@@ -87,7 +87,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var perm=0>
 		<cfset var rsPermited="">
 		
-		<cfquery name="rsPermited" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery name="rsPermited" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 		Select GroupID from tpermissions where ContentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/> and type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#"/> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> and groupid='#arguments.groupid#'
 		</cfquery>
 		
@@ -165,7 +165,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="siteid" type="string" required="true">
 		<cfset var rs="">
 		
-		<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">	
+		<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">	
 		Select tusers.GroupName, tusers.isPublic 
 		from tpermissions inner join tusers on tusers.userid in (tpermissions.groupid)
 		where tpermissions.ContentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/>
@@ -303,7 +303,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="siteid" type="string" required="true">
 		<cfset var rs="">
 		
-		<cfquery datasource="#variables.configBean.getDatasource()#" name="rs" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#variables.configBean.getDatasource(mode='readOnly')#" name="rs" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 			select tusers.groupname,isPublic from tusers INNER JOIN tpermissions ON (tusers.userid = tpermissions.groupid) where tpermissions.contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#"/> and tpermissions.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
 		</cfquery>
 
@@ -428,7 +428,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var Verdictlist=""/>
 		<cfset var I = "" />
 		
-		<cfquery name="rsGroups" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery name="rsGroups" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 		select groupid from tpermissions where contentid='00000000000000000000000000000000000' and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.crumbdata[1].siteid#"/>
 		</cfquery>
 		
@@ -460,7 +460,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="data" type="struct" />
 <cfset var rsGroups=""/>
 
-	<cfquery name="rsgroups" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rsgroups" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	select UserID from tusers where type =1 
 	</cfquery> 
 	
@@ -493,7 +493,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="data" type="struct" />
 <cfset var rsContentlist=""/>
 <cftransaction>
-	<cfquery name="rsContentlist" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rsContentlist" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	select contentID from tcontent where siteid='#arguments.data.siteid#' group by contentid
 	</cfquery> 
 	
@@ -531,7 +531,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getModule" access="public" returntype="query" output="false">
 <cfargument name="data" type="struct" />
 <cfset var rs = "" />
-<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 SELECT * FROM tcontent WHERE 
  ContentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.contentID#"/> and  siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/> and active=1
 </cfquery>
@@ -542,7 +542,7 @@ SELECT * FROM tcontent WHERE
 <cfargument name="data" type="struct" />
 <cfset var rs = "" />
 <cfset var returnStruct=structNew() />
-<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 select userid, groupname from tusers where type=1 and groupname <>'Admin' and isPublic=0 
 and siteid='#application.settingsManager.getSite(arguments.data.siteid).getPrivateUserPoolID()#' 
 order by groupname
@@ -550,7 +550,7 @@ order by groupname
 
 <cfset returnStruct.privateGroups=rs />
 
-<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 select userid, groupname from tusers where type=1  and isPublic=1 
 and siteid='#application.settingsManager.getSite(arguments.data.siteid).getPublicUserPoolID()#' 
 order by groupname
@@ -564,8 +564,8 @@ order by groupname
 <cffunction name="getPermitedGroups"  access="public" returntype="query" output="false">
 <cfargument name="data" type="struct" />
 <cfset var rs = "" />
-<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"
-username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"
+username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 select * from tpermissions where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.contentID#"/> and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/> and type='module'
 </cfquery>
 <cfreturn rs />
@@ -574,8 +574,8 @@ select * from tpermissions where contentid= <cfqueryparam cfsqltype="cf_sql_varc
 <cffunction name="getcontent" access="public" returntype="query" output="false">
 <cfargument name="data" type="struct" />
 <cfset var rs = "" />
-<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"
-username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"
+username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 SELECT tcontent.*, tfiles.fileEXT FROM tcontent 
 LEFT Join tfiles ON (tcontent.fileID=tfiles.fileID)
 WHERE tcontent.ContentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.contentID#"/> and tcontent.active=1 and tcontent.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/>

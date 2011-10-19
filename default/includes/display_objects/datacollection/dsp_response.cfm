@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif len(customResponse)>
 		#customResponse#
 	<cfelse>
-		<cfquery name="rsTotal" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
+		<cfquery name="rsTotal" datasource="#application.configBean.getDatasource(mode='readOnly')#" username="#application.configBean.getDBUsername(mode='readOnly')#" password="#application.configBean.getDBPassword(mode='readOnly')#">
 		select count(pollValue) as qty from tformresponsequestions where FormID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectID#"/> and pollValue is not null
 		</cfquery>
 	
@@ -60,7 +60,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<ul class="pollResults">
 		<cfloop list="#request.polllist#" index="i">
 		<cfsilent>
-		<cfquery name="rsSubTotal" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
+		<cfquery name="rsSubTotal" datasource="#application.configBean.getDatasource(mode='readOnly')#" username="#application.configBean.getDBUsername(mode='readOnly')#" password="#application.configBean.getDBPassword(mode='readOnly')#">
 		SELECT tformresponsequestions.pollValue, Count(tformresponsequestions.pollValue) AS qty
 		FROM tformresponsequestions
 		GROUP BY tformresponsequestions.pollValue, tformresponsequestions.formID

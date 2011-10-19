@@ -59,7 +59,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="sortDirection" default="asc">
 	<cfset var rs = "" />
 
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" cachedwithin="#createtimespan(1,0,0,0)#"  >
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#" cachedwithin="#createtimespan(1,0,0,0)#"  >
 	select * from tsettings order by 
 	<cfif listFindNoCase("domain,site,orderno",arguments.sortBy)>
 	#arguments.sortBy#

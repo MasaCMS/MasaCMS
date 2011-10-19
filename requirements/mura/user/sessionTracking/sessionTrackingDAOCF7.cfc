@@ -54,7 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset variables.configBean=arguments.configBean />
 <cfset variables.settingsManager=arguments.settingsManager />
-<cfset variables.dsn=variables.configBean.getDatasource()/>
+
 <cfreturn this />
 </cffunction>
 
@@ -107,7 +107,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset arguments.startCount =GetTickCount()>
 			
 			<!---<cftry>--->
-			<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			INSERT INTO tsessiontracking (REMOTE_ADDR,SCRIPT_NAME,QUERY_STRING,SERVER_NAME,URLToken,UserID,siteID,
 				country,lang,locale, contentID, referer,keywords,user_agent,Entered,originalURLToken)
 			values (
@@ -151,7 +151,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="clearOldData" returnType="void" access="public">
 		
 	<cfif variables.configBean.getSessionHistory() gt 0>
-	<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	delete from tsessiontracking 
 	where entered <  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('d',-variables.configBean.getSessionHistory(),now())#">
 	</cfquery>
@@ -160,7 +160,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="deleteSession" access="public" returntype="void">
 <cfargument name="URLToken" type="string" required="yes"/>
-<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 delete from tsessiontracking 
 where urlToken=<cfqueryparam  cfsqltype="cf_sql_varchar" value="#arguments.urlToken#" />
 </cfquery>

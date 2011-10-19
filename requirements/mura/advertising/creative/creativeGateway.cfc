@@ -58,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var rs ="" />
 
-	<cfquery name="rs" datasource="#variables.instance.configBean.getDatasource()#"  username="#variables.instance.configBean.getDBUsername()#" password="#variables.instance.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.instance.configBean.getDatasource(mode='readOnly')#"  username="#variables.instance.configBean.getDBUsername(mode='readOnly')#" password="#variables.instance.configBean.getDBPassword(mode='readOnly')#">
 	select tadcreatives.* from tadcreatives
 	where tadcreatives.userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#" />  order by tadcreatives.name
 	</cfquery>
@@ -72,7 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var rs ="" />
 
-	<cfquery name="rs" datasource="#variables.instance.configBean.getDatasource()#"  username="#variables.instance.configBean.getDBUsername()#" password="#variables.instance.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.instance.configBean.getDatasource(mode='readOnly')#"  username="#variables.instance.configBean.getDBUsername(mode='readOnly')#" password="#variables.instance.configBean.getDBPassword(mode='readOnly')#">
 	select tadcreatives.*, tusers.company from tadcreatives
 	inner join tusers on tadcreatives.userid=tusers.userid
 	where tusers.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" /> 

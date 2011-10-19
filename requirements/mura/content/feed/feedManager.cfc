@@ -272,7 +272,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			
 			<cfif  arguments.feedBean.getRestricted()>
-						<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+						<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 						select tusers.userid from tusers 
 						<cfif rLen> inner join tusersmemb 
 						on(tusers.userid=tusersmemb.userid)</cfif>

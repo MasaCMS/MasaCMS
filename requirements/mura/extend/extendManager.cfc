@@ -54,7 +54,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset variables.configBean=arguments.configBean />
 	<cfset variables.contentRenderer=arguments.contentRenderer />
-	<cfset variables.dsn=variables.configBean.getDatasource()/>
 	
 	<cfreturn this />
 </cffunction>
@@ -179,7 +178,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset setLen=listLen(arguments.data.extendSetID)/>
 
 <!--- process non-file attributes --->
-<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 select attributeID,name,validation,message from tclassextendattributes where 
 ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
@@ -267,7 +266,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 	<cfset arguments.data.moduleID="00000000000000000000000000000000004">
 </cfif>
 <!--- process non-file attributes --->
-<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 select attributeID,name,validation,message from tclassextendattributes where 
 ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
@@ -289,13 +288,13 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 			<cfset theValue="">
 		</cfif>
 		
-		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			delete from #arguments.dataTable# 
 			where baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">
 			and attributeID = <cfqueryparam cfsqltype="cf_sql_numeric"  value="#rs.attributeID#">
 		</cfquery>
 			
-		<cfquery  datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery  datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			insert into #arguments.dataTable# (baseID,attributeID,siteID,stringvalue,attributeValue,datetimevalue,numericvalue,remoteID
 			)
 			values (
@@ -358,7 +357,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 </cfloop>
 
 <!--- process file attributes --->
-<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 select attributeID,name from tclassextendattributes where 
 ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
@@ -385,7 +384,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 			
 			<cfset fileManager.deleteIfNotUsed(fileID,arguments.baseID)/>
 			
-			<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			delete from #arguments.dataTable# 
 			where baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">
 			and attributeID = <cfqueryparam cfsqltype="cf_sql_numeric"  value="#rs.attributeID#">
@@ -423,7 +422,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 			<cfset fileID=arguments.data[formField]>
 		</cfif>	
 		
-		<cfquery  datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery  datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			insert into #arguments.dataTable# (baseID,attributeID,siteID,attributeValue,stringvalue,remoteID)
 			values (
 			<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">,
@@ -464,7 +463,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 	<cfset remoteID=left(arguments.data.remoteID,35)>
 </cfif>
 <!--- preserve data from extendsets that were'nt submitted --->
-<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 select #arguments.dataTable#.dataID, #arguments.dataTable#.baseID, #arguments.dataTable#.attributeID,#arguments.dataTable#.siteID, #arguments.dataTable#.attributevalue, 
 #arguments.dataTable#.datetimevalue, #arguments.dataTable#.numericvalue, #arguments.dataTable#.stringvalue, tclassextendattributes.name from #arguments.dataTable#
 inner join tclassextendattributes on ( #arguments.dataTable#.attributeID=tclassextendattributes.attributeID)
@@ -490,7 +489,7 @@ and tclassextendattributes.extendSetID not in (<cfloop from="1" to="#setLen#" in
 </cfquery>
 
 <cfloop query="rs">
-		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		insert into #arguments.dataTable# (baseID,attributeID,siteID,attributeValue,datetimevalue,numericvalue,stringvalue,remoteID)
 		values (
 		<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">,
@@ -522,7 +521,7 @@ and tclassextendattributes.extendSetID not in (<cfloop from="1" to="#setLen#" in
 </cfloop>
 
 <!--- preserve get non file attributes that were'nt submitted along with extendedset  --->
-<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 select #arguments.dataTable#.dataID, #arguments.dataTable#.baseID, #arguments.dataTable#.attributeID,#arguments.dataTable#.siteID, #arguments.dataTable#.attributevalue, 
 #arguments.dataTable#.datetimevalue, #arguments.dataTable#.numericvalue, #arguments.dataTable#.stringvalue, tclassextendattributes.name  from #arguments.dataTable#
 inner join tclassextendattributes on ( #arguments.dataTable#.attributeID=tclassextendattributes.attributeID)
@@ -553,7 +552,7 @@ and tclassextendattributes.type!='File'
 <cfif not structKeyExists(arguments.data,key)
 	and not structKeyExists(arguments.data,rs.name)>
 		
-		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 						insert into #arguments.dataTable# (baseID,attributeID,siteID,attributeValue,datetimevalue,numericvalue,stringvalue,remoteID)
 						values (
 						<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">,
@@ -587,7 +586,7 @@ and tclassextendattributes.type!='File'
 </cfloop>	
 
 <!--- preserve  Files from submitted extendset and make sure that is they were'nt newly submitted that the fileID is carried forward--->
-<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 select #arguments.dataTable#.dataID, #arguments.dataTable#.baseID, #arguments.dataTable#.attributeID,#arguments.dataTable#.siteID, #arguments.dataTable#.attributevalue, 
 #arguments.dataTable#.datetimevalue, #arguments.dataTable#.numericvalue, #arguments.dataTable#.stringvalue, tclassextendattributes.name from #arguments.dataTable#
 inner join tclassextendattributes on ( #arguments.dataTable#.attributeID=tclassextendattributes.attributeID)
@@ -624,7 +623,7 @@ and tclassextendattributes.type='File'
 			and len(rs.attributeValue)>
 		
 		
-						<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+						<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 						insert into #arguments.dataTable# (baseID,attributeID,siteID,attributeValue,stringvalue,remoteID)
 						values (
 						<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.baseID#">,
@@ -668,7 +667,7 @@ and tclassextendattributes.type='File'
 <cfargument name="siteid">
 <cfargument name="activeOnly" default="false">
 <cfset var rs = ""/>
-<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	select * from tclassextend 
 	where 
 	siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.siteid#">
@@ -686,7 +685,7 @@ and tclassextendattributes.type='File'
 <cfargument name="siteid">
 <cfargument name="activeOnly" default="false">
 <cfset var rs = ""/>
-<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	select * from tclassextend 
 	where 
 	siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.siteid#">
@@ -705,7 +704,7 @@ and tclassextendattributes.type='File'
 <cfset var rs = ""/>
 <cfset var a=0/>
 <cfloop from="1" to="#listlen(arguments.attributeID)#" index="a">
-	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	update tclassextendattributes
 	set orderno=#a#
 	where 
@@ -720,7 +719,7 @@ and tclassextendattributes.type='File'
 <cfset var rs = ""/>
 <cfset var s=0/>
 <cfloop from="1" to="#listlen(arguments.extendSetID)#" index="s">
-	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	update tclassextendsets
 	set orderno=#s#
 	where 
@@ -736,7 +735,7 @@ and tclassextendattributes.type='File'
 <cfargument name="dataTable" required="true" default="tclassextenddata"/>
 <cfset var rs =""/>
 <cfset var tempDate="">
-	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	select #arguments.dataTable#.attributeValue,tclassextendattributes.defaultValue,#arguments.dataTable#.attributeID,tclassextendattributes.validation from tclassextendattributes
 	left join #arguments.dataTable# ON (tclassextendattributes.attributeID=#arguments.dataTable#.attributeID)
 	where 
@@ -769,7 +768,7 @@ and tclassextendattributes.type='File'
 <cfset var rsFiles="">
 <cfset var fileManager=getBean("fileManager") />
 
-	<cfquery name="rsFiles" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rsFiles" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 		select attributeValue from #arguments.dataTable#
 		inner join tclassextendattributes on (#arguments.dataTable#.attributeID=tclassextendattributes.attributeID)
 		where 
@@ -782,7 +781,7 @@ and tclassextendattributes.type='File'
 		<cfset fileManager.deleteIfNotUsed(rsFiles.attributeValue,arguments.baseID)/>
 	</cfloop>
 
-	<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		delete from #arguments.dataTable# where 
 	    baseid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.baseid#"/>
 	</cfquery>		
@@ -795,7 +794,7 @@ and tclassextendattributes.type='File'
 <cfargument name="activeOnly" requierd="true" default="false">
 	<cfset var rs="">
 	
-	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 		select tclassextend.type, tclassextend.subType, tclassextendattributes.attributeID, tclassextend.baseTable, tclassextend.baseKeyField, tclassextend.dataTable, tclassextendattributes.name attribute
 		from tclassextendattributes 
 		inner join tclassextendsets on (tclassextendsets.extendSetID=tclassextendattributes.extendSetID)
@@ -818,7 +817,7 @@ and tclassextendattributes.type='File'
 <cfset var rs="">
 <cfif variables.configBean.getStrictExtendedData()>
 	<cfif not structKeyExists(arguments,"datatype")>
-		<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 				select validation from tclassextendattributes 
 				where 
 				<cfif isNumeric(arguments.attribute)>
@@ -851,7 +850,7 @@ and tclassextendattributes.type='File'
 	<cfargument name="type" default="both">
 
 		<cfif arguments.type eq "Both" or arguments.type eq "Content">
-			<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 				<cfswitch expression="#variables.configBean.getDBType()#">
 				<cfcase value="mysql">
 				update tclassextenddata
@@ -891,7 +890,7 @@ and tclassextendattributes.type='File'
 				</cfswitch>
 			</cfquery>
 			
-			<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			<cfswitch expression="#variables.configBean.getDBType()#">
 				<cfcase value="mysql">
 				update tclassextenddata
@@ -926,7 +925,7 @@ and tclassextendattributes.type='File'
 			</cfquery>
 			
 			<cfif variables.configBean.getStrictExtendedData()>
-				<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+				<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 					<cfswitch expression="#variables.configBean.getDBType()#">
 					<cfcase value="mysql">
 					update tclassextenddata
@@ -967,7 +966,7 @@ and tclassextendattributes.type='File'
 				
 				<!--- Make sure MySQL does not have any values set to '0000-00-00 00:00:00' --->
 				<cfif variables.configBean.getDBType() eq "MYSQL">
-					<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+					<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 					update tclassextenddata
 					inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddata.attributeID
 														and tclassextendattributes.validation='date')
@@ -978,7 +977,7 @@ and tclassextendattributes.type='File'
 					</cfquery>
 				</cfif>
 				
-				<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+				<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 					<cfswitch expression="#variables.configBean.getDBType()#">
 					<cfcase value="mysql">
 					update tclassextenddata
@@ -1023,7 +1022,7 @@ and tclassextendattributes.type='File'
 		
 		<cfif arguments.type eq "Both" or arguments.type eq "User">
 			
-			<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			<cfswitch expression="#variables.configBean.getDBType()#">
 				<cfcase value="mysql">
 				update tclassextenddatauseractivity
@@ -1049,7 +1048,7 @@ and tclassextendattributes.type='File'
 				</cfswitch>
 			</cfquery>
 			
-			<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			<cfswitch expression="#variables.configBean.getDBType()#">
 				<cfcase value="mysql">
 				update tclassextenddatauseractivity
@@ -1070,7 +1069,7 @@ and tclassextendattributes.type='File'
 			</cfquery>
 			
 			<cfif variables.configBean.getStrictExtendedData()>
-				<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+				<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 					<cfswitch expression="#variables.configBean.getDBType()#">
 					<cfcase value="mysql">
 					update tclassextenddatauseractivity
@@ -1105,7 +1104,7 @@ and tclassextendattributes.type='File'
 				
 				<!--- Make sure MySQL does not have any values set to '0000-00-00 00:00:00' --->
 				<cfif variables.configBean.getDBType() eq "MYSQL">
-					<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+					<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 					update tclassextenddatauseractivity
 					inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddatauseractivity.attributeID
 														and tclassextendattributes.validation='date')
@@ -1114,7 +1113,7 @@ and tclassextendattributes.type='File'
 					</cfquery>
 				</cfif>
 				
-				<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+				<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 					<cfswitch expression="#variables.configBean.getDBType()#">
 					<cfcase value="mysql">
 					update tclassextenddatauseractivity

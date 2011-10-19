@@ -239,7 +239,7 @@
 	</cfif>
 	
 	<cfif len(idString)>
-		<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
+		<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" password="#variables.configBean.getDbPassword(mode='readOnly')#" username="#variables.configBean.getDbUsername(mode='readOnly')#">
 			select objectID from ttrash where objectID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#evaluate('arguments.deleted.get#IDString#()')#" />
 		</cfquery>
 		
@@ -283,7 +283,7 @@
 	<cfset var retrieved="">
 	<cfset var allValues="">
 	
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" password="#variables.configBean.getDbPassword(mode='readOnly')#" username="#variables.configBean.getDbUsername(mode='readOnly')#">
 		select objectID,parentID,siteID,objectClass,objectLabel,objectType,objectSubType,objectString,deletedDate,deletedBy from ttrash where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectID#" />				
 	</cfquery>
 	
@@ -303,7 +303,7 @@
 <cffunction name="getQuery" output="false">
 	<cfset var rs="">
 	
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" password="#variables.configBean.getDbPassword(mode='readOnly')#" username="#variables.configBean.getDbUsername(mode='readOnly')#">
 		select objectID,siteID,parentID,objectClass,objectType,objectSubType,objectLabel,deletedDate,deletedBy 
 		from ttrash where 
 		1=1

@@ -163,7 +163,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfloop condition="ID neq ''">
 				<cfset path =  listAppend(path,"'#ID#'")>
-				<cfquery name="rsCat" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+				<cfquery name="rsCat" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 				select parentid from tcontentcategories where categoryid='#ID#' and siteid='#arguments.categoryBean.getSiteID()#'
 				</cfquery>
 				<cfset ID = rsCat.parentID />
@@ -214,7 +214,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfthrow type="custom" message="The attribute 'CATEGORYID' is required when saving a category.">
 	</cfif>
 	
-	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rs">
+	<cfquery datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#" name="rs">
 	select categoryID from tcontentcategories where categoryID=<cfqueryparam value="#arguments.data.categoryID#">
 	</cfquery>
 	
@@ -287,7 +287,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rsCheck="">
 	<cfset var tempFilename=arguments.categoryBean.getFilename()>
 	<cfloop condition="not isUnique">
-		<cfquery name="rsCheck" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
+		<cfquery name="rsCheck" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDbUsername(mode='readOnly')#" password="#variables.configBean.getDbPassword(mode='readOnly')#">
 			select categoryID from tcontentcategories 
 			where categoryID != <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.categoryBean.getCategoryID()#">
 			and filename=<cfqueryparam cfsqltype="cf_sql_varchar" value="#tempFilename#">
@@ -510,7 +510,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.categoryBean=read(categoryID=arguments.categoryID)>
 	</cfif>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	select categoryID,siteID,dateCreated,lastUpdate,lastUpdateBy,
 	name,isInterestGroup,parentID,isActive,isOpen,notes,sortBy,
 	sortDirection,restrictGroups,path,remoteID,remoteSourceURL,

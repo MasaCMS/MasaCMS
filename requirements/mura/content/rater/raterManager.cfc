@@ -140,7 +140,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var rs=""/>
 	
-	<cfquery name="rs" datasource="#getBean("configBean").getDatasource()#"  username="#getBean("configBean").getDBUsername()#" password="#getBean("configBean").getDBPassword()#">
+	<cfquery name="rs" datasource="#getBean("configBean").getDatasource(mode='readOnly')#"  username="#getBean("configBean").getDBUsername(mode='readOnly')#" password="#getBean("configBean").getDBPassword(mode='readOnly')#">
 	select avg(tcontentratings.rate) as theAvg, count(tcontentratings.contentID) as theCount, (count(tcontentratings.contentID)-downVotes) as upVotes, downVotes from tcontentratings
 	left join (select count(rate) as downVotes, contentID,siteID from tcontentratings
 				where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
@@ -168,7 +168,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var stop=""/>
 	<cfset var start=""/>
 	<cfset var dbType=getBean("configBean").getDbType() />
-	<cfquery name="rs" datasource="#getBean("configBean").getDatasource()#"  username="#getBean("configBean").getDBUsername()#" password="#getBean("configBean").getDBPassword()#">
+	<cfquery name="rs" datasource="#getBean("configBean").getDatasource(mode='readOnly')#"  username="#getBean("configBean").getDBUsername(mode='readOnly')#" password="#getBean("configBean").getDBPassword(mode='readOnly')#">
 	    <cfif dbType eq "oracle" and arguments.limit>select * from (</cfif>
 	    SELECT <cfif dbType eq "mssql" and arguments.limit>Top #arguments.limit#</cfif> tcontent.ContentHistID, tcontent.ContentID, tcontent.Approved, tcontent.filename, tcontent.Active,
 	    tcontent.Type, tcontent.OrderNo, tcontent.ParentID, tcontent.siteID,  tcontent.moduleID,

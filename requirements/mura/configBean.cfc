@@ -132,6 +132,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.broadcastCachePurges=true />
 <cfset variables.instance.broadcastAppreloads=true />
 <cfset variables.instance.broadcastWithProxy=true />
+<cfset variables.instance.readOnlyDatasource="" />
+<cfset variables.instance.readOnlyDbUsername="" />
+<cfset variables.instance.readOnlyDbPassword="" />
 <cfset variables.instance.MYSQLEngine="InnoDB" />
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
@@ -204,6 +207,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset setCompiler("Adobe")/>	
 	</cfdefaultcase>
 	</cfswitch>
+	
+	<cfif not len(variables.instance.readOnlyDatasource)>
+		<cfset variables.instance.readOnlyDatasource=variables.instance.datasource>
+	</cfif>
+	
+	<cfif not len(variables.instance.readOnlyDbPassword)>
+		<cfset variables.instance.readOnlyDbPassword=variables.instance.dbPassword>
+	</cfif>
+	
+	<cfif not len(variables.instance.readOnlyDbUsername)>
+		<cfset variables.instance.readOnlyDbUsername=variables.instance.dbUsername>
+	</cfif>
 
 	<cfset variables.instance.reactorDBType=config.dbType>
 	
@@ -302,7 +317,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getDatasource" returntype="any" access="public" output="false">
-	<cfreturn variables.instance.datasource />
+	<cfargument name="mode" default="" />
+	<cfif arguments.mode eq "readOnly">
+		<cfreturn variables.instance.readOnlyDatasource />
+	<cfelse>
+		<cfreturn variables.instance.datasource />
+	</cfif>
 </cffunction>
 
 <cffunction name="setDatasource" access="public" output="false">
@@ -476,7 +496,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getDbPassword" returntype="any" access="public" output="false">
-	<cfreturn variables.instance.dbPassword />
+	<cfargument name="mode" default="" />
+	<cfif arguments.mode eq "readOnly">
+		<cfreturn variables.instance.readOnlydbPassword />
+	<cfelse>
+		<cfreturn variables.instance.dbPassword />
+	</cfif>
 </cffunction>
 
 <cffunction name="setDbPassword" access="public" output="false">
@@ -486,7 +511,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getDbUsername" returntype="any" access="public" output="false">
-	<cfreturn variables.instance.dbUsername />
+	<cfargument name="mode" default="" />
+	<cfif arguments.mode eq "readOnly">
+		<cfreturn variables.instance.readOnlyDbUsername />
+	<cfelse>
+		<cfreturn variables.instance.dbUsername />
+	</cfif>
 </cffunction>
 
 <cffunction name="setDbUsername" access="public" output="false">
@@ -732,7 +762,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="dbCreateIndex" access="private">
+<cffunction name="dbCreateIndex" output="false">
 	<cfargument name="table">
 	<cfargument name="column" default="">
 	
@@ -774,7 +804,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="dbDropIndex" access="private">
+<cffunction name="dbDropIndex" output="false">
 	<cfargument name="table">
 	<cfargument name="column" default="">
 	

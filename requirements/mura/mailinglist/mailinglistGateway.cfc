@@ -49,7 +49,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="init" access="public" returntype="any" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
-		<cfset variables.dsn=variables.configBean.getDatasource()/>
 		<cfreturn this />
 </cffunction>
 
@@ -57,7 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="mlid" type="string" />
 	<cfargument name="siteid" type="string" />
 	<cfset var rs = ""/>
-	<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rs">
+	<cfquery datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#" name="rs">
 	select mlid,email,siteid,fname,lname,company,isVerified,created from tmailinglistmembers where mlid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.mlid#" /> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#" /> order by email
 	</cfquery>
 
@@ -67,7 +66,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getList" access="public" output="false" returntype="query">
 	<cfargument name="siteid" type="string" />
 	<cfset var rs = ""/>
-	<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rs">
+	<cfquery datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#" name="rs">
 	select tmailinglist.siteid, tmailinglist.name, tmailinglist.lastupdate, tmailinglist.mlid, tmailinglist.ispurge, tmailinglist.isPublic, count(tmailinglistmembers.mlid) as "Members" from tmailinglist LEFT JOIN tmailinglistmembers ON(tmailinglist.mlid=tmailinglistmembers.mlid and tmailinglist.siteid=tmailinglistmembers.siteid)
 	WHERE tmailinglist.siteid =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" /> 
 	GROUP By tmailinglist.siteid, tmailinglist.name, tmailinglist.mlid, tmailinglist.ispurge, tmailinglist.lastupdate,tmailinglist.isPublic

@@ -317,7 +317,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="checkUsername" returntype="boolean" output="false" access="public">
 	<cfset var rsCheck=""/>
-	<cfquery name="rsCheck" datasource="#getBean("configBean").getDatasource()#" username="#getBean("configBean").getDBUsername()#" password="#getBean("configBean").getDBPassword()#">
+	<cfquery name="rsCheck" datasource="#getBean("configBean").getDatasource(mode='readOnly')#" username="#getBean("configBean").getDBUsername(mode='readOnly')#" password="#getBean("configBean").getDBPassword(mode='readOnly')#">
 		select username from tusers where type=2 and username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(variables.instance.username)#"> and UserID <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(variables.instance.userID)#"> 
 	</cfquery>
 		
@@ -331,7 +331,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 <cffunction name="checkEmail" returntype="boolean" output="false" access="public">	
 	<cfset var rsCheck=""/>
-	<cfquery name="rsCheck" datasource="#getBean("configBean").getDatasource()#" username="#getBean("configBean").getDBUsername()#" password="#getBean("configBean").getDBPassword()#">
+	<cfquery name="rsCheck" datasource="#getBean("configBean").getDatasource(mode='readOnly')#" username="#getBean("configBean").getDBUsername(mode='readOnly')#" password="#getBean("configBean").getDBPassword(mode='readOnly')#">
 		select username from tusers where type=2 and email=<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(variables.instance.email)#"> and UserID <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(getUserID())#">  
 		and (siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.settingsManager.getSite(variables.instance.siteid).getPrivateUserPoolID()#">
 			or 
