@@ -5,7 +5,7 @@
 	<cfinclude template="inc/header.cfm" />
 		<div id="content" class="clearfix">
 		<article>
-			#$.dspBody(body=$.content('body'),pageTitle=$.content(''),crumbList=0,showMetaImage=0)#
+			#$.dspBody(body=$.content('body'),pageTitle="",crumbList=0,showMetaImage=0)#
 			#$.dspObjects(2)#
 		</article>
 		<aside id="right">

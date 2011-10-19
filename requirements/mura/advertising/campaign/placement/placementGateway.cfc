@@ -62,7 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var start ="" />
 	<cfset var stop ="" />
 		
-	<cfquery name="rs" datasource="#variables.instance.configBean.getDatasource()#"  username="#variables.instance.configBean.getDBUsername()#" password="#variables.instance.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.instance.configBean.getDatasource(mode='readOnly')#"  username="#variables.instance.configBean.getDBUsername(mode='readOnly')#" password="#variables.instance.configBean.getDBPassword(mode='readOnly')#">
 	select tadplacements.startdate,tadplacements.enddate,tadplacements.costPerImp,
 	tadplacements.costPerClick,tadplacements.isExclusive,tadplacements.isActive,
 	tadplacements.placementid,tadplacements.creativeid,tadplacements.adZoneID, tadplacements.budget,

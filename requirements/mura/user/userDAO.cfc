@@ -74,7 +74,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset bean=getBean("user")>	
 		</cfif>
 		
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsUser">
+		<cfquery datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#" name="rsUser">
 			select #variables.fieldList#
 			from tusers 
 			left join tfiles on tusers.photoFileId=tfiles.fileid
@@ -107,7 +107,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset bean=getBean("user")>	
 		</cfif>
 			
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsUser">
+		<cfquery datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#" name="rsUser">
 			select #variables.fieldList#
 			from tusers 
 			left join tfiles on tusers.photoFileId=tfiles.fileid
@@ -162,7 +162,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset bean=getBean("user")>	
 		</cfif>
 		
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsUser">
+		<cfquery datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#" name="rsUser">
 			select #variables.fieldList#
 			from tusers 
 			left join tfiles on tusers.photoFileId=tfiles.fileid
@@ -231,7 +231,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset bean=getBean("user")>	
 		</cfif>
 				
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" name="rsUser">
+		<cfquery datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#" name="rsUser">
 			select #variables.fieldList#
 			from tusers 
 			left join tfiles on tusers.photoFileId=tfiles.fileid
@@ -452,7 +452,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="userid" type="string" />
 	<cfargument name="originID" type="string" required="yes" default=""/>
 	
-	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" >
+	<cfquery datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#" >
 		DELETE FROM tusersmemb where UserID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userid#">
 		<cfif arguments.originID neq "">
 			and groupID in (select userID from tusers 
@@ -496,7 +496,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="groupid" type="string" />
 	<cfset var checkmemb=""/>
 	<cftransaction>
-	<cfquery name="checkmemb" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="checkmemb" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	select * from tusersmemb where groupid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.groupID#"> and userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
 	
 	</cfquery>
@@ -534,7 +534,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="userid" type="string" />
 	<cfargument name="originID" type="string" required="yes" default="" />
 	
-	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" >
+	<cfquery datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#" >
 		DELETE FROM tusersinterests where UserID='#arguments.UserId#'
 		<cfif arguments.originID neq "">
 			and categoryID in (select categoryID from tcontentcategories where siteid='#arguments.originID#')
@@ -569,7 +569,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="userid" type="string" />
 	<cfset var rs =""/>
 	
-	<cfquery name="rs"  datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs"  datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	Select tusers.userID groupID, #variables.fieldList# from tusers 
 	inner join tusersmemb on tusers.userid=tusersmemb.groupid
 	left join tfiles on tusers.photoFileId=tfiles.fileid
@@ -583,7 +583,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="userid" type="string" />
 	<cfset var rs =""/>
 	
-	<cfquery name="rs"  datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs"  datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	Select tusers.userID groupID from tusers 
 	inner join tusersmemb on tusers.userid=tusersmemb.groupid
 	left join tfiles on tusers.photoFileId=tfiles.fileid
@@ -597,7 +597,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="userid" type="string" />
 	<cfset var rs =""/>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	Select tusers.userID groupID, #variables.fieldList# from tusers
 	inner join  tusersmemb on tusers.userid=tusersmemb.userid 
 	left join tfiles on tusers.photoFileId=tfiles.fileid
@@ -612,7 +612,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="userid" type="string" default="" />
 
 	<cfset var rs = "" />
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	SELECT tcontentcategories.* from tcontentcategories
 	Inner Join tusersinterests on tcontentcategories.categoryID=tusersinterests.categoryID
 	where userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
@@ -624,7 +624,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="userid" type="string" default="" />
 
 	<cfset var rs = "" />
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	SELECT categoryID from tusersinterests where userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
 	</cfquery>
 	<cfreturn rs />
@@ -645,7 +645,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="readUserHash" returntype="query" output="false" access="public">
 	<cfargument name="userid" type="string" />
 	<cfset var rs="">
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
       SELECT userID,password as userHash,siteID,isPublic from tusers
        WHERE UserID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"> 
    </cfquery>
@@ -764,17 +764,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var rs=""/>
 	<!--- sometimes apps allow addresses to be rated --->
-	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" >
+	<cfquery datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#" >
 		DELETE FROM tcontentratings where contentID 
 		in (select addressID from tuseraddresses where userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">)
 	</cfquery>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" >
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#" >
 		select addressID FROM tuseraddresses where userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
 	</cfquery>
 	
 	<cfloop query="rs">
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" >
+		<cfquery datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#" >
 			DELETE FROM tuseraddresses where addressID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.addressID#">
 		</cfquery>
 		
@@ -798,7 +798,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getAddresses" access="public" output="false" returntype="query">
 		<cfargument name="userID" type="String" />
 		<cfset var rs ="" />
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" >
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#" >
 		select * from tuseraddresses where userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
 		order by isPrimary desc
 	</cfquery>
@@ -810,7 +810,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="userBean" type="any" />
 
 	<cfif not arguments.userBean.getS2() and  arguments.userBean.getIsPublic()>
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" >
+		<cfquery datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#" >
 			delete from tusersmemb where userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userBean.getUserID()#">
 			and groupID not in 
 			(select userID from tusers 

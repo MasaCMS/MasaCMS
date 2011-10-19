@@ -47,7 +47,7 @@
 	<cfset var campaignBean=getBean("campaign") />
 	<cfset var rs ="" />
 	
-	<cfquery name="rs" datasource="#application.configBean.getDatasource()#"  username="#variables.instance.configBean.getDBUsername()#" password="#variables.instance.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#application.configBean.getDatasource(mode='readOnly')#"  username="#variables.instance.configBean.getDBUsername(mode='readOnly')#" password="#variables.instance.configBean.getDBPassword(mode='readOnly')#">
 	Select * from tadcampaigns where 
 	campaignID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.campaignID#" />
 	</cfquery>

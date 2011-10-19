@@ -653,7 +653,7 @@ function keyCheck(e){
 
 	if (pressed_keys != "") {
 	
-	aux = new String(pressed_keys);
+	var aux = pressed_keys;
 	
 	if (aux.indexOf('2776') != -1 && location.search.indexOf("display=login") == -1) {
 		

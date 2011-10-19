@@ -51,7 +51,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="settingsManager" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
 		<cfset variables.settingsManager=arguments.settingsManager />
-		<cfset variables.dsn=variables.configBean.getDatasource() />
 		<cfset variables.classExtensionManager=variables.configBean.getClassExtensionManager()>
 <cfreturn this />
 </cffunction>
@@ -117,7 +116,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<cfloop condition="ID neq '00000000000000000000000000000000END'">
 
-			<cfquery name="rsContent" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			<cfquery name="rsContent" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 			select contenthistid, contentid, menutitle, filename, parentid, type, target, targetParams, 
 			siteid, restricted, restrictgroups,template,childTemplate,inheritObjects,metadesc,metakeywords,sortBy,
 			sortDirection from tcontent where active=1 and contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#ID#"/> and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
@@ -167,7 +166,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<cfelse>
 			
-			<cfquery name="rsContent" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			<cfquery name="rsContent" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 			select contenthistid, contentid, menutitle, filename, parentid, type, target, targetParams, 
 			siteid, restricted, restrictgroups,template,childTemplate,inheritObjects,metadesc,metakeywords,sortBy,
 			sortDirection,
@@ -230,7 +229,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getContentIDFromContentHistID" returntype="string" access="public" output="false">
 	<cfargument name="contenthistid" required="true" default="">
 	<cfset var rs="">
-	<cfquery name="rs" datasource="#variables.dsn#" blockfactor="20"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" blockfactor="20"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 		select contentID from tcontent where contenthistid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contenthistid#">
 	</cfquery>
 	<cfreturn rs.contentID>
@@ -298,7 +297,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 
 			
-				<cfquery name="rsKids" datasource="#variables.dsn#" blockfactor="20"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+				<cfquery name="rsKids" datasource="#variables.configBean.getDatasource(mode='readOnly')#" blockfactor="20"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 				<cfif dbType eq "oracle" and arguments.size>select * from (</cfif>
 				SELECT <cfif dbType eq "mssql" and arguments.size>Top #arguments.size#</cfif> 
 				title, releasedate, menuTitle, tcontent.lastupdate,summary, tags,tcontent.filename, type,subType, tcontent.siteid,
@@ -528,7 +527,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset var f=""/>
 			<cfset var nowAdjusted=createDateTime(year(arguments.today),month(arguments.today),day(arguments.today),hour(arguments.today),int((minute(arguments.today)/5)*5),0)>
 			
-				<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+				<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 				SELECT tcontentcategories.categoryID, tcontentcategories.filename, Count(tcontent.contenthistID) as "Count", tcontentcategories.name from tcontent inner join tcontentcategoryassign
 				ON (tcontent.contenthistID=tcontentcategoryassign.contentHistID
 					and tcontent.siteID=tcontentcategoryassign.siteID)
@@ -597,7 +596,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<cfset var rs=""/>
 	
-			<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 				SELECT count(tcontentcomments.contentid) as CommentCount
 				FROM tcontentcomments
 				WHERE contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/> and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> and isApproved=1	 
@@ -610,7 +609,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteID"  type="string" />
 	<cfset var rs = "">
 	
-	<cfquery datasource="#variables.dsn#" name="rs"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.configBean.getDatasource(mode='readOnly')#" name="rs"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	select object,name, '' as objectid, orderno from tsystemobjects where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	order by orderno
 	</cfquery>
@@ -623,7 +622,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="contenthistid"  type="string" />
 	<cfset var rs = "">
 	
-	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	SELECT count(ContentID) as theCount FROM tcontentobjects WHERE
 	 (contenthistID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#"/> <cfif request.inheritedObjects neq ''>or contenthistID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#request.inheritedObjects#"/></cfif>)
 	 and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
@@ -638,7 +637,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="contenthistid"  type="string" />
 	<cfset var rs = "">
 	
-	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	SELECT count(ContentID) as theCount FROM tcontentobjects WHERE
 	 (contenthistID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#"/> <cfif request.inheritedObjects neq ''>or contenthistID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#request.inheritedObjects#"/></cfif>)
 	 and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
@@ -653,7 +652,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="contenthistid"  type="string" />
 	<cfset var rs = "">
 	
-	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	SELECT count(ContentID) as theCount FROM tcontentobjects WHERE
 	 (contenthistID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#"/> <cfif request.inheritedObjects neq ''>or contenthistID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#request.inheritedObjects#"/></cfif>)
 	 and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
@@ -668,7 +667,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="contentid"  type="string" />
 	<cfset var rs = "">
 	
-	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	SELECT count(ContentID) as theCount FROM tcontent WHERE
 	 ParentID='#arguments.ContentID#' 
 	 and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
@@ -692,7 +691,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="type"  type="string" required="true" default="" />
 	<cfset var rs = "">
 	
-	<cfquery datasource="#variables.dsn#" name="rs"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.configBean.getDatasource(mode='readOnly')#" name="rs"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	select contentid, menutitle, type from tcontent where siteid='#arguments.siteid#' and 
 	<cfif arguments.type eq ''>
 	(type='Portal' or type='Calendar' or type='Gallery')
@@ -710,7 +709,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteID"  type="string" />
 	<cfset var rs = "">
 	
-	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	SELECT Count(tcontent.ContentID) AS counter
 	FROM tcontent
 	WHERE Type in ('Page','Portal','File','Calendar','Gallery') and 
@@ -731,7 +730,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rspre = "">
 	<cfset var rs = "">
 	
-	<cfquery name="rspre" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rspre" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	SELECT DISTINCT tmodule.Title AS module, active.ModuleID, active.SiteID, active.ParentID, active.Type, active.subtype, active.MenuTitle, active.Filename, active.ContentID,
 	 tmodule.SiteID, draft.SiteID, active.SiteID, active.targetparams, draft.lastUpdate,
 	 draft.lastUpdateBy,tfiles.fileExt, draft.changesetID
@@ -844,7 +843,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset doAg=true/>
 		</cfif>
 		
-		<cfquery name="rs" datasource="#variables.dsn#"   username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"   username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 		SELECT tcontent.ContentHistID, tcontent.ContentID, tcontent.Approved, tcontent.filename, tcontent.Active, tcontent.Type, tcontent.subtype, tcontent.OrderNo, tcontent.ParentID, 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, 
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted, count(tcontent2.parentid) AS hasKids,tcontent.isfeature,tcontent.inheritObjects,tcontent.target,
@@ -929,7 +928,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="siteid" type="string" required="true">
 		<cfset var rs = "">
 		
-		<cfquery datasource="#variables.dsn#" name="rs"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#variables.configBean.getDatasource(mode='readOnly')#" name="rs"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 		SELECT contentid, menutitle, body, title, filename
 		FROM  tcontent 
 		WHERE     	         (tcontent.Active = 1) 
@@ -959,7 +958,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="siteid" type="string" required="true">
 		<cfset var rs = "">
 		
-		<cfquery datasource="#variables.dsn#" name="rs"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#variables.configBean.getDatasource(mode='readOnly')#" name="rs"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 		SELECT tcontent.ContentHistID, tcontent.ContentID, tcontent.Approved, tcontent.filename, tcontent.Active, tcontent.Type, tcontent.subtype, tcontent.OrderNo, tcontent.ParentID, 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, 
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted, count(tcontent2.parentid) AS hasKids,tcontent.isFeature,tcontent.inheritObjects,tcontent.target,tcontent.targetParams,
@@ -981,7 +980,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="type" type="string" required="true">
 	<cfset var rs = "">
 	
-	<cfquery datasource="#variables.dsn#" name="rs"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.configBean.getDatasource(mode='readOnly')#" name="rs"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	select contentid, menutitle, responseChart FROM  tcontent 
 	WHERE     	         (tcontent.Active = 1) 
 			<!--- 		    AND (tcontent.DisplayStart <= #createodbcdatetime(now())#) 
@@ -1009,7 +1008,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteid" type="string" required="true">
 	<cfset var rs = "">
 	
-	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	select menutitle, tcontent.siteid, contentid, contenthistid, fileID, type, tcontent.lastupdateby, active, approved, tcontent.lastupdate, 
 	display, displaystart, displaystop, moduleid, isnav, notes,isfeature,featurestart,featurestop,inheritObjects,filename,targetParams,releaseDate,
 	tcontent.changesetID, tchangesets.name changesetName, tchangesets.published changsetPublished,tchangesets.publishDate changesetPublishDate 
@@ -1026,7 +1025,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteid" type="string" required="true">
 	<cfset var rs = "">
 	
-	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	select menutitle, contentid, contenthistid, fileID, type, lastupdateby, active, approved, lastupdate, 
 	display, displaystart, displaystop, moduleid, isnav, notes,isfeature,inheritObjects,filename,targetParams,releaseDate,path
 	from tcontent where contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/>
@@ -1043,7 +1042,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteid" type="string" required="true">
 	<cfset var rs = "">
 	
-	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	select menutitle, contentid, contenthistid, fileID, type, lastupdateby, active, approved, lastupdate, 
 	display, displaystart, displaystop, moduleid, isnav, notes,isfeature,inheritObjects,filename,targetParams,releaseDate,path
 	from tcontent where contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/>
@@ -1060,7 +1059,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteid" type="string" required="true">
 	<cfset var rs = "">
 	
-	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	select menutitle, contentid, contenthistid, fileID, type, lastupdateby, active, approved, lastupdate, 
 	display, displaystart, displaystop, moduleid, isnav, notes,isfeature,inheritObjects,filename,targetParams,releaseDate
 	from tcontent where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/> 
@@ -1078,7 +1077,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteid" type="string" required="true">
 	<cfset var rs = "">
 	
-	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	SELECT menuTitle, Title, filename, lastupdate, type  from  tcontent WHERE
 	 contentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/> and active=1 and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	</cfquery> 
@@ -1092,7 +1091,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteid" type="string" required="true">
 	<cfset var rs = "">
 	
-	<cfquery datasource="#variables.dsn#" name="rs"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.configBean.getDatasource(mode='readOnly')#" name="rs"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	select min(entered) as FirstEntered, max(entered) as LastEntered, Count(*) as CountEntered from tformresponsepackets 
 	where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> and formid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/>
 	</cfquery>
@@ -1111,7 +1110,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rs = "">
 	<cfset var kw = trim(arguments.keywords)>
 	
-	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	SELECT tcontent.ContentHistID, tcontent.ContentID, tcontent.Approved, tcontent.filename, tcontent.Active, tcontent.Type, tcontent.OrderNo, tcontent.ParentID, 
 	tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, 
 	tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted, count(tcontent2.parentid) AS hasKids,tcontent.isfeature,tcontent.inheritObjects,tcontent.target,tcontent.targetParams,
@@ -1238,7 +1237,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var c = "">
 	<cfset var categoryListLen=listLen(arguments.categoryID)>
 	
-	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	<!--- Find direct matches with no releasedate --->
 	
 	select tcontent.contentid,tcontent.contenthistid,tcontent.siteid,tcontent.title,tcontent.menutitle,tcontent.targetParams,tcontent.filename,tcontent.summary,tcontent.tags,
@@ -1444,7 +1443,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="contentHistID" type="string" required="true">
 	<cfset var rs = "">
 	
-	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 		select tcontentcategoryassign.*, tcontentcategories.name, tcontentcategories.filename  from tcontentcategories inner join tcontentcategoryassign
 		ON (tcontentcategories.categoryID=tcontentcategoryassign.categoryID)
 		where tcontentcategoryassign.contentHistID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#"/>
@@ -1463,7 +1462,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var rs ="" />
 
-	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	SELECT tcontent.title, tcontent.releasedate, tcontent.menuTitle, tcontent.lastupdate, tcontent.summary, tcontent.filename, tcontent.type, tcontent.contentid,
 	tcontent.target,tcontent.targetParams, tcontent.restricted, tcontent.restrictgroups, tcontent.displaystart, tcontent.displaystop, tcontent.orderno,tcontent.sortBy,tcontent.sortDirection,
 	tcontent.fileid, tcontent.credits, tcontent.remoteSource, tcontent.remoteSourceURL, tcontent.remoteURL,
@@ -1526,7 +1525,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var rs= ''/>
 	
-	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	select tcontent.menutitle, tcontent.type, tcontent.filename, tcontent.lastupdate, tcontent.contentID, tcontent.siteID,
 	tcontent.approved,tcontent.display,tcontent.displayStart,tcontent.displayStop,tcontent.moduleid,tcontent.contenthistID,
 	tcontent.parentID
@@ -1544,7 +1543,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var rs= ''/>
 	
-	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	select count(*) as Total from tcontent
 	where active=1
 	<cfif arguments.siteID neq ''>
@@ -1572,7 +1571,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rs= ''/>
 	<cfset var dbType=variables.configBean.getDbType() />
 	
-	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	<cfif dbType eq "oracle" and arguments.limit>select * from (</cfif>
 	select <cfif dbType eq "mssql"  and arguments.limit>Top #arguments.limit#</cfif>
 	contentID,contentHistID,approved,menutitle,parentID,moduleID,siteid,lastupdate,lastUpdatebyID,lastUpdateBy,type from tcontent
@@ -1600,7 +1599,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rs= ''/>
 	<cfset var dbType=variables.configBean.getDbType() />
 	
-	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	<cfif dbType eq "oracle" and arguments.limit>select * from (</cfif>
 	select <cfif dbType eq "mssql"  and arguments.limit>Top #arguments.limit#</cfif>
 	contentID,contentHistID,approved,menutitle,parentID,moduleID,tcontent.siteid,
@@ -1634,7 +1633,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var rs= ''/>
 	
-	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	select tag, count(tag) as tagCount from tcontenttags 
 	inner join tcontent on (tcontenttags.contenthistID=tcontent.contenthistID)
 	left Join tcontent tparent on (tcontent.parentid=tparent.contentid
@@ -1698,7 +1697,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var rsObjects=""/>
 	
-	<cfquery datasource="#variables.configBean.getDatasource()#" name="rsObjects"  username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.configBean.getDatasource(mode='readOnly')#" name="rsObjects"  username="#application.configBean.getDBUsername(mode='readOnly')#" password="#application.configBean.getDBPassword(mode='readOnly')#">
 	select tcontentobjects.object,tcontentobjects.objectid, tcontentobjects.orderno, tcontentobjects.params, tplugindisplayobjects.configuratorInit from tcontentobjects 
 	inner join tcontent On(
 	tcontentobjects.contenthistid=tcontent.contenthistid
@@ -1721,7 +1720,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteID" required="yes" type="string" >
 	
 	<cfset var rsObjects=""/>
-	<cfquery datasource="#application.configBean.getDatasource()#" name="rsObjects"  username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
+	<cfquery datasource="#application.configBean.getDatasource(mode='readOnly')#" name="rsObjects"  username="#application.configBean.getDBUsername(mode='readOnly')#" password="#application.configBean.getDBPassword(mode='readOnly')#">
 	select tcontentobjects.object, tcontentobjects.objectid, tcontentobjects.orderno, tcontentobjects.params, tplugindisplayobjects.configuratorInit from tcontentobjects
 	left join tplugindisplayobjects on (tcontentobjects.object='plugin' 
 										and tcontentobjects.objectID=tplugindisplayobjects.objectID)  

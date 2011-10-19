@@ -96,7 +96,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var placementBean=getBean("placement") />
 	<cfset var rs ="" />
 	
-	<cfquery name="rs" datasource="#variables.instance.configBean.getDatasource()#"  username="#variables.instance.configBean.getDBUsername()#" password="#variables.instance.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.instance.configBean.getDatasource(mode='readOnly')#"  username="#variables.instance.configBean.getDBUsername(mode='readOnly')#" password="#variables.instance.configBean.getDBPassword(mode='readOnly')#">
 	Select * from tadplacements where 
 	placementID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.placementID#" />
 	</cfquery>
@@ -196,7 +196,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rsBillableClicks=""/>
 	<cfset var billable=0/>
 	
-	<cfquery name="rsBillableImps" datasource="#variables.instance.configBean.getDatasource()#"  username="#variables.instance.configBean.getDBUsername()#" password="#variables.instance.configBean.getDBPassword()#">
+	<cfquery name="rsBillableImps" datasource="#variables.instance.configBean.getDatasource(mode='readOnly')#"  username="#variables.instance.configBean.getDBUsername(mode='readOnly')#" password="#variables.instance.configBean.getDBPassword(mode='readOnly')#">
 	select sum(counter) as total
 	from tadstats
 	where placementID='#arguments.placementID#'
@@ -207,7 +207,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset billable=billable + (rsBillableImps.total * arguments.costPerImp) />
 	</cfif>
 	
-	<cfquery name="rsBillableClicks" datasource="#variables.instance.configBean.getDatasource()#"  username="#variables.instance.configBean.getDBUsername()#" password="#variables.instance.configBean.getDBPassword()#">
+	<cfquery name="rsBillableClicks" datasource="#variables.instance.configBean.getDatasource(mode='readOnly')#"  username="#variables.instance.configBean.getDBUsername(mode='readOnly')#" password="#variables.instance.configBean.getDBPassword(mode='readOnly')#">
 	select sum(counter) as Total
 	from tadstats
 	where placementID='#arguments.placementID#'
@@ -257,7 +257,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var rs=""/>
 	
-	<cfquery name="rs" datasource="#variables.instance.configBean.getDatasource()#"  username="#variables.instance.configBean.getDBUsername()#" password="#variables.instance.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.instance.configBean.getDatasource(mode='readOnly')#"  username="#variables.instance.configBean.getDBUsername(mode='readOnly')#" password="#variables.instance.configBean.getDBPassword(mode='readOnly')#">
 	select PlacementValue from tadplacementdetails
 	where placementID = '#arguments.placementID#'
 	and placementType='#arguments.placementType#'
@@ -292,7 +292,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 <cfset var rs =""/>
 	 <cfset var ItemList =""/>
 	
-	<cfquery name="rs" datasource="#variables.instance.configBean.getDatasource()#"  username="#variables.instance.configBean.getDBUsername()#" password="#variables.instance.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.instance.configBean.getDatasource(mode='readOnly')#"  username="#variables.instance.configBean.getDBUsername(mode='readOnly')#" password="#variables.instance.configBean.getDBPassword(mode='readOnly')#">
 		select categoryID from tadplacementcategoryassign
 		where placementID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.placementID#">
 	</cfquery>

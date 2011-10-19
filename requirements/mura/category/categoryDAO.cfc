@@ -52,7 +52,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="init" returntype="any" output="false" access="public">
 <cfargument name="configBean" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
-		<cfset variables.dsn=variables.configBean.getDatasource()/>
 	<cfreturn this />
 </cffunction>
 
@@ -64,7 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="create" returntype="void" access="public" output="false">
 	<cfargument name="categoryBean" type="any" />
 	 
-	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	insert into tcontentcategories (categoryID,siteid,parentID,dateCreated,lastupdate,lastupdateBy,
 	name,notes,isInterestGroup,isActive,isOpen,sortBy,sortDirection,restrictgroups,path,remoteID,remoteSourceURL,remotePubDate,urltitle,filename)
 	values (
@@ -102,7 +101,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset bean=getBean("category")>
 	</cfif>
 	
-	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	Select 
 	#variables.fieldlist#
 	from tcontentcategories where 
@@ -130,7 +129,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset bean=getBean("category")>
 	</cfif>
 	
-	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Select
 	#variables.fieldlist#
 	from tcontentcategories where 
@@ -169,7 +168,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset bean=getBean("category")>
 	</cfif>
 
-	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Select
 	#variables.fieldlist#
 	from tcontentcategories where 
@@ -208,7 +207,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset bean=getBean("category")>
 	</cfif>
 	
-	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Select
 	#variables.fieldlist#
 	from tcontentcategories where 
@@ -256,7 +255,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="featureStart"  required="true" default=""/>	
 	<cfargument name="featureStop"  required="true" default=""/>		
 	
-		<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		insert Into tcontentcategoryassign (categoryID,contentID,contentHistID,isFeature,orderno,siteid,
 		featureStart,featureStop)
 		values (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.categoryID#" />,
@@ -275,7 +274,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="update" access="public" output="false" returntype="void" >
 	<cfargument name="categoryBean" type="any" />
 	
-	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	update tcontentcategories set
 	lastUpdate = <cfif isDate(arguments.categoryBean.getLastUpdate()) ><cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.categoryBean.getLastUpdate()#"><cfelse>null</cfif>,
 	lastupdateBy = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.categoryBean.getLastUpdateBy() neq '',de('no'),de('yes'))#" value="#arguments.categoryBean.getLastUpdateBy()#">,
@@ -304,13 +303,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var categoryBean=read(arguments.categoryID) />
 	
-	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	update tcontentcategories set 
 	parentID=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(categoryBean.getParentID() neq '',de('no'),de('yes'))#" value="#categoryBean.getParentID()#">
 	where parentID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.categoryID#" />
 	</cfquery>
 	
-	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	delete from tcontentcategories 
 	where categoryID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.categoryID#" />
 	</cfquery>
@@ -326,7 +325,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var i=0 />
 
 	<cfloop from="1" to="#listlen(arguments.orderid)#" index="i">
-	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	update tcontentcategoryassign set 
 	orderno=<cfqueryparam cfsqltype="cf_sql_numeric" value="#listgetat(arguments.orderno,i)#" />
 	where contentID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.orderid,i)#" />
@@ -344,7 +343,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var rs = ""/>
 	
-	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	select distinct tcontentcategoryassign.orderno from tcontentcategoryassign  inner join tcontent
 	ON (tcontentcategoryassign.contentid=tcontent.contentid
 		and tcontentcategoryassign.siteid=tcontent.siteid)
@@ -416,7 +415,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="categoryID" type="string" default=""/>
 	<cfargument name="siteID" type="string" default=""/>
 	
-	<cfquery datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update tcontentcategoryassign set orderno=OrderNo+1 where 
 		categoryid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.categoryID#" /> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</cfquery>

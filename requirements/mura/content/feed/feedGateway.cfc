@@ -50,7 +50,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="configBean" type="any" required="yes" />
 
 	<cfset variables.configBean=arguments.configBean />
-	<cfset variables.dsn=variables.configBean.getDatasource() />
 	<cfset variables.classExtensionManager=variables.configBean.getClassExtensionManager()>
 	<cfreturn this />
 </cffunction>
@@ -63,7 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset var rs ="" />
 
-	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	select * from tcontentfeeds
 	where siteID= <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.siteID#">
 	and Type= <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.type#">
@@ -85,7 +84,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var rs ="" />
 
-	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	select * from tcontentfeeds
 	where siteID= <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.siteID#">
 	and isDefault=1
@@ -157,7 +156,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfloop>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" blockfactor="#blockFactor#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" blockfactor="#blockFactor#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	<cfif dbType eq "oracle" and arguments.feedBean.getMaxItems()>select * from (</cfif>
 	select <cfif dbtype eq "mssql" and arguments.feedBean.getMaxItems()>top #arguments.feedBean.getMaxItems()#</cfif> 
 	tcontent.siteid, tcontent.title, tcontent.menutitle, tcontent.restricted, tcontent.restrictgroups, 
@@ -604,7 +603,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var theListLen =listLen(arguments.contentID) />
 	<cfset var I = 0 />
 
-	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select contentID, menutitle, type from tcontent where
 	active=1 and
 	<cfif theListLen>
@@ -627,7 +626,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var rs ="" />
 
-	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 
 	SELECT name, channelLink, type
 	FROM tcontentfeeds 
@@ -652,7 +651,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var rs= ''/>
 	
-	<cfquery name="rs" datasource="#variables.dsn#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select count(*) as Total from tcontentfeeds
 	where isactive=1
 	<cfif arguments.siteID neq ''>

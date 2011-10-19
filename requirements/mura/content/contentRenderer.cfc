@@ -1062,9 +1062,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset bean = $.getBean("content").loadBy(title=arguments.objectID,siteID=arguments.siteID)>
 					</cfif>
 					<cfif arguments.object eq "component">
-						<cfset editableControl.class="editComponnent">
+						<cfset editableControl.class="editableComponent">
 					<cfelse>
-						<cfset editableControl.class="editForm">
+						<cfset editableControl.class="editableForm">
 					</cfif>
 					<cfset editableControl.editLink = "#$.globalConfig('context')#/admin/index.cfm?fuseaction=cArch.edit">
 					<cfif len($.event('previewID'))>
@@ -1635,7 +1635,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfsilent>
 				<cfif not homeDisplayed and currDepth eq 1 and (arguments.displayHome eq "Always" or (arguments.displayHome eq "Conditional" and event.getValue('contentBean').getcontentid() neq "00000000000000000000000000000000001" and listFind(class,"first"," ")))>
 				<cfsilent>
-					<cfquery name="rsHome" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
+					<cfquery name="rsHome" datasource="#application.configBean.getDatasource(mode='readOnly')#" username="#application.configBean.getDBUsername(mode='readOnly')#" password="#application.configBean.getDBPassword(mode='readOnly')#">
 					select menutitle,filename from tcontent where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#event.getValue('siteID')#"> and active=1
 					</cfquery>
 					<cfset homeLink="#application.configBean.getContext()##getURLStem(event.getValue('siteID'),rsHome.filename)#">

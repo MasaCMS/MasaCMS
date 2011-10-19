@@ -70,7 +70,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset variables.configBean=arguments.configBean />
 	<cfset variables.contentRenderer=arguments.contentRenderer />
-	<cfset variables.dsn=variables.configBean.getDatasource()/>
 	<cfset variables.classExtensionManager=variables.configBean.getClassExtensionManager()>
 	<cfreturn this />
 </cffunction>
@@ -297,7 +296,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="load"  access="public" output="false">
 <cfset var rs=""/>
-	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	select * from tclassextendattributes where 
 	<cfif getAttributeID()>
 	attributesID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#getAttributeID()#">
@@ -319,7 +318,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif getAttributeID()>
 		
-		<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update tclassextendattributes set
 		ExtendSetID=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getExtendSetID() neq '',de('no'),de('yes'))#" value="#getExtendSetID()#">,
 		siteID=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getSiteID() neq '',de('no'),de('yes'))#" value="#getSiteID()#">,
@@ -343,7 +342,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 		<cflock name="addingAttribute#application.instanceID#" timeout="100">
 			
-			<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			Insert into tclassextendattributes (ExtendSetID,siteID,name,hint,type,isActive,orderno,required,validation,regex,message,label,defaultValue,optionList,optionLabelList) 
 			values(
 			<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getExtendSetID() neq '',de('no'),de('yes'))#" value="#getExtendSetID()#">,
@@ -364,7 +363,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			)
 			</cfquery>
 			
-			<cfquery name="rs"  datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			<cfquery name="rs"  datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 			select max(attributeID) as newID  from tclassextendattributes
 			</cfquery>
 			
@@ -384,7 +383,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var rs =""/>
 	
 	<cftransaction>
-	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	select attributeValue,baseID from tclassextenddata
 	inner join tclassextendattributes on (tclassextenddata.attributeID=tclassextendattributes.attributeID)
 	where tclassextenddata.attributeID=<cfqueryparam cfsqltype="cf_sql_numeric"  value="#getAttributeID()#">
@@ -396,12 +395,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset fileManager.deleteIfNotUsed(rs.attributeValue,rs.baseID) />
 	</cfloop>
 	
-	<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	delete from tclassextenddata
 	where attributeID=<cfqueryparam cfsqltype="cf_sql_numeric"  value="#getAttributeID()#">
 	</cfquery>
 	
-	<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
 	select attributeValue,baseID from tclassextenddatauseractivity
 	inner join tclassextendattributes on (tclassextenddatauseractivity.attributeID=tclassextendattributes.attributeID)
 	where tclassextenddatauseractivity.attributeID=<cfqueryparam cfsqltype="cf_sql_numeric"  value="#getAttributeID()#">
@@ -413,12 +412,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset fileManager.deleteIfNotUsed(rs.attributeValue,rs.baseID) />
 	</cfloop>
 	
-	<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	delete from tclassextenddatauseractivity
 	where attributeID=<cfqueryparam cfsqltype="cf_sql_numeric"  value="#getAttributeID()#">
 	</cfquery>
 	
-	<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	delete from tclassextendattributes
 	where attributeID=<cfqueryparam cfsqltype="cf_sql_numeric"  value="#getAttributeID()#">
 	</cfquery>
@@ -479,7 +478,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rs = "" />
 
 	<cfif not isQuery(variables.instance.options)>
-		<cfquery name="rs" datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		select * from TClassExtendAttributeOptions
 		where attributeID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getAttributeID()#">
 		order by orderno 
@@ -521,7 +520,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="deleteOptions">
-	<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		delete from TExtendAttributeOptions
 		where attributeID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getAttributeID()#">
 	</cfquery>
@@ -532,7 +531,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset deleteOptions() />
 		
 		<cfloop query="variables.instance.options">
-			<cfquery datasource="#variables.dsn#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			insert into TClassExtendAttributeOptions
 			(optionID,attributeID,siteID,optionValue,label,orderno)
 			values(
