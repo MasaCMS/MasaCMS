@@ -171,7 +171,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getQuery"  access="public" output="false" returntype="query">
 	<cfset var rs=""/>
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select c.contentid,c.commentid,c.parentid,c.name,c.email,c.url,c.comments,c.entered,c.siteid,c.isApproved,c.subscribe, c.userID, c.path, k.kids, f.fileid, f.fileExt 
 	from tcontentcomments c left join (select count(*) kids, parentID 
 										from tcontentcomments where commentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#"> 
@@ -329,7 +329,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif not len(arguments.script)>
 
-<cfquery name="rsContent" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+<cfquery name="rsContent" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select title from tcontent 
 	where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#">
 	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#">
@@ -391,7 +391,7 @@ View
 <cfset var email="">
 <cfset var rsSubscribers=getBean("contentDAO").getCommentSubscribers(variables.instance.contentID,variables.instance.siteID)>
 
-<cfquery name="rsContent" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+<cfquery name="rsContent" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select title from tcontent 
 	where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#">
 	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#">
@@ -487,7 +487,7 @@ To Unsubscribe Click Here:
 	<cfargument name="sort" required="true" default="asc">
 	<cfset var rs="">
 	
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		select c.contentid,c.commentid,c.parentid,c.name,c.email,c.url,c.comments,c.entered,c.siteid,
 		c.isApproved,c.subscribe,c.userID,c.path, 
 		<cfif variables.configBean.getDBType() eq "MSSQL">

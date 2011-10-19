@@ -178,7 +178,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset setLen=listLen(arguments.data.extendSetID)/>
 
 <!--- process non-file attributes --->
-<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 select attributeID,name,validation,message from tclassextendattributes where 
 ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
@@ -266,7 +266,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 	<cfset arguments.data.moduleID="00000000000000000000000000000000004">
 </cfif>
 <!--- process non-file attributes --->
-<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 select attributeID,name,validation,message from tclassextendattributes where 
 ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
@@ -357,7 +357,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 </cfloop>
 
 <!--- process file attributes --->
-<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 select attributeID,name from tclassextendattributes where 
 ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
@@ -463,7 +463,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 	<cfset remoteID=left(arguments.data.remoteID,35)>
 </cfif>
 <!--- preserve data from extendsets that were'nt submitted --->
-<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 select #arguments.dataTable#.dataID, #arguments.dataTable#.baseID, #arguments.dataTable#.attributeID,#arguments.dataTable#.siteID, #arguments.dataTable#.attributevalue, 
 #arguments.dataTable#.datetimevalue, #arguments.dataTable#.numericvalue, #arguments.dataTable#.stringvalue, tclassextendattributes.name from #arguments.dataTable#
 inner join tclassextendattributes on ( #arguments.dataTable#.attributeID=tclassextendattributes.attributeID)
@@ -521,7 +521,7 @@ and tclassextendattributes.extendSetID not in (<cfloop from="1" to="#setLen#" in
 </cfloop>
 
 <!--- preserve get non file attributes that were'nt submitted along with extendedset  --->
-<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 select #arguments.dataTable#.dataID, #arguments.dataTable#.baseID, #arguments.dataTable#.attributeID,#arguments.dataTable#.siteID, #arguments.dataTable#.attributevalue, 
 #arguments.dataTable#.datetimevalue, #arguments.dataTable#.numericvalue, #arguments.dataTable#.stringvalue, tclassextendattributes.name  from #arguments.dataTable#
 inner join tclassextendattributes on ( #arguments.dataTable#.attributeID=tclassextendattributes.attributeID)
@@ -586,7 +586,7 @@ and tclassextendattributes.type!='File'
 </cfloop>	
 
 <!--- preserve  Files from submitted extendset and make sure that is they were'nt newly submitted that the fileID is carried forward--->
-<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 select #arguments.dataTable#.dataID, #arguments.dataTable#.baseID, #arguments.dataTable#.attributeID,#arguments.dataTable#.siteID, #arguments.dataTable#.attributevalue, 
 #arguments.dataTable#.datetimevalue, #arguments.dataTable#.numericvalue, #arguments.dataTable#.stringvalue, tclassextendattributes.name from #arguments.dataTable#
 inner join tclassextendattributes on ( #arguments.dataTable#.attributeID=tclassextendattributes.attributeID)
@@ -667,7 +667,7 @@ and tclassextendattributes.type='File'
 <cfargument name="siteid">
 <cfargument name="activeOnly" default="false">
 <cfset var rs = ""/>
-<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select * from tclassextend 
 	where 
 	siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.siteid#">
@@ -685,7 +685,7 @@ and tclassextendattributes.type='File'
 <cfargument name="siteid">
 <cfargument name="activeOnly" default="false">
 <cfset var rs = ""/>
-<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select * from tclassextend 
 	where 
 	siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.siteid#">
@@ -735,7 +735,7 @@ and tclassextendattributes.type='File'
 <cfargument name="dataTable" required="true" default="tclassextenddata"/>
 <cfset var rs =""/>
 <cfset var tempDate="">
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select #arguments.dataTable#.attributeValue,tclassextendattributes.defaultValue,#arguments.dataTable#.attributeID,tclassextendattributes.validation from tclassextendattributes
 	left join #arguments.dataTable# ON (tclassextendattributes.attributeID=#arguments.dataTable#.attributeID)
 	where 
@@ -768,7 +768,7 @@ and tclassextendattributes.type='File'
 <cfset var rsFiles="">
 <cfset var fileManager=getBean("fileManager") />
 
-	<cfquery name="rsFiles" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+	<cfquery name="rsFiles" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		select attributeValue from #arguments.dataTable#
 		inner join tclassextendattributes on (#arguments.dataTable#.attributeID=tclassextendattributes.attributeID)
 		where 
@@ -794,7 +794,7 @@ and tclassextendattributes.type='File'
 <cfargument name="activeOnly" requierd="true" default="false">
 	<cfset var rs="">
 	
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		select tclassextend.type, tclassextend.subType, tclassextendattributes.attributeID, tclassextend.baseTable, tclassextend.baseKeyField, tclassextend.dataTable, tclassextendattributes.name attribute
 		from tclassextendattributes 
 		inner join tclassextendsets on (tclassextendsets.extendSetID=tclassextendattributes.extendSetID)
@@ -817,7 +817,7 @@ and tclassextendattributes.type='File'
 <cfset var rs="">
 <cfif variables.configBean.getStrictExtendedData()>
 	<cfif not structKeyExists(arguments,"datatype")>
-		<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 				select validation from tclassextendattributes 
 				where 
 				<cfif isNumeric(arguments.attribute)>

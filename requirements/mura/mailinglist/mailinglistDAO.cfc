@@ -78,7 +78,7 @@ values (
 		<cfset bean=getBean("mailingList")>
 	</cfif>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	Select * from tmailinglist where 
 	mlid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.MLID#">
 	</cfquery>
@@ -102,7 +102,7 @@ values (
 		<cfset bean=getBean("mailingList")>
 	</cfif>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	Select * from tmailinglist where 
 	name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.name#">
 	and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">

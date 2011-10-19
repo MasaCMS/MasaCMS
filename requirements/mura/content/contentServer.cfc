@@ -169,7 +169,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		
 		<cfif isValid("UUID",last)>
-			<cfquery name="rsRedirect" datasource="#application.configBean.getDatasource(mode='readOnly')#"  username="#application.configBean.getDBUsername(mode='readOnly')#" password="#application.configBean.getDBPassword(mode='readOnly')#">
+			<cfquery name="rsRedirect" datasource="#application.configBean.getReadOnlyDatasource()#"  username="#application.configBean.getReadOnlyDbUsername()#" password="#application.configBean.getReadOnlyDbPassword()#">
 			select * from tredirects where redirectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#last#">
 			</cfquery>
 			

@@ -67,7 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<!--- <cfset archiveTrackingForce(arguments.data.siteid) /> --->
 	
-	<cfquery datasource="#variables.instance.configBean.getDatasource(mode='readOnly')#" name="request.rsdataImps"  username="#variables.instance.configBean.getDBUsername(mode='readOnly')#" password="#variables.instance.configBean.getDBPassword(mode='readOnly')#">
+	<cfquery datasource="#variables.instance.configBean.getReadOnlyDatasource()#" name="request.rsdataImps"  username="#variables.instance.configBean.getReadOnlyDbUsername()#" password="#variables.instance.configBean.getReadOnlyDbPassword()#">
 	SELECT type,stathour, sum(counter) AS qty, Year(statDate) AS reportYear, Month(statDate) AS reportMonth, Max(statDate) AS LastEntered, Min(statDate) AS FirstEntered
 	FROM tadstats
 	WHERE placementid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.PlacementBean.getPlacementID()#" />
@@ -84,7 +84,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	ORDER BY Year(statdate) , Month(statdate), stathour;
 	</cfquery>
 	
-	<cfquery datasource="#variables.instance.configBean.getDatasource(mode='readOnly')#" name="request.rsdataClicks"  username="#variables.instance.configBean.getDBUsername(mode='readOnly')#" password="#variables.instance.configBean.getDBPassword(mode='readOnly')#">
+	<cfquery datasource="#variables.instance.configBean.getReadOnlyDatasource()#" name="request.rsdataClicks"  username="#variables.instance.configBean.getReadOnlyDbUsername()#" password="#variables.instance.configBean.getReadOnlyDbPassword()#">
 	SELECT type,stathour,sum(counter) AS qty, Year(statdate) AS reportYear, Month(statdate) AS reportMonth, Max(statdate) AS LastEntered, Max(statdate) AS FirstEntered
 	FROM tadstats
 	WHERE placementid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.PlacementBean.getPlacementID()#" />
@@ -152,13 +152,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset var rs=""/>
 	
-	<cfquery name="rs" datasource="#variables.instance.configBean.getDatasource(mode='readOnly')#"  username="#variables.instance.configBean.getDBUsername(mode='readOnly')#" password="#variables.instance.configBean.getDBPassword(mode='readOnly')#">
+	<cfquery name="rs" datasource="#variables.instance.configBean.getReadOnlyDatasource()#"  username="#variables.instance.configBean.getReadOnlyDbUsername()#" password="#variables.instance.configBean.getReadOnlyDbPassword()#">
 	select placementid,type,statdate,stathour,sum(counter) as Total from tadstats
 	where date=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.thedate#">
 	group by placementid,type,statdate,stathour
 	</cfquery>
 	
-	<cfquery datasource="#variables.instance.configBean.getDatasource(mode='readOnly')#"  username="#variables.instance.configBean.getDBUsername(mode='readOnly')#" password="#variables.instance.configBean.getDBPassword(mode='readOnly')#">
+	<cfquery datasource="#variables.instance.configBean.getReadOnlyDatasource()#"  username="#variables.instance.configBean.getReadOnlyDbUsername()#" password="#variables.instance.configBean.getReadOnlyDbPassword()#">
 	delete from tadstats
 	where date=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.thedate#">
 	</cfquery>

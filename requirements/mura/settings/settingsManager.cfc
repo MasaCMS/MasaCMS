@@ -252,7 +252,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif structIsEmpty(bean.getErrors()) and  bean.getSiteID() neq ''>
 		
-		<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		select siteid from tsettings where siteid='#bean.getSiteID()#'
 		</cfquery>
 		
@@ -524,7 +524,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfthrow type="custom" message="The attribute 'SITEID' is required when saving a site settingsBean.">
 	</cfif>
 	
-	<cfquery datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#" name="rs">
+	<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#" name="rs">
 	select siteID from tsettings where siteID=<cfqueryparam value="#arguments.data.siteID#">
 	</cfquery>
 	

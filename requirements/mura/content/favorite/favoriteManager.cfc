@@ -66,7 +66,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="siteID" type="string" required="yes">
 	
 		<cfset var rs = "" />
-		<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		select * from tusersfavorites
 		where userID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
 		
@@ -89,7 +89,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var rs ="" />
 
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	SELECT tusersfavorites.favoriteID, tusersfavorites.favorite, tusersfavorites.dateCreated, tcontent.title, tcontent.releasedate, tcontent.menuTitle, tcontent.lastupdate, tcontent.summary, 
 	tcontent.filename, tcontent.type, tcontent.contentid,
 	tcontent.target,tcontent.targetParams, tcontent.restricted, tcontent.restrictgroups, tcontent.displaystart, tcontent.displaystop, tcontent.orderno,tcontent.sortBy,tcontent.sortDirection,
@@ -150,7 +150,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var returnVar = "" />
 		<cfset var rs = "" />
 		
-		<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#"  username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		select favorite from tusersfavorites where favorite= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/>
 		and userID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
 			<cfif isDefined( "arguments.type" )>

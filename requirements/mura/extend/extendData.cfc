@@ -178,7 +178,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var dataTable=getDataTable() />
 <cfset var rsDefinitions=getDefinitionsQuery()>
 
-		<cfquery name="rs" datasource="#variables.configBean.getDatasource(mode='readOnly')#" username="#variables.configBean.getDBUsername(mode='readOnly')#" password="#variables.configBean.getDBPassword(mode='readOnly')#">
+		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		select #dataTable#.baseid, tclassextendattributes.name, tclassextendattributes.validation, 
 		<cfif variables.configBean.getDBType() eq "oracle">
 			to_char(tclassextendattributes.label) as label
