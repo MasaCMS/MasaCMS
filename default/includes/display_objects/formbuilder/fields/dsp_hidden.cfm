@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+﻿<!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -45,19 +45,11 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-<cfset strField = "" />
-</cfsilent>
+<cfset strField = "" />	
 <cfsavecontent variable="strField">
-	<cfoutput>
-	#$.dspObject_Include(thefile='/formbuilder/fields/dsp_label.cfm',field=arguments.field,dataset=arguments.dataset)#</p>
-	<div>
-	<cfloop from="1" to="#ArrayLen(dataset.datarecordorder)#" index="iiy">
-		<cfset record = dataset.datarecords[dataset.datarecordorder[iiy]] />
-		<label for="#record.datarecordid#"><input name="#field.name#" id="#record.datarecordid#" type="radio"<cfif record.isselected eq 1> CHECKED</cfif> value="#record.value#">#record.label#</label>
-	</cfloop>
-	</div>
-	</cfoutput>
+	<cfoutput><input type="hidden" name="#field.name#" value="#field.value#"#$.dspObject_Include(thefile='/formbuilder/fields/dsp_common.cfm',field=arguments.field,dataset=arguments.dataset)#</cfoutput>
 </cfsavecontent>
+</cfsilent>
 <cfoutput>
-#strField#
+#strField# />
 </cfoutput>

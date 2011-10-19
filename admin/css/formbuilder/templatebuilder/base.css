@@ -1,3 +1,6 @@
+/* @override 
+	http://localhost:8500/muracms/admin/css/formbuilder/templatebuilder/base.css */
+
 /* This file is part of Mura CMS. 
 
 	Mura CMS is free software: you can redistribute it and/or modify 
@@ -280,6 +283,9 @@
 }
 #mura-tb-fields li.field-checkbox div {
 	background-image: url('../../../images/formbuilder/frm_checkbox_big.png');
+}
+#mura-tb-fields li.field-hidden div {
+	background-image: url('../../../images/formbuilder/frm_hidden_big.png');
 }
 
 #mura-tb-form #mura-tb-fields li.field-section {

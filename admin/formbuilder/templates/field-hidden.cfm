@@ -1,3 +1,4 @@
+
 <!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
@@ -44,20 +45,39 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfsilent>
-<cfset strField = "" />
-</cfsilent>
-<cfsavecontent variable="strField">
-	<cfoutput>
-	#$.dspObject_Include(thefile='/formbuilder/fields/dsp_label.cfm',field=arguments.field,dataset=arguments.dataset)#</p>
-	<div>
-	<cfloop from="1" to="#ArrayLen(dataset.datarecordorder)#" index="iiy">
-		<cfset record = dataset.datarecords[dataset.datarecordorder[iiy]] />
-		<label for="#record.datarecordid#"><input name="#field.name#" id="#record.datarecordid#" type="radio"<cfif record.isselected eq 1> CHECKED</cfif> value="#record.value#">#record.label#</label>
-	</cfloop>
-	</div>
-	</cfoutput>
-</cfsavecontent>
-<cfoutput>
-#strField#
+<cfoutput><span>
+		<div class="mura-tb-form">
+			<div class="mura-tb-header hiddenfield">
+				<h3><!---#mmRBF.getKeyValue(session.rb,'formbuilder.field.textfield')#:---><span id="mura-tb-form-label"></span></h3>
+				<ul class="mura-tb-nav-utility">
+					<li><div class="ui-button" id="button-trash" title="#mmRBF.getKeyValue(session.rb,'formbuilder.delete')#"></div></li>
+				</ul>
+			</div>
+			
+			<div class="ui-tabs" id="ui-tabs">
+			
+			<ul class="ui-tabs-nav">
+				<li class="ui-state-default ui-corner-top"><a href="##mura-tb-form-tab-basic"><span>Basic</span></a></li>
+			</ul>
+			
+			<div class="ui-tabs-panel" id="mura-tb-form-tab-basic">
+			
+					<ul class="template-form">
+						<li>
+							<label for="label">#mmRBF.getKeyValue(session.rb,'formbuilder.field.label')#</label>
+							<input class="text tb-label" type="text" name="label" value="" maxlength="250" data-required='true' />
+						</li>
+						<li>
+							<label for="name">#mmRBF.getKeyValue(session.rb,'formbuilder.field.name')#</label>
+							<input id="tb-name" class="text disabled" name="name" type="text" value="" maxlength="250" disabled="true" />
+						</li>
+						<li>
+							<label for="value">#mmRBF.getKeyValue(session.rb,'formbuilder.field.value')#</label>
+							<input class="text long" type="text" name="value" value="" maxlength="250" />
+						</li>
+					</ul>
+			</div>		
+		</div>
+		</div>
+	</span>
 </cfoutput>

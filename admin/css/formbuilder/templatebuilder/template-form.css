@@ -1,3 +1,6 @@
+/* @override 
+	http://localhost:8500/muracms/admin/css/formbuilder/templatebuilder/template-form.css */
+	
 /* This file is part of Mura CMS. 
 
 	Mura CMS is free software: you can redistribute it and/or modify 
@@ -43,8 +46,7 @@
 	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
-/* @override 
-	http://localhost:8500/muracms/admin/css/formbuilder/templatebuilder/template-form.css */
+
 /*
 <!---
 ||PACKAGENAMELICENSE||
@@ -93,6 +95,9 @@ width: 100%;*/
 .mura-tb-header.checkbox h3 {
 	background-image: url('../../../images/formbuilder/frm_checkbox_big.png');
 	padding-top: 4px;
+}
+.mura-tb-header.hiddenfield h3 {
+	background-image: url('../../../images/formbuilder/frm_hidden_big.png');
 }
 
 .mura-tb-form .mura-tb-header h3 span {
@@ -274,11 +279,12 @@ input.disabled {
 
 /*.ui-icon-formfield-field { background-position: 0 0; }*/
 .ui-icon-formfield-section { background-image: none !important; width: auto; }
-.ui-icon-formfield-textfield { background-position: 5px 5px; }
-.ui-icon-formfield-textarea { background-position: -28px 5px; }
-.ui-icon-formfield-radiobox { background-position: -157px 5px; }
-.ui-icon-formfield-checkbox { background-position: -126px 5px; }
-.ui-icon-formfield-select { background-position: -61px 5px; }
+.ui-icon-formfield-textfield { background-position: 6px 6px; }
+.ui-icon-formfield-textarea { background-position: -27px 6px; }
+.ui-icon-formfield-radiobox { background-position: -155px 6px; }
+.ui-icon-formfield-checkbox { background-position: -124px 6px; }
+.ui-icon-formfield-select { background-position: -61px 6px; }
+.ui-icon-formfield-hidden { background-position: -255px 6px; }
 
 
 

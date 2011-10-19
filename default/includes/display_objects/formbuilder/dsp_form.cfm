@@ -58,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <form id="#frmID#" method="post">
 <!---<input type="hidden" name="siteid" value="#arguments.siteid#">
 <input type="hidden" name="formid" value="#arguments.formid#">--->
-<fieldset id="set-default">
+<!---<fieldset id="set-default">--->
 <ol>
 <cfloop from="1" to="#ArrayLen(aFieldOrder)#" index="iiX">
 	<cfif StructKeyExists(frmFields,aFieldOrder[iiX])>
@@ -92,37 +92,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cfloop>
 </ol>	
-	</fieldset>
+<!---	</fieldset>--->
 	<div class="buttons"><input type="submit" class="submit" value="Submit"></div>
+	<cfinclude template="../dsp_form_protect.cfm">
+	<!---<cfinclude template="../dsp_captcha.cfm">--->
 </form>
 </cfoutput>
-
-
-<!---jQuery Mobile Example Output--->
-
-<!---Radio Buttons--->
-<!---<ol >
-    <li data-role="controlgroup">
-    	<p>Choose a pet:</p>
-         	<input type="radio" name="radio-choice-1" id="radio-choice-1" value="choice-1" checked="checked" />
-         	<label for="radio-choice-1">Cat</label>
-
-         	<input type="radio" name="radio-choice-1" id="radio-choice-2" value="choice-2"  />
-         	<label for="radio-choice-2">Dog</label>
-
-         	<input type="radio" name="radio-choice-1" id="radio-choice-3" value="choice-3"  />
-         	<label for="radio-choice-3">Hamster</label>
-
-         	<input type="radio" name="radio-choice-1" id="radio-choice-4" value="choice-4"  />
-         	<label for="radio-choice-4">Lizard</label>
-    </li>
-</ol>--->
-
-<!---Checkboxes--->
-<!---<ul >
- 	<li data-role="controlgroup">
-		<p>Agree to the terms:</p>
-		<input type="checkbox" name="checkbox-1" id="checkbox-1" class="custom" />
-		<label for="checkbox-1">I agree</label>
-    </li>
-</ul>--->

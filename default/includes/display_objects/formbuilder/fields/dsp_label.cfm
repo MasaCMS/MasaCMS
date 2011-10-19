@@ -52,6 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<p>#arguments.field.label#
 	<cfelseif field.fieldtype.fieldtype eq "checkbox">
 		<p>#arguments.field.label#
+	<cfelseif field.fieldtype.fieldtype eq "hidden">
 	<cfelse>
 		<label for="#arguments.field.name#">#arguments.field.label#
 	</cfif>
