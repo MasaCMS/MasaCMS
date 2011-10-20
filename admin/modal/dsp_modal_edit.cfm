@@ -211,6 +211,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		'</div>');
 		
 		frontEndModalHeight=0;
+		jQuery("##frontEndToolsModalBody").css("top",($(document).scrollTop()+50) + "px")
 		resizeFrontEndToolsModal();
 		
 	}
@@ -220,7 +221,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			var frame = document.getElementById("frontEndToolsModaliframe");
 			var frameDoc = frame.contentWindow.document;
 			var frameContainer = document.getElementById("frontEndToolsModalContainer");
-			jQuery("##frontEndToolsModalBody").css("top",($(document).scrollTop()+50) + "px")
+			
 			if (frameDoc.body != null) {
 				var frameHeight = Math.max(frameDoc.body.scrollHeight, frameDoc.body.offsetHeight, frameDoc.documentElement.scrollHeight, frameDoc.documentElement.offsetHeight);
 				var windowHeight = Math.max(frameHeight, jQuery(window).height());
