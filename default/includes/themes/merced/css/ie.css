@@ -79,6 +79,13 @@
 	list-style: none;
 	}
 
+* html .home #right {
+	position: relative;
+	top: -40px;
+	z-index: 2;
+	margin: 0; 
+}
+
 * html aside .svIndex .rating {
 	background-position: 35px -1px;
 	}
@@ -91,13 +98,6 @@ hr { margin: -8px auto 11px; } /* IE 6/7 has problems with setting proper <hr> m
 
 article {
 	z-index: 1;
-}
-
-.home #right {
-	position: relative;
-	top: -40px;
-	z-index: 2;
-	margin: 0; 
 }
 
 /* Fixes wrong line-height on sup/sub in IE 6/7. */
@@ -176,11 +176,6 @@ html>body p code { *white-space: normal; } /* Fixes IE7 missing wrapping of code
 html>body h1 a {
 	margin: 0 0 20px 0;
 	}
-
-
-html>body #right .svIndex dl {
-	width:  100px;
-}
 
 /* @group IE7 - Dropdown Nav
 ===================================== */
