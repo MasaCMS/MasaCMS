@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getBean" output="false">
-	<cfargument name="beanName" default="rate">
+	<cfargument name="beanName" default="rateBean">
 	<cfreturn super.getBean(arguments.beanName)>
 </cffunction>
 
