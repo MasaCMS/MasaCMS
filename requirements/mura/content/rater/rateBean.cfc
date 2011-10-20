@@ -25,11 +25,11 @@
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setRate" access="public" output="false">
-	<cfargument name="rate" />
-	<cfif isNumeric(arguments.rate)>
-	<cfset variables.instance.rate = arguments.rate />
+<cffunction name="getRate" access="public" output="false">
+	<cfif isNumeric(variables.instance.rate)>
+		<cfset variables.instance.rate = 0 />
 	</cfif>
+	<cfreturn>
 </cffunction>
 
 <cffunction name="setEntered" access="public" output="false">
@@ -74,7 +74,7 @@
 		
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update tcontentratings set
-		rate=#variables.instance.rate#,
+		rate=#getRate()#,
 		entered=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#variables.instance.entered#">
 		where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#">
 		and userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.userID#">
@@ -89,7 +89,7 @@
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(variables.instance.contentID neq '',de('no'),de('yes'))#" value="#variables.instance.contentID#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(variables.instance.userID neq '',de('no'),de('yes'))#" value="#variables.instance.userID#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(variables.instance.siteID neq '',de('no'),de('yes'))#" value="#variables.instance.siteID#">,
-		#variables.instance.rate#,
+		#getRate()#,
 		<cfqueryparam cfsqltype="cf_sql_timestamp" value="#variables.instance.entered#">
 		)
 		</cfquery>

@@ -1031,10 +1031,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset editableControl.editLink = editableControl.editLink & "&amp;topid=00000000000000000000000000000000001">
 					<cfif arguments.object eq "component">
 						<cfset editableControl.editLink = editableControl.editLink & "&amp;type=Component">
-						<cfset editableControl.editLink = editableControl.editLink & "&amp;moduleid=00000000000000000000000000000000001">
+						<cfset editableControl.editLink = editableControl.editLink & "&amp;moduleid=00000000000000000000000000000000003">
+						<cfset editableControl.editLink = editableControl.editLink & "&amp;parentid=00000000000000000000000000000000003">
 					<cfelse>
 						<cfset editableControl.editLink = editableControl.editLink & "&amp;type=Form">
 						<cfset editableControl.editLink = editableControl.editLink & "&amp;moduleid=00000000000000000000000000000000004">
+						<cfset editableControl.editLink = editableControl.editLink & "&amp;parentid=00000000000000000000000000000000004">
 					</cfif>		
 					<cfset editableControl.isConfigurator=false>
 				</cfif>
