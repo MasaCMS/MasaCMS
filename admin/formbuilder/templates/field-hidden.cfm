@@ -1,3 +1,4 @@
+
 <!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
@@ -44,57 +45,39 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfset fbManager = $.getBean('formBuilderManager') />
-
-<cfset frmID		= "frm" & replace(arguments.formID,"-","","ALL") />
-<cfset frm			= fbManager.renderFormJSON( arguments.formJSON ) />
-<cfset frmForm		= frm.form />
-<cfset frmData		= frm.datasets />
-<cfset frmFields	= frmForm.fields />
-<cfset dataset		= "" />
-
-<cfset aFieldOrder = frmForm.fieldorder />
-<cfoutput>
-<form id="#frmID#" method="post">
-<!---<input type="hidden" name="siteid" value="#arguments.siteid#">
-<input type="hidden" name="formid" value="#arguments.formid#">--->
-<!---<fieldset id="set-default">--->
-<ol>
-<cfloop from="1" to="#ArrayLen(aFieldOrder)#" index="iiX">
-	<cfif StructKeyExists(frmFields,aFieldOrder[iiX])>
-		<cfset field = frmFields[aFieldOrder[iiX]] />
-		<cfif field.fieldtype.isdata eq 1 and len(field.datasetid)>
-			<cfset dataset = fbManager.processDataset( $,frmData[field.datasetid] ) />  
-		</cfif>
-		<cfif field.fieldtype.fieldtype eq "hidden">
-		#$.dspObject_Include(thefile='/formbuilder/fields/dsp_#field.fieldtype.fieldtype#.cfm',
-			field=field,
-			dataset=dataset
-			)#			
-		<cfelseif field.fieldtype.fieldtype neq "section">
-		<li<cfif field.fieldtype.fieldtype eq "radio"> class="mura-form-radio"
-		<cfelseif field.fieldtype.fieldtype eq "checkbox"> class="mura-form-checkbox"
-		</cfif>>
-		#$.dspObject_Include(thefile='/formbuilder/fields/dsp_#field.fieldtype.fieldtype#.cfm',
-			field=field,
-			dataset=dataset
-			)#			
-		</li>
-		<cfelse>
-		#$.dspObject_Include(thefile='/formbuilder/fields/dsp_#field.fieldtype.fieldtype#.cfm',
-			field=field,
-			dataset=dataset
-			)#
-		</cfif>		
-		<!---#$.dspObject_Include('formbuilder/fields/dsp_#field.fieldtype.fieldtype#.cfm')#--->
-	<cfelse>
-		<!---<cfthrow message="ERROR 9000: Field Missing: #aFieldOrder[iiX]#">--->
-	</cfif>
-</cfloop>
-</ol>	
-<!---</fieldset>--->
-	<div class="buttons"><input type="submit" class="submit" value="Submit"></div>
-	<cfinclude template="../dsp_form_protect.cfm">
-	<!---<cfinclude template="../dsp_captcha.cfm">--->
-</form>
+<cfoutput><span>
+		<div class="mura-tb-form">
+			<div class="mura-tb-header hiddenfield">
+				<h3><!---#mmRBF.getKeyValue(session.rb,'formbuilder.field.textfield')#:---><span id="mura-tb-form-label"></span></h3>
+				<ul class="mura-tb-nav-utility">
+					<li><div class="ui-button" id="button-trash" title="#mmRBF.getKeyValue(session.rb,'formbuilder.delete')#"></div></li>
+				</ul>
+			</div>
+			
+			<div class="ui-tabs" id="ui-tabs">
+			
+			<ul class="ui-tabs-nav">
+				<li class="ui-state-default ui-corner-top"><a href="##mura-tb-form-tab-basic"><span>Basic</span></a></li>
+			</ul>
+			
+			<div class="ui-tabs-panel" id="mura-tb-form-tab-basic">
+			
+					<ul class="template-form">
+						<li>
+							<label for="label">#mmRBF.getKeyValue(session.rb,'formbuilder.field.label')#</label>
+							<input class="text tb-label" type="text" name="label" value="" maxlength="250" data-required='true' />
+						</li>
+						<li>
+							<label for="name">#mmRBF.getKeyValue(session.rb,'formbuilder.field.name')#</label>
+							<input id="tb-name" class="text disabled" name="name" type="text" value="" maxlength="250" disabled="true" />
+						</li>
+						<li>
+							<label for="value">#mmRBF.getKeyValue(session.rb,'formbuilder.field.value')#</label>
+							<input class="text long" type="text" name="value" value="" maxlength="250" />
+						</li>
+					</ul>
+			</div>		
+		</div>
+		</div>
+	</span>
 </cfoutput>
