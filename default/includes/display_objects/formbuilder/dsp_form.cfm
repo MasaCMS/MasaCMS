@@ -92,7 +92,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cfloop>
 </ol>	
-<!---	</fieldset>--->
+<!---</fieldset>--->
 	<div class="buttons"><input type="submit" class="submit" value="Submit"></div>
 	<cfinclude template="../dsp_form_protect.cfm">
 	<!---<cfinclude template="../dsp_captcha.cfm">--->
