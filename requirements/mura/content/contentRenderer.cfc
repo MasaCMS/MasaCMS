@@ -1053,7 +1053,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfcase>
 		<cfcase value="component,form">
-			<cfif session.mura.isLoggedIn and this.showEditableObjects >	
+			<cfif session.mura.isLoggedIn and this.showEditableObjects>	
 				<cfset showEditable=application.permUtility.getDisplayObjectPerm(arguments.siteID,arguments.object,arguments.objectID) eq "editor">		
 				<cfif showEditable>
 					<cfset historyID = $.getBean("contentGateway").getContentHistIDFromContentID(contentID=arguments.objectID,siteID=arguments.siteID)>
@@ -1205,8 +1205,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="ContentHistID" required="yes" type="string" default="#event.getValue('contentBean').getcontenthistid()#">
 <cfset var rsObjects="">	
 <cfset var theRegion= ""/>
-<cfset var nodePerm="none"/>
-<cfset var nodeID=""/>
 
 <cfif (event.getValue('isOnDisplay') 
 		and ((not event.getValue('r').restrict) 
@@ -1217,10 +1215,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		and event.getValue('inheritedObjects') neq ''
 		and event.getValue('contentBean').getcontenthistid() eq arguments.contentHistID>
 			<cfset rsObjects=application.contentGateway.getObjectInheritance(arguments.columnID,event.getValue('inheritedObjects'),event.getValue('siteID'))>	
-			<cfset nodeID=$.getBean("contentGateway").getContentIDFromContentHistID(contentHistID=event.getValue('inheritedObjects') )>
-			<cfset nodePerm=$.getBean('permUtility').getNodePerm($.getBean('contentGateway').getCrumblist(nodeID,event.getValue('siteID')))>
 			<cfloop query="rsObjects">
-				<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params, event.getValue('inheritedObjects'), arguments.columnID, rsObjects.orderno, len(rsObjects.configuratorInit),nodePerm) />
+				<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params, event.getValue('inheritedObjects'), arguments.columnID, rsObjects.orderno, len(rsObjects.configuratorInit),event.getValue("inheritedObjectsPerm")) />
 			</cfloop>	
 	</cfif>
 
