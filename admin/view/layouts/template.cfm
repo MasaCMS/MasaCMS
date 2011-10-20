@@ -165,7 +165,7 @@ var context='#application.configBean.getContext()#';
 var themepath='#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#';
 var rb='#lcase(session.rb)#';
 var siteid='#session.siteid#';
-var sessionTimeout=<cfif isNumeric(application.configBean.getValue('sessionTimeout'))>#evaluate("application.configBean.getValue('sessionTimeout') * 60")#<cfelse>180</cfif>;
+var sessionTimeout=#evaluate("application.configBean.getValue('sessionTimeout') * 60")#;
 </script>
 #session.dateKey#
 <script type="text/javascript">
