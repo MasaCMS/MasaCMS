@@ -338,7 +338,7 @@ form li.mura-form-radio label, form li.mura-form-checkbox label {
 form li span { font-weight: normal; }
 
 fieldset input.text { 
-	width: 70%; 
+	width: 68%; 
 	}
 
 label input {
@@ -346,7 +346,7 @@ label input {
 }
 
 fieldset textarea {
-	width: 70%;
+	width: 68%;
 	height: 10em;
 	}
 

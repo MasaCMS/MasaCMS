@@ -1,3 +1,5 @@
+/* @override http://localhost:8500/muracms/default/includes/themes/merced/css/merced.css */
+
 /* @override
 	http://mura:8500/5.4/default/includes/themes/merced-html5/css/merced.css
 	http://localhost:8500/muracms/default/includes/themes/merced/css/merced.css
@@ -977,7 +979,7 @@ aside .svIndex dl, .svIndex>ul li {
 	line-height: 20px; /* acommodate height of stars */
 	}
 
-div.stars a {
+.stars a {
 	width: 14px;
 	height: 13px;
 	background: transparent url(../images/rater/stars.png) no-repeat;
