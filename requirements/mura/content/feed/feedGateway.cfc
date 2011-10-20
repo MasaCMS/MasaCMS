@@ -224,7 +224,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						   where tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getsiteid()#"/>
 						   		#renderActiveClause("tcontent",arguments.feedBean.getSiteID())#
 							    #renderActiveClause("TKids",arguments.feedBean.getSiteID())#
-							    AND TKids.searchExclude = 0
+							    <cfif not arguments.feedBean.getShowExcludeSearch()> AND TKids.searchExclude = 0</cfif>
 							    <cfif arguments.feedBean.getShowNavOnly()>AND TKids.isNav = 1</cfif>
 							 	AND tcontent.moduleid = '00000000000000000000000000000000000'
 							 
@@ -410,7 +410,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		AND tcontent.moduleid = '00000000000000000000000000000000000'
 	</cfif>
-	AND tcontent.searchExclude = 0
+	<cfif not arguments.feedBean.getShowExcludeSearch()> AND tcontent.searchExclude = 0</cfif>
 	AND tcontent.type !='Module'
 
 		<cfif rsParams.recordcount>

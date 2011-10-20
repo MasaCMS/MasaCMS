@@ -85,7 +85,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 
 <cfset variables.contentListFieldsType="Search">
-<cfset variables.contentListFields="Title,Summary,Tags,Credits">
+<cfset variables.contentListFields="Title,Summary,ReadMore,Tags,Credits">
 
 </cfsilent>
 

@@ -130,6 +130,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<!---<div class="summary">--->#$.setDynamicContent(arguments.item.getValue('summary'))#<!---</div>--->
 						</cfif>
 					</cfcase>
+					<cfcase value="ReadMore">
+					 	<p class="readmore"><span class="readMore">#$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),$.rbKey('list.readmore'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),arguments.item.getValue('siteID'),'',$.globalConfig('context'),$.globalConfig('stub'),$.globalConfig('indexFile'))#</span></p>
+					</cfcase>
 					<cfcase value="Credits">
 						<cfif len(arguments.item.getValue('credits'))>
 							<p class="credits">#$.rbKey('list.by')# #HTMLEditFormat(arguments.item.getValue('credits'))#</p>
@@ -202,8 +205,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfcase>
 					<cfcase value="Summary">
 						<cfif len(arguments.item.getValue('summary')) and arguments.item.getValue('summary') neq "<p></p>">
-						 	<dd class="summary">#$.setDynamicContent(arguments.item.getValue('summary'))# <span class="readMore">#$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),$.rbKey('list.readmore'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),arguments.item.getValue('siteID'),'',$.globalConfig('context'),$.globalConfig('stub'),$.globalConfig('indexFile'))#</span></dd>
+						 	<dd class="summary">#$.setDynamicContent(arguments.item.getValue('summary'))#</dd>
 						</cfif>
+					</cfcase>
+					<cfcase value="ReadMore">
+					 	<dd class="readmore"><span class="readMore">#$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),$.rbKey('list.readmore'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),arguments.item.getValue('siteID'),'',$.globalConfig('context'),$.globalConfig('stub'),$.globalConfig('indexFile'))#</span></dd>
 					</cfcase>
 					<cfcase value="Credits">
 						<cfif len(arguments.item.getValue('credits'))>

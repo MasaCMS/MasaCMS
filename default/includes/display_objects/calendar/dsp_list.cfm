@@ -73,7 +73,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div id="svPortal" class="svIndex">
 		<cfsilent>
 			<cfif NOT len($.content("displayList"))>
-				<cfset variables.contentListFields="Date,Title,Image,Summary,Credits">
+				<cfset variables.contentListFields="Date,Title,Image,Summary,ReadMore,Credits">
 				
 				<cfif $.getBean('contentGateway').getHasComments($.event('siteid'),$.content('contentID'))>
 					<cfset variables.contentListFields=listAppend(contentListFields,"Comments")>
