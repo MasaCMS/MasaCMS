@@ -168,7 +168,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				}
 				resizeFrontEndToolsModal();	
 			} else if(parameters["cmd"] == "setLocation"){
-				window.location=parameters["location"];
+				window.location=decodeURIComponent(parameters["location"]);
 			}
 		}			
 	}

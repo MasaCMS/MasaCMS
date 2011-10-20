@@ -83,10 +83,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</dd>
 					<dd id="feedCustomImageOptions"<cfif feed.getImageSize() neq "custom"> style="display:none"</cfif>>
 						<dl>
-							<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</dt>
-							<dd><input name="imageHeight" class="param text" value="#feed.getImageHeight()#" /></dd>
 							<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</dt>
 							<dd><input name="imageWidth" class="param text" value="#feed.getImageWidth()#" /></dd>
+							<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</dt>
+							<dd><input name="imageHeight" class="param text" value="#feed.getImageHeight()#" /></dd>
 						</dl>
 					</dd>
 				

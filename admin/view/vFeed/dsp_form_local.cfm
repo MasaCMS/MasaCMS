@@ -163,7 +163,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <form novalidate="novalidate" action="index.cfm?fuseaction=cFeed.update&siteid=#URLEncodedFormat(attributes.siteid)#" method="post" name="form1" id="feedFrm" onsubmit="return validate(this);"<cfif len(attributes.assignmentID)> style="width: 412px"</cfif>>
 <cfif not isObjectInstance>
 	<cfif attributes.compactDisplay eq "true">
-		<ul id="navTask">
+	<ul id="navTask">
 		<li><a onclick="history.go(-1);">#application.rbFactory.getKeyValue(session.rb,'collections.back')#</a></li>
 	</ul>
 	</cfif>
@@ -254,6 +254,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <input name="showNavOnly" type="radio" value="1" class="radio" <cfif request.feedBean.getShowNavOnly()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
 <input name="showNavOnly" type="radio" value="0" class="radio" <cfif not request.feedBean.getShowNavOnly()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
 </dd>
+<dt>#application.rbFactory.getKeyValue(session.rb,'collections.showexcludesearch')#</dt>
+<dd>
+<input name="showExcludeSearch" type="radio" value="1" class="radio" <cfif request.feedBean.getShowExcludeSearch()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+<input name="showExcludeSearch" type="radio" value="0" class="radio" <cfif not request.feedBean.getShowExcludeSearch()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+</dd>
 <!---<dt><button onclick="previewFeed();" type="button">Preview Index</button></dt>--->
 </dl>
 </div>
@@ -326,10 +331,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</dd>
 <dd id="feedCustomImageOptions"<cfif request.feedBean.getImageSize() neq "custom"> style="display:none"</cfif>>
 	<dl>
-	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</dt>
-	<dd><input name="#displaNamePrefix#imageHeight" data-displayobjectparam="imageHeight" class="text" value="#request.feedBean.getImageHeight()#" /></dd>
 	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</dt>
 	<dd><input name="#displaNamePrefix#imageWidth" data-displayobjectparam="imageWidth" class="text" value="#request.feedBean.getImageWidth()#" /></dd>
+	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</dt>
+	<dd><input name="#displaNamePrefix#imageHeight" data-displayobjectparam="imageHeight" class="text" value="#request.feedBean.getImageHeight()#" /></dd>
 	</dl>
 </dd>
 

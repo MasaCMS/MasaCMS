@@ -631,7 +631,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rs"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select object,name, '' as objectid, orderno from tsystemobjects where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-	order by orderno
+	order by name
 	</cfquery>
 	
 	<cfreturn rs />

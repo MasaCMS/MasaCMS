@@ -56,6 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="lang" type="string" default="en-us" required="true" />
 <cfproperty name="isActive" type="numeric" default="1" required="true" />
 <cfproperty name="showNavOnly" type="numeric" default="1" required="true" />
+<cfproperty name="showExcludeSearch" type="numeric" default="0" required="true" />
 <cfproperty name="isPublic" type="numeric" default="0" required="true" />
 <cfproperty name="isDefault" type="numeric" default="0" required="true" />
 <cfproperty name="description" type="string" default="" required="true" />
@@ -100,6 +101,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.Lang="en-us"/>
 	<cfset variables.instance.isActive=1 />
 	<cfset variables.instance.showNavOnly=1 />
+	<cfset variables.instance.showExcludeSearch=0 />
 	<cfset variables.instance.isPublic=0 />
 	<cfset variables.instance.isDefault=0 />
 	<cfset variables.instance.description=""/>
@@ -258,6 +260,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="showNavOnly" type="any" />
 	<cfif isNumeric(arguments.showNavOnly)>
 	<cfset variables.instance.showNavOnly = arguments.showNavOnly />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setShowExcludeSearch" access="public" output="false">
+	<cfargument name="showExcludeSearch" type="any" />
+	<cfif isNumeric(arguments.showExcludeSearch)>
+	<cfset variables.instance.showExcludeSearch = arguments.showExcludeSearch />
 	</cfif>
 	<cfreturn this>
 </cffunction>
@@ -436,14 +446,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getAvailableDisplayList" output="false">
-	<cfset var returnList="Date,Title,Image,Summary,Credits,Comments,Tags,Rating">
+	<cfset var returnList="Date,Title,Image,Summary,ReadMore,Credits,Comments,Tags,Rating">
 	<cfset var i=0>
 	<cfset var finder=0>
 	<cfset var rsExtend=variables.configBean.getClassExtensionManager().getExtendedAttributeList(variables.instance.siteid,"tcontent")>
 	
 	<cfif rsExtend.recordcount>
 		<cfquery name="rsExtend" dbType="query">
-			select * from rsExtend order by attribute
+			select attribute from rsExtend 
+			group by attribute
+			order by attribute
 		</cfquery>
 		<cfset returnList=returnList & "," & valueList(rsExtend.attribute)>
 	</cfif>

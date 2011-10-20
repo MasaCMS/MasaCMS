@@ -159,10 +159,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</dd>
 	<dd id="CustomImageOptions"<cfif request.contentBean.getImageSize() neq "custom"> style="display:none"</cfif>>
 	<dl>
-	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</dt>
-	<dd><input name="imageHeight" class="text" value="#request.contentBean.getImageHeight()#" /></dd>
 	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</dt>
 	<dd><input name="imageWidth" class="text" value="#request.contentBean.getImageWidth()#" /></dd>
+	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</dt>
+	<dd><input name="imageHeight" class="text" value="#request.contentBean.getImageHeight()#" /></dd>
 	</dl>
 </dd>
 
