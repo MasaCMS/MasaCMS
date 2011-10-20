@@ -1351,13 +1351,15 @@ function addDisplayObject(objectToAdd,regionid,configure){
 		{
 			url: 'index.cfm',
 			pars: 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=feed&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionid  + '&feedid=' +  data.objectid + '&cacheid=' + Math.random(),
-			title: localIndexConfiguratorTitle,
+			title: "Loading...",
 			init: function(data,config){
 					//alert(JSON.stringify(data));
 					if(data.type.toLowerCase()=='remote'){
 						jQuery("#ui-dialog-title-configuratorContainer").html(remoteFeedConfiguratorTitle);
+						jQuery("#configuratorHeader").html(remoteFeedConfiguratorTitle);
 					} else {
 						jQuery("#ui-dialog-title-configuratorContainer").html(localIndexConfiguratorTitle);
+						jQuery("#configuratorHeader").html(localIndexConfiguratorTitle);
 					}
 					
 					if (jQuery("#availableListSort").length) {

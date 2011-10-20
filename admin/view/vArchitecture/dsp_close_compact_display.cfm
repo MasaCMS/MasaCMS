@@ -81,22 +81,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <script src="#application.configBean.getContext()#/admin/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 <script src="#application.configBean.getContext()#/admin/js/porthole/porthole.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 <script>
-	function reloadParent(){
-		frontEndProxy = new Porthole.WindowProxy("#session.frontEndProxyLoc##application.configBean.getContext()#/admin/js/porthole/proxy.html");
-		if(jQuery("##ProxyIFrame").length){
-			jQuery("##ProxyIFrame").load(
-				function(){
-					frontEndProxy.postMessage("cmd=setLocation&location=#jsStringFormat(href)#");
-				}
-			);
+	function reload(){
+		if (top.location != self.location) {
+			frontEndProxy = new Porthole.WindowProxy("#session.frontEndProxyLoc##application.configBean.getContext()#/admin/js/porthole/proxy.html");
+			if (jQuery("##ProxyIFrame").length) {
+				jQuery("##ProxyIFrame").load(function(){
+					frontEndProxy.postMessage("cmd=setLocation&location=" + encodeURIComponent("#JSStringFormat(href)#"));
+				});
+			}
+			else {
+				frontEndProxy.postMessage("cmd=setLocation&location=" + encodeURIComponent("#JSStringFormat(href)#"));
+			}
+			
 		} else {
-			frontEndProxy.postMessage("cmd=setLocation&location=#jsStringFormat(href)#");
+			location.href="#JSStringFormat(href)#";
 		}
 	}
 </script>
 </cfoutput>
 </head>
-<body onload="reloadParent()">
+<body onload="reload()">
 </body>
 </html>
   

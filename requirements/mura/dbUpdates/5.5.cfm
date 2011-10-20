@@ -374,6 +374,43 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	datasource="#application.configBean.getDatasource()#"
 	username="#application.configBean.getDbUsername()#"
 	password="#application.configBean.getDbPassword()#"
+	table="tcontentfeeds"
+	type="columns">
+
+<cfquery name="rsCheck" dbtype="query">
+	select * from rsCheck where lower(rsCheck.column_name) = 'showexcludesearch'
+</cfquery>
+
+<cfif not rsCheck.recordcount>
+<cfswitch expression="#getDbType()#">
+<cfcase value="mssql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentfeeds ADD showExcludeSearch tinyint default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="mysql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentfeeds ADD COLUMN showExcludeSearch tinyint(3) NULL
+	</cfquery>
+</cfcase>
+<cfcase value="oracle">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentfeeds ADD showExcludeSearch NUMBER(3,0)
+	</cfquery>
+</cfcase>
+</cfswitch>
+
+<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	update tcontentfeeds set showExcludeSearch=0
+</cfquery>
+	
+</cfif>
+
+<cfdbinfo 
+	name="rsCheck"
+	datasource="#application.configBean.getDatasource()#"
+	username="#application.configBean.getDbUsername()#"
+	password="#application.configBean.getDbPassword()#"
 	table="tplugindisplayobjects"
 	type="columns">
 
@@ -431,6 +468,47 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	</cfquery>
 </cfcase>
 </cfswitch>
+</cfif>
+
+<cfdbinfo 
+	name="rsCheck"
+	datasource="#application.configBean.getDatasource()#"
+	username="#application.configBean.getDbUsername()#"
+	password="#application.configBean.getDbPassword()#"
+	table="tsettings"
+	type="columns">
+
+<cfquery name="rsCheck" dbtype="query">
+	select * from rsCheck where lower(rsCheck.column_name) = 'domain'
+</cfquery>
+
+<cfif rsCheck.COLUMN_SIZE neq 255>
+<cfswitch expression="#getDbType()#">
+<cfcase value="mssql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tsettings ALTER COLUMN [domain] nvarchar(255) 
+	</cfquery>
+</cfcase>
+<cfcase value="mysql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tsettings MODIFY column domain varchar(255)
+	</cfquery>
+</cfcase>
+<cfcase value="oracle">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tsettings rename column domain to domain2
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tsettings ADD domain varchar2(255)
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	UPDATE tsettings set domain=domain2
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tsettings drop column domain2
+	</cfquery>
+</cfcase>
+</cfswitch>	
 </cfif>
 
 <cfset dbCreateIndex(table="tcontent",column="urltitle")>
