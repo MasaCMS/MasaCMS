@@ -119,13 +119,22 @@
 	});
 	
 	<!--- Indexes --->	
-	$('.svIndex ul').attr({
+	$('.svIndex ul:first').attr({
  		'data-role': 'listview',
   		'data-inset': 'true',
   		'data-theme': 'c',
   		'data-dividertheme': 'b'
 	});
 	
+	$('.svIndex .moreResults ul').attr({
+			'data-role': 'controlgroup',
+			'data-type': 'horizontal',
+	});
+	
+	$('.svIndex .moreResults ul li').attr({
+			'data-role': 'button',
+			'data-theme': 'c'
+	});
 	<!--- Forms --->
 	$('form ul, form ol').attr({
 			'data-role': 'fieldcontain'

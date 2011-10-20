@@ -1,3 +1,6 @@
+/* @override http://localhost:8500/muracms/default/includes/themes/merced/css/mobile.css
+	http://localhost:8500/muracms/default/css/mura.css */
+
 /* @override http://localjost:8500/muracms/default/includes/themes/merced/css/mobile.css */
 
 /*
@@ -107,18 +110,46 @@ form input[type=checkbox] {
 
 .svIndex .releaseDate  {
 	margin: 0;
+	clear: both;
 }
 
 .svIndex ul li h3  {
 	margin: 0 0 .5em;
+	font-size: 14px;
 }
 
 .svIndex .credits {
 	margin-bottom: 0;
+	clear: both;
 }
 
-dd.image {
-	margin-left: 0;
+.stars a {
+	width: 14px;
+	height: 13px;
+	background: transparent url(../images/rater/stars.png) no-repeat;
+}
+
+.zero { background-image: url(../images/rater/star_zero.png); }
+.one { background-image: url(../images/rater/star_one.png); }
+.onehalf { background-image: url(../images/rater/star_onehalf.png); }
+.two { background-image: url(../images/rater/star_two.png); }
+.twohalf { background-image: url(../images/rater/star_twohalf.png); }
+.three { background-image: url(../images/rater/star_three.png); }
+.threehalf { background-image: url(../images/rater/star_threehalf.png); }
+.four { background-image: url(../images/rater/star_four.png); }
+.fourhalf { background-image: url(../images/rater/star_fourhalf.png); }
+.five { background-image: url(../images/rater/star_five.png); }
+
+.moreResults dt {
+	font-size: 1em;
+}
+
+.moreResults dd {
+	margin: 0;
+}
+
+.moreResults li {
+	margin: 0 -5px 0 0 !important; /* This is repeated here from the jQuery mobile CSS because it was getting overridden somehow. */
 }
 
 /* @group Globals - Forms
