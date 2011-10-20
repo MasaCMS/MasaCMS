@@ -137,7 +137,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 
 	<!--- How long do session vars persist? --->
 	<cfif request.trackSession>
-		<cfset this.sessionTimeout = (properties.getProperty("sessionTimeout","180") / 24) / 60>
+		<cfset this.sessionTimeout = (properties.getProperty("sessionTimeout","30") / 24) / 60>
 	<cfelse>
 		<cfset this.sessionTimeout = createTimeSpan(0,0,5,0)>
 	</cfif>

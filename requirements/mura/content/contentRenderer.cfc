@@ -836,49 +836,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="height" default=""/>
 <cfargument name="width" default=""/>
 
-	<cfset var imgSuffix=arguments.size>
-	<cfset var returnURL="">
-	<cfset var begin="">
-
-	<cfif not structKeyExists(arguments,"fileEXT")>
-		<cfset arguments.fileEXT=getBean("fileManager").readMeta(arguments.fileID).fileEXT>
-	</cfif>
-	
-	<cfif not structKeyExists(arguments,"siteID")>
-		<cfset arguments.siteID=session.siteID>
-	</cfif>
-	
-	<cfset begin=iif(arguments.complete,de('http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de('')) />
-	
-	<cfif request.muraExportHtml>
-		<cfset arguments.direct=true>
-	</cfif>
-	
-	<cfif arguments.direct and application.configBean.getFileStore() eq "fileDir">
-		<cfif arguments.size neq "Custom">
-			<cfif imgSuffix eq "large">
-				<cfset imgSuffix="">
-			<cfelse>
-				<cfset imgSuffix="_" & lcase(imgSuffix)>
-			</cfif>
-			<cfset returnURL=application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & arguments.fileID & imgSuffix & "." & arguments.fileEXT>
-		<cfelse>
-			<cfif not len(arguments.width)>
-				<cfset arguments.width="auto">
-			</cfif>
-			<cfif not len(arguments.height)>
-				<cfset arguments.height="auto">
-			</cfif>
-			<cfreturn application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & getBean("filemanager").getCustomImage("#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##arguments.fileID#.#arguments.fileExt#",arguments.height,arguments.width)>
-		</cfif>
-	<cfelse>
-		<cfif imgSuffix eq "large">
-			<cfset imgSuffix="file">
-		</cfif>
-		<cfset returnURL=application.configBean.getContext() & "/tasks/render/" & imgSuffix & "/?fileID=" & arguments.fileID & "&fileEXT=" &  arguments.fileEXT>
-	</cfif>
-	
-	<cfreturn begin & returnURL>
+	<cfreturn getBean("fileManager").createHREFForImage(argumentCollection=arguments)>
 	
 </cffunction>
 
@@ -1053,7 +1011,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfcase>
 		<cfcase value="component,form">
-			<cfif session.mura.isLoggedIn and this.showEditableObjects >	
+			<cfif session.mura.isLoggedIn and this.showEditableObjects>	
 				<cfset showEditable=application.permUtility.getDisplayObjectPerm(arguments.siteID,arguments.object,arguments.objectID) eq "editor">		
 				<cfif showEditable>
 					<cfset historyID = $.getBean("contentGateway").getContentHistIDFromContentID(contentID=arguments.objectID,siteID=arguments.siteID)>
@@ -1205,8 +1163,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="ContentHistID" required="yes" type="string" default="#event.getValue('contentBean').getcontenthistid()#">
 <cfset var rsObjects="">	
 <cfset var theRegion= ""/>
-<cfset var nodePerm="none"/>
-<cfset var nodeID=""/>
 
 <cfif (event.getValue('isOnDisplay') 
 		and ((not event.getValue('r').restrict) 
@@ -1217,10 +1173,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		and event.getValue('inheritedObjects') neq ''
 		and event.getValue('contentBean').getcontenthistid() eq arguments.contentHistID>
 			<cfset rsObjects=application.contentGateway.getObjectInheritance(arguments.columnID,event.getValue('inheritedObjects'),event.getValue('siteID'))>	
-			<cfset nodeID=$.getBean("contentGateway").getContentIDFromContentHistID(contentHistID=event.getValue('inheritedObjects') )>
-			<cfset nodePerm=$.getBean('permUtility').getNodePerm($.getBean('contentGateway').getCrumblist(nodeID,event.getValue('siteID')))>
 			<cfloop query="rsObjects">
-				<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params, event.getValue('inheritedObjects'), arguments.columnID, rsObjects.orderno, len(rsObjects.configuratorInit),nodePerm) />
+				<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params, event.getValue('inheritedObjects'), arguments.columnID, rsObjects.orderno, len(rsObjects.configuratorInit),event.getValue("inheritedObjectsPerm")) />
 			</cfloop>	
 	</cfif>
 
