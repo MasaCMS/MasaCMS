@@ -57,6 +57,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var themeRenderer=arguments.event.getThemeRenderer()>
 	<cfset var modal="">
 	<cfset var tracePoint=0>
+	<cfset var inheritedObjectsPerm="">
+	<cfset var inheritedObjectsContentID="">
+	
+	<cfif session.mura.isLoggedIn and siteRenderer.showEditableObjects>
+		<cfset inheritedObjectsContentID=$.getBean("contentGateway").getContentIDFromContentHistID(contentHistID=$.event('inheritedObjects') )>
+		<cfset inheritedObjectsPerm=$.getBean('permUtility').getNodePerm($.getBean('contentGateway').getCrumblist(inheritedObjectsContentID,$.event('siteID')))>
+		<cfset $.event("inheritedObjectsPerm",inheritedObjectsPerm)>
+	</cfif>
 	
 	<cfif isObject(themeRenderer) and structKeyExists(themeRenderer,"renderHTMLHeadQueue")>
 		<cfset renderer=themeRenderer>

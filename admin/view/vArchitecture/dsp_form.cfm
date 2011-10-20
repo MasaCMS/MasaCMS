@@ -50,7 +50,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset nodeLevelList="Page,Portal,Calendar,Gallery,Link,File"/>
 <cfset hasChangesets=application.settingsManager.getSite(attributes.siteID).getHasChangesets() and listFindNoCase("Page,Portal,Calendar,Gallery,File,Link",attributes.type)>
 <cfset request.perm=application.permUtility.getnodePerm(request.crumbdata)>
-
+<cfif attributes.parentID eq "" and not request.contentBean.getIsNew()>
+	<cfset attributes.parentID=request.contentBean.getParentID()>	
+ </cfif>
 <cfif hasChangesets>
 <cfset currentChangeset=application.changesetManager.read(request.contentBean.getChangesetID())>
 <cfset pendingChangesets=application.changesetManager.getPendingByContentID(request.contentBean.getContentID(),attributes.siteID)>
