@@ -54,7 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h3>#application.rbFactory.getKeyValue(session.rb,'advertising.creativeassetinformation')#</h3>
 #application.utility.displayErrors(request.creativeBean.getErrors())#
 <form novalidate="novalidate" action="index.cfm?fuseaction=cAdvertising.updateCreative&siteid=#URLEncodedFormat(attributes.siteid)#&userid=#URLEncodedFormat(attributes.userid)#" enctype="multipart/form-data" method="post" name="form1" onsubmit="return validate(this);">
-<dl class="oneColumn">
+<dl class="oneColumn separate">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'advertising.name')#</dt>
 <dd><input name="name" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.namerequired')#" value="#HTMLEditFormat(request.creativeBean.getName())#" maxlength="50"></dd>
 <dt>#application.rbFactory.getKeyValue(session.rb,'advertising.assettype')#</dt>
@@ -102,6 +102,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <dt>#application.rbFactory.getKeyValue(session.rb,'advertising.notes')#</dt>
 <dd><textarea name="notes" class="textArea">#HTMLEditFormat(request.creativeBean.getNotes())#</textarea></dd>
 </dl>
+<div id="actionButtons">
 <cfif attributes.creativeid eq ''>
 	<input type="button" class="submit" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.add')#" />
 	<input type=hidden name="creativeID" value="">
@@ -109,7 +110,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<input type="button" class="submit" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'advertising.deletecreativeconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.delete')#" />
 	<input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.update')#" />
 	<input type=hidden name="creativeid" value="#request.creativeBean.getCreativeID()#">
-</cfif><input type="hidden" name="action" value=""></form>
+</cfif><input type="hidden" name="action" value="">
+</div>
+</form>
 
 <cfif attributes.creativeid neq ''>
 <h3 class="divide">#application.rbFactory.getKeyValue(session.rb,'advertising.currentasset')#</h3>

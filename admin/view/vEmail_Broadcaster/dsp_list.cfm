@@ -74,7 +74,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  <cfoutput>
 <ul id="navTask"><li><a href="index.cfm?fuseaction=cEmail.edit&emailid=&siteid=#URLEncodedFormat(attributes.siteid)#">#application.rbFactory.getKeyValue(session.rb,"email.addemail")#</a></li></ul>
 
-	  <div id="filterView" >
+	  <div id="filterView">
 	  <h3>#application.rbFactory.getKeyValue(session.rb,"email.emails")#</h3></cfoutput>
 <form novalidate="novalidate" action="index.cfm?fuseaction=cEmail.list&siteid=<cfoutput>#attributes.siteid#</cfoutput>" method="post" name="form1" id="advancedSearch" class="clearfix">
 <dl class="filter">
@@ -124,6 +124,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </form>
 </div>
 </cfoutput>
+<div class="separate"></div>
 	  <table id="metadata" class="mura-table-grid stripe">
         <tr> 
 		  <cfset subjectDirection = "asc">

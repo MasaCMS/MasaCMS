@@ -182,9 +182,9 @@ select * from rsSubTypes where subType <> 'Default'
 </dl>
 </div>
 </div>
-
+<div id="actionButtons">
 <input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'user.update')#" />
-	
+</div>
 		<input type="hidden" name="type" value="2">
 		<input type="hidden" name="action" value="">
 		<input type="hidden" name="contact" value="0">

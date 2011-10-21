@@ -67,11 +67,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <form novalidate="novalidate" action="index.cfm?fuseaction=cChangesets.save&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="form1" onsubmit="return validate(this);">
 <dl class="oneColumn">
-<dt class="first">#application.rbFactory.getKeyValue(session.rb,'changesets.name')#</dt>
+<dt class="first separate">#application.rbFactory.getKeyValue(session.rb,'changesets.name')#</dt>
 <dd><input name="name" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'changesets.titlerequired')#" value="#HTMLEditFormat(rc.changeset.getName())#" maxlength="50"></dd>
-<dt class="first">#application.rbFactory.getKeyValue(session.rb,'changesets.description')#</dt>
+<dt class="divide">#application.rbFactory.getKeyValue(session.rb,'changesets.description')#</dt>
 <dd><textarea name="description">#HTMLEditFormat(rc.changeset.getDescription())#</textarea></dd>
-<dt><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,'changesets.publishdate')#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.changesetpublishdate")#</span></a></dt>
+<dt class="divide"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,'changesets.publishdate')#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.changesetpublishdate")#</span></a></dt>
 <dd><cfif rc.changeset.getPublished()>
 	#LSDateFormat(rc.changeset.getLastUpdate(),session.dateKeyFormat)# #LSTimeFormat(rc.changeset.getLastUpdate(),"medium")#
 	<cfelse>
@@ -84,6 +84,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </dl>
 
 <cfif rc.changesetID eq ''>
+<div id="actionButtons">
 <input type="button" class="submit" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'changesets.add')#" /><input type=hidden name="changesetID" value="">
 <cfelse>
 <input type="button" class="submit" value="#application.rbFactory.getKeyValue(session.rb,'changesets.delete')#" onclick="confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'changesets.deleteconfirm'))#','index.cfm?fuseaction=cChangesets.delete&changesetID=#rc.changeset.getchangesetID()#&siteid=#URLEncodedFormat(rc.changeset.getSiteID())#')" /> 
@@ -92,6 +93,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <input type="button" class="submit" value="#application.rbFactory.getKeyValue(session.rb,'changesets.publishnow')#" onclick="confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'changesets.publishnowconfirm'))#','index.cfm?fuseaction=cChangesets.publish&changesetID=#rc.changeset.getchangesetID()#&siteid=#URLEncodedFormat(rc.changeset.getSiteID())#')" /> 
 </cfif>
 <input type=hidden name="changesetID" value="#rc.changeset.getchangesetID()#">
-</cfif><input type="hidden" name="action" value=""></form>
-</p></cfoutput>
+</cfif><input type="hidden" name="action" value="">
+</div>
+</form>
+</cfoutput>
 

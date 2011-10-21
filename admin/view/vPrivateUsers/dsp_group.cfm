@@ -57,10 +57,13 @@ select * from rsSubTypes where subType <> 'Default'
 </cfoutput>
     <cfswitch expression="#request.userBean.getperm()#">
 	  	<cfcase value="1">
-		<!--topid form system groups---><cfoutput><h3><strong>#application.rbFactory.getKeyValue(session.rb,'user.group')#:</strong> #request.userBean.getgroupname()#</h3>
+		<!---topid form system groups--->
+		<cfoutput>
+		<h3><strong>#application.rbFactory.getKeyValue(session.rb,'user.group')#:</strong> #request.userBean.getgroupname()#</h3>
 		</cfoutput>
-		</cfcase><cfdefaultcase>
-				<!--top form non-system groups--->
+		</cfcase>
+		<cfdefaultcase>
+		<!---top form non-system groups--->
 <cfoutput>
 #application.utility.displayErrors(request.userBean.getErrors())#
 
@@ -141,7 +144,8 @@ loadExtendedAttributes('#request.userbean.getUserID()#','1','#request.userbean.g
 </cfswitch>
 
 
-      <cfif attributes.userid neq ''><cfoutput><h4 class="separate">#application.rbFactory.getKeyValue(session.rb,'user.groupmembers')#</h4> 
+      <cfif attributes.userid neq ''>
+      <cfoutput><h4 class="separate">#application.rbFactory.getKeyValue(session.rb,'user.groupmembers')#</h4> 
         <table class="mura-table-grid stripe">
             <tr> 
               <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'user.name')#</th>

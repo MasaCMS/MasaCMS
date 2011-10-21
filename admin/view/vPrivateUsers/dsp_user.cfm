@@ -303,14 +303,14 @@ select * from rsSubTypes where subType <> 'Default'
 #tabContent#
 </div>
 
-	
+	<div id="actionButtons">
 	<cfif attributes.userid eq ''>
 		<input type="button" class="submit" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'user.add')#" />
     <cfelse>
         <input type="button" class="submit" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.deleteuserconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'user.delete')#" /> 
 		<input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'user.update')#" />
 	</cfif>
-
+	</div>
 		<input type="hidden" name="type" value="2">
 		<input type="hidden" name="action" value="">
 		<input type="hidden" name="contact" value="0">

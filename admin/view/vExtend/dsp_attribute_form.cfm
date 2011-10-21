@@ -48,15 +48,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset typeList="TextBox,TextArea,HTMLEditor,SelectBox,MultiSelectBox,RadioGroup,File,Hidden"/>
 <cfoutput>
 <cfif attributes.action eq "add">
-<a href="javascript:;" id="#HTMLEditFormat(attributes.formName)#open" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container').slideDown();this.style.display='none';jQuery('###HTMLEditFormat(attributes.formName)#close').show();return false;">[Add New Attribute]</a>
-<a href="javascript:;" style="display:none;" id="#HTMLEditFormat(attributes.formName)#close" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container').slideUp();this.style.display='none';jQuery('###HTMLEditFormat(attributes.formName)#open').show();return false;">[Close]</a>
-<br/>
+<p><a href="javascript:;" id="#HTMLEditFormat(attributes.formName)#open" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container').slideDown();this.style.display='none';jQuery('###HTMLEditFormat(attributes.formName)#close').show();return false;">[Add New Attribute]</a></p>
+<p><a href="javascript:;" style="display:none;" id="#HTMLEditFormat(attributes.formName)#close" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container').slideUp();this.style.display='none';jQuery('###HTMLEditFormat(attributes.formName)#open').show();return false;">[Close]</a></p>
 </cfif>
 <cfif attributes.action eq "add">
 <div style="display:none;" id="#HTMLEditFormat(attributes.formName)#container">
 </cfif>
 <form novalidate="novalidate" method="post" name="#HTMLEDitFormat(attributes.formName)#" action="index.cfm" onsubmit="return validateForm(this);">
-<dl class="oneColumn">
+<dl class="oneColumn separate">
 <cfif attributes.action neq "add">
 <dt>Attribute ID</dt>
 <dd>#attributes.attributeBean.getAttributeID()#</dd>
@@ -100,6 +99,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <dd><input type="text" name="optionLabelList"  value="#HTMLEditFormat(attributes.attributeBean.getOptionLabelList())#" /></dd>
 </dl>
 
+<div id="actionButtons">
 <cfif attributes.action eq "add">
 <input type="button" class="submit" onclick="submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'add');" value="Add" />
 <input type="button" class="submit" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container').slideUp();jQuery('###HTMLEditFormat(attributes.formName)#close').hide();jQuery('###HTMLEditFormat(attributes.formName)#open').show();" value="Cancel" />
@@ -108,7 +108,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <input type="button" class="submit" onclick="submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'delete','Delete Attribute?');" value="Delete" />
 <input type="button" class="submit" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container'));jQuery('###HTMLEditFormat(attributes.formName)#close').hide();jQuery('###HTMLEditFormat(attributes.formName)#open').show();" value="Cancel" />
 </cfif>
-
+</div>
 <input name="orderno" type="hidden" value="#attributes.attributeBean.getOrderno()#"/>
 <input name="isActive" type="hidden" value="#attributes.attributeBean.getIsActive()#"/>
 <input name="siteID" type="hidden" value="#attributes.attributeBean.getSiteID()#"/>

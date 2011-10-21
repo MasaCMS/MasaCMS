@@ -67,21 +67,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </span>
 
 <form novalidate="novalidate" action="index.cfm?fuseaction=cFeed.update&siteid=#URLEncodedFormat(attributes.siteid)#" method="post" name="form1" onsubmit="return validate(this);">
-<dl class="oneColumn">
+<dl class="oneColumn separate">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.name')#</dt>
 <dd><input name="name" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.namerequired')#" value="#HTMLEditFormat(request.feedBean.getName())#" maxlength="50"></dd>
 
 <dt>#application.rbFactory.getKeyValue(session.rb,'collections.url')#</dt>
 <dd><input name="channelLink" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.urlrequired')#" value="#HTMLEditFormat(request.feedBean.getChannelLink())#" maxlength="250"></dd>
 </dl>
+<p class="divide" /></p>
 </cfoutput>
 <cfsavecontent variable='tabContent'>
 <cfoutput>
 <div id="tabBasic">
 	<dl class="oneColumn">
-	<!--- <dt>Description</dt>
-	<dd><textarea name="Description" class="alt">#request.feedBean.getDescription()#</textarea></dd> --->
-	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</dt>
+	<dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</dt>
 	<dd><select name="maxItems" class="dropdown">
 	<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="m">
 	<option value="#m#" <cfif request.feedBean.getMaxItems() eq m>selected</cfif>>#m#</option>
@@ -156,6 +155,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </ul>
 #tabContent#
 </div>
+<div id="actionButtons">
 <cfif attributes.feedID eq ''>
 	<input type="button" class="submit" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'collections.add')#" />
 	<input type=hidden name="feedID" value="">
@@ -173,6 +173,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<input type="hidden" name="action" value="update">
 </cfif>
 <input type="hidden" name="type" value="Remote">
+</div>
 </form>
 <!---
 <cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
