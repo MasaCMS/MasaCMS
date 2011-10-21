@@ -19,6 +19,7 @@ CKEDITOR.plugins.add( 'Selectlink',
 			 title : 'Select Link',
 			 minWidth : 550,
 			 minHeight : 500,
+			 resizable : CKEDITOR.DIALOG_RESIZE_BOTH,
 			 contents :
 				   [
 					  {
