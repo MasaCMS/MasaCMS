@@ -189,5 +189,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
    
    </cfoutput>
    <cfelse>
-    <p><em><cfoutput>#application.rbFactory.getKeyValue(session.rb,'advertising.noplacementactivity')#</cfoutput></em></p>
+   <p class="notice"><cfoutput>#application.rbFactory.getKeyValue(session.rb,'advertising.noplacementactivity')#</cfoutput></p class="notice"
    </cfif>
