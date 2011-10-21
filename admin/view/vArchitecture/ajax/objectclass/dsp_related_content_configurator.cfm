@@ -70,7 +70,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 				<dl class="oneColumn" id="configurator">
 					<dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</dt>
-					<dd><select name="imageSize" class="objectparam  dropdown" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
+					<dd><select name="imageSize" class="objectParam  dropdown" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
 						<cfloop list="Small,Medium,Large,Custom" index="i">
 							<option value="#lcase(i)#"<cfif i eq feed.getImageSize()> selected</cfif>>#I#</option>
 						</cfloop>
@@ -79,9 +79,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<dd id="feedCustomImageOptions"<cfif feed.getImageSize() neq "custom"> style="display:none"</cfif>>
 						<dl>
 							<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</dt>
-							<dd><input name="imageWidth" class="objectparam  text" value="#feed.getImageWidth()#" /></dd>
+							<dd><input name="imageWidth" class="objectParam  text" value="#feed.getImageWidth()#" /></dd>
 							<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</dt>
-							<dd><input name="imageHeight" class="objectparam  text" value="#feed.getImageHeight()#" /></dd>
+							<dd><input name="imageHeight" class="objectParam  text" value="#feed.getImageHeight()#" /></dd>
 						</dl>
 					</dd>
 				<dt id="availableFields"><span>Available Fields</span> <span>Selected Fields</span></dt>
@@ -103,7 +103,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<li class="ui-state-highlight">#i#</li>
 						</cfloop>
 					</ul>
-					<input type="hidden" id="displayList" class="objectparam " value="#displayList#" name="displayList"/>
+					<input type="hidden" id="displayList" class="objectParam " value="#displayList#" name="displayList"/>
 					</div>	
 				</dd>
 				</dl>
