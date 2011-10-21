@@ -76,7 +76,11 @@ jQuery(document).ready(function(){
 						'name':'#JSStringFormat(rsDisplayObject.name)#',
 						'regionid':'#JSStringFormat(rsDisplayObject.columnid)#',
 						'context':'#application.configBean.getContext()#',
-						'params':'#JSStringFormat(rsDisplayObject.params)#'		
+						'params':'#JSStringFormat(rsDisplayObject.params)#',
+						'siteid':'#JSStringFormat(rsDisplayObject.siteid)#',
+						'contenthistid':'#JSStringFormat(request.contentBean.getContentHistID())#',
+						'contentid':'#JSStringFormat(request.contentBean.getContentID())#',
+						'parentid':'#JSStringFormat(request.contentBean.getParentID())#'		
 					});
 		</cfcase>
 		<cfcase value="feed_slideshow,feed_slideshow_no_summary">	
@@ -86,7 +90,11 @@ jQuery(document).ready(function(){
 						'name':'#JSStringFormat(rsDisplayObject.name)#',
 						'regionid':'#JSStringFormat(rsDisplayObject.columnid)#',
 						'context':'#application.configBean.getContext()#',
-						'params':'#JSStringFormat(rsDisplayObject.params)#'		
+						'params':'#JSStringFormat(rsDisplayObject.params)#',
+						'siteid':'#JSStringFormat(rsDisplayObject.siteid)#',
+						'contenthistid':'#JSStringFormat(request.contentBean.getContentHistID())#',
+						'contentid':'#JSStringFormat(request.contentBean.getContentID())#',
+						'parentid':'#JSStringFormat(request.contentBean.getParentID())#'
 					});
 		</cfcase>
 		<cfcase value="category_summary,category_summary_rss">	
@@ -96,7 +104,11 @@ jQuery(document).ready(function(){
 						'name':'#JSStringFormat(rsDisplayObject.name)#',
 						'regionid':'#JSStringFormat(rsDisplayObject.columnid)#',
 						'context':'#application.configBean.getContext()#',
-						'params':'#JSStringFormat(rsDisplayObject.params)#'		
+						'params':'#JSStringFormat(rsDisplayObject.params)#',
+						'siteid':'#JSStringFormat(rsDisplayObject.siteid)#',
+						'contenthistid':'#JSStringFormat(request.contentBean.getContentHistID())#',
+						'contentid':'#JSStringFormat(request.contentBean.getContentID())#',
+						'parentid':'#JSStringFormat(request.contentBean.getParentID())#'		
 					});
 		</cfcase>
 		<cfcase value="related_content,related_section_content">	
@@ -106,7 +118,11 @@ jQuery(document).ready(function(){
 						'name':'#JSStringFormat(rsDisplayObject.name)#',
 						'regionid':'#JSStringFormat(rsDisplayObject.columnid)#',
 						'context':'#application.configBean.getContext()#',
-						'params':'#JSStringFormat(rsDisplayObject.params)#'		
+						'params':'#JSStringFormat(rsDisplayObject.params)#',
+						'siteid':'#JSStringFormat(rsDisplayObject.siteid)#',
+						'contenthistid':'#JSStringFormat(request.contentBean.getContentHistID())#',
+						'contentid':'#JSStringFormat(request.contentBean.getContentID())#',
+						'parentid':'#JSStringFormat(request.contentBean.getParentID())#'		
 					});
 		</cfcase>
 		<cfcase value="plugin">	
@@ -118,7 +134,11 @@ jQuery(document).ready(function(){
 					'name':'#JSStringFormat(rsDisplayObject.name)#',
 					'regionid':'#JSStringFormat(rsDisplayObject.columnid)#',
 					'context':'#application.configBean.getContext()#',
-					'params':'#JSStringFormat(rsDisplayObject.params)#'		
+					'params':'#JSStringFormat(rsDisplayObject.params)#',
+					'siteid':'#JSStringFormat(request.contentBean.getSiteID())#',
+					'contenthistid':'#JSStringFormat(request.contentBean.getContentHistID())#',
+					'contentid':'#JSStringFormat(request.contentBean.getContentID())#',
+					'parentid':'#JSStringFormat(request.contentBean.getParentID())#'
 				}
 			);
 			jQuery("##configuratorHeader").html('#JSStringFormat(rsDisplayObject.name)#');
@@ -228,8 +248,8 @@ jQuery(document).ready(function(){
 				<cfelse>
 				loc=loc + "?";
 				</cfif>
-				loc=loc + "contentID=" + resp.contentid;
-				loc=loc + "&previewID=" + resp.contenthistid;
+				//loc=loc + "contentID=" + resp.contentid;
+				loc=loc + "previewID=" + resp.contenthistid;
 				frontEndProxy.postMessage("cmd=setLocation&location=" + encodeURIComponent(loc) );
 			}
 		
