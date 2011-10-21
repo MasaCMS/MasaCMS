@@ -92,7 +92,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.fileStore=""/>
 <cfset variables.instance.fileStoreAccessInfo=""/>
 <cfset variables.instance.tooltips=structNew()/>
-<cfset variables.instance.sessionHistory=30 />
+<cfset variables.instance.sessionHistory=1 />
 <cfset variables.instance.extensionManager=""/>
 <cfset variables.instance.reactorDbType=""/>
 <cfset variables.instance.reactor=""/>
@@ -118,7 +118,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.appreloadKey=application.appreloadKey />
 <cfset variables.instance.loginStrikes=4 />
 <cfset variables.instance.encryptPasswords=true />
-<cfset variables.instance.sessionTimeout=30 />
+<cfset variables.instance.sessionTimeout=180 />
 <cfset variables.instance.tempDir=getTempDirectory() />
 <cfset variables.instance.autoresetpasswords=true />
 <cfset variables.instance.encryptionKey=hash(getCurrentTemplatePath()) />

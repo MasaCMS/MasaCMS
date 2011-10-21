@@ -23,13 +23,14 @@ StructAppend(attributes, form, "no");
 		<title>Select Link</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta content="noindex, nofollow" name="robots">
-		<link href="#application.configBean.getContext()#/admin/css/admin.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 		<script src="#application.configBean.getContext()#/admin/js/admin.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/js/jquery/jquery-ui.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/js/jquery/jquery-ui-i18n.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 		<link href="#application.configBean.getContext()#/admin/css/jquery/default/jquery.ui.all.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 		<script src="#application.configBean.getContext()#/admin/js/prototype.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>	
+		<link href="#application.configBean.getContext()#/admin/css/admin.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+		<link rel="stylesheet" type="text/css" href="#application.configBean.getContext()#/tasks/widgets/ckeditor/skins/mura/dialog.css">
 </cfoutput>
 
 	<style>
@@ -55,7 +56,6 @@ StructAppend(attributes, form, "no");
 	#mura-select-link #mura-table-grid-container {
 		overflow: auto !important;
 		height: 287px;
-		background: red;
 	}
 	
 	#mura-select-link .mura-table-grid {
@@ -83,7 +83,7 @@ StructAppend(attributes, form, "no");
 <body id="mura-select-link">
 <cfoutput>
 <h3>Keyword Search</h3>
-<form id="siteSearch" name="siteSearch" method="post" onSubmit="return validateForm(this);"><input name="keywords" value="#attributes.keywords#" type="text" class="text" maxlength="50" required="true" message="The 'Keyword' field is required."/>
+<form id="siteSearch" name="siteSearch" method="post"><input name="keywords" value="#HTMLEditFormat(attributes.keywords)#" type="text" class="text" maxlength="50"/>
 	<input type="hidden" name="fuseaction" value="cArch.search">
 	<input type="hidden" name="siteid" value="#session.siteid#">
 	<input type="hidden" name="moduleid" value="00000000000000000000000000000000000">
@@ -124,7 +124,9 @@ stripe('stripe');
 document.forms.siteSearch.keywords.focus();
 </cfif>
 </script>
-
+<div id="alertDialog" title="Alert" style="display:none">
+	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><span id="alertDialogMessage"></span></p>
+</div>
 	</body>
 </html>
 <cfelse>
