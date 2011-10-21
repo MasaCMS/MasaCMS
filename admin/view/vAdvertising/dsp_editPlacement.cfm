@@ -68,7 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <dt>#application.rbFactory.getKeyValue(session.rb,'advertising.creativeasset')# (<em>#application.rbFactory.getKeyValue(session.rb,'advertising.dimensionscreativetype')#</em>)</dt>
 <dd><select name="creativeID">
 <cfloop query="request.rsCreatives">
-<option value="#request.rsCreatives.creativeID#" <cfif request.rsCreatives.creativeID eq request.placementBean.getCreativeID()>selected</cfif>>#request.rsCreatives.name# (#application.rbFactory.getKeyValue(session.rb,'advertising.heightinitial')# #request.rsCreatives.height# X #application.rbFactory.getKeyValue(session.rb,'advertising.widthinitial')# #request.rsCreatives.width# - #application.rbFactory.getKeyValue(session.rb,'advertising.creativetype.#request.rsCreatives.creativeType#')#)</option>
+<option value="#request.rsCreatives.creativeID#" <cfif request.rsCreatives.creativeID eq request.placementBean.getCreativeID()>selected</cfif>>#request.rsCreatives.name# (#application.rbFactory.getKeyValue(session.rb,'advertising.heightinitial')# #request.rsCreatives.height# X #application.rbFactory.getKeyValue(session.rb,'advertising.widthinitial')# #request.rsCreatives.width# - #application.rbFactory.getKeyValue(session.rb,'advertising.creativetype.#replace(request.rsCreatives.creativeType,' ','','all')#')#)</option>
 </cfloop>
 </select></dd>
 
