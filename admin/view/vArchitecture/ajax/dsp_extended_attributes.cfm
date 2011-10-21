@@ -83,7 +83,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </dl>
 </cfif>
 <dl class="oneColumn" id="extendMessage" <cfif started>style="display:none"</cfif>>
-<dd><br/><em>There are currently no extended attributes available.</em></dd></dl>
+<dd><p class="notice">There are currently no extended attributes available.</p></dd></dl>
 </cfoutput>
 </cfsavecontent>
 <cfsavecontent variable="returnsets.basic">

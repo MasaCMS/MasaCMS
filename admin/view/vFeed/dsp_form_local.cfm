@@ -167,7 +167,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<li><a onclick="history.go(-1);">#application.rbFactory.getKeyValue(session.rb,'collections.back')#</a></li>
 	</ul>
 	</cfif>
-	<dl class="oneColumn">
+	<dl class="oneColumn separate">
 	<dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.name')#</dt>
 	<dd><input name="name" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.namerequired')#" value="#HTMLEditFormat(request.feedBean.getName())#" maxlength="50"></dd>
 	</dl>

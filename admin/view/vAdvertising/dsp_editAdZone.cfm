@@ -49,11 +49,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 #application.utility.displayErrors(request.adZoneBean.getErrors())#
 
 <form novalidate="novalidate" name="form1" method="post" action="index.cfm?fuseaction=cAdvertising.updateAdZone&siteid=#URLEncodedFormat(attributes.siteid)#" onsubmit="return false;">
-<dl class="oneColumn">
+<dl class="oneColumn separate">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'advertising.name')#</dt>
 <dd><input name="name" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.namerequired')#" value="#HTMLEditFormat(request.adZoneBean.getName())#" maxlength="50"><dd>
 <cfif attributes.adZoneID neq ''>
 </dl>
+<div class="divide"></div>
 <div class="tabs initActiveTab" style="display:none">
 <ul>
 
@@ -85,22 +86,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <dt>#application.rbFactory.getKeyValue(session.rb,'advertising.notes')#</dt>
 <dd><textarea name="notes" class="textArea">#HTMLEditFormat(request.adZoneBean.getNotes())#</textarea></dd>
 </dl>
+<div id="actionButtons">
 <cfif attributes.adZoneid eq ''>
 <input type="button" class="submit" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.add')#" /><input type=hidden name="adZoneID" value="">
 <cfelse><input type="button" class="submit" onclick="submitForm(document.forms.form1,'delete','#jsStringformat(application.rbFactory.getKeyValue(session.rb,'advertising.deleteadzoneconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.delete')#" />
 <input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.update')#" />
+</div>
 <input type=hidden name="adZoneID" value="#request.adZoneBean.getAdZoneID()#"></cfif><input type="hidden" name="action" value="add"></form>
-</p></cfoutput>
+</cfoutput>
 <cfif attributes.adZoneID neq ''>
 </div>
 <cfinclude template="dsp_tab_usage.cfm">
 </div>
-</cfif>
-<cfif attributes.adZoneID neq ''>
-<!---
-<cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
-<cfhtmlhead text='<script type="text/javascript" src="js/tab-view.js"></script>'>
-<cfoutput><script type="text/javascript">
-initTabs(Array("#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'advertising.basic'))#","#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'advertising.usagereport'))#"),0,0,0);
-</script></cfoutput>--->
 </cfif>

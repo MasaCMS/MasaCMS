@@ -221,14 +221,16 @@ select * from rsSubTypes where subType <> 'Default'
 				<cfloop collection="#application.settingsManager.getSites()#" item="site">
 					<cfif application.settingsManager.getSite(site).getPrivateUserPoolID() eq attributes.siteid>
 						<!---<li>--->
-							<cfoutput><h4>#application.settingsManager.getSite(site).getSite()#</h4></cfoutput>
+							<cfoutput><h4>#application.settingsManager.getSite(site).getSite()#</h4>
+							<div class="divide"></div>
+							</cfoutput>
 							<cf_dsp_categories_nest siteID="#attributes.siteID#" parentID="" categoryID="#attributes.categoryID#" nestLevel="0" >
 						<!---</li>--->
 					</cfif>
 				</cfloop>
 			<!---</ul>--->
 			<cfelse>
-			<em>#application.rbFactory.getKeyValue(session.rb,'user.nointerestcategories')#</em>
+			<p class="notice">#application.rbFactory.getKeyValue(session.rb,'user.nointerestcategories')#</p>
 			</cfif> 
 		</dd>
 		
@@ -303,14 +305,14 @@ select * from rsSubTypes where subType <> 'Default'
 #tabContent#
 </div>
 
-	
+	<div id="actionButtons">
 	<cfif attributes.userid eq ''>
 		<input type="button" class="submit" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'user.add')#" />
     <cfelse>
         <input type="button" class="submit" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.deleteuserconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'user.delete')#" /> 
 		<input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'user.update')#" />
 	</cfif>
-
+	</div>
 		<input type="hidden" name="type" value="2">
 		<input type="hidden" name="action" value="">
 		<input type="hidden" name="contact" value="0">

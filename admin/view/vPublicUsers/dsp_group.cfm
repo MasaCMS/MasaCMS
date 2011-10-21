@@ -73,7 +73,7 @@ select * from rsSubTypes where subType <> 'Default'
 </ul>
 <div id="tabBasic">
 </cfif>
-<dl class="oneColumn">
+<dl class="oneColumn separate">
 <cfif rsNonDefault.recordcount>
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'user.type')#</dt>
 <dd><select name="subtype" class="dropdown" onchange="resetExtendedAttributes('#request.userBean.getUserID()#','1',this.value,'#userPoolID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
@@ -123,14 +123,14 @@ loadExtendedAttributes('#request.userbean.getUserID()#','1','#request.userbean.g
 //initTabs(Array("#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.basic'))#","#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.extendedattributes'))#"),0,0,0);
 </script>	
 </cfif>
-
+<div id="actionButtons">
 <cfif attributes.userid eq ''>
 <input type="button" class="submit" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'user.add')#" />
 <cfelse>
 <input type="button" class="submit" onclick="submitForm(document.forms.form1,'delete','This');" value="#application.rbFactory.getKeyValue(session.rb,'user.delete')#" /> 
 <input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'user.update')#" />
 </cfif>
-
+</div>
 <input type="hidden" name="action" value=""><input type="hidden" name="type" value="1"><input type="hidden" name="contact" value="0">
 <input type="hidden" name="isPublic" value="1">
 <input type="hidden" name="siteid" value="#HTMLEditFormat(attributes.siteid)#">

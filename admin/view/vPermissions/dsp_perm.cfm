@@ -84,9 +84,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</table>
 		
 		<cfset request.rslist=request.groups.publicGroups />
+		<div class="separate"></div>
 		<h3>#application.rbFactory.getKeyValue(session.rb,'user.membergroups')#</h3>
-		<p>#application.rbFactory.getKeyValue(session.rb,'permissions.memberpermscript')#
-		  #application.rbFactory.getKeyValue(session.rb,'permissions.memberpermnodescript')#</p>
+		<p>#application.rbFactory.getKeyValue(session.rb,'permissions.memberpermscript')##application.rbFactory.getKeyValue(session.rb,'permissions.memberpermnodescript')#</p>
 		<table class="mura-table-grid stripe">
 			<tr> 
             <th>#application.rbFactory.getKeyValue(session.rb,'permissions.editor')#</th>
@@ -115,8 +115,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             </tr>
 		</cfif>
 		</table>
-	
+	<div id="actionButtons">
 		 <input type="button" class="submit" onclick="javascript:document.form1.submit();" value="#application.rbFactory.getKeyValue(session.rb,'permissions.update')#" />
+	</div>
                     <input type="hidden" name="router" value="#cgi.HTTP_REFERER#">
 					<input type="hidden" name="siteid" value="#HTMLEditFormat(attributes.siteid)#">
 					<input type="hidden" name="startrow" value="#attributes.startrow#">

@@ -42,7 +42,7 @@
 	<div id="configurator">
 		<img src="images/progress_bar.gif">
 	</div>	
-	<div id="configuratorActions" style="display:none;">
+	<div id="actionButtons" style="display:none;">
 		<cfif assignChangesets>
 			<cfinclude template="../form/dsp_changesets.cfm">
 		</cfif>
@@ -156,7 +156,7 @@ jQuery(document).ready(function(){
 			updateAvailableObject();
 				
 			jQuery("##configurator").html('<img src="images/progress_bar.gif">');
-			jQuery("##configuratorActions").hide();
+			jQuery("##actionButtons").hide();
 			jQuery("##configuratorNotices").hide();
 			
 			jQuery.post("./index.cfm?fuseaction=cArch.updateObjectParams",
@@ -188,7 +188,7 @@ jQuery(document).ready(function(){
 			updateAvailableObject();
 				
 			jQuery("##configurator").html('<img src="images/progress_bar.gif">');
-			jQuery("##configuratorActions").hide();
+			jQuery("##actionButtons").hide();
 			jQuery("##configuratorNotices").hide();
 			
 			jQuery.post("./index.cfm?fuseaction=cArch.updateObjectParams",
@@ -220,7 +220,7 @@ jQuery(document).ready(function(){
 			updateAvailableObject();
 				
 			jQuery("##configurator").html('<img src="images/progress_bar.gif">');
-			jQuery("##configuratorActions").hide();
+			jQuery("##actionButtons").hide();
 			jQuery("##configuratorNotices").hide();
 			
 			jQuery.post("./index.cfm?fuseaction=cArch.updateObjectParams",
@@ -264,7 +264,7 @@ function saveConfiguratorToChangeset(changesetid,removepreviouschangeset){
 		function() {
 			updateAvailableObject();
 			jQuery("##configurator").html('<img src="images/progress_bar.gif">');
-			jQuery("##configuratorActions").hide();
+			jQuery("##actionButtons").hide();
 			
 			jQuery.post("./index.cfm?fuseaction=cArch.updateObjectParams",
 			{

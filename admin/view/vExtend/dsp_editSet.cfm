@@ -61,7 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
 <form novalidate="novalidate" name="form1" method="post" action="index.cfm" onsubit="return validateForm(this);">
-<dl class="oneColumn">
+<dl class="oneColumn separate">
 <dt class="first">Attribute Set Name</dt>
 <dd><input name="name" value="#HTMLEditFormat(extendSetBean.getName())#" required="true"/></dd>
 <dt>Container</dt>
@@ -75,9 +75,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <dt>Available Category Dependencies</dt>
 <dd class="categoryAssignment"><cf_dsp_categories_nest siteID="#attributes.siteID#" parentID="" nestLevel="0" extendSetBean="#extendSetBean#"></dd>
 </cfif></dl>
+<div id="actionButtons">
 <cfif not len(attributes.extendSetID)>
 <input type="button" class="submit" onclick="submitForm(document.forms.form1,'add');" value="Add" /><input type=hidden name="extendSetID" value="#createuuid()#"><cfelse> <input type="button" class="submit" onclick="submitForm(document.forms.form1,'delete','Delete Attribute Set?');" value="Delete" /> <input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="Update" />
-
+</div>
 <input type=hidden name="extendSetID" value="#extendSetBean.getExtendSetID()#"></cfif><input type="hidden" name="action" value="">
 <input name="fuseaction" value="cExtend.updateSet" type="hidden">
 <input name="siteID" value="#HTMLEditFormat(attributes.siteid)#" type="hidden">

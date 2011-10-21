@@ -151,7 +151,9 @@ select * from rsSubTypes where subType <> 'Default'
 				<cfloop collection="#application.settingsManager.getSites()#" item="site">
 					<cfif application.settingsManager.getSite(site).getPrivateUserPoolID() eq request.userBean.getsiteID()>
 						<!---<li>--->
-							<cfoutput><h4>#application.settingsManager.getSite(site).getSite()#</h4></cfoutput>
+							<cfoutput><h4>#application.settingsManager.getSite(site).getSite()#</h4>
+							<div class="divide"></div>
+							</cfoutput>
 							<cf_dsp_categories_nest siteID="#request.userBean.getsiteID()#" parentID="" categoryID="#attributes.categoryID#" nestLevel="0" >
 						<!---</li>--->
 					</cfif>
@@ -182,9 +184,9 @@ select * from rsSubTypes where subType <> 'Default'
 </dl>
 </div>
 </div>
-
+<div id="actionButtons">
 <input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'user.update')#" />
-	
+</div>
 		<input type="hidden" name="type" value="2">
 		<input type="hidden" name="action" value="">
 		<input type="hidden" name="contact" value="0">

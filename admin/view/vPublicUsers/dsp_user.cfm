@@ -138,8 +138,7 @@ select * from rsSubTypes where subType <> 'Default'
 		</cfsilent>
 		<dl class="oneColumn">
 		<cfif attributes.userid eq ''>
-		<dt class="first"></dt>
-		<dt>#application.rbFactory.getKeyValue(session.rb,'user.address1')#</dt>
+		<dt class="first">#application.rbFactory.getKeyValue(session.rb,'user.address1')#</dt>
 		<dd><input id="address1" name="address1" type="text" value="#HTMLEditFormat(attributes.address1)#"  class="text"></dd>
 		<dt>#application.rbFactory.getKeyValue(session.rb,'user.address2')#</dt>
 		<dd><input id="address2" name="address2" type="text" value="#HTMLEditFormat(attributes.address2)#"  class="text"></dd>
@@ -220,6 +219,7 @@ select * from rsSubTypes where subType <> 'Default'
 					<cfif application.settingsManager.getSite(site).getPrivateUserPoolID() eq attributes.siteid>
 						<!---<li>--->
 							<cfoutput><h4>#application.settingsManager.getSite(site).getSite()#</h4></cfoutput>
+							<div class="divide"></div>
 							<cf_dsp_categories_nest siteID="#attributes.siteID#" parentID="" categoryID="#attributes.categoryID#" nestLevel="0" >
 						<!---</li>--->
 					</cfif>
@@ -297,7 +297,7 @@ select * from rsSubTypes where subType <> 'Default'
 </ul>
 #tabContent#
 </div>
-		
+<div id="actionButtons">	
 		<cfif attributes.userid eq ''>
 				<input type="button" class="submit" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'user.add')#" />
         <cfelse>
@@ -311,13 +311,7 @@ select * from rsSubTypes where subType <> 'Default'
 		<input type="hidden" name="groupid" value="">
 		<input type="hidden" name="ContactForm" value="">
 		<input type="hidden" name="isPublic" value="1">
-<!---
-<cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
-<cfhtmlhead text='<script type="text/javascript" src="js/tab-view.js"></script>'>
-<script type="text/javascript">
-initTabs(Array(#tablist#),#attributes.activeTab#,0,0);
-</script>	
---->
+</div>
 	</cfoutput>
 
 </form>

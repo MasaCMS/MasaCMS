@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h3>#application.rbFactory.getKeyValue(session.rb,'advertising.campaigninformation')#</h3>
 #application.utility.displayErrors(request.campaignBean.getErrors())#
 <form novalidate="novalidate" action="index.cfm?fuseaction=cAdvertising.updateCampaign&siteid=#URLEncodedFormat(attributes.siteid)#" name="form1"  method="post" onsubmit="return validate(this);">
-<dl class="oneColumn">
+<dl class="oneColumn separate">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'advertising.name')#</dt>
 <dd><input name="name" class="text" required="true" message="The 'Name' field is required." value="#HTMLEditFormat(request.campaignBean.getName())#" maxlength="50"></dd>
 <dt>#application.rbFactory.getKeyValue(session.rb,'advertising.startdate')#</dt>
@@ -73,6 +73,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <dt>#application.rbFactory.getKeyValue(session.rb,'advertising.notes')#</dt>
 <dd><textarea name="notes" class="textArea">#HTMLEditFormat(request.campaignBean.getNotes())#</textarea></dd>
 </dl>
+<div id="actionButtons">
 <cfif attributes.campaignid eq ''>
 	<input type="button" class="submit" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.add')#" />
 	<input type=hidden name="campaignID" value="">
@@ -81,6 +82,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.update')#" />
 	<input type=hidden name="campaignID" value="#request.campaignBean.getCampaignID()#">
 	</cfif>
+</div>
 <input type="hidden" name="action" value="">
 <input type="hidden" name="userID" value="#HTMLEditFormat(attributes.userid)#">
 </form>

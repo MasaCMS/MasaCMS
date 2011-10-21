@@ -45,6 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
+<div id="allBounces">
 <h2>#application.rbFactory.getKeyValue(session.rb,"email.bouncedemailaddresses")#</h2>
 <h3 class="alt">#application.rbFactory.getKeyValue(session.rb,"email.filterbynumberofbounces")#:</h3>
 <div id="advancedSearch" class="clearfix bounces">
@@ -67,8 +68,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </form>
 </div>
-
-<h3>#application.rbFactory.getKeyValue(session.rb,"email.emailaddressbounces")#</h3></cfoutput>
+<div class="separate"></div>
+<h3 >#application.rbFactory.getKeyValue(session.rb,"email.emailaddressbounces")#</h3></cfoutput>
 <cfif request.rsBounces.recordcount>
 	<cfset bouncedEmailList = "">
 
@@ -87,12 +88,4 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfoutput>
 	</form>
 </cfif>
-
-	
-
-
-
-
-
-
-
+</div>

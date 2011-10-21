@@ -27,7 +27,7 @@ function CheckAuthentication()
 }
 
 config.licenseName  = 'Mura CMS';
-config.licenseKey = '9EJW-TKDF-PFVT-Q3VW-NG6B-MKQF-3HVP';
+config.licenseKey = 'VSYA-KXHX-KXVB-8XHA-2L6P-66LF-FDMT';
 
 /* To make it easy to configure CKFinder, the config.baseUrl and config.baseDir can be used.
  * Those are helper variables used later in this config file.

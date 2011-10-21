@@ -53,7 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </span>
 
 <form novalidate="novalidate" action="index.cfm?fuseaction=cCategory.update&siteid=#URLEncodedFormat(attributes.siteid)#" method="post" name="form1" onsubmit="return validate(this);">
-<dl class="oneColumn">
+<dl class="oneColumn separate">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'categorymanager.name')#</dt>
 <dd><input name="name" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'categorymanager.namerequired')#" value="#HTMLEditFormat(request.categoryBean.getName())#" maxlength="50"></dd>
 <dt>#application.rbFactory.getKeyValue(session.rb,'categorymanager.urltitle')#</dt>
@@ -132,54 +132,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <dt>#application.rbFactory.getKeyValue(session.rb,'categorymanager.notes')#</dt>
 <dd><textarea name="notes" class="alt">#HTMLEditFormat(request.categoryBean.getNotes())#</textarea></dd>
 </dl>
-<!--- <cfif request.rslist.recordcount>
-<p>
-<h3>Featured Content</h3>
 
-
- <table id="metadata" class="mura-table-grid stripe">
-    <tr> 
-      <th class="varWidth">Title</th>
-	  <cfif request.categoryBean.getSortBy() eq 'orderno'><th>Order</th></cfif>
-      <th>Display</th>
-	  <th>Feature Shedule</th>
-      <th>Update</th>
-    </tr>
-<cfloop query="request.rslist">
-<cfset crumbdata=application.contentManager.getCrumbList(request.rslist.contentid, attributes.siteid)/>
-<tr>
-<td class="varWidth">
-#application.contentRenderer.dspZoom(crumbdata)#
-</td>
- <cfif request.categoryBean.getSortBy() eq 'orderno'>
- <td>
-<input type="hidden" name="orderID" value="#request.rslist.contentid#"/>
-<select name="orderno" class="dropdown">
-<cfloop from="1" to="#request.rslist.recordcount#" index="o">
-<option value="#o#" <cfif o eq request.rslist.currentrow>selected</cfif>>#o#</option>
-</cfloop>
-</select>
-</td>
-</cfif>
-<td><cfif request.rslist.Display and (request.rslist.Display eq 1 and request.rslist.approved and request.rslist.approved)>Yes<cfelseif(request.rslist.Display eq 2 and request.rslist.approved and request.rslist.approved)>#LSDateFormat(request.rslist.displaystart,session.dateKeyFormat)#&nbsp;-&nbsp;#LSDateFormat(request.rslist.displaystop,session.dateKeyFormat)#<cfelse>No</cfif></td>
-<td><cfif request.rslist.isFeature eq 1>Fixed<cfelse>#LSDateFormat(request.rslist.featurestart,session.dateKeyFormat)#&nbsp;-&nbsp;#LSDateFormat(request.rslist.featurestop,session.dateKeyFormat)#</cfif></td>
-<td>#LSDateFormat(request.rslist.lastupdate,"m/d/yy")#</td>
-</tr>
-</cfloop>
-</table>
-</p>
-</cfif> --->
-<!---
-<cfif attributes.categoryID neq ''>
-</div>
-<cfinclude template="dsp_tab_usage.cfm">
-</div>
-</cfif>
---->
+<div id="actionButtons">
 <cfif attributes.categoryID eq ''>
+
 <input type="button" class="submit" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'categorymanager.add')#" /><input type=hidden name="categoryID" value=""><cfelse> <input type="button" class="submit" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'categorymanager.deleteconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'categorymanager.delete')#" /> <input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'categorymanager.update')#" />
-<input type=hidden name="categoryID" value="#request.categoryBean.getCategoryID()#"></cfif><input type="hidden" name="action" value=""></form>
-</p></cfoutput>
+<input type=hidden name="categoryID" value="#request.categoryBean.getCategoryID()#"></cfif>
+<input type="hidden" name="action" value="">
+</div>
+</form>
+</cfoutput>
 <!---
 <cfif attributes.categoryID neq ''>
 <cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
