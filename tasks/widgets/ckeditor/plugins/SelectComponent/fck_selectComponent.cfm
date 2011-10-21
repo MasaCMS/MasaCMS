@@ -12,7 +12,6 @@
 	<body>
 		<div class="cke_dialog">
 			<h3>Component Name</h3>
-			<p id="MURA">Please help!!!!!!</p>
 			<cfoutput>
 			<select id="btnComponents">
 				<option value="">Select a Component</option>
