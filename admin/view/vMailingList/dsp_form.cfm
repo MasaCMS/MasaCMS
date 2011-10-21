@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <li><a href="index.cfm?fuseaction=cMailingList.listmembers&mlid=#attributes.mlid#&siteid=#URLEncodedFormat(attributes.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.vieweditmembers')#</a></li>
 <li><a href="index.cfm?fuseaction=cMailingList.download&mlid=#attributes.mlid#&siteid=#URLEncodedFormat(attributes.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.downloadmembers')#</a></li>
 </ul></cfif>
-<dl class="oneColumn"><cfif request.listBean.getispurge() neq 1>
+<dl class="oneColumn separate"><cfif request.listBean.getispurge() neq 1>
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.name')#</dt>
 <dd><input type=text name="Name" value="#HTMLEditFormat(request.listBean.getname())#" required="true" message="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.namerequired')#" class="text"></dd>
 <cfif attributes.mlid neq ''>

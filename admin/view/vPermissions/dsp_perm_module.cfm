@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <p>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"permissions.moduletext"),request.rscontent.title)#</p>
   <form novalidate="novalidate"  method="post" name="form1" action="?fuseaction=cPerm.updatemodule&contentid=#URLEncodedFormat(attributes.contentid)#">
-        <h3>#application.rbFactory.getKeyValue(session.rb,'user.adminusergroups')#</h3>
+        <h3 class="separate">#application.rbFactory.getKeyValue(session.rb,'user.adminusergroups')#</h3>
 		<table class="mura-table-grid stripe">
           <tr> 
             <th>#application.rbFactory.getKeyValue(session.rb,'permissions.allow')#</th>
@@ -70,11 +70,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			  </td>
             </tr>
 	</cfif>
-		</table
+		</table>
 	
 		<cfset request.rslist=request.groups.publicGroups />
-		 <h3>#application.rbFactory.getKeyValue(session.rb,'user.membergroups')#</h3>
-		 <p>#application.rbFactory.getKeyValue(session.rb,'permissions.memberpermscript')#</p>
+		 <h3 class="divide">#application.rbFactory.getKeyValue(session.rb,'user.membergroups')#</h3>		<p>#application.rbFactory.getKeyValue(session.rb,'permissions.memberpermscript')#</p>
 		 <table class="mura-table-grid stripe">
           <tr> 
             <th>#application.rbFactory.getKeyValue(session.rb,'permissions.allow')#</th>
@@ -95,8 +94,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             </tr>
 	</cfif>
 		</table>
-	
+<div id="actionButtons">
 <input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'permissions.update')#" />
+</div>
 <input type="hidden" name="router" value="#cgi.HTTP_REFERER#">
 <input type="hidden" name="siteid" value="#HTMLEditFormat(attributes.siteid)#">
 <input type="hidden" name="topid" value="#attributes.topid#">

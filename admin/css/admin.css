@@ -244,6 +244,11 @@ input.textMed, input.med {
 	width: 200px;
 }
 
+input.submit, input[type=submit] {
+	position: relative;
+	top: 2px;
+}
+
 /* Deferring to OS/Browser default styles for buttons
 input.submit {
 	background-color: #69c;
@@ -288,7 +293,11 @@ input.checkbox {
 
 input.radio, input[type=radio] {
 	width: auto !important;
-	margin: 0 2px;
+	margin: 0 4px;
+}
+
+input.radio:first-child, input[type=radio]:first-child {
+	margin: 0 4px 0 2px;
 }
 
 #popUp form {
@@ -300,7 +309,7 @@ input.radio, input[type=radio] {
 
 
 th, td, input, select {
-	font-size: 11px;
+	font-size: 12px;
 }
 
 td.order select, td.deploy select {
@@ -381,12 +390,20 @@ img.tabPreloader {
 	background: url(../images/rule_dotted.gif) left bottom repeat-x;
 }
 
-.separate, .oneColumn dt.separate, #actionButtons {
+.separate {
 	clear: both;
 	margin: 0;
-	padding: 26px 0 0 0;
+	padding: 16px 0 0 0;
 	background: url(../images/rule_dotted_big.gif) repeat-x;
 }
+
+#actionButtons {
+	clear: both;
+	margin: 10px 0 0;
+	padding: 16px 0 0 0;
+	background: url(../images/rule_dotted_big.gif) repeat-x;
+}
+
 
 #actionIndicator {
 	clear: both;
@@ -415,6 +432,17 @@ img.tabPreloader {
 	margin: 6px 0 16px 0;
 	padding: 0 0 16px 0;
 	background: url(../images/rule_dotted.gif) repeat-x bottom;
+}
+
+#tabInterests div.divide {
+	margin-top: 0;
+	padding: 1px;
+}
+
+div.separate {
+	margin: 30px 0 14px;
+	height: 10px;
+	padding: 0;
 }
 
 /* @end */
@@ -1162,7 +1190,7 @@ dl#mura-view-options dt.sort {
 dl#mura-view-options dd {
 	float: left;
 	margin: 0 4px 0 0;
-	padding: 2px 0;
+	/*padding: 2px 0;*/
 }
 
 dl#mura-view-options dd.rows, dl#mura-view-options dd.button {
@@ -2104,7 +2132,7 @@ h3 span {
 }
 
 h4 {
-	margin: 0 0 .75em 0;
+	margin: 0 0 .75em 0 !important;
 	padding: 0;
 	font-size: 15px;
 	font-weight: normal;
@@ -2364,7 +2392,7 @@ h5 {
 
 #cdashboard form.sessionHistory dl, #advancedSearch, .overview, #advancedMemberSearch dl {
 	margin-bottom: 1em;
-	padding: 8px 8px 0;
+	padding: 8px;
 	border-top: 1px solid #EAF4FE;
 	border-bottom: 1px solid #EAF4FE;
 	background: #F7FBFE;
@@ -2372,10 +2400,13 @@ h5 {
 	float: left;
 }
 
+#cemail #advancedSearch {
+	margin-bottom: 16px;
+}
+
 #advancedMemberSearch dl {
 	padding-bottom: 8px;
 }
-
 
 #advancedSearch {
 	margin-bottom: 2em;
@@ -2387,9 +2418,18 @@ h5 {
 	border: 0;
 	background: none;
 }
-/*.viewUpdate dl {
-	padding-top: 8px;
-}*/
+
+form#filterBounces {
+	margin-bottom: 0;
+	overflow: hidden;
+}
+
+form#filterBounces * {
+	margin-bottom: 0;
+	float: left;
+	position: relative;
+	top: 0;
+}
 
 
 .sessionHistory dt, .sessionHistory dd {
@@ -4693,6 +4733,10 @@ ul.checkboxTree li {
 	line-height: 13px;
 	padding: 0 1px;
 	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	text-shadow: 0px 1px #fff;
+	/*box-shadow: -1px -1px 0px #666, 1px 1px 0px #999;*/
 }
 
 .checkboxTree span:hover {
@@ -4701,7 +4745,7 @@ ul.checkboxTree li {
 
 .checkboxTree span.expanded, .checkboxTree span.collapsed {
 	cursor:pointer;
-	background: #f2f2f2;
+	background: #dbdbdb;
 }
 
 /* @end */
