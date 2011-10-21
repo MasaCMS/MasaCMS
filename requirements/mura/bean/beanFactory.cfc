@@ -48,6 +48,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	
 	<cfset variables.transient=structNew()>
+	<cfset variables.transientAlias=structNew()>
+	<cfset variables.transientObjects=structNew()>
+	
 	<cfset variables.transient["contentBean"]="mura.content.contentBean"/>
 	<cfset variables.transient["contentNavBean"]="mura.content.contentNavBean"/>
 	<cfset variables.transient["contentStatsBean"]="mura.content.contentStatsBean"/>
@@ -119,17 +122,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cffunction name="getBean" outout="false">
 		<cfargument name="beanName">
 		<cfset var bean="">
-		
+	
 		<cfif super.containsBean(arguments.beanName)>
-			<cfset bean=super.getBean(arguments.beanName)>
-		<cfelseif structKeyExists(variables.transientAlias,arguments.beanName)>
+			<cfreturn super.getBean(arguments.beanName)>
+		</cfif>
+		
+		<cfif structKeyExists(variables.transientAlias,arguments.beanName)>
 			<cfset arguments.beanName=variables.transientAlias["#arguments.beanName#"]>
-			<cfset bean=createObject("component",variables.transient["#arguments.beanName#"]).init()>
-			<cfset variables.beanInjector.autowire(bean,variables.transient["#arguments.beanName#"])>
-		<cfelseif structKeyExists(variables.transient,arguments.beanName)>
-			<cfset bean=createObject("component",variables.transient[arguments.beanName]).init()>
+		</cfif>
+		
+		<cfif structKeyExists(variables.transient,arguments.beanName)>
+			<cfif StructKeyExists(application,"configBean") and application.configBean.getValue("duplicateTransients")>
+				<cfif not structKeyExists(variables.transientObjects,"#arguments.beanName#")>
+					<cfset variables.transientObjects["#arguments.beanName#"]=createObject("component",variables.transient["#arguments.beanName#"]).init()>
+				</cfif>
+				
+				<cfset bean=duplicate(variables.transientObjects["#arguments.beanName#"])>
+			<cfelse>
+				<cfset bean=createObject("component",variables.transient["#arguments.beanName#"]).init()>
+			</cfif>
+			
 			<cfif arguments.beanName neq "MuraScope">
-				<cfset variables.beanInjector.autowire(bean,variables.transient[arguments.beanName])>
+				<cfset variables.beanInjector.autowire(bean,variables.transient["#arguments.beanName#"])>
 			</cfif>
 		<cfelse>
 			<cfthrow message="The bean '#arguments.beanName#' does not exist">
