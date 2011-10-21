@@ -113,7 +113,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput query="request.rsCreatives">
 	<tr>
 		<td class="varWidth"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?fuseaction=cAdvertising.editCreative&userid=#URLEncodedFormat(attributes.userid)#&siteid=#URLEncodedFormat(attributes.siteid)#&creativeid=#request.rsCreatives.creativeID#">#request.rsCreatives.name#</a></td>
-		<td>#application.rbFactory.getKeyValue(session.rb,'advertising.creativetype.#request.rsCreatives.creativeType#')#</td>
+		<td>#application.rbFactory.getKeyValue(session.rb,'advertising.creativetype.#replace(request.rsCreatives.creativeType,' ','','all')#')#</td>
 		<td>#application.rbFactory.getKeyValue(session.rb,'advertising.mediatype.#request.rsCreatives.mediatype#')#</td>
 		<td>#request.rsCreatives.height#</td>
 		<td>#request.rsCreatives.width#</td>

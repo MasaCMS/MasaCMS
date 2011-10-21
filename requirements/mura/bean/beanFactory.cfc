@@ -113,6 +113,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.transientAlias["favorite"]="favoriteBean"/>
 	<cfset variables.transientAlias["campaign"]="campaignBean"/>
 	<cfset variables.transientAlias["email"]="emailBean"/>
+	<cfset variables.transientAlias["adZone"]="adZoneBean"/>
 	
 	<cffunction name="loadBeansFromXMLRaw" output="false">
 		<cfset super.loadBeansFromXMLRaw(argumentCollection=arguments)>
