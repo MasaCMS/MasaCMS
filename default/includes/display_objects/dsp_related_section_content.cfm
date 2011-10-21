@@ -66,16 +66,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 <div id="#variables.cssID#" class="svRelSecContent svIndex">
 	<#$.getHeaderTag('subHead1')#>#rsSection.menutitle#</#$.getHeaderTag('subHead1')#>
-	<cfif isDefined("params") and isJson(arguments.params)>
-		<cfset params=deserializeJSON(arguments.params)>
+	<cfif not structIsEmpty(objectparams)>
 		#$.dspObject_Include(
 				thefile='dsp_content_list.cfm',
 				fields=params.displayList,
-				type='Related', 
+				type='objectparams', 
 				iterator=variables.iterator,
-				imageSize=params.imageSize,
-				imageHeight=params.imageHeight,
-				imageWidth=params.imageWidth
+				imageSize=objectparams.imageSize,
+				imageHeight=objectparams.imageHeight,
+				imageWidth=objectparams.imageWidth
 				)#
 	<cfelse>
 		<cfsilent>

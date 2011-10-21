@@ -50,23 +50,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif variables.iterator.getRecordCount()>
 	<div class="svRelContent svIndex">
 	<#$.getHeaderTag('subHead1')#>#$.rbKey('list.relatedcontent')#</#$.getHeaderTag('subHead1')#>
-	<cfif isJson(arguments.params)>
-		<cfset params=deserializeJSON(arguments.params)>
+	<cfif not structIsEmpty(objectparams)>
 		#$.dspObject_Include(
 				thefile='dsp_content_list.cfm',
-				fields=params.displayList,
+				fields=objectparams.displayList,
 				type='Related', 
 				iterator=$.content().getRelatedContentIterator(liveOnly=true),
-				imageSize=params.imageSize,
-				imageHeight=params.imageHeight,
-				imageWidth=params.imageWidth
+				imageSize=objectparams.imageSize,
+				imageHeight=objectparams.imageHeight,
+				imageWidth=objectparams.imageWidth
 				)#
 	<cfelse>
 		#$.dspObject_Include(
 				thefile='dsp_content_list.cfm',
 				fields='Title',
 				type='Related', 
-				iterator=  variables.iterator
+				iterator= variables.iterator
 				)#
 	</cfif>
 	</div>

@@ -1594,6 +1594,12 @@ select * from tplugins order by #arguments.orderby#
 	<cfset event.setValue("objectID",arguments.object)>
 	<cfset event.setValue("params",arguments.params)>
 	
+	<cfif isJSON(arguments.params)>
+		<cfset event.setValue("objectparams",deserializeJSON(arguments.params))>
+	<cfelse>
+		<cfset event.setValue("objectparams",structNew())>
+	</cfif>
+	
 	<cfquery name="rs" dbtype="query">
 	select pluginID, displayObjectFile,location,displaymethod, docache, objectID, directory, moduleID, configuratorInit, configuratorJS from variables.rsDisplayObjects 
 	where 

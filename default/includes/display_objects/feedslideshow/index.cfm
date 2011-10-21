@@ -58,8 +58,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.feedBean = $.getBean("feed").loadBy(name=arguments.objectID,siteID=arguments.siteID)>
   	</cfif>
 	
-	<cfif isDefined("arguments.params") and isJson(arguments.params)>
-		<cfset variables.feedBean.set(deserializeJSON(arguments.params))>
+	<cfif not structIsEmpty(objectparams)>
+		<cfset variables.feedBean.set(objectparams)>
 	<cfelse>
 		<cfset variables.feedBean.setImageSize("medium")>
 		<cfif not arguments.hasSummary>

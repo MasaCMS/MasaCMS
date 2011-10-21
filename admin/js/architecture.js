@@ -1504,7 +1504,7 @@ function addDisplayObject(objectToAdd,regionid,configure){
 	function updateAvailableObject(){
 		availableObjectParams={};
 						
-		jQuery("#availableObjectParams").find(".param").each(
+		jQuery("#availableObjectParams").find(".objectparam").each(
 			function(){
 				var item=jQuery(this);
 				if (item.attr("type") != "radio" || (item.attr("type") =="radio" && item.is(':checked'))) {
