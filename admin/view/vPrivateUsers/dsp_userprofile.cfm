@@ -151,7 +151,9 @@ select * from rsSubTypes where subType <> 'Default'
 				<cfloop collection="#application.settingsManager.getSites()#" item="site">
 					<cfif application.settingsManager.getSite(site).getPrivateUserPoolID() eq request.userBean.getsiteID()>
 						<!---<li>--->
-							<cfoutput><h4>#application.settingsManager.getSite(site).getSite()#</h4></cfoutput>
+							<cfoutput><h4>#application.settingsManager.getSite(site).getSite()#</h4>
+							<div class="divide"></div>
+							</cfoutput>
 							<cf_dsp_categories_nest siteID="#request.userBean.getsiteID()#" parentID="" categoryID="#attributes.categoryID#" nestLevel="0" >
 						<!---</li>--->
 					</cfif>

@@ -856,7 +856,7 @@ dd ul.interestGroups li li li li, dd ul.categories li li li li, #emailGroupsList
 }
 
 .categoryAssignment {
-	border-bottom: 1px solid #dbdbdb;
+	/*border-bottom: 1px solid #dbdbdb;*/
 	padding-bottom: 0;
 }
 

@@ -70,7 +70,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <a href="javascript:;"  id="showSort" onclick="showSaveSort('setList');return false;">[Reorder]</a>
 </cfif>
 
-<p>
 <cfif arrayLen(extendSets)>
 
 <ul id="setList">
@@ -88,6 +87,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </ul>
  
 <cfelse>
-<em>There are currently no available attribute sets.</em>
+<p class="notice">There are currently no available attribute sets.</p>
 </cfif>
-</p>
