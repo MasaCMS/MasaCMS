@@ -376,7 +376,8 @@
 		<cfset versionBean.addDisplayObject(argumentCollection=arguments.rc)>
 		<cfset versionBean.save()>
 	</cfif>
-	<cfabort>
+	
+	<cfset rc.versionBean=versionBean>
 	
 </cffunction>
 
