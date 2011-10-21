@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfhtmlhead text="#session.dateKey#">
 <cfset userPoolID=application.settingsManager.getSite(attributes.siteID).getPrivateUserPoolID()>
-<cfset rsSubTypes=application.classExtensionManager.getSubTypesByType(type=1,subtype=siteID,activeOnly=true) />
+<cfset rsSubTypes=application.classExtensionManager.getSubTypesByType(type=1,siteid=userPoolID,activeOnly=true) />
 <cfquery name="rsNonDefault" dbtype="query">
 select * from rsSubTypes where subType <> 'Default'
 </cfquery>

@@ -272,20 +272,36 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setImageHeight" access="public" output="false">
-	<cfargument name="imageHeight" type="any" />
-	<cfif isNumeric(arguments.imageHeight)>
-	<cfset variables.instance.imageHeight = arguments.imageHeight />
+<cffunction name="setImageHeight" output="false" access="public">
+    <cfargument name="ImageHeight" required="true">
+	<cfif isNumeric(arguments.ImageHeight)>
+  	  <cfset variables.instance.ImageHeight = arguments.ImageHeight />
 	</cfif>
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setImageWidth" access="public" output="false">
-	<cfargument name="imageWidth" type="any" />
-	<cfif isNumeric(arguments.imageWidth)>
-	<cfset variables.instance.imageWidth = arguments.imageWidth />
+<cffunction name="getImageHeight" output="false" access="public">
+	<cfif variables.instance.imageSize eq "Custom">
+  	  <cfreturn variables.instance.ImageHeight />
+	<cfelse>
+		<cfreturn "AUTO">
+	</cfif>
+</cffunction>
+
+<cffunction name="setImageWidth" output="false" access="public">
+    <cfargument name="ImageWidth" required="true">
+	<cfif isNumeric(arguments.ImageWidth)>
+  	  <cfset variables.instance.ImageWidth = arguments.ImageWidth />
 	</cfif>
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="getImageWidth" output="false" access="public">
+	<cfif variables.instance.imageSize eq "Custom">
+  	  <cfreturn variables.instance.ImageWidth />
+	<cfelse>
+		<cfreturn "AUTO">
+	</cfif>
 </cffunction>
 
 <cffunction name="setAdvancedParams" access="public" output="false">

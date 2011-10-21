@@ -573,12 +573,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="getImageHeight" output="false" access="public">
+	<cfif variables.instance.imageSize eq "Custom">
+  	  <cfreturn variables.instance.ImageHeight />
+	<cfelse>
+		<cfreturn "AUTO">
+	</cfif>
+</cffunction>
+
 <cffunction name="setImageWidth" output="false" access="public">
     <cfargument name="ImageWidth" required="true">
 	<cfif isNumeric(arguments.ImageWidth)>
   	  <cfset variables.instance.ImageWidth = arguments.ImageWidth />
 	</cfif>
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="getImageWidth" output="false" access="public">
+	<cfif variables.instance.imageSize eq "Custom">
+  	  <cfreturn variables.instance.ImageWidth />
+	<cfelse>
+		<cfreturn "AUTO">
+	</cfif>
 </cffunction>
 
 <cffunction name="setDisplayList" output="false">

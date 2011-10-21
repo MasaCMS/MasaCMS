@@ -151,7 +151,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif attributes.type eq 'Portal' or attributes.type eq 'Calendar' or attributes.type eq 'Gallery'>
 	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</dt>
-	<dd><select name="imageSize" class="dropdown" onchange="if(this.value=='custom'){jQuery('##CustomImageOptions').fadeIn('fast')}else{jQuery('##CustomImageOptions').hide()}">
+	<dd><select name="imageSize" class="dropdown" onchange="if(this.value=='custom'){jQuery('##CustomImageOptions').fadeIn('fast')}else{jQuery('##CustomImageOptions').hide();jQuery('##CustomImageOptions').find(':input').val('AUTO');}">
 		<cfloop list="Small,Medium,Large,Custom" index="i">
 		<option value="#lcase(i)#"<cfif i eq request.contentBean.getImageSize()> selected</cfif>>#I#</option>
 		</cfloop>

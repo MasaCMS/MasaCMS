@@ -53,8 +53,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.feedBean = $.getBean("feed").loadBy(name=arguments.objectID, 
 		                                                     siteID=arguments.siteID)>
 	</cfif>
-	<cfif isDefined("arguments.params") and isJson(arguments.params)>
-		<cfset variables.feedBean.set(deserializeJSON(arguments.params))>
+	<cfif not structIsEmpty(objectparams)>
+		<cfset variables.feedBean.set(objectparams)>
 	<cfelseif variables.feedBean.getType() eq "Local" and not arguments.hasSummary>
 		<cfset variables.contentListFields=listDeleteAt(variables.feedBean.getDisplayList(),listFindNoCase(variables.feedBean.getDisplayList(),"Summary"))>
 		<cfset variables.feedBean.setDisplayList(variables.contentListFields)>
@@ -131,8 +131,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.feedData = application.feedManager.getRemoteFeedData(variables.feedBean.getChannelLink(), 
 			                                                                      variables.feedBean.getMaxItems())/>
 			                                                                      
-			<cfif isJSON(arguments.params)>
-				<cfset arguments.hasSummary=deserializeJSON(arguments.params).displaySummaries>	
+			<cfif not structIsEmpty(objectparams)>
+				<cfset arguments.hasSummary=objectparams.displaySummaries>	
 			</cfif>
 		</cfsilent>
 		<cfoutput>

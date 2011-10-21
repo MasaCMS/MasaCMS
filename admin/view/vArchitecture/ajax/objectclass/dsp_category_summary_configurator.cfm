@@ -65,8 +65,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<dl class="oneColumn">
 			<dt class="first">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayrss')#</dt>
 			<dd>
-			<input name="displayRSS" type="radio" value="1" class="param radio" <cfif displayRSS>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-			<input name="displayRSS" type="radio" value="0" class="param radio" <cfif not displayRSS>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+			<input name="displayRSS" type="radio" value="1" class="objectparam  radio" <cfif displayRSS>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+			<input name="displayRSS" type="radio" value="0" class="objectparam  radio" <cfif not displayRSS>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
 			</dd>
 		</dl>
 	</div>

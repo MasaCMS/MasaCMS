@@ -23,9 +23,10 @@ StructAppend(attributes, form, "no");
 		<title>Select Link</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta content="noindex, nofollow" name="robots">
-		<link href="#application.configBean.getContext()#/admin/css/admin.css" rel="stylesheet" type="text/css" />
-		<script src="#application.configBean.getContext()#/admin/js/admin.js" type="text/javascript" language="Javascript"></script>
-		<script src="#application.configBean.getContext()#/admin/js/prototype.js" type="text/javascript" language="Javascript"></script>
+		<link href="#application.configBean.getContext()#/admin/css/admin.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+		<script src="#application.configBean.getContext()#/admin/js/admin.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
+		<script src="#application.configBean.getContext()#/admin/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
+		<script src="#application.configBean.getContext()#/admin/js/prototype.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>	
 </cfoutput>
 
 	<style>

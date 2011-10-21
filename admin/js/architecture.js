@@ -1128,6 +1128,10 @@ function getDisplayObjectConfig(regionid){
 		
 		data.regionid=regionid;
 		data.context=context;
+		data.siteid=siteid;
+		data.contentid=contentid;
+		data.contenthistid=contenthistid;
+		data.parentid=parentid;
 		
 		return data;
 }
@@ -1198,7 +1202,14 @@ function addDisplayObject(objectToAdd,regionid,configure){
 	
 	if(typeof(tmpObject) == "object"){
 		//object^name^objectID^params
-			
+		
+		tmpObject.regionid = regionid;
+		tmpObject.context = context;
+		tmpObject.siteid = siteid;
+		tmpObject.contentid=contentid;
+		tmpObject.contenthistid=contenthistid;
+		tmpObject.parentid=parentid;
+					
 		if (tmpObject.object=='feed') {
 			if (configure) {
 				tmpObject.regionid=regionid;
@@ -1241,8 +1252,6 @@ function addDisplayObject(objectToAdd,regionid,configure){
 			
 			if (configurator != '') {
 				if (configure) {
-					tmpObject.regionid = regionid;
-					tmpObject.context = context;
 					window[configurator](tmpObject);
 					return false;
 				}
@@ -1504,7 +1513,7 @@ function addDisplayObject(objectToAdd,regionid,configure){
 	function updateAvailableObject(){
 		availableObjectParams={};
 						
-		jQuery("#availableObjectParams").find(".param").each(
+		jQuery("#availableObjectParams").find(".objectparam").each(
 			function(){
 				var item=jQuery(this);
 				if (item.attr("type") != "radio" || (item.attr("type") =="radio" && item.is(':checked'))) {

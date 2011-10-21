@@ -129,7 +129,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			function FCKeditor_OnComplete( editorInstance ) { 	
 				<cfif attributes.preview eq 1>
-			   	preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,'')#?previewid=#request.contentBean.getcontenthistid()#&siteid=#request.contentBean.getsiteid()#','#request.contentBean.getTargetParams()#');
+			   	preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,'')#?previewid=#request.contentBean.getcontenthistid()#','#request.contentBean.getTargetParams()#');
 				</cfif> 
 				htmlEditorOnComplete(editorInstance); 
 			}

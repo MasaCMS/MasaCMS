@@ -928,6 +928,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var expandedDisplayObjectPath=expandPath(displayObjectPath)>
 	<cfset var expandedThemeObjectPath=expandPath(themeObjectPath)>
 	<cfset var tracePoint=0>
+	<cfset var objectParams="">
+	
+	<cfif isJSON(arguments.params)>
+		<cfset objectParams=deserializeJSON(arguments.params)>
+	<cfelse>
+		<cfset objectParams=structNew()>
+	</cfif>
 	
 	<cfsavecontent variable="theContent">
 	<cfif fileExists(expandedThemeObjectPath & fileDelim & arguments.theFile)>
