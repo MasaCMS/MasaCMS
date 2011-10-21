@@ -41,6 +41,7 @@ config.format_tags = 'p;h1;h2;h3;h4;pre;address;div';
 	config.format_h3 = { element : '#renderer.getHeaderTag('subHead2')#' };
 	config.format_h4 = { element : '#renderer.getHeaderTag('subHead3')#' };
 	config.format_h5 = { element : '#renderer.getHeaderTag('subHead4')#' };
+	// config.format_h6 = { element : '#renderer.getHeaderTag('subHead5')#' };
 	</cfoutput>
 	
     // config.ignoreEmptyParagraph = 'false';
