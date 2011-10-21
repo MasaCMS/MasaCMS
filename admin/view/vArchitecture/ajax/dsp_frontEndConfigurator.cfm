@@ -50,6 +50,7 @@
 			<input type="button" class="button" onclick="saveToChangeset('#request.contentBean.getChangesetID()#','#HTMLEditFormat(rsDisplayObject.siteid)#','');return false;" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset")#" />	
 		</cfif>
 		<input type="button" id="saveConfigDraft" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#"/>
+		<input type="button" id="previewConfigDraft" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.preview"))#"/>
 		<cfif request.perm eq "Editor"><input type="button" id="publishConfig" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#"/></cfif>
 	</div>
 </div>
@@ -150,10 +151,11 @@ jQuery(document).ready(function(){
 				'object':'#JSStringFormat(rsDisplayObject.object)#',
 				'name': '#JSStringFormat(rsDisplayObject.name)#',
 				'changesetid':'',
-				'removepreviouschangeset':false			
+				'removepreviouschangeset':false,
+				'preview':1				
 			},
 
-			function(data){
+			function(){
 				frontEndProxy.postMessage("cmd=setLocation&location=#jsStringFormat(request.homeBean.getURL())#");
 			}
 		
@@ -181,11 +183,54 @@ jQuery(document).ready(function(){
 				'object':'#JSStringFormat(rsDisplayObject.object)#',
 				'name': '#JSStringFormat(rsDisplayObject.name)#',
 				'changesetid':'',
-				'removepreviouschangeset':false	
+				'removepreviouschangeset':false,
+				'preview':0		
 			},
 
 			function(){
 				frontEndProxy.postMessage("cmd=setLocation&location=#jsStringFormat(request.homeBean.getURL())#");
+			}
+		
+			);
+		});
+		
+		jQuery("##previewConfigDraft").bind("click",
+		function(){
+			
+			updateAvailableObject();
+				
+			jQuery("##configurator").html('<img src="images/progress_bar.gif">');
+			jQuery("##configuratorActions").hide();
+			jQuery("##configuratorNotices").hide();
+			
+			jQuery.post("./index.cfm?fuseaction=cArch.updateObjectParams",
+			{
+				'contenthistid':'#JSStringFormat(rsDisplayObject.contentHistID)#',
+				'objectid':'#JSStringFormat(rsDisplayObject.objectid)#',
+				'regionid':'#JSStringFormat(rsDisplayObject.columnid)#',
+				'orderno':'#JSStringFormat(rsDisplayObject.orderno)#',
+				'siteid':'#JSStringFormat(rsDisplayObject.siteid)#',
+				'params': JSON.stringify(availableObject.params),
+				'approved':0,
+				'object':'#JSStringFormat(rsDisplayObject.object)#',
+				'name': '#JSStringFormat(rsDisplayObject.name)#',
+				'changesetid':'',
+				'removepreviouschangeset':false,
+				'preview':1	
+			},
+
+			function(raw){
+				var resp=eval( "(" + raw + ")" );
+				<cfset str=request.homeBean.getURL()>
+				var loc="#JSStringFormat(str)#";
+				<cfif find("?",str)>
+				loc=loc + "&";
+				<cfelse>
+				loc=loc + "?";
+				</cfif>
+				loc=loc + "contentID=" + resp.contentid;
+				loc=loc + "&previewID=" + resp.contenthistid;
+				frontEndProxy.postMessage("cmd=setLocation&location=" + encodeURIComponent(loc) );
 			}
 		
 			);
@@ -213,7 +258,8 @@ function saveConfiguratorToChangeset(changesetid,removepreviouschangeset){
 				'object':'#JSStringFormat(rsDisplayObject.object)#',
 				'name': '#JSStringFormat(rsDisplayObject.name)#',
 				'changesetid':changesetid,
-				'removepreviouschangeset':removepreviouschangeset
+				'removepreviouschangeset':removepreviouschangeset,
+				'preview':0	
 			},
 	
 			function(){
