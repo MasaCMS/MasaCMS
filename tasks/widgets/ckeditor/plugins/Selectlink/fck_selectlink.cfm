@@ -83,7 +83,7 @@ StructAppend(attributes, form, "no");
 <body id="mura-select-link">
 <cfoutput>
 <h3>Keyword Search</h3>
-<form id="siteSearch" name="siteSearch" method="post" onSubmit="return validateForm(this);"><input name="keywords" value="#attributes.keywords#" type="text" class="text" maxlength="50" required="true" message="The 'Keyword' field is required."/>
+<form id="siteSearch" name="siteSearch" method="post"><input name="keywords" value="#HTMLEditFormat(attributes.keywords)#" type="text" class="text" maxlength="50"/>
 	<input type="hidden" name="fuseaction" value="cArch.search">
 	<input type="hidden" name="siteid" value="#session.siteid#">
 	<input type="hidden" name="moduleid" value="00000000000000000000000000000000000">
@@ -124,7 +124,9 @@ stripe('stripe');
 document.forms.siteSearch.keywords.focus();
 </cfif>
 </script>
-
+<div id="alertDialog" title="Alert" style="display:none">
+	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><span id="alertDialogMessage"></span></p>
+</div>
 	</body>
 </html>
 <cfelse>
