@@ -1693,7 +1693,7 @@ function addDisplayObject(objectToAdd,regionid,configure){
 				jQuery("#actionButtons").show();
 				jQuery("#configuratorNotices").show();
 			}	
-			initConfiguratorParams();
+			//initConfiguratorParams();
 				
 		});
 			

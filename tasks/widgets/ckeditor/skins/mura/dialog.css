@@ -27,10 +27,10 @@ body .cke_dialog {
 	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif !important;
 }
 
-body .cke_dialog h3 {
+/*body .cke_dialog h3 {
 	
 	font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif !important;
-}
+}*/
 
 .cke_skin_mura .cke_dialog_tl,.cke_skin_mura .cke_dialog_tr,.cke_skin_mura .cke_dialog_tc,.cke_skin_mura .cke_dialog_bl,.cke_skin_mura .cke_dialog_br,.cke_skin_mura .cke_dialog_bc,.cke_skin_mura .cke_dialog_ml,.cke_skin_mura .cke_dialog_mr {
 	display: none;
