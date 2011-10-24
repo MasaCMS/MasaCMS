@@ -885,7 +885,8 @@ function CountDown(){
 		timerID=setTimeout("CountDown()", 100)
 	}else{
 	
-		location.href=context + "/admin/index.cfm?fuseaction=cLogin.logout"
+		if(document.getElementById('clock').innerHTML != undefined ){document.getElementById('clock').innerHTML = 0  + ':' + 0 + ':' + 0 ;}
+		//location.href=context + "/admin/index.cfm?fuseaction=cLogin.logout"
 		
 	}
 }
