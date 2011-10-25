@@ -102,9 +102,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</dd>
 				</cfif>
 				<cfif hasSummary and len(rsFeatures.summary)>
-					<dd>#setDynamicContent(rsFeatures.summary)#
-						<span class="readMore">#addlink(rsFeatures.type,rsFeatures.filename,rbFactory.getKey('list.readmore'),rsFeatures.target,rsFeatures.targetParams,rsFeatures.contentid,request.siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())#</span>
-					</dd>
+					<dd>#setDynamicContent(rsFeatures.summary)#</dd>
+					<dd class="readMore">#addlink(rsFeatures.type,rsFeatures.filename,rbFactory.getKey('list.readmore'),rsFeatures.target,rsFeatures.targetParams,rsFeatures.contentid,request.siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())#</dd>
 				</cfif>
 				<cfif len(rsFeatures.credits)>
 					<dd class="credits">#rbFactory.getKey('list.by')# #rsFeatures.credits#</dd>
