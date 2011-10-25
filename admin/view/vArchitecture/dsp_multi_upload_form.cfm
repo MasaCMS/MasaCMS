@@ -70,8 +70,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 
 <p>
-Please select images to upload. You may select multiple, and they will begin 
-as soon as you click Ok on the Open Dialog box.
+Please select one image at a time to upload. Uploading will begin as soon as you click Ok on the Open Dialog box.
 </p>
 <!---
 <div id="newfile">
@@ -114,7 +113,7 @@ as soon as you click Ok on the Open Dialog box.
 jQuery(document).ready(function(){
 	new AjaxUpload('uploadbutton', {
             action: './index.cfm',
-            multiple: true,
+            multiple: false,
             name:'newfile1',
 			data:{
 				'fuseaction':'cArch.update',
