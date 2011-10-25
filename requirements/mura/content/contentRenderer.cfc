@@ -2211,6 +2211,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		and arguments.height eq "auto")>
 		<cfset arguments.size="small">
 	</cfif>
+	<cfif arguments.size eq "large">
+		<cfset arguments.size = "main" />
+	</cfif>
 		
 	<cfif arguments.size neq "custom">
 		<cfif $.siteConfig('gallery#arguments.size#ScaleBy') eq 'x'>

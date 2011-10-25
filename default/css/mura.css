@@ -675,7 +675,7 @@ aside .svIndex li h3 {
 	color: #999;
 	}
 
-.summary span.readMore { font-size: .9em; }
+.summary .readMore, .readMore { font-size: .9em; }
 
 .credits,
 .comments,
