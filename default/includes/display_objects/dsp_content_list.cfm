@@ -131,7 +131,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>
 					</cfcase>
 					<cfcase value="ReadMore">
-					 	<p class="readmore"><span class="readMore">#$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),$.rbKey('list.readmore'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),arguments.item.getValue('siteID'),'',$.globalConfig('context'),$.globalConfig('stub'),$.globalConfig('indexFile'))#</span></p>
+					 	<p class="readMore">#$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),$.rbKey('list.readmore'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),arguments.item.getValue('siteID'),'',$.globalConfig('context'),$.globalConfig('stub'),$.globalConfig('indexFile'))#</p>
 					</cfcase>
 					<cfcase value="Credits">
 						<cfif len(arguments.item.getValue('credits'))>
@@ -171,7 +171,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfcase>
 					<cfdefaultcase>
 						<cfif len(arguments.item.getValue(arguments.field))>
-						 	<p class="#lcase(arguments.field)#">#HTMLEditFormat(arguments.item.getValue(arguments.field))#</p>	 	
+						 	<p class="sys#uCase(left(arguments.field,1))##iif(len(arguments.field) gt 1,de('#right(arguments.field,len(arguments.field)-1)#'),de(''))#">#HTMLEditFormat(arguments.item.getValue(arguments.field))#</p>	 	
 						</cfif>
 					</cfdefaultcase>
 				</cfswitch>
@@ -209,7 +209,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>
 					</cfcase>
 					<cfcase value="ReadMore">
-					 	<dd class="readmore"><span class="readMore">#$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),$.rbKey('list.readmore'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),arguments.item.getValue('siteID'),'',$.globalConfig('context'),$.globalConfig('stub'),$.globalConfig('indexFile'))#</span></dd>
+					 	<dd class="readMore">#$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),$.rbKey('list.readmore'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),arguments.item.getValue('siteID'),'',$.globalConfig('context'),$.globalConfig('stub'),$.globalConfig('indexFile'))#</dd>
 					</cfcase>
 					<cfcase value="Credits">
 						<cfif len(arguments.item.getValue('credits'))>
@@ -240,7 +240,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfcase>
 					<cfdefaultcase>
 						<cfif len(arguments.item.getValue(arguments.field))>
-						 	<dd class="#lcase(arguments.field)#">#HTMLEditFormat(arguments.item.getValue(arguments.field))#</dd>	 	
+						 	<dd class="sys#uCase(left(arguments.field,1))##iif(len(arguments.field) gt 1,de('#right(arguments.field,len(arguments.field)-1)#'),de(''))#">#HTMLEditFormat(arguments.item.getValue(arguments.field))#</dd>	 	
 						</cfif>
 					</cfdefaultcase>
 				</cfswitch>

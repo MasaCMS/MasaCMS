@@ -4711,6 +4711,8 @@ margin: .5em 0; }
 .notice a { color: #514721; }
 .success a { color: #264409; }
 
+.ui-tabs-panel p.notice { margin-bottom: 0 !important; }
+
 /* @end */
 
 /* @Collapsible Checkbox Tree */
