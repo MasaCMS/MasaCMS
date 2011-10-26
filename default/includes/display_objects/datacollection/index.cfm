@@ -69,7 +69,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfinclude template="dsp_response.cfm">
 	<cfelse>
 	<cfsilent>
-		<cfset $.addToHTMLHeadQueue("htmlEditor.cfm")>
 		<cfif isJSON(rsForm.body)>
 			<cfset renderedForm=$.setDynamicContent(
 					dspObject_Include(
@@ -83,16 +82,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset renderedForm=$.setDynamicContent(rsForm.body)>
 		</cfif>
 		</cfsilent>
-		#application.dataCollectionManager.renderForm(
+		<cfset renderedForm=application.dataCollectionManager.renderForm(
 			rsForm.contentid,
 			$.event('siteID'),
 			renderedForm,
 			rsForm.responseChart, 
 			$.content('contentID')
-		)#	
-		<script type="text/javascript">
-		setHTMLEditors(200,500);
-		</script>
+		)>
+		#renderedForm#
+		<cfif find("htmlEditor",renderedForm)>
+			<cfset $.addToHTMLHeadQueue("htmlEditor.cfm")>	
+			<script type="text/javascript">
+			setHTMLEditors(200,500);
+			</script>
+		</cfif>
 	</cfif>
 </cfif>
 </cfoutput>
