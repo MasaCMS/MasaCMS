@@ -112,6 +112,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="theme" type="string" default="" required="true" />
 <cfproperty name="javaLocale" type="string" default="" required="true" /> 
 <cfproperty name="CFStatic" type="any" default="" required="true" /> 
+<cfproperty name="deafultStaticPath" type="any" default="static" required="true" /> 
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	
@@ -188,9 +189,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.jsDateKey=""/>  
 	<cfset variables.instance.theme=""/> 
 	<cfset variables.instance.contentRenderer=""/>
-	<cfset variables.instance.themeRenderer="">
-	<cfset variables.instance.hasChangesets=0>
-	<cfset variables.instance.CFStatic="">
+	<cfset variables.instance.themeRenderer=""/>
+	<cfset variables.instance.hasChangesets=0/>
+	<cfset variables.instance.CFStatic=structNew()/>
+	<cfset variables.instance.deafultStaticPath="static">
 	
 	<cfreturn this />
 </cffunction>
@@ -245,10 +247,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.instance.displayPoolID=variables.instance.siteID />
 	</cfif>
 		
-	<cfif directoryExists(expandPath(getThemeIncludePath()) & "/static")>
-		<cfset getCFStatic().include(expandPath(getThemeIncludePath()) & "/static")>
-	</cfif>
-		
 	<cfreturn this>
  </cffunction>
 
@@ -256,7 +254,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="theme">
 	<cfif arguments.theme neq variables.instance.theme>
 		<cfset variables.instance.theme=arguments.theme>
-		<cfset variables.instance.CFStatic="">
+		<cfset variables.instance.CFStatic=structNew()>
+		<cfset variables.instance.staticPath="/static">
 	</cfif>
 </cffunction>
 <cffunction name="getDomain" returntype="String" access="public" output="false">
@@ -710,28 +709,28 @@ s
 </cffunction>
 
 <cffunction name="getCFStatic" output="false">
-	<cfif not isObject(variables.instance.CFStatic)>
-		<cfif not directoryExists(ExpandPath(getThemeIncludePath() & "/static/min"))>
-			<cfset getBean("fileWriter").createDir(ExpandPath(getThemeIncludePath() & "/static/min"))>	
+	<cfargument name="staticPath" default="#variables.instance.deafultStaticPath#">
+	<cfset var hashKey=hash(arguments.staticPath)>
+	
+	<cfif not structKeyExists(variables.instance.CFStatic,hashKey)>
+		<cfif not directoryExists(ExpandPath(getThemeIncludePath() & "/" & variables.instance.staticPath & "/min"))>
+			<cfset getBean("fileWriter").createDir(ExpandPath(getThemeIncludePath() & "/" & variables.instance.staticPath & "/min"))>	
 		</cfif>
-		<cfif not directoryExists(ExpandPath(getThemeIncludePath() & "/static/js"))>
-			<cfset getBean("fileWriter").createDir(ExpandPath(getThemeIncludePath() & "/static/js"))>	
+		<cfif not directoryExists(ExpandPath(getThemeIncludePath() & "/" & variables.instance.staticPath & "/js"))>
+			<cfset getBean("fileWriter").createDir(ExpandPath(getThemeIncludePath() & "/" & variables.instance.staticPath & "/js"))>	
 		</cfif>	
-		<cfif not directoryExists(ExpandPath(getThemeIncludePath() & "/static/css"))>
-			<cfset getBean("fileWriter").createDir(ExpandPath(getThemeIncludePath() & "/static/css"))>	
-		</cfif>		
-		<cfset variables.instance.CFStatic=createObject("component","org.cfstatic.CfStatic").init(
-																								      staticDirectory = ExpandPath(getThemeIncludePath() & "/static/")
-																								    , staticUrl       = getThemeAssetPath() & "/static/"
+		<cfif not directoryExists(ExpandPath(getThemeIncludePath() & "/" & variables.instance.staticPath & "/css"))>
+			<cfset getBean("fileWriter").createDir(ExpandPath(getThemeIncludePath() & "/" & variables.instance.staticPath & "/css"))>	
+		</cfif>	
+			
+		<cfset variables.instance.CFStatic[hashKey]=createObject("component","org.cfstatic.CfStatic").init(
+																								      staticDirectory = ExpandPath(getThemeIncludePath() & "/"  & variables.instance.staticPath)
+																								    , staticUrl       = getThemeAssetPath() & variables.instance.staticPath
 																								    , jsDirectory     = 'js'
 																								    , cssDirectory    = 'css'
-																						   			 , outputDirectory = 'min')>
+																						   			, outputDirectory = 'min')>
 	</cfif>
-	<cfreturn variables.instance.CFStatic>
-</cffunction>
-
-<cffunction name="getHasCFStatic" output="false">
-	<cfreturn isObject(variables.instance.CFStatic)>
+	<cfreturn variables.instance.CFStatic[hashKey]>
 </cffunction>
 
 </cfcomponent>

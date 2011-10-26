@@ -394,7 +394,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="static" output="false">
-	<cfreturn siteConfig("CFStatic")>
+	<cfargument name="staticPath" default="#siteConfig('defaultStaticPath')#">
+	<cfreturn siteConfig().getCFStatic(argumentCollection=arguments)>
 </cffunction>
 
 </cfcomponent>
