@@ -1909,13 +1909,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif getRenderHTMLQueues()>
 		
 		<cfif arguments.queueType eq "HEAD">
+			<cfif $.siteConfig("hasCFStatic")>
+				<cfset headerStr=$.siteConfig("CFStatic").renderIncludes("css")>
+			</cfif>
 			<!--- ensure that the js lb is always there --->
 			<cfset loadJSLib() />
 			<!--- Add global.js --->
 			<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()#/#application.settingsmanager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/display_objects/htmlhead/global.cfm")>
-			<cfsavecontent variable="headerStr">
+			<cfsavecontent variable="itemStr">
 					<cfinclude  template="/#application.configBean.getWebRootMap()#/#application.settingsmanager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/display_objects/htmlhead/global.cfm">
 			</cfsavecontent>
+			
+			<cfset headerStr=headerStr & trim(itemStr)>
 			<cfset commitTracePoint(tracePoint)>
 					
 			<!--- Add modal edit --->
@@ -1928,8 +1933,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</cfif>
 		<cfelseif arguments.queueType eq "FOOT">
+				<cfif $.siteConfig("hasCFStatic")>
+					<cfset headerStr=$.siteConfig("CFStatic").renderIncludes("js")>
+				</cfif>
 				<cfif (getShowModal() or event.getValue("muraChangesetPreview")) and not request.muraExportHTML>
-					<cfsavecontent variable="headerStr">
+					<cfsavecontent variable="itemStr">
 						<cfif getShowModal()>
 							<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()#/admin/modal/dsp_modal_edit.cfm")>
 							<cfinclude template="/#application.configBean.getWebRootMap()#/admin/modal/dsp_modal_edit.cfm">
@@ -1942,6 +1950,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>
 					</cfsavecontent>
 				</cfif>
+				<cfset headerStr=headerStr & itemStr>
+	
 		</cfif>
 		<!--- Loop through the HTML Head Que--->
 		<cfset HTMLQueue=event.getValue('HTML#arguments.queueType#Queue') />
