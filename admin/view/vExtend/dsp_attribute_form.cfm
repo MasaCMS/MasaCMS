@@ -104,7 +104,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <input type="button" class="submit" onclick="submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'add');" value="Add" />
 <input type="button" class="submit" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container').slideUp();jQuery('###HTMLEditFormat(attributes.formName)#close').hide();jQuery('###HTMLEditFormat(attributes.formName)#open').show();" value="Cancel" />
 <cfelse>
-<input type="button" class="submit" onclick="submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'update'); value="Update" />
+<input type="button" class="submit" onclick="submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'update');" value="Update" />
 <input type="button" class="submit" onclick="submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'delete','Delete Attribute?');" value="Delete" />
 <input type="button" class="submit" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container'));jQuery('###HTMLEditFormat(attributes.formName)#close').hide();jQuery('###HTMLEditFormat(attributes.formName)#open').show();" value="Cancel" />
 </cfif>
