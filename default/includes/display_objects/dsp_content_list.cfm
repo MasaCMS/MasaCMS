@@ -171,7 +171,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfcase>
 					<cfdefaultcase>
 						<cfif len(arguments.item.getValue(arguments.field))>
-						 	<p class="#lcase(arguments.field)#">#HTMLEditFormat(arguments.item.getValue(arguments.field))#</p>	 	
+						 	<p class="sys#uCase(left(arguments.field,1))##iif(len(arguments.field) gt 1,de('#right(arguments.field,len(arguments.field)-1)#'),de(''))#">#HTMLEditFormat(arguments.item.getValue(arguments.field))#</p>	 	
 						</cfif>
 					</cfdefaultcase>
 				</cfswitch>
@@ -240,7 +240,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfcase>
 					<cfdefaultcase>
 						<cfif len(arguments.item.getValue(arguments.field))>
-						 	<dd class="#lcase(arguments.field)#">#HTMLEditFormat(arguments.item.getValue(arguments.field))#</dd>	 	
+						 	<dd class="sys#uCase(left(arguments.field,1))##iif(len(arguments.field) gt 1,de('#right(arguments.field,len(arguments.field)-1)#'),de(''))#">#HTMLEditFormat(arguments.item.getValue(arguments.field))#</dd>	 	
 						</cfif>
 					</cfdefaultcase>
 				</cfswitch>
