@@ -394,8 +394,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="static" output="false">
-	<cfargument name="resource">
-	<cfset siteConfig("CFStatic").include(argumentCollection=arguments)>
+	<cfreturn siteConfig("CFStatic")>
 </cffunction>
 
 </cfcomponent>
