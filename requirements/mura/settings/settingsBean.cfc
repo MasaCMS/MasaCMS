@@ -255,9 +255,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif arguments.theme neq variables.instance.theme>
 		<cfset variables.instance.theme=arguments.theme>
 		<cfset variables.instance.CFStatic=structNew()>
-		<cfset variables.instance.staticPath="/static">
+		<cfset variables.instance.staticPath="static">
 	</cfif>
 </cffunction>
+
 <cffunction name="getDomain" returntype="String" access="public" output="false">
 	<cfargument name="mode" type="String" required="true" default="#application.configBean.getMode()#" />
 	
