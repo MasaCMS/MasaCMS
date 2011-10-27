@@ -61,6 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.directory="" />
 <cfset variables.customSettings=structNew()>
 <cfset variables.hasCustomSettingsDir=false />
+<cfset variables.CFStatic=structNew()>
 
 <cffunction name="initSettings" returntype="any" access="public" output="false">
 	<cfargument name="data"  type="any" default="#structNew()#">
@@ -177,7 +178,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setDirectory" access="public" output="false">
 	<cfargument name="directory" type="String" />
-	<cfset variables.directory = trim(arguments.directory) />
+	
+	<cfif arguments.directory neq variables.directory>
+		<cfset variables.directory = trim(arguments.directory) />
+		<cfset variables.CFStatic=structNew()>
+	</cfif>
 </cffunction>
 
 <cffunction name="getDirectory" returntype="String" access="public" output="false">
@@ -395,6 +400,35 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getFullPath" output="false">
 	<cfreturn application.configBean.getPluginDir() & "/" & getDirectory()>
 </cffunction>
+
+<cffunction name="static" output="false">
+	<cfargument name="path" default="">
+	<cfset var staticDirectory=getFullPath()>
+	<cfset var staticUrl= application.configBean.getContext() & "/plugins/" & getDirectory()>
+	<cfset var hashKey="">
+		
+	<cfif len(arguments.path)>
+		<cfset staticDirectory=staticDirectory & "/" & arguments.path>
+		<cfset staticUrl=staticUrl & "/" & arguments.path>
+	</cfif>
+
+	<cfset hashKey=hash(staticDirectory)>
+	
+	<cfif not structKeyExists(variables.CFStatic,hashKey)>
+		<cfif not directoryExists(staticDirectory & "/compiled")>
+			<cfset getBean("fileWriter").createDir(staticDirectory & "/compiled")>	
+		</cfif>
+			
+		<cfset variables.CFStatic[hashKey]=createObject("component","org.cfstatic.CfStatic").init(
+																								      staticDirectory = staticDirectory
+																								    , staticUrl       = staticUrl
+   																									, outputDirectory = 'compiled'
+																									, minifyMode = 'package'
+																									)>
+	</cfif>
+	<cfreturn variables.CFStatic[hashKey]>
+</cffunction>
+
 
 </cfcomponent>
 

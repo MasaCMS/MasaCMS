@@ -45,7 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<script src="js/architecture.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript" ></script>
+<script src="js/architecture.min.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript" ></script>
 </cfoutput>
 <cfif myfusebox.originalfuseaction eq 'edit'>
 <script type="text/javascript">

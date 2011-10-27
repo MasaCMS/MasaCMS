@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 <cfoutput>
 #getSite().getJSDateKey()#	
-<script type="text/javascript" src="#event.getSite().getAssetPath()#/js/global.js"></script>
+<script type="text/javascript" src="#event.getSite().getAssetPath()#/js/global.min.js"></script>
 <script type="text/javascript">
 var loginURL="#loginURL#";
 var siteid="#$.event('siteID')#"; 

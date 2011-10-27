@@ -46,25 +46,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfoutput>
 <script src="#event.getSite().getAssetPath()#/includes/display_objects/feedslideshow/js/jquery.cycle.js" type="text/javascript"></script>
-<script src="#event.getSite().getAssetPath()#/includes/display_objects/feedslideshow/js/slideshow.jquery.js" type="text/javascript"></script>
-
-<cfset imageBorder = 6> <!--- Total number of pixels of top and bottom borders, default Merced theme sets it at 3px --->
-<cfset minHeight = #$.siteConfig('galleryMediumScale')# + imageBorder> <!--- Add the border to the size of the medium image set in site settings--->
-
-<cfset topBottomMargin = 20> <!--- Total of top and bottom margin on each slide (dl), defaults to 10px --->
-<cfset slideMargin = #$.siteConfig('galleryMediumScale')# + topBottomMargin>
-
-<cfset addToPager = 10> <!--- Total of top and bottom margin on each slide (dl),  --->
-<cfset pagerWidth = #$.siteConfig('galleryMediumScale')# + addToPager>
-
-<!--- These are only applicable for square images. Images constrained by x or y in site settings must be accounted for directly in CSS --->
-<!---<style>
-	
-	.svSlides dl.hasImage {
-	padding-left: #slideMargin#px;
-	min-height: #minHeight#px;
-	}
-	
-</style>--->
-
+<script src="#event.getSite().getAssetPath()#/includes/display_objects/feedslideshow/js/slideshow.jquery.min.js" type="text/javascript"></script>
 </cfoutput>

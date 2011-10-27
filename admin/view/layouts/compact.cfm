@@ -64,11 +64,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfheader name="cache-control" value="no-cache, no-store, must-revalidate">
 <cfheader name="expires" value="06 Nov 1994 08:37:34 GMT">
 <meta http-equiv="cache control" content="no-cache, no-store, must-revalidate" />
-<script src="#application.configBean.getContext()#/admin/js/admin.js" type="text/javascript" language="Javascript"></script>
+<script src="#application.configBean.getContext()#/admin/js/admin.min.js" type="text/javascript" language="Javascript"></script>
 <script src="#application.configBean.getContext()#/admin/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 <script src="#application.configBean.getContext()#/admin/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 <script src="#application.configBean.getContext()#/admin/js/jquery/jquery-ui.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-<script src="#application.configBean.getContext()#/admin/js/jquery/jquery-ui-i18n.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+<script src="#application.configBean.getContext()#/admin/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 <link href="#application.configBean.getContext()#/admin/css/jquery/default/jquery.ui.all.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 <script src="#application.configBean.getContext()#/admin/js/prototype.js" type="text/javascript" language="Javascript"></script>
 <cfif application.configBean.getValue("htmlEditorType") eq "fckeditor">
@@ -106,9 +106,9 @@ var siteid='#session.siteid#';
 	);
 </script>
 	#fusebox.ajax#
-	<link href="#application.configBean.getContext()#/admin/css/admin.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+	<link href="#application.configBean.getContext()#/admin/css/admin.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 	<!--[if IE]>
-	<link href="#application.configBean.getContext()#/admin/css/ie.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+	<link href="#application.configBean.getContext()#/admin/css/ie.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 	<![endif]-->
 		<!--[if IE 6]>
 	<link href="#application.configBean.getContext()#/admin/css/ie6.cs?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />

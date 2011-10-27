@@ -13,20 +13,16 @@
 	<link rel="icon" href="#$.siteConfig('assetPath')#/images/favicon.ico" type="image/x-icon" />
 	<link rel="shortcut icon" href="#$.siteConfig('assetPath')#/images/favicon.ico" type="image/x-icon" />
 	
-	<!-- Enable html5 support in IE 8 and below: http://code.google.com/p/html5shiv/ -->
-	<!--[if lt IE 9]>
-	<script src="#$.siteConfig('themeAssetPath')#/js/html5.js"></script>
-	<![endif]-->
-	
-	<!--- Shared Styles --->
-	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/reset.css" type="text/css" media="all" />
-	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.css" type="text/css" media="all" />
+	<!--- Shared Styles --->	
+	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/reset.min.css" type="text/css" media="all" />
+	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.min.css" type="text/css" media="all" />
+
 	<!--- Theme-Specific Styles --->
-	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/typography.css" type="text/css" media="all" />
-	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/merced.css" type="text/css" media="all" />
-	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/print.css" type="text/css" media="print" />
-	<cfinclude template="ie_conditional_includes.cfm" />
-	
+	#$.static()
+		.include("/css/core/")
+		.include("/css/print/")
+		.renderIncludes("css")#
+			
 	<cfset rs=$.getBean('feedManager').getFeeds($.event('siteID'),'Local',true,true) />
 	<cfloop query="rs">
 	<link rel="alternate" type="application/rss+xml" title="#HTMLEditFormat($.siteConfig('site'))# - #HTMLEditFormat(rs.name)#" href="#XMLFormat('http://#listFirst(cgi.http_host,":")##$.globalConfig('context')#/tasks/feed/?feedID=#rs.feedID#')#" />

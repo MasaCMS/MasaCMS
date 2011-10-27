@@ -50,7 +50,9 @@
 	Hartija Css Print Framework - http://code.google.com/p/hartija/
 */
 
-
+/**
+ * @media print
+ */
 
 html {
 	width: 100%; 

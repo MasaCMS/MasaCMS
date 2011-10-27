@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif FindNoCase('Opera','#CGI.HTTP_USER_AGENT#') LESS THAN 1>
 <cfparam name="Cookie.fetDisplay" default="">
 <cfoutput>
-<link href="#application.configBean.getContext()#/admin/css/dialog.css" rel="stylesheet" type="text/css" />
+<link href="#application.configBean.getContext()#/admin/css/dialog.min.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="#application.configBean.getContext()#/admin/js/porthole/porthole.min.js"></script>
 
 <!---[if LT IE9]>

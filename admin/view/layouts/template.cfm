@@ -145,12 +145,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <script src="#application.configBean.getContext()#/admin/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 <script src="#application.configBean.getContext()#/admin/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 <script src="#application.configBean.getContext()#/admin/js/jquery/jquery-ui.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-<script src="#application.configBean.getContext()#/admin/js/jquery/jquery-ui-i18n.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+<script src="#application.configBean.getContext()#/admin/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 <link href="#application.configBean.getContext()#/admin/css/jquery/default/jquery.ui.all.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 <cfif not attributes.jsLibLoaded and attributes.jsLib eq "prototype">
 <script src="#application.configBean.getContext()#/admin/js/prototype.js" type="text/javascript" language="Javascript"></script>
 </cfif>
-<script src="#application.configBean.getContext()#/admin/js/admin.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
+<script src="#application.configBean.getContext()#/admin/js/admin.min.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
 <cfif application.configBean.getValue("htmlEditorType") eq "fckeditor">
 <script type="text/javascript" src="#application.configBean.getContext()#/wysiwyg/fckeditor.js"></script>
 <cfelse>
@@ -180,10 +180,10 @@ if (top.location != self.location) {
 </script>
 
 </cfif>
-<link href="#application.configBean.getContext()#/admin/css/admin.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+<link href="#application.configBean.getContext()#/admin/css/admin.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 <cfif cgi.http_user_agent contains 'msie'>
 <!--[if LTE IE 7]>
-	<link href="#application.configBean.getContext()#/admin/css/ie.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+	<link href="#application.configBean.getContext()#/admin/css/ie.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 <![endif]-->
 <!--[if IE 6]>
 	<script src="#application.configBean.getContext()#/admin/js/DD_belatedPNG.js"></script>
