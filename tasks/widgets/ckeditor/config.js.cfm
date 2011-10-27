@@ -119,7 +119,11 @@ config.format_tags = 'p;h1;h2;h3;h4;pre;address;div';
 		config.GoogleMaps_Key='none';
 	</cfif>	
 	
-	<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/css/editor.css.cfm') )>
+	<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/css/editor/editor.css.cfm') )>
+		config.contentsCss='#$.siteConfig('themeAssetPath')#/css/editor/editor.css.cfm';
+	<cfelseif fileExists(expandPath($.siteConfig("themeIncludePath") & '/css/editor/editor.css') )>
+		config.contentsCss='#$.siteConfig('themeAssetPath')#/css/editor/editor.css';	
+	<cfelseif fileExists(expandPath($.siteConfig("themeIncludePath") & '/css/editor.css.cfm') )>
 		config.contentsCss='#$.siteConfig('themeAssetPath')#/css/editor.css.cfm';
 	<cfelse>		
 		config.contentsCss='#$.siteConfig('themeAssetPath')#/css/editor.css';

@@ -12,4 +12,10 @@
 			<p>&copy;#year(now())# #HTMLEditFormat($.siteConfig('site'))#</p>
 		</div>
 	</footer>
+	#$.static()
+		.include("/css/ie/lte7/")
+		.include("/js/ie/lte8/")
+		.include("/js/ie/DD_roundies.js")
+		.renderIncludes("js")#
+	<cfinclude template="ie_conditional_includes.cfm" />		
 </cfoutput>
