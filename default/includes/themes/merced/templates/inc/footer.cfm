@@ -12,9 +12,11 @@
 			<p>&copy;#year(now())# #HTMLEditFormat($.siteConfig('site'))#</p>
 		</div>
 	</footer>
+	<cf_CacheOMatic key="globalfooterjs">
 	#$.static()
 		.include("/js/ie/lte8/")
 		.include("/js/ie/DD_roundies.js")
 		.renderIncludes("js")#
+	</cf_CacheOMatic>
 	<cfinclude template="ie_conditional_includes.cfm" />		
 </cfoutput>
