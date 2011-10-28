@@ -13,7 +13,6 @@
 		</div>
 	</footer>
 	#$.static()
-		.include("/css/ie/lte7/")
 		.include("/js/ie/lte8/")
 		.include("/js/ie/DD_roundies.js")
 		.renderIncludes("js")#

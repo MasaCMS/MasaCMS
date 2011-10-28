@@ -3,6 +3,7 @@
 
 /**
  * @ie IE LT 8
+ * @depends /core/merced.css
  */
 
 * html legend { /* Fixes incorrect styling of legend in IE6. */

@@ -21,6 +21,7 @@
 	#$.static()
 		.include("/css/core/")
 		.include("/css/print/")
+		.include("/css/ie/lte7/")
 		.renderIncludes("css")#
 			
 	<cfset rs=$.getBean('feedManager').getFeeds($.event('siteID'),'Local',true,true) />
