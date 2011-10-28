@@ -583,7 +583,7 @@ function setImageOffSets(margin,type,selector){
 							}
 							title.style.marginLeft=this.width + margin + 'px';
 							this.style.marginTop=-hOffset + "px";
-							this.style.float="left";
+							obj.style.cssFloat = "left";
 						}
 					}	
 				}				
