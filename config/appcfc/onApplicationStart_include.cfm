@@ -223,7 +223,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset application.serviceFactory.getBean("fileWriter").appendFile(file="#mapPrefix##baseDir#/config/mappings.cfm", output='<cfset this.mappings["/#rsRequirements.name#"] = mapPrefix & BaseDir & "/requirements/#rsRequirements.name#">')>	
 			</cfif>
 		</cfloop>	
-					
+		
+		<cfset application.cfstatic=structNew()>			
 		<cfset application.appInitialized=true/>
 		<cfset application.appInitializedTime=now()>
 		<cfif application.broadcastInit>

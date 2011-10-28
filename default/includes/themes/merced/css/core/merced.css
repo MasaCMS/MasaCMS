@@ -10,6 +10,10 @@ Theme:  Merced (HTML 5)
 Author: Blue River Interactive Group
 */
 
+/**
+ * @depends /core/typography.css
+ */
+
 /* @group GLOBALS
 ===================================== */
 

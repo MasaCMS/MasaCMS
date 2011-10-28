@@ -111,7 +111,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="hasChangesets" type="numeric" default="0" required="true" />
 <cfproperty name="theme" type="string" default="" required="true" />
 <cfproperty name="javaLocale" type="string" default="" required="true" /> 
-<cfproperty name="CFStatic" type="any" default="" required="true" /> 
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	
@@ -190,7 +189,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.contentRenderer=""/>
 	<cfset variables.instance.themeRenderer=""/>
 	<cfset variables.instance.hasChangesets=0/>
-	<cfset variables.instance.CFStatic=structNew()/>
 	
 	<cfreturn this />
 </cffunction>
@@ -244,9 +242,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif variables.instance.displayPoolID eq ''>
 		<cfset variables.instance.displayPoolID=variables.instance.siteID />
 	</cfif>
-	
-	<cfset variables.instance.CFStatic=structNew()/>
-		
+
 	<cfreturn this>
  </cffunction>
 
@@ -254,8 +250,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="theme">
 	<cfif arguments.theme neq variables.instance.theme>
 		<cfset variables.instance.theme=arguments.theme>
-		<cfset variables.instance.CFStatic=structNew()>
-		<cfset variables.instance.staticPath="static">
 	</cfif>
 </cffunction>
 
@@ -707,48 +701,6 @@ s
 	<cfset arguments.settingsBean=this>
 	
 	<cfreturn getBean("settingsManager").read(argumentCollection=arguments)>
-</cffunction>
-
-<cffunction name="getCFStatic" output="false">
-	<cfargument name="path" default="">
-	<cfset var staticDirectory=ExpandPath(getThemeIncludePath())>
-	<cfset var staticUrl= getThemeAssetPath()>
-	<cfset var hashKey="">
-		
-	<cfif len(arguments.path)>
-		<cfif arguments.path eq "../../../">
-			<cfset staticDirectory=ExpandPath(getIncludePath())>
-			<cfset staticUrl= getAssetPath()>
-		<cfelse>
-			<cfset staticDirectory=staticDirectory & "/" & arguments.path>
-			<cfset staticUrl=staticUrl & "/" & arguments.path>
-		</cfif>
-	</cfif>
-
-	<cfset hashKey=hash(staticDirectory)>
-	
-	<cfif not structKeyExists(variables.instance.CFStatic,hashKey)>
-		<cfif not directoryExists(staticDirectory & "/compiled")>
-			<cfset getBean("fileWriter").createDir(staticDirectory & "/compiled")>	
-		</cfif>
-		
-		<!---<cfif not directoryExists(staticDirectory & "/css")>
-			<cfset getBean("fileWriter").createDir(staticDirectory & "/css")>	
-		</cfif>
-		
-		<cfif not directoryExists(staticDirectory & "/js")>
-			<cfset getBean("fileWriter").createDir(staticDirectory & "/js")>	
-		</cfif>--->
-			
-		<cfset variables.instance.CFStatic[hashKey]=createObject("component","org.cfstatic.CfStatic").init(
-																								      staticDirectory = staticDirectory
-																								    , staticUrl       = staticUrl
-   																									, outputDirectory = 'compiled'
-																									, minifyMode = 'package'
-																									, checkForUpdates = true
-																									)>
-	</cfif>
-	<cfreturn variables.instance.CFStatic[hashKey]>
 </cffunction>
 
 </cfcomponent>

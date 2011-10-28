@@ -52,6 +52,7 @@
 
 /**
  * @media print
+ * @depends /core/merced.css
  */
 
 html {

@@ -401,35 +401,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn application.configBean.getPluginDir() & "/" & getDirectory()>
 </cffunction>
 
-<cffunction name="static" output="false">
-	<cfargument name="path" default="">
-	<cfset var staticDirectory=getFullPath()>
-	<cfset var staticUrl= application.configBean.getContext() & "/plugins/" & getDirectory()>
-	<cfset var hashKey="">
-		
-	<cfif len(arguments.path)>
-		<cfset staticDirectory=staticDirectory & "/" & arguments.path>
-		<cfset staticUrl=staticUrl & "/" & arguments.path>
-	</cfif>
-
-	<cfset hashKey=hash(staticDirectory)>
-	
-	<cfif not structKeyExists(variables.CFStatic,hashKey)>
-		<cfif not directoryExists(staticDirectory & "/compiled")>
-			<cfset getBean("fileWriter").createDir(staticDirectory & "/compiled")>	
-		</cfif>
-			
-		<cfset variables.CFStatic[hashKey]=createObject("component","org.cfstatic.CfStatic").init(
-																								      staticDirectory = staticDirectory
-																								    , staticUrl       = staticUrl
-   																									, outputDirectory = 'compiled'
-																									, minifyMode = 'package'
-																									, checkForUpdates = true
-																									)>
-	</cfif>
-	<cfreturn variables.CFStatic[hashKey]>
-</cffunction>
-
-
 </cfcomponent>
 

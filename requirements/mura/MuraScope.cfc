@@ -394,8 +394,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="static" output="false">
-	<cfargument name="path" default="">
-	<cfreturn siteConfig().getCFStatic(argumentCollection=arguments)>
+	<cfargument name="staticDirectory" default="">
+	<cfargument name="staticUrl" default="">
+	<cfargument name="outputDirectory" default="compiled">
+	<cfargument name="minifyMode" default="package">
+	<cfargument name="checkForUpdates" default="true">
+	<cfset var hashKey="">
+	
+	<cfif not len(arguments.staticDirectory) and len(event("siteid"))>
+		<cfset arguments.staticDirectory=ExpandPath(siteConfig("themeIncludePath"))>	
+	</cfif>
+	
+	<cfset hashKey=hash(arguments.staticDirectory)>
+	
+	<cfif not structKeyExists(application.cfstatic,hashKey)>
+		
+		<cfif not len(arguments.staticUrl)>
+			<cfset arguments.staticUrl=replace(globalConfig("context") & right(staticDirectory,len(staticDirectory)-len(expandPath("/murawrm"))), "\","/","all")>	
+		</cfif>
+	
+		<cfif not directoryExists(arguments.staticDirectory & "/compiled")>
+			<cfset getBean("fileWriter").createDir(arguments.staticDirectory & "/compiled")>	
+		</cfif>
+		
+		<cfset application.cfstatic[hashKey]=createObject("component","org.cfstatic.CfStatic").init(argumentCollection=arguments)>
+	</cfif>
+	<cfreturn application.cfstatic[hashKey]>
 </cffunction>
 
 </cfcomponent>

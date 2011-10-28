@@ -18,10 +18,13 @@
 	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.min.css" type="text/css" media="all" />
 
 	<!--- Theme-Specific Styles --->
+	<cf_CacheOMatic key="globalheadercss">
 	#$.static()
 		.include("/css/core/")
 		.include("/css/print/")
+		.include("/css/ie/lte7/")
 		.renderIncludes("css")#
+	</cf_CacheOMatic>
 			
 	<cfset rs=$.getBean('feedManager').getFeeds($.event('siteID'),'Local',true,true) />
 	<cfloop query="rs">
