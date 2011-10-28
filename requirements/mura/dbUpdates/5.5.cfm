@@ -511,6 +511,47 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 </cfswitch>	
 </cfif>
 
+<cfdbinfo 
+	name="rsCheck"
+	datasource="#application.configBean.getDatasource()#"
+	username="#application.configBean.getDbUsername()#"
+	password="#application.configBean.getDbPassword()#"
+	table="tsettings"
+	type="columns">
+
+<cfquery name="rsCheck" dbtype="query">
+	select * from rsCheck where lower(rsCheck.column_name) = 'columnnames'
+</cfquery>
+
+<cfif rsCheck.COLUMN_SIZE eq 255>
+<cfswitch expression="#getDbType()#">
+<cfcase value="mssql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tsettings ALTER COLUMN [columnNames] nvarchar(max) 
+	</cfquery>
+</cfcase>
+<cfcase value="mysql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tsettings MODIFY column columnNames text
+	</cfquery>
+</cfcase>
+<cfcase value="oracle">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tsettings rename column columnNames to columnNames2
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tsettings ADD columnNames clob
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	UPDATE tsettings set columnNames=columnNames2
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tsettings drop column columnNames2
+	</cfquery>
+</cfcase>
+</cfswitch>	
+</cfif>
+
 <cfset dbCreateIndex(table="tcontent",column="urltitle")>
 <cfset dbCreateIndex(table="tcontent",column="displaystart")>
 <cfset dbCreateIndex(table="tcontent",column="displaystop")>

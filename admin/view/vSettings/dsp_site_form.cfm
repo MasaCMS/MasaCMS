@@ -470,53 +470,24 @@ to your own modified versions of Mura CMS.
       <dl class="oneColumn">
       <dt class="first">Number of Display Regions</dt>
       <dd>
-        <input type="radio" name="columnCount" value="1" <cfif request.siteBean.getcolumnCount() eq 1 or request.siteBean.getcolumnCount() eq 0> CHECKED</CFIF>>
-        1&nbsp;&nbsp;
-        <input type="radio" name="columnCount" value="2" <cfif request.siteBean.getcolumnCount() eq 2> CHECKED</CFIF>>
-        2 &nbsp;&nbsp;
-        <input type="radio" name="columnCount" value="3" <cfif request.siteBean.getcolumnCount() eq 3> CHECKED</CFIF>>
-        3
-        &nbsp;&nbsp;
-        <input type="radio" name="columnCount" value="4" <cfif request.siteBean.getcolumnCount() eq 4> CHECKED</CFIF>>
-        4
-        &nbsp;&nbsp;
-        <input type="radio" name="columnCount" value="5" <cfif request.siteBean.getcolumnCount() eq 5> CHECKED</CFIF>>
-        5
-        &nbsp;&nbsp;
-        <input type="radio" name="columnCount" value="6" <cfif request.siteBean.getcolumnCount() eq 6> CHECKED</CFIF>>
-        6
-        &nbsp;&nbsp;
-        <input type="radio" name="columnCount" value="7" <cfif request.siteBean.getcolumnCount() eq 7> CHECKED</CFIF>>
-        7
-        &nbsp;&nbsp;
-        <input type="radio" name="columnCount" value="8" <cfif request.siteBean.getcolumnCount() eq 8> CHECKED</CFIF>>
-        8</dd>
+      	<select name="columnCount">
+      		<option value="1" <cfif request.siteBean.getcolumnCount() eq 1 or request.siteBean.getcolumnCount() eq 0> selected</cfif>> 1</option>
+      		<cfloop from="2" to="20" index="i">
+				<option value="#i#" <cfif request.siteBean.getcolumnCount() eq i> selected</cfif>>#i#</option> 	
+			</cfloop>
+      	</select>
+       </dd>
       <dt>Primary Display Region <span>(Dynamic System Content such as Login Forms and Search Results get displayed here)</span></dt>
       <dd>
-        <input type="radio" name="primaryColumn" value="1" <cfif request.siteBean.getprimaryColumn() eq 1 or request.siteBean.getprimaryColumn() eq 0> CHECKED</CFIF>>
-        1&nbsp;&nbsp;
-        <input type="radio" name="primaryColumn" value="2" <cfif request.siteBean.getprimaryColumn() eq 2> CHECKED</CFIF>>
-        2 &nbsp;&nbsp;
-        <input type="radio" name="primaryColumn" value="3" <cfif request.siteBean.getprimaryColumn() eq 3> CHECKED</CFIF>>
-        3
-        &nbsp;&nbsp;
-        <input type="radio" name="primaryColumn" value="4" <cfif request.siteBean.getprimaryColumn() eq 4> CHECKED</CFIF>>
-        4
-        &nbsp;&nbsp;
-        <input type="radio" name="primaryColumn" value="5" <cfif request.siteBean.getprimaryColumn() eq 5> CHECKED</CFIF>>
-        5
-        &nbsp;&nbsp;
-        <input type="radio" name="primaryColumn" value="6" <cfif request.siteBean.getprimaryColumn() eq 6> CHECKED</CFIF>>
-        6
-        &nbsp;&nbsp;
-        <input type="radio" name="primaryColumn" value="7" <cfif request.siteBean.getprimaryColumn() eq 7> CHECKED</CFIF>>
-        7
-        &nbsp;&nbsp;
-        <input type="radio" name="primaryColumn" value="8" <cfif request.siteBean.getprimaryColumn() eq 8> CHECKED</CFIF>>
-        8</dd>
+       <select name="primaryColumn">
+      		<cfloop from="1" to="20" index="i">
+				<option value="#i#" <cfif request.siteBean.getPrimaryColumn() eq i> selected</cfif>>#i#</option> 	
+			</cfloop>
+      	</select>
+	  </dd>
       <dt>Display Region Names <span>("^" Delimiter)</span></dt>
       <dd>
-        <input name="columnNames" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getcolumnNames())#" maxlength="255">
+        <input name="columnNames" type="text" class="text long" value="#HTMLEditFormat(request.siteBean.getcolumnNames())#">
       </dd>
       </dl>
       </div>

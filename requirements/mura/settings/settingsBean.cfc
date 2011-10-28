@@ -745,6 +745,7 @@ s
 																								    , staticUrl       = staticUrl
    																									, outputDirectory = 'compiled'
 																									, minifyMode = 'package'
+																									, checkForUpdates = true
 																									)>
 	</cfif>
 	<cfreturn variables.instance.CFStatic[hashKey]>
