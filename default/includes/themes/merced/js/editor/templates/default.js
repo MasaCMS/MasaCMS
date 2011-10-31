@@ -16,7 +16,7 @@ CKEDITOR.addTemplates( 'default',
                     {
                             title: '2 Columns',
                             image: 'template-cols2.gif',
-                            description: 'An area with 200 equally wide columns',
+                            description: 'An area with 2 equally wide columns',
                             html:
                                     '<div class="columns2 clearfix">' +
                                             '<div class="col">' +
