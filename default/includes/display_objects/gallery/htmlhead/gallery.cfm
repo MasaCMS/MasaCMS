@@ -48,14 +48,4 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif not cookie.mobileFormat>
 <script src="#event.getSite().getAssetPath()#/includes/display_objects/gallery/js/gallery.min.js" type="text/javascript"></script>
 </cfif>
-
-<!--- <cfset imgWidth = #$.siteConfig('gallerySmallScale')#> --->
-<cfset addToWidth = 0> <!--- Add total number of pixels and padding applied to <li> via CSS  --->
-<cfset totalWidth = #$.siteConfig('gallerySmallScale')# + addToWidth>
-
-<style>
-##svGallery li {
-	width: #totalWidth#px;
-	}
-</style>
 </cfoutput>
