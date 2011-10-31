@@ -65,6 +65,8 @@
 	outline-color: #ff3a00 !important;
 	background: transparent !important;
 	}
+* html .editableObject  { zoom: 1; display: inline; } /* IE6 */
+*:first-child+html .editableObject { zoom: 1; display: inline; } /* IE7 */
 
 .editableObject:after {
 	visibility: hidden !important;
@@ -74,8 +76,6 @@
 	clear: both !important;
 	height: 0 !important;
 	}
-* html .editableObject  { zoom: 1; display: inline; } /* IE6 */
-*:first-child+html .editableObject { zoom: 1; display: inline; } /* IE7 */
 
 .editableObject:hover {
 	outline-width: 2px !important;
@@ -84,7 +84,7 @@
 
 
 .editableObject .editableObjectContents {
-	/*display: inline-block !important;*/
+	display: inline-block !important;
 	visibility: !important;
 	float: none !important;
 	position: relative !important;
