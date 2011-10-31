@@ -54,12 +54,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset application.cfstatic=structNew()>
 </cfif>
 
-<cfif isDefined("url.showTrace") and isBoolean(url.showTrace)>
-	<cfset session.mura.showTrace=url.showTrace>
-</cfif>
-
-<cfset request.muraShowTrace=session.mura.showTrace>
-
 <cfif ( NOT structKeyExists( application, "setupComplete" ) or not application.appInitialized or structKeyExists(url,application.appReloadKey)) and isDefined("onApplicationStart")>
 	<cfset onApplicationStart()>
 </cfif>
@@ -70,6 +64,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif not StructKeyExists(cookie, 'userid')>
 	  <cfcookie name="userid" expires="never" value="">
 </cfif>
+
+<cfset application.userManager.setUserStructDefaults()>
+
+<cfif isDefined("url.showTrace") and isBoolean(url.showTrace)>
+	<cfset session.mura.showTrace=url.showTrace>
+</cfif>
+
+<cfset request.muraShowTrace=session.mura.showTrace>
 	
 <!--- Making sure that session is valid --->
 <cfif yesNoFormat(application.configBean.getValue("useLegacySessions")) and structKeyExists(session,"mura")>
@@ -83,8 +85,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfcookie name="userid" expires="never" value="#tempcookieuserID#">	
 	</cfif>
 </cfif>
-
-<cfset application.userManager.setUserStructDefaults()>
 
 <!---settings.custom.vars.cfm reference is for backwards compatability --->
 <cfif fileExists(expandPath("/muraWRM/config/settings.custom.vars.cfm"))>

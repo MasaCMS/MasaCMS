@@ -7,7 +7,7 @@
 	type="columns">
 
 <cfquery name="rsCheck" dbtype="query">
-	select * from rsCheck where lower(rsCheck.column_name) = 'imagesize'
+	select * from rsCheck where lower(rsCheck.column_name) like 'imagesize'
 </cfquery>
 
 <cfif not rsCheck.recordcount>
@@ -39,7 +39,7 @@
 	type="columns">
 
 <cfquery name="rsCheck" dbtype="query">
-	select * from rsCheck where lower(rsCheck.column_name) = 'imageheight'
+	select * from rsCheck where lower(rsCheck.column_name) like 'imageheight'
 </cfquery>
 
 <cfif not rsCheck.recordcount>
@@ -71,7 +71,7 @@
 	type="columns">
 
 <cfquery name="rsCheck" dbtype="query">
-	select * from rsCheck where lower(rsCheck.column_name) = 'imagewidth'
+	select * from rsCheck where lower(rsCheck.column_name) like 'imagewidth'
 </cfquery>
 
 <cfif not rsCheck.recordcount>
@@ -103,7 +103,7 @@
 	type="columns">
 
 <cfquery name="rsCheck" dbtype="query">
-	select * from rsCheck where lower(rsCheck.column_name) = 'displaylist'
+	select * from rsCheck where lower(rsCheck.column_name) like 'displaylist'
 </cfquery>
 
 <cfif not rsCheck.recordcount>
@@ -149,7 +149,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	type="columns">
 
 <cfquery name="rsCheck" dbtype="query">
-	select * from rsCheck where lower(rsCheck.column_name) = 'imagesize'
+	select * from rsCheck where lower(rsCheck.column_name) like 'imagesize'
 </cfquery>
 
 <cfif not rsCheck.recordcount>
@@ -181,7 +181,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	type="columns">
 
 <cfquery name="rsCheck" dbtype="query">
-	select * from rsCheck where lower(rsCheck.column_name) = 'imageheight'
+	select * from rsCheck where lower(rsCheck.column_name) like 'imageheight'
 </cfquery>
 
 <cfif not rsCheck.recordcount>
@@ -213,7 +213,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	type="columns">
 
 <cfquery name="rsCheck" dbtype="query">
-	select * from rsCheck where lower(rsCheck.column_name) = 'imagewidth'
+	select * from rsCheck where lower(rsCheck.column_name) like 'imagewidth'
 </cfquery>
 
 <cfif not rsCheck.recordcount>
@@ -245,7 +245,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	type="columns">
 
 <cfquery name="rsCheck" dbtype="query">
-	select * from rsCheck where lower(rsCheck.column_name) = 'childtemplate'
+	select * from rsCheck where lower(rsCheck.column_name) like 'childtemplate'
 </cfquery>
 
 <cfif not rsCheck.recordcount>
@@ -277,7 +277,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	type="columns">
 
 <cfquery name="rsCheck" dbtype="query">
-	select * from rsCheck where lower(rsCheck.column_name) = 'urltitle'
+	select * from rsCheck where lower(rsCheck.column_name) like 'urltitle'
 </cfquery>
 
 <cfif not listFindNoCase("varchar,nvarchar,varchar2",rsCheck.type_name)>
@@ -321,7 +321,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 
 	<cfloop list="targetparams,restrictgroups,moduleassign,htmltitle,remoteurl,remotesourceurl,remotesource,audience,tags,responsesendto,responsedisplayfields,notes,path,keypoints,metakeywords,metadesc" index="i">
 		<cfquery name="rsSubCheck" dbtype="query">
-			select * from rsCheck where lower(rsCheck.column_name) = '#i#'
+			select * from rsCheck where lower(rsCheck.column_name) like '#i#'
 		</cfquery>
 		
 		<cfif rsSubCheck.type_name neq "text">
@@ -341,7 +341,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	type="columns">
 
 <cfquery name="rsCheck" dbtype="query">
-	select * from rsCheck where lower(rsCheck.column_name) = 'shownavonly'
+	select * from rsCheck where lower(rsCheck.column_name) like 'shownavonly'
 </cfquery>
 
 <cfif not rsCheck.recordcount>
@@ -378,7 +378,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	type="columns">
 
 <cfquery name="rsCheck" dbtype="query">
-	select * from rsCheck where lower(rsCheck.column_name) = 'showexcludesearch'
+	select * from rsCheck where lower(rsCheck.column_name) like 'showexcludesearch'
 </cfquery>
 
 <cfif not rsCheck.recordcount>
@@ -415,7 +415,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	type="columns">
 
 <cfquery name="rsCheck" dbtype="query">
-	select * from rsCheck where lower(rsCheck.column_name) = 'configuratorinit'
+	select * from rsCheck where lower(rsCheck.column_name) like 'configuratorinit'
 </cfquery>
 
 <cfif not rsCheck.recordcount>
@@ -447,7 +447,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	type="columns">
 
 <cfquery name="rsCheck" dbtype="query">
-	select * from rsCheck where lower(rsCheck.column_name) = 'configuratorjs'
+	select * from rsCheck where lower(rsCheck.column_name) like 'configuratorjs'
 </cfquery>
 
 <cfif not rsCheck.recordcount>
@@ -479,7 +479,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	type="columns">
 
 <cfquery name="rsCheck" dbtype="query">
-	select * from rsCheck where lower(rsCheck.column_name) = 'domain'
+	select * from rsCheck where lower(rsCheck.column_name) like 'domain'
 </cfquery>
 
 <cfif rsCheck.COLUMN_SIZE neq 255>
@@ -520,7 +520,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	type="columns">
 
 <cfquery name="rsCheck" dbtype="query">
-	select * from rsCheck where lower(rsCheck.column_name) = 'columnnames'
+	select * from rsCheck where lower(rsCheck.column_name) like 'columnnames'
 </cfquery>
 
 <cfif rsCheck.COLUMN_SIZE eq 255>
