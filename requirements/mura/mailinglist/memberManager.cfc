@@ -112,12 +112,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="read" access="public" output="false" returntype="any" >
 	<cfargument name="data" type="struct" />
+	<cfset var memberBean="">
 	
 	<cfif not structKeyExists(arguments.data,"mailinglistBean")>
 		<cfset arguments.data.mailinglistBean="">	
 	</cfif>
 	
-	<cfset var memberBean = variables.memberDAO.read(arguments.data.email,arguments.data.siteid,arguments.data.mailinglistBean) />
+	<cfset memberBean = variables.memberDAO.read(arguments.data.email,arguments.data.siteid,arguments.data.mailinglistBean) />
 	
 	<cfreturn memberBean />
 	
