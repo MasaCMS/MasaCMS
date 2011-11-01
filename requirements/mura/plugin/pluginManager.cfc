@@ -1559,7 +1559,7 @@ select * from tplugins order by #arguments.orderby#
 		<cfif arguments.configuratorsOnly>
 			and configuratorInit > ''
 		</cfif>
-		order by moduleID, title
+		 order by moduleID, title, name
 		</cfif>
 	</cfquery>
 
