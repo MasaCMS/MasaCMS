@@ -744,15 +744,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getRelatedContentQuery" returnType="query" output="false" access="public">
 	<cfargument name="liveOnly" type="boolean" required="yes" default="false" />
 	<cfargument name="today" type="date" required="yes" default="#now()#" />
+	<cfargument name="sortBy" type="string" default="created" >
+	<cfargument name="sortDirection" type="string" default="desc" >
 	
-	<cfreturn variables.contentManager.getRelatedContent(variables.instance.siteID, getContentHistID(), arguments.liveOnly, arguments.today) />
+	<cfreturn variables.contentManager.getRelatedContent(variables.instance.siteID, getContentHistID(), arguments.liveOnly, arguments.today,arguments.sortBy,arguments.sortDirection) />
 </cffunction>
 
 <cffunction name="getRelatedContentIterator" returnType="any" output="false" access="public">
 	<cfargument name="liveOnly" type="boolean" required="yes" default="false" />
 	<cfargument name="today" type="date" required="yes" default="#now()#" />
+	<cfargument name="sortBy" type="string" default="created" >
+	<cfargument name="sortDirection" type="string" default="desc" >
 	
-	<cfset var q=getRelatedContentQuery(arguments.liveOnly, arguments.today) />
+	<cfset var q=getRelatedContentQuery(arguments.liveOnly, arguments.today,arguments.sortBy,arguments.sortDirection) />
 	<cfset var it=getBean("contentIterator").setPackageBy("active")>
 	<cfset it.setQuery(q)>
 	<cfreturn it>
