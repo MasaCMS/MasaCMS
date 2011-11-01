@@ -64,13 +64,14 @@
 	
 	.mura-tb-form .mura-tb-header h3 {
 		font-size: 15px;
-		min-height: 26px;
+		min-height: 22px;
 		color: #666;
 		float: left;
 		margin: 0;
 		background-repeat: no-repeat;
-		background-position: left top;
+		background-position: left center;
 		padding-left: 36px;
+		padding-top: 6px;
 		/*padding-right: 14px;*/
 		line-height: 1.1;
 	}
@@ -95,6 +96,10 @@
 	}
 	.mura-tb-header.hiddenfield h3 {
 		background-image: url('../../../images/formbuilder/frm_hidden_big.png');
+	}
+	.mura-tb-header.fileuploadfield h3 {
+		background-image: url('../../../images/formbuilder/frm_upload_big.png');
+		padding-left: 24px;
 	}
 	
 	.mura-tb-form .mura-tb-header h3 span {
@@ -282,6 +287,7 @@
 	.ui-icon-formfield-checkbox { background-position: -124px 6px; }
 	.ui-icon-formfield-select { background-position: -61px 6px; }
 	.ui-icon-formfield-hidden { background-position: -255px 6px; }
+	.ui-icon-formfield-file { background-position: -285px 6px; }
 	
 	/*.ui-icon-formfield-hidden { background-position: -233px 0; }*/
 	/*.ui-icon-formfield-form { background-position: -96px 0; }*/
@@ -575,7 +581,7 @@
 #mura-tb-fields li.field-hidden div {
 	background-image: url('../../../images/formbuilder/frm_hidden_big.png');
 }
-#mura-tb-fields li.field-file-upload div {
+#mura-tb-fields li.field-file div {
 	background-image: url('../../../images/formbuilder/frm_upload_big.png');
 }
 
