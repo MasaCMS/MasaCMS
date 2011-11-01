@@ -84,9 +84,9 @@
 
 
 .editableObject .editableObjectContents {
-	display: inline-block !important;
-	visibility: !important;
-	float: none !important;
+	/*display: inline-block;*/ /* May be overridden when rendered */
+	visibility: visiible !important;
+	float: none; /* May be overridden when rendered */
 	position: relative !important;
 	top: auto !important;
 	right: auto !important;
