@@ -1,5 +1,6 @@
 /* @override 
-	http://localhost:8500/muracms/admin/css/admin.css?coreversion=1 */
+	http://localhost:8500/muracms/admin/css/admin.css?coreversion=1
+	http://localhost:8500/muracms/admin/css/admin.min.css?coreversion=1 */
 
 /* This file is part of Mura CMS. 
 
@@ -309,7 +310,7 @@ input.radio:first-child, input[type=radio]:first-child {
 
 
 th, td, input, select {
-	font-size: 12px;
+	font-size: 11px;
 }
 
 td.order select, td.deploy select {
