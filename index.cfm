@@ -48,8 +48,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset application.contentServer.redirect()>
 <cfelse>
 	<cfif len(application.configBean.getStub())>
-		<cfoutput>#application.contentServer.parseURLRootStub()#</cfoutput>
+		<cfset pageContent = application.contentServer.parseURLRootStub()>
 	<cfelse>	
-		<cfoutput>#application.contentServer.parseURLRoot()#</cfoutput>
+		<cfset pageContent = application.contentServer.parseURLRoot()>
 	</cfif>
-</cfif>
+	<cfoutput>#pageContent#</cfoutput>
+</cfif> 
