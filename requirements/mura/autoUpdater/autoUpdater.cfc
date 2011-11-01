@@ -60,7 +60,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var baseDir=expandPath("/#variables.configBean.getWebRootMap()#")>
 <cfset var versionDir=expandPath("/#variables.configBean.getWebRootMap()#")>
 <cfset var currentVersion=getCurrentVersion(arguments.siteid)>
-<cfset var updateVersion=getProductionVersion()>
+<cfset var updateVersion=getProductionVersion(arguments.siteid)>
 <cfset var versionFileContents="">
 <cfset var svnUpdateDir="/trunk/www">
 <cfset var zipFileName="global">
@@ -249,14 +249,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getProductionData" output="false">
+	<cfargument name="siteid" default="">
 	<cfset var diff="">
 
 	<cfif len(variables.configBean.getProxyServer())>
-		<cfhttp url="http://getmura.com/productionVersion.cfm?cfversion=#application.CFVersion#" result="diff" getasbinary="no" 
+		<cfhttp url="http://getmura.com/productionVersion.cfm?cfversion=#application.CFVersion#&muraversion=#getCurrentVersion(arguments.siteID)#" result="diff" getasbinary="no" 
 		proxyUser="#variables.configBean.getProxyUser()#" proxyPassword="#variables.configBean.getProxyPassword()#"
 		proxyServer="#variables.configBean.getProxyServer()#" proxyPort="#variables.configBean.getProxyPort()#">
 	<cfelse>
-		<cfhttp url="http://getmura.com/productionVersion.cfm?cfversion=#application.CFVersion#" result="diff" getasbinary="no">
+		<cfhttp url="http://getmura.com/productionVersion.cfm?cfversion=#application.CFVersion#&muraversion=#getCurrentVersion(arguments.siteID)#" result="diff" getasbinary="no">
 	</cfif>
 	<cftry>
 	<cfreturn createObject("component","mura.json").decode(diff.filecontent)>

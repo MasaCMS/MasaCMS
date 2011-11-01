@@ -45,6 +45,8 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfsilent>
+<cfparam name="attributes.jsLib" default="prototype">
+<cfparam name="attributes.jsLibLoaded" default="false">
 <cfparam name="attributes.activetab" default="0">
 <cfparam name="attributes.activepanel" default="0">
 <cfparam name="attributes.siteid" default="#session.siteID#">
@@ -70,7 +72,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <script src="#application.configBean.getContext()#/admin/js/jquery/jquery-ui.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 <script src="#application.configBean.getContext()#/admin/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 <link href="#application.configBean.getContext()#/admin/css/jquery/default/jquery.ui.all.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+<cfif not attributes.jsLibLoaded and attributes.jsLib eq "prototype">
 <script src="#application.configBean.getContext()#/admin/js/prototype.js" type="text/javascript" language="Javascript"></script>
+</cfif>
 <cfif application.configBean.getValue("htmlEditorType") eq "fckeditor">
 <script type="text/javascript" src="#application.configBean.getContext()#/wysiwyg/fckeditor.js"></script>
 <cfelse>

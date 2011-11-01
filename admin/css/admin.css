@@ -1,5 +1,6 @@
 /* @override 
-	http://localhost:8500/muracms/admin/css/admin.css?coreversion=1 */
+	http://localhost:8500/muracms/admin/css/admin.css?coreversion=1
+	http://localhost:8500/muracms/admin/css/admin.min.css?coreversion=1 */
 
 /* This file is part of Mura CMS. 
 
@@ -309,7 +310,7 @@ input.radio:first-child, input[type=radio]:first-child {
 
 
 th, td, input, select {
-	font-size: 12px;
+	font-size: 11px;
 }
 
 td.order select, td.deploy select {
@@ -3165,11 +3166,17 @@ dt .add li.Page {
 
 /* @group File Icons */
 
-.mura-grid li dt a  {
+.mura-grid li dt a {
 	background: url(../images/icons/files/icon_generic_small.gif) 1px center no-repeat;
 	color: #333232;
 	text-decoration: none;
 	margin: 0;
+}
+
+.mura-file {
+	background-repeat: no-repeat;
+	padding: 4px 0 4px 20px;
+	background-position:left center
 }
 
 /* @group Default */

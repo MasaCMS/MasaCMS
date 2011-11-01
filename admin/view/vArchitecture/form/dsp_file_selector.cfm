@@ -32,6 +32,9 @@
 	</cfif>
 	</dd>
 <cfelse>
+<cfif attributes.type eq 'File' and not request.contentBean.getIsNew()>
+ <a class="mura-file #lcase(request.contentBean.getFileExt())#" href="#application.configBean.getContext()#/tasks/render/medium/index.cfm?fileid=#request.contentBean.getFileID()#">#HTMLEditFormat(request.contentBean.getFilename())#</a>
+</cfif>
 <input type="hidden" name="fileid" value="#htmlEditFormat(request.contentBean.getFileID())#" />
 </cfif>
 </cfoutput>

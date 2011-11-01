@@ -216,14 +216,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset application.encryptionKey=application.configBean.getValue('encryptionKey')>
 		</cfif>
 					
-		<cfdirectory action="list" directory="#mapPrefix##baseDir#/requirements/" name="rsRequirements">
-				
+		<cfdirectory action="list" directory="#baseDir#/requirements/" name="rsRequirements">
+	
 		<cfloop query="rsRequirements">
 			<cfif rsRequirements.type eq "dir" and rsRequirements.name neq '.svn' and not structKeyExists(this.mappings,"/#rsRequirements.name#")>
-				<cfset application.serviceFactory.getBean("fileWriter").appendFile(file="#mapPrefix##baseDir#/config/mappings.cfm", output='<cfset this.mappings["/#rsRequirements.name#"] = mapPrefix & BaseDir & "/requirements/#rsRequirements.name#">')>	
+				<cfset application.serviceFactory.getBean("fileWriter").appendFile(file="#baseDir#/config/mappings.cfm", output='<cfset this.mappings["/#rsRequirements.name#"] = mapPrefix & BaseDir & "/requirements/#rsRequirements.name#">')>				
 			</cfif>
 		</cfloop>	
-		
+
 		<cfset application.cfstatic=structNew()>			
 		<cfset application.appInitialized=true/>
 		<cfset application.appInitializedTime=now()>

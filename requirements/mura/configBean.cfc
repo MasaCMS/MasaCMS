@@ -796,7 +796,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		type="index">
 
 	<cfquery name="rsCheck" dbtype="query">
-		select * from rsCheck where lower(rsCheck.column_name) = '#arguments.column#'
+		select * from rsCheck where lower(rsCheck.column_name) like '#arguments.column#'
 	</cfquery>
 	
 	<cfif not rsCheck.recordcount>
@@ -838,7 +838,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		type="index">
 	
 	<cfquery name="rsCheck" dbtype="query">
-		select * from rsCheck where lower(rsCheck.column_name) = '#arguments.column#'
+		select * from rsCheck where lower(rsCheck.column_name) like '#arguments.column#'
 	</cfquery>
 	
 	<cfif not rsCheck.recordcount>
@@ -877,7 +877,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		type="index">
 	
 	<cfquery name="rsCheck" dbtype="query">
-		select * from rsCheck where lower(rsCheck.column_name) = '#arguments.column#'
+		select * from rsCheck where lower(rsCheck.column_name) like '#arguments.column#'
 	</cfquery>
 	
 	<cfif not rsCheck.recordcount>

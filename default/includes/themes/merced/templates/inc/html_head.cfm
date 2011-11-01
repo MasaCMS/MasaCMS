@@ -18,6 +18,14 @@
 	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.min.css" type="text/css" media="all" />
 
 	<!--- Theme-Specific Styles --->
+	
+	<!--- ** Simple Method of CSS Inclusion ** --->
+	<!---<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/core/typography.css" type="text/css" media="all" />
+	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/core/merced.css" type="text/css" media="all" />
+	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/print/print.css" type="text/css" media="print" />
+	<cfinclude template="ie_conditional_includes.cfm" />--->
+	
+	<!--- ** Optimized Method of CSS Inclusion ** --->
 	<cf_CacheOMatic key="globalheadercss">
 	#$.static()
 		.include("/css/core/")

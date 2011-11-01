@@ -1479,7 +1479,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="contentHistID" type="String">
 	<cfargument name="liveOnly" type="boolean" required="yes" default="false">
 	<cfargument name="today" type="date" required="yes" default="#now()#" />
-	
+	<cfargument name="sortBy" type="string" default="created" >
+	<cfargument name="sortDirection" type="string" default="desc" >
 	<cfset var rs ="" />
 
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
@@ -1532,7 +1533,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
 	</cfif>
 	
-	order by tcontent.created desc
+	order by 
+	
+	<cfswitch expression="#arguments.sortBy#">
+		<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displaystart,displaystop,created,credits,type,subtype">
+			<cfif variables.configBean.getDbType() neq "oracle" or  listFindNoCase("orderno,lastUpdate,releaseDate,created,displayStart,displayStop",arguments.sortBy)>
+				tcontent.#arguments.sortBy# #arguments.sortDirection#
+			<cfelse>
+				lower(tcontent.#arguments.sortBy#) #arguments.sortDirection#
+			</cfif>
+		</cfcase>
+		<cfcase value="rating">
+			tcontentstats.rating #arguments.sortDirection#, tcontentstats.totalVotes  #arguments.sortDirection#
+		</cfcase>
+		<cfcase value="comments">
+			tcontentstats.comments #arguments.sortDirection#
+		</cfcase>
+		<cfdefaultcase>
+			tcontent.created desc
+		</cfdefaultcase>
+	</cfswitch>
 	
 	</cfquery>
 	

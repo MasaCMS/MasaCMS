@@ -1472,8 +1472,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="contentHistID"  type="string" />
 		<cfargument name="liveOnly" type="boolean" required="yes" default="false" />
 		<cfargument name="today" type="date" required="yes" default="#now()#" />
+		<cfargument name="sortBy" type="string" default="created" >
+		<cfargument name="sortDirection" type="string" default="desc" >
 	
-		<cfreturn variables.contentGateway.getRelatedContent(arguments.siteID,arguments.contentHistID,arguments.liveOnly,arguments.today) />
+		<cfreturn variables.contentGateway.getRelatedContent(argumentCollection=arguments) />
 	</cffunction>
 	
 	<cffunction name="getRelatedContentIterator" returntype="any" access="public" output="false">

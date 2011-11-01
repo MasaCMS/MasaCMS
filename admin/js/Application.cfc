@@ -44,5 +44,26 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfset pageContent = application.contentServer.parseURLLocal() />
-<cfoutput>#pageContent#</cfoutput>
+<cfcomponent output="false">
+	<cfset depth=2>
+	<cfinclude template="#repeatString('../',depth)#config/applicationSettings.cfm">
+	<cfinclude template="#repeatString('../',depth)#config/mappings.cfm">
+	<cfinclude template="#repeatString('../',depth)#plugins/mappings.cfm">
+	
+	<cffunction name="onRequestStart">
+		<cfset var local=structNew()>
+		<cfif listLast(cgi.SCRIPT_NAME,"/") neq "dialog.js.cfm">
+		<cfoutput>Access Restricted.</cfoutput>
+		<cfabort>
+		</cfif>
+		<cfinclude template="#repeatString('../',depth)#config/appcfc/onRequestStart_include.cfm">
+		<cfinclude template="#repeatString('../',depth)#config/appcfc/scriptProtect_include.cfm">
+		<cfreturn true>
+	</cffunction>
+	<cfinclude template="#repeatString('../',depth)#config/appcfc/onApplicationStart_method.cfm">
+	<cfinclude template="#repeatString('../',depth)#config/appcfc/onSessionStart_method.cfm">
+	<cfinclude template="#repeatString('../',depth)#config/appcfc/onSessionEnd_method.cfm">
+	<cfinclude template="#repeatString('../',depth)#config/appcfc/onError_method.cfm">
+	<cfinclude template="#repeatString('../',depth)#config/appcfc/onMissingTemplate_method.cfm">
+	
+</cfcomponent>
