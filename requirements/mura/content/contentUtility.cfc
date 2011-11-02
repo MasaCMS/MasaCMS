@@ -801,6 +801,10 @@ Sincerely,
 	<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
 	<cfset var rsKids="">
 	<cfset contentBean = variables.contentDAO.readActive(arguments.contentID, arguments.siteID)>
+	
+	<!--- This makes sure that all extended data is loaded --->
+	<cfset contentBean.getAllValues()>
+	
 	<!--- <cfset contentBeanParent = variables.contentDAO.readActive(arguments.parentID, arguments.siteID)>--->
 	<cfset contentHistID = contentBean.getcontentHistID()>
 	
@@ -834,7 +838,6 @@ Sincerely,
 	</cfif>
 	
 	<cfset contentBean.setCreated(now())>
-	
 	<cfset contentBean.save()>
 	<cfset newContentHistID=contentBean.getContentHistID()>
 	<cfset newContentID=contentBean.getContentID()>
