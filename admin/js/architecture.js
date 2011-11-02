@@ -471,6 +471,7 @@ function loadObjectClass(siteid,classid,subclassid,contentid,parentid,contenthis
 			availableObjectTemplate="";
 			availalbeObjectParams={};
 			availableObject={};
+			availableObjectValidate=function(){return true};
 		}
 	);
 	return false;
@@ -1111,6 +1112,7 @@ function closeQuickEdit(){
 var availableObjectTemplate="";
 var availalbeObjectParams={};
 var availableObject={};
+availableObjectValidate=function(){return true};
 	
 function getDisplayObjectConfig(regionid){
 		var selectedObjects=jQuery('#selectedObjects' + regionid);
@@ -1555,6 +1557,7 @@ function addDisplayObject(objectToAdd,regionid,configure){
 		availableObjectTemplate="";
 		availalbeObjectParams={};
 		availableObject={};
+		availableObjectValidate=function(){return true};
 	}
 	
 	function resetConfiguratorContainer(){
@@ -1599,6 +1602,10 @@ function addDisplayObject(objectToAdd,regionid,configure){
 	function initConfigurator(data,config){
 		resetAvailableObject();
 		
+		if (typeof(config.validate) != 'undefined') {
+			availableObjectValidate=config.validate;
+		}
+						
 		data.configuratorMode=configuratorMode;
 		
 		if (typeof(data.object) == 'undefined') {
@@ -1617,13 +1624,15 @@ function addDisplayObject(objectToAdd,regionid,configure){
 					Save: function(){
 						updateAvailableObject();
 						
-						addDisplayObject(availableObject, data.regionid, false);
-						
-						if (typeof(config.destroy) != 'undefined') {
-							config.destroy(data, config);
+						if (availableObjectValidate(data.params)) {
+							addDisplayObject(availableObject, data.regionid, false);
+							
+							if (typeof(config.destroy) != 'undefined') {
+								config.destroy(data, config);
+							}
+							
+							jQuery(this).dialog("destroy");
 						}
-						
-						jQuery(this).dialog("destroy");
 						
 					},
 					Cancel: function(){

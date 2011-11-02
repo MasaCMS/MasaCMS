@@ -2,6 +2,7 @@
 <!DOCTYPE html> 
 <html>
 <head>
+	<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1" />
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="description" content="#HTMLEditFormat($.getMetaDesc())#" />
 	<meta name="keywords" content="#HTMLEditFormat($.getMetaKeywords())#" />
@@ -13,9 +14,9 @@
 	<link rel="icon" href="#$.siteConfig('assetPath')#/images/favicon.ico" type="image/x-icon" />
 	<link rel="shortcut icon" href="#$.siteConfig('assetPath')#/images/favicon.ico" type="image/x-icon" />	
 	
-	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.css" />
+	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.min.css" />
 	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/mobile/jquery.mobile.min.css" />
-	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/mobile.css" />
+	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/mobile/mobile.css" />
 	
 	<script src="#$.siteConfig('assetPath')#/js/jquery/jquery.js"></script>
 	

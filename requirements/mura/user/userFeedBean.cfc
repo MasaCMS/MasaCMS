@@ -53,7 +53,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfproperty name="siteID" type="string" default="" required="true" />
 	<cfproperty name="sortBy" type="string" default="lname" required="true" />
 	<cfproperty name="sortDirection" type="string" default="asc" required="true" />
-	<cfproperty name="groupID" type="query" required="true" />
 	
 <cffunction name="init" output="false">
 	<cfset super.init(argumentCollection=arguments)>
