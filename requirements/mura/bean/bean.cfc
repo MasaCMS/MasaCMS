@@ -159,7 +159,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setAllValues" returntype="any" access="public" output="false">
 	<cfargument name="instance">
-	<cfset variables.instance=arguments.instance/>
+	<cfset init()>
+	<cfset structAppend(variables.instance,arguments.instance,true)/>
 	<cfreturn this>
 </cffunction>
 
