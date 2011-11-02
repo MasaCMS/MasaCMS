@@ -45,6 +45,8 @@
 	document.createElement("header"); 
 	document.createElement("hgroup"); 
 	document.createElement("nav"); 
+	document.createElement("section");
+	document.createElement("figure");
 	</script>
 
 </head>
