@@ -419,7 +419,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</cfloop>
 		</cfif>
-			
+		
 		<cfif not structIsEmpty(variables.displayRegions)>
 			<cfloop collection="#variables.displayRegions#" item="i">
 				<cfset variables.instance[i]=variables.contentManager.formatRegionObjectsString(variables.displayRegions[i])>
@@ -499,7 +499,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setReleaseDate" output="false" access="public">
     <cfargument name="releaseDate" type="string" required="true">
 	<cfset variables.instance.releaseDate = parseDateArg(arguments.releaseDate) />
-	<cfreturn this>
 </cffunction>
   
 <cffunction name="setNextN" output="false" access="public">
@@ -807,6 +806,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset querysetcell(rs,"object",arguments.object,rs.currentrow)/>
 				<cfset querysetcell(rs,"name",arguments.name,rs.currentrow)/>
 				<cfset querysetcell(rs,"params",arguments.params,rs.currentrow)/>
+				<cfset variables.instance.extendAutoComplete = true />
 				<cfreturn this>
 			</cfif>
 		</cfloop>
@@ -819,6 +819,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset querysetcell(rs,"object",arguments.object,rows)/>
 		<cfset querysetcell(rs,"name",arguments.name,rows)/>
 		<cfset querysetcell(rs,"params",arguments.params,rows)/>	
+		<cfset variables.instance.extendAutoComplete = true />
 	</cfif>
 	
 	<cfreturn this>
@@ -837,7 +838,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		not (objectID='#arguments.objectID#'
 		and object='#arguments.object#')
 		</cfquery>
+		<cfset variables.instance.extendAutoComplete = true />
 	</cfif>
+	
 	<cfreturn this>
 </cffunction>
 
