@@ -38,16 +38,6 @@
 	<cfloop query="rs">
 	<link rel="alternate" type="application/rss+xml" title="#HTMLEditFormat($.siteConfig('site'))# - #HTMLEditFormat(rs.name)#" href="#XMLFormat('http://#listFirst(cgi.http_host,":")##$.globalConfig('context')#/tasks/feed/?feedID=#rs.feedID#')#" />
 	</cfloop>
-	
-	<script>
-	document.createElement("article"); 
-	document.createElement("footer"); 
-	document.createElement("header"); 
-	document.createElement("hgroup"); 
-	document.createElement("nav"); 
-	document.createElement("section");
-	document.createElement("figure");
-	</script>
 
 </head>
 </cfoutput>
