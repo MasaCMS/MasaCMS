@@ -177,7 +177,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfloop>
 
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#" result="request.test">
+	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	Select #variables.fieldList# from tusers 
 	left join tfiles on tusers.photofileID=tfiles.fileID
 	<cfloop list="#jointables#" index="jointable">
@@ -198,7 +198,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	on (tusers.userID=qExtendedSort.baseID)
 	</cfif>
 	
-	where tusers.type=2 and tusers.isPublic =#params.getIsPublic()# and 
+	where tusers.type=2 and tusers.isPublic =#arguments.isPublic# and 
 	tusers.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#userPoolID#">
 		
 		<cfif rsParams.recordcount>
@@ -292,11 +292,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							)
 							)
 	</cfif>
-	
-	
-	
-	and tusers.inactive=#params.getInActive()#
-	
+		
+	<cfif isNumeric(arguments.data.inactive)>
+		and tusers.inactive=#arguments.data.inactive#
+	</cfif>
 	
 	<cfif not listFind(session.mura.memberships,'S2')> and tusers.s2=0 </cfif> 
 	
