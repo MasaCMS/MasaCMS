@@ -253,3 +253,9 @@ li .req ins {
 /* @end Calendar
 -------------------------------- */
 
+/*
+	Fixes iOS right roverflow issue with 100% width and padding
+*/
+.ui-header, .ui-footer, .ui-page-fullscreen .ui-header, .ui-page-fullscreen .ui-footer {
+	width: auto;
+}
