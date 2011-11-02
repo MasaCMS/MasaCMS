@@ -2,6 +2,7 @@
 <!DOCTYPE html> 
 <html>
 <head>
+	<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1" />
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="description" content="#HTMLEditFormat($.getMetaDesc())#" />
 	<meta name="keywords" content="#HTMLEditFormat($.getMetaKeywords())#" />
