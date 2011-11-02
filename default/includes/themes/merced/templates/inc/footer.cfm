@@ -12,13 +12,12 @@
 			<p>&copy;#year(now())# #HTMLEditFormat($.siteConfig('site'))#</p>
 		</div>
 	</footer>
-	<cfif listFirst(server.coldfusion.productversion) eq 8>
+	<cfif listFirst(server.coldfusion.productversion) neq 8>
 	<cf_CacheOMatic key="globalfooterjs">
 	#$.static()
 		.include("/js/ie/lte8/")
 		.include("/js/ie/DD_roundies.js")
 		.renderIncludes("js")#
 	</cf_CacheOMatic>
-	</cfif>
-	<cfinclude template="ie_conditional_includes.cfm" />		
+	</cfif>	
 </cfoutput>
