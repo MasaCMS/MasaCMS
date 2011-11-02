@@ -18,7 +18,7 @@
 	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.min.css" type="text/css" media="all" />
 
 	<!--- Theme-Specific Styles --->
-	<cfif listFirst(server.coldfusion.productversion) lt 9>
+	<cfif listFirst(server.coldfusion.productversion) eq 8>
 	<!--- ** Simple Method of CSS Inclusion ** --->
 	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/core/typography.css" type="text/css" media="all" />
 	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/core/merced.css" type="text/css" media="all" />

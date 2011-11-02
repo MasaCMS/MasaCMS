@@ -12,7 +12,7 @@
 			<p>&copy;#year(now())# #HTMLEditFormat($.siteConfig('site'))#</p>
 		</div>
 	</footer>
-	<cfif listFirst(server.coldfusion.productversion) lt 9>
+	<cfif listFirst(server.coldfusion.productversion) lt 8>
 	<cf_CacheOMatic key="globalfooterjs">
 	#$.static()
 		.include("/js/ie/lte8/")
