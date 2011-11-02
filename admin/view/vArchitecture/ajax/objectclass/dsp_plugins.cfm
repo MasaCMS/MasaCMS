@@ -106,9 +106,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			select * from prelist where
 			objectID in (''
 			<cfloop list="#customOutputList#" index="i">
-				,'
-				#i#
-				'
+				,'#i#'
 			</cfloop>
 			)
 		</cfquery>
@@ -134,9 +132,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			select * from prelist where
 			objectID not in (''
 			<cfloop list="#customOutputList#" index="i">
-				,'
-				#i#
-				'
+				,'#i#'
 			</cfloop>
 			)
 		</cfquery>
