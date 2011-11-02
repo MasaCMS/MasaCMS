@@ -46,6 +46,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfparam name="local" default="#structNew()#">
 
+<cfif ( NOT structKeyExists( application, "setupComplete" ) or not application.appInitialized or structKeyExists(url,application.appReloadKey)) and isDefined("onApplicationStart")>
+	<cfset onApplicationStart()>
+</cfif>
+
 <cfset application.userManager.setUserStructDefaults()>
 
 <cfif not isDefined("session.mura.showTrace")>
@@ -54,10 +58,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif not isDefined("application.cfstatic")>
 	<cfset application.cfstatic=structNew()>
-</cfif>
-
-<cfif ( NOT structKeyExists( application, "setupComplete" ) or not application.appInitialized or structKeyExists(url,application.appReloadKey)) and isDefined("onApplicationStart")>
-	<cfset onApplicationStart()>
 </cfif>
 
 <cfprocessingdirective pageencoding="utf-8"/>
