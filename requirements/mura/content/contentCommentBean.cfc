@@ -206,7 +206,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset pluginManager.announceEvent("onAfterCommentDelete",pluginEvent)>
 	
-	<cfset variables.contentManager.setCommentStat(getContentID(),variables.instance.siteID) />
+	<cfset variables.contentManager.setCommentStat(variables.instance.contentID,variables.instance.siteID) />
 </cffunction>
 
 <cffunction name="save" access="public" output="false">
