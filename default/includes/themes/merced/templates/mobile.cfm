@@ -145,7 +145,7 @@
 			'data-role': 'controlgroup'
 	});
 
-	<!--- This is for when ajaxLinksEnabled enabled to make sure certain link types render as external. 
+	<!--- This is to make sure certain link types render as external. ---> 
 	$('.gallery').attr({
  		'rel': 'external'
 	});
@@ -158,14 +158,14 @@
  		'rel': 'external'
 	});
 	
-	$('a[href*="linkServID"]').attr({
+	$('a[href*="linkservid"]').attr({
  		'rel': 'external'
 	});
 	
 	$('a[rel*="shadowbox"]').attr({
  		'rel': 'external'
 	});
-	--->
+	<!--- --->
 	
 	$('##btn-back').live('tap',function() {
 	  history.back(); return false;
