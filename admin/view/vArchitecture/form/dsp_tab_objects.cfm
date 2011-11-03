@@ -58,7 +58,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<input type="radio" name="inheritObjects" id="ioc" value="Cascade" <cfif request.contentBean.getinheritObjects() eq 'cascade'>checked</cfif>> <label for="ioc">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startnewcascade')#</label> 
 	<input type="radio" name="inheritObjects" id="ior" value="Reject" <cfif request.contentBean.getinheritObjects() eq 'reject'>checked</cfif>> <label for="ior">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.donotinheritcascade')#</label>
 	</dd>
+	<!---
 	<cfset hideObjects = not request.rsContentObjects1.recordcount and not request.rsContentObjects2.recordcount and not request.rsContentObjects3.recordcount />
+	--->
 <dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentobjects')#</dt>
 <dd id="editObjects">
 <!---<a href="javascript:;" onClick="javascript: toggleDisplay('editObjects'); return false">Display Objects</a>
