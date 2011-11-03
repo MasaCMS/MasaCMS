@@ -1893,7 +1893,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="limit" default="#variables.configBean.getMaxArchivedVersions()#">
 	<cfset var rsHist=getHist(arguments.contentID, arguments.siteID) >
 	<cfset var i=0>
-	<cfset var trim=arguments.limit+1>
+	<cfset var trimThreshhold=arguments.limit+1>
 	<cfset var args=structNew()>
 
 	<cfquery name="rsHist" dbtype="query">
