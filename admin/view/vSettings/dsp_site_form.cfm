@@ -143,7 +143,7 @@ to your own modified versions of Mura CMS.
       <dd>
         <input name="cacheCapacity" type="text" class="text short" value="#HTMLEditFormat(request.siteBean.getCacheCapacity())#" size="15" maxlength="15">
       </dd>
-	  <dt>Cache Free Memory Threshold <span>(Defaults to 40%)</span></dt>
+	  <dt>Cache Free Memory Threshold <span>(Defaults to 60%)</span></dt>
       <dd>
         <input name="cacheFreeMemoryThreshold" type="text" class="text short" value="#HTMLEditFormat(request.siteBean.getCacheFreeMemoryThreshold())#" size="3" maxlength="3">%
       </dd>
