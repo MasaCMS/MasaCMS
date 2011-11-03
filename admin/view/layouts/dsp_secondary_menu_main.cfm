@@ -46,7 +46,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfif session.siteid neq ''>
-  <cfoutput>
+<cfif not application.configBean.getSessionHistory() or application.configBean.getSessionHistory() gte 30>
+	<cfparam name="session.dashboardSpan" default="30">
+<cfelse>
+	<cfparam name="session.dashboardSpan" default="#application.configBean.getSessionHistory()#">
+</cfif>
+<cfoutput>
     <ul id="navSecondary">
 		<cfif application.configBean.getDashboard()>
 		<li <cfif  myfusebox.originalcircuit eq 'cDashboard'>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cDashboard.main&siteid=#session.siteid#&span=#session.dashboardSpan#">#application.rbFactory.getKeyValue(session.rb,"layout.dashboard")#</a>
