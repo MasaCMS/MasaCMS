@@ -23,8 +23,8 @@
 	<script type="text/javascript">
       $(document).bind("mobileinit", function(){
             $.extend(  $.mobile , { 
-                  ajaxFormsEnabled : false,
-                  ajaxLinksEnabled : false
+                  ajaxEnabled : false,
+				  pushStateEnabled : false
              });
       });
 	</script>
@@ -91,8 +91,7 @@
 	
 </div><!-- /page -->
 
-	<script>
-	
+<script>
 	$('body').live('pagebeforecreate',init);
 	
 	function init() {
@@ -144,28 +143,6 @@
 	$('form li').attr({
 			'data-role': 'controlgroup'
 	});
-
-	<!--- This is to make sure certain link types render as external. ---> 
-	$('.gallery').attr({
- 		'rel': 'external'
-	});
-	
-	$('##svAsset').attr({
- 		'rel': 'external'
-	});
-	
-	$('a[href*="LinkServID"]').attr({
- 		'rel': 'external'
-	});
-	
-	$('a[href*="linkservid"]').attr({
- 		'rel': 'external'
-	});
-	
-	$('a[rel*="shadowbox"]').attr({
- 		'rel': 'external'
-	});
-	<!--- --->
 	
 	$('##btn-back').live('tap',function() {
 	  history.back(); return false;
@@ -174,7 +151,7 @@
 	});
 	
 }	
-	</script>
+</script>
 
 </body>	
 </html>
