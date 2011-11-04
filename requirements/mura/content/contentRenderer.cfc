@@ -1104,7 +1104,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfcase value="forward_email"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_forward_email.cfm")></cfcase>
 		<cfcase value="adzone"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_adZone.cfm")></cfcase>
 		<cfcase value="feed">
-			<cfset theObject=theObject & dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_feed.cfm",cacheKey=cacheKeyObjectId & "startrow#request.startrow#",params=arguments.params,showEditable=showEditable)>
+			<cfset theObject=theObject & dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_feed.cfm",cacheKey=cacheKeyObjectId  & getListFormat() & "startrow#request.startrow#",params=arguments.params,showEditable=showEditable)>
 		</cfcase>	
 		<cfcase value="feed_slideshow">
 			<cfif not cookie.mobileFormat>	
@@ -1119,10 +1119,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfcase value="favorites"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"favorites/index.cfm")></cfcase>
 			<cfcase value="dragable_feeds"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dragablefeeds/index.cfm")></cfcase>
 		<cfcase value="related_content">
-			<cfset theObject=theObject & dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_related_content.cfm",cacheKey=cacheKeyContentId,params=arguments.params,showEditable=showEditable)>
+			<cfset theObject=theObject & dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_related_content.cfm",cacheKey=cacheKeyContentId & getListFormat(),params=arguments.params,showEditable=showEditable)>
 		</cfcase>
 		<cfcase value="related_section_content">
-			<cfset theObject=theObject & dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_related_section_content.cfm",cachekey=cacheKeyContentId,params=arguments.params,showEditable=showEditable)>
+			<cfset theObject=theObject & dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_related_section_content.cfm",cachekey=cacheKeyContentId & getListFormat(),params=arguments.params,showEditable=showEditable)>
 		</cfcase>
 		<cfcase value="user_tools"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_user_tools.cfm")></cfcase>
 		<cfcase value="tag_cloud">
@@ -1317,13 +1317,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfswitch expression="#event.getValue('contentBean').gettype()#">
 					<cfcase value="Portal">
 						<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
-						<cf_CacheOMatic key="portalBody#cacheStub#" nocache="#event.getValue('r').restrict#">
+						<cf_CacheOMatic key="portalBody#cacheStub##getListFormat()#" nocache="#event.getValue('r').restrict#">
 						 <cfoutput>#dspObject_Include(thefile='dsp_portal.cfm')#</cfoutput>
 						</cf_CacheOMatic>
 					</cfcase> 
 					<cfcase value="Calendar">
 						<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
-						 <cf_CacheOMatic key="calendarBody#cacheStub#" nocache="#event.getValue('r').restrict#">
+						 <cf_CacheOMatic key="calendarBody#cacheStub##getListFormat()#" nocache="#event.getValue('r').restrict#">
 						 <cfoutput>#dspObject_Include(thefile='calendar/index.cfm')#</cfoutput>
 						 </cf_CacheOMatic>
 					</cfcase> 
@@ -1331,7 +1331,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset loadShadowBoxJS() />
 						<cfset addToHTMLHeadQueue("gallery/htmlhead/gallery.cfm")>
 						<cfif not event.valueExists('galleryItemID')><cfset event.setValue('galleryItemID','')></cfif>
-						<cf_CacheOMatic key="galleryBody#cacheStub##event.getValue('galleryItemID')#" nocache="#event.getValue('r').restrict#">
+						<cf_CacheOMatic key="galleryBody#cacheStub##event.getValue('galleryItemID')##getListFormat()#" nocache="#event.getValue('r').restrict#">
 						<cfoutput>#dspObject_Include(thefile='gallery/index.cfm')#</cfoutput>
 						</cf_CacheOMatic>
 					</cfcase> 
