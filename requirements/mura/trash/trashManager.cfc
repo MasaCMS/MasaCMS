@@ -140,6 +140,7 @@
 		delete from tadstats
 		where placementID not in (select placementID from tadplacements)
 	</cfquery>
+	</cftransaction>
 	
 	<!--- FILES --->
 	<cfif isdefined("arguments.siteID") and len(arguments.siteID)>
@@ -147,8 +148,7 @@
 	<cfelse>
 		<cfset getBean('fileManager').purgeDeleted("")>
 	</cfif>
-	</cftransaction>
-
+	
 	<cfif isdefined("arguments.siteID") and len(arguments.siteID)>
 		<cfset getBean("pluginManager").announceEvent("onAfterSiteEmptyTrash",pluginEvent)>
 	<cfelse>
