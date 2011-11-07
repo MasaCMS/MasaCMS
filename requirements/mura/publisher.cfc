@@ -3017,14 +3017,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstplugindisplayobjects.displayMethod neq '',de('no'),de('yes'))#" value="#rstplugindisplayobjects.displayMethod#">,
 								<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstplugindisplayobjects.docache),de(rstplugindisplayobjects.docache),de(0))#">
 								<cfif isdefined("rstplugindisplayobjects.configuratorInit") and len(rstplugindisplayobjects.configuratorInit)>
-									<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="no" value="#rstplugindisplayobjects.configuratorInit#">
+									,<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="no" value="#rstplugindisplayobjects.configuratorInit#">
 								<cfelse>
-									null
-								</cfif>,
+									,null
+								</cfif>
 								<cfif isdefined("rstplugindisplayobjects.configuratorJS") and len(rstplugindisplayobjects.configuratorJS)>
-									<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="no" value="#rstplugindisplayobjects.configuratorJS#">
+									,<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="no" value="#rstplugindisplayobjects.configuratorJS#">
 								<cfelse>
-									null
+									,null
 								</cfif>
 								)
 							</cfquery>
