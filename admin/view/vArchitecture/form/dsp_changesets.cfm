@@ -45,7 +45,7 @@ function saveToChangeset(changesetid,siteid,keywords){
 					if (configuratorMode == 'backEnd') {
 						if(ckContent()){
 							jQuery("##changesetID").val(currentChangesetSelection);
-							jQuery("##removePreviousChangeset.").val(document.getElementById("_removePreviousChangeset").checked);
+							jQuery("##removePreviousChangeset").val(document.getElementById("_removePreviousChangeset").checked);
 							submitForm(document.contentForm, 'add');
 						}
 					} else {
