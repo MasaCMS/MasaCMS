@@ -248,6 +248,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.LastUpdate = parseDateArg(arguments.LastUpdate) />
 	<cfreturn this>
 </cffunction>
+
+<cffunction name="setCreated" output="false" access="public">
+    <cfargument name="Created" type="string" required="true">
+	<cfset variables.instance.Created = parseDateArg(arguments.Created) />
+	<cfreturn this>
+</cffunction>
   
 <cffunction name="setGroupID" access="public" output="false">
 	<cfargument name="groupID" type="String" />
