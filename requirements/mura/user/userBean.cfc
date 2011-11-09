@@ -67,6 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="lastUpdate" type="date" default="" required="true" />
 <cfproperty name="lastUpdateBy" type="string" default="" required="true" />
 <cfproperty name="lastUpdateByID" type="string" default="" required="true" />
+<cfproperty name="created" type="date" default="" required="true" />
 <cfproperty name="perm" type="numeric" default="0" required="true" />
 <cfproperty name="inActive" type="numeric" default="0" required="true" />
 <cfproperty name="isPublic" type="numeric" default="1" required="true" />
@@ -115,6 +116,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.LastUpdate = now() />
 	<cfset variables.instance.LastUpdateBy = "" />
 	<cfset variables.instance.LastUpdateByID = "" />
+	<cfset variables.instance.created=now() />
 	<cfset variables.instance.perm=0 />
 	<cfset variables.instance.inactive=0 />
 	<cfset variables.instance.ispublic=1 />
