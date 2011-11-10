@@ -145,6 +145,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not isObject(arguments.data)>
 		<cfset params=getBean("userFeedBean")>
 		<cfset params.setParams(data)>
+		<cfif isNumeric(arguments.isPublic)>
+			<cfset params.setIsPublic(arguments.isPublic)>
+		</cfif>
 	<cfelse>
 		<cfset params=arguments.data>
 	</cfif>
@@ -198,7 +201,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	on (tusers.userID=qExtendedSort.baseID)
 	</cfif>
 	
-	where tusers.type=2 and tusers.isPublic =#arguments.isPublic# and 
+	where tusers.type=2 and tusers.isPublic =#params.getIsPublic()# and 
 	tusers.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#userPoolID#">
 		
 		<cfif rsParams.recordcount>
@@ -293,8 +296,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							)
 	</cfif>
 		
-	<cfif isNumeric(arguments.data.inactive)>
-		and tusers.inactive=#arguments.data.inactive#
+	<cfif isNumeric(params.getInActive())>
+		and tusers.inactive=#params.getInActive()#
 	</cfif>
 	
 	<cfif not listFind(session.mura.memberships,'S2')> and tusers.s2=0 </cfif> 
