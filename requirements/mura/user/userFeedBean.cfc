@@ -57,11 +57,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="init" output="false">
 	<cfset super.init(argumentCollection=arguments)>
 	
-	<cfset variables.inactive=0>
-	<cfset variables.isPublic=1>
-	<cfset variables.groupID="">
-	<cfset variables.categoryID="">
-	<cfset variables.siteID="">
+	<cfset variables.instance.inactive="">
+	<cfset variables.instance.isPublic=1>
+	<cfset variables.instance.groupID="">
+	<cfset variables.instance.categoryID="">
+	<cfset variables.instance.siteID="">
 	<cfset variables.instance.sortBy="lname" />
 	<cfset variables.instance.sortDirection="asc" />
 	
@@ -186,7 +186,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setInActive" output="false">
 	<cfargument name="inactive">
 	<cfif isNumeric(arguments.inactive)>
-		<cfset variables.inactive=arguments.inactive>
+		<cfset variables.instance.inactive=arguments.inactive>
 	</cfif>
 	<cfreturn this>
 </cffunction>
@@ -194,7 +194,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setIsPublic" output="false">
 	<cfargument name="isPublic">
 	<cfif isNumeric(arguments.isPublic)>
-		<cfset variables.isPublic=arguments.isPublic>
+		<cfset variables.instance.isPublic=arguments.isPublic>
 	</cfif>
 	<cfreturn this>
 </cffunction>
@@ -205,11 +205,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var i="">
 	
     <cfif not arguments.append>
-		<cfset variables.groupID = trim(arguments.groupID) />
+		<cfset variables.instance.groupID = trim(arguments.groupID) />
 	<cfelse>
 		<cfloop list="#arguments.groupID#" index="i">
-		<cfif not listFindNoCase(variables.groupID,trim(i))>
-	    	<cfset variables.groupID = listAppend(variables.groupID,trim(i)) />
+		<cfif not listFindNoCase(variables.instance.groupID,trim(i))>
+	    	<cfset variables.instance.groupID = listAppend(variables.instance.groupID,trim(i)) />
 	    </cfif>
 	    </cfloop> 
 	</cfif>
@@ -222,11 +222,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var i="">
 	
     <cfif not arguments.append>
-		<cfset variables.categoryID = trim(arguments.categoryID) />
+		<cfset variables.instance.categoryID = trim(arguments.instance.categoryID) />
 	<cfelse>
 		<cfloop list="#arguments.categoryID#" index="i">
-		<cfif not listFindNoCase(variables.categoryID,trim(i))>
-	    	<cfset variables.categoryID = listAppend(variables.categoryID,trim(i)) />
+		<cfif not listFindNoCase(variables.instance.categoryID,trim(i))>
+	    	<cfset variables.instance.categoryID = listAppend(variables.instance.categoryID,trim(i)) />
 	    </cfif>
 	    </cfloop> 
 	</cfif>

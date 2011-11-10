@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cfset variables.fieldList="tusers.userID, tusers.GroupName, tusers.Fname, tusers.Lname, tusers.UserName, tusers.Password, tusers.PasswordCreated, tusers.Email, tusers.Company, tusers.JobTitle, tusers.MobilePhone, tusers.Website, tusers.Type, tusers.subType, tusers.Ext, tusers.ContactForm, tusers.Admin, tusers.S2, tusers.LastLogin, tusers.LastUpdate, tusers.LastUpdateBy, tusers.LastUpdateByID, tusers.Perm, tusers.InActive, tusers.IsPublic, tusers.SiteID, tusers.Subscribe, tusers.Notes, tusers.description, tusers.Interests, tusers.keepPrivate, tusers.PhotoFileID, tusers.IMName, tusers.IMService, tusers.Created, tusers.RemoteID, tusers.Tags, tusers.tablist, tfiles.fileEXT photoFileExt">
+<cfset variables.fieldList="tusers.userID, tusers.GroupName, tusers.Fname, tusers.Lname, tusers.UserName, tusers.Password, tusers.PasswordCreated, tusers.Email, tusers.Company, tusers.JobTitle, tusers.MobilePhone, tusers.Website, tusers.Type, tusers.subType, tusers.ContactForm, tusers.S2, tusers.LastLogin, tusers.LastUpdate, tusers.LastUpdateBy, tusers.LastUpdateByID, tusers.Perm, tusers.InActive, tusers.IsPublic, tusers.SiteID, tusers.Subscribe, tusers.Notes, tusers.description, tusers.Interests, tusers.keepPrivate, tusers.PhotoFileID, tusers.IMName, tusers.IMService, tusers.Created, tusers.RemoteID, tusers.Tags, tusers.tablist, tfiles.fileEXT photoFileExt">
 
 <cffunction name="init" returntype="any" access="public" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
@@ -145,6 +145,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not isObject(arguments.data)>
 		<cfset params=getBean("userFeedBean")>
 		<cfset params.setParams(data)>
+		<cfif isNumeric(arguments.isPublic)>
+			<cfset params.setIsPublic(arguments.isPublic)>
+		</cfif>
 	<cfelse>
 		<cfset params=arguments.data>
 	</cfif>
@@ -198,7 +201,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	on (tusers.userID=qExtendedSort.baseID)
 	</cfif>
 	
-	where tusers.type=2 and tusers.isPublic =#arguments.isPublic# and 
+	where tusers.type=2 and tusers.isPublic =#params.getIsPublic()# and 
 	tusers.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#userPoolID#">
 		
 		<cfif rsParams.recordcount>
@@ -293,8 +296,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							)
 	</cfif>
 		
-	<cfif isNumeric(arguments.data.inactive)>
-		and tusers.inactive=#arguments.data.inactive#
+	<cfif isNumeric(params.getInActive())>
+		and tusers.inactive=#params.getInActive()#
 	</cfif>
 	
 	<cfif not listFind(session.mura.memberships,'S2')> and tusers.s2=0 </cfif> 
