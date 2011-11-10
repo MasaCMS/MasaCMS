@@ -135,7 +135,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var aFieldTemplate		= ListToArray(rereplace(arguments.fieldType,"[^[:alnum:]|-]","","all"),"-") />
 		<cfset var displayName			= lcase( aFieldTemplate[1] ) />
 		<cfset var typeName				= lcase( aFieldTemplate[2] ) />
-		<cfset var fieldTypeBean		= createObject('component','fieldTypeBean').init(fieldTypeID=arguments.fieldTypeID,fieldtype=typeName,displayType=displayName) />
+		<cfset var fieldTypeBean		= createObject('component','fieldtypeBean').init(fieldTypeID=arguments.fieldTypeID,fieldtype=typeName,displayType=displayName) />
 
 		<cfswitch expression="#fieldTypeBean.getFieldType()#">
 			<cfcase value="dropdown,checkbox,radio" >
