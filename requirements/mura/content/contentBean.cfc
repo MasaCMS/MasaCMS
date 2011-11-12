@@ -559,7 +559,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setImageSize" output="false">
 	<cfargument name="imageSize">
-	<cfif len(arguments.imageSize)>
+	<cfif listFindNoCase("small,medium,large,custom",arguments.imageSize)>
 		<cfset variables.instance.imageSize = arguments.imageSize>
 	</cfif>	
 	<cfreturn this>
