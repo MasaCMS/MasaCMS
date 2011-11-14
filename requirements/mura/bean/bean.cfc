@@ -170,8 +170,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="valueExists" access="public" output="false">
 	<cfargument name="valueKey">
-	<cfset var allVAlues=getAllValues()>
-	<cfreturn structKeyExists(allVAlues,arguments.valueKey) />
+	<cfreturn structKeyExists(variables.instance,arguments.valueKey) />
 </cffunction>
 
 <cffunction name="validate" access="public" output="false">
