@@ -76,6 +76,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="MissingMethodArguments" type="struct" required="true"/>
 	<cfset var local=structNew()>
 	<cfset var object="">
+	<cfset var prefix="">
 	
 	<cfif len(MissingMethodName)>
 		
@@ -85,8 +86,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset object=getThemeRenderer()>
 		<cfelseif isObject(getContentRenderer()) and structKeyExists(getContentRenderer(),MissingMethodName)>
 			<cfset object=getContentRenderer()>
-		<cfelseif isObject(getContentBean()) and structKeyExists(getContentBean(),MissingMethodName)>
-			<cfset object=getContentBean()>
+		<cfelseif isObject(getContentBean())>
+			<cfif structKeyExists(getContentBean(),MissingMethodName)>
+				<cfset object=getContentBean()>
+			<cfelse>
+				<cfset prefix=left(arguments.MissingMethodName,3)>
+				<cfif listFindNoCase("set,get",prefix) and len(arguments.MissingMethodName) gt 3>
+					<cfif getContentBean().valueExists(right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3))>
+						<cfset object=getContentBean()>
+					</cfif>
+				</cfif>
+			</cfif>
 		<cfelse>
 			<cfthrow message="The method '#arguments.MissingMethodName#' is not defined">
 		</cfif>

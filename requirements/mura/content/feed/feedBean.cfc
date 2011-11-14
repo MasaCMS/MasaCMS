@@ -272,6 +272,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="setImageSize" output="false">
+	<cfargument name="imageSize">
+	<cfif listFindNoCase("small,medium,large,custom",arguments.imageSize)>
+		<cfset variables.instance.imageSize = arguments.imageSize>
+	</cfif>	
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="setImageHeight" output="false" access="public">
     <cfargument name="ImageHeight" required="true">
 	<cfif isNumeric(arguments.ImageHeight)>
