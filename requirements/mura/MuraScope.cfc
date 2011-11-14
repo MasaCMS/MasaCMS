@@ -87,10 +87,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelseif isObject(getContentRenderer()) and structKeyExists(getContentRenderer(),MissingMethodName)>
 			<cfset object=getContentRenderer()>
 		<cfelseif isObject(getContentBean())>
-			<cfset prefix=left(arguments.MissingMethodName,3)>
-			<cfif listFindNoCase("set,get",prefix) and len(arguments.MissingMethodName) gt 3>
-				<cfif getContentBean().valueExists(right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3))>
-					<cfset object=getContentBean()>
+			<cfif structKeyExists(getContentBean(),MissingMethodName)>
+				<cfset object=getContentBean()>
+			<cfelse>
+				<cfset prefix=left(arguments.MissingMethodName,3)>
+				<cfif listFindNoCase("set,get",prefix) and len(arguments.MissingMethodName) gt 3>
+					<cfif getContentBean().valueExists(right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3))>
+						<cfset object=getContentBean()>
+					</cfif>
 				</cfif>
 			</cfif>
 		<cfelse>
