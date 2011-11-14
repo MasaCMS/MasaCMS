@@ -68,7 +68,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset this.secureJSONPrefix = "">
 	<!--- Used to help CF work with missing files and dir indexes --->
 	<cfset this.welcomeFileList = "">
-
+	
+	<cfparam name="request.muraFrontEndRequest" default="false"/>
+	<cfparam name="request.muraChangesetPreview" default="false"/>
+	<cfparam name="request.muraExportHtml" default="false"/>
+	<cfparam name="request.muraMobileRequest" default="false"/>
+	<cfparam name="request.muraHandledEvents" default="#structNew()#"/>
+	<cfparam name="request.altTHeme" default=""/>
+	<cfparam name="request.customMuraScopeKeys" default="#structNew()#"/>
+	<cfparam name="request.muraTraceRoute" default="#arrayNew(1)#"/>
+	<cfparam name="request.muraRequestStart" default="#getTickCount()#"/>
+	<cfparam name="request.muraShowTrace" default="false"/>
+	
 	<cfset baseDir= left(this.configPath,len(this.configPath)-8) /><cfif not fileExists(baseDir & "/config/settings.ini.cfm")>
 		<cftry>
 		<cffile action="copy" source="#baseDir#/config/templates/settings.template.cfm" destination="#baseDir#/config/settings.ini.cfm" mode="777">
@@ -179,17 +190,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset this.ormSettings.logsql=properties.getProperty("ormlogsql","false") />
 	</cfif>
 
-	<cfparam name="request.muraFrontEndRequest" default="false"/>
-	<cfparam name="request.muraChangesetPreview" default="false"/>
-	<cfparam name="request.muraExportHtml" default="false"/>
-	<cfparam name="request.muraMobileRequest" default="false"/>
-	<cfparam name="request.muraHandledEvents" default="#structNew()#"/>
-	<cfparam name="request.altTHeme" default=""/>
-	<cfparam name="request.customMuraScopeKeys" default="#structNew()#"/>
-	<cfparam name="request.muraTraceRoute" default="#arrayNew(1)#"/>
-	<cfparam name="request.muraRequestStart" default="#getTickCount()#"/>
-	<cfparam name="request.muraShowTrace" default="false"/>
-	
 	<cftry>
 		<cfinclude template="#properties.getProperty("context","")#/plugins/cfapplication.cfm">
 		<cfset hasPluginCFApplication=true>

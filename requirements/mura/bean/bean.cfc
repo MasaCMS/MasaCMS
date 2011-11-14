@@ -168,6 +168,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.instance />
 </cffunction>
 
+<cffunction name="valueExists" access="public" output="false">
+	<cfargument name="valueKey">
+	<cfset var allVAlues=getAllValues()>
+	<cfreturn structKeyExists(allVAlues,arguments.valueKey) />
+</cffunction>
+
 <cffunction name="validate" access="public" output="false">
 	<cfset variables.instance.errors=structnew() />
 	<cfreturn this>
