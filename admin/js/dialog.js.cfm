@@ -9,7 +9,7 @@
 	var adminDomain=<cfif len($.globalConfig('admindomain'))>"#$.globalConfig('admindomain')#"<cfelse>location.hostname</cfif>;
 	var adminProtocal=<cfif application.configBean.getAdminSSL()>"https://";<cfelse>"http://"</cfif>;
 	var adminProxyLoc=adminProtocal + adminDomain + "#$.globalConfig('serverPort')##$.globalConfig('context')#/admin/js/porthole/proxy.html";
-	var fronEndProxyLoc= location.protocol + "//" + location.hostname + "#$.globalConfig('serverPort')#";
+	var frontEndProxyLoc= location.protocol + "//" + location.hostname + "#$.globalConfig('serverPort')#";
 	
 	function onAdminMessage(messageEvent){
 		if (messageEvent.origin == adminProtocal + adminDomain + "#$.globalConfig('serverPort')#") {
@@ -26,6 +26,8 @@
 				resizeFrontEndToolsModal();	
 			} else if(parameters["cmd"] == "setLocation"){
 				window.location=decodeURIComponent(parameters["location"]);
+			} else if(parameters["cmd"] == "resizeFrontEndToolsModal"){
+				resizeFrontEndToolsModal(decodeURIComponent(parameters["frameHeight"]));
 			}
 		}			
 	}
@@ -45,7 +47,7 @@
 	var frontEndModalIsConfigurator=false;
 	
 	function openFrontEndToolsModal(a){
-		var src=a.href + "&frontEndProxyLoc=" + fronEndProxyLoc;
+		var src=a.href + "&frontEndProxyLoc=" + frontEndProxyLoc;
 		var isModal=jQuery(a).attr("data-configurator");
 		var modalClass="";
 		
@@ -69,18 +71,16 @@
 		
 		frontEndModalHeight=0;
 		jQuery("##frontEndToolsModalBody").css("top",($(document).scrollTop()+50) + "px")
-		resizeFrontEndToolsModal();
+		resizeFrontEndToolsModal(0);
 		
 	}
 	
-	function resizeFrontEndToolsModal(){
+	function resizeFrontEndToolsModal(frameHeight){
 		if (document.getElementById("frontEndToolsModaliframe")) {
 			var frame = document.getElementById("frontEndToolsModaliframe");
-			var frameDoc = frame.contentWindow.document;
 			var frameContainer = document.getElementById("frontEndToolsModalContainer");
 			
-			if (frameDoc.body != null) {
-				var frameHeight = Math.max(frameDoc.body.scrollHeight, frameDoc.body.offsetHeight, frameDoc.documentElement.scrollHeight, frameDoc.documentElement.offsetHeight);
+			//if (frameDoc.body != null) {
 				var windowHeight = Math.max(frameHeight, jQuery(window).height());
 		
 				if (!frontEndModalIsConfigurator && frameHeight < jQuery(window).height()) {
@@ -106,8 +106,8 @@
 					
 				}
 				
-			}
-			setTimeout(resizeFrontEndToolsModal, 250);
+			//}
+			//setTimeout(resizeFrontEndToolsModal, 250);
 		}
 		
 	}
