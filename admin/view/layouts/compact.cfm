@@ -72,6 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <script src="#application.configBean.getContext()#/admin/js/jquery/jquery-ui.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 <script src="#application.configBean.getContext()#/admin/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 <link href="#application.configBean.getContext()#/admin/css/jquery/default/jquery.ui.all.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+<script src="#application.configBean.getContext()#/admin/js/jquery/jquery-resize.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 <cfif not attributes.jsLibLoaded and attributes.jsLib eq "prototype">
 <script src="#application.configBean.getContext()#/admin/js/prototype.js" type="text/javascript" language="Javascript"></script>
 </cfif>
@@ -105,6 +106,11 @@ var siteid='#session.siteid#';
 			setCheckboxTrees();
 			if (top.location != self.location) {
 				frontEndProxy = new Porthole.WindowProxy("#session.frontEndProxyLoc##application.configBean.getContext()#/admin/js/porthole/proxy.html");
+				jQuery(this).resize(function(e){
+					frontEndProxy.postMessage("cmd=resizeFrontEndToolsModal&frameHeight=" + Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight))
+				});
+					
+									
 			}	
 		}
 	);
