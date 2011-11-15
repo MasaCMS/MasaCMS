@@ -604,6 +604,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var doPurgeContentCache=false>
 		<cfset var doPurgeOutputCache=false>
 		<cfset var doPurgeContentDescendentsCache=false>
+		<cfset var doTrimVersionHistory=false>
 		
 		<!---IF THE DATA WAS SUBMITTED AS AN OBJECT UNPACK THE VALUES --->
 		<cfif isObject(arguments.data)>
@@ -976,8 +977,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif variables.configBean.getPurgeDrafts()>
 				<cfset variables.contentDAO.deleteDraftHistAll(newbean.getcontentID(),arguments.data.siteid)/>
 			</cfif>
-			<cfif variables.configBean.getMaxArchivedVersions()>	
-				<cfset trimArchiveHistory(newBean.getContentID(),newBean.getSiteID())>
+			<cfif variables.configBean.getMaxArchivedVersions()>
+				<cfset doTrimVersionHistory=true>
 			</cfif>
 			<cfset variables.contentDAO.deleteContentAssignments(newbean.getcontentID(),arguments.data.siteid)/>
 		</cfif>
@@ -1060,6 +1061,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		<cfif doPurgeContentDescendentsCache>
 			<cfset purgeContentDescendentsCache(contentBean=newbean)>
+		</cfif>
+		<cfif doTrimVersionHistory>
+			<cfset trimArchiveHistory(newBean.getContentID(),newBean.getSiteID())>
 		</cfif>
 		
 		<!--- Make sure preview data is in sync --->	
