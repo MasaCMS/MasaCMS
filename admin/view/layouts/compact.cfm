@@ -107,7 +107,7 @@ var siteid='#session.siteid#';
 			if (top.location != self.location) {
 				frontEndProxy = new Porthole.WindowProxy("#session.frontEndProxyLoc##application.configBean.getContext()#/admin/js/porthole/proxy.html");
 				jQuery(this).resize(function(e){
-					frontEndProxy.postMessage("cmd=resizeFrontEndToolsModal&frameHeight=" + Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight))
+					frontEndProxy.postMessage("cmd=resizeFrontEndToolsModal&frameHeight=" + Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight));
 				});
 					
 									
