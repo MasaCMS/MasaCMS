@@ -924,8 +924,11 @@ function loadSiteSection(node, startrow)	{
 					stripe('stripe');
 					initDraftPrompt();
 					initQuickEdits();
-					node.find('.section:first').hide().fadeIn("slow");
 					
+					//The fadeIn in ie8 causes a rendering issue
+					if (!(jQuery.browser.msie && parseInt(jQuery.browser.version) == 8)) {
+						node.find('.section:first').hide().fadeIn("slow");
+					}
 				} 
 				catch (err) {
 					node.append(data);
