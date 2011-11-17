@@ -200,11 +200,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<input type="hidden" id="contentDisplayList" value="#displayList#" name="displayList"/>
 		
 		<script>
-			jQuery(document).ready(
-				function(){
-					setContentDisplayListSort();
-				}
-			);	
+			//Removed from jQuery(document).ready() because it would not fire in ie7 frontend editing.
+			setContentDisplayListSort();
 		</script>
 	</div>	
 </dd>
