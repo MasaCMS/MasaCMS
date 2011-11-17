@@ -31,7 +31,9 @@
 		.include("/css/core/")
 		.include("/css/print/")
 		.include("/css/ie/lte7/")
-		.renderIncludes("css")#
+		.include("/js/ie/lte8")
+		.include("/js/ie/lte7")
+		.renderIncludes()#
 	</cf_CacheOMatic>
 	</cfif>	
 	<cfset rs=$.getBean('feedManager').getFeeds($.event('siteID'),'Local',true,true) />

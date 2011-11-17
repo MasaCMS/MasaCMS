@@ -1,5 +1,5 @@
 /**
- * @ie IE LT 8
+ * @ie lt IE 8
  */
 /**
 * DD_roundies, this adds rounded-corner CSS in standard browsers and VML sublayers in IE that accomplish a similar appearance when comparing said browsers.
