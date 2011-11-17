@@ -31,11 +31,17 @@
 		.include("/css/core/")
 		.include("/css/print/")
 		.include("/css/ie/lte7/")
-		.include("/js/ie/lte8")
-		.include("/js/ie/lte7")
-		.renderIncludes()#
+		.renderIncludes("css")#
 	</cf_CacheOMatic>
-	</cfif>	
+	</cfif>
+	
+	<!--- ** HTML5 compatability code needs to be run before parsing dom. 
+		  ** Other JS should be added with in the footer.cfm with $.static()	
+	--->
+	<!--[if lte IE 8]>
+	<script src="#$.siteConfig('themeAssetPath')#/js/ie/lte8/html5.js" type="text/javascript" language="Javascript"></script>
+	<![endif]-->
+	
 	<cfset rs=$.getBean('feedManager').getFeeds($.event('siteID'),'Local',true,true) />
 	<cfloop query="rs">
 	<link rel="alternate" type="application/rss+xml" title="#HTMLEditFormat($.siteConfig('site'))# - #HTMLEditFormat(rs.name)#" href="#XMLFormat('http://#listFirst(cgi.http_host,":")##$.globalConfig('context')#/tasks/feed/?feedID=#rs.feedID#')#" />
