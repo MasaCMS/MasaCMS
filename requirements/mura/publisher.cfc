@@ -657,7 +657,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					restricted,restrictGroups,siteID,Type,version,sortBy,sortDirection,nextN,displayName,displayRatings,displayComments,altname,remoteID,remoteSourceURL,remotePubDate
 					<!--- Check for new fields added in 5.5 --->
 					<cfif isdefined("rstcontentfeeds.imageSize")>
-					,imageSize,imageHeight,imageWidth
+					,imageSize,imageHeight,imageWidth,showExcludeSearch,showNavOnly
 					</cfif>
 					)
 					values
@@ -697,7 +697,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.imageSize neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.imageSize#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.imageHeight neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.imageHeight#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.imageWidth neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.imageWidth#">
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.imageWidth neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.imageWidth#">,
+					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.showExcludeSearch),de(rstcontentfeeds.showExcludeSearch),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.showNavOnly),de(rstcontentfeeds.showNavOnly),de(0))#">
 					</cfif>		
 					)
 				</cfquery>
@@ -2860,6 +2862,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								created=#createODBCDateTime(rstplugins.created)#,
 								loadPriority=<cfqueryparam cfsqltype="cf_sql_integer" value="#rstplugins.loadPriority#">,
 								package=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rstplugins.package#">
+	
 								where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#">
 							</cfquery>
 						<cfelse>
