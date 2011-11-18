@@ -172,7 +172,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset address=listAppend(address,variables.instance.city) />
 			</cfif>
 			
-			<cfif len(getZip())>
+			<cfif len(variables.instance.zip)>
 				<cfset address=listAppend(address,variables.instance.zip) />
 			</cfif>				
 				
