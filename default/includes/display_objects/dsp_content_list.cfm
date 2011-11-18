@@ -99,7 +99,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfoutput>
 	<!---  UL MARKUP -------------------------------------------------------------------------- --->
 	<cfif $.getListFormat() eq "ul">
-		<li <cfif not $.event("muraMobileRequest")>class="clearfix<cfif arguments.class neq ''> #arguments.class#</cfif> <cfif arguments.hasImage>style="#arguments.imageStyles#</cfif></cfif>>
+		<li<cfif not $.event("muraMobileRequest")> class="clearfix<cfif arguments.class neq ''> #arguments.class#</cfif>" <cfif arguments.hasImage>#arguments.imageStyles#</cfif></cfif>>
 			<cfloop list="#arguments.fields#" index="arguments.field">
 				<cfswitch expression="#arguments.field#">
 					<cfcase value="Image">
