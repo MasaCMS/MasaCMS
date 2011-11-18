@@ -48,8 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset crumbdata=application.contentManager.getCrumbList(attributes.topid,attributes.siteid)>
 
-<cfif isdefined('attributes.viewDepth') and attributes.viewDepth gt 0>
-  <cfset session.mura.viewDepth=attributes.viewDepth>
+<cfif isdefined('attributes.nextN') and attributes.nextN gt 0>
   <cfset session.mura.nextN=attributes.nextN>
   <cfset attributes.startrow=1>
 </cfif>
