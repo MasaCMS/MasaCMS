@@ -814,7 +814,7 @@ function setCheckboxTrees(){
 	jQuery('.checkboxTree').each(
 		function(){
 			jQuery(this).collapsibleCheckboxTree({
-			checkParents : true, 
+			checkParents : false, 
 			checkChildren : false, 
 			uncheckChildren : true, 
 			initialState : 'default'
