@@ -236,7 +236,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset tracer.commitTracePoint(tracePoint)>
 		
 		<cfset tracePoint=tracer.initTracePoint("Instantiating categoryManager")> 
-		<cfset application.advertiserManager=application.serviceFactory.getBean("categoryManager") />
+		<cfset application.advertiserManager=application.serviceFactory.getBean("advertiserManager") />
 		<cfset tracer.commitTracePoint(tracePoint)>
 		
 		<cfset tracePoint=tracer.initTracePoint("Instantiating categoryManager")> 
