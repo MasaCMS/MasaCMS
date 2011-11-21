@@ -924,12 +924,17 @@ function loadjscssfile(filename, filetype){
 
 function getDialogPosition(){
 	if(top.location != self.location) {
-		var windowHeight =jQuery(window.parent).height();
-		var dialogHeight = jQuery("#configuratorContainer").height();
-		var scrollTop = jQuery(window.parent).scrollTop();
-		var editorTop = jQuery("#frontEndToolsModalBody",window.parent.document).position().top;
-		var t = Math.floor((windowHeight - dialogHeight) / 2) + scrollTop - editorTop ;
-		return ["center", t];
+		try {
+			var windowHeight = jQuery(window.parent).height();
+			var dialogHeight = jQuery("#configuratorContainer").height();
+			var scrollTop = jQuery(window.parent).scrollTop();
+			var editorTop = jQuery("#frontEndToolsModalBody", window.parent.document).position().top;
+			var t = Math.floor((windowHeight - dialogHeight) / 2) + scrollTop - editorTop;
+			return ["center", t];
+		} 
+		catch(err){
+			return ["center", 0];
+		}
 	} else{
 		return "center";
 	}

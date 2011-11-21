@@ -37,7 +37,6 @@
 		<cfargument name="preserveAllSemiColons" type="boolean" required="false" default="false" />
 		<cfargument name="disableOptimizations" type="boolean" required="false" default="false" />
 
-<cftry>
 		<cfscript>
 			var input		= $loadJavaClass('java.io.StringReader').init(arguments.source);
 			var output		= $loadJavaClass('java.io.StringWriter').init();
@@ -61,11 +60,5 @@
 
 			return compressed;
 		</cfscript>
-		<cfcatch> 
-			<cfdump var="#arguments.source#">
-			<cfabort>
-		</cfcatch>
-		
-</cftry>
 	</cffunction>
 </cfcomponent>
