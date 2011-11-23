@@ -170,7 +170,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getQuery" returntype="query" output="false">
-	<cfif not len(vairables.instance.siteID)>
+	<cfif not len(variables.instance.siteID)>
 		<cfthrow message="The 'SITEID' value must be set in order to search users.">
 	</cfif>
 	<cfreturn getBean('userManager').getAdvancedSearchQuery(this)>
