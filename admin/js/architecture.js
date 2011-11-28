@@ -924,8 +924,11 @@ function loadSiteSection(node, startrow)	{
 					stripe('stripe');
 					initDraftPrompt();
 					initQuickEdits();
-					node.find('.section:first').hide().fadeIn("slow");
 					
+					//The fadeIn in ie8 causes a rendering issue
+					if (!(jQuery.browser.msie && parseInt(jQuery.browser.version) == 8)) {
+						node.find('.section:first').hide().fadeIn("slow");
+					}
 				} 
 				catch (err) {
 					node.append(data);
@@ -1513,7 +1516,7 @@ function addDisplayObject(objectToAdd,regionid,configure){
 	);
 	
 	function updateAvailableObject(){
-		availableObjectParams={};
+		var availableObjectParams={};
 						
 		jQuery("#availableObjectParams").find(".objectParam").each(
 			function(){
@@ -1528,9 +1531,9 @@ function addDisplayObject(objectToAdd,regionid,configure){
 	}
 		
 	function initDisplayObjectConfigurators(){
-		jQuery(".displayRegions").find("option").dblclick(
+		jQuery(".displayRegions").dblclick(
 			function(){
-				var regionid=jQuery(this).parents("select:first").attr("data-regionid");
+				var regionid=jQuery(this).attr("data-regionid");
 				var data=getDisplayObjectConfig(regionid);
 					
 				if (data.object == 'feed') {
@@ -1555,7 +1558,7 @@ function addDisplayObject(objectToAdd,regionid,configure){
 	
 	function resetAvailableObject(){
 		availableObjectTemplate="";
-		availalbeObjectParams={};
+		//availalbeObjectParams={};
 		availableObject={};
 		availableObjectValidate=function(){return true};
 	}

@@ -15,8 +15,7 @@
 	<cfif listFirst(server.coldfusion.productversion) neq 8>
 	<cf_CacheOMatic key="globalfooterjs">
 	#$.static()
-		.include("/js/ie/lte8/")
-		.include("/js/ie/DD_roundies.js")
+		.include("/js/ie/lte7/roundies/")
 		.renderIncludes("js")#
 	</cf_CacheOMatic>
 	</cfif>	

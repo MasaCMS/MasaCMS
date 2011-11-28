@@ -39,7 +39,7 @@
 
 		<cfset var files = $directoryList( directory=arguments.directory, recurse=false ) />
 		<cfloop query="files">
-			<cfif not ListFind(arguments.excludeFiles, files.name)>
+			<cfif files.type EQ 'File' and not ListFind(arguments.excludeFiles, files.name)>
 				<cffile action="delete" file="#files.directory#/#files.name#" />
 			</cfif>
 		</cfloop>
@@ -286,6 +286,12 @@
 					return IsInstanceOf(arguments.variable, arguments.type);
 			}
 		</cfscript>
+	</cffunction>
+
+	<cffunction name="$samifyUnixAndWindowsPaths" access="private" returntype="string" output="false">
+		<cfargument name="path" type="string" required="true" />
+
+		<cfreturn ListChangeDelims(arguments.path, '/', '\') />
 	</cffunction>
 
 <!--- accessors --->

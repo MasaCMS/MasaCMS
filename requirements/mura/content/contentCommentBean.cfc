@@ -348,10 +348,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
 <cfsavecontent variable="notifyText"><cfoutput>
-A comment has been posted to "#rscontent.title#" by #gvariables.instance.name#.
+A comment has been posted to "#rscontent.title#" by #variables.instance.name#.
 
 COMMENT:
-#getComments()#
+#variables.instance.comments#
 
 Approve
 #serverpath##utility.createRedirectID(arguments.contentRenderer.getCurrentURL(true,"approvedcommentID=#getCommentID()#"))#
@@ -372,7 +372,7 @@ View
 <cfset email=getBean('mailer') />
 <cfset email.sendText(notifyText,
 						contactEmail,
-						getName(),
+						variables.instance.name,
 						'New Comment',
 						variables.instance.siteID) />
 						
