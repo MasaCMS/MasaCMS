@@ -157,9 +157,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getValue" returntype="any" access="public" output="false">
 	<cfargument name="property" type="string" required="true">	
 	<cfif len(arguments.property)>
-		<cfif isdefined("this.get#property#")>
+		<cfif structKeyExists(this,"get#arguments.property#")>
 			<cfreturn evaluate("get#property#()") />
-		<cfelseif isdefined("variables.instance.#arguments.property#")>
+		<cfelseif structKeyExists(variables.instance,"#arguments.property#")>
 			<cfreturn variables.instance["#arguments.property#"] />
 		<cfelse>
 			<cfreturn getExtendedAttribute(arguments.property) />
