@@ -62,7 +62,7 @@
 		
 		closeFrontEndToolsModal();
 		
-		jQuery("##fronEndToolsModalTarget").html('<div id="frontEndToolsModalContainer" class="' + modalClass + '">' +
+		jQuery("##frontEndToolsModalTarget").html('<div id="frontEndToolsModalContainer" class="' + modalClass + '">' +
 		'<div id="frontEndToolsModalBody">' +
 		'<a id="frontEndToolsModalClose" style="display:none;" href="javascript:closeFrontEndToolsModal();">Close</a>' +
 		'<iframe src="' + src + '" id="frontEndToolsModaliframe" scrolling="false" frameborder="0" style="overflow:hidden" name="frontEndToolsModaliframe"></iframe>' +
