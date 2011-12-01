@@ -205,7 +205,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 	
 	<cfif getJSLib() eq "jquery">
-		<div id="fronEndToolsModalTarget"></div>
+		<div id="frontEndToolsModalTarget"></div>
 	</cfif>
 </cfoutput>
 </cfif>

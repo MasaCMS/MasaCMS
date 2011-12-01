@@ -119,6 +119,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		<cfset $.content("displayList",variables.contentListFields)>
 	</cfif>
+	
+	<cfif $.content('imageSize') neq 'custom'>
+		<cfset imageWidth=$.siteConfig('gallery#$.content('imageSize')#Scale')>
+	<cfelseif isNumeric($.content('imageWidth'))>
+		<cfset imageWidth=$.content('imageWidth')>
+	<cfelse>
+		<cfset imageWidth=0>
+	</cfif>
 </cfsilent>
 	<cfif iterator.getRecordCount()>
 	<div id="svGallery"> 
@@ -135,7 +143,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			</cfsilent>
 			<cfoutput>
-			<li class="#class#">
+			<li class="#class#"<cfif imageWidth> style="width:#imageWidth#px;"</cfif>>
 				<a href="#item.getImageURL(size='large')#" title="#HTMLEditFormat(item.getValue('title'))#" rel="shadowbox[gallery]" class="gallery"><img src="#item.getImageURL(argumentCollection=imageArgs)#" alt="#HTMLEditFormat(item.getValue('title'))#"/></a>	 
 			 	<dl>
 			 	<cfloop list="#$.content("displayList")#" index="field">

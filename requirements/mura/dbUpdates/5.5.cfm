@@ -283,9 +283,12 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 <cfif not listFindNoCase("varchar,nvarchar,varchar2",rsCheck.type_name)>
 <cfswitch expression="#getDbType()#">
 <cfcase value="mssql">
-	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tcontent ALTER COLUMN urltitle nvarchar(255) 
-	</cfquery>
+	<cftry>
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		ALTER TABLE tcontent ALTER COLUMN urltitle nvarchar(255) 
+		</cfquery>
+		<cfcatch></cfcatch>
+	</cftry>
 </cfcase>
 <cfcase value="mysql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
@@ -526,9 +529,12 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 <cfif rsCheck.COLUMN_SIZE eq 255>
 <cfswitch expression="#getDbType()#">
 <cfcase value="mssql">
+	<cftry>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tsettings ALTER COLUMN [columnNames] nvarchar(max) 
 	</cfquery>
+	<cfcatch></cfcatch>
+	</cftry>
 </cfcase>
 <cfcase value="mysql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
