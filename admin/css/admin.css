@@ -3181,7 +3181,7 @@ dt .add li.Page {
 
 /* @group Default */
 
-.doc, .docx {
+.doc, .docx, .docm, .dotx, .dotm {
 	background-image: url(../images/icons/files/icon_doc_small.gif) !important;
 }
 
@@ -3209,11 +3209,11 @@ dt .add li.Page {
 	background-image: url(../images/icons/files/icon_txt_small.gif) !important;
 }
 
-.ppt {
+.ppt, .pptx, .pptm, .potx, .potm, .ppam, .ppsx, .ppsm, .sldx, .sldm, .thmx {
 	background-image: url(../images/icons/files/icon_ppt_small.gif) !important;
 }
 
-.xls {
+.xls, .xlsx, .xlsm, .xltx, .xltm, .xlsb, .xlam {
 	background-image: url(../images/icons/files/icon_xls_small.gif) !important;
 }
 
@@ -3265,7 +3265,7 @@ dt .add li.Page {
 
 /* @group Locked */
 
-.docLocked, .docxLocked {
+.docLocked, .docxLocked, .docmLocked, .dotxLocked, .dotmLocked {
 	background-image: url(../images/icons/files/icon_doc_small_locked.gif) !important;
 }
 
@@ -3293,11 +3293,11 @@ dt .add li.Page {
 	background-image: url(../images/icons/files/icon_txt_small_locked.gif) !important;
 }
 
-.pptLocked {
+.pptLocked, .pptxLocked, .pptmLocked, .potxLocked, .potmLocked, .ppamLocked, .ppsxLocked, .ppsmLocked, .sldxLocked, .sldmLocked, .thmxLocked {
 	background-image: url(../images/icons/files/icon_ppt_small_locked.gif) !important;
 }
 
-.xlsLocked {
+.xlsLocked, .xlsxLocked, .xlsmLocked, .xltxLocked, .xltmLocked, .xlsbLocked, .xlamLocked {
 	background-image: url(../images/icons/files/icon_xls_small_locked.gif) !important;
 }
 
