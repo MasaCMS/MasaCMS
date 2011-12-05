@@ -92,8 +92,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelse>
 			<cfset currentConfigFile="#currentDir#/plugin/config.xml.cfm">
 			<cfif fileExists(currentConfigFile)>
-				<cffile action="read" variable="currentConfig" file="#currentConfigFile#">
 				<cftry>
+					<cfsavecontent variable="currentConfig"><cfoutput><cfinclude template="../plugins/#rsRequirements.name#/plugin/config.xml.cfm"></cfoutput></cfsavecontent>
 					<cfset currentConfig=xmlParse(currentConfig)>
 					<cfcatch>
 						<cfset currentConfig=structNew()>
