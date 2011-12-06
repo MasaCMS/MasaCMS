@@ -1,3 +1,7 @@
+<cfif not listFind(session.mura.memberships,'S2')>
+Access Restricted.
+<cfabort>
+</cfif>
 <cfparam name="URL.siteID" default="">
 <cfflush interval="5">
 <html>
