@@ -193,8 +193,8 @@ function initFlatViewArgs(){
 
 var flatViewArgs=initFlatViewArgs();
 
-jQuery("##viewTabs").bind( "tabsshow", function(event,ui){
-	switch(ui.index){
+function initSiteManagerTabContent(index){
+	switch(index){
 		case 0:
 		if (!archViewLoaded) {
 			loadSiteManager('#JSStringFormat(attributes.siteID)#', '#JSStringFormat(attributes.topid)#', '#JSStringFormat(attributes.moduleid)#', '#JSStringFormat(attributes.sortby)#', '#JSStringFormat(attributes.sortdirection)#', '#JSStringFormat(attributes.ptype)#', '#JSStringFormat(attributes.startrow)#');
@@ -207,8 +207,13 @@ jQuery("##viewTabs").bind( "tabsshow", function(event,ui){
 			flatViewLoaded = true;
 		}
 	}
-});				
+}
 
+jQuery("##viewTabs").bind( "tabsselect", function(event,ui){
+	initSiteManagerTabContent(ui.index)
+});	
+
+initSiteManagerTabContent(#attributes.activeTab#);			
 </script>
 </cfoutput>
 <cfinclude template="draftpromptjs.cfm">
