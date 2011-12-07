@@ -61,9 +61,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="attributes.sortBy" default="#request.rstop.sortBy#" />
 <cfparam name="attributes.sortDirection" default="#request.rstop.sortDirection#" />
 <cfparam name="attributes.sorted" default="false" />
+<cfparam name="attributes.lockid" default="" />
+<cfparam name="attributes.assignments" default="false" />
+<cfparam name="attributes.categoryid" default="" />
+<cfparam name="attributes.tag" default="" />
+<cfparam name="attributes.type" default="" />
+<cfparam name="attributes.subtype" default="" />
 <cfparam name="session.copyContentID" default="">
 <cfparam name="session.copySiteID" default="">
 <cfparam name="session.copyAll" default="false">
+
+<cfparam name="session.flatViewArgs" default="#structNew()#">
+<cfparam name="session.flatViewArgs.#session.siteID#" default="#structNew()#">
+<cfparam name="session.flatViewArgs" default="#structNew()#">
+<cfparam name="session.flatViewArgs.#session.siteID#.moduleid" default="#attributes.moduleid#" />
+<cfparam name="session.flatViewArgs.#session.siteID#.sortBy" default="#attributes.sortby#" />
+<cfparam name="session.flatViewArgs.#session.siteID#.sortDirection" default="#attributes.sortdirection#" />
+<cfparam name="session.flatViewArgs.#session.siteID#.lockid" default="#attributes.lockid#" />
+<cfparam name="session.flatViewArgs.#session.siteID#.assignments" default="#attributes.assignments#" />
+<cfparam name="session.flatViewArgs.#session.siteID#.categoryid" default="#attributes.categoryid#" />
+<cfparam name="session.flatViewArgs.#session.siteID#.tag" default="#attributes.tag#" />
+<cfparam name="session.flatViewArgs.#session.siteID#.startrow" default="#attributes.startrow#" />
+<cfparam name="session.flatViewArgs.#session.siteID#.type" default="#attributes.type#" />
+<cfparam name="session.flatViewArgs.#session.siteID#.subtype" default="#attributes.subtype#" />
 
 <cfhtmlhead text='<script src="#application.configBean.getContext()#/admin/js/jquery/jquery-pulse.js?coreversion=#application.coreversion#" type="text/javascript"></script>'>
 
@@ -155,6 +175,23 @@ copyAll = 'false';
 <script type="text/javascript">
 var archViewLoaded=false;
 var flatViewLoaded=false;
+
+function initFlatViewArgs(){
+	return {siteid:'#JSStringFormat(session.siteID)#', 
+			moduleid:'#JSStringFormat(session.flatViewArgs[session.siteid].moduleid)#', 
+			sortby:'#JSStringFormat(session.flatViewArgs[session.siteid].sortby)#', 
+			sortdirection:'#JSStringFormat(session.flatViewArgs[session.siteid].sortdirection)#', 
+			startrow:'#JSStringFormat(session.flatViewArgs[session.siteid].startrow)#',	
+			tag:'#JSStringFormat(session.flatViewArgs[session.siteid].tag)#',
+			categoryid:'#JSStringFormat(session.flatViewArgs[session.siteid].categoryid)#',
+			lockid:'#JSStringFormat(session.flatViewArgs[session.siteid].lockid)#',
+			type:'#JSStringFormat(session.flatViewArgs[session.siteid].type)#',
+			subType:'#JSStringFormat(session.flatViewArgs[session.siteid].subtype)#'
+			};
+}
+
+var flatViewArgs=initFlatViewArgs();
+
 jQuery("##viewTabs").bind( "tabsshow", function(event,ui){
 	switch(ui.index){
 		case 0:
@@ -165,7 +202,7 @@ jQuery("##viewTabs").bind( "tabsshow", function(event,ui){
 		break;
 		case 1:
 		if (!flatViewLoaded) {
-			loadSiteFlat('#JSStringFormat(attributes.siteID)#', '#JSStringFormat(attributes.moduleid)#', '#JSStringFormat(attributes.sortby)#', '#JSStringFormat(attributes.sortdirection)#', '#JSStringFormat(attributes.startrow)#');
+			loadSiteFlat(flatViewArgs);
 			flatViewLoaded = true;
 		}
 	}
