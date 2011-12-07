@@ -120,6 +120,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="imageSize" type="string" default="small" required="true" />
 <cfproperty name="imageHeight" type="string" default="AUTO" required="true" />
 <cfproperty name="imageWidth" type="string" default="AUTO" required="true" />
+<cfproperty name="majorVersion" type="numeric" default="0" required="true" />
+<cfproperty name="minorVersion" type="numeric" default="0" required="true" />
 
 <cffunction name="init" access="public" returntype="any" output="false">
 	
@@ -209,6 +211,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.imageSize = "small" />
 	<cfset variables.instance.imageHeight = "AUTO" />
 	<cfset variables.instance.imageWidth = "AUTO" />
+	<cfset variables.instance.majorVersion = 0 />
+	<cfset variables.instance.minorVersion = 0 />
 	<cfset variables.instance.errors=structnew() />
 	
 	<cfset variables.kids = arrayNew(1) />
@@ -531,6 +535,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <cfargument name="DisplayTitle" required="true">
 	<cfif isNumeric(arguments.DisplayTitle)>
   	  <cfset variables.instance.DisplayTitle = arguments.DisplayTitle />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setMajorVersion" output="false" access="public">
+    <cfargument name="majorVersion" required="true">
+	<cfif isNumeric(arguments.majorVersion)>
+  	  <cfset variables.instance.majorVersion = arguments.majorVersion />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setMinorVersion" output="false" access="public">
+    <cfargument name="minorVersion" required="true">
+	<cfif isNumeric(arguments.minorVersion)>
+  	  <cfset variables.instance.minorVersion = arguments.minorVersion />
 	</cfif>
 	<cfreturn this>
 </cffunction>

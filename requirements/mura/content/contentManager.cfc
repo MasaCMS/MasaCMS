@@ -970,6 +970,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!--- BEGIN CONTENT TYPE: ALL CONTENT TYPES --->
 		<!---If approved, delete all drafts and set the last active to inactive--->
 			
+		<cfset variables.contentUtility.setVersionNumbers(newBean)>
+			
 		<cfif newBean.getapproved() and not newBean.getIsNew()>
 			
 			<cfset newBean.setActive(1) />

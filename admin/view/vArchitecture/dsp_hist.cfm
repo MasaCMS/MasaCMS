@@ -95,6 +95,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <table class="mura-table-grid stripe">
   <tr><th nowrap class="varWidth">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.title')#</th>
+<th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version')#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.notes')#</th>
 <cfif hasChangesets><th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.changeset')#</th></cfif> 
 <th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.status')#</th>
@@ -122,6 +123,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <tr><td class="varWidth">
 <a title="Edit" href="index.cfm?fuseaction=cArch.edit&contenthistid=#request.rshist.ContenthistID#&contentid=#request.rshist.ContentID#&type=#attributes.type#&parentid=#URLEncodedFormat(attributes.parentid)#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#&return=hist&compactDisplay=#attributes.compactDisplay#">#HTMLEditFormat(left(request.rshist.menutitle,90))#</a>
 </td>
+<td><cfif request.rshist.majorversion>#request.rshist.majorversion#.#request.rshist.minorversion#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.na')#</cfif></td>
 <td class="title"><cfif request.rsHist.notes neq ''><a class="expand">View&nbsp;Note<span>#application.contentRenderer.setParagraphs(htmleditformat(request.rshist.notes))#</span></a></cfif></td>
 <cfif hasChangesets><td class="changeset"><cfif isDate(request.rshist.changesetPublishDate)><a href="##" class="tooltip"><span>#LSDateFormat(request.rshist.changesetPublishDate,"short")#</span></a></cfif>#HTMLEditFormat(request.rshist.changesetName)#</td></cfif> 
 <td nowrap class="status">#versionStatus#</td> 
