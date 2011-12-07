@@ -1359,7 +1359,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfquery datasource="#arguments.fromDSN#">
 					insert into tcontentstats (contentID,siteID,views,rating,totalVotes,upVotes,downVotes,comments
 					<cfif isdefined("rstcontentstats.majorVersion")>
-					,majorVersion,minorVersion
+					,majorVersion,minorVersion, lockID
 					</cfif>
 					)
 					values
@@ -1375,8 +1375,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<!--- Check for new fields added in 5.6 --->
 					<cfif isdefined("rstcontentstats.majorVersion")>
 					,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstContent.majorVersion),de(rstContent.majorVersion),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstContent.minorVersion),de(rstContent.minorVersion),de(0))#">
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentstats.majorVersion),de(rstcontentstats.majorVersion),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentstats.minorVersion),de(rstcontentstats.minorVersion),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentstats.lockID neq '',de('no'),de('yes'))#" value="#rstcontentstats.lockID#">,
 					</cfif>
 					)
 				</cfquery>

@@ -56,6 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="comments" type="numeric" default="0" required="true" />
 <cfproperty name="majorVersion" type="numeric" default="0" required="true" />
 <cfproperty name="minorVersion" type="numeric" default="0" required="true" />
+<cfproperty name="lockID" type="string" default="" required="true" />
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	
@@ -69,6 +70,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.comments=0/>
 	<cfset variables.instance.majorVersion=0/>
 	<cfset variables.instance.minorVersion=0/>
+	<cfset variables.instance.lockID=""/>
 	
 	<cfreturn this />
 </cffunction>
@@ -180,7 +182,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		downVotes=#variables.instance.downVotes#,
 		comments=#variables.instance.comments#,
 		majorVersion=#variables.instance.majorVersion#,
-		minorVersion=#variables.instance.minorVersion#
+		minorVersion=#variables.instance.minorVersion#,
+		lockID=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(variables.instance.lockID neq '',de('no'),de('yes'))#" value="#variables.instance.lockID#">
 		where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#">
 		and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#">
 		</cfquery>
@@ -188,7 +191,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 	
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		insert into tcontentstats (contentID,siteID,rating,views,totalVotes,upVotes,downVotes,comments,majorVersion,minorVersion)
+		insert into tcontentstats (contentID,siteID,rating,views,totalVotes,upVotes,downVotes,comments,majorVersion,minorVersion,lockID)
 		values(
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#">,
@@ -199,7 +202,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		#variables.instance.downVotes#,
 		#variables.instance.comments#,
 		#variables.instance.majorVersion#,
-		#variables.instance.minorVersion#
+		#variables.instance.minorVersion#,
+		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(variables.instance.lockID neq '',de('no'),de('yes'))#" value="#variables.instance.lockID#">
 		)
 		</cfquery>
 		
