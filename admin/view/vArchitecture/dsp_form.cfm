@@ -311,8 +311,8 @@ select * from rsPluginScripts3 order by pluginID
 				<li><strong>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.votes")#:</strong> <cfif rsRating.recordcount>#rsRating.theCount#<cfelse>0</cfif></li>
 			</cfif>
 			</cfif>
+			<cfif attributes.type eq "file" and request.contentBean.getMajorVersion()><li><strong>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.file')#:</strong> #request.contentBean.getMajorVersion()#.#request.contentBean.getMinorVersion()#</cfif>
 	</cfif>
-		<cfif request.contentBean.getMajorVersion()><li><strong>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.version")#:</strong> #request.contentBean.getMajorVersion()#.#request.contentBean.getMinorVersion()#</cfif>
 		</ul>
 </cfif>
 

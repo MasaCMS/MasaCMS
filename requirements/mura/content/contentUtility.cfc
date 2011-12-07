@@ -1269,6 +1269,7 @@ and parentID is null
 
 <cffunction name="setVersionNumbers" output="false">
 <cfargument name="contentBean">
+<cfargument name="versionType" default="minor">
 	<cfset var rs="">
 	<cfset var stats="">
 	<cfset var major=0>
@@ -1291,7 +1292,7 @@ and parentID is null
 			</cfquery>
 			
 			<cfif rs.recordcount and rs.majorVersion>		
-				<cfif arguments.contentBean.getApproved()>
+				<cfif arguments.versionType eq "major">
 					<cfset major=rs.majorVersion + 1>
 					<cfset minor=0>
 				<cfelse>
@@ -1306,7 +1307,7 @@ and parentID is null
 		<cfelse>
 	
 			<cfif stats.getMajorVersion()>		
-				<cfif arguments.contentBean.getApproved()>
+				<cfif arguments.versionType eq "major">
 					<cfset major=stats.getMajorVersion() + 1>
 					<cfset minor=0>
 				<cfelse>

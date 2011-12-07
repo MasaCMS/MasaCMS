@@ -913,6 +913,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				
 				<cfif newBean.getType() eq "File">
 					<cfset newBean.setfilename(tempFile.serverfile) />
+					
+					<cfif not isdefined("arguments.data.versionType")>
+						<cfset arguments.data.versionType="minor">
+					</cfif>
+					<cfset variables.contentUtility.setVersionNumbers(newBean,arguments.data.versionType)>
 				</cfif>
 				
 				<!--- Delete Files in temp directory --->
@@ -969,8 +974,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 		<!--- BEGIN CONTENT TYPE: ALL CONTENT TYPES --->
 		<!---If approved, delete all drafts and set the last active to inactive--->
-			
-		<cfset variables.contentUtility.setVersionNumbers(newBean)>
 			
 		<cfif newBean.getapproved() and not newBean.getIsNew()>
 			
