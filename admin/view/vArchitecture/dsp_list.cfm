@@ -135,13 +135,42 @@ copyAll = 'false';
     <input type="hidden" name="moduleid" value="#attributes.moduleid#">
 </form>
 
-<div id="gridContainer"><img class="loadProgress" src="images/progress_bar.gif"></div>
-<script type="text/javascript">
-	jQuery(document).ready(
-	function(){
-	loadSiteManager('#JSStringFormat(attributes.siteID)#','#JSStringFormat(attributes.topid)#','#JSStringFormat(attributes.moduleid)#','#JSStringFormat(attributes.sortby)#','#JSStringFormat(attributes.sortdirection)#','#JSStringFormat(attributes.ptype)#','#JSStringFormat(attributes.startrow)#');
-	});
-</script>
 
+<img class="loadProgress tabPreloader" src="images/progress_bar.gif">
+
+<div id="viewTabs" class="tabs initActiveTab" style="display:none">
+		<ul>
+			<li><a href="##tabArchitectual" onclick="return false;"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.architectural")#</span></a></li>
+			<li><a href="##tabFlat" onclick="return false;"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.flat")#</span></a></li>
+		</ul>
+		<div id="tabArchitectual">
+		<div id="gridContainer"><img class="loadProgress" src="images/progress_bar.gif"></div>
+		</div>
+		
+		<div id="tabFlat">
+			<img class="loadProgress" src="images/progress_bar.gif">
+		</div>
+		
+</div>
+<script type="text/javascript">
+var archViewLoaded=false;
+var flatViewLoaded=false;
+jQuery("##viewTabs").bind( "tabsshow", function(event,ui){
+	switch(ui.index){
+		case 0:
+		if (!archViewLoaded) {
+			loadSiteManager('#JSStringFormat(attributes.siteID)#', '#JSStringFormat(attributes.topid)#', '#JSStringFormat(attributes.moduleid)#', '#JSStringFormat(attributes.sortby)#', '#JSStringFormat(attributes.sortdirection)#', '#JSStringFormat(attributes.ptype)#', '#JSStringFormat(attributes.startrow)#');
+			archViewLoaded = true;
+		}
+		break;
+		case 1:
+		if (!flatViewLoaded) {
+			loadSiteFlat('#JSStringFormat(attributes.siteID)#', '#JSStringFormat(attributes.moduleid)#', '#JSStringFormat(attributes.sortby)#', '#JSStringFormat(attributes.sortdirection)#', '#JSStringFormat(attributes.startrow)#');
+			flatViewLoaded = true;
+		}
+	}
+});				
+
+</script>
 </cfoutput>
 <cfinclude template="draftpromptjs.cfm">

@@ -167,7 +167,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tfiles.fileSize,tfiles.fileExt,tcontent.fileid,
 	tcontent.tags,tcontent.credits,tcontent.audience, tcontent.orderNo,
 	tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes,
-	tcontentstats.comments, tparent.type parentType, <cfif doKids> qKids.kids<cfelse> null as kids</cfif>,tcontent.path, tcontent.created, tcontent.nextn
+	tcontentstats.comments, tparent.type parentType, <cfif doKids> qKids.kids<cfelse> null as kids</cfif>,tcontent.path, tcontent.created, tcontent.nextn, tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID
 	from tcontent
 	
 	<cfloop list="#jointables#" index="jointable">
@@ -400,7 +400,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	where
 	tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedBean.getsiteid()#">
 	#renderActiveClause("tcontent",arguments.feedBean.getSiteID())#
-	<cfif arguments.feedBean.getType() eq "Local" and arguments.feedBean.getShowNavOnly()>
+	<cfif arguments.feedBean.getShowNavOnly()>
 	AND tcontent.isNav = 1
 	</cfif>
 	<cfif arguments.feedBean.getType() eq "Remote">
