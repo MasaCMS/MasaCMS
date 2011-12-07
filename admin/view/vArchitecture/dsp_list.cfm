@@ -84,7 +84,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="session.flatViewArgs.#session.siteID#.startrow" default="#attributes.startrow#" />
 <cfparam name="session.flatViewArgs.#session.siteID#.type" default="#attributes.type#" />
 <cfparam name="session.flatViewArgs.#session.siteID#.subtype" default="#attributes.subtype#" />
-
+<cfparam name="session.siteManagerTab" default="0" />
+<cfset attributes.activeTab=session.siteManagerTab/>
 <cfhtmlhead text='<script src="#application.configBean.getContext()#/admin/js/jquery/jquery-pulse.js?coreversion=#application.coreversion#" type="text/javascript"></script>'>
 
 <cfif isdefined('attributes.orderperm') and (attributes.orderperm eq 'editor' or (attributes.orderperm eq 'author' and application.configBean.getSortPermission() eq "author"))>
