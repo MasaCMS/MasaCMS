@@ -50,7 +50,92 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 <cfsavecontent variable="data.html">
 <cfoutput>
- Hello World!
+<h3>Sort by:</h3>
+<ul id="navTask" class="">
+
+<li><a href="">Release Date</a></li>
+<li><a href="">Title</a></li>
+<li><a href="">Last Updated</a></li>
+<li><a href="">Created</a></li>
+	
+</ul>
+<table class="mura-table-grid stripe" style="width: 75%;  float: left;">
+	<tr>
+		<th></th>
+	  	<th class="varWidth">Item</th>
+		<!--<th>Updated</th> 
+		<th>Updated by</th>
+		<th>Categories</th>
+		<th>Tags</th>-->
+		<th nowrap class="administration">&nbsp;</th>
+	</tr> 
+ 
+	<tr>
+		<td class="add">
+		     
+				<a href="javascript:;" onmouseover="showMenu('newContentMenu',1,this,'321C5464-0918-4F7B-90826F1A53E9F4A9','321C5464-0918-4F7B-90826F1A53E9F4A9','00000000000000000000000000000000001','dev','Page');">&nbsp;</a>
+		</td>
+		<td class="varWidth">
+			<img src="http://3.bp.blogspot.com/_S-x1Z_8lDxM/Sw6aeMkGmII/AAAAAAAAAB4/gfigUEc-c6Q/s1600/gretsch_jim_1152x864.jpg" width="100" height="100">
+			
+			
+			<p class="lockedOffline">Locked for offline editing by Exene Cervenka</p>
+			<h3><a title="Edit" href="">Lorem ipsum dolor sit amet</a></h3>
+			
+			<ul class="navZoom">	
+				<li class="Page"><a href="">Home</a> »</li>
+				<li class="Portal"><a href="0">Mura</a> »</li>
+				<li class="Portal">
+				<a href="">Portal Example</a> »</li>
+				<li class="Page"><strong><a href="">Eget Ultrices Velit Dui Sed</a></strong></li>
+			</ul>
+			
+			<dl>
+				<dt class="updated-on">Updated on 1/12/12 at 1:11 PM by John Doe</dt>
+				<dt class="version">Version:</dt><dd class="version">1.2</dd>
+				<dt class="categories">Categories:</dt><dd class="categories">Lorem Ipsum</dd>
+				<dt class="tags">Tags:</dt><dd class="tags">Dolor, Sit, Amet</dd>
+				<dt class="type">Type:</dt><dd class="type">File (Default)</dd>
+				<dt class="size">Size:</dt><dd class="size">800k</dd>
+				<dt class="download">Download</dt>
+			</dl>
+		</td>
+		<td class="administration">
+			<ul class="three"><li class="edit"><a title="Edit" href="">Edit</a></li>
+				<li class="preview"><a title="Preview" href="">Home</a></li>
+				<li class="deleteOff">Delete</li>
+			</ul>
+		</td>
+	</tr>
+	
+	
+</table>
+
+<div class="sidebar" style="float: right; width: 20%;">
+	
+	<h3>Type</h3>
+	<ul>
+		<li>Page</li>
+		<li>Portal</li>
+		<li>Link</li>
+		<li>File</li>
+	</ul>
+	
+	<h3>Tags</h3>
+	<ul>
+	<li>Tag 1</li>
+	<li>Tag 2</li>
+	<li>Tag 3</li>
+	</ul>
+	
+	<h3>Categories</h3>
+	<ul>
+	<li>Cat 1</li>
+	<li>Cat 2</li>
+	<li>Cat 3</li>
+	</ul>
+</div>
+
 </cfoutput>
 </cfsavecontent>
 <cfoutput>#createObject("component","mura.json").encode(data)#</cfoutput>
