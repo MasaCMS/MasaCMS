@@ -180,7 +180,7 @@ if (top.location != self.location) {
 </script>
 
 </cfif>
-<link href="#application.configBean.getContext()#/admin/css/admin.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+<link href="#application.configBean.getContext()#/admin/css/admin.css" rel="stylesheet" type="text/css" />
 <cfif cgi.http_user_agent contains 'msie'>
 <!--[if LTE IE 7]>
 	<link href="#application.configBean.getContext()#/admin/css/ie.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />

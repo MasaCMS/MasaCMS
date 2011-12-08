@@ -50,36 +50,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 <cfsavecontent variable="data.html">
 <cfoutput>
-<h3>Sort by:</h3>
-<ul id="navTask" class="">
-
-<li><a href="">Release Date</a></li>
-<li><a href="">Title</a></li>
-<li><a href="">Last Updated</a></li>
-<li><a href="">Created</a></li>
-	
-</ul>
-<table class="mura-table-grid stripe" style="width: 75%;  float: left;">
+<div class="navSort">
+	<h3>Sort by:</h3>
+	<ul id="navTask">
+		<li><a href="">Release Date</a></li>
+		<li><a href="">Title</a></li>
+		<li><a href="">Last Updated</a></li>
+		<li><a href="">Created</a></li>
+	</ul>
+</div>
+<table class="mura-table-grid stripe">
 	<tr>
 		<th></th>
-	  	<th class="varWidth">Item</th>
-		<!--<th>Updated</th> 
-		<th>Updated by</th>
-		<th>Categories</th>
-		<th>Tags</th>-->
+	  	<th class="item">Item</th>
 		<th nowrap class="administration">&nbsp;</th>
 	</tr> 
  
 	<tr>
-		<td class="add">
-		     
-				<a href="javascript:;" onmouseover="showMenu('newContentMenu',1,this,'321C5464-0918-4F7B-90826F1A53E9F4A9','321C5464-0918-4F7B-90826F1A53E9F4A9','00000000000000000000000000000000001','dev','Page');">&nbsp;</a>
-		</td>
-		<td class="varWidth">
-			<img src="http://3.bp.blogspot.com/_S-x1Z_8lDxM/Sw6aeMkGmII/AAAAAAAAAB4/gfigUEc-c6Q/s1600/gretsch_jim_1152x864.jpg" width="100" height="100">
-			
-			
-			<p class="lockedOffline">Locked for offline editing by Exene Cervenka</p>
+		<td class="add"><a href="javascript:;" onmouseover="">&nbsp;</a></td>
+		<td class="item">
+			<img src="http://3.bp.blogspot.com/_S-x1Z_8lDxM/Sw6aeMkGmII/AAAAAAAAAB4/gfigUEc-c6Q/s1600/gretsch_jim_1152x864.jpg" />
+			<p class="locked-offline">The associated file is locked for offline editing by Exene Cervenka</p>
 			<h3><a title="Edit" href="">Lorem ipsum dolor sit amet</a></h3>
 			
 			<ul class="navZoom">	
@@ -111,7 +102,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 </table>
 
-<div class="sidebar" style="float: right; width: 20%;">
+<div class="sidebar">
 	
 	<h3>Type</h3>
 	<ul>
