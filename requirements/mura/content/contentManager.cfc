@@ -595,6 +595,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rsFile="" />
 		<cfset var rsComments="" />
 		<cfset var rsDrafts = "" />
+		<cfset var rs = "" />
+		<cfset var i = "" />
 		<cfset var d = "" />
 		<cfset var pluginEvent = createObject("component","mura.MuraScope") />
 		<cfset var tempFile="" />
@@ -682,7 +684,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 			
 		<cfif not newBean.getIsNew()>
-			<cfset currentBean=read(contentID=newBean.getcontentID(),siteID=arguments.data.siteid) />
+			<cfif not (isDefined('arguments.data.preserveID') and isValid('UUID',arguments.data.preserveID))>
+				<cfset arguments.data.preserveID=newBean.getContentHistID()>
+			</cfif>	
+			<cfset currentBean=read(contentHistID=arguments.data.preserveID,siteID=arguments.data.siteid) />
 			<cfset pluginEvent.setValue("currentBean",currentBean)>	
 		</cfif>
 	
@@ -729,7 +734,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			
 			<cfif not newBean.getIsNew()>
-				<cfset variables.ClassExtensionManager.preserveExtendedData(newBean.getcontentHistID(),newBean.getPreserveID(),arguments.data,"tclassextenddata", newBean.getType(), newBean.getSubType())/>
+				<cfset variables.ClassExtensionManager.preserveExtendedData(newBean.getcontentHistID(),currentBean.getContentHistID(),arguments.data,"tclassextenddata", newBean.getType(), newBean.getSubType())/>
 			</cfif>
 		</cfif>
 		
@@ -776,6 +781,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 				<cfset variables.contentDAO.createRelatedItems(newBean.getcontentID(),
 				newBean.getcontentHistID(),arguments.data,newBean.getSiteID(),'') />
+			</cfif>
+			
+			<!--- Content expiration assignments --->
+			<cfif isDefined("arguments.data.expiresassign") and len(arguments.data.expiresassign)>
+				<cfloop list="#arguments.data.expiresassign#" index="i">
+					<cfset variables.contentDAO.createContentAssignment(newBean,i,'expire')>	
+				</cfloop>
+			<cfelseif not newBean.getIsNew()>
+				<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+				 select userID from tcontentassignments 
+				 where contenthistid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#currentBean.getContentHistID()#">
+				 and type='expire'
+				 </cfquery>
+				 <cfloop query="rs">
+					<cfset variables.contentDAO.createContentAssignment(newBean,rs.userid,'expire')>	
+				</cfloop>
 			</cfif>
 		</cfif>
 		
@@ -873,8 +894,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif isDefined('arguments.data.deleteFile') and len(newBean.getFileID())>
 				<cfset variables.fileManager.deleteIfNotUsed(newBean.getFileID(),newBean.getContentHistID())>
 				<cfset newBean.setFileID('')>
-			</cfif>
-						
+			</cfif>	
 		</cfif>
 		<!--- END CONTENT TYPE: PAGE, PORTAL, CALENDAR, GALLERY --->
 		
@@ -985,7 +1005,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif variables.configBean.getMaxArchivedVersions()>
 				<cfset doTrimVersionHistory=true>
 			</cfif>
-			<cfset variables.contentDAO.deleteContentAssignments(newbean.getcontentID(),arguments.data.siteid)/>
+			<cfset variables.contentDAO.deleteContentAssignments(newbean.getcontentID(),arguments.data.siteid,"draft")/>
 		</cfif>
 			
 		<cfif newBean.getapproved()>
@@ -1041,7 +1061,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<!--- Send out notification(s) if needed--->
 		<cfif isdefined('arguments.data.notify') and arguments.data.notify neq ''>
-			<cfset variables.contentUtility.sendNotices(arguments.data,newBean) />
+			<cfset variables.contentUtility.sendNotices(arguments.data,newBean,"Draft") />
 		</cfif>
 		
 		<cfset variables.contentDAO.createTags(newBean) />
@@ -1298,6 +1318,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.contentDAO.deleteObjectsHist(arguments.data.contenthistid,arguments.data.siteid) />
 		<cfset variables.contentDAO.deleteCategoryHist(arguments.data.contenthistid,arguments.data.siteid) />
 		<cfset variables.contentDAO.deleteExtendDataHist(arguments.data.contenthistid,arguments.data.siteid) />
+		<cfset variables.contentDAO.deleteContentAssignments(arguments.data.contenthistid,arguments.data.siteid,'expire') />
 		
 		<cfif  ListFindNoCase(this.TreeLevelList,versionBean.getType())>
 			<cfset variables.pluginManager.announceEvent("onAfterContentDeleteVersion",pluginEvent)>
