@@ -93,7 +93,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</ul>
 		</td>
 		<td class="administration">
-			<ul class="three"><li class="edit"><a title="Edit" href="">Edit</a></li>
+			<ul class="four"><li class="edit"><a title="Edit" href="">Edit</a></li>
 				<li class="preview"><a title="Preview" href="">Preview</a></li>
 				<li class="download"><a title="Download" href="">Download</a></li>
 				<li class="delete">Delete</li>
