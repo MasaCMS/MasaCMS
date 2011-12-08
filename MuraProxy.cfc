@@ -260,7 +260,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="serviceName" type="string">
 <cfargument name="methodName" type="string">
 <cfargument name="authToken" type="string" default="">
-<cfargument name="args" default="#structNew()#" type="struct">
+<cfargument name="args" default="#structNew()#" type="any">
 
 <cfset var event="">
 <cfset var service="">	
@@ -269,6 +269,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset arguments.args=deserializeJSON(arguments.args)>
 <cfelseif isWddx(arguments.args)>
 	<cfwddx action="wddx2cfml" input="#arguments.args#" output="arguments.args">
+<cfelseif not isStruct(arguments.args)>
+	<cfset arguments.args=structNew()>
 </cfif>
 
 <cfif (isDefined("session.mura.isLoggedIn") and session.mura.isLoggedIn)
