@@ -122,6 +122,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="imageWidth" type="string" default="AUTO" required="true" />
 <cfproperty name="majorVersion" type="numeric" default="0" required="true" />
 <cfproperty name="minorVersion" type="numeric" default="0" required="true" />
+<cfproperty name="expires" type="date" default="" required="true" />
 
 <cffunction name="init" access="public" returntype="any" output="false">
 	
@@ -213,6 +214,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.imageWidth = "AUTO" />
 	<cfset variables.instance.majorVersion = 0 />
 	<cfset variables.instance.minorVersion = 0 />
+	<cfset variables.instance.expires = "" />
 	<cfset variables.instance.errors=structnew() />
 	
 	<cfset variables.kids = arrayNew(1) />
@@ -242,6 +244,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var featurestophour="" />
 	<cfset var featurestarthour="" />
 	<cfset var releasehour="" />
+	<cfset var expireshour="" />
 	<cfset var prop="" />
 	
 	<cfif isQuery(arguments.content) and arguments.content.recordcount>
@@ -380,6 +383,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfif>
 		
+		<cfif isDate(variables.instance.expires)>
+			
+			<cfif isdefined("arguments.content.expireshour")
+			and isdefined("arguments.content.expiresMinute")
+			and isdefined("arguments.content.expiresDayPart")>
+			
+				<cfif arguments.content.expiresdaypart eq "PM">
+					<cfset expireshour = arguments.content.expireshour + 12>
+					
+					<cfif expireshour eq 24>
+						<cfset expireshour = 12>
+					</cfif>
+				<cfelse>
+					<cfset expireshour = arguments.content.expireshour>
+					
+					<cfif expireshour eq 12>
+						<cfset expireshour = 0>
+					</cfif>
+				</cfif>
+				
+				<cfset setExpires(createDateTime(year(variables.instance.expires), month(variables.instance.expires), day(variables.instance.expires), expireshour, arguments.content.expiresMinute, "0"))>
+		
+			</cfif>
+		</cfif>
+		
 		<cfif not session.mura.isLoggedIn >
 			<cfset variables.instance.LastUpdateBy = "" />
 			<cfset variables.instance.LastUpdateByID = "" />
@@ -460,6 +488,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setDisplaystop" output="false" access="public">
     <cfargument name="Displaystop" type="string" required="true">
 	<cfset variables.instance.Displaystop = parseDateArg(arguments.Displaystop) />
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setExpires" output="false" access="public">
+    <cfargument name="expires" type="string" required="true">
+	<cfset variables.instance.expires = parseDateArg(arguments.expires) />
 	<cfreturn this>
 </cffunction>
 

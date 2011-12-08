@@ -461,7 +461,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 <cfloop query="rslist">
 		
-<cfset variables.contentDAO.createContentAssignment(arguments.contentBean,rsList.userID) />
+<cfset variables.contentDAO.createContentAssignment(arguments.contentBean,rsList.userID,'draft') />
 		
 <cfif rsList.email neq ''>
 

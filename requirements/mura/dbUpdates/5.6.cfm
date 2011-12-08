@@ -177,3 +177,72 @@
 </cfcase>
 </cfswitch>
 </cfif>
+
+<cfdbinfo 
+	name="rsCheck"
+	datasource="#application.configBean.getDatasource()#"
+	username="#application.configBean.getDbUsername()#"
+	password="#application.configBean.getDbPassword()#"
+	table="tcontentassignments"
+	type="columns">
+
+<cfquery name="rsCheck" dbtype="query">
+	select * from rsCheck where lower(rsCheck.column_name) like 'type'
+</cfquery>
+
+<cfif not rsCheck.recordcount>
+<cfswitch expression="#getDbType()#">
+<cfcase value="mssql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentassignments ADD type [nvarchar](50) default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="mysql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentassignments ADD COLUMN type varchar(5) default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="oracle">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentassignments ADD type varchar2(50)
+	</cfquery>
+</cfcase>
+</cfswitch>
+
+<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	Update tcontentassignmentsset set type='draft'
+</cfquery>
+</cfif>
+
+
+<cfdbinfo 
+	name="rsCheck"
+	datasource="#application.configBean.getDatasource()#"
+	username="#application.configBean.getDbUsername()#"
+	password="#application.configBean.getDbPassword()#"
+	table="tcontent"
+	type="columns">
+
+<cfquery name="rsCheck" dbtype="query">
+	select * from rsCheck where lower(rsCheck.column_name) like 'expires'
+</cfquery>
+
+<cfif not rsCheck.recordcount>
+<cfswitch expression="#getDbType()#">
+<cfcase value="mssql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontent ADD expires [datetime] default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="mysql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontent ADD COLUMN expires datetime default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="oracle">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontent ADD expires date
+	</cfquery>
+</cfcase>
+</cfswitch>
+</cfif>

@@ -116,7 +116,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var blockFactor=arguments.feedBean.getNextN()>
 	<cfset var jointables="" />
 	<cfset var jointable="">
-	<cfset var histtables="tcontenttags,tcontentcategoryassign,tcontentobjects,tcontentrelated">
+	<cfset var histtables="tcontenttags,tcontentcategoryassign,tcontentobjects,tcontentrelated,tcontentassignments">
 	<cfset var rsAttribute="">
 	<cfset var isListParam=false>
 	
@@ -167,7 +167,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tfiles.fileSize,tfiles.fileExt,tcontent.fileid,
 	tcontent.tags,tcontent.credits,tcontent.audience, tcontent.orderNo,
 	tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes,
-	tcontentstats.comments, tparent.type parentType, <cfif doKids> qKids.kids<cfelse> null as kids</cfif>,tcontent.path, tcontent.created, tcontent.nextn, tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID
+	tcontentstats.comments, tparent.type parentType, <cfif doKids> qKids.kids<cfelse> null as kids</cfif>,
+	tcontent.path, tcontent.created, tcontent.nextn, tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires
 	from tcontent
 	
 	<cfloop list="#jointables#" index="jointable">
