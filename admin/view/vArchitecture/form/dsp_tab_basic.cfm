@@ -247,7 +247,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</dd>
 </cfif>
-<cfif listFindNoCase("Page,Link,File,Gallery,Calendar,Portal",request.contentBean.getType())>
+<cfif listFind("Page,Portal,Calendar,Gallery,Link",attributes.type)>
 <dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expires')#</dt>
 <dd><input type="text" name="expires" value="#LSDateFormat(request.contentBean.getExpires(),session.dateKeyFormat)#" class="textAlt datepicker">
 	<select name="expireshour" class="dropdown"><cfloop from="1" to="12" index="h"><option value="#h#" <cfif not LSisDate(request.contentBean.getExpires())  and h eq 12 or (LSisDate(request.contentBean.getExpires()) and (hour(request.contentBean.getExpires()) eq h or (hour(request.contentBean.getExpires()) - 12) eq h or hour(request.contentBean.getExpires()) eq 0 and h eq 12))>selected</cfif>>#h#</option></cfloop></select>
