@@ -68,33 +68,35 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  
 	<tr>
 		<td class="add"><a href="javascript:;" onmouseover="">&nbsp;</a></td>
-		<td class="item">
-			<img src="http://3.bp.blogspot.com/_S-x1Z_8lDxM/Sw6aeMkGmII/AAAAAAAAAB4/gfigUEc-c6Q/s1600/gretsch_jim_1152x864.jpg" />
-			<p class="locked-offline">The associated file is locked for offline editing by Exene Cervenka</p>
+		<td class="varWidth item">
+		<p class="locked-offline">The associated file is locked for offline editing by Exene Cervenka</p>
+			
 			<h3><a title="Edit" href="">Lorem ipsum dolor sit amet</a></h3>
 			
-			<ul class="navZoom">	
-				<li class="Page"><a href="">Home</a> »</li>
-				<li class="Portal"><a href="0">Mura</a> »</li>
-				<li class="Portal">
-				<a href="">Portal Example</a> »</li>
-				<li class="Page"><strong><a href="">Eget Ultrices Velit Dui Sed</a></strong></li>
-			</ul>
-			
 			<dl>
-				<dt class="updated-on">Updated on 1/12/12 at 1:11 PM by John Doe</dt>
+				<dt class="updated">Updated on 1/12/12 at 1:11 PM by John Doe</dt>
 				<dt class="version">Version:</dt><dd class="version">1.2</dd>
 				<dt class="categories">Categories:</dt><dd class="categories">Lorem Ipsum</dd>
 				<dt class="tags">Tags:</dt><dd class="tags">Dolor, Sit, Amet</dd>
 				<dt class="type">Type:</dt><dd class="type">File (Default)</dd>
 				<dt class="size">Size:</dt><dd class="size">800k</dd>
 				<dt class="download">Download</dt>
+				<dd class="preview"><img src="http://3.bp.blogspot.com/_S-x1Z_8lDxM/Sw6aeMkGmII/AAAAAAAAAB4/gfigUEc-c6Q/s1600/gretsch_jim_1152x864.jpg" /></dd>
 			</dl>
+			
+			<ul class="navZoom">	
+				<li class="Page"><a href="">Home</a> &raquo;</li>
+				<li class="Portal"><a href="0">Mura</a> &raquo;</li>
+				<li class="Portal">
+				<a href="">Portal Example</a> &raquo;</li>
+				<li class="Page"><strong><a href="">Eget Ultrices Velit Dui Sed</a></strong></li>
+			</ul>
 		</td>
 		<td class="administration">
 			<ul class="three"><li class="edit"><a title="Edit" href="">Edit</a></li>
-				<li class="preview"><a title="Preview" href="">Home</a></li>
-				<li class="deleteOff">Delete</li>
+				<li class="preview"><a title="Preview" href="">Preview</a></li>
+				<li class="download"><a title="Download" href="">Download</a></li>
+				<li class="delete">Delete</li>
 			</ul>
 		</td>
 	</tr>

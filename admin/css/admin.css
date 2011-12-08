@@ -2576,17 +2576,14 @@ dt .add li.Page {
 	color: #fff;
 }
 
+#tabFlat .mura-table-grid td {
+	position: relative;
+}
+
 #tabFlat .mura-table-grid td.item {
 	padding: 8px;
 	text-align: left;
 	white-space: wrap !important;
-}
-
-#tabFlat .mura-table-grid td img {
-	float: left;
-	margin: 0 1em 1em 0;
-	width: 100px;
-	height: auto;
 }
 
 #tabFlat .mura-table-grid td p {
@@ -2594,9 +2591,51 @@ dt .add li.Page {
 }
 
 #tabFlat td .locked-offline {
-	padding: .25em;
+	padding: .25em .5em;
+	margin-bottom: .5em;
 	background: yellow;
-}  
+	clear: both;
+} 
+
+#tabFlat dl, #tabFlat .locked-offline, #tabFlat td h3 {
+	margin-left: 120px !important;
+}
+
+#tabFlat dl {
+	margin-bottom: 1em;
+	overflow: hidden;
+}
+
+#tabFlat dt {
+	float: left;
+	font-weight: bold;
+	margin-right: .5em;
+}
+
+#tabFlat dd {
+	float: left;
+	margin-right: 1em;
+}
+
+#tabFlat dt.updated {
+	clear: right !important;
+}
+
+
+#tabFlat .mura-table-grid dd.preview {
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	margin: 0 1em 1em 0;
+	width: 100px;
+	height: auto;
+}
+
+#tabFlat .mura-table-grid dd.preview img {
+	width: 100px;
+	height: auto;
+}
+
 
 /* @end */
 
@@ -4140,7 +4179,7 @@ li span.req {
 
 /* @group User Feedback */
 
-.error, .notice, .success { padding: .8em !important; margin-bottom: 1em !important; border: 2px solid #ddd; }
+.error, .notice, .success { padding: .8em !important; margin-bottom: 1em !important; border: 2px solid #ddd; clear: both; }
 
 #tabBundles .error,#tabBundles .notice,#tabBundles .success { 
 margin: .5em 0; }
@@ -4542,6 +4581,7 @@ li:hover #navSecondary {
 	list-style: none;
 	padding: 0 0 10px 0;
 	background: url(../images/rule_dotted.gif) repeat-x left bottom;
+	clear: both;
 }
 
 #content .notice .navZoom {
