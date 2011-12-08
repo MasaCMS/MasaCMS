@@ -26,10 +26,10 @@
 </cffunction>
 
 <cffunction name="getRate" access="public" output="false">
-	<cfif isNumeric(variables.instance.rate)>
+	<cfif not isNumeric(variables.instance.rate)>
 		<cfset variables.instance.rate = 0 />
 	</cfif>
-	<cfreturn>
+	<cfreturn variables.instance.rate>
 </cffunction>
 
 <cffunction name="setEntered" access="public" output="false">
