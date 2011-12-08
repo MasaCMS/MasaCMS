@@ -326,6 +326,12 @@
 	<cfabort>
 </cffunction>
 
+<cffunction name="siteManagerTab" ouput="false">
+	<cfargument name="rc">
+	<cfset session.siteManagerTab=rc.tab  />
+	<cfabort>
+</cffunction>
+
 <cffunction name="saveCopyInfo" ouput="false">
 	<cfargument name="rc">
 	<cfset variables.contentManager.saveCopyInfo(arguments.rc.siteid,arguments.rc.contentID,arguments.rc.copyAll)  />

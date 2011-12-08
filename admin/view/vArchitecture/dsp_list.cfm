@@ -194,6 +194,9 @@ function initFlatViewArgs(){
 var flatViewArgs=initFlatViewArgs();
 
 function initSiteManagerTabContent(index){
+	
+	jQuery.get("./index.cfm","fuseaction=carch.siteManagerTab&tab=" + index);
+	
 	switch(index){
 		case 0:
 		if (!archViewLoaded) {
