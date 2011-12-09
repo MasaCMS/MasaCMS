@@ -71,18 +71,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<td class="varWidth item">
 		<p class="locked-offline">The associated file is locked for offline editing by Exene Cervenka</p>
 			
-			<h3><a title="Edit" href="">Lorem ipsum dolor sit amet</a></h3>
+			<h3 class="pdf"><a title="Edit" href="">Lorem ipsum dolor sit amet</a></h3>
 			
-			<dl>
-				<dt class="updated">Updated on 1/12/12 at 1:11 PM by John Doe</dt>
-				<dt class="version">Version:</dt><dd class="version">1.2</dd>
-				<dt class="categories">Categories:</dt><dd class="categories">Lorem Ipsum</dd>
-				<dt class="tags">Tags:</dt><dd class="tags">Dolor, Sit, Amet</dd>
-				<dt class="type">Type:</dt><dd class="type">File (Default)</dd>
-				<dt class="size">Size:</dt><dd class="size">800k</dd>
-				<dt class="download">Download</dt>
-				<dd class="preview"><img src="http://3.bp.blogspot.com/_S-x1Z_8lDxM/Sw6aeMkGmII/AAAAAAAAAB4/gfigUEc-c6Q/s1600/gretsch_jim_1152x864.jpg" /></dd>
-			</dl>
+			<ul class="nodeMeta">
+				<li class="updated">Updated on 1/12/12 at 1:11 PM by John Doe</li>
+				<li class="version">Version: <strong>1.2</strong></li>
+				<li class="type">Type: <strong>File (Default)</strong></li>
+				<li class="size">Size: <strong>800k</strong></li>
+				<li class="categories">Categories: <strong>Lorem Ipsum</strong></dd>
+				<li class="tags">Tags: <strong>Dolor, Sit, Amet</strong></li>
+				<li class="preview"><img src="http://3.bp.blogspot.com/_S-x1Z_8lDxM/Sw6aeMkGmII/AAAAAAAAAB4/gfigUEc-c6Q/s1600/gretsch_jim_1152x864.jpg" /></li>
+			</ul>
 			
 			<ul class="navZoom">	
 				<li class="Page"><a href="">Home</a> &raquo;</li>
@@ -96,7 +95,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<ul class="four"><li class="edit"><a title="Edit" href="">Edit</a></li>
 				<li class="preview"><a title="Preview" href="">Preview</a></li>
 				<li class="download"><a title="Download" href="">Download</a></li>
-				<li class="delete">Delete</li>
+				<li class="delete"><a title="Delete" href="">Delete</a></li>
 			</ul>
 		</td>
 	</tr>
