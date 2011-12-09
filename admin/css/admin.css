@@ -2577,7 +2577,7 @@ dt .add li.Page {
 }
 
 #tabFlat .mura-table-grid td {
-	position: relative;
+	vertical-align: top;
 }
 
 #tabFlat .mura-table-grid td.item {
@@ -2592,18 +2592,24 @@ dt .add li.Page {
 
 #tabFlat td .locked-offline {
 	padding: .25em .5em;
-	margin-bottom: .5em;
+	margin-bottom: .25em;
 	background: yellow;
 	clear: both;
-} 
-
-#tabFlat dl, #tabFlat .locked-offline, #tabFlat td h3 {
-	margin-left: 120px !important;
 }
+
+#tabFlat h3 {
+	margin-bottom: .5em;
+}
+
+/*#tabFlat dl, #tabFlat .locked-offline, #tabFlat td h3 {
+	margin-left: 120px !important;
+}*/
 
 #tabFlat dl {
 	margin-bottom: 1em;
-	overflow: hidden;
+	position: relative;
+	padding-left: 120px;
+	min-height: 80px;
 }
 
 #tabFlat dt {
@@ -2624,9 +2630,9 @@ dt .add li.Page {
 
 #tabFlat .mura-table-grid dd.preview {
 	position: absolute;
-	left: 10px;
-	top: 10px;
-	margin: 0 1em 1em 0;
+	left: 0;
+	top: 0;
+	margin: 0;
 	width: 100px;
 	height: auto;
 }
