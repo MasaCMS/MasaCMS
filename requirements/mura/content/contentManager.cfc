@@ -784,16 +784,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			
 			<!--- Content expiration assignments --->
-			<cfif isDefined("arguments.data.expiresassign") and len(arguments.data.expiresassign)>
-				<cfloop list="#arguments.data.expiresassign#" index="i">
+			<cfif isDefined("arguments.data.expiresnotify") and len(arguments.data.expiresnotify)>
+				<cfloop list="#arguments.data.expiresnotify#" index="i">
 					<cfset variables.contentDAO.createContentAssignment(newBean,i,'expire')>	
 				</cfloop>
 			<cfelseif not newBean.getIsNew()>
-				<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-				 select userID from tcontentassignments 
-				 where contenthistid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#currentBean.getContentHistID()#">
-				 and type='expire'
-				 </cfquery>
+				<cfset rs=variables.contentDAO.getExpireAssignments(currentBean.getContentHistID())>
 				 <cfloop query="rs">
 					<cfset variables.contentDAO.createContentAssignment(newBean,rs.userid,'expire')>	
 				</cfloop>

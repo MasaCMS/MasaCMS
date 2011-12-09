@@ -85,7 +85,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="session.flatViewArgs.#session.siteID#.type" default="#attributes.type#" />
 <cfparam name="session.flatViewArgs.#session.siteID#.subtype" default="#attributes.subtype#" />
 <cfparam name="session.siteManagerTab" default="0" />
-<cfset attributes.activeTab=session.siteManagerTab/>
+<cfif not isdefined("url.activeTab")>
+	<cfset attributes.activeTab=session.siteManagerTab/>
+</cfif>
 <cfhtmlhead text='<script src="#application.configBean.getContext()#/admin/js/jquery/jquery-pulse.js?coreversion=#application.coreversion#" type="text/javascript"></script>'>
 
 <cfif isdefined('attributes.orderperm') and (attributes.orderperm eq 'editor' or (attributes.orderperm eq 'author' and application.configBean.getSortPermission() eq "author"))>
@@ -194,6 +196,9 @@ function initFlatViewArgs(){
 var flatViewArgs=initFlatViewArgs();
 
 function initSiteManagerTabContent(index){
+	
+	jQuery.get("./index.cfm","fuseaction=carch.siteManagerTab&tab=" + index);
+	
 	switch(index){
 		case 0:
 		if (!archViewLoaded) {

@@ -199,7 +199,7 @@
 </cfcase>
 <cfcase value="mysql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tcontentassignments ADD COLUMN type varchar(5) default NULL
+	ALTER TABLE tcontentassignments ADD COLUMN type varchar(50) default NULL
 	</cfquery>
 </cfcase>
 <cfcase value="oracle">

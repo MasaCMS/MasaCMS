@@ -1164,4 +1164,15 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 			</cfif>	
 	</cfoutput>
 </cffunction>
+
+<cffunction name="getExpireAssignments" output="false">
+<cfargument name="contenthistid">
+<cfset var rs="">
+<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+    select userID from tcontentassignments 
+	where contenthistid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#">
+	and type='expire'
+</cfquery>
+<cfreturn rs>
+</cffunction>
 </cfcomponent>
