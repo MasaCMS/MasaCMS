@@ -2550,8 +2550,6 @@ dt .add li.Page {
 	background: none;
 	margin: 0;
 	padding: 0;
-	/*height: 24px;
-	line-height: 24px;*/
 }
 
 #tabFlat #navTask li {
@@ -2576,8 +2574,18 @@ dt .add li.Page {
 	color: #fff;
 }
 
+#tabFlat li.active {
+	background: #333;
+	color: #fff;
+}
+
 #tabFlat .mura-table-grid td {
 	vertical-align: top;
+}
+
+#tabFlat .mura-table-grid td {
+	vertical-align: top;
+	padding-top: 12px;
 }
 
 #tabFlat .mura-table-grid td.item {
@@ -2592,18 +2600,21 @@ dt .add li.Page {
 	background: yellow;
 	clear: both;
 	font-size: 11px;
+	/*display: none;*/
 }
 
 #tabFlat td h3 {
 	margin-bottom: .5em;
 	background-repeat: no-repeat;
 	padding-left: 20px;
-	letter-spacing: -.07em;
+	letter-spacing: -.06em;
 	font-weight: bold;
+	line-height: 16px;
+	font-size: 14px;
 }
 
 #tabFlat ul.nodeMeta {
-	margin-bottom: .85em;
+	margin: 0;
 	position: relative;
 	list-style: none;
 }
@@ -2611,14 +2622,13 @@ dt .add li.Page {
 #tabFlat ul.nodeMeta li {
 	float: left;
 	padding: 0;
-	margin-right: 1.5em;
+	margin: 0 1.25em .35em 0;
 	font-size: 11px;
 }
 
 #tabFlat .item .nodeMeta .updated {
-	clear: right !important;
+	float: none;
 }
-
 
 #tabFlat .nodeMeta .thumbnail {
 	float: left;
@@ -2632,11 +2642,17 @@ dt .add li.Page {
 	margin: 0;
 	padding: 0;
 	display: block;
+	/*background: #ccc;
+	padding: .4em;*/
+	border: 3px solid #ccc;
 }
 
 #tabFlat table .navZoom {
-	margin-top: .9em !important;	
+	margin-top: .5em !important;
+	clear: both !important;
 }
+
+
 
 
 /* @end */
