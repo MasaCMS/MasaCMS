@@ -45,8 +45,40 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-<cfset session.siteManagerTab=1>
-<cfset data=structNew()>
+<cfscript>
+	data=structNew();
+	$=application.serviceFactory.getBean("MuraScope");
+	feed=$.getBean("feed");
+	feed.setMaxItems(500);
+	feed.setNextN(20);
+	feed.setLiveOnly(0);
+	
+	if(len($.event("tag"))){
+		feed.addParam(field="tcontent.tags",criteria=$.event("tag"));	
+	}
+	
+	if(len($.event("type"))){
+		feed.addParam(field="tcontent.type",criteria=$.event("type"),condition="in");	
+	}
+	
+	if(len($.event("subtype"))){
+		feed.addParam(field="tcontent.subtype",value=$.event("subtype"));	
+	}
+	
+	if(len($.event("categoryID"))){
+		feed.setCategoryID($.event("categoryID"));	
+	}
+	
+	if(len($.event("sortBy"))){
+		feed.setSortBy($.event("sortBy"));	
+	}
+	
+	if(len($.event("sortDirection"))){
+		feed.setSortDirection($.event("sortDirection"));	
+	}
+	
+	iterator=feed.getIterator();
+</cfscript>
 </cfsilent>
 <cfsavecontent variable="data.html">
 <cfoutput>
@@ -65,13 +97,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  	<th class="item">Item</th>
 		<th nowrap class="administration">&nbsp;</th>
 	</tr> 
- 
+ 	<cfif iterator.hasNext()>
+	<cfloop condition="iterator.hasNext()">
+	<cfset item=iterator.next()>
 	<tr>
 		<td class="add"><a href="javascript:;" onmouseover="">&nbsp;</a></td>
 		<td class="varWidth item">
 		<p class="locked-offline">The associated file is locked for offline editing by Exene Cervenka</p>
 			
-			<h3><a title="Edit" href="">Lorem ipsum dolor sit amet</a></h3>
+			<h3><a title="Edit" href="">#HTMLEditFormat(item.getMenuTitle())#</a></h3>
 			
 			<dl>
 				<dt class="updated">Updated on 1/12/12 at 1:11 PM by John Doe</dt>
@@ -100,6 +134,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</ul>
 		</td>
 	</tr>
+	</cfloop>
+	<cfelse>
+		<tr>
+			<td colspan="3">Your search returned no results.</td>
+		</tr>	
+	</cfif>
 	
 	
 </table>
@@ -108,25 +148,54 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<h3>Type</h3>
 	<ul>
-		<li>Page</li>
-		<li>Portal</li>
-		<li>Link</li>
-		<li>File</li>
+		<cfloop list="#$.getBean('contentManager').TreeLevelList#" index="i">
+		<li><input type="checkbox" name="type" value="#i#"<cfif not len($.event('type')) or listfind($.event('type'),i)> checked</cfif>>#i#</li>
+		</cfloop>
 	</ul>
 	
 	<h3>Tags</h3>
-	<ul>
-	<li>Tag 1</li>
-	<li>Tag 2</li>
-	<li>Tag 3</li>
-	</ul>
-	
+	<cfsilent>
+		<cfset tags=$.getBean('contentGateway').getTagCloud($.event('siteID')) />
+		<cfset tagValueArray = ListToArray(ValueList(tags.tagCount))>
+		<cfset max = ArrayMax(tagValueArray)>
+		<cfset min = ArrayMin(tagValueArray)>
+		<cfset diff = max - min>
+		<cfset distribution = diff>
+		<cfset rbFactory=$.siteConfig().getRBFactory()>
+	</cfsilent>
+		
+
+	<div id="svTagCloud">
+	<cfif tags.recordcount>
+		<ol>
+		<cfloop query="tags"><cfsilent>
+				<cfif tags.tagCount EQ min>
+				<cfset class="not-popular">
+			<cfelseif tags.tagCount EQ max>
+				<cfset class="ultra-popular">
+			<cfelseif tags.tagCount GT (min + (distribution/2))>
+				<cfset class="somewhat-popular">
+			<cfelseif tags.tagCount GT (min + distribution)>
+				<cfset class="mediumTag">
+			<cfelse>
+				<cfset class="not-very-popular">
+			</cfif>
+			<cfset args = ArrayNew(1)>
+		    <cfset args[1] = tags.tagcount>
+		</cfsilent><li class="#class#"><span><cfif tags.tagcount gt 1> #rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemsare'), args)#<cfelse>#rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemis'), args)#</cfif> tagged with </span><a href="#$.createHREF(filename='#$.event('currentFilenameAdjusted')#/tag/#urlEncodedFormat(tags.tag)#')#" class="tag">#tags.tag#</a></li>
+		</cfloop>
+		</ol>
+	<cfelse>
+		<p>#$.rbKey('tagcloud.notags')#</p>
+	</cfif>
+	</div>
+
+	<cfif $.getBean("categoryManager").getCategoryCount($.event("siteID"))>
 	<h3>Categories</h3>
-	<ul>
-	<li>Cat 1</li>
-	<li>Cat 2</li>
-	<li>Cat 3</li>
-	</ul>
+	<cf_dsp_categories_nest siteID="#$.event('siteID')#" parentID="" nestLevel="0" categoryid="#$.event('categoryid')#">
+	</cfif>
+	
+	<input type="button" name="filterList" value="Filter"/>
 </div>
 
 </cfoutput>
