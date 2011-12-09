@@ -254,7 +254,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<select name="expiresMinute" class="dropdown"><cfloop from="0" to="59" index="m"><option value="#m#" <cfif LSisDate(request.contentBean.getExpires()) and minute(request.contentBean.getExpires()) eq m>selected</cfif>>#iif(len(m) eq 1,de('0#m#'),de('#m#'))#</option></cfloop></select>
 	<select name="expiresDayPart" class="dropdown"><option value="AM">AM</option><option value="PM" <cfif LSisDate(request.contentBean.getExpires()) and hour(request.contentBean.getExpires()) gte 12>selected</cfif>>PM</option></select>
 </dd>
-<dt><input type="checkbox" name="dspExpiresNotify"  id="dspexpiresnotify" onclick="loadExpiresNotify('#attributes.siteid#','#attributes.contenthistid#','#attributes.parentid#');"  class="checkbox"> <label for="dspnotify"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expiresnotify')#<!---<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.notifyReview")#</span></a>---></label></dt>
+<dt><input type="checkbox" name="dspExpiresNotify"  id="dspexpiresnotify" onclick="loadExpiresNotify('#attributes.siteid#','#attributes.contenthistid#','#attributes.parentid#');"  class="checkbox"> <label for="dspnotify"><!---<a href="##" class="tooltip">--->#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expiresnotify')#<!---<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.notifyReview")#</span></a>---></label></dt>
 <dd id="selectExpiresNotify" style="display: none;"></dd>
 </cfif>
 <cfif attributes.type neq 'Component' and attributes.type neq 'Form' and  attributes.contentid neq '00000000000000000000000000000000001'>
