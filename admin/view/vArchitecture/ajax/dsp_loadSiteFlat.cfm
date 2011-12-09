@@ -69,18 +69,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<tr>
 		<td class="add"><a href="javascript:;" onmouseover="">&nbsp;</a></td>
 		<td class="varWidth item">
-		<p class="locked-offline">The associated file is locked for offline editing by Exene Cervenka</p>
+		
 			
-			<h3 class="pdf"><a title="Edit" href="">Lorem ipsum dolor sit amet</a></h3>
+			<h3 class="pdf"><a title="Edit" href="">Lorem ipsum dolor sit amet</a></h3><p class="locked-offline">The associated file is locked for offline editing by Exene Cervenka</p>
 			
 			<ul class="nodeMeta">
+				<li class="thumbnail"><img src="http://3.bp.blogspot.com/_S-x1Z_8lDxM/Sw6aeMkGmII/AAAAAAAAAB4/gfigUEc-c6Q/s1600/gretsch_jim_1152x864.jpg" /></li>
 				<li class="updated">Updated on 1/12/12 at 1:11 PM by John Doe</li>
 				<li class="version">Version: <strong>1.2</strong></li>
 				<li class="type">Type: <strong>File (Default)</strong></li>
 				<li class="size">Size: <strong>800k</strong></li>
 				<li class="categories">Categories: <strong>Lorem Ipsum</strong></dd>
 				<li class="tags">Tags: <strong>Dolor, Sit, Amet</strong></li>
-				<li class="preview"><img src="http://3.bp.blogspot.com/_S-x1Z_8lDxM/Sw6aeMkGmII/AAAAAAAAAB4/gfigUEc-c6Q/s1600/gretsch_jim_1152x864.jpg" /></li>
 			</ul>
 			
 			<ul class="navZoom">	
@@ -88,7 +88,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<li class="Portal"><a href="0">Mura</a> &raquo;</li>
 				<li class="Portal">
 				<a href="">Portal Example</a> &raquo;</li>
-				<li class="Page"><strong><a href="">Eget Ultrices Velit Dui Sed</a></strong></li>
+				<li class="pdf"><strong><a href="">Eget Ultrices Velit Dui Sed</a></strong></li>
 			</ul>
 		</td> 
 		<td class="administration">

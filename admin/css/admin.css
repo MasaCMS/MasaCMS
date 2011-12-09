@@ -2586,13 +2586,9 @@ dt .add li.Page {
 	white-space: wrap !important;
 }
 
-#tabFlat .mura-table-grid td p {
-	
-}
-
 #tabFlat td .locked-offline {
 	padding: .25em .5em;
-	margin-bottom: .5em;
+	margin-bottom: .75em;
 	background: yellow;
 	clear: both;
 	font-size: 11px;
@@ -2602,19 +2598,13 @@ dt .add li.Page {
 	margin-bottom: .5em;
 	background-repeat: no-repeat;
 	padding-left: 20px;
-	letter-spacing: -.08em;
+	letter-spacing: -.07em;
 	font-weight: bold;
 }
 
-/*#tabFlat dl, #tabFlat .locked-offline, #tabFlat td h3 {
-	margin-left: 120px !important;
-}*/
-
 #tabFlat ul.nodeMeta {
-	margin-bottom: 1em;
+	margin-bottom: .85em;
 	position: relative;
-	padding-left: 110px;
-	min-height: 80px;
 	list-style: none;
 }
 
@@ -2630,19 +2620,22 @@ dt .add li.Page {
 }
 
 
-.nodeMeta .preview {
-	position: absolute;
-	left: 0;
-	top: 0;
-	margin: 0;
+#tabFlat .nodeMeta .thumbnail {
+	float: left;
+	margin: 0 .75em .5em 0;
 	padding-left: 0;
-	width: 100px;
-	height: auto;
 }
 
-.nodeMeta .preview img {
+.nodeMeta .thumbnail img {
 	width: 100px;
 	height: auto;
+	margin: 0;
+	padding: 0;
+	display: block;
+}
+
+#tabFlat table .navZoom {
+	margin-top: .9em !important;	
 }
 
 
@@ -3658,6 +3651,8 @@ table .navZoom {
 	list-style: none;
 	background-image: none !important;
 	position: relative;
+	display: inline-block;
+	clear: none;
 }
 
 /* @end */
