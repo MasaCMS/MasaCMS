@@ -91,7 +91,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<a href="">Portal Example</a> &raquo;</li>
 				<li class="Page"><strong><a href="">Eget Ultrices Velit Dui Sed</a></strong></li>
 			</ul>
-		</td>
+		</td> 
 		<td class="administration">
 			<ul class="four"><li class="edit"><a title="Edit" href="">Edit</a></li>
 				<li class="preview"><a title="Preview" href="">Preview</a></li>
