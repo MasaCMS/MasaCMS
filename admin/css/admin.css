@@ -2094,9 +2094,9 @@ table td table td {
 
 .mura-table-grid td.add a, .mura-grid a.add {
 	display: block;
-	background: url(../images/icons/add_32.png) no-repeat center center;
-	width: 12px;
-	height: 12px;
+	background: url(../images/icons/add_16x16.png) no-repeat center center;
+	width: 16px;
+	height: 16px;
 	padding: 0;
 }
 
@@ -2636,6 +2636,10 @@ dt .add li.Page {
 	padding-left: 0;
 }
 
+#tabFlat .item .nodeMeta .categories {
+	max-width: 77%;
+}
+
 .nodeMeta .thumbnail img {
 	width: 100px;
 	height: auto;
@@ -2650,6 +2654,7 @@ dt .add li.Page {
 #tabFlat table .navZoom {
 	margin-top: .5em !important;
 	clear: both !important;
+	display: block;
 }
 
 
@@ -2990,7 +2995,7 @@ ul.seven { /* 7 Icons */
 }
 
 .mura-grid .admin .add, .mura-grid .admin .select, table td.administration li.add, table td.administration .select {
-	background: url(../images/icons/add_24.png) no-repeat;
+	background: url(../images/icons/add_16x16.png) no-repeat;
 }
 
 .mura-grid .admin li.preview, table td.administration li.preview {
