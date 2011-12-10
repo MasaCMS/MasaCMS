@@ -75,8 +75,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="session.flatViewArgs.#session.siteID#" default="#structNew()#">
 <cfparam name="session.flatViewArgs" default="#structNew()#">
 <cfparam name="session.flatViewArgs.#session.siteID#.moduleid" default="#attributes.moduleid#" />
-<cfparam name="session.flatViewArgs.#session.siteID#.sortBy" default="#attributes.sortby#" />
-<cfparam name="session.flatViewArgs.#session.siteID#.sortDirection" default="#attributes.sortdirection#" />
+<cfparam name="session.flatViewArgs.#session.siteID#.sortBy" default="lastupdate" />
+<cfparam name="session.flatViewArgs.#session.siteID#.sortDirection" default="desc" />
 <cfparam name="session.flatViewArgs.#session.siteID#.lockid" default="#attributes.lockid#" />
 <cfparam name="session.flatViewArgs.#session.siteID#.assignments" default="#attributes.assignments#" />
 <cfparam name="session.flatViewArgs.#session.siteID#.categoryid" default="#attributes.categoryid#" />
