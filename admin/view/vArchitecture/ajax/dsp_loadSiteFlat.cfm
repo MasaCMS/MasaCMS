@@ -60,7 +60,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	session.flatViewArgs[rc.siteID].startrow=$.event("startrow");
 	session.flatViewArgs[rc.siteID].type=$.event("type");
 	session.flatViewArgs[rc.siteID].subtype=$.event("subtype");
-	
+	 
 	feed=$.getBean("feed");
 	feed.setMaxItems(500);
 	feed.setNextN(20);
