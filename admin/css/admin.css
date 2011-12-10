@@ -1830,11 +1830,11 @@ form#filterBounces * {
 }
 
 a.addCriteria {
-	background: url(../images/icons/add_32.png) no-repeat center left;
-	height: 14px;
-	width: 14px;
-	padding-left: 14px;
-	line-height: 14px;
+	background: url(../images/icons/add_16x16.png) no-repeat center left;
+	height: 16px;
+	width: 16px;
+	padding-left: 16px;
+	line-height: 16px;
 	color: #666;
 }
 
@@ -2106,7 +2106,7 @@ table td table td {
 }
 
 #ccategory table td.add a, #cFeed table td.add a {
-	background: url(../images/icons/add_32.png) no-repeat center center;
+	background: url(../images/icons/add_16x16.png) no-repeat center center;
 }
 
 /*#ccategory td.add a {
@@ -2454,7 +2454,7 @@ td.scheduled a span {
 	margin: 0;
 	margin-right: 7px;
 	display: block;
-	background: url(../images/icons/add_32.png) no-repeat center center;
+	background: url(../images/icons/add_16x16.png) no-repeat center center;
 	height: 20px;
 	padding: 4px;
 	border: 0;
