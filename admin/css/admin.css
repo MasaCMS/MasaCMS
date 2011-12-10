@@ -2574,7 +2574,7 @@ dt .add li.Page {
 	color: #fff;
 }
 
-#tabFlat li.active {
+#tabFlat .active {
 	background: #333;
 	color: #fff;
 }
