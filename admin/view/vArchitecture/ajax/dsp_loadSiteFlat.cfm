@@ -47,14 +47,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfsilent>
 <cfscript>
 	data=structNew();
+	
 	$=application.serviceFactory.getBean("MuraScope");
+	
+	session.flatViewArgs[rc.siteID].moduleid=$.event("moduleid");
+	session.flatViewArgs[rc.siteID].sortBy=$.event("sortby");
+	session.flatViewArgs[rc.siteID].sortDirection=$.event("sortdirection");
+	session.flatViewArgs[rc.siteID].lockid=$.event("lockid");
+	session.flatViewArgs[rc.siteID].assignments=$.event("assignments");
+	session.flatViewArgs[rc.siteID].categoryid=$.event("categoryid");
+	session.flatViewArgs[rc.siteID].tag=$.event("tag");
+	session.flatViewArgs[rc.siteID].startrow=$.event("startrow");
+	session.flatViewArgs[rc.siteID].type=$.event("type");
+	session.flatViewArgs[rc.siteID].subtype=$.event("subtype");
+	
 	feed=$.getBean("feed");
 	feed.setMaxItems(500);
 	feed.setNextN(20);
 	feed.setLiveOnly(0);
 	
 	if(len($.event("tag"))){
-		feed.addParam(field="tcontent.tags",criteria=$.event("tag"));	
+		feed.addParam(field="tcontent.tags",criteria=$.event("tag"),condition="in");
 	}
 	
 	if(len($.event("type"))){
@@ -103,34 +116,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<tr>
 		<td class="add"><a href="javascript:;" onmouseover="">&nbsp;</a></td>
 		<td class="varWidth item">
-		<p class="locked-offline">The associated file is locked for offline editing by Exene Cervenka</p>
+		<h3 class="pdf"><a title="Edit" href="">#HTMLEditFormat(item.getMenuTitle())#</a></h3>
+			<p class="locked-offline">The associated file is locked for offline editing by Exene Cervenka</p>
 			
-			<h3><a title="Edit" href="">#HTMLEditFormat(item.getMenuTitle())#</a></h3>
-			
-			<dl>
-				<dt class="updated">Updated on 1/12/12 at 1:11 PM by John Doe</dt>
-				<dt class="version">Version:</dt><dd class="version">1.2</dd>
-				<dt class="categories">Categories:</dt><dd class="categories">Lorem Ipsum</dd>
-				<dt class="tags">Tags:</dt><dd class="tags">Dolor, Sit, Amet</dd>
-				<dt class="type">Type:</dt><dd class="type">File (Default)</dd>
-				<dt class="size">Size:</dt><dd class="size">800k</dd>
-				<dt class="download">Download</dt>
-				<dd class="preview"><img src="http://3.bp.blogspot.com/_S-x1Z_8lDxM/Sw6aeMkGmII/AAAAAAAAAB4/gfigUEc-c6Q/s1600/gretsch_jim_1152x864.jpg" /></dd>
-			</dl>
+			<ul class="nodeMeta">
+				<li class="thumbnail"><img src="http://3.bp.blogspot.com/_S-x1Z_8lDxM/Sw6aeMkGmII/AAAAAAAAAB4/gfigUEc-c6Q/s1600/gretsch_jim_1152x864.jpg" /></li>
+				<li class="updated">Updated on 1/12/12 at 1:11 PM by John Doe</li>
+				<li class="version">Version: <strong>1.2</strong></li>
+				<li class="expiration">Expiration: <strong>1/6/12</strong></li>
+				<li class="type">Type: <strong>File (Default)</strong></li>
+				<li class="size">Size: <strong>800k</strong></li>
+				<li class="categories">Categories: <strong>Lorem Ipsum, Lorem ipsum dolor sit amet</strong></dd>
+				<li class="tags">Tags: <strong>Dolor, Sit, Amet</strong></li>
+			</ul>
 			
 			<ul class="navZoom">	
 				<li class="Page"><a href="">Home</a> &raquo;</li>
 				<li class="Portal"><a href="0">Mura</a> &raquo;</li>
 				<li class="Portal">
 				<a href="">Portal Example</a> &raquo;</li>
-				<li class="Page"><strong><a href="">Eget Ultrices Velit Dui Sed</a></strong></li>
+				<li class="pdf"><strong><a href="">Eget Ultrices Velit Dui Sed</a></strong></li>
 			</ul>
 		</td> 
 		<td class="administration">
 			<ul class="four"><li class="edit"><a title="Edit" href="">Edit</a></li>
 				<li class="preview"><a title="Preview" href="">Preview</a></li>
 				<li class="download"><a title="Download" href="">Download</a></li>
-				<li class="delete">Delete</li>
+				<li class="delete"><a title="Delete" href="">Delete</a></li>
 			</ul>
 		</td>
 	</tr>
@@ -145,14 +157,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </table>
 
 <div class="sidebar">
-	
+	<p>
 	<h3>Type</h3>
-	<ul>
+	<select name="contentTypeFilter" id="contentTypeFilter">
+		<option value="">All</option>
 		<cfloop list="#$.getBean('contentManager').TreeLevelList#" index="i">
-		<li><input type="checkbox" name="type" value="#i#"<cfif not len($.event('type')) or listfind($.event('type'),i)> checked</cfif>>#i#</li>
+		<option value="#i#"<cfif listfind($.event('type'),i)> selected</cfif>>#i#</option>
 		</cfloop>
-	</ul>
-	
+	</select>
+	</p>
+	<p>
 	<h3>Tags</h3>
 	<cfsilent>
 		<cfset tags=$.getBean('contentGateway').getTagCloud($.event('siteID')) />
@@ -163,7 +177,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset distribution = diff>
 		<cfset rbFactory=$.siteConfig().getRBFactory()>
 	</cfsilent>
-		
+	</p>	
 
 	<div id="svTagCloud">
 	<cfif tags.recordcount>
@@ -180,9 +194,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 				<cfset class="not-very-popular">
 			</cfif>
+			
+			<cfif listFindNoCase($.event("tag"),tags.tag)>
+				<cfset class=class & " active">
+			</cfif>
 			<cfset args = ArrayNew(1)>
 		    <cfset args[1] = tags.tagcount>
-		</cfsilent><li class="#class#"><span><cfif tags.tagcount gt 1> #rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemsare'), args)#<cfelse>#rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemis'), args)#</cfif> tagged with </span><a href="#$.createHREF(filename='#$.event('currentFilenameAdjusted')#/tag/#urlEncodedFormat(tags.tag)#')#" class="tag">#tags.tag#</a></li>
+		</cfsilent><li class="#class#" data-tag="#HTMLEditFormat(tags.tag)#"><span><cfif tags.tagcount gt 1> #rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemsare'), args)#<cfelse>#rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemis'), args)#</cfif> tagged with </span>#HTMLEditFormat(tags.tag)#</li>
 		</cfloop>
 		</ol>
 	<cfelse>
@@ -195,7 +213,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cf_dsp_categories_nest siteID="#$.event('siteID')#" parentID="" nestLevel="0" categoryid="#$.event('categoryid')#">
 	</cfif>
 	
-	<input type="button" name="filterList" value="Filter"/>
+	<input type="button" name="filterList" value="Filter" onclick="loadSiteFlatByFilter();"/>
 </div>
 
 </cfoutput>
