@@ -356,7 +356,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					,imageSize,imageHeight,imageWidth,childTemplate
 					</cfif>
 					<cfif isdefined("rstContent.majorVersion")>
-					,majorVersion,minorVersion
+					,majorVersion,minorVersion, expires
 					</cfif>
 					)
 					values
@@ -441,7 +441,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif isdefined("rstContent.majorVersion")>
 					,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstContent.majorVersion),de(rstContent.majorVersion),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstContent.minorVersion),de(rstContent.minorVersion),de(0))#">
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstContent.minorVersion),de(rstContent.minorVersion),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstContent.expires),de('no'),de('yes'))#" value="#rstContent.expires#">,
 					</cfif>
 					)
 				</cfquery>

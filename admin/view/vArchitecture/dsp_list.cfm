@@ -82,7 +82,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="session.flatViewArgs.#session.siteID#.categoryid" default="#attributes.categoryid#" />
 <cfparam name="session.flatViewArgs.#session.siteID#.tag" default="#attributes.tag#" />
 <cfparam name="session.flatViewArgs.#session.siteID#.startrow" default="#attributes.startrow#" />
-<cfparam name="session.flatViewArgs.#session.siteID#.type" default="#attributes.type#" />
+<cfparam name="session.flatViewArgs.#session.siteID#.type" default="" />
 <cfparam name="session.flatViewArgs.#session.siteID#.subtype" default="#attributes.subtype#" />
 <cfparam name="session.siteManagerTab" default="0" />
 <cfif not isdefined("url.activeTab")>
