@@ -60,11 +60,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	session.flatViewArgs[rc.siteID].startrow=$.event("startrow");
 	session.flatViewArgs[rc.siteID].type=$.event("type");
 	session.flatViewArgs[rc.siteID].subtype=$.event("subtype");
-	
+	 
 	feed=$.getBean("feed");
 	feed.setMaxItems(500);
 	feed.setNextN(20);
 	feed.setLiveOnly(0);
+	feed.setShowNavOnly(0);
 	
 	if(len($.event("tag"))){
 		feed.addParam(field="tcontent.tags",criteria=$.event("tag"),condition="in");
@@ -98,10 +99,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="navSort">
 	<h3>Sort by:</h3>
 	<ul id="navTask">
-		<li><a href="">Release Date</a></li>
-		<li><a href="">Title</a></li>
-		<li><a href="">Last Updated</a></li>
-		<li><a href="">Created</a></li>
+		<!---<li><a href="" data-sortby="releasedate">Release Date</a></li>--->	
+		<li><a href="" data-sortby="lastupdate"<cfif $.event("sortBy") eq "lastUpate"> class="active"</cfif>>Last Updated</a></li>
+		<li><a href="" data-sortby="created"<cfif $.event("sortBy") eq "created"> class="active"</cfif>>Created</a></li>
+		<!---<li><a href="" data-sortby="releasedate"<cfif $.event("sortBy") eq "releasedate"> class="active"</cfif>>Release Date</a></li>--->
+		<li><a href="" data-sortby="menutitle"<cfif $.event("sortBy") eq "menutitle"> class="active"</cfif>>Title</a></li>
 	</ul>
 </div>
 <table class="mura-table-grid stripe">
@@ -194,13 +196,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 				<cfset class="not-very-popular">
 			</cfif>
-			
-			<cfif listFindNoCase($.event("tag"),tags.tag)>
-				<cfset class=class & " active">
-			</cfif>
+		
 			<cfset args = ArrayNew(1)>
 		    <cfset args[1] = tags.tagcount>
-		</cfsilent><li class="#class#" data-tag="#HTMLEditFormat(tags.tag)#"><span><cfif tags.tagcount gt 1> #rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemsare'), args)#<cfelse>#rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemis'), args)#</cfif> tagged with </span>#HTMLEditFormat(tags.tag)#</li>
+		</cfsilent><li class="#class#"><span><cfif tags.tagcount gt 1> #rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemsare'), args)#<cfelse>#rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemis'), args)#</cfif> tagged with </span><a class="tag<cfif listFind($.event('tag'),tags.tag)> active</cfif>">#HTMLEditFormat(tags.tag)#</a></li>
 		</cfloop>
 		</ol>
 	<cfelse>
