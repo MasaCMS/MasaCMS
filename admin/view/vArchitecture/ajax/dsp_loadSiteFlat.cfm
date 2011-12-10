@@ -60,6 +60,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	session.flatViewArgs[rc.siteID].startrow=$.event("startrow");
 	session.flatViewArgs[rc.siteID].type=$.event("type");
 	session.flatViewArgs[rc.siteID].subtype=$.event("subtype");
+	session.flatViewArgs[rc.siteID].report=$.event("report");
 	 
 	feed=$.getBean("feed");
 	feed.setMaxItems(500);
@@ -160,7 +161,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div class="sidebar">
 	<p>
-	<h3>Type</h3>
+	<h3>Reports</h3>
+	<ul class="navReports">
+		<li><a href="" data-report=""<cfif not len($.event("report"))> class="active"</cfif>>All Site Content</a></a></li>
+		<li><a href="" data-report="expires"<cfif $.event("report") eq "expires"> class="active"</cfif>>Your Expiring Content</a></li>
+		<li><a href="" data-report="drafts"<cfif $.event("report") eq "drafts"> class="active"</cfif>>Drafts Assigned to You</a></li>
+		<li><a href="" data-report="lockedfiles"<cfif $.event("report") eq "lockedfiles"> class="active"</cfif>>Files You're Editing Offline</a></li>
+	</ul>
+	</p>
+	
+	<cfset tags=$.getBean('contentGateway').getTagCloud($.event('siteID')) />
+	<cfset categoryCount=$.getBean("categoryManager").getCategoryCount($.event("siteID"))>
+	
+	<cfif $.event("report") neq "lockedfiles" 
+		or tags.recordcount 
+		or categoryCount>
+	<h3>Filters</h3>
+	<cfif $.event("report") neq "lockedfiles">
+	<p>
+	<h4>Type</h4>
 	<select name="contentTypeFilter" id="contentTypeFilter">
 		<option value="">All</option>
 		<cfloop list="#$.getBean('contentManager').TreeLevelList#" index="i">
@@ -168,8 +187,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 	</select>
 	</p>
-	<p>
-	<h3>Tags</h3>
+	</cfif>
+		
 	<cfsilent>
 		<cfset tags=$.getBean('contentGateway').getTagCloud($.event('siteID')) />
 		<cfset tagValueArray = ListToArray(ValueList(tags.tagCount))>
@@ -178,11 +197,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset diff = max - min>
 		<cfset distribution = diff>
 		<cfset rbFactory=$.siteConfig().getRBFactory()>
-	</cfsilent>
-	</p>	
-
-	<div id="svTagCloud">
+	</cfsilent>	
+	
 	<cfif tags.recordcount>
+	<h4>Tags</h4>
+	<div id="svTagCloud">
 		<ol>
 		<cfloop query="tags"><cfsilent>
 				<cfif tags.tagCount EQ min>
@@ -202,17 +221,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfsilent><li class="#class#"><span><cfif tags.tagcount gt 1> #rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemsare'), args)#<cfelse>#rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemis'), args)#</cfif> tagged with </span><a class="tag<cfif listFind($.event('tag'),tags.tag)> active</cfif>">#HTMLEditFormat(tags.tag)#</a></li>
 		</cfloop>
 		</ol>
-	<cfelse>
-		<p>#$.rbKey('tagcloud.notags')#</p>
-	</cfif>
 	</div>
+	</cfif>
 
-	<cfif $.getBean("categoryManager").getCategoryCount($.event("siteID"))>
-	<h3>Categories</h3>
+	<cfif categoryCount>
+	<h4>Categories</h4>
 	<cf_dsp_categories_nest siteID="#$.event('siteID')#" parentID="" nestLevel="0" categoryid="#$.event('categoryid')#">
 	</cfif>
 	
 	<input type="button" name="filterList" value="Filter" onclick="loadSiteFlatByFilter();"/>
+	</cfif>
 </div>
 
 </cfoutput>
