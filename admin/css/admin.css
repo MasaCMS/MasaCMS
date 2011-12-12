@@ -2574,7 +2574,7 @@ dt .add li.Page {
 	color: #fff;
 }
 
-#tabFlat .active {
+#tabFlat a.active {
 	background: #333;
 	color: #fff;
 }
@@ -2641,7 +2641,7 @@ dt .add li.Page {
 }
 
 .nodeMeta .thumbnail img {
-	width: 100px;
+	width: 80px;
 	height: auto;
 	margin: 0;
 	padding: 0;
