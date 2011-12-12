@@ -129,6 +129,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset variables.condition="=" />
 				</cfif>
 	 		</cfcase>
+	 		<cfdefaultcase>
+			 	<cfset variables.condition=arguments.condition />
+			</cfdefaultcase>
 	 	</cfswitch>
 	
 </cffunction>
@@ -150,61 +153,65 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset tmp=application.contentRenderer.setDynamicContent(arguments.criteria) />
 	<cfcatch><cfset tmp=arguments.criteria /></cfcatch>
 	</cftry>
-	<cfswitch expression="#getDataType()#">
-	<cfcase value="varchar">
-		<cfswitch expression="#arguments.condition#">
-			<cfcase value="Begins" >
-				<cfset variables.criteria="#tmp#%" />
-			</cfcase>
-			<cfcase value="Contains" >
-				<cfset variables.criteria="%#tmp#%" />
-			</cfcase>
-			<cfdefaultcase>
-				<cfset variables.criteria="#tmp#" />
-			</cfdefaultcase>
+	<cfif tmp eq "null">
+		<cfset variables.criteria="null">
+	<cfelse>
+		<cfswitch expression="#getDataType()#">
+		<cfcase value="varchar">
+			<cfswitch expression="#arguments.condition#">
+				<cfcase value="Begins" >
+					<cfset variables.criteria="#tmp#%" />
+				</cfcase>
+				<cfcase value="Contains" >
+					<cfset variables.criteria="%#tmp#%" />
+				</cfcase>
+				<cfdefaultcase>
+					<cfset variables.criteria="#tmp#" />
+				</cfdefaultcase>
+			</cfswitch>
+		</cfcase>
+		<cfcase value="date" >
+			<cfif lsIsDate(tmp)>
+				<cfset tmp=lsParseDateTime(tmp)>
+				<cfset variables.criteria=createODBCDate(createDate(year(tmp),month(tmp),day(tmp))) />
+			<cfelseif isDate(tmp)>
+				<cfset tmp=parseDateTime(tmp)>
+				<cfset variables.criteria=createODBCDate(createDate(year(tmp),month(tmp),day(tmp))) />
+			<cfelse>
+				<cfset variables.criteria="" />
+				<cfset setIsValid(false) />
+			</cfif>
+		</cfcase>
+		<cfcase value="timestamp" >
+			<cfif lsIsDate(tmp)>
+				<cfset tmp=lsParseDateTime(tmp)>
+				<cfset variables.criteria=createODBCDateTime(createDateTime(year(tmp),month(tmp),day(tmp),hour(tmp),minute(tmp),0)) />
+			<cfelseif isDate(tmp)>
+				<cfset tmp=parseDateTime(tmp)>
+				<cfset variables.criteria=createODBCDateTime(createDateTime(year(tmp),month(tmp),day(tmp),hour(tmp),minute(tmp),0)) />
+			<cfelse>
+				<cfset variables.criteria="" />
+				<cfset setIsValid(false) />
+			</cfif>
+		</cfcase>
+		<cfcase value="time" >
+			<cfif isDate(tmp)>
+				<cfset variables.criteria=createODBCDateTime(tmp) />
+			<cfelse>
+				<cfset variables.criteria="" />
+				<cfset setIsValid(false) />
+			</cfif>
+		</cfcase>
+		<cfcase value="numeric" >
+			<cfif isNumeric(tmp)>
+				<cfset variables.criteria=tmp />
+			<cfelse>
+				<cfset variables.criteria="" />
+				<cfset setIsValid(false) />
+			</cfif>
+		</cfcase>
 		</cfswitch>
-	</cfcase>
-	<cfcase value="date" >
-		<cfif lsIsDate(tmp)>
-			<cfset tmp=lsParseDateTime(tmp)>
-			<cfset variables.criteria=createODBCDate(createDate(year(tmp),month(tmp),day(tmp))) />
-		<cfelseif isDate(tmp)>
-			<cfset tmp=parseDateTime(tmp)>
-			<cfset variables.criteria=createODBCDate(createDate(year(tmp),month(tmp),day(tmp))) />
-		<cfelse>
-			<cfset variables.criteria="" />
-			<cfset setIsValid(false) />
-		</cfif>
-	</cfcase>
-	<cfcase value="timestamp" >
-		<cfif lsIsDate(tmp)>
-			<cfset tmp=lsParseDateTime(tmp)>
-			<cfset variables.criteria=createODBCDateTime(createDateTime(year(tmp),month(tmp),day(tmp),hour(tmp),minute(tmp),0)) />
-		<cfelseif isDate(tmp)>
-			<cfset tmp=parseDateTime(tmp)>
-			<cfset variables.criteria=createODBCDateTime(createDateTime(year(tmp),month(tmp),day(tmp),hour(tmp),minute(tmp),0)) />
-		<cfelse>
-			<cfset variables.criteria="" />
-			<cfset setIsValid(false) />
-		</cfif>
-	</cfcase>
-	<cfcase value="time" >
-		<cfif isDate(tmp)>
-			<cfset variables.criteria=createODBCDateTime(tmp) />
-		<cfelse>
-			<cfset variables.criteria="" />
-			<cfset setIsValid(false) />
-		</cfif>
-	</cfcase>
-	<cfcase value="numeric" >
-		<cfif isNumeric(tmp)>
-			<cfset variables.criteria=tmp />
-		<cfelse>
-			<cfset variables.criteria="" />
-			<cfset setIsValid(false) />
-		</cfif>
-	</cfcase>
-	</cfswitch>
+	</cfif>
 	
 </cffunction>
 

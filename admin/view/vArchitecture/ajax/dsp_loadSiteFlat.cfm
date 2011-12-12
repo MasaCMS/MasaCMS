@@ -77,7 +77,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	}
 	
 	if(len($.event("subtype"))){
-		feed.addParam(field="tcontent.subtype",value=$.event("subtype"));	
+		feed.addParam(field="tcontent.subtype",criteria=$.event("subtype"));	
 	}
 	
 	if(len($.event("categoryID"))){
@@ -90,6 +90,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	if(len($.event("sortDirection"))){
 		feed.setSortDirection($.event("sortDirection"));	
+	}
+	
+	if($.event('report') eq "mylockedfiles"){
+		feed.addParam(field="tcontentstats.lockid",condition=">",criteria="");	
+	} else if($.event('report') eq "mylockedfiles"){
+		feed.addParam(field="tcontentstats.lockid",condition="=",criteria=$.currentUser("userID"));
+	} else if($.event('report') eq "expires"){
+		feed.addParam(field="tcontent.expires",datatype="date",condition="<=",criteria=dateAdd("m",1,now()));
+		feed.addParam(field="tcontent.expires",datatype="date",condition="is not",criteria="null");		
+	} else if($.event('report') eq "myexpires"){
+		feed.addParam(field="tcontent.expires",datatype="date",condition="<=",criteria=dateAdd("m",1,now()));
+		feed.addParam(field="tcontent.expires",datatype="date",condition="is not",criteria="null");		
+		feed.addParam(relationship="and (");
+		feed.addParam(field="tcontentassignments.userid",datatype="varchar",condition="=",criteria=$.currentUser("userID"));
+		feed.addParam(field="tcontentassignments.type",datatype="varchar",condition="=",criteria="expires");
+		feed.addParam(relationship="or",field="tcontent.lastupdatebyid",datatype="varchar",condition="=",criteria=$.currentUser("userID"));
+		feed.addParam(relationship=")");
+	} else if($.event('report') eq "mydrafts"){
+		draftList=$.getBean("contentManager").getDraftList($.event("siteID"));
+		feed.addParam(field="tcontent.contentID",datatype="varchar",condition="in",criteria=valuelist(draftList.contentID));
 	}
 	
 	iterator=feed.getIterator();
@@ -126,10 +146,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfset deletable=((item.getParentID() neq '00000000000000000000000000000000001' and application.settingsManager.getSite(item.getSiteID()).getLocking() neq 'all') or (item.getParentID() eq '00000000000000000000000000000000001' and application.settingsManager.getSite(item.getSiteID()).getLocking() eq 'none')) and (verdict eq 'editor')  and item.getIsLocked() neq 1>
 	</cfsilent>	
-	<tr>
+	<tr data-siteid="#item.getSiteID()#" data-contentid="#item.getContentID()#" data-contenthistid="#item.getContentHistID()#" data-sortby="#item.getSortBy()#" data-sortdirection="#item.getSortDirection()#" data-moduleid="#HTMLEditFormat(item.getModuleID())#" data-type="#item.getType()#">
 		<td class="add"><a class="add" href="javascript:;" onmouseover="showMenu('newContentMenu',#newcontent#,this,'#item.getContentID()#','#item.getContentID()#','#item.getContentID()#','#item.getSiteID()#','#item.getType()#');"></a></td>
 		<td class="varWidth item">
-		<h3 class="pdf"><a title="Edit" href="index.cfm?fuseaction=cArch.edit&contenthistid=#item.getContentHistID()#&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getParentID()#&topid=#URLEncodedFormat(item.getParentID())#&siteid=#URLEncodedFormat(item.getSiteid())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#">#HTMLEditFormat(item.getMenuTitle())#</a></h3>
+		<h3 class="pdf">
+			<cfif verdict neq 'none'>
+				<a title="Edit" class="draftprompt" href="index.cfm?fuseaction=cArch.edit&contenthistid=#item.getContentHistID()#&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getParentID()#&topid=#URLEncodedFormat(item.getParentID())#&siteid=#URLEncodedFormat(item.getSiteid())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#">#HTMLEditFormat(item.getMenuTitle())#</a>
+			<cfelse>
+				#HTMLEditFormat(item.getMenuTitle())#
+			</cfif>	
+		</h3>
 			<cfif len(item.getLockID())>
 				<cfset lockedBy=$.getBean("user").loadBy(item.getLockID())>
 				<p class="locked-offline">The associated file is locked for offline editing by #HTMLEditFormat(lockedBy.getFName())# #HTMLEditFormat(lockedBy.getLName())#</p>
@@ -160,7 +186,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<td class="administration">
 			<ul class="siteSummary five">
 			<cfif verdict neq 'none'>
-		       <li class="edit"><a title="Edit" href="index.cfm?fuseaction=cArch.edit&contenthistid=#item.getContentHistID()#&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getParentID()#&topid=#URLEncodedFormat(item.getParentID())#&siteid=#URLEncodedFormat(item.getSiteid())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#">&nbsp;</a></li>
+		       <li class="edit"><a title="Edit" class="draftprompt" href="index.cfm?fuseaction=cArch.edit&contenthistid=#item.getContentHistID()#&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getParentID()#&topid=#URLEncodedFormat(item.getParentID())#&siteid=#URLEncodedFormat(item.getSiteid())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#">&nbsp;</a></li>
 			   <cfswitch expression="#item.gettype()#">
 				<cfcase value="Page,Portal,Calendar,Gallery">
 				<li class="preview"><a title="Preview" href="javascript:preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),item.getfilename())#','#item.gettargetParams()#');">Preview</a></li>
@@ -218,9 +244,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<ul class="navReports">
 		<li><a href="" data-report=""<cfif not len($.event("report"))> class="active"</cfif>>All Site Content</a></a></li>
 		<li><a href="" data-report="expires"<cfif $.event("report") eq "expires"> class="active"</cfif>>All Expiring Content</a></li>
-		<li><a href="" data-report="expires"<cfif $.event("report") eq "yourexpires"> class="active"</cfif>>Your Expiring Content</a></li>
-		<li><a href="" data-report="drafts"<cfif $.event("report") eq "drafts"> class="active"</cfif>>Your Drafts</a></li>
-		<li><a href="" data-report="lockedfiles"<cfif $.event("report") eq "lockedfiles"> class="active"</cfif>>Files You're Editing Offline</a></li>
+		<li><a href="" data-report="myexpires"<cfif $.event("report") eq "myexpires"> class="active"</cfif>>My Expiring Content</a></li>
+		<li><a href="" data-report="mydrafts"<cfif $.event("report") eq "mydrafts"> class="active"</cfif>>My Drafts</a></li>
+		<li><a href="" data-report="mylockedfiles"<cfif $.event("report") eq "mylockedfiles"> class="active"</cfif>>Files I'm Editing Offline</a></li>
 	</ul>
 	</p>
 	
@@ -286,7 +312,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<input type="button" name="filterList" value="Filter" onclick="loadSiteFlatByFilter();"/>
 	</cfif>
 </div>
-
+<!---<cfdump var="#request.test#">--->
 </cfoutput>
 <!---</cfsavecontent>
 <cfoutput>#createObject("component","mura.json").encode(data)#</cfoutput>--->

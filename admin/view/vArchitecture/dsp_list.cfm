@@ -190,7 +190,8 @@ function initFlatViewArgs(){
 			categoryid:'#JSStringFormat(session.flatViewArgs[session.siteid].categoryid)#',
 			lockid:'#JSStringFormat(session.flatViewArgs[session.siteid].lockid)#',
 			type:'#JSStringFormat(session.flatViewArgs[session.siteid].type)#',
-			subType:'#JSStringFormat(session.flatViewArgs[session.siteid].subtype)#'
+			subType:'#JSStringFormat(session.flatViewArgs[session.siteid].subtype)#',
+			report:'#JSStringFormat(session.flatViewArgs[session.siteid].report)#'
 			};
 }
 
