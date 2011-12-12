@@ -2853,54 +2853,53 @@ dt .add li.Page {
 
 /* @group Content Icons */
 
-li.Link, .mura-grid li dt a.Link {
+.Link {
 	background: url(../images/icons/link.png) no-repeat 2px .7em;
 }
 
-li.Portal, .mura-grid li dt a.Portal {
+.Portal {
 	background: url(../images/icons/portal.png) no-repeat 0 .6em;
 }
 
-li.Gallery, .mura-grid li dt a.Gallery {
+.Gallery {
 	background: url(../images/icons/smicn_32.png) no-repeat 3px .7em;
 }
 
-li.Image, .mura-grid li dt a.Image {
+.Image, .mura-grid li dt a.Image {
 	background: url(../images/icons/image_32.png) no-repeat 0 .6em;
 }
 
-li.GalleryLocked, .mura-grid li dt a.GalleryLocked {
+.GalleryLocked {
 	background: url(../images/icons/smicn_32_locked.png) no-repeat 1px .7em;
 }
 
-li.ImageLocked, .mura-grid li dt a.ImageLocked {
+.ImageLocked {
 	background: url(../images/icons/image_32_locked.png) no-repeat 0 .1em;
 }
 
-li.Calendar, .mura-grid li dt a.Calendar {
+.Calendar {
 	background: url(../images/icons/calendar.gif) no-repeat 2px .6em;
 }
 
-li.PageLocked, .mura-grid li dt a.PageLocked {
+.PageLocked {
 	background: url(../images/icons/files/icon_generic_small_locked.gif) no-repeat 1px .6em;
 }
 
-li.DocumentLocked, li.FileLocked, .mura-grid li dt a.DocumentLocked, .mura-grid li dt a.FileLocked {
+.DocumentLocked, .FileLocked {
 	background: url(../images/icons/document_locked.png) no-repeat 1px .1em;
 }
 
-li.LinkLocked, .mura-grid li dt a.LinkLocked {
+.LinkLocked {
 	background: url(../images/icons/link_locked.png) no-repeat 1px .7em;
 }
 
-li.PortalLocked, .mura-grid li dt a.PortalLocked {
+.PortalLocked {
 	background: url(../images/icons/portal_locked.png) no-repeat 0 .6em;
 }
 
-li.CalendarLocked, .mura-grid li dt a.CalendarLocked {
+.CalendarLocked {
 	background: url(../images/icons/calendar_locked.gif) no-repeat 1px .6em;
 }
-
 
 .navZoom li, .navZoom li.Link, .navZoom li.Gallery, .navZoom li.Image, .navZoom li.Page, .navZoom li.gif, .navZoom li.jpg, .navZoom li.psd, .navZoom li.pdf, .navZoom li.ppt, .navZoom li.doc, .navZoom li.png, .navZoom li.txt, .navZoom li.xls, .navZoom li.mdb, .navZoom li.vsd, .navZoom li.mpp, .navZoom li.graffle, .navZoom li.mp3, .navZoom li.ndd, .navZoom li.zip, .navZoom li.css, .navZoom li.html, .navZoom li.htm, .navZoom li.LinkLocked, .navZoom li.GalleryLocked, .navZoom li.ImageLocked, .navZoom li.PageLocked, .navZoom li.gifLocked, .navZoom li.jpgLocked, .navZoom li.psdLocked, .navZoom li.pdfLocked, .navZoom li.pptLocked, .navZoom li.docLocked, .navZoom li.pngLocked, .navZoom li.txtLocked, .navZoom li.xlsLocked, .navZoom li.mdbLocked, .navZoom li.vsdLocked, .navZoom li.mppLocked, .navZoom li.graffleLocked, .navZoom li.mp3Locked, .navZoom li.nddLocked, .navZoom li.zipLocked, .navZoom li.cssLocked, .navZoom li.htmlLocked, .navZoom li.htmLocked   {
 	background-position: left center;
