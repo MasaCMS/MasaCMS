@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfsilent>
 <cfscript>
-	data=structNew();
+	//data=structNew();
 	
 	$=application.serviceFactory.getBean("MuraScope");
 	
@@ -95,7 +95,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	iterator=feed.getIterator();
 </cfscript>
 </cfsilent>
-<cfsavecontent variable="data.html">
+<!---<cfsavecontent variable="data.html">--->
 <cfoutput>
 <div class="navSort">
 	<h3>Sort by:</h3>
@@ -115,38 +115,93 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</tr> 
  	<cfif iterator.hasNext()>
 	<cfloop condition="iterator.hasNext()">
+	<cfsilent>
 	<cfset item=iterator.next()>
+	<cfset crumbdata=application.contentManager.getCrumbList(item.getContentID(), item.getSiteID())/>
+	<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
+	<cfif application.settingsManager.getSite(item.getSiteID()).getLocking() neq 'all' and verdict neq 'none'>
+		<cfset newcontent=1>
+	<cfelse>
+		<cfset newcontent=0>
+	</cfif>
+	<cfset deletable=((item.getParentID() neq '00000000000000000000000000000000001' and application.settingsManager.getSite(item.getSiteID()).getLocking() neq 'all') or (item.getParentID() eq '00000000000000000000000000000000001' and application.settingsManager.getSite(item.getSiteID()).getLocking() eq 'none')) and (verdict eq 'editor')  and item.getIsLocked() neq 1>
+	</cfsilent>	
 	<tr>
-		<td class="add"><a href="javascript:;" onmouseover="">&nbsp;</a></td>
+		<td class="add"><a class="add" href="javascript:;" onmouseover="showMenu('newContentMenu',#newcontent#,this,'#item.getContentID()#','#item.getContentID()#','#item.getContentID()#','#item.getSiteID()#','#item.getType()#');"></a></td>
 		<td class="varWidth item">
-		<h3 class="pdf"><a title="Edit" href="">#HTMLEditFormat(item.getMenuTitle())#</a></h3>
-			<p class="locked-offline">The associated file is locked for offline editing by Exene Cervenka</p>
-			
+		<h3 class="pdf"><a title="Edit" href="index.cfm?fuseaction=cArch.edit&contenthistid=#item.getContentHistID()#&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getParentID()#&topid=#URLEncodedFormat(item.getParentID())#&siteid=#URLEncodedFormat(item.getSiteid())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#">#HTMLEditFormat(item.getMenuTitle())#</a></h3>
+			<cfif len(item.getLockID())>
+				<cfset lockedBy=$.getBean("user").loadBy(item.getLockID())>
+				<p class="locked-offline">The associated file is locked for offline editing by #HTMLEditFormat(lockedBy.getFName())# #HTMLEditFormat(lockedBy.getLName())#</p>
+			</cfif>
 			<ul class="nodeMeta">
-				<li class="thumbnail"><img src="http://3.bp.blogspot.com/_S-x1Z_8lDxM/Sw6aeMkGmII/AAAAAAAAAB4/gfigUEc-c6Q/s1600/gretsch_jim_1152x864.jpg" /></li>
-				<li class="updated">Updated on 1/12/12 at 1:11 PM by John Doe</li>
-				<li class="version">Version: <strong>1.2</strong></li>
-				<li class="expiration">Expiration: <strong>1/6/12</strong></li>
-				<li class="type">Type: <strong>File (Default)</strong></li>
-				<li class="size">Size: <strong>800k</strong></li>
-				<li class="categories">Categories: <strong>Lorem Ipsum, Lorem ipsum dolor sit amet</strong></dd>
-				<li class="tags">Tags: <strong>Dolor, Sit, Amet</strong></li>
+				<cfif listFindNoCase("png,jpg,jpeg,gif",item.getFileExt())>
+				<li class="thumbnail"><img src="#item.getImageURL(size='small')#" /></li>
+				</cfif>
+				<li class="updated">Updated on #LSDateformat(item.getlastUpdate(),session.dateKeyFormat)# at #LSTimeFormat(item.getLastUpdate())#  by #HTMLEditFormat(item.getLastUpdateBy())#</li>
+				<cfif isNumeric(item.getMajorVersion()) and item.getMajorVersion()><li class="version">Version: <strong>#item.getMajorVersion()#.#item.getMinorVersion()#</strong></li></cfif>
+				<cfif isDate(item.getExpires())><li class="expiration">Expiration: <strong>#LSDateFormat(item.getExpires(),session.dateKeyFormat)#</strong></li></cfif>
+				<li class="type">Type: <strong>#item.getType()# (#item.getSubType()#)</strong></li>
+				<cfif isNumeric(item.getFileSize()) and item.getFileSize()><li class="size">Size: <strong>#$.renderFileSize(item.getFileSize())#</strong></li></cfif>
+				<cfset categories=item.getCategoriesIterator()>
+				<cfif categories.hasNext()>
+				<li class="categories">Categories: <strong>
+					<cfloop condition="categories.hasNext()">
+						<cfset category=categories.next()>
+						#HTMLEditFormat(category.getName())#<cfif categories.hasPrevious()>, </cfif>
+					</cfloop>
+					</strong>
+				</cfif></dd>
+				<cfif len(item.getTags())><li class="tags">Tags: <strong>#item.getTags()#</strong></li></cfif>
 			</ul>
 			
-			<ul class="navZoom">	
-				<li class="Page"><a href="">Home</a> &raquo;</li>
-				<li class="Portal"><a href="0">Mura</a> &raquo;</li>
-				<li class="Portal">
-				<a href="">Portal Example</a> &raquo;</li>
-				<li class="pdf"><strong><a href="">Eget Ultrices Velit Dui Sed</a></strong></li>
-			</ul>
+			#application.contentRenderer.dspZoom(crumbdata,item.getFileEXT())#
 		</td> 
 		<td class="administration">
-			<ul class="four"><li class="edit"><a title="Edit" href="">Edit</a></li>
-				<li class="preview"><a title="Preview" href="">Preview</a></li>
-				<li class="download"><a title="Download" href="">Download</a></li>
-				<li class="delete"><a title="Delete" href="">Delete</a></li>
-			</ul>
+			<ul class="siteSummary five">
+			<cfif verdict neq 'none'>
+		       <li class="edit"><a title="Edit" href="index.cfm?fuseaction=cArch.edit&contenthistid=#item.getContentHistID()#&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getParentID()#&topid=#URLEncodedFormat(item.getParentID())#&siteid=#URLEncodedFormat(item.getSiteid())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#">&nbsp;</a></li>
+			   <cfswitch expression="#item.gettype()#">
+				<cfcase value="Page,Portal,Calendar,Gallery">
+				<li class="preview"><a title="Preview" href="javascript:preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),item.getfilename())#','#item.gettargetParams()#');">Preview</a></li>
+				</cfcase>
+				<cfcase value="Link">
+				<li class="preview"><a title="Preview" href="javascript:preview('#item.getfilename()#','#item.gettargetParams()#');">Preview</a></li>
+				</cfcase>
+				<cfcase value="File">
+				<li class="preview"><a title="Preview" href="javascript:preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),"")#?LinkServID=#item.getcontentid()#','#item.gettargetParams()#');">Preview</a></li>
+				</cfcase>
+				</cfswitch>
+			   <li class="versionHistory"><a title="Version History" href="index.cfm?fuseaction=cArch.hist&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#item.getcontentID()#&siteid=#URLEncodedFormat(item.getSiteID())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#">&nbsp;</a></li>
+		        <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(item.getSiteID()).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
+		          <li class="permissions"><a title="Permissions" href="index.cfm?fuseaction=cPerm.main&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#item.getcontentID()#&siteid=#URLEncodedFormat(item.getSiteID())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#">&nbsp;</a></li>
+		        <cfelse>
+				  <li class="permissionsOff"><a>Permissions</a></li>
+				</cfif>
+		        <cfif deletable>
+		          <li class="delete"><a title="Delete" href="index.cfm?fuseaction=cArch.update&contentid=#item.getContentID()#&type=#item.gettype()#&action=deleteall&topid=#item.getcontentID()#&siteid=#URLEncodedFormat(item.getSiteID())#&moduleid=#item.getmoduleid()#&parentid=#URLEncodedFormat(item.getParentID())#&startrow=#$.event('startrow')#"
+					<cfif listFindNoCase("Page,Portal,Calendar,Gallery,Link,File",item.gettype())>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),item.getmenutitle()))#',this.href)"<cfelse>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)"</cfif>>&nbsp;</a></li>
+		         <cfelseif attributes.locking neq 'all'>
+		          <li class="deleteOff">Delete</li>
+		        </cfif>
+	        <cfelse>
+		        <li class="editOff">&nbsp;</li>
+				<cfswitch expression="#item.gettype#">
+				<cfcase value="Page,Portal,Calendar,Gallery">
+				<li class="preview"><a title="Preview" href="javascript:preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),item.getfilename())#','#item.gettargetParams()#');">Preview</a></li>
+				</cfcase>
+				<cfcase value="Link">
+				<li class="preview"><a title="Preview" href="javascript:preview('#item.getfilename()#','#item.gettargetParams()#');">Preview</a></li>
+				</cfcase>
+				<cfcase value="File">
+				<li class="preview"><a title="Preview" href="javascript:preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),"")#?LinkServID=#item.getcontentid()#','#item.gettargetParams()#');">Preview</a></li>
+				</cfcase>
+				</cfswitch>
+				<li class="versionHistoryOff"><a>Version History</a></li>
+				<li class="permissionsOff"><a>Permissions</a></li>
+				<li class="deleteOff"><a>Delete</a></li>
+	      </cfif>
+	      </ul>
 		</td>
 	</tr>
 	</cfloop>
@@ -155,8 +210,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<td colspan="3">Your search returned no results.</td>
 		</tr>	
 	</cfif>
-	
-	
 </table>
 
 <div class="sidebar">
@@ -164,8 +217,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<h3>Reports</h3>
 	<ul class="navReports">
 		<li><a href="" data-report=""<cfif not len($.event("report"))> class="active"</cfif>>All Site Content</a></a></li>
-		<li><a href="" data-report="expires"<cfif $.event("report") eq "expires"> class="active"</cfif>>Your Expiring Content</a></li>
-		<li><a href="" data-report="drafts"<cfif $.event("report") eq "drafts"> class="active"</cfif>>Drafts Assigned to You</a></li>
+		<li><a href="" data-report="expires"<cfif $.event("report") eq "expires"> class="active"</cfif>>All Expiring Content</a></li>
+		<li><a href="" data-report="expires"<cfif $.event("report") eq "yourexpires"> class="active"</cfif>>Your Expiring Content</a></li>
+		<li><a href="" data-report="drafts"<cfif $.event("report") eq "drafts"> class="active"</cfif>>Your Drafts</a></li>
 		<li><a href="" data-report="lockedfiles"<cfif $.event("report") eq "lockedfiles"> class="active"</cfif>>Files You're Editing Offline</a></li>
 	</ul>
 	</p>
@@ -234,5 +288,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 
 </cfoutput>
-</cfsavecontent>
-<cfoutput>#createObject("component","mura.json").encode(data)#</cfoutput>
+<!---</cfsavecontent>
+<cfoutput>#createObject("component","mura.json").encode(data)#</cfoutput>--->
