@@ -144,10 +144,17 @@ body#popUp {
 	width: 290px;
 }
 
-
 #login p {
 	margin: 0 0 6px 0;
 	padding: 0;
+}
+
+.sidebar ul {
+	list-style: none;
+}
+
+.sidebar li {
+	margin-bottom: .5em;
 }
 
 ul#setList {
@@ -1487,9 +1494,9 @@ h4 {
 }
 
 .sidebar h4 {
-	font-size: 11px;
-	margin-bottom: 0;
-	text-transform: none;
+	font-size: 12px;
+	text-transform: uppercase;
+	margin-bottom: .25em !important;
 }
 
 #filterByTitle h4 {
@@ -1581,15 +1588,15 @@ h5 {
 	clear: right;
 }
 
-#contentSecondary dd input {
+#contentSecondary dd input.text {
 	margin: 0 4px 3px 0;
-	width: 125px;
+	width: 155px !important;
 	display: inline;
 }
 
 #contentSecondary dd input.submit {
 	margin: 0 4px 3px 0;
-	width: auto;
+	width: auto !important;
 }
 
 #contentSecondary dd a.submit {
@@ -1719,7 +1726,8 @@ h5 {
 #cdashboard #siteSearch {
 	margin: 0;
 	padding: 0;
-	background-image: none;
+	background: none;
+	float: none;
 }
 
 #cdashboard #advancedSearch dd {
@@ -2524,7 +2532,10 @@ dt .add li.Page {
 
 #tabFlat .sidebar {
 	float: right;
-	width: 20%;
+	width: 22%;
+	/*padding: 1em;
+	background: #e9e9e9;
+	border-radius: 5px;*/
 }
 
 #tabFlat .mura-table-grid {
@@ -2543,6 +2554,11 @@ dt .add li.Page {
 	margin: 0 .5em 0 0;
 	height: 24px;
 	line-height: 24px;
+}
+
+#tabFlat .sidebar h3 {
+	font-size: 15px;
+	font-weight: bold;
 }
 
 #tabFlat #navTask {
@@ -2603,13 +2619,13 @@ dt .add li.Page {
 	/*display: none;*/
 }
 
-#tabFlat td h3 {
-	margin-bottom: .5em;
+#tabFlat .item h3 {
+	margin-bottom: .35em;
 	/*background-repeat: no-repeat;
 	padding-left: 20px;*/
 	letter-spacing: -.06em;
 	font-weight: bold;
-	line-height: 18px;
+	line-height: 16px;
 	font-size: 14px;
 }
 
@@ -2628,7 +2644,7 @@ dt .add li.Page {
 
 #tabFlat ul.nodeMeta .navZoom li {
 	padding-left: 18px;
-	margin-right: 0;
+	margin-right: .25em;
 }
 
 #tabFlat .item .nodeMeta .updated {
@@ -2637,7 +2653,7 @@ dt .add li.Page {
 
 #tabFlat .thumbnail {
 	float: left;
-	margin: 0 .75em .5em 0;
+	margin: .35em .75em .5em 0;
 	padding-left: 0;
 }
 
@@ -2647,6 +2663,7 @@ dt .add li.Page {
 
 #tabFlat .item .nodeMeta .type {
 	clear: right !important;
+	float: none;
 }
 
 #tabFlat .thumbnail img {
@@ -2661,13 +2678,42 @@ dt .add li.Page {
 }
 
 #tabFlat table .item .navZoom {
-	margin-top: .5em !important;
+	margin-top: .35em !important;
 	clear: both !important;
 	display: block;
 }
 
+.module {
+	margin-bottom: 1em;
+	padding: 1em;
+	background: #e9e9e9;
+	border-radius: 5px;
+}
 
+#tabFlat #navReports li {
+	margin-bottom: .25em;
+}
 
+#tabFlat #navReports a {
+	color: #ff3a00;
+	padding: .35em .75em;
+	border-radius: 10px;
+	display: inline-block;
+}
+
+#tabFlat #navReports a:hover {
+	color: #333;
+	background: #ccc;
+	text-decoration: none;
+}
+
+#tabFlat #navReports a.active {
+	color: #fff;
+}
+
+.module select {
+	width: 100%;
+}
 
 /* @end */
 
@@ -4951,6 +4997,10 @@ div.menu {
 #svTagCloud .popular { font-size: 1.6em; }
 #svTagCloud .very-popular { font-size: 1.9em; }
 #svTagCloud .ultra-popular { font-size: 2.2em; }
+
+#svTagCloud a {
+	color: #369;
+}
 
 /* @end Tag Clouds
 ----------------------------------------- */

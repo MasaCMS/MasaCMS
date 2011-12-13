@@ -289,16 +289,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </table>
 
 <div class="sidebar">
-	<p>
 	<h3>Reports</h3>
-	<ul class="navReports">
+	<ul id="navReports" class="module">
 		<li><a href="" data-report=""<cfif not len($.event("report"))> class="active"</cfif>>All Site Content</a></a></li>
 		<li><a href="" data-report="expires"<cfif $.event("report") eq "expires"> class="active"</cfif>>All Expiring Content</a></li>
 		<li><a href="" data-report="myexpires"<cfif $.event("report") eq "myexpires"> class="active"</cfif>>My Expiring Content</a></li>
 		<li><a href="" data-report="mydrafts"<cfif $.event("report") eq "mydrafts"> class="active"</cfif>>My Drafts</a></li>
 		<li><a href="" data-report="mylockedfiles"<cfif $.event("report") eq "mylockedfiles"> class="active"</cfif>>Files I'm Editing Offline</a></li>
 	</ul>
-	</p>
 	
 	<cfset tags=$.getBean('contentGateway').getTagCloud($.event('siteID')) />
 	<cfset categoryCount=$.getBean("categoryManager").getCategoryCount($.event("siteID"))>
@@ -308,7 +306,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		or categoryCount>
 	<h3>Filters</h3>
 	<cfif $.event("report") neq "lockedfiles">
-	<p>
+	<div id="filters" class="module">
 	<h4>Type</h4>
 	<select name="contentTypeFilter" id="contentTypeFilter">
 		<option value="">All</option>
@@ -316,7 +314,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<option value="#i#"<cfif listfind($.event('type'),i)> selected</cfif>>#i#</option>
 		</cfloop>
 	</select>
-	</p>
+	</div>
 	</cfif>
 		
 	<cfsilent>
@@ -330,6 +328,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfsilent>	
 	
 	<cfif tags.recordcount>
+	<div class="module">
 	<h4>Tags</h4>
 	<div id="svTagCloud">
 		<ol>
@@ -352,13 +351,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 		</ol>
 	</div>
+	</div>
 	</cfif>
 
 	<cfif categoryCount>
+	<div class="module">
 	<h4>Categories</h4>
 	<cf_dsp_categories_nest siteID="#$.event('siteID')#" parentID="" nestLevel="0" categoryid="#$.event('categoryid')#">
 	</cfif>
 	
+	</div>
 	<input type="button" name="filterList" value="Filter" onclick="loadSiteFlatByFilter();"/>
 	</cfif>
 </div>
