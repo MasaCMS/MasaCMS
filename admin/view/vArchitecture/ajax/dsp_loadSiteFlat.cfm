@@ -289,7 +289,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </table>
 
 <div class="sidebar">
-	<p>
 	<h3>Reports</h3>
 	<ul class="navReports">
 		<li><a href="" data-report=""<cfif not len($.event("report"))> class="active"</cfif>>All Site Content</a></a></li>
@@ -298,7 +297,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<li><a href="" data-report="mydrafts"<cfif $.event("report") eq "mydrafts"> class="active"</cfif>>My Drafts</a></li>
 		<li><a href="" data-report="mylockedfiles"<cfif $.event("report") eq "mylockedfiles"> class="active"</cfif>>Files I'm Editing Offline</a></li>
 	</ul>
-	</p>
 	
 	<cfset tags=$.getBean('contentGateway').getTagCloud($.event('siteID')) />
 	<cfset categoryCount=$.getBean("categoryManager").getCategoryCount($.event("siteID"))>
