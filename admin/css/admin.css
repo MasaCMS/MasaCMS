@@ -2585,7 +2585,7 @@ dt .add li.Page {
 
 #tabFlat .mura-table-grid td {
 	vertical-align: top;
-	padding-top: 12px;
+	padding-top: 10px;
 }
 
 #tabFlat .mura-table-grid td.item {
@@ -2626,11 +2626,16 @@ dt .add li.Page {
 	font-size: 11px;
 }
 
+#tabFlat ul.nodeMeta .navZoom li {
+	padding-left: 18px;
+	margin-right: 0;
+}
+
 #tabFlat .item .nodeMeta .updated {
 	float: none;
 }
 
-#tabFlat .nodeMeta .thumbnail {
+#tabFlat .thumbnail {
 	float: left;
 	margin: 0 .75em .5em 0;
 	padding-left: 0;
@@ -2640,7 +2645,7 @@ dt .add li.Page {
 	max-width: 77%;
 }
 
-.nodeMeta .thumbnail img {
+#tabFlat .thumbnail img {
 	width: 80px;
 	height: auto;
 	margin: 0;
@@ -2653,8 +2658,8 @@ dt .add li.Page {
 
 #tabFlat table .navZoom {
 	margin-top: .5em !important;
-	clear: both !important;
-	display: block;
+	clear: none !important;
+	display: inline;
 }
 
 
@@ -2972,7 +2977,7 @@ ul.seven { /* 7 Icons */
 	width: 133px;
 }
 
-.mura-grid .admin li, td.administration li {
+.mura-grid .admin li, .mura-table-grid .admin li, td.administration li {
 	list-style: none; 
 	float: left !important;
 	width: 14px;
@@ -2984,7 +2989,7 @@ ul.seven { /* 7 Icons */
 	border: 0;
 }
 
-.mura-grid .admin a, td.administration li a {
+.mura-grid .admin a, .mura-table-grid .admin li a, td.administration li a {
 	height: 18px;
 	width: 14px;
 	float: left;
@@ -2993,136 +2998,136 @@ ul.seven { /* 7 Icons */
 
 }
 
-.mura-grid .admin .add, .mura-grid .admin .select, table td.administration li.add, table td.administration .select {
+.admin .add, .mura-grid .admin .select, table td.administration li.add, table td.administration .select {
 	background: url(../images/icons/add_16x16.png) no-repeat;
 }
 
-.mura-grid .admin li.preview, table td.administration li.preview {
+.admin li.preview, table td.administration li.preview {
 	background: url(../images/icons/opnbr_24.png) no-repeat;
 }
 
-.mura-grid .admin li.edit, table td.administration li.edit {
+.admin li.edit, table td.administration li.edit {
 	background: url(../images/icons/edit_24.png) no-repeat;
 }
 
-.mura-grid .admin li.config, table td.administration li.config {
+.admin li.config, table td.administration li.config {
 	background: url(../images/icons/apps_24.png) no-repeat;
 }
 
-.mura-grid .admin li.versionHistory, table td.administration li.versionHistory {
+.admin li.versionHistory, table td.administration li.versionHistory {
 	background: url(../images/icons/hist_24.png) no-repeat;
 }
 
-.mura-grid .admin li.changeSets, table td.administration li.changeSets {
+.admin li.changeSets, table td.administration li.changeSets {
 	background: url(../images/icons/change_set_24.png) no-repeat;
 }
 
 
-.mura-grid .admin li.permissions, table td.administration li.permissions {
+.admin li.permissions, table td.administration li.permissions {
 	background: url(../images/icons/group_24.png) no-repeat;
 }
 
-.mura-grid .admin li.delete, table td.administration li.delete {
+.admin li.delete, table td.administration li.delete {
 	background: url(../images/icons/remov_24.png) no-repeat;
 	margin-right: 0;
 }
 
-.mura-grid .admin li.viewDetails, table td.administration li.viewDetails {
+.admin li.viewDetails, table td.administration li.viewDetails {
 	background: url(../images/icons/srch_24.png) no-repeat;
 }
 
-.mura-grid .admin li.rss, table td.administration li.rss {
+.admin li.rss, table td.administration li.rss {
 	background: url(../images/icons/rss_14.png) no-repeat;
 }
 
-.mura-grid .admin li.viewReport, table td.administration li.viewReport {
+.admin li.viewReport, table td.administration li.viewReport {
 	background: url(../images/icons/chart_24.png) no-repeat;
 }
 
-.mura-grid .admin li.download, table td.administration li.download {
+.admin li.download, table td.administration li.download {
 	background: url(../images/icons/save_24.png) no-repeat;
 }
 
-.mura-grid .admin li.manageData, table td.administration li.manageData {
+.admin li.manageData, table td.administration li.manageData {
 	background: url(../images/icons/confg_24.png) no-repeat;
 }
 
-.mura-grid .admin li.deploy, table td.administration li.deploy {
+.admin li.deploy, table td.administration li.deploy {
 	background: url(../images/icons/go_24.png) no-repeat;
 }
 
-.mura-grid li.admin li.moveCopy, table td.administration li.moveCopy {
+li.admin li.moveCopy, table td.administration li.moveCopy {
 	background: url(../images/icons/move_24.png) no-repeat;
 }
 
-.mura-grid li.admin li.source, table td.administration li.source {
+li.admin li.source, table td.administration li.source {
 	background: url(../images/icons/notep_24.png) no-repeat;
 }
 
-.mura-grid .admin li.rename, table td.administration li.rename {
+.admin li.rename, table td.administration li.rename {
 	background: url(../images/icons/wiz_24.png) no-repeat;
 }
 
-.mura-grid .admin li.viewUnzip, table td.administration li.viewUnzip {
+.admin li.viewUnzip, table td.administration li.viewUnzip {
 	background: url(../images/icons/open_24.png) no-repeat;
 }
 
-.mura-grid .admin li.manipulate, table td.administration li.manipulate {
+.admin li.manipulate, table td.administration li.manipulate {
 	background: url(../images/icons/confg_24.png) no-repeat;
 }
 
-.mura-grid .admin li.addOff, table td.administration li.addOff {
+.admin li.addOff, table td.administration li.addOff {
 	background: url(../images/icons/add_24_off.png) no-repeat;
 	text-indent: -999em;
 }
 
-.mura-grid .admin li.editOff, table td.administration li.editOff {
+.admin li.editOff, table td.administration li.editOff {
 	background: url(../images/icons/edit_24_off.png) no-repeat;
 	text-indent: -999em;
 }
 
-.mura-grid .admin li.versionHistoryOff, table td.administration li.versionHistoryOff {
+.admin li.versionHistoryOff, table td.administration li.versionHistoryOff {
 	background: url(../images/icons/hist_24_off.png) no-repeat;
 	text-indent: -999em;
 }
 
-.mura-grid .admin li.permissionsOff, table td.administration li.permissionsOff {
+.admin li.permissionsOff, table td.administration li.permissionsOff {
 	background: url(../images/icons/group_24_off.png) no-repeat;
 	text-indent: -999em;
 }
 
-.mura-grid .admin li.deleteOff, table td.administration li.deleteOff {
+.admin li.deleteOff, table td.administration li.deleteOff {
 	background: url(../images/icons/remov_24_off.png) no-repeat;
 	text-indent: -999em;
 	margin-right: 0;
 }
 
-.mura-grid .admin li.moveCopyOff, table td.administration li.moveCopyOff {
+.admin li.moveCopyOff, table td.administration li.moveCopyOff {
 	background: url(../images/icons/move_24_off.png) no-repeat;
 	text-indent: -999em;
 }
 
-.mura-grid .admin li.sourceOff, table td.administration li.sourceOff {
+.admin li.sourceOff, table td.administration li.sourceOff {
 	background: url(../images/icons/notep_24_off.png) no-repeat;
 	text-indent: -999em;
 }
 
-.mura-grid .admin li.renameOff, table td.administration li.renameOff {
+.admin li.renameOff, table td.administration li.renameOff {
 	background: url(../images/icons/wiz_24_off.png) no-repeat;
 	text-indent: -999em;
 }
 
-.mura-grid .admin li.viewUnzipOff, table td.administration li.viewUnzipOff {
+.admin li.viewUnzipOff, table td.administration li.viewUnzipOff {
 	background: url(../images/icons/open_24_off.png) no-repeat;
 	text-indent: -999em;
 }
 
-.mura-grid .admin li.manipulateOff, table td.administration li.manipulateOff {
+.admin li.manipulateOff, table td.administration li.manipulateOff {
 	background: url(../images/icons/confg_24_off.png) no-repeat;
 	text-indent: -999em;
 }
 
-.mura-grid .admin li.manageDataOff, table td.administration li.manageDataOff {
+.admin li.manageDataOff, table td.administration li.manageDataOff {
 	background: url(../images/icons/confg_24_off.png) no-repeat;
 	text-indent: -999em;
 }
@@ -3150,6 +3155,20 @@ ul.seven { /* 7 Icons */
 
 .admin, #manageData .dateSubmitted {
 	white-space: nowrap;
+}
+
+#tabFlat .admin {
+	float: right;
+	margin-left: 2em;
+}
+
+#tabFlat .admin ul {
+	padding: .35em .75em;
+	background: #e5e5e5;
+	float: right;
+	border-radius: 12px;
+	-webkit-border-radius: 12px;
+	-moz-border-radius: 12px;
 }
 
 /* @end */
