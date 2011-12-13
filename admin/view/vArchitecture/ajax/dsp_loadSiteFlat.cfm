@@ -198,7 +198,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div> 
 		
 
-		<h3 class="pdf">
+		<h3>
 			<cfif verdict neq 'none'>
 				<a title="Edit" class="draftprompt" href="index.cfm?fuseaction=cArch.edit&contenthistid=#item.getContentHistID()#&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getParentID()#&topid=#URLEncodedFormat(item.getParentID())#&siteid=#URLEncodedFormat(item.getSiteid())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#">#HTMLEditFormat(item.getMenuTitle())#</a>
 			<cfelse>
@@ -216,7 +216,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<li class="updated">Updated on #LSDateformat(item.getlastUpdate(),session.dateKeyFormat)# at #LSTimeFormat(item.getLastUpdate())#  by #HTMLEditFormat(item.getLastUpdateBy())#</li>
 				<cfif isNumeric(item.getMajorVersion()) and item.getMajorVersion()><li class="version">Version: <strong>#item.getMajorVersion()#.#item.getMinorVersion()#</strong></li></cfif>
 				<cfif isDate(item.getExpires())><li class="expiration">Expiration: <strong>#LSDateFormat(item.getExpires(),session.dateKeyFormat)#</strong></li></cfif>
-				<li class="type">Type: <strong>#item.getType()# (#item.getSubType()#)</strong></li>
 				<cfif isNumeric(item.getFileSize()) and item.getFileSize()><li class="size">Size: <strong>#$.renderFileSize(item.getFileSize())#</strong></li></cfif>
 				<cfset categories=item.getCategoriesIterator()>
 				<cfif categories.hasNext()>
@@ -228,6 +227,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</strong>
 				</cfif></dd>
 				<cfif len(item.getTags())><li class="tags">Tags: <strong>#item.getTags()#</strong></li></cfif>
+				<li class="type">Type: <strong>#item.getType()# (#item.getSubType()#)</strong></li>
 				<li class="crumblist">#application.contentRenderer.dspZoom(crumbdata,item.getFileEXT(),true)#</li>
 			</ul>
 			

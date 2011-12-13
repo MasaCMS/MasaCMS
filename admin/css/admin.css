@@ -2605,11 +2605,11 @@ dt .add li.Page {
 
 #tabFlat td h3 {
 	margin-bottom: .5em;
-	background-repeat: no-repeat;
-	padding-left: 20px;
+	/*background-repeat: no-repeat;
+	padding-left: 20px;*/
 	letter-spacing: -.06em;
 	font-weight: bold;
-	line-height: 16px;
+	line-height: 18px;
 	font-size: 14px;
 }
 
@@ -2645,6 +2645,10 @@ dt .add li.Page {
 	max-width: 77%;
 }
 
+#tabFlat .item .nodeMeta .type {
+	clear: right !important;
+}
+
 #tabFlat .thumbnail img {
 	width: 80px;
 	height: auto;
@@ -2656,10 +2660,10 @@ dt .add li.Page {
 	border: 3px solid #ccc;
 }
 
-#tabFlat table .navZoom {
+#tabFlat table .item .navZoom {
 	margin-top: .5em !important;
-	clear: none !important;
-	display: inline;
+	clear: both !important;
+	display: block;
 }
 
 
