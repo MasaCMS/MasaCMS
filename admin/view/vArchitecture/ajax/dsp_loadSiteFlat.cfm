@@ -181,7 +181,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif len(item.getTags())><li class="tags">Tags: <strong>#item.getTags()#</strong></li></cfif>
 			</ul>
 			
-			#application.contentRenderer.dspZoom(crumbdata,item.getFileEXT())#
+			#application.contentRenderer.dspZoom(crumbdata,item.getFileEXT(),true)#
 		</td> 
 		<td class="administration">
 			<ul class="siteSummary five">

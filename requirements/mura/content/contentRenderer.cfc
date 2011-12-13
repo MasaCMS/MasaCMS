@@ -343,7 +343,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfsilent>
 		<li class="#renderIcon(arguments.crumbdata[i].type,arguments.fileExt)##locked#">
 		<a <cfif arguments.ajax> 
-			href="" onclick="return loadSiteManager('#arguments.crumbdata[I].siteid#','#arguments.crumbdata[I].contentid#','00000000000000000000000000000000000','','','#arguments.crumbdata[I].type#',1);"
+			href="" onclick="return loadSiteManagerInTab(function(){loadSiteManager('#arguments.crumbdata[I].siteid#','#arguments.crumbdata[I].contentid#','00000000000000000000000000000000000','','','#arguments.crumbdata[I].type#',1)});"
 		<cfelse>
 			href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.list&siteid=#arguments.crumbdata[I].siteid#&topid=#arguments.crumbdata[I].contentid#&moduleid=00000000000000000000000000000000000&activeTab=0"
 		</cfif>>#HTMLEditformat(arguments.crumbdata[I].menutitle)#</a> &raquo;</li>
@@ -355,7 +355,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfsilent>
 		<li class="#renderIcon(arguments.crumbdata[1].type,arguments.fileExt)##lastlocked#"><strong><cfif listFindNoCase("Portal,Page,Gallery,Calendar",arguments.crumbdata[1].type)>
 		<a <cfif arguments.ajax> 
-			href="" onclick="return loadSiteManager('#arguments.crumbdata[1].siteid#','#arguments.crumbdata[1].contentid#','00000000000000000000000000000000000','','','#arguments.crumbdata[1].type#',1);"
+			href="" onclick="return loadSiteManagerInTab(function(){loadSiteManager('#arguments.crumbdata[1].siteid#','#arguments.crumbdata[1].contentid#','00000000000000000000000000000000000','','','#arguments.crumbdata[1].type#',1)});"
 		<cfelse>
 			href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.list&siteid=#arguments.crumbdata[1].siteid#&topid=#arguments.crumbdata[1].contentid#&moduleid=00000000000000000000000000000000000&activeTab=0"
 		</cfif>>#HTMLEditformat(arguments.crumbdata[1].menutitle)#</a><cfelse><a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.list&siteid=#arguments.crumbdata[1].siteid#&topid=#arguments.crumbdata[1].parentid#&moduleid=00000000000000000000000000000000000&activeTab=0">#HTMLEditformat(crumbdata[1].menutitle)#</a></cfif></strong></li></ul>
