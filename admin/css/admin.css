@@ -1494,9 +1494,9 @@ h4 {
 }
 
 .sidebar h4 {
-	font-size: 13px;
-	margin-bottom: 0;
+	font-size: 12px;
 	text-transform: uppercase;
+	margin-bottom: .25em !important;
 }
 
 #filterByTitle h4 {
@@ -2532,10 +2532,10 @@ dt .add li.Page {
 
 #tabFlat .sidebar {
 	float: right;
-	width: 20%;
-	padding: 1em;
+	width: 22%;
+	/*padding: 1em;
 	background: #e9e9e9;
-	border-radius: 5px;
+	border-radius: 5px;*/
 }
 
 #tabFlat .mura-table-grid {
@@ -2683,8 +2683,37 @@ dt .add li.Page {
 	display: block;
 }
 
+.module {
+	margin-bottom: 1em;
+	padding: 1em;
+	background: #e9e9e9;
+	border-radius: 5px;
+}
 
+#tabFlat #navReports li {
+	margin-bottom: .25em;
+}
 
+#tabFlat #navReports a {
+	color: #ff3a00;
+	padding: .35em .75em;
+	border-radius: 10px;
+	display: inline-block;
+}
+
+#tabFlat #navReports a:hover {
+	color: #333;
+	background: #ccc;
+	text-decoration: none;
+}
+
+#tabFlat #navReports a.active {
+	color: #fff;
+}
+
+.module select {
+	width: 100%;
+}
 
 /* @end */
 
@@ -4968,6 +4997,10 @@ div.menu {
 #svTagCloud .popular { font-size: 1.6em; }
 #svTagCloud .very-popular { font-size: 1.9em; }
 #svTagCloud .ultra-popular { font-size: 2.2em; }
+
+#svTagCloud a {
+	color: #369;
+}
 
 /* @end Tag Clouds
 ----------------------------------------- */
