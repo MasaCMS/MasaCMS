@@ -291,7 +291,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="sidebar">
 	<h3>Reports</h3>
 	<ul id="navReports" class="module">
-		<li><a href="" data-report=""<cfif not len($.event("report"))> class="active"</cfif>>All Site Content</a></a></li>
+		<li><a href="" data-report=""<cfif not len($.event("report"))> class="active"</cfif>>All Site Content</a></li>
 		<li><a href="" data-report="expires"<cfif $.event("report") eq "expires"> class="active"</cfif>>All Expiring Content</a></li>
 		<li><a href="" data-report="myexpires"<cfif $.event("report") eq "myexpires"> class="active"</cfif>>My Expiring Content</a></li>
 		<li><a href="" data-report="mydrafts"<cfif $.event("report") eq "mydrafts"> class="active"</cfif>>My Drafts</a></li>
