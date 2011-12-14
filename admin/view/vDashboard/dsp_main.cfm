@@ -144,7 +144,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <dt>#application.rbFactory.getKeyValue(session.rb,"dashboard.searchtext")#:</dt>
 <dd><form novalidate="novalidate" id="siteSearch" name="siteSearch" method="get"><input name="keywords" value="#HTMLEditFormat(session.keywords)#" type="text" class="text" align="absmiddle" />  
 	<input type="button" class="submit" onclick="submitForm(document.forms.siteSearch);" value="Search" />
-	<input type="hidden" name="fuseaction" value="cArch.search">
+	<input type="hidden" name="fuseaction" value="cArch.list">
+	<input type="hidden" name="activetab" value="1">
 	<input type="hidden" name="siteid" value="#HTMLEditFormat(attributes.siteid)#">
 	<input type="hidden" name="moduleid" value="00000000000000000000000000000000000">
 </form></dd>
