@@ -85,9 +85,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="session.flatViewArgs.#session.siteID#.type" default="" />
 <cfparam name="session.flatViewArgs.#session.siteID#.subtype" default="#attributes.subtype#" />
 <cfparam name="session.flatViewArgs.#session.siteID#.report" default="" />
+<cfparam name="session.flatViewArgs.#session.siteID#.keywords" default="" />
 <cfparam name="session.siteManagerTab" default="0" />
 <cfif not isdefined("url.activeTab")>
 	<cfset attributes.activeTab=session.siteManagerTab/>
+</cfif>
+<cfif isdefined("url.keywords")>
+	<cfset session.flatViewArgs[session.siteID].keywords=url.keywords/>
+	<cfset session.flatViewArgs[session.siteID].report=""/>
+	<cfset session.keywords=url.keywords/>
 </cfif>
 <cfhtmlhead text='<script src="#application.configBean.getContext()#/admin/js/jquery/jquery-pulse.js?coreversion=#application.coreversion#" type="text/javascript"></script>'>
 
@@ -154,7 +160,8 @@ copyAll = 'false';
     <!---<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.contentsearch")#</h3>--->
     <input name="keywords" value="#HTMLEditFormat(session.keywords)#" type="text" class="text" align="absmiddle" />
     <input type="button" class="submit" onclick="submitForm(document.forms.siteSearch);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.search")#" />
-    <input type="hidden" name="fuseaction" value="cArch.search">
+    <input type="hidden" name="fuseaction" value="cArch.list">
+	<input type="hidden" name="activetab" value="1">
     <input type="hidden" name="siteid" value="#HTMLEditFormat(attributes.siteid)#">
     <input type="hidden" name="moduleid" value="#attributes.moduleid#">
 </form>
@@ -191,7 +198,8 @@ function initFlatViewArgs(){
 			lockid:'#JSStringFormat(session.flatViewArgs[session.siteid].lockid)#',
 			type:'#JSStringFormat(session.flatViewArgs[session.siteid].type)#',
 			subType:'#JSStringFormat(session.flatViewArgs[session.siteid].subtype)#',
-			report:'#JSStringFormat(session.flatViewArgs[session.siteid].report)#'
+			report:'#JSStringFormat(session.flatViewArgs[session.siteid].report)#',
+			keywords:'#JSStringFormat(session.flatViewArgs[session.siteid].keywords)#'
 			};
 }
 

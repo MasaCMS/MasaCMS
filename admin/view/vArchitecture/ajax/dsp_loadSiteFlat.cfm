@@ -61,6 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	session.flatViewArgs[rc.siteID].type=$.event("type");
 	session.flatViewArgs[rc.siteID].subtype=$.event("subtype");
 	session.flatViewArgs[rc.siteID].report=$.event("report");
+	session.flatViewArgs[rc.siteID].keywords=$.event("keywords");
 	 
 	feed=$.getBean("feed");
 	feed.setMaxItems(500);
@@ -108,8 +109,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		feed.addParam(relationship="or",field="tcontent.lastupdatebyid",datatype="varchar",condition="=",criteria=$.currentUser("userID"));
 		feed.addParam(relationship=")");
 	} else if($.event('report') eq "mydrafts"){
-		draftList=$.getBean("contentManager").getDraftList($.event("siteID"));
-		feed.addParam(field="tcontent.contentID",datatype="varchar",condition="in",criteria=valuelist(draftList.contentID));
+		subList=$.getBean("contentManager").getDraftList($.event("siteID"));
+		feed.addParam(field="tcontent.contentID",datatype="varchar",condition="in",criteria=valuelist(subList.contentID));
+	}
+	
+	if(len($.event("keywords"))){	
+		subList=$.getBean("contentManager").getPrivateSearch($.event("siteID"),$.event("keywords"));
+		feed.addParam(field="tcontent.contentID",datatype="varchar",condition="in",criteria=valuelist(subList.contentID));
 	}
 	
 	iterator=feed.getIterator();
@@ -298,15 +304,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<li><a href="" data-report="mylockedfiles"<cfif $.event("report") eq "mylockedfiles"> class="active"</cfif>>Files I'm Editing Offline</a></li>
 	</ul>
 	
-	<cfset tags=$.getBean('contentGateway').getTagCloud($.event('siteID')) />
-	<cfset categoryCount=$.getBean("categoryManager").getCategoryCount($.event("siteID"))>
-	
-	<cfif $.event("report") neq "lockedfiles" 
-		or tags.recordcount 
-		or categoryCount>
 	<h3>Filters</h3>
-	<cfif $.event("report") neq "lockedfiles">
+	
 	<div id="filters" class="module">
+	<h4>Keywords</h4>
+    <input id="contentKeywords" value="#HTMLEditFormat(session.flatViewArgs[rc.siteID].keywords)#" type="text" size="20" />
+  	</div>
+
+    <cfif $.event("report") neq "lockedfiles">
+	<div class="module">
 	<h4>Type</h4>
 	<select name="contentTypeFilter" id="contentTypeFilter">
 		<option value="">All</option>
@@ -352,9 +358,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</ol>
 	</div>
 	</div>
-	</cfif>
 
-	<cfif categoryCount>
+	<cfif $.getBean("categoryManager").getCategoryCount($.event("siteID"))>
 	<div class="module">
 	<h4>Categories</h4>
 	<cf_dsp_categories_nest siteID="#$.event('siteID')#" parentID="" nestLevel="0" categoryid="#$.event('categoryid')#">
