@@ -119,6 +119,11 @@ body#popUp {
 	-moz-box-shadow: 0px 0px 6px #999;
 }
 
+#main {
+	float: left;
+	width: 75%;
+}
+
 #sendLogin {
 	width: 360px;
 	margin: 0 auto;
@@ -151,10 +156,6 @@ body#popUp {
 
 .sidebar ul {
 	list-style: none;
-}
-
-.sidebar li {
-	margin-bottom: .5em;
 }
 
 ul#setList {
@@ -2540,7 +2541,7 @@ dt .add li.Page {
 
 #tabFlat .mura-table-grid {
 	float: left;
-	width: 75%;
+	width: 100%;
 }
 
 .navSort {
@@ -2647,7 +2648,8 @@ dt .add li.Page {
 	margin-right: .25em;
 }
 
-#tabFlat .item .nodeMeta .updated {
+#tabFlat .item .nodeMeta .updated,
+#tabFlat .item .nodeMeta .created {
 	float: none;
 }
 
@@ -2734,83 +2736,115 @@ dt .add li.Page {
 
 /* @group Default */
 
-.doc, .docx, .docm, .dotx, .dotm {
+.mura-grid li a.doc,
+.mura-grid li a.docx,
+.mura-grid li a.docm,
+.mura-grid li a.dotx,
+.mura-grid li a.dotm,
+.mura-table-grid li a.doc,
+.mura-table-grid li a.docx,
+.mura-table-grid li a.docm,
+.mura-table-grid li a.dotx,
+.mura-table-grid li a.dotm {
 	background-image: url(../images/icons/files/icon_doc_small.gif) !important;
 }
 
-.jpg {
+.mura-grid li a.jpg,
+.mura-table-grid li a.jpg {
 	background-image: url(../images/icons/files/icon_jpg_small.gif) !important;
 }
 
-.psd {
+.mura-grid li a.psd,
+.mura-table-grid li a.psd {
 	background-image: url(../images/icons/files/icon_gif_small.gif) !important;
 }
 
-.gif {
+.mura-grid li a.gif,
+.mura-table-grid li a.gif {
 	background-image: url(../images/icons/files/icon_gif_small.gif) !important;
 }
 
-.png {
+ .mura-grid li a.png,
+ .mura-table-grid li a.png {
 	background-image: url(../images/icons/files/icon_png_small.gif) !important;
 }
 
-.pdf {
+ .mura-grid li a.pdf,
+ .mura-table-grid li a.pdf {
 	background-image: url(../images/icons/files/icon_pdf_small.gif) !important;
 }
 
-.txt {
+ .mura-grid li a.txt,
+ .mura-table-grid li a.txt {
 	background-image: url(../images/icons/files/icon_txt_small.gif) !important;
 }
 
-.ppt, .pptx, .pptm, .potx, .potm, .ppam, .ppsx, .ppsm, .sldx, .sldm, .thmx {
+ .mura-grid li a.ppt, 
+ .mura-grid li a.pptx,
+ .mura-grid li a.pptm,
+ .mura-grid li a.potx,
+ .mura-grid li a.potm,
+ .mura-grid li a.ppam,
+ .mura-grid li a.ppsx,
+ .mura-grid li a.ppsm,
+ .mura-grid li a.sldx,
+ .mura-grid li a.sldm,
+ .mura-grid li a.thmx {
 	background-image: url(../images/icons/files/icon_ppt_small.gif) !important;
 }
 
-.xls, .xlsx, .xlsm, .xltx, .xltm, .xlsb, .xlam {
+ .mura-grid li a.xls,
+ .mura-grid li a.xlsx,
+ .mura-grid li a.xlsm,
+ .mura-grid li a.xltx,
+ .mura-grid li a.xltm,
+ .mura-grid li a.xlsb,
+ .mura-grid li a.xlam {
 	background-image: url(../images/icons/files/icon_xls_small.gif) !important;
 }
 
-.mdb {
+.mura-grid li a.mdb {
 	background-image: url(../images/icons/files/icon_mdb_small.gif) !important;
 }
 
-.vsd {
+.mura-grid li a.vsd {
 	background-image: url(../images/icons/files/icon_vsd_small.gif) !important;
 }
 
-.mpp {
+.mura-grid li a.mpp {
 	background-image: url(../images/icons/files/icon_mpp_small.gif) !important;
 }
 
-.graffle {
+.mura-grid li a.graffle {
 	background-image: url(../images/icons/files/icon_graffle_small.gif) !important;
 }
 
-.oo3 {
+.mura-grid li a.oo3 {
 	background-image: url(../images/icons/files/icon_oo3_small.gif) !important;
 }
 
-.mp3 {
+.mura-grid li a.mp3 {
 	background-image: url(../images/icons/files/icon_mp3_small.gif) !important;
 }
 
-.ndd {
+.mura-grid li a.ndd {
 	background-image: url(../images/icons/files/icon_ndd_small.gif) !important;
 }
 
-.zip {
+.mura-grid li a.zip {
 	background-image: url(../images/icons/files/icon_zip_small.gif) !important;
 }
 
-.css {
+.mura-grid li a.css {
 	background-image: url(../images/icons/files/icon_css_small.gif) !important;
 }
 
-.flv {
+.mura-grid li a.flv {
 	background-image: url(../images/icons/files/icon_flv_small.png) !important;
 }
 
-.html, .htm {
+.mura-grid li a.html,
+.mura-grid li a.htm {
 	background-image: url(../images/icons/files/icon_generic_small.gif) !important;
 }
 
@@ -2818,87 +2852,116 @@ dt .add li.Page {
 
 /* @group Locked */
 
-.docLocked, .docxLocked, .docmLocked, .dotxLocked, .dotmLocked {
+.mura-grid li a.docLocked,
+.mura-grid li a.docxLocked,
+.mura-grid li a.docmLocked,
+.mura-grid li a.dotxLocked,
+.mura-grid li a.dotmLocked {
 	background-image: url(../images/icons/files/icon_doc_small_locked.gif) !important;
 }
 
-.jpgLocked {
+.mura-grid li a.jpgLocked {
 	background-image: url(../images/icons/files/icon_jpg_small_locked.gif) !important;
 }
 
-.psdLocked {
+.mura-grid li a.psdLocked {
 	background-image: url(../images/icons/files/icon_gif_small_locked.gif) !important;
 }
 
-.gifLocked {
+.mura-grid li a.gifLocked {
 	background-image: url(../images/icons/files/icon_gif_small_locked.gif) !important;
 }
 
-.pngLocked {
+.mura-grid li a.pngLocked {
 	background-image: url(../images/icons/files/icon_png_small_locked.gif) !important;
 }
 
-.pdfLocked {
+.mura-grid li a.pdfLocked {
 	background-image: url(../images/icons/files/icon_pdf_small_locked.gif) !important;
 }
 
-.txtLocked {
+.mura-grid li a.txtLocked {
 	background-image: url(../images/icons/files/icon_txt_small_locked.gif) !important;
 }
 
-.pptLocked, .pptxLocked, .pptmLocked, .potxLocked, .potmLocked, .ppamLocked, .ppsxLocked, .ppsmLocked, .sldxLocked, .sldmLocked, .thmxLocked {
+.mura-grid li a.pptLocked,
+.mura-grid li a.pptxLocked,
+.mura-grid li a.pptmLocked,
+.mura-grid li a.potxLocked,
+.mura-grid li a.potmLocked,
+.mura-grid li a.ppamLocked,
+.mura-grid li a.ppsxLocked,
+.mura-grid li a.ppsmLocked,
+.mura-grid li a.sldxLocked,
+.mura-grid li a.sldmLocked,
+.mura-grid li a.thmxLocked {
 	background-image: url(../images/icons/files/icon_ppt_small_locked.gif) !important;
 }
 
-.xlsLocked, .xlsxLocked, .xlsmLocked, .xltxLocked, .xltmLocked, .xlsbLocked, .xlamLocked {
+.mura-grid li a.xlsLocked,
+.mura-grid li a.xlsxLocked,
+.mura-grid li a.xlsmLocked,
+.mura-grid li a.xltxLocked,
+.mura-grid li a.xltmLocked,
+.mura-grid li a.xlsbLocked,
+.mura-grid li a.xlamLocked {
 	background-image: url(../images/icons/files/icon_xls_small_locked.gif) !important;
 }
 
-.mdbLocked {
+.mura-grid li a.mdbLocked {
 	background-image: url(../images/icons/files/icon_mdb_small_locked.gif) !important;
 }
 
-.vsdLocked {
+.mura-grid li a.vsdLocked {
 	background-image: url(../images/icons/files/icon_vsd_small_locked.gif) !important;
 }
 
-.mppLocked {
+.mura-grid li a.mppLocked {
 	background-image: url(../images/icons/files/icon_mpp_small_locked.gif) !important;
 }
 
-.graffleLocked {
+.mura-grid li a.graffleLocked {
 	background-image: url(../images/icons/files/icon_graffle_small_locked.gif) !important;
 }
 
-.oo3Locked {
+.mura-grid li a.oo3Locked {
 	background-image: url(../images/icons/files/icon_oo3_small_locked.gif) !important;
 }
 
-.mp3Locked {
+.mura-grid li a.mp3Locked {
 	background-image: url(../images/icons/files/icon_mp3_small_locked.gif) !important;
 }
 
-.nddLocked {
+.mura-grid li a.nddLocked {
 	background-image: url(../images/icons/files/icon_ndd_small_locked.gif) !important;
 }
 
-.zipLocked {
+.mura-grid li a.zipLocked {
 	background-image: url(../images/icons/files/icon_zip_small_locked.gif) !important;
 }
 
-.cssLocked {
+.mura-grid li a.cssLocked {
 	background-image: url(../images/icons/files/icon_css_small_locked.gif) !important;
 }
 
-.cssLocked {
+.mura-grid li a.cssLocked {
 	background-image: url(../images/icons/files/icon_flv_small_locked.gif) !important;
 }
 
-.flvLocked {
+.mura-grid li a.flvLocked {
 	background-image: url(../images/icons/files/icon_flv_small_locked.png) !important;
 }
 
-.htmlLocked, .htmLocked, .cfmLocked, .cfcLocked, .csvLocked, .phpLocked, .rbLocked, .pyLocked, .javaLocked, .jspLocked  {
+.mura-grid li a.htmlLocked,
+.mura-grid li a.htmLocked,
+.mura-grid li a.cfmLocked,
+.mura-grid li a.cfcLocked,
+.mura-grid li a.csvLocked,
+.mura-grid li a.phpLocked,
+.mura-grid li a.rbLocked,
+.mura-grid li a.pyLocked,
+.mura-grid li a.javaLocked,
+.mura-grid li a.jspLocked  {
 	background-image: url(../images/icons/files/icon_generic_small_locked.gif) !important;
 }
 
@@ -2908,60 +2971,120 @@ dt .add li.Page {
 
 /* @group Content Icons */
 
-.Link {
+.mura-grid li a.Link,
+.navZoom li.Link  {
 	background: url(../images/icons/link.png) no-repeat 2px .7em;
 }
 
-.Portal {
+.mura-grid li a.Portal,
+.navZoom li.Portal {
 	background: url(../images/icons/portal.png) no-repeat 0 .6em;
 }
 
-.Gallery {
+.mura-grid li a.Gallery,
+.navZoom li.Gallery {
 	background: url(../images/icons/smicn_32.png) no-repeat 3px .7em;
 }
 
-.Image, .mura-grid li dt a.Image {
+.mura-grid li a.Image,
+.navZoom li.Image {
 	background: url(../images/icons/image_32.png) no-repeat 0 .6em;
 }
 
-.GalleryLocked {
+.mura-grid li a.GalleryLocked,
+.navZoom li.GalleryLocked {
 	background: url(../images/icons/smicn_32_locked.png) no-repeat 1px .7em;
 }
 
-.ImageLocked {
+.mura-grid li a.ImageLocked,
+.navZoom li.ImageLocked {
 	background: url(../images/icons/image_32_locked.png) no-repeat 0 .1em;
 }
 
-.Calendar {
+.mura-grid li a.Calendar,
+.navZoom li.Calendar {
 	background: url(../images/icons/calendar.gif) no-repeat 2px .6em;
 }
 
-.PageLocked {
+.mura-grid li a.PageLocked,
+.navZoom li.PageLocked {
 	background: url(../images/icons/files/icon_generic_small_locked.gif) no-repeat 1px .6em;
 }
 
-.DocumentLocked, .FileLocked {
+.mura-grid li a.DocumentLocked,
+.mura-grid li a.FileLocked,
+.navZoom li.DocumentLocked,
+.navZoom li.FileLocked {
 	background: url(../images/icons/document_locked.png) no-repeat 1px .1em;
 }
 
-.LinkLocked {
+.mura-grid li a.LinkLocked,
+.navZoom li.LinkLocked {
 	background: url(../images/icons/link_locked.png) no-repeat 1px .7em;
 }
 
-.PortalLocked {
+.mura-grid li a.PortalLocked,
+.navZoom li.PortalLocked {
 	background: url(../images/icons/portal_locked.png) no-repeat 0 .6em;
 }
 
-.CalendarLocked {
+.mura-grid li a.CalendarLocked,
+.navZoom li.CalendarLocked {
 	background: url(../images/icons/calendar_locked.gif) no-repeat 1px .6em;
 }
 
-.navZoom li, .navZoom li.Link, .navZoom li.Gallery, .navZoom li.Image, .navZoom li.Page, .navZoom li.gif, .navZoom li.jpg, .navZoom li.psd, .navZoom li.pdf, .navZoom li.ppt, .navZoom li.doc, .navZoom li.png, .navZoom li.txt, .navZoom li.xls, .navZoom li.mdb, .navZoom li.vsd, .navZoom li.mpp, .navZoom li.graffle, .navZoom li.mp3, .navZoom li.ndd, .navZoom li.zip, .navZoom li.css, .navZoom li.html, .navZoom li.htm, .navZoom li.LinkLocked, .navZoom li.GalleryLocked, .navZoom li.ImageLocked, .navZoom li.PageLocked, .navZoom li.gifLocked, .navZoom li.jpgLocked, .navZoom li.psdLocked, .navZoom li.pdfLocked, .navZoom li.pptLocked, .navZoom li.docLocked, .navZoom li.pngLocked, .navZoom li.txtLocked, .navZoom li.xlsLocked, .navZoom li.mdbLocked, .navZoom li.vsdLocked, .navZoom li.mppLocked, .navZoom li.graffleLocked, .navZoom li.mp3Locked, .navZoom li.nddLocked, .navZoom li.zipLocked, .navZoom li.cssLocked, .navZoom li.htmlLocked, .navZoom li.htmLocked   {
+.navZoom li,
+.navZoom li.Link,
+.navZoom li.Gallery,
+.navZoom li.Image,
+.navZoom li.Page,
+.navZoom li.gif,
+.navZoom li.jpg,
+.navZoom li.psd,
+.navZoom li.pdf,
+.navZoom li.ppt,
+.navZoom li.doc,
+.navZoom li.png,
+.navZoom li.txt,
+.navZoom li.xls,
+.navZoom li.mdb,
+.navZoom li.vsd,
+.navZoom li.mpp,
+.navZoom li.graffle,
+.navZoom li.mp3,
+.navZoom li.ndd,
+.navZoom li.zip,
+.navZoom li.css,
+.navZoom li.html,
+.navZoom li.htm,
+.navZoom li.LinkLocked,
+.navZoom li.GalleryLocked,
+.navZoom li.ImageLocked,
+.navZoom li.PageLocked,
+.navZoom li.gifLocked,
+.navZoom li.jpgLocked,
+.navZoom li.psdLocked,
+.navZoom li.pdfLocked,
+.navZoom li.pptLocked,
+.navZoom li.docLocked,
+.navZoom li.pngLocked,
+.navZoom li.txtLocked,
+.navZoom li.xlsLocked,
+.navZoom li.mdbLocked,
+.navZoom li.vsdLocked,
+.navZoom li.mppLocked,
+.navZoom li.graffleLocked,
+.navZoom li.mp3Locked,
+.navZoom li.nddLocked,
+.navZoom li.zipLocked,
+.navZoom li.cssLocked,
+.navZoom li.htmlLocked,
+.navZoom li.htmLocked   {
 	background-position: left center;
 	color: #333232;
 	text-decoration: none;
 	margin: 0;
-	padding: 2px 0 2px 18px;
+	padding: 2px 0 2px 18px !important;
 }
 
 .navZoom li.Portal, .navZoom li.PortalLocked {
@@ -2969,7 +3092,7 @@ dt .add li.Page {
 	color: #333232;
 	text-decoration: none;
 	margin: 0;
-	padding: 2px 0 2px 20px;
+	padding: 2px 0 2px 20px !important;
 }
 
 
@@ -4749,6 +4872,7 @@ table .navZoom li.first {
 	/*border-top: 1px solid #f9f9f9;
 	border-bottom: 1px solid #f9f9f9;*/
 	background: url(../images/bg_dots.gif);
+	clear: b;
 }
 
 .divide#navTask, .divide.navTask  {
@@ -4930,6 +5054,8 @@ div.menu {
 	margin: 0 !important;
 	padding: 0;
 	list-style: none;
+	clear: both;
+	overflow: hidden;
 	}
 
 .navSequential li,

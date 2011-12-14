@@ -123,16 +123,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 <!---<cfsavecontent variable="data.html">--->
 <cfoutput>
+<div id="main">
 <div class="navSort">
 	<h3>Sort by:</h3>
 	<ul id="navTask">
 		<!---<li><a href="" data-sortby="releasedate">Release Date</a></li>--->	
-		<li><a href="" data-sortby="lastupdate"<cfif $.event("sortBy") eq "lastUpate"> class="active"</cfif>>Last Updated</a></li>
+		<li><a href="" data-sortby="lastupdate"<cfif $.event("sortBy") eq "lastUpdate"> class="active"</cfif>>Last Updated</a></li>
 		<li><a href="" data-sortby="created"<cfif $.event("sortBy") eq "created"> class="active"</cfif>>Created</a></li>
 		<!---<li><a href="" data-sortby="releasedate"<cfif $.event("sortBy") eq "releasedate"> class="active"</cfif>>Release Date</a></li>--->
 		<li><a href="" data-sortby="menutitle"<cfif $.event("sortBy") eq "menutitle"> class="active"</cfif>>Title</a></li>
 	</ul>
 </div>
+
+<p class="search-showing">Showing 50 of 100 Results</p>
+<ul class="moreResults">
+	<li class="navPrev"><a href="">&laquo;</a></li>
+	<li><a href="">1</a></li>
+	<li><a href="">2</a></li>
+	<li><a href="">3</a></li>
+	<li><a href="">4</a></li>
+	<li class="navNext"><a href="">&raquo;</a></li>
+</ul>
+
 <table class="mura-table-grid stripe">
 	<tr>
 		<th></th>
@@ -204,7 +216,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div> 
 		
 
-		<h3>
+		<h3 class="pdf">
 			<cfif verdict neq 'none'>
 				<a title="Edit" class="draftprompt" href="index.cfm?fuseaction=cArch.edit&contenthistid=#item.getContentHistID()#&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getParentID()#&topid=#URLEncodedFormat(item.getParentID())#&siteid=#URLEncodedFormat(item.getSiteid())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#">#HTMLEditFormat(item.getMenuTitle())#</a>
 			<cfelse>
@@ -220,6 +232,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			<ul class="nodeMeta">
 				<li class="updated">Updated on #LSDateformat(item.getlastUpdate(),session.dateKeyFormat)# at #LSTimeFormat(item.getLastUpdate())#  by #HTMLEditFormat(item.getLastUpdateBy())#</li>
+				<li class="created">Created on 1/1/12 at 1:00 PM  by John Doe</li>
 				<cfif isNumeric(item.getMajorVersion()) and item.getMajorVersion()><li class="version">Version: <strong>#item.getMajorVersion()#.#item.getMinorVersion()#</strong></li></cfif>
 				<cfif isDate(item.getExpires())><li class="expiration">Expiration: <strong>#LSDateFormat(item.getExpires(),session.dateKeyFormat)#</strong></li></cfif>
 				<cfif isNumeric(item.getFileSize()) and item.getFileSize()><li class="size">Size: <strong>#$.renderFileSize(item.getFileSize())#</strong></li></cfif>
@@ -293,6 +306,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</tr>	
 	</cfif>
 </table>
+
+<p class="search-showing">Showing 50 of 100 Results</p>
+<ul class="moreResults">
+	<li class="navPrev"><a href="">&laquo;</a></li>
+	<li><a href="">1</a></li>
+	<li><a href="">2</a></li>
+	<li><a href="">3</a></li>
+	<li><a href="">4</a></li>
+	<li class="navNext"><a href="">&raquo;</a></li>
+</ul>
+
+</div>
+
 
 <div class="sidebar">
 	<h3>Reports</h3>
