@@ -168,7 +168,7 @@ copyAll = 'false';
 </form>
 
 
-<img class="loadProgress tabPreloader" src="images/progress_bar.gif">
+<!---<img class="loadProgress tabPreloader" src="images/progress_bar.gif">--->
 
 <div id="viewTabs" class="tabs initActiveTab" style="display:none">
 		<ul>
