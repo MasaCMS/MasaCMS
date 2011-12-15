@@ -2767,152 +2767,83 @@ dt .add li.Page {
 
 /* @group Default */
 
-.mura-grid li a.doc,
-.mura-grid li a.docx,
-.mura-grid li a.docm,
-.mura-grid li a.dotx,
-.mura-grid li a.dotm,
-.mura-table-grid li.doc,
-.mura-table-grid li.docx,
-.mura-table-grid li.docm,
-.mura-table-grid li.dotx,
-.mura-table-grid li.dotm {
+.doc,.docx,.docm,.dotx,dotm {
 	background-image: url(../images/icons/files/icon_doc_small.gif) !important;
 }
 
-.mura-grid li a.jpg,
-.mura-table-grid li.jpg,
 .jpg  {
 	background-image: url(../images/icons/files/icon_jpg_small.gif) !important;
 }
 
-.mura-grid li a.psd,
-.mura-table-grid li.psd,
 .psd {
 	background-image: url(../images/icons/files/icon_gif_small.gif) !important;
 }
 
-.mura-grid li a.gif,
-.mura-table-grid li.gif,
 .gif {
 	background-image: url(../images/icons/files/icon_gif_small.gif) !important;
 }
 
- .mura-grid li a.png,
- .mura-table-grid li.png,
  .png {
 	background-image: url(../images/icons/files/icon_png_small.gif) !important;
 }
 
- .mura-grid li a.pdf,
- .mura-table-grid li.pdf,
- .pdf {
+.pdf {
 	background-image: url(../images/icons/files/icon_pdf_small.gif) !important;
 }
 
- .mura-grid li a.txt,
- .mura-table-grid li.txt,
- .txt {
+.txt {
 	background-image: url(../images/icons/files/icon_txt_small.gif) !important;
 }
 
- .mura-grid li a.ppt, 
- .mura-grid li a.pptx,
- .mura-grid li a.pptm,
- .mura-grid li a.potx,
- .mura-grid li a.potm,
- .mura-grid li a.ppam,
- .mura-grid li a.ppsx,
- .mura-grid li a.ppsm,
- .mura-grid li a.sldx,
- .mura-grid li a.sldm,
- .mura-grid li a.thmx,
- .mura-table-grid li.ppt, 
- .mura-table-grid li.pptx,
- .mura-table-grid li.pptm,
- .mura-table-grid li.potx,
- .mura-table-grid li.potm,
- .mura-table-grid li.ppam,
- .mura-table-grid li.ppsx,
- .mura-table-grid li.ppsm,
- .mura-table-grid li.sldx,
- .mura-table-grid li.sldm,
- .mura-table-grid li.thmx,
  .ppt, .pptx, .pptm, .potx, .potm, .ppam, .ppsx, .ppsm, .sldx, .sldm, .thmx {
 	background-image: url(../images/icons/files/icon_ppt_small.gif) !important;
 }
 
- .mura-grid li a.xls,
- .mura-grid li a.xlsx,
- .mura-grid li a.xlsm,
- .mura-grid li a.xltx,
- .mura-grid li a.xltm,
- .mura-grid li a.xlsb,
- .mura-grid li a.xlam,
- .mura-table-grid li.xls,
- .mura-table-grid li.xlsx,
- .mura-table-grid li.xlsm,
- .mura-table-grid li.xltx,
- .mura-table-grid li.xltm,
- .mura-table-grid li.xlsb,
- .mura-table-grid li.xlam {
+.xls, .xlsx, .xlsm, .xltx, .xltm, .xlsb, .xlam {
 	background-image: url(../images/icons/files/icon_xls_small.gif) !important;
 }
 
-.mura-grid li a.mdb,
-.mura-table-grid li.mdb {
+.mdb {
 	background-image: url(../images/icons/files/icon_mdb_small.gif) !important;
 }
 
-.mura-table-grid li.vsd,
-.mura-table-grid li.vsd {
+.vsd {
 	background-image: url(../images/icons/files/icon_vsd_small.gif) !important;
 }
 
-.mura-grid li a.mpp,
-.mura-grid li.mpp {
+.mpp {
 	background-image: url(../images/icons/files/icon_mpp_small.gif) !important;
 }
 
-.mura-grid li a.graffle,
-.mura-table-grid li.graffle {
+.graffle {
 	background-image: url(../images/icons/files/icon_graffle_small.gif) !important;
 }
 
-.mura-grid li a.oo3,
-.mura-table-grid li.oo3 {
+.oo3 {
 	background-image: url(../images/icons/files/icon_oo3_small.gif) !important;
 }
 
-.mura-grid li a.mp3,
-.mura-table-grid li.mp3 {
+.mp3 {
 	background-image: url(../images/icons/files/icon_mp3_small.gif) !important;
 }
 
-.mura-grid li a.ndd,
-.mura-table-grid li.ndd {
+.ndd {
 	background-image: url(../images/icons/files/icon_ndd_small.gif) !important;
 }
 
-.mura-grid li a.zip,
-.mura-table-grid li.zip {
+.zip {
 	background-image: url(../images/icons/files/icon_zip_small.gif) !important;
 }
 
-.mura-grid li a.css,
-.mura-table-grid li.css {
+.css {
 	background-image: url(../images/icons/files/icon_css_small.gif) !important;
 }
 
-.mura-grid li a.flv,
-.mura-table-grid li.flv {
+.flv {
 	background-image: url(../images/icons/files/icon_flv_small.png) !important;
 }
 
-.mura-grid li a.html,
-.mura-table-grid li.htm,
-.mura-grid li a.html,
-.mura-table-grid li.htm {
+.html, .htm {
 	background-image: url(../images/icons/files/icon_generic_small.gif) !important;
 }
 
@@ -2920,161 +2851,83 @@ dt .add li.Page {
 
 /* @group Locked */
 
-.mura-grid li a.docLocked,
-.mura-grid li a.docxLocked,
-.mura-grid li a.docmLocked,
-.mura-grid li a.dotxLocked,
-.mura-grid li a.dotmLocked,
-.mura-table-grid li.docLocked,
-.mura-table-grid li.docxLocked,
-.mura-table-grid li.docmLocked,
-.mura-table-grid li.dotxLocked,
-.mura-table-grid li.dotmLocked {
+.docLocked, .docxLocked, .docmLocked, .dotxLocked, .dotmLocked {
 	background-image: url(../images/icons/files/icon_doc_small_locked.gif) !important;
 }
 
-.mura-grid li a.jpgLocked,
-.mura-table-grid li.jpgLocked {
+.jpgLocked {
 	background-image: url(../images/icons/files/icon_jpg_small_locked.gif) !important;
 }
 
-.mura-grid li a.psdLocked,
-.mura-table-grid li.psdLocked {
+.psdLocked {
 	background-image: url(../images/icons/files/icon_gif_small_locked.gif) !important;
 }
 
-.mura-grid li a.gifLocked,
-.mura-table-grid li.gifLocked {
+.gifLocked {
 	background-image: url(../images/icons/files/icon_gif_small_locked.gif) !important;
 }
 
-.mura-grid li a.pngLocked,
-.mura-table-grid li.gifLocked {
+.pngLocked {
 	background-image: url(../images/icons/files/icon_png_small_locked.gif) !important;
 }
 
-.mura-grid li a.pdfLocked,
-.mura-table-grid li.pdfLocked {
+.pdfLocked {
 	background-image: url(../images/icons/files/icon_pdf_small_locked.gif) !important;
 }
 
-.mura-grid li a.txtLocked,
-.mura-table-grid li.txtLocked {
+.txtLocked {
 	background-image: url(../images/icons/files/icon_txt_small_locked.gif) !important;
 }
 
-.mura-grid li a.pptLocked,
-.mura-grid li a.pptxLocked,
-.mura-grid li a.pptmLocked,
-.mura-grid li a.potxLocked,
-.mura-grid li a.potmLocked,
-.mura-grid li a.ppamLocked,
-.mura-grid li a.ppsxLocked,
-.mura-grid li a.ppsmLocked,
-.mura-grid li a.sldxLocked,
-.mura-grid li a.sldmLocked,
-.mura-grid li a.thmxLocked,
-.mura-table-grid li.pptLocked,
-.mura-table-grid li.pptxLocked,
-.mura-table-grid li.pptmLocked,
-.mura-table-grid li.potxLocked,
-.mura-table-grid li.potmLocked,
-.mura-table-grid li.ppamLocked,
-.mura-table-grid li.ppsxLocked,
-.mura-table-grid li.ppsmLocked,
-.mura-table-grid li.sldxLocked,
-.mura-table-grid li.sldmLocked,
-.mura-table-grid li.thmxLocked {
+.pptLocked, .pptxLocked, .pptmLocked, .potxLocked, .potmLocked, .ppamLocked, .ppsxLocked, .ppsmLocked, .sldxLocked, .sldmLocked, .thmxLocked {
 	background-image: url(../images/icons/files/icon_ppt_small_locked.gif) !important;
 }
 
-.mura-grid li a.xlsLocked,
-.mura-grid li a.xlsxLocked,
-.mura-grid li a.xlsmLocked,
-.mura-grid li a.xltxLocked,
-.mura-grid li a.xltmLocked,
-.mura-grid li a.xlsbLocked,
-.mura-grid li a.xlamLocked,
-.mura-table-grid li.xlsLocked,
-.mura-table-grid li.xlsxLocked,
-.mura-table-grid li.xlsmLocked,
-.mura-table-grid li.xltxLocked,
-.mura-table-grid li.xltmLocked,
-.mura-table-grid li.xlsbLocked,
-.mura-table-grid li.xlamLocked {
+.xlsLocked, .xlsxLocked, .xlsmLocked, .xltxLocked, .xltmLocked, .xlsbLocked, .xlamLocked {
 	background-image: url(../images/icons/files/icon_xls_small_locked.gif) !important;
 }
 
-.mura-grid li a.mdbLocked,
-.mura-table-grid li.mdbLocked {
+.mdbLocked {
 	background-image: url(../images/icons/files/icon_mdb_small_locked.gif) !important;
 }
 
-.mura-grid li a.vsdLocked,
-.mura-table-grid li.vsdLocked {
+.vsdLocked {
 	background-image: url(../images/icons/files/icon_vsd_small_locked.gif) !important;
 }
 
-.mura-grid li a.mppLocked,
-.mura-table-grid li.mppLocked {
+.mppLocked {
 	background-image: url(../images/icons/files/icon_mpp_small_locked.gif) !important;
 }
 
-.mura-grid li a.graffleLocked,
-.mura-table-grid li.graffleLocked {
+.graffleLocked {
 	background-image: url(../images/icons/files/icon_graffle_small_locked.gif) !important;
 }
 
-.mura-grid li a.oo3Locked,
-.mura-table-grid li.oo3Locked {
+.oo3Locked {
 	background-image: url(../images/icons/files/icon_oo3_small_locked.gif) !important;
 }
 
-.mura-grid li a.mp3Locked,
-.mura-table-grid li.mp3Locked {
+.mp3Locked {
 	background-image: url(../images/icons/files/icon_mp3_small_locked.gif) !important;
 }
 
-.mura-grid li a.nddLocked,
-.mura-table-grid li.nddLocked {
+.nddLocked {
 	background-image: url(../images/icons/files/icon_ndd_small_locked.gif) !important;
 }
 
-.mura-grid li a.zipLocked,
-.mura-table-grid li.zipLocked {
+.zipLocked {
 	background-image: url(../images/icons/files/icon_zip_small_locked.gif) !important;
 }
 
-.mura-grid li a.cssLocked,
-.mura-table-grid li.cssLocked {
+.cssLocked {
 	background-image: url(../images/icons/files/icon_flv_small_locked.gif) !important;
 }
 
-.mura-grid li a.flvLocked,
-.mura-table-grid li.flvLocked {
+.flvLocked {
 	background-image: url(../images/icons/files/icon_flv_small_locked.png) !important;
 }
 
-.mura-grid li a.htmlLocked,
-.mura-grid li a.htmLocked,
-.mura-grid li a.cfmLocked,
-.mura-grid li a.cfcLocked,
-.mura-grid li a.csvLocked,
-.mura-grid li a.phpLocked,
-.mura-grid li a.rbLocked,
-.mura-grid li a.pyLocked,
-.mura-grid li a.javaLocked,
-.mura-grid li a.jspLocked,
-.mura-table-grid li.htmlLocked,
-.mura-table-grid li.htmLocked,
-.mura-table-grid li.cfmLocked,
-.mura-table-grid li.cfcLocked,
-.mura-table-grid li.csvLocked,
-.mura-table-grid li.phpLocked,
-.mura-table-grid li.rbLocked,
-.mura-table-grid li.pyLocked,
-.mura-table-grid li.javaLocked,
-.mura-table-grid li.jspLocked  {
+.htmlLocked, .htmLocked, .cfmLocked, .cfcLocked, .csvLocked, .phpLocked, .rbLocked, .pyLocked, .javaLocked, .jspLocked  {
 	background-image: url(../images/icons/files/icon_generic_small_locked.gif) !important;
 }
 
