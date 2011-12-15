@@ -2594,7 +2594,7 @@ dt .add li.Page {
 	text-decoration: none;
 }
 
-#tabFlat #navTask li a:hover {
+#tabFlat #navTask li a:hover, #tabFlat #navTask li a.active {
 	background: #aaa;
 	color: #fff;
 }
@@ -2663,8 +2663,7 @@ dt .add li.Page {
 	margin-right: .25em;
 }
 
-#tabFlat .item .nodeMeta .updated,
-#tabFlat .item .nodeMeta .created {
+#tabFlat .item .nodeMeta .updated {
 	float: none;
 }
 
@@ -2680,7 +2679,7 @@ dt .add li.Page {
 
 #tabFlat .item .nodeMeta .type {
 	clear: right !important;
-	float: none;
+	/*float: none;*/
 }
 
 #tabFlat .thumbnail img {
@@ -2698,6 +2697,8 @@ dt .add li.Page {
 	margin-top: .35em !important;
 	clear: both !important;
 	display: block;
+	overflow: hidden;
+	float: none !important;
 }
 
 .module {
@@ -3353,6 +3354,7 @@ li.admin li.source, table td.administration li.source {
 #tabFlat .admin ul {
 	padding: .35em .75em;
 	float: right;
+	background: #e9e9e9;
 	border-radius: 12px;
 	-webkit-border-radius: 12px;
 	-moz-border-radius: 12px;
