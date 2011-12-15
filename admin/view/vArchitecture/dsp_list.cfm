@@ -92,6 +92,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset attributes.activeTab=session.siteManagerTab/>
 </cfif>
 <cfif isdefined("url.keywords")>
+	<cfif session.flatViewArgs[session.siteID].keywords neq url.keywords>
+		<cfset session.flatViewArgs[session.siteID].page=1>
+	</cfif>
 	<cfset session.flatViewArgs[session.siteID].keywords=url.keywords/>
 	<cfset session.flatViewArgs[session.siteID].report=""/>
 	<cfset session.keywords=url.keywords/>
