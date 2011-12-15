@@ -40,6 +40,18 @@
 		<cfreturn variables.recordIndex />
 	</cffunction>
 	
+	<cffunction name="getFirstRecordOnPageIndex" access="public" output="false" returntype="numeric">
+		<cfreturn variables.recordIndex+1 />
+	</cffunction>
+	
+	<cffunction name="getLastRecordOnPageIndex" access="public" output="false" returntype="numeric">
+		<cfset var last=(variables.recordIndex + variables.maxRecordsPerPage)>
+		<cfif last gt variables.records.recordcount>
+			<cfset last=variables.records.recordcount>
+		</cfif>
+		<cfreturn last />
+	</cffunction>
+	
 	<cffunction name="getPageIndex" access="public" output="false" returntype="numeric">
 		<cfreturn variables.pageIndex />
 	</cffunction>

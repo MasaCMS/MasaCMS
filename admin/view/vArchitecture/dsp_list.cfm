@@ -66,6 +66,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="attributes.categoryid" default="" />
 <cfparam name="attributes.tag" default="" />
 <cfparam name="attributes.type" default="" />
+<cfparam name="attributes.page" default="1" />
 <cfparam name="attributes.subtype" default="" />
 <cfparam name="session.copyContentID" default="">
 <cfparam name="session.copySiteID" default="">
@@ -81,7 +82,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="session.flatViewArgs.#session.siteID#.assignments" default="#attributes.assignments#" />
 <cfparam name="session.flatViewArgs.#session.siteID#.categoryid" default="#attributes.categoryid#" />
 <cfparam name="session.flatViewArgs.#session.siteID#.tag" default="#attributes.tag#" />
-<cfparam name="session.flatViewArgs.#session.siteID#.startrow" default="#attributes.startrow#" />
+<cfparam name="session.flatViewArgs.#session.siteID#.page" default="#attributes.page#" />
 <cfparam name="session.flatViewArgs.#session.siteID#.type" default="" />
 <cfparam name="session.flatViewArgs.#session.siteID#.subtype" default="#attributes.subtype#" />
 <cfparam name="session.flatViewArgs.#session.siteID#.report" default="" />
@@ -192,7 +193,7 @@ function initFlatViewArgs(){
 			moduleid:'#JSStringFormat(session.flatViewArgs[session.siteid].moduleid)#', 
 			sortby:'#JSStringFormat(session.flatViewArgs[session.siteid].sortby)#', 
 			sortdirection:'#JSStringFormat(session.flatViewArgs[session.siteid].sortdirection)#', 
-			startrow:'#JSStringFormat(session.flatViewArgs[session.siteid].startrow)#',	
+			page:'#JSStringFormat(session.flatViewArgs[session.siteid].page)#',	
 			tag:'#JSStringFormat(session.flatViewArgs[session.siteid].tag)#',
 			categoryid:'#JSStringFormat(session.flatViewArgs[session.siteid].categoryid)#',
 			lockid:'#JSStringFormat(session.flatViewArgs[session.siteid].lockid)#',

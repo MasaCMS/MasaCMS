@@ -57,7 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	session.flatViewArgs[rc.siteID].assignments=$.event("assignments");
 	session.flatViewArgs[rc.siteID].categoryid=$.event("categoryid");
 	session.flatViewArgs[rc.siteID].tag=$.event("tag");
-	session.flatViewArgs[rc.siteID].startrow=$.event("startrow");
+	session.flatViewArgs[rc.siteID].page=$.event("page");
 	session.flatViewArgs[rc.siteID].type=$.event("type");
 	session.flatViewArgs[rc.siteID].subtype=$.event("subtype");
 	session.flatViewArgs[rc.siteID].report=$.event("report");
@@ -65,7 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 
 	feed=$.getBean("feed");
 	feed.setMaxItems(500);
-	feed.setNextN(20);
+	feed.setNextN(10);
 	feed.setLiveOnly(0);
 	feed.setShowNavOnly(0);
 	
@@ -119,8 +119,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	}
 	
 	iterator=feed.getIterator();
+	iterator.setPage($.event('page'));
 </cfscript>
-</cfsilent>
+
+<cfsavecontent variable="pagination">
+<cfoutput>
+	<cfif iterator.hasNext()>
+	<p class="search-showing">Showing #iterator.getFirstRecordOnPageIndex()#-#iterator.getLastRecordOnPageIndex()# of #iterator.getRecordCount()# Results</p>
+	<cfif iterator.pageCount() gt 1>
+	<ul class="moreResults">
+		<cfif iterator.hasPrevious()><li class="navPrev"><a href="" data-page="#evaluate($.event('page')-1)#">&laquo;</a></li></cfif>
+		<cfloop from="#max($.event('page')-5,1)#" to="#min($.event('page')+5,iterator.pageCount())#" index="p">
+		<li><a href="" data-page="#p#"<cfif $.event('page') eq p> class="active"</cfif>>#p#</a></li>
+		</cfloop>
+		<cfif $.event('page') lt iterator.pageCount()><li class="navNext"><a href="" data-page="#evaluate($.event('page')+1)#">&raquo;</a></li></cfif>	
+	</ul>
+	</cfif>
+	</cfif>	
+</cfoutput>	
+</cfsavecontent></cfsilent>
 <!---<cfsavecontent variable="data.html">--->
 <cfoutput>
 <div id="main">
@@ -135,15 +152,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</ul>
 </div>
 
-<p class="search-showing">Showing 50 of 100 Results</p>
-<ul class="moreResults">
-	<li class="navPrev"><a href="">&laquo;</a></li>
-	<li><a href="">1</a></li>
-	<li><a href="">2</a></li>
-	<li><a href="">3</a></li>
-	<li><a href="">4</a></li>
-	<li class="navNext"><a href="">&raquo;</a></li>
-</ul>
+#pagination#
 
 <table class="mura-table-grid stripe">
 	<tr>
@@ -232,7 +241,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			<ul class="nodeMeta">
 				<li class="updated">Updated on #LSDateformat(item.getlastUpdate(),session.dateKeyFormat)# at #LSTimeFormat(item.getLastUpdate())#  by #HTMLEditFormat(item.getLastUpdateBy())#</li>
-				<li class="created">Created on 1/1/12 at 1:00 PM  by John Doe</li>
+				<li class="created">Created on #LSDateformat(item.getCreated(),session.dateKeyFormat)# at #LSTimeFormat(item.getCreated())#</li>
 				<cfif isNumeric(item.getMajorVersion()) and item.getMajorVersion()><li class="version">Version: <strong>#item.getMajorVersion()#.#item.getMinorVersion()#</strong></li></cfif>
 				<cfif isDate(item.getExpires())><li class="expiration">Expiration: <strong>#LSDateFormat(item.getExpires(),session.dateKeyFormat)#</strong></li></cfif>
 				<cfif isNumeric(item.getFileSize()) and item.getFileSize()><li class="size">Size: <strong>#$.renderFileSize(item.getFileSize())#</strong></li></cfif>
@@ -307,15 +316,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </table>
 
-<p class="search-showing">Showing 50 of 100 Results</p>
-<ul class="moreResults">
-	<li class="navPrev"><a href="">&laquo;</a></li>
-	<li><a href="">1</a></li>
-	<li><a href="">2</a></li>
-	<li><a href="">3</a></li>
-	<li><a href="">4</a></li>
-	<li class="navNext"><a href="">&raquo;</a></li>
-</ul>
+#pagination#
 
 </div>
 
