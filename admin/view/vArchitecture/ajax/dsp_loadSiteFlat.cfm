@@ -125,16 +125,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfsavecontent variable="pagination">
 <cfoutput>
 	<cfif iterator.hasNext()>
-	<p class="search-showing">Showing #iterator.getFirstRecordOnPageIndex()#-#iterator.getLastRecordOnPageIndex()# of #iterator.getRecordCount()# Results</p>
-	<cfif iterator.pageCount() gt 1>
-	<ul class="moreResults">
-		<cfif iterator.hasPrevious()><li class="navPrev"><a href="" data-page="#evaluate($.event('page')-1)#">&laquo;</a></li></cfif>
-		<cfloop from="#max($.event('page')-5,1)#" to="#min($.event('page')+5,iterator.pageCount())#" index="p">
-		<li><a href="" data-page="#p#"<cfif $.event('page') eq p> class="active"</cfif>>#p#</a></li>
-		</cfloop>
-		<cfif $.event('page') lt iterator.pageCount()><li class="navNext"><a href="" data-page="#evaluate($.event('page')+1)#">&raquo;</a></li></cfif>	
-	</ul>
-	</cfif>
+		<cfset args=arrayNew(1)>
+		<cfset args[1]="#iterator.getFirstRecordOnPageIndex()#-#iterator.getLastRecordOnPageIndex()#">
+		<cfset args[2]=iterator.getRecordCount()>
+		<p class="search-showing">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.paginationmeta"),args)#</p>
+		<cfif iterator.pageCount() gt 1>
+			<ul class="moreResults">
+				<cfif iterator.hasPrevious()><li class="navPrev"><a href="" data-page="#evaluate($.event('page')-1)#">&laquo;</a></li></cfif>
+				<cfloop from="#max($.event('page')-5,1)#" to="#min($.event('page')+5,iterator.pageCount())#" index="p">
+				<li><a href="" data-page="#p#"<cfif $.event('page') eq p> class="active"</cfif>>#p#</a></li>
+				</cfloop>
+				<cfif $.event('page') lt iterator.pageCount()><li class="navNext"><a href="" data-page="#evaluate($.event('page')+1)#">&raquo;</a></li></cfif>	
+			</ul>
+		</cfif>
 	</cfif>	
 </cfoutput>	
 </cfsavecontent></cfsilent>
@@ -145,10 +148,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<h3>Sort by:</h3>
 	<ul id="navTask">
 		<!---<li><a href="" data-sortby="releasedate">Release Date</a></li>--->	
-		<li><a href="" data-sortby="lastupdate"<cfif $.event("sortBy") eq "lastUpdate"> class="active"</cfif>>Last Updated</a></li>
-		<li><a href="" data-sortby="created"<cfif $.event("sortBy") eq "created"> class="active"</cfif>>Created</a></li>
+		<li><a href="" data-sortby="lastupdate"<cfif $.event("sortBy") eq "lastUpdate"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.lastupdated")#</a></li>
+		<li><a href="" data-sortby="created"<cfif $.event("sortBy") eq "created"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.created")#</a></li>
 		<!---<li><a href="" data-sortby="releasedate"<cfif $.event("sortBy") eq "releasedate"> class="active"</cfif>>Release Date</a></li>--->
-		<li><a href="" data-sortby="menutitle"<cfif $.event("sortBy") eq "menutitle"> class="active"</cfif>>Title</a></li>
+		<li><a href="" data-sortby="menutitle"<cfif $.event("sortBy") eq "menutitle"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.title")#</a></li>
 	</ul>
 </div>
 
@@ -157,7 +160,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <table class="mura-table-grid stripe">
 	<tr>
 		<th></th>
-	  	<th class="item">Item</th>
+	  	<th class="item">#application.rbFactory.getKeyValue(session.rb,"sitemanager.item")#</th>
 		<!---<th nowrap class="administration">&nbsp;</th>--->
 	</tr> 
  	<cfif iterator.hasNext()>
@@ -233,38 +236,45 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>	
 		</h3>
 		<cfif listFindNoCase("png,jpg,jpeg,gif",item.getFileExt())>
-		<div class="thumbnail"><img src="#item.getImageURL(size='small')#" /></div>
+		<div class="thumbnail"><img src="#item.getImageURL(height=80,width=80)#" /></div>
 		</cfif>
 			<cfif len(item.getLockID())>
 				<cfset lockedBy=$.getBean("user").loadBy(item.getLockID())>
-				<p class="locked-offline">The associated file is locked for offline editing by #HTMLEditFormat(lockedBy.getFName())# #HTMLEditFormat(lockedBy.getLName())#</p>
+				<p class="locked-offline">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.filelockedby"),"#HTMLEditFormat(lockedBy.getFName())# #HTMLEditFormat(lockedBy.getLName())#")#</p>
 			</cfif>
 			
 			#application.contentRenderer.dspZoom(crumbdata,item.getFileEXT(),true)#
 			
 			<ul class="nodeMeta">
-				<li class="updated">Updated on #LSDateformat(item.getlastUpdate(),session.dateKeyFormat)# at #LSTimeFormat(item.getLastUpdate())#  by #HTMLEditFormat(item.getLastUpdateBy())#</li>
-				<li class="created">Created on #LSDateformat(item.getCreated(),session.dateKeyFormat)# at #LSTimeFormat(item.getCreated())#</li>
-				<cfif isNumeric(item.getMajorVersion()) and item.getMajorVersion()><li class="version">Version: <strong>#item.getMajorVersion()#.#item.getMinorVersion()#</strong></li></cfif>
-				<cfif isDate(item.getExpires())><li class="expiration">Expiration: <strong>#LSDateFormat(item.getExpires(),session.dateKeyFormat)#</strong></li></cfif>
-				<cfif isNumeric(item.getFileSize()) and item.getFileSize()><li class="size">Size: <strong>#$.renderFileSize(item.getFileSize())#</strong></li></cfif>
+				<cfsilent><cfset args=arrayNew(1)>
+				<cfset args[1]=LSDateformat(item.getLastUpdate(),session.dateKeyFormat)>
+				<cfset args[2]=LSTimeFormat(item.getLastUpdate())>
+				<cfset args[3]=item.getLastUpdateBy()></cfsilent>
+				<li class="updated">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.lastupdatedlong"),args)#</li>		
+				<cfsilent><cfset args=arrayNew(1)>
+				<cfset args[1]=LSDateformat(item.getCreated(),session.dateKeyFormat)>
+				<cfset args[2]=LSTimeFormat(item.getCreated())></cfsilent>
+				<li class="created">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.createdlong"),args)#</li>
+				<cfif isNumeric(item.getMajorVersion()) and item.getMajorVersion()><li class="version">#application.rbFactory.getKeyValue(session.rb,"sitemanager.version")#: <strong>#item.getMajorVersion()#.#item.getMinorVersion()#</strong></li></cfif>
+				<cfif isDate(item.getExpires())><li class="expiration">#application.rbFactory.getKeyValue(session.rb,"sitemanager.expiration")#: <strong>#LSDateFormat(item.getExpires(),session.dateKeyFormat)#</strong></li></cfif>
+				<cfif isNumeric(item.getFileSize()) and item.getFileSize()><li class="size">#application.rbFactory.getKeyValue(session.rb,"sitemanager.size")#: <strong>#$.renderFileSize(item.getFileSize())#</strong></li></cfif>
 				<cfset categories=item.getCategoriesIterator()>
 				<cfif categories.hasNext()>
-				<li class="categories">Categories: <strong>
+				<li class="categories">#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#: <strong>
 					<cfloop condition="categories.hasNext()">
 						<cfset category=categories.next()>
 						#HTMLEditFormat(category.getName())#<cfif categories.hasPrevious()>, </cfif>
 					</cfloop>
 					</strong>
 				</cfif></dd>
-				<cfif len(item.getTags())><li class="tags">Tags: <strong>#item.getTags()#</strong></li></cfif>
-				<li class="type">Type: <strong>#item.getType()# (#item.getSubType()#)</strong></li>
+				<cfif len(item.getTags())><li class="tags">#application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#: <strong>#item.getTags()#</strong></li></cfif>
+				<li class="type">#application.rbFactory.getKeyValue(session.rb,"sitemanager.type")#: <strong>#item.getType()# (#item.getSubType()#)</strong></li>
 			</ul>
 		</tr>
 	</cfloop>
 	<cfelse>
 		<tr>
-			<td colspan="3">Your search returned no results.</td>
+			<td colspan="3">#application.rbFactory.getKeyValue(session.rb,"sitemanager.noresults")#</td>
 		</tr>	
 	</cfif>
 </table>
@@ -275,29 +285,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
 <div class="sidebar">
-	<h3>Reports</h3>
+	<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports")#</h3>
 	<ul id="navReports" class="module">
-		<li><a href="" data-report=""<cfif not len($.event("report"))> class="active"</cfif>>All Site Content</a></li>
-		<li><a href="" data-report="expires"<cfif $.event("report") eq "expires"> class="active"</cfif>>All Expiring Content</a></li>
-		<li><a href="" data-report="myexpires"<cfif $.event("report") eq "myexpires"> class="active"</cfif>>My Expiring Content</a></li>
-		<li><a href="" data-report="mydrafts"<cfif $.event("report") eq "mydrafts"> class="active"</cfif>>My Drafts</a></li>
-		<li><a href="" data-report="mylockedfiles"<cfif $.event("report") eq "mylockedfiles"> class="active"</cfif>>Files I'm Editing Offline</a></li>
+		<li><a href="" data-report=""<cfif not len($.event("report"))> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.all")#</a></li>
+		<li><a href="" data-report="expires"<cfif $.event("report") eq "expires"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.expires")#</a></li>
+		<li><a href="" data-report="myexpires"<cfif $.event("report") eq "myexpires"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.myexpires")#</a></li>
+		<li><a href="" data-report="mydrafts"<cfif $.event("report") eq "mydrafts"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mydrafts")#</a></li>
+		<li><a href="" data-report="mylockedfiles"<cfif $.event("report") eq "mylockedfiles"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.mylockedfiles")#</a></li>
 	</ul>
 	
-	<h3>Filters</h3>
+	<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.filters")#</h3>
 	
 	<div id="filters" class="module">
-	<h4>Keywords</h4>
+	<h4>#application.rbFactory.getKeyValue(session.rb,"sitemanager.keywords")#</h4>
     <input id="contentKeywords" value="#HTMLEditFormat(session.flatViewArgs[rc.siteID].keywords)#" type="text" size="20" />
   	</div>
 
     <cfif $.event("report") neq "lockedfiles">
 	<div class="module">
-	<h4>Type</h4>
+	<h4>#application.rbFactory.getKeyValue(session.rb,"sitemanager.type")#</h4>
 	<select name="contentTypeFilter" id="contentTypeFilter">
-		<option value="">All</option>
+		<option value="">#application.rbFactory.getKeyValue(session.rb,"sitemanager.all")#</option>
 		<cfloop list="#$.getBean('contentManager').TreeLevelList#" index="i">
-		<option value="#i#"<cfif listfind($.event('type'),i)> selected</cfif>>#i#</option>
+		<option value="#i#"<cfif listfind($.event('type'),i)> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#i#")#</option>
 		</cfloop>
 	</select>
 	</div>
@@ -315,7 +325,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif tags.recordcount>
 	<div class="module">
-	<h4>Tags</h4>
+	<h4>#application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</h4>
 	<div id="svTagCloud">
 		<ol>
 		<cfloop query="tags"><cfsilent>
@@ -341,12 +351,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif $.getBean("categoryManager").getCategoryCount($.event("siteID"))>
 	<div class="module">
-	<h4>Categories</h4>
+	<h4>#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#</h4>
 	<cf_dsp_categories_nest siteID="#$.event('siteID')#" parentID="" nestLevel="0" categoryid="#$.event('categoryid')#">
 	</cfif>
 	
 	</div>
-	<input type="button" name="filterList" value="Filter" onclick="loadSiteFlatByFilter();"/>
+	<input type="button" name="filterList" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#" onclick="loadSiteFlatByFilter();"/>
 	</cfif>
 </div>
 <!---<cfdump var="#request.test#">--->
