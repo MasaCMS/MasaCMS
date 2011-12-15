@@ -506,9 +506,7 @@ div.separate {
 	margin: 0 0 0 0;
 	padding: 36px 0 36px 30px;
 	line-height: 16px;
-	min-width: 830px;
-	max-width: 920px;
-	width: auto;
+	width: 920px;
 }
 
 body.compact #content {
@@ -2748,6 +2746,10 @@ dt .add li.Page {
 	width: 100%;
 }
 
+.module input.text {
+	width: 95%;
+}
+
 /* @end */
 
 /* @group File Icons */
@@ -3113,7 +3115,7 @@ ul.five, ul.form, .admin ul { /* 5 Icons */
 }
 
 ul.six { /* 6 Icons */
-	width: 104px;
+	width: 110px;
 }
 
 ul.seven { /* 7 Icons */
@@ -3188,7 +3190,7 @@ ul.seven { /* 7 Icons */
 }
 
 .admin li.download, table td.administration li.download {
-	background: url(../images/icons/save_24.png) no-repeat;
+	background: url(../images/icons/download_24.png) no-repeat;
 }
 
 .admin li.manageData, table td.administration li.manageData {

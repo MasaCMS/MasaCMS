@@ -299,7 +299,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<div id="filters" class="module">
 	<h4>#application.rbFactory.getKeyValue(session.rb,"sitemanager.keywords")#</h4>
-    <input id="contentKeywords" value="#HTMLEditFormat(session.flatViewArgs[rc.siteID].keywords)#" type="text" size="20" />
+    <input class="text" id="contentKeywords" value="#HTMLEditFormat(session.flatViewArgs[rc.siteID].keywords)#" type="text" size="20" />
   	</div>
 
     <cfif $.event("report") neq "lockedfiles">
