@@ -344,6 +344,14 @@ p {
 	line-height: 1.3;
 }
 
+#content p.search-showing {
+	margin: 0 1em 1em 0;
+	font-size: 11px;
+	font-style: italic;
+	float: left;
+	line-height: 20px;
+}
+
 a, .tabs dt a {
 	color: #ff3a00;
 	text-decoration: none;
@@ -2611,6 +2619,12 @@ dt .add li.Page {
 	white-space: wrap !important;
 }
 
+/* Interactions */
+#tabFlat .mura-table-grid tr:hover td {
+	background: #f9f9f9;
+}
+
+
 #tabFlat td .locked-offline {
 	padding: .25em .5em;
 	margin-bottom: .75em;
@@ -2628,6 +2642,7 @@ dt .add li.Page {
 	font-weight: bold;
 	line-height: 16px;
 	font-size: 14px;
+	width: 80%;
 }
 
 #tabFlat ul.nodeMeta {
@@ -3337,11 +3352,16 @@ li.admin li.source, table td.administration li.source {
 
 #tabFlat .admin ul {
 	padding: .35em .75em;
-	background: #e5e5e5;
 	float: right;
 	border-radius: 12px;
 	-webkit-border-radius: 12px;
 	-moz-border-radius: 12px;
+	/*display: none;*/
+}
+
+#tabFlat .mura-table-grid tr:hover .admin ul {
+	display: block;
+	background: #fff;
 }
 
 /* @end */
@@ -5052,33 +5072,27 @@ div.menu {
 .navSequential,
 .moreResults {
 	margin: 0 !important;
-	padding: 0;
+	padding: 2px 0;
 	list-style: none;
-	clear: both;
 	overflow: hidden;
+	}
+
+#tabFlat .moreResults {
+	 float: right;
+	 margin-bottom: 1em !important;
+	/*clear: both;*/
 	}
 
 .navSequential li,
 .moreResults li {
-	float: left;
-	margin: 0 .25em;
+	display: inline-block;
+	margin: 0;
 	padding: 0;
 	text-align: center;
+	 /* IE7 Hack for inline-block respect */
+	zoom: 1;
+	*display: inline;
 	}
-	
-/*.nextPrev li.navPrev {
-	border-right: 1px solid #dbdbdb;
-	margin-right: .4em;
-	}
-
-.nextPrev li.navNext {
-	border-left: 1px solid #dbdbdb;
-	margin-left: .4em;
-	}*/
-
-/*.moreResults li.navPrev {
-	border-right: 1px solid #dbdbdb;
-	}*/
 
 .navSequential li a,
 .moreResults li a {
@@ -5089,7 +5103,7 @@ div.menu {
 	}
 	
 .moreResults li.first a,
-.moreResults li.last a {
+.moreResults li.last a  {
 	border: 1px solid #fff;
 	}
 
