@@ -2663,8 +2663,7 @@ dt .add li.Page {
 	margin-right: .25em;
 }
 
-#tabFlat .item .nodeMeta .updated,
-#tabFlat .item .nodeMeta .created {
+#tabFlat .item .nodeMeta .updated {
 	float: none;
 }
 
