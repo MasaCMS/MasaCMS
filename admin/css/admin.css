@@ -2654,8 +2654,18 @@ dt .add li.Page {
 #tabFlat ul.nodeMeta li {
 	float: left;
 	padding: 0;
-	margin: 0 1.25em .35em 0;
+	margin: 0 .5em .35em 0;
 	font-size: 11px;
+}
+
+#tabFlat ul.nodeMeta li:after {
+	content: "/";
+	margin-left: .5em;
+	color: #999;
+}
+
+#tabFlat ul.nodeMeta li:last-child:after {
+	content: "";
 }
 
 #tabFlat ul.nodeMeta .navZoom li {
@@ -2663,9 +2673,9 @@ dt .add li.Page {
 	margin-right: .25em;
 }
 
-#tabFlat .item .nodeMeta .updated {
+/*#tabFlat .item .nodeMeta .updated {
 	float: none;
-}
+}*/
 
 #tabFlat .thumbnail {
 	float: left;
@@ -2694,8 +2704,8 @@ dt .add li.Page {
 }
 
 #tabFlat table .item .navZoom {
-	margin-top: .35em !important;
-	clear: both !important;
+	margin: 1em 0 .5em !important;
+	/*clear: both !important;*/
 	display: block;
 	overflow: hidden;
 	float: none !important;
