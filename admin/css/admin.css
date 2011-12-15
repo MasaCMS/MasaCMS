@@ -2767,7 +2767,7 @@ dt .add li.Page {
 
 /* @group Default */
 
-.doc,.docx,.docm,.dotx,dotm {
+.doc, .docx, .docm, .dotx, .dotm {
 	background-image: url(../images/icons/files/icon_doc_small.gif) !important;
 }
 
