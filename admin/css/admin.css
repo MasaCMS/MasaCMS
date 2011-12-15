@@ -2600,7 +2600,7 @@ dt .add li.Page {
 }
 
 #tabFlat a.active {
-	background: #333;
+	background: #aaa;
 	color: #fff;
 }
 
@@ -2661,7 +2661,7 @@ dt .add li.Page {
 #tabFlat ul.nodeMeta li:after {
 	content: "/";
 	margin-left: .5em;
-	color: #999;
+	color: #aaa;
 }
 
 #tabFlat ul.nodeMeta li:last-child:after {
@@ -2723,15 +2723,16 @@ dt .add li.Page {
 }
 
 #tabFlat #navReports a {
-	color: #ff3a00;
+	/*color: #ff3a00;*/
+	color: #369;
 	padding: .35em .75em;
 	border-radius: 10px;
 	display: inline-block;
 }
 
 #tabFlat #navReports a:hover {
-	color: #333;
-	background: #ccc;
+	color: #fff;
+	background: #333;
 	text-decoration: none;
 }
 
@@ -3030,6 +3031,10 @@ dt .add li.Page {
 .mura-grid li a.Calendar,
 .navZoom li.Calendar {
 	background: url(../images/icons/calendar.gif) no-repeat 2px .6em;
+}
+
+#tabFlat .navZoom li.Calendar {
+	background: url(../images/icons/calendar.gif) no-repeat 2px .1em;
 }
 
 .mura-grid li a.PageLocked,
@@ -3368,7 +3373,7 @@ li.admin li.source, table td.administration li.source {
 	border-radius: 12px;
 	-webkit-border-radius: 12px;
 	-moz-border-radius: 12px;
-	/*display: none;*/
+	display: none;
 }
 
 #tabFlat .mura-table-grid tr:hover .admin ul {
@@ -5152,6 +5157,22 @@ div.menu {
 
 #svTagCloud a {
 	color: #369;
+}
+
+#tabFlat #svTagCloud a {
+	padding: 2px 4px;
+}
+
+#tabFlat #svTagCloud a.active, #tabFlat #svTagCloud a:hover {
+	text-decoration: none;
+	border-radius: 4px;
+}
+#tabFlat #svTagCloud a.active {
+	
+}
+#tabFlat #svTagCloud a:hover {
+	color: #fff;
+	background: #333;
 }
 
 /* @end Tag Clouds
