@@ -74,6 +74,7 @@
 							function(){
 								jQuery("##msg-file-locked").fadeOut();
 								jQuery("##lockFileForEditing").fadeIn();
+								hasFileLock=false;
 								jQuery.post("./index.cfm",{fuseaction:"carch.unlockfile",contentid:"#request.contentBean.getContentID()#",siteid:"#request.contentBean.getSiteID()#"})
 							}
 						);	
@@ -89,6 +90,7 @@
 							function(){
 								jQuery("##msg-file-locked").fadeIn();
 								jQuery(a).fadeOut();
+								hasFileLock=true;
 								document.location="./index.cfm?fuseaction=carch.lockfile&contentID=#request.contentBean.getContentID()#&siteID=#request.contentBean.getSiteID()#";
 							}
 						);	
@@ -127,4 +129,9 @@
 	</script>
 	</cfif>
 </cfif>
+<script>
+	hasFileLock=<cfif stats.getLockID() eq session.mura.userID>true<cfelse>false</cfif>;
+	unlockfileconfirm="#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlockfileconfirm'))#";
+</script>
+<input type="hidden" id="unlockwithnew" name="unlockwithnew" value="false" />
 </cfoutput>
