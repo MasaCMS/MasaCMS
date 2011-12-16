@@ -23,14 +23,9 @@
 	</cfif>
 	<input type="file" id="file" name="NewFile" class="text" <cfif attributes.ptype eq 'Gallery' or attributes.type neq 'File'>accept="image/jpeg,image/png" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.newimagevalidate')#"</cfif>>
 	<cfif attributes.type eq "file" and not request.contentBean.getIsNew()>
-		<div style="display:none;" id="revisionType">
-		<p>
-		<dl>
-		<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.filerevisiontype')#</dt>
-		<dd><input type="radio" name="versionType" value="major"/> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.major')# <input type="radio" name="versionType" value="minor" checked/> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.minor')#</dd>
-		</dl>
+		<p style="display:none;" id="revisionType">	
+		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.filerevisiontype')#: <input type="radio" name="versionType" value="major"/> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.major')# <input type="radio" name="versionType" value="minor" checked/> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.minor')#
 		</p>
-		</div>
 		<script>
 			jQuery("##file").change(function(){
 				jQuery("##revisionType").fadeIn();
