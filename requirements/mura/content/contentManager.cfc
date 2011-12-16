@@ -927,6 +927,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset theFileStruct=variables.fileManager.process(tempFile,newBean.getSiteID()) />
 				<cfset newBean.setfileID(variables.fileManager.create(theFileStruct.fileObj,newBean.getcontentID(),newBean.getSiteID(),tempFile.ClientFile,tempFile.ContentType,tempFile.ContentSubType,tempFile.FileSize,newBean.getModuleID(),tempFile.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium,variables.utility.getUUID(),theFileStruct.fileObjSource)) />
 				
+				<cfif not newBean.getIsNew()
+					and isdefined("arguments.data.unlockwithnew") 
+					and arguments.data.unlockwithnew>
+					<cfset newBean.getStats().setLockID("").save()>	
+				</cfif>
+				
 				<cfif newBean.getType() eq "File">
 					<cfset newBean.setfilename(tempFile.serverfile) />
 					

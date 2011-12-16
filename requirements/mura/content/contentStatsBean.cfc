@@ -86,6 +86,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif isNumeric(arguments.views)>
 	<cfset variables.instance.views = arguments.views />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getRating" returntype="numeric" access="public" output="false">
@@ -97,6 +98,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif isNumeric(arguments.rating)>
 	<cfset variables.instance.rating = arguments.rating />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="setMajorVersion" access="public" output="false">
@@ -104,6 +106,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif isNumeric(arguments.majorVersion)>
 	<cfset variables.instance.majorVersion = arguments.majorVersion />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="setMinorVersion" access="public" output="false">
@@ -111,6 +114,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif isNumeric(arguments.minorVersion)>
 	<cfset variables.instance.minorVersion = arguments.minorVersion />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="setTotalVotes" access="public" output="false">
@@ -118,6 +122,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif isNumeric(arguments.TotalVotes)>
 	<cfset variables.instance.TotalVotes = arguments.TotalVotes />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="setUpVotes" access="public" output="false">
@@ -125,6 +130,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif isNumeric(arguments.UpVotes)>
 	<cfset variables.instance.UpVotes = arguments.UpVotes />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="setDownVotes" access="public" output="false">
@@ -132,6 +138,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif isNumeric(arguments.DownVotes)>
 	<cfset variables.instance.DownVotes = arguments.DownVotes />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="setComments" access="public" output="false">
@@ -139,13 +146,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif isNumeric(arguments.Comments)>
 	<cfset variables.instance.Comments = arguments.Comments />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
-<cffunction name="load"  access="public" output="false" returntype="void">
+<cffunction name="load"  access="public" output="false">
 	<cfset var rs=getQuery()>
 	<cfif rs.recordcount>
 		<cfset set(rs) />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getQuery"  access="public" output="false" returntype="query">
@@ -167,7 +176,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfquery>
 </cffunction>
 
-<cffunction name="save"  access="public" output="false" returntype="void">
+<cffunction name="save"  access="public" output="false">
 <cfset var rs=""/>
 	
 	
@@ -208,7 +217,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfquery>
 		
 	</cfif>
-	
+	<cfreturn this>
 </cffunction>
 
 </cfcomponent>

@@ -839,8 +839,9 @@ jQuery("#alertDialog").dialog({
 return false;
 }
  
-function confirmDialog(message,action){
-	confirmedAction=action;
+function confirmDialog(message,yesAction,noAction){
+	_yesAction=yesAction;
+	_noAction=noAction;
 	
 	jQuery("#alertDialogMessage").html(message);
 	jQuery("#alertDialog").dialog({
@@ -850,15 +851,23 @@ function confirmDialog(message,action){
 			buttons: {
 				'YES': function() {
 					jQuery(this).dialog('close');
-					if(typeof(confirmedAction)=='function'){
-						confirmedAction();
+					if(typeof(_yesAction)=='function'){
+						_yesAction();
 					} else {
-						location.href=confirmedAction;
+						location.href=_yesAction;
 					}
 					
 					},
 				'NO': function() {
 					jQuery(this).dialog('close');
+					if (typeof(_noAction) != 'undefined') {
+						if (typeof(_noAction) == 'function') {
+							_noAction();
+						}
+						else {
+							location.href = _noAction;
+						}
+					}
 				}
 			}
 		});
