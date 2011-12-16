@@ -2804,6 +2804,15 @@ dt .add li.Page {
 
 /* @group File Icons */
 
+.btn-alt {
+	background-color: #eee;
+	padding: .25em 1em;
+	border-radius: 16px;
+	-webkit-border-radius: 16px;
+	-moz-border-radius: 16px;
+	display: inline-block;
+}
+
 .mura-grid li dt a {
 	background: url(../images/icons/files/icon_generic_small.gif) 1px center no-repeat;
 	color: #333232;
@@ -2818,26 +2827,38 @@ dt .add li.Page {
 	margin-right: 1em;
 }
 
-.mura-file-offline-edit {
+#mura-file-offline-edit {
 	background: #eee url(../images/icons/download_24.png) 7px center no-repeat;
-	padding: 4px 1em 4px 24px;
+	padding-left: 24px;
 	margin-right: 1em;
-	border-radius: 16px;
 }
 
 #msg-file-locked {
-	margin-bottom: 1em !important;
-	padding: .35em .35em .35em 26px !important;
-	background: #FFF6BF url(../images/icons/sinfo_24.png) 7px center no-repeat;
+	margin-bottom: .5em !important;
+	/*padding: .35em .35em .35em 26px !important;
+	background-image: url(../images/icons/sinfo_24.png);
+	background-position: 7px center;
+	background-repeat: no-repeat;*/
+	padding: .35em .75em !important;
 	font-size: 11px !important;
 }
 
-#msg-file-locked a {
-	color: #69c;
+#msg-file-locked.error {
+
+}
+
+#msg-file-locked.error a {
+	padding-left: 24px;
+	text-decoration: underline;
+	background-image: url(../images/icons/mail_24.png);
+	background-position: 7px center;
+	background-repeat: no-repeat;
+}
+
+#mura-file-unlock {
 	text-decoration: none;
-	background: url(../images/icons/ulock_24.png) 4px center no-repeat;
-	padding-left: 22px;
-	font-weight: bold;
+	background: #eee url(../images/icons/ulock_24.png) 9px center no-repeat;
+	padding-left: 26px;
 }
 
 /* @group Default */

@@ -8,7 +8,10 @@
 #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectfile')#
 </cfif>	
 </dt>
-<dd><input type="file" id="file" name="NewFile" class="text" <cfif attributes.ptype eq 'Gallery' or attributes.type neq 'File'>accept="image/jpeg,image/png" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.newimagevalidate')#"</cfif>>
+<dd>
+<p id="msg-file-locked" class="notice">You've locked this file for offline editing.</p>
+<p id="msg-file-locked" class="error">[NAME] has locked this file for offline editing. <a href="mailto:[EMAIL]" subject="File Unlock Request">Request File Lock Release</a></p>
+<input type="file" id="file" name="NewFile" class="text" <cfif attributes.ptype eq 'Gallery' or attributes.type neq 'File'>accept="image/jpeg,image/png" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.newimagevalidate')#"</cfif>>
 <cfif attributes.type eq "file" and not request.contentBean.getIsNew()>
 	<div style="display:none;" id="revisionType">
 	<p>
@@ -48,15 +51,14 @@
 	</dd>
 <cfelse>
 	<cfif attributes.type eq 'File' and not request.contentBean.getIsNew()>
-	<p id="msg-file-locked" class="notice">You've locked this file for offline editing. <a href="">Unlock this File</a></p>
  		<a class="mura-file #lcase(request.contentBean.getFileExt())#" href="#application.configBean.getContext()#/tasks/render/medium/index.cfm?fileid=#request.contentBean.getFileID()#">#HTMLEditFormat(request.contentBean.getFilename())#</a>
  		
  		<!--- Start Lock/download stuff ---> 		
 	 		
 	 		
  			<!--- Unlocked --->
- 			<a class="mura-file-offline-edit">Download for Offline Editing</a>
- 			
+ 			<a id="mura-file-offline-edit" class="btn-alt" href="">Download for Offline Editing</a>
+ 			<a id="mura-file-unlock" class="btn-alt" href="">Unlock this File</a>
  			
  			
  		
