@@ -128,6 +128,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset args=arrayNew(1)>
 		<cfset args[1]="#iterator.getFirstRecordOnPageIndex()#-#iterator.getLastRecordOnPageIndex()#">
 		<cfset args[2]=iterator.getRecordCount()>
+		
+		<div class="mura-results-wrapper">
 		<p class="search-showing">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.paginationmeta"),args)#</p>
 		<cfif iterator.pageCount() gt 1>
 			<ul class="moreResults">
@@ -138,6 +140,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif $.event('page') lt iterator.pageCount()><li class="navNext"><a href="" data-page="#evaluate($.event('page')+1)#">&raquo;</a></li></cfif>	
 			</ul>
 		</cfif>
+		</div>
 	</cfif>	
 </cfoutput>	
 </cfsavecontent></cfsilent>
