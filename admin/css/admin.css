@@ -5138,6 +5138,10 @@ div.menu {
 	list-style: none;
 	overflow: hidden;
 	}
+	
+.mura-results-wrapper {
+	clear: both;
+}
 
 #tabFlat .moreResults {
 	 float: right;
@@ -5151,9 +5155,6 @@ div.menu {
 	margin: 0;
 	padding: 0;
 	text-align: center;
-	 /* IE7 Hack for inline-block respect */
-	zoom: 1;
-	*display: inline;
 	}
 
 .navSequential li a,
