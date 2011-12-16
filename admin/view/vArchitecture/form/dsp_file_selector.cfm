@@ -16,7 +16,12 @@
 </dt>
 
 <cfif not lockedBySomeElse>
-	<dd><input type="file" id="file" name="NewFile" class="text" <cfif attributes.ptype eq 'Gallery' or attributes.type neq 'File'>accept="image/jpeg,image/png" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.newimagevalidate')#"</cfif>>
+	<dd>
+	<cfif not (request.contentBean.getcontentType() eq 'image' or attributes.type neq 'File')
+		and (attributes.type eq 'File' and not request.contentBean.getIsNew())>
+		<p id="msg-file-locked" class="notice"<cfif not lockedByYou> style="display:none;"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.youvelockedfile')#</p>
+	</cfif>
+	<input type="file" id="file" name="NewFile" class="text" <cfif attributes.ptype eq 'Gallery' or attributes.type neq 'File'>accept="image/jpeg,image/png" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.newimagevalidate')#"</cfif>>
 	<cfif attributes.type eq "file" and not request.contentBean.getIsNew()>
 		<div style="display:none;" id="revisionType">
 		<p>
@@ -59,21 +64,21 @@
 	<cfelse>
 		<cfif attributes.type eq 'File' and not request.contentBean.getIsNew()>
 		<dd>
-			<p id="msg-file-locked" class="notice"<cfif not lockedByYou> style="display:none;"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.youvelockedfile')# <a id="unlockFile" href="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlockfile')#</a></p>
-		
 			<a class="mura-file #lcase(request.contentBean.getFileExt())#" href="#application.configBean.getContext()#/tasks/render/file/index.cfm?fileid=#request.contentBean.getFileID()#&method=attachment">#HTMLEditFormat(request.contentBean.getFilename())#<cfif request.contentBean.getMajorVersion()> (v#request.contentBean.getMajorVersion()#.#request.contentBean.getMinorVersion()#)</cfif></a>
 		
-		 	<a id="lockFileForEditing" class="mura-file-offline-edit"<cfif len(stats.getLockID())> style="display:none;"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.downloadforofflineediting')#</a>	
+			<a id="mura-file-unlock" class="btn-alt"  href=""<cfif not lockedByYou> style="display:none;"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlockfile')#</a>
+		 	<a id="mura-file-offline-edit" class="btn-alt"<cfif len(stats.getLockID())> style="display:none;"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.downloadforofflineediting')#</a>	
 		</dd>
 			<script>
-				jQuery("##unlockFile").click(
+				jQuery("##mura-file-unlock").click(
 					function(event){
 						event.preventDefault();
 						confirmDialog(
 							"#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlockfileconfirm'))#",
 							function(){
 								jQuery("##msg-file-locked").fadeOut();
-								jQuery("##lockFileForEditing").fadeIn();
+								jQuery("##mura-file-unlock").hide();
+								jQuery("##mura-file-offline-edit").fadeIn();
 								hasFileLock=false;
 								jQuery.post("./index.cfm",{fuseaction:"carch.unlockfile",contentid:"#request.contentBean.getContentID()#",siteid:"#request.contentBean.getSiteID()#"})
 							}
@@ -81,7 +86,7 @@
 						
 					}
 				);
-				jQuery("##lockFileForEditing").click(
+				jQuery("##mura-file-offline-edit").click(
 					function(event){
 						event.preventDefault();
 						var a=this;
@@ -89,6 +94,7 @@
 							"#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.downloadforofflineeditingconfirm'))#",
 							function(){
 								jQuery("##msg-file-locked").fadeIn();
+								jQuery("##mura-file-unlock").fadeIn();
 								jQuery(a).fadeOut();
 								hasFileLock=true;
 								document.location="./index.cfm?fuseaction=carch.lockfile&contentID=#request.contentBean.getContentID()#&siteID=#request.contentBean.getSiteID()#";
@@ -105,7 +111,7 @@
 	<!--- Locked by someone else --->
 	<dd>
 		<cfset lockedBy=$.getBean("user").loadBy(stats.getLockID())>
-		<p id="msg-file-locked" class="notice">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.filelockedby"),"#HTMLEditFormat(lockedBy.getFName())# #HTMLEditFormat(lockedBy.getLName())#")#  <a href="mailto:#HTMLEditFormat(lockedBy.getEmail())#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.sendmessage')#</a> <cfif listFindNoCase(session.mura.memberships,"s2")><a id="unlockFileSomeoneElse" href="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlockfile')#</a></cfif></p>
+		<p id="msg-file-locked" class="error">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.filelockedby"),"#HTMLEditFormat(lockedBy.getFName())# #HTMLEditFormat(lockedBy.getLName())#")#  <a href="mailto:#HTMLEditFormat(lockedBy.getEmail())#?subject=#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.fileunlockrequest'))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.requestfilerelease')#</a> <cfif listFindNoCase(session.mura.memberships,"s2")><a id="unlockFileSomeoneElse" href="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlockfile')#</a></cfif></p>
 		<a class="mura-file #lcase(request.contentBean.getFileExt())#" href="#application.configBean.getContext()#/tasks/render/file/index.cfm?fileid=#request.contentBean.getFileID()#&method=attachment">#HTMLEditFormat(request.contentBean.getFilename())#<cfif request.contentBean.getMajorVersion()> (v#request.contentBean.getMajorVersion()#.#request.contentBean.getMinorVersion()#)</cfif></a>
 		<input type="hidden" name="fileid" value="#htmlEditFormat(request.contentBean.getFileID())#" />
 	</dd>
