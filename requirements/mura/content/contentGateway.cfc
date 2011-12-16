@@ -1812,9 +1812,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#" maxrows="1000">
 	SELECT contentid 
 	FROM tcontent 
+	
 	WHERE
 	lastUpdateByID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/> 
-	and active=1 
+	and
+	active=1 
 	and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	and expires <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd("m",1,now())#"> 
 	and expires > <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd("m",-12,now())#"> 

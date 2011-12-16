@@ -355,8 +355,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	</div>
-	<input type="button" name="filterList" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#" onclick="loadSiteFlatByFilter();"/>
 	</cfif>
+	<input type="button" name="filterList" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#" onclick="loadSiteFlatByFilter();"/>
 </div>
 <!---<cfdump var="#request.test#">--->
 </cfoutput>
