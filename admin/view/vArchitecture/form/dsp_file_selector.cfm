@@ -117,6 +117,11 @@
 		<a class="mura-file #lcase(request.contentBean.getFileExt())#" href="#application.configBean.getContext()#/tasks/render/file/index.cfm?fileid=#request.contentBean.getFileID()#&method=attachment">#HTMLEditFormat(request.contentBean.getFilename())#<cfif request.contentBean.getMajorVersion()> (v#request.contentBean.getMajorVersion()#.#request.contentBean.getMinorVersion()#)</cfif></a>
 		<input type="hidden" name="fileid" value="#htmlEditFormat(request.contentBean.getFileID())#" />
 	</dd>
+	<cfif request.contentBean.getcontentType() eq 'image'>
+		<dd>
+			<img id="assocImage" src="#application.configBean.getContext()#/tasks/render/medium/index.cfm?fileid=#request.contentBean.getFileID()#" />
+		</dd>
+	</cfif>
 	<cfif listFindNoCase(session.mura.memberships,"s2")>
 	<script>
 		jQuery("##unlockFileSomeoneElse").click(
