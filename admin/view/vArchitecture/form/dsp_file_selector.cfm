@@ -48,12 +48,15 @@
 	</dd>
 <cfelse>
 	<cfif attributes.type eq 'File' and not request.contentBean.getIsNew()>
+	<p id="msg-file-locked" class="notice">You've locked this file for offline editing. <a href="">Unlock this File</a></p>
  		<a class="mura-file #lcase(request.contentBean.getFileExt())#" href="#application.configBean.getContext()#/tasks/render/medium/index.cfm?fileid=#request.contentBean.getFileID()#">#HTMLEditFormat(request.contentBean.getFilename())#</a>
  		
- 		<!--- Start Lock/download stuff --->
- 		
+ 		<!--- Start Lock/download stuff ---> 		
+	 		
+	 		
  			<!--- Unlocked --->
  			<a class="mura-file-offline-edit">Download for Offline Editing</a>
+ 			
  			
  			
  		

@@ -2819,10 +2819,25 @@ dt .add li.Page {
 }
 
 .mura-file-offline-edit {
-	background: #ddd url(../images/icons/download_24.png) 7px center no-repeat;
+	background: #eee url(../images/icons/download_24.png) 7px center no-repeat;
 	padding: 4px 1em 4px 24px;
 	margin-right: 1em;
 	border-radius: 16px;
+}
+
+#msg-file-locked {
+	margin-bottom: 1em !important;
+	padding: .35em .35em .35em 26px !important;
+	background: #FFF6BF url(../images/icons/sinfo_24.png) 7px center no-repeat;
+	font-size: 11px !important;
+}
+
+#msg-file-locked a {
+	color: #69c;
+	text-decoration: none;
+	background: url(../images/icons/ulock_24.png) 4px center no-repeat;
+	padding-left: 22px;
+	font-weight: bold;
 }
 
 /* @group Default */
