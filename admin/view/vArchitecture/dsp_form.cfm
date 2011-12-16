@@ -214,7 +214,17 @@ select * from rsPluginScripts3 order by pluginID
 <cfelse>
 <h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editcontent")#</h2>
 </cfif>
-<!--- Experimental Treatment <h2 class="editTitle"><span>Currently Editing:</span> #HTMLEditFormat(request.contentBean.getTitle())#</h2> --->
+
+
+<!--- Fake Meta Data --->
+<ul class="metadata">
+	<li>Vote(s): <strong>1</strong></li>
+	<li>Average Rating:<img border="0" alt="4.0000 stars" src="images/rater/star_four.gif" id="ratestars"></li>	
+	<li>v1.2</li>
+	<li>Updated: <strong>01/21/2011 1:58 PM</strong></li>
+	<li>Status: <strong>Published</strong></li>
+</ul>
+
 <cfif attributes.compactDisplay eq "true" and not ListFindNoCase(nodeLevelList,attributes.type)>
 <p class="notice">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
 </cfif>
@@ -239,7 +249,7 @@ select * from rsPluginScripts3 order by pluginID
 <form novalidate="novalidate" action="index.cfm" method="post" enctype="multipart/form-data" name="contentForm" onsubmit="return ckContent(draftremovalnotice);" id="contentForm">
 <cfif attributes.compactDisplay neq "true">
 	<cfif attributes.moduleid eq '00000000000000000000000000000000000'>#application.contentRenderer.dspZoom(request.crumbdata,fileExt)#</cfif>
-		<ul class="metadata">
+		<!---<ul class="metadata">
 			<cfif listFindNoCase(pageLevelList,attributes.type)>
 			<li><strong>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#:</strong>
 			<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#request.contentBean.getcontentHistID()#',this.value,'#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
@@ -313,7 +323,7 @@ select * from rsPluginScripts3 order by pluginID
 			</cfif>
 			<cfif attributes.type eq "file" and request.contentBean.getMajorVersion()><li><strong>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.file')#:</strong> #request.contentBean.getMajorVersion()#.#request.contentBean.getMinorVersion()#</cfif>
 	</cfif>
-		</ul>
+		</ul>--->
 </cfif>
 
 <!-- This is plugin message targeting --->	
@@ -321,6 +331,19 @@ select * from rsPluginScripts3 order by pluginID
 #application.pluginManager.renderEvent("on#request.contentBean.getType()#EditMessageRender", pluginEvent)#
 #application.pluginManager.renderEvent("on#request.contentBean.getType()##request.contentBean.getSubType()#EditMessageRender", pluginEvent)#
 </span>
+
+<!--- Fake Selector --->
+<div class="selectContentType"><strong>Type:</strong>
+<select onchange="resetExtendedAttributes('66820BA1-F975-0B85-41C59BFEB5F44F19',this.value,'dev','/muracore','/muracore/default/includes/themes/merced');" class="dropdown" name="typeSelector">
+<option selected="" value="Page^Default">Page</option>
+<option value="Page^NotDefault">Page  / NotDefault</option>
+<option value="Page^Voting">Page  / Voting</option>
+<option value="Portal^Default">Portal</option>
+<option value="Portal^Voting">Portal  / Voting</option>
+<option value="Calendar^Default">Calendar</option>
+<option value="Gallery^Default">Gallery</option>
+</select>
+</div>
 
 <cfif attributes.compactDisplay neq "true" or not listFindNoCase(nodeLevelList,attributes.type)>	
 	<cfif attributes.contentid neq "">

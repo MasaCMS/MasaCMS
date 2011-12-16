@@ -49,6 +49,16 @@
 <cfelse>
 	<cfif attributes.type eq 'File' and not request.contentBean.getIsNew()>
  		<a class="mura-file #lcase(request.contentBean.getFileExt())#" href="#application.configBean.getContext()#/tasks/render/medium/index.cfm?fileid=#request.contentBean.getFileID()#">#HTMLEditFormat(request.contentBean.getFilename())#</a>
+ 		
+ 		<!--- Start Lock/download stuff --->
+ 		
+ 			<!--- Unlocked --->
+ 			<a class="dl-offline-edit">Download for offline editing</a>
+ 			
+ 			
+ 		
+ 		<!--- End Lock Download stuff --->
+ 		
 	</cfif>
 	<input type="hidden" name="fileid" value="#htmlEditFormat(request.contentBean.getFileID())#" />
 </cfif>
