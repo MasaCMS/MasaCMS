@@ -145,7 +145,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <div id="main">
 <div class="navSort">
-	<h3>Sort by:</h3>
+	<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sortby")#:</h3>
 	<ul id="navTask">
 		<!---<li><a href="" data-sortby="releasedate">Release Date</a></li>--->	
 		<li><a href="" data-sortby="lastupdate"<cfif $.event("sortBy") eq "lastUpdate"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.lastupdated")#</a></li>

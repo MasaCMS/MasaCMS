@@ -328,7 +328,9 @@
 
 <cffunction name="siteManagerTab" ouput="false">
 	<cfargument name="rc">
-	<cfset session.siteManagerTab=rc.tab  />
+	<cfpraram name="session.flatViewArgs" default="#structNew()#">
+	<cfpraram name="session.flatViewArgs.#session.siteID#" default="#structNew()#">
+	<cfset session.flatViewArgs[session.siteID].tab=rc.tab  />
 	<cfabort>
 </cffunction>
 
