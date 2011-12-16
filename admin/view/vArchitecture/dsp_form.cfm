@@ -216,7 +216,7 @@ select * from rsPluginScripts3 order by pluginID
 </cfif>
 
 
-<!--- Fake Meta Data --->
+<!--- Fake Meta Data 
 <ul class="metadata">
 	<li>Vote(s): <strong>1</strong></li>
 	<li>Average Rating:<img border="0" alt="4.0000 stars" src="images/rater/star_four.gif" id="ratestars"></li>	
@@ -224,6 +224,25 @@ select * from rsPluginScripts3 order by pluginID
 	<li>Updated: <strong>01/21/2011 1:58 PM</strong></li>
 	<li>Status: <strong>Published</strong></li>
 </ul>
+--->
+<ul class="metadata">
+
+<cfif attributes.contentid neq ''>
+
+<cfif listFindNoCase('Page,Portal,Calendar,Gallery,Link,File',attributes.type)>
+<cfset rsRating=application.raterManager.getAvgRating(request.contentBean.getcontentID(),request.contentBean.getSiteID()) />
+<cfif rsRating.recordcount>
+<li>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.votes")#: <strong><cfif rsRating.recordcount>#rsRating.theCount#<cfelse>0</cfif></strong></li>
+<li>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.averagerating")#: <img id="ratestars" src="images/rater/star_#application.raterManager.getStarText(rsRating.theAvg)#.gif" alt="#rsRating.theAvg# stars" border="0"></li>
+</cfif>
+</cfif>
+<cfif attributes.type eq "file" and request.contentBean.getMajorVersion()><li>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.file')#: <strong>#request.contentBean.getMajorVersion()#.#request.contentBean.getMinorVersion()#</strong></li></cfif>
+</cfif>
+<li>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.update")#: <strong>#LSDateFormat(parseDateTime(request.contentBean.getlastupdate()),session.dateKeyFormat)# #LSTimeFormat(parseDateTime(request.contentBean.getlastupdate()),"short")#</strong></li>
+<li>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.status")#: <strong><cfif attributes.contentid neq ''><cfif request.contentBean.getactive() gt 0 and request.contentBean.getapproved() gt 0>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.published")#<cfelseif request.contentBean.getapproved() lt 1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#<cfelse>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.archived")#</cfif><cfelse>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#</cfif></strong></li>
+<li>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#: <strong>#HTMLEditFormat(attributes.type)#</strong>
+</ul>
+
 
 <cfif attributes.compactDisplay eq "true" and not ListFindNoCase(nodeLevelList,attributes.type)>
 <p class="notice">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
@@ -247,92 +266,7 @@ select * from rsPluginScripts3 order by pluginID
 </p>
 </cfif>
 <form novalidate="novalidate" action="index.cfm" method="post" enctype="multipart/form-data" name="contentForm" onsubmit="return ckContent(draftremovalnotice);" id="contentForm">
-<cfif attributes.compactDisplay neq "true">
-	<cfif attributes.moduleid eq '00000000000000000000000000000000000'>#application.contentRenderer.dspZoom(request.crumbdata,fileExt)#</cfif>
-		<!---<ul class="metadata">
-			<cfif listFindNoCase(pageLevelList,attributes.type)>
-			<li><strong>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#:</strong>
-			<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#request.contentBean.getcontentHistID()#',this.value,'#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
-			<cfloop list="#baseTypeList#" index="t">
-			<cfsilent><cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery></cfsilent>
-			<option value="#t#^Default" <cfif attributes.type eq t and request.contentBean.getSubType() eq "Default">selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#</option>
-			<cfif rsst.recordcount>
-				<cfloop query="rsst">
-					<option value="#t#^#rsst.subtype#" <cfif attributes.type eq t and request.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#  / #rsst.subtype#</option>
-				</cfloop>
-			</cfif>
-			</cfloop>
-			</select>
-			 </li>
-			<cfelseif attributes.type eq 'File'>
-			<cfset t="File"/>
-			<cfsilent><cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery></cfsilent>
-			<cfif rsst.recordcount>
-			<li><strong>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#:</strong>
-			<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#request.contentBean.getcontentHistID()#',this.value,'#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
-			<option value="#t#^Default" <cfif attributes.type eq t and request.contentBean.getSubType() eq "Default">selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#t#")#</option>
-			<cfif rsst.recordcount>
-				<cfloop query="rsst">
-					<option value="#t#^#rsst.subtype#" <cfif attributes.type eq t and request.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")# / #rsst.subtype#</option>
-				</cfloop>
-			</cfif>
-			</select>
-			</li>
-			</cfif>
-			<cfelseif attributes.type eq 'Link'>	
-			<cfset t="Link"/>
-			<cfsilent><cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery></cfsilent>
-			<cfif rsst.recordcount>
-			<li><strong>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#:</strong>
-			<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#request.contentBean.getcontentHistID()#',this.value,'#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
-			<option value="#t#^Default" <cfif attributes.type eq t and request.contentBean.getSubType() eq "Default">selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#</option>
-			<cfif rsst.recordcount>
-				<cfloop query="rsst">
-					<cfif rsst.subtype neq 'Default'><option value="#t#^#rsst.subtype#" <cfif attributes.type eq t and request.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#  / #rsst.subtype#</option></cfif>
-				</cfloop>
-			</cfif>
-			</select>
-			</li>
-			</cfif>
-			<cfelseif attributes.type eq 'Component'>	
-			<cfset t="Component"/>
-			<cfsilent><cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery></cfsilent>
-			<cfif rsst.recordcount>
-			<li><strong>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#:</strong>
-			<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#request.contentBean.getcontentHistID()#',this.value,'#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
-			<option value="#t#^Default" <cfif attributes.type eq t and request.contentBean.getSubType() eq "Default">selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#</option>
-			<cfif rsst.recordcount>
-				<cfloop query="rsst">
-					<cfif rsst.subtype neq 'Default'><option value="#t#^#rsst.subtype#" <cfif attributes.type eq t and request.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#  / #rsst.subtype#</option></cfif>
-				</cfloop>
-			</cfif>
-			</select>
-			</li>
-			</cfif>
-			</cfif>
-			
-			<li><strong>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.status")#:</strong> <cfif attributes.contentid neq ''><cfif request.contentBean.getactive() gt 0 and request.contentBean.getapproved() gt 0>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.published")#<cfelseif request.contentBean.getapproved() lt 1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#<cfelse>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.archived")#</cfif><cfelse>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#</cfif></li><cfif attributes.contentid neq ''>
-			<li><strong>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.update")#:</strong> #LSDateFormat(parseDateTime(request.contentBean.getlastupdate()),session.dateKeyFormat)# #LSTimeFormat(parseDateTime(request.contentBean.getlastupdate()),"short")#</li>
-			
-			<cfif listFindNoCase('Page,Portal,Calendar,Gallery,Link,File',attributes.type)>
-			<cfset rsRating=application.raterManager.getAvgRating(request.contentBean.getcontentID(),request.contentBean.getSiteID()) />
-			<cfif rsRating.recordcount>
-				<li><strong>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.averagerating")#:</strong> <img id="ratestars" src="images/rater/star_#application.raterManager.getStarText(rsRating.theAvg)#.gif" alt="#rsRating.theAvg# stars" border="0"></li>
-				<li><strong>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.votes")#:</strong> <cfif rsRating.recordcount>#rsRating.theCount#<cfelse>0</cfif></li>
-			</cfif>
-			</cfif>
-			<cfif attributes.type eq "file" and request.contentBean.getMajorVersion()><li><strong>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.file')#:</strong> #request.contentBean.getMajorVersion()#.#request.contentBean.getMinorVersion()#</cfif>
-	</cfif>
-		</ul>--->
-</cfif>
-
-<!-- This is plugin message targeting --->	
-<span id="msg">
-#application.pluginManager.renderEvent("on#request.contentBean.getType()#EditMessageRender", pluginEvent)#
-#application.pluginManager.renderEvent("on#request.contentBean.getType()##request.contentBean.getSubType()#EditMessageRender", pluginEvent)#
-</span>
-
-<!--- Fake Selector --->
+<!--- Fake Selector 
 <div class="selectContentType"><strong>Type:</strong>
 <select onchange="resetExtendedAttributes('66820BA1-F975-0B85-41C59BFEB5F44F19',this.value,'dev','/muracore','/muracore/default/includes/themes/merced');" class="dropdown" name="typeSelector">
 <option selected="" value="Page^Default">Page</option>
@@ -344,6 +278,77 @@ select * from rsPluginScripts3 order by pluginID
 <option value="Gallery^Default">Gallery</option>
 </select>
 </div>
+--->
+
+<cfif attributes.compactDisplay neq "true">
+	<cfif attributes.moduleid eq '00000000000000000000000000000000000'>#application.contentRenderer.dspZoom(request.crumbdata,fileExt)#</cfif>
+		<div class="selectContentType">
+		<cfif listFindNoCase(pageLevelList,attributes.type)>
+			<strong>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#:</strong>
+			<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#request.contentBean.getcontentHistID()#',this.value,'#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
+			<cfloop list="#baseTypeList#" index="t">
+			<cfsilent><cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery></cfsilent>
+			<option value="#t#^Default" <cfif attributes.type eq t and request.contentBean.getSubType() eq "Default">selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#</option>
+			<cfif rsst.recordcount>
+				<cfloop query="rsst">
+					<option value="#t#^#rsst.subtype#" <cfif attributes.type eq t and request.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#  / #rsst.subtype#</option>
+				</cfloop>
+			</cfif>
+			</cfloop>
+			</select>
+		<cfelseif attributes.type eq 'File'>
+			<cfset t="File"/>
+			<cfsilent><cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery></cfsilent>
+			<cfif rsst.recordcount>
+			<strong>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#:</strong>
+			<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#request.contentBean.getcontentHistID()#',this.value,'#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
+			<option value="#t#^Default" <cfif attributes.type eq t and request.contentBean.getSubType() eq "Default">selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#t#")#</option>
+			<cfif rsst.recordcount>
+				<cfloop query="rsst">
+					<option value="#t#^#rsst.subtype#" <cfif attributes.type eq t and request.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")# / #rsst.subtype#</option>
+				</cfloop>
+			</cfif>
+			</select>
+			</cfif>
+		<cfelseif attributes.type eq 'Link'>	
+			<cfset t="Link"/>
+			<cfsilent><cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery></cfsilent>
+			<cfif rsst.recordcount>
+			<strong>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#:</strong>
+			<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#request.contentBean.getcontentHistID()#',this.value,'#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
+			<option value="#t#^Default" <cfif attributes.type eq t and request.contentBean.getSubType() eq "Default">selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#</option>
+			<cfif rsst.recordcount>
+				<cfloop query="rsst">
+					<cfif rsst.subtype neq 'Default'><option value="#t#^#rsst.subtype#" <cfif attributes.type eq t and request.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#  / #rsst.subtype#</option></cfif>
+				</cfloop>
+			</cfif>
+			</select>
+			</cfif>
+		<cfelseif attributes.type eq 'Component'>	
+			<cfset t="Component"/>
+			<cfsilent><cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery></cfsilent>
+			<cfif rsst.recordcount>
+			<strong>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#:</strong>
+			<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#request.contentBean.getcontentHistID()#',this.value,'#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
+			<option value="#t#^Default" <cfif attributes.type eq t and request.contentBean.getSubType() eq "Default">selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#</option>
+			<cfif rsst.recordcount>
+				<cfloop query="rsst">
+					<cfif rsst.subtype neq 'Default'><option value="#t#^#rsst.subtype#" <cfif attributes.type eq t and request.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#  / #rsst.subtype#</option></cfif>
+				</cfloop>
+			</cfif>
+			</select>
+			</cfif>
+		</cfif>
+	</div>
+</cfif>
+
+
+<!-- This is plugin message targeting --->	
+<span id="msg">
+#application.pluginManager.renderEvent("on#request.contentBean.getType()#EditMessageRender", pluginEvent)#
+#application.pluginManager.renderEvent("on#request.contentBean.getType()##request.contentBean.getSubType()#EditMessageRender", pluginEvent)#
+</span>
+
 
 <cfif attributes.compactDisplay neq "true" or not listFindNoCase(nodeLevelList,attributes.type)>	
 	<cfif attributes.contentid neq "">
@@ -393,7 +398,7 @@ select * from rsPluginScripts3 order by pluginID
 				<cfset t=attributes.type/>
 				<cfsilent></cfsilent>
 				<ul class="metadata frontend">
-				<li><strong>Type:</strong>
+				<li><strong>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#:</strong>
 				<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#request.contentBean.getcontentHistID()#',this.value,'#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
 				<option value="#t#^Default" <cfif attributes.type eq t and request.contentBean.getSubType() eq "Default">selected</cfif>>#t#</option>
 				<cfloop query="rsst">
@@ -407,6 +412,7 @@ select * from rsPluginScripts3 order by pluginID
 		
 	<input type="hidden" name="closeCompactDisplay" value="true" />
 </cfif>
+
 </cfoutput>
 
 <cfset tabLabelList=""/>
