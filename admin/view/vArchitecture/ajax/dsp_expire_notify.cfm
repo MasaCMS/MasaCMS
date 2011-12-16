@@ -57,7 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rsAssigned=application.serviceFactory.getBean("contentDAO").getExpireAssignments(contentBean.getContentHistID())>
 <cfset assignedList=valueList(rsAssigned.userID)>
 <cfoutput>
-	#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expiresnotifyselect')#<br />
+	<p>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expiresnotifyselect')#</p>
 	<select id="expiresnotify" name="expiresnotify" size="6" multiple class="multiSelect">
 	<option value="">None</option>
 	<cfloop query="rsnotify">

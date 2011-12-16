@@ -175,7 +175,7 @@ ol li {
 	font-size: 12px;
 }
 
-form textarea {
+form textarea, select.multiSelect {
 	margin: 0;
 	width: 99%;
 	height: 120px;
@@ -183,6 +183,11 @@ form textarea {
 	border: 1px solid #DBDBDB;
 	padding: 3px;
 }
+
+select.multiSelect {
+	height: 128px;
+}
+
 
 textarea.alt, select.alt, input.textAlt {
 	width: 50%;
@@ -313,6 +318,29 @@ input.radio, input[type=radio] {
 input.radio:first-child, input[type=radio]:first-child {
 	margin: 0 4px 0 2px;
 }
+
+#expires-date-selector {
+	margin-bottom: 1em;
+}
+
+#selectExpiresNotify p {
+	margin: .5em 0;
+	font-size: 11px !important;
+	font-style: italic;
+	color: #666;
+}
+
+/*#expires-date-selector {
+	width: 300px;
+	float: left;
+}
+
+#expires-notify {
+	width: 500px;
+	float: left;
+	margin-top: 5px;
+}*/
+
 
 #popUp form {
 	background: #fff;
@@ -507,6 +535,7 @@ div.separate {
 	padding: 36px 0 36px 30px;
 	line-height: 16px;
 	width: 920px;
+	position: relative;
 }
 
 body.compact #content {
@@ -1542,20 +1571,40 @@ h5 {
 /* @group Metadata List */
 
 .metadata {
-	margin: 16px 0;
-	padding: 0;
+	margin: 1px 0 0 0;
+	padding: .25em .5em;
 	list-style: none;
-	position: relative;
+	float: right;
+	/*position: absolute;
+	top: 10px;
+	right: 0;*/
+	/*width: 400px;*/
+	background: #f9f9f9;
+	border-radius: 14px;
+	-webkit-border-radius: 14px;
+	-moz-border-radius: 14px;
 }
 
 .metadata li {
-	margin: 0 0 .25em;
+	margin: 0 .5em .25em;
 	padding: 0;
 	color: #333;
+	float: right;
+	/*width: 30%;*/
+	line-height: 20px;
 }
 
 .metadata li strong {
 	padding: 0 .25em 0 0;
+}
+
+.metadata #ratestars {
+	position: relative;
+	top: 3px;
+}
+
+.selectContentType {
+	margin-bottom: 1em;
 }
 
 /* @end */
@@ -2711,6 +2760,7 @@ dt .add li.Page {
 	display: block;
 	overflow: hidden;
 	float: none !important;
+	border: none;
 }
 
 .module {
@@ -4771,11 +4821,12 @@ li:hover #navSecondary {
 /* @group Zoom/Breadcrumb Nav */
 
 .navZoom, #crumblist {
-	margin: 0 0 10px 0;
 	list-style: none;
+	margin: 0 0 10px 0;
 	padding: 0 0 10px 0;
-	background: url(../images/rule_dotted.gif) repeat-x left bottom;
 	clear: both;
+	/*border-top: 1px dotted #ccc;*/
+	border-bottom: 1px dotted #ccc;
 }
 
 #content .notice .navZoom {
