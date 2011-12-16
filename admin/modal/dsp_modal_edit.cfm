@@ -130,6 +130,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset adminLink = adminLink & "&amp;ptype=" & request.contentBean.getType()>
 	<cfset adminLink = adminLink & "&amp;parentid=" & request.contentBean.getParentID()>
 	<cfset adminLink = adminLink & "&amp;moduleid=" & request.contentBean.getModuleID()>
+	<cfset adminLink = adminLink & "&amp;activeTab=0">
 	
 	<cfset deleteLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.update">
 	<cfset deleteLink = deleteLink & "&amp;siteid=" & request.contentBean.getSiteID()>

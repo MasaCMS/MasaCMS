@@ -355,6 +355,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif isdefined("rstContent.imageSize")>
 					,imageSize,imageHeight,imageWidth,childTemplate
 					</cfif>
+					<cfif isdefined("rstContent.majorVersion")>
+					,majorVersion,minorVersion, expires
+					</cfif>
 					)
 					values
 					(
@@ -433,6 +436,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.imageHeight neq '',de('no'),de('yes'))#" value="#rstContent.imageHeight#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.imageWidth neq '',de('no'),de('yes'))#" value="#rstContent.imageWidth#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.childTemplate neq '',de('no'),de('yes'))#" value="#rstContent.childTemplate#">
+					</cfif>
+					<!--- Check for new fields added in 5.6 --->
+					<cfif isdefined("rstContent.majorVersion")>
+					,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstContent.majorVersion),de(rstContent.majorVersion),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstContent.minorVersion),de(rstContent.minorVersion),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstContent.expires),de('no'),de('yes'))#" value="#rstContent.expires#">,
 					</cfif>
 					)
 				</cfquery>
@@ -1348,7 +1358,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfquery>
 			<cfloop query="rstcontentstats">
 				<cfquery datasource="#arguments.fromDSN#">
-					insert into tcontentstats (contentID,siteID,views,rating,totalVotes,upVotes,downVotes,comments)
+					insert into tcontentstats (contentID,siteID,views,rating,totalVotes,upVotes,downVotes,comments
+					<cfif isdefined("rstcontentstats.majorVersion")>
+					,majorVersion,minorVersion, lockID
+					</cfif>
+					)
 					values
 					(
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstcontentstats.contentID)#">,
@@ -1359,6 +1373,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentstats.upVotes),de(rstcontentstats.upVotes),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentstats.downVotes),de(rstcontentstats.downVotes),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentstats.comments),de(rstcontentstats.comments),de(0))#">
+					<!--- Check for new fields added in 5.6 --->
+					<cfif isdefined("rstcontentstats.majorVersion")>
+					,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentstats.majorVersion),de(rstcontentstats.majorVersion),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentstats.minorVersion),de(rstcontentstats.minorVersion),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentstats.lockID neq '',de('no'),de('yes'))#" value="#rstcontentstats.lockID#">,
+					</cfif>
 					)
 				</cfquery>
 			</cfloop>

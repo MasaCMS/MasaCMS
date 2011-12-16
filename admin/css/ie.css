@@ -377,3 +377,31 @@ dd.categoryAssignment input.textAlt {
 	padding: 0;
 	border: 0;
 }
+
+#content p.search-showing {
+	font-size: 12px;
+	margin-bottom: .5em;
+}
+
+#tabFlat .moreResults {
+	float: right;
+	margin-bottom: 1em !important;
+	zoom:  1;
+	}
+	
+.navSequential li,
+.moreResults li {
+	 /* IE7 Hack for inline-block respect */
+	zoom: 1;
+	display: inline;
+	margin: 0 1px;
+	/*border: 1px solid #ccc;*/
+	}
+	
+.navSequential li a,
+.moreResults li a {
+	 /* IE7 Hack for inline-block respect */
+	zoom: 1;
+	display: inline;
+	/*border: 1px solid #ccc;*/
+	}

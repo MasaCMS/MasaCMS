@@ -79,14 +79,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset options[13][2]=application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startdatetime')>
 <cfset options[14][1]="tcontent.displayStop^timestamp">
 <cfset options[14][2]=application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.stopdatetime')>
-<cfset options[15][1]="tcontent.contentID^varchar">
-<cfset options[15][2]="Content ID"/>
-<cfset options[16][1]="tcontent.parentID^varchar">
-<cfset options[16][2]="Parent ID"/>
-<cfset options[17][1]="tcontent.path^varchar">
-<cfset options[17][2]="Path"/>
-<cfset options[18][1]="tcontentcategoryassign.categoryID^varchar">
-<cfset options[18][2]="Category ID"/>
+<cfset options[15][1]="tcontent.expires^timestamp">
+<cfset options[15][2]=application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expires')>
+<cfset options[16][1]="tcontent.contentID^varchar">
+<cfset options[16][2]="Content ID"/>
+<cfset options[17][1]="tcontent.parentID^varchar">
+<cfset options[17][2]="Parent ID"/>
+<cfset options[18][1]="tcontent.path^varchar">
+<cfset options[18][2]="Path"/>
+<cfset options[19][1]="tcontentcategoryassign.categoryID^varchar">
+<cfset options[19][2]="Category ID"/>
+
 
 <cfset rsExtend=application.configBean.getClassExtensionManager().getExtendedAttributeList(siteID=attributes.siteid,baseTable="tcontent",activeOnly=true)>
 <cfloop query="rsExtend">

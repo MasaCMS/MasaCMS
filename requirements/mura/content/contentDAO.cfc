@@ -57,7 +57,7 @@ tcontent.responseDisplayFields,tcontent.responseMessage,tcontent.responseSendTo,
 tcontent.searchExclude,tcontent.SiteID,tcontent.sortBy,tcontent.sortDirection,tcontent.Summary,tcontent.Target,
 tcontent.TargetParams,tcontent.Template,tcontent.Title,tcontent.Type,tcontent.subType,tcontent.Path,tcontent.tags,
 tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.mobileExclude,tcontent.changesetID,
-tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTemplate</cfoutput></cfsavecontent>
+tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTemplate,tcontent.majorVersion,tcontent.minorVersion,tcontent.expires</cfoutput></cfsavecontent>
 
 <cffunction name="init" access="public" returntype="any" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
@@ -406,7 +406,10 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	  imageSize,
 	  imageHeight,
 	  imageWidth,
-	  childTemplate)
+	  childTemplate,
+	  majorVersion,
+	  minorVersion,
+	  expires)
       VALUES (
 	  	 <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentHistID()#">, 
          <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentID()#">,
@@ -525,7 +528,19 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getImageSize() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getImageSize()#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getImageHeight() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getImageHeight()#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getImageWidth() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getImageWidth()#">,
-		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getChildTemplate() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getchildTemplate()#">
+		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getChildTemplate() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getchildTemplate()#">,
+		#arguments.contentBean.getMajorVersion()#,
+		#arguments.contentBean.getMinorVersion()#,
+		<cfif isdate(arguments.contentBean.getExpires())>
+			 <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.contentBean.getExpires()), 
+			 				month(arguments.contentBean.getExpires()),
+							day(arguments.contentBean.getExpires()), 
+							hour(arguments.contentBean.getExpires()), 
+							minute(arguments.contentBean.getExpires()), 
+							second(arguments.contentBean.getExpires()))#">
+		<cfelse>
+			null
+		</cfif>
 		)
  </CFQUERY>
 
@@ -872,6 +887,11 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	ContentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentID()#"/>
 	</cfquery>
 	
+	<cfquery datasource="#variables.configBean.getDatasource()#"   username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		DELETE FROM tcontentassignments where contentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentid()#"/>
+		AND siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getsiteid()#"/>
+	</cfquery>
+		
 	<cfif arguments.contentBean.gettype() neq 'Form'  and arguments.contentBean.gettype() neq 'Component'>
 	
 		<cfquery datasource="#variables.configBean.getDatasource()#"   username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -981,13 +1001,20 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 </cffunction> 
 
 <cffunction name="deleteContentAssignments" access="public" output="false" returntype="void" >
-	<cfargument name="contentID" type="String" />
+	<cfargument name="id" type="String" />
 	<cfargument name="siteID" type="String" />
+	<cfargument name="type" type="String" default="draft"/>
 	
 	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	delete from tcontentassignments
-	where contentID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentid#"/>
+	where 
+	<cfif arguments.type eq "expire">
+	contentHistID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.id#"/>
+	<cfelse>
+	contentID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.id#"/>
 	and siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+	</cfif>
+	and type = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#"/>
 	</cfquery>
 
 </cffunction>
@@ -995,13 +1022,15 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 <cffunction name="createContentAssignment" access="public" output="false" returntype="void" >
 	<cfargument name="contentBean" type="any" />
 	<cfargument name="userID" type="String" />
+	<cfargument name="type" type="String" default="draft"/>
 	
 	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			insert into tcontentassignments (contentID,contentHistID,siteID,UserID) values(
+			insert into tcontentassignments (contentID,contentHistID,siteID,UserID,type) values(
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentID()#" >,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getcontentHistID()#" >,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getSiteID()#" >,
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#" >
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#" >,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#" >
 			)
 	</cfquery>
 	
@@ -1134,5 +1163,16 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 				
 			</cfif>	
 	</cfoutput>
+</cffunction>
+
+<cffunction name="getExpireAssignments" output="false">
+<cfargument name="contenthistid">
+<cfset var rs="">
+<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+    select userID from tcontentassignments 
+	where contenthistid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#">
+	and type='expire'
+</cfquery>
+<cfreturn rs>
 </cffunction>
 </cfcomponent>
