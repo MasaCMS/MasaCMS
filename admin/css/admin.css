@@ -2814,7 +2814,15 @@ dt .add li.Page {
 .mura-file {
 	background-repeat: no-repeat;
 	padding: 4px 0 4px 20px;
-	background-position:left center
+	background-position:left center;
+	margin-right: 1em;
+}
+
+.mura-file-offline-edit {
+	background: #ddd url(../images/icons/download_24.png) 7px center no-repeat;
+	padding: 4px 1em 4px 24px;
+	margin-right: 1em;
+	border-radius: 16px;
 }
 
 /* @group Default */

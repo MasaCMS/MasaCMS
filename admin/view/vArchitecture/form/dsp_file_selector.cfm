@@ -53,7 +53,7 @@
  		<!--- Start Lock/download stuff --->
  		
  			<!--- Unlocked --->
- 			<a class="dl-offline-edit">Download for offline editing</a>
+ 			<a class="mura-file-offline-edit">Download for Offline Editing</a>
  			
  			
  		
