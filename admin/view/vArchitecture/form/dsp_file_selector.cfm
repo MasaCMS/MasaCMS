@@ -17,7 +17,7 @@
 
 <cfif not lockedBySomeElse>
 	<dd>
-	<cfif not (request.contentBean.getcontentType() eq 'image' or attributes.type neq 'File')
+	<cfif  attributes.type eq 'File'
 		and (attributes.type eq 'File' and not request.contentBean.getIsNew())>
 		<p id="msg-file-locked" class="notice"<cfif not lockedByYou> style="display:none;"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.youvelockedfile')#</p>
 	</cfif>
