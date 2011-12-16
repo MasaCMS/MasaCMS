@@ -38,14 +38,10 @@
 		</script>
 	</cfif>
 	</dd>
-	<cfif request.contentBean.getcontentType() eq 'image' or attributes.type neq 'File'>
+	<cfif attributes.type neq 'File'>
 		<dd>
 			<cfif len(request.contentBean.getFileID())>
-				<cfif attributes.type neq 'File'>
-					<img id="assocImage" src="#application.configBean.getContext()#/tasks/render/small/index.cfm?fileid=#request.contentBean.getFileID()#" /><br /><input type="checkbox" name="deleteFile" value="1" id="deleteFileBox"/> <label for="deleteFileBox">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.removeattachedfile')#</label><br />
-				<cfelse>
-					<img id="assocImage" src="#application.configBean.getContext()#/tasks/render/medium/index.cfm?fileid=#request.contentBean.getFileID()#" />
-				</cfif>
+				<img id="assocImage" src="#application.configBean.getContext()#/tasks/render/small/index.cfm?fileid=#request.contentBean.getFileID()#" /><br /><input type="checkbox" name="deleteFile" value="1" id="deleteFileBox"/> <label for="deleteFileBox">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.removeattachedfile')#</label><br />
 			</cfif>
 			<cfif attributes.type neq 'File'>
 				<span id="selectAssocImage">
@@ -68,7 +64,13 @@
 		
 			<a id="mura-file-unlock" class="btn-alt"  href=""<cfif not lockedByYou> style="display:none;"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlockfile')#</a>
 		 	<a id="mura-file-offline-edit" class="btn-alt"<cfif len(stats.getLockID())> style="display:none;"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.downloadforofflineediting')#</a>	
+
 		</dd>
+		<cfif request.contentBean.getcontentType() eq 'image'>
+		<dd>
+			<img id="assocImage" src="#application.configBean.getContext()#/tasks/render/medium/index.cfm?fileid=#request.contentBean.getFileID()#" />
+		</dd>
+		</cfif>
 			<script>
 				jQuery("##mura-file-unlock").click(
 					function(event){
