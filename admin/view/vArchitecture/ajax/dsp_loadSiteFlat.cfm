@@ -99,10 +99,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		feed.addParam(field="tcontentstats.lockid",condition="=",criteria=$.currentUser("userID"));
 	} else if($.event('report') eq "expires"){
 		feed.addParam(field="tcontent.expires",datatype="date",condition="<=",criteria=dateAdd("m",1,now()));
-		feed.addParam(field="tcontent.expires",datatype="date",condition="is not",criteria="null");		
+		feed.addParam(field="tcontent.expires",datatype="date",condition=">",criteria=dateAdd("m",-12,now()));		
 	} else if($.event('report') eq "myexpires"){
 		feed.addParam(field="tcontent.expires",datatype="date",condition="<=",criteria=dateAdd("m",1,now()));
-		feed.addParam(field="tcontent.expires",datatype="date",condition="is not",criteria="null");		
+		feed.addParam(field="tcontent.expires",datatype="date",condition=">",criteria=dateAdd("m",-12,now()));		
 		feed.addParam(relationship="and (");
 		feed.addParam(field="tcontentassignments.userid",datatype="varchar",condition="=",criteria=$.currentUser("userID"));
 		feed.addParam(field="tcontentassignments.type",datatype="varchar",condition="=",criteria="expires");

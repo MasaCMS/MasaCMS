@@ -45,6 +45,8 @@
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
 var formSubmitted = false;
+var fileLockConfirmed = false;
+var hasFileLock = false;
 var dirtyRelatedContent = false;
 
 var copyContentID = "";
@@ -99,11 +101,38 @@ function ckContent(draftremovalnotice){
 		alertDialog("The form field 'Url' is required"); 
 		return false;
 	 }
+	 
 	
 	 if(document.contentForm.approved.value==1 
 			&& draftremovalnotice != "" 
 			&& !confirm(draftremovalnotice)){
 		 return false;
+	 }
+	 
+	 if(typeof(hasFileLock) != 'undefined'
+	 	&& !fileLockConfirmed 
+	  	&& hasFileLock
+		&& jQuery("#file").val() != ''){
+	 	 confirmDialog(unlockfileconfirm, 
+				 					function() {
+			 						//alert('true')
+									jQuery("#unlockwithnew").val("true");
+									if(ckContent(false)){
+										formSubmitted=true;
+										document.contentForm.submit(); 
+									}
+			 						},
+									function() {
+									//alert('false')
+			 						jQuery("#unlockwithnew").val("false");
+									if(ckContent(false)){
+										formSubmitted=true;
+										document.contentForm.submit(); 
+									}
+			 						});
+		
+		fileLockConfirmed=true;							
+		return false;
 	 }
 	 
 	 if(document.contentForm.approved.value==1
@@ -209,10 +238,14 @@ document.getElementById('newGalleryItemMultiLink').style.display='none';
 //document.getElementById('newFileMulti').style.display='none';
 //document.getElementById('newFileMultiLink').style.display='none';
 
-document.getElementById('newZoomLink').onclick=function(){loadSiteManager(siteid,contentid,'00000000000000000000000000000000000','','',type,1); document.getElementById(id).style.visibility="hidden"; return false};
+document.getElementById('newZoomLink').onclick = function(){
+	loadSiteManagerInTab(function(){
+		return loadSiteManager(siteid, contentid, '00000000000000000000000000000000000', '', '', type, 1);
+	});
+	return false;
+}
 document.getElementById('newZoom').style.display='';
 document.getElementById('newZoomLink').style.display='';
-
 
 if(newcontent){
 
@@ -509,6 +542,26 @@ function loadNotify(siteid,contentid,parentid)	{
 		return false;
 	}
 
+function loadExpiresNotify(siteid,contenthistid,parentid)	{
+		var url = 'index.cfm';
+		var pars = 'fuseaction=cArch.loadExpireNotify&compactDisplay=true&siteid=' + siteid +'&contenthistid=' + contenthistid +'&parentid=' + parentid + '&cacheid=' + Math.random();
+		var d = jQuery('#selectExpiresNotify');
+		if(d.html()==''){
+			d.show();
+			d.html('<img class="loadProgress" src="images/progress_bar.gif">');
+			jQuery.get(url + "?" + pars, 
+					function(data) {
+					jQuery('#selectExpiresNotify').html(data);
+					}
+			);
+		}
+		else {
+			d.toggle();  
+		}
+		
+		return false;
+	}
+
 
 function loadRelatedContent(siteid,keywords,isNew)	{
 		var url = 'index.cfm';
@@ -661,8 +714,8 @@ function pasteThis(parentID){
 
 	jQuery.get(url + "?" + pars, 
 			function(data) {
-				loadSiteManager(copySiteID,parentID,'00000000000000000000000000000000000','','','',1);
-				document.getElementById("newContentMenu").style.visibility="hidden"
+				loadSiteManagerInTab(
+					function(){loadSiteManager(copySiteID,parentID,'00000000000000000000000000000000000','','','',1);});
 			}
 	);
 }
@@ -894,6 +947,160 @@ function loadSiteManager(siteid,topid,moduleid,sortby,sortdirection,ptype,startr
 }
 
 var sectionLoading=false;
+
+function loadSiteFlatByFilter(){
+	flatViewArgs.type=jQuery("#contentTypeFilter").val();
+	var categoryid=[];
+	var tag=[];
+	
+	jQuery(".categories :checked").each(
+		function(){
+			categoryid.push(jQuery(this).val());
+		}
+	);
+
+	flatViewArgs.categoryid=categoryid.toString();
+	
+	jQuery("#svTagCloud .active").each(
+		function(){
+			tag.push(jQuery(this).html());
+		}
+	);
+	
+	flatViewArgs.tag=tag.toString();
+	flatViewArgs.keywords=jQuery("#contentKeywords").val();
+	flatViewArgs.page=1;
+	loadSiteFlat(flatViewArgs);
+	
+}
+
+function loadSiteManagerInTab(loader){
+		archViewLoaded=true;
+		window.scrollTo(0,0); 
+		jQuery("#viewTabs").tabs('select', 0); 
+		loader();
+		//document.getElementById(id).style.visibility="hidden"; 
+		return false;
+}
+
+function loadSiteFlat(args)	{
+	var url = 'index.cfm';
+	var pars = 'fuseaction=cArch.loadSiteFlat&cacheid=' + Math.random();
+
+	//location.href=url + "?" + pars;
+	var d = jQuery('#tabFlat');
+	
+	d.html('<img class="loadProgress" src="images/progress_bar.gif">');
+	document.getElementById("newContentMenu").style.visibility="hidden";
+	
+	jQuery.post(url + "?" + pars, args, 
+		function(data) {
+			//try{
+				//var r=eval("(" + data + ")");
+				//d.html(r.html)	
+				//} catch(err){
+					d.html(data);	
+				//}
+				stripe('stripe');
+				setCheckboxTrees();
+				
+				jQuery("#svTagCloud a").click(
+					function(event){
+						event.preventDefault();
+						jQuery(this).toggleClass('active');
+					}
+				);
+				
+				jQuery(".navSort a").click(
+					function(event){
+						event.preventDefault();
+						
+						jQuery(".sortNav .active").toggleClass('active');
+						jQuery(this).toggleClass('active');
+						
+						var sortby=jQuery(this).attr("data-sortby");
+						
+						if(sortby==flatViewArgs.sortby){
+							if (flatViewArgs.sortdirection == "asc") {
+								flatViewArgs.sortdirection="desc";
+							}
+							else {
+								flatViewArgs.sortdirection="asc";
+							}
+						} else {
+							flatViewArgs.sortby=sortby;
+							
+							switch(flatViewArgs.sortby){
+							case "menutitle":
+							flatViewArgs.sortdirection="asc";
+							break;
+							case "created":
+							case "lastupdate":
+							case "releasedate":
+							flatViewArgs.sortdirection="desc";	
+							}						
+						}
+						
+						flatViewArgs.page=1;
+						
+						loadSiteFlat(flatViewArgs)
+						
+					}
+				);
+				
+				jQuery("#navReports a").click(
+					function(event){
+						event.preventDefault();
+						
+						jQuery(".navReports .active").toggleClass('active');
+						jQuery(this).toggleClass('active');
+						
+						var report=jQuery(this).attr("data-report");
+						
+						if(
+							(flatViewArgs.report=="mylockedfiles" || flatViewArgs.report=="lockedfiles") 
+							&& !(report=="mylockedfiles" || report=="lockedfiles")
+						){
+							flatViewArgs.type="";
+						}
+						
+						flatViewArgs.report=report;
+						
+						if(flatViewArgs.report=="mylockedfiles" || flatViewArgs.report=="lockedfiles"){
+							flatViewArgs.type="File";
+						}
+						
+						flatViewArgs.page=1;
+						
+						loadSiteFlat(flatViewArgs)
+						
+					}
+				);
+				
+				jQuery("#tabFlat .moreResults a").click(
+					function(event){
+						event.preventDefault();
+						
+						jQuery("#tabFlat .moreResults a").toggleClass('active');
+						jQuery(this).toggleClass('active');
+						
+						flatViewArgs.page=jQuery(this).attr("data-page");
+						
+						
+						loadSiteFlat(flatViewArgs)
+						
+					}
+				);
+				initDraftPrompt();
+				
+				d.hide().animate({
+					'opacity': 'show'
+				}, 1000);
+			}
+		);
+
+	return false;
+}
 
 function loadSiteSection(node, startrow)	{
 	

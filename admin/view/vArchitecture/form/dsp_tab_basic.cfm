@@ -256,7 +256,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<select name="expiresDayPart" class="dropdown"><option value="AM">AM</option><option value="PM" <cfif LSisDate(request.contentBean.getExpires()) and hour(request.contentBean.getExpires()) gte 12>selected</cfif>>PM</option></select>
 	</div>
 	<div id="expires-notify">
-		<label for="dspnotify"><input type="checkbox" name="dspExpiresNotify"  id="dspexpiresnotify" onclick="loadExpiresNotify('#attributes.siteid#','#attributes.contenthistid#','#attributes.parentid#');"  class="checkbox"><!---<a href="##" class="tooltip">--->#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expiresnotify')#<!---<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.notifyReview")#</span></a>---></label>
+		<label for="dspexpiresnotify"><input type="checkbox" name="dspExpiresNotify"  id="dspexpiresnotify" onclick="loadExpiresNotify('#attributes.siteid#','#attributes.contenthistid#','#attributes.parentid#');"  class="checkbox"><!---<a href="##" class="tooltip">--->#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expiresnotify')#<!---<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.notifyReview")#</span></a>---></label>
 		<div id="selectExpiresNotify" style="display: none;"></div>
 	</div>
 </dd>

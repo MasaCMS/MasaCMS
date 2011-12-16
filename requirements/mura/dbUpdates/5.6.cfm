@@ -210,7 +210,7 @@
 </cfswitch>
 
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	Update tcontentassignmentsset set type='draft'
+	Update tcontentassignments set type='draft'
 </cfquery>
 </cfif>
 
