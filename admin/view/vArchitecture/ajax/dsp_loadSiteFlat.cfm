@@ -101,13 +101,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		feed.addParam(field="tcontent.expires",datatype="date",condition="<=",criteria=dateAdd("m",1,now()));
 		feed.addParam(field="tcontent.expires",datatype="date",condition=">",criteria=dateAdd("m",-12,now()));		
 	} else if($.event('report') eq "myexpires"){
-		feed.addParam(field="tcontent.expires",datatype="date",condition="<=",criteria=dateAdd("m",1,now()));
-		feed.addParam(field="tcontent.expires",datatype="date",condition=">",criteria=dateAdd("m",-12,now()));		
-		feed.addParam(relationship="and (");
-		feed.addParam(field="tcontentassignments.userid",datatype="varchar",condition="=",criteria=$.currentUser("userID"));
-		feed.addParam(field="tcontentassignments.type",datatype="varchar",condition="=",criteria="expires");
-		feed.addParam(relationship="or",field="tcontent.lastupdatebyid",datatype="varchar",condition="=",criteria=$.currentUser("userID"));
-		feed.addParam(relationship=")");
+		subList=$.getBean("contentManager").getExpiringContent($.event("siteID"),$.currentUser("userID"));
+		feed.addParam(field="tcontent.contentID",datatype="varchar",condition="in",criteria=valuelist(subList.contentID));
 	} else if($.event('report') eq "mydrafts"){
 		subList=$.getBean("contentManager").getDraftList($.event("siteID"));
 		feed.addParam(field="tcontent.contentID",datatype="varchar",condition="in",criteria=valuelist(subList.contentID));

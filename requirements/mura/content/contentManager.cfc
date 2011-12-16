@@ -1958,4 +1958,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfreturn variables.contentDAO.readContentObject(argumentCollection=arguments)>
 	</cffunction>
+	
+	<cffunction name="getExpiringContent" returntype="query" access="public" output="false">
+	<cfargument name="siteid" type="string" required="true">
+	<cfargument name="userid" type="string" required="true">
+	
+		<cfreturn variables.contentGateway.getExpiringContent(arguments.siteID,arguments.userID)>
+	</cffunction>
 </cfcomponent>

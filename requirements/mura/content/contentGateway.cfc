@@ -1804,6 +1804,39 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 </cffunction>
 
+<cffunction name="getExpiringContent" returntype="query" access="public" output="false">
+	<cfargument name="siteid" type="string" required="true">
+	<cfargument name="userid" type="string" required="true">
+	<cfset var rs = "">
+	
+	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#" maxrows="1000">
+	SELECT contentid 
+	FROM tcontent 
+	WHERE
+	lastUpdateByID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/> 
+	and active=1 
+	and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+	and expires <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd("m",1,now())#"> 
+	and expires > <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd("m",-12,now())#"> 
+	
+	UNION
+	
+	SELECT tcontent.contentid 
+	FROM tcontent inner join tcontentassignments on (tcontent.contentHistID=tcontentassignments.contentHistID
+													and tcontentassignments.type='expire')
+	
+	WHERE 
+	tcontent.active=1 
+	and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+	and tcontentassignments.userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/> 
+	and tcontent.expires <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd("m",1,now())#"> 
+	and tcontent.expires > <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd("m",-12,now())#"> 
+	</cfquery> 
+
+
+	<cfreturn rs />
+</cffunction>
+
 <cffunction name="getReleaseCountByMonth" output="false">
 <cfargument name="siteid">
 <cfargument name="parentID">
