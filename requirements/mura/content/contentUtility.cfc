@@ -1275,13 +1275,13 @@ and parentID is null
 	<cfset var major=0>
 	<cfset var minor=0>
 	
+	<cfset stats=arguments.contentBean.getStats()>
+	
 	<cfif arguments.contentBean.getIsNew()>
 		<cfset major=1>
 		<cfset minor=0>
 	<cfelse>
-		
-		<cfset stats=arguments.contentBean.getStats()>
-			
+
 		<cfif not stats.getMajorVersion()>		
 			<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">	
 				select contentID, siteID, max(majorVersion) majorVersion, max(minorVersion) minorVersion
@@ -1324,7 +1324,7 @@ and parentID is null
 	
 	<cfset arguments.contentBean.setMajorVersion(major)>
 	<cfset arguments.contentBean.setMinorVersion(minor)>
-	
+
 	<cfset stats.setMajorVersion(major)>
 	<cfset stats.setMinorVersion(minor)>
 	<cfset stats.save()>
