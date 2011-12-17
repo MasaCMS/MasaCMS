@@ -895,8 +895,7 @@ activeQuickEdit=false;
 function loadSiteManager(siteid,topid,moduleid,sortby,sortdirection,ptype,startrow)	{
 	var url = 'index.cfm';
 	var pars = 'fuseaction=cArch.loadSiteManager&siteid=' + siteid  + '&topid=' + topid  + '&moduleid=' + moduleid  + '&sortby=' + sortby  + '&sortdirection=' + sortdirection  + '&ptype=' + ptype  + '&startrow=' + startrow + '&cacheid=' + Math.random();
-	hideMenu('newContentMenu');
-	
+	document.getElementById('newContentMenu').style.visibility="hidden";
 	//location.href=url + "?" + pars;
 	var d = jQuery('#gridContainer');
 		if (!activeQuickEdit) {
@@ -992,7 +991,7 @@ function loadSiteFlat(args)	{
 	var d = jQuery('#tabFlat');
 	
 	d.html('<img class="loadProgress" src="images/progress_bar.gif">');
-	hideMenu('newContentMenu');
+	document.getElementById('newContentMenu').style.visibility="hidden";
 	
 	jQuery.post(url + "?" + pars, args, 
 		function(data) {
@@ -1127,7 +1126,7 @@ function loadSiteSection(node, startrow)	{
 					node.find('.section:first').remove();
 					node.append(r.html);
 					
-					hideMenu('newContentMenu');
+					document.getElementById('newContentMenu').style.visibility="hidden";
 					stripe('stripe');
 					initDraftPrompt();
 					initQuickEdits();
@@ -1155,7 +1154,7 @@ function loadSiteSection(node, startrow)	{
 				function(){
 					node.find('.section:first').remove();
 				    stripe('stripe');
-					hideMenu('newContentMenu');
+					document.getElementById('newContentMenu').style.visibility="hidden";
 					sectionLoading = false;
 				}
 			);	
