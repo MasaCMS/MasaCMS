@@ -2675,14 +2675,12 @@ dt .add li.Page {
 	
 }
 
-
 #tabFlat td .locked-offline {
-	padding: .25em .5em;
-	margin-bottom: .75em;
-	background: yellow;
-	clear: both;
+	padding: .35em .8em;
+	margin:  .25em 0 0;
+	background: #FBC2C4;
 	font-size: 11px;
-	/*display: none;*/
+	display: inline-block;
 }
 
 #tabFlat .item h3 {
@@ -2755,7 +2753,7 @@ dt .add li.Page {
 }
 
 #tabFlat table .item .navZoom {
-	margin: 1em 0 .5em !important;
+	margin: .75em 0 .75em !important;
 	/*clear: both !important;*/
 	display: block;
 	overflow: hidden;
@@ -2859,6 +2857,10 @@ dt .add li.Page {
 	text-decoration: none;
 	background: #eee url(../images/icons/ulock_24.png) 9px center no-repeat;
 	padding-left: 26px;
+}
+
+#mura-revision-type {
+	margin: .5em 0;
 }
 
 /* @group Default */
@@ -3399,11 +3401,15 @@ li.admin li.source, table td.administration li.source {
 #tabFlat .admin {
 	float: right;
 	margin-left: 2em;
+	position: relative;
 }
 
 #tabFlat .admin ul {
 	padding: .35em .75em;
-	float: right;
+	/*float: right;*/
+	position:  absolute;
+	top: 0;
+	right: 0;
 	background: #ddd;
 	border-radius: 12px;
 	-webkit-border-radius: 12px;
