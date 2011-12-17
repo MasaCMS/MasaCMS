@@ -93,7 +93,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		feed.setSortDirection($.event("sortDirection"));	
 	}
 	
-	if($.event('report') eq "mylockedfiles"){
+	if($.event('report') eq "lockedfiles"){
 		feed.addParam(field="tcontentstats.lockid",condition=">",criteria="");	
 	} else if($.event('report') eq "mylockedfiles"){
 		feed.addParam(field="tcontentstats.lockid",condition="=",criteria=$.currentUser("userID"));
