@@ -895,7 +895,8 @@ activeQuickEdit=false;
 function loadSiteManager(siteid,topid,moduleid,sortby,sortdirection,ptype,startrow)	{
 	var url = 'index.cfm';
 	var pars = 'fuseaction=cArch.loadSiteManager&siteid=' + siteid  + '&topid=' + topid  + '&moduleid=' + moduleid  + '&sortby=' + sortby  + '&sortdirection=' + sortdirection  + '&ptype=' + ptype  + '&startrow=' + startrow + '&cacheid=' + Math.random();
-
+	hideMenu('newContentMenu');
+	
 	//location.href=url + "?" + pars;
 	var d = jQuery('#gridContainer');
 		if (!activeQuickEdit) {
@@ -979,7 +980,7 @@ function loadSiteManagerInTab(loader){
 		window.scrollTo(0,0); 
 		jQuery("#viewTabs").tabs('select', 0); 
 		loader();
-		//document.getElementById(id).style.visibility="hidden"; 
+		//document.getElementById("newContentMenu").style.visibility="hidden"; 
 		return false;
 }
 
@@ -991,7 +992,7 @@ function loadSiteFlat(args)	{
 	var d = jQuery('#tabFlat');
 	
 	d.html('<img class="loadProgress" src="images/progress_bar.gif">');
-	document.getElementById("newContentMenu").style.visibility="hidden";
+	hideMenu('newContentMenu');
 	
 	jQuery.post(url + "?" + pars, args, 
 		function(data) {
@@ -1084,8 +1085,7 @@ function loadSiteFlat(args)	{
 						jQuery("#tabFlat .moreResults a").toggleClass('active');
 						jQuery(this).toggleClass('active');
 						
-						flatViewArgs.page=jQuery(this).attr("data-page");
-						
+						flatViewArgs.page=jQuery(this).attr("data-page");	
 						
 						loadSiteFlat(flatViewArgs)
 						
@@ -1127,7 +1127,7 @@ function loadSiteSection(node, startrow)	{
 					node.find('.section:first').remove();
 					node.append(r.html);
 					
-					document.getElementById("newContentMenu").style.visibility = "hidden";
+					hideMenu('newContentMenu');
 					stripe('stripe');
 					initDraftPrompt();
 					initQuickEdits();
@@ -1155,7 +1155,7 @@ function loadSiteSection(node, startrow)	{
 				function(){
 					node.find('.section:first').remove();
 				    stripe('stripe');
-					document.getElementById("newContentMenu").style.visibility = "hidden";
+					hideMenu('newContentMenu');
 					sectionLoading = false;
 				}
 			);	
