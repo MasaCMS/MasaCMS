@@ -173,6 +173,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset newcontent=0>
 	</cfif>
 	<cfset deletable=((item.getParentID() neq '00000000000000000000000000000000001' and application.settingsManager.getSite(item.getSiteID()).getLocking() neq 'all') or (item.getParentID() eq '00000000000000000000000000000000001' and application.settingsManager.getSite(item.getSiteID()).getLocking() eq 'none')) and (verdict eq 'editor')  and item.getIsLocked() neq 1>
+	<cfset editLink="index.cfm?fuseaction=cArch.edit&contenthistid=#item.getContentHistID()#&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getParentID()#&topid=#URLEncodedFormat(item.getParentID())#&siteid=#URLEncodedFormat(item.getSiteid())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#">
 	</cfsilent>	
 	<tr data-siteid="#item.getSiteID()#" data-contentid="#item.getContentID()#" data-contenthistid="#item.getContentHistID()#" data-sortby="#item.getSortBy()#" data-sortdirection="#item.getSortDirection()#" data-moduleid="#HTMLEditFormat(item.getModuleID())#" data-type="#item.getType()#">
 		<td class="add"><a class="add" href="javascript:;" onmouseover="showMenu('newContentMenu',#newcontent#,this,'#item.getContentID()#','#item.getContentID()#','#item.getContentID()#','#item.getSiteID()#','#item.getType()#');"></a></td>
@@ -181,7 +182,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="admin">
 			<ul class="siteSummary <cfif item.gettype() neq 'File'>five<cfelse>six</cfif>">
 				<cfif verdict neq 'none'>
-			     <li class="edit"><a title="Edit" class="draftprompt" href="index.cfm?fuseaction=cArch.edit&contenthistid=#item.getContentHistID()#&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getParentID()#&topid=#URLEncodedFormat(item.getParentID())#&siteid=#URLEncodedFormat(item.getSiteid())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#">&nbsp;</a></li>
+			     <li class="edit"><a title="Edit" class="draftprompt" href="#editLink#">&nbsp;</a></li>
 				   <cfswitch expression="#item.gettype()#">
 					<cfcase value="Page,Portal,Calendar,Gallery">
 					<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="javascript:preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),item.getfilename())#','#item.gettargetParams()#');">Preview</a></li>
@@ -235,7 +236,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>	
 		</h3>
 		<cfif listFindNoCase("png,jpg,jpeg,gif",item.getFileExt())>
-		<div class="thumbnail"><img src="#item.getImageURL(height=80,width=80)#" /></div>
+		<div class="thumbnail"><a title="Edit" class="draftprompt" href="#editLink#"><img src="#item.getImageURL(height=80,width=80)#" /></a></div>
 		</cfif>
 			<cfif len(item.getLockID())>
 				<cfset lockedBy=$.getBean("user").loadBy(item.getLockID())>
