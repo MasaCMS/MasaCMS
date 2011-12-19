@@ -233,6 +233,7 @@ jQuery(document).ready(function(){
 		<li>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.status")#: <strong><cfif attributes.contentid neq ''><cfif request.contentBean.getactive() gt 0 and request.contentBean.getapproved() gt 0>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.published")#<cfelseif request.contentBean.getapproved() lt 1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#<cfelse>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.archived")#</cfif><cfelse>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#</cfif></strong></li>
 		<cfset started=false>
 		<li>
+		<!---
 		<cfif listFindNoCase(pageLevelList,attributes.type)>
 				<cfset started=true>
 				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#:
@@ -293,10 +294,11 @@ jQuery(document).ready(function(){
 				</select>
 				</cfif>
 			</cfif>
-			<cfif not started>	
+			
+			<cfif not started>	--->
 			#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#: <strong>#HTMLEditFormat(attributes.type)#
-			</cfif>
-			</li>
+			<!---</cfif>--->
+		</li>
 	</ul>
 	</cfif>
 	
@@ -375,7 +377,7 @@ jQuery(document).ready(function(){
 		</cfif>
 	</cfif>
 	
-<!---		<cfif attributes.compactDisplay neq "true">
+	<cfif attributes.compactDisplay neq "true">
 			<div class="selectContentType">
 			<cfif listFindNoCase(pageLevelList,attributes.type)>
 				<strong>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#:</strong>
@@ -435,7 +437,7 @@ jQuery(document).ready(function(){
 			</cfif>
 		</div>
 	</cfif>
-	--->
+	
 	<cfif attributes.compactDisplay eq "true">
 		<cfif not listFindNoCase("Component,Form", attributes.type)>
 			<cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#attributes.type#"> and subtype not in ('Default','default')</cfquery>

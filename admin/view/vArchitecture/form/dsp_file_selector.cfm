@@ -107,8 +107,9 @@
 	<!--- Locked by someone else --->
 	<dd>
 		<cfset lockedBy=$.getBean("user").loadBy(stats.getLockID())>
-		<p id="msg-file-locked" class="error">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.filelockedby"),"#HTMLEditFormat(lockedBy.getFName())# #HTMLEditFormat(lockedBy.getLName())#")#  <a href="mailto:#HTMLEditFormat(lockedBy.getEmail())#?subject=#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.fileunlockrequest'))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.requestfilerelease')#</a> <cfif listFindNoCase(session.mura.memberships,"s2")><a id="unlockFileSomeoneElse" href="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlockfile')#</a></cfif></p>
+		<p id="msg-file-locked" class="error">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.filelockedby"),"#HTMLEditFormat(lockedBy.getFName())# #HTMLEditFormat(lockedBy.getLName())#")#  <a href="mailto:#HTMLEditFormat(lockedBy.getEmail())#?subject=#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.fileunlockrequest'))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.requestfilerelease')#</a></p>
 		<a class="mura-file #lcase(request.contentBean.getFileExt())#" href="#application.configBean.getContext()#/tasks/render/file/index.cfm?fileid=#request.contentBean.getFileID()#&method=attachment">#HTMLEditFormat(request.contentBean.getFilename())#<cfif request.contentBean.getMajorVersion()> (v#request.contentBean.getMajorVersion()#.#request.contentBean.getMinorVersion()#)</cfif></a>
+		 <cfif listFindNoCase(session.mura.memberships,"s2")><a id="mura-file-unlock" href="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlockfile')#</a></cfif>
 		<input type="hidden" name="fileid" value="#htmlEditFormat(request.contentBean.getFileID())#" />
 	</dd>
 	<cfif request.contentBean.getcontentType() eq 'image'>
@@ -118,7 +119,7 @@
 	</cfif>
 	<cfif listFindNoCase(session.mura.memberships,"s2")>
 	<script>
-		jQuery("##unlockFileSomeoneElse").click(
+		jQuery("##mura-file-unlock").click(
 					function(event){
 						event.preventDefault();
 						confirmDialog(
