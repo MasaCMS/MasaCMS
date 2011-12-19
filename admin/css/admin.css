@@ -1419,7 +1419,7 @@ h2 {
 	line-height: 1;
 }
 
-#carch h2 {
+#carch h2, #cemail h2 {
 	float: left;
 	margin-bottom: .75em;
 }
@@ -1830,13 +1830,30 @@ h5 {
 	border-top: 1px solid #EAF4FE;
 	border-bottom: 1px solid #EAF4FE;
 	background: #F7FBFE;
-	width: 100%;
+	width: 98%;
 	float: left;
 }
 
 #cemail #advancedSearch {
 	margin-bottom: 16px;
 }
+
+#cemail #advancedSearch dl {
+	float: left;
+	margin-right: 2em;
+	margin-bottom: 1em;
+}
+
+#cemail #advancedSearch dd {
+	padding-bottom: 0;
+	margin-bottom: 0;
+}
+
+#cemail #advancedSearch .submit {
+	display: block;
+	clear: both;
+}
+
 
 #advancedMemberSearch dl {
 	padding-bottom: 8px;
@@ -1963,7 +1980,7 @@ form.search {
 #siteSearch {
 	float: right;
 	width: auto;
-	margin: 0;
+	margin: 0 0 2em;
 	padding: 0;
 	position: relative;
 	right: 0;
@@ -3918,7 +3935,6 @@ ul.params li {
 	padding: 10px;
 	/*background: #F9F9F9;*/
 }
-
 
 .overview .navZoom {
 	margin-bottom: 0;
