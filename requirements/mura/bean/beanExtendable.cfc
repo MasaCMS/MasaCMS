@@ -118,8 +118,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getExtendedAttribute" returnType="string" output="false" access="public">
  	<cfargument name="key" type="string" required="true">
 	<cfargument name="useMuraDefault" type="boolean" required="true" default="false"> 
-	<cfargument name="defaultValue">
-  	<cfreturn getExtendedData().getAttribute(argumentCollection=arguments) />
+  	<cfreturn getExtendedData().getAttribute(arguments.key,arguments.useMuraDefault) />
  </cffunction>
 
 <cffunction name="setValue" returntype="any" access="public" output="false">
@@ -173,7 +172,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfreturn arguments.defaultValue />
 			</cfif>
 		<cfelse>
-			<cfreturn getExtendedAttribute(key=arguments.property) />
+			<cfreturn getExtendedAttribute(arguments.property) />
 		</cfif>
 	</cfif>
 </cffunction>
