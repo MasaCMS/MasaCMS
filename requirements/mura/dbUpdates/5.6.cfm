@@ -246,3 +246,81 @@
 </cfcase>
 </cfswitch>
 </cfif>
+
+<cfdbinfo 
+	name="rsCheck"
+	datasource="#application.configBean.getDatasource()#"
+	username="#application.configBean.getDbUsername()#"
+	password="#application.configBean.getDbPassword()#"
+	table="tcontentcomments"
+	type="columns">
+
+<cfquery name="rsCheck" dbtype="query">
+	select * from rsCheck where lower(rsCheck.column_name) like 'remoteid'
+</cfquery>
+
+<cfif not rsCheck.recordcount>
+<cfswitch expression="#getDbType()#">
+<cfcase value="mssql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentcomments ADD remoteID [char](35) default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="mysql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentcomments ADD COLUMN remoteID char(35) default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="oracle">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentcomments ADD remoteID char(35)
+	</cfquery>
+</cfcase>
+</cfswitch>
+</cfif>
+
+<cfset dbCreateIndex(table="tcontentcomments",column="remoteid")>
+
+<cfdbinfo 
+	name="rsCheck"
+	datasource="#application.configBean.getDatasource()#"
+	username="#application.configBean.getDbUsername()#"
+	password="#application.configBean.getDbPassword()#"
+	table="tcontentcomments"
+	type="columns">
+	
+<cfquery name="rsCheck" dbtype="query">
+	select * from rsCheck where lower(rsCheck.column_name) like 'url'
+</cfquery>
+
+<cfif rsCheck.COLUMN_SIZE eq 50>
+<cfswitch expression="#getDbType()#">
+<cfcase value="mssql">
+	<cftry>
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		ALTER TABLE tcontentcomments ALTER COLUMN url nvarchar(255) 
+		</cfquery>
+		<cfcatch></cfcatch>
+	</cftry>
+</cfcase>
+<cfcase value="mysql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentcomments MODIFY column url varchar(255)
+	</cfquery>
+</cfcase>
+<cfcase value="oracle">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentcomments rename column url to url2
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentcomments ADD url varchar2(255)
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	UPDATE tcontentcomments set url=url2
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentcomments drop column url2
+	</cfquery>
+</cfcase>
+</cfswitch>	
+</cfif>
