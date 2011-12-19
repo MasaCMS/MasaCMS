@@ -53,8 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </form>
 <h2>#application.rbFactory.getKeyValue(session.rb,'advertising.viewadvertisers')#</h2>
 
-<h3 class="alt">#application.rbFactory.getKeyValue(session.rb,'advertising.advertisersearch')#</h3>
-
+<!---<h3 class="alt">#application.rbFactory.getKeyValue(session.rb,'advertising.advertisersearch')#</h3>--->
 
 <!--- 
 <ul id="navTask">
