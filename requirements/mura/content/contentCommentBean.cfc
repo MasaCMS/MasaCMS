@@ -61,6 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="path" type="string" default="" required="true" />
 <cfproperty name="kids" type="string" default="" required="true" />
 <cfproperty name="remoteID" type="string" default="" required="true" />
+<cfproperty name="isNew" type="numeric" default="1" required="true" />
 
 <cfset variables.contentRenderer=application.contentRenderer/>
 
@@ -84,6 +85,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.path=""/>
 	<cfset variables.instance.kids=0/>
 	<cfset variables.instance.remoteID=""/>
+	<cfset variables.instance.isNew=1/>
 
 	<cfreturn this />
 </cffunction>
@@ -175,6 +177,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="remoteID">
 	<cfset var rs=getQuery(argumentCollection=arguments)>
 	<cfif rs.recordcount>
+		<cfset variables.instance.isNew=0/>
 		<cfset set(rs) />
 	</cfif>
 	<cfreturn this>
@@ -303,6 +306,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			remoteID=<cfif len(variables.instance.remoteID)><cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.remoteID#"/><cfelse>null</cfif>
 			)
 			</cfquery>
+		
+		<cfset variables.instance.isNew=0/>
 			
 		<cfset pluginManager.announceEvent("onAfterCommentCreate",pluginEvent)>
 		<cfset getBean('trashManager').takeOut(this)>

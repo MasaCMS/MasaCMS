@@ -1313,7 +1313,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<cfloop query="rstcontentcomments">
 					<cfquery datasource="#arguments.toDSN#">
-							insert into tcontentcomments (comments,commentid,contenthistid,contentid,email,entered,ip,isApproved,name,siteid,url,subscribe,parentID,path)
+							insert into tcontentcomments (comments,commentid,contenthistid,contentid,email,entered,ip,isApproved,name,siteid,url,subscribe,parentID,path
+							<!--- added in 5.6 --->
+							<cfif isdefined("rstcontentcomments.remoteid")>
+								,remoteID
+							</cfif>
 							values
 							(
 							<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstcontentcomments.comments neq '',de('no'),de('yes'))#" value="#rstcontentcomments.comments#">,
@@ -1330,6 +1334,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentcomments.subscribe),de(rstcontentcomments.subscribe),de(0))#">,
 							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentcomments.parentID neq '',de('no'),de('yes'))#" value="#keys.get(rstcontentcomments.parentID)#">,
 							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentcomments.path neq '',de('no'),de('yes'))#" value="#rstcontentcomments.path#">
+							<cfif isdefined("rstcontentcomments.remoteid")>
+								,<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentcomments.remoteid neq '',de('no'),de('yes'))#" value="#rstcontentcomments.remoteid#">
+							</cfif>
 							)
 					</cfquery>
 			</cfloop>
