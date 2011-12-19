@@ -118,7 +118,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getExtendedAttribute" returnType="string" output="false" access="public">
  	<cfargument name="key" type="string" required="true">
 	<cfargument name="useMuraDefault" type="boolean" required="true" default="false"> 
-	
   	<cfreturn getExtendedData().getAttribute(arguments.key,arguments.useMuraDefault) />
  </cffunction>
 
@@ -155,12 +154,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getValue" returntype="any" access="public" output="false">
-	<cfargument name="property" type="string" required="true">	
+	<cfargument name="property" type="string" required="true">
+	<cfargument name="defaultValue">
+	<cfset var tempValue="">	
 	<cfif len(arguments.property)>
 		<cfif structKeyExists(this,"get#arguments.property#")>
 			<cfreturn evaluate("get#property#()") />
 		<cfelseif structKeyExists(variables.instance,"#arguments.property#")>
 			<cfreturn variables.instance["#arguments.property#"] />
+		<cfelseif structKeyExists(arguments,"defaultValue")>
+			<cfset tempValue=getExtendedAttribute(arguments.property,true) />
+			<cfif tempValue neq "useMuraDefault">
+				<cfset variables.instance["#arguments.property#"]=tempValue />
+				<cfreturn tempValue>
+			<cfelse>
+				<cfset variables.instance["#arguments.property#"]=arguments.defaultValue />
+				<cfreturn arguments.defaultValue />
+			</cfif>
 		<cfelse>
 			<cfreturn getExtendedAttribute(arguments.property) />
 		</cfif>

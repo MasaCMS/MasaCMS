@@ -123,8 +123,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 	</cfif>--->
 	
-	<cfif attributes.compactDisplay eq "true">
-		<!---<cfif not listFindNoCase("Component,Form", attributes.type)>
+	<!---<cfif attributes.compactDisplay eq "true">
+		<cfif not listFindNoCase("Component,Form", attributes.type)>
 			<cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#attributes.type#"> and subtype not in ('Default','default')</cfquery>
 			<cfif rsst.recordcount>
 					<cfset t=attributes.type/>
@@ -140,10 +140,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</select>	
 					</dd>								
 			</cfif>
-		</cfif>--->
+		</cfif>
 			
 		<input type="hidden" name="closeCompactDisplay" value="true" />
-	</cfif>
+	</cfif>--->
 <cfswitch expression="#attributes.type#">
 	<cfcase value="Page,Portal,Calendar,Gallery,File,Link">
 		<dt<cfif not started> class="first"</cfif>><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.title")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.pageTitle")#</span></a></dt>
