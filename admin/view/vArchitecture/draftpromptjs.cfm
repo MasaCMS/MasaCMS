@@ -27,7 +27,7 @@ function initDraftPrompt(){
 						width:"400px",
 						buttons: {
 							"#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.cancel'))#":function(){
-								$(this).dialog('close');
+								jQuery(this).dialog('close');
 							},
 							"#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.latest'))#": function(){
 								var href = a.attr('href').replace(node.attr('data-contenthistid'),resp.historyid);
