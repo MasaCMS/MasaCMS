@@ -295,8 +295,8 @@ jQuery(document).ready(function(){
 				</cfif>
 			</cfif>
 			
-			<cfif not started>	--->
-			#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#: <strong>#HTMLEditFormat(attributes.type)#
+			<cfif not started> --->
+			#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#: <strong>#HTMLEditFormat(attributes.type)#</strong>
 			<!---</cfif>--->
 		</li>
 	</ul>

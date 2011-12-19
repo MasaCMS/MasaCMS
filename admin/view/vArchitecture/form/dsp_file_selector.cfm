@@ -23,7 +23,13 @@
 	</cfif>
 	<input type="file" id="file" name="NewFile" class="text" <cfif attributes.ptype eq 'Gallery' or attributes.type neq 'File'>accept="image/jpeg,image/png" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.newimagevalidate')#"</cfif>>
 	<cfif attributes.type eq "file" and not request.contentBean.getIsNew()>
-		<p style="display:none;" id="mura-revision-type"><!---#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.filerevisiontype')#:---><label><input type="radio" name="versionType" value="major">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.major')#</label> <label><input type="radio" name="versionType" value="minor" checked/>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.minor')#</label>
+		<p style="display:none;" id="mura-revision-type">
+			<label>
+				<input type="radio" name="versionType" value="major">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.major')#
+			</label>
+			<label>
+				<input type="radio" name="versionType" value="minor" checked />#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.minor')#
+			</label>
 		</p>
 		<script>
 			jQuery("##file").change(function(){
@@ -35,7 +41,7 @@
 	<cfif attributes.type neq 'File'>
 		<dd>
 			<cfif len(request.contentBean.getFileID())>
-				<img id="assocImage" src="#application.configBean.getContext()#/tasks/render/small/index.cfm?fileid=#request.contentBean.getFileID()#" /><br /><input type="checkbox" name="deleteFile" value="1" id="deleteFileBox"/> <label for="deleteFileBox">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.removeattachedfile')#</label><br />
+				<img id="assocImage" src="#application.configBean.getContext()#/tasks/render/small/index.cfm?fileid=#request.contentBean.getFileID()#" /><input type="checkbox" name="deleteFile" value="1" id="deleteFileBox"/> <label for="deleteFileBox">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.removeattachedfile')#</label>
 			</cfif>
 			<cfif attributes.type neq 'File'>
 				<span id="selectAssocImage">

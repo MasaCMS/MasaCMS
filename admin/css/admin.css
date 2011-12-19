@@ -415,6 +415,13 @@ img.tabPreloader {
 	margin: 0 0 1em auto;
 }
 
+img#assocImage {
+	clear: left !important;
+	float: none;
+	display: block;
+	padding: 1em 0;
+}
+
 .results a {
 	text-decoration: none;
 }
@@ -1606,6 +1613,20 @@ h5 {
 	margin-bottom: 1em;
 }
 
+#csettings .metadata {
+	float: left;
+	max-width: 400px;
+	padding: 1em;
+	margin-bottom: 1em;
+	overflow: hidden;
+	border-radius: 5px;
+}
+
+#csettings .metadata li {
+	width: 170px;
+	float: left;
+}
+
 /* @end */
 
 /* @group Secondary Content */
@@ -2612,7 +2633,7 @@ dt .add li.Page {
 }
 
 #tabFlat .sidebar h3 {
-	font-size: 15px;
+	font-size: 13px;
 	font-weight: bold;
 }
 
@@ -2765,6 +2786,22 @@ dt .add li.Page {
 	padding: 1em;
 	background: #e9e9e9;
 	border-radius: 5px;
+}
+
+#mura-filter-category {
+	overflow-x: scroll;
+}
+
+#mura-filter-category ul {
+	overflow: visible;
+}
+
+#mura-filter-category li {
+	min-width: 160px;
+}
+
+#navReports {
+	margin-top: 91px;
 }
 
 #tabFlat #navReports li {
@@ -4497,7 +4534,7 @@ margin: .5em 0; }
 }
 
 ul.checkboxTree li {
-	list-style:none;
+	list-style: none;
 	margin: .35em 0 !important;
 }
 

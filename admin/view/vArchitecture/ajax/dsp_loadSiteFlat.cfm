@@ -285,7 +285,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
 <div class="sidebar">
-	<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports")#</h3>
+	<!---<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports")#</h3>--->
 	<ul id="navReports" class="module">
 		<li><a href="" data-report=""<cfif not len($.event("report"))> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.all")#</a></li>
 		<li><a href="" data-report="expires"<cfif $.event("report") eq "expires"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.expires")#</a></li>
@@ -324,7 +324,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfsilent>	
 	
 	<cfif tags.recordcount>
-	<div class="module">
+	<div class="module" id="mura-filter-tags">
 	<h4>#application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</h4>
 	<div id="svTagCloud">
 		<ol>
@@ -350,7 +350,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 
 	<cfif $.getBean("categoryManager").getCategoryCount($.event("siteID"))>
-	<div class="module">
+	<div class="module"" id="mura-filter-category">
 	<h4>#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#</h4>
 	<cf_dsp_categories_nest siteID="#$.event('siteID')#" parentID="" nestLevel="0" categoryid="#$.event('categoryid')#">
 	</cfif>
