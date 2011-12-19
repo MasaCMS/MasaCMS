@@ -59,8 +59,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <li><strong>Name:</strong> #htmlEditFormat(request.pluginXML.plugin.name.xmlText)#</li>
 <li><strong>Category:</strong> #htmlEditFormat(request.pluginXML.plugin.category.xmlText)#</li>
 <li><strong>Version:</strong> #htmlEditFormat(request.pluginXML.plugin.version.xmlText)#</li>
-<li><strong>Provider:</strong> #htmlEditFormat(request.pluginXML.plugin.provider.xmlText)#</li>
-<li><strong>Provider URL:</strong> <a href="#request.pluginXML.plugin.providerURL.xmlText#" target="_blank">#htmlEditFormat(request.pluginXML.plugin.providerURL.xmlText)#</a></li>
+<li><strong>Provider:</strong> <a href="#request.pluginXML.plugin.providerURL.xmlText#" target="_blank">#htmlEditFormat(request.pluginXML.plugin.provider.xmlText)#</a></li>
+<!---<li><strong>Provider URL:</strong> <a href="#request.pluginXML.plugin.providerURL.xmlText#" target="_blank">#htmlEditFormat(request.pluginXML.plugin.providerURL.xmlText)#</a></li>--->
 <li><strong>Plugin ID:</strong> #rsplugin.pluginID#</li>
 <li><strong>Package:</strong> <cfif len(package)>#htmlEditFormat(package)#<cfelse>N/A</cfif></li>
 </ul>
