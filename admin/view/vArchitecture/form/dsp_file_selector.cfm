@@ -23,7 +23,7 @@
 	</cfif>
 	<input type="file" id="file" name="NewFile" class="text" <cfif attributes.ptype eq 'Gallery' or attributes.type neq 'File'>accept="image/jpeg,image/png" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.newimagevalidate')#"</cfif>>
 	<cfif attributes.type eq "file" and not request.contentBean.getIsNew()>
-		<p style="display:none;" id="mura-revision-type">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.filerevisiontype')#: <input type="radio" name="versionType" value="major"/> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.major')# <input type="radio" name="versionType" value="minor" checked/> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.minor')#
+		<p style="display:none;" id="mura-revision-type"><!---#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.filerevisiontype')#:---><label><input type="radio" name="versionType" value="major">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.major')#</label> <label><input type="radio" name="versionType" value="minor" checked/>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.minor')#</label>
 		</p>
 		<script>
 			jQuery("##file").change(function(){

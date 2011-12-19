@@ -223,7 +223,8 @@ input.text {
 }
 
 input#file {
-	margin-top: 2px;
+	margin: 2px 1em 0 0;
+	float: left;
 }
 
 input.textAlt, input.date, input.medium {
@@ -364,7 +365,9 @@ p {
 }
 
 #content p {
-	font-size: 12px;
+	font-size: 11px;
+	line-height: 16px;
+	font-weight: normal;
 }
 
 #content p.intro {
@@ -1556,10 +1559,6 @@ h5 {
 /* @end */
 
 /* @group Content */
-
-#content p {
-	line-height: 16px;
-}
 
 #selectUser #content {
 	padding: 20px 10px 10px 10px;
@@ -2823,6 +2822,7 @@ dt .add li.Page {
 	padding: 4px 0 4px 20px;
 	background-position:left center;
 	margin-right: 1em;
+	clear: left;
 }
 
 #mura-file-offline-edit {
@@ -2838,7 +2838,6 @@ dt .add li.Page {
 	background-position: 7px center;
 	background-repeat: no-repeat;*/
 	padding: .35em .75em !important;
-	font-size: 11px !important;
 }
 
 #msg-file-locked.error {
@@ -2860,7 +2859,8 @@ dt .add li.Page {
 }
 
 #mura-revision-type {
-	margin: .5em 0;
+	margin: .75em 0 0;
+	line-height: 2.2 !important;
 }
 
 /* @group Default */
