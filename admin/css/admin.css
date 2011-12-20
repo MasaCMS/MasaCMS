@@ -223,7 +223,8 @@ input.text {
 }
 
 input#file {
-	margin: 2px 1em 0 0;
+	margin: 3px 1em .5em 0;
+	padding: 0;
 	float: left;
 }
 
@@ -458,6 +459,13 @@ img#assocImage {
 }
 
 #actionButtons {
+	clear: both;
+	margin: 10px 0 0;
+	padding: 0 0 0 0;
+	background: none;
+}
+
+#actionButtons.alt {
 	clear: both;
 	margin: 10px 0 0;
 	padding: 16px 0 0 0;
@@ -838,81 +846,6 @@ dd ul li ul {
 	overflow: hidden;
 }
 
-/*dd ul.interestGroups ul, dd ul.categories ul, #emailGroupsLists dd ul {
-	overflow: hidden;
-	margin: 1em 0 .5em 0;
-}*/
-
-
-/*dd ul.interestGroups ul ul, dd ul.categories ul ul {
-	overflow: hidden;
-	margin: .75em 0 0 1.8em;
-}*/
-
-/*#emailGroupsLists dd ul {
-	overflow: hidden;
-	margin: .5em 0 0 0;
-}*/
-
-/*#emailGroupsLists dd ul ul {
-	margin: .75em 0 0 1.8em;
-}*/
-
-
-/*dd ul.interestGroups li, dd ul.categories li, #emailGroupsLists dt {
-	font-size: 15px;
-	color: #636261;
-	font-weight: normal;
-	width: 100%;
-}*/
-
-dd ul.interestGroups li li, dd ul.categories li li, #emailGroupsLists dd ul li {
-	margin: 0 1% .5em 0;
-    display: -moz-inline-stack; /* FF 2 */
-	display: inline-block;
-    zoom: 1; /* Trigger hasLayout for IE */
-    *display: inline; /* IE 7 */
-    _height: 1%; /* IE 6 */
-	float: left;
-	vertical-align: top;
-	font-size: 11px;
-	color: #000;
-	width: 100%;
-}
-
-dd ul.interestGroups li li li, dd ul.categories li li li, #emailGroupsLists dd ul li li {
-	font-weight: normal;
-	/*width: 31% !important;*/
-}
-
-dd ul.interestGroups li li li li, dd ul.categories li li li li, #emailGroupsLists dd ul li li {
-	color: #636261;
-	width: 100%;
-}
-
-#tabInterests dd ul.interestGroups li li, #tabChoosecontent dd ul.categories li {
-	margin: 0 1% .5em 0;
-    display: -moz-inline-stack; /* FF 2 */
-	display: inline-block;
-    zoom: 1; /* Trigger hasLayout for IE */
-    *display: inline; /* IE 7 */
-    _height: 1%; /* IE 6 */
-	/*float: left;*/
-	vertical-align: top;
-	font-size: 11px;
-	color: #000;
-	width: 100%;
-}
-
-#tabInterests dd ul.interestGroups li li {
-	font-weight: normal;
-	width: 100%;	
-}
-
-#tabInterests dd ul.interestGroups li li li, #tabChoosecontent dd ul.categories li li {
-	color: #636261;
-	/*width: 31%;*/
-}
 
 .categoryAssignment {
 	/*border-bottom: 1px solid #dbdbdb;*/
@@ -2827,7 +2760,7 @@ dt .add li.Page {
 }
 
 #navReports {
-	margin-top: 91px;
+	margin-top: 26px;
 }
 
 #tabFlat #navReports li {
@@ -2884,7 +2817,9 @@ dt .add li.Page {
 	background-repeat: no-repeat;
 	padding: 4px 0 4px 20px;
 	background-position:left center;
-	margin-right: 1em;
+	margin: 0 1em 1em 0;
+	display: block;
+	float: left;
 	clear: left;
 }
 
@@ -2892,6 +2827,8 @@ dt .add li.Page {
 	background: #eee url(../images/icons/download_24.png) 7px center no-repeat;
 	padding-left: 24px;
 	margin-right: 1em;
+	display: block;
+	float: left;
 }
 
 #msg-file-locked {
@@ -2919,11 +2856,14 @@ dt .add li.Page {
 	text-decoration: none;
 	background: #eee url(../images/icons/ulock_24.png) 9px center no-repeat;
 	padding-left: 26px;
+	display: block;
+	float: left;
 }
 
-#mura-revision-type {
-	margin: .75em 0 0;
+#content #mura-revision-type {
+	margin: 0;
 	line-height: 2.2 !important;
+	display: inline-block;
 }
 
 /* @group Default */

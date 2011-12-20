@@ -21,7 +21,7 @@
 		and (attributes.type eq 'File' and not request.contentBean.getIsNew())>
 		<p id="msg-file-locked" class="notice"<cfif not lockedByYou> style="display:none;"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.youvelockedfile')#</p>
 	</cfif>
-	<input type="file" id="file" name="NewFile" class="text" <cfif attributes.ptype eq 'Gallery' or attributes.type neq 'File'>accept="image/jpeg,image/png" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.newimagevalidate')#"</cfif>>
+	<input type="file" id="file" name="NewFile" <cfif attributes.ptype eq 'Gallery' or attributes.type neq 'File'>accept="image/jpeg,image/png" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.newimagevalidate')#"</cfif>>
 	<cfif attributes.type eq "file" and not request.contentBean.getIsNew()>
 		<p style="display:none;" id="mura-revision-type">
 			<label>
