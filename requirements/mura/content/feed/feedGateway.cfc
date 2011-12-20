@@ -554,8 +554,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	
 	) 
-	</cfif>
-	
+
 	and (tcontent.mobileExclude is null
 		OR 
 		<cfif request.muraMobileRequest>
@@ -564,7 +563,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			tcontent.mobileExclude in (0,1)
 		</cfif>
 	)
-							
+	</cfif>
+						
 	order by
 	
 	<cfswitch expression="#arguments.feedBean.getSortBy()#">
