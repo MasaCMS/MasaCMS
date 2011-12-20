@@ -499,10 +499,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					  )
 					  </cfif>	
 				
-				 <cfif request.muraMobileRequest>
-				 	and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
-				 </cfif>
-				  order by 
+				#renderMobileClause()#
+						
+				order by 
 					
 					
 				<cfswitch expression="#arguments.sortBy#">
@@ -588,9 +587,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                    		  tcontent.Display = 1
 					  )
 					 
-					 <cfif request.muraMobileRequest>
-				 		and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
-				 	 </cfif>			  
+					#renderMobileClause()#
+								  
 					 <cfif relatedListLen >
 					  and tcontent.contentID in (
 							select tcontentrelated.contentID from tcontentrelated 
@@ -1376,9 +1374,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					  )
 				</cfif>
 				
-				<cfif request.muraMobileRequest>
-				    and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
-				</cfif>
+				#renderMobileClause()#
 				
 				
 	union all
@@ -1473,9 +1469,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					  )
 				</cfif>
 				
-				<cfif request.muraMobileRequest>
-				 	and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
-				</cfif>				
+				#renderMobileClause()#			
 	</cfquery>
 	
 	<cfquery name="rs" dbtype="query">
@@ -1557,9 +1551,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		)
 	</cfif>
 	
-	<cfif request.muraMobileRequest>
-		and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
-	</cfif>
+	#renderMobileClause()#
 	
 	order by 
 	
@@ -1747,9 +1739,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		
 		) 
-	<cfif request.muraMobileRequest>
-		and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
-	</cfif>
+		
+	#renderMobileClause()#
+	
 	<cfif isQuery(arguments.rsContent)  and arguments.rsContent.recordcount> and contentID in (#quotedValuelist(arguments.rsContent.contentID)#)</cfif>
 	group by tag
 	order by tag
@@ -2102,4 +2094,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfswitch>
 </cfoutput>
 </cffunction>
+
+<cffunction name="renderMobileClause" output="true">
+	<cfoutput>
+	and (tcontent.mobileExclude is null
+		OR 
+		<cfif request.muraMobileRequest>
+			tcontent.mobileExclude in (0,2)
+		<cfelse>
+			tcontent.mobileExclude in (0,1)
+		</cfif>
+	)
+	</cfoutput>
+</cffunction>
+
 </cfcomponent>

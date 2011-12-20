@@ -555,10 +555,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	) 
 	</cfif>
-	<cfif request.muraMobileRequest>
-		and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
-	</cfif>
-									
+	
+	and (tcontent.mobileExclude is null
+		OR 
+		<cfif request.muraMobileRequest>
+			tcontent.mobileExclude in (0,2)
+		<cfelse>
+			tcontent.mobileExclude in (0,1)
+		</cfif>
+	)
+							
 	order by
 	
 	<cfswitch expression="#arguments.feedBean.getSortBy()#">
