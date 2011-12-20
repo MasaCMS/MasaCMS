@@ -45,15 +45,15 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
-<cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,'user.sitemembersgroups')#</h2>
+<cfoutput><form novalidate="novalidate" action="index.cfm?fuseaction=cPublicUsers.search&siteid=#URLEncodedFormat(attributes.siteid)#" method="post" name="form1" id="siteSearch">
+	<!---<h3>#application.rbFactory.getKeyValue(session.rb,'user.searchformembers')#</h3>--->
+<input id="search" name="search" type="text" class="text"> 
+<input type="button" class="submit" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'user.search')#" />
+<input type="button" class="submit" onclick="window.location='index.cfm?fuseaction=cPublicUsers.advancedSearch&siteid=#URLEncodedFormat(attributes.siteid)#&newSearch=true'" value="#application.rbFactory.getKeyValue(session.rb,'user.advanced')#" /></form><h2>#application.rbFactory.getKeyValue(session.rb,'user.sitemembersgroups')#</h2>
 	<ul id="navTask"><li><a href="index.cfm?fuseaction=cPublicUsers.edituser&siteid=#URLEncodedFormat(attributes.siteid)#&userid=">#application.rbFactory.getKeyValue(session.rb,'user.addmember')#</a></li>
 <li><a href="index.cfm?fuseaction=cPublicUsers.editgroup&siteid=#URLEncodedFormat(attributes.siteid)#&userid=">#application.rbFactory.getKeyValue(session.rb,'user.addgroup')#</a></li>
 </ul>
-<form novalidate="novalidate" action="index.cfm?fuseaction=cPublicUsers.search&siteid=#URLEncodedFormat(attributes.siteid)#" method="post" name="form1" id="siteSearch">
-	<h3>#application.rbFactory.getKeyValue(session.rb,'user.searchformembers')#</h3>
-<input id="search" name="search" type="text" class="text"> 
-<input type="button" class="submit" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'user.search')#" />
-<input type="button" class="submit" onclick="window.location='index.cfm?fuseaction=cPublicUsers.advancedSearch&siteid=#URLEncodedFormat(attributes.siteid)#&newSearch=true'" value="#application.rbFactory.getKeyValue(session.rb,'user.advanced')#" /></form>
+
 
 <h3>#application.rbFactory.getKeyValue(session.rb,'user.usergroups')#</h3>
 
