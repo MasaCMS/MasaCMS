@@ -859,12 +859,12 @@ dd ul li ul {
 }*/
 
 
-dd ul.interestGroups li, dd ul.categories li, #emailGroupsLists dt {
+/*dd ul.interestGroups li, dd ul.categories li, #emailGroupsLists dt {
 	font-size: 15px;
 	color: #636261;
 	font-weight: normal;
 	width: 100%;
-}
+}*/
 
 dd ul.interestGroups li li, dd ul.categories li li, #emailGroupsLists dd ul li {
 	margin: 0 1% .5em 0;
@@ -1589,6 +1589,7 @@ h5 {
 	border-radius: 14px;
 	-webkit-border-radius: 14px;
 	-moz-border-radius: 14px;
+	*width: 515px;
 }
 
 .metadata li {
@@ -1984,8 +1985,8 @@ form.search {
 	padding: 0;
 	position: relative;
 	right: 0;
-	background: #f9f9f9;
-	padding: .75em .75em;
+	background: #f9f9f9 !important;
+	padding: .75em .75em !important;
 	border-radius: 5px;
 }
 
@@ -1994,12 +1995,17 @@ form.search {
 }
 
 #popUp #siteSearch {
-	margin-bottom: 1.5em;
+	margin-bottom: 1em;
+	float: left;
 }
 
 #siteSearch label {
 	display: block;
 	margin: 0 0 4px 0;
+}
+
+#popUp #siteSearch input.text {
+	
 }
 
 /* @end */
@@ -2809,7 +2815,7 @@ dt .add li.Page {
 }
 
 #mura-filter-category {
-	overflow-x: scroll;
+	overflow-x: auto;
 }
 
 #mura-filter-category ul {
@@ -4207,29 +4213,29 @@ a.expand span {
 	width: auto;
 }
 
-#cadvertising .categories {
+/*#cadvertising .categories {
 	overflow: hidden;
-}
+}*/
 
-#cadvertising .categories ul {
+/*#cadvertising .categories ul {
 	float: left;
 	clear: both !important;
 	width: 100%;
 	margin: .5em 0 0 0;
 	padding: 0;
-}
+}*/
 
-#cadvertising .categories li {
+/*#cadvertising .categories li {
 	font-style: italic;
 	margin-bottom: .5em;
-}
+}*/
 
-#cadvertising .categories li li {
+/*#cadvertising .categories li li {
 	width: 30%;
 	margin-right: 1%;
 	float: left;
 	font-style: normal;
-}
+}*/
 
 /* @end */
 
