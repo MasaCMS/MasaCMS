@@ -87,7 +87,8 @@
 	<cfparam name="arguments.rc.closeCompactDisplay" default=""/>
 	<cfparam name="arguments.rc.returnURL" default=""/>
 	<cfparam name="arguments.rc.locking" default="false"/>
-
+	<cfparam name="arguments.rc.mobileExclude" default="0"/>
+	
 	<cfif not isDefined("arguments.rc.topid")>
 		<cfparam name="session.topID" default="00000000000000000000000000000000001">
 		<cfset arguments.rc.topid=session.topID>
