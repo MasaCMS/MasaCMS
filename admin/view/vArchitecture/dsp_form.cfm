@@ -444,16 +444,15 @@ jQuery(document).ready(function(){
 			<cfif rsst.recordcount>
 					<cfset t=attributes.type/>
 					<cfsilent></cfsilent>
-					<ul class="metadata frontend">
-					<li><strong>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#:</strong>
+					<div class="selectContentType">
+					<strong>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#:</strong>
 					<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#request.contentBean.getcontentHistID()#',this.value,'#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
 					<option value="#t#^Default" <cfif attributes.type eq t and request.contentBean.getSubType() eq "Default">selected</cfif>>#t#</option>
 					<cfloop query="rsst">
 						<option value="#t#^#rsst.subtype#" <cfif attributes.type eq t and request.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#t#  / #rsst.subtype#</option>
 					</cfloop>
 					</select>	
-					</li>
-					</ul>								
+					</div>								
 			</cfif>
 		</cfif>
 			
