@@ -1,5 +1,6 @@
 /* @override 
-	http://localhost:8500/muracore/admin/css/admin.css */
+	http://localhost:8500/muracore/admin/css/admin.css
+	http://localhost:8500/muracore/admin/css/admin.css?coreversion=1 */
 
 
 
@@ -458,14 +459,14 @@ img#assocImage {
 	background: url(../images/rule_dotted_big.gif) repeat-x;
 }
 
-#actionButtons {
+#actionButtons.alt {
 	clear: both;
 	margin: 10px 0 0;
 	padding: 0 0 0 0;
 	background: none;
 }
 
-#actionButtons.alt {
+#actionButtons {
 	clear: both;
 	margin: 10px 0 0;
 	padding: 16px 0 0 0;
@@ -1603,7 +1604,7 @@ h5 {
 
 #contentSecondary dd input.text {
 	margin: 0 4px 3px 0;
-	width: 155px !important;
+	width: 140px !important;
 	display: inline;
 }
 
@@ -1745,6 +1746,7 @@ h5 {
 
 #cdashboard #advancedSearch dd {
 	padding-right: .5em;
+	padding-bottom: 0;
 }
 
 #cdashboard #advancedSearch dd input.calendar {
@@ -1869,11 +1871,14 @@ form#filterBounces * {
 
 a.addCriteria {
 	background: url(../images/icons/add_16x16.png) no-repeat center left;
-	height: 16px;
-	width: 16px;
-	padding-left: 16px;
-	line-height: 16px;
+	height: 16px !important;
+	/*width: 18px;*/
+	padding-left: 18px;/*
+	line-height: 18px !important;*/
 	color: #666;
+	display: inline-block;
+	zoom: 1; /* IE 7 Hack */
+	*display: inline;
 }
 
 a.removeCriteria {

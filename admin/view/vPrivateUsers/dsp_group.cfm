@@ -132,6 +132,7 @@ loadExtendedAttributes('#request.userbean.getUserID()#','1','#request.userbean.g
 </cfif>
 
 <cfif attributes.userid eq ''>
+<div id="actionButtons">
 <input type="button" class="submit" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'user.add')#" />
 <cfelse>
 <input type="button" class="submit" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.deletegroupconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'user.delete')#" />
@@ -139,7 +140,7 @@ loadExtendedAttributes('#request.userbean.getUserID()#','1','#request.userbean.g
 </cfif>
 <input type="hidden" name="action" value=""><input type="hidden" name="type" value="1"><input type="hidden" name="contact" value="0">
 <input type="hidden" name="isPublic" value="0">
-<input type="hidden" name="siteid" value="#HTMLEditFormat(attributes.siteid)#"></cfoutput></form>
+<input type="hidden" name="siteid" value="#HTMLEditFormat(attributes.siteid)#"></div></cfoutput></form>
 </cfdefaultcase>
 </cfswitch>
 
