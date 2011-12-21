@@ -140,6 +140,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfoutput>	
 </cfsavecontent></cfsilent>
 <!---<cfsavecontent variable="data.html">--->
+<cfset hasCustomImage=structKeyExists(getMetaData($.getBean('fileManager').getValue('imageProcessor')),'getCustomImage')>
 <cfoutput>
 <div id="main">
 <div class="navSort">
@@ -236,7 +237,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>	
 		</h3>
 		<cfif listFindNoCase("png,jpg,jpeg,gif",item.getFileExt())>
-		<div class="thumbnail"><a title="Edit" class="draftprompt" href="#editLink#"><img src="#item.getImageURL(height=80,width=80)#" /></a></div>
+		<div class="thumbnail"><a title="Edit" class="draftprompt" href="#editLink#"><cfif hasCustomImage><img src="#item.getImageURL(height=80,width=80)#" /><cfelse><img src="#item.getImageURL(size='small')#" /></cfif></a></div>
 		</cfif>
 			<cfif len(item.getLockID())>
 				<cfset lockedBy=$.getBean("user").loadBy(item.getLockID())>
