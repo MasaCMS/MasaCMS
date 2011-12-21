@@ -1546,6 +1546,7 @@ h5 {
 
 .selectContentType {
 	margin-bottom: 1em;
+	clear: both;
 }
 
 #csettings .metadata {

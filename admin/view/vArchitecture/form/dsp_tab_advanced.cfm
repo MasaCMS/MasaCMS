@@ -96,11 +96,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<dt><input name="searchExclude" id="searchExclude" type="CHECKBOX" value="1" <cfif request.contentBean.getSearchExclude() eq "">checked <cfelseif request.contentBean.getSearchExclude() eq 1>checked</cfif> class="checkbox"> <label for="searchExclude">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchexclude')#</label></dt>
 	<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude')#</dt>
 	<dd>
-		<select name="mobileExclude" id="mobileExclude">
+		<!---<select name="mobileExclude" id="mobileExclude">
 			<option value="0"<cfif request.contentBean.getMobileExclude() eq 0> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.always')#</option>
 			<option value="1"<cfif request.contentBean.getMobileExclude() eq 1> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.standard')#</option>
 			<option value="1"<cfif request.contentBean.getMobileExclude() eq 2> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.mobile')#</option>
-		</select>
+		</select>--->
+		
+		
+			<label><input type="radio" name="mobileExclude" value="0" checked<!---<cfif request.contentBean.getMobileExclude() eq 0> selected</cfif>--->>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.always')#</option></label>
+			<label><input type="radio" name="mobileExclude" value="2"<cfif request.contentBean.getMobileExclude() eq 2> checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.mobile')#</label>
+			<label><input type="radio" name="mobileExclude" value="1"<cfif request.contentBean.getMobileExclude() eq 1> checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.standard')#</label>
+		
 		<!---<input name="mobileExclude" id="mobileExclude" type="CHECKBOX" value="1" <cfif request.contentBean.getMobileExclude() eq "">checked <cfelseif request.contentBean.getMobileExclude() eq 1>checked</cfif> class="checkbox"> <label for="mobileExclude">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude')#</label>--->
 	</dd>
 	
