@@ -100,11 +100,10 @@ function goAndClose(userid)	{
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"></head>
 <body id="popUp"><cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,'user.selectuser')#</h2>
-<form novalidate="novalidate" name="form1" method="post" action="" id="siteSearch" onSubmit="return validate(this);"><label>#application.rbFactory.getKeyValue(session.rb,'user.lastnameorcompany')#</label>
+<form novalidate="novalidate" name="form1" method="post" action="" id="siteSearch" onSubmit="return validate(this);"><!---<label>#application.rbFactory.getKeyValue(session.rb,'user.lastnameorcompany')#</label>--->
 <input name="search" style="width: 208px;" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.lastnameorcompanyrequired')#"> <input type="button" class="submit" onClick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'user.search')#" /></form></cfoutput>
 <cfif rslist.recordcount>
-<div class="separate"></div>
-<table id="metadata"><cfoutput>
+<table class="mura-table-grid"><cfoutput>
 <tr><th>#application.rbFactory.getKeyValue(session.rb,'user.name')#</th>
 </tr></cfoutput>
   <cfoutput query="rslist"> 
@@ -115,12 +114,8 @@ function goAndClose(userid)	{
 </table>
 <cfelseif form.search neq ''>
 <div class="separate"></div>
-<table id="metadata"><cfoutput>
-<tr><th>#application.rbFactory.getKeyValue(session.rb,'user.name')#</th></tr>
-    <tr>
-        <td class="title"><em>#application.rbFactory.getKeyValue(session.rb,'user.nosearchresults')#.</em></td>
-    </tr></cfoutput>
-</table>
+<cfoutput>
+<div class="notice">#application.rbFactory.getKeyValue(session.rb,'user.nosearchresults')#.</div></cfoutput>
 </cfif>
 </body>
 </html>

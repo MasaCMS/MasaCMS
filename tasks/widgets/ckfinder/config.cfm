@@ -173,8 +173,8 @@ config.resourceType[3].maxSize = 0;
 config.resourceType[3].allowedExtensions = 'swf,flv';
 config.resourceType[3].deniedExtensions = '';
 
-if (isdefined("url.type") and currentUser.getS2()){
-	if(application.configBean.getValue('fmShowApplicationRoot') neq 0){
+if (isdefined("url.type")){
+	if(currentUser.getS2() and application.configBean.getValue('fmShowApplicationRoot') neq 0){
 	  config.resourceType[4] = structNew();
 	  config.resourceType[4].name = 'Application_Root';
 	  config.resourceType[4].url =  application.configBean.getContext();

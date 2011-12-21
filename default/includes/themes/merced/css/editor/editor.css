@@ -44,9 +44,9 @@
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
-@import url(../../../../css/reset.css);
-@import url(../../../../css/mura.css);
-@import url(typography.css);
+@import url(../../../../../css/reset.css);
+@import url(../../../../../css/mura.css);
+@import url(../core/typography.css);
 
 body {
 	padding: 20px;

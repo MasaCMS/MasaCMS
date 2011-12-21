@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
   <h2>#application.rbFactory.getKeyValue(session.rb,'email.createeditemail')#</h2>
   <cfif attributes.emailid neq "">
-    <ul class="overview">
+    <ul class="metadata">
       <li><strong>#application.rbFactory.getKeyValue(session.rb,'email.datecreated')#:</strong> #LSDateFormat(request.emailBean.getCreatedDate(),session.dateKeyFormat)#</li>
       <li><strong>#application.rbFactory.getKeyValue(session.rb,'email.createdby')#:</strong> #request.emailBean.getlastupdateby()#</li>
       <li><strong>#application.rbFactory.getKeyValue(session.rb,'email.status')#:</strong>

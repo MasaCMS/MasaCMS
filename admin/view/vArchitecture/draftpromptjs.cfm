@@ -8,6 +8,11 @@ function initDraftPrompt(){
 	jQuery('a.draftprompt').click(function(e){
 		e.preventDefault(); // stop the link's normal clicking behavior
 		var node = jQuery(this).parents("li:first");
+		
+		if(!node.attr('data-contentid')){
+			node = jQuery(this).parents("tr:first");
+		}
+		
 		var a = jQuery(this);
 		
 		jQuery.ajax({
@@ -22,7 +27,7 @@ function initDraftPrompt(){
 						width:"400px",
 						buttons: {
 							"#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.cancel'))#":function(){
-								$(this).dialog('close');
+								jQuery(this).dialog('close');
 							},
 							"#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.latest'))#": function(){
 								var href = a.attr('href').replace(node.attr('data-contenthistid'),resp.historyid);

@@ -61,10 +61,44 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="attributes.sortBy" default="#request.rstop.sortBy#" />
 <cfparam name="attributes.sortDirection" default="#request.rstop.sortDirection#" />
 <cfparam name="attributes.sorted" default="false" />
+<cfparam name="attributes.lockid" default="" />
+<cfparam name="attributes.assignments" default="false" />
+<cfparam name="attributes.categoryid" default="" />
+<cfparam name="attributes.tag" default="" />
+<cfparam name="attributes.type" default="" />
+<cfparam name="attributes.page" default="1" />
+<cfparam name="attributes.subtype" default="" />
 <cfparam name="session.copyContentID" default="">
 <cfparam name="session.copySiteID" default="">
 <cfparam name="session.copyAll" default="false">
 
+<cfparam name="session.flatViewArgs" default="#structNew()#">
+<cfparam name="session.flatViewArgs.#session.siteID#" default="#structNew()#">
+<cfparam name="session.flatViewArgs" default="#structNew()#">
+<cfparam name="session.flatViewArgs.#session.siteID#.moduleid" default="#attributes.moduleid#" />
+<cfparam name="session.flatViewArgs.#session.siteID#.sortBy" default="lastupdate" />
+<cfparam name="session.flatViewArgs.#session.siteID#.sortDirection" default="desc" />
+<cfparam name="session.flatViewArgs.#session.siteID#.lockid" default="#attributes.lockid#" />
+<cfparam name="session.flatViewArgs.#session.siteID#.assignments" default="#attributes.assignments#" />
+<cfparam name="session.flatViewArgs.#session.siteID#.categoryid" default="#attributes.categoryid#" />
+<cfparam name="session.flatViewArgs.#session.siteID#.tag" default="#attributes.tag#" />
+<cfparam name="session.flatViewArgs.#session.siteID#.page" default="#attributes.page#" />
+<cfparam name="session.flatViewArgs.#session.siteID#.type" default="" />
+<cfparam name="session.flatViewArgs.#session.siteID#.subtype" default="#attributes.subtype#" />
+<cfparam name="session.flatViewArgs.#session.siteID#.report" default="" />
+<cfparam name="session.flatViewArgs.#session.siteID#.keywords" default="" />
+<cfparam name="session.flatViewArgs.#session.siteID#.tab" default="0" />
+<cfif not isdefined("url.activeTab")>
+	<cfset attributes.activeTab=session.flatViewArgs[session.siteID].tab/>
+</cfif>
+<cfif isdefined("url.keywords")>
+	<cfif session.flatViewArgs[session.siteID].keywords neq url.keywords>
+		<cfset session.flatViewArgs[session.siteID].page=1>
+	</cfif>
+	<cfset session.flatViewArgs[session.siteID].keywords=url.keywords/>
+	<cfset session.flatViewArgs[session.siteID].report=""/>
+	<cfset session.keywords=url.keywords/>
+</cfif>
 <cfhtmlhead text='<script src="#application.configBean.getContext()#/admin/js/jquery/jquery-pulse.js?coreversion=#application.coreversion#" type="text/javascript"></script>'>
 
 <cfif isdefined('attributes.orderperm') and (attributes.orderperm eq 'editor' or (attributes.orderperm eq 'author' and application.configBean.getSortPermission() eq "author"))>
@@ -127,21 +161,78 @@ copyAll = 'false';
  
 <h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sitemanager")#</h2>
 <form novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
-    <h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.contentsearch")#</h3>
+    <!---<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.contentsearch")#</h3>--->
     <input name="keywords" value="#HTMLEditFormat(session.keywords)#" type="text" class="text" align="absmiddle" />
     <input type="button" class="submit" onclick="submitForm(document.forms.siteSearch);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.search")#" />
-    <input type="hidden" name="fuseaction" value="cArch.search">
+    <input type="hidden" name="fuseaction" value="cArch.list">
+	<input type="hidden" name="activetab" value="1">
     <input type="hidden" name="siteid" value="#HTMLEditFormat(attributes.siteid)#">
     <input type="hidden" name="moduleid" value="#attributes.moduleid#">
 </form>
 
-<div id="gridContainer"><img class="loadProgress" src="images/progress_bar.gif"></div>
-<script type="text/javascript">
-	jQuery(document).ready(
-	function(){
-	loadSiteManager('#JSStringFormat(attributes.siteID)#','#JSStringFormat(attributes.topid)#','#JSStringFormat(attributes.moduleid)#','#JSStringFormat(attributes.sortby)#','#JSStringFormat(attributes.sortdirection)#','#JSStringFormat(attributes.ptype)#','#JSStringFormat(attributes.startrow)#');
-	});
-</script>
 
+<!---<img class="loadProgress tabPreloader" src="images/progress_bar.gif">--->
+
+<div id="viewTabs" class="tabs initActiveTab" style="display:none">
+		<ul>
+			<li><a href="##tabArchitectual" onclick="return false;"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.architectural")#</span></a></li>
+			<li><a href="##tabFlat" onclick="return false;"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.flat")#</span></a></li>
+		</ul>
+		<div id="tabArchitectual">
+		<div id="gridContainer"><img class="loadProgress" src="images/progress_bar.gif"></div>
+		</div>
+		
+		<div id="tabFlat">
+			<img class="loadProgress" src="images/progress_bar.gif">
+		</div>
+		
+</div>
+<script type="text/javascript">
+var archViewLoaded=false;
+var flatViewLoaded=false;
+
+function initFlatViewArgs(){
+	return {siteid:'#JSStringFormat(session.siteID)#', 
+			moduleid:'#JSStringFormat(session.flatViewArgs[session.siteid].moduleid)#', 
+			sortby:'#JSStringFormat(session.flatViewArgs[session.siteid].sortby)#', 
+			sortdirection:'#JSStringFormat(session.flatViewArgs[session.siteid].sortdirection)#', 
+			page:'#JSStringFormat(session.flatViewArgs[session.siteid].page)#',	
+			tag:'#JSStringFormat(session.flatViewArgs[session.siteid].tag)#',
+			categoryid:'#JSStringFormat(session.flatViewArgs[session.siteid].categoryid)#',
+			lockid:'#JSStringFormat(session.flatViewArgs[session.siteid].lockid)#',
+			type:'#JSStringFormat(session.flatViewArgs[session.siteid].type)#',
+			subType:'#JSStringFormat(session.flatViewArgs[session.siteid].subtype)#',
+			report:'#JSStringFormat(session.flatViewArgs[session.siteid].report)#',
+			keywords:'#JSStringFormat(session.flatViewArgs[session.siteid].keywords)#'
+			};
+}
+
+var flatViewArgs=initFlatViewArgs();
+
+function initSiteManagerTabContent(index){
+	
+	jQuery.get("./index.cfm","fuseaction=carch.siteManagerTab&tab=" + index);
+	
+	switch(index){
+		case 0:
+		if (!archViewLoaded) {
+			loadSiteManager('#JSStringFormat(attributes.siteID)#', '#JSStringFormat(attributes.topid)#', '#JSStringFormat(attributes.moduleid)#', '#JSStringFormat(attributes.sortby)#', '#JSStringFormat(attributes.sortdirection)#', '#JSStringFormat(attributes.ptype)#', '#JSStringFormat(attributes.startrow)#');
+			archViewLoaded = true;
+		}
+		break;
+		case 1:
+		if (!flatViewLoaded) {
+			loadSiteFlat(flatViewArgs);
+			flatViewLoaded = true;
+		}
+	}
+}
+
+jQuery("##viewTabs").bind( "tabsselect", function(event,ui){
+	initSiteManagerTabContent(ui.index)
+});	
+
+initSiteManagerTabContent(#attributes.activeTab#);			
+</script>
 </cfoutput>
 <cfinclude template="draftpromptjs.cfm">

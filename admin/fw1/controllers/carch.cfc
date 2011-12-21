@@ -87,7 +87,8 @@
 	<cfparam name="arguments.rc.closeCompactDisplay" default=""/>
 	<cfparam name="arguments.rc.returnURL" default=""/>
 	<cfparam name="arguments.rc.locking" default="false"/>
-
+	<cfparam name="arguments.rc.mobileExclude" default="0"/>
+	
 	<cfif not isDefined("arguments.rc.topid")>
 		<cfparam name="session.topID" default="00000000000000000000000000000000001">
 		<cfset arguments.rc.topid=session.topID>
@@ -326,6 +327,14 @@
 	<cfabort>
 </cffunction>
 
+<cffunction name="siteManagerTab" ouput="false">
+	<cfargument name="rc">
+	<cfparam name="session.flatViewArgs" default="#structNew()#">
+	<cfparam name="session.flatViewArgs.#session.siteID#" default="#structNew()#">
+	<cfset session.flatViewArgs[session.siteID].tab=rc.tab  />
+	<cfabort>
+</cffunction>
+
 <cffunction name="saveCopyInfo" ouput="false">
 	<cfargument name="rc">
 	<cfset variables.contentManager.saveCopyInfo(arguments.rc.siteid,arguments.rc.contentID,arguments.rc.copyAll)  />
@@ -379,6 +388,39 @@
 	
 	<cfset rc.versionBean=versionBean>
 	
+</cffunction>
+
+<cffunction name="lockFile" ouput="false">
+	<cfargument name="rc">
+	
+	<cfset local.contentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)> 
+	<cfset local.crumbdata=variables.contentManager.getCrumbList(arguments.rc.contentID,arguments.rc.siteid)/>
+	<cfset local.perm=variables.permUtility.getNodePerm(local.crumbData) />
+	
+	<cfif listFindNoCase("author,editor",local.perm)
+		or listFindNoCase(session.mura.memberships,"s2")>
+			<cfset local.contentBean.getStats().setLockID(session.mura.userID).save()>
+			<cflocation url="#variables.configBean.getContext()#/tasks/render/file/index.cfm?fileid=#local.contentBean.getFileID()#&method=attachment">
+	</cfif>
+	<cfabort>
+</cffunction>
+
+<cffunction name="unlockFile" ouput="false">
+	<cfargument name="rc">
+	
+	<cfset local.contentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)>
+	<cfset local.stats=local.contentBean.getStats()> 
+
+	<cfif len(local.stats.getLockID())
+		and (
+			local.stats.getLockID() eq session.mura.userID
+			or
+			listFindNoCase(session.mura.memberships,"s2")
+			)>
+		<cfset local.stats.setLockID("").save()>
+	
+	</cfif>
+	<cfabort>
 </cffunction>
 
 </cfcomponent>

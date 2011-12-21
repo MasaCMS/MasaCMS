@@ -87,6 +87,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="imageHeight" type="string" default="AUTO" required="true" />
 <cfproperty name="imageWidth" type="string" default="AUTO" required="true" />
 <cfproperty name="displayList" type="string" default="Title,Date,Image,Summary,Tags,Credits" required="true" />
+<cfproperty name="liveOnly" type="numeric" default="1" required="true" />
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfset super.init(argumentCollection=arguments)>
@@ -134,7 +135,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.imageHeight="AUTO" />
 	<cfset variables.instance.imageWidth="AUTO" />
 	<cfset variables.instance.displayList="Date,Title,Image,Summary,Credits,Tags" />
-		
+	<cfset variables.instance.liveOnly=1 />
+	
 	<cfreturn this />
 </cffunction>
 

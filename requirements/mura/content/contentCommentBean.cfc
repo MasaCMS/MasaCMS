@@ -60,6 +60,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="userID" type="string" default="" required="true" />
 <cfproperty name="path" type="string" default="" required="true" />
 <cfproperty name="kids" type="string" default="" required="true" />
+<cfproperty name="remoteID" type="string" default="" required="true" />
+<cfproperty name="isNew" type="numeric" default="1" required="true" />
 
 <cfset variables.contentRenderer=application.contentRenderer/>
 
@@ -82,6 +84,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.userID=""/>
 	<cfset variables.instance.path=""/>
 	<cfset variables.instance.kids=0/>
+	<cfset variables.instance.remoteID=""/>
+	<cfset variables.instance.isNew=1/>
 
 	<cfreturn this />
 </cffunction>
@@ -162,17 +166,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="load" access="public" output="false">
-	<cfset var rs=getQuery()>
+	<cfargument name="commentID">
+	<cfargument name="remoteID">
+	<cfset loadBy(argumentCollection=arguments)>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="loadBy" access="public" output="false">
+	<cfargument name="commentID">
+	<cfargument name="remoteID">
+	<cfset var rs=getQuery(argumentCollection=arguments)>
 	<cfif rs.recordcount>
+		<cfset variables.instance.isNew=0/>
 		<cfset set(rs) />
 	</cfif>
 	<cfreturn this>
 </cffunction>
 
 <cffunction name="getQuery"  access="public" output="false" returntype="query">
+	<cfargument name="commentID">
+	<cfargument name="remoteID">	
 	<cfset var rs=""/>
+	
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-	select c.contentid,c.commentid,c.parentid,c.name,c.email,c.url,c.comments,c.entered,c.siteid,c.isApproved,c.subscribe, c.userID, c.path, k.kids, f.fileid, f.fileExt 
+	select c.contentid,c.commentid,c.parentid,c.name,c.email,c.url,c.comments,c.entered,c.siteid,c.isApproved,c.subscribe, c.userID, c.path, c.remoteID, k.kids, f.fileid, f.fileExt 
 	from tcontentcomments c left join (select count(*) kids, parentID 
 										from tcontentcomments where commentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#"> 
 										group by parentID
@@ -180,7 +197,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 										on c.commentID = k.parentID
 	left join tusers u on c.userid=u.userid
 	left join tfiles f on u.photofileid=f.fileid 
-	where c.commentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
+	where 
+	<cfif isdefined("arguments.commentID")>
+		c.commentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.commentID#">
+	<cfelseif isdefined("arguments.remoteID")>
+		c.remoteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.remoteID#">
+	<cfelse>
+		c.commentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
+	</cfif>
 	</cfquery>
 	
 	<cfreturn rs/>
@@ -252,7 +276,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			subscribe=<cfqueryparam cfsqltype="cf_sql_numeric" value="#variables.instance.subscribe#">,
 			userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.useriD#"/>,
 			parentID=<cfif len(variables.instance.parentID)><cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.parentID#"/><cfelse>null</cfif>,
-			path=<cfqueryparam cfsqltype="cf_sql_varchar" value="#path#"/>
+			path=<cfqueryparam cfsqltype="cf_sql_varchar" value="#path#"/>,
+			remoteID=<cfif len(variables.instance.remoteID)><cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.remoteID#"/><cfelse>null</cfif>
 		where commentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
 		</cfquery>
 		
@@ -262,7 +287,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset pluginManager.announceEvent("onBeforeCommentCreate",pluginEvent)>
 		
 		<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rslist">
-			insert into tcontentcomments (contentid,commentid,parentid,name,email,url,comments,entered,siteid,isApproved,subscribe,userID,path, ip)
+			insert into tcontentcomments (contentid,commentid,parentid,name,email,url,comments,entered,siteid,isApproved,subscribe,userID,path, ip, remoteID)
 			values (
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#"/>,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#"/>,
@@ -277,9 +302,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfqueryparam cfsqltype="cf_sql_numeric" value="#variables.instance.subscribe#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.userID#"/>,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#path#"/>,
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#request.remoteAddr#"/>
+			<cfif isdefined("request.remoteAddr")><cfqueryparam cfsqltype="cf_sql_varchar" value="#request.remoteAddr#"/><cfelse><cfqueryparam cfsqltype="cf_sql_varchar" value="#CGI.REMOTE_ADDR#"/></cfif>,
+			<cfif len(variables.instance.remoteID)><cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.remoteID#"/><cfelse>null</cfif>
 			)
 			</cfquery>
+		
+		<cfset variables.instance.isNew=0/>
 			
 		<cfset pluginManager.announceEvent("onAfterCommentCreate",pluginEvent)>
 		<cfset getBean('trashManager').takeOut(this)>
@@ -517,13 +545,6 @@ To Unsubscribe Click Here:
 	<cfset var it=getBean("contentCommentIterator").init()>
 	<cfset it.setQuery(rs)>
 	<cfreturn it>
-</cffunction>
-
-<cffunction name="loadBy" returnType="any" output="false" access="public">
-	<cfargument name="commentID">
-	<cfset set(arguments)>
-	<cfset load()>
-	<cfreturn this>
 </cffunction>
 
 <cffunction name="hasParent" output="false">

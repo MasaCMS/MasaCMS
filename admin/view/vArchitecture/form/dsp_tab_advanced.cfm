@@ -94,7 +94,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</dd>
 	<dt><input name="forceSSL" id="forceSSL" type="CHECKBOX" value="1" <cfif request.contentBean.getForceSSL() eq "">checked <cfelseif request.contentBean.getForceSSL() eq 1>checked</cfif> class="checkbox"> <label for="forceSSL"><a href="##" class="tooltip">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessltext'),application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#attributes.type#'))#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.makePageSecure")#</span></a></label></dt>
 	<dt><input name="searchExclude" id="searchExclude" type="CHECKBOX" value="1" <cfif request.contentBean.getSearchExclude() eq "">checked <cfelseif request.contentBean.getSearchExclude() eq 1>checked</cfif> class="checkbox"> <label for="searchExclude">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchexclude')#</label></dt>
-	<dt><input name="mobileExclude" id="mobileExclude" type="CHECKBOX" value="1" <cfif request.contentBean.getMobileExclude() eq "">checked <cfelseif request.contentBean.getMobileExclude() eq 1>checked</cfif> class="checkbox"> <label for="mobileExclude">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude')#</label></dt>
+	<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude')#</dt>
+	<dd>
+		<!---<select name="mobileExclude" id="mobileExclude">
+			<option value="0"<cfif request.contentBean.getMobileExclude() eq 0> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.always')#</option>
+			<option value="1"<cfif request.contentBean.getMobileExclude() eq 1> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.standard')#</option>
+			<option value="1"<cfif request.contentBean.getMobileExclude() eq 2> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.mobile')#</option>
+		</select>--->
+		
+		
+			<label><input type="radio" name="mobileExclude" value="0" checked<!---<cfif request.contentBean.getMobileExclude() eq 0> selected</cfif>--->>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.always')#</option></label>
+			<label><input type="radio" name="mobileExclude" value="2"<cfif request.contentBean.getMobileExclude() eq 2> checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.mobile')#</label>
+			<label><input type="radio" name="mobileExclude" value="1"<cfif request.contentBean.getMobileExclude() eq 1> checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.standard')#</label>
+		
+		<!---<input name="mobileExclude" id="mobileExclude" type="CHECKBOX" value="1" <cfif request.contentBean.getMobileExclude() eq "">checked <cfelseif request.contentBean.getMobileExclude() eq 1>checked</cfif> class="checkbox"> <label for="mobileExclude">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude')#</label>--->
+	</dd>
 	
 	<cfif application.settingsManager.getSite(attributes.siteid).getextranet()>
 		<dt><input name="restricted" id="Restricted" type="CHECKBOX" value="1"  onclick="javascript: this.checked?toggleDisplay2('rg',true):toggleDisplay2('rg',false);" <cfif request.contentBean.getrestricted() eq 1>checked </cfif> class="checkbox">
@@ -157,61 +171,61 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif attributes.type eq 'Portal' or attributes.type eq 'Calendar' or attributes.type eq 'Gallery'>
 	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</dt>
-	<dd><select name="imageSize" class="dropdown" onchange="if(this.value=='custom'){jQuery('##CustomImageOptions').fadeIn('fast')}else{jQuery('##CustomImageOptions').hide();jQuery('##CustomImageOptions').find(':input').val('AUTO');}">
-		<cfloop list="Small,Medium,Large,Custom" index="i">
-		<option value="#lcase(i)#"<cfif i eq request.contentBean.getImageSize()> selected</cfif>>#I#</option>
-		</cfloop>
-	</select>
+	<dd>
+		<select name="imageSize" class="dropdown" onchange="if(this.value=='custom'){jQuery('##CustomImageOptions').fadeIn('fast')}else{jQuery('##CustomImageOptions').hide();jQuery('##CustomImageOptions').find(':input').val('AUTO');}">
+			<cfloop list="Small,Medium,Large,Custom" index="i">
+			<option value="#lcase(i)#"<cfif i eq request.contentBean.getImageSize()> selected</cfif>>#I#</option>
+			</cfloop>
+		</select>
 	</dd>
 	<dd id="CustomImageOptions"<cfif request.contentBean.getImageSize() neq "custom"> style="display:none"</cfif>>
-	<dl>
-	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</dt>
-	<dd><input name="imageWidth" class="text" value="#request.contentBean.getImageWidth()#" /></dd>
-	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</dt>
-	<dd><input name="imageHeight" class="text" value="#request.contentBean.getImageHeight()#" /></dd>
-	</dl>
-</dd>
-
-<dt id="availableFields"><span>Available Fields</span> <span>Selected Fields</span></dt>
-<dd>
-	<div class="sortableFields">
-	<p class="dragMsg"><span class="dragFrom">Drag Fields from Here&hellip;</span><span>&hellip;and Drop Them Here.</span></p>
-	
-		<cfset displayList=request.contentBean.getDisplayList()>
-		<cfset availableList=request.contentBean.getAvailableDisplayList()>
-		<cfif attributes.type eq "Gallery">
-			<cfset finder=listFindNoCase(availableList,"Image")>
-			<cfif finder>
-				<cfset availableList=listDeleteAt(availableList,finder)>
-			</cfif>
-		</cfif>			
-		<ul id="contentAvailableListSort" class="contentDisplayListSortOptions">
-			<cfloop list="#availableList#" index="i">
-				<li class="ui-state-default">#i#</li>
-			</cfloop>
-		</ul>
-					
-		<ul id="contentDisplayListSort" class="contentDisplayListSortOptions">
-			<cfloop list="#displayList#" index="i">
-				<li class="ui-state-highlight">#i#</li>
-			</cfloop>
-		</ul>
-					
-		<input type="hidden" id="contentDisplayList" value="#displayList#" name="displayList"/>
+		<dl>
+			<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</dt>
+			<dd><input name="imageWidth" class="text" value="#request.contentBean.getImageWidth()#" /></dd>
+			<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</dt>
+			<dd><input name="imageHeight" class="text" value="#request.contentBean.getImageHeight()#" /></dd>
+		</dl>
+	</dd>	
+	<dt id="availableFields"><span>Available Fields</span> <span>Selected Fields</span></dt>
+	<dd>
+		<div class="sortableFields">
+		<p class="dragMsg"><span class="dragFrom">Drag Fields from Here&hellip;</span><span>&hellip;and Drop Them Here.</span></p>
 		
-		<script>
-			//Removed from jQuery(document).ready() because it would not fire in ie7 frontend editing.
-			setContentDisplayListSort();
-		</script>
-	</div>	
-</dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.recordsperpage')#</dt>
-<dd><select name="nextN" class="dropdown">
-	<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="r">
-		<option value="#r#" <cfif r eq request.contentBean.getNextN()>selected</cfif>>#r#</option>
-	</cfloop>
-	</select>
-</dd>
+			<cfset displayList=request.contentBean.getDisplayList()>
+			<cfset availableList=request.contentBean.getAvailableDisplayList()>
+			<cfif attributes.type eq "Gallery">
+				<cfset finder=listFindNoCase(availableList,"Image")>
+				<cfif finder>
+					<cfset availableList=listDeleteAt(availableList,finder)>
+				</cfif>
+			</cfif>			
+			<ul id="contentAvailableListSort" class="contentDisplayListSortOptions">
+				<cfloop list="#availableList#" index="i">
+					<li class="ui-state-default">#i#</li>
+				</cfloop>
+			</ul>
+						
+			<ul id="contentDisplayListSort" class="contentDisplayListSortOptions">
+				<cfloop list="#displayList#" index="i">
+					<li class="ui-state-highlight">#i#</li>
+				</cfloop>
+			</ul>
+						
+			<input type="hidden" id="contentDisplayList" value="#displayList#" name="displayList"/>
+			
+			<script>
+				//Removed from jQuery(document).ready() because it would not fire in ie7 frontend editing.
+				setContentDisplayListSort();
+			</script>
+		</div>	
+	</dd>
+	<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.recordsperpage')#</dt>
+	<dd><select name="nextN" class="dropdown">
+		<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="r">
+			<option value="#r#" <cfif r eq request.contentBean.getNextN()>selected</cfif>>#r#</option>
+		</cfloop>
+		</select>
+	</dd>
 </cfif>
 
 <cfif (attributes.type neq 'Component' and attributes.type neq 'Form') and request.contentBean.getcontentID() neq '00000000000000000000000000000000001'>

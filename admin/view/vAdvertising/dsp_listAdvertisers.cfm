@@ -45,14 +45,16 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<h2>#application.rbFactory.getKeyValue(session.rb,'advertising.viewadvertisers')#</h2>
-
-<h3 class="alt">#application.rbFactory.getKeyValue(session.rb,'advertising.advertisersearch')#</h3><form novalidate="novalidate" id="siteSearch" name="siteSearch" method="get"><input name="keywords" value="#HTMLEditFormat(attributes.keywords)#" type="text" class="text" maxlength="50" />  
+<form novalidate="novalidate" id="siteSearch" name="siteSearch" method="get"><input name="keywords" value="#HTMLEditFormat(attributes.keywords)#" type="text" class="text" maxlength="50" />  
 	
 <input type="button" class="submit" onclick="submitForm(document.forms.siteSearch);" value="#application.rbFactory.getKeyValue(session.rb,'advertising.search')#" />
 	<input type="hidden" name="fuseaction" value="cAdvertising.listAdvertisers">
 	<input type="hidden" name="siteid" value="#HTMLEditFormat(attributes.siteid)#">
 </form>
+<h2>#application.rbFactory.getKeyValue(session.rb,'advertising.viewadvertisers')#</h2>
+
+<!---<h3 class="alt">#application.rbFactory.getKeyValue(session.rb,'advertising.advertisersearch')#</h3>--->
+
 <!--- 
 <ul id="navTask">
 <li><a href="index.cfm?fuseaction=cPublicUsers.editUser&userid=&siteid=#URLEncodedFormat(attributes.siteid)#&groupid=#application.advertiserManager.getGroupID(attributes.siteid)#&routeid=adManager">Add Advertiser</li>

@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rslist=application.categoryManager.getCategories(attributes.siteID,attributes.ParentID,"") />
 </cfsilent>
 <cfif rslist.recordcount>
-<ul>
+<ul class="categories<cfif not attributes.nestLevel> checkboxTree</cfif>">
 <cfoutput query="rslist">
 <li>
 <cfif rslist.isOpen eq 1><input type="checkbox" name="categoryID" class="checkbox" <cfif listfind(request.placementBean.getCategoryID(),rslist.categoryID) or listfind(attributes.categoryID,rslist.CategoryID)>checked</cfif> value="#rslist.categoryID#" <cfif not application.permUtility.getCategoryPerm(rslist.restrictGroups,attributes.siteid)>disabled</cfif> > </cfif>#rslist.name#

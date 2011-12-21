@@ -46,12 +46,107 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.basic"))/>
 <cfset tabList=listAppend(tabList,"tabBasic")>
+<cfset started=false>
 <cfoutput>
 <div id="tabBasic">
 <dl class="oneColumn">
+		<!---<cfif attributes.compactDisplay neq "true">
+			<div class="selectContentType">
+			<cfif listFindNoCase(pageLevelList,attributes.type)>
+				<cfset started=true>
+				<dt class="first">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#<!---</dt>
+				<dd>--->
+				<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#request.contentBean.getcontentHistID()#',this.value,'#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
+				<cfloop list="#baseTypeList#" index="t">
+				<cfsilent><cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery></cfsilent>
+				<option value="#t#^Default" <cfif attributes.type eq t and request.contentBean.getSubType() eq "Default">selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#</option>
+				<cfif rsst.recordcount>
+					<cfloop query="rsst">
+						<option value="#t#^#rsst.subtype#" <cfif attributes.type eq t and request.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#  / #rsst.subtype#</option>
+					</cfloop>
+				</cfif>
+				</cfloop>
+				</select>
+				</dt>
+			<cfelseif attributes.type eq 'File'>
+				<cfset t="File"/>
+				<cfsilent><cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery></cfsilent>
+				<cfif rsst.recordcount>
+				<cfset started=true>
+				<dt class="first">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#<!---</dt>
+				</dd>--->
+				<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#request.contentBean.getcontentHistID()#',this.value,'#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
+				<option value="#t#^Default" <cfif attributes.type eq t and request.contentBean.getSubType() eq "Default">selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#t#")#</option>
+				<cfif rsst.recordcount>
+					<cfloop query="rsst">
+						<option value="#t#^#rsst.subtype#" <cfif attributes.type eq t and request.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")# / #rsst.subtype#</option>
+					</cfloop>
+				</cfif>
+				</select>
+				</dt>
+				</cfif>
+			<cfelseif attributes.type eq 'Link'>	
+				<cfset t="Link"/>
+				<cfsilent><cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery></cfsilent>
+				<cfif rsst.recordcount>
+				<cfset started=true>
+				<dt class="first">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#<!---</dt>
+				<dd>--->
+				<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#request.contentBean.getcontentHistID()#',this.value,'#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
+				<option value="#t#^Default" <cfif attributes.type eq t and request.contentBean.getSubType() eq "Default">selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#</option>
+				<cfif rsst.recordcount>
+					<cfloop query="rsst">
+						<cfif rsst.subtype neq 'Default'><option value="#t#^#rsst.subtype#" <cfif attributes.type eq t and request.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#  / #rsst.subtype#</option></cfif>
+					</cfloop>
+				</cfif>
+				</select>
+				</dt>
+				</cfif>
+			<cfelseif attributes.type eq 'Component'>	
+				<cfset t="Component"/>
+				<cfsilent><cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery></cfsilent>
+				<cfif rsst.recordcount>
+				<cfset started=true>
+				<dt class="first">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#<!---</dt>
+				<dd>--->
+				<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#request.contentBean.getcontentHistID()#',this.value,'#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
+				<option value="#t#^Default" <cfif attributes.type eq t and request.contentBean.getSubType() eq "Default">selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#</option>
+				<cfif rsst.recordcount>
+					<cfloop query="rsst">
+						<cfif rsst.subtype neq 'Default'><option value="#t#^#rsst.subtype#" <cfif attributes.type eq t and request.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#  / #rsst.subtype#</option></cfif>
+					</cfloop>
+				</cfif>
+				</select>
+				</dt>
+				</cfif>
+			</cfif>
+		</div>
+	</cfif>--->
+	
+	<!---<cfif attributes.compactDisplay eq "true">
+		<cfif not listFindNoCase("Component,Form", attributes.type)>
+			<cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#attributes.type#"> and subtype not in ('Default','default')</cfquery>
+			<cfif rsst.recordcount>
+					<cfset t=attributes.type/>
+					<cfsilent></cfsilent>
+					<cfset started=true>
+					<dt class="first">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#</dt>
+					<dd>
+					<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#request.contentBean.getcontentHistID()#',this.value,'#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
+					<option value="#t#^Default" <cfif attributes.type eq t and request.contentBean.getSubType() eq "Default">selected</cfif>>#t#</option>
+					<cfloop query="rsst">
+						<option value="#t#^#rsst.subtype#" <cfif attributes.type eq t and request.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#t#  / #rsst.subtype#</option>
+					</cfloop>
+					</select>	
+					</dd>								
+			</cfif>
+		</cfif>
+			
+		<input type="hidden" name="closeCompactDisplay" value="true" />
+	</cfif>--->
 <cfswitch expression="#attributes.type#">
 	<cfcase value="Page,Portal,Calendar,Gallery,File,Link">
-		<dt class="first"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.title")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.pageTitle")#</span></a></dt>
+		<dt<cfif not started> class="first"</cfif>><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.title")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.pageTitle")#</span></a></dt>
 		<dd><input type="text" id="title" name="title" value="#HTMLEditFormat(request.contentBean.gettitle())#"  maxlength="255" class="textLong" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#" <cfif not request.contentBean.getIsNew() and not listFind("File,Link",attributes.type)>onkeypress="openDisplay('editSEOTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');"</cfif>></dd>
 		
 		<dt><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.menutitle")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.navigationTitle")#</span></a></dt>
@@ -72,7 +167,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfcase>
 	<cfdefaultcase>
 		<input type="hidden" id="menuTitle" name="menuTitle" value="">
-		<dt class="first">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#</dt>
+		<dt<cfif not started> class="first"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#</dt>
 		<dd><input type="text" id="title" name="title" value="#HTMLEditFormat(request.contentBean.getTitle())#"  maxlength="255" class="textLong" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#"></dd>
 	</cfdefaultcase>
 </cfswitch>
@@ -247,7 +342,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</dd>
 </cfif>
-
+<cfif listFind("Page,Portal,Calendar,Gallery,Link,File,Link",attributes.type)>
+<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expires')#</dt>
+<dd class="clearfix"><div id="expires-date-selector">
+	<input type="text" name="expires" value="#LSDateFormat(request.contentBean.getExpires(),session.dateKeyFormat)#" class="textAlt datepicker">
+	<select name="expireshour" class="dropdown"><cfloop from="1" to="12" index="h"><option value="#h#" <cfif not LSisDate(request.contentBean.getExpires())  and h eq 12 or (LSisDate(request.contentBean.getExpires()) and (hour(request.contentBean.getExpires()) eq h or (hour(request.contentBean.getExpires()) - 12) eq h or hour(request.contentBean.getExpires()) eq 0 and h eq 12))>selected</cfif>>#h#</option></cfloop></select>
+	<select name="expiresMinute" class="dropdown"><cfloop from="0" to="59" index="m"><option value="#m#" <cfif LSisDate(request.contentBean.getExpires()) and minute(request.contentBean.getExpires()) eq m>selected</cfif>>#iif(len(m) eq 1,de('0#m#'),de('#m#'))#</option></cfloop></select>
+	<select name="expiresDayPart" class="dropdown"><option value="AM">AM</option><option value="PM" <cfif LSisDate(request.contentBean.getExpires()) and hour(request.contentBean.getExpires()) gte 12>selected</cfif>>PM</option></select>
+	</div>
+	<div id="expires-notify">
+		<label for="dspexpiresnotify"><input type="checkbox" name="dspExpiresNotify"  id="dspexpiresnotify" onclick="loadExpiresNotify('#attributes.siteid#','#attributes.contenthistid#','#attributes.parentid#');"  class="checkbox"><!---<a href="##" class="tooltip">--->#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expiresnotify')#<!---<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.notifyReview")#</span></a>---></label>
+		<div id="selectExpiresNotify" style="display: none;"></div>
+	</div>
+</dd>
+</cfif>
 <cfif attributes.type neq 'Component' and attributes.type neq 'Form' and  attributes.contentid neq '00000000000000000000000000000000001'>
 <dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.isfeature')#</dt>
 

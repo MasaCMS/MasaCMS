@@ -116,7 +116,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var blockFactor=arguments.feedBean.getNextN()>
 	<cfset var jointables="" />
 	<cfset var jointable="">
-	<cfset var histtables="tcontenttags,tcontentcategoryassign,tcontentobjects,tcontentrelated">
+	<cfset var histtables="tcontenttags,tcontentcategoryassign,tcontentobjects,tcontentrelated,tcontentassignments">
 	<cfset var rsAttribute="">
 	<cfset var isListParam=false>
 	
@@ -167,7 +167,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tfiles.fileSize,tfiles.fileExt,tcontent.fileid,
 	tcontent.tags,tcontent.credits,tcontent.audience, tcontent.orderNo,
 	tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes,
-	tcontentstats.comments, tparent.type parentType, <cfif doKids> qKids.kids<cfelse> null as kids</cfif>,tcontent.path, tcontent.created, tcontent.nextn
+	tcontentstats.comments, tparent.type parentType, <cfif doKids> qKids.kids<cfelse> null as kids</cfif>,
+	tcontent.path, tcontent.created, tcontent.nextn, tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires
 	from tcontent
 	
 	<cfloop list="#jointables#" index="jointable">
@@ -222,8 +223,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							Inner Join tcontenttags on (tcontent.contentHistID=tcontenttags.contentHistID)
 							</cfif>
 						   where tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getsiteid()#"/>
-						   		#renderActiveClause("tcontent",arguments.feedBean.getSiteID())#
-							    #renderActiveClause("TKids",arguments.feedBean.getSiteID())#
+						   		#renderActiveClause("tcontent",arguments.feedBean.getSiteID(),arguments.feedBean.getLiveOnly())#
+							    #renderActiveClause("TKids",arguments.feedBean.getSiteID(),arguments.feedBean.getLiveOnly())#
 							    <cfif not arguments.feedBean.getShowExcludeSearch()> AND TKids.searchExclude = 0</cfif>
 							    <cfif arguments.feedBean.getShowNavOnly()>AND TKids.isNav = 1</cfif>
 							 	AND tcontent.moduleid = '00000000000000000000000000000000000'
@@ -340,7 +341,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						tcontent.parentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#listGetAt(arguments.feedBean.getcontentID(),c)#" /> <cfif c lt contentLen> or </cfif> 
 						</cfloop>)
 						</cfif>
-							    
+						
+						<cfif arguments.feedBean.getLiveOnly()>	    
 						AND 
 						(
 							
@@ -389,6 +391,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							)	
 					
 						) 
+						</cfif>
 												    
 											   group by tcontent.contentID
 											   ) qKids
@@ -399,8 +402,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	where
 	tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedBean.getsiteid()#">
-	#renderActiveClause("tcontent",arguments.feedBean.getSiteID())#
-	<cfif arguments.feedBean.getType() eq "Local" and arguments.feedBean.getShowNavOnly()>
+	#renderActiveClause("tcontent",arguments.feedBean.getSiteID(),arguments.feedBean.getLiveOnly())#
+	<cfif arguments.feedBean.getShowNavOnly()>
 	AND tcontent.isNav = 1
 	</cfif>
 	<cfif arguments.feedBean.getType() eq "Remote">
@@ -529,7 +532,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfqueryparam cfsqltype="cf_sql_varchar"  value="#listGetAt(arguments.feedBean.getcontentID(),c)#">, 
 	</cfloop>'')
 	</cfif>
-		    
+	
+	<cfif arguments.feedBean.getLiveOnly()>	    
 	AND 
 	(
 		
@@ -550,11 +554,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	
 	) 
-	
-	<cfif request.muraMobileRequest>
-		and (tcontent.mobileExclude!=1 or tcontent.mobileExclude is null)
+
+	and (tcontent.mobileExclude is null
+		OR 
+		<cfif request.muraMobileRequest>
+			tcontent.mobileExclude in (0,2)
+		<cfelse>
+			tcontent.mobileExclude in (0,1)
+		</cfif>
+	)
 	</cfif>
-									
+						
 	order by
 	
 	<cfswitch expression="#arguments.feedBean.getSortBy()#">
@@ -669,13 +679,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="renderActiveClause" output="true">
 <cfargument name="table" default="tcontent">
 <cfargument name="siteID">
+<cfargument name="liveOnly" default="1">
 	<cfset var previewData="">
 	<cfoutput>
 			<cfif request.muraChangesetPreview>
 				<cfset previewData=getCurrentUser().getValue("ChangesetPreviewData")>
 				and (
 						(#arguments.table#.active = 1
-						and #arguments.table#.Approved = 1
+						<cfif arguments.liveOnly>and #arguments.table#.Approved = 1</cfif>
 						and #arguments.table#.contentID not in (#previewData.contentIDList#)	
 						)
 						
@@ -688,7 +699,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					)	
 			<cfelse>
 				and #arguments.table#.active = 1
-				and #arguments.table#.Approved = 1
+				<cfif arguments.liveOnly>and #arguments.table#.Approved = 1</cfif>
 			</cfif>	
 	</cfoutput>
 </cffunction>

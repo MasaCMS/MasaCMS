@@ -461,7 +461,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 <cfloop query="rslist">
 		
-<cfset variables.contentDAO.createContentAssignment(arguments.contentBean,rsList.userID) />
+<cfset variables.contentDAO.createContentAssignment(arguments.contentBean,rsList.userID,'draft') />
 		
 <cfif rsList.email neq ''>
 
@@ -1263,6 +1263,71 @@ and parentID is null
 		</cfloop>
 		
 		<cfreturn returnStr />
+	
+</cffunction>
+
+
+<cffunction name="setVersionNumbers" output="false">
+<cfargument name="contentBean">
+<cfargument name="versionType" default="minor">
+	<cfset var rs="">
+	<cfset var stats="">
+	<cfset var major=0>
+	<cfset var minor=0>
+	
+	<cfset stats=arguments.contentBean.getStats()>
+	
+	<cfif arguments.contentBean.getIsNew()>
+		<cfset major=1>
+		<cfset minor=0>
+	<cfelse>
+
+		<cfif not stats.getMajorVersion()>		
+			<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">	
+				select contentID, siteID, max(majorVersion) majorVersion, max(minorVersion) minorVersion
+				from tcontent
+				where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentID()#">
+				and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getSiteID()#">
+				group by contentID, siteID
+			</cfquery>
+			
+			<cfif rs.recordcount and rs.majorVersion>		
+				<cfif arguments.versionType eq "major">
+					<cfset major=rs.majorVersion + 1>
+					<cfset minor=0>
+				<cfelse>
+					<cfset major=rs.majorVersion>
+					<cfset minor=rs.minorVersion + 1>
+				</cfif>
+			<cfelse>
+				<cfset major=1>
+				<cfset minor=0>
+			</cfif>
+			
+		<cfelse>
+	
+			<cfif stats.getMajorVersion()>		
+				<cfif arguments.versionType eq "major">
+					<cfset major=stats.getMajorVersion() + 1>
+					<cfset minor=0>
+				<cfelse>
+					<cfset major=stats.getMajorVersion()>
+					<cfset minor=stats.getMinorVersion() + 1>
+				</cfif>
+			<cfelse>
+				<cfset major=1>
+				<cfset minor=0>
+			</cfif>
+		
+		</cfif>
+	</cfif>
+	
+	<cfset arguments.contentBean.setMajorVersion(major)>
+	<cfset arguments.contentBean.setMinorVersion(minor)>
+
+	<cfset stats.setMajorVersion(major)>
+	<cfset stats.setMinorVersion(minor)>
+	<cfset stats.save()>
 	
 </cffunction>
 
