@@ -70,7 +70,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	feed.setShowNavOnly(0);
 	
 	if(len($.event("tag"))){
-		feed.addParam(field="tcontent.tags",criteria=$.event("tag"),condition="in");
+		feed.addParam(field="tcontenttags.tag",criteria=$.event("tag"),condition="in");
 	}
 	
 	if(len($.event("type"))){
