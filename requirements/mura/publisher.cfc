@@ -345,7 +345,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 				</cfif>
 			</cfquery>			
-			
+		
 			<cfloop query="rstContent">
 				<cfquery datasource="#arguments.toDSN#">
 					insert into tcontent (Active,Approved,audience,Body,ContentHistID,ContentID,Credits,Display,DisplayStart,DisplayStop,featureStart,featureStop,FileID,Filename,forceSSL,inheritObjects,isFeature,IsLocked,IsNav,keyPoints,
@@ -355,6 +355,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif isdefined("rstContent.imageSize")>
 					,imageSize,imageHeight,imageWidth,childTemplate
 					</cfif>
+					<!--- Check for new fields added in 5.6 --->
 					<cfif isdefined("rstContent.majorVersion")>
 					,majorVersion,minorVersion, expires
 					</cfif>
@@ -442,7 +443,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstContent.majorVersion),de(rstContent.majorVersion),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstContent.minorVersion),de(rstContent.minorVersion),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstContent.expires),de('no'),de('yes'))#" value="#rstContent.expires#">,
+					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstContent.expires),de('no'),de('yes'))#" value="#rstContent.expires#">
 					</cfif>
 					)
 				</cfquery>
