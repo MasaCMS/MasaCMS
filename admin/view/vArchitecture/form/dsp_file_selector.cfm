@@ -60,7 +60,7 @@
 	<cfelse>
 		<cfif attributes.type eq 'File' and not request.contentBean.getIsNew()>
 		<dd>
-			<a class="mura-file #lcase(request.contentBean.getFileExt())#" href="#application.configBean.getContext()#/tasks/render/file/index.cfm?fileid=#request.contentBean.getFileID()#&method=attachment">#HTMLEditFormat(request.contentBean.getFilename())#<cfif request.contentBean.getMajorVersion()> (v#request.contentBean.getMajorVersion()#.#request.contentBean.getMinorVersion()#)</cfif></a>
+			<a class="mura-file #lcase(request.contentBean.getFileExt())#" href="#application.configBean.getContext()#/tasks/render/file/index.cfm?fileid=#request.contentBean.getFileID()#&method=attachment" onclick="return confirmDialog('#application.rbFactory.getKeyValue(session.rb,'sitemanager.downloadconfirm')#',this.href);">#HTMLEditFormat(request.contentBean.getFilename())#<cfif request.contentBean.getMajorVersion()> (v#request.contentBean.getMajorVersion()#.#request.contentBean.getMinorVersion()#)</cfif></a>
 		
 			<a id="mura-file-unlock" class="btn-alt"  href=""<cfif not lockedByYou> style="display:none;"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlockfile')#</a>
 		 	<a id="mura-file-offline-edit" class="btn-alt"<cfif len(stats.getLockID())> style="display:none;"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.downloadforofflineediting')#</a>	
@@ -114,7 +114,7 @@
 	<dd>
 		<cfset lockedBy=$.getBean("user").loadBy(stats.getLockID())>
 		<p id="msg-file-locked" class="error">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.filelockedby"),"#HTMLEditFormat(lockedBy.getFName())# #HTMLEditFormat(lockedBy.getLName())#")#  <a href="mailto:#HTMLEditFormat(lockedBy.getEmail())#?subject=#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.fileunlockrequest'))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.requestfilerelease')#</a></p>
-		<a class="mura-file #lcase(request.contentBean.getFileExt())#" href="#application.configBean.getContext()#/tasks/render/file/index.cfm?fileid=#request.contentBean.getFileID()#&method=attachment">#HTMLEditFormat(request.contentBean.getFilename())#<cfif request.contentBean.getMajorVersion()> (v#request.contentBean.getMajorVersion()#.#request.contentBean.getMinorVersion()#)</cfif></a>
+		<a class="mura-file #lcase(request.contentBean.getFileExt())#" href="#application.configBean.getContext()#/tasks/render/file/index.cfm?fileid=#request.contentBean.getFileID()#&method=attachment" onclick="return confirmDialog('#application.rbFactory.getKeyValue(session.rb,'sitemanager.downloadconfirm')#',this.href);">#HTMLEditFormat(request.contentBean.getFilename())#<cfif request.contentBean.getMajorVersion()> (v#request.contentBean.getMajorVersion()#.#request.contentBean.getMinorVersion()#)</cfif></a>
 		 <cfif listFindNoCase(session.mura.memberships,"s2")><a id="mura-file-unlock" href="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlockfile')#</a></cfif>
 		<input type="hidden" name="fileid" value="#htmlEditFormat(request.contentBean.getFileID())#" />
 	</dd>
