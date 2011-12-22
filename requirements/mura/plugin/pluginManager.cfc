@@ -174,7 +174,8 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="siteID" default="" hint="List of siteIDs to assign the plugin. Only applicable when useDefaultSettings is set to true.">
 <cfargument name="pluginFile" required="true" default="">
 <cfargument name="pluginDir" required="true" default="">
-	
+<cfargument name="activate" required="true" default="true">
+
 <cfset var delim=variables.configBean.getFileDelim() />
 <cfset var location="">
 <cfset var modID=arguments.moduleID />
@@ -311,7 +312,7 @@ select * from tplugins order by #arguments.orderby#
 			
 			<cfset deployArgs.location="global">
 			<cfset deployArgs.overwrite="false">
-			
+			<cfset deployArgs.activate=arguments.activate>
 			<cfset deployArgs.siteAssignID=arguments.siteID>
 			
 			<cfif structKeyExists(pluginXML.plugin,"package") and len(pluginXML.plugin.package.xmlText)>
@@ -502,7 +503,6 @@ select * from tplugins order by #arguments.orderby#
 
 <cffunction name="createAppCFCIncludes" output="false">
 	<cfset var mapPrefix="" />
-	<cfset var rsRequitements="">
 	<cfset var done=structNew()>
 	<cfset var mHash="">
 	<cfset var m="">
@@ -601,6 +601,56 @@ select * from tplugins order by #arguments.orderby#
 			</cftry>
 		</cfif>
 	</cfloop>
+	</cflock>
+</cffunction>
+
+
+<cffunction name="discover" output="false">
+	<cfset var mapPrefix="" />
+	<cfset var baseDir=variables.configBean.getPluginDir()>
+	<cfset var rsRequirements="">
+	<cfset var configXML="">
+	<cfset var item="">
+	<cfset var rs="">
+
+	<cflock name="pluginDiscovery#application.instanceID#" type="exclusive" timeout="200">
+		<cfdirectory action="list" directory="#baseDir#" name="rsRequirements">
+		<cfloop query="rsRequirements">
+			
+			<cfif rsRequirements.type eq "dir" and rsRequirements.name neq '.svn'>	
+	
+				<cfif not hasPlugin(listLast(item,"_"),"",false)>
+					<cfset configXML="">
+					<cftry>
+						<cfset configXML=getPluginXML(moduleID="",pluginDir=rsRequirements.name)>
+						<cfcatch></cfcatch>
+					</cftry>
+					
+					<cfif isXml(configXML)>
+						<cfset deployDirectory(directory="#baseDir#/#rsRequirements.name#",activate=false)>
+					</cfif>
+				</cfif>
+			<cfelseif listLast(rsRequirements.name,".") eq 'zip'>
+				<cfset item="#baseDir#/#rsRequirements.name#">
+				<cfif variables.settingsManager.isBundle(item)>
+					<cfset deployBundle(siteID="", bundleFile=item)>
+					<cfset fileDelete(item)>
+				<cfelse>
+					<cfset item="#baseDir#/#rsRequirements.name#">
+					<cfset rs=createObject("component","mura.Zip").list(item)>
+					<cfquery name="rs" dbtype="query">
+						select * from rs 
+						where entry like '%plugin#variables.configBean.getFileDelim()#config.xml'
+						or entry like '%plugin#variables.configBean.getFileDelim()#config.xml.cfm'
+					</cfquery>
+					<cfif rs.recordcount>
+						<cfset deployPlugin(siteID="",pluginFile=item,useDefaultSettings=true,activate=false)>
+						<cfset fileDelete(item)>
+					</cfif>
+				</cfif>	
+			</cfif>
+			
+		</cfloop>
 	</cflock>
 </cffunction>
 
@@ -927,36 +977,37 @@ select * from tplugins order by #arguments.orderby#
 		</cfif>
 	</cfif>
 	
-
-	<cfset pluginConfig=getConfig(arguments.args.moduleID,'',false) />
-	
-	<!--- check to see is the plugin.cfc exists --->
-	<cfif fileExists(ExpandPath("/plugins") & "/" & pluginConfig.getDirectory() & "/plugin/plugin.cfc")>	
-		<cfset pluginCFC= createObject("component","plugins.#pluginConfig.getDirectory()#.plugin.plugin") />
+	<cfif not (isDefined("arguments.args.activate") and not arguments.args.activate)>
+		<cfset pluginConfig=getConfig(arguments.args.moduleID,'',false) />
 		
-		<!--- only call the methods if they have been defined --->
-		<cfif structKeyExists(pluginCFC,"init")>
-			<cfset pluginCFC.init(pluginConfig)>
-		</cfif>
-
-		<cfif pluginConfig.getDeployed()>
-			<cfif structKeyExists(pluginCFC,"update")>
-				<cfset pluginCFC.update() />
+		<!--- check to see is the plugin.cfc exists --->
+		<cfif fileExists(ExpandPath("/plugins") & "/" & pluginConfig.getDirectory() & "/plugin/plugin.cfc")>	
+			<cfset pluginCFC= createObject("component","plugins.#pluginConfig.getDirectory()#.plugin.plugin") />
+			
+			<!--- only call the methods if they have been defined --->
+			<cfif structKeyExists(pluginCFC,"init")>
+				<cfset pluginCFC.init(pluginConfig)>
 			</cfif>
-		<cfelse>
-			<cfif structKeyExists(pluginCFC,"install")>
-				<cfset pluginCFC.install() />
-			</cfif>
-		</cfif>
-	</cfif>
 	
-	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	update tplugins 
-	set deployed=1
-	where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.args.moduleID#">
-	</cfquery>
-	<cfset application.appInitialized=false>
-	<cfset loadPlugins() />
+			<cfif pluginConfig.getDeployed()>
+				<cfif structKeyExists(pluginCFC,"update")>
+					<cfset pluginCFC.update() />
+				</cfif>
+			<cfelse>
+				<cfif structKeyExists(pluginCFC,"install")>
+					<cfset pluginCFC.install() />
+				</cfif>
+			</cfif>
+		</cfif>
+		
+		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		update tplugins 
+		set deployed=1
+		where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.args.moduleID#">
+		</cfquery>
+		<cfset application.appInitialized=false>
+		<cfset loadPlugins() />
+	</cfif>
 </cffunction>
 
 <cffunction name="deleteSettings" returntype="void" output="false">
@@ -1895,8 +1946,8 @@ select * from rs order by name
 	<cfargument name="bundleFile" hint="Complete path to bundle zip file">
 	<cfset var errors=structNew()>
 	
-	<cfif not variables.settingsManager.isBundle(arguments.bundleFile)>
-		<cfreturn deployBundle(siteID=arguments.siteID, pluginFile=arguments.bundleFile)>	
+	<cfif not variables.settingsManager.isBundle(arguments.pluginFile)>
+		<cfreturn deployPlugin(siteID=arguments.siteID, pluginFile=arguments.pluginFile)>	
 	</cfif>
 	
 	<cfset errors=getBean("settingsManager").restoreBundle(
@@ -1916,6 +1967,8 @@ select * from rs order by name
 <cffunction name="deployPlugin" output="false">
 	<cfargument name="siteID" hint="List of siteIDs to assign the plugin">
 	<cfargument name="pluginFile" hint="Complete path to plugin zip file">
+	<cfargument name="useDefaultSettings" required="true" default="true">
+	<cfargument name="activate" required="true" default="true">
 	
 	<cfset var zipTrim=getZipTrim(arguments.pluginFile)>
 	<cfset var errors=structNew()>
@@ -1945,7 +1998,7 @@ select * from rs order by name
 		<cfset id=pluginXML.plugin.name.xmlText>
 	</cfif>	
 	
-	<cfset result=deploy(id=id, pluginDir=tempDir, useDefaultSettings=true, siteID=arguments.siteID)>
+	<cfset result=deploy(id=id, pluginDir=tempDir, useDefaultSettings=arguments.useDefaultSettings, siteID=arguments.siteID,activate=arguments.activate)>
 	
 	<cfset variables.fileWriter.deleteDir(directory=getLocation(tempDir))>
 	
@@ -1956,7 +2009,8 @@ select * from rs order by name
 <cffunction name="deployDirectory" output="false">
 	<cfargument name="siteID" hint="List of siteIDs to assign the plugin. If not defined will defiend to existing assignment.">
 	<cfargument name="directory" hint="Complete path to external plugin directory">
-
+	<cfargument name="useDefaultSettings" required="true" default="true">
+	<cfargument name="activate" required="true" default="true">
 	<cfset var errors=structNew()>
 	<cfset var tempDir=createUUID()>
 	<cfset var id="">
@@ -1979,7 +2033,7 @@ select * from rs order by name
 		<cfset arguments.siteID=valueList(rsSites.siteID)>
 	</cfif>
 	
-	<cfset result=deploy(id=id, pluginDir=tempDir, useDefaultSettings=true, siteID=arguments.siteID)>
+	<cfset result=deploy(id=id, pluginDir=tempDir, useDefaultSettings=arguments.useDefaultSettings, siteID=arguments.siteID, activate=arguments.activate)>
 	
 	<cfset variables.fileWriter.deleteDir(directory=getLocation(tempDir))>
 	
