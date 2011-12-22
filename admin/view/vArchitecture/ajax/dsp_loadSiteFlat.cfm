@@ -50,18 +50,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	$=application.serviceFactory.getBean("MuraScope");
 	
-	session.flatViewArgs[rc.siteID].moduleid=$.event("moduleid");
-	session.flatViewArgs[rc.siteID].sortBy=$.event("sortby");
-	session.flatViewArgs[rc.siteID].sortDirection=$.event("sortdirection");
-	session.flatViewArgs[rc.siteID].lockid=$.event("lockid");
-	session.flatViewArgs[rc.siteID].assignments=$.event("assignments");
-	session.flatViewArgs[rc.siteID].categoryid=$.event("categoryid");
-	session.flatViewArgs[rc.siteID].tag=$.event("tag");
-	session.flatViewArgs[rc.siteID].page=$.event("page");
-	session.flatViewArgs[rc.siteID].type=$.event("type");
-	session.flatViewArgs[rc.siteID].subtype=$.event("subtype");
-	session.flatViewArgs[rc.siteID].report=$.event("report");
-	session.flatViewArgs[rc.siteID].keywords=$.event("keywords");
+	session.flatViewArgs["#rc.siteID#"].moduleid=$.event("moduleid");
+	session.flatViewArgs["#rc.siteID#"].sortBy=$.event("sortby");
+	session.flatViewArgs["#rc.siteID#"].sortDirection=$.event("sortdirection");
+	session.flatViewArgs["#rc.siteID#"].lockid=$.event("lockid");
+	session.flatViewArgs["#rc.siteID#"].assignments=$.event("assignments");
+	session.flatViewArgs["#rc.siteID#"].categoryid=$.event("categoryid");
+	session.flatViewArgs["#rc.siteID#"].tag=$.event("tag");
+	session.flatViewArgs["#rc.siteID#"].page=$.event("page");
+	session.flatViewArgs["#rc.siteID#"].type=$.event("type");
+	session.flatViewArgs["#rc.siteID#"].subtype=$.event("subtype");
+	session.flatViewArgs["#rc.siteID#"].report=$.event("report");
+	session.flatViewArgs["#rc.siteID#"].keywords=$.event("keywords");
 	 
 	feed=$.getBean("feed");
 	feed.setMaxItems(500);
@@ -299,7 +299,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<div id="filters" class="module">
 	<h4>#application.rbFactory.getKeyValue(session.rb,"sitemanager.keywords")#</h4>
-    <input class="text" id="contentKeywords" value="#HTMLEditFormat(session.flatViewArgs[rc.siteID].keywords)#" type="text" size="20" />
+    <input class="text" id="contentKeywords" value="#HTMLEditFormat(session.flatViewArgs["#rc.siteID#"].keywords)#" type="text" size="20" />
   	</div>
 
     <cfif $.event("report") neq "lockedfiles">
