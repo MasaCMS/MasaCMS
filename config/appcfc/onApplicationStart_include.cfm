@@ -320,6 +320,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfloop>	
 
+		<cfif application.configBean.getValue("autoDiscoverPlugins")>
+			<cfset application.pluginManager.discover()>
+		</cfif>
+		
 		<cfset application.cfstatic=structNew()>			
 		<cfset application.appInitialized=true/>
 		<cfset application.appInitializedTime=now()>
