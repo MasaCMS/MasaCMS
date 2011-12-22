@@ -73,30 +73,75 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="session.copyAll" default="false">
 
 <cfparam name="session.flatViewArgs" default="#structNew()#">
-<cfparam name="session.flatViewArgs.#session.siteID#" default="#structNew()#">
 <cfparam name="session.flatViewArgs" default="#structNew()#">
-<cfparam name="session.flatViewArgs.#session.siteID#.moduleid" default="#attributes.moduleid#" />
-<cfparam name="session.flatViewArgs.#session.siteID#.sortBy" default="lastupdate" />
-<cfparam name="session.flatViewArgs.#session.siteID#.sortDirection" default="desc" />
-<cfparam name="session.flatViewArgs.#session.siteID#.lockid" default="#attributes.lockid#" />
-<cfparam name="session.flatViewArgs.#session.siteID#.assignments" default="#attributes.assignments#" />
-<cfparam name="session.flatViewArgs.#session.siteID#.categoryid" default="#attributes.categoryid#" />
-<cfparam name="session.flatViewArgs.#session.siteID#.tag" default="#attributes.tag#" />
-<cfparam name="session.flatViewArgs.#session.siteID#.page" default="#attributes.page#" />
-<cfparam name="session.flatViewArgs.#session.siteID#.type" default="" />
-<cfparam name="session.flatViewArgs.#session.siteID#.subtype" default="#attributes.subtype#" />
-<cfparam name="session.flatViewArgs.#session.siteID#.report" default="" />
-<cfparam name="session.flatViewArgs.#session.siteID#.keywords" default="" />
-<cfparam name="session.flatViewArgs.#session.siteID#.tab" default="0" />
+
+<cfscript>
+	if(not structKeyExists(session.flatViewArgs,session.siteid)){
+		session.flatViewArgs["#session.siteid#"]=structNew();
+	}
+	
+	if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"moduleid")){
+		session.flatViewArgs["#session.siteid#"].moduleid=attributes.moduleid;
+	}
+	
+	if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"sortby")){
+		session.flatViewArgs["#session.siteid#"].sortby="lastupdate";
+	}
+	
+	if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"sortdirection")){
+		session.flatViewArgs["#session.siteid#"].sortdirection="desc";
+	}
+	
+	if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"lockid")){
+		session.flatViewArgs["#session.siteid#"].lockid=attributes.lockid;
+	}
+	
+	if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"assignments")){
+		session.flatViewArgs["#session.siteid#"].assignments=attributes.assignments;
+	}
+	
+	if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"categoryid")){
+		session.flatViewArgs["#session.siteid#"].categoryid=attributes.categoryid;
+	}
+	
+	if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"tag")){
+		session.flatViewArgs["#session.siteid#"].tag=attributes.tag;
+	}
+	
+	if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"page")){
+		session.flatViewArgs["#session.siteid#"].page=attributes.page;
+	}
+	
+	if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"type")){
+		session.flatViewArgs["#session.siteid#"].type="";
+	}
+	
+	if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"subtype")){
+		session.flatViewArgs["#session.siteid#"].subtype=attributes.subtype;
+	}
+	
+	if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"report")){
+		session.flatViewArgs["#session.siteid#"].report="";
+	}
+	
+	if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"keywords")){
+		session.flatViewArgs["#session.siteid#"].keywords="";
+	}
+	
+	if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"tab")){
+		session.flatViewArgs["#session.siteid#"].tab=0;
+	}
+</cfscript>
+
 <cfif not isdefined("url.activeTab")>
-	<cfset attributes.activeTab=session.flatViewArgs[session.siteID].tab/>
+	<cfset attributes.activeTab=session.flatViewArgs["#session.siteID#"].tab/>
 </cfif>
 <cfif isdefined("url.keywords")>
-	<cfif session.flatViewArgs[session.siteID].keywords neq url.keywords>
-		<cfset session.flatViewArgs[session.siteID].page=1>
+	<cfif session.flatViewArgs["#session.siteID#"].keywords neq url.keywords>
+		<cfset session.flatViewArgs["#session.siteID#"].page=1>
 	</cfif>
-	<cfset session.flatViewArgs[session.siteID].keywords=url.keywords/>
-	<cfset session.flatViewArgs[session.siteID].report=""/>
+	<cfset session.flatViewArgs["#session.siteID#"].keywords=url.keywords/>
+	<cfset session.flatViewArgs["#session.siteID#"].report=""/>
 	<cfset session.keywords=url.keywords/>
 </cfif>
 <cfhtmlhead text='<script src="#application.configBean.getContext()#/admin/js/jquery/jquery-pulse.js?coreversion=#application.coreversion#" type="text/javascript"></script>'>
@@ -193,17 +238,17 @@ var flatViewLoaded=false;
 
 function initFlatViewArgs(){
 	return {siteid:'#JSStringFormat(session.siteID)#', 
-			moduleid:'#JSStringFormat(session.flatViewArgs[session.siteid].moduleid)#', 
-			sortby:'#JSStringFormat(session.flatViewArgs[session.siteid].sortby)#', 
-			sortdirection:'#JSStringFormat(session.flatViewArgs[session.siteid].sortdirection)#', 
-			page:'#JSStringFormat(session.flatViewArgs[session.siteid].page)#',	
-			tag:'#JSStringFormat(session.flatViewArgs[session.siteid].tag)#',
-			categoryid:'#JSStringFormat(session.flatViewArgs[session.siteid].categoryid)#',
-			lockid:'#JSStringFormat(session.flatViewArgs[session.siteid].lockid)#',
-			type:'#JSStringFormat(session.flatViewArgs[session.siteid].type)#',
-			subType:'#JSStringFormat(session.flatViewArgs[session.siteid].subtype)#',
-			report:'#JSStringFormat(session.flatViewArgs[session.siteid].report)#',
-			keywords:'#JSStringFormat(session.flatViewArgs[session.siteid].keywords)#'
+			moduleid:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].moduleid)#', 
+			sortby:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].sortby)#', 
+			sortdirection:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].sortdirection)#', 
+			page:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].page)#',	
+			tag:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].tag)#',
+			categoryid:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].categoryid)#',
+			lockid:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].lockid)#',
+			type:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].type)#',
+			subType:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].subtype)#',
+			report:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].report)#',
+			keywords:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].keywords)#'
 			};
 }
 
