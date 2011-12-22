@@ -136,11 +136,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfloop query="rs">
 					<cfif not listFind("contentRenderer.cfc,eventHandler.cfc,servlet.cfc,loginHandler.cfc,.gitignore",listLast(rs.entry,variables.fileDelim))>
 						<cfset destination="#baseDir##right(rs.entry,len(rs.entry)-trimLen)#">
-						<cfif fileExists(destination)>
-							<cffile action="delete" file="#destination#">
-						</cfif>
-						<cfset destination=left(destination,len(destination)-len(listLast(destination,variables.fileDelim)))>		
 						<cftry>
+							<cfif fileExists(destination)>
+								<cffile action="delete" file="#destination#">
+							</cfif>
+							<cfset destination=left(destination,len(destination)-len(listLast(destination,variables.fileDelim)))>		
+							
 							<cfif not directoryExists(destination)>
 								<cfset variables.fileWriter.createDir(directory="#destination#")>
 							</cfif>
