@@ -612,6 +612,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var configXML="">
 	<cfset var item="">
 	<cfset var rs="">
+	<cfset var tempDir="">
 
 	<cflock name="pluginDiscovery#application.instanceID#" type="exclusive" timeout="200">
 		<cfdirectory action="list" directory="#baseDir#" name="rsRequirements">
@@ -619,7 +620,7 @@ select * from tplugins order by #arguments.orderby#
 			
 			<cfif rsRequirements.type eq "dir" and rsRequirements.name neq '.svn'>	
 	
-				<cfif not hasPlugin(listLast(item,"_"),"",false)>
+				<cfif not hasPlugin(listLast(rsRequirements.name,"_"),"",false)>
 					<cfset configXML="">
 					<cftry>
 						<cfset configXML=getPluginXML(moduleID="",pluginDir=rsRequirements.name)>
@@ -627,7 +628,10 @@ select * from tplugins order by #arguments.orderby#
 					</cftry>
 					
 					<cfif isXml(configXML)>
-						<cfset deployDirectory(directory="#baseDir#/#rsRequirements.name#",activate=false)>
+						<cfset tempDir="#baseDir#/#createUUID()#">
+						<cfset variables.fileWriter.renameDir(directory="#baseDir#/#rsRequirements.name#",newDirectory=tempDir)>
+						<cfset deployDirectory(directory=tempDir,activate=false)>
+						<cfset variables.fileWriter.deleteDir(directory=tempDir)>
 					</cfif>
 				</cfif>
 			<cfelseif listLast(rsRequirements.name,".") eq 'zip'>
