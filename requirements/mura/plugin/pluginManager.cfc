@@ -312,7 +312,6 @@ select * from tplugins order by #arguments.orderby#
 			
 			<cfset deployArgs.location="global">
 			<cfset deployArgs.overwrite="false">
-			<cfset deployArgs.siteAssignID=arguments.siteID>
 			
 			<cfif structKeyExists(pluginXML.plugin,"package") and len(pluginXML.plugin.package.xmlText)>
 				<cfset deployArgs.package=pluginXML.plugin.package.xmlText>
@@ -327,9 +326,9 @@ select * from tplugins order by #arguments.orderby#
 			</cfif>
 			
 			<cfif structKeyExists(pluginXML.plugin,"siteid") and len(pluginXML.plugin.siteid.xmlText)>
-				<cfset deployArgs.autoDeploy=pluginXML.plugin.siteID.xmlText>
+				<cfset deployArgs.siteAssignID=pluginXML.plugin.siteID.xmlText>
 			<cfelse>
-				<cfset deployArgs.autoDeploy=arguments.siteid>
+				<cfset deployArgs.siteAssignID=arguments.siteID>
 			</cfif>
 			
 			<cfif structKeyExists(pluginXML.plugin.settings,"setting")>
@@ -992,7 +991,7 @@ select * from tplugins order by #arguments.orderby#
 		</cfif>
 	</cfif>
 	
-	<cfif not (isDefined("arguments.args.autoDeploy") and not arguments.args.autoDeploy)>
+	<cfif not isDefined("arguments.args.autoDeploy") or arguments.args.autoDeploy>
 		<cfset pluginConfig=getConfig(arguments.args.moduleID,'',false) />
 		
 		<!--- check to see is the plugin.cfc exists --->
