@@ -2115,7 +2115,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var str="">
 <cfset var rsPages=getPagesQuery(arguments.body)>
 <cfset var currentNextNIndex=1>
-<cfset var nextN="">
 
 <cfset event.setValue("currentNextNID",event.getContentBean().getContentID())>
 

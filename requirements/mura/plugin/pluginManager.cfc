@@ -174,7 +174,7 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="siteID" default="" hint="List of siteIDs to assign the plugin. Only applicable when useDefaultSettings is set to true.">
 <cfargument name="pluginFile" required="true" default="">
 <cfargument name="pluginDir" required="true" default="">
-<cfargument name="activate" required="true" default="true">
+<cfargument name="autoDeploy" required="true" default="true">
 
 <cfset var delim=variables.configBean.getFileDelim() />
 <cfset var location="">
@@ -312,13 +312,23 @@ select * from tplugins order by #arguments.orderby#
 			
 			<cfset deployArgs.location="global">
 			<cfset deployArgs.overwrite="false">
-			<cfset deployArgs.activate=arguments.activate>
-			<cfset deployArgs.siteAssignID=arguments.siteID>
 			
 			<cfif structKeyExists(pluginXML.plugin,"package") and len(pluginXML.plugin.package.xmlText)>
 				<cfset deployArgs.package=pluginXML.plugin.package.xmlText>
 			<cfelse>
 				<cfset deployArgs.package="">
+			</cfif>
+			
+			<cfif structKeyExists(pluginXML.plugin,"autoDeploy") and isBoolean(pluginXML.plugin.autoDeploy.xmlText)>
+				<cfset deployArgs.autoDeploy=pluginXML.plugin.autoDeploy.xmlText>
+			<cfelse>
+				<cfset deployArgs.autoDeploy=arguments.autoDeploy>
+			</cfif>
+			
+			<cfif structKeyExists(pluginXML.plugin,"siteid") and len(pluginXML.plugin.siteid.xmlText)>
+				<cfset deployArgs.siteAssignID=pluginXML.plugin.siteID.xmlText>
+			<cfelse>
+				<cfset deployArgs.siteAssignID=arguments.siteID>
 			</cfif>
 			
 			<cfif structKeyExists(pluginXML.plugin.settings,"setting")>
@@ -630,7 +640,7 @@ select * from tplugins order by #arguments.orderby#
 					<cfif isXml(configXML)>
 						<cfset tempDir="#baseDir#/#createUUID()#">
 						<cfset variables.fileWriter.renameDir(directory="#baseDir#/#rsRequirements.name#",newDirectory=tempDir)>
-						<cfset deployDirectory(directory=tempDir,activate=false)>
+						<cfset deployDirectory(directory=tempDir,autoDeploy=false)>
 						<cfset variables.fileWriter.deleteDir(directory=tempDir)>
 					</cfif>
 				</cfif>
@@ -648,7 +658,7 @@ select * from tplugins order by #arguments.orderby#
 						or entry like '%plugin#variables.configBean.getFileDelim()#config.xml.cfm'
 					</cfquery>
 					<cfif rs.recordcount>
-						<cfset deployPlugin(siteID="",pluginFile=item,useDefaultSettings=true,activate=false)>
+						<cfset deployPlugin(siteID="",pluginFile=item,useDefaultSettings=true,autoDeploy=false)>
 						<cfset fileDelete(item)>
 					</cfif>
 				</cfif>	
@@ -981,7 +991,7 @@ select * from tplugins order by #arguments.orderby#
 		</cfif>
 	</cfif>
 	
-	<cfif not (isDefined("arguments.args.activate") and not arguments.args.activate)>
+	<cfif not isDefined("arguments.args.autoDeploy") or arguments.args.autoDeploy>
 		<cfset pluginConfig=getConfig(arguments.args.moduleID,'',false) />
 		
 		<!--- check to see is the plugin.cfc exists --->
@@ -1972,7 +1982,7 @@ select * from rs order by name
 	<cfargument name="siteID" hint="List of siteIDs to assign the plugin">
 	<cfargument name="pluginFile" hint="Complete path to plugin zip file">
 	<cfargument name="useDefaultSettings" required="true" default="true">
-	<cfargument name="activate" required="true" default="true">
+	<cfargument name="autoDeploy" required="true" default="true">
 	
 	<cfset var zipTrim=getZipTrim(arguments.pluginFile)>
 	<cfset var errors=structNew()>
@@ -2002,7 +2012,7 @@ select * from rs order by name
 		<cfset id=pluginXML.plugin.name.xmlText>
 	</cfif>	
 	
-	<cfset result=deploy(id=id, pluginDir=tempDir, useDefaultSettings=arguments.useDefaultSettings, siteID=arguments.siteID,activate=arguments.activate)>
+	<cfset result=deploy(id=id, pluginDir=tempDir, useDefaultSettings=arguments.useDefaultSettings, siteID=arguments.siteID,autoDeploy=arguments.autoDeploy)>
 	
 	<cfset variables.fileWriter.deleteDir(directory=getLocation(tempDir))>
 	
@@ -2014,7 +2024,7 @@ select * from rs order by name
 	<cfargument name="siteID" hint="List of siteIDs to assign the plugin. If not defined will defiend to existing assignment.">
 	<cfargument name="directory" hint="Complete path to external plugin directory">
 	<cfargument name="useDefaultSettings" required="true" default="true">
-	<cfargument name="activate" required="true" default="true">
+	<cfargument name="autoDeploy" required="true" default="true">
 	<cfset var errors=structNew()>
 	<cfset var tempDir=createUUID()>
 	<cfset var id="">
@@ -2037,7 +2047,7 @@ select * from rs order by name
 		<cfset arguments.siteID=valueList(rsSites.siteID)>
 	</cfif>
 	
-	<cfset result=deploy(id=id, pluginDir=tempDir, useDefaultSettings=arguments.useDefaultSettings, siteID=arguments.siteID, activate=arguments.activate)>
+	<cfset result=deploy(id=id, pluginDir=tempDir, useDefaultSettings=arguments.useDefaultSettings, siteID=arguments.siteID, autoDeploy=arguments.autoDeploy)>
 	
 	<cfset variables.fileWriter.deleteDir(directory=getLocation(tempDir))>
 	
