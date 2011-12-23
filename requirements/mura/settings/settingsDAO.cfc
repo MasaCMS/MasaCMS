@@ -454,7 +454,7 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
    <cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
       Insert into tcontent (siteid,moduleid,parentid,contentid,contenthistid,type,subType,active,title,menutitle,display,approved,isnav,
 	  template,orderno,lastupdate,lastupdateby,
-	  restricted,responseChart,displayTitle,isFeature,isLocked,NextN,inheritObjects,sortBy,sortDirection,forceSSL,searchExclude,path)
+	  restricted,responseChart,displayTitle,isFeature,isLocked,NextN,inheritObjects,sortBy,sortDirection,forceSSL,searchExclude,path,created)
 	  values(
 	  '#arguments.bean.getsiteid()#',
 	  '00000000000000000000000000000000000',
@@ -484,7 +484,8 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
 	  'asc',
 	  0,
 	  0,
-	  <cfqueryparam cfsqltype="cf_sql_varchar" value="00000000000000000000000000000000001" />
+	  <cfqueryparam cfsqltype="cf_sql_varchar" value="00000000000000000000000000000000001" />,
+	  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 	)
    </cfquery>
    
