@@ -165,18 +165,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfloop query="rs">
 					<cfif not listFind("settings.ini.cfm,settings.custom.vars.cfm,settings.custom.managers.cfm,coldspring.custom.xml.cfm,.gitignore",listLast(rs.entry,variables.fileDelim))>
 						<cfset destination="#baseDir##right(rs.entry,len(rs.entry)-trimLen)#">
-						<cfif fileExists(destination)>
-							<cffile action="delete" file="#destination#">
-						</cfif>
-						<cfset destination=left(destination,len(destination)-len(listLast(destination,variables.fileDelim)))>		
 						<cftry>
+							<cfif fileExists(destination)>
+								<cffile action="delete" file="#destination#">
+							</cfif>
+							<cfset destination=left(destination,len(destination)-len(listLast(destination,variables.fileDelim)))>		
+					
 							<cfif not directoryExists(destination)>
 								<cfset variables.fileWriter.createDir(directory="#destination#")>
 							</cfif>
 							<cfset variables.fileWriter.moveFile(source="#currentDir##zipFileName##variables.fileDelim##rs.entry#",destination="#destination#")>
 							<cfcatch>
 								<!--- patch to make sure autoupdates do not stop for mode errors --->
-								<cfif not findNoCase("change mode of file",cfcatch.message)>
+								<cfif not findNoCase("change mode of file",cfcatch.message) and listLast(rs.entry,".") neq "jar">
 									<cfrethrow>
 								</cfif>
 							</cfcatch>
