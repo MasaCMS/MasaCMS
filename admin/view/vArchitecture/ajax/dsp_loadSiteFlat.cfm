@@ -252,10 +252,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset args[2]=LSTimeFormat(item.getLastUpdate())>
 				<cfset args[3]=item.getLastUpdateBy()></cfsilent>
 				<li class="updated">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.lastupdatedlong"),args)#</li>		
+				<cfif isDate(item.getCreated())>
 				<cfsilent><cfset args=arrayNew(1)>
 				<cfset args[1]=LSDateformat(item.getCreated(),session.dateKeyFormat)>
 				<cfset args[2]=LSTimeFormat(item.getCreated())></cfsilent>
 				<li class="created">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.createdlong"),args)#</li>
+				</cfif>
 				<cfif isNumeric(item.getMajorVersion()) and item.getMajorVersion()><li class="version">#application.rbFactory.getKeyValue(session.rb,"sitemanager.version")#: <strong>#item.getMajorVersion()#.#item.getMinorVersion()#</strong></li></cfif>
 				<cfif isDate(item.getExpires())><li class="expiration">#application.rbFactory.getKeyValue(session.rb,"sitemanager.expiration")#: <strong>#LSDateFormat(item.getExpires(),session.dateKeyFormat)#</strong></li></cfif>
 				<cfif isNumeric(item.getFileSize()) and item.getFileSize()><li class="size">#application.rbFactory.getKeyValue(session.rb,"sitemanager.size")#: <strong>#$.renderFileSize(item.getFileSize())#</strong></li></cfif>
