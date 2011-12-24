@@ -46,9 +46,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="sessionTrackingDAOCF7" output="false">
 
-<cffunction name="createTrackingRecord" output="false">
+<cffunction name="trackRequest" output="false">
 	<cfthread action="run" name="track#hash(session.trackingID)#" context="#arguments#">
-		<cfset super.createTrackingRecord(argumentCollection=context)>
+		<cfset super.trackRequest(argumentCollection=context)>
 	</cfthread>
 </cffunction>
 
