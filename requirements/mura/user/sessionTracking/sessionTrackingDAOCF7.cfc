@@ -47,6 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent extends="mura.cfobject" output="false">
 
 <cfset variables.longRequests=0>
+<cfset variables.lastPurge=now()>
 
 <cffunction name="init" returntype="any" access="public" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
@@ -149,12 +150,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="clearOldData" returnType="void" access="public">
+	<cfset var requestTime=now()>
+	
+	<cfif variables.configBean.getSessionHistory() gt 0
+		and dateDiff("s", variables.lastPurge,requestTime) gte 60>
 		
-	<cfif variables.configBean.getSessionHistory() gt 0>
-	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	delete from tsessiontracking 
-	where entered <  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('d',-variables.configBean.getSessionHistory(),now())#">
-	</cfquery>
+		<cfset variables.lastPurge = requestTime>
+		
+		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		delete from tsessiontracking 
+		where entered <  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('d',-variables.configBean.getSessionHistory(),now())#">
+		</cfquery>
 	</cfif>
 </cffunction>
 
