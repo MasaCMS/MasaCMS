@@ -327,39 +327,39 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfsilent>	
 	
 	<cfif tags.recordcount>
-	<div class="module" id="mura-filter-tags">
-	<h4>#application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</h4>
-	<div id="svTagCloud">
-		<ol>
-		<cfloop query="tags"><cfsilent>
-				<cfif tags.tagCount EQ min>
-				<cfset class="not-popular">
-			<cfelseif tags.tagCount EQ max>
-				<cfset class="ultra-popular">
-			<cfelseif tags.tagCount GT (min + (distribution/2))>
-				<cfset class="somewhat-popular">
-			<cfelseif tags.tagCount GT (min + distribution)>
-				<cfset class="mediumTag">
-			<cfelse>
-				<cfset class="not-very-popular">
-			</cfif>
-		
-			<cfset args = ArrayNew(1)>
-		    <cfset args[1] = tags.tagcount>
-		</cfsilent><li class="#class#"><span><cfif tags.tagcount gt 1> #rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemsare'), args)#<cfelse>#rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemis'), args)#</cfif> tagged with </span><a class="tag<cfif listFind($.event('tag'),tags.tag)> active</cfif>">#HTMLEditFormat(tags.tag)#</a></li>
-		</cfloop>
-		</ol>
-	</div>
-	</div>
-
-	<cfif $.getBean("categoryManager").getCategoryCount($.event("siteID"))>
-	<div class="module"" id="mura-filter-category">
-	<h4>#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#</h4>
-	<cf_dsp_categories_nest siteID="#$.event('siteID')#" parentID="" nestLevel="0" categoryid="#$.event('categoryid')#">
+		<div class="module" id="mura-filter-tags">
+			<h4>#application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</h4>
+			<div id="svTagCloud">
+				<ol>
+				<cfloop query="tags"><cfsilent>
+						<cfif tags.tagCount EQ min>
+						<cfset class="not-popular">
+					<cfelseif tags.tagCount EQ max>
+						<cfset class="ultra-popular">
+					<cfelseif tags.tagCount GT (min + (distribution/2))>
+						<cfset class="somewhat-popular">
+					<cfelseif tags.tagCount GT (min + distribution)>
+						<cfset class="mediumTag">
+					<cfelse>
+						<cfset class="not-very-popular">
+					</cfif>
+				
+					<cfset args = ArrayNew(1)>
+				    <cfset args[1] = tags.tagcount>
+				</cfsilent><li class="#class#"><span><cfif tags.tagcount gt 1> #rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemsare'), args)#<cfelse>#rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemis'), args)#</cfif> tagged with </span><a class="tag<cfif listFind($.event('tag'),tags.tag)> active</cfif>">#HTMLEditFormat(tags.tag)#</a></li>
+				</cfloop>
+				</ol>
+			</div>
+		</div>
 	</cfif>
 	
-	</div>
+	<cfif $.getBean("categoryManager").getCategoryCount($.event("siteID"))>
+		<div class="module"" id="mura-filter-category">
+		<h4>#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#</h4>
+		<cf_dsp_categories_nest siteID="#$.event('siteID')#" parentID="" nestLevel="0" categoryid="#$.event('categoryid')#">
+		</div>
 	</cfif>
+
 	<input type="button" name="filterList" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#" onclick="loadSiteFlatByFilter();"/>
 </div>
 <!---<cfdump var="#request.test#">--->
