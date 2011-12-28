@@ -41,11 +41,18 @@
 	</cffunction>
 	
 	<cffunction name="getFirstRecordOnPageIndex" access="public" output="false" returntype="numeric">
-		<cfreturn variables.recordIndex+1 />
+		<cfset var first = ((variables.pageIndex-1) * variables.maxRecordsPerPage)>
+		
+		<cfif first gt getRecordCount()>
+			<cfreturn 1>
+		<cfelse>
+			<cfreturn first+1 />
+		</cfif>
+		
 	</cffunction>
 	
 	<cffunction name="getLastRecordOnPageIndex" access="public" output="false" returntype="numeric">
-		<cfset var last=(variables.recordIndex + variables.maxRecordsPerPage)>
+		<cfset var last=(((variables.pageIndex-1) * variables.maxRecordsPerPage) + variables.maxRecordsPerPage)>
 		<cfif last gt variables.records.recordcount>
 			<cfset last=variables.records.recordcount>
 		</cfif>
