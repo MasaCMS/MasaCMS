@@ -1353,7 +1353,7 @@ h2 {
 	line-height: 1;
 }
 
-#carch h2, #cemail h2 {
+#carch h2, #cemail h2, #cextend h2 {
 	float: left;
 	margin-bottom: .75em;
 }
