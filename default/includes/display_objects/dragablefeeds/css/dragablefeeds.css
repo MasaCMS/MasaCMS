@@ -114,7 +114,7 @@
 	right: 2px;
 	width: 16px;
 	height: 16px;
-	background-image: url(../images/delete-lt.png);
+	background-image: url(../images/delete-lt.png); /* dk = dark option */
 	background-repeat: no-repeat;
 	background-position: center center;
 	text-indent: -999em;
@@ -131,7 +131,7 @@
 	right: 20px;
 	width: 16px;
 	height: 16px;
-	background-image: url(../images/info-lt.png);
+	background-image: url(../images/info-lt.png); /* dk = dark option */
 	background-repeat: no-repeat;
 	background-position: center center;
 	text-indent: -999em;
