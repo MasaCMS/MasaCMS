@@ -70,12 +70,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 <cfoutput>
 <div id="svRSSFeeds">
-<#$.getHeaderTag('subHead1')#>#$.rbKey('dragablefeeds.title')#</#$.getHeaderTag('subHead1')#>
+<!---<#$.getHeaderTag('subHead1')#>#$.rbKey('dragablefeeds.title')#</#$.getHeaderTag('subHead1')#>--->
 <cfif not len(getPersonalizationID()) and application.settingsManager.getSite($.event('siteID')).getExtranetPublicReg() eq 1><p class="rssBlurb"><a href="#application.settingsManager.getSite($.event('siteID')).getLoginURL()#&returnURL=#URLEncodedFormat(application.contentRenderer.getCurrentURL())#">#$.rbKey('dragablefeeds.createaccount')#</a></p></cfif>
 </div>
 
 
-<#$.getHeaderTag('subHead2')# class="addFeeds">#$.rbKey('dragablefeeds.wantmore')#</#$.getHeaderTag('subHead2')#>
+<#$.getHeaderTag('subHead1')# class="addFeeds">#$.rbKey('dragablefeeds.wantmore')#</#$.getHeaderTag('subHead1')#>
 <div id="svAddNewFeed" class="clearfix">
 	<form method="post" action="##">
 		<dl id="rssInternal">

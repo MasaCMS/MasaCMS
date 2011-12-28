@@ -217,4 +217,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>	
 </cffunction>
 
+<cffunction name="newQuery" output="false">
+	<cfset var q=createObject("component","query")>
+	<cfset q.setDatasource(application.configBean.getDatasource())>
+	<cfset q.setUserName(application.configBean.getUserName())>
+	<cfset q.setPassword(application.configBean.getPassword())>
+	
+	<cfreturn q>
+</cffunction>
 </cfcomponent>
