@@ -292,15 +292,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif structKeyExists(arguments,"property")>
 		<cfif structKeyExists(arguments,"propertyValue")>
-				<cfif structKeyExists(application.configBean,"set#arguments.property#")>
-					<cfinvoke component="#application.configBean#" method="set#arguments.property#">
-						<cfinvokeargument name="#arguments.property#" value="#arguments.propertyValue#">
-					</cfinvoke>
-				<cfelse>
-					<cfthrow message="'#arguments.property#' is not a valid global property.">
-				</cfif>
-			</cfif>
-		<cfif structKeyExists(application.configBean,"get#arguments.property#")>
+				<cfinvoke component="#application.configBean#" method="set#arguments.property#">
+					<cfinvokeargument name="#arguments.property#" value="#arguments.propertyValue#">
+				</cfinvoke>
+		<cfelse>
 			<cfinvoke component="#application.configBean#" method="get#arguments.property#" returnvariable="theValue">
 		</cfif>
 		<cfreturn theValue>
