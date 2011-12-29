@@ -218,8 +218,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset application.serviceFactory.getBean("userUtility").returnLoginCheck(request.event.getValue("MuraScope"))>
 		</cfif>
 		
-		<cfif application.configBean.getAdminDomain() neq '' and application.configBean.getAdminDomain() neq listFirst(cgi.http_host,":") and request.context.compactDisplay eq '' and request.context.closeCompactDisplay eq ''>
-			<cflocation url="#application.configBean.getContext()#/" addtoken="false">
+		<cfif application.configBean.getAdminDomain() neq '' and application.configBean.getAdminDomain() neq listFirst(cgi.http_host,":") and not yesNoFormat(request.context.compactDisplay) and not yesNoFormat(request.context.closeCompactDisplay)>
+			<cfset application.contentServer.renderFilename("/admin/",false)>
+			<cfabort>
+			<!---<cflocation url="#application.configBean.getContext()#/" addtoken="false">--->
 		</cfif>
 		
 		<cfif session.mura.isLoggedIn and not structKeyExists(session,"siteArray")>
