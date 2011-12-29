@@ -129,6 +129,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset variables.condition="=" />
 				</cfif>
 	 		</cfcase>
+	 		<cfcase value="Like">
+	 			<cfset variables.condition="like" />
+	 		</cfcase>
 	 		<cfdefaultcase>
 			 	<cfset variables.condition=arguments.condition />
 			</cfdefaultcase>
