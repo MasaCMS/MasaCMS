@@ -124,7 +124,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfloop query="rssites">
 	<cfset site=application.settingsManager.getSite(rsSites.siteID)>
 	<cftry>
-	<cfif site.isValidDomain(domain:checkDomain, mode:"partial")>>
+	<cfif site.isValidDomain(domain:checkDomain, mode:"partial")>
 		<cflocation addtoken="no" url="http://#application.settingsManager.getSite(rsSites.siteID).getDomain()##application.configBean.getContext()#">
 	</cfif>
 	<cfcatch></cfcatch>
@@ -332,16 +332,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 </cffunction>
 
-<cffunction name="render404" output="true" access="public">
+<cffunction name="renderFileName" output="true" access="public">
+	<cfargument name="filename" default="">
+	<cfargument name="validateDomain" default="true">
 	<cfset var fileoutput="">
+
+	<cfset request.muraValidateDomain=arguments.validateDomain>
 	<cfset request.siteid = bindToDomain()>
-	<cfset request.currentFilename = "404">
+	<cfset request.currentFilename = arguments.filename>
 	<cfset request.currentFilenameAdjusted=request.currentFilename>
 	<cfset request.servletEvent = createObject("component","mura.servletEvent").init() />
-	<cfset fileOutput=variables.Mura.doRequest(request.servletEvent)>
-	<cfheader statuscode="404" statustext="Content Not Found" /> 
+	<cfset fileOutput=variables.Mura.doRequest(request.servletEvent)>	
 	<cfoutput>#fileOutput#</cfoutput>
 	<cfabort>
+</cffunction>
+
+<cffunction name="render404" output="true" access="public">
+	<cfheader statuscode="404" statustext="Content Not Found" /> 
+	<cfset renderFilename("404")> 
 </cffunction>
 
 <cffunction name="parseCustomURLVars" output="false">

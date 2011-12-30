@@ -79,6 +79,7 @@
 
 .editableObject:hover {
 	outline-width: 2px !important;
+	outline-offset: -2px !important;
 	/*overflow: hidden !important;*/
 	}
 
