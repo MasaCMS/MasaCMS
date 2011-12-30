@@ -132,7 +132,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset traverseSite(rs.contentID, arguments.siteid, arguments.exportDir,rs.sortBy,rs.sortDirection) />	
 		</cfif>
 		
-		<cfset contentBean=createObject("component","contentNavBean").init( variables.utility.queryRowToStruct(rs,rs.currentRow) ,variables.contentManager) />
+		<cfset contentBean=getBean("contentNavBean").set( variables.utility.queryRowToStruct(rs,rs.currentRow)) />
 		<cfset exportNode(contentBean,arguments.exportDir)>
 		
 	</cfloop>
@@ -159,10 +159,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.exportDir=left(arguments.exportDir, len(arguments.exportDir)-1 )>
 	</cfif>
 	
+	<cfset request.muraValidateDomain=false>
 	<cfset request.muraExportHtml = true>
 	<cfset request.siteid = arguments.contentBean.getSiteID()>
 
-	<cfif not listFindNoCase("Link,File",arguments.contentBean.getType())>
+	<cfif not listFindNoCase("Link,File",arguments.contentBean.getType())>		
 			<cfset request.currentFilename = arguments.contentBean.getFilename()>
 			<cfset request.currentFilenameAdjusted=request.currentFilename>
 			<cfset request.servletEvent = createObject("component","mura.servletEvent").init() />
