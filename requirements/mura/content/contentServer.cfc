@@ -357,7 +357,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="event">
 	<cfset var categoryFilename="">
 	<cfset var categoryBean="">
-	<cfset var contentBean="">
 	<cfset var i="">
 	<cfset var dateArray=arrayNew(1)>
 	<cfset var categoryArray=arrayNew(1)>
