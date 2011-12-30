@@ -74,10 +74,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setConfigBean" returntype="void" access="public" output="false">
 <cfargument name="configBean">
-<cfset variables.configBean=arguments.configBean />
-
-<cfset loadPlugins()>
-
+	
+	<cfset variables.configBean=arguments.configBean />
+	
+	<cfif isdefined("url.safemode") and isDefined("session.mura.memberships") and listFindNoCase(session.mura.memberships,"S2")>
+		<cfset loadPlugins(safeMode=true)>
+	<cfelse>	
+		<cfset loadPlugins(safeMode=false)>
+	</cfif>
 </cffunction>
 
 <cffunction name="setSettingsManager" returntype="void" access="public" output="false">
@@ -96,19 +100,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="loadPlugins" returntype="void" access="public" output="false">
+<cfargument name="safeMode" default="false">
 <cfset var rsScripts1="">
 <cfset var rsScripts2="">
 
 <cfquery name="variables.rsPlugins" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 select * from tplugins
+<cfif arguments.safeMode>
+	where 0=1
+</cfif>
 </cfquery>
 
 <cfquery name="variables.rsPluginSiteAsignments" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 select moduleID, siteid from tcontent where type='Plugin'
+<cfif arguments.safeMode>
+	and 0=1
+</cfif>
 </cfquery>
 
 <cfquery name="variables.rsSettings" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 select * from tpluginsettings
+<cfif arguments.safeMode>
+	where 0=1
+</cfif>
 </cfquery>
 
 <cfquery name="rsScripts1" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -118,6 +132,9 @@ inner join tplugins on (tpluginscripts.moduleID=tplugins.moduleID)
 inner join tcontent on (tplugins.moduleID=tcontent.moduleID)
 where tpluginscripts.runat not in ('onGlobalLogin','onGlobalRequestStart','onApplicationLoad','onGlobalError','onGlobalSessionStart','onGlobalSessionEnd')
 and tplugins.deployed=1
+<cfif arguments.safeMode>
+	and 0=1
+</cfif>
 </cfquery>
 
 <cfquery name="rsScripts2" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -125,6 +142,9 @@ select tplugins.name, tplugins.package, tplugins.directory, tpluginscripts.modul
 inner join tplugins on (tpluginscripts.moduleID=tplugins.moduleID)
 where tpluginscripts.runat in ('onGlobalLogin','onGlobalRequestStart','onApplicationLoad','onGlobalError','onGlobalSessionStart','onGlobalSessionEnd')
 and tplugins.deployed=1
+<cfif arguments.safeMode>
+	and 0=1
+</cfif>
 </cfquery>
 
 
@@ -144,6 +164,9 @@ tplugindisplayobjects.displayObjectfile, tplugins.pluginID, tplugins.package, tp
 tplugindisplayobjects.location, tplugindisplayobjects.displaymethod, tplugindisplayobjects.docache,tplugindisplayobjects.configuratorInit, configuratorJS
 from tplugindisplayobjects inner join tplugins on (tplugindisplayobjects.moduleID=tplugins.moduleID)
 inner join tcontent on (tplugins.moduleID=tcontent.moduleID)
+<cfif arguments.safeMode>
+	where 0=1
+</cfif>
 </cfquery>
 
 <cfset purgeEventManagers()/>

@@ -337,7 +337,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="validateDomain" default="true">
 	<cfset var fileoutput="">
 
-	<cfset request.validateDomain=arguments.validateDomain>
+	<cfset request.muraValidateDomain=arguments.validateDomain>
 	<cfset request.siteid = bindToDomain()>
 	<cfset request.currentFilename = arguments.filename>
 	<cfset request.currentFilenameAdjusted=request.currentFilename>
