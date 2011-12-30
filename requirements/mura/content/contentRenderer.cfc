@@ -684,17 +684,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var theme =$.siteConfig("theme")>
 	<cfset var expandedPath=expandPath(filePath)>
 	<cfset var str="">
-
+	<cfset var tracePoint=0>
+	
 	<cfsavecontent variable="str">
 	<cfif fileExists(expandedPath & "themes/"  & theme & "/display_objects/nav/dsp_tag_cloud.cfm")>
-		<cfinclude  template="#filePath#themes/#theme#/display_objects/nav/dsp_tag_cloud.cfm" />
+		<cfset tracePoint=initTracePoint("#filePath#themes/#theme#/display_objects/nav/dsp_tag_cloud.cfm")>
+		<cfinclude template="#filePath#themes/#theme#/display_objects/nav/dsp_tag_cloud.cfm" />
 	<cfelseif fileExists(expandedPath & "display_objects/custom/nav/dsp_tag_cloud.cfm")>
-		<cfinclude  template="#filePath#display_objects/custom/nav/dsp_tag_cloud.cfm" />
+		<cfset tracePoint=initTracePoint("#filePath#display_objects/custom/nav/dsp_tag_cloud.cfm")>
+		<cfinclude template="#filePath#display_objects/custom/nav/dsp_tag_cloud.cfm" />
 	<cfelse>
-		<cfinclude  template="#filePath#display_objects/nav/dsp_tag_cloud.cfm" />
+		<cfset tracePoint=initTracePoint("#filePath#display_objects/nav/dsp_tag_cloud.cfm")>
+		<cfinclude template="#filePath#display_objects/nav/dsp_tag_cloud.cfm" />
 	</cfif>
 	</cfsavecontent>
-
+	
+	<cfset commitTracePoint(tracePoint)>
+	
 <cfreturn str />
 </cffunction>
 

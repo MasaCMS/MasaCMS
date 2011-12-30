@@ -332,19 +332,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 </cffunction>
 
-<cffunction name="renderFileName" output="true" access="public">
+<cffunction name="renderFilename" output="true" access="public">
 	<cfargument name="filename" default="">
 	<cfargument name="validateDomain" default="true">
 	<cfset var fileoutput="">
-
-	<cfset request.muraValidateDomain=arguments.validateDomain>
+ 
 	<cfset request.siteid = bindToDomain()>
-	<cfset request.currentFilename = arguments.filename>
-	<cfset request.currentFilenameAdjusted=request.currentFilename>
 	<cfset request.servletEvent = createObject("component","mura.servletEvent").init() />
+	<cfset request.servletEvent.setValue("muraValidateDomain",arguments.validateDomain)>
+	<cfset request.servletEvent.setValue("currentfilename",arguments.filename)>
+	<cfset parseCustomURLVars(request.servletEvent)>
 	<cfset fileOutput=variables.Mura.doRequest(request.servletEvent)>	
 	<cfoutput>#fileOutput#</cfoutput>
 	<cfabort>
+
 </cffunction>
 
 <cffunction name="render404" output="true" access="public">
@@ -356,7 +357,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="event">
 	<cfset var categoryFilename="">
 	<cfset var categoryBean="">
-	<cfset var contentBean="">
 	<cfset var i="">
 	<cfset var dateArray=arrayNew(1)>
 	<cfset var categoryArray=arrayNew(1)>
