@@ -134,7 +134,7 @@ Usage:
 		<cfelse>
 		
 			<!--- Double-checked lock based on Object Type Name to handle race conditions. --->
-			<cflock name="Lock_BeanInjector_Exclusive_#local.typeName#" type="exclusive" timeout="5" throwontimeout="true">
+			<cflock name="BeanInjector_#local.typeName#_#application.instanceID#" type="exclusive" timeout="5" throwontimeout="true">
 				
 				<cfif StructKeyExists(variables.DICache, local.typeName) and StructKeyExists(variables.DICache[local.typeName], variables.loadedKey)>
 					<cfset injectCachedBeans(arguments.targetComponent, local.typeName) />
