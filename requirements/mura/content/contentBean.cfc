@@ -537,6 +537,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setReleaseDate" output="false" access="public">
     <cfargument name="releaseDate" type="string" required="true">
 	<cfset variables.instance.releaseDate = parseDateArg(arguments.releaseDate) />
+	<cfreturn this>
 </cffunction>
   
 <cffunction name="setNextN" output="false" access="public">
