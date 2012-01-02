@@ -1457,10 +1457,35 @@ jQuery(function($){
 		dayNamesShort: ['zon', 'maa', 'din', 'woe', 'don', 'vri', 'zat'],
 		dayNamesMin: ['zo', 'ma', 'di', 'wo', 'do', 'vr', 'za'],
 		weekHeader: 'Wk',
-		dateFormat: 'dd/mm/yy',
+		dateFormat: 'dd-mm-yy',
 		firstDay: 1,
 		isRTL: false,
 		showMonthAfterYear: false,
 		yearSuffix: ''};
 	$.datepicker.setDefaults($.datepicker.regional.nl);
+});
+jQuery(function($){
+	$.datepicker.regional["nl-BE"] = {
+		closeText: 'Sluiten',
+		prevText: '←',
+		nextText: '→',
+		currentText: 'Vandaag',
+		monthNames: ['januari', 'februari', 'maart', 'april', 'mei', 'juni',
+		'juli', 'augustus', 'september', 'oktober', 'november', 'december'],
+		monthNamesShort: ['jan', 'feb', 'mrt', 'apr', 'mei', 'jun',
+		'jul', 'aug', 'sep', 'okt', 'nov', 'dec'],
+		dayNames: ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'],
+		dayNamesShort: ['zon', 'maa', 'din', 'woe', 'don', 'vri', 'zat'],
+		dayNamesMin: ['zo', 'ma', 'di', 'wo', 'do', 'vr', 'za'],
+		weekHeader: 'Wk',
+		dateFormat: 'dd/mm/yy',
+		firstDay: 1,
+		isRTL: false,
+		showMonthAfterYear: false,
+		yearSuffix: ''};
+	$.datepicker.setDefaults($.datepicker.regional["nl-BE"]);
+});
+jQuery(function($){
+	$.datepicker.regional["nl-NL"] = $.datepicker.regional.nl
+	$.datepicker.setDefaults($.datepicker.regional["nl-NL"]);
 });
