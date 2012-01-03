@@ -138,9 +138,9 @@ config.format_tags = 'p;h1;h2;h3;h4;pre;address;div';
 	</cfif>
 	
 	<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/styles.js.cfm') )>
-		config.stylesCombo_stylesSet='default:#$.siteConfig('themeAssetPath')#/js/editor/styles.js.cfm';
+		config.stylesSet='default:#$.siteConfig('themeAssetPath')#/js/editor/styles.js.cfm';
 	<cfelseif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/styles.js') )>
-		config.stylesCombo_stylesSet='default:#$.siteConfig('themeAssetPath')#/js/editor/styles.js';
+		config.stylesSet='default:#$.siteConfig('themeAssetPath')#/js/editor/styles.js';
 	</cfif>
 	
 	<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/config.js.cfm') )>
