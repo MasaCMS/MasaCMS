@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="rc">
 	<cfparam name="arguments.rc.siteid" default="#session.siteid#"/>
 	
-	<cfif not listFind(session.mura.memberships,'Admin;#variables.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') and not listFind(session.mura.memberships,'S2')>
+	<cfif not variables.permUtility.getModulePerm('00000000000000000000000000000000000',arguments.rc.siteid)>
 		<cfset secure(arguments.rc)>
 	</cfif>
 	
