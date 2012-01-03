@@ -367,7 +367,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset serverpath = "http://#listFirst(cgi.http_host,':')##configBean.getServerPort()##configBean.getContext()#/">
 
 <cfif configBean.getSiteIDInURLS()>
-    <cfset serverpath &= '#getSiteID()#/'>
+    <cfset serverpath &= '#variables.instance.siteID#/'>
 </cfif>
 
 <cfif configBean.getIndexFileInURLS()>
