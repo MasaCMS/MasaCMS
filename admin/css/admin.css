@@ -690,6 +690,11 @@ form {
 	width: 920px;
 }
 
+form.clear {
+	clear: both;
+}
+
+
 body.compact form {
 	margin: 0;
 	width: 100%;
