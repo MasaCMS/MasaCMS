@@ -1928,6 +1928,13 @@ form.search {
 	border-radius: 5px;
 }
 
+
+#mura-select-link #siteSearch {
+	float: none;
+	clear: both;
+	width: 100%;
+}
+
 #siteSearch input.text, #siteSearch input.submit {
 	margin: 0;
 }
@@ -3078,6 +3085,10 @@ dt .add li.Page {
 	background: url(../images/icons/calendar.gif) no-repeat 2px .6em;
 }
 
+.mura-link-search-result .navZoom li.Calendar {
+	background: url(../images/icons/calendar.gif) no-repeat 2px center;
+}
+
 #tabFlat .navZoom li.Calendar {
 	background: url(../images/icons/calendar.gif) no-repeat 2px .1em;
 }
@@ -3944,12 +3955,13 @@ ul.params li {
 
 table .navZoom {
 	margin: 0 !important;
-	padding: 0 !important;
+	padding: .2em !important;
 	list-style: none;
 	background-image: none !important;
 	position: relative;
 	display: inline-block;
 	clear: none;
+	border: 0;
 }
 
 /* @end */
