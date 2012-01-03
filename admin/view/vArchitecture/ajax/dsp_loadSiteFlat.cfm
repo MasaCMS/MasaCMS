@@ -210,7 +210,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			      </cfif>
 			  <cfelse>
 			      <li class="editOff">&nbsp;</li>
-					<cfswitch expression="#item.gettype#">
+					<cfswitch expression="#item.gettype()#">
 					<cfcase value="Page,Portal,Calendar,Gallery">
 					<li class="preview"><a title="Preview" href="javascript:preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),item.getfilename())#','#item.gettargetParams()#');">Preview</a></li>
 					</cfcase>
