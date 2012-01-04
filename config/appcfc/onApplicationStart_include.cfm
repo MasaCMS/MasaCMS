@@ -320,7 +320,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfloop>	
 
-		<cfif application.configBean.getValue("autoDiscoverPlugins")>
+		<cfif application.configBean.getValue("autoDiscoverPlugins") and not isdefined("url.safemode")>
 			<cfset application.pluginManager.discover()>
 		</cfif>
 		
