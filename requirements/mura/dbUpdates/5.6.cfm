@@ -1,10 +1,4 @@
-﻿<cfdbinfo 
-	name="rsCheck"
-	datasource="#application.configBean.getDatasource()#"
-	username="#application.configBean.getDbUsername()#"
-	password="#application.configBean.getDbPassword()#"
-	table="tcontent"
-	type="columns">
+﻿<cfset rsCheck=dbTableColumns("tcontent")>
 
 <cfquery name="rsCheck" dbtype="query">
 	select * from rsCheck where lower(rsCheck.column_name) like 'majorversion'
@@ -35,13 +29,7 @@
 	
 </cfif>
 
-<cfdbinfo 
-	name="rsCheck"
-	datasource="#application.configBean.getDatasource()#"
-	username="#application.configBean.getDbUsername()#"
-	password="#application.configBean.getDbPassword()#"
-	table="tcontent"
-	type="columns">
+<cfset rsCheck=dbTableColumns("tcontent")>
 
 <cfquery name="rsCheck" dbtype="query">
 	select * from rsCheck where lower(rsCheck.column_name) like 'minorversion'
@@ -72,13 +60,7 @@
 	
 </cfif>
 
-<cfdbinfo 
-	name="rsCheck"
-	datasource="#application.configBean.getDatasource()#"
-	username="#application.configBean.getDbUsername()#"
-	password="#application.configBean.getDbPassword()#"
-	table="tcontentstats"
-	type="columns">
+<cfset rsCheck=dbTableColumns("tcontentstats")>
 
 <cfquery name="rsCheck" dbtype="query">
 	select * from rsCheck where lower(rsCheck.column_name) like 'majorversion'
@@ -109,13 +91,7 @@
 	
 </cfif>
 
-<cfdbinfo 
-	name="rsCheck"
-	datasource="#application.configBean.getDatasource()#"
-	username="#application.configBean.getDbUsername()#"
-	password="#application.configBean.getDbPassword()#"
-	table="tcontentstats"
-	type="columns">
+<cfset rsCheck=dbTableColumns("tcontentstats")>
 
 <cfquery name="rsCheck" dbtype="query">
 	select * from rsCheck where lower(rsCheck.column_name) like 'minorversion'
@@ -146,13 +122,7 @@
 	
 </cfif>
 
-<cfdbinfo 
-	name="rsCheck"
-	datasource="#application.configBean.getDatasource()#"
-	username="#application.configBean.getDbUsername()#"
-	password="#application.configBean.getDbPassword()#"
-	table="tcontentstats"
-	type="columns">
+<cfset rsCheck=dbTableColumns("tcontentstats")>
 
 <cfquery name="rsCheck" dbtype="query">
 	select * from rsCheck where lower(rsCheck.column_name) like 'lockid'
@@ -178,13 +148,7 @@
 </cfswitch>
 </cfif>
 
-<cfdbinfo 
-	name="rsCheck"
-	datasource="#application.configBean.getDatasource()#"
-	username="#application.configBean.getDbUsername()#"
-	password="#application.configBean.getDbPassword()#"
-	table="tcontentassignments"
-	type="columns">
+<cfset rsCheck=dbTableColumns("tcontentassignments")>
 
 <cfquery name="rsCheck" dbtype="query">
 	select * from rsCheck where lower(rsCheck.column_name) like 'type'
@@ -215,13 +179,7 @@
 </cfif>
 
 
-<cfdbinfo 
-	name="rsCheck"
-	datasource="#application.configBean.getDatasource()#"
-	username="#application.configBean.getDbUsername()#"
-	password="#application.configBean.getDbPassword()#"
-	table="tcontent"
-	type="columns">
+<cfset rsCheck=dbTableColumns("tcontent")>
 
 <cfquery name="rsCheck" dbtype="query">
 	select * from rsCheck where lower(rsCheck.column_name) like 'expires'
@@ -247,13 +205,7 @@
 </cfswitch>
 </cfif>
 
-<cfdbinfo 
-	name="rsCheck"
-	datasource="#application.configBean.getDatasource()#"
-	username="#application.configBean.getDbUsername()#"
-	password="#application.configBean.getDbPassword()#"
-	table="tcontentcomments"
-	type="columns">
+<cfset rsCheck=dbTableColumns("tcontentcomments")>
 
 <cfquery name="rsCheck" dbtype="query">
 	select * from rsCheck where lower(rsCheck.column_name) like 'remoteid'
@@ -281,13 +233,7 @@
 
 <cfset dbCreateIndex(table="tcontentcomments",column="remoteid")>
 
-<cfdbinfo 
-	name="rsCheck"
-	datasource="#application.configBean.getDatasource()#"
-	username="#application.configBean.getDbUsername()#"
-	password="#application.configBean.getDbPassword()#"
-	table="tcontentcomments"
-	type="columns">
+<cfset rsCheck=dbTableColumns("tcontentcomments")>
 	
 <cfquery name="rsCheck" dbtype="query">
 	select * from rsCheck where lower(rsCheck.column_name) like 'url'

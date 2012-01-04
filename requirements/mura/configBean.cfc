@@ -782,6 +782,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="dbTableColumns" output="false">
+	<cfargument name="table">
+	<cfset var rs ="">
+	
+	<cfif variables.instance.dbtype neq "oracle">
+			<cfdbinfo 
+			name="rs"
+			datasource="#getDatasource()#"
+			username="#getDbUsername()#"
+			password="#getDbPassword()#"
+			table="#arguments.table#"
+			type="columns">	
+	<cfelse>
+		<cfquery
+			name="rs" 
+			datasource="#getDatasource()#"
+			username="#getDbUsername()#"
+			password="#getDbPassword()#">
+				SELECT column_name, data_length column_size, data_type type_name
+				FROM user_tab_cols
+				WHERE table_name=UPPER('#arguments.table#')
+		</cfquery>
+	</cfif>
+	
+	<cfreturn rs>
+</cffunction>
+
 <cffunction name="dbCreateIndex" output="false">
 	<cfargument name="table">
 	<cfargument name="column" default="">

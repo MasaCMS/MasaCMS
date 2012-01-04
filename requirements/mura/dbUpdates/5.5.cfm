@@ -1,10 +1,4 @@
-﻿<cfdbinfo 
-	name="rsCheck"
-	datasource="#application.configBean.getDatasource()#"
-	username="#application.configBean.getDbUsername()#"
-	password="#application.configBean.getDbPassword()#"
-	table="tcontentfeeds"
-	type="columns">
+﻿<cfset rsCheck=dbTableColumns("tcontentfeeds")>
 
 <cfquery name="rsCheck" dbtype="query">
 	select * from rsCheck where lower(rsCheck.column_name) like 'imagesize'
@@ -30,13 +24,7 @@
 </cfswitch>
 </cfif>
 
-<cfdbinfo 
-	name="rsCheck"
-	datasource="#application.configBean.getDatasource()#"
-	username="#application.configBean.getDbUsername()#"
-	password="#application.configBean.getDbPassword()#"
-	table="tcontentfeeds"
-	type="columns">
+<cfset rsCheck=dbTableColumns("tcontentfeeds")>
 
 <cfquery name="rsCheck" dbtype="query">
 	select * from rsCheck where lower(rsCheck.column_name) like 'imageheight'
@@ -62,13 +50,7 @@
 </cfswitch>
 </cfif>
 
-<cfdbinfo 
-	name="rsCheck"
-	datasource="#application.configBean.getDatasource()#"
-	username="#application.configBean.getDbUsername()#"
-	password="#application.configBean.getDbPassword()#"
-	table="tcontentfeeds"
-	type="columns">
+<cfset rsCheck=dbTableColumns("tcontentfeeds")>
 
 <cfquery name="rsCheck" dbtype="query">
 	select * from rsCheck where lower(rsCheck.column_name) like 'imagewidth'
@@ -94,13 +76,7 @@
 </cfswitch>
 </cfif>
 
-<cfdbinfo 
-	name="rsCheck"
-	datasource="#application.configBean.getDatasource()#"
-	username="#application.configBean.getDbUsername()#"
-	password="#application.configBean.getDbPassword()#"
-	table="tcontentfeeds"
-	type="columns">
+<cfset rsCheck=dbTableColumns("tcontentfeeds")>
 
 <cfquery name="rsCheck" dbtype="query">
 	select * from rsCheck where lower(rsCheck.column_name) like 'displaylist'
@@ -140,13 +116,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 </cfswitch>
 </cfif>
 
-<cfdbinfo 
-	name="rsCheck"
-	datasource="#application.configBean.getDatasource()#"
-	username="#application.configBean.getDbUsername()#"
-	password="#application.configBean.getDbPassword()#"
-	table="tcontent"
-	type="columns">
+<cfset rsCheck=dbTableColumns("tcontent")>
 
 <cfquery name="rsCheck" dbtype="query">
 	select * from rsCheck where lower(rsCheck.column_name) like 'imagesize'
@@ -172,13 +142,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 </cfswitch>
 </cfif>
 
-<cfdbinfo 
-	name="rsCheck"
-	datasource="#application.configBean.getDatasource()#"
-	username="#application.configBean.getDbUsername()#"
-	password="#application.configBean.getDbPassword()#"
-	table="tcontent"
-	type="columns">
+<cfset rsCheck=dbTableColumns("tcontent")>
 
 <cfquery name="rsCheck" dbtype="query">
 	select * from rsCheck where lower(rsCheck.column_name) like 'imageheight'
@@ -204,13 +168,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 </cfswitch>
 </cfif>
 
-<cfdbinfo 
-	name="rsCheck"
-	datasource="#application.configBean.getDatasource()#"
-	username="#application.configBean.getDbUsername()#"
-	password="#application.configBean.getDbPassword()#"
-	table="tcontent"
-	type="columns">
+<cfset rsCheck=dbTableColumns("tcontent")>
 
 <cfquery name="rsCheck" dbtype="query">
 	select * from rsCheck where lower(rsCheck.column_name) like 'imagewidth'
@@ -236,13 +194,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 </cfswitch>
 </cfif>
 
-<cfdbinfo 
-	name="rsCheck"
-	datasource="#application.configBean.getDatasource()#"
-	username="#application.configBean.getDbUsername()#"
-	password="#application.configBean.getDbPassword()#"
-	table="tcontent"
-	type="columns">
+<cfset rsCheck=dbTableColumns("tcontent")>
 
 <cfquery name="rsCheck" dbtype="query">
 	select * from rsCheck where lower(rsCheck.column_name) like 'childtemplate'
@@ -268,13 +220,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 </cfswitch>
 </cfif>
 
-<cfdbinfo 
-	name="rsCheck"
-	datasource="#application.configBean.getDatasource()#"
-	username="#application.configBean.getDbUsername()#"
-	password="#application.configBean.getDbPassword()#"
-	table="tcontent"
-	type="columns">
+<cfset rsCheck=dbTableColumns("tcontent")>
 
 <cfquery name="rsCheck" dbtype="query">
 	select * from rsCheck where lower(rsCheck.column_name) like 'urltitle'
@@ -314,13 +260,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 
 
 <cfif getDbType() eq "mysql">
-	<cfdbinfo 
-	name="rsCheck"
-	datasource="#application.configBean.getDatasource()#"
-	username="#application.configBean.getDbUsername()#"
-	password="#application.configBean.getDbPassword()#"
-	table="tcontent"
-	type="columns">
+	<cfset rsCheck=dbTableColumns("tcontent")>
 
 	<cfloop list="targetparams,restrictgroups,moduleassign,htmltitle,remoteurl,remotesourceurl,remotesource,audience,tags,responsesendto,responsedisplayfields,notes,path,keypoints,metakeywords,metadesc" index="i">
 		<cfquery name="rsSubCheck" dbtype="query">
@@ -335,13 +275,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	</cfloop>
 </cfif>
 
-<cfdbinfo 
-	name="rsCheck"
-	datasource="#application.configBean.getDatasource()#"
-	username="#application.configBean.getDbUsername()#"
-	password="#application.configBean.getDbPassword()#"
-	table="tcontentfeeds"
-	type="columns">
+<cfset rsCheck=dbTableColumns("tcontentfeeds")>
 
 <cfquery name="rsCheck" dbtype="query">
 	select * from rsCheck where lower(rsCheck.column_name) like 'shownavonly'
@@ -372,13 +306,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	
 </cfif>
 
-<cfdbinfo 
-	name="rsCheck"
-	datasource="#application.configBean.getDatasource()#"
-	username="#application.configBean.getDbUsername()#"
-	password="#application.configBean.getDbPassword()#"
-	table="tcontentfeeds"
-	type="columns">
+<cfset rsCheck=dbTableColumns("tcontentfeeds")>
 
 <cfquery name="rsCheck" dbtype="query">
 	select * from rsCheck where lower(rsCheck.column_name) like 'showexcludesearch'
@@ -409,13 +337,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	
 </cfif>
 
-<cfdbinfo 
-	name="rsCheck"
-	datasource="#application.configBean.getDatasource()#"
-	username="#application.configBean.getDbUsername()#"
-	password="#application.configBean.getDbPassword()#"
-	table="tplugindisplayobjects"
-	type="columns">
+<cfset rsCheck=dbTableColumns("tplugindisplayobjects")>
 
 <cfquery name="rsCheck" dbtype="query">
 	select * from rsCheck where lower(rsCheck.column_name) like 'configuratorinit'
@@ -441,13 +363,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 </cfswitch>
 </cfif>
 
-<cfdbinfo 
-	name="rsCheck"
-	datasource="#application.configBean.getDatasource()#"
-	username="#application.configBean.getDbUsername()#"
-	password="#application.configBean.getDbPassword()#"
-	table="tplugindisplayobjects"
-	type="columns">
+<cfset rsCheck=dbTableColumns("tplugindisplayobjects")>
 
 <cfquery name="rsCheck" dbtype="query">
 	select * from rsCheck where lower(rsCheck.column_name) like 'configuratorjs'
@@ -473,13 +389,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 </cfswitch>
 </cfif>
 
-<cfdbinfo 
-	name="rsCheck"
-	datasource="#application.configBean.getDatasource()#"
-	username="#application.configBean.getDbUsername()#"
-	password="#application.configBean.getDbPassword()#"
-	table="tsettings"
-	type="columns">
+<cfset rsCheck=dbTableColumns("tsettings")>
 
 <cfquery name="rsCheck" dbtype="query">
 	select * from rsCheck where lower(rsCheck.column_name) like 'domain'
@@ -514,13 +424,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 </cfswitch>	
 </cfif>
 
-<cfdbinfo 
-	name="rsCheck"
-	datasource="#application.configBean.getDatasource()#"
-	username="#application.configBean.getDbUsername()#"
-	password="#application.configBean.getDbPassword()#"
-	table="tsettings"
-	type="columns">
+<cfset rsCheck=dbTableColumns("tsettings")>
 
 <cfquery name="rsCheck" dbtype="query">
 	select * from rsCheck where lower(rsCheck.column_name) like 'columnnames'
