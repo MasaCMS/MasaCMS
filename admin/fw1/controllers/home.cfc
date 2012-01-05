@@ -62,23 +62,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rsList="">
 		<cfset var rsDefault=structNew()>
 		
+		<cfset rsDefault.recordcount=0>
 		<cfset arguments.rc.siteid="">
+		
 		<cfif not listFind(session.mura.memberships,'S2IsPrivate')>
 			<cfset variables.fw.redirect(action="clogin.main",path="index.cfm")>
 		</cfif>
 		
 		<cfset rsList=application.settingsManager.getUserSites(session.siteArray,listFind(session.mura.memberships,'S2')) />
 		
-		<cfset siteID=application.contentServer.bindToDomain(isAdmin=true)>
-		
-		<cfif siteID neq "--none--">
+		<cfif isDefined("session.siteID")>
 			<cfquery name="rsDefault" dbtype="query">
 			SELECT siteid FROM rsList
-			WHERE siteid = <cfqueryparam cfsqltype="cf_sql_varchar"
-			value="#siteID#" />
+			WHERE siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.siteID#" />
 			</cfquery>
-		<cfelse>
-			<cfset rsDefault.recordcount=0>
+		</cfif>
+	
+		<cfif not rsDefault.recordcount>
+			<cfset siteID=application.contentServer.bindToDomain(isAdmin=true)>
+			
+			<cfif siteID neq "--none--">
+				<cfquery name="rsDefault" dbtype="query">
+				SELECT siteid FROM rsList
+				WHERE siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#siteID#" />
+				</cfquery>
+			</cfif>
+		
 		</cfif>
 		
 		<cfif rsDefault.recordcount>
