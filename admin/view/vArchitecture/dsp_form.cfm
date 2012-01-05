@@ -174,7 +174,9 @@ jQuery(document).ready(function(){
 		<cfif request.contentBean.getIsNew()>
 			<cfquery name="rsParentSubType" dbtype="query">
 			select * from rsSubTypes
-			where subtype = <cfqueryparam cfsqltype="cf_sql_varchar" value="#$.getBean('content').loadBy(contentID=attributes.parentID, siteID=attributes.siteID).getSubType()#"/>
+			where 
+			type = <cfqueryparam cfsqltype="cf_sql_varchar" value="#attributes.type#"/>
+			and subtype = <cfqueryparam cfsqltype="cf_sql_varchar" value="#$.getBean('content').loadBy(contentID=attributes.parentID, siteID=attributes.siteID).getSubType()#"/>
 			</cfquery>
 			<cfif rsParentSubType.recordcount>
 				<cfset request.contentBean.setSubType(rsParentSubType.subType)>

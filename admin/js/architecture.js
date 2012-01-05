@@ -400,8 +400,6 @@ function updateDisplayObjectList(regionid){
 			objectList.value = selectedObjects.options[i].value; 
 		}
 	}
-	
-	initDisplayObjectConfigurators();
 
 }
 
@@ -1529,7 +1527,6 @@ function addDisplayObject(objectToAdd,regionid,configure){
 		myoption.text= tmpText;
 		myoption.value=tmpValue;
 		myoption.selected = "selected"
-		
 	}
 	
 	updateDisplayObjectList(regionid);
@@ -1717,7 +1714,7 @@ function addDisplayObject(objectToAdd,regionid,configure){
 	
 	jQuery(document).ready(
 		function(){
-			initDisplayObjectConfigurators()
+			initDisplayObjectConfigurators();
 		}
 	);
 	
