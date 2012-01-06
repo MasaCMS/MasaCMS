@@ -93,16 +93,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset prefix=left(arguments.MissingMethodName,3)>
 				<cfif listFindNoCase("set,get",prefix) and len(arguments.MissingMethodName) gt 3>
 					<cfif getContentBean().valueExists(right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3))>
-						<cfset object=getContentBean()>			
+						<cfset object=getContentBean()>	
+					<cfelse>
+						<cfthrow message="The method '#arguments.MissingMethodName#' is not defined">		
 					</cfif>
+				<cfelse>
+					<cfthrow message="The method '#arguments.MissingMethodName#' is not defined">
 				</cfif>
 			</cfif>
-		</cfif>
-		
-		<cfif not isObject(object)>	
+		<cfelse>
 			<cfthrow message="The method '#arguments.MissingMethodName#' is not defined">
 		</cfif>
-	
+		
 		<cfsavecontent variable="local.thevalue2">
 		<cfif not structIsEmpty(MissingMethodArguments)>
 			<cfinvoke component="#object#" method="#MissingMethodName#" argumentcollection="#MissingMethodArguments#" returnvariable="local.theValue1">
