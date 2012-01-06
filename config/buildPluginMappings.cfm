@@ -119,10 +119,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<cfset currentPath=currentDir & "/" & p>
 				<cfif len(p) and directoryExists(currentPath)>
+					<cfset pluginmapping=currentConfig.plugin.mappings.mapping[m].xmlAttributes.name>
 					<cfif canWriteMode>
-						<cffile action="append" file="#baseDir#/plugins/mappings.cfm" output='<cfset this.mappings["/#currentConfig.plugin.mappings.mapping[m].xmlAttributes.name#"] = mapPrefix & BaseDir & "/plugins/#rsRequirements.name#/#p#">' mode="775">
+						<cffile action="append" file="#baseDir#/plugins/mappings.cfm" output='<cfif not structKeyExists(this.mappings,"/#pluginmapping#")><cfset this.mappings["/#pluginmapping#"] = mapPrefix & BaseDir & "/plugins/#rsRequirements.name#/#p#"></cfif>' mode="775">
 					<cfelseif canWriteMappings>
-						<cffile action="append" file="#baseDir#/plugins/mappings.cfm" output='<cfset this.mappings["/#currentConfig.plugin.mappings.mapping[m].xmlAttributes.name#"] = mapPrefix & BaseDir & "/plugins/#rsRequirements.name#/#p#">'>		
+						<cffile action="append" file="#baseDir#/plugins/mappings.cfm" output='<cfif not structKeyExists(this.mappings,"/#pluginmapping#")><cfset this.mappings["/#pluginmapping#"] = mapPrefix & BaseDir & "/plugins/#rsRequirements.name#/#p#"></cfif>'>		
 					</cfif>
 				</cfif>
 			</cfif>
