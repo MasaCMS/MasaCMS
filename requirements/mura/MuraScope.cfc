@@ -94,10 +94,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif listFindNoCase("set,get",prefix) and len(arguments.MissingMethodName) gt 3>
 					<cfif getContentBean().valueExists(right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3))>
 						<cfset object=getContentBean()>
+						
 					</cfif>
 				</cfif>
 			</cfif>
-		<cfelse>
+		</cfif>
+		
+		<cfif not isObject(object)>	
 			<cfthrow message="The method '#arguments.MissingMethodName#' is not defined">
 		</cfif>
 	
