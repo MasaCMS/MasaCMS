@@ -93,8 +93,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset prefix=left(arguments.MissingMethodName,3)>
 				<cfif listFindNoCase("set,get",prefix) and len(arguments.MissingMethodName) gt 3>
 					<cfif getContentBean().valueExists(right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3))>
-						<cfset object=getContentBean()>
-						
+						<cfset object=getContentBean()>			
 					</cfif>
 				</cfif>
 			</cfif>
