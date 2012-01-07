@@ -72,3 +72,4 @@ editablecomments=0
 scriptProtect=true
 strongPasswords=0
 autoDiscoverPlugins=false
+maxPortalItems=100
