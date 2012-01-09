@@ -1897,7 +1897,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  	</cfquery>
 
 	<cfquery name="rs"dbtype="query">
-		select m as [month] ,y as [year], items from rs	
+		select m as [month] ,y as [year], items from rs
+		order by [year] desc, [month] desc	
  	</cfquery>
 	
 	<cfreturn rs>
