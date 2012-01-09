@@ -431,4 +431,37 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn application.cfstatic[hashKey]>
 </cffunction>
 
+<cffunction name="each">
+	<cfargument name="collection" hint="An Query, Array, Iterator, Struct or List the action function will be applied." >
+	<cfargument name="action" hint="A function that will run per item in iterator.">
+	<cfargument name="context" default="#this#" hint="A context object that is passed to each method. It defaults to the current MuraScope istance">
+	<cfargument name="delimiters" default="," hint="The delimiter to be used when the collection argument is a list.">
+	<cfset var i="">
+	<cfset var queryIterator="">
+	
+	<cfif isObject(arguments.collection) and structKeyExists(arguments.collection,"hasNext")>	
+		<cfloop condition="arguments.collection.hasNext()">
+			<cfset arguments.action(arguments.collection.next(), arguments.context)>
+		</cfloop>	
+	<cfelseif isArray(arguments.collection) and arrayLen(arguments.collection)>
+		<cfloop from="1" to="#arrayLen(arguments.collection)#" index="i">
+			<cfset arguments.action(arguments.collection[i], arguments.context)>
+		</cfloop>
+	<cfelseif isStruct(arguments.collection)>
+		<cfloop collection="#arguments.collection#" item="i">
+			<cfset arguments.action(arguments.collection[i], arguments.context)>
+		</cfloop>
+	<cfelseif isQuery(arguments.collection)>
+		<cfset queryIterator=createObject("component","mura.iterator.queryIterator")>
+		<cfset queryIterator.setQuery(arguments.collection)>
+		<cfloop condition="queryIterator.hasNext()">	
+			<cfset arguments.action(queryIterator.next(), arguments.context)>
+		</cfloop>
+	<cfelseif isSimpleValue(arguments.collection)>
+		<cfloop list="#arguments.collection#" index="i" delimiters="#arguments.delimiters#">
+			<cfset arguments.action(i, arguments.context)>
+		</cfloop>	
+	</cfif>
+</cffunction>
+
 </cfcomponent>

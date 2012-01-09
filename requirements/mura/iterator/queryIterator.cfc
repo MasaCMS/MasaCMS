@@ -216,4 +216,16 @@
 		<cfset variables.recordTranslator=arguments.recordTranslator/>
 		<cfreturn this>
 	</cffunction>
+	
+	<cffunction name="each">
+		<cfargument name="action" hint="A function that will run per item in iterator.">
+		<cfargument name="context" hint="A context object that is passed to each method. If not provides a MuraScope instance is created.">		
+		<cfloop condition="arguments.collection.hasNext()">
+			<cfif structKeyExists(arguments,"context")>
+				<cfset arguments.action(next(),arguments.context)>
+			<cfelse>
+				<cfset arguments.action(next())>
+			</cfif>	
+		</cfloop>
+	</cffunction>
 </cfcomponent>
