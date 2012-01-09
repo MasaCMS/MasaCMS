@@ -476,11 +476,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 	<cfelseif isQuery(arguments.collection)>
 		<cfset queryIterator=createObject("component","mura.iterator.queryIterator")>
-		<cfset queryIterator.setQuery(arguments.collection)>
+		<cfset queryIterator.setQuery(arguments.collection).init()>
 		<cfset arguments.$.event("each:count",queryIterator.getRecordCount())>
 		<cfloop condition="queryIterator.hasNext()">	
+			<cfset item=queryIterator.next()>
 			<cfset arguments.$.event("each:index",queryIterator.getRecordIndex())>
-			<cfset test=arguments.action(queryIterator.next(), arguments.$)>
+			<cfset test=arguments.action(item=item, $=arguments.$)>
 			<cfif isDefined("test") and isBoolean(test) and not test>
 				<cfbreak>	
 			</cfif>
