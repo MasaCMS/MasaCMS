@@ -216,7 +216,7 @@
 		<cfset variables.recordTranslator=arguments.recordTranslator/>
 		<cfreturn this>
 	</cffunction>
-	
+	<!---
 	<cffunction name="each">
 		<cfargument name="action" hint="A function that will run per item in iterator.">
 		<cfargument name="$" hint="If not provides a MuraScope instance is created.">		
@@ -244,4 +244,5 @@
 			</cfif>
 		</cfloop>
 	</cffunction>
+	--->
 </cfcomponent>
