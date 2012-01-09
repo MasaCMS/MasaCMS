@@ -219,13 +219,29 @@
 	
 	<cffunction name="each">
 		<cfargument name="action" hint="A function that will run per item in iterator.">
-		<cfargument name="context" hint="A context object that is passed to each method. If not provides a MuraScope instance is created.">		
+		<cfargument name="$" hint="If not provides a MuraScope instance is created.">		
+		<cfset var test=false>
+		<cfset var item="">
+		
+		<cfif structKeyExists(arguments,"mura")>
+			<cfset arguments.$=arguments.mura>
+		</cfif>
+		
+		<cfif structKeyExists(arguments,"$")>
+			<cfset arguments.$.event("each:count",getRecordCount())>
+		</cfif>
+		
 		<cfloop condition="hasNext()">
-			<cfif structKeyExists(arguments,"context")>
-				<cfset arguments.action(next(),arguments.context)>
-			<cfelse>
-				<cfset arguments.action(next())>
-			</cfif>	
+			<cfset item=next()>
+			<cfif not structKeyExists(arguments,"$")>
+				<cfset arguments.$=getBean("$").init(item.getValue("siteID"))>
+				<cfset arguments.$.event("each:count",getRecordCount())>
+			</cfif>
+			<cfset arguments.$.event("each:index",getRecordIndex())>
+			<cfset test=arguments.action(item=item, $=arguments.$, mura=arguments.$)>
+			<cfif isDefined("test") and isBoolean(test) and not test>
+				<cfbreak>	
+			</cfif>
 		</cfloop>
 	</cffunction>
 </cfcomponent>

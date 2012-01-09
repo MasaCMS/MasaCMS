@@ -434,32 +434,66 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="each">
 	<cfargument name="collection" hint="An Query, Array, Iterator, Struct or List the action function will be applied." >
 	<cfargument name="action" hint="A function that will run per item in iterator.">
-	<cfargument name="context" default="#this#" hint="A context object that is passed to each method. It defaults to the current MuraScope istance">
+	<cfargument name="$" default="#this#" hint="A context object that is passed to each method. It defaults to the current MuraScope istance">
 	<cfargument name="delimiters" default="," hint="The delimiter to be used when the collection argument is a list.">
 	<cfset var i="">
 	<cfset var queryIterator="">
+	<cfset var test=false>
+	<cfset var item="">
+	
+	<cfif structKeyExists(arguments,"mura")>
+		<cfset arguments.$=arguments.mura>
+	</cfif>
 	
 	<cfif isObject(arguments.collection) and structKeyExists(arguments.collection,"hasNext")>	
+		<cfset arguments.$.event("each:count",arguments.collection.getRecordCount())>
 		<cfloop condition="arguments.collection.hasNext()">
-			<cfset arguments.action(arguments.collection.next(), arguments.context)>
+			<cfset item=arguments.collection.next()>
+			<cfset arguments.$.event("each:index",arguments.collection.getRecordIndex())>
+			<cfset test=arguments.action(item=item, $=arguments.$, mura=arguments.$)>
+			<cfif isDefined("test") and isBoolean(test) and not test>
+				<cfbreak>	
+			</cfif>
 		</cfloop>	
 	<cfelseif isArray(arguments.collection) and arrayLen(arguments.collection)>
+		<cfset arguments.$.event("each:count",arrayLen(arguments.collection))>
 		<cfloop from="1" to="#arrayLen(arguments.collection)#" index="i">
-			<cfset arguments.action(arguments.collection[i], arguments.context)>
+			<cfset arguments.$.event("each:index",i)>
+			<cfset test=arguments.action(item=arguments.collection[i], $=arguments.$, mura=arguments.$)>
+			<cfif isDefined("test") and isBoolean(test) and not test>
+				<cfbreak>	
+			</cfif>
 		</cfloop>
 	<cfelseif isStruct(arguments.collection)>
+		<cfset arguments.$.event("each:count",structCount(arguments.collection))>
+		<cfset arguments.$.event("each:index",0)>
 		<cfloop collection="#arguments.collection#" item="i">
-			<cfset arguments.action(arguments.collection[i], arguments.context)>
+			<cfset arguments.$.event("each:index",arguments.$.event("each:index")+1)>
+			<cfset test=arguments.action(item=arguments.collection[i], $=arguments.$, mura=arguments.$)>
+			<cfif isDefined("test") and isBoolean(test) and not test>
+				<cfbreak>	
+			</cfif>
 		</cfloop>
 	<cfelseif isQuery(arguments.collection)>
 		<cfset queryIterator=createObject("component","mura.iterator.queryIterator")>
 		<cfset queryIterator.setQuery(arguments.collection)>
+		<cfset arguments.$.event("each:count",queryIterator.getRecordCount())>
 		<cfloop condition="queryIterator.hasNext()">	
-			<cfset arguments.action(queryIterator.next(), arguments.context)>
+			<cfset arguments.$.event("each:index",queryIterator.getRecordIndex())>
+			<cfset test=arguments.action(queryIterator.next(), arguments.$)>
+			<cfif isDefined("test") and isBoolean(test) and not test>
+				<cfbreak>	
+			</cfif>
 		</cfloop>
-	<cfelseif isSimpleValue(arguments.collection)>
-		<cfloop list="#arguments.collection#" index="i" delimiters="#arguments.delimiters#">
-			<cfset arguments.action(i, arguments.context)>
+	<cfelseif isSimpleValue(arguments.collection) and len(arguments.collection)>
+		<cfset arguments.collection=listToArray(arguments.collection,arguments.delimiters)>
+		<cfset arguments.$.event("each:count",arrayLen(arguments.collection))>
+		<cfloop from="1" to="#arrayLen(arguments.collection)#" index="i">
+			<cfset arguments.$.event("each:index",i)>
+			<cfset test=arguments.action(item=arguments.collection[i], $=arguments.$, mura=arguments.$)>
+			<cfif isDefined("test") and isBoolean(test) and not test>
+				<cfbreak>	
+			</cfif>
 		</cfloop>	
 	</cfif>
 </cffunction>
