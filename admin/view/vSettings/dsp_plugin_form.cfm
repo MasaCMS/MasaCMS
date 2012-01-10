@@ -78,7 +78,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 <cfset application.userManager.getCurrentUser().setValue("errors","")>
 
-<form novalidate="novalidate" method="post" name="frmSettings" action="index.cfm?fuseaction=cSettings.updatePlugin" onsubmit="return validateForm(this);">
+<form novalidate="novalidate" class="clear" method="post" name="frmSettings" action="index.cfm?fuseaction=cSettings.updatePlugin" onsubmit="return validateForm(this);">
 <cfsilent>
 
 <cfquery name="rsLocation" datasource="#application.configbean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">

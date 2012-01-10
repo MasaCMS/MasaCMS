@@ -92,7 +92,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfcatch>
 		</cftry>
 	<cfelseif isDate(arguments.arg)>
-		<cfreturn arguments.arg />
+		<cftry>
+		<cfreturn parseDateTime(arguments.arg) />
+		<cfcatch>
+			<cfreturn arguments.arg />
+		</cfcatch>
+		</cftry>
 	<cfelse>
 		<cfreturn "" />
 	</cfif>

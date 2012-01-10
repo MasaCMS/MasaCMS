@@ -545,6 +545,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var currentDir="">
 	<cfset var p="">
 	<cfset var currentPath="">
+	<cfset var pluginmapping="">
 	
 	<cflock name="createAppCFCIncludes#application.instanceID#" type="exclusive" timeout="200">
 	<cfif StructKeyExists(SERVER,"bluedragon") and not findNoCase("Windows",server.os.name)>
@@ -594,7 +595,8 @@ select * from tplugins order by #arguments.orderby#
 					</cfif>
 					<cfset currentPath=currentDir & "/" & p>
 					<cfif len(p) and directoryExists(currentPath)>
-						<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output='<cfset this.mappings["/#currentConfig.plugin.mappings.mapping[m].xmlAttributes.name#"] = mapPrefix & BaseDir & "/plugins/#rsRequirements.name#/#p#">')>
+						<cfset pluginmapping=currentConfig.plugin.mappings.mapping[m].xmlAttributes.name>
+						<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output='<cfif not structKeyExists(this.mappings,"/#pluginmapping#")><cfset this.mappings["/#pluginmapping#"] = mapPrefix & BaseDir & "/plugins/#rsRequirements.name#/#p#"></cfif>')>
 					</cfif>
 				</cfif>
 				</cfloop>
