@@ -3308,6 +3308,10 @@ ul.seven { /* 7 Icons */
 	background: url(../images/icons/download_24.png) no-repeat;
 }
 
+.admin li.import, table td.administration li.import {
+	background: url(../images/icons/download_24.png) no-repeat;
+}
+
 .admin li.manageData, table td.administration li.manageData {
 	background: url(../images/icons/confg_24.png) no-repeat;
 }
