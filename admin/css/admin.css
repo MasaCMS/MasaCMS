@@ -1555,8 +1555,9 @@ h5 {
 
 #csettings .metadata, #cextend .metadata {
 	float: left;
-	max-width: 50%;
-	margin-bottom: 1em;
+	/*max-width: 50%;*/
+	margin: 1em;
+	padding-top: .5em;
 	overflow: hidden;
 	border-radius: 5px;
 }
@@ -3309,6 +3310,10 @@ ul.seven { /* 7 Icons */
 }
 
 .admin li.download, table td.administration li.download {
+	background: url(../images/icons/download_24.png) no-repeat;
+}
+
+.admin li.import, table td.administration li.import {
 	background: url(../images/icons/download_24.png) no-repeat;
 }
 
