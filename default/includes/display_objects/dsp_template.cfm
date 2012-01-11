@@ -138,5 +138,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif editableControl.innerHTML neq "">
 	<cfoutput>#renderEditableObjectFooter(editableControl.innerHTML)#</cfoutput>
 </cfif>
-
-<cfset request.cacheItem=variables.rsTemplate.doCache/>
+<cfif not variables.rsTemplate.doCache>
+	<cfset request.cacheItem=variables.rsTemplate.doCache/>
+</cfif>
