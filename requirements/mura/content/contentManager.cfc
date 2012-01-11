@@ -887,10 +887,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset variables.contentDAO.createObjects(arguments.data,newBean,currentBean.getcontentHistID()) />
 			</cfif>
 			
-			<cfif isDefined('arguments.data.deleteFile') and len(newBean.getFileID())>
-				<cfset variables.fileManager.deleteIfNotUsed(newBean.getFileID(),newBean.getContentHistID())>
-				<cfset newBean.setFileID('')>
-			</cfif>	
 		</cfif>
 		<!--- END CONTENT TYPE: PAGE, PORTAL, CALENDAR, GALLERY --->
 		
@@ -913,6 +909,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<!--- BEGIN CONTENT TYPE: FILE --->	
 		<!---<cfif newBean.gettype() eq 'File'>--->
+			
+			<cfif newBean.gettype() neq 'File' and isDefined('arguments.data.deleteFile') and len(newBean.getFileID())>
+				<cfset variables.fileManager.deleteIfNotUsed(newBean.getFileID(),newBean.getContentHistID())>
+				<cfset newBean.setFileID('')>
+			</cfif>	
 				
 			<cfif isDefined('arguments.data.newfile') and len(arguments.data.newfile)>
 				
