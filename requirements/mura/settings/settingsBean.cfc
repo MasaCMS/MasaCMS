@@ -357,16 +357,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getLoginURL" returntype="String" access="public" output="false">
+	<cfargument name="parseMuraTag" default="true">
+	
 	<cfif variables.instance.loginURL neq ''>
-	<cfreturn variables.instance.LoginURL />
+		<cfif arguments.parseMuraTag>	
+			<cfreturn getContentRenderer().setDynamicContent(variables.instance.LoginURL) />
+		<cfelse>
+			<cfreturn variables.instance.LoginURL />
+		</cfif>
 	<cfelse>
 	<cfreturn "#application.configBean.getIndexFile()#?display=login" />
 	</cfif>
 </cffunction>
 
 <cffunction name="getEditProfileURL" returntype="String" access="public" output="false">
+	<cfargument name="parseMuraTag" default="true">
 	<cfif variables.instance.EditProfileURL neq ''>
-	<cfreturn variables.instance.EditProfileURL />
+		<cfif arguments.parseMuraTag>	
+			<cfreturn getContentRenderer().setDynamicContent(variables.instance.EditProfileURL) />
+		<cfelse>
+			<cfreturn variables.instance.EditProfileURL />
+		</cfif>
 	<cfelse>
 	<cfreturn "#application.configBean.getIndexFile()#?display=editProfile" />
 	</cfif>
