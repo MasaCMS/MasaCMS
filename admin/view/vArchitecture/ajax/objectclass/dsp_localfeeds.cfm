@@ -58,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		                                    'sitemanager.content.fields.localindexlistingtable')#
 		</option>
 		<cfloop query="request.rslist">
-			<option value="{'object':'feed','objectid':'#request.rslist.feedID#','name':'#request.rslist.name# #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindex')#'}">
+			<option value="{'object':'feed','objectid':'#request.rslist.feedID#','name':'#JSStringFormat(request.rslist.name)# #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindex')#'}">
 				#request.rslist.name# 
 				- 
 				#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.localindex')#
