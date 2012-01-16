@@ -53,7 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		        style="width:310px;">
 		<cfset request.rslist = application.feedManager.getFeeds(attributes.siteid, 'Local')/>
 		<cfloop query="request.rslist">
-			<option value="{'object':'feed_slideshow','objectid':'#request.rslist.feedID#','name':'#request.rslist.name# #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindexslideshow')#'}">
+			<option value="{'object':'feed_slideshow','objectid':'#request.rslist.feedID#','name':'#JSStringFormat(request.rslist.name)# #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindexslideshow')#'}">
 				#request.rslist.name# 
 				- 
 				#application.rbFactory.getKeyValue(session.rb, 
