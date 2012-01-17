@@ -210,10 +210,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif arguments.contentMode neq "none">
 				<cfset getBean("fileManager").cleanFileCache(arguments.toSiteID)>
 			</cfif>
-
 			<cfif listFindNoCase("All,Theme",arguments.renderingMode)>
 				<cfset rssite=Bundle.getValue("rssite")>
-						
 				<cfif rssite.recordcount and directoryExists(expandPath("/muraWRM/#arguments.toSiteID#/includes/themes/#rssite.theme#"))>
 					<cfquery datasource="#arguments.toDSN#">
 						update tsettings set 
@@ -1386,7 +1384,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentstats.majorVersion),de(rstcontentstats.majorVersion),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentstats.minorVersion),de(rstcontentstats.minorVersion),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentstats.lockID neq '',de('no'),de('yes'))#" value="#rstcontentstats.lockID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentstats.lockID neq '',de('no'),de('yes'))#" value="#rstcontentstats.lockID#">
 					</cfif>
 					)
 				</cfquery>
