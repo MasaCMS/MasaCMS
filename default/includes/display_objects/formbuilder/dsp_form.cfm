@@ -96,7 +96,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfoutput>
 </cfsavecontent>
 <cfoutput>
-<form <!---id="#frmID#"--->method="post"<cfif isMultipart>enctype="multipart/form-data"</cfif>>
+<form id="#frmID#" method="post"<cfif isMultipart>enctype="multipart/form-data"</cfif>>
 	#frmFieldContents#
 	<div class="buttons"><input type="submit" class="submit" value="Submit"></div>
 	<cfinclude template="../dsp_form_protect.cfm">

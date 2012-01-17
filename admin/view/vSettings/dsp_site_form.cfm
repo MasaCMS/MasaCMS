@@ -440,11 +440,11 @@ to your own modified versions of Mura CMS.
         Yes</dd>
 	   <dt>Custom Login URL</dt>
       <dd>
-        <input name="loginURL" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getLoginURL(parseMuraTag=false))#" maxlength="255">
+        <input name="loginURL" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getLoginURL())#" maxlength="255">
       </dd>
 	   <dt>Custom Profile URL</dt>
       <dd>
-        <input name="editProfileURL" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getEditProfileURL(parseMuraTag=false))#" maxlength="255">
+        <input name="editProfileURL" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getEditProfileURL())#" maxlength="255">
       </dd>
      <!---  <dt>Allow Public Submission In To Portals</dt>
       <dd>

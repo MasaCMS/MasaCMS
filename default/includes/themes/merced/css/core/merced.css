@@ -1,7 +1,3 @@
-/* @override 
-	http://localhost:8500/muracms/default/includes/themes/merced/css/core/merced.css
-*/
-
 /*
 Theme:  Merced (HTML 5)
 Author: Blue River Interactive Group
@@ -829,6 +825,12 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	position: relative;
 	}
 
+#features dd.image img {
+	/* recommended size: */
+	/*width: 213px;*/
+	/*height: 120px;*/
+	}
+
 
 /* @end Features
 -------------------------------- */
@@ -909,6 +911,10 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 
 .home aside .svIndex dl.hasImage .image {
 	margin: 0 .5em 0em 0;
+	}
+
+.home aside .svIndex dl.hasImage .image img {
+	width: 50px;
 	}
 
 .home aside .svIndex dd p {
