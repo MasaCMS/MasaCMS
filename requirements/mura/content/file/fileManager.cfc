@@ -628,7 +628,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="height" default=""/>
 <cfargument name="width" default=""/>
 
-	<cfset var imgSuffix=arguments.size>
+	<cfset var imgSuffix="">
 	<cfset var returnURL="">
 	<cfset var begin="">
 
@@ -647,16 +647,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	<cfif arguments.direct and application.configBean.getFileStore() eq "fileDir">
+
+		<cfif not isNumeric(arguments.width)>
+			<cfset arguments.width="auto">
+		</cfif>
+		<cfif not isNumeric(arguments.height)>
+			<cfset arguments.height="auto">
+		</cfif>
+
 		<cfif isNumeric(arguments.height) or isNumeric(arguments.width)>
 			<cfset arguments.size="Custom">
-		<cfelseif arguments.height eq "auto" and  arguments.width eq "auto">
+		</cfif>
+		
+		<cfif arguments.size eq "Custom" and arguments.height eq "auto" and arguments.width eq "auto">
 			<cfset arguments.size="small">
 		</cfif>
+	
 		<cfif arguments.size neq "Custom">
-			<cfif imgSuffix eq "large">
+			<cfif arguments.size eq "large">
 				<cfset imgSuffix="">
 			<cfelse>
-				<cfset imgSuffix="_" & lcase(imgSuffix)>
+				<cfset imgSuffix="_" & lcase(arguments.size)>
 			</cfif>
 			<cfset returnURL=application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & arguments.fileID & imgSuffix & "." & arguments.fileEXT>
 		<cfelse>
