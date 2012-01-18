@@ -146,7 +146,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setEntered" access="public" output="false">
 	<cfargument name="entered" />
 	<cfif isDate(arguments.entered)>
-	<cfset variables.instance.entered = arguments.entered />
+	<cfset variables.instance.entered = parseDateArg(arguments.entered) />
 	</cfif>
 	<cfreturn this>
 </cffunction>
