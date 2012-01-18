@@ -167,7 +167,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	(
 		findNoCase("MuraProxy.cfc",cgi.script_name)
 		and isDefined("url.method")
-		and findNoCase("purge",url.method)
+		and (
+				findNoCase("purge",url.method)
+				or 
+				url.method eq "reload"
+			)
 	)>
 	<cfset application.changesetManager.publishBySchedule()>
 </cfif>
