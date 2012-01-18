@@ -163,7 +163,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset application.serviceFactory.getBean("fileWriter").writeFile(file="#expandPath('/muraWRM/config')#/cfapplication.cfm", output='<!--- Add Custom Application.cfc Vars Here --->')>	
 </cfif>
 
-<cfif isDefined("application.changesetManager")>
+<cfif isDefined("application.changesetManager") and not findNoCase("MuraProxy.cfc",cgi.script_name)>
 	<cfset application.changesetManager.publishBySchedule()>
 </cfif>
 
