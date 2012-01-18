@@ -163,9 +163,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset application.serviceFactory.getBean("fileWriter").writeFile(file="#expandPath('/muraWRM/config')#/cfapplication.cfm", output='<!--- Add Custom Application.cfc Vars Here --->')>	
 </cfif>
 
-<cfif isDefined("application.changesetManager") and not findNoCase("MuraProxy.cfc",cgi.script_name)>
+<cfif isDefined("application.changesetManager") and not 
+	(
+		findNoCase("MuraProxy.cfc",cgi.script_name)
+		and isDefined("url.method")
+		and findNoCase("purge",url.method)
+	)>
 	<cfset application.changesetManager.publishBySchedule()>
 </cfif>
+
 
 <cfif structKeyExists(request,"doMuraGlobalSessionStart")>
 	<cfset application.pluginManager.executeScripts('onGlobalSessionStart')>
