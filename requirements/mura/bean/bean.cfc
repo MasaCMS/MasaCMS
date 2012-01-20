@@ -137,7 +137,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.propertyValue=trim(arguments.propertyValue)>
 	</cfif>
 	
-	<cfif structKeyExists(this,"set#property#")>
+	<cfif structKeyExists(this,"set#arguments.property#")>
 		<cfset evaluate("set#property#(arguments.propertyValue)") />
 	<cfelse>
 		<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
