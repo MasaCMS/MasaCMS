@@ -382,7 +382,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var fileManager=getBean("fileManager") />	
 <cfset var rs =""/>
 	
-	<cftransaction>
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select attributeValue,baseID from tclassextenddata
 	inner join tclassextendattributes on (tclassextenddata.attributeID=tclassextendattributes.attributeID)
@@ -421,7 +420,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	delete from tclassextendattributes
 	where attributeID=<cfqueryparam cfsqltype="cf_sql_numeric"  value="#getAttributeID()#">
 	</cfquery>
-	</cftransaction>
 	
 	<cfset variables.classExtensionManager.purgeDefinitionsQuery()>
 </cffunction>

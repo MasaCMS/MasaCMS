@@ -725,7 +725,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.data=newBean.getAllValues()>
 
 		<cflock type="exclusive" name="editingContent#arguments.data.siteid##application.instanceID#" timeout="600">
-		<cftransaction>
+		<cftransaction isolation="read_uncommitted">
 		
 		<!--- BEGIN CONTENT TYPE: ALL EXTENDABLE CONTENT TYPES --->
 		<cfif  listFindNoCase(this.ExtendableList,newBean.getType())>

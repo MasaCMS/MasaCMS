@@ -492,7 +492,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="updateGroup" returntype="void" access="public" output="true">
 <cfargument name="data" type="struct" />
 <cfset var rsContentlist=""/>
-<cftransaction>
+
 	<cfquery name="rsContentlist" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select contentID from tcontent where siteid='#arguments.data.siteid#' group by contentid
 	</cfquery> 
@@ -522,7 +522,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 </cfloop>
 
-</cftransaction>
 
 	<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache()>
 	
@@ -587,7 +586,6 @@ WHERE tcontent.ContentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#argum
 <cfargument name="data" type="struct" />
 <cfset var I = "" />
 <cfparam name="arguments.data.groupid" type="string" default="" />
-<cftransaction>
 
 <cfquery datasource="#variables.configBean.getDatasource()#"
 username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -610,8 +608,6 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 	<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache()>
 
 </cfloop>
-
-</cftransaction>
 
 </cffunction>
 
