@@ -62,7 +62,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="create" returntype="void" access="public" output="false">
 	<cfargument name="feedBean" type="any" />
 	 
-	<cftransaction>
 	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	insert into tcontentfeeds (feedID,siteid,dateCreated,lastupdate,lastupdateBy,name, altName, description,
 	isActive,isPublic,isDefault,lang,maxItems,allowHTML,isFeaturesOnly,restricted,restrictGroups,version,
@@ -111,7 +110,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset createItems(arguments.feedBean.getfeedID(),arguments.feedBean.getcontentID(),'contentID') />
 	<cfset createItems(arguments.feedBean.getfeedID(),arguments.feedBean.getCategoryID(),'categoryID') />
 	<cfset createAdvancedParams(arguments.feedBean.getfeedID(),arguments.feedBean.getAdvancedParams()) />
-	</cftransaction>
 	
 </cffunction> 
 
@@ -236,7 +234,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="update" access="public" output="false" returntype="void" >
 	<cfargument name="feedBean" type="any" />
 	
-	<cftransaction>
 	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	update tcontentfeeds set
 	lastUpdate = <cfif isDate(arguments.feedBean.getLastUpdate()) ><cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.feedBean.getLastUpdate()#"><cfelse>null</cfif>,
@@ -279,7 +276,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset createItems(arguments.feedBean.getfeedID(),arguments.feedBean.getcontentID(),'contentID') />
 	<cfset createItems(arguments.feedBean.getfeedID(),arguments.feedBean.getCategoryID(),'categoryID') />
 	<cfset createAdvancedParams(arguments.feedBean.getfeedID(),arguments.feedBean.getAdvancedParams()) />
-	</cftransaction>
 	
 </cffunction>
 

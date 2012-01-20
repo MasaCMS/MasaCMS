@@ -330,7 +330,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="delete" access="public" output="false" returntype="void">
 		<cfargument name="UserID" type="String" />
 		<cfargument name="Type" type="String" />
-		<cftransaction>
 
 		<cfset deleteExtendData(arguments.UserID) />
 		<cfset deleteTags(arguments.UserID) />
@@ -338,8 +337,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		DELETE FROM tusers where userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userid#">
 		</cfquery>
-			
-		</cftransaction>
 
 </cffunction>
 
@@ -372,10 +369,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="updateGroups" type="boolean" default="true" required="yes" />
 	<cfargument name="updateInterests" type="boolean" default="true" required="yes" />
 	<cfargument name="OriginID" type="string" default="" required="yes" />
-	<cftransaction>
 
-
- <cfquery  datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+ 	<cfquery  datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
       UPDATE tusers SET
 		 RemoteID =  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getRemoteID() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getRemoteID()#">,
 	  	 Fname =  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getFname() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getFname()#">,
@@ -443,8 +438,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset deleteTags(arguments.userBean.getUserID()) />
 		<cfset createTags(arguments.userBean) />
 	<!--- </cfif> --->
-	
-	</cftransaction>
 
 </cffunction>
 
@@ -495,7 +488,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="userid" type="string" />
 	<cfargument name="groupid" type="string" />
 	<cfset var checkmemb=""/>
-	<cftransaction>
+	
 	<cfquery name="checkmemb" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select * from tusersmemb where groupid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.groupID#"> and userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
 	
@@ -504,8 +497,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not checkmemb.recordcount>
 		<cfset createUserMemberships(arguments.UserID,arguments.groupid) />
 	</cfif>
-	
-	</cftransaction>
+
 </cffunction>
 
 <cffunction name="createUserMemberships" returntype="void" output="false" access="public">
