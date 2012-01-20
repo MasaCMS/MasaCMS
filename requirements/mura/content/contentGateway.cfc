@@ -1911,6 +1911,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  	<cfoutput>
 			<cfif request.muraChangesetPreview>
 				<cfset previewData=getCurrentUser().getValue("ChangesetPreviewData")>
+				<cfif len(previewData.contentIDList)>
 				and (
 						(#arguments.table#.active = 1
 						and #arguments.table#.Approved = 1
@@ -1921,9 +1922,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						
 						(
 						#arguments.table#.contentHistID in (#previewData.contentHistIDList#)
-						)
-						
-					)	
+						)			
+					)
+				<cfelse>
+					and #arguments.table#.active = 1
+					and #arguments.table#.Approved = 1
+				</cfif>	
 			<cfelse>
 				and #arguments.table#.active = 1
 				and #arguments.table#.Approved = 1

@@ -286,7 +286,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfset key="filename" & arguments.siteid & arguments.filename />
 		
-		<cfif site.getCache()>
+		<cfif site.getCache() and not request.muraChangesetPreview>
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
@@ -319,7 +319,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var cacheFactory=site.getCacheFactory(name="data")/>
 		<cfset var bean=arguments.contentBean/>
 		
-		<cfif site.getCache()>
+		<cfif site.getCache() and not request.muraChangesetPreview>
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
@@ -351,7 +351,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var cacheFactory=site.getCacheFactory(name="data")/>
 		<cfset var bean=arguments.contentBean/>
 		
-		<cfif site.getCache()>
+		<cfif site.getCache() and not request.muraChangesetPreview>
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
@@ -383,7 +383,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var cacheFactory=site.getCacheFactory(name="data")/>
 		<cfset var bean=arguments.contentBean/>
 		
-		<cfif site.getCache()>
+		<cfif site.getCache() and not request.muraChangesetPreview>
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
@@ -416,7 +416,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var cacheFactory=site.getCacheFactory(name="data")/>
 		<cfset var bean=arguments.contentBean/>
 		
-		<cfif site.getCache()>
+		<cfif site.getCache() and not request.muraChangesetPreview>
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
