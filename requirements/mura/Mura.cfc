@@ -66,7 +66,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	<cfset previewData=getCurrentUser().getValue("ChangesetPreviewData")>
-	<cfset request.muraChangesetPreview=isStruct(previewData) and previewData.siteID eq arguments.event.getValue("siteID") and len(previewData.contentIDList)>
+	<cfset request.muraChangesetPreview=isStruct(previewData) and previewData.siteID eq arguments.event.getValue("siteID")>
 	
 	<cfif request.muraChangesetPreview>
 		<cfset request.nocache=1>
