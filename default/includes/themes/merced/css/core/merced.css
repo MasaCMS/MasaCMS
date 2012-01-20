@@ -825,6 +825,12 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 	position: relative;
 	}
 
+#features dd.image img {
+	/* recommended size: */
+	/*width: 213px;*/
+	/*height: 120px;*/
+	}
+
 
 /* @end Features
 -------------------------------- */
@@ -905,6 +911,10 @@ a.boxItemHeader { /* Link of items inside dragable boxes */
 
 .home aside .svIndex dl.hasImage .image {
 	margin: 0 .5em 0em 0;
+	}
+
+.home aside .svIndex dl.hasImage .image img {
+	width: 50px;
 	}
 
 .home aside .svIndex dd p {
