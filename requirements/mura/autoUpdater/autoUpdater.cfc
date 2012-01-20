@@ -73,6 +73,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var returnStruct=structNew()>
 <cfset var updatedArray=arrayNew(1)>
 <cfset var destination="">
+<cfset var autoUpdateSleep=variables.configBean.getValue("autoUpdateSleep")>
 
 <cfif listFind(session.mura.memberships,'S2')>
 	<cfif updateVersion gt currentVersion>
@@ -188,6 +189,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset application.appInitialized=false>
 				<cfset application.appAutoUpdated=true>
 				<cfset application.coreversion=updateVersion>
+
+				<cfif isNumeric(autoUpdateSleep) and autoUpdateSleep>
+					<cfset autoUpdateSleep=autoUpdateSleep*1000>
+					<cfthread action="sleep" duration="#autoUpdateSleep#"></cfthread>
+				</cfif>
+
 			</cfif>
 			<cfdirectory action="delete" directory="#currentDir##zipFileName#" recurse="true">
 		</cfif>

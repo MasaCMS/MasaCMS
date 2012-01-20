@@ -174,11 +174,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="remoteURL">
 	<cftry>
 	<cfif variables.broadcastWithProxy and len(variables.configBean.getProxyServer())>
-		<cfhttp url="#remoteURL#" timeout="100"
+		<cfhttp url="#remoteURL#" timeout="1"
 				proxyUser="#variables.configBean.getProxyUser()#" proxyPassword="#variables.configBean.getProxyPassword()#"
 				proxyServer="#variables.configBean.getProxyServer()#" proxyPort="#variables.configBean.getProxyPort()#">
 	<cfelse>
-		<cfhttp url="#remoteURL#" timeout="100">
+		<cfhttp url="#remoteURL#" timeout="1">
 	</cfif>
 	<cfcatch></cfcatch>
 	</cftry>

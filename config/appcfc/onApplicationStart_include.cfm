@@ -91,8 +91,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cfif>	
 
-<cfif (not application.appInitialized or structKeyExists(url,application.appReloadKey))>
-	<cflock name="appInitBlock#application.instanceID#" type="exclusive" timeout="200">	
+<cflock name="appInitBlock#application.instanceID#" type="exclusive" timeout="200">	
+	<cfif (not application.appInitialized or structKeyExists(url,application.appReloadKey))>
 		
 		<cfset request.muraShowTrace=true>
 		
@@ -412,6 +412,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>	
 		</cfloop>
 		
-		<cfset application.sessionTrackingThrottle=false>
-	</cflock>
-</cfif>		
+		<cfset application.sessionTrackingThrottle=false>	
+	</cfif>	
+</cflock>	
