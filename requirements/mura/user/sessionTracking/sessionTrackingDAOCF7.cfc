@@ -75,7 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="originalURLToken" type="string" required="yes"/>
 	
 
-	<cfset var $ = createObject("component","mura.MuraScope") />
+	<!---<cfset var $ = createObject("component","mura.MuraScope") />--->
 	
 	<cfset arguments.language = 'Unknown' />
 	<cfset arguments.country ='Unknown' />
@@ -94,9 +94,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.user_agent=arguments.user_agent />
 	</cfif>
 	
+	<!---
 	<cfset $.init(arguments)>
 	<cfset $.announceEvent("onSiteSessionTrack")>
-	
+	--->
 	<cfif application.configBean.getSessionHistory() and application.configBean.getDashboard() and not application.sessionTrackingThrottle>
 		<cfset createTrackingRecord(argumentCollection=arguments)>
 	</cfif>	
