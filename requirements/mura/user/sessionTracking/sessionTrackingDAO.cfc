@@ -47,6 +47,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent extends="sessionTrackingDAOCF7" output="false">
 
 <cffunction name="trackRequest" output="false">
+
+	<cfset var $ = createObject("component","mura.MuraScope") />
+	<cfset $.init(arguments)>
+	<cfset $.announceEvent("onSiteSessionTrack")>
+
 	<cfthread action="run" name="track#hash(session.trackingID)#" context="#arguments#">
 		<cfset super.trackRequest(argumentCollection=context)>
 	</cfthread>
