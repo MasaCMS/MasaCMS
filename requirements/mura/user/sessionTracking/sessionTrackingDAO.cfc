@@ -47,8 +47,34 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent extends="sessionTrackingDAOCF7" output="false">
 
 <cffunction name="trackRequest" output="false">
+	<cfargument name="remote_addr" type="string" required="yes"/>
+	<cfargument name="script_name" type="string" required="yes"/>
+	<cfargument name="query_string" type="string" required="yes"/>
+	<cfargument name="server_name" type="string" required="yes"/>
+	<cfargument name="referer" type="string" required="yes" default=""/>
+	<cfargument name="user_agent" type="string" required="yes" default=""/>
+	<cfargument name="keywords" type="string" required="yes" default="" />
+	<cfargument name="urlToken" type="string" required="yes"/>
+	<cfargument name="UserID" type="string" required="yes"/>
+	<cfargument name="siteID" type="string" required="yes"/>
+	<cfargument name="contentID" type="string" required="yes"/>
+	<cfargument name="locale" type="string" required="yes"/>
+	<cfargument name="originalURLToken" type="string" required="yes"/>
 
 	<cfset var $ = createObject("component","mura.MuraScope") />
+
+	<cfif trim(arguments.referer) eq ''>
+		<cfset arguments.referer='Unknown' />
+	<cfelseif findNoCase(arguments.server_name,arguments.referer)>
+		<cfset arguments.referer="Internal" />
+	</cfif>
+	
+	<!---
+	<cfif arguments.user_agent neq ''>
+		<cfset arguments.user_agent=arguments.user_agent />
+	</cfif>
+	--->
+
 	<cfset $.init(arguments)>
 	<cfset $.announceEvent("onSiteSessionTrack")>
 
