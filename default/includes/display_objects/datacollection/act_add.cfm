@@ -117,7 +117,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not isBinary(GetHttpRequestData().content)>
 		<cfset request.fieldnames=""/>
 		<cfloop list="#GetHttpRequestData().content#" delimiters="&" index="j">
-			<cfset request.fieldnames = listAppend(request.fieldnames, listFirst(urlDecode(j), "="))>
+			<cfset fieldname = listFirst(urlDecode(j), "=")>
+			<cfif not listFindNoCase(request.fieldnames, fieldname)>
+				<cfset request.fieldnames = listAppend(request.fieldnames, listFirst(urlDecode(j), "="))>
+			</cfif>
 		</cfloop>
 	</cfif>
 	
