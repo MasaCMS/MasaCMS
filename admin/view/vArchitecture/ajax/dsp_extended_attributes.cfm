@@ -67,7 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfsilent>
 	<dd><dl><cfloop from="1" to="#arrayLen(attributesArray)#" index="a">	
 		<cfset attributeBean=attributesArray[a]/>
-		<cfset attributeValue=contentBean.getvalue(attributeBean.getName()) />
+		<cfset attributeValue=contentBean.getvalue(attributeBean.getName(),'useMuraDefault') />
 		<dt>
 		<cfif len(attributeBean.getHint())>
 		<a href="##" class="tooltip">#attributeBean.getLabel()# <span>#attributeBean.gethint()#</span></a>
@@ -107,7 +107,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfsilent>
 	<dd><dl><cfloop from="1" to="#arrayLen(attributesArray)#" index="a">	
 		<cfset attributeBean=attributesArray[a]/>
-		<cfset attributeValue=contentBean.getvalue(attributeBean.getName()) />
+		<cfset attributeValue=contentBean.getvalue(attributeBean.getName(),'useMuraDefault') />
 		<dt>
 		<cfif len(attributeBean.getHint())>
 		<a href="##" class="tooltip">#attributeBean.getLabel()# <span>#attributeBean.gethint()#</span></a>
