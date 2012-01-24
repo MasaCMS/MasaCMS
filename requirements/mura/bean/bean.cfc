@@ -54,6 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset super.init(argumentCollection=arguments)>
 	<cfset variables.instance=structNew()>
 	<cfset variables.instance.siteID=""/>
+	<cfset variables.instance.errors=structNew()/>
 	<cfset variables.instance.fromMuraCache = false />
 	<cfreturn this>
 </cffunction>
