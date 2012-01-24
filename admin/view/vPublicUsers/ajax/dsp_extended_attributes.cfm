@@ -79,7 +79,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfsilent>
 	<dd><dl><cfloop from="1" to="#arrayLen(attributesArray)#" index="a">	
 		<cfset attributeBean=attributesArray[a]/>
-		<cfset attributeValue=userBean.getvalue(attributeBean.getName()) />
+		<cfset attributeValue=userBean.getvalue(attributeBean.getName(),'useMuraDefault') />
 		<dt>
 		<cfif len(attributeBean.getHint())>
 		<a href="##" class="tooltip">#attributeBean.getLabel()# <cfif attributeBean.getType() IS "Hidden"><strong>[Hidden]</strong></cfif> <span>#attributeBean.gethint()#</span></a>
@@ -126,7 +126,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfsilent>
 	<dd><dl><cfloop from="1" to="#arrayLen(attributesArray)#" index="a">	
 		<cfset attributeBean=attributesArray[a]/>
-		<cfset attributeValue=userBean.getvalue(attributeBean.getName()) />
+		<cfset attributeValue=userBean.getvalue(attributeBean.getName(),'useMuraDefault') />
 		<dt>
 		<cfif len(attributeBean.getHint())>
 		<a href="##" class="tooltip">#attributeBean.getLabel()# <cfif attributeBean.getType() IS "Hidden"><strong>[Hidden]</strong></cfif> <span>#attributeBean.gethint()#</span></a>
