@@ -16,20 +16,17 @@
 <cfargument name="manager" default="">
 <cfargument name="configBean" default="#application.configBean#">
 <cfargument name="ID" default="">
+<cfargument name="remoteID" default="">
+
 	<cfset super.init(argumentCollection=arguments)>
-	
+
 	<cfset setType(arguments.type)>
 	<cfset setSubType(arguments.subType)>
 	<cfset setSiteID(arguments.siteID)>
 	<cfset setManager(arguments.manager)>
 	<cfset setConfigBean(arguments.configBean)>
 	<cfset setID(arguments.ID)>
-	
-	<cfset variables.instance.Type = "Page" />
-	<cfset variables.instance.subType = "Default" />
-	<cfset variables.instance.ID = "" />
-	<cfset variables.instance.siteID="">
-	<cfset variables.instance.remoteID="">
+	<cfset variables.instance.remoteID=arguments.remoteID>
 	
 	<cfreturn this>
 </cffunction>

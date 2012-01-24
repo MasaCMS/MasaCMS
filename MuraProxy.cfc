@@ -260,11 +260,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="serviceName" type="string">
 <cfargument name="methodName" type="string">
 <cfargument name="authToken" type="string" default="">
-<cfargument name="args" default="#structNew()#" type="any">
+<cfargument name="args" default="#structNew()#" type="struct">
 
 <cfset var event="">
 <cfset var service="">	
 
+<!---
+CF9 requires a explicitly argument type do dynamic evaluation of data format won't work
 <cfif isJSON(arguments.args)>
 	<cfset arguments.args=deserializeJSON(arguments.args)>
 <cfelseif isWddx(arguments.args)>
@@ -272,6 +274,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfelseif not isStruct(arguments.args)>
 	<cfset arguments.args=structNew()>
 </cfif>
+--->
 
 <cfif (isDefined("session.mura.isLoggedIn") and session.mura.isLoggedIn)
 		or (len(arguments.authToken) and isValidSession(arguments.authToken))>

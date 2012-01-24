@@ -80,7 +80,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var placementBean=getBean("placementBean") />
 	<cfset placementBean.set(arguments.data) />
-	
+	<cfset placementBean.validate()>
+
 	<cfif structIsEmpty(placementBean.getErrors())>
 		<cfset placementBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50)) />
 		<cfif not (structKeyExists(arguments.data,"placementID") and len(arguments.data.placementID))>
@@ -106,6 +107,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var placementBean=variables.instance.DAO.read(arguments.data.placementID) />
 	<cfset placementBean.set(arguments.data) />
+	<cfset placementBean.validate()>
 	
 	<cfif structIsEmpty(placementBean.getErrors())>
 		<cfset variables.instance.globalUtility.logEvent("PlacementID:#placementBean.getPlacementID()# Name:#placementBean.getCampaignID()# was updated","mura-advertising","Information",true) />

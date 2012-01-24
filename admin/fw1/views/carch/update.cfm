@@ -51,6 +51,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfelseif rc.action eq 'multiFileUpload'>
 <cfoutput>success</cfoutput>
 <cfabort>
+<cfelseif not structIsEmpty(rc.contentBean.getErrors())>
+	<cfset request.layout=true>
+	<cfset rc.compactDisplay=true>
+	<cfset session.mura.editBean=rc.contentBean>
+	<cfset rc.rsCount=application.contentManager.getItemCount(rc.contentid,rc.siteid) />
+  	<cfset rc.rsPageCount=application.contentManager.getPageCount(rc.siteid) />
+  	<cfset rc.rsRestrictGroups=application.contentUtility.getRestrictGroups(rc.siteid) />
+  	<cfset rc.rsTemplates=application.contentUtility.getTemplates(rc.siteid,rc.type) />
+  	<cfset rc.rsCategoryAssign=application.contentManager.getCategoriesByHistID(rc.contenthistID) />
+	<cfif rc.moduleID eq '00000000000000000000000000000000000'>
+		  <cfset application.contentManager.setRequestRegionObjects(rc.contenthistid,rc.siteid) />
+	</cfif>
+	<cfset rc.rsRelatedContent=application.contentManager.getRelatedContent(rc.siteid, rc.contenthistID) />
+	<cfset rc.ajax=doFBInclude("/muraWRM/admin/view/vArchitecture/ajax/dsp_javascript.cfm")>
+	<cfset rc.layout=doFBInclude("/muraWRM/admin/view/vArchitecture/dsp_form.cfm")>
 <cfelse>
-<cfoutput>#doFBInclude("/muraWRM/admin/view/vArchitecture/dsp_close_compact_display.cfm")#</cfoutput>
+	<cfset structDelete(session.mura,"editBean")>
+	<cfoutput>#doFBInclude("/muraWRM/admin/view/vArchitecture/dsp_close_compact_display.cfm")#</cfoutput>
 </cfif>

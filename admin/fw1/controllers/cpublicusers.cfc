@@ -134,6 +134,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="route" output="false">
 	<cfargument name="rc">
 	
+	<cfset structDelete(session.mura,"editBean")>
+
 	<cfif arguments.rc.routeid eq ''>
 		<cfset variables.fw.redirect(action="cPublicUsers.list",append="siteid",path="")>
 	</cfif>

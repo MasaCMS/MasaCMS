@@ -45,7 +45,11 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfset returnsets=structNew()>
-<cfset contentBean=application.contentManager.getcontentVersion(attributes.contentHistID,attributes.siteID)/>
+<cfif isDefined("session.mura.editBean") and isInstanceOf(session.mura.editBean, "mura.content.contentBean")>
+	<cfset contentBean=session.mura.editBean>
+<cfelse>
+	<cfset contentBean=application.contentManager.getcontentVersion(attributes.contentHistID,attributes.siteID)/>
+</cfif>
 <cfsavecontent variable="returnsets.extended">
 <cfset extendSets=application.classExtensionManager.getSubTypeByName(attributes.type,attributes.subtype,attributes.siteid).getExtendSets(inherit=true,container="Default",activeOnly=true) />
 <cfset started=false />
@@ -63,7 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfsilent>
 	<dd><dl><cfloop from="1" to="#arrayLen(attributesArray)#" index="a">	
 		<cfset attributeBean=attributesArray[a]/>
-		<cfset attributeValue=contentBean.getExtendedAttribute(attributeBean.getAttributeID(),true) />
+		<cfset attributeValue=contentBean.getvalue(attributeBean.getName()) />
 		<dt>
 		<cfif len(attributeBean.getHint())>
 		<a href="##" class="tooltip">#attributeBean.getLabel()# <span>#attributeBean.gethint()#</span></a>
@@ -103,7 +107,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfsilent>
 	<dd><dl><cfloop from="1" to="#arrayLen(attributesArray)#" index="a">	
 		<cfset attributeBean=attributesArray[a]/>
-		<cfset attributeValue=contentBean.getExtendedAttribute(attributeBean.getAttributeID(),true) />
+		<cfset attributeValue=contentBean.getvalue(attributeBean.getName()) />
 		<dt>
 		<cfif len(attributeBean.getHint())>
 		<a href="##" class="tooltip">#attributeBean.getLabel()# <span>#attributeBean.gethint()#</span></a>

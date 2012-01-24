@@ -325,6 +325,10 @@ jQuery(document).ready(function(){
 		<cfif not currentChangeset.getIsNew()>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetversionnotify")#: "#HTMLEditFormat(currentChangeset.getName())#"</cfif>
 		</p>
 	</cfif>
+
+	<cfif not structIsEmpty(request.contentBean.getErrors())>
+		<p class="error">#application.utility.displayErrors(request.contentBean.getErrors())#</p>
+	</cfif>
 	<form novalidate="novalidate" action="index.cfm" method="post" enctype="multipart/form-data" name="contentForm" onsubmit="return ckContent(draftremovalnotice);" id="contentForm">
 	
 	<cfif attributes.compactDisplay neq "true" and attributes.moduleid eq '00000000000000000000000000000000000'>

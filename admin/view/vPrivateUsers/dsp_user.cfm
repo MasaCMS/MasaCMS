@@ -78,7 +78,9 @@ select * from rsSubTypes where subType <> 'Default'
 		</cfif>
 	</cfif>
 	
-	#application.utility.displayErrors(request.userBean.getErrors())#
+	<cfif not structIsEmpty(request.userBean.getErrors())>
+		<p class="error">#application.utility.displayErrors(request.userBean.getErrors())#</p>
+	</cfif>
 	
 	<p>#application.rbFactory.getKeyValue(session.rb,'user.requiredtext')#</p>
 </cfoutput>	

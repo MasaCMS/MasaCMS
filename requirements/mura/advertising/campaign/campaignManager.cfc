@@ -94,7 +94,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var campaignBean=getBean("campaignBean") />
 	<cfset campaignBean.set(arguments.data) />
-	
+	<cfset campaignBean.validate()>
+
 	<cfif structIsEmpty(campaignBean.getErrors())>
 		<cfset campaignBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50)) />
 		<cfif not (structKeyExists(arguments.data,"campaignID") and len(arguments.data.campaignID))>
@@ -120,7 +121,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var campaignBean=variables.instance.DAO.read(arguments.data.campaignID) />
 	<cfset campaignBean.set(arguments.data) />
-	
+	<cfset campaignBean.validate()>
+
 	<cfif structIsEmpty(campaignBean.getErrors())>
 		<cfset variables.instance.globalUtility.logEvent("CampaignID:#campaignBean.getCampaignID()# Name:#campaignBean.getName()# was updated","mura-advertising","Information",true) />
 		<cfset campaignBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50)) />

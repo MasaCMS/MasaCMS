@@ -88,7 +88,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var creativeBean=getBean("creativeBean") />
 	<cfset creativeBean.set(arguments.data) />
-	
+	<cfset creativeBean.validate()>
+
 	<cfif structIsEmpty(creativeBean.getErrors())>
 		<cfset creativeBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50)) />
 		<cfif not (structKeyExists(arguments.data,"creativeID") and len(arguments.data.creativeID))>
@@ -116,6 +117,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var creativeBean=variables.instance.DAO.read(arguments.data.creativeID) />
 	<cfset creativeBean.set(arguments.data) />
+	<cfset creativeBean.validate()>
 	
 	<cfif structIsEmpty(creativeBean.getErrors())>
 		<cfset variables.instance.globalUtility.logEvent("CreativeID:#creativeBean.getCreativeID()# Name:#creativeBean.getName()# was updated","mura-advertising","Information",true) />

@@ -198,7 +198,9 @@
 		  <cfset variables.contentManager.setRequestRegionObjects(arguments.rc.contenthistid,arguments.rc.siteid) />
 	</cfif>
 	<cfset arguments.rc.rsRelatedContent=variables.contentManager.getRelatedContent(arguments.rc.siteid, arguments.rc.contenthistID) />
-	
+
+	<cfset session.mura.editBean=arguments.rc.contentBean>
+ 	
 </cffunction>
 
 <cffunction name="update" ouput="false">
@@ -272,15 +274,18 @@
 				<cfset variables.fw.redirect(action="cChangesets.assignments",append="changesetID,siteid",path="")>
 			</cfif>
 			
-			<cfif arguments.rc.preview eq 0>
-				<cfset variables.fw.redirect(action="cArch.list",append="topid,siteid,startrow,moduleid",path="")>
-			<cfelse>
-				<cfset arguments.rc.parentid=rc.contentBean.getParentID()>
-				<cfset arguments.rc.type=rc.contentBean.getType()>
-				<cfset arguments.rc.contentid=rc.contentBean.getContentID()>
-				<cfset arguments.rc.contenthistid=rc.contentBean.getContentHistID()>
-				<cfset arguments.rc.preview=1>
-				<cfset variables.fw.redirect(action="cArch.edit",append="contenthistid,contentid,type,parentid,topid,siteid,moduleid,preview,startrow,return",path="")>
+			<cfif structIsEmpty(rc.contentBean.getErrors())>
+				<cfset structDelete(session.mura,"editBean")>
+				<cfif arguments.rc.preview eq 0>
+					<cfset variables.fw.redirect(action="cArch.list",append="topid,siteid,startrow,moduleid",path="")>
+				<cfelse>
+					<cfset arguments.rc.parentid=rc.contentBean.getParentID()>
+					<cfset arguments.rc.type=rc.contentBean.getType()>
+					<cfset arguments.rc.contentid=rc.contentBean.getContentID()>
+					<cfset arguments.rc.contenthistid=rc.contentBean.getContentHistID()>
+					<cfset arguments.rc.preview=1>
+					<cfset variables.fw.redirect(action="cArch.edit",append="contenthistid,contentid,type,parentid,topid,siteid,moduleid,preview,startrow,return",path="")>
+				</cfif>
 			</cfif>
 	</cfif>
 

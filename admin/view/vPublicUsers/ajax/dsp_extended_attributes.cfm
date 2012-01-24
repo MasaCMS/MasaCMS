@@ -47,7 +47,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfsilent>
 <cfset returnsets=structNew()>
-<cfset userBean=application.userManager.read(attributes.baseID)/>
+<cfif isDefined("session.mura.editBean") and isInstanceOf(session.mura.editBean, "mura.user.userBean")>
+	<cfset userBean=session.mura.editBean>
+<cfelse>
+	<cfset userBean=application.userManager.read(attributes.baseID)/>
+</cfif>
+
 <cfset extendSets=application.classExtensionManager.getSubTypeByName(attributes.type,attributes.subtype,attributes.siteid).getExtendSets(inherit=true,container="Default",activeOnly=true) />
 <!---
 <cfif userBean.getType() eq 2>
@@ -74,7 +79,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfsilent>
 	<dd><dl><cfloop from="1" to="#arrayLen(attributesArray)#" index="a">	
 		<cfset attributeBean=attributesArray[a]/>
-		<cfset attributeValue=userBean.getExtendedAttribute(attributeBean.getAttributeID(),true) />
+		<cfset attributeValue=userBean.getvalue(attributeBean.getName()) />
 		<dt>
 		<cfif len(attributeBean.getHint())>
 		<a href="##" class="tooltip">#attributeBean.getLabel()# <cfif attributeBean.getType() IS "Hidden"><strong>[Hidden]</strong></cfif> <span>#attributeBean.gethint()#</span></a>
@@ -121,7 +126,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfsilent>
 	<dd><dl><cfloop from="1" to="#arrayLen(attributesArray)#" index="a">	
 		<cfset attributeBean=attributesArray[a]/>
-		<cfset attributeValue=userBean.getExtendedAttribute(attributeBean.getAttributeID(),true) />
+		<cfset attributeValue=userBean.getvalue(attributeBean.getName()) />
 		<dt>
 		<cfif len(attributeBean.getHint())>
 		<a href="##" class="tooltip">#attributeBean.getLabel()# <cfif attributeBean.getType() IS "Hidden"><strong>[Hidden]</strong></cfif> <span>#attributeBean.gethint()#</span></a>
