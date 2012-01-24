@@ -53,6 +53,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfabort>
 <cfelseif not structIsEmpty(rc.contentBean.getErrors())>
 	<cfset request.layout=true>
+	<cfset rc.compactDisplay=true>
+	<cfset session.mura.editBean=rc.contentBean>
 	<cfset rc.rsCount=application.contentManager.getItemCount(rc.contentid,rc.siteid) />
   	<cfset rc.rsPageCount=application.contentManager.getPageCount(rc.siteid) />
   	<cfset rc.rsRestrictGroups=application.contentUtility.getRestrictGroups(rc.siteid) />
@@ -65,5 +67,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset rc.ajax=doFBInclude("/muraWRM/admin/view/vArchitecture/ajax/dsp_javascript.cfm")>
 	<cfset rc.layout=doFBInclude("/muraWRM/admin/view/vArchitecture/dsp_form.cfm")>
 <cfelse>
+	<cfset structDelete(session.mura,"editBean")>
 	<cfoutput>#doFBInclude("/muraWRM/admin/view/vArchitecture/dsp_close_compact_display.cfm")#</cfoutput>
 </cfif>

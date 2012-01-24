@@ -198,7 +198,9 @@
 		  <cfset variables.contentManager.setRequestRegionObjects(arguments.rc.contenthistid,arguments.rc.siteid) />
 	</cfif>
 	<cfset arguments.rc.rsRelatedContent=variables.contentManager.getRelatedContent(arguments.rc.siteid, arguments.rc.contenthistID) />
-	
+
+	<cfset session.mura.editBean=arguments.rc.contentBean>
+ 	
 </cffunction>
 
 <cffunction name="update" ouput="false">
@@ -273,6 +275,7 @@
 			</cfif>
 			
 			<cfif structIsEmpty(rc.contentBean.getErrors())>
+				<cfset structDelete(session.mura,"editBean")>
 				<cfif arguments.rc.preview eq 0>
 					<cfset variables.fw.redirect(action="cArch.list",append="topid,siteid,startrow,moduleid",path="")>
 				<cfelse>

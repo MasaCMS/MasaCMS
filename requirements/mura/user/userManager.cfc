@@ -335,6 +335,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset userBean=variables.userDAO.read(arguments.data.userid)/>
 	
 	<cfset userBean.set(arguments.data) />
+	<cfset userBean.validate()>
 
 	<!--- <cfif userBean.getType() eq 2 and  userBean.getAddressID() neq ''> --->
 	<cfif userBean.getAddressID() neq ''>
@@ -344,8 +345,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	<cfset pluginEvent.setValue("siteID", userBean.getSiteID())>
-	
-	<cfset userBean.validate()>
 
 	<cfif userBean.getType() eq 1>	
 		<cfset pluginEvent.setValue("groupBean",userBean)/>			
@@ -437,6 +436,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset pluginEvent.init(arguments.data)>
 	
 	<cfset userBean.set(arguments.data) />
+	<cfset userBean.validate()>
 	
 	<!--- MAKE SURE ALL REQUIRED DATA IS THERE--->
 	<cfif not structKeyExists(arguments.data,"userID") or (structKeyExists(arguments.data,"userID") and not len(arguments.data.userID))>
@@ -463,8 +463,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	<cfset pluginEvent.setValue("siteID", userBean.getSiteID())>
-
-	<cfset userBean.validate()>
 	
 	<cfif userBean.getType() eq 1>	
 		<cfset pluginEvent.setValue("groupBean",userBean)/>			
