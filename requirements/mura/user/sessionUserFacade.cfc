@@ -92,7 +92,7 @@
 	</cfif>
 </cffunction>
 
-<cffunction name="isInGroup" access="public" returntype="any" output="false">
+<cffunction name="isInGroup" access="public" returntype="boolean" output="false">
 	<cfargument name="group">
 	<cfargument name="isPublic" hint="optional">
 	<cfset var siteid=session.mura.siteID>
@@ -118,13 +118,15 @@
 			<cfelse>
 				<cfreturn application.permUtility.isUserInGroup(arguments.group,publicPool,1) or application.permUtility.isUserInGroup(arguments.group,privatePool,0)>
 			</cfif>
+		<cfelse>
+			<cfreturn false>
 		</cfif>
 	<cfelse>
 		<cfreturn false>
 	</cfif>
 </cffunction>
 
-<cffunction name="isPrivateUser" access="public" returntype="any" output="false">
+<cffunction name="isPrivateUser" access="public" returntype="boolean" output="false">
 	<cfset var siteid=session.mura.siteID>
 	<cfif hasSession()>
 		<cfset siteid=session.mura.siteID>
@@ -155,7 +157,7 @@
 	</cfif>
 </cffunction>
 
-<cffunction name="hasSession" output="false">
+<cffunction name="hasSession" output="false" returntype="boolean">
 	<cfreturn isDefined("session.mura")>
 </cffunction>
 
