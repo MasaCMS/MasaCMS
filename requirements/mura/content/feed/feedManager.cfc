@@ -114,6 +114,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var feedBean=getBean("feed") />
 	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
 	<cfset feedBean.set(arguments.data) />
+	<cfset feedBean.validate()>
 	
 	<cfset pluginEvent.setValue("feedBean",feedBean)>
 	<cfset pluginEvent.setValue("siteID",feedBean.getSiteID())>
@@ -188,6 +189,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var feedBean=variables.feedDAO.read(arguments.data.feedID) />
 	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
 	<cfset feedBean.set(arguments.data) />
+	<cfset feedBean.validate()>
 	
 	<cfset pluginEvent.setValue("feedBean",feedBean)>
 	<cfset pluginEvent.setValue("siteID",feedBean.getSiteID())>

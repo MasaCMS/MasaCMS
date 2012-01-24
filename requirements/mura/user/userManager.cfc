@@ -345,6 +345,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset pluginEvent.setValue("siteID", userBean.getSiteID())>
 	
+	<cfset userBean.validate()>
+
 	<cfif userBean.getType() eq 1>	
 		<cfset pluginEvent.setValue("groupBean",userBean)/>			
 		<cfset variables.pluginManager.announceEvent("onBeforeGroupUpdate",pluginEvent)>
@@ -461,6 +463,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	<cfset pluginEvent.setValue("siteID", userBean.getSiteID())>
+
+	<cfset userBean.validate()>
 	
 	<cfif userBean.getType() eq 1>	
 		<cfset pluginEvent.setValue("groupBean",userBean)/>			
@@ -489,15 +493,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset setPhotoFile(userBean)/>
 		</cfif>
 		
-		<cfif structIsEmpty(userBean.getErrors())>
-			<cfset variables.globalUtility.logEvent("UserID:#userBean.getUserID()# Type:#userBean.getType()# User:#userBean.getFName()# #userBean.getFName()# Group:#userBean.getGroupName()# was created","mura-users","Information",true) />
-			<cfset setLastUpdateInfo(userBean) />
-			<cfset variables.userDAO.create(userBean) />
-			<cfset purgeUserCache(userBean=userBean)>
-			<cfset variables.trashManager.takeOut(userBean)>
-			<cfif isObject(addressBean)>
-				<cfset variables.userDAO.createAddress(addressBean) />
-			</cfif>
+		<cfset variables.globalUtility.logEvent("UserID:#userBean.getUserID()# Type:#userBean.getType()# User:#userBean.getFName()# #userBean.getFName()# Group:#userBean.getGroupName()# was created","mura-users","Information",true) />
+		<cfset setLastUpdateInfo(userBean) />
+		<cfset variables.userDAO.create(userBean) />
+		<cfset purgeUserCache(userBean=userBean)>
+		<cfset variables.trashManager.takeOut(userBean)>
+		<cfif isObject(addressBean)>
+			<cfset variables.userDAO.createAddress(addressBean) />
 		</cfif>
 		
 		<cfset userBean.purgeExtendedData()>
@@ -709,6 +711,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	<cfset addressBean.set(arguments.data) />
+	<cfset addressBean.validate()>
 	
 	<cfset userBean=read(addressBean.getUserID())>
 	<cfset addressBean.setSiteID(userBean.getSiteID())>
@@ -756,6 +759,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	<cfset addressBean.set(arguments.data) />
+	<cfset addressBean.validate()>
 	
 	<cfset userBean=read(addressBean.getUserID())>
 	<cfset addressBean.setSiteID(userBean.getSiteID())>

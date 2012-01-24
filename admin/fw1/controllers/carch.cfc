@@ -272,15 +272,17 @@
 				<cfset variables.fw.redirect(action="cChangesets.assignments",append="changesetID,siteid",path="")>
 			</cfif>
 			
-			<cfif arguments.rc.preview eq 0>
-				<cfset variables.fw.redirect(action="cArch.list",append="topid,siteid,startrow,moduleid",path="")>
-			<cfelse>
-				<cfset arguments.rc.parentid=rc.contentBean.getParentID()>
-				<cfset arguments.rc.type=rc.contentBean.getType()>
-				<cfset arguments.rc.contentid=rc.contentBean.getContentID()>
-				<cfset arguments.rc.contenthistid=rc.contentBean.getContentHistID()>
-				<cfset arguments.rc.preview=1>
-				<cfset variables.fw.redirect(action="cArch.edit",append="contenthistid,contentid,type,parentid,topid,siteid,moduleid,preview,startrow,return",path="")>
+			<cfif structIsEmpty(rc.contentBean.getErrors())>
+				<cfif arguments.rc.preview eq 0>
+					<cfset variables.fw.redirect(action="cArch.list",append="topid,siteid,startrow,moduleid",path="")>
+				<cfelse>
+					<cfset arguments.rc.parentid=rc.contentBean.getParentID()>
+					<cfset arguments.rc.type=rc.contentBean.getType()>
+					<cfset arguments.rc.contentid=rc.contentBean.getContentID()>
+					<cfset arguments.rc.contenthistid=rc.contentBean.getContentHistID()>
+					<cfset arguments.rc.preview=1>
+					<cfset variables.fw.redirect(action="cArch.edit",append="contenthistid,contentid,type,parentid,topid,siteid,moduleid,preview,startrow,return",path="")>
+				</cfif>
 			</cfif>
 	</cfif>
 

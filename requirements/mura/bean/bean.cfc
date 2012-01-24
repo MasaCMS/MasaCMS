@@ -192,7 +192,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getErrors" output="false" access="public">
-	<cfset validate()>
 	<cfreturn variables.instance.errors>
 </cffunction>
 

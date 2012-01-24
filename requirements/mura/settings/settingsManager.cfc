@@ -210,7 +210,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var bean=variables.DAO.read(arguments.data.SiteID) />
 	<cfset bean.set(arguments.data) />
-	
+	<cfset bean.validate()>
 	<cfif structIsEmpty(bean.getErrors())>
 		<cfset variables.utility.logEvent("SiteID:#bean.getSiteID()# Site:#bean.getSite()# was updated","mura-settings","Information",true) />
 		<cfset variables.DAO.update(bean) />
@@ -249,6 +249,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var bean=getBean("settingsBean") />
 	
 	<cfset bean.set(arguments.data) />
+	<cfset bean.validate()>
 	
 	<cfif structIsEmpty(bean.getErrors()) and  bean.getSiteID() neq ''>
 		

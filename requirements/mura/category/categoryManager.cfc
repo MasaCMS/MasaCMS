@@ -233,7 +233,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var pluginEvent = getBean("category").set(arguments.data) />
 	<cfset var parentBean="">
 	<cfset categoryBean.set(arguments.data) />
-	
+	<cfset categoryBean.validate()>
+
 	<cfset pluginEvent.setValue("categoryBean",categoryBean)>
 	<cfset pluginEvent.setValue("siteID", categoryBean.getSiteID())>
 	<cfset variables.pluginManager.announceEvent("onBeforeCategorySave",pluginEvent)>
@@ -544,6 +545,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset currentURLTitle=categoryBean.getURLTitle() />
 	<cfset currentFilename=categoryBean.getFilename() />
 	<cfset categoryBean.set(arguments.data) />
+	<cfset categoryBean.validate()>
 	<cfset currentPath=categoryBean.getPath() />
 	
 	<cfset pluginEvent.setValue("categoryBean",categoryBean)>

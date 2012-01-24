@@ -78,6 +78,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var adZoneBean=getBean("adZoneBean") />
 	<cfset adZoneBean.set(arguments.data) />
+	<cfset adZoneBean.validate()>
 	
 	<cfif structIsEmpty(adZoneBean.getErrors())>
 		<cfset adZoneBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50)) />
@@ -104,6 +105,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var adZoneBean=variables.instance.DAO.read(arguments.data.adZoneID) />
 	<cfset adZoneBean.set(arguments.data) />
+	<cfset adZoneBean.validate()>
 	
 	<cfif structIsEmpty(adZoneBean.getErrors())>
 		<cfset variables.instance.globalUtility.logEvent("AdZoneID:#adZoneBean.getAdZoneID()# Name:#adZoneBean.getName()# was updated","mura-advertising","Information",true) />

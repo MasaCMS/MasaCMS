@@ -61,7 +61,9 @@ select * from rsSubTypes where subType <> 'Default'
 <form novalidate="novalidate" action="index.cfm?fuseaction=cEditProfile.update" method="post" enctype="multipart/form-data" name="form1" class="columns" onsubmit="return validate(this);">
 <cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,'user.editprofile')#</h2>
 
-	#application.utility.displayErrors(request.userBean.getErrors())#
+	<cfif not structIsEmpty(request.userBean.getErrors())>
+		<p class="error">#application.utility.displayErrors(request.userBean.getErrors())#</p>
+	</cfif>
 	
 	<p>(*Required, **Required to login to Site)<p>
 
