@@ -53,7 +53,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfabort>
 <cfelseif not structIsEmpty(rc.contentBean.getErrors())>
 	<cfset request.layout=true>
-	<cfset rc.compactDisplay=true>
+	<cfif rc.closeCompactDisplay eq "true">
+		<cfset rc.compactDisplay=true>
+	</cfif>
 	<cfset session.mura.editBean=rc.contentBean>
 	<cfset rc.rsCount=application.contentManager.getItemCount(rc.contentid,rc.siteid) />
   	<cfset rc.rsPageCount=application.contentManager.getPageCount(rc.siteid) />
