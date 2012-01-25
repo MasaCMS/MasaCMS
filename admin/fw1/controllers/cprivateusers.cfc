@@ -114,7 +114,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset arguments.rc.rsSiteList=variables.settingsManager.getList() />
 	<cfset arguments.rc.rsGroupList=variables.userManager.readGroupMemberships(arguments.rc.userid) />
 	<cfset arguments.rc.nextn=variables.utility.getNextN(arguments.rc.rsGroupList,15,arguments.rc.startrow) />
-	<cfset session.mura.editBean=arguments.rc.userBean>
 </cffunction>
 
 <cffunction name="addtogroup" output="false">
@@ -166,7 +165,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfset arguments.rc.rsPrivateGroups=variables.userManager.getPrivateGroups(arguments.rc.siteid)  />
 	<cfset arguments.rc.rsPublicGroups=variables.userManager.getPublicGroups(arguments.rc.siteid) />
-	<cfset session.mura.editBean=arguments.rc.userBean>
 </cffunction>
 
 <cffunction name="editAddress" output="false">
@@ -206,6 +204,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  <cfif arguments.rc.action neq 'delete' and  not structIsEmpty(arguments.rc.userBean.getErrors()) and arguments.rc.type eq 1>
 	  	<cfset variables.fw.redirect(action="cPrivateUsers.editgroup",preserve="all",path="")>
 	  <cfelseif arguments.rc.action neq  'delete' and not structIsEmpty(arguments.rc.userBean.getErrors()) and arguments.rc.type eq 2>
+	  	<cfset session.mura.editBean=arguments.rc.userBean>
 	    <cfset variables.fw.redirect(action="cPrivateUsers.edituser",preserve="all",path="")>
 	  </cfif>
 </cffunction>

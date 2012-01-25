@@ -220,6 +220,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  <cfif arguments.rc.action neq 'delete' and  not structIsEmpty(arguments.rc.userBean.getErrors()) and arguments.rc.type eq 1>
 	  	<cfset variables.fw.redirect(action="cPublicUsers.editgroup",preserve="all",path="")>
 	  <cfelseif arguments.rc.action neq  'delete' and not structIsEmpty(arguments.rc.userBean.getErrors()) and arguments.rc.type eq 2>
+	  	<cfset session.mura.editBean=arguments.rc.userBean>
 	    <cfset variables.fw.redirect(action="cPublicUsers.edituser",preserve="all",path="")>
 	  </cfif>
 </cffunction>

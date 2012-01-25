@@ -92,7 +92,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not isdefined('rc.userBean')>
 		<cfset arguments.rc.userBean=variables.userManager.read(session.mura.userID)>
 	</cfif>
-	<cfset session.mura.editBean=arguments.rc.userBean>
 </cffunction>
 
 <cffunction name="update" output="false">
