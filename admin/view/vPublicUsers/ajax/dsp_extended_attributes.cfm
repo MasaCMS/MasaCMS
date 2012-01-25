@@ -47,12 +47,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfsilent>
 <cfset returnsets=structNew()>
-<cfif isDefined("session.mura.editBean") and isInstanceOf(session.mura.editBean, "mura.user.userBean")>
+<cfif isDefined("session.mura.editBean") and isInstanceOf(session.mura.editBean, "mura.user.userBean") and session.mura.editBean.getUserID() eq attributes.baseID>
 	<cfset userBean=session.mura.editBean>
 <cfelse>
 	<cfset userBean=application.userManager.read(attributes.baseID)/>
 </cfif>
-
+<cfset structDelete(session.mura,"editBean")>
 <cfset extendSets=application.classExtensionManager.getSubTypeByName(attributes.type,attributes.subtype,attributes.siteid).getExtendSets(inherit=true,container="Default",activeOnly=true) />
 <!---
 <cfif userBean.getType() eq 2>

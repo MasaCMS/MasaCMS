@@ -198,8 +198,6 @@
 		  <cfset variables.contentManager.setRequestRegionObjects(arguments.rc.contenthistid,arguments.rc.siteid) />
 	</cfif>
 	<cfset arguments.rc.rsRelatedContent=variables.contentManager.getRelatedContent(arguments.rc.siteid, arguments.rc.contenthistID) />
-
-	<cfset session.mura.editBean=arguments.rc.contentBean>
  	
 </cffunction>
 

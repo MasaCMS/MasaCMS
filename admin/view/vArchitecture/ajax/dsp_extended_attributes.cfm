@@ -45,11 +45,12 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfset returnsets=structNew()>
-<cfif isDefined("session.mura.editBean") and isInstanceOf(session.mura.editBean, "mura.content.contentBean")>
+<cfif isDefined("session.mura.editBean") and isInstanceOf(session.mura.editBean, "mura.content.contentBean") and session.mura.editBean.getContentHistID() eq attributes.contentHistID>
 	<cfset contentBean=session.mura.editBean>
 <cfelse>
 	<cfset contentBean=application.contentManager.getcontentVersion(attributes.contentHistID,attributes.siteID)/>
 </cfif>
+<cfset structDelete(session.mura,"editBean")>
 <cfsavecontent variable="returnsets.extended">
 <cfset extendSets=application.classExtensionManager.getSubTypeByName(attributes.type,attributes.subtype,attributes.siteid).getExtendSets(inherit=true,container="Default",activeOnly=true) />
 <cfset started=false />
