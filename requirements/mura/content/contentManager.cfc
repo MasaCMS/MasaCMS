@@ -1128,9 +1128,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset variables.pluginManager.announceEvent("onAfter#newBean.getType()##newBean.getSubType()#Save",pluginEvent)>	
 			<!--- end save content --->	
 			<cfelse>
-				<cfif structKeyExists(arguments.data,"preserveID")>
+				<cfif structKeyExists(arguments.data,"preserveID") and len(arguments.data.preserveID)>
 					<cfset newBean.setContentHistID(arguments.data.preserveID)>
-				<cfelseif structKeyExists(arguments.data,"contentHistID")>
+				<cfelseif structKeyExists(arguments.data,"contentHistID") and len(arguments.data.contentHistID)>
 					<cfset newBean.setContentHistID(arguments.data.contentHistID)>
 				</cfif>	
 			</cfif>			
