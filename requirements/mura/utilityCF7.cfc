@@ -56,7 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfreturn this />
 </cffunction>
 
-<cffunction name="displayErrors" access="public" output="true" returntype="string">
+<cffunction name="displayErrors" access="public" output="true">
 <cfargument name="error" type="struct" required="yes" default="#structnew()#"/>
 <cfset var err=""/>
 <cfset var started=false>
@@ -66,8 +66,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput><strong>#structfind(arguments.error,err)#</strong><br/></cfoutput>
 </cfif>
 </cfloop>
-<cfif started></br></cfif>
-<cfreturn/>
 </cffunction>
 
 <cffunction name="getNextN" returntype="struct" access="public" output="false">
