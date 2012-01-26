@@ -207,7 +207,7 @@ jQuery(document).ready(function(){
 </cfsilent>
 
 <!--- check to see if the site has reached it's maximum amount of pages --->
-<cfif (request.rsPageCount.counter lt application.settingsManager.getSite(attributes.siteid).getpagelimit() and  attributes.contentid eq '') or attributes.contentid neq ''>
+<cfif (request.rsPageCount.counter lt application.settingsManager.getSite(attributes.siteid).getpagelimit() and  request.contentBean.getIsNew()) or not request.contentBean.getIsNew()>
 <cfoutput>
 	<cfif attributes.type eq "Component">
 		<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editcomponent")#</h2>
@@ -219,7 +219,7 @@ jQuery(document).ready(function(){
 	
 	<cfif attributes.compactDisplay neq "true">
 	<ul class="metadata">
-		<cfif attributes.contentid neq ''>
+		<cfif not request.contentBean.getIsNew()>
 			<cfif listFindNoCase('Page,Portal,Calendar,Gallery,Link,File',attributes.type)>
 				<cfset rsRating=application.raterManager.getAvgRating(request.contentBean.getcontentID(),request.contentBean.getSiteID()) />
 				<cfif rsRating.recordcount>
@@ -232,74 +232,10 @@ jQuery(document).ready(function(){
 		</cfif>
 		</cfif>
 		<li>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.update")#: <strong>#LSDateFormat(parseDateTime(request.contentBean.getlastupdate()),session.dateKeyFormat)# #LSTimeFormat(parseDateTime(request.contentBean.getlastupdate()),"short")#</strong></li>
-		<li>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.status")#: <strong><cfif attributes.contentid neq ''><cfif request.contentBean.getactive() gt 0 and request.contentBean.getapproved() gt 0>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.published")#<cfelseif request.contentBean.getapproved() lt 1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#<cfelse>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.archived")#</cfif><cfelse>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#</cfif></strong></li>
+		<li>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.status")#: <strong><cfif not request.contentBean.getIsNew()><cfif request.contentBean.getactive() gt 0 and request.contentBean.getapproved() gt 0>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.published")#<cfelseif request.contentBean.getapproved() lt 1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#<cfelse>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.archived")#</cfif><cfelse>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#</cfif></strong></li>
 		<cfset started=false>
 		<li>
-		<!---
-		<cfif listFindNoCase(pageLevelList,attributes.type)>
-				<cfset started=true>
-				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#:
-				<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#request.contentBean.getcontentHistID()#',this.value,'#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
-				<cfloop list="#baseTypeList#" index="t">
-				<cfsilent><cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery></cfsilent>
-				<option value="#t#^Default" <cfif attributes.type eq t and request.contentBean.getSubType() eq "Default">selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#</option>
-				<cfif rsst.recordcount>
-					<cfloop query="rsst">
-						<option value="#t#^#rsst.subtype#" <cfif attributes.type eq t and request.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#  / #rsst.subtype#</option>
-					</cfloop>
-				</cfif>
-				</cfloop>
-				</select>
-			<cfelseif attributes.type eq 'File'>
-				<cfset t="File"/>
-				<cfsilent><cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery></cfsilent>
-				<cfif rsst.recordcount>
-				<cfset started=true>
-				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#:
-				<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#request.contentBean.getcontentHistID()#',this.value,'#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
-				<option value="#t#^Default" <cfif attributes.type eq t and request.contentBean.getSubType() eq "Default">selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#t#")#</option>
-				<cfif rsst.recordcount>
-					<cfloop query="rsst">
-						<option value="#t#^#rsst.subtype#" <cfif attributes.type eq t and request.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")# / #rsst.subtype#</option>
-					</cfloop>
-				</cfif>
-				</select>
-				</cfif>
-			<cfelseif attributes.type eq 'Link'>	
-				<cfset t="Link"/>
-				<cfsilent><cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery></cfsilent>
-				<cfif rsst.recordcount>
-				<cfset started=true>
-				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#:v
-				<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#request.contentBean.getcontentHistID()#',this.value,'#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
-				<option value="#t#^Default" <cfif attributes.type eq t and request.contentBean.getSubType() eq "Default">selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#</option>
-				<cfif rsst.recordcount>
-					<cfloop query="rsst">
-						<cfif rsst.subtype neq 'Default'><option value="#t#^#rsst.subtype#" <cfif attributes.type eq t and request.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#  / #rsst.subtype#</option></cfif>
-					</cfloop>
-				</cfif>
-				</select>
-				</cfif>
-			<cfelseif attributes.type eq 'Component'>	
-				<cfset t="Component"/>
-				<cfsilent><cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery></cfsilent>
-				<cfif rsst.recordcount>
-				<cfset started=true>
-				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#:
-				<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#request.contentBean.getcontentHistID()#',this.value,'#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
-				<option value="#t#^Default" <cfif attributes.type eq t and request.contentBean.getSubType() eq "Default">selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#</option>
-				<cfif rsst.recordcount>
-					<cfloop query="rsst">
-						<cfif rsst.subtype neq 'Default'><option value="#t#^#rsst.subtype#" <cfif attributes.type eq t and request.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#  / #rsst.subtype#</option></cfif>
-					</cfloop>
-				</cfif>
-				</select>
-				</cfif>
-			</cfif>
-			
-			<cfif not started> --->
 			#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#: <strong>#HTMLEditFormat(attributes.type)#</strong>
-			<!---</cfif>--->
 		</li>
 	</ul>
 	</cfif>
@@ -348,7 +284,7 @@ jQuery(document).ready(function(){
 			<cfif attributes.compactDisplay neq "true" and (request.contentBean.getfilename() neq '' or attributes.contentid eq '00000000000000000000000000000000001')>
 				<cfswitch expression="#attributes.type#">
 				<cfcase value="Page,Portal,Calendar,Gallery">
-					<cfif attributes.contentID neq ''>
+					<cfif not request.contentBean.getIsNew()>
 						<cfset currentBean=application.contentManager.getActiveContent(attributes.contentID,attributes.siteid) />
 						<li><a  href="javascript:preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,currentBean.getfilename())#','#currentBean.getTargetParams()#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewactive")#</a></li>
 					</cfif>
@@ -356,7 +292,7 @@ jQuery(document).ready(function(){
 				</cfcase>
 				<cfcase value="Link">
 					<cfset currentBean=application.contentManager.getActiveContent(attributes.contentID,attributes.siteid) />
-					<cfif attributes.contentID neq ''>
+					<cfif not request.contentBean.getIsNew()>
 						<li><a href="javascript:preview('#currentBean.getfilename()#','#currentBean.getTargetParams()#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewactive")#</a></li>
 					</cfif>
 					<li><a href="javascript:preview('#request.contentBean.getfilename()#','#request.contentBean.getTargetParams()#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewversion")#</a></li>
@@ -520,14 +456,14 @@ jQuery(document).ready(function(){
 		</cfcase>
 		<cfcase value="Component">
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Usage Report')>
-			<cfif attributes.contentID neq ''>
+			<cfif not request.contentBean.getIsNew()>
 			<cfinclude template="form/dsp_tab_usage.cfm">
 			</cfif>
 			</cfif>		
 		</cfcase>
 		<cfcase value="Form">
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Usage Report')>
-			<cfif attributes.contentID neq ''>
+			<cfif not request.contentBean.getIsNew()>
 			<cfinclude template="form/dsp_tab_usage.cfm">
 			</cfif>
 			</cfif>
@@ -610,7 +546,7 @@ jQuery(document).ready(function(){
 		<cfif attributes.type neq 'Link'>
 			<input name="filename" type="hidden" value="#request.contentBean.getfilename()#">
 		</cfif>
-		<cfif attributes.contentid neq ''>
+		<cfif not request.contentBean.getIsNew()>
 			<input name="lastupdate" type="hidden" value="#LSDateFormat(request.contentBean.getlastupdate(),session.dateKeyFormat)#">
 		</cfif>
 		<cfif attributes.contentid eq '00000000000000000000000000000000001'>

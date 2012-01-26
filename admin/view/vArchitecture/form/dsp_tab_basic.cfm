@@ -287,7 +287,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>	
 
 <cfif ((attributes.parentid neq '00000000000000000000000000000000001' and application.settingsManager.getSite(attributes.siteid).getlocking() neq 'all') or (attributes.parentid eq '00000000000000000000000000000000001' and application.settingsManager.getSite(attributes.siteid).getlocking() eq 'none')) and attributes.contentid neq '00000000000000000000000000000000001'>
-	<cfset bydate=iif(request.contentBean.getdisplay() EQ 2 or (attributes.ptype eq 'Calendar' and attributes.contentid eq ''),de('true'),de('false'))>
+	<cfset bydate=iif(request.contentBean.getdisplay() EQ 2 or (attributes.ptype eq 'Calendar' and request.contentBean.getIsNew()),de('true'),de('false'))>
 	<dt><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.display')#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.displayContent")#</span></a></dt>
 	<dd><select name="display" class="dropdown" onchange="javascript: this.selectedIndex==2?toggleDisplay2('editDates',true):toggleDisplay2('editDates',false);">
 					<option value="1"  <cfif  request.contentBean.getdisplay() EQ 1> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#</option>
@@ -312,10 +312,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</dd>
 	
 	<cfif attributes.type neq 'Component' and application.settingsManager.getSite(attributes.siteid).getlocking() neq 'all' and attributes.type neq 'Form'>
-	<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentparent')#:<span id="move" class="text"> <cfif attributes.contentid eq ''>"#request.crumbData[1].menutitle#"<cfelse>"#request.crumbData[2].menutitle#"</cfif>
+	
+	<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentparent')#:<span id="move" class="text"> <cfif request.contentBean.getIsNew()>"#request.crumbData[1].menutitle#"<cfelse>"#request.crumbData[2].menutitle#"</cfif>
 				&nbsp;&nbsp;<a href="javascript:##;" onclick="javascript: loadSiteParents('#attributes.siteid#','#attributes.contentid#','#attributes.parentid#','',1);return false;">[#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectnewparent')#]</a>
 				<input type="hidden" name="parentid" value="#attributes.parentid#">
-		<!---<cfif attributes.contentid eq '' and  request.crumbdata[1].sortBy eq 'orderno'>
+		<!---<cfif request.contentBean.getIsNew() and  request.crumbdata[1].sortBy eq 'orderno'>
 				at <select name="topOrBottom" class="dropdown">
 				<option value="top">Top</option>
 				<option value="bottom">Bottom</option>

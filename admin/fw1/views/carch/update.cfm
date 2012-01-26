@@ -57,14 +57,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset rc.compactDisplay=true>
 	</cfif>
 	<cfset session.mura.editBean=rc.contentBean>
+	<cfif not isDate(session.mura.editBean.getLastUpdate())>
+		<cfset session.mura.editBean.setLastUpdate(now())>
+	</cfif>
+	<cfset rc.contentHistID=rc.contentBean.getContentHistID()>
+  	<cfset rc.contentID=rc.contentBean.getContentID()>
 	<cfset rc.rsCount=application.contentManager.getItemCount(rc.contentid,rc.siteid) />
   	<cfset rc.rsPageCount=application.contentManager.getPageCount(rc.siteid) />
   	<cfset rc.rsRestrictGroups=application.contentUtility.getRestrictGroups(rc.siteid) />
   	<cfset rc.rsTemplates=application.contentUtility.getTemplates(rc.siteid,rc.type) />
+
+	<cfif not rc.contentBean.getIsNew()> 
+  		<cfset rc.crumbData=application.contentManager.getCrumbList(rc.contentID,rc.siteid)/>
+  	<cfelse>
+  		<cfset rc.crumbData=application.contentManager.getCrumbList(rc.parentID,rc.siteid)/>
+  	</cfif>
   	
-  	<cfset rc.contentHistID=rc.contentBean.getContentHistID()>
-  	<cfset rc.contentID=rc.contentBean.getContentID()>
- 
   	<cfset rc.rsCategoryAssign=application.contentManager.getCategoriesByHistID(rc.contenthistID) />
 
   	<cfset rsCategories=application.categoryManager.getCategoriesBySiteID(rc.siteid) />

@@ -46,5 +46,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfoutput>
 <h2>Edit Content</h2>
-This site has reached it's maximum number of pages allowed. If you are a Super Admin, this can be changed in Site Settings. <!---  If you have any questions, or are interested in learning about more options for your website please email <a href="mailto:#application.configBean.getAdminEmail()#">#application.configBean.getAdminEmail()#</a>. --->
+<p class="error">
+This site has reached it's maximum number of pages allowed. If you are a Super Admin, this can be changed in Site Settings.</p> 
 </cfoutput>
