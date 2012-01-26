@@ -71,7 +71,7 @@ onload=function(){
 	var anchors=document.getElementsByTagName("A");
 	
 	for(var i=0;i<anchors.length;i++){		
-		if (typeof anchors[i].onclick != 'function') {
+		if (typeof(anchors[i].onclick) != 'function' && jQuery(anchors[i]).attr("href") !='#') {
    			anchors[i].onclick = setRequestedURL;
 		}
 	}
@@ -335,7 +335,7 @@ jQuery(document).ready(function(){
 		#application.contentRenderer.dspZoom(request.crumbdata,fileExt)#
 	</cfif>
 	
-	<!-- This is plugin message targeting --->	
+	<!--- This is plugin message targeting --->	
 	<span id="msg">
 	#application.pluginManager.renderEvent("on#request.contentBean.getType()#EditMessageRender", pluginEvent)#
 	#application.pluginManager.renderEvent("on#request.contentBean.getType()##request.contentBean.getSubType()#EditMessageRender", pluginEvent)#
