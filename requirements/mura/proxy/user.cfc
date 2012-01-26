@@ -82,7 +82,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getAddressBean" output="false">
 	<cfargument name="event">
 	
-	<cfset var address=getBean("userDAO").readAddress(event.getValue("addressID"))>
+	<cfset var address=super.getBean("userDAO").readAddress(event.getValue("addressID"))>
 	<cfreturn address>
 	
 </cffunction>
