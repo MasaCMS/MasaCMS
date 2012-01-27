@@ -452,10 +452,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not structKeyExists(arguments.data,"fromMuraTrash")>
 		<cfset addressBean=getBean("addressBean") />
 		<cfset addressBean.set(arguments.data) />
-		<cfset addressBean.setAddressID(createuuid()) />
+		<cfif not len(addressBean.getAddressID())>
+			<cfset addressBean.setAddressID(createuuid()) />
+		</cfif>
 		<cfset addressBean.setUserID(userBean.getUserID()) />
 		<cfset addressBean.setIsPrimary(1) />
-		<cfset addressBean.setAddressName('Primary') />
+		<cfif not len(addressBean.getAddressName())>
+			<cfset addressBean.setAddressName('Primary') />
+		</cfif>
 	</cfif>
 	
 	<cfif userBean.getPassword() eq ''>

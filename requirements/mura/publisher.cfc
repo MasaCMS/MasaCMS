@@ -1312,11 +1312,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<cfloop query="rstcontentcomments">
 					<cfquery datasource="#arguments.toDSN#">
-							insert into tcontentcomments (comments,commentid,contenthistid,contentid,email,entered,ip,isApproved,name,siteid,url,subscribe,parentID,path
+							insert into tcontentcomments (
+							comments,commentid,contenthistid,contentid,email,entered,ip,isApproved,name,siteid,url,subscribe,parentID,path
 							<!--- added in 5.6 --->
 							<cfif isdefined("rstcontentcomments.remoteid")>
 								,remoteID
 							</cfif>
+							)
 							values
 							(
 							<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstcontentcomments.comments neq '',de('no'),de('yes'))#" value="#rstcontentcomments.comments#">,
