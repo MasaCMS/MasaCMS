@@ -498,7 +498,11 @@ select * from tplugins order by #arguments.orderby#
 				<cfset displayObject.setModuleID(modID) />
 				<cfset displayObject.setName(pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes.name) />
 				<cfset displayObject.loadByName() />
-				<cfset displayObject.setLocation(pluginXML.plugin.displayobjects.xmlAttributes.location) />
+				<cfif structKeyExists(pluginXML.plugin.displayobjects.xmlAttributes,"location")>
+					<cfset displayObject.setLocation(pluginXML.plugin.displayobjects.xmlAttributes.location) />
+				<cfelse>
+					<cfset displayObject.setLocation("global") />
+				</cfif>
 				<cfif structKeyExists(pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes,"displayobjectfile")>
 					<cfset displayObject.setDisplayObjectFile(pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes.displayobjectfile) />
 				<cfelse>
