@@ -46,7 +46,7 @@
 			<cfif attributes.type neq 'File'>
 				<span id="selectAssocImage">
 				<input type="hidden" name="fileid" value="#htmlEditFormat(request.contentBean.getfileid())#" />		
-				<a class="selectImage" href="javascript:##;" onclick="javascript: loadAssocImages('#htmlEditFormat(attributes.siteid)#','#htmlEditFormat(request.contentBean.getFileID())#','#htmlEditFormat(attributes.contentID)#','',1);return false;">[#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectassocimage')#]</a>
+				<a class="selectImage" href="javascript:##;" onclick="javascript: loadAssocImages('#htmlEditFormat(attributes.siteid)#','#htmlEditFormat(request.contentBean.getFileID())#','#htmlEditFormat(attributes.contentID)#','',1);return false;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectassocimage')#</a>
 				</span>
 				
 				<span id="selectAssocImageReInit" style="display:none">
