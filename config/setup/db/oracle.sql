@@ -1,21 +1,21 @@
 
-	CREATE SEQUENCE  "TADPLACEMENTDETAILS_DETAILID_S"  MINVALUE 1 MAXVALUE 999999999999999999999999 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE ;
+	CREATE SEQUENCE  "TADPLACEMENTDETAILS_DETAILID_S" MINVALUE 1 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE ;
 --|
-	CREATE SEQUENCE  "TADSTATS_STATID_SEQ"  MINVALUE 1 MAXVALUE 999999999999999999999999 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE ;
+	CREATE SEQUENCE  "TADSTATS_STATID_SEQ" MINVALUE 1 NOMAXVALUE INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE ;
 --|
-	CREATE SEQUENCE  "TCLASSEXTENDATTRIBUTES_ATTRIBU"  MINVALUE 1 MAXVALUE 999999999999999999999999 INCREMENT BY 1 START WITH 19537201 CACHE 20 NOORDER  NOCYCLE ;
+	CREATE SEQUENCE  "TCLASSEXTENDATTRIBUTES_ATTRIBU" MINVALUE 1  INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE ;
 --|
-	CREATE SEQUENCE  "TCLASSEXTENDDATAUSERACTIVITY_D"  MINVALUE 1 MAXVALUE 999999999999999999999999 INCREMENT BY 1 START WITH 321 CACHE 20 NOORDER  NOCYCLE ;
+	CREATE SEQUENCE  "TCLASSEXTENDDATAUSERACTIVITY_D" MINVALUE 1 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE ;
 --|
-   CREATE SEQUENCE  "TCLASSEXTENDDATA_DATAID_SEQ"  MINVALUE 1 MAXVALUE 999999999999999999999999 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "TCLASSEXTENDDATA_DATAID_SEQ" MINVALUE 1 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE ;
 --|
-   CREATE SEQUENCE  "TCONTENTTAGS_TAGID_SEQ"  MINVALUE 1 MAXVALUE 999999999999999999999999 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "TCONTENTTAGS_TAGID_SEQ" MINVALUE 1 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE ;
 --|
-   CREATE SEQUENCE  "TCONTENT_TCONTENT_ID_SEQ"  MINVALUE 1 MAXVALUE 999999999999999999999999 INCREMENT BY 1 START WITH 221 CACHE 20 NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "TCONTENT_TCONTENT_ID_SEQ"  MINVALUE 1 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE ;
 --|
-   CREATE SEQUENCE  "TSESSIONTRACKING_TRACKINGID_SE"  MINVALUE 1 MAXVALUE 999999999999999999999999 INCREMENT BY 1 START WITH 361 CACHE 20 NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "TSESSIONTRACKING_TRACKINGID_SE" MINVALUE 1 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE ;
 --|
-   CREATE SEQUENCE  "TUSERSTAGS_TAGID_SEQ"  MINVALUE 1 MAXVALUE 999999999999999999999999 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE ;
+   CREATE SEQUENCE  "TUSERSTAGS_TAGID_SEQ"  MINVALUE 1 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE ;
 --|
 
   CREATE TABLE "TADCAMPAIGNS" 
@@ -1352,31 +1352,10 @@ CREATE INDEX "INDEX_3_4" ON "TCLASSEXTENDDATAUSERACTIVITY" ("ATTRIBUTEID")
   ;
 --|
 
-  CREATE OR REPLACE PACKAGE "SQL_UTILITIES" AS
-identity NUMBER(10);
-END sql_utilities;
-/
---|
-
-  CREATE OR REPLACE TRIGGER "TADPLACEMENTDETAILS_DETAILID_T" BEFORE INSERT OR UPDATE ON tadplacementdetails
+CREATE OR REPLACE TRIGGER "TADPLACEMENTDETAILS_DETAILID_T" BEFORE INSERT ON tadplacementdetails
 FOR EACH ROW
-DECLARE 
-v_newVal NUMBER(12) := 0;
-v_incval NUMBER(12) := 0;
 BEGIN
-  IF INSERTING AND :new.detailID IS NULL THEN
-    SELECT  tadplacementdetails_detailID_S.NEXTVAL INTO v_newVal FROM DUAL;
-    IF v_newVal = 1 THEN 
-      SELECT max(detailID) INTO v_newVal FROM tadplacementdetails;
-      v_newVal := v_newVal + 1;
-      LOOP
-           EXIT WHEN v_incval>=v_newVal;
-           SELECT tadplacementdetails_detailID_S.nextval INTO v_incval FROM dual;
-      END LOOP;
-    END IF;
-   sql_utilities.identity := v_newVal; 
-   :new.detailID := v_newVal;
-  END IF;
+    select tadplacementdetails_detailID_S.nextval into :new.detailID from dual;
 END;
 /
 --|
@@ -1384,25 +1363,10 @@ END;
 ALTER TRIGGER "TADPLACEMENTDETAILS_DETAILID_T" ENABLE;
 --|
 
-  CREATE OR REPLACE TRIGGER "TADSTATS_STATID_TRG" BEFORE INSERT OR UPDATE ON tadstats
+CREATE OR REPLACE TRIGGER "TADSTATS_STATID_TRG" BEFORE INSERT ON tadstats
 FOR EACH ROW
-DECLARE 
-v_newVal NUMBER(12) := 0;
-v_incval NUMBER(12) := 0;
 BEGIN
-  IF INSERTING AND :new.statID IS NULL THEN
-    SELECT  tadstats_statID_SEQ.NEXTVAL INTO v_newVal FROM DUAL;
-    IF v_newVal = 1 THEN 
-      SELECT max(statID) INTO v_newVal FROM tadstats;
-      v_newVal := v_newVal + 1;
-      LOOP
-           EXIT WHEN v_incval>=v_newVal;
-           SELECT tadstats_statID_SEQ.nextval INTO v_incval FROM dual;
-      END LOOP;
-    END IF;
-   sql_utilities.identity := v_newVal; 
-   :new.statID := v_newVal;
-  END IF;
+    select tadstats_statID_SEQ.nextval into :new.statID from dual;
 END;
 /
 --|
@@ -1410,25 +1374,10 @@ END;
 ALTER TRIGGER "TADSTATS_STATID_TRG" ENABLE;
 --|
 
-CREATE OR REPLACE TRIGGER "TCLASSEXTENDATTRIBUTES_ATTRI_1" BEFORE INSERT OR UPDATE ON tclassextendattributes
+CREATE OR REPLACE TRIGGER "TCLASSEXTENDATTRIBUTES_ATTRI_1" BEFORE INSERT ON tclassextendattributes
 FOR EACH ROW
-DECLARE 
-v_newVal NUMBER(12) := 0;
-v_incval NUMBER(12) := 0;
 BEGIN
-  IF INSERTING AND :new.attributeID IS NULL THEN
-    SELECT  tclassextendattributes_attribu.NEXTVAL INTO v_newVal FROM DUAL;
-    IF v_newVal = 1 THEN 
-      SELECT max(attributeID) INTO v_newVal FROM tclassextendattributes;
-      v_newVal := v_newVal + 1;
-      LOOP
-           EXIT WHEN v_incval>=v_newVal;
-           SELECT tclassextendattributes_attribu.nextval INTO v_incval FROM dual;
-      END LOOP;
-    END IF;
-   sql_utilities.identity := v_newVal; 
-   :new.attributeID := v_newVal;
-  END IF;
+    select tclassextendattributes_attribu.NEXTVAL into :new.attributeID from dual;
 END;
 /
 --|
@@ -1436,25 +1385,10 @@ END;
 ALTER TRIGGER "TCLASSEXTENDATTRIBUTES_ATTRI_1" ENABLE;
 --|
 
-  CREATE OR REPLACE TRIGGER "TCLASSEXTENDDATAUSERACTIVITY_1" BEFORE INSERT OR UPDATE ON tclassextenddatauseractivity
+CREATE OR REPLACE TRIGGER "TCLASSEXTENDDATAUSERACTIVITY_1" BEFORE INSERT ON tclassextenddatauseractivity
 FOR EACH ROW
-DECLARE 
-v_newVal NUMBER(12) := 0;
-v_incval NUMBER(12) := 0;
 BEGIN
-  IF INSERTING AND :new.dataID IS NULL THEN
-    SELECT  tclassextenddatauseractivity_d.NEXTVAL INTO v_newVal FROM DUAL;
-    IF v_newVal = 1 THEN 
-      SELECT max(dataID) INTO v_newVal FROM tclassextenddatauseractivity;
-      v_newVal := v_newVal + 1;
-      LOOP
-           EXIT WHEN v_incval>=v_newVal;
-           SELECT tclassextenddatauseractivity_d.nextval INTO v_incval FROM dual;
-      END LOOP;
-    END IF;
-   sql_utilities.identity := v_newVal; 
-   :new.dataID := v_newVal;
-  END IF;
+   select tclassextenddatauseractivity_d.NEXTVAL into :new.dataID from dual;
 END;
 /
 --|
@@ -1462,25 +1396,10 @@ END;
 ALTER TRIGGER "TCLASSEXTENDDATAUSERACTIVITY_1" ENABLE;
 --|
 
-  CREATE OR REPLACE TRIGGER "TCLASSEXTENDDATA_DATAID_TRG" BEFORE INSERT OR UPDATE ON tclassextenddata
+CREATE OR REPLACE TRIGGER "TCLASSEXTENDDATA_DATAID_TRG" BEFORE INSERT ON tclassextenddata
 FOR EACH ROW
-DECLARE 
-v_newVal NUMBER(12) := 0;
-v_incval NUMBER(12) := 0;
 BEGIN
-  IF INSERTING AND :new.dataID IS NULL THEN
-    SELECT  tclassextenddata_dataID_SEQ.NEXTVAL INTO v_newVal FROM DUAL;
-    IF v_newVal = 1 THEN 
-      SELECT max(dataID) INTO v_newVal FROM tclassextenddata;
-      v_newVal := v_newVal + 1;
-      LOOP
-           EXIT WHEN v_incval>=v_newVal;
-           SELECT tclassextenddata_dataID_SEQ.nextval INTO v_incval FROM dual;
-      END LOOP;
-    END IF;
-   sql_utilities.identity := v_newVal; 
-   :new.dataID := v_newVal;
-  END IF;
+   	select tclassextenddata_dataID_SEQ.NEXTVAL into :new.dataID from dual;
 END;
 /
 --|
@@ -1488,25 +1407,10 @@ END;
 ALTER TRIGGER "TCLASSEXTENDDATA_DATAID_TRG" ENABLE;
 --|
 
-  CREATE OR REPLACE TRIGGER "TCONTENTTAGS_TAGID_TRG" BEFORE INSERT OR UPDATE ON tcontenttags
+CREATE OR REPLACE TRIGGER "TCONTENTTAGS_TAGID_TRG" BEFORE INSERT ON tcontenttags
 FOR EACH ROW
-DECLARE 
-v_newVal NUMBER(12) := 0;
-v_incval NUMBER(12) := 0;
 BEGIN
-  IF INSERTING AND :new.tagID IS NULL THEN
-    SELECT  tcontenttags_tagID_SEQ.NEXTVAL INTO v_newVal FROM DUAL;
-    IF v_newVal = 1 THEN 
-      SELECT max(tagID) INTO v_newVal FROM tcontenttags;
-      v_newVal := v_newVal + 1;
-      LOOP
-           EXIT WHEN v_incval>=v_newVal;
-           SELECT tcontenttags_tagID_SEQ.nextval INTO v_incval FROM dual;
-      END LOOP;
-    END IF;
-   sql_utilities.identity := v_newVal; 
-   :new.tagID := v_newVal;
-  END IF;
+   select tcontenttags_tagID_SEQ.NEXTVAL into :new.tagID from dual;
 END;
 /
 --|
@@ -1514,25 +1418,10 @@ END;
 ALTER TRIGGER "TCONTENTTAGS_TAGID_TRG" ENABLE;
 --|
 
-  CREATE OR REPLACE TRIGGER "TCONTENT_TCONTENT_ID_TRG" BEFORE INSERT OR UPDATE ON tcontent
+CREATE OR REPLACE TRIGGER "TCONTENT_TCONTENT_ID_TRG" BEFORE INSERT ON tcontent
 FOR EACH ROW
-DECLARE 
-v_newVal NUMBER(12) := 0;
-v_incval NUMBER(12) := 0;
 BEGIN
-  IF INSERTING AND :new.TContent_ID IS NULL THEN
-    SELECT  tcontent_TContent_ID_SEQ.NEXTVAL INTO v_newVal FROM DUAL;
-    IF v_newVal = 1 THEN 
-      SELECT max(TContent_ID) INTO v_newVal FROM tcontent;
-      v_newVal := v_newVal + 1;
-      LOOP
-           EXIT WHEN v_incval>=v_newVal;
-           SELECT tcontent_TContent_ID_SEQ.nextval INTO v_incval FROM dual;
-      END LOOP;
-    END IF;
-   sql_utilities.identity := v_newVal; 
-   :new.TContent_ID := v_newVal;
-  END IF;
+   select tcontent_tcontent_ID_SEQ.nextval into :new.TContent_ID from dual;
 END;
 /
 --|
@@ -1540,25 +1429,10 @@ END;
 ALTER TRIGGER "TCONTENT_TCONTENT_ID_TRG" ENABLE;
 --|
 
-  CREATE OR REPLACE TRIGGER "TSESSIONTRACKING_TRACKINGID_TR" BEFORE INSERT OR UPDATE ON tsessiontracking
+CREATE OR REPLACE TRIGGER "TSESSIONTRACKING_TRACKINGID_TR" BEFORE INSERT ON tsessiontracking
 FOR EACH ROW
-DECLARE 
-v_newVal NUMBER(12) := 0;
-v_incval NUMBER(12) := 0;
 BEGIN
-  IF INSERTING AND :new.trackingID IS NULL THEN
-    SELECT  tsessiontracking_trackingID_SE.NEXTVAL INTO v_newVal FROM DUAL;
-    IF v_newVal = 1 THEN 
-      SELECT max(trackingID) INTO v_newVal FROM tsessiontracking;
-      v_newVal := v_newVal + 1;
-      LOOP
-           EXIT WHEN v_incval>=v_newVal;
-           SELECT tsessiontracking_trackingID_SE.nextval INTO v_incval FROM dual;
-      END LOOP;
-    END IF;
-   sql_utilities.identity := v_newVal; 
-   :new.trackingID := v_newVal;
-  END IF;
+    select tsessiontracking_trackingID_SE.nextval into :new.trackingID from dual;
 END;
 /
 --|
@@ -1566,25 +1440,10 @@ END;
 ALTER TRIGGER "TSESSIONTRACKING_TRACKINGID_TR" ENABLE;
 --|
 
-  CREATE OR REPLACE TRIGGER "TUSERSTAGS_TAGID_TRG" BEFORE INSERT OR UPDATE ON tuserstags
+CREATE OR REPLACE TRIGGER "TUSERSTAGS_TAGID_TRG" BEFORE INSERT on tuserstags 
 FOR EACH ROW
-DECLARE 
-v_newVal NUMBER(12) := 0;
-v_incval NUMBER(12) := 0;
 BEGIN
-  IF INSERTING AND :new.tagID IS NULL THEN
-    SELECT  tuserstags_tagID_SEQ.NEXTVAL INTO v_newVal FROM DUAL;
-    IF v_newVal = 1 THEN 
-      SELECT max(tagID) INTO v_newVal FROM tuserstags;
-      v_newVal := v_newVal + 1;
-      LOOP
-           EXIT WHEN v_incval>=v_newVal;
-           SELECT tuserstags_tagID_SEQ.nextval INTO v_incval FROM dual;
-      END LOOP;
-    END IF;
-   sql_utilities.identity := v_newVal; 
-   :new.tagID := v_newVal;
-  END IF;
+    select tuserstags_tagID_SEQ.nextval into :new.tagID from dual;
 END;
 /
 --|
