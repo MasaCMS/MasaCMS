@@ -1796,7 +1796,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset var body=arguments.str>
 	<cfset var errorStr="">
-	<cfset var regex1="(\${|\[sava\]|\[mura\]).+?(\[/sava\]|\[/mura\]|})">
+	<cfset var regex1="({{|\[sava\]|\[mura\]).+?(\[/sava\]|\[/mura\]|}})">
 	<cfset var regex2="">
 	<cfset var finder=reFindNoCase(regex1,body,1,"true")>
 	<cfset var tempValue="">
@@ -1810,12 +1810,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfloop condition="#finder.len[1]#">
 		<cftry>
 			<cfset tempValue=mid(body, finder.pos[1], finder.len[1])>
-			<!---
-			<cfif left(tempValue,2) eq "${">
-				<cfset tempValue=evaluate("##" & mid(tempValue, 3, len(tempValue)-3) & "##")>
-			<cfelse>--->
+			
+			<cfif left(tempValue,2) eq "{{">
+				<cfset tempValue=evaluate("##" & mid(tempValue, 3, len(tempValue)-4) & "##")>
+			<cfelse>
 				<cfset tempValue=evaluate("##" & mid(tempValue, 7, len(tempValue)-13) & "##")>
-			<!---</cfif>--->
+			</cfif>
 			
 			<cfif not isDefined("tempValue") or not isSimpleValue(tempValue)>
 				<cfset tempValue="">

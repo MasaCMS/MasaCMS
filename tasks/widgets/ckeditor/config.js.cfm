@@ -143,12 +143,18 @@ config.format_tags = 'p;h1;h2;h3;h4;pre;address;div';
 		config.stylesSet='default:#$.siteConfig('themeAssetPath')#/js/editor/styles.js';
 	</cfif>
 	
+	<cfif fileExists(expandPath($.siteConfig("includePath") & '/js/editor/config.js.cfm') )>
+		config.customConfig='#$.siteConfig('includePath')#/js/editor/config.js.cfm';
+	<cfelseif fileExists(expandPath($.siteConfig("includePath") & '/js/editor/config.js') )>
+		config.customConfig='#$.siteConfig('includePath')#/js/editor/config.js';
+	</cfif>
+
 	<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/config.js.cfm') )>
 		config.customConfig='#$.siteConfig('themeAssetPath')#/js/editor/config.js.cfm';
 	<cfelseif fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/editor/config.js') )>
 		config.customConfig='#$.siteConfig('themeAssetPath')#/js/editor/config.js';
 	</cfif>
-	
+
 	config.defaultLanguage='#listFirst($.siteConfig('JavaLocale'),'_')#';
     </cfoutput>
 
