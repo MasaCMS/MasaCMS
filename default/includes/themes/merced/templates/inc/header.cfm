@@ -23,10 +23,10 @@
 		<nav>
 		<cf_CacheOMatic key="dspPrimaryNav#request.contentBean.getcontentID()#">
 			#$.dspPrimaryNav(
-				viewDepth="1",
+				viewDepth="5",
 				id="navPrimary",
 				displayHome="Always",
-				closePortals="true",
+				closePortals="false",
 				showCurrentChildrenOnly="false"
 				)#</cf_cacheomatic>
 		<!--- Optional named arguments for Primary Nav are: displayHome="Always/Never/Conditional", openPortals/closePortals="contentid,contentid" (i.e. show specific sub-content in dropdown nav) --->
