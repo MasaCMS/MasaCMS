@@ -182,6 +182,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setType" access="public" output="false">
 	<cfargument name="Type" type="String" />
 	<cfset variables.instance.Type = trim(arguments.Type) />
+	<cfif variables.instance.Type eq "text">
+		<cfset variables.instance.Type="TextBox">
+	</cfif>
 	<cfreturn this>
 </cffunction>
 

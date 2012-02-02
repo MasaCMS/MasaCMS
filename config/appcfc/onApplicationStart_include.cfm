@@ -386,7 +386,71 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				
 		<!--- Fire local onApplicationLoad events--->
 		<cfset rsSites=application.settingsManager.getList() />
-		<cfloop query="rsSites">	
+		<cfset themeHash=structNew()>
+		<cfloop query="rsSites">
+			
+			<cfset siteBean=application.settingsManager.getSite(rsSites.siteID)>
+			<cfset themeDir=expandPath(siteBean.getThemeIncludePath())>
+			<cfset themeName=listLast(themeDir,application.configBean.getFileDelim())>
+
+			<cfif fileExists(themeDir & '/config.xml.cfm')>
+				<cfset themeConfig='config.xml.cfm'>
+			<cfelseif fileExists(themeDir & '/config.xml')>
+				<cfset themeConfig='config.xml'>
+			<cfelse>
+				<cfset themeConfig="">
+			</cfif>
+
+			
+			<cfif len(themeConfig) and not structKeyExists(themeHash,hash(themeDir))>
+				<cfset themeHash[hash(themeDir)]=themeDir>
+				
+				<cfif themeConfig eq "config.xml.cfm">
+					<cfsavecontent variable="themeConfig">
+						<cfinclude template="#siteBean.getThemeIncludePath()#/config.xml.cfm">
+					</cfsavecontent>
+
+				<cfelse>
+					<cfset themeConfig=fileRead(themeDir & "/" &themeConfig)>
+				</cfif>
+
+				<cfset themeConfig=xmlParse(themeConfig)>
+
+				<cfif arraylen(themeConfig.theme.settings)>
+					<cfscript>
+					subType = application.classExtensionManager.getSubTypeBean();
+			     	subType.setType( "Site" );
+			    
+			      	subType.setSiteID( rssites.siteID );
+			      	subType.load();
+			      	subType.setBaseTable( "tsettings" );
+			      	subType.setBaseKeyField( "baseID" );
+			      	
+			      	subType.save();
+
+			      	extendSet = subType.getExtendSetByName( "Theme Settings: " & themeName );
+			      	extendSet.save();
+
+			      	for(i=1;i lte arraylen(themeConfig.theme.settings.xmlChildren); i=i+1){
+			      		setting=themeConfig.theme.settings.xmlChildren[i];
+
+			      		attribute = extendSet.getAttributeByName(setting.name.xmlText);
+
+			      		attributeKeyList="label,type,optionlist,optionlabellist,defaultvalue,hint,required,validation,message,regex";
+			      		for (ak=1;ak LTE listLen(attributeKeyList);ak=ak+1) {
+			      			attrbuteKeyName=listGetAt(attributeKeyList,ak);
+			      			if(structKeyExists(setting,attrbuteKeyName)){
+								evaluate("attribute.set#attrbuteKeyName#(setting[attrbuteKeyName].xmlText)");
+							}
+						}
+
+				    	attribute.save();
+					}
+			      	</cfscript>
+			      </cfif>
+
+			</cfif>
+
 			<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#rsSites.siteID#/includes/eventHandler.cfc")>
 				<cfset localHandler=createObject("component","#application.configBean.getWebRootMap()#.#rsSites.siteID#.includes.eventHandler").init()>
 				<cfif structKeyExists(localHandler,"onApplicationLoad")>		
