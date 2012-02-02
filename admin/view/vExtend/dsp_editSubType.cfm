@@ -45,7 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
-<cfset typeList="1^tusers^userID^tclassextenddatauseractivity,2^tusers^userID^tclassextenddatauseractivity,Address^tuseraddresses^addressID^tclassextenddatauseractivity,Page^tcontent^contentHistID^tclassextenddata,Portal^tcontent^contentHistID^tclassextenddata,File^tcontent^contentHistID^tclassextenddata,Calendar^tcontent^contentHistID^tclassextenddata,Gallery^tcontent^contentHistID^tclassextenddata,Link^tcontent^contentHistID^tclassextenddata,Component^tcontent^contentHistID^tclassextenddata,Custom^custom^ID^tclassextenddata"/>
+<cfset typeList="1^tusers^userID^tclassextenddatauseractivity,2^tusers^userID^tclassextenddatauseractivity,Address^tuseraddresses^addressID^tclassextenddatauseractivity,Page^tcontent^contentHistID^tclassextenddata,Portal^tcontent^contentHistID^tclassextenddata,File^tcontent^contentHistID^tclassextenddata,Calendar^tcontent^contentHistID^tclassextenddata,Gallery^tcontent^contentHistID^tclassextenddata,Link^tcontent^contentHistID^tclassextenddata,Component^tcontent^contentHistID^tclassextenddata,Custom^custom^ID^tclassextenddata,Site^tsettings^baseID^tclassextenddata"/>
 <cfset subType=application.classExtensionManager.getSubTypeByID(attributes.subTypeID)>
 <h2><cfif len(attributes.subTypeID)>Edit<cfelse>Add</cfif> Class Extension</h2>
 <cfoutput>
@@ -62,8 +62,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</select>
 <!--- 	
 	<input name="type" value="#HTMLEditFormat(subType.getType())#" required="true"/> ---></dd>
-<dt>Sub Type</dt>
-<dd><input name="subType" value="#HTMLEditFormat(subType.getSubType())#" required="true" maxlength="25"/></dd>
+<dt class="subTypeContainer"<cfif subtype.getType() eq "Site"> style="display:none;"</cfif>>Sub Type</dt>
+<dd class="subTypeContainer"<cfif subtype.getType() eq "Site"> style="display:none;"</cfif>><input name="subType" id="subType" value="#HTMLEditFormat(subType.getSubType())#" required="true" maxlength="25"/></dd>
 <dt>Active</dt>
 <dd><ul class="radioGroup"><li><input name="isActive" type="radio" class="radio" value="1"<cfif subType.getIsActive() eq 1 >Checked</cfif>>Yes</li><li><input name="isActive" type="radio" class="radio" value="0"<cfif subType.getIsActive() eq 0 >Checked</cfif>>No</li></ul></dd>
 </dl>

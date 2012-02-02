@@ -57,6 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.Gateway=arguments.settingsGateway />
 		<cfset variables.DAO=arguments.settingsDAO />
 		<cfset variables.clusterManager=arguments.clusterManager />	
+		<cfset variables.ClassExtensionManager=variables.configBean.getClassExtensionManager()>
 		<cfset setSites() />
 <cfreturn this />
 </cffunction>
@@ -213,6 +214,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset bean.validate()>
 	<cfif structIsEmpty(bean.getErrors())>
 		<cfset variables.utility.logEvent("SiteID:#bean.getSiteID()# Site:#bean.getSite()# was updated","mura-settings","Information",true) />
+		<cfif structKeyExists(arguments.data,"extendSetID") and len(arguments.data.extendSetID)>
+			<cfset variables.ClassExtensionManager.saveExtendedData(bean.getBaseID(),bean.getAllValues())/>
+		</cfif>
 		<cfset variables.DAO.update(bean) />
 		<cfset checkForBundle(arguments.data,bean.getErrors())>
 		<cfset setSites()/>
@@ -267,6 +271,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		
 		<cfset variables.utility.logEvent("SiteID:#bean.getSiteID()# Site:#bean.getSite()# was created","mura-settings","Information",true) />
+		<cfif structKeyExists(arguments.data,"extendSetID") and len(arguments.data.extendSetID)>
+			<cfset variables.ClassExtensionManager.saveExtendedData(bean.getBaseID(),bean.getAllValues())/>
+		</cfif>
 		<cfset variables.DAO.create(bean) />
 		<cfset variables.utility.copyDir("#variables.configBean.getWebRoot()##variables.configBean.getFileDelim()#default#variables.configBean.getFileDelim()#", "#variables.configBean.getWebRoot()##variables.configBean.getFileDelim()##bean.getSiteID()##variables.configBean.getFileDelim()#") />
 		<cfif variables.configBean.getCreateRequiredDirectories()>

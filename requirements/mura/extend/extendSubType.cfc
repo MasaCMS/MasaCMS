@@ -49,7 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.subTypeID=""/>
 <cfset variables.instance.siteID=""/>
 <cfset variables.instance.type=""/>
-<cfset variables.instance.subtype=""/>
+<cfset variables.instance.subtype="Default"/>
 <cfset variables.instance.baseTable=""/>
 <cfset variables.instance.baseKeyField=""/>
 <cfset variables.instance.dataTable="tclassextenddata"/>
@@ -382,7 +382,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	subTypeID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getsubtypeID()#">
 	</cfquery>
 	
-	<cfif getBaseTable() neq "Custom">
+	<cfif not listFindNoCase("Custom,Site",getType())>
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update #getBaseTable()#
 		set subType='Default'
