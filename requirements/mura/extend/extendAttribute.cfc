@@ -62,6 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.defaultValue=""/>
 <cfset variables.instance.optionList=""/>
 <cfset variables.instance.optionLabelList=""/>
+<cfset variables.instance.isNew=1/>
 <cfset variables.instance.errors=structnew() />
 
 <cffunction name="init" returntype="any" output="false" access="public">
@@ -297,6 +298,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="getIsNew" output="false">
+	<cfreturn variables.instance.isNew>
+</cffunction>
+
+<cffunction name="setIsNew" output="false">
+	<cfargument name="isNew">
+	<cfset variables.instance.isNew=arguments.isNew>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="load"  access="public" output="false">
 <cfset var rs=""/>
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
@@ -311,6 +322,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif rs.recordcount>
 		<cfset set(rs) />
+		<cfset setIsNew(0)>
 	</cfif>
 	<cfreturn this>
 </cffunction>

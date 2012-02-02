@@ -55,6 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.dataTable="tclassextenddata"/>
 <cfset variables.instance.isActive=1/>
 <cfset variables.instance.sets=""/>
+<cfset variables.instance.isNew=1/>
 <cfset variables.instance.errors=structnew() />
 
 
@@ -90,6 +91,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif rs.recordcount>
 		<cfset set(rs) />
+		<cfset setIsNew(0)>
 	</cfif>
 	<cfreturn this>
 </cffunction>
@@ -217,6 +219,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif isNumeric(arguments.isActive)>
 		<cfset variables.instance.IsActive = arguments.IsActive />
 	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getIsNew" output="false">
+	<cfreturn variables.instance.isNew>
+</cffunction>
+
+<cffunction name="setIsNew" output="false">
+	<cfargument name="isNew">
+	<cfset variables.instance.isNew=arguments.isNew>
 	<cfreturn this>
 </cffunction>
 

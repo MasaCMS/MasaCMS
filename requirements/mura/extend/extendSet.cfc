@@ -55,6 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.isActive=1/>
 <cfset variables.instance.categoryID=""/>
 <cfset variables.instance.attributes=""/>
+<cfset variables.instance.isNew=1/>
 <cfset variables.instance.errors=structnew() />
 
 
@@ -201,6 +202,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.instance.container = arguments.container />
 	</cfif>
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="getIsNew" output="false">
+	<cfreturn variables.instance.isNew>
+</cffunction>
+
+<cffunction name="setIsNew" output="false">
+	<cfargument name="isNew">
+	<cfset variables.instance.isNew=arguments.isNew>
+	<cfreturn this>
 </cffunction> 
 
 <cffunction name="getAttributesQuery" access="public" returntype="query">
@@ -232,6 +243,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                
     <cfif rs.recordcount>
           <cfset set(rs) />
+          <cfset setIsNew(0)>
      </cfif>
      
 	<cfreturn this>
