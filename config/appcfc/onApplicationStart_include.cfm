@@ -411,7 +411,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfsavecontent>
 
 				<cfelse>
-					<cfset themeConfig=fileRead(themeDir & "/" &themeConfig)>
+					<cfset themeConfig=fileRead(themeDir & "/" & themeConfig)>
 				</cfif>
 
 				<cfset themeConfig=xmlParse(themeConfig)>

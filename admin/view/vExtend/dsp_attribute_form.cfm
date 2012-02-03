@@ -87,6 +87,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<option value="Numeric" <cfif attributes.attributeBean.getValidation() eq "Numeric">selected</cfif>>Numeric</option>
 	<option value="Email" <cfif attributes.attributeBean.getValidation() eq "Email">selected</cfif>>Email</option>
 	<option value="Regex" <cfif attributes.attributeBean.getValidation() eq "Regex">selected</cfif>>Regex</option>
+	<option value="Color" <cfif attributes.attributeBean.getValidation() eq "Color">selected</cfif>>Color</option>
 	</select>
 </dd>
 <dt>Regex</dt>
