@@ -479,27 +479,58 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		and tclassextendsets.container=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.container#">
 		</cfif>
 		
-		<cfif arguments.inherit and getSubType() neq "Default">
-			Union All
+		<cfif arguments.inherit>
+			<cfif getSubType() neq "Default">
+				Union All
 
-			select tclassextendsets.ExtendSetID,tclassextendsets.subTypeID,tclassextendsets.name,tclassextendsets.orderno,tclassextendsets.isActive,tclassextendsets.siteID,tclassextendsets.categoryID,tclassextendsets.orderno,1 as setlevel from tclassextendsets 
-		    Inner Join tclassextend
-		    On (tclassextendsets.subTypeID=tclassextend.subTypeID)
-			where
-			tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getType()#">
-			and tclassextend.subType=<cfqueryparam cfsqltype="cf_sql_varchar"  value="Default">
-			and tclassextend.siteID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
-			<cfif arguments.doFilter and fLen>
-			and (
-			<cfloop from="1" to="#fLen#" index="f">
-			tclassextendsets.categoryID like '%#listGetAt(arguments.filter,f)#%' <cfif f lt fLen>or</cfif> 
-			</cfloop>
-			)
-			<cfelseif arguments.doFilter>
-			and tclassextendsets.categoryID is null
+				select tclassextendsets.ExtendSetID,tclassextendsets.subTypeID,tclassextendsets.name,tclassextendsets.orderno,tclassextendsets.isActive,tclassextendsets.siteID,tclassextendsets.categoryID,tclassextendsets.orderno,1 as setlevel from tclassextendsets 
+			    Inner Join tclassextend
+			    On (tclassextendsets.subTypeID=tclassextend.subTypeID)
+				where
+				tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getType()#">
+				and tclassextend.subType=<cfqueryparam cfsqltype="cf_sql_varchar"  value="Default">
+				and tclassextend.siteID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
+				<cfif arguments.doFilter and fLen>
+				and (
+				<cfloop from="1" to="#fLen#" index="f">
+				tclassextendsets.categoryID like '%#listGetAt(arguments.filter,f)#%' <cfif f lt fLen>or</cfif> 
+				</cfloop>
+				)
+				<cfelseif arguments.doFilter>
+				and tclassextendsets.categoryID is null
+				</cfif>
+				<cfif len(arguments.container)>
+				and tclassextendsets.container=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.container#">
+				</cfif>
 			</cfif>
-			<cfif len(arguments.container)>
-			and tclassextendsets.container=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.container#">
+			
+			<cfif not listFindNoCase("1,2,User,Group,Address,Site,Component,Form",getType())>
+				Union All
+
+				select tclassextendsets.ExtendSetID,tclassextendsets.subTypeID,tclassextendsets.name,tclassextendsets.orderno,tclassextendsets.isActive,tclassextendsets.siteID,tclassextendsets.categoryID,tclassextendsets.orderno,2 as setlevel from tclassextendsets 
+				Inner Join tclassextend
+				On (tclassextendsets.subTypeID=tclassextend.subTypeID)
+				where
+				tclassextend.type='Base'
+				and (
+					tclassextend.subType=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSubType()#">
+					<cfif getType() neq "Default">
+						or tclassextend.subType='Default'
+					</cfif>
+				)
+				and tclassextend.siteID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
+				<cfif arguments.doFilter and fLen>
+				and (
+				<cfloop from="1" to="#fLen#" index="f">
+				tclassextendsets.categoryID like '%#listGetAt(arguments.filter,f)#%' <cfif f lt fLen>or</cfif> 
+				</cfloop>
+					)
+				<cfelseif arguments.doFilter>
+				and tclassextendsets.categoryID is null
+				</cfif>
+				<cfif len(arguments.container)>
+				and tclassextendsets.container=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.container#">
+				</cfif>
 			</cfif>
 		</cfif>
 		</cfquery>

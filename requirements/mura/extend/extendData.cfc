@@ -217,7 +217,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 												)
 											)
 			where tclassextend.siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
-			and tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getType()#">
+			and 
+				(
+					tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getType()#">
+					<cfif not listFindNoCase("1,2,User,Group,Address,Site,Component,Form",getType())>
+						or tclassextend.type='Base'
+					</cfif>
+				)
 			and (
 				<cfif getSubType() neq "Default">
 				tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSubType()#">
@@ -242,7 +248,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				select '' baseID, attributename, validation, label, attributeID, defaultValue, extendSetID, '' attributeValue
 				from rsDefinitions
 				where siteID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
-				and type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getType()#">
+				and (
+					type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getType()#">
+					<cfif not listFindNoCase("1,2,User,Group,Address,Site,Component,Form",getType())>
+						or type='Base'
+					</cfif>
+					)
 	          	and (
 	                 <cfif getSubType() neq "Default">
 	                  subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSubType()#">
