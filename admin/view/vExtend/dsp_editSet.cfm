@@ -64,14 +64,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <dl class="oneColumn separate">
 <dt class="first">Attribute Set Name</dt>
 <dd><input name="name" value="#HTMLEditFormat(extendSetBean.getName())#" required="true"/></dd>
+<cfif subType.getType() neq "Custom">
 <dt>Container</dt>
 <dd><select name="container">
 <option value="Default">Extended Attributes Tab</option>
-<option value="Basic"<cfif extendSetBean.getContainer() eq "Basic"> selected</cfif>>Basic Tab</option>
+<cfif subType.getTYpe() neq "Site">
+<option value="Basic"<cfif extendSetBean.getContainer() eq "Basic"> selected</cfif>>Basic Tab</option></cfif>
 <option value="Custom"<cfif extendSetBean.getContainer() eq "Custom"> selected</cfif>>Custom UI</option>
 </select>
 </dd>
-<cfif subType.getType() neq  "1" and application.categoryManager.getCategoryCount(attributes.siteID)>
+<cfelse>
+<input name="container" value="Custom" type="hidden"/>	
+</cfif>
+<cfif  not listFindNoCase("1,Site,Custom", subtype.getType()) and application.categoryManager.getCategoryCount(attributes.siteID)>
 <dt>Available Category Dependencies</dt>
 <dd class="categoryAssignment"><cf_dsp_categories_nest siteID="#attributes.siteID#" parentID="" nestLevel="0" extendSetBean="#extendSetBean#"></dd>
 </cfif></dl>

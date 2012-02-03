@@ -119,5 +119,12 @@ function setBaseInfo(str){
 	document.subTypeFrm.baseTable.value=dataArray[1];
 	document.subTypeFrm.baseKeyField.value=dataArray[2];
 	document.subTypeFrm.dataTable.value=dataArray[3];
+
+	if(dataArray[0]=="Site"){
+		jQuery(".subTypeContainer").hide();
+		jQuery("#subType").val("Default");
+	} else {
+		jQuery(".subTypeContainer").show();
+	}
 	
 }

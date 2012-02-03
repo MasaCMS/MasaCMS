@@ -951,7 +951,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						inner join tclassextend on (tclassextendsets.subtypeid=tclassextend.subtypeid)
 						where tclassextenddata.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
 						and tclassextendattributes.type='File'
-						and tclassextend.type in ('Custom','1','2','User','Group','Address')
+						and tclassextend.type in ('Custom','1','2','User','Group','Address','Site')
 					)
 					
 					<cfif arguments.includeUsers>
@@ -1064,7 +1064,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif isDate(arguments.sinceDate)>
 					and lastUpdate >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.sinceDate#">
 				</cfif>
-				and tclassextenddata.attributeID in (select attributeID from tclassextendattributes)
+				and tclassextenddata.attributeID in (select attributeID from tclassextendattributes
+					where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>)
+
+				union 
+
+				select tclassextenddata.baseID, tclassextenddata.attributeID, tclassextenddata.attributeValue, 
+				tclassextenddata.siteID, tclassextenddata.stringvalue, tclassextenddata.numericvalue, tclassextenddata.datetimevalue, tclassextenddata.remoteID from tclassextenddata 
+				inner join tclassextendattributes on (tclassextenddata.attributeID=tclassextendattributes.attributeID)
+				inner join tclassextendsets on (tclassextendattributes.extendsetid=tclassextendsets.extendsetid)
+				inner join tclassextend on (tclassextendsets.subtypeid=tclassextend.subtypeid)
+				where tclassextenddata.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+				and tclassextend.type='Site'
+
 			</cfquery>
 		
 			<cfset setValue("rstclassextenddata",rstclassextenddata)>
@@ -1132,7 +1144,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<cfquery datasource="#arguments.dsn#" name="rssite">
 				select domain,siteid,theme,galleryMainScaleBy,galleryMediumScaleBy,gallerySmallScaleBy,
-			    galleryMainScale,galleryMediumScale,gallerySmallScale,columnCount,columnNames,primaryColumn
+			    galleryMainScale,galleryMediumScale,gallerySmallScale,columnCount,columnNames,primaryColumn,baseID
 			    from tsettings where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
 			</cfquery>
 			

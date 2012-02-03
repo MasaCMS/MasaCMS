@@ -158,6 +158,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckeditor/adapters/jquery.js"></script>
 <script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckfinder/ckfinder.js"></script>
 </cfif>
+<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/miniColors/jquery.miniColors.min.js?coreversion=#application.coreversion#"></script>
+<link href="#application.configBean.getContext()#/tasks/widgets/miniColors/jquery.miniColors.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 <script src="#application.configBean.getContext()#/admin/js/json2.js" type="text/javascript" language="Javascript"></script>
 <script type="text/javascript">
 var htmlEditorType='#application.configBean.getValue("htmlEditorType")#';
@@ -169,7 +171,14 @@ var sessionTimeout=#evaluate("application.configBean.getValue('sessionTimeout') 
 </script>
 #session.dateKey#
 <script type="text/javascript">
-	jQuery(document).ready(function(){setDatePickers(".datepicker",dtLocale);setTabs(".tabs",#attributes.activeTab#);setHTMLEditors();setAccordions(".accordion",#attributes.activePanel#);setCheckboxTrees();});
+	jQuery(document).ready(function(){
+			setDatePickers(".datepicker",dtLocale);
+			setTabs(".tabs",#attributes.activeTab#);
+			setHTMLEditors();
+			setAccordions(".accordion",#attributes.activePanel#);
+			setCheckboxTrees();
+			setColorPickers(".colorpicker");
+		});
 </script>
 #fusebox.ajax#
 <cfif myfusebox.originalcircuit neq "cLogin">
