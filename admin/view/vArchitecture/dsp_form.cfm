@@ -165,7 +165,9 @@ jQuery(document).ready(function(){
 			select * from rsSubTypes
 			where 
 				type = <cfqueryparam cfsqltype="cf_sql_varchar" value="#attributes.type#"/>
-				or type='Base'
+				<cfif listFindNocase("Link,File",attributes.type)>
+					or type='Base'
+				</cfif>
 			</cfquery>
 		</cfif>
 		<cfif listFindNoCase("Component,File,Link",attributes.type)>
