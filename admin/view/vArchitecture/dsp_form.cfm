@@ -156,12 +156,18 @@ jQuery(document).ready(function(){
 		<cfif attributes.compactDisplay neq "true" and listFindNoCase("#pageLevelList#",attributes.type)>
 			<cfquery name="rsSubTypes" dbtype="query">
 			select * from rsSubTypes
-			where type in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#pageLevelList#"/>)
+			where 
+				type in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#pageLevelList#"/>)
+				or type='Base'
 			</cfquery>
 		<cfelse>
 			<cfquery name="rsSubTypes" dbtype="query">
 			select * from rsSubTypes
-			where type = <cfqueryparam cfsqltype="cf_sql_varchar" value="#attributes.type#"/>
+			where 
+				type = <cfqueryparam cfsqltype="cf_sql_varchar" value="#attributes.type#"/>
+				<cfif listFindNocase("Link,File",attributes.type)>
+					or type='Base'
+				</cfif>
 			</cfquery>
 		</cfif>
 		<cfif listFindNoCase("Component,File,Link",attributes.type)>

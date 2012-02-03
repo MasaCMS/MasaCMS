@@ -62,6 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.defaultValue=""/>
 <cfset variables.instance.optionList=""/>
 <cfset variables.instance.optionLabelList=""/>
+<cfset variables.instance.isNew=1/>
 <cfset variables.instance.errors=structnew() />
 
 <cffunction name="init" returntype="any" output="false" access="public">
@@ -182,6 +183,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setType" access="public" output="false">
 	<cfargument name="Type" type="String" />
 	<cfset variables.instance.Type = trim(arguments.Type) />
+	<cfif variables.instance.Type eq "text">
+		<cfset variables.instance.Type="TextBox">
+	</cfif>
 	<cfreturn this>
 </cffunction>
 
@@ -294,6 +298,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="getIsNew" output="false">
+	<cfreturn variables.instance.isNew>
+</cffunction>
+
+<cffunction name="setIsNew" output="false">
+	<cfargument name="isNew">
+	<cfset variables.instance.isNew=arguments.isNew>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="load"  access="public" output="false">
 <cfset var rs=""/>
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
@@ -308,6 +322,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif rs.recordcount>
 		<cfset set(rs) />
+		<cfset setIsNew(0)>
 	</cfif>
 	<cfreturn this>
 </cffunction>
@@ -447,8 +462,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcase value="Hidden">
 <cfsavecontent variable="str"><cfoutput><input type="hidden" name="#key#" id="#key#" label="#XMLFormat(getlabel())#" value="#HTMLEditFormat(renderValue)#" /></cfoutput></cfsavecontent>
 </cfcase>
-<cfcase value="TextBox">
-<cfsavecontent variable="str"><cfoutput><input type="text" name="#key#" class="text<cfif getValidation() eq 'date'> datepicker</cfif>" id="#key#" label="#XMLFormat(getlabel())#" value="#HTMLEditFormat(renderValue)#" required="#getRequired()#"<cfif len(getvalidation())> validate="#getValidation()#"</cfif><cfif getvalidation() eq "Regex"> regex="#getRegex()#"</cfif><cfif len(getMessage())> message="#XMLFormat(getMessage())#"</cfif> /></cfoutput></cfsavecontent>
+<cfcase value="TextBox,Text">
+<cfsavecontent variable="str"><cfoutput><input type="text" name="#key#" class="text<cfif getValidation() eq 'date'> datepicker<cfelseif getValidation() eq 'Color'> colorpicker</cfif>" id="#key#" label="#XMLFormat(getlabel())#" value="#HTMLEditFormat(renderValue)#" required="#getRequired()#"<cfif len(getvalidation())> validate="#getValidation()#"</cfif><cfif getvalidation() eq "Regex"> regex="#getRegex()#"</cfif><cfif len(getMessage())> message="#XMLFormat(getMessage())#"</cfif> /></cfoutput></cfsavecontent>
 </cfcase>
 <cfcase value="TextArea,HTMLEditor">
 <cfsavecontent variable="str"><cfoutput><textarea name="#key#" id="#key#" label="#XMLFormat(getlabel())#" required="#getRequired()#"<cfif len(getMessage())> message="#XMLFormat(getMessage())#"</cfif><cfif getType() eq "HTMLEditor"> class="htmlEditor"</cfif><cfif len(getvalidation())> validate="#getValidation()#"</cfif><cfif getvalidation() eq "Regex"> regex="#getRegex()#"</cfif>>#HTMLEditFormat(renderValue)#</textarea></cfoutput></cfsavecontent>
@@ -470,81 +485,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfreturn str/>
 </cffunction>
-
-<!--- 
-<cffunction name="getOptions" access="public" returntype="query">
-	<cfset var rs = "" />
-
-	<cfif not isQuery(variables.instance.options)>
-		<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		select * from TClassExtendAttributeOptions
-		where attributeID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getAttributeID()#">
-		order by orderno 
-		</cfquery>
-		
-		<cfset variables.instance.options=rs />
-	</cfif>
-
-	<cfreturn variables.instance.options />
-
-</cffunction>
-
-<cffunction name="setOptions" access="public">
-<cfargument name="options">
-<cfset var o=1/>
-
-<cfif isQuery(arguments.options)>
-	<cfset variables.instance.options=arguments.options />
-<cfelse>
-	<cfset variables.instance.options=queryNew("optionID,attributeID,siteID,optionValue,label,orderno","cf_sql_varchar,cf_sql_varchar,cf_sql_varchar,cf_sql_varchar,cf_sql_varchar,cf_sql_varchar") />
-
-	<cfloop condition="structkeyExist(arguments.options,'options#o#')">
-	
-		<cfif len(arguments.options["label#o#"])
-			or len(arguments.options["optionValue#o#"])>
-			
-			<cfset querySetCell(variables.instance.options,"optionID",createUUID(),o) />
-			<cfset querySetCell(variables.instance.options,"attributeID",getAttributeID(),o) />
-			<cfset querySetCell(variables.instance.options,"siteID",getSiteID(),o) />
-			<cfset querySetCell(variables.instance.options,"orderno",o,o) />
-			<cfset querySetCell(variables.instance.options,"label",arguments.options["label#o#"],o) />
-			<cfset querySetCell(variables.instance.options,"optionValue",arguments.options["optionValue#o#"],o) />
-
-		</cfif>
-	<cfset o=o+1/>
-	</cfloop>
-</cfif>
-
-</cffunction>
-
-<cffunction name="deleteOptions">
-	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		delete from TExtendAttributeOptions
-		where attributeID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getAttributeID()#">
-	</cfquery>
-</cffunction>
-
-<cffunction name="saveOptions" access="public">
-	<cfif isQuery(variables.instance.options)>
-		<cfset deleteOptions() />
-		
-		<cfloop query="variables.instance.options">
-			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			insert into TClassExtendAttributeOptions
-			(optionID,attributeID,siteID,optionValue,label,orderno)
-			values(
-				<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.options.optionID#">,
-				<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.options.attributeID#">,
-				<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.options.siteID#">,
-				<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(variables.instance.options.optionValue neq '',de('no'),de('yes'))#" value="#variables.instance.options.optionValue#">,
-				<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(variables.instance.options.label neq '',de('no'),de('yes'))#" value="#variables.instance.options.label#">,
-				variables.instance.options.orderno
-			)
-			</cfquery>
-		</cfloop>
-
-	</cfif>
-	
-</cffunction> --->
 
 </cfcomponent>

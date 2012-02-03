@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.bean.bean" output="false">
+<cfcomponent extends="mura.bean.beanExtendable" output="false">
 
 <cfproperty name="siteID" type="string" default="" required="true" />
 <cfproperty name="site" type="string" default="" required="true" />
@@ -189,6 +189,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.contentRenderer=""/>
 	<cfset variables.instance.themeRenderer=""/>
 	<cfset variables.instance.hasChangesets=0/>
+	<cfset variables.instance.type="Site"/>
+	<cfset variables.instance.subtype="Default"/>
+	<cfset variables.instance.baseID=createUUID()/>
 	
 	<cfreturn this />
 </cffunction>
@@ -245,6 +248,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfreturn this>
  </cffunction>
+
+<cffunction name="setBaseID" output="false">
+	<cfargument name="baseID">
+	<cfif len(arguments.baseID)>
+		<cfset variables.instance.baseID=arguments.baseID>
+	</cfif>
+</cffunction>
+
+<cffunction name="getExtendBaseID" output="false">
+	<cfreturn variables.instance.baseID>
+</cffunction>
 
 <cffunction name="setTheme" output="false">
 	<cfargument name="theme">

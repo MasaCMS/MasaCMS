@@ -2390,6 +2390,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rsCheck="">
 		<cfset var rstclassextenddatauseractivity="">
 		<cfset var rsFeedParams="">
+		<cfset var rssite="">
 		
 		<cfparam name="arguments.rsUserConflicts" default="#queryNew('userID')#">
 		
@@ -2400,7 +2401,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif arguments.usersMode neq "none">
 				<cfset typeList=typeList & ",">
 			</cfif>
-			<cfset typeList=typeList & "Custom,Page,Portal,Gallery,Calendar,Link,File,Component">
+			<cfset typeList=typeList & "Custom,Page,Portal,Gallery,Calendar,Link,File,Component,Site,Base">
 		</cfif>
 		
 			<cfif not StructKeyExists(arguments,"Bundle")>
@@ -2408,6 +2409,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					select * from tclassextend where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 				</cfquery>
 			<cfelse>
+				<cfif listFindNoCase(typeList,"Site")>
+					<cfset rssite=arguments.bundle.getValue("rssite")>
+					<cfif isDefined("rssite.baseID")>
+						<cfquery datasource="#arguments.toDSN#">
+							update tsettings set 
+								baseID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rssite.baseID)#">
+							where 
+								siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">
+						</cfquery>
+					</cfif>
+				</cfif>
+
 				<cfset rstclassextend = arguments.Bundle.getValue("rstclassextend")>
 			</cfif>
 				

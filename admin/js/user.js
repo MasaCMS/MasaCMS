@@ -75,6 +75,8 @@ function setExtendedAttributes(data){
 	setHTMLEditors(context,themeAssetPath);
 	setDatePickers("#extendSetsDefault .datepicker",dtLocale);
 	setDatePickers("#extendSetsBasic .datepicker",dtLocale);
+	setColorPickers("#extendSetsDefault .colorpicker");
+	setColorPickers("#extendSetsBasic .colorpicker");
 }
 
 function checkExtendSetTargeting(){

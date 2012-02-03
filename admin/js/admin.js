@@ -760,6 +760,17 @@ function setDatePickers(target,locale,delim){
 	}
 }
 
+function setColorPickers(target){	
+	jQuery(target).each(
+		function(index){		
+				jQuery(this).miniColors({
+					letterCase: 'uppercase'
+					}
+				);
+		}
+	);	
+}
+
 function setTabs(target,activetab){
 	jQuery(target).each(
 		function(index) {			

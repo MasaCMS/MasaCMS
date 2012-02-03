@@ -43,6 +43,7 @@ to your own modified versions of Mura CMS.
 <cfsilent>
  <cfset rsThemes=request.siteBean.getThemes() />
  <cfset rsSites=application.settingsManager.getList() />
+<cfset extendSets=application.classExtensionManager.getSubTypeByName("Site","Default",attributes.siteid).getExtendSets(inherit=true,container="Default",activeOnly=true) />
  <cfparam name="attributes.action" default="">
 </cfsilent>
 <h2>Site Settings</h2>
@@ -70,8 +71,14 @@ to your own modified versions of Mura CMS.
 <cfhtmlhead text='<script type="text/javascript" src="js/ajax.js"></script>'>
 <cfhtmlhead text='<script type="text/javascript" src="js/tab-view.js"></script>'>
  --->
+<cfif arrayLen(extendSets)>
+<cfset tabLabelList='Basic,Contact Info,Shared Resources,Modules,Email,Images,Extranet,Display Regions,Extended Attributes,Deploy Bundle'>
+<cfset tabList='tabBasic,tabContactinfo,tabSharedresources,tabModules,tabEmail,tabImages,tabExtranet,tabDisplayregions,tabExtendedAttributes,tabBundles'>
+<cfelse>
 <cfset tabLabelList='Basic,Contact Info,Shared Resources,Modules,Email,Images,Extranet,Display Regions,Deploy Bundle'>
 <cfset tabList='tabBasic,tabContactinfo,tabSharedresources,tabModules,tabEmail,tabImages,tabExtranet,tabDisplayregions,tabBundles'>
+</cfif>
+
  <img class="loadProgress tabPreloader" src="images/progress_bar.gif">
  <div class="tabs initActiveTab" style="display:none">
   <ul>
@@ -491,7 +498,44 @@ to your own modified versions of Mura CMS.
       </dd>
       </dl>
       </div>
-	 
+	 <!--- BEING EXTENDED ATTRIBUTES --->
+    <cfif arrayLen(extendSets)>
+    <div id="tabExtendedAttributes">   
+      <cfset started=false />
+      <dl class="oneColumn" id="extendDL">
+      <cfloop from="1" to="#arrayLen(extendSets)#" index="s"> 
+      <cfset extendSetBean=extendSets[s]/>
+      <cfset style=extendSetBean.getStyle()/><cfif not len(style)><cfset started=true/></cfif>
+        <span class="extendset" extendsetid="#extendSetBean.getExtendSetID()#" categoryid="#extendSetBean.getCategoryID()#" #style#>
+        <input name="extendSetID" type="hidden" value="#extendSetBean.getExtendSetID()#"/>
+        <dt <cfif not started>class="first"<cfset started=true/><cfelse>class="separate"</cfif>>#extendSetBean.getName()#</dt>
+        <cfsilent>
+        <cfset attributesArray=extendSetBean.getAttributes() />
+        </cfsilent>
+        <dd><dl><cfloop from="1" to="#arrayLen(attributesArray)#" index="a">  
+          <cfset attributeBean=attributesArray[a]/>
+          <cfset attributeValue=request.siteBean.getvalue(attributeBean.getName(),'useMuraDefault') />
+          <dt>
+          <cfif len(attributeBean.getHint())>
+          <a href="##" class="tooltip">#attributeBean.getLabel()# <span>#attributeBean.gethint()#</span></a>
+          <cfelse>
+          #attributeBean.getLabel()#
+          </cfif>
+          <cfif attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'> <a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#attributeValue#" target="_blank">[Download]</a> <input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/> Delete</cfif>
+          </dt>
+          <!--- if it's an hidden type attribute then flip it to be a textbox so it can be editable through the admin --->
+          <cfif attributeBean.getType() IS "Hidden">
+            <cfset attributeBean.setType( "TextBox" ) />
+          </cfif> 
+          <dd>#attributeBean.renderAttribute(attributeValue)#</dd>
+        </cfloop></dl></dd>
+        </span>
+      </cfloop>
+      </dl>
+      </div>
+      </cfif>
+      
+      <!--- END EXTENDED ATTRIBUTES --->
       <div id="tabBundles">
       <dl class="oneColumn">
 
@@ -548,8 +592,6 @@ to your own modified versions of Mura CMS.
 		  
 	  </dd>
 --->
-	 
-	
 	  
 	  <dt><a class="tooltip">Select Bundle File From Server<cfif application.configBean.getPostBundles()> (Preferred)</cfif><span>You can deploy a bundle that exists on the server by entering the complete server path to the Site Bundle here. This eliminates the need to upload the file via your web browser, avoiding some potential timeout issues.</span></a></dt>
       <dd>
@@ -582,7 +624,6 @@ to your own modified versions of Mura CMS.
 	  </cfif>
 	  </dl>
 	  </div>
-	
     </div>
     <input type="hidden" name="action" value="update">
     <div id="actionButtons">

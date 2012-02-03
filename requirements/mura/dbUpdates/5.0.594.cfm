@@ -259,30 +259,10 @@ select * from (select pluginID as CheckIfTableExists from tplugins) where ROWNUM
 	</cfquery>
 
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	create or replace TRIGGER "TPLUGINS_PLUGINID_TRG" BEFORE INSERT OR UPDATE ON tplugins
+	create or replace TRIGGER "TPLUGINS_PLUGINID_TRG" BEFORE INSERT ON tplugins
 	FOR EACH ROW
-	DECLARE 
-	v_newVal NUMBER(12) := 0;
-	v_incval NUMBER(12) := 0;
 	BEGIN
-	  IF INSERTING AND :new.pluginID IS NULL THEN
 	    SELECT  tplugins_pluginID_SEQ.NEXTVAL INTO v_newVal FROM DUAL;
-	    -- If this is the first time this table have been inserted into (sequence == 1)
-	    IF v_newVal = 1 THEN 
-	      --get the max indentity value from the table
-	      SELECT max(pluginID) INTO v_newVal FROM tplugins;
-	      v_newVal := v_newVal + 1;
-	      --set the sequence to that value
-	      LOOP
-	           EXIT WHEN v_incval>=v_newVal;
-	           SELECT tplugins_pluginID_SEQ.nextval INTO v_incval FROM dual;
-	      END LOOP;
-	    END IF;
-	    -- save this to emulate @@identity
-	   sql_utilities.identity := v_newVal; 
-	   -- assign the value from the sequence to emulate the identity column
-	   :new.pluginID := v_newVal;
-	  END IF;
 	END;
 	</cfquery>
 	
