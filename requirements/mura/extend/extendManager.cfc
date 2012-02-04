@@ -1297,15 +1297,20 @@ and tclassextendattributes.type='File'
 					      		
 					attributeXML=extendSetXML.xmlChildren[at];
 
-					attribute = extendSet.getAttributeByName(attributeXML.name.xmlText);
-
+					if(structKeyExists(attributeXML,"name")){
+						attribute = extendSet.getAttributeByName(attributeXML.name.xmlText);
+					} else {
+						attribute = extendSet.getAttributeByName(attributeXML.xmlAttributes.name);
+					}
 					if(attribute.getIsNew()){
 						attributeKeyList="label,type,optionlist,optionlabellist,defaultvalue,hint,required,validation,message,regex";
 						
 						for (ak=1;ak LTE listLen(attributeKeyList);ak=ak+1) {
 						      			attrbuteKeyName=listGetAt(attributeKeyList,ak);
 						    if(structKeyExists(attributeXML,attrbuteKeyName)){
-									evaluate("attribute.set#attrbuteKeyName#(attributeXML[attrbuteKeyName].xmlText)");
+								evaluate("attribute.set#attrbuteKeyName#(attributeXML[attrbuteKeyName].xmlText)");
+							}else if(structKeyExists(attributeXML.xmlAttributes,ak)) {
+								evaluate("attribute.set#attrbuteKeyName#(attributeXML.xmlAttributes[attrbuteKeyName])");
 							}
 						}
 

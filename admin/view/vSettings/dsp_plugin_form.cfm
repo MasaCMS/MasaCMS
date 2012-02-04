@@ -173,8 +173,12 @@ and fileExists(licenseFile)>
 		<cfsilent>
 		<cfset settingBean=application.pluginManager.getAttributeBean(request.pluginXML.plugin.settings.setting[i],attributes.moduleID)/>		
 		<cfif not len(settingBean.getSettingValue())
-				and not rsPlugin.deployed and structKeyExists(request.pluginXML.plugin.settings.setting[i],'defaultValue')>
-			<cfset settingBean.setSettingValue(request.pluginXML.plugin.settings.setting[i].defaultValue.xmlText)>
+				and not rsPlugin.deployed>
+			<cfif structKeyExists(request.pluginXML.plugin.settings.setting[i],"defaultValue")>
+				<cfset settingBean.setSettingValue(request.pluginXML.plugin.settings.setting[i].defaultValue.xmlText)>
+			<cfelseif structKeyExists(request.pluginXML.plugin.settings.setting[i].xmlAttributes,"defaultValue")>
+				<cfset settingBean.setSettingValue(request.pluginXML.plugin.settings.setting[i].xmlAttributes.defaultValue)>
+			</cfif>
 		</cfif>
 		</cfsilent>
 		<dt>
