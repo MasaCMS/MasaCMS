@@ -963,7 +963,7 @@ select * from tplugins order by #arguments.orderby#
 
 		<cfloop list="#arguments.args.siteAssignID#" index="i">
 
-			<cfset variables.configBean.loadConfigXML(pluginXML,i)>
+			<cfset variables.configBean.getClassExtensionManager().loadConfigXML(pluginXML,i)>
 			
 			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			insert into tcontent (siteID,moduleID,contentID,contentHistID,parentID,type,subType,title,
