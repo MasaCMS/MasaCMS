@@ -104,7 +104,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif structKeyExists(request.pluginXML.plugin,"extensions") 
 and structKeyExists(request.pluginXML.plugin.extensions,"extension")>
-	<cfset extensionsLen=arraylen(request.pluginXML.plugin.settings.setting)/>
+	<cfset extensionsLen=arraylen(request.pluginXML.plugin.extensions.extension)/>
 <cfelse>
 	<cfset extensionsLen=0>
 </cfif>
@@ -240,7 +240,7 @@ and fileExists(licenseFile)>
 <dt>Class Extensions</dt>
 <dd><ul>
 <cfloop from="1" to="#extensionsLen#" index="i">
-	<li>#htmlEditFormat(request.pluginXML.plugin.extensions.extension[i].XmlAttributes.type)#/<cfif isDefined("request.pluginXML.plugin.extensions.extension[i].XmlAttributes.subtype")>#htmlEditFormat(request.pluginXML.plugin.extensions.extension[i].XmlAttributes.subtype)#<cfelse>Default</cfif></li>
+	<li>#htmlEditFormat(request.pluginXML.plugin.extensions.extension[i].XmlAttributes.type)#/<cfif structKeyExists(request.pluginXML.plugin.extensions.extension[i].XmlAttributes,"subtype")>#htmlEditFormat(request.pluginXML.plugin.extensions.extension[i].XmlAttributes.subtype)#<cfelse>Default</cfif></li>
 </cfloop>
 </ul>
 </dd>
