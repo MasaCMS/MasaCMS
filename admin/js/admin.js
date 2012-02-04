@@ -403,7 +403,7 @@ function validateForm(theForm) {
 					}
 					else if(validationType=='COLOR' && theField.value !='')
 					{	
-						var re = new RegExp("/^(#)?([0-9a-fA-F]{3})([0-9a-fA-F]{3})?$/");
+						var re = new RegExp("^#?([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?$");
 						if(!theField.value.match(re))
 						{
 							if (!started) {
