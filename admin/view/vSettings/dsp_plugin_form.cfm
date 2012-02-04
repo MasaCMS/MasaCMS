@@ -97,11 +97,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 
 <cfif structKeyExists(request.pluginXML.plugin.settings,"setting")>
-<cfset settingsLen=arraylen(request.pluginXML.plugin.settings.setting)/>
+	<cfset settingsLen=arraylen(request.pluginXML.plugin.settings.setting)/>
 <cfelse>
-<cfset settingsLen=0>
+	<cfset settingsLen=0>
 </cfif>
 
+<cfif structKeyExists(request.pluginXML.plugin,"extensions") 
+and structKeyExists(request.pluginXML.plugin.extensions,"extension")>
+	<cfset extensionsLen=arraylen(request.pluginXML.plugin.settings.setting)/>
+<cfelse>
+	<cfset extensionsLen=0>
+</cfif>
 
 <cfif structKeyExists(request.pluginXML.plugin,"scripts") and structKeyExists(request.pluginXML.plugin.scripts,"script")>
 <cfset scriptsLen=arraylen(request.pluginXML.plugin.scripts.script)/>
@@ -229,6 +235,17 @@ and fileExists(licenseFile)>
 </ul>
 </dd>
 </cfif> 
+
+<cfif extensionsLen>
+<dt>Class Extensions</dt>
+<dd><ul>
+<cfloop from="1" to="#extensionsLen#" index="i">
+	<li>#htmlEditFormat(request.pluginXML.plugin.extensions.extension[i].XmlAttributes.type)#/<cfif isDefined("request.pluginXML.plugin.extensions.extension[i].XmlAttributes.subtype")>#htmlEditFormat(request.pluginXML.plugin.extensions.extension[i].XmlAttributes.subtype)#<cfelse>Default</cfif></li>
+</cfloop>
+</ul>
+</dd>
+
+</cfif>
 
 <cfset rsAssigned=application.pluginManager.getAssignedSites(attributes.moduleID)>
 <dt>Site Assignment</dt>

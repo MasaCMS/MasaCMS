@@ -400,7 +400,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 				<cfset themeConfig="">
 			</cfif>
-
 			
 			<cfif len(themeConfig) and not structKeyExists(themeHash,hash(themeDir))>
 				<cfset themeHash[hash(themeDir)]=themeDir>
@@ -415,45 +414,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 
 				<cfset themeConfig=xmlParse(themeConfig)>
-
-				<cfif arraylen(themeConfig.theme.settings)>
-					<cfscript>
-					subType = application.classExtensionManager.getSubTypeBean();
-			     	subType.setType( "Site" );
-			      	subType.setSiteID( rssites.siteID );
-			      	subType.load();
-
-			      	if(subtype.getIsNew()){
-			      		subType.setBaseTable( "tsettings" );
-			      		subType.setBaseKeyField( "baseID" );
-			      		subType.save();
-			      	}
-
-			      	extendSet = subType.getExtendSetByName( "Theme Settings: " & themeName );
-
-			      	if(extendSet.getIsNew()){
-			      		extendSet.save();
-			      	}
-
-			      	for(i=1;i lte arraylen(themeConfig.theme.settings.xmlChildren); i=i+1){
-			      		setting=themeConfig.theme.settings.xmlChildren[i];
-
-			      		attribute = extendSet.getAttributeByName(setting.name.xmlText);
-
-			      		if(attribute.getIsNew()){
-				      		attributeKeyList="label,type,optionlist,optionlabellist,defaultvalue,hint,required,validation,message,regex";
-				      		for (ak=1;ak LTE listLen(attributeKeyList);ak=ak+1) {
-				      			attrbuteKeyName=listGetAt(attributeKeyList,ak);
-				      			if(structKeyExists(setting,attrbuteKeyName)){
-									evaluate("attribute.set#attrbuteKeyName#(setting[attrbuteKeyName].xmlText)");
-								}
-							}
-						}
-
-				    	attribute.save();
-					}
-			      	</cfscript>
-			      </cfif>
+				<cfset application.configBean.getClassExtensionManager().loadConfigXML(themeConfig,rssites.siteid)>
 
 			</cfif>
 

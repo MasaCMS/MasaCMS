@@ -401,6 +401,20 @@ function validateForm(theForm) {
 							 errors += getValidationMessage(theField,' must be numeric.');
 						}					
 					}
+					else if(validationType=='COLOR' && theField.value !='')
+					{	
+						var re = new RegExp("/^(#)?([0-9a-fA-F]{3})([0-9a-fA-F]{3})?$/");
+						if(!theField.value.match(re))
+						{
+							if (!started) {
+							started=true;
+							startAt=f;
+							firstErrorNode="input";
+							}
+						
+							 errors += getValidationMessage(theField,' is not a valid color.');
+						}					
+					}
 					
 					else if(validationType=='REGEX' && theField.value !='' && hasValidationRegex(theField))
 					{	
