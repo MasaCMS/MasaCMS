@@ -367,8 +367,12 @@ select * from tplugins order by #arguments.orderby#
 			<cfloop from="1" to="#settingsLen#" index="i">
 				<cfset settingBean=getAttributeBean(pluginXML.plugin.settings.setting[i],modID)/>		
 				<cfif not len(settingBean.getSettingValue())
-						and not rsPlugin.deployed and structKeyExists(pluginXML.plugin.settings.setting[i],'defaultValue')>
-					<cfset settingBean.setSettingValue(pluginXML.plugin.settings.setting[i].defaultValue.xmlText)>
+						and not rsPlugin.deployed>
+					<cfif structKeyExists(pluginXML.plugin.settings.setting[i],'defaultValue')>
+						<cfset settingBean.setSettingValue(pluginXML.plugin.settings.setting[i].defaultValue.xmlText)>
+					<cfelseif structKeyExists(pluginXML.plugin.settings.setting[i].xmlAttributes,'defaultValue')>
+						<cfset settingBean.setSettingValue(pluginXML.plugin.settings.setting[i].xmlAttributes.defaultValue)>
+					</cfif>
 				</cfif>
 				<cfset deployArgs["#settingBean.getname()#"]=application.contentRenderer.setDynamicContent(settingBean.getSettingValue())>
 			</cfloop>
