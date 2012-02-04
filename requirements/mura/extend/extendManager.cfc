@@ -1242,12 +1242,23 @@ and tclassextendattributes.type='File'
 	<cfset var attribute="">
 	<cfset var attributeKeyList="">
 	<cfset var ak="">
+	<cfset var baseElement="">
 
-	<cfif isDefined("arguments.configXML.plugin.extensions") and arraylen(arguments.configXML.plugin.extensions)>
+	<cfif isDefined("arguments.configXML.plugin")>
+		<cfset baseElement="plugin">
+	<cfelseif isDefined("arguments.configXML.theme")>
+		<cfset baseElement="theme">
+	</cfif>
+	
+	<cfif len(baseElement) 
+		and (
+			isDefined("arguments.configXML.#baseElement#.extensions") 
+			and arraylen(arguments.configXML[baseElement].extensions)
+		)>
 	<cfscript>
-		for(ext=1;ext lte arraylen(arguments.configXML.plugin.extensions.xmlChildren); ext=ext+1){
+		for(ext=1;ext lte arraylen(arguments.configXML[baseElement].extensions.xmlChildren); ext=ext+1){
 						
-			extXML=arguments.configXML.plugin.extensions.extension[ext];
+			extXML=arguments.configXML[baseElement].extensions.extension[ext];
 
 			subType = application.classExtensionManager.getSubTypeBean();
 						
