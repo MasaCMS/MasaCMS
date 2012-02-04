@@ -1320,7 +1320,7 @@ and tclassextendattributes.type='File'
 						      			attrbuteKeyName=listGetAt(attributeKeyList,ak);
 						    if(structKeyExists(attributeXML,attrbuteKeyName)){
 								evaluate("attribute.set#attrbuteKeyName#(attributeXML[attrbuteKeyName].xmlText)");
-							}else if(structKeyExists(attributeXML.xmlAttributes,ak)) {
+							}else if(structKeyExists(attributeXML.xmlAttributes,attrbuteKeyName)) {
 								evaluate("attribute.set#attrbuteKeyName#(attributeXML.xmlAttributes[attrbuteKeyName])");
 							}
 						}
