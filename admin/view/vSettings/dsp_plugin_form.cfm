@@ -97,11 +97,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 
 <cfif structKeyExists(request.pluginXML.plugin.settings,"setting")>
-<cfset settingsLen=arraylen(request.pluginXML.plugin.settings.setting)/>
+	<cfset settingsLen=arraylen(request.pluginXML.plugin.settings.setting)/>
 <cfelse>
-<cfset settingsLen=0>
+	<cfset settingsLen=0>
 </cfif>
 
+<cfif structKeyExists(request.pluginXML.plugin,"extensions") 
+and structKeyExists(request.pluginXML.plugin.extensions,"extension")>
+	<cfset extensionsLen=arraylen(request.pluginXML.plugin.extensions.extension)/>
+<cfelse>
+	<cfset extensionsLen=0>
+</cfif>
 
 <cfif structKeyExists(request.pluginXML.plugin,"scripts") and structKeyExists(request.pluginXML.plugin.scripts,"script")>
 <cfset scriptsLen=arraylen(request.pluginXML.plugin.scripts.script)/>
@@ -167,8 +173,12 @@ and fileExists(licenseFile)>
 		<cfsilent>
 		<cfset settingBean=application.pluginManager.getAttributeBean(request.pluginXML.plugin.settings.setting[i],attributes.moduleID)/>		
 		<cfif not len(settingBean.getSettingValue())
-				and not rsPlugin.deployed and structKeyExists(request.pluginXML.plugin.settings.setting[i],'defaultValue')>
-			<cfset settingBean.setSettingValue(request.pluginXML.plugin.settings.setting[i].defaultValue.xmlText)>
+				and not rsPlugin.deployed>
+			<cfif structKeyExists(request.pluginXML.plugin.settings.setting[i],"defaultValue")>
+				<cfset settingBean.setSettingValue(request.pluginXML.plugin.settings.setting[i].defaultValue.xmlText)>
+			<cfelseif structKeyExists(request.pluginXML.plugin.settings.setting[i].xmlAttributes,"defaultValue")>
+				<cfset settingBean.setSettingValue(request.pluginXML.plugin.settings.setting[i].xmlAttributes.defaultValue)>
+			</cfif>
 		</cfif>
 		</cfsilent>
 		<dt>
@@ -229,6 +239,17 @@ and fileExists(licenseFile)>
 </ul>
 </dd>
 </cfif> 
+
+<cfif extensionsLen>
+<dt>Class Extensions</dt>
+<dd><ul>
+<cfloop from="1" to="#extensionsLen#" index="i">
+	<li>#htmlEditFormat(request.pluginXML.plugin.extensions.extension[i].XmlAttributes.type)#/<cfif structKeyExists(request.pluginXML.plugin.extensions.extension[i].XmlAttributes,"subtype")>#htmlEditFormat(request.pluginXML.plugin.extensions.extension[i].XmlAttributes.subtype)#<cfelse>Default</cfif></li>
+</cfloop>
+</ul>
+</dd>
+
+</cfif>
 
 <cfset rsAssigned=application.pluginManager.getAssignedSites(attributes.moduleID)>
 <dt>Site Assignment</dt>
