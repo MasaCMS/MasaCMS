@@ -391,7 +391,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<cfset siteBean=application.settingsManager.getSite(rsSites.siteID)>
 			<cfset themeDir=expandPath(siteBean.getThemeIncludePath())>
-			<cfset themeName=listLast(themeDir,application.configBean.getFileDelim())>
 
 			<cfif fileExists(themeDir & '/config.xml.cfm')>
 				<cfset themeConfig='config.xml.cfm'>
