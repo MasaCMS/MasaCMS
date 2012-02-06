@@ -54,12 +54,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfswitch expression="#attributes.type#">
 	<cfcase value="Page,Portal,Calendar,Gallery,File,Link">
 		<dt<cfif not started> class="first"</cfif>><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.title")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.pageTitle")#</span></a></dt>
-		<dd><input type="text" id="title" name="title" value="#HTMLEditFormat(request.contentBean.gettitle())#"  maxlength="255" class="textLong" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#" <cfif not request.contentBean.getIsNew() and not listFindNoCase('Link,File',attributes.type)>onkeypress="openDisplay('editSecondaryTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');"</cfif>></dd>
+		<dd><input type="text" id="title" name="title" value="#HTMLEditFormat(request.contentBean.gettitle())#"  maxlength="255" class="textLong" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#" <cfif not request.contentBean.getIsNew() and not listFindNoCase('Link,File',attributes.type)>onkeypress="openDisplay('editAdditionalTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');"</cfif>></dd>
 		
 		<!---<cfif not listFind("File,Link",attributes.type)>--->
-			<dt><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.secondarytitles")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.secondarytitles")#</span> <a href="##" id="editSecondaryTitlesLink" onclick="javascript: toggleDisplay('editSecondaryTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');return false">[#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.expand")#]</a></dt>
-			<dd id="editSecondaryTitles" style="display:none;">
-			<p class="notice">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.secondarytitlesnote")#</p>
+			<dt><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.AdditionalTitles")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.AdditionalTitles")#</span> <a href="##" id="editAdditionalTitlesLink" onclick="javascript: toggleDisplay('editAdditionalTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');return false">[#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.expand")#]</a></dt>
+			<dd id="editAdditionalTitles" style="display:none;">
+			<p class="notice">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.AdditionalTitlesnote")#</p>
 			<p>
 				<dl>
 				<dt><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.menutitle")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.navigationTitle")#</span></a></dt>
