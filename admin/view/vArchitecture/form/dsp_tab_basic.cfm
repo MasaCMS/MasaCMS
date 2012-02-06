@@ -50,118 +50,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <div id="tabBasic">
 <dl class="oneColumn">
-		<!---<cfif attributes.compactDisplay neq "true">
-			<div class="selectContentType">
-			<cfif listFindNoCase(pageLevelList,attributes.type)>
-				<cfset started=true>
-				<dt class="first">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#<!---</dt>
-				<dd>--->
-				<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#request.contentBean.getcontentHistID()#',this.value,'#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
-				<cfloop list="#baseTypeList#" index="t">
-				<cfsilent><cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery></cfsilent>
-				<option value="#t#^Default" <cfif attributes.type eq t and request.contentBean.getSubType() eq "Default">selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#</option>
-				<cfif rsst.recordcount>
-					<cfloop query="rsst">
-						<option value="#t#^#rsst.subtype#" <cfif attributes.type eq t and request.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#  / #rsst.subtype#</option>
-					</cfloop>
-				</cfif>
-				</cfloop>
-				</select>
-				</dt>
-			<cfelseif attributes.type eq 'File'>
-				<cfset t="File"/>
-				<cfsilent><cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery></cfsilent>
-				<cfif rsst.recordcount>
-				<cfset started=true>
-				<dt class="first">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#<!---</dt>
-				</dd>--->
-				<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#request.contentBean.getcontentHistID()#',this.value,'#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
-				<option value="#t#^Default" <cfif attributes.type eq t and request.contentBean.getSubType() eq "Default">selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#t#")#</option>
-				<cfif rsst.recordcount>
-					<cfloop query="rsst">
-						<option value="#t#^#rsst.subtype#" <cfif attributes.type eq t and request.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")# / #rsst.subtype#</option>
-					</cfloop>
-				</cfif>
-				</select>
-				</dt>
-				</cfif>
-			<cfelseif attributes.type eq 'Link'>	
-				<cfset t="Link"/>
-				<cfsilent><cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery></cfsilent>
-				<cfif rsst.recordcount>
-				<cfset started=true>
-				<dt class="first">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#<!---</dt>
-				<dd>--->
-				<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#request.contentBean.getcontentHistID()#',this.value,'#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
-				<option value="#t#^Default" <cfif attributes.type eq t and request.contentBean.getSubType() eq "Default">selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#</option>
-				<cfif rsst.recordcount>
-					<cfloop query="rsst">
-						<cfif rsst.subtype neq 'Default'><option value="#t#^#rsst.subtype#" <cfif attributes.type eq t and request.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#  / #rsst.subtype#</option></cfif>
-					</cfloop>
-				</cfif>
-				</select>
-				</dt>
-				</cfif>
-			<cfelseif attributes.type eq 'Component'>	
-				<cfset t="Component"/>
-				<cfsilent><cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery></cfsilent>
-				<cfif rsst.recordcount>
-				<cfset started=true>
-				<dt class="first">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#<!---</dt>
-				<dd>--->
-				<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#request.contentBean.getcontentHistID()#',this.value,'#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
-				<option value="#t#^Default" <cfif attributes.type eq t and request.contentBean.getSubType() eq "Default">selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#</option>
-				<cfif rsst.recordcount>
-					<cfloop query="rsst">
-						<cfif rsst.subtype neq 'Default'><option value="#t#^#rsst.subtype#" <cfif attributes.type eq t and request.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#  / #rsst.subtype#</option></cfif>
-					</cfloop>
-				</cfif>
-				</select>
-				</dt>
-				</cfif>
-			</cfif>
-		</div>
-	</cfif>--->
-	
-	<!---<cfif attributes.compactDisplay eq "true">
-		<cfif not listFindNoCase("Component,Form", attributes.type)>
-			<cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#attributes.type#"> and subtype not in ('Default','default')</cfquery>
-			<cfif rsst.recordcount>
-					<cfset t=attributes.type/>
-					<cfsilent></cfsilent>
-					<cfset started=true>
-					<dt class="first">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#</dt>
-					<dd>
-					<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#request.contentBean.getcontentHistID()#',this.value,'#attributes.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(attributes.siteID).getThemeAssetPath()#');">
-					<option value="#t#^Default" <cfif attributes.type eq t and request.contentBean.getSubType() eq "Default">selected</cfif>>#t#</option>
-					<cfloop query="rsst">
-						<option value="#t#^#rsst.subtype#" <cfif attributes.type eq t and request.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#t#  / #rsst.subtype#</option>
-					</cfloop>
-					</select>	
-					</dd>								
-			</cfif>
-		</cfif>
-			
-		<input type="hidden" name="closeCompactDisplay" value="true" />
-	</cfif>--->
+		
 <cfswitch expression="#attributes.type#">
 	<cfcase value="Page,Portal,Calendar,Gallery,File,Link">
 		<dt<cfif not started> class="first"</cfif>><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.title")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.pageTitle")#</span></a></dt>
-		<dd><input type="text" id="title" name="title" value="#HTMLEditFormat(request.contentBean.gettitle())#"  maxlength="255" class="textLong" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#" <cfif not request.contentBean.getIsNew() and not listFind("File,Link",attributes.type)>onkeypress="openDisplay('editSEOTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');"</cfif>></dd>
-		
-		<dt><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.menutitle")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.navigationTitle")#</span></a></dt>
-		<dd><input type="text" id="menuTitle" name="menuTitle" value="#HTMLEditFormat(request.contentBean.getmenuTitle())#"  maxlength="255" class="textLong" <cfif not request.contentBean.getIsNew() and not listFind("File,Link",attributes.type)>onkeypress="openDisplay('editSEOTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');"</cfif>></dd>
+		<dd><input type="text" id="title" name="title" value="#HTMLEditFormat(request.contentBean.gettitle())#"  maxlength="255" class="textLong" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#" <cfif not request.contentBean.getIsNew() and not listFindNoCase('Link,File',attributes.type)>onkeypress="openDisplay('editAdditionalTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');"</cfif>></dd>
 		
 		<!---<cfif not listFind("File,Link",attributes.type)>--->
-			<dt><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.seotitles")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.seotitles")#</span> <a href="##" id="editSEOTitlesLink" onclick="javascript: toggleDisplay('editSEOTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');return false">[#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.expand")#]</a></dt>
-			<dd id="editSEOTitles" style="display:none;">
-			<p class="notice">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.seotitlesnote")#</p>
-			<dl>
-			<dt class="alt noBorder"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.urltitle")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.urlTitle")#</span></a></dt>
-			<dd><input type="text" id="urlTitle" name="urlTitle" value="#HTMLEditFormat(request.contentBean.getURLTitle())#"  maxlength="255" class="textLong"></dd>
-			<dt class="alt"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.htmltitle")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.htmlTitle")#</span></a></dt>
-			<dd><input type="text" id="htmlTitle" name="htmlTitle" value="#HTMLEditFormat(request.contentBean.getHTMLTitle())#"  maxlength="255" class="textLong"></dd>
-			</dl>
+			<dt><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.AdditionalTitles")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.AdditionalTitles")#</span> <a href="##" id="editAdditionalTitlesLink" onclick="javascript: toggleDisplay('editAdditionalTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');return false">[#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.expand")#]</a></dt>
+			<dd id="editAdditionalTitles" style="display:none;">
+			<p class="notice">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.AdditionalTitlesnote")#</p>
+			<p>
+				<dl>
+				<dt><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.menutitle")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.navigationTitle")#</span></a></dt>
+				<dl>
+				<dd><input type="text" id="menuTitle" name="menuTitle" value="#HTMLEditFormat(request.contentBean.getmenuTitle())#"  maxlength="255" class="textLong"></dd>
+				<dt class="alt noBorder"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.urltitle")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.urlTitle")#</span></a></dt>
+				<dd><input type="text" id="urlTitle" name="urlTitle" value="#HTMLEditFormat(request.contentBean.getURLTitle())#"  maxlength="255" class="textLong"></dd>
+				<dt class="alt"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.htmltitle")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.htmlTitle")#</span></a></dt>
+				<dd><input type="text" id="htmlTitle" name="htmlTitle" value="#HTMLEditFormat(request.contentBean.getHTMLTitle())#"  maxlength="255" class="textLong"></dd>
+				</dl>
+			</p>
 			</dd>
 		<!---</cfif>--->
 	</cfcase>

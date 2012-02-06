@@ -63,9 +63,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <dd><input type="text" id="credits" name="tags" value="#HTMLEditFormat(request.contentBean.getTags())#"  maxlength="255" class="textLong"></dd>
 <dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.credits')#</dt>
 <dd><input type="text" id="credits" name="credits" value="#HTMLEditFormat(request.contentBean.getCredits())#"  maxlength="255" class="textLong"></dd>
+<!---
 <dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.audience')#</dt>
 <dd><input type="text" id="audience" name="audience" value="#HTMLEditFormat(request.contentBean.getAudience())#"  maxlength="255" class="textLong"></dd>
 <dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.keypoints')#</dt>
 <dd><textarea name="keyPoints" rows="8" id="keyPoints">#HTMLEditFormat(request.contentBean.getKeyPoints())#</textarea></dd>
+--->
 </dl>
 </div></cfoutput>
