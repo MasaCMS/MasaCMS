@@ -63,7 +63,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<p>
 				<dl>
 				<dt><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.menutitle")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.navigationTitle")#</span></a></dt>
-				<dl>
 				<dd><input type="text" id="menuTitle" name="menuTitle" value="#HTMLEditFormat(request.contentBean.getmenuTitle())#"  maxlength="255" class="textLong"></dd>
 				<dt class="alt noBorder"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.urltitle")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.urlTitle")#</span></a></dt>
 				<dd><input type="text" id="urlTitle" name="urlTitle" value="#HTMLEditFormat(request.contentBean.getURLTitle())#"  maxlength="255" class="textLong"></dd>
