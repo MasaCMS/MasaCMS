@@ -1230,4 +1230,109 @@ and tclassextendattributes.type='File'
 </cfloop>
 </cffunction>
 
+<cffunction name="loadConfigXML" output="false">
+	<cfargument name="configXML">
+	<cfargument name="siteID">
+	<cfset var extXML="">
+	<cfset var ext="">
+	<cfset var subtype="">
+	<cfset var extset="">
+	<cfset var at="">
+	<cfset var attributesXML="">
+	<cfset var attribute="">
+	<cfset var attributeKeyList="">
+	<cfset var ak="">
+	<cfset var baseElement="">
+
+	<cfif isDefined("arguments.configXML.plugin")>
+		<cfset baseElement="plugin">
+	<cfelseif isDefined("arguments.configXML.theme")>
+		<cfset baseElement="theme">
+	</cfif>
+	
+	<cfif len(baseElement) 
+		and (
+			isDefined("arguments.configXML.#baseElement#.extensions") 
+			and arraylen(arguments.configXML[baseElement].extensions)
+		)>
+	<cfscript>
+		for(ext=1;ext lte arraylen(arguments.configXML[baseElement].extensions.xmlChildren); ext=ext+1){
+						
+			extXML=arguments.configXML[baseElement].extensions.extension[ext];
+
+			subType = application.classExtensionManager.getSubTypeBean();
+						
+			if(isDefined("extXML.xmlAttributes.type")){
+				subType.setType( extXML.xmlAttributes.type );
+			}
+						
+			if(isDefined("extXML.xmlAttributes.subtype")){
+				subType.setSubType( extXML.xmlAttributes.subtype );
+			}
+				      	
+			subType.setSiteID( arguments.siteID );
+			subType.load();
+
+			if(subtype.getIsNew()){
+				if(subtype.getType() eq "Site"){
+			  		subType.setBaseTable( "tsettings" );
+					subType.setBaseKeyField( "baseID" );
+				} else if(listFindNoCase("1,2,Group,User",subtype.getType())){
+					subType.setBaseTable( "tusers" );
+					subType.setBaseKeyField( "userid" );
+					subType.setDataTable("tclassextenddatauseractivity");
+				} else if(subtype.getType() eq "Address"){
+			  		subType.setBaseTable( "tusersaddresses" );
+			  		subType.setDataTable("tclassextenddatauseractivity");
+					subType.setBaseKeyField( "addressid" );	
+				}
+
+				subType.save();
+			}
+
+			for(extset=1;extset lte arraylen(extXML.xmlChildren); extset=extset+1){
+				      	
+				extendSetXML=extXML.xmlChildren[extset];
+
+				 extendset= subType.getExtendSetByName(  extendSetXML.xmlAttributes.name );
+
+				if(isDefined("extendSetXML.xmlAttributes.container")){
+					extendset.setContainer( extendSetXML.xmlAttributes.container );
+				}
+							
+				if(extendSet.getIsNew()){
+					      		extendSet.save();
+					    }
+
+				for(at=1;at lte arraylen(extendSetXML.xmlChildren); at=at+1){
+					      		
+					attributeXML=extendSetXML.xmlChildren[at];
+
+					if(structKeyExists(attributeXML,"name")){
+						attribute = extendSet.getAttributeByName(attributeXML.name.xmlText);
+					} else {
+						attribute = extendSet.getAttributeByName(attributeXML.xmlAttributes.name);
+					}
+					if(attribute.getIsNew()){
+						attributeKeyList="label,type,optionlist,optionlabellist,defaultvalue,hint,required,validation,message,regex";
+						
+						for (ak=1;ak LTE listLen(attributeKeyList);ak=ak+1) {
+						      			attrbuteKeyName=listGetAt(attributeKeyList,ak);
+						    if(structKeyExists(attributeXML,attrbuteKeyName)){
+								evaluate("attribute.set#attrbuteKeyName#(attributeXML[attrbuteKeyName].xmlText)");
+							}else if(structKeyExists(attributeXML.xmlAttributes,attrbuteKeyName)) {
+								evaluate("attribute.set#attrbuteKeyName#(attributeXML.xmlAttributes[attrbuteKeyName])");
+							}
+						}
+
+						attribute.save();
+					}			
+				}
+			}
+		}
+	</cfscript>
+	</cfif>
+</cffunction>
+
+
 </cfcomponent>

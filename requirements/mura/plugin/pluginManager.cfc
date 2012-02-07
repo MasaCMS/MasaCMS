@@ -365,10 +365,14 @@ select * from tplugins order by #arguments.orderby#
 			<cfset deployArgs.moduleID=modID>
 			
 			<cfloop from="1" to="#settingsLen#" index="i">
-				<cfset settingBean=application.pluginManager.getAttributeBean(pluginXML.plugin.settings.setting[i],modID)/>		
+				<cfset settingBean=getAttributeBean(pluginXML.plugin.settings.setting[i],modID)/>		
 				<cfif not len(settingBean.getSettingValue())
-						and not rsPlugin.deployed and structKeyExists(pluginXML.plugin.settings.setting[i],'defaultValue')>
-					<cfset settingBean.setSettingValue(pluginXML.plugin.settings.setting[i].defaultValue.xmlText)>
+						and not rsPlugin.deployed>
+					<cfif structKeyExists(pluginXML.plugin.settings.setting[i],'defaultValue')>
+						<cfset settingBean.setSettingValue(pluginXML.plugin.settings.setting[i].defaultValue.xmlText)>
+					<cfelseif structKeyExists(pluginXML.plugin.settings.setting[i].xmlAttributes,'defaultValue')>
+						<cfset settingBean.setSettingValue(pluginXML.plugin.settings.setting[i].xmlAttributes.defaultValue)>
+					</cfif>
 				</cfif>
 				<cfset deployArgs["#settingBean.getname()#"]=application.contentRenderer.setDynamicContent(settingBean.getSettingValue())>
 			</cfloop>
@@ -960,7 +964,11 @@ select * from tplugins order by #arguments.orderby#
 	<cfset deleteAssignedSites(arguments.args.moduleID) />
 	
 	<cfif structKeyExists(arguments.args,"siteAssignID") and len(arguments.args.siteAssignID)>
+
 		<cfloop list="#arguments.args.siteAssignID#" index="i">
+
+			<cfset variables.configBean.getClassExtensionManager().loadConfigXML(pluginXML,i)>
+			
 			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			insert into tcontent (siteID,moduleID,contentID,contentHistID,parentID,type,subType,title,
 			display,approved,isNav,active,forceSSL,searchExclude) values (

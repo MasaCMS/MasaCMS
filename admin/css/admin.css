@@ -3179,7 +3179,7 @@ dt .add li.Page {
 	padding: 2px 0 2px 18px !important;
 }
 
-.navZoom li.Portal, .navZoom li.PortalLocked {
+.navZoom li.Portal, .navZoom li.PortalLocked, .navZoom li.Calendar, .navZoom li.CalendarLocked {
 	background-position: left center;
 	color: #333232;
 	text-decoration: none;

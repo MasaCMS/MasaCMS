@@ -79,18 +79,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="set"  access="public" output="false" returntype="any">
 	<cfargument name="theXML">
 	<cfargument name="moduleID">
+	<cfset var i="">
+
+	<cfloop list="name,type,hint,required,validation,regex,message,label,optionlist,optionlabellist" index="i">	
+		<cfif structKeyExists(arguments.theXML,i)>
+			<cfset evaluate("set#i#(arguments.theXML[i].xmlText)")/>
+		<cfelseif structKeyExists(arguments.theXML.xmlAttributes,i)>
+			<cfset evaluate("set#i#(arguments.theXML[i].xmlText)")/>
+		</cfif>
+	</cfloop>
 	
-	<cfset setName(arguments.theXML.name.xmlText)/>
-	<cfset setType(arguments.theXML.type.xmlText)/>
-	<cfset setHint(arguments.theXML.hint.xmlText)/>
-	<cfset setRequired(arguments.theXML.required.xmlText)/>
-	<cfset setValidation(arguments.theXML.validation.xmlText)/>
-	<cfset setRegex(arguments.theXML.regex.xmlText)/>
-	<cfset setMessage(arguments.theXML.message.xmlText)/>
-	<cfset setLabel(arguments.theXML.label.xmlText)/>
-	<cfset setSettingValue(arguments.theXML.defaultvalue.xmlText)/>
-	<cfset setOptionList(arguments.theXML.optionlist.xmlText)/>
-	<cfset setOptionLabelList(arguments.theXML.optionlabellist.xmlText)/>
 	<cfset setModuleID(arguments.moduleID)/>
 	<cfset loadSettingValue()/>
 	

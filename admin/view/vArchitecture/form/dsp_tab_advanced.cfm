@@ -52,19 +52,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <dl class="oneColumn" id="configuratorTab">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentid')#</dt>
 <dd><cfif len(attributes.contentID) and len(request.contentBean.getcontentID())>#request.contentBean.getcontentID()#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notavailable')#</cfif></dd>
-
-<cfif listFind("Gallery,Link,Portal,Page,Calendar,File,Link",attributes.type)>
-	<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.permlink')#</dt>
-	<dd><cfif len(attributes.contentID) and len(request.contentBean.getcontentID())>http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/#attributes.siteid#/?LinkServID=#request.contentBean.getcontentID()#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notavailable')#</cfif></dd>
-	</dd>
-</cfif>
-
 <cfif listFind("Gallery,Link,Portal,Page,Calendar",attributes.type)>
 	<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.currentfilename')#</dt>
 	<dd><cfif attributes.contentBean.getContentID() eq "00000000000000000000000000000000001">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.emptystring')#<cfelseif len(attributes.contentID) and len(request.contentBean.getcontentID())>#request.contentBean.getFilename()#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notavailable')#</cfif></dd>
 	</dd>
 </cfif>
-
 <cfif attributes.type neq 'Component' and attributes.type neq 'Form'>
 	<dt><cfoutput><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.layouttemplate')#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.layoutTemplate")#</span></a></cfoutput></dt>
 	<dd><select name="template" class="dropdown">
