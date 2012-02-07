@@ -80,6 +80,7 @@
 	color: rgba(255,255,255,.8) !important;
 	text-shadow: rgba(0,0,0,.8) 0px -1px 0px !important;
 	height: 13px !important;
+	line-height: 13px !important;
 }
 
 #m-changesets #m-cs-utility {

@@ -54,6 +54,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset dataset		= "" />
 <cfset isMultipart	= false />
 
+<!--- start with fieldsets closed --->
+<cfset request.fieldsetopen = false />
+
 <cfset aFieldOrder = frmForm.fieldorder />
 <cfsavecontent variable="frmFieldContents">
 <cfoutput>
@@ -92,6 +95,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!---<cfthrow message="ERROR 9000: Field Missing: #aFieldOrder[iiX]#">--->
 	</cfif>
 </cfloop>
+<cfif request.fieldsetopen eq true></fieldset><cfset request.fieldsetopen = false /></cfif>
 </ol>
 </cfoutput>
 </cfsavecontent>
