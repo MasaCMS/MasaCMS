@@ -695,7 +695,7 @@ function fadeToggle(id){
 
 }
 
-function setHTMLEditors(height,width) {
+function setHTMLEditors(height,width,config) {
 	var allPageTags = document.getElementsByTagName("textarea");
 	var editors = new Array();
 	for (i = 0; i < allPageTags.length; i++) {
@@ -716,15 +716,20 @@ function setHTMLEditors(height,width) {
 				editors.push(oFCKeditor);
 			} else {
 				var instance=CKEDITOR.instances[allPageTags[i].id];
+				var conf={height:height,width:width};
+				if(config != null){
+					conf=extendObject(conf,config)
+				}
 				if (instance) {
 					CKEDITOR.remove(instance);
 				} 
 				
+				/*
 				if(jQuery('#' + allPageTags[i].id).html() == ''){
 					jQuery('#' + allPageTags[i].id).html("<p></p>")
-				}
+				}*/
 				
-				jQuery('#' + allPageTags[i].id).ckeditor(getHTMLEditorConfig({height:height,width:width}),htmlEditorOnComplete);
+				jQuery('#' + allPageTags[i].id).ckeditor(getHTMLEditorConfig(conf),htmlEditorOnComplete);
 					
 			}
 		}
