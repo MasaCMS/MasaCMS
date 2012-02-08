@@ -14,7 +14,7 @@
 	<link rel="icon" href="#$.siteConfig('assetPath')#/images/favicon.ico" type="image/x-icon" />
 	<link rel="shortcut icon" href="#$.siteConfig('assetPath')#/images/favicon.ico" type="image/x-icon" />	
 	
-	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.min.css" />
+	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.min.css?" />
 	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/jquery/mobile/jquery.mobile.min.css" />
 	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/mobile/mobile.css" />
 	
