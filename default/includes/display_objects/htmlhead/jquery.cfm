@@ -46,6 +46,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfoutput><script type="text/javascript"> 
 <!--
-!window.jQuery && document.write(unescape('%3Cscript type="text/javascript" src="#event.getSite().getAssetPath()#/js/jquery/jquery.js"%3E%3C/script%3E'))
+!window.jQuery && document.write(unescape('%3Cscript type="text/javascript" src="#event.getSite().getAssetPath()#/jquery/jquery.js"%3E%3C/script%3E'))
 //-->
 </script></cfoutput>

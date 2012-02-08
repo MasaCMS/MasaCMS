@@ -102,6 +102,10 @@ config.format_tags = 'p;h1;h2;h3;h4;pre;address;div';
 	                                	['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','Image']
 	                                ] ;
 
+	config.toolbar_bbcode = [
+	                                	['Source'],['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','Image']
+	                                ] ;
+
 	config.extraPlugins = <cfif application.configBean.getEnableMuraTag()>'SelectComponent,media,Selectlink,muratag,gmap'<cfelse>'SelectComponent,media,Selectlink,gmap'</cfif>;
 	config.entities_additional = "";
 	//config.protectedSource.push( /\[mura\][\s\S]*?\[\/mura\]/g );
