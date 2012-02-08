@@ -15,10 +15,10 @@
 	<link rel="shortcut icon" href="#$.siteConfig('assetPath')#/images/favicon.ico" type="image/x-icon" />	
 	
 	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.min.css?" />
-	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/jquery/mobile/jquery.mobile.min.css" />
+	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/mobile/jquery.mobile.min.css" />
 	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/mobile/mobile.css" />
 	
-	<script src="#$.siteConfig('assetPath')#/jquery/jquery.js"></script>
+	<script src="#$.siteConfig('assetPath')#/js/jquery/jquery.js"></script>
 	
 	<script type="text/javascript">
       $(document).bind("mobileinit", function(){
@@ -29,7 +29,7 @@
       });
 	</script>
 
-	<script src="#$.siteConfig('assetPath')#/jquery/mobile/jquery.mobile.min.js"></script>
+	<script src="#$.siteConfig('assetPath')#/mobile/jquery.mobile.min.js"></script>
 	<cfset rs=$.getBean('feedManager').getFeeds($.event('siteID'),'Local',true,true) />
 
 </head>
