@@ -394,7 +394,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	subTypeID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getsubtypeID()#">
 	</cfquery>
 	
-	<cfif not listFindNoCase("Custom,Site",getType())>
+	<cfif not listFindNoCase("Custom,Site,Base",getType())>
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update #getBaseTable()#
 		set subType='Default'
