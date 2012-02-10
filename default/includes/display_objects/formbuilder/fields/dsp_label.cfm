@@ -45,7 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfif len(arguments.field.rblabel)>
-	<cfoutput><label for="#arguments.field.name#" <cfif arguments.field.isrequired> class="req"</cfif>>#$.rbKey(arguments.field.rblabel)#<cfif arguments.field.isrequired> <ins>Required</ins></cfif></cfoutput>
+	<cfoutput><label for="#arguments.field.name#">#$.rbKey(arguments.field.rblabel)#<cfif arguments.field.isrequired> <ins>Required</ins></cfif></cfoutput>
 <cfelse>
 	<cfoutput>
 	<cfif field.fieldtype.fieldtype eq "radio">
@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelseif field.fieldtype.fieldtype eq "hidden">
 	
 	<cfelse>
-		<label for="#arguments.field.name#"<cfif arguments.field.isrequired> class="req"</cfif>>#arguments.field.label#<cfif arguments.field.isrequired> <ins>Required</ins></cfif>
+		<label for="#arguments.field.name#">#arguments.field.label#<cfif arguments.field.isrequired> <ins>Required</ins></cfif>
 	</cfif>
 	</cfoutput>
 </cfif>	
