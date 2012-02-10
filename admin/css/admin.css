@@ -1601,8 +1601,12 @@ h5 {
 }
 
 #contentSecondary dd input.submit {
-	margin: 0 4px 3px 0;
-	width: auto !important;
+	margin: 0 0 3px 0;
+	line-height: 13px;
+	top: 0px;
+	padding-left: .85em;
+	padding-right: .85em;
+	/*width: auto !important;*/
 }
 
 #contentSecondary dd a.submit {
