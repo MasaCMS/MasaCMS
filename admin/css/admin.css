@@ -1,6 +1,5 @@
 /* @override 
-	http://localhost:8500/muracore/admin/css/admin.css
-	http://localhost:8500/muracore/admin/css/admin.css?coreversion=1 */
+	http://localhost:8500/muracore/admin/css/admin.min.css?coreversion=1 */
 
 
 
@@ -105,6 +104,7 @@ body#popUp {
 
 #login, #login form {
 	width: 300px;
+	margin-bottom: 0;
 }
 
 #login, #cSetUp #content {
@@ -135,7 +135,7 @@ body#popUp {
 }
 
 #sendLogin input.text {
-	width: 80%;
+	width: 78%;
 }
 
 #cSetUp input.submit {
@@ -266,48 +266,28 @@ input.textMed, input.med {
 	width: 200px;
 }
 
-input.submit, input[type=submit] {
+input.submit, input[type="submit"] {
 	position: relative;
 	top: 2px;
 }
 
-/* Deferring to OS/Browser default styles for buttons
-input.submit {
-	background-color: #69c;
-	vertical-align: middle;
-	padding: 0;
-	width: auto;
-	border: 0 solid #fff;
-	color: #fff;
-	padding: 4px .6em;
-	border-radius: 3px;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-}*/
+#loginForm {
+	text-align: center;
+}
+
+#loginForm dt, #loginForm dd, #loginForm p {
+	text-align: left;
+}
 
 #loginForm p {
 	margin: 0 0 10px 0;
 }
 
-/* Deprecated Button Styles */
-a.submit {
-	background: url(../images/btn.gif) no-repeat top left;
-	margin: 0;
-	padding: 5px 0 5px 8px;
-	color: #fff;
+#loginForm input.submit {
+	width: 7em;
+	line-height: 18px;
+	margin: 0 auto;
 }
-
-a.submit:hover {
-	text-decoration: none;
-}
-
-a.submit span {
-	background: url(../images/btn.gif) no-repeat top right;
-	padding: 5px 8px 5px 0;
-	color: #fff;
-}
-
-/* End Deprecated Button Styles */
 
 input.checkbox {
 	margin: 0 3px 0 0;
@@ -1212,6 +1192,12 @@ dl#mura-view-options input.text {
 	vertical-align: middle;
 }
 
+#mura-view-options dd input.submit {
+	position: relative;
+	top: -3px;
+	line-height: 14px;
+}
+
 form .long {
 	width: 100%;
 }
@@ -1355,6 +1341,7 @@ h2 {
 	font-weight: normal;
 	color: #ff3a00;
 	line-height: 1;
+	text-shadow: 0 1px rgba(255,255,255,1);
 }
 
 #carch h2, #cemail h2 {
