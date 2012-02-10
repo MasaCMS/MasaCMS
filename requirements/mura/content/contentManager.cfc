@@ -51,32 +51,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cffunction name="init" access="public" returntype="any" output="false">
 		<cfargument name="contentGateway" type="any" required="yes"/>
 		<cfargument name="contentDAO" type="any" required="yes"/>
-		<cfargument name="contentUtility" type="any" required="yes"/>
-		<cfargument name="reminderManager" type="any" required="yes"/>
 		<cfargument name="settingsManager" type="any" required="yes"/>
-		<cfargument name="utility" type="any" required="yes"/>
-		<cfargument name="categoryManager" type="any" required="yes"/>
 		<cfargument name="configBean" type="any" required="yes"/>
-		<cfargument name="fileManager" type="any" required="yes"/>
 		<cfargument name="pluginManager" type="any" required="yes"/>
-		<cfargument name="trashManager" type="any" required="yes"/>
 		<cfargument name="changesetManager" type="any" required="yes"/>
-		<cfargument name="clusterManager" type="any" required="yes"/>
 		
 		<cfset variables.contentGateway=arguments.contentGateway />
 		<cfset variables.contentDAO=arguments.contentDAO />
-		<cfset variables.contentUtility=arguments.contentUtility />
-		<cfset variables.reminderManager=arguments.reminderManager />
 		<cfset variables.settingsManager=arguments.settingsManager />
-		<cfset variables.utility=arguments.utility />
-		<cfset variables.categoryManager=arguments.categoryManager />
 		<cfset variables.configBean=arguments.configBean />
-		<cfset variables.fileManager=arguments.fileManager />
 		<cfset variables.pluginManager=arguments.pluginManager />
-		<cfset variables.trashManager=arguments.trashManager />
 		<cfset variables.changesetManager=arguments.changesetManager />
 		<cfset variables.ClassExtensionManager=variables.configBean.getClassExtensionManager() />
-		<cfset variables.clusterManager=arguments.clusterManager />
 		
 		<cfset variables.contentDAO.setContentManager(this)/>
 		
@@ -705,7 +691,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			
 			<cfif newBean.getURLTitle() eq ''>
-				<cfset newBean.setURLTitle(variables.contentUtility.formatFilename(newBean.getmenutitle()))>
+				<cfset newBean.setURLTitle(getBean('contentUtility').formatFilename(newBean.getmenutitle()))>
 			</cfif>
 			
 			<cfif newBean.getHTMLTitle() eq ''>
@@ -743,17 +729,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				
 				<!--- Category Persistence --->	
 				<cfif not newBean.getIsNew() and isdefined("arguments.data.mode") and arguments.data.mode eq 'import'>
-					<cfset variables.categoryManager.keepCategories(newBean.getcontentHistID(),getCategoriesByHistID(currentBean.getcontentHistID())) />	
+					<cfset getBean('categoryManager').keepCategories(newBean.getcontentHistID(),getCategoriesByHistID(currentBean.getcontentHistID())) />	
 				<cfelse>
 					<cfif isQuery(newBean.getValue("categoriesFromMuraTrash"))>
-						<cfset variables.categoryManager.setCategories(arguments.data,newBean.getcontentID(),
+						<cfset getBean('categoryManager').setCategories(arguments.data,newBean.getcontentID(),
 						newBean.getcontentHistID(),arguments.data.siteid,newBean.getValue("categoriesFromMuraTrash")) />	
 					<cfelse>
 						<cfif newBean.getIsNew()>
-							<cfset variables.categoryManager.setCategories(arguments.data,newBean.getcontentID(),
+							<cfset getBean('categoryManager').setCategories(arguments.data,newBean.getcontentID(),
 							newBean.getcontentHistID(),arguments.data.siteid,getCategoriesByHistID('')) />	
 						<cfelse>
-							<cfset variables.categoryManager.setCategories(arguments.data,newBean.getcontentID(),
+							<cfset getBean('categoryManager').setCategories(arguments.data,newBean.getcontentID(),
 							newBean.getcontentHistID(),arguments.data.siteid,getCategoriesByHistID(currentBean.getcontentHistID())) />	
 						</cfif>	
 					</cfif>
@@ -765,9 +751,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					
 					<!--- Reminder Persistence --->	
 					<cfif newBean.getapproved() and not newBean.getIsNew() and currentBean.getDisplay() eq 2 and newBean.getDisplay() eq 2>
-						<cfset variables.reminderManager.updateReminders(newBean.getcontentID(),newBean.getSiteid(),newBean.getDisplayStart()) />
+						<cfset getBean('reminderManager').updateReminders(newBean.getcontentID(),newBean.getSiteid(),newBean.getDisplayStart()) />
 					<cfelseif newBean.getapproved() and not newBean.getIsNew() and currentBean.getDisplay() eq 2 and newBean.getDisplay() neq 2>
-						<cfset variables.reminderManager.deleteReminders(newBean.getcontentID(),newBean.getSiteID()) />
+						<cfset getBean('reminderManager').deleteReminders(newBean.getcontentID(),newBean.getSiteID()) />
 					</cfif>
 				
 					<cfset setMaterializedPath(newBean) />
@@ -802,14 +788,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<!--- PUBLIC CONTENT SUBMISSION --DEPRICATED    --->
 				<cfif newBean.getIsNew() and isdefined('arguments.data.email') and isdefined('arguments.data.approvalqueue') and arguments.data.approvalqueue>
 					<cftry>
-						<cfset variables.contentUtility.setApprovalQue(newBean,arguments.data.email) />
+						<cfset getBean('contentUtility').setApprovalQue(newBean,arguments.data.email) />
 				<cfcatch></cfcatch>
 				</cftry>
 				</cfif>
 				
 				<cfif newBean.getIsNew() eq 0 and newBean.getDisplay() neq 0 and currentBean.getDisplay() eq 0> 
 					<cftry>
-					<cfset variables.contentUtility.checkApprovalQue(newBean,getActiveContent(newBean.getParentID(),newBean.getSiteID())) />
+					<cfset getBean('contentUtility').checkApprovalQue(newBean,getActiveContent(newBean.getParentID(),newBean.getSiteID())) />
 					<cfcatch></cfcatch>
 					</cftry>
 				</cfif>
@@ -857,7 +843,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							  not newBean.getIsNew() 
 							  and (
 								 	currentBean.getparentid() neq newBean.getparentid()
-								or variables.contentUtility.formatFilename(currentBean.getURLtitle()) neq variables.contentUtility.formatFilename(newBean.getURLtitle())
+								or getBean('contentUtility').formatFilename(currentBean.getURLtitle()) neq getBean('contentUtility').formatFilename(newBean.getURLtitle())
 								)
 							  )
 							 )
@@ -874,11 +860,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							
 						and not (not newBean.getIsNew() and newBean.getIsLocked())>
 										
-						<cfset variables.contentUtility.setUniqueFilename(newBean) />
+						<cfset getBean('contentUtility').setUniqueFilename(newBean) />
 												
 						<cfif not newBean.getIsNew() and newBean.getoldfilename() neq newBean.getfilename() and len(newBean.getoldfilename())>
-							<cfset variables.contentUtility.movelink(newBean.getSiteID(),newBean.getFilename(),currentBean.getFilename()) />	
-							<cfset variables.contentUtility.move(newBean.getsiteid(),newBean.getFilename(),newBean.getOldFilename())>
+							<cfset getBean('contentUtility').movelink(newBean.getSiteID(),newBean.getFilename(),currentBean.getFilename()) />	
+							<cfset getBean('contentUtility').move(newBean.getsiteid(),newBean.getFilename(),newBean.getOldFilename())>
 							<cfset doPurgeContentDescendentsCache=true>
 						</cfif>
 								
@@ -895,13 +881,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif newBean.getapproved() or newBean.getIsNew()>
 				<!--- BEGIN CONTENT TYPE: FILE, LINK --->	
 					<cfif listFindNoCase("Link,File",newBean.getType())>
-						<cfset variables.contentUtility.setUniqueURLTitle(newBean) />
+						<cfset getBean('contentUtility').setUniqueURLTitle(newBean) />
 					</cfif>
 					<!--- END CONTENT TYPE: FILE, LINK --->
 							
 					<!--- BEGIN CONTENT TYPE: COMPONENT, FORM --->	
 					<cfif listFindNoCase("Component,Form",newBean.getType())>
-						<cfset variables.contentUtility.setUniqueTitle(newBean) />
+						<cfset getBean('contentUtility').setUniqueTitle(newBean) />
 						<cfset newBean.setMenuTitle(newBean.getTitle())>
 						<cfset newBean.setHTMLTitle(newBean.getTitle())>
 						<cfset newBean.setURLTitle(newBean.getTitle())>
@@ -913,22 +899,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<!---<cfif newBean.gettype() eq 'File'>--->
 					
 				<cfif newBean.gettype() neq 'File' and isDefined('arguments.data.deleteFile') and len(newBean.getFileID())>
-					<cfset variables.fileManager.deleteIfNotUsed(newBean.getFileID(),newBean.getContentHistID())>
+					<cfset getBean('fileManager').deleteIfNotUsed(newBean.getFileID(),newBean.getContentHistID())>
 					<cfset newBean.setFileID('')>
 				</cfif>	
 						
 				<cfif isDefined('arguments.data.newfile') and len(arguments.data.newfile)>
 						
 					<!--- Check to see if it's a posted binary file--->
-					<cfif variables.fileManager.isPostedFile(arguments.data.newfile)>
+					<cfif getBean('fileManager').isPostedFile(arguments.data.newfile)>
 						<cffile action="upload" result="tempFile" filefield="NewFile" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
 					<!--- Else fake it to think it was a posted files--->
 					<cfelse>
-						<cfset tempFile=variables.fileManager.emulateUpload(arguments.data.newfile)>
+						<cfset tempFile=getBean('fileManager').emulateUpload(arguments.data.newfile)>
 					</cfif>
 						
-					<cfset theFileStruct=variables.fileManager.process(tempFile,newBean.getSiteID()) />
-					<cfset newBean.setfileID(variables.fileManager.create(theFileStruct.fileObj,newBean.getcontentID(),newBean.getSiteID(),tempFile.ClientFile,tempFile.ContentType,tempFile.ContentSubType,tempFile.FileSize,newBean.getModuleID(),tempFile.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium,variables.utility.getUUID(),theFileStruct.fileObjSource)) />
+					<cfset theFileStruct=getBean('fileManager').process(tempFile,newBean.getSiteID()) />
+					<cfset newBean.setfileID(getBean('fileManager').create(theFileStruct.fileObj,newBean.getcontentID(),newBean.getSiteID(),tempFile.ClientFile,tempFile.ContentType,tempFile.ContentSubType,tempFile.FileSize,newBean.getModuleID(),tempFile.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium,getBean('utility').getUUID(),theFileStruct.fileObjSource)) />
 						
 					<cfif not newBean.getIsNew()
 							and isdefined("arguments.data.unlockwithnew") 
@@ -943,7 +929,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfset arguments.data.versionType="minor">
 						</cfif>
 					
-						<cfset variables.contentUtility.setVersionNumbers(newBean,arguments.data.versionType)>
+						<cfset getBean('contentUtility').setVersionNumbers(newBean,arguments.data.versionType)>
 					</cfif>
 						
 					<!--- Delete Files in temp directory --->
@@ -982,7 +968,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfif newBean.getFileID() neq d and not listFind(preserveFileList,d,"^") and not listFind(deleteFileList,d,"^")>
 							<cftry>
 							<cflock name="#d#" type="exclusive" timeout="500">
-							<cfset variables.fileManager.deleteVersion(d) />
+							<cfset getBean('fileManager').deleteVersion(d) />
 							</cflock>
 							<cfcatch></cfcatch>
 							</cftry>
@@ -1064,18 +1050,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					
 				<!--- Send out notification(s) if needed--->
 				<cfif isdefined('arguments.data.notify') and arguments.data.notify neq ''>
-					<cfset variables.contentUtility.sendNotices(arguments.data,newBean,"Draft") />
+					<cfset getBean('contentUtility').sendNotices(arguments.data,newBean,"Draft") />
 				</cfif>
 					
 				<cfset variables.contentDAO.createTags(newBean) />
 					
-				<cfset variables.utility.logEvent("ContentID:#newBean.getcontentID()# ContentHistID:#newBean.getcontentHistID()# MenuTitle:#newBean.getMenuTitle()# Type:#newBean.getType()# was created","mura-content","Information",true) />
+				<cfset getBean('utility').logEvent("ContentID:#newBean.getcontentID()# ContentHistID:#newBean.getcontentHistID()# MenuTitle:#newBean.getMenuTitle()# Type:#newBean.getType()# was created","mura-content","Information",true) />
 				<cfset variables.contentDAO.create(newBean) />
 				<!---
 					<cfif isQuery(newBean.getValue("commentsFromMuraTrash") ) >
 						<cfset rsComments=newBean.getValue("commentsFromMuraTrash")>
 						<cfloop query="rsComments">
-							<cfset getBean("contentCommentBean").set( variables.utility.queryRowToStruct(rsComments, currentrow)  ).save()>
+							<cfset getBean("contentCommentBean").set( getBean('utility').queryRowToStruct(rsComments, currentrow)  ).save()>
 						</cfloop>
 					</cfif>
 					--->
@@ -1104,7 +1090,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset variables.changesetManager.setSessionPreviewData(changesetData.changesetID)>
 				</cfif>
 					
-				<cfset variables.trashManager.takeOut(newBean)>
+				<cfset getBean('trashManager').takeOut(newBean)>
 					
 				<!--- END CONTENT TYPE: ALL CONTENT TYPES --->
 					
@@ -1191,10 +1177,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset variables.pluginManager.announceEvent("on#currentBean.getType()##currentBean.getSubType()#Delete",pluginEvent)>
 				<cfset variables.pluginManager.announceEvent("onBefore#currentBean.getType()##currentBean.getSubType()#Delete",pluginEvent)>
 				
-				<cfset variables.utility.logEvent("ContentID:#currentBean.getcontentID()# MenuTitle:#currentBean.getMenuTitle()# Type:#currentBean.getType()# was completely deleted","mura-content","Information",true) />		
-				<cfset variables.trashManager.throwIn(currentBean)>
+				<cfset getBean('utility').logEvent("ContentID:#currentBean.getcontentID()# MenuTitle:#currentBean.getMenuTitle()# Type:#currentBean.getType()# was completely deleted","mura-content","Information",true) />		
+				<cfset getBean('trashManager').throwIn(currentBean)>
 				<cfif len(currentBean.getFileID()) or currentBean.getType() eq 'Form'>
-					<cfset variables.fileManager.deleteAll(currentBean.getcontentID()) />
+					<cfset getBean('fileManager').deleteAll(currentBean.getcontentID()) />
 				</cfif>
 				<cfset variables.contentDAO.delete(currentBean) />
 				<cfif  ListFindNoCase(this.TreeLevelList,currentBean.getType())>
@@ -1267,7 +1253,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfloop query="rsHist">
 			<cfif not (rshist.active eq 1 or (rshist.approved eq 0 and len(rshist.changesetID))) and len(rshist.FileID)>
 					<cfif not listFind(fileList,rshist.FileID,"^")>
-						<cfset variables.filemanager.deleteVersion(rshist.FileID,false) />
+						<cfset getBean('fileManager').deleteVersion(rshist.FileID,false) />
 						<cfset fileList=listAppend(fileList,rshist.FileID,"^")/>
 					</cfif>		
 			</cfif>			
@@ -1277,7 +1263,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset purgeContentCache(contentBean=currentBean)>
 		</cfif>
 		
-		<cfset variables.utility.logEvent("ContentID:#currentBean.getcontentID()# MenuTitle:#currentBean.getMenuTitle()# Type:#currentBean.getType()# version history was deleted","mura-content","Information",true) />
+		<cfset getBean('utility').logEvent("ContentID:#currentBean.getcontentID()# MenuTitle:#currentBean.getMenuTitle()# Type:#currentBean.getType()# version history was deleted","mura-content","Information",true) />
 		<cfset variables.contentDAO.deletehistall(data.contentid,data.siteid) />
 		
 		<cfif  ListFindNoCase(this.TreeLevelList,currentBean.getType())>
@@ -1314,7 +1300,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</cfloop>
 			<cfif not listFind(fileList,versionBean.getFileID(),"^")>
-				<cfset variables.filemanager.deleteVersion(versionBean.getFileID()) />
+				<cfset getBean('fileManager').deleteVersion(versionBean.getFileID()) />
 			</cfif>
 		</cfif>
 		
@@ -1322,7 +1308,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset purgeContentCache(contentBean=versionBean)>
 		</cfif>
 		
-		<cfset variables.utility.logEvent("ContentID:#versionBean.getcontentID()# ContentHistID:#versionBean.getcontentHistID()# MenuTitle:#versionBean.getMenuTitle()# Type:#versionBean.getType()#  version was deleted","mura-content","Information",true) />		
+		<cfset getBean('utility').logEvent("ContentID:#versionBean.getcontentID()# ContentHistID:#versionBean.getcontentHistID()# MenuTitle:#versionBean.getMenuTitle()# Type:#versionBean.getType()#  version was deleted","mura-content","Information",true) />		
 		<cfset variables.contentDAO.deletehist(arguments.data.contenthistid,arguments.data.siteid) />
 		<cfset variables.contentDAO.deleteTagHist(arguments.data.contenthistid,arguments.data.siteid) />
 		<cfset variables.contentDAO.deleteObjectsHist(arguments.data.contenthistid,arguments.data.siteid) />
@@ -1352,7 +1338,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="data" type="struct"/>
 		<cfargument name="contentBean" type="any"/>
 
-		<cfset variables.contentUtility.getReportData(arguments.data,arguments.contentBean) />
+		<cfset getBean('contentUtility').getReportData(arguments.data,arguments.contentBean) />
 		
 	</cffunction>
 	
@@ -1363,14 +1349,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 <cfargument name="displayStart" type="string">
 		 <cfargument name="remindInterval" type="numeric">
 		 
-		 <cfset variables.reminderManager.setReminder(arguments.contentid,arguments.siteid,arguments.email,arguments.displaystart,arguments.remindInterval)/>
+		 <cfset getBean('reminderManager').setReminder(arguments.contentid,arguments.siteid,arguments.email,arguments.displaystart,arguments.remindInterval)/>
 		 
 	 </cffunction>
 	 
 	<cffunction name="sendReminders" returntype="void" access="public" output="false">
 	<cfargument name="theTime" default="#now()#" required="yes"/>
 
-		<cfset variables.reminderManager.sendReminders(arguments.theTime) />
+		<cfset getBean('reminderManager').sendReminders(arguments.theTime) />
 	
 	</cffunction>
 	
@@ -1444,11 +1430,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="siteid" type="string" required="true" default="default" />
 
 		<cfset traverseSite('00000000000000000000000000000000END', arguments.siteid, variables.settingsManager.getSite(arguments.siteid).getExportLocation()) />
-		<cfset variables.utility.copyDir("#variables.configBean.getWebRoot()#\#arguments.siteid#\client_images\", "#variables.configBean.getWebRoot()#\#variables.settingsManager.getSite(arguments.siteid).getExportLocation()#\client_images\") />
-		<cfset variables.utility.copyDir("#variables.configBean.getWebRoot()#\#arguments.siteid#\css\", "#variables.configBean.getWebRoot()#\#variables.settingsManager.getSite(arguments.siteid).getExportLocation()#\css\") />
-		<cfset variables.utility.copyDir("#variables.configBean.getWebRoot()#\#arguments.siteid#\flash\", "#variables.configBean.getWebRoot()#\#variables.settingsManager.getSite(arguments.siteid).getExportLocation()#\flash\") />
-		<cfset variables.utility.copyDir("#variables.configBean.getWebRoot()#\#arguments.siteid#\images\", "#variables.configBean.getWebRoot()#\#variables.settingsManager.getSite(arguments.siteid).getExportLocation()#\images\") />
-		<cfset variables.utility.copyDir("#variables.configBean.getWebRoot()#\#arguments.siteid#\js\", "#variables.configBean.getWebRoot()#\#variables.settingsManager.getSite(arguments.siteid).getExportLocation()#\js\") />
+		<cfset getBean('utility').copyDir("#variables.configBean.getWebRoot()#\#arguments.siteid#\client_images\", "#variables.configBean.getWebRoot()#\#variables.settingsManager.getSite(arguments.siteid).getExportLocation()#\client_images\") />
+		<cfset getBean('utility').copyDir("#variables.configBean.getWebRoot()#\#arguments.siteid#\css\", "#variables.configBean.getWebRoot()#\#variables.settingsManager.getSite(arguments.siteid).getExportLocation()#\css\") />
+		<cfset getBean('utility').copyDir("#variables.configBean.getWebRoot()#\#arguments.siteid#\flash\", "#variables.configBean.getWebRoot()#\#variables.settingsManager.getSite(arguments.siteid).getExportLocation()#\flash\") />
+		<cfset getBean('utility').copyDir("#variables.configBean.getWebRoot()#\#arguments.siteid#\images\", "#variables.configBean.getWebRoot()#\#variables.settingsManager.getSite(arguments.siteid).getExportLocation()#\images\") />
+		<cfset getBean('utility').copyDir("#variables.configBean.getWebRoot()#\#arguments.siteid#\js\", "#variables.configBean.getWebRoot()#\#variables.settingsManager.getSite(arguments.siteid).getExportLocation()#\js\") />
 	
 	</cffunction>
 	
@@ -1538,7 +1524,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="appendTitle" type="boolean" required="true" default="true"/>
 		<cfargument name="setNotOnDisplay" type="boolean" required="true" default="false"/>
 		
-		<cfreturn variables.contentUtility.copy(arguments.siteID, arguments.contentID, arguments.parentID, arguments.recurse, arguments.appendTitle, "", arguments.setNotOnDisplay)>
+		<cfreturn getBean('contentUtility').copy(arguments.siteID, arguments.contentID, arguments.parentID, arguments.recurse, arguments.appendTitle, "", arguments.setNotOnDisplay)>
 	
 	</cffunction>
 	
@@ -1724,16 +1710,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif len(requestData.content) GT 0>
 			
 			<cffile action="write" file="#variables.configBean.getTempDir()##arguments.data.qqfile#" output="#requestData.content#">     
-			<cfset tempFile=variables.fileManager.emulateUpload("#variables.configBean.getTempDir()##arguments.data.qqfile#")>
+			<cfset tempFile=getBean('fileManager').emulateUpload("#variables.configBean.getTempDir()##arguments.data.qqfile#")>
 		
 		<cfelse>
 			
 			<cffile action="upload" result="tempFile" filefield="qqfile" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">		
 		</cfif>	
 		
-		<cfset theFileStruct=variables.fileManager.process(tempFile,arguments.data.siteid) />
+		<cfset theFileStruct=getBean('fileManager').process(tempFile,arguments.data.siteid) />
 		<cfset fileItem.title=tempFile.serverfile/>	
-		<cfset fileItem.fileid=variables.fileManager.create(theFileStruct.fileObj, '', arguments.data.siteid, tempFile.ClientFile, tempFile.ContentType, tempFile.ContentSubType, tempFile.FileSize, "00000000000000000000000000000000000", tempFile.ServerFileExt, theFileStruct.fileObjSmall, theFileStruct.fileObjMedium) />
+		<cfset fileItem.fileid=getBean('fileManager').create(theFileStruct.fileObj, '', arguments.data.siteid, tempFile.ClientFile, tempFile.ContentType, tempFile.ContentSubType, tempFile.FileSize, "00000000000000000000000000000000000", tempFile.ServerFileExt, theFileStruct.fileObjSmall, theFileStruct.fileObjMedium) />
 		<cfset fileItem.filename=tempFile.serverfile/>
 		<cfset fileBean=add(structCopy(fileItem)) />
 		<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -1753,9 +1739,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfloop condition="structKeyExists(arguments.data,'newFile#f#')">
 		<cfif len(form["NewFile#f#"])>
 		<cffile action="upload" result="tempFile" filefield="NewFile#f#" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
-		<cfset theFileStruct=variables.fileManager.process(tempFile,arguments.data.siteid) />		
+		<cfset theFileStruct=getBean('fileManager').process(tempFile,arguments.data.siteid) />		
 		<cfset fileItem.title=tempFile.serverfile/>
-		<cfset fileItem.fileid=variables.fileManager.create(theFileStruct.fileObj, '', arguments.data.siteid, tempFile.ClientFile, tempFile.ContentType, tempFile.ContentSubType, tempFile.FileSize, "00000000000000000000000000000000000", tempFile.ServerFileExt, theFileStruct.fileObjSmall, theFileStruct.fileObjMedium) />
+		<cfset fileItem.fileid=getBean('fileManager').create(theFileStruct.fileObj, '', arguments.data.siteid, tempFile.ClientFile, tempFile.ContentType, tempFile.ContentSubType, tempFile.FileSize, "00000000000000000000000000000000000", tempFile.ServerFileExt, theFileStruct.fileObjSmall, theFileStruct.fileObjMedium) />
 		<cfset fileItem.filename=tempFile.serverfile/>
 		<cfset fileBean=add(structCopy(fileItem)) />
 		<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -1892,7 +1878,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 		
 		<cfif arguments.broadcast>
-			<cfset variables.clusterManager.purgeContentCache(contentID=arguments.contentBean.getContentID(),siteID=arguments.contentBean.getSiteID())>
+			<cfset getBean('clusterManager').purgeContentCache(contentID=arguments.contentBean.getContentID(),siteID=arguments.contentBean.getSiteID())>
 		</cfif>
 	</cfif>
 	</cffunction>
@@ -1924,7 +1910,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfloop>
 	
 	<cfif arguments.broadcast>
-		<cfset variables.clusterManager.purgeContentDescendentsCache(contentID=arguments.contentBean.getContentID(),siteID=arguments.contentBean.getSiteID())>
+		<cfset getBean('clusterManager').purgeContentDescendentsCache(contentID=arguments.contentBean.getContentID(),siteID=arguments.contentBean.getSiteID())>
 	</cfif>
 	</cffunction>
 

@@ -184,119 +184,36 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfset application.appAutoUpdated=false>
 		
-		<cfset tracePoint=tracer.initTracePoint("Instantiating settingsManager")> 
-		<cfset application.settingsManager=application.serviceFactory.getBean("settingsManager") />
-		<cfset tracer.commitTracePoint(tracePoint)>
-		
-		<cfset tracePoint=tracer.initTracePoint("Instantiating pluginManager")> 
-		<cfset application.pluginManager=application.serviceFactory.getBean("pluginManager") />
+		<cfset serviceList="settingsManager,pluginManager,contentManager,contentRenderer">
+
+		<cfloop list="#serviceList#" index="i">
+			<cfset tracePoint=tracer.initTracePoint("Instantiating #i#")> 
+			<cfset application["#i#"]=application.serviceFactory.getBean(I) >
+			<cfset tracer.commitTracePoint(tracePoint)>
+		</cfloop>
+
 		<cfset application.eventManager= application.pluginManager />
-		<cfset tracer.commitTracePoint(tracePoint)>
+
+		<cfset placeholderList="utility,contentUtility,contentGateway,categoryManager,clusterManager,contentServer,changesetManager,scriptProtectionFilter,permUtility,emailManager,loginManager,mailinglistManager,userManager,dataCollectionManager,advertiserManager,feedManager,sessionTrackingManager,favoriteManager,raterManager,dashboardManager,autoUpdater">
+
+		<!--- These application level services use the beanServicePlaceHolder to lazy load the bean --->
+		<cfloop list="#placeholderList#" index="i">
+			<cfset tracePoint=tracer.initTracePoint("Instantiating #i#")> 
+			<cfset application["#i#"]=application.serviceFactory.getBean("beanServicePlaceHolder").setServiceName(i) />
+			<cfset tracer.commitTracePoint(tracePoint)>
+		</cfloop>	
 		
-		<cfset tracePoint=tracer.initTracePoint("Instantiating contentManager")> 
-		<cfset application.contentManager=application.serviceFactory.getBean("contentManager") />
-		<cfset tracer.commitTracePoint(tracePoint)>
-		
-		<cfset tracePoint=tracer.initTracePoint("Instantiating utility")> 
-		<cfset application.utility=application.serviceFactory.getBean("utility") />
-		<cfset tracer.commitTracePoint(tracePoint)>
-		
-		<cfset tracePoint=tracer.initTracePoint("Instantiating permUtility")> 
-		<cfset application.permUtility=application.serviceFactory.getBean("permUtility") />
-		<cfset tracer.commitTracePoint(tracePoint)>
-		
-		<cfset tracePoint=tracer.initTracePoint("Instantiating contentUtility")> 
-		<cfset application.contentUtility=application.serviceFactory.getBean("contentUtility") />
-		<cfset tracer.commitTracePoint(tracePoint)>
-		
-		<cfset tracePoint=tracer.initTracePoint("Instantiating contentRenderer")> 
-		<cfset application.contentRenderer=application.serviceFactory.getBean("contentRenderer") />
-		<cfset tracer.commitTracePoint(tracePoint)>
-		
-		<cfset tracePoint=tracer.initTracePoint("Instantiating contentGateway")> 
-		<cfset application.contentGateway=application.serviceFactory.getBean("contentGateway") />
-		<cfset tracer.commitTracePoint(tracePoint)>
-		
-		<cfset tracePoint=tracer.initTracePoint("Instantiating emailManager")> 
-		<cfset application.emailManager=application.serviceFactory.getBean("emailManager") />
-		<cfset tracer.commitTracePoint(tracePoint)>
-		
-		<cfset tracePoint=tracer.initTracePoint("Instantiating loginManager")> 
-		<cfset application.loginManager=application.serviceFactory.getBean("loginManager") />
-		<cfset tracer.commitTracePoint(tracePoint)>
-		
-		<cfset tracePoint=tracer.initTracePoint("Instantiating mailinglistManager")> 
-		<cfset application.mailinglistManager=application.serviceFactory.getBean("mailinglistManager") />
-		<cfset tracer.commitTracePoint(tracePoint)>
-		
-		<cfset tracePoint=tracer.initTracePoint("Instantiating userManager")> 
-		<cfset application.userManager=application.serviceFactory.getBean("userManager") />
-		<cfset tracer.commitTracePoint(tracePoint)>
-		
-		<cfset tracePoint=tracer.initTracePoint("Instantiating dataCollectionManager")> 
-		<cfset application.dataCollectionManager=application.serviceFactory.getBean("dataCollectionManager") />
-		<cfset tracer.commitTracePoint(tracePoint)>
-		
-		<cfset tracePoint=tracer.initTracePoint("Instantiating categoryManager")> 
-		<cfset application.advertiserManager=application.serviceFactory.getBean("advertiserManager") />
-		<cfset tracer.commitTracePoint(tracePoint)>
-		
-		<cfset tracePoint=tracer.initTracePoint("Instantiating categoryManager")> 
-		<cfset application.categoryManager=application.serviceFactory.getBean("categoryManager") />
-		<cfset tracer.commitTracePoint(tracePoint)>
-		
-		<cfset tracePoint=tracer.initTracePoint("Instantiating feedManager")> 
-		<cfset application.feedManager=application.serviceFactory.getBean("feedManager") />
-		<cfset tracer.commitTracePoint(tracePoint)>
-		
-		<cfset tracePoint=tracer.initTracePoint("Instantiating sessionTrackingManager")> 
-		<cfset application.sessionTrackingManager=application.serviceFactory.getBean("sessionTrackingManager") />
-		<cfset tracer.commitTracePoint(tracePoint)>
-		
-		<cfset tracePoint=tracer.initTracePoint("Instantiating favoriteManager")> 
-		<cfset application.favoriteManager=application.serviceFactory.getBean("favoriteManager") />
-		<cfset tracer.commitTracePoint(tracePoint)>
-		
-		<cfset tracePoint=tracer.initTracePoint("Instantiating raterManager")> 
-		<cfset application.raterManager=application.serviceFactory.getBean("raterManager") />
-		<cfset tracer.commitTracePoint(tracePoint)>
-		
-		<cfsavecontent variable="variables.temp"><cfoutput><cfinclude template="/mura/bad_words.txt"></cfoutput></cfsavecontent>
-		<cfset application.badwords = ReReplaceNoCase(variables.temp, "," , "|" , "ALL")/> 
-		
-		<cfset tracePoint=tracer.initTracePoint("Instantiating dashboardManager")> 
-		<cfset application.dashboardManager=application.serviceFactory.getBean("dashboardManager") />
-		<cfset tracer.commitTracePoint(tracePoint)>
-		
+		<!--- End beanServicePlaceHolders --->
+
 		<cfset tracePoint=tracer.initTracePoint("Instantiating classExtensionManager")> 
 		<cfset application.classExtensionManager=application.configBean.getClassExtensionManager() />
 		<cfset application.classExtensionManager.setContentRenderer(application.contentRenderer)>
 		<cfset tracer.commitTracePoint(tracePoint)>
-		
+
 		<cfset tracePoint=tracer.initTracePoint("Instantiating resourceBundleFactory")> 
 		<cfset application.rbFactory=application.serviceFactory.getBean("resourceBundleFactory") />
 		<cfset tracer.commitTracePoint(tracePoint)>
-		
-		<cfset tracePoint=tracer.initTracePoint("Instantiating clusterManager")> 
-		<cfset application.clusterManager=application.serviceFactory.getBean("clusterManager") />
-		<cfset tracer.commitTracePoint(tracePoint)>
-		
-		<cfset tracePoint=tracer.initTracePoint("Instantiating contentServer")> 
-		<cfset application.contentServer=application.serviceFactory.getBean("contentServer") />
-		<cfset tracer.commitTracePoint(tracePoint)>
-		
-		<cfset tracePoint=tracer.initTracePoint("Instantiating changesetManager")> 
-		<cfset application.changesetManager=application.serviceFactory.getBean("changesetManager") />
-		<cfset tracer.commitTracePoint(tracePoint)>
-		
-		<cfset tracePoint=tracer.initTracePoint("Instantiating autoUpdater")> 
-		<cfset application.autoUpdater=application.serviceFactory.getBean("autoUpdater") />
-		<cfset tracer.commitTracePoint(tracePoint)>
-		
-		<cfset tracePoint=tracer.initTracePoint("Instantiating scriptProtectionFilter")> 
-		<cfset application.scriptProtectionFilter=application.serviceFactory.getBean("scriptProtectionFilter") >
-		<cfset tracer.commitTracePoint(tracePoint)>
-		
+			
 		<!---settings.custom.managers.cfm reference is for backwards compatibility --->
 		<cfif fileExists(ExpandPath("/muraWRM/config/settings.custom.managers.cfm"))>
 			<cfinclude template="/muraWRM/config/settings.custom.managers.cfm">
