@@ -47,11 +47,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent extends="mura.Factory" output="false">
 
 <cffunction name="init" output="false" returnType="any">
-<cfargument name="class">
 <cfargument name="siteid">
 <cfargument name="standardEventsHandler">
 <cfargument name="pluginManager">
-	<cfset variables.class=arguments.class>
 	<cfset variables.siteid=arguments.siteid>
 	<cfset variables.standardEventsHandler=arguments.standardEventsHandler>
 	<cfset variables.pluginManager=arguments.pluginManager>
@@ -65,7 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!---<cfargument name="persist" default="true" required="true" />--->
 		<cfset var hashKey = getHashKey( arguments.key ) />
 		<cfset var checkKey= "__check__" & arguments.key>
-		<cfset var localKey=arguments.key & variables.class>
+		<cfset var localKey=arguments.key>
 		<cfset var hashCheckKey = getHashKey( checkKey ) />
 		<cfset var rs="" />
 		<cfset var event="" />
@@ -123,7 +121,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset wrappedClassInstance=wrapHandler(variables.standardEventsHandler,localKey)>
 				<cfset super.set( localKey, wrappedClassInstance )>
 			<cfelse>
-				<cfset wrappedClassInstance=wrapHandler(createObject("component","mura.#variables.class#.#localKey#").init(),localKey)>
+				<cfset wrappedClassInstance=wrapHandler(createObject("component","mura.Translator.#localKey#").init(),localKey)>
 			</cfif>
 			<!---<cfif arguments.persist>
 				<cfset super.set( localKey, wrappedClassInstance )>

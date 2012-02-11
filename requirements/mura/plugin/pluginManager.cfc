@@ -48,7 +48,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset variables.configBean="">
 <cfset variables.settingsManager="">
-<cfset variables.standardEventsHandlers="">
+<cfset variables.standardEventManagers=structNew()>
+<cfset variables.standardEventsHandler="">	
 <cfset variables.cacheFactories=structNew()>
 <cfset variables.siteListeners=structNew()>
 <cfset variables.globalListeners=structNew()>
@@ -169,7 +170,7 @@ inner join tcontent on (tplugins.moduleID=tcontent.moduleID)
 </cfif>
 </cfquery>
 
-<cfset purgeEventManagers()/>
+<cfset purgeStandardEventManagers()/>
 <cfset purgeCacheFactories()/>
 <cfset purgePluginConfigs()/>
 </cffunction>
@@ -1809,16 +1810,16 @@ select * from tplugins order by #arguments.orderby#
 <cfreturn createObject("component","pluginScriptBean").init() />
 </cffunction>
 
-<cffunction name="purgeEventManagers" returntype="any" output="false">
-<cfset variables.eventManagers=structNew()/>
+<cffunction name="purgeStandardEventManagers" returntype="any" output="false">
+<cfset variables.standardEventManagers=structNew()/>
 </cffunction>
 
-<cffunction name="getEventManager" returntype="any" output="false">
+<cffunction name="getStandardEventFactory" returntype="any" output="false">
 <cfargument name="siteid" required="true" default="">
 
 
-	<cfif not structKeyExists(variables.eventManagers,arguments.siteid)>
-		<cfset variables.eventManagers[arguments.siteid]=createObject("component","pluginStandardEventManager").init(arguments.siteID,variables.standardEventsHandler,this)>
+	<cfif not structKeyExists(variables.standardEventManagers,arguments.siteid)>
+		<cfset variables.eventManagers[arguments.siteid]=createObject("component","pluginStandardEventFactory").init(arguments.siteID,variables.standardEventsHandler,this)>
 	</cfif>
 	
 	<cfreturn variables.eventManagers[arguments.siteid]>

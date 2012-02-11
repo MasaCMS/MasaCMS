@@ -79,9 +79,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="request.returnURL" default=""/>
 	<cfparam name="request.showMeta" default="0"/>
 	
-	<cfset setValue('ValidatorFactory',application.pluginManager.getEventManager(getValue('siteid')).getFactory("Validator"))>
-	<cfset setValue('HandlerFactory',application.pluginManager.getEventManager(getValue('siteid')).getFactory("Handler"))>
-	<cfset setValue('TranslatorFactory',application.pluginManager.getEventManager(getValue('siteid')).getFactory("Translator"))>
+	<cfset setValue('HandlerFactory',application.pluginManager.getStandardEventFactory(getValue('siteid')))>
 	<cfset setValue("MuraScope",createObject("component","mura.MuraScope"))>
 	<cfset getValue('MuraScope').setEvent(this)>
 	<cfreturn this />
@@ -169,20 +167,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getHandler" returntype="any" access="public" output="false">
 	<cfargument name="handler">
-	<cfargument name="persist" default="true" required="true">
-	<cfreturn getValue('HandlerFactory').get(arguments.handler,getValue("localHandler"),arguments.persist) />	
+	<cfreturn getValue('HandlerFactory').get(arguments.handler & "Handler",getValue("localHandler")) />	
 </cffunction>
 
 <cffunction name="getValidator" returntype="any" access="public" output="false">
 	<cfargument name="validation">
-	<cfargument name="persist" default="true" required="true">
-	<cfreturn getValue('ValidatorFactory').get(arguments.validation,getValue("localHandler"),arguments.persist) />	
+	<cfreturn getValue('HandlerFactory').get(arguments.validation & "Validator",getValue("localHandler")) />	
 </cffunction>
 
 <cffunction name="getTranslator" returntype="any" access="public" output="false">
 	<cfargument name="translator">
-	<cfargument name="persist" default="true" required="true">
-	<cfreturn getValue('TranslatorFactory').get(arguments.translator,getValue("localHandler"),arguments.persist) />	
+	<cfreturn getValue('HandlerFactory').get(arguments.translator & "Translator",getValue("localHandler")) />	
 </cffunction>
 
 <cffunction name="getContentRenderer" returntype="any" access="public" output="false">
