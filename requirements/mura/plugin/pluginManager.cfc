@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset variables.configBean="">
 <cfset variables.settingsManager="">
-<cfset variables.standardEventManagers=structNew()>
+<cfset variables.standardEventFactories=structNew()>
 <cfset variables.standardEventsHandler="">	
 <cfset variables.cacheFactories=structNew()>
 <cfset variables.siteListeners=structNew()>
@@ -67,7 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset setConfigBean(arguments.configBean)>
 	<cfset setSettingsManager(arguments.settingsManager)>
 	<cfset setUtility(arguments.utility)>
-	<cfset setstandardEventsHandler(arguments.standardEventsHandler)>
+	<cfset setStandardEventsHandler(arguments.standardEventsHandler)>
 	<cfset variables.fileWriter=arguments.fileWriter>
 	
 <cfreturn this />
@@ -170,7 +170,7 @@ inner join tcontent on (tplugins.moduleID=tcontent.moduleID)
 </cfif>
 </cfquery>
 
-<cfset purgeStandardEventManagers()/>
+<cfset purgeStandardEventFactories()/>
 <cfset purgeCacheFactories()/>
 <cfset purgePluginConfigs()/>
 </cffunction>
@@ -1810,19 +1810,19 @@ select * from tplugins order by #arguments.orderby#
 <cfreturn createObject("component","pluginScriptBean").init() />
 </cffunction>
 
-<cffunction name="purgeStandardEventManagers" returntype="any" output="false">
-<cfset variables.standardEventManagers=structNew()/>
+<cffunction name="purgeStandardEventFactories" returntype="any" output="false">
+<cfset variables.standardEventFactories=structNew()/>
 </cffunction>
 
 <cffunction name="getStandardEventFactory" returntype="any" output="false">
 <cfargument name="siteid" required="true" default="">
 
 
-	<cfif not structKeyExists(variables.standardEventManagers,arguments.siteid)>
-		<cfset variables.eventManagers[arguments.siteid]=createObject("component","pluginStandardEventFactory").init(arguments.siteID,variables.standardEventsHandler,this)>
+	<cfif not structKeyExists(variables.standardEventFactories,arguments.siteid)>
+		<cfset variables.standardEventFactories[arguments.siteid]=createObject("component","pluginStandardEventFactory").init(arguments.siteID,variables.standardEventsHandler,this)>
 	</cfif>
 	
-	<cfreturn variables.eventManagers[arguments.siteid]>
+	<cfreturn variables.standardEventFactories[arguments.siteid]>
 </cffunction>
 
 <cffunction name="getCacheFactory" returntype="any" output="false">
