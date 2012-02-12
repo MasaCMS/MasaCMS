@@ -395,7 +395,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</bean>
 		<bean id="raterManager" class="mura.content.rater.raterManager" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
-			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 		</bean>
 		<bean id="dashboardManager" class="mura.dashboard.dashboardManager" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>

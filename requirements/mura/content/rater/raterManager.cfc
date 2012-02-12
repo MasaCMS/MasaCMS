@@ -46,18 +46,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 <cffunction name="init" access="public" returntype="any">
-		<cfreturn this>
+	<cfargument name="configBean" type="any" required="yes"/>
+	<cfset variables.configBean=arguments.configBean />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getBean" output="false">
 	<cfargument name="beanName" default="rateBean">
 	<cfreturn super.getBean(arguments.beanName)>
-</cffunction>
-
-<cffunction name="setConfigBean" output="false">
-	<cfargument name="configBean">
-	<cfset variables.configBean=arguments.configBean>
-	<cfreturn this>
 </cffunction>
 
 <cffunction name="getStarText" access="public" output="false" returntype="string">
