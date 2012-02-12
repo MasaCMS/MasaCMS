@@ -77,6 +77,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<bean id="contentDAO" class="mura.content.contentDAO" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
+			<constructor-arg name="utility"><ref bean="utility" /></constructor-arg>
 		</bean>
 		<bean id="contentUtility" class="mura.content.contentUtility" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
@@ -366,6 +367,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</bean>
 		<bean id="feedDAO" class="mura.content.feed.feedDAO" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
+			<constructor-arg name="utility"><ref bean="utility" /></constructor-arg>
 		</bean>
 		<bean id="feedUtility" class="mura.content.feed.feedUtility" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
@@ -438,7 +440,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			    <ref bean="configBean"/>
 			</property>
 		</bean>
-		<bean id="changesetManager" class="mura.content.changeset.changesetManager" singleton="true"/>
+		<bean id="changesetManager" class="mura.content.changeset.changesetManager" singleton="true">
+			<property name="configBean">
+			    <ref bean="configBean"/>
+			</property>
+			<property name="trashManager">
+			    <ref bean="trashManager"/>
+			</property>
+		</bean>
 		<bean id="scriptProtectionFilter" class="mura.Portcullis" singleton="true" />
 		<bean id="formBuilderManager" class="mura.formBuilder.formBuilderManager" singleton="true"/>
 		<alias name="pluginManager" alias="eventManager"/>

@@ -9,7 +9,18 @@
 </cffunction>
 
 <cffunction name="init" output="false">
-	<cfset variables.configBean=getBean("configBean")>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setConfigBean" output="false">
+	<cfargument name="configBean">
+	<cfset variables.configBean=arguments.configBean>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setTrashManager" output="false">
+	<cfargument name="trashManager">
+	<cfset variables.trashManager=arguments.trashManager>
 	<cfreturn this>
 </cffunction>
 
@@ -163,7 +174,7 @@
 		)
 	</cfquery>
 	
-	<cfset getBean("trashManager").takeOut(bean)>
+	<cfset variables.trashManager.takeOut(bean)>
 	
 	</cfif>
 	<cfreturn bean>

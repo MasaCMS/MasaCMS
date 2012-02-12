@@ -54,6 +54,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn super.getBean(arguments.beanName)>
 </cffunction>
 
+<cffunction name="setConfigBean" output="false">
+	<cfargument name="configBean">
+	<cfset variables.configBean=arguments.configBean>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="getStarText" access="public" output="false" returntype="string">
 <cfargument name="avg" type="any" default="" required="yes"/>
 
@@ -140,7 +146,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var rs=""/>
 	
-	<cfquery name="rs" datasource="#getBean("configBean").getReadOnlyDatasource()#"  username="#getBean("configBean").getReadOnlyDbUsername()#" password="#getBean("configBean").getReadOnlyDbPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select avg(tcontentratings.rate) as theAvg, count(tcontentratings.contentID) as theCount, (count(tcontentratings.contentID)-downVotes) as upVotes, downVotes from tcontentratings
 	left join (select count(rate) as downVotes, contentID,siteID from tcontentratings
 				where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
@@ -167,8 +173,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rs=""/>
 	<cfset var stop=""/>
 	<cfset var start=""/>
-	<cfset var dbType=getBean("configBean").getDbType() />
-	<cfquery name="rs" datasource="#getBean("configBean").getReadOnlyDatasource()#"  username="#getBean("configBean").getReadOnlyDbUsername()#" password="#getBean("configBean").getReadOnlyDbPassword()#">
+	<cfset var dbType=variables.configBean.getDbType() />
+	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	    <cfif dbType eq "oracle" and arguments.limit>select * from (</cfif>
 	    SELECT <cfif dbType eq "mssql" and arguments.limit>Top #arguments.limit#</cfif> tcontent.ContentHistID, tcontent.ContentID, tcontent.Approved, tcontent.filename, tcontent.Active,
 	    tcontent.Type, tcontent.OrderNo, tcontent.ParentID, tcontent.siteID,  tcontent.moduleID,

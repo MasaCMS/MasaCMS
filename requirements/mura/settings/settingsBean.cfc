@@ -249,6 +249,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
  </cffunction>
 
+<cffunction name="setConfigBean" output="false">
+	<cfargument name="configBean">
+	<cfset variables.configBean=arguments.configBean>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="setBaseID" output="false">
 	<cfargument name="baseID">
 	<cfif len(arguments.baseID)>
@@ -268,11 +274,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getDomain" returntype="String" access="public" output="false">
-	<cfargument name="mode" type="String" required="true" default="#application.configBean.getMode()#" />
+	<cfargument name="mode" type="String" required="true" default="#variables.configBean.getMode()#" />
 	
 	<cfif arguments.mode eq 'Staging'>
-		<cfif len(application.configBean.getAdminDomain())>
-			<cfreturn application.configBean.getAdminDomain() />
+		<cfif len(variables.configBean.getAdminDomain())>
+			<cfreturn variables.configBean.getAdminDomain() />
 		<cfelse>
 			<cfreturn cgi.server_name />
 		</cfif>
@@ -380,7 +386,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfreturn variables.instance.LoginURL />
 		</cfif>
 	<cfelse>
-	<cfreturn "#application.configBean.getIndexFile()#?display=login" />
+	<cfreturn "#variables.configBean.getIndexFile()#?display=login" />
 	</cfif>
 </cffunction>
 
@@ -393,7 +399,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfreturn variables.instance.EditProfileURL />
 		</cfif>
 	<cfelse>
-	<cfreturn "#application.configBean.getIndexFile()#?display=editProfile" />
+	<cfreturn "#variables.configBean.getIndexFile()#?display=editProfile" />
 	</cfif>
 </cffunction>
 
@@ -481,7 +487,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif len(variables.instance.siteLocale)>
 		<cfset variables.instance.javaLocale=application.rbFactory.CF2Java(variables.instance.siteLocale)>
 	<cfelse>
-		<cfset variables.instance.javaLocale=application.rbFactory.CF2Java(getBean("configBean").getDefaultLocale())>
+		<cfset variables.instance.javaLocale=application.rbFactory.CF2Java(variables.configBean.getDefaultLocale())>
 	</cfif>
 	<cfreturn variables.instance.javaLocale />
 </cffunction>
@@ -490,7 +496,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var tmpFactory="">
 	<cfset var themeRBDir="">
 	<cfif not isObject(variables.instance.rbFactory)>
-		<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#expandPath('/#getBean("configBean").getWebRootMap()#')#/#variables.instance.displayPoolID#/includes/resourceBundles/",getJavaLocale())>
+		<cfset tmpFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(application.rbFactory,"#expandPath('/#variables.configBean.getWebRootMap()#')#/#variables.instance.displayPoolID#/includes/resourceBundles/",getJavaLocale())>
 		<cfset themeRBDir=expandPath(getThemeIncludePath()) & "/resourceBundles/">
 		<cfif directoryExists(themeRBDir)>
 			<cfset variables.instance.rbFactory=createObject("component","mura.resourceBundle.resourceBundleFactory").init(tmpFactory,themeRBDir,getJavaLocale()) />
@@ -521,15 +527,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 s
 <cffunction name="getAssetPath" returntype="any" access="public" output="false">
-	<cfreturn "#getBean("configBean").getContext()#/#variables.instance.displayPoolID#" />
+	<cfreturn "#variables.configBean.getContext()#/#variables.instance.displayPoolID#" />
 </cffunction>
 
 <cffunction name="getIncludePath" returntype="any" access="public" output="false">
-	<cfreturn "/#getBean("configBean").getWebRootMap()#/#variables.instance.displayPoolID#" />
+	<cfreturn "/#variables.configBean.getWebRootMap()#/#variables.instance.displayPoolID#" />
 </cffunction>
 
 <cffunction name="getAssetMap" returntype="any" access="public" output="false">
-	<cfreturn "#getBean("configBean").getWebRootMap()#.#variables.instance.displayPoolID#" />
+	<cfreturn "#variables.configBean.getWebRootMap()#.#variables.instance.displayPoolID#" />
 </cffunction>
 
 <cffunction name="getThemeAssetPath" returntype="any" access="public" output="false">
@@ -588,11 +594,11 @@ s
 	<cfargument name="theme" default="#request.altTheme#">
 	
 	<cfif len(arguments.theme)>
-		<cfreturn "#expandPath('/#getBean("configBean").getWebRootMap()#')#/#variables.instance.displayPoolID#/includes/themes/#arguments.theme#/templates">
+		<cfreturn "#expandPath('/#variables.configBean.getWebRootMap()#')#/#variables.instance.displayPoolID#/includes/themes/#arguments.theme#/templates">
 	<cfelseif len(variables.instance.theme)>
-		<cfreturn "#expandPath('/#getBean("configBean").getWebRootMap()#')#/#variables.instance.displayPoolID#/includes/themes/#variables.instance.theme#/templates">
+		<cfreturn "#expandPath('/#variables.configBean.getWebRootMap()#')#/#variables.instance.displayPoolID#/includes/themes/#variables.instance.theme#/templates">
 	<cfelse>
-		<cfreturn "#expandPath('/#getBean("configBean").getWebRootMap()#')#/#variables.instance.displayPoolID#/includes/templates">
+		<cfreturn "#expandPath('/#variables.configBean.getWebRootMap()#')#/#variables.instance.displayPoolID#/includes/templates">
 	</cfif>
 </cffunction>
 
@@ -601,9 +607,9 @@ s
 	<cfset var themeDir="">
 	
 	<cfif len(variables.instance.displayPoolID)>
-		<cfset themeDir="#expandPath('/#getBean("configBean").getWebRootMap()#')#/#variables.instance.displayPoolID#/includes/themes">
+		<cfset themeDir="#expandPath('/#variables.configBean.getWebRootMap()#')#/#variables.instance.displayPoolID#/includes/themes">
 	<cfelse>
-		<cfset themeDir="#expandPath('/#getBean("configBean").getWebRootMap()#')#/default/includes/themes">
+		<cfset themeDir="#expandPath('/#variables.configBean.getWebRootMap()#')#/default/includes/themes">
 	</cfif>
 	
 	<cfdirectory action="list" directory="#themeDir#" name="rs">

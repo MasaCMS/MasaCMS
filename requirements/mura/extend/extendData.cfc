@@ -163,7 +163,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfreturn rs.attributeValue />
 			</cfif>
 		<cfelse>
-			<cfreturn getBean('contentRenderer').setDynamicContent(rs.defaultValue) />
+			<cfreturn application.contentRenderer.setDynamicContent(rs.defaultValue) />
 		</cfif>
 	<cfelseif arguments.useMuraDefault>
 		<cfreturn "useMuraDefault" />
