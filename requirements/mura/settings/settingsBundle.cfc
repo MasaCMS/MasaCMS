@@ -87,7 +87,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  
 
 		<cfif fileExists( arguments.BundleFile )>
-			<cfif getBean("settingsManager").isBundle(arguments.BundleFile)>
+			<cfif application.settingsManager.isBundle(arguments.BundleFile)>
 				<cfset variables.zipTool.Extract(zipFilePath="#arguments.BundleFile#",extractPath=variables.unpackPath, overwriteFiles=true)>
 			<cfelse>
 				<cffile action="delete" file="#arguments.BundleFile#">
@@ -440,8 +440,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rstuseraddresses=""/>
 		<cfset var rstusersfavorites=""/>
 		<cfset var rstpermissions=""/>	
-		<cfset var publicUserPoolID=getBean("settingsManager").getSite(arguments.siteID).getPublicUserPoolID()>
-		<cfset var privateUserPoolID=getBean("settingsManager").getSite(arguments.siteID).getPrivateUserPoolID()>
+		<cfset var publicUserPoolID=application.settingsManager.getSite(arguments.siteID).getPublicUserPoolID()>
+		<cfset var privateUserPoolID=application.settingsManager.getSite(arguments.siteID).getPrivateUserPoolID()>
 		
 		<cfset var sArgs		= StructCopy( arguments ) />
 		<cfset var rsZipFile	= "" />
@@ -753,8 +753,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				select * from tadcampaigns
 				where userID in 
 				(select userID from tusers where
-				siteid = '#getBean("settingsManager").getSite(rsSettings.advertiserUserPoolID).getPrivateUserPoolID()#' or
-				siteid = '#getBean("settingsManager").getSite(rsSettings.advertiserUserPoolID).getPublicUserPoolID()#')
+				siteid = '#application.settingsManager.getSite(rsSettings.advertiserUserPoolID).getPrivateUserPoolID()#' or
+				siteid = '#application.settingsManager.getSite(rsSettings.advertiserUserPoolID).getPublicUserPoolID()#')
 			</cfquery>
 	
 			<cfset setValue("rstadcampaigns",rstadcampaigns)>
@@ -763,8 +763,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				select * from tadcreatives
 				where userID in 
 				(select userID from tusers where
-				siteid = '#getBean("settingsManager").getSite(rsSettings.advertiserUserPoolID).getPrivateUserPoolID()#' or
-				siteid = '#getBean("settingsManager").getSite(rsSettings.advertiserUserPoolID).getPublicUserPoolID()#')
+				siteid = '#application.settingsManager.getSite(rsSettings.advertiserUserPoolID).getPrivateUserPoolID()#' or
+				siteid = '#application.settingsManager.getSite(rsSettings.advertiserUserPoolID).getPublicUserPoolID()#')
 			</cfquery>
 	
 			<cfset setValue("rstadcampaigns",rstadcampaigns)>

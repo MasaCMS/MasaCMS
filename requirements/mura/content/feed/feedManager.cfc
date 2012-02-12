@@ -285,7 +285,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							or 
 						     tusers.password=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#trim(hash(arguments.password))#">)
 						</cfif>
-						and tusers.siteid='#getBean("settingsManager").getSite(arguments.feedBean.getSiteID()).getPublicUserPoolID()#'
+						and tusers.siteid='#application.settingsManager.getSite(arguments.feedBean.getSiteID()).getPublicUserPoolID()#'
 						
 						<cfif rLen>
 						and tusersmemb.groupid in ( 

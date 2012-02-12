@@ -2002,7 +2002,7 @@ select * from rs order by name
 		<cfreturn deployPlugin(siteID=arguments.siteID, pluginFile=arguments.pluginFile)>	
 	</cfif>
 	
-	<cfset errors=getBean("settingsManager").restoreBundle(
+	<cfset errors=application.settingsManager.restoreBundle(
 			BundleFile=arguments.bundleFile,
 			siteID=arguments.siteID,
 			keyMode="publish",

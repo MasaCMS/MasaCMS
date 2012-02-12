@@ -640,7 +640,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.siteID=session.siteID>
 	</cfif>
 	
-	<cfset begin=iif(arguments.complete,de('http://#getBean("settingsManager").getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de('')) />
+	<cfset begin=iif(arguments.complete,de('http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de('')) />
 	
 	<cfif request.muraExportHtml>
 		<cfset arguments.direct=true>

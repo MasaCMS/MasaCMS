@@ -112,9 +112,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			from tusers 
 			left join tfiles on tusers.photoFileId=tfiles.fileid
 			where tusers.username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.username#">
-			and (tusers.siteid='#getBean("settingsManager").getSite(arguments.siteID).getPublicUserPoolID()#'
+			and (tusers.siteid='#application.settingsManager.getSite(arguments.siteID).getPublicUserPoolID()#'
 				or  
-				tusers.siteid='#getBean("settingsManager").getSite(arguments.siteID).getPrivateUserPoolID()#'
+				tusers.siteid='#application.settingsManager.getSite(arguments.siteID).getPrivateUserPoolID()#'
 				) 
 		</cfquery>
 		
@@ -171,17 +171,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			and tusers.groupname=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.groupname#">
 			and 
 			<cfif not isBoolean(arguments.isPublic)>
-				(tusers.siteid='#getBean("settingsManager").getSite(arguments.siteID).getPublicUserPoolID()#'
+				(tusers.siteid='#application.settingsManager.getSite(arguments.siteID).getPublicUserPoolID()#'
 				or  
-				tusers.siteid='#getBean("settingsManager").getSite(arguments.siteID).getPrivateUserPoolID()#'
+				tusers.siteid='#application.settingsManager.getSite(arguments.siteID).getPrivateUserPoolID()#'
 				) 
 			<cfelseif arguments.isPublic>
-			(tusers.siteid='#getBean("settingsManager").getSite(arguments.siteID).getPublicUserPoolID()#'
+			(tusers.siteid='#application.settingsManager.getSite(arguments.siteID).getPublicUserPoolID()#'
 				and
 			tusers.isPublic=1
 			) 
 			<cfelse>
-			(tusers.siteid='#getBean("settingsManager").getSite(arguments.siteID).getPrivateUserPoolID()#'
+			(tusers.siteid='#application.settingsManager.getSite(arguments.siteID).getPrivateUserPoolID()#'
 				and 
 			tusers.isPublic=0
 			) 
@@ -236,9 +236,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			from tusers 
 			left join tfiles on tusers.photoFileId=tfiles.fileid
 			where tusers.remoteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.remoteid#">
-			and (tusers.siteid='#getBean("settingsManager").getSite(arguments.siteID).getPublicUserPoolID()#'
+			and (tusers.siteid='#application.settingsManager.getSite(arguments.siteID).getPublicUserPoolID()#'
 				or  
-				tusers.siteid='#getBean("settingsManager").getSite(arguments.siteID).getPrivateUserPoolID()#'
+				tusers.siteid='#application.settingsManager.getSite(arguments.siteID).getPrivateUserPoolID()#'
 				) 
 		</cfquery>
 		

@@ -197,7 +197,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getSite" returntype="any" access="public" output="false">
-	<cfreturn getBean("settingsManager").getSite(getValue('siteid')) />	
+	<cfreturn application.settingsManager.getSite(getValue('siteid')) />	
 </cffunction>
 
 <cffunction name="getMuraScope" returntype="any" access="public" output="false">

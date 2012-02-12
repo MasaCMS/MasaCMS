@@ -49,7 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.parentFactory=""/>
 <cfset variables.resourceDirectory=""/>
 <cfset variables.configBean=application.configBean />
-<cfset variables.settingsManager=getBean("settingsManager") />
+<cfset variables.settingsManager=application.settingsManager />
 <cfset variables.locale="" />
 
 <cffunction name="init" returntype="any" access="public" output="false">
@@ -846,7 +846,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="resetSessionLocale" output="false">
 <cfargument name="mySession" required="true" default="#session#">
-	<cfset arguments.mySession.locale=getBean("settingsManager").getSite(arguments.mySession.siteID).getJavaLocale() />
+	<cfset arguments.mySession.locale=application.settingsManager.getSite(arguments.mySession.siteID).getJavaLocale() />
 	<cfset arguments.mySession.dateKey=""/>
 	<cfset arguments.mySession.dateKeyFormat=""/>
 	<cfset setAdminLocale(arguments.mySession)>

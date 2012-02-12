@@ -61,7 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var href=""/>
 	<cfset var tp=""/>
-	<cfset var begin=iif(arguments.complete,de('http://#getBean("settingsManager").getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de('')) />
+	<cfset var begin=iif(arguments.complete,de('http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de('')) />
 	<cfset var staticIndexFile = "index.htm">
 	<cfset var contentBean = "">
 	<cfset var rsFile = "">
@@ -70,10 +70,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfcase value="Link,File">
 					<cfset contentBean=getBean('contentManager').getActiveContent(arguments.contentID,arguments.siteid) />
 					<cfset rsFile=getBean('fileManager').read(contentBean.getfileid()) />
-					<cfset href="/#getBean("settingsManager").getSite(arguments.siteid).getExportLocation()#/#replace(arguments.contentid, '-', '', 'ALL')#.#rsfile.fileExt#"/>
+					<cfset href="/#application.settingsManager.getSite(arguments.siteid).getExportLocation()#/#replace(arguments.contentid, '-', '', 'ALL')#.#rsfile.fileExt#"/>
 				</cfcase>
 				<cfdefaultcase>
-					<cfset href="/#getBean("settingsManager").getSite(arguments.siteid).getExportLocation()#/#arguments.filename##iif(arguments.filename neq '',de('/'),de(''))##staticIndexFile#" />
+					<cfset href="/#application.settingsManager.getSite(arguments.siteid).getExportLocation()#/#arguments.filename##iif(arguments.filename neq '',de('/'),de(''))##staticIndexFile#" />
 				</cfdefaultcase>
 		</cfswitch>
 		

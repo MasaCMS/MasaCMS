@@ -170,7 +170,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif arguments.data.isAdminLogin>
 			<cflocation url="./index.cfm?fuseaction=cLogin.main&display=login&status=failed&rememberMe=#arguments.data.rememberMe#&contentid=#arguments.data.contentid#&LinkServID=#arguments.data.linkServID#&returnURL=#urlEncodedFormat(arguments.data.returnUrl)#&compactDisplay=#urlEncodedFormat(arguments.data.compactDisplay)#" addtoken="false">
 		<cfelse>
-			<cfset loginURL = getBean("settingsManager").getSite(request.siteid).getLoginURL() />
+			<cfset loginURL = application.settingsManager.getSite(request.siteid).getLoginURL() />
 			<cfif find('?', loginURL)>
 				<cfset loginURL &= "&status=failed&rememberMe=#arguments.data.rememberMe#&contentid=#arguments.data.contentid#&LinkServID=#arguments.data.linkServID#&returnURL=#urlEncodedFormat(arguments.data.returnUrl)#" />
 			<cfelse>

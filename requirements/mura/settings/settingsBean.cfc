@@ -458,9 +458,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn variables.instance.cacheFactories["#arguments.name#"] />
 	<cfelse>
 		<cfif not variables.instance.cacheCapacity>
-			<cfset variables.instance.cacheFactories["#arguments.name#"]=getBean("settingsManager").createCacheFactory(freeMemoryThreshold=variables.instance.cacheFreeMemoryThreshold,name=arguments.name,siteID=variables.instance.siteID)>
+			<cfset variables.instance.cacheFactories["#arguments.name#"]=application.settingsManager.createCacheFactory(freeMemoryThreshold=variables.instance.cacheFreeMemoryThreshold,name=arguments.name,siteID=variables.instance.siteID)>
 		<cfelse>
-			<cfset variables.instance.cacheFactories["#arguments.name#"]=getBean("settingsManager").createCacheFactory(capacity=variables.instance.cacheCapacity,freeMemoryThreshold=variables.instance.cacheFreeMemoryThreshold,name=arguments.name,siteID=variables.instance.siteID)>
+			<cfset variables.instance.cacheFactories["#arguments.name#"]=application.settingsManager.createCacheFactory(capacity=variables.instance.cacheCapacity,freeMemoryThreshold=variables.instance.cacheFreeMemoryThreshold,name=arguments.name,siteID=variables.instance.siteID)>
 		</cfif>
 		<cfreturn variables.instance.cacheFactories["#arguments.name#"] />
 	</cfif>
@@ -707,14 +707,14 @@ s
 </cffunction>
 
 <cffunction name="save" returnType="any" output="false" access="public">
-	<cfset setAllValues(getBean("settingsManager").save(this).getAllValues())>
+	<cfset setAllValues(application.settingsManager.save(this).getAllValues())>
 	<cfreturn this />
 </cffunction>
 
 <!---
 	Not sure I want to expose this.
 <cffunction name="delete" output="false" access="public">
-	<cfset getBean("settingsManager").delete(variables.instance.siteID) />
+	<cfset application.settingsManager.delete(variables.instance.siteID) />
 </cffunction>
 --->
 
@@ -725,7 +725,7 @@ s
 	
 	<cfset arguments.settingsBean=this>
 	
-	<cfreturn getBean("settingsManager").read(argumentCollection=arguments)>
+	<cfreturn application.settingsManager.read(argumentCollection=arguments)>
 </cffunction>
 
 </cfcomponent>

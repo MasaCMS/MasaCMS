@@ -57,7 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cffile action="upload" result="tempFile" filefield="bundleFile" nameconflict="makeunique" destination="#application.configBean.getTempDir()#">
 
 			<cfset application.pluginManager.announceEvent("onBeforeProxyBundleDeploy", event)>
-			<cfset getBean("settingsManager").restoreBundle(
+			<cfset application.settingsManager.restoreBundle(
 				"#tempfile.serverDirectory#/#tempfile.serverFilename#.#tempfile.serverFileExt#" , 
 				arguments.event.getValue('siteID'),
 				errors, 
