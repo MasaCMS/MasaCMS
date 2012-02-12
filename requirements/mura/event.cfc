@@ -58,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif len(getValue('siteid')) and application.settingsManager.siteExists(getValue('siteid'))>
 		<cfset loadSiteRelatedObjects()/>
 	<cfelse>
-		<cfset setValue("contentRenderer",application.contentRenderer)>
+		<cfset setValue("contentRenderer",getBean('contentRenderer'))>
 	</cfif>
 	
 	<cfset setValue("MuraScope",createObject("component","mura.MuraScope"))>

@@ -758,7 +758,7 @@ and tclassextendattributes.type='File'
 			<cfreturn rs.attributeValue />
 		</cfif>
 	<cfelse>
-		<cfreturn application.contentRenderer.setDynamicContent(rs.defaultValue) />
+		<cfreturn getBean('contentRenderer').setDynamicContent(rs.defaultValue) />
 	</cfif>
 </cffunction>
 

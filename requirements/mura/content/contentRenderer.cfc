@@ -92,6 +92,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset this.showMemberToolBar=false>
 	</cfif>
 
+	<cfset variables.contentGateway=getBean('contentGateway')>
+
 <cfreturn this />
 </cffunction>
 
@@ -412,7 +414,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var theNav="">
 		
 		<cfif not isQuery(rsSection)>
-			<cfset rsSection=application.contentGateway.getKids('00000000000000000000000000000000000',event.getValue('siteID'),arguments.contentid,arguments.type,arguments.today,50,'',0,arguments.sortBy,arguments.sortDirection,arguments.categoryID,arguments.relatedID)>
+			<cfset rsSection=variables.contentGateway.getKids('00000000000000000000000000000000000',event.getValue('siteID'),arguments.contentid,arguments.type,arguments.today,50,'',0,arguments.sortBy,arguments.sortDirection,arguments.categoryID,arguments.relatedID)>
 		</cfif>
 		
 		<cfif rsSection.recordcount and ((event.getValue('r').restrict and event.getValue('r').allow) or (not event.getValue('r').restrict))>
@@ -496,14 +498,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<cfif event.getValue('contentBean').getType() eq 'Portal' or event.getValue('contentBean').getType() eq 'Gallery'>
 				<cfif arraylen(this.crumbdata) gt (this.navParentIdx+this.navOffSet)>
-					<cfif arraylen(this.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and (this.crumbdata[this.navGrandParentIdx].type neq 'Portal' or this.crumbdata[this.navGrandParentIdx].type neq 'Gallery') and not application.contentGateway.getCount(event.getValue('siteID'),this.crumbdata[this.navSelfIdx].contentID)>
+					<cfif arraylen(this.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and (this.crumbdata[this.navGrandParentIdx].type neq 'Portal' or this.crumbdata[this.navGrandParentIdx].type neq 'Gallery') and not variables.contentGateway.getCount(event.getValue('siteID'),this.crumbdata[this.navSelfIdx].contentID)>
 						<cfset theNav = dspNestedNav(this.crumbdata[this.navGrandParentIdx].contentid,2,1,'default',now(),arguments.class,'',this.crumbdata[this.navGrandParentIdx].sortBy,this.crumbdata[this.navGrandParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub(),event.getValue('categoryID')) />
 					<cfelse>
 						<cfset thenav=dspPeerNav(arguments.class) />
 					</cfif>
 				</cfif>
 			<cfelseif arrayLen(this.crumbdata) gt (this.navSelfIdx+this.navOffSet) and this.crumbdata[this.navParentIdx].type eq 'Portal' or (arraylen(this.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and this.crumbdata[this.navGrandParentIdx].type eq 'Portal')>
-				<cfif arraylen(this.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and this.crumbdata[this.navGrandParentIdx].type neq 'Portal' and not application.contentGateway.getCount(event.getValue('siteID'),this.crumbdata[this.navSelfIdx].contentID)>
+				<cfif arraylen(this.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and this.crumbdata[this.navGrandParentIdx].type neq 'Portal' and not variables.contentGateway.getCount(event.getValue('siteID'),this.crumbdata[this.navSelfIdx].contentID)>
 					<cfset theNav = dspNestedNav(this.crumbdata[this.navGrandParentIdx].contentid,1,1,'default',now(),arguments.class,'',this.crumbdata[this.navGrandParentIdx].sortBy,this.crumbdata[this.navGrandParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub(),event.getValue('categoryID')) />
 				<cfelse>
 					<cfset thenav=dspSubNav(arguments.class) />
@@ -527,7 +529,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfelse>
 					<cfset menutype='default'>
 				</cfif>
-				<cfif arraylen(this.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and not application.contentGateway.getCount(event.getValue('siteID'),this.crumbdata[this.navSelfIdx].contentID)>
+				<cfif arraylen(this.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and not variables.contentGateway.getCount(event.getValue('siteID'),this.crumbdata[this.navSelfIdx].contentID)>
 					<cfset theNav = dspNestedNav(this.crumbdata[this.navGrandParentIdx].contentid,2,1,menutype,now(),arguments.class,'',this.crumbdata[this.navGrandParentIdx].sortBy,this.crumbdata[this.navGrandParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub()) />	
 				<cfelse>
 					<cfset theNav = dspNestedNav(this.crumbdata[this.navParentIdx].contentid,2,1,menutype,now(),arguments.class,'',this.crumbdata[this.navParentIdx].sortBy,this.crumbdata[this.navParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub()) />	
@@ -573,7 +575,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="dspSequentialNav" output="false" returntype="string">
-		<cfset var rsSection=application.contentGateway.getKids('00000000000000000000000000000000000','#event.getValue('siteID')#','#event.getValue('contentBean').getparentid()#','default',now(),0,'',0,'#this.crumbdata[2].sortBy#','#this.crumbdata[2].sortDirection#')>
+		<cfset var rsSection=variables.contentGateway.getKids('00000000000000000000000000000000000','#event.getValue('siteID')#','#event.getValue('contentBean').getparentid()#','default',now(),0,'',0,'#this.crumbdata[2].sortBy#','#this.crumbdata[2].sortDirection#')>
 		<cfset var link=''>
 		<cfset var class=''>
 		<cfset var itemClass=''>
@@ -614,7 +616,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="dspGalleryNav" output="false" returntype="string">
-		<cfset var rsSection=application.contentGateway.getKids('00000000000000000000000000000000000',event.getValue('siteID'),event.getValue('contentBean').getcontentID(),'default',now(),0,'',0,event.getValue('contentBean').getsortBy(),event.getValue('contentBean').getsortDirection(),event.getValue('categoryID'),event.getValue('relatedID'))>
+		<cfset var rsSection=variables.contentGateway.getKids('00000000000000000000000000000000000',event.getValue('siteID'),event.getValue('contentBean').getcontentID(),'default',now(),0,'',0,event.getValue('contentBean').getsortBy(),event.getValue('contentBean').getsortDirection(),event.getValue('categoryID'),event.getValue('relatedID'))>
 		<cfset var link=''>
 		<cfset var class=''>
 		<cfset var itemClass=''>
@@ -661,7 +663,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif event.getValue('returnURL') neq "">
 		<cfset returnUrl = event.getValue('returnURL')>
 	<cfelse>
-		<cfset returnURL = URLEncodedFormat('#application.contentRenderer.getCurrentURL()#')>
+		<cfset returnURL = URLEncodedFormat(getCurrentURL())>
 	</cfif>
 		
 	<cfsavecontent variable="theNav">
@@ -1187,13 +1189,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif event.getValue('contentBean').getinheritObjects() eq 'inherit' 
 		and event.getValue('inheritedObjects') neq ''
 		and event.getValue('contentBean').getcontenthistid() eq arguments.contentHistID>
-			<cfset rsObjects=application.contentGateway.getObjectInheritance(arguments.columnID,event.getValue('inheritedObjects'),event.getValue('siteID'))>	
+			<cfset rsObjects=variables.contentGateway.getObjectInheritance(arguments.columnID,event.getValue('inheritedObjects'),event.getValue('siteID'))>	
 			<cfloop query="rsObjects">
 				<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params, event.getValue('inheritedObjects'), arguments.columnID, rsObjects.orderno, len(rsObjects.configuratorInit),event.getValue("inheritedObjectsPerm")) />
 			</cfloop>	
 	</cfif>
 
-	<cfset rsObjects=application.contentGateway.getObjects(arguments.columnID,arguments.contentHistID,event.getValue('siteID'))>	
+	<cfset rsObjects=variables.contentGateway.getObjects(arguments.columnID,arguments.contentHistID,event.getValue('siteID'))>	
 	<cfloop query="rsObjects">
 		<cfset theRegion = theRegion & dspObject(rsObjects.object,rsObjects.objectid,event.getValue('siteID'), rsObjects.params, arguments.contentHistID, arguments.columnID, rsObjects.orderno, len(rsObjects.configuratorInit),$.event('r').perm) />
 	</cfloop>
@@ -1509,7 +1511,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="menuClass" type="string" default="">
 		<cfargument name="showCurrentChildrenOnly" type="boolean" default="false">
 
-		<cfset var rsSection=application.contentGateway.getKids('00000000000000000000000000000000000',event.getValue('siteID'),arguments.contentid,arguments.type,arguments.today,0,'',0,arguments.sortBy,arguments.sortDirection,'','','',true)>
+		<cfset var rsSection=variables.contentGateway.getKids('00000000000000000000000000000000000',event.getValue('siteID'),arguments.contentid,arguments.type,arguments.today,0,'',0,arguments.sortBy,arguments.sortDirection,'','','',true)>
 		<cfset var adjust=0>
 		<cfset var current=0>
 		<cfset var link=''>

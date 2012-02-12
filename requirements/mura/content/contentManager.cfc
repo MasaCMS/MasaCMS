@@ -63,9 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.pluginManager=arguments.pluginManager />
 		<cfset variables.changesetManager=arguments.changesetManager />
 		<cfset variables.ClassExtensionManager=variables.configBean.getClassExtensionManager() />
-		
-		<cfset variables.contentDAO.setContentManager(this)/>
-		
+
 		<cfreturn this />
 	</cffunction>
 	
@@ -1465,7 +1463,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset basepath = "#variables.configBean.getWebRoot()#\#arguments.exportLocation#">
 			
 			<cfif rs.type eq "file">
-				<cfset contentBean=application.contentManager.getActiveContent(rs.contentID,arguments.siteid) />
+				<cfset contentBean=getActiveContent(rs.contentID,arguments.siteid) />
 				<cfset rsFile=getBean('fileManager').read(contentBean.getfileid()) />
 				<cfset fileOutput = rsFile.image>
 				<cfset filePath = "#basepath#\#replace(contentBean.getcontentID(), '-', '', 'ALL')#.#rsfile.fileExt#">
@@ -1617,7 +1615,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cffunction name="saveComment" access="public" output="false" returntype="any">
 		<cfargument name="data" type="struct">
-		<cfargument name="contentRenderer" required="true" default="#application.contentRenderer#">
+		<cfargument name="contentRenderer" required="true" default="#getBean('contentRenderer')#">
 		<cfargument name="script" required="true" default="">
 		<cfargument name="subject" required="true" default="">
 		<cfargument name="notify" required="true" default="true">
@@ -1639,7 +1637,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cffunction name="approveComment" access="public" output="false" returntype="any">
 		<cfargument name="commentID" type="string">
-		<cfargument name="contentRenderer" required="true" default="#application.contentRenderer#">
+		<cfargument name="contentRenderer" required="true" default="#getBean('contentRenderer')#">
 		<cfargument name="script" required="true" default="">
 		<cfargument name="subject" required="true" default="">
 		

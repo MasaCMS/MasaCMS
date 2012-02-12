@@ -63,7 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="remoteID" type="string" default="" required="true" />
 <cfproperty name="isNew" type="numeric" default="1" required="true" />
 
-<cfset variables.contentRenderer=application.contentRenderer/>
+<cfset variables.contentRenderer=getBean('contentRenderer')/>
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	
@@ -80,7 +80,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.entered=now()/>
 	<cfset variables.instance.subscribe=0/>
 	<cfset variables.instance.isApproved=0/>
-	<cfset variables.contentRenderer=application.contentRenderer/>
+	<cfset variables.contentRenderer=getBean('contentRenderer')/>
 	<cfset variables.instance.userID=""/>
 	<cfset variables.instance.path=""/>
 	<cfset variables.instance.kids=0/>
@@ -408,7 +408,7 @@ View
 </cffunction>
 
 <cffunction name="notifySubscribers" access="public" output="false">
-<cfargument name="contentRenderer" required="true" default="#application.contentRenderer#">
+<cfargument name="contentRenderer" required="true" default="#getBean('contentRenderer')#">
 <cfargument name="script" required="true" default="">
 <cfargument name="subject" required="true" default="">
 <cfargument name="notifyAdmin" required="true" default="true">

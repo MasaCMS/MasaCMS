@@ -150,7 +150,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var tmp="" />
 	
 	<cftry>
-		<cfset tmp=application.contentRenderer.setDynamicContent(arguments.criteria) />
+		<cfset tmp=getBean('contentRenderer').setDynamicContent(arguments.criteria) />
 	<cfcatch><cfset tmp=arguments.criteria /></cfcatch>
 	</cftry>
 	<cfif tmp eq "null">

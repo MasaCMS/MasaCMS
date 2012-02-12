@@ -163,7 +163,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfreturn rs.attributeValue />
 			</cfif>
 		<cfelse>
-			<cfreturn application.contentRenderer.setDynamicContent(rs.defaultValue) />
+			<cfreturn getBean('contentRenderer').setDynamicContent(rs.defaultValue) />
 		</cfif>
 	<cfelseif arguments.useMuraDefault>
 		<cfreturn "useMuraDefault" />
@@ -327,7 +327,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset extData.data['#rs.name#']=rs.attributeValue>
 				</cfif>
 			<cfelse>
-				<cfset extData.data['#rs.name#']=application.contentRenderer.setDynamicContent(rs.defaultValue)>
+				<cfset extData.data['#rs.name#']=getBean('contentRenderer').setDynamicContent(rs.defaultValue)>
 			</cfif>
 		</cfloop>
 	</cfif>

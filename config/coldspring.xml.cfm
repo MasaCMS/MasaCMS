@@ -438,17 +438,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			    <ref bean="configBean"/>
 			</property>
 		</bean>
-		<bean id="changesetManager" class="mura.content.changeset.changesetManager" singleton="true">
-			<property name="configBean">
-			    <ref bean="configBean"/>
-			</property>
-			<property name="contentManager">
-			    <ref bean="contentManager"/>
-			</property>
-			<property name="trashManager">
-			    <ref bean="trashManager"/>
-			</property>
-		</bean>	
+		<bean id="changesetManager" class="mura.content.changeset.changesetManager" singleton="true"/>
 		<bean id="scriptProtectionFilter" class="mura.Portcullis" singleton="true" />
 		<bean id="formBuilderManager" class="mura.formBuilder.formBuilderManager" singleton="true"/>
 		<alias name="pluginManager" alias="eventManager"/>

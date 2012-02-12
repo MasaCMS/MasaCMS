@@ -67,11 +67,6 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 <cfreturn this />
 </cffunction>
 
-<cffunction name="setContentManager" output="false" returntyp="any">
-	<cfargument name="contentManager" type="any" required="yes"/>
-	<cfset variables.contentManager=arguments.contentManager>
-</cffunction>
-
 <cffunction name="readVersion" access="public" returntype="any" output="false">
 		<cfargument name="contentHistID" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />

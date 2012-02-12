@@ -184,17 +184,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfset application.appAutoUpdated=false>
 		
-		<cfset serviceList="settingsManager,pluginManager,contentManager,contentRenderer">
-
-		<cfloop list="#serviceList#" index="i">
-			<cfset tracePoint=tracer.initTracePoint("Instantiating #i#")> 
-			<cfset application["#i#"]=application.serviceFactory.getBean(I) >
-			<cfset tracer.commitTracePoint(tracePoint)>
-		</cfloop>
-
-		<cfset application.eventManager= application.pluginManager />
-
-		<cfset placeholderList="utility,contentUtility,contentGateway,categoryManager,clusterManager,contentServer,changesetManager,scriptProtectionFilter,permUtility,emailManager,loginManager,mailinglistManager,userManager,dataCollectionManager,advertiserManager,feedManager,sessionTrackingManager,favoriteManager,raterManager,dashboardManager,autoUpdater">
+		<cfset placeholderList="contentManager,pluginManager,eventManager,contentRenderer,utility,contentUtility,contentGateway,categoryManager,clusterManager,contentServer,changesetManager,scriptProtectionFilter,permUtility,emailManager,loginManager,mailinglistManager,userManager,dataCollectionManager,advertiserManager,feedManager,sessionTrackingManager,favoriteManager,raterManager,dashboardManager,autoUpdater">
 
 		<!--- These application level services use the beanServicePlaceHolder to lazy load the bean --->
 		<cfloop list="#placeholderList#" index="i">
@@ -207,7 +197,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfset tracePoint=tracer.initTracePoint("Instantiating classExtensionManager")> 
 		<cfset application.classExtensionManager=application.configBean.getClassExtensionManager() />
-		<cfset application.classExtensionManager.setContentRenderer(application.contentRenderer)>
+		<cfset application.classExtensionManager.setContentRenderer(application.serviceFactory.getBean("contentRenderer"))>
 		<cfset tracer.commitTracePoint(tracePoint)>
 
 		<cfset tracePoint=tracer.initTracePoint("Instantiating resourceBundleFactory")> 
