@@ -48,8 +48,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.resourceBundles=structNew() />
 <cfset variables.parentFactory=""/>
 <cfset variables.resourceDirectory=""/>
-<cfset variables.configBean=application.configBean />
-<cfset variables.settingsManager=application.settingsManager />
+<cfset variables.configBean=getBean("configBean") />
+<cfset variables.settingsManager=getBean("settingsManager") />
 <cfset variables.locale="" />
 
 <cffunction name="init" returntype="any" access="public" output="false">

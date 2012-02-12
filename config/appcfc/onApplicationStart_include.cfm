@@ -188,11 +188,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<!--- These application level services use the beanServicePlaceHolder to lazy load the bean --->
 		<cfloop list="#serviceList#" index="i">
-			<cfset tracePoint=tracer.initTracePoint("Instantiating #i#")> 
-			<cfset application["#i#"]=application.serviceFactory.getBean(i)> 
-			<!---
+			<cfset tracePoint=tracer.initTracePoint("Instantiating #i#")> 	
 			<cfset application["#i#"]=application.serviceFactory.getBean("beanServicePlaceHolder").setServiceName(i) />
-			--->
 			<cfset tracer.commitTracePoint(tracePoint)>
 		</cfloop>	
 		
