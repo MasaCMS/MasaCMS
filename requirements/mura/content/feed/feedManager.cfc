@@ -62,9 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.feedUtility=arguments.feedUtility />
 	<cfset variables.pluginManager=arguments.pluginManager />
 	<cfset variables.trashManager=arguments.trashManager />
-	
-	<cfset variables.feedDAO.setFeedManager(this) />
-	
+
 	<cfreturn this />
 </cffunction>
 

@@ -54,11 +54,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="setFeedManager" access="public" output="false">
-	<cfargument name="feedManager" type="any" />
-	<cfset variables.feedManager = arguments.feedManager />
-</cffunction>
-
 <cffunction name="create" returntype="void" access="public" output="false">
 	<cfargument name="feedBean" type="any" />
 	 
