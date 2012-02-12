@@ -73,7 +73,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset event.setValue('track',0)>
 	<cfset event.setValue('nocache',1)>
-	<cfset event.setValue('contentBean',getBean('contentManager').getcontentVersion(event.getValue('previewID'),event.getValue('siteID'),true)) />
+	<cfset event.setValue('contentBean',application.contentManager.getcontentVersion(event.getValue('previewID'),event.getValue('siteID'),true)) />
 
 </cffunction>
 
@@ -155,9 +155,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfif not event.valueExists('contentBean')>
 			<cfif len(event.getValue('linkServID'))>
-				<cfset event.setValue('contentBean',getBean('contentManager').getActiveContent(listFirst(event.getValue('linkServID')),event.getValue('siteid'),true)) />
+				<cfset event.setValue('contentBean',application.contentManager.getActiveContent(listFirst(event.getValue('linkServID')),event.getValue('siteid'),true)) />
 			<cfelse>
-				<cfset event.setValue('contentBean',getBean('contentManager').getActiveContentByFilename(event.getValue('currentFilenameAdjusted'),event.getValue('siteid'),true)) />
+				<cfset event.setValue('contentBean',application.contentManager.getActiveContentByFilename(event.getValue('currentFilenameAdjusted'),event.getValue('siteid'),true)) />
 			</cfif>
 		</cfif>
 	</cfif>
@@ -286,7 +286,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfset translator=event.getHandler('standardFileTranslation')>
 							<!---
 							<cfcatch>
-								<cfset event.setValue('contentBean',getBean('contentManager').getActiveContentByFilename("404",event.getValue('siteID'))) />
+								<cfset event.setValue('contentBean',application.contentManager.getActiveContentByFilename("404",event.getValue('siteID'))) />
 								<cfset event.getHandler('standardTranslation').handle(event) />
 							</cfcatch>
 							</cftry>
@@ -323,7 +323,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfif event.getValue("contentBean").getIsNew()>
-		<cfset arguments.event.setValue('contentBean',getBean('contentManager').getActiveContentByFilename("404",arguments.event.getValue('siteid'),true)) />
+		<cfset arguments.event.setValue('contentBean',application.contentManager.getActiveContentByFilename("404",arguments.event.getValue('siteid'),true)) />
 			
 		<cfif len(arguments.event.getValue('previewID'))>
 			<cfset arguments.event.getContentBean().setBody("The requested version of this content could not be found.")>
@@ -450,7 +450,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				
 				<cfif event.getValue("passedProtect")>
-					<cfset getBean('contentManager').setReminder(event.getValue('contentBean').getcontentid(),event.getValue('siteID'),event.getValue('email'),event.getValue('contentBean').getdisplaystart(),event.getValue('interval')) />
+					<cfset application.contentManager.setReminder(event.getValue('contentBean').getcontentid(),event.getValue('siteID'),event.getValue('email'),event.getValue('contentBean').getdisplaystart(),event.getValue('interval')) />
 				</cfif>
 			</cfcase>
 			
