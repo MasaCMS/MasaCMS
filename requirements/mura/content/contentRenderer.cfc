@@ -258,12 +258,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset var allowLink=true>
 			<cfset var G = 0 />
 			<cfif  arguments.loggedIn and (arguments.restrict)>
-						<cfif arguments.restrictgroups eq '' or listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(event.getValue('siteID')).getPrivateUserPoolID()#') or listFind(session.mura.memberships,'S2')>
+						<cfif arguments.restrictgroups eq '' or listFind(session.mura.memberships,'S2IsPrivate;#getBean("settingsManager").getSite(event.getValue('siteID')).getPrivateUserPoolID()#') or listFind(session.mura.memberships,'S2')>
 									<cfset allowLink=True>
 							<cfelseif arguments.restrictgroups neq ''>
 									<cfset allowLink=False>
 									<cfloop list="#arguments.restrictgroups#" index="G">
-										<cfif listFind(session.mura.memberships,'#G#;#application.settingsManager.getSite(event.getValue('siteID')).getPublicUserPoolID()#;1')>
+										<cfif listFind(session.mura.memberships,'#G#;#getBean("settingsManager").getSite(event.getValue('siteID')).getPublicUserPoolID()#;1')>
 										<cfset allowLink=true>
 										</cfif>
 									</cfloop>
@@ -668,7 +668,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 	<cfsavecontent variable="theNav">
 		<cfif getSite().getExtranet() eq 1 and session.mura.isLoggedIn>
-			<cfoutput><ul id="#arguments.id#"><li><a href="#application.configBean.getIndexFile()#?doaction=logout&nocache=1">Log Out #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#</a></li><li><a href="#application.settingsManager.getSite(event.getValue('siteID')).getEditProfileURL()#&returnURL=#returnURL#&nocache=1">Edit Profile</a></li></ul></cfoutput>
+			<cfoutput><ul id="#arguments.id#"><li><a href="#application.configBean.getIndexFile()#?doaction=logout&nocache=1">Log Out #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#</a></li><li><a href="#getBean("settingsManager").getSite(event.getValue('siteID')).getEditProfileURL()#&returnURL=#returnURL#&nocache=1">Edit Profile</a></li></ul></cfoutput>
 		</cfif>
 	</cfsavecontent>
 			
@@ -770,7 +770,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var href=""/>
 	<cfset var tp=""/>
-	<cfset var begin=iif(arguments.complete,de('http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de('')) />
+	<cfset var begin=iif(arguments.complete,de('http://#getBean("settingsManager").getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de('')) />
 	<cfset var fileBean="">
 	
 	<cfif len(arguments.querystring) and not left(arguments.querystring,1) eq "?">
@@ -816,7 +816,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var href=""/>
 	<cfset var tp=""/>
-	<cfset var begin="http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#" />
+	<cfset var begin="http://#getBean("settingsManager").getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#" />
 	
 		<cfswitch expression="#arguments.type#">
 				<cfcase value="Link">
@@ -1482,15 +1482,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteID" type="string">
 	<cfset var returnstring=arguments.str/>
 	
-	<cfset returnstring=replaceNoCase(returnstring,'src="/','src="http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#/','ALL')>
-	<cfset returnstring=replaceNoCase(returnstring,"src='/",'src="http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#/','ALL')>
-	<cfset returnstring=replaceNoCase(returnstring,'href="/','href="http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#/','ALL')>
-	<cfset returnstring=replaceNoCase(returnstring,"href='/",'href="http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#/','ALL')>
+	<cfset returnstring=replaceNoCase(returnstring,'src="/','src="http://#getBean("settingsManager").getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#/','ALL')>
+	<cfset returnstring=replaceNoCase(returnstring,"src='/",'src="http://#getBean("settingsManager").getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#/','ALL')>
+	<cfset returnstring=replaceNoCase(returnstring,'href="/','href="http://#getBean("settingsManager").getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#/','ALL')>
+	<cfset returnstring=replaceNoCase(returnstring,"href='/",'href="http://#getBean("settingsManager").getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#/','ALL')>
 	<cfreturn returnstring />
 </cffunction>
 
 <cffunction name="getSite" returntype="any" output="false">
-	<cfreturn application.settingsManager.getSite(event.getValue('siteID')) />
+	<cfreturn getBean("settingsManager").getSite(event.getValue('siteID')) />
 </cffunction>
 
 <cffunction name="dspNestedNavPrimary" output="false" returntype="string">
@@ -1901,7 +1901,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getShowModal" output="false">
-<cfreturn ((listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(event.getValue('siteID')).getPrivateUserPoolID()#') or listFind(session.mura.memberships,'S2')) or (listFindNoCase("editor,author",event.getValue('r').perm) and this.showMemberToolBar)) and getShowAdminToolBar() />
+<cfreturn ((listFind(session.mura.memberships,'S2IsPrivate;#getBean("settingsManager").getSite(event.getValue('siteID')).getPrivateUserPoolID()#') or listFind(session.mura.memberships,'S2')) or (listFindNoCase("editor,author",event.getValue('r').perm) and this.showMemberToolBar)) and getShowAdminToolBar() />
 </cffunction>
 
 <cffunction name="renderHTMLQueue" output="false">
@@ -1916,8 +1916,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var pluginPath="" />
 	<cfset var pluginID=0 />
 	<cfset var pluginConfig="" />
-	<cfset var displayPoolID=application.settingsmanager.getSite(event.getValue('siteID')).getDisplayPoolID()>
-	<cfset var theme=application.settingsmanager.getSite(event.getValue('siteID')).getTheme()>
+	<cfset var displayPoolID=getBean("settingsManager").getSite(event.getValue('siteID')).getDisplayPoolID()>
+	<cfset var theme=getBean("settingsManager").getSite(event.getValue('siteID')).getTheme()>
 	<cfset var tracePoint=0>
 	
 	<cfif getRenderHTMLQueues()>
@@ -1926,9 +1926,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<!--- ensure that the js lb is always there --->
 			<cfset loadJSLib() />
 			<!--- Add global.js --->
-			<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()#/#application.settingsmanager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/display_objects/htmlhead/global.cfm")>
+			<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()#/#getBean("settingsManager").getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/display_objects/htmlhead/global.cfm")>
 			<cfsavecontent variable="headerStr">
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#application.settingsmanager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/display_objects/htmlhead/global.cfm">
+					<cfinclude  template="/#application.configBean.getWebRootMap()#/#getBean("settingsManager").getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/display_objects/htmlhead/global.cfm">
 			</cfsavecontent>
 			<cfset commitTracePoint(tracePoint)>
 					

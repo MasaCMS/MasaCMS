@@ -150,9 +150,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfloop query="rsPermited">
 		<cfif rsPermited.isPublic>
-		<cfif listFind(session.mura.memberships,"#rsPermited.groupname#;#application.settingsManager.getSite(arguments.siteid).getPublicUserPoolID()#;1")><cfset perm=1><cfbreak></cfif>
+		<cfif listFind(session.mura.memberships,"#rsPermited.groupname#;#getBean("settingsManager").getSite(arguments.siteid).getPublicUserPoolID()#;1")><cfset perm=1><cfbreak></cfif>
 		<cfelse>
-		<cfif listFind(session.mura.memberships,"#rsPermited.groupname#;#application.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#;0")><cfset perm=1><cfbreak></cfif>
+		<cfif listFind(session.mura.memberships,"#rsPermited.groupname#;#getBean("settingsManager").getSite(arguments.siteid).getPrivateUserPoolID()#;0")><cfset perm=1><cfbreak></cfif>
 		</cfif>
 		</cfloop>
 		
@@ -543,7 +543,7 @@ SELECT * FROM tcontent WHERE
 <cfset var returnStruct=structNew() />
 <cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 select userid, groupname from tusers where type=1 and groupname <>'Admin' and isPublic=0 
-and siteid='#application.settingsManager.getSite(arguments.data.siteid).getPrivateUserPoolID()#' 
+and siteid='#getBean("settingsManager").getSite(arguments.data.siteid).getPrivateUserPoolID()#' 
 order by groupname
 </cfquery>
 
@@ -551,7 +551,7 @@ order by groupname
 
 <cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 select userid, groupname from tusers where type=1  and isPublic=1 
-and siteid='#application.settingsManager.getSite(arguments.data.siteid).getPublicUserPoolID()#' 
+and siteid='#getBean("settingsManager").getSite(arguments.data.siteid).getPublicUserPoolID()#' 
 order by groupname
 </cfquery>
 

@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="standardWrongDomainHandler" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
-	<cflocation addtoken="no" url="http://#application.settingsManager.getSite(request.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##getBean('contentRenderer').getURLStem(event.getValue('siteID'),event.getValue('contentBean').getFilename())#">
+	<cflocation addtoken="no" url="http://#getBean("settingsManager").getSite(request.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##getBean('contentRenderer').getURLStem(event.getValue('siteID'),event.getValue('contentBean').getFilename())#">
 
 </cffunction>
 
@@ -92,7 +92,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="standardSetLocaleHandler" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	<cfparam name="session.siteID" default="">
-	<cfset setLocale(application.settingsManager.getSite(event.getValue('siteid')).getJavaLocale()) />
+	<cfset setLocale(getBean("settingsManager").getSite(event.getValue('siteid')).getJavaLocale()) />
 	<cfif session.siteid neq event.getValue('siteid') or not structKeyExists(session,"locale")>
 		<!---These are use for admin purposes--->
 		<cfset session.siteID=event.getValue('siteid')>
@@ -194,7 +194,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var loginURL = "" />
 	
 	<cfif event.getValue('isOnDisplay') and event.getValue('r').restrict and not event.getValue('r').loggedIn and (event.getValue('display') neq 'login' and event.getValue('display') neq 'editProfile')>
-		<cfset loginURL = application.settingsManager.getSite(request.siteid).getLoginURL() />
+		<cfset loginURL = getBean("settingsManager").getSite(request.siteid).getLoginURL() />
 		<cfif find('?', loginURL)>
 			<cfset loginURL &= "&returnURL=#URLEncodedFormat(event.getValue('contentRenderer').getCurrentURL())#" />
 		<cfelse>
@@ -238,9 +238,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="event" required="true">
 	
 	<cfif application.utility.isHTTPS()>
-		<cflocation addtoken="no" url="http://#application.settingsManager.getSite(event.getValue('siteID')).getDomain()##application.configBean.getServerPort()##event.getContentRenderer().getCurrentURL(false)#">
+		<cflocation addtoken="no" url="http://#getBean("settingsManager").getSite(event.getValue('siteID')).getDomain()##application.configBean.getServerPort()##event.getContentRenderer().getCurrentURL(false)#">
 	<cfelse>
-		<cflocation addtoken="no" url="https://#application.settingsManager.getSite(event.getValue('siteID')).getDomain()##application.configBean.getServerPort()##event.getContentRenderer().getCurrentURL(false)#">
+		<cflocation addtoken="no" url="https://#getBean("settingsManager").getSite(event.getValue('siteID')).getDomain()##application.configBean.getServerPort()##event.getContentRenderer().getCurrentURL(false)#">
 	</cfif>
 </cffunction>
 
@@ -392,7 +392,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfcase>
 			
 			<cfcase value="createprofile">
-				<cfif application.settingsManager.getSite(event.getValue('siteid')).getextranetpublicreg() eq 1>
+				<cfif getBean("settingsManager").getSite(event.getValue('siteid')).getextranetpublicreg() eq 1>
 					<cfset arguments.event.setValue("userID","")>
 					
 					<cfif event.valueExists("useProtect")>
@@ -480,7 +480,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="event" required="true">
 	
 	<cfif (application.configBean.getMode() eq 'production' and yesNoFormat(event.getValue("muraValidateDomain"))
-				and not application.settingsManager.getSite(request.siteID).isValidDomain(domain:listFirst(cgi.http_host,":"), mode: "either")) 
+				and not getBean("settingsManager").getSite(request.siteID).isValidDomain(domain:listFirst(cgi.http_host,":"), mode: "either")) 
 				and not (listFirst(cgi.http_host,":") eq 'LOCALHOST' and cgi.HTTP_USER_AGENT eq 'vspider')>
 			<cfset event.getHandler("standardWrongDomain").handle(event)>
 		</cfif>
@@ -521,7 +521,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif event.getValue("contentBean").getFilename() neq "404" 
 			and 
 			(
-				(event.getValue('forceSSL') or (event.getValue('r').restrict and application.settingsManager.getSite(event.getValue('siteID')).getExtranetSSL() eq 1)) and not application.utility.isHTTPS()
+				(event.getValue('forceSSL') or (event.getValue('r').restrict and getBean("settingsManager").getSite(event.getValue('siteID')).getExtranetSSL() eq 1)) and not application.utility.isHTTPS()
 				)
 			or	(
 				not (event.getValue('r').restrict or event.getValue('forceSSL')) and application.utility.isHTTPS()	

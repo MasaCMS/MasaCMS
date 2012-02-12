@@ -162,8 +162,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					
 					<cfif isDefined("rssite.domain") 
 						and len(rssite.domain) 
-						and rssite.domain neq application.settingsManager.getSite(arguments.toSiteID).getDomain()>
-						<cfset application.contentUtility.findAndReplace("//#rssite.domain#","//#application.settingsManager.getSite(arguments.toSiteID).getDomain()#" , arguments.toSiteID)>
+						and rssite.domain neq getBean("settingsManager").getSite(arguments.toSiteID).getDomain()>
+						<cfset application.contentUtility.findAndReplace("//#rssite.domain#","//#getBean("settingsManager").getSite(arguments.toSiteID).getDomain()#" , arguments.toSiteID)>
 					</cfif>
 					
 					<cfif rssite.siteID neq arguments.toSiteID>
@@ -232,7 +232,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						gallerySmallScale=<cfqueryparam cfsqltype="cf_sql_integer" value="#rssite.gallerySmallScale#">
 						where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">
 					</cfquery>
-					<cfset application.settingsManager.setSites()>
+					<cfset getBean("settingsManager").setSites()>
 				<cfelse>
 					<cfset arguments.errors.missingtheme="The submitted bundle did not provide valid theme settings information.">
 				</cfif>
@@ -1793,8 +1793,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							select * from tadcampaigns
 							where userID in 
 							(select userID from tusers where
-							siteid = '#application.settingsManager.getSite(rstSettings.advertiserUserPoolID).getPrivateUserPoolID()#' or
-							siteid = '#application.settingsManager.getSite(rstSettings.advertiserUserPoolID).getPublicUserPoolID()#')
+							siteid = '#getBean("settingsManager").getSite(rstSettings.advertiserUserPoolID).getPrivateUserPoolID()#' or
+							siteid = '#getBean("settingsManager").getSite(rstSettings.advertiserUserPoolID).getPublicUserPoolID()#')
 							<cfif isDate(arguments.lastDeployment)>
 								and lastUpdate >= #createODBCDateTime(lastDeployment)#
 							</cfif>
@@ -1807,8 +1807,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							delete from tadcampaigns
 							where userID in 
 							(select userID from tusers where
-							siteid = '#application.settingsManager.getSite(rstSettings.advertiserUserPoolID).getPrivateUserPoolID()#' or
-							siteid = '#application.settingsManager.getSite(rstSettings.advertiserUserPoolID).getPublicUserPoolID()#')
+							siteid = '#getBean("settingsManager").getSite(rstSettings.advertiserUserPoolID).getPrivateUserPoolID()#' or
+							siteid = '#getBean("settingsManager").getSite(rstSettings.advertiserUserPoolID).getPublicUserPoolID()#')
 							<cfif isDate(arguments.lastDeployment)>
 								<cfif rstadcampaigns.recordcount or rsDeleted.recordcount>
 									and (
@@ -1857,8 +1857,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							select * from tadcreatives
 							where userID in 
 							(select userID from tusers where
-							siteid = '#application.settingsManager.getSite(rstSettings.advertiserUserPoolID).getPrivateUserPoolID()#' or
-							siteid = '#application.settingsManager.getSite(rstSettings.advertiserUserPoolID).getPublicUserPoolID()#')
+							siteid = '#getBean("settingsManager").getSite(rstSettings.advertiserUserPoolID).getPrivateUserPoolID()#' or
+							siteid = '#getBean("settingsManager").getSite(rstSettings.advertiserUserPoolID).getPublicUserPoolID()#')
 							<cfif isDate(arguments.lastDeployment)>
 								and lastUpdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.lastDeployment#">
 							</cfif>
@@ -1871,8 +1871,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						delete from tadcreatives 
 						where userID in 
 						(select userID from tusers where
-						siteid = '#application.settingsManager.getSite(rstSettings.advertiserUserPoolID).getPrivateUserPoolID()#' or
-						siteid = '#application.settingsManager.getSite(rstSettings.advertiserUserPoolID).getPublicUserPoolID()#')
+						siteid = '#getBean("settingsManager").getSite(rstSettings.advertiserUserPoolID).getPrivateUserPoolID()#' or
+						siteid = '#getBean("settingsManager").getSite(rstSettings.advertiserUserPoolID).getPublicUserPoolID()#')
 						<cfif isDate(arguments.lastDeployment)>
 							<cfif tadcreatives.recordcount or rsDeleted.recordcount>
 								and (
@@ -3126,7 +3126,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var errors=arrayNew(1)>
 		<cfset var itemErrors=arrayNew(1)>
 		<cfset var publishercontentPushMode="Full">
-		<cfset var lastDeployment=application.settingsManager.getSite(arguments.siteID).getLastDeployment()>
+		<cfset var lastDeployment=getBean("settingsManager").getSite(arguments.siteID).getLastDeployment()>
 		<cfset var rsDeleted=queryNew("objectID")>
 		
 		<cfif arguments.pushMode neq "changesOnly">

@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="cgi_path">
 <cfargument name="siteID">
 <cfset var qstring="">
-<cfset var contentRenderer=application.settingsManager.getSite(arguments.siteID).getContentRenderer()>
+<cfset var contentRenderer=getBean("settingsManager").getSite(arguments.siteID).getContentRenderer()>
 <cfset var indexFileLen=0>
 <cfset var last=listLast(cgi_path,"/") >
 <cfset var indexFile="" >	
@@ -100,7 +100,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="isAdmin" required="true" default="false">
 	<cfargument name="domain" required="true" default="#cgi.http_host#">
 	<cfset var siteID= "" />
-	<cfset var rsSites=application.settingsManager.getList(sortBy="orderno") />
+	<cfset var rsSites=getBean("settingsManager").getList(sortBy="orderno") />
 	<cfset var site="">
 	<cfset var i="">
 	<cfset var lineBreak=chr(13)&chr(10)>
@@ -111,7 +111,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<!--- check for exact host match to find siteID --->
 	<cfloop query="rsSites">
-	<cfset site=application.settingsManager.getSite(rsSites.siteID)>
+	<cfset site=getBean("settingsManager").getSite(rsSites.siteID)>
 	<cftry>
 	<cfif site.isValidDomain(domain:checkDomain, mode:"complete")>
 		<cfreturn rsSites.siteid>
@@ -122,10 +122,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<!--- if not found look for a partial match and redirect--->
 	<cfloop query="rssites">
-	<cfset site=application.settingsManager.getSite(rsSites.siteID)>
+	<cfset site=getBean("settingsManager").getSite(rsSites.siteID)>
 	<cftry>
 	<cfif site.isValidDomain(domain:checkDomain, mode:"partial")>
-		<cflocation addtoken="no" url="http://#application.settingsManager.getSite(rsSites.siteID).getDomain()##application.configBean.getContext()#">
+		<cflocation addtoken="no" url="http://#getBean("settingsManager").getSite(rsSites.siteID).getDomain()##application.configBean.getContext()#">
 	</cfif>
 	<cfcatch></cfcatch>
 	</cftry>
@@ -189,7 +189,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset request.currentFilename="" />
 		
 		<cftry>
-			<cfset application.settingsManager.getSite(request.siteid) />
+			<cfset getBean("settingsManager").getSite(request.siteid) />
 			<cfcatch>
 				<cflocation url="/" addtoken="false">
 			</cfcatch>
@@ -311,10 +311,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="Redirect" output="false" returntype="any">
 
-	<cfset var rsSites=application.settingsManager.getList(sortBy="orderno") />
+	<cfset var rsSites=getBean("settingsManager").getList(sortBy="orderno") />
 	<cfset var site="">
 	<cfloop query="rssites">
-	<cfset site=application.settingsManager.getSite(rsSites.siteID)>
+	<cfset site=getBean("settingsManager").getSite(rsSites.siteID)>
 	<cftry>
 	<cfif site.isValidDomain(domain:listFirst(cgi.http_host,":"))>
 	<cfset getBean('contentRenderer').redirect("#application.configBean.getContext()##getBean('contentRenderer').getURLStem(rsSites.siteid,"")#")>

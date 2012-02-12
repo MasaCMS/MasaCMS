@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif isdefined("form")><cfset structAppend(variables.event,form,false)/></cfif>
 	<cfset structAppend(variables.event,url,false)/>
 	
-	<cfif len(getValue('siteid')) and application.settingsManager.siteExists(getValue('siteid'))>
+	<cfif len(getValue('siteid')) and getBean("settingsManager").siteExists(getValue('siteid'))>
 		<cfset loadSiteRelatedObjects()/>
 	<cfelse>
 		<cfset setValue("contentRenderer",getBean('contentRenderer'))>
@@ -147,7 +147,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getSite" returntype="any" access="public" output="false">
 	<cfif len(getValue('siteid'))>
-		<cfreturn application.settingsManager.getSite(getValue('siteid')) />
+		<cfreturn getBean("settingsManager").getSite(getValue('siteid')) />
 	<cfelse>
 		<cfset throwSiteIDError()>
 	</cfif>	
@@ -183,7 +183,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset setValue('HandlerFactory',application.pluginManager.getStandardEventFactory(getValue('siteid')))>
 	</cfif>
 	<cfif not valueExists("contentRenderer")>
-		<cfset setValue("contentRenderer",createObject("component","#application.settingsManager.getSite(getValue('siteid')).getAssetMap()#.includes.contentRenderer").init(event=this,$=getValue('MuraScope'),mura=getValue('MuraScope')))>
+		<cfset setValue("contentRenderer",createObject("component","#getBean("settingsManager").getSite(getValue('siteid')).getAssetMap()#.includes.contentRenderer").init(event=this,$=getValue('MuraScope'),mura=getValue('MuraScope')))>
 	</cfif>
 	<cfif not valueExists("themeRenderer") and fileExists(expandPath(getSite().getThemeIncludePath()) & "/contentRenderer.cfc")>
 		<cfset setValue("themeRenderer",createObject("component","#getSite().getThemeAssetMap()#.contentRenderer").init(event=this,$=getValue('MuraScope'),mura=getValue('MuraScope')))>

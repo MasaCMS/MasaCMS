@@ -105,8 +105,8 @@
 			<cfset siteID=request.siteID>
 		</cfif>
 		
-		<cfset publicPool=application.settingsManager.getSite(siteid).getPublicUserPoolID()>
-		<cfset privatePool=application.settingsManager.getSite(siteid).getPrivateUserPoolID()>
+		<cfset publicPool=getBean("settingsManager").getSite(siteid).getPublicUserPoolID()>
+		<cfset privatePool=getBean("settingsManager").getSite(siteid).getPrivateUserPoolID()>
 		
 		<cfif session.mura.isLoggedIn and len(siteID)>
 			<cfif structKeyExists(arguments,"isPublic")>

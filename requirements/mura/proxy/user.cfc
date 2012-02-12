@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="call">
 	<cfargument name="Event">
-	<cfif not (listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(event.getValue("siteID")).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2'))>
+	<cfif not (listFind(session.mura.memberships,'Admin;#getBean("settingsManager").getSite(event.getValue("siteID")).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2'))>
 		<cfset event.setValue("__response__", format("access denied",event.getValue("responseFormat")))>
 	<cfelse>
 		<cfset proceed( event ) >

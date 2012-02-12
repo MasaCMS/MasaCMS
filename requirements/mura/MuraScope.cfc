@@ -273,7 +273,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var siteID=event('siteid')>
 	
 	<cfif len(siteid)>
-		<cfset site=application.settingsManager.getSite(siteid)>
+		<cfset site=getBean("settingsManager").getSite(siteid)>
 	
 		<cfif structKeyExists(arguments,"property")>
 			<cfif structKeyExists(arguments,"propertyValue")>
