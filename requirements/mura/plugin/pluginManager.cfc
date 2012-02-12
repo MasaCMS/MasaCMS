@@ -375,7 +375,7 @@ select * from tplugins order by #arguments.orderby#
 						<cfset settingBean.setSettingValue(pluginXML.plugin.settings.setting[i].xmlAttributes.defaultValue)>
 					</cfif>
 				</cfif>
-				<cfset deployArgs["#settingBean.getname()#"]=application.contentRenderer.setDynamicContent(settingBean.getSettingValue())>
+				<cfset deployArgs["#settingBean.getname()#"]=getBean('contentRenderer').setDynamicContent(settingBean.getSettingValue())>
 			</cfloop>
 			
 			<cfset updateSettings(deployArgs)>

@@ -132,7 +132,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelseif len(event('siteid'))>
 			<cfset event("contentRenderer",createObject("component","#siteConfig().getAssetMap()#.contentRenderer").init(event=event,$=event("muraScope"),mura=event("muraScope") ) )>
 		<cfelseif structKeyExists(application,"contentRenderer")>
-			<cfset event("contentRenderer",application.contentRenderer)>
+			<cfset event("contentRenderer",getBean('contentRenderer'))>
 		</cfif>
 	</cfif>
 	<cfreturn event("contentRenderer")>
