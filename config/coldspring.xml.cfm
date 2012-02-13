@@ -60,11 +60,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<constructor-arg name="contentGateway"><ref bean="contentGateway" /></constructor-arg>
 			<constructor-arg name="contentDAO"><ref bean="contentDAO" /></constructor-arg>
 			<constructor-arg name="contentUtility"><ref bean="contentUtility" /></constructor-arg>
+			<constructor-arg name="reminderManager"><ref bean="reminderManager" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
+			<constructor-arg name="utility"><ref bean="utility" /></constructor-arg>
+			<constructor-arg name="categoryManager"><ref bean="categoryManager" /></constructor-arg>
+			<constructor-arg name="fileManager"><ref bean="fileManager" /></constructor-arg>
 			<constructor-arg name="pluginManager"><ref bean="pluginManager" /></constructor-arg>
+			<constructor-arg name="trashManager"><ref bean="trashManager" /></constructor-arg>
 			<constructor-arg name="changesetManager"><ref bean="changesetManager" /></constructor-arg>
+			<constructor-arg name="clusterManager"><ref bean="clusterManager" /></constructor-arg>
 		</bean>
-		
 		<cfif isDefined("server.coldfusion.productname") and server.coldfusion.productname eq "Railo">
 		<bean id="contentGateway" class="mura.content.contentGatewayRailo" singleton="true">
 		<cfelse>
