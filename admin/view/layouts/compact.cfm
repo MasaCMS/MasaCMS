@@ -119,6 +119,7 @@ var siteid='#session.siteid#';
 </script>
 	#fusebox.ajax#
 	<link href="#application.configBean.getContext()#/admin/css/admin.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+	<!---<link href="#application.configBean.getContext()#/admin/css/buttons.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />--->
 	<!--[if IE]>
 	<link href="#application.configBean.getContext()#/admin/css/ie.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 	<![endif]-->
