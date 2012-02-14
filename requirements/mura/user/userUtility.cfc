@@ -386,8 +386,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var autoresetpasswords=variables.configBean.getValue("autoresetpasswords")>
 <cfset var returnID=createUUID()>
 <cfset var editProfileURL="">
-<cfset var returnURL="">		
-<cfset var urlBase="http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#">
+<cfset var returnURL="">	
+<cfset var protocal="http://">	
+<cfset var urlBase="#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#">
 <cfset var site="">
 
 <cfif arguments.siteid neq ''>
@@ -395,24 +396,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset sendLoginScript =site.getSendLoginScript()/>
 	<cfset contactEmail=site.getContact()/>
 	<cfset contactName=site.getSite()/>
+
+	<cfif site.getExtranetSSL()>
+		<cfset protocal="https://">
+	</cfif>
 	
 	<cfif left(site.getEditProfileURL(),4) eq "http">
 		<cfset editProfileURL=site.getEditProfileURL()>
 	<cfelse>
-		<cfset editProfileURL=urlBase & site.getEditProfileURL()>
+		<cfset editProfileURL=protocal & urlBase & site.getEditProfileURL()>
 	</cfif>
 		
-	<cfset returnURL="#urlBase##site.getContentRenderer().getURLStem(site.getSiteID(),returnID)#">	
+	<cfset returnURL="#protocal##urlBase##site.getContentRenderer().getURLStem(site.getSiteID(),returnID)#">	
 <cfelse>
 	<cfset site=variables.settingsManager.getSite("default")>
 	<cfset contactEmail=variables.configBean.getAdminEmail()/>
 	<cfset contactName=variables.configBean.getTitle()/>
 	
-	<cfset returnURL="#urlBase##site.getContentRenderer().getURLStem(site.getSiteID(),returnID)#">
-	<cfset editProfileURL =urlBase & "/admin/index.cfm?fuseaction=cEditProfile.edit">	
+	<cfif variables.configBean.getAdminSSL()>
+		<cfset protocal="https://">
+	</cfif>
+
+	<cfset returnURL="#protocal##urlBase##site.getContentRenderer().getURLStem(site.getSiteID(),returnID)#">
+	<cfset editProfileURL =protocal & urlBase & "/admin/index.cfm?fuseaction=cEditProfile.edit">	
 
 </cfif>
-
 
 <!--- make sure that there is a ? in the editProfileURL--->
 <cfif not find("?",editProfileURL)>
