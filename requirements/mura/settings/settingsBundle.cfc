@@ -87,7 +87,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  
 
 		<cfif fileExists( arguments.BundleFile )>
-			<cfif getBean("settingsManager").isBundle(arguments.BundleFile)>
+			<cfif application.settingsManager.isBundle(arguments.BundleFile)>
 				<cfset variables.zipTool.Extract(zipFilePath="#arguments.BundleFile#",extractPath=variables.unpackPath, overwriteFiles=true)>
 			<cfelse>
 				<cffile action="delete" file="#arguments.BundleFile#">

@@ -171,7 +171,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var s=0/>
 <cfset var tempDate=""/>
 <cfset var errors=structNew()>
-<cfset var site=getBean("settingsManager").getSite(arguments.data.siteID) />
+<cfset var site=application.settingsManager.getSite(arguments.data.siteID) />
 <cfset var rbFactory=site.getRBFactory()>
 
 <cfif isDefined("arguments.data.extendSetID") and len(arguments.data.extendSetID)>
@@ -758,7 +758,7 @@ and tclassextendattributes.type='File'
 			<cfreturn rs.attributeValue />
 		</cfif>
 	<cfelse>
-		<cfreturn application.contentRenderer.setDynamicContent(rs.defaultValue) />
+		<cfreturn getBean('contentRenderer').setDynamicContent(rs.defaultValue) />
 	</cfif>
 </cffunction>
 

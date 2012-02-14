@@ -44,6 +44,12 @@
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="setConfigBean" output="false">
+	<cfargument name="configBean">
+	<cfset variables.configBean=arguments.configBean>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="setChangesetManager" output="false">
 	<cfargument name="changesetManager">
 	<cfset variables.changesetManager=arguments.changesetManager>

@@ -61,7 +61,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.configBean=arguments.configBean />
 	<cfset variables.gateway=arguments.categoryGateway />
 	<cfset variables.DAO=arguments.categoryDAO />
-	<cfset variables.DAO.setCategoryManager(this)>
 	<cfset variables.utility=arguments.utility />
 	<cfset variables.settingsManager=arguments.settingsManager />
 	<cfset variables.categoryUtility=arguments.categoryUtility />

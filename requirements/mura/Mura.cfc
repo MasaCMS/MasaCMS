@@ -62,7 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset request.muraFrontEndRequest=true>
 
 	<cfif structKeyExists(url,"changesetID")>
-		<cfset application.changesetManager.setSessionPreviewData(url.changesetID)>
+		<cfset getBean('changesetManager').setSessionPreviewData(url.changesetID)>
 	</cfif>
 	
 	<cfset previewData=getCurrentUser().getValue("ChangesetPreviewData")>

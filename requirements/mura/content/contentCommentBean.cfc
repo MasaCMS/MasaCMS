@@ -63,7 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="remoteID" type="string" default="" required="true" />
 <cfproperty name="isNew" type="numeric" default="1" required="true" />
 
-<cfset variables.contentRenderer=application.contentRenderer/>
+<cfset variables.contentRenderer=getBean('contentRenderer')/>
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	
@@ -99,6 +99,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setSettingsManager">
 	<cfargument name="settingsManager">
 	<cfset variables.settingsManager=arguments.settingsManager>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setTrashManager">
+	<cfargument name="trashManager">
+	<cfset variables.trashManager=arguments.trashManager>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setContentDAO">
+	<cfargument name="contentDAO">
+	<cfset variables.contentDAO=arguments.contentDAO>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setMailer">
+	<cfargument name="mailer">
+	<cfset variables.mailer=arguments.mailer>
 	<cfreturn this>
 </cffunction>
 
@@ -219,7 +237,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset eventArgs.commentBean=this>
 	<cfset pluginEvent.init(eventArgs)>
 	
-	<cfset getBean('trashManager').throwIn(this)>
+	<cfset variables.trashManager.throwIn(this)>
 	
 	<cfset pluginManager.announceEvent("onBeforeCommentDelete",pluginEvent)>
 	
@@ -397,7 +415,7 @@ View
 
 </cfif>
 
-<cfset email=getBean('mailer') />
+<cfset email=variables.mailer />
 <cfset email.sendText(notifyText,
 						contactEmail,
 						variables.instance.name,
@@ -408,7 +426,7 @@ View
 </cffunction>
 
 <cffunction name="notifySubscribers" access="public" output="false">
-<cfargument name="contentRenderer" required="true" default="#application.contentRenderer#">
+<cfargument name="contentRenderer" required="true" default="#getBean('contentRenderer')#">
 <cfargument name="script" required="true" default="">
 <cfargument name="subject" required="true" default="">
 <cfargument name="notifyAdmin" required="true" default="true">
@@ -417,7 +435,7 @@ View
 <cfset var notifyText="">
 <cfset var notifysubject=arguments.subject>
 <cfset var email="">
-<cfset var rsSubscribers=getBean("contentDAO").getCommentSubscribers(variables.instance.contentID,variables.instance.siteID)>
+<cfset var rsSubscribers=variables.contentDAO.getCommentSubscribers(variables.instance.contentID,variables.instance.siteID)>
 
 <cfquery name="rsContent" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select title from tcontent 
@@ -450,7 +468,7 @@ To Unsubscribe Click Here:
 
 </cfif>
 
-<cfset email=getBean('mailer') />
+<cfset email=variables.mailer />
 
 <cfloop query="rsSubscribers">
 	<cfset email.sendText(notifyText & arguments.contentRenderer.getCurrentURL(true,"commentUnsubscribe=#URLEncodedFormat(rsSubscribers.email)#"),

@@ -325,7 +325,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="checkUsername" returntype="boolean" output="false" access="public">
 	<cfset var rsCheck=""/>
-	<cfquery name="rsCheck" datasource="#getBean("configBean").getReadOnlyDatasource()#" username="#getBean("configBean").getReadOnlyDbUsername()#" password="#getBean("configBean").getReadOnlyDbPassword()#">
+	<cfquery name="rsCheck" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		select username from tusers where type=2 and username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(variables.instance.username)#"> and UserID <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(variables.instance.userID)#"> 
 	</cfquery>
 		
@@ -339,7 +339,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 <cffunction name="checkEmail" returntype="boolean" output="false" access="public">	
 	<cfset var rsCheck=""/>
-	<cfquery name="rsCheck" datasource="#getBean("configBean").getReadOnlyDatasource()#" username="#getBean("configBean").getReadOnlyDbUsername()#" password="#getBean("configBean").getReadOnlyDbPassword()#">
+	<cfquery name="rsCheck" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		select username from tusers where type=2 and email=<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(variables.instance.email)#"> and UserID <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(getUserID())#">  
 		and (siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.settingsManager.getSite(variables.instance.siteid).getPrivateUserPoolID()#">
 			or 
@@ -363,7 +363,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.errors=structNew()>
 	
 	<cfif len(variables.instance.siteID)>
-		<cfset extErrors=getBean("configBean").getClassExtensionManager().validateExtendedData(getAllValues())>
+		<cfset extErrors=variables.configBean.getClassExtensionManager().validateExtendedData(getAllValues())>
 	</cfif>
 		
 	<cfset variables.instance.errors=structnew() />
@@ -374,9 +374,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 	<cfif trim(variables.instance.siteid) neq "">
 			
-		<cfif variables.instance.type eq 2 and len(variables.instance.password) and yesNoFormat(getBean("configBean").getValue("strongPasswords"))>
+		<cfif variables.instance.type eq 2 and len(variables.instance.password) and yesNoFormat(variables.configBean.getValue("strongPasswords"))>
 
-			<cfif not reFind(getBean("configBean").getValue("strongPasswordRegex"),variables.instance.password) or variables.instance.username eq variables.instance.password>
+			<cfif not reFind(variables.configBean.getValue("strongPasswordRegex"),variables.instance.password) or variables.instance.username eq variables.instance.password>
 				<cfset variables.instance.errors.username=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("user.passwordstrengthvalidate") />
 			</cfif>
 				

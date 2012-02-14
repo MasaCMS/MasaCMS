@@ -92,6 +92,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.transient["campaignBean"]="mura.advertising.campaign.campaignBean" />
 	<cfset variables.transient["placementBean"]="mura.advertising.campaign.placement.placementBean" />
 	<cfset variables.transient["feedBean"]="mura.content.feed.feedBean"/>
+	<cfset variables.transient["beanServicePlaceHolder"]="mura.bean.beanServicePlaceHolder"/>
 	<cfset variables.transientAlias["content"]="contentBean"/>
 	<cfset variables.transientAlias["feed"]="feedBean"/>
 	<cfset variables.transientAlias["site"]="settingsBean"/>
@@ -123,10 +124,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cffunction name="getBean" outout="false">
 		<cfargument name="beanName">
+		<cfargument name="targetService">
 		<cfset var bean="">
 	
 		<cfif super.containsBean(arguments.beanName)>
-			<cfreturn super.getBean(arguments.beanName)>
+			<cfif structKeyExists(arguments,"targetService")>
+				<cfreturn createObject("component","beanServicePlaceholder").init(argumentCollection=arguments)>
+			<cfelse>
+				<cfreturn super.getBean(arguments.beanName)>
+			</cfif>
 		</cfif>
 		
 		<cfif structKeyExists(variables.transientAlias,arguments.beanName)>

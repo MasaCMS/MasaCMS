@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="standardWrongDomainHandler" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
-	<cflocation addtoken="no" url="http://#application.settingsManager.getSite(request.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(event.getValue('siteID'),event.getValue('contentBean').getFilename())#">
+	<cflocation addtoken="no" url="http://#application.settingsManager.getSite(request.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##getBean('contentRenderer').getURLStem(event.getValue('siteID'),event.getValue('contentBean').getFilename())#">
 
 </cffunction>
 

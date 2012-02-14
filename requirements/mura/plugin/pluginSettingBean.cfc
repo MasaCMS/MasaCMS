@@ -76,6 +76,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
+<cffunction name="setConfigBean" output="false">
+	<cfargument name="configBean">
+	<cfset variables.configBean=arguments.configBean>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="set"  access="public" output="false" returntype="any">
 	<cfargument name="theXML">
 	<cfargument name="moduleID">
@@ -238,7 +244,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="loadSettingValue"  access="public" output="false" returntype="void">
 <cfset var rs=""/>
-	<cfquery name="rs" datasource="#getBean('configBean').getDatasource()#" username="#getBean('configBean').getDBUsername()#" password="#getBean('configBean').getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select * from tpluginsettings 
 	where name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getName()#">
 	and moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getModuleID()#">

@@ -50,13 +50,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="init" returntype="any" output="false" access="public">
 <cfargument name="configBean" type="any" required="yes"/>
+<cfargument name="utility" type="any" required="yes"/>
 	<cfset variables.configBean=arguments.configBean />
+	<cfset variables.utility=arguments.utility />
 	<cfreturn this />
-</cffunction>
-
-<cffunction name="setFeedManager" access="public" output="false">
-	<cfargument name="feedManager" type="any" />
-	<cfset variables.feedManager = arguments.feedManager />
 </cffunction>
 
 <cffunction name="create" returntype="void" access="public" output="false">
@@ -147,7 +144,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="feedBean" default="" />
 	<cfset var rs ="" />
 	<cfset var beanArray=arrayNew(1)>
-	<cfset var utility="">
 	<cfset var bean=arguments.feedBean />
 	
 	<cfif not isObject(bean)>
@@ -163,9 +159,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfquery>
 	
 	<cfif rs.recordcount gt 1>
-		<cfset utility=getBean("utility")>
 		<cfloop query="rs">
-			<cfset bean=getBean("feed").set(utility.queryRowToStruct(rs,rs.currentrow))>
+			<cfset bean=getBean("feed").set(variables.utility.queryRowToStruct(rs,rs.currentrow))>
 			<cfset bean.setcontentID(readItems(rs.feedID,"contentID")) />
 			<cfset bean.setCategoryID(readItems(rs.feedID,"categoryID")) />
 			<cfset bean.setAdvancedParams(readAdvancedParams(rs.feedID)) />
@@ -192,7 +187,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="feedBean" default="" />
 	<cfset var rs ="" />
 	<cfset var beanArray=arrayNew(1)>
-	<cfset var utility="">
 	<cfset var bean=arguments.feedBean />
 	
 	<cfif not isObject(bean)>
@@ -208,9 +202,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfquery>
 	
 	<cfif rs.recordcount gt 1>
-		<cfset utility=getBean("utility")>
 		<cfloop query="rs">
-			<cfset bean=getBean("feed").set(utility.queryRowToStruct(rs,rs.currentrow))>
+			<cfset bean=getBean("feed").set(variables.utility.queryRowToStruct(rs,rs.currentrow))>
 			<cfset bean.setcontentID(readItems(rs.feedID,"contentID")) />
 			<cfset bean.setCategoryID(readItems(rs.feedID,"categoryID")) />
 			<cfset bean.setAdvancedParams(readAdvancedParams(rs.feedID)) />

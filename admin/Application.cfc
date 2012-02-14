@@ -358,7 +358,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfinclude template="../config/appcfc/onError_include.cfm">
 	</cffunction>
 	
-	<cffunction name="onMissingTemplate"  returnType="void"  output="true">
+	<cffunction name="onMissingTemplate" output="true">
 	    <cfargument name="targetPage" required="true">
 		<cfset var local = structNew() />
 		<cfinclude template="../config/appcfc/onMissingTemplate_include.cfm">

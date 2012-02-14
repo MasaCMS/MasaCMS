@@ -68,7 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 		<cfswitch expression="#arguments.type#">
 				<cfcase value="Link,File">
-					<cfset contentBean=application.contentManager.getActiveContent(arguments.contentID,arguments.siteid) />
+					<cfset contentBean=getBean('contentManager').getActiveContent(arguments.contentID,arguments.siteid) />
 					<cfset rsFile=getBean('fileManager').read(contentBean.getfileid()) />
 					<cfset href="/#application.settingsManager.getSite(arguments.siteid).getExportLocation()#/#replace(arguments.contentid, '-', '', 'ALL')#.#rsfile.fileExt#"/>
 				</cfcase>

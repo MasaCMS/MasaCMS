@@ -77,9 +77,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.changesetManager=arguments.changesetManager />
 		<cfset variables.ClassExtensionManager=variables.configBean.getClassExtensionManager() />
 		<cfset variables.clusterManager=arguments.clusterManager />
-		
-		<cfset variables.contentDAO.setContentManager(this)/>
-		
+
 		<cfreturn this />
 	</cffunction>
 	
@@ -705,7 +703,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			
 			<cfif newBean.getURLTitle() eq ''>
-				<cfset newBean.setURLTitle(variables.contentUtility.formatFilename(newBean.getmenutitle()))>
+				<cfset newBean.setURLTitle(getBean('contentUtility').formatFilename(newBean.getmenutitle()))>
 			</cfif>
 			
 			<cfif newBean.getHTMLTitle() eq ''>
@@ -802,14 +800,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<!--- PUBLIC CONTENT SUBMISSION --DEPRICATED    --->
 				<cfif newBean.getIsNew() and isdefined('arguments.data.email') and isdefined('arguments.data.approvalqueue') and arguments.data.approvalqueue>
 					<cftry>
-						<cfset variables.contentUtility.setApprovalQue(newBean,arguments.data.email) />
+						<cfset getBean('contentUtility').setApprovalQue(newBean,arguments.data.email) />
 				<cfcatch></cfcatch>
 				</cftry>
 				</cfif>
 				
 				<cfif newBean.getIsNew() eq 0 and newBean.getDisplay() neq 0 and currentBean.getDisplay() eq 0> 
 					<cftry>
-					<cfset variables.contentUtility.checkApprovalQue(newBean,getActiveContent(newBean.getParentID(),newBean.getSiteID())) />
+					<cfset getBean('contentUtility').checkApprovalQue(newBean,getActiveContent(newBean.getParentID(),newBean.getSiteID())) />
 					<cfcatch></cfcatch>
 					</cftry>
 				</cfif>
@@ -857,7 +855,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							  not newBean.getIsNew() 
 							  and (
 								 	currentBean.getparentid() neq newBean.getparentid()
-								or variables.contentUtility.formatFilename(currentBean.getURLtitle()) neq variables.contentUtility.formatFilename(newBean.getURLtitle())
+								or getBean('contentUtility').formatFilename(currentBean.getURLtitle()) neq getBean('contentUtility').formatFilename(newBean.getURLtitle())
 								)
 							  )
 							 )
@@ -874,11 +872,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							
 						and not (not newBean.getIsNew() and newBean.getIsLocked())>
 										
-						<cfset variables.contentUtility.setUniqueFilename(newBean) />
+						<cfset getBean('contentUtility').setUniqueFilename(newBean) />
 												
 						<cfif not newBean.getIsNew() and newBean.getoldfilename() neq newBean.getfilename() and len(newBean.getoldfilename())>
-							<cfset variables.contentUtility.movelink(newBean.getSiteID(),newBean.getFilename(),currentBean.getFilename()) />	
-							<cfset variables.contentUtility.move(newBean.getsiteid(),newBean.getFilename(),newBean.getOldFilename())>
+							<cfset getBean('contentUtility').movelink(newBean.getSiteID(),newBean.getFilename(),currentBean.getFilename()) />	
+							<cfset getBean('contentUtility').move(newBean.getsiteid(),newBean.getFilename(),newBean.getOldFilename())>
 							<cfset doPurgeContentDescendentsCache=true>
 						</cfif>
 								
@@ -895,13 +893,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif newBean.getapproved() or newBean.getIsNew()>
 				<!--- BEGIN CONTENT TYPE: FILE, LINK --->	
 					<cfif listFindNoCase("Link,File",newBean.getType())>
-						<cfset variables.contentUtility.setUniqueURLTitle(newBean) />
+						<cfset getBean('contentUtility').setUniqueURLTitle(newBean) />
 					</cfif>
 					<!--- END CONTENT TYPE: FILE, LINK --->
 							
 					<!--- BEGIN CONTENT TYPE: COMPONENT, FORM --->	
 					<cfif listFindNoCase("Component,Form",newBean.getType())>
-						<cfset variables.contentUtility.setUniqueTitle(newBean) />
+						<cfset getBean('contentUtility').setUniqueTitle(newBean) />
 						<cfset newBean.setMenuTitle(newBean.getTitle())>
 						<cfset newBean.setHTMLTitle(newBean.getTitle())>
 						<cfset newBean.setURLTitle(newBean.getTitle())>
@@ -943,7 +941,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfset arguments.data.versionType="minor">
 						</cfif>
 					
-						<cfset variables.contentUtility.setVersionNumbers(newBean,arguments.data.versionType)>
+						<cfset getBean('contentUtility').setVersionNumbers(newBean,arguments.data.versionType)>
 					</cfif>
 						
 					<!--- Delete Files in temp directory --->
@@ -1064,7 +1062,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					
 				<!--- Send out notification(s) if needed--->
 				<cfif isdefined('arguments.data.notify') and arguments.data.notify neq ''>
-					<cfset variables.contentUtility.sendNotices(arguments.data,newBean,"Draft") />
+					<cfset getBean('contentUtility').sendNotices(arguments.data,newBean,"Draft") />
 				</cfif>
 					
 				<cfset variables.contentDAO.createTags(newBean) />
@@ -1267,7 +1265,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfloop query="rsHist">
 			<cfif not (rshist.active eq 1 or (rshist.approved eq 0 and len(rshist.changesetID))) and len(rshist.FileID)>
 					<cfif not listFind(fileList,rshist.FileID,"^")>
-						<cfset variables.filemanager.deleteVersion(rshist.FileID,false) />
+						<cfset variables.fileManager.deleteVersion(rshist.FileID,false) />
 						<cfset fileList=listAppend(fileList,rshist.FileID,"^")/>
 					</cfif>		
 			</cfif>			
@@ -1314,7 +1312,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</cfloop>
 			<cfif not listFind(fileList,versionBean.getFileID(),"^")>
-				<cfset variables.filemanager.deleteVersion(versionBean.getFileID()) />
+				<cfset variables.fileManager.deleteVersion(versionBean.getFileID()) />
 			</cfif>
 		</cfif>
 		
@@ -1352,7 +1350,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="data" type="struct"/>
 		<cfargument name="contentBean" type="any"/>
 
-		<cfset variables.contentUtility.getReportData(arguments.data,arguments.contentBean) />
+		<cfset getBean('contentUtility').getReportData(arguments.data,arguments.contentBean) />
 		
 	</cffunction>
 	
@@ -1479,8 +1477,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset basepath = "#variables.configBean.getWebRoot()#\#arguments.exportLocation#">
 			
 			<cfif rs.type eq "file">
-				<cfset contentBean=application.contentManager.getActiveContent(rs.contentID,arguments.siteid) />
-				<cfset rsFile=getBean('fileManager').read(contentBean.getfileid()) />
+				<cfset contentBean=getActiveContent(rs.contentID,arguments.siteid) />
+				<cfset rsFile=variables.fileManager.read(contentBean.getfileid()) />
 				<cfset fileOutput = rsFile.image>
 				<cfset filePath = "#basepath#\#replace(contentBean.getcontentID(), '-', '', 'ALL')#.#rsfile.fileExt#">
 			<cfelse>
@@ -1538,7 +1536,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="appendTitle" type="boolean" required="true" default="true"/>
 		<cfargument name="setNotOnDisplay" type="boolean" required="true" default="false"/>
 		
-		<cfreturn variables.contentUtility.copy(arguments.siteID, arguments.contentID, arguments.parentID, arguments.recurse, arguments.appendTitle, "", arguments.setNotOnDisplay)>
+		<cfreturn getBean('contentUtility').copy(arguments.siteID, arguments.contentID, arguments.parentID, arguments.recurse, arguments.appendTitle, "", arguments.setNotOnDisplay)>
 	
 	</cffunction>
 	
@@ -1631,7 +1629,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cffunction name="saveComment" access="public" output="false" returntype="any">
 		<cfargument name="data" type="struct">
-		<cfargument name="contentRenderer" required="true" default="#application.contentRenderer#">
+		<cfargument name="contentRenderer" required="true" default="#getBean('contentRenderer')#">
 		<cfargument name="script" required="true" default="">
 		<cfargument name="subject" required="true" default="">
 		<cfargument name="notify" required="true" default="true">
@@ -1653,7 +1651,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cffunction name="approveComment" access="public" output="false" returntype="any">
 		<cfargument name="commentID" type="string">
-		<cfargument name="contentRenderer" required="true" default="#application.contentRenderer#">
+		<cfargument name="contentRenderer" required="true" default="#getBean('contentRenderer')#">
 		<cfargument name="script" required="true" default="">
 		<cfargument name="subject" required="true" default="">
 		

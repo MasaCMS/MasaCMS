@@ -58,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif len(getValue('siteid')) and application.settingsManager.siteExists(getValue('siteid'))>
 		<cfset loadSiteRelatedObjects()/>
 	<cfelse>
-		<cfset setValue("contentRenderer",application.contentRenderer)>
+		<cfset setValue("contentRenderer",getBean('contentRenderer'))>
 	</cfif>
 	
 	<cfset setValue("MuraScope",createObject("component","mura.MuraScope"))>
@@ -111,9 +111,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getHandler" returntype="any" access="public" output="false">
 	<cfargument name="handler">
-	<cfargument name="persist" default="true" required="true">
 	<cfif isObject(getValue('HandlerFactory'))>
-		<cfreturn getValue('HandlerFactory').get(arguments.handler,getValue("localHandler"),arguments.persist) />
+		<cfreturn getValue('HandlerFactory').get(arguments.handler & "Handler",getValue("localHandler")) />
 	<cfelse>
 		<cfset throwSiteIDError()>
 	</cfif>
@@ -121,9 +120,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getValidator" returntype="any" access="public" output="false">
 	<cfargument name="validation">
-	<cfargument name="persist" default="true" required="true">
 	<cfif isObject(getValue('ValidatorFactory'))>
-		<cfreturn getValue('ValidatorFactory').get(arguments.validation,getValue("localHandler"),arguments.persist) />	
+		<cfreturn getValue('ValidatorFactory').get(arguments.validation & "Validator",getValue("localHandler")) />	
 	<cfelse>
 		<cfset throwSiteIDError()>
 	</cfif>
@@ -132,13 +130,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getTranslator" returntype="any" access="public" output="false">
 	<cfargument name="translator">
-	<cfargument name="persist" default="true" required="true">
 	<cfif isObject(getValue('TranslatorFactory'))>
-		<cfreturn getValue('TranslatorFactory').get(arguments.translator,getValue("localHandler"),arguments.persist) />	
+		<cfreturn getValue('TranslatorFactory').get(arguments.translator & "Translator",getValue("localHandler")) />	
 	<cfelse>
 		<cfset throwSiteIDError()>
-	</cfif>
-	
+	</cfif>	
 </cffunction>
 
 <cffunction name="getContentRenderer" returntype="any" access="public" output="false">
@@ -182,14 +178,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="loadSiteRelatedObjects" returntype="any" access="public" output="false">
 	<cfset var localHandler="">
-	<cfif not valueExists("ValidatorFactory")>
-		<cfset setValue('ValidatorFactory',application.pluginManager.getEventManager(getValue('siteid')).getFactory("Validator"))>
-	</cfif>
+	
 	<cfif not valueExists("HandlerFactory")>
-		<cfset setValue('HandlerFactory',application.pluginManager.getEventManager(getValue('siteid')).getFactory("Handler"))>
-	</cfif>
-	<cfif not valueExists("TranslatorFactory")>
-		<cfset setValue('TranslatorFactory',application.pluginManager.getEventManager(getValue('siteid')).getFactory("Translator"))>
+		<cfset setValue('HandlerFactory',application.pluginManager.getStandardEventFactory(getValue('siteid')))>
 	</cfif>
 	<cfif not valueExists("contentRenderer")>
 		<cfset setValue("contentRenderer",createObject("component","#application.settingsManager.getSite(getValue('siteid')).getAssetMap()#.includes.contentRenderer").init(event=this,$=getValue('MuraScope'),mura=getValue('MuraScope')))>

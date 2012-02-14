@@ -327,7 +327,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset extData.data['#rs.name#']=rs.attributeValue>
 				</cfif>
 			<cfelse>
-				<cfset extData.data['#rs.name#']=application.contentRenderer.setDynamicContent(rs.defaultValue)>
+				<cfset extData.data['#rs.name#']=getBean('contentRenderer').setDynamicContent(rs.defaultValue)>
 			</cfif>
 		</cfloop>
 	</cfif>

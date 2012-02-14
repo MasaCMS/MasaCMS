@@ -64,6 +64,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
   
+<cffunction name="setConfigBean" output="false">
+	<cfargument name="configBean">
+	<cfset variables.configBean=arguments.configBean>
+	<cfreturn this>
+</cffunction>
 
 <cffunction name="getScriptID" returntype="String" access="public" output="false">
 	<cfif not len(variables.instance.scriptID)>
@@ -85,7 +90,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getQuery"  access="public" output="false" returntype="query">
 	<cfset var rs=""/>
-	<cfquery name="rs" datasource="#getBean('configBean').getDatasource()#" username="#getBean('configBean').getDBUsername()#" password="#getBean('configBean').getDBPassword()#">
+	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select scriptID, moduleID, scriptfile, runat, docache from tpluginscripts where scriptID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getScriptID()#">
 	</cfquery>
 	
@@ -93,7 +98,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="delete" access="public" returntype="void">
-	<cfquery datasource="#getBean('configBean').getDatasource()#" username="#getBean('configBean').getDBUsername()#" password="#getBean('configBean').getDBPassword()#">
+	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	delete from tpluginscripts
 	where scriptID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getScriptID()#">
 	</cfquery>
@@ -106,7 +111,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif getQuery().recordcount>
 		
-		<cfquery datasource="#getBean('configBean').getDatasource()#" username="#getBean('configBean').getDBUsername()#" password="#getBean('configBean').getDBPassword()#">
+		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update tpluginscripts set
 			moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.moduleID#">,
 			runat=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.runAt#">,
@@ -117,7 +122,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 	<cfelse>
 	
-		<cfquery datasource="#getBean('configBean').getDatasource()#" username="#getBean('configBean').getDBUsername()#" password="#getBean('configBean').getDBPassword()#">
+		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			insert into tpluginscripts (scriptID,moduleID,runat,scriptfile,docache) values (
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getScriptID()#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.moduleID#">,

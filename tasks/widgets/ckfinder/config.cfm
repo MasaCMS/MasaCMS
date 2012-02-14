@@ -51,10 +51,11 @@ config.thumbnails = structNew();
 config.thumbnails.url = config.baseUrl & '/Thumbs';
 config.thumbnails.baseDir = config.baseDir & '/Thumbs';
 config.thumbnails.enabled = true;
-config.thumbnails.directAccess = false;
+config.thumbnails.directAccess = true;
 config.thumbnails.maxWidth = 100;
 config.thumbnails.maxHeight = 100;
 config.thumbnails.quality = 80;
+config.thumbnailDelay = 100;
 
 /*
  * set the maximum size of uploaded images

@@ -66,6 +66,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="setConfigBean" output="false">
+	<cfargument name="configBean">
+	<cfset variables.configBean=arguments.configBean>
+	<cfreturn this>
+</cffunction>
+
 <!--- This needs to be overriden--->
 <cffunction name="getExtendBaseID" output="false">
 	<cfreturn "">
@@ -104,7 +110,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getExtendedData" returntype="any" output="false" access="public">
 	<cfif not isObject(variables.instance.extendData)>
-	<cfset variables.instance.extendData=getBean("configBean").getClassExtensionManager().getExtendedData(baseID:getExtendBaseID(), type:variables.instance.type, subType:variables.instance.subtype, siteID:variables.instance.siteID, dataTable=variables.instance.extendDataTable)/>
+	<cfset variables.instance.extendData=variables.configBean.getClassExtensionManager().getExtendedData(baseID:getExtendBaseID(), type:variables.instance.type, subType:variables.instance.subtype, siteID:variables.instance.siteID, dataTable=variables.instance.extendDataTable)/>
 	</cfif> 
 	<cfreturn variables.instance.extendData />
 </cffunction>

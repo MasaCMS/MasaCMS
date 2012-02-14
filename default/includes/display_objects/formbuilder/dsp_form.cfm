@@ -76,9 +76,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			dataset=dataset
 			)#			
 		<cfelseif field.fieldtype.fieldtype neq "section">
-		<li<cfif field.fieldtype.fieldtype eq "radio"> class="mura-form-radio"
-		<cfelseif field.fieldtype.fieldtype eq "checkbox"> class="mura-form-checkbox"
-		</cfif>>
+		<li class="<cfif field.fieldtype.fieldtype eq "radio">mura-form-radio
+		<cfelseif field.fieldtype.fieldtype eq "checkbox">mura-form-checkbox
+		 </cfif><cfif field.isrequired>req</cfif>">
 		#$.dspObject_Include(thefile='/formbuilder/fields/dsp_#field.fieldtype.fieldtype#.cfm',
 			field=field,
 			dataset=dataset

@@ -1,7 +1,6 @@
 <cfcomponent extends="mura.cfobject" output="false">
 
 <cfset variables.configBean="">
-<cfset variables.contentManager="">
 <cfset variables.trashManager="">
 
 <cffunction name="getBean" output="false">
@@ -9,19 +8,20 @@
 	<cfreturn super.getBean(arguments.beanName)>
 </cffunction>
 
-<cffunction name="setConfigBean" output="false">
-<cfargument name="configBean">
-<cfset variables.configBean=arguments.configBean>
+<cffunction name="init" output="false">
+	<cfreturn this>
 </cffunction>
 
-<cffunction name="setContentManager" output="false">
-<cfargument name="contentManager">
-<cfset variables.contentManager=arguments.contentManager>
+<cffunction name="setConfigBean" output="false">
+	<cfargument name="configBean">
+	<cfset variables.configBean=arguments.configBean>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="setTrashManager" output="false">
-<cfargument name="trashManager">
-<cfset variables.trashManager=arguments.trashManager>
+	<cfargument name="trashManager">
+	<cfset variables.trashManager=arguments.trashManager>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="setValue" returntype="any" access="public" output="false">

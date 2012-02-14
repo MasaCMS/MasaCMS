@@ -72,7 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 	<cfset qstring="" />
 	</cfif>
-	<cfset application.contentRenderer.redirect("#application.configBean.getContext()##contentRenderer.getURLStem(arguments.siteID,url.path)##qstring#")>
+	<cfset getBean('contentRenderer').redirect("#application.configBean.getContext()##contentRenderer.getURLStem(arguments.siteID,url.path)##qstring#")>
 </cfif>
 </cffunction>
 
@@ -136,7 +136,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif arguments.isAdmin>
 			<cfreturn "--none--">	
 		<cfelse>
-			<cfset application.contentRenderer.redirect("#application.configBean.getContext()#/admin/")>
+			<cfset getBean('contentRenderer').redirect("#application.configBean.getContext()#/admin/")>
 		</cfif>
 	<cfelse>
 		<cfreturn rsSites.siteID>
@@ -164,7 +164,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset indexFile=last>
 			</cfif>
 			<cfif last neq indexFile and right(url.path,1) neq "/">
-				<cfset application.contentRenderer.redirect("#url.path#/")>
+				<cfset getBean('contentRenderer').redirect("#url.path#/")>
 			</cfif>
 		</cfif>
 		
@@ -275,7 +275,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset urlStem=application.configBean.getContext() & application.configBean.getStub() & "/" & siteid />
 
 	<cfif listFind("/go,/go/",url.path)>
-		<cfset application.contentRenderer.redirect("/")>
+		<cfset getBean('contentRenderer').redirect("/")>
 	</cfif>
 
 	<cfset rtrim=len(url.path)-len(application.configBean.getContext() & application.configBean.getStub()) - 1>
@@ -296,7 +296,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		
 		<cfif last neq indexFile and right(url.path,1) neq "/">
-			<cfset application.contentRenderer.redirect("#application.configBean.getStub()#/#url.path#/")>
+			<cfset getBean('contentRenderer').redirect("#application.configBean.getStub()#/#url.path#/")>
 		</cfif>
 	</cfif>
 	
@@ -317,7 +317,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset site=application.settingsManager.getSite(rsSites.siteID)>
 	<cftry>
 	<cfif site.isValidDomain(domain:listFirst(cgi.http_host,":"))>
-	<cfset application.contentRenderer.redirect("#application.configBean.getContext()##application.contentRenderer.getURLStem(rsSites.siteid,"")#")>
+	<cfset getBean('contentRenderer').redirect("#application.configBean.getContext()##getBean('contentRenderer').getURLStem(rsSites.siteid,"")#")>
 	</cfif>
 	<cfcatch></cfcatch>
 	</cftry>
@@ -325,9 +325,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	
 	<cfif listFirst(cgi.http_host,":") eq application.configBean.getAdminDomain()>
-		<cfset application.contentRenderer.redirect("#application.configBean.getContext()#/admin/")>
+		<cfset getBean('contentRenderer').redirect("#application.configBean.getContext()#/admin/")>
 	<cfelse>
-		<cfset application.contentRenderer.redirect("http://#rsSites.domain##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rsSites.siteid,"")#")>
+		<cfset getBean('contentRenderer').redirect("http://#rsSites.domain##application.configBean.getServerPort()##application.configBean.getContext()##getBean('contentRenderer').getURLStem(rsSites.siteid,"")#")>
 	</cfif>
 	
 </cffunction>
@@ -421,6 +421,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfif>
 
+</cffunction>
+
+<cffunction name="handleRootRequest">
+	<cfset var pageContent="">
+	<cfif application.configBean.getSiteIDInURLS()>
+		<cfset application.contentServer.redirect()>
+	<cfelse>
+		<cfif len(application.configBean.getStub())>
+			<cfset pageContent = application.contentServer.parseURLRootStub()>
+		<cfelse>	
+			<cfset pageContent = application.contentServer.parseURLRoot()>
+		</cfif>
+		<cfoutput>#pageContent#</cfoutput>
+	</cfif> 
 </cffunction>
 
 </cfcomponent>

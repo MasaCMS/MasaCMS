@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent output="false">
+<cfcomponent output="false" extends="mura.cfobject">
 
 <cfset variables.relationship="" />
 <cfset variables.field="" />
@@ -150,7 +150,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var tmp="" />
 	
 	<cftry>
-		<cfset tmp=application.contentRenderer.setDynamicContent(arguments.criteria) />
+		<cfset tmp=getBean('contentRenderer').setDynamicContent(arguments.criteria) />
 	<cfcatch><cfset tmp=arguments.criteria /></cfcatch>
 	</cftry>
 	<cfif tmp eq "null">

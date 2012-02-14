@@ -62,14 +62,11 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 <cffunction name="init" access="public" returntype="any" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="settingsManager" type="any" required="yes"/>
+<cfargument name="utility" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
 		<cfset variables.settingsManager=arguments.settingsManager />
+		<cfset variables.utility=arguments.utility>
 <cfreturn this />
-</cffunction>
-
-<cffunction name="setContentManager" output="false" returntyp="any">
-	<cfargument name="contentManager" type="any" required="yes"/>
-	<cfset variables.contentManager=arguments.contentManager>
 </cffunction>
 
 <cffunction name="readVersion" access="public" returntype="any" output="false">
@@ -178,7 +175,6 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		<cfargument name="contentBean" required="true" default="">
 		<cfset var rsContent = queryNew('empty') />
 		<cfset var beanArray=arrayNew(1)>
-		<cfset var utility="">
 		<cfset var bean=arguments.contentBean />
 		
 		<cfif not isObject(bean)>
@@ -197,9 +193,8 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		</cfif>
 		
 		<cfif rsContent.recordcount gt 1>
-				<cfset utility=getBean("utility")>
 				<cfloop query="rscontent">
-				<cfset bean=getBean("content").set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
+				<cfset bean=getBean("content").set(variables.utility.queryRowToStruct(rsContent,rsContent.currentrow))>
 				<cfset bean.setIsNew(0)>
 				<cfset bean.setPreserveID(rsContent.contentHistID)>
 				<cfset arrayAppend(beanArray,bean)>				
@@ -225,7 +220,6 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		<cfargument name="contentBean" required="true" default="">
 		<cfset var rsContent = queryNew('empty') />
 		<cfset var beanArray=arrayNew(1)>
-		<cfset var utility="">
 		<cfset var bean=arguments.contentBean />
 		
 		<cfif not isObject(bean)>
@@ -244,9 +238,8 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		</cfif>
 		
 		<cfif rsContent.recordcount gt 1>
-				<cfset utility=getBean("utility")>
 				<cfloop query="rscontent">
-				<cfset bean=getBean("content").set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
+				<cfset bean=getBean("content").set(variables.utility.queryRowToStruct(rsContent,rsContent.currentrow))>
 				<cfset bean.setIsNew(0)>
 				<cfset bean.setPreserveID(rsContent.contentHistID)>
 				<cfset arrayAppend(beanArray,bean)>				
@@ -272,7 +265,6 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		<cfargument name="contentBean" required="true" default="">
 		<cfset var rsContent = queryNew('empty') />
 		<cfset var beanArray=arrayNew(1)>
-		<cfset var utility="">
 		<cfset var bean=arguments.contentBean />
 		
 		<cfif not isObject(bean)>
@@ -291,9 +283,8 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		</cfif>
 		
 		<cfif rsContent.recordcount gt 1>
-				<cfset utility=getBean("utility")>
 				<cfloop query="rscontent">
-				<cfset bean=getBean("content").set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
+				<cfset bean=getBean("content").set(variables.utility.queryRowToStruct(rsContent,rsContent.currentrow))>
 				<cfset bean.setIsNew(0)>
 				<cfset bean.setPreserveID(rsContent.contentHistID)>
 				<cfset arrayAppend(beanArray,bean)>				
@@ -319,7 +310,6 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		<cfargument name="contentBean" required="true" default="">
 		<cfset var rsContent = queryNew('empty') />
 		<cfset var beanArray=arrayNew(1)>
-		<cfset var utility="">
 		<cfset var bean=arguments.contentBean />
 		
 		<cfif not isObject(bean)>
@@ -343,9 +333,8 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		</cfquery>
 
 		<cfif rsContent.recordcount gt 1>
-			<cfset utility=getBean("utility")>
 				<cfloop query="rscontent">
-				<cfset bean=getBean("content").set(utility.queryRowToStruct(rsContent,rsContent.currentrow))>
+				<cfset bean=getBean("content").set(variables.utility.queryRowToStruct(rsContent,rsContent.currentrow))>
 				<cfset bean.setIsNew(0)>
 				<cfset bean.setPreserveID(rsContent.contentHistID)>
 				<cfset arrayAppend(beanArray,bean)>				

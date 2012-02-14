@@ -55,11 +55,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
-<cffunction name="setCategoryManager" returntype="any" access="public" output="false">
-	<cfargument name="categoryManager">
-	<cfset variables.categoryManager=arguments.categoryManager/>
-</cffunction>
-
 <cffunction name="create" returntype="void" access="public" output="false">
 	<cfargument name="categoryBean" type="any" />
 	 

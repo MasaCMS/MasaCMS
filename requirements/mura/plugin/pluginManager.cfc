@@ -48,7 +48,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset variables.configBean="">
 <cfset variables.settingsManager="">
-<cfset variables.standardEventsHandlers="">
+<cfset variables.standardEventFactories=structNew()>
+<cfset variables.standardEventsHandler="">	
 <cfset variables.cacheFactories=structNew()>
 <cfset variables.siteListeners=structNew()>
 <cfset variables.globalListeners=structNew()>
@@ -66,7 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset setConfigBean(arguments.configBean)>
 	<cfset setSettingsManager(arguments.settingsManager)>
 	<cfset setUtility(arguments.utility)>
-	<cfset setstandardEventsHandler(arguments.standardEventsHandler)>
+	<cfset setStandardEventsHandler(arguments.standardEventsHandler)>
 	<cfset variables.fileWriter=arguments.fileWriter>
 	
 <cfreturn this />
@@ -169,7 +170,7 @@ inner join tcontent on (tplugins.moduleID=tcontent.moduleID)
 </cfif>
 </cfquery>
 
-<cfset purgeEventManagers()/>
+<cfset purgeStandardEventFactories()/>
 <cfset purgeCacheFactories()/>
 <cfset purgePluginConfigs()/>
 </cffunction>
@@ -374,7 +375,7 @@ select * from tplugins order by #arguments.orderby#
 						<cfset settingBean.setSettingValue(pluginXML.plugin.settings.setting[i].xmlAttributes.defaultValue)>
 					</cfif>
 				</cfif>
-				<cfset deployArgs["#settingBean.getname()#"]=application.contentRenderer.setDynamicContent(settingBean.getSettingValue())>
+				<cfset deployArgs["#settingBean.getname()#"]=getBean('contentRenderer').setDynamicContent(settingBean.getSettingValue())>
 			</cfloop>
 			
 			<cfset updateSettings(deployArgs)>
@@ -1809,19 +1810,19 @@ select * from tplugins order by #arguments.orderby#
 <cfreturn createObject("component","pluginScriptBean").init() />
 </cffunction>
 
-<cffunction name="purgeEventManagers" returntype="any" output="false">
-<cfset variables.eventManagers=structNew()/>
+<cffunction name="purgeStandardEventFactories" returntype="any" output="false">
+<cfset variables.standardEventFactories=structNew()/>
 </cffunction>
 
-<cffunction name="getEventManager" returntype="any" output="false">
+<cffunction name="getStandardEventFactory" returntype="any" output="false">
 <cfargument name="siteid" required="true" default="">
 
 
-	<cfif not structKeyExists(variables.eventManagers,arguments.siteid)>
-		<cfset variables.eventManagers[arguments.siteid]=createObject("component","pluginStandardEventManager").init(arguments.siteID,variables.standardEventsHandler,this)>
+	<cfif not structKeyExists(variables.standardEventFactories,arguments.siteid)>
+		<cfset variables.standardEventFactories[arguments.siteid]=createObject("component","pluginStandardEventFactory").init(arguments.siteID,variables.standardEventsHandler,this)>
 	</cfif>
 	
-	<cfreturn variables.eventManagers[arguments.siteid]>
+	<cfreturn variables.standardEventFactories[arguments.siteid]>
 </cffunction>
 
 <cffunction name="getCacheFactory" returntype="any" output="false">
@@ -2001,7 +2002,7 @@ select * from rs order by name
 		<cfreturn deployPlugin(siteID=arguments.siteID, pluginFile=arguments.pluginFile)>	
 	</cfif>
 	
-	<cfset errors=getBean("settingsManager").restoreBundle(
+	<cfset errors=application.settingsManager.restoreBundle(
 			BundleFile=arguments.bundleFile,
 			siteID=arguments.siteID,
 			keyMode="publish",

@@ -70,7 +70,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<constructor-arg name="changesetManager"><ref bean="changesetManager" /></constructor-arg>
 			<constructor-arg name="clusterManager"><ref bean="clusterManager" /></constructor-arg>
 		</bean>
-		
 		<cfif isDefined("server.coldfusion.productname") and server.coldfusion.productname eq "Railo">
 		<bean id="contentGateway" class="mura.content.contentGatewayRailo" singleton="true">
 		<cfelse>
@@ -83,6 +82,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<bean id="contentDAO" class="mura.content.contentDAO" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
+			<constructor-arg name="utility"><ref bean="utility" /></constructor-arg>
 		</bean>
 		<bean id="contentUtility" class="mura.content.contentUtility" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
@@ -372,6 +372,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</bean>
 		<bean id="feedDAO" class="mura.content.feed.feedDAO" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
+			<constructor-arg name="utility"><ref bean="utility" /></constructor-arg>
 		</bean>
 		<bean id="feedUtility" class="mura.content.feed.feedUtility" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
@@ -399,7 +400,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</bean>
 		<bean id="raterManager" class="mura.content.rater.raterManager" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
-			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 		</bean>
 		<bean id="dashboardManager" class="mura.dashboard.dashboardManager" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
@@ -448,13 +448,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<property name="configBean">
 			    <ref bean="configBean"/>
 			</property>
-			<property name="contentManager">
-			    <ref bean="contentManager"/>
-			</property>
 			<property name="trashManager">
 			    <ref bean="trashManager"/>
 			</property>
-		</bean>	
+		</bean>
 		<bean id="scriptProtectionFilter" class="mura.Portcullis" singleton="true" />
 		<bean id="formBuilderManager" class="mura.formBuilder.formBuilderManager" singleton="true"/>
 		<alias name="pluginManager" alias="eventManager"/>
