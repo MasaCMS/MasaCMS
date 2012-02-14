@@ -1753,7 +1753,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cffile action="upload" result="tempFile" filefield="NewFile#f#" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
 		<cfset theFileStruct=variables.fileManager.process(tempFile,arguments.data.siteid) />		
 		<cfset fileItem.title=tempFile.serverfile/>
-		<cfset fileItem.fileid=variables.fileManager.create(theFileStruct.fileObj, '', arguments.data.siteid, tempFile.ClientFile, tempFile.ContentType, tempFile.ContentSubType, tempFile.FileSize, "00000000000000000000000000000000000", tempFile.ServerFileExt, theFileStruct.fileObjSmall, theFileStruct.fileObjMedium) />
+		<cfset fileItem.fileid=variables.fileManager.create(theFileStruct.fileObj, '', arguments.data.siteid, tempFile.ClientFile, tempFile.ContentType, tempFile.ContentSubType, tempFile.FileSize, "00000000000000000000000000000000000", tempFile.ServerFileExt, theFileStruct.fileObjSmall, theFileStruct.fileObjMedium, variables.utility.getUUID(), theFileStruct.fileObjSource) />
 		<cfset fileItem.filename=tempFile.serverfile/>
 		<cfset fileBean=add(structCopy(fileItem)) />
 		<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
