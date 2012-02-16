@@ -46,6 +46,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent output="false" extends="mura.cfobject">
 
+<cfif isDefined("url.args") OR isDefined("form.args")>
+	<cfset injectMethod("call",callAsHTTPRequest)>
+</cfif>
+
 <cffunction name="purgeSiteCache" returntype="any" access="remote" output="false">
 	<cfargument name="siteid" required="true" default="">
 	<cfargument name="name" required="true" default="" hint="data, output or both">
@@ -261,6 +265,63 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="methodName" type="string">
 <cfargument name="authToken" type="string" default="">
 <cfargument name="args" default="#structNew()#" type="struct">
+
+<cfset var event="">
+<cfset var service="">	
+
+<!---
+CF9 requires a explicitly argument type do dynamic evaluation of data format won't work
+<cfif isJSON(arguments.args)>
+	<cfset arguments.args=deserializeJSON(arguments.args)>
+<cfelseif isWddx(arguments.args)>
+	<cfwddx action="wddx2cfml" input="#arguments.args#" output="arguments.args">
+<cfelseif not isStruct(arguments.args)>
+	<cfset arguments.args=structNew()>
+</cfif>
+--->
+
+<cfif (isDefined("session.mura.isLoggedIn") and session.mura.isLoggedIn)
+		or (len(arguments.authToken) and isValidSession(arguments.authToken))>
+	
+	<cfif len(arguments.authToken)>
+		<cfset session.mura=getSession(arguments.authToken)>
+		<cfset session.siteID=session.mura.siteID>
+		<cfset application.rbFactory.resetSessionLocale()>
+	</cfif>
+	
+	<cfif not isObject(arguments.args)>
+		<cfset event=createObject("component","mura.event")>
+		<cfset event.init(args)>
+		<cfset event.setValue("proxy",this)>
+	<cfelse>
+		<cfset event=args>
+	</cfif>
+
+	<cfset event.setValue("isProxyCall",true)>
+	<cfset event.setValue("serviceName",arguments.serviceName)>
+	<cfset event.setValue("methodName",arguments.methodName)>
+	<cfset service=getService(event.getValue('serviceName'))>
+	
+	<cfinvoke component="#service#" method="call">
+		<cfinvokeargument name="event" value="#event#" />
+	</cfinvoke>
+	
+	<cfif len(arguments.authToken)>
+		<cfset application.loginManager.logout()>
+	</cfif>
+	
+	<cfreturn event.getValue("__response__")>
+
+<cfelse>
+	<cfreturn "invalid session">
+</cfif>
+</cffunction>
+
+<cffunction name="callAsHTTPRequest" returntype="any" access="remote">
+<cfargument name="serviceName" type="string">
+<cfargument name="methodName" type="string">
+<cfargument name="authToken" type="string" default="">
+<cfargument name="args" default="" type="string">
 
 <cfset var event="">
 <cfset var service="">	
