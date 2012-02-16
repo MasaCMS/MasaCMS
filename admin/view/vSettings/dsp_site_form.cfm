@@ -13,7 +13,7 @@ You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
 Linking Mura CMS statically or dynamically with other modules constitutes
-the preparation of a derivative work based on Mura CMS. Thus, the terms and 	
+the preparation of a derivative work based on Mura CMS. Thus, the terms and   
 conditions of the GNU General Public License version 2 (GPL) cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission
@@ -82,12 +82,12 @@ to your own modified versions of Mura CMS.
  <img class="loadProgress tabPreloader" src="images/progress_bar.gif">
  <div class="tabs initActiveTab" style="display:none">
   <ul>
-	<cfloop from="1" to="#listlen(tabList)#" index="t">
-	<li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
-	</cfloop>
+  <cfloop from="1" to="#listlen(tabList)#" index="t">
+  <li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
+  </cfloop>
   </ul>
   <!--- Basic --->
-  	<div id="tabBasic">
+    <div id="tabBasic">
     <dl class="oneColumn">
       <dt class="first">Site ID <span>(Warning: no punctuation, dots or file delimiters)</span></dt>
       <dd>
@@ -97,7 +97,7 @@ to your own modified versions of Mura CMS.
       <dd>
         <input name="site" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getsite())#" size="50" maxlength="50">
       </dd>
-	 <dt>Tag Line</dt>
+   <dt>Tag Line</dt>
       <dd>
         <input name="tagline" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getTagline())#" size="50" maxlength="255">
       </dd>
@@ -105,28 +105,28 @@ to your own modified versions of Mura CMS.
       <dd>
         <input name="domain" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getdomain('production'))#" size="50" maxlength="255">
       </dd>
-	 <dt>Domain Alias List <span>(Line Delimited)</span></dt>
+   <dt>Domain Alias List <span>(Line Delimited)</span></dt>
       <dd>
         <textarea name="domainAlias">#HTMLEditFormat(request.siteBean.getDomainAlias())#</textarea>
       </dd>
-	 <dt>Locale</dt>
+   <dt>Locale</dt>
       <dd>
-		<select name="siteLocale">
-		<option value="">Default</option>	
-		<cfloop list="#listSort(server.coldfusion.supportedLocales,'textnocase','ASC')#" index="l">
+    <select name="siteLocale">
+    <option value="">Default</option> 
+    <cfloop list="#listSort(server.coldfusion.supportedLocales,'textnocase','ASC')#" index="l">
         <option value="#l#"<cfif request.siteBean.getSiteLocale() eq l> selected</cfif>>#l#</option>
-		</cfloop>
-		</select>
+    </cfloop>
+    </select>
       </dd>
 
-	  <dt>Theme</dt>
+    <dt>Theme</dt>
       <dd>
-		<select name="theme">
-		<cfif request.siteBean.hasNonThemeTemplates()><option value="">None</option></cfif>	
-		<cfloop query="rsThemes">
+    <select name="theme">
+    <cfif request.siteBean.hasNonThemeTemplates()><option value="">None</option></cfif> 
+    <cfloop query="rsThemes">
         <option value="#rsThemes.name#"<cfif rsThemes.name eq request.siteBean.getTheme() or (not len(request.siteBean.getSiteID()) and rsThemes.currentRow eq 1)> selected</cfif>>#rsThemes.name#</option>
-		</cfloop>
-		</select>
+    </cfloop>
+    </select>
       </dd>
       <dt>Page Limit</dt>
       <dd>
@@ -141,16 +141,16 @@ to your own modified versions of Mura CMS.
         <input name="nextN" type="text" class="text short" value="#HTMLEditFormat(request.siteBean.getnextN())#" size="5" maxlength="5">
       </dd>
       <dt>Site Caching</dt>
-      <dd>		 
+      <dd>     
        <input type="radio" name="cache" value="0"<cfif request.siteBean.getcache() neq 1> CHECKED</CFIF>>
         Off&nbsp;&nbsp;
        <input type="radio" name="cache" value="1"<cfif request.siteBean.getcache() eq 1> CHECKED</CFIF>>
         On
-	  <dt>Cache Capacity <span>(0=Unlimited)</span></dt>
+    <dt>Cache Capacity <span>(0=Unlimited)</span></dt>
       <dd>
         <input name="cacheCapacity" type="text" class="text short" value="#HTMLEditFormat(request.siteBean.getCacheCapacity())#" size="15" maxlength="15">
       </dd>
-	  <dt>Cache Free Memory Threshold <span>(Defaults to 60%)</span></dt>
+    <dt>Cache Free Memory Threshold <span>(Defaults to 60%)</span></dt>
       <dd>
         <input name="cacheFreeMemoryThreshold" type="text" class="text short" value="#HTMLEditFormat(request.siteBean.getCacheFreeMemoryThreshold())#" size="3" maxlength="3">%
       </dd>
@@ -163,26 +163,26 @@ to your own modified versions of Mura CMS.
         <input type="radio" name="locking" value="top" <cfif request.siteBean.getlocking() eq 'top'> CHECKED</CFIF>>
         Top</dd>
         <dt>Allow Comments to be Posted Without Site Admin Approval</dt>
-		<dd>
+    <dd>
         <input type="radio" name="CommentApprovalDefault" value="1" <cfif request.siteBean.getCommentApprovalDefault()  eq 1> CHECKED</CFIF>>
         Yes&nbsp;
         <input type="radio" name="CommentApprovalDefault" value="0" <cfif request.siteBean.getCommentApprovalDefault() neq 1> CHECKED</CFIF>>
        No
 </dd>
        <dt>Static HTML Export Location (BETA)
-		<cfif len(request.siteBean.getExportLocation()) and not directoryExists(request.siteBean.getExportLocation())>
-			<p class="error">ERROR: The current value is not a valid directory</p>
-		</cfif>
-		</dt>
+    <cfif len(request.siteBean.getExportLocation()) and not directoryExists(request.siteBean.getExportLocation())>
+      <p class="error">ERROR: The current value is not a valid directory</p>
+    </cfif>
+    </dt>
       <dd>
         <input name="exportLocation" type="text" class="text" value="#request.siteBean.getExportLocation()#" maxlength="100"/>
       </dd> 
      <!--- 
-	  <dt>Google API Key <a href="http://www.google.com/apis/maps/signup.html" target="_blank">(Required for Google Maps Support)</a></dt>
+    <dt>Google API Key <a href="http://www.google.com/apis/maps/signup.html" target="_blank">(Required for Google Maps Support)</a></dt>
       <dd>
         <input name="googleAPIKey" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getGoogleAPIKey())#">
       </dd>
-	   --->
+     --->
       <!--- <dt>Google Analytics Account #</dt>
       <dd>
         <input name="googleAnalyticsAcct" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getGoogleAnalyticsAcct())#">
@@ -260,7 +260,7 @@ to your own modified versions of Mura CMS.
           </cfloop>
         </select>
       </dd>
-	  <dt>Display Object Pool</dt>
+    <dt>Display Object Pool</dt>
       <dd>
         <select name="displayPoolID">
           <option value="">This site</option>
@@ -285,12 +285,12 @@ to your own modified versions of Mura CMS.
         On</dd>
       <dt>Email Broadcaster</dt>
       <dd>
-		<!--- <p class="notice">NOTE: The Email Broadcaster is not supported within Mura Bundles.</p> --->
+    <!--- <p class="notice">NOTE: The Email Broadcaster is not supported within Mura Bundles.</p> --->
         <input type="radio" name="EmailBroadcaster" value="0" <cfif request.siteBean.getemailbroadcaster() neq 1> CHECKED</CFIF>>
         Off&nbsp;&nbsp;
         <input type="radio" name="EmailBroadcaster" value="1" <cfif request.siteBean.getemailbroadcaster()  eq 1> CHECKED</CFIF>>
         On
-		</dd>
+    </dd>
       <dt>Email Broadcaster Limit</dt>
       <dd>
         <input name="EmailBroadcasterLimit" type="text" class="text medium" value="#HTMLEditFormat(request.siteBean.getEmailBroadcasterLimit())#" size="50" maxlength="50">
@@ -309,12 +309,12 @@ to your own modified versions of Mura CMS.
         On</dd>
       <dt>Advertisement Manager</dt>
       <dd>
-		<!--- <p class="notice">NOTE: The Advertisement Manager is not supported within Mura Bundles and Staging to Production configurations.</p> --->
+    <!--- <p class="notice">NOTE: The Advertisement Manager is not supported within Mura Bundles and Staging to Production configurations.</p> --->
         <input type="radio" name="adManager" value="0" <cfif request.siteBean.getadManager() neq 1> CHECKED</CFIF>>
         Off&nbsp;&nbsp;
         <input type="radio" name="adManager" value="1" <cfif request.siteBean.getadManager() eq 1> CHECKED</CFIF>>
         On</dd>
-	  <dt>Change Sets Manager</dt>
+    <dt>Change Sets Manager</dt>
       <dd>
         <input type="radio" name="hasChangesets" value="0" <cfif request.siteBean.getHasChangesets() neq 1> CHECKED</CFIF>>
         Off&nbsp;&nbsp;
@@ -334,11 +334,11 @@ to your own modified versions of Mura CMS.
       <dd>
         <input name="MailServerIP" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getMailServerIP())#" size="50" maxlength="50">
       </dd>
-	  <dt>Mail Server SMTP Port</dt>
+    <dt>Mail Server SMTP Port</dt>
       <dd>
         <input name="MailServerSMTPPort" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getMailServerSMTPPort())#" size="5" maxlength="5">
       </dd>
-	  <dt>Mail Server POP Port</dt>
+    <dt>Mail Server POP Port</dt>
       <dd>
         <input name="MailServerPOPPort" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getMailServerPOPPort())#" size="5" maxlength="5">
       </dd>
@@ -350,32 +350,32 @@ to your own modified versions of Mura CMS.
       <dd>
         <input name="MailServerPassword" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getMailServerPassword())#" size="50" maxlength="50">
       </dd>
-	<dt>Use TLS</dt>
-		<dd>
+  <dt>Use TLS</dt>
+    <dd>
         <input type="radio" name="mailServerTLS" value="true" <cfif request.siteBean.getmailServerTLS()  eq "true"> CHECKED</CFIF>>
         Yes&nbsp;
         <input type="radio" name="mailServerTLS" value="false" <cfif request.siteBean.getmailServerTLS() eq "false"> CHECKED</CFIF>>
        No
-	  </dd>
-	  <dt>Use SSL</dt>
-		<dd>
+    </dd>
+    <dt>Use SSL</dt>
+    <dd>
         <input type="radio" name="mailServerSSL" value="true" <cfif request.siteBean.getmailServerSSL()  eq "true"> CHECKED</CFIF>>
         Yes&nbsp;
         <input type="radio" name="mailServerSSL" value="false" <cfif request.siteBean.getmailServerSSL() eq "false"> CHECKED</CFIF>>
        No
-	  </dd>
-	  <dt>Use Default SMTP Server</dt>
-		<dd>
+    </dd>
+    <dt>Use Default SMTP Server</dt>
+    <dd>
         <input type="radio" name="useDefaultSMTPServer" value="1" <cfif request.siteBean.getUseDefaultSMTPServer()  eq 1> CHECKED</CFIF>>
         Yes&nbsp;
         <input type="radio" name="useDefaultSMTPServer" value="0" <cfif request.siteBean.getUseDefaultSMTPServer() neq 1> CHECKED</CFIF>>
        No
-	  </dd>
+    </dd>
       <dt class="separate">User Login Info Request Script</dt>
       <dd>Available Dynamic Content: ##firstName## ##lastName## ##username## ##password## ##contactEmail## ##contactName## ##returnURL##<br/>
         <textarea name="sendLoginScript">#HTMLEditFormat(request.siteBean.getSendLoginScript())#</textarea>
       </dd>
-	    <dt>Mailing List Confirmation Script</dt>
+      <dt>Mailing List Confirmation Script</dt>
       <dd>Available Dynamic Content: ##listName## ##contactName## ##contactEmail## ##returnURL##<br/>
         <textarea name="mailingListConfirmScript">#HTMLEditFormat(request.siteBean.getMailingListConfirmScript())#</textarea>
       </dd>
@@ -383,11 +383,11 @@ to your own modified versions of Mura CMS.
       <dd>Available Dynamic Content: ##firstName## ##lastName## ##username## ##contactEmail## ##contactName##<br/>
         <textarea name="accountActivationScript">#HTMLEditFormat(request.siteBean.getAccountActivationScript())#</textarea>
       </dd>
-	   <dt>Public Submission Approval Script</dt>
+     <dt>Public Submission Approval Script</dt>
       <dd>Available Dynamic Content: ##returnURL## ##contentName## ##parentName## ##contentType##
         <textarea name="publicSubmissionApprovalScript">#HTMLEditFormat(request.siteBean.getPublicSubmissionApprovalScript())#</textarea>
       </dd>
-	  <dt>Event Reminder Script</dt>
+    <dt>Event Reminder Script</dt>
       <dd>Available Dynamic Content: ##returnURL## ##eventTitle## ##startDate## ##startTime## ##siteName## ##eventContactName## ##eventContactAddress## ##eventContactCity## ##eventContactState## ##eventContactZip## ##eventContactPhone##
         <textarea name="reminderScript">#HTMLEditFormat(request.siteBean.getReminderScript())#</textarea>
       </dd>
@@ -399,35 +399,35 @@ to your own modified versions of Mura CMS.
       <!--- Galleries --->
       <div id="tabImages">
       <dl class="oneColumn">
-	  <dt class="first">Small (Thumbnail) Image Size</dt>
+    <dt class="first">Small (Thumbnail) Image Size</dt>
       <dd>
         <input name="gallerySmallScale" type="text" class="text short" value="#request.siteBean.getGallerySmallScale()#" size="5" maxlength="5">px
       </dd>
-	    <dt>Constrain Small Images by</dt>
+      <dt>Constrain Small Images by</dt>
       <dd>
         <input type="radio" name="gallerySmallScaleBy" value="x" <cfif request.siteBean.getgallerySmallScaleBy() eq 'x'> CHECKED</CFIF>>
        Width&nbsp;&nbsp;
         <input type="radio" name="gallerySmallScaleBy" value="y" <cfif request.siteBean.getgallerySmallScaleBy() eq 'y'> CHECKED</CFIF>>
         Height
-		 <input type="radio" name="gallerySmallScaleBy" value="s" <cfif request.siteBean.getgallerySmallScaleBy() neq 'x' and request.siteBean.getgallerySmallScaleBy() neq 'y'> CHECKED</CFIF>>
+     <input type="radio" name="gallerySmallScaleBy" value="s" <cfif request.siteBean.getgallerySmallScaleBy() neq 'x' and request.siteBean.getgallerySmallScaleBy() neq 'y'> CHECKED</CFIF>>
         Square <span>(Recommended)</span></dd>
 <dt>Medium Image Size</dt>
       <dd>
         <input name="galleryMediumScale" type="text" class="text short" value="#request.siteBean.getGalleryMediumScale()#" size="5" maxlength="5">px
       </dd>
-	   <dt>Constrain Medium Images by</dt>
+     <dt>Constrain Medium Images by</dt>
       <dd>
         <input type="radio" name="galleryMediumScaleBy" value="x" <cfif request.siteBean.getgalleryMediumScaleBy() eq 'x'> CHECKED</CFIF>>
        Width&nbsp;&nbsp;
         <input type="radio" name="galleryMediumScaleBy" value="y" <cfif request.siteBean.getgalleryMediumScaleBy() neq 's' and request.siteBean.getgalleryMediumScaleBy() neq 'x'> CHECKED</CFIF>>
         Height
-		 <input type="radio" name="galleryMediumScaleBy" value="s" <cfif request.siteBean.getgalleryMediumScaleBy() eq 's' > CHECKED</CFIF>>
+     <input type="radio" name="galleryMediumScaleBy" value="s" <cfif request.siteBean.getgalleryMediumScaleBy() eq 's' > CHECKED</CFIF>>
         Square <span>(Recommended)</span></dd>
          <dt>Large (Full) Image Size</dt>
       <dd>
         <input name="galleryMainScale" type="text" class="text short" value="#request.siteBean.getgalleryMainScale()#" size="5" maxlength="5">px
       </dd>
-	    <dt>Constrain Large Images by</dt>
+      <dt>Constrain Large Images by</dt>
       <dd>
         <input type="radio" name="galleryMainScaleBy" value="x" <cfif request.siteBean.getgalleryMainScaleBy() eq 'x'> CHECKED</CFIF>>
        Width&nbsp;&nbsp;
@@ -445,13 +445,13 @@ to your own modified versions of Mura CMS.
         No&nbsp;&nbsp;
         <input type="radio" name="extranetpublicreg" value="1" <cfif request.siteBean.getextranetpublicreg()  eq 1> CHECKED</CFIF>>
         Yes</dd>
-	   <dt>Custom Login URL</dt>
+     <dt>Custom Login URL</dt>
       <dd>
-        <input name="loginURL" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getLoginURL())#" maxlength="255">
+        <input name="loginURL" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getLoginURL(parseMuraTag=false))#" maxlength="255">
       </dd>
-	   <dt>Custom Profile URL</dt>
+     <dt>Custom Profile URL</dt> 
       <dd>
-        <input name="editProfileURL" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getEditProfileURL())#" maxlength="255">
+        <input name="editProfileURL" type="text" class="text" value="#HTMLEditFormat(request.siteBean.getEditProfileURL(parseMuraTag=false))#" maxlength="255">
       </dd>
      <!---  <dt>Allow Public Submission In To Portals</dt>
       <dd>
@@ -466,7 +466,7 @@ to your own modified versions of Mura CMS.
         No&nbsp;&nbsp;
         <input type="radio" name="extranetssl" value="1" <cfif request.siteBean.getextranetssl()  eq 1> CHECKED</CFIF>>
         Yes</dd>
-		<dt>Email Site Registration Notifications to:</dt>
+    <dt>Email Site Registration Notifications to:</dt>
       <dd>
         <input name="ExtranetPublicRegNotify" type="text" class="text" value="#request.siteBean.getExtranetPublicRegNotify()#" size="50" maxlength="50">
       </dd>
@@ -477,28 +477,28 @@ to your own modified versions of Mura CMS.
       <dl class="oneColumn">
       <dt class="first">Number of Display Regions</dt>
       <dd>
-      	<select name="columnCount">
-      		<option value="1" <cfif request.siteBean.getcolumnCount() eq 1 or request.siteBean.getcolumnCount() eq 0> selected</cfif>> 1</option>
-      		<cfloop from="2" to="20" index="i">
-				<option value="#i#" <cfif request.siteBean.getcolumnCount() eq i> selected</cfif>>#i#</option> 	
-			</cfloop>
-      	</select>
+        <select name="columnCount">
+          <option value="1" <cfif request.siteBean.getcolumnCount() eq 1 or request.siteBean.getcolumnCount() eq 0> selected</cfif>> 1</option>
+          <cfloop from="2" to="20" index="i">
+        <option value="#i#" <cfif request.siteBean.getcolumnCount() eq i> selected</cfif>>#i#</option>  
+      </cfloop>
+        </select>
        </dd>
       <dt>Primary Display Region <span>(Dynamic System Content such as Login Forms and Search Results get displayed here)</span></dt>
       <dd>
        <select name="primaryColumn">
-      		<cfloop from="1" to="20" index="i">
-				<option value="#i#" <cfif request.siteBean.getPrimaryColumn() eq i> selected</cfif>>#i#</option> 	
-			</cfloop>
-      	</select>
-	  </dd>
+          <cfloop from="1" to="20" index="i">
+        <option value="#i#" <cfif request.siteBean.getPrimaryColumn() eq i> selected</cfif>>#i#</option>  
+      </cfloop>
+        </select>
+    </dd>
       <dt>Display Region Names <span>("^" Delimiter)</span></dt>
       <dd>
         <input name="columnNames" type="text" class="text long" value="#HTMLEditFormat(request.siteBean.getcolumnNames())#">
       </dd>
       </dl>
       </div>
-	 <!--- BEING EXTENDED ATTRIBUTES --->
+   <!--- BEING EXTENDED ATTRIBUTES --->
     <cfif arrayLen(extendSets)>
     <div id="tabExtendedAttributes">   
       <cfset started=false />
@@ -539,106 +539,106 @@ to your own modified versions of Mura CMS.
       <div id="tabBundles">
       <dl class="oneColumn">
 
-	<dt class="first"> 
-	  	Are you restoring a site from a backup bundle?
-	  </dt>
-	  <dd>
-	  <label for=""><input type="radio" name="bundleImportKeyMode" value="copy" checked="checked">No - <em>Assign New Keys to Imported Items</em></label>
-	  <label for=""><input type="radio" name="bundleImportKeyMode" value="publish">Yes - <em>Maintain All Keys from Imported Items</em></label>
-	  </dd>
-	  <dt> 
-	  	Include:
-	  </dt>
-	  <dd>
-		  <ul>
-			  <li>
-			  	<label for="bundleImportContentMode"><input id="bundleImportContentMode" name="bundleImportContentMode" value="all" type="checkbox" onchange="if(this.checked){jQuery('##contentRemovalNotice').show();}else{jQuery('##contentRemovalNotice').hide();}">Site Architecture &amp; Content</label>
-			 </li>
-			 <li id="bundleImportUsersModeLI"<cfif not (request.siteBean.getPublicUserPoolID() eq request.siteBean.getSiteID() and request.siteBean.getPrivateUserPoolID() eq request.siteBean.getSiteID())> style="display:none;"</cfif>>
-			  	<label for="bundleImportUsersMode"><input id="bundleImportUsersMode" name="bundleImportUsersMode" value="all" type="checkbox"  onchange="if(this.checked){jQuery('##userNotice').show();}else{jQuery('##userNotice').hide();}">Site Members &amp; Administrative Users</label>
-			 </li>
-			 <li>
-			  	<label for="bundleImportMailingListMembersMode"><input id="bundleImportMailingListMembersMode" name="bundleImportMailingListMembersMode" value="all" type="checkbox">Mailing Lists Members</label>
-			 </li>
-			  <li>
-			  	<label for="bundleImportFormDataMode"><input id="bundleImportFormDataMode" name="bundleImportFormDataMode" value="all" type="checkbox">Form Response Data</label>
-			 </li>
-			 <li>
-			  	<label for="bundleImportPluginMode"><input id="bundleImportPluginMode" name="bundleImportPluginMode" value="all" type="checkbox">All Plugins</label>
-			 </li>
-		 </ul>
-		 <p class="notice" style="display:none" id="contentRemovalNotice"><strong>Important:</strong> When importing content from a Mura bundle ALL of the existing content will be deleted.</p>
-		 <p class="notice" style="display:none" id="userNotice"><strong>Important:</strong> Importing users will remove all existing user data which may include the account that you are currently logged in as.</p>
-	 </dd>
-	 <dt> 
-	  	Which rendering files would you like to import?
-	  </dt>
-	  <dd>
-	  <label for=""><input type="radio" name="bundleImportRenderingMode" value="all" onchange="if(this.value!='none'){jQuery('##themeNotice').show();}else{jQuery('##themeNotice').hide();}">All</label>
-	  <label for=""><input type="radio" name="bundleImportRenderingMode" value="theme" onchange="if(this.value!='none'){jQuery('##themeNotice').show();}else{jQuery('##themeNotice').hide();}">Theme Only</label>
-	  <label for=""><input type="radio" name="bundleImportRenderingMode" value="none" checked="checked" onchange="if(this.value!='none'){jQuery('##themeNotice').show();}else{jQuery('##themeNotice').hide();}">None</label>
-	  <p class="notice" style="display:none" id="themeNotice"><strong>Important:</strong> Your site's theme assignment and gallery image settings will be updated.</p>
-		  <!---
-			<select name="bundleImportRenderingMode" onchange="if(this.value!='none'){jQuery('##themeNotice').show();}else{jQuery('##themeNotice').hide();}">
-		  	<option>Select Rendering Files</option>
-			<option value="none">None</option>
-			<option value="all">The entire siteID directory</option>
-			<option value="theme">Theme only</option>
-		  </select>	
-			--->
-	 </dd>
-	  <!---
+  <dt class="first"> 
+      Are you restoring a site from a backup bundle?
+    </dt>
+    <dd>
+    <label for=""><input type="radio" name="bundleImportKeyMode" value="copy" checked="checked">No - <em>Assign New Keys to Imported Items</em></label>
+    <label for=""><input type="radio" name="bundleImportKeyMode" value="publish">Yes - <em>Maintain All Keys from Imported Items</em></label>
+    </dd>
+    <dt> 
+      Include:
+    </dt>
+    <dd>
+      <ul>
+        <li>
+          <label for="bundleImportContentMode"><input id="bundleImportContentMode" name="bundleImportContentMode" value="all" type="checkbox" onchange="if(this.checked){jQuery('##contentRemovalNotice').show();}else{jQuery('##contentRemovalNotice').hide();}">Site Architecture &amp; Content</label>
+       </li>
+       <li id="bundleImportUsersModeLI"<cfif not (request.siteBean.getPublicUserPoolID() eq request.siteBean.getSiteID() and request.siteBean.getPrivateUserPoolID() eq request.siteBean.getSiteID())> style="display:none;"</cfif>>
+          <label for="bundleImportUsersMode"><input id="bundleImportUsersMode" name="bundleImportUsersMode" value="all" type="checkbox"  onchange="if(this.checked){jQuery('##userNotice').show();}else{jQuery('##userNotice').hide();}">Site Members &amp; Administrative Users</label>
+       </li>
+       <li>
+          <label for="bundleImportMailingListMembersMode"><input id="bundleImportMailingListMembersMode" name="bundleImportMailingListMembersMode" value="all" type="checkbox">Mailing Lists Members</label>
+       </li>
+        <li>
+          <label for="bundleImportFormDataMode"><input id="bundleImportFormDataMode" name="bundleImportFormDataMode" value="all" type="checkbox">Form Response Data</label>
+       </li>
+       <li>
+          <label for="bundleImportPluginMode"><input id="bundleImportPluginMode" name="bundleImportPluginMode" value="all" type="checkbox">All Plugins</label>
+       </li>
+     </ul>
+     <p class="notice" style="display:none" id="contentRemovalNotice"><strong>Important:</strong> When importing content from a Mura bundle ALL of the existing content will be deleted.</p>
+     <p class="notice" style="display:none" id="userNotice"><strong>Important:</strong> Importing users will remove all existing user data which may include the account that you are currently logged in as.</p>
+   </dd>
+   <dt> 
+      Which rendering files would you like to import?
+    </dt>
+    <dd>
+    <label for=""><input type="radio" name="bundleImportRenderingMode" value="all" onchange="if(this.value!='none'){jQuery('##themeNotice').show();}else{jQuery('##themeNotice').hide();}">All</label>
+    <label for=""><input type="radio" name="bundleImportRenderingMode" value="theme" onchange="if(this.value!='none'){jQuery('##themeNotice').show();}else{jQuery('##themeNotice').hide();}">Theme Only</label>
+    <label for=""><input type="radio" name="bundleImportRenderingMode" value="none" checked="checked" onchange="if(this.value!='none'){jQuery('##themeNotice').show();}else{jQuery('##themeNotice').hide();}">None</label>
+    <p class="notice" style="display:none" id="themeNotice"><strong>Important:</strong> Your site's theme assignment and gallery image settings will be updated.</p>
+      <!---
+      <select name="bundleImportRenderingMode" onchange="if(this.value!='none'){jQuery('##themeNotice').show();}else{jQuery('##themeNotice').hide();}">
+        <option>Select Rendering Files</option>
+      <option value="none">None</option>
+      <option value="all">The entire siteID directory</option>
+      <option value="theme">Theme only</option>
+      </select> 
+      --->
+   </dd>
+    <!---
 <dd>
-		  
-	  </dd>
+      
+    </dd>
 --->
-	  
-	  <dt><a class="tooltip">Select Bundle File From Server<cfif application.configBean.getPostBundles()> (Preferred)</cfif><span>You can deploy a bundle that exists on the server by entering the complete server path to the Site Bundle here. This eliminates the need to upload the file via your web browser, avoiding some potential timeout issues.</span></a></dt>
+    
+    <dt><a class="tooltip">Select Bundle File From Server<cfif application.configBean.getPostBundles()> (Preferred)</cfif><span>You can deploy a bundle that exists on the server by entering the complete server path to the Site Bundle here. This eliminates the need to upload the file via your web browser, avoiding some potential timeout issues.</span></a></dt>
       <dd>
         <input class="text" type="text" name="serverBundlePath" id="serverBundlePath" value=""><input type="button" value="Browse Server" id="serverBundleBrowser"/>
-		<script>
-		jQuery(document).ready( function() {
-			var finder = new CKFinder();
-				finder.basePath = '#application.configBean.getContext()#/tasks/widgets/ckfinder/';
-				finder.selectActionFunction = setServerBundlePath;
-				finder.resourceType='Application_Root';
-			
-				 jQuery("##serverBundleBrowser").bind("click", function(){
-					 finder.popup();
-				 });		
-		});
-		
-		function setServerBundlePath(fileUrl) {
-			var check=fileUrl.split(".");
-			if(check[check.length-1].toLowerCase() == 'zip'){
-			jQuery('##serverBundlePath').val("#JSStringFormat('#application.configBean.getWebRoot()##application.configBean.getFileDelim()#')#" + fileUrl);
-			}
-		}
-		</script>
+    <script>
+    jQuery(document).ready( function() {
+      var finder = new CKFinder();
+        finder.basePath = '#application.configBean.getContext()#/tasks/widgets/ckfinder/';
+        finder.selectActionFunction = setServerBundlePath;
+        finder.resourceType='Application_Root';
+      
+         jQuery("##serverBundleBrowser").bind("click", function(){
+           finder.popup();
+         });    
+    });
+    
+    function setServerBundlePath(fileUrl) {
+      var check=fileUrl.split(".");
+      if(check[check.length-1].toLowerCase() == 'zip'){
+      jQuery('##serverBundlePath').val("#JSStringFormat('#application.configBean.getWebRoot()##application.configBean.getFileDelim()#')#" + fileUrl);
+      }
+    }
+    </script>
       </dd>
-	  <cfif application.configBean.getPostBundles()>
-	  	<dt><a class="tooltip">Upload Bundle File <span>Uploading large files via a web browser can produce inconsistent results.</span></a></dt>
-	  	<dd><input type="file" name="bundleFile" accept=".zip"/></dd>
-	  <cfelse>
-	  	<input type="hidden" name="bundleFile" value=""/>
-	  </cfif>
-	  </dl>
-	  </div>
+    <cfif application.configBean.getPostBundles()>
+      <dt><a class="tooltip">Upload Bundle File <span>Uploading large files via a web browser can produce inconsistent results.</span></a></dt>
+      <dd><input type="file" name="bundleFile" accept=".zip"/></dd>
+    <cfelse>
+      <input type="hidden" name="bundleFile" value=""/>
+    </cfif>
+    </dl>
+    </div>
     </div>
     <input type="hidden" name="action" value="update">
     <div id="actionButtons">
-	<cfif request.siteBean.getsiteid() eq ''> 
+  <cfif request.siteBean.getsiteid() eq ''> 
       <input type="button" class="submit" onclick="submitForm(document.forms.form1,'add');" value="Add" />
     <cfelse>
-		<cfif request.siteBean.getsiteid() neq 'default'>
-		<input type="button" class="submit" onclick="return confirmDialog('#JSStringFormat("WARNING: A deleted site and all of it''s files cannot be recovered. Are you sure that you want to continue?")#','index.cfm?fuseaction=cSettings.updateSite&action=delete&siteid=#request.siteBean.getSiteID()#');" value="Delete" />
-		</cfif>
-      	<input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="Update" />
+    <cfif request.siteBean.getsiteid() neq 'default'>
+    <input type="button" class="submit" onclick="return confirmDialog('#JSStringFormat("WARNING: A deleted site and all of it''s files cannot be recovered. Are you sure that you want to continue?")#','index.cfm?fuseaction=cSettings.updateSite&action=delete&siteid=#request.siteBean.getSiteID()#');" value="Delete" />
+    </cfif>
+        <input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="Update" />
      </cfif>
-	 </div>
-	 <div id="actionIndicator" style="display: none;">
-		<img class="loadProgress" src="#application.configBean.getContext()#/admin/images/progress_bar.gif">
-	</div>
+   </div>
+   <div id="actionIndicator" style="display: none;">
+    <img class="loadProgress" src="#application.configBean.getContext()#/admin/images/progress_bar.gif">
+  </div>
   </form>
 </cfoutput>
 
