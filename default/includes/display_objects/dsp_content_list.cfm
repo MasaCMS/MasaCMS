@@ -159,7 +159,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfelse>
 								<cfloop from="1" to="#arguments.tagLen#" index="arguments.t">
 									<cfset arguments.tag=#trim(listgetAt(arguments.item.getValue('tags'),arguments.t))#>
-									<a href="#$.createHREF(filename=$.event('currentFilenameAdjusted'),queryString='tag=#urlEncodedFormat(arguments.tag)#')#">#arguments.tag#</a><cfif arguments.tagLen gt arguments.t>, </cfif>
+									<a href="#$.createHREF(filename=$.event('currentFilenameAdjusted'),queryString='tag=#urlEncodedFormat(arguments.tag)#&newSearch=true&display=search')#">#arguments.tag#</a><cfif arguments.tagLen gt arguments.t>, </cfif>
 								</cfloop>
 								</cfif>
 							</p>
@@ -230,7 +230,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								#$.rbKey('tagcloud.tags')#: 
 								<cfloop from="1" to="#arguments.tagLen#" index="t">
 								<cfset arguments.tag=#trim(listgetAt(arguments.item.getValue('tags'),t))#>
-								<a href="#$.createHREF(filename=$.event('currentFilenameAdjusted'),queryString='tag=#urlEncodedFormat(arguments.tag)#')#">#arguments.tag#</a><cfif arguments.tagLen gt t>, </cfif>
+								<a href="#$.createHREF(filename=$.event('currentFilenameAdjusted'),queryString='tag=#urlEncodedFormat(arguments.tag)#&newSearch=true&display=search')#">#arguments.tag#</a><cfif arguments.tagLen gt t>, </cfif>
 								</cfloop>
 							</dd>
 						</cfif>
