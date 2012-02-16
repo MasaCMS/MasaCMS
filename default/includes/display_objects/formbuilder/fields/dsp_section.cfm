@@ -48,11 +48,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfsilent>
 <cfsavecontent variable="strField">
 	<cfoutput>
-	</ol>
 <cfif request.fieldsetopen eq true></fieldset><cfset request.fieldsetopen = false /></cfif>
 <fieldset id="set-#field.name#">
 	<legend>#field.label#</legend>
-	<ol>
 	</cfoutput>
 </cfsavecontent>
 <!--- note that fieldsets are open --->
