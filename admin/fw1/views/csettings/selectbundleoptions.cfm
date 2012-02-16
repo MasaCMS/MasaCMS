@@ -151,7 +151,7 @@ function checkAll (form) {
       <p class="notice"><strong>Note:</strong> The Advertising Module &amp; Email Broadcaster are not included in Mura Bundles.</p>
       <!--- </cfif>  --->
     
-    <a href="javascript:;" onClick="return submitBundle();" class="submit"><span>Create Bundle</span></a> </div>
+    <input type="button" onClick="return submitBundle();" value="Create Bundle" class="submit" /></div>
     <div id="actionIndicator" style="display: none;"> <img class="loadProgress" src="#application.configBean.getContext()#/admin/images/progress_bar.gif"> </div>
     <input type="hidden" name="fuseaction" value="cSettings.createBundle"/>
     <input type="hidden" name="siteID" value="#HTMLEditFormat(rc.siteID)#"/>
