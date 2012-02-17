@@ -47,6 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent output="false" extends="mura.cfobject">
 
 <cfif isDefined("url.args") OR isDefined("form.args")>
+	<cfset injectMethod("callWithStructArgs",call)>
 	<cfset injectMethod("call",callWithStringArgs)>
 </cfif>
 
@@ -319,7 +320,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelseif not isStruct(arguments.args)>
 		<cfset arguments.args=structNew()>
 	</cfif>
-	<cfreturn call(argumentCollection=arguments)>
+	<cfreturn callWithStructArgs(argumentCollection=arguments)>
 </cffunction>
 
 </cfcomponent>
