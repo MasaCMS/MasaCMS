@@ -73,7 +73,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfset args = ArrayNew(1)>
     <cfset args[1] = tags.tagcount>
-</cfsilent><li class="#class#"><span><cfif tags.tagcount gt 1> #rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemsare'), args)#<cfelse>#rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemis'), args)#</cfif> tagged with </span><a href="#$.createHREF(filename=$.event('currentFilenameAdjusted'),queryString='tag=#urlEncodedFormat(tags.tag)#')#" class="tag">#HTMLEditFormat(tags.tag)#</a></li>
+</cfsilent><li class="#class#"><span><cfif tags.tagcount gt 1> #rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemsare'), args)#<cfelse>#rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemis'), args)#</cfif> tagged with </span><a href="#$.createHREF(filename=$.event('currentFilenameAdjusted'),queryString='tag=#urlEncodedFormat(tags.tag)#&newSearch=true&display=search')#" class="tag">#HTMLEditFormat(tags.tag)#</a></li>
 </cfloop>
 </ol>
 <cfelse>

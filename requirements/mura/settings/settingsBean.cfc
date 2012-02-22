@@ -45,7 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.bean.beanExtendable" output="false">
-
+ 
 <cfproperty name="siteID" type="string" default="" required="true" />
 <cfproperty name="site" type="string" default="" required="true" />
 <cfproperty name="tagLine" type="string" default="" required="true" />
@@ -379,7 +379,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getLoginURL" returntype="String" access="public" output="false">
 	<cfargument name="parseMuraTag" default="true">
 	
-	<cfif variables.instance.loginURL neq ''>
+	<cfif variables.instance.loginURL neq ''> 
 		<cfif arguments.parseMuraTag>	
 			<cfreturn getContentRenderer().setDynamicContent(variables.instance.LoginURL) />
 		<cfelse>
@@ -391,7 +391,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getEditProfileURL" returntype="String" access="public" output="false">
-	<cfargument name="parseMuraTag" default="true">
+	<cfargument name="parseMuraTag" default="true"> 
 	<cfif variables.instance.EditProfileURL neq ''>
 		<cfif arguments.parseMuraTag>	
 			<cfreturn getContentRenderer().setDynamicContent(variables.instance.EditProfileURL) />

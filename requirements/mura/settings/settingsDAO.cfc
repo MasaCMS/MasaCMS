@@ -304,7 +304,7 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
 		 reminderScript = <cfqueryparam  null="#iif(arguments.bean.getreminderScript() neq '',de('no'),de('yes'))#" cfsqltype="cf_sql_longvarchar" value="#arguments.bean.getreminderScript()#" />,
 		
 		 ExtranetPublicRegNotify=<cfqueryparam  null="#iif(arguments.bean.getExtranetPublicRegNotify() neq '',de('no'),de('yes'))#" cfsqltype="cf_sql_longvarchar" value="#arguments.bean.getExtranetPublicRegNotify()#" />,
-		 loginURL=<cfqueryparam  null="#iif(arguments.bean.getloginURL() neq '',de('no'),de('yes'))#" cfsqltype="cf_sql_varchar" value="#arguments.bean.getloginURL(parseMuraTag=false)#" />,
+		 loginURL=<cfqueryparam  null="#iif(arguments.bean.getloginURL() neq '',de('no'),de('yes'))#" cfsqltype="cf_sql_varchar" value="#arguments.bean.getloginURL(parseMuraTag=false)#" />, 
 		 editProfileURL=<cfqueryparam  null="#iif(arguments.bean.getEditProfileURL() neq '',de('no'),de('yes'))#" cfsqltype="cf_sql_varchar" value="#arguments.bean.getEditProfileURL(parseMuraTag=false)#" />,
 		 CommentApprovalDefault = #arguments.bean.getCommentApprovalDefault()#,
  		 accountActivationScript=<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.bean.getAccountActivationScript() neq '',de('no'),de('yes'))#" value="#arguments.bean.getAccountActivationScript()#" />,

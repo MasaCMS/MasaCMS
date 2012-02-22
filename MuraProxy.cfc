@@ -46,6 +46,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent output="false" extends="mura.cfobject">
 
+<cfif isDefined("url.args") OR isDefined("form.args")>
+	<cfset injectMethod("callWithStructArgs",call)>
+	<cfset injectMethod("call",callWithStringArgs)>
+</cfif>
+
 <cffunction name="purgeSiteCache" returntype="any" access="remote" output="false">
 	<cfargument name="siteid" required="true" default="">
 	<cfargument name="name" required="true" default="" hint="data, output or both">
@@ -265,17 +270,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var event="">
 <cfset var service="">	
 
-<!---
-CF9 requires a explicitly argument type do dynamic evaluation of data format won't work
-<cfif isJSON(arguments.args)>
-	<cfset arguments.args=deserializeJSON(arguments.args)>
-<cfelseif isWddx(arguments.args)>
-	<cfwddx action="wddx2cfml" input="#arguments.args#" output="arguments.args">
-<cfelseif not isStruct(arguments.args)>
-	<cfset arguments.args=structNew()>
-</cfif>
---->
-
 <cfif (isDefined("session.mura.isLoggedIn") and session.mura.isLoggedIn)
 		or (len(arguments.authToken) and isValidSession(arguments.authToken))>
 	
@@ -311,6 +305,22 @@ CF9 requires a explicitly argument type do dynamic evaluation of data format won
 <cfelse>
 	<cfreturn "invalid session">
 </cfif>
+</cffunction>
+
+<cffunction name="callWithStringArgs" returntype="any" access="remote">
+	<cfargument name="serviceName" type="string">
+	<cfargument name="methodName" type="string">
+	<cfargument name="authToken" type="string" default="">
+	<cfargument name="args" default="" type="string">
+
+	<cfif isJSON(arguments.args)>
+		<cfset arguments.args=deserializeJSON(arguments.args)>
+	<cfelseif isWddx(arguments.args)>
+		<cfwddx action="wddx2cfml" input="#arguments.args#" output="arguments.args">
+	<cfelseif not isStruct(arguments.args)>
+		<cfset arguments.args=structNew()>
+	</cfif>
+	<cfreturn callWithStructArgs(argumentCollection=arguments)>
 </cffunction>
 
 </cfcomponent>

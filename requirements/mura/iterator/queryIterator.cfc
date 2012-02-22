@@ -85,6 +85,10 @@
 	<cffunction name="hasNext" access="public" output="false" returntype="boolean">
 		<cfreturn currentIndex() lt getRecordCount() and currentIndex() lt (getPageIndex() *  variables.maxRecordsPerPage ) />
 	</cffunction>
+
+	<cffunction name="peek" access="public" output="false" returntype="any">
+			<cfreturn packageRecord( currentIndex() + 1) />
+	</cffunction>
 	
 	<cffunction name="next" access="public" output="false" returntype="any">
 		<cfset variables.recordIndex = currentIndex() + 1 />
@@ -101,7 +105,8 @@
 	</cffunction>
 	
 	<cffunction name="packageRecord" access="public" output="false" returntype="any">
-		<cfreturn queryRowToStruct(variables.records,currentIndex()) />
+		<cfargument name="recordIndex" default="#currentIndex()#">
+		<cfreturn queryRowToStruct(variables.records,arguments.recordIndex) />
 	</cffunction>
 	
 	<cffunction name="reset" access="public" output="false">

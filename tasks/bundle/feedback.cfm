@@ -2,6 +2,7 @@
 Access Restricted.
 <cfabort>
 </cfif>
+<cfsetting requestTimeout = "3000">
 <cfparam name="URL.siteID" default="">
 <cfflush interval="5">
 <html>

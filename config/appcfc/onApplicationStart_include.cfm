@@ -195,6 +195,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<!--- End beanServicePlaceHolders --->
 
+		<cfsavecontent variable="variables.temp"><cfoutput><cfinclude template="/mura/bad_words.txt"></cfoutput></cfsavecontent>
+		<cfset application.badwords = ReReplaceNoCase(trim(variables.temp), "," , "|" , "ALL")/> 
+
 		<cfset tracePoint=tracer.initTracePoint("Instantiating classExtensionManager")> 
 		<cfset application.classExtensionManager=application.configBean.getClassExtensionManager() />
 		<cfset application.classExtensionManager.setContentRenderer(application.serviceFactory.getBean("contentRenderer"))>
