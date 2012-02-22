@@ -148,7 +148,6 @@ and tplugins.deployed=1
 </cfif>
 </cfquery>
 
-
 <cfquery name="variables.rsScripts" dbtype="query">
 select * from rsScripts1
 union
@@ -1630,7 +1629,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfif len(arguments.moduleID)>
 	and moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#">
 	</cfif>
-	order by pluginID
+	order by loadPriority
 	</cfquery>
 <cfreturn rs/>
 
