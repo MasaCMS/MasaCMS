@@ -1,5 +1,4 @@
-<cfprocessingdirective pageencoding="utf-8">
-<cfsetting enablecfoutputonly="Yes">
+<cfsilent><cfsetting enablecfoutputonly="Yes">
 <!--- DP_ParseBBML version 1.1 --->
 <!---
 Author: Jim Davis, the Depressed Press of Boston
@@ -210,10 +209,10 @@ eInfo.e0111 = StructNew();
 Input = Replace(Input, "«", "&laquo;", "All");
 Input = Replace(Input, "»", "&raquo;", "All");
 	// The O Graves substitute angle brackets withing in Lists
-Input = Replace(Input, "Ò", "&Ograve;", "All");
-Input = Replace(Input, "ò", "&ograve;", "All");
+Input = Replace(Input, "#Chr(210)#", "&Ograve;", "All");
+Input = Replace(Input, "#Chr(242)#", "&ograve;", "All");
 	// The O Slash replaces list items
-Input = Replace(Input, "Ø", "&Oslash;", "All");
+Input = Replace(Input, "#Chr(216)#", "&Oslash;", "All");
 	// The Section mark substitutes quotes in generated HTML
 Input = Replace(Input, "§", "&sect;", "All");
 	// U graves/acutes are used to protect non-tag square brackets
@@ -228,117 +227,35 @@ Input = Replace(Input, "£", "&pound;", "All");
 SQLBlocks = ArrayNew(1);
 CodeBlocks = ArrayNew(1);
 
+CurPos=1;
+while (FindNoCase("[code]", Input, CurPos) GT 0) {
+	sCodePos = FindNoCase("[code]", Input, CurPos) + 6;
+	eCodePos = FindNoCase("[/code]", Input, sCodePos);
+	if (eCodePos EQ 0) {
+		break;
+	} else {
+		CurPos = sCodePos;
+	};
+	CurCodeBlock = Mid(Input, sCodePos, eCodePos - sCodePos);
+	Input = RemoveChars(Input, sCodePos, eCodePos - sCodePos);
+	CurCodeBlock = replace(CurCodeBlock,"#chr(13)##chr(10)#","<br>","all");
+	CurCodeBlock = "<div class='code'><code>#CurCodeBlock#</code></div>";
+	ArrayAppend(CodeBlocks, CurCodeBlock);
+	Input = Insert("***#ArrayLen(CodeBlocks)#***", Input, sCodePos - 1);
+}
+
 	// Convert BBML, if needed
 if ( ConvertBBML AND Find("[", Input) AND Find("]", Input) ) {
-
-		// Extract SQL Blocks apply formatting
-	CurPos=1;
-	while (FindNoCase("[sql]", Input, CurPos) GT 0) {
-		sSQLPos = FindNoCase("[sql]", Input, CurPos) + 5;
-		eSQLPos = FindNoCase("[/sql]", Input, sSQLPos);
-		if (eSQLPos EQ 0) {
-			break;
-		} else {
-			CurPos = sSQLPos;
-		};
-		CurSQLBlock = Mid(Input, sSQLPos, eSQLPos - sSQLPos);
-		Input = RemoveChars(Input, sSQLPos, eSQLPos - sSQLPos);
-		Input = Insert("***#Evaluate(ArrayLen(SQLBlocks) + 1)#***", Input, sSQLPos - 1);
-			// Clean up quotes and angle brackets in the code
-		CurSQLBlock = Replace(CurSQLBlock, """", "&quot;", "ALL");
-		CurSQLBlock = Replace(CurSQLBlock, "<", "&lt;", "ALL");
-		CurSQLBlock = Replace(CurSQLBlock, ">", "&gt;", "ALL");
-			// The following code submitted by Jochem van Dieten.  Used with Permission.
-		reservedWords = "ABSOLUTE|ACTION|ADD|ADMIN|AFTER|AGGREGATE|ALIAS|ALL|ALLOCATE|ALTER|AND|ANY|ARE|ARRAY|AS|ASC|ASSERTION|AT|AUTHORIZATION|AVG|BEFORE|BEGIN|BETWEEN|BINARY|BIT|BIT_LENGTH|BLOB|BOOLEAN|BOTH|BREADTH|BY|CALL|CASCADE|CASCADED|CASE|CAST|CATALOG|CHAR|CHAR_LENGTH|CHARACTER|CHARACTER_LENGTH|CHECK|CLASS|CLOB|CLOSE|COALESCE|COLLATE|COLLATION|COLUMN|COMMIT|COMPLETION|CONNECT|CONNECTION|CONSTRAINT|CONSTRAINTS|CONSTRUCTOR|CONTINUE|CONVERT|CORRESPONDING|COUNT|CREATE|CROSS|CUBE|CURRENT|CURRENT_DATE|CURRENT_PATH|CURRENT_ROLE|CURRENT_TIME|CURRENT_TIMESTAMP|CURRENT_USER|CURSOR|CYCLE|DATA|DATE|DAY|DEALLOCATE|DEC|DECIMAL|DECLARE|DEFAULT|DEFERRABLE|DEFERRED|DELETE|DEPTH|DEREF|DESC|DESCRIBE|DESCRIPTOR|DESTROY|DESTRUCTOR|DETERMINISTIC|DIAGNOSTICS|DICTIONARY|DISCONNECT|DISTINCT|DOMAIN|DOUBLE|DROP|DYNAMIC|EACH|ELSE|END|END-EXEC|EQUALS|ESCAPE|EVERY|EXCEPT|EXCEPTION|EXEC|EXECUTE|EXISTS|EXTERNAL|EXTRACT|FALSE|FETCH|FIRST|FLOAT|FOR|FOREIGN|FOUND|FREE|FROM|FULL|FUNCTION|GENERAL|GET|GLOBAL|GO|GOTO|GRANT|GROUP|GROUPING|HAVING|HOST|HOUR|IDENTITY|IGNORE|IMMEDIATE|IN|INDICATOR|INITIALIZE|INITIALLY|INNER|INOUT|INPUT|INSENSITIVE|INSERT|INT|INTEGER|INTERSECT|INTERVAL|INTO|IS|ISOLATION|ITERATE|JOIN|KEY|LANGUAGE|LARGE|LAST|LATERAL|LEADING|LEFT|LESS|LEVEL|LIKE|LIMIT|LOCAL|LOCALTIME|LOCALTIMESTAMP|LOCATOR|LOWER|MAP|MATCH|MAX|MIN|MINUTE|MODIFIES|MODIFY|MODULE|MONTH|NAMES|NATIONAL|NATURAL|NCHAR|NCLOB|NEW|NEXT|NO|NONE|NOT|NULL|NULLIF|NUMERIC|OBJECT|OCTET_LENGTH|OF|OFF|OLD|ON|ONLY|OPEN|OPERATION|OPTION|OR|ORDER|ORDINALITY|OUT|OUTER|OUTPUT|OVERLAPS|PAD|PARAMETER|PARAMETERS|PARTIAL|PATH|POSITION|POSTFIX|PRECISION|PREFIX|PREORDER|PREPARE|PRESERVE|PRIMARY|PRIOR|PRIVILEGES|PROCEDURE|PUBLIC|READ|READS|REAL|RECURSIVE|REF|REFERENCES|REFERENCING|RELATIVE|RESTRICT|RESULT|RETURN|RETURNS|REVOKE|RIGHT|ROLE|ROLLBACK|ROLLUP|ROUTINE|ROW|ROWS|SAVEPOINT|SCHEMA|SCOPE|SCROLL|SEARCH|SECOND|SECTION|SELECT|SEQUENCE|SESSION|SESSION_USER|SET|SETS|SIZE|SMALLINT|SOME|SPACE|SPECIFIC|SPECIFICTYPE|SQL|SQLEXCEPTION|SQLSTATE|SQLWARNING|START|STATE|STATEMENT|STATIC|STRUCTURE|SUBSTRING|SUM|SYSTEM_USER|TABLE|TEMPORARY|TERMINATE|THAN|THEN|TIME|TIMESTAMP|TIMEZONE_HOUR|TIMEZONE_MINUTE|TO|TRAILING|TRANSACTION|TRANSLATE|TRANSLATION|TREAT|TRIGGER|TRIM|TRUE|UNDER|UNION|UNIQUE|UNKNOWN|UNNEST|UPDATE|UPPER|USAGE|USER|USING|VALUE|VALUES|VARCHAR|VARIABLE|VARYING|VIEW|WHEN|WHENEVER|WHERE|WITH|WITHOUT|WORK|WRITE|YEAR|ZONE";
-		CurSQLBlock = REReplaceNoCase(REReplaceNoCase(" " & CurSQLBlock & " ","([^[:alnum:]])(#reservedWords#)([^[:alnum:]])","\1<strong>\2</strong>\3","All"),"([^[:alnum:]])(#reservedWords#)([^[:alnum:]])","\1<strong>\2</strong>\3","All");
-			// End of code submitted by Jochem van Dieten.
-		CurSQLBlock = "<pre>#Trim(CurSQLBlock)#</pre>";
-		ArrayAppend(SQLBlocks, CurSQLBlock);
-	};
-
-		// Extract Code Blocks and apply formatting if CF_ColoredCode if needed
-	CurPos=1;
-	while (FindNoCase("[code]", Input, CurPos) GT 0) {
-		sCodePos = FindNoCase("[code]", Input, CurPos) + 6;
-		eCodePos = FindNoCase("[/code]", Input, sCodePos);
-		if (eCodePos EQ 0) {
-			break;
-		} else {
-			CurPos = sCodePos;
-		};
-		CurCodeBlock = Mid(Input, sCodePos, eCodePos - sCodePos);
-		Input = RemoveChars(Input, sCodePos, eCodePos - sCodePos);
-		if (UseCF_ColoredCode) {
-				// The following code copyrighted by Dain Anderson, www.cfcomet.com.  Used with Permission
-			/* Pointer to Attributes.Data */
-			this = CurCodeBlock;
-			/* Convert special characters so they do not get interpreted literally; italicize and boldface */
-			this = REReplaceNoCase(this, "&([[:alpha:]]{2,});", "«B»«I»&amp;\1;«/I»«/B»", "ALL");
-			/* Convert many standalone (not within quotes) numbers to blue, ie. myValue = 0 */
-			this = REReplaceNoCase(this, "(gt|lt|eq|is|,|\(|\))([[:space:]]?[0-9]{1,})", "\1«FONT COLOR=BLUE»\2«/FONT»", "ALL");
-			/* Convert normal tags to navy blue */
-			this = REReplaceNoCase(this, "<(/?)((!d|b|c(e|i|od|om)|d|e|f(r|o)|h|i|k|l|m|n|o|p|q|r|s|t(e|i|t)|u|v|w|x)[^>]*)>", "«FONT COLOR=NAVY»<\1\2>«/FONT»", "ALL");
-			/* Convert all table-related tags to teal */
-			this = REReplaceNoCase(this, "<(/?)(t(a|r|d|b|f|h)([^>]*)|c(ap|ol)([^>]*))>", "«FONT COLOR=TEAL»<\1\2>«/FONT»", "ALL");
-			/* Convert all form-related tags to orange */
-			this = REReplaceNoCase(this, "<(/?)((bu|f(i|or)|i(n|s)|l(a|e)|se|op|te)([^>]*))>", "«FONT COLOR=FF8000»<\1\2>«/FONT»", "ALL");
-			/* Convert all tags starting with 'a' to green, since the others aren't used much and we get a speed gain */
-			this = REReplaceNoCase(this, "<(/?)(a[^>]*)>", "«FONT COLOR=GREEN»<\1\2>«/FONT»", "ALL");
-			/* Convert all image and style tags to purple */
-			this = REReplaceNoCase(this, "<(/?)((im[^>]*)|(sty[^>]*))>", "«FONT COLOR=PURPLE»<\1\2>«/FONT»", "ALL");
-			/* Convert all ColdFusion, SCRIPT and WDDX tags to maroon */
-			this = REReplaceNoCase(this, "<(/?)((cf[^>]*)|(sc[^>]*)|(wddx[^>]*))>", "«FONT COLOR=MAROON»<\1\2>«/FONT»", "ALL");
-			/* Convert all inline "//" comments to gray (revised) */
-			this = REReplaceNoCase(this, "([^:/]\/{2,2})([^[:cntrl:]]+)($|[[:cntrl:]])", "«FONT COLOR=GRAY»«I»\1\2«/I»«/FONT»", "ALL");
-			/* Convert all multi-line script comments to gray */
-			this = REReplaceNoCase(this, "(\/\*[^\*]*\*\/)", "«FONT COLOR=GRAY»«I»\1«/I»«/FONT»", "ALL");
-			/* Convert all HTML and ColdFusion comments to gray */	
-			/* The next 10 lines of code can be replaced with the commented-out line following them, if you do care whether HTML and CFML 
-			   comments contain colored markup. */
-			EOF = 0; BOF = 1;
-			while(NOT EOF) {
-				Match = REFindNoCase("<!---?([^-]*)-?-->", this, BOF, True);
-				if (Match.pos[1]) {
-					Orig = Mid(this, Match.pos[1], Match.len[1]);
-					Chunk = REReplaceNoCase(Orig, "«(/?[^»]*)»", "", "ALL");
-					BOF = ((Match.pos[1] + Len(Chunk)) + 31); // 31 is the length of the FONT tags in the next line
-					this = Replace(this, Orig, "«FONT COLOR=GRAY»«I»#Chunk#«/I»«/FONT»");
-				} else EOF = 1;
-			}
-			// Use this next line of code instead of the last 10 lines if you want (faster)
-			// this = REReplaceNoCase(this, "(<!---?[^-]*-?-->)", "«FONT COLOR=GRAY»«I»\1«/I»«/FONT»", "ALL");
-			/* Convert all quoted values to blue */
-			this = REReplaceNoCase(this, """([^""]*)""", "«FONT COLOR=BLUE»""\1""«/FONT»", "ALL");
-			/* Convert left containers to their ASCII equivalent */
-			this = REReplaceNoCase(this, "<", "&lt;", "ALL");
-			/* Revert all pseudo-containers back to their real values to be interpreted literally (revised) */
-			this = REReplaceNoCase(this, "«([^»]*)»", "<\1>", "ALL");
-			/* ***New Feature*** Convert all FILE and UNC paths to active links (i.e, file:///, \\server\, c:\myfile.cfm) */
-			this = REReplaceNoCase(this, "(((file:///)|([a-z]:\\)|(\\\\[[:alpha:]]))+(\.?[[:alnum:]\/=^@*|:~`+$%?_##& -])+)", "<A TARGET=""_blank"" HREF=""\1"">\1</A>", "ALL");
-			/* Convert all URLs to active links (revised) */
-			this = REReplaceNoCase(this, "([[:alnum:]]*://[[:alnum:]\@-]*(\.[[:alnum:]][[:alnum:]-]*[[:alnum:]]\.)?[[:alnum:]]{2,}(\.?[[:alnum:]\/=^@*|:~`+$%?_##&-])+)", "<A TARGET=""_blank"" HREF=""\1"">\1</A>", "ALL");
-			/* Convert all email addresses to active mailto's (revised) */
-			this = REReplaceNoCase(this, "(([[:alnum:]][[:alnum:]_.-]*)?[[:alnum:]]@[[:alnum:]][[:alnum:].-]*\.[[:alpha:]]{2,})", "<A HREF=""mailto:\1"">\1</A>", "ALL");
-			this = "<DIV STYLE=""padding-left : 10px;""><PRE>#this#</PRE></DIV>";
-				// The above code copyrighted by Dain Anderson, www.cfcomet.com.  Used with Permission
-			CurCodeBlock = this;
-		} else {
-			CurCodeBlock = HTMLCodeFormat(CurCodeBlock);
-		};
-		ArrayAppend(CodeBlocks, CurCodeBlock);
-		Input = Insert("***#ArrayLen(CodeBlocks)#***", Input, sCodePos - 1);
-	};
-
 		// Set non-tag brackets to safe entities
-	Input = ReReplaceNoCase(Input, "\[(/?)((\*)|(b)|(bold)|(i)|(italic)|(u)|(underline)|(s)|(strikethrough)|(sup)|(superscript)|(center)|(sub)|(subscript)|(size(=[0-9]*)?)|(color(=[##0-9A-Za-z]*)?)|(q)|(quote)|(sql)|(code)|(pre)|(preformatted)|((url|link)(=([^]]*))?)|(email(=([^]]*))?)|(img)|(image)|(list(=(1|a|A|i|I))?))\]", "ù\1\2ú", "All");
+	Input = ReReplaceNoCase(Input, "\[(/?)((\*)|(b)||(heading)|(bold)|(i)|(italic)|(u)|(underline)|(s)|(strikethrough)|(sup)|(superscript)|(center)|(sub)|(subscript)|(size(=[0-9]*)?)|(color(=[##0-9A-Za-z]*)?)|(q)|(quote)|(sql)|(code)|(pre)|(preformatted)|((url|link)(=([^]]*))?)|(email(=([^]]*))?)|(img)|(image)|(list(=(1|a|A|i|I))?))\]", "ù\1\2ú", "All");
 	Input = Replace(Input, "[", "Ù", "All");
 	Input = Replace(Input, "]", "Ú", "All");
 	Input = Replace(Input, "ù", "[", "All");
 	Input = Replace(Input, "ú", "]", "All");
 
 		// Validate the [size] tag's limits	
-	MaximumFontSize = 25;
-	MinimumFontSize = 8;
+	MaximumFontSize = 300;
+	MinimumFontSize = 75;
 	CurPos = 1;
 	while (ReFindNoCase("\[size=([0-9]*)\]", Input, CurPos) GT 0) {
 		CurPos = ReFindNoCase("\[size=([0-9]*)\]", Input, CurPos, True);
@@ -365,37 +282,41 @@ if ( ConvertBBML AND Find("[", Input) AND Find("]", Input) ) {
 		Input = ReReplaceNoCase(Input, "\[(sup|superscript)\]([^[]*)\[/\1\]", "«sup»\2«/sup»", "All");
 		Input = ReReplaceNoCase(Input, "\[(sub|subscript)\]([^[]*)\[/\1\]", "«sub»\2«/sub»", "All");
 		Input = ReReplaceNoCase(Input, "\[center\]([^[]*)\[/center\]", "«div align=§center§»\1«/div»", "All");
+
 			// Convert "Color" and "Size"
-		Input = ReReplaceNoCase(Input, "\[size=([0-9]+)\]([^[]*)\[/size(=\1)?\]", "«span style=§font-size: \1pt§»\2«/span»", "All");
+		Input = ReReplaceNoCase(Input, "\[size=([0-9]+)\]([^[]*)\[/size(=\1)?\]", "«span style=§font-size: \1% !important§»\2«/span»", "All");
 		Input = ReReplaceNoCase(Input, "\[color=([##0-9A-Za-z]+)\]([^[]*)\[/color(=\1)?\]", "«span style=§color: \1§»\2«/span»", "All");
 
 			// Convert Special Formatting
-		Input = ReReplaceNoCase(Input, "\[(q|quote)\]([^[]*)\[/\1\]", "«blockquote»\2«/blockquote»", "All");
+		Input = ReReplaceNoCase(Input, "\[(q|quote)\]([^[]*)\[/\1\]", "«blockquote»«span class=§blockquote§»\2«/span»«/blockquote»", "All");
 		Input = ReReplaceNoCase(Input, "\[(code)\]([^[]*)\[/\1\]", "«code»\2«/code»", "All");
 		Input = ReReplaceNoCase(Input, "\[(sql)\]([^[]*)\[/\1\]", "«sql»\2«/sql»", "All");
 		Input = ReReplaceNoCase(Input, "\[(pre|preformatted)\]([^[]*)\[/\1\]", "«pre»\2«/pre»", "All");
+
+			// Meld Forums Additions
+		Input = ReReplaceNoCase(Input, "\[(h3|heading)\]([^[]*)\[/\1\]", "«h3»\2«/h3»", "All");
 
 			// Convert Images
 		Input = ReReplaceNoCase(Input, "\[(img|image)\]([^[«]*)\[/(img|image)\]", "«img src=§\2§»", "All");
 	
 			// Convert Links
-		Input = ReReplaceNoCase(Input, "\[(url|link)=([^]]*)\]([^[£]*)\[/\1\]", "£ href=§\2§»\3«/a»", "All");
-		Input = ReReplaceNoCase(Input, "\[(url|link)\]([^[£]*)\[/\1\]", "£ href=§\2§»\2«/a»", "All");
+		Input = ReReplaceNoCase(Input, "\[(url|link)=([^]]*)\]([^[£]*)\[/\1\]", "£ rel=§nofollow§ href=§\2§»\3«/a»", "All");
+		Input = ReReplaceNoCase(Input, "\[(url|link)\]([^[£]*)\[/\1\]", "£  rel=§nofollow§ href=§\2§»\2«/a»", "All");
 	
 			// Convert Email Links
-		Input = ReReplaceNoCase(Input, "\[email=([^]]*)\]([^[£]*)\[/email\]", "£ href=§mailto:\1§»\2«/a»", "All");
-		Input = ReReplaceNoCase(Input, "\[email\]([^[(£]*)\[/email\]", "£ href=§mailto:\1§»\1«/a»", "All");
+		Input = ReReplaceNoCase(Input, "\[email=([^]]*)\]([^[£]*)\[/email\]", "£ rel=§nofollow§ href=§mailto:\1§»\2«/a»", "All");
+		Input = ReReplaceNoCase(Input, "\[email\]([^[(£]*)\[/email\]", "£ rel=§nofollow§ href=§mailto:\1§»\1«/a»", "All");
 	
 			// Convert Lists
-			// List brackets get replaced with "Ò" and "ò" to distingush them for validation
-		Input = Replace(Input, "[*]", "Ø", "ALL");
-		Input = ReReplaceNoCase(Input, "\[list\][[:space:]]*Ø([^[]*)\[/list\]", "ÒulòØ\1Ò/ulò", "All");
-		Input = ReReplaceNoCase(Input, "\[list=(1|a|A|i|I)\][[:space:]]*Ø([^[]*)\[/list(=\1)?\]", "Òol type=§\1§òØ\2Ò/olò", "All");
-
+			// List brackets get replaced with "#Chr(210)#" and "#Chr(242)#" to distingush them for validation
+		Input = Replace(Input, "[*]", "#Chr(216)#", "ALL");
+		Input = ReReplaceNoCase(Input, "\[list\][[:space:]]*#Chr(216)#([^[]*)\[/list\]", "#Chr(210)#ul#Chr(242)##Chr(216)#\1#Chr(210)#/ul#Chr(242)#", "All");
+		Input = ReReplaceNoCase(Input, "\[list=(1|a|A|i|I)\][[:space:]]*#Chr(216)#([^[]*)\[/list(=\1)?\]", "#Chr(210)#ol type=§\1§#Chr(242)##Chr(216)#\2#Chr(210)#/ol#Chr(242)#", "All");
+	
 			// Clean Up lists
 			// Add end item tags and remove line feeds and carriage returns
 		do {
-			bList = ReFind("Ò(ul|ol)( type=§.§)?ò", Input, 1);
+			bList = ReFind("#Chr(210)#(ul|ol)( type=§.§)?#Chr(242)#", Input, 1);
 			if ( bList NEQ 0 ) {
 				CurPos = bList;
 				ItemCnt = 0;
@@ -407,7 +328,7 @@ if ( ConvertBBML AND Find("[", Input) AND Find("]", Input) ) {
 						CurPos = CurPos - 1;
 					};
 						// Convert item tags to pseudo code and insert End item tags
-					if ( Compare(Mid(Input, CurPos, 1), "Ø" ) EQ 0 ) {
+					if ( Compare(Mid(Input, CurPos, 1), "#Chr(216)#" ) EQ 0 ) {
 						Input = RemoveChars(Input, CurPos, 1);
 						Input = Insert("«li»", Input, CurPos - 1);
 						ItemCnt = ItemCnt + 1;
@@ -417,7 +338,7 @@ if ( ConvertBBML AND Find("[", Input) AND Find("]", Input) ) {
 						};
 					};
 						// When we find the beginning of the list end tag, stop
-					if ( Compare(Mid(Input, CurPos, 1), "Ò" ) EQ 0 ) {
+					if ( Compare(Mid(Input, CurPos, 1), "#Chr(210)#" ) EQ 0 ) {
 						Input = RemoveChars(Input, CurPos, 1);
 						Input = Insert("«", Input, CurPos - 1);
 						Input = Insert("«/li»", Input, CurPos - 1);
@@ -429,13 +350,13 @@ if ( ConvertBBML AND Find("[", Input) AND Find("]", Input) ) {
 		} while (bList NEQ 0);
 
 			// Set the List tags back to psuedo-code
-		Input = Replace(Input, "ò", "»", "ALL");
+		Input = Replace(Input, "#Chr(242)#", "»", "ALL");
 
 		// If no changes have been made, break out of the loop - we're done!
 	} while (TempInput NEQ Input);
 
 		// Convert Orphaned List Items back to BBML code
-	Input = Replace(Input, "Ø", "[*]", "ALL");
+	Input = Replace(Input, "#Chr(216)#", "[*]", "ALL");
 };
 
 	// Convert Smilies if Needed
@@ -481,8 +402,8 @@ if (ConvertHTML) {
 
 Input = "«p»" & Input & "«/p»";
 Input = Replace(Input, "#Chr(13)##Chr(10)##Chr(13)##Chr(10)#", "«/p»«p»", "ALL");
-Input = Replace(Input, "#Chr(13)##Chr(10)#", "«br»", "ALL");
-
+Input = Replace(Input, "#Chr(13)##Chr(10)#", "«/p»«p»", "ALL");
+	
 	// Reset non-tag brackets to brackets
 Input = Replace(Input, "Ù", "[", "All");
 Input = Replace(Input, "Ú", "]", "All");
@@ -494,22 +415,13 @@ if (ArrayLen(CodeBlocks) GT 0) {
 	};
 };
 
-
-
-	// Reinsert SQL blocks
-if (ArrayLen(SQLBlocks) GT 0) {
-	for (Cnt = 1; Cnt LTE ArrayLen(SQLBlocks); Cnt = Cnt + 1) {
-		Input = ReplaceNoCase(Input, "«sql»***#Cnt#***«/sql»", SQLBlocks[Cnt]);
-	};
-};
-
 	// Convert Psuedo-Tags to angle brackets
 	// All code-HTML conversion must be completed by this point!
 Input = Replace(Input, "§", """", "ALL");
 Input = Replace(Input, "«", "<", "ALL");
 Input = Replace(Input, "»", ">", "ALL");
 Input = Replace(Input, "£", "<a", "ALL");
-//writeOutput(input);
+
 </cfscript>
 
 <cfelse>
@@ -541,13 +453,17 @@ do {
 	Input = ReReplaceNoCase(Input, "<blockquote>([^<]*)</blockquote>", "[quote]\1[/quote]", "All");
 	Input = ReReplaceNoCase(Input, "<code>([^<]*)</code>", "[code]\1[/code]", "All");
 	Input = ReReplaceNoCase(Input, "<pre>([^<]*)</pre>", "[preformatted]\1[/preformatted]", "All");
+
+			// Meld Forums Additions
+	Input = ReReplaceNoCase(Input, "<h3>([^<]*)</h3>", "[heading]\1[/heading]", "All");
+
 	
 		// Revert Email Links (this must be done BEFORE regular links)
-	Input = ReReplaceNoCase(Input, "<a href=""mailto:([^>]*)"">([^<]*)</a>", "[email=\1]\2[/email]", "All");
+	Input = ReReplaceNoCase(Input, "<a rel=""nofollow"" href=""mailto:([^>]*)"">([^<]*)</a>", "[email=\1]\2[/email]", "All");
 	Input = ReReplaceNoCase(Input, "\[email=([^]]*)\]\1\[/email\]", "[email=\1]", "All");
-
+	
 		// Revert Links
-	Input = ReReplaceNoCase(Input, "<a href=""([^>]*)"">([^<]*)</a>", "[url=\1]\2[/url]", "All");
+	Input = ReReplaceNoCase(Input, "<a rel=""nofollow"" href=""([^>]*)"">([^<]*)</a>", "[url=\1]\2[/url]", "All");
 	Input = ReReplaceNoCase(Input, "\[url=([^]]*)\]\1\[/url\]", "[url=\1]", "All");
 
 		// Revert Images
@@ -573,11 +489,11 @@ Input = Replace(Input, "</p>", "", "ALL");
 
 
 	<!--- Dump Output --->
-<cfif ThisTag.HasEndTag AND NOT IsDefined("Attributes.Input")><cfoutput>#Input#</cfoutput></cfif>
+</cfsilent><cfif ThisTag.HasEndTag AND NOT IsDefined("Attributes.Input")><cfoutput>#input#</cfoutput></cfif>
 	<!--- Set up output struct --->
 <cfset TempOutput.Output = Input>
 <cfset TempOutput.OutputLen = Len(Input)>
 	<!--- Output the output struct --->
 <cfset "Caller.#Attributes.OutputVar#" = TempOutput>
 
-<cfsetting enablecfoutputonly="No">
+<cfsetting enablecfoutputonly="No">	
