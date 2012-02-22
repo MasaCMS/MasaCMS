@@ -93,8 +93,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset rsExtend=application.configBean.getClassExtensionManager().getExtendedAttributeList(siteID=attributes.siteid,baseTable="tcontent",activeOnly=true)>
 <cfloop query="rsExtend">
-<cfset options[rsExtend.currentRow + 17][1]="#rsExtend.attributeID#^varchar">
-<cfset options[rsExtend.currentRow + 17][2]="#rsExtend.Type#/#rsExtend.subType# - #rsExtend.attribute#"/>
+<cfset options[rsExtend.currentRow + 20][1]="#rsExtend.attributeID#^varchar">
+<cfset options[rsExtend.currentRow + 20][2]="#rsExtend.Type#/#rsExtend.subType# - #rsExtend.attribute#"/>
 </cfloop>
 
 <cfset criterias[1][1]="Equals">
