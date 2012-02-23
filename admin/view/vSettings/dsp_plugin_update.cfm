@@ -57,7 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <li><strong>Package:</strong> <cfif len(request.pluginConfig.getPackage())>#request.pluginConfig.getPackage()#<cfelse>N/A</cfif></li>
 </ul>
 
-Upload New Plugin Version
+<p>Upload New Plugin Version</p>
 <form novalidate="novalidate" name="frmNewPlugin" action="index.cfm?fuseaction=cSettings.deployPlugin" enctype="multipart/form-data" method="post" onsubmit="return validateForm(this);">
 <input name="newPlugin" type="file" required="true" message="Please select a plugin file.">
 <input type="submit" value="Deploy"/>
