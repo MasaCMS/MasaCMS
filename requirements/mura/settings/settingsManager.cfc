@@ -290,13 +290,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="setSites" access="public" output="false" returntype="void">
+	<cfargument name="missingOnly" default="false">
 	<cfset var rs="" />
 	<cfset var builtSites=structNew()>
 	<cfobjectcache action="clear"/>
 	<cfset rs=getList() />
 
 	<cfloop query="rs">
-		<cfset builtSites['#rs.siteid#']=variables.DAO.read(rs.siteid) />
+		<cfif arguments.missingOnly and structKeyExists(variables.sites,'#rs.siteid#')>
+			<cfset builtSites['#rs.siteid#']=variables.sites['#rs.siteid#'] />
+		<cfelse>
+			<cfset builtSites['#rs.siteid#']=variables.DAO.read(rs.siteid) />	
+		</cfif>
 		<cfif variables.configBean.getCreateRequiredDirectories()>
 			<cfset variables.utility.createRequiredSiteDirectories(rs.siteid) />
 		</cfif>
@@ -315,7 +320,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif structKeyExists(variables.sites,'#arguments.siteid#')>
 					<cfreturn variables.sites['#arguments.siteid#'] />
 				<cfelse>
-					<cfset setSites() />
+					<cfset setSites(missingOnly=true) />
 				</cfif>
 			</cflock>
 			<cfif structKeyExists(variables.sites,'#arguments.siteid#')>
