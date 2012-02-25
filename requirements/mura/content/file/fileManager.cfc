@@ -443,8 +443,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset local.results.serverDirectory=arguments.destinationDir>
 	<cfset local.results.serverFile=replace(listLast(local.filePath ,"/")," ","-","all")>
 	<cfset local.results.clientFile=local.results.serverFile>
-	<cfset local.results.serverFileName=listFirst(local.results.serverFile ,".")>
-	<cfset local.results.clientFileName=listFirst(local.results.clientFile ,".")>
+	<cfset local.results.serverFileName=listDeleteAt(local.results.serverFile,listLen(local.results.serverFile ,"."),".")>
+	<cfset local.results.clientFileName=listDeleteAt(local.results.clientFile,listLen(local.results.clientFile ,"."),".")>
 	<cfset local.results.clientFileExt=listLast(local.filePath ,".")>
 	
 	<cfif listFind("/,\",right(local.results.serverDirectory,1))>
