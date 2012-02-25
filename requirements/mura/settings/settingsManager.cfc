@@ -208,8 +208,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="update" access="public" output="false" returntype="any">
 	<cfargument name="data" type="struct" />
-	
 	<cfset var bean=variables.DAO.read(arguments.data.SiteID) />
+
 	<cfset bean.set(arguments.data) />
 	<cfset bean.setModuleID("00000000000000000000000000000000000")>
 	<cfset bean.validate()>
@@ -221,7 +221,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		<cfset variables.DAO.update(bean) />
 		<cfset checkForBundle(arguments.data,bean.getErrors())>
-		<cfset setSites()/>
+		<cfset setSites() />
+		<cfset application.appInitialized=false>
 	</cfif>
 
 	<cfreturn bean />
@@ -284,6 +285,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		<cfset checkForBundle(arguments.data,bean.getErrors())>
 		<cfset setSites() />
+		<cfset application.appInitialized=false>
 	</cfif>
 
 	<cfreturn bean />
@@ -481,7 +483,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset getBean("pluginManager").loadPlugins()>
 			</cfif>	
 		</cfif>
-	
+		
+		<cfset application.appInitialized=false>
 	<cfcatch>
 		
 		<cfset arguments.errors.message="The bundle was not successfully imported:<br/>ERROR: " & cfcatch.message>
