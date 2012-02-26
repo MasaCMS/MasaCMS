@@ -57,10 +57,10 @@ select * from rsSubTypes where subType <> 'Default'
 
 <cfswitch expression="#request.userBean.getperm()#">
 <cfcase value="1">
-<!--topid form system groups---><h3><strong>Group:</strong> #request.userBean.getgroupname()#</h3>
+<!---topid form system groups---><h3><strong>Group:</strong> #request.userBean.getgroupname()#</h3>
 </cfcase>
 <cfdefaultcase>
-<!--top form non-system groups--->
+<!---top form non-system groups--->
 
 #application.utility.displayErrors(request.userBean.getErrors())#
 

@@ -486,7 +486,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cfloop>
 
-	<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache()>
+	<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache(name="output")>
 </cffunction>
 
 <cffunction name="updateGroup" returntype="void" access="public" output="true">
@@ -502,26 +502,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfquery>
 	
 	<cfloop query="rsContentlist">
-	<cfif isdefined('arguments.data.p#replacelist(rsContentlist.contentid,"-","")#')
-	 and 
-	 (evaluate("arguments.data.p#replacelist(rsContentlist.contentid,"-","")#") eq 'Editor' 
-	 	or evaluate("arguments.data.p#replacelist(rsContentlist.contentid,"-","")#") eq 'Author'  
-		or evaluate("arguments.data.p#replacelist(rsContentlist.contentid,"-","")#") eq 'Module')>
-	
-	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	Insert Into tpermissions  (ContentID,GroupID,Type,siteid)
-	values(
-	<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsContentlist.ContentID#"/>,
-	<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.groupid#"/>,
-	<cfqueryparam cfsqltype="cf_sql_varchar" value="#evaluate("form.p#replacelist(rsContentlist.contentid,"-","")#")#"/>,
-	<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/>
-	)</cfquery>
-	
-	</cfif>
+		<cfif isdefined('arguments.data.p#replacelist(rsContentlist.contentid,"-","")#')
+		 and 
+		 (evaluate("arguments.data.p#replacelist(rsContentlist.contentid,"-","")#") eq 'Editor' 
+		 	or evaluate("arguments.data.p#replacelist(rsContentlist.contentid,"-","")#") eq 'Author'  
+			or evaluate("arguments.data.p#replacelist(rsContentlist.contentid,"-","")#") eq 'Module')>
+		
+			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			Insert Into tpermissions  (ContentID,GroupID,Type,siteid)
+			values(
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsContentlist.ContentID#"/>,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.groupid#"/>,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#evaluate("form.p#replacelist(rsContentlist.contentid,"-","")#")#"/>,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/>
+			)</cfquery>
+		
+		</cfif>
 
-	
-</cfloop>
-
+	</cfloop>
 
 	<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache()>
 	
@@ -592,22 +590,25 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 	Delete From tpermissions where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.contentID#"/> and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/>
 	</cfquery>
 	
-	
 	<cfloop list="#arguments.data.groupid#" index="I">
 
-	<cfquery datasource="#variables.configBean.getDatasource()#"
-	username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	Insert Into tpermissions  (ContentID,GroupID,Type,siteid)
-	values(
-	<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.contentID#"/>,
-	<cfqueryparam cfsqltype="cf_sql_varchar" value="#I#"/>,
-	'module',
-	<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/>
-	)</cfquery>
-	
-	<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache()>
+		<cfquery datasource="#variables.configBean.getDatasource()#"
+		username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		Insert Into tpermissions  (ContentID,GroupID,Type,siteid)
+		values(
+		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.contentID#"/>,
+		<cfqueryparam cfsqltype="cf_sql_varchar" value="#I#"/>,
+		'module',
+		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/>
+		)</cfquery>
 
-</cfloop>
+		<cfquery name="rs" datasource="#variables.configBean.getDatasource()#">
+	 		select * from tpermissions where groupid='#arguments.data.groupid#'
+		</cfquery>
+
+	</cfloop>
+
+	<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache(name="output")>
 
 </cffunction>
 
