@@ -130,9 +130,8 @@ loadExtendedAttributes('#request.userbean.getUserID()#','1','#request.userbean.g
 //initTabs(Array("#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.basic'))#","#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.extendedattributes'))#"),0,0,0);
 </script>	
 </cfif>
-
-<cfif attributes.userid eq ''>
 <div id="actionButtons">
+<cfif attributes.userid eq ''>
 <input type="button" class="submit" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'user.add')#" />
 <cfelse>
 <input type="button" class="submit" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.deletegroupconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'user.delete')#" />
@@ -145,7 +144,7 @@ loadExtendedAttributes('#request.userbean.getUserID()#','1','#request.userbean.g
 </cfswitch>
 
 
-      <cfif attributes.userid neq ''>
+	<cfif attributes.userid neq ''>
       <cfoutput><h4 class="separate">#application.rbFactory.getKeyValue(session.rb,'user.groupmembers')#</h4> 
         <table class="mura-table-grid stripe">
             <tr> 
@@ -155,8 +154,9 @@ loadExtendedAttributes('#request.userbean.getUserID()#','1','#request.userbean.g
 			  <th>#application.rbFactory.getKeyValue(session.rb,'user.time')#</th>
               <th>#application.rbFactory.getKeyValue(session.rb,'user.authoreditor')#</th>
               <th>&nbsp;</th>
-            </tr></cfoutput>
-          <cfif request.rsgrouplist.recordcount>
+            </tr>
+        </cfoutput>
+        <cfif request.rsgrouplist.recordcount>
             <cfoutput query="request.rsgrouplist" maxrows="#request.nextN.recordsperPage#" startrow="#attributes.startrow#"> 
 			  <tr> 
                 <td class="varWidth"><a href="index.cfm?fuseaction=#iif(request.rsgrouplist.isPublic,de('cPublicUsers'),de('cPrivateUsers'))#.edituser&userid=#request.rsgrouplist.UserID#&routeid=#attributes.userid#&siteid=#URLEncodedFormat(attributes.siteid)#">#request.rsgrouplist.lname#, #request.rsgrouplist.fname# <cfif request.rsgrouplist.company neq ''> (#request.rsgrouplist.company#)</cfif></a></td>
@@ -167,14 +167,13 @@ loadExtendedAttributes('#request.userbean.getUserID()#','1','#request.userbean.g
                 <td class="administration"><ul class="group"><li class="edit"><a href="index.cfm?fuseaction=#iif(request.rsgrouplist.isPublic,de('cPublicUsers'),de('cPrivateUsers'))#.edituser&userid=#request.rsgrouplist.UserID#&routeid=#attributes.userid#&siteid=#URLEncodedFormat(attributes.siteid)#">#application.rbFactory.getKeyValue(session.rb,'user.edit')#</a></li><li class="delete"><a href="index.cfm?fuseaction=cPrivateUsers.removefromgroup&userid=#request.rsgrouplist.UserID#&routeid=#attributes.userid#&groupid=#attributes.userid#&siteid=#URLEncodedFormat(attributes.siteid)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.removeconfirm'))#',this.href)">#application.rbFactory.getKeyValue(session.rb,'user.remove')#</a></li></ul></td>
               </tr>
             </cfoutput> 
-		
-			<cfelse>
+		<cfelse>
             <tr> 
               <td class="noResults" colspan="6"><cfoutput>#application.rbFactory.getKeyValue(session.rb,'user.nogroupmembers')#</cfoutput></td>
             </tr>
-          </cfif>
+        </cfif>
       </table>
-     </cfif>
+    </cfif>
 	
 	<cfif request.nextN.numberofpages gt 1> 
 		<p class="moreResults"><cfoutput>#application.rbFactory.getKeyValue(session.rb,'user.moreresults')#:
