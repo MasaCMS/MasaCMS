@@ -1067,7 +1067,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				and tclassextenddata.attributeID in (select attributeID from tclassextendattributes
 					where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>)
 
-				union 
+				union all
 
 				select tclassextenddata.baseID, tclassextenddata.attributeID, tclassextenddata.attributeValue, 
 				tclassextenddata.siteID, tclassextenddata.stringvalue, tclassextenddata.numericvalue, tclassextenddata.datetimevalue, tclassextenddata.remoteID from tclassextenddata 
@@ -1075,7 +1075,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				inner join tclassextendsets on (tclassextendattributes.extendsetid=tclassextendsets.extendsetid)
 				inner join tclassextend on (tclassextendsets.subtypeid=tclassextend.subtypeid)
 				where tclassextenddata.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-				and tclassextend.type='Site'
+				and tclassextend.type in ('Site','Custom')
 
 			</cfquery>
 		
