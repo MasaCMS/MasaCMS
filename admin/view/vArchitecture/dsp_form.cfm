@@ -279,6 +279,7 @@ jQuery(document).ready(function(){
 	
 	<!--- This is plugin message targeting --->	
 	<span id="msg">
+	#application.pluginManager.renderEvent("onContentEditMessageRender", pluginEvent)#
 	#application.pluginManager.renderEvent("on#request.contentBean.getType()#EditMessageRender", pluginEvent)#
 	#application.pluginManager.renderEvent("on#request.contentBean.getType()##request.contentBean.getSubType()#EditMessageRender", pluginEvent)#
 	</span>
