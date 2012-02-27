@@ -60,9 +60,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.imageInList="jpg,jpeg,png,gif">
 <cfset this.directImages=true/>
 <cfset this.personalization="user">
-<cfset this.showAdminToolBar=true/>
-<cfset this.showMemberToolBar=true/>
-<cfset this.showEditableObjects=true/>
+<cfif isDefined('url.muraadminpreview')>
+	<cfset this.showAdminToolBar=false/>
+	<cfset this.showMemberToolBar=false/>
+	<cfset this.showEditableObjects=false/>
+<cfelse>
+	<cfset this.showAdminToolBar=true/>
+	<cfset this.showMemberToolBar=true/>
+	<cfset this.showEditableObjects=true/>
+</cfif>
 <!--- renderHTMLHead has been deprecated in favor of renderHTMLQueues---->
 <cfset this.renderHTMLHead=true/>
 <cfset this.renderHTMLQueues=true/>
