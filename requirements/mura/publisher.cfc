@@ -916,7 +916,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstMailinglistmembers.fname neq '',de('no'),de('yes'))#" value="#rstMailinglistmembers.fname#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstMailinglistmembers.lname neq '',de('no'),de('yes'))#" value="#rstMailinglistmembers.lname#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstMailinglistmembers.company neq '',de('no'),de('yes'))#" value="#rstMailinglistmembers.company#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstMailinglistmembers.isVerified),de(rstMailinglistmembers.isVerified),de(0))#">,
+					<cfif isNumeric(rstMailinglistmembers.isVerified)>
+						<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#rstMailinglistmembers.isVerified#">,
+					<cfelse>
+						0,
+					</cfif>
 					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstMailinglistmembers.created),de('no'),de('yes'))#" value="#rstMailinglistmembers.created#">
 					)
 				</cfquery>
