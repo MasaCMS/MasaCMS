@@ -279,7 +279,6 @@ jQuery(document).ready(function(){
 	
 	<!--- This is plugin message targeting --->	
 	<span id="msg">
-	<cfif not listFindNoCase("Component,Form",attribute.type)>#application.pluginManager.renderEvent("onContentEditMessageRender", pluginEvent)#</cfif>
 	#application.pluginManager.renderEvent("on#request.contentBean.getType()#EditMessageRender", pluginEvent)#
 	#application.pluginManager.renderEvent("on#request.contentBean.getType()##request.contentBean.getSubType()#EditMessageRender", pluginEvent)#
 	</span>
