@@ -64,7 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		        style="width:310px;">
 			<cfloop query="request.rsSections">
 				<cfif request.rsSections.contentID eq attributes.subclassid>
-					<option value="{'object':'category_summary','name':'#HTMLEditFormat(request.rsSections.menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.categorysummary')#','objectid':'#request.rsSections.contentid#'}">
+					<option value="{'object':'category_summary','name':'#JSStringFormat(request.rsSections.menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.categorysummary')#','objectid':'#request.rsSections.contentid#'}">
 						#HTMLEditFormat(request.rsSections.menutitle)# 
 						- 
 						#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.categorysummary')#

@@ -78,7 +78,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			dataset=dataset
 			)#			
 		<cfelseif field.fieldtype.fieldtype neq "section">
-			<li class="mura-form-#field.fieldtype.fieldtype#">
+			<li class="mura-form-#field.fieldtype.fieldtype#<cfif field.isrequired> req</cfif>">
 			#$.dspObject_Include(thefile='/formbuilder/fields/dsp_#field.fieldtype.fieldtype#.cfm',
 				field=field,
 				dataset=dataset
@@ -112,8 +112,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <form id="#frmID#" method="post"<cfif isMultipart>enctype="multipart/form-data"</cfif>>
 	#frmFieldContents#
 	<div class="buttons"><input type="submit" class="submit" value="Submit"></div>
-	<cfinclude template="../dsp_form_protect.cfm">
-	<!---<cfinclude template="../dsp_captcha.cfm">--->
+	#$.dspObject_Include(thefile='dsp_form_protect.cfm')#
+	<!---#$.dspObject_Include(thefile='dsp_captcha.cfm')#--->
 </form>
 </cfoutput>
 
