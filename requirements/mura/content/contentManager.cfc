@@ -1658,7 +1658,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset var commentBean=getCommentBean() />
 			<cfset commentBean.setCommentID(arguments.commentid) />
 			<cfset commentBean.load() />
-			<cfif not commentBean.isNew()>
+			<cfif not commentBean.getIsNew()>
 				<cfset commentBean.setIsApproved(1) />
 				<cfset commentBean.save(arguments.contentRenderer,arguments.script,arguments.subject) />
 			</cfif>
