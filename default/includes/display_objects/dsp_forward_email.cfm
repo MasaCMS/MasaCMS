@@ -69,7 +69,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<input name="origin" value="#HTMLEditFormat($.event('origin'))#" type="hidden"/>
 	<fieldset>
 	<input class="submit" type="submit" value="#HTMLEditFormat($.rbKey('email.submit'))#"/>
-	<cfinclude template="dsp_form_protect.cfm" />
+	#$.dspObject_Include(thefile='dsp_form_protect.cfm')#
 	</form>
 	</cfif>
 </div>
