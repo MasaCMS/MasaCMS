@@ -973,3 +973,20 @@ function getDialogPosition(){
 		return "center";
 	}
 }
+
+function openPreviewDialog(previewURL){
+	if (previewURL.indexOf("?") == -1){
+		previewURL=previewURL + '?muraadminpreview';
+	} else {
+		previewURL=previewURL + '&muraadminpreview';
+	}
+
+	var $dialog = jQuery('<div></div>')
+	    .html('<iframe style="border: 0px; " src="' + previewURL + '" width="1100" height="600"></iframe>')
+	    .dialog({
+	        width: 1100,
+	        height: 600,     
+	        modal: true,
+	        title: 'Preview'
+	    });
+}
