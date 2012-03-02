@@ -131,6 +131,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"tab")){
 		session.flatViewArgs["#session.siteid#"].tab=0;
 	}
+
+	if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"filtered") or not isBoolean((session.flatViewArgs["#session.siteid#"].filtered))){
+		session.flatViewArgs["#session.siteid#"].filtered=false;
+	}
 </cfscript>
 
 <cfif not isdefined("url.activeTab")>
@@ -249,7 +253,7 @@ function initFlatViewArgs(){
 			subType:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].subtype)#',
 			report:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].report)#',
 			keywords:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].keywords)#',
-			filtered:false
+			filtered: '#JSStringFormat(session.flatViewArgs["#session.siteID#"].filtered)#'
 			};
 }
 
