@@ -107,9 +107,10 @@ CKEDITOR.editorConfig = function( config )
 
 	config.extraPlugins = <cfif application.configBean.getEnableMuraTag()>'SelectComponent,media,Selectlink,muratag,gmap,tableresize,autogrow'<cfelse>'SelectComponent,media,Selectlink,gmap,tableresize,autogrow'</cfif>;
 	
-	autoGrow_maxHeight : 1200,
-			// Remove the Resize plugin as it does not make sense to use it in conjunction with the AutoGrow plugin.
-			removePlugins : 'resize'
+	autoGrow_maxHeight : 1200;
+	
+	// Remove the Resize plugin as it does not make sense to use it in conjunction with the AutoGrow plugin.
+	removePlugins : 'resize';
 	
 	config.entities_additional = "";
 	//config.protectedSource.push( /\[mura\][\s\S]*?\[\/mura\]/g );
