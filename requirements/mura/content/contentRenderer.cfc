@@ -60,9 +60,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.imageInList="jpg,jpeg,png,gif">
 <cfset this.directImages=true/>
 <cfset this.personalization="user">
-<cfset this.showAdminToolBar=true/>
-<cfset this.showMemberToolBar=true/>
-<cfset this.showEditableObjects=true/>
+<cfif isDefined('url.muraadminpreview')>
+	<cfset this.showAdminToolBar=false/>
+	<cfset this.showMemberToolBar=false/>
+	<cfset this.showEditableObjects=false/>
+<cfelse>
+	<cfset this.showAdminToolBar=true/>
+	<cfset this.showMemberToolBar=true/>
+	<cfset this.showEditableObjects=true/>
+</cfif>
 <!--- renderHTMLHead has been deprecated in favor of renderHTMLQueues---->
 <cfset this.renderHTMLHead=true/>
 <cfset this.renderHTMLQueues=true/>
@@ -74,6 +80,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.subHead2="h4"/>
 <cfset this.subHead3="h5"/>
 <cfset this.subHead4="h6">
+<!--- This is duplicated for when the page title gets set to h1 ---> 
+<cfset this.subHead5="h6">
 
 <cffunction name="init" returntype="any" access="public" output="false">
 <cfargument name="event" required="true" default="">
@@ -99,10 +107,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getHeaderTag" returntype="string" output="false">
 <cfargument name="header">
-	<cfif listFindNoCase("headline,subHead1,subHead2,subHead3,subHead4",arguments.header)>
+	<cfif listFindNoCase("headline,subHead1,subHead2,subHead3,subHead4,subHead5",arguments.header)>
 	<cfreturn this["#arguments.header#"]/>
 	<cfelse>
-	<cfreturn "Invalid Argument. Must be one of 'headline, subHead1, subHead2, subHead3, subHead4'">
+	<cfreturn "Invalid Argument. Must be one of 'headline, subHead1, subHead2, subHead3, subHead4, subHead5'">
 	</cfif>
 </cffunction>
 
