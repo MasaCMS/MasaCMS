@@ -51,3 +51,18 @@
 body {
 	padding: 20px;
 }
+
+table {
+	border-collapse: separate;
+	border-spacing: 1px;
+	border: 1px dotted #ccc;
+}
+
+td {
+	border: 1px dotted #ccc;
+}
+
+th {
+	background: #f5f5f5;
+	font-weight: bold;
+}

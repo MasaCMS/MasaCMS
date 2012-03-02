@@ -207,7 +207,7 @@ to your own modified versions of Mura CMS.
 			<cfset application.contentManager.deleteComment(request.deletecommentid) />
 		</cfif>
 
-		<cfif request.isEditor and request.approvedcommentid neq "" >
+		<cfif request.approvedcommentid neq "" >
 			<cfset application.contentManager.approveComment(request.approvedcommentid,event.getContentRenderer()) />
 		</cfif>
 		<cfset level=0>
