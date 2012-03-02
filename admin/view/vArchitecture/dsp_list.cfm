@@ -248,7 +248,8 @@ function initFlatViewArgs(){
 			type:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].type)#',
 			subType:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].subtype)#',
 			report:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].report)#',
-			keywords:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].keywords)#'
+			keywords:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].keywords)#',
+			filtered:false
 			};
 }
 

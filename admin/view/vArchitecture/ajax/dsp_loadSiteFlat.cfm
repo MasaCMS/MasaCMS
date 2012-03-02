@@ -62,6 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	session.flatViewArgs["#rc.siteID#"].subtype=$.event("subtype");
 	session.flatViewArgs["#rc.siteID#"].report=$.event("report");
 	session.flatViewArgs["#rc.siteID#"].keywords=$.event("keywords");
+	session.flatViewArgs["#rc.siteID#"].filtered=yesNoFormat($.event("filtered"));
 	 
 	feed=$.getBean("feed");
 	feed.setMaxItems(500);
@@ -361,7 +362,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<input type="button" name="filterList" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#" onclick="loadSiteFlatByFilter();"/>
-	<input type="button" name="filterList" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.removefilter")#" onclick="loadSiteFlat(initFlatViewArgs());"/>
+	<cfif session.flatViewArgs["#rc.siteID#"].filtered><input type="button" name="filterList" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.removefilter")#" onclick="loadSiteFlat(initFlatViewArgs());"/></cfif>
 </div>
 <!---<cfdump var="#request.test#">--->
 </cfoutput>

@@ -970,6 +970,7 @@ function loadSiteFlatByFilter(){
 	flatViewArgs.tag=tag.toString();
 	flatViewArgs.keywords=jQuery("#contentKeywords").val();
 	flatViewArgs.page=1;
+	flatViewArgs.filtered=true;
 	loadSiteFlat(flatViewArgs);
 	
 }
