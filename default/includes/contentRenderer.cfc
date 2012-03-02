@@ -67,10 +67,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!---<cfset this.showEditableObjects=false/>--->
 <!---<cfset this.renderHTMLQueues=true/>--->
 <!---<cfset this.listFormat="dl"/>--->
-<!---<cfset this.headline="h2"/>--->
-<!---<cfset this.subHead1="h3"/>--->
-<!---<cfset this.subHead2="h4"/>--->
-<!---<cfset this.subHead3="h5"/>--->
-<!---<cfset this.subHead4="h6"/>--->
+<!---<cfset this.headline="h1"/>
+<cfset this.subHead1="h2"/>
+<cfset this.subHead2="h3"/>
+<cfset this.subHead3="h4"/>
+<cfset this.subHead4="h5"/>
+<cfset this.subHead5="h6"/>--->
 
 </cfcomponent>
