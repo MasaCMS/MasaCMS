@@ -362,7 +362,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<input type="button" name="filterList" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#" onclick="loadSiteFlatByFilter();"/>
-	<cfif session.flatViewArgs["#rc.siteID#"].filtered><input type="button" name="filterList" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.removefilter")#" onclick="loadSiteFlat(jQuery.extend(initFlatViewArgs(),{report:'#JSStringFormat(session.flatViewArgs["#rc.siteID#"].report)#'}));"/></cfif>
+	<cfif session.flatViewArgs["#rc.siteID#"].filtered><input type="button" name="filterList" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.removefilter")#" onclick="loadSiteFlat(jQuery.extend(initFlatViewArgs(),{report:'#JSStringFormat(session.flatViewArgs["#rc.siteID#"].report)#',sortby:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].sortby)#', 
+			sortdirection:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].sortdirection)#'}));"/></cfif>
 </div>
 <!---<cfdump var="#request.test#">--->
 </cfoutput>
