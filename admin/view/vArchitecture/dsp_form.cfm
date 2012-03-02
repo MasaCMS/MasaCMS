@@ -547,6 +547,7 @@ jQuery(document).ready(function(){
 		<img src="#application.configBean.getContext()#/admin/images/progress_bar.gif">
 	</div>
 		<input name="approved" type="hidden" value="0">
+		<input name="muraPreviouslyApproved" type="hidden" value="#request.contentBean.getApproved()#">
 		<input id="removePreviousChangeset" name="removePreviousChangeset" type="hidden" value="false">
 		<input id="changesetID" name="changesetID" type="hidden" value="">
 		<input name="preview" type="hidden" value="0">	
