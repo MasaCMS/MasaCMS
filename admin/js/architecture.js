@@ -135,9 +135,10 @@ function ckContent(draftremovalnotice){
 		return false;
 	 }
 	 
-	 if(document.contentForm.approved.value==1
-			&& typeof(currentChangesetID) != 'undefined' 
-			&& currentChangesetID != ''){
+	 if(document.contentForm.muraPreviouslyApproved==0
+	  	&& document.contentForm.approved.value==1
+		&& typeof(currentChangesetID) != 'undefined' 
+		&& currentChangesetID != ''){
 		 
 		 confirmDialog(publishitemfromchangeset, 
 				 					function() {
@@ -970,6 +971,7 @@ function loadSiteFlatByFilter(){
 	flatViewArgs.tag=tag.toString();
 	flatViewArgs.keywords=jQuery("#contentKeywords").val();
 	flatViewArgs.page=1;
+	flatViewArgs.filtered=true;
 	loadSiteFlat(flatViewArgs);
 	
 }
