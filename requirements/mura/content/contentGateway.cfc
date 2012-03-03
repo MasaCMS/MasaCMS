@@ -158,9 +158,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif I gt 50><cfthrow  type="custom" message="Crumdata Loop Error"></cfif>
 			</cfloop>
 			
-			<cfif I>
-			<cfset crumbdata[1].parentArray=parentArray />
+			<cfif arrayLen(crumbdata)>
+				<cfset crumbdata[1].parentArray=parentArray />
 			</cfif>
+			
 			<cfcatch type="custom"></cfcatch>
 			</cftry>
 			
@@ -216,7 +217,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			</cfloop>
 			
-			<cfif rsContent.recordcount>
+			<cfif arrayLen(crumbdata)>
 				<cfset crumbdata[1].parentArray=parentArray />
 			</cfif>
 			

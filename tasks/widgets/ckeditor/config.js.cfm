@@ -165,6 +165,8 @@ CKEDITOR.editorConfig = function( config )
 	</cfif>
 
 	config.defaultLanguage='#listFirst($.siteConfig('JavaLocale'),'_')#';
+
+	#$.renderEvent("onSiteCKEditorConfigRender")#
     </cfoutput>
 
 

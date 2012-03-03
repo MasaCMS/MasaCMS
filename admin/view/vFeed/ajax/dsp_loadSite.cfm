@@ -63,7 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     </tr><cfif request.rslist.recordcount>
      <cfoutput query="request.rslist" startrow="1" maxrows="100">	
 		<cfset crumbdata=application.contentManager.getCrumbList(request.rslist.contentid, attributes.siteid)/>
-        <cfif not listFind(arraytolist(crumbdata[1].parentArray),attributes.contentid) and request.rslist.type neq 'File' and request.rslist.type neq 'Link'>
+        <cfif structKeyExists(crumbdata[1],"parentArray") and not listFind(arraytolist(crumbdata[1].parentArray),attributes.contentid) and request.rslist.type neq 'File' and request.rslist.type neq 'Link'>
 		<cfset counter=counter+1/>
 		<tr <cfif not(counter mod 2)>class="alt"</cfif>>
 		
