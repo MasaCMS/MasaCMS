@@ -989,4 +989,6 @@ function openPreviewDialog(previewURL){
 	        modal: true,
 	        title: 'Preview'
 	    });
+
+	   return false;
 }
