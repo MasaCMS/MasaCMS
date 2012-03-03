@@ -293,27 +293,27 @@ jQuery(document).ready(function(){
 				<cfcase value="Page,Portal,Calendar,Gallery">
 					<cfif not request.contentBean.getIsNew()>
 						<cfset currentBean=application.contentManager.getActiveContent(attributes.contentID,attributes.siteid) />
-						<li><a  href="javascript:openPreviewDialog('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,currentBean.getfilename())#','#currentBean.getTargetParams()#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewactive")#</a></li>
+						<li><a href="##" onclick="return openPreviewDialog('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,currentBean.getfilename())#','#currentBean.getTargetParams()#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewactive")#</a></li>
 					</cfif>
-					<li><a  href="javascript:openPreviewDialog('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,"")#?previewid=#request.contentBean.getcontenthistid()#&contentid=#request.contentBean.getcontentid()#','#request.contentBean.getTargetParams()#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewversion")#</a></li>
+					<li><a href="##" onclick="return openPreviewDialog('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,"")#?previewid=#request.contentBean.getcontenthistid()#&contentid=#request.contentBean.getcontentid()#','#request.contentBean.getTargetParams()#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewversion")#</a></li>
 				</cfcase>
 				<cfcase value="Link">
 					<cfset currentBean=application.contentManager.getActiveContent(attributes.contentID,attributes.siteid) />
 					<cfif not request.contentBean.getIsNew()>
-						<li><a href="javascript:openPreviewDialog('#currentBean.getfilename()#','#currentBean.getTargetParams()#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewactive")#</a></li>
+						<li><a href="##" onclick="return openPreviewDialog('#currentBean.getfilename()#','#currentBean.getTargetParams()#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewactive")#</a></li>
 					</cfif>
-					<li><a href="javascript:openPreviewDialog('#request.contentBean.getfilename()#','#request.contentBean.getTargetParams()#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewversion")#</a></li>
+					<li><a href="##" onclick="return openPreviewDialog('#request.contentBean.getfilename()#','#request.contentBean.getTargetParams()#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewversion")#</a></li>
 				</cfcase>
 				<cfcase value="File">	
-					<li><a  href="javascript:openPreviewDialog('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,"")#?LinkServID=#attributes.contentid#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewactive")#</a></li>
-					<li><a  href="javascript:openPreviewDialog('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/?fileID=#request.contentBean.getFileID()#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewversion")#</a></li>
+					<li><a href="##" onclick="return openPreviewDialog('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,"")#?LinkServID=#attributes.contentid#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewactive")#</a></li>
+					<li><a href="##" onclick="return openPreviewDialog('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/?fileID=#request.contentBean.getFileID()#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewversion")#</a></li>
 				</cfcase>
 				</cfswitch>
 			</cfif>
 			<cfswitch expression="#attributes.type#">
 			<cfcase value="Form">
 				<cfif listFind(session.mura.memberships,'S2IsPrivate')>
-				<li><a  href="index.cfm?fuseaction=cArch.datamanager&contentid=#URLEncodedFormat(attributes.contentid)#&siteid=#URLEncodedFormat(attributes.siteid)#&topid=#URLEncodedFormat(attributes.topid)#&moduleid=#attributes.moduleid#&type=Form&parentid=#attributes.moduleid#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.managedata")#</a></li>
+				<li><a href="index.cfm?fuseaction=cArch.datamanager&contentid=#URLEncodedFormat(attributes.contentid)#&siteid=#URLEncodedFormat(attributes.siteid)#&topid=#URLEncodedFormat(attributes.topid)#&moduleid=#attributes.moduleid#&type=Form&parentid=#attributes.moduleid#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.managedata")#</a></li>
 				</cfif>
 			</cfcase>
 			</cfswitch>
@@ -547,6 +547,7 @@ jQuery(document).ready(function(){
 		<img src="#application.configBean.getContext()#/admin/images/progress_bar.gif">
 	</div>
 		<input name="approved" type="hidden" value="0">
+		<input name="muraPreviouslyApproved" type="hidden" value="#request.contentBean.getApproved()#">
 		<input id="removePreviousChangeset" name="removePreviousChangeset" type="hidden" value="false">
 		<input id="changesetID" name="changesetID" type="hidden" value="">
 		<input name="preview" type="hidden" value="0">	

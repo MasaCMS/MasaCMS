@@ -324,3 +324,6 @@ if (APPLICATION.CFVersion gte 8 or StructKeyExists(SERVER,"bluedragon")) {
 <cfif (fileExists(expandPath($.siteConfig("themeIncludePath") & '/js/finder/config.cfm') ) )>
      <cfinclude template="#$.siteConfig('themeIncludePath')#/js/finder/config.cfm">
 </cfif>
+
+<cfset $.event("config",config)>
+<cfset $.announceEvent("onSiteCKFinderConfig")>
