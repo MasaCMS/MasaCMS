@@ -73,8 +73,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset arguments.language = 'Unknown' />
 	<cfset arguments.country ='Unknown' />
-	<cfset arguments.duration=0 />
-	<cfset arguments.startcount=0 />
 	
 	<cfset createTrackingRecord(argumentCollection=arguments)>
 	
