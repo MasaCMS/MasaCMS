@@ -137,6 +137,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.readOnlyDbPassword="" />
 <cfset variables.instance.MYSQLEngine="InnoDB" />
 <cfset variables.instance.autoDiscoverPlugins=false />
+<cfset variables.instance.trackSessionInNewThread=1 />
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
@@ -1349,6 +1350,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getMaxArchivedVersions" returntype="any" access="public" output="false">
 	<cfreturn variables.instance.maxArchivedVersions />
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setTrackSessionInNewThread" access="public" output="false">
+	<cfargument name="trackSessionInNewThread" type="string" />
+	<cfif isBoolean(arguments.trackSessionInNewThread)>
+		<cfset variables.instance.trackSessionInNewThread = arguments.trackSessionInNewThread />
+	</cfif>
 	<cfreturn this>
 </cffunction>
 
