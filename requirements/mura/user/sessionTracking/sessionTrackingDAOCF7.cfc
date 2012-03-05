@@ -74,16 +74,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="locale" type="string" required="yes"/>
 	<cfargument name="originalURLToken" type="string" required="yes"/>
 	
-	
 	<cfset arguments.language = 'Unknown' />
 	<cfset arguments.country ='Unknown' />
 	<cfset arguments.duration=0 />
 	<cfset arguments.startcount=0 />
 	
-	<cfif application.configBean.getSessionHistory() and application.configBean.getDashboard() and not application.sessionTrackingThrottle>
-		<cfset createTrackingRecord(argumentCollection=arguments)>
-	</cfif>	
-
+	<cfset createTrackingRecord(argumentCollection=arguments)>
+	
 </cffunction>
 
 <cffunction name="createTrackingRecord" output="false">
