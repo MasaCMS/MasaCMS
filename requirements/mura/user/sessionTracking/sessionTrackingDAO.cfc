@@ -78,9 +78,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset $.init(arguments)>
 	<cfset $.announceEvent("onSiteSessionTrack")>
 
-	<cfthread action="run" name="track#hash(session.trackingID)#" context="#arguments#">
-		<cfset super.trackRequest(argumentCollection=context)>
-	</cfthread>
+	<cfif application.configBean.getTrackSessionInNewThread()>
+		<cfthread action="run" name="track#hash(session.trackingID)#" context="#arguments#">
+			<cfset super.trackRequest(argumentCollection=context)>
+		</cfthread>
+	<cfelse>
+		 <cfset super.trackRequest(argumentCollection=arguments)>
+	</cfif>
 </cffunction>
 
 </cfcomponent>
