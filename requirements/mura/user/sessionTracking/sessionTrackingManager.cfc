@@ -66,32 +66,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="session.remote_addr" default="#request.remoteAddr#">
 	<cfparam name="session.trackingID" default="#createUUID()#">
 	
-	<cfif session.remote_addr eq request.remoteAddr>
-		<cfif cgi.HTTP_USER_AGENT neq 'vspider'>
-			
-			<cftry>
-			<cfset variables.sessionTrackingDAO.trackRequest(session.REMOTE_ADDR,
-																	arguments.SCRIPT_NAME,
-																	cgi.QUERY_STRING,
-																	listFirst(cgi.http_host,":"),
-																	cgi.HTTP_REFERER,
-																	cgi.USER_AGENT,
-																	arguments.keywords,
-																	session.trackingID,
-																	iif(session.mura.isLoggedIn,de('#session.mura.userID#'),de('')),
-																	arguments.siteid,
-																	arguments.contentid,
-																	getCFLocale( trim( replace( listFirst( listFirst(cgi.HTTP_ACCEPT_LANGUAGE,';') ),"-","_") ) ),
-																	cookie.originalURLToken
-																	)/>
-			<cfcatch><cfreturn ""/></cfcatch></cftry>
+	<cfif application.configBean.getSessionHistory() and application.configBean.getDashboard() and not application.sessionTrackingThrottle>
+		<cfif session.remote_addr eq request.remoteAddr>
+			<cfif cgi.HTTP_USER_AGENT neq 'vspider'>
+				
+				<cftry>
+				<cfset variables.sessionTrackingDAO.trackRequest(session.REMOTE_ADDR,
+																		arguments.SCRIPT_NAME,
+																		cgi.QUERY_STRING,
+																		listFirst(cgi.http_host,":"),
+																		cgi.HTTP_REFERER,
+																		cgi.USER_AGENT,
+																		arguments.keywords,
+																		session.trackingID,
+																		iif(session.mura.isLoggedIn,de('#session.mura.userID#'),de('')),
+																		arguments.siteid,
+																		arguments.contentid,
+																		getCFLocale( trim( replace( listFirst( listFirst(cgi.HTTP_ACCEPT_LANGUAGE,';') ),"-","_") ) ),
+																		cookie.originalURLToken
+																		)/>
+				<cfcatch><cfreturn ""/></cfcatch></cftry>
+			</cfif>
+			<cfreturn ""/>
+		<cfelse>
+			<cfreturn "killSession"/>
 		</cfif>
-		<cfreturn ""/>
-	<cfelse>
-		<cfreturn "killSession"/>
 	</cfif>
 	
-
 </cffunction>
 
 <cffunction name="getSessionData" access="public" returntype="query">
