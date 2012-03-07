@@ -137,7 +137,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.readOnlyDbPassword="" />
 <cfset variables.instance.MYSQLEngine="InnoDB" />
 <cfset variables.instance.autoDiscoverPlugins=false />
-<cfset variables.instance.trackSessionInNewThread=1 />
+<cfset variables.instance.trackSessionInNewThread=0 />
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
