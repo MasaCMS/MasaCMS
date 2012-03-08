@@ -386,9 +386,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<constructor-arg name="sessionTrackingDAO"><ref bean="sessionTrackingDAO" /></constructor-arg>
 			<constructor-arg name="sessionTrackingGateway"><ref bean="sessionTrackingGateway" /></constructor-arg>
 		</bean>
-		<bean id="sessionTrackingDAO" <cfif application.cfversion eq 7>class="mura.user.sessionTracking.sessionTrackingDAOCF7"<cfelse>class="mura.user.sessionTracking.sessionTrackingDAO"</cfif> singleton="true">
+		<bean id="sessionTrackingDAO" class="mura.user.sessionTracking.sessionTrackingDAO" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
-			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 		</bean>
 		<bean id="sessionTrackingGateway" class="mura.user.sessionTracking.sessionTrackingGateway" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>

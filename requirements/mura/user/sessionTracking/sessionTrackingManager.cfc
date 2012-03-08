@@ -75,7 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif session.remote_addr eq request.remoteAddr>
 			<cfif cgi.HTTP_USER_AGENT neq 'vspider'>
 				
-				<cftry>
+				<!---<cftry>--->
 				<cfset variables.sessionTrackingDAO.trackRequest(session.REMOTE_ADDR,
 																		arguments.SCRIPT_NAME,
 																		cgi.QUERY_STRING,
@@ -90,7 +90,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 																		getCFLocale( trim( replace( listFirst( listFirst(cgi.HTTP_ACCEPT_LANGUAGE,';') ),"-","_") ) ),
 																		cookie.originalURLToken
 																		)/>
-				<cfcatch><cfreturn ""/></cfcatch></cftry>
+				<!---<cfcatch><cfreturn ""/></cfcatch></cftry>--->
 			</cfif>
 			<cfreturn ""/>
 		<cfelse>
