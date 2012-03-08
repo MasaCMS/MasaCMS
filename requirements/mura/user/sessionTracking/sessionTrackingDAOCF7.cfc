@@ -52,6 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset variables.configBean=arguments.configBean />
 <cfset variables.settingsManager=arguments.settingsManager />
+<cfset variables.longRequests=0>
 <cfset variables.lastPurge=now()>
 	
 <cfreturn this />
@@ -74,8 +75,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset arguments.language = 'Unknown' />
 	<cfset arguments.country ='Unknown' />
+	<cfset arguments.startCount =GetTickCount()>
 	
 	<cfset createTrackingRecord(argumentCollection=arguments)>
+
+	<cfset arguments.duration=GetTickCount()-arguments.startCount>
+			
+	<cfif arguments.duration gt 5000>
+		<cfset variables.longRequests=variables.longRequests+1>
+	<cfelse>
+		<cfset variables.longRequests=0>
+	</cfif>
+			
+	<cfif variables.longRequests gt 20>
+		<cfset application.sessionTrackingThrottle=true>
+	 </cfif>
 	
 </cffunction>
 
