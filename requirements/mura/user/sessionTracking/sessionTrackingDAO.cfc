@@ -44,7 +44,22 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="sessionTrackingDAOCF7" output="false">
+<cfcomponent output="false">
+
+<cffunction name="init" returntype="any" access="public" output="false">
+<cfargument name="configBean" type="any" required="yes"/>
+
+<cfset variables.datasource=arguments.configBean.getDatasource() />
+<cfset variables.dbUsername=arguments.configBean.getDbUsername() />
+<cfset variables.dbPassword=arguments.configBean.getDbPassword() />
+<cfset variables.clearHistory=arguments.configBean.getClearSessionHistory() />
+<cfset variables.sessionHistory=arguments.configBean.getSessionHistory() />
+<cfset variables.trackSessionInNewThread=arguments.configBean.getTrackSessionInNewThread()>
+<cfset variables.longRequests=0>
+<cfset variables.lastPurge=now()>
+	
+<cfreturn this />
+</cffunction>
 
 <cffunction name="trackRequest" output="false">
 	<cfargument name="remote_addr" type="string" required="yes"/>
@@ -78,13 +93,100 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset $.init(arguments)>
 	<cfset $.announceEvent("onSiteSessionTrack")>
 
-	<cfif application.configBean.getTrackSessionInNewThread()>
-		<cfthread action="run" name="track#hash(session.trackingID)#" context="#arguments#">
-			<cfset super.trackRequest(argumentCollection=context)>
+	<cfif variables.trackSessionInNewThread>
+		<cfthread action="run" name="MuraSessionTracking" context="#arguments#" priority="low">
+			<cfset createTrackingRecord(argumentCollection=context)>
 		</cfthread>
 	<cfelse>
-		 <cfset super.trackRequest(argumentCollection=arguments)>
+		 <cfset createTrackingRecord(argumentCollection=arguments)>
 	</cfif>
+</cffunction>
+
+<cffunction name="createTrackingRecord" output="false">
+	<cfargument name="remote_addr" type="string" required="yes"/>
+	<cfargument name="script_name" type="string" required="yes"/>
+	<cfargument name="query_string" type="string" required="yes"/>
+	<cfargument name="server_name" type="string" required="yes"/>
+	<cfargument name="referer" type="string" required="yes" default=""/>
+	<cfargument name="user_agent" type="string" required="yes" default=""/>
+	<cfargument name="keywords" type="string" required="yes" default="" />
+	<cfargument name="urlToken" type="string" required="yes"/>
+	<cfargument name="UserID" type="string" required="yes"/>
+	<cfargument name="siteID" type="string" required="yes"/>
+	<cfargument name="contentID" type="string" required="yes"/>
+	<cfargument name="locale" type="string" required="yes"/>
+	<cfargument name="originalURLToken" type="string" required="yes"/>
+
+	<cfset arguments.language = 'Unknown' />
+	<cfset arguments.country ='Unknown' />
+	<cfset arguments.startCount =GetTickCount()>
+			
+	<cftry>
+		<cfquery datasource="#variables.datasource#" username="#variables.dbUsername#" password="#variables.dbPassword#">
+			INSERT INTO tsessiontracking (REMOTE_ADDR,SCRIPT_NAME,QUERY_STRING,SERVER_NAME,URLToken,UserID,siteID,
+				country,lang,locale, contentID, referer,keywords,user_agent,Entered,originalURLToken)
+			values (
+				<cfqueryparam  cfsqltype="cf_sql_varchar" value="#arguments.REMOTE_ADDR#" />,
+				<cfqueryparam  cfsqltype="cf_sql_varchar" value="#left(arguments.SCRIPT_NAME,200)#" />,
+				<cfqueryparam  cfsqltype="cf_sql_varchar" value="#arguments.QUERY_STRING#" />,
+				<cfqueryparam  cfsqltype="cf_sql_varchar" value="#left(arguments.SERVER_NAME,50)#" />,
+				<cfqueryparam  cfsqltype="cf_sql_varchar" value="#left(arguments.URLToken,130)#" />,
+				<cfqueryparam  cfsqltype="cf_sql_varchar" null="#iif(arguments.userid neq '',de('no'),de('yes'))#" value="#arguments.userid#" />,
+				<cfqueryparam  cfsqltype="cf_sql_varchar" null="#iif(arguments.siteid neq '',de('no'),de('yes'))#" value="#arguments.siteid#" />,
+				<cfqueryparam  cfsqltype="cf_sql_varchar" value="#arguments.country#" />,
+				<cfqueryparam  cfsqltype="cf_sql_varchar" value="#arguments.language#" />,
+				<cfqueryparam  cfsqltype="cf_sql_varchar" value="#arguments.locale#" />,
+				<cfqueryparam  cfsqltype="cf_sql_varchar" null="#iif(arguments.contentid neq '',de('no'),de('yes'))#" value="#arguments.contentid#" />,
+				<cfqueryparam  cfsqltype="cf_sql_varchar" value="#left(arguments.referer,255)#" />,
+				<cfqueryparam  cfsqltype="cf_sql_varchar" null="#iif(arguments.keywords neq '',de('no'),de('yes'))#" value="#left(arguments.keywords,200)#"/>,
+				<cfqueryparam  cfsqltype="cf_sql_varchar" value="#left(arguments.user_agent,200)#"/>,
+				<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
+				<cfqueryparam  cfsqltype="cf_sql_varchar" value="#left(arguments.originalURLToken,130)#" />
+			)	
+		</cfquery>
+			
+		<cfcatch></cfcatch>
+	</cftry>
+			
+			
+	<cfset clearOldData(argumentCollection=arguments)/>
+	
+	<cfset arguments.duration=GetTickCount()-arguments.startCount>
+			
+	<cfif arguments.duration gt 5000>
+		<cfset variables.longRequests=variables.longRequests+1>
+	<cfelse>
+		<cfset variables.longRequests=0>
+	</cfif>
+			
+	<cfif variables.longRequests gt 20>
+		<cfset application.sessionTrackingThrottle=true>
+	 </cfif>
+			
+</cffunction>
+
+<cffunction name="clearOldData" returnType="void" access="public">
+	<cfset var requestTime=now()>
+	
+	<cfif variables.clearHistory
+		and dateDiff("s", variables.lastPurge,requestTime) gte 60>
+		
+       	<cfset variables.lastPurge = requestTime>
+		
+		<cfquery datasource="#variables.datasource#" username="#variables.dbUsername#" password="#variables.dbPassword#">
+		delete from tsessiontracking 
+		where entered <  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('d',-variables.sessionHistory,now())#">
+		</cfquery>
+	</cfif>
+</cffunction>
+
+<cffunction name="deleteSession" access="public" returntype="void">
+	<cfargument name="URLToken" type="string" required="yes"/>
+	<cfquery datasource="#variables.datasource#" username="#variables.dbUsername#" password="#variables.dbPassword#">
+	delete from tsessiontracking 
+	where urlToken=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.urlToken#" />
+	</cfquery>
+
 </cffunction>
 
 </cfcomponent>
