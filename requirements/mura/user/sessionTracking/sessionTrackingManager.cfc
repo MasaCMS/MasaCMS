@@ -45,10 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
-
-<cfset variables.longRequests=0>
-<cfset variables.lastPurge=now()>
-
+ 
 <cffunction name="init" returntype="any" access="public" output="false">
 	<cfargument name="configBean" type="any" required="yes"/>
 	<cfargument name="settingsManager" type="any" required="yes"/>
@@ -75,8 +72,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		and application.configBean.getDashboard() 
 		and not application.sessionTrackingThrottle>
 
-		<cfset arguments.startCount =GetTickCount()>
-
 		<cfif session.remote_addr eq request.remoteAddr>
 			<cfif cgi.HTTP_USER_AGENT neq 'vspider'>
 				
@@ -100,18 +95,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfreturn ""/>
 		<cfelse>
 			<cfreturn "killSession"/>
-		</cfif>
-
-		<cfset arguments.duration=GetTickCount()-arguments.startCount>
-			
-		<cfif  arguments.duration gt 5000>
-			<cfset variables.longRequests=variables.longRequests+1>
-		<cfelse>
-			<cfset variables.longRequests=0>
-		</cfif>
-			
-		<cfif variables.longRequests gt 20>
-			<cfset application.sessionTrackingThrottle=true>
 		</cfif>
 	</cfif>
 
