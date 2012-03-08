@@ -71,12 +71,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="contentID" type="string" required="yes"/>
 	<cfargument name="locale" type="string" required="yes"/>
 	<cfargument name="originalURLToken" type="string" required="yes"/>
-	<cfargument name="datasource" type="string" required="yes"/>
-	<cfargument name="dbUsername" type="string" required="yes"/>
-	<cfargument name="dbPassword" type="string" required="yes"/>
-	<cfargument name="sessionHistory" type="numeric" required="yes"/>
-	<cfargument name="instanceID" type="string" required="yes"/>
-	
+
 	<cfset arguments.language = 'Unknown' />
 	<cfset arguments.country ='Unknown' />
 	
@@ -87,7 +82,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="createTrackingRecord" output="false">
 			
 			<!---<cftry>--->
-			<cfquery datasource="#arguments.datasource#" username="#arguments.dbusername#" password="#arguments.dbPassword#">
+			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			INSERT INTO tsessiontracking (REMOTE_ADDR,SCRIPT_NAME,QUERY_STRING,SERVER_NAME,URLToken,UserID,siteID,
 				country,lang,locale, contentID, referer,keywords,user_agent,Entered,originalURLToken)
 			values (
@@ -119,21 +114,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="clearOldData" returnType="void" access="public">
-	<cfargument name="datasource" type="string" required="yes"/>
-	<cfargument name="dbUsername" type="string" required="yes"/>
-	<cfargument name="dbPassword" type="string" required="yes"/>
-	<cfargument name="sessionHistory" type="string" required="yes"/>
-	<cfargument name="instanceID" type="string" required="yes"/>
 	<cfset var requestTime=now()>
 	
-	<cfif arguments.sessionHistory gt 0
+	<cfif application.getClearSessionHistory()
 		and dateDiff("s", variables.lastPurge,requestTime) gte 60>
 		
        	<cfset variables.lastPurge = requestTime>
 		
-		<cfquery datasource="#arguments.datasource#" username="#arguments.dbUsername()#" password="#arguments.dbPassword#">
+		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		delete from tsessiontracking 
-		where entered <  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('d',-arguments.sessionHistory,now())#">
+		where entered <  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('d',-application.getSessionHistory(),now())#">
 		</cfquery>
 	</cfif>
 </cffunction>
@@ -142,7 +132,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="URLToken" type="string" required="yes"/>
 <cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 delete from tsessiontracking 
-where urlToken=<cfqueryparam  cfsqltype="cf_sql_varchar" value="#arguments.urlToken#" />
+where urlToken=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.urlToken#" />
 </cfquery>
 
 </cffunction>
