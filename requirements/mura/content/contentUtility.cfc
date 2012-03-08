@@ -204,7 +204,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				and type in ('Portal','Page','Calendar','Gallery','File','Link','Component','Form')
 			</cfcase>
 			<cfcase value="urltitle">
-				and urltitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fieldValue#"/> 
+				and urltitle like <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fieldValue#"/> 
 				and type in ('Portal','Page','Calendar','Gallery','File','Link')
 			</cfcase>
 			<cfcase value="remoteID">
