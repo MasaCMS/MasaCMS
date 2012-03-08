@@ -93,6 +93,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.fileStoreAccessInfo=""/>
 <cfset variables.instance.tooltips=structNew()/>
 <cfset variables.instance.sessionHistory=1 />
+<cfset variables.instance.clearSessionHistory=1 />
 <cfset variables.instance.extensionManager=""/>
 <cfset variables.instance.reactorDbType=""/>
 <cfset variables.instance.reactor=""/>
