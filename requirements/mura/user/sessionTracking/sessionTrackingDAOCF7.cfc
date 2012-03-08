@@ -52,7 +52,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset variables.configBean=arguments.configBean />
 <cfset variables.settingsManager=arguments.settingsManager />
-
+<cfset variables.lastPurge=now()>
+	
 <cfreturn this />
 </cffunction>
 
