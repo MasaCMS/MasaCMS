@@ -137,7 +137,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		delete from tsessiontracking 
-		where entered <  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('d',-application.getSessionHistory(),now())#">
+		where entered <  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('d',-variables.configBean.getSessionHistory(),now())#">
 		</cfquery>
 	</cfif>
 </cffunction>
