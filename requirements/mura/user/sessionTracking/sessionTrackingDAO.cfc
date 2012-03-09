@@ -94,9 +94,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset $.announceEvent("onSiteSessionTrack")>
 
 	<cfif variables.trackSessionInNewThread>
-		<cfthread action="run" name="MuraSessionTracking" context="#arguments#" priority="low">
-			<cfset createTrackingRecord(argumentCollection=context)>
-		</cfthread>
+		<cflock name="MuraSessionTracking#application.instanceID#" timeout="5">
+			<cfthread action="run" name="MuraSessionTracking#application.instanceID#" context="#arguments#" priority="low">
+				<cfset createTrackingRecord(argumentCollection=context)>
+			</cfthread>
+		</cflock>
 	<cfelse>
 		 <cfset createTrackingRecord(argumentCollection=arguments)>
 	</cfif>
