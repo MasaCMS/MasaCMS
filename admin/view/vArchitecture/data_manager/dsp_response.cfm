@@ -129,29 +129,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </tr>
 <cfoutput query="rsData">
 <tr>
-<cfsilent><cfwddx action="wddx2cfml" input="#rsdata.data#" output="info"></cfsilent>
-<td class="administration">
-	<ul class="two">
-		<li class="edit">
-			<a href="index.cfm?fuseaction=cArch.datamanager&contentid=#URLEncodedFormat(attributes.contentid)#&siteid=#URLEncodedFormat(attributes.siteid)#&date1=#attributes.date1#&hour1=#attributes.hour1#&minute1=#attributes.minute1#&date2=#attributes.date2#&hour2=#attributes.hour2#&minute2=#attributes.minute2#&responseid=#rsdata.responseid#&action=edit&moduleid=#attributes.moduleid#&sortBy=#urlEncodedFormat(attributes.sortBy)#&sortDirection=#attributes.sortDirection#&filterBy=#urlEncodedFormat(attributes.filterBy)#&keywords=#urlEncodedFormat(attributes.keywords)#">
-				<img src="images/icons/edit_24.png" width="14" height="14" border="0" />
-				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.edit')#
-			</a>
-		</li>
-		<li class="delete">
-			<a href="index.cfm?fuseaction=cArch.datamanager&contentid=#URLEncodedFormat(attributes.contentid)#&siteid=#URLEncodedFormat(attributes.siteid)#&date1=#attributes.date1#&hour1=#attributes.hour1#&minute1=#attributes.minute1#&date2=#attributes.date2#&hour2=#attributes.hour2#&minute2=#attributes.minute2#&responseid=#rsdata.responseid#&action=delete&moduleid=#attributes.moduleid#&sortBy=#urlEncodedFormat(attributes.sortBy)#&sortDirection=#attributes.sortDirection#&filterBy=#urlEncodedFormat(attributes.filterBy)#&keywords=#urlEncodedFormat(attributes.keywords)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponseconfirm'))#',this.href)">
-				<img src="images/icons/remov_24.png" width="14" height="14" border="0" />
-				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponse')#
-			</a>
-		</li>
-	</ul>
-</td>
-<td class="dateSubmitted">#lsdateformat(rsdata.entered,session.dateKeyFormat)# #lstimeformat(rsdata.entered,"short")#</td>
-<cfloop list="#attributes.fieldnames#" index="f">
-	<cftry><cfset fValue=info['#f#']><cfcatch><cfset fValue=""></cfcatch></cftry>
-<td class="mForm-data"><cfif findNoCase('attachment',f) and isValid("UUID",fvalue)><a  href="javascript:preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/?fileID=#fvalue#');">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.viewattachment')#</a><cfelse>#application.contentRenderer.setParagraphs(htmleditformat(fvalue))#</cfif></td>
-</cfloop>
-
+<cftry>
+	<cfsilent><cfwddx action="wddx2cfml" input="#rsdata.data#" output="info"></cfsilent>
+	<td class="administration">
+		<ul class="two">
+			<li class="edit">
+				<a href="index.cfm?fuseaction=cArch.datamanager&contentid=#URLEncodedFormat(attributes.contentid)#&siteid=#URLEncodedFormat(attributes.siteid)#&date1=#attributes.date1#&hour1=#attributes.hour1#&minute1=#attributes.minute1#&date2=#attributes.date2#&hour2=#attributes.hour2#&minute2=#attributes.minute2#&responseid=#rsdata.responseid#&action=edit&moduleid=#attributes.moduleid#&sortBy=#urlEncodedFormat(attributes.sortBy)#&sortDirection=#attributes.sortDirection#&filterBy=#urlEncodedFormat(attributes.filterBy)#&keywords=#urlEncodedFormat(attributes.keywords)#">
+					<img src="images/icons/edit_24.png" width="14" height="14" border="0" />
+					#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.edit')#
+				</a>
+			</li>
+			<li class="delete">
+				<a href="index.cfm?fuseaction=cArch.datamanager&contentid=#URLEncodedFormat(attributes.contentid)#&siteid=#URLEncodedFormat(attributes.siteid)#&date1=#attributes.date1#&hour1=#attributes.hour1#&minute1=#attributes.minute1#&date2=#attributes.date2#&hour2=#attributes.hour2#&minute2=#attributes.minute2#&responseid=#rsdata.responseid#&action=delete&moduleid=#attributes.moduleid#&sortBy=#urlEncodedFormat(attributes.sortBy)#&sortDirection=#attributes.sortDirection#&filterBy=#urlEncodedFormat(attributes.filterBy)#&keywords=#urlEncodedFormat(attributes.keywords)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponseconfirm'))#',this.href)">
+					<img src="images/icons/remov_24.png" width="14" height="14" border="0" />
+					#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponse')#
+				</a>
+			</li>
+		</ul>
+	</td>
+	<td class="dateSubmitted">#lsdateformat(rsdata.entered,session.dateKeyFormat)# #lstimeformat(rsdata.entered,"short")#</td>
+	<cfloop list="#attributes.fieldnames#" index="f">
+		<cftry><cfset fValue=info['#f#']><cfcatch><cfset fValue=""></cfcatch></cftry>
+	<td class="mForm-data"><cfif findNoCase('attachment',f) and isValid("UUID",fvalue)><a  href="javascript:preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/?fileID=#fvalue#');">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.viewattachment')#</a><cfelse>#application.contentRenderer.setParagraphs(htmleditformat(fvalue))#</cfif></td>
+	</cfloop>
+	<cfcatch>
+		<td>Invalid Response: #rsData.responseID#</td>
+	</cfcatch>
+</cftry>
 </tr>
 </cfoutput>
 </table>
