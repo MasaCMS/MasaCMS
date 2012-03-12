@@ -560,7 +560,7 @@ to your own modified versions of Mura CMS.
 </head>
 </cfoutput>
 <body id="cSetUp" >
-<div id="header"><a id="blueRiverLink" href="http://blueriver.com" target="_blank" title="mura by blueRiver"></a><p id="version">Version 5.5</p><h1>Mura CMS</h1></div>
+<div id="header"><a id="blueRiverLink" href="http://blueriver.com" target="_blank" title="mura by blueRiver"></a><p id="version">Version 5.6</p><h1>Mura CMS</h1></div>
 
 <div id="content">
 <h2>Mura Set Up</h2>
