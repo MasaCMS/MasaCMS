@@ -489,7 +489,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="standardTrackSessionValidator" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
-	<cfif event.getValue('trackSession') 
+	<cfif true or event.getValue('trackSession') 
 			and len(event.getValue('contentBean').getcontentID()) 
 			and event.getValue('contentBean').getIsNew() eq 0 
 			and event.getValue('contentBean').getActive() eq 1
