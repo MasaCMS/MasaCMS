@@ -84,10 +84,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.referer>
 </cffunction>
 
-<cffunction name="getHost" output="false">
-	<cfreturn variables.host>
-</cffunction>
-
 <cffunction name="setUserAgent" output="false">
 	<cfargument name="userAgent">
 	<cfset variables.userAgent=arguments.userAgent>
