@@ -959,7 +959,7 @@ if(typeof Shadowbox == 'undefined'){
         }else if(!this_domain || RE.iframe.test(url)){
             return 'iframe';
         }
-        return 'unsupported';
+        return 'iframe';
     };
 
     /**

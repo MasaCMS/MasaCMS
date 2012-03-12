@@ -1112,7 +1112,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfcase value="category_summary"><cfset theObject=theObject & dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_category_summary.cfm",cacheKey=cacheKeyObjectId & event.getValue('categoryID'),params=arguments.params)></cfcase>
 		<cfcase value="archive_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_archive.cfm",cacheKeyObjectId)></cfcase>
 		<cfcase value="form"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"datacollection/index.cfm",cacheKeyObjectId)></cfcase>
-		<cfcase value="form_responses"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dataresponses/index.cfm",cacheKeyObjectId)></cfcase>
+		<cfcase value="form_responses"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dataresponses/index.cfm",cacheKeyObjectId & event.getValue("responseID") & event.getValue("startrow"))></cfcase>
 		<cfcase value="component"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_template.cfm",cacheKey=cacheKeyObjectId,showEditable=showEditable)></cfcase>
 		<cfcase value="ad"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_ad.cfm")></cfcase>
 		<cfcase value="comments"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_comments.cfm")></cfcase>

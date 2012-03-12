@@ -1381,7 +1381,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfset var rs=""/>
 
-		<cfset rs=variables.contentGateway.getPrivateSearch(arguments.siteid,arguments.keywords,arguments.tag,arguments.sectionID, arguments.searchType) />
+		<cfset rs=variables.contentGateway.getPrivateSearch(argumentCollection=arguments) />
 		
 		<cfreturn rs/>
 		
@@ -1394,7 +1394,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="sectionID" required="true" default=""/>
 		<cfargument name="searchType" type="string" required="true" default="default" hint="Can be default or image">
 		
-		<cfset var rs=getPrivateSearch(arguments.siteid,arguments.keywords,arguments.tag,arguments.sectionID, arguments.searchType) />
+		<cfset var rs=getPrivateSearch(argumentCollection=arguments) />
 		<cfset var it = getBean("contentIterator")>
 		<cfset it.setQuery(rs)>
 		<cfreturn it/>	
@@ -1410,7 +1410,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfset var rs=""/>
 
-		<cfset rs=variables.contentGateway.getPublicSearch(arguments.siteid,arguments.keywords,arguments.tag,arguments.sectionID,arguments.categoryID) />
+		<cfset rs=variables.contentGateway.getPublicSearch(argumentCollection=arguments) />
 		
 		<cfreturn rs/>
 		
@@ -1423,7 +1423,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="sectionID" required="true" default=""/>
 		<cfargument name="categoryID" required="true" default=""/>
 		
-		<cfset var rs=getPublicSearch(arguments.siteid,arguments.keywords,arguments.tag,arguments.sectionID,arguments.categoryID) />
+		<cfset var rs=getPublicSearch(argumentCollection=arguments) />
 		<cfset var it = getBean("contentIterator")>
 		<cfset it.setQuery(rs)>
 		<cfreturn it/>	

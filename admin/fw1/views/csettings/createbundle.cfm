@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <p>The bundle that you have requested has been created and is now available on your server at #rc.bundleFilePath#.</p>
 	<p class="notice"><strong>Important:</strong> Leaving large bundle files on server can lead to excessive disk space usage.</p>
 <cfif findNoCase(application.configBean.getWebRoot(),rc.bundleFilePath)>
-	<cfset downloadURL=application.configBean.getContext() & right(rc.bundleFilePath,len(rc.bundleFilePath)-len(application.configBean.getWebRoot()))>
+	<cfset downloadURL=replace(application.configBean.getContext() & right(rc.bundleFilePath,len(rc.bundleFilePath)-len(application.configBean.getWebRoot())),"\","/","All")>
 	<p><a href="#downloadURL#"class="submit"><span>Download Bundle</span></a></p>
 </cfif>
 </cfoutput>
