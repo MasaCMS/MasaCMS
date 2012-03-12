@@ -663,20 +663,30 @@ select * from tplugins order by #arguments.orderby#
 			
 			<cfif rsRequirements.type eq "dir" and rsRequirements.name neq '.svn'>	
 	
-				<cfif not hasPlugin(listLast(rsRequirements.name,"_"),"",false)>
-					<cfset configXML="">
-					<cftry>
-						<cfset configXML=getPluginXML(moduleID="",pluginDir=rsRequirements.name)>
-						<cfcatch></cfcatch>
-					</cftry>
-					
-					<cfif isXml(configXML)>
+				<cfset configXML="">
+				<cftry>
+					<cfset configXML=getPluginXML(moduleID="",pluginDir=rsRequirements.name)>
+					<cfcatch></cfcatch>
+				</cftry>
+				
+				<cfif isXml(configXML)>
+					<cfif not hasPlugin(listLast(rsRequirements.name,"_"),"",false)>
 						<cfset tempDir="#baseDir#/#createUUID()#">
 						<cfset variables.fileWriter.renameDir(directory="#baseDir#/#rsRequirements.name#",newDirectory=tempDir)>
 						<cfset deployDirectory(directory=tempDir,autoDeploy=false)>
 						<cfset variables.fileWriter.deleteDir(directory=tempDir)>
+					<cfelseif structKeyExists(configXML.plugin,"autoUpdate")
+							and isBoolean(configXML.plugin.autoUpdate.xmlText) 
+							and isBoolean(configXML.plugin.autoUpdate.xmlText) 
+							and configXML.plugin.autoUpdate.xmlText EQ true
+							and structKeyExists(configXML.plugin,"version")>
+							<!--- If Plugin.xml contains "autoupdate=true" and version doesn't match deployed version, then redeploy plugin --->
+							<cfset currentPlugin = getPlugin(listLast(rsRequirements.name,"_"),"",false) >
+							<cfif currentPlugin.version NEQ configXML.plugin.version>
+								<cfset reDeploy(id:currentPlugin.pluginID)>
+							</cfif>	
 					</cfif>
-				</cfif>
+				</cfif>	
 			<cfelseif listLast(rsRequirements.name,".") eq 'zip'>
 				<cfset item="#baseDir#/#rsRequirements.name#">
 				<cfif variables.settingsManager.isBundle(item)>
