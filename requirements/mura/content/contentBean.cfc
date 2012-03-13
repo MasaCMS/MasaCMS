@@ -408,7 +408,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfif>
 		
-		<cfif not session.mura.isLoggedIn >
+		<cfif not isDefined("session.mura.isLoggedIn") or not session.mura.isLoggedIn >
 			<cfset variables.instance.LastUpdateBy = "" />
 			<cfset variables.instance.LastUpdateByID = "" />
 		<cfelse>
