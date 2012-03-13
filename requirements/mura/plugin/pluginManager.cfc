@@ -1261,7 +1261,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var currentModuleID="">
 	<cfset var tracePoint=0>
 	
-	<cfset arguments.runat=replace(arguments.runat," ", "","ALL")>
+	<cfset arguments.runat=REReplace(arguments.runat, "[^a-zA-Z0-9_]", "", "ALL")>
 	
 	<cfset isValidEvent=variables.utility.isValidCFVariableName(arguments.runat)>
 	
