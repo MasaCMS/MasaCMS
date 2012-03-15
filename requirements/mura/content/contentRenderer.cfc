@@ -1896,15 +1896,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="addToHTMLHeadQueue" output="false">
 	<cfargument name="text">
+	<cfargument name="action" default="append">
 	<cfif not listFind(event.getValue('HTMLHeadQueue'),arguments.text)>
-		<cfset event.setValue('HTMLHeadQueue',listappend(event.getValue('HTMLHeadQueue'),arguments.text)) />
+		<cfif arguments.action eq "append">
+			<cfset event.setValue('HTMLHeadQueue',listappend(event.getValue('HTMLHeadQueue'),arguments.text)) />
+		<cfelse>
+			<cfset event.setValue('HTMLHeadQueue',listprepend(event.getValue('HTMLHeadQueue'),arguments.text)) />
+		</cfif>
 	</cfif>
 </cffunction>
 
 <cffunction name="addToHTMLFootQueue" output="false">
-	<cfargument name="text">	
+	<cfargument name="text">
+	<cfargument name="action" default="append">	
 	<cfif not listFind(event.getValue('HTMLFootQueue'),arguments.text)>
-		<cfset event.setValue('HTMLFootQueue',listappend(event.getValue('HTMLFootQueue'),arguments.text)) />
+		<cfif arguments.action eq "append">
+			<cfset event.setValue('HTMLFootQueue',listappend(event.getValue('HTMLFootQueue'),arguments.text)) />
+		<cfelse>
+			<cfset event.setValue('HTMLFootQueue',listprepend(event.getValue('HTMLFootQueue'),arguments.text)) />
+		</cfif>
 	</cfif>
 </cffunction>
 
@@ -1934,11 +1944,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<!--- ensure that the js lb is always there --->
 			<cfset loadJSLib() />
 			<!--- Add global.js --->
-			<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()#/#application.settingsManager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/display_objects/htmlhead/global.cfm")>
-			<cfsavecontent variable="headerStr">
-					<cfinclude  template="/#application.configBean.getWebRootMap()#/#application.settingsManager.getSite(event.getValue('siteID')).getDisplayPoolID()#/includes/display_objects/htmlhead/global.cfm">
-			</cfsavecontent>
-			<cfset commitTracePoint(tracePoint)>
+			<cfset addToHTMLHEADQueue('global.cfm',"prepend")>
 					
 			<!--- Add modal edit --->
 			<cfif getShowModal()>
