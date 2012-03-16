@@ -1195,6 +1195,24 @@ aside .responseMessage { color: red; }
 
 /* @end System Forms - Responses */
 
+/* @group System Forms - Rater */
+.stars a {
+	width: 14px;
+	height: 13px;
+	background: transparent url(../includes/display_objects/rater/images/stars.png) no-repeat;
+}
+.rating.zero, .ratestars.zero { background-image: url(../includes/display_objects/rater/images/star_zero.png); }
+.rating.one, .ratestars.one { background-image: url(../includes/display_objects/rater/images/star_one.png); }
+.rating.onehalf, .ratestars.onehalf { background-image: url(../includes/display_objects/rater/images/star_onehalf.png); }
+.rating.two, .ratestars.two { background-image: url(../includes/display_objects/rater/images/star_two.png); }
+.rating.twohalf, .ratestars.twohalf { background-image: url(../includes/display_objects/rater/images/star_twohalf.png); }
+.rating.three, .ratestars.three { background-image: url(../includes/display_objects/rater/images/star_three.png); }
+.rating.threehalf, .ratestars.threehalf { background-image: url(../includes/display_objects/rater/images/star_threehalf.png); }
+.rating.four, .ratestars.four { background-image: url(../includes/display_objects/rater/images/star_four.png); }
+.rating.fourhalf, .ratestars.fourhalf { background-image: url(../includes/display_objects/rater/images/star_fourhalf.png); }
+.rating.five, .ratestars.five { background-image: url(../includes/display_objects/rater/images/star_five.png); }
+/* @end Rater */
+
 /* @end SYSTEM FORMS */
 
 
