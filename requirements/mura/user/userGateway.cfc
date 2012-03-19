@@ -201,7 +201,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	on (tusers.userID=qExtendedSort.baseID)
 	</cfif>
 	
-	where tusers.type=2 and tusers.isPublic =#params.getIsPublic()# and 
+	where tusers.type=#params.getType()# and tusers.isPublic =#params.getIsPublic()# and 
 	tusers.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#userPoolID#">
 		
 		<cfif rsParams.recordcount>
