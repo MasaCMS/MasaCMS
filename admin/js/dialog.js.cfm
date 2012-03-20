@@ -1,4 +1,5 @@
-﻿<cfif isDefined("url.siteID")>
+<cfcontent reset="yes" type="application/javascript">
+<cfif isDefined("url.siteID")>
 <cfset isIeSix=FindNoCase('MSIE 6','#CGI.HTTP_USER_AGENT#') GREATER THAN 0>
 <cfset $=application.serviceFactory.getBean("MuraScope").init(url.siteID)>
 <cfparam name="Cookie.fetDisplay" default="">
@@ -167,36 +168,45 @@
 			);
 		</cfif>
 	}
-	
+
+	function resizeEditableObjects(){
+		$(".editableObjectContents").each(	
+			function(el){
+				var display="inline";	
+				var width=0;
+				var float;
+						
+				$(this).children().each(
+					function(el){			
+						if ($(this).css("display") == "block") {
+							display = "block";
+							float=$(this).css("float");
+							width=$(this).outerWidth();
+						}											
+					}	
+				);
+					
+				$(this).css("display",display).parent().css("display",display);
+					
+				if(width){
+					$(this).width(width).parent().width(width);
+					$(this).css("float",float).parent().css("float",float);
+				}
+					
+			}
+		);
+	}
+
 	jQuery(document).ready(
 		function($) {
-			$(".editableObjectContents").each(	
-				function(el){
-					var display="inline";	
-					var width=0;
-					var float;
-						
-					$(this).children().each(
-						function(el){			
-							if ($(this).css("display") == "block") {
-								display = "block";
-								float=$(this).css("float");
-								width=$(this).outerWidth();
-							}											
-						}	
-					);
-					
-					$(this).css("display",display).parent().css("display",display);
-					
-					if(width){
-						$(this).width(width).parent().width(width);
-						$(this).css("float",float).parent().css("float",float);
-					}
-					
-				}
-			);
+			resizeEditableObjects();
 		}
 	);
+
+	$(window).resize(function() {
+  		resizeEditableObjects();
+	});
+
 
 <cfelse>
 	function toggleAdminToolbarIE6(){

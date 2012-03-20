@@ -122,7 +122,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!--- otherwise grab it from the cache --->
 		<cfif NOT cacheFactory.has( key )>
 			<cfset bean=variables.userDAO.read(arguments.userid,bean)>
-			<cfif not bean.getIsNew()>
+			<cfif not isArray(bean) and not bean.getIsNew()>
 				<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 			</cfif>
 			<cfreturn bean/>
@@ -158,7 +158,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!--- otherwise grab it from the cache --->
 		<cfif NOT cacheFactory.has( key )>
 			<cfset bean=variables.userDAO.readByUsername(arguments.username,arguments.siteid,bean) />
-			<cfif not bean.getIsNew()>
+			<cfif not isArray(bean) and not bean.getIsNew()>
 				<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 			</cfif>
 			<cfreturn bean/>
@@ -191,7 +191,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!--- otherwise grab it from the cache --->
 		<cfif NOT cacheFactory.has( key )>
 			<cfset bean=variables.userDAO.readByGroupName(arguments.groupname,arguments.siteid,arguments.isPublic,bean)  />
-			<cfif not bean.getIsNew()>
+			<cfif not isArray(bean) and not bean.getIsNew()>
 				<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 			</cfif>
 			<cfreturn bean/>
@@ -223,7 +223,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!--- otherwise grab it from the cache --->
 		<cfif NOT cacheFactory.has( key )>
 			<cfset bean=variables.userDAO.readByRemoteID(arguments.remoteID,arguments.siteid,bean) />
-			<cfif not bean.getIsNew()>
+			<cfif not isArray(bean) and not bean.getIsNew()>
 				<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 			</cfif>
 			<cfreturn bean/>

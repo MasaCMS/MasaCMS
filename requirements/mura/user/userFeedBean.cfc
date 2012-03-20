@@ -49,6 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfproperty name="inActive" type="numeric" default="0" required="true" />
 	<cfproperty name="isPublic" type="numeric" default="1" required="true" />
 	<cfproperty name="groupID" type="string" default="" required="true" />
+	<cfproperty name="type" type="numeric" default="2" required="true" />
 	<cfproperty name="categoryID" type="string" default="" required="true" />
 	<cfproperty name="siteID" type="string" default="" required="true" />
 	<cfproperty name="sortBy" type="string" default="lname" required="true" />
@@ -60,6 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.inactive="">
 	<cfset variables.instance.isPublic=1>
 	<cfset variables.instance.groupID="">
+	<cfset variables.instance.type=2>
 	<cfset variables.instance.categoryID="">
 	<cfset variables.instance.siteID="">
 	<cfset variables.instance.sortBy="lname" />
@@ -118,6 +120,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<cfif structKeyExists(arguments.params,"ispublic")>
 				<cfset setIsPublic(arguments.params.ispublic)>
+			</cfif>
+
+			<cfif structKeyExists(arguments.params,"type")>
+				<cfset setType(arguments.params.type)>
 			</cfif>
 			
 			<cfif structKeyExists(arguments.params,"siteid")>
@@ -195,6 +201,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="isPublic">
 	<cfif isNumeric(arguments.isPublic)>
 		<cfset variables.instance.isPublic=arguments.isPublic>
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setType" output="false">
+	<cfargument name="type">
+	<cfif isNumeric(arguments.type)>
+		<cfset variables.instance.type=arguments.type>
 	</cfif>
 	<cfreturn this>
 </cffunction>

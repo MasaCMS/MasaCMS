@@ -62,7 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfloop list="#fieldnames#" index="f">
 	<cftry><cfset fValue=info['#f#']><cfcatch><cfset fValue=""></cfcatch></cftry>
 	<dt>#f#</dt>
-	<dd>#fvalue#</dd>
+	<dd>#HTMLEditFormat(fvalue)#</dd>
 </cfloop>
 </dl>
 </cfoutput>

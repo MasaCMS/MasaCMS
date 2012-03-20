@@ -76,7 +76,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfsilent><cfwddx action="wddx2cfml" input="#rsdata.data#" output="info"></cfsilent>
 <cfloop list="#data.fieldnames#" index="f">
 	<cftry><cfset fValue=info['#f#']><cfcatch><cfset fValue=""></cfcatch></cftry>
-<td><a href="?fuseaction=detail&responseid=#rsdata.responseid#">#fvalue#</a></td>
+<td><a href="?fuseaction=detail&responseid=#rsdata.responseid#">#HTMLEditFormat(fvalue)#</a></td>
 </cfloop>
 
 </tr>
