@@ -368,7 +368,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!--- otherwise grab it from the cache --->
 		<cfif NOT cacheFactory.has( key )>
 			<cfset bean=variables.DAO.readByName(arguments.name,arguments.siteID,bean) >
-			<cfif not bean.getIsNew()>
+			<cfif not isArray(bean) and not bean.getIsNew()>
 				<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 			</cfif>
 			<cfreturn bean/>
@@ -421,7 +421,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!--- otherwise grab it from the cache --->
 		<cfif NOT cacheFactory.has( key )>
 			<cfset bean=variables.DAO.readByFilename(arguments.filename,arguments.siteID,bean) >
-			<cfif not bean.getIsNew()>
+			<cfif not isArray(bean) and not bean.getIsNew()>
 				<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 			</cfif>
 			<cfreturn bean/>
@@ -452,7 +452,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!--- otherwise grab it from the cache --->
 		<cfif NOT cacheFactory.has( key )>
 			<cfset bean=variables.DAO.readByRemoteID(arguments.remoteID,arguments.siteID,bean) >
-			<cfif not bean.getIsNew()>
+			<cfif not isArray(bean) and not bean.getIsNew()>
 				<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 			</cfif>
 			<cfreturn bean/>

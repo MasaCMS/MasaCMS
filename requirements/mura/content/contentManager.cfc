@@ -235,7 +235,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
 				<cfset bean=variables.contentDAO.readVersion(arguments.contentHistID,arguments.siteid,arguments.use404,bean) />
-				<cfif not bean.getIsNew()>
+				<cfif not isArray(bean) and not bean.getIsNew()>
 					<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 				</cfif>
 				<cfreturn bean/>
@@ -419,7 +419,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
 				<cfset bean=variables.contentDAO.readActive(arguments.contentID,arguments.siteid,arguments.use404,bean)  />
-				<cfif not bean.getIsNew()>
+				<cfif not isArray(bean) and not bean.getIsNew()>
 					<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 				</cfif>
 				<cfreturn bean/>
