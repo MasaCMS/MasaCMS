@@ -1301,8 +1301,9 @@ and tclassextendattributes.type='File'
 				}
 							
 				if(extendSet.getIsNew()){
-					      		extendSet.save();
-					    }
+					extendSet.setOrderNo(extset);
+					extendSet.save();
+				}
 
 				for(at=1;at lte arraylen(extendSetXML.xmlChildren); at=at+1){
 					      		
@@ -1325,6 +1326,7 @@ and tclassextendattributes.type='File'
 							}
 						}
 
+						attribute.setOrderNo(at);
 						attribute.save();
 					}			
 				}
