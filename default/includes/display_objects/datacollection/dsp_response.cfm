@@ -67,7 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		HAVING tformresponsequestions.formID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectID#"/>
 		and tformresponsequestions.pollValue=<cfqueryparam cfsqltype="cf_sql_varchar" value="#I#"/>
 		ORDER BY Count(tformresponsequestions.pollValue)
-		</cfquery></cfsilent><cfif rsSubTotal.qty eq ''><cfset lineQty=0><cfelse><cfset lineQty=rsSubtotal.qty></cfif><cfset percent=round((lineQty/rstotal.qty)*100)><li><span class="pollValue">#i#:</span> <span class="pollQty">#lineQty#</span> <span class="pollPercent">(#percent#%)</span><div style="margin: 2px 0 0 0; height: 10px; width: #percent#%; background: ##8C9EB4 url(/default/images/bg_poll_result.gif); font-size: 9px;">&nbsp;</div></li></cfloop></ul></div>
+		</cfquery></cfsilent><cfif rsSubTotal.qty eq ''><cfset lineQty=0><cfelse><cfset lineQty=rsSubtotal.qty></cfif><cfset percent=round((lineQty/rstotal.qty)*100)><li><span class="pollValue">#i#:</span> <span class="pollQty">#lineQty#</span> <span class="pollPercent">(#percent#%)</span><div style="margin: 2px 0 0 0; height: 10px; width: #percent#%; background: ##8C9EB4; font-size: 9px;">&nbsp;</div></li></cfloop></ul></div>
 	</cfif>
 </cfif>
 <cfif not acceptdata>
