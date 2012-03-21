@@ -64,6 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.sortBy="" />
 	<cfset variables.instance.sortDirection="asc" />
 	<cfset variables.instance.tableFieldLookUp=structNew()/>
+	<cfset variables.instance.tableFieldlist=""/>
 	<cfset variables.instance.nextN=0>
 	<cfset variables.instance.maxItems=0>
 
@@ -88,24 +89,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="formatField" output="false">
-	<cfargument name="field">
+<cffunction name="loadTableMetaData" output="false">
 	<cfset var rs="">
 	<cfset var temp="">
 	<cfset var i="">
 
-	<cfif structIsEmpty(variables.instance.tableFieldLookUp)>
+	<cfif not len(variables.instance.tableFieldList)>
 		<cfset variables.instance.tableFieldLookUp=variables.configBean.getValue("#variables.instance.bean#FieldLookUp")>
-		<cfif not isStruct(variables.instance.tableFieldLookUp)>
+		<cfset variables.instance.tableFieldList=variables.configBean.getValue("#variables.instance.bean#FieldList
+			")>
+		<cfif not len(variables.instance.tableFieldList)>
 			<cfset variables.instance.tableFieldLookUp=structNew()>
 			<cfset rs=variables.configBean.dbTableColumns(variables.instance.table)>
-			<cfset temp=valueList(rs.column_name)>
-			<cfloop list="#temp#" index="i">
+			<cfset variables.instance.tableFieldlist=valueList(rs.column_name)>
+			<cfloop list="#variables.instance.tableFieldlist#" index="i">
 				<cfset variables.instance.tableFieldLookUp["#i#"]=true>
 			</cfloop>
 			<cfset variables.configBean.setValue("#variables.instance.bean#FieldLookUp",variables.instance.tableFieldLookUp)>
+			<cfset variables.configBean.setValue("#variables.instance.bean#FieldList",variables.instance.tableFieldlist)>
 		</cfif>
 	</cfif>
+</cffunction>
+
+<cffunction name="formatField" output="false">
+	<cfargument name="field">
+
+	<cfset loadTableMetaData()>
 
 	<cfif structKeyExists(variables.instance.tableFieldLookUp,arguments.field)>
 		<cfset arguments.field="#variables.instance.table#.#arguments.field#">
@@ -242,7 +251,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
 		<cfif dbType eq "oracle" and variables.instance.maxItems>select * from (</cfif>
 		select <cfif dbtype eq "mssql" and variables.instance.maxItems>top #variables.instance.maxItems#</cfif>
-		select * from #variables.instance.table#
+		#variables.instance.tableFieldlist# from #variables.instance.table#
 		
 		<cfloop list="#jointables#" index="jointable">
 			inner join #jointable# on (#variables.instance.table#.#variables.instance.keyField#=#jointable#.#variables.instance.keyField#)
