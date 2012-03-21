@@ -61,9 +61,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.keyField="">
 	<cfset variables.instance.sortBy="" />
 	<cfset variables.instance.sortDirection="asc" />
+	<cfset variables.instance.tableFieldList=""/>
 	
 	<cfset variables.instance.params=queryNew("param,relationship,field,condition,criteria,dataType","integer,varchar,varchar,varchar,varchar,varchar" )  />
 	<cfreturn this/>
+</cffunction>
+
+<cffunction name="formatField" output="false">
+	<cfargument name="field">
+	<cfset var rs="">
+
+	<cfif not len(variables.instance.tableFieldList)>
+		<cfset variables.instance.tableFieldList=variables.configBean.getValue("#variables.instance.bean#FieldList")>
+		<cfif not len(variables.instance.tableFieldList)>
+			<cfset rs=variables.configBean.dbTableColumns(variables.instance.table)>
+			<cfset variables.instance.tableFieldList=valueList(rs.column_name)>
+			<cfset variables.configBean.setValue("#variables.instance.bean#FieldList",variables.instance.tableFieldList)>
+		</cfif>
+	</cfif>
+
+	<cfif listFindNoCase(variables.instance.tableFieldList,arguments.field)>
+		<cfset arguments.field="#variables.instance.table#.#arguments.field#">
+	</cfif>
+
+	<cfreturn arguments.field>
+
 </cffunction>
 
 <cffunction name="setConfigBean" output="false">
@@ -133,7 +155,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset queryAddRow(variables.instance.params,1)/>
 		<cfset rows = variables.instance.params.recordcount />
 		<cfset querysetcell(variables.instance.params,"param",rows,rows)/>
-		<cfset querysetcell(variables.instance.params,"field",arguments.field,rows)/>
+		<cfset querysetcell(variables.instance.params,"field",formatField(arguments.field),rows)/>
 		<cfset querysetcell(variables.instance.params,"relationship",arguments.relationship,rows)/>
 		<cfset querysetcell(variables.instance.params,"criteria",arguments.criteria,rows)/>
 		<cfset querysetcell(variables.instance.params,"condition",arguments.condition,rows)/>
@@ -151,9 +173,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn addParam(argumentCollection=arguments)>
 </cffunction>
 
-<cffunction name="clearParams">
+<cffunction name="getAdvancedParams">
+	<cfreturn getParams()>
+</cffunction>
+
+<cffunction name="getParams">
+	<cfreturn variables.instance.params>
+</cffunction>
+
+<cffunction name="clearAdvancedParams">
 	<cfset variables.instance.params=queryNew("param,relationship,field,condition,criteria,dataType","integer,varchar,varchar,varchar,varchar,varchar" )  />
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="clearParams">
+	<cfreturn clearAdvancedParams()>
 </cffunction>
 
 <cffunction name="getQuery" returntype="query" output="false">
@@ -240,7 +274,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getIterator" returntype="any" output="false">
 	<cfset var rs=getQuery()>
-	<cfset var it=getBean("userIterator")>
+	<cfset var it=getBean("#variables.instance.bean#Iterator")>
 	<cfset it.setQuery(rs)>
 	<cfreturn it>
 </cffunction>

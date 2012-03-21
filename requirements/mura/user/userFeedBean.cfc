@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.bean.bean" output="false">
+<cfcomponent extends="mura.bean.beanFeedBean" output="false">
 
 	<cfproperty name="inActive" type="numeric" default="0" required="true" />
 	<cfproperty name="isPublic" type="numeric" default="1" required="true" />
@@ -54,6 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfproperty name="siteID" type="string" default="" required="true" />
 	<cfproperty name="sortBy" type="string" default="lname" required="true" />
 	<cfproperty name="sortDirection" type="string" default="asc" required="true" />
+	<cfproperty name="bean" type="string" default="user" required="true" />
 	
 <cffunction name="init" output="false">
 	<cfset super.init(argumentCollection=arguments)>
@@ -64,8 +65,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.type=2>
 	<cfset variables.instance.categoryID="">
 	<cfset variables.instance.siteID="">
+	<cfset variables.instance.bean="user">
 	<cfset variables.instance.sortBy="lname" />
 	<cfset variables.instance.sortDirection="asc" />
+	<cfset variables.instance.table="tusers">
 	
 	<cfset variables.instance.params=queryNew("param,relationship,field,condition,criteria,dataType","integer,varchar,varchar,varchar,varchar,varchar" )  />
 	<cfreturn this/>
@@ -139,40 +142,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfif>
 		<cfreturn this>
-</cffunction>
-
-<cffunction name="addParam" access="public" output="false">
-	<cfargument name="field" type="string" required="true" default="">
-	<cfargument name="relationship" type="string" default="and" required="true">
-	<cfargument name="criteria" type="string" required="true" default="">
-	<cfargument name="condition" type="string" default="EQUALS" required="true">
-	<cfargument name="datatype" type="string"  default="varchar" required="true">
-		<cfset var rows=1/>
-		
-		<cfset queryAddRow(variables.instance.params,1)/>
-		<cfset rows = variables.instance.params.recordcount />
-		<cfset querysetcell(variables.instance.params,"param",rows,rows)/>
-		<cfset querysetcell(variables.instance.params,"field",arguments.field,rows)/>
-		<cfset querysetcell(variables.instance.params,"relationship",arguments.relationship,rows)/>
-		<cfset querysetcell(variables.instance.params,"criteria",arguments.criteria,rows)/>
-		<cfset querysetcell(variables.instance.params,"condition",arguments.condition,rows)/>
-		<cfset querysetcell(variables.instance.params,"dataType",arguments.datatype,rows)/>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="addAdvancedParam" access="public" output="false">
-	<cfargument name="field" type="string" required="true" default="">
-	<cfargument name="relationship" type="string" default="and" required="true">
-	<cfargument name="criteria" type="string" required="true" default="">
-	<cfargument name="condition" type="string" default="EQUALS" required="true">
-	<cfargument name="datatype" type="string"  default="varchar" required="true">
-		
-	<cfreturn addParam(argumentCollection=arguments)>
-</cffunction>
-
-<cffunction name="clearParams">
-	<cfset variables.instance.params=queryNew("param,relationship,field,condition,criteria,dataType","integer,varchar,varchar,varchar,varchar,varchar" )  />
-	<cfreturn this>
 </cffunction>
 
 <cffunction name="getQuery" returntype="query" output="false">

@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.bean.bean" output="false">
+<cfcomponent extends="mura.bean.beanFeedBean" output="false">
 
 <cfproperty name="feedID" type="string" default="" required="true" />
 <cfproperty name="siteID" type="string" default="" required="true" />
@@ -88,6 +88,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="imageWidth" type="string" default="AUTO" required="true" />
 <cfproperty name="displayList" type="string" default="Title,Date,Image,Summary,Tags,Credits" required="true" />
 <cfproperty name="liveOnly" type="numeric" default="1" required="true" />
+<cfproperty name="bean" type="string" default="content" required="true" />
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfset super.init(argumentCollection=arguments)>
@@ -136,6 +137,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.imageWidth="AUTO" />
 	<cfset variables.instance.displayList="Date,Title,Image,Summary,Credits,Tags" />
 	<cfset variables.instance.liveOnly=1 />
+	<cfset variables.instance.bean="content" />
+	<cfset variables.instance.table="tcontent">
 	
 	<cfreturn this />
 </cffunction>
@@ -143,12 +146,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setFeedManager">
 	<cfargument name="feedManager">
 	<cfset variables.feedManager=arguments.feedManager>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="setConfigBean">
-	<cfargument name="configBean">
-	<cfset variables.configBean=arguments.configBean>
 	<cfreturn this>
 </cffunction>
 
@@ -340,44 +337,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 	</cfif>
 	
-	<cfreturn this>
-</cffunction>
-
-
-<cffunction name="addAdvancedParam" access="public" output="false">
-	<cfargument name="field" type="string" required="true" default="">
-	<cfargument name="relationship" type="string" default="and" required="true">
-	<cfargument name="criteria" type="string" required="true" default="">
-	<cfargument name="condition" type="string" default="EQUALS" required="true">
-	<cfargument name="datatype" type="string"  default="varchar" required="true">
-	
-	<cfset var rows=1/>
-		
-	<cfset queryAddRow(variables.instance.advancedParams,1)/>
-	<cfset rows = variables.instance.advancedParams.recordcount />
-	<cfset querysetcell(variables.instance.advancedParams,"feedid",variables.instance.feedID,rows)/>
-	<cfset querysetcell(variables.instance.advancedParams,"param",rows,rows)/>
-	<cfset querysetcell(variables.instance.advancedParams,"field",arguments.field,rows)/>
-	<cfset querysetcell(variables.instance.advancedParams,"relationship",arguments.relationship,rows)/>
-	<cfset querysetcell(variables.instance.advancedParams,"criteria",arguments.criteria,rows)/>
-	<cfset querysetcell(variables.instance.advancedParams,"condition",arguments.condition,rows)/>
-	<cfset querysetcell(variables.instance.advancedParams,"dataType",arguments.datatype,rows)/>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="addParam" access="public" output="false" hint="This is the same as addAdvancedParam.">
-	<cfargument name="field" type="string" required="true" default="">
-	<cfargument name="relationship" type="string" default="and" required="true">
-	<cfargument name="criteria" type="string" required="true" default="">
-	<cfargument name="condition" type="string" default="EQUALS" required="true">
-	<cfargument name="datatype" type="string"  default="varchar" required="true">
-	<cfset addAdvancedParam(argumentcollection=arguments)>
-	<cfreturn this>
-</cffunction>
-
-
-<cffunction name="clearAdvancedParams" output="false">
-	<cfset variables.instance.advancedParams=queryNew("feedID,param,relationship,field,condition,criteria,dataType","varchar,integer,varchar,varchar,varchar,varchar,varchar" )  />
 	<cfreturn this>
 </cffunction>
 
