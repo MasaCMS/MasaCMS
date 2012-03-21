@@ -79,7 +79,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="displayComments" type="numeric" default="0" required="true" />
 <cfproperty name="displayKids" type="numeric" default="0" required="true" />
 <cfproperty name="isNew" type="numeric" default="0" required="true" />
-<cfproperty name="advancedParams" type="query" default="" required="true" />
+<cfproperty name="params" type="query" default="" required="true" />
 <cfproperty name="remoteID" type="string" default="" required="true" />
 <cfproperty name="remoteSourceURL" type="string" default="" required="true" />
 <cfproperty name="remotePubDAte" type="string" default="" required="true" />
@@ -127,7 +127,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.displaySummaries=1 />
 	<cfset variables.instance.displayKids=0 />
 	<cfset variables.instance.isNew=1 />
-	<cfset variables.instance.advancedParams=queryNew("feedID,param,relationship,field,condition,criteria,dataType","varchar,integer,varchar,varchar,varchar,varchar,varchar" )  />
+	<cfset variables.instance.params=queryNew("feedID,param,relationship,field,condition,criteria,dataType","varchar,integer,varchar,varchar,varchar,varchar,varchar" )  />
 	<cfset variables.instance.errors=structnew() />
 	<cfset variables.instance.remoteID = "" />
 	<cfset variables.instance.remoteSourceURL = "" />
@@ -165,7 +165,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfset setAdvancedParams(arguments.feed) />
 	</cfif>
-		
+	
 	<cfreturn this />
 </cffunction>
 
@@ -303,22 +303,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="setAdvancedParams" access="public" output="false">
+<cffunction name="setParams" access="public" output="false">
 	<cfargument name="params" type="any" required="true">
 		
 	<cfset var rows=0/>
 	<cfset var I = 0 />
 		
 	<cfif isquery(arguments.params)>
-			
-		<cfset variables.instance.advancedParams=arguments.params />
+		<cfset variables.instance.params=arguments.params />
 			
 	<cfelseif isdefined('arguments.params.param')>
 	
-		<cfset clearAdvancedParams() />
+		<cfset clearParams() />
 		<cfloop from="1" to="#listLen(arguments.params.param)#" index="i">
 			
-			<cfset addAdvancedParam(
+			<cfset addParam(
 					listFirst(evaluate('arguments.params.paramField#i#'),'^'),
 					evaluate('arguments.params.paramRelationship#i#'),
 					evaluate('arguments.params.paramCriteria#i#'),
@@ -330,6 +329,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="setAdvancedParams" output="false">
+	<cfargument name="params" type="any" required="true">
+	<cfreturn setParams(argumentCollection=arguments)>
 </cffunction>
 
 <cffunction name="renderName" returntype="String" access="public" output="false">	

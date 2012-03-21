@@ -130,6 +130,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="setAdvancedParams" access="public" output="false">
+	<cfargument name="params" type="any" required="true">
+	<cfreturn setParams(argumentCollection=arguments)>
+</cffunction>
+
 <cffunction name="setParams" access="public" output="false">
 	<cfargument name="params" type="any" required="true">
 		
@@ -177,6 +182,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset setSiteID(arguments.params.siteid)>
 			</cfif>	
 		</cfif>
+
 		<cfreturn this>
 </cffunction>
 
