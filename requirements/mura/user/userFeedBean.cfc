@@ -154,7 +154,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getIterator" returntype="any" output="false">
 	<cfset var rs=getQuery()>
 	<cfset var it=getBean("userIterator")>
-	<cfset it.setQuery(rs)>
+	<cfset it.setQuery(rs,variables.instance.nextN)>
 	<cfreturn it>
 </cffunction>
 
