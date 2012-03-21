@@ -1,12 +1,12 @@
 CREATE TABLE [dbo].[tadcampaigns] (
 	[campaignID] [char] (35) NOT NULL ,
 	[userID] [char] (35) NULL ,
-	[dateCreated] [smalldatetime] NULL ,
-	[lastUpdate] [smalldatetime] NULL ,
+	[dateCreated] [datetime] NULL ,
+	[lastUpdate] [datetime] NULL ,
 	[lastUpdateBy] [nvarchar] (50) NULL ,
 	[name] [nvarchar] (50) NULL ,
-	[startDate] [smalldatetime] NULL ,
-	[endDate] [smalldatetime] NULL ,
+	[startDate] [datetime] NULL ,
+	[endDate] [datetime] NULL ,
 	[isActive] [int] NULL ,
 	[notes] [nvarchar] (max) NULL 
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
@@ -15,8 +15,8 @@ GO
 CREATE TABLE [dbo].[tadcreatives] (
 	[creativeID] [char] (35) NOT NULL ,
 	[userID] [char] (35) NULL ,
-	[dateCreated] [smalldatetime] NULL ,
-	[lastUpdate] [smalldatetime] NULL ,
+	[dateCreated] [datetime] NULL ,
+	[lastUpdate] [datetime] NULL ,
 	[lastUpdateBy] [nvarchar] (50) NULL ,
 	[name] [nvarchar] (50) NULL ,
 	[creativeType] [nvarchar] (50) NULL ,
@@ -51,11 +51,11 @@ CREATE TABLE [dbo].[tadplacements] (
 	[campaignID] [char] (35) NULL ,
 	[adZoneID] [char] (35) NULL ,
 	[creativeID] [char] (35) NULL ,
-	[dateCreated] [smalldatetime] NULL ,
-	[lastUpdate] [smalldatetime] NULL ,
+	[dateCreated] [datetime] NULL ,
+	[lastUpdate] [datetime] NULL ,
 	[lastUpdateBy] [nvarchar] (50) NULL ,
-	[startDate] [smalldatetime] NULL ,
-	[endDate] [smalldatetime] NULL ,
+	[startDate] [datetime] NULL ,
+	[endDate] [datetime] NULL ,
 	[costPerImp] [decimal](18, 5) NULL ,
 	[costPerClick] [decimal](18, 2) NULL ,
 	[isExclusive] [int] NULL ,
@@ -70,7 +70,7 @@ CREATE TABLE [dbo].[tadstats] (
 	[statID] [int] IDENTITY (1, 1) NOT NULL ,
 	[PlacementID] [char] (35) NULL ,
 	[StatHour] [int] NULL ,
-	[StatDate] [smalldatetime] NULL ,
+	[StatDate] [datetime] NULL ,
 	[Type] [nvarchar] (50) NULL ,
 	[counter] [int] NULL 
 ) ON [PRIMARY]
@@ -79,8 +79,8 @@ GO
 CREATE TABLE [dbo].[tadzones] (
 	[adZoneID] [char] (35) NOT NULL ,
 	[siteID] [nvarchar] (25) NULL ,
-	[dateCreated] [smalldatetime] NULL ,
-	[lastUpdate] [smalldatetime] NULL ,
+	[dateCreated] [datetime] NULL ,
+	[lastUpdate] [datetime] NULL ,
 	[lastUpdateBy] [nvarchar] (50) NULL ,
 	[name] [nvarchar] (50) NULL ,
 	[creativeType] [nvarchar] (50) NULL ,
@@ -124,11 +124,11 @@ CREATE TABLE [dbo].[tcontent] (
 	[MetaDesc] [nvarchar] (max) NULL ,
 	[MetaKeyWords] [nvarchar] (max) NULL ,
 	[Body] [nvarchar] (max) NULL ,
-	[lastUpdate] [smalldatetime] NULL ,
+	[lastUpdate] [datetime] NULL ,
 	[lastUpdateBy] [nvarchar] (50) NULL ,
 	[lastUpdateByID] [nvarchar] (50) NULL ,
-	[DisplayStart] [smalldatetime] NULL ,
-	[DisplayStop] [smalldatetime] NULL ,
+	[DisplayStart] [datetime] NULL ,
+	[DisplayStop] [datetime] NULL ,
 	[Display] [tinyint] NULL ,
 	[Approved] [tinyint] NULL ,
 	[IsNav] [tinyint] NULL ,
@@ -145,13 +145,13 @@ CREATE TABLE [dbo].[tcontent] (
 	[Notes] [nvarchar] (max) NULL ,
 	[inheritObjects] [nvarchar] (25) NULL ,
 	[isFeature] [tinyint] NULL ,
-	[ReleaseDate] [smalldatetime] NULL ,
+	[ReleaseDate] [datetime] NULL ,
 	[IsLocked] [tinyint] NULL ,
 	[nextN] [int] NULL ,
 	[sortBy] [nvarchar] (50) NULL ,
 	[sortDirection] [nvarchar] (50) NULL ,
-	[featureStart] [smalldatetime] NULL ,
-	[featureStop] [smalldatetime] NULL ,
+	[featureStart] [datetime] NULL ,
+	[featureStop] [datetime] NULL ,
 	[forceSSL] [tinyint] NOT NULL ,
 	[audience] [nvarchar] (255) NULL ,
 	[keyPoints] [nvarchar] (max) NULL ,
@@ -187,8 +187,8 @@ CREATE TABLE [dbo].[tcontentcategories] (
 	[categoryID] [char] (35) NOT NULL ,
 	[siteID] [nvarchar] (25) NULL ,
 	[parentID] [char] (35) NULL ,
-	[dateCreated] [smalldatetime] NULL ,
-	[lastUpdate] [smalldatetime] NULL ,
+	[dateCreated] [datetime] NULL ,
+	[lastUpdate] [datetime] NULL ,
 	[lastUpdateBy] [nvarchar] (50) NULL ,
 	[name] [nvarchar] (50) NULL ,
 	[notes] [nvarchar] (max) NULL ,
@@ -209,8 +209,8 @@ CREATE TABLE [dbo].[tcontentcategoryassign] (
 	[isFeature] [int] NULL ,
 	[orderno] [int] NULL ,
 	[siteID] [nvarchar] (25) NULL ,
-	[featureStart] [smalldatetime] NULL ,
-	[featureStop] [smalldatetime] NULL 
+	[featureStart] [datetime] NULL ,
+	[featureStop] [datetime] NULL 
 ) ON [PRIMARY]
 GO
 
@@ -221,7 +221,7 @@ CREATE TABLE [dbo].[tcontentcomments] (
 	[url] [nvarchar] (50) NULL ,
 	[name] [nvarchar] (50) NULL ,
 	[comments] [nvarchar] (max) NULL ,
-	[entered] [smalldatetime] NULL ,
+	[entered] [datetime] NULL ,
 	[email] [nvarchar] (100) NULL ,
 	[siteid] [nvarchar] (25) NULL ,
 	[ip] [nvarchar] (50) NULL ,
@@ -233,7 +233,7 @@ CREATE TABLE [dbo].[tcontenteventreminders] (
 	[contentId] [char] (35) NOT NULL ,
 	[siteId] [nvarchar] (25) NOT NULL ,
 	[email] [nvarchar] (200) NOT NULL ,
-	[RemindDate] [smalldatetime] NULL ,
+	[RemindDate] [datetime] NULL ,
 	[RemindHour] [int] NULL ,
 	[RemindMinute] [int] NULL ,
 	[RemindInterval] [int] NULL ,
@@ -331,7 +331,7 @@ CREATE TABLE [dbo].[temailreturnstats] (
 	[emailID] [char] (35) NULL ,
 	[email] [nvarchar] (100) NULL ,
 	[url] [nvarchar] (1500) NULL ,
-	[created] [smalldatetime] NULL 
+	[created] [datetime] NULL 
 ) ON [PRIMARY]
 GO
 
@@ -342,7 +342,7 @@ CREATE TABLE [dbo].[temailstats] (
 	[returnClick] [int] NOT NULL ,
 	[bounce] [int] NOT NULL ,
 	[sent] [int] NOT NULL ,
-	[Created] [smalldatetime] NULL 
+	[Created] [datetime] NULL 
 ) ON [PRIMARY]
 GO
 
@@ -389,7 +389,7 @@ CREATE TABLE [dbo].[tformresponsepackets] (
 	[SiteID] [nvarchar] (25) NULL ,
 	[FieldList] [nvarchar] (max) NULL ,
 	[Data] [nvarchar] (max) NULL ,
-	[Entered] [smalldatetime] NULL 
+	[Entered] [datetime] NULL 
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
@@ -413,7 +413,7 @@ CREATE TABLE [dbo].[tmailinglist] (
 	[SiteID] [nvarchar] (25) NULL ,
 	[Name] [nvarchar] (50) NULL ,
 	[Description] [nvarchar] (max) NULL ,
-	[LastUpdate] [smalldatetime] NULL ,
+	[LastUpdate] [datetime] NULL ,
 	[isPurge] [int] NULL ,
 	[isPublic] [int] NULL 
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
@@ -493,7 +493,7 @@ CREATE TABLE [dbo].[tsettings] (
 	[primaryColumn] [int] NULL ,
 	[publicSubmission] [int] NULL ,
 	[AdManager] [int] NULL ,
-	[archiveDate] [smalldatetime] NULL ,
+	[archiveDate] [datetime] NULL ,
 	[contactName] [nvarchar] (50) NULL ,
 	[contactAddress] [nvarchar] (50) NULL ,
 	[contactCity] [nvarchar] (50) NULL ,
@@ -572,7 +572,7 @@ CREATE TABLE [dbo].[tusers] (
 	[Lname] [nvarchar] (50) NULL ,
 	[UserName] [nvarchar] (50) NULL ,
 	[Password] [nvarchar] (50) NULL ,
-	[PasswordCreated] [smalldatetime] NULL ,
+	[PasswordCreated] [datetime] NULL ,
 	[Email] [nvarchar] (100) NULL ,
 	[Company] [nvarchar] (50) NULL ,
 	[JobTitle] [nvarchar] (50) NULL ,
@@ -584,8 +584,8 @@ CREATE TABLE [dbo].[tusers] (
 	[ContactForm] [nvarchar] (max) NULL ,
 	[Admin] [int] NULL ,
 	[S2] [int] NULL ,
-	[LastLogin] [smalldatetime] NULL ,
-	[LastUpdate] [smalldatetime] NULL ,
+	[LastLogin] [datetime] NULL ,
+	[LastUpdate] [datetime] NULL ,
 	[LastUpdateBy] [nvarchar] (50) NULL ,
 	[LastUpdateByID] [nvarchar] (35) NULL ,
 	[Perm] [tinyint] NULL ,

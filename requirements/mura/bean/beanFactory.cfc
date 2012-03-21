@@ -56,7 +56,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.transient["contentStatsBean"]="mura.content.contentStatsBean"/>
 	<cfset variables.transient["contentIterator"]="mura.content.contentIterator"/>
 	<cfset variables.transient["contentCommentIterator"]="mura.content.contentCommentIterator"/>
-	<cfset variables.transient["contentCommentBean"]="mura.content.contentCommentBean"/>	
+	<cfset variables.transient["contentCommentBean"]="mura.content.contentCommentBean"/>
+	<cfset variables.transient["contentCommentFeedBean"]="mura.content.contentCommentFeedBean"/>	
 	<cfset variables.transient["httpSession"]="mura.client.httpSession"/>
 	<cfset variables.transient["MuraScope"]="mura.MuraScope">
 	<cfset variables.transient["changesetBean"]="mura.content.changeset.changesetBean"/>
@@ -79,6 +80,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.transient["contentRenderer"]="mura.content.contentRenderer"  />
 	<cfset variables.transient["categoryIterator"]="mura.category.categoryIterator"/>
 	<cfset variables.transient["categoryBean"]="mura.category.categoryBean" />
+	<cfset variables.transient["categoryFeedBean"]="mura.category.categoryFeedBean" />
 	<cfset variables.transient["settingsBean"]="mura.settings.settingsBean"/>
 	<cfset variables.transient["settingsBundle"]="mura.settings.settingsBundle"/>
 	<cfset variables.transient["userIterator"]="mura.user.userIterator"/>
@@ -100,8 +102,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.transientAlias["group"]="userBean"/>
 	<cfset variables.transientAlias["address"]="addressBean"/>
 	<cfset variables.transientAlias["category"]="categoryBean"/>
+	<cfset variables.transientAlias["categoryFeed"]="categoryFeedBean"/>
 	<cfset variables.transientAlias["userFeed"]="userFeedBean"/>
 	<cfset variables.transientAlias["comment"]="contentCommentBean"/>
+	<cfset variables.transientAlias["commentFeed"]="contentCommentFeedBean"/>
 	<cfset variables.transientAlias["stats"]="contentStatsBean"/>
 	<cfset variables.transientAlias["changeset"]="changesetBean"/>
 	<cfset variables.transientAlias["bundle"]="settingsBundle"/>
