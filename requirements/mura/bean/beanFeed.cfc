@@ -49,6 +49,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfproperty name="bean" type="string" default="" required="true" />
 	<cfproperty name="table" type="string" default="" required="true" />
 	<cfproperty name="keyField" type="string" default="" required="true" />
+	<cfproperty name="nextN" type="numeric" default="0" required="true" />
+	<cfproperty name="maxItems" type="numeric" default="0" required="true" />
 	<cfproperty name="siteID" type="string" default="" required="true" />
 	<cfproperty name="sortBy" type="string" default="" required="true" />
 	<cfproperty name="sortDirection" type="string" default="asc" required="true" />
@@ -62,9 +64,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.sortBy="" />
 	<cfset variables.instance.sortDirection="asc" />
 	<cfset variables.instance.tableFieldLookUp=structNew()/>
+	<cfset variables.instance.nextN=0>
+	<cfset variables.instance.maxItems=0>
+
 	
 	<cfset variables.instance.params=queryNew("param,relationship,field,condition,criteria,dataType","integer,varchar,varchar,varchar,varchar,varchar" )  />
 	<cfreturn this/>
+</cffunction>
+
+<cffunction name="setNextN" access="public" output="false">
+	<cfargument name="NextN" type="any" />
+	<cfif isNumeric(arguments.nextN)>
+	<cfset variables.instance.NextN = arguments.NextN />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setMaxItems" access="public" output="false">
+	<cfargument name="maxItems" type="any" />
+	<cfif isNumeric(arguments.maxItems)>
+	<cfset variables.instance.maxItems = arguments.maxItems />
+	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="formatField" output="false">
@@ -203,7 +224,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var openGrouping=false>
 	<cfset var jointable="">
 	<cfset var jointableS="">
-	
+	<cfset var dbType=variables.configBean.getDatasource()>
+
 	<cfif not len(variables.instance.siteID)>
 		<cfthrow message="The 'SITEID' value must be set in order to search users.">
 	</cfif>
@@ -218,6 +240,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfloop>
 
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
+		<cfif dbType eq "oracle" and variables.instance.maxItems>select * from (</cfif>
+		select <cfif dbtype eq "mssql" and variables.instance.maxItems>top #variables.instance.maxItems#</cfif>
 		select * from #variables.instance.table#
 		
 		<cfloop list="#jointables#" index="jointable">
@@ -272,6 +296,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 	#variables.instance.table#.#variables.instance.sortBy# #variables.instance.sortDirection#
 	
+	<cfif dbType eq "mysql" and variables.instance.maxItems>limit <cfqueryparam cfsqltype="cf_sql_integer" value="#variables.instance.maxItems#" /> </cfif>
+	<cfif dbType eq "oracle" and variables.instance.maxItems>) where ROWNUM <= <cfqueryparam cfsqltype="cf_sql_integer" value="#variables.instance.maxItems#" /> </cfif>
 
 	</cfquery>
 
@@ -281,7 +307,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getIterator" returntype="any" output="false">
 	<cfset var rs=getQuery()>
 	<cfset var it=getBean("#variables.instance.bean#Iterator")>
-	<cfset it.setQuery(rs)>
+	<cfset it.setQuery(rs,variables.instance.nextN)>
 	<cfreturn it>
 </cffunction>
 

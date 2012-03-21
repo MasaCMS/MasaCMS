@@ -215,14 +215,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setNextN" access="public" output="false">
-	<cfargument name="NextN" type="any" />
-	<cfif isNumeric(arguments.nextN)>
-	<cfset variables.instance.NextN = arguments.NextN />
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
 <cffunction name="setDisplayName" access="public" output="false">
 	<cfargument name="DisplayName" type="any" />
 	<cfif isNumeric(arguments.DisplayName)>
