@@ -61,7 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.keyField="">
 	<cfset variables.instance.sortBy="" />
 	<cfset variables.instance.sortDirection="asc" />
-	<cfset variables.instance.tableFieldList=""/>
+	<cfset variables.instance.tableFieldLookUp=structNew()/>
 	
 	<cfset variables.instance.params=queryNew("param,relationship,field,condition,criteria,dataType","integer,varchar,varchar,varchar,varchar,varchar" )  />
 	<cfreturn this/>
@@ -70,17 +70,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="formatField" output="false">
 	<cfargument name="field">
 	<cfset var rs="">
+	<cfset var temp="">
+	<cfset var i="">
 
-	<cfif not len(variables.instance.tableFieldList)>
-		<cfset variables.instance.tableFieldList=variables.configBean.getValue("#variables.instance.bean#FieldList")>
-		<cfif not len(variables.instance.tableFieldList)>
+	<cfif structIsEmpty(variables.instance.tableFieldLookUp)>
+		<cfset variables.instance.tableFieldLookUp=variables.configBean.getValue("#variables.instance.bean#FieldLookUp")>
+		<cfif not isStruct(variables.instance.tableFieldLookUp)>
+			<cfset variables.instance.tableFieldLookUp=structNew()>
 			<cfset rs=variables.configBean.dbTableColumns(variables.instance.table)>
-			<cfset variables.instance.tableFieldList=valueList(rs.column_name)>
-			<cfset variables.configBean.setValue("#variables.instance.bean#FieldList",variables.instance.tableFieldList)>
+			<cfset temp=valueList(rs.column_name)>
+			<cfloop list="#temp#" index="i">
+				<cfset variables.instance.tableFieldLookUp["#i#"]=true>
+			</cfloop>
+			<cfset variables.configBean.setValue("#variables.instance.bean#FieldLookUp",variables.instance.tableFieldLookUp)>
 		</cfif>
 	</cfif>
 
-	<cfif listFindNoCase(variables.instance.tableFieldList,arguments.field)>
+	<cfif structKeyExists(variables.instance.tableFieldLookUp,arguments.field)>
 		<cfset arguments.field="#variables.instance.table#.#arguments.field#">
 	</cfif>
 
