@@ -159,8 +159,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset request.muraMobileRequest=cookie.mobileFormat>
 
-<cfset request.muraRequestID=application.utility.getUUID()>
-
 <cfif not request.hasCFApplicationCFM and not fileExists("#expandPath('/muraWRM/config')#/cfapplication.cfm")>
 	<cfset application.serviceFactory.getBean("fileWriter").writeFile(file="#expandPath('/muraWRM/config')#/cfapplication.cfm", output='<!--- Add Custom Application.cfc Vars Here --->')>	
 </cfif>

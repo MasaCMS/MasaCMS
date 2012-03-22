@@ -95,7 +95,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif variables.trackSessionInNewThread>
 		<cflock name="MuraSessionTracking#application.instanceID#" timeout="5">
-			<cfthread action="run" name="MuraSessionTracking#request.muraRequestID#" context="#arguments#" priority="low">
+			<cfthread action="run" name="MuraSessionTracking#application.utility.getUUID()#" context="#arguments#" priority="low">
 				<cfset createTrackingRecord(argumentCollection=context)>
 			</cfthread>
 		</cflock>
