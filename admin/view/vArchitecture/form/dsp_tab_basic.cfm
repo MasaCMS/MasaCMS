@@ -151,7 +151,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				function(editorInstance){
 					htmlEditorOnComplete(editorInstance);
 					<cfif attributes.preview eq 1>
-					openPreviewDialog('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,'')#?previewid=#request.contentBean.getcontenthistid()#&siteid=#request.contentBean.getsiteid()#');
+					<cfif listFindNoCase("File",attributes.type)>
+						preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,'')#?previewid=#request.contentBean.getcontenthistid()#&siteid=#request.contentBean.getsiteid()#');
+					<cfelse>
+						openPreviewDialog('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,'')#?previewid=#request.contentBean.getcontenthistid()#&siteid=#request.contentBean.getsiteid()#');
+					</cfif>
 					</cfif>
 				}
 			);
