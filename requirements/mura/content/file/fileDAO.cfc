@@ -194,11 +194,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="deleteAll" returntype="void" access="public" output="false">
 		<cfargument name="contentID" type="string" required="yes"/>
 		<cfset var rs='' />
-			
-		<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		update tfiles set deleted=1 where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#">
+		
+		<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		select contentHistID, fileID from tcontent 
+		where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#">
+		and fileID is not null
 		</cfquery>
-	
+
+		<cfset deleteIfNotUsed(valueList(rs.fileID),valueList(rs.contentHistID))>
+
 </cffunction>
 
 <cffunction name="read" returntype="query" access="public" output="false">
@@ -265,19 +269,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rs4 = "" />
 		
 		<cfquery name="rs1" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-		SELECT fileId FROM tcontent where fileid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fileID#"> and contenthistId <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.baseID#">
+		SELECT fileId FROM tcontent where 
+		fileid in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#arguments.fileID#">)
+		and contenthistId not in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#arguments.baseID#">)
 		</cfquery>
 		
 		<cfquery name="rs2" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-		SELECT attributeValue FROM tclassextenddata where attributeValue like <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fileID#"> and baseId <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.baseID#">
+		SELECT attributeValue FROM tclassextenddata where 
+		stringValue in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#arguments.fileID#">)
+		and baseId not in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#arguments.baseID#">)
 		</cfquery>
 		
 		<cfquery name="rs3" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-		SELECT attributeValue FROM tclassextenddatauseractivity where attributeValue like <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fileID#"> and baseId <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.baseID#">
+		SELECT attributeValue FROM tclassextenddatauseractivity where 
+		stringValue in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#arguments.fileID#">)
+		and baseId not in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#arguments.baseID#">)
 		</cfquery>
 		
 		<cfquery name="rs4" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		SELECT photoFileID FROM tusers where photoFileID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fileID#"> and userId <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.baseID#">
+		SELECT photoFileID FROM tusers where 
+		photoFileID in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#arguments.fileID#">)
+		and userId not in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#arguments.baseID#">)
 		</cfquery>
 		
 		<cfif not rs1.recordcount and not rs2.recordcount and not rs3.recordcount and not rs4.recordcount>
