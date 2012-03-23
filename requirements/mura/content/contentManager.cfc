@@ -957,36 +957,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<!--- Get version attached to pending changesets--->
 					<cfloop query="rsPendingChangesets">
 						<cfif len(rsPendingChangesets.fileID)>
-							<cfset preserveFileList=listAppend(preserveFileList,rsPendingChangesets.fileID,"^")/>
+							<cfset preserveFileList=listAppend(preserveFileList,rsPendingChangesets.fileID)/>
 						</cfif>
 					</cfloop>
 							
 					<!--- Get archived versions--->
 					<cfloop query="rsArchive">
 						<cfif len(rsPendingChangesets.fileID)>
-							<cfset preserveFileList=listAppend(preserveFileList,rsArchive.fileID,"^")/>
+							<cfset preserveFileList=listAppend(preserveFileList,rsArchive.fileID)/>
 						</cfif>
 					</cfloop>
 							
 					<!--- Get archived versions--->
 					<cfloop query="rsDrafts">
 						<cfif len(rsDrafts.fileID)>
-							<cfset deleteFileList=listAppend(deleteFileList,rsDrafts.fileID,"^")/>
+							<cfset deleteFileList=listAppend(deleteFileList,rsDrafts.fileID)/>
 						</cfif>
 					</cfloop>
 							
 					<!--- delete files in rsDafts that are not in the preserveFileList or attached to the newBean --->	
 					<cfloop list="#draftList#" index="d">
-						<cfif newBean.getFileID() neq d and not listFind(preserveFileList,d,"^") and not listFind(deleteFileList,d,"^")>
-							<cftry>
-							<cflock name="#d#" type="exclusive" timeout="500">
-							<cfset variables.fileManager.deleteVersion(d) />
-							</cflock>
-							<cfcatch></cfcatch>
-							</cftry>
-							<cfset deletedList=listAppend(deleteFileList,d,"^")/>
+						<cfif newBean.getFileID() neq d and not listFind(preserveFileList,d) and not listFind(deleteFileList,d)>
+							<cfset deletedList=listAppend(deleteFileList,d)/>
 						</cfif>	
 					</cfloop>	
+					<cfset variables.fileManager.deleteIfNotUsed(deletedList,valueList(rsDrafts.contentHistID))>
 				</cfif>
 				
 				<!---</cfif>--->
@@ -1235,6 +1230,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
 		<cfset var historyIterator=getBean("contentIterator")>
 		<cfset var rsPendingChangesets=""/>
+		<cfset var deleteFileList="">
+		<cfset var deleteIDList="">
 		
 		<cfset pluginEvent.setValue("contentBean",currentBean)/>
 		<cfset rsHist=getHist(arguments.data.contentid,arguments.data.siteid)/>
@@ -1258,18 +1255,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfloop query="rsPendingChangesets">
 			<cfif len(rsPendingChangesets.fileID)>
-				<cfset fileList=listAppend(fileList,rsPendingChangesets.FileID,"^")/>
+				<cfset fileList=listAppend(fileList,rsPendingChangesets.FileID)/>
 			</cfif>
 		</cfloop>
 		
 		<cfloop query="rsHist">
 			<cfif not (rshist.active eq 1 or (rshist.approved eq 0 and len(rshist.changesetID))) and len(rshist.FileID)>
-					<cfif not listFind(fileList,rshist.FileID,"^")>
-						<cfset variables.fileManager.deleteVersion(rshist.FileID,false) />
-						<cfset fileList=listAppend(fileList,rshist.FileID,"^")/>
-					</cfif>		
+				<cfif not listFind(fileList,rshist.FileID)>
+					<cfset variables.fileManager.deleteVersion(rshist.FileID,false) />
+					<cfset fileList=listAppend(fileList,rshist.FileID)/>
+					<cfset deleteFileList=listAppend(deleteFileList,rshist.FileID)/>
+					<cfset deleteIDList=listAppend(deleteIDList,rshist.contentHistID)/>
+				</cfif>		
 			</cfif>			
 		</cfloop>
+
+		<cfset variables.filemanager.deleteIfNotUsed(deleteFileList,deleteIDList)>
 		
 		<cfif NOT currentBean.getIsNew()>
 			<cfset purgeContentCache(contentBean=currentBean)>
