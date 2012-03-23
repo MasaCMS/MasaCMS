@@ -157,7 +157,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfswitch>
 		
 		<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		INSERT INTO tfiles (fileID,contentID,siteID,filename,contentType,contentSubType,fileSize,moduleID,fileExt,created<cfif variables.configBean.getFileStore() eq 'database'>,image,imageSmall,imageMedium</cfif>)
+		INSERT INTO tfiles (fileID,contentID,siteID,filename,contentType,contentSubType,fileSize,moduleID,fileExt,created<cfif variables.configBean.getFileStore() eq 'database'>,image,imageSmall,imageMedium</cfif>,deleted)
 		VALUES(
 		<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.fileid#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.contentid#">,
@@ -173,7 +173,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfqueryparam cfsqltype="cf_sql_blob"  value="#arguments.fileObj#">,
 		<cfqueryparam cfsqltype="cf_sql_blob"  null="#iif(isBinary(arguments.fileObjSmall),de('no'),de('yes'))#" value="#arguments.fileObjSmall#">,
 		<cfqueryparam cfsqltype="cf_sql_blob"  null="#iif(isBinary(arguments.fileObjMedium),de('no'),de('yes'))#" value="#arguments.fileObjMedium#">
-		</cfif>
+		</cfif>,
+		0
 		)	
 		</cfquery>
 		
