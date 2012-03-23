@@ -262,7 +262,7 @@ select * from (select pluginID as CheckIfTableExists from tplugins) where ROWNUM
 	create or replace TRIGGER "TPLUGINS_PLUGINID_TRG" BEFORE INSERT ON tplugins
 	FOR EACH ROW
 	BEGIN
-	    SELECT  tplugins_pluginID_SEQ.NEXTVAL INTO v_newVal FROM DUAL;
+	    SELECT  tplugins_pluginID_SEQ.NEXTVAL INTO :new.pluginID FROM DUAL;
 	END;
 	</cfquery>
 	
