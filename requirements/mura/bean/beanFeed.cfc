@@ -111,6 +111,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
+<cffunction name="getTableFieldList" output="false">
+	<cfset loadTableMetaData()>
+	<cfreturn variables.instance.tableFieldList>
+</cffunction>
+
 <cffunction name="formatField" output="false">
 	<cfargument name="field">
 
@@ -257,7 +262,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
 		<cfif dbType eq "oracle" and variables.instance.maxItems>select * from (</cfif>
 		select <cfif dbtype eq "mssql" and variables.instance.maxItems>top #variables.instance.maxItems#</cfif>
-		#variables.instance.tableFieldlist# from #variables.instance.table#
+		#getTableFieldList()# from #variables.instance.table#
 		
 		<cfloop list="#jointables#" index="jointable">
 			inner join #jointable# on (#variables.instance.table#.#variables.instance.keyField#=#jointable#.#variables.instance.keyField#)

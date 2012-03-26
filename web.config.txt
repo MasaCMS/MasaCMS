@@ -24,13 +24,19 @@
 					indexfileinurls=0
 				- reload Mura CMS
 		-->
+
+		<rule name="Mura CMS Rewrite TAG Option 1">
+			<match url="^([a-zA-Z0-9/-]*tag/.+)$" />
+			<action type="Rewrite" url="/index.cfm/{R:1}" logRewrittenUrl="true" />
+		</rule>
+
 		<rule name="Mura CMS Rewrite Option 1" enabled="true">
 			<match url="^([a-zA-Z0-9/-]+)$" ignoreCase="false" />
 			<conditions logicalGrouping="MatchAll">
 				<add input="{DOCUMENT_ROOT}{URL}" matchType="IsDirectory" ignoreCase="false" negate="true" />
 			</conditions>
 			<action type="Rewrite" url="/index.cfm{URL}" />
-		</rule>
+		</rule>	
 
 		<!--
 			Keep SiteID but allow for missing index.cfm from URL
@@ -41,7 +47,16 @@
 						siteidinurls=1
 						indexfileinurls=0
 					- reload Mura CMS
-			-->
+		-->
+
+		<rule name="Mura CMS Rewrite TAG Option 2" enabled="false">
+			<match url="^([a-zA-Z0-9-]{1,})/([a-zA-Z0-9/-]*tag/.+)$" ignoreCase="false" />
+			<conditions logicalGrouping="MatchAll">
+			<add input="{DOCUMENT_ROOT}{URL}" matchType="IsDirectory" ignoreCase="false" negate="true" />
+			</conditions>
+			<action type="Rewrite" url="/{R:1}/index.cfm/{R:2}" />
+		</rule>
+
 		<rule name="Mura CMS Rewrite Option 2" enabled="false">
 			<match url="^([a-zA-Z0-9-]{1,})/([a-zA-Z0-9/-]+)$" ignoreCase="false" />
 			<conditions logicalGrouping="MatchAll">
@@ -49,8 +64,7 @@
 			</conditions>
 			<action type="Rewrite" url="/{R:1}/index.cfm/{R:2}" />
 		</rule>
-
-
+		
 	</rules>
 </rewrite>
 
