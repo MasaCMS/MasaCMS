@@ -102,19 +102,19 @@ p.center { text-align: center; }
 
 /* @group Nav - Breadcrumb */
 
-#crumbList {
+#crumblist {
 	margin: 0 0 1em;
 	padding: 0;
 	list-style: none;
 	}
 
-#crumbList li {
+#crumblist li {
 	display: inline;
 	margin: 0;
 	font-size: 1em;
 	}
 
-#crumbList a { text-decoration: none; }
+#crumblist a { text-decoration: none; }
 
 /* @end */
 

@@ -8,7 +8,7 @@
 			#$.dspObjects(1)#
 		</aside>
 		<article>
-			<nav>#$.dspCrumbListLinks("crumbList","&nbsp;&raquo;&nbsp;")#</nav>
+			<nav>#$.dspCrumbListLinks("crumblist","&nbsp;&raquo;&nbsp;")#</nav>
 			#$.dspBody(body=$.content('body'),pageTitle=$.content('title'),crumbList=0,showMetaImage=1)#
 			#$.dspObjects(2)#
 		</article>
