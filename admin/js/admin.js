@@ -653,6 +653,7 @@ function preview(url,targetParams){
 	}
 	newWindow.focus();
 	void(0);
+	return false;
 }
 
 function createCookie(name,value,days) {
