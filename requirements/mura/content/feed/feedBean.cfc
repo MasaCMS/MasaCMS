@@ -427,7 +427,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getAvailableDisplayList" output="false">
-	<cfset var returnList="Date,Title,Image,Summary,ReadMore,Credits,Comments,Tags,Rating">
+	<cfset var returnList="Date,Title,Image,Summary,Body,ReadMore,Credits,Comments,Tags,Rating">
 	<cfset var i=0>
 	<cfset var finder=0>
 	<cfset var rsExtend=variables.configBean.getClassExtensionManager().getExtendedAttributeList(variables.instance.siteid,"tcontent")>
