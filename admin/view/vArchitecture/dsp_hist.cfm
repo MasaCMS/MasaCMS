@@ -69,13 +69,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!---<cfif request.contentBean.getFilename() neq '' or attributes.contentid eq '00000000000000000000000000000000001'>
 	<cfswitch expression="#attributes.type#">
 <cfcase value="Page,Portal,Calendar">
-<li><a  onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.configBean.getStub()#/#attributes.siteid#/#request.contentBean.getFilename()##iif(request.contentBean.getFilename() neq '',de('/'),de(''))##application.configBean.getIndexFile()#','#request.contentBean.getTargetParams()#');">View Active #attributes.type#</a></li>
+<li><a  href="##" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.configBean.getStub()#/#attributes.siteid#/#request.contentBean.getFilename()##iif(request.contentBean.getFilename() neq '',de('/'),de(''))##application.configBean.getIndexFile()#','#request.contentBean.getTargetParams()#');">View Active #attributes.type#</a></li>
 </cfcase>
 <cfcase value="Link">
-<li><a onclick="return preview('#request.contentBean.getFilename()#');">View Active #attributes.type#</a></li>
+<li><a href="##" onclick="return preview('#request.contentBean.getFilename()#');">View Active #attributes.type#</a></li>
 </cfcase>
 <cfcase value="File">
-<li><a  onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/#attributes.siteid#/linkserv/#application.configBean.getIndexFile()#?contentid=#attributes.contentid#');">View Active #attributes.type#</a></li>
+<li><a  href="##" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/#attributes.siteid#/linkserv/#application.configBean.getIndexFile()#?contentid=#attributes.contentid#');">View Active #attributes.type#</a></li>
 </cfcase>
 </cfswitch>
 </cfif>--->
@@ -154,13 +154,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <td class="administration"><ul class="three"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#request.rshist.ContenthistID#&contentid=#request.rshist.ContentID#&type=#attributes.type#&parentid=#URLEncodedFormat(attributes.parentid)#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#&return=hist&compactDisplay=#attributes.compactDisplay#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#</a></li>
 <cfswitch expression="#request.rsHist.type#">
 <cfcase value="Page,Portal,Calendar,Gallery">
-<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.preview')#" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,"")#?previewid=#request.rshist.contenthistid#&contentid=#URLEncodedFormat(attributes.contentid)#','#request.rshist.TargetParams#');">#left(request.rshist.menutitle,90)#</a></li>
+<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,"")#?previewid=#request.rshist.contenthistid#&contentid=#URLEncodedFormat(attributes.contentid)#','#request.rshist.TargetParams#');">#left(request.rshist.menutitle,90)#</a></li>
 </cfcase>
 <cfcase value="Link">
-<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.preview')#" onclick="return preview('#request.rshist.filename#');">#left(request.rshist.menutitle,90)#</a></li></li>
+<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.preview')#" href="##" onclick="return preview('#request.rshist.filename#');">#left(request.rshist.menutitle,90)#</a></li></li>
 </cfcase>
 <cfcase value="File">
-<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.preview')#" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/?fileID=#request.rshist.fileid#');">#left(request.rshist.menutitle,90)#</a></li>
+<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/?fileID=#request.rshist.fileid#');">#left(request.rshist.menutitle,90)#</a></li>
 </cfcase>
 </cfswitch>
 <cfif not request.rshist.active and (request.perm neq 'none')><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" href="index.cfm?fuseaction=cArch.update&contenthistid=#request.rshist.ContentHistID#&action=delete&contentid=#URLEncodedFormat(attributes.contentid)#&type=#attributes.type#&parentid=#URLEncodedFormat(attributes.parentid)#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&startrow=#attributes.startrow#&moduleid=#attributes.moduleid#&compactDisplay=#attributes.compactDisplay#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deleteversionconfirm'))#',this.href)">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#</a></li><cfelse><li class="deleteOff">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#</li></cfif></ul></td></tr></cfoutput></table>

@@ -191,13 +191,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			     <li class="edit"><a title="Edit" class="draftprompt" href="#editLink#">&nbsp;</a></li>
 				   <cfswitch expression="#item.gettype()#">
 					<cfcase value="Page,Portal,Calendar,Gallery">
-					<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),item.getfilename())#','#item.gettargetParams()#');">Preview</a></li>
+					<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),item.getfilename())#','#item.gettargetParams()#');">Preview</a></li>
 					</cfcase>
 					<cfcase value="Link">
-					<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" onclick="return preview('#item.getfilename()#','#item.gettargetParams()#');">Preview</a></li>
+					<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('#item.getfilename()#','#item.gettargetParams()#');">Preview</a></li>
 					</cfcase>
 					<cfcase value="File">
-					<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),"")#?LinkServID=#item.getcontentid()#','#item.gettargetParams()#');">Preview</a></li>
+					<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),"")#?LinkServID=#item.getcontentid()#','#item.gettargetParams()#');">Preview</a></li>
 					<li class="download"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.download')#" href="/tasks/render/file/?fileID=#item.getFileID()#&method=attachment" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.downloadconfirm'))#',this.href)">Preview</a></li>
 					</cfcase>
 					</cfswitch>
@@ -217,13 +217,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			      <li class="editOff">&nbsp;</li>
 					<cfswitch expression="#item.gettype()#">
 					<cfcase value="Page,Portal,Calendar,Gallery">
-					<li class="preview"><a title="Preview" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),item.getfilename())#','#item.gettargetParams()#');">Preview</a></li>
+					<li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),item.getfilename())#','#item.gettargetParams()#');">Preview</a></li>
 					</cfcase>
 					<cfcase value="Link">
-					<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" onclick="return preview('#item.getfilename()#','#item.gettargetParams()#');">Preview</a></li>
+					<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('#item.getfilename()#','#item.gettargetParams()#');">Preview</a></li>
 					</cfcase>
 					<cfcase value="File">
-					<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),"")#?LinkServID=#item.getcontentid()#','#item.gettargetParams()#');">Preview</a></li>
+					<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),"")#?LinkServID=#item.getcontentid()#','#item.gettargetParams()#');">Preview</a></li>
 					</cfcase>
 					</cfswitch>
 					<li class="versionHistoryOff"><a>Version History</a></li>
