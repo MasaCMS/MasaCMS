@@ -69,7 +69,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </form>
 
 <h4>Preview Link</h4>
-<p><a title="Preview" href="javascript:preview('#JSStringFormat(rc.previewLink)#','');">#HTMLEditFormat(rc.previewLink)#</a></p>
+<p><a title="Preview" onclick="return preview('#JSStringFormat(rc.previewLink)#','');">#HTMLEditFormat(rc.previewLink)#</a></p>
  <table class="mura-table-grid stripe">
     <tr> 
       <th class="varWidth">Title</th>
@@ -87,11 +87,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<ul class="four">
 		<cfif verdict neq 'none'>
        		<li class="edit"><a title="Edit" href="index.cfm?fuseaction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#URLEncodedFormat(rc.rslist.contentID)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.rslist.moduleid#&startrow=#rc.startrow#&return=changesets">&nbsp;</a></li> 	
-			<li class="preview"><a title="Preview" href="javascript:preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?changesetPreviewID=#JSStringFormat(rc.rslist.changesetID)#&linkServID=#JSStringFormat(rc.rslist.contentID)#','#rc.rsList.targetParams#');">#HTMLEditFormat(left(rc.rsList.menutitle,70))#</a></li>
+			<li class="preview"><a title="Preview" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?changesetPreviewID=#JSStringFormat(rc.rslist.changesetID)#&linkServID=#JSStringFormat(rc.rslist.contentID)#','#rc.rsList.targetParams#');">#HTMLEditFormat(left(rc.rsList.menutitle,70))#</a></li>
 		   	<li class="versionHistory"><a title="Version History" href="index.cfm?fuseaction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#rc.rsList.contentID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.rslist.moduleID#&startrow=#rc.startrow#">&nbsp;</a></li>   
         <cfelse>
 	        <li class="editOff">&nbsp;</li>
-			<li class="preview"><a title="Preview" href="javascript:preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?changesetID=#JSStringFormat(rc.rslist.changesetID)#&linkServID=#JSStringFormat(rc.rslist.contentID)#','#rc.rsList.targetParams#');">#HTMLEditFormat(left(rc.rsList.menutitle,70))#</a></li>
+			<li class="preview"><a title="Preview" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?changesetID=#JSStringFormat(rc.rslist.changesetID)#&linkServID=#JSStringFormat(rc.rslist.contentID)#','#rc.rsList.targetParams#');">#HTMLEditFormat(left(rc.rsList.menutitle,70))#</a></li>
 			<li class="versionHistoryOff"><a>Version History</a></li>
       	</cfif>
 		<li class="delete"><a  title="Delete" href="index.cfm?fuseaction=cChangesets.removeItem&contentHistId=#rc.rsList.contentHistID#&siteid=#URLEncodedFormat(rc.siteid)#&changesetID=#URLEncodedFormat(rc.rslist.changesetID)#&keywords=#HTMLEditFormat(rc.keywords)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'changesets.removeitemconfirm'),rc.rslist.menutitle))#',this.href)"&nbsp;</a></li>

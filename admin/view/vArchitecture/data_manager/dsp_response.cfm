@@ -150,7 +150,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<td class="dateSubmitted">#lsdateformat(rsdata.entered,session.dateKeyFormat)# #lstimeformat(rsdata.entered,"short")#</td>
 	<cfloop list="#attributes.fieldnames#" index="f">
 		<cftry><cfset fValue=info['#f#']><cfcatch><cfset fValue=""></cfcatch></cftry>
-	<td class="mForm-data"><cfif findNoCase('attachment',f) and isValid("UUID",fvalue)><a  href="javascript:preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/?fileID=#fvalue#');">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.viewattachment')#</a><cfelse>#application.contentRenderer.setParagraphs(htmleditformat(fvalue))#</cfif></td>
+	<td class="mForm-data"><cfif findNoCase('attachment',f) and isValid("UUID",fvalue)><a  onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/?fileID=#fvalue#');">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.viewattachment')#</a><cfelse>#application.contentRenderer.setParagraphs(htmleditformat(fvalue))#</cfif></td>
 	</cfloop>
 	<cfcatch>
 		<td>Invalid Response: #rsData.responseID#</td>
