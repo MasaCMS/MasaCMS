@@ -78,13 +78,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <td>#request.rslist.locale#</td>
 <td class="administration"><ul class="one"><li class="preview"><cfswitch expression="#request.rslist.type#">
 		<cfcase value="Page,Portal,Calendar,Gallery">
-		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,request.rsList.filename)#','#request.rslist.targetParams#');">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#</a>
+		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,request.rsList.filename)#','#request.rslist.targetParams#');">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#</a>
 		</cfcase>
 		<cfcase value="Link">
-		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" onclick="return preview('#request.rslist.filename#','#request.rslist.targetParams#');">#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#</a>
+		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('#request.rslist.filename#','#request.rslist.targetParams#');">#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#</a>
 		</cfcase>
 		<cfcase value="File">
-		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,"")#?LinkServID=#request.rslist.contentid#','#request.rslist.targetParams#');">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#</a>
+		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,"")#?LinkServID=#request.rslist.contentid#','#request.rslist.targetParams#');">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#</a>
 		</cfcase>
 		</cfswitch></li></ul></td>
 </tr></cfloop>
