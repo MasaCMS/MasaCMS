@@ -21,6 +21,4 @@
 /logs
 /crossdomain.xml
 /.rdsTempFiles
-/muracms.esproj
-/demo
-/
+/.esproj
