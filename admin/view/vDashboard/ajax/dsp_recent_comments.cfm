@@ -68,7 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<td class="dateTime">#LSDateFormat(comment.getEntered(),session.dateKeyFormat)# #LSTimeFormat(comment.getEntered(),"short")#</td>
 		<td class="administration">
 		<ul class="one">
-			<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="javascript:preview('#content.getURL(complete=1,queryString='##comment-#comment.getCommentID()#')#','#content.getTargetParams()#');">#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#</a></li>
+			<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" onclick="return preview('#JSStringFormat(content.getURL(complete=1,queryString='##comment-#comment.getCommentID()#'))#','#content.getTargetParams()#');">#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#</a></li>
 		</ul>
 		</td>
 	</tr>
