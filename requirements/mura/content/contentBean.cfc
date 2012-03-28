@@ -669,7 +669,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rsExtend=variables.configBean.getClassExtensionManager().getExtendedAttributeList(variables.instance.siteID,"tcontent")>
 	
 	<cfif variables.instance.type neq "Gallery">
-		<cfset returnList="Date,Title,Image,Summary,ReadMore,Credits,Comments,Tags,Rating">
+		<cfset returnList="Date,Title,Image,Summary,Body,ReadMore,Credits,Comments,Tags,Rating">
 	<cfelse>
 		<cfset returnList="Date,Title,Summary,ReadMore,Credits,Comments,Tags,Rating">
 	</cfif>
