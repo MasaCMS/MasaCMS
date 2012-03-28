@@ -169,21 +169,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset item=iterator.next()>
 	<cfset crumbdata=application.contentManager.getCrumbList(item.getContentID(), item.getSiteID())/>
 	<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
-	<cfif application.settingsManager.getSite(item.getSiteID()).getLocking() neq 'all' and verdict neq 'none'>
-		<cfset newcontent=1>
+	
+	<cfif application.settingsManager.getSite(item.getSiteID()).getLocking() neq 'all'>
+		<cfset newcontent=verdict>
+	<cfelseif verdict neq 'none'>
+  		<cfset newcontent='read'>
 	<cfelse>
-		<cfset newcontent=0>
+  		<cfset newcontent='none'>
 	</cfif>
+
 	<cfset deletable=((item.getParentID() neq '00000000000000000000000000000000001' and application.settingsManager.getSite(item.getSiteID()).getLocking() neq 'all') or (item.getParentID() eq '00000000000000000000000000000000001' and application.settingsManager.getSite(item.getSiteID()).getLocking() eq 'none')) and (verdict eq 'editor')  and item.getIsLocked() neq 1>
 	<cfset editLink="index.cfm?fuseaction=cArch.edit&contenthistid=#item.getContentHistID()#&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getParentID()#&topid=#URLEncodedFormat(item.getParentID())#&siteid=#URLEncodedFormat(item.getSiteid())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#">
 	</cfsilent>	
 	<tr data-siteid="#item.getSiteID()#" data-contentid="#item.getContentID()#" data-contenthistid="#item.getContentHistID()#" data-sortby="#item.getSortBy()#" data-sortdirection="#item.getSortDirection()#" data-moduleid="#HTMLEditFormat(item.getModuleID())#" data-type="#item.getType()#">
-		<td class="add"><a class="add" href="javascript:;" onmouseover="showMenu('newContentMenu',#newcontent#,this,'#item.getContentID()#','#item.getContentID()#','#item.getContentID()#','#item.getSiteID()#','#item.getType()#');"></a></td>
+		<td class="add"><a class="add" href="javascript:;" onmouseover="showMenu('newContentMenu','#newcontent#',this,'#item.getContentID()#','#item.getContentID()#','#item.getContentID()#','#item.getSiteID()#','#item.getType()#');"></a></td>
 		<td class="varWidth item">
 		
 		<div class="admin">
 			<ul class="siteSummary <cfif item.gettype() neq 'File'>five<cfelse>six</cfif>">
-				<cfif verdict neq 'none'>
+				<cfif not listFindNoCase('none,read',verdict)>
 			     <li class="edit"><a title="Edit" class="draftprompt" href="#editLink#">&nbsp;</a></li>
 				   <cfswitch expression="#item.gettype()#">
 					<cfcase value="Page,Portal,Calendar,Gallery">
@@ -231,7 +235,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 
 		<h3>
-			<cfif verdict neq 'none'>
+			<cfif not listFindNoCase('none,read',verdict)>
 				<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#" class="draftprompt" href="index.cfm?fuseaction=cArch.edit&contenthistid=#item.getContentHistID()#&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getParentID()#&topid=#URLEncodedFormat(item.getParentID())#&siteid=#URLEncodedFormat(item.getSiteid())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#">#HTMLEditFormat(item.getMenuTitle())#</a>
 			<cfelse>
 				#HTMLEditFormat(item.getMenuTitle())#

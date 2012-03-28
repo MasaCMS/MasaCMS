@@ -188,6 +188,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset verdict='editor'>
 			<cfelseif getpermverdict(arguments.contentid,'author',arguments.siteid)>
 				<cfset verdict='author'>
+			<cfelseif getpermverdict(arguments.contentid,'read',arguments.siteid)>
+				<cfset verdict='read'>
 			<cfelseif getpermverdict(arguments.contentid,'deny',arguments.siteid)>
 				<cfset verdict='deny'>
 			</cfif>
@@ -229,7 +231,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif verdict neq 'none'><cfbreak></cfif>
 		</cfloop>
 		
-		<cfif verdict eq 'deny' or verdict eq 'read' or verdict eq ''>
+		<cfif verdict eq 'deny' or verdict eq ''>
 		<cfset verdict='none'>
 		</cfif>
 		
