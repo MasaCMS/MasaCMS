@@ -82,10 +82,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset verdict = "none">
 </cfif>
 
-<cfif attributes.locking neq 'all' and verdict neq 'none'>
-	<cfset newcontent=1>
+<cfif attributes.locking neq 'all'>
+	<cfset newcontent=verdict>
+<cfelseif verdict neq 'none'>
+	<cfset newcontent='read'>
 <cfelse>
-	<cfset newcontent=0>
+	<cfset newcontent='none'>
 </cfif>
 
 <cfset attop=attributes.rsnest.currentrow eq 1>
@@ -123,17 +125,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <dl>
 <dt>
 	<!---<cfif (attributes.rsNest.type eq 'Page') or  (attributes.rsNest.type eq 'Portal')  or  (attributes.rsNest.type eq 'Calendar') or (attributes.rsNest.type eq 'Gallery')>--->
-	<a class="add" href="javascript:;" onmouseover="showMenu('newContentMenu',#newcontent#,this,'#attributes.rsNest.contentid#','#attributes.topid#','#attributes.rsNest.parentid#','#attributes.siteid#','#attributes.rsNest.type#');"></a>
+	<a class="add" href="javascript:;" onmouseover="showMenu('newContentMenu','#newcontent#',this,'#attributes.rsNest.contentid#','#attributes.topid#','#attributes.rsNest.parentid#','#attributes.siteid#','#attributes.rsNest.type#');"></a>
 	
 	<cfif attributes.rsNest.haskids>
 		<span <cfif isOpenSection>class="hasChildren-open"<cfelse>class="hasChildren-closed"</cfif> onclick="return loadSiteSection( jQuery(this).parents('li:first') , 1 , true);"></span>
 	</cfif>
-	<cfif verdict neq 'none'>
+	<cfif not listFindNoCase('none,read',verdict)>
 		<a class="#icon# title draftprompt" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#attributes.rsNest.ContentHistID#&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">
 	<cfelse>
 		<a class="#icon# title">
 	</cfif>
-	
 	#HTMLEditFormat(left(attributes.rsNest.menutitle,70))#
 	<cfif len(attributes.rsNest.menutitle) gt 70>&hellip;</cfif>
 	<cfif isMore><span class="hasMore">&nbsp;(#application.rbFactory.getKeyValue(session.rb,"sitemanager.more")#)</span></cfif></a>
@@ -177,7 +178,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <dd class="updated">#LSDateFormat(attributes.rsnest.lastupdate,session.dateKeyFormat)# #LSTimeFormat(attributes.rsnest.lastupdate,"medium")#</dd>
     <dd class="admin">
     <ul>
-    	<cfif verdict neq 'none'>
+    	<cfif not listFindNoCase('none,read',verdict)>
        <li class="edit"><a class="draftprompt"  data-siteid="#attributes.siteid#" data-contentid="#attributes.rsNest.contentid#" data-contenthistid="#attributes.rsNest.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#attributes.rsNest.ContentHistID#&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">&nbsp;</a></li>
 	   <cfswitch expression="#attributes.rsnest.type#">
 		<cfcase value="Page,Portal,Calendar,Gallery">

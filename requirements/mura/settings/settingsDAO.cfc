@@ -255,7 +255,7 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
       UPDATE tsettings SET
 	  	 site = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsite()#" />,
          pagelimit = #arguments.bean.getpagelimit()#,
-		 domain=<cfif arguments.bean.getdomain() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getdomain())#" /><cfelse>null</cfif>,
+		 domain=<cfif arguments.bean.getdomain('production') neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getdomain('production'))#" /><cfelse>null</cfif>,
 		 domainAlias=<cfif arguments.bean.getdomainAlias() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getdomainAlias())#" /><cfelse>null</cfif>,
 		 contact=<cfif arguments.bean.getcontact() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getContact())#" /><cfelse>null</cfif>,
          locking = '#arguments.bean.getlocking()#',
@@ -345,7 +345,7 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
 	  values(
 	  	'#arguments.bean.getsiteid()#',
          #arguments.bean.getpagelimit()# ,
-		 <cfif arguments.bean.getdomain() neq ''>'#trim(arguments.bean.getdomain())#'<cfelse>null</cfif>,
+		 <cfif arguments.bean.getdomain('production') neq ''>'#trim(arguments.bean.getdomain('production'))#'<cfelse>null</cfif>,
 		 <cfif arguments.bean.getdomainAlias() neq ''>'#trim(arguments.bean.getdomainAlias())#'<cfelse>null</cfif>,
 		<cfif arguments.bean.getcontact() neq ''>'#trim(arguments.bean.getcontact())#'<cfelse>null</cfif>,
          '#arguments.bean.getlocking()#',

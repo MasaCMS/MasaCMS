@@ -70,11 +70,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset r=application.permUtility.setRestriction(crumbdata).restrict>
 <cfset rsNext=application.contentManager.getNest('#attributes.topid#',attributes.siteid,attributes.sortBy,attributes.sortDirection)>
 <cfinclude template="dsp_nextn.cfm">
-<cfif  ((attributes.topid eq '00000000000000000000000000000000001' and application.settingsManager.getSite(attributes.siteid).getlocking() eq 'none') or (attributes.topid neq '00000000000000000000000000000000001')) and perm neq 'none' and application.settingsManager.getSite(attributes.siteid).getlocking() neq 'all'>
-  <cfset newcontent=1>
-  <cfelse>
-  <cfset newcontent=0>
+
+<cfif  ((attributes.topid eq '00000000000000000000000000000000001' and application.settingsManager.getSite(attributes.siteid).getlocking() eq 'none') or (attributes.topid neq '00000000000000000000000000000000001')) and application.settingsManager.getSite(attributes.siteid).getlocking() neq 'all'>
+  <cfset newcontent=perm>
+<cfelseif perm neq 'none'>
+  <cfset newcontent='read'>
+<cfelse>
+  <cfset newcontent='none'>
 </cfif>
+
 <cfif request.rsTop.type eq 'File'>
 	<cfset icon=lcase(request.rsTop.fileExt)>
 	<cfif r>
@@ -165,12 +169,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <dl id="top-node">
       <dt>
        
-       <a  class="add" href="javascript:;" onmouseover="showMenu('newContentMenu',#newcontent#,this,'#request.rstop.contentid#','#attributes.topid#','#request.rstop.parentid#','#attributes.siteid#','#request.rstop.type#');">&nbsp;</a>
+       <a  class="add" href="javascript:;" onmouseover="showMenu('newContentMenu','#newcontent#',this,'#request.rstop.contentid#','#attributes.topid#','#request.rstop.parentid#','#attributes.siteid#','#request.rstop.type#');">&nbsp;</a>
    
        <cfif request.rstop.haskids>
 	    	<span class="hasChildren-open" onclick="loadSiteManager('#JSStringFormat(attributes.siteID)#','#JSStringFormat(attributes.topid)#','#JSStringFormat(attributes.moduleid)#','#JSStringFormat(attributes.sortby)#','#JSStringFormat(attributes.sortdirection)#','#JSStringFormat(request.rstop.type)#',1);"></span>
 		</cfif>
-        <cfif perm neq 'none'>
+        <cfif not listFindNoCase('none,read',perm)>
           <a class="#icon# title draftprompt" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#request.rstop.ContentHistID#&siteid=#URLEncodedFormat(attributes.siteid)#&contentid=#attributes.topid#&topid=#URLEncodedFormat(attributes.topid)#&type=#request.rstop.type#&parentid=#request.rstop.parentid#&moduleid=#attributes.moduleid#">
         <cfelse>
 		  <a class="#icon# title">
@@ -219,7 +223,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <dd class="updated">#LSDateFormat(request.rstop.lastupdate,session.dateKeyFormat)# #LSTimeFormat(request.rstop.lastupdate,"medium")#</dd>
       <dd class="admin">
       	<ul>
-          <cfif perm neq 'none'>
+          <cfif not listFindNoCase('none,read',perm)>
             <li class="edit"><a class="draftprompt" data-siteid="#rc.siteid#" data-contentid="#request.rstop.contentid#" data-contenthistid="#request.rstop.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?fuseaction=cArch.edit&contenthistid=#request.rstop.ContentHistID#&siteid=#URLEncodedFormat(attributes.siteid)#&contentid=#attributes.topid#&topid=#URLEncodedFormat(attributes.topid)#&type=#request.rstop.type#&parentid=#request.rstop.parentid#&moduleid=#attributes.moduleid#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#</a></li>
             <cfswitch expression="#request.rsTop.type#">
               <cfcase value="Page,Portal,Calendar,Gallery">

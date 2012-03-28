@@ -179,7 +179,8 @@ function getObj(name)
 }
 
 function showMenu(id,newcontent,obj,contentid,topid,parentid,siteid,type) {
-		
+var navperm=newcontent.toLowerCase();
+
 if (window.innerHeight)
 	{
 		 var posTop = window.pageYOffset
@@ -248,7 +249,17 @@ document.getElementById('newZoomLink').onclick = function(){
 document.getElementById('newZoom').style.display='';
 document.getElementById('newZoomLink').style.display='';
 
-if(newcontent){
+if(navperm != 'none'){
+
+	document.getElementById('newCopyLink').href='javascript:copyThis(\'' + siteid + '\', \'' + contentid + '\',\'false\')';
+	document.getElementById('newCopyAllLink').href='javascript:copyThis(\'' + siteid + '\', \'' + contentid + '\',\'true\')';
+	document.getElementById('newCopy').style.display='';
+	document.getElementById('newCopyLink').style.display='';
+	document.getElementById('newCopyAllLink').style.display='';
+
+}
+
+if(navperm=='author' || navperm=='editor'){
 
 document.getElementById('newPageLink').href=
 'index.cfm?fuseaction=cArch.edit&contentid=&parentid=' + contentid + '&type=Page&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
@@ -268,13 +279,6 @@ document.getElementById('newGalleryItemMultiLink').href=
 'index.cfm?fuseaction=cArch.multiFileUpload&contentid=&parentid=' + contentid + '&type=File&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
 //document.getElementById('newFileMultiLink').href=
 //'index.cfm?fuseaction=cArch.multiFileUpload&contentid=&parentid=' + contentid + '&type=File&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
-
-
-document.getElementById('newCopyLink').href='javascript:copyThis(\'' + siteid + '\', \'' + contentid + '\',\'false\')';
-document.getElementById('newCopyAllLink').href='javascript:copyThis(\'' + siteid + '\', \'' + contentid + '\',\'true\')';
-document.getElementById('newCopy').style.display='';
-document.getElementById('newCopyLink').style.display='';
-document.getElementById('newCopyAllLink').style.display='';
 
 if (copySiteID != "" && copyContentID != ""){
 	document.getElementById('newPasteLink').href='javascript:pasteThis(\'' + contentid + '\')';

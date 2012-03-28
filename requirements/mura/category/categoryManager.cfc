@@ -229,7 +229,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="data" type="struct" default="#structnew()#"/>		
 	
 	<cfset var categoryBean=getBean("categoryBean") />
-	<cfset var pluginEvent = getBean("category").set(arguments.data) />
+	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
 	<cfset var parentBean="">
 	<cfset categoryBean.set(arguments.data) />
 	<cfset categoryBean.validate()>
