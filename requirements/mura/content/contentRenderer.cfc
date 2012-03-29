@@ -1801,6 +1801,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<li class="first<cfif event.getValue('contentBean').getcontentid() eq arguments.contentid> #arguments.liCurrentClass#</cfif>" id="navHome"<cfif len(arguments.liCurrentCustomString)> #arguments.liCurrentCustomString#</cfif>><a href="#homeLink#">#HTMLEditFormat(rsHome.menuTitle)#</a></li>
 				<cfset class=listRest(class," ")/>
 			</cfif>
+			<cfif not started>
+				<cfset started=true>
+				<ul<cfif currDepth eq 1>#iif(arguments.id neq '',de(' id="#arguments.id#"'),de(''))##iif(arguments.menuClass neq '',de(' class="#arguments.menuClass#"'),de(''))#<cfelse><cfif len(arguments.ulNestedClass)> class="#arguments.ulNestedClass#"</cfif><cfif len(arguments.ulNestedCustomString)> #arguments.ulNestedCustomString#</cfif></cfif>>
+			</cfif>
 			<li<cfif len(itemClass)> class="#itemClass#"</cfif> id="#itemId#"<cfif len(arguments.liCurrentCustomString)> #arguments.liCurrentCustomString#</cfif>>#link#<cfif subnav>#nest#</cfif></li>
 			<cfelse><cfset adjust=adjust-1></cfif></cfloop>
 			<cfif started></ul></cfif>
