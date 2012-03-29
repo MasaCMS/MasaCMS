@@ -512,12 +512,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="dspCrumblistLinks"  output="false" returntype="string"> 
 <cfargument name="id" type="string" default="crumblist">
 <cfargument name="separator" type="string" default="">
+<cfargument name="class" type="string" default="">
 <cfset var thenav="" />
 <cfset var theOffset=arrayLen(this.crumbdata)- this.navOffSet />
 <cfset var I = 0 />
 <cfif arrayLen(this.crumbdata) gt (1 + this.navOffSet)>
 	<cfsavecontent variable="theNav">
-		<cfoutput><ul id="#arguments.id#">
+		<cfoutput><ul<cfif len(arguments.id)> id="#arguments.id#"</cfif><cfif len(arguments.class)> class="#arguments.class#"</cfif>>
 			<cfloop from="#theOffset#" to="1" index="I" step="-1">
 				<cfif I neq 1>
 					<li class="#iif(I eq theOffset,de('first'),de(''))#">
