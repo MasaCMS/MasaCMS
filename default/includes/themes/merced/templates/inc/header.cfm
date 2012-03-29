@@ -23,7 +23,7 @@
 		<nav>
 		<cf_CacheOMatic key="dspPrimaryNav#request.contentBean.getcontentID()#">
 			#$.dspPrimaryNav(
-				viewDepth="5",
+				viewDepth="1",
 				id="navPrimary",
 				displayHome="Always",
 				closePortals="false",
