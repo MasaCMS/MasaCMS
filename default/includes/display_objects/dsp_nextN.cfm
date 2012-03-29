@@ -100,7 +100,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		<cfloop from="#variables.nextN.firstPage#"  to="#variables.nextN.lastPage#" index="i">
 			<cfif variables.nextn.currentpagenumber eq i>
-				<li class="#this.liCurrentClass#"><a href="##">#i#</a></li>
+				<li class="#this.liCurrentClass#"><a class="#this.aCurrentClass#" href="##">#i#</a></li>
 			<cfelse>
 				<cfif request.muraExportHtml>
 					<cfif i eq 1>

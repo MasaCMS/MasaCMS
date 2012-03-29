@@ -482,9 +482,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset itemClass=iif(current eq 1,de('first'),de(iif(current eq adjust,de('last'),de('')))) />
 				<cfset isCurrent=listFind(event.getValue('contentBean').getPath(),"#rsSection.contentid#") />
 			
-				<cfif isCurrent>
+				<cfif isCurrent and len(arguments.liCurrentClass)>
 					<cfset itemClass=listAppend(itemClass,arguments.liCurrentClass," ")>
 				</cfif>
+				<cfif subnav and len(arguments.liHasKidsClass)>
+					<cfset itemClass=listAppend(class,arguments.liHasKidsClass," ")/>
+				</cfif>
+
 				<cfset linkArgs=structNew()>
 				<cfset linkArgs.aHasKidsClass=arguments.aHasKidsClass>
 				<cfset linkArgs.aHasKidsCustomString=arguments.aHasKidsCustomString>
@@ -750,7 +754,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset itemClass=iif(event.getValue('contentBean').getfilename() eq rsSection.filename,de('#this.liCurrentClass#'),de('')) />
 				<cfset link=addlink(rsSection.type,rsSection.filename,rssection.currentrow,'','',rsSection.contentid,event.getValue('siteID'),'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile(),showItemMeta(rsSection.fileExt))>
 			</cfsilent>
-			<li class="#itemClass#">#link#</li>
+			<li<cfif len(itemClass)> class="#itemClass#"</cfif>>#link#</li>
 			</cfloop>
 			<cfif rsSection.contentID[rsSection.recordcount] neq event.getValue('contentBean').getContentID()>
 			<li><a href="./?linkServID=#rsSection.contentID[next]#">#getSite().getRBFactory().getKey("sitemanager.next")# &raquo;</a></li>
@@ -1767,15 +1771,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<cfset itemClass=iif(current eq 1,de('first'),de(iif(current eq adjust,de('last'),de('')))) />
 			
-			<cfif listFind(event.getValue('contentBean').getPath(),"#rsSection.contentid#")>
+			<cfif listFind(event.getValue('contentBean').getPath(),"#rsSection.contentid#") and len(arguments.liCurrentClass)>
 				<cfset itemClass=listAppend(class,arguments.liCurrentClass," ")/>
+			</cfif>
+
+			<cfif subnav and len(arguments.liHasKidsClass)>
+				<cfset itemClass=listAppend(class,arguments.liHasKidsClass," ")/>
 			</cfif>
 			
 			<cfset itemId="nav" & setCamelback(rsSection.menutitle)>
 			
 			<cfset linkArgs=structNew()>
 			<cfset linkArgs.aHasKidsClass=arguments.aHasKidsClass>
-			<cfset linkArgs.aHasKidsCustomString=arguments.aHasKidsCustomString>
 			<cfset linkArgs.aCurrentClass=arguments.aCurrentClass>
 			<cfset linkArgs.aCurrentCustomString=arguments.aCurrentCustomString>
 			<cfset linkArgs.type=rsSection.type>
