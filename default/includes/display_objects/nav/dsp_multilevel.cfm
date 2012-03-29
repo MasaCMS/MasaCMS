@@ -49,7 +49,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <div id="navMultilevel">
 #dspNestedNav(
-	class="navSecondary",
 	contentID=$.getTopVar("contentID"),
 	viewDepth=4,
 	currDepth=1,
