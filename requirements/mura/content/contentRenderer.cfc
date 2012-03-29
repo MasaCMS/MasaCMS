@@ -743,7 +743,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfoutput>
 			<ul class="#this.ulPaginationClass#">
 			<cfif rsSection.contentID[1] neq event.getValue('contentBean').getContentID()>
-			<li><a href="./?linkServID=#rsSection.contentID[prev]#">&laquo; #getSite().getRBFactory().getKey("sitemanager.prev")#</a></li>
+			<li ><a href="./?linkServID=#rsSection.contentID[prev]#">&laquo; #getSite().getRBFactory().getKey("sitemanager.prev")#</a></li>
 			</cfif>
 			<cfloop query="rsSection">
 			<cfsilent>
