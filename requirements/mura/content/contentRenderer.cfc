@@ -94,6 +94,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.ulNestedClass="">
 <cfset this.ulNestedCustomString="">
 <cfset this.ulTopClass="navSecondary">
+<cfset this.ulPaginationClass="navSequential">
 
 <cffunction name="init" returntype="any" access="public" output="false">
 <cfargument name="event" required="true" default="">
@@ -740,7 +741,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<cfsavecontent variable="theNav">
 			<cfoutput>
-			<ul class="navSequential">
+			<ul class="#this.ulPaginationClass#">
 			<cfif rsSection.contentID[1] neq event.getValue('contentBean').getContentID()>
 			<li><a href="./?linkServID=#rsSection.contentID[prev]#">&laquo; #getSite().getRBFactory().getKey("sitemanager.prev")#</a></li>
 			</cfif>
