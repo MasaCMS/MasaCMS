@@ -598,6 +598,7 @@ if(typeof Shadowbox == 'undefined'){
         isOpera = ua.indexOf("opera") > -1,
         isIE = ua.indexOf('msie') > -1,
         isIE7 = ua.indexOf('msie 7') > -1,
+        isIE9 = ua.indexOf('msie 9') > -1,
         isBorderBox = isIE && !isStrict,
         isSafari = (/webkit|khtml/).test(ua),
         isSafari3 = isSafari && !!(document.evaluate),
@@ -766,7 +767,7 @@ if(typeof Shadowbox == 'undefined'){
      * @private
      */
     var clearOpacity = function(el){
-        if(isIE){
+        if(isIE && !isIE9){
             if(typeof el.style.filter == 'string' && (/alpha/i).test(el.style.filter)){
                 el.style.filter = '';
             }
@@ -1405,8 +1406,10 @@ if(typeof Shadowbox == 'undefined'){
                 next = current_gallery[0];
             }
             if(next.type == 'img'){
-                var preload_next = new Image();
-                preload_next.src = next.href;
+                if(typeof next.href != 'undefined'){
+                    var preload_next = new Image();
+                    preload_next.src = next.href;
+                }
             }
 
             var prev = current_gallery[current - 1];
@@ -1414,8 +1417,10 @@ if(typeof Shadowbox == 'undefined'){
                 prev = current_gallery[current_gallery.length - 1];
             }
             if(prev.type == 'img'){
-                var preload_prev = new Image();
-                preload_prev.src = prev.href;
+                if(typeof prev.href != 'undefined'){
+                    var preload_prev = new Image();
+                    preload_prev.src = prev.href;
+                }
             }
         }
     };
