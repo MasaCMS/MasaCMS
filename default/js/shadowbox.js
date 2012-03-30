@@ -1406,10 +1406,8 @@ if(typeof Shadowbox == 'undefined'){
                 next = current_gallery[0];
             }
             if(next.type == 'img'){
-                if(typeof next.href != 'undefined'){
-                    var preload_next = new Image();
-                    preload_next.src = next.href;
-                }
+                var preload_next = new Image();
+                preload_next.src = next.content;
             }
 
             var prev = current_gallery[current - 1];
@@ -1417,10 +1415,8 @@ if(typeof Shadowbox == 'undefined'){
                 prev = current_gallery[current_gallery.length - 1];
             }
             if(prev.type == 'img'){
-                if(typeof prev.href != 'undefined'){
-                    var preload_prev = new Image();
-                    preload_prev.src = prev.href;
-                }
+                var preload_prev = new Image();
+                preload_prev.src = prev.content;
             }
         }
     };
