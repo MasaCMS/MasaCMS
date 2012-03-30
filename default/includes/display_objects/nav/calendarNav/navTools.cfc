@@ -119,9 +119,9 @@ dateShort = "#listGetAt(monthShort,navMonth,",")# #navYear#";
 <cfoutput>
 <table>
 <tr>
-<th title="#dateLong#" id="previousMonth"><a href="#navPath#date/#previousYear#/#previousMonth#/#qrystr#">&laquo;</a></th>
+<th title="#dateLong#" id="previousMonth"><a href="#navPath#date/#previousYear#/#previousMonth#/#qrystr#" rel=-“nofollow”>&laquo;</a></th>
 <th colspan="5"><a href="#navPath#date/#navYear#/#navmonth#/#qrystr#">#dateLong#</a></th>
-<th id="nextMonth"><a href="#navPath#date/#nextyear#/#nextmonth#/#qrystr#">&raquo;</a></th>
+<th id="nextMonth"><a href="#navPath#date/#nextyear#/#nextmonth#/#qrystr#" rel=-“nofollow”>&raquo;</a></th>
 </tr>
 </tr>
 	<tr class="dayofweek">

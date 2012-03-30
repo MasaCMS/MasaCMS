@@ -49,9 +49,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <table>
 <tr>
-<th title="#HTMLEditFormat(dateLong)#" id="previousMonth"><a href="?month=#previousmonth#&year=#previousyear#&categoryID=#URLEncodedFormat($.event('categoryID'))#&relatedID=#URLEncodedFormat(request.relatedID)#">&laquo;</a></th>
+<th title="#HTMLEditFormat(dateLong)#" id="previousMonth"><a href="?month=#previousmonth#&year=#previousyear#&categoryID=#URLEncodedFormat($.event('categoryID'))#&relatedID=#URLEncodedFormat(request.relatedID)#" rel=-“nofollow”>&laquo;</a></th>
 <th colspan="5">#dateLong#</th>
-<th id="nextMonth"><a href="?month=#nextmonth#&year=#nextyear#&categoryID=#URLEncodedFormat($.event('categoryID'))#&relatedID=#URLEncodedFormat(request.relatedID)#">&raquo;</a></th>
+<th id="nextMonth"><a href="?month=#nextmonth#&year=#nextyear#&categoryID=#URLEncodedFormat($.event('categoryID'))#&relatedID=#URLEncodedFormat(request.relatedID)#" rel=-“nofollow”>&raquo;</a></th>
 </tr>
 	<tr class="dayofweek">
 	<cfloop index="id" from="1" to="#listLen(weekdayShort)#">
