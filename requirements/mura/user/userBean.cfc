@@ -377,7 +377,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif variables.instance.type eq 2 and len(variables.instance.password) and yesNoFormat(variables.configBean.getValue("strongPasswords"))>
 
 			<cfif not reFind(variables.configBean.getValue("strongPasswordRegex"),variables.instance.password) or variables.instance.username eq variables.instance.password>
-				<cfset variables.instance.errors.username=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("user.passwordstrengthvalidate") />
+				<cfset variables.instance.errors.password=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("user.passwordstrengthvalidate") />
 			</cfif>
 				
 		</cfif>
