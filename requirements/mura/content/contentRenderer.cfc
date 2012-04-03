@@ -490,7 +490,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset itemClass=listAppend(itemClass,arguments.liCurrentClass," ")>
 				</cfif>
 				<cfif subnav and len(arguments.liHasKidsClass)>
-					<cfset itemClass=listAppend(class,arguments.liHasKidsClass," ")/>
+					<cfset itemClass=listAppend(itemClass,arguments.liHasKidsClass," ")/>
 				</cfif>
 
 				<cfset linkArgs=structNew()>
@@ -1770,11 +1770,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset itemClass=iif(current eq 1,de('first'),de(iif(current eq adjust,de('last'),de('')))) />
 			
 			<cfif listFind(event.getValue('contentBean').getPath(),"#rsSection.contentid#") and len(arguments.liCurrentClass)>
-				<cfset itemClass=listAppend(class,arguments.liCurrentClass," ")/>
+				<cfset itemClass=listAppend(itemClass,arguments.liCurrentClass," ")/>
 			</cfif>
 
 			<cfif subnav and len(arguments.liHasKidsClass)>
-				<cfset itemClass=listAppend(class,arguments.liHasKidsClass," ")/>
+				<cfset itemClass=listAppend(itemClass,arguments.liHasKidsClass," ")/>
 			</cfif>
 			
 			<cfset itemId="nav" & setCamelback(rsSection.menutitle)>
