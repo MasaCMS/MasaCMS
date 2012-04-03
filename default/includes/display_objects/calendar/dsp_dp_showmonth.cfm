@@ -47,7 +47,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div id="svCalendar" class="svCalendar">
 <cfoutput>
-<table>
+<table class="table table-bordered">
+<thead>
 <tr>
 <th title="#HTMLEditFormat(dateLong)#" id="previousMonth"><a href="?month=#previousmonth#&year=#previousyear#&categoryID=#URLEncodedFormat($.event('categoryID'))#&relatedID=#URLEncodedFormat(request.relatedID)#" rel=“nofollow”>&laquo;</a></th>
 <th colspan="5">#dateLong#</th>
@@ -60,8 +61,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<td title="#dayValueLong#">#dayValue#</td>
 	
 	</cfloop>
-	</tr>
+	</tr></thead>
 	<cfset posn = 1>
+	<tbody>
 	<tr>
 	<cfloop index="id" from="1" to="#firstDayOfWeek#">
 	<td>&nbsp;</td>
@@ -90,6 +92,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<td>&nbsp;</td>
 	</cfloop>
 	</cfif></tr>
+</tbody>
 	</table>
 </cfoutput>
 </div>
