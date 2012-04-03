@@ -144,7 +144,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfsilent>
 			<cfoutput>
 			<li class="#class#"<cfif imageWidth> style="width:#imageWidth#px;"</cfif>>
-				<a href="#item.getImageURL(size='large')#" title="#HTMLEditFormat(item.getValue('title'))#" rel="shadowbox[gallery]" class="gallery"><img src="#item.getImageURL(argumentCollection=imageArgs)#" alt="#HTMLEditFormat(item.getValue('title'))#"/></a>	 
+				<a href="#item.getImageURL(size='large')#" title="#HTMLEditFormat(item.getValue('title'))#" rel="shadowbox[gallery]" class="gallery thumbnail"><img src="#item.getImageURL(argumentCollection=imageArgs)#" alt="#HTMLEditFormat(item.getValue('title'))#"/></a>	 
 			 	<dl>
 			 	<cfloop list="#$.content("displayList")#" index="field">
 					<cfswitch expression="#field#">
