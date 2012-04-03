@@ -450,6 +450,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif not isQuery(rsSection)>
 			<cfset rsSection=variables.contentGateway.getKids('00000000000000000000000000000000000',event.getValue('siteID'),arguments.contentid,arguments.type,arguments.today,50,'',0,arguments.sortBy,arguments.sortDirection,arguments.categoryID,arguments.relatedID)>
 		</cfif>
+
+		<cfif isDefined("arguments.ulTopClass")>
+			<cfset arguments.class=arguments.ulTopClass>
+		</cfif>
 		
 		<cfif rsSection.recordcount and ((event.getValue('r').restrict and event.getValue('r').allow) or (not event.getValue('r').restrict))>
 			<cfset adjust=rsSection.recordcount>
@@ -1689,6 +1693,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var nestedArgs=structNew()>
 		<cfset var linkArgs=structNew()>
 		<cfset var started=false>
+
+		<cfif isDefined("arguments.ulTopClass")>
+			<cfset arguments.menuclass=arguments.ulTopClass>
+		</cfif>
 
 		<cfif len(arguments.closePortals)>
 			<cfset limitingBy="closed">	

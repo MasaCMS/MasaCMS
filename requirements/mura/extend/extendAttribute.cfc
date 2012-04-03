@@ -460,18 +460,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfswitch expression="#getType()#">
 <cfcase value="Hidden">
-<cfsavecontent variable="str"><cfoutput><input type="hidden" name="#key#" id="#key#" label="#XMLFormat(getlabel())#" value="#HTMLEditFormat(renderValue)#" /></cfoutput></cfsavecontent>
+<cfsavecontent variable="str"><cfoutput><input type="hidden" name="#key#" id="#key#" data-label="#XMLFormat(getlabel())#" value="#HTMLEditFormat(renderValue)#" /></cfoutput></cfsavecontent>
 </cfcase>
 <cfcase value="TextBox,Text">
-<cfsavecontent variable="str"><cfoutput><input type="text" name="#key#" class="text<cfif getValidation() eq 'date'> datepicker<cfelseif getValidation() eq 'Color'> colorpicker</cfif>" id="#key#" label="#XMLFormat(getlabel())#" value="#HTMLEditFormat(renderValue)#" required="#getRequired()#"<cfif len(getvalidation())> validate="#getValidation()#"</cfif><cfif getvalidation() eq "Regex"> regex="#getRegex()#"</cfif><cfif len(getMessage())> message="#XMLFormat(getMessage())#"</cfif> /></cfoutput></cfsavecontent>
+<cfsavecontent variable="str"><cfoutput><input type="text" name="#key#" class="text<cfif getValidation() eq 'date'> datepicker<cfelseif getValidation() eq 'Color'> colorpicker</cfif>" id="#key#" data-label="#XMLFormat(getlabel())#" value="#HTMLEditFormat(renderValue)#" data-required="#getRequired()#"<cfif len(getvalidation())> data-validate="#getValidation()#"</cfif><cfif getvalidation() eq "Regex"> data-regex="#getRegex()#"</cfif><cfif len(getMessage())> data-message="#XMLFormat(getMessage())#"</cfif> /></cfoutput></cfsavecontent>
 </cfcase>
 <cfcase value="TextArea,HTMLEditor">
-<cfsavecontent variable="str"><cfoutput><textarea name="#key#" id="#key#" label="#XMLFormat(getlabel())#" required="#getRequired()#"<cfif len(getMessage())> message="#XMLFormat(getMessage())#"</cfif><cfif getType() eq "HTMLEditor"> class="htmlEditor"</cfif><cfif len(getvalidation())> validate="#getValidation()#"</cfif><cfif getvalidation() eq "Regex"> regex="#getRegex()#"</cfif>>#HTMLEditFormat(renderValue)#</textarea></cfoutput></cfsavecontent>
+<cfsavecontent variable="str"><cfoutput><textarea name="#key#" id="#key#" data-label="#XMLFormat(getlabel())#" data-required="#getRequired()#"<cfif len(getMessage())> data-message="#XMLFormat(getMessage())#"</cfif><cfif getType() eq "HTMLEditor"> class="htmlEditor"</cfif><cfif len(getvalidation())> data-validate="#getValidation()#"</cfif><cfif getvalidation() eq "Regex"> data-regex="#getRegex()#"</cfif>>#HTMLEditFormat(renderValue)#</textarea></cfoutput></cfsavecontent>
 </cfcase>
 <cfcase value="SelectBox,MultiSelectBox">
 <cfset optionlist=variables.contentRenderer.setDynamicContent(getOptionList())/>
 <cfset optionLabellist=variables.contentRenderer.setDynamicContent(getOptionLabelList())/>
-<cfsavecontent variable="str"><cfoutput><cfif getType() EQ "MultiSelectBox"><input type="hidden" name="#key#" value="" /></cfif><select name="#key#" id="#key#" label="#XMLFormat(getlabel())#" required="#getRequired()#"<cfif len(getMessage())> message="#XMLFormat(getMessage())#"</cfif><cfif getType() eq "MultiSelectBox"> multiple="multiple"</cfif>><cfif listLen(optionlist,'^')><cfloop from="1" to="#listLen(optionlist,'^')#" index="o"><cfset optionValue=listGetAt(optionlist,o,'^') /><option value="#XMLFormat(optionValue)#"<cfif optionValue eq renderValue or listFind(renderValue,optionValue,"^") or listFind(renderValue,optionValue)> selected="selected"</cfif>><cfif len(optionlabellist)>#listGetAt(optionlabellist,o,'^')#<cfelse>#optionValue#</cfif></option></cfloop></cfif></select></cfoutput></cfsavecontent>
+<cfsavecontent variable="str"><cfoutput><cfif getType() EQ "MultiSelectBox"><input type="hidden" name="#key#" value="" /></cfif><select name="#key#" id="#key#" data-label="#XMLFormat(getlabel())#" data-required="#getRequired()#"<cfif len(getMessage())> data-message="#XMLFormat(getMessage())#"</cfif><cfif getType() eq "MultiSelectBox"> multiple="multiple"</cfif>><cfif listLen(optionlist,'^')><cfloop from="1" to="#listLen(optionlist,'^')#" index="o"><cfset optionValue=listGetAt(optionlist,o,'^') /><option value="#XMLFormat(optionValue)#"<cfif optionValue eq renderValue or listFind(renderValue,optionValue,"^") or listFind(renderValue,optionValue)> selected="selected"</cfif>><cfif len(optionlabellist)>#listGetAt(optionlabellist,o,'^')#<cfelse>#optionValue#</cfif></option></cfloop></cfif></select></cfoutput></cfsavecontent>
 </cfcase>
 <cfcase value="RadioGroup">
 <cfset optionlist=variables.contentRenderer.setDynamicContent(getOptionList())/>
@@ -479,7 +479,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfsavecontent variable="str"><cfoutput><cfif listLen(optionlist,'^')><cfloop from="1" to="#listLen(optionlist,'^')#" index="o"><cfset optionValue=listGetAt(optionlist,o,'^') /><input type="radio" id="#key#" name="#key#" value="#XMLFormat(optionValue)#"<cfif optionValue eq renderValue> checked="checked"</cfif> /> <cfif len(optionlabellist)>#listGetAt(optionlabellist,o,'^')#<cfelse>#optionValue#</cfif> </cfloop></cfif></cfoutput></cfsavecontent>
 </cfcase>
 <cfcase value="File">
-<cfsavecontent variable="str"><cfoutput><input type="file" name="#key#" id="#key#" label="#XMLFormat(getlabel())#" value="" required="#getRequired()#"<cfif len(getvalidation())> validate="#getValidation()#"</cfif><cfif getvalidation() eq "Regex"> regex="#getRegex()#"</cfif><cfif len(getMessage())> message="#XMLFormat(getMessage())#"</cfif>/></cfoutput></cfsavecontent>
+<cfsavecontent variable="str"><cfoutput><input type="file" name="#key#" id="#key#" data-label="#XMLFormat(getlabel())#" value="" data-required="#getRequired()#"<cfif len(getvalidation())> data-validate="#getValidation()#"</cfif><cfif getvalidation() eq "Regex"> data-regex="#getRegex()#"</cfif><cfif len(getMessage())> data-message="#XMLFormat(getMessage())#"</cfif>/></cfoutput></cfsavecontent>
 </cfcase>
 </cfswitch>
 
