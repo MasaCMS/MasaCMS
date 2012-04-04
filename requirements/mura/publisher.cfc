@@ -1441,7 +1441,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfelse>
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstpermissions.contentID)#">
 					</cfif>,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#rstpermissions.groupID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstpermissions.groupID)#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstpermissions.type neq '',de('no'),de('yes'))#" value="#rstpermissions.type#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">
 					)
