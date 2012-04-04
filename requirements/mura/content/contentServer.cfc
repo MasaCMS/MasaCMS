@@ -335,13 +335,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="renderFilename" output="true" access="public">
 	<cfargument name="filename" default="">
 	<cfargument name="validateDomain" default="true">
+	<cfargument name="parseURL" default="true">
 	<cfset var fileoutput="">
  
 	<cfset request.siteid = bindToDomain()>
 	<cfset request.servletEvent = createObject("component","mura.servletEvent").init() />
 	<cfset request.servletEvent.setValue("muraValidateDomain",arguments.validateDomain)>
 	<cfset request.servletEvent.setValue("currentfilename",arguments.filename)>
-	<cfset parseCustomURLVars(request.servletEvent)>
+	<cfif arguments.parseURL>
+		<cfset parseCustomURLVars(request.servletEvent)>
+	</cfif>
 	<cfset fileOutput=variables.Mura.doRequest(request.servletEvent)>	
 	<cfoutput>#fileOutput#</cfoutput>
 	<cfabort>
@@ -349,8 +352,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="render404" output="true" access="public">
-	<cfheader statuscode="404" statustext="Content Not Found" /> 
-	<cfset renderFilename("404")> 
+	<cfheader statuscode="404" statustext="Content Not Found" />
+	<!--- Must reset the linkservID to prevent recursive 404s --->
+	<cfset request.linkServID=""> 
+	<cfset renderFilename("404",true,false)> 
 </cffunction>
 
 <cffunction name="parseCustomURLVars" output="false">
