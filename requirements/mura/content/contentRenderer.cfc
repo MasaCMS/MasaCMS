@@ -82,6 +82,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.subHead4="h6">
 <!--- This is duplicated for when the page title gets set to h1 ---> 
 <cfset this.subHead5="h6">
+<!--- These settings are for navigational display objects --->
+<cfset this.liHasKidsClass="">
+<cfset this.liHasKidsCustomString="">
+<cfset this.liCurrentClass="current">
+<cfset this.liCurrentCustomString="">
+<cfset this.aHasKidsClass="">
+<cfset this.aHasKidsCustomString="">
+<cfset this.aCurrentClass="current">
+<cfset this.aCurrentCustomString="">
+<cfset this.ulNestedClass="">
+<cfset this.ulNestedCustomString="">
+<cfset this.ulTopClass="navSecondary">
+<cfset this.ulPaginationClass="navSequential">
 
 <cffunction name="init" returntype="any" access="public" output="false">
 <cfargument name="event" required="true" default="">
@@ -400,7 +413,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="currDepth" type="numeric"  required="true"  default="1">
 		<cfargument name="type" type="string"  default="default">
 		<cfargument name="today" type="date"  default="#now()#">
-		<cfargument name="class" type="string" default="">
+		<cfargument name="class" type="string" default="#this.ulTopClass#">
 		<cfargument name="querystring" type="string" default="">
 		<cfargument name="sortBy" type="string" default="orderno">
 		<cfargument name="sortDirection" type="string" default="asc">
@@ -410,7 +423,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="relatedID" type="string" default="">
 		<cfargument name="rs" required="true" default="">
 		<cfargument name="subNavExpression" required="true" default="">
-		
+		<cfargument name="liHasKidsClass" required="true" default="#this.liHasKidsClass#">
+		<cfargument name="liHasKidsCustomString" required="true" default="#this.liHasKidsCustomString#">
+		<cfargument name="liCurrentClass" required="true" default="#this.liCurrentClass#">
+		<cfargument name="liCurrentCustomString" required="true" default="#this.liCurrentCustomString#">
+		<cfargument name="aHasKidsClass" required="true" default="#this.aHasKidsClass#">
+		<cfargument name="aHasKidsCustomString" required="true" default="#this.aHasKidsCustomString#">
+		<cfargument name="aCurrentClass" required="true" default="#this.aCurrentClass#">
+		<cfargument name="aCurrentCustomString" required="true" default="#this.aCurrentCustomString#">
+		<cfargument name="ulNestedClass" required="true" default="#this.ulNestedClass#">
+		<cfargument name="ulNestedCustomString" required="true" default="#this.ulNestedCustomString#">
+	
 		<cfset var rsSection=arguments.rs>
 		<cfset var adjust=0>
 		<cfset var current=0>
@@ -420,41 +443,76 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var nest=''>
 		<cfset var subnav=false>
 		<cfset var theNav="">
+		<cfset var nestedArgs=structNew()>
+		<cfset var linkArgs=structNew()>
+		<cfset var started=false>
 		
 		<cfif not isQuery(rsSection)>
 			<cfset rsSection=variables.contentGateway.getKids('00000000000000000000000000000000000',event.getValue('siteID'),arguments.contentid,arguments.type,arguments.today,50,'',0,arguments.sortBy,arguments.sortDirection,arguments.categoryID,arguments.relatedID)>
 		</cfif>
+
+		<cfif isDefined("arguments.ulTopClass")>
+			<cfset arguments.class=arguments.ulTopClass>
+		</cfif>
 		
 		<cfif rsSection.recordcount and ((event.getValue('r').restrict and event.getValue('r').allow) or (not event.getValue('r').restrict))>
 			<cfset adjust=rsSection.recordcount>
+
 			<cfsavecontent variable="theNav">
 			<cfoutput>
-			<ul #iif(arguments.class neq '',de(' class="#arguments.class #"'),de(''))#><cfloop query="rsSection"><cfif allowLink(rssection.restricted,rssection.restrictgroups,event.getValue('r').loggedIn)><cfsilent>
+			<cfloop query="rsSection">
+			<cfif allowLink(rssection.restricted,rssection.restrictgroups,event.getValue('r').loggedIn)>
+			<cfsilent>
+				<cfif len(arguments.subNavExpression)>
+					<cfset subnav=evaluate(arguments.subNavExpression)>
+				<cfelse>
+					 <cfset subnav=(((ListFind("Page,Portal,Calendar",rsSection.type)) and arguments.class eq 'navSecondary' and (this.crumbData[this.navSelfIdx].contentID eq rsSection.contentid or this.crumbData[this.navSelfIdx].parentID eq rsSection.contentid) ) or ((listFindNoCase("Page,Calendar",rsSection.type)) and arguments.class neq 'navSecondary')) and arguments.currDepth lt arguments.viewDepth and rsSection.type neq 'Gallery' and not (rsSection.restricted and not session.mura.isLoggedIn) >
+				</cfif>
 			
-			<cfset current=current+1>
-			<cfset nest=''>
+				<cfset current=current+1>
+				<cfset nest=''>
+				<cfif subnav>
+					<cfset nestedArgs.contentID=rssection.contentid>
+					<cfset nestedArgs.currDepth=arguments.currDepth+1>
+					<cfset nestedArgs.type=iif(rssection.type eq 'calendar',de('fixed'),de('default'))>
+					<cfset nestedArgs.sortBy=rsSection.sortBy>
+					<cfset nestedArgs.sortDirection=rsSection.sortDirection>
+
+					<cfset structAppend(nestedArgs,arguments,false)>
+					<cfset nest=dspNestedNav(argumentCollection=nestedArgs) />
+					<cfset subnav=subnav and find("<li",nest)>
+				</cfif>
 			
-			<cfif len(arguments.subNavExpression)>
-				<cfset subnav=evaluate(arguments.subNavExpression)>
-			<cfelse>
-				<cfset subnav=(((ListFind("Page,Portal,Calendar",rsSection.type)) and arguments.class eq 'navSecondary' and (this.crumbData[this.navSelfIdx].contentID eq rsSection.contentid or this.crumbData[this.navSelfIdx].parentID eq rsSection.contentid) ) or ((listFindNoCase("Page,Calendar",rsSection.type)) and arguments.class neq 'navSecondary')) and arguments.currDepth lt arguments.viewDepth and rsSection.type neq 'Gallery' and not (rsSection.restricted and not session.mura.isLoggedIn) >
-			</cfif>
+				<cfset itemClass=iif(current eq 1,de('first'),de(iif(current eq adjust,de('last'),de('')))) />
+				<cfset isCurrent=listFind(event.getValue('contentBean').getPath(),"#rsSection.contentid#") />
 			
-			<cfif subnav>
-				<cfset nest=dspNestedNav(rssection.contentid,arguments.viewDepth,arguments.currDepth+1,iif(rssection.type eq 'calendar',de('fixed'),de('default')),now(),'','',rsSection.sortBy,rsSection.sortDirection,arguments.context,arguments.stub,arguments.categoryID,arguments.relatedID,"",arguments.subNavExpression) />
-			</cfif>
-			
-			<cfset itemClass=iif(current eq 1,de('first'),de(iif(current eq adjust,de('last'),de('')))) />
-			<cfset isCurrent=listFind(event.getValue('contentBean').getPath(),"#rsSection.contentid#") />
-			
-			<cfif isCurrent>
-				<cfset itemClass=listAppend(itemClass,"current"," ")>
-			</cfif>
-			
-			<cfset link=addlink(rsSection.type,rsSection.filename,rsSection.menutitle,rsSection.target,rsSection.targetParams,rsSection.contentid,event.getValue('siteID'),arguments.querystring,arguments.context,arguments.stub)>
+				<cfif isCurrent and len(arguments.liCurrentClass)>
+					<cfset itemClass=listAppend(itemClass,arguments.liCurrentClass," ")>
+				</cfif>
+				<cfif subnav and len(arguments.liHasKidsClass)>
+					<cfset itemClass=listAppend(itemClass,arguments.liHasKidsClass," ")/>
+				</cfif>
+
+				<cfset linkArgs=structNew()>
+				<cfset linkArgs.aHasKidsClass=arguments.aHasKidsClass>
+				<cfset linkArgs.aHasKidsCustomString=arguments.aHasKidsCustomString>
+				<cfset linkArgs.aCurrentClass=arguments.aCurrentClass>
+				<cfset linkArgs.aCurrentCustomString=arguments.aCurrentCustomString>
+				<cfset linkArgs.type=rsSection.type>
+				<cfset linkArgs.filename=rsSection.filename>
+				<cfset linkArgs.title=rsSection.menutitle>
+				<cfset linkArgs.contentid=rsSection.contentid>
+				<cfset linkArgs.siteID=event.getValue('siteID')>
+				<cfset linkArgs.querystring=arguments.querystring>
+				<cfset linkArgs.isParent=subnav>
+				<cfset link=addlink(argumentCollection=linkArgs)>
 			</cfsilent>
-			<li<cfif len(itemClass)> class="#itemClass#"</cfif>>#link#<cfif subnav and find("<li",nest)>#nest#</cfif></li><cfelse><cfset adjust=adjust-1></cfif></cfloop>
-			</ul></cfoutput>
+			<cfif not started>
+				<cfset started=true>
+				<ul<cfif arguments.currDepth eq 1 and len(arguments.class)> class="#arguments.class#"<cfelse><cfif len(arguments.ulNestedClass)> class="#arguments.ulNestedClass#"</cfif><cfif len(arguments.ulNestedCustomString)> #arguments.ulNestedCustomString#</cfif></cfif>>
+			</cfif>
+			<li<cfif len(itemClass)> class="#itemClass#"</cfif><cfif len(arguments.liCurrentCustomString)> #arguments.liCurrentCustomString#</cfif>>#link#<cfif subnav>#nest#</cfif></li><cfelse><cfset adjust=adjust-1></cfif></cfloop>
+			<cfif started></ul></cfif></cfoutput>
 			</cfsavecontent>
 		</cfif>
 		<cfreturn theNav />
@@ -463,26 +521,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="dspCrumblistLinks"  output="false" returntype="string"> 
 <cfargument name="id" type="string" default="crumblist">
 <cfargument name="separator" type="string" default="">
+<cfargument name="class" type="string" default="">
 <cfset var thenav="" />
 <cfset var theOffset=arrayLen(this.crumbdata)- this.navOffSet />
 <cfset var I = 0 />
-	<cfif arrayLen(this.crumbdata) gt (1 + this.navOffSet)>
-		<cfsavecontent variable="theNav">
-			<cfoutput><ul id="#arguments.id#">
-				<cfloop from="#theOffset#" to="1" index="I" step="-1">
-					<cfif I neq 1>
-						<li class="#iif(I eq theOffset,de('first'),de(''))#">
-						<cfif i neq theOffset>#arguments.separator#</cfif>#addlink(this.crumbdata[I].type,this.crumbdata[I].filename,this.crumbdata[I].menutitle,'_self','',this.crumbdata[I].contentid,this.crumbdata[I].siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile(),event.getValue('showMeta'),0)#
-						</li>
-					<cfelse>
-						<li class="#iif(arraylen(this.crumbdata),de('last'),de('first'))#">
-							#arguments.separator##addlink(this.crumbdata[1].type,this.crumbdata[1].filename,this.crumbdata[1].menutitle,'_self','',this.crumbdata[1].contentid,this.crumbdata[1].siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile(),event.getValue('showMeta'),0)#
-						</li>
-					</cfif>
-				</cfloop>
-			</ul></cfoutput>
-		</cfsavecontent>
-	</cfif>
+<cfif arrayLen(this.crumbdata) gt (1 + this.navOffSet)>
+	<cfsavecontent variable="theNav">
+		<cfoutput><ul<cfif len(arguments.id)> id="#arguments.id#"</cfif><cfif len(arguments.class)> class="#arguments.class#"</cfif>>
+			<cfloop from="#theOffset#" to="1" index="I" step="-1"><cfif I neq 1><li class="#iif(I eq theOffset,de('first'),de(''))#"><cfif i neq theOffset>#arguments.separator#</cfif>#addlink(this.crumbdata[I].type,this.crumbdata[I].filename,this.crumbdata[I].menutitle,'_self','',this.crumbdata[I].contentid,this.crumbdata[I].siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile(),event.getValue('showMeta'),0)#</li><cfelse><li class="#iif(arraylen(this.crumbdata),de('last'),de('first'))#">#arguments.separator##addlink(this.crumbdata[1].type,this.crumbdata[1].filename,this.crumbdata[1].menutitle,'_self','',this.crumbdata[1].contentid,this.crumbdata[1].siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile(),event.getValue('showMeta'),0)#</li></cfif></cfloop>
+		</ul></cfoutput>
+	</cfsavecontent>
+</cfif>
 
 <cfreturn trim(theNav)>
 </cffunction>
@@ -500,35 +549,73 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="dspPortalNav" output="false" returntype="string">
-	<cfargument name="class" default="navSecondary" required="true">
+	<cfargument name="class" default="#this.ulTopClass#" required="true">
+	<cfargument name="liHasKidsClass" required="true" default="#this.liHasKidsClass#">
+	<cfargument name="liHasKidsCustomString" required="true" default="#this.liHasKidsCustomString#">
+	<cfargument name="liCurrentClass" required="true" default="#this.liCurrentClass#">
+	<cfargument name="liCurrentCustomString" required="true" default="#this.liCurrentCustomString#">
+	<cfargument name="aHasKidsClass" required="true" default="#this.aHasKidsClass#">
+	<cfargument name="aHasKidsCustomString" required="true" default="#this.aHasKidsCustomString#">
+	<cfargument name="aCurrentClass" required="true" default="#this.aCurrentClass#">
+	<cfargument name="aCurrentCustomString" required="true" default="#this.aCurrentCustomString#">
+	<cfargument name="ulNestedClass" required="true" default="#this.ulNestedClass#">
+	<cfargument name="ulNestedCustomString" required="true" default="#this.ulNestedCustomString#">
+
 	<cfset var thenav="" />
 	<cfset var menutype="" />
+	<cfset var nestedArgs=structNew()>
 
-			<cfif event.getValue('contentBean').getType() eq 'Portal' or event.getValue('contentBean').getType() eq 'Gallery'>
-				<cfif arraylen(this.crumbdata) gt (this.navParentIdx+this.navOffSet)>
-					<cfif arraylen(this.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and (this.crumbdata[this.navGrandParentIdx].type neq 'Portal' or this.crumbdata[this.navGrandParentIdx].type neq 'Gallery') and not variables.contentGateway.getCount(event.getValue('siteID'),this.crumbdata[this.navSelfIdx].contentID)>
-						<cfset theNav = dspNestedNav(this.crumbdata[this.navGrandParentIdx].contentid,2,1,'default',now(),arguments.class,'',this.crumbdata[this.navGrandParentIdx].sortBy,this.crumbdata[this.navGrandParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub(),event.getValue('categoryID')) />
-					<cfelse>
-						<cfset thenav=dspPeerNav(arguments.class) />
-					</cfif>
-				</cfif>
-			<cfelseif arrayLen(this.crumbdata) gt (this.navSelfIdx+this.navOffSet) and this.crumbdata[this.navParentIdx].type eq 'Portal' or (arraylen(this.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and this.crumbdata[this.navGrandParentIdx].type eq 'Portal')>
-				<cfif arraylen(this.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and this.crumbdata[this.navGrandParentIdx].type neq 'Portal' and not variables.contentGateway.getCount(event.getValue('siteID'),this.crumbdata[this.navSelfIdx].contentID)>
-					<cfset theNav = dspNestedNav(this.crumbdata[this.navGrandParentIdx].contentid,1,1,'default',now(),arguments.class,'',this.crumbdata[this.navGrandParentIdx].sortBy,this.crumbdata[this.navGrandParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub(),event.getValue('categoryID')) />
-				<cfelse>
-					<cfset thenav=dspSubNav(arguments.class) />
-				</cfif>
+	<cfif event.getValue('contentBean').getType() eq 'Portal' or event.getValue('contentBean').getType() eq 'Gallery'>
+		<cfif arraylen(this.crumbdata) gt (this.navParentIdx+this.navOffSet)>
+			<cfif arraylen(this.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and (this.crumbdata[this.navGrandParentIdx].type neq 'Portal' or this.crumbdata[this.navGrandParentIdx].type neq 'Gallery') and not variables.contentGateway.getCount(event.getValue('siteID'),this.crumbdata[this.navSelfIdx].contentID)>
+				<cfset nestedArgs.contentID=this.crumbdata[this.navGrandParentIdx].contentid>
+				<cfset nestedArgs.viewDepth=2>
+				<cfset nestedArgs.currDepth=1>
+				<cfset nestedArgs.sortBy=this.crumbdata[this.navGrandParentIdx].sortBy>
+				<cfset nestedArgs.sortDirection=this.crumbdata[this.navGrandParentIdx].sortDirection>
+				<cfset nestedArgs.categoryID=event.getValue('categoryID')>
+				<cfset structAppend(nestedArgs,arguments,false)>
+				<cfset theNav = dspNestedNav(argumentCollection=nestedArgs) />
 			<cfelse>
-			<cfset thenav=dspStandardNav(arguments.class) />
+				<cfset thenav=dspPeerNav(argumentCollection=arguments) />
 			</cfif>
+		</cfif>
+	<cfelseif arrayLen(this.crumbdata) gt (this.navSelfIdx+this.navOffSet) and this.crumbdata[this.navParentIdx].type eq 'Portal' or (arraylen(this.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and this.crumbdata[this.navGrandParentIdx].type eq 'Portal')>
+		<cfif arraylen(this.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and this.crumbdata[this.navGrandParentIdx].type neq 'Portal' and not variables.contentGateway.getCount(event.getValue('siteID'),this.crumbdata[this.navSelfIdx].contentID)>
+			<cfset nestedArgs.contentID=this.crumbdata[this.navGrandParentIdx].contentid>
+			<cfset nestedArgs.viewDepth=1>
+			<cfset nestedArgs.currDepth=1>
+			<cfset nestedArgs.sortBy=this.crumbdata[this.navGrandParentIdx].sortBy>
+			<cfset nestedArgs.sortDirection=this.crumbdata[this.navGrandParentIdx].sortDirection>
+			<cfset nestedArgs.categoryID=event.getValue('categoryID')>
+			<cfset structAppend(nestedArgs,arguments,false)>
+
+			<cfset theNav = dspNestedNav(argumentCollection=nestedArgs) />
+		<cfelse>
+			<cfset thenav=dspSubNav(argumentCollection=nestedArgs) />
+		</cfif>
+	<cfelse>
+		<cfset thenav=dspStandardNav(argumentCollection=nestedArgs) />
+	</cfif>
 			
-			<cfreturn thenav />
+	<cfreturn thenav />
 </cffunction>
 
 <cffunction name="dspStandardNav" output="false" returntype="string">
-	<cfargument name="class" default="navSecondary" required="true">
+	<cfargument name="class" default="#this.ulTopClass#" required="true">
+	<cfargument name="liHasKidsClass" required="true" default="#this.liHasKidsClass#">
+	<cfargument name="liHasKidsCustomString" required="true" default="#this.liHasKidsCustomString#">
+	<cfargument name="liCurrentClass" required="true" default="#this.liCurrentClass#">
+	<cfargument name="liCurrentCustomString" required="true" default="#this.liCurrentCustomString#">
+	<cfargument name="aHasKidsClass" required="true" default="#this.aHasKidsClass#">
+	<cfargument name="aHasKidsCustomString" required="true" default="#this.aHasKidsCustomString#">
+	<cfargument name="aCurrentClass" required="true" default="#this.aCurrentClass#">
+	<cfargument name="aCurrentCustomString" required="true" default="#this.aCurrentCustomString#">
+	<cfargument name="ulNestedClass" required="true" default="#this.ulNestedClass#">
+	<cfargument name="ulNestedCustomString" required="true" default="#this.ulNestedCustomString#">
 	<cfset var thenav="" />
 	<cfset var menutype="" />
+	<cfset var nestedArgs=structNew()>
 	
 	<cfif event.getValue('contentBean').getType() neq 'Gallery'>
 			<cfif arraylen(this.crumbdata) gt (this.navParentIdx+this.navOffSet)>
@@ -538,48 +625,97 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset menutype='default'>
 				</cfif>
 				<cfif arraylen(this.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and not variables.contentGateway.getCount(event.getValue('siteID'),this.crumbdata[this.navSelfIdx].contentID)>
-					<cfset theNav = dspNestedNav(this.crumbdata[this.navGrandParentIdx].contentid,2,1,menutype,now(),arguments.class,'',this.crumbdata[this.navGrandParentIdx].sortBy,this.crumbdata[this.navGrandParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub()) />	
+					<cfset nestedArgs.contentID=this.crumbdata[this.navGrandParentIdx].contentid>
+					<cfset nestedArgs.viewDepth=2>
+					<cfset nestedArgs.currDepth=1>
+					<cfset nestedArgs.type=menutype>
+					<cfset nestedArgs.sortBy=this.crumbdata[this.navGrandParentIdx].sortBy>
+					<cfset nestedArgs.sortDirection=this.crumbdata[this.navGrandParentIdx].sortDirection>
+					<cfset structAppend(nestedArgs,arguments,false)>
+					<cfset theNav = dspNestedNav(argumentCollection=nestedArgs) />	
 				<cfelse>
-					<cfset theNav = dspNestedNav(this.crumbdata[this.navParentIdx].contentid,2,1,menutype,now(),arguments.class,'',this.crumbdata[this.navParentIdx].sortBy,this.crumbdata[this.navParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub()) />	
+					<cfset nestedArgs.contentID=this.crumbdata[this.navParentIdx].contentid>
+					<cfset nestedArgs.viewDepth=2>
+					<cfset nestedArgs.currDepth=1>
+					<cfset nestedArgs.type=menutype>
+					<cfset nestedArgs.sortBy=this.crumbdata[this.navParentIdx].sortBy>
+					<cfset nestedArgs.sortDirection=this.crumbdata[this.navParentIdx].sortDirection>
+					<cfset structAppend(nestedArgs,arguments,false)>
+					<cfset theNav = dspNestedNav(argumentCollection=nestedArgs) />
 				</cfif>			
 			<cfelse>
-			<cfset theNav=dspSubNav(arguments.class) />
+				<cfset theNav=dspSubNav(argumentCollection=arguments) />
 			</cfif>	
 			
 			<cfreturn thenav />
 	<cfelse>
-			<cfreturn dspPortalNav(arguments.class) />
+			<cfreturn dspPortalNav(argumentCollection=arguments) />
 	</cfif>
 </cffunction>
 
 <cffunction name="dspSubNav" output="false" returntype="string">
-	<cfargument name="class" default="navSecondary" required="true">
+	<cfargument name="class" default="#this.ulTopClass#" required="true">
+	<cfargument name="liHasKidsClass" required="true" default="#this.liHasKidsClass#">
+	<cfargument name="liHasKidsCustomString" required="true" default="#this.liHasKidsCustomString#">
+	<cfargument name="liCurrentClass" required="true" default="#this.liCurrentClass#">
+	<cfargument name="liCurrentCustomString" required="true" default="#this.liCurrentCustomString#">
+	<cfargument name="aHasKidsClass" required="true" default="#this.aHasKidsClass#">
+	<cfargument name="aHasKidsCustomString" required="true" default="#this.aHasKidsCustomString#">
+	<cfargument name="aCurrentClass" required="true" default="#this.aCurrentClass#">
+	<cfargument name="aCurrentCustomString" required="true" default="#this.aCurrentCustomString#">
+
 	<cfset var thenav="" />
-	<cfset var menutype="">
-			<cfif arraylen(this.crumbdata) gt (this.navSelfIdx+this.navOffSet)>
-			<cfif this.crumbdata[this.navSelfIdx].type eq 'Calendar'><cfset menutype='fixed'><cfelse><cfset menutype='default'></cfif>
-			<cfset theNav = dspNestedNav(this.crumbdata[this.navSelfIdx].contentID,1,1,menutype,now(),arguments.class,'',this.crumbdata[this.navSelfIdx].sortBy,this.crumbdata[this.navSelfIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub()) />
-			</cfif>
+	<cfset var nestedArgs=structNew()>
+
+	<cfif arraylen(this.crumbdata) gt (this.navSelfIdx+this.navOffSet)>	
+		<cfset nestedArgs.contentID=this.crumbdata[this.navSelfIdx].contentID>
+		<cfset nestedArgs.viewDepth=1>
+		<cfset nestedArgs.currDepth=1>
+		<cfif this.crumbdata[this.navSelfIdx].type eq 'Calendar'>
+			<cfset nestedArgs.type='fixed'>
+		<cfelse>
+			<cfset nestedArgs.type='default'>
+		</cfif>
+		<cfset nestedArgs.sortBy=this.crumbdata[this.navSelfIdx].sortBy>
+		<cfset nestedArgs.sortDirection=this.crumbdata[this.navSelfIdx].sortDirection>
+		<cfset structAppend(nestedArgs,arguments,false)>
+		<cfset theNav = dspNestedNav(argumentCollection=nestedArgs) />
+	</cfif>
 			
 			<cfreturn thenav />
 </cffunction>
 
 <cffunction name="dspPeerNav" output="false" returntype="string">
-	<cfargument name="class" default="navSecondary" required="true">
+	<cfargument name="class" default="#this.ulTopClass#" required="true">
+	<cfargument name="liHasKidsClass" required="true" default="#this.liHasKidsClass#">
+	<cfargument name="liHasKidsCustomString" required="true" default="#this.liHasKidsCustomString#">
+	<cfargument name="liCurrentClass" required="true" default="#this.liCurrentClass#">
+	<cfargument name="liCurrentCustomString" required="true" default="#this.liCurrentCustomString#">
+	<cfargument name="aHasKidsClass" required="true" default="#this.aHasKidsClass#">
+	<cfargument name="aHasKidsCustomString" required="true" default="#this.aHasKidsCustomString#">
+	<cfargument name="aCurrentClass" required="true" default="#this.aCurrentClass#">
+	<cfargument name="aCurrentCustomString" required="true" default="#this.aCurrentCustomString#">
+	
 	<cfset var thenav="" />
 	<cfset var menutype = "" />
 		
-			<cfif event.getContentBean().getContentID() neq '00000000000000000000000000000000001'
-				 and arraylen(this.crumbdata) gt (this.navParentIdx+this.navOffSet)>
-				<cfif this.crumbdata[this.navParentIdx].type eq 'calendar'>
-					<cfset menutype='fixed'>
-				<cfelse>
-					<cfset menutype='default'>
-				</cfif>
-				<cfset theNav = dspNestedNav(this.crumbdata[this.navParentIdx].contentID,1,1,menutype,now(),arguments.class,'',this.crumbdata[this.navParentIdx].sortBy,this.crumbdata[this.navParentIdx].sortDirection,application.configBean.getContext(),application.configBean.getStub()) />
-			</cfif>
+	<cfif event.getContentBean().getContentID() neq '00000000000000000000000000000000001'
+		 and arraylen(this.crumbdata) gt (this.navParentIdx+this.navOffSet)>
+		<cfset nestedArgs.contentID=this.crumbdata[this.navParentIdx].contentID>
+		<cfset nestedArgs.viewDepth=1>
+		<cfset nestedArgs.currDepth=1>
+		<cfif this.crumbdata[this.navParentIdx].type eq 'calendar'>
+			<cfset nestedArgs.type='fixed'>
+		<cfelse>
+			<cfset nestedArgs.type='default'>
+		</cfif>
+		<cfset nestedArgs.sortBy=this.crumbdata[this.navParentIdx].sortBy>
+		<cfset nestedArgs.sortDirection=this.crumbdata[this.navParentIdx].sortDirection>
+		<cfset structAppend(nestedArgs,arguments,false)>
+		<cfset theNav = dspNestedNav(argumentCollection=nestedArgs) />
+	</cfif>
 			
-			<cfreturn theNav />
+	<cfreturn theNav />
 </cffunction>
 
 <cffunction name="dspSequentialNav" output="false" returntype="string">
@@ -603,16 +739,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<cfsavecontent variable="theNav">
 			<cfoutput>
-			<ul class="navSequential">
+			<ul class="#this.ulPaginationClass#">
 			<cfif rsSection.contentID[1] neq event.getValue('contentBean').getContentID()>
-			<li><a href="./?linkServID=#rsSection.contentID[prev]#">&laquo; #getSite().getRBFactory().getKey("sitemanager.prev")#</a></li>
+			<li ><a href="./?linkServID=#rsSection.contentID[prev]#">&laquo; #getSite().getRBFactory().getKey("sitemanager.prev")#</a></li>
 			</cfif>
 			<cfloop query="rsSection">
 			<cfsilent>
-				<cfset itemClass=iif(event.getValue('contentBean').getfilename() eq rsSection.filename,de('current'),de('')) />
+				<cfset itemClass=iif(event.getValue('contentBean').getfilename() eq rsSection.filename,de('#this.liCurrentClass#'),de('')) />
 				<cfset link=addlink(rsSection.type,rsSection.filename,rssection.currentrow,'','',rsSection.contentid,event.getValue('siteID'),'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile(),showItemMeta(rsSection.fileExt))>
 			</cfsilent>
-			<li class="#itemClass#">#link#</li>
+			<li<cfif len(itemClass)> class="#itemClass#"</cfif>>#link#</li>
 			</cfloop>
 			<cfif rsSection.contentID[rsSection.recordcount] neq event.getValue('contentBean').getContentID()>
 			<li><a href="./?linkServID=#rsSection.contentID[next]#">#getSite().getRBFactory().getKey("sitemanager.next")# &raquo;</a></li>
@@ -857,36 +993,44 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="addlink" output="false" returntype="string">
-			<cfargument name="type" required="true">
-			<cfargument name="filename" required="true">
-			<cfargument name="title" required="true">
-			<cfargument name="target" type="string"  default="">
-			<cfargument name="targetParams" type="string"  default="">
-			<cfargument name="contentid" required="true">
-			<cfargument name="siteid" required="true">
-			<cfargument name="querystring" type="string" required="true" default="">
-			<cfargument name="context" type="string" required="true" default="#application.configBean.getContext()#">
-			<cfargument name="stub" type="string" required="true" default="#application.configBean.getStub()#">
-			<cfargument name="indexFile" type="string" required="true" default="">
-			<cfargument name="showMeta" type="string" required="true" default="0">
-			<cfargument name="showCurrent" type="string" required="true" default="1">
-			<cfargument name="class" type="string" required="true" default="">
-			<cfargument name="complete" type="boolean" required="true" default="false">
-			<cfargument name="id" type="string" required="true" default="">
-
-						
-			<cfset var link ="">
-			<cfset var href ="">
-			<cfset var theClass =arguments.class>
+	<cfargument name="type" required="true">
+	<cfargument name="filename" required="true">
+	<cfargument name="title" required="true">
+	<cfargument name="target" type="string"  default="">
+	<cfargument name="targetParams" type="string"  default="">
+	<cfargument name="contentid" required="true">
+	<cfargument name="siteid" required="true">
+	<cfargument name="querystring" type="string" required="true" default="">
+	<cfargument name="context" type="string" required="true" default="#application.configBean.getContext()#">
+	<cfargument name="stub" type="string" required="true" default="#application.configBean.getStub()#">
+	<cfargument name="indexFile" type="string" required="true" default="">
+	<cfargument name="showMeta" type="string" required="true" default="0">
+	<cfargument name="showCurrent" type="string" required="true" default="1">
+	<cfargument name="class" type="string" required="true" default="">
+	<cfargument name="complete" type="boolean" required="true" default="false">
+	<cfargument name="id" type="string" required="true" default="">
+	<cfargument name="aHasKidsClass" required="true" default="#this.aHasKidsClass#">
+	<cfargument name="aHasKidsCustomString" required="true" default="#this.aHasKidsCustomString#">
+	<cfargument name="aCurrentClass" required="true" default="#this.aCurrentClass#">
+	<cfargument name="aCurrentCustomString" required="true" default="#this.aCurrentCustomString#">
+	<cfargument name="isParent" required="true" default="false">
 			
-			<cfif arguments.showCurrent and listFind(event.getValue('contentBean').getPath(),"#arguments.contentID#")>					
-				<cfset theClass=listAppend(theClass,"current"," ") />
-			</cfif>
-			
-			<cfset href=createHREF(arguments.type,arguments.filename,arguments.siteid,arguments.contentid,arguments.target,iif(arguments.filename eq event.getValue('contentBean').getfilename(),de(''),de(arguments.targetParams)),arguments.queryString,arguments.context,arguments.stub,arguments.indexFile,arguments.complete,arguments.showMeta)>
-			<cfset link='<a href="#href#"#iif(len(theClass),de(' class="#theClass#"'),de(""))##iif(len(arguments.id),de(' id="#arguments.id#"'),de(""))#>#HTMLEditFormat(arguments.title)#</a>' />
-
-		<cfreturn link>
+	<cfset var link ="">
+	<cfset var href ="">
+	<cfset var theClass =arguments.class>
+	<cfif arguments.showCurrent>
+		<cfset showCurrent=listFind(event.getValue('contentBean').getPath(),"#arguments.contentID#")>
+	</cfif>
+	<cfif arguments.showCurrent>					
+		<cfset theClass=listAppend(theClass,arguments.aCurrentClass," ") />
+	</cfif>
+	<cfif arguments.isParent>					
+		<cfset theClass=listAppend(theClass,arguments.aHasKidsClass," ") />
+	</cfif>
+		
+	<cfset href=createHREF(arguments.type,arguments.filename,arguments.siteid,arguments.contentid,arguments.target,iif(arguments.filename eq event.getValue('contentBean').getfilename(),de(''),de(arguments.targetParams)),arguments.queryString,arguments.context,arguments.stub,arguments.indexFile,arguments.complete,arguments.showMeta)>
+	<cfset link='<a href="#href#"#iif(len(theClass),de(' class="#theClass#"'),de(""))##iif(len(arguments.id),de(' id="#arguments.id#"'),de(""))##iif(arguments.showCurrent,de(' #arguments.aCurrentCustomString#'),de(""))##iif(arguments.isParent and len(arguments.aHasKidsCustomString),de(' #arguments.aHasKidsCustomString#'),de(""))#>#HTMLEditFormat(arguments.title)#</a>' />
+	<cfreturn link>
 </cffunction>
 
 <cffunction name="dspObject_Render" access="public" output="false" returntype="string">
@@ -1516,14 +1660,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="displayHome" type="string" default="conditional">
 		<cfargument name="closePortals" type="string" default="">
 		<cfargument name="openPortals" type="string" default="">	
-		<cfargument name="menuClass" type="string" default="">
+		<cfargument name="menuClass" type="string" default="#this.ulTopClass#">
 		<cfargument name="showCurrentChildrenOnly" type="boolean" default="false">
+		<cfargument name="liHasKidsClass" required="true" default="#this.liHasKidsClass#">
+		<cfargument name="liHasKidsCustomString" required="true" default="#this.liHasKidsCustomString#">
+		<cfargument name="liCurrentClass" required="true" default="#this.liCurrentClass#">
+		<cfargument name="liCurrentCustomString" required="true" default="#this.liCurrentCustomString#">
+		<cfargument name="aHasKidsClass" required="true" default="#this.aHasKidsClass#">
+		<cfargument name="aHasKidsCustomString" required="true" default="#this.aHasKidsCustomString#">
+		<cfargument name="aCurrentClass" required="true" default="#this.aCurrentClass#">
+		<cfargument name="aCurrentCustomString" required="true" default="#this.aCurrentCustomString#">
+		<cfargument name="ulNestedClass" required="true" default="#this.ulNestedClass#">
+		<cfargument name="ulNestedCustomString" required="true" default="#this.ulNestedCustomString#">
 
 		<cfset var rsSection=variables.contentGateway.getKids('00000000000000000000000000000000000',event.getValue('siteID'),arguments.contentid,arguments.type,arguments.today,0,'',0,arguments.sortBy,arguments.sortDirection,'','','',true)>
 		<cfset var adjust=0>
 		<cfset var current=0>
 		<cfset var link=''>
-		<cfset var class=''>
+		<cfset var itemClass=''>
 		<cfset var itemId=''>
 		<cfset var nest=''>
 		<cfset var subnav=false>
@@ -1536,7 +1690,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var limitingBy = "">
 		<cfset var isNavSecondary=arguments.showCurrentChildrenOnly or (arguments.id eq 'navSecondary' or arguments.menuClass eq 'navSecondary')>
 		<cfset var homeDisplayed = false>
-			
+		<cfset var nestedArgs=structNew()>
+		<cfset var linkArgs=structNew()>
+		<cfset var started=false>
+
+		<cfif isDefined("arguments.ulTopClass")>
+			<cfset arguments.menuclass=arguments.ulTopClass>
+		</cfif>
+
 		<cfif len(arguments.closePortals)>
 			<cfset limitingBy="closed">	
 			<cfif isBoolean(arguments.closePortals)>	
@@ -1558,7 +1719,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif rsSection.recordcount>
 			<cfset adjust=rsSection.recordcount>
 			<cfsavecontent variable="theNav"><cfoutput>
-			<ul<cfif currDepth eq 1>#iif(arguments.id neq '',de(' id="#arguments.id#"'),de(''))##iif(arguments.menuClass neq '',de(' class="#arguments.menuClass#"'),de(''))#</cfif>><cfloop query="rsSection"><cfif allowLink(rssection.restricted,rssection.restrictgroups,event.getValue('r').loggedIn)><cfsilent>
+			<cfloop query="rsSection">
+			<cfif allowLink(rssection.restricted,rssection.restrictgroups,event.getValue('r').loggedIn)>
+			<cfsilent>
 			
 			<cfset current=current+1>
 			<cfset nest=''>
@@ -1594,21 +1757,43 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			/>
 			
 			<cfif subnav>
-				<cfset nest=dspNestedNavPrimary(contentID=rssection.contentid, openPortals=arguments.openPortals, closePortals=arguments.closePortals, viewDepth= arguments.viewDepth, currDepth=arguments.currDepth+1, type=iif(rssection.type eq 'calendar',de('fixed'),de('default')), today=now() , sortBy=rsSection.sortBy, sortDirection=rsSection.sortDirection, id=arguments.id, menuClass=arguments.menuClass) />
+				<cfset nestedArgs.contentID=rssection.contentid>
+				<cfset nestedArgs.currDepth=arguments.currDepth+1>
+				<cfset nestedArgs.type=iif(rssection.type eq 'calendar',de('fixed'),de('default'))>
+				<cfset nestedArgs.sortBy=rssection.sortBy>
+				<cfset nestedArgs.sortDirection=rssection.sortDirection>
+				<cfset structAppend(nestedArgs,arguments,false)>
+				<cfset nest=dspNestedNav(argumentCollection=nestedArgs) />
+				<cfset subnav=subnav and find("<li",nest)>
 			</cfif>
 			
-			<cfset class=iif(current eq 1,de('first'),de(iif(current eq adjust,de('last'),de('')))) />
+			<cfset itemClass=iif(current eq 1,de('first'),de(iif(current eq adjust,de('last'),de('')))) />
 			
-			<cfif listFind(event.getValue('contentBean').getPath(),"#rsSection.contentid#")>
-				<cfset class=listAppend(class,"current"," ")/>
+			<cfif listFind(event.getValue('contentBean').getPath(),"#rsSection.contentid#") and len(arguments.liCurrentClass)>
+				<cfset itemClass=listAppend(itemClass,arguments.liCurrentClass," ")/>
+			</cfif>
+
+			<cfif subnav and len(arguments.liHasKidsClass)>
+				<cfset itemClass=listAppend(itemClass,arguments.liHasKidsClass," ")/>
 			</cfif>
 			
 			<cfset itemId="nav" & setCamelback(rsSection.menutitle)>
 			
-			<cfset link=addlink(rsSection.type,rsSection.filename,rsSection.menutitle,rsSection.target,rsSection.targetParams,rsSection.contentid,event.getValue('siteID'),'',arguments.context,application.configBean.getStub(),application.configBean.getIndexFile())>
+			<cfset linkArgs=structNew()>
+			<cfset linkArgs.aHasKidsClass=arguments.aHasKidsClass>
+			<cfset linkArgs.aCurrentClass=arguments.aCurrentClass>
+			<cfset linkArgs.aCurrentCustomString=arguments.aCurrentCustomString>
+			<cfset linkArgs.type=rsSection.type>
+			<cfset linkArgs.filename=rsSection.filename>
+			<cfset linkArgs.title=rsSection.menutitle>
+			<cfset linkArgs.contentid=rsSection.contentid>
+			<cfset linkArgs.siteID=event.getValue('siteID')>
+			<cfset linkArgs.querystring=arguments.querystring>
+			<cfset linkArgs.isParent=subnav>
+			<cfset link=addlink(argumentCollection=linkArgs)>
 			
 			</cfsilent>
-				<cfif not homeDisplayed and currDepth eq 1 and (arguments.displayHome eq "Always" or (arguments.displayHome eq "Conditional" and event.getValue('contentBean').getcontentid() neq "00000000000000000000000000000000001" and listFind(class,"first"," ")))>
+			<cfif not homeDisplayed and currDepth eq 1 and (arguments.displayHome eq "Always" or (arguments.displayHome eq "Conditional" and event.getValue('contentBean').getcontentid() neq "00000000000000000000000000000000001" and listFind(class,"first"," ")))>
 				<cfsilent>
 					<cfquery name="rsHome" datasource="#application.configBean.getReadOnlyDatasource()#" username="#application.configBean.getReadOnlyDbUsername()#" password="#application.configBean.getReadOnlyDbPassword()#">
 					select menutitle,filename from tcontent where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#event.getValue('siteID')#"> and active=1
@@ -1616,12 +1801,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset homeLink="#application.configBean.getContext()##getURLStem(event.getValue('siteID'),rsHome.filename)#">
 					<cfset homeDisplayed = true>
 				</cfsilent>
-				<li class="first<cfif event.getValue('contentBean').getcontentid() eq arguments.contentid> current</cfif>" id="navHome"><a href="#homeLink#">#HTMLEditFormat(rsHome.menuTitle)#</a></li>
-				<cfset class=listRest(class," ")/>
+				<cfif not started>
+					<cfset started=true>
+					<ul<cfif currDepth eq 1>#iif(arguments.id neq '',de(' id="#arguments.id#"'),de(''))##iif(arguments.menuClass neq '',de(' class="#arguments.menuClass#"'),de(''))#<cfelse><cfif len(arguments.ulNestedClass)> class="#arguments.ulNestedClass#"</cfif><cfif len(arguments.ulNestedCustomString)> #arguments.ulNestedCustomString#</cfif></cfif>>
 				</cfif>
-				<li<cfif len(class)> class="#class#"</cfif> id="#itemId#">#link#<cfif subnav and find("<li",nest)>#nest#</cfif></li>
-				<cfelse><cfset adjust=adjust-1></cfif></cfloop>
-			</ul></cfoutput></cfsavecontent>
+				<li class="first<cfif event.getValue('contentBean').getcontentid() eq arguments.contentid> #arguments.liCurrentClass#</cfif>" id="navHome"<cfif len(arguments.liCurrentCustomString)> #arguments.liCurrentCustomString#</cfif>><a href="#homeLink#">#HTMLEditFormat(rsHome.menuTitle)#</a></li>
+				<cfset class=listRest(class," ")/>
+			</cfif>
+			<cfif not started>
+				<cfset started=true>
+				<ul<cfif currDepth eq 1>#iif(arguments.id neq '',de(' id="#arguments.id#"'),de(''))##iif(arguments.menuClass neq '',de(' class="#arguments.menuClass#"'),de(''))#<cfelse><cfif len(arguments.ulNestedClass)> class="#arguments.ulNestedClass#"</cfif><cfif len(arguments.ulNestedCustomString)> #arguments.ulNestedCustomString#</cfif></cfif>>
+			</cfif>
+			<li<cfif len(itemClass)> class="#itemClass#"</cfif> id="#itemId#"<cfif len(arguments.liCurrentCustomString)> #arguments.liCurrentCustomString#</cfif>>#link#<cfif subnav>#nest#</cfif></li>
+			<cfelse><cfset adjust=adjust-1></cfif></cfloop>
+			<cfif started></ul></cfif>
+			</cfoutput></cfsavecontent>
 		</cfif>
 		<cfreturn theNav />
 </cffunction>
@@ -1632,13 +1826,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="displayHome" type="string" required="true" default="conditional">
 	<cfargument name="closePortals" type="string" default="">
 	<cfargument name="openPortals" type="string" default="">
-	<cfargument name="class" type="string" default="">
+	<cfargument name="class" type="string" default="#this.ulTopClass#">
 	<cfargument name="showCurrentChildrenOnly" type="boolean" default="false">
 
 	<cfset var thenav="" />
 	<cfset var topIndex= arrayLen(this.crumbdata)-this.navOffSet />
 
-	<cfset theNav = dspNestedNavPrimary(this.crumbdata[topIndex].contentID,arguments.viewDepth+1,1,'default',now(),arguments.id,'','orderno','asc',application.configBean.getContext(),application.configBean.getStub(),arguments.displayHome,arguments.closePortals,arguments.openPortals,arguments.class,arguments.showCurrentChildrenOnly) />
+	<cfset arguments.contentid=this.crumbdata[topIndex].contentID>
+	<cfset arguments.viewDepth=arguments.viewDepth+1>
+	<cfset arguments.currDepth=1>
+	<cfset arguments.sortBy="orderno">
+	<cfset arguments.sortDirection="asc">
+	<cfset arguments.menuClass=arguments.class>
+	<cfset theNav = dspNestedNavPrimary(argumentCollection=arguments) />
 
 	<cfreturn thenav />
 </cffunction>

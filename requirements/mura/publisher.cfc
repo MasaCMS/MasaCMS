@@ -2776,7 +2776,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfquery>
 					<cfloop query="rsFeedParams">
 						<cfif isNumeric(rsFeedParams.field)>
-							<cfquery name="rsFeedParams" datasource="#arguments.toDSN#">
+							<cfquery datasource="#arguments.toDSN#">
 								update tcontentfeedadvancedparams 
 								set field=<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rsFeedParams.field)#"> 
 								where field=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsFeedParams.field#">

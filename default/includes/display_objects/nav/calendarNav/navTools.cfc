@@ -117,11 +117,12 @@ dateShort = "#listGetAt(monthShort,navMonth,",")# #navYear#";
 
 <cffunction name="dspMonth" output="true">
 <cfoutput>
-<table>
+<table class="table table-bordered">
+<thead>
 <tr>
-<th title="#dateLong#" id="previousMonth"><a href="#navPath#date/#previousYear#/#previousMonth#/#qrystr#">&laquo;</a></th>
+<th title="#dateLong#" id="previousMonth"><a href="#navPath#date/#previousYear#/#previousMonth#/#qrystr#" rel=“nofollow”>&laquo;</a></th>
 <th colspan="5"><a href="#navPath#date/#navYear#/#navmonth#/#qrystr#">#dateLong#</a></th>
-<th id="nextMonth"><a href="#navPath#date/#nextyear#/#nextmonth#/#qrystr#">&raquo;</a></th>
+<th id="nextMonth"><a href="#navPath#date/#nextyear#/#nextmonth#/#qrystr#" rel=“nofollow”>&raquo;</a></th>
 </tr>
 </tr>
 	<tr class="dayofweek">
@@ -132,7 +133,9 @@ dateShort = "#listGetAt(monthShort,navMonth,",")# #navYear#";
 	
 	</cfloop>
 	</tr>
+</thead>
 	<cfset posn = 1>
+<tbody>
 	<tr>
 	<cfloop index="id" from="1" to="#firstDayOfWeek#">
 	<td>&nbsp;</td>
@@ -149,6 +152,7 @@ dateShort = "#listGetAt(monthShort,navMonth,",")# #navYear#";
 	<td>&nbsp;</td>
 	</cfloop>
 	</cfif></tr>
+</tbody>
 	</table>
 </cfoutput>
 </cffunction>

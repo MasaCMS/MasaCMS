@@ -86,7 +86,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <dl class="moreResults">
 	<cfif variables.nextN.recordsPerPage gt 1><dt>#$.rbKey('list.moreresults')#:</dt></cfif>
 	<dd>
-		<ul>
+		<ul class="#this.ulPaginationClass#">
 		<cfif variables.nextN.currentpagenumber gt 1>
 		<cfif request.muraExportHtml>
 			<cfif variables.nextN.currentpagenumber eq 2>
@@ -100,7 +100,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		<cfloop from="#variables.nextN.firstPage#"  to="#variables.nextN.lastPage#" index="i">
 			<cfif variables.nextn.currentpagenumber eq i>
-				<li class="current">#i#</li>
+				<li class="#this.liCurrentClass#"><a class="#this.aCurrentClass#" href="##">#i#</a></li>
 			<cfelse>
 				<cfif request.muraExportHtml>
 					<cfif i eq 1>
