@@ -1660,18 +1660,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="displayHome" type="string" default="conditional">
 		<cfargument name="closePortals" type="string" default="">
 		<cfargument name="openPortals" type="string" default="">	
-		<cfargument name="menuClass" type="string" default="#this.ulTopClass#">
+		<cfargument name="menuClass" type="string" default="">
 		<cfargument name="showCurrentChildrenOnly" type="boolean" default="false">
-		<cfargument name="liHasKidsClass" required="true" default="#this.liHasKidsClass#">
-		<cfargument name="liHasKidsCustomString" required="true" default="#this.liHasKidsCustomString#">
-		<cfargument name="liCurrentClass" required="true" default="#this.liCurrentClass#">
-		<cfargument name="liCurrentCustomString" required="true" default="#this.liCurrentCustomString#">
-		<cfargument name="aHasKidsClass" required="true" default="#this.aHasKidsClass#">
-		<cfargument name="aHasKidsCustomString" required="true" default="#this.aHasKidsCustomString#">
-		<cfargument name="aCurrentClass" required="true" default="#this.aCurrentClass#">
-		<cfargument name="aCurrentCustomString" required="true" default="#this.aCurrentCustomString#">
-		<cfargument name="ulNestedClass" required="true" default="#this.ulNestedClass#">
-		<cfargument name="ulNestedCustomString" required="true" default="#this.ulNestedCustomString#">
+		<cfargument name="liHasKidsClass" required="true" default="">
+		<cfargument name="liHasKidsCustomString" required="true" default="">
+		<cfargument name="liCurrentClass" required="true" default="">
+		<cfargument name="liCurrentCustomString" required="true" default="">
+		<cfargument name="aHasKidsClass" required="true" default="">
+		<cfargument name="aHasKidsCustomString" required="true" default="">
+		<cfargument name="aCurrentClass" required="true" default="">
+		<cfargument name="aCurrentCustomString" required="true" default="">
+		<cfargument name="ulNestedClass" required="true" default="">
+		<cfargument name="ulNestedCustomString" required="true" default="">
 
 		<cfset var rsSection=variables.contentGateway.getKids('00000000000000000000000000000000000',event.getValue('siteID'),arguments.contentid,arguments.type,arguments.today,0,'',0,arguments.sortBy,arguments.sortDirection,'','','',true)>
 		<cfset var adjust=0>
@@ -1725,6 +1725,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<cfset current=current+1>
 			<cfset nest=''>
+			<cfset itemClass=''>
 			
 			<cfset isNotLimited= rsSection.type eq "Page" or 
 			not (
@@ -1767,8 +1768,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset subnav=subnav and find("<li",nest)>
 			</cfif>
 			
-			<cfset itemClass=iif(current eq 1,de('first'),de(iif(current eq adjust,de('last'),de('')))) />
-			
+			<cfif current eq adjust>
+				<cfset itemClass=listAppend(itemClass, "last",' ')>
+			</cfif>
+
 			<cfif listFind(event.getValue('contentBean').getPath(),"#rsSection.contentid#") and len(arguments.liCurrentClass)>
 				<cfset itemClass=listAppend(itemClass,arguments.liCurrentClass," ")/>
 			</cfif>
@@ -1801,15 +1804,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset homeLink="#application.configBean.getContext()##getURLStem(event.getValue('siteID'),rsHome.filename)#">
 					<cfset homeDisplayed = true>
 				</cfsilent>
-				<cfif not started>
-					<cfset started=true>
-					<ul<cfif currDepth eq 1>#iif(arguments.id neq '',de(' id="#arguments.id#"'),de(''))##iif(arguments.menuClass neq '',de(' class="#arguments.menuClass#"'),de(''))#<cfelse><cfif len(arguments.ulNestedClass)> class="#arguments.ulNestedClass#"</cfif><cfif len(arguments.ulNestedCustomString)> #arguments.ulNestedCustomString#</cfif></cfif>>
-				</cfif>
+
+				<cfset started=true>
+				<ul<cfif currDepth eq 1>#iif(arguments.id neq '',de(' id="#arguments.id#"'),de(''))##iif(arguments.menuClass neq '',de(' class="#arguments.menuClass#"'),de(''))#<cfelse><cfif len(arguments.ulNestedClass)> class="#arguments.ulNestedClass#"</cfif><cfif len(arguments.ulNestedCustomString)> #arguments.ulNestedCustomString#</cfif></cfif>>
 				<li class="first<cfif event.getValue('contentBean').getcontentid() eq arguments.contentid> #arguments.liCurrentClass#</cfif>" id="navHome"<cfif len(arguments.liCurrentCustomString)> #arguments.liCurrentCustomString#</cfif>><a href="#homeLink#">#HTMLEditFormat(rsHome.menuTitle)#</a></li>
 				<cfset class=listRest(class," ")/>
 			</cfif>
 			<cfif not started>
 				<cfset started=true>
+				<cfset itemClass=listAppend(itemClass, "first",' ')>
 				<ul<cfif currDepth eq 1>#iif(arguments.id neq '',de(' id="#arguments.id#"'),de(''))##iif(arguments.menuClass neq '',de(' class="#arguments.menuClass#"'),de(''))#<cfelse><cfif len(arguments.ulNestedClass)> class="#arguments.ulNestedClass#"</cfif><cfif len(arguments.ulNestedCustomString)> #arguments.ulNestedCustomString#</cfif></cfif>>
 			</cfif>
 			<li<cfif len(itemClass)> class="#itemClass#"</cfif> id="#itemId#"<cfif len(arguments.liCurrentCustomString)> #arguments.liCurrentCustomString#</cfif>>#link#<cfif subnav>#nest#</cfif></li>
@@ -1826,7 +1829,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="displayHome" type="string" required="true" default="conditional">
 	<cfargument name="closePortals" type="string" default="">
 	<cfargument name="openPortals" type="string" default="">
-	<cfargument name="class" type="string" default="#this.ulTopClass#">
+	<cfargument name="class" type="string" default="">
 	<cfargument name="showCurrentChildrenOnly" type="boolean" default="false">
 
 	<cfset var thenav="" />
