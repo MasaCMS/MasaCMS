@@ -1417,7 +1417,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rstuseraddresses="">
 		<cfset var keys=arguments.keyFactory>
 		<cfset var rstpermissions="">
-		
+		<cfset var publicUserPoolID=application.settingsManager.getSite(arguments.toSiteID).getPublicUserPoolID()>
+		<cfset var privateUserPoolID=application.settingsManager.getSite(arguments.toSiteID).getPrivateUserPoolID()>
+		<cfset var rsUserCheck="">
 		<cfset arguments.rsUserConflicts=queryNew("userID")>
 		
 		<!--- tpermissions--->
@@ -1464,7 +1466,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					username in (
 								<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rstusers.username)#" list="true">
 								)
-					and siteID != <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">	
+					and not
+						(
+							(
+								siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#privateUserPoolID#"/>
+								and isPublic=0
+							)
+							
+							or
+							
+							(
+								siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#publicUserPoolID#"/>
+								and isPublic=1
+							)
+						)	
 				</cfquery>
 					
 				<cfif arguments.rsUserConflicts.recordcount>
@@ -1491,8 +1506,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfquery datasource="#arguments.toDSN#">
 					delete from tusersmemb where 
 					userID in (
-								select userID from tusers where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">	
+								select userID from tusers where 
+								(
+									(
+										siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#privateUserPoolID#"/>
+										and isPublic=0
+									)
+									
+									or
+									
+									(
+										siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#publicUserPoolID#"/>
+										and isPublic=1
+									)
 								)
+							)
 				   <cfif arguments.rsUserConflicts.recordcount>
 						and userID not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(arguments.rsUserConflicts.userID)#" list="true">)
 				   </cfif>
@@ -1530,7 +1558,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					
 					<cfquery datasource="#arguments.toDSN#">
 						delete from tuserstags where 
-						siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">
+						userID in (
+									select userID from tusers where
+									(
+										(
+											siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#privateUserPoolID#"/>
+											and isPublic=0
+										)
+										
+										or
+										
+										(
+											siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#publicUserPoolID#"/>
+											and isPublic=1
+										)
+									)
+								)
 						
 						<cfif arguments.rsUserConflicts.recordcount>
 							and userID not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(arguments.rsUserConflicts.userID)#" list="true">)
@@ -1538,13 +1581,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfquery>
 					
 					<cfloop query="rstuserstags">
-						<cfquery datasource="#arguments.toDSN#">
-							insert into tuserstags (userID,siteID,tag) values (
-							<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstuserstags.userID)#">,
-							<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">,
-							<cfqueryparam cfsqltype="cf_sql_varchar" value="#rstuserstags.tag#">
-							)
+						<cfquery name="rsUserCheck" dbtype="query">
+							select isPublic from rstusers 
+							where userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rstuserstags.userid#">
 						</cfquery>
+						<cfif rsUserCheck.recordcount>
+							<cfquery datasource="#arguments.toDSN#">
+								insert into tuserstags (userID,siteID,tag) values (
+								<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstuserstags.userID)#">,
+								<cfif rsUserCheck.isPublic>
+									<cfqueryparam cfsqltype="cf_sql_varchar" value="#publicUserPoolID#">
+								<cfelse>
+									<cfqueryparam cfsqltype="cf_sql_varchar" value="#privateUserPoolID#">
+								</cfif>,
+								<cfqueryparam cfsqltype="cf_sql_varchar" value="#rstuserstags.tag#">
+								)
+							</cfquery>
+						</cfif>
 					</cfloop>
 				</cfif>
 				
@@ -1562,8 +1615,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfquery datasource="#arguments.toDSN#">
 						delete from tusersinterests where 
 						userID in (
-									select userID from tusers where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">	
+									select userID from tusers where
+									(
+										(
+											siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#privateUserPoolID#"/>
+											and isPublic=0
+										)
+										
+										or
+										
+										(
+											siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#publicUserPoolID#"/>
+											and isPublic=1
+										)
 									)
+								)
 						<cfif arguments.rsUserConflicts.recordcount>
 							and userID not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(arguments.rsUserConflicts.userID)#" list="true">)
 					   </cfif>
@@ -1590,7 +1656,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				
 				<cfquery datasource="#arguments.toDSN#">
 					delete from tusersfavorites where 
-					siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">
+					siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#"/>
 					<cfif arguments.rsUserConflicts.recordcount>
 						and userID not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(arguments.rsUserConflicts.userID)#" list="true">)
 				   </cfif>	
@@ -1629,44 +1695,82 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				
 				<cfquery datasource="#arguments.toDSN#">
 					delete from tuseraddresses where 
-					siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">
+					userID in (
+									select userID from tusers where
+									(
+										(
+											siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#privateUserPoolID#"/>
+											and isPublic=0
+										)
+										
+										or
+										
+										(
+											siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#publicUserPoolID#"/>
+											and isPublic=1
+										)
+									)
+								)
 					<cfif arguments.rsUserConflicts.recordcount>
 						and userID not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(arguments.rsUserConflicts.userID)#" list="true">)
 				   </cfif>	
 				</cfquery>
 				
 				<cfloop query="rstuseraddresses">
-					<cfquery datasource="#arguments.toDSN#">
-						INSERT INTO tuseraddresses  (AddressID,UserID,siteID,
-							phone,fax,address1, address2, city, state, zip ,
-							addressName,country,isPrimary,addressNotes,addressURL,
-							longitude,latitude,addressEmail,hours)
-					     VALUES(
-					        <cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstuseraddresses.addressID)#">,
-							<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstuseraddresses.userID)#">,
-							<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">,
-							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstuseraddresses.Phone neq '',de('no'),de('yes'))#" value="#rstuseraddresses.Phone#">,
-							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstuseraddresses.Fax neq '',de('no'),de('yes'))#" value="#rstuseraddresses.Fax#">,
-							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstuseraddresses.Address1 neq '',de('no'),de('yes'))#" value="#rstuseraddresses.Address1#">,
-							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstuseraddresses.Address2 neq '',de('no'),de('yes'))#" value="#rstuseraddresses.Address2#">,
-							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstuseraddresses.City neq '',de('no'),de('yes'))#" value="#rstuseraddresses.City#">,
-							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstuseraddresses.State neq '',de('no'),de('yes'))#" value="#rstuseraddresses.State#">,
-							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstuseraddresses.Zip neq '',de('no'),de('yes'))#" value="#rstuseraddresses.Zip#">,
-							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstuseraddresses.AddressName neq '',de('no'),de('yes'))#" value="#rstuseraddresses.AddressName#">,
-							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstuseraddresses.Country neq '',de('no'),de('yes'))#" value="#rstuseraddresses.Country#">,
-							#rstuseraddresses.isprimary#,
-							<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(rstuseraddresses.AddressNotes neq '',de('no'),de('yes'))#" value="#rstuseraddresses.AddressNotes#">,
-							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstuseraddresses.AddressURL neq '',de('no'),de('yes'))#" value="#rstuseraddresses.AddressURL#">,
-							#rstuseraddresses.Longitude#,
-							#rstuseraddresses.Latitude#,
-							<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstuseraddresses.AddressEmail neq '',de('no'),de('yes'))#" value="#rstuseraddresses.AddressEmail#">,
-							<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(rstuseraddresses.Hours neq '',de('no'),de('yes'))#" value="#rstuseraddresses.Hours#">
-							  )
+					<cfquery name="rsUserCheck" dbtype="query">
+						select isPublic from rstusers 
+						where userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rstuseraddresses.userid#">
 					</cfquery>
+					<cfif rsUserCheck.recordcount>
+						<cfquery datasource="#arguments.toDSN#">
+							INSERT INTO tuseraddresses  (AddressID,UserID,siteID,
+								phone,fax,address1, address2, city, state, zip ,
+								addressName,country,isPrimary,addressNotes,addressURL,
+								longitude,latitude,addressEmail,hours)
+						     VALUES(
+						        <cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstuseraddresses.addressID)#">,
+								<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstuseraddresses.userID)#">,
+								<cfif rsUserCheck.isPublic>
+									<cfqueryparam cfsqltype="cf_sql_varchar" value="#publicUserPoolID#">
+								<cfelse>
+									<cfqueryparam cfsqltype="cf_sql_varchar" value="#privateUserPoolID#">
+								</cfif>,
+								<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstuseraddresses.Phone neq '',de('no'),de('yes'))#" value="#rstuseraddresses.Phone#">,
+								<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstuseraddresses.Fax neq '',de('no'),de('yes'))#" value="#rstuseraddresses.Fax#">,
+								<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstuseraddresses.Address1 neq '',de('no'),de('yes'))#" value="#rstuseraddresses.Address1#">,
+								<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstuseraddresses.Address2 neq '',de('no'),de('yes'))#" value="#rstuseraddresses.Address2#">,
+								<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstuseraddresses.City neq '',de('no'),de('yes'))#" value="#rstuseraddresses.City#">,
+								<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstuseraddresses.State neq '',de('no'),de('yes'))#" value="#rstuseraddresses.State#">,
+								<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstuseraddresses.Zip neq '',de('no'),de('yes'))#" value="#rstuseraddresses.Zip#">,
+								<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstuseraddresses.AddressName neq '',de('no'),de('yes'))#" value="#rstuseraddresses.AddressName#">,
+								<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstuseraddresses.Country neq '',de('no'),de('yes'))#" value="#rstuseraddresses.Country#">,
+								#rstuseraddresses.isprimary#,
+								<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(rstuseraddresses.AddressNotes neq '',de('no'),de('yes'))#" value="#rstuseraddresses.AddressNotes#">,
+								<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstuseraddresses.AddressURL neq '',de('no'),de('yes'))#" value="#rstuseraddresses.AddressURL#">,
+								#rstuseraddresses.Longitude#,
+								#rstuseraddresses.Latitude#,
+								<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstuseraddresses.AddressEmail neq '',de('no'),de('yes'))#" value="#rstuseraddresses.AddressEmail#">,
+								<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(rstuseraddresses.Hours neq '',de('no'),de('yes'))#" value="#rstuseraddresses.Hours#">
+								  )
+						</cfquery>
+					</cfif>
 				</cfloop>
 				
 				<cfquery datasource="#arguments.toDSN#">
-					delete from tusers where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">
+					delete from tusers where 
+						(
+							(
+								siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#privateUserPoolID#"/>
+								and isPublic=0
+							)
+							
+							or
+							
+							(
+								siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#publicUserPoolID#"/>
+								and isPublic=1
+							)
+						)	
 					 <cfif arguments.rsUserConflicts.recordcount>
 						and userID not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valuelist(arguments.rsUserConflicts.userID)#" list="true">)
 				   </cfif>	
@@ -1701,7 +1805,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						   <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstusers.Company neq '',de('no'),de('yes'))#" value="#rstusers.company#">,
 						   <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstusers.JobTitle neq '',de('no'),de('yes'))#" value="#rstusers.jobTitle#">, 
 						  #rstusers.subscribe#,
-						   <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">,
+						  <cfif rstusers.isPublic>
+								<cfqueryparam cfsqltype="cf_sql_varchar" value="#publicUserPoolID#">
+							<cfelse>
+								<cfqueryparam cfsqltype="cf_sql_varchar" value="#privateUserPoolID#">
+						  </cfif>,
 						  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstusers.Website neq '',de('no'),de('yes'))#" value="#rstusers.website#">,
 						 <cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(rstusers.Notes neq '',de('no'),de('yes'))#" value="#rstusers.notes#">,
 						 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(rstusers.MobilePhone neq '',de('no'),de('yes'))#" value="#rstusers.mobilePhone#">,
