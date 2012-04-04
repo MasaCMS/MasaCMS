@@ -220,9 +220,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfloop>
 </cfif>
 
-<div class="buttons">
+<div class="buttons form-actions">
 	<cfif session.mura.isLoggedIn>
-		<input name="submit" type="submit"  value="#HTMLEditFormat($.rbKey('user.updateprofile'))#" />
+		<input name="submit" type="submit" class="btn" value="#HTMLEditFormat($.rbKey('user.updateprofile'))#" />
 		<input type="hidden" name="userid" value="#session.mura.userID#"/>
 		<input type="hidden" name="doaction" value="updateprofile">
 	<cfelse>
