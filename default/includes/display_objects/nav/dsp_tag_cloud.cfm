@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 
 <cfoutput>
-<div id="svTagCloud">
+<div id="svTagCloud" class="well">
 <#$.getHeaderTag('subHead1')#>#$.rbKey('tagcloud.tagcloud')#</#$.getHeaderTag('subHead1')#>
 <cfif tags.recordcount>
 <ol>
