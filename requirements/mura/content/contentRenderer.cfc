@@ -1437,7 +1437,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfset loadShadowBoxJS() />
 								<cfoutput>
 								<div id="svAssetDetail" class="image">
-								<a href="#$.content().getImageURL(size='large')#" title="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#$.content().getImageURL(size='medium')#" class="imgMed" alt="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" /></a>
+								<a class="thumbnail" href="#$.content().getImageURL(size='large')#" title="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#$.content().getImageURL(size='medium')#" class="imgMed" alt="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" /></a>
 								#setDynamicContent(event.getValue('contentBean').getSummary(),event.getValue('keywords'))#
 								</div>
 								</cfoutput>
@@ -1466,9 +1466,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfset loadShadowBoxJS() />
 								<cfoutput>
 								<cfif arguments.includeMetaHREF>
-									<a href="#$.content().getImageURL(size='large')#" title="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#$.content().getImageURL(size='medium')#" class="imgMed" alt="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" /></a>
+									<a class="thumbnail" href="#$.content().getImageURL(size='large')#" title="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#$.content().getImageURL(size='medium')#" class="imgMed" alt="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" /></a>
 									<cfelse>
+									<div id="svAsset" class="thumbnail">
 									<img src="#$.content().getImageURL(size='medium')#" class="imgMed" alt="#HTMLEditFormat(event.getValue('contentBean').getMenuTitle())#" />
+									</div>
 								</cfif>
 								</cfoutput>	
 						</cfif>		
