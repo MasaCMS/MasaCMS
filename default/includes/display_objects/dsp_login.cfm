@@ -54,7 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div id="svLoginContainer">
 
 	#$.content('summary')# <!--- The page summary can be used to show some content before the user has logged in. Outputs only if there is content in the summary field. --->
-	<#$.getHeaderTag('subhead1')#>#$.rbKey('user.pleaselogin')#</#$.getHeaderTag('subhead1')#>
+	
 	<cfif $.event('status') eq 'failed'>
 		<cfif isDate(session.blockLoginUntil) and session.blockLoginUntil gt now()>
 		<cfset $.event('isBlocked',true) />
@@ -66,29 +66,36 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not $.event('isBlocked')>
 	<form id="login" name="frmLogin" method="post" action="?nocache=1" onsubmit="return validate(this);" novalidate="novalidate" >
 		<fieldset>
-			<ol>
-				<li class="req">
-					<label for="txtUsername">#$.rbKey('user.username')#<ins> (#htmlEditFormat($.rbKey('user.required'))#)</ins></label>
-					<input type="text" id="txtUsername" class="text" name="username" required="true" message="#htmlEditFormat($.rbKey('user.usernamerequired'))#" />
+		<legend>#$.rbKey('user.pleaselogin')#</legend>
+			<ol class="well">
+				<li class="req control-group">
+					<label for="txtUsername" class="control-label">#$.rbKey('user.username')#<ins> (#htmlEditFormat($.rbKey('user.required'))#)</ins></label>
+					<div class="controls">
+						<input type="text" id="txtUsername" class="text" name="username" required="true" message="#htmlEditFormat($.rbKey('user.usernamerequired'))#" />
+					</div>
 				</li>
-				<li class="req">
-					<label for="txtPassword">#$.rbKey('user.password')#<ins> (#htmlEditFormat($.rbKey('user.required'))#)</ins></label>
+				<li class="req control-group">
+					<label for="txtPassword" class="control-label">#$.rbKey('user.password')#<ins> (#htmlEditFormat($.rbKey('user.required'))#)</ins></label>
+					<div class="controls">
 					<input type="password" id="txtPassword" class="text" name="password" required="true" message="#htmlEditFormat($.rbKey('user.passwordrequired'))#" />
+					</div>
 				</li>
-				<li>
-					<input type="checkbox" id="cbRememberMe" class="checkbox first" name="rememberMe" value="1" />
-					<label for="cbRememberMe">#htmlEditFormat($.rbKey('user.rememberme'))#</label>
+				<li control-group>
+				<div class="controls">
+					<label for="cbRememberMe" class="checkbox"><input type="checkbox" id="cbRememberMe" class="checkbox first" name="rememberMe" value="1" />
+					#htmlEditFormat($.rbKey('user.rememberme'))#</label>
+				</div>
 				</li>
 			</ol>
+			<p class="required">#$.rbKey('user.requiredfields')#</p>
 			<div class="buttons">
 				<input type="hidden" name="doaction" value="login" />
 				<input type="hidden" name="linkServID" value="#HTMLEditFormat($.event('linkServID'))#" />
 				<input type="hidden" name="returnURL" value="#HTMLEditFormat($.event('returnURL'))#" />
-				<input type="submit" value="#htmlEditFormat($.rbKey('user.login'))#" />
+				<input type="submit" class="btn btn-primary" value="#htmlEditFormat($.rbKey('user.login'))#" />
 			</div>
 		</fieldset>
 	</form>
-	<p class="required">#$.rbKey('user.requiredfields')#</p>
 	
 	
 	<cfif $.event('doaction') eq 'sendlogin'>
@@ -99,7 +106,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<fieldset>
 			<legend>#$.rbKey('user.forgetusernameorpassword')#</legend>
 			<p>#$.rbKey('user.forgotloginmessage')#</p>
-			<ol>
+			<ol class="well">
 				<li>
 					<label for="txtEmail">#$.rbKey('user.email')#</label>
 					<input id="email" name="email" type="text" class="text" validate="email" required="true" message="#htmlEditFormat($.rbKey('user.emailvalidate'))#" />
@@ -114,7 +121,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<input type="hidden" name="linkServID" value="#HTMLEditFormat($.event('linkServID'))#" />
 			<input type="hidden" name="display" value="login" />
 			<input type="hidden" name="returnURL" value="#HTMLEditFormat($.event('returnURL'))#" />
-			<input type="submit" value="#HTMLEditFormat($.rbKey('user.getpassword'))#" class="submit" />
+			<input type="submit" value="#HTMLEditFormat($.rbKey('user.getpassword'))#" class="submit btn" />
 		</div>
 	</form>
 

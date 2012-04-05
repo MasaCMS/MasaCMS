@@ -60,7 +60,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfquery>
 </cfsilent>
 <cfoutput>
-<div class="svMailingList" id="#createCSSID(rsList.name)#">
+<div class="svMailingList well" id="#createCSSID(rsList.name)#">
 	<#$.getHeaderTag('subHead1')#>#rslist.name#</#$.getHeaderTag('subHead1')#>
 	
 	<cfif $.event('doaction') eq 'unsubscribe'>
@@ -88,22 +88,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<legend>#$.rbKey('mailinglist.yourinfo')#</legend>
 			<ol>
 			<cfif rslist.isPurge neq 1>
-				<li class="req">
-					<label for="txtNameFirst">#$.rbKey('mailinglist.fname')#<ins> (required)</ins></label>
-					<input type="text" id="txtNameFirst" class="text" name="fname" maxlength="50" required="true" message="#HTMLEditFormat($.rbKey('mailinglist.fnamerequired'))#"/>
+				<li class="req control-group">
+					<label for="txtNameFirst" class="control-label">#$.rbKey('mailinglist.fname')#<ins> (required)</ins></label>
+					<div class="controls">
+					<input type="text" id="txtNameFirst" class="text input-med" name="fname" maxlength="50" required="true" message="#HTMLEditFormat($.rbKey('mailinglist.fnamerequired'))#"/>
+					</div>
 				</li>
-				<li class="req">
-					<label for="txtNameLast">#$.rbKey('mailinglist.lname')#<ins> (#$.rbKey('mailinglist.required')#)</ins></label>
+				<li class="req control-group">
+					<label for="txtNameLast" class="control-label">#$.rbKey('mailinglist.lname')#<ins> (#$.rbKey('mailinglist.required')#)</ins></label>
+					<div class="controls">
 					<input type="text" id="txtNameLast" class="text" name="lname" maxlength="50" required="true" message="#HTMLEditFormat($.rbKey('mailinglist.lnamerequired'))#"/>
+					</div>
 				</li>
-				<li>
-					<label for="txtCompany">#$.rbKey('mailinglist.company')#</label>
+				<li class="control-group">
+					<label for="txtCompany" class="control-label">#$.rbKey('mailinglist.company')#</label>
+					<div class="controls">
 					<input type="text" id="txtCompany" class="text" maxlength="50" name="company" />
+					</div>
 				</li>
 			</cfif>
-				<li class="req">
-					<label for="txtEmail">#$.rbKey('mailinglist.email')#<ins> (#$.rbKey('mailinglist.required')#)</ins></label>
+				<li class="req control-group">
+					<label for="txtEmail" class="control-label">#$.rbKey('mailinglist.email')#<ins> (#$.rbKey('mailinglist.required')#)</ins></label>
+					<div class="controls">
 					<input type="text" id="txtEmail" class="text" name="email" maxlength="50" required="true" validate="email" message="#HTMLEditFormat($.rbKey('mailinglist.emailvalidate'))#"/>
+					</div>
 				</li>
 			</ol>
 		</fieldset>
@@ -113,11 +121,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif rslist.isPurge eq 0>
 			<input type="hidden" name="doaction" value="subscribe" checked="checked" />
 			<input type="hidden" name="isVerified" value="1" />
-			<input type="submit" class="submit" value="#HTMLEditFormat($.rbKey('mailinglist.subscribe'))#" />
+			<input type="submit" class="submit btn" value="#HTMLEditFormat($.rbKey('mailinglist.subscribe'))#" />
 			<cfelse>
 			<input type="hidden" name="doaction" value="subscribe"  />
 			<input type="hidden" name="isVerified" value="1"  />
-			<input type="submit" class="submit" value="#HTMLEditFormat($.rbKey('mailinglist.unsubscribe'))#" />
+			<input type="submit" class="submit btn" value="#HTMLEditFormat($.rbKey('mailinglist.unsubscribe'))#" />
 			</cfif>
 				#$.dspObject_Include(thefile='dsp_form_protect.cfm')#
 		</div>

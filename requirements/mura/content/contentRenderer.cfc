@@ -466,7 +466,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif len(arguments.subNavExpression)>
 					<cfset subnav=evaluate(arguments.subNavExpression)>
 				<cfelse>
-					 <cfset subnav=(((ListFind("Page,Portal,Calendar",rsSection.type)) and arguments.class eq 'navSecondary' and (this.crumbData[this.navSelfIdx].contentID eq rsSection.contentid or this.crumbData[this.navSelfIdx].parentID eq rsSection.contentid) ) or ((listFindNoCase("Page,Calendar",rsSection.type)) and arguments.class neq 'navSecondary')) and arguments.currDepth lt arguments.viewDepth and rsSection.type neq 'Gallery' and not (rsSection.restricted and not session.mura.isLoggedIn) >
+					 <cfset subnav=(((ListFind("Page,Portal,Calendar",rsSection.type)) and arguments.class eq this.ulTopClass and (this.crumbData[this.navSelfIdx].contentID eq rsSection.contentid or this.crumbData[this.navSelfIdx].parentID eq rsSection.contentid) ) or ((listFindNoCase("Page,Calendar",rsSection.type)) and arguments.class neq this.ulTopClass)) and arguments.currDepth lt arguments.viewDepth and rsSection.type neq 'Gallery' and not (rsSection.restricted and not session.mura.isLoggedIn) >
 				</cfif>
 			
 				<cfset current=current+1>
@@ -1764,7 +1764,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset nestedArgs.sortBy=rssection.sortBy>
 				<cfset nestedArgs.sortDirection=rssection.sortDirection>
 				<cfset structAppend(nestedArgs,arguments,false)>
-				<cfset nest=dspNestedNav(argumentCollection=nestedArgs) />
+				<cfset nest=dspNestedNavPrimary(argumentCollection=nestedArgs) />
 				<cfset subnav=subnav and find("<li",nest)>
 			</cfif>
 			
