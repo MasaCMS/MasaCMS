@@ -52,12 +52,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif listfind($.event('doaction'),"setReminder")>
 	<em>#$.rbKey('event.setreminder')#</em><br/><br/>
 	</cfif>
-	<form name="reminderFrm" action="?nocache=1" method="post" onsubmit="return validate(this);" novalidate="novalidate" >
+	<form class="well" name="reminderFrm" action="?nocache=1" method="post" onsubmit="return validate(this);" novalidate="novalidate" >
 	<fieldset>
 	<ol>
-	<li><label for="email">#$.rbKey('event.email')#*</label>
+	<li class="req control-group"><label class="control-label" for="email">#$.rbKey('event.email')#*</label>
 	<input id="email" name="email" required="true" validate="email" message="#htmlEditFormat($.rbKey('event.emailvalidate'))#"></li>
-	<li><label for="interval">#$.rbKey('event.sendmeareminder')#</label>
+	<li class="req control-group"><label class="control-label" for="interval">#$.rbKey('event.sendmeareminder')#</label>
 	<select id="interval" name="interval">
 	<option value="0">0 #$.rbKey('event.minutes')#</option>
 	<option value="5">5 #$.rbKey('event.minutes')#</option>
@@ -80,7 +80,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</ol>
 	</fieldset>
 	<input name="doaction" value="setReminder" type="hidden"/>
-	<input type="submit" value="#htmlEditFormat($.rbKey('event.submit'))#"/>
+	<input class="btn" type="submit" value="#htmlEditFormat($.rbKey('event.submit'))#"/>
 	</form>
 </div>
 </cfoutput>
