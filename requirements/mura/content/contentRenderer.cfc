@@ -451,7 +451,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset rsSection=variables.contentGateway.getKids('00000000000000000000000000000000000',event.getValue('siteID'),arguments.contentid,arguments.type,arguments.today,50,'',0,arguments.sortBy,arguments.sortDirection,arguments.categoryID,arguments.relatedID)>
 		</cfif>
 
-		<cfif isDefined("arguments.ulTopClass")>
+		<cfif isDefined("arguments.ulTopClass") and arguments.currDepth eq 1>
 			<cfset arguments.class=arguments.ulTopClass>
 		</cfif>
 		
@@ -477,7 +477,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset nestedArgs.type=iif(rssection.type eq 'calendar',de('fixed'),de('default'))>
 					<cfset nestedArgs.sortBy=rsSection.sortBy>
 					<cfset nestedArgs.sortDirection=rsSection.sortDirection>
-
+					<cfset nestedArgs.class="">
+					<cfset nestedArgs.ulTopClass="">
 					<cfset structAppend(nestedArgs,arguments,false)>
 					<cfset nest=dspNestedNav(argumentCollection=nestedArgs) />
 					<cfset subnav=subnav and find("<li",nest)>
@@ -1763,6 +1764,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset nestedArgs.type=iif(rssection.type eq 'calendar',de('fixed'),de('default'))>
 				<cfset nestedArgs.sortBy=rssection.sortBy>
 				<cfset nestedArgs.sortDirection=rssection.sortDirection>
+				<cfset nestedArgs.menuClass="">
+				<cfset nestedArgs.ulTopClass="">
 				<cfset structAppend(nestedArgs,arguments,false)>
 				<cfset nest=dspNestedNavPrimary(argumentCollection=nestedArgs) />
 				<cfset subnav=subnav and find("<li",nest)>
