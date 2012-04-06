@@ -48,6 +48,7 @@ to your own modified versions of Mura CMS.
 	<cfproperty name="Bean" type="string" default="" required="true" maxlength="50" />
 	<cfproperty name="IsData" type="boolean" default="0" required="true" />
 	<cfproperty name="IsLong" type="boolean" default="0" required="true" />
+	<cfproperty name="IsMultiselect" type="boolean" default="0" required="true" />
 	<cfproperty name="ModuleID" type="uuid" default="" maxlength="35" />
 	<cfproperty name="DateCreate" type="date" default="" required="true" />
 	<cfproperty name="DateLastUpdate" type="date" default="" required="true" />
@@ -65,6 +66,7 @@ to your own modified versions of Mura CMS.
 		<cfargument name="Bean" type="string" required="false" default="" />
 		<cfargument name="IsData" type="boolean" required="false" default="0" />
 		<cfargument name="IsLong" type="boolean" required="false" default="0" />
+		<cfargument name="IsMultiselect" type="boolean" required="false" default="0" />
 		<cfargument name="ModuleID" type="string" required="false" default="" />
 		<cfargument name="DateCreate" type="string" required="false" default="" />
 		<cfargument name="DateLastUpdate" type="string" required="false" default="" />
@@ -78,6 +80,7 @@ to your own modified versions of Mura CMS.
 		<cfset setBean( arguments.Bean ) />
 		<cfset setIsData( arguments.IsData ) />
 		<cfset setIsLong( arguments.IsLong ) />
+		<cfset setIsMultiselect( arguments.IsMultiselect ) />
 		<cfset setModuleID( arguments.ModuleID ) />
 		<cfset setDateCreate( arguments.DateCreate ) />
 		<cfset setDateLastUpdate( arguments.DateLastUpdate ) />
@@ -149,6 +152,14 @@ to your own modified versions of Mura CMS.
 	</cffunction>
 	<cffunction name="getIsLong" access="public" returntype="boolean" output="false">
 		<cfreturn variables.instance.IsLong />
+	</cffunction>
+	
+	<cffunction name="setIsMultiSelect" access="public" returntype="void" output="false">
+		<cfargument name="IsMultiSelect" type="boolean" required="true" />
+		<cfset variables.instance['IsMultiSelect'] = arguments.IsMultiSelect />
+	</cffunction>
+	<cffunction name="getIsMultiSelect" access="public" returntype="boolean" output="false">
+		<cfreturn variables.instance.IsMultiSelect />
 	</cffunction>
 	
 	<cffunction name="setModuleID" access="public" returntype="void" output="false">
