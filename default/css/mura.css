@@ -1213,6 +1213,26 @@ aside .responseMessage { color: red; }
 .rating.five, .ratestars.five { background-image: url(../includes/display_objects/rater/images/star_five.png); }
 /* @end Rater */
 
+/* @group Help Text */
+
+.help-block,
+.help-inline {
+  color: #ccc;
+}
+
+.help-block {
+  display: block; /* account for any element using help-block */
+  margin-bottom: .5em;
+}
+
+.help-inline {
+  display: inline-block;
+  *display: inline; /* IE7 */
+  vertical-align: middle;
+  padding-left: 5px;
+}
+/* @end Help Text */
+
 /* @end SYSTEM FORMS */
 
 
