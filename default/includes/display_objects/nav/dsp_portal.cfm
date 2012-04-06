@@ -46,4 +46,4 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <!--- Works just like the standard nav, but omits items in a portal to avoid potentially unmanageably long sub nav for something like a news portal with 100 items --->
-<cfoutput><div id="navPortal">#dspPortalNav()#</div></cfoutput>
+<cfoutput><div id="navPortal" class="sidebar-nav well">#dspPortalNav()#</div></cfoutput>
