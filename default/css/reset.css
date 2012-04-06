@@ -319,6 +319,20 @@ form li.mura-form-radio label, form li.mura-form-checkbox label {
 	text-align: left;
 }
 
+form li.mura-form-checkbox label.checkbox {
+	color: red;
+	text-align: left;
+	width: auto;
+	padding-top: .5em;
+	margin-left: 28%;
+	line-height: 1;
+	color: #0c2846;
+	}
+
+form li.mura-form-checkbox label.checkbox input.checkbox {
+	float: left;
+	}
+
 .mura-form-radio div,
 .mura-form-checkbox div { 
 	width: 70%;
