@@ -1733,7 +1733,18 @@ function addDisplayObject(objectToAdd,regionid,configure){
 			function(){
 				var item=jQuery(this);
 				if (item.attr("type") != "radio" || (item.attr("type") =="radio" && item.is(':checked'))) {
-					availableObjectParams[item.attr("name")] = item.val();
+					if(typeof(availableObjectParams[item.attr("name")]) == 'undefined'){
+						availableObjectParams[item.attr("name")] = item.val();
+					} else {
+						if( !jQuery.isArray(availableObjectParams[item.attr("name")]) ){
+							var tempArray=[];
+							tempArray[0]=availableObjectParams[item.attr("name")];
+							availableObjectParams[item.attr("name")]=tempArray;
+						}
+
+						availableObjectParams[item.attr("name")].push(item.val());
+
+					}
 				}
 			}
 		)

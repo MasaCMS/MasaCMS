@@ -240,53 +240,53 @@ to your own modified versions of Mura CMS.
 		</cfif>
 		<dd id="postcomment-form">
 		<cfoutput><span id="postcomment-comment" style="display: none"><a href="##postcomment">#$.rbKey('comments.newcomment')#</a></span></cfoutput>
-		<form id="postcomment" method="post" name="addComment" action="?nocache=1#postcomment" onsubmit="return validate(this);" novalidate="novalidate">
+		<form id="postcomment" class="well" method="post" name="addComment" action="?nocache=1#postcomment" onsubmit="return validate(this);" novalidate="novalidate">
 			<a name="postcomment"></a>
 			<fieldset>
 				<cfoutput><legend id="postacomment">#$.rbKey('comments.postacomment')#</legend>
 				<legend id="editcomment" style="display:none">#$.rbKey('comments.editcomment')#</legend>
 				<legend id="replytocomment" style="display:none">#$.rbKey('comments.replytocomment')#</legend>
 				<ol>
-					<li class="req">
-						<label for="txtName">#$.rbKey('comments.name')#<ins> (#$.rbKey('comments.required')#)</ins></label>
-						<input id="txtName" name="name" type="text" size="38" class="text" maxlength="50" required="true" message="#htmlEditFormat($.rbKey('comments.namerequired'))#" value="#HTMLEditFormat(request.name)#" />
+					<li class="req control-group">
+						<label class="control-label" for="txtName">#$.rbKey('comments.name')#<ins> (#$.rbKey('comments.required')#)</ins></label>
+						<input id="txtName" name="name" type="text" class="text span5" maxlength="50" required="true" message="#htmlEditFormat($.rbKey('comments.namerequired'))#" value="#HTMLEditFormat(request.name)#" />
 					</li>
-					<li class="req">
-						<label for="txtEmail">#$.rbKey('comments.email')#</label>
-						<input id="txtEmail" name="email" type="text" size="38" class="text" maxlength="50" required="true" message="#htmlEditFormat($.rbKey('comments.emailvalidate'))#" value="#HTMLEditFormat(request.email)#" />
+					<li class="req control-group">
+						<label class="control-label" for="txtEmail">#$.rbKey('comments.email')#<ins> (#$.rbKey('comments.required')#)</ins></label>
+						<input id="txtEmail" name="email" type="text" class="text span5" maxlength="50" required="true" message="#htmlEditFormat($.rbKey('comments.emailvalidate'))#" value="#HTMLEditFormat(request.email)#" />
 					</li>
-					<li>
-						<label for="txtUrl">#$.rbKey('comments.url')#</label>
-						<input id="txtUrl" name="url" type="text" size="38" class="text" maxlength="50" value="#HTMLEditFormat(request.url)#" />
+					<li class="control-group">
+						<label for="txtUrl" class="control-label">#$.rbKey('comments.url')#</label>
+						<input id="txtUrl" name="url" type="text" class="text span5" maxlength="50" value="#HTMLEditFormat(request.url)#" />
 					</li>
-					<li class="req">
-						<label for="txtComment">#$.rbKey('comments.comment')#<ins> (#$.rbKey('comments.required')#)</ins></label>
-						<textarea id="txtComment" name="comments" message="#htmlEditFormat($.rbKey('comments.commentrequired'))#" cols="30" rows="20" required="true">#HTMLEditFormat(request.comments)#</textarea>
+					<li class="req control-group">
+						<label for="txtComment" class="control-label">#$.rbKey('comments.comment')#<ins> (#$.rbKey('comments.required')#)</ins></label>
+						<textarea id="txtComment" class="span5" name="comments" message="#htmlEditFormat($.rbKey('comments.commentrequired'))#" required="true">#HTMLEditFormat(request.comments)#</textarea>
 					</li>
-					<li>
-						<label for="txtRemember">#$.rbKey('comments.rememberinfo')#</label>
-						<input type="checkbox" id="txtRemember" name="remember" value="1"<cfif isBoolean(cookie.remember) and cookie.remember> checked="checked"</cfif> />
+					<li class="control-group">
+						<label for="txtRemember" class="checkbox">
+						<input type="checkbox" class="checkbox" id="txtRemember" name="remember" value="1"<cfif isBoolean(cookie.remember) and cookie.remember> checked="checked"</cfif> />#$.rbKey('comments.rememberinfo')#</label>
 					</li>
-					<li>
-						<label for="txtSubscribe">#$.rbKey('comments.subscribe')#</label>
-						<input type="checkbox" id="txtSubscribe" name="subscribe" value="1"<cfif isBoolean(cookie.subscribe) and cookie.subscribe> checked="checked"</cfif> />
+					<li class="control-group">
+						<label for="txtSubscribe" class="checkbox">
+						<input type="checkbox" class="checkbox" id="txtSubscribe" name="subscribe" value="1"<cfif isBoolean(cookie.subscribe) and cookie.subscribe> checked="checked"</cfif> />#$.rbKey('comments.subscribe')#</label>
 					</li></cfoutput>
 					<li>
 						<cfoutput>#$.dspObject_Include(thefile='dsp_form_protect.cfm')#</cfoutput>
 					</li>
 				</ol>
 			</fieldset>
-			<div class="buttons">
-				<cfoutput>
-					<p class="required">#$.rbKey('comments.requiredfield')#</p>
+			<cfoutput>
+			<p class="required">#$.rbKey('comments.requiredfield')#</p>
+			<div class="buttons">					
 					<input type="hidden" name="returnURL" value="#HTMLEditFormat(getCurrentURL())#" />
 					<input type="hidden" name="commentid" value="#createuuid()#" />
 					<input type="hidden" name="parentid" value="" />
 					<input type="hidden" name="commenteditmode" value="add" />
 					<input type="hidden" name="linkServID" value="#$.content('contentID')#" />
-					<input type="submit" class="submit" name="submit" value="#htmlEditFormat($.rbKey('comments.submit'))#" />
-				</cfoutput>
+					<input type="submit" class="submit btn" name="submit" value="#htmlEditFormat($.rbKey('comments.submit'))#" />
 			</div>
+				</cfoutput>
 		</form>
 		</dd>	
 	</div>

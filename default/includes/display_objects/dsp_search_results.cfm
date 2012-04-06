@@ -85,7 +85,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 
 <cfset variables.contentListFieldsType="Search">
-<cfset variables.contentListFields="Title,Summary,ReadMore,Tags,Credits">
+<cfset variables.contentListFields="Title,Summary,Tags,Credits">
 
 </cfsilent>
 
@@ -112,7 +112,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfoutput>
 <cfif totalrecords>
 <cfoutput>
-	<div class="moreResults top">
+	<div class="moreResults top well">
 		<ul>
 		<li class="resultsFound">#$.rbKey('search.displaying')#: #request.startrow# - #variables.through# #$.rbKey('search.of')# #session.rsSearch.recordcount#</li>
 		<cfif previous gte 1>
@@ -133,7 +133,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			)#
 	</div>
 		
-	<div class="moreResults bottom">
+	<div class="moreResults bottom well">
 		<ul>
 		<li class="resultsFound">#$.rbKey('search.displaying')#: #request.startrow# - #variables.through# #$.rbKey('search.of')# #session.rsSearch.recordcount#</li>
 		<cfif previous gte 1>
@@ -147,9 +147,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>	
 	
 <cfoutput>
-	<form id="svSearchAgain" name="searchFrm" action="" method="get">
+	<form id="svSearchAgain" class="form-inline" name="searchFrm" action="" method="get">
 		<p>#$.rbKey('search.didnotfind')#</p>
-		#$.rbKey('search.search')#: <input type="text" name="keywords" value="#HTMLEditFormat(request.keywords)#" /><input name="newSearch" value="true" type="hidden"/><input name="nocache" value="1" type="hidden"/><input name="searchSectionID" value="#HTMLEditFormat(request.searchSectionID)#" type="hidden"/>  <input name="display" value="search" type="hidden"/><input type="submit" class="submit" value="#htmlEditFormat($.rbKey('search.go'))#" alt="submit" />
+		<!---#$.rbKey('search.search')#:---> <input type="text" name="keywords" value="#HTMLEditFormat(request.keywords)#" placeholder="search" /><input name="newSearch" value="true" type="hidden"/><input name="nocache" value="1" type="hidden"/><input name="searchSectionID" value="#HTMLEditFormat(request.searchSectionID)#" type="hidden"/>  <input name="display" value="search" type="hidden"/><input type="submit" class="btn" value="#htmlEditFormat($.rbKey('search.go'))#" alt="submit" />
 	</form>
 </cfoutput>
 </div>

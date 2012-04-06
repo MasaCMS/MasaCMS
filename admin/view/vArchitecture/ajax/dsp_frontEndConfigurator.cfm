@@ -2,7 +2,7 @@
 	<cfset rsDisplayObject=application.contentManager.readContentObject(attributes.contentHistID,attributes.regionID,attributes.orderno)>
 	<cfset attributes.siteid=rsDisplayObject.siteid>
 	<cfif rsDisplayObject.object eq "plugin">
-	<cfset displayObjectBean=createObject("component","mura.plugin.pluginDisplayObjectBean").init().setObjectID(rsDisplayObject.objectid).load()>
+	<cfset displayObjectBean=application.serviceFactory.getBean('pluginDisplayObjectBean').setObjectID(rsDisplayObject.objectid).load()>
 		<cfset displayObjectBean.load()>
 		<cfset hasConfigurator=len(displayObjectBean.getConfiguratorJS())>
 	</cfif>

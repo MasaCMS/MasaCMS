@@ -54,9 +54,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 </cfsilent>
 <cfoutput>
+<div class="navArchive well">
 <#$.getHeaderTag('subHead1')#>#$.rbKey('list.archive')#</#$.getHeaderTag('subHead1')#>
-<div class="navArchive">
-<ul class="#this.ulOuterClass#">
+<ul class="#this.ulTopClass# sidebar-nav">
 	<cfloop query="rsArchive">
 		<cfset isCurrentArchive=hasArchiveFilter and $.event("month") eq rsArchive.month and $.event("year") eq rsArchive.year>
 		<li<cfif isCurrentArchive> class="#this.liCurrentClass#"</cfif>><a href="#$.createHREF(filename='#archive.getFilename()#/date/#rsArchive.year#/#rsArchive.month#/')#"<cfif isCurrentArchive> class="current"</cfif>>#monthasstring(rsArchive.month)# #rsArchive.year# (#rsArchive.items#)</a></li>

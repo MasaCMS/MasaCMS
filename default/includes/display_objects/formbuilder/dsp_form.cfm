@@ -63,9 +63,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfloop from="1" to="#ArrayLen(aFieldOrder)#" index="iiX">
 	<cfif StructKeyExists(frmFields,aFieldOrder[iiX])>
 		<cfset field = frmFields[aFieldOrder[iiX]] />
-		<cfif iiX eq 1 and field.fieldtype.fieldtype neq "section">
+		<!---<cfif iiX eq 1 and field.fieldtype.fieldtype neq "section">
 			<ol>
-		</cfif>
+		</cfif>--->
 		<cfif field.fieldtype.isdata eq 1 and len(field.datasetid)>
 			<cfset dataset = fbManager.processDataset( $,frmData[field.datasetid] ) />  
 		</cfif>
@@ -78,21 +78,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			dataset=dataset
 			)#			
 		<cfelseif field.fieldtype.fieldtype neq "section">
-			<li class="mura-form-#field.fieldtype.fieldtype#<cfif field.isrequired> req</cfif>">
+			<div class="mura-form-#field.fieldtype.fieldtype#<cfif field.isrequired> req</cfif> control-group">
 			#$.dspObject_Include(thefile='/formbuilder/fields/dsp_#field.fieldtype.fieldtype#.cfm',
 				field=field,
 				dataset=dataset
 				)#			
-			</li>
+			</div>
 		<cfelseif field.fieldtype.fieldtype eq "section">
-			<cfif iiX neq 1>
+			<!---<cfif iiX neq 1>
 				</ol>
-			</cfif>
+			</cfif>--->
 			#$.dspObject_Include(thefile='/formbuilder/fields/dsp_#field.fieldtype.fieldtype#.cfm',
 				field=field,
 				dataset=dataset
 				)#
-			<ol>
+			<!---<ol>--->
 		<cfelse>
 		#$.dspObject_Include(thefile='/formbuilder/fields/dsp_#field.fieldtype.fieldtype#.cfm',
 			field=field,
@@ -104,14 +104,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!---<cfthrow message="ERROR 9000: Field Missing: #aFieldOrder[iiX]#">--->
 	</cfif>
 </cfloop>
-<cfif request.fieldsetopen eq true></fieldset><cfset request.fieldsetopen = false /></cfif>
-</ol>
+<cfif request.fieldsetopen eq true></div></fieldset><cfset request.fieldsetopen = false /></cfif>
+<!---</ol>--->
 </cfoutput>
 </cfsavecontent>
 <cfoutput>
-<form id="#frmID#" method="post"<cfif isMultipart>enctype="multipart/form-data"</cfif>>
+<form id="#frmID#" class="#$.siteConfig('bsFormLayout')#" method="post"<cfif isMultipart>enctype="multipart/form-data"</cfif>>
 	#frmFieldContents#
-	<div class="buttons"><input type="submit" class="submit" value="Submit"></div>
+	<div class="form-actions buttons"><input type="submit" class="btn" value="Submit"></div>
 	#$.dspObject_Include(thefile='dsp_form_protect.cfm')#
 	<!---#$.dspObject_Include(thefile='dsp_captcha.cfm')#--->
 </form>
