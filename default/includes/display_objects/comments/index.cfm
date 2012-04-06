@@ -252,7 +252,7 @@ to your own modified versions of Mura CMS.
 						<input id="txtName" name="name" type="text" class="text span5" maxlength="50" required="true" message="#htmlEditFormat($.rbKey('comments.namerequired'))#" value="#HTMLEditFormat(request.name)#" />
 					</li>
 					<li class="req control-group">
-						<label class="control-label" for="txtEmail">#$.rbKey('comments.email')#</label>
+						<label class="control-label" for="txtEmail">#$.rbKey('comments.email')#<ins> (#$.rbKey('comments.required')#)</ins></label>
 						<input id="txtEmail" name="email" type="text" class="text span5" maxlength="50" required="true" message="#htmlEditFormat($.rbKey('comments.emailvalidate'))#" value="#HTMLEditFormat(request.email)#" />
 					</li>
 					<li class="control-group">
@@ -276,7 +276,7 @@ to your own modified versions of Mura CMS.
 					</li>
 				</ol>
 			</fieldset>
-			<div class="buttons">
+			<div class="buttons form-actions">
 				<cfoutput>
 					<p class="required">#$.rbKey('comments.requiredfield')#</p>
 					<input type="hidden" name="returnURL" value="#HTMLEditFormat(getCurrentURL())#" />
