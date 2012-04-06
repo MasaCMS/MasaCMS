@@ -240,7 +240,7 @@ to your own modified versions of Mura CMS.
 		</cfif>
 		<dd id="postcomment-form">
 		<cfoutput><span id="postcomment-comment" style="display: none"><a href="##postcomment">#$.rbKey('comments.newcomment')#</a></span></cfoutput>
-		<form id="postcomment" method="post" name="addComment" action="?nocache=1#postcomment" onsubmit="return validate(this);" novalidate="novalidate">
+		<form id="postcomment" class="well" method="post" name="addComment" action="?nocache=1#postcomment" onsubmit="return validate(this);" novalidate="novalidate">
 			<a name="postcomment"></a>
 			<fieldset>
 				<cfoutput><legend id="postacomment">#$.rbKey('comments.postacomment')#</legend>
@@ -259,34 +259,34 @@ to your own modified versions of Mura CMS.
 						<label for="txtUrl" class="control-label">#$.rbKey('comments.url')#</label>
 						<input id="txtUrl" name="url" type="text" class="text span5" maxlength="50" value="#HTMLEditFormat(request.url)#" />
 					</li>
-					<li class="req "control-group">
+					<li class="req control-group">
 						<label for="txtComment" class="control-label">#$.rbKey('comments.comment')#<ins> (#$.rbKey('comments.required')#)</ins></label>
-						<textarea id="txtComment" class="span5" name="comments" message="#htmlEditFormat($.rbKey('comments.commentrequired'))#" cols="30" rows="20" required="true">#HTMLEditFormat(request.comments)#</textarea>
+						<textarea id="txtComment" class="span5" name="comments" message="#htmlEditFormat($.rbKey('comments.commentrequired'))#" required="true">#HTMLEditFormat(request.comments)#</textarea>
 					</li>
 					<li class="control-group">
-						<label for="txtRemember" class="checkbox">#$.rbKey('comments.rememberinfo')#
-						<input type="checkbox" id="txtRemember" name="remember" value="1"<cfif isBoolean(cookie.remember) and cookie.remember> checked="checked"</cfif> /></label>
+						<label for="txtRemember" class="checkbox">
+						<input type="checkbox" class="checkbox" id="txtRemember" name="remember" value="1"<cfif isBoolean(cookie.remember) and cookie.remember> checked="checked"</cfif> />#$.rbKey('comments.rememberinfo')#</label>
 					</li>
 					<li class="control-group">
-						<label for="txtSubscribe" class="checkbox">#$.rbKey('comments.subscribe')#
-						<input type="checkbox" id="txtSubscribe" name="subscribe" value="1"<cfif isBoolean(cookie.subscribe) and cookie.subscribe> checked="checked"</cfif> /></label>
+						<label for="txtSubscribe" class="checkbox">
+						<input type="checkbox" class="checkbox" id="txtSubscribe" name="subscribe" value="1"<cfif isBoolean(cookie.subscribe) and cookie.subscribe> checked="checked"</cfif> />#$.rbKey('comments.subscribe')#</label>
 					</li></cfoutput>
 					<li>
 						<cfoutput>#$.dspObject_Include(thefile='dsp_form_protect.cfm')#</cfoutput>
 					</li>
 				</ol>
 			</fieldset>
-			<div class="buttons form-actions">
-				<cfoutput>
-					<p class="required">#$.rbKey('comments.requiredfield')#</p>
+			<cfoutput>
+			<p class="required">#$.rbKey('comments.requiredfield')#</p>
+			<div class="buttons">					
 					<input type="hidden" name="returnURL" value="#HTMLEditFormat(getCurrentURL())#" />
 					<input type="hidden" name="commentid" value="#createuuid()#" />
 					<input type="hidden" name="parentid" value="" />
 					<input type="hidden" name="commenteditmode" value="add" />
 					<input type="hidden" name="linkServID" value="#$.content('contentID')#" />
 					<input type="submit" class="submit btn" name="submit" value="#htmlEditFormat($.rbKey('comments.submit'))#" />
-				</cfoutput>
 			</div>
+				</cfoutput>
 		</form>
 		</dd>	
 	</div>
