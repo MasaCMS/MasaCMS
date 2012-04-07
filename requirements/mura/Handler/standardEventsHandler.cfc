@@ -222,8 +222,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset renderer.showAdminToolbar=false>
 		<cfset renderer.showMemberToolbar=false>
 		<cfset renderer.showEditableObjects=false>
-	<cfelse>
-		<cfcookie name="mobileFormat" value="false" />
 	</cfif>
 </cffunction>
 
