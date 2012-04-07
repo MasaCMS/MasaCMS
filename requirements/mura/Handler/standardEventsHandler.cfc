@@ -219,11 +219,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif fileExists(ExpandPath( "#event.getSite().getThemeIncludePath()#/templates/mobile.cfm"))>
 		<cfset renderer.listFormat="ul">
 		<cfset event.getValue("contentBean").setTemplate("mobile.cfm")>
+		<cfset renderer.showAdminToolbar=false>
+		<cfset renderer.showMemberToolbar=false>
+		<cfset renderer.showEditableObjects=false>
 	</cfif>
 	
-	<cfset renderer.showAdminToolbar=false>
-	<cfset renderer.showMemberToolbar=false>
-	<cfset renderer.showEditableObjects=false>
 </cffunction>
 
 <cffunction name="standardLinkTranslationHandler" output="false" returnType="any">
