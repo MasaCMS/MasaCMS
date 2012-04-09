@@ -1667,11 +1667,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="showCurrentChildrenOnly" type="boolean" default="false">
 		<cfargument name="liHasKidsClass" required="true" default="">
 		<cfargument name="liHasKidsCustomString" required="true" default="">
-		<cfargument name="liCurrentClass" required="true" default="">
+		<cfargument name="liCurrentClass" required="true" default="#this.liCurrentClass#">
 		<cfargument name="liCurrentCustomString" required="true" default="">
 		<cfargument name="aHasKidsClass" required="true" default="">
 		<cfargument name="aHasKidsCustomString" required="true" default="">
-		<cfargument name="aCurrentClass" required="true" default="">
+		<cfargument name="aCurrentClass" required="true" default="#this.aCurrentClass#">
 		<cfargument name="aCurrentCustomString" required="true" default="">
 		<cfargument name="ulNestedClass" required="true" default="">
 		<cfargument name="ulNestedCustomString" required="true" default="">
