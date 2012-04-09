@@ -55,7 +55,15 @@ uses the query string as the key --->
 <cfparam name="request.cacheItemTimeSpan" default="">
 
 <cfif not isBoolean(request.cacheItem)>
-       <cfset request.cacheItem=true/>
+  <cfset request.cacheItem=true/>
+</cfif>
+
+<cfif not isBoolean(attributes.nocache)>
+    <cfset attributes.nocache=false/>
+</cfif>
+
+<cfif not isBoolean(request.forceCache)>
+   <cfset request.forceCache=false/>
 </cfif>
 
 <cfif thisTag.executionMode IS "Start">
