@@ -535,8 +535,6 @@
 <cffunction name="tables" output="false">
 	<cfset var rscheck="">
 
-	<cfset variables.table=arguments.table>
-
 	<cfdbinfo 
 		name="rsCheck"
 		datasource="#variables.configBean.getDatasource()#"
@@ -548,8 +546,6 @@
 
 <cffunction name="version" output="false">
 	<cfset var rscheck="">
-
-	<cfset variables.table=arguments.table>
 
 	<cfdbinfo 
 		name="rsCheck"
