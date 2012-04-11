@@ -644,6 +644,32 @@
 	<cfreturn rsCheck.recordcount>
 </cffunction>
 
+<cffunction name="foreignKeyMetaData" output="false">
+	<cfargument name="column">
+	<cfargument name="refColumn">
+	<cfargument name="refTable">
+	<cfargument name="table" default="#variables.table#">
+	<cfset var rscheck="">
+
+	<cfset variables.table=arguments.table>
+
+	<cfdbinfo 
+		name="rsCheck"
+		datasource="#application.configBean.getDatasource()#"
+		username="#application.configBean.getDbUsername()#"
+		password="#application.configBean.getDbPassword()#"
+		table="#arguments.refTable#"
+		type="foreignkeys">
+
+	<cfquery name="rsCheck" dbtype="query">
+		select * from rsCheck where 
+		lower(rsCheck.fkColumn_NAME) like '#lcase(arguments.column)#'
+		AND lower(rsCheck.fkTable_NAME) like '#lcase(arguments.table)#'
+	</cfquery>
+
+	<cfreturn rsCheck>
+</cffunction>
+
 <cffunction name="addForeignKey" output="false">
 	<cfargument name="column">
 	<cfargument name="refColumn">
