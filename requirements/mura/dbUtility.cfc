@@ -334,7 +334,6 @@
 </cffunction>
 
 <cffunction name="dropPrimaryKey" output="false">
-	<cfargument name="column" default="">
 	<cfargument name="table" default="#variables.table#">
 
 	<cfset variables.table=arguments.table>
