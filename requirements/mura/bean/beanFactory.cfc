@@ -95,6 +95,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.transient["placementBean"]="mura.advertising.campaign.placement.placementBean" />
 	<cfset variables.transient["feedBean"]="mura.content.feed.feedBean"/>
 	<cfset variables.transient["beanServicePlaceHolder"]="mura.bean.beanServicePlaceHolder"/>
+	<cfset variables.transient["dbUtility"]="mura.dbUtility"/>
 	<cfset variables.transientAlias["content"]="contentBean"/>
 	<cfset variables.transientAlias["feed"]="feedBean"/>
 	<cfset variables.transientAlias["site"]="settingsBean"/>

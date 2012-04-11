@@ -50,7 +50,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cffunction name="init" returntype="any" access="public" output="false">
 		<cfargument name="pluginConfig"  type="any" default="">
+		<cfargument name="configBean"  type="any" default="">
 		<cfset variables.pluginConfig = arguments.pluginConfig>
+		<cfif isObject(arguments.configBean)>
+			<cfset variables.configBean = arguments.configBean>
+		</cfif>
 	</cffunction>
 	
 	<cffunction name="install" returntype="void" access="public" output="false">
