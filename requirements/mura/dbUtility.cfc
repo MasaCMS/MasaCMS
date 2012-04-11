@@ -19,7 +19,7 @@
 		<cfreturn this>
 	</cffunction>
 
-	<cffunction name="tableColumns" output="false">
+	<cffunction name="columns" output="false">
 	<cfargument name="table" default="#variables.table#">
 	<cfset var rs ="">
 	
@@ -126,7 +126,7 @@
 	<cfargument name="column" default="">
 	<cfargument name="table" default="#variables.table#">
 	
-	<cfset var rsCheck=tableColumns(arguments.table)>
+	<cfset var rsCheck=columns(arguments.table)>
 	
 	<cfset variables.table=arguments.table>
 	
@@ -204,25 +204,34 @@
 		</cfcase>
 		<cfcase value="oracle">
 			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
-				<cfif hasTable>
+				<cfif not hasTable>
 					CREATE TABLE #arguments.table# (
 				<cfelse>
-					ALTER TABLE #arguments.table# ADD 
+					ALTER TABLE #arguments.table# ADD <cfif variables.configBean.getDbType() eq "ORACLE">(</cfif>
 				</cfif>
 				
 				#arguments.column# #transformDataType(arguments.datatype,arguments.length)# <cfif not arguments.nullable> not null </cfif> default <cfif arguments.default eq 'null' or listFindNoCase('int,tinyint',arguments.datatype)>#arguments.default#<cfelse>'#arguments.default#'</cfif>
 				
-				<cfif not hasTable>)</cfif>
-
-				<cfif transformDataType(arguments.datatype,arguments.length) eq "clob">
+				<cfif not hasTable or variables.configBean.getDbType() eq "ORACLE">)</cfif>
+				
+				<cfif arguments.datatype eq "longtext">
 					lob (#arguments.column#) STORE AS (
 					TABLESPACE "USERS" ENABLE STORAGE IN ROW CHUNK 8192 PCTVERSION 10
 					NOCACHE LOGGING
 					STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
 					PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT))
 				</cfif>
+
 			</cfquery>
-			<cfif arguments.autoincrement>
+			<cfif arguments.autoincrement>				
+				
+				<cftry>
+				 <cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
+					DROP SEQUENCE seq_#arguments.table#_#arguments.column#
+				</cfquery>
+				<cfcatch></cfcatch>
+				</cftry>
+				
 				<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
 					CREATE SEQUENCE seq_#arguments.table#_#arguments.column#
 					MINVALUE 1
@@ -447,7 +456,7 @@
 <cffunction name="columnExists" output="false">
 	<cfargument name="column">
 	<cfargument name="table" default="#variables.table#">
-	<cfset var rsCheck=tableColumns(arguments.table)>
+	<cfset var rsCheck=columns(arguments.table)>
 	
 	<cfquery name="rsCheck" dbtype="query">
 		select * from rsCheck where lower(rsCheck.column_name) like '#lcase(arguments.column)#'
@@ -491,8 +500,7 @@
 	<cfreturn rscheck.recordcount>
 </cffunction>
 
-<cffunction name="indexExists" output="false">
-	<cfargument name="column">
+<cffunction name="indexes" output="false">
 	<cfargument name="table" default="#variables.table#">
 	<cfset var rscheck="">
 
@@ -505,7 +513,60 @@
 		password="#variables.configBean.getDbPassword()#"
 		table="#arguments.table#"
 		type="index">
-	
+	<cfreturn rscheck>
+</cffunction>
+
+<cffunction name="foreignKeys" output="false">
+	<cfargument name="table" default="#variables.table#">
+	<cfset var rscheck="">
+
+	<cfset variables.table=arguments.table>
+
+	<cfdbinfo 
+		name="rsCheck"
+		datasource="#variables.configBean.getDatasource()#"
+		username="#variables.configBean.getDbUsername()#"
+		password="#variables.configBean.getDbPassword()#"
+		table="#arguments.table#"
+		type="foreignKeys">
+	<cfreturn rscheck>
+</cffunction>
+
+<cffunction name="tables" output="false">
+	<cfset var rscheck="">
+
+	<cfset variables.table=arguments.table>
+
+	<cfdbinfo 
+		name="rsCheck"
+		datasource="#variables.configBean.getDatasource()#"
+		username="#variables.configBean.getDbUsername()#"
+		password="#variables.configBean.getDbPassword()#"
+		type="tables">
+	<cfreturn rscheck>
+</cffunction>
+
+<cffunction name="version" output="false">
+	<cfset var rscheck="">
+
+	<cfset variables.table=arguments.table>
+
+	<cfdbinfo 
+		name="rsCheck"
+		datasource="#variables.configBean.getDatasource()#"
+		username="#variables.configBean.getDbUsername()#"
+		password="#variables.configBean.getDbPassword()#"
+		type="version">
+	<cfreturn rscheck>
+</cffunction>
+
+<cffunction name="indexExists" output="false">
+	<cfargument name="column">
+	<cfargument name="table" default="#variables.table#">
+	<cfset var rscheck=indexes(arguments.table)>
+
+	<cfset variables.table=arguments.table>
+
 	<cfquery name="rsCheck" dbtype="query">
 		select * from rsCheck where lower(rsCheck.column_name) like '#lcase(arguments.column)#'
 	</cfquery>
