@@ -464,6 +464,18 @@
 	<cfreturn rsCheck.recordcount>
 </cffunction>
 
+<cffunction name="columnMetaData" output="false">
+	<cfargument name="column">
+	<cfargument name="table" default="#variables.table#">
+	<cfset var rsCheck=columns(arguments.table)>
+	
+	<cfquery name="rsCheck" dbtype="query">
+		select * from rsCheck where lower(rsCheck.column_name) like '#lcase(arguments.column)#'
+	</cfquery>
+
+	<cfreturn rsCheck>
+</cffunction>
+
 <cffunction name="tableExists" output="false">
 	<cfargument name="table" default="#variables.table#">
 	<cfset var rscheck="">
