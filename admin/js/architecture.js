@@ -1732,7 +1732,7 @@ function addDisplayObject(objectToAdd,regionid,configure){
 		jQuery("#availableObjectParams").find(".objectParam").each(
 			function(){
 				var item=jQuery(this);
-				if (item.attr("type") != "radio" || (item.attr("type") =="radio" && item.is(':checked'))) {
+				if ( (item.attr("type") != "radio" && item.attr("type") != "checkbox") || ( (item.attr("type")=="radio" || item.attr("type")=="checkbox") && item.is(':checked') ) ) {
 					if(typeof(availableObjectParams[item.attr("name")]) == 'undefined'){
 						availableObjectParams[item.attr("name")] = item.val();
 					} else {
