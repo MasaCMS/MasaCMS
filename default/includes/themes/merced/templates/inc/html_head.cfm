@@ -13,6 +13,7 @@
 
 	<link rel="icon" href="#$.siteConfig('assetPath')#/images/favicon.ico" type="image/x-icon" />
 	<link rel="shortcut icon" href="#$.siteConfig('assetPath')#/images/favicon.ico" type="image/x-icon" />
+	<meta content="#$.siteConfig('assetPath')#/images/favicon.ico" itemprop="image"/>
 
 	<!--- Shared Styles --->	
 	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/reset.min.css" type="text/css" media="all" />
