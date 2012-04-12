@@ -138,6 +138,7 @@
 	</cfif>
 
 	<cfif not structIsEmpty(existing)
+		and not arguments.autoincrement
 		and (
 			existing.dataType neq arguments.datatype
 			or (
