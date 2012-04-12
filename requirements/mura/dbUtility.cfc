@@ -130,10 +130,27 @@
 	<cfargument name="default" default="null">
 	<cfargument name="autoincrement" default="false">
 	<cfargument name="table" default="#variables.table#">
-	
+	<cfset var existing=columnMetaData(arguments.column,arguments.table)>
 	<cfset var hasTable=tableExists(arguments.table)>
 
-	<cfif not hasTable or not columnExists(arguments.column,arguments.table)>
+	<cfif arguments.autoincrement>
+		<cfset arguments.datatype="int">
+	</cfif>
+
+	<cfif not structIsEmpty(existing)
+		and (
+			existing.dataType neq arguments.datatype
+			or (
+				listFindNoCase("char,varchar",arguments.datatype) 
+				and arguments.length neq existing.length
+				)
+			or existing.nullable neq arguments.nullable
+			or existing.default neq arguments.default
+			)
+		>
+			<cfset alterColumn(argumentCollection=arguments)>
+
+	<cfelseif not hasTable or structIsEmpty(existing)>
 		<cfswitch expression="#variables.configBean.getDbType()#">
 		<cfcase value="mssql">
 			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
@@ -156,7 +173,7 @@
 					ALTER TABLE #arguments.table# ADD COLUMN
 				</cfif>
 				
-				#arguments.column#  <cfif arguments.autoincrement>INT(11) NOT NULL AUTO_INCREMENT<cfelse>#transformDataType(arguments.datatype,arguments.length)# <cfif not arguments.nullable> not null </cfif> default <cfif arguments.default eq 'null' or listFindNoCase('int,tinyint',arguments.datatype)>#arguments.default#<cfelse>'#arguments.default#'</cfif></cfif>
+				#arguments.column#  <cfif arguments.autoincrement>INT(10) NOT NULL AUTO_INCREMENT<cfelse>#transformDataType(arguments.datatype,arguments.length)# <cfif not arguments.nullable> not null </cfif> default <cfif arguments.default eq 'null' or listFindNoCase('int,tinyint',arguments.datatype)>#arguments.default#<cfelse>'#arguments.default#'</cfif></cfif>
 				
 				<cfif not hasTable>
 					<cfif arguments.autoincrement>
@@ -231,6 +248,10 @@
 	<cfargument name="autoincrement" default="false">
 	<cfargument name="table" default="#variables.table#">
 	
+	<cfif arguments.autoincrement>
+		<cfset arguments.datatype="int">
+	</cfif>
+
 	<cfif columnExists(arguments.column,arguments.table)>
 		<cfswitch expression="#variables.configBean.getDbType()#">
 			<cfcase value="mssql">
@@ -240,7 +261,7 @@
 			</cfcase>
 			<cfcase value="mysql">
 				<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
-					ALTER TABLE #arguments.table# MODIFY COLUMN #arguments.column# #transformDataType(arguments.datatype,arguments.length)# <cfif not arguments.nullable> not null </cfif> <cfif arguments.autoincrement>AUTO_INCREMENT<cfelse>default <cfif arguments.default eq 'null' or listFindNoCase('int,tinyint',arguments.datatype)>#arguments.default#<cfelse>'#arguments.default#'</cfif></cfif>
+					ALTER TABLE #arguments.table# MODIFY COLUMN #arguments.column# <cfif arguments.autoincrement>INT(10) NOT NULL AUTO_INCREMENT<cfelse>#transformDataType(arguments.datatype,arguments.length)# <cfif not arguments.nullable> not null </cfif> default <cfif arguments.default eq 'null' or listFindNoCase('int,tinyint',arguments.datatype)>#arguments.default#<cfelse>'#arguments.default#'</cfif></cfif>
 				</cfquery>
 			</cfcase>
 			<cfcase value="oracle">
@@ -258,6 +279,8 @@
 				</cfquery>
 			</cfcase>
 		</cfswitch>
+	<cfelse>
+		<cfset addColumn(argumentCollection=arguments)>
 	</cfif>
 
 	<cfreturn this>
