@@ -788,7 +788,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="dbTableColumns" output="false" hint="deprecated, use dbUtility">
 	<cfargument name="table">
-	<cfreturn variables.dbUtility.tableColumns(argumentCollection=arguments)>
+	<cfreturn variables.dbUtility.columns(argumentCollection=arguments)>
 </cffunction>
 
 <cffunction name="dbCreateIndex" output="false" hint="deprecated, use dbUtility">
