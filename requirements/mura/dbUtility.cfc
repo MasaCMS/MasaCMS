@@ -34,12 +34,12 @@
 
 <cffunction name="tableExists" output="false">
 	<cfargument name="table" default="#variables.table#">
-	<cfset var tableArray=columns(arguments.table)>
+	<cfset var tableArray=tables(arguments.table)>
 	<cfset var i="">
 	
 	<cfif arrayLen(tableArray)>
-		<cfloop from="1" to="#arrayLen(columnsArray)#" index="i">
-			<cfif tableArray[i].table_name eq arguments.tabe>
+		<cfloop from="1" to="#arrayLen(tableArray)#" index="i">
+			<cfif tableArray[i].table_name eq arguments.table>
 				<cfreturn true>
 			</cfif>
 		</cfloop>
@@ -735,7 +735,7 @@
 	<cfargument name="fkTable">
 	<cfargument name="table" default="#variables.table#">
 
-	<cfset var fkArray=foriegnKeys(argumentCollection=arguments)>
+	<cfset var fkArray=foreignKeys(argumentCollection=arguments)>
 	<cfset var i="">
 	
 	<cfif arrayLen(fkArray)>
@@ -755,7 +755,7 @@
 	<cfargument name="fkColumn">
 	<cfargument name="fkTable">
 	<cfargument name="table" default="#variables.table#">
-	<cfset var fkArray=foriegnKeys(argumentCollection=arguments)>
+	<cfset var fkArray=foreignKeys(argumentCollection=arguments)>
 	<cfset var i="">
 	
 	<cfif arrayLen(fkArray)>
