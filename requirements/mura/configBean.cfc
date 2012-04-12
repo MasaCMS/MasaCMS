@@ -139,6 +139,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.MYSQLEngine="InnoDB" />
 <cfset variables.instance.autoDiscoverPlugins=false />
 <cfset variables.instance.trackSessionInNewThread=1 />
+<cfset variables.dbUtility="">
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
@@ -224,7 +225,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfset variables.instance.reactorDBType=config.dbType>
-	
+	<cfset variables.dbUtility=getBean("dbUtility")>
+
 	<cfreturn this />
 </cffunction>
 
@@ -784,7 +786,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="dbTableColumns" output="false">
+<cffunction name="dbTableColumns" output="false" hint="deprecated, use dbUtility">
 	<cfargument name="table">
 	<cfset var rs ="">
 	
@@ -811,7 +813,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn rs>
 </cffunction>
 
-<cffunction name="dbCreateIndex" output="false">
+<cffunction name="dbCreateIndex" output="false" hint="deprecated, use dbUtility">
 	<cfargument name="table">
 	<cfargument name="column" default="">
 	
@@ -853,7 +855,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="dbDropIndex" output="false">
+<cffunction name="dbDropIndex" output="false" hint="deprecated, use dbUtility">
 	<cfargument name="table">
 	<cfargument name="column" default="">
 	
@@ -892,7 +894,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="dbDropColumn" access="private">
+<cffunction name="dbDropColumn" access="private" hint="deprecated, use dbUtility">
 	<cfargument name="table">
 	<cfargument name="column" default="">
 	
@@ -930,7 +932,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfswitch>	
 	</cfif>
 </cffunction>
-
 <cffunction name="getClassExtensionManager" returntype="any" access="public" output="false">
 	<cfargument name="contentRenderer" required="true" default="" />
 	

@@ -1047,7 +1047,7 @@ select * from tplugins order by #arguments.orderby#
 			
 			<!--- only call the methods if they have been defined --->
 			<cfif structKeyExists(pluginCFC,"init")>
-				<cfset pluginCFC.init(pluginConfig)>
+				<cfset pluginCFC.init(pluginConfig,variables.configBean)>
 			</cfif>
 	
 			<cfif pluginConfig.getDeployed()>
@@ -1179,7 +1179,7 @@ select * from tplugins order by #arguments.orderby#
 		
 		<!--- only call the methods if they have been defined --->
 		<cfif structKeyExists(pluginCFC,"init")>
-			<cfset pluginCFC.init(pluginConfig)>
+			<cfset pluginCFC.init(pluginConfig,variables.configBean)>
 		</cfif>
 		
 		<cfif structKeyExists(pluginCFC,"delete")>
