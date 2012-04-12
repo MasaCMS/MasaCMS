@@ -788,29 +788,150 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="dbTableColumns" output="false" hint="deprecated, use dbUtility">
 	<cfargument name="table">
-	<cfreturn variables.dbUtility.columns(argumentCollection=arguments)>
+	<cfset var rs ="">
+	
+	<cfif variables.instance.dbtype neq "oracle">
+			<cfdbinfo 
+			name="rs"
+			datasource="#getDatasource()#"
+			username="#getDbUsername()#"
+			password="#getDbPassword()#"
+			table="#arguments.table#"
+			type="columns">	
+	<cfelse>
+		<cfquery
+			name="rs" 
+			datasource="#getDatasource()#"
+			username="#getDbUsername()#"
+			password="#getDbPassword()#">
+				SELECT column_name, data_length column_size, data_type type_name
+				FROM user_tab_cols
+				WHERE table_name=UPPER('#arguments.table#')
+		</cfquery>
+	</cfif>
+	
+	<cfreturn rs>
 </cffunction>
 
 <cffunction name="dbCreateIndex" output="false" hint="deprecated, use dbUtility">
 	<cfargument name="table">
 	<cfargument name="column" default="">
-	<cfreturn variables.dbUtility.addIndex(argumentCollection=arguments)>
+	
+	<cfset var rsCheck="">
+	 
+	<cfdbinfo 
+		name="rsCheck"
+		datasource="#getDatasource()#"
+		username="#getDbUsername()#"
+		password="#getDbPassword()#"
+		table="#arguments.table#"
+		type="index">
+
+	<cfquery name="rsCheck" dbtype="query">
+		select * from rsCheck where lower(rsCheck.column_name) like '#arguments.column#'
+	</cfquery>
+	
+	<cfif not rsCheck.recordcount>
+	<cftry>
+		<cfswitch expression="#getDbType()#">
+		<cfcase value="mssql">
+			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+			CREATE INDEX IX_#arguments.table#_#arguments.column# ON #arguments.table# (#arguments.column#)
+			</cfquery>
+		</cfcase>
+		<cfcase value="mysql">
+			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+			CREATE INDEX IX_#arguments.table#_#arguments.column# ON #arguments.table# (#arguments.column#)
+			</cfquery>
+		</cfcase>
+		<cfcase value="oracle">
+			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+			CREATE INDEX #right("IX_#arguments.table#_#arguments.column#",30)# ON #arguments.table# (#arguments.column#)
+			</cfquery>
+		</cfcase>
+		</cfswitch>	
+	<cfcatch></cfcatch>
+	</cftry>
+	</cfif>
 </cffunction>
 
 <cffunction name="dbDropIndex" output="false" hint="deprecated, use dbUtility">
 	<cfargument name="table">
 	<cfargument name="column" default="">
 	
-	<cfreturn variables.dbUtility.dropIndex(argumentCollection=arguments)>
+	<cfset var rsCheck="">
+	 
+	<cfdbinfo 
+		name="rsCheck"
+		datasource="#getDatasource()#"
+		username="#getDbUsername()#"
+		password="#getDbPassword()#"
+		table="#arguments.table#"
+		type="index">
+	
+	<cfquery name="rsCheck" dbtype="query">
+		select * from rsCheck where lower(rsCheck.column_name) like '#arguments.column#'
+	</cfquery>
+	
+	<cfif not rsCheck.recordcount>
+	<cfswitch expression="#getDbType()#">
+	<cfcase value="mssql">
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		DROP INDEX IX_#arguments.table#_#arguments.column# on #arguments.table#
+		</cfquery>
+	</cfcase>
+	<cfcase value="mysql">
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		DROP INDEX IX_#arguments.table#_#arguments.column# on #arguments.table#
+		</cfquery>
+	</cfcase>
+	<cfcase value="oracle">
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		DROP INDEX IX_#arguments.table#_#arguments.column#
+		</cfquery>
+	</cfcase>
+	</cfswitch>	
+	</cfif>
 </cffunction>
 
 <cffunction name="dbDropColumn" access="private" hint="deprecated, use dbUtility">
 	<cfargument name="table">
 	<cfargument name="column" default="">
 	
-	<cfreturn variables.dbUtility.dropColumn(argumentCollection=arguments)>
+	<cfset var rsCheck="">
+	 
+	<cfdbinfo 
+		name="rsCheck"
+		datasource="#getDatasource()#"
+		username="#getDbUsername()#"
+		password="#getDbPassword()#"
+		table="#arguments.table#"
+		type="index">
+	
+	<cfquery name="rsCheck" dbtype="query">
+		select * from rsCheck where lower(rsCheck.column_name) like '#arguments.column#'
+	</cfquery>
+	
+	<cfif not rsCheck.recordcount>
+	<cfswitch expression="#getDbType()#">
+	<cfcase value="mssql">
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		ALTER TABLE #arguments.table# DROP COLUMN #arguments.column#
+		</cfquery>
+	</cfcase>
+	<cfcase value="mysql">
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		ALTER TABLE #arguments.table# DROP COLUMN #arguments.column#
+		</cfquery>
+	</cfcase>
+	<cfcase value="oracle">
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		ALTER TABLE #arguments.table# DROP COLUMN #arguments.column#
+		</cfquery>
+	</cfcase>
+	</cfswitch>	
+	</cfif>
 </cffunction>
-
 <cffunction name="getClassExtensionManager" returntype="any" access="public" output="false">
 	<cfargument name="contentRenderer" required="true" default="" />
 	
