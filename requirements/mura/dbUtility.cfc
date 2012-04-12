@@ -777,7 +777,12 @@
 	<cfargument name="table" default="#variables.table#">
 	<cfset var rscheck="">
 
-	<cfif not foreignKeyExists(argumentCollection=arguments)>	
+	<cfif not foreignKeyExists(
+							table=arguments.fkTable,
+							column=arguments.fkColumn,
+							fkTable=arguments.table,
+							fkColumn=arguments.column
+						)>	
 		<cfset addIndex(arguments.column,arguments.table)>
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
 			ALTER TABLE #arguments.table#
@@ -803,7 +808,12 @@
 	<cfargument name="table" default="#variables.table#">
 	<cfset var rscheck="">
 
-	<cfif foreignKeyExists(argumentCollection=arguments)>
+	<cfif not foreignKeyExists(
+							table=arguments.fkTable,
+							column=arguments.fkColumn,
+							fkTable=arguments.table,
+							fkColumn=arguments.column
+						)>
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
 			ALTER TABLE #arguments.table#
 			DROP <cfif variables.configBean.getDbType() eq 'MySQL'>FOREIGN KEY<cfelse>CONSTRAINT</cfif> fk_#arguments.fktable#_#arguments.fkcolumn#
@@ -815,14 +825,18 @@
 
 <cffunction name="buildForeignKeyMetaData" access="private" output="false">
 	<cfargument name="rs">
+	<cfargument name="table">
 	<cfset var fk={}>
 	<cfset var fkArray=[]>
 
 	<cfif rs.recordcount>
 		<cfloop query="rs">
-			<cfset fk={table=source.pktable_name,
-					fkTable=source.fkTable_name,
-					fkColumn=source.fkcolumn_name}>
+
+			<cfset fk={table=arguments.table,
+					fkTable=rs.fkTable_name,
+					fkColumn=rs.fkcolumn_name,
+					deleteRule=rs.delete_rule,
+					updateRule=rs.update_rule}>
 			<cfset arrayAppend(fkArray,fk)>
 		</cfloop>
 	</cfif>
@@ -842,7 +856,7 @@
 		type="foreignKeys">
 
 
-	<cfreturn buildForeignKeyMetaData(rsCheck)>
+	<cfreturn buildForeignKeyMetaData(rsCheck,arguments.table)>
 </cffunction>
 s
 <!------------------- UTILTY --------------------->
