@@ -158,7 +158,7 @@
 
 <cffunction name="addColumn" output="false">
 	<cfargument name="column" default="">
-	<cfargument name="datatype" default="varchar" hint="varchar,char,text,longtext,datetime,tinyint,int">
+	<cfargument name="datatype" default="varchar" hint="varchar,char,text,longtext,datetime,tinyint,int,float,double">
 	<cfargument name="length" default="50">
 	<cfargument name="nullable" default="true">
 	<cfargument name="default" default="null">
@@ -260,7 +260,7 @@
 
 <cffunction name="alterColumn" output="false">
 	<cfargument name="column" default="">
-	<cfargument name="datatype" default="varchar" hint="varchar,char,text,longtext,datetime,tinyint,int">
+	<cfargument name="datatype" default="varchar" hint="varchar,char,text,longtext,datetime,tinyint,int,float,double">
 	<cfargument name="length" default="50">
 	<cfargument name="nullable" default="true">
 	<cfargument name="default" default="null">
@@ -400,6 +400,12 @@
 						<cfreturn "ntext">
 					</cfif>
 				</cfcase>
+				<cfcase value="float">
+					<cfreturn "float">
+				</cfcase>
+				<cfcase value="double">
+					<cfreturn "Decimal">
+				</cfcase>
 			</cfswitch>
 		</cfcase>
 		<cfcase value="mysql">
@@ -411,10 +417,10 @@
 					<cfreturn "char(#arguments.length#)">
 				</cfcase>
 				<cfcase value="int">
-					<cfreturn "int(11)">
+					<cfreturn "int(10)">
 				</cfcase>
 				<cfcase value="tinyint">
-					<cfreturn "int(3)">
+					<cfreturn "tinyint">
 				</cfcase>
 				<cfcase value="date,datetime">
 					<cfreturn "datetime">
@@ -424,6 +430,12 @@
 				</cfcase>
 				<cfcase value="longtext">
 					<cfreturn "longtext">
+				</cfcase>
+				<cfcase value="float">
+					<cfreturn "float">
+				</cfcase>
+				<cfcase value="double">
+					<cfreturn "double">
 				</cfcase>
 			</cfswitch>
 		</cfcase>
@@ -446,6 +458,12 @@
 				</cfcase>
 				<cfcase value="text,longtext">
 					<cfreturn "clob">
+				</cfcase>
+				<cfcase value="float">
+					<cfreturn "binary_float">
+				</cfcase>
+				<cfcase value="double">
+					<cfreturn "binary_double">
 				</cfcase>
 			</cfswitch>
 		</cfcase>
