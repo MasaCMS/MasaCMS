@@ -125,7 +125,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset site=application.settingsManager.getSite(rsSites.siteID)>
 	<cftry>
 	<cfif site.isValidDomain(domain:checkDomain, mode:"partial")>
-		<cflocation addtoken="no" url="http://#application.settingsManager.getSite(rsSites.siteID).getDomain()##application.configBean.getContext()#">
+		<cfif arguments.isAdmin>
+			<cfreturn rsSites.siteid>
+		<cfelse>
+			<cflocation addtoken="no" url="http://#application.settingsManager.getSite(rsSites.siteID).getDomain()##application.configBean.getContext()#">
+		</cfif>
 	</cfif>
 	<cfcatch></cfcatch>
 	</cftry>
