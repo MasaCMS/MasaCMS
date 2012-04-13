@@ -765,6 +765,26 @@ function setExtendedAttributes(data){
 	jQuery("#extendSetsDefault").html(r.extended);
 	jQuery("#extendSetsBasic").html(r.basic);
 
+	if(r.excludesummary){
+		if(typeof hideSummaryEditor != 'undefined'){
+			hideSummaryEditor();
+		}
+	} else{
+		if(typeof showSummaryEditor != 'undefined'){
+			showSummaryEditor();
+		}
+	}
+
+	if(r.excludebody){
+		if(typeof hideBodyEditor != 'undefined'){
+			hideBodyEditor();
+		}
+	} else{
+		if(typeof showBodyEditor != 'undefined'){
+			showBodyEditor();
+		}
+	}
+
 	checkExtendSetTargeting();
 	setHTMLEditors(context,themeAssetPath);
 	setDatePickers("#extendSetsDefault .datepicker",dtLocale);

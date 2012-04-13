@@ -51,8 +51,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset contentBean=application.contentManager.getcontentVersion(attributes.contentHistID,attributes.siteID)/>
 </cfif>
 <cfset structDelete(session.mura,"editBean")>
+
+<cfset subtype=application.classExtensionManager.getSubTypeByName(attributes.type,attributes.subtype,attributes.siteid)>
+
 <cfsavecontent variable="returnsets.extended">
-<cfset extendSets=application.classExtensionManager.getSubTypeByName(attributes.type,attributes.subtype,attributes.siteid).getExtendSets(inherit=true,container="Default",activeOnly=true) />
+<cfset extendSets=subtype.getExtendSets(inherit=true,container="Default",activeOnly=true) />
 <cfset started=false />
 <cfoutput>
 <cfif arrayLen(extendSets)>
@@ -92,7 +95,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfoutput>
 </cfsavecontent>
 <cfsavecontent variable="returnsets.basic">
-<cfset extendSets=application.classExtensionManager.getSubTypeByName(attributes.type,attributes.subtype,attributes.siteid).getExtendSets(inherit=true,container="Basic",activeOnly=true) />
+<cfset extendSets=subtype.getExtendSets(inherit=true,container="Basic",activeOnly=true) />
 <cfset started=false />
 <cfoutput>
 <cfif arrayLen(extendSets)>
@@ -129,4 +132,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 </cfoutput>
 </cfsavecontent>
+
+<cfset returnsets.excludeSummary=subType.getExcludeSummary()>
+<cfset returnsets.excludeBody=subType.getExcludeBody()>
+
 <cfoutput>#createObject("component","mura.json").encode(returnsets)#</cfoutput>

@@ -47,6 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
 <cfset pageLevelList="Page,Portal,Calendar,Gallery"/>
 <cfset extendedList="Page,Portal,Calendar,Gallery,Link,File,Component"/>
+<cfset isExtended=false>
 <cfset nodeLevelList="Page,Portal,Calendar,Gallery,Link,File"/>
 <cfset hasChangesets=application.settingsManager.getSite(attributes.siteID).getHasChangesets() and listFindNoCase("Page,Portal,Calendar,Gallery,File,Link",attributes.type)>
 <cfset request.perm=application.permUtility.getnodePerm(request.crumbdata)>
@@ -143,6 +144,14 @@ jQuery(document).ready(function(){
 });
 </script>
 </cfif> 
+
+<cfset subtype=application.classExtensionManager.getSubTypeByName(attributes.type,request.contentBean.getSubType(),attributes.siteid)>
+<cfoutput>
+<script type="text/javascript">
+var excludeSummary=#subType.getExcludeSummary()#;
+var excludeBody=#subType.getExcludeBody()#;
+</script>
+</cfoutput>
 
 <cfsilent>
 	<cfif request.contentBean.getType() eq 'File'>
@@ -571,7 +580,7 @@ jQuery(document).ready(function(){
 		<input type="hidden" name="topid" value="#attributes.topid#">
 		<input type="hidden" name="contentid" value="#request.contentBean.getContentID()#">
 		<input type="hidden" name="ptype" value="#attributes.ptype#">
-		<input type="hidden" name="type"  value="#attributes.type#">
+		<input type="hidden" name="type" value="#attributes.type#">
 		<input type="hidden" name="subtype" value="#request.contentBean.getSubType()#">
 		<input type="hidden" name="fuseaction" value="cArch.update">
 		<input type="hidden" name="startrow" value="#attributes.startrow#">

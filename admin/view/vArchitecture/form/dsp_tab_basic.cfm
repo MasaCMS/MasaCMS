@@ -85,15 +85,41 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>	
 
 <cfif attributes.type neq 'Form' and  attributes.type neq 'Component' >
-	<dt><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.summary")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.contentSummary")#</span></a> <a href="##" id="editSummaryLink" onclick="javascript: toggleDisplay('editSummary','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#'); editSummary();return false">[#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.expand")#]</a></dt>
-	<dd id="editSummary" style="display:none;">
+	<dt class="summaryContainer" style="display:none;"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.summary")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.contentSummary")#</span></a> <a href="##" id="editSummaryLink" onclick="javascript: toggleDisplay('editSummary','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#'); editSummary();return false">[#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.expand")#]</a></dt>
+	<dd id="editSummary"  class="summaryContainer" style="display:none;">
 	<cfoutput><textarea name="summary" id="summary" cols="96" rows="10"><cfif application.configBean.getValue("htmlEditorType") neq "none" or len(request.contentBean.getSummary())>#HTMLEditFormat(request.contentBean.getSummary())#<cfelse><p></p></cfif></textarea></cfoutput>
 	</dd>
+	<script>
+		hideSummaryEditor=function(){
+			if(typeof CKEDITOR.instances.summary != 'undefined'){
+				CKEDITOR.instances.summary.updateElement();
+				CKEDITOR.instances.summary.destroy();
+			}
+			jQuery(".summaryContainer").hide();
+			summaryLoaded=false;
+		}
+
+		showSummaryEditor=function(){
+			if(typeof CKEDITOR.instances.summary == 'undefined'){
+				jQuery(".summaryContainer").show();
+				jQuery("##editSummary").hide();
+			}
+		}
+		<cfif not isExtended>
+		(function($){
+			var summary=$('##summary').val();
+			if(summary!='' && summary!='<p></p>'){
+				toggleDisplay('editSummary','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');
+				editSummary();
+			}
+		}(jQuery));
+		</cfif>
+	</script>
 </cfif>
 
 <cfif attributes.type eq 'Page' or attributes.type eq 'Portal' or attributes.type eq 'Gallery' or attributes.type eq 'Calendar' or  attributes.type eq 'Component' or  attributes.type eq 'Form' >
-	<dt class="separate">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.content")#</dt>
-	<dd id="bodyContainer">
+	<dt class="separate bodyContainer">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.content")#</dt>
+	<dd class="bodyContainer" style="display:none;">
 	<cfset rsPluginEditor=application.pluginManager.getScripts("onHTMLEdit",attributes.siteID)>
 	<cfif rsPluginEditor.recordcount>
 		#application.pluginManager.renderScripts("onHTMLEdit",attributes.siteid,pluginEvent,rsPluginEditor)#
@@ -136,6 +162,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif> 
 				htmlEditorOnComplete(editorInstance); 
 			}
+
+			<cfif request.contentBean.getSummary() neq '' and request.contentBean.getSummary() neq "<p></p>">
+			toggleDisplay('editSummary','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');
+			editSummary();
+			</cfif>
 			</script>
 		<cfelseif application.configBean.getValue("htmlEditorType") eq "none">
 			<textarea name="body" id="body">#HTMLEditFormat(request.contentBean.getBody())#</textarea>
@@ -143,26 +174,49 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<textarea name="body" id="body"><cfif len(request.contentBean.getBody())>#HTMLEditFormat(request.contentBean.getBody())#<cfelse><p></p></cfif></textarea>
 			<script type="text/javascript" language="Javascript">
 			var loadEditorCount = 0;
-			jQuery('##body').ckeditor(
-				{ toolbar:<cfif attributes.type eq "Form">'Form'<cfelse>'Default'</cfif>,
-				height:'550',
-				customConfig : 'config.js.cfm' 
-				},
-				function(editorInstance){
-					htmlEditorOnComplete(editorInstance);
-					<cfif attributes.preview eq 1>
-					<cfif listFindNoCase("File",attributes.type)>
-						preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,'')#?previewid=#request.contentBean.getcontenthistid()#&siteid=#request.contentBean.getsiteid()#');
-					<cfelse>
-						openPreviewDialog('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,'')#?previewid=#request.contentBean.getcontenthistid()#&siteid=#request.contentBean.getsiteid()#');
-					</cfif>
-					</cfif>
+			<cfif attributes.preview eq 1>var previewLaunched= false;</cfif>
+
+			hideBodyEditor=function(){
+				if(typeof CKEDITOR.instances.body != 'undefined'){
+					CKEDITOR.instances.body.updateElement();
+					CKEDITOR.instances.body.destroy();
 				}
-			);
+				jQuery(".bodyContainer").hide();
+			}
+
+			showBodyEditor=function(){
+				if(typeof CKEDITOR.instances.body == 'undefined'){
+					jQuery(".bodyContainer").show();
+
+					jQuery('##body').ckeditor(
+					{ toolbar:<cfif attributes.type eq "Form">'Form'<cfelse>'Default'</cfif>,
+					height:'550',
+					customConfig : 'config.js.cfm' 
+					},
+						function(editorInstance){
+							htmlEditorOnComplete(editorInstance);
+							<cfif attributes.preview eq 1>
+								if(!previewLaunched){
+							<cfif listFindNoCase("File",attributes.type)>
+								preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,'')#?previewid=#request.contentBean.getcontenthistid()#&siteid=#request.contentBean.getsiteid()#');
+							<cfelse>
+								openPreviewDialog('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,'')#?previewid=#request.contentBean.getcontenthistid()#&siteid=#request.contentBean.getsiteid()#');
+							</cfif>
+									previewLaunched=true;
+								}
+							</cfif>
+							
+						}
+					);
+				}
+			}
+
+			<cfif not isExtended>
+				showBodyEditor();	
+			</cfif>
 			</script>
 		</cfif>
 	</cfif>
-	
 	</dd>
 	
 <cfelseif attributes.type eq 'Link'>
@@ -314,10 +368,4 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </dd>
 </dl>
 </div>
-<cfif application.configBean.getValue("htmlEditorType") neq "none" and request.contentBean.getSummary() neq '' and request.contentBean.getSummary() neq "<p></p>">
-	<script>
-	toggleDisplay('editSummary','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');
-	editSummary();
-	</script>
-</cfif>
 </cfoutput>
