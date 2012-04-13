@@ -16,7 +16,7 @@
 			<select id="btnComponents">
 				<option value="">Select a Component</option>
 				<cfloop query="rs">
-					<option value="#htmleditformat('#rs.body#')#">#rs.title#</option>
+					<option value="<cfif len(trim(rs.body))>#htmleditformat(rs.body)#<cfelse>[mura]$.dspObject('component', '#rs.contentID#')[/mura]</cfif>">#rs.title#</option>
 				</cfloop>
 			</select>
 			</cfoutput>
