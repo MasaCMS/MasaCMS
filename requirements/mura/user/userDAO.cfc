@@ -59,6 +59,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getBean" access="public" returntype="any">
+	<cfargument name="beanName" default="user">
 	<cfreturn super.getBean("user")>
 </cffunction>
 
