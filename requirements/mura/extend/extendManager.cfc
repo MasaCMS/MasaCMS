@@ -1187,6 +1187,8 @@ and tclassextendattributes.type='File'
 	<cfset destSubType.setBaseTable(sourceSubType.getBaseTable())>
 	<cfset destSubType.setBaseKeyField(sourceSubType.getBaseKeyField())>
 	<cfset destSubType.setIsActive(sourceSubType.getIsActive())>
+	<cfset destSubType.setExcludeSummary(sourceSubType.getExcludeSummary())>
+	<cfset destSubType.setExcludeBody(sourceSubType.getExcludeBody())>
 	
 	<cfset destSubType.save()>
 	

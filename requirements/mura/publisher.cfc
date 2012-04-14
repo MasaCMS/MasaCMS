@@ -2586,13 +2586,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							isActive=<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextend.isActive neq '',de('no'),de('yes'))#" value="#rstclassextend.isActive#">,
 							notes=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.notes neq '',de('no'),de('yes'))#" value="#rstclassextend.notes#">,
 							lastUpdate=#createODBCDateTime(now())#,
+							<cfif isDefined("rstclassextend.excludeSummary")>
+							excludeSummary=<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextend.excludeSummary neq '',de('no'),de('yes'))#" value="#rstclassextend.excludeSummary#">,
+							excludeBody=<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextend.excludeBody neq '',de('no'),de('yes'))#" value="#rstclassextend.excludeBody#">,
+							</cfif>
 							lastUpdateBy='System'
 							where subTypeID = <cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstclassextend.subTypeID)#">
 						</cfquery>
 					<cfelse>
 						<cfquery datasource="#arguments.toDSN#">
 							insert into tclassextend (subTypeID,siteID, baseTable, baseKeyField, dataTable, type, subType,
-							isActive, notes, lastUpdate, dateCreated, lastUpdateBy)
+							isActive, notes, lastUpdate, dateCreated, 
+							<cfif isDefined("rstclassextend.excludeSummary")>
+							excludeSummary,excludeBody
+							</cfif>
+							lastUpdateBy)
 							values
 							(
 							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstclassextend.subTypeID)#">,
@@ -2606,6 +2614,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.notes neq '',de('no'),de('yes'))#" value="#rstclassextend.notes#">,
 							#createODBCDateTime(now())#,
 							#createODBCDateTime(now())#,
+							<cfif isDefined("rstclassextend.excludeSummary")>
+							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextend.excludeSummary neq '',de('no'),de('yes'))#" value="#rstclassextend.excludeSummary#">,
+							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextend.excludeBody neq '',de('no'),de('yes'))#" value="#rstclassextend.excludeBody#">,
+							</cfif>
 							'System'
 							)
 						</cfquery>

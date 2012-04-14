@@ -65,13 +65,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <dt class="subTypeContainer"<cfif subtype.getType() eq "Site"> style="display:none;"</cfif>>Sub Type</dt>
 <dd class="subTypeContainer"<cfif subtype.getType() eq "Site"> style="display:none;"</cfif>><input name="subType" id="subType" value="#HTMLEditFormat(subType.getSubType())#" required="true" maxlength="25"/></dd>
 
-<dt class="excludeSummaryContainer">Exclude Summary</dt>
+<dt class="excludeSummaryContainer">Exclude summary when editing?</dt>
 <dd class="excludeSummaryContainer"><ul class="radioGroup"><li><input name="excludeSummary" type="radio" class="radio" value="1"<cfif subType.getExcludeSummary() eq 1 >Checked</cfif>>Yes</li><li><input name="excludeSummary" type="radio" class="radio" value="0"<cfif subType.getExcludeSummary() eq 0 >Checked</cfif>>No</li></ul></dd>
 
-<dt class="excludeBodyContainer">Exclude Body</dt>
+<dt class="excludeBodyContainer">Exclude body when editing?</dt>
 <dd class="excludeBodyContainer"> <ul class="radioGroup"><li><input name="excludeBody" type="radio" class="radio" value="1"<cfif subType.getExcludeBody() eq 1 >Checked</cfif>>Yes</li><li><input name="excludeBody" type="radio" class="radio" value="0"<cfif subType.getExcludeBody() eq 0 >Checked</cfif>>No</li></ul></dd>
 
-<dt>Active</dt>
+<dt>Is this class extension active?</dt>
 <dd><ul class="radioGroup"><li><input name="isActive" type="radio" class="radio" value="1"<cfif subType.getIsActive() eq 1 >Checked</cfif>>Yes</li><li><input name="isActive" type="radio" class="radio" value="0"<cfif subType.getIsActive() eq 0 >Checked</cfif>>No</li></ul></dd>
 </dl>
 
