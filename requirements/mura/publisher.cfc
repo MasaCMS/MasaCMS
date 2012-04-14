@@ -348,7 +348,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfquery datasource="#arguments.toDSN#">
 					insert into tcontent (Active,Approved,audience,Body,ContentHistID,ContentID,Credits,Display,DisplayStart,DisplayStop,featureStart,featureStop,FileID,Filename,forceSSL,inheritObjects,isFeature,IsLocked,IsNav,keyPoints,
 					lastUpdate,lastUpdateBy,lastUpdateByID,MenuTitle,MetaDesc,MetaKeyWords,moduleAssign,ModuleID,nextN,Notes,OrderNo,ParentID,displayTitle,ReleaseDate,RemoteID,RemotePubDate,RemoteSource,RemoteSourceURL,RemoteURL,responseChart,
-					responseDisplayFields,responseMessage,responseSendTo,Restricted,RestrictGroups,searchExclude,SiteID,sortBy,sortDirection,Summary,Target,TargetParams,Template,Title,Type,subType,Path,tags,doCache,created,urltitle,htmltitle,mobileExclude,changesetID
+					responseDisplayFields,responseMessage,responseSendTo,Restricted,RestrictGroups,searchhas,SiteID,sortBy,sortDirection,Summary,Target,TargetParams,Template,Title,Type,subType,Path,tags,doCache,created,urltitle,htmltitle,mobilehas,changesetID
 					<!--- Check for new fields added in 5.5 --->
 					<cfif isdefined("rstContent.imageSize")>
 					,imageSize,imageHeight,imageWidth,childTemplate
@@ -409,7 +409,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.responseSendTo neq '',de('no'),de('yes'))#" value="#rstContent.responseSendTo#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstContent.Restricted),de(rstContent.Restricted),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.RestrictGroups neq '',de('no'),de('yes'))#" value="#rstContent.RestrictGroups#">,
-					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstContent.searchExclude),de(rstContent.searchExclude),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstContent.searchhas),de(rstContent.searchhas),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.sortBy neq '',de('no'),de('yes'))#" value="#rstContent.sortBy#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.sortDirection neq '',de('no'),de('yes'))#" value="#rstContent.sortDirection#">,
@@ -426,7 +426,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstContent.created),de('no'),de('yes'))#" value="#rstContent.created#">,
 					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstContent.urlTitle neq '',de('no'),de('yes'))#" value="#rstContent.urltitle#">,
 					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstContent.htmltitle neq '',de('no'),de('yes'))#" value="#rstContent.htmltitle#">,
-					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstContent.mobileExclude),de(rstContent.mobileExclude),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstContent.mobilehas),de(rstContent.mobilehas),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.changesetID neq '',de('no'),de('yes'))#" value="#rstContent.changesetID#">
 					<!--- Check for new fields added in 5.5 --->
 					<cfif isdefined("rstContent.imageSize")>
@@ -666,7 +666,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					restricted,restrictGroups,siteID,Type,version,sortBy,sortDirection,nextN,displayName,displayRatings,displayComments,altname,remoteID,remoteSourceURL,remotePubDate
 					<!--- Check for new fields added in 5.5 --->
 					<cfif isdefined("rstcontentfeeds.imageSize")>
-					,imageSize,imageHeight,imageWidth,showExcludeSearch,showNavOnly,displaylist
+					,imageSize,imageHeight,imageWidth,showhasSearch,showNavOnly,displaylist
 					</cfif>
 					)
 					values
@@ -707,7 +707,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.imageSize neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.imageSize#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.imageHeight neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.imageHeight#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.imageWidth neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.imageWidth#">,
-					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.showExcludeSearch),de(rstcontentfeeds.showExcludeSearch),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.showhasSearch),de(rstcontentfeeds.showhasSearch),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.showNavOnly),de(rstcontentfeeds.showNavOnly),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.displaylist neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.displaylist#">
 					</cfif>		
@@ -2586,9 +2586,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							isActive=<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextend.isActive neq '',de('no'),de('yes'))#" value="#rstclassextend.isActive#">,
 							notes=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.notes neq '',de('no'),de('yes'))#" value="#rstclassextend.notes#">,
 							lastUpdate=#createODBCDateTime(now())#,
-							<cfif isDefined("rstclassextend.excludeSummary")>
-							excludeSummary=<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextend.excludeSummary neq '',de('no'),de('yes'))#" value="#rstclassextend.excludeSummary#">,
-							excludeBody=<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextend.excludeBody neq '',de('no'),de('yes'))#" value="#rstclassextend.excludeBody#">,
+							<cfif isDefined("rstclassextend.hasSummary")>
+							hasSummary=<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextend.hasSummary neq '',de('no'),de('yes'))#" value="#rstclassextend.hasSummary#">,
+							hasBody=<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextend.hasBody neq '',de('no'),de('yes'))#" value="#rstclassextend.hasBody#">,
 							</cfif>
 							lastUpdateBy='System'
 							where subTypeID = <cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstclassextend.subTypeID)#">
@@ -2597,8 +2597,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfquery datasource="#arguments.toDSN#">
 							insert into tclassextend (subTypeID,siteID, baseTable, baseKeyField, dataTable, type, subType,
 							isActive, notes, lastUpdate, dateCreated, 
-							<cfif isDefined("rstclassextend.excludeSummary")>
-							excludeSummary,excludeBody
+							<cfif isDefined("rstclassextend.hasSummary")>
+							hasSummary,hasBody
 							</cfif>
 							lastUpdateBy)
 							values
@@ -2614,9 +2614,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.notes neq '',de('no'),de('yes'))#" value="#rstclassextend.notes#">,
 							#createODBCDateTime(now())#,
 							#createODBCDateTime(now())#,
-							<cfif isDefined("rstclassextend.excludeSummary")>
-							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextend.excludeSummary neq '',de('no'),de('yes'))#" value="#rstclassextend.excludeSummary#">,
-							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextend.excludeBody neq '',de('no'),de('yes'))#" value="#rstclassextend.excludeBody#">,
+							<cfif isDefined("rstclassextend.hasSummary")>
+							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextend.hasSummary neq '',de('no'),de('yes'))#" value="#rstclassextend.hasSummary#">,
+							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextend.hasBody neq '',de('no'),de('yes'))#" value="#rstclassextend.hasBody#">,
 							</cfif>
 							'System'
 							)
@@ -3102,7 +3102,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									
 									<cfquery datasource="#arguments.todsn#">
 									insert into tcontent (siteID,moduleID,contentID,contentHistID,parentID,type,subType,title,
-									display,approved,isNav,active,forceSSL,searchExclude) values (
+									display,approved,isNav,active,forceSSL,searchhas) values (
 									<cfqueryparam cfsqltype="cf_sql_varchar" value="#s#">,
 									<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#">,
 									<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#">,

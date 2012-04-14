@@ -148,8 +148,8 @@ jQuery(document).ready(function(){
 <cfset subtype=application.classExtensionManager.getSubTypeByName(attributes.type,request.contentBean.getSubType(),attributes.siteid)>
 <cfoutput>
 <script type="text/javascript">
-var excludeSummary=#subType.getExcludeSummary()#;
-var excludeBody=#subType.getExcludeBody()#;
+var hasSummary=#subType.getHasSummary()#;
+var hasBody=#subType.getHasBody()#;
 </script>
 </cfoutput>
 

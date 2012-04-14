@@ -101,15 +101,17 @@
 			table="#arguments.table#"
 			type="columns">	
 	<cfelse>
+		
 		<cfquery
 			name="rs" 
 			datasource="#variables.configBean.getDatasource()#"
 			username="#variables.configBean.getDbUsername()#"
 			password="#variables.configBean.getDbPassword()#">
-				SELECT column_name, data_length column_size, data_type type_name
+				SELECT column_name, data_length column_size, data_type type_name, data_default column_default_value, nullable is_nullable
 				FROM user_tab_cols
 				WHERE table_name=UPPER('#arguments.table#')
 		</cfquery>
+		
 	</cfif>
 	
 	<cfreturn transformColumnMetaData(rs,arguments.table)>
@@ -157,7 +159,6 @@
 	</cfif>
 
 	<cfif not structIsEmpty(existing)
-		and not arguments.autoincrement
 		and (
 			existing.dataType neq arguments.datatype
 			or (
@@ -490,7 +491,7 @@
 			</cfcase>
 		</cfswitch>
 
-		<cfif rs.is_nullable>
+		<cfif rs.is_nullable eq "y" or (isBoolean(rs.is_nullable) and rs.is_nullable)>
 			<cfset columnsArgs.nullable=true>
 		<cfelse>
 			<cfset columnsArgs.nullable=false>
@@ -500,7 +501,7 @@
 			<cfset columnsArgs.default=rs.column_default_value>
 		</cfif>
 
-		<cfif not rs.is_nullable and rs.is_primarykey and rs.type_name eq "int">
+		<cfif not columnsArgs.nullable and columnsArgs.datatype eq "int" and isDefined('rs.is_primarykey') and rs.is_primarykey>
 			<cfset columnsArgs.autoincrement=true>
 		</cfif>
 

@@ -38,6 +38,6 @@
 
 <cfscript>
 	dbUtility.setTable("tclassextend");
-	dbUtility.addColumn(column="excludeSummary",datatype="tinyint",default=0);
-	dbUtility.addColumn(column="excludeBody",datatype="tinyint",default=0);
+	dbUtility.addColumn(column="hasSummary",datatype="tinyint",default=1);
+	dbUtility.addColumn(column="hasBody",datatype="tinyint",default=1);
 </cfscript>

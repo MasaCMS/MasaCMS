@@ -54,8 +54,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.baseKeyField=""/>
 <cfset variables.instance.dataTable="tclassextenddata"/>
 <cfset variables.instance.isActive=1/>
-<cfset variables.instance.excludeSummary=0/>
-<cfset variables.instance.excludeBody=0/>
+<cfset variables.instance.hasSummary=1/>
+<cfset variables.instance.hasBody=1/>
 <cfset variables.instance.isActive=1/>
 <cfset variables.instance.sets=""/>
 <cfset variables.instance.isNew=1/>
@@ -83,7 +83,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rs=""/>
 		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		select subtypeid,siteID,baseTable,baseKeyField,dataTable,type,subtype,
-		isActive,notes,lastUpdate,dateCreated,lastUpdateBy,excludeSummary,excludeBody 
+		isActive,notes,lastUpdate,dateCreated,lastUpdateBy,hasSummary,hasBody 
 		from tclassextend 
 		where subTypeID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getsubtypeID()#">
 		or (
@@ -116,8 +116,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset setDataTable(arguments.data.DataTable) />
 			<cfset setbaseKeyField(arguments.data.baseKeyField) />
 			<cfset setIsActive(arguments.data.isActive) />
-			<cfset setExcludeSummary(arguments.data.excludeSummary) />
-			<cfset setExcludeBody(arguments.data.excludeBody) />
+			<cfset setHasSummary(arguments.data.hasSummary) />
+			<cfset setHasBody(arguments.data.hasBody) />
 			
 		<cfelseif isStruct(arguments.data)>
 		
@@ -229,26 +229,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getexcludeSummary" returntype="numeric" access="public" output="false">
-	<cfreturn variables.instance.excludeSummary />
+<cffunction name="getHasSummary" returntype="numeric" access="public" output="false">
+	<cfreturn variables.instance.hasSummary />
 </cffunction>
 
-<cffunction name="setexcludeSummary" access="public" output="false">
-	<cfargument name="excludeSummary"/>
-	<cfif isNumeric(arguments.excludeSummary)>
-		<cfset variables.instance.excludeSummary = arguments.excludeSummary />
+<cffunction name="setHasSummary" access="public" output="false">
+	<cfargument name="hasSummary"/>
+	<cfif isNumeric(arguments.hasSummary)>
+		<cfset variables.instance.hasSummary = arguments.hasSummary />
 	</cfif>
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getexcludeBody" returntype="numeric" access="public" output="false">
-	<cfreturn variables.instance.excludeBody />
+<cffunction name="getHasBody" returntype="numeric" access="public" output="false">
+	<cfreturn variables.instance.hasBody />
 </cffunction>
 
-<cffunction name="setexcludeBody" access="public" output="false">
-	<cfargument name="excludeBody"/>
-	<cfif isNumeric(arguments.excludeBody)>
-		<cfset variables.instance.excludeBody = arguments.excludeBody />
+<cffunction name="setHasBody" access="public" output="false">
+	<cfargument name="hasBody"/>
+	<cfif isNumeric(arguments.hasBody)>
+		<cfset variables.instance.hasBody = arguments.hasBody />
 	</cfif>
 	<cfreturn this>
 </cffunction>
@@ -346,8 +346,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		baseKeyField = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getbaseKeyField() neq '',de('no'),de('yes'))#" value="#getbaseKeyField()#">,
 		dataTable=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getDataTable() neq '',de('no'),de('yes'))#" value="#getDataTable()#">,
 		isActive = #getIsActive()#,
-		excludeSummary = #getExcludeSummary()#,
-		excludeBody = #getExcludeBody()#
+		hasSummary = #getHasSummary()#,
+		hasBody = #getHasBody()#
 		where subTypeID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSubTypeID()#">
 		</cfquery>
 		
@@ -366,7 +366,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 	
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		Insert into tclassextend (subTypeID,siteID,type,subType,baseTable,baseKeyField,dataTable,isActive,excludeSummary,excludeBody) 
+		Insert into tclassextend (subTypeID,siteID,type,subType,baseTable,baseKeyField,dataTable,isActive,hasSummary,hasBody) 
 		values(
 		<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getsubTypeID()#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getSiteID() neq '',de('no'),de('yes'))#" value="#getSiteID()#">,
@@ -376,8 +376,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getbaseKeyField() neq '',de('no'),de('yes'))#" value="#getbaseKeyField()#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getDataTable() neq '',de('no'),de('yes'))#" value="#getDataTable()#">,
 		#getIsActive()#,
-		#getExcludeSummary()#,
-		#getExcludeBody()#)
+		#getHasSummary()#,
+		#getHasBody()#)
 		</cfquery>
 		<!---
 		<cfset extendSetBean=getExtendSetBean() />

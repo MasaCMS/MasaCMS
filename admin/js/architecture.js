@@ -765,7 +765,7 @@ function setExtendedAttributes(data){
 	jQuery("#extendSetsDefault").html(r.extended);
 	jQuery("#extendSetsBasic").html(r.basic);
 
-	if(r.excludesummary){
+	if(!r.hassummary){
 		if(typeof hideSummaryEditor != 'undefined'){
 			hideSummaryEditor();
 		}
@@ -775,7 +775,7 @@ function setExtendedAttributes(data){
 		}
 	}
 
-	if(r.excludebody){
+	if(!r.hasbody){
 		if(typeof hideBodyEditor != 'undefined'){
 			hideBodyEditor();
 		}
