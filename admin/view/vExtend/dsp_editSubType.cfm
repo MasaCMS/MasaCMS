@@ -56,7 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <form novalidate="novalidate" name="subTypeFrm" method="post" action="index.cfm" onsubit="return validateForm(this);">
 <dl class="oneColumn separate">
 <dt class="first">Base Type</dt>
-<dd><select name="typeSelector" required="true" message="The BASE CLASS field is required." onchange="setBaseInfo(this.value);">
+<dd><select name="typeSelector" id="typeSelector" required="true" message="The BASE CLASS field is required." onchange="setBaseInfo(this.value);">
 	<option value="">Select</option>
 	<cfloop list="#typeList#" index="t"><option value="#t#" <cfif listFirst(t,'^') eq subType.getType()>selected</cfif>>#application.classExtensionManager.getTypeAsString(listFirst(t,'^'))#</option></cfloop>
 	</select>
@@ -64,9 +64,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<input name="type" value="#HTMLEditFormat(subType.getType())#" required="true"/> ---></dd>
 <dt class="subTypeContainer"<cfif subtype.getType() eq "Site"> style="display:none;"</cfif>>Sub Type</dt>
 <dd class="subTypeContainer"<cfif subtype.getType() eq "Site"> style="display:none;"</cfif>><input name="subType" id="subType" value="#HTMLEditFormat(subType.getSubType())#" required="true" maxlength="25"/></dd>
-<dt>Active</dt>
+
+<dt class="hasSummaryContainer">Show summary when editing?</dt>
+<dd class="hasSummaryContainer"><ul class="radioGroup"><li><input name="hasSummary" type="radio" class="radio" value="1"<cfif subType.gethasSummary() eq 1 >Checked</cfif>>Yes</li><li><input name="hasSummary" type="radio" class="radio" value="0"<cfif subType.gethasSummary() eq 0 >Checked</cfif>>No</li></ul></dd>
+
+<dt class="hasBodyContainer">Show body when editing?</dt>
+<dd class="hasBodyContainer"> <ul class="radioGroup"><li><input name="hasBody" type="radio" class="radio" value="1"<cfif subType.gethasBody() eq 1 >Checked</cfif>>Yes</li><li><input name="hasBody" type="radio" class="radio" value="0"<cfif subType.gethasBody() eq 0 >Checked</cfif>>No</li></ul></dd>
+
+<dt>Is this class extension active?</dt>
 <dd><ul class="radioGroup"><li><input name="isActive" type="radio" class="radio" value="1"<cfif subType.getIsActive() eq 1 >Checked</cfif>>Yes</li><li><input name="isActive" type="radio" class="radio" value="0"<cfif subType.getIsActive() eq 0 >Checked</cfif>>No</li></ul></dd>
 </dl>
+
 <div id="actionButtons">
 <cfif not len(attributes.subTypeID)>
 <input type="button" class="submit" onclick="submitForm(document.forms.subTypeFrm,'add');" value="Add" /><input type=hidden name="subTypeID" value="#createuuid()#"><cfelse> <input type="button" class="submit" onclick="submitForm(document.forms.subTypeFrm,'delete','Delete Class Extension?');" value="Delete" /> <input type="button" class="submit" onclick="submitForm(document.forms.subTypeFrm,'update');" value="Update" />
@@ -80,4 +88,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <input type="hidden" name="dataTable" value="#subType.getDataTable()#" />
 
 </form>
+
+<script>
+setBaseInfo(jQuery('##typeSelector').val());
+</script>
 </cfoutput>

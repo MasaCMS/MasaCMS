@@ -776,6 +776,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rsCheck ="" />
 	<cfset var rsSubCheck ="" />
 	<cfset var rsUpdates ="" />
+	<cfset var dbUtility=getBean("dbUtility") />
 	<cfset var i ="" />
 	
 	<cfdirectory action="list" directory="#getDirectoryFromPath(getCurrentTemplatePath())#dbUpdates" name="rsUpdates" filter="*.cfm" sort="name asc">

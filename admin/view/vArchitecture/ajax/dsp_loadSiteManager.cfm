@@ -171,7 +171,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
        
        <a  class="add" href="javascript:;" onmouseover="showMenu('newContentMenu','#newcontent#',this,'#request.rstop.contentid#','#attributes.topid#','#request.rstop.parentid#','#attributes.siteid#','#request.rstop.type#');">&nbsp;</a>
    
-       <cfif request.rstop.haskids>
+       <cfif isNumeric(request.rstop.haskids) and request.rstop.haskids>
 	    	<span class="hasChildren-open" onclick="loadSiteManager('#JSStringFormat(attributes.siteID)#','#JSStringFormat(attributes.topid)#','#JSStringFormat(attributes.moduleid)#','#JSStringFormat(attributes.sortby)#','#JSStringFormat(attributes.sortdirection)#','#JSStringFormat(request.rstop.type)#',1);"></span>
 		</cfif>
         <cfif not listFindNoCase('none,read',perm)>

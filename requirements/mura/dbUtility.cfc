@@ -13,6 +13,25 @@
 		<cfreturn this>
 </cffunction>
 
+<cffunction name="setUtility" output="false">
+	<cfargument name="utility">
+		<cfset variables.utility=arguments.utility>
+		<cfreturn this>
+</cffunction>
+
+<cffunction name="version" output="false">
+	<cfset var rscheck="">
+
+	<cfdbinfo 
+		name="rsCheck"
+		datasource="#variables.configBean.getDatasource()#"
+		username="#variables.configBean.getDbUsername()#"
+		password="#variables.configBean.getDbPassword()#"
+		type="version">
+
+	<cfreturn variables.utility.queryRowToStruct(rscheck,1)>
+</cffunction>
+
 <!------------- TABLE ----------------->
 <cffunction name="setTable" output="false">
 	<cfargument name="table">
@@ -60,7 +79,7 @@
 		type="tables">
 
 	<cfloop query="rscheck">
-		<cfset arrayAppend(tableArray, queryRowToStruct(rsCheck,rsCheck.currentRow))>
+		<cfset arrayAppend(tableArray, variables.utility.queryRowToStruct(rsCheck,rsCheck.currentRow))>
 	</cfloop>
 
 	<cfreturn tableArray>
@@ -82,15 +101,17 @@
 			table="#arguments.table#"
 			type="columns">	
 	<cfelse>
+		
 		<cfquery
 			name="rs" 
 			datasource="#variables.configBean.getDatasource()#"
 			username="#variables.configBean.getDbUsername()#"
 			password="#variables.configBean.getDbPassword()#">
-				SELECT column_name, data_length column_size, data_type type_name
+				SELECT column_name, data_length column_size, data_type type_name, data_default column_default_value, nullable is_nullable
 				FROM user_tab_cols
 				WHERE table_name=UPPER('#arguments.table#')
 		</cfquery>
+		
 	</cfif>
 	
 	<cfreturn transformColumnMetaData(rs,arguments.table)>
@@ -138,7 +159,6 @@
 	</cfif>
 
 	<cfif not structIsEmpty(existing)
-		and not arguments.autoincrement
 		and (
 			existing.dataType neq arguments.datatype
 			or (
@@ -471,7 +491,7 @@
 			</cfcase>
 		</cfswitch>
 
-		<cfif rs.is_nullable>
+		<cfif rs.is_nullable eq "y" or (isBoolean(rs.is_nullable) and rs.is_nullable)>
 			<cfset columnsArgs.nullable=true>
 		<cfelse>
 			<cfset columnsArgs.nullable=false>
@@ -481,7 +501,7 @@
 			<cfset columnsArgs.default=rs.column_default_value>
 		</cfif>
 
-		<cfif not rs.is_nullable and rs.is_primarykey and rs.type_name eq "int">
+		<cfif not columnsArgs.nullable and columnsArgs.datatype eq "int" and isDefined('rs.is_primarykey') and rs.is_primarykey>
 			<cfset columnsArgs.autoincrement=true>
 		</cfif>
 
@@ -505,7 +525,7 @@
 		</cfloop>
 	</cfif>
 
-	<cfreturn {}>
+	<cfreturn structNew()>
 </cffunction>
 
 <!---------------- INDEXES --------------------------->
@@ -647,7 +667,7 @@
 		</cfloop>
 	</cfif>
 
-	<cfreturn {}>
+	<cfreturn structNew()>
 </cffunction>
 
 <!--------- PRIMARY KEY -------------------->
@@ -791,7 +811,7 @@
 		</cfloop>
 	</cfif>
 
-	<cfreturn {}>
+	<cfreturn structNew()>
 </cffunction>
 
 <cffunction name="addForeignKey" output="false">
@@ -882,54 +902,5 @@
 
 	<cfreturn buildForeignKeyMetaData(rsCheck,arguments.table)>
 </cffunction>
-s
-<!------------------- UTILTY --------------------->
-
-<cffunction name="queryRowToStruct" access="public" output="false" returntype="struct">
-		<cfargument name="qry" type="query" required="true">
-		
-		<cfscript>
-			/**
-			 * Makes a row of a query into a structure.
-			 * 
-			 * @param query 	 The query to work with. 
-			 * @param row 	 Row number to check. Defaults to row 1. 
-			 * @return Returns a structure. 
-			 * @author Nathan Dintenfass (nathan@changemedia.com) 
-			 * @version 1, December 11, 2001 
-			 */
-			//by default, do this to the first row of the query
-			var row = 1;
-			//a var for looping
-			var ii = 1;
-			//the cols to loop over
-			var cols = listToArray(qry.columnList);
-			//the struct to return
-			var stReturn = structnew();
-			//if there is a second argument, use that for the row number
-			if(arrayLen(arguments) GT 1)
-				row = arguments[2];
-			//loop over the cols and build the struct from the query row
-			for(ii = 1; ii lte arraylen(cols); ii = ii + 1){
-				stReturn[cols[ii]] = qry[cols[ii]][row];
-			}		
-			//return the struct
-			return stReturn;
-		</cfscript>
-	</cffunction>
-
-<cffunction name="version" output="false">
-	<cfset var rscheck="">
-
-	<cfdbinfo 
-		name="rsCheck"
-		datasource="#variables.configBean.getDatasource()#"
-		username="#variables.configBean.getDbUsername()#"
-		password="#variables.configBean.getDbPassword()#"
-		type="version">
-
-	<cfreturn queryRowToStruct(rscheck,1)>
-</cffunction>
-
 
 </cfcomponent>

@@ -1,6 +1,4 @@
-/.project
-/.settings
-/.DS_Store
+# Folders and Files to ignore
 /WEB-INF
 /config/settings.ini.cfm
 /config/version.cfm
@@ -20,7 +18,20 @@
 /settings.xml
 /logs
 /crossdomain.xml
-/.rdsTempFiles
-/.esproj
-/muracms.sublime-project
-/muracms.sublime-workspace
+compiled/
+*.less.css
+
+# OS or Editor folders
+*~
+.DS_Store
+._*
+Thumbs.db
+.cache
+.project
+.rdsTempFiles
+.settings
+.tmproj
+*.esproj
+*.sublime-project
+*.sublime-workspace
+*_notes/

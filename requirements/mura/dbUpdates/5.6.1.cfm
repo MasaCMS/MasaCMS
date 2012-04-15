@@ -36,4 +36,8 @@
 	</cfloop>
 </cfif>
 
-
+<cfscript>
+	dbUtility.setTable("tclassextend");
+	dbUtility.addColumn(column="hasSummary",datatype="tinyint",default=1);
+	dbUtility.addColumn(column="hasBody",datatype="tinyint",default=1);
+</cfscript>
