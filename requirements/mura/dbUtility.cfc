@@ -506,7 +506,7 @@
 		</cfif>
 
 		<cfif len(columnsArgs.default) and columnsArgs.default neq "null"
-			and listFindNoCase("tinyint,int",columnsArgs.datatype)>
+			and listFindNoCase("tinyint,int,float,double",columnsArgs.datatype)>
 			<cfset columnsArgs.default=_parseInt(columnsArgs.default)>
 		</cfif>
 
