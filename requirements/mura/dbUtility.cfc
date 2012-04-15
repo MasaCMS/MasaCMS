@@ -525,7 +525,7 @@
 		</cfloop>
 	</cfif>
 
-	<cfreturn {}>
+	<cfreturn structNew()>
 </cffunction>
 
 <!---------------- INDEXES --------------------------->
@@ -667,7 +667,7 @@
 		</cfloop>
 	</cfif>
 
-	<cfreturn {}>
+	<cfreturn structNew()>
 </cffunction>
 
 <!--------- PRIMARY KEY -------------------->
@@ -811,7 +811,7 @@
 		</cfloop>
 	</cfif>
 
-	<cfreturn {}>
+	<cfreturn structNew()>
 </cffunction>
 
 <cffunction name="addForeignKey" output="false">
