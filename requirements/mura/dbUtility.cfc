@@ -505,6 +505,11 @@
 			<cfset columnsArgs.default=rs.column_default_value>
 		</cfif>
 
+		<cfif len(columnsArgs.default) and columnsArgs.default neq "null"
+			and listFindNoCase("tinyint,int",columnsArgs.datatype)>
+			<cfset columnsArgs.default=_parseInt(columnsArgs.default)>
+		</cfif>
+
 		<cfif not columnsArgs.nullable and columnsArgs.datatype eq "int" and isDefined('rs.is_primarykey') and rs.is_primarykey>
 			<cfset columnsArgs.autoincrement=true>
 		</cfif>
@@ -906,5 +911,25 @@
 
 	<cfreturn buildForeignKeyMetaData(rsCheck,arguments.table)>
 </cffunction>
+
+<cfscript>
+/**
+ * Parse out the first set of numbers in a string.
+ * 
+ * @param string      String to parse. (Required)
+ * @return Returns a string. 
+ * @author Marco G. Williams (email@marcogwilliams.com) 
+ * @version 1, May 22, 2003 
+ */
+function _parseInt(String){
+    var NewString = "";
+    var i = 1;
+
+    for(i=1; i lt Len(String); i = i + 1) {
+        if( isNumeric( mid(String,i,1) ) ) { newString = val( mid( String,i,Len(String) ) ); break;}
+    }
+    return NewString;
+}
+</cfscript>
 
 </cfcomponent>
