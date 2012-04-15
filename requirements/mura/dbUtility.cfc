@@ -161,6 +161,7 @@
 	<cfif not structIsEmpty(existing)
 		and (
 			existing.dataType neq arguments.datatype
+			and not arguments.autoincrement
 			or (
 				listFindNoCase("char,varchar",arguments.datatype) 
 				and arguments.length neq existing.length
@@ -169,7 +170,10 @@
 			or existing.default neq arguments.default
 			)
 		>
+			<cftry>
 			<cfset alterColumn(argumentCollection=arguments)>
+			<cfcatch></cfcatch>
+			</cftry>
 
 	<cfelseif not hasTable or structIsEmpty(existing)>
 		<cfswitch expression="#variables.configBean.getDbType()#">
