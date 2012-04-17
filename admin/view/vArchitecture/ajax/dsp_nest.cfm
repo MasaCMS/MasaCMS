@@ -63,7 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfsilent>
 <cfset request.menulist=listappend(request.menulist,attributes.rsnest.contentid)>
 
-<cfif attributes.rsnest.hasKids> 
+<cfif isNumeric(attributes.rsnest.hasKids) and attributes.rsnest.hasKids> 
 	<cfset rsNext=application.contentManager.getNest(attributes.rsNest.contentid,attributes.siteid,attributes.rsNest.sortBy,attributes.rsNest.sortDirection)>
 	<cfset isMore=rsNext.recordcount gt attributes.nextN>
 <cfelse>
@@ -127,7 +127,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<!---<cfif (attributes.rsNest.type eq 'Page') or  (attributes.rsNest.type eq 'Portal')  or  (attributes.rsNest.type eq 'Calendar') or (attributes.rsNest.type eq 'Gallery')>--->
 	<a class="add" href="javascript:;" onmouseover="showMenu('newContentMenu','#newcontent#',this,'#attributes.rsNest.contentid#','#attributes.topid#','#attributes.rsNest.parentid#','#attributes.siteid#','#attributes.rsNest.type#');"></a>
 	
-	<cfif attributes.rsNest.haskids>
+	<cfif isNumeric(attributes.rsnest.hasKids) and attributes.rsNest.haskids>
 		<span <cfif isOpenSection>class="hasChildren-open"<cfelse>class="hasChildren-closed"</cfif> onclick="return loadSiteSection( jQuery(this).parents('li:first') , 1 , true);"></span>
 	</cfif>
 	<cfif not listFindNoCase('none,read',verdict)>
@@ -231,7 +231,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</ul>
 	</dd>
 </dl>
-   <cfif ((attributes.rsNest.hasKids and attributes.nestlevel lt attributes.viewDepth)
+   <cfif ((isNumeric(attributes.rsnest.hasKids) and attributes.rsNest.hasKids and attributes.nestlevel lt attributes.viewDepth)
    	 or isOpenSection) and rsNext.recordcount>
    <cf_dsp_nest parentid="#attributes.rsNest.contentid#"  
    locking="#attributes.locking#" 

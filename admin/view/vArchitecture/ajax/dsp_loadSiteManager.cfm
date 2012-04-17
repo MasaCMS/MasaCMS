@@ -270,7 +270,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         </ul></dd>
       </dl>
       
-      <cfif request.rstop.hasKids and rsNext.recordcount>
+      <cfif isNumeric(request.rstop.haskids) and request.rstop.hasKids and rsNext.recordcount>
         <cf_dsp_nest topid="#attributes.topid#" parentid="#attributes.topid#"  rsnest="#rsNext#" locking="#application.settingsManager.getSite(attributes.siteid).getlocking()#" nestlevel="1" perm="#perm#" siteid="#attributes.siteid#" moduleid="#attributes.moduleid#" restricted="#r#" viewdepth="1" nextn="#session.mura.nextN#" startrow="#attributes.startrow#" sortBy="#attributes.sortBy#" sortDirection="#attributes.sortDirection#" pluginEvent="#pluginEvent#">
       </cfif>
       </li>

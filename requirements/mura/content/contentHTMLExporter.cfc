@@ -71,7 +71,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="exportDir" type="string" required="true" />
 
 	<cfset var $=getBean("MuraScope").init(arguments.siteID)>
-	
+
 	<cfif listFind("/,\",right(arguments.exportDir,1))>
 		<cfset arguments.exportDir=left(arguments.exportDir, len(arguments.exportDir)-1 )>
 	</cfif>
@@ -94,11 +94,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset variables.fileWriter.createDir("#arguments.exportDir##$.globalConfig('context')#/#arguments.siteID#/includes")>
 	<cfset variables.fileWriter.createDir("#arguments.exportDir##$.globalConfig('context')#/#arguments.siteID#/includes/themes")>
-	<cfset variables.fileWriter.createDir("#arguments.exportDir##$.globalConfig('context')#/#arguments.siteID#/includes/themes/#$.siteConfig('theme')#")>
+
+	<!---<cfset variables.fileWriter.createDir("#arguments.exportDir##$.globalConfig('context')#/#arguments.siteID#/includes/themes/#$.siteConfig('theme')#")>--->
+	<cfset variables.fileWriter.copyDir(expandPath("#$.siteConfig('themeIncludePath')#/"), "#arguments.exportDir##$.globalConfig('context')#/#arguments.siteID#/includes/themes/#$.siteConfig('theme')#/") />
 	
 	<cfset variables.fileWriter.createDir("#arguments.exportDir##$.globalConfig('context')#/#arguments.siteID#/cache")>
 	<cfset variables.fileWriter.createDir("#arguments.exportDir##$.globalConfig('context')#/#arguments.siteID#/cache/file")>
 
+	<!---
 	<cfif directoryExists("#$.siteConfig('themeIncludePath')#/css")>
 		<cfset variables.fileWriter.copyDir(expandPath("#$.siteConfig('themeIncludePath')#/css/"), "#arguments.exportDir##$.globalConfig('context')#/#arguments.siteID#/includes/themes/#$.siteConfig('theme')#/css/") />
 	</cfif>
@@ -111,6 +114,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif directoryExists("#$.siteConfig('themeIncludePath')#/js")>
 		<cfset variables.fileWriter.copyDir(expandPath("#$.siteConfig('themeIncludePath')#/js/"), "#arguments.exportDir##$.globalConfig('context')#/#arguments.siteID#/includes/themes/#$.siteConfig('theme')#/js/") />
 	</cfif>
+	--->
 	
 	<cfset traverseSite('00000000000000000000000000000000END', arguments.siteid, arguments.exportDir) />
 	
@@ -165,8 +169,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif not listFindNoCase("Link,File",arguments.contentBean.getType())>		
 			<cfset request.currentFilename = arguments.contentBean.getFilename()>
-			<cfset request.currentFilenameAdjusted=request.currentFilename>
+			<cfset request.currentFilenameAdjusted=request.currentFilename>		
+			<cfset request.contentBean=arguments.contentBean>
+
 			<cfset request.servletEvent = createObject("component","mura.servletEvent").init() />
+			<cfset structDelete(request.servletEvent.getAllValues(),"crumbdata")>
 			<cfset fileOutput=variables.Mura.doRequest(request.servletEvent)>
 			
 			<cfif variables.configBean.getSiteIDInURLS()>

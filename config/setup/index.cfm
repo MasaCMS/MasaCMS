@@ -696,12 +696,12 @@ if (server.ColdFusion.ProductName CONTAINS "Railo"){
 	</dd>
 	<!--- <cfdump var="#form.production_siteidinurls#"> --->
 	<dt><a href="" class="tooltip">Use SiteIDs in URLs<span>When SiteIDs are not in URLs you must ensure that each site has it's own unique domain.</span></a></dt>
-	<dd><input type="radio" name="siteidinurls" value="1" id="siteidinurls_on"<cfif yesNoFormat(form.production_siteidinurls)> checked</cfif>> Yes 
-	    <input type="radio" name="siteidinurls" value="0" id="siteidinurls_off"<cfif not yesNoFormat(form.production_siteidinurls)> checked</cfif>> No      
+	<dd><input type="radio" name="production_siteidinurls" value="1" id="siteidinurls_on"<cfif yesNoFormat(form.production_siteidinurls)> checked</cfif>> Yes 
+	    <input type="radio" name="production_siteidinurls" value="0" id="siteidinurls_off"<cfif not yesNoFormat(form.production_siteidinurls)> checked</cfif>> No      
 	</dd>
 	<dt><a href="" class="tooltip">Use "index.cfm" in URLS<span>If set to "No" you must ensure that you have properly configured your webserver's URL rewriting. Toggling this alone will not remove index.cfm from yoru URLs.</span></a></dt>
-	<dd><input type="radio" class="radio" name="indexfileinurls" value="1" id="indexfileinurls_on"<cfif yesNoFormat(form.production_indexfileinurls)> checked</cfif>> Yes 
-	    <input type="radio" class="radio" name="indexfileinurls" value="0" id="indexfileinurls_off"<cfif not yesNoFormat(form.production_indexfileinurls)> checked</cfif>> No      
+	<dd><input type="radio" class="radio" name="production_indexfileinurls" value="1" id="indexfileinurls_on"<cfif yesNoFormat(form.production_indexfileinurls)> checked</cfif>> Yes 
+	    <input type="radio" class="radio" name="production_indexfileinurls" value="0" id="indexfileinurls_off"<cfif not yesNoFormat(form.production_indexfileinurls)> checked</cfif>> No      
 	</dd>
 	</dl>
 
