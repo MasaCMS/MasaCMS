@@ -118,8 +118,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 
 <cfif attributes.type eq 'Page' or attributes.type eq 'Portal' or attributes.type eq 'Gallery' or attributes.type eq 'Calendar' or  attributes.type eq 'Component' or  attributes.type eq 'Form' >
-	<dt class="separate bodyContainer">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.content")#</dt>
-	<dd class="bodyContainer" style="display:none;">
+	<dt class="separate body-container">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.content")#</dt>
+	<dd id="bodyContainer" class="body-container" style="display:none;">
 	<cfset rsPluginEditor=application.pluginManager.getScripts("onHTMLEdit",attributes.siteID)>
 	<cfif rsPluginEditor.recordcount>
 		#application.pluginManager.renderScripts("onHTMLEdit",attributes.siteid,pluginEvent,rsPluginEditor)#
@@ -181,12 +181,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					CKEDITOR.instances.body.updateElement();
 					CKEDITOR.instances.body.destroy();
 				}
-				jQuery(".bodyContainer").hide();
+				jQuery(".body-container").hide();
 			}
 
 			showBodyEditor=function(){
 				if(typeof CKEDITOR.instances.body == 'undefined'){
-					jQuery(".bodyContainer").show();
+					jQuery(".body-container").show();
 
 					jQuery('##body').ckeditor(
 					{ toolbar:<cfif attributes.type eq "Form">'Form'<cfelse>'Default'</cfif>,
