@@ -86,7 +86,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif attributes.type neq 'Form' and  attributes.type neq 'Component' >
 	<dt class="summaryContainer" style="display:none;"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.summary")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.contentSummary")#</span></a> <a href="##" id="editSummaryLink" onclick="javascript: toggleDisplay('editSummary','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#'); editSummary();return false">[#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.expand")#]</a></dt>
-	<dd id="editSummary"  class="summaryContainer" style="display:none;">
+	<dd id="editSummary"  class="summaryContainer">
 	<cfoutput><textarea name="summary" id="summary" cols="96" rows="10"><cfif application.configBean.getValue("htmlEditorType") neq "none" or len(request.contentBean.getSummary())>#HTMLEditFormat(request.contentBean.getSummary())#<cfelse><p></p></cfif></textarea></cfoutput>
 	</dd>
 	<script>
@@ -119,7 +119,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif attributes.type eq 'Page' or attributes.type eq 'Portal' or attributes.type eq 'Gallery' or attributes.type eq 'Calendar' or  attributes.type eq 'Component' or  attributes.type eq 'Form' >
 	<dt class="separate body-container">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.content")#</dt>
-	<dd id="bodyContainer" class="body-container" style="display:none;">
+	<dd id="bodyContainer" class="body-container">
 	<cfset rsPluginEditor=application.pluginManager.getScripts("onHTMLEdit",attributes.siteID)>
 	<cfif rsPluginEditor.recordcount>
 		#application.pluginManager.renderScripts("onHTMLEdit",attributes.siteid,pluginEvent,rsPluginEditor)#
