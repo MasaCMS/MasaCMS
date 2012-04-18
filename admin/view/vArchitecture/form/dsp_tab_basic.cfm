@@ -119,8 +119,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif attributes.type eq 'Page' or attributes.type eq 'Portal' or attributes.type eq 'Gallery' or attributes.type eq 'Calendar' or  attributes.type eq 'Component' or  attributes.type eq 'Form' >
 	<dt class="separate body-container">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.content")#</dt>
-	<dd id="bodyContainer" class="body-container">
 	<cfset rsPluginEditor=application.pluginManager.getScripts("onHTMLEdit",attributes.siteID)>
+	<dd id="bodyContainer" class="body-container"<cfif rsPluginEditor.recordcount> style="display:none;"</cfif>>
 	<cfif rsPluginEditor.recordcount>
 		#application.pluginManager.renderScripts("onHTMLEdit",attributes.siteid,pluginEvent,rsPluginEditor)#
 	<cfelse>
