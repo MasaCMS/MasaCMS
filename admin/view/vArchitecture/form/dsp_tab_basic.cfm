@@ -86,7 +86,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif attributes.type neq 'Form' and  attributes.type neq 'Component' >
 	<dt class="summaryContainer" style="display:none;"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.summary")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.contentSummary")#</span></a> <a href="##" id="editSummaryLink" onclick="javascript: toggleDisplay('editSummary','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#'); editSummary();return false">[#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.expand")#]</a></dt>
-	<dd id="editSummary"  class="summaryContainer">
+	<dd id="editSummary"  class="summaryContainer" style="display:none;">
 	<cfoutput><textarea name="summary" id="summary" cols="96" rows="10"><cfif application.configBean.getValue("htmlEditorType") neq "none" or len(request.contentBean.getSummary())>#HTMLEditFormat(request.contentBean.getSummary())#<cfelse><p></p></cfif></textarea></cfoutput>
 	</dd>
 	<script>
