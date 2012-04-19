@@ -79,6 +79,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setCGIPath" output="false" returntype="any" access="remote">
 	<cfset var cgi_path="">
 	<cfset var parsed_path_info = cgi.path_info>
+	<cfif isDefined("url.path")>
+		<cfset parsed_path_info = url.path>
+	</cfif>
 	<cfif len(getContextRoot()) and getContextRoot() NEQ "/">
 		<cfset parsed_path_info = replace(parsed_path_info,getContextRoot(),"")/>
 	</cfif>
