@@ -21,7 +21,12 @@
 				EXEC sp_MSgetversion
 			</cfquery>
 				
-			<cfset MSSQLversion = left(MSSQLversion.CHARACTER_VALUE,1) >
+			<cftry>
+				<cfset MSSQLversion=left(MSSQLversion.CHARACTER_VALUE,1)>
+				<cfcatch>
+					<cfset MSSQLversion=mid(MSSQLversion.COMPUTED_COLUMN_1,1,find(".",MSSQLversion.COMPUTED_COLUMN_1)-1)>
+				</cfcatch>
+			</cftry>
 			
 			<cfif MSSQLversion neq 8>
 				<cfset MSSQLlob="[nvarchar](max) NULL">
