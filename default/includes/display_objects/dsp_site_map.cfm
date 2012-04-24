@@ -44,5 +44,9 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-
-<cfoutput><ul id="svSiteMap"><li class="home"><a href="#$.globalConfig('context')##application.contentRenderer.getURLStem($.event('siteID'),"")#">Home</a>#dspNestedNav('00000000000000000000000000000000001',10)#</li></ul></cfoutput>
+<cfoutput>
+	<ul id="svSiteMap">
+		<li class="home"><a href="#$.globalConfig('context')##$.getURLStem($.event('siteID'),'')#">Home</a>#$.dspNestedNav(contentid='00000000000000000000000000000000001',viewdepth=10,class='')#
+		</li>
+	</ul>
+</cfoutput>
