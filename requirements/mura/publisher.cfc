@@ -2598,7 +2598,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							insert into tclassextend (subTypeID,siteID, baseTable, baseKeyField, dataTable, type, subType,
 							isActive, notes, lastUpdate, dateCreated, 
 							<cfif isDefined("rstclassextend.hasSummary")>
-							hasSummary,hasBody
+							hasSummary,hasBody,
 							</cfif>
 							lastUpdateBy)
 							values
