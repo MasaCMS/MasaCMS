@@ -161,11 +161,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfif>
 	</cfif>
-	
+
 	<cfset event.getValidator("standard404").validate(event)>
 	
-	<cfset event.setValue('forceSSL',event.getValue('contentBean').getForceSSL())/>
-	
+	<cfif event.getValue('contentBean').getForceSSL()>
+		<cfset event.setValue('forceSSL',event.getValue('contentBean').getForceSSL())/>
+	</cfif>
+
 	<cfif not event.valueExists('crumbdata')>
 		<cfset event.setValue('crumbdata',application.contentGateway.getCrumbList(event.getValue('contentBean').getcontentid(),event.getContentBean().getSiteID(),true,event.getValue('contentBean').getPath())) />
 	</cfif>

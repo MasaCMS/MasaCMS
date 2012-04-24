@@ -1951,7 +1951,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	<cfif arguments.complete>
-		<cfif cgi.https eq 'On'>
+		<cfif application.utility.isHTTPS()>
 			<cfset host='https://#listFirst(cgi.http_host,":")##application.configBean.getServerPort()#'>
 		<cfelse>
 			<cfset host='http://#listFirst(cgi.http_host,":")##application.configBean.getServerPort()#'>
