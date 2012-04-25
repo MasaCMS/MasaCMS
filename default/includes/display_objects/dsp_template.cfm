@@ -52,14 +52,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	<cfset variables.rsTemplate=bean.getAllValues()>
+	<cfset event.setValue("component",variables.rsTemplate)>
 	
-	<cfset variables._component=$.event("component")>
+	<!---<cfset variables._component=$.event("component")>
 	
 	<cfif isStruct(variables._component)>
 		<cfset structAppend(variables._component,variables.rsTemplate,true)>
 	<cfelse>
 		<cfset event.setValue("component",variables.rsTemplate)>
-	</cfif>
+	</cfif>--->
 	
 	<cfset variables.rsTemplate.isOnDisplay=variables.rsTemplate.display eq 1 or 
 			(
