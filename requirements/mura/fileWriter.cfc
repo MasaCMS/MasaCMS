@@ -226,6 +226,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="destDir" default="" required="true" />
 	<cfargument name="excludeList" default="" required="true" />
 	<cfargument name="sinceDate" default="" required="true" />
+	<cfargument name="excludeHiddenFiles" default="true" required="true" />
 	<cfset getBean("utility").copyDir(argumentCollection=arguments)>
 </cffunction>
 

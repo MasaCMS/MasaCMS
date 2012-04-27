@@ -188,6 +188,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="destDir" default="" required="true" />
 	<cfargument name="excludeList" default="" required="true" />
 	<cfargument name="sinceDate" default="" required="true" />
+	<cfargument name="excludeHiddenFiles" default="" required="true" />
 	<cfset var rsAll = "">
 	<cfset var rs = "">
 	<cfset var i="">
@@ -200,10 +201,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfquery name="rsAll" dbtype="query">
 			SELECT * FROM rsAll
 			WHERE 
-			directory NOT LIKE '%#variables.configBean.getFileDelim()#.svn%'
-			and directory NOT LIKE '%#variables.configBean.getFileDelim()#.git%'
-			AND name not like '.%'
-			
+			1=1
+			<cfif arguments.excludeHiddenFiles>
+				and directory NOT LIKE '%#variables.configBean.getFileDelim()#.svn%'
+				and directory NOT LIKE '%#variables.configBean.getFileDelim()#.git%'
+				and name not like '.%'
+			</cfif>
 			<cfif len(arguments.excludeList)>
 				<cfloop list="#arguments.excludeList#" index="i">
 					and directory NOT LIKE '%#i#%'
