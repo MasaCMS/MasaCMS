@@ -59,33 +59,36 @@ uses the query string as the key --->
 </cfif>
 
 <cfif not isBoolean(attributes.nocache)>
-    <cfset attributes.nocache=false/>
+  <cfset attributes.nocache=false/>
 </cfif>
 
 <cfif not isBoolean(request.forceCache)>
-   <cfset request.forceCache=false/>
+  <cfset request.forceCache=false/>
 </cfif>
 
 <cfif thisTag.executionMode IS "Start">
-       <cfset request.cacheItem=true/>
-	   <cfset request.cacheItemTimeSpan="">
+  <cfset request.cacheItem=true/>
+	 <cfset request.cacheItemTimeSpan="">
 </cfif>
 
 <cfif request.cacheItem and NOT attributes.nocache AND (application.settingsManager.getSite(attributes.siteid).getCache()  OR request.forceCache IS true)>
-       <cfset cacheFactory=attributes.cacheFactory/>
+  <cfset cacheFactory=attributes.cacheFactory/>
        
-       <cfif thisTag.executionMode IS "Start">
-               <cfif cacheFactory.has( attributes.key )>
-                       <cfset content=cacheFactory.get( attributes.key )>
-                       <cfoutput>#content#</cfoutput>
-                       <cfsetting enableCFOutputOnly="No">
-                       <cfexit method="EXITTAG">      
-               </cfif>
-       <cfelse>        
-			  <cfif isDate(request.cacheItemTimeSpan)>
-				 <cfset cacheFactory.set( key=attributes.key, context=thisTag.generatedContent, obj=thisTag.generatedContent, timespan=request.cacheItemTimeSpan)>
-			  <cfelse>
-              	 <cfset cacheFactory.set( key=attributes.key, context=thisTag.generatedContent, obj=thisTag.generatedContent, timespan=attributes.timespan)>
-			  </cfif>
-       </cfif>
+  <cfif thisTag.executionMode IS "Start">
+    <cfif cacheFactory.has( attributes.key )>
+      <cftry>
+        <cfset content=cacheFactory.get( attributes.key )>
+        <cfoutput>#content#</cfoutput>
+        <cfsetting enableCFOutputOnly="No">
+        <cfexit method="EXITTAG">   
+        <cfcatch></cfcatch>
+      </cftry>
+    </cfif>
+  <cfelse>        
+	 <cfif isDate(request.cacheItemTimeSpan)>
+		  <cfset cacheFactory.set( key=attributes.key, context=thisTag.generatedContent, obj=thisTag.generatedContent, timespan=request.cacheItemTimeSpan)>
+	 <cfelse>
+      <cfset cacheFactory.set( key=attributes.key, context=thisTag.generatedContent, obj=thisTag.generatedContent, timespan=attributes.timespan)>
+	 </cfif>
+  </cfif>
 </cfif>

@@ -173,10 +173,11 @@ return true;
 function isEmail(cur){
 			var string1=cur
 			if (string1.indexOf("@") == -1 || string1.indexOf(".") == -1)
-			{alert(cur)
-			return false;
+			{
+				return false;
 			}else{
-			return true;}
+				return true;
+			}
 
 }
 
@@ -287,11 +288,11 @@ function getValidationIsRequired(theField){
 
 function getValidationMessage(theField, defaultMessage){
 	if(theField.getAttribute('data-message') != undefined){
-		return theField.getAttribute('data-message') + '\n';
+		return theField.getAttribute('data-message') + '<br/>';
 	} else if(theField.getAttribute('message') != undefined){
-		return theField.getAttribute('message') + '\n';
+		return theField.getAttribute('message') + '<br/>';
 	} else {
-		return getValidationFieldName(theField).toUpperCase() + defaultMessage + '\n';
+		return getValidationFieldName(theField).toUpperCase() + defaultMessage + '<br/>';
 	}	
 }
 

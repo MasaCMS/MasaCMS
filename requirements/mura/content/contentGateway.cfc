@@ -75,22 +75,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
 			
-			<cfif NOT cacheFactory.has( key )>
-				
-				<cfset crumbdata=buildCrumblist(arguments.contentID,arguments.siteID,arguments.setInheritance,arguments.path) />
-				
+			<cfif NOT cacheFactory.has( key )>			
+				<cfset crumbdata=buildCrumblist(arguments.contentID,arguments.siteID,arguments.setInheritance,arguments.path) />	
 				<cfreturn cacheFactory.get( key, crumbdata ) />
 			<cfelse>
-				<cfset crumbdata=cacheFactory.get( key ) />
-				<cfif arguments.setInheritance>
-					<cfloop from="1" to="#arrayLen(crumbdata)#" index="I">
-						<cfif crumbdata[I].inheritObjects eq 'cascade'>
-							<cfset request.inheritedObjects=crumbdata[I].contenthistid>
-							<cfbreak>
-						</cfif>
-					</cfloop>
-				</cfif>	
-				<cfreturn crumbdata />
+				<cftry>
+					<cfset crumbdata=cacheFactory.get( key ) />
+					<cfif arguments.setInheritance>
+						<cfloop from="1" to="#arrayLen(crumbdata)#" index="I">
+							<cfif crumbdata[I].inheritObjects eq 'cascade'>
+								<cfset request.inheritedObjects=crumbdata[I].contenthistid>
+								<cfbreak>
+							</cfif>
+						</cfloop>
+					</cfif>	
+					<cfreturn crumbdata />
+					<cfcatch>
+						<cfset crumbdata=buildCrumblist(arguments.contentID,arguments.siteID,arguments.setInheritance,arguments.path) />
+						<cfreturn cacheFactory.get( key, crumbdata ) />
+					</cfcatch>
+				</cftry>
 			</cfif>
 		<cfelse>
 			<cfreturn buildCrumblist(arguments.contentID,arguments.siteID,arguments.setInheritance,arguments.path)/>

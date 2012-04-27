@@ -240,12 +240,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<cfreturn bean/>
 			<cfelse>
-				<cfif not isObject(bean)>
-					<cfset bean=getBean("content")/>
-				</cfif>
-				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
-				<cfset bean.setValue("extendAutoComplete",false)>
-				<cfreturn bean />
+				<cftry>
+					<cfif not isObject(bean)>
+						<cfset bean=getBean("content")/>
+					</cfif>
+					<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
+					<cfset bean.setValue("extendAutoComplete",false)>
+					<cfreturn bean />
+					<cfcatch>
+						<cfset bean=variables.contentDAO.readVersion(arguments.contentHistID,arguments.siteid,arguments.use404,bean) />
+						<cfif not isArray(bean) and not bean.getIsNew()>
+							<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
+						</cfif>
+						<cfreturn bean/>
+					</cfcatch>
+				</cftry>
 			</cfif>
 		<cfelse>
 			<cfreturn variables.contentDAO.readVersion(arguments.contentHistID,arguments.siteid,arguments.use404,bean) />
@@ -294,12 +303,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<cfreturn bean/>
 			<cfelse>
-				<cfif not isObject(bean)>
-					<cfset bean=getBean("content")/>
-				</cfif>
-				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
-				<cfset bean.setValue("extendAutoComplete",false)>
-				<cfreturn bean />
+				<cftry>
+					<cfif not isObject(bean)>
+						<cfset bean=getBean("content")/>
+					</cfif>
+					<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
+					<cfset bean.setValue("extendAutoComplete",false)>
+					<cfreturn bean />
+					<cfcatch>
+						<cfset bean=variables.contentDAO.readActiveByFilename(arguments.filename,arguments.siteid,arguments.use404,bean) />
+						<cfif not isArray(bean) and not bean.getIsNew()>
+							<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
+						</cfif>
+						<cfreturn bean/>
+					</cfcatch>
+				</cftry>
 			</cfif>
 		<cfelse>
 			<cfreturn variables.contentDAO.readActiveByFilename(arguments.filename,arguments.siteid,arguments.use404,bean)/>
@@ -327,12 +345,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<cfreturn bean/>
 			<cfelse>
-				<cfif not isObject(bean)>
-					<cfset bean=getBean("content")/>
-				</cfif>
-				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
-				<cfset bean.setValue("extendAutoComplete",false)>
-				<cfreturn bean />
+				<cftry>
+					<cfif not isObject(bean)>
+						<cfset bean=getBean("content")/>
+					</cfif>
+					<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
+					<cfset bean.setValue("extendAutoComplete",false)>
+					<cfreturn bean />
+					<cfcatch>
+						<cfset bean=variables.contentDAO.readActiveByRemoteID(arguments.remoteID,arguments.siteid,arguments.use404,bean)  />
+						<cfif not isArray(bean) and not bean.getIsNew()>
+							<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
+						</cfif>
+						<cfreturn bean/>
+					</cfcatch>
+				</cftry>
 			</cfif>
 		<cfelse>
 			<cfreturn variables.contentDAO.readActiveByRemoteID(arguments.remoteID,arguments.siteid,arguments.use404,bean)/>
@@ -359,12 +386,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<cfreturn bean/>
 			<cfelse>
-				<cfif not isObject(bean)>
-					<cfset bean=getBean("content")/>
-				</cfif>
-				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
-				<cfset bean.setValue("extendAutoComplete",false)>
-				<cfreturn bean />
+				<cftry>
+					<cfif not isObject(bean)>
+						<cfset bean=getBean("content")/>
+					</cfif>
+					<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
+					<cfset bean.setValue("extendAutoComplete",false)>
+					<cfreturn bean />
+					<cfcatch>
+						<cfset bean=variables.contentDAO.readActiveByTitle(arguments.title,arguments.siteid,bean)  />
+						<cfif not isArray(bean) and not bean.getIsNew()>
+							<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
+						</cfif>
+						<cfreturn bean/>
+					</cfcatch>
+				</cftry>
 			</cfif>
 		<cfelse>
 			<cfreturn variables.contentDAO.readActiveByTitle(arguments.title,arguments.siteid,bean)/>
@@ -391,12 +427,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<cfreturn bean/>
 			<cfelse>
-				<cfif not isObject(bean)>
-					<cfset bean=getBean("content")/>
-				</cfif>
-				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
-				<cfset bean.setValue("extendAutoComplete",false)>
-				<cfreturn bean />
+				<cftry>
+					<cfif not isObject(bean)>
+						<cfset bean=getBean("content")/>
+					</cfif>
+					<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
+					<cfset bean.setValue("extendAutoComplete",false)>
+					<cfreturn bean />
+					<cfcatch>
+						<cfset bean=variables.contentDAO.readActiveByURLTitle(arguments.URLTitle,arguments.siteid,bean)  />
+						<cfif not isArray(bean) and not bean.getIsNew()>
+							<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
+						</cfif>
+						<cfreturn bean/>
+					</cfcatch>
+				</cftry>
 			</cfif>
 		<cfelse>
 			<cfreturn variables.contentDAO.readActiveByURLTitle(arguments.URLTitle,arguments.siteid,bean)/>
@@ -424,12 +469,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<cfreturn bean/>
 			<cfelse>
-				<cfif not isObject(bean)>
-					<cfset bean=getBean("content")/>
-				</cfif>
-				<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
-				<cfset bean.setValue("extendAutoComplete",false)>
-				<cfreturn bean />
+				<cftry>
+					<cfif not isObject(bean)>
+						<cfset bean=getBean("content")/>
+					</cfif>
+					<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
+					<cfset bean.setValue("extendAutoComplete",false)>
+					<cfreturn bean />
+					<cfcatch>
+						<cfset bean=variables.contentDAO.readActive(arguments.contentID,arguments.siteid,arguments.use404,bean)  />
+						<cfif not isArray(bean) and not bean.getIsNew()>
+							<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
+						</cfif>
+						<cfreturn bean/>
+					</cfcatch>
+				</cftry>
 			</cfif>
 		<cfelse>
 			<cfreturn variables.contentDAO.readActive(arguments.contentID,arguments.siteid,arguments.use404,bean) />

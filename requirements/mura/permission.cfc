@@ -71,7 +71,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif NOT cacheFactory.has( key )>
 				<cfreturn cacheFactory.get( key, buildGroupPermVerdict(arguments.contentID,arguments.groupID,arguments.type,arguments.siteid)  ) />
 			<cfelse>
-				<cfreturn cacheFactory.get( key ) />
+				<cftry>
+					<cfreturn cacheFactory.get( key ) />
+					<cfcatch>
+						<cfreturn cacheFactory.get( key, buildGroupPermVerdict(arguments.contentID,arguments.groupID,arguments.type,arguments.siteid)  ) />
+					</cfcatch>
+				</cftry>
 			</cfif>
 		<cfelse>
 			<cfreturn buildGroupPermVerdict(arguments.contentID,arguments.groupID,arguments.type,arguments.siteid)/>
@@ -137,12 +142,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif NOT cacheFactory.has( key )>
 				<cfset rsPermited=getPermVerdictQuery(arguments.contentID,arguments.type,arguments.siteid) />
 				<cfset cacheFactory.get( key, rsPermited.recordcount  ) />
-			<cfelse>		
-				<cfif cacheFactory.get( key ) >
-					<cfset rsPermited=getPermVerdictQuery(arguments.contentID,arguments.type,arguments.siteid) />
-				<cfelse>
-					<cfreturn perm />	
-				</cfif>
+			<cfelse>	
+				<cftry>	
+					<cfif cacheFactory.get( key ) >
+						<cfset rsPermited=getPermVerdictQuery(arguments.contentID,arguments.type,arguments.siteid) />
+					<cfelse>
+						<cfreturn perm />	
+					</cfif>
+					<cfcatch>
+						<cfset rsPermited=getPermVerdictQuery(arguments.contentID,arguments.type,arguments.siteid) />
+					<cfset cacheFactory.get( key, rsPermited.recordcount  ) />
+					</cfcatch>
+				</cftry>
 			</cfif>
 		<cfelse>
 			<cfset rsPermited=getPermVerdictQuery(arguments.contentID,arguments.type,arguments.siteid) />
@@ -271,17 +282,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif site.getCache()>
 					<!--- check to see if it is cached. if not then pass in the context --->
 					<!--- otherwise grab it from the cache --->		
-					<cfif NOT cacheFactory.has( key )>
-						
+					<cfif NOT cacheFactory.has( key )>				
 						<cfset rsgroups=getModulePermQuery(arguments.moduleID,arguments.siteid) />
 						<cfset cacheFactory.get( key, rsgroups.recordcount  ) />
 					<cfelse>
-							
-						<cfif cacheFactory.get( key ) >
-							<cfset rsgroups=getModulePermQuery(arguments.moduleID,arguments.siteid) />
-						<cfelse>
-							<cfreturn Verdict />	
-						</cfif>
+						<cftry>
+							<cfif cacheFactory.get( key ) >
+								<cfset rsgroups=getModulePermQuery(arguments.moduleID,arguments.siteid) />
+							<cfelse>
+								<cfreturn Verdict />	
+							</cfif>
+							<cfcatch>
+								<cfset rsgroups=getModulePermQuery(arguments.moduleID,arguments.siteid) />
+								<cfset cacheFactory.get( key, rsgroups.recordcount  ) />
+							</cfcatch>
+						</cftry>
 					</cfif>
 				<cfelse><
 					<cfset rsgroups=getModulePermQuery(arguments.moduleID,arguments.siteid) />

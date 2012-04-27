@@ -322,7 +322,7 @@ select * from tplugins order by #arguments.orderby#
 				<cffile action="delete" file="#serverfile#">
 			</cfif>
 		<cfelseif getLocation(arguments.pluginDir) neq location>
-			<cfset variables.fileWriter.copyDir(getLocation(arguments.pluginDir),location)>
+			<cfset variables.fileWriter.copyDir(baseDir=getLocation(arguments.pluginDir),destDir=location,excludeHiddenFiles=false)>
 		</cfif>
 		
 		<cfset savePluginXML(modID=modID) />
@@ -1029,7 +1029,7 @@ select * from tplugins order by #arguments.orderby#
 				</cfif>
 				
 				<cfif not directoryExists(siteDir)>			
-					<cfset variables.utility.copyDir(adminDir,siteDir)>
+					<cfset variables.utility.copyDir(baseDir=adminDir,destDir=siteDir,excludeHiddenFiles=false)>
 				</cfif>
 				
 				<cfset distroList=listAppend(distroList,dopID)>
@@ -2080,7 +2080,7 @@ select * from rs order by name
 	<cfset var rsSites="">
 	
 	<cfset variables.fileWriter.createDir(directory=getLocation(tempDir))>
-	<cfset variables.fileWriter.copyDir(arguments.directory,getLocation(tempDir))>
+	<cfset variables.fileWriter.copyDir(baseDir=arguments.directory,destDir=getLocation(tempDir),excludeHiddenFiles=false)>
 	<cfset pluginXml=getPluginXML(moduleID="",pluginDir=tempDir)>
 	
 	<cfif structKeyExists(pluginXML.plugin,"package") and len(pluginXML.plugin.package.xmlText)>
