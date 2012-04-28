@@ -619,7 +619,7 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/>
 		)</cfquery>
 
-		<cfquery name="rs" datasource="#variables.configBean.getDatasource()#">
+		<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	 		select * from tpermissions where groupid='#arguments.data.groupid#'
 		</cfquery>
 
