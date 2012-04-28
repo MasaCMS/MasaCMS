@@ -1722,9 +1722,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif rsSection.recordcount>
 			<cfset adjust=rsSection.recordcount>
 			<cfsavecontent variable="theNav"><cfoutput>
-			<cfloop query="rsSection">
-			<cfif allowLink(rssection.restricted,rssection.restrictgroups,event.getValue('r').loggedIn)>
-			
+
 			<cfif not homeDisplayed and currDepth eq 1 and (arguments.displayHome eq "Always" or (arguments.displayHome eq "Conditional" and event.getValue('contentBean').getcontentid() neq "00000000000000000000000000000000001"))>
 				<cfsilent>
 					<cfquery name="rsHome" datasource="#application.configBean.getReadOnlyDatasource()#" username="#application.configBean.getReadOnlyDbUsername()#" password="#application.configBean.getReadOnlyDbPassword()#">
@@ -1738,7 +1736,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<ul<cfif currDepth eq 1>#iif(arguments.id neq '',de(' id="#arguments.id#"'),de(''))##iif(arguments.menuClass neq '',de(' class="#arguments.menuClass#"'),de(''))#<cfelse><cfif len(arguments.ulNestedClass)> class="#arguments.ulNestedClass#"</cfif><cfif len(arguments.ulNestedCustomString)> #arguments.ulNestedCustomString#</cfif></cfif>>
 				<li class="first<cfif event.getValue('contentBean').getcontentid() eq arguments.contentid> #arguments.liCurrentClass#</cfif>" id="navHome"<cfif len(arguments.liCurrentCustomString)> #arguments.liCurrentCustomString#</cfif>><a href="#homeLink#"<cfif len(arguments.aCurrentClass)> class="#arguments.aCurrentClass#"</cfif><cfif len(arguments.aCurrentCustomString)> #arguments.aCurrentCustomString#</cfif>>#HTMLEditFormat(rsHome.menuTitle)#</a></li>
 			</cfif>
-
+			
+			<cfloop query="rsSection">
+			<cfif allowLink(rssection.restricted,rssection.restrictgroups,event.getValue('r').loggedIn)>
 			<cfsilent>
 			
 			<cfset current=current+1>
