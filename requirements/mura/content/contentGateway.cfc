@@ -1842,7 +1842,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var rspre="">
 <cfset var rs="">
 
-	<cfquery name="rspre" datasource="#variables.configBean.getDatasource()#">
+	<cfquery name="rspre" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		select
 			parentID,
 			<cfif variables.configBean.getDbTYpe() neq 'oracle'>
