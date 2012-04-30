@@ -273,7 +273,8 @@ select * from tplugins order by #arguments.orderby#
 		
 		<cfif isNew>
 			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-			insert into tplugins (moduleID,name,provider,providerURL,version,deployed,category,created,loadPriority) values (
+			insert into tplugins (moduleID,name,provider,providerURL,version,deployed,
+			category,created,loadPriority,directory) values (
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#modID#">,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="An error occurred.">,
 			null,
@@ -282,7 +283,12 @@ select * from tplugins order by #arguments.orderby#
 			0,
 			null,
 			<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
-			5
+			5,
+			<cfif len(arguments.pluginDir)>
+				<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.pluginDir#">
+			<cfelse>
+				null
+			</cfif>
 			)
 			</cfquery>
 		<cfelse>
@@ -294,7 +300,7 @@ select * from tplugins order by #arguments.orderby#
 		<cfset rsPlugin=getPlugin(modID,'',false) />
 		
 		<!--- Set the directory to the newly installed pluginID--->
-		<cfif isNew>
+		<cfif isNew and not len(arguments.pluginDir)>
 			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			update tplugins set
 			directory=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsPlugin.pluginID#">
@@ -305,6 +311,7 @@ select * from tplugins order by #arguments.orderby#
 		
 		<cfset location=getLocation(rsPlugin.directory) />
 		
+		<!--- if new the location will be the newly created pluginID --->
 		<cfif not directoryExists(location)>
 			<cfset variables.fileWriter.createDir(directory=location)>
 		</cfif>
@@ -321,8 +328,9 @@ select * from tplugins order by #arguments.orderby#
 			<cfif not structIsEmpty(cffileData)>
 				<cffile action="delete" file="#serverfile#">
 			</cfif>
-		<cfelseif getLocation(arguments.pluginDir) neq location>
+		<!---<cfelseif getLocation(arguments.pluginDir) neq location>
 			<cfset variables.fileWriter.copyDir(baseDir=getLocation(arguments.pluginDir),destDir=location,excludeHiddenFiles=false)>
+		--->
 		</cfif>
 		
 		<cfset savePluginXML(modID=modID) />
@@ -671,10 +679,7 @@ select * from tplugins order by #arguments.orderby#
 				
 				<cfif isXml(configXML)>
 					<cfif not hasPlugin(listLast(rsRequirements.name,"_"),"",false)>
-						<cfset tempDir="#baseDir#/#createUUID()#">
-						<cfset variables.fileWriter.renameDir(directory="#baseDir#/#rsRequirements.name#",newDirectory=tempDir)>
-						<cfset deployDirectory(directory=tempDir,autoDeploy=false)>
-						<cfset variables.fileWriter.deleteDir(directory=tempDir)>
+						<cfset deployDirectory(directory=rsRequirements.name,autoDeploy=false)>
 					<cfelseif structKeyExists(configXML.plugin,"autoUpdate")
 							and isBoolean(configXML.plugin.autoUpdate.xmlText) 
 							and isBoolean(configXML.plugin.autoUpdate.xmlText) 
@@ -2069,19 +2074,33 @@ select * from rs order by name
 
 <cffunction name="deployDirectory" output="false">
 	<cfargument name="siteID" hint="List of siteIDs to assign the plugin. If not defined will defiend to existing assignment.">
-	<cfargument name="directory" hint="Complete path to external plugin directory">
+	<cfargument name="directory" hint="Complete path to external plugin directory if external, otherwise the name og the directory in /plugins">
 	<cfargument name="useDefaultSettings" required="true" default="true">
 	<cfargument name="autoDeploy" required="true" default="true">
+
 	<cfset var errors=structNew()>
-	<cfset var tempDir=createUUID()>
+	<cfset var tempDir="">
 	<cfset var id="">
 	<cfset var result="">
 	<cfset var pluginXml="">
 	<cfset var rsSites="">
-	
-	<cfset variables.fileWriter.createDir(directory=getLocation(tempDir))>
-	<cfset variables.fileWriter.copyDir(baseDir=arguments.directory,destDir=getLocation(tempDir),excludeHiddenFiles=false)>
-	<cfset pluginXml=getPluginXML(moduleID="",pluginDir=tempDir)>
+	<cfset var external=true>
+
+	<cfset arguments.deployDirectory=replace(arguments.directory,"\","/","all")>
+
+	<!--- Remove Trailing Slash --->
+	<cfif right(arguments.deployDirectory,1) eq "/">
+		<cfset arguments.deployDirectory=left(arguments.deployDirectory,len(arguments.deployDirectory)-1)>
+	</cfif>
+
+	<cfif find("/",arguments.deployDirectory)>		
+		<cfset tempDir=createUUID()>
+		<cfset variables.fileWriter.createDir(directory=getLocation(tempDir))>
+		<cfset variables.fileWriter.copyDir(baseDir=arguments.directory,destDir=getLocation(tempDir),excludeHiddenFiles=false)>
+		<cfset arguments.directory=tempDir>
+	</cfif>
+
+	<cfset pluginXml=getPluginXML(moduleID="",pluginDir=arguments.directory)>
 	
 	<cfif structKeyExists(pluginXML.plugin,"package") and len(pluginXML.plugin.package.xmlText)>
 		<cfset id=pluginXML.plugin.package.xmlText>
@@ -2094,9 +2113,7 @@ select * from rs order by name
 		<cfset arguments.siteID=valueList(rsSites.siteID)>
 	</cfif>
 	
-	<cfset result=deploy(id=id, pluginDir=tempDir, useDefaultSettings=arguments.useDefaultSettings, siteID=arguments.siteID, autoDeploy=arguments.autoDeploy)>
-	
-	<cfset variables.fileWriter.deleteDir(directory=getLocation(tempDir))>
+	<cfset result=deploy(id=id, pluginDir=arguments.directory, useDefaultSettings=arguments.useDefaultSettings, siteID=arguments.siteID, autoDeploy=arguments.autoDeploy)>
 	
 	<cfreturn result>
 
@@ -2106,8 +2123,7 @@ select * from rs order by name
 	<cfargument name="siteID" hint="List of siteIDs to assign the plugin. If not defined will defiend to existing assignment.">
 	<cfargument name="ID" hint="The moduleID, pluginID, package or name of plugin to redeploy">
 
-	<cfset var errors=structNew()>
-	<cfset var tempDir=createUUID()>
+	<cfset var errors=structNew()>s
 	<cfset var rsSites="">
 	<cfset var pluginConfig=getConfig(arguments.id)>
 	<cfset var result="">
