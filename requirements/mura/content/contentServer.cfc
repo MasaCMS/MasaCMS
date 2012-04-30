@@ -445,8 +445,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelse>	
 			<cfset pageContent = application.contentServer.parseURLRoot()>
 		</cfif>
-		<cfoutput>#pageContent#</cfoutput>
+		<cfreturn pageContent>
 	</cfif> 
+	<cfreturn "">
 </cffunction>
 
 </cfcomponent>
