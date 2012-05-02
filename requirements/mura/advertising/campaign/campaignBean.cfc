@@ -91,57 +91,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setDateCreated" access="public" output="false">
 	<cfargument name="dateCreated" type="String" />
-	<cfif isDate(arguments.dateCreated)>
-	<cfset variables.instance.dateCreated = parseDateTime(arguments.dateCreated) />
-	<cfelse>
-	<cfset variables.instance.dateCreated = ""/>
-	</cfif>
-</cffunction>
-
-<cffunction name="getlastUpdate" returntype="String" access="public" output="false">
-	<cfreturn variables.instance.lastUpdate />
+	<cfset variables.instance.dateCreated = parseDateArg(arguments.dateCreated)/>
+	<cfreturn this>	
 </cffunction>
 
 <cffunction name="setLastUpdate" access="public" output="false">
 	<cfargument name="lastUpdate" type="String" />
-	<cfif isDate(arguments.lastUpdate)>
-	<cfset variables.instance.lastUpdate = parseDateTime(arguments.lastUpdate) />
-	<cfelse>
-	<cfset variables.instance.lastUpdate = ""/>
-	</cfif>
+	<cfset variables.instance.lastUpdate = parseDateArg(arguments.lastUpdate)/>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="setLastUpdateBy" access="public" output="false">
 	<cfargument name="lastUpdateBy" type="String" />
 	<cfset variables.instance.lastUpdateBy = left(trim(arguments.lastUpdateBy),50) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="setStartDate" access="public" output="false">
 	<cfargument name="startDate" type="String" />
-	<cfif lsisDate(arguments.startDate)>
-		<cftry>
-		<cfset variables.instance.startDate = lsparseDateTime(arguments.startDate) />
-		<cfcatch>
-			<cfset variables.instance.startDate = arguments.startDate />
-		</cfcatch>
-		</cftry>
-		<cfelse>
-		<cfset variables.instance.startDate = ""/>
-	</cfif>
+	<cfset variables.instance.startDate = parseDateArg(arguments.startDate)/>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="setEndDate" access="public" output="false">
 	<cfargument name="endDate" type="String" />
-	<cfif lsisDate(arguments.endDate)>
-		<cftry>
-		<cfset variables.instance.endDate = lsparseDateTime(arguments.endDate) />
-		<cfcatch>
-			<cfset variables.instance.endDate = arguments.endDate />
-		</cfcatch>
-		</cftry>
-		<cfelse>
-		<cfset variables.instance.endDate = ""/>
-	</cfif>
+	<cfset variables.instance.endDate = parseDateArg(arguments.endDate)/>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="save" output="false">
