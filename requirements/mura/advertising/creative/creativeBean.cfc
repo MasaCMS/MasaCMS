@@ -112,21 +112,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setDateCreated" access="public" output="false">
 	<cfargument name="dateCreated" type="String" />
-	<cfif isDate(arguments.dateCreated)>
-	<cfset variables.instance.dateCreated = parseDateTime(arguments.dateCreated) />
-	</cfif>
+	<cfset variables.instance.dateCreated = parseDateArg(arguments.dateCreated)/>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="setLastUpdate" access="public" output="false">
 	<cfargument name="lastUpdate" type="String" />
-	<cfif isDate(arguments.lastUpdate)>
-	<cfset variables.instance.lastUpdate = parseDateTime(arguments.lastUpdate) />
-	</cfif>
+	<cfset variables.instance.lastUpdate = parseDateArg(arguments.lastUpdate)/>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="setlastUpdateBy" access="public" output="false">
 	<cfargument name="lastUpdateBy" type="String" />
 	<cfset variables.instance.lastUpdateBy = left(trim(arguments.lastUpdateBy),50) />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="setTarget" access="public" output="false">
@@ -134,6 +133,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif len(arguments.target)>
 	<cfset variables.instance.target = trim(arguments.target) />
 	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="save" output="false">
