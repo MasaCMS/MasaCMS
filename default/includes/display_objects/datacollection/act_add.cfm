@@ -136,6 +136,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif acceptdata>
 	<cfset application.pluginManager.announceEvent("onBeforeFormSubmitSave",event)>
 	<cfset info=application.dataCollectionManager.update(structCopy(request))/>
+	<cfset event.setValue("formResult",info)>
 	<cfset application.pluginManager.announceEvent("onAfterFormSubmitSave",event)>
 	
 	<cfset mailer=$.getBean('mailer')/>
