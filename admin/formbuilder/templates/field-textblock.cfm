@@ -59,11 +59,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<li class="ui-state-default ui-corner-top"><a href="##mura-tb-form-tab-basic"><span>Basic</span></a></li>
 			</ul>
 			
-			<div class="ui-tabs-panel" id="mura-tb-form-tab-basic">		
+			<div class="ui-tabs-panel" id="mura-tb-form-tab-basic" style="position: relative">		
 					<ul class="template-form">
 						<li>
-							<label for="value">#mmRBF.getKeyValue(session.rb,'formbuilder.field.textblock.text')#</label>
-							<textarea class="textarea" name="value"></textarea>
+							<label for="label">#mmRBF.getKeyValue(session.rb,'formbuilder.field.label')#</label>
+							<input class="text  tb-label" type="text" name="label" value="" maxlength="50" data-required='true' />
+							<textarea id='field_textblock' class="textarea" name="value"></textarea>
 						</li>
 					</ul>
 			</div>

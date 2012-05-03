@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfsilent>
 <cfsavecontent variable="strField">
 	<cfoutput>
-	<p>#rereplace(field.value,"#chr(10)#|#chr(13)#","</p><p>","all")#</p>
+	#field.value#
 	</cfoutput>
 </cfsavecontent>
 </cfsilent>
