@@ -205,7 +205,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfquery>
 			
 			<cfloop query="rsInActivefiles">
-				<cfdirectory action="list" name="rscheck" directory="#variables.configBean.getValue('filedir')##variables.fileDelim#cache#variables.fileDelim#file#variables.fileDelim#" filter="#rsInActivefiles.fileID#*">
+				<cfdirectory action="list" name="rscheck" directory="#variables.configBean.getValue('filedir')##variables.fileDelim##arguments.siteid##variables.fileDelim#cache#variables.fileDelim#file#variables.fileDelim#" filter="#rsInActivefiles.fileID#*">
 								
 				<cfif rscheck.recordcount>
 					<cfloop query="rscheck">
