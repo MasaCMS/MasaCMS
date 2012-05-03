@@ -226,7 +226,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						   		#renderActiveClause("tcontent",arguments.feedBean.getSiteID(),arguments.feedBean.getLiveOnly())#
 							    #renderActiveClause("TKids",arguments.feedBean.getSiteID(),arguments.feedBean.getLiveOnly())#
 							    <cfif not arguments.feedBean.getShowExcludeSearch()> AND TKids.searchExclude = 0</cfif>
-							    <cfif arguments.feedBean.getShowNavOnly()>AND TKids.isNav = 1</cfif>
+							    <cfif arguments.feedBean.getShowNavOnly() and arguments.feedBean.getType() neq 'Component'>AND TKids.isNav = 1</cfif>
 							 	AND tcontent.moduleid = '00000000000000000000000000000000000'
 							 
 							<cfif rsParams.recordcount>
@@ -403,7 +403,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	where
 	tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedBean.getsiteid()#">
 	#renderActiveClause("tcontent",arguments.feedBean.getSiteID(),arguments.feedBean.getLiveOnly())#
-	<cfif arguments.feedBean.getShowNavOnly()>
+	<cfif arguments.feedBean.getShowNavOnly() and arguments.feedBean.getType() neq 'Component'>
 	AND tcontent.isNav = 1
 	</cfif>
 	<cfif arguments.feedBean.getType() eq "Remote">
