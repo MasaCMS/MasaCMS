@@ -44,15 +44,6 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfset tz=GetTimeZoneInfo()>
-
-<cfif not find("-", tz.utcHourOffset)>
-	<cfset utc = " -" & numberFormat(tz.utcHourOffset,"00") & "00">
-<cfelse>
-	<cfset tz.utcHourOffset = right(tz.utcHourOffset, len(tz.utcHourOffset) -1 )>
-	<cfset utc = " +" & numberFormat(tz.utcHourOffset,"00") & "00">
-</cfif>
-<cfset pubDate=dateFormat(now(),"ddd, dd mmm yyyy") & " " & timeFormat(now(),"HH:mm:ss") & utc>
 <cfheader name="content-type" value="text/xml;charset=UTF-8"><cfcontent reset="yes"><cfoutput><?xml version="1.0" ?>
 <rss version="2.0">
 	<channel>
@@ -61,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<description>#XMLFormat(feedBean.getDescription())#</description> 
 		<webMaster>#application.settingsManager.getSite(feedBean.getSiteID()).getContact()#</webMaster>
 		<generator>http://www.getmura.com</generator>
-		<pubDate>#XMLformat(pubDate)#</pubDate> 
+		<pubDate>#GetHttpTimeString(now())#</pubDate> 
 		<language>#XMLFormat(feedBean.getLang())#</language>
 <cfloop condition="feedIt.hasNext()"><cfsilent>
 <cfset item=feedIt.next()>
@@ -76,9 +67,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset itemdescription = renderer.addCompletePath(renderer.setDynamicContent(itemdescription),feedBean.getSiteID())>
 </cfif>
 <cfif isDate(item.getValue('releaseDate'))>
-	<cfset thePubDate=dateFormat(item.getValue('releaseDate'),"yyyy-mm-dd") & "T" & timeFormat(item.getValue('releaseDate'),"HH:mm:ss") & utc>
+	<cfset thePubDate=item.getValue('releaseDate')>
 <cfelse>
-	<cfset thePubDate=dateFormat(item.getValue('lastUpdate'),"yyyy-mm-dd") & "T" & timeFormat(item.getValue('lastUpdate'),"HH:mm:ss") & utc>
+	<cfset thePubDate=item.getValue('lastUpdate')>
 </cfif>
 <cfset rsCats=application.contentManager.getCategoriesByHistID(item.getContentHistID())>
 
@@ -89,7 +80,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<link>#theLink#</link><cfif rs.type neq 'File' and rs.type neq 'Link'>
 			<comments>#theLink###comments</comments></cfif>
 			<guid isPermaLink="false">#item.getValue('contentID')#</guid>
-			<pubDate>#XMLFormat(thePubDate)#</pubDate>
+			<pubDate>#GetHttpTimeString(thePubDate)#</pubDate>
 			<description><![CDATA[#itemdescription# ]]></description>
 			<cfloop query="rsCats">
 			<category><![CDATA[#rsCats.name#]]></category>	
