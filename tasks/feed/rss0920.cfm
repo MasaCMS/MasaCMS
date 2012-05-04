@@ -44,13 +44,6 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfset tz=GetTimeZoneInfo()>
-<cfif not find("-", tz.utcHourOffset)>
-	<cfset utc = " -" & numberFormat(tz.utcHourOffset,"00") & "00">
-<cfelse>
-	<cfset tz.utcHourOffset = right(tz.utcHourOffset, len(tz.utcHourOffset) -1 )>
-	<cfset utc = " +" & numberFormat(tz.utcHourOffset,"00") & "00">
-</cfif>
 <cfheader name="content-type" value="text/xml"><cfcontent reset="yes"><cfoutput><?xml version="1.0" ?>
 <rss version="0.92"
 	xmlns:dc="http://purl.org/dc/elements/1.1/">
@@ -73,11 +66,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset itemdescription = renderer.addCompletePath(renderer.setDynamicContent(itemdescription),feedBean.getSiteID())>
 </cfif>
 <cfif isDate(item.getValue('releaseDate'))>
-	<cfset thePubDate=dateFormat(item.getValue('releaseDate'),"yyyy-mm-dd") & "T" & timeFormat(item.getValue('releaseDate'),"HH:mm:ss") & utc>
+	<cfset thePubDate=item.getValue('releaseDate')>
 <cfelse>
-	<cfset thePubDate=dateFormat(item.getValue('lastUpdate'),"yyyy-mm-dd") & "T" & timeFormat(item.getValue('lastUpdate'),"HH:mm:ss") & utc>
+	<cfset thePubDate=item.getValue('lastUpdate')>
 </cfif>
-
 <cfset rsCats=application.contentManager.getCategoriesByHistID(item.getValue('contentHistID'))>
 
 <cfset theLink=XMLFormat(renderer.createHREFforRss(item.getValue('type'),item.getValue('filename'),item.getValue('siteID'),item.getValue('contentID'),item.getValue('target'),item.getValue('targetParams'),application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile(),0,item.getValue('fileEXT'))) />
@@ -87,7 +79,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<description><![CDATA[#itemdescription# ]]></description> 
 			<link>#theLink#</link>
 			<guid isPermaLink="true">#theLink#</guid>
-			<dc:date>#thePubDate#</dc:date>
+			<dc:date>#GetHttpTimeString(thePubDate)#</dc:date>
 			<cfif item.getValue('type') eq "File"><cfset fileMeta=application.serviceFactory.getBean("fileManager").readMeta(item.getValue('fileID'))><enclosure url="#XMLFormat('http://#application.settingsManager.getSite(item.getValue('siteID')).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/?fileID=#item.getValue('fileID')#&fileEXT=.#item.getValue('fileExt')#')#" length="#fileMeta.filesize#" type="#fileMeta.ContentType#/#fileMeta.ContentSubType#" /></cfif>
 		</item></cfloop>
 	</channel>
