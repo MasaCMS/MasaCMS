@@ -105,7 +105,7 @@ CKEDITOR.editorConfig = function( config )
 	                                	['Source'],['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','Image']
 	                                ] ;
 
-	config.extraPlugins = <cfif application.configBean.getEnableMuraTag()>'SelectComponent,media,Selectlink,muratag,gmap,tableresize,autogrow,onchange'<cfelse>'SelectComponent,media,Selectlink,gmap,tableresize,autogrow,onchange'</cfif>;
+	config.extraPlugins = <cfif application.configBean.getEnableMuraTag()>'SelectComponent,media,Selectlink,muratag,gmap,tableresize,autogrow'<cfelse>'SelectComponent,media,Selectlink,gmap,tableresize,autogrow'</cfif>;
 		
 	autoGrow_maxHeight : 1200;
 	
