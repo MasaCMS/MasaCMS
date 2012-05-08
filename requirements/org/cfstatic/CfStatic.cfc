@@ -309,7 +309,7 @@
 		<cfscript>
 			// put javaloader instances in server scope due to memory leak issues
 			if(arguments.compilerScope eq "application"){
-				if( not StructKeyExists(server, '_cfstaticJavaloaders') ){
+				if( not StructKeyExists(application, '_cfstaticJavaloaders') ){
 					application['_cfstaticJavaloaders'] = _loadJavaLoaders();
 				}
 
@@ -341,7 +341,7 @@
 			cfstaticJavaloaders.yui  = CreateObject('component','org.cfstatic.lib.javaloader.JavaLoader').init( jarsForYui  );
 			cfstaticJavaloaders.less = CreateObject('component','org.cfstatic.lib.javaloader.JavaLoader').init( jarsForLess );
 			
-		 	cfstaticJavaloaders;
+		 	return cfstaticJavaloaders;
 		</cfscript>
 	</cffunction>
 
