@@ -139,7 +139,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.MYSQLEngine="InnoDB" />
 <cfset variables.instance.autoDiscoverPlugins=false />
 <cfset variables.instance.trackSessionInNewThread=1 />
-<cfset variables.instance.cfstaticCompilercope="application">
+<cfset variables.instance.cfstaticCompilerscope="application">
 <cfset variables.dbUtility="">
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
