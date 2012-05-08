@@ -189,9 +189,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif isExtendedSort>
 	left Join (select 
-			
 			#variables.classExtensionManager.getCastString(data.getSortBy(),data.getSiteID())# extendedSort
-			 ,tclassextenddata.baseID 
+			 ,tclassextenddatauseractivity.baseID 
 			from tclassextenddatauseractivity inner join tclassextendattributes
 			on (tclassextenddatauseractivity.attributeID=tclassextendattributes.attributeID)
 			where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#data.getSiteID()#">
@@ -305,7 +304,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	order by
 	
 	<cfif isExtendedSort>
-			qExtendedSort.extendedSort #arguments.feedBean.getSortDirection()#
+			qExtendedSort.extendedSort #params.getSortDirection()#
 	<cfelse>	
 		<cfif variables.configBean.getDbType() neq "oracle" or listFindNoCase("lastUpdate,created,isPublic",params.getSortBy())>
 			tusers.#params.getSortBy()# #params.getSortDirection()#
