@@ -408,6 +408,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="outputDirectory" default="compiled">
 	<cfargument name="minifyMode" default="package">
 	<cfargument name="checkForUpdates" default="true">
+	<cfargument name="compilerScope" default="#application.configBean.getValue('cfstaticCompilercope')#">
 	<cfset var hashKey="">
 	
 	<cfif not len(arguments.staticDirectory) and len(event("siteid"))>
