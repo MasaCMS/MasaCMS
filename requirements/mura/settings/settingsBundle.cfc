@@ -190,8 +190,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					
 					moduleid in ('00000000000000000000000000000000000','00000000000000000000000000000000003'<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif>)
 							
-					<cfif not arguments.includeVersionHistory and rstfiles.recordcount>
-						or fileID not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rstfiles.fileID)#" list="true">)				
+					<cfif not arguments.includeVersionHistory>
+						or fileID not in ('',<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rstfiles.fileID)#" list="true">)				
 					</cfif>
 							
 					<cfif not arguments.includeTrash>
@@ -204,6 +204,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</cfquery>
 			
+			<!---
 			<cfloop query="rsInActivefiles">
 				<cfdirectory action="list" name="rscheck" directory="#variables.configBean.getValue('filedir')##variables.fileDelim##arguments.siteid##variables.fileDelim#cache#variables.fileDelim#file#variables.fileDelim#" filter="#rsInActivefiles.fileID#*">
 								
@@ -214,7 +215,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 						
 			</cfloop>
-				
+			--->
+
 			<cfif variables.configBean.getValue('assetdir') neq variables.configBean.getValue('webroot')>
 				<cfset zipDir = variables.configBean.getValue('assetdir') & variables.fileDelim & arguments.siteID />
 				<cffile action="write" file="#zipDir##variables.fileDelim#blank.txt" output="empty file" />  
