@@ -24,7 +24,7 @@ Mura CMS under the license of your choice, provided that you follow these specif
 
 Your custom code 
 
-• Must not alter any default objects in the Mura CMS database and
+• Must not alter any" default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
 • Must not alter any files in the following directories.
 
@@ -433,7 +433,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="aCurrentCustomString" required="true" default="#this.aCurrentCustomString#">
 		<cfargument name="ulNestedClass" required="true" default="#this.ulNestedClass#">
 		<cfargument name="ulNestedCustomString" required="true" default="#this.ulNestedCustomString#">
-	
+		<cfargument name="openCurrentOnly" required="true" default="false">
+
 		<cfset var rsSection=arguments.rs>
 		<cfset var adjust=0>
 		<cfset var current=0>
@@ -466,7 +467,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif len(arguments.subNavExpression)>
 					<cfset subnav=evaluate(arguments.subNavExpression)>
 				<cfelse>
-					 <cfset subnav=(((ListFind("Page,Portal,Calendar",rsSection.type)) and arguments.class eq this.ulTopClass and (this.crumbData[this.navSelfIdx].contentID eq rsSection.contentid or this.crumbData[this.navSelfIdx].parentID eq rsSection.contentid) ) or ((listFindNoCase("Page,Calendar",rsSection.type)) and arguments.class neq this.ulTopClass)) and arguments.currDepth lt arguments.viewDepth and rsSection.type neq 'Gallery' and not (rsSection.restricted and not session.mura.isLoggedIn) >
+					<cfset subnav=(((ListFind("Page,Portal,Calendar",rsSection.type)) and arguments.openCurrentOnly and (this.crumbData[this.navSelfIdx].contentID eq rsSection.contentid or this.crumbData[this.navSelfIdx].parentID eq rsSection.contentid) ) or ((listFindNoCase("Page,Calendar",rsSection.type)) and not arguments.openCurrentOnly)) and arguments.currDepth lt arguments.viewDepth and rsSection.type neq 'Gallery' and not (rsSection.restricted and not session.mura.isLoggedIn) >
 				</cfif>
 			
 				<cfset current=current+1>
@@ -566,6 +567,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var menutype="" />
 	<cfset var nestedArgs=structNew()>
 
+	<cfset nestedArgs.openCurrentOnly=true>
+	""
 	<cfif event.getValue('contentBean').getType() eq 'Portal' or event.getValue('contentBean').getType() eq 'Gallery'>
 		<cfif arraylen(this.crumbdata) gt (this.navParentIdx+this.navOffSet)>
 			<cfif arraylen(this.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and (this.crumbdata[this.navGrandParentIdx].type neq 'Portal' or this.crumbdata[this.navGrandParentIdx].type neq 'Gallery') and not variables.contentGateway.getCount(event.getValue('siteID'),this.crumbdata[this.navSelfIdx].contentID)>
@@ -618,6 +621,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var menutype="" />
 	<cfset var nestedArgs=structNew()>
 	
+	<cfset nestedArgs.openCurrentOnly=true>
+
 	<cfif event.getValue('contentBean').getType() neq 'Gallery'>
 			<cfif arraylen(this.crumbdata) gt (this.navParentIdx+this.navOffSet)>
 				<cfif this.crumbdata[this.navParentIdx].type eq 'calendar'>
@@ -668,6 +673,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var thenav="" />
 	<cfset var nestedArgs=structNew()>
 
+	<cfset nestedArgs.openCurrentOnly=true>
+
 	<cfif arraylen(this.crumbdata) gt (this.navSelfIdx+this.navOffSet)>	
 		<cfset nestedArgs.contentID=this.crumbdata[this.navSelfIdx].contentID>
 		<cfset nestedArgs.viewDepth=1>
@@ -699,7 +706,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var thenav="" />
 	<cfset var menutype = "" />
-		
+	<cfset var nestedArgs=structNew()>
+
+	<cfset nestedArgs.openCurrentOnly=true>
+
 	<cfif event.getContentBean().getContentID() neq '00000000000000000000000000000000001'
 		 and arraylen(this.crumbdata) gt (this.navParentIdx+this.navOffSet)>
 		<cfset nestedArgs.contentID=this.crumbdata[this.navParentIdx].contentID>
