@@ -318,6 +318,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var cacheFactory="">
 	<cfset var bean=arguments.categoryBean>	
 	
+	<cfif not len(arguments.siteID) and isdefined("session.siteID")>
+		<cfset arguments.siteID=session.siteID>
+	</cfif>
+	
 	<cfif not len(arguments.categoryID) and len(arguments.siteID)>
 		<cfif len(arguments.name)>
 			<cfreturn readByName(arguments.name, arguments.siteID, bean) />
@@ -327,7 +331,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfreturn readByFilename(arguments.filename, arguments.siteID, bean) />
 		</cfif>
 	</cfif>
-	
+
 	<cfset key= "category" & arguments.siteid & arguments.categoryID />
 	<cfset site=variables.settingsManager.getSite(arguments.siteid)/>
 	<cfset cacheFactory=site.getCacheFactory(name="data")>			
