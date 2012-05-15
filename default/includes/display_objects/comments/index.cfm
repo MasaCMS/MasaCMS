@@ -221,6 +221,7 @@ to your own modified versions of Mura CMS.
 	<cfset CurrentPageNumber=Ceiling(request.StartRow/RecordsPerPage)> --->
 
 	<div id="svComments">
+		<a name="comments"></a>
 		<cfoutput>
 		<#$.getHeaderTag('subHead1')#>#$.rbKey('comments.comments')#</#$.getHeaderTag('subHead1')#>
 		#$.dspObject_Include(thefile='comments/dsp_comments.cfm')#</cfoutput>
