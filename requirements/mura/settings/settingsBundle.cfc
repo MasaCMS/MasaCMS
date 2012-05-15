@@ -164,6 +164,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var deleteList =	"" />
 		<cfset var rstfiles=getValue("rstfiles")>
 		<cfset var rscheck="">
+		<cfset var started=false>
 		
 		<!---<cfset var moduleIDSQLlist="" />--->
 		<cfset var i="" />
@@ -186,16 +187,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfquery name="rsInActivefiles" datasource="#arguments.dsn#">
 				select fileID,fileExt from tfiles  
 				where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
+				and moduleid in ('00000000000000000000000000000000000','00000000000000000000000000000000003'<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif>)
 				and (
-					
-					moduleid in ('00000000000000000000000000000000000','00000000000000000000000000000000003'<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.includeUsers>,'00000000000000000000000000000000008'</cfif>)
 							
-					<cfif not arguments.includeVersionHistory>
-						or fileID not in ('',<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rstfiles.fileID)#" list="true">)				
+					<cfif not arguments.includeVersionHistory and rstfiles.recordcount>
+						fileID not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rstfiles.fileID)#" list="true">)				
+						<cfset started=true>
 					</cfif>
 							
 					<cfif not arguments.includeTrash>
-						or deleted=1
+						<cfif started>or</cfif> deleted=1
+						<cfset started=true>
+					</cfif>
+
+					<cfif not started>
+						1=1
 					</cfif>
 				)	
 				
@@ -204,7 +210,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</cfquery>
 			
-			<!---
 			<cfloop query="rsInActivefiles">
 				<cfdirectory action="list" name="rscheck" directory="#variables.configBean.getValue('filedir')##variables.fileDelim##arguments.siteid##variables.fileDelim#cache#variables.fileDelim#file#variables.fileDelim#" filter="#rsInActivefiles.fileID#*">
 								
@@ -215,7 +220,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 						
 			</cfloop>
-			--->
 
 			<cfif variables.configBean.getValue('assetdir') neq variables.configBean.getValue('webroot')>
 				<cfset zipDir = variables.configBean.getValue('assetdir') & variables.fileDelim & arguments.siteID />
