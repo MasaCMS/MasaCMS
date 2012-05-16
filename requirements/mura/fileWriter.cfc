@@ -205,8 +205,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="touchDir" output="false">
 <cfargument name="directory">
 <cfargument name="mode" required="true" default="#variables.defaultFileMode#">
-<cfif not DirectoryExists(arguments.destination)>
-	<cfset createDir(arguments.destination,arguments.mode) />
+<cfif not DirectoryExists(arguments.directory)>
+	<cfset createDir(arguments.directory,arguments.mode) />
 </cfif>
 </cffunction>
 
