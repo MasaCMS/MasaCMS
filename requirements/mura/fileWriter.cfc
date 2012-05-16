@@ -158,9 +158,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="mode" required="true" default="#variables.defaultFileMode#">
 <cfargument name="accept" required="false" default="" />
 
-<cfif not DirectoryExists(arguments.destination)>
-	<cfset createDir(arguments.destination,arguments.mode) />
-</cfif>
+<cfset touchDir(arguments.destination,arguments.mode) />
 
 <cfif variables.useMode >
 	<cffile action="upload"
@@ -201,6 +199,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfdirectory action="create" mode="#arguments.mode#" directory="#arguments.directory#"/>
 <cfelse>
 	<cfdirectory action="create" directory="#arguments.directory#"/>
+</cfif>
+</cffunction>
+
+<cffunction name="touchDir" output="false">
+<cfargument name="directory">
+<cfargument name="mode" required="true" default="#variables.defaultFileMode#">
+<cfif not DirectoryExists(arguments.destination)>
+	<cfset createDir(arguments.destination,arguments.mode) />
 </cfif>
 </cffunction>
 
