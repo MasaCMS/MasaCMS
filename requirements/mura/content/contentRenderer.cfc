@@ -1145,7 +1145,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var historyID="">
 	<cfset var tempObject="">
 	
-	
 	<cfswitch expression="#arguments.object#">
 		<cfcase value="plugin">
 			<cfif session.mura.isLoggedIn and this.showEditableObjects >
@@ -1242,6 +1241,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset editableControl.editLink = editableControl.editLink & "&amp;contenthistID=" & arguments.assignmentID>
 			<cfset editableControl.editLink = editableControl.editLink & "&amp;regionID=" & arguments.regionID>
 			<cfset editableControl.editLink = editableControl.editLink & "&amp;orderno=" & arguments.orderno>
+			<cfset editableControl.editLink = editableControl.editLink & "&amp;siteID=" & arguments.siteID>
 		</cfif>
 	</cfif>
 
