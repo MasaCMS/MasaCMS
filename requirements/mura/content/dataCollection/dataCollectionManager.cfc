@@ -335,5 +335,7 @@ order by tformresponsepackets.entered asc
 	and contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentID()#"/>
 	</cfquery>
 
+	<cfset getBean("contentManager").purgeContentCache(contentBean=arguments.contentBean)>
+
 </cffunction>
 </cfcomponent>
