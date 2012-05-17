@@ -67,7 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfelseif isDefined('attributes.responseid') and attributes.action eq 'Delete'>
 	<cfset application.dataCollectionManager.delete('#attributes.responseID#')/>
 <cfelseif  attributes.action eq 'setDisplay'>
-	<cfset request.contentBean.setResponseDisplayFields(attributes.responseDisplayFields)/>
+	<cfset request.contentBean.setResponseDisplayFields("#attributes.detailList2#~#attributes.summaryList2#")/>
 	<cfset request.contentBean.setNextN(attributes.nextn)/>
 	<cfset request.contentBean.setSortBy(attributes.sortBy)/>
 	<cfset request.contentBean.setSortDirection(attributes.sortDirection)/>

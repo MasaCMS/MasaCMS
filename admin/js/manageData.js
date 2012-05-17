@@ -69,7 +69,7 @@ function addObject(availableList,publicList,privateList){
 	document.getElementById(publicList).appendChild(myoption);
 	myoption.text     = addoption.text;
 	myoption.value    = addoption.value;
-	myoption.selected = "selected"
+	myoption.selected = "selected";
 	
 	updateList(publicList,privateList);
 	
@@ -91,8 +91,10 @@ function deleteObject(publicList,privateList){
 
 function updateList(publicList,privateList){
 	var selectedObjects =document.getElementById(publicList);
-	 var objectList=document.getElementById(privateList)
-	 objectList.value=""; 
+	var objectList=document.getElementById(privateList);
+	
+	objectList.value=""; 
+	
 	for (var i=0;i<selectedObjects.options.length;i++){ 
 		if(objectList.value!=""){
 			objectList.value += "^" + selectedObjects.options[i].value; 
