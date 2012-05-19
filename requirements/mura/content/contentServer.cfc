@@ -513,7 +513,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	 	<cfset event.getHandler("standardDoResponse").handle(event)>
 		
-		<cfset response event.getValue("__MuraResponse__")>
+		<cfset response=event.getValue("__MuraResponse__")>
 	</cfif>
 
 	<cfset application.pluginManager.announceEvent('onSiteRequestEnd',event)/>
