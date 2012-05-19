@@ -451,7 +451,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var servlet = "" />
 	<cfset var localHandler=""/>
 	<cfset var previewData=""/>
-	<cfset var requestHandled=false/>
+	
 	<cfset var trace=""/>
 	<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#/#event.getValue('siteid')#/includes/servlet.cfc"))>
 		<cfset servlet=createObject("component","#application.configBean.getWebRootMap()#.#event.getValue('siteid')#.includes.servlet").init(event)>
@@ -479,20 +479,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset application.pluginManager.announceEvent('onSiteRequestStart',event)/>
 	
-	<cfif isObject(servlet)>
-		<cfif isdefined("servlet.onRequestStart")>
-			<cfset servlet.onRequestStart()>
-		</cfif>
-		<cfif isdefined("servlet.doRequest")>
-			<cfset response=servlet.doRequest()>
-			<cfset requestHandled=true>
-		</cfif>
-		<cfif isdefined("servlet.onRequestEnd")>
-			<cfset servlet.onRequestEnd()>
-		</cfif>
+	<cfif isdefined("servlet.onRequestStart")>
+		<cfset servlet.onRequestStart()>
 	</cfif>
-
-	<cfif not requestHandled>
+	
+	<cfif isdefined("servlet.doRequest")>
+		<cfset response=servlet.doRequest()>
+	<cfelse>
 		<cfset event.getHandler("standardSetContent").handle(event)>
 	
 		<cfset event.getValidator("standardWrongDomain").validate(event)> 
@@ -514,6 +507,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 	<cfset event.getHandler("standardDoResponse").handle(event)>
 		
 		<cfset response=event.getValue("__MuraResponse__")>
+	</cfif>
+
+	<cfif isdefined("servlet.onRequestEnd")>
+		<cfset servlet.onRequestEnd()>
 	</cfif>
 
 	<cfset application.pluginManager.announceEvent('onSiteRequestEnd',event)/>
