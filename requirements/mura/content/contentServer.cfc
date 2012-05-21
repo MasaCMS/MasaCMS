@@ -455,6 +455,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var trace=""/>
 	<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#/#event.getValue('siteid')#/includes/servlet.cfc"))>
 		<cfset servlet=createObject("component","#application.configBean.getWebRootMap()#.#event.getValue('siteid')#.includes.servlet").init(event)>
+	<cfelse>
+		<cfset event.getHandler("standardSetContentRenderer").handle(event)>
 	</cfif>
 	
 	<cfset request.muraFrontEndRequest=true>
@@ -478,7 +480,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset event.setValue("localHandler",localHandler)/>
 	
 	<cfset application.pluginManager.announceEvent('onSiteRequestStart',event)/>
-	
+
 	<cfif isdefined("servlet.onRequestStart")>
 		<cfset servlet.onRequestStart()>
 	</cfif>
