@@ -46,11 +46,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject">
 
-<cffunction name="init" output="false" returntype="any">
-<cfset variables.Mura=createObject("component","mura.Mura").init()>
-<cfreturn this>
-</cffunction>
-
 <cffunction name="forcePathDirectoryStructure" output="false" returntype="any" access="remote">
 <cfargument name="cgi_path">
 <cfargument name="siteID">
@@ -222,7 +217,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfset parseCustomURLVars(request.servletEvent)>
 		
-		<cfreturn variables.Mura.doRequest(request.servletEvent)>
+		<cfreturn doRequest(request.servletEvent)>
 		
 	<cfelse>
 		<cfset redirect()>
@@ -352,7 +347,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif arguments.parseURL>
 		<cfset parseCustomURLVars(request.servletEvent)>
 	</cfif>
-	<cfset fileOutput=variables.Mura.doRequest(request.servletEvent)>	
+	<cfset fileOutput=doRequest(request.servletEvent)>	
 	<cfoutput>#fileOutput#</cfoutput>
 	<cfabort>
 
@@ -448,6 +443,81 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn pageContent>
 	</cfif> 
 	<cfreturn "">
+</cffunction>
+
+<cffunction name="doRequest" output="false" returntype="any">
+<cfargument name="event">
+	<cfset var response=""/>
+	<cfset var servlet = "" />
+	<cfset var localHandler=""/>
+	<cfset var previewData=""/>
+	
+	<cfset var trace=""/>
+	<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#/#event.getValue('siteid')#/includes/servlet.cfc"))>
+		<cfset servlet=createObject("component","#application.configBean.getWebRootMap()#.#event.getValue('siteid')#.includes.servlet").init(event)>
+	</cfif>
+	
+	<cfset request.muraFrontEndRequest=true>
+
+	<cfif structKeyExists(url,"changesetID")>
+		<cfset getBean('changesetManager').setSessionPreviewData(url.changesetID)>
+	</cfif>
+	
+	<cfset previewData=getCurrentUser().getValue("ChangesetPreviewData")>
+	<cfset request.muraChangesetPreview=isStruct(previewData) and previewData.siteID eq arguments.event.getValue("siteID")>
+	
+	<cfif request.muraChangesetPreview>
+		<cfset request.nocache=1>
+	</cfif>
+	
+	<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#event.getValue('siteid')#/includes/eventHandler.cfc")>
+		<cfset localHandler=createObject("component","#application.configBean.getWebRootMap()#.#event.getValue('siteid')#.includes.eventHandler").init()>
+		<cfset localHandler._objectName=getMetaData(localHandler).name>
+	</cfif>
+
+	<cfset event.setValue("localHandler",localHandler)/>
+	
+	<cfset application.pluginManager.announceEvent('onSiteRequestStart',event)/>
+	
+	<cfif isdefined("servlet.onRequestStart")>
+		<cfset servlet.onRequestStart()>
+	</cfif>
+	
+	<cfif isdefined("servlet.doRequest")>
+		<cfset response=servlet.doRequest()>
+	<cfelse>
+		<cfset event.getHandler("standardSetContent").handle(event)>
+	
+		<cfset event.getValidator("standardWrongDomain").validate(event)> 
+		
+		<cfset event.getValidator("standardTrackSession").validate(event)>
+		
+		<cfset event.getHandler("standardSetPermissions").handle(event)>
+		
+		<cfset event.getHandler("standardSetIsOnDisplay").handle(event)>
+		
+		<cfset event.getHandler("standardDoActions").handle(event)>
+		
+		<cfset event.getValidator("standardRequireLogin").validate(event)>
+		
+		<cfset event.getHandler("standardSetLocale").handle(event)>
+		
+		<cfset event.getValidator("standardMobile").validate(event)>
+
+	 	<cfset event.getHandler("standardDoResponse").handle(event)>
+		
+		<cfset response=event.getValue("__MuraResponse__")>
+	</cfif>
+
+	<cfif isdefined("servlet.onRequestEnd")>
+		<cfset servlet.onRequestEnd()>
+	</cfif>
+
+	<cfset application.pluginManager.announceEvent('onSiteRequestEnd',event)/>
+	<cfif isDefined("session.mura.showTrace") and session.mura.showTrace and listFindNoCase(session.mura.memberships,"S2IsPrivate")>
+		<cfset response=replaceNoCase(response,"</html>","#application.utility.dumpTrace()#</html>")>
+	</cfif>
+	<cfreturn response>
 </cffunction>
 
 </cfcomponent>

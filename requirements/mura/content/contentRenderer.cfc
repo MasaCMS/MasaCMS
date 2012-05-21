@@ -1190,7 +1190,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfcase>
 		<cfcase value="component,form">
 			<cfif session.mura.isLoggedIn and this.showEditableObjects>	
-				<cfset showEditable=application.permUtility.getDisplayObjectPerm(arguments.siteID,arguments.object,arguments.objectID) eq "editor">		
+				<cfset showEditable=listFindNoCase("editor,author",application.permUtility.getDisplayObjectPerm(arguments.siteID,arguments.object,arguments.objectID))>		
 				<cfif showEditable>
 					<cfset historyID = $.getBean("contentGateway").getContentHistIDFromContentID(contentID=arguments.objectID,siteID=arguments.siteID)>
 					<cfif arguments.object eq "component">

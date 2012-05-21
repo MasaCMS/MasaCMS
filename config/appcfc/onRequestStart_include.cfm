@@ -105,16 +105,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfcookie name="userid" value="#session.mura.userID#" expires="never" />
 	<cfcookie name="userHash" value="#encrypt(application.userManager.readUserHash(session.mura.userID).userHash,application.configBean.getEncryptionKey(),'cfmx_compat','hex')#" expires="never" />
 	</cfif>
+<cfcatch>
+	<cfcookie name="userid" value="" expires="never" />
+	<cfcookie name="userHash" value="" expires="never" />
+</cfcatch>
+</cftry>
 
+<cftry>
 	<cfif cookie.userid neq '' and not session.mura.isLoggedIn>
 	<cfset application.loginManager.rememberMe(cookie.userid,decrypt(cookie.userHash,application.configBean.getEncryptionKey(),"cfmx_compat",'hex')) />
 	</cfif>
+<cfcatch></cfcatch>
+</cftry>
 
+<cftry>
 	<cfif cookie.userid neq '' and structKeyExists(session,"rememberMe") and session.rememberMe eq 0 and session.mura.isLoggedIn>
 	<cfcookie name="userid" value="" expires="never" />
 	<cfcookie name="userHash" value="" expires="never" />
 	</cfif>
+<cfcatch>
+	<cfcookie name="userid" value="" expires="never" />
+	<cfcookie name="userHash" value="" expires="never" />
+</cfcatch>
+</cftry>
 
+<cftry>
 	<cfif not structKeyExists(cookie,"originalURLToken")>
 	<cfparam name="session.trackingID" default="#application.utility.getUUID()#">
 	<cfcookie name="originalURLToken" value="#session.trackingID#" expires="never" />
