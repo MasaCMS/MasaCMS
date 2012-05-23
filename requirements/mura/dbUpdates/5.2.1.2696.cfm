@@ -23,17 +23,17 @@ ALTER TABLE [dbo].[tadplacementcategoryassign] WITH NOCHECK ADD
 
 </cfcase>
 <cfcase value="mysql">
-	<cfset runDBUpdate=false/>
+	<cfset variables.RUNDBUPDATE=false/>
 	<cftry>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	select placementID as CheckIfTableExists from tadplacementcategoryassign limit 1
 	</cfquery>
 	<cfcatch>
-	<cfset runDBUpdate=true/>
+	<cfset variables.RUNDBUPDATE=true/>
 	</cfcatch>
 	</cftry>
 	
-	<cfif runDBUpdate>
+	<cfif variables.RUNDBUPDATE>
 	<cftry>
 	
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
@@ -61,17 +61,17 @@ ALTER TABLE [dbo].[tadplacementcategoryassign] WITH NOCHECK ADD
 	</cfif>
 </cfcase>
 <cfcase value="oracle">
-<cfset runDBUpdate=false/>
+<cfset variables.RUNDBUPDATE=false/>
 <cftry>
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 select * from (select placementID as CheckIfTableExists from tadplacementcategoryassign) where ROWNUM <=1
 </cfquery>
 <cfcatch>
-<cfset runDBUpdate=true/>
+<cfset variables.RUNDBUPDATE=true/>
 </cfcatch>
 </cftry>
 
-<cfif runDBUpdate>
+<cfif variables.RUNDBUPDATE>
 	<cftransaction>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	CREATE TABLE tadplacementcategoryassign (
@@ -147,17 +147,17 @@ select * from tadplacements  where 0=1
 	</cfquery>
 </cfif>
 
-<cfset doupdate=false>
+<cfset variables.DOUPDATE=false>
 <cftry>
 <cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 select remoteID from tclassextenddatauseractivity  where 0=1
 </cfquery>
 <cfcatch>
-	<cfset doupdate=true>
+	<cfset variables.DOUPDATE=true>
 </cfcatch>
 </cftry>
 
-<cfif doupdate>
+<cfif variables.DOUPDATE>
 <cfswitch expression="#getDbType()#">
 <cfcase value="mssql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
@@ -203,17 +203,17 @@ select remoteID from tclassextenddatauseractivity  where 0=1
 
 </cfif>
 
-<cfset doupdate=false>
+<cfset variables.DOUPDATE=false>
 <cftry>
 <cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 select remoteID from tclassextenddata where 0=1
 </cfquery>
 <cfcatch>
-	<cfset doupdate=true>
+	<cfset variables.DOUPDATE=true>
 </cfcatch>
 </cftry>
 
-<cfif doupdate>
+<cfif variables.DOUPDATE>
 <cfswitch expression="#getDbType()#">
 <cfcase value="mssql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">

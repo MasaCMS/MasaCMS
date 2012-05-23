@@ -46,22 +46,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfoutput>
-<cfset variables.iterator=$.content().getRelatedContentIterator(liveOnly=true)>
+<cfset variables.iterator=variables.$.content().getRelatedContentIterator(liveOnly=true)>
 <cfif variables.iterator.getRecordCount()>
 	<div class="svRelContent svIndex">
-	<#$.getHeaderTag('subHead1')#>#$.rbKey('list.relatedcontent')#</#$.getHeaderTag('subHead1')#>
+	<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('list.relatedcontent')#</#variables.$.getHeaderTag('subHead1')#>
 	<cfif not structIsEmpty(objectparams)>
-		#$.dspObject_Include(
+		#variables.$.dspObject_Include(
 				thefile='dsp_content_list.cfm',
 				fields=objectparams.displayList,
 				type='Related', 
-				iterator=$.content().getRelatedContentIterator(liveOnly=true),
+				iterator=variables.$.content().getRelatedContentIterator(liveOnly=true),
 				imageSize=objectparams.imageSize,
 				imageHeight=objectparams.imageHeight,
 				imageWidth=objectparams.imageWidth
 				)#
 	<cfelse>
-		#$.dspObject_Include(
+		#variables.$.dspObject_Include(
 				thefile='dsp_content_list.cfm',
 				fields='Title',
 				type='Related', 

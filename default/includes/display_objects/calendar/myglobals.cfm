@@ -49,20 +49,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="request.year" default="#year(now())#">
 <cfparam name="request.day" default="#day(now())#">
 <cfscript>
-currentDate=now();
-selectedMonth = createDate(request.year,request.month,1);
-daysInMonth=daysInMonth(selectedMonth);
-firstDayOfWeek=dayOfWeek(selectedMonth)-1;
-weekdayShort=$.rbKey('calendar.weekdayshort');
-weekdayLong=$.rbKey('calendar.weekdaylong');
-monthShort=$.rbKey('calendar.monthshort');
-monthLong=$.rbKey('calendar.monthlong');
-dateLong = "#listGetAt(monthLong,request.month,",")# #request.year#";
-dateShort = "#listGetAt(monthShort,request.month,",")# #request.year#";
-previousMonth = request.month-1;
-nextMonth = request.month+1;
-nextYear = request.year;
-previousYear=request.year;
-if (previousMonth lte 0) {previousMonth=12;previousYear=previousYear-1;}
-if (nextMonth gt 12) {nextMonth=1;nextYear=nextYear+1;}
+variables.currentDate=now();
+variables.selectedMonth = createDate(request.year,request.month,1);
+variables.daysInMonth=daysInMonth(variables.selectedMonth);
+variables.firstDayOfWeek=dayOfWeek(variables.selectedMonth)-1;
+variables.weekdayShort=variables.$.rbKey('calendar.weekdayshort');
+variables.weekdayLong=variables.$.rbKey('calendar.weekdaylong');
+variables.monthShort=variables.$.rbKey('calendar.monthshort');
+variables.monthLong=variables.$.rbKey('calendar.monthlong');
+variables.dateLong = "#listGetAt(variables.monthLong,request.month,",")# #request.year#";
+variables.dateShort = "#listGetAt(variables.monthShort,request.month,",")# #request.year#";
+variables.previousMonth = request.month-1;
+variables.nextMonth = request.month+1;
+variables.nextYear = request.year;
+variables.previousYear=request.year;
+if (variables.previousMonth lte 0) {variables.previousMonth=12;variables.previousYear=variables.previousYear-1;}
+if (variables.nextMonth gt 12) {variables.nextMonth=1;variables.nextYear=variables.nextYear+1;}
 </cfscript>

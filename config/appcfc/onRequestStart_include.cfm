@@ -80,9 +80,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			or
 		(session.mura.isLoggedIn and not isValid("UUID",listFirst(getAuthUser(),"^")))	>
 		
-		<cfset tempcookieuserID=cookie.userID>
+		<cfset variables.tempcookieuserID=cookie.userID>
 		<cfset application.loginManager.logout()>
-		<cfcookie name="userid" expires="never" value="#tempcookieuserID#">	
+		<cfcookie name="userid" expires="never" value="#variables.tempcookieuserID#">	
 	</cfif>
 </cfif>
 
@@ -138,10 +138,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cftry>
 
 <!--- look to see is there is a custom remote IP header in the settings.ini.cfm --->
-<cfset remoteIPHeader=application.configBean.getValue("remoteIPHeader")>
-<cfif len(remoteIPHeader)>
+<cfset variables.remoteIPHeader=application.configBean.getValue("remoteIPHeader")>
+<cfif len(variables.remoteIPHeader)>
 	<cftry>
-		<cfif StructKeyExists(GetHttpRequestData().headers, remoteIPHeader)>
+		<cfif StructKeyExists(GetHttpRequestData().headers, variables.remoteIPHeader)>
 	    	<cfset request.remoteAddr = GetHttpRequestData().headers[remoteIPHeader]>
 	    <cfelse>
 			<cfset request.remoteAddr = CGI.REMOTE_ADDR>

@@ -50,79 +50,79 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset request.userBean=application.userManager.read(session.mura.userID) />
 </cfif>
 
-<cfparam name="msg" default="#$.rbKey('user.message')#">
-<cfset $.loadJSLib()>
-<cfset $.addToHTMLHeadQueue("htmlEditor.cfm")>
+<cfparam name="msg" default="#variables.$.rbKey('user.message')#">
+<cfset variables.$.loadJSLib()>
+<cfset variables.$.addToHTMLHeadQueue("htmlEditor.cfm")>
 </cfsilent>
 <cfoutput>
 
-<#$.getHeaderTag('headline')#><cfif not session.mura.isLoggedIn>#$.rbKey('user.createprofile')#<cfelse>
-#$.rbKey('user.editprofile')#</cfif></#$.getHeaderTag('headline')#>
+<#variables.$.getHeaderTag('headline')#><cfif not session.mura.isLoggedIn>#variables.$.rbKey('user.createprofile')#<cfelse>
+#variables.$.rbKey('user.editprofile')#</cfif></#variables.$.getHeaderTag('headline')#>
 <div id="svEditProfile">
 <cfif not(structIsEmpty(request.userBean.getErrors()) and request.doaction eq 'createprofile')>
 
 <cfif not structIsEmpty(request.userBean.getErrors()) >
- <div id="editProfileMsg" class="required">#$.getBean('utility').displayErrors(request.userBean.getErrors())#</div>
+ <div id="editProfileMsg" class="required">#variables.$.getBean('utility').displayErrors(request.userBean.getErrors())#</div>
 <cfelse>
   <div id="editProfileMsg" class="required">#msg#</div>
 </cfif>
 	<!--- <a id="editSubscriptions" href="##">Edit Email Subscriptions</a> --->
 	<form name="profile" id="profile" action="?nocache=1" method="post" onsubmit="return validate(this);"  enctype="multipart/form-data" novalidate="novalidate">
 	<fieldset>
-	<legend>#$.rbKey('user.contactinformation')#</legend>
+	<legend>#variables.$.rbKey('user.contactinformation')#</legend>
 	<ul>
 	<li>
-	<label for="firstName">#$.rbKey('user.fname')#<span class="required">*</span></label>
-	<input type="text" id="firstName" class="text" name="fname" value="#HTMLEditFormat(request.userBean.getfname())#" required="true" message="#htmlEditFormat($.rbKey('user.fnamerequired'))#" maxlength="50"/>
+	<label for="firstName">#variables.$.rbKey('user.fname')#<span class="required">*</span></label>
+	<input type="text" id="firstName" class="text" name="fname" value="#HTMLEditFormat(request.userBean.getfname())#" required="true" message="#htmlEditFormat(variables.$.rbKey('user.fnamerequired'))#" maxlength="50"/>
 	</li>
 	<li>
-	<label for="lastName">#$.rbKey('user.lname')#<span class="required">*</span></label>
-	<input type="text" id="lastName" class="text" name="lname" value="#HTMLEditFormat(request.userBean.getlname())#" required="true" message="#htmlEditFormat($.rbKey('user.lnamerequired'))#" maxlength="50"/>
+	<label for="lastName">#variables.$.rbKey('user.lname')#<span class="required">*</span></label>
+	<input type="text" id="lastName" class="text" name="lname" value="#HTMLEditFormat(request.userBean.getlname())#" required="true" message="#htmlEditFormat(variables.$.rbKey('user.lnamerequired'))#" maxlength="50"/>
 	</li>
 	<li>
-	<label for="usernametxt">#$.rbKey('user.username')#<span class="required">*</span></label>
-	<input name="username" id="usernametxt" type="text" value="#HTMLEditFormat(request.userBean.getusername())#" class="text"  required="yes" message="#htmlEditFormat($.rbKey('user.usernamerequired'))#" maxlength="50">
+	<label for="usernametxt">#variables.$.rbKey('user.username')#<span class="required">*</span></label>
+	<input name="username" id="usernametxt" type="text" value="#HTMLEditFormat(request.userBean.getusername())#" class="text"  required="yes" message="#htmlEditFormat(variables.$.rbKey('user.usernamerequired'))#" maxlength="50">
 	</li>	
 	
 	<li>
-	<label for="companytxt">#$.rbKey('user.organization')#</label>
+	<label for="companytxt">#variables.$.rbKey('user.organization')#</label>
 	<input name="company" id="companytxt" type="text" value="#htmlEditFormat(request.userBean.getCompany())#" class="text" maxlength="50"/>
 	</li>
 
        
 <cfif not session.mura.isloggedin>
 	<li>
-	<label for="emailtxt">#$.rbKey('user.email')#<span class="required">*</span></label>
-	<input name="email" id="emailtxt" validate="email" type="text" value="#request.userBean.getEmail()#" class="text"  required="true" message="#HTMLEditFormat($.rbKey('user.emailvalidate'))#" maxlength="50">
+	<label for="emailtxt">#variables.$.rbKey('user.email')#<span class="required">*</span></label>
+	<input name="email" id="emailtxt" validate="email" type="text" value="#request.userBean.getEmail()#" class="text"  required="true" message="#HTMLEditFormat(variables.$.rbKey('user.emailvalidate'))#" maxlength="50">
 	</li>
 	<li>
-	<label for="email2xt">#$.rbKey('user.emailconfirm')#<span class="required">*</span></label>
-	<input name="email2" id="email2txt" type="text" value="" class="text" validate="match" matchfield="email" required="true" message="#HTMLEditFormat($.rbKey('user.emailconfirmvalidate'))#" maxlength="50">
+	<label for="email2xt">#variables.$.rbKey('user.emailconfirm')#<span class="required">*</span></label>
+	<input name="email2" id="email2txt" type="text" value="" class="text" validate="match" matchfield="email" required="true" message="#HTMLEditFormat(variables.$.rbKey('user.emailconfirmvalidate'))#" maxlength="50">
 	
 	<!--- Comment out the following two password fields to automatically create a random password for the user instead of letting them pick one themselves --->
 	<li>
-	<label for="passwordtxt">#$.rbKey('user.password')#<span class="required">*</span></label>
-	<input name="passwordNoCache" validate="match" matchfield="password2" type="password" value="" class="text"  message="#HTMLEditFormat($.rbKey('user.passwordvalidate'))#" maxlength="50">
+	<label for="passwordtxt">#variables.$.rbKey('user.password')#<span class="required">*</span></label>
+	<input name="passwordNoCache" validate="match" matchfield="password2" type="password" value="" class="text"  message="#HTMLEditFormat(variables.$.rbKey('user.passwordvalidate'))#" maxlength="50">
 	</li>
 	<li>
-	<label for="password2txt">#$.rbKey('user.passwordconfirm')#<span class="required">*</span></label>
-	<input  name="password2" id="password2txt" type="password" value="" required="true" class="text"  message="#HTMLEditFormat($.rbKey('user.passwordconfirmrequired'))#" maxlength="50">
+	<label for="password2txt">#variables.$.rbKey('user.passwordconfirm')#<span class="required">*</span></label>
+	<input  name="password2" id="password2txt" type="password" value="" required="true" class="text"  message="#HTMLEditFormat(variables.$.rbKey('user.passwordconfirmrequired'))#" maxlength="50">
 	</li>
 	<!--- <cfinclude template="dsp_captcha.cfm" > --->
 	<cfinclude template="dsp_form_protect.cfm" >
 <cfelse>
  	 <li>
-	<label for="emailtxt">#$.rbKey('user.email')#<span class="required">*</span></label>
-	<input name="email" id="emailtxt" validate="email" type="text" value="#htmlEditFormat(request.userBean.getEmail())#" class="text"  required="true" message="#HTMLEditFormat($.rbKey('user.emailvalidate'))#" maxlength="50">
+	<label for="emailtxt">#variables.$.rbKey('user.email')#<span class="required">*</span></label>
+	<input name="email" id="emailtxt" validate="email" type="text" value="#htmlEditFormat(request.userBean.getEmail())#" class="text"  required="true" message="#HTMLEditFormat(variables.$.rbKey('user.emailvalidate'))#" maxlength="50">
 	</li>
 
 	<li>
-	<label for="passwordtxt">#$.rbKey('user.password')#</label>
-	<input name="passwordNoCache" validate="match" matchfield="password2" type="password" value="" class="text"  message="#HTMLEditFormat($.rbKey('user.passwordvalidate'))#" maxlength="50">
+	<label for="passwordtxt">#variables.$.rbKey('user.password')#</label>
+	<input name="passwordNoCache" validate="match" matchfield="password2" type="password" value="" class="text"  message="#HTMLEditFormat(variables.$.rbKey('user.passwordvalidate'))#" maxlength="50">
 	</li>
 	<li>
-	<label for="password2txt">#$.rbKey('user.passwordconfirm')#</label>
-	<input  name="password2" id="password2txt" type="password" value="" required="false" class="text"  message="#HTMLEditFormat($.rbKey('user.passwordconfirmrequired'))#" maxlength="50">
+	<label for="password2txt">#variables.$.rbKey('user.passwordconfirm')#</label>
+	<input  name="password2" id="password2txt" type="password" value="" required="false" class="text"  message="#HTMLEditFormat(variables.$.rbKey('user.passwordconfirmrequired'))#" maxlength="50">
 	</li>
 
 </cfif>
@@ -130,10 +130,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </ul>
 </fieldset>
 
-<cfif application.categoryManager.getCategoryCount($.event('siteID'))>
+<cfif application.categoryManager.getCategoryCount(variables.$.event('siteID'))>
 <fieldset>
-	<legend>#$.rbKey('user.interests')#:</legend>		
-			<cf_dsp_categories_nest siteid="#$.event('siteID')#">
+	<legend>#variables.$.rbKey('user.interests')#:</legend>		
+			<cf_dsp_categories_nest siteid="#variables.$.event('siteID')#">
 </fieldset>
 </cfif>
 <!--- This *should* work if you want to allow an avatar, but it hasn't been fully tested. If you need help with it, hit us up in the Mura forum.
@@ -146,7 +146,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</li>
 			<li class="col">
 				<cfif len(request.userBean.getPhotoFileID())>
-							<img src="#$.globalConfig('context')#/tasks/render/small/?fileid=#request.userBean.getPhotoFileID()#" alt="your photo" />
+							<img src="#variables.$.globalConfig('context')#/tasks/render/small/?fileid=#request.userBean.getPhotoFileID()#" alt="your photo" />
 			<input type="checkbox" name="removePhotoFile" value="true"> Remove current logo 
 			</cfif>
 			</li>
@@ -157,7 +157,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!--- extended attributes as defined in the class extension manager --->
 <cfsilent>
 <cfif request.userBean.getIsNew()>
-	<cfset request.userBean.setSiteID($.event("siteid"))>
+	<cfset request.userBean.setSiteID(variables.$.event("siteid"))>
 </cfif>
 <cfif request.userBean.getIsPublic()>
 <cfset userPoolID=application.settingsManager.getSite(request.userBean.getSiteID()).getPublicUserPoolID()>
@@ -201,7 +201,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 					<cfif attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'>
 						<div class="inputBox rightCol">
-							<a href="#$.globalConfig('context')#/tasks/render/file/?fileID=#attributeValue#" target="_blank">[Download]</a> 
+							<a href="#variables.$.globalConfig('context')#/tasks/render/file/?fileID=#attributeValue#" target="_blank">[Download]</a> 
 							<br/><input type="checkbox" name="extDelete#attributeBean.getAttributeID()#" value="true"/> 
 							Delete
 						</div>
@@ -222,19 +222,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div class="buttons form-actions">
 	<cfif session.mura.isLoggedIn>
-		<input name="submit" type="submit" class="btn" value="#HTMLEditFormat($.rbKey('user.updateprofile'))#" />
+		<input name="submit" type="submit" class="btn" value="#HTMLEditFormat(variables.$.rbKey('user.updateprofile'))#" />
 		<input type="hidden" name="userid" value="#session.mura.userID#"/>
 		<input type="hidden" name="doaction" value="updateprofile">
 	<cfelse>
 		<input type="hidden" name="userid" value=""/>
 		<input type="hidden" name="isPublic" value="1"/>
 		<input type="hidden" name="inactive" value="0"/> <!--- Set the value to "1" to require admin approval of new accounts --->
-		<input name="submit" type="submit"  value="#HTMLEditFormat($.rbKey('user.createprofile'))#"/>
+		<input name="submit" type="submit"  value="#HTMLEditFormat(variables.$.rbKey('user.createprofile'))#"/>
 		<input type="hidden" name="doaction" value="createprofile">
 		<!--- <input type="hidden" name="groupID" value="[userid from Group Detail page url]"> Add users to a specific group --->
 	</cfif> 
 
-	<input type="hidden" name="siteid" value="#HTMLEditFormat($.event('siteID'))#" />
+	<input type="hidden" name="siteid" value="#HTMLEditFormat(variables.$.event('siteID'))#" />
 	<input type="hidden" name="returnURL" value="#HTMLEditFormat(request.returnURL)#" />
 	<input type="hidden" name="display" value="editprofile" />
 </div>
@@ -252,27 +252,27 @@ setHTMLEditors(200,"70%");
 A new registration has been submitted to #getSite().getSite()#
 
 Date/Time: #now()#
-#$.rbKey('user.email')#: #request.userBean.getEmail()#
-#$.rbKey('user.username')#: #request.userBean.getUserName()#
-#$.rbKey('user.fname')#: #request.userBean.getFname()#
-#$.rbKey('user.lname')#: #request.userBean.getLname()#
+#variables.$.rbKey('user.email')#: #request.userBean.getEmail()#
+#variables.$.rbKey('user.username')#: #request.userBean.getUserName()#
+#variables.$.rbKey('user.fname')#: #request.userBean.getFname()#
+#variables.$.rbKey('user.lname')#: #request.userBean.getLname()#
 </cfoutput></cfsavecontent>
-<cfset email=$.getBean('mailer') />
+<cfset email=variables.$.getBean('mailer') />
 <cfset email.sendText(notifyText,
 				getSite().getExtranetPublicRegNotify(),
 				getSite().getSite(),
 				'#getSite().getSite()# Public Registration',
-				$.event('siteID')) />
+				variables.$.event('siteID')) />
 
 </cfif>
 </cfsilent>
 
 <cfif request.userBean.getInActive()>
 <div id="editProfileMsg" class="required">
-<p class="success">#$.rbKey('user.thankyouinactive')#</p>
+<p class="success">#variables.$.rbKey('user.thankyouinactive')#</p>
 </div>
 <cfelse>
-<div id="editProfileMsg" class="required"><p class="notice">#$.rbKey('user.thankyouactive')#</p></div>
+<div id="editProfileMsg" class="required"><p class="notice">#variables.$.rbKey('user.thankyouactive')#</p></div>
 </cfif>
 </cfif>
 </cfoutput>

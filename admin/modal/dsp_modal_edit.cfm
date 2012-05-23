@@ -54,7 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <link href="#application.configBean.getContext()#/admin/css/dialog.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="#application.configBean.getContext()#/admin/js/porthole/porthole.min.js?coreversion=#application.coreversion#"></script>
-<script type="text/javascript" src="#application.configBean.getContext()#/admin/js/dialog.js.cfm?siteid=#URLEncodedFormat($.event('siteid'))#&coreversion=#application.coreversion#"></script>
+<script type="text/javascript" src="#application.configBean.getContext()#/admin/js/dialog.js.cfm?siteid=#URLEncodedFormat(variables.$.event('siteid'))#&coreversion=#application.coreversion#"></script>
 <!---[if LT IE9]>
 
    <style type="text/css">
@@ -72,77 +72,77 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfsilent>
 	<cfif len(application.configBean.getAdminDomain())>
 		<cfif application.configBean.getAdminSSL()>
-			<cfset adminBase="https://#application.configBean.getAdminDomain()##application.configBean.getServerPort()#"/>
+			<cfset variables.adminBase="https://#application.configBean.getAdminDomain()##application.configBean.getServerPort()#"/>
 		<cfelse>
-			<cfset adminBase="http://#application.configBean.getAdminDomain()##application.configBean.getServerPort()#"/>
+			<cfset variables.adminBase="http://#application.configBean.getAdminDomain()##application.configBean.getServerPort()#"/>
 		</cfif>
 	<cfelse>
-		<cfset adminBase=""/>
+		<cfset variables.adminBase=""/>
 	</cfif>
 	
-	<cfset targetHook=generateEditableHook()>
+	<cfset variables.targetHook=generateEditableHook()>
 	
-	<cfset editLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit">
+	<cfset variables.editLink = variables.adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit">
 	<cfif structKeyExists(request,"previewID") and len(request.previewID)>
-		<cfset editLink = editLink & "&amp;contenthistid=" & request.previewID>
+		<cfset variables.editLink = variables.editLink & "&amp;contenthistid=" & request.previewID>
 	<cfelse>
-		<cfset editLink = editLink & "&amp;contenthistid=" & request.contentBean.getContentHistID()>
+		<cfset variables.editLink = variables.editLink & "&amp;contenthistid=" & request.contentBean.getContentHistID()>
 	</cfif>
-	<cfset editLink = editLink & "&amp;siteid=" & request.contentBean.getSiteID()>
-	<cfset editLink = editLink & "&amp;contentid=" & request.contentBean.getContentID()>
-	<cfset editLink = editLink & "&amp;topid=00000000000000000000000000000000001">
-	<cfset editLink = editLink & "&amp;type=" & request.contentBean.getType()>
-	<cfset editLink = editLink & "&amp;parentid=" & request.contentBean.getParentID()>
-	<cfset editLink = editLink & "&amp;moduleid=" & request.contentBean.getModuleID()>
-	<cfset editLink = editLink & "&amp;compactDisplay=true">
+	<cfset variables.editLink = variables.editLink & "&amp;siteid=" & request.contentBean.getSiteID()>
+	<cfset variables.editLink = variables.editLink & "&amp;contentid=" & request.contentBean.getContentID()>
+	<cfset variables.editLink = variables.editLink & "&amp;topid=00000000000000000000000000000000001">
+	<cfset variables.editLink = variables.editLink & "&amp;type=" & request.contentBean.getType()>
+	<cfset variables.editLink = variables.editLink & "&amp;parentid=" & request.contentBean.getParentID()>
+	<cfset variables.editLink = variables.editLink & "&amp;moduleid=" & request.contentBean.getModuleID()>
+	<cfset variables.editLink = variables.editLink & "&amp;compactDisplay=true">
 	
-	<cfset newLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit">
-	<cfset newLink = newLink & "&amp;contentid=">
-	<cfset newLink = newLink & "&amp;parentid=" & request.contentBean.getContentID()>
-	<cfset newLink = newLink & "&amp;topid=00000000000000000000000000000000001">
-	<cfset newLink = newLink & "&amp;siteid=" & request.contentBean.getSiteID()>
-	<cfset newLink = newLink & "&amp;moduleid=" & "00000000000000000000000000000000000">
-	<cfset newLink = newLink & "&amp;ptype=" & request.contentBean.getType()>
-	<cfset newLink = newLink & "&amp;compactDisplay=true">
+	<cfset variables.newLink = variables.adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit">
+	<cfset variables.newLink = variables.newLink & "&amp;contentid=">
+	<cfset variables.newLink = variables.newLink & "&amp;parentid=" & request.contentBean.getContentID()>
+	<cfset variables.newLink = variables.newLink & "&amp;topid=00000000000000000000000000000000001">
+	<cfset variables.newLink = variables.newLink & "&amp;siteid=" & request.contentBean.getSiteID()>
+	<cfset variables.newLink = variables.newLink & "&amp;moduleid=" & "00000000000000000000000000000000000">
+	<cfset variables.newLink = variables.newLink & "&amp;ptype=" & request.contentBean.getType()>
+	<cfset variables.newLink = variables.newLink & "&amp;compactDisplay=true">
 	
-	<cfset newMultiLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.multiFileUpload">
-	<cfset newMultiLink = newMultiLink & "&amp;contentid=">
-	<cfset newMultiLink = newMultiLink & "&amp;parentid=" & request.contentBean.getContentID()>
-	<cfset newMultiLink = newMultiLink & "&amp;topid=00000000000000000000000000000000001">
-	<cfset newMultiLink = newMultiLink & "&amp;siteid=" & request.contentBean.getSiteID()>
-	<cfset newMultiLink = newMultiLink & "&amp;moduleid=" & "00000000000000000000000000000000000">
-	<cfset newMultiLink = newMultiLink & "&amp;ptype=" & request.contentBean.getType()>
-	<cfset newMultiLink = newMultiLink & "&amp;compactDisplay=true">
+	<cfset variables.newMultiLink = variables.adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.multiFileUpload">
+	<cfset variables.newMultiLink = variables.newMultiLink & "&amp;contentid=">
+	<cfset variables.newMultiLink = variables.newMultiLink & "&amp;parentid=" & request.contentBean.getContentID()>
+	<cfset variables.newMultiLink = variables.newMultiLink & "&amp;topid=00000000000000000000000000000000001">
+	<cfset variables.newMultiLink = variables.newMultiLink & "&amp;siteid=" & request.contentBean.getSiteID()>
+	<cfset variables.newMultiLink = variables.newMultiLink & "&amp;moduleid=" & "00000000000000000000000000000000000">
+	<cfset variables.newMultiLink = variables.newMultiLink & "&amp;ptype=" & request.contentBean.getType()>
+	<cfset variables.newMultiLink = variables.newMultiLink & "&amp;compactDisplay=true">
 	
-	<cfset historyLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.hist">
-	<cfset historyLink = historyLink & "&amp;siteid=" & request.contentBean.getSiteID()>
-	<cfset historyLink = historyLink & "&amp;contentid=" & request.contentBean.getContentID()>
-	<cfset historyLink = historyLink & "&amp;topid=00000000000000000000000000000000001">
-	<cfset historyLink = historyLink & "&amp;type=" & request.contentBean.getType()>
-	<cfset historyLink = historyLink & "&amp;parentid=" & request.contentBean.getParentID()>
-	<cfset historyLink = historyLink & "&amp;moduleid=" & request.contentBean.getModuleID()>
-	<cfset historyLink = historyLink & "&amp;startrow=1">
-	<cfset historyLink = historyLink & "&amp;compactDisplay=true">
+	<cfset variables.historyLink = variables.adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.hist">
+	<cfset variables.historyLink = variables.historyLink & "&amp;siteid=" & request.contentBean.getSiteID()>
+	<cfset variables.historyLink = variables.historyLink & "&amp;contentid=" & request.contentBean.getContentID()>
+	<cfset variables.historyLink = variables.historyLink & "&amp;topid=00000000000000000000000000000000001">
+	<cfset variables.historyLink = variables.historyLink & "&amp;type=" & request.contentBean.getType()>
+	<cfset variables.historyLink = variables.historyLink & "&amp;parentid=" & request.contentBean.getParentID()>
+	<cfset variables.historyLink = variables.historyLink & "&amp;moduleid=" & request.contentBean.getModuleID()>
+	<cfset variables.historyLink = variables.historyLink & "&amp;startrow=1">
+	<cfset variables.historyLink = variables.historyLink & "&amp;compactDisplay=true">
 	
-	<cfset adminLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.list">
-	<cfset adminLink = adminLink & "&amp;siteid=" & request.contentBean.getSiteID()>
-	<cfset adminLink = adminLink & "&amp;topid=" & request.contentBean.getContentID()>
-	<cfset adminLink = adminLink & "&amp;ptype=" & request.contentBean.getType()>
-	<cfset adminLink = adminLink & "&amp;parentid=" & request.contentBean.getParentID()>
-	<cfset adminLink = adminLink & "&amp;moduleid=" & request.contentBean.getModuleID()>
-	<cfset adminLink = adminLink & "&amp;activeTab=0">
+	<cfset variables.adminLink = variables.adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.list">
+	<cfset variables.adminLink = variables.adminLink & "&amp;siteid=" & request.contentBean.getSiteID()>
+	<cfset variables.adminLink = variables.adminLink & "&amp;topid=" & request.contentBean.getContentID()>
+	<cfset variables.adminLink = variables.adminLink & "&amp;ptype=" & request.contentBean.getType()>
+	<cfset variables.adminLink = variables.adminLink & "&amp;parentid=" & request.contentBean.getParentID()>
+	<cfset variables.adminLink = variables.adminLink & "&amp;moduleid=" & request.contentBean.getModuleID()>
+	<cfset variables.adminLink = variables.adminLink & "&amp;activeTab=0">
 	
-	<cfset deleteLink = adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.update">
-	<cfset deleteLink = deleteLink & "&amp;siteid=" & request.contentBean.getSiteID()>
-	<cfset deleteLink = deleteLink & "&amp;contentid=" & request.contentBean.getContentID()>
-	<cfset deleteLink = deleteLink & "&amp;topid=00000000000000000000000000000000001">
-	<cfset deleteLink = deleteLink & "&amp;type=" & request.contentBean.getType()>
-	<cfset deleteLink = deleteLink & "&amp;parentid=" & request.contentBean.getParentID()>
-	<cfset deleteLink = deleteLink & "&amp;moduleid=" & request.contentBean.getModuleID()>
-	<cfset deleteLink = deleteLink & "&amp;compactDisplay=true">
-	<cfset deleteLink = deleteLink & "&amp;closeCompactDisplay=true">
-	<cfset deleteLink = deleteLink & "&amp;action=deleteall">
-	<cfset deleteLink = deleteLink & "&amp;startrow=1">
+	<cfset variables.deleteLink = variables.adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.update">
+	<cfset variables.deleteLink = variables.deleteLink & "&amp;siteid=" & request.contentBean.getSiteID()>
+	<cfset variables.deleteLink = variables.deleteLink & "&amp;contentid=" & request.contentBean.getContentID()>
+	<cfset variables.deleteLink = variables.deleteLink & "&amp;topid=00000000000000000000000000000000001">
+	<cfset variables.deleteLink = variables.deleteLink & "&amp;type=" & request.contentBean.getType()>
+	<cfset variables.deleteLink = variables.deleteLink & "&amp;parentid=" & request.contentBean.getParentID()>
+	<cfset variables.deleteLink = variables.deleteLink & "&amp;moduleid=" & request.contentBean.getModuleID()>
+	<cfset variables.deleteLink = variables.deleteLink & "&amp;compactDisplay=true">
+	<cfset variables.deleteLink = variables.deleteLink & "&amp;closeCompactDisplay=true">
+	<cfset variables.deleteLink = variables.deleteLink & "&amp;action=deleteall">
+	<cfset variables.deleteLink = variables.deleteLink & "&amp;startrow=1">
 </cfsilent>
 
 <cfif variables.isIeSix>
@@ -164,7 +164,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<ul>
 		<cfif not request.contentBean.getIsNew()>
 			<cfif ListFindNoCase('editor,author',request.r.perm) or listFind(session.mura.memberships,'S2')>
-			<li id="adminEditPage"><a href="#editLink#" #targetHook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#</a></li>
+			<li id="adminEditPage"><a href="#variables.editLink#" #variables.targetHook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#</a></li>
 				<cfif listFind("Page,Portal,Calendar,Gallery",request.contentBean.getType())>
 						<cfif variables.isIeSix>
 						<!--- USES JAVASCRIPT TO SHOW AND HIDE THE ADD MENU AS IT PLAYS NICE WITH IE6 --->
@@ -174,15 +174,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							
 						</cfif><ul id="addMenuDropDown">
 						<cfif request.contentBean.getType() neq 'Gallery'>
-						<li id="adminNewPage"><a href="#newLink#&amp;type=Page" #targetHook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.page')#</a></li>
-						<li id="adminNewLink"><a href="#newLink#&amp;type=Link" #targetHook# >#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.link')#</a></li>
-						<li id="adminNewFile"><a href="#newLink#&amp;type=File" #targetHook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.file')#</a></li>
-						<li id="adminNewPortal"><a href="#newLink#&amp;type=Portal" #targetHook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.portal')#</a></li>
-						<li id="adminNewCalendar"><a href="#newLink#&amp;type=Calendar" #targetHook# >#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.calendar')#</a></li>
-						<li id="adminNewGallery"><a href="#newLink#&amp;type=Gallery" #targetHook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.gallery')#</a></li>
+						<li id="adminNewPage"><a href="#variables.newLink#&amp;type=Page" #variables.targethook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.page')#</a></li>
+						<li id="adminNewLink"><a href="#variables.newLink#&amp;type=Link" #variables.targethook# >#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.link')#</a></li>
+						<li id="adminNewFile"><a href="#variables.newLink#&amp;type=File" #variables.targethook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.file')#</a></li>
+						<li id="adminNewPortal"><a href="#variables.newLink#&amp;type=Portal" #variables.targethook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.portal')#</a></li>
+						<li id="adminNewCalendar"><a href="#variables.newLink#&amp;type=Calendar" #variables.targethook# >#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.calendar')#</a></li>
+						<li id="adminNewGallery"><a href="#variables.newLink#&amp;type=Gallery" #variables.targethook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.gallery')#</a></li>
 						<cfelse>
-							<li id="adminNewGalleryItem"><a href="#newLink#&amp;type=File" #targetHook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.galleryitem')#</a></li>
-							<li id="adminNewGalleryItemMulti"><a href="#newMultiLink#&amp;type=File" #targetHook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.addmultiitems')#</a></li>
+							<li id="adminNewGalleryItem"><a href="#variables.newLink#&amp;type=File" #variables.targethook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.galleryitem')#</a></li>
+							<li id="adminNewGalleryItemMulti"><a href="#variables.newMultiLink#&amp;type=File" #variables.targethook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.addmultiitems')#</a></li>
 						</cfif>			
 						#application.pluginManager.renderScripts("onFEToolbarAddRender",request.contentBean.getSiteID())#
 						#application.pluginManager.renderScripts("onFEToolbar#request.contentBean.getType()#AddRender",request.contentBean.getSiteID())#
@@ -190,12 +190,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</ul>
 					</li>
 				</cfif>
-				<li id="adminVersionHistory"><a href="#historyLink#" #targetHook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#</a></li>
+				<li id="adminVersionHistory"><a href="#variables.historyLink#" #variables.targethook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#</a></li>
 			</cfif>
 			<cfif (request.r.perm eq 'editor' or listFind(session.mura.memberships,'S2')) and request.contentBean.getFilename() neq "" and not request.contentBean.getIslocked()>
-				<li id="adminDelete"><a href="#deleteLink#" onclick="return confirm('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),request.contentBean.getMenutitle()))#');">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#</a></li>
+				<li id="adminDelete"><a href="#variables.deleteLink#" onclick="return confirm('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),request.contentBean.getMenutitle()))#');">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#</a></li>
 			</cfif>
-			<cfif listFind(session.mura.memberships,'S2IsPrivate')><li id="adminSiteManager"><a href="#adminLink#" target="admin">#application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#</a></li></cfif>
+			<cfif listFind(session.mura.memberships,'S2IsPrivate')><li id="adminSiteManager"><a href="#variables.adminLink#" target="admin">#application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#</a></li></cfif>
 		<cfelse>
 			<cfif listFind(session.mura.memberships,'S2IsPrivate')><li id="adminSiteManager404"><a href="#adminLink#" target="admin">#application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#</li></cfif>	
 		</cfif>

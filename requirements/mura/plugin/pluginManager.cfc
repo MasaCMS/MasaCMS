@@ -1280,7 +1280,7 @@ select * from tplugins order by #arguments.orderby#
 		
 		<cfif not isObject(arguments.event)>
 			<cfif isStruct(arguments.event)>
-				<cfset variables.event=createObject("component","mura.event").init(arguments.event)/>
+				<cfset arguments.event=createObject("component","mura.event").init(arguments.event)/>
 			<cfelse>				
 				<cfif structKeyExists(request,"servletEvent")>
 					<cfset arguments.event=request.servletEvent />
@@ -1298,9 +1298,9 @@ select * from tplugins order by #arguments.orderby#
 		</cfif>
 		
 		<cfif not isQuery(arguments.scripts) and not len(arguments.moduleID)>
-			<cfif isObject(event.getValue("localHandler"))>
-				<cfset localHandler=event.getValue("localHandler")>
-				<cfif structKeyExists(localHandler,runat)>
+			<cfif isObject(arguments.event.getValue("localHandler"))>
+				<cfset localHandler=arguments.event.getValue("localHandler")>
+				<cfif structKeyExists(localHandler,arguments.runat)>
 					<cfset tracePoint=initTracePoint("#localHandler._objectName#.#arguments.runat#")>
 					<cfinvoke component="#localHandler#" method="#arguments.runat#">
 						<cfinvokeargument name="event" value="#arguments.event#">
@@ -1441,7 +1441,7 @@ select * from tplugins order by #arguments.orderby#
 	
 	<cfif not isObject(arguments.event)>
 		<cfif isStruct(arguments.event)>
-			<cfset variables.event=createObject("component","mura.event").init(arguments.event)/>
+			<cfset arguments.event=createObject("component","mura.event").init(arguments.event)/>
 		<cfelse>				
 			<cfif structKeyExists(request,"servletEvent")>
 				<cfset arguments.event=request.servletEvent />
@@ -1462,9 +1462,9 @@ select * from tplugins order by #arguments.orderby#
 		
 	<cftry>
 		<cfif not isQuery(arguments.scripts) and not len(arguments.moduleID)>
-			<cfif isObject(event.getValue("localHandler"))>
-				<cfset localHandler=event.getValue("localHandler")>
-				<cfif structKeyExists(localHandler,runat)>
+			<cfif isObject(arguments.event.getValue("localHandler"))>
+				<cfset localHandler=arguments.event.getValue("localHandler")>
+				<cfif structKeyExists(localHandler,arguments.runat)>
 					<cfset tracePoint=initTracePoint("#localHandler._objectName#.#arguments.runat#")>
 					<cfsavecontent variable="local.theDisplay1">
 					<cfinvoke component="#localHandler#" method="#arguments.runat#" returnVariable="local.theDisplay2">

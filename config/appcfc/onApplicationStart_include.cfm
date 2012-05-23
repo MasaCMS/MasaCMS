@@ -59,14 +59,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <!--- do a settings setup check --->
 <cfif NOT structKeyExists( application, "setupComplete" ) OR (not application.appInitialized or structKeyExists(url,application.appReloadKey) )>
-	<cfif getProfileString( baseDir & "/config/settings.ini.cfm", "settings", "mode" ) eq "production">
-		<cfif directoryExists( baseDir & "/config/setup" )>
+	<cfif getProfileString( variables.basedir & "/config/settings.ini.cfm", "settings", "mode" ) eq "production">
+		<cfif directoryExists( variables.basedir & "/config/setup" )>
 			<cfset structDelete( application, "setupComplete") />
 			<!--- check the settings --->
 			<cfparam name="cookie.setupSubmitButton" default="A#hash( createUUID() )#" />
 			<cfparam name="cookie.setupSubmitButtonComplete" default="A#hash( createUUID() )#" />
 			
-			<cfif trim( getProfileString( baseDir & "/config/settings.ini.cfm" , "production", "datasource" ) ) IS NOT ""
+			<cfif trim( getProfileString( variables.basedir & "/config/settings.ini.cfm" , "production", "datasource" ) ) IS NOT ""
 					AND (
 						NOT isDefined( "FORM.#cookie.setupSubmitButton#" )
 						AND
@@ -77,7 +77,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset application.setupComplete = true />
 			<cfelse>
 				<!--- check to see if the index.cfm page exists in the setup folder --->
-				<cfif NOT fileExists( baseDir & "/config/setup/index.cfm" )>
+				<cfif NOT fileExists( variables.basedir & "/config/setup/index.cfm" )>
 					<cfthrow message="Your setup directory is incomplete. Please reset it up from the Mura source." />
 				</cfif>
 					
@@ -98,26 +98,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfset request.muraShowTrace=true>
 		
-		<cfset variables.iniPath = "#baseDir#/config/settings.ini.cfm" />
+		<cfset variables.iniPath = "#variables.basedir#/config/settings.ini.cfm" />
 		
 		<cfset variables.iniSections=getProfileSections(variables.iniPath)>
 		
 		<cfset variables.iniProperties=structNew()>
-		<cfloop list="#variables.iniSections.settings#" index="p">
-			<cfset variables.iniProperties[p]=getProfileString("#baseDir#/config/settings.ini.cfm","settings",p)>			
-			<cfif left(variables.iniProperties[p],2) eq "${"
-				and right(variables.iniProperties[p],1) eq "}">
-				<cfset variables.iniProperties[p]=mid(variables.iniProperties[p],3,len(variables.iniProperties[p])-3)>
-				<cfset variables.iniProperties[p] = evaluate(variables.iniProperties[p])>
+		<cfloop list="#variables.iniSections.settings#" index="variables.p">
+			<cfset variables.iniProperties[variables.p]=getProfileString("#variables.basedir#/config/settings.ini.cfm","settings",variables.p)>			
+			<cfif left(variables.iniProperties[variables.p],2) eq "${"
+				and right(variables.iniProperties[variables.p],1) eq "}">
+				<cfset variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-3)>
+				<cfset variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p])>
 			</cfif>		
 		</cfloop>		
 		
-		<cfloop list="#variables.iniSections[ variables.iniProperties.mode]#" index="p">
-			<cfset variables.iniProperties[p]=getProfileString("#baseDir#/config/settings.ini.cfm", variables.iniProperties.mode,p)>
-			<cfif left(variables.iniProperties[p],2) eq "${"
-				and right(variables.iniProperties[p],1) eq "}">
-				<cfset variables.iniProperties[p]=mid(variables.iniProperties[p],3,len(variables.iniProperties[p])-3)>
-				<cfset variables.iniProperties[p] = evaluate(variables.iniProperties[p])>
+		<cfloop list="#variables.iniSections[ variables.iniProperties.mode]#" index="variables.p">
+			<cfset variables.iniProperties[variables.p]=getProfileString("#variables.basedir#/config/settings.ini.cfm", variables.iniProperties.mode,variables.p)>
+			<cfif left(variables.iniProperties[variables.p],2) eq "${"
+				and right(variables.iniProperties[variables.p],1) eq "}">
+				<cfset variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-3)>
+				<cfset variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p])>
 			</cfif>	
 		</cfloop>
 		
@@ -137,39 +137,39 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfinclude template="/muraWRM/config/coldspring.xml.cfm" />
 		
-		<cfset tracer=createObject("component","mura.cfobject").init()>
+		<cfset variables.tracer=createObject("component","mura.cfobject").init()>
 	
 		<!--- load the core services.xml --->
 		
-		<cfset tracePoint=tracer.initTracePoint("Instantiating ColdSpring")> 
+		<cfset variables.tracepoint=variables.tracer.initTracepoint("Instantiating ColdSpring")> 
 		<cfset variables.serviceFactory=createObject("component","mura.bean.beanFactory").init(defaultProperties=variables.iniProperties) />
-		<cfset tracer.commitTracePoint(tracePoint)>
+		<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
 		
-		<cfset tracePoint=tracer.initTracePoint("Loading Coldspring XML")> 
-		<cfset variables.serviceFactory.loadBeansFromXMLRaw(servicesXML,true) />
-		<cfset tracer.commitTracePoint(tracePoint)>
+		<cfset variables.tracepoint=variables.tracer.initTracepoint("Loading Coldspring XML")> 
+		<cfset variables.serviceFactory.loadBeansFromXMLRaw(variables.servicesXML,true) />
+		<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
 		
 		<!--- If coldspring.custom.xml.cfm exists read it in an check it it is valid xml--->
 		<cfif fileExists(expandPath("/muraWRM/config/coldspring.custom.xml.cfm"))>	
-			<cffile action="read" variable="customServicesXML" file="#expandPath('/muraWRM/config/coldspring.custom.xml.cfm')#">
-			<cfif not findNoCase("<!-" & "--",customServicesXML)>
-				<cfif not findNoCase("<beans>",customServicesXML)>
-					<cfset customServicesXML= "<beans>" & customServicesXML & "</beans>">
+			<cffile action="read" variable="customvariables.servicesXML" file="#expandPath('/muraWRM/config/coldspring.custom.xml.cfm')#">
+			<cfif not findNoCase("<!-" & "--",customvariables.servicesXML)>
+				<cfif not findNoCase("<beans>",customvariables.servicesXML)>
+					<cfset customvariables.servicesXML= "<beans>" & customvariables.servicesXML & "</beans>">
 				</cfif>
-				<cfset customServicesXML=replaceNoCase(customServicesXML, "##mapdir##","mura","ALL")>
-				<cfset tracePoint=tracer.initTracePoint("Loading Custom Coldspring XML")> 
-				<cfset variables.serviceFactory.loadBeansFromXMLRaw(customServicesXML,true) />
-				<cfset tracer.commitTracePoint(tracePoint)>
+				<cfset customvariables.servicesXML=replaceNoCase(customvariables.servicesXML, "##mapdir##","mura","ALL")>
+				<cfset variables.tracepoint=variables.tracer.initTracepoint("Loading Custom Coldspring XML")> 
+				<cfset variables.serviceFactory.loadBeansFromXMLRaw(customvariables.servicesXML,true) />
+				<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
 			</cfif>
 		</cfif>
 		
 		<cfset application.serviceFactory=variables.serviceFactory>
 		
 		<cfobjectcache action="clear" />
-		<cfset tracePoint=tracer.initTracePoint("Instantiating ConfigBean")> 
+		<cfset variables.tracepoint=variables.tracer.initTracepoint("Instantiating ConfigBean")> 
 		<cfset application.configBean=application.serviceFactory.getBean("configBean") />
 		<cfset application.configBean.set(variables.iniProperties)>
-		<cfset tracer.commitTracePoint(tracePoint)>
+		<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
 		
 		<!---You can create an onGlobalConfig.cfm file that runs after the initial configBean loads, but before anything else is loaded --->
 		<cfif fileExists(ExpandPath("/muraWRM/config/onGlobalConfig.cfm"))>
@@ -177,20 +177,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		
 		<cfif application.configBean.getValue("applyDBUpdates") or application.appAutoUpdated>
-			<cfset tracePoint=tracer.initTracePoint("Checking/Applying DB updates")> 
+			<cfset variables.tracepoint=variables.tracer.initTracepoint("Checking/Applying DB updates")> 
 			<cfset application.configBean.applyDbUpdates() />
-			<cfset tracer.commitTracePoint(tracePoint)>
+			<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
 		</cfif>
 		
 		<cfset application.appAutoUpdated=false>
 		
-		<cfset serviceList="settingsManager,contentManager,pluginManager,eventManager,contentRenderer,utility,contentUtility,contentGateway,categoryManager,clusterManager,contentServer,changesetManager,scriptProtectionFilter,permUtility,emailManager,loginManager,mailinglistManager,userManager,dataCollectionManager,advertiserManager,feedManager,sessionTrackingManager,favoriteManager,raterManager,dashboardManager,autoUpdater">
+		<cfset variables.serviceList="settingsManager,contentManager,pluginManager,eventManager,contentRenderer,utility,contentUtility,contentGateway,categoryManager,clusterManager,contentServer,changesetManager,scriptProtectionFilter,permUtility,emailManager,loginManager,mailinglistManager,userManager,dataCollectionManager,advertiserManager,feedManager,sessionTrackingManager,favoriteManager,raterManager,dashboardManager,autoUpdater">
 
 		<!--- These application level services use the beanServicePlaceHolder to lazy load the bean --->
-		<cfloop list="#serviceList#" index="i">
-			<cfset tracePoint=tracer.initTracePoint("Instantiating #i#")> 	
-			<cfset application["#i#"]=application.serviceFactory.getBean("#i#") />
-			<cfset tracer.commitTracePoint(tracePoint)>
+		<cfloop list="#variables.serviceList#" index="variables.i">
+			<cfset variables.tracepoint=variables.tracer.initTracepoint("Instantiating #variables.i#")> 	
+			<cfset application["#variables.i#"]=application.serviceFactory.getBean("#variables.i#") />
+			<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
 		</cfloop>	
 		
 		<!--- End beanServicePlaceHolders --->
@@ -198,37 +198,37 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfsavecontent variable="variables.temp"><cfoutput><cfinclude template="/mura/bad_words.txt"></cfoutput></cfsavecontent>
 		<cfset application.badwords = ReReplaceNoCase(trim(variables.temp), "," , "|" , "ALL")/> 
 
-		<cfset tracePoint=tracer.initTracePoint("Instantiating classExtensionManager")> 
+		<cfset variables.tracepoint=variables.tracer.initTracepoint("Instantiating classExtensionManager")> 
 		<cfset application.classExtensionManager=application.configBean.getClassExtensionManager() />
 		<cfset application.classExtensionManager.setContentRenderer(application.serviceFactory.getBean("contentRenderer"))>
-		<cfset tracer.commitTracePoint(tracePoint)>
+		<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
 
-		<cfset tracePoint=tracer.initTracePoint("Instantiating resourceBundleFactory")> 
+		<cfset variables.tracepoint=variables.tracer.initTracepoint("Instantiating resourceBundleFactory")> 
 		<cfset application.rbFactory=application.serviceFactory.getBean("resourceBundleFactory") />
-		<cfset tracer.commitTracePoint(tracePoint)>
+		<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
 			
 		<!---settings.custom.managers.cfm reference is for backwards compatibility --->
 		<cfif fileExists(ExpandPath("/muraWRM/config/settings.custom.managers.cfm"))>
 			<cfinclude template="/muraWRM/config/settings.custom.managers.cfm">
 		</cfif>		
 					
-		<cfset baseDir=expandPath("/muraWRM")/>
+		<cfset variables.basedir=expandPath("/muraWRM")/>
 					
 		<cfif StructKeyExists(SERVER,"bluedragon") and not findNoCase("Windows",server.os.name)>
-			<cfset mapPrefix="$" />
+			<cfset variables.mapprefix="$" />
 		<cfelse>
-			<cfset mapPrefix="" />
+			<cfset variables.mapprefix="" />
 		</cfif>
 		
 		<cfif len(application.configBean.getValue('encryptionKey'))>
 			<cfset application.encryptionKey=application.configBean.getValue('encryptionKey')>
 		</cfif>
 					
-		<cfdirectory action="list" directory="#baseDir#/requirements/" name="rsRequirements">
+		<cfdirectory action="list" directory="#variables.basedir#/requirements/" name="variables.rsRequirements">
 	
-		<cfloop query="rsRequirements">
-			<cfif rsRequirements.type eq "dir" and rsRequirements.name neq '.svn' and not structKeyExists(this.mappings,"/#rsRequirements.name#")>
-				<cfset application.serviceFactory.getBean("fileWriter").appendFile(file="#baseDir#/config/mappings.cfm", output='<cfset this.mappings["/#rsRequirements.name#"] = mapPrefix & BaseDir & "/requirements/#rsRequirements.name#">')>				
+		<cfloop query="variables.rsRequirements">
+			<cfif variables.rsRequirements.type eq "dir" and variables.rsRequirements.name neq '.svn' and not structKeyExists(this.mappings,"/#variables.rsRequirements.name#")>
+				<cfset application.serviceFactory.getBean("fileWriter").appendFile(file="#variables.basedir#/config/mappings.cfm", output='<cfset this.mappings["/#variables.rsRequirements.name#"] = variables.mapprefix & variables.basedir & "/requirements/#variables.rsRequirements.name#">')>				
 			</cfif>
 		</cfloop>	
 
@@ -249,24 +249,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<!--- Set up scheduled tasks --->
 		<cfif (len(application.configBean.getServerPort())-1) lt 1>
-			<cfset port=80/>
+			<cfset variables.port=80/>
 		<cfelse>
-			<cfset port=right(application.configBean.getServerPort(),len(application.configBean.getServerPort())-1) />
+			<cfset variables.port=right(application.configBean.getServerPort(),len(application.configBean.getServerPort())-1) />
 		</cfif>
 			
 		<cfif application.configBean.getCompiler() eq "Railo">
-			<cfset siteMonitorTask="siteMonitor"/>
+			<cfset variables.siteMonitorTask="siteMonitor"/>
 		<cfelse>
-			<cfset siteMonitorTask="#application.configBean.getWebRoot()#/tasks/siteMonitor.cfm"/>
+			<cfset variables.siteMonitorTask="#application.configBean.getWebRoot()#/tasks/siteMonitor.cfm"/>
 		</cfif>
 			
 		<cftry>
 			<cfif variables.iniProperties.ping eq 1>
 				<cfschedule action = "update"
-					task = "#siteMonitorTask#"
+					task = "#variables.siteMonitorTask#"
 					operation = "HTTPRequest"
 					url = "http://#listFirst(cgi.http_host,":")##application.configBean.getContext()#/tasks/siteMonitor.cfm"
-					port="#port#"
+					port="#variables.port#"
 					startDate = "#dateFormat(now(),'mm/dd/yyyy')#"
 					startTime = "#createTime(0,15,0)#"
 					publish = "No"
@@ -287,70 +287,70 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cftry>
 		</cfif>
 		
-		<cfif not fileExists(baseDir & "/robots.txt")>	
-			<cfset application.serviceFactory.getBean("fileWriter").copyFile(source="#baseDir#/config/templates/robots.template.cfm", destination="#baseDir#/robots.txt")>
+		<cfif not fileExists(variables.basedir & "/robots.txt")>	
+			<cfset application.serviceFactory.getBean("fileWriter").copyFile(source="#variables.basedir#/config/templates/robots.template.cfm", destination="#variables.basedir#/robots.txt")>
 		</cfif>
 		
-		<cfset pluginEvent=createObject("component","mura.event").init()>			
-		<cfset application.pluginManager.executeScripts(runat='onApplicationLoad',event= pluginEvent)>
+		<cfset variables.pluginEvent=createObject("component","mura.event").init()>			
+		<cfset application.pluginManager.executeScripts(runat='onApplicationLoad',event= variables.pluginEvent)>
 				
 		<!--- Fire local onApplicationLoad events--->
-		<cfset rsSites=application.settingsManager.getList() />
-		<cfset themeHash=structNew()>
-		<cfloop query="rsSites">
+		<cfset variables.rsSites=application.settingsManager.getList() />
+		<cfset variables.themeHash=structNew()>
+		<cfloop query="variables.rsSites">
 			
-			<cfset siteBean=application.settingsManager.getSite(rsSites.siteID)>
-			<cfset themeDir=expandPath(siteBean.getThemeIncludePath())>
+			<cfset variables.siteBean=application.settingsManager.getSite(variables.rsSites.siteID)>
+			<cfset variables.themedir=expandPath(variables.siteBean.getThemeIncludePath())>
 
-			<cfif fileExists(themeDir & '/config.xml.cfm')>
-				<cfset themeConfig='config.xml.cfm'>
-			<cfelseif fileExists(themeDir & '/config.xml')>
-				<cfset themeConfig='config.xml'>
+			<cfif fileExists(variables.themedir & '/config.xml.cfm')>
+				<cfset variables.themeConfig='config.xml.cfm'>
+			<cfelseif fileExists(variables.themedir & '/config.xml')>
+				<cfset variables.themeConfig='config.xml'>
 			<cfelse>
-				<cfset themeConfig="">
+				<cfset variables.themeConfig="">
 			</cfif>
 			
-			<cfif len(themeConfig) and not structKeyExists(themeHash,hash(themeDir))>
-				<cfset themeHash[hash(themeDir)]=themeDir>
+			<cfif len(variables.themeConfig) and not structKeyExists(variables.themeHash,hash(variables.themedir))>
+				<cfset variables.themeHash[hash(variables.themedir)]=variables.themedir>
 				
-				<cfif themeConfig eq "config.xml.cfm">
-					<cfsavecontent variable="themeConfig">
-						<cfinclude template="#siteBean.getThemeIncludePath()#/config.xml.cfm">
+				<cfif variables.themeConfig eq "config.xml.cfm">
+					<cfsavecontent variable="variables.themeConfig">
+						<cfinclude template="#variables.siteBean.getThemeIncludePath()#/config.xml.cfm">
 					</cfsavecontent>
 
 				<cfelse>
-					<cfset themeConfig=fileRead(themeDir & "/" & themeConfig)>
+					<cfset variables.themeConfig=fileRead(variables.themedir & "/" & variables.themeConfig)>
 				</cfif>
 
-				<cfset themeConfig=xmlParse(themeConfig)>
-				<cfset application.configBean.getClassExtensionManager().loadConfigXML(themeConfig,rssites.siteid)>
+				<cfset variables.themeConfig=xmlParse(variables.themeConfig)>
+				<cfset application.configBean.getClassExtensionManager().loadConfigXML(variables.themeConfig,variables.rsSites.siteid)>
 
 			</cfif>
 
-			<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#rsSites.siteID#/includes/eventHandler.cfc")>
-				<cfset localHandler=createObject("component","#application.configBean.getWebRootMap()#.#rsSites.siteID#.includes.eventHandler").init()>
-				<cfif structKeyExists(localHandler,"onApplicationLoad")>		
-						<cfset pluginEvent.setValue("siteID",rsSites.siteID)>
-						<cfset pluginEvent.loadSiteRelatedObjects()>
-						<cfset localHandler._objectName="#application.configBean.getWebRootMap()#.#rsSites.siteID#.includes.eventHandler">
-						<cfset tracePoint=application.pluginManager.initTracePoint("#localHandler._objectName#.onApplicationLoad")>
-						<cfset localHandler.onApplicationLoad(event=pluginEvent,$=pluginEvent.getValue("muraScope"),mura=pluginEvent.getValue("muraScope"))>
-						<cfset application.pluginManager.commitTracePoint(tracePoint)>
+			<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#variables.rsSites.siteID#/includes/eventHandler.cfc")>
+				<cfset variables.localhandler=createObject("component","#application.configBean.getWebRootMap()#.#variables.rsSites.siteID#.includes.eventHandler").init()>
+				<cfif structKeyExists(variables.localhandler,"onApplicationLoad")>		
+						<cfset variables.pluginEvent.setValue("siteID",variables.rsSites.siteID)>
+						<cfset variables.pluginEvent.loadSiteRelatedObjects()>
+						<cfset variables.localhandler._objectName="#application.configBean.getWebRootMap()#.#variables.rsSites.siteID#.includes.eventHandler">
+						<cfset variables.tracepoint=application.pluginManager.initTracepoint("#variables.localhandler._objectName#.onApplicationLoad")>
+						<cfset variables.localhandler.onApplicationLoad(event=variables.pluginEvent,$=variables.pluginEvent.getValue("muraScope"),mura=variables.pluginEvent.getValue("muraScope"))>
+						<cfset application.pluginManager.commitTracepoint(variables.tracepoint)>
 				</cfif>
 			</cfif>
-			<cfset siteBean=application.settingsManager.getSite(rsSites.siteid)>
-			<cfset expandedPath=expandPath(siteBean.getThemeIncludePath()) & "/eventHandler.cfc">
-			<cfif fileExists(expandedPath)>
-				<cfset themeHandler=createObject("component","#siteBean.getThemeAssetMap()#.eventHandler").init()>
-				<cfif structKeyExists(themeHandler,"onApplicationLoad")>		
-						<cfset pluginEvent.setValue("siteID",rsSites.siteID)>
-						<cfset pluginEvent.loadSiteRelatedObjects()>
-						<cfset themeHandler._objectName="#siteBean.getThemeAssetMap()#.eventHandler">
-						<cfset tracePoint=application.pluginManager.initTracePoint("#themeHandler._objectName#.onApplicationLoad")>
-						<cfset themeHandler.onApplicationLoad(event=pluginEvent,$=pluginEvent.getValue("muraScope"),mura=pluginEvent.getValue("muraScope"))>
-						<cfset application.pluginManager.commitTracePoint(tracePoint)>
+			<cfset variables.siteBean=application.settingsManager.getSite(variables.rsSites.siteid)>
+			<cfset variables.expandedPath=expandPath(variables.siteBean.getThemeIncludePath()) & "/eventHandler.cfc">
+			<cfif fileExists(variables.expandedPath)>
+				<cfset variables.themeHandler=createObject("component","#variables.siteBean.getThemeAssetMap()#.eventHandler").init()>
+				<cfif structKeyExists(variables.themeHandler,"onApplicationLoad")>		
+						<cfset variables.pluginEvent.setValue("siteID",variables.rsSites.siteID)>
+						<cfset variables.pluginEvent.loadSiteRelatedObjects()>
+						<cfset variables.themeHandler._objectName="#variables.siteBean.getThemeAssetMap()#.eventHandler">
+						<cfset variables.tracepoint=application.pluginManager.initTracepoint("#variables.themeHandler._objectName#.onApplicationLoad")>
+						<cfset variables.themeHandler.onApplicationLoad(event=variables.pluginEvent,$=variables.pluginEvent.getValue("muraScope"),mura=variables.pluginEvent.getValue("muraScope"))>
+						<cfset application.pluginManager.commitTracepoint(variables.tracepoint)>
 				</cfif>
-				<cfset application.pluginManager.addEventHandler(themeHandler,rsSites.siteID)>
+				<cfset application.pluginManager.addEventHandler(variables.themeHandler,variables.rsSites.siteID)>
 			</cfif>	
 		</cfloop>
 		

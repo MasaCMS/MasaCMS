@@ -364,7 +364,7 @@
 		<cfset dtFormat=listAppend(dtFormat,listFind(formatTest,"18",dtCh) -1) />
 	</cfif>
 	
-	<cfset variables.datekeyExample=lsDateFormat(createDate(2018,11,10),datekeyFormat)/>
+	<cfset variables.datekeyExample=lsDateFormat(createDate(2018,11,10),variables.datekeyFormat)/>
 	
 	<cfif not isdefined('session.locale')>
 		<cfset session.locale="en_US">

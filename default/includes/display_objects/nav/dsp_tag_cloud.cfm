@@ -28,7 +28,7 @@ Your custom code
 • May not alter the default display of the Mura CMS logo within Mura CMS and
 • Must not alter any files in the following directories.
 
- /admin/
+ /advariables.min/
  /tasks/
  /config/
  /requirements/mura/
@@ -38,46 +38,46 @@ Your custom code
 
 You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
 under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
-requires distribution of source code.
+requires variables.distribution of source code.
 
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-<cfset tags=$.getBean('contentGateway').getTagCloud($.event('siteID'),arguments.parentID,arguments.categoryID,arguments.rsContent) />
-<cfset tagValueArray = ListToArray(ValueList(tags.tagCount))>
-<cfset max = ArrayMax(tagValueArray)>
-<cfset min = ArrayMin(tagValueArray)>
-<cfset diff = max - min>
-<cfset distribution = diff>
-<cfset rbFactory=getSite().getRBFactory()>
+<cfset variables.tags=variables.$.getBean('contentGateway').getTagCloud(variables.$.event('siteID'),arguments.parentID,arguments.categoryID,arguments.rsContent) />
+<cfset variables.tagValueArray = ListToArray(ValueList(variables.tags.tagCount))>
+<cfset variables.max = Arrayvariables.max(variables.tagValueArray)>
+<cfset variables.min = Arrayvariables.min(variables.tagValueArray)>
+<cfset variables.diff = variables.max - variables.min>
+<cfset variables.distribution = variables.diff>
+<cfset variables.rbFactory=getSite().getvariables.rbFactory()>
 </cfsilent>
 
 <cfoutput>
-<div id="svTagCloud" class="well">
-<#$.getHeaderTag('subHead1')#>#$.rbKey('tagcloud.tagcloud')#</#$.getHeaderTag('subHead1')#>
-<cfif tags.recordcount>
+<div id="svTagCloud" variables.class="well">
+<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('tagcloud.tagcloud')#</#variables.$.getHeaderTag('subHead1')#>
+<cfif variables.tags.recordcount>
 <ol>
-<cfloop query="tags"><cfsilent>
-		<cfif tags.tagCount EQ min>
-		<cfset class="not-popular">
-	<cfelseif tags.tagCount EQ max>
-		<cfset class="ultra-popular">
-	<cfelseif tags.tagCount GT (min + (distribution/2))>
-		<cfset class="somewhat-popular">
-	<cfelseif tags.tagCount GT (min + distribution)>
-		<cfset class="mediumTag">
+<cfloop query="variables.tags"><cfsilent>
+		<cfif variables.tags.tagCount EQ variables.min>
+		<cfset variables.class="not-popular">
+	<cfelseif variables.tags.tagCount EQ variables.max>
+		<cfset variables.class="ultra-popular">
+	<cfelseif variables.tags.tagCount GT (variables.min + (variables.distribution/2))>
+		<cfset variables.class="somewhat-popular">
+	<cfelseif variables.tags.tagCount GT (variables.min + variables.distribution)>
+		<cfset variables.class="mediumTag">
 	<cfelse>
-		<cfset class="not-very-popular">
+		<cfset variables.class="not-very-popular">
 	</cfif>
-	<cfset args = ArrayNew(1)>
-    <cfset args[1] = tags.tagcount>
-</cfsilent><li class="#class#"><span><cfif tags.tagcount gt 1> #rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemsare'), args)#<cfelse>#rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemis'), args)#</cfif> tagged with </span><a href="#$.createHREF(filename='#$.event('currentFilenameAdjusted')#/tag/#urlEncodedFormat(tags.tag)#')#" class="tag">#HTMLEditFormat(tags.tag)#</a></li>
+	<cfset variables.args = ArrayNew(1)>
+    <cfset variables.args[1] = variables.tags.tagcount>
+</cfsilent><li variables.class="#variables.class#"><span><cfif variables.tags.tagcount gt 1> #variables.rbFactory.getResourceBundle().messageFormat(variables.$.rbKey('tagcloud.itemsare'), variables.args)#<cfelse>#variables.rbFactory.getResourceBundle().messageFormat(variables.$.rbKey('tagcloud.itemis'), variables.args)#</cfif> tagged with </span><a href="#variables.$.createHREF(filename='#variables.$.event('currentFilenameAdjusted')#/tag/#urlEncodedFormat(variables.tags.tag)#')#" variables.class="tag">#HTMLEditFormat(variables.tags.tag)#</a></li>
 </cfloop>
 </ol>
 <cfelse>
-<p>#$.rbKey('tagcloud.notags')#</p>
+<p>#variables.$.rbKey('tagcloud.novariables.tags')#</p>
 </cfif>
 </div>
 </cfoutput>

@@ -75,7 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="pageBuffer" type="numeric" default="5" />
 	<cfset var nextn=structnew() />
 	
-	<cfset nextn.TotalRecords=data.RecordCount>
+	<cfset nextn.TotalRecords=arguments.data.RecordCount>
 	<cfset nextn.RecordsPerPage=arguments.RecordsPerPage> 
 	<cfset nextn.NumberOfPages=Ceiling(nextn.TotalRecords/nextn.RecordsPerPage)>
 	<cfset nextn.CurrentPageNumber=Ceiling(arguments.StartRow/nextn.RecordsPerPage)> 
@@ -450,7 +450,7 @@ QuerySetCell( myQuery , colName[ c ] , myArray[ r ][colName[ c ] ] , r );
 			//a var for looping
 			var ii = 1;
 			//the cols to loop over
-			var cols = listToArray(qry.columnList);
+			var cols = listToArray(arguments.qry.columnList);
 			//the struct to return
 			var stReturn = structnew();
 			//if there is a second argument, use that for the row number
@@ -458,7 +458,7 @@ QuerySetCell( myQuery , colName[ c ] , myArray[ r ][colName[ c ] ] , r );
 				row = arguments[2];
 			//loop over the cols and build the struct from the query row
 			for(ii = 1; ii lte arraylen(cols); ii = ii + 1){
-				stReturn[cols[ii]] = qry[cols[ii]][row];
+				stReturn[cols[ii]] = arguments.qry[cols[ii]][row];
 			}		
 			//return the struct
 			return stReturn;

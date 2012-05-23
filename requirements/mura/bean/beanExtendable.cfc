@@ -165,7 +165,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var tempValue="">	
 	<cfif len(arguments.property)>
 		<cfif structKeyExists(this,"get#arguments.property#")>
-			<cfreturn evaluate("get#property#()") />
+			<cfreturn evaluate("get#arguments.property#()") />
 		<cfelseif structKeyExists(variables.instance,"#arguments.property#")>
 			<cfreturn variables.instance["#arguments.property#"] />
 		<cfelseif structKeyExists(arguments,"defaultValue")>

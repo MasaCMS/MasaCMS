@@ -134,7 +134,7 @@
 	<cffunction name="getRecordCount" access="public" output="false" returntype="numeric">
 		<cfset var recordCount = 0 />
 		<cfif structKeyExists(variables,"records")>
-			<cfset recordCount =records.recordCount />
+			<cfset recordCount =variables.records.recordCount />
 		</cfif>
 		<cfreturn recordCount />
 	</cffunction>
@@ -201,7 +201,7 @@
 			//a var for looping
 			var ii = 1;
 			//the cols to loop over
-			var cols = listToArray(qry.columnList);
+			var cols = listToArray(arguments.qry.columnList);
 			//the struct to return
 			var stReturn = structnew();
 			//if there is a second argument, use that for the row number
@@ -209,7 +209,7 @@
 				row = arguments[2];
 			//loop over the cols and build the struct from the query row
 			for(ii = 1; ii lte arraylen(cols); ii = ii + 1){
-				stReturn[cols[ii]] = qry[cols[ii]][row];
+				stReturn[cols[ii]] = arguments.qry[cols[ii]][row];
 			}		
 			//return the struct
 			return stReturn;

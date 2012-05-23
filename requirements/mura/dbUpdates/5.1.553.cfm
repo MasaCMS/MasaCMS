@@ -1,17 +1,17 @@
 <!--- make sure tcontent.urltitle and tcontent.htmltitle exists --->
 
-<cfset doUpdate=false>
+<cfset variables.DOUPDATE=false>
 
 <cftry>
 <cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 select urltitle from tcontent  where 0=1
 </cfquery>
 <cfcatch>
-<cfset doUpdate=true>
+<cfset variables.DOUPDATE=true>
 </cfcatch>
 </cftry>
 
-<cfif doUpdate>
+<cfif variables.DOUPDATE>
 <cfswitch expression="#getDbType()#">
 <cfcase value="mssql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">

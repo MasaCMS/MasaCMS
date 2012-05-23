@@ -45,6 +45,6 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<script>!window.jQuery.ui && document.write(unescape('%3Cscript src="#$.siteConfig("assetPath")#/jquery/ui/jquery-ui.min.js"%3E%3C/script%3E'))</script>
-<link href="#$.siteConfig('assetPath')#/jquery/ui/jquery-ui.min.css" rel="stylesheet" type="text/css" />
+<script>!window.jQuery.ui && document.write(unescape('%3Cscript src="#variables.$.siteConfig("assetPath")#/jquery/ui/jquery-ui.min.js"%3E%3C/script%3E'))</script>
+<link href="#variables.$.siteConfig('assetPath')#/jquery/ui/jquery-ui.min.css" rel="stylesheet" type="text/css" />
 </cfoutput>

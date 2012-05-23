@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfsilent>
 
 </cfsilent>
-<cfoutput><#$.getHeaderTag('headline')#>#$.rbKey('search.searchresults')#</#$.getHeaderTag('headline')#></cfoutput>
+<cfoutput><#variables.$.getHeaderTag('headline')#>#variables.$.rbKey('search.searchresults')#</#variables.$.getHeaderTag('headline')#></cfoutput>
 <div id="svSearchResults">
 <cfsilent>
 <cfparam name="variables.rsnewsearch" default="#queryNew('empty')#"/>
@@ -56,10 +56,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="session.rsSearch" default="#queryNew('empty')#">
 <cfif (len(request.keywords) or len(request.tag) ) and isdefined('request.newSearch')>
 <cfset session.aggregation=request.aggregation />
-<cfset variables.rsNewSearch=application.contentManager.getPublicSearch($.event('siteID'),request.keywords,request.tag,request.searchSectionID) /> 
+<cfset variables.rsNewSearch=application.contentManager.getPublicSearch(variables.$.event('siteID'),request.keywords,request.tag,request.searchSectionID) /> 
 
 <cfif getSite().getExtranet() eq 1>
-	<cfset session.rsSearch=$.queryPermFIlter(variables.rsnewsearch)/>
+	<cfset session.rsSearch=variables.$.queryPermFIlter(variables.rsnewsearch)/>
 <cfelse>
 	<cfset session.rsSearch=variables.rsnewsearch/>
 </cfif>
@@ -68,20 +68,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset session.rsSearch=newResultQuery()/>
 </cfif>
 
-<cfset variables.TotalRecords=session.rsSearch.RecordCount>
-<cfset variables.RecordsPerPage=10> 
-<cfset variables.NumberOfPages=Ceiling(TotalRecords/RecordsPerPage)>
-<cfset variables.CurrentPageNumber=Ceiling(request.StartRow/RecordsPerPage)> 
-<cfset variables.next=evaluate((request.startrow+recordsperpage))	>
-<cfset variables.previous=evaluate((request.startrow-recordsperpage))	>
-<cfset variables.through=iif(variables.totalRecords lt variables.next,totalrecords,variables.next-1)> 
+<cfset variables.totalrecords=session.rsSearch.RecordCount>
+<cfset variables.recordsperpage=10> 
+<cfset variables.NumberOfPages=Ceiling(variables.totalrecords/variables.recordsperpage)>
+<cfset variables.CurrentPageNumber=Ceiling(request.StartRow/variables.recordsperpage)> 
+<cfset variables.next=evaluate((request.startrow+variables.recordsperpage))	>
+<cfset variables.previous=evaluate((request.startrow-variables.recordsperpage))	>
+<cfset variables.through=iif(variables.totalrecords lt variables.next,variables.totalrecords,variables.next-1)> 
 
-<cfset variables.iterator=$.getBean("contentIterator")>
-<cfset variables.iterator.setQuery(session.rsSearch,RecordsPerPage)>
-<cfset variables.iterator.setStartRow($.event("startrow"))>
+<cfset variables.iterator=variables.$.getBean("contentIterator")>
+<cfset variables.iterator.setQuery(session.rsSearch,variables.recordsperpage)>
+<cfset variables.iterator.setStartRow(variables.$.event("startrow"))>
 
 <cfif len(request.searchSectionID)>
-<cfset variables.sectionBean=application.contentManager.getActiveContent(request.searchSectionID,$.event('siteID')) />
+<cfset variables.sectionBean=application.contentManager.getActiveContent(request.searchSectionID,variables.$.event('siteID')) />
 </cfif>
 
 <cfset variables.contentListFieldsType="Search">
@@ -96,36 +96,36 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.args[2]=htmlEditFormat(request.tag)>
 		<cfif len(request.searchSectionID)>
 			<cfset variables.args[3]=htmlEditFormat(variables.sectionBean.getTitle())>
-			<p>#$.siteConfig("rbFactory").getResourceBundle().messageFormat($.rbKey('search.searchtagsection'),variables.args)#</p>
+			<p>#variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('search.searchtagsection'),variables.args)#</p>
 		<cfelse>
-			<p>#$.siteConfig("rbFactory").getResourceBundle().messageFormat($.rbKey('search.searchtag'),variables.args)#</p>
+			<p>#variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('search.searchtag'),variables.args)#</p>
 		</cfif>
 	<cfelse>
 		<cfset variables.args[2]=htmlEditFormat(request.keywords)>
 		<cfif len(request.searchSectionID)>
 			<cfset variables.args[3]=htmlEditFormat(variables.sectionBean.getTitle())>
-	 		<p>#$.siteConfig("rbFactory").getResourceBundle().messageFormat($.rbKey('search.searchkeywordsection'),variables.args)#</p>
+	 		<p>#variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('search.searchkeywordsection'),variables.args)#</p>
 		<cfelse>
-			<p>#$.siteConfig("rbFactory").getResourceBundle().messageFormat($.rbKey('search.searchkeyword'),variables.args)#</p>
+			<p>#variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('search.searchkeyword'),variables.args)#</p>
 		</cfif>
 	</cfif>
 </cfoutput>
-<cfif totalrecords>
+<cfif variables.totalrecords>
 <cfoutput>
 	<div class="moreResults top well">
 		<ul>
-		<li class="resultsFound">#$.rbKey('search.displaying')#: #request.startrow# - #variables.through# #$.rbKey('search.of')# #session.rsSearch.recordcount#</li>
-		<cfif previous gte 1>
-		<li class="navPrev"><a href="?startrow=#previous#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">&laquo;#$.rbKey('search.prev')#</a></li>
+		<li class="resultsFound">#variables.$.rbKey('search.displaying')#: #request.startrow# - #variables.through# #variables.$.rbKey('search.of')# #session.rsSearch.recordcount#</li>
+		<cfif variables.previous gte 1>
+		<li class="navPrev"><a href="?startrow=#variables.previous#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">&laquo;#variables.$.rbKey('search.prev')#</a></li>
 		</cfif>
 		<cfif session.rsSearch.recordcount gt 0 and  variables.through lt session.rsSearch.recordcount>
-		<li class="navNext"><a href="?startrow=#next#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">#$.rbKey('search.next')#&raquo;</a></li>
+		<li class="navNext"><a href="?startrow=#next#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">#variables.$.rbKey('search.next')#&raquo;</a></li>
 		</cfif>
 		</ul>
 	</div>
 	
 	<div id="svPortal" class="svIndex">
-		#$.dspObject_Include(
+		#variables.$.dspObject_Include(
 			thefile='dsp_content_list.cfm',
 			fields=variables.contentListFields,
 			type=variables.contentListFieldsType, 
@@ -135,12 +135,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 	<div class="moreResults bottom well">
 		<ul>
-		<li class="resultsFound">#$.rbKey('search.displaying')#: #request.startrow# - #variables.through# #$.rbKey('search.of')# #session.rsSearch.recordcount#</li>
-		<cfif previous gte 1>
-		<li class="navPrev"><a href="?startrow=#previous#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">&laquo;#$.rbKey('search.prev')#</a></li>
+		<li class="resultsFound">#variables.$.rbKey('search.displaying')#: #request.startrow# - #variables.through# #variables.$.rbKey('search.of')# #session.rsSearch.recordcount#</li>
+		<cfif variables.previous gte 1>
+		<li class="navPrev"><a href="?startrow=#variables.previous#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">&laquo;#variables.$.rbKey('search.prev')#</a></li>
 		</cfif>
-		<cfif session.rsSearch.recordcount gt 0 and  through lt session.rsSearch.recordcount>
-		<li class="navNext"><a href="?startrow=#next#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">#$.rbKey('search.next')#&raquo;</a></li>
+		<cfif session.rsSearch.recordcount gt 0 and  variables.through lt session.rsSearch.recordcount>
+		<li class="navNext"><a href="?startrow=#next#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">#variables.$.rbKey('search.next')#&raquo;</a></li>
 		</cfif></ul>
 	</div>
 	</cfoutput>
@@ -148,8 +148,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 <cfoutput>
 	<form id="svSearchAgain" class="form-inline" name="searchFrm" action="" method="get">
-		<p>#$.rbKey('search.didnotfind')#</p>
-		<!---#$.rbKey('search.search')#:---> <input type="text" name="keywords" value="#HTMLEditFormat(request.keywords)#" placeholder="search" /><input name="newSearch" value="true" type="hidden"/><input name="nocache" value="1" type="hidden"/><input name="searchSectionID" value="#HTMLEditFormat(request.searchSectionID)#" type="hidden"/>  <input name="display" value="search" type="hidden"/><input type="submit" class="btn" value="#htmlEditFormat($.rbKey('search.go'))#" alt="submit" />
+		<p>#variables.$.rbKey('search.didnotfind')#</p>
+		<!---#variables.$.rbKey('search.search')#:---> <input type="text" name="keywords" value="#HTMLEditFormat(request.keywords)#" placeholder="search" /><input name="newSearch" value="true" type="hidden"/><input name="nocache" value="1" type="hidden"/><input name="searchSectionID" value="#HTMLEditFormat(request.searchSectionID)#" type="hidden"/>  <input name="display" value="search" type="hidden"/><input type="submit" class="btn" value="#htmlEditFormat(variables.$.rbKey('search.go'))#" alt="submit" />
 	</form>
 </cfoutput>
 </div>

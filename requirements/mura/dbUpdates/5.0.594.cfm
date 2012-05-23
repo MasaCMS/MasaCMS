@@ -119,17 +119,17 @@ ALTER TABLE [dbo].[tpluginsettings] WITH NOCHECK ADD
 </cftransaction>
 </cfcase>
 <cfcase value="mysql">
-	<cfset runDBUpdate=false/>
+	<cfset variables.RUNDBUPDATE=false/>
 	<cftry>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	select pluginID as CheckIfTableExists from tplugins limit 1
 	</cfquery>
 	<cfcatch>
-	<cfset runDBUpdate=true/>
+	<cfset variables.RUNDBUPDATE=true/>
 	</cfcatch>
 	</cftry>
 	
-	<cfif runDBUpdate>
+	<cfif variables.RUNDBUPDATE>
 	<cftry>
 	<cftransaction>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
@@ -229,17 +229,17 @@ ALTER TABLE [dbo].[tpluginsettings] WITH NOCHECK ADD
 	</cfif>
 </cfcase>
 <cfcase value="oracle">
-<cfset runDBUpdate=false/>
+<cfset variables.RUNDBUPDATE=false/>
 <cftry>
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 select * from (select pluginID as CheckIfTableExists from tplugins) where ROWNUM <=1
 </cfquery>
 <cfcatch>
-<cfset runDBUpdate=true/>
+<cfset variables.RUNDBUPDATE=true/>
 </cfcatch>
 </cftry>
 
-<cfif runDBUpdate>
+<cfif variables.RUNDBUPDATE>
 	<cftransaction>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	CREATE TABLE "TPLUGINS" (

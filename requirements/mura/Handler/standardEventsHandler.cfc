@@ -50,30 +50,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="standardWrongDomainHandler" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
-	<cflocation addtoken="no" url="http://#application.settingsManager.getSite(request.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##getBean('contentRenderer').getURLStem(event.getValue('siteID'),event.getValue('contentBean').getFilename())#">
+	<cflocation addtoken="no" url="http://#application.settingsManager.getSite(request.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##getBean('contentRenderer').getURLStem(arguments.event.getValue('siteID'),arguments.event.getValue('contentBean').getFilename())#">
 
 </cffunction>
 
 <cffunction name="standardTranslationHandler" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
-	<cfset event.getTranslator('standardHTML').translate(event)/>
+	<cfset arguments.event.getTranslator('standardHTML').translate(arguments.event)/>
 
 </cffunction>
 
 <cffunction name="standardTrackSessionHandler" output="false" returnType="any">
 	<cfargument name="event" required="true">	
 	
-	<cfset application.sessionTrackingManager.trackRequest(event.getValue('siteID'),event.getValue('path'),event.getValue('keywords'),event.getValue('contentBean').getcontentID()) />
+	<cfset application.sessionTrackingManager.trackRequest(arguments.event.getValue('siteID'),arguments.event.getValue('path'),arguments.event.getValue('keywords'),arguments.event.getValue('contentBean').getcontentID()) />
 		
 </cffunction>
 
 <cffunction name="standardSetPreviewHandler" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
-	<cfset event.setValue('track',0)>
-	<cfset event.setValue('nocache',1)>
-	<cfset event.setValue('contentBean',application.contentManager.getcontentVersion(event.getValue('previewID'),event.getValue('siteID'),true)) />
+	<cfset arguments.event.setValue('track',0)>
+	<cfset arguments.event.setValue('nocache',1)>
+	<cfset arguments.event.setValue('contentBean',application.contentManager.getcontentVersion(arguments.event.getValue('previewID'),arguments.event.getValue('siteID'),true)) />
 
 </cffunction>
 
@@ -82,9 +82,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset getBean("userUtility").returnLoginCheck(arguments.event.getValue("MuraScope"))>
 	
-	<cfset event.setValue('r',application.permUtility.setRestriction(event.getValue('crumbdata')))>
-	<cfif event.getValue('r').restrict>
-		<cfset event.setValue('nocache',1)>
+	<cfset arguments.event.setValue('r',application.permUtility.setRestriction(arguments.event.getValue('crumbdata')))>
+	<cfif arguments.event.getValue('r').restrict>
+		<cfset arguments.event.setValue('nocache',1)>
 	</cfif>
 	
 </cffunction>
@@ -92,11 +92,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="standardSetLocaleHandler" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	<cfparam name="session.siteID" default="">
-	<cfset setLocale(application.settingsManager.getSite(event.getValue('siteid')).getJavaLocale()) />
-	<cfif session.siteid neq event.getValue('siteid') or not structKeyExists(session,"locale")>
+	<cfset setLocale(application.settingsManager.getSite(arguments.event.getValue('siteid')).getJavaLocale()) />
+	<cfif session.siteid neq arguments.event.getValue('siteid') or not structKeyExists(session,"locale")>
 		<!---These are use for admin purposes--->
-		<cfset session.siteID=event.getValue('siteid')>
-		<cfset session.userFilesPath = "#application.configBean.getAssetPath()#/#event.getValue('siteid')#/assets/">
+		<cfset session.siteID=arguments.event.getValue('siteid')>
+		<cfset session.userFilesPath = "#application.configBean.getAssetPath()#/#arguments.event.getValue('siteid')#/assets/">
 		<cfset application.rbFactory.resetSessionLocale()>
 	</cfif>
 </cffunction>
@@ -106,86 +106,86 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var crumbdata="">
 	<cfset var previewData=getCurrentUser().getValue("ChangesetPreviewData")>
 	
-	<cfif isStruct(previewData) and listFind(previewData.contentIdList,"'#event.getValue("contentBean").getContentID()#'")>
-		<cfif arrayLen(event.getValue('crumbData')) gt 1>
-			<cfset crumbdata=event.getValue('crumbdata')>
-			<cfset event.setValue('isOnDisplay',application.contentUtility.isOnDisplay(event.getValue('contentBean').getdisplay(),event.getValue('contentBean').getdisplaystart(),event.getValue('contentBean').getdisplaystop(),event.getValue('siteID'),event.getValue('contentBean').getparentid(),crumbdata[2].type))>
+	<cfif isStruct(previewData) and listFind(previewData.contentIdList,"'#arguments.event.getValue("contentBean").getContentID()#'")>
+		<cfif arrayLen(arguments.event.getValue('crumbData')) gt 1>
+			<cfset crumbdata=arguments.event.getValue('crumbdata')>
+			<cfset arguments.event.setValue('isOnDisplay',application.contentUtility.isOnDisplay(arguments.event.getValue('contentBean').getdisplay(),arguments.event.getValue('contentBean').getdisplaystart(),arguments.event.getValue('contentBean').getdisplaystop(),arguments.event.getValue('siteID'),arguments.event.getValue('contentBean').getparentid(),crumbdata[2].type))>
 		<cfelse>
-			<cfset event.setValue('isOnDisplay',application.contentUtility.isOnDisplay(event.getValue('contentBean').getdisplay(),event.getValue('contentBean').getdisplaystart(),event.getValue('contentBean').getdisplaystop(),event.getValue('siteID'),event.getValue('contentBean').getparentid(),"Page"))>
+			<cfset arguments.event.setValue('isOnDisplay',application.contentUtility.isOnDisplay(arguments.event.getValue('contentBean').getdisplay(),arguments.event.getValue('contentBean').getdisplaystart(),arguments.event.getValue('contentBean').getdisplaystop(),arguments.event.getValue('siteID'),arguments.event.getValue('contentBean').getparentid(),"Page"))>
 		</cfif>
-	<cfelseif event.valueExists('previewID')>
-		<cfset event.setValue('isOnDisplay',1)>
-	<cfelseif event.getValue('contentBean').getapproved() eq 0>
-		<cfset event.setValue('track',0)>
-		<cfset event.setValue('nocache',1)>
-		<cfset event.setValue('isOnDisplay',0)>
-	<cfelseif arrayLen(event.getValue('crumbData')) gt 1>
-		<cfset crumbdata=event.getValue('crumbdata')>
-		<cfset event.setValue('isOnDisplay',application.contentUtility.isOnDisplay(event.getValue('contentBean').getdisplay(),event.getValue('contentBean').getdisplaystart(),event.getValue('contentBean').getdisplaystop(),event.getValue('siteID'),event.getValue('contentBean').getparentid(),crumbdata[2].type))>
+	<cfelseif arguments.event.valueExists('previewID')>
+		<cfset arguments.event.setValue('isOnDisplay',1)>
+	<cfelseif arguments.event.getValue('contentBean').getapproved() eq 0>
+		<cfset arguments.event.setValue('track',0)>
+		<cfset arguments.event.setValue('nocache',1)>
+		<cfset arguments.event.setValue('isOnDisplay',0)>
+	<cfelseif arrayLen(arguments.event.getValue('crumbData')) gt 1>
+		<cfset crumbdata=arguments.event.getValue('crumbdata')>
+		<cfset arguments.event.setValue('isOnDisplay',application.contentUtility.isOnDisplay(arguments.event.getValue('contentBean').getdisplay(),arguments.event.getValue('contentBean').getdisplaystart(),arguments.event.getValue('contentBean').getdisplaystop(),arguments.event.getValue('siteID'),arguments.event.getValue('contentBean').getparentid(),crumbdata[2].type))>
 	<cfelse>
-		<cfset event.setValue('isOnDisplay',1)>
+		<cfset arguments.event.setValue('isOnDisplay',1)>
 	</cfif>
 	
 </cffunction>
 
 <cffunction name="standardSetContentRendererHandler" output="false" returnType="any">
 	<cfargument name="event" required="true">
-	<cfset var $=event.getValue("muraScope")>
+	<cfset var $=arguments.event.getValue("muraScope")>
 	<cfset var themeRenderer="">
-	<cfset event.setValue('contentRenderer',createObject("component","#event.getSite().getAssetMap()#.includes.contentRenderer").init(event=event,$=$,mura=$))/>
-	<cfif fileExists(expandPath(event.getSite().getThemeIncludePath()) & "/contentRenderer.cfc")>
-		<cfset themeRenderer=createObject("component","#event.getSite().getThemeAssetMap()#.contentRenderer").init()>
+	<cfset arguments.event.setValue('contentRenderer',createObject("component","#arguments.event.getSite().getAssetMap()#.includes.contentRenderer").init(event=arguments.event,$=$,mura=$))/>
+	<cfif fileExists(expandPath(arguments.event.getSite().getThemeIncludePath()) & "/contentRenderer.cfc")>
+		<cfset themeRenderer=createObject("component","#arguments.event.getSite().getThemeAssetMap()#.contentRenderer").init()>
 		<cfset themeRenderer.injectMethod("mura",$)>
 		<cfset themeRenderer.injectMethod("$",$)>
-		<cfset themeRenderer.injectMethod("event",event)>
-		<cfset event.setValue("themeRenderer",themeRenderer)>
+		<cfset themeRenderer.injectMethod("event",arguments.event)>
+		<cfset arguments.event.setValue("themeRenderer",themeRenderer)>
 	</cfif>
 </cffunction>
 
 <cffunction name="standardSetContentHandler" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
-	<cfset var renderer=event.getValue("contentRenderer")>
-	<cfset var themeRenderer=event.getValue("themeRenderer")>
+	<cfset var renderer=arguments.event.getValue("contentRenderer")>
+	<cfset var themeRenderer=arguments.event.getValue("themeRenderer")>
 	
-	<cfif event.valueExists('previewID')>
-		<cfset event.getHandler("standardSetPreview").handle(event)>
+	<cfif arguments.event.valueExists('previewID')>
+		<cfset arguments.event.getHandler("standardSetPreview").handle(arguments.event)>
 	<cfelse>
-		<cfset event.getHandler("standardSetAdTracking").handle(event)>
+		<cfset arguments.event.getHandler("standardSetAdTracking").handle(arguments.event)>
 		
-		<cfif not event.valueExists('contentBean')>
-			<cfif len(event.getValue('linkServID'))>
-				<cfset event.setValue('contentBean',application.contentManager.getActiveContent(listFirst(event.getValue('linkServID')),event.getValue('siteid'),true)) />
+		<cfif not arguments.event.valueExists('contentBean')>
+			<cfif len(arguments.event.getValue('linkServID'))>
+				<cfset arguments.event.setValue('contentBean',application.contentManager.getActiveContent(listFirst(arguments.event.getValue('linkServID')),arguments.event.getValue('siteid'),true)) />
 			<cfelse>
-				<cfset event.setValue('contentBean',application.contentManager.getActiveContentByFilename(event.getValue('currentFilenameAdjusted'),event.getValue('siteid'),true)) />
+				<cfset arguments.event.setValue('contentBean',application.contentManager.getActiveContentByFilename(arguments.event.getValue('currentFilenameAdjusted'),arguments.event.getValue('siteid'),true)) />
 			</cfif>
 		</cfif>
 	</cfif>
 
-	<cfset event.getValidator("standard404").validate(event)>
+	<cfset arguments.event.getValidator("standard404").validate(arguments.event)>
 	
-	<cfif event.getValue('contentBean').getForceSSL()>
-		<cfset event.setValue('forceSSL',event.getValue('contentBean').getForceSSL())/>
+	<cfif arguments.event.getValue('contentBean').getForceSSL()>
+		<cfset arguments.event.setValue('forceSSL',arguments.event.getValue('contentBean').getForceSSL())/>
 	</cfif>
 
-	<cfif not event.valueExists('crumbdata')>
-		<cfset event.setValue('crumbdata',application.contentGateway.getCrumbList(event.getValue('contentBean').getcontentid(),event.getContentBean().getSiteID(),true,event.getValue('contentBean').getPath())) />
+	<cfif not arguments.event.valueExists('crumbdata')>
+		<cfset arguments.event.setValue('crumbdata',application.contentGateway.getCrumbList(arguments.event.getValue('contentBean').getcontentid(),arguments.event.getContentBean().getSiteID(),true,arguments.event.getValue('contentBean').getPath())) />
 	</cfif>
 	
-	<cfset renderer.crumbdata=event.getValue("crumbdata")>
+	<cfset renderer.crumbdata=arguments.event.getValue("crumbdata")>
 	
 	<cfif isObject(themeRenderer)>
-		<cfset themeRenderer.crumbdata=event.getValue("crumbdata")>
+		<cfset themeRenderer.crumbdata=arguments.event.getValue("crumbdata")>
 	</cfif>
 </cffunction>
 
 <cffunction name="standardSetAdTrackingHandler" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
-	<cfif event.getValue('trackSession')>
-		<cfset event.setValue('track',1)>
+	<cfif arguments.event.getValue('trackSession')>
+		<cfset arguments.event.setValue('track',1)>
 	<cfelse>
-		<cfset event.setValue('track',0)>
+		<cfset arguments.event.setValue('track',0)>
 	</cfif>
 	
 </cffunction>
@@ -195,12 +195,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var loginURL = "" />
 	
-	<cfif event.getValue('isOnDisplay') and event.getValue('r').restrict and not event.getValue('r').loggedIn and (event.getValue('display') neq 'login' and event.getValue('display') neq 'editProfile')>
+	<cfif arguments.event.getValue('isOnDisplay') and arguments.event.getValue('r').restrict and not arguments.event.getValue('r').loggedIn and (arguments.event.getValue('display') neq 'login' and arguments.event.getValue('display') neq 'editProfile')>
 		<cfset loginURL = application.settingsManager.getSite(request.siteid).getLoginURL() />
 		<cfif find('?', loginURL)>
-			<cfset loginURL &= "&returnURL=#URLEncodedFormat(event.getValue('contentRenderer').getCurrentURL())#" />
+			<cfset loginURL &= "&returnURL=#URLEncodedFormat(arguments.event.getValue('contentRenderer').getCurrentURL())#" />
 		<cfelse>
-			<cfset loginURL &= "?returnURL=#URLEncodedFormat(event.getValue('contentRenderer').getCurrentURL())#" />
+			<cfset loginURL &= "?returnURL=#URLEncodedFormat(arguments.event.getValue('contentRenderer').getCurrentURL())#" />
 		</cfif>
 		<cflocation addtoken="no" url="#loginURL#">
 	</cfif>
@@ -210,17 +210,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="standardPostLogoutHandler" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
-	<cflocation url="#event.getValue('contentRenderer').getCurrentURL()#" addtoken="false">
+	<cflocation url="#arguments.event.getValue('contentRenderer').getCurrentURL()#" addtoken="false">
 
 </cffunction>
 
 <cffunction name="standardMobileHandler" output="false" returnType="any">
 	<cfargument name="event" required="true">
-	<cfset var renderer=event.getValue("contentRenderer")>
+	<cfset var renderer=arguments.event.getValue("contentRenderer")>
 	
-	<cfif fileExists(ExpandPath( "#event.getSite().getThemeIncludePath()#/templates/mobile.cfm"))>
+	<cfif fileExists(ExpandPath( "#arguments.event.getSite().getThemeIncludePath()#/templates/mobile.cfm"))>
 		<cfset renderer.listFormat="ul">
-		<cfset event.getValue("contentBean").setTemplate("mobile.cfm")>
+		<cfset arguments.event.getValue("contentBean").setTemplate("mobile.cfm")>
 		<cfset renderer.showAdminToolbar=false>
 		<cfset renderer.showMemberToolbar=false>
 		<cfset renderer.showEditableObjects=false>
@@ -231,7 +231,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="standardLinkTranslationHandler" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
-	<cfset event.getTranslator('standardLink').translate(event) />
+	<cfset arguments.event.getTranslator('standardLink').translate(arguments.event) />
 
 </cffunction>
 
@@ -239,16 +239,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="event" required="true">
 	
 	<cfif application.utility.isHTTPS()>
-		<cflocation addtoken="no" url="http://#application.settingsManager.getSite(event.getValue('siteID')).getDomain()##application.configBean.getServerPort()##event.getContentRenderer().getCurrentURL(false)#">
+		<cflocation addtoken="no" url="http://#application.settingsManager.getSite(arguments.event.getValue('siteID')).getDomain()##application.configBean.getServerPort()##arguments.event.getContentRenderer().getCurrentURL(false)#">
 	<cfelse>
-		<cflocation addtoken="no" url="https://#application.settingsManager.getSite(event.getValue('siteID')).getDomain()##application.configBean.getServerPort()##event.getContentRenderer().getCurrentURL(false)#">
+		<cflocation addtoken="no" url="https://#application.settingsManager.getSite(arguments.event.getValue('siteID')).getDomain()##application.configBean.getServerPort()##arguments.event.getContentRenderer().getCurrentURL(false)#">
 	</cfif>
 </cffunction>
 
 <cffunction name="standardFileTranslationHandler" output="false" returnType="any">
 	<cfargument name="event" required="true">
 
-	<cfset event.getTranslator('standardFile').translate(event) />
+	<cfset arguments.event.getTranslator('standardFile').translate(arguments.event) />
 
 </cffunction>
 
@@ -266,64 +266,64 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset renderer=siteRenderer>
 	</cfif>
 	
-	<cfset application.pluginManager.announceEvent('onRenderStart', event)/>
+	<cfset application.pluginManager.announceEvent('onRenderStart', arguments.event)/>
 	
-	<cfswitch expression="#event.getValue('contentBean').getType()#">
+	<cfswitch expression="#arguments.event.getValue('contentBean').getType()#">
 	<cfcase value="File,Link">
 			
-		<cfif event.getValue('isOnDisplay') and ((not event.getValue('r').restrict) or (event.getValue('r').restrict and event.getValue('r').allow))>			
-			<cfif event.getValue('showMeta') neq 1>
-				<cfswitch expression="#event.getValue('contentBean').getType()#">
+		<cfif arguments.event.getValue('isOnDisplay') and ((not arguments.event.getValue('r').restrict) or (arguments.event.getValue('r').restrict and arguments.event.getValue('r').allow))>			
+			<cfif arguments.event.getValue('showMeta') neq 1>
+				<cfswitch expression="#arguments.event.getValue('contentBean').getType()#">
 					<cfcase value="Link">
-						<cfif not renderer.showItemMeta("Link") or event.getValue('showMeta') eq 2>
-							<cfset translator=event.getHandler('standardLinkTranslation')>
+						<cfif not renderer.showItemMeta("Link") or arguments.event.getValue('showMeta') eq 2>
+							<cfset translator=arguments.event.getHandler('standardLinkTranslation')>
 						<cfelse>
-							<cfset translator=event.getHandler('standardTranslation')>
+							<cfset translator=arguments.event.getHandler('standardTranslation')>
 						</cfif>
 					</cfcase>
 					<cfcase value="File">		
-						<cfif not renderer.showItemMeta(event.getValue('contentBean').getFileExt()) or event.getValue('showMeta') eq 2>
+						<cfif not renderer.showItemMeta(arguments.event.getValue('contentBean').getFileExt()) or arguments.event.getValue('showMeta') eq 2>
 							<!---<cftry>--->
-							<cfset translator=event.getHandler('standardFileTranslation')>
+							<cfset translator=arguments.event.getHandler('standardFileTranslation')>
 							<!---
 							<cfcatch>
-								<cfset event.setValue('contentBean',application.contentManager.getActiveContentByFilename("404",event.getValue('siteID'))) />
-								<cfset event.getHandler('standardTranslation').handle(event) />
+								<cfset arguments.event.setValue('contentBean',application.contentManager.getActiveContentByFilename("404",arguments.event.getValue('siteID'))) />
+								<cfset arguments.event.getHandler('standardTranslation').handle(arguments.event) />
 							</cfcatch>
 							</cftry>
 							--->
 						<cfelse>
-							<cfset translator=event.getHandler('standardTranslation')>	
+							<cfset translator=arguments.event.getHandler('standardTranslation')>	
 						</cfif>
 					</cfcase>
 				</cfswitch>
 			<cfelse>
-				<cfset translator=event.getHandler('standardTranslation')>	
+				<cfset translator=arguments.event.getHandler('standardTranslation')>	
 			</cfif>
 		<cfelse>
-			<cfset translator=event.getHandler('standardTranslation')>	
+			<cfset translator=arguments.event.getHandler('standardTranslation')>	
 		</cfif>	
 	</cfcase>
 	<cfdefaultcase>
-		<cfset translator=event.getHandler('standardTranslation')>
+		<cfset translator=arguments.event.getHandler('standardTranslation')>
 	</cfdefaultcase>
 	</cfswitch>
 	
-	<cfset translator.handle(event) />
+	<cfset translator.handle(arguments.event) />
 	
-	<cfset application.pluginManager.announceEvent('onRenderEnd', event)/>
-	<cfset event.getValidator('standardForceSSL').validate(event)>
+	<cfset application.pluginManager.announceEvent('onRenderEnd', arguments.event)/>
+	<cfset arguments.event.getValidator('standardForceSSL').validate(arguments.event)>
 
 </cffunction>
 
 <cffunction name="standard404Handler" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
-	<cfif event.getValue("contentBean").getIsNew()>
+	<cfif arguments.event.getValue("contentBean").getIsNew()>
 		<cfset getPluginManager().announceEvent("onSite404",arguments.event)>
 	</cfif>
 
-	<cfif event.getValue("contentBean").getIsNew()>
+	<cfif arguments.event.getValue("contentBean").getIsNew()>
 		<cfset arguments.event.setValue('contentBean',application.contentManager.getActiveContentByFilename("404",arguments.event.getValue('siteid'),true)) />
 			
 		<cfif len(arguments.event.getValue('previewID'))>
@@ -339,9 +339,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset var a=""/>
 
-<cfif event.getValue('doaction') neq ''>
-<cfloop list="#event.getValue('doaction')#" index="a">
-<cfset doAction(a,event)>
+<cfif arguments.event.getValue('doaction') neq ''>
+<cfloop list="#arguments.event.getValue('doaction')#" index="a">
+<cfset doAction(a,arguments.event)>
 </cfloop>
 </cfif>
 
@@ -353,122 +353,122 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfswitch expression="#arguments.theaction#">
 			<cfcase value="login">
-				<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#/#event.getValue('siteid')#/includes/loginHandler.cfc"))>
-					<cfset createObject("component","#application.configBean.getWebRootMap()#.#event.getValue('siteid')#.includes.loginHandler").init().handleLogin(event.getAllValues())>
+				<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#/#arguments.event.getValue('siteid')#/includes/loginHandler.cfc"))>
+					<cfset createObject("component","#application.configBean.getWebRootMap()#.#arguments.event.getValue('siteid')#.includes.loginHandler").init().handleLogin(arguments.event.getAllValues())>
 				<cfelse>
-					<cfset application.loginManager.login(event.getAllValues(),'') />
+					<cfset application.loginManager.login(arguments.event.getAllValues(),'') />
 				</cfif>
 			</cfcase>
 			
 			<cfcase value="return">
-				<cfset application.emailManager.track(event.getValue('emailID'),event.getValue('email'),'returnClick')>
+				<cfset application.emailManager.track(arguments.event.getValue('emailID'),arguments.event.getValue('email'),'returnClick')>
 			</cfcase>
 			
 			<cfcase value="logout">
 				<cfset application.loginManager.logout()>
-				<cfset event.getHandler("standardPostLogout").handle(event)>
+				<cfset arguments.event.getHandler("standardPostLogout").handle(arguments.event)>
 			</cfcase>
 			
 			<cfcase value="updateprofile">
 				<cfif session.mura.isLoggedIn>
 					<cfset arguments.event.setValue("userID",session.mura.userID)>
 					<cfif isDefined('request.addressAction')>
-						<cfif event.getValue('addressAction') eq "create">
-							<cfset application.userManager.createAddress(event.getAllValues())>
-						<cfelseif event.getValue('addressAction') eq "update">
-							<cfset application.userManager.updateAddress(event.getAllValues())>
-						<cfelseif event.getValue('addressAction') eq "delete">
-							<cfset application.userManager.deleteAddress(event.getValue('addressID'))>
+						<cfif arguments.event.getValue('addressAction') eq "create">
+							<cfset application.userManager.createAddress(arguments.event.getAllValues())>
+						<cfelseif arguments.event.getValue('addressAction') eq "update">
+							<cfset application.userManager.updateAddress(arguments.event.getAllValues())>
+						<cfelseif arguments.event.getValue('addressAction') eq "delete">
+							<cfset application.userManager.deleteAddress(arguments.event.getValue('addressID'))>
 						</cfif>
 						<!--- reset the form --->
-						<cfset event.setValue('addressID','')>
-						<cfset event.setValue('addressAction','')>
+						<cfset arguments.event.setValue('addressID','')>
+						<cfset arguments.event.setValue('addressAction','')>
 					<cfelse>
-						<cfset event.setValue('userBean',application.userManager.update( getBean("user").loadBy(userID=event.getValue("userID")).set(event.getAllValues()).getAllValues() , iif(event.valueExists('groupID'),de('true'),de('false')),true,event.getValue('siteID'))) />
-						<cfif structIsEmpty(event.getValue('userBean').getErrors())>
-							<cfset application.loginManager.loginByUserID(event.getAllValues())>
+						<cfset arguments.event.setValue('userBean',application.userManager.update( getBean("user").loadBy(userID=arguments.event.getValue("userID")).set(arguments.event.getAllValues()).getAllValues() , iif(event.valueExists('groupID'),de('true'),de('false')),true,arguments.event.getValue('siteID'))) />
+						<cfif structIsEmpty(arguments.event.getValue('userBean').getErrors())>
+							<cfset application.loginManager.loginByUserID(arguments.event.getAllValues())>
 						</cfif>
 					</cfif>
 				</cfif>
 			</cfcase>
 			
 			<cfcase value="createprofile">
-				<cfif application.settingsManager.getSite(event.getValue('siteid')).getextranetpublicreg() eq 1>
+				<cfif application.settingsManager.getSite(arguments.event.getValue('siteid')).getextranetpublicreg() eq 1>
 					<cfset arguments.event.setValue("userID","")>
 					
-					<cfif event.valueExists("useProtect")>
-						<cfset event.setValue("passedProtect",application.utility.cfformprotect(event))>
+					<cfif arguments.event.valueExists("useProtect")>
+						<cfset arguments.event.setValue("passedProtect",application.utility.cfformprotect(arguments.event))>
 					</cfif>
 					
-					<cfset event.setValue('userBean',  getBean("user").loadBy(userID=event.getValue("userID")).set(event.getAllValues()).save() ) />		
-					<cfif structIsEmpty(event.getValue('userBean').getErrors()) and not event.valueExists('passwordNoCache')>
-						<cfset application.userManager.sendLoginByUser(event.getValue('userBean'),event.getValue('siteid'),event.getValue('contentRenderer').getCurrentURL(),true) />
-					<cfelseif structIsEmpty(event.getValue('userBean').getErrors()) and event.valueExists('passwordNoCache') and event.getValue('userBean').getInactive() eq 0>	
-						<cfset event.setValue('userID',event.getValue('userBean').getUserID()) />
-						<cfset application.loginManager.loginByUserID(event.getAllValues())>
+					<cfset arguments.event.setValue('userBean',  getBean("user").loadBy(userID=arguments.event.getValue("userID")).set(arguments.event.getAllValues()).save() ) />		
+					<cfif structIsEmpty(arguments.event.getValue('userBean').getErrors()) and not arguments.event.valueExists('passwordNoCache')>
+						<cfset application.userManager.sendLoginByUser(arguments.event.getValue('userBean'),arguments.event.getValue('siteid'),arguments.event.getValue('contentRenderer').getCurrentURL(),true) />
+					<cfelseif structIsEmpty(arguments.event.getValue('userBean').getErrors()) and arguments.event.valueExists('passwordNoCache') and arguments.event.getValue('userBean').getInactive() eq 0>	
+						<cfset arguments.event.setValue('userID',arguments.event.getValue('userBean').getUserID()) />
+						<cfset application.loginManager.loginByUserID(arguments.event.getAllValues())>
 					</cfif>
 				</cfif>
 			</cfcase>
 			
 			<cfcase value="contactsend">
 				<cfparam name="request.company" default="">
-				<cfset getBean("mailer").send(event.getAllValues(),event.getValue('sendTo'),'#iif(event.getValue('fname') eq '' and event.getValue('lname') eq '',de('#event.getValue('company')#'),de('#event.getValue('fname')# #event.getValue('lname')#'))#',event.getValue('subject'),event.getValue('siteID'),event.getValue('email'))>
+				<cfset getBean("mailer").send(arguments.event.getAllValues(),arguments.event.getValue('sendTo'),'#iif(arguments.event.getValue('fname') eq '' and arguments.event.getValue('lname') eq '',de('#arguments.event.getValue('company')#'),de('#arguments.event.getValue('fname')# #arguments.event.getValue('lname')#'))#',arguments.event.getValue('subject'),arguments.event.getValue('siteID'),arguments.event.getValue('email'))>
 			</cfcase>
 			
 			<cfcase value="subscribe">
-				<cfif event.valueExists("useProtect")>
-					<cfset event.setValue("passedProtect",application.utility.cfformprotect(event))>
+				<cfif arguments.event.valueExists("useProtect")>
+					<cfset arguments.event.setValue("passedProtect",application.utility.cfformprotect(arguments.event))>
 				<cfelse>
-					<cfset event.setValue("passedProtect",true)>
+					<cfset arguments.event.setValue("passedProtect",true)>
 				</cfif>
 				
-				<cfif event.getValue("passedProtect")>
-					<cfset application.mailinglistManager.createMember(event.getAllValues())>
+				<cfif arguments.event.getValue("passedProtect")>
+					<cfset application.mailinglistManager.createMember(arguments.event.getAllValues())>
 				</cfif>
 			</cfcase>
 			
 			<cfcase value="unsubscribe">
-				<cfset application.mailinglistManager.deleteMember(event.getAllValues())>
+				<cfset application.mailinglistManager.deleteMember(arguments.event.getAllValues())>
 			</cfcase>
 			
 			<cfcase value="masterSubscribe">
-				<cfif event.valueExists("useProtect")>
-					<cfset event.setValue("passedProtect",application.utility.cfformprotect(event))>
+				<cfif arguments.event.valueExists("useProtect")>
+					<cfset arguments.event.setValue("passedProtect",application.utility.cfformprotect(arguments.event))>
 				<cfelse>
-					<cfset event.setValue("passedProtect",true)>
+					<cfset arguments.event.setValue("passedProtect",true)>
 				</cfif>
 				
-				<cfif event.getValue("passedProtect")>
-					<cfset application.mailinglistManager.masterSubscribe(event.getAllValues())/>
+				<cfif arguments.event.getValue("passedProtect")>
+					<cfset application.mailinglistManager.masterSubscribe(arguments.event.getAllValues())/>
 				</cfif>
 			</cfcase>
 			
 			<cfcase value="setReminder">
-				<cfif event.valueExists("useProtect")>
-					<cfset event.setValue("passedProtect",application.utility.cfformprotect(event))>
+				<cfif arguments.event.valueExists("useProtect")>
+					<cfset arguments.event.setValue("passedProtect",application.utility.cfformprotect(arguments.event))>
 				<cfelse>
-					<cfset event.setValue("passedProtect",true)>
+					<cfset arguments.event.setValue("passedProtect",true)>
 				</cfif>
 				
-				<cfif event.getValue("passedProtect")>
-					<cfset application.contentManager.setReminder(event.getValue('contentBean').getcontentid(),event.getValue('siteID'),event.getValue('email'),event.getValue('contentBean').getdisplaystart(),event.getValue('interval')) />
+				<cfif arguments.event.getValue("passedProtect")>
+					<cfset application.contentManager.setReminder(arguments.event.getValue('contentBean').getcontentid(),arguments.event.getValue('siteID'),arguments.event.getValue('email'),arguments.event.getValue('contentBean').getdisplaystart(),arguments.event.getValue('interval')) />
 				</cfif>
 			</cfcase>
 			
 			<cfcase value="forwardEmail">
-				<cfif event.valueExists("useProtect")>
-					<cfset event.setValue("passedProtect",application.utility.cfformprotect(event))>
+				<cfif arguments.event.valueExists("useProtect")>
+					<cfset arguments.event.setValue("passedProtect",application.utility.cfformprotect(arguments.event))>
 				<cfelse>
-					<cfset event.setValue("passedProtect",true)>
+					<cfset arguments.event.setValue("passedProtect",true)>
 				</cfif>
 				
-				<cfif event.getValue("passedProtect")>
-					<cfset event.setValue('to',event.getValue('to1'))/>
-					<cfset event.setValue('to',listAppend(event.getValue('to'),event.getValue('to2'))) />
-					<cfset event.setValue('to',listAppend(event.getValue('to'),event.getValue('to3'))) />
-					<cfset event.setValue('to',listAppend(event.getValue('to'),event.getValue('to4'))) />
-					<cfset event.setValue('to',listAppend(event.getValue('to'),event.getValue('to5'))) />
-					<cfset application.emailManager.forward(event.getAllValues()) />
+				<cfif arguments.event.getValue("passedProtect")>
+					<cfset arguments.event.setValue('to',arguments.event.getValue('to1'))/>
+					<cfset arguments.event.setValue('to',listAppend(arguments.event.getValue('to'),arguments.event.getValue('to2'))) />
+					<cfset arguments.event.setValue('to',listAppend(arguments.event.getValue('to'),arguments.event.getValue('to3'))) />
+					<cfset arguments.event.setValue('to',listAppend(arguments.event.getValue('to'),arguments.event.getValue('to4'))) />
+					<cfset arguments.event.setValue('to',listAppend(arguments.event.getValue('to'),arguments.event.getValue('to5'))) />
+					<cfset application.emailManager.forward(arguments.event.getAllValues()) />
 				</cfif>
 			</cfcase>
 			
@@ -480,62 +480,62 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="standardWrongDomainValidator" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
-	<cfif (application.configBean.getMode() eq 'production' and yesNoFormat(event.getValue("muraValidateDomain"))
+	<cfif (application.configBean.getMode() eq 'production' and yesNoFormat(arguments.event.getValue("muraValidateDomain"))
 				and not application.settingsManager.getSite(request.siteID).isValidDomain(domain:listFirst(cgi.http_host,":"), mode: "either")) 
 				and not (listFirst(cgi.http_host,":") eq 'LOCALHOST' and cgi.HTTP_USER_AGENT eq 'vspider')>
-			<cfset event.getHandler("standardWrongDomain").handle(event)>
+			<cfset arguments.event.getHandler("standardWrongDomain").handle(arguments.event)>
 		</cfif>
 </cffunction>
 
 <cffunction name="standardTrackSessionValidator" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
-	<cfif true or event.getValue('trackSession') 
-			and len(event.getValue('contentBean').getcontentID()) 
-			and event.getValue('contentBean').getIsNew() eq 0 
-			and event.getValue('contentBean').getActive() eq 1
-			and not event.valueExists('previewID')>
-			<cfset event.getHandler("standardTrackSession").handle(event)>
+	<cfif true or arguments.event.getValue('trackSession') 
+			and len(arguments.event.getValue('contentBean').getcontentID()) 
+			and arguments.event.getValue('contentBean').getIsNew() eq 0 
+			and arguments.event.getValue('contentBean').getActive() eq 1
+			and not arguments.event.valueExists('previewID')>
+			<cfset arguments.event.getHandler("standardTrackSession").handle(arguments.event)>
 	</cfif>
 </cffunction>
 
 <cffunction name="standardRequireLoginValidator" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
-	<cfif event.getValue('isOnDisplay') and event.getValue('r').restrict 
-			and not event.getValue('r').loggedIn 
-			and (event.getValue('display') neq 'login' and event.getValue('display') neq 'editProfile')>
-			<cfset event.getHandler("standardRequireLogin").handle(event)>
+	<cfif arguments.event.getValue('isOnDisplay') and arguments.event.getValue('r').restrict 
+			and not arguments.event.getValue('r').loggedIn 
+			and (arguments.event.getValue('display') neq 'login' and arguments.event.getValue('display') neq 'editProfile')>
+			<cfset arguments.event.getHandler("standardRequireLogin").handle(arguments.event)>
 	</cfif>
 </cffunction>
 
 <cffunction name="standardMobileValidator" output="false" returnType="any">
 	<cfargument name="event" required="true">
-	<cfif request.muraMobileRequest and not len(event.getValue('altTheme'))>
-		<cfset event.getHandler("standardMobile").handle(event)>
+	<cfif request.muraMobileRequest and not len(arguments.event.getValue('altTheme'))>
+		<cfset arguments.event.getHandler("standardMobile").handle(arguments.event)>
 	</cfif>
 </cffunction>
 
 <cffunction name="standardForceSSLValidator" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
-	<cfif event.getValue("contentBean").getFilename() neq "404" 
+	<cfif arguments.event.getValue("contentBean").getFilename() neq "404" 
 			and 
 			(
-				(event.getValue('forceSSL') or (event.getValue('r').restrict and application.settingsManager.getSite(event.getValue('siteID')).getExtranetSSL() eq 1)) and not application.utility.isHTTPS()
+				(arguments.event.getValue('forceSSL') or (arguments.event.getValue('r').restrict and application.settingsManager.getSite(arguments.event.getValue('siteID')).getExtranetSSL() eq 1)) and not application.utility.isHTTPS()
 				)
 			or	(
-				not (event.getValue('r').restrict or event.getValue('forceSSL')) and application.utility.isHTTPS()	
+				not (arguments.event.getValue('r').restrict or arguments.event.getValue('forceSSL')) and application.utility.isHTTPS()	
 			)>
-		<cfset event.getHandler("standardForceSSL").handle(event)>
+		<cfset arguments.event.getHandler("standardForceSSL").handle(arguments.event)>
 	</cfif>
 </cffunction>
 
 <cffunction name="standard404Validator" output="false" returnType="any">
 	<cfargument name="event" required="true">
 
-	<cfif event.getValue('contentBean').getIsNew() eq 1>
-		<cfset event.getHandler("standard404").handle(event)>
+	<cfif arguments.event.getValue('contentBean').getIsNew() eq 1>
+		<cfset arguments.event.getHandler("standard404").handle(arguments.event)>
 	</cfif>
 
 </cffunction>
@@ -543,12 +543,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!--- TRANSLATORS --->
 <cffunction name="standardFileTranslator" output="false" returnType="any">
 	<cfargument name="event" required="true">
-	<cfset event.getValue('contentRenderer').renderFile(event.getValue('contentBean').getFileID()) />
+	<cfset arguments.event.getValue('contentRenderer').renderFile(arguments.event.getValue('contentBean').getFileID()) />
 </cffunction>
 
 <cffunction name="standardLinkTranslator" output="false" returnType="any">
 	<cfargument name="event" required="true">
-	<cfset var theLink=event.getValue('contentRenderer').setDynamicContent(event.getValue('contentBean').getFilename())>
+	<cfset var theLink=arguments.event.getValue('contentRenderer').setDynamicContent(arguments.event.getValue('contentBean').getFilename())>
 	
 	<cfif left(theLink,1) eq "?">
 		<cfset theLink="/" & theLink>
