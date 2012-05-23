@@ -1708,8 +1708,8 @@ select * from tplugins order by #arguments.orderby#
 		<cfset muraScope=arguments.event.getValue("muraScope")>
 	</cfif>
 	
-	<cfset event.setValue("objectID",arguments.object)>
-	<cfset event.setValue("params",arguments.params)>
+	<cfset arguments.event.setValue("objectID",arguments.object)>
+	<cfset arguments.event.setValue("params",arguments.params)>
 	
 	<cfif isJSON(arguments.params)>
 		<cfset event.setValue("objectparams",deserializeJSON(arguments.params))>

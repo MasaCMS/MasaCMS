@@ -1260,7 +1260,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfcase value="contact"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_contact.cfm")></cfcase>
 		<cfcase value="calendar_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/calendarNav/index.cfm")></cfcase>
 		<cfcase value="plugin">
-			<cfset theObject=theObject & application.pluginManager.displayObject(object=arguments.objectid,variables.event=variables.event,params=arguments.params)>
+			<cfset theObject=theObject & application.pluginManager.displayObject(object=arguments.objectid,event=variables.event,params=arguments.params)>
 		</cfcase>
 		<cfcase value="mailing_list"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="dsp_mailing_list.cfm")></cfcase>
 		<cfcase value="mailing_list_master"><cfset theObject=theObject & dspObject_Render(siteid=arguments.siteid,object=arguments.object,objectid=arguments.objectid,fileName="dsp_mailing_list_master.cfm")></cfcase>
