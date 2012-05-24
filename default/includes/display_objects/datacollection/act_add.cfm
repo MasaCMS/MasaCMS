@@ -52,62 +52,62 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="request.ukey" default="">
 <cfparam name="acceptError" default="">
 
-<cfset passedProtect = true>
+<cfset variables.passedProtect = true>
 <cfscript>
-	myRequest = structNew();
-	StructAppend(myRequest, url, "no");
-	StructAppend(myRequest, form, "no");
+	variables.myRequest = structNew();
+	StructAppend(variables.myRequest, url, "no");
+	StructAppend(variables.myRequest, form, "no");
 </cfscript>
 
-<cfif structKeyExists(myRequest, "useProtect")>
-	<cfset cffp = CreateObject("component","cfformprotect.cffpVerify").init() />
-	<cfif len(rsForm.responseSendTo)>
-		<cfset cffp.updateConfig('emailServer', application.settingsManager.getSite($.event('siteID')).getMailServerIP())>
+<cfif structKeyExists(variables.myRequest, "useProtect")>
+	<cfset variables.cffp = CreateObject("component","cfformprotect.cffpVerify").init() />
+	<cfif len(variables.rsform.responseSendTo)>
+		<cfset variables.cffp.updateConfig('emailServer', application.settingsManager.getSite($.event('siteID')).getMailServerIP())>
 		<cfset cffp.updateConfig('emailUserName', application.settingsManager.getSite($.event('siteID')).getMailserverUsername(true))>
-		<cfset cffp.updateConfig('emailPassword', application.settingsManager.getSite($.event('siteID')).getMailserverPassword())>
-		<cfset cffp.updateConfig('emailFromAddress', application.settingsManager.getSite($.event('siteID')).getMailserverUsernameEmail())>
-		<cfset cffp.updateConfig('emailToAddress', rsForm.responseSendTo)>
-		<cfset cffp.updateConfig('emailSubject', 'Spam form submission')>
+		<cfset variables.cffp.updateConfig('emailPassword', application.settingsManager.getSite($.event('siteID')).getMailserverPassword())>
+		<cfset variables.cffp.updateConfig('emailFromAddress', application.settingsManager.getSite($.event('siteID')).getMailserverUsernameEmail())>
+		<cfset variables.cffp.updateConfig('emailToAddress', variables.rsform.responseSendTo)>
+		<cfset variables.cffp.updateConfig('emailSubject', 'Spam form submission')>
 	</cfif>
-	<cfset passedProtect = cffp.testSubmission(myRequest)>
+	<cfset variables.passedProtect = variables.cffp.testSubmission(variables.myRequest)>
 </cfif>
 
-<cfif (request.hkey eq '' or request.hKey eq hash(lcase(request.ukey))) and passedProtect>
-	<cfif rsform.responseChart>
+<cfif (request.hkey eq '' or request.hKey eq hash(lcase(request.ukey))) and variables.passedProtect>
+	<cfif variables.rsform.responseChart>
 		<cfif refind("Mac",cgi.HTTP_USER_AGENT) and refind("MSIE 5",cgi.HTTP_USER_AGENT)>
-			<cfset acceptdata=0>
-			<cfset acceptError="Browser">  
+			<cfset variables.acceptdata=0>
+			<cfset variables.acceptError="Browser">  
 		<cfelse>
 			<cfif not isdefined('cookie.poll')>
 				<cfset cookie.poll="#arguments.objectid#">
 			<cfelseif isdefined('cookie.poll') and listfind(cookie.poll,arguments.objectid)>
-				<cfset acceptdata=0> 
-				<cfset acceptError="Duplicate"> 
+				<cfset variables.acceptdata=0> 
+				<cfset variables.acceptError="Duplicate"> 
 			<cfelseif isdefined('cookie.poll') and not listfind(cookie.poll,arguments.objectid)>
-				<cfset templist=cookie.poll>
-				<cfif listlen(templist) eq 6>
-					<cfset templist=listdeleteat(templist,1)>
+				<cfset variables.templist=cookie.poll>
+				<cfif listlen(variables.templist) eq 6>
+					<cfset variables.templist=listdeleteat(variables.templist,1)>
 				</cfif>
-				<cfset templist=listappend(templist,arguments.objectid)>
+				<cfset variables.templist=listappend(variables.templist,arguments.objectid)>
 				<cfset cookie.poll="#templist#">
 			</cfif>
 		</cfif>
 	</cfif>
 <cfelse>
-	<cfset acceptdata=0>
-	<cfif passedProtect>
-		<cfset acceptError="Captcha"> 
+	<cfset variables.acceptdata=0>
+	<cfif variables.passedProtect>
+		<cfset variables.acceptError="Captcha"> 
 	<cfelse>
-		<cfset acceptError="Spam">	
+		<cfset variables.acceptError="Spam">	
 	</cfif>
 </cfif>
 
 <cfif structKeyExists(request,"fieldnameOrder")>
 	<cfset request.fieldnames=""/>
 	
-	<cfloop list="#request.fieldnameOrder#" index="i">
+	<cfloop list="#request.fieldnameOrder#" index="variables.i">
 		<cfif structKeyExists(form, i)>
-			<cfset request.fieldnames = listAppend(request.fieldnames, i)>
+			<cfset request.fieldnames = listAppend(request.fieldnames, variables.i)>
 		</cfif>
 	</cfloop>
 	
@@ -116,10 +116,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfelseif application.configBean.getCompiler() eq "Railo">
 	<cfif not isBinary(GetHttpRequestData().content)>
 		<cfset request.fieldnames=""/>
-		<cfloop list="#GetHttpRequestData().content#" delimiters="&" index="j">
-			<cfset fieldname = listFirst(urlDecode(j), "=")>
-			<cfif not listFindNoCase(request.fieldnames, fieldname)>
-				<cfset request.fieldnames = listAppend(request.fieldnames, listFirst(urlDecode(j), "="))>
+		<cfloop list="#GetHttpRequestData().content#" delimiters="&" index="variables.j">
+			<cfset variables.fieldname = listFirst(urlDecode(variables.j), "=")>
+			<cfif not listFindNoCase(request.fieldnames, variables.fieldname)>
+				<cfset request.fieldnames = listAppend(request.fieldnames, listFirst(urlDecode(variables.j), "="))>
 			</cfif>
 		</cfloop>
 	</cfif>
@@ -127,38 +127,38 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfelseif not structKeyExists(request,"fieldnames")>
 	<cfset request.fieldnames=""/>
 	
-	<cfloop collection="#form#" item="fn">
-		<cfset request.fieldnames=listAppend(request.fieldnames,fn) />
+	<cfloop collection="#form#" item="variables.fn">
+		<cfset request.fieldnames=listAppend(request.fieldnames,variables.fn) />
 	</cfloop>
 	
 </cfif>
 
-<cfif acceptdata>
-	<cfset application.pluginManager.announceEvent("onBeforeFormSubmitSave",event)>
-	<cfset info=application.dataCollectionManager.update(structCopy(request))/>
-	<cfset event.setValue("formResult",info)>
-	<cfset application.pluginManager.announceEvent("onAfterFormSubmitSave",event)>
+<cfif variables.acceptdata>
+	<cfset application.pluginManager.announceEvent("onBeforeFormSubmitSave",variables.event)>
+	<cfset variables.info=application.dataCollectionManager.update(structCopy(request))/>
+	<cfset variables.event.setValue("formResult",variables.info)>
+	<cfset application.pluginManager.announceEvent("onAfterFormSubmitSave",variables.event)>
 	
-	<cfset mailer=$.getBean('mailer')/>
+	<cfset variables.mailer=variables.$.getBean('mailer')/>
 	
 	<cfif request.copyEmail eq 'true' and mailer.isValidEmailFormat(request.email)>
 		<cfset request.sendto=listappend(request.sendto,request.email) />
 	</cfif>
 	
-	<cfif mailer.isValidEmailFormat(request.sendto)>
-		<cfset variables.sendto=listappend(rsform.responsesendto,request.sendto) />
+	<cfif variables.mailer.isValidEmailFormat(request.sendto)>
+		<cfset variables.sendto=listappend(variables.rsform.responsesendto,request.sendto) />
 	<cfelse>
-		<cfset variables.sendto=rsform.responsesendto />
+		<cfset variables.sendto=variables.rsform.responsesendto />
 	</cfif>
 	
-	<cfparam name="request.subject" default="#rsForm.title#">
+	<cfparam name="request.subject" default="#variables.rsform.title#">
 			
-	<cfif not StructIsEmpty(info) and variables.sendto neq ''> 
-		<cfset mailer=$.getBean('mailer')/>
-		<cfif mailer.isValidEmailFormat(request.email)>
-			<cfset mailer.send(info,'#variables.sendto#','#rsForm.title#','#request.subject#','#$.event('siteID')#','#request.email#')>
+	<cfif not StructIsEmpty(variables.info) and variables.sendto neq ''> 
+		<cfset variables.mailer=variables.$.getBean('mailer')/>
+		<cfif variables.mailer.isValidEmailFormat(request.email)>
+			<cfset variables.mailer.send(info,'#variables.sendto#','#variables.rsform.title#','#request.subject#','#variables.$.event('siteID')#','#request.email#')>
 		<cfelse>
-			<cfset mailer.send(info,'#variables.sendto#','#rsForm.title#','#request.subject#','#$.event('siteID')#','')>
+			<cfset variables.mailer.send(variables.info,'#variables.sendto#','#variables.rsform.title#','#request.subject#','#variables.$.event('siteID')#','')>
 		</cfif>
 	</cfif>
 			

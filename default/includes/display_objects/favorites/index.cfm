@@ -10,7 +10,7 @@
 	</cfdefaultcase>
 </cfswitch>
 
-<cfset currentPageFavoriteID = "">
+<cfset variables.currentPageFavoriteID = "">
 </cfsilent>
 <cfoutput>
 <div id="svFavoritesList">

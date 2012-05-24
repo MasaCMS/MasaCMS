@@ -64,7 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.iterator.setPage(1)>
 </cfif>
 
-<cfset variables.nextN=variables.$.getBean('utility').getNextN(rsSection,event.getContentBean().getNextN(),currentNextNIndex)>
+<cfset variables.nextN=variables.$.getBean('utility').getNextN(variables.rsSection,event.getContentBean().getNextN(),currentNextNIndex)>
 
 </cfsilent>
 

@@ -47,80 +47,80 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfsilent>
 <!---<cfset loadShadowBoxJS() />--->
-<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rsSection">select contentid,filename,menutitle,target,restricted,restrictgroups,type,sortBy,sortDirection from tcontent where siteid='#request.siteid#' and contentid='#arguments.objectid#' and approved=1 and active=1 and display=1</cfquery>
-<cfif rsSection.recordcount>
-<cfset hasComments=application.contentGateway.getHasComments(request.siteid,rsSection.contentID) />
-<cfset hasRatings=application.contentGateway.getHasRatings(request.siteid,rsSection.contentID) />
-<cfset checkMeta=hasRatings or hasComments />
+<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="variables.rsSection">select contentid,filename,menutitle,target,restricted,restrictgroups,type,sortBy,sortDirection from tcontent where siteid='#request.siteid#' and contentid='#arguments.objectid#' and approved=1 and active=1 and display=1</cfquery>
+<cfif variables.rsSection.recordcount>
+<cfset variables.hasComments=application.contentGateway.getHasComments(request.siteid,rsSection.contentID) />
+<cfset variables.hasRatings=application.contentGateway.getHasRatings(request.siteid,rsSection.contentID) />
+<cfset variables.checkMeta=variables.hasRatings or variables.hasComments />
 <cfset menutype=iif(rsSection.type eq 'Portal',de('default'),de('calendar_features'))/>
 <cfset rsPreFeatures=application.contentGateway.getkids('00000000000000000000000000000000000','#request.siteid#','#arguments.objectid#',menutype,now(),0,"",1,iif(rsSection.type eq 'Portal',de('#rsSection.sortBy#'),de('displaystart')),iif(rsSection.type eq 'Portal',de('#rsSection.sortDirection#'),de('desc')))>
 	<cfif getSite().getExtranet() eq 1 and request.r.restrict eq 1>
-		<cfset rsFeatures=queryPermFilter(rsPreFeatures)/>
+		<cfset variables.rsFeatures=queryPermFilter(variables.rsPreFeatures)/>
 	<cfelse>
-		<cfset rsFeatures=rsPreFeatures/>
+		<cfset variables.rsFeatures=rsPreFeatures/>
 	</cfif>
 </cfif>
-<cfset rbFactory=getSite().getRBFactory() />
-<cfparam name="hasSummary" default="true"/>
-<cfset cssID="#createCSSID(rsSection.menuTitle)#Features">
+<cfset variables.rbFactory=getSite().getRBFactory() />
+<cfparam name="variables.hasSummary" default="true"/>
+<cfset cssID="#createCSSID(variables.rsSection.menuTitle)#Features">
 <cfset doMeta=0 />
 </cfsilent>
 <cfoutput>
-<cfif rsSection.recordcount and rsFeatures.recordcount>
-<div id="#cssID#" class="svSyndLocal svIndex clearfix">
-<#getHeaderTag('subHead1')#>#rsSection.menutitle#</#getHeaderTag('subHead1')#>
-<cfloop query="rsFeatures">
+<cfif variables.rsSection.recordcount and variables.rsFeatures.recordcount>
+<div id="#variables.cssID#" class="svSyndLocal svIndex clearfix">
+<#variables.$.getHeaderTag('subHead1')#>#variables.rsSection.menutitle#</#variables.$.getHeaderTag('subHead1')#>
+<cfloop query="variables.rsFeatures">
 		<cfsilent>
-			<cfset theLink=createHREF(rsFeatures.type,rsFeatures.filename,rsFeatures.siteid,rsFeatures.contentid,rsFeatures.target,rsFeatures.targetparams,"",application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile()) />
-				<cfset class=""/>
-				<cfif rsFeatures.currentRow eq 1> 
-					<cfset class=listAppend(class,"first"," ")/> 
+			<cfset variables.theLink=createHREF(variables.rsFeatures.type,variables.rsFeatures.filename,variables.rsFeatures.siteid,variables.rsFeatures.contentid,variables.rsFeatures.target,variables.rsFeatures.targetparams,"",application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile()) />
+				<cfset variables.class=""/>
+				<cfif variables.rsFeatures.currentRow eq 1> 
+					<cfset variables.class=listAppend(variables.class,"first"," ")/> 
 				</cfif>
-				<cfif rsFeatures.currentRow eq rsFeatures.recordcount> 
-					<cfset class=listAppend(class,"last"," ")/> 
+				<cfif variables.rsFeatures.currentRow eq variables.rsFeatures.recordcount> 
+					<cfset variables.class=listAppend(variables.class,"last"," ")/> 
 				</cfif>
 				
-				<cfset hasImage=len(rsFeatures.fileID) and showImageInList(rsFeatures.fileExt) />
+				<cfset variables.hasImage=len(variables.rsFeatures.fileID) and showImageInList(variables.rsFeatures.fileExt) />
 
-				<cfif hasImage>
-					<cfset class=listAppend(class,"hasImage"," ")>
+				<cfif variables.hasImage>
+					<cfset variables.class=listAppend(variables.class,"hasImage"," ")>
 				</cfif>
-				<cfif checkMeta> 
-				<cfset doMeta=rsFeatures.type eq 'Page' or showItemMeta(rsFeatures.type) or (len(rsFeatures.fileID) and showItemMeta(rsFeatures.fileExt))>
+				<cfif variables.checkMeta> 
+				<cfset variables.doMeta=variables.rsFeatures.type eq 'Page' or showItemMeta(variables.rsFeatures.type) or (len(variables.rsFeatures.fileID) and showItemMeta(variables.rsFeatures.fileExt))>
 				</cfif>
 				</cfsilent>
-				<dl<cfif class neq ''> class="#class#"</cfif>>
-				<cfif menutype eq  "calendar_features" and isDate(rsFeatures.displaystart)>
-					<dt class="releaseDate"><cfif LSDateFormat(rsFeatures.displaystart,"short") lt LSDateFormat(rsFeatures.displaystop,"short")>#LSDateFormat(rsFeatures.displaystart,getShortDateFormat())# - #LSDateFormat(rsFeatures.displaystop,getShortDateFormat())#<cfelse>#LSDateFormat(rsFeatures.displaystart,getLongDateFormat())#</cfif></dt>
+				<dl<cfif class neq ''> class="#variables.class#"</cfif>>
+				<cfif variables.menutype eq  "calendar_features" and isDate(variables.rsFeatures.displaystart)>
+					<dt class="releaseDate"><cfif LSDateFormat(variables.rsFeatures.displaystart,"short") lt LSDateFormat(variables.rsFeatures.displaystop,"short")>#LSDateFormat(variables.rsFeatures.displaystart,getShortDateFormat())# - #LSDateFormat(variables.rsFeatures.displaystop,getShortDateFormat())#<cfelse>#LSDateFormat(variables.rsFeatures.displaystart,getLongDateFormat())#</cfif></dt>
 				<cfelseif LSisDate(rsFeatures.releasedate)>
-					<dt class="releaseDate">#LSDateFormat(rsFeatures.releasedate,getLongDateFormat())#</dt>
+					<dt class="releaseDate">#LSDateFormat(variables.rsFeatures.releasedate,getLongDateFormat())#</dt>
 				</cfif>
-					<dt><a href="#theLink#">#rsFeatures.MenuTitle#</a></dt>
+					<dt><a href="#variables.theLink#">#variables.rsFeatures.MenuTitle#</a></dt>
 				<cfif hasImage>
 					<dd class="image">
 						<!---<a href="#application.configBean.getContext()#/tasks/render/file/index.cfm?fileID=#rsFeatures.FileID#&ext=.#rsFeatures.fileExt#" title="#HTMLEditFormat(rsFeatures.title)#" rel="shadowbox[#cssID#]">---><img src="#createHREFForImage(rsFeatures.siteID,rsFeatures.fileID,rsFeatures.fileExt,'small')#" alt="#htmlEditFormat(rsFeatures.title)#"/><!---</a>--->
 					</dd>
 				</cfif>
-				<cfif hasSummary and len(rsFeatures.summary)>
-					<dd>#setDynamicContent(rsFeatures.summary)#</dd>
-					<dd class="readMore">#addlink(rsFeatures.type,rsFeatures.filename,rbFactory.getKey('list.readmore'),rsFeatures.target,rsFeatures.targetParams,rsFeatures.contentid,request.siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())#</dd>
+				<cfif variables.hasSummary and len(variables.rsFeatures.summary)>
+					<dd>#variables.$.setDynamicContent(variables.rsFeatures.summary)#</dd>
+					<dd class="readMore">#variables.$.addlink(variables.rsFeatures.type,variables.rsFeatures.filename,rbFactory.getKey('list.readmore'),variables.rsFeatures.target,variables.rsFeatures.targetParams,rsFeatures.contentid,request.siteid,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile())#</dd>
 				</cfif>
-				<cfif len(rsFeatures.credits)>
-					<dd class="credits">#rbFactory.getKey('list.by')# #rsFeatures.credits#</dd>
+				<cfif len(variables.rsFeatures.credits)>
+					<dd class="credits">#variables.rbFactory.getKey('list.by')# #variables.rsFeatures.credits#</dd>
 				</cfif>
 				<cfif doMeta and hasComments>
-					<dd class="comments"><cfif isNumeric(rsFeatures.comments)>#rsFeatures.comments#<cfelse>0</cfif> <cfif rsFeatures.comments neq 1>#rbFactory.getKey('list.comments')#<cfelse>#rbFactory.getKey('list.comment')#</cfif></dd>
+					<dd class="comments"><cfif isNumeric(variables.rsFeatures.comments)>#variables.rsFeatures.comments#<cfelse>0</cfif> <cfif rsFeatures.comments neq 1>#variables.rbFactory.getKey('list.comments')#<cfelse>#variables.rbFactory.getKey('list.comment')#</cfif></dd>
 				</cfif>
 				<cfif len(rsFeatures.tags)>
-					<dd class="tags"><cfmodule template="nav/dsp_tag_line.cfm" tags="#rsFeatures.tags#"></dd>
+					<dd class="tags"><cfmodule template="nav/dsp_tag_line.cfm" tags="#variables.rsFeatures.tags#"></dd>
 				</cfif>
-				<cfif doMeta and hasRatings>
-					<dd class="rating #application.raterManager.getStarText(rsFeatures.rating)#"><dd class="rating #application.raterManager.getStarText(rsFeatures.rating)#">#rbFactory.getKey('list.rating')#: <span><cfif isNumeric(rsFeatures.rating)>#rsFeatures.rating# star<cfif rsFeatures.rating gt 1>s</cfif><cfelse>Zero stars</cfif></span></dd>
+				<cfif variables.doMeta and variables.hasRatings>
+					<dd class="rating #application.raterManager.getStarText(variables.rsFeatures.rating)#"><dd class="rating #application.raterManager.getStarText(variables.rsFeatures.rating)#">#rbFactory.getKey('list.rating')#: <span><cfif isNumeric(variables.rsFeatures.rating)>#variables.rsFeatures.rating# star<cfif variables.rsFeatures.rating gt 1>s</cfif><cfelse>Zero stars</cfif></span></dd>
 				</cfif>
 				</dl>
 		</cfloop>	
 		<dl class="moreResults">
-		<dt>&raquo; <a href="#application.configBean.getContext()##getURLStem(request.siteid,rssection.filename)#">#rbFactory.getKey('list.viewall')#</a></dt></dl>
+		<dt>&raquo; <a href="#application.configBean.getContext()##getURLStem(request.siteid,rssection.filename)#">#variables.rbFactory.getKey('list.viewall')#</a></dt></dl>
 </div>
 <cfelse>
 	<!-- Empty Portal Features '#rsSection.menutitle#' -->

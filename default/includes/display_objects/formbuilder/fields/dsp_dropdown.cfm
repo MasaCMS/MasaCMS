@@ -45,25 +45,25 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-<cfset strField = "" />
-<cfparam name="dataset.defaultid" default="" />
-<cfsavecontent variable="strField">
+<cfset variables.strField = "" />
+<cfparam name="arguments.dataset.defaultid" default="" />
+<cfsavecontent variable="variables.strField">
 	<cfoutput>
-	#$.dspObject_Include(thefile='/formbuilder/fields/dsp_label.cfm',field=arguments.field,dataset=arguments.dataset)#</label>
-	<select name="#field.name#"
+	#variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_label.cfm',field=arguments.field,dataset=arguments.dataset)#</label>
+	<select name="#arguments.field.name#"
 	</cfoutput>
 </cfsavecontent>
 </cfsilent>
-<cfsavecontent variable="strField">
+<cfsavecontent variable="variables.strField">
 	<cfoutput>
-	#strField#>
-	<cfloop from="1" to="#ArrayLen(dataset.datarecordorder)#" index="iiy">
-		<cfset record = dataset.datarecords[dataset.datarecordorder[iiy]] />
-		<option<cfif len(record.value)> value="#record.value#"</cfif><cfif record.datarecordid eq dataset.defaultid> SELECTED</cfif>>#record.label#</option>
+	#variables.strField#>
+	<cfloop from="1" to="#ArrayLen(dataset.datarecordorder)#" index="variables.iiy">
+		<cfset variables.record = arguments.dataset.datarecords[arguments.dataset.datarecordorder[variables.iiy]] />
+		<option<cfif len(variables.record.value)> value="#variables.record.value#"</cfif><cfif variables.record.datarecordid eq arguments.dataset.defaultid> SELECTED</cfif>>#variables.record.label#</option>
 	</cfloop>
 	</select>
 	</cfoutput>
 </cfsavecontent>
 <cfoutput>
-#strField#
+#variables.strField#
 </cfoutput>

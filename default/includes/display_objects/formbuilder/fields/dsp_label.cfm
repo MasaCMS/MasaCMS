@@ -48,11 +48,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfoutput><label for="#arguments.field.name#">#$.rbKey(arguments.field.rblabel)#<cfif arguments.field.isrequired> <ins>Required</ins></cfif></cfoutput>
 <cfelse>
 	<cfoutput>
-	<cfif field.fieldtype.fieldtype eq "radio">
+	<cfif arguments.field.fieldtype.fieldtype eq "radio">
 		<p>#arguments.field.label#
-	<cfelseif field.fieldtype.fieldtype eq "checkbox">
+	<cfelseif arguments.field.fieldtype.fieldtype eq "checkbox">
 		<p>#arguments.field.label#
-	<cfelseif field.fieldtype.fieldtype eq "hidden">
+	<cfelseif arguments.field.fieldtype.fieldtype eq "hidden">
 	
 	<cfelse>
 		<label for="#arguments.field.name#">#arguments.field.label#<cfif arguments.field.isrequired> <ins>Required</ins></cfif>

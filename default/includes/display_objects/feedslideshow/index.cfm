@@ -45,17 +45,17 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
-<cfswitch expression="#$.getJsLib()#">
+<cfswitch expression="#variables.$.getJsLib()#">
 <cfcase value="jquery">
 	<cfset loadJSLib() />
-	<cfset $.addToHTMLHeadQueue("feedslideshow/htmlhead/slideshow.jquery.cfm")>
-	<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#$.event('nocache')#">
+	<cfset variables.$.addToHTMLHeadQueue("feedslideshow/htmlhead/slideshow.jquery.cfm")>
+	<cf_CacheOMatic key="#arguments.object##arguments.objectid#" nocache="#variables.$.event('nocache')#">
 	<cfsilent>
 	<cfparam name="hasSummary" default="true"/>
 	<cfif isValid("UUID",arguments.objectID)>	
-		<cfset variables.feedBean = $.getBean("feed").loadBy(feedID=arguments.objectID,siteID=arguments.siteID)>
+		<cfset variables.feedBean = variables.$.getBean("feed").loadBy(feedID=arguments.objectID,siteID=arguments.siteID)>
   	<cfelse>
-		<cfset variables.feedBean = $.getBean("feed").loadBy(name=arguments.objectID,siteID=arguments.siteID)>
+		<cfset variables.feedBean = variables.$.getBean("feed").loadBy(name=arguments.objectID,siteID=arguments.siteID)>
   	</cfif>
 	
 	<cfif not structIsEmpty(objectparams)>
@@ -69,33 +69,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cfsilent>
 
-	<cfif feedBean.getIsActive()>
-		<cfset cssID=$.createCSSid(feedBean.renderName())>
+	<cfif variables.feedBean.getIsActive()>
+		<cfset variables.cssID=variables.$.createCSSid(variables.feedBean.renderName())>
       	<cfsilent>	
-			<cfset rsPreFeed=application.feedManager.getFeed(feedBean,request.tag) />
-			<cfif $.siteConfig('Extranet') eq 1 and $.event('r').restrict eq 1>
-				<cfset rs=$.queryPermFilter(rsPreFeed)/>
+			<cfset variables.rsPreFeed=application.feedManager.getFeed(variables.feedBean,request.tag) />
+			<cfif variables.$.siteConfig('Extranet') eq 1 and variables.$.event('r').restrict eq 1>
+				<cfset variables.rs=variables.$.queryPermFilter(variables.rsPreFeed)/>
 			<cfelse>
-				<cfset rs=rsPreFeed />
+				<cfset variables.rs=variables.rsPreFeed />
 			</cfif>
 			
-			<cfset variables.iterator=$.getBean("contentIterator")>
-			<cfset variables.iterator.setQuery(rs,feedBean.getNextN())>
+			<cfset variables.iterator=variables.$.getBean("contentIterator")>
+			<cfset variables.iterator.setQuery(variables.rs,variables.feedBean.getNextN())>
 		
 			
-			<cfset nextN=$.getBean('utility').getNextN(rs,feedBean.getNextN(),request.StartRow)>
-			<cfset checkMeta=feedBean.getDisplayRatings() or feedBean.getDisplayComments()>
-			<cfset doMeta=0 />
+			<cfset variables.nextN=variables.$.getBean('utility').getNextN(variables.rs,variables.feedBean.getNextN(),request.StartRow)>
+			<cfset variables.checkMeta=feedBean.getDisplayRatings() or variables.feedBean.getDisplayComments()>
+			<cfset variables.doMeta=0 />
 		  </cfsilent>
-	  	<cfif  variables.iterator.hasNext()>
+	  	<cfif variables.iterator.hasNext()>
 	  	<cfoutput>
-	  	<div class="svSlideshow clearfix well" id="#cssID#">
+	  	<div class="svSlideshow clearfix well" id="#variables.cssID#">
 		 	<cfif variables.feedBean.getDisplayName()>
-		       <#$.getHeaderTag('subHead1')#>#HTMLEditFormat(variables.feedBean.renderName())#</#$.getHeaderTag('subHead1')#>
+		       <#variables.$.getHeaderTag('subHead1')#>#HTMLEditFormat(variables.feedBean.renderName())#</#variables.$.getHeaderTag('subHead1')#>
 			</cfif>
-	  		<div class="svSlides"<cfif listFindNoCase(variables.feedBean.getDisplayList(),"image")> style="#$.generateListImageSyles(size=variables.feedBean.getImageSize(),height=variables.feedBean.getImageHeight(),setWidth=false)#"</cfif>>
+	  		<div class="svSlides"<cfif listFindNoCase(variables.feedBean.getDisplayList(),"image")> style="#variables.$.generateListImageSyles(size=variables.feedBean.getImageSize(),height=variables.feedBean.getImageHeight(),setWidth=false)#"</cfif>>
 		
-			#$.dspObject_Include(
+			#variables.$.dspObject_Include(
 				thefile='dsp_content_list.cfm',
 				fields=variables.feedBean.getDisplayList(),
 				type="Feed", 

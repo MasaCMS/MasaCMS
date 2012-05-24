@@ -44,5 +44,5 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfset $.loadShadowBoxJS()>
-<cfif $.content('type') eq 'Page'><cfoutput><a rel="shadowbox;width=600;height=500" href="http://#application.settingsManager.getSite($.event('siteID')).getDomain()##application.configBean.getServerPort()##$.globalConfig('context')#/#getSite().getDisplayPoolID()#/includes/display_objects/sendtofriend/index.cfm?link=#URLEncodedFormat(getCurrentURL())#&siteid=#$.event('siteID')#">#rbFactory.getResourceBundle().messageFormat($.rbKey('favorites.emailthis'),$.rbKey('sitemanager.content.type.#$.content('type')#'))#</a></cfoutput></cfif>
+<cfset variables.$.loadShadowBoxJS()>
+<cfif variables.$.content('type') eq 'Page'><cfoutput><a rel="shadowbox;width=600;height=500" href="http://#application.settingsManager.getSite(variables.$.event('siteID')).getDomain()##application.configBean.getServerPort()##variables.$.globalConfig('context')#/#getSite().getDisplayPoolID()#/includes/display_objects/sendtofriend/index.cfm?link=#URLEncodedFormat(getCurrentURL())#&siteid=#variables.$.event('siteID')#">#rbFactory.getResourceBundle().messageFormat(variables.$.rbKey('favorites.emailthis'),variables.$.rbKey('sitemanager.content.type.#variables.$.content('type')#'))#</a></cfoutput></cfif>

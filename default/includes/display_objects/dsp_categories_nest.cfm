@@ -49,14 +49,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="attributes.parentID" default="">
 <cfparam name="attributes.categoryID" default="">
 <cfparam name="attributes.nestLevel" default="1">
-<cfset rslist=application.categoryManager.getCategories(attributes.siteID,attributes.ParentID,"",true,true) />
+<cfset variables.rslist=application.categoryManager.getCategories(attributes.siteID,attributes.ParentID,"",true,true) />
 </cfsilent>
-<cfif rslist.recordcount>
+<cfif variables.rslist.recordcount>
 <ul>
 <cfoutput query="rslist">
-<li><cfif rslist.isOpen eq 1>
-<input type="checkbox" name="categoryID" class="checkbox" <cfif listfind(request.userBean.getCategoryID(),rslist.categoryID) or listfind(attributes.categoryID,rslist.CategoryID)>checked</cfif> value="#rslist.categoryID#"> </cfif>#rslist.name#
-<cf_dsp_categories_nest siteID="#attributes.siteID#" parentID="#rslist.categoryID#" categoryID="#attributes.categoryID#" nestLevel="#evaluate(attributes.nestLevel +1)#" >
+<li><cfif variables.rslist.isOpen eq 1>
+<input type="checkbox" name="categoryID" class="checkbox" <cfif listfind(request.userBean.getCategoryID(),variables.rslist.categoryID) or listfind(attributes.categoryID,variables.rslist.CategoryID)>checked</cfif> value="#variables.rslist.categoryID#"> </cfif>#variables.rslist.name#
+<cf_dsp_categories_nest siteID="#attributes.siteID#" parentID="#variables.rslist.categoryID#" categoryID="#attributes.categoryID#" nestLevel="#evaluate(attributes.nestLevel +1)#" >
 </li>
 </cfoutput>
 </ul>
