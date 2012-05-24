@@ -41,11 +41,11 @@ the GNU General Public License version 2 without this exception. You may, if you
 to your own modified versions of Mura CMS.
 --->
 
-<cfif not listFind("Portal,Gallery",$.content('type'))>
-	<cfswitch expression="#$.getJsLib()#">
+<cfif not listFind("Portal,Gallery",variables.$.content('type'))>
+	<cfswitch expression="#variables.$.getJsLib()#">
 		<cfcase value="jquery">
-			<cfset $.getContentRenderer().loadJSLib() />
-		 	<cfset $.addToHTMLHeadQueue("comments/htmlhead/comments-jquery.cfm")>
+			<cfset variables.$.getContentRenderer().loadJSLib() />
+		 	<cfset variables.$.addToHTMLHeadQueue("comments/htmlhead/comments-jquery.cfm")>
 		</cfcase>
 		<cfdefaultcase>
 			<!--- no such luck, signed Grant --->
@@ -65,8 +65,8 @@ to your own modified versions of Mura CMS.
 		<cfif not structKeyExists(request,"name")>
 			<cfif structKeyExists(cookie,"name")>
 				<cfset request.name=cookie.name>
-			<cfelseif $.currentUser().isLoggedIn()>
-				<cfset request.name=$.currentUser().getUserName()>
+			<cfelseif variables.$.currentUser().isLoggedIn()>
+				<cfset request.name=variables.$.currentUser().getUserName()>
 			</cfif>
 		</cfif>
 
@@ -77,8 +77,8 @@ to your own modified versions of Mura CMS.
 		<cfif not structKeyExists(request,"email")>
 			<cfif structKeyExists(cookie,"email")>
 				<cfset request.email=cookie.email>
-			<cfelseif $.currentUser().isLoggedIn()>
-				<cfset request.email=$.currentUser().getEmail()>
+			<cfelseif variables.$.currentUser().isLoggedIn()>
+				<cfset request.email=variables.$.currentUser().getEmail()>
 			</cfif>
 		</cfif>
 
@@ -91,8 +91,8 @@ to your own modified versions of Mura CMS.
 		</cfif>
 
 		
-		<cfset theContentID=$.content('contentID')>
-		<cfset request.isEditor=(listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite($.event('siteID')).getPrivateUserPoolID()#')
+		<cfset variables.theContentID=variables.$.content('contentID')>
+		<cfset request.isEditor=(listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(variables.$.event('siteID')).getPrivateUserPoolID()#')
 				and application.permUtility.getnodePerm(request.crumbdata) neq 'none')
 				or listFind(session.mura.memberships,'S2')>
 		<cfparam name="request.commentid" default="">
@@ -109,43 +109,43 @@ to your own modified versions of Mura CMS.
 		<cfset errors=structNew()/>
 
 		<cfif structKeyExists(request,"commentUnsubscribe")>
-			<cfset application.contentManager.commentUnsubscribe($.content('contentID'),request.commentUnsubscribe,$.event('siteID'))>
-			<cfset errors["unsubscribe"]=$.rbKey('comments.youhaveunsubscribed')>
+			<cfset application.contentManager.commentUnsubscribe(variables.$.content('contentID'),request.commentUnsubscribe,variables.$.event('siteID'))>
+			<cfset errors["unsubscribe"]=variables.$.rbKey('comments.youhaveunsubscribed')>
 		</cfif>
 
 		<cfif request.commentid neq '' and request.comments neq '' and request.name neq ''>
 
-			<cfset passedProtect = true>
+			<cfset variables.passedProtect = true>
 			<cfscript>
-				myRequest = structNew();
-				StructAppend(myRequest, url, "no");
-				StructAppend(myRequest, form, "no");
+				variables.myRequest = structNew();
+				StructAppend(variables.myRequest, url, "no");
+				StructAppend(variables.myRequest, form, "no");
 			</cfscript>
 
-			<cfif structKeyExists(myRequest, "useProtect")>
-				<cfset cffp = CreateObject("component","cfformprotect.cffpVerify").init() />
+			<cfif structKeyExists(variables.myRequest, "useProtect")>
+				<cfset variables.cffp = CreateObject("component","cfformprotect.cffpVerify").init() />
 
-				<cfif application.settingsManager.getSite($.event('siteID')).getContactEmail() neq "">
-					<cfset cffp.updateConfig('emailServer', application.settingsManager.getSite($.event('siteID')).getMailServerIP())>
-					<cfset cffp.updateConfig('emailUserName', application.settingsManager.getSite($.event('siteID')).getMailserverUsername(true))>
-					<cfset cffp.updateConfig('emailPassword', application.settingsManager.getSite($.event('siteID')).getMailserverPassword())>
-					<cfset cffp.updateConfig('emailFromAddress', application.settingsManager.getSite($.event('siteID')).getMailserverUsernameEmail())>
-					<cfset cffp.updateConfig('emailToAddress', application.settingsManager.getSite($.event('siteID')).getContactEmail())>
-					<cfset cffp.updateConfig('emailSubject', 'Spam form submission')>
+				<cfif application.settingsManager.getSite(variables.$.event('siteID')).getContactEmail() neq "">
+					<cfset variables.cffp.updateConfig('emailServer', application.settingsManager.getSite(variables.$.event('siteID')).getMailServerIP())>
+					<cfset variables.cffp.updateConfig('emailUserName', application.settingsManager.getSite(variables.$.event('siteID')).getMailserverUsername(true))>
+					<cfset variables.cffp.updateConfig('emailPassword', application.settingsManager.getSite(variables.$.event('siteID')).getMailserverPassword())>
+					<cfset variables.cffp.updateConfig('emailFromAddress', application.settingsManager.getSite(variables.$.event('siteID')).getMailserverUsernameEmail())>
+					<cfset variables.cffp.updateConfig('emailToAddress', application.settingsManager.getSite(variables.$.event('siteID')).getContactEmail())>
+					<cfset variables.cffp.updateConfig('emailSubject', 'Spam form submission')>
 				</cfif>
 
-				<cfset passedProtect = cffp.testSubmission(myRequest)>
+				<cfset variables.passedProtect = variables.cffp.testSubmission(variables.myRequest)>
 			</cfif>
 
-			<cfif (request.hkey eq '' or request.hKey eq hash(lcase(request.ukey))) and passedProtect>
+			<cfif (request.hkey eq '' or request.hKey eq hash(lcase(request.ukey))) and variables.passedProtect>
 
-				<cfset submittedData=$.getBean('utility').filterArgs(request,application.badwords)/>
-				<cfset submittedData.contentID=theContentID />
-				<cfif $.currentUser().isLoggedIn()>
-					<cfset request.userID=$.currentUser().getUserID()>
+				<cfset variables.submittedData=variables.$.getBean('utility').filterArgs(request,application.badwords)/>
+				<cfset variables.submittedData.contentID=variables.theContentID />
+				<cfif variables.$.currentUser().isLoggedIn()>
+					<cfset request.userID=variables.$.currentUser().getUserID()>
 				</cfif>
 		
-				<cfset submittedData.isApproved=application.settingsManager.getSite($.event('siteID')).getCommentApprovalDefault() />
+				<cfset variables.submittedData.isApproved=application.settingsManager.getSite(variables.$.event('siteID')).getCommentApprovalDefault() />
 				
 				
 				
@@ -153,12 +153,12 @@ to your own modified versions of Mura CMS.
 					<cfset commentBean=application.contentManager.saveComment(submittedData,event.getContentRenderer()) />
 				<cfelseif request.commenteditmode eq "edit" and request.isEditor>
 					
-					<cfset commentBean=application.contentManager.getCommentBean().setCommentID(request.commentID).load()>
-					<cfset commentBean.setName(submittedData.name)>
-					<cfset commentBean.setComments(submittedData.comments)>
-					<cfset commentBean.setURL(submittedData.url)>
-					<cfset commentBean.setEmail(submittedData.email)>
-					<cfset commentBean.save()>
+					<cfset variables.commentBean=application.contentManager.getCommentBean().setCommentID(request.commentID).load()>
+					<cfset variables.commentBean.setName(submittedData.name)>
+					<cfset variables.commentBean.setComments(submittedData.comments)>
+					<cfset variables.commentBean.setURL(submittedData.url)>
+					<cfset variables.commentBean.setEmail(submittedData.email)>
+					<cfset variables.commentBean.save()>
 				</cfif>
 				
 				<cfset request.comments=""/>
@@ -169,7 +169,7 @@ to your own modified versions of Mura CMS.
 					<cfset request.subscribe=0/>
 					<cfset request.remember=0/>
 				</cfif>
-				<cfif not application.settingsManager.getSite($.event('siteID')).getCommentApprovalDefault() eq 1>
+				<cfif not application.settingsManager.getSite(variables.$.event('siteID')).getCommentApprovalDefault() eq 1>
 					<cfset commentBean.sendNotification() />
 				</cfif>
 				<cfif isBoolean(request.remember) and request.remember>
@@ -194,10 +194,10 @@ to your own modified versions of Mura CMS.
 					</script>
 				</cfsavecontent>
 
-				<cfif passedProtect>
-					<cfset errors["SecurityCode"]=$.rbKey('captcha.error')>
+				<cfif variables.passedProtect>
+					<cfset variables.errors["SecurityCode"]=variables.$.rbKey('captcha.error')>
 				<cfelse>
-					<cfset errors["Spam"] = $.rbKey("captcha.spam")>
+					<cfset variables.errors["Spam"] = variables.$.rbKey("captcha.spam")>
 				</cfif>
 
 			</cfif>
@@ -208,11 +208,11 @@ to your own modified versions of Mura CMS.
 		</cfif>
 
 		<cfif request.approvedcommentid neq "" >
-			<cfset application.contentManager.approveComment(request.approvedcommentid,event.getContentRenderer()) />
+			<cfset application.contentManager.approveComment(request.approvedcommentid,variables.$.getContentRenderer()) />
 		</cfif>
-		<cfset level=0>
-		<cfset rsComments=application.contentManager.readComments(thecontentID,$.event('siteID'),request.isEditor,"asc","",false ) />
-		<cfset rsSubComments=StructNew() />
+		<cfset variables.level=0>
+		<cfset rsComments=application.contentManager.readComments(variables.thecontentID,variables.$.event('siteID'),request.isEditor,"asc","",false ) />
+		<cfset variables.rsSubComments=StructNew() />
 	</cfsilent>
 
 	<!--- <cfset TotalRecords=rsComments.RecordCount>
@@ -223,69 +223,69 @@ to your own modified versions of Mura CMS.
 	<div id="svComments">
 		<a name="comments"></a>
 		<cfoutput>
-		<#$.getHeaderTag('subHead1')#>#$.rbKey('comments.comments')#</#$.getHeaderTag('subHead1')#>
-		#$.dspObject_Include(thefile='comments/dsp_comments.cfm')#</cfoutput>
-		<cfif not structIsEmpty(errors) >
+		<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('comments.comments')#</#variables.$.getHeaderTag('subHead1')#>
+		#variables.$.dspObject_Include(thefile='comments/dsp_comments.cfm')#</cfoutput>
+		<cfif not structIsEmpty(variables.errors) >
 			<cfoutput>
 				#errorJSTxt#
 				<a name="errors"></a>
 				<div id="editProfileMsg" class="required">
-					#$.getBean('utility').displayErrors(errors)#
+					#variables.$.getBean('utility').displayErrors(variables.errors)#
 				</div>
 		</cfoutput>
 
-		<cfelseif request.commentid neq '' and application.settingsManager.getSite($.event('siteID')).getCommentApprovalDefault() neq 1>
+		<cfelseif request.commentid neq '' and application.settingsManager.getSite(variables.$.event('siteID')).getCommentApprovalDefault() neq 1>
 			<div id="editProfileMsg" class="required">
-				<cfoutput>#$.rbKey('comments.postedsoon')#</cfoutput>
+				<cfoutput>#variables.$.rbKey('comments.postedsoon')#</cfoutput>
 			</div>
 		</cfif>
 		<dd id="postcomment-form">
-		<cfoutput><span id="postcomment-comment" style="display: none"><a href="##postcomment">#$.rbKey('comments.newcomment')#</a></span></cfoutput>
+		<cfoutput><span id="postcomment-comment" style="display: none"><a href="##postcomment">#variables.$.rbKey('comments.newcomment')#</a></span></cfoutput>
 		<form id="postcomment" class="well" method="post" name="addComment" action="?nocache=1#postcomment" onsubmit="return validate(this);" novalidate="novalidate">
 			<a name="postcomment"></a>
 			<fieldset>
-				<cfoutput><legend id="postacomment">#$.rbKey('comments.postacomment')#</legend>
-				<legend id="editcomment" style="display:none">#$.rbKey('comments.editcomment')#</legend>
-				<legend id="replytocomment" style="display:none">#$.rbKey('comments.replytocomment')#</legend>
+				<cfoutput><legend id="postacomment">#variables.$.rbKey('comments.postacomment')#</legend>
+				<legend id="editcomment" style="display:none">#variables.$.rbKey('comments.editcomment')#</legend>
+				<legend id="replytocomment" style="display:none">#variables.$.rbKey('comments.replytocomment')#</legend>
 				<ol>
 					<li class="req control-group">
-						<label class="control-label" for="txtName">#$.rbKey('comments.name')#<ins> (#$.rbKey('comments.required')#)</ins></label>
-						<input id="txtName" name="name" type="text" class="text span5" maxlength="50" required="true" message="#htmlEditFormat($.rbKey('comments.namerequired'))#" value="#HTMLEditFormat(request.name)#" />
+						<label class="control-label" for="txtName">#variables.$.rbKey('comments.name')#<ins> (#variables.$.rbKey('comments.required')#)</ins></label>
+						<input id="txtName" name="name" type="text" class="text span5" maxlength="50" required="true" message="#htmlEditFormat(variables.$.rbKey('comments.namerequired'))#" value="#HTMLEditFormat(request.name)#" />
 					</li>
 					<li class="req control-group">
-						<label class="control-label" for="txtEmail">#$.rbKey('comments.email')#<ins> (#$.rbKey('comments.required')#)</ins></label>
-						<input id="txtEmail" name="email" type="text" class="text span5" maxlength="50" required="true" message="#htmlEditFormat($.rbKey('comments.emailvalidate'))#" value="#HTMLEditFormat(request.email)#" />
+						<label class="control-label" for="txtEmail">#variables.$.rbKey('comments.email')#<ins> (#variables.$.rbKey('comments.required')#)</ins></label>
+						<input id="txtEmail" name="email" type="text" class="text span5" maxlength="50" required="true" message="#htmlEditFormat(variables.$.rbKey('comments.emailvalidate'))#" value="#HTMLEditFormat(request.email)#" />
 					</li>
 					<li class="control-group">
-						<label for="txtUrl" class="control-label">#$.rbKey('comments.url')#</label>
+						<label for="txtUrl" class="control-label">#variables.$.rbKey('comments.url')#</label>
 						<input id="txtUrl" name="url" type="text" class="text span5" maxlength="50" value="#HTMLEditFormat(request.url)#" />
 					</li>
 					<li class="req control-group">
-						<label for="txtComment" class="control-label">#$.rbKey('comments.comment')#<ins> (#$.rbKey('comments.required')#)</ins></label>
-						<textarea id="txtComment" class="span5" name="comments" message="#htmlEditFormat($.rbKey('comments.commentrequired'))#" required="true">#HTMLEditFormat(request.comments)#</textarea>
+						<label for="txtComment" class="control-label">#variables.$.rbKey('comments.comment')#<ins> (#variables.$.rbKey('comments.required')#)</ins></label>
+						<textarea id="txtComment" class="span5" name="comments" message="#htmlEditFormat(variables.$.rbKey('comments.commentrequired'))#" required="true">#HTMLEditFormat(request.comments)#</textarea>
 					</li>
 					<li class="control-group">
 						<label for="txtRemember" class="checkbox">
-						<input type="checkbox" class="checkbox" id="txtRemember" name="remember" value="1"<cfif isBoolean(cookie.remember) and cookie.remember> checked="checked"</cfif> />#$.rbKey('comments.rememberinfo')#</label>
+						<input type="checkbox" class="checkbox" id="txtRemember" name="remember" value="1"<cfif isBoolean(cookie.remember) and cookie.remember> checked="checked"</cfif> />#variables.$.rbKey('comments.rememberinfo')#</label>
 					</li>
 					<li class="control-group">
 						<label for="txtSubscribe" class="checkbox">
-						<input type="checkbox" class="checkbox" id="txtSubscribe" name="subscribe" value="1"<cfif isBoolean(cookie.subscribe) and cookie.subscribe> checked="checked"</cfif> />#$.rbKey('comments.subscribe')#</label>
+						<input type="checkbox" class="checkbox" id="txtSubscribe" name="subscribe" value="1"<cfif isBoolean(cookie.subscribe) and cookie.subscribe> checked="checked"</cfif> />#variables.$.rbKey('comments.subscribe')#</label>
 					</li></cfoutput>
 					<li>
-						<cfoutput>#$.dspObject_Include(thefile='dsp_form_protect.cfm')#</cfoutput>
+						<cfoutput>#variables.$.dspObject_Include(thefile='dsp_form_protect.cfm')#</cfoutput>
 					</li>
 				</ol>
 			</fieldset>
 			<cfoutput>
-			<p class="required">#$.rbKey('comments.requiredfield')#</p>
+			<p class="required">#variables.$.rbKey('comments.requiredfield')#</p>
 			<div class="buttons">					
-					<input type="hidden" name="returnURL" value="#HTMLEditFormat(getCurrentURL())#" />
+					<input type="hidden" name="returnURL" value="#HTMLEditFormat(variables.$.getCurrentURL())#" />
 					<input type="hidden" name="commentid" value="#createuuid()#" />
 					<input type="hidden" name="parentid" value="" />
 					<input type="hidden" name="commenteditmode" value="add" />
-					<input type="hidden" name="linkServID" value="#$.content('contentID')#" />
-					<input type="submit" class="submit btn" name="submit" value="#htmlEditFormat($.rbKey('comments.submit'))#" />
+					<input type="hidden" name="linkServID" value="#variables.$.content('contentID')#" />
+					<input type="submit" class="submit btn" name="submit" value="#htmlEditFormat(variables.$.rbKey('comments.submit'))#" />
 			</div>
 				</cfoutput>
 		</form>

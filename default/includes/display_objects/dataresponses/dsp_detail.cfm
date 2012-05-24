@@ -46,22 +46,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfsilent>
-<cfset rsData=application.dataCollectionManager.read(request.responseid)/>
-<cfif $.content('ResponseDisplayFields') neq ''>
-<cfset fieldnames=replace(listLast($.content('ResponseDisplayFields'),"~"),"^",",","ALL")/>
+<cfset variables.rsData=application.dataCollectionManager.read(request.responseid)/>
+<cfif variables.$.content('ResponseDisplayFields') neq ''>
+<cfset variables.fieldnames=replace(listLast(variables.$.content('ResponseDisplayFields'),"~"),"^",",","ALL")/>
 <cfelse>
-<cfset fieldnames=application.dataCollectionManager.getCurrentFieldList($.content('contentID'))/>
+<cfset variables.fieldnames=application.dataCollectionManager.getCurrentFieldList(variables.$.content('contentID'))/>
 </cfif>
-<cfwddx action="wddx2cfml" input="#rsdata.data#" output="info">
+<cfwddx action="wddx2cfml" input="#variables.rsData.data#" output="variables.info">
 </cfsilent>
 <cfoutput>
 <div id="dsp_detail" class="dataResponses">
-<#$.getHeaderTag('subHead1')#>#$.content('title')#</#$.getHeaderTag('subHead1')#>
+<#variables.$.getHeaderTag('subHead1')#>#variables.$.content('title')#</#variables.$.getHeaderTag('subHead1')#>
 <a class="actionItem" href="##" onclick="history.go(-1)">Return to List</a>
 <dl>
-<cfloop list="#fieldnames#" index="f">
-	<cftry><cfset fValue=info['#f#']><cfcatch><cfset fValue=""></cfcatch></cftry>
-	<dt>#f#</dt>
+<cfloop list="#variables.fieldnames#" index="variables.f">
+	<cftry><cfset variables.fValue=variables.info['#variables.f#']><cfcatch><cfset variables.fValue=""></cfcatch></cftry>
+	<dt>#variables.f#</dt>
 	<dd>#HTMLEditFormat(fvalue)#</dd>
 </cfloop>
 </dl>

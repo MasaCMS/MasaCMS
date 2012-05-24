@@ -44,14 +44,14 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfset rbFactory=getSite().getRBFactory()>
+<cfset variables.rbFactory=variables.$.siteConfig('RBFactory')>
 <cfoutput>
-<script src="#event.getSite().getAssetPath()#/includes/display_objects/dragablefeeds/js/dragablefeeds.js" type="text/javascript"></script>
+<script src="#variables.$.siteConfig('AssetPath')#/includes/display_objects/dragablefeeds/js/dragablefeeds.js" type="text/javascript"></script>
 <script>
-var feeditems='#JSStringFormat($.rbKey("dragablefeeds.items"))#';
-var feedsource='#JSStringFormat($.rbKey("dragablefeeds.source"))#';
-var feedsave='#JSStringFormat($.rbKey("dragablefeeds.save"))#';
+var feeditems='#JSStringFormat(variables.$.rbKey("dragablefeeds.items"))#';
+var feedsource='#JSStringFormat(variables.$.rbKey("dragablefeeds.source"))#';
+var feedsave='#JSStringFormat(variables.$.rbKey("dragablefeeds.save"))#';
 </script>
-<link rel="stylesheet" href="#event.getSite().getAssetPath()#/includes/display_objects/dragablefeeds/css/dragablefeeds.css" type="text/css" media="all" />
+<link rel="stylesheet" href="#variables.$.siteConfig('AssetPath')#/includes/display_objects/dragablefeeds/css/dragablefeeds.css" type="text/css" media="all" />
 <!--[if lt IE 7]><link rel="stylesheet" href="#event.getSite().getAssetPath()#/includes/display_objects/dragablefeeds/css/dragablefeeds-ie.css" type="text/css" media="all" /><![endif]-->
 </cfoutput>
