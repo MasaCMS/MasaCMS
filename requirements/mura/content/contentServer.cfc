@@ -451,8 +451,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var servlet = "" />
 	<cfset var localHandler=""/>
 	<cfset var previewData=""/>
-	
-	<cfset var trace=""/>
+
 	<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#/#arguments.event.getValue('siteid')#/includes/servlet.cfc"))>
 		<cfset servlet=createObject("component","#application.configBean.getWebRootMap()#.#arguments.event.getValue('siteid')#.includes.servlet").init(arguments.event)>
 	<cfelse>

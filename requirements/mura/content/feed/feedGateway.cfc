@@ -119,7 +119,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var histtables="tcontenttags,tcontentcategoryassign,tcontentobjects,tcontentrelated,tcontentassignments">
 	<cfset var rsAttribute="">
 	<cfset var isListParam=false>
-	
+	<cfset var tableModifier="">
+
+	 <cfif dbtype eq "MSSQL">
+	 	<cfset tableModifier="with (nolock)">
+	 </cfif>
+
 	<cfif blockFactor gt 100>
 		<cfset blockFactor=100>
 	</cfif>
@@ -173,16 +178,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfloop list="#jointables#" index="jointable">
 		<cfif listFindNoCase(histtables,jointable)>
-		inner join #jointable# on (tcontent.contenthistid=#jointable#.contenthistid)
+		inner join #jointable# #tableModifier# on (tcontent.contenthistid=#jointable#.contenthistid)
 		<cfelse>
-		inner join #jointable# on (tcontent.contentid=#jointable#.contentid)
+		inner join #jointable# #tableModifier# on (tcontent.contentid=#jointable#.contentid)
 		</cfif>
 	</cfloop>
 	
-	left Join tfiles on (tcontent.fileid=tfiles.fileid)
-	left Join tcontentstats on (tcontent.contentid=tcontentstats.contentid
+	left Join tfiles #tableModifier# on (tcontent.fileid=tfiles.fileid)
+	left Join tcontentstats #tableModifier# on (tcontent.contentid=tcontentstats.contentid
 					    		and tcontent.siteid=tcontentstats.siteid)
-	Left Join tcontent tparent on (tcontent.parentid=tparent.contentid
+	Left Join tcontent tparent #tableModifier# on (tcontent.parentid=tparent.contentid
 					    			and tcontent.siteid=tparent.siteid
 					    			and tparent.active=1) 
 	
@@ -191,7 +196,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			#variables.classExtensionManager.getCastString(arguments.feedBean.getSortBy(),arguments.feedBean.getSiteID())# extendedSort
 			 ,tclassextenddata.baseID 
-			from tclassextenddata inner join tclassextendattributes
+			from tclassextenddata #tableModifier# inner join tclassextendattributes #tableModifier#
 			on (tclassextenddata.attributeID=tclassextendattributes.attributeID)
 			where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getSiteID()#">
 			and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getSortBy()#">
@@ -205,22 +210,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				Left Join (select
 						   tcontent.contentID, 
 						   Count(TKids.contentID) as kids					   
-						   from tcontent 
+						   from tcontent #tableModifier#
 						   
 						   <cfloop list="#jointables#" index="jointable">
 								<cfif listFindNoCase(histtables,jointable)>
-								inner join #jointable# on (tcontent.contenthistid=#jointable#.contenthistid)
+								inner join #jointable# #tableModifier# on (tcontent.contenthistid=#jointable#.contenthistid)
 								<cfelse>
-								inner join #jointable# on (tcontent.contentid=#jointable#.contentid)
+								inner join #jointable# #tableModifier# on (tcontent.contentid=#jointable#.contentid)
 								</cfif>
 							</cfloop>
 						
-						   inner join tcontent TKids
+						   inner join tcontent TKids #tableModifier#
 						   on (tcontent.contentID=TKids.parentID
 						   		and tcontent.siteID=TKids.siteID)
 							
 						   <cfif doTags>
-							Inner Join tcontenttags on (tcontent.contentHistID=tcontenttags.contentHistID)
+							Inner Join tcontenttags #tableModifier# on (tcontent.contentHistID=tcontenttags.contentHistID)
 							</cfif>
 						   where tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getsiteid()#"/>
 						   		#renderActiveClause("tcontent",arguments.feedBean.getSiteID(),arguments.feedBean.getLiveOnly())#
@@ -268,8 +273,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 										#param.getField()# #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#"><cfif isListParam>)</cfif>  	
 									<cfelseif len(param.getField())>
 										tcontent.contentHistID IN (
-											select tclassextenddata.baseID from tclassextenddata
-											inner join tcontent on (tcontent.contentHistID=tclassextenddata.baseID and tcontent.active=1)
+											select tclassextenddata.baseID from tclassextenddata #tableModifier#
+											inner join tcontent #tableModifier# on (tcontent.contentHistID=tclassextenddata.baseID and tcontent.active=1)
 											<cfif isNumeric(param.getField())>
 											where tclassextenddata.attributeID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#param.getField()#">
 											<cfelse>
@@ -287,8 +292,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						
 						<cfif categoryLen>
 							AND tcontent.contentHistID in (
-							select distinct tcontentcategoryassign.contentHistID from tcontentcategoryassign
-							inner join tcontentcategories 
+							select distinct tcontentcategoryassign.contentHistID from tcontentcategoryassign #tableModifier#
+							inner join tcontentcategories #tableModifier#
 							ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID) 
 							where (<cfloop from="1" to="#categoryLen#" index="c">
 									tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listgetat(arguments.feedBean.getCategoryID(),c)#%"/> 
@@ -310,8 +315,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								)				
 							) 
 							<cfif categoryLen> OR tcontent.contentHistID in (
-							select distinct tcontentcategoryassign.contentHistID from tcontentcategoryassign
-							inner join tcontentcategories 
+							select distinct tcontentcategoryassign.contentHistID from tcontentcategoryassign #tableModifier#
+							inner join tcontentcategories #tableModifier#
 							ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID) 
 							where (<cfloop from="1" to="#categoryLen#" index="c">
 									tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listgetat(arguments.feedBean.getCategoryID(),c)#%"/> 
@@ -455,8 +460,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					#param.getField()# #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#"><cfif isListParam>)</cfif>  	
 				<cfelseif len(param.getField())>
 					tcontent.contentHistID IN (
-						select tclassextenddata.baseID from tclassextenddata
-						inner join tcontent on (tcontent.contentHistID=tclassextenddata.baseID and tcontent.active=1)
+						select tclassextenddata.baseID from tclassextenddata #tableModifier#
+						inner join tcontent #tableModifier# on (tcontent.contentHistID=tclassextenddata.baseID and tcontent.active=1)
 						<cfif isNumeric(param.getField())>
 						where tclassextenddata.attributeID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#param.getField()#">
 						<cfelse>
@@ -477,8 +482,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif categoryLen>
 		AND tcontent.contenthistID in (
-			select distinct tcontentcategoryassign.contentHistID from tcontentcategoryassign
-			inner join tcontentcategories 
+			select distinct tcontentcategoryassign.contentHistID from tcontentcategoryassign #tableModifier#
+			inner join tcontentcategories #tableModifier#
 			ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID) 
 			where (<cfloop from="1" to="#categoryLen#" index="c">
 					tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listgetat(arguments.feedBean.getCategoryID(),c)#%"/> 
@@ -500,8 +505,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			)				
 		) 
 		<cfif categoryLen> OR tcontent.contenthistID in (
-		select distinct tcontentcategoryassign.contentHistID from tcontentcategoryassign
-		inner join tcontentcategories 
+		select distinct tcontentcategoryassign.contentHistID from tcontentcategoryassign #tableModifier#
+		inner join tcontentcategories #tableModifier#
 		ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID) 
 		where (<cfloop from="1" to="#categoryLen#" index="c">
 				tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listgetat(arguments.feedBean.getCategoryID(),c)#%"/> 

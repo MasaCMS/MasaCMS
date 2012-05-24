@@ -308,7 +308,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset var sortOptions="menutitle,title,lastupdate,releasedate,orderno,displayStart,created,rating,comment,credits,type,subtype">
 			<cfset var isExtendedSort=(not listFindNoCase(sortOptions,arguments.sortBy))>
 			<cfset var nowAdjusted="">
-			
+			<cfset var tableModifier="">
+
+			<cfif dbtype eq "MSSQL">
+				<cfset tableModifier="with (nolock)">
+			</cfif>
+
 			<cfif request.muraChangesetPreview>
 				<cfset nowAdjusted=getCurrentUser().getValue("ChangesetPreviewData").publishDate>
 			</cfif>
@@ -334,15 +339,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				,tcontentstats.comments, '' parentType, <cfif doKids> qKids.kids<cfelse>null as kids</cfif>,tcontent.path, tcontent.created, tcontent.nextn,
 				tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires
 				
-				FROM tcontent Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
-				left Join tcontentstats on (tcontent.contentid=tcontentstats.contentid
+				FROM tcontent 
+				Left Join tfiles #tableModifier# ON (tcontent.fileID=tfiles.fileID)
+				left Join tcontentstats #tableModifier# on (tcontent.contentid=tcontentstats.contentid
 								    and tcontent.siteid=tcontentstats.siteid) 
 
 <cfif isExtendedSort>
 	left Join (select 
 			#variables.classExtensionManager.getCastString(arguments.sortBy,arguments.siteID)# extendedSort
 			 ,tclassextenddata.baseID 
-			from tclassextenddata inner join tclassextendattributes
+			from tclassextenddata #tableModifier# inner join tclassextendattributes #tableModifier#
 			on (tclassextenddata.attributeID=tclassextendattributes.attributeID)
 			where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
 			and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.sortBy#">
@@ -355,12 +361,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				Left Join (select 
 						   tcontent.contentID,
 						   Count(TKids.contentID) as kids
-						   from tcontent 
-						   left join tcontent TKids
+						   from tcontent #tableModifier#
+						   left join tcontent TKids #tableModifier#
 						   on (tcontent.contentID=TKids.parentID
 						   		and tcontent.siteID=TKids.siteID)
 						   	<cfif len(arguments.tag)>
-							Inner Join tcontenttags on (tcontent.contentHistID=tcontenttags.contentHistID)
+							Inner Join tcontenttags #tableModifier# on (tcontent.contentHistID=tcontenttags.contentHistID)
 							</cfif>
 						   where tcontent.siteid='#arguments.siteid#'
 						   		 AND tcontent.parentid =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#"/>
@@ -392,7 +398,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					
 					<cfif relatedListLen >
 					  and tcontent.contentID in (
-							select relatedID from tcontentrelated 
+							select relatedID from tcontentrelated #tableModifier#
 							where contentID in 
 							(<cfloop from=1 to="#relatedListLen#" index="f">
 							<cfqueryparam cfsqltype="cf_sql_varchar" value="#listgetat(arguments.relatedID,f)#"/> 
@@ -405,8 +411,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					  <cfif categoryListLen>
 					  and tcontent.contentHistID in (
 							select tcontentcategoryassign.contentHistID from 
-							tcontentcategoryassign 
-							inner join tcontentcategories 
+							tcontentcategoryassign #tableModifier#
+							inner join tcontentcategories #tableModifier#
 							ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID)
 							where (<cfloop from="1" to="#categoryListLen#" index="c">
 									tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listgetat(arguments.categoryID,c)#%"/> 
@@ -435,7 +441,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 <!--- end QKids --->
 				<cfif len(arguments.tag)>
-				Inner Join tcontenttags on (tcontent.contentHistID=tcontenttags.contentHistID)
+				Inner Join tcontenttags #tableModifier# on (tcontent.contentHistID=tcontenttags.contentHistID)
 				</cfif>
 				WHERE  	
 				    tcontent.parentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#"/>
@@ -481,8 +487,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					  <cfif categoryListLen>
 					  and tcontent.contentHistID in (
 							select tcontentcategoryassign.contentHistID from 
-							tcontentcategoryassign 
-							inner join tcontentcategories 
+							tcontentcategoryassign #tableModifier#
+							inner join tcontentcategories #tableModifier#
 							ON (tcontentcategoryassign.categoryID=tcontentcategories.categoryID)
 								and (<cfloop from="1" to="#categoryListLen#" index="c">
 									tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#listgetat(arguments.categoryID,c)#%"/> 
@@ -507,8 +513,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				#renderMobileClause()#
 						
 				order by 
-					
-					
+							
 				<cfswitch expression="#arguments.sortBy#">
 					<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displaystart,displaystop,created,credits,type,subtype">
 						<cfif dbType neq "oracle" or  listFindNoCase("orderno,lastUpdate,releaseDate,created,displayStart,displayStop",arguments.sortBy)>
@@ -869,14 +874,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="sortDirection" type="string" required="true" default="asc">
 		<cfargument name="searchString" type="string" required="true" default="">
 		<cfset var rs = "">
-		<cfset var doAg=false/>
 		<cfset var sortOptions="menutitle,title,lastupdate,releasedate,orderno,displayStart,created,rating,comment,credits,type,subtype">
 		<cfset var isExtendedSort=(not listFindNoCase(sortOptions,arguments.sortBy))>
 		<cfset var dbType=variables.configBean.getDbType() />
-		
-		<cfif arguments.sortBy eq 'rating' 
-			or arguments.sortBy eq 'comments'>
-			<cfset doAg=true/>
+		<cfset var tableModifier="">
+
+		<cfif dbtype eq "MSSQL">
+			<cfset tableModifier="with (nolock)">
 		</cfif>
 		
 		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"   username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
@@ -885,33 +889,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted, count(tcontent2.parentid) AS hasKids,tcontent.isfeature,tcontent.inheritObjects,tcontent.target,
 		tcontent.targetParams,tcontent.islocked,tcontent.sortBy,tcontent.sortDirection,tcontent.releaseDate,
 		tfiles.fileSize,tfiles.FileExt,tfiles.ContentType,tfiles.ContentSubType, tcontent.siteID, tcontent.featureStart,tcontent.featureStop,tcontent.template,tcontent.childTemplate,
-		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires
-		<cfif doAg>
-			,avg(tcontentratings.rate) As Rating,count(tcontentcomments.contentID) as Comments,count(tcontentratings.contentID) as Votes
-		<cfelse>
-			,0 as Rating, 0 as Comments, 0 as Votes
-		</cfif>
+		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires,
+		tcontentstats.rating,tcontentstats.totalVotes, tcontentstats.comments
 	
-		FROM tcontent LEFT JOIN tcontent tcontent2 ON tcontent.contentid=tcontent2.parentid
-		LEFT JOIN tfiles On tcontent.FileID=tfiles.FileID and tcontent.siteID=tfiles.siteID
-		LEFT JOIN tcontentstats on (tcontent.contentID=tcontentstats.contentID 
+		FROM tcontent LEFT JOIN tcontent tcontent2 #tableModifier# ON tcontent.contentid=tcontent2.parentid
+		LEFT JOIN tfiles #tableModifier# On tcontent.FileID=tfiles.FileID and tcontent.siteID=tfiles.siteID
+		LEFT JOIN tcontentstats #tableModifier# on (tcontent.contentID=tcontentstats.contentID 
 								and tcontent.siteID=tcontentstats.siteID
 								)
-		<cfif doAg>
-		Left Join tcontentcomments on tcontent.contentID=tcontentcomments.contentID
-		Left Join tcontentratings on tcontent.contentID=tcontentratings.contentID
-		</cfif>
 
 <cfif isExtendedSort>
 	left Join (select 
 			#variables.classExtensionManager.getCastString(arguments.sortBy,arguments.siteID)# extendedSort
 			 ,tclassextenddata.baseID 
-			from tclassextenddata inner join tclassextendattributes
+			from tclassextenddata #tableModifier# inner join tclassextendattributes #tableModifier#
 			on (tclassextenddata.attributeID=tclassextendattributes.attributeID)
 			where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
 			and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.sortBy#">
 	) qExtendedSort
-	on (tcontent.contenthistid=qExtendedSort.baseID)
+	on (tcontent.contenthistid=qExtendedSort.baseID) 
 </cfif>
 		WHERE 
 		tcontent.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
@@ -935,29 +931,35 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted,tcontent.isfeature,tcontent.inheritObjects,
 		tcontent.target,tcontent.targetParams,tcontent.islocked,tcontent.sortBy,tcontent.sortDirection,tcontent.releaseDate,
 		tfiles.fileSize,tfiles.FileExt,tfiles.ContentType,tfiles.ContentSubType, tcontent.created, tcontent.siteID, tcontent.featureStart,tcontent.featureStop,tcontent.template,tcontent.childTemplate,
-		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires
+		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires,
+		tcontentstats.rating,tcontentstats.totalVotes, tcontentstats.comments
 		<cfif isExtendedSort>
 			,qExtendedSort.extendedSort	
 		</cfif>
-		<cfif arguments.sortBy neq "">
-			ORDER BY
-			<cfif not doAg>
-				<cfif isExtendedSort>
-				qExtendedSort.extendedSort #arguments.sortDirection#	
+		
+		order by
+		<cfswitch expression="#arguments.sortBy#">
+			<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displaystart,displaystop,created,credits,type,subtype">
+				<cfif dbType neq "oracle" or  listFindNoCase("orderno,lastUpdate,releaseDate,created,displayStart,displayStop",arguments.sortBy)>
+				tcontent.#arguments.sortBy# #arguments.sortDirection#
 				<cfelse>
-					<cfif dbType neq "oracle" or listFindNoCase("orderno,releaseDate,lastUpdate,created",arguments.sortBy)>
-						tcontent.#arguments.sortBy# #arguments.sortDirection#
-					<cfelse>
-						lower(tcontent.#arguments.sortBy#) #arguments.sortDirection#
-					</cfif>
-				</cfif> 
-			<cfelseif arguments.sortBy eq 'rating'>
-				Rating #arguments.sortDirection#, Votes #arguments.sortDirection# 
-			<cfelse>
-				Comments #arguments.sortDirection# 
-			</cfif>
-			
-		</cfif>
+				lower(tcontent.#arguments.sortBy#) #arguments.sortDirection#
+				</cfif>
+			</cfcase>
+			<cfcase value="rating">
+				tcontentstats.rating #arguments.sortDirection#, tcontentstats.totalVotes  #arguments.sortDirection#
+			</cfcase>
+			<cfcase value="comments">
+				tcontentstats.comments #arguments.sortDirection#
+			</cfcase>
+			<cfdefaultcase>
+				<cfif isExtendedSort>
+					qExtendedSort.extendedSort #arguments.sortDirection#
+				<cfelse>
+					tcontent.orderno
+				</cfif>
+			</cfdefaultcase>
+		</cfswitch>
 		
 		</cfquery>
 
