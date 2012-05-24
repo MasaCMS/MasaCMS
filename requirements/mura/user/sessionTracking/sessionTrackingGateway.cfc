@@ -52,6 +52,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.configBean=arguments.configBean />
 <cfset variables.settingsManager=arguments.settingsManager />
 
+<cfif variables.configBean.getDbType() eq "MSSQL">
+	<cfset variables.tableModifier="with (nolock)">
+<cfelse>
+	<cfset variables.tableModifier="">
+</cfif>
+
 <cfreturn this />
 </cffunction>
 
@@ -63,11 +69,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select  fname,lname,company,tsessiontracking.*, tcontent.menuTitle,tfiles.fileEXT,
 	tcontent.Type, tcontent.filename,tcontent.targetParams
-	from tsessiontracking 
-	inner join tcontent on
+	from tsessiontracking #variables.tableModifier#
+	inner join tcontent  #variables.tableModifier# on
 	(tsessiontracking.contentid=tcontent.contentid and tsessiontracking.siteid=tcontent.siteid)
-	left join tusers on (tsessiontracking.userid = tusers.userid)
-	left join tfiles on (tcontent.fileid=tfiles.fileid)
+	left join tusers #variables.tableModifier# on (tsessiontracking.userid = tusers.userid)
+	left join tfiles #variables.tableModifier# on (tcontent.fileid=tfiles.fileid)
 	where urlToken=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.urlToken#">
 	and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
 	and tcontent.active=1
@@ -97,9 +103,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	select  <cfif dbType eq "mssql" and arguments.limit>Top #arguments.limit#</cfif> count(tsessiontracking.contentid) Hits, tsessiontracking.contentid,
 	tcontent.type,tcontent.moduleID,tcontent.ContentHistID,tcontent.siteID,tcontent.filename,
 	tcontent.menuTitle,tcontent.LastUpdate, tcontent.parentID,tcontent.targetParams ,tfiles.fileEXT  
-    from tsessiontracking 
-	inner join tcontent on (tsessiontracking.contentid=tcontent.contentid and tsessiontracking.siteid=tcontent.siteid)
-	left join tfiles on (tcontent.fileid=tfiles.fileid)
+    from tsessiontracking #variables.tableModifier#
+	inner join tcontent #variables.tableModifier# on (tsessiontracking.contentid=tcontent.contentid and tsessiontracking.siteid=tcontent.siteid)
+	left join tfiles #variables.tableModifier# on (tcontent.fileid=tfiles.fileid)
 	where tsessiontracking.siteid=<cfqueryparam  cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
 	and tcontent.active=1
 	
@@ -159,7 +165,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rs = ""/>
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select count(userID) as isOnLine
-    from tsessiontracking 
+    from tsessiontracking #variables.tableModifier#
 	where 
 	entered >=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd("n",-15,now())#">
 	and userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
@@ -185,8 +191,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	firstRequest, count(urlToken) as views,
 	tsessiontracking.country,tsessiontracking.lang,tsessiontracking.locale,
 	tsessiontracking.userid,tsessiontracking.siteid 
-	from tsessiontracking 
-	left join tusers on (tsessiontracking.userid = tusers.userid)
+	from tsessiontracking #variables.tableModifier#
+	left join tusers #variables.tableModifier# on (tsessiontracking.userid = tusers.userid)
 	where
 	entered >=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd(arguments.spanType,-arguments.span,now())#">
 	<cfif arguments.siteID neq ''>
@@ -238,7 +244,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#" >
 	select count(distinct urlToken) as sessions 
-	from tsessiontracking 
+	from tsessiontracking #variables.tableModifier#
 	<!---
 	left join tcontent on (tsessiontracking.contentid=tcontent.contentID
 							and tsessiontracking.siteid=tcontent.siteID
@@ -291,7 +297,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	<cfif dbType eq "oracle" and arguments.limit>select * from (</cfif>
-	select  <cfif dbType eq "mssql" and arguments.limit>Top #arguments.limit#</cfif> count(tsessiontracking.keywords) keywordCount, tsessiontracking.keywords from tsessiontracking 
+	select  <cfif dbType eq "mssql" and arguments.limit>Top #arguments.limit#</cfif> count(tsessiontracking.keywords) keywordCount, tsessiontracking.keywords from tsessiontracking #variables.tableModifier#
 	where tsessiontracking.siteid=<cfqueryparam  cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
 	
 	<cfif lsIsDate(arguments.startDate)>
@@ -349,7 +355,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var rs = ""/>
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-	select count(tsessiontracking.keywords) keywordCount from tsessiontracking 
+	select count(tsessiontracking.keywords) keywordCount from tsessiontracking #variables.tableModifier#
 	where tsessiontracking.siteid=<cfqueryparam  cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
 	<cfif isdate(arguments.stopDate)>and entered <=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
 	<cfif isdate(arguments.startDate)>and entered >=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
@@ -388,7 +394,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	<cfif dbType eq "oracle" and arguments.limit>select * from (</cfif>
-	select  <cfif dbType eq "mssql" and arguments.limit>Top #arguments.limit#</cfif> count(tsessiontracking.referer) referals, tsessiontracking.referer from tsessiontracking 
+	select  <cfif dbType eq "mssql" and arguments.limit>Top #arguments.limit#</cfif> count(tsessiontracking.referer) referals, tsessiontracking.referer from tsessiontracking #variables.tableModifier#
 	inner join tcontent on (tsessiontracking.contentid=tcontent.contentid and tsessiontracking.siteid=tcontent.siteid)
 	where tsessiontracking.siteid=<cfqueryparam  cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
 	and tcontent.active=1
@@ -438,7 +444,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var stop ="">
 	
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-	select  count(tsessiontracking.referer) referals from tsessiontracking 
+	select  count(tsessiontracking.referer) referals from tsessiontracking #variables.tableModifier#
 	where tsessiontracking.siteid=<cfqueryparam  cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
 	
 	<cfif lsIsDate(arguments.startDate)>
@@ -483,7 +489,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var start ="">
 	<cfset var stop ="">
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-	select count(*) hits from tsessiontracking 
+	select count(*) hits from tsessiontracking #variables.tableModifier#
 	inner join tcontent on (tsessiontracking.contentID=tcontent.contentID)
 	where tsessiontracking.siteid=<cfqueryparam  cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
 	and tcontent.active=1
@@ -539,7 +545,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rs = ""/>
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select count(distinct urlToken) sessionCount	
-	from tsessiontracking  
+	from tsessiontracking  #variables.tableModifier#
 	where tsessiontracking.siteid=<cfqueryparam  cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
 	<cfif isdate(arguments.stopDate)>and entered <=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#"></cfif>
 	<cfif isdate(arguments.startDate)>and entered >=  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDateTime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#"></cfif>
@@ -624,8 +630,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	count(tsessiontracking.urlToken) as views,
 	tsessiontracking.country, tsessiontracking.lang,tsessiontracking.locale,
 	tsessiontracking.userid, tsessiontracking.siteid
-	From tsessiontracking
-	inner join tcontent on (tsessiontracking.contentid=tcontent.contentID
+	From tsessiontracking #variables.tableModifier#
+	inner join tcontent #variables.tableModifier# on (tsessiontracking.contentid=tcontent.contentID
 							and tsessiontracking.siteid=tcontent.siteID
 							and tcontent.active=1)
 	
@@ -688,13 +694,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	count(tsessiontracking.urlToken) as views,
 	tsessiontracking.country, tsessiontracking.lang,tsessiontracking.locale,
 	tsessiontracking.userid, tsessiontracking.siteid
-	From tsessiontracking
-	inner join tusers on (tsessiontracking.userid=tusers.userID)
+	From tsessiontracking #variables.tableModifier#
+	inner join tusers #variables.tableModifier# on (tsessiontracking.userid=tusers.userID)
 	<cfif searchAddress>
-	inner join tuseraddresses on (tsessiontracking.userid=tuseraddresses.userID)
+	inner join tuseraddresses #variables.tableModifier# on (tsessiontracking.userid=tuseraddresses.userID)
 	</cfif>
 	
-	inner join tcontent on (tsessiontracking.contentid=tcontent.contentID
+	inner join tcontent #variables.tableModifier# on (tsessiontracking.contentid=tcontent.contentID
 							and tsessiontracking.siteid=tcontent.siteID
 							and tcontent.active=1)
 		 
