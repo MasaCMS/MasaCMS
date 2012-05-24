@@ -46,62 +46,62 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfsilent>
-	<cfquery datasource="#application.configBean.getDatasource(mode='readOnly')#" username="#application.configBean.getDBUsername(mode='readOnly')#" password="#application.configBean.getDBPassword(mode='readOnly')#" name="rslist">
-	select mlid, name, description from tmailinglist where siteid='#$.event('siteID')#' and isPublic=1 order by isPurge, name 
+	<cfquery datasource="#application.configBean.getDatasource(mode='readOnly')#" username="#application.configBean.getDBUsername(mode='readOnly')#" password="#application.configBean.getDBPassword(mode='readOnly')#" name="variables.rslist">
+	select mlid, name, description from tmailinglist where siteid='#variables.$.event('siteID')#' and isPublic=1 order by isPurge, name 
 	</cfquery>
 </cfsilent>
 
 <cfoutput>
 <div id="svMasterEmail">
-	<cfif $.event('doaction') eq 'masterSubscribe'>
-		<cfif $.event("passedProtect")>
-			<p class="response success">#$.rbKey('mailinglist.selectionssaved')#</p>
+	<cfif variables.$.event('doaction') eq 'masterSubscribe'>
+		<cfif variables.$.event("passedProtect")>
+			<p class="response success">#variables.$.rbKey('mailinglist.selectionssaved')#</p>
 		<cfelse>
-			<p class="error">#$.rbKey('captcha.spam')#</p>
+			<p class="error">#variables.$.rbKey('captcha.spam')#</p>
 		</cfif>
-	<cfelseif $.event('doaction') eq 'validateMember'>
-		<cfset application.mailinglistManager.validateMember($.event().getAllValues())/>
-		<p class="response success">#$.rbKey('mailinglist.hasbeenvalidated')#</p>
+	<cfelseif variables.$.event('doaction') eq 'validateMember'>
+		<cfset application.mailinglistManager.validateMember(variables.$.event().getAllValues())/>
+		<p class="response success">#variables.$.rbKey('mailinglist.hasbeenvalidated')#</p>
 	<cfelse>
 		<form id="frmEmailMaster" name="frmEmailMaster" action="?nocache=1" method="post" onsubmit="return validate(this);" novalidate="novalidate" >
 			<fieldset>
-				<legend>#$.rbKey('mailinglist.mydetails')#</legend>
+				<legend>#variables.$.rbKey('mailinglist.mydetails')#</legend>
 				<ol>
 					<li class="req">
-						<label for="txtNameFirst">#$.rbKey('mailinglist.fname')#<ins> (#$.rbKey('mailinglist.required')#)</ins></label>
-						<input id="txtNameFirst" class="text" type="text" name="fname" maxlength="50" required="true" message="#HTMLEditFormat($.rbKey('mailinglist.fnamerequired'))#" />
+						<label for="txtNameFirst">#variables.$.rbKey('mailinglist.fname')#<ins> (#variables.$.rbKey('mailinglist.required')#)</ins></label>
+						<input id="txtNameFirst" class="text" type="text" name="fname" maxlength="50" required="true" message="#HTMLEditFormat(variables.$.rbKey('mailinglist.fnamerequired'))#" />
 					</li>
 					<li class="req">
-						<label for="txtNameLast">#$.rbKey('mailinglist.lname')#<ins> (#$.rbKey('mailinglist.required')#)</ins></label>
-						<input id="txtNameLast" class="text" type="text" name="lname" maxlength="50" required="true" message="#HTMLEditFormat($.rbKey('mailinglist.lnamerequired'))#" />
+						<label for="txtNameLast">#variables.$.rbKey('mailinglist.lname')#<ins> (#variables.$.rbKey('mailinglist.required')#)</ins></label>
+						<input id="txtNameLast" class="text" type="text" name="lname" maxlength="50" required="true" message="#HTMLEditFormat(variables.$.rbKey('mailinglist.lnamerequired'))#" />
 					</li>
 					<li>
-						<label for="txtCompany">#$.rbKey('mailinglist.company')#</label>
+						<label for="txtCompany">#variables.$.rbKey('mailinglist.company')#</label>
 						<input id="txtCompany" class="text" type="text" maxlength="50" name="company" />
 					</li>
 					<li class="req">
-						<label for="txtEmail">#$.rbKey('mailinglist.email')#<ins> (#$.rbKey('mailinglist.required')#)</ins></label>
-						<input id="txtEmail" class="text" type="text" name="email" maxlength="50" required="true" validate="email" message="#HTMLEditFormat($.rbKey('mailinglist.emailvalidate'))#" />
+						<label for="txtEmail">#variables.$.rbKey('mailinglist.email')#<ins> (#variables.$.rbKey('mailinglist.required')#)</ins></label>
+						<input id="txtEmail" class="text" type="text" name="email" maxlength="50" required="true" validate="email" message="#HTMLEditFormat(variables.$.rbKey('mailinglist.emailvalidate'))#" />
 					</li>
 				</ol>
 			</fieldset>
 			<fieldset>
 				<legend>Subscription Settings</legend>
-				<ol id="subSettings" class="stack"><cfset loopcount = 1><cfloop query="rslist">
+				<ol id="subSettings" class="stack"><cfset variables.loopcount = 1><cfloop query="variables.rslist">
 					<li>
-						<input id="mlid#loopcount#" class="checkbox" type="checkbox" name="mlid" value="#rslist.mlid#" <cfif listfind($.event('mlid'),rslist.mlid)>checked="checked"</cfif> />
-						<label for="mlid#loopcount#">#rslist.name#</label>
-						<cfif #rslist.description# neq ''><p class="inputNote">#rslist.description#</p></cfif>
+						<input id="mlid#variables.loopcount#" class="checkbox" type="checkbox" name="mlid" value="#variables.rslist.mlid#" <cfif listfind(variables.$.event('mlid'),variables.rslist.mlid)>checked="checked"</cfif> />
+						<label for="mlid#variables.loopcount#">#variables.rslist.name#</label>
+						<cfif #variables.rslist.description# neq ''><p class="inputNote">#variables.rslist.description#</p></cfif>
 					</li>
-				<cfset loopcount = loopcount + 1></cfloop></ol>
+				<cfset variables.loopcount = variables.loopcount + 1></cfloop></ol>
 			</fieldset>
 			<div class="buttons">
-				<input type="hidden" name="siteid" value="#$.event('siteID')#" />
+				<input type="hidden" name="siteid" value="#variables.$.event('siteID')#" />
 				<input type="hidden" name="doaction" value="masterSubscribe" />
-				<input type="hidden" name="linkServID" value="#$.content('contentID')#" />
-				<input type="submit" class="submit" value="#HTMLEditFormat($.rbKey('mailinglist.submit'))#" />
+				<input type="hidden" name="linkServID" value="#variables.$.content('contentID')#" />
+				<input type="submit" class="submit" value="#HTMLEditFormat(variables.$.rbKey('mailinglist.submit'))#" />
 			</div>
-				<cfoutput>#$.dspObject_Include(thefile='dsp_form_protect.cfm')#</cfoutput>
+				<cfoutput>#variables.$.dspObject_Include(thefile='dsp_form_protect.cfm')#</cfoutput>
 		</form>
 	</cfif>
 </div>

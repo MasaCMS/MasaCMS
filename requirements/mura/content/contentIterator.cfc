@@ -103,7 +103,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var recordCount = 0 />
 		<cfif structKeyExists(variables,"records")>
 			<cfif isQuery(variables.records)>
-				<cfset recordCount =records.recordCount />
+				<cfset recordCount =variables.records.recordCount />
 			<cfelseif isArray(variables.records)>
 				<cfset recordCount= arrayLen(variables.records) />
 			</cfif>

@@ -103,6 +103,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var cacheFactory="">
 	<cfset var bean=arguments.userBean>
 	
+	<cfif not len(arguments.siteID) and isdefined("session.siteID")>
+		<cfset arguments.siteID=session.siteID>
+	</cfif>
+	
 	<cfif len(arguments.siteID)>
 		<cfif len(arguments.username)>
 			<cfreturn readByUsername(arguments.username,arguments.siteid,bean) />

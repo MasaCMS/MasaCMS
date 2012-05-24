@@ -87,9 +87,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="destination">
 <cfargument name="mode" required="true" default="#variables.defaultFileMode#">
 <cfif variables.useMode >
-	<cffile action="move" mode="#arguments.mode#" source="#arguments.source#" destination="#arguments.destination#" />
+	<cffile action="copy" mode="#arguments.mode#" source="#arguments.source#" destination="#arguments.destination#" />
+    <cffile action="delete" file="#arguments.source#" />
+	<!---<cffile action="move" mode="#arguments.mode#" source="#arguments.source#" destination="#arguments.destination#" />--->
 <cfelse>
-	<cffile action="move" source="#arguments.source#" destination="#arguments.destination#" />
+	<cffile action="copy" source="#arguments.source#" destination="#arguments.destination#" />
+    <cffile action="delete" file="#arguments.source#" />
+	<!---<cffile action="move" source="#arguments.source#" destination="#arguments.destination#" />--->
 </cfif>
 </cffunction>
 
@@ -158,9 +162,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="mode" required="true" default="#variables.defaultFileMode#">
 <cfargument name="accept" required="false" default="" />
 
-<cfif not DirectoryExists(arguments.destination)>
-	<cfset createDir(arguments.destination,arguments.mode) />
-</cfif>
+<cfset touchDir(arguments.destination,arguments.mode) />
 
 <cfif variables.useMode >
 	<cffile action="upload"
@@ -201,6 +203,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfdirectory action="create" mode="#arguments.mode#" directory="#arguments.directory#"/>
 <cfelse>
 	<cfdirectory action="create" directory="#arguments.directory#"/>
+</cfif>
+</cffunction>
+
+<cffunction name="touchDir" output="false">
+<cfargument name="directory">
+<cfargument name="mode" required="true" default="#variables.defaultFileMode#">
+<cfif not DirectoryExists(arguments.directory)>
+	<cfset createDir(arguments.directory,arguments.mode) />
 </cfif>
 </cffunction>
 

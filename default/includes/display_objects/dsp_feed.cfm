@@ -47,10 +47,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!--- <cftry> --->
 <cfsilent>
 	<cfif isValid("UUID", arguments.objectID)>
-		<cfset variables.feedBean = $.getBean("feed").loadBy(feedID=arguments.objectID, 
+		<cfset variables.feedBean = variables.$.getBean("feed").loadBy(feedID=arguments.objectID, 
 		                                                     siteID=arguments.siteID)>
 	<cfelse>
-		<cfset variables.feedBean = $.getBean("feed").loadBy(name=arguments.objectID, 
+		<cfset variables.feedBean = variables.$.getBean("feed").loadBy(name=arguments.objectID, 
 		                                                     siteID=arguments.siteID)>
 	</cfif>
 	<cfif not structIsEmpty(objectparams)>
@@ -64,36 +64,36 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif variables.feedBean.getIsActive()>
 
-	<cfset variables.cssID = $.createCSSid(feedBean.renderName())>
+	<cfset variables.cssID = variables.$.createCSSid(variables.feedBean.renderName())>
 
 	<cfif variables.feedBean.getType() eq 'local'>
 		<cfsilent>
-			<cfset variables.rsPreFeed = application.feedManager.getFeed(feedBean)/>
-			<cfif $.siteConfig('extranet') eq 1 and $.event('r').restrict eq 1>
-				<cfset variables.rs = $.queryPermFilter(rsPreFeed)/>
+			<cfset variables.rsPreFeed = application.feedManager.getFeed(variables.feedBean)/>
+			<cfif variables.$.siteConfig('extranet') eq 1 and variables.$.event('r').restrict eq 1>
+				<cfset variables.rs = variables.$.queryPermFilter(variables.rsPreFeed)/>
 			<cfelse>
-				<cfset variables.rs = rsPreFeed/>
+				<cfset variables.rs = variables.rsPreFeed/>
 			</cfif>
-			<cfset variables.iterator = $.getBean("contentIterator")>
-			<cfset variables.iterator.setQuery(rs, feedBean.getNextN())>
+			<cfset variables.iterator = variables.$.getBean("contentIterator")>
+			<cfset variables.iterator.setQuery(variables.rs, variables.feedBean.getNextN())>
 		
-			<cfset variables.checkMeta = feedBean.getDisplayRatings() or feedBean.getDisplayComments()>
+			<cfset variables.checkMeta = variables.feedBean.getDisplayRatings() or variables.feedBean.getDisplayComments()>
 			<cfset variables.doMeta = 0/>
-			<cfset event.setValue("currentNextNID", feedBean.getFeedID())>
+			<cfset variables.$.event("currentNextNID", variables.feedBean.getFeedID())>
 		
-			<cfif not len($.event("nextNID")) or $.event("nextNID") eq $.event("currentNextNID")>
-				<cfif event.getContentBean().getNextN() gt 1>
-					<cfset variables.currentNextNIndex = $.event("startRow")>
-					<cfset variables.iterator.setStartRow(currentNextNIndex)>
+			<cfif not len(variables.$.event("nextNID")) or variables.$.event("nextNID") eq variables.$.event("currentNextNID")>
+				<cfif variables.$.content('NextN') gt 1>
+					<cfset variables.currentNextNIndex = variables.$.event("startRow")>
+					<cfset variables.iterator.setStartRow(variables.currentNextNIndex)>
 				<cfelse>
-					<cfset variables.currentNextNIndex = $.event("pageNum")>
+					<cfset variables.currentNextNIndex = variables.$.event("pageNum")>
 					<cfset variables.iterator.setPage(currentNextNIndex)>
 				</cfif>
 			<cfelse>
 				<cfset variables.currentNextNIndex = 1>
 				<cfset variables.iterator.setPage(1)>
 			</cfif>
-			<cfset variables.nextN = $.getBean('utility').getNextN(variables.rs, 
+			<cfset variables.nextN = variables.$.getBean('utility').getNextN(variables.rs, 
 			                                                      variables.feedBean.getNextN(),
 			                                                      variables.currentNextNIndex)>
 		</cfsilent>
@@ -102,9 +102,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfoutput>
 				<div class="svSyndLocal svFeed svIndex clearfix" id="#variables.cssID#">
 					<cfif variables.feedBean.getDisplayName()>
-						<#$.getHeaderTag('subHead1')#>#HTMLEditFormat(variables.feedBean.renderName())#</#$.getHeaderTag('subHead1')#>
+						<#variables.$.getHeaderTag('subHead1')#>#HTMLEditFormat(variables.feedBean.renderName())#</#variables.$.getHeaderTag('subHead1')#>
 					</cfif>
-					#$.dspObject_Include(
+					#variables.$.dspObject_Include(
 									thefile='dsp_content_list.cfm', 
 									fields=variables.feedBean.getDisplayList(), 
 				                    type="Feed",
@@ -114,7 +114,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				                    imageWidth=variables.feedBean.getImageWidth()
 								)#
 					<cfif variables.nextN.numberofpages gt 1>
-						#$.dspObject_Include(thefile='dsp_nextN.cfm')#
+						#variables.$.dspObject_Include(thefile='dsp_nextN.cfm')#
 					</cfif>
 				</div>
 			</cfoutput>
@@ -138,7 +138,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfoutput>
 			<cfif isDefined("variables.feedData.maxItems") and variables.feedData.maxItems>
 				<div class="svSyndRemote svIndex svFeed clearfix" id="#variables.cssID#">
-					<#$.getHeaderTag('subHead1')#>#HTMLEditFormat(variables.feedBean.getName())#</#$.getHeaderTag('subHead1')#>
+					<#variables.$.getHeaderTag('subHead1')#>#HTMLEditFormat(variables.feedBean.getName())#</#variables.$.getHeaderTag('subHead1')#>
 					<cfif variables.feedData.type neq "atom">
 						<cfloop from="1" to="#variables.feedData.maxItems#" index="i">
 							<dl<cfif (i EQ 1)> class="first"<cfelseif (i EQ variables.feedData.maxItems)> class="last"</cfif>>
@@ -146,13 +146,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfif structKeyExists(variables.feedData.itemArray[i],"pubDate")>
 									<cftry>
 									<cfset variables.itemDate=parseDateTime(variables.feedData.itemArray[i].pubDate.xmlText)>
-									<dt class="releaseDate"><cfif isDate(variables.itemDate)>#LSDateFormat(variables.itemDate,$.getLongDateFormat())#<cfelse>#variables.feedData.itemArray[i].pubDate.xmlText#</cfif></dt>
+									<dt class="releaseDate"><cfif isDate(variables.itemDate)>#LSDateFormat(variables.itemDate,variables.$.getLongDateFormat())#<cfelse>#variables.feedData.itemArray[i].pubDate.xmlText#</cfif></dt>
 									<cfcatch></cfcatch>
 									</cftry>
 								<cfelseif structKeyExists(variables.feedData.itemArray[i],"dc:date")>
 									<cftry>
 									<cfset itemDate=parseDateTime(variables.feedData.itemArray[i]["dc:date"].xmlText)>
-									<dt class="releaseDate"><cfif isDate(variables.itemDate)>#LSDateFormat(variables.itemDate,$.getLongDateFormat())#<cfelse>#variables.feedData.itemArray[i]["dc:date"].xmlText#</cfif></dt>
+									<dt class="releaseDate"><cfif isDate(variables.itemDate)>#LSDateFormat(variables.itemDate,variables.$.getLongDateFormat())#<cfelse>#variables.feedData.itemArray[i]["dc:date"].xmlText#</cfif></dt>
 									<cfcatch></cfcatch>
 									</cftry>
 								</cfif>
@@ -167,7 +167,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfif structKeyExists(variables.feedData.itemArray[i],"updated")>
 									<cftry>
 									<cfset variables.itemDate=parseDateTime(variables.feedData.itemArray[i].updated.xmlText)>
-									<dt class="releaseDate"><cfif isDate(variables.itemDate)>#LSDateFormat(variables.itemDate,$.getLongDateFormat())#<cfelse>#variables.feedData.itemArray[i].updated.xmlText#</cfif></dt>
+									<dt class="releaseDate"><cfif isDate(variables.itemDate)>#LSDateFormat(variables.itemDate,variables.$.getLongDateFormat())#<cfelse>#variables.feedData.itemArray[i].updated.xmlText#</cfif></dt>
 									<cfcatch></cfcatch>
 									</cftry>
 								</cfif>

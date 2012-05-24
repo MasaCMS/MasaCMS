@@ -49,12 +49,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <div id="navMultilevel" class="sidebar-nav well">
 #dspNestedNav(
-	contentID=$.getTopVar("contentID"),
+	contentID=variables.$.getTopVar("contentID"),
 	viewDepth=4,
 	currDepth=1,
-	sortBy=$.getTopVar("sortBy"),
-	sortDirection=$.getTopVar("sortDirection"),
-	subNavExpression="listFindNoCase('Page,Calendar',rsSection.type) and listFind($.content('path'),rsSection.contentID) and arguments.currDepth lt arguments.viewDepth"
+	sortBy=variables.$.getTopVar("sortBy"),
+	sortDirection=variables.$.getTopVar("sortDirection"),
+	subNavExpression="listFindNoCase('Page,Calendar',rsSection.type) and listFind(variables.$.content('path'),rsSection.contentID) and arguments.currDepth lt arguments.viewDepth"
 )#
 </div>
 </cfoutput>

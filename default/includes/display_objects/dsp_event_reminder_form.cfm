@@ -44,43 +44,43 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfset crumbs=$.event('crumbData')>
-<cfif arrayLen(crumbs) gt 1 and crumbs[2].type eq 'Calendar' and $.content('display') eq 2 and $.content('displayStart') gt now()>
+<cfset crumbs=variables.$.event('crumbData')>
+<cfif arrayLen(crumbs) gt 1 and crumbs[2].type eq 'Calendar' and variables.$.content('display') eq 2 and variables.$.content('displayStart') gt now()>
 <cfoutput>
 <div id="svEventReminder">
-	<#$.getHeaderTag('subHead1')#>#$.rbKey('event.setreminder')#</#$.getHeaderTag('subHead1')#>
-	<cfif listfind($.event('doaction'),"setReminder")>
-	<em>#$.rbKey('event.setreminder')#</em><br/><br/>
+	<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('event.setreminder')#</#variables.$.getHeaderTag('subHead1')#>
+	<cfif listfind(variables.$.event('doaction'),"setReminder")>
+	<em>#variables.$.rbKey('event.setreminder')#</em><br/><br/>
 	</cfif>
 	<form class="well" name="reminderFrm" action="?nocache=1" method="post" onsubmit="return validate(this);" novalidate="novalidate" >
 	<fieldset>
 	<ol>
-	<li class="req control-group"><label class="control-label" for="email">#$.rbKey('event.email')#*</label>
-	<input id="email" name="email" required="true" validate="email" message="#htmlEditFormat($.rbKey('event.emailvalidate'))#"></li>
-	<li class="req control-group"><label class="control-label" for="interval">#$.rbKey('event.sendmeareminder')#</label>
+	<li class="req control-group"><label class="control-label" for="email">#variables.$.rbKey('event.email')#*</label>
+	<input id="email" name="email" required="true" validate="email" message="#htmlEditFormat(variables.$.rbKey('event.emailvalidate'))#"></li>
+	<li class="req control-group"><label class="control-label" for="interval">#variables.$.rbKey('event.sendmeareminder')#</label>
 	<select id="interval" name="interval">
-	<option value="0">0 #$.rbKey('event.minutes')#</option>
-	<option value="5">5 #$.rbKey('event.minutes')#</option>
-	<option value="15">15 #$.rbKey('event.minutes')#</option>
-	<option value="30">30 #$.rbKey('event.minutes')#</option>
-	<option value="60">1 #$.rbKey('event.hour')#</option>
-	<option value="120">2 #$.rbKey('event.hours')#</option>
-	<option value="240">3 #$.rbKey('event.hours')#</option>
-	<option value="300">4 #$.rbKey('event.hours')#</option>
-	<option value="360">5 #$.rbKey('event.hours')#</option>
-	<option value="420">6 #$.rbKey('event.hours')#</option>
-	<option value="480">7 #$.rbKey('event.hours')#</option>
-	<option value="540">8 #$.rbKey('event.hours')#</option>
-	<option value="1440">1 #$.rbKey('event.day')#</option>
-	<option value="2880">2 #$.rbKey('event.days')#</option>
-	<option value="3320">3 #$.rbKey('event.days')#</option>
-	<option value="10040">1 #$.rbKey('event.week')#</option>
+	<option value="0">0 #variables.$.rbKey('event.minutes')#</option>
+	<option value="5">5 #variables.$.rbKey('event.minutes')#</option>
+	<option value="15">15 #variables.$.rbKey('event.minutes')#</option>
+	<option value="30">30 #variables.$.rbKey('event.minutes')#</option>
+	<option value="60">1 #variables.$.rbKey('event.hour')#</option>
+	<option value="120">2 #variables.$.rbKey('event.hours')#</option>
+	<option value="240">3 #variables.$.rbKey('event.hours')#</option>
+	<option value="300">4 #variables.$.rbKey('event.hours')#</option>
+	<option value="360">5 #variables.$.rbKey('event.hours')#</option>
+	<option value="420">6 #variables.$.rbKey('event.hours')#</option>
+	<option value="480">7 #variables.$.rbKey('event.hours')#</option>
+	<option value="540">8 #variables.$.rbKey('event.hours')#</option>
+	<option value="1440">1 #variables.$.rbKey('event.day')#</option>
+	<option value="2880">2 #variables.$.rbKey('event.days')#</option>
+	<option value="3320">3 #variables.$.rbKey('event.days')#</option>
+	<option value="10040">1 #variables.$.rbKey('event.week')#</option>
 	</select> 
-	#$.rbKey('event.beforethisevent')#</li>
+	#variables.$.rbKey('event.beforethisevent')#</li>
 	</ol>
 	</fieldset>
 	<input name="doaction" value="setReminder" type="hidden"/>
-	<input class="btn" type="submit" value="#htmlEditFormat($.rbKey('event.submit'))#"/>
+	<input class="btn" type="submit" value="#htmlEditFormat(variables.$.rbKey('event.submit'))#"/>
 	</form>
 </div>
 </cfoutput>

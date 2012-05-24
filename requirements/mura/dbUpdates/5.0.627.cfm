@@ -1,5 +1,5 @@
 <cfif getDbType() eq "mysql">
-<cfset doUpdate=false/>
+<cfset variables.DOUPDATE=false/>
 <cftransaction>
 <cftry>
 <cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
@@ -11,7 +11,7 @@
 </cfquery>
 
 <cfif rsCheck.DATA_TYPE eq "mediumtext">
-	<cfset doUpdate=true/>
+	<cfset variables.DOUPDATE=true/>
 </cfif>
 
 <cfcatch>
@@ -23,12 +23,12 @@ select type from rsCheck where Field='referer'
 </cfquery>
 
 <cfif rsCheck.type eq "mediumtext">
-	<cfset doUpdate=true/>
+	<cfset variables.DOUPDATE=true/>
 </cfif>
 </cfcatch>
 </cftry>
 
-<cfif doUpdate>
+<cfif variables.DOUPDATE>
 
 
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">

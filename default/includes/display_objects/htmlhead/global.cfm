@@ -45,25 +45,25 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-<cfset loginURL=application.settingsManager.getSite($.event('siteID')).getLoginURL()>
+<cfset variables.loginURL=variables.$.siteConfig('LoginURL')>
 <!---
-<cfif find("?",loginURL)>
-<cfset loginURL=LoginURL & "&LinkServID=" & $.content('contentID')>
+<cfif find("?",variables.loginURL)>
+<cfset variables.loginURL=variables.LoginURL & "&LinkServID=" & variables.$.content('contentID')>
 <cfelse>
-<cfset loginURL=LoginURL & "?LinkServID=" & $.content('contentID')>
+<cfset variables.loginURL=variables.LoginURL & "?LinkServID=" & variables.$.content('contentID')>
 </cfif>--->
 </cfsilent>
 <cfoutput>
-#getSite().getJSDateKey()#	
-<script type="text/javascript" src="#event.getSite().getAssetPath()#/js/global.min.js"></script>
+#variables.$.siteConfig('JSDateKey')#	
+<script type="text/javascript" src="#variables.$.siteConfig('AssetPath')#/js/global.min.js"></script>
 <script type="text/javascript">
-var loginURL="#loginURL#";
-var siteid="#$.event('siteID')#"; 
-var siteID="#$.event('siteID')#"; 
-var context="#$.globalConfig('context')#"; 
-var jslib="#$.getJsLib()#";
-var assetpath="#$.siteConfig('assetPath')#";
-var themepath="#$.siteConfig('themeAssetPath')#";
-var htmlEditorType="#$.globalConfig('htmlEditorType')#";
-var rb="#lcase(listFirst($.siteConfig('JavaLocale'),"_"))#";
+var loginURL="#variables.loginURL#";
+var siteid="#variables.$.event('siteID')#"; 
+var siteID="#variables.$.event('siteID')#"; 
+var context="#variables.$.globalConfig('context')#"; 
+var jslib="#variables.$.getJsLib()#";
+var assetpath="#variables.$.siteConfig('assetPath')#";
+var themepath="#variables.$.siteConfig('themeAssetPath')#";
+var htmlEditorType="#variables.$.globalConfig('htmlEditorType')#";
+var rb="#lcase(listFirst(variables.$.siteConfig('JavaLocale'),"_"))#";
 </script></cfoutput>

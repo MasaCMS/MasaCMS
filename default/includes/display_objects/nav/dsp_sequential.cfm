@@ -45,6 +45,6 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <!--- Outputs nav of portal and calendar child content in sequence in the form of "Previous 1 2 3 4 5 Next" --->
-<cfif not listFind("Portal,Gallery",$.content('type'))>
+<cfif not listFind("Portal,Gallery",variables.$.content('type'))>
 <cfoutput>#dspSequentialNav()#</cfoutput>
 </cfif>

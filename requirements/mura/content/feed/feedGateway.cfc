@@ -111,7 +111,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var openGrouping =false />
 	<cfset var dbType=variables.configBean.getDbType() />
 	<cfset var sortOptions="menutitle,title,lastupdate,releasedate,orderno,displayStart,created,rating,comment,credits,type,subtype">
-	<cfset var isExtendedSort=(not listFindNoCase(sortOptions,feedBean.getSortBy()))>
+	<cfset var isExtendedSort=(not listFindNoCase(sortOptions,arguments.feedBean.getSortBy()))>
 	<cfset var nowAdjusted="">
 	<cfset var blockFactor=arguments.feedBean.getNextN()>
 	<cfset var jointables="" />

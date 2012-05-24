@@ -92,20 +92,20 @@
 	
 	if (fileExists(thisRBFile)) { // final check, if this fails the file is not where it should be
 		isOK=true;
-		fis.init(thisRBFile);
-		rB.init(fis);
-		keys=rB.getKeys();
+		variables.fis.init(thisRBFile);
+		variables.rB.init(fis);
+		keys=variables.rB.getKeys();
 		while (keys.hasMoreElements()) {
 			thisKEY=keys.nextElement();
-			thisMSG=rB.handleGetObject(thisKey);
+			thisMSG=variables.rB.handleGetObject(thisKey);
 			variables.resourceBundle["#thisKEY#"]=thisMSG;
 			}
-		fis.close();
+		variables.fis.close();
 		}
 	</cfscript>
 	
 	<cfset variables.isloaded=true />
-	<cfreturn resourceBundle>
+	<cfreturn variables.resourceBundle>
 
 </cffunction> 
 
@@ -120,7 +120,7 @@
 	var thisFile=getFileFromPath(variables.rbFile);
 	var thisRBfile=thisDir & listFirst(thisFile,".") & "_"& variables.Locale & "." & listLast(thisFile,".");
 	var local=structNew();
-	var linechecker=false;
+	var linecheck=false;
 	
 	if (NOT fileExists(thisRBfile))// still nothing? strip thisRBfile back to base rb
 		thisRBfile=thisDir & thisLang & "." & listLast(thisFile,".");
@@ -133,13 +133,13 @@
 	
 	if (fileExists(thisRBFile)) { // final check, if this fails the file is not where it should be
 		isOK=true;
-		fis.init(thisRBFile);
-		fisr.init(fis,"UTF-8");
-		br.init(fisr);
+		variables.fis.init(thisRBFile);
+		variables.fisr.init(fis,"UTF-8");
+		variables.br.init(fisr);
 		
 		do
 			{
-			   local.line = br.readLine();
+			   local.line = variables.br.readLine();
 			   linecheck = isDefined("local.line");
 			   if(lineCheck)
 			   {
@@ -149,12 +149,12 @@
 			   }
 			} while(lineCheck);
 		
-		br.close();
+		variables.br.close();
 		}
 	</cfscript>
 	
 	<cfset variables.isloaded=true />
-	<cfreturn resourceBundle>
+	<cfreturn variables.resourceBundle>
 
 </cffunction> 
 
@@ -188,7 +188,7 @@
 			<cfif NOT isArray(inputArgs)>
 				<cfset inputArgs=listToArray(inputArgs)>
 			</cfif>	
-			<cfset thisFormat=msgFormat.init(arguments.thisPattern,variables.javaLocale)>
+			<cfset thisFormat=variables.msgFormat.init(arguments.thisPattern,variables.javaLocale)>
 			<!--- let's make sure any cf numerics are cast to java datatypes --->
 			<cfset p=pattern.compile(regexStr,pattern.CASE_INSENSITIVE)>
 			<cfset m=p.matcher(arguments.thisPattern)>
@@ -228,7 +228,7 @@
 
 		<cfreturn variables.resourceBundle[arguments.key] />
 
-	<cfelseif useMuraDefault>
+	<cfelseif arguments.useMuraDefault>
 		<cfreturn "muraKeyEmpty">
 
 	<cfelse>

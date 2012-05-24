@@ -658,13 +658,13 @@ Thanks for using #contactName#</cfoutput>
 <cffunction name="returnLoginCheck" output="false">
 <cfargument name="$">
 	<cfset var rs="">
-	<cfif not $.currentUser().isLoggedIn() and len($.event('returnID')) and len($.event('returnUserID'))>
+	<cfif not arguments.$.currentUser().isLoggedIn() and len(arguments.$.event('returnID')) and len(arguments.$.event('returnUserID'))>
 		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 			select created from tredirects
-			where redirectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#$.event('returnID')#" >
+			where redirectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.$.event('returnID')#" >
 		</cfquery>
 		<cfif rs.recordcount and rs.created gte dateAdd("d",-1,now())>
-			<cfset loginByUserID($.event('returnUserID'),$.event('siteID'))>
+			<cfset loginByUserID($.event('returnUserID'),arguments.$.event('siteID'))>
 			<cfset structDelete(session,"siteArray")>
 		</cfif>
 	</cfif>

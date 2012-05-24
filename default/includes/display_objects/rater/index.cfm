@@ -44,49 +44,49 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfif not listFind("Portal,Gallery",$.content('type'))>
+<cfif not listFind("Portal,Gallery",variables.$.content('type'))>
 <cfsilent>
-<cfset $.loadJSLib() />
-<cfswitch expression="#$.getJsLib()#">
+<cfset variables.$.loadJSLib() />
+<cfswitch expression="#variables.$.getJsLib()#">
 	<cfcase value="jquery">
-	 	<cfset $.addToHTMLHeadQueue("rater/htmlhead/rater-jquery.cfm")>
+	 	<cfset variables.$.addToHTMLHeadQueue("rater/htmlhead/rater-jquery.cfm")>
 	</cfcase>
 	<cfdefaultcase>
-		<cfset $.addToHTMLHeadQueue("rater/htmlhead/rater-prototype.cfm")>
+		<cfset variables.$.addToHTMLHeadQueue("rater/htmlhead/rater-prototype.cfm")>
 	</cfdefaultcase>
 	</cfswitch>
-<cfset $.addToHTMLHeadQueue("rater/htmlhead/rater.cfm")>
+<cfset variables.$.addToHTMLHeadQueue("rater/htmlhead/rater.cfm")>
 
-<cfif not isNumeric($.event('rate'))>
-	<cfset $.event('rate',0)>
+<cfif not isNumeric(variables.$.event('rate'))>
+	<cfset variables.$.event('rate',0)>
 </cfif>
 
-<cfset $.event('raterID',$.getPersonalizationID()) />
-<cfif listFind($.event('doaction'),"saveRate") and $.event('raterID') neq ''>
-	<cfset myRate=$.getBean('raterManager').saveRate(
-	$.content('contentID'),
-	$.event('siteID'),
-	$.event('raterID'),
-	$.event('rate')) />
+<cfset variables.$.event('raterID',variables.$.getPersonalizationID()) />
+<cfif listFind(variables.$.event('doaction'),"saveRate") and variables.$.event('raterID') neq ''>
+	<cfset myRate=variables.$.getBean('raterManager').saveRate(
+	variables.$.content('contentID'),
+	variables.$.event('siteID'),
+	variables.$.event('raterID'),
+	variables.$.event('rate')) />
 <cfelse>
-	<cfset myRate = $.getBean('raterManager').readRate(
-	$.content('contentID'),
-	$.content('siteID'),
-	$.event('raterID')) />
+	<cfset myRate = variables.$.getBean('raterManager').readRate(
+	variables.$.content('contentID'),
+	variables.$.content('siteID'),
+	variables.$.event('raterID')) />
 </cfif>
-<cfset rsRating=$.getBean('raterManager').getAvgRating($.content('contentID'),$.content('siteID')) />
+<cfset rsRating=variables.$.getBean('raterManager').getAvgRating(variables.$.content('contentID'),variables.$.content('siteID')) />
 
 </cfsilent>
 <cfoutput>
 <div id="svRatings" class="clearfix">	
 	<div id="rateIt">
-	<#$.getHeaderTag('subHead1')#>#$.rbKey('rater.ratethis')#</#$.getHeaderTag('subHead1')#>				
+	<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('rater.ratethis')#</#variables.$.getHeaderTag('subHead1')#>				
 		<form name="rater1" id="rater1" method="post" action="">
 			<input type="hidden" id="rate" name="rate" value="##">
-			<input type="hidden" id="userID" name="userID" value="#$.event('raterID')#">
-			<input type="hidden" id="loginURL" name="loginURL" value="#$.siteConfig('loginURL')#&returnURL=#URLencodedFormat($.getCurrentURL(true,'doaction=saveRate&rate='))#">
-			<input type="hidden" id="siteID" name="siteID" value="#$.event('siteID')#">
-			<input type="hidden" id="contentID" name="contentID" value="#$.content('contentID')#">
+			<input type="hidden" id="userID" name="userID" value="#variables.$.event('raterID')#">
+			<input type="hidden" id="loginURL" name="loginURL" value="#variables.$.siteConfig('loginURL')#&returnURL=#URLencodedFormat(variables.$.getCurrentURL(true,'doaction=saveRate&rate='))#">
+			<input type="hidden" id="siteID" name="siteID" value="#variables.$.event('siteID')#">
+			<input type="hidden" id="contentID" name="contentID" value="#variables.$.content('contentID')#">
 			<input type="hidden" id="formID" name="formID" value="rater1">
 			<fieldset>
 				<label for="rater1_rater_input0radio1"><input type="radio" name="rater1_rater_input0" id="rater1_rater_input0radio1" value="1" class="stars" <cfif myRate.getRate() eq 1>checked</cfif> >Not at All</label>
@@ -101,8 +101,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<div id="avgrating">
 		<cfif rsRating.theCount gt 0>
-			<#$.getHeaderTag('subHead1')#>#$.rbKey('rater.avgrating')# (<span id="numvotes">#rsRating.theCount# <cfif rsRating.theCount neq 1>#$.rbKey('rater.votes')#<cfelse>#$.rbKey('rater.vote')#</cfif></span>)</#$.getHeaderTag('subHead1')#>
-			<div id="avgratingstars" class="ratestars #$.getBean('raterManager').getStarText(rsRating.theAvg)#<!--- #replace(rsRating.theAvg(),".","")# --->">
+			<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('rater.avgrating')# (<span id="numvotes">#rsRating.theCount# <cfif rsRating.theCount neq 1>#variables.$.rbKey('rater.votes')#<cfelse>#variables.$.rbKey('rater.vote')#</cfif></span>)</#variables.$.getHeaderTag('subHead1')#>
+			<div id="avgratingstars" class="ratestars #variables.$.getBean('raterManager').getStarText(rsRating.theAvg)#<!--- #replace(rsRating.theAvg(),".","")# --->">
 			<cfif isNumeric(rsRating.theAvg)>#rsRating.theAvg#<cfelse>0</cfif>
 			<!--- <img id="ratestars" src="#event.getSite().getAssetPath()#/images/rater/star_#application.raterManager.getStarText(rsRating.theAvg)#.gif" alt="<cfif isNumeric(rsRating.theAvg)>#rsRating.theAvg# star<cfif rsRating.theAvg gt 1>s</cfif></cfif>" border="0"> ---></div>
 		</cfif>

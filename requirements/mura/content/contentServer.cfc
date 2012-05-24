@@ -46,18 +46,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject">
 
-<cffunction name="init" output="false" returntype="any">
-<cfset variables.Mura=createObject("component","mura.Mura").init()>
-<cfreturn this>
-</cffunction>
-
 <cffunction name="forcePathDirectoryStructure" output="false" returntype="any" access="remote">
 <cfargument name="cgi_path">
 <cfargument name="siteID">
 <cfset var qstring="">
 <cfset var contentRenderer=application.settingsManager.getSite(arguments.siteID).getContentRenderer()>
 <cfset var indexFileLen=0>
-<cfset var last=listLast(cgi_path,"/") >
+<cfset var last=listLast(arguments.cgi_path,"/") >
 <cfset var indexFile="" >	
 
 <cfif find(".",last)>
@@ -66,7 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset indexFileLen=len(indexFile)>
 
-<cfif len(cgi_path) and right(cgi_path,1) neq "/"  and (not indexFileLen or indexFileLen and (right(cgi_path,indexFileLen) neq indexFile))>
+<cfif len(arguments.cgi_path) and right(arguments.cgi_path,1) neq "/"  and (not indexFileLen or indexFileLen and (right(cgi_path,indexFileLen) neq indexFile))>
 	<cfif len(cgi.query_string)>
 	<cfset qstring="?" & cgi.query_string>
 	<cfelse>
@@ -222,7 +217,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfset parseCustomURLVars(request.servletEvent)>
 		
-		<cfreturn variables.Mura.doRequest(request.servletEvent)>
+		<cfreturn doRequest(request.servletEvent)>
 		
 	<cfelse>
 		<cfset redirect()>
@@ -352,7 +347,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif arguments.parseURL>
 		<cfset parseCustomURLVars(request.servletEvent)>
 	</cfif>
-	<cfset fileOutput=variables.Mura.doRequest(request.servletEvent)>	
+	<cfset fileOutput=doRequest(request.servletEvent)>	
 	<cfoutput>#fileOutput#</cfoutput>
 	<cfabort>
 
@@ -448,6 +443,83 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn pageContent>
 	</cfif> 
 	<cfreturn "">
+</cffunction>
+
+<cffunction name="doRequest" output="false" returntype="any">
+<cfargument name="event">
+	<cfset var response=""/>
+	<cfset var servlet = "" />
+	<cfset var localHandler=""/>
+	<cfset var previewData=""/>
+	
+	<cfset var trace=""/>
+	<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#/#arguments.event.getValue('siteid')#/includes/servlet.cfc"))>
+		<cfset servlet=createObject("component","#application.configBean.getWebRootMap()#.#arguments.event.getValue('siteid')#.includes.servlet").init(arguments.event)>
+	<cfelse>
+		<cfset arguments.event.getHandler("standardSetContentRenderer").handle(arguments.event)>
+	</cfif>
+	
+	<cfset request.muraFrontEndRequest=true>
+
+	<cfif structKeyExists(url,"changesetID")>
+		<cfset getBean('changesetManager').setSessionPreviewData(url.changesetID)>
+	</cfif>
+	
+	<cfset previewData=getCurrentUser().getValue("ChangesetPreviewData")>
+	<cfset request.muraChangesetPreview=isStruct(previewData) and previewData.siteID eq arguments.event.getValue("siteID")>
+	
+	<cfif request.muraChangesetPreview>
+		<cfset request.nocache=1>
+	</cfif>
+	
+	<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#arguments.event.getValue('siteid')#/includes/eventHandler.cfc")>
+		<cfset localHandler=createObject("component","#application.configBean.getWebRootMap()#.#arguments.event.getValue('siteid')#.includes.eventHandler").init()>
+		<cfset localHandler._objectName=getMetaData(localHandler).name>
+	</cfif>
+
+	<cfset arguments.event.setValue("localHandler",localHandler)/>
+	
+	<cfset application.pluginManager.announceEvent('onSiteRequestStart',arguments.event)/>
+
+	<cfif isdefined("servlet.onRequestStart")>
+		<cfset servlet.onRequestStart()>
+	</cfif>
+	
+	<cfif isdefined("servlet.doRequest")>
+		<cfset response=servlet.doRequest()>
+	<cfelse>
+		<cfset arguments.event.getHandler("standardSetContent").handle(arguments.event)>
+	
+		<cfset arguments.event.getValidator("standardWrongDomain").validate(arguments.event)> 
+		
+		<cfset arguments.event.getValidator("standardTrackSession").validate(arguments.event)>
+		
+		<cfset arguments.event.getHandler("standardSetPermissions").handle(arguments.event)>
+		
+		<cfset arguments.event.getHandler("standardSetIsOnDisplay").handle(arguments.event)>
+		
+		<cfset arguments.event.getHandler("standardDoActions").handle(arguments.event)>
+		
+		<cfset arguments.event.getValidator("standardRequireLogin").validate(arguments.event)>
+		
+		<cfset arguments.event.getHandler("standardSetLocale").handle(arguments.event)>
+		
+		<cfset arguments.event.getValidator("standardMobile").validate(arguments.event)>
+
+	 	<cfset arguments.event.getHandler("standardDoResponse").handle(arguments.event)>
+		
+		<cfset response=arguments.event.getValue("__MuraResponse__")>
+	</cfif>
+
+	<cfif isdefined("servlet.onRequestEnd")>
+		<cfset servlet.onRequestEnd()>
+	</cfif>
+
+	<cfset application.pluginManager.announceEvent('onSiteRequestEnd',arguments.event)/>
+	<cfif isDefined("session.mura.showTrace") and session.mura.showTrace and listFindNoCase(session.mura.memberships,"S2IsPrivate")>
+		<cfset response=replaceNoCase(response,"</html>","#application.utility.dumpTrace()#</html>")>
+	</cfif>
+	<cfreturn response>
 </cffunction>
 
 </cfcomponent>

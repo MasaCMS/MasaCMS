@@ -455,71 +455,71 @@
 					length=50
 				}>
 
-	<cfloop query="rs">
-		<cfset columnsArgs=structCopy(defaultArgs)>
-		<cfset columnsArgs.column=rs.column_name>
-		<cfset columnsArgs.table=arguments.table>
+	<cfloop query="arguments.rs">
+		<cfset columnArgs=structCopy(defaultArgs)>
+		<cfset columnArgs.column=arguments.rs.column_name>
+		<cfset columnArgs.table=arguments.table>
 		
-		<cfswitch expression="#rs.type_name#">
+		<cfswitch expression="#arguments.rs.type_name#">
 			<cfcase value="varchar,nvarchar,varchar2">
 				<!--- Add MSSQL nvarchar(max)--->
-				<cfset columnsArgs.datatype="varchar">
-				<cfset columnsArgs.length=rs.column_size>
+				<cfset columnArgs.datatype="varchar">
+				<cfset columnArgs.length=arguments.rs.column_size>
 			</cfcase>
 			<cfcase value="char">
-				<cfset columnsArgs.datatype="varchar">
-				<cfset columnsArgs.length=rs.column_size>
+				<cfset columnArgs.datatype="varchar">
+				<cfset columnArgs.length=arguments.rs.column_size>
 			</cfcase>
 			<cfcase value="int">
-				<cfset columnsArgs.datatype="int">
+				<cfset columnArgs.datatype="int">
 			</cfcase>
 			<cfcase value="number">
-				<cfif rs.column_size eq 10>
-					<cfset columnsArgs.datatype="int">
+				<cfif arguments.rs.column_size eq 10>
+					<cfset columnArgs.datatype="int">
 				<cfelse>
-					<cfset columnsArgs.datatype="tinyint">
+					<cfset columnArgs.datatype="tinyint">
 				</cfif>
 			</cfcase>
 			<cfcase value="tinyint">
-				<cfset columnsArgs.datatype="tinyint">
+				<cfset columnArgs.datatype="tinyint">
 			</cfcase>
 			<cfcase value="date,datetime">
-				<cfset columnsArgs.datatype="datetime">
+				<cfset columnArgs.datatype="datetime">
 			</cfcase>
 			<cfcase value="ntext,longtext,clob">
-				<cfset columnsArgs.datatype="longtext">
+				<cfset columnArgs.datatype="longtext">
 			</cfcase>
 			<cfcase value="text">
-				<cfset columnsArgs.datatype="text">
+				<cfset columnArgs.datatype="text">
 			</cfcase>
 			<cfcase value="float,binary_float">
-				<cfset columnsArgs.datatype="float">
+				<cfset columnArgs.datatype="float">
 			</cfcase>
 			<cfcase value="double,decimal,binary_double">
-				<cfset columnsArgs.datatype="double">
+				<cfset columnArgs.datatype="double">
 			</cfcase>
 		</cfswitch>
 
-		<cfif rs.is_nullable eq "y" or (isBoolean(rs.is_nullable) and rs.is_nullable)>
-			<cfset columnsArgs.nullable=true>
+		<cfif arguments.rs.is_nullable eq "y" or (isBoolean(arguments.rs.is_nullable) and arguments.rs.is_nullable)>
+			<cfset columnArgs.nullable=true>
 		<cfelse>
-			<cfset columnsArgs.nullable=false>
+			<cfset columnArgs.nullable=false>
 		</cfif>
 
-		<cfif len(rs.column_default_value)>
-			<cfset columnsArgs.default=rs.column_default_value>
+		<cfif len(arguments.rs.column_default_value)>
+			<cfset columnArgs.default=arguments.rs.column_default_value>
 		</cfif>
 
-		<cfif len(columnsArgs.default) and columnsArgs.default neq "null"
-			and listFindNoCase("tinyint,int,float,double",columnsArgs.datatype)>
-			<cfset columnsArgs.default=_parseInt(columnsArgs.default)>
+		<cfif len(columnArgs.default) and columnArgs.default neq "null"
+			and listFindNoCase("tinyint,int,float,double",columnArgs.datatype)>
+			<cfset columnArgs.default=_parseInt(columnArgs.default)>
 		</cfif>
 
-		<cfif not columnsArgs.nullable and columnsArgs.datatype eq "int" and isDefined('rs.is_primarykey') and rs.is_primarykey>
-			<cfset columnsArgs.autoincrement=true>
+		<cfif not columnArgs.nullable and columnArgs.datatype eq "int" and isDefined('rs.is_primarykey') and arguments.rs.is_primarykey>
+			<cfset columnArgs.autoincrement=true>
 		</cfif>
 
-		<cfset arrayAppend(columnsArray,columnsArgs)>
+		<cfset arrayAppend(columnsArray,columnArgs)>
 	</cfloop>
 
 	<cfreturn columnsArray>
@@ -530,6 +530,7 @@
 	<cfargument name="column">
 	<cfargument name="table" default="#variables.table#">
 	<cfset var columnsArray=columns(arguments.table)>
+	<cfset var i ="">
 
 	<cfif arrayLen(columnsArray)>
 		<cfloop from="1" to="#arrayLen(columnsArray)#" index="i">
@@ -930,8 +931,8 @@ function _parseInt(String){
     var NewString = "";
     var i = 1;
 
-    for(i=1; i lt Len(String); i = i + 1) {
-        if( isNumeric( mid(String,i,1) ) ) { newString = val( mid( String,i,Len(String) ) ); break;}
+    for(i=1; i lt Len(arguments.String); i = i + 1) {
+        if( isNumeric( mid(arguments.String,i,1) ) ) { newString = val( mid( arguments.String,i,Len(arguments.String) ) ); break;}
     }
     return NewString;
 }

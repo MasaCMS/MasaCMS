@@ -44,9 +44,9 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent output="false" extends="mura.cfobject">
+<cfcomponent output="false" extends="mura.cfobject" hint="This file has been deprecated">
 <cfset msg="">
-	
+
 <cffunction name="init" returntype="any" access="public" output="false">
 	<cfargument name="event">
 	
@@ -54,38 +54,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset event.getHandler("standardSetContentRenderer").handle(event)>
 	
 	<cfreturn this />
-</cffunction>
-
-<cffunction name="onRequestStart" access="public" returnType="void" output="false">
-</cffunction>
-
-<cffunction name="onRequestEnd" access="public" returnType="void" output="false">
-</cffunction>
-
-<cffunction name="doRequest" returntype="any"  access="public" output="false">
-	
-	<cfset event.getHandler("standardSetContent").handle(event)>
-	
-	<cfset event.getValidator("standardWrongDomain").validate(event)> 
-	
-	<cfset event.getValidator("standardTrackSession").validate(event)>
-	
-	<cfset event.getHandler("standardSetPermissions").handle(event)>
-	
-	<cfset event.getHandler("standardSetIsOnDisplay").handle(event)>
-	
-	<cfset event.getHandler("standardDoActions").handle(event)>
-	
-	<cfset event.getValidator("standardRequireLogin").validate(event)>
-	
-	<cfset event.getHandler("standardSetLocale").handle(event)>
-	
-	<cfset event.getValidator("standardMobile").validate(event)>
-
- 	<cfset event.getHandler("standardDoResponse").handle(event)>
-	
-	<cfreturn event.getValue("__MuraResponse__")>
-	
 </cffunction>
 
 </cfcomponent>

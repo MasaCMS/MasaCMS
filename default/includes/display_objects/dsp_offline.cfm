@@ -46,6 +46,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfoutput>
-<#$.getHeaderTag('headline')#>#$.rbKey('sitemanager.offline')#</#$.getHeaderTag('headline')#>
-<p>#$.rbKey('sitemanager.offlineinstructions')#</p>
+<#variables.$.getHeaderTag('headline')#>#variables.$.rbKey('sitemanager.offline')#</#variables.$.getHeaderTag('headline')#>
+<p>#variables.$.rbKey('sitemanager.offlineinstructions')#</p>
 </cfoutput>

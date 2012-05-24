@@ -75,9 +75,9 @@ document.getElementById('responseDisplayFields').value=document.getElementById('
         </select></td>
       <td><table>
           <tr>
-            <td class="nested"><input type="button" value=">>" onclick="addObject('availableFields','summaryList','summaryList2');setFields();" class="objectNav">
+            <td class="nested"><input type="button" value=">>" onclick="addObject('availableFields','summaryList','summaryList2');" class="objectNav">
               <br />
-              <input type="button" value="<<" onclick="deleteObject('summaryList','summaryList2');setFields();" class="objectNav">            </td>
+              <input type="button" value="<<" onclick="deleteObject('summaryList','summaryList2');" class="objectNav">            </td>
             <td class="nested"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.summarydisplayfields')#<br />
               <select name="summaryList" id="summaryList" size="4" class="multiSelect">
                 <cfif summaryList neq "">
@@ -86,15 +86,15 @@ document.getElementById('responseDisplayFields').value=document.getElementById('
                   </cfloop>
                 </cfif>
               </select>
-              <input style="display:none" type="text" name="summaryList2" id="summaryList2" value="#summaryList#" class="multiSelect">            </td>
-            <td  class="nested"><input type="button" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.up')#" onclick="moveUp('summaryList','summaryList2');setFields();" class="objectNav">
+              <input type="hidden" name="summaryList2" id="summaryList2" value="#summaryList#" class="multiSelect">            </td>
+            <td  class="nested"><input type="button" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.up')#" onclick="moveUp('summaryList','summaryList2');" class="objectNav">
               <br />
-              <input type="button" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.down')#" onclick="moveDown('summaryList','summaryList2');setFields();" class="objectNav">            </td>
+              <input type="button" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.down')#" onclick="moveDown('summaryList','summaryList2');" class="objectNav">            </td>
           </tr>
           <tr>
-            <td class="nested"><input type="button" value=">>" onclick="addObject('availableFields','detailList','detailList2');setFields();" class="objectNav">
+            <td class="nested"><input type="button" value=">>" onclick="addObject('availableFields','detailList','detailList2');" class="objectNav">
               <br />
-              <input type="button" value="<<" onclick="deleteObject('detailList','detailList2');setFields();" class="objectNav">            </td>
+              <input type="button" value="<<" onclick="deleteObject('detailList','detailList2');" class="objectNav">            </td>
             <td class="nested"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.detaildisplayfields')#<br />
               <select name="detailList"  id="detailList" size="4" style="width:310px;">
                 <cfif detailList neq "">
@@ -103,13 +103,13 @@ document.getElementById('responseDisplayFields').value=document.getElementById('
                   </cfloop>
                 </cfif>
               </select>
-              <input style="display:none" type="text" name="detailList2" id="detailList2" value="#detailList#">            </td>
-            <td  class="nested"><input type="button" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.up')#" onclick="moveUp('detailList','detailList2');setFields();" class="objectNav">
+              <input type="hidden" name="detailList2" id="detailList2" value="#detailList#">            </td>
+            <td  class="nested"><input type="button" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.up')#" onclick="moveUp('detailList','detailList2');" class="objectNav">
               <br />
-              <input type="button" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.down')#" onclick="moveDown('detailList','detailList2');setFields();" class="objectNav">            </td>
+              <input type="button" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.down')#" onclick="moveDown('detailList','detailList2');" class="objectNav">            </td>
           </tr>
         </table>
-        <input style="display:none" type="text" name="responseDisplayFields" id="responseDisplayFields" value="#request.contentBean.getResponseDisplayFields()#"/></td>
+       </td>
     </tr>
   </table>
   </dd>

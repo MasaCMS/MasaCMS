@@ -2,18 +2,18 @@
 
 	<cfcase value="mssql">		
 
-		<cfset runDBUpdate=false/>
+		<cfset variables.RUNDBUPDATE=false/>
 
 		<cftry>
 			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 				SELECT TOP 1 changesetID AS CheckIfTableExists FROM tchangesets
 			</cfquery>
 			<cfcatch>
-				<cfset runDBUpdate = true />
+				<cfset variables.RUNDBUPDATE = true />
 			</cfcatch>
 		</cftry>
 			
-		<cfif runDBUpdate>
+		<cfif variables.RUNDBUPDATE>
 		
 		<cftransaction>
 		
@@ -85,17 +85,17 @@
 	
 	</cfcase>
 	<cfcase value="mysql">
-		<cfset runDBUpdate=false/>
+		<cfset variables.RUNDBUPDATE=false/>
 		<cftry>
 			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 				select changesetID as CheckIfTableExists from tchangesets limit 1
 			</cfquery>
 			<cfcatch>
-				<cfset runDBUpdate=true/>
+				<cfset variables.RUNDBUPDATE=true/>
 			</cfcatch>
 		</cftry>
 		
-		<cfif runDBUpdate>
+		<cfif variables.RUNDBUPDATE>
 			<cftry>
 				<cftransaction>
 					<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
@@ -162,17 +162,17 @@
 		</cfif>
 	</cfcase>
 	<cfcase value="oracle">
-		<cfset runDBUpdate=false/>
+		<cfset variables.RUNDBUPDATE=false/>
 		<cftry>
 			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 				select * from (select changesetID as CheckIfTableExists from tchangesets) where ROWNUM <=1
 			</cfquery>
 			<cfcatch>
-				<cfset runDBUpdate=true/>
+				<cfset variables.RUNDBUPDATE=true/>
 			</cfcatch>
 		</cftry>
 		
-		<cfif runDBUpdate>
+		<cfif variables.RUNDBUPDATE>
 			<cftransaction>
 			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 			CREATE TABLE "TCHANGESETS" (
@@ -393,18 +393,18 @@ update tsettings set hasChangesets=0
 
 </cfif>
 
-<cfset doUpdate=false>
+<cfset variables.DOUPDATE=false>
 
 <cftry>
 <cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 select urltitle from tcontentcategories  where 0=1
 </cfquery>
 <cfcatch>
-<cfset doUpdate=true>
+<cfset variables.DOUPDATE=true>
 </cfcatch>
 </cftry>
 
-<cfif doUpdate>
+<cfif variables.DOUPDATE>
 <cfswitch expression="#getDbType()#">
 <cfcase value="mssql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
