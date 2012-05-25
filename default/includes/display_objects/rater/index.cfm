@@ -63,18 +63,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset variables.$.event('raterID',variables.$.getPersonalizationID()) />
 <cfif listFind(variables.$.event('doaction'),"saveRate") and variables.$.event('raterID') neq ''>
-	<cfset myRate=variables.$.getBean('raterManager').saveRate(
+	<cfset variables.myRate=variables.$.getBean('raterManager').saveRate(
 	variables.$.content('contentID'),
 	variables.$.event('siteID'),
 	variables.$.event('raterID'),
 	variables.$.event('rate')) />
 <cfelse>
-	<cfset myRate = variables.$.getBean('raterManager').readRate(
+	<cfset variables.myRate = variables.$.getBean('raterManager').readRate(
 	variables.$.content('contentID'),
 	variables.$.content('siteID'),
 	variables.$.event('raterID')) />
 </cfif>
-<cfset rsRating=variables.$.getBean('raterManager').getAvgRating(variables.$.content('contentID'),variables.$.content('siteID')) />
+<cfset variables.rsRating=variables.$.getBean('raterManager').getAvgRating(variables.$.content('contentID'),variables.$.content('siteID')) />
 
 </cfsilent>
 <cfoutput>
@@ -89,22 +89,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<input type="hidden" id="contentID" name="contentID" value="#variables.$.content('contentID')#">
 			<input type="hidden" id="formID" name="formID" value="rater1">
 			<fieldset>
-				<label for="rater1_rater_input0radio1"><input type="radio" name="rater1_rater_input0" id="rater1_rater_input0radio1" value="1" class="stars" <cfif myRate.getRate() eq 1>checked</cfif> >Not at All</label>
-				<label for="rater1_rater_input0radio2"><input type="radio" name="rater1_rater_input0" id="rater1_rater_input0radio2" value="2" class="stars"  <cfif myRate.getRate() eq 2>checked</cfif>>Somewhat</label>
-				<label for="rater1_rater_input0radio3"><input type="radio" name="rater1_rater_input0" id="rater1_rater_input0radio3" value="3" class="stars" <cfif myRate.getRate() eq 3>checked</cfif>>Moderately</label>
-				<label for="rater1_rater_input0radio4"><input type="radio" name="rater1_rater_input0" id="rater1_rater_input0radio4" value="4" class="stars" <cfif myRate.getRate() eq 4>checked</cfif> >Highly</label>
-				<label for="rater1_rater_input0radio5"><input type="radio" name="rater1_rater_input0" id="rater1_rater_input0radio5" value="5" class="stars" <cfif myRate.getRate() eq 5>checked</cfif>>Very Highly</label>
+				<label for="rater1_rater_input0radio1"><input type="radio" name="rater1_rater_input0" id="rater1_rater_input0radio1" value="1" class="stars" <cfif variables.myRate.getRate() eq 1>checked</cfif> >Not at All</label>
+				<label for="rater1_rater_input0radio2"><input type="radio" name="rater1_rater_input0" id="rater1_rater_input0radio2" value="2" class="stars"  <cfif variables.myRate.getRate() eq 2>checked</cfif>>Somewhat</label>
+				<label for="rater1_rater_input0radio3"><input type="radio" name="rater1_rater_input0" id="rater1_rater_input0radio3" value="3" class="stars" <cfif variables.myRate.getRate() eq 3>checked</cfif>>Moderately</label>
+				<label for="rater1_rater_input0radio4"><input type="radio" name="rater1_rater_input0" id="rater1_rater_input0radio4" value="4" class="stars" <cfif variables.myRate.getRate() eq 4>checked</cfif> >Highly</label>
+				<label for="rater1_rater_input0radio5"><input type="radio" name="rater1_rater_input0" id="rater1_rater_input0radio5" value="5" class="stars" <cfif variables.myRate.getRate() eq 5>checked</cfif>>Very Highly</label>
 				<!---<input type="submit" value="rate it" class="submit">--->
 			</fieldset>
 		</form>									
 	</div>
 	
 	<div id="avgrating">
-		<cfif rsRating.theCount gt 0>
-			<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('rater.avgrating')# (<span id="numvotes">#rsRating.theCount# <cfif rsRating.theCount neq 1>#variables.$.rbKey('rater.votes')#<cfelse>#variables.$.rbKey('rater.vote')#</cfif></span>)</#variables.$.getHeaderTag('subHead1')#>
-			<div id="avgratingstars" class="ratestars #variables.$.getBean('raterManager').getStarText(rsRating.theAvg)#<!--- #replace(rsRating.theAvg(),".","")# --->">
-			<cfif isNumeric(rsRating.theAvg)>#rsRating.theAvg#<cfelse>0</cfif>
-			<!--- <img id="ratestars" src="#event.getSite().getAssetPath()#/images/rater/star_#application.raterManager.getStarText(rsRating.theAvg)#.gif" alt="<cfif isNumeric(rsRating.theAvg)>#rsRating.theAvg# star<cfif rsRating.theAvg gt 1>s</cfif></cfif>" border="0"> ---></div>
+		<cfif variables.rsRating.theCount gt 0>
+			<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('rater.avgrating')# (<span id="numvotes">#variables.rsRating.theCount# <cfif variables.rsRating.theCount neq 1>#variables.$.rbKey('rater.votes')#<cfelse>#variables.$.rbKey('rater.vote')#</cfif></span>)</#variables.$.getHeaderTag('subHead1')#>
+			<div id="avgratingstars" class="ratestars #variables.$.getBean('raterManager').getStarText(variables.rsRating.theAvg)#<!--- #replace(variables.rsRating.theAvg(),".","")# --->">
+			<cfif isNumeric(variables.rsRating.theAvg)>#variables.rsRating.theAvg#<cfelse>0</cfif>
+			<!--- <img id="ratestars" src="#event.getSite().getAssetPath()#/images/rater/star_#application.raterManager.getStarText(variables.rsRating.theAvg)#.gif" alt="<cfif isNumeric(variables.rsRating.theAvg)>#variables.rsRating.theAvg# star<cfif variables.rsRating.theAvg gt 1>s</cfif></cfif>" border="0"> ---></div>
 		</cfif>
 		<script type="text/javascript">
 		  initRatings('rater1');
