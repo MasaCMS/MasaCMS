@@ -47,12 +47,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfsilent>
 	<cfif isValid("UUID",arguments.objectID)>
-		<cfset variables.bean = variables.$.getBean("content").loadBy(contentID=arguments.objectID,siteID=arguments.siteID)>
+		<cfset bean = variables.$.getBean("content").loadBy(contentID=arguments.objectID,siteID=arguments.siteID)>
 	<cfelse>
-		<cfset variables.bean = variables.$.getBean("content").loadBy(title=arguments.objectID,siteID=arguments.siteID)>
+		<cfset bean = variables.$.getBean("content").loadBy(title=arguments.objectID,siteID=arguments.siteID)>
 	</cfif>
-	<cfset variables.rsForm=variables.bean.getAllValues()>
-	<cfset variables.event.setValue("formBean",variables.bean)>
+	<cfset variables.rsForm=bean.getAllValues()>
+	<cfset variables.event.setValue("formBean",bean)>
 	
 	<cfset variables.rsForm.isOnDisplay=variables.rsForm.display eq 1 or 
 			(
