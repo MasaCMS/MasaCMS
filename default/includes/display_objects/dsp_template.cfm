@@ -46,15 +46,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfsilent>
 	<cfif isValid("UUID",arguments.objectID)>
-		<cfset bean = $.getBean("content").loadBy(contentID=arguments.objectID,siteID=arguments.siteID)>
+		<cfset bean = variables.$.getBean("content").loadBy(contentID=arguments.objectID,siteID=arguments.siteID)>
 	<cfelse>
-		<cfset bean = $.getBean("content").loadBy(title=arguments.objectID,siteID=arguments.siteID)>
+		<cfset bean = variables.$.getBean("content").loadBy(title=arguments.objectID,siteID=arguments.siteID)>
 	</cfif>
 	
 	<cfset variables.rsTemplate=bean.getAllValues()>
-	<cfset event.setValue("component",variables.rsTemplate)>
+	<cfset variables.event.setValue("component",variables.rsTemplate)>
 	
-	<!---<cfset variables._component=$.event("component")>
+	<!---<cfset variables._component=variables.$.event("component")>
 	
 	<cfif isStruct(variables._component)>
 		<cfset structAppend(variables._component,variables.rsTemplate,true)>
@@ -77,8 +77,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset editableControl.innerHTML = "">
 
 	<cfif not bean.getIsNew() and this.showEditableObjects  and objectPerm eq 'editor'>
-		<cfset $.loadShadowBoxJS()>
-		<cfset $.addToHTMLHeadQueue('editableObjects.cfm')>
+		<cfset variables.$.loadShadowBoxJS()>
+		<cfset variables.$.addToHTMLHeadQueue('editableObjects.cfm')>
 		<cfif len(application.configBean.getAdminDomain())>
 			<cfif application.configBean.getAdminSSL()>
 				<cfset variables.adminBase="https://#application.configBean.getAdminDomain()#"/>
@@ -89,9 +89,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.adminBase=""/>
 		</cfif>
 		
-		<cfset editableControl.editLink = variables.adminBase & "#$.globalConfig('context')#/admin/index.cfm?fuseaction=cArch.edit">
-		<cfif len($.event('previewID'))>
-			<cfset editableControl.editLink = editableControl.editLink & "&amp;contenthistid=" & $.event('previewID')>
+		<cfset editableControl.editLink = variables.adminBase & "#variables.$.globalConfig('context')#/admin/index.cfm?fuseaction=cArch.edit">
+		<cfif len(variables.$.event('previewID'))>
+			<cfset editableControl.editLink = editableControl.editLink & "&amp;contenthistid=" & variables.$.event('previewID')>
 		<cfelse>
 			<cfset editableControl.editLink = editableControl.editLink & "&amp;contenthistid=" & bean.getContentHistID()>
 		</cfif>
@@ -103,9 +103,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;parentid=" & bean.getParentID()>
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;moduleid=" & bean.getModuleID()>
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;compactDisplay=true">
-		<cfset editableControl.editLink = editableControl.editLink & "&amp;homeid=" & $.content('contentID')>
+		<cfset editableControl.editLink = editableControl.editLink & "&amp;homeid=" & variables.$.content('contentID')>
 		<!---
-		<cfset editableControl.historyLink = adminBase & "#$.globalConfig('context')#/admin/index.cfm?fuseaction=cArch.hist">
+		<cfset editableControl.historyLink = adminBase & "#variables.$.globalConfig('context')#/admin/index.cfm?fuseaction=cArch.hist">
 		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;siteid=" & bean.getSiteID()>
 		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;contentid=" & bean.getContentID()>
 		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;topid=00000000000000000000000000000000001">
@@ -115,13 +115,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;startrow=1">
 		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;compactDisplay=true">
 		--->
-		<cfset editableControl.innerHTML = generateEditableObjectControl(editableControl.editLink)>
+		<cfset editableControl.innerHTML = variables.$generateEditableObjectControl(editableControl.editLink)>
 	</cfif>
 </cfsilent>
 
 
 <cfif editableControl.innerHTML neq "">
-	<cfoutput>#$.renderEditableObjectHeader("editableComponent")#</cfoutput>
+	<cfoutput>#variables.$.renderEditableObjectHeader("editableComponent")#</cfoutput>
 </cfif>
 <cfif variables.rsTemplate.isOnDisplay>
 	<cfset variables.componentOutput=application.pluginManager.renderEvent("onComponent#bean.getSubType()#BodyRender",event)>
@@ -132,12 +132,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.componentBody=variables.rsTemplate.body>
 			<cfinclude template="#getSite().getTemplateIncludePath()#/components/#variables.rsTemplate.template#">
 		<cfelse>
-			<cfoutput>#$.setDynamicContent(variables.rsTemplate.body)#</cfoutput>
+			<cfoutput>#variables.$.setDynamicContent(variables.rsTemplate.body)#</cfoutput>
 		</cfif>
 	</cfif>
 </cfif>
 <cfif editableControl.innerHTML neq "">
-	<cfoutput>#renderEditableObjectFooter(editableControl.innerHTML)#</cfoutput>
+	<cfoutput>#variables.$renderEditableObjectFooter(editableControl.innerHTML)#</cfoutput>
 </cfif>
 <cfif not variables.rsTemplate.doCache>
 	<cfset request.cacheItem=variables.rsTemplate.doCache/>

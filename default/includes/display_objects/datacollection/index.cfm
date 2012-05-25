@@ -51,8 +51,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfset variables.bean = variables.$.getBean("content").loadBy(title=arguments.objectID,siteID=arguments.siteID)>
 	</cfif>
-	<cfset variables.rsForm=bean.getAllValues()>
-	<cfset event.setValue("formBean",variables.bean)>
+	<cfset variables.rsForm=variables.bean.getAllValues()>
+	<cfset variables.event.setValue("formBean",variables.bean)>
 	
 	<cfset variables.rsForm.isOnDisplay=variables.rsForm.display eq 1 or 
 			(
