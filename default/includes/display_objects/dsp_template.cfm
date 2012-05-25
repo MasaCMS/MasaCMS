@@ -76,7 +76,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	--->
 	<cfset editableControl.innerHTML = "">
 
-	<cfif not bean.getIsNew() and this.showEditableObjects  and objectPerm eq 'editor'>
+	<cfif not bean.getIsNew() and this.showEditableObjects  and arguments.objectPerm eq 'editor'>
 		<cfset variables.$.loadShadowBoxJS()>
 		<cfset variables.$.addToHTMLHeadQueue('editableObjects.cfm')>
 		<cfif len(application.configBean.getAdminDomain())>
