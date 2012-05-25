@@ -1379,7 +1379,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var theIncludePath = variables.event.getSite().getIncludePath() />
 	<cfset var str = "" />
 	<cfset var fileDelim= application.configBean.getFileDelim() />
-	<cfset var variables.eventOutput="" />
+	<cfset var eventOutput="" />
 	<cfset var rsPages="">
 	<cfset var cacheStub="#variables.event.getValue('contentBean').getcontentID()##variables.event.getValue('pageNum')##variables.event.getValue('startrow')##variables.event.getValue('year')##variables.event.getValue('month')##variables.event.getValue('day')##variables.event.getValue('filterby')##variables.event.getValue('categoryID')##variables.event.getValue('relatedID')#">
 	<cfset variables.event.setValue("BodyRenderArgs",arguments)>
@@ -1393,27 +1393,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfcase value="editprofile">
 						<cfset variables.event.setValue('noCache',1)>
 						<cfset variables.event.setValue('forceSSL',getSite().getExtranetSSL())/>
-						<cfset variables.eventOutput=application.pluginManager.renderEvent("onSiteEditProfileRender",variables.event)>
-						<cfif len(variables.eventOutput)>
-						<cfoutput>#variables.eventOutput#</cfoutput>
+						<cfset eventOutput=application.pluginManager.renderEvent("onSiteEditProfileRender",variables.event)>
+						<cfif len(eventOutput)>
+						<cfoutput>#eventOutput#</cfoutput>
 						<cfelse>
 						<cfoutput>#dspObject_Include(thefile='dsp_edit_profile.cfm')#</cfoutput>
 						</cfif>
 					</cfcase>
 					<cfcase value="search">
 						<cfset variables.event.setValue('noCache',1)>
-						<cfset variables.eventOutput=application.pluginManager.renderEvent("onSiteSearchRender",variables.event)>
-						<cfif len(variables.eventOutput)>
-						<cfoutput>#variables.eventOutput#</cfoutput>
+						<cfset eventOutput=application.pluginManager.renderEvent("onSiteSearchRender",variables.event)>
+						<cfif len(eventOutput)>
+						<cfoutput>#eventOutput#</cfoutput>
 						<cfelse>
 						<cfoutput>#dspObject_Include(thefile='dsp_search_results.cfm')#</cfoutput>
 						</cfif>
 					</cfcase> 
 					<cfcase value="login">
 						<cfset variables.event.setValue('noCache',1)>
-						<cfset variables.eventOutput=application.pluginManager.renderEvent("onSiteLoginPromptRender",variables.event)>
-						<cfif len(variables.eventOutput)>
-						<cfoutput>#variables.eventOutput#</cfoutput>
+						<cfset eventOutput=application.pluginManager.renderEvent("onSiteLoginPromptRender",variables.event)>
+						<cfif len(eventOutput)>
+						<cfoutput>#eventOutput#</cfoutput>
 						<cfelse>
 						<cfoutput>#dspObject_Include(thefile='dsp_login.cfm')#</cfoutput>
 						</cfif>
@@ -1429,13 +1429,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>			
 				</cfoutput>
 				
-				<cfset variables.eventOutput=application.pluginManager.renderEvent("on#variables.event.getContentBean().getType()##variables.event.getContentBean().getSubType()#BodyRender",variables.event)>
-				<cfif not len(variables.eventOutput)>
-					<cfset variables.eventOutput=application.pluginManager.renderEvent("on#variables.event.getContentBean().getType()#BodyRender",variables.event)>
+				<cfset eventOutput=application.pluginManager.renderEvent("on#variables.event.getContentBean().getType()##variables.event.getContentBean().getSubType()#BodyRender",variables.event)>
+				<cfif not len(eventOutput)>
+					<cfset eventOutput=application.pluginManager.renderEvent("on#variables.event.getContentBean().getType()#BodyRender",variables.event)>
 				</cfif>
 				
-				<cfif len(variables.eventOutput)>
-					<cfoutput>#variables.eventOutput#</cfoutput>
+				<cfif len(eventOutput)>
+					<cfoutput>#eventOutput#</cfoutput>
 				<cfelseif fileExists(expandPath(theIncludePath)  & fileDelim & "includes" & fileDelim & "display_objects" & fileDelim & "custom" & fileDelim & "extensions" & fileDelim & "dsp_" & variables.event.getValue('contentBean').getType() & "_" & variables.event.getValue('contentBean').getSubType() & ".cfm")>
 					 <cfinclude template="#theIncludePath#/includes/display_objects/custom/extensions/dsp_#variables.event.getValue('contentBean').getType()#_#variables.event.getValue('contentBean').getSubType()#.cfm">
 				<cfelseif fileExists(expandPath(theIncludePath)  & fileDelim & "includes" & fileDelim & "themes" & fileDelim & variables.$.siteConfig("theme") & fileDelim & "display_objects" & fileDelim & "custom" & fileDelim & "extensions" & fileDelim & "dsp_" & variables.event.getValue('contentBean').getType() & "_" & variables.event.getValue('contentBean').getSubType() & ".cfm")>
@@ -1513,24 +1513,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>		
 			</cfif> 
 		<cfelseif variables.event.getValue('isOnDisplay') and variables.event.getValue('r').restrict and variables.event.getValue('r').loggedIn and not variables.event.getValue('r').allow >
-			<cfset variables.eventOutput=application.pluginManager.renderEvent("onContentDenialRender",variables.event)>
-			<cfif len(variables.eventOutput)>
-			<cfoutput>#variables.eventOutput#</cfoutput>
+			<cfset eventOutput=application.pluginManager.renderEvent("onContentDenialRender",variables.event)>
+			<cfif len(eventOutput)>
+			<cfoutput>#eventOutput#</cfoutput>
 			<cfelse>
 			<cfoutput>#dspObject_Include(thefile='dsp_deny.cfm')#</cfoutput>
 			</cfif>
 		<cfelseif variables.event.getValue('isOnDisplay') and variables.event.getValue('r').restrict and not variables.event.getValue('r').loggedIn>
 			<cfset variables.event.setValue('noCache',1)>
-			<cfset variables.eventOutput=application.pluginManager.renderEvent("onSiteLoginPromptRender",variables.event)>
-			<cfif len(variables.eventOutput)>
-			<cfoutput>#variables.eventOutput#</cfoutput>
+			<cfset eventOutput=application.pluginManager.renderEvent("onSiteLoginPromptRender",variables.event)>
+			<cfif len(eventOutput)>
+			<cfoutput>#eventOutput#</cfoutput>
 			<cfelse>
 			<cfoutput>#dspObject_Include(thefile='dsp_login.cfm')#</cfoutput>
 			</cfif>
 		<cfelse>
-			<cfset variables.eventOutput=application.pluginManager.renderEvent("onContentOfflineRender",variables.event)>
-			<cfif len(variables.eventOutput)>
-			<cfoutput>#variables.eventOutput#</cfoutput>
+			<cfset eventOutput=application.pluginManager.renderEvent("onContentOfflineRender",variables.event)>
+			<cfif len(eventOutput)>
+			<cfoutput>#eventOutput#</cfoutput>
 			<cfelse>
 			<cfoutput>#dspObject_Include(thefile='dsp_offline.cfm')#</cfoutput>
 			</cfif>
