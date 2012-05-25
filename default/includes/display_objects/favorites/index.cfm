@@ -30,14 +30,14 @@
 			<cfset variables.lid = replace(variables.rsFavorites.favoriteID, "-", "", "ALL") />
 			<cfset variables.contentLink = createHref(variables.rsFavorites.Type, variables.rsFavorites.filename, variables.$.event('siteID'), variables.rsFavorites.contentID, variables.rsFavorites.target,variables.rsFavorites.targetParams, '', '#variables.$.globalConfig('context')#', '#variables.$.globalConfig('stub')#', '', 'false') />
 			<cfset variables.contentLink = "<a href='#variables.contentLink#'>#HTMLEditFormat(variables.rsFavorites.menutitle)#</a>" />
-			<li id="favorite#variables.lid#"><a href="" onclick="return deleteFavorite('#variables.favoriteID#', 'favorite#variables.lid#');" title="#xmlformat(variables.$.rbKey('favorites.removefromfavorites'))#" class="remove">[-]</a> #variables.contentLink#</li>
+			<li id="favorite#variables.lid#"><a href="" onclick="return deleteFavorite('#variables.rsFavorites.favoriteID#', 'favorite#variables.lid#');" title="#xmlformat(variables.$.rbKey('favorites.removefromfavorites'))#" class="remove">[-]</a> #variables.contentLink#</li>
 		</cfloop>
 		<cfif variables.rsFavorites.recordCount gt 5>
 			<li><a href="" onclick="return effectFunction();"><span>#variables.$.rbKey('favorites.morefavorites')#</span></a>
 				<ul id="favoriteListMore" style="display:none">
 				<cfloop query="variables.rsFavorites" startrow="6">
 					<cfif variables.$.content('contentID') eq variables.rsFavorites.contentid>
-						<cfset variables.currentPageFavoriteID = variables.favoriteID>
+						<cfset variables.currentPageFavoriteID = variables.rsFavorites.favoriteID>
 					</cfif>
 					<cfset variables.contentLink = "" />
 					<cfset variables.lid = replace(variables.rsFavorites.favoriteID, "-", "", "ALL") />
