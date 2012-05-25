@@ -124,7 +124,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfoutput>#variables.$.renderEditableObjectHeader("editableComponent")#</cfoutput>
 </cfif>
 <cfif variables.rsTemplate.isOnDisplay>
-	<cfset variables.componentOutput=application.pluginManager.renderEvent("onComponent#bean.getSubType()#BodyRender",event)>
+	<cfset variables.componentOutput=application.pluginManager.renderEvent("onComponent#bean.getSubType()#BodyRender",variables.event)>
 	<cfif len(variables.componentOutput)>
 		<cfoutput>#variables.componentOutput#</cfoutput>
 		<cfelse>
