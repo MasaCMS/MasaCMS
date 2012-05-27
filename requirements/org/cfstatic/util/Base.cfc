@@ -36,10 +36,11 @@
 	<cffunction name="$directoryClean" access="private" returntype="void" output="false" hint="I delete all the files in a directory">
 		<cfargument name="directory" type="string" required="true"/>
 		<cfargument name="excludeFiles" type="string" required="false" default="" hint="list of filenames to ignore in the cleaning" />
+		<cfargument name="fileTypes" type="string" required="false" default="" />
 
 		<cfset var files = $directoryList( directory=arguments.directory, recurse=false ) />
 		<cfloop query="files">
-			<cfif files.type EQ 'File' and not ListFind(arguments.excludeFiles, files.name)>
+			<cfif files.type EQ 'File' and not ListFind(arguments.excludeFiles, files.name) and (not Len(arguments.fileTypes) or ListFindNoCase(arguments.fileTypes, ListLast(files.name, '.')))>
 				<cffile action="delete" file="#files.directory#/#files.name#" />
 			</cfif>
 		</cfloop>
@@ -67,10 +68,11 @@
 	</cffunction>
 	
 	<cffunction name="$fileWrite" access="private" returntype="void" output="false" hint="I write the passed content to the given file (path)">
-		<cfargument name="path" type="string" required="true" />
+		<cfargument name="path"    type="string" required="true" />
 		<cfargument name="content" type="string" required="true" />
+		<cfargument name="charset" type="string" required="false" default="utf-8" />
 	
-		<cffile action="write" file="#arguments.path#" output="#arguments.content#" addnewline="false" />
+		<cffile action="write" file="#arguments.path#" output="#arguments.content#" addnewline="false" charset="#arguments.charset#" />
 	</cffunction>
 
 	<cffunction name="$fileLastModified" access="private" returntype="date" output="false" hint="I return the last modified date of the given file (path)">
@@ -82,6 +84,12 @@
 
 			return lastModified;
 		</cfscript>
+	</cffunction>
+
+	<cffunction name="$fileDelete" access="private" returntype="void" output="false">
+		<cfargument name="path" type="string" required="true" />
+
+		<cffile action="delete" file="#arguments.path#" />
 	</cffunction>
 	
 	<cffunction name="$reSearch" access="private" returntype="struct" output="false" hint="I perform a Regex search and return a struct of arrays containing pattern match information. Each key represents the position of a match, i.e. $1, $2, etc. Each key contains an array of matches.">
@@ -155,15 +163,17 @@
 		<cfargument name="src" type="string" required="true" />
 		<cfargument name="media" type="string" required="true" />
 		<cfargument name="ieConditional" type="string" required="false" default="" />
+		<cfargument name="charset" type="string" required="false" default="utf-8" />
 				
-		<cfreturn $renderIeConditional('<link rel="stylesheet" href="#arguments.src#" media="#arguments.media#" />', arguments.ieConditional) />
+		<cfreturn $renderIeConditional('<link rel="stylesheet" href="#arguments.src#" media="#arguments.media#" charset="#arguments.charset#" />', arguments.ieConditional) & $newline() />
 	</cffunction>
 	
 	<cffunction name="$renderJsInclude" access="private" returntype="string" output="false" hint="I return the html nevessary to include the given javascript file">
 		<cfargument name="src" type="string" required="true" />
 		<cfargument name="ieConditional" type="string" required="false" default="" />
+		<cfargument name="charset" type="string" required="false" default="utf-8" />
 		
-		<cfreturn $renderIeConditional( '<script type="text/javascript" src="#arguments.src#"></script>', arguments.ieConditional ) />
+		<cfreturn $renderIeConditional( '<script type="text/javascript" src="#arguments.src#" charset="#arguments.charset#"></script>', arguments.ieConditional ) & $newline() />
 	</cffunction>
 	
 	<cffunction name="$generateCacheBuster" access="private" returntype="string" output="false" hint="I return a cachebuster string for a given date">
@@ -301,10 +311,10 @@
 		</cfscript>
 	</cffunction>
 
-	<cffunction name="$samifyUnixAndWindowsPaths" access="private" returntype="string" output="false">
+	<cffunction name="$normalizeUnixAndWindowsPaths" access="private" returntype="string" output="false">
 		<cfargument name="path" type="string" required="true" />
 
-		<cfreturn iif(left(arguments.path,2) eq '\\',de('//'),de('')) & ListChangeDelims(arguments.path, '/', '\') />
+		<cfreturn Replace( arguments.path, '\', '/', 'all' ) />
 	</cffunction>
 
 	<cffunction name="$shouldFileBeIncluded" access="private" returntype="boolean" output="false">
@@ -312,7 +322,7 @@
 		<cfargument name="includePattern" type="string" required="true" />
 		<cfargument name="excludePattern" type="string" required="true" />
 		<cfscript>
-			filepath = $samifyUnixAndWindowsPaths(filepath);
+			filepath = $normalizeUnixAndWindowsPaths(filepath);
 			if ( Len(Trim(arguments.includePattern)) AND NOT ReFindNoCase(arguments.includePattern, arguments.filePath) ) {
 				return false;
 			}
@@ -322,6 +332,49 @@
 			}
 
 			return true;
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="$newline" access="private" returntype="string" output="false">
+		<cfreturn Chr(13) & Chr(10) />
+	</cffunction>
+
+	<cffunction name="$calculateRelativePath" access="private" returntype="string" output="false">
+		<cfargument name="basePath"     type="string" required="true" />
+		<cfargument name="relativePath" type="string" required="true" />
+
+		<cfscript>
+			var basePathArray     = ListToArray( GetDirectoryFromPath( arguments.basePath ), "\/" );
+			var relativePathArray = ListToArray( arguments.relativePath, "\/" );
+			var finalPath         = ArrayNew(1);
+			var pathStart         = 0;
+			var i                 = 0;
+
+			/* Define the starting path (path in common) */
+			for (i = 1; i LTE ArrayLen(basePathArray); i = i + 1) {
+				if (basePathArray[i] NEQ relativePathArray[i]) {
+					pathStart = i;
+					break;
+				}
+			}
+			
+			if ( pathStart EQ 0 ) {
+				ArrayAppend( finalPath, "." );
+			}
+
+			/* Build the prefix for the relative path (../../etc.) */
+			for ( i = ArrayLen(basePathArray) - pathStart; i GTE 0; i=i-1 ) {
+				ArrayAppend( finalPath, ".." );
+			}
+
+			/* Build the relative path */
+			for ( i = pathStart; i LTE ArrayLen(relativePathArray); i=i+1 ) {
+				if ( i ) {
+					ArrayAppend( finalPath, relativePathArray[i] );
+				}
+			}
+
+			return ArrayToList( finalPath, "/" );
 		</cfscript>
 	</cffunction>
 
