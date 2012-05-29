@@ -327,7 +327,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset fusebox.ajax=rc.ajax>
 		<cfset fusebox.layout=rc.layout>
 		<cfset myfusebox.originalfuseaction = listLast(request.action,".")>
-		<cfset  myfusebox.originalcircuit = listFirst(request.action,".")>
+		<cfset myfusebox.originalcircuit = listFirst(request.action,".")>
 		
 		<cfif not structKeyExists(request,"requestappended")>
 			<cfif structKeyExists(request, 'layout')>

@@ -1747,7 +1747,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<cfset started=true>
 				<ul<cfif arguments.currDepth eq 1>#iif(arguments.id neq '',de(' id="#arguments.id#"'),de(''))##iif(arguments.menuClass neq '',de(' class="#arguments.menuClass#"'),de(''))#<cfelse><cfif len(arguments.ulNestedClass)> class="#arguments.ulNestedClass#"</cfif><cfif len(arguments.ulNestedCustomString)> #arguments.ulNestedCustomString#</cfif></cfif>>
-				<li class="first<cfif variables.event.getValue('contentBean').getcontentid() eq arguments.contentid> #arguments.liCurrentClass#</cfif>" id="navHome"<cfif len(arguments.liCurrentCustomString)> #arguments.liCurrentCustomString#</cfif>><a href="#homeLink#"<cfif len(arguments.aCurrentClass)> class="#arguments.aCurrentClass#"</cfif><cfif len(arguments.aCurrentCustomString)> #arguments.aCurrentCustomString#</cfif>>#HTMLEditFormat(rsHome.menuTitle)#</a></li>
+				<li class="first<cfif variables.event.getValue('contentBean').getcontentid() eq arguments.contentid> #arguments.liCurrentClass#</cfif>" id="navHome"<cfif len(arguments.liCurrentCustomString)> #arguments.liCurrentCustomString#</cfif>><a href="#homeLink#"<cfif len(arguments.aCurrentClass) and $.content('contentID') eq '00000000000000000000000000000000001'> class="#arguments.aCurrentClass#"</cfif><cfif len(arguments.aCurrentCustomString)> #arguments.aCurrentCustomString#</cfif>>#HTMLEditFormat(rsHome.menuTitle)#</a></li>
 			</cfif>
 			
 			<cfloop query="rsSection">
