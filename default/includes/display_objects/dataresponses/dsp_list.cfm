@@ -52,12 +52,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.data.contentid=variables.$.content('contentID')/>
 <cfset variables.data.keywords=request.keywords />
 <cfset variables.data.fieldnames=application.variables.dataCollectionManager.getCurrentFieldList(variables.data.contentid)/>
-<cfset variables.rsdata=application.variables.dataCollectionManager.getvariables.data(variables.data)/>
+<cfset variables.rsdata=application.variables.dataCollectionManager.getdata(variables.data)/>
 </cfsilent>
 <div id="dsp_list" class="variables.dataResponses">
 <cfif variables.rsdata.recordcount>
 <cfsilent>
-<cfset variables.nextN=variables.$.getBean('utility').getvariables.nextN(variables.rsdata,variables.$.content('variables.nextN'),request.StartRow)>
+<cfset variables.nextN=variables.$.getBean('utility').getnextN(variables.rsdata,variables.$.content('variables.nextN'),request.StartRow)>
 			
 <cfif variables.$.content('ResponseDisplayFields') neq ''>
 <cfset variables.data.fieldnames=replace(listFirst(variables.$.content('ResponseDisplayFields'),"~"),"^",",","ALL")/>
