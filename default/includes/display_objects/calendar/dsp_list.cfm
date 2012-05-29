@@ -46,17 +46,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfsilent>
-<cfset variables.iterator=$.getBean("contentIterator")>
-<cfset variables.iterator.setQuery(variables.rsSection,$.content('nextN'))>
+<cfset variables.iterator=variables.$.getBean("contentIterator")>
+<cfset variables.iterator.setQuery(variables.rsSection,variables.$.content('nextN'))>
 
-<cfset event.setValue("currentNextNID",$.content('contentID'))>
+<cfset event.setValue("currentNextNID",variables.$.content('contentID'))>
 
-<cfif not len($.event("nextNID")) or $.event("nextNID") eq $.event("currentNextNID")>
+<cfif not len(variables.$.event("nextNID")) or variables.$.event("nextNID") eq variables.$.event("currentNextNID")>
 	<cfif event.getContentBean().getNextN() gt 1>
-		<cfset variables.currentNextNIndex=$.event("startRow")>
+		<cfset variables.currentNextNIndex=variables.$.event("startRow")>
 		<cfset variables.iterator.setStartRow(variables.currentNextNIndex)>
 	<cfelse>
-		<cfset variables.currentNextNIndex=$.event("pageNum")>
+		<cfset variables.currentNextNIndex=variables.$.event("pageNum")>
 		<cfset variables.iterator.setPage(variables.currentNextNIndex)>
 	</cfif>
 <cfelse>	
@@ -64,7 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.iterator.setPage(1)>
 </cfif>
 
-<cfset variables.nextN=$.getBean('utility').getNextN(rsSection,event.getContentBean().getNextN(),currentNextNIndex)>
+<cfset variables.nextN=variables.$.getBean('utility').getNextN(variables.rsSection,event.getContentBean().getNextN(),currentNextNIndex)>
 
 </cfsilent>
 
@@ -72,31 +72,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfoutput>
 	<div id="svPortal" class="svIndex">
 		<cfsilent>
-			<cfif NOT len($.content("displayList"))>
+			<cfif NOT len(variables.$.content("displayList"))>
 				<cfset variables.contentListFields="Date,Title,Image,Summary,ReadMore,Credits">
 				
-				<cfif $.getBean('contentGateway').getHasComments($.event('siteid'),$.content('contentID'))>
+				<cfif variables.$.getBean('contentGateway').getHasComments(variables.$.event('siteid'),variables.$.content('contentID'))>
 					<cfset variables.contentListFields=listAppend(contentListFields,"Comments")>
 				</cfif>
 				
 				<cfset variables.contentListFields=listAppend(variables.contentListFields,"Tags")>
 				
-				<cfif $.getBean('contentGateway').getHasRatings($.event('siteid'),$.content('contentID'))>
+				<cfif variables.$.getBean('contentGateway').getHasRatings(variables.$.event('siteid'),variables.$.content('contentID'))>
 					<cfset variables.contentListFields=listAppend(variables.contentListFields,"Rating")>
 				</cfif>
-				<cfset $.content("displayList",variables.contentListFields)>
+				<cfset variables.$.content("displayList",variables.contentListFields)>
 			</cfif>
 		</cfsilent>
-		#$.dspObject_Include(thefile='dsp_content_list.cfm',
-			fields=$.content("displayList"),
+		#variables.$.dspObject_Include(thefile='dsp_content_list.cfm',
+			fields=variables.$.content("displayList"),
 			type="Portal", 
 			iterator= variables.iterator,
-			imageSize=$.content("ImageSize"),
-			imageHeight=$.content("ImageHeight"),
-			imageWidth=$.content("ImageWidth")
+			imageSize=variables.$.content("ImageSize"),
+			imageHeight=variables.$.content("ImageHeight"),
+			imageWidth=variables.$.content("ImageWidth")
 			)#
 		<cfif variables.nextn.numberofpages gt 1>
-			#$.dspObject_Include(thefile='dsp_nextN.cfm')#
+			#variables.$.dspObject_Include(thefile='dsp_nextN.cfm')#
 		</cfif>	
 	</div>
 	</cfoutput>
@@ -104,19 +104,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif not variables.iterator.getRecordCount()>
      <cfoutput>
-     <cfif $.event('filterBy') eq "releaseMonth">
+     <cfif variables.$.event('filterBy') eq "releaseMonth">
      <div id="svPortal">
 	     <br>
-	     <p>#$.rbKey('list.nocontentmonth')#</p>    
+	     <p>#variables.$.rbKey('list.nocontentmonth')#</p>    
      </div>
-     <cfelseif $.event('filterBy') eq "releaseDate">
+     <cfelseif variables.$.event('filterBy') eq "releaseDate">
      <div id="svPortal">
 	     <br>
-	     <p>#$.rbKey('list.nocontentday')#</p>
+	     <p>#variables.$.rbKey('list.nocontentday')#</p>
      </div>
      <cfelse>
      <div id="svPortal">
-         <p>#$.rbKey('list.nocontent')#</p>   
+         <p>#variables.$.rbKey('list.nocontent')#</p>   
      </div>
      </cfif>
      </cfoutput>

@@ -119,7 +119,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				                                    'sitemanager.content.fields.selectplugindisplayobjectclass')#
 				</option>
 				<cfloop query="rs">
-					<cfif application.permUtility.getModulePerm(request.rsPlugins.moduleID, attributes.siteid)>
+					<cfif application.permUtility.getModulePerm(rs.moduleID, attributes.siteid)>
 						<option value="#rs.moduleID#,#rs.objectID#" <cfif rs.objectID eq attributes.objectID>selected</cfif>>#HTMLEditFormat(rs.name)#</option>
 					</cfif>
 				</cfloop>

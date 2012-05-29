@@ -45,39 +45,39 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-<cfset strField = "" />
+<cfset variables.strField = "" />
 <cfif arguments.field.isrequired>
-	<cfset strField = strField & ' data-required="true"' />
+	<cfset variables.strField = variables.strField & ' data-required="true"' />
 </cfif>
 <cfif structkeyexists(arguments.field,'size') and len(arguments.field.size)>
-	<cfset strField = strField & ' size="#arguments.field.size#"' />
+	<cfset variables.strField = strField & ' size="#arguments.field.size#"' />
 </cfif>
 <cfif structkeyexists(arguments.field,'maxlength') and len(arguments.field.maxlength)>
-	<cfset strField = strField & ' maxlength="#arguments.field.maxlength#"' />
+	<cfset variables.strField = variables.strField & ' maxlength="#arguments.field.maxlength#"' />
 <cfelseif structkeyexists(arguments.field,'size') and len(arguments.field.size)>
-	<cfset strField = strField & ' maxlength="#arguments.field.size#"' />
+	<cfset variables.strField = variables.strField & ' maxlength="#arguments.field.size#"' />
 </cfif>
 <cfif structkeyexists(arguments.field,'cols') and len(arguments.field.cols)>
-	<cfset strField = strField & ' cols="#arguments.field.cols#"' />
+	<cfset variables.strField = variables.strField & ' cols="#arguments.field.cols#"' />
 </cfif>
 <cfif structkeyexists(arguments.field,'cssid') and len(arguments.field.cssid)>
-	<cfset strField = strField & ' id="#arguments.field.cssid#"' />
+	<cfset variables.strField = variables.strField & ' id="#arguments.field.cssid#"' />
 </cfif>
 <cfif structkeyexists(arguments.field,'cssclass') and len(arguments.field.cssclass)>
-	<cfset strField = strField & ' class="#arguments.field.cssclass#"' />
+	<cfset variables.strField = variables.strField & ' class="#arguments.field.cssclass#"' />
 </cfif>
 <cfif len(arguments.field.validatemessage)>
-	<cfset strField = strField & ' data-message="#replace(arguments.field.validatemessage,"""","&quot;","all")#"' />
+	<cfset variables.strField = variables.strField & ' data-message="#replace(arguments.field.validatemessage,"""","&quot;","all")#"' />
 </cfif>
 <cfif len(arguments.field.validatetype)>
 	<cfif arguments.field.validatetype eq "regex" and len(arguments.field.validateregex)>
-		<cfset strField = strField & ' data-validate="#arguments.field.validatetype# data-regex="#arguments.field.validateregex#"' />
+		<cfset variables.strField = variables.strField & ' data-validate="#arguments.field.validatetype# data-regex="#arguments.field.validateregex#"' />
 	<cfelse>
-		<cfset strField = strField & ' data-validate="#arguments.field.validatetype#"' />
+		<cfset variables.strField = variables.strField & ' data-validate="#arguments.field.validatetype#"' />
 	</cfif>
 </cfif>
 <cfif len(arguments.field.remoteid)>
-	<cfset strField = strField & ' data-remoteid="#arguments.field.remoteid#"' />
+	<cfset variables.strField = variables.strField & ' data-remoteid="#arguments.field.remoteid#"' />
 </cfif>
 </cfsilent>
-<cfoutput>#strField#</cfoutput>
+<cfoutput>#variables.strField#</cfoutput>

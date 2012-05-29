@@ -50,45 +50,45 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <table class="table table-bordered">
 <thead>
 <tr>
-<th title="#HTMLEditFormat(dateLong)#" id="previousMonth"><a href="?month=#previousmonth#&year=#previousyear#&categoryID=#URLEncodedFormat($.event('categoryID'))#&relatedID=#URLEncodedFormat(request.relatedID)#" rel=“nofollow”>&laquo;</a></th>
-<th colspan="5">#dateLong#</th>
-<th id="nextMonth"><a href="?month=#nextmonth#&year=#nextyear#&categoryID=#URLEncodedFormat($.event('categoryID'))#&relatedID=#URLEncodedFormat(request.relatedID)#" rel=“nofollow”>&raquo;</a></th>
+<th title="#HTMLEditFormat(variables.datelong)#" id="variables.previousMonth"><a href="?month=#variables.previousMonth#&year=#variables.previousYear#&categoryID=#URLEncodedFormat(variables.$.event('categoryID'))#&relatedID=#URLEncodedFormat(request.relatedID)#" rel=“nofollow”>&laquo;</a></th>
+<th colspan="5">#variables.datelong#</th>
+<th id="variables.nextmonth"><a href="?month=#variables.nextmonth#&year=#variables.nextyear#&categoryID=#URLEncodedFormat(variables.$.event('categoryID'))#&relatedID=#URLEncodedFormat(request.relatedID)#" rel=“nofollow”>&raquo;</a></th>
 </tr>
 	<tr class="dayofweek">
-	<cfloop index="id" from="1" to="#listLen(weekdayShort)#">
-	<cfset dayValue = listGetAt(weekdayShort,id,",")>
-	<cfset dayValueLong = listGetAt(weekdayLong,id,",")>
-	<td title="#dayValueLong#">#dayValue#</td>
+	<cfloop index="variables.id" from="1" to="#listLen(variables.weekdayshort)#">
+	<cfset variables.dayvalue = listGetAt(variables.weekdayshort,variables.id,",")>
+	<cfset variables.dayvaluelong = listGetAt(variables.weekdaylong,variables.id,",")>
+	<td title="#variables.dayvaluelong#">#variables.dayvalue#</td>
 	
 	</cfloop>
 	</tr></thead>
-	<cfset posn = 1>
+	<cfset variables.posn = 1>
 	<tbody>
 	<tr>
-	<cfloop index="id" from="1" to="#firstDayOfWeek#">
+	<cfloop index="variables.id" from="1" to="#variables.firstDayOfWeek#">
 	<td>&nbsp;</td>
-	<cfset posn=posn+1>
+	<cfset variables.posn=variables.posn+1>
 	</cfloop>
-	<cfloop index="id" from="1" to="#daysInMonth#">
-	<cfif posn eq 8></tr><cfif id lte daysInMonth><tr></cfif>
-	<cfset posn=1></cfif>
+	<cfloop index="variables.id" from="1" to="#variables.daysInMonth#">
+	<cfif variables.posn eq 8></tr><cfif variables.id lte variables.daysInMonth><tr></cfif>
+	<cfset variables.posn=1></cfif>
 	<cfsilent>
-	<cfset calendarDay=createdate('#request.year#','#request.month#','#id#')>
-	<cfquery dbType="query" name="rsDay">
-	select * from rsSection where 
-		DisplayStart < <cfqueryparam value="#dateadd('D',1,calendarDay)#" cfsqltype="CF_SQL_DATE"> 
+	<cfset variables.calendarDay=createdate('#request.year#','#request.month#','#variables.id#')>
+	<cfquery dbType="query" name="variables.rsDay">
+	select * from variables.rssection where 
+		DisplayStart < <cfqueryparam value="#dateadd('D',1,variables.calendarDay)#" cfsqltype="CF_SQL_DATE"> 
 			AND 
 				(
-		 			DisplayStop >= <cfqueryparam value="#calendarDay#" cfsqltype="CF_SQL_DATE"> or DisplayStop =''
+		 			DisplayStop >= <cfqueryparam value="#variables.calendarDay#" cfsqltype="CF_SQL_DATE"> or DisplayStop =''
 		  		)	
 		order by DisplayStart
 	</cfquery>
 	</cfsilent>
-	<td><span class="date">#id#</span>#dspNestedNav('#$.content('contentID')#',1,1,'calendar',calendarDay,'','?month=#request.month#&year=#request.year#&categoryID=#$.event('categoryID')#&relatedID=#request.relatedID#','displaystart, orderno','','#$.globalConfig('context')#','#$.globalConfig('stub')#','#$.event('categoryID')#','#request.relatedID#',rsDay)#</td>
-	<cfset posn=posn+1>
+	<td><span class="date">#variables.id#</span>#dspNestedNav('#variables.$.content('contentID')#',1,1,'calendar',variables.calendarDay,'','?month=#request.month#&year=#request.year#&categoryID=#variables.$.event('categoryID')#&relatedID=#request.relatedID#','displaystart, orderno','','#variables.$.globalConfig('context')#','#variables.$.globalConfig('stub')#','#variables.$.event('categoryID')#','#request.relatedID#',variables.rsDay)#</td>
+	<cfset variables.posn=variables.posn+1>
 	</cfloop>
-	<cfif posn lt 8>
-	<cfloop index="id" from="#posn#" to="7">
+	<cfif variables.posn lt 8>
+	<cfloop index="variables.id" from="#variables.posn#" to="7">
 	<td>&nbsp;</td>
 	</cfloop>
 	</cfif></tr>

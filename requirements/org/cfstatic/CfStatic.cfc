@@ -19,6 +19,7 @@
 		_embedCssImages      = "none";
 		_includePattern      = ".*";
 		_excludePattern      = "";
+		_outputCharset       = "utf-8";
 
 		_jsPackages			= "";
 		_cssPackages		= "";
@@ -49,7 +50,9 @@
 		<cfargument name="embedCssImages"      type="string"  required="false" default="none"    hint="Either 'none', 'all' or a regular expression to select css images that should be embedded in css files as base64 encoded strings, e.g. '\.gif$' for only gifs or '.*' for all images"/>
 		<cfargument name="includePattern"      type="string"  required="false" default=".*"      hint="Regex pattern indicating css and javascript files to be included in CfStatic's processing. Defaults to .* (all)" />
 		<cfargument name="excludePattern"      type="string"  required="false" default=""        hint="Regex pattern indicating css and javascript files to be excluded from CfStatic's processing. Defaults to blank (exclude none)" />
-		<cfargument name="compilerScope" 	   type="string"  required="false" default="server" hint="The scope should the compilers be persisted">
+		<cfargument name="outputCharset"       type="string"  required="false" default="utf-8"   hint="Character set to use when writing outputted minified files" />
+		<cfargument name="javaLoaderScope"     type="string"  required="false" default="server"  hint="The scope in which instances of JavaLoader libraries for the compilers should be persisted, either 'application' or 'server' (default is 'server' to prevent JavaLoader memory leaks)" />
+		<cfargument name="lessGlobals"         type="string"  required="false" default=""        hint="Comma separated list of .LESS files to import when processing all .LESS files. Files will be included in the order of the list" />
 		<cfscript>
 			// if we are given a relative or mapped path, ensure we have the full path
 			if(directoryExists(ExpandPath(arguments.staticDirectory))){
@@ -57,7 +60,7 @@
 			}
 
 			// ensure easy windows / unix compatibility
-			arguments.staticDirectory = $samifyUnixAndWindowsPaths( arguments.staticDirectory );
+			arguments.staticDirectory = $normalizeUnixAndWindowsPaths( arguments.staticDirectory );
 
 			// set config options
 			_setRootDirectory		( arguments.staticDirectory );
@@ -79,9 +82,11 @@
 			_setEmbedCssImages      ( arguments.embedCssImages      );
 			_setIncludePattern      ( arguments.includePattern      );
 			_setExcludePattern      ( arguments.excludePattern      );
+			_setOutputCharset       ( arguments.outputCharset       );
+			_setLessGlobals         ( arguments.lessGlobals         );
 
 			// instantiate any compilers we are using and compile the static resources
-			_loadCompilers(compilerScope=arguments.compilerScope);
+			_loadCompilers( javaLoaderScope = arguments.javaLoaderScope );
 			_processStaticFiles();
 
 			// return reference to self
@@ -135,7 +140,7 @@
 				filters = _getRequestIncludeFilters( type = 'css' );
 
 				if( (ArrayLen(filters.packages) + ArrayLen(filters.files)) or _getIncludeAllByDefault() ){
-					str.append( _getCssPackages().renderincludes( minification, _getDownloadExternals(), filters.packages, filters.files ) );
+					str.append( _getCssPackages().renderincludes( minification, _getDownloadExternals(), filters.packages, filters.files, _getOutputCharset() ) );
 				}
 			}
 			if( not StructKeyExists(arguments, 'type') OR arguments.type EQ 'js' ){
@@ -143,7 +148,7 @@
 
 				filters = _getRequestIncludeFilters( type = 'js' );
 				if( (ArrayLen(filters.packages) + ArrayLen(filters.files)) or _getIncludeAllByDefault() ){
-					str.append( _getJsPackages().renderincludes( minification, _getDownloadExternals(), filters.packages, filters.files ) );
+					str.append( _getJsPackages().renderincludes( minification, _getDownloadExternals(), filters.packages, filters.files, _getOutputCharset() ) );
 				}
 			}
 
@@ -256,8 +261,13 @@
 
 						// setup the mapping structure for it
 						mappings[include] = StructNew();
-						mappings[include].packages = mappings[pkgInclude].packages; // for a start, we can add the mappings for the package already
-						mappings[include].files = ArrayNew(1);
+						mappings[include].packages = ArrayNew(1);
+						mappings[include].files    = ArrayNew(1);
+
+						// add the package to the mapping when we are in package mode
+						if ( _getMinifyMode() EQ 'package' ){
+							mappings[include].packages = mappings[pkgInclude].packages;
+						}
 
 						// add the file itself
 						ArrayAppend( mappings[include].files, files[n]);
@@ -304,37 +314,37 @@
 	</cffunction>
 
 	<cffunction name="_loadCompilers" access="private" returntype="void" output="false" hint="I instantiate all the compilers used by cfstatic">
-		<cfargument name="compilerScope" type="string" required="false" default="server" hint="The scope should the compilers be persisted">
-		
+		<cfargument name="javaLoaderScope" type="string" required="false" default="server" hint="The scope should the compilers be persisted">
+
 		<cfscript>
-			var scope = server;
-			if ( arguments.compilerScope EQ 'application' ){
-			    scope = application;
+			var jlScope = server;
+			if ( arguments.javaLoaderScope EQ 'application' ){
+			    jlScope = application;
 			}
 
-			if( not StructKeyExists(scope, '_cfstaticJavaloaders') ){
-				scope['_cfstaticJavaloaders'] = _loadJavaLoaders();
+			if( not StructKeyExists(jlScope, '_cfstaticJavaloaders') ){
+				jlScope['_cfstaticJavaloaders'] = _loadJavaLoaders();
 			}
-			
-			_setYuiCompressor ( CreateObject('component','org.cfstatic.util.YuiCompressor' ).init( scope['_cfstaticJavaloaders'].yui  ) );
-			_setLessCompiler  ( CreateObject('component','org.cfstatic.util.LessCompiler'  ).init( scope['_cfstaticJavaloaders'].less ) );
+
+			_setYuiCompressor ( CreateObject('component','org.cfstatic.util.YuiCompressor' ).init( jlScope['_cfstaticJavaloaders'].yui  ) );
+			_setLessCompiler  ( CreateObject('component','org.cfstatic.util.LessCompiler'  ).init( jlScope['_cfstaticJavaloaders'].less ) );
 			_setCssImageParser( CreateObject('component','org.cfstatic.util.CssImageParser').init( _getCssUrl(), $listAppend(_getRootDirectory(), _getCssDirectory(), '/' ) ) );
 		</cfscript>
 	</cffunction>
 
 	<cffunction name="_loadJavaLoaders" access="private" output="false">
 		<cfscript>
-			var jarsForYui		  = ArrayNew(1);
-			var jarsForLess		  = ArrayNew(1);
-			var cfstaticJavaloaders   = StructNew();
- 
-			jarsForYui[1]  = ExpandPath('/org/cfstatic/lib/yuiCompressor/yuicompressor-2.4.6.jar');
+			var jarsForYui          = ArrayNew(1);
+			var jarsForLess         = ArrayNew(1);
+			var cfstaticJavaloaders = StructNew();
+
+			jarsForYui[1]  = ExpandPath('/org/cfstatic/lib/yuiCompressor/yuicompressor-2.4.7.jar');
 			jarsForYui[2]  = ExpandPath('/org/cfstatic/lib/cfstatic.jar');
 			jarsForLess[1] = ExpandPath('/org/cfstatic/lib/less/lesscss-engine-1.3.0.jar');
 
 			cfstaticJavaloaders.yui  = CreateObject('component','org.cfstatic.lib.javaloader.JavaLoader').init( jarsForYui  );
 			cfstaticJavaloaders.less = CreateObject('component','org.cfstatic.lib.javaloader.JavaLoader').init( jarsForLess );
-			
+
 		 	return cfstaticJavaloaders;
 		</cfscript>
 	</cffunction>
@@ -359,22 +369,26 @@
 
 	<cffunction name="_compileLess" access="public" returntype="void" output="false">
 		<cfscript>
-			var cssDir = $listAppend(_getRootdirectory(), _getCssdirectory(), '/');
-			var files  = $directoryList(cssDir, '*.less');
-			var i      = 0;
-			var file   = "";
-			var target = "";
+			var cssDir          = $listAppend(_getRootdirectory(), _getCssdirectory(), '/');
+			var files           = $directoryList(cssDir, '*.less');
+			var globalsModified = _getLessGlobalsLastModified();
+			var i               = 0;
+			var file            = "";
+			var target          = "";
+			var compiled        = "";
+			var needsCompiling  = "";
+			var lastModified    = "";
 
 			for(i=1; i LTE files.recordCount; i++){
 				file = $listAppend(files.directory[i], files.name[i], '/');
 				if ( $shouldFileBeIncluded( file, _getIncludePattern(), _getExcludePattern() ) ){
-					target = file & '.css';
+					target         = file & '.css';
+					lastModified   = $fileLastModified(target);
+					needsCompiling = ( not fileExists(target) or lastModified LT globalsModified or lastModified LT $fileLastModified(file) );
+					if ( needsCompiling ){
+						compiled = _getLesscompiler().compile( file, _getLessGlobals() );
 
-					if(not fileExists(target) or $fileLastModified(target) LT $fileLastModified(file)){
-						$fileWrite( target, _getLesscompiler().compile( file ) );
-
-						// set the last modified date of the generated css file to be that of the LESS file
-						FileSetLastModified( target, $fileLastModified(file) );
+						$fileWrite( target, compiled, _getOutputCharset() );
 					}
 				}
 			}
@@ -397,17 +411,19 @@
 			if( _compilationNecessary(_getJsPackages() ) ){
 				packages		= _getJsPackages().getOrdered();
 				for(i=1; i LTE ArrayLen(packages); i++){
-					package		= _getJsPackages().getPackage(packages[i]);
-					files			= package.getOrdered();
-					for(n=1; n LTE ArrayLen(files); n++){
-						file		= package.getStaticFile( files[n] );
-						content.append( _compileJsFile( file ) );
+					if ( _getDownloadexternals() OR packages[i] NEQ 'external' ) {
+						package		= _getJsPackages().getPackage(packages[i]);
+						files			= package.getOrdered();
+						for(n=1; n LTE ArrayLen(files); n++){
+							file		= package.getStaticFile( files[n] );
+							content.append( _compileJsFile( file ) );
+						}
 					}
 				}
 
 				fileName	= _getJsPackages().getMinifiedFileName();
 				filePath	= $listAppend( _getOutputDirectory(), filename, '/' );
-				$fileWrite(filePath, content.toString());
+				$fileWrite(filePath, content.toString(), _getOutputCharset() );
 			}
 
 			// css
@@ -425,10 +441,10 @@
 
 				fileName	= _getCssPackages().getMinifiedFileName();
 				filePath	= $listAppend( _getOutputDirectory(), filename, '/' );
-				$fileWrite(filePath, content.toString());
+				$fileWrite(filePath, content.toString(), _getOutputCharset() );
 			}
 
-			$directoryClean( directory=_getOutputDirectory(), excludeFiles=ListAppend( _getJsPackages().getMinifiedFileName(), _getCssPackages().getMinifiedFileName() ) );
+			$directoryClean( directory=_getOutputDirectory(), excludeFiles=ListAppend( _getJsPackages().getMinifiedFileName(), _getCssPackages().getMinifiedFileName() ), fileTypes="css,js" );
 		</cfscript>
 	</cffunction>
 
@@ -460,7 +476,7 @@
 
 					fileName	= package.getMinifiedFileName();
 					filePath	= $listAppend( _getOutputDirectory(), filename, '/' );
-					$fileWrite(filePath, content.toString());
+					$fileWrite(filePath, content.toString(), _getOutputCharset() );
 				}
 
 				fileList = ListAppend(fileList, package.getMinifiedFileName());
@@ -480,13 +496,13 @@
 
 					fileName	= package.getMinifiedFileName();
 					filePath	= $listAppend( _getOutputDirectory(), filename, '/' );
-					$fileWrite(filePath, content.toString());
+					$fileWrite(filePath, content.toString(), _getOutputCharset() );
 				}
 
 				fileList = ListAppend(fileList, package.getMinifiedFileName());
 			}
 
-			$directoryClean( directory=_getOutputDirectory(), excludeFiles=fileList );
+			$directoryClean( directory=_getOutputDirectory(), excludeFiles=fileList, fileTypes="css,js" );
 		</cfscript>
 	</cffunction>
 
@@ -516,7 +532,7 @@
 							content		= _compileJsFile( file );
 							fileName	= file.getMinifiedFileName();
 							filePath	= $listAppend( _getOutputDirectory(), filename, '/' );
-							$fileWrite(filePath, content);
+							$fileWrite(filePath, content, _getOutputCharset() );
 						}
 						fileList = ListAppend(fileList, file.getMinifiedFileName());
 					}
@@ -536,14 +552,14 @@
 							content		= _compileCssFile( file );
 							fileName	= file.getMinifiedFileName();
 							filePath	= $listAppend( _getOutputDirectory(), filename, '/' );
-							$fileWrite(filePath, content);
+							$fileWrite(filePath, content, _getOutputCharset() );
 						}
 						fileList = ListAppend(fileList, file.getMinifiedFileName());
 					}
 				}
 			}
 
-			$directoryClean( directory=_getOutputDirectory(), excludeFiles=fileList );
+			$directoryClean( directory=_getOutputDirectory(), excludeFiles=fileList, fileTypes="js,css" );
 		</cfscript>
 	</cffunction>
 
@@ -607,7 +623,7 @@
 				return "";
 			}
 
-			return '<script type="text/javascript">var cfrequest = #SerializeJson(data)#</script>';
+			return '<script type="text/javascript" charset="#_getOutputCharset()#">var cfrequest = #SerializeJson(data)#</script>' & $newline();
 		</cfscript>
     </cffunction>
 
@@ -817,7 +833,7 @@
 	</cffunction>
 
 	<cffunction name="_getAddCacheBusters" access="private" returntype="boolean" output="false">
-		<cfreturn _addCacheBusters>
+		<cfreturn _addCacheBusters />
 	</cffunction>
 	<cffunction name="_setAddCacheBusters" access="private" returntype="void" output="false">
 		<cfargument name="addCacheBusters" type="boolean" required="true" />
@@ -825,7 +841,7 @@
 	</cffunction>
 
 	<cffunction name="_getIncludeAllByDefault" access="private" returntype="boolean" output="false">
-		<cfreturn _includeAllByDefault>
+		<cfreturn _includeAllByDefault />
 	</cffunction>
 	<cffunction name="_setIncludeAllByDefault" access="private" returntype="void" output="false">
 		<cfargument name="includeAllByDefault" type="boolean" required="true" />
@@ -833,7 +849,7 @@
 	</cffunction>
 
 	<cffunction name="_getEmbedCssImages" access="private" returntype="string" output="false">
-		<cfreturn _embedCssImages>
+		<cfreturn _embedCssImages />
 	</cffunction>
 	<cffunction name="_setEmbedCssImages" access="private" returntype="void" output="false">
 		<cfargument name="embedCssImages" type="string" required="true" />
@@ -841,7 +857,7 @@
 	</cffunction>
 
 	<cffunction name="_getIncludePattern" access="private" returntype="string" output="false">
-		<cfreturn _includePattern>
+		<cfreturn _includePattern />
 	</cffunction>
 	<cffunction name="_setIncludePattern" access="private" returntype="void" output="false">
 		<cfargument name="includePattern" type="string" required="true" />
@@ -849,10 +865,43 @@
 	</cffunction>
 
 	<cffunction name="_getExcludePattern" access="private" returntype="string" output="false">
-		<cfreturn _excludePattern>
+		<cfreturn _excludePattern />
 	</cffunction>
 	<cffunction name="_setExcludePattern" access="private" returntype="void" output="false">
 		<cfargument name="excludePattern" type="string" required="true" />
 		<cfset _excludePattern = arguments.excludePattern />
+	</cffunction>
+
+	<cffunction name="_getOutputCharset" access="private" returntype="any" output="false">
+		<cfreturn _outputCharset />
+	</cffunction>
+	<cffunction name="_setOutputCharset" access="private" returntype="void" output="false">
+		<cfargument name="outputCharset" type="any" required="true" />
+		<cfset _outputCharset = arguments.outputCharset />
+	</cffunction>
+
+	<cffunction name="_getLessGlobals" access="private" returntype="string" output="false">
+		<cfreturn _LessGlobals>
+	</cffunction>
+	<cffunction name="_setLessGlobals" access="private" returntype="void" output="false">
+		<cfargument name="LessGlobals" type="string" required="true" />
+		<cfset _LessGlobals = arguments.LessGlobals />
+	</cffunction>
+	<cffunction name="_getLessGlobalsLastModified" access="private" returntype="date" output="false">
+		<cfscript>
+			var globals      = ListToArray( _getLessGlobals() );
+			var lastModified = "1900-01-01";
+			var fileModified = "";
+			var i            = 0;
+
+			for( i=1; i LTE ArrayLen(globals); i++ ) {
+				fileModified = $fileLastModified( globals[i] );
+				if ( fileModified GT lastModified ){
+					lastModified = fileModified;
+				}
+			}
+
+			return lastModified;
+		</cfscript>
 	</cffunction>
 </cfcomponent>

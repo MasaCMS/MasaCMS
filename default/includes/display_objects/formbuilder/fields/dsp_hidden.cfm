@@ -45,11 +45,11 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-<cfset strField = "" />	
-<cfsavecontent variable="strField">
-	<cfoutput><input type="hidden" name="#field.name#" value="#field.value#"#$.dspObject_Include(thefile='/formbuilder/fields/dsp_common.cfm',field=arguments.field,dataset=arguments.dataset)#</cfoutput>
+<cfset variables.strField = "" />	
+<cfsavecontent variable="variables.strField">
+	<cfoutput><input type="hidden" name="#arguments.field.name#" value="#arguments.field.value#"#variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_common.cfm',field=arguments.field,dataset=arguments.dataset)#</cfoutput>
 </cfsavecontent>
 </cfsilent>
 <cfoutput>
-#strField# />
+#variables.strField# />
 </cfoutput>

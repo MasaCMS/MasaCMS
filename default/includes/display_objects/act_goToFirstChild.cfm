@@ -45,16 +45,16 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-<cfset rsPre=$.getBean('contentGateway').getKids('00000000000000000000000000000000000',$.event('siteID'),$.content('contentID'),'default',now(),100,$.event('keywords'),0,$.content('sortBy'),$.content('sortDirection'),$.event('categoryID'),$.event('relatedID'),$.event('tag'))>
-<cfif $.siteConfig('extranet') eq 1 and $.event('r').restrict eq 1>
-	<cfset rs=$.queryPermFilter(rsPre)/>
+<cfset variables.rsPre=variables.$.getBean('contentGateway').getKids('00000000000000000000000000000000000',variables.$.event('siteID'),variables.$.content('contentID'),'default',now(),100,variables.$.event('keywords'),0,variables.$.content('sortBy'),variables.$.content('sortDirection'),variables.$.event('categoryID'),variables.$.event('relatedID'),variables.$.event('tag'))>
+<cfif variables.$.siteConfig('extranet') eq 1 and variables.$.event('r').restrict eq 1>
+	<cfset variables.rs=variables.$.queryPermFilter(variables.rsPre)/>
 <cfelse>
-	<cfset rs=rsPre/>
+	<cfset variables.rs=variables.rsPre/>
 </cfif>
 
 <cfif rs.recordcount>	
-	<cfset redirect=$.createHREF(rs.type,rs.filename,rs.siteid,rs.contentid,"","","",$.globalConfig('context'),$.globalConfig('stub'),$.globalConfig('indexFile'))>	
-	<cfset $.redirect(redirect) />
+	<cfset variables.redirect=variables.$.createHREF(variables.rs.type,variables.rs.filename,variables.rs.siteid,variables.rs.contentid,"","","",variables.$.globalConfig('context'),variables.$.globalConfig('stub'),variables.$.globalConfig('indexFile'))>	
+	<cfset variables.$.redirect(redirect) />
 </cfif>
 </cfsilent>
 

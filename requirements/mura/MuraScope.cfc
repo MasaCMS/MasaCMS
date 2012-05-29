@@ -78,16 +78,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var object="">
 	<cfset var prefix="">
 	
-	<cfif len(MissingMethodName)>
+	<cfif len(arguments.MissingMethodName)>
 		
-		<cfif isObject(getEvent()) and structKeyExists(variables.instance.event,MissingMethodName)>
+		<cfif isObject(getEvent()) and structKeyExists(variables.instance.event,arguments.MissingMethodName)>
 			<cfset object=variables.instance.event>
-		<cfelseif isObject(getThemeRenderer()) and structKeyExists(getThemeRenderer(),MissingMethodName)>
+		<cfelseif isObject(getThemeRenderer()) and structKeyExists(getThemeRenderer(),arguments.MissingMethodName)>
 			<cfset object=getThemeRenderer()>
-		<cfelseif isObject(getContentRenderer()) and structKeyExists(getContentRenderer(),MissingMethodName)>
+		<cfelseif isObject(getContentRenderer()) and structKeyExists(getContentRenderer(),arguments.MissingMethodName)>
 			<cfset object=getContentRenderer()>
 		<cfelseif isObject(getContentBean())>
-			<cfif structKeyExists(getContentBean(),MissingMethodName)>
+			<cfif structKeyExists(getContentBean(),arguments.MissingMethodName)>
 				<cfset object=getContentBean()>
 			<cfelse>
 				<cfset prefix=left(arguments.MissingMethodName,3)>
@@ -106,10 +106,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		
 		<cfsavecontent variable="local.thevalue2">
-		<cfif not structIsEmpty(MissingMethodArguments)>
-			<cfinvoke component="#object#" method="#MissingMethodName#" argumentcollection="#MissingMethodArguments#" returnvariable="local.theValue1">
+		<cfif not structIsEmpty(arguments.MissingMethodArguments)>
+			<cfinvoke component="#object#" method="#arguments.MissingMethodName#" argumentcollection="#arguments.MissingMethodArguments#" returnvariable="local.theValue1">
 		<cfelse>
-			<cfinvoke component="#object#" method="#MissingMethodName#" returnvariable="local.theValue1">
+			<cfinvoke component="#object#" method="#arguments.MissingMethodName#" returnvariable="local.theValue1">
 		</cfif>
 		</cfsavecontent>
 		
@@ -408,7 +408,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="outputDirectory" default="compiled">
 	<cfargument name="minifyMode" default="package">
 	<cfargument name="checkForUpdates" default="true">
-	<cfargument name="compilerScope" default="#application.configBean.getValue('cfStaticCompilerScope')#">
+	<cfargument name="javaLoaderScope" default="#application.configBean.getValue('cfStaticJavaLoaderScope')#">
 	<cfset var hashKey="">
 	
 	<cfif not len(arguments.staticDirectory) and len(event("siteid"))>
@@ -420,7 +420,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not structKeyExists(application.cfstatic,hashKey)>
 		
 		<cfif not len(arguments.staticUrl)>
-			<cfset arguments.staticUrl=replace(globalConfig("context") & right(staticDirectory,len(staticDirectory)-len(expandPath("/murawrm"))), "\","/","all")>	
+			<cfset arguments.staticUrl=replace(globalConfig("context") & right(arguments.staticDirectory,len(arguments.staticDirectory)-len(expandPath("/murawrm"))), "\","/","all")>	
 		</cfif>
 	
 		<cfif not directoryExists(arguments.staticDirectory & "/compiled")>

@@ -46,50 +46,50 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfsilent>
-<cfif not isNumeric($.event('month'))>
-	<cfset $.event('month',month(now()))>
+<cfif not isNumeric(variables.$.event('month'))>
+	<cfset variables.$.event('month',month(now()))>
 </cfif>
 
-<cfif not isNumeric($.event('year'))>
-	<cfset $.event('year',year(now()))>
+<cfif not isNumeric(variables.$.event('year'))>
+	<cfset variables.$.event('year',year(now()))>
 </cfif>
 
-<cfif isNumeric($.event('day')) and $.event('day')
-	and $.event('filterBy') eq "releaseDate">
-	<cfset menuType="releaseDate">
-	<cfset menuDate=createDate($.event('year'),$.event('month'),$.event('day'))>
-<cfelseif $.event('filterBy') eq "releaseMonth">
-	<cfset menuType="releaseMonth">
-	<cfset menuDate=createDate($.event('year'),$.event('month'),1)>
+<cfif isNumeric(variables.$.event('day')) and variables.$.event('day')
+	and variables.$.event('filterBy') eq "releaseDate">
+	<cfset variables.menuType="releaseDate">
+	<cfset variables.menuDate=createDate(variables.$.event('year'),variables.$.event('month'),variables.$.event('day'))>
+<cfelseif variables.$.event('filterBy') eq "releaseMonth">
+	<cfset variables.menuType="releaseMonth">
+	<cfset variables.menuDate=createDate(variables.$.event('year'),variables.$.event('month'),1)>
 <cfelse>
-	<cfset menuDate=now()>
-	<cfset menuType="default">
+	<cfset variables.menuDate=now()>
+	<cfset variables.menuType="default">
 </cfif>
 
-<cfset maxPortalItems=$.globalConfig("maxPortalItems")>
-<cfif not isNumeric(maxPortalItems)>
-	<cfset maxPortalItems=100>
+<cfset variables.maxPortalItems=variables.$.globalConfig("variables.maxPortalItems")>
+<cfif not isNumeric(variables.maxPortalItems)>
+	<cfset variables.maxPortalItems=100>
 </cfif>
 
-<cfset variables.rsPreSection=$.getBean('contentGateway').getKids('00000000000000000000000000000000000',$.event('siteID'),$.content('contentID'),menuType,menuDate,maxPortalItems,$.event('keywords'),0,$.content('sortBy'),$.content('sortDirection'),$.event('categoryID'),$.event('relatedID'),$.event('tag'))>
+<cfset variables.rsPreSection=variables.$.getBean('contentGateway').getKids('00000000000000000000000000000000000',variables.$.event('siteID'),variables.$.content('contentID'),variables.menuType,variables.menuDate,variables.maxPortalItems,variables.$.event('keywords'),0,variables.$.content('sortBy'),variables.$.content('sortDirection'),variables.$.event('categoryID'),variables.$.event('relatedID'),variables.$.event('tag'))>
 
-<cfif $.siteConfig('extranet') eq 1 and $.event('r').restrict eq 1>
-	<cfset variables.rssection=$.queryPermFIlter(variables.rsPreSection)/>
+<cfif variables.$.siteConfig('extranet') eq 1 and variables.$.event('r').restrict eq 1>
+	<cfset variables.rssection=variables.$.queryPermFIlter(variables.rsPreSection)/>
 <cfelse>
 	<cfset variables.rssection=variables.rsPreSection/>
 </cfif>
 	
-<cfset variables.iterator=$.getBean("contentIterator")>
-<cfset variables.iterator.setQuery(rsSection,$.content('nextN'))>
+<cfset variables.iterator=variables.$.getBean("contentIterator")>
+<cfset variables.iterator.setQuery(variables.rsSection,variables.$.content('nextN'))>
 
-<cfset event.setValue("currentNextNID",$.content('contentID'))>
+<cfset variables.$.event("currentNextNID",variables.$.content('contentID'))>
 
-<cfif not len($.event("nextNID")) or $.event("nextNID") eq $.event("currentNextNID")>
-	<cfif event.getContentBean().getNextN() gt 1>
-		<cfset variables.currentNextNIndex=$.event("startRow")>
+<cfif not len(variables.$.event("nextNID")) or variables.$.event("nextNID") eq variables.$.event("currentNextNID")>
+	<cfif variables.$.content('NextN') gt 1>
+		<cfset variables.currentNextNIndex=variables.$.event("startRow")>
 		<cfset variables.iterator.setStartRow(variables.currentNextNIndex)>
 	<cfelse>
-		<cfset variables.currentNextNIndex=$.event("pageNum")>
+		<cfset variables.currentNextNIndex=variables.$.event("pageNum")>
 		<cfset variables.iterator.setPage(variables.currentNextNIndex)>
 	</cfif>
 <cfelse>	
@@ -97,39 +97,39 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.iterator.setPage(1)>
 </cfif>
 
-<cfset variables.nextN=$.getBean('utility').getNextN(rsSection,$.content('nextN'),variables.currentNextNIndex)>
+<cfset variables.nextN=variables.$.getBean('utility').getNextN(variables.rsSection,variables.$.content('nextN'),variables.currentNextNIndex)>
 
 </cfsilent>
 
-<cfif iterator.getRecordcount()>
+<cfif variables.iterator.getRecordcount()>
 	<cfoutput>
 	<div id="svPortal" class="svIndex">
 		<cfsilent>
-			<cfif NOT len($.content("displayList"))>
+			<cfif NOT len(variables.$.content("displayList"))>
 				<cfset variables.contentListFields="Date,Title,Image,Summary,ReadMore,Credits">
 				
-				<cfif $.getBean('contentGateway').getHasComments($.event('siteid'),$.content('contentID'))>
+				<cfif variables.$.getBean('contentGateway').getHasComments(variables.$.event('siteid'),variables.$.content('contentID'))>
 					<cfset variables.contentListFields=listAppend(contentListFields,"Comments")>
 				</cfif>
 				
 				<cfset variables.contentListFields=listAppend(variables.contentListFields,"Tags")>
 				
-				<cfif $.getBean('contentGateway').getHasRatings($.event('siteid'),$.content('contentID'))>
+				<cfif variables.$.getBean('contentGateway').getHasRatings(variables.$.event('siteid'),variables.$.content('contentID'))>
 					<cfset variables.contentListFields=listAppend(variables.contentListFields,"Rating")>
 				</cfif>
-				<cfset $.content("displayList",variables.contentListFields)>
+				<cfset variables.$.content("displayList",variables.contentListFields)>
 			</cfif>
 		</cfsilent>
-		#$.dspObject_Include(thefile='dsp_content_list.cfm',
-			fields=$.content("displayList"),
+		#variables.$.dspObject_Include(thefile='dsp_content_list.cfm',
+			fields=variables.$.content("displayList"),
 			type="Portal", 
 			iterator= variables.iterator,
-			imageSize=$.content("ImageSize"),
-			imageHeight=$.content("ImageHeight"),
-			imageWidth=$.content("ImageWidth")
+			imageSize=variables.$.content("ImageSize"),
+			imageHeight=variables.$.content("ImageHeight"),
+			imageWidth=variables.$.content("ImageWidth")
 			)#
 		<cfif variables.nextn.numberofpages gt 1>
-			#$.dspObject_Include(thefile='dsp_nextN.cfm')#
+			#variables.$.dspObject_Include(thefile='dsp_nextN.cfm')#
 		</cfif>	
 	</div>
 	</cfoutput>
@@ -137,19 +137,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif not variables.iterator.getRecordCount()>
      <cfoutput>
-     <cfif $.event('filterBy') eq "releaseMonth">
+     <cfif variables.$.event('filterBy') eq "releaseMonth">
      <div id="svPortal">
 	     <br>
-	     <p>#$.rbKey('list.nocontentmonth')#</p>    
+	     <p>#variables.$.rbKey('list.nocontentmonth')#</p>    
      </div>
-     <cfelseif $.event('filterBy') eq "releaseDate">
+     <cfelseif variables.$.event('filterBy') eq "releaseDate">
      <div id="svPortal">
 	     <br>
-	     <p>#$.rbKey('list.nocontentday')#</p>
+	     <p>#variables.$.rbKey('list.nocontentday')#</p>
      </div>
      <cfelse>
      <div id="svPortal">
-         <p>#$.rbKey('list.nocontent')#</p>   
+         <p>#variables.$.rbKey('list.nocontent')#</p>   
      </div>
      </cfif>
      </cfoutput>

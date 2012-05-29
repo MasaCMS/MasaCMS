@@ -45,5 +45,5 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<script src="#event.getSite().getAssetPath()#/js/adapter/shadowbox-prototype.js" type="text/javascript"></script>
+<script src="#variables.$.siteConfig('assetPath')#/js/adapter/shadowbox-prototype.js" type="text/javascript"></script>
 </cfoutput>

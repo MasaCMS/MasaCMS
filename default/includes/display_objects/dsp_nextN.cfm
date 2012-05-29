@@ -63,8 +63,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif len(request.sortBy)>
 	<cfset variables.qrystr="&sortBy=#request.sortBy#&sortDirection=#request.sortDirection#"/>
 </cfif>
-<cfif len($.event('categoryID'))>
-	<cfset variables.qrystr=variables.qrystr & "&categoryID=#$.event('categoryID')#"/>
+<cfif len(variables.$.event('categoryID'))>
+	<cfset variables.qrystr=variables.qrystr & "&categoryID=#variables.$.event('categoryID')#"/>
 </cfif>
 <cfif len(request.relatedID)>
 	<cfset variables.qrystr=variables.qrystr & "&relatedID=#request.relatedID#"/>
@@ -84,18 +84,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 <cfoutput>
 <dl class="moreResults">
-	<cfif variables.nextN.recordsPerPage gt 1><dt>#$.rbKey('list.moreresults')#:</dt></cfif>
+	<cfif variables.nextN.recordsPerPage gt 1><dt>#variables.$.rbKey('list.moreresults')#:</dt></cfif>
 	<dd>
 		<ul class="#this.ulPaginationClass#">
 		<cfif variables.nextN.currentpagenumber gt 1>
 		<cfif request.muraExportHtml>
 			<cfif variables.nextN.currentpagenumber eq 2>
-			<li class="navPrev"><a href="index.html">&laquo;&nbsp;#$.rbKey('list.previous')#</a></li>
+			<li class="navPrev"><a href="index.html">&laquo;&nbsp;#variables.$.rbKey('list.previous')#</a></li>
 			<cfelse>
-			<li class="navPrev"><a href="index#evaluate('#variables.nextn.currentpagenumber#-1')#.html">&laquo;&nbsp;#$.rbKey('list.previous')#</a></li>
+			<li class="navPrev"><a href="index#evaluate('#variables.nextn.currentpagenumber#-1')#.html">&laquo;&nbsp;#variables.$.rbKey('list.previous')#</a></li>
 			</cfif>
 		<cfelse>
-			<li class="navPrev"><a href="#xmlFormat('?#paginationKey#=#variables.nextN.previous##qrystr#')#">&laquo;&nbsp;#$.rbKey('list.previous')#</a></li>
+			<li class="navPrev"><a href="#xmlFormat('?#paginationKey#=#variables.nextN.previous##variables.qrystr#')#">&laquo;&nbsp;#variables.$.rbKey('list.previous')#</a></li>
 		</cfif>
 		</cfif>
 		<cfloop from="#variables.nextN.firstPage#"  to="#variables.nextN.lastPage#" index="i">
@@ -109,15 +109,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<li><a href="index#i#.html">#i#</a></li>
 					</cfif>
 				<cfelse>
-					<li><a href="#xmlFormat('?#paginationKey#=#evaluate('(#i#*#variables.nextN.recordsperpage#)-#variables.nextN.recordsperpage#+1')##qrystr#')#">#i#</a></li>
+					<li><a href="#xmlFormat('?#paginationKey#=#evaluate('(#i#*#variables.nextN.recordsperpage#)-#variables.nextN.recordsperpage#+1')##variables.qrystr#')#">#i#</a></li>
 				</cfif>
 			</cfif>
 		</cfloop>
 		<cfif variables.nextN.currentpagenumber lt variables.nextN.NumberOfPages>
 			<cfif request.muraExportHtml>
-				<li class="navNext"><a href="index#evaluate('#variables.nextn.currentpagenumber#+1')#.html">#$.rbKey('list.next')#&nbsp;&raquo;</a></li>
+				<li class="navNext"><a href="index#evaluate('#variables.nextn.currentpagenumber#+1')#.html">#variables.$.rbKey('list.next')#&nbsp;&raquo;</a></li>
 			<cfelse>
-				<li class="navNext"><a href="#xmlFormat('?#paginationKey#=#variables.nextN.next##variables.qrystr#')#">#$.rbKey('list.next')#&nbsp;&raquo;</a></li>
+				<li class="navNext"><a href="#xmlFormat('?#paginationKey#=#variables.nextN.next##variables.qrystr#')#">#variables.$.rbKey('list.next')#&nbsp;&raquo;</a></li>
 			</cfif>
 		</cfif>
 		</ul>

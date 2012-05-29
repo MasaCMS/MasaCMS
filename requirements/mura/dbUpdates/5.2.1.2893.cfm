@@ -110,17 +110,17 @@ CREATE INDEX IX_ttrash_parentid ON ttrash (parentid)
 	</cftry>
 </cfcase>
 <cfcase value="oracle">
-<cfset runDBUpdate=false/>
+<cfset variables.RUNDBUPDATE=false/>
 <cftry>
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 select * from ttrash where 0=1
 </cfquery>
 <cfcatch>
-<cfset runDBUpdate=true/>
+<cfset variables.RUNDBUPDATE=true/>
 </cfcatch>
 </cftry>
 
-<cfif runDBUpdate>
+<cfif variables.RUNDBUPDATE>
 	<cftransaction>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	CREATE TABLE "TTRASH" (

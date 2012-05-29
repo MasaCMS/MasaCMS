@@ -50,44 +50,44 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cfif>
 <cfparam name="useRss" default="false">
-<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rsSection">select contentid,filename,menutitle,target,restricted,restrictgroups,type,sortBy,sortDirection from tcontent where siteid='#$.event('siteID')#' and contentid='#arguments.objectid#' and approved=1 and active=1 and display=1</cfquery>
+<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="variables.rsSection">select contentid,filename,menutitle,target,restricted,restrictgroups,type,sortBy,sortDirection from tcontent where siteid='#variables.$.event('siteID')#' and contentid='#arguments.objectid#' and approved=1 and active=1 and display=1</cfquery>
 <cfif rsSection.recordcount>
 <cfsilent>
 <cfif rsSection.type neq "Calendar">
-<cfset today=now() />
+<cfset variables.today=now() />
 <cfelse>
-<cfset today=createDate($.event('year'),$.event('month'),1) />
+<cfset variables.today=createDate(variables.$.event('year'),variables.$.event('month'),1) />
 </cfif>
-<cfset rs=$.getBean('contentGateway').getKidsCategorySummary($.event('siteID'),arguments.objectid,$.event('relatedID'),today,rsSection.type)>
+<cfset variables.rs=variables.$.getBean('contentGateway').getKidsCategorySummary(variables.$.event('siteID'),arguments.objectid,variables.$.event('relatedID'),today,variables.rsSection.type)>
 
-<cfset viewAllURL="#$.globalConfig('context')##getURLStem($.event('siteID'),rsSection.filename)#">
-<cfif len($.event('relatedID'))>
-	<cfset viewAllURL=viewAllURL & "?relatedID=#HTMLEditFormat($.event('relatedID'))#">
+<cfset variables.viewAllURL="#variables.$.globalConfig('context')##getURLStem(variables.$.event('siteID'),rsSection.filename)#">
+<cfif len(variables.$.event('relatedID'))>
+	<cfset variables.viewAllURL=variables.viewAllURL & "?relatedID=#HTMLEditFormat(variables.$.event('relatedID'))#">
 </cfif>
 </cfsilent>
-<cfif rs.recordcount>
+<cfif variables.rs.recordcount>
 
 <cfoutput>
 <div class="svCatSummary svIndex">
-<#$.getHeaderTag('subHead1')#>#$.rbKey('list.categories')#</#$.getHeaderTag('subHead1')#>
-<ul class="navSecondary"><cfloop query="rs">
+<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('list.categories')#</#variables.$.getHeaderTag('subHead1')#>
+<ul class="navSecondary"><cfloop query="variables.rs">
 	<cfsilent>
-	<cfif len(rs.filename)>
-		<cfset categoryURL="#$.globalConfig('context')##getURLStem($.event('siteID'),rsSection.filename & '/category/' & rs.filename)#">
-		<cfif len($.event('relatedID'))>
-			<cfset categoryURL=categoryURL & "?relatedID=#HTMLEditFormat($.event('relatedID'))#">
+	<cfif len(variables.rs.filename)>
+		<cfset variables.categoryURL="#variables.$.globalConfig('context')##getURLStem(variables.$.event('siteID'),variables.rsSection.filename & '/category/' & variables.rs.filename)#">
+		<cfif len(variables.$.event('relatedID'))>
+			<cfset variables.categoryURL=variables.categoryURL & "?relatedID=#HTMLEditFormat(variables.$.event('relatedID'))#">
 		</cfif>
 	<cfelse>
-		<cfset categoryURL="#$.globalConfig('context')##getURLStem($.event('siteID'),rsSection.filename)#?categoryID=#rs.categoryID#">
-		<cfif len($.event('relatedID'))>
-			<cfset categoryURL=categoryURL & "&relatedID=#HTMLEditFormat($.event('relatedID'))#">
+		<cfset categoryURL="#variables.$.globalConfig('context')##getURLStem(variables.$.event('siteID'),rsSection.filename)#?categoryID=#rs.categoryID#">
+		<cfif len(variables.$.event('relatedID'))>
+			<cfset categoryURL=categoryURL & "&relatedID=#HTMLEditFormat(variables.$.event('relatedID'))#">
 		</cfif>
 	</cfif>
 	</cfsilent>
 	<cfset class=iif(rs.currentrow eq 1,de('first'),de(''))>
-		<li class="#class#<cfif listFind($.event('categoryID'),rs.categoryID)> current</cfif>"><a href="#categoryURL#">#rs.name# (#rs.count#)</a><cfif useRss><a class="rss" href="#$.globalConfig('context')#/tasks/feed/index.cfm?siteid=#$.event('siteID')#&contentID=#rsSection.contentid#&categoryID=#rs.categoryID#" <cfif listFind($.event('categoryID'),rs.categoryID)>class="current"</cfif>>RSS</a></cfif></li>
+		<li class="#class#<cfif listFind(variables.$.event('categoryID'),variables.rs.categoryID)> current</cfif>"><a href="#categoryURL#">#variables.rs.name# (#variables.rs.count#)</a><cfif useRss><a class="rss" href="#variables.$.globalConfig('context')#/tasks/feed/index.cfm?siteid=#variables.$.event('siteID')#&contentID=#variables.rsSection.contentid#&categoryID=#variables.rs.categoryID#" <cfif listFind(variables.$.event('categoryID'),variables.rs.categoryID)>class="current"</cfif>>RSS</a></cfif></li>
 	</cfloop>
-	<li class="last"><a href="#viewAllURL#">View All</a><cfif useRss><a class="rss" href="#$.globalConfig('context')#/tasks/feed/index.cfm?siteid=#$.event('siteID')#&contentID=#rsSection.contentid#">RSS</a></cfif></li>
+	<li class="last"><a href="#variables.viewAllURL#">View All</a><cfif useRss><a class="rss" href="#variables.$.globalConfig('context')#/tasks/feed/index.cfm?siteid=#variables.$.event('siteID')#&contentID=#variables.rsSection.contentid#">RSS</a></cfif></li>
 </ul>
 </div>
 </cfoutput>

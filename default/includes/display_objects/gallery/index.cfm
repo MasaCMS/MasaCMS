@@ -46,150 +46,150 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfsilent>
 	<!--- the js is not loaded in contentRenderer.dspBody() to prevent caching --->
-	<cfset hasComments=$.getBean('contentGateway').getHasComments($.event('siteID'),$.content('contentHistID')) />
-	<cfset hasRatings=$.getBean('contentGateway').getHasRatings($.event('siteID'),$.content('contentHistID')) />
+	<cfset variables.hasComments=variables.$.getBean('contentGateway').gethasComments(variables.$.event('siteID'),variables.$.content('contentHistID')) />
+	<cfset variables.hasRatings=variables.$.getBean('contentGateway').gethasRatings(variables.$.event('siteID'),variables.$.content('contentHistID')) />
 	
-	<cfif not isNumeric($.event('month'))>
-		<cfset $.event('month',month(now()))>
+	<cfif not isNumeric(variables.$.event('month'))>
+		<cfset variables.$.event('month',month(now()))>
 	</cfif>
 	
-	<cfif not isNumeric($.event('year'))>
-		<cfset $.event('year',year(now()))>
+	<cfif not isNumeric(variables.$.event('year'))>
+		<cfset variables.$.event('year',year(now()))>
 	</cfif>
 	
-	<cfif isNumeric($.event('day')) and $.event('day')
-		and $.event('filterBy') eq "releaseDate">
-		<cfset menuType="releaseDate">
-		<cfset menuDate=createDate($.event('year'),$.event('month'),$.event('day'))>
-	<cfelseif $.event('filter') eq "releaseMonth">
-		<cfset menuType="releaseMonth">
-		<cfset menuDate=createDate($.event('year'),$.event('month'),1)>
+	<cfif isNumeric(variables.$.event('day')) and variables.$.event('day')
+		and variables.$.event('filterBy') eq "releaseDate">
+		<cfset variables.menuType="releaseDate">
+		<cfset variables.menuDate=createDate(variables.$.event('year'),variables.$.event('month'),variables.$.event('day'))>
+	<cfelseif variables.$.event('filter') eq "releaseMonth">
+		<cfset variables.menuType="releaseMonth">
+		<cfset variables.menuDate=createDate(variables.$.event('year'),variables.$.event('month'),1)>
 	<cfelse>
-		<cfset menuDate=now()>
-		<cfset menuType="default">
+		<cfset variables.menuDate=now()>
+		<cfset variables.menuType="default">
 	</cfif>
 	
-	<cfset rsPreSection=$.getBean('contentGateway').getKids('00000000000000000000000000000000000',$.event('siteID'),$.content('contentID'),menutype,menuDate,0,$.event('keywords'),0,$.content('sortBy'),$.content('sortDirection'),$.event('categoryID'),$.event('relatedID'),$.event('tag'))>
-	<cfif $.siteConfig('extranet') eq 1 and $.event('r').restrict eq 1>
-		<cfset rssection=$.queryPermFilter(rsPreSection)/>
+	<cfset variables.rsPreSection=variables.$.getBean('contentGateway').getKids('00000000000000000000000000000000000',variables.$.event('siteID'),variables.$.content('contentID'),variables.menuType,variables.menuDate,0,variables.$.event('keywords'),0,variables.$.content('sortBy'),variables.$.content('sortDirection'),variables.$.event('categoryID'),variables.$.event('relatedID'),variables.$.event('tag'))>
+	<cfif variables.$.siteConfig('extranet') eq 1 and variables.$.event('r').restrict eq 1>
+		<cfset variables.rssection=variables.$.queryPermFilter(variables.rsPreSection)/>
 	<cfelse>
-		<cfset rssection=rsPreSection/>
+		<cfset variables.rssection=variables.rsPreSection/>
 	</cfif>
 	
-	<cfset iterator=$.getBean("contentIterator")>
-	<cfset iterator.setQuery(rsSection,event.getContentBean().getNextN())>
+	<cfset variables.iterator=variables.$.getBean("contentvariables.iterator")>
+	<cfset variables.iterator.setQuery(variables.rssection,event.getContentBean().getNextN())>
 	
 	<cfset imageArgs=structNew()/>
 	
-	<cfif $.content("imageSize") neq "Custom">
-		<cfset imageArgs.size=$.content("imageSize")>
+	<cfif variables.$.content("imageSize") neq "Custom">
+		<cfset imageArgs.size=variables.$.content("imageSize")>
 	<cfelse>
-		<cfset imageArgs.height=$.content("imageHeight")>
-		<cfset imageArgs.width=$.content("imageWidth")>
+		<cfset imageArgs.height=variables.$.content("imageHeight")>
+		<cfset imageArgs.width=variables.$.content("variables.imageWidth")>
 	</cfif>
 	
-	<cfset event.setValue("currentNextNID",$.content('contentID'))>
+	<cfset variables.$.event("currentNextNID",variables.$.content('contentID'))>
 	
-	<cfif not len($.event("nextNID")) or $.event("nextNID") eq $.event("currentNextNID")>
+	<cfif not len(variables.$.event("nextNID")) or variables.$.event("nextNID") eq variables.$.event("currentNextNID")>
 		<cfif event.getContentBean().getNextN() gt 1>
-			<cfset currentNextNIndex=$.event("startRow")>
-			<cfset iterator.setStartRow(currentNextNIndex)>
+			<cfset currentNextNIndex=variables.$.event("startRow")>
+			<cfset variables.iterator.setStartRow(currentNextNIndex)>
 		<cfelse>
-			<cfset currentNextNIndex=$.event("pageNum")>
-			<cfset iterator.setPage(currentNextNIndex)>
+			<cfset currentNextNIndex=variables.$.event("pageNum")>
+			<cfset variables.iterator.setPage(currentNextNIndex)>
 		</cfif>
 	<cfelse>	
 		<cfset currentNextNIndex=1>
-		<cfset iterator.setPage(1)>
+		<cfset variables.iterator.setPage(1)>
 	</cfif>
 	
-	<cfset variables.nextN=$.getBean('utility').getNextN(rsSection,event.getContentBean().getNextN(),currentNextNIndex)>
+	<cfset variables.nextN=variables.$.getBean('utility').getNextN(variables.rssection,event.getContentBean().getNextN(),currentNextNIndex)>
 
-	<cfif NOT len($.content("displayList"))>
+	<cfif NOT len(variables.$.content("displayList"))>
 		<cfset variables.contentListFields="Title,Summary,Credits">
 		
-		<cfif $.getBean('contentGateway').getHasComments($.event('siteid'),$.content('contentID'))>
+		<cfif variables.$.getBean('contentGateway').gethasComments(variables.$.event('siteid'),variables.$.content('contentID'))>
 			<cfset variables.contentListFields=listAppend(contentListFields,"Comments")>
 		</cfif>
 			
 		<cfset variables.contentListFields=listAppend(variables.contentListFields,"Tags")>
 				
-		<cfif $.getBean('contentGateway').getHasRatings($.event('siteid'),$.content('contentID'))>
+		<cfif variables.$.getBean('contentGateway').gethasRatings(variables.$.event('siteid'),variables.$.content('contentID'))>
 			<cfset variables.contentListFields=listAppend(variables.contentListFields,"Rating")>
 		</cfif>
-		<cfset $.content("displayList",variables.contentListFields)>
+		<cfset variables.$.content("displayList",variables.contentListFields)>
 	</cfif>
 	
-	<cfif $.content('imageSize') neq 'custom'>
-		<cfset imageWidth=$.siteConfig('gallery#$.content('imageSize')#Scale')>
-	<cfelseif isNumeric($.content('imageWidth'))>
-		<cfset imageWidth=$.content('imageWidth')>
+	<cfif variables.$.content('imageSize') neq 'custom'>
+		<cfset variables.imageWidth=variables.$.siteConfig('gallery#variables.$.content('imageSize')#Scale')>
+	<cfelseif isNumeric(variables.$.content('variables.imageWidth'))>
+		<cfset variables.imageWidth=variables.$.content('variables.imageWidth')>
 	<cfelse>
-		<cfset imageWidth=0>
+		<cfset variables.imageWidth=0>
 	</cfif>
 </cfsilent>
-	<cfif iterator.getRecordCount()>
+	<cfif variables.iterator.getRecordCount()>
 	<div id="svGallery"> 
-			<ul class="clearfix">
-			<cfloop condition="iterator.hasNext()">
+			<ul variables.class="clearfix">
+			<cfloop condition="variables.iterator.hasNext()">
 			<cfsilent>
-			<cfset item=iterator.next()>
-			<cfset class=""/>
-			<cfif not iterator.hasPrevious()> 
-				<cfset class=listAppend(class,"first"," ")/> 
+			<cfset variables.item=variables.iterator.next()>
+			<cfset variables.class=""/>
+			<cfif not variables.iterator.hasPrevious()> 
+				<cfset variables.class=listAppend(variables.class,"first"," ")/> 
 			</cfif>
-			<cfif not iterator.hasNext()> 
-				<cfset class=listAppend(class,"last"," ")/> 
+			<cfif not variables.iterator.hasNext()> 
+				<cfset variables.class=listAppend(variables.class,"last"," ")/> 
 			</cfif>
 			</cfsilent>
 			<cfoutput>
-			<li class="#class#"<cfif imageWidth> style="width:#imageWidth#px;"</cfif>>
-				<a href="#item.getImageURL(size='large')#" title="#HTMLEditFormat(item.getValue('title'))#" rel="shadowbox[gallery]" class="gallery thumbnail"><img src="#item.getImageURL(argumentCollection=imageArgs)#" alt="#HTMLEditFormat(item.getValue('title'))#"/></a>	 
+			<li variables.class="#variables.class#"<cfif variables.imageWidth> style="width:#variables.imageWidth#px;"</cfif>>
+				<a href="#variables.item.getImageURL(size='large')#" title="#HTMLEditFormat(variables.item.getValue('title'))#" rel="shadowbox[gallery]" variables.class="gallery thumbnail"><img src="#variables.item.getImageURL(argumentCollection=imageArgs)#" alt="#HTMLEditFormat(variables.item.getValue('title'))#"/></a>	 
 			 	<dl>
-			 	<cfloop list="#$.content("displayList")#" index="field">
+			 	<cfloop list="#variables.$.content("displayList")#" index="field">
 					<cfswitch expression="#field#">
 						<cfcase value="Title">
 							<dt>
-							 	<cfif listFindNoCase($.content("displayList"),"comments")>
-							 		<a href="?linkServID=#item.getValue('contentid')#&categoryID=#HTMLEditFormat($.event('categoryID'))#&relatedID=#HTMLEditFormat(request.relatedID)#" title="#HTMLEditFormat(item.getValue('title'))#">#HTMLEditFormat(item.getValue('menutitle'))#</a>
+							 	<cfif listFindNoCase(variables.$.content("displayList"),"comments")>
+							 		<a href="?linkServID=#variables.item.getValue('contentid')#&categoryID=#HTMLEditFormat(variables.$.event('categoryID'))#&relatedID=#HTMLEditFormat(request.relatedID)#" title="#HTMLEditFormat(variables.item.getValue('title'))#">#HTMLEditFormat(variables.item.getValue('menutitle'))#</a>
 							 	<cfelse>
-							 		#HTMLEditFormat(item.getValue('menutitle'))#
+							 		#HTMLEditFormat(variables.item.getValue('menutitle'))#
 							 	</cfif>
 							</dt>
 						</cfcase>
 						<cfcase value="Summary">
-						 	<cfif item.getValue('summary') neq "" and item.getValue('summary') neq "<p></p>">
-							 	<dd class="summary">
-							 	#item.getValue('summary')#
+						 	<cfif variables.item.getValue('summary') neq "" and variables.item.getValue('summary') neq "<p></p>">
+							 	<dd variables.class="summary">
+							 	#variables.item.getValue('summary')#
 							 	</dd>
 						 	</cfif>
 						</cfcase>
 						<cfcase value="Credits">	 	
-						 	<cfif item.getValue('credits') neq "">
-						 		<dd class="credits">#$.rbKey('list.by')# #HTMLEditFormat(item.getValue('credits'))#</dd>
+						 	<cfif variables.item.getValue('credits') neq "">
+						 		<dd variables.class="credits">#variables.$.rbKey('list.by')# #HTMLEditFormat(variables.item.getValue('credits'))#</dd>
 						 	</cfif>
 						</cfcase>
 						<cfcase value="Comments">
-					 		<dd class="comments"><a href="?linkServID=#item.getValue('contentid')#&categoryID=#HTMLEditFormat($.event('categoryID'))#&relatedID=#HTMLEditFormat(request.relatedID)#" title="#HTMLEditFormat(item.getValue('title'))#">#$.rbKey('list.comments')# (#$.getBean('contentGateway').getCommentCount($.event('siteID'),item.getValue('contentid'))#)</a></dd>
+					 		<dd variables.class="comments"><a href="?linkServID=#variables.item.getValue('contentid')#&categoryID=#HTMLEditFormat(variables.$.event('categoryID'))#&relatedID=#HTMLEditFormat(request.relatedID)#" title="#HTMLEditFormat(variables.item.getValue('title'))#">#variables.$.rbKey('list.comments')# (#variables.$.getBean('contentGateway').getCommentCount(variables.$.event('siteID'),variables.item.getValue('contentid'))#)</a></dd>
 					 	 </cfcase>
 						<cfcase value="Tags">
-						 	<cfif len(item.getValue('tags'))>
-								<cfset tagLen=listLen(item.getValue('tags')) />
-								<dd class="tags">
-									#$.rbKey('tagcloud.tags')#: 
-									<cfloop from="1" to="#tagLen#" index="t">
-									<cfset tag=#trim(listgetAt(item.getValue('tags'),t))#>
-									<a href="#$.createHREF(filename='#$.event('currentFilenameAdjusted')#/tag/#urlEncodedFormat(tag)#')#">#tag#</a><cfif tagLen gt t>, </cfif>
+						 	<cfif len(variables.item.getValue('tags'))>
+								<cfset tagLen=listLen(variables.item.getValue('tags')) />
+								<dd variables.class="tags">
+									#variables.$.rbKey('tagcloud.tags')#: 
+									<cfloop from="1" to="#tagLen#" index="variables.t">
+									<cfset tag=#trim(listgetAt(variables.item.getValue('tags'),variables.t))#>
+									<a href="#variables.$.createHREF(filename='#variables.$.event('currentFilenameAdjusted')#/tag/#urlEncodedFormat(tag)#')#">#tag#</a><cfif tagLen gt t>, </cfif>
 									</cfloop>
 								</dd>
 							</cfif>
 					 	</cfcase>
 						<cfcase value="Rating">
-					 		<dd class="ratings stars">#$.rbKey('list.rating')#: <img class="ratestars" src="#$.siteConfig('themeAssetPath')#/images/rater/star_#application.raterManager.getStarText(item.getValue('rating'))#.png" alt="<cfif isNumeric(item.getValue('rating'))>#item.getValue('rating')# star<cfif item.getValue('rating') gt 1>s</cfif></cfif>" border="0"></dd>
+					 		<dd variables.class="ratings stars">#variables.$.rbKey('list.rating')#: <img variables.class="ratestars" src="#variables.$.siteConfig('themeAssetPath')#/images/rater/star_#application.raterManager.getStarText(variables.item.getValue('rating'))#.png" alt="<cfif isNumeric(variables.item.getValue('rating'))>#variables.item.getValue('rating')# star<cfif variables.item.getValue('rating') gt 1>s</cfif></cfif>" border="0"></dd>
 					 	</cfcase>
 					 	<cfdefaultcase>
-							<cfif len(item.getValue(field))>
-							 	<dd class="#lcase(field)#">#HTMLEditFormat(item.getValue(field))#</dd>	 	
+							<cfif len(variables.item.getValue(field))>
+							 	<dd variables.class="#lcase(field)#">#HTMLEditFormat(variables.item.getValue(field))#</dd>	 	
 							</cfif>
 						</cfdefaultcase>
 					</cfswitch>
@@ -201,16 +201,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</ul>		
 	</div>
 	<cfif variables.nextN.numberofpages gt 1>
-			<cfoutput>#$.dspObject_Include(thefile='dsp_nextN.cfm')#</cfoutput>
+			<cfoutput>#variables.$.dspObject_Include(thefile='dsp_nextN.cfm')#</cfoutput>
 		</cfif>	
 	<cfelse>
 	 <cfoutput>
-	 <cfif $.event('filterBy') eq "releaseMonth">
-		<p>#$.rbKey('list.nocontentmonth')#</p>		
-	 <cfelseif $.event('filterBy') eq "releaseDate">
-		<p>#$.rbKey('list.nocontentday')#</p>	
+	 <cfif variables.$.event('filterBy') eq "releaseMonth">
+		<p>#variables.$.rbKey('list.nocontentmonth')#</p>		
+	 <cfelseif variables.$.event('filterBy') eq "releaseDate">
+		<p>#variables.$.rbKey('list.nocontentday')#</p>	
 	<cfelse>
-		<p>#$.rbKey('list.galleryisempty')#</p>
+		<p>#variables.$.rbKey('list.galleryisempty')#</p>
 	</cfif>
 	</cfoutput>
 	</cfif>

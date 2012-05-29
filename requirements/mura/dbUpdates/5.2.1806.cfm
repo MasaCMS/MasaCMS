@@ -1,17 +1,17 @@
 <!--- make sure tcontentfeeds.remoteID exists --->
 
-<cfset doUpdate=false>
+<cfset variables.DOUPDATE=false>
 
 <cftry>
 <cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 select remoteID from tcontentfeeds  where 0=1
 </cfquery>
 <cfcatch>
-<cfset doUpdate=true>
+<cfset variables.DOUPDATE=true>
 </cfcatch>
 </cftry>
 
-<cfif doUpdate>
+<cfif variables.DOUPDATE>
 <cfswitch expression="#getDbType()#">
 <cfcase value="mssql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
@@ -49,17 +49,17 @@ select remoteID from tcontentfeeds  where 0=1
 </cfswitch>
 </cfif>
 
-<cfset doUpdate=false>
+<cfset variables.DOUPDATE=false>
 <cftry>
 <cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 select remoteID from tcontentcategories  where 0=1
 </cfquery>
 <cfcatch>
-<cfset doUpdate=true>
+<cfset variables.DOUPDATE=true>
 </cfcatch>
 </cftry>
 
-<cfif doUpdate>
+<cfif variables.DOUPDATE>
 <cfswitch expression="#getDbType()#">
 <cfcase value="mssql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
@@ -97,17 +97,17 @@ select remoteID from tcontentcategories  where 0=1
 </cfswitch>
 </cfif>
 
-<cfset doUpdate=false>
+<cfset variables.DOUPDATE=false>
 <cftry>
 <cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 select container from tclassextendsets  where 0=1
 </cfquery>
 <cfcatch>
-<cfset doUpdate=true>
+<cfset variables.DOUPDATE=true>
 </cfcatch>
 </cftry>
 
-<cfif doUpdate>
+<cfif variables.DOUPDATE>
 <cfswitch expression="#getDbType()#">
 <cfcase value="mssql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">

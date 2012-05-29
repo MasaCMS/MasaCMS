@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfoutput>
 	<ul id="svSiteMap">
-		<li class="home"><a href="#$.globalConfig('context')##$.getURLStem($.event('siteID'),'')#">Home</a>#$.dspNestedNav(contentid='00000000000000000000000000000000001',viewdepth=10,class='')#
+		<li class="home"><a href="#variables.$.globalConfig('context')##variables.$.getURLStem(variables.$.event('siteID'),'')#">Home</a>#variables.$.dspNestedNav(contentid='00000000000000000000000000000000001',viewdepth=10,class='')#
 		</li>
 	</ul>
 </cfoutput>

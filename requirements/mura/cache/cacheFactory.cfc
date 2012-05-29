@@ -80,7 +80,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif NOT has( arguments.key ) AND isDefined("arguments.context")>		
 			<cfif hasFreeMemoryAvailable()>
 				<!--- create object --->
-				<cfset set( key, arguments.context, arguments.isSoft, arguments.timespan ) />
+				<cfset set( arguments.key, arguments.context, arguments.isSoft, arguments.timespan ) />
 			<cfelse>
 				<cfreturn arguments.context>
 			</cfif>
@@ -92,7 +92,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 		<!--- return cached context --->		
-		<cfreturn super.get( key ) />
+		<cfreturn super.get( arguments.key ) />
 
 	</cffunction>
 	

@@ -71,8 +71,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset prop=right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3)>	
 		<cfif prefix eq "get">
 			<cfreturn getValue(prop)>
-		<cfelseif prefix eq "set" and not structIsEmpty(MissingMethodArguments)>
-			<cfset setValue(prop,MissingMethodArguments[1])>	
+		<cfelseif prefix eq "set" and not structIsEmpty(arguments.MissingMethodArguments)>
+			<cfset setValue(prop,arguments.MissingMethodArguments[1])>	
 			<cfreturn this>
 		</cfif>
 	<cfelse>

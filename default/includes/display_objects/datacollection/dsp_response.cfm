@@ -46,55 +46,55 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfoutput>
-<cfif rsform.responseChart and not(refind("Mac",cgi.HTTP_USER_AGENT) and refind("MSIE 5",cgi.HTTP_USER_AGENT))>
+<cfif variables.rsform.responseChart and not(refind("Mac",cgi.HTTP_USER_AGENT) and refind("MSIE 5",cgi.HTTP_USER_AGENT))>
 	
-	<cfset customResponse=application.pluginManager.renderEvent("onFormSubmitPollRender",event)>
-	<cfif len(customResponse)>
-		#customResponse#
+	<cfset variables.customResponse=application.pluginManager.renderEvent("onFormSubmitPollRender",variables.event)>
+	<cfif len(variables.customResponse)>
+		#variables.customResponse#
 	<cfelse>
-		<cfquery name="rsTotal" datasource="#application.configBean.getDatasource(mode='readOnly')#" username="#application.configBean.getDBUsername(mode='readOnly')#" password="#application.configBean.getDBPassword(mode='readOnly')#">
+		<cfquery name="variables.rsTotal" datasource="#application.configBean.getDatasource(mode='readOnly')#" username="#application.configBean.getDBUsername(mode='readOnly')#" password="#application.configBean.getDBPassword(mode='readOnly')#">
 		select count(pollValue) as qty from tformresponsequestions where FormID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectID#"/> and pollValue is not null
 		</cfquery>
 	
 		<div id="dsp_response" class="dataCollection">
 		<ul class="pollResults">
-		<cfloop list="#request.polllist#" index="i">
+		<cfloop list="#request.polllist#" index="variables.i">
 		<cfsilent>
-		<cfquery name="rsSubTotal" datasource="#application.configBean.getDatasource(mode='readOnly')#" username="#application.configBean.getDBUsername(mode='readOnly')#" password="#application.configBean.getDBPassword(mode='readOnly')#">
+		<cfquery name="variables.rsSubTotal" datasource="#application.configBean.getDatasource(mode='readOnly')#" username="#application.configBean.getDBUsername(mode='readOnly')#" password="#application.configBean.getDBPassword(mode='readOnly')#">
 		SELECT tformresponsequestions.pollValue, Count(tformresponsequestions.pollValue) AS qty
 		FROM tformresponsequestions
 		GROUP BY tformresponsequestions.pollValue, tformresponsequestions.formID
 		HAVING tformresponsequestions.formID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectID#"/>
-		and tformresponsequestions.pollValue=<cfqueryparam cfsqltype="cf_sql_varchar" value="#I#"/>
+		and tformresponsequestions.pollValue=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.I#"/>
 		ORDER BY Count(tformresponsequestions.pollValue)
-		</cfquery></cfsilent><cfif rsSubTotal.qty eq ''><cfset lineQty=0><cfelse><cfset lineQty=rsSubtotal.qty></cfif><cfset percent=round((lineQty/rstotal.qty)*100)><li><span class="pollValue">#i#:</span> <span class="pollQty">#lineQty#</span> <span class="pollPercent">(#percent#%)</span><div style="margin: 2px 0 0 0; height: 10px; width: #percent#%; background: ##8C9EB4; font-size: 9px;">&nbsp;</div></li></cfloop></ul></div>
+		</cfquery></cfsilent><cfif variables.rsSubTotal.qty eq ''><cfset variables.lineQty=0><cfelse><cfset variables.lineQty=rsSubtotal.qty></cfif><cfset variables.percent=round((variables.lineQty/variables.rstotal.qty)*100)><li><span class="pollValue">#i#:</span> <span class="pollQty">#variables.lineQty#</span> <span class="pollPercent">(#variables.percent#%)</span><div style="margin: 2px 0 0 0; height: 10px; width: #variables.percent#%; background: ##8C9EB4; font-size: 9px;">&nbsp;</div></li></cfloop></ul></div>
 	</cfif>
 </cfif>
-<cfif not acceptdata>
-	<cfif acceptError eq "Browser">
+<cfif not variables.acceptdata>
+	<cfif variables.acceptError eq "Browser">
 		<p class="error">We're sorry the polling feature is not supported for IE 5 on the Mac</p>
-	<cfelseif acceptError eq "Duplicate">
+	<cfelseif variables.acceptError eq "Duplicate">
 		<p class="error">#getSite().getRBFactory().getKey("poll.onlyonevote")#</p>
-	<cfelseif acceptError eq "Captcha">
+	<cfelseif variables.acceptError eq "Captcha">
 		<p class="error">#getSite().getRBFactory().getKey("captcha.error")# <a href="javascript:history.back();">#getSite().getRBFactory().getKey("captcha.tryagain")#</a></p>
-	<cfelseif acceptError eq "Spam">
+	<cfelseif variables.acceptError eq "Spam">
 		<p class="error">#getSite().getRBFactory().getKey("captcha.spam")# <a href="javascript:history.back();">#getSite().getRBFactory().getKey("captcha.tryagain")#</a></p>
 	</cfif>
 <cfelse>
-		<div id="frm#replace(rsform.contentID,'-','','ALL')#">
-		<cfset customResponse=application.pluginManager.renderEvent("onFormSubmitResponseRender",event)>
+		<div id="frm#replace(variables.rsform.contentID,'-','','ALL')#">
+		<cfset variables.customResponse=application.pluginManager.renderEvent("onFormSubmitResponseRender",event)>
 		<cfif len(customResponse)>
-		#customResponse#
+		#variables.customResponse#
 		<cfelse>
-		#$.setDynamicContent('<p class="success">' & rsform.responseMessage & '</p>')#
+		#variables.$.setDynamicContent('<p class="success">' & variables.rsform.responseMessage & '</p>')#
 		</cfif>
 	
 		<cfif isdefined("request.redirect_url")>
-			<cfset customResponse=application.pluginManager.renderEvent("onBeforeFormSubmitRedirect",event)>
-			<cfif len(customResponse)>
-				#customResponse#
+			<cfset variables.customResponse=application.pluginManager.renderEvent("onBeforeFormSubmitRedirect",variables.event)>
+			<cfif len(variables.customResponse)>
+				#variables.customResponse#
 			<cfelse>
-				<cfif  isdefined("request.redirect_label")>
+				<cfif isdefined("request.redirect_label")>
 					<p class="success"><a href="#request.redirect_url#">#request.redirect_label#</a></p>
 				<cfelse>
 					<cflocation addtoken="false" url="#request.redirect_url#">

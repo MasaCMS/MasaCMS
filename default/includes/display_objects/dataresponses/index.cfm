@@ -46,10 +46,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfparam name="request.fuseaction" default="list">
-<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rssite">
+<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="variables.rssite">
 select siteid from tcontent where contentid='#arguments.objectid#' and active=1
 </cfquery>
-<cfset $.event('contentBean', $.getBean("content").loadBy(contentID=arguments.objectID) )/>
+<cfset variables.$.event('contentBean', $.getBean("content").loadBy(contentID=arguments.objectID) )/>
 
 <cfswitch expression="#request.fuseaction#">
 <cfcase value="list">

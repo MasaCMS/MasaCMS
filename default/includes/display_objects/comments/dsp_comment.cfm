@@ -45,7 +45,7 @@ to your own modified versions of Mura CMS.
 </cfsilent>
 <cfoutput>
 	<!--- comment-#request.rsSubCommentsLevel.commentid# cannot change; used by nested comments --->
-	<dl class="#class#" id="comment-#request.rsSubCommentsLevel.commentid#">
+	<dl class="#variables.class#" id="comment-#request.rsSubCommentsLevel.commentid#">
 		<dt>
 			<cfif request.rsSubCommentsLevel.url neq ''>
 				<a href="#request.rsSubCommentsLevel.url#" target="_blank">#htmleditformat(request.rsSubCommentsLevel.name)#</a>
@@ -53,20 +53,20 @@ to your own modified versions of Mura CMS.
 				#htmleditformat(request.rsSubCommentsLevel.name)#
 			</cfif>
 			<cfif request.isEditor and request.rsSubCommentsLevel.email neq ''>
-				<a href="javascript:noSpam('#listFirst(htmlEditFormat(request.rsSubCommentsLevel.email),'@')#','#listlast(HTMLEditFormat(request.rsSubCommentsLevel.email),'@')#')" onfocus="this.blur();">#$.rbKey('comments.email')#</a>
+				<a href="javascript:noSpam('#listFirst(htmlEditFormat(request.rsSubCommentsLevel.email),'@')#','#listlast(HTMLEditFormat(request.rsSubCommentsLevel.email),'@')#')" onfocus="this.blur();">#variables.$.rbKey('comments.email')#</a>
 			</cfif>
 			<cfif request.isEditor>
 				<cfif yesnoformat(application.configBean.getValue("editablecomments"))>
-					| <a class="editcomment" data-id="#request.rsSubCommentsLevel.commentID#">#$.rbKey('comments.edit')#</a>
+					| <a class="editcomment" data-id="#request.rsSubCommentsLevel.commentID#">#variables.$.rbKey('comments.edit')#</a>
 				</cfif>
 				<cfif request.rsSubCommentsLevel.isApproved neq 1>
-					| <a href="./?approvedcommentid=#request.rsSubCommentsLevel.commentid#&nocache=1&linkServID=#$.content('contentID')#" onClick="return confirm('Approve Comment?');">#$.rbKey('comments.approve')#</a>
+					| <a href="./?approvedcommentid=#request.rsSubCommentsLevel.commentid#&nocache=1&linkServID=#variables.$.content('contentID')#" onClick="return confirm('Approve Comment?');">#variables.$.rbKey('comments.approve')#</a>
 				</cfif>
-				| <a href="./?deletecommentid=#request.rsSubCommentsLevel.commentid#&nocache=1&linkServID=#$.content('contentID')#" onClick="return confirm('Delete Comment?');">#$.rbKey('comments.delete')#</a>		
+				| <a href="./?deletecommentid=#request.rsSubCommentsLevel.commentid#&nocache=1&linkServID=#variables.$.content('contentID')#" onClick="return confirm('Delete Comment?');">#variables.$.rbKey('comments.delete')#</a>		
 			</cfif>
 		</dt>
-		<cfif len($.currentUser().getPhotoFileID())>
-			<dd class="gravatar"><img src="#$.createHREFForImage($.currentUser().getSiteID(),$.currentUser().getPhotoFileID(),'jpg', 'medium')#"></dd>
+		<cfif len(variables.$.currentUser().getPhotoFileID())>
+			<dd class="gravatar"><img src="#variables.$.createHREFForImage(variables.$.currentUser().getSiteID(),variables.$.currentUser().getPhotoFileID(),'jpg', 'medium')#"></dd>
 		<cfelse>
 			<dd class="gravatar"><img src="http://www.gravatar.com/avatar/#lcase(Hash(lcase(request.rsSubCommentsLevel.email)))#" /></dd>
 		</cfif>
@@ -76,7 +76,7 @@ to your own modified versions of Mura CMS.
 		<dd class="dateTime">
 			#LSDateFormat(request.rsSubCommentsLevel.entered,"long")#, #LSTimeFormat(request.rsSubCommentsLevel.entered,"short")#
 		</dd>
-		<dd class="reply"><a  data-id="#request.rsSubCommentsLevel.commentid#" href="##postcomment">#$.rbKey('comments.reply')#</a></dd>
+		<dd class="reply"><a  data-id="#request.rsSubCommentsLevel.commentid#" href="##postcomment">#variables.$.rbKey('comments.reply')#</a></dd>
 		<dd id="postcomment-#request.rsSubCommentsLevel.commentid#"></dd>
 	</dl>
 </cfoutput>

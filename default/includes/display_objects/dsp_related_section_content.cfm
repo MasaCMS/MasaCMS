@@ -46,12 +46,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfsilent>
-	<cfquery datasource="#application.configBean.getDatasource(mode='readOnly')#" username="#application.configBean.getDBUsername(mode='readOnly')#" password="#application.configBean.getDBPassword(mode='readOnly')#" name="rsSection">select contentid,filename,menutitle,target,restricted,restrictgroups,type,sortBy,sortDirection from tcontent where siteid='#$.event('siteID')#' and contentid='#arguments.objectid#' and approved=1 and active=1 and display=1</cfquery>
+	<cfquery datasource="#application.configBean.getDatasource(mode='readOnly')#" username="#application.configBean.getDBUsername(mode='readOnly')#" password="#application.configBean.getDBPassword(mode='readOnly')#" name="rsSection">select contentid,filename,menutitle,target,restricted,restrictgroups,type,sortBy,sortDirection from tcontent where siteid='#variables.$.event('siteID')#' and contentid='#arguments.objectid#' and approved=1 and active=1 and display=1</cfquery>
 	<cfif variables.rsSection.recordcount>
 	<cfset variables.menutype=iif(variables.rsSection.type eq 'Portal',de('default'),de('calendar_features'))/>
-	<cfset rsPreFeatures=$.getBean('contentGateway').getkids('00000000000000000000000000000000000','#$.event('siteID')#','#arguments.objectid#',variables.menutype,now(),0,"",0,iif(variables.rsSection.type eq 'Portal',de('#variables.rsSection.sortBy#'),de('displaystart')),iif(variables.rsSection.type eq 'Portal',de('#variables.rsSection.sortDirection#'),de('desc')),'','#$.content('contentID')#')>
-		<cfif $.siteConfig('extranet') eq 1 and $.event('r').restrict eq 1>
-			<cfset variables.rsFeatures=$.queryPermFIlter(variables.rsPreFeatures)/>
+	<cfset rsPreFeatures=variables.$.getBean('contentGateway').getkids('00000000000000000000000000000000000','#variables.$.event('siteID')#','#arguments.objectid#',variables.menutype,now(),0,"",0,iif(variables.rsSection.type eq 'Portal',de('#variables.rsSection.sortBy#'),de('displaystart')),iif(variables.rsSection.type eq 'Portal',de('#variables.rsSection.sortDirection#'),de('desc')),'','#variables.$.content('contentID')#')>
+		<cfif variables.$.siteConfig('extranet') eq 1 and variables.$.event('r').restrict eq 1>
+			<cfset variables.rsFeatures=variables.$.queryPermFIlter(variables.rsPreFeatures)/>
 		<cfelse>
 			<cfset variables.rsFeatures=rsPreFeatures/>
 		</cfif>
@@ -60,14 +60,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <cfif variables.rsSection.recordcount and variables.rsFeatures.recordcount>
 <cfsilent>
-	<cfset variables.iterator=$.getBean("contentIterator")>
+	<cfset variables.iterator=variables.$.getBean("contentIterator")>
 	<cfset variables.iterator.setQuery(rsFeatures)>
-	<cfset variables.cssID=$.createCSSid(variables.rsSection.menuTitle)>
+	<cfset variables.cssID=variables.$.createCSSid(variables.rsSection.menuTitle)>
 </cfsilent>
 <div id="#variables.cssID#" class="svRelSecContent svIndex">
-	<#$.getHeaderTag('subHead1')#>#rsSection.menutitle#</#$.getHeaderTag('subHead1')#>
+	<#variables.$.getHeaderTag('subHead1')#>#rsSection.menutitle#</#variables.$.getHeaderTag('subHead1')#>
 	<cfif not structIsEmpty(objectparams)>
-		#$.dspObject_Include(
+		#variables.$.dspObject_Include(
 				thefile='dsp_content_list.cfm',
 				fields=params.displayList,
 				type='objectparams', 
@@ -80,11 +80,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfsilent>
 		<cfset variables.contentListFields="Title">
 		
-		<cfif $.getBean('contentGateway').getHasComments($.event('siteID'),arguments.objectid) >
+		<cfif variables.$.getBean('contentGateway').getHasComments(variables.$.event('siteID'),arguments.objectid) >
 			<cfset variables.contentListFields=listAppend(variables.contentListFields,"Comments")>
 		</cfif>
 		</cfsilent>
-		#$.dspObject_Include(
+		#variables.$.dspObject_Include(
 			thefile='dsp_content_list.cfm',
 			fields=variables.contentListFields,
 			type='Related', 
@@ -93,7 +93,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	<dl class="moreResults">
-		<dt><a href="#application.configBean.getServerPort()##$.globalConfig('context')##application.contentRenderer.getURLStem($.event('siteID'),variables.rsSection.filename)#">View All</a></dt>
+		<dt><a href="#application.configBean.getServerPort()##variables.$.globalConfig('context')##application.contentRenderer.getURLStem(variables.$.event('siteID'),variables.rsSection.filename)#">View All</a></dt>
 	</dl>
 </div>
 <cfelse>

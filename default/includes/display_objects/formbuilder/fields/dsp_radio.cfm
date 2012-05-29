@@ -45,19 +45,19 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-<cfset strField = "" />
+<cfset variables.strField = "" />
 </cfsilent>
-<cfsavecontent variable="strField">
+<cfsavecontent variable="variables.strField">
 	<cfoutput>
 	#$.dspObject_Include(thefile='/formbuilder/fields/dsp_label.cfm',field=arguments.field,dataset=arguments.dataset)#</p>
 	<div>
-	<cfloop from="1" to="#ArrayLen(dataset.datarecordorder)#" index="iiy">
-		<cfset record = dataset.datarecords[dataset.datarecordorder[iiy]] />
-		<label for="#record.datarecordid#"><input name="#field.name#" id="#record.datarecordid#" type="radio"<cfif record.isselected eq 1> CHECKED</cfif> value="#record.value#">#record.label#</label>
+	<cfloop from="1" to="#ArrayLen(arguments.dataset.datarecordorder)#" index="variables.iiy">
+		<cfset variables.record = arguments.dataset.datarecords[dataset.datarecordorder[variables.iiy]] />
+		<label for="#variables.record.datarecordid#"><input name="#arguments.field.name#" id="#record.datarecordid#" type="radio"<cfif variables.record.isselected eq 1> CHECKED</cfif> value="#variables.record.value#">#variables.record.label#</label>
 	</cfloop>
 	</div>
 	</cfoutput>
 </cfsavecontent>
 <cfoutput>
-#strField#
+#variables.strField#
 </cfoutput>

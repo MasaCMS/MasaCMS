@@ -44,12 +44,12 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfset strField = "" />
+<cfset variables.strField = "" />
 <cfsilent>
-<cfsavecontent variable="strField">
+<cfsavecontent variable="variables.strField">
 	<cfoutput>
-	#field.value#
+	#arguments.field.value#
 	</cfoutput>
 </cfsavecontent>
 </cfsilent>
-<cfoutput>#strField#</cfoutput>
+<cfoutput>#variables.strField#</cfoutput>

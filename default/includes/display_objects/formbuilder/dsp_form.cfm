@@ -44,59 +44,59 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfset fbManager = $.getBean('formBuilderManager') />
+<cfset variables.fbManager = $.getBean('formBuilderManager') />
 
-<cfset frmID		= "frm" & replace(arguments.formID,"-","","ALL") />
-<cfset frm			= fbManager.renderFormJSON( arguments.formJSON ) />
-<cfset frmForm		= frm.form />
-<cfset frmData		= frm.datasets />
-<cfset frmFields	= frmForm.fields />
-<cfset dataset		= "" />
-<cfset isMultipart	= false />
+<cfset variables.frmID		= "frm" & replace(arguments.formID,"-","","ALL") />
+<cfset variables.frm			= variables.fbManager.renderFormJSON( arguments.formJSON ) />
+<cfset variables.frmForm		= variables.frm.form />
+<cfset variables.frmData		= variables.frm.datasets />
+<cfset variables.frmFields	= variables.frmForm.fields />
+<cfset variables.dataset		= "" />
+<cfset variables.isMultipart	= false />
 
 <!--- start with fieldsets closed --->
 <cfset request.fieldsetopen = false />
 
-<cfset aFieldOrder = frmForm.fieldorder />
+<cfset variables.aFieldOrder = variables.frmForm.fieldorder />
 <cfsavecontent variable="frmFieldContents">
 <cfoutput>
-<cfloop from="1" to="#ArrayLen(aFieldOrder)#" index="iiX">
-	<cfif StructKeyExists(frmFields,aFieldOrder[iiX])>
-		<cfset field = frmFields[aFieldOrder[iiX]] />
+<cfloop from="1" to="#ArrayLen(aFieldOrder)#" index="variables.iiX">
+	<cfif StructKeyExists(variables.frmFields,variables.aFieldOrder[variables.iiX])>
+		<cfset variables.field = variables.frmFields[variables.aFieldOrder[variables.iiX]] />
 		<!---<cfif iiX eq 1 and field.fieldtype.fieldtype neq "section">
 			<ol>
 		</cfif>--->
-		<cfif field.fieldtype.isdata eq 1 and len(field.datasetid)>
-			<cfset dataset = fbManager.processDataset( $,frmData[field.datasetid] ) />  
+		<cfif variables.field.fieldtype.isdata eq 1 and len(variables.field.datasetid)>
+			<cfset variables.dataset = variables.fbManager.processDataset( variables.$,variables.frmData[variables.field.datasetid] ) />
 		</cfif>
-		<cfif field.fieldtype.fieldtype eq "file">
-			<cfset isMultipart = true />
+		<cfif variables.field.fieldtype.fieldtype eq "file">
+			<cfset variables.isMultipart = true />
 		</cfif>
-		<cfif field.fieldtype.fieldtype eq "hidden">
-		#$.dspObject_Include(thefile='/formbuilder/fields/dsp_#field.fieldtype.fieldtype#.cfm',
-			field=field,
-			dataset=dataset
+		<cfif variables.field.fieldtype.fieldtype eq "hidden">
+		#variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_#variables.field.fieldtype.fieldtype#.cfm',
+			field=variables.field,
+			dataset=variables.dataset
 			)#			
-		<cfelseif field.fieldtype.fieldtype neq "section">
-			<div class="mura-form-#field.fieldtype.fieldtype#<cfif field.isrequired> req</cfif> control-group">
-			#$.dspObject_Include(thefile='/formbuilder/fields/dsp_#field.fieldtype.fieldtype#.cfm',
-				field=field,
-				dataset=dataset
+		<cfelseif variables.field.fieldtype.fieldtype neq "section">
+			<div class="mura-form-#variables.field.fieldtype.fieldtype#<cfif variables.field.isrequired> req</cfif> control-group">
+			#variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_#variables.field.fieldtype.fieldtype#.cfm',
+				field=variables.field,
+				dataset=variables.dataset
 				)#			
 			</div>
-		<cfelseif field.fieldtype.fieldtype eq "section">
+		<cfelseif variables.field.fieldtype.fieldtype eq "section">
 			<!---<cfif iiX neq 1>
 				</ol>
 			</cfif>--->
-			#$.dspObject_Include(thefile='/formbuilder/fields/dsp_#field.fieldtype.fieldtype#.cfm',
-				field=field,
-				dataset=dataset
+			#variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_#variables.field.fieldtype.fieldtype#.cfm',
+				field=variables.field,
+				dataset=variables.dataset
 				)#
 			<!---<ol>--->
 		<cfelse>
-		#$.dspObject_Include(thefile='/formbuilder/fields/dsp_#field.fieldtype.fieldtype#.cfm',
-			field=field,
-			dataset=dataset
+		#variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_#variables.field.fieldtype.fieldtype#.cfm',
+			field=variables.field,
+			dataset=variables.dataset
 			)#
 		</cfif>		
 		<!---#$.dspObject_Include('formbuilder/fields/dsp_#field.fieldtype.fieldtype#.cfm')#--->
@@ -109,10 +109,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfoutput>
 </cfsavecontent>
 <cfoutput>
-<form id="#frmID#" class="#$.siteConfig('bsFormLayout')#" method="post"<cfif isMultipart>enctype="multipart/form-data"</cfif>>
-	#frmFieldContents#
+<form id="#variables.frmID#" class="#variables.$.siteConfig('bsFormLayout')#" method="post"<cfif isMultipart>enctype="multipart/form-data"</cfif>>
+	#variables.frmFieldContents#
 	<div class="form-actions buttons"><input type="submit" class="btn" value="Submit"></div>
-	#$.dspObject_Include(thefile='dsp_form_protect.cfm')#
+	#variables.$.dspObject_Include(thefile='dsp_form_protect.cfm')#
 	<!---#$.dspObject_Include(thefile='dsp_captcha.cfm')#--->
 </form>
 </cfoutput>
