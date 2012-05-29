@@ -86,7 +86,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var i="">
 	<cfset var item="">
 	<cfset var args=structNew()>
-	
+	<cfset var setters=arguments.cfc>
+
+	<cfif application.cfversion gr 8>
+		<cfset setters=findImplicitAndExplicitSetters(arguments.cfc)>
+	</cfif>
+
 	<cfloop collection="#arguments.cfc#" item="i">
 		<cfif len(i) gt 3 and left(i,3) eq "set">
 			<cfset item=right(i,len(i)-3)>
@@ -106,6 +111,58 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfloop>
 	<cfreturn arguments.cfc>
+</cffunction>
+
+<!--- Ported from FW1 --->
+<cffunction name="findImplicitAndExplicitSetters" access="private" output="false">
+	<cfargument name="cfc">
+	<cfscript>
+		var baseMetadata = getMetadata( cfc );
+		var setters = { };
+		// is it already attached to the CFC metadata?
+		if ( structKeyExists( baseMetadata, '__fw1_setters' ) )  {
+			setters = baseMetadata.__fw1_setters;
+		} else {
+			var md = { extends = baseMetadata };
+			do {
+				md = md.extends;
+				var implicitSetters = false;
+				// we have implicit setters if: accessors="true" or persistent="true"
+				if ( structKeyExists( md, 'persistent' ) && isBoolean( md.persistent ) ) {
+					implicitSetters = md.persistent;
+				}
+				if ( structKeyExists( md, 'accessors' ) && isBoolean( md.accessors ) ) {
+					implicitSetters = implicitSetters || md.accessors;
+				}
+				if ( structKeyExists( md, 'properties' ) ) {
+					// due to a bug in ACF9.0.1, we cannot use var property in md.properties,
+					// instead we must use an explicit loop index... ugh!
+					var n = arrayLen( md.properties );
+					for ( var i = 1; i <= n; ++i ) {
+						var property = md.properties[ i ];
+						if ( implicitSetters ||
+								structKeyExists( property, 'setter' ) && isBoolean( property.setter ) && property.setter ) {
+							setters[ property.name ] = 'implicit';
+						}
+					}
+				}
+			} while ( structKeyExists( md, 'extends' ) );
+			// cache it in the metadata (note: in Railo 3.2 metadata cannot be modified
+			// which is why we return the local setters structure - it has to be built
+			// on every controller call; fixed in Railo 3.3)
+			baseMetadata.__fw1_setters = setters;
+		}
+		// gather up explicit setters as well
+		for ( var member in cfc ) {
+			var method = cfc[ member ];
+			var n = len( member );
+			if ( isCustomFunction( method ) && left( member, 3 ) == 'set' && n > 3 ) {
+				var property = right( member, n - 3 );
+				setters[ property ] = 'explicit';
+			}
+		}
+		return setters;
+	</cfscript>
 </cffunction>
 
 <cffunction name="getValue" returntype="any" access="public" output="false">
