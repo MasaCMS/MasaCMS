@@ -88,7 +88,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var args=structNew()>
 	<cfset var setters=arguments.cfc>
 
-	<cfif application.cfversion gr 8>
+	<cfif application.cfversion gt 8>
 		<cfset setters=findImplicitAndExplicitSetters(arguments.cfc)>
 	</cfif>
 
