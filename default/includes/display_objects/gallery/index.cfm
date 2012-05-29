@@ -46,8 +46,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfsilent>
 	<!--- the js is not loaded in contentRenderer.dspBody() to prevent caching --->
-	<cfset variables.hasComments=variables.$.getBean('contentGateway').getvariables.hasComments(variables.$.event('siteID'),variables.$.content('contentHistID')) />
-	<cfset variables.hasRatings=variables.$.getBean('contentGateway').getvariables.hasRatings(variables.$.event('siteID'),variables.$.content('contentHistID')) />
+	<cfset variables.hasComments=variables.$.getBean('contentGateway').gethasComments(variables.$.event('siteID'),variables.$.content('contentHistID')) />
+	<cfset variables.hasRatings=variables.$.getBean('contentGateway').gethasRatings(variables.$.event('siteID'),variables.$.content('contentHistID')) />
 	
 	<cfif not isNumeric(variables.$.event('month'))>
 		<cfset variables.$.event('month',month(now()))>
@@ -108,13 +108,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif NOT len(variables.$.content("displayList"))>
 		<cfset variables.contentListFields="Title,Summary,Credits">
 		
-		<cfif variables.$.getBean('contentGateway').getvariables.hasComments(variables.$.event('siteid'),variables.$.content('contentID'))>
+		<cfif variables.$.getBean('contentGateway').gethasComments(variables.$.event('siteid'),variables.$.content('contentID'))>
 			<cfset variables.contentListFields=listAppend(contentListFields,"Comments")>
 		</cfif>
 			
 		<cfset variables.contentListFields=listAppend(variables.contentListFields,"Tags")>
 				
-		<cfif variables.$.getBean('contentGateway').getvariables.hasRatings(variables.$.event('siteid'),variables.$.content('contentID'))>
+		<cfif variables.$.getBean('contentGateway').gethasRatings(variables.$.event('siteid'),variables.$.content('contentID'))>
 			<cfset variables.contentListFields=listAppend(variables.contentListFields,"Rating")>
 		</cfif>
 		<cfset variables.$.content("displayList",variables.contentListFields)>

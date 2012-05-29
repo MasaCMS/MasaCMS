@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 <cfoutput>
 <div class="navvariables.archive well">
-<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('list.variables.archive')#</#variables.$.getHeaderTag('subHead1')#>
+<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('list.archive')#</#variables.$.getHeaderTag('subHead1')#>
 <ul class="#this.ulTopClass# sidebar-nav">
 	<cfloop query="variables.rsvariables.archive">
 		<cfset isCurrentvariables.archive=hasvariables.archiveFilter and variables.$.event("month") eq variables.rsvariables.archive.month and variables.$.event("year") eq variables.rsvariables.archive.year>

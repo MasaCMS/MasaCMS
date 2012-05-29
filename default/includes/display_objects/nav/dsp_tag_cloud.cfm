@@ -47,11 +47,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfsilent>
 <cfset variables.tags=variables.$.getBean('contentGateway').getTagCloud(variables.$.event('siteID'),arguments.parentID,arguments.categoryID,arguments.rsContent) />
 <cfset variables.tagValueArray = ListToArray(ValueList(variables.tags.tagCount))>
-<cfset variables.max = Arrayvariables.max(variables.tagValueArray)>
-<cfset variables.min = Arrayvariables.min(variables.tagValueArray)>
+<cfset variables.max = ArrayMax(variables.tagValueArray)>
+<cfset variables.min = Arraymin(variables.tagValueArray)>
 <cfset variables.diff = variables.max - variables.min>
 <cfset variables.distribution = variables.diff>
-<cfset variables.rbFactory=getSite().getvariables.rbFactory()>
+<cfset variables.rbFactory=getSite().getRbFactory()>
 </cfsilent>
 
 <cfoutput>

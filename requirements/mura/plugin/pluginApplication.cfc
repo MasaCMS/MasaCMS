@@ -137,20 +137,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				md = md.extends;
 				implicitSetters = false;
 				// we have implicit setters if: accessors="true" or persistent="true"
-				if ( structKeyExists( md, 'persistent' ) && isBoolean( md.persistent ) ) {
+				if ( structKeyExists( md, 'persistent' ) and isBoolean( md.persistent ) ) {
 					implicitSetters = md.persistent;
 				}
-				if ( structKeyExists( md, 'accessors' ) && isBoolean( md.accessors ) ) {
-					implicitSetters = implicitSetters || md.accessors;
+				if ( structKeyExists( md, 'accessors' ) and isBoolean( md.accessors ) ) {
+					implicitSetters = implicitSetters or md.accessors;
 				}
 				if ( structKeyExists( md, 'properties' ) ) {
 					// due to a bug in ACF9.0.1, we cannot use var property in md.properties,
 					// instead we must use an explicit loop index... ugh!
 					n = arrayLen( md.properties );
-					for ( i = 1; i <= n; ++i ) {
+					for ( i = 1; i lte n; i=i+1 ) {
 						property = md.properties[ i ];
 						if ( implicitSetters ||
-								structKeyExists( property, 'setter' ) && isBoolean( property.setter ) && property.setter ) {
+								structKeyExists( property, 'setter' ) and isBoolean( property.setter ) and property.setter ) {
 							setters[ property.name ] = 'implicit';
 						}
 					}
@@ -165,7 +165,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		for ( member in arguments.cfc ) {
 			method = arguments.cfc[ member ];
 			n = len( member );
-			if ( isCustomFunction( method ) && left( member, 3 ) == 'set' && n > 3 ) {
+			if ( isCustomFunction( method ) and left( member, 3 ) eq 'set' and n gt 3 ) {
 				 property = right( member, n - 3 );
 				setters[ property ] = 'explicit';
 			}
