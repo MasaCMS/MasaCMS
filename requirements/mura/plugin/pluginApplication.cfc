@@ -117,16 +117,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="findImplicitAndExplicitSetters" access="private" output="false">
 	<cfargument name="cfc">
 	<cfscript>
-		var baseMetadata = getMetadata( cfc );
+		//Moved all the varing to top of method for CF8 compilation.
+		var baseMetadata = getMetadata( arguments.cfc );
 		var setters = { };
+		var md = "";
+		var n = "";
+		var property = "";
+		var i = "";
+		var implicitSetters = "";
+		var member = "";
+		var method = "";
+
 		// is it already attached to the CFC metadata?
 		if ( structKeyExists( baseMetadata, '__fw1_setters' ) )  {
 			setters = baseMetadata.__fw1_setters;
 		} else {
-			var md = { extends = baseMetadata };
+			md = { extends = baseMetadata };
 			do {
 				md = md.extends;
-				var implicitSetters = false;
+				implicitSetters = false;
 				// we have implicit setters if: accessors="true" or persistent="true"
 				if ( structKeyExists( md, 'persistent' ) && isBoolean( md.persistent ) ) {
 					implicitSetters = md.persistent;
@@ -137,9 +146,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				if ( structKeyExists( md, 'properties' ) ) {
 					// due to a bug in ACF9.0.1, we cannot use var property in md.properties,
 					// instead we must use an explicit loop index... ugh!
-					var n = arrayLen( md.properties );
-					for ( var i = 1; i <= n; ++i ) {
-						var property = md.properties[ i ];
+					n = arrayLen( md.properties );
+					for ( i = 1; i <= n; ++i ) {
+						property = md.properties[ i ];
 						if ( implicitSetters ||
 								structKeyExists( property, 'setter' ) && isBoolean( property.setter ) && property.setter ) {
 							setters[ property.name ] = 'implicit';
@@ -153,11 +162,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			baseMetadata.__fw1_setters = setters;
 		}
 		// gather up explicit setters as well
-		for ( var member in cfc ) {
-			var method = cfc[ member ];
-			var n = len( member );
+		for ( member in arguments.cfc ) {
+			method = arguments.cfc[ member ];
+			n = len( member );
 			if ( isCustomFunction( method ) && left( member, 3 ) == 'set' && n > 3 ) {
-				var property = right( member, n - 3 );
+				 property = right( member, n - 3 );
 				setters[ property ] = 'explicit';
 			}
 		}
