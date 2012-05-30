@@ -45,7 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfset event=request.event>
-<cfinclude template="ajax.cfm">
+<cfinclude template="js.cfm">
 <cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,"categorymanager")#</h2>
 <ul id="navTask"><li><a  title="#application.rbFactory.getKeyValue(session.rb,"categorymanager.addnewcategory")#" href="index.cfm?muraAction=cCategory.edit&categoryID=&parentID=&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,"categorymanager.addnewcategory")#</a></li></ul>
 <table class="mura-table-grid stripe"> 

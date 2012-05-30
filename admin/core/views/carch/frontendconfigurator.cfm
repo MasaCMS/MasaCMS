@@ -1,4 +1,4 @@
-﻿<cfinclude template="ajax.cfm">
+﻿<cfinclude template="js.cfm">
 <cfsilent>
 	<cfset rsDisplayObject=application.contentManager.readContentObject(rc.contentHistID,rc.regionID,rc.orderno)>
 	<cfset rc.siteid=rsDisplayObject.siteid>

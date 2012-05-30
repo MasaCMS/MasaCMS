@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfinclude template="../cpublicusers/ajax.cfm">
+<cfinclude template="../cpublicusers/js.cfm">
 <cfhtmlhead text="#session.dateKey#">
 <cfparam name="rc.activeTab" default="0" />
 <cfset rsSubTypes=application.classExtensionManager.getSubTypesByType(type=2,siteID=rc.userBean.getSiteID(),activeOnly=true) />
