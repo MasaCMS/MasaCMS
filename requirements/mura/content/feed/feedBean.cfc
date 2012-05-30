@@ -404,7 +404,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="compactDisplay" type="any" required="true" default="false"/>
 	<cfset var returnStr="">
 	
-	<cfset returnStr= "#variables.configBean.getContext()#/admin/?fuseaction=cFeed.edit&feedID=#variables.instance.feedID#&siteid=#variables.instance.siteID#&type=#variables.instance.type#&compactDisplay=#arguments.compactdisplay#" >
+	<cfset returnStr= "#variables.configBean.getContext()#/admin/?muraAction=cFeed.edit&feedID=#variables.instance.feedID#&siteid=#variables.instance.siteID#&type=#variables.instance.type#&compactDisplay=#arguments.compactdisplay#" >
 	
 	<cfreturn returnStr>
 </cffunction> 

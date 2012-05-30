@@ -433,7 +433,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset versionLink='http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#/?contentID=#arguments.contentBean.getContentID()#&previewID=#arguments.contentBean.getContentHistID()#'>
 		</cfif>
 	<cfelse>
-		<cfset versionLink='http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit&parentid=#arguments.data.parentid#&&topid=#arguments.data.topid#&siteid=#arguments.data.siteid#&contentid=#arguments.contentBean.getcontentid()#&contenthistid=#arguments.contentBean.getcontenthistid()#&moduleid=#arguments.data.moduleid#&type=#arguments.data.type#&ptype=#arguments.data.ptype#'>
+		<cfset versionLink='http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#/admin/index.cfm?muraAction=cArch.edit&parentid=#arguments.data.parentid#&&topid=#arguments.data.topid#&siteid=#arguments.data.siteid#&contentid=#arguments.contentBean.getcontentid()#&contenthistid=#arguments.contentBean.getcontenthistid()#&moduleid=#arguments.data.moduleid#&type=#arguments.data.type#&ptype=#arguments.data.ptype#'>
 	</cfif>
 	
 	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -444,7 +444,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		)
 	</cfquery>
 	</cfif>
-	<cfset historyLink='http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.hist&parentid=#arguments.data.parentid#&&topid=#arguments.data.topid#&siteid=#arguments.data.siteid#&contentid=#arguments.contentBean.getcontentid()#&moduleid=#arguments.data.moduleid#&type=#arguments.data.type#'>
+	<cfset historyLink='http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##variables.configBean.getContext()#/admin/index.cfm?muraAction=cArch.hist&parentid=#arguments.data.parentid#&&topid=#arguments.data.topid#&siteid=#arguments.data.siteid#&contentid=#arguments.contentBean.getcontentid()#&moduleid=#arguments.data.moduleid#&type=#arguments.data.type#'>
 	
 	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		insert into tredirects (redirectID,URL,created) values(
