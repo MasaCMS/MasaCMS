@@ -1,4 +1,5 @@
-﻿<cfinclude template="js.cfm">
+﻿<cfset event=request.event>
+<cfinclude template="js.cfm">
 <cfsilent>
 	<cfset rsDisplayObject=application.contentManager.readContentObject(rc.contentHistID,rc.regionID,rc.orderno)>
 	<cfset rc.siteid=rsDisplayObject.siteid>
@@ -45,7 +46,7 @@
 	</div>	
 	<div id="actionButtons" style="display:none;">
 		<cfif assignChangesets>
-			<cfinclude template="../form/dsp_changesets.cfm">
+			<cfinclude template="form/dsp_changesets.cfm">
 		</cfif>
 		<cfif assignChangesets>
 			<input type="button" class="button" onclick="saveToChangeset('#rc.contentBean.getChangesetID()#','#HTMLEditFormat(rsDisplayObject.siteid)#','');return false;" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset")#" />	
