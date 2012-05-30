@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="rc">
 	
 	<cfif not (listFind(session.mura.memberships,'Admin;#variables.settingsManager.getSite(arguments.rc.siteid).getPrivateUserPoolID()#;0') or  listFind(session.mura.memberships,'S2'))
-	and not (listFindNoCase('cPrivateUsers.editAddress,cPrivateUsers.updateAddress',listLast(arguments.rc.muraAction":")) and  rc.userID eq session.mura.userID)>
+	and not (listFindNoCase('cPrivateUsers.editAddress,cPrivateUsers.updateAddress',listLast(arguments.rc.muraAction,":")) and  rc.userID eq session.mura.userID)>
 		<cfset secure(arguments.rc)>
 	</cfif>
 	
