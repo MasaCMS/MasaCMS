@@ -900,7 +900,7 @@
 			data.formid = _formData.formid;
 			
 			jQuery.ajax({
-				url: settings.url + "?fuseaction=cform.getfield&i=" + iefix,
+				url: settings.url + "?muraAction=cform.getfield&i=" + iefix,
 				type: 'POST',
 				data: data,
 				cache: false,
@@ -920,7 +920,7 @@
 			data.fieldType = template;
 
 			jQuery.ajax({
-				url: settings.url + "?fuseaction=cform.getfieldtemplate&i=" + iefix,
+				url: settings.url + "?muraAction=cform.getfieldtemplate&i=" + iefix,
 				type: 'POST',
 				data: data,
 				cache: false,
@@ -944,7 +944,7 @@
 			data.dialog = template;
 
 			jQuery.ajax({
-				url: settings.url + "?fuseaction=cform.getdialog&i=" + iefix,
+				url: settings.url + "?muraAction=cform.getdialog&i=" + iefix,
 				type: 'POST',
 				data: data,
 				cache: false,
@@ -967,7 +967,7 @@
 			data.fieldID = _currentFieldID;
 
 			jQuery.ajax({
-				url: settings.url + "?fuseaction=cform.getdataset&i=" + iefix,
+				url: settings.url + "?muraAction=cform.getdataset&i=" + iefix,
 				type: 'POST',
 				data: data,
 				cache: false,

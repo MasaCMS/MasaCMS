@@ -262,23 +262,23 @@ if(navperm != 'none'){
 if(navperm=='author' || navperm=='editor'){
 
 document.getElementById('newPageLink').href=
-'index.cfm?fuseaction=cArch.edit&contentid=&parentid=' + contentid + '&type=Page&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
+'index.cfm?muraAction=cArch.edit&contentid=&parentid=' + contentid + '&type=Page&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
 document.getElementById('newLinkLink').href=
-'index.cfm?fuseaction=cArch.edit&contentid=&parentid=' + contentid + '&type=Link&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
+'index.cfm?muraAction=cArch.edit&contentid=&parentid=' + contentid + '&type=Link&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
 document.getElementById('newCalendarLink').href=
-'index.cfm?fuseaction=cArch.edit&contentid=&parentid=' + contentid + '&type=Calendar&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
+'index.cfm?muraAction=cArch.edit&contentid=&parentid=' + contentid + '&type=Calendar&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
 document.getElementById('newPortalLink').href=
-'index.cfm?fuseaction=cArch.edit&contentid=&parentid=' + contentid + '&type=Portal&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
+'index.cfm?muraAction=cArch.edit&contentid=&parentid=' + contentid + '&type=Portal&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
 document.getElementById('newFileLink').href=
-'index.cfm?fuseaction=cArch.edit&contentid=&parentid=' + contentid + '&type=File&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
+'index.cfm?muraAction=cArch.edit&contentid=&parentid=' + contentid + '&type=File&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
 document.getElementById('newGalleryLink').href=
-'index.cfm?fuseaction=cArch.edit&contentid=&parentid=' + contentid + '&type=Gallery&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
+'index.cfm?muraAction=cArch.edit&contentid=&parentid=' + contentid + '&type=Gallery&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
 document.getElementById('newGalleryItemLink').href=
-'index.cfm?fuseaction=cArch.edit&contentid=&parentid=' + contentid + '&type=File&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
+'index.cfm?muraAction=cArch.edit&contentid=&parentid=' + contentid + '&type=File&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
 document.getElementById('newGalleryItemMultiLink').href=
-'index.cfm?fuseaction=cArch.multiFileUpload&contentid=&parentid=' + contentid + '&type=File&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
+'index.cfm?muraAction=cArch.multiFileUpload&contentid=&parentid=' + contentid + '&type=File&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
 //document.getElementById('newFileMultiLink').href=
-//'index.cfm?fuseaction=cArch.multiFileUpload&contentid=&parentid=' + contentid + '&type=File&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
+//'index.cfm?muraAction=cArch.multiFileUpload&contentid=&parentid=' + contentid + '&type=File&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
 
 if (copySiteID != "" && copyContentID != ""){
 	document.getElementById('newPasteLink').href='javascript:pasteThis(\'' + contentid + '\')';
@@ -472,7 +472,7 @@ function setTargetParams(frm){
 		
 function loadSiteParents(siteid,contentid,parentid,keywords,isNew)	{
 	var url = 'index.cfm';
-	var pars = 'fuseaction=cArch.siteParents&compactDisplay=true&siteid=' + siteid +'&contentid=' + contentid + '&parentid=' +parentid+ '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
+	var pars = 'muraAction=cArch.siteParents&compactDisplay=true&siteid=' + siteid +'&contentid=' + contentid + '&parentid=' +parentid+ '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
 	var d = jQuery('#move');
 	d.html('<img src="images/progress_bar.gif"><input type=hidden name=parentid value=' + parentid + ' >');
 	jQuery.get(url + "?" + pars, 
@@ -484,7 +484,7 @@ function loadSiteParents(siteid,contentid,parentid,keywords,isNew)	{
 
 function loadAssocImages(siteid,fileid,contentid,keywords,isNew)	{
 	var url = 'index.cfm';
-	var pars = 'fuseaction=cArch.assocImages&compactDisplay=true&siteid=' + siteid +'&fileid=' + fileid + '&contentid=' + contentid + '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
+	var pars = 'muraAction=cArch.assocImages&compactDisplay=true&siteid=' + siteid +'&fileid=' + fileid + '&contentid=' + contentid + '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
 	var d = jQuery('#selectAssocImage');
 	//d.html('<img class="loadProgress" src="images/progress_bar.gif">');
 	jQuery.get(url + "?" + pars, 
@@ -497,7 +497,7 @@ function loadAssocImages(siteid,fileid,contentid,keywords,isNew)	{
 
 function loadObjectClass(siteid,classid,subclassid,contentid,parentid,contenthistid)	{
 	var url = 'index.cfm';
-	var pars = 'fuseaction=cArch.loadclass&compactDisplay=true&siteid=' + siteid +'&classid=' + classid  +'&subclassid=' + subclassid + '&contentid=' + contentid + '&parentid=' + parentid  +'&cacheid=' + Math.random();
+	var pars = 'muraAction=cArch.loadclass&compactDisplay=true&siteid=' + siteid +'&classid=' + classid  +'&subclassid=' + subclassid + '&contentid=' + contentid + '&parentid=' + parentid  +'&cacheid=' + Math.random();
 	var d=jQuery('#classList');
 
 	d.html('<img class="loadProgress" src="images/progress_bar.gif">');
@@ -527,7 +527,7 @@ function getDisplayObjectID(regionid){
 
 function loadNotify(siteid,contentid,parentid)	{
 		var url = 'index.cfm';
-		var pars = 'fuseaction=cArch.loadNotify&compactDisplay=true&siteid=' + siteid +'&contentid=' + contentid +'&parentid=' + parentid + '&cacheid=' + Math.random();
+		var pars = 'muraAction=cArch.loadNotify&compactDisplay=true&siteid=' + siteid +'&contentid=' + contentid +'&parentid=' + parentid + '&cacheid=' + Math.random();
 		var d = jQuery('#selectNotify');
 		if(d.html()==''){
 			d.show();
@@ -547,7 +547,7 @@ function loadNotify(siteid,contentid,parentid)	{
 
 function loadExpiresNotify(siteid,contenthistid,parentid)	{
 		var url = 'index.cfm';
-		var pars = 'fuseaction=cArch.loadExpireNotify&compactDisplay=true&siteid=' + siteid +'&contenthistid=' + contenthistid +'&parentid=' + parentid + '&cacheid=' + Math.random();
+		var pars = 'muraAction=cArch.loadExpireNotify&compactDisplay=true&siteid=' + siteid +'&contenthistid=' + contenthistid +'&parentid=' + parentid + '&cacheid=' + Math.random();
 		var d = jQuery('#selectExpiresNotify');
 		if(d.html()==''){
 			d.show();
@@ -568,7 +568,7 @@ function loadExpiresNotify(siteid,contenthistid,parentid)	{
 
 function loadRelatedContent(siteid,keywords,isNew)	{
 		var url = 'index.cfm';
-		var pars = 'fuseaction=cArch.loadRelatedContent&compactDisplay=true&siteid=' + siteid + '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
+		var pars = 'muraAction=cArch.loadRelatedContent&compactDisplay=true&siteid=' + siteid + '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
 		/*if(keywords != ''){
 		location.href="?" + pars;
 		}*/
@@ -697,7 +697,7 @@ function form_is_modified(oForm)
 
 function copyThis(siteID, contentID, _copyAll){
 	var url = 'index.cfm';
-	var pars = 'fuseaction=cArch.saveCopyInfo&siteid=' + siteID +'&contentid=' + contentID + '&copyAll='+ _copyAll + '&cacheid=' + Math.random();
+	var pars = 'muraAction=cArch.saveCopyInfo&siteid=' + siteID +'&contentid=' + contentID + '&copyAll='+ _copyAll + '&cacheid=' + Math.random();
 	
 	jQuery.get(url + "?" + pars);
 	
@@ -710,7 +710,7 @@ function copyThis(siteID, contentID, _copyAll){
 
 function pasteThis(parentID){
 	var url = 'index.cfm';
-	var pars = 'fuseaction=cArch.copy&compactDisplay=true&siteid=' + copySiteID +'&copyAll=' + copyAll +'&contentid=' + copyContentID + '&parentid=' + parentID + '&cacheid=' + Math.random();
+	var pars = 'muraAction=cArch.copy&compactDisplay=true&siteid=' + copySiteID +'&copyAll=' + copyAll +'&contentid=' + copyContentID + '&parentid=' + parentID + '&cacheid=' + Math.random();
 	var d = jQuery('#newPasteLink');
 	d.css('background','url(/admin/images/ajax-loader.gif) no-repeat 1px 5px;');
 	reloadURL = jQuery('#newZoomLink').attr("href");
@@ -733,7 +733,7 @@ function reloadPage(){
 
 function loadExtendedAttributes(contentHistID,type,subType,_siteID,_context,_themeAssetPath)	{
 		var url = 'index.cfm';
-		var pars = 'fuseaction=cArch.loadExtendedAttributes&contentHistID=' + contentHistID +'&type=' + type  +'&subType=' + subType + '&siteID=' + _siteID + '&cacheid=' + Math.random();
+		var pars = 'muraAction=cArch.loadExtendedAttributes&contentHistID=' + contentHistID +'&type=' + type  +'&subType=' + subType + '&siteID=' + _siteID + '&cacheid=' + Math.random();
 
 		siteID=_siteID;
 		context=_context;
@@ -903,7 +903,7 @@ function loadCategoryFeatureStartStop(id,display,siteID){
  } else if (display == true) {
   var url = 'index.cfm';
   var idParam = id;
-  var pars = 'fuseaction=cArch.loadCategoryFeatureStartStop&id=' + idParam.replace(/editDates/, "") + '&siteID=' + siteID + '&cacheid=' + Math.random();
+  var pars = 'muraAction=cArch.loadCategoryFeatureStartStop&id=' + idParam.replace(/editDates/, "") + '&siteID=' + siteID + '&cacheid=' + Math.random();
   cat.show();
   jQuery.get(url + "?" + pars, 
 			function(data) {
@@ -919,7 +919,7 @@ activeQuickEdit=false;
 
 function loadSiteManager(siteid,topid,moduleid,sortby,sortdirection,ptype,startrow)	{
 	var url = 'index.cfm';
-	var pars = 'fuseaction=cArch.loadSiteManager&siteid=' + siteid  + '&topid=' + topid  + '&moduleid=' + moduleid  + '&sortby=' + sortby  + '&sortdirection=' + sortdirection  + '&ptype=' + ptype  + '&startrow=' + startrow + '&cacheid=' + Math.random();
+	var pars = 'muraAction=cArch.loadSiteManager&siteid=' + siteid  + '&topid=' + topid  + '&moduleid=' + moduleid  + '&sortby=' + sortby  + '&sortdirection=' + sortdirection  + '&ptype=' + ptype  + '&startrow=' + startrow + '&cacheid=' + Math.random();
 	document.getElementById('newContentMenu').style.visibility="hidden";
 	//location.href=url + "?" + pars;
 	var d = jQuery('#gridContainer');
@@ -1011,7 +1011,7 @@ function loadSiteManagerInTab(loader){
 
 function loadSiteFlat(args)	{
 	var url = 'index.cfm';
-	var pars = 'fuseaction=cArch.loadSiteFlat&cacheid=' + Math.random();
+	var pars = 'muraAction=cArch.loadSiteFlat&cacheid=' + Math.random();
 
 	//location.href=url + "?" + pars;
 	var d = jQuery('#tabFlat');
@@ -1132,7 +1132,7 @@ function loadSiteSection(node, startrow)	{
 	if (!sectionLoading) {
 		sectionLoading = true;
 		var url = 'index.cfm';
-		var pars = 'fuseaction=cArch.loadSiteSection&siteid=' + node.attr("data-siteid") + '&contentID=' + node.attr("data-contentid") + '&moduleid=' + node.attr("data-moduleid") + '&sortby=' + node.attr("data-sortby") + '&sortdirection=' + node.attr("data-sortdirection") + '&ptype=' + node.attr("data-type") + '&startrow=' + startrow + '&cacheid=' + Math.random();
+		var pars = 'muraAction=cArch.loadSiteSection&siteid=' + node.attr("data-siteid") + '&contentID=' + node.attr("data-contentid") + '&moduleid=' + node.attr("data-moduleid") + '&sortby=' + node.attr("data-sortby") + '&sortdirection=' + node.attr("data-sortdirection") + '&ptype=' + node.attr("data-type") + '&startrow=' + startrow + '&cacheid=' + Math.random();
 		
 		//location.href=url + "?" + pars;
 		var icon = node.find("span:first");
@@ -1194,7 +1194,7 @@ function refreshSiteSection(node, startrow)	{
 	if (!sectionLoading) {
 		sectionLoading = true;
 		var url = 'index.cfm';
-		var pars = 'fuseaction=cArch.refreshSiteSection&siteid=' + node.attr("data-siteid") + '&contentID=' + node.attr("data-contentid") + '&moduleid=' + node.attr("data-moduleid") + '&sortby=' + node.attr("data-sortby") + '&sortdirection=' + node.attr("data-sortdirection") + '&ptype=' + node.attr("data-type") + '&startrow=' + startrow + '&cacheid=' + Math.random();
+		var pars = 'muraAction=cArch.refreshSiteSection&siteid=' + node.attr("data-siteid") + '&contentID=' + node.attr("data-contentid") + '&moduleid=' + node.attr("data-moduleid") + '&sortby=' + node.attr("data-sortby") + '&sortdirection=' + node.attr("data-sortdirection") + '&ptype=' + node.attr("data-type") + '&startrow=' + startrow + '&cacheid=' + Math.random();
 	
 		jQuery.get(url + "?" + pars, function(data){
 			try {
@@ -1245,7 +1245,7 @@ function initQuickEdits(){
 					var attribute=jQuery(this).attr("data-attribute");
 					var node = jQuery(this).parents("li:first");
 					var url = 'index.cfm';
-					var pars = 'fuseaction=cArch.loadQuickEdit&siteid=' + siteid + '&contentID=' + node.attr("data-contentid") + '&attribute=' + attribute + '&cacheid=' + Math.random();
+					var pars = 'muraAction=cArch.loadQuickEdit&siteid=' + siteid + '&contentID=' + node.attr("data-contentid") + '&attribute=' + attribute + '&cacheid=' + Math.random();
 					
 					//location.href='?' + pars;
 					//images/icons/template_24x24.png
@@ -1287,7 +1287,7 @@ function saveQuickEdit(){
 	var url = 'index.cfm';
 	
 	var basePars = {
-		'fuseaction':'cArch.saveQuickEdit',
+		'muraAction':'cArch.saveQuickEdit',
 		'siteID' : siteID,
 		'contentID':  node.attr("data-contentid"),
 		'attribute': attribute	
@@ -1574,7 +1574,7 @@ function addDisplayObject(objectToAdd,regionid,configure){
 		initConfigurator(data,
 		{
 			url:'index.cfm',
-			pars:'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=category_summary&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionid  + '&objectid=' +  data.objectid + '&cacheid=' + Math.random(),
+			pars:'muraAction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=category_summary&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionid  + '&objectid=' +  data.objectid + '&cacheid=' + Math.random(),
 			title: categorySummaryConfiguratorTitle
 		}
 		);
@@ -1595,7 +1595,7 @@ function addDisplayObject(objectToAdd,regionid,configure){
 		initConfigurator(data,
 		{
 			url: 'index.cfm',
-			pars: 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=feed&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionid  + '&feedid=' +  data.objectid + '&cacheid=' + Math.random(),
+			pars: 'muraAction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=feed&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionid  + '&feedid=' +  data.objectid + '&cacheid=' + Math.random(),
 			title: "Loading...",
 			init: function(data,config){
 					//alert(JSON.stringify(data));
@@ -1650,7 +1650,7 @@ function addDisplayObject(objectToAdd,regionid,configure){
 		initConfigurator(data,
 		{
 			url: 'index.cfm',
-			pars: 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=feed_slideshow&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionid  + '&feedid=' +  data.objectid + '&cacheid=' + Math.random(),
+			pars: 'muraAction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=feed_slideshow&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionid  + '&feedid=' +  data.objectid + '&cacheid=' + Math.random(),
 			title: slideShowConfiguratorTitle,
 			init: function(data,config){
 					jQuery( "#availableListSort, #displayListSort" ).sortable({
@@ -1685,7 +1685,7 @@ function addDisplayObject(objectToAdd,regionid,configure){
 		data,
 		{
 			url: 'index.cfm',
-			pars: 'fuseaction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=' + data.object + '&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionid  + '&objectid=' +  data.objectid + '&cacheid=' + Math.random(),
+			pars: 'muraAction=cArch.loadclassconfigurator&compactDisplay=true&siteid=' + siteid + '&classid=' + data.object + '&contentid=' + contentid + '&parentid=' + parentid + '&contenthistid=' + contenthistid + '&regionid=' + data.regionid  + '&objectid=' +  data.objectid + '&cacheid=' + Math.random(),
 			title: relatedContentConfiguratorTitle,
 			init: function(data,config){
 					jQuery( "#availableListSort, #displayListSort" ).sortable({

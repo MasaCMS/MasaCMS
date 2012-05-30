@@ -82,7 +82,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset variables.targetHook=generateEditableHook()>
 	
-	<cfset variables.editLink = variables.adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit">
+	<cfset variables.editLink = variables.adminBase & "#application.configBean.getContext()#/admin/index.cfm?muraAction=cArch.edit">
 	<cfif structKeyExists(request,"previewID") and len(request.previewID)>
 		<cfset variables.editLink = variables.editLink & "&amp;contenthistid=" & request.previewID>
 	<cfelse>
@@ -96,7 +96,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.editLink = variables.editLink & "&amp;moduleid=" & request.contentBean.getModuleID()>
 	<cfset variables.editLink = variables.editLink & "&amp;compactDisplay=true">
 	
-	<cfset variables.newLink = variables.adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.edit">
+	<cfset variables.newLink = variables.adminBase & "#application.configBean.getContext()#/admin/index.cfm?muraAction=cArch.edit">
 	<cfset variables.newLink = variables.newLink & "&amp;contentid=">
 	<cfset variables.newLink = variables.newLink & "&amp;parentid=" & request.contentBean.getContentID()>
 	<cfset variables.newLink = variables.newLink & "&amp;topid=00000000000000000000000000000000001">
@@ -105,7 +105,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.newLink = variables.newLink & "&amp;ptype=" & request.contentBean.getType()>
 	<cfset variables.newLink = variables.newLink & "&amp;compactDisplay=true">
 	
-	<cfset variables.newMultiLink = variables.adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.multiFileUpload">
+	<cfset variables.newMultiLink = variables.adminBase & "#application.configBean.getContext()#/admin/index.cfm?muraAction=cArch.multiFileUpload">
 	<cfset variables.newMultiLink = variables.newMultiLink & "&amp;contentid=">
 	<cfset variables.newMultiLink = variables.newMultiLink & "&amp;parentid=" & request.contentBean.getContentID()>
 	<cfset variables.newMultiLink = variables.newMultiLink & "&amp;topid=00000000000000000000000000000000001">
@@ -114,7 +114,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.newMultiLink = variables.newMultiLink & "&amp;ptype=" & request.contentBean.getType()>
 	<cfset variables.newMultiLink = variables.newMultiLink & "&amp;compactDisplay=true">
 	
-	<cfset variables.historyLink = variables.adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.hist">
+	<cfset variables.historyLink = variables.adminBase & "#application.configBean.getContext()#/admin/index.cfm?muraAction=cArch.hist">
 	<cfset variables.historyLink = variables.historyLink & "&amp;siteid=" & request.contentBean.getSiteID()>
 	<cfset variables.historyLink = variables.historyLink & "&amp;contentid=" & request.contentBean.getContentID()>
 	<cfset variables.historyLink = variables.historyLink & "&amp;topid=00000000000000000000000000000000001">
@@ -124,7 +124,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.historyLink = variables.historyLink & "&amp;startrow=1">
 	<cfset variables.historyLink = variables.historyLink & "&amp;compactDisplay=true">
 	
-	<cfset variables.adminLink = variables.adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.list">
+	<cfset variables.adminLink = variables.adminBase & "#application.configBean.getContext()#/admin/index.cfm?muraAction=cArch.list">
 	<cfset variables.adminLink = variables.adminLink & "&amp;siteid=" & request.contentBean.getSiteID()>
 	<cfset variables.adminLink = variables.adminLink & "&amp;topid=" & request.contentBean.getContentID()>
 	<cfset variables.adminLink = variables.adminLink & "&amp;ptype=" & request.contentBean.getType()>
@@ -132,7 +132,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.adminLink = variables.adminLink & "&amp;moduleid=" & request.contentBean.getModuleID()>
 	<cfset variables.adminLink = variables.adminLink & "&amp;activeTab=0">
 	
-	<cfset variables.deleteLink = variables.adminBase & "#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.update">
+	<cfset variables.deleteLink = variables.adminBase & "#application.configBean.getContext()#/admin/index.cfm?muraAction=cArch.update">
 	<cfset variables.deleteLink = variables.deleteLink & "&amp;siteid=" & request.contentBean.getSiteID()>
 	<cfset variables.deleteLink = variables.deleteLink & "&amp;contentid=" & request.contentBean.getContentID()>
 	<cfset variables.deleteLink = variables.deleteLink & "&amp;topid=00000000000000000000000000000000001">
