@@ -49,7 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <script src="js/architecture.min.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript" ></script>
 </cfoutput>
-<cfif listLast(listFirst(rc.muraAction,"."),":") eq 'edit'>
+<cfif listLast(rc.muraAction,".") eq 'edit'>
 <script type="text/javascript">
   summaryLoaded=false;
 </script>

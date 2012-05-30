@@ -53,7 +53,7 @@ select * from rsSubTypes where subType <> 'Default'
 </cfquery>
 
 <cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,'user.groupform')#</h2>
-<cfif listfirst(rc.muraAction,".") eq "editgroup" and rc.userid neq ''>
+<cfif listfirst(listLast(rc.muraAction":"),".") eq "editgroup" and rc.userid neq ''>
 <ul id="navTask"><li><a href="javascript:extuserselect('#rc.userid#',1,<cfif listFind(session.mura.memberships,'S2')>1<cfelse>0</cfif>,'#rc.siteid#')">#application.rbFactory.getKeyValue(session.rb,'user.addmembertogroup')#</a></li></ul></cfif>
 
 <cfswitch expression="#rc.userBean.getperm()#">
