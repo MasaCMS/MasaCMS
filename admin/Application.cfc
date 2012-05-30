@@ -108,8 +108,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.framework=structNew()>
 	<cfset variables.framework.home = "home.redirect">
 	<cfset variables.framework.action="fuseaction">
-	<cfset variables.framework.base="/muraWRM/admin/fw1">
+	<cfset variables.framework.base="/muraWRM/admin/">
+	<cfset variables.framework.defaultSubsystem="core">
+	<cfset variables.framework.usingSubsystems=true>
 	<cfset variables.framework.applicationKey="muraAdmin">
+	<cfset variables.framework.siteWideLayoutSubsystem='common'>
 	
 	<cffunction name="setupApplication" output="false">
 		<cfset var local = structNew() />
@@ -326,8 +329,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var temp=structNew()>
 		<cfset fusebox.ajax=rc.ajax>
 		<cfset fusebox.layout=rc.layout>
-		<cfset myfusebox.originalfuseaction = listLast(request.action,".")>
-		<cfset myfusebox.originalcircuit = listFirst(request.action,".")>
+		<cfset myfusebox.originalfuseaction = listLast(listLast(request.action,":"),".")>
+		<cfset myfusebox.originalcircuit = listFirst(listLast(request.action,":"),".")>
 		
 		<cfif not structKeyExists(request,"requestappended")>
 			<cfif structKeyExists(request, 'layout')>
