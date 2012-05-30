@@ -111,43 +111,47 @@ Please select one image at a time to upload. Uploading will begin as soon as you
 
 
 <script type="text/javascript">/*<![CDATA[*/
-jQuery(document).ready(function(){
-	new AjaxUpload('uploadbutton', {
-            action: './index.cfm',
-            multiple: false,
-            name:'newfile1',
-			data:{
-				'muraAction':'cArch.update',
-				'action':'multiFileUpload',
-				'siteid':'#jsStringFormat(rc.siteid)#',
-				'moduleid':'#jsStringFormat(rc.moduleid)#',
-				'topid':'#jsStringFormat(rc.topid)#',
-				'ptype':'#jsStringFormat(rc.ptype)#',
-				'parentid':'#jsStringFormat(rc.parentid)#',
-				'contentid':'',
-				'type':'File',
-				'subtype':'Default',
-				'startrow':#rc.startrow#,
-				'orderno':0,
-				'approved':<cfif rc.perm eq "editor">1<cfelse>0</cfif>
-			},
-			onSubmit : function(file , ext){
-			                // Allow only images. You should add security check on the server-side.
-			if (ext && /^(jpg|png|jpeg|gif|JPG|PNG|JPEG|GIF|Jpg|Png|Jpeg|Gif)$/i.test(ext)){
-				jQuery('<li><img src="#application.configBean.getContext()#/admin/images/progress_bar.gif"></li>').appendTo('##uploader .files');	
-			} else {
-			// extension is not allowed
-				alertDialog('Error: only jpg, png, or gif images are allowed');
-				// cancel upload
-				return false;
-			}
-			},
-			onComplete : function(file){
-				jQuery('.files li:last').html(file);	
-			}
-		});
+   jQuery(document).ready(function(){
+       AjaxUpload.uploadCount = 0;
+       AjaxUpload.uploadDone = 0;
+       new AjaxUpload('uploadbutton', {
+           action: './index.cfm',
+           multiple: false,
+           name:'newfile1',
+                       data:{
+                               'fuseaction':'cArch.update',
+                               'action':'multiFileUpload',
+                               'siteid':'#jsStringFormat(rc.siteid)#',
+                               'moduleid':'#jsStringFormat(rc.moduleid)#',
+                               'topid':'#jsStringFormat(rc.topid)#',
+                               'ptype':'#jsStringFormat(rc.ptype)#',
+                               'parentid':'#jsStringFormat(rc.parentid)#',
+                               'contentid':'',
+                               'type':'File',
+                               'subtype':'Default',
+                               'startrow':#rc.startrow#,
+                               'orderno':0,
+                               'approved':<cfif rc.perm eq "editor">1<cfelse>0</cfif>
+                       },
+                       onSubmit : function(file, ext){
+                               AjaxUpload.uploadCount += 1;
+                           // Allow only images. You should add security check on the server-side.
+                               if (ext && /^(jpg|png|jpeg|gif|JPG|PNG|JPEG|GIF|Jpg|Png|Jpeg|Gif)$/i.test(ext)){
+                                       jQuery('<li class="up' + AjaxUpload.uploadCount + '"><img src="#application.configBean.getContext()#/admin/images/progress_bar.gif"></li>').appendTo('##uploader .files');
+                               } else {
+                               // extension is not allowed
+                                       alertDialog('Error: only jpg, png, or gif images are allowed');
+                                       // cancel upload
+                                       return false;
+                               }
+                       },
+                       onComplete : function(file){
+                               AjaxUpload.uploadDone += 1;
+                               jQuery('.files li.up' + AjaxUpload.uploadDone).html(file);
+                       }
+               });
 
-});/*]]>*/
+   });/*]]>*/
 </script>
 <div id="uploader">
 <p><input type="button" class="submit" id="uploadbutton" value="Upload Image" /></p>
