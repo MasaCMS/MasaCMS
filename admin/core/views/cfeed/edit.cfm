@@ -114,6 +114,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset criterias[7][2]=application.rbFactory.getKeyValue(session.rb,'params.beginswith')>
 <cfset criterias[8][1]="Contains">
 <cfset criterias[8][2]=application.rbFactory.getKeyValue(session.rb,'params.contains')>
+<cfset criterias[9][1]="IN">
+<cfset criterias[9][2]=application.rbFactory.getKeyValue(session.rb,'params.in')>
+<cfset criterias[10][1]="NOT IN">
+<cfset criterias[10][2]=application.rbFactory.getKeyValue(session.rb,'params.notin')>
 
 <cfif len(rc.assignmentID)>
 	<cfset rsDisplayObject=application.contentManager.readContentObject(rc.assignmentID,rc.regionID,rc.orderno)>
