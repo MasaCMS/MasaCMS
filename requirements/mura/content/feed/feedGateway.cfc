@@ -155,7 +155,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfloop query="rsParams">
 		<cfif listLen(rsParams.field,".") eq 2>
 			<cfset jointable=listFirst(rsParams.field,".") >
-			<cfif not listFindNoCase("tcontent,tcontentstats,tfiles,tparent",jointable) and not listFind(jointables,jointable)>
+			<cfif not listFindNoCase("tcontent,tcontentstats,tfiles,tparent,tcontentcategoryassign",jointable) and not listFind(jointables,jointable)>
 				<cfset jointables=listAppend(jointables,jointable)>
 			</cfif>
 		</cfif>
@@ -270,7 +270,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<cfset started = true />
 									<cfset isListParam=listFindNoCase("IN,NOT IN",param.getCondition())>			
 									<cfif  listLen(param.getField(),".") gt 1>
-										#param.getField()# #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#"><cfif isListParam>)</cfif>  	
+										<cfif listFirst(param.getField(),".") neq "tcontentcategoryassign">
+											#param.getField()# #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#"><cfif isListParam>)</cfif>  	
+										<cfelse>
+											tcontent.contenthistid in (select distinct contenthistid from tcontentcategoryassign
+												where
+												#param.getField()# #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#"><cfif isListParam>)</cfif> 
+												)
+										</cfif>
 									<cfelseif len(param.getField())>
 										tcontent.contentHistID IN (
 											select tclassextenddata.baseID from tclassextenddata #tableModifier#
@@ -457,7 +464,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset started = true />
 				<cfset isListParam=listFindNoCase("IN,NOT IN",param.getCondition())>	
 				<cfif  listLen(param.getField(),".") gt 1>						
-					#param.getField()# #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#"><cfif isListParam>)</cfif>  	
+					<cfif listFirst(param.getField(),".") neq "tcontentcategoryassign">
+						#param.getField()# #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#"><cfif isListParam>)</cfif>  	
+					<cfelse>
+						tcontent.contenthistid in (select distinct contenthistid from tcontentcategoryassign
+							where
+							#param.getField()# #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#"><cfif isListParam>)</cfif> 
+							)
+					</cfif>
 				<cfelseif len(param.getField())>
 					tcontent.contentHistID IN (
 						select tclassextenddata.baseID from tclassextenddata #tableModifier#
