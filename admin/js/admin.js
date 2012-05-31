@@ -599,15 +599,19 @@ function submitForm(frm,action,msg){
 
 		}
 		}
-		
-		jQuery('#actionIndicator').each(function(){
-			jQuery(this).show();	
-			});
 
-		jQuery('#actionButtons').each(function(){
-			jQuery(this).hide();	
-			});
-		
+		if(jQuery('#actionIndicator').length){
+			jQuery('#actionIndicator').show();
+			jQuery('#actionButtons').hide();
+		} else{
+			jQuery('#actionButtons').html(
+					'<div style="display:none;">' 
+					+ jQuery('#actionButtons').html() 
+					+ '</div>'
+					+ '<img src="images/progress_bar.gif">'
+				);
+		}	
+
 		frm.submit();
 		formSubmitted = true;
 	

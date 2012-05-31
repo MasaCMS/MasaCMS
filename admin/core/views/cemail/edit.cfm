@@ -337,8 +337,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         <input type="hidden" name="sendNow" value="">
       </div>
 	  </div>
-      <div id="actionIndicator" style="display: none;"> <img src="#application.configBean.getContext()#/admin/images/progress_bar.gif"> </div>
-    
     
   </form>
 </cfoutput>

@@ -68,7 +68,7 @@ select * from rsSubTypes where subType <> 'Default'
 	
 	<cfif len(rc.userBean.getUsername())>
 		<cfset strikes=createObject("component","mura.user.userstrikes").init(rc.userBean.getUsername(),application.configBean)>
-		<cfif structKeyExists(attributes,"removeBlock")>
+		<cfif structKeyExists(rc,"removeBlock")>
 			<cfset strikes.clear()>
 		</cfif>
 		<cfif strikes.isBlocked()>

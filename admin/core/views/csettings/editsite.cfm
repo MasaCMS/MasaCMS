@@ -636,9 +636,6 @@ to your own modified versions of Mura CMS.
       	<input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="Update" />
      </cfif>
 	 </div>
-	 <div id="actionIndicator" style="display: none;">
-		<img class="loadProgress" src="#application.configBean.getContext()#/admin/images/progress_bar.gif">
-	</div>
   </form>
 </cfoutput>
 

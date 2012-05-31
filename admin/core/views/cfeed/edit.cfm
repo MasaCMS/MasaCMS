@@ -627,7 +627,7 @@ jQuery(document).ready(function(){
 	<dl class="oneColumn">
 	<dt>#application.rbFactory.getKeyValue(session.rb,'collections.categoryassignments')#</dt>
 	<dd>
-	<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" feedID="#rc.feedID#">
+	<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" feedID="#rc.feedID#" feedBean="#rc.feedBean#">
 	<dd>
 	</dl>
 </div>

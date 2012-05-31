@@ -119,9 +119,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <input type="hidden" name="action" value="">
 </form>
 </div>
-<div id="actionIndicator" style="display: none;">
-	<img class="loadProgress" src="#application.configBean.getContext()#/admin/images/progress_bar.gif">
-</div>
 </cfoutput>
 <!---
 <cfif rc.mlid neq ''>
