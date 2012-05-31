@@ -159,9 +159,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	   </cfif>
 	 
 	  <cfif not (arguments.rc.action eq  'add' or arguments.rc.action neq  'delete' and not structIsEmpty(arguments.rc.campaignBean.getErrors()))>
-	  	<cfset variables.fw.redirect(action="cAdvertising.viewAdvertiser",append="userid,siteid",path="./")>
+	  	<cfset variables.fw.redirect(action="cAdvertising.viewAdvertiser",append="userid,siteid")>
 	  <cfelse>
-	  	<cfset variables.fw.redirect(action="cAdvertising.editCampaign",append="userid,siteid,campaignid",path="./")>
+	  	<cfset variables.fw.redirect(action="cAdvertising.editCampaign",append="userid,siteid,campaignid")>
 	  </cfif>
 </cffunction>
 
@@ -186,7 +186,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	   </cfif>
 	 
 	  <cfif not (arguments.rc.action neq  'delete' and not structIsEmpty(arguments.rc.AdZoneBean.getErrors()))>
-		 <cfset variables.fw.redirect(action="cAdvertising.Listadzones",append="siteid",path="./")>
+		 <cfset variables.fw.redirect(action="cAdvertising.Listadzones",append="siteid")>
 	  </cfif>
 </cffunction>
 
@@ -209,7 +209,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	   </cfif>
 	 
 	  <cfif not (arguments.rc.action neq  'delete' and not structIsEmpty(arguments.rc.creativeBean.getErrors()))>
-		  <cfset variables.fw.redirect(action="cAdvertising.viewAdvertiser",append="userid,siteid",path="./")>
+		  <cfset variables.fw.redirect(action="cAdvertising.viewAdvertiser",append="userid,siteid")>
 	  </cfif>
 </cffunction>
 
@@ -232,7 +232,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  </cfif>
 	 
 	  <cfif not (arguments.rc.action neq  'delete' and not structIsEmpty(arguments.rc.placementBean.getErrors()))>
-		  <cfset variables.fw.redirect(action="cAdvertising.editCampaign",append="userid,siteid,campaignid",path="./")>
+		  <cfset variables.fw.redirect(action="cAdvertising.editCampaign",append="userid,siteid,campaignid")>
 	  </cfif>
 </cffunction>
 
@@ -244,7 +244,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="updateIPWhiteList" output="false">
 	<cfargument name="rc">
 	<cfset variables.advertiserManager.updateIPWhiteListBySiteID(arguments.rc.IPWhiteList,arguments.rc.siteid) />
-	<cfset variables.fw.redirect(action="cAdvertising.listAdvertisers",append="siteid",path="./")>
+	<cfset variables.fw.redirect(action="cAdvertising.listAdvertisers",append="siteid")>
 </cffunction>
 
 </cfcomponent>

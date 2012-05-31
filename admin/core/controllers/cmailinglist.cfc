@@ -94,9 +94,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 			
 	<cfif arguments.rc.action eq 'delete'>
-		<cfset variables.fw.redirect(action="cMailingList.list",append="siteid",path="./")>
+		<cfset variables.fw.redirect(action="cMailingList.list",append="siteid")>
 	<cfelse>
-		<cfset variables.fw.redirect(action="cMailingList.listmembers",append="siteid,mlid",path="./")>
+		<cfset variables.fw.redirect(action="cMailingList.listmembers",append="siteid,mlid")>
 	</cfif>
 </cffunction>
 
@@ -111,7 +111,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.mailinglistManager.deleteMember(arguments.rc) />
 	</cfif>
 	
-	<cfset variables.fw.redirect(action="cMailingList.listmembers",append="siteid,mlid",path="./")>
+	<cfset variables.fw.redirect(action="cMailingList.listmembers",append="siteid,mlid")>
 </cffunction>
 
 <cffunction name="download" output="false">

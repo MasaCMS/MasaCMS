@@ -608,8 +608,10 @@ function submitForm(frm,action,msg){
 					'<div style="display:none;">' 
 					+ jQuery('#actionButtons').html() 
 					+ '</div>'
-					+ '<img src="images/progress_bar.gif">'
+					+ '<img src="./images/progress_bar.gif">'
 				);
+
+			//alert(jQuery('#actionButtons').html());
 		}	
 
 		frm.submit();

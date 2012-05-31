@@ -99,7 +99,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="update" output="false">
 <cfargument name="rc">
 	<cfset variables.emailManager.update(arguments.rc) />
-	<cfset variables.fw.redirect(action="cEmail.list",append="siteid",path="./")>
+	<cfset variables.fw.redirect(action="cEmail.list",append="siteid")>
 </cffunction>
 
 <cffunction name="showAllBounces" output="false">

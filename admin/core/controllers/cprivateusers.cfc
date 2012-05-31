@@ -134,7 +134,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset structDelete(session.mura,"editBean")>
 
 	<cfif arguments.rc.routeid eq '' or arguments.rc.routeid eq 'adManager'>
-		<cfset variables.fw.redirect(action="cPrivateUsers.list",append="siteid",path="./")>
+		<cfset variables.fw.redirect(action="cPrivateUsers.list",append="siteid")>
 	</cfif>
 	<cfset arguments.rc.routeBean=variables.userManager.read(arguments.rc.routeid) />
 	
@@ -144,7 +144,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.rc.siteID=rc.routeBean.getSiteid()>
 	</cfif>
 	
-	<cfset variables.fw.redirect(action="cPrivateUsers.editgroup",append="siteid,userid",path="./")>
+	<cfset variables.fw.redirect(action="cPrivateUsers.editgroup",append="siteid,userid")>
 </cffunction>
 
 <cffunction name="search" output="false">
@@ -153,7 +153,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset arguments.rc.rslist=variables.userManager.getSearch(arguments.rc.search,arguments.rc.siteid,0) />
 	<cfif arguments.rc.rslist.recordcount eq 1>
 		<cfset arguments.rc.userID=rc.rslist.userid>
-		<cfset variables.fw.redirect(action="cPrivateUsers.editUser",append="siteid,userid",path="./")>
+		<cfset variables.fw.redirect(action="cPrivateUsers.editUser",append="siteid,userid")>
 	</cfif>
 	<cfset arguments.rc.nextn=variables.utility.getNextN(arguments.rc.rsList,15,arguments.rc.startrow) />
 </cffunction>
@@ -202,10 +202,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  </cfif>
 	 
 	  <cfif arguments.rc.action neq 'delete' and  not structIsEmpty(arguments.rc.userBean.getErrors()) and arguments.rc.type eq 1>
-	  	<cfset variables.fw.redirect(action="cPrivateUsers.editgroup",preserve="all",path="./")>
+	  	<cfset variables.fw.redirect(action="cPrivateUsers.editgroup",preserve="all")>
 	  <cfelseif arguments.rc.action neq  'delete' and not structIsEmpty(arguments.rc.userBean.getErrors()) and arguments.rc.type eq 2>
 	  	<cfset session.mura.editBean=arguments.rc.userBean>
-	    <cfset variables.fw.redirect(action="cPrivateUsers.edituser",preserve="all",path="./")>
+	    <cfset variables.fw.redirect(action="cPrivateUsers.edituser",preserve="all")>
 	  </cfif>
 </cffunction>
 

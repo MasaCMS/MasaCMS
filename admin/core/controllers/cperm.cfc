@@ -69,13 +69,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="update" output="false">
 	<cfargument name="rc">
 	<cfset variables.permUtility.update(arguments.rc)  />
-	<cfset variables.fw.redirect(action="cArch.list",append="siteid,moduleid,startrow,topid",path="./")>
+	<cfset variables.fw.redirect(action="cArch.list",append="siteid,moduleid,startrow,topid")>
 </cffunction>
 
 <cffunction name="updategroup" output="false">
 	<cfargument name="rc">
 	<cfset variables.permUtility.updateGroup(arguments.rc)  />
-	<cfset variables.fw.redirect(action="cPrivateUsers.list",append="siteid",path="./")>
+	<cfset variables.fw.redirect(action="cPrivateUsers.list",append="siteid")>
 </cffunction>
 
 <cffunction name="main" output="false">
@@ -93,39 +93,39 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="rc">
 	<cfset variables.permUtility.updateModule(arguments.rc) />
 	<cfif arguments.rc.moduleid eq '00000000000000000000000000000000004'>
-		<cfset variables.fw.redirect(action="cPrivateUsers.list",append="siteid",path="./")>
+		<cfset variables.fw.redirect(action="cPrivateUsers.list",append="siteid")>
 	</cfif>
 	 <cfif arguments.rc.moduleid eq '00000000000000000000000000000000005'>
-		 <cfset variables.fw.redirect(action="cEmail.list",append="siteid",path="./")>
+		 <cfset variables.fw.redirect(action="cEmail.list",append="siteid")>
 	</cfif>
 	 <cfif arguments.rc.moduleid eq '00000000000000000000000000000000007'>
-		 <cfset variables.fw.redirect(action="cForm.list",append="siteid",path="./")>
+		 <cfset variables.fw.redirect(action="cForm.list",append="siteid")>
 	</cfif>
 	 <cfif arguments.rc.moduleid eq '00000000000000000000000000000000008'>
-		 <cfset variables.fw.redirect(action="cPublicUsers.list",append="siteid",path="./")>
+		 <cfset variables.fw.redirect(action="cPublicUsers.list",append="siteid")>
 	</cfif>
 	 <cfif arguments.rc.moduleid eq '00000000000000000000000000000000009'>
-		 <cfset variables.fw.redirect(action="cMailingList.list",append="siteid",path="./")>
+		 <cfset variables.fw.redirect(action="cMailingList.list",append="siteid")>
 	</cfif>
 	  <cfif arguments.rc.moduleid eq '00000000000000000000000000000000000'>
 		 <cfset arguments.rc.moduleid="00000000000000000000000000000000000">
 		 <cfset arguments.rc.topid="00000000000000000000000000000000001">
-		 <cfset variables.fw.redirect(action="cArch.list",append="siteid,topid,moduleid",path="./")>
+		 <cfset variables.fw.redirect(action="cArch.list",append="siteid,topid,moduleid")>
 	</cfif>
 	  <cfif arguments.rc.moduleid eq '00000000000000000000000000000000006'>
-		 <cfset variables.fw.redirect(action="cAdvertising.listAdvertisers",append="siteid",path="./")>
+		 <cfset variables.fw.redirect(action="cAdvertising.listAdvertisers",append="siteid")>
 	</cfif>
 	<cfif arguments.rc.moduleid eq '00000000000000000000000000000000010'>
-	 	<cfset variables.fw.redirect(action="cCategory.list",append="siteid",path="./")>
+	 	<cfset variables.fw.redirect(action="cCategory.list",append="siteid")>
 	</cfif>
 	 <cfif arguments.rc.moduleid eq '00000000000000000000000000000000011'>
-		<cfset variables.fw.redirect(action="cFeed.list",append="siteid",path="./")>
+		<cfset variables.fw.redirect(action="cFeed.list",append="siteid")>
 	</cfif>
 	 <cfif arguments.rc.moduleid eq '00000000000000000000000000000000014'>
-		<cfset variables.fw.redirect(action="cChangesets.list",append="siteid",path="./")>
+		<cfset variables.fw.redirect(action="cChangesets.list",append="siteid")>
 	</cfif>
 	
-	 <cfset variables.fw.redirect(action="cPlugins.list",append="siteid",path="./")>
+	 <cfset variables.fw.redirect(action="cPlugins.list",append="siteid")>
 </cffunction>
 
 </cfcomponent>
