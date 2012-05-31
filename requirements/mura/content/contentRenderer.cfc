@@ -2184,13 +2184,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif (getShowModal() or variables.event.getValue("muraChangesetPreview")) and not request.muraExportHTML>
 					<cfsavecontent variable="headerStr">
 						<cfif getShowModal()>
-							<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()#/admin/modal/dsp_modal_edit.cfm")>
-							<cfinclude template="/#application.configBean.getWebRootMap()#/admin/modal/dsp_modal_edit.cfm">
+							<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()#/admin/core/utilities/modal/dsp_modal_edit.cfm")>
+							<cfinclude template="/#application.configBean.getWebRootMap()#/admin/core/utilities/modal/dsp_modal_edit.cfm">
 							<cfset commitTracePoint(tracePoint)>
 						</cfif>	
 						<cfif variables.event.getValue("muraChangesetPreview")>
-							<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()#/admin/modal/dsp_modal_changeset.cfm")>
-							<cfinclude template="/#application.configBean.getWebRootMap()#/admin/modal/dsp_modal_changeset.cfm">
+							<cfset tracePoint=initTracePoint("/#application.configBean.getWebRootMap()#/admin/core/utilities/modal/dsp_modal_changeset.cfm")>
+							<cfinclude template="/#application.configBean.getWebRootMap()#/admin/core/utilities/modal/dsp_modal_changeset.cfm">
 							<cfset commitTracePoint(tracePoint)>
 						</cfif>
 					</cfsavecontent>

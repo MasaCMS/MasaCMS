@@ -48,8 +48,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.fields		= StructNew()>
 
 	<cffunction name="init" access="public" output="false" returntype="FormBuilderManager">
-		<cfset variables.filePath = "#expandPath("/muraWRM")#/admin/formbuilder/templates" />
-		<cfset variables.templatePath = "/muraWRM/admin/formbuilder/templates" />
+		<cfset variables.filePath = "#expandPath("/muraWRM")#/admin/core/utilities/formbuilder/templates" />
+		<cfset variables.templatePath = "/muraWRM/admin/utilities/core/formbuilder/templates" />
 		<cfset variables.fields["en"] = StructNew()>
 		
 		<cfreturn this/>
