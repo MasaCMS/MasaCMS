@@ -84,7 +84,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="cfc">
 	<cfset var i="">
 	<cfset var property="">
-	<cfset var setters=arguments.cfc>
+	<cfset var setters="">
 
 	<cfif application.cfversion gt 8>
 		<cfset setters=findImplicitAndExplicitSetters(arguments.cfc)>
