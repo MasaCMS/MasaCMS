@@ -45,7 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-<cfset rc.layout=false>
+<cfset request.layout=false>
 <cfset emailBean=application.emailManager.read(rc.emailID) />
 <cfset rsAddresses=application.emailManager.getAddresses(emailBean.getGroupID(),emailBean.getSiteID())/>
 <cfset TabChar=chr(9) />
