@@ -112,7 +112,7 @@ document.getElementById(id).style.left=xPos + "px" ;
 document.getElementById(id).style.visibility="visible";
 
 document.getElementById('newCategoryLink').href=
-'index.cfm?fuseaction=cCategory.edit&parentid=' + parentid + '&siteid=' + siteid;
+'index.cfm?muraAction=cCategory.edit&parentid=' + parentid + '&siteid=' + siteid;
 
 
 if(lastid!="" && lastid !=id){

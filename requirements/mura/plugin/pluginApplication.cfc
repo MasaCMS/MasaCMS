@@ -69,8 +69,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="property"  type="string" required="true">
 <cfargument name="propertyValue" default="" required="true">
 <cfargument name="autowire" default="false" required="true">
-	
-	
+		
 	<cfset variables.properties[arguments.property]=arguments.propertyValue />
 	<cfset structDelete(variables.wired,arguments.property)>
 	
@@ -84,33 +83,43 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="doAutowire" output="false">
 <cfargument name="cfc">
 	<cfset var i="">
-	<cfset var item="">
-	<cfset var args=structNew()>
-	<cfset var setters=arguments.cfc>
+	<cfset var property="">
+	<cfset var setters="">
 
 	<cfif application.cfversion gt 8>
 		<cfset setters=findImplicitAndExplicitSetters(arguments.cfc)>
+		<cfloop collection="#setters#" item="i">
+			<cfset wireProperty(arguments.cfc,i)>
+		</cfloop>
+	<cfelse>
+		<cfloop collection="#arguments.cfc#" item="i">
+			<cfif len(i) gt 3 and left(i,3) eq "set">
+				<cfset property=right(i,len(i)-3)>
+				<cfset wireProperty(arguments.cfc,property)>
+			</cfif>
+		</cfloop>
 	</cfif>
 
-	<cfloop collection="#arguments.cfc#" item="i">
-		<cfif len(i) gt 3 and left(i,3) eq "set">
-			<cfset item=right(i,len(i)-3)>
-			<cfif item eq "pluginConfig">
-				<cfset args=structNew()>
-				<cfset args[item] = variables.pluginConfig />
-				<cfinvoke component="#arguments.cfc#" method="#i#" argumentCollection="#args#" />
-			<cfelseif structKeyExists(variables.properties,item)>
-				<cfset args=structNew()>
-				<cfset args[item] = variables.properties[item] />
-				<cfinvoke component="#arguments.cfc#" method="#i#" argumentCollection="#args#" />
-			<cfelseif getServiceFactory().containsBean(item)>
-				<cfset args=structNew()>
-				<cfset args[item] = getBean(item) />
-				<cfinvoke component="#arguments.cfc#" method="#i#" argumentCollection="#args#" />
-			</cfif>
-		</cfif>
-	</cfloop>
 	<cfreturn arguments.cfc>
+</cffunction>
+
+<cffunction name="wireProperty" output="false" access="private">
+<cfargument name="object">
+<cfargument name="property">
+	<cfset var args=structNew()>
+
+	<cfif arguments.property neq "value">
+		<cfif arguments.property eq "pluginConfig">
+			<cfset args[arguments.property] = variables.pluginConfig />
+			<cfinvoke component="#arguments.cfc#" method="set#arguments.property#" argumentCollection="#args#" />
+		<cfelseif structKeyExists(variables.properties,arguments.property)>
+			<cfset args[arguments.property] = variables.properties[arguments.property] />
+			<cfinvoke component="#arguments.object#" method="set#arguments.property#" argumentCollection="#args#" />
+		<cfelseif getServiceFactory().containsBean(arguments.property)>
+			<cfset args[arguments.property] = getBean(arguments.property) />
+			<cfinvoke component="#arguments.object#" method="set#arguments.property#" argumentCollection="#args#" />
+		</cfif>
+	</cfif>
 </cffunction>
 
 <!--- Ported from FW1 --->

@@ -418,7 +418,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfset returnURL="#protocol##urlBase##site.getContentRenderer().getURLStem(site.getSiteID(),returnID)#">
-	<cfset editProfileURL =protocol & urlBase & "/admin/index.cfm?fuseaction=cEditProfile.edit">	
+	<cfset editProfileURL =protocol & urlBase & "/admin/index.cfm?muraAction=cEditProfile.edit">	
 
 </cfif>
 
