@@ -503,7 +503,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="isHandledEvent" output="false">
 <cfargument name="eventName">
 	<cfreturn structKeyExists(request.muraHandledEvents,arguments.eventName)>
-</cffuntion>
+</cffunction>
 
 
 </cfcomponent>
