@@ -76,7 +76,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.rssection=variables.rsPreSection/>
 	</cfif>
 	
-	<cfset variables.iterator=variables.$.getBean("contentvariables.iterator")>
+	<cfset variables.iterator=variables.$.getBean("contentIterator")>
 	<cfset variables.iterator.setQuery(variables.rssection,event.getContentBean().getNextN())>
 	
 	<cfset imageArgs=structNew()/>
