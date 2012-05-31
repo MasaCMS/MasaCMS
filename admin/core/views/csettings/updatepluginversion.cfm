@@ -60,7 +60,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <p>Upload New Plugin Version</p>
 <form novalidate="novalidate" name="frmNewPlugin" action="index.cfm?muraAction=cSettings.deployPlugin" enctype="multipart/form-data" method="post" onsubmit="return validateForm(this);">
 <input name="newPlugin" type="file" required="true" message="Please select a plugin file.">
+<div id="actionButtons">
 <input type="submit" value="Deploy"/>
+</div>
 <input type="hidden" name="moduleID" value="#rc.pluginConfig.getModuleID()#">
 </form>
 
