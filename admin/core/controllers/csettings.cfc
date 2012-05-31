@@ -74,7 +74,7 @@ to your own modified versions of Mura CMS.
 	</cfif>
 
 	<cfif isdefined("arguments.rc.refresh")>
-		<cfset variables.fw.redirect(action="cSettings.list",append="activeTab",path="")>
+		<cfset variables.fw.redirect(action="cSettings.list",append="activeTab",path="./")>
 	</cfif>
 	
 	<cfset variables.settingsManager.saveOrder(arguments.rc.orderno,arguments.rc.orderID)  />
@@ -93,7 +93,7 @@ to your own modified versions of Mura CMS.
 	<cfset variables.pluginManager.deletePlugin(arguments.rc.moduleID) />
 	<cfset arguments.rc.activeTab=1>
 	<cfset arguments.rc.refresh=1>
-	<cfset variables.fw.redirect(action="cSettings.list",append="activeTab,refresh",path="")>
+	<cfset variables.fw.redirect(action="cSettings.list",append="activeTab,refresh",path="./")>
 </cffunction>
 
 <cffunction name="editPlugin" output="false">
@@ -116,14 +116,14 @@ to your own modified versions of Mura CMS.
 	
 	<cfif len(tempID)>
 		<cfset arguments.rc.moduleID=tempID>
-		<cfset variables.fw.redirect(action="cSettings.editPlugin",append="moduleid",path="")>
+		<cfset variables.fw.redirect(action="cSettings.editPlugin",append="moduleid",path="./")>
 	<cfelse>
 		<cfif len(arguments.rc.moduleID)>
-			<cfset variables.fw.redirect(action="cSettings.editPlugin",append="moduleid",path="")>
+			<cfset variables.fw.redirect(action="cSettings.editPlugin",append="moduleid",path="./")>
 		<cfelse>
 			<cfset arguments.rc.activeTab=1>
 			<cfset arguments.rc.refresh=1>
-			<cfset variables.fw.redirect(action="cSettings.list",append="activeTab,refresh",path="")>
+			<cfset variables.fw.redirect(action="cSettings.list",append="activeTab,refresh",path="./")>
 		</cfif>	
 	</cfif>
 	
@@ -134,7 +134,7 @@ to your own modified versions of Mura CMS.
 	<cfset arguments.rc.moduleID=variables.pluginManager.updateSettings(arguments.rc) />
 	<cfset arguments.rc.activeTab=1>
 	<cfset arguments.rc.refresh=1>
-	<cfset variables.fw.redirect(action="cSettings.list",append="activeTab,refresh",path="")>
+	<cfset variables.fw.redirect(action="cSettings.list",append="activeTab,refresh",path="./")>
 </cffunction>
 
 <cffunction name="updateSite" output="false">
@@ -163,7 +163,7 @@ to your own modified versions of Mura CMS.
 			<cfset session.userFilesPath = "#application.configBean.getAssetPath()#/default/assets/">
 			<cfset arguments.rc.siteid="default"/>
 	</cfif>
-	<cfset variables.fw.redirect(action="cSettings.list",path="")>
+	<cfset variables.fw.redirect(action="cSettings.list",path="./")>
 </cffunction>
 
 <cffunction name="sitecopyselect" output="false">
@@ -180,7 +180,7 @@ to your own modified versions of Mura CMS.
 	<cfif arguments.rc.fromSiteID neq arguments.rc.toSiteID>
 		<cfset getBean('publisher').copy(fromSiteID=rc.fromSiteID,toSiteID=rc.toSiteID)>
 	</cfif>
-	<cfset variables.fw.redirect(action="cSettings.sitecopyresult",append="fromSiteID,toSiteID",path="")>
+	<cfset variables.fw.redirect(action="cSettings.sitecopyresult",append="fromSiteID,toSiteID",path="./")>
 </cffunction>
 
 <cffunction name="createBundle" output="false">

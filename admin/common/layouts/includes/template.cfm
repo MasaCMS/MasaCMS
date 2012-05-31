@@ -150,7 +150,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif not attributes.jsLibLoaded and attributes.jsLib eq "prototype">
 <script src="#application.configBean.getContext()#/admin/js/prototype.js" type="text/javascript" language="Javascript"></script>
 </cfif>
-<script src="#application.configBean.getContext()#/admin/js/admin.min.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
+<script src="#application.configBean.getContext()#/admin/js/admin.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
 
 <cfif application.configBean.getValue("htmlEditorType") eq "fckeditor">
 <script type="text/javascript" src="#application.configBean.getContext()#/wysiwyg/fckeditor.js"></script>

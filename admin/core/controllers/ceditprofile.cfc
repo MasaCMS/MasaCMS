@@ -100,7 +100,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif structIsEmpty(arguments.rc.userBean.getErrors())>
 		<cfset structDelete(session.mura,"editBean")>
-		 <cfset variables.fw.redirect(action="home.redirect",path="")>
+		 <cfset variables.fw.redirect(action="home.redirect",path="./")>
 	</cfif>
 </cffunction>
 

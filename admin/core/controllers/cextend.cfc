@@ -81,9 +81,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	  <cfif arguments.rc.action neq 'delete'>
 		  <cfset arguments.rc.subTypeID=rc.subtypeBean.getSubTypeID()>
-		  <cfset variables.fw.redirect(action="cExtend.listSets",append="subTypeID,siteid",path="")>
+		  <cfset variables.fw.redirect(action="cExtend.listSets",append="subTypeID,siteid",path="./")>
 	  <cfelse>
-	  	  <cfset variables.fw.redirect(action="cExtend.listSubTypes",append="siteid",path="")>
+	  	  <cfset variables.fw.redirect(action="cExtend.listSubTypes",append="siteid",path="./")>
 	  </cfif>
 	  
 </cffunction>
@@ -106,9 +106,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  </cfif> 
 	
 	  <cfif arguments.rc.action neq 'delete'>
-		<cfset variables.fw.redirect(action="cExtend.editAttributes",append="subTypeId,extendSetID,siteid",path="")>
+		<cfset variables.fw.redirect(action="cExtend.editAttributes",append="subTypeId,extendSetID,siteid",path="./")>
 	  <cfelse>
-	  	<cfset variables.fw.redirect(action="cExtend.listSets",append="subTypeId,siteid",path="")>
+	  	<cfset variables.fw.redirect(action="cExtend.listSets",append="subTypeId,siteid",path="./")>
 	  </cfif>
 </cffunction>	  	
 
@@ -129,7 +129,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  	<cfset arguments.rc.attributeBean.save() />
 	  </cfif> 
 	  
-	 <cfset variables.fw.redirect(action="cExtend.editAttributes",append="subTypeId,extendSetID,siteid",path="")>
+	 <cfset variables.fw.redirect(action="cExtend.editAttributes",append="subTypeId,extendSetID,siteid",path="./")>
 </cffunction>
 
 <cffunction name="saveAttributeSort" output="false">

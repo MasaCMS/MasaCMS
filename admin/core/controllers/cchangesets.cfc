@@ -72,7 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="publish" output="false">
 <cfargument name="rc">
 <cfset variables.changesetManager.publish(rc.changesetID)>
-<cfset variables.fw.redirect(action="cChangesets.edit",append="changesetID,siteID",path="")>
+<cfset variables.fw.redirect(action="cChangesets.edit",append="changesetID,siteID",path="./")>
 </cffunction>
 
 <cffunction name="assignments" output="false">
@@ -84,7 +84,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="removeitem" output="false">
 <cfargument name="rc">
 <cfset variables.changesetManager.removeItem(rc.changesetID,rc.contenthistID)>
-<cfset variables.fw.redirect(action="cChangesets.assignments",append="changesetID,siteID,keywords",path="")>
+<cfset variables.fw.redirect(action="cChangesets.assignments",append="changesetID,siteID,keywords",path="./")>
 </cffunction>
 
 <cffunction name="edit" output="false">
@@ -96,12 +96,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="rc">
 <cfset rc.changeset=variables.changesetManager.read(rc.changesetID).set(rc).save()>
 <cfset rc.changesetID=rc.changeset.getChangesetID()>
-<cfset variables.fw.redirect(action="cChangesets.list",append="changesetID,siteID",path="")>
+<cfset variables.fw.redirect(action="cChangesets.list",append="changesetID,siteID",path="./")>
 </cffunction>
 
 <cffunction name="delete" output="false">
 <cfargument name="rc">
 <cfset rc.changeset=variables.changesetManager.read(rc.changesetID).delete()>
-<cfset variables.fw.redirect(action="cChangesets.list",append="changesetID,siteID",path="")>
+<cfset variables.fw.redirect(action="cChangesets.list",append="changesetID,siteID",path="./")>
 </cffunction>
 </cfcomponent>

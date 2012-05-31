@@ -75,7 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="rc">
 	
 	<cfset variables.trashManager.empty(argumentCollection=arguments.rc)>
-	<cfset variables.fw.redirect(action="cTrash.list",append="siteID",path="")>
+	<cfset variables.fw.redirect(action="cTrash.list",append="siteID",path="./")>
 	
 </cffunction>
 
@@ -95,7 +95,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfset obj.save()>
 	<cfset arguments.restoreID=arguments.rc.objectID>
-	<cfset variables.fw.redirect(action="cTrash.list",append="restoreID,siteID,keywords,pageNum",path="")>
+	<cfset variables.fw.redirect(action="cTrash.list",append="restoreID,siteID,keywords,pageNum",path="./")>
 	
 </cffunction>
 
