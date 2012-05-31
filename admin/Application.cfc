@@ -107,9 +107,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset variables.framework=structNew()>
 	<cfset variables.framework.home = "home.redirect">
-	<cfset variables.framework.action="fuseaction">
-	<cfset variables.framework.base="/muraWRM/admin/fw1">
+	<cfset variables.framework.action="muraAction">
+	<cfset variables.framework.base="/muraWRM/admin/">
+	<cfset variables.framework.defaultSubsystem="core">
+	<cfset variables.framework.usingSubsystems=true>
 	<cfset variables.framework.applicationKey="muraAdmin">
+	<cfset variables.framework.siteWideLayoutSubsystem='common'>
+
+	<cfif structKeyExists(form,"fuseaction")>
+		<cfset form.muraAction=form.fuseaction>
+	</cfif>
+
+	<cfif structKeyExists(url,"fuseaction")>
+		<cfset url.muraAction=url.fuseaction>
+	</cfif>
 	
 	<cffunction name="setupApplication" output="false">
 		<cfset var local = structNew() />
@@ -145,7 +156,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif right(cgi.script_name, Len("index.cfm")) NEQ "index.cfm" and right(cgi.script_name, Len("error.cfm")) NEQ "error.cfm" AND right(cgi.script_name, 3) NEQ "cfc">
 			<cflocation url="index.cfm" addtoken="false">
 		</cfif>	
-		
+
 		<cfscript>
 			StructAppend(request.context, url, "no");
 			StructAppend(request.context, form, "no");
@@ -158,7 +169,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfparam name="request.context.moduleid" default="">
 		<cfparam name="request.context.siteid" default="">
-		<cfparam name="request.context.fuseaction" default="">
+		<cfparam name="request.context.muraAction" default="">
 		<cfparam name="request.context.layout" default=""/>
 		<cfparam name="request.context.activetab" default="0"/>
 		<cfparam name="request.context.activepanel" default="0"/>
@@ -237,8 +248,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif session.mura.isLoggedIn and structKeyExists(session,"siteArray") and not arrayLen(session.siteArray)>
 			<cfif not listFind(session.mura.memberships,'S2IsPrivate')>
 				<cflocation url="#application.configBean.getContext()#/" addtoken="false">
-			<cfelseif not len(request.context.fuseaction) or (len(request.context.fuseaction) and not listfindNoCase("clogin,cMessage,cEditprofile",listFirst(request.context.fuseaction,".")))>
-				<cflocation url="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cMessage.noaccess" addtoken="false">
+			<cfelseif not len(request.context.muraAction) or (len(request.context.muraAction) and not listfindNoCase("clogin,cMessage,cEditprofile",listFirst(request.context.muraAction,".")))>
+				<cflocation url="#application.configBean.getContext()#/admin/index.cfm?muraAction=cMessage.noaccess" addtoken="false">
 			</cfif>
 		</cfif>
 		
@@ -263,7 +274,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 			<cfif request.context.param neq ''>
 				<cfset session.paramArray=arrayNew(1) />
-				<cfset session.paramCircuit=listFirst(request.context.fuseaction,'.') />
+				<cfset session.paramCircuit=listFirst(request.context.muraAction,'.') />
 				<cfloop from="1" to="#listLen(request.context.param)#" index="i">
 					<cfset theParam=listGetAt(request.context.param,i) />
 					<cfif evaluate('request.context.paramField#theParam#') neq 'Select Field'
@@ -326,8 +337,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var temp=structNew()>
 		<cfset fusebox.ajax=rc.ajax>
 		<cfset fusebox.layout=rc.layout>
-		<cfset myfusebox.originalfuseaction = listLast(request.action,".")>
-		<cfset myfusebox.originalcircuit = listFirst(request.action,".")>
+		<cfset myfusebox.originalfuseaction = listLast(listLast(request.action,":"),".")>
+		<cfset myfusebox.originalcircuit = listFirst(listLast(request.action,":"),".")>
 		
 		<cfif not structKeyExists(request,"requestappended")>
 			<cfif structKeyExists(request, 'layout')>

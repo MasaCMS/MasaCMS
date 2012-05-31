@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset FUSEBOX_APPLICATION_KEY = "primaryAdmin" />
 <cfset FUSEBOX_PARAMETERS.allowImplicitFusebox = true />
 <cfset FUSEBOX_PARAMETERS.allowImplicitCircuits = true />
-<cfset FUSEBOX_PARAMETERS.defaultFuseaction = "home.redirect" />
+<cfset FUSEBOX_PARAMETERS.defaultmuraAction = "home.redirect" />
 <cfset FUSEBOX_PARAMETERS.password = application.appreloadkey />
 <cfset FUSEBOX_PARAMETERS.mode = "production" />
 <cfinclude template="/fusebox5/fusebox5.cfm" />

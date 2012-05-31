@@ -125,7 +125,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif not isdefined('arguments.data.username')>
 
-	<cflocation url="#indexFile#?fuseaction=clogin.main&linkServID=#arguments.data.linkServID#" addtoken="false">
+	<cflocation url="#indexFile#?muraAction=clogin.main&linkServID=#arguments.data.linkServID#" addtoken="false">
 
 <cfelse>
 	
@@ -168,7 +168,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	<cfelse>
 		<cfif arguments.data.isAdminLogin>
-			<cflocation url="./index.cfm?fuseaction=cLogin.main&display=login&status=failed&rememberMe=#arguments.data.rememberMe#&contentid=#arguments.data.contentid#&LinkServID=#arguments.data.linkServID#&returnURL=#urlEncodedFormat(arguments.data.returnUrl)#&compactDisplay=#urlEncodedFormat(arguments.data.compactDisplay)#" addtoken="false">
+			<cflocation url="./index.cfm?muraAction=cLogin.main&display=login&status=failed&rememberMe=#arguments.data.rememberMe#&contentid=#arguments.data.contentid#&LinkServID=#arguments.data.linkServID#&returnURL=#urlEncodedFormat(arguments.data.returnUrl)#&compactDisplay=#urlEncodedFormat(arguments.data.compactDisplay)#" addtoken="false">
 		<cfelse>
 			<cfset loginURL = application.settingsManager.getSite(request.siteid).getLoginURL() />
 			<cfif find('?', loginURL)>
@@ -254,7 +254,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif not isdefined('arguments.data.userid')>
 
-	<cflocation url="./?fuseaction=clogin.main&linkServID=#arguments.data.linkServID#" addtoken="false">
+	<cflocation url="./?muraAction=clogin.main&linkServID=#arguments.data.linkServID#" addtoken="false">
 
 <cfelse>
 	
@@ -281,7 +281,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset returnUrl = replace(arguments.data.returnUrl, 'doaction=logout', '', 'ALL')>
 				<cflocation url="#returnUrl#" addtoken="false">
 			<cfelse>
-				<cflocation url="./?fuseaction=#arguments.data.redirect#&parentid=#arguments.data.parentid#&topid=#arguments.data.topid#&siteid=#arguments.data.siteid#&contentid=#arguments.data.contentid#&contenthistid=#arguments.data.contenthistid#&type=#arguments.data.type#&moduleid=#arguments.data.moduleid#" addtoken="false">
+				<cflocation url="./?muraAction=#arguments.data.redirect#&parentid=#arguments.data.parentid#&topid=#arguments.data.topid#&siteid=#arguments.data.siteid#&contentid=#arguments.data.contentid#&contenthistid=#arguments.data.contenthistid#&type=#arguments.data.type#&moduleid=#arguments.data.moduleid#" addtoken="false">
 			</cfif>
 		<cfelseif arguments.data.returnUrl neq ''>
 			<cfset returnUrl = replace(arguments.data.returnUrl, 'doaction=logout', '', 'ALL')>
@@ -294,7 +294,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfif>
 	<cfelse>
-		<cflocation url="./?fuseaction=cLogin.main&display=login&status=failed&rememberMe=#arguments.data.rememberMe#&contentid=#arguments.data.contentid#&LinkServID=#arguments.data.linkServID#" addtoken="false">
+		<cflocation url="./?muraAction=cLogin.main&display=login&status=failed&rememberMe=#arguments.data.rememberMe#&contentid=#arguments.data.contentid#&LinkServID=#arguments.data.linkServID#" addtoken="false">
 	</cfif>
 </cfif>
 

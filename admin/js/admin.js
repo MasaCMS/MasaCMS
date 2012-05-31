@@ -599,15 +599,21 @@ function submitForm(frm,action,msg){
 
 		}
 		}
-		
-		jQuery('#actionIndicator').each(function(){
-			jQuery(this).show();	
-			});
 
-		jQuery('#actionButtons').each(function(){
-			jQuery(this).hide();	
-			});
-		
+		if(jQuery('#actionIndicator').length){
+			jQuery('#actionIndicator').show();
+			jQuery('#actionButtons').hide();
+		} else{
+			jQuery('#actionButtons').html(
+					'<div style="display:none;">' 
+					+ jQuery('#actionButtons').html() 
+					+ '</div>'
+					+ '<img src="./images/progress_bar.gif">'
+				);
+
+			//alert(jQuery('#actionButtons').html());
+		}	
+
 		frm.submit();
 		formSubmitted = true;
 	
@@ -922,7 +928,7 @@ function CountDown(){
 	}else{
 	
 		if(document.getElementById('clock').innerHTML != undefined ){document.getElementById('clock').innerHTML = 0  + ':' + 0 + ':' + 0 ;}
-		//location.href=context + "/admin/index.cfm?fuseaction=cLogin.logout"
+		//location.href=context + "/admin/index.cfm?muraAction=cLogin.logout"
 		
 	}
 }

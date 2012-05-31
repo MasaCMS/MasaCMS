@@ -46,7 +46,7 @@
 
 function loadUserActivity(siteID)	{
 		var url = 'index.cfm';
-		var pars = 'fuseaction=cDashboard.loadUserActivity&siteID=' + siteID  + '&cacheid=' + Math.random();
+		var pars = 'muraAction=cDashboard.loadUserActivity&siteID=' + siteID  + '&cacheid=' + Math.random();
 		
 		//location.href=url + "?" + pars;
 		var d = jQuery('#userActivityData');
@@ -64,7 +64,7 @@ function loadUserActivity(siteID)	{
 	
 function loadPopularContent(siteID)	{
 		var url = 'index.cfm';
-		var pars = 'fuseaction=cDashboard.loadPopularContent&siteID=' + siteID  + '&cacheid=' + Math.random();
+		var pars = 'muraAction=cDashboard.loadPopularContent&siteID=' + siteID  + '&cacheid=' + Math.random();
 		
 		//location.href=url + "?" + pars;
 		var d = jQuery('#popularContentData');
@@ -82,7 +82,7 @@ function loadPopularContent(siteID)	{
 
 function loadRecentComments(siteID)	{
 	var url = 'index.cfm';
-	var pars = 'fuseaction=cDashboard.loadRecentComments&siteID=' + siteID  + '&cacheid=' + Math.random();
+	var pars = 'muraAction=cDashboard.loadRecentComments&siteID=' + siteID  + '&cacheid=' + Math.random();
 	
 	//location.href=url + "?" + pars;
 	var d = jQuery('#recentCommentsData');
@@ -101,7 +101,7 @@ function loadRecentComments(siteID)	{
 	
 function loadFormActivity(siteID)	{
 		var url = 'index.cfm';
-		var pars = 'fuseaction=cDashboard.loadFormActivity&siteID=' + siteID  + '&cacheid=' + Math.random();
+		var pars = 'muraAction=cDashboard.loadFormActivity&siteID=' + siteID  + '&cacheid=' + Math.random();
 		
 		//location.href=url + "?" + pars;
 		var d = jQuery('#recentFormActivityData');
@@ -119,7 +119,7 @@ function loadFormActivity(siteID)	{
 	
 function loadEmailActivity(siteID)	{
 		var url = 'index.cfm';
-		var pars = 'fuseaction=cDashboard.loadEmailActivity&siteID=' + siteID  + '&cacheid=' + Math.random();
+		var pars = 'muraAction=cDashboard.loadEmailActivity&siteID=' + siteID  + '&cacheid=' + Math.random();
 		
 		//location.href=url + "?" + pars;
 		var d = jQuery('#emailBroadcastsData');

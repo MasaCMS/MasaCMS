@@ -74,6 +74,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset request.muraShowTrace=session.mura.showTrace>
 	
 <!--- Making sure that session is valid --->
+<cftry>
 <cfif yesNoFormat(application.configBean.getValue("useLegacySessions")) and structKeyExists(session,"mura")>
 	<cfif 
 		(not session.mura.isLoggedIn and isValid("UUID",listFirst(getAuthUser(),"^")))
@@ -85,6 +86,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfcookie name="userid" expires="never" value="#variables.tempcookieuserID#">	
 	</cfif>
 </cfif>
+<cfcatch>
+	<cfset application.loginManager.logout()>
+	<cfcookie name="userid" expires="never" value="">
+</cfcatch>
+</cftry>
 
 <!---settings.custom.vars.cfm reference is for backwards compatability --->
 <cfif fileExists(expandPath("/muraWRM/config/settings.custom.vars.cfm"))>

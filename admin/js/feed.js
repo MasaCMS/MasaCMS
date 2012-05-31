@@ -46,7 +46,7 @@
 
 function loadSiteFilters(siteid,keywords,isNew)	{
 		var url = 'index.cfm';
-		var pars = 'fuseaction=cFeed.loadSite&compactDisplay=true&siteid=' + siteid + '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
+		var pars = 'muraAction=cFeed.loadSite&compactDisplay=true&siteid=' + siteid + '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
 		var d = jQuery('#selectFilter');
 			d.html('<img class="loadProgress" src="images/progress_bar.gif">');
 			jQuery.get(url + "?" + pars, 
@@ -106,7 +106,7 @@ function removeFilter(id){
 
 function loadSiteParents(siteid,parentid,keywords,isNew)	{
 		var url = 'index.cfm';
-		var pars = 'fuseaction=cFeed.siteParents&compactDisplay=true&siteid=' + siteid + '&parentid=' +parentid+ '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
+		var pars = 'muraAction=cFeed.siteParents&compactDisplay=true&siteid=' + siteid + '&parentid=' +parentid+ '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
 		var d = jQuery('#move');
 			d.html('<img class="loadProgress" src="images/progress_bar.gif"><inut type=hidden name=parentid value=' + parentid + ' >');
 			jQuery.get(url + "?" + pars, 

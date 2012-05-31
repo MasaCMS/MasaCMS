@@ -83,7 +83,7 @@ function saveAttributeSort(id){
 	);
 	
 	var url = "index.cfm";
-	var pars = 'fuseaction=cExtend.saveAttributeSort&attributeID=' + attArray.toString() + '&cacheID=' + Math.random();	
+	var pars = 'muraAction=cExtend.saveAttributeSort&attributeID=' + attArray.toString() + '&cacheID=' + Math.random();	
 	
 	//location.href=url + "?" + pars;
 	jQuery.get(url + "?" + pars); 
@@ -100,7 +100,7 @@ function saveExtendSetSort(id){
 	);
 
 	var url = "index.cfm";
-	var pars = 'fuseaction=cExtend.saveExtendSetSort&extendSetID=' + setArray.toString() + '&cacheID=' + Math.random();	
+	var pars = 'muraAction=cExtend.saveExtendSetSort&extendSetID=' + setArray.toString() + '&cacheID=' + Math.random();	
 	
 	//location.href=url + "?" + pars;
 	jQuery.get(url + "?" + pars); 	
