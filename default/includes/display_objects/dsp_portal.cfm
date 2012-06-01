@@ -61,6 +61,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfelseif variables.$.event('filterBy') eq "releaseMonth">
 	<cfset variables.menuType="releaseMonth">
 	<cfset variables.menuDate=createDate(variables.$.event('year'),variables.$.event('month'),1)>
+<cfelseif variables.$.event('filterBy') eq "releaseYear">
+	<cfset variables.menuType="releaseYear">
+	<cfset variables.menuDate=createDate(variables.$.event('year'),1,1)>
 <cfelse>
 	<cfset variables.menuDate=now()>
 	<cfset variables.menuType="default">
