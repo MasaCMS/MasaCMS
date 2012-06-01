@@ -47,8 +47,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent output="false">
 	<cfinclude template="config/applicationSettings.cfm">
 	
-	<cfdump var="#cgi#">
-	
 	<cfif not hasMainMappings>
 		<!--- Try and include global mappings --->
 		<cfset canWriteMode=true>
