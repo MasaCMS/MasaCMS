@@ -117,7 +117,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif rsUser.recordcount gt 1>
 			<cfset utility=getBean("utility")>
 			<cfloop query="rsUser">
-				<cfset bean=getBean("email").set(utility.queryRowToStruct(rsUser,rsUser.currentrow))>
+				<cfset bean=getBean("user").set(utility.queryRowToStruct(rsUser,rsUser.currentrow))>
 				<cfset bean.setIsNew(0)>
 				<cfset rsmembs=readMembershipIDs(bean.getUserId()) />
 				<cfset rsInterests=readInterestGroupIDs(bean.getUserId()) />
@@ -187,7 +187,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif rsUser.recordcount gt 1>
 			<cfset utility=getBean("utility")>
 			<cfloop query="rsUser">
-				<cfset bean=getBean("email").set(utility.queryRowToStruct(rsUser,rsUser.currentrow))>
+				<cfset bean=getBean("user").set(utility.queryRowToStruct(rsUser,rsUser.currentrow))>
 				<cfset bean.setIsNew(0)>
 				<cfset rsmembs=readMembershipIDs(bean.getUserId()) />
 				<cfset rsInterests=readInterestGroupIDs(bean.getUserId()) />
@@ -241,7 +241,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif rsUser.recordcount gt 1>
 			<cfset utility=getBean("utility")>
 			<cfloop query="rsUser">
-				<cfset bean=getBean("email").set(utility.queryRowToStruct(rsUser,rsUser.currentrow))>
+				<cfset bean=getBean("user").set(utility.queryRowToStruct(rsUser,rsUser.currentrow))>
 				<cfset bean.setIsNew(0)>
 				<cfset rsmembs=readMembershipIDs(bean.getUserId()) />
 				<cfset rsInterests=readInterestGroupIDs(bean.getUserId()) />
