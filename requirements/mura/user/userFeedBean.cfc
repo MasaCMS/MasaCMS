@@ -205,7 +205,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var i="">
 	
     <cfif not arguments.append>
-		<cfset variables.instance.categoryID = trim(arguments.instance.categoryID) />
+		<cfset variables.instance.categoryID = trim(arguments.categoryID) />
 	<cfelse>
 		<cfloop list="#arguments.categoryID#" index="i">
 		<cfif not listFindNoCase(variables.instance.categoryID,trim(i))>
