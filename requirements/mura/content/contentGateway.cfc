@@ -81,6 +81,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 				<cftry>
 					<cfset crumbdata=cacheFactory.get( key ) />
+					
+					<cfif not isArray(crumbdata)>
+						<cfset crumbdata=buildCrumblist(arguments.contentID,arguments.siteID,arguments.setInheritance,arguments.path) />
+						<cfreturn cacheFactory.get( key, crumbdata ) />
+					</cfif>
+
 					<cfif arguments.setInheritance>
 						<cfloop from="1" to="#arrayLen(crumbdata)#" index="I">
 							<cfif crumbdata[I].inheritObjects eq 'cascade'>
