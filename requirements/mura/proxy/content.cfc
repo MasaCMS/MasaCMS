@@ -64,10 +64,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var content=event.getValue("content")>
 	
 	<cfif content.getIsNew()>
-		<cfset result.crumbdata=getBean('contentManager').getCrumbList(content.getParentID(),event.getValue('siteID'))/>
+		<cfset result.crumbdata=application.contentManager.getCrumbList(content.getParentID(),event.getValue('siteID'))/>
 	 	<cfset result.level=application.permUtility.getNodePerm(result.crumbdata) />
 	 <cfelse>
-		<cfset result.crumbdata=getBean('contentManager').getCrumbList(content.getContentID(),event.getValue('siteID'))/>
+		<cfset result.crumbdata=application.contentManager.getCrumbList(content.getContentID(),event.getValue('siteID'))/>
 		<cfset result.level=application.permUtility.getNodePerm(result.crumbdata) />
 	</cfif>
 	
@@ -87,15 +87,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	<cfif len(event.getValue("contenthistid"))>
-		<cfset content=getBean('contentManager').getcontentVersion(event.getValue("contenthistid"),event.getValue("siteid"),event.getValue("use404"))>
+		<cfset content=application.contentManager.getcontentVersion(event.getValue("contenthistid"),event.getValue("siteid"),event.getValue("use404"))>
 	<cfelseif event.valueExists("filename")>
-		<cfset content=getBean('contentManager').getActiveContentByFilename(event.getValue("filename"),event.getValue("siteid"),event.getValue("use404"))>
+		<cfset content=application.contentManager.getActiveContentByFilename(event.getValue("filename"),event.getValue("siteid"),event.getValue("use404"))>
 	<cfelseif len(event.getValue("remoteID"))>
-		<cfset content=getBean('contentManager').getActiveByRemoteID(event.getValue("remoteid"),event.getValue("siteid"))>
+		<cfset content=application.contentManager.getActiveByRemoteID(event.getValue("remoteid"),event.getValue("siteid"))>
 	<cfelseif len(event.getValue("title"))>
-		<cfset content=getBean('contentManager').getActiveByTitle(event.getValue("title"),event.getValue("siteid"))>
+		<cfset content=application.contentManager.getActiveByTitle(event.getValue("title"),event.getValue("siteid"))>
+	<cfelseif len(event.getValue("urltitle"))>
+		<cfset content=application.contentManager.getActiveByTitle(event.getValue("urltitle"),event.getValue("siteid"))>
 	<cfelse>
-		<cfset content=getBean('contentManager').getActiveContent(event.getValue("contentid"),event.getValue("siteid"),event.getValue("use404"))>
+		<cfset content=application.contentManager.getActiveContent(event.getValue("contentid"),event.getValue("siteid"),event.getValue("use404"))>
 	</cfif>
 	
 	<cfset event.setValue('content',content)>
@@ -197,7 +199,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var perm=getPerm(event)>
 	
 	<cfif perm.level neq 'Deny'>
-		<cfset event.setValue("__response__", getBean(event).getCategoriesQuery())>
+		<cfset event.setValue("__response__", content.getCategoriesQuery())>
 	<cfelse>
 		<cfset event.setValue("__response__", "access denied")>
 	</cfif>
