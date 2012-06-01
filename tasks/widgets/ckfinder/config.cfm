@@ -199,10 +199,10 @@ if (isdefined("url.type")){
 	    temp.url =  application.configBean.getAssetPath() & '/' & rsSites.siteID[i] & '/assets';
 	    temp.directory ="#application.configBean.getAssetDir()##application.configBean.getFileDelim()##rsSites.siteID[i]##application.configBean.getFileDelim()#assets";
 	    temp.maxSize = 0;
-	    if(application.configBean.getValue('fmAllowedExtensions') neq ''){
-	      temp.allowedExtensions ='7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,m4v';
+	    if(application.configBean.getValue('fmAllowedExtensions') eq ''){
+	      temp.allowedExtensions = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,m4v';
 	    } else {
-	      temp.allowedExtensions ='';    
+	      temp.allowedExtensions = application.configBean.getValue('fmAllowedExtensions');    
 	    }
 	    temp.deniedExtensions = '';
 	    
