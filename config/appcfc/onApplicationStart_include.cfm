@@ -291,10 +291,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset application.serviceFactory.getBean("fileWriter").copyFile(source="#variables.basedir#/config/templates/robots.template.cfm", destination="#variables.basedir#/robots.txt")>
 		</cfif>
 		
+		<cfset application.pluginstemp=application.plugins>
 		<cfset application.plugins=structNew()>
-		<cfset variables.pluginEvent=createObject("component","mura.event").init()>			
-		<cfset application.pluginManager.executeScripts(runat='onApplicationLoad',event= variables.pluginEvent)>
-				
+		<cfset variables.pluginEvent=createObject("component","mura.event").init()>		
+
+		<cftry>	
+			<cfset application.pluginManager.executeScripts(runat='onApplicationLoad',event= variables.pluginEvent)>
+			<cfcatch>
+				<cfset structAppend(application.plugins,application.pluginstemp,false)>
+				<cfrethrow>
+			</cfcatch>
+		</cftry>
+
+		<cfset structDelete(application,"pluginstemp")>
+
 		<!--- Fire local onApplicationLoad events--->
 		<cfset variables.rsSites=application.settingsManager.getList() />
 		<cfset variables.themeHash=structNew()>
