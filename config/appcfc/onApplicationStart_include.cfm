@@ -299,6 +299,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset application.pluginManager.executeScripts(runat='onApplicationLoad',event= variables.pluginEvent)>
 			<cfcatch>
 				<cfset structAppend(application.plugins,application.pluginstemp,false)>
+				<cfset structDelete(application,"pluginstemp")>
 				<cfrethrow>
 			</cfcatch>
 		</cftry>
