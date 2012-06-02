@@ -291,7 +291,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset application.serviceFactory.getBean("fileWriter").copyFile(source="#variables.basedir#/config/templates/robots.template.cfm", destination="#variables.basedir#/robots.txt")>
 		</cfif>
 		
-		<cfif structKeyExists(application,"plugins")>
+		<cfif not structKeyExists(application,"plugins")>
 			<cfset application.plugins=structNew()>
 		</cfif>
 		<cfset application.pluginstemp=application.plugins>
