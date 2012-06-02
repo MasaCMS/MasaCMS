@@ -293,7 +293,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfif structKeyExists(application,"plugins")>
 			<cfset application.plugins=structNew()>
-		<cfif>
+		</cfif>
 		<cfset application.pluginstemp=application.plugins>
 		<cfset application.plugins=structNew()>
 		<cfset variables.pluginEvent=createObject("component","mura.event").init()>		
