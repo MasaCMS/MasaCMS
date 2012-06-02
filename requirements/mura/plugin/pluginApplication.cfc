@@ -111,7 +111,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif arguments.property neq "value">
 		<cfif arguments.property eq "pluginConfig">
 			<cfset args[arguments.property] = variables.pluginConfig />
-			<cfinvoke component="#arguments.cfc#" method="set#arguments.property#" argumentCollection="#args#" />
+			<cfinvoke component="#arguments.object#" method="set#arguments.property#" argumentCollection="#args#" />
 		<cfelseif structKeyExists(variables.properties,arguments.property)>
 			<cfset args[arguments.property] = variables.properties[arguments.property] />
 			<cfinvoke component="#arguments.object#" method="set#arguments.property#" argumentCollection="#args#" />
