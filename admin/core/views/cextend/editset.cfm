@@ -44,57 +44,49 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfinclude template="js.cfm">
-<cfset subType=application.classExtensionManager.getSubTypeByID(rc.subTypeID) />
-<cfset extendSet=subType.loadSet(rc.extendSetID)/>
-<cfset attributesArray=extendSet.getAttributes() />
-<h2>Manage Attributes Set</h2>
+
+<cfset subType=application.classExtensionManager.getSubTypeByID(rc.subTypeID)>
+<cfset extendSetBean=subType.loadSet(rc.extendSetID) />
+<h2><cfif len(rc.extendSetID)>Edit<cfelse>Add</cfif> Attribute Set</h2>
 <cfoutput>
+	
 <ul class="metadata">
-		<li><strong>Class Extension:</strong> #application.classExtensionManager.getTypeAsString(subType.getType())# / #subType.getSubType()#</li>
-		<li><strong>Attributes Set:</strong> #extendSet.getName()#</li>
+<li><strong>Class Extension:</strong> #application.classExtensionManager.getTypeAsString(subType.getType())# / #subType.getSubType()#</li>
 </ul>
 
 <ul id="navTask">
-<li><a href="index.cfm?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#">List All Class Extensions</a></li>
-<li><a href="index.cfm?muraAction=cExtend.editSubType&subTypeID=#URLEncodedFormat(rc.subTypeID)#&siteid=#URLEncodedFormat(rc.siteid)#">Edit Class Extension</a></li>
-<li><a href="index.cfm?muraAction=cExtend.editSet&subTypeID=#URLEncodedFormat(rc.subTypeID)#&extendSetID=#URLEncodedFormat(rc.extendSetID)#&siteid=#URLEncodedFormat(rc.siteid)#">Edit Attribute Set</a></li>
-<li><a href="index.cfm?muraAction=cExtend.listSets&subTypeID=#URLEncodedFormat(rc.subTypeID)#&siteid=#URLEncodedFormat(rc.siteid)#">Back to Attribute Sets</a></li>
-<!--- <li><a href="index.cfm?muraAction=cExtend.editSet&subTypeID=#rc.subTypeID#&&extendSetID=#rc.extendSetID#&siteid=#URLEncodedFormat(rc.siteid)#&attributeID=">Add Attribute</a></li> --->
+<li><a href="index.cfm?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#">Class Extension Manager</a></li>
+<li><a href="index.cfm?muraAction=cExtend.listSets&subTypeID=#rc.subTypeID#&siteid=#URLEncodedFormat(rc.siteid)#">Back to Attribute Sets</a></li>
 </ul>
 
-<cfset newAttribute=extendSet.getAttributeBean() />
-<cfset newAttribute.setSiteID(rc.siteID) />
-<cfset newAttribute.setOrderno(arrayLen(attributesArray)+1) />
-<cf_dsp_attribute_form attributeBean="#newAttribute#" action="add" subTypeID="#rc.subTypeID#" formName="newFrm">
 
-<cfif arrayLen(attributesArray)>
-<a href="javascript:;" style="display:none;" id="saveSort" onclick="saveAttributeSort('attributesList');return false;">[Save Order]</a>
-<a href="javascript:;"  id="showSort" onclick="showSaveSort('attributesList');return false;">[Reorder]</a>
-</cfif>
-
-<p>
-<cfif arrayLen(attributesArray)>
-<ul id="attributesList">
-<cfloop from="1" to="#arrayLen(attributesArray)#" index="a">	
-<cfset attributeBean=attributesArray[a]/>
-<cfoutput>
-	<li attributeID="#attributeBean.getAttributeID()#">
-		<span id="handle#a#" class="handle" style="display:none;">[Drag]</span>
-		#attributeBean.getName()#
-		<a title="Edit" href="javascript:;" id="editFrm#a#open" onclick="jQuery('##editFrm#a#container').slideDown();this.style.display='none';jQuery('##editFrm#a#close').show();return false;">[Edit]</a>
-		<a title="Edit" href="javascript:;" style="display:none;" id="editFrm#a#close" onclick="jQuery('##editFrm#a#container').slideUp();this.style.display='none';jQuery('##editFrm#a#open').show();return false;">[Close]</a>
-		<a title="Delete" href="index.cfm?muraAction=cExtend.updateAttribute&action=delete&subTypeID=#URLEncodedFormat(rc.subTypeID)#&extendSetID=#attributeBean.getExtendSetID()#&siteid=#URLEncodedFormat(rc.siteid)#&attributeID=#attributeBean.getAttributeID()#" onClick="return confirmDialog('Delete the attribute #jsStringFormat("'#attributeBean.getname()#'")#?',this.href)">[Delete]</a>
-
-	<div style="display:none;" id="editFrm#a#container">
-		<cf_dsp_attribute_form attributeBean="#attributeBean#" action="edit" subTypeID="#rc.subTypeID#" formName="editFrm#a#">
-	</div>
-	</li>
-</cfoutput>
-</cfloop>
-</ul>
-
+<form novalidate="novalidate" name="form1" method="post" action="index.cfm" onsubit="return validateForm(this);">
+<dl class="oneColumn separate">
+<dt class="first">Attribute Set Name</dt>
+<dd><input name="name" value="#HTMLEditFormat(extendSetBean.getName())#" required="true"/></dd>
+<cfif subType.getType() neq "Custom">
+<dt>Container</dt>
+<dd><select name="container">
+<option value="Default">Extended Attributes Tab</option>
+<cfif subType.getTYpe() neq "Site">
+<option value="Basic"<cfif extendSetBean.getContainer() eq "Basic"> selected</cfif>>Basic Tab</option></cfif>
+<option value="Custom"<cfif extendSetBean.getContainer() eq "Custom"> selected</cfif>>Custom UI</option>
+</select>
+</dd>
 <cfelse>
-<p class="notice">This set has no rc.</p>
+<input name="container" value="Custom" type="hidden"/>	
 </cfif>
+<cfif  not listFindNoCase("1,Site,Custom", subtype.getType()) and application.categoryManager.getCategoryCount(rc.siteID)>
+<dt>Available Category Dependencies</dt>
+<dd class="categoryAssignment"><cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" extendSetBean="#extendSetBean#"></dd>
+</cfif></dl>
+<div id="actionButtons">
+<cfif not len(rc.extendSetID)>
+<input type="button" class="submit" onclick="submitForm(document.forms.form1,'add');" value="Add" /><input type=hidden name="extendSetID" value="#createuuid()#"><cfelse> <input type="button" class="submit" onclick="submitForm(document.forms.form1,'delete','Delete Attribute Set?');" value="Delete" /> <input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="Update" />
+</div>
+<input type=hidden name="extendSetID" value="#extendSetBean.getExtendSetID()#"></cfif><input type="hidden" name="action" value="">
+<input name="muraAction" value="cExtend.updateSet" type="hidden">
+<input name="siteID" value="#HTMLEditFormat(rc.siteid)#" type="hidden">
+<input name="subTypeID" value="#subType.getSubTypeID()#" type="hidden">
+</form>
 </cfoutput>
