@@ -54,7 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset rc.fieldnames=application.dataCollectionManager.getCurrentFieldList(rc.contentid)/>
 </cfif>
 
-<cfset rsdata=application.dataCollectionManager.getData(attributes)/>
+<cfset rsdata=application.dataCollectionManager.getDatarc/>
 <cfset DelimChar=",">
 <cfset NewLine=chr(13)&chr(10)>
 
