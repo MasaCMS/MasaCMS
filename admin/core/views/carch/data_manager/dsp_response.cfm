@@ -112,7 +112,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 <cfif isdefined ('rc.minute1')>
 <cfsilent>
-<cfset rsData=application.dataCollectionManager.getData(attributes)/>
+<cfset rsData=application.dataCollectionManager.getDatarc/>
 </cfsilent>
 <cfif rsData.recordcount>
 <table class="mura-table-grid stripe">
