@@ -63,7 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rc.perm=application.permUtility.getnodePerm(rc.crumbdata)>
 
 <cfif isDefined('rc.responseid') and rc.action eq 'Update'>
-	<cfset application.dataCollectionManager.update(attributes)/>
+	<cfset application.dataCollectionManager.updaterc/>
 <cfelseif isDefined('rc.responseid') and rc.action eq 'Delete'>
 	<cfset application.dataCollectionManager.delete('#rc.responseID#')/>
 <cfelseif  rc.action eq 'setDisplay'>

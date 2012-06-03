@@ -82,7 +82,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif structKeyExists(displayObject, "#prelist.displayMethod#OptionsRender")>
 				<cfset customOutputList = listAppend(customOutputList, prelist.objectID)>
 				<cfif rc.objectID eq prelist.objectID>
-					<cfset event = createObject("component", "mura.event").init(attributes)>
+					<cfset event = createObject("component", "mura.event").init(rc)>
 					<cfset muraScope = event.getValue("muraScope")>
 					<cfsavecontent variable="customOutput1">
 			<cfinvoke component="#displayObject#" method="#prelist.displaymethod#OptionsRender" returnvariable="customOutput2">
