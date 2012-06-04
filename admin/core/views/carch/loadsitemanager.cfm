@@ -71,7 +71,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset perm=application.permUtility.getnodePerm(crumbdata)>
 <cfset r=application.permUtility.setRestriction(crumbdata).restrict>
 <cfset rsNext=application.contentManager.getNest('#rc.topid#',rc.siteid,rc.sortBy,rc.sortDirection)>
-<cfinclude template="dsp_nextn.cfm">
+<cfinclude template="dsp_nextN.cfm">
 
 <cfif  ((rc.topid eq '00000000000000000000000000000000001' and application.settingsManager.getSite(rc.siteid).getlocking() eq 'none') or (rc.topid neq '00000000000000000000000000000000001')) and application.settingsManager.getSite(rc.siteid).getlocking() neq 'all'>
   <cfset newcontent=perm>
