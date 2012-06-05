@@ -783,6 +783,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn it>
 </cffunction>
 
+<cffunction name="getKidsCategoryQuery" returntype="any" output="false" access="public">
+	<cfreturn variables.contentManager.getCategoriesByParentID(siteID:variables.instance.siteID,parentID:getContentID()) />
+</cffunction>
+
+<cffunction name="getKidsCategoryIterator">
+	<cfscript>
+		var q = getKidsCategoryQuery();
+		var it = getBean('categoryIterator').init();
+		it.setQuery(q);
+		return it;
+	</cfscript>
+</cffunction>
+
 <cffunction name="getVersionHistoryQuery" returnType="query" output="false" access="public">
 	<cfreturn variables.contentManager.getHist(getContentID(), variables.instance.siteID) />
 </cffunction>
