@@ -85,7 +85,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset imageArgs.size=variables.$.content("imageSize")>
 	<cfelse>
 		<cfset imageArgs.height=variables.$.content("imageHeight")>
-		<cfset imageArgs.width=variables.$.content("variables.imageWidth")>
+		<cfset imageArgs.width=variables.$.content("imageWidth")>
 	</cfif>
 	
 	<cfset variables.$.event("currentNextNID",variables.$.content('contentID'))>
@@ -122,8 +122,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif variables.$.content('imageSize') neq 'custom'>
 		<cfset variables.imageWidth=variables.$.siteConfig('gallery#variables.$.content('imageSize')#Scale')>
-	<cfelseif isNumeric(variables.$.content('variables.imageWidth'))>
-		<cfset variables.imageWidth=variables.$.content('variables.imageWidth')>
+	<cfelseif isNumeric(variables.$.content('imageWidth'))>
+		<cfset variables.imageWidth=variables.$.content('imageWidth')>
 	<cfelse>
 		<cfset variables.imageWidth=0>
 	</cfif>
