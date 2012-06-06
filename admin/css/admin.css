@@ -4023,8 +4023,9 @@ a.tooltip:hover span {
 
 a.expand {
 	position: relative;
-	text-decoration: none;
+	text-decoration: none !important;
 	cursor: help;
+	white-space: normal !important;
 }
 
 a.expand span {
