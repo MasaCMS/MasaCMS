@@ -4026,6 +4026,7 @@ a.expand {
 	text-decoration: none !important;
 	cursor: help;
 	white-space: normal !important;
+	text-align: left;
 }
 
 a.expand span {
