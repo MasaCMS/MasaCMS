@@ -57,7 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div id="dsp_list" class="variables.dataResponses">
 <cfif variables.rsdata.recordcount>
 <cfsilent>
-<cfset variables.nextN=variables.$.getBean('utility').getnextN(variables.rsdata,variables.$.content('variables.nextN'),request.StartRow)>
+<cfset variables.nextN=variables.$.getBean('utility').getnextN(variables.rsdata,variables.$.content('nextN'),request.StartRow)>
 			
 <cfif variables.$.content('ResponseDisplayFields') neq ''>
 <cfset variables.data.fieldnames=replace(listFirst(variables.$.content('ResponseDisplayFields'),"~"),"^",",","ALL")/>
