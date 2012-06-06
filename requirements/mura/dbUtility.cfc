@@ -151,8 +151,12 @@
 	<cfargument name="default" default="null">
 	<cfargument name="autoincrement" default="false">
 	<cfargument name="table" default="#variables.table#">
-	<cfset var existing=columnMetaData(arguments.column,arguments.table)>
+	<cfset var existing=structNew()>
 	<cfset var hasTable=tableExists(arguments.table)>
+
+	<cfif hasTable>
+		<cfset existing=columnMetaData(arguments.column,arguments.table)>
+	</cfif>
 
 	<cfif arguments.autoincrement>
 		<cfset arguments.datatype="int">
@@ -277,7 +281,7 @@
 		<cfset arguments.datatype="int">
 	</cfif>
 
-	<cfif columnExists(arguments.column,arguments.table)>
+	<cfif tableExists(arguments.table) and columnExists(arguments.column,arguments.table)>
 		<cfswitch expression="#variables.configBean.getDbType()#">
 			<cfcase value="mssql">
 				<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
