@@ -224,7 +224,7 @@
 	<cfset var dataTable=getDataTable()>
 	<cfset var tableModifier="">
 
-	<cfif dbtype eq "MSSQL">
+	<cfif variables.configBean.getDbType() eq "MSSQL">
 		 <cfset tableModifier="with (nolock)">
 	 </cfif>
 	
