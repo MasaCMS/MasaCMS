@@ -177,6 +177,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var rs=""/>
 <cfset var dataTable=getDataTable() />
 <cfset var rsDefinitions=getDefinitionsQuery()>
+<cfset var tableModifier="">
+
+		<cfif dbtype eq "MSSQL">
+			 <cfset tableModifier="with (nolock)">
+		 </cfif>
 
 		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		select #dataTable#.baseid, tclassextendattributes.name, tclassextendattributes.validation, 
@@ -189,8 +194,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		#dataTable#.attributeValue
 		
-		from #dataTable# inner join
-		tclassextendattributes On (#dataTable#.attributeID=tclassextendattributes.attributeID)
+		from #dataTable# #tableModifier# 
+		inner join tclassextendattributes #tableModifier# On (#dataTable#.attributeID=tclassextendattributes.attributeID)
 		where #dataTable#.baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getBaseID()#">
 		
 		<cfif variables.configBean.getDBType() eq "oracle" and len(getType()) and len(getSubType()) and len(getSiteID())>
@@ -207,10 +212,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			#dataTable#.attributeValue
 			 
-			from tclassextend 
-			inner join tclassextendsets On (tclassextend.subtypeid=tclassextendsets.subtypeid)
-			inner join tclassextendattributes On (tclassextendsets.extendsetid=tclassextendattributes.extendsetid)
-			left join #dataTable# on (
+			from tclassextend #tableModifier#
+			inner join tclassextendsets #tableModifier# On (tclassextend.subtypeid=tclassextendsets.subtypeid)
+			inner join tclassextendattributes #tableModifier# On (tclassextendsets.extendsetid=tclassextendattributes.extendsetid)
+			left join #dataTable# #tableModifier# on (
 												(
 													tclassextendattributes.attributeID=#dataTable#.attributeID
 													and  #dataTable#.baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getBaseID()#">
