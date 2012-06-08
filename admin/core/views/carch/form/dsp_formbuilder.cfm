@@ -67,7 +67,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<li><div class="ui-button button-field" id="button-checkbox" data-object="field-checkbox" title="#application.rbFactory.getKeyValue(session.rb,'formbuilder.field.checkbox.tooltip')#"><span class="ui-icon ui-icon-formfield ui-icon-formfield-checkbox"></span></div></li>
 			<li><div class="ui-button button-field" id="button-dropdown" data-object="field-dropdown" title="#application.rbFactory.getKeyValue(session.rb,'formbuilder.field.dropdown.tooltip')#"><span class="ui-icon ui-icon-formfield ui-icon-formfield-select"></span></div></li>
 			<li><div class="ui-button button-field" id="button-file" data-object="field-file" title="#application.rbFactory.getKeyValue(session.rb,'formbuilder.field.file.tooltip')#"><span class="ui-icon ui-icon-formfield ui-icon-formfield-file"></span></div></li>
+			<!---
 			<li><div class="ui-button button-field" id="button-textblock" data-object="field-textblock" title="#application.rbFactory.getKeyValue(session.rb,'formbuilder.field.textblock.tooltip')#"><span class="ui-icon ui-icon-formfield ui-icon-formfield-textblock"></span></div></li>
+			--->
 			</ul>
 		</div>
 		<div id="mura-tb-form" class="clearfix">
