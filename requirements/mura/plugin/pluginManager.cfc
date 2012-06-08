@@ -1897,7 +1897,7 @@ select * from tplugins order by #arguments.orderby#
 <cfset var returnStr="">
 
 <cfsavecontent variable="returnStr">
-<cfinclude template="/#variables.configBean.getWebrootMap()#/admin/view/layouts/pluginHeader.cfm">
+<cfinclude template="/#variables.configBean.getWebrootMap()#/admin/common/layouts/includes/pluginHeader.cfm">
 </cfsavecontent>
 
 <cfreturn returnStr/>

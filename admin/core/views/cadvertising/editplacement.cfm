@@ -62,7 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <dt>#application.rbFactory.getKeyValue(session.rb,'advertising.adzone')# (<em>#application.rbFactory.getKeyValue(session.rb,'advertising.dimensionscreativetype')#</em>)</dt>
 <dd><select name="adZoneID">
 <cfloop query="rc.rsAdzones">
-<option value="#rc.rsAdzones.adZoneID#" <cfif rc.rsAdzones.adZoneID eq rc.placementBean.getAdZoneID()>selected</cfif>>#rc.rsAdzones.name# (#application.rbFactory.getKeyValue(session.rb,'advertising.heightinitial')# #rc.rsAdzones.height# X #application.rbFactory.getKeyValue(session.rb,'advertising.widthinitial')# #rc.rsAdzones.width# - #application.rbFactory.getKeyValue(session.rb,'advertising.creativetype.#rc.rsAdzones.creativeType#')#)</option>
+<option value="#rc.rsAdzones.adZoneID#" <cfif rc.rsAdzones.adZoneID eq rc.placementBean.getAdZoneID()>selected</cfif>>#rc.rsAdzones.name# (#application.rbFactory.getKeyValue(session.rb,'advertising.heightinitial')# #rc.rsAdzones.height# X #application.rbFactory.getKeyValue(session.rb,'advertising.widthinitial')# #rc.rsAdzones.width# - #application.rbFactory.getKeyValue(session.rb,'advertising.creativetype.#replace(rc.rsAdzones.creativeType,' ', '','all')#')#)</option>
 </cfloop>
 </select></dd>
 <dt>#application.rbFactory.getKeyValue(session.rb,'advertising.creativeasset')# (<em>#application.rbFactory.getKeyValue(session.rb,'advertising.dimensionscreativetype')#</em>)</dt>
