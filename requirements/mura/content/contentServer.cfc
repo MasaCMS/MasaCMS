@@ -97,16 +97,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	--->
 	
 	<cfscript>
-	if (structKeyExists(cgi,"http_x_rewrite_url") && len(cgi.http_x_rewrite_url)) // iis6 1/ IIRF (Ionics Isapi Rewrite Filter)
+	if (structKeyExists(cgi,"http_x_rewrite_url") and len(cgi.http_x_rewrite_url)){ // iis6 1/ IIRF (Ionics Isapi Rewrite Filter)
 	request.path_info = listFirst(cgi.http_x_rewrite_url,'?'); 
-	else if (structKeyExists(cgi,"http_x_original_url") && len(cgi.http_x_original_url)) // iis7 rewrite default
+	}else if (structKeyExists(cgi,"http_x_original_url") and len(cgi.http_x_original_url)){ // iis7 rewrite default
 	request.path_info = listFirst(cgi.http_x_original_url,"?");
-	else if (structKeyExists(cgi,"request_uri") && len(cgi.request_uri)) // apache default
+	}else if (structKeyExists(cgi,"request_uri") and len(cgi.request_uri)){ // apache default
 	request.path_info = listFirst(cgi.request_uri,'?'); 
-	else if (structKeyExists(cgi,"redirect_url") && len(cgi.redirect_url)) // apache fallback
+	}else if (structKeyExists(cgi,"redirect_url") and len(cgi.redirect_url)){ // apache fallback
 	request.path_info = listFirst(cgi.redirect_url,'?');
-	else // fallback to cgi.path_info
+	}else{ // fallback to cgi.path_info
 	request.path_info = cgi.path_info;
+	}
 	</cfscript>
 
 	<cfif isDefined("request.path_info") and len(trim(request.path_info))>
