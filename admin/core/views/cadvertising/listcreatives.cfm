@@ -70,7 +70,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<tr>
 		<td class="varWidth"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?muraAction=cAdvertising.editCreative&userid=#rc.rslist.userid#&siteid=#URLEncodedFormat(rc.siteid)#&creativeid=#rc.rslist.creativeID#">#rc.rslist.name#</a></td>
 		<td class="varWidth">#rc.rslist.company#</td>
-		<td>#application.rbFactory.getKeyValue(session.rb,'advertising.creativetype.#rc.rslist.creativeType#')#</td>
+		<td>#application.rbFactory.getKeyValue(session.rb,'advertising.creativetype.#replace(rc.rslist.creativeType,' ','','all')#')#</td>
 		<td>#application.rbFactory.getKeyValue(session.rb,'advertising.mediatype.#rc.rslist.mediatype#')#</td>
 		<td>#rc.rslist.height#</td>
 		<td>#rc.rslist.width#</td>

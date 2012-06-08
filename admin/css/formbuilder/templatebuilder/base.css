@@ -101,6 +101,10 @@
 		background-image: url('../../../images/formbuilder/frm_upload_big.png');
 		padding-left: 24px;
 	}
+	.mura-tb-header.textblock h3 {
+		background-image: url('../../../images/formbuilder/frm_text_freeform_big.png');
+		padding-left: 34px;
+	}
 	
 	.mura-tb-form .mura-tb-header h3 span {
 		font-size: 15px;
@@ -288,6 +292,7 @@
 	.ui-icon-formfield-select { background-position: -61px 6px; }
 	.ui-icon-formfield-hidden { background-position: -255px 6px; }
 	.ui-icon-formfield-file { background-position: -285px 6px; }
+	.ui-icon-formfield-textblock { background-position: -314px 6px; }
 	
 	/*.ui-icon-formfield-hidden { background-position: -233px 0; }*/
 	/*.ui-icon-formfield-form { background-position: -96px 0; }*/
@@ -583,6 +588,9 @@
 }
 #mura-tb-fields li.field-file div {
 	background-image: url('../../../images/formbuilder/frm_upload_big.png');
+}
+#mura-tb-fields li.field-textblock div {
+	background-image: url('../../../images/formbuilder/frm_text_freeform_big.png');
 }
 
 #mura-tb-form #mura-tb-fields li.field-section {

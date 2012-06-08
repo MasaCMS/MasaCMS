@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 
 <cfoutput>
-<div id="svTagCloud" variables.class="well">
+<div id="svTagCloud" class="well">
 <#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('tagcloud.tagcloud')#</#variables.$.getHeaderTag('subHead1')#>
 <cfif variables.tags.recordcount>
 <ol>
@@ -73,7 +73,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfset variables.args = ArrayNew(1)>
     <cfset variables.args[1] = variables.tags.tagcount>
-</cfsilent><li variables.class="#variables.class#"><span><cfif variables.tags.tagcount gt 1> #variables.rbFactory.getResourceBundle().messageFormat(variables.$.rbKey('tagcloud.itemsare'), variables.args)#<cfelse>#variables.rbFactory.getResourceBundle().messageFormat(variables.$.rbKey('tagcloud.itemis'), variables.args)#</cfif> tagged with </span><a href="#variables.$.createHREF(filename='#variables.$.event('currentFilenameAdjusted')#/tag/#urlEncodedFormat(variables.tags.tag)#')#" variables.class="tag">#HTMLEditFormat(variables.tags.tag)#</a></li>
+</cfsilent><li class="#variables.class#"><span><cfif variables.tags.tagcount gt 1> #variables.rbFactory.getResourceBundle().messageFormat(variables.$.rbKey('tagcloud.itemsare'), variables.args)#<cfelse>#variables.rbFactory.getResourceBundle().messageFormat(variables.$.rbKey('tagcloud.itemis'), variables.args)#</cfif> tagged with </span><a href="#variables.$.createHREF(filename='#variables.$.event('currentFilenameAdjusted')#/tag/#urlEncodedFormat(variables.tags.tag)#')#" variables.class="tag">#HTMLEditFormat(variables.tags.tag)#</a></li>
 </cfloop>
 </ol>
 <cfelse>
