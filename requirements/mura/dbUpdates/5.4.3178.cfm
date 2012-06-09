@@ -110,7 +110,7 @@
 				</cfquery>
 			</cfif>
 
-			<cfif not dbUtility.setTable('tchangesets').columnExists('changesetID')>
+			<cfif not dbUtility.setTable('tcontent').columnExists('changesetID')>
 				<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 					ALTER TABLE tcontent ADD COLUMN changesetID char(35) default NULL
 				</cfquery>
