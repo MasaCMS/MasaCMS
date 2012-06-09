@@ -89,7 +89,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	}
 	</cfscript>
 	--->
-	<cfset var parsed_path_info = cgi.path_info>
+	<cfset parsed_path_info = cgi.path_info>
 	
 	<cfif not len(parsed_path_info) and isDefined("url.path")>
 		<cfset parsed_path_info = url.path>
