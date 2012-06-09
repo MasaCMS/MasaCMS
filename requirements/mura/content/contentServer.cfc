@@ -75,40 +75,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var cgi_path="">
 	<cfset var parsed_path_info = "">
 	<!---
-	Workaround for the changes to ColdFusion 10 cgi.path_info
-	This relies on IIRF on Windows IIS to have the [U] modifier on the RewriteRules to pass inn a cgi variable.
-	Credit for the discovery and cfscript code belongs to Giancarlo Gomez at http://www.giancarlogomez.com/2012/06/you-are-not-going-crazy-cgipathinfo-is.html
-	
-	Implemented and tested on Windows 2008, ColdFusion 10, IIRF 2.1 and MuraCMS 5.6.4938
-	
-	Example IIRF.ini config:
-	RewriteEngine On
-
-	#no rewriting for actual files or folders
-	RewriteCond  %{REQUEST_FILENAME}  -f  [OR]
-	RewriteCond  %{REQUEST_FILENAME}  -d
-	RewriteRule  .  -  [L]
-	
-	# redirect ..../myurl to ..../myurl/
-	RewriteRule ^([^/]+)\?(.*)$	$1/ [QSA,L,R=301]
-	
-	# rewrite /myurl/ to index.cfm and send /myurl/ in cgi.http_x_....
-	RewriteRule  ^(.*)$  /index.cfm%{REQUEST_URI}  [L,U]
-	--->
-	
 	<cfscript>
-	if (structKeyExists(cgi,"http_x_rewrite_url") and len(cgi.http_x_rewrite_url)){ // iis6 1/ IIRF (Ionics Isapi Rewrite Filter)
-	parsed_path_info = listFirst(cgi.http_x_rewrite_url,'?'); 
-	}else if (structKeyExists(cgi,"http_x_original_url") and len(cgi.http_x_original_url)){ // iis7 rewrite default
-	parsed_path_info = listFirst(cgi.http_x_original_url,"?");
-	}else if (structKeyExists(cgi,"request_uri") and len(cgi.request_uri)){ // apache default
-	parsed_path_info = listFirst(cgi.request_uri,'?'); 
-	}else if (structKeyExists(cgi,"redirect_url") and len(cgi.redirect_url)){ // apache fallback
-	parsed_path_info = listFirst(cgi.redirect_url,'?');
-	}else{ // fallback to cgi.path_info
-	parsed_path_info = cgi.path_info;
+	if (structKeyExists(cgi,"http_x_rewrite_url") and len(cgi.http_x_rewrite_url)){ 
+		parsed_path_info = listFirst(cgi.http_x_rewrite_url,'?'); 
+	} else if (structKeyExists(cgi,"http_x_original_url") and len(cgi.http_x_original_url)){ 
+		parsed_path_info = listFirst(cgi.http_x_original_url,"?");
+	} else if (structKeyExists(cgi,"request_uri") and len(cgi.request_uri)){ 
+		parsed_path_info = listFirst(cgi.request_uri,'?'); 
+	} else if (structKeyExists(cgi,"redirect_url") and len(cgi.redirect_url)){ 
+		parsed_path_info = listFirst(cgi.redirect_url,'?');
+	} else{ 
+		parsed_path_info = cgi.path_info;
 	}
 	</cfscript>
+	--->
+	<cfset var parsed_path_info = cgi.path_info>
 	
 	<cfif not len(parsed_path_info) and isDefined("url.path")>
 		<cfset parsed_path_info = url.path>
