@@ -72,8 +72,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="setCGIPath" output="false" returntype="any" access="remote">
+	<cfargument name="siteID"/>
 	<cfset var cgi_path="">
-	<cfset var parsed_path_info = "">
+	<cfset var parsed_path_info = cgi.path_info>
 	<!---
 	<cfscript>
 	if (structKeyExists(cgi,"http_x_rewrite_url") and len(cgi.http_x_rewrite_url)){ 
@@ -84,12 +85,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		parsed_path_info = listFirst(cgi.request_uri,'?'); 
 	} else if (structKeyExists(cgi,"redirect_url") and len(cgi.redirect_url)){ 
 		parsed_path_info = listFirst(cgi.redirect_url,'?');
-	} else{ 
+	} else { 
 		parsed_path_info = cgi.path_info;
 	}
 	</cfscript>
 	--->
-	<cfset parsed_path_info = cgi.path_info>
 	
 	<cfif not len(parsed_path_info) and isDefined("url.path")>
 		<cfset parsed_path_info = url.path>
@@ -100,6 +100,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif len(application.configBean.getContext())>
 		<cfset parsed_path_info = replace(parsed_path_info,application.configBean.getContext(),"")/>
 	</cfif>
+
+	<!---
+	<cfset parsed_path_info = replace(parsed_path_info,"/#arguments.siteID#/index.cfm","")/>
+	--->
+
 	<cfif parsed_path_info eq cgi.script_name>
 		<cfset cgi_path=""/>
 	<cfelse>
@@ -247,10 +252,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var cgi_path="">
 	<cfparam name="url.path" default="" />
 	
-	<cfset cgi_path=setCGIPath()>
-	
 	<cfset siteID = listGetAt(cgi.script_name,listLen(cgi.script_name,"/")-1,"/") />
-	
+	<cfset cgi_path=setCGIPath(siteId)>
+
 	<cfset forcePathDirectoryStructure(cgi_path,siteID)>
 	
 	<cfif not len(cgi.PATH_INFO)>
@@ -274,7 +278,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfparam name="url.path" default="" />
 	
-	<cfset cgi_path=setCGIPath()>
+	<cfset cgi_path=setCGIPath(siteId)>
 	<cfset forcePathDirectoryStructure(cgi_path,siteID)>
 	
 	<cfset url.path="#application.configBean.getStub()#/#siteID#/#url.path#" />
