@@ -119,7 +119,7 @@ Please select one image at a time to upload. Uploading will begin as soon as you
            multiple: false,
            name:'newfile1',
                        data:{
-                               'fuseaction':'cArch.update',
+                               'muraAction':'cArch.update',
                                'action':'multiFileUpload',
                                'siteid':'#jsStringFormat(rc.siteid)#',
                                'moduleid':'#jsStringFormat(rc.moduleid)#',
