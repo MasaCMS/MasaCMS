@@ -268,20 +268,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </form>
 </cfoutput>
 <!--- <cfdump var="#rc.result#">arrayLen(session.paramArray)  --->
-
 <cfset searchFailed=false/>
 <cfif not rc.newSearch>
 <cfsilent>
-<cftry>
-<cfif arrayLen(session.paramArray) and session.paramCircuit eq 'cDashboard' >
-<cfset rc.rslist=application.dashboardManager.getSessionSearch(session.paramArray,rc.siteid,session.membersOnly,session.visitorStatus,session.startDate,session.stopDate) />
-<cfelse>
-<cfset rc.rslist=application.dashboardManager.getSessionSearch(arrayNew(1),rc.siteid,session.membersOnly,session.visitorStatus,session.startDate,session.stopDate) />
-</cfif>
-<cfcatch><cfset searchFailed=true/></cfcatch>
-</cftry>
+	<cftry>
+		<cfif arrayLen(session.paramArray) and session.paramCircuit eq 'cDashboard' >
+			<cfset rc.rslist=application.dashboardManager.getSessionSearch(session.paramArray,rc.siteid,session.membersOnly,session.visitorStatus,session.startDate,session.stopDate) />
+		<cfelse>
+			<cfset rc.rslist=application.dashboardManager.getSessionSearch(arrayNew(1),rc.siteid,session.membersOnly,session.visitorStatus,session.startDate,session.stopDate) />
+		</cfif>
+	<cfcatch>
+		<cfset searchFailed=true/>
+	</cfcatch>
+	</cftry>
 </cfsilent>
-	<script type="text/javascript">setSearchButtons();</script>
+
+<script type="text/javascript">setSearchButtons();</script>
+
 <cfif not searchFailed>
 	<cfoutput>
 	<h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.totalsessions")# (#rc.rslist.recordcount#)</h3>
