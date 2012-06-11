@@ -75,22 +75,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteID"/>
 	<cfset var cgi_path="">
 	<cfset var parsed_path_info = cgi.path_info>
-	<!---
+	
 	<cfscript>
-	if (structKeyExists(cgi,"http_x_rewrite_url") and len(cgi.http_x_rewrite_url)){ 
-		parsed_path_info = listFirst(cgi.http_x_rewrite_url,'?'); 
-	} else if (structKeyExists(cgi,"http_x_original_url") and len(cgi.http_x_original_url)){ 
-		parsed_path_info = listFirst(cgi.http_x_original_url,"?");
-	} else if (structKeyExists(cgi,"request_uri") and len(cgi.request_uri)){ 
-		parsed_path_info = listFirst(cgi.request_uri,'?'); 
-	} else if (structKeyExists(cgi,"redirect_url") and len(cgi.redirect_url)){ 
-		parsed_path_info = listFirst(cgi.redirect_url,'?');
-	} else { 
-		parsed_path_info = cgi.path_info;
+	// If the cgi.path_info was empty then double check other cgi variable
+	if (not len(parsed_path_info)){
+		// iis6 1/ IIRF (Ionics Isapi Rewrite Filter)
+		if (structKeyExists(cgi,"http_x_rewrite_url") and len(cgi.http_x_rewrite_url)){ 
+			parsed_path_info = listFirst(cgi.http_x_rewrite_url,'?'); 
+		} 
+		// iis7 rewrite default
+		else if (structKeyExists(cgi,"http_x_original_url") and len(cgi.http_x_original_url)){ 
+			parsed_path_info = listFirst(cgi.http_x_original_url,"?");
+		} 
+		// apache default
+		else if (structKeyExists(cgi,"request_uri") and len(cgi.request_uri)){ 
+			parsed_path_info = listFirst(cgi.request_uri,'?'); 
+		} 
+		// apache fallback
+		else if (structKeyExists(cgi,"redirect_url") and len(cgi.redirect_url)){ 
+			parsed_path_info = listFirst(cgi.redirect_url,'?');
+		} 
 	}
 	</cfscript>
-	--->
-	
 	<cfif not len(parsed_path_info) and isDefined("url.path")>
 		<cfset parsed_path_info = url.path>
 	</cfif>
@@ -100,11 +106,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif len(application.configBean.getContext())>
 		<cfset parsed_path_info = replace(parsed_path_info,application.configBean.getContext(),"")/>
 	</cfif>
-
-	<!---
-	<cfset parsed_path_info = replace(parsed_path_info,"/#arguments.siteID#/index.cfm","")/>
-	--->
-
+	<cfif listFirst(parsed_path_info,"/") eq arguments.siteID>
+		<cfset parsed_path_info=listRest(parsed_path_info,"/")>
+	</cfif>
+	<cfif listFirst(parsed_path_info,"/") eq "index.cfm">
+		<cfset parsed_path_info=listRest(parsed_path_info,"/")>
+	</cfif>
 	<cfif parsed_path_info eq cgi.script_name>
 		<cfset cgi_path=""/>
 	<cfelse>
