@@ -1513,6 +1513,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	</cffunction>
 	
+	<!---
 	<cffunction name="traverseSite">
 		<cfargument name="contentid" type="string" required="true" />
 		<cfargument name="siteid" type="string" required="true" default="default" />
@@ -1567,6 +1568,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 	
 	</cffunction>
+	--->
 	
 	<cffunction name="getRelatedContent" returntype="query" access="public" output="false">
 		<cfargument name="siteID"  type="string" />

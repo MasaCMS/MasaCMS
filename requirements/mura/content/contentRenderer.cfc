@@ -484,8 +484,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset nest=dspNestedNav(argumentCollection=nestedArgs) />
 					<cfset subnav=subnav and find("<li",nest)>
 				</cfif>
-			
-				<cfset itemClass=iif(current eq 1,de('first'),de(iif(current eq adjust,de('last'),de('')))) />
+				
+				<cfset itemClass=''>
+
+				<cfif current eq 1>
+					<cfset itemClass=listAppend(itemClass,'first',' ')>
+				</cfif>
+				<cfif current eq adjust>
+					<cfset itemClass=listAppend(itemClass,'last',' ')>
+				</cfif>
+				
 				<cfset isCurrent=listFind(variables.event.getValue('contentBean').getPath(),"#rsSection.contentid#") />
 			
 				<cfif isCurrent and len(arguments.liCurrentClass)>
