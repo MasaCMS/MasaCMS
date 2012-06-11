@@ -274,7 +274,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 			<cfif request.context.param neq ''>
 				<cfset session.paramArray=arrayNew(1) />
-				<cfset session.paramCircuit=listFirst(request.context.muraAction,'.') />
+				<cfset session.paramCircuit=listLast(listFirst(request.context.muraAction,'.'),':') />
 				<cfloop from="1" to="#listLen(request.context.param)#" index="i">
 					<cfset theParam=listGetAt(request.context.param,i) />
 					<cfif evaluate('request.context.paramField#theParam#') neq 'Select Field'
