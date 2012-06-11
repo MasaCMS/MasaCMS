@@ -101,6 +101,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<constructor-arg name="contentManager"><ref bean="contentManager" /></constructor-arg>
 			<constructor-arg name="utility"><ref bean="utility" /></constructor-arg>
 			<constructor-arg name="fileWriter"><ref bean="fileWriter" /></constructor-arg>
+			<constructor-arg name="contentServer"><ref bean="contentServer" /></constructor-arg>
 		</bean>
 		<bean id="fileManager" class="mura.content.file.fileManager" singleton="true" >
 			<constructor-arg name="fileDAO"><ref bean="fileDAO" /></constructor-arg>
