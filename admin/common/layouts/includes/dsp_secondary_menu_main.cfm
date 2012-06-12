@@ -44,7 +44,6 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-
 <cfif session.siteid neq ''>
 <cfif not application.configBean.getSessionHistory() or application.configBean.getSessionHistory() gte 30>
 	<cfparam name="session.dashboardSpan" default="30">
@@ -55,7 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <ul id="navSecondary">
 		<cfif application.configBean.getDashboard()>
 		<li <cfif  myfusebox.originalcircuit eq 'cDashboard'>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cDashboard.main&siteid=#session.siteid#&span=#session.dashboardSpan#">#application.rbFactory.getKeyValue(session.rb,"layout.dashboard")#</a>
-        	<cfif  myfusebox.originalcircuit eq 'cDashboard'><cfinclude template="/muraWRM/admin/core/views/carch/dsp_secondary_menu.cfm"></cfif>
+        	<cfif  myfusebox.originalcircuit eq 'cDashboard'><cfinclude template="/muraWRM/admin/core/views/cdashboard/dsp_secondary_menu.cfm"></cfif>
 		</li>
 		</cfif>
       <li <cfif attributes.moduleid eq '00000000000000000000000000000000000' and myfusebox.originalcircuit eq 'cArch'>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cArch.list&siteid=#session.siteid#&moduleid=00000000000000000000000000000000000">#application.rbFactory.getKeyValue(session.rb,"layout.sitemanager")#</a>
