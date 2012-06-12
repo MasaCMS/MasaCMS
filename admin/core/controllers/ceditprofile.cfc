@@ -94,7 +94,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<!--- This is here for backward plugin compatibility--->
-	<cfset structAppend(request,arguments.rc,false)>
+	<cfset appendRequestScope(arguments.rc)>
 
 </cffunction>
 

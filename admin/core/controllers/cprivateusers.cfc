@@ -116,7 +116,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset arguments.rc.nextn=variables.utility.getNextN(arguments.rc.rsGroupList,15,arguments.rc.startrow) />
 	
 	<!--- This is here for backward plugin compatibility--->
-	<cfset structAppend(request,arguments.rc,false)>
+	<cfset appendRequestScope(arguments.rc)>
 
 </cffunction>
 
@@ -171,7 +171,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset arguments.rc.rsPublicGroups=variables.userManager.getPublicGroups(arguments.rc.siteid) />
 
 	<!--- This is here for backward plugin compatibility--->
-	<cfset structAppend(request,arguments.rc,false)>
+	<cfset appendRequestScope(arguments.rc)>
 
 </cffunction>
 

@@ -200,7 +200,7 @@
 	<cfset arguments.rc.rsRelatedContent=variables.contentManager.getRelatedContent(arguments.rc.siteid, arguments.rc.contenthistID) />
  	
 	<!--- This is here for backward plugin compatibility--->
-	<cfset structAppend(request,rc,false)>
+	<cfset appendRequestScope(arguments.rc)>
 
 </cffunction>
 
