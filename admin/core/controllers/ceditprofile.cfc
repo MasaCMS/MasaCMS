@@ -89,9 +89,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="edit" output="false">
 <cfargument name="rc">
-	<cfif not isdefined('rc.userBean')>
+	<cfif not isdefined('arguments.rc.userBean')>
 		<cfset arguments.rc.userBean=variables.userManager.read(session.mura.userID)>
 	</cfif>
+
+	<!--- This is here for backward plugin compatibility--->
+	<cfset structAppend(request,arguments.rc,false)>
+
 </cffunction>
 
 <cffunction name="update" output="false">
