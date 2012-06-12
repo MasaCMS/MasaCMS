@@ -60,20 +60,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.sets=""/>
 <cfset variables.instance.isNew=1/>
 <cfset variables.instance.errors=structnew() />
-
+<cfset variables.contentRenderer="" />
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfargument name="configBean">
-	<cfargument name="contentRenderer">
 	
 	<cfset variables.configBean=arguments.configBean />
-	<cfset variables.contentRenderer=arguments.contentRenderer />
 	<cfset variables.classExtensionManager=variables.configBean.getClassExtensionManager()>
 	<cfreturn this />
 </cffunction>
 
 <cffunction name="getExtendSetBean" returnType="any">
-<cfset var extendSetBean=createObject("component","mura.extend.extendSet").init(variables.configBean,variables.contentRenderer) />
+<cfset var extendSetBean=createObject("component","mura.extend.extendSet").init(variables.configBean,getContentRenderer()) />
 <cfset extendSetBean.setSubTypeID(getSubTypeID()) />
 <cfset extendSetBean.setSiteID(getSiteID()) />
 <cfreturn extendSetBean />
@@ -588,6 +586,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfelse>
 	<cfreturn getType() />
 </cfif>
+</cffunction>
+
+<cffunction name="getContentRenderer" output="false">
+	<cfif not isObject(variables.contentRenderer)>
+		<cfif structKeyExists(request,"servletEvent")>
+			<cfset variables.contentRenderer=request.servletEvent.getContentRenderer()>
+		<cfelseif structKeyExists(request,"event")>
+			<cfset variables.contentRenderer=request.event.getContentRenderer()>
+		<cfelseif len(getSiteID())>
+			<cfset variables.contentRenderer=getBean("$").init(getSiteID()).getContentRenderer()>
+		<cfelse>
+			<cfset variables.contentRenderer=getBean("contentRenderer")>
+		</cfif>
+	</cfif>
+
+	<cfreturn variables.contentRenderer>
 </cffunction>
 
 </cfcomponent>
