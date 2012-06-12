@@ -767,8 +767,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cffunction name="loadClassExtensionManager" returntype="any" access="public" output="false">
-	<cfargument name="contentRenderer"  />
-	<cfset variables.instance.extensionManager=createObject("component","#getMapDir()#.extend.extendManager").init(this,arguments.contentRenderer) />
+	<cfset variables.instance.extensionManager=createObject("component","#getMapDir()#.extend.extendManager").init(this) />
 	<cfreturn this>
 </cffunction>
 
@@ -935,10 +934,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 <cffunction name="getClassExtensionManager" returntype="any" access="public" output="false">
-	<cfargument name="contentRenderer" required="true" default="" />
 	
 	<cfif not isObject(variables.instance.extensionManager)>
-		<cfset loadClassExtensionManager(arguments.contentRenderer)/>
+		<cfset loadClassExtensionManager()/>
 	</cfif>
 	<cfreturn variables.instance.extensionManager />
 </cffunction>
