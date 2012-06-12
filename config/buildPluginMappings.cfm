@@ -72,9 +72,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset m=listFirst(rsRequirements.name,"_")>
 		<cfif not isNumeric(m) and not structKeyExists(this.mappings,m)>
 			<cfif canWriteMode>
-				<cffile action="append" file="#baseDir#/plugins/mappings.cfm" output='<cfset this.mappings["/#m#"] = mapPrefix & BaseDir & "/plugins/#rsRequirements.name#">' mode="775">
+				<cffile action="append" file="#baseDir#/plugins/mappings.cfm" output='<cfset this.mappings["/#m#"] = variables.mapPrefix & variables.BaseDir & "/plugins/#rsRequirements.name#">' mode="775">
 			<cfelseif canWriteMappings>
-				<cffile action="append" file="#baseDir#/plugins/mappings.cfm" output='<cfset this.mappings["/#m#"] = mapPrefix & BaseDir & "/plugins/#rsRequirements.name#">'>		
+				<cffile action="append" file="#baseDir#/plugins/mappings.cfm" output='<cfset this.mappings["/#m#"] = variables.mapPrefix & variables.BaseDir & "/plugins/#rsRequirements.name#">'>		
 			</cfif>
 			<cfset this.mappings["/#m#"] = mapPrefix & rsRequirements.directory & "/" & rsRequirements.name>
 		</cfif>
