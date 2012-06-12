@@ -122,6 +122,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset OriginalImageFile = Replace(OriginalImageFile, "_source.#OriginalImageType#", ".#OriginalImageType#", "all") />
 		</cfif>
 	
+		<!--- If the original file does not exist then it can create the custom image.--->
+		<cfif not fileExists(OriginalImageFile)>
+			<cfreturn NewImageLocal>
+		</cfif>
+
 		<cfset ThisImage=imageRead(OriginalImageFile)>
 
 		<cfif arguments.Width eq "AUTO">
