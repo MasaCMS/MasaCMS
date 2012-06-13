@@ -341,19 +341,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getContentRenderer" output="false">
-	<cfif not isObject(variables.contentRenderer)>
+	<cfif not isObject(variables.instance.contentRenderer)>
 		<cfif structKeyExists(request,"servletEvent")>
-			<cfset variables.contentRenderer=request.servletEvent.getContentRenderer()>
+			<cfset variables.instance.contentRenderer=request.servletEvent.getContentRenderer()>
 		<cfelseif structKeyExists(request,"event")>
-			<cfset variables.contentRenderer=request.event.getContentRenderer()>
+			<cfset variables.instance.contentRenderer=request.event.getContentRenderer()>
 		<cfelseif len(getSiteID())>
-			<cfset variables.contentRenderer=getBean("$").init(getSiteID()).getContentRenderer()>
+			<cfset variables.instance.contentRenderer=getBean("$").init(getSiteID()).getContentRenderer()>
 		<cfelse>
-			<cfset variables.contentRenderer=getBean("contentRenderer")>
+			<cfset variables.instance.contentRenderer=getBean("contentRenderer")>
 		</cfif>
 	</cfif>
 
-	<cfreturn variables.contentRenderer>
+	<cfreturn variables.instance.contentRenderer>
 </cffunction>
 
 </cfcomponent>
