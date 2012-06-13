@@ -62,10 +62,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfloop query="rsRequirements">
 	<cfif rsRequirements.type eq "dir" and rsRequirements.name neq '.svn'>
 		<cfif canWriteMode>
-			<cffile action="append" file="#baseDir#/config/mappings.cfm" output='<cfset this.mappings["/#rsRequirements.name#"] = mapPrefix & BaseDir & "/requirements/#rsRequirements.name#">' mode="775">	
+			<cffile action="append" file="#baseDir#/config/mappings.cfm" output='<cfset this.mappings["/#rsRequirements.name#"] = variables.mapPrefix & variables.BaseDir & "/requirements/#rsRequirements.name#">' mode="775">	
 		<cfelseif canWriteMappings>
-			<cffile action="append" file="#baseDir#/config/mappings.cfm" output='<cfset this.mappings["/#rsRequirements.name#"] = mapPrefix & BaseDir & "/requirements/#rsRequirements.name#">'>	
+			<cffile action="append" file="#baseDir#/config/mappings.cfm" output='<cfset this.mappings["/#rsRequirements.name#"] = variables.mapPrefix & variables.BaseDir & "/requirements/#rsRequirements.name#">'>	
 		</cfif>
-		<cfset this.mappings["/#rsRequirements.name#"] = mapPrefix & rsRequirements.directory & "/" & rsRequirements.name>
+		<cfset this.mappings["/#rsRequirements.name#"] = variables.mapPrefix & rsRequirements.directory & "/" & rsRequirements.name>
 	</cfif>
 </cfloop>	

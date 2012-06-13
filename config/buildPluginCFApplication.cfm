@@ -105,11 +105,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset currentPath=currentDir & "/" & p>
 			<cfif len(p) and directoryExists(currentPath)>
 				<cfif canWriteMode>
-					<cffile action="append" file="#baseDir#/plugins/cfapplication.cfm" output='<cfset this.customtagpaths = listAppend(this.customtagpaths, mapPrefix & BaseDir & "/plugins/#rsRequirements.name#/#p#")>' mode="775">
+					<cffile action="append" file="#baseDir#/plugins/cfapplication.cfm" output='<cfset this.customtagpaths = listAppend(this.customtagpaths, variables.mapPrefix & variables.BaseDir & "/plugins/#rsRequirements.name#/#p#")>' mode="775">
 				<cfelseif canWriteMappings>
-					<cffile action="append" file="#baseDir#/plugins/cfapplication.cfm" output='<cfset this.customtagpaths = listAppend(this.customtagpaths,mapPrefix & BaseDir & "/plugins/#rsRequirements.name#/#p#")>'>		
+					<cffile action="append" file="#baseDir#/plugins/cfapplication.cfm" output='<cfset this.customtagpaths = listAppend(this.customtagpaths,variables.mapPrefix & variables.BaseDir & "/plugins/#rsRequirements.name#/#p#")>'>		
 				</cfif>
-				<cfset this.customtagpaths = listAppend(this.customtagpaths,mapPrefix & BaseDir & "/plugins/#rsRequirements.name#/#p#")>
+				<cfset this.customtagpaths = listAppend(this.customtagpaths,variables.mapPrefix & variables.BaseDir & "/plugins/#rsRequirements.name#/#p#")>
 			</cfif>
 			</cfloop>
 		</cfif>

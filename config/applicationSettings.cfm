@@ -97,16 +97,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<!--- define custom coldfusion mappings. Keys are mapping names, values are full paths  --->
 	<cfif StructKeyExists(SERVER,"bluedragon") and not findNoCase("Windows",server.os.name)>
-		<cfset mapPrefix="$" />
+		<cfset variables.mapPrefix="$" />
 	<cfelse>
-		<cfset mapPrefix="" />
+		<cfset variables.mapPrefix="" />
 	</cfif>
 	
 	<cfset this.mappings = structNew()>
-	<cfset this.mappings["/plugins"] = mapPrefix & baseDir & "/plugins">
-	<cfset this.mappings["/muraWRM"] = mapPrefix & baseDir>
-	<cfset this.mappings["/savaWRM"] = mapPrefix & baseDir>
-	<cfset this.mappings["/config"] = mapPrefix & baseDir & "/config">
+	<cfset this.mappings["/plugins"] = variables.mapPrefix & variables.baseDir & "/plugins">
+	<cfset this.mappings["/muraWRM"] = variables.mapPrefix & variables.baseDir>
+	<cfset this.mappings["/savaWRM"] = variables.mapPrefix & variables.baseDir>
+	<cfset this.mappings["/config"] = variables.mapPrefix & variables.baseDir & "/config">
 	
 	<cftry>
 		<cfinclude template="#properties.getProperty("context","")#/config/mappings.cfm">
