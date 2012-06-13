@@ -85,7 +85,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfset variables.Bundle	= variables.unpackPath />
 
-		<cfsetting requestTimeout = "100000">
+		<cfsetting requestTimeout = "7200">
 		
 		<cfif fileExists( arguments.BundleFile )>
 			<cfif application.settingsManager.isBundle(arguments.BundleFile)>
@@ -463,7 +463,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rstformresponsepackets="">
 		<cfset var rsCleanDir="">
 
-		<cfsetting requestTimeout = "100000">
+		<cfsetting requestTimeout = "7200">
 		
 		<cfif len(arguments.saveFileDir) and listFind("/,\",arguments.saveFileDir)>
 			<cfset arguments.saveFileDir="">

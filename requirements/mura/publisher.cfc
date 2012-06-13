@@ -103,7 +103,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rssite="">
 		<cfset var themeDir="">
 		
-		<cfsetting requestTimeout = "100000">
+		<cfsetting requestTimeout = "7200">
 		
 		<cfif structKeyExists(arguments,"Bundle")>
 			<cfset arguments.lastDeployment=arguments.bundle.getValue("sincedate","")>
