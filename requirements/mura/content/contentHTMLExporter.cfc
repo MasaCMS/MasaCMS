@@ -73,6 +73,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset var $=getBean("MuraScope").init(arguments.siteID)>
 
+	<cfsetting requestTimeout = "100000">
+	
 	<cfif listFind("/,\",right(arguments.exportDir,1))>
 		<cfset arguments.exportDir=left(arguments.exportDir, len(arguments.exportDir)-1 )>
 	</cfif>
