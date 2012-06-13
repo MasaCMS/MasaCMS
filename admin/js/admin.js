@@ -705,8 +705,8 @@ function setHTMLEditors() {
 			} else {
 				
 				var instance=CKEDITOR.instances[allPageTags[i].id];
-				if (instance) {
-					CKEDITOR.remove(instance);
+				if (typeof(instance) != 'undefined' && instance!=null) {
+					instance.destroy(true);
 				} 
 				
 				if(jQuery(document.getElementById(allPageTags[i].id)).val() == ''){
