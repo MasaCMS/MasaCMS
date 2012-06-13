@@ -592,12 +592,16 @@ function submitForm(frm,action,msg){
 		}
 
 		if(typeof(htmlEditorType) != "undefined"){
-		if( htmlEditorType!='fckeditor'){
-			 for(var name in CKEDITOR.instances){
-				 CKEDITOR.instances[name].updateElement();
-                 };
+			if( htmlEditorType!='fckeditor'){
+				 for(var name in CKEDITOR.instances){
+				 	if (typeof(CKEDITOR.instances[name]) != 'undefined' && CKEDITOR.instances[name]!=null) {
+						if( jQuery('#' + name).length){
+							CKEDITOR.instances[name].updateElement();
+						} 
+					}
+	             }
 
-		}
+			}
 		}
 
 		if(jQuery('#actionIndicator').length){
@@ -705,8 +709,8 @@ function setHTMLEditors() {
 			} else {
 				
 				var instance=CKEDITOR.instances[allPageTags[i].id];
-				if (instance) {
-					CKEDITOR.remove(instance);
+				if (typeof(instance) != 'undefined' && instance!=null) {
+					instance.destroy(true);
 				} 
 				
 				if(jQuery(document.getElementById(allPageTags[i].id)).val() == ''){
