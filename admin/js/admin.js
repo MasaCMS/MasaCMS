@@ -592,12 +592,16 @@ function submitForm(frm,action,msg){
 		}
 
 		if(typeof(htmlEditorType) != "undefined"){
-		if( htmlEditorType!='fckeditor'){
-			 for(var name in CKEDITOR.instances){
-				 CKEDITOR.instances[name].updateElement();
-                 };
+			if( htmlEditorType!='fckeditor'){
+				 for(var name in CKEDITOR.instances){
+				 	if (typeof(CKEDITOR.instances[name]) != 'undefined' && CKEDITOR.instances[name]!=null) {
+						if( jQuery('#' + name).length){
+							CKEDITOR.instances[name].updateElement();
+						} 
+					}
+	             }
 
-		}
+			}
 		}
 
 		if(jQuery('#actionIndicator').length){
