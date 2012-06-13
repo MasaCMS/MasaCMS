@@ -8,7 +8,6 @@
 	<cfif request.contentBean.getCredits() neq ""><meta name="author" content="#HTMLEditFormat($.content('credits'))#" /></cfif>
 	<meta name="generator" content="Mura CMS #$.globalConfig('version')#" />
 	<!--- <meta name="robots" content="noindex, nofollow" /> ---><!--- use this to discourage search engines from indexing your site. (can be useful if developing on a live server for example) Delete if not needed. --->
-	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" /> <!--- Disables IE Compatibility Mode --->
 	<title>#HTMLEditFormat($.content('HTMLTitle'))# - #HTMLEditFormat($.siteConfig('site'))#</title>
 
 	<link rel="icon" href="#$.siteConfig('assetPath')#/images/favicon.ico" type="image/x-icon" />
