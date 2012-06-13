@@ -68,15 +68,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!---<cfoutput>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectassocimage')#</cfoutput>--->
 <table>
 <tr>
+	<cfset filtered=structNew()>
     <cfif rc.rslist.recordcount>
      <cfoutput query="rc.rslist" startrow="1" maxrows="100">
-		<cfsilent>
-			<cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/>
-       		<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
-		</cfsilent>
-		<cfif verdict neq 'none'>
-			<cfset counter=counter+1/> 
-	        <td><img src="#application.configBean.getContext()#/tasks/render/small/?fileID=#rc.rslist.fileid#"><input type="radio" name="fileid" value="#rc.rslist.fileid#"></td>
+		<cfif not structKeyExists(filtered,'#rc.rslist.fileid#')>
+			<cfsilent>
+				<cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/>
+	       		<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
+			</cfsilent>
+			<cfif verdict neq 'none'>
+				<cfset filtered['#rc.rslist.fileid#']=true>
+				<cfset counter=counter+1/> 
+		        <td><img src="#application.configBean.getContext()#/tasks/render/small/?fileID=#rc.rslist.fileid#"><input type="radio" name="fileid" value="#rc.rslist.fileid#"></td>
+		 	</cfif>
 	 	</cfif>
       </cfoutput>
 	 </cfif>
