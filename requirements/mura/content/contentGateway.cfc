@@ -1518,6 +1518,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="sortDirection" type="string" default="desc" >
 	<cfset var rs ="" />
 
+	<cfif not len(arguments.sortBy)>
+		<cfset arguments.sortBy=created>
+	</cfif>
+
+	<cfif not len(arguments.sortDirection)>
+		<cfset arguments.sortDirection=desc>
+	</cfif>
+
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	SELECT tcontent.title, tcontent.releasedate, tcontent.menuTitle, tcontent.lastupdate, tcontent.summary, tcontent.filename, tcontent.type, tcontent.contentid,
 	tcontent.target,tcontent.targetParams, tcontent.restricted, tcontent.restrictgroups, tcontent.displaystart, tcontent.displaystop, tcontent.orderno,tcontent.sortBy,tcontent.sortDirection,
