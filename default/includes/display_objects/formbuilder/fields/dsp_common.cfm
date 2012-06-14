@@ -71,7 +71,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 <cfif len(arguments.field.validatetype)>
 	<cfif arguments.field.validatetype eq "regex" and len(arguments.field.validateregex)>
-		<cfset variables.strField = variables.strField & ' data-validate="#arguments.field.validatetype# data-regex="#arguments.field.validateregex#"' />
+		<cfset variables.strField = variables.strField & ' data-validate="#arguments.field.validatetype#" data-regex="#arguments.field.validateregex#"' />
 	<cfelse>
 		<cfset variables.strField = variables.strField & ' data-validate="#arguments.field.validatetype#"' />
 	</cfif>
