@@ -61,7 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	   <cfif attributes.moduleid eq '00000000000000000000000000000000000' and myfusebox.originalcircuit neq 'cDashboard'>
 	   <cfinclude template="/muraWRM/admin/core/views/carch/dsp_secondary_menu.cfm"></cfif></li>
 	
-  <!--- Moved to flat view --->
+  <!--- Moved to flat view 
   <li <cfif myfusebox.originalfuseaction eq 'draft'>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cArch.draft&siteid=#session.siteid#" >#application.rbFactory.getKeyValue(session.rb,"layout.drafts")#</a></li>--->
     
 	<cfif isNumeric(application.settingsManager.getSite(session.siteid).getValue("HasChangesets"))>
