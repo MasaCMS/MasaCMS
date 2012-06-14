@@ -128,6 +128,7 @@
 
 <cffunction name="isPrivateUser" access="public" returntype="boolean" output="false">
 	<cfset var siteid=session.mura.siteID>
+	
 	<cfif hasSession()>
 		<cfset siteid=session.mura.siteID>
 		
@@ -135,7 +136,7 @@
 			<cfset siteID=request.siteID>
 		</cfif>
 	
-		<cfreturn application.permUtility.isPrivateUser(siteid)>
+		<cfreturn application.permUtility.isS2() or application.permUtility.isPrivateUser(siteid)>
 	<cfelse>
 		<cfreturn false>
 	</cfif>
