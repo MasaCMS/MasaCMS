@@ -89,6 +89,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfcatch>
 		</cftry>
 	</cfif>
+
+	<cfset this.baseDir=variables.baseDir>
 	
 	<cfset properties = createObject( 'java', 'java.util.Properties' ).init()>
 	<cfset fileStream = createObject( 'java', 'java.io.FileInputStream').init( getDirectoryFromPath(getCurrentTemplatePath()) & "/settings.ini.cfm")>
@@ -101,6 +103,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfset variables.mapPrefix="" />
 	</cfif>
+
+	<cfset this.mapPrefix=variables.mapPrefix>
 	
 	<cfset this.mappings = structNew()>
 	<cfset this.mappings["/plugins"] = variables.mapPrefix & variables.baseDir & "/plugins">
@@ -156,7 +160,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<!--- define a list of custom tag paths. --->
 	<cfset this.customtagpaths = properties.getProperty("customtagpaths","") />
-	<cfset this.customtagpaths = listAppend(this.customtagpaths,mapPrefix & variables.baseDir  &  "/requirements/custom_tags/")>
+	<cfset this.customtagpaths = listAppend(this.customtagpaths,variables.mapPrefix & variables.baseDir  &  "/requirements/custom_tags/")>
 	
 	<cfset this.clientManagement = properties.getProperty("clientManagement","false") />
 	<cfset this.clientStorage = properties.getProperty("clientStorage","registry") />
