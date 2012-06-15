@@ -50,10 +50,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfargument name="configBean">
-	<cfargument name="contentRenderer">
 	
 	<cfset variables.configBean=arguments.configBean />
-	<cfset variables.contentRenderer=arguments.contentRenderer />
 	
 	<cfreturn this />
 </cffunction>
@@ -102,18 +100,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.definitionsQuery="">
 </cffunction>
 
-<cffunction name="setContentRenderer" access="public" returntype="void">
-<cfargument name="contentRenderer">
-<cfset variables.contentRenderer=arguments.contentRenderer />
-</cffunction>
-
 <cffunction name="setConfigBean" access="public" returntype="void">
 <cfargument name="configBean">
 <cfset variables.configBean=arguments.configBean />
 </cffunction>
 
 <cffunction name="getSubTypeBean" returnType="any">
-<cfset var subtype=createObject("component","mura.extend.extendSubType").init(variables.configBean,variables.contentRenderer) />
+<cfset var subtype=createObject("component","mura.extend.extendSubType").init(variables.configBean) />
 <cfreturn subtype />
 </cffunction>
 

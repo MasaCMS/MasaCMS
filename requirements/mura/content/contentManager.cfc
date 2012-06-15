@@ -1501,18 +1501,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn rs />
 	</cffunction>
 	
-	<cffunction name="exportHtmlSite">
+	<cffunction name="exportHtmlSite" output="false">
 		<cfargument name="siteid" type="string" required="true" default="default" />
+		<cfargument name="exportDir" default="">
 
-		<cfset traverseSite('00000000000000000000000000000000END', arguments.siteid, variables.settingsManager.getSite(arguments.siteid).getExportLocation()) />
-		<cfset variables.utility.copyDir("#variables.configBean.getWebRoot()#\#arguments.siteid#\client_images\", "#variables.configBean.getWebRoot()#\#variables.settingsManager.getSite(arguments.siteid).getExportLocation()#\client_images\") />
-		<cfset variables.utility.copyDir("#variables.configBean.getWebRoot()#\#arguments.siteid#\css\", "#variables.configBean.getWebRoot()#\#variables.settingsManager.getSite(arguments.siteid).getExportLocation()#\css\") />
-		<cfset variables.utility.copyDir("#variables.configBean.getWebRoot()#\#arguments.siteid#\flash\", "#variables.configBean.getWebRoot()#\#variables.settingsManager.getSite(arguments.siteid).getExportLocation()#\flash\") />
-		<cfset variables.utility.copyDir("#variables.configBean.getWebRoot()#\#arguments.siteid#\images\", "#variables.configBean.getWebRoot()#\#variables.settingsManager.getSite(arguments.siteid).getExportLocation()#\images\") />
-		<cfset variables.utility.copyDir("#variables.configBean.getWebRoot()#\#arguments.siteid#\js\", "#variables.configBean.getWebRoot()#\#variables.settingsManager.getSite(arguments.siteid).getExportLocation()#\js\") />
+		<cfset variables.settingsManager.getSite(arguments.siteID).exportHTML(arguments.exportDir)>
 	
 	</cffunction>
 	
+	<!---
 	<cffunction name="traverseSite">
 		<cfargument name="contentid" type="string" required="true" />
 		<cfargument name="siteid" type="string" required="true" default="default" />
@@ -1567,6 +1564,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 	
 	</cffunction>
+	--->
 	
 	<cffunction name="getRelatedContent" returntype="query" access="public" output="false">
 		<cfargument name="siteID"  type="string" />

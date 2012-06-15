@@ -108,12 +108,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="editGroup" output="false">
 	<cfargument name="rc">
 	
-	<cfif not isdefined('rc.userBean')>
+	<cfif not isdefined('arguments.rc.userBean')>
 		<cfset arguments.rc.userBean=variables.userManager.read(arguments.rc.userid) />
 	</cfif>
 	<cfset arguments.rc.rsSiteList=variables.settingsManager.getList() />
 	<cfset arguments.rc.rsGroupList=variables.userManager.readGroupMemberships(arguments.rc.userid) />
 	<cfset arguments.rc.nextn=variables.utility.getNextN(arguments.rc.rsGroupList,15,arguments.rc.startrow) />
+	
+	<!--- This is here for backward plugin compatibility--->
+	<cfset appendRequestScope(arguments.rc)>
+
 </cffunction>
 
 <cffunction name="addtogroup" output="false">
@@ -165,6 +169,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfset arguments.rc.rsPrivateGroups=variables.userManager.getPrivateGroups(arguments.rc.siteid)  />
 	<cfset arguments.rc.rsPublicGroups=variables.userManager.getPublicGroups(arguments.rc.siteid) />
+
+	<!--- This is here for backward plugin compatibility--->
+	<cfset appendRequestScope(arguments.rc)>
+
 </cffunction>
 
 <cffunction name="editAddress" output="false">

@@ -71,7 +71,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 #application.rbFactory.getKeyValue(session.rb,'advertising.assettype')#</dt>
 <dd><select name="creativeType">
 <cfloop list="#application.advertiserManager.getCreativeTypes()#" index="ct">
-<option value="#ct#" <cfif rc.adZoneBean.getCreativeType() eq ct>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'advertising.creativetype.#ct#')#</option>
+<option value="#ct#" <cfif rc.adZoneBean.getCreativeType() eq ct>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'advertising.creativetype.#replace(ct,' ','','all')#')#</option>
 </cfloop>
 </select></dd>
 <dt>#application.rbFactory.getKeyValue(session.rb,'advertising.height')#</dt>

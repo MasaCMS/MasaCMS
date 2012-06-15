@@ -588,7 +588,7 @@ select * from tplugins order by #arguments.orderby#
 			<cfset m=listFirst(rsRequirements.name,"_")>
 			<cfset mHash=hash(m)>
 			<cfif not isNumeric(m) and not structKeyExists(done,mHash)>
-				<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output='<cfset this.mappings["/#m#"] = mapPrefix & BaseDir & "/plugins/#rsRequirements.name#">')>
+				<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output='<cfset this.mappings["/#m#"] = variables.mapPrefix & variables.BaseDir & "/plugins/#rsRequirements.name#">')>
 				<cfset done[mHash]=true>
 			</cfif>
 		
@@ -612,7 +612,7 @@ select * from tplugins order by #arguments.orderby#
 					<cfset currentPath=currentDir & "/" & p>
 					<cfif len(p) and directoryExists(currentPath)>
 						<cfset pluginmapping=currentConfig.plugin.mappings.mapping[m].xmlAttributes.name>
-						<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output='<cfif not structKeyExists(this.mappings,"/#pluginmapping#")><cfset this.mappings["/#pluginmapping#"] = mapPrefix & BaseDir & "/plugins/#rsRequirements.name#/#p#"></cfif>')>
+						<cfset variables.fileWriter.appendFile(file="#baseDir#/mappings.cfm", output='<cfif not structKeyExists(this.mappings,"/#pluginmapping#")><cfset this.mappings["/#pluginmapping#"] = variables.mapPrefix & variables.BaseDir & "/plugins/#rsRequirements.name#/#p#"></cfif>')>
 					</cfif>
 				</cfif>
 				</cfloop>
@@ -1897,7 +1897,7 @@ select * from tplugins order by #arguments.orderby#
 <cfset var returnStr="">
 
 <cfsavecontent variable="returnStr">
-<cfinclude template="/#variables.configBean.getWebrootMap()#/admin/view/layouts/pluginHeader.cfm">
+<cfinclude template="/#variables.configBean.getWebrootMap()#/admin/common/layouts/includes/pluginHeader.cfm">
 </cfsavecontent>
 
 <cfreturn returnStr/>

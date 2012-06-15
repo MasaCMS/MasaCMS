@@ -85,7 +85,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset imageArgs.size=variables.$.content("imageSize")>
 	<cfelse>
 		<cfset imageArgs.height=variables.$.content("imageHeight")>
-		<cfset imageArgs.width=variables.$.content("variables.imageWidth")>
+		<cfset imageArgs.width=variables.$.content("imageWidth")>
 	</cfif>
 	
 	<cfset variables.$.event("currentNextNID",variables.$.content('contentID'))>
@@ -122,8 +122,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif variables.$.content('imageSize') neq 'custom'>
 		<cfset variables.imageWidth=variables.$.siteConfig('gallery#variables.$.content('imageSize')#Scale')>
-	<cfelseif isNumeric(variables.$.content('variables.imageWidth'))>
-		<cfset variables.imageWidth=variables.$.content('variables.imageWidth')>
+	<cfelseif isNumeric(variables.$.content('imageWidth'))>
+		<cfset variables.imageWidth=variables.$.content('imageWidth')>
 	<cfelse>
 		<cfset variables.imageWidth=0>
 	</cfif>
@@ -143,7 +143,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			</cfsilent>
 			<cfoutput>
-			<li variables.class="#variables.class#"<cfif variables.imageWidth> style="width:#variables.imageWidth#px;"</cfif>>
+			<li class="#variables.class#"<cfif variables.imageWidth> style="width:#variables.imageWidth#px;"</cfif>>
 				<a href="#variables.item.getImageURL(size='large')#" title="#HTMLEditFormat(variables.item.getValue('title'))#" rel="shadowbox[gallery]" variables.class="gallery thumbnail"><img src="#variables.item.getImageURL(argumentCollection=imageArgs)#" alt="#HTMLEditFormat(variables.item.getValue('title'))#"/></a>	 
 			 	<dl>
 			 	<cfloop list="#variables.$.content("displayList")#" index="field">

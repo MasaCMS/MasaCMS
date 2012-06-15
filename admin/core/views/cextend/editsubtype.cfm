@@ -75,11 +75,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <dd><ul class="radioGroup"><li><input name="isActive" type="radio" class="radio" value="1"<cfif subType.getIsActive() eq 1 >Checked</cfif>>Yes</li><li><input name="isActive" type="radio" class="radio" value="0"<cfif subType.getIsActive() eq 0 >Checked</cfif>>No</li></ul></dd>
 </dl>
 
-<div id="actionButtons">
+<div class="clearfix" id="actionButtons">
 <cfif not len(rc.subTypeID)>
-<input type="button" class="submit" onclick="submitForm(document.forms.subTypeFrm,'add');" value="Add" /><input type=hidden name="subTypeID" value="#createuuid()#"><cfelse> <input type="button" class="submit" onclick="submitForm(document.forms.subTypeFrm,'delete','Delete Class Extension?');" value="Delete" /> <input type="button" class="submit" onclick="submitForm(document.forms.subTypeFrm,'update');" value="Update" />
+	<input type="button" class="submit" onclick="submitForm(document.forms.subTypeFrm,'add');" value="Add" />
+	<input type=hidden name="subTypeID" value="#createuuid()#">
+<cfelse>
+	<input type="button" class="submit" onclick="submitForm(document.forms.subTypeFrm,'delete','Delete Class Extension?');" value="Delete" />
+	<input type="button" class="submit" onclick="submitForm(document.forms.subTypeFrm,'update');" value="Update" />
+	<input type=hidden name="subTypeID" value="#subType.getsubtypeID()#">
+</cfif>
+</div>
 
-<input type=hidden name="subTypeID" value="#subType.getsubtypeID()#"></div></cfif><input type="hidden" name="action" value="">
+<input type="hidden" name="action" value="">
 <input name="muraAction" value="cExtend.updateSubType" type="hidden">
 <input name="siteID" value="#HTMLEditFormat(rc.siteid)#" type="hidden">
 <input type="hidden" name="baseTable" value="#subType.getBaseTable()#"/>

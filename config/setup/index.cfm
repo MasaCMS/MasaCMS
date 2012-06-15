@@ -48,7 +48,7 @@ to your own modified versions of Mura CMS.
 <!--- settings --->
 <cfset message = "" />
 <!--- get settings path --->
-<cfset settingsPath = baseDir & "/config/settings.ini.cfm" />
+<cfset settingsPath = variables.baseDir & "/config/settings.ini.cfm" />
  
 <!--- load settings into iniFile instance --->
 <cfset settingsini=createobject("component","mura.IniFile").init(settingsPath)>

@@ -222,6 +222,11 @@
 	<cfset var blockFactor=getNextN()>
 	<cfset var rsAttribute="">
 	<cfset var dataTable=getDataTable()>
+	<cfset var tableModifier="">
+
+	<cfif variables.configBean.getDbType() eq "MSSQL">
+		 <cfset tableModifier="with (nolock)">
+	 </cfif>
 	
 	<cfif not len(getSiteID())>
 		<cfthrow message="The 'SITEID' value must be set in order to search custom objects.">
@@ -243,18 +248,17 @@
 	<cfif dbType eq "oracle" and getMaxItems()>select * from (</cfif>
 	select <cfif dbtype eq "mssql" and getMaxItems()>top #getMaxItems()#</cfif> 	
 	tclassextend.type,tclassextend.subtype,tclassextend.siteID, #dataTable#.baseID as ID, extendedSort
-	from #dataTable#
-	INNER JOIN  tclassextendattributes on (#dataTable#.attributeID=tclassextendattributes.attributeID)
-	INNER JOIN  tclassextendsets on (tclassextendattributes.extendsetID=tclassextendsets.extendsetID)
-	INNER JOIN  tclassextend on (tclassextendsets.subtypeID=tclassextend.subtypeID)
+	from #dataTable# #tableModifier#
+	INNER JOIN tclassextendattributes #tableModifier# on (#dataTable#.attributeID=tclassextendattributes.attributeID)
+	INNER JOIN tclassextendsets #tableModifier# on (tclassextendattributes.extendsetID=tclassextendsets.extendsetID)
+	INNER JOIN tclassextend #tableModifier# on (tclassextendsets.subtypeID=tclassextend.subtypeID)
 
 	<cfif len(getSortBy()) and getSortBy() neq "random">
 	LEFT JOIN (select 
-			
 			#variables.configBean.getClassExtensionManager().getCastString(getSortBy(),getSiteID())# extendedSort
 			 ,#dataTable#.baseID 
-			from #dataTable# inner join tclassextendattributes
-			on (#dataTable#.attributeID=tclassextendattributes.attributeID)
+			from #dataTable# #tableModifier# 
+			inner join tclassextendattributes #tableModifier# on (#dataTable#.attributeID=tclassextendattributes.attributeID)
 			where #dataTable#.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getSiteID()#">
 			and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getSortBy()#">
 	) qExtendedSort
@@ -310,11 +314,11 @@
 					#param.getField()# #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCondition() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>  	
 				<cfelseif len(param.getField())>
 					#dataTable#.baseID IN (
-						select #dataTable#.baseID from tclassextenddata
+						select #dataTable#.baseID from tclassextenddata #tableModifier#
 						<cfif isNumeric(param.getField())>
 						where #dataTable#.attributeID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#param.getField()#">
 						<cfelse>
-						inner join tclassextendattributes on (tclassextenddata.attributeID = tclassextendattributes.attributeID)
+						inner join tclassextendattributes #tableModifier# on (tclassextenddata.attributeID = tclassextendattributes.attributeID)
 						where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getSiteID()#">
 						and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
 						</cfif>

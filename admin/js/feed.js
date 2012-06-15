@@ -147,10 +147,10 @@ function setDisplayListSort(){
 					var current = jQuery("#displayList").val();
 					
 					if (current != '') {
-						jQuery("#displayList").val(current + "," + jQuery(this).html());
+						jQuery("#displayList").val( current + "," + jQuery.trim(jQuery(this).html()) );
 					}
 					else {
-						jQuery("#displayList").val(jQuery(this).html());
+						jQuery("#displayList").val( jQuery.trim(jQuery(this).html()) );
 					}
 							
 				});

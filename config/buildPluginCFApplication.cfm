@@ -45,19 +45,19 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cftry>
-		<cffile action="write" file="#baseDir#/plugins/cfapplication.cfm" output="<!--- Do Not Edit --->" addnewline="true" mode="775">
-		<cffile action="append" file="#baseDir#/plugins/cfapplication.cfm" output="<cfif not isDefined('this.name')>" addnewline="true" mode="775">
-		<cffile action="append" file="#baseDir#/plugins/cfapplication.cfm" output="<cfoutput>Access Restricted.</cfoutput>" addnewline="true" mode="775">
-		<cffile action="append" file="#baseDir#/plugins/cfapplication.cfm" output="<cfabort>" addnewline="true" mode="775">
-		<cffile action="append" file="#baseDir#/plugins/cfapplication.cfm" output="</cfif>" addnewline="true" mode="775">
+		<cffile action="write" file="#variables.baseDir#/plugins/cfapplication.cfm" output="<!--- Do Not Edit --->" addnewline="true" mode="775">
+		<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output="<cfif not isDefined('this.name')>" addnewline="true" mode="775">
+		<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output="<cfoutput>Access Restricted.</cfoutput>" addnewline="true" mode="775">
+		<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output="<cfabort>" addnewline="true" mode="775">
+		<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output="</cfif>" addnewline="true" mode="775">
 		<cfcatch>
 			<cfset canWriteMode=false>
 			<cftry>
-				<cffile action="write" file="#baseDir#/plugins/cfapplication.cfm" output="<!--- Do Not Edit --->" addnewline="true">
-				<cffile action="append" file="#baseDir#/plugins/cfapplication.cfm" output="<cfif not isDefined('this.name')>" addnewline="true">
-				<cffile action="append" file="#baseDir#/plugins/cfapplication.cfm" output="<cfoutput>Access Restricted.</cfoutput>">
-				<cffile action="append" file="#baseDir#/plugins/cfapplication.cfm" output="<cfabort>" addnewline="true">
-				<cffile action="append" file="#baseDir#/plugins/cfapplication.cfm" output="</cfif>" addnewline="true">
+				<cffile action="write" file="#variables.baseDir#/plugins/cfapplication.cfm" output="<!--- Do Not Edit --->" addnewline="true">
+				<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output="<cfif not isDefined('this.name')>" addnewline="true">
+				<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output="<cfoutput>Access Restricted.</cfoutput>">
+				<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output="<cfabort>" addnewline="true">
+				<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output="</cfif>" addnewline="true">
 				<cfcatch>
 					<cfset canWriteMappings=false>
 				</cfcatch>
@@ -65,11 +65,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfcatch>
 </cftry>
 				
-<cfdirectory action="list" directory="#baseDir#/plugins/" name="rsRequirements">
+<cfdirectory action="list" directory="#variables.baseDir#/plugins/" name="rsRequirements">
 				
 <cfloop query="rsRequirements">
 	<cfif rsRequirements.type eq "dir" and rsRequirements.name neq '.svn'>
-		<cfset currentDir="#baseDir#/plugins/#rsRequirements.name#">
+		<cfset currentDir="#variables.baseDir#/plugins/#rsRequirements.name#">
 		<cfset currentConfigFile="#currentDir#/plugin/config.xml">
 		<cfif fileExists(currentConfigFile)>
 			<cffile action="read" variable="currentConfig" file="#currentConfigFile#">
@@ -105,11 +105,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset currentPath=currentDir & "/" & p>
 			<cfif len(p) and directoryExists(currentPath)>
 				<cfif canWriteMode>
-					<cffile action="append" file="#baseDir#/plugins/cfapplication.cfm" output='<cfset this.customtagpaths = listAppend(this.customtagpaths, mapPrefix & BaseDir & "/plugins/#rsRequirements.name#/#p#")>' mode="775">
+					<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output='<cfset this.customtagpaths = listAppend(this.customtagpaths, variables.mapPrefix & variables.BaseDir & "/plugins/#rsRequirements.name#/#p#")>' mode="775">
 				<cfelseif canWriteMappings>
-					<cffile action="append" file="#baseDir#/plugins/cfapplication.cfm" output='<cfset this.customtagpaths = listAppend(this.customtagpaths,mapPrefix & BaseDir & "/plugins/#rsRequirements.name#/#p#")>'>		
+					<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output='<cfset this.customtagpaths = listAppend(this.customtagpaths,variables.mapPrefix & variables.BaseDir & "/plugins/#rsRequirements.name#/#p#")>'>		
 				</cfif>
-				<cfset this.customtagpaths = listAppend(this.customtagpaths,mapPrefix & BaseDir & "/plugins/#rsRequirements.name#/#p#")>
+				<cfset this.customtagpaths = listAppend(this.customtagpaths,variables.mapPrefix & variables.BaseDir & "/plugins/#rsRequirements.name#/#p#")>
 			</cfif>
 			</cfloop>
 		</cfif>
@@ -125,9 +125,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset currentPath=currentDir & "/" & p>
 			<cfif len(p) and directoryExists(currentPath)>
 				<cfif canWriteMode>
-					<cffile action="append" file="#baseDir#/plugins/cfapplication.cfm" output='<cfset arrayAppend(this.ormsettings.cfclocation,"/plugins/#rsRequirements.name#/#p#")>' mode="775">
+					<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output='<cfset arrayAppend(this.ormsettings.cfclocation,"/plugins/#rsRequirements.name#/#p#")>' mode="775">
 				<cfelseif canWriteMappings>
-					<cffile action="append" file="#baseDir#/plugins/cfapplication.cfm" output='<cfset arrayAppend(this.ormsettings.cfclocation,"/plugins/#rsRequirements.name#/#p#")>'>		
+					<cffile action="append" file="#variables.baseDir#/plugins/cfapplication.cfm" output='<cfset arrayAppend(this.ormsettings.cfclocation,"/plugins/#rsRequirements.name#/#p#")>'>		
 				</cfif>
 				<cfset arrayAppend(this.ormsettings.cfclocation,"/plugins/#rsRequirements.name#/#p#")>
 			</cfif>

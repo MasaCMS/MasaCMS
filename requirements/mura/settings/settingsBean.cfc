@@ -728,8 +728,8 @@ s
 </cffunction>
 
 <cffunction name="exportHTML" output="false">
-	<cfargument name="exportDir">
-	<cfif isDefined("arguments.exportDir")>
+	<cfargument name="exportDir" default="">
+	<cfif len(arguments.exportdir)>
 		<cfset getBean("HTMLExporter").export(variables.instance.siteID,arguments.exportDir)>
 	<cfelse>
 		<cfset getBean("HTMLExporter").export(variables.instance.siteID,variables.instance.exportLocation)>

@@ -116,13 +116,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					
 					<ul id="availableListSort" class="displayListSortOptions">
 						<cfloop list="#availableList#" index="i">
-						<li class="ui-state-default">#i#</li>
+						<li class="ui-state-default">#trim(i)#</li>
 						</cfloop>
 					</ul>
 					
 					<ul id="displayListSort" class="displayListSortOptions">
 						<cfloop list="#displayList#" index="i">
-						<li class="ui-state-highlight">#i#</li>
+						<li class="ui-state-highlight">#trim(i)#</li>
 						</cfloop>
 					</ul>
 					<input type="hidden" id="displayList" class="objectParam " value="#displayList#" name="displayList"/>

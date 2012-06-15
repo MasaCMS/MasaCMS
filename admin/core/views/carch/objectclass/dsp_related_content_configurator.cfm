@@ -94,17 +94,45 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					
 					<ul id="availableListSort" class="displayListSortOptions">
 						<cfloop list="#availableList#" index="i">
-						<li class="ui-state-default">#i#</li>
+						<li class="ui-state-default">#trim(i)#</li>
 						</cfloop>
 					</ul>
 					
 					<ul id="displayListSort" class="displayListSortOptions">
 						<cfloop list="#displayList#" index="i">
-						<li class="ui-state-highlight">#i#</li>
+						<li class="ui-state-highlight">#trim(i)#</li>
 						</cfloop>
 					</ul>
 					<input type="hidden" id="displayList" class="objectParam " value="#displayList#" name="displayList"/>
 					</div>	
+				</dd>
+				<dt>#application.rbFactory.getKeyValue(session.rb,'collections.sortby')#</dt>
+				<dd><select name="sortBy" class="dropdown objectParam">
+						<option value="lastUpdate" <cfif feed.getsortBy() eq 'lastUpdate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.lastupdate')#</option>
+						<option value="releaseDate" <cfif feed.getsortBy() eq 'releaseDate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.releasedate')#</option>
+						<option value="displayStart" <cfif feed.getsortBy() eq 'displayStart'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startdatetime')#</option>
+						<option value="menuTitle" <cfif feed.getsortBy() eq 'menuTitle'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.menutitle')#</option>
+						<option value="title" <cfif feed.getsortBy() eq 'title'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.longtitle')#</option>
+						<!---
+						<option value="rating" <cfif feed.getsortBy() eq 'rating'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.rating')#</option>
+						<option value="comments" <cfif feed.getsortBy() eq 'comments'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.comments')#</option>
+						--->
+						<option value="created" <cfif feed.getsortBy() eq 'created'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.created')#</option>
+						<option value="orderno" <cfif feed.getsortBy() eq 'orderno'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.orderno')#</option>
+						<!---
+						<option value="random" <cfif feed.getsortBy() eq 'random'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.random')#</option>
+					
+						<cfloop query="rsExtend"><option value="#HTMLEditFormat(rsExtend.attribute)#" <cfif feed.getsortBy() eq rsExtend.attribute>selected</cfif>>#rsExtend.Type#/#rsExtend.subType# - #rsExtend.attribute#</option>
+						</cfloop>
+					--->
+					</select>
+					</dd>
+					<dt>#application.rbFactory.getKeyValue(session.rb,'collections.sortdirection')#</dt>
+					<dd>
+					<select name="sortDirection" class="dropdown objectParam">
+						<option value="asc" <cfif feed.getsortDirection() eq 'asc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.ascending')#</option>
+						<option value="desc" <cfif feed.getsortDirection() eq 'desc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.descending')#</option>
+					</select>
 				</dd>
 				</dl>
 		</div>	

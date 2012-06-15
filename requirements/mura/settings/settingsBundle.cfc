@@ -84,8 +84,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var importWDDX = "" />
 		
 		<cfset variables.Bundle	= variables.unpackPath />
- 
 
+		<cfsetting requestTimeout = "7200">
+		
 		<cfif fileExists( arguments.BundleFile )>
 			<cfif application.settingsManager.isBundle(arguments.BundleFile)>
 				<cfset variables.zipTool.Extract(zipFilePath="#arguments.BundleFile#",extractPath=variables.unpackPath, overwriteFiles=true)>
@@ -461,6 +462,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rstadplacementcategories="">
 		<cfset var rstformresponsepackets="">
 		<cfset var rsCleanDir="">
+
+		<cfsetting requestTimeout = "7200">
 		
 		<cfif len(arguments.saveFileDir) and listFind("/,\",arguments.saveFileDir)>
 			<cfset arguments.saveFileDir="">

@@ -85,20 +85,9 @@
 	
 	</cfcase>
 	<cfcase value="mysql">
-		<cfset variables.RUNDBUPDATE=false/>
-		<cftry>
-			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-				select changesetID as CheckIfTableExists from tchangesets limit 1
-			</cfquery>
-			<cfcatch>
-				<cfset variables.RUNDBUPDATE=true/>
-			</cfcatch>
-		</cftry>
-		
-		<cfif variables.RUNDBUPDATE>
-			<cftry>
-				<cftransaction>
-					<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		<cftransaction>
+			<cfif not dbUtility.setTable('tchangesets').tableExists()>
+				<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 					CREATE TABLE `tchangesets` (
 					  `changesetID` char(35),
 					  `siteID` varchar(25),
@@ -118,48 +107,19 @@
 					  key `IX_tchangesets_publishDate` (`publishDate`),
 					  key `IX_tchangesets_remoteID` (`remoteID`)
 					) ENGINE=#variables.instance.MYSQLEngine# DEFAULT CHARSET=utf8
-					</cfquery>
-					
-					<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+				</cfquery>
+			</cfif>
+
+			<cfif not dbUtility.setTable('tcontent').columnExists('changesetID')>
+				<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 					ALTER TABLE tcontent ADD COLUMN changesetID char(35) default NULL
-					</cfquery>
-					
-					<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+				</cfquery>
+						
+				<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 					CREATE INDEX IX_tcontent_changesetID ON tcontent (changesetID)
-					</cfquery>
-				</cftransaction>
-				<cfcatch>
-					<cftransaction>
-						<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-						CREATE TABLE `tchangesets` (
-						  `changesetID` char(35) ,
-						  `siteID` varchar(25),
-						  `name` varchar(100),
-						  `description` longtext,
-						  `created` datetime,
-						  `publishDate` datetime,
-						  `published` tinyint(3),
-						  `lastUpdate` datetime,
-						  `lastUpdateBy` varchar(50),
-						  `lastUpdateByID` char(35),
-						  `remoteID` varchar(255),
-						  `remotePubDate` datetime,
-						  `remoteSourceURL` varchar(255),
-						  PRIMARY KEY  (`changesetID`)
-						) 
-						</cfquery>
-						
-						<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-						ALTER TABLE tcontent ADD COLUMN changesetID char(35) default NULL
-						</cfquery>
-						
-						<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-						CREATE INDEX IX_tcontent_changesetID ON tcontent (changesetID)
-						</cfquery>
-					</cftransaction>
-				</cfcatch>
-			</cftry>
-		</cfif>
+				</cfquery>
+			</cfif>
+		</cftransaction>	
 	</cfcase>
 	<cfcase value="oracle">
 		<cfset variables.RUNDBUPDATE=false/>

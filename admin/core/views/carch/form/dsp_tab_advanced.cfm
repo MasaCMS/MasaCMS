@@ -193,13 +193,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>			
 			<ul id="contentAvailableListSort" class="contentDisplayListSortOptions">
 				<cfloop list="#availableList#" index="i">
-					<li class="ui-state-default">#i#</li>
+					<li class="ui-state-default">#trim(i)#</li>
 				</cfloop>
 			</ul>
 						
 			<ul id="contentDisplayListSort" class="contentDisplayListSortOptions">
 				<cfloop list="#displayList#" index="i">
-					<li class="ui-state-highlight">#i#</li>
+					<li class="ui-state-highlight">#trim(i)#</li>
 				</cfloop>
 			</ul>
 						

@@ -80,4 +80,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="utility">
 		<cfset variables.utility=arguments.utility>
 	</cffunction>
+
+	<!--- This is here for backward plugin compatibility--->
+	<cffunction name="appendRequestScope" output="false">
+		<cfargument name="rc">
+		<cfset var temp=structNew()>
+
+		<cfif not structKeyExists(request,"requestappended")>
+			<cfif structKeyExists(request, 'layout')>
+				<cfset temp.layout=request.layout>
+			</cfif>
+			
+			<cfset structAppend(request,arguments.rc,false)>
+			
+			<cfif structKeyExists(temp, 'layout')>
+				<cfset request.layout=temp.layout>
+			<cfelse>
+				<cfset structDelete(request,"layout")>
+			</cfif>
+			
+			<cfset request.requestappended=true>
+		</cfif>
+	</cffunction>
 </cfcomponent>

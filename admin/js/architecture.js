@@ -1617,10 +1617,10 @@ function addDisplayObject(objectToAdd,regionid,configure){
 								var current = jQuery("#displayList").val();
 								
 								if (current != '') {
-									jQuery("#displayList").val(current + "," + jQuery(this).html());
+									jQuery("#displayList").val( current + "," + jQuery.trim(jQuery(this).html()) );
 								}
 								else {
-									jQuery("#displayList").val(jQuery(this).html());
+									jQuery("#displayList").val( jQuery.trim(jQuery(this).html()) );
 								}
 								
 							});
@@ -1830,10 +1830,10 @@ function addDisplayObject(objectToAdd,regionid,configure){
 						var current = jQuery("#contentDisplayList").val();
 						
 						if (current != '') {
-							jQuery("#contentDisplayList").val(current + "," + jQuery(this).html());
+							jQuery("#contentDisplayList").val( current + "," + jQuery.trim(jQuery(this).html()) );
 						}
 						else {
-							jQuery("#contentDisplayList").val(jQuery(this).html());
+							jQuery("#contentDisplayList").val( jQuery.trim(jQuery(this).html()) );
 						}
 								
 					});

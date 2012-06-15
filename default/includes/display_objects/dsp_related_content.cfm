@@ -46,16 +46,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfoutput>
-<cfset variables.iterator=variables.$.content().getRelatedContentIterator(liveOnly=true)>
+<cfset variables.isConfigured=not structIsEmpty(objectparams)>
+<cfparam name="objectparams.sortBy" default="created">
+<cfparam name="objectparams.sortDirection" default="desc">
+<cfset variables.iterator=variables.$.content().getRelatedContentIterator(liveOnly=true,sortBy=objectparams.sortBy,sortDirection=objectparams.sortDirection)>
 <cfif variables.iterator.getRecordCount()>
 	<div class="svRelContent svIndex">
 	<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('list.relatedcontent')#</#variables.$.getHeaderTag('subHead1')#>
-	<cfif not structIsEmpty(objectparams)>
+	<cfif variables.isConfigured>
 		#variables.$.dspObject_Include(
 				thefile='dsp_content_list.cfm',
 				fields=objectparams.displayList,
 				type='Related', 
-				iterator=variables.$.content().getRelatedContentIterator(liveOnly=true),
+				iterator=variables.iterator,
 				imageSize=objectparams.imageSize,
 				imageHeight=objectparams.imageHeight,
 				imageWidth=objectparams.imageWidth

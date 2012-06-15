@@ -200,7 +200,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfset variables.tracepoint=variables.tracer.initTracepoint("Instantiating classExtensionManager")> 
 		<cfset application.classExtensionManager=application.configBean.getClassExtensionManager() />
-		<cfset application.classExtensionManager.setContentRenderer(application.serviceFactory.getBean("contentRenderer"))>
 		<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
 
 		<cfset variables.tracepoint=variables.tracer.initTracepoint("Instantiating resourceBundleFactory")> 
