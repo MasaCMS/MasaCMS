@@ -73,7 +73,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </tr>
 <cfoutput query="variables.rsdata" startrow="#request.startRow#" maxrows="#variables.nextN.RecordsPerPage#">
 <tr>
-<cfsilent><cfwddx action="wddx2cfml" input="#variables.rsdata.variables.data#" output="variables.info"></cfsilent>
+<cfsilent><cfwddx action="wddx2cfml" input="#variables.rsdata.data#" output="variables.info"></cfsilent>
 <cfloop list="#variables.data.fieldnames#" index="variables.f">
 	<cftry><cfset fValue=variables.info['#variables.f#']><cfcatch><cfset variables.fValue=""></cfcatch></cftry>
 <td><a href="?fuseaction=detail&responseid=#variables.rsdata.responseid#">#HTMLEditFormat(variables.fvalue)#</a></td>
