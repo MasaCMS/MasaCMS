@@ -160,6 +160,7 @@
 
 	<cfif arguments.autoincrement>
 		<cfset arguments.datatype="int">
+		<cfset arguments.nullable=false>
 	</cfif>
 
 	<cfif not structIsEmpty(existing)
