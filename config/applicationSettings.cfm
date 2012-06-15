@@ -156,7 +156,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<!--- define a list of custom tag paths. --->
 	<cfset this.customtagpaths = properties.getProperty("customtagpaths","") />
-	<cfset this.customtagpaths = listAppend(this.customtagpaths,mapPrefix & variables.baseDir  &  "/requirements/custom_tags/")>
+	<cfset this.customtagpaths = listAppend(this.customtagpaths,variables.mapPrefix & variables.baseDir  &  "/requirements/custom_tags/")>
 	
 	<cfset this.clientManagement = properties.getProperty("clientManagement","false") />
 	<cfset this.clientStorage = properties.getProperty("clientStorage","registry") />
