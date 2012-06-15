@@ -45,11 +45,11 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cftry>
-	<cffile action="write" file="#baseDir#/config/mappings.cfm" output="<!--- Add Custom Mappings Here --->" addnewline="true" mode="775">
+	<cffile action="write" file="#variables.baseDir#/config/mappings.cfm" output="<!--- Add Custom Mappings Here --->" addnewline="true" mode="775">
 	<cfcatch>
 		<cfset canWriteMode="false">
 		<cftry>
-			<cffile action="write" file="#baseDir#/config/mappings.cfm" output="<!--- Add Custom Mappings Here --->" addnewline="true">
+			<cffile action="write" file="#variables.baseDir#/config/mappings.cfm" output="<!--- Add Custom Mappings Here --->" addnewline="true">
 			<cfcatch>
 				<cfset canWriteMappings=false>
 			</cfcatch>
@@ -57,14 +57,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfcatch>
 </cftry>
 			
-<cfdirectory action="list" directory="#baseDir#/requirements/" name="rsRequirements">
+<cfdirectory action="list" directory="#variables.baseDir#/requirements/" name="rsRequirements">
 				
 <cfloop query="rsRequirements">
 	<cfif rsRequirements.type eq "dir" and rsRequirements.name neq '.svn'>
 		<cfif canWriteMode>
-			<cffile action="append" file="#baseDir#/config/mappings.cfm" output='<cfset this.mappings["/#rsRequirements.name#"] = variables.mapPrefix & variables.BaseDir & "/requirements/#rsRequirements.name#">' mode="775">	
+			<cffile action="append" file="#variables.baseDir#/config/mappings.cfm" output='<cfset this.mappings["/#rsRequirements.name#"] = variables.mapPrefix & variables.BaseDir & "/requirements/#rsRequirements.name#">' mode="775">	
 		<cfelseif canWriteMappings>
-			<cffile action="append" file="#baseDir#/config/mappings.cfm" output='<cfset this.mappings["/#rsRequirements.name#"] = variables.mapPrefix & variables.BaseDir & "/requirements/#rsRequirements.name#">'>	
+			<cffile action="append" file="#variables.baseDir#/config/mappings.cfm" output='<cfset this.mappings["/#rsRequirements.name#"] = variables.mapPrefix & variables.BaseDir & "/requirements/#rsRequirements.name#">'>	
 		</cfif>
 		<cfset this.mappings["/#rsRequirements.name#"] = variables.mapPrefix & rsRequirements.directory & "/" & rsRequirements.name>
 	</cfif>
