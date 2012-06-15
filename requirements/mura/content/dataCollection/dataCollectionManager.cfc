@@ -314,7 +314,9 @@ order by tformresponsepackets.entered asc
 				if(polllist.length > 0) {frm.action='?nocache=1&polllist='+ polllist.toString();}		
 			</cfif>
 		</cfif>
-		frm.action=frm.action + "###frmID#";
+		if( !(typeof(window.jQuery) != 'undefined' && typeof(window.jQuery.mobile) != 'undefined') ){
+			frm.action=frm.action + "###frmID#";
+		}
 </script></cfoutput>
 </cfsavecontent>
 
