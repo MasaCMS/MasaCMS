@@ -89,6 +89,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfcatch>
 		</cftry>
 	</cfif>
+
+	<cfset this.baseDir=variables.baseDir>
 	
 	<cfset properties = createObject( 'java', 'java.util.Properties' ).init()>
 	<cfset fileStream = createObject( 'java', 'java.io.FileInputStream').init( getDirectoryFromPath(getCurrentTemplatePath()) & "/settings.ini.cfm")>
@@ -101,6 +103,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfset variables.mapPrefix="" />
 	</cfif>
+
+	<cfset this.mapPrefix=variables.mapPrefix>
 	
 	<cfset this.mappings = structNew()>
 	<cfset this.mappings["/plugins"] = variables.mapPrefix & variables.baseDir & "/plugins">
