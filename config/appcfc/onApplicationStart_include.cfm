@@ -53,7 +53,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="application.sessionTrackingThrottle" default="true"/>
 <cfparam name="application.instanceID" default="#createUUID()#" />
 <cfparam name="application.CFVersion" default="#Left(SERVER.COLDFUSION.PRODUCTVERSION,Find(",",SERVER.COLDFUSION.PRODUCTVERSION)-1)#" />
-
+<!--- this is here for CF8 compatibility --->
+<cfset variables.baseDir=this.baseDir>
 <cfprocessingdirective pageencoding="utf-8"/>
 <cfsetting requestTimeout = "1000"> 
 
