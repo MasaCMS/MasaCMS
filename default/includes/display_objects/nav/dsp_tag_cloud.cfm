@@ -77,7 +77,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfloop>
 </ol>
 <cfelse>
-<p>#variables.$.rbKey('tagcloud.novariables.tags')#</p>
+<p>#variables.$.rbKey('tagcloud.notags')#</p>
 </cfif>
 </div>
 </cfoutput>

@@ -310,6 +310,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfif rc.sorted>
 			<cfset current=application.serviceFactory.getBean("content").loadBy(contentID=rc.topID, siteid=rc.siteID)>
+			<cfif rc.sortBy eq 'orderno'>
+				<cfset rc.sortDirection='asc'>
+			</cfif>
 			<cfset current.setSortBy(rc.sortBy)>
 			<cfset current.setSortDirection(rc.sortDirection)>
 			<cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
