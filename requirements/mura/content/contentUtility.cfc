@@ -529,7 +529,8 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 
 <cffunction name="formatFilename" returntype="any" output="false" access="public">
 	<cfargument name="filename" type="any" />
-	
+	<cfset var wordDelim=variables.configBean.getURLTitleDelim()>
+
 	<!--- replace some latin based unicode chars with allowable chars --->
 	<cfset arguments.filename=removeUnicode(arguments.filename) />
 	
@@ -537,7 +538,7 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 	<cfset arguments.filename=rereplace(arguments.filename," ","svphsv","ALL") />
 	
 	<!--- temporarily escape "-" used for word separation --->
-	<cfset arguments.filename=rereplace(arguments.filename,"-","svphsv","ALL") />
+	<cfset arguments.filename=rereplace(arguments.filename,"\#wordDelim#","svphsv","ALL") />
 	
 	<!--- remove all punctuation --->
 	<cfset arguments.filename=rereplace(arguments.filename,"[[:punct:]]","","ALL") />
@@ -546,11 +547,11 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 	<cfset arguments.filename=urlEncodedFormat(arguments.filename) />
 	
 	<!---  put word separators " "  and "-" back in --->
-	<cfset arguments.filename=rereplace(arguments.filename,"svphsv","-","ALL") />
+	<cfset arguments.filename=rereplace(arguments.filename,"svphsv",wordDelim,"ALL") />
 	
 	<!--- remove an non alphanumeric chars (most likely %) --->
-	<cfset arguments.filename=lcase(rereplace(arguments.filename,"[^a-zA-Z0-9\-]","","ALL")) />
-	<cfset arguments.filename=lcase(rereplace(arguments.filename,"\-+","-","ALL")) />
+	<cfset arguments.filename=lcase(rereplace(arguments.filename,"[^a-zA-Z0-9\#wordDelim#]","","ALL")) />
+	<cfset arguments.filename=lcase(rereplace(arguments.filename,"\#wordDelim#+",wordDelim,"ALL")) />
 
 	<cfreturn arguments.filename>
 
@@ -562,6 +563,7 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 	<cfset var pass =0 />
 	<cfset var tempfile = "">
 	<cfset var parentFilename="">
+
 	<cfset arguments.contentBean.setFilename(formatFilename(arguments.contentBean.getURLTitle()))>
 	
 	<cfif not len(arguments.contentBean.getfilename()) and arguments.contentBean.getContentID() neq  '00000000000000000000000000000000001'>
