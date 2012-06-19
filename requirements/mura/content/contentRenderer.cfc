@@ -2358,7 +2358,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rs=queryNew("page")>
 	<cfset var i=1>
 	<cfset var pageArray=ArrayNew(1)>
-	
+	<cfset var pageList=replaceNocase(pageList,"${pagebreak}","murapagebreak","ALL")>
 	<cftry>
 		<cfset pageArray=pageList.split("murapagebreak",-1)>
 		<cfcatch>

@@ -267,7 +267,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
 		<cfargument name="contentBean" required="true" default="">
-		<cfargument name="type" type="string" required="yes" default=""/>
+		<cfargument name="type" required="yes" default=""/>
 
 		<cfset var key="" />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
@@ -333,7 +333,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
 		<cfargument name="contentBean" required="true" default="">
-		<cfargument name="type" type="string" required="yes" default=""/>
+		<cfargument name="type" required="yes" default=""/>
 		<cfset var key="remoteID" & arguments.siteid & arguments.remoteID  & arguments.type/>
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory(name="data")/>
@@ -374,18 +374,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cffunction name="getActiveByTitle" access="public" returntype="any" output="false">
 		<cfargument name="title" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
+		<cfargument name="use404" type="boolean" required="yes" default="false"/>
 		<cfargument name="contentBean" required="true" default="">
-		<cfargument name="type" type="string" required="yes" default=""/>
+		<cfargument name="type" required="yes" default=""/>
 		<cfset var key="title" & arguments.siteid & arguments.title  & arguments.type/>
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory(name="data")/>
 		<cfset var bean=arguments.contentBean/>
 		
-		<cfif site.getCache() and not request.muraChangesetPreview>
+		
+ 		<cfif site.getCache() and not request.muraChangesetPreview>
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
-				<cfset bean=variables.contentDAO.readActiveByTitle(arguments.title,arguments.siteid,bean,arguments.type)  />
+				<cfset bean=variables.contentDAO.readActiveByTitle(arguments.title,arguments.siteid,arguments.use404,bean,arguments.type)  />
 				<cfif not isArray(bean) and not bean.getIsNew()>
 					<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 				</cfif>
@@ -399,7 +401,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset bean.setValue("extendAutoComplete",false)>
 					<cfreturn bean />
 					<cfcatch>
-						<cfset bean=variables.contentDAO.readActiveByTitle(arguments.title,arguments.siteid,bean,arguments.type)  />
+						<cfset bean=variables.contentDAO.readActiveByTitle(arguments.title,arguments.siteid,arguments.use404,bean,arguments.type)  />
 						<cfif not isArray(bean) and not bean.getIsNew()>
 							<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 						</cfif>
@@ -408,7 +410,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cftry>
 			</cfif>
 		<cfelse>
-			<cfreturn variables.contentDAO.readActiveByTitle(arguments.title,arguments.siteid,bean,arguments.type)/>
+			<cfreturn variables.contentDAO.readActiveByTitle(arguments.title,arguments.siteid,arguments.use404,bean,arguments.type)/>
 		</cfif>
 		
 	</cffunction>
@@ -416,8 +418,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cffunction name="getActiveByURLTitle" access="public" returntype="any" output="false">
 		<cfargument name="URLTitle" type="string" required="yes" />
 		<cfargument name="siteID" type="string" required="yes" />
+		<cfargument name="use404" type="boolean" required="yes" default="false"/>
 		<cfargument name="contentBean" required="true" default="">
-		<cfargument name="type" type="string" required="yes" default=""/>
+		<cfargument name="type" required="yes" default=""/>
 		<cfset var key="urltitle" & arguments.siteid & arguments.urltitle  & arguments.type/>
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory(name="data")/>
@@ -427,7 +430,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
-				<cfset bean=variables.contentDAO.readActiveByURLTitle(arguments.URLTitle,arguments.siteid,bean,arguments.type)  />
+				<cfset bean=variables.contentDAO.readActiveByURLTitle(arguments.URLTitle,arguments.siteid,arguments.use404,bean,arguments.type)  />
 				<cfif not isArray(bean) and not bean.getIsNew()>
 					<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 				</cfif>
@@ -441,7 +444,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset bean.setValue("extendAutoComplete",false)>
 					<cfreturn bean />
 					<cfcatch>
-						<cfset bean=variables.contentDAO.readActiveByURLTitle(arguments.URLTitle,arguments.siteid,bean,arguments.type)  />
+						<cfset bean=variables.contentDAO.readActiveByURLTitle(arguments.URLTitle,arguments.siteid,arguments.use404,bean,arguments.type)  />
 						<cfif not isArray(bean) and not bean.getIsNew()>
 							<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 						</cfif>
@@ -450,7 +453,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cftry>
 			</cfif>
 		<cfelse>
-			<cfreturn variables.contentDAO.readActiveByURLTitle(arguments.URLTitle,arguments.siteid,bean,arguments.type)/>
+			<cfreturn variables.contentDAO.readActiveByURLTitle(arguments.URLTitle,arguments.siteid,arguments.use404,bean,arguments.type)/>
 		</cfif>
 		
 	</cffunction>
