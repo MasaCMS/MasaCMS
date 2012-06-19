@@ -77,7 +77,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="assignments" output="false">
 <cfargument name="rc">
-<cfset rc.assignments=variables.changesetManager.getAssignmentsIterator(rc.changesetID,rc.keywords)>
+<cfset rc.siteAssignments=variables.changesetManager.getAssignmentsIterator(rc.changesetID,rc.keywords,'00000000000000000000000000000000000')>
+<cfset rc.componentAssignments=variables.changesetManager.getAssignmentsIterator(rc.changesetID,rc.keywords,'00000000000000000000000000000000003')>
+<cfset rc.formAssignments=variables.changesetManager.getAssignmentsIterator(rc.changesetID,rc.keywords,'00000000000000000000000000000000004')>
 <cfset rc.changeset=variables.changesetManager.read(rc.changesetID)>
 </cffunction>
 

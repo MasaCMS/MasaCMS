@@ -85,7 +85,8 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 			<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rsContent"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 				select #variables.fieldlist#, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
 				left join tfiles on (tcontent.fileid=tfiles.fileid)
-				where tcontent.contenthistid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#" /> and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+				where tcontent.contenthistid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#" /> 
+				and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 			</cfquery>
 		</cfif>
 		
@@ -173,6 +174,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
 		<cfargument name="contentBean" required="true" default="">
+		<cfargument name="type" required="true" default="">
 		<cfset var rsContent = queryNew('empty') />
 		<cfset var beanArray=arrayNew(1)>
 		<cfset var bean=arguments.contentBean />
@@ -188,7 +190,11 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 				where tcontent.remoteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.remoteID#" /> 
 				#renderActiveClause("tcontent",arguments.siteID)#
 				and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
-				and type in ('Page','Portal','File','Calendar','Link','Gallery','Component','Form')
+				<cfif len(arguments.type)>
+					and tcontent.type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#" />
+				<cfelse>
+					and type in ('Page','Portal','File','Calendar','Link','Gallery','Component','Form')
+				</cfif>	
 			</cfquery>
 		</cfif>
 		
@@ -218,6 +224,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
 		<cfargument name="contentBean" required="true" default="">
+		<cfargument name="type" required="true" default="">
 		<cfset var rsContent = queryNew('empty') />
 		<cfset var beanArray=arrayNew(1)>
 		<cfset var bean=arguments.contentBean />
@@ -233,7 +240,11 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 				where tcontent.title=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.title#" /> 
 				#renderActiveClause("tcontent",arguments.siteID)#
 				and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
-				and type in ('Page','Portal','File','Calendar','Link','Gallery','Component','Form')
+				<cfif len(arguments.type)>
+					and tcontent.type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#" />
+				<cfelse>
+					and type in ('Page','Portal','File','Calendar','Link','Gallery','Component','Form')
+				</cfif>	
 			</cfquery>
 		</cfif>
 		
@@ -263,6 +274,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
 		<cfargument name="contentBean" required="true" default="">
+		<cfargument name="type" required="true" default="">
 		<cfset var rsContent = queryNew('empty') />
 		<cfset var beanArray=arrayNew(1)>
 		<cfset var bean=arguments.contentBean />
@@ -278,7 +290,11 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 				where tcontent.urltitle=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.urltitle#" /> 
 				#renderActiveClause("tcontent",arguments.siteID)#
 				and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#" />
-				and type in ('Page','Portal','File','Calendar','Link','Gallery','Component','Form')
+				<cfif len(arguments.type)>
+					and tcontent.type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#" />
+				<cfelse>
+					and type in ('Page','Portal','File','Calendar','Link','Gallery','Component','Form')
+				</cfif>	
 			</cfquery>
 		</cfif>
 		
@@ -308,6 +324,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		<cfargument name="siteID" type="string" required="yes" default="" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
 		<cfargument name="contentBean" required="true" default="">
+		<cfargument name="type" required="true" default="">
 		<cfset var rsContent = queryNew('empty') />
 		<cfset var beanArray=arrayNew(1)>
 		<cfset var bean=arguments.contentBean />
@@ -330,6 +347,11 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 			 and tcontent.type in('Page','Portal','Calendar','Gallery') 
 			</cfif>
 			and  tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+			<cfif len(arguments.type)>
+				and tcontent.type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#" />
+			<cfelse>
+				and type in ('Page','Portal','File','Calendar','Link','Gallery','Component','Form')
+			</cfif>	
 		</cfquery>
 
 		<cfif rsContent.recordcount gt 1>

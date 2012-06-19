@@ -161,7 +161,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</dd>
 	</dl>
 	
-	<cfset changesetMembers=application.changesetManager.getAssignmentsIterator(previewData.changesetID)>
+	<cfset changesetMembers=application.changesetManager.getAssignmentsIterator(changesetID=previewData.changesetID,moduleID='00000000000000000000000000000000000')>
 	<dl id="m-cs-assignments">
 		<dt>Items in Change Set</dt>
 		<dd>
