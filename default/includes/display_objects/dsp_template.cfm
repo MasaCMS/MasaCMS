@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif isValid("UUID",arguments.objectID)>
 		<cfset bean = variables.$.getBean("content").loadBy(contentID=arguments.objectID,siteID=arguments.siteID)>
 	<cfelse>
-		<cfset bean = variables.$.getBean("content").loadBy(title=arguments.objectID,siteID=arguments.siteID)>
+		<cfset bean = variables.$.getBean("content").loadBy(title=arguments.objectID,siteID=arguments.siteID,type='Component')>
 	</cfif>
 	
 	<cfset variables.rsTemplate=bean.getAllValues()>
