@@ -1927,17 +1927,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cffunction>
 	
 	<cffunction name="purgeContentCacheKey" output="false">
+	<cfargument name="cache">
 	<cfargument name="key">
 	<cfargument name="purgeTypes" default="true">
 		<cfset var i="">
-		<cfset var cache=variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getCacheFactory(name="data")>	
 		
-		<cfset cache.purge(arguments.key)>
+		<cfset arguments.cache.purge(arguments.key)>
 
 		<cfif arguments.purgeTypes>
 			<!--- Purge any keys specifically assigned to a content type --->
 			<cfloop list="Page,Portal,File,Calendar,Link,Gallery,Component,Form" index="i">
-				<cfset cache.purge(arguments.key & i)>
+				<cfset arguments.cache.purge(arguments.key & i)>
 			</cfloop>
 		</cfif>
 
@@ -1950,31 +1950,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="broadcast" default="true">
 	<cfset var history="">
 	<cfset var version="">
-	
+	<cfset var cache=variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getCacheFactory(name="data")>	
 	
 	<cfif not isDefined("arguments.contentBean")>
 		<cfset arguments.contentBean=read(contentID=arguments.contentID,siteID=arguments.siteID)>
 	</cfif>
 	
 	<cfif NOT arguments.contentBean.getIsNew()>	
-		<cfset purgeContentCacheKey("contentID" & arguments.contentBean.getSiteID() & arguments.contentBean.getContentID(),false)>
+		<cfset purgeContentCacheKey(cache, "contentID" & arguments.contentBean.getSiteID() & arguments.contentBean.getContentID(),false)>
 		
 		<cfif len(arguments.contentBean.getRemoteID())>
-			<cfset purgeContentCacheKey("remoteID" & arguments.contentBean.getSiteID() & arguments.contentBean.getRemoteID())>
+			<cfset purgeContentCacheKey(cache,"remoteID" & arguments.contentBean.getSiteID() & arguments.contentBean.getRemoteID())>
 		</cfif>
 
 		<cfif len(arguments.contentBean.getFilename()) or arguments.contentBean.getContentID() eq "00000000000000000000000000000000001">
-			<cfset purgeContentCacheKey("filename" & arguments.contentBean.getSiteID() & arguments.contentBean.getFilename())>	
+			<cfset purgeContentCacheKey(cache,"filename" & arguments.contentBean.getSiteID() & arguments.contentBean.getFilename())>	
 		</cfif>
 
-		<cfset purgeContentCacheKey("title" & arguments.contentBean.getSiteID() & arguments.contentBean.getTitle())>
-		<cfset purgeContentCacheKey("urltitle" & arguments.contentBean.getSiteID() & arguments.contentBean.getURLTitle())>
+		<cfset purgeContentCacheKey(cache,"title" & arguments.contentBean.getSiteID() & arguments.contentBean.getTitle())>
+		<cfset purgeContentCacheKey(cache,"urltitle" & arguments.contentBean.getSiteID() & arguments.contentBean.getURLTitle())>
 		
 		<cfset history=arguments.contentBean.getVersionHistoryIterator()>
 		
 		<cfloop condition="history.hasNext()">
 			<cfset version=history.next()>
-			<cfset purgeContentCacheKey("version" & arguments.contentBean.getSiteID() & arguments.contentBean.getContentHistID(),false)>
+			<cfset purgeContentCacheKey(cache,"version" & arguments.contentBean.getSiteID() & arguments.contentBean.getContentHistID(),false)>
 		</cfloop>
 		
 		<cfif arguments.broadcast>
