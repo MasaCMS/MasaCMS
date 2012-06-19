@@ -49,7 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset crumbdata=application.contentManager.getCrumbList(rc.contentid,rc.siteid)>
 <cfset rc.perm=application.permUtility.getnodeperm(crumbdata)> 
 <cfset nodeLevelList="Page,Portal,Calendar,Gallery,Link,File"/>
-<cfset hasChangesets=application.settingsManager.getSite(rc.siteID).getHasChangesets() and rc.moduleid eq '00000000000000000000000000000000000'>
+<cfset hasChangesets=application.settingsManager.getSite(rc.siteID).getHasChangesets()>
 <cfset stats=rc.contentBean.getStats()>
 <cfif rc.contentBean.getType() eq 'File'>
 <cfset rsFile=application.serviceFactory.getBean('fileManager').readMeta(rc.contentBean.getFileID())>

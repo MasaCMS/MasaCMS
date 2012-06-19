@@ -56,7 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h3>#application.rbFactory.getKeyValue(session.rb,'changesets.name')#</h3>
 <p>#HTMLEditFormat(rc.changeset.getName())#</p>
 
-<cfset rc.rslist=rc.assignments.getQuery()>
+<cfset rc.rslist=rc.siteAssignments.getQuery()>
 <cfset rc.previewLink="http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?changesetID=#rc.changesetID#">
 <h4>#application.rbFactory.getKeyValue(session.rb,'changesets.filterview')#</h4>
 <p>#application.rbFactory.getKeyValue(session.rb,'changesets.filterviewnotice')#</p>
@@ -68,8 +68,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<input type="hidden" name="changesetID" value="#HTMLEditFormat(rc.changesetID)#">
 </form>
 
-<h4>Preview Link</h4>
+<h4>#application.rbFactory.getKeyValue(session.rb,'changesets.previewlink')#</h4>
 <p><a title="Preview" href="##" onclick="return preview('#JSStringFormat(rc.previewLink)#','');">#HTMLEditFormat(rc.previewLink)#</a></p>
+<h4>#application.rbFactory.getKeyValue(session.rb,'changesets.sitearchitecture')#</h4>
  <table class="mura-table-grid stripe">
     <tr> 
       <th class="varWidth">Title</th>
@@ -88,6 +89,82 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif verdict neq 'none'>
        		<li class="edit"><a title="Edit" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#URLEncodedFormat(rc.rslist.contentID)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.rslist.moduleid#&startrow=#rc.startrow#&return=changesets">&nbsp;</a></li> 	
 			<li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?changesetPreviewID=#JSStringFormat(rc.rslist.changesetID)#&linkServID=#JSStringFormat(rc.rslist.contentID)#','#rc.rsList.targetParams#');">#HTMLEditFormat(left(rc.rsList.menutitle,70))#</a></li>
+		   	<li class="versionHistory"><a title="Version History" href="index.cfm?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#rc.rsList.contentID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.rslist.moduleID#&startrow=#rc.startrow#">&nbsp;</a></li>   
+        <cfelse>
+	        <li class="editOff">&nbsp;</li>
+			<li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?changesetID=#JSStringFormat(rc.rslist.changesetID)#&linkServID=#JSStringFormat(rc.rslist.contentID)#','#rc.rsList.targetParams#');">#HTMLEditFormat(left(rc.rsList.menutitle,70))#</a></li>
+			<li class="versionHistoryOff"><a>Version History</a></li>
+      	</cfif>
+		<li class="delete"><a  title="Delete" href="index.cfm?muraAction=cChangesets.removeItem&contentHistId=#rc.rsList.contentHistID#&siteid=#URLEncodedFormat(rc.siteid)#&changesetID=#URLEncodedFormat(rc.rslist.changesetID)#&keywords=#HTMLEditFormat(rc.keywords)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'changesets.removeitemconfirm'),rc.rslist.menutitle))#',this.href)"&nbsp;</a></li>
+		</ul>
+		</td>
+		</tr>
+   		</cfloop>
+      <cfelse>
+      <tr> 
+        <td colspan="2" class="results"><em>Your search returned no results.</em></td>
+      </tr>
+    </cfif>
+</table>
+</td></tr></table>
+
+<cfset rc.rslist=rc.componentAssignments.getQuery()>
+<h4>#application.rbFactory.getKeyValue(session.rb,'changesets.components')#</h4>
+ <table class="mura-table-grid stripe">
+    <tr> 
+      <th class="varWidth">Title</th>
+      <th class="administration">&nbsp;</th>
+    </tr>
+    <cfif rc.rslist.recordcount>
+     <cfloop query="rc.rslist">
+		<cfsilent>
+			<cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid,false,rc.rslist.path)/>
+			<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
+		</cfsilent>
+        <tr>  
+          <td class="title varWidth">#HTMLEditFormat(rc.rsList.title)#</td>
+ 		  <td class="administration">
+		<ul class="three">
+		<cfif verdict neq 'none'>
+       		<li class="edit"><a title="Edit" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#URLEncodedFormat(rc.rslist.contentID)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.rslist.moduleid#&startrow=#rc.startrow#&return=changesets">&nbsp;</a></li> 	
+		   	<li class="versionHistory"><a title="Version History" href="index.cfm?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#rc.rsList.contentID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.rslist.moduleID#&startrow=#rc.startrow#">&nbsp;</a></li>   
+        <cfelse>
+	        <li class="editOff">&nbsp;</li>
+			<li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?changesetID=#JSStringFormat(rc.rslist.changesetID)#&linkServID=#JSStringFormat(rc.rslist.contentID)#','#rc.rsList.targetParams#');">#HTMLEditFormat(left(rc.rsList.menutitle,70))#</a></li>
+			<li class="versionHistoryOff"><a>Version History</a></li>
+      	</cfif>
+		<li class="delete"><a  title="Delete" href="index.cfm?muraAction=cChangesets.removeItem&contentHistId=#rc.rsList.contentHistID#&siteid=#URLEncodedFormat(rc.siteid)#&changesetID=#URLEncodedFormat(rc.rslist.changesetID)#&keywords=#HTMLEditFormat(rc.keywords)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'changesets.removeitemconfirm'),rc.rslist.menutitle))#',this.href)"&nbsp;</a></li>
+		</ul>
+		</td>
+		</tr>
+   		</cfloop>
+      <cfelse>
+      <tr> 
+        <td colspan="2" class="results"><em>Your search returned no results.</em></td>
+      </tr>
+    </cfif>
+</table>
+</td></tr></table>
+
+<cfset rc.rslist=rc.formAssignments.getQuery()>
+<h4>#application.rbFactory.getKeyValue(session.rb,'changesets.forms')#</h4>
+ <table class="mura-table-grid stripe">
+    <tr> 
+      <th class="varWidth">Title</th>
+      <th class="administration">&nbsp;</th>
+    </tr>
+    <cfif rc.rslist.recordcount>
+     <cfloop query="rc.rslist">
+		<cfsilent>
+			<cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid,false,rc.rslist.path)/>
+			<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
+		</cfsilent>
+        <tr>  
+          <td class="title varWidth">#HTMLEditFormat(rc.rsList.title)#</td>
+ 		  <td class="administration">
+		<ul class="three">
+		<cfif verdict neq 'none'>
+       		<li class="edit"><a title="Edit" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#URLEncodedFormat(rc.rslist.contentID)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.rslist.moduleid#&startrow=#rc.startrow#&return=changesets">&nbsp;</a></li> 	
 		   	<li class="versionHistory"><a title="Version History" href="index.cfm?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#rc.rsList.contentID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.rslist.moduleID#&startrow=#rc.startrow#">&nbsp;</a></li>   
         <cfelse>
 	        <li class="editOff">&nbsp;</li>

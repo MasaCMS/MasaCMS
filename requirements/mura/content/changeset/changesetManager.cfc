@@ -392,11 +392,12 @@
 <cffunction name="getAssignmentsQuery" access="public" returntype="any" output="false">
 <cfargument name="changesetID">
 <cfargument name="keywords" default="">
+<cfargument name="moduleid" default="">
 	<cfset var rs="">
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select menutitle, tcontent.siteid, tcontent.parentID, tcontent.path, tcontent.contentid, contenthistid, tcontent.fileID, type, tcontent.lastupdateby, active, approved, tcontent.lastupdate, 
 	display, displaystart, displaystop, tcontent.moduleid, isnav, notes,isfeature,inheritObjects,tcontent.filename,targetParams,releaseDate,
-	tcontent.changesetID, tfiles.fileExt
+	tcontent.changesetID, tfiles.fileExt, tcontent.title, tcontent.menutitle
 	from tcontent 
 	left join tfiles on tcontent.fileID=tfiles.fileID
 	where tcontent.changesetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.changesetID#">
@@ -406,6 +407,9 @@
 		or tcontent.summary like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
 		or tcontent.body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
 		)
+	</cfif>
+	<cfif len(arguments.moduleid)>
+		and tcontent.moduleid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleid#">
 	</cfif>
 	order by menutitle
 	</cfquery>
