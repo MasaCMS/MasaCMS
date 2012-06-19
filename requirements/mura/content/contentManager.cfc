@@ -206,7 +206,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	<cfif len(arguments.contenthistid)>
-		<cfreturn getcontentVersion(arguments.contenthistid, arguments.siteid, arguments.use404, arguments.contentBean,arguments.type)>
+		<cfreturn getcontentVersion(arguments.contenthistid, arguments.siteid, arguments.use404, arguments.contentBean)>
 	<cfelseif structKeyExists(arguments,"filename")>
 		<cfreturn getActiveContentByFilename(arguments.filename, arguments.siteid, arguments.use404, arguments.contentBean,arguments.type)>
 	<cfelseif len(arguments.remoteid)>
@@ -216,7 +216,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelseif len(arguments.urltitle)>
 		<cfreturn getActiveByURLTitle(arguments.urltitle, arguments.siteid, arguments.use404, arguments.contentBean,arguments.type)>
 	<cfelse>	
-		<cfreturn getActiveContent(arguments.contentid, arguments.siteid, arguments.use404, arguments.contentBean,arguments.type)>
+		<cfreturn getActiveContent(arguments.contentid, arguments.siteid, arguments.use404, arguments.contentBean)>
 	</cfif>
 	
 	</cffunction>
