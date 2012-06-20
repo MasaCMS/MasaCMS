@@ -176,9 +176,9 @@ var hasBody=#subType.getHasBody()#;
 			select * from rsSubTypes
 			where 
 				type = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rc.type#"/>
-				<cfif listFindNocase("Link,File",rc.type)>
+				<!---<cfif listFindNocase("Link,File",rc.type)>--->
 					or type='Base'
-				</cfif>
+				<!---</cfif>--->
 			</cfquery>
 		</cfif>
 		<cfif listFindNoCase("Component,File,Link",rc.type)>
