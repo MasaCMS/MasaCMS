@@ -46,14 +46,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfsavecontent variable="rc.ajax">
 <cfoutput>
-<script src="js/architecture.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript" ></script>
+<script src="assets/js/architecture.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript" ></script>
 </cfoutput>
 </cfsavecontent>
-<cfsavecontent variable="rc.layout">
 <cfoutput>
 <h2>Trash Detail</h2>
 
-<ul id="navTask"
+<ul class="navTask nav nav-pills"
 <li><a href="index.cfm?muraAction=cTrash.list&siteID=#URLEncodedFormat(rc.trashItem.getSiteID())#&keywords=#URLEncodedFormat(rc.keywords)#&pageNum=#URLEncodedFormat(rc.pageNum)#">Back to Trash Bin</a></li>
 </ul>
 
@@ -70,8 +69,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </ul>
 
 <cfif not listFindNoCase("Page,Portal,File,Link,Gallery,Calender",rc.trashItem.getObjectType())>
-<div class="clearfix" id="actionButtons">
-<input type="button" class="submit" onclick="return confirmDialog('Restore Item From Trash?','?muraAction=cTrash.restore&objectID=#rc.trashItem.getObjectID()#&siteid=#rc.trashItem.getSiteID()#');" value="Restore Item" />
+<div class="clearfix form-actions" id="actionButtons">
+<input type="button" class="submit btn" onclick="return confirmDialog('Restore Item From Trash?','?muraAction=cTrash.restore&objectID=#rc.trashItem.getObjectID()#&siteid=#rc.trashItem.getSiteID()#');" value="Restore Item" />
 </div>
 <cfelse>
 <cfset parentBean=application.serviceFactory.getBean("content").loadBy(contentID=rc.trashItem.getParentID(),siteID=rc.trashItem.getSiteID())>
@@ -82,8 +81,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<input type="hidden" id="parentid" name="parentid" value="#rc.trashItem.getParentID()#">
 	</span>
 </div>
-<div class="clearfix" id="actionButtons">
-<input type="button" class="submit" onclick="restoreContent();" value="Restore Item" />
+<div class="clearfix form-actions" id="actionButtons">
+<input type="button" class="submit btn" onclick="restoreContent();" value="Restore Item" />
 </div>
 
 <script>
@@ -107,4 +106,3 @@ function restoreContent(){
 
 </cfif>
 </cfoutput>
-</cfsavecontent>

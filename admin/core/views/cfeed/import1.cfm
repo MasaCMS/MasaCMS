@@ -95,6 +95,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfoutput><p>#application.rbFactory.getKeyValue(session.rb,'collections.formatnosupported')#</p></cfoutput>
 		</cfcase>
 	</cfswitch>
-	<cfoutput><input type="button" class="submit" onclick="confirmImport();" value="#application.rbFactory.getKeyValue(session.rb,'collections.import')#" /></cfoutput>
+	<div class="form-actions">
+	<cfoutput><input type="button" class="submit btn" onclick="confirmImport();" value="#application.rbFactory.getKeyValue(session.rb,'collections.import')#" /></cfoutput>
+	</div>
 	<input type="hidden" name="action" value="import" />
 </form>

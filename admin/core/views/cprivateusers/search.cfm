@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,'user.adminusersearchresults')#</h2>
 
-        <table class="mura-table-grid stripe">
+        <table class="table table-striped table-condensed">
           <tr> 
             <th class="varWidth">Name</th>
             <th>#application.rbFactory.getKeyValue(session.rb,'user.email')#</th>

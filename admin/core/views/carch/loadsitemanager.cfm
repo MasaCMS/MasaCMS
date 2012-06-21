@@ -102,6 +102,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     #application.contentRenderer.dspZoom(crumbdata=crumbdata,ajax=true)#
 </cfif>
   <cfset rsExtend=application.configBean.getClassExtensionManager().getExtendedAttributeList(rc.siteid)>
+
   <form novalidate="novalidate" class="viewUpdate" name="viewUpdate" method="post" action="./index.cfm?muraAction=cArch.list&siteid=#urlEncodedFormat(rc.siteID)#&moduleid=#urlEncodedFormat(rc.moduleID)#&topid=#urlEncodedFormat(rc.topID)#">
     <h3 class="alt">#application.rbFactory.getKeyValue(session.rb,"sitemanager.modifyview")#</h3>
     <dl id="mura-view-options" class="clearfix">

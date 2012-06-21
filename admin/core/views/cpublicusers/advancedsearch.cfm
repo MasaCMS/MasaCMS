@@ -112,7 +112,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,"user.advancedmembersearch")#</h2>
-<ul id="navTask">
+<ul class="navTask nav nav-pills">
 <li><a href="index.cfm?muraAction=cPublicUsers.search&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,"user.basicsearch")#</a></li>
 </ul>
 <form novalidate="novalidate" id="advancedMemberSearch" action="index.cfm" method="get" name="form2">
@@ -218,7 +218,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rc.nextN=application.utility.getNextN(rc.rsList,15,rc.startrow)/>
 
 </cfsilent><cfoutput>
-        <table class="mura-table-grid stripe">
+        <table class="table table-striped table-condensed">
           <tr> 
             <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,"user.name")#</th>
             <th>#application.rbFactory.getKeyValue(session.rb,"user.email")#</th>

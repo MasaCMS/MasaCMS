@@ -61,13 +61,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif not isBlocked>
 <form novalidate="novalidate" id="loginForm" name="frmLogin" method="post" action="index.cfm">
-<dl>
-<dt>#application.rbFactory.getKeyValue(session.rb,'login.username')#</dt>
-<dd><input id="username" name="username" type="text" class="text"></dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'login.password')#</dt>
-<dd><input id="password" type="password" name="password" class="text" onKeyPress="checkKeyPressed(event, 'loginForm')"></dd>
-<dt>Language</dt>
-<dd><select name="rb">
+
+<div class="control-group">
+    <label class="control-label">
+    	#application.rbFactory.getKeyValue(session.rb,'login.username')#
+    </label>
+    <div class="controls">
+      <input id="username" name="username" type="text" class="text">
+    </div>
+ </div>
+
+<div class="control-group">
+    <label class="control-label">
+      	#application.rbFactory.getKeyValue(session.rb,'login.password')#
+ 	</label>
+    <div class="controls">
+      	<input id="password" type="password" name="password" class="text" onKeyPress="checkKeyPressed(event, 'loginForm')">
+  	</div>
+</div>
+
+<div class="control-group">
+      <label class="control-label">Language</label>
+      <div class="controls"><select name="rb">
 	<option value="en">English</option>
 	<option value="de"<cfif cookie.rb eq "de"> selected</cfif>>Deutsch</option>
 	<option value="fr"<cfif cookie.rb eq "fr"> selected</cfif>>Fran&ccedil;ais</option>
@@ -78,22 +93,41 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<option value="es"<cfif cookie.rb eq "es"> selected</cfif>>Spanish</option>
 	<!---<option value="es">Spanish</option>--->
 	</select>
-</dd>
-</dl>
-<p class="rememberMe"><input type="checkbox" id="rememberMe" name="rememberMe" value="1" /> <label for="rememberMe">#application.rbFactory.getKeyValue(session.rb,'login.rememberme')#</label></p>
-<input type="button" class="submit" onclick="document.frmLogin.submit();" value="#application.rbFactory.getKeyValue(session.rb,'login.login')#" />
+	</div>
+</div>
+
+<div class="control-group">
+      <label class="control-label">
+      	#application.rbFactory.getKeyValue(session.rb,'login.rememberme')#
+      </label>
+      <div class="controls">
+      <input type="checkbox" id="rememberMe" name="rememberMe" value="1" /> <label for="rememberMe">
+      </label>
+  </div>
+</div>
+
+<div class="form-actions" id="actionButtons">
+<input type="button" class="submit btn" onclick="document.frmLogin.submit();" value="#application.rbFactory.getKeyValue(session.rb,'login.login')#" />
+</div>
 <input name="returnUrl" type="hidden" value="#HTMLEditFormat(rc.returnURL)#">
 <input type="hidden" name="muraAction" value="cLogin.login">
 <input type="hidden" name="isAdminLogin" value="true">
 <input type="hidden" name="compactDisplay" value="#HTMLEditFormat(rc.compactDisplay)#">
  </form>
 </div>
+
 	<form novalidate="novalidate" id="sendLogin" name="sendLogin" method="post" action="index.cfm?muraAction=cLogin.main" onsubmit="javascript:if(document.sendLogin.email.value !=''){return true;}else{return false;}">
-	<dl>
-	<dt>#application.rbFactory.getKeyValue(session.rb,'login.forgetpassword')#</dt>
-	<dd><cfif rc.status eq 'sendLogin'>
+	
+	<div class="control-group">
+      <label class="control-label">
+		#application.rbFactory.getKeyValue(session.rb,'login.forgetpassword')#
+	</label>
+      <div class="controls">
+	<p class="help-block">
+	<cfif rc.status eq 'sendLogin'>
 	  <cfset msg=application.userManager.sendLoginByEmail('#rc.email#','','#urlencodedformat("#listFirst(cgi.http_host,":")##cgi.SCRIPT_NAME#")#')>
 	<cfif left(msg,2) eq "No">
+
 	#HTMLEditFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"login.noaccountexists"),rc.email))#		
 	<cfelseif left(msg,4) eq "Your">
 	#HTMLEditFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"login.messagesent"),rc.email))#
@@ -101,12 +135,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfelse>
 	#application.rbFactory.getKeyValue(session.rb,'login.enteremail')#
-	</cfif></dd>
-        <dd><input id="email" name="email" type="text" class="text" align="absmiddle" onKeyPress="checkKeyPressed(event, 'sendLogin')"/>
+	</cfif>
+	</p>
+	<input id="email" name="email" type="text" class="text" align="absmiddle" onKeyPress="checkKeyPressed(event, 'sendLogin')"/>
+	</div></div>
+	<div class="form-actions">
  		<input type="button" class="submit" onclick="document.sendLogin.submit();" value="#application.rbFactory.getKeyValue(session.rb,'login.submit')#" />
+ 	</div>
 		<input type="hidden" name="status" value="sendlogin" />
-		<input name="returnURL" type="hidden" value="#HTMLEditFormat(rc.returnURL)#"></dd>
-		</dl>
+		<input name="returnURL" type="hidden" value="#HTMLEditFormat(rc.returnURL)#">
 		<input type="hidden" name="isAdminLogin" value="true">
 		<input type="hidden" name="compactDisplay" value="#HTMLEditFormat(rc.compactDisplay)#">
     </form>

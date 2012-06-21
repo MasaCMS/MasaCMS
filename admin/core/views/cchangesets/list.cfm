@@ -47,19 +47,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,"changesets")#</h2>
 
-<ul id="navTask"><li><a  title="#application.rbFactory.getKeyValue(session.rb,'changesets.addchangeset')#" href="index.cfm?muraAction=cChangesets.edit&changesetID=&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'changesets.addchangeset')#</a></li></ul>
+<ul class="navTask nav nav-pills"><li><a  title="#application.rbFactory.getKeyValue(session.rb,'changesets.addchangeset')#" href="index.cfm?muraAction=cChangesets.edit&changesetID=&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'changesets.addchangeset')#</a></li></ul>
 
 <!--- <h3>#application.rbFactory.getKeyValue(session.rb,'changesets.filterview')#:</h3> --->
 <h3 class="alt">#application.rbFactory.getKeyValue(session.rb,'changesets.filterviewnotice')#</h3>
 
 <form novalidate="novalidate" id="changesetSearch" name="changesetSearch" method="get">
 	<input name="keywords" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" maxlength="50" />
-	<input type="button" class="submit" onclick="submitForm(document.forms.changesetSearch);" value="Search" />
+	<input type="button" class="submit btn" onclick="submitForm(document.forms.changesetSearch);" value="Search" />
 	<input type="hidden" name="muraAction" value="cChangesets.list">
 	<input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
 </form>
 
-<table class="mura-table-grid stripe"> 
+<table class="table table-striped table-condensed"> 
 <tr>
 <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'changesets.name')#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,'changesets.datetopublish')#</th>

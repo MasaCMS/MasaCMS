@@ -65,7 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif rc.compactDisplay neq 'true'>
 <cfif rc.moduleid eq '00000000000000000000000000000000000'>#application.contentRenderer.dspZoom(crumbdata,fileExt)#</cfif>
 </cfif>
-<ul id="navTask">
+<ul class="navTask nav nav-pills">
 <!---<cfif rc.contentBean.getFilename() neq '' or rc.contentid eq '00000000000000000000000000000000001'>
 	<cfswitch expression="#rc.type#">
 <cfcase value="Page,Portal,Calendar">
@@ -94,7 +94,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </ul>
 </cfoutput>
 <cfoutput>
-<table class="mura-table-grid stripe">
+<table class="table table-striped table-condensed">
   <tr><th nowrap class="varWidth">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.title')#</th>
 <cfif rc.contentBean.getType() eq "file" and stats.getMajorVersion()><th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.file')#</th></cfif>
 <th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.notes')#</th>

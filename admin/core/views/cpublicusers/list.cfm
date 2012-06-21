@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <input id="search" name="search" type="text" class="text"> 
 <input type="button" class="submit" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'user.search')#" />
 <input type="button" class="submit" onclick="window.location='index.cfm?muraAction=cPublicUsers.advancedSearch&siteid=#URLEncodedFormat(rc.siteid)#&newSearch=true'" value="#application.rbFactory.getKeyValue(session.rb,'user.advanced')#" /></form><h2>#application.rbFactory.getKeyValue(session.rb,'user.sitemembersgroups')#</h2>
-	<ul id="navTask"><li><a href="index.cfm?muraAction=cPublicUsers.edituser&siteid=#URLEncodedFormat(rc.siteid)#&userid=">#application.rbFactory.getKeyValue(session.rb,'user.addmember')#</a></li>
+	<ul class="navTask nav nav-pills"><li><a href="index.cfm?muraAction=cPublicUsers.edituser&siteid=#URLEncodedFormat(rc.siteid)#&userid=">#application.rbFactory.getKeyValue(session.rb,'user.addmember')#</a></li>
 <li><a href="index.cfm?muraAction=cPublicUsers.editgroup&siteid=#URLEncodedFormat(rc.siteid)#&userid=">#application.rbFactory.getKeyValue(session.rb,'user.addgroup')#</a></li>
 </ul>
 
@@ -58,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h3>#application.rbFactory.getKeyValue(session.rb,'user.usergroups')#</h3>
 
 
-        <table class="mura-table-grid stripe">
+        <table class="table table-striped table-condensed">
                   <tr> 
                     <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'user.name')# (<em>#application.rbFactory.getKeyValue(session.rb,'user.members')#</em>)</th>
                     <th>#application.rbFactory.getKeyValue(session.rb,'user.email')#</th>

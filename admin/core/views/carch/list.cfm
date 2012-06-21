@@ -85,7 +85,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.componentmanager')#</h2>	
 </cfif>
 
-<ul id="navTask">
+<ul class="navTask nav nav-pills">
 	<cfif rc.moduleid eq '00000000000000000000000000000000003'>
 	<li><a href="index.cfm?muraAction=cArch.edit&type=Component&contentid=&topid=#URLEncodedFormat(rc.topid)#&parentid=#rc.topid#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.addcomponent')#</a></li>
 	<cfelse>
@@ -98,7 +98,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   <form novalidate="novalidate" id="filterByTitle" action="index.cfm" method="get">
 	  <h4>#application.rbFactory.getKeyValue(session.rb,'sitemanager.filterviewdesc')#</h4>
 	  <input type="text" name="searchString" value="#HTMLEditFormat(rc.searchString)#" class="text">
-	  <input type="button" class="submit" onclick="document.getElementById('filterByTitle').submit();" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.filter')#" />
+	  <input type="button" class="submit btn" onclick="document.getElementById('filterByTitle').submit();" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.filter')#" />
 	  <input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#" />
 	  <input type="hidden" name="topid" value="#rc.topID#" />
 	  <input type="hidden" name="parentid" value="#rc.parentID#" />
@@ -109,7 +109,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   </form>
   
   </cfoutput>
-  <table class="mura-table-grid stripe">
+  <table class="table table-striped table-condensed">
     
 	<cfoutput>
 	<tr> 
@@ -370,7 +370,7 @@ copyAll = 'false';
 <form novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
     <!---<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.contentsearch")#</h3>--->
     <input name="keywords" value="#HTMLEditFormat(session.keywords)#" type="text" class="text" align="absmiddle" />
-    <input type="button" class="submit" onclick="submitForm(document.forms.siteSearch);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.search")#" />
+    <input type="button" class="submit btn" onclick="submitForm(document.forms.siteSearch);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.search")#" />
     <input type="hidden" name="muraAction" value="cArch.list">
 	<input type="hidden" name="activetab" value="1">
     <input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
@@ -378,7 +378,7 @@ copyAll = 'false';
 </form>
 
 
-<!---<img class="loadProgress tabPreloader" src="images/progress_bar.gif">--->
+<!---<img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">--->
 
 <div id="viewTabs" class="tabs initActiveTab" style="display:none">
 		<ul>
@@ -386,11 +386,11 @@ copyAll = 'false';
 			<li><a href="##tabFlat" onclick="return false;"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.flat")#</span></a></li>
 		</ul>
 		<div id="tabArchitectual">
-		<div id="gridContainer"><img class="loadProgress" src="images/progress_bar.gif"></div>
+		<div id="gridContainer"><img class="loadProgress" src="assets/images/progress_bar.gif"></div>
 		</div>
 		
 		<div id="tabFlat">
-			<img class="loadProgress" src="images/progress_bar.gif">
+			<img class="loadProgress" src="assets/images/progress_bar.gif">
 		</div>
 		
 </div>

@@ -58,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif not parentBean.getIsNew()>
 <cfset parentCrumb=application.contentManager.getCrumbList(rc.parentid, rc.siteid)/>
 </cfif>
- <table class="mura-table-grid stripe">
+ <table class="table table-striped table-condensed">
     <cfif not parentBean.getIsNew()>
 	<tr> 
       <th class="varWidth"><cfoutput>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectnewcontentparent')#</cfoutput></th>

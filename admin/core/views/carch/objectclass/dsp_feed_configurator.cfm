@@ -79,7 +79,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset editlink = editlink & "&amp;homeID=" & rc.homeID>
 				<cfset editlink = editlink & "&amp;compactDisplay=true">
 			</cfsilent>
-			<ul id="navTask">
+			<ul class="navTask nav nav-pills">
 				<li><a href="#editlink#">#application.rbFactory.getKeyValue(session.rb,'collections.editdefaultsettings')#</a></li>
 			</ul>
 			</cfif>

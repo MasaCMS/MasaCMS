@@ -1,4 +1,3 @@
-<cfsavecontent variable="rc.layout">
 <cfparam name="rc.keywords" default="">
 <cfparam name="session.resourceType" default="assets">
 <cfparam name="rc.resourceType" default="">
@@ -13,14 +12,14 @@
 <cfelseif session.resourceType eq "root">
 <h2>#application.rbFactory.getKeyValue(session.rb,"layout.applicationroot")#</h2>
 </cfif>
-<ul class="navTask">
+<ul class="navTask nav nav-pills">
   <li<cfif session.resourceType eq 'assets'> class="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cFilemanager.default&siteid=#session.siteid#&&resourceType=assets">#application.rbFactory.getKeyValue(session.rb,"layout.userassets")#</a></li>
   <cfif listFind(session.mura.memberships,'S2')>
 	  <cfif application.configBean.getValue('fmShowSiteFiles') neq 0>
-	 	 <li<cfif session.resourceType eq 'files'> class="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cFilemanager.default&siteid=#session.siteid#&&resourceType=files">#application.rbFactory.getKeyValue(session.rb,"layout.sitefiles")#</a></li>
+	 	 <li<cfif session.resourceType eq 'files'> class="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cFilemanager.default&siteid=#session.siteid#&resourceType=files">#application.rbFactory.getKeyValue(session.rb,"layout.sitefiles")#</a></li>
 	  </cfif>
 	  <cfif listFind(session.mura.memberships,'S2') and application.configBean.getValue('fmShowApplicationRoot') neq 0>
-	  	<li<cfif session.resourceType eq 'root'> class="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cFilemanager.default&siteid=#session.siteid#&&resourceType=root">#application.rbFactory.getKeyValue(session.rb,"layout.applicationroot")#</a></li>
+	  	<li<cfif session.resourceType eq 'root'> class="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cFilemanager.default&siteid=#session.siteid#&resourceType=root">#application.rbFactory.getKeyValue(session.rb,"layout.applicationroot")#</a></li>
 	  </cfif>
   </cfif>
 </ul>
@@ -41,4 +40,3 @@ finder.resourceType="#JSStringFormat('#session.siteID#_User_Assets')#";
 finder.create();
 </script>
 </cfoutput>
-</cfsavecontent>

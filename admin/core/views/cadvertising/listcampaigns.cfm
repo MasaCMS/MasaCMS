@@ -46,13 +46,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfoutput>
 <form novalidate="novalidate" id="siteSearch" name="siteSearch" method="get"><input name="keywords" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" />  
-	<input type="button" class="submit" onclick="submitForm(document.forms.siteSearch);" value="#application.rbFactory.getKeyValue(session.rb,'advertising.search')#" />
+	<input type="button" class="submit btn" onclick="submitForm(document.forms.siteSearch);" value="#application.rbFactory.getKeyValue(session.rb,'advertising.search')#" />
 	<input type="hidden" name="muraAction" value="cAdvertising.listCampaigns">
 	<input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
 </form>
 <h2>#application.rbFactory.getKeyValue(session.rb,'advertising.viewcampaigns')#</h2>
 
-<table class="mura-table-grid stripe">
+<table class="table table-striped table-condensed">
 <tr>
 	<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'advertising.campaign')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.advertiser')#</th>

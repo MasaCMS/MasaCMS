@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <form novalidate="novalidate" id="siteSearch" name="siteSearch" method="get"><input name="keywords" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" maxlength="50" />  
 	
-<input type="button" class="submit" onclick="submitForm(document.forms.siteSearch);" value="#application.rbFactory.getKeyValue(session.rb,'advertising.search')#" />
+<input type="button" class="submit btn" onclick="submitForm(document.forms.siteSearch);" value="#application.rbFactory.getKeyValue(session.rb,'advertising.search')#" />
 	<input type="hidden" name="muraAction" value="cAdvertising.listAdvertisers">
 	<input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
 </form>
@@ -56,11 +56,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!---<h3 class="alt">#application.rbFactory.getKeyValue(session.rb,'advertising.advertisersearch')#</h3>--->
 
 <!--- 
-<ul id="navTask">
+<ul class="navTask nav nav-pills">
 <li><a href="index.cfm?muraAction=cPublicUsers.editUser&userid=&siteid=#URLEncodedFormat(rc.siteid)#&groupid=#application.advertiserManager.getGroupID(rc.siteid)#&routeid=adManager">Add Advertiser</li>
 </ul> --->
 
-<table class="mura-table-grid stripe">
+<table class="table table-striped table-condensed">
 <tr>
 	<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'advertising.advertiser')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.contact')#</th>

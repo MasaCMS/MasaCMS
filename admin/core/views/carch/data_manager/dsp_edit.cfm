@@ -50,20 +50,42 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 <cfoutput>
 <form novalidate="novalidate" name="form1" action="index.cfm" method="post">
-<dl class="oneColumn">
+
+
+
 <cfsilent><cfwddx action="wddx2cfml" input="#rsdata.data#" output="info"></cfsilent>
-<dt>Date/Time Entered</dt>
-<dd>#rsdata.entered#</dd>
+
+<div class="control-group">
+  <label class="control-label">Date/Time Entered</label>
+  <div class="controls">#rsdata.entered#</div>
+</div>
+
 <cfloop list="#rc.fieldnames#" index="f">
-	<cftry><cfset fValue=info['#f#']><cfcatch><cfset fValue=""></cfcatch></cftry>
+	<cftry>
+		<cfset fValue=info['#f#']>
+		<cfcatch>
+			<cfset fValue="">
+		</cfcatch>
+	</cftry>
 	<cfif findNoCase('attachment',f) and isValid("UUID",fvalue)>
-	<input type="hidden" name="#f#" value="#fvalue#">
+		<input type="hidden" name="#f#" value="#fvalue#">
 	<cfelse>
-	<dt>#f#</dt><dd><cfif len(fValue) gt 100><textarea name="#f#">#HTMLEditFormat(fvalue)#</textarea><cfelse><input type="text" name="#f#" value="#HTMLEditFormat(fvalue)#"></cfif></dd>
+		<div class="control-group">
+  			<label class="control-label">#f#</label>
+  			<div class="controls">
+  				<cfif len(fValue) gt 100>
+  					<textarea name="#f#">#HTMLEditFormat(fvalue)#</textarea>
+  				<cfelse>
+  					<input type="text" name="#f#" value="#HTMLEditFormat(fvalue)#">
+  			</cfif>
+  		    </div>
+ 		 </div>
 	</cfif>
 </cfloop>
-</dl>
-<input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.update')#" /><input type="button" class="submit" onclick="submitForm(document.forms.form1,'delete','This');" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponse')#" />
+
+<div id="actionButtons" class="form-actions">
+<input type="button" class="submit btn btn-primary" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.update')#" /><input type="button" class="submit btn btn-danger" onclick="submitForm(document.forms.form1,'delete','This');" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponse')#" />
+</div>
 <input type="hidden" name="formid" value="#HTMLEditFormat(rc.contentid)#">
 <input type="hidden" name="contentid" value="#HTMLEditFormat(rc.contentid)#">
 <input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">

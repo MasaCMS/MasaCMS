@@ -98,7 +98,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   </cfif>
   <form novalidate="novalidate" action="index.cfm?muraAction=cEmail.update&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="form1" onSubmit="return false;">
     
-    <img class="loadProgress tabPreloader" src="images/progress_bar.gif">
+    <img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
     
     <div class="tabs initActiveTab" style="display:none">
 	
@@ -109,30 +109,54 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
     <!--- Email --->
     <div id="emailContent">
-      <dl class="oneColumn">
-        <dt class="first">#application.rbFactory.getKeyValue(session.rb,'email.subject')#</dt>
-        <dd>
+
+      <div class="control-group">
+        <label class="control-label">
+          #application.rbFactory.getKeyValue(session.rb,'email.subject')#
+        </label>
+      <div class="controls">
           <input type="text" class="text" name="subject" value="#HTMLEditFormat(rc.emailBean.getsubject())#"  required="true" message="#application.rbFactory.getKeyValue(session.rb,'email.subjectrequired')#">
-        </dd>
-        <dt>#application.rbFactory.getKeyValue(session.rb,'email.replytoemail')#</dt>
-        <dd>
+        </div>
+      </div>
+        
+        <div class="control-group">
+        <label class="control-label">
+          #application.rbFactory.getKeyValue(session.rb,'email.replytoemail')#
+        </label>
+        <div class="controls">
           <input type="text" class="text" name="replyto" value="#iif(rc.emailid neq '',de("#rc.emailBean.getreplyto()#"),de("#application.settingsManager.getSite(rc.siteid).getcontact()#"))#"  required="true" validate="email" message="#application.rbFactory.getKeyValue(session.rb,'email.replytorequired')#" >
-        </dd>
-        <dt>#application.rbFactory.getKeyValue(session.rb,'email.fromlabel')#</dt>
-        <dd>
+          </div>
+         </div>
+        
+        <div class="control-group">
+        <label class="control-label">
+          #application.rbFactory.getKeyValue(session.rb,'email.fromlabel')#
+          </label>
+         <div class="controls">
           <input type="text" class="text" name="fromLabel" value="#iif(rc.emailBean.getFromLabel() neq '',de("#HTMLEditFormat(rc.emailBean.getFromLabel())#"),de("#HTMLEditFormat(application.settingsManager.getSite(rc.siteid).getsite())#"))#"  required="true" message="The 'From Label' form field is required" >
-        </dd>
-        <dt>#application.rbFactory.getKeyValue(session.rb,'email.format')#</dt>
-        <dd>
+          </div>
+         </div>
+        
+        <div class="control-group">
+        <label class="control-label">
+          #application.rbFactory.getKeyValue(session.rb,'email.format')#
+        </label>
+        <div class="controls">
           <select name="format" class="dropdown" onChange="showMessageEditor();" id="messageFormat">
             <option value="HTML">#application.rbFactory.getKeyValue(session.rb,'email.html')#</option>
             <option value="Text" <cfif rc.emailBean.getformat() eq 'Text'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'email.text')#</option>
             <option value="HTML & Text" <cfif rc.emailBean.getformat() eq 'HTML & Text'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'email.htmltext')#</option>
           </select>
-        </dd>
+          </div>
+         </div>
+        
         <span id="htmlMessage" style="display:none;">
-        <dt>#application.rbFactory.getKeyValue(session.rb,'email.htmlmessage')#</dt>
-        <dd>
+        
+        <div class="control-group">
+        <label class="control-label">
+          #application.rbFactory.getKeyValue(session.rb,'email.htmlmessage')#
+        </label>
+        <div class="controls">
           <cfset rsPluginScripts=application.pluginManager.getScripts("onHTMLEdit",rc.siteID)>
           <cfif rsPluginScripts.recordcount>
             <cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
@@ -173,14 +197,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</script>
             </cfif>
           </cfif>
-        </dd>
-        </span> <span id="textMessage" style="display:none;">
-        <dt>#application.rbFactory.getKeyValue(session.rb,'email.textmessage')#</dt>
-        <dd>
+          </div>
+        </div>
+        
+        </span> 
+
+        <span id="textMessage" style="display:none;">
+        
+        <div class="control-group">
+        <label class="control-label">
+          #application.rbFactory.getKeyValue(session.rb,'email.textmessage')#
+        </label>
+        <div class="controls">
           <textarea name="bodyText" id="textEditor">#HTMLEditFormat(rc.emailBean.getbodytext())#</textarea>
-        </dd>
+          </div>
+        </div>
+
         </span>
-      </dl>
+
       </div>
       
       <!--- Recipients --->      
@@ -198,9 +232,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
      	
       <cfif rc.rsPrivateGroups.recordcount>
       <div id="privateGroups">
-      <dl>
-        <dt>#application.rbFactory.getKeyValue(session.rb,'email.privategroups')#</dt>
-        <dd>
+      
+      <div class="control-group">
+        <label class="control-label">
+            #application.rbFactory.getKeyValue(session.rb,'email.privategroups')#
+        </label>
+      <div class="controls">
           <ul>
             <cfloop query="rc.rsPrivateGroups">
               <li>
@@ -209,15 +246,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
               </li>
             </cfloop>
           </ul>
-        </dd>
-        </dl>
+         </div>
         </div>
+        
+      </div>
       </cfif>
+
       <cfif rc.rsPublicGroups.recordcount>
       <div id="publicGroups">
-        <dl>
-          <dt>#application.rbFactory.getKeyValue(session.rb,'email.publicgroups')#</dt>
-          <dd>
+        
+        <div class="control-group">
+        <label class="control-label">
+            #application.rbFactory.getKeyValue(session.rb,'email.publicgroups')#
+        </label>
+        <div class="controls">
             <ul>
               <cfloop query="rc.rsPublicGroups">
                 <li>
@@ -226,25 +268,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                 </li>
               </cfloop>
             </ul>
-          </dd>
-        </dl>
+           </div>
+        </div>
+
        </div>
       </cfif>
       <cfif application.categoryManager.getInterestGroupCount(rc.siteID)>
       <div id="interestGroups">
-        <dl>
-          <dt>#application.rbFactory.getKeyValue(session.rb,'email.userinterestgroups')#</dt>
-          <dd>
+       
+        <div class="control-group">
+        <label class="control-label">
+          #application.rbFactory.getKeyValue(session.rb,'email.userinterestgroups')#
+        </label>
+        <div class="controls">
             <cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" groupid="#rc.emailBean.getgroupID()#">
-          </dd>
-        </dl>
+        </div>
+      </div>
+
       </div>
       </cfif>
       <cfif rc.rsMailingLists.recordcount>
       <div id="mailingLists">
-        <dl>
-          <dt>#application.rbFactory.getKeyValue(session.rb,'email.mailinglists')#</dt>
-          <dd>
+
+       <div class="control-group">
+        <label class="control-label">
+          #application.rbFactory.getKeyValue(session.rb,'email.mailinglists')#
+        </label>
+        <div class="controls">
             <ul>
               <cfloop query="rc.rsMailingLists">
                 <li>
@@ -255,11 +305,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             </ul>
           </dd>
         </dl>
+
       </div>
       </cfif>
     </div>
  </div> <!--- End Tab Container --->
-      <div class="clearfix separate" id="actionButtons"> 
+      <div class="clearfix separate form-actions" id="actionButtons"> 
       <div style="display:inline" id="controls"> 
         <!---Delivery Options---><br />
         <cfsilent>
@@ -282,10 +333,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           </cfif>
         </cfif>
         </cfsilent>
-        <input type="button" class="submit" onClick="validateEmailForm('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.saveconfirm'))#')" value="#application.rbFactory.getKeyValue(session.rb,'email.save')#" /> <input type="button" class="submit" onClick="document.forms.form1.sendNow.value='true'; validateEmailForm('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.sendnowconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'email.sendnow')#" /> <input type="button" class="submit" onClick="openScheduler();" value="#application.rbFactory.getKeyValue(session.rb,'email.schedule')#" />
-          <input type="hidden" name="emailid" value="#currentEmailid#">
-          <cfif showDelete>
-            <input type="button" class="submit" onClick="validateEmailForm('delete', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.deleteconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'email.delete')#" />
+        <input type="button" class="submit btn" onClick="validateEmailForm('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.saveconfirm'))#')" value="#application.rbFactory.getKeyValue(session.rb,'email.save')#" /> 
+        <input type="button" class="submit btn" onClick="document.forms.form1.sendNow.value='true'; validateEmailForm('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.sendnowconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'email.sendnow')#" /> 
+        <input type="button" class="submit btn" onClick="openScheduler();" value="#application.rbFactory.getKeyValue(session.rb,'email.schedule')#" />
+        <input type="hidden" name="emailid" value="#currentEmailid#">
+        <cfif showDelete>
+            <input type="button" class="submit btn" onClick="validateEmailForm('delete', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.deleteconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'email.delete')#" />
           </cfif>
        </div>
         <div style="display:none" id="scheduler"> #application.rbFactory.getKeyValue(session.rb,'email.deliverydate')#<br />
@@ -332,7 +385,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             <option value="AM" <cfif timepart eq 'AM'>selected</cfif>>AM</option>
             <option value="PM" <cfif timepart eq 'PM'>selected</cfif>>PM</option>
           </select>
-          <input type="button" class="submit" onClick="validateScheduler('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.pleaseenterdate'))#', 'deliveryDate');" value="#application.rbFactory.getKeyValue(session.rb,'email.save')#"/> <input type="button" class="submit" onClick="closeScheduler()" value="#application.rbFactory.getKeyValue(session.rb,'email.cancel')#" /> </div>
+          <input type="button" class="submit btn" onClick="validateScheduler('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.pleaseenterdate'))#', 'deliveryDate');" value="#application.rbFactory.getKeyValue(session.rb,'email.save')#"/> <input type="button" class="submit btn" onClick="closeScheduler()" value="#application.rbFactory.getKeyValue(session.rb,'email.cancel')#" /> </div>
         <input type="hidden" name="action" value="">
         <input type="hidden" name="sendNow" value="">
       </div>
@@ -342,13 +395,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfoutput>
 <cfif showScheduler and dateCheck>
   <script language="javascript">
-				openScheduler();
-			</script>
+		openScheduler();
+	</script>
   <cfelse>
   <script language="javascript">
-				closeScheduler();
-			</script>
+		closeScheduler();
+	</script>
 </cfif>
-<script language="javascript">
-			showMessageEditor();
-		</script>
+  <script language="javascript">
+		showMessageEditor();
+  </script>

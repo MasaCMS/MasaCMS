@@ -53,37 +53,44 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <h3 class="alt">#application.rbFactory.getKeyValue(session.rb,"params.daterange")#</h3>
 <form novalidate="novalidate" name="searchFrm" onsubmit="return validate(this);" id="advancedSearch">
-<dl>
-<dt>#application.rbFactory.getKeyValue(session.rb,"params.from")#</dt>
-<dd>
-<input class="date datepicker" type="input" name="startDate" value="#LSDateFormat(rc.startDate,session.dateKeyFormat)#" validate="date" message="The 'From' date is required." />
-<!---<input class="calendar" type="image" src="images/icons/cal_24.png" onclick="window.open('date_picker/index.cfm?form=searchFrm&field=startDate&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">--->
-</dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,"params.to")#</dt>
-<dd>
-<input class="date datepicker" type="input" name="stopDate" value="#LSDateFormat(rc.stopDate,session.dateKeyFormat)#" validate="date" message="The 'To' date is required." />
-<!---<input class="calendar" type="image" src="images/icons/cal_24.png" onclick="window.open('date_picker/index.cfm?form=searchFrm&field=stopDate&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">--->
-</dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,"params.votesrequired")#</dt>
-<dd><select name="threshold">
-		<cfloop list="1,2,3,4,5,10,20,30,40,50,75,100" index="i">
-		<option value="#i#" <cfif rc.threshold eq i>selected</cfif>>#i#</option>
-		</cfloop>
-	</select>
-</dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,"params.numberofitems")#</dt>
-<dd><select name="limit">
+<div class="control-group">
+	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,"params.from")#
+</label>
+      <div class="controls">
+		<input type="input" class="datepicker" name="startDate" value="#LSDateFormat(rc.startDate,session.dateKeyFormat)#" validate="date" message="The 'From' date is required." />
+     </div>
+ </div>
+
+<div class="control-group">
+	<label class="control-label">
+		#application.rbFactory.getKeyValue(session.rb,"params.to")#
+	</label>
+      <div class="controls">
+		<input type="input" class="datepicker" name="stopDate" value="#LSDateFormat(rc.stopDate,session.dateKeyFormat)#" validate="date" message="The 'To' date is required." />
+     </div>
+ </div>
+
+
+<div class="control-group">
+	<label class="control-label">
+		#application.rbFactory.getKeyValue(session.rb,"params.numberofitems")#
+	</label>
+      <div class="controls"><select name="limit">
 		<cfloop list="10,20,30,40,50,75,100" index="i">
 		<option value="#i#" <cfif rc.limit eq i>selected</cfif>>#i#</option>
 		</cfloop>
 	</select>
-</dd>
-<dd><input type="button" class="submit" onclick="submitForm(document.forms.searchFrm);" value="Search"></a></dd>
-</dl>
+    </div>
+</div>
+
+<div id="buttonActins" class="formActions">
+	<input type="button" class="submit btn" onclick="submitForm(document.forms.searchFrm);" value="#application.rbFactory.getKeyValue(session.rb,"params.search")#" /></dd>
+</div>
+
 <input type="hidden" value="#HTMLEditFormat(rc.siteid)#" name="siteID"/>
 <input type="hidden" value="cDashboard.topRated" name="muraAction"/>
 </form>
-<table class="mura-table-grid stripe">
+<table class="table table-striped table-condensed">
 <tr>
 <th class="varWidth">Content</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.averagerating")#</th>

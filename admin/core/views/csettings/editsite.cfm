@@ -49,7 +49,7 @@ to your own modified versions of Mura CMS.
 <h2>Site Settings</h2>
 <cfoutput>
 <cfif len(rc.siteid)>
-<ul id="navTask">
+<ul class="navTask nav nav-pills">
 <li><a href="index.cfm?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#">Class Extension Manager</a></li>
 <li><a href="index.cfm?muraAction=cTrash.list&siteID=#URLEncodedFormat(rc.siteid)#">Trash Bin</a></li>
 <cfif rc.action eq "updateFiles">
@@ -68,8 +68,8 @@ to your own modified versions of Mura CMS.
 <form novalidate="novalidate" method ="post"  enctype="multipart/form-data" action="index.cfm?muraAction=cSettings.updateSite" name="form1"  onsubmit="return validate(this);">
 <!---
 <cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
-<cfhtmlhead text='<script type="text/javascript" src="js/ajax.js"></script>'>
-<cfhtmlhead text='<script type="text/javascript" src="js/tab-view.js"></script>'>
+<cfhtmlhead text='<script type="text/javascript" src="assets/js/ajax.js"></script>'>
+<cfhtmlhead text='<script type="text/javascript" src="assets/js/tab-view.js"></script>'>
  --->
 <cfif arrayLen(extendSets)>
 <cfset tabLabelList='Basic,Contact Info,Shared Resources,Modules,Email,Images,Extranet,Display Regions,Extended Attributes,Deploy Bundle'>
@@ -79,7 +79,7 @@ to your own modified versions of Mura CMS.
 <cfset tabList='tabBasic,tabContactinfo,tabSharedresources,tabModules,tabEmail,tabImages,tabExtranet,tabDisplayregions,tabBundles'>
 </cfif>
 
- <img class="loadProgress tabPreloader" src="images/progress_bar.gif">
+ <img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
  <div class="tabs initActiveTab" style="display:none">
   <ul>
 	<cfloop from="1" to="#listlen(tabList)#" index="t">

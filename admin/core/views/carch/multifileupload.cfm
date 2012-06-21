@@ -137,7 +137,7 @@ Please select one image at a time to upload. Uploading will begin as soon as you
                                AjaxUpload.uploadCount += 1;
                            // Allow only images. You should add security check on the server-side.
                                if (ext && /^(jpg|png|jpeg|gif|JPG|PNG|JPEG|GIF|Jpg|Png|Jpeg|Gif)$/i.test(ext)){
-                                       jQuery('<li class="up' + AjaxUpload.uploadCount + '"><img src="#application.configBean.getContext()#/admin/images/progress_bar.gif"></li>').appendTo('##uploader .files');
+                                       jQuery('<li class="up' + AjaxUpload.uploadCount + '"><img src="#application.configBean.getContext()#/admin/assets/images/progress_bar.gif"></li>').appendTo('##uploader .files');
                                } else {
                                // extension is not allowed
                                        alertDialog('Error: only jpg, png, or gif images are allowed');

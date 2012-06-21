@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager')#</h2>
-<ul id="navTask">
+<ul class="navTask nav nav-pills">
 <li><a href="index.cfm?muraAction=cMailingList.list&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager')#</a></li>
 <li><a href="index.cfm?muraAction=cMailingList.Edit&mlid=#rc.mlid#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.editmailinglist')#</a></li>
 <li><a href="index.cfm?muraAction=cMailingList.download&mlid=#rc.mlid#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.downloadmembers')#</a></li>
@@ -71,7 +71,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </form>
 <h3>#rc.listBean.getname()#</h3>
 
-<table id="metadata" class="mura-table-grid stripe">
+<table id="metadata" class="table table-striped table-condensed">
 <tr>
 	<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.emails')# (#rc.rslist.recordcount#)</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.name')#</th>

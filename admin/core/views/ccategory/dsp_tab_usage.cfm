@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="page_aTab">
 <dl class="oneColumn">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'categorymanager.usagetext')#:</dt>
- <table class="mura-table-grid stripe">
+ <table class="table table-striped table-condensed">
     <tr> 
       <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'categorymanager.title')#</th>
       <th>#application.rbFactory.getKeyValue(session.rb,'categorymanager.display')#</th>

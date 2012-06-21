@@ -54,7 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <li><strong>Class Extension:</strong> #application.classExtensionManager.getTypeAsString(subType.getType())# / #subType.getSubType()#</li>
 </ul>
 
-<ul id="navTask">
+<ul class="navTask nav nav-pills">
 <li><a href="index.cfm?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#">Class Extension Manager</a></li>
 <li><a href="index.cfm?muraAction=cExtend.listSets&subTypeID=#rc.subTypeID#&siteid=#URLEncodedFormat(rc.siteid)#">Back to Attribute Sets</a></li>
 </ul>

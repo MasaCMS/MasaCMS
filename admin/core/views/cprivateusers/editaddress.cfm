@@ -130,7 +130,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 
 <cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
-<cfhtmlhead text='<script type="text/javascript" src="js/tab-view.js"></script>'>
+<cfhtmlhead text='<script type="text/javascript" src="assets/js/tab-view.js"></script>'>
 <script type="text/javascript">
 initTabs(Array("#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.basic'))#","#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.extendedattributes'))#"),0,0,0);
 </script>	

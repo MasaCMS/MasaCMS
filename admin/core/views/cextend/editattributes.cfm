@@ -56,7 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<li><strong>Attributes Set:</strong> #extendSet.getName()#</li>
 </ul>
 
-<ul id="navTask">
+<ul class="navTask nav nav-pills">
 <li><a href="index.cfm?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#">List All Class Extensions</a></li>
 <li><a href="index.cfm?muraAction=cExtend.editSubType&subTypeID=#URLEncodedFormat(rc.subTypeID)#&siteid=#URLEncodedFormat(rc.siteid)#">Edit Class Extension</a></li>
 <li><a href="index.cfm?muraAction=cExtend.editSet&subTypeID=#URLEncodedFormat(rc.subTypeID)#&extendSetID=#URLEncodedFormat(rc.extendSetID)#&siteid=#URLEncodedFormat(rc.siteid)#">Edit Attribute Set</a></li>

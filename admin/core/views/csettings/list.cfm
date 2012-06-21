@@ -49,7 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="rc.siteUpdateSelect" default="false">
 <cfparam name="rc.siteAutoDeploySelect" default="false">
 <h2>Site Settings</h2>
-<ul id="navTask">
+<ul class="navTask nav nav-pills">
 	<cfif rc.action neq 'updateCore'>
 		<li><a href="index.cfm?muraAction=cSettings.list&action=updateCore" onclick="return confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.\n\nIf your are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.',this.href);">Update Core Files to Latest Version</a></li>
 		<cfif rc.siteUpdateSelect eq "true" or rc.siteSortBy eq "orderno">
@@ -82,7 +82,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfoutput>
 	</cfif>
 	<cfset application.userManager.getCurrentUser().setValue("errors","")>
-	<img class="loadProgress tabPreloader" src="images/progress_bar.gif">
+	<img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
 	<div class="tabs initActiveTab" style="display:none">
 		<ul>
 			<li><a href="#tabCurrentsites" onclick="return false;"><span>Current Sites</span></a></li>
@@ -108,7 +108,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				});
 			</script>
 			<form novalidate="novalidate" name="form1" id="form1" action="index.cfm?muraAction=csettings.list" method="post">
-				<table class="mura-table-grid stripe">
+				<table class="table table-striped table-condensed">
 					<tr>
 						<cfif rc.siteUpdateSelect eq "true">
 							<th>
@@ -190,20 +190,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfoutput>
 				</table>
 				<cfif rc.siteSortBy eq "orderno">
-					<input type="button" class="submit" onclick="document.form1.submit();" value="Update Bind Order" />
+					<input type="button" class="submit btn" onclick="document.form1.submit();" value="Update Bind Order" />
 				</cfif>
 				<cfif  rc.siteUpdateSelect eq "true">
 					<div class="clearfix" id="actionButtons">
 					<input type="button" class="submit" id="btnUpdateSites" value="Update Selected Sites to Latest Version" />
 					</div>
 					<div id="actionIndicator" style="display: none;">
-						<cfoutput><img class="loadProgress" src="#application.configBean.getContext()#/admin/images/progress_bar.gif"></cfoutput>
+						<cfoutput><img class="loadProgress" src="#application.configBean.getContext()#/admin/assets/images/progress_bar.gif"></cfoutput>
 					</div>
 				</cfif>
 				<cfif application.configBean.getMode() eq 'staging'
 						and rc.siteSortBy neq "orderno"
 						and rc.siteUpdateSelect neq "true">
-					<input type="button" class="submit" onclick="document.form1.submit();" value="Update Auto Deploy Settings" />	
+					<input type="button" class="submit btn" onclick="document.form1.submit();" value="Update Auto Deploy Settings" />	
 				</cfif>
 				<cfoutput>
 					<input type="hidden" name="siteSortBy" value="#htmlEditFormat(rc.siteSortBy)#" />
@@ -214,9 +214,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<form novalidate="novalidate" name="frmNewPlugin" action="index.cfm?muraAction=cSettings.deployPlugin" enctype="multipart/form-data" method="post" onsubmit="return validateForm(this);">
 				Upload New Plugin<br/>
 				<input name="newPlugin" type="file" required="true" message="Please select a plugin file.">
-				<input type="submit" value="Deploy"/>
+				<input type="submit" value="Deploy" class="btn"/>
 			</form>
-			<table class="mura-table-grid stripe">
+			<table class="table table-striped table-condensed">
 				<tr>
 					<th class="varWidth">Name</th>
 					<th>Directory</th>
@@ -254,7 +254,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<!---
 <cfparam name="rc.activeTab" default="0">
 <cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
-<cfhtmlhead text='<script type="text/javascript" src="js/tab-view.js"></script>'>
+<cfhtmlhead text='<script type="text/javascript" src="assets/js/tab-view.js"></script>'>
 <cfoutput><script type="text/javascript">
 initTabs(Array("Current Sites","Plugins"),#rc.activeTab#,0,0);
 </script></cfoutput>--->

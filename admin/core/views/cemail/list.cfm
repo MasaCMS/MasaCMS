@@ -73,14 +73,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  <a href="index.cfm?muraAction=cEmail.showAllBounces&siteid=<cfoutput>#rc.siteid#</cfoutput>">View All Bounces</a>
 	  </div>--->
 	  <cfoutput>
-<ul id="navTask"><li><a href="index.cfm?muraAction=cEmail.edit&emailid=&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,"email.addemail")#</a></li></ul>
+<ul class="navTask nav nav-pills"><li><a href="index.cfm?muraAction=cEmail.edit&emailid=&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,"email.addemail")#</a></li></ul>
 
 	  <div id="filterView">
 	  <h3>#application.rbFactory.getKeyValue(session.rb,"email.emails")#</h3></cfoutput>
+
 <form novalidate="novalidate" action="index.cfm?muraAction=cEmail.list&siteid=<cfoutput>#rc.siteid#</cfoutput>" method="post" name="form1" id="advancedSearch" class="clearfix">
-<dl class="filter">
-<dt><cfoutput>#application.rbFactory.getKeyValue(session.rb,"email.filterby")#:</dt>
-<dd><select name="groupID">
+
+<div class="control-group">
+      <label class="control-label">
+      	<cfoutput>#application.rbFactory.getKeyValue(session.rb,"email.filterby")#:
+      </label>
+      <div class="controls"><select name="groupID">
       	<optgroup label="#application.rbFactory.getKeyValue(session.rb,'email.all')#">
 		<option value="">#application.rbFactory.getKeyValue(session.rb,"email.all")#</option>
 		</optgroup></cfoutput>
@@ -110,23 +114,44 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<option value=""></option>
 		</cfif>
 	  </select>
-</dd>
-</dl><cfoutput>
-<dl class="status">
-<dt>#application.rbFactory.getKeyValue(session.rb,'email.status')#</dt>
-<dd><input type="radio"  name="status" value="2"  <cfif session.emaillist.status eq 2>checked</cfif>> <span class="text">#application.rbFactory.getKeyValue(session.rb,'email.all')#</span> <input type="radio"  name="status" value="1" <cfif session.emaillist.status eq 1>checked</cfif>> <span class="text">#application.rbFactory.getKeyValue(session.rb,'email.sent')#</span> <input type="radio"  name="status" value="0"  <cfif session.emaillist.status eq 0>checked</cfif>> <span class="text">#application.rbFactory.getKeyValue(session.rb,'email.queued')#</span></dd>
-</dl>
-<dl class="subject">
- <dt>#application.rbFactory.getKeyValue(session.rb,'email.subject')# <span>(#application.rbFactory.getKeyValue(session.rb,'email.leaveblanktoviewall')#)</span></dt>
- <dd><input type="text"  name="subject" value="#session.emaillist.subject#" class="textbox"></dd>
-</dl>
+      </div>
+    </div><cfoutput>
+
+<div class="control-group">
+      <label class="control-label">
+      	#application.rbFactory.getKeyValue(session.rb,'email.status')#
+      </label>
+      <div class="controls">
+      <label class="radio">
+      <input type="radio"  name="status" value="2"  <cfif session.emaillist.status eq 2>checked</cfif>> 
+      <span class="text">#application.rbFactory.getKeyValue(session.rb,'email.all')#</span> 
+      </label>
+      <label class="radio">
+      <input type="radio"  name="status" value="1" <cfif session.emaillist.status eq 1>checked</cfif>> 
+      <span class="text">#application.rbFactory.getKeyValue(session.rb,'email.sent')#</span> 
+      </label>
+       <label class="radio">
+       	<input type="radio"  name="status" value="0"  <cfif session.emaillist.status eq 0>checked</cfif>> 
+       <span class="text">#application.rbFactory.getKeyValue(session.rb,'email.queued')#</span>
+   		</label>
+      </div>
+</div>
+
+<div class="control-group">
+      <label class="control-label">
+      	#application.rbFactory.getKeyValue(session.rb,'email.subject')# <span>(#application.rbFactory.getKeyValue(session.rb,'email.leaveblanktoviewall')#)</span>
+  	  </label>
+      <div class="controls"><input type="text"  name="subject" value="#session.emaillist.subject#" class="textbox">
+      </div>
+</div>
 <input type="hidden" name="doSearch" value="true"/>			  
 <input type="button" class="submit" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'email.filter')#" />
 </form>
 </div>
+
 </cfoutput>
 <div class="separate"></div>
-	  <table id="metadata" class="mura-table-grid stripe">
+	  <table id="metadata" class="table table-striped table-condensed">
         <tr> 
 		  <cfset subjectDirection = "asc">
 		  <cfset createdDateDirection = "desc">

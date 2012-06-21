@@ -59,11 +59,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <h3>#application.rbFactory.getKeyValue(session.rb,'advertising.campaigns')#</h3>
 
-<ul id="navTask">
+<ul class="navTask nav nav-pills">
 <li><a href="index.cfm?muraAction=cAdvertising.editCampaign&campaignid=&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.addnewcampaign')#</a></li>
 </ul>
 
-<table class="mura-table-grid stripe">
+<table class="table table-striped table-condensed">
 <tr>
 	<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'advertising.name')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.startdate')#</th>
@@ -93,11 +93,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <h3 class="divide">#application.rbFactory.getKeyValue(session.rb,'advertising.creatives')#</h3>
 
-<ul id="navTask">
+<ul class="navTask nav nav-pills">
 <li><a href="index.cfm?muraAction=cAdvertising.editCreative&creativeid=&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.addnewcreative')#</a></li>
 </ul>
 
-<table class="mura-table-grid stripe">
+<table class="table table-striped table-condensed">
 <tr>
 	<th class="title">#application.rbFactory.getKeyValue(session.rb,'advertising.name')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.assettype')#</th>

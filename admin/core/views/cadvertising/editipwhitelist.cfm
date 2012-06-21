@@ -49,13 +49,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset newline= chr(13)& chr(10)>
 <p>#application.rbFactory.getKeyValue(session.rb,'advertising.yourcurrentip')#: <strong>#request.remoteAddr#</strong></p>
 <form novalidate="novalidate" name="form1" method="post" action="index.cfm?muraAction=cAdvertising.updateIPWhiteList&siteid=#URLEncodedFormat(rc.siteid)#">
-<dl class="oneColumn separate">
-<dt class="first">#application.rbFactory.getKeyValue(session.rb,'advertising.iplist')#</dt>
-<dd><p class="notice">#application.rbFactory.getKeyValue(session.rb,'advertising.iplistnote')#</p></dd>
-<dd><textarea name="IPWhiteList" class="alt"><cfloop query="rc.rslist">#rc.rslist.ip##newLine#</cfloop></textarea></dd>
-</dl>
-<div id="actionButtons">
-<input type="button" class="submit" onclick="document.form1.submit();" value="#application.rbFactory.getKeyValue(session.rb,'advertising.update')#" />
+
+<div class="control-group">
+	<label class="control-label">
+		#application.rbFactory.getKeyValue(session.rb,'advertising.iplist')#
+	</label>
+	<p class="notice help-block">#application.rbFactory.getKeyValue(session.rb,'advertising.iplistnote')#</p>
+	<div class="controls"><textarea name="IPWhiteList" class="alt"><cfloop query="rc.rslist">#rc.rslist.ip##newLine#</cfloop></textarea>
+	</div>
+</div>
+
+<div id="actionButtons" class="form-actions">
+<input type="button" class="submit btn btn-primary" onclick="document.form1.submit();" value="#application.rbFactory.getKeyValue(session.rb,'advertising.update')#" />
 </div>
 </form>
 </cfoutput>

@@ -53,7 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   <cfset summaryList="">
   <cfset detailList="">
 </cfif>
-<cfhtmlhead text='<script src="js/manageData.js?coreversion=#application.coreversion#" type="text/javascript"></script>'>
+<cfhtmlhead text='<script src="assets/js/manageData.js?coreversion=#application.coreversion#" type="text/javascript"></script>'>
 </cfsilent>
 <script language="javascript" type="text/javascript">
 function setFields(){
@@ -63,9 +63,10 @@ document.getElementById('responseDisplayFields').value=document.getElementById('
 
 <cfoutput>
   <form novalidate="novalidate" name="frmDisplayFields" method="post" action="index.cfm">
-  <dl class="oneColumn">
-  <dt class="first">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectfields')#</dt>
-  <dd><table>
+  
+<div class="control-group">
+  <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectfields')#</label>
+  <div class="controls"><table>
     <tr>
       <td valign="top">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablefields')#<br/>
         <select name="availableFields" size="10" id="availableFields" class="multiSelect">
@@ -112,15 +113,23 @@ document.getElementById('responseDisplayFields').value=document.getElementById('
        </td>
     </tr>
   </table>
-  </dd>
-  <dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.recordsperpage')#</dt>
-  <dd><select name="nextN" class="dropdown">
+  </div>
+</div>
+  
+<div class="control-group">
+  <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.recordsperpage')#
+  </label>
+  <div class="controls"><select name="nextN" class="dropdown">
           <cfloop from="5" to="50" step="5" index="r">
             <option value="#r#" <cfif r eq rc.contentBean.getNextN()>selected</cfif>>#r#</option>
           </cfloop>
-        </select></dd>
-  <dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.sortby')#:</dt>
-  <dd><select name="sortBy" class="dropdown">
+        </select>
+  </div>
+</div>
+  
+<div class="control-group">
+  <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.sortby')#:</label>
+  <div class="controls"><select name="sortBy" class="dropdown">
           <cfloop list="#rc.fieldnames#" index="f">
             <option value="#f#" <cfif f eq rc.contentBean.getSortBy()>selected</cfif>>#f#</option>
           </cfloop>
@@ -128,9 +137,14 @@ document.getElementById('responseDisplayFields').value=document.getElementById('
         <select name="sortDirection" class="dropdown">
           <option value="asc" <cfif rc.contentBean.getSortDirection() eq 'asc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.ascending')#</option>
           <option value="desc" <cfif rc.contentBean.getSortDirection() eq 'desc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.descending')#</option>
-        </select></dd>
-  </dl>
-  <input type="button" class="submit" onclick="submitForm(document.forms.frmDisplayFields,'setDisplay');" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.update')#" />
+        </select>
+     </div>
+  </div>
+
+<div id="actionButtons" class="form-actions">
+  <input type="button" class="submit btn btn-primary" onclick="submitForm(document.forms.frmDisplayFields,'setDisplay');" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.update')#" />
+</div>
+
 <input type="hidden" value="setDisplay" name="action">
 <input type="hidden" name="muraAction" value="cArch.datamanager" />
 <input type="hidden" name="contentid" value="#HTMLEditFormat(rc.contentid)#" />

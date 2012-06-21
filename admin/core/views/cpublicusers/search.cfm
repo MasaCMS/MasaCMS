@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,'user.membersearchresults')#</h2>
 
-<ul id="navTask">
+<ul class="navTask nav nav-pills">
 <li><a href="index.cfm?muraAction=cPublicUsers.advancedSearch&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'user.advancedmembersearch')#</a></li>
 </ul>
 <form novalidate="novalidate" action="index.cfm" method="get" name="form1" id="siteSearch">
@@ -58,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  <input type="button" class="submit" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'user.search')#" /></form>
 
 
-        <table class="mura-table-grid stripe">
+        <table class="table table-striped table-condensed">
           <tr> 
             <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'user.name')#</th>
             <th>#application.rbFactory.getKeyValue(session.rb,'user.email')#</th>

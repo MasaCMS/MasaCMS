@@ -128,21 +128,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <form novalidate="novalidate"  method="get" name="searchFrm" id="advancedSearch" class="sessionHistory">
 <input type="hidden" name="startSearch" value="true"/>
-<dl class="clearfix">
-<dt class="from">#application.rbFactory.getKeyValue(session.rb,"params.from")#</dt>
-<dd class="from"><input type="hidden" name="muraAction" value="cDashboard.sessionSearch" />
+<div class="control-group">
+	<label class="control-label">
+		#application.rbFactory.getKeyValue(session.rb,"params.from")#
+	</label>
+      <div class="controls"><input type="hidden" name="muraAction" value="cDashboard.sessionSearch" />
 <input type="hidden" name="siteID" value="#HTMLEditFormat(rc.siteid)#" />
 
 <input type="input" class="datepicker" name="startDate" value="#LSDateFormat(session.startDate,session.dateKeyFormat)#" validate="date" message="The 'From' date is required." />
 <!---<input class="calendar" type="image" src="images/icons/cal_24.png" onclick="window.open('date_picker/index.cfm?form=searchFrm&field=startDate&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">--->
 </dd>
-<dt class="to">#application.rbFactory.getKeyValue(session.rb,"params.to")#</dt>
-<dd class="to">
+<div class="control-group">
+	<label class="control-label">
+		#application.rbFactory.getKeyValue(session.rb,"params.to")#
+	</label>
+      <div class="controls">
 <input type="input" class="datepicker" name="stopDate" value="#LSDateFormat(session.stopDate,session.dateKeyFormat)#" validate="date" message="The 'To' date is required." />
 <!---<input class="calendar" type="image" src="images/icons/cal_24.png" onclick="window.open('date_picker/index.cfm?form=searchFrm&field=stopDate&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">--->
 </dd>
-<dt class="where">#application.rbFactory.getKeyValue(session.rb,"params.where")#</dt>
-	<dd class="where">
+<div class="control-group">
+	<label class="control-label">
+		#application.rbFactory.getKeyValue(session.rb,"params.where")#
+	</label>
+      <div class="controls">
 		<ul id="searchParams">
 		<cfif rc.newSearch or (session.paramCircuit neq 'cDashboard' or not session.paramCount)>
 		<li class="first"><select name="paramRelationship1" style="display:none;" >
@@ -252,19 +260,45 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 	</dd> --->
 	
-	
-</dl>
-<dl class="clearfix" id="memberVisitorOptions">
+
 <cfif application.settingsManager.getSite(rc.siteID).getExtranet() eq 1>
-	<dt class="first">#application.rbFactory.getKeyValue(session.rb,"params.memberoptions")#</dt>
-	<dd><input type="radio" name="membersOnly" value="true" <cfif session.membersOnly>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,"params.membersonlytrue")#&nbsp; &nbsp; <input type="radio" name="membersOnly" value="false" <cfif not session.membersOnly>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,"params.membersonlyfalse")#</dd>
-	<dt>#application.rbFactory.getKeyValue(session.rb,"params.visitoroptions")#</dt>
+<div class="control-group">
+	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,"params.memberoptions")#</label>
+      <div class="controls">
+      	<label class="radio">
+      	<input type="radio" name="membersOnly" value="true" <cfif session.membersOnly>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,"params.membersonlytrue")#
+      </label>
+	<label class="radio">
+      <input type="radio" name="membersOnly" value="false" <cfif not session.membersOnly>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,"params.membersonlyfalse")#
+  	</label>
+     </div>
+ </div>
+<div class="control-group">
+	<label class="control-label">
+		#application.rbFactory.getKeyValue(session.rb,"params.visitoroptions")#
+	</label>
 <cfelse>
-	<dt class="first">#application.rbFactory.getKeyValue(session.rb,"params.visitoroptions")#</dt>
-</cfif>
-	<dd><input type="radio" name="visitorStatus" value="Return" <cfif session.visitorStatus eq "Return">checked</cfif>> #application.rbFactory.getKeyValue(session.rb,"params.returningvisitors")# &nbsp; &nbsp; <input type="radio" name="visitorStatus" value="New" <cfif session.visitorStatus eq "New">checked</cfif>> #application.rbFactory.getKeyValue(session.rb,"params.newvisitors")# &nbsp; &nbsp; <input type="radio" name="visitorStatus" value="All" <cfif session.visitorStatus eq "All">checked</cfif>> #application.rbFactory.getKeyValue(session.rb,"params.allvisitors")#</dd>
-</dl>
-<input type="button" class="submit" onclick="submitForm(document.forms.searchFrm);" value="#application.rbFactory.getKeyValue(session.rb,"params.search")#" />
+<div class="control-group">
+	<label class="control-label">
+		#application.rbFactory.getKeyValue(session.rb,"params.visitoroptions")#
+	</label>
+</cfif>	
+    <div class="controls">
+	<label class="radio">
+   		<input type="radio" name="visitorStatus" value="Return" <cfif session.visitorStatus eq "Return">checked</cfif>> #application.rbFactory.getKeyValue(session.rb,"params.returningvisitors")# 
+    </label>
+    <label class="radio">
+    	 <input type="radio" name="visitorStatus" value="New" <cfif session.visitorStatus eq "New">checked</cfif>> #application.rbFactory.getKeyValue(session.rb,"params.newvisitors")# 
+    </label>
+	<label class="radio">
+    	<input type="radio" name="visitorStatus" value="All" <cfif session.visitorStatus eq "All">checked</cfif>> #application.rbFactory.getKeyValue(session.rb,"params.allvisitors")#
+    </label>
+  </div>
+</div>
+
+<div class="form-actions" id="actionButtons">
+<input type="button" class="submit btn" onclick="submitForm(document.forms.searchFrm);" value="#application.rbFactory.getKeyValue(session.rb,"params.search")#" />
+</div>
 </form>
 </cfoutput>
 <!--- <cfdump var="#rc.result#">arrayLen(session.paramArray)  --->
@@ -289,7 +323,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfoutput>
 	<h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.totalsessions")# (#rc.rslist.recordcount#)</h3>
 	
-<table class="mura-table-grid stripe"> 
+<table class="table table-striped table-condensed"> 
 <tr>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.user")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.locale")#</th>

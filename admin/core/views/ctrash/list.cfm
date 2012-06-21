@@ -44,12 +44,11 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfsavecontent variable="rc.layout">
 <cfparam name="rc.keywords" default="">
 <cfoutput>
 <h2>Trash Bin</h2>
 
-<ul id="navTask"
+<ul class="navTask nav nav-pills">
 <li><a href="index.cfm?muraAction=cSettings.editSite&siteID=#URLEncodedFormat(rc.siteID)#">Back to Site Settings</a></li>
 <li><a href="index.cfm?muraAction=cTrash.empty&siteID=#URLEncodedFormat(rc.siteID)#" onclick="return confirmDialog('Empty Site Trash?', this.href);">Empty Trash</a></li>
 </ul>
@@ -57,12 +56,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <form novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
    <h3>Keyword Search</h3>
     <input name="keywords" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" align="absmiddle" />
-    <input type="button" class="submit" onclick="submitForm(document.forms.siteSearch);" value="Search" />
+    <input type="button" class="submit btn" onclick="submitForm(document.forms.siteSearch);" value="Search" />
     <input type="hidden" name="muraAction" value="cTrash.list">
     <input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
  </form>
 
-<table class="mura-table-grid stripe"> 
+<table class="table table-striped table-condensed"> 
 <tr>
 <th class="varWidth">Label</th>
 <th>Type</th>
@@ -108,6 +107,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif> 
 </p>
 </cfif>
-
 </cfoutput>
-</cfsavecontent>
+

@@ -46,11 +46,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfoutput><ul>
 <cfif application.configBean.getSessionHistory()>
-<li<cfif myfusebox.originalfuseaction eq "sessionSearch"> class="current"</cfif>><a href="index.cfm?muraAction=cDashboard.sessionSearch&siteID=#session.siteid#&newSearch=true">#application.rbFactory.getKeyValue(session.rb,"dashboard.sessionsearch")#</a></li>
-<li<cfif myfusebox.originalfuseaction eq "topContent"> class="current"</cfif>><a href="index.cfm?muraAction=cDashboard.topContent&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.topcontent")#</a></li>
-<li<cfif myfusebox.originalfuseaction eq "topReferers"> class="current"</cfif>><a href="index.cfm?muraAction=cDashboard.topReferers&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.topreferrers")#</a></li>
-<li<cfif myfusebox.originalfuseaction eq "topSearches"> class="current"</cfif>><a href="index.cfm?muraAction=cDashboard.topSearches&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.topsearches")#</a></li>
+<li<cfif rc.originalfuseaction eq "sessionSearch"> class="current"</cfif>><a href="index.cfm?muraAction=cDashboard.sessionSearch&siteID=#session.siteid#&newSearch=true">#application.rbFactory.getKeyValue(session.rb,"dashboard.sessionsearch")#</a></li>
+<li<cfif rc.originalfuseaction eq "topContent"> class="current"</cfif>><a href="index.cfm?muraAction=cDashboard.topContent&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.topcontent")#</a></li>
+<li<cfif rc.originalfuseaction eq "topReferers"> class="current"</cfif>><a href="index.cfm?muraAction=cDashboard.topReferers&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.topreferrers")#</a></li>
+<li<cfif rc.originalfuseaction eq "topSearches"> class="current"</cfif>><a href="index.cfm?muraAction=cDashboard.topSearches&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.topsearches")#</a></li>
 </cfif>
-<li<cfif myfusebox.originalfuseaction eq "topRated"> class="current"</cfif>><a href="index.cfm?muraAction=cDashboard.topRated&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.toprated")#</a></li>
-<li<cfif myfusebox.originalfuseaction eq "recentComments"> class="current"</cfif>><a href="index.cfm?muraAction=cDashboard.recentComments&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments")#</a></li>
+<li<cfif rc.originalfuseaction eq "topRated"> class="current"</cfif>><a href="index.cfm?muraAction=cDashboard.topRated&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.toprated")#</a></li>
+<li<cfif rc.originalfuseaction eq "recentComments"> class="current"</cfif>><a href="index.cfm?muraAction=cDashboard.recentComments&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments")#</a></li>
 </ul></cfoutput>

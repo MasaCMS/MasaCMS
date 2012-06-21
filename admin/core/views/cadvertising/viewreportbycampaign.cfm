@@ -62,7 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 <cfset theMonth=createDate(year(rc.date1),month(rc.date1),1) /></cfsilent>
 <cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,'advertising.campaignreport')#</h2>
-<ul id="navTask">
+<ul class="navTask nav nav-pills">
 <li><a href="index.cfm?muraAction=cAdvertising.viewAdvertiser&&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.backtoadvertiser')#</a></li>
 <li><a href="index.cfm?muraAction=cAdvertising.editCampaign&&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#&campaignid=#rc.campaignid#">#application.rbFactory.getKeyValue(session.rb,'advertising.backtocampaign')#</a></li>
 </ul> 
@@ -75,17 +75,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <h3>#application.rbFactory.getKeyValue(session.rb,'advertising.reportdaterange')#</h3>
 <form novalidate="novalidate" action="index.cfm?muraAction=cAdvertising.viewReportByCampaign&campaignid=#rc.campaignid#&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="download" onsubmit="return validate(this);">
-#application.rbFactory.getKeyValue(session.rb,'advertising.from')# <input type="text" class="dateSelect datepicker" name="date1"  validate="date" message="#application.rbFactory.getKeyValue(session.rb,'advertising.fromvalidate')#" required="true" value="#LSDateFormat(rc.date1,session.dateKeyFormat)#" > <!---<input class="calendar" type="image" src="images/icons/cal_24.png" width="14" height="14" onclick="window.open('date_picker/index.cfm?form=download&field=date1&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">--->
+#application.rbFactory.getKeyValue(session.rb,'advertising.from')# 
+<input type="text" class="dateSelect datepicker" name="date1"  validate="date" message="#application.rbFactory.getKeyValue(session.rb,'advertising.fromvalidate')#" required="true" value="#LSDateFormat(rc.date1,session.dateKeyFormat)#" > 
 &nbsp;#application.rbFactory.getKeyValue(session.rb,'advertising.to')# 
-<input type="text" class="dateSelect datepicker" name="date2" validate="date" message="#application.rbFactory.getKeyValue(session.rb,'advertising.tovalidate')#" required="true" value="#LSDateFormat(rc.date2,session.dateKeyFormat)#"><!---<input class="calendar" type="image" src="images/icons/cal_24.png" width="14" height="14" onclick="window.open('date_picker/index.cfm?form=download&field=date2&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">---> <input type="button" class="submit" onclick="document.download.submit();" value="#application.rbFactory.getKeyValue(session.rb,'advertising.view')#" /></form>
+<input type="text" class="dateSelect datepicker" name="date2" validate="date" message="#application.rbFactory.getKeyValue(session.rb,'advertising.tovalidate')#" required="true" value="#LSDateFormat(rc.date2,session.dateKeyFormat)#"> 
+<input type="button" class="submit btn" onclick="document.download.submit();" value="#application.rbFactory.getKeyValue(session.rb,'advertising.view')#" />
+</form>
 
-
-<!--- <cfif rc.userBean.getaddress() neq ''><strong>Address:</strong> #rc.userBean.getaddress()#<br/></cfif>
-<cfif rc.userBean.getcity() neq '' and rc.userBean.getstate() neq '' and rc.userBean.getzip() neq ''><strong>City/State/Zip:</strong> #rc.userBean.getcity()#, #rc.userBean.getstate()#  #rc.userBean.getzip()#<br/></cfif>
-<cfif rc.userBean.getphone1() neq ''><strong>Phone:</strong> #rc.userBean.getPhone1()#<br/></cfif>
-<cfif rc.userBean.getfax() neq ''><strong>Fax:</strong> #rc.userBean.getfax()#<br/></cfif>
-<cfif rc.userBean.getfname() neq '' or rc.userBean.getlname() neq ''><strong>Contact:</strong> #rc.userBean.getfname()# #rc.userBean.getlname()#<br/></cfif>
-<cfif rc.userBean.getemail() neq ''><strong>Email:</strong> <a href"mailto:#rc.userBean.getemail()#">#rc.userBean.getemail()#</a><br/></cfif> --->
 
 	<cfset fTotalImps=0 />
 	<cfset fTotalClicks=0 />
@@ -115,7 +111,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfsilent>
 	
 	<cfoutput><h4>#month(theMonth)#/#year(theMonth)#</h4>
-	<table class="mura-table-grid stripe">
+	<table class="table table-striped table-condensed">
 	<tr>
 	<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'advertising.adzone')#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,'advertising.creative')#</th>
@@ -206,7 +202,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 	<h3>#application.rbFactory.getKeyValue(session.rb,'advertising.total')#</h3>
 
-	<table id="metadata" class="mura-table-grid stripe">
+	<table id="metadata" class="table table-striped table-condensed">
 	<tr>
 		<th>#application.rbFactory.getKeyValue(session.rb,'advertising.totalm')#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,'advertising.cpmtotal')#</th>

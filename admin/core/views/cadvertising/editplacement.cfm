@@ -47,37 +47,52 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfhtmlhead text="#session.dateKey#">
 <cfoutput>
 <h2>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"advertising.editcampaignplacement"),rc.campaignBean.getName())#</h2> 
-<ul id="navTask">
+
+<ul class="navTask nav nav-pills">
 <li><a href="index.cfm?muraAction=cAdvertising.viewAdvertiser&&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.backtoadvertiser')#</a></li>
 <li><a href="index.cfm?muraAction=cAdvertising.editCampaign&&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#&campaignid=#URLEncodedFormat(rc.campaignid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.backtocampaign')#</a></li>
 <cfif rc.placementid neq ""><li><a href="index.cfm?muraAction=cAdvertising.viewReportByPlacement&placementid=#URLEncodedFormat(rc.placementid)#&campaignid=#URLEncodedFormat(rc.campaignid)#&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.viewplacementreport')#</a></li></cfif>
 </ul> 
+
 <p class="overview">#application.rbFactory.getKeyValue(session.rb,'advertising.campaigndaterange')#: #LSDateFormat(rc.campaignBean.getStartDate(),session.dateKeyFormat)# - #LSDateFormat(rc.campaignBean.getEndDate(),session.dateKeyFormat)#</p>
 
 <h3>#application.rbFactory.getKeyValue(session.rb,'advertising.placementinformation')#</h3>
 #application.utility.displayErrors(rc.placementBean.getErrors())#
 
 <form novalidate="novalidate" action="index.cfm?muraAction=cAdvertising.updatePlacement&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#&campaignid=#URLEncodedFormat(rc.campaignid)#" method="post" name="form1" onsubmit="return validate(this);">
-<dl class="oneColumn">
-<dt>#application.rbFactory.getKeyValue(session.rb,'advertising.adzone')# (<em>#application.rbFactory.getKeyValue(session.rb,'advertising.dimensionscreativetype')#</em>)</dt>
-<dd><select name="adZoneID">
+
+<div class="control-group">
+	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.adzone')# (<em>#application.rbFactory.getKeyValue(session.rb,'advertising.dimensionscreativetype')#</em>)</label>
+	<div class="controls"><select name="adZoneID">
 <cfloop query="rc.rsAdzones">
 <option value="#rc.rsAdzones.adZoneID#" <cfif rc.rsAdzones.adZoneID eq rc.placementBean.getAdZoneID()>selected</cfif>>#rc.rsAdzones.name# (#application.rbFactory.getKeyValue(session.rb,'advertising.heightinitial')# #rc.rsAdzones.height# X #application.rbFactory.getKeyValue(session.rb,'advertising.widthinitial')# #rc.rsAdzones.width# - #application.rbFactory.getKeyValue(session.rb,'advertising.creativetype.#replace(rc.rsAdzones.creativeType,' ', '','all')#')#)</option>
 </cfloop>
-</select></dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'advertising.creativeasset')# (<em>#application.rbFactory.getKeyValue(session.rb,'advertising.dimensionscreativetype')#</em>)</dt>
-<dd><select name="creativeID">
+</select>
+	</div>
+</div>
+
+<div class="control-group">
+	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.creativeasset')# (<em>#application.rbFactory.getKeyValue(session.rb,'advertising.dimensionscreativetype')#</em>)</label>
+	<div class="controls"><select name="creativeID">
 <cfloop query="rc.rsCreatives">
 <option value="#rc.rsCreatives.creativeID#" <cfif rc.rsCreatives.creativeID eq rc.placementBean.getCreativeID()>selected</cfif>>#rc.rsCreatives.name# (#application.rbFactory.getKeyValue(session.rb,'advertising.heightinitial')# #rc.rsCreatives.height# X #application.rbFactory.getKeyValue(session.rb,'advertising.widthinitial')# #rc.rsCreatives.width# - #application.rbFactory.getKeyValue(session.rb,'advertising.creativetype.#replace(rc.rsCreatives.creativeType,' ','','all')#')#)</option>
 </cfloop>
-</select></dd>
+</select>
+	</div>
+</div>
 
-<dt>#application.rbFactory.getKeyValue(session.rb,'advertising.startdate')#</dt>
-<dd><input name="startDate" class="text datepicker" validate="date" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.startdatevalidate')#" value="#iif(rc.placementBean.getStartDate() eq '',de(LSDateFormat(rc.campaignBean.getStartDate(),session.dateKeyFormat)),de(LSDateFormat(rc.placementBean.getStartDate(),session.dateKeyFormat)))#">
-<!---<input class="calendar" type="image" src="images/icons/cal_24.png" width="14" height="14" onclick="window.open('date_picker/index.cfm?form=form1&field=startDate&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">---></dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'advertising.enddate')#</dt>
-<dd><input name="endDate" class="text datepicker" validate="date" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.enddatevalidate')#" value="#iif(rc.placementBean.getEndDate() eq '',de(LSDateFormat(rc.campaignBean.getEndDate(),session.dateKeyFormat)),de(LSDateFormat(rc.placementBean.getEndDate(),session.dateKeyFormat)))#">
-<!---<input class="calendar" type="image" src="images/icons/cal_24.png" width="14" height="14" onclick="window.open('date_picker/index.cfm?form=form1&field=endDate&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">---></dd>
+<div class="control-group">
+	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.startdate')#</label>
+	<div class="controls"><input name="startDate" class="text datepicker" validate="date" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.startdatevalidate')#" value="#iif(rc.placementBean.getStartDate() eq '',de(LSDateFormat(rc.campaignBean.getStartDate(),session.dateKeyFormat)),de(LSDateFormat(rc.placementBean.getStartDate(),session.dateKeyFormat)))#">
+	</div>
+</div>
+
+<div class="control-group">
+	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.enddate')#</label>
+	<div class="controls"><input name="endDate" class="text datepicker" validate="date" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.enddatevalidate')#" value="#iif(rc.placementBean.getEndDate() eq '',de(LSDateFormat(rc.campaignBean.getEndDate(),session.dateKeyFormat)),de(LSDateFormat(rc.placementBean.getEndDate(),session.dateKeyFormat)))#">
+	</div>
+</div>
+
 <dd class="divide">
 <script>
 function checkAllHours() {
@@ -121,40 +136,71 @@ function uncheckAllHours() {
 </td>
 </tr>
 </table>
-</dd>
+	</div>
+</div>
+
 <cfif application.categoryManager.getCategoryCount(rc.siteid)>
-<dt>#application.rbFactory.getKeyValue(session.rb,'advertising.categoryfilters')#</dt>
-<dd class="categories">
+<div class="control-group">
+	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.categoryfilters')#</label>
+	<div class="controls categories">
 <cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" placementID="#rc.placementID#" placementBean="#rc.placementBean#">
-<dd>
+	</div>
+</div>
 
 </cfif>
-<dt>#application.rbFactory.getKeyValue(session.rb,'advertising.costper1000impressions')#</dt>
-<dd><input name="costPerM" class="text" required="true" validate="numeric" message="#application.rbFactory.getKeyValue(session.rb,'advertising.cpmvalidate')#" value="#rc.placementBean.getCostPerM()#"></dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'advertising.costperclick')#</dt>
-<dd><input name="costPerClick" class="text" required="true" validate="numeric" message="#application.rbFactory.getKeyValue(session.rb,'advertising.cpcvalidate')#" value="#rc.placementBean.getCostPerClick()#"></dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'advertising.budget')#</dt>
-<dd><input name="budget" class="text" required="true" validate="numeric" message="#application.rbFactory.getKeyValue(session.rb,'advertising.budgetvalidate')#" value="#rc.placementBean.getBudget()#"></dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'advertising.exclusive')#</dt>
-<dd>
-<input name="isExclusive" id="isExclusiveYes" type="radio" value="1" <cfif rc.placementBean.getisExclusive()>checked</cfif>> <label for="isExclusiveYes">#application.rbFactory.getKeyValue(session.rb,'advertising.yes')#</label> 
-<input name="isExclusive" id="isExclusiveNo" type="radio" value="0" <cfif not rc.placementBean.getisExclusive()>checked</cfif>> <label for="isExclusiveNo">#application.rbFactory.getKeyValue(session.rb,'advertising.no')#</label> 
-</dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'advertising.isactive')#</dt>
-<dd>
-<input name="isActive" id="isActiveYes" type="radio" value="1" <cfif rc.placementBean.getIsActive()>checked</cfif>> <label for="isActiveYes">#application.rbFactory.getKeyValue(session.rb,'advertising.yes')#</label>
-<input name="isActive" id="isActiveNo" type="radio" value="0" <cfif not rc.placementBean.getIsActive()>checked</cfif>> <label for="isActiveNo">#application.rbFactory.getKeyValue(session.rb,'advertising.no')#</label>
-</dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'advertising.notes')#</dt>
-<dd><textarea name="notes" class="textArea">#rc.placementBean.getNotes()#</textarea></dd>
 
-</dl>
+<div class="control-group">
+	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.costper1000impressions')#</label>
+	<div class="controls"><input name="costPerM" class="text" required="true" validate="numeric" message="#application.rbFactory.getKeyValue(session.rb,'advertising.cpmvalidate')#" value="#rc.placementBean.getCostPerM()#">
+		</div>
+</div>
 
+<div class="control-group">
+	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.costperclick')#</label>
+	<div class="controls"><input name="costPerClick" class="text" required="true" validate="numeric" message="#application.rbFactory.getKeyValue(session.rb,'advertising.cpcvalidate')#" value="#rc.placementBean.getCostPerClick()#">
+	</div>
+</div>
+
+<div class="control-group">
+	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.budget')#</label>
+	<div class="controls"><input name="budget" class="text" required="true" validate="numeric" message="#application.rbFactory.getKeyValue(session.rb,'advertising.budgetvalidate')#" value="#rc.placementBean.getBudget()#">
+	</div>
+</div>
+
+<div class="control-group">
+	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.exclusive')#</label>
+	<div class="controls">
+	<label  clas="radio" for="isExclusiveYes">
+<input name="isExclusive" id="isExclusiveYes" type="radio" value="1" <cfif rc.placementBean.getisExclusive()>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,'advertising.yes')#</label> 
+<label clas="radio" for="isExclusiveNo">
+<input name="isExclusive" id="isExclusiveNo" type="radio" value="0" <cfif not rc.placementBean.getisExclusive()>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,'advertising.no')#</label> 
+	</div>
+</div>
+
+<div class="control-group">
+	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.isactive')#</label>
+	<div class="controls">
+	<label class="radio" for="isActiveYes">
+<input name="isActive" id="isActiveYes" type="radio" value="1" <cfif rc.placementBean.getIsActive()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'advertising.yes')#</label>
+<label class="radio" for="isActiveNo">
+<input name="isActive" id="isActiveNo" type="radio" value="0" <cfif not rc.placementBean.getIsActive()>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,'advertising.no')#</label>
+	</div>
+</div>
+
+<div class="control-group">
+	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.notes')#</label>
+	<div class="controls"><textarea name="notes" class="textArea">#rc.placementBean.getNotes()#</textarea>
+	</div>
+</div>
+
+<div id="actionButtons" class="form-actions">
 <cfif rc.placementid eq ''>
-	<input type="button" class="submit" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.add')#" />
+	<input type="button" class="submit btn btn-primary" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.add')#" />
 	<input type=hidden name="placementID" value="">
 <cfelse>
-	<input type="button" class="submit" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'advertising.deleteplacementconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.delete')#" />
-	<input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.update')#" />
-	<input type=hidden name="placementID" value="#rc.placementBean.getplacementID()#"></cfif><input type="hidden" name="action" value=""></form>
+	<input type="button" class="submit btn btn-danger" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'advertising.deleteplacementconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.delete')#" />
+	<input type="button" class="submit btn btn-primary" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.update')#" />
+	<input type=hidden name="placementID" value="#rc.placementBean.getplacementID()#"></cfif><input type="hidden" name="action" value="">
+</div>
+</form>
 </cfoutput>

@@ -46,8 +46,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfoutput><ul>
-<!---<li<cfif myfusebox.originalfuseaction eq "edituser"> class="current"</cfif>><a href="index.cfm?muraAction=cPublicUsers.edituser&siteid=#URLEncodedFormat(attributes.siteid)#&userid=">Add Member</a></li>
-<li<cfif myfusebox.originalfuseaction eq "editgroup"> class="current"</cfif>><a href="index.cfm?muraAction=cPublicUsers.editgroup&siteid=#URLEncodedFormat(attributes.siteid)#&userid=">Add Group</a></li>
-<li<cfif myfusebox.originalfuseaction eq "advancedSearchForm" or  myfusebox.originalfuseaction eq "advancedSearch"> class="current"</cfif>><a href="index.cfm?muraAction=cPublicUsers.advancedSearch&siteid=#URLEncodedFormat(attributes.siteid)#&newSearch=true">Advanced Search</a></li>--->
-<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')><li<cfif myfusebox.originalfuseaction eq "module"> class="current"</cfif>><a href="index.cfm?muraAction=cPerm.module&contentid=00000000000000000000000000000000008&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=00000000000000000000000000000000008">#application.rbFactory.getKeyValue(session.rb,'user.permissions')#</a></li></cfif>
+<!---<li<cfif rc.originalfuseaction eq "edituser"> class="current"</cfif>><a href="index.cfm?muraAction=cPublicUsers.edituser&siteid=#URLEncodedFormat(rc.siteid)#&userid=">Add Member</a></li>
+<li<cfif rc.originalfuseaction eq "editgroup"> class="current"</cfif>><a href="index.cfm?muraAction=cPublicUsers.editgroup&siteid=#URLEncodedFormat(rc.siteid)#&userid=">Add Group</a></li>
+<li<cfif rc.originalfuseaction eq "advancedSearchForm" or  rc.originalfuseaction eq "advancedSearch"> class="current"</cfif>><a href="index.cfm?muraAction=cPublicUsers.advancedSearch&siteid=#URLEncodedFormat(rc.siteid)#&newSearch=true">Advanced Search</a></li>--->
+<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')><li<cfif rc.originalfuseaction eq "module"> class="current"</cfif>><a href="index.cfm?muraAction=cPerm.module&contentid=00000000000000000000000000000000008&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=00000000000000000000000000000000008">#application.rbFactory.getKeyValue(session.rb,'user.permissions')#</a></li></cfif>
 </ul></cfoutput>

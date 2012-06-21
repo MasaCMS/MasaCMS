@@ -165,7 +165,7 @@ select * from rsSubTypes where subType <> 'Default'
 		<dd><textarea id="hours" name="hours" >#HTMLEditFormat(rc.hours)#</textarea></dd>   
 		<input type="hidden" name="isPrimary" value="1" />
 		<cfelse>
-		<dt class="first"><ul id="navTask"><li><a href="index.cfm?muraAction=cPublicUsers.editAddress&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#&routeID=#rc.routeid#&addressID=">#application.rbFactory.getKeyValue(session.rb,'user.addnewaddress')#</a></li></ul></dt>
+		<dt class="first"><ul class="navTask nav nav-pills"><li><a href="index.cfm?muraAction=cPublicUsers.editAddress&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#&routeID=#rc.routeid#&addressID=">#application.rbFactory.getKeyValue(session.rb,'user.addnewaddress')#</a></li></ul></dt>
 		<cfset rsAddresses=rc.userBean.getAddresses()>
 		<dd>
 		<cfif rsAddresses.recordcount>
@@ -242,7 +242,7 @@ select * from rsSubTypes where subType <> 'Default'
 	loadExtendedAttributes('#rc.userbean.getUserID()#','#rc.userbean.getType()#','#rc.userBean.getSubType()#','#userPoolID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteid).getThemeAssetPath()#');
 	</script>	
 </div>
-<cfhtmlhead text='<script type="text/javascript" src="js/user.js"></script>'>
+<cfhtmlhead text='<script type="text/javascript" src="assets/js/user.js"></script>'>
 </cfif>
 	<div id="tabAdvanced">
 		<dl class="oneColumn">
@@ -291,7 +291,7 @@ select * from rsSubTypes where subType <> 'Default'
 		</cfoutput>
 </cfsavecontent>	
 <cfoutput>	
-<img class="loadProgress tabPreloader" src="images/progress_bar.gif">
+<img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
 <div class="tabs initActiveTab" style="display:none">
 <ul>
 <cfloop from="1" to="#listlen(tabList)#" index="t">

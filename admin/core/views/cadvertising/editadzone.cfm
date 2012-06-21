@@ -49,11 +49,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 #application.utility.displayErrors(rc.adZoneBean.getErrors())#
 
 <form novalidate="novalidate" name="form1" method="post" action="index.cfm?muraAction=cAdvertising.updateAdZone&siteid=#URLEncodedFormat(rc.siteid)#" onsubmit="return false;">
-<dl class="oneColumn separate">
-<dt class="first">#application.rbFactory.getKeyValue(session.rb,'advertising.name')#</dt>
-<dd><input name="name" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.namerequired')#" value="#HTMLEditFormat(rc.adZoneBean.getName())#" maxlength="50"><dd>
+
+<div class="control-group">
+	<label class="control-label">
+		#application.rbFactory.getKeyValue(session.rb,'advertising.name')#
+	</label>
+	<div class="controls">
+		<input name="name" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.namerequired')#" value="#HTMLEditFormat(rc.adZoneBean.getName())#" maxlength="50">
+	</div>
+</div>
 <cfif rc.adZoneID neq ''>
-</dl>
+
 <div class="divide"></div>
 <div class="tabs initActiveTab" style="display:none">
 <ul>
@@ -63,34 +69,61 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </ul>
 
 <div id="tabBasic">
-<dl class="oneColumn">
-<dt class="first">
-<cfelse>
-<dt>
+
 </cfif>
-#application.rbFactory.getKeyValue(session.rb,'advertising.assettype')#</dt>
-<dd><select name="creativeType">
-<cfloop list="#application.advertiserManager.getCreativeTypes()#" index="ct">
-<option value="#ct#" <cfif rc.adZoneBean.getCreativeType() eq ct>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'advertising.creativetype.#replace(ct,' ','','all')#')#</option>
-</cfloop>
-</select></dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'advertising.height')#</dt>
-<dd><input name="height" validate="numeric" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.heightvalidate')#" value="#rc.adZoneBean.getHeight()#"></dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'advertising.width')#</dt>
-<dd><input name="width" validate="numeric" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.widthvalidate')#" value="#rc.adZoneBean.getWidth()#"></dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'advertising.isactive')#</dt>
-<dd>
-<input name="isActive" id="isActiveYes" type="radio" value="1" <cfif rc.adZoneBean.getIsActive()>checked</cfif>> <label for="isActiveYes">#application.rbFactory.getKeyValue(session.rb,'advertising.yes')#</label> 
-<input name="isActive" id="isActiveNo" type="radio" value="0" <cfif not rc.adZoneBean.getIsActive()>checked</cfif>> <label for="isActiveNo">#application.rbFactory.getKeyValue(session.rb,'advertising.no')#</label>
-</dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'advertising.notes')#</dt>
-<dd><textarea name="notes" class="textArea">#HTMLEditFormat(rc.adZoneBean.getNotes())#</textarea></dd>
-</dl>
-<div id="actionButtons">
+<div class="control-group">
+<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.assettype')#</label>
+	<div class="controls">
+		<select name="creativeType">
+			<cfloop list="#application.advertiserManager.getCreativeTypes()#" index="ct">
+			<option value="#ct#" <cfif rc.adZoneBean.getCreativeType() eq ct>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'advertising.creativetype.#replace(ct,' ','','all')#')#</option>
+			</cfloop>
+		</select>
+	</div>
+</div>
+
+<div class="control-group">
+	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.height')#</label>
+	<div class="controls">
+		<input name="height" validate="numeric" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.heightvalidate')#" value="#rc.adZoneBean.getHeight()#">
+	</div>
+</div>
+
+<div class="control-group">
+	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.width')#</label>
+	<div class="controls">
+	<input name="width" validate="numeric" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.widthvalidate')#" value="#rc.adZoneBean.getWidth()#">
+	</div>
+</div>
+
+<div class="control-group">
+	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.isactive')#</label>
+	<div class="controls">
+		<label for="isActiveYes" class="radio">
+			<input name="isActive" id="isActiveYes" type="radio" value="1" <cfif rc.adZoneBean.getIsActive()>checked</cfif>> 
+			#application.rbFactory.getKeyValue(session.rb,'advertising.yes')#
+		</label> 
+		<label for="isActiveNo" class="radio">
+			<input name="isActive" id="isActiveNo" type="radio" value="0" <cfif not rc.adZoneBean.getIsActive()>checked</cfif>> 
+			#application.rbFactory.getKeyValue(session.rb,'advertising.no')#
+		</label>
+	</div>
+</div>
+
+<div class="control-group">
+	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.notes')#</label>
+	<div class="controls">
+	<textarea name="notes" class="textArea">#HTMLEditFormat(rc.adZoneBean.getNotes())#</textarea>
+	</div>
+</div>
+
+
+
+<div id="actionButtons" class="form-actions">
 <cfif rc.adZoneid eq ''>
-<input type="button" class="submit" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.add')#" /><input type=hidden name="adZoneID" value="">
-<cfelse><input type="button" class="submit" onclick="submitForm(document.forms.form1,'delete','#jsStringformat(application.rbFactory.getKeyValue(session.rb,'advertising.deleteadzoneconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.delete')#" />
-<input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.update')#" />
+<input type="button" class="submit btn btn-primary" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.add')#" /><input type=hidden name="adZoneID" value="">
+<cfelse><input type="button" class="submit btn btn-danger" onclick="submitForm(document.forms.form1,'delete','#jsStringformat(application.rbFactory.getKeyValue(session.rb,'advertising.deleteadzoneconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.delete')#" />
+<input type="button" class="submit btn btn-primary" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.update')#" />
 </div>
 <input type=hidden name="adZoneID" value="#rc.adZoneBean.getAdZoneID()#"></cfif><input type="hidden" name="action" value="add"></form>
 </cfoutput>

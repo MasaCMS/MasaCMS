@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <h2>Change Set Content List</h2>
 
-<ul id="navTask">
+<ul class="navTask nav nav-pills">
 <li><a  title="#application.rbFactory.getKeyValue(session.rb,'changesets.backtochangesets')#" href="index.cfm?muraAction=cChangesets.list&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'changesets.backtochangesets')#</a></li>
 <li><a  title="#application.rbFactory.getKeyValue(session.rb,'changesets.vieweditform')#" href="index.cfm?muraAction=cChangesets.edit&siteid=#URLEncodedFormat(rc.siteid)#&changesetID=#HTMLEditFormat(rc.changesetID)#">#application.rbFactory.getKeyValue(session.rb,'changesets.vieweditform')#</a></li>
 </ul>
@@ -62,7 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <p>#application.rbFactory.getKeyValue(session.rb,'changesets.filterviewnotice')#</p>
 <form novalidate="novalidate" id="assignmentSearch" name="assignmentSearch" method="get">
 	<input name="keywords" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" maxlength="50" />
-	<input type="button" class="submit" onclick="return submitForm(document.forms.assignmentSearch);" value="Search" />
+	<input type="button" class="submit btn" onclick="return submitForm(document.forms.assignmentSearch);" value="Search" />
 	<input type="hidden" name="muraAction" value="cChangesets.assignments">
 	<input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
 	<input type="hidden" name="changesetID" value="#HTMLEditFormat(rc.changesetID)#">
@@ -71,7 +71,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h4>#application.rbFactory.getKeyValue(session.rb,'changesets.previewlink')#</h4>
 <p><a title="Preview" href="##" onclick="return preview('#JSStringFormat(rc.previewLink)#','');">#HTMLEditFormat(rc.previewLink)#</a></p>
 <h4>#application.rbFactory.getKeyValue(session.rb,'changesets.sitearchitecture')#</h4>
- <table class="mura-table-grid stripe">
+ <table class="table table-striped table-condensed">
     <tr> 
       <th class="varWidth">Title</th>
       <th class="administration">&nbsp;</th>
@@ -87,15 +87,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  		  <td class="administration">
 		<ul class="four">
 		<cfif verdict neq 'none'>
-       		<li class="edit"><a title="Edit" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#URLEncodedFormat(rc.rslist.contentID)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.rslist.moduleid#&startrow=#rc.startrow#&return=changesets">&nbsp;</a></li> 	
+       		<li class="edit"><a title="Edit" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#URLEncodedFormat(rc.rslist.contentID)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.rslist.moduleid#&startrow=#rc.startrow#&return=changesets">Edit</a></li> 	
 			<li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?changesetPreviewID=#JSStringFormat(rc.rslist.changesetID)#&linkServID=#JSStringFormat(rc.rslist.contentID)#','#rc.rsList.targetParams#');">#HTMLEditFormat(left(rc.rsList.menutitle,70))#</a></li>
-		   	<li class="versionHistory"><a title="Version History" href="index.cfm?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#rc.rsList.contentID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.rslist.moduleID#&startrow=#rc.startrow#">&nbsp;</a></li>   
+		   	<li class="versionHistory"><a title="Version History" href="index.cfm?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#rc.rsList.contentID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.rslist.moduleID#&startrow=#rc.startrow#"Version History</a></li>   
         <cfelse>
 	        <li class="editOff">&nbsp;</li>
 			<li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?changesetID=#JSStringFormat(rc.rslist.changesetID)#&linkServID=#JSStringFormat(rc.rslist.contentID)#','#rc.rsList.targetParams#');">#HTMLEditFormat(left(rc.rsList.menutitle,70))#</a></li>
 			<li class="versionHistoryOff"><a>Version History</a></li>
       	</cfif>
-		<li class="delete"><a  title="Delete" href="index.cfm?muraAction=cChangesets.removeItem&contentHistId=#rc.rsList.contentHistID#&siteid=#URLEncodedFormat(rc.siteid)#&changesetID=#URLEncodedFormat(rc.rslist.changesetID)#&keywords=#HTMLEditFormat(rc.keywords)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'changesets.removeitemconfirm'),rc.rslist.menutitle))#',this.href)"&nbsp;</a></li>
+		<li class="delete"><a  title="Delete" href="index.cfm?muraAction=cChangesets.removeItem&contentHistId=#rc.rsList.contentHistID#&siteid=#URLEncodedFormat(rc.siteid)#&changesetID=#URLEncodedFormat(rc.rslist.changesetID)#&keywords=#HTMLEditFormat(rc.keywords)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'changesets.removeitemconfirm'),rc.rslist.menutitle))#',this.href)">delete</a></li>
 		</ul>
 		</td>
 		</tr>
@@ -110,7 +110,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset rc.rslist=rc.componentAssignments.getQuery()>
 <h4>#application.rbFactory.getKeyValue(session.rb,'changesets.components')#</h4>
- <table class="mura-table-grid stripe">
+ <table class="table table-striped table-condensed">
     <tr> 
       <th class="varWidth">Title</th>
       <th class="administration">&nbsp;</th>
@@ -120,21 +120,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfsilent>
 			<cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid,false,rc.rslist.path)/>
 			<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
-      <cfset editlink="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#URLEncodedFormat(rc.rslist.contentID)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.rslist.moduleid#&startrow=#rc.startrow#&return=changesets">
+      <cfset editlink="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.rslist.moduleid#&startrow=#rc.startrow#&return=changesets">
 		</cfsilent>
         <tr>  
           <td class="title varWidth"><a href="#editlink#">#HTMLEditFormat(rc.rsList.title)#</a></td>
  		  <td class="administration">
 		<ul class="three">
 		<cfif verdict neq 'none'>
-       		<li class="edit"><a title="Edit" href="#editlink#">&nbsp;</a></li> 	
-		   	<li class="versionHistory"><a title="Version History" href="index.cfm?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#rc.rsList.contentID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.rslist.moduleID#&startrow=#rc.startrow#">&nbsp;</a></li>   
+       		<li class="edit"><a title="Edit" href="#editlink#">Edit</a></li> 	
+		   	<li class="versionHistory"><a title="Version History" href="index.cfm?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.rslist.moduleID#&startrow=#rc.startrow#">Version History</a></li>   
         <cfelse>
-	        <li class="editOff">&nbsp;</li>
-			<li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?changesetID=#JSStringFormat(rc.rslist.changesetID)#&linkServID=#JSStringFormat(rc.rslist.contentID)#','#rc.rsList.targetParams#');">#HTMLEditFormat(left(rc.rsList.menutitle,70))#</a></li>
+	        <li class="editOff">Edit</li>
+			<li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?changesetID=#JSStringFormat(rc.rslist.changesetID)#&linkServID=#JSStringFormat(rc.rslist.contentID)#','#rc.rsList.targetParams#');">Preview</a></li>
 			<li class="versionHistoryOff"><a>Version History</a></li>
       	</cfif>
-		<li class="delete"><a  title="Delete" href="index.cfm?muraAction=cChangesets.removeItem&contentHistId=#rc.rsList.contentHistID#&siteid=#URLEncodedFormat(rc.siteid)#&changesetID=#URLEncodedFormat(rc.rslist.changesetID)#&keywords=#HTMLEditFormat(rc.keywords)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'changesets.removeitemconfirm'),rc.rslist.menutitle))#',this.href)"&nbsp;</a></li>
+		<li class="delete"><a  title="Delete" href="index.cfm?muraAction=cChangesets.removeItem&contentHistId=#rc.rsList.contentHistID#&siteid=#URLEncodedFormat(rc.siteid)#&changesetID=#URLEncodedFormat(rc.rslist.changesetID)#&keywords=#HTMLEditFormat(rc.keywords)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'changesets.removeitemconfirm'),rc.rslist.menutitle))#',this.href)">Delete</a></li>
 		</ul>
 		</td>
 		</tr>
@@ -149,7 +149,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset rc.rslist=rc.formAssignments.getQuery()>
 <h4>#application.rbFactory.getKeyValue(session.rb,'changesets.forms')#</h4>
- <table class="mura-table-grid stripe">
+ <table class="table table-striped table-condensed">
     <tr> 
       <th class="varWidth">Title</th>
       <th class="administration">&nbsp;</th>
@@ -159,21 +159,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <cfsilent>
       <cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid,false,rc.rslist.path)/>
       <cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
-      <cfset editlink="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#URLEncodedFormat(rc.rslist.contentID)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.rslist.moduleid#&startrow=#rc.startrow#&return=changesets">
+      <cfset editlink="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.rslist.moduleid#&startrow=#rc.startrow#&return=changesets">
     </cfsilent>
         <tr>  
           <td class="title varWidth"><a href="#editlink#">#HTMLEditFormat(rc.rsList.title)#</a></td>
       <td class="administration">
     <ul class="three">
     <cfif verdict neq 'none'>
-          <li class="edit"><a title="Edit" href="#editlink#">&nbsp;</a></li>  
-        <li class="versionHistory"><a title="Version History" href="index.cfm?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#rc.rsList.contentID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.rslist.moduleID#&startrow=#rc.startrow#">&nbsp;</a></li>   
+          <li class="edit"><a title="Edit" href="#editlink#">Edit;</a></li>  
+        <li class="versionHistory"><a title="Version History" href="index.cfm?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.rslist.moduleID#&startrow=#rc.startrow#">Version History</a></li>   
         <cfelse>
-          <li class="editOff">&nbsp;</li>
-      <li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?changesetID=#JSStringFormat(rc.rslist.changesetID)#&linkServID=#JSStringFormat(rc.rslist.contentID)#','#rc.rsList.targetParams#');">#HTMLEditFormat(left(rc.rsList.menutitle,70))#</a></li>
+          <li class="editOff">Edit</li>
+      <li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?changesetID=#JSStringFormat(rc.rslist.changesetID)#&linkServID=#JSStringFormat(rc.rslist.contentID)#','#rc.rsList.targetParams#');">Preview</a></li>
       <li class="versionHistoryOff"><a>Version History</a></li>
         </cfif>
-    <li class="delete"><a  title="Delete" href="index.cfm?muraAction=cChangesets.removeItem&contentHistId=#rc.rsList.contentHistID#&siteid=#URLEncodedFormat(rc.siteid)#&changesetID=#URLEncodedFormat(rc.rslist.changesetID)#&keywords=#HTMLEditFormat(rc.keywords)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'changesets.removeitemconfirm'),rc.rslist.menutitle))#',this.href)"&nbsp;</a></li>
+    <li class="delete"><a  title="Delete" href="index.cfm?muraAction=cChangesets.removeItem&contentHistId=#rc.rsList.contentHistID#&siteid=#URLEncodedFormat(rc.siteid)#&changesetID=#URLEncodedFormat(rc.rslist.changesetID)#&keywords=#HTMLEditFormat(rc.keywords)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'changesets.removeitemconfirm'),rc.rslist.menutitle))#',this.href)">Delete</a></li>
     </ul>
     </td>
     </tr>

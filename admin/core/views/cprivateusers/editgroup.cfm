@@ -53,7 +53,7 @@ select * from rsSubTypes where subType <> 'Default'
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,'user.admingroupform')#</h2>
 <cfif listFirst(listLast(rc.muraAction,":"),".") eq "editgroup" and rc.userid neq ''>
-<ul id="navTask"><li><a href="javascript:intuserselect('#rc.userid#',1,<cfif listFind(session.mura.memberships,'S2')>1<cfelse>0</cfif>,'#rc.siteid#')">#application.rbFactory.getKeyValue(session.rb,'user.addadminusertogroup')#</a></li></ul></cfif>
+<ul class="navTask nav nav-pills"><li><a href="javascript:intuserselect('#rc.userid#',1,<cfif listFind(session.mura.memberships,'S2')>1<cfelse>0</cfif>,'#rc.siteid#')">#application.rbFactory.getKeyValue(session.rb,'user.addadminusertogroup')#</a></li></ul></cfif>
 </cfoutput>
     <cfswitch expression="#rc.userBean.getperm()#">
 	  	<cfcase value="1">
@@ -122,9 +122,9 @@ select * from rsSubTypes where subType <> 'Default'
 </div>
 <!---
 <cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
-<cfhtmlhead text='<script type="text/javascript" src="js/tab-view.js"></script>'>
+<cfhtmlhead text='<script type="text/javascript" src="assets/js/tab-view.js"></script>'>
 --->
-<cfhtmlhead text='<script type="text/javascript" src="js/user.js"></script>'>
+<cfhtmlhead text='<script type="text/javascript" src="assets/js/user.js"></script>'>
 <script type="text/javascript">
 loadExtendedAttributes('#rc.userbean.getUserID()#','1','#rc.userbean.getSubType()#','#userPoolID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteid).getThemeAssetPath()#');	
 //initTabs(Array("#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.basic'))#","#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.extendedattributes'))#"),0,0,0);
@@ -146,7 +146,7 @@ loadExtendedAttributes('#rc.userbean.getUserID()#','1','#rc.userbean.getSubType(
 
 	<cfif rc.userid neq ''>
       <cfoutput><h4 class="separate">#application.rbFactory.getKeyValue(session.rb,'user.groupmembers')#</h4> 
-        <table class="mura-table-grid stripe">
+        <table class="table table-striped table-condensed">
             <tr> 
               <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'user.name')#</th>
               <th>#application.rbFactory.getKeyValue(session.rb,'user.email')#</th>

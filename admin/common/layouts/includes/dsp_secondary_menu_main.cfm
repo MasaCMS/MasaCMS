@@ -51,23 +51,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="session.dashboardSpan" default="#application.configBean.getSessionHistory()#">
 </cfif>
 <cfoutput>
-    <ul id="navSecondary">
+<li class="dropdown">
+  <a href="##" class="dropdown-toggle" data-toggle="dropdown">Modules <b class="caret"></b></a>
+  <ul id="navSecondary" class="dropdown-menu">
 		<cfif application.configBean.getDashboard()>
-		<li <cfif  myfusebox.originalcircuit eq 'cDashboard'>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cDashboard.main&siteid=#session.siteid#&span=#session.dashboardSpan#">#application.rbFactory.getKeyValue(session.rb,"layout.dashboard")#</a>
-        	<cfif  myfusebox.originalcircuit eq 'cDashboard'><cfinclude template="/muraWRM/admin/core/views/cdashboard/dsp_secondary_menu.cfm"></cfif>
+		<li <cfif  rc.originalcircuit eq 'cDashboard'>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cDashboard.main&siteid=#session.siteid#&span=#session.dashboardSpan#">#application.rbFactory.getKeyValue(session.rb,"layout.dashboard")#</a>
+        	<cfif  rc.originalcircuit eq 'cDashboard'><cfinclude template="/muraWRM/admin/core/views/cdashboard/dsp_secondary_menu.cfm"></cfif>
 		</li>
 		</cfif>
-      <li <cfif attributes.moduleid eq '00000000000000000000000000000000000' and myfusebox.originalcircuit eq 'cArch'>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cArch.list&siteid=#session.siteid#&moduleid=00000000000000000000000000000000000">#application.rbFactory.getKeyValue(session.rb,"layout.sitemanager")#</a>
-	   <cfif attributes.moduleid eq '00000000000000000000000000000000000' and myfusebox.originalcircuit neq 'cDashboard'>
+      <li <cfif rc.moduleid eq '00000000000000000000000000000000000' and rc.originalcircuit eq 'cArch'>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cArch.list&siteid=#session.siteid#&moduleid=00000000000000000000000000000000000">#application.rbFactory.getKeyValue(session.rb,"layout.sitemanager")#</a>
+	   <cfif rc.moduleid eq '00000000000000000000000000000000000' and rc.originalcircuit neq 'cDashboard'>
 	   <cfinclude template="/muraWRM/admin/core/views/carch/dsp_secondary_menu.cfm"></cfif></li>
 	
   <!--- Moved to flat view 
-  <li <cfif myfusebox.originalfuseaction eq 'draft'>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cArch.draft&siteid=#session.siteid#" >#application.rbFactory.getKeyValue(session.rb,"layout.drafts")#</a></li>--->
+  <li <cfif rc.originalfuseaction eq 'draft'>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cArch.draft&siteid=#session.siteid#" >#application.rbFactory.getKeyValue(session.rb,"layout.drafts")#</a></li>--->
     
 	<cfif isNumeric(application.settingsManager.getSite(session.siteid).getValue("HasChangesets"))>
 	  <cfif application.settingsManager.getSite(session.siteid).getHasChangesets() and application.permUtility.getModulePerm("00000000000000000000000000000000014","#session.siteid#")>
-        <li <cfif  myfusebox.originalcircuit eq 'cChangesets' or (myfusebox.originalcircuit eq 'cPerm' and  attributes.moduleid eq '00000000000000000000000000000000014')>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cChangesets.list&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.changesets")#</a>
-          <cfif myfusebox.originalcircuit eq 'cChangesets' or (myfusebox.originalcircuit eq 'cPerm' and  attributes.moduleid eq '00000000000000000000000000000000014')>
+        <li <cfif  rc.originalcircuit eq 'cChangesets' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000014')>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cChangesets.list&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.changesets")#</a>
+          <cfif rc.originalcircuit eq 'cChangesets' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000014')>
             <cfinclude template="/muraWRM/admin/core/views/cchangesets/dsp_secondary_menu.cfm">
           </cfif>
         </li>
@@ -75,14 +77,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>  
 	
 	<cfif application.permUtility.getModulePerm("00000000000000000000000000000000003","#session.siteid#")>
-        <li <cfif attributes.moduleid eq '00000000000000000000000000000000003'>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cArch.list&siteid=#session.siteid#&topid=00000000000000000000000000000000003&parentid=00000000000000000000000000000000003&moduleid=00000000000000000000000000000000003">#application.rbFactory.getKeyValue(session.rb,"layout.components")#</a>
-          <cfif attributes.moduleid eq '00000000000000000000000000000000003' or (myfusebox.originalcircuit eq 'cPerm' and  attributes.moduleid eq '00000000000000000000000000000000003')>
+        <li <cfif rc.moduleid eq '00000000000000000000000000000000003'>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cArch.list&siteid=#session.siteid#&topid=00000000000000000000000000000000003&parentid=00000000000000000000000000000000003&moduleid=00000000000000000000000000000000003">#application.rbFactory.getKeyValue(session.rb,"layout.components")#</a>
+          <cfif rc.moduleid eq '00000000000000000000000000000000003' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000003')>
             <cfinclude template="/muraWRM/admin/core/views/carch/dsp_secondary_menu.cfm">
           </cfif>
         </li>
       </cfif>
 	 
-		<li<cfif myfusebox.originalcircuit eq 'cPlugins' > id="current"</cfif>>
+		<li<cfif rc.originalcircuit eq 'cPlugins' > id="current"</cfif>>
 		<a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPlugins.list&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.plugins")#</a>
         </li>
 		<cfif isdefined("request.event")>
@@ -94,54 +96,54 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		#application.pluginManager.renderEvent("onAdminModuleNav",pluginEvent)#
       <cfif application.permUtility.getModulePerm("00000000000000000000000000000000010","#session.siteid#")>
-        <li <cfif  myfusebox.originalcircuit eq 'cCategory' or (myfusebox.originalcircuit eq 'cPerm' and  attributes.moduleid eq '00000000000000000000000000000000010')>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cCategory.list&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.categories")#</a>
-          <cfif myfusebox.originalcircuit eq 'cCategory' or (myfusebox.originalcircuit eq 'cPerm' and  attributes.moduleid eq '00000000000000000000000000000000010')>
+        <li <cfif  rc.originalcircuit eq 'cCategory' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000010')>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cCategory.list&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.categories")#</a>
+          <cfif rc.originalcircuit eq 'cCategory' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000010')>
             <cfinclude template="/muraWRM/admin/core/views/ccategory/dsp_secondary_menu.cfm">
           </cfif>
         </li>
       </cfif>
       <cfif application.settingsManager.getSite(session.siteid).getHasFeedManager() and application.permUtility.getModulePerm("00000000000000000000000000000000011","#session.siteid#")>
-        <li <cfif  myfusebox.originalcircuit eq 'cFeed' or (myfusebox.originalcircuit eq 'cPerm' and  attributes.moduleid eq '00000000000000000000000000000000011')>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cFeed.list&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.contentcollections")#</a>
-          <cfif myfusebox.originalcircuit eq 'cFeed' or (myfusebox.originalcircuit eq 'cPerm' and  attributes.moduleid eq '00000000000000000000000000000000011')>
+        <li <cfif  rc.originalcircuit eq 'cFeed' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000011')>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cFeed.list&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.contentcollections")#</a>
+          <cfif rc.originalcircuit eq 'cFeed' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000011')>
            <cfinclude template="/muraWRM/admin/core/views/cfeed/dsp_secondary_menu.cfm">
           </cfif>
         </li>
       </cfif>
       <cfif application.settingsManager.getSite(session.siteid).getDataCollection() and  application.permUtility.getModulePerm("00000000000000000000000000000000004","#session.siteid#")>
-        <li <cfif attributes.moduleid eq '00000000000000000000000000000000004' or (myfusebox.originalcircuit eq 'cPerm' and  attributes.moduleid eq '00000000000000000000000000000000004')>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cArch.list&siteid=#session.siteid#&topid=00000000000000000000000000000000004&parentid=00000000000000000000000000000000004&moduleid=00000000000000000000000000000000004">#application.rbFactory.getKeyValue(session.rb,"layout.forms")#</a>
-          <cfif attributes.moduleid eq '00000000000000000000000000000000004'>
+        <li <cfif rc.moduleid eq '00000000000000000000000000000000004' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000004')>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cArch.list&siteid=#session.siteid#&topid=00000000000000000000000000000000004&parentid=00000000000000000000000000000000004&moduleid=00000000000000000000000000000000004">#application.rbFactory.getKeyValue(session.rb,"layout.forms")#</a>
+          <cfif rc.moduleid eq '00000000000000000000000000000000004'>
             <cfinclude template="/muraWRM/admin/core/views/carch/dsp_secondary_menu.cfm">
           </cfif>
         </li>
       </cfif>
 	
 	   <cfif application.settingsManager.getSite(session.siteid).getextranet() and  application.permUtility.getModulePerm("00000000000000000000000000000000008","#session.siteid#")>
-        <li <cfif myfusebox.originalcircuit eq 'cPublicUsers' or (myfusebox.originalcircuit eq 'cPerm' and  attributes.moduleid eq '00000000000000000000000000000000008')>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPublicUsers.list&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.sitemembers")#</a>
-          <cfif myfusebox.originalcircuit eq 'cPublicUsers' or (myfusebox.originalcircuit eq 'cPerm' and  attributes.moduleid eq '00000000000000000000000000000000008')>
+        <li <cfif rc.originalcircuit eq 'cPublicUsers' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000008')>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPublicUsers.list&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.sitemembers")#</a>
+          <cfif rc.originalcircuit eq 'cPublicUsers' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000008')>
             <cfinclude template="/muraWRM/admin/core/views/cpublicusers/dsp_secondary_menu.cfm">
           </cfif>
         </li>
       </cfif>
 	
       <cfif application.settingsManager.getSite(session.siteid).getAdManager() and  application.permUtility.getModulePerm("00000000000000000000000000000000006","#session.siteid#")>
-        <li <cfif myfusebox.originalcircuit eq 'cAdvertising' or (myfusebox.originalcircuit eq 'cPerm' and  attributes.moduleid eq '00000000000000000000000000000000006')>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cAdvertising.listAdvertisers&siteid=#session.siteid#&moduleid=00000000000000000000000000000000006">#application.rbFactory.getKeyValue(session.rb,"layout.advertising")#</a>
+        <li <cfif rc.originalcircuit eq 'cAdvertising' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000006')>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cAdvertising.listAdvertisers&siteid=#session.siteid#&moduleid=00000000000000000000000000000000006">#application.rbFactory.getKeyValue(session.rb,"layout.advertising")#</a>
 
-          <cfif myfusebox.originalcircuit eq 'cAdvertising' or (myfusebox.originalcircuit eq 'cPerm' and  attributes.moduleid eq '00000000000000000000000000000000006')>
+          <cfif rc.originalcircuit eq 'cAdvertising' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000006')>
             <cfinclude template="/muraWRM/admin/core/views/cadvertising/dsp_secondary_menu.cfm">
           </cfif>
         </li>
       </cfif>
 	   
       <cfif application.settingsManager.getSite(session.siteid).getemailbroadcaster() and  application.permUtility.getModulePerm("00000000000000000000000000000000005","#session.siteid#")>
-        <li <cfif myfusebox.originalcircuit eq 'cEmail' or (myfusebox.originalcircuit eq 'cPerm' and  attributes.moduleid eq '00000000000000000000000000000000005')>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cEmail.list&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.emailbroadcaster")#</a>
-          <cfif myfusebox.originalcircuit eq 'cEmail' or (myfusebox.originalcircuit eq 'cPerm' and  attributes.moduleid eq '00000000000000000000000000000000005')>
+        <li <cfif rc.originalcircuit eq 'cEmail' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000005')>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cEmail.list&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.emailbroadcaster")#</a>
+          <cfif rc.originalcircuit eq 'cEmail' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000005')>
            <cfinclude template="/muraWRM/admin/core/views/cemail/dsp_secondary_menu.cfm">
           </cfif>
         </li>
       </cfif>
       <cfif application.settingsManager.getSite(session.siteid).getemailbroadcaster() and  application.permUtility.getModulePerm("00000000000000000000000000000000009","#session.siteid#")>
-        <li <cfif myfusebox.originalcircuit eq 'cMailingList' or (myfusebox.originalcircuit eq 'cPerm' and  attributes.moduleid eq '00000000000000000000000000000000009')>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cMailingList.list&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.mailinglists")#</a>
-          <cfif myfusebox.originalcircuit eq 'cMailingList' or (myfusebox.originalcircuit eq 'cPerm' and  attributes.moduleid eq '00000000000000000000000000000000009')>
+        <li <cfif rc.originalcircuit eq 'cMailingList' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000009')>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cMailingList.list&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.mailinglists")#</a>
+          <cfif rc.originalcircuit eq 'cMailingList' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000009')>
              <cfinclude template="/muraWRM/admin/core/views/cmailinglist/dsp_secondary_menu.cfm">
           </cfif>
         </li>
@@ -151,11 +153,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfinclude template="/#application.configBean.getWebRootMap()#/#session.siteID#/includes/display_objects/custom/admin/dsp_secondary_menu.cfm" >
 	  </cfif>
 	  
-      <!--- <cfif listFind(session.mura.memberships,'S2') or listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0')><li<cfif myfusebox.originalcircuit eq 'cPrivateUsers'>id="current"</cfif>><a href="index.cfm?muraAction=cPrivateUsers.list&siteid=#session.siteid#" >Administrative Users</a><cfif myfusebox.originalcircuit eq 'cPrivateUsers'><cfinclude template="../../view/vPrivateUsers/dsp_secondary_menu.cfm"></cfif></li></cfif> --->
+      <!--- <cfif listFind(session.mura.memberships,'S2') or listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0')><li<cfif rc.originalcircuit eq 'cPrivateUsers'>id="current"</cfif>><a href="index.cfm?muraAction=cPrivateUsers.list&siteid=#session.siteid#" >Administrative Users</a><cfif rc.originalcircuit eq 'cPrivateUsers'><cfinclude template="../../view/vPrivateUsers/dsp_secondary_menu.cfm"></cfif></li></cfif> --->
      
 	
-	<li <cfif myfusebox.originalcircuit eq 'cFilemanager'>id="current"</cfif>><a href="index.cfm?muraAction=cFilemanager.default&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.filemanager")#</a>
-	<cfif myfusebox.originalcircuit eq 'cFilemanager'>
+	<li <cfif rc.originalcircuit eq 'cFilemanager'>id="current"</cfif>><a href="index.cfm?muraAction=cFilemanager.default&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.filemanager")#</a>
+	<cfif rc.originalcircuit eq 'cFilemanager'>
 		<ul>
 			<li<cfif session.resourceType eq 'assets'> class="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cFilemanager.default&siteid=#session.siteid#&resourceType=assets">#application.rbFactory.getKeyValue(session.rb,"layout.userassets")#</a></li>
 			<cfif listFind(session.mura.memberships,'S2')>
@@ -172,7 +174,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</li>
 	
      <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-        <li <cfif (myfusebox.originalcircuit eq 'cPerm' and  attributes.moduleid eq '00000000000000000000000000000000000')>id='current'</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPerm.module&contentid=00000000000000000000000000000000000&siteid=#session.siteid#&moduleid=00000000000000000000000000000000000">#application.rbFactory.getKeyValue(session.rb,"layout.permissions")#</a></li>
+        <li <cfif (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000000')>id='current'</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPerm.module&contentid=00000000000000000000000000000000000&siteid=#session.siteid#&moduleid=00000000000000000000000000000000000">#application.rbFactory.getKeyValue(session.rb,"layout.permissions")#</a></li>
      </cfif>
 	 <cfif listFind(session.mura.memberships,'S2')>
 	  	<li><a href="#application.configBean.getContext()#/admin/index.cfm?#urlEncodedFormat(application.appreloadkey)#&reload=#urlEncodedFormat(application.appreloadkey)#">#application.rbFactory.getKeyValue(session.rb,"layout.reloadapplication")#</a></li>
@@ -180,3 +182,4 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     </ul>
   </cfoutput>
 </cfif>
+</li>

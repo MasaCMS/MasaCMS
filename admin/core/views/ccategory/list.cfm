@@ -47,8 +47,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset event=request.event>
 <cfinclude template="js.cfm">
 <cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,"categorymanager")#</h2>
-<ul id="navTask"><li><a  title="#application.rbFactory.getKeyValue(session.rb,"categorymanager.addnewcategory")#" href="index.cfm?muraAction=cCategory.edit&categoryID=&parentID=&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,"categorymanager.addnewcategory")#</a></li></ul>
-<table class="mura-table-grid stripe"> 
+<ul class="navTask nav nav-pills"><li><a  title="#application.rbFactory.getKeyValue(session.rb,"categorymanager.addnewcategory")#" href="index.cfm?muraAction=cCategory.edit&categoryID=&parentID=&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,"categorymanager.addnewcategory")#</a></li></ul>
+<table class="table table-striped table-condensed"> 
 <tr>
 <th class="add">&nbsp;</td>
 <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,"categorymanager.category")#</th>

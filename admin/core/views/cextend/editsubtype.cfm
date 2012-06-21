@@ -49,7 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset subType=application.classExtensionManager.getSubTypeByID(rc.subTypeID)>
 <h2><cfif len(rc.subTypeID)>Edit<cfelse>Add</cfif> Class Extension</h2>
 <cfoutput>
-<ul id="navTask">
+<ul class="navTask nav nav-pills">
 <li><a href="index.cfm?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#">Class Extension Manager</a></li>
 </ul>
 

@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfsavecontent variable="rc.ajax">
 <cfoutput>
-<script src="js/category.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript">
+<script src="assets/js/category.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript">
 </script>
 
 <div id="newContentMenu" onMouseOut="hideMenu('newContentMenu');" class="addNew">

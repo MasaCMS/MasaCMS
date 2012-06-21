@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabList="tabBasic,tabUsagereport">
 <cfoutput><form novalidate="novalidate" action="index.cfm?muraAction=cMailingList.update" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);">
 <h2>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager')#</h2>
-<cfif rc.mlid neq ''><ul id="navTask">
+<cfif rc.mlid neq ''><ul class="navTask nav nav-pills">
 <li><a href="index.cfm?muraAction=cMailingList.listmembers&mlid=#rc.mlid#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.vieweditmembers')#</a></li>
 <li><a href="index.cfm?muraAction=cMailingList.download&mlid=#rc.mlid#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.downloadmembers')#</a></li>
 </ul></cfif>
@@ -123,7 +123,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!---
 <cfif rc.mlid neq ''>
 <cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
-<cfhtmlhead text='<script type="text/javascript" src="js/tab-view.js"></script>'>
+<cfhtmlhead text='<script type="text/javascript" src="assets/js/tab-view.js"></script>'>
 <cfoutput><script type="text/javascript">
 initTabs(Array("#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.basic'))#","#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.usagereport'))#"),0,0,0);
 </script></cfoutput>

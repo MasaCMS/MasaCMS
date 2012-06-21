@@ -298,7 +298,7 @@ var hasBody=#subType.getHasBody()#;
 	
 	<cfif rc.compactDisplay neq "true" or not listFindNoCase(nodeLevelList,rc.type)>	
 		<cfif rc.contentid neq "">
-			<ul id="navTask">
+			<ul class="navTask nav nav-pills">
 			<cfif rc.compactDisplay neq "true" and (rc.contentBean.getfilename() neq '' or rc.contentid eq '00000000000000000000000000000000001')>
 				<cfswitch expression="#rc.type#">
 				<cfcase value="Page,Portal,Calendar,Gallery">
@@ -528,7 +528,7 @@ var hasBody=#subType.getHasBody()#;
 		</cfoutput>
 	</cfsavecontent>
 	<cfoutput>
-	<img class="loadProgress tabPreloader" src="images/progress_bar.gif">
+	<img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
 	<div class="tabs initActiveTab" style="display:none">
 		<ul>
 		<cfloop from="1" to="#listlen(tabList)#" index="t">
@@ -542,16 +542,16 @@ var hasBody=#subType.getHasBody()#;
 		<cfinclude template="form/dsp_changesets.cfm">
 	</cfif>
 	
-	<div class="clearfix" id="actionButtons">
+	<div class="clearfix" id="actionButtons" class="form-actions">
 		<cfif assignChangesets>
-		<input type="button" class="submit" onclick="saveToChangeset('#rc.contentBean.getChangesetID()#','#HTMLEditFormat(rc.siteID)#','');return false;" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset")#" />	
+		<input type="button" class="submit btn btn-primary" onclick="saveToChangeset('#rc.contentBean.getChangesetID()#','#HTMLEditFormat(rc.siteID)#','');return false;" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset")#" />	
 		</cfif>
-		 <input type="button" class="submit" onclick="if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#" />
+		 <input type="button" class="submit btn" onclick="if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#" />
 		<cfif listFindNoCase("Page,Portal,Calendar,Gallery",rc.type)>
-		<input type="button" class="submit" onclick="document.contentForm.preview.value=1;if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraftandpreview"))#" />
+		<input type="button" class="submit btn" onclick="document.contentForm.preview.value=1;if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraftandpreview"))#" />
 		</cfif>
 		<cfif rc.perm eq 'editor'>
-		<input type="button" class="submit" onclick="document.contentForm.approved.value=1;if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#" />
+		<input type="button" class="submit btn btn-primary" onclick="document.contentForm.approved.value=1;if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#" />
 		</cfif> 
 	</div>
 		<input name="approved" type="hidden" value="0">

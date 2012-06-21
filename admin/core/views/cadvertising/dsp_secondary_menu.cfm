@@ -47,12 +47,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfoutput>
 <ul>
-	<li<cfif myfusebox.originalfuseaction eq "listadzones"> class="current"</cfif>><a href="index.cfm?muraAction=cAdvertising.listadzones&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.adzones')#</a></li>
-	<li<cfif myfusebox.originalfuseaction eq "listAdvertisers"> class="current"</cfif>><a href="index.cfm?muraAction=cAdvertising.listAdvertisers&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.advertisers')#</a></li>
-	<li<cfif myfusebox.originalfuseaction eq "listCampaigns"> class="current"</cfif>><a href="index.cfm?muraAction=cAdvertising.listCampaigns&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.campaigns')#</a></li>
-	<li<cfif myfusebox.originalfuseaction eq "listCreatives"> class="current"</cfif>><a href="index.cfm?muraAction=cAdvertising.listCreatives&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.creatives')#</a></li>
-	<li<cfif myfusebox.originalfuseaction eq "editIPWhitelist"> class="current"</cfif>><a href="index.cfm?muraAction=cAdvertising.editIPWhitelist&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.ipwhitelist')#</a></li>
+	<li<cfif rc.originalfuseaction eq "listadzones"> class="current"</cfif>><a href="index.cfm?muraAction=cAdvertising.listadzones&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.adzones')#</a></li>
+	<li<cfif rc.originalfuseaction eq "listAdvertisers"> class="current"</cfif>><a href="index.cfm?muraAction=cAdvertising.listAdvertisers&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.advertisers')#</a></li>
+	<li<cfif rc.originalfuseaction eq "listCampaigns"> class="current"</cfif>><a href="index.cfm?muraAction=cAdvertising.listCampaigns&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.campaigns')#</a></li>
+	<li<cfif rc.originalfuseaction eq "listCreatives"> class="current"</cfif>><a href="index.cfm?muraAction=cAdvertising.listCreatives&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.creatives')#</a></li>
+	<li<cfif rc.originalfuseaction eq "editIPWhitelist"> class="current"</cfif>><a href="index.cfm?muraAction=cAdvertising.editIPWhitelist&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.ipwhitelist')#</a></li>
 	<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-	<li<cfif myfusebox.originalfuseaction eq "module"> class="current"</cfif>><a href="index.cfm?muraAction=cPerm.module&contentid=00000000000000000000000000000000006&moduleid=00000000000000000000000000000000006&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.permissions')#</a></li>
+	<li<cfif rc.originalfuseaction eq "module"> class="current"</cfif>><a href="index.cfm?muraAction=cPerm.module&contentid=00000000000000000000000000000000006&moduleid=00000000000000000000000000000000006&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.permissions')#</a></li>
 	</cfif>
 </ul></cfoutput>

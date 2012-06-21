@@ -148,7 +148,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div id="main">
 <div class="navSort">
 	<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sortby")#:</h3>
-	<ul id="navTask">
+	<ul class="navTask nav nav-pills">
 		<!---<li><a href="" data-sortby="releasedate">Release Date</a></li>--->	
 		<li><a href="" data-sortby="lastupdate"<cfif $.event("sortBy") eq "lastUpdate"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.lastupdated")#</a></li>
 		<li><a href="" data-sortby="created"<cfif $.event("sortBy") eq "created"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.created")#</a></li>
@@ -159,7 +159,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 #pagination#
 
-<table class="mura-table-grid stripe">
+<table class="table table-striped table-condensed">
 	<tr>
 		<th></th>
 	  	<th class="item">#application.rbFactory.getKeyValue(session.rb,"sitemanager.item")#</th>
@@ -190,7 +190,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="admin">
 			<ul class="siteSummary <cfif item.gettype() neq 'File'>five<cfelse>six</cfif>">
 				<cfif not listFindNoCase('none,read',verdict)>
-			     <li class="edit"><a title="Edit" class="draftprompt" href="#editLink#">&nbsp;</a></li>
+			     <li class="edit"><a title="Edit" class="draftprompt" href="#editLink#">Edit</a></li>
 				   <cfswitch expression="#item.gettype()#">
 					<cfcase value="Page,Portal,Calendar,Gallery">
 					<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),item.getfilename())#','#item.gettargetParams()#');">Preview</a></li>
@@ -200,18 +200,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfcase>
 					<cfcase value="File">
 					<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),"")#?LinkServID=#item.getcontentid()#','#item.gettargetParams()#');">Preview</a></li>
-					<li class="download"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.download')#" href="/tasks/render/file/?fileID=#item.getFileID()#&method=attachment" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.downloadconfirm'))#',this.href)">Preview</a></li>
+					<li class="download"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.download')#" href="/tasks/render/file/?fileID=#item.getFileID()#&method=attachment" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.downloadconfirm'))#',this.href)">Download</a></li>
 					</cfcase>
 					</cfswitch>
-				   <li class="versionHistory"><a title="Version History" href="index.cfm?muraAction=cArch.hist&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#item.getcontentID()#&siteid=#URLEncodedFormat(item.getSiteID())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#">&nbsp;</a></li>
+				   <li class="versionHistory"><a title="Version History" href="index.cfm?muraAction=cArch.hist&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#item.getcontentID()#&siteid=#URLEncodedFormat(item.getSiteID())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#">Version History</a></li>
 			      <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(item.getSiteID()).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-			        <li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#" href="index.cfm?muraAction=cPerm.main&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#item.getcontentID()#&siteid=#URLEncodedFormat(item.getSiteID())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#">&nbsp;</a></li>
+			        <li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#" href="index.cfm?muraAction=cPerm.main&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#item.getcontentID()#&siteid=#URLEncodedFormat(item.getSiteID())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#</a></li>
 			      <cfelse>
-					  <li class="permissionsOff"><a>Permissions</a></li>
+					  <li class="permissionsOff"><a>#application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#</a></li>
 					</cfif>
 			      <cfif deletable>
 			        <li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.delete')#" href="index.cfm?muraAction=cArch.update&contentid=#item.getContentID()#&type=#item.gettype()#&action=deleteall&topid=#item.getcontentID()#&siteid=#URLEncodedFormat(item.getSiteID())#&moduleid=#item.getmoduleid()#&parentid=#URLEncodedFormat(item.getParentID())#&startrow=#$.event('startrow')#"
-						<cfif listFindNoCase("Page,Portal,Calendar,Gallery,Link,File",item.gettype())>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),item.getmenutitle()))#',this.href)"<cfelse>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)"</cfif>>&nbsp;</a></li>
+						<cfif listFindNoCase("Page,Portal,Calendar,Gallery,Link,File",item.gettype())>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),item.getmenutitle()))#',this.href)"<cfelse>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.delete')#</a></li>
 			       <cfelseif rc.locking neq 'all'>
 			        <li class="deleteOff">Delete</li>
 			      </cfif>
