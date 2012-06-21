@@ -50,12 +50,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <ul class="navTask nav nav-pills">
 <li><a href="index.cfm?muraAction=cPublicUsers.advancedSearch&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'user.advancedmembersearch')#</a></li>
 </ul>
-<form novalidate="novalidate" action="index.cfm" method="get" name="form1" id="siteSearch">
+<form class="form-inline" novalidate="novalidate" action="index.cfm" method="get" name="form1" id="siteSearch">
 	<h3>#application.rbFactory.getKeyValue(session.rb,'user.searchformembers')#</h3>
 <input id="search" name="search" value="#rc.search#" type="text" class="text">
 <input type="hidden" name="muraAction" value="cPublicUsers.Search" />
 <input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
- <input type="button" class="submit" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'user.search')#" /></form>
+ <input type="button" class="submit btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'user.search')#" /></form>
 
 
         <table class="table table-striped table-condensed">

@@ -61,71 +61,107 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div class="page_aTab">
 	</cfif>
 	
-		<dl class="oneColumn">
-		<dt class="first"></dt>
-		<dt>#application.rbFactory.getKeyValue(session.rb,'user.addressname')#</dt>
-		<dd><input id="addressName" name="addressName" type="text" value="#HTMLEditFormat(rsAddress.addressName)#"  class="text"></dd>
-		<dt>#application.rbFactory.getKeyValue(session.rb,'user.address1')#</dt>
-		<dd><input id="address1" name="address1" type="text" value="#HTMLEditFormat(rsAddress.address1)#"  class="text"></dd>
-		<dt>#application.rbFactory.getKeyValue(session.rb,'user.address2')#</dt>
-		<dd><input id="address2" name="address2" type="text" value="#HTMLEditFormat(rsAddress.address2)#"  class="text"></dd>
-		<dt>#application.rbFactory.getKeyValue(session.rb,'user.city')#</dt>
-		<dd><input id="city" name="city" type="text" value="#HTMLEditFormat(rsAddress.city)#" class="text"></dd>
-		<dt>#application.rbFactory.getKeyValue(session.rb,'user.state')#</dt>
-		<dd><input id="state" name="state" type="text" value="#HTMLEditFormat(rsAddress.state)#" class="text"></dd>
-		<dt>#application.rbFactory.getKeyValue(session.rb,'user.zip')#</dt>
-		<dd><input id="zip" name="zip" type="text" value="#HTMLEditFormat(rsAddress.zip)#" class="text"></dd>
-		<dt>#application.rbFactory.getKeyValue(session.rb,'user.country')#</dt>
-		<dd><input id="country" name="country" type="text" value="#HTMLEditFormat(rsAddress.country)#" class="text"></dd>
-		<dt>#application.rbFactory.getKeyValue(session.rb,'user.phone')#</dt>
-		<dd><input id="phone" name="phone" type="text" value="#HTMLEditFormat(rsAddress.phone)#" class="text"></dd>
-		<dt>#application.rbFactory.getKeyValue(session.rb,'user.fax')#</dt>
-		<dd><input id="fax" name="fax" type="text" value="#HTMLEditFormat(rsAddress.fax)#" class="text"></dd> 
-		<dt>#application.rbFactory.getKeyValue(session.rb,'user.website')# (#application.rbFactory.getKeyValue(session.rb,'user.includehttp')#)</dt>
-		<dd><input id="addressURL" name="addressURL" type="text" value="#HTMLEditFormat(rsAddress.addressURL)#" class="text"></dd>
-		<dt>#application.rbFactory.getKeyValue(session.rb,'user.email')#</dt>
-		<dd><input id="addressEmail" name="addressEmail" validate="email" message="#application.rbFactory.getKeyValue(session.rb,'user.emailvalidate')#" type="text" value="#HTMLEditFormat(rsAddress.addressEmail)#" class="text"></dd> 
-		<dt>#application.rbFactory.getKeyValue(session.rb,'user.hours')#</dt>
-		<dd><textarea id="hours" name="hours" >#HTMLEditFormat(rsAddress.hours)#</textarea></dd>   
 
-</dl>
+		<div class="control-group">
+      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.addressname')#</label>
+      <div class="controls"><input id="addressName" name="addressName" type="text" value="#HTMLEditFormat(rsAddress.addressName)#"  class="text"></div>
+    </div>
+		
+		<div class="control-group">
+      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.address1')#</label>
+      <div class="controls"><input id="address1" name="address1" type="text" value="#HTMLEditFormat(rsAddress.address1)#"  class="text"></div>
+    </div>
+		
+		<div class="control-group">
+      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.address2')#</label>
+      <div class="controls"><input id="address2" name="address2" type="text" value="#HTMLEditFormat(rsAddress.address2)#"  class="text"></div>
+    </div>
+		
+		<div class="control-group">
+      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.city')#</label>
+      <div class="controls"><input id="city" name="city" type="text" value="#HTMLEditFormat(rsAddress.city)#" class="text"></div>
+    </div>
+		
+		<div class="control-group">
+      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.state')#</label>
+      <div class="controls"><input id="state" name="state" type="text" value="#HTMLEditFormat(rsAddress.state)#" class="text"></div>
+    </div>
+		
+		<div class="control-group">
+      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.zip')#</label>
+      <div class="controls"><input id="zip" name="zip" type="text" value="#HTMLEditFormat(rsAddress.zip)#" class="text"></div>
+    </div>
+		
+		<div class="control-group">
+      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.country')#</label>
+      <div class="controls"><input id="country" name="country" type="text" value="#HTMLEditFormat(rsAddress.country)#" class="text"></div>
+    </div>
+		
+		<div class="control-group">
+      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.phone')#</label>
+      <div class="controls"><input id="phone" name="phone" type="text" value="#HTMLEditFormat(rsAddress.phone)#" class="text"></div>
+    </div>
+		
+		<div class="control-group">
+      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.fax')#</label>
+      <div class="controls"><input id="fax" name="fax" type="text" value="#HTMLEditFormat(rsAddress.fax)#" class="text"></div>
+    </div>
+		
+		<div class="control-group">
+      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.website')# (#application.rbFactory.getKeyValue(session.rb,'user.includehttp')#)</label>
+      <div class="controls"><input id="addressURL" name="addressURL" type="text" value="#HTMLEditFormat(rsAddress.addressURL)#" class="text"></div>
+    </div>
+		
+		<div class="control-group">
+      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.email')#</label>
+      <div class="controls"><input id="addressEmail" name="addressEmail" validate="email" message="#application.rbFactory.getKeyValue(session.rb,'user.emailvalidate')#" type="text" value="#HTMLEditFormat(rsAddress.addressEmail)#" class="text"></div>
+    </div>
+		
+		<div class="control-group">
+      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.hours')#</label>
+      <div class="controls"><textarea id="hours" name="hours" >#HTMLEditFormat(rsAddress.hours)#</textarea></div>
+    </div>
+
 
 <!--- extended attributes as defined in the class extension manager --->
 <cfif arrayLen(extendSets)>
 </div>
 <div class="page_aTab">
-<dl class="oneColumn" id="extendDL">
+
 <cfloop from="1" to="#arrayLen(extendSets)#" index="s">	
 <cfset extendSetBean=extendSets[s]/>
 <cfoutput><cfset style=extendSetBean.getStyle()/><cfif not len(style)><cfset started=true/></cfif>
 	<span class="extendset" extendsetid="#extendSetBean.getExtendSetID()#" categoryid="#extendSetBean.getCategoryID()#" #style#>
 	<input name="extendSetID" type="hidden" value="#extendSetBean.getExtendSetID()#"/>
-	<dt <cfif not started>class="first"<cfset started=true/><cfelse>class="separate"</cfif>>#extendSetBean.getName()#</dt>
+	<fieldset>
+		<legend>#extendSetBean.getName()#</legend>
 	<cfsilent>
 	<cfset attributesArray=extendSetBean.getAttributes() />
 	</cfsilent>
-	<dd><dl><cfloop from="1" to="#arrayLen(attributesArray)#" index="a">	
+	<cfloop from="1" to="#arrayLen(attributesArray)#" index="a">	
 		<cfset attributeBean=attributesArray[a]/>
 		<cfset attributeValue=addressBean.getExtendedAttribute(attributeBean.getAttributeID(),true) />
-		<dt>
+		<div class="control-group">
+      <label class="control-label">
 		<cfif len(attributeBean.getHint())>
 		<a href="##" class="tooltip">#attributeBean.getLabel()# <cfif attributeBean.getType() IS "Hidden"><strong>[Hidden]</strong></cfif> <span>#attributeBean.gethint()#</span></a>
 		<cfelse>
 		#attributeBean.getLabel()# <cfif attributeBean.getType() IS "Hidden"><strong>[Hidden]</strong></cfif>
 		</cfif>
 		<cfif attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'> <a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#attributeValue#" target="_blank">[Download]</a> <input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/> Delete</cfif>
-		</dt>
+		</label>
+     
 		
 		<!--- if it's an hidden type attribute then flip it to be a textbox so it can be editable through the admin --->
 		<cfif attributeBean.getType() IS "Hidden">
 			<cfset attributeBean.setType( "TextBox" ) />
 		</cfif>	
 		
-		<dd>#attributeBean.renderAttribute(attributeValue)#</dd>
-	</cfloop></dl></dd>
+		 <div class="controls">#attributeBean.renderAttribute(attributeValue)#</div></div>
+	</cfloop>
 </cfoutput>
 </cfloop>
-</dl>
+
 </div>
 </div>
 
@@ -136,15 +172,15 @@ initTabs(Array("#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'us
 </script>	
 </cfif>
 
-	
+	<div id="actionButtons" class="form-actions">
 		<cfif rc.addressid eq ''>
         
-				<input type="button" class="submit" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'user.add')#" />
+				<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'user.add')#" />
            <cfelse>
-            	<input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'user.update')#" />
-				<input type="button" class="submit" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.deleteaddressconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'user.delete')#" />
+            	<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'user.update')#" />
+				<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.deleteaddressconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'user.delete')#" />
            </cfif>
-
+    </div>
 		<input type="hidden" name="action" value="">
 		<input type="hidden" name="addressID" value="#rc.addressID#">
 		<input type="hidden" name="isPublic" value="#rc.userBean.getIsPublic()#">

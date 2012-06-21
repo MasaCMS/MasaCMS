@@ -116,9 +116,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <li><a href="index.cfm?muraAction=cPublicUsers.search&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,"user.basicsearch")#</a></li>
 </ul>
 <form novalidate="novalidate" id="advancedMemberSearch" action="index.cfm" method="get" name="form2">
-<dl>
-<dt>#application.rbFactory.getKeyValue(session.rb,"user.searchcriteria")#</dt>
-	<dd>
+ 
+ <div class="control-group">
+      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,"user.searchcriteria")#</label>
+      <div class="controls">
 		<ul id="searchParams">
 		<cfif rc.newSearch or (session.paramCircuit neq 'cPublicUsers' or not session.paramCount)>
 		<li><select name="paramRelationship1" style="display:none;" >
@@ -167,7 +168,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 		</cfif>
 		</ul>
-	</dd>
+	</div>
+    </div>
 	<!--- <cfif rc.rsGroups.recordcount>
 		<dt class="first">Groups</dt>
 		<dd>
@@ -192,17 +194,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</ul>
 		</dd>
 	</cfif> --->
-	<dt>#application.rbFactory.getKeyValue(session.rb,"user.inactive")#</dt>
+	 <div class="control-group">
+      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,"user.inactive")#</label>
+      <div class="controls">
 		<select name="inActive">
 			<option value="">All</option>
 			<option value="0" <cfif session.inactive eq 0>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"user.yes")#</option>
 			<option value="1" <cfif session.inactive eq 1>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"user.no")#</option>
 		</select>
-	</dd>
-</dl>
+	</div>
+    </div>
+
+<div class="form-actions" id="actionButtoms">
 <input type="hidden" name="muraAction" value="cPublicUsers.advancedSearch" /><input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#"/>
-<input type="button" class="submit" onclick="document.forms.form2.muraAction.value='cPublicUsers.advancedSearch';submitForm(document.forms.form2);" value="#application.rbFactory.getKeyValue(session.rb,"user.search")#" />
-<input type="button" class="submit" onclick="document.forms.form2.muraAction.value='cPublicUsers.advancedSearchToCSV';submitForm(document.forms.form2);" value="#application.rbFactory.getKeyValue(session.rb,"user.download")#" />
+<input type="button" class="submit btn" onclick="document.forms.form2.muraAction.value='cPublicUsers.advancedSearch';submitForm(document.forms.form2);" value="#application.rbFactory.getKeyValue(session.rb,"user.search")#" />
+<input type="button" class="submit btn" onclick="document.forms.form2.muraAction.value='cPublicUsers.advancedSearchToCSV';submitForm(document.forms.form2);" value="#application.rbFactory.getKeyValue(session.rb,"user.download")#" />
+</div>
 </form>
 </cfoutput>
 

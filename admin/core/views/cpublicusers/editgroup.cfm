@@ -74,39 +74,52 @@ select * from rsSubTypes where subType <> 'Default'
 </ul>
 <div id="tabBasic">
 </cfif>
-<dl class="oneColumn separate">
+
 <cfif rsNonDefault.recordcount>
-<dt class="first">#application.rbFactory.getKeyValue(session.rb,'user.type')#</dt>
-<dd><select name="subtype" class="dropdown" onchange="resetExtendedAttributes('#rc.userBean.getUserID()#','1',this.value,'#userPoolID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');">
+<div class="control-group">
+      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.type')#</label>
+      <div class="controls"><select name="subtype" class="dropdown" onchange="resetExtendedAttributes('#rc.userBean.getUserID()#','1',this.value,'#userPoolID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');">
 	<option value="Default" <cfif  rc.userBean.getSubType() eq "Default">selected</cfif>> #application.rbFactory.getKeyValue(session.rb,'user.default')#</option>
 		<cfloop query="rsNonDefault">
 			<option value="#rsNonDefault.subtype#" <cfif rc.userBean.getSubType() eq rsNonDefault.subtype>selected</cfif>>#rsNonDefault.subtype#</option>
 		</cfloop>
 	</select>
-</dd>
+</div>
+    </div>
 <cfelse>
 	<input type="hidden" name="subtype" value="Default"/>
 </cfif>
 		
-<dt <cfif not  rsNonDefault.recordcount>class="first"</cfif>>#application.rbFactory.getKeyValue(session.rb,'user.groupname')#</dt>
-<dd><input type="text" class="text" name="groupname" value="#HTMLEditFormat(rc.userBean.getgroupname())#"  required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.groupname required')#"></dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'user.email')#</dt>
-<dd><input type="text" class="text" name="email" value="#HTMLEditFormat(rc.userBean.getemail())#" validate="email" message="#application.rbFactory.getKeyValue(session.rb,'user.emailvalidate')#"></dd>
+<div class="control-group">
+      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.groupname')#</label>
+      <div class="controls"><input type="text" class="text" name="groupname" value="#HTMLEditFormat(rc.userBean.getgroupname())#"  required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.groupname required')#"></div>
+    </div>
 
-<dt>#application.rbFactory.getKeyValue(session.rb,'user.tablist')#</dt>
-<dd>
+<div class="control-group">
+      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.email')#</label>
+      <div class="controls"><input type="text" class="text" name="email" value="#HTMLEditFormat(rc.userBean.getemail())#" validate="email" message="#application.rbFactory.getKeyValue(session.rb,'user.emailvalidate')#"></div>
+    </div>
+
+<div class="control-group">
+      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.tablist')#</label>
+      <div class="controls">
 <select name="tablist" multiple="true">
 <option value=""<cfif not len(rc.userBean.getTablist())> selected</cfif>>All</option>
 <cfloop list="Basic,Meta Data,Content Objects,Categorization,Related Content,Extended Attributes,Advanced,Usage Report" index="t">
 <option value="#t#"<cfif listFindNoCase(rc.userBean.getTablist(),t)> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.#replace(t,' ','','all')#")#</option>
 </cfloop>
 </select>
-</dd>
+</div>
+    </div>
 
-<dt class="alt"><input type="checkbox" name="contactform" value="#HTMLEditFormat(rc.siteid)#" <cfif rc.userBean.getcontactform() eq rc.siteid>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,'user.contactform')#</dt>
+<div class="control-group">
+      <div class="controls">
+      <label class="control-label"><input type="checkbox" name="contactform" value="#HTMLEditFormat(rc.siteid)#" <cfif rc.userBean.getcontactform() eq rc.siteid>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,'user.contactform')#</div>
+    </div>
 
 <span id="extendSetsBasic"></span>
-</dl>
+
+
 <cfif rsSubTypes.recordcount>
 </div>
 
@@ -124,12 +137,12 @@ loadExtendedAttributes('#rc.userbean.getUserID()#','1','#rc.userbean.getSubType(
 //initTabs(Array("#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.basic'))#","#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.extendedattributes'))#"),0,0,0);
 </script>	
 </cfif>
-<div id="actionButtons" class="alt">
+<div id="actionButtons" class="alt form-actions">
 <cfif rc.userid eq ''>
-<input type="button" class="submit" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'user.add')#" />
+<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'user.add')#" />
 <cfelse>
-<input type="button" class="submit" onclick="submitForm(document.forms.form1,'delete','This');" value="#application.rbFactory.getKeyValue(session.rb,'user.delete')#" /> 
-<input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'user.update')#" />
+<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'delete','This');" value="#application.rbFactory.getKeyValue(session.rb,'user.delete')#" /> 
+<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'user.update')#" />
 </cfif>
 </div>
 <input type="hidden" name="action" value=""><input type="hidden" name="type" value="1"><input type="hidden" name="contact" value="0">

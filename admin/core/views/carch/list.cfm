@@ -95,7 +95,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </ul>
 
   <h3 class="alt">#application.rbFactory.getKeyValue(session.rb,'sitemanager.filterview')#:</h3>
-  <form novalidate="novalidate" id="filterByTitle" action="index.cfm" method="get">
+  <form class="form-inline" novalidate="novalidate" id="filterByTitle" action="index.cfm" method="get">
 	  <h4>#application.rbFactory.getKeyValue(session.rb,'sitemanager.filterviewdesc')#</h4>
 	  <input type="text" name="searchString" value="#HTMLEditFormat(rc.searchString)#" class="text">
 	  <input type="button" class="submit btn" onclick="document.getElementById('filterByTitle').submit();" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.filter')#" />
@@ -139,7 +139,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
         <tr>  
           <td class="varWidth"><cfif verdict neq 'none'><a class="draftprompt" data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#">#left(rc.rstop.menutitle,90)#</a><cfelse>#left(rc.rstop.menutitle,90)#</cfif></td>
-          <!--- <cfif verdict eq 'editor'><td nowrap class="order"><cfif rc.rstop.currentrow neq 1><a href="index.cfm?muraAction=cArch.order&contentid=#rc.rstop.contentid#&parentid=#rc.rstop.parentid#&direction=down&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&startrow=#rc.startrow#&moduleid=#rc.moduleid#"><img src="images/icons/up_on.gif" width="9" height="6" border="0"></a><cfelse><img src="images/icons/up_off.gif" width="9" height="6" border="0"></cfif><cfif rc.rstop.currentrow lt rc.rstop.recordcount><a href="index.cfm?muraAction=cArch.order&contentid=#rc.rstop.contentid#&parentid=#rc.rstop.parentid#&direction=up&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&startrow=#rc.startrow#&moduleid=#rc.moduleid#"><img src="images/icons/down_on.gif" width="9" height="6" border="0"></a><cfelse><img src="images/icons/down_off.gif" width="9" height="6" border="0"></cfif></td>	--->  
+          
 			   <td> 
 	    <cfif rc.rstop.Display and (rc.rstop.Display eq 1 and rc.rstop.approved and rc.rstop.approved)>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#<cfelseif(rc.rstop.Display eq 2 and rc.rstop.approved and rc.rstop.approved)>#LSDateFormat(rc.rstop.displaystart,"short")# - #LSDateFormat(rc.rstop.displaystop,"short")#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</cfif></td>
 		<td>#LSDateFormat(rc.rstop.lastupdate,session.dateKeyFormat)# #LSTimeFormat(rc.rstop.lastupdate,"medium")#</td>
@@ -367,7 +367,7 @@ copyAll = 'false';
 </script>
  
 <h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sitemanager")#</h2>
-<form novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
+<form class="form-inline" novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
     <!---<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.contentsearch")#</h3>--->
     <input name="keywords" value="#HTMLEditFormat(session.keywords)#" type="text" class="text" align="absmiddle" />
     <input type="button" class="submit btn" onclick="submitForm(document.forms.siteSearch);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.search")#" />
