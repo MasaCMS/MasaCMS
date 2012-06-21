@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfset previewData=$.currentUser("ChangesetPreviewData")>
 <cfoutput>
-	<link href="#$.globalConfig('context')#/admin/css/changeset.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="#$.globalConfig('context')#/admin/assets/css/changeset.css" rel="stylesheet" type="text/css" media="all" />
 	
 	<!--[if LTE IE 8]>
 	
@@ -103,7 +103,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<![endif]-->
 	
 	<!--[if IE 6]>
-	<script src="#$.globalConfig('context')#/admin/js/DD_belatedPNG.js"></script>
+	<script src="#$.globalConfig('context')#/admin/assets/js/DD_belatedPNG.js"></script>
 	<script>
 	  DD_belatedPNG.fix('##m-changesets dl,##m-cs-status ##m-cs-included,##m-cs-status ##m-cs-other');
 	</script>
@@ -138,7 +138,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	</style>
 	<![endif]-->
-	<script language="javascript" type="text/javascript" src="#$.globalConfig('context')#/admin/js/jquery/jquery.equalheights.js"></script>
+	<script language="javascript" type="text/javascript" src="#$.globalConfig('context')#/admin/assets/js/jquery/jquery.equalheights.js"></script>
 	
 	<script>
 	$(document).ready(function() {

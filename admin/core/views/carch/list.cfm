@@ -303,7 +303,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset session.flatViewArgs["#session.siteID#"].report=""/>
 	<cfset session.keywords=url.keywords/>
 </cfif>
-<cfhtmlhead text='<script src="#application.configBean.getContext()#/admin/js/jquery/jquery-pulse.js?coreversion=#application.coreversion#" type="text/javascript"></script>'>
+<cfhtmlhead text='<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-pulse.js?coreversion=#application.coreversion#" type="text/javascript"></script>'>
 
 <cfif isdefined('rc.orderperm') and (rc.orderperm eq 'editor' or (rc.orderperm eq 'author' and application.configBean.getSortPermission() eq "author"))>
 	<cflock type="exclusive" name="editingContent#rc.siteid#" timeout="60">

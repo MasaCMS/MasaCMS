@@ -46,9 +46,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfinclude template="js.cfm">
 <cfsavecontent variable="str"><cfoutput>
-<link href="#application.configBean.getContext()#/admin/js/fileuploader/fileuploader.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css">
-<!---<script src="#application.configBean.getContext()#/admin/js/fileuploader/fileuploader.js?coreversion=#application.coreversion#s" type="text/javascript"></script>--->
-<script src="#application.configBean.getContext()#/admin/js/fileuploader/ajaxupload.js?coreversion=#application.coreversion#s" type="text/javascript"></script>		
+<link href="#application.configBean.getContext()#/admin/assets/js/fileuploader/fileuploader.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css">
+<!---<script src="#application.configBean.getContext()#/admin/assets/js/fileuploader/fileuploader.js?coreversion=#application.coreversion#s" type="text/javascript"></script>--->
+<script src="#application.configBean.getContext()#/admin/assets/js/fileuploader/ajaxupload.js?coreversion=#application.coreversion#s" type="text/javascript"></script>		
 #session.dateKey#
 </cfoutput>
 </cfsavecontent>

@@ -93,7 +93,7 @@ to your own modified versions of Mura CMS.
       <label class="control-label">Site ID</label>
       <div class="controls">
         <cfif rc.siteid eq ''>
-        <p class="help-block">Warning: no spaces, punctuation, dots or file delimiters</div>
+        <p class="help-block">Warning: no spaces, punctuation, dots or file delimiters</p>
         <input name="siteid" type="text" class="text" value="#rc.siteBean.getsiteid()#" size="25" maxlength="25" required="true"><cfelse>#rc.siteBean.getsiteid()#<input name="siteid" type="hidden" value="#rc.siteBean.getsiteid()#"></cfif>
       </div>
     </div>
@@ -718,6 +718,7 @@ to your own modified versions of Mura CMS.
       </div>
       
       <div id="tabDisplayregions">
+      
       <div class="control-group">
       <label class="control-label">Number of Display Regions</label>
       <div class="controls">
@@ -728,7 +729,7 @@ to your own modified versions of Mura CMS.
 			</cfloop>
       	</select>
        </div>
-    </div>
+     </div>
       
       <div class="control-group">
       <label class="control-label">Primary Display Region</label>
@@ -739,8 +740,8 @@ to your own modified versions of Mura CMS.
 				<option value="#i#" <cfif rc.siteBean.getPrimaryColumn() eq i> selected</cfif>>#i#</option> 	
 			</cfloop>
       	</select>
-	  </div>
-    </div>
+	   </div>
+      </div>
       
       <div class="control-group">
       <label class="control-label">Display Region Names</label>
@@ -748,7 +749,7 @@ to your own modified versions of Mura CMS.
          <p class="help-block">"^" Delimiter</p>
         <input name="columnNames" type="text" class="text long" value="#HTMLEditFormat(rc.siteBean.getcolumnNames())#">
       </div>
-    </div>
+      </div>
 
 
       </div>

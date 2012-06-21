@@ -95,7 +95,6 @@
     <meta name="author" content="">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="robots" content="noindex, nofollow, noarchive" />
-	<meta name="robots" content="noindex, nofollow, noarchive" />
 	<meta http-equiv="cache control" content="no-cache, no-store, must-revalidate" />
 
     <!-- Le styles -->

@@ -52,9 +52,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif FindNoCase('Opera','#CGI.HTTP_USER_AGENT#') LESS THAN 1>
 <cfparam name="Cookie.fetDisplay" default="">
 <cfoutput>
-<link href="#application.configBean.getContext()#/admin/css/dialog.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="#application.configBean.getContext()#/admin/js/porthole/porthole.min.js?coreversion=#application.coreversion#"></script>
-<script type="text/javascript" src="#application.configBean.getContext()#/admin/js/dialog.js.cfm?siteid=#URLEncodedFormat(variables.$.event('siteid'))#&coreversion=#application.coreversion#"></script>
+<link href="#application.configBean.getContext()#/admin/assets/css/dialog.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#"></script>
+<script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/dialog.js.cfm?siteid=#URLEncodedFormat(variables.$.event('siteid'))#&coreversion=#application.coreversion#"></script>
 <!---[if LT IE9]>
 
    <style type="text/css">
@@ -149,16 +149,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!--------------------------------------------------------------------------------------------------------------->
 <!--- IE6 COMPATIBILITY FOR FRONT END TOOLS ----------->
 <!--------------------------------------------------------------------------------------------------------------->
-<link href="#application.configBean.getContext()#/admin/css/dialogIE6.css" rel="stylesheet" type="text/css" />	
+<link href="#application.configBean.getContext()#/admin/assets/css/dialogIE6.css" rel="stylesheet" type="text/css" />	
 </cfif>
 
 <cfif variables.isIeSix>
 	<!--- NAMED DIFFERENTLY TO USE THE IE6 COMPATIBLE dialogIE6.css --->
-	<img src="#application.configBean.getContext()#/admin/images/ie6/logo_small_feTools.gif" id="frontEndToolsHandleIE6" onclick="if (document.getElementById('frontEndToolsIE6').style.display == 'none') { createCookie('FETDISPLAY','',5); } else { createCookie('FETDISPLAY','none',5); } toggleAdminToolbarIE6();" />
+	<img src="#application.configBean.getContext()#/admin/assets/images/ie6/logo_small_feTools.gif" id="frontEndToolsHandleIE6" onclick="if (document.getElementById('frontEndToolsIE6').style.display == 'none') { createCookie('FETDISPLAY','',5); } else { createCookie('FETDISPLAY','none',5); } toggleAdminToolbarIE6();" />
 	<div id="frontEndToolsIE6" style="display: #Cookie.fetDisplay#">						
 <cfelse>
 	<!--- USES STANDARD dialog.css --->
-	<img src="#application.configBean.getContext()#/admin/images/logo_small_feTools.png" id="frontEndToolsHandle" onclick="if (document.getElementById('frontEndTools').style.display == 'none') { createCookie('FETDISPLAY','',5); } else { createCookie('FETDISPLAY','none',5); } toggleAdminToolbar();" />
+	<img src="#application.configBean.getContext()#/admin/assets/images/logo_small_feTools.png" id="frontEndToolsHandle" onclick="if (document.getElementById('frontEndTools').style.display == 'none') { createCookie('FETDISPLAY','',5); } else { createCookie('FETDISPLAY','none',5); } toggleAdminToolbar();" />
 	<div id="frontEndTools" style="display: #Cookie.fetDisplay#">
 </cfif>
 		<ul>

@@ -142,7 +142,7 @@ document.getElementById('responseDisplayFields').value=document.getElementById('
   </div>
 
 <div id="actionButtons" class="form-actions">
-  <input type="button" class="submit btn btn-primary" onclick="submitForm(document.forms.frmDisplayFields,'setDisplay');" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.update')#" />
+  <input type="button" class="submit btn" onclick="submitForm(document.forms.frmDisplayFields,'setDisplay');" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.update')#" />
 </div>
 
 <input type="hidden" value="setDisplay" name="action">
