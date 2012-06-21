@@ -45,9 +45,10 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-<cfset rc.originalfuseaction = listLast(listLast(request.action,":"),".")>
-<cfset rc.originalcircuit = listFirst(listLast(request.action,":"),".")>
-<cfparam name="rc.jsLib" default="prototype">
+<cfparam name="request.action" default="core:cplugin.plugin">
+<cfparam name="rc.originalfuseaction" default="#listLast(listLast(request.action,":"),".")#">
+<cfparam name="rc.originalcircuit"  default="#listFirst(listLast(request.action,":"),".")#">
+<cfparam name="rc.jsLib" default="jquery">
 <cfparam name="rc.jsLibLoaded" default="false">
 <cfparam name="rc.activetab" default="0">
 <cfparam name="rc.activepanel" default="0">
@@ -129,7 +130,7 @@ var siteid='#session.siteid#';
 			setCheckboxTrees();
 			setColorPickers(".colorpicker");
 			if (top.location != self.location) {
-				frontEndProxy = new Porthole.WindowProxy("#session.frontEndProxyLoc##application.configBean.getContext()#/admin/js/porthole/proxy.html");
+				frontEndProxy = new Porthole.WindowProxy("#session.frontEndProxyLoc##application.configBean.getContext()#/admin/assets/js/porthole/proxy.html");
 				frontEndProxy.postMessage("cmd=resizeFrontEndToolsModal&frameHeight=" + Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight));
 				jQuery(this).resize(function(e){
 					frontEndProxy.postMessage("cmd=resizeFrontEndToolsModal&frameHeight=" + Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight));

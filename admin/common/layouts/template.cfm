@@ -1,9 +1,10 @@
 <cfoutput><html lang="en">
   <head>
   	<cfsilent>
-  		<cfset rc.originalfuseaction = listLast(listLast(request.action,":"),".")>
-		<cfset rc.originalcircuit = listFirst(listLast(request.action,":"),".")>
-	  	<cfparam name="rc.jsLib" default="prototype">
+  		<cfparam name="request.action" default="core:cplugin.plugin">
+  		<cfparam name="rc.originalfuseaction" default="#listLast(listLast(request.action,":"),".")#">
+		<cfparam name="rc.originalcircuit"  default="#listFirst(listLast(request.action,":"),".")#">
+	  	<cfparam name="rc.jsLib" default="jquery">
 		<cfparam name="rc.jsLibLoaded" default="false">
 		<cfparam name="rc.activetab" default="0">
 		<cfparam name="rc.activepanel" default="0">

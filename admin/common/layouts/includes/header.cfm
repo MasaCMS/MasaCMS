@@ -45,6 +45,9 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfsilent>
+<cfparam name="rc.originalfuseaction" default="">
+<cfparam name="rc.originalcircuit" default="">
+<cfparam name="rc.moduleid" default="">
 <cfif not isDefined("session.mura.memberships")>
   <cflocation url="#application.configBean.getContext()#/admin/?muraAction=cLogin.logout" addtoken="false">
 </cfif>

@@ -44,6 +44,10 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
+<cfparam name="request.action" default="core:cplugin.plugin">
+<cfparam name="rc.originalfuseaction" default="#listLast(listLast(request.action,":"),".")#">
+<cfparam name="rc.originalcircuit"  default="#listFirst(listLast(request.action,":"),".")#">
+<cfparam name="rc.moduleid" default="">
 <cfif not application.configBean.getSessionHistory() or application.configBean.getSessionHistory() gte 30>
 	<cfparam name="session.dashboardSpan" default="30">
 <cfelse>
@@ -56,19 +60,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif not arguments.jsLibLoaded>
 <cfif arguments.jsLib eq "jquery">
 <script src="#application.configBean.getContext()#/#application.settingsmanager.getSite(session.siteid).getDisplayPoolID()#/js/jquery/jquery.js" type="text/javascript"></script>
-<script src="#application.configBean.getContext()#/admin/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 <cfelse>
 <script src="#application.configBean.getContext()#/#application.settingsmanager.getSite(session.siteid).getDisplayPoolID()#/js/prototype.js" type="text/javascript" language="Javascript"></script>
 <script type="text/javascript" src="#application.configBean.getContext()#/#application.settingsmanager.getSite(session.siteid).getDisplayPoolID()#/js/scriptaculous/src/scriptaculous.js?load=effects"></script>
 </cfif>
 </cfif>
-<script type="text/javascript" src="#application.configBean.getContext()#/admin/js/admin.js"></script>
-<link href="#application.configBean.getContext()#/admin/css/dialog.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/admin.js"></script>
+<link href="#application.configBean.getContext()#/admin/assets/css/dialog.css" rel="stylesheet" type="text/css" />
 <cfif variables.isIeSix>	
 <!--------------------------------------------------------------------------------------------------------------->
 <!--- IE6 COMPATIBILITY FOR FRONT END TOOLS, ADDED BY CHRIS HAYES JUN 30 2009  CHRIS AT HAYESDATA.COM ----------->
 <!--------------------------------------------------------------------------------------------------------------->
-<link href="#application.configBean.getContext()#/admin/css/dialogIE6.css" rel="stylesheet" type="text/css" />
+<link href="#application.configBean.getContext()#/admin/assets/css/dialogIE6.css" rel="stylesheet" type="text/css" />
 <script>
 	function toggleAdminToolbarIE6(){
 	<cfif arguments.jsLib eq "jquery">
