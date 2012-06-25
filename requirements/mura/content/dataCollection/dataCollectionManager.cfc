@@ -293,7 +293,9 @@ order by tformresponsepackets.entered asc
 </cfloop>
 
 <cfset body=rereplacenocase(arguments.preBody,'</form>','#formHTML#</form>')>
-<cfset body=rereplacenocase(body,'<form','<form id="#frmID#" ')>
+<cfif not find(frmID,body)>
+	<cfset body=rereplacenocase(body,'<form','<form id="#frmID#" ')>
+</cfif>
 
 <cfsavecontent variable="frm"><cfoutput>
 #body#
