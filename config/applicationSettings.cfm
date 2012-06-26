@@ -81,16 +81,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="request.muraShowTrace" default="false"/>
 	<cfparam name="request.muraValidateDomain" default="true"/>
 	
-	<cfset variables.baseDir= left(this.configPath,len(this.configPath)-8) /><cfif not fileExists(variables.baseDir & "/config/settings.ini.cfm")>
+	<cfset baseDir= left(this.configPath,len(this.configPath)-8) />
+	<cfif not fileExists(baseDir & "/config/settings.ini.cfm")>
 		<cftry>
-		<cffile action="copy" source="#variables.baseDir#/config/templates/settings.template.cfm" destination="#variables.baseDir#/config/settings.ini.cfm" mode="777">
+		<cffile action="copy" source="#baseDir#/config/templates/settings.template.cfm" destination="#baseDir#/config/settings.ini.cfm" mode="777">
 		<cfcatch>
-			<cffile action="copy" source="#variables.baseDir#/config/templates/settings.template.cfm" destination="#variables.baseDir#/config/settings.ini.cfm">
+			<cffile action="copy" source="#baseDir#/config/templates/settings.template.cfm" destination="#baseDir#/config/settings.ini.cfm">
 		</cfcatch>
 		</cftry>
 	</cfif>
 
-	<cfset this.baseDir=variables.baseDir>
+	<cfset this.baseDir=baseDir>
+	<cfset variables.baseDir=baseDir>
 	
 	<cfset properties = createObject( 'java', 'java.util.Properties' ).init()>
 	<cfset fileStream = createObject( 'java', 'java.io.FileInputStream').init( getDirectoryFromPath(getCurrentTemplatePath()) & "/settings.ini.cfm")>
@@ -99,12 +101,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<!--- define custom coldfusion mappings. Keys are mapping names, values are full paths  --->
 	<cfif StructKeyExists(SERVER,"bluedragon") and not findNoCase("Windows",server.os.name)>
-		<cfset variables.mapPrefix="$" />
+		<cfset mapPrefix="$" />
 	<cfelse>
-		<cfset variables.mapPrefix="" />
+		<cfset mapPrefix="" />
 	</cfif>
 
-	<cfset this.mapPrefix=variables.mapPrefix>
+	<cfset this.mapPrefix=mapPrefix>
+	<cfset variables.mapPrefix=mapPrefix>
 	
 	<cfset this.mappings = structNew()>
 	<cfset this.mappings["/plugins"] = variables.mapPrefix & variables.baseDir & "/plugins">

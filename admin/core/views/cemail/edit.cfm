@@ -310,7 +310,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       </cfif>
     </div>
  </div> <!--- End Tab Container --->
-      <div class="clearfix separate form-actions" id="actionButtons"> 
+      <div class="clearfix separate" id="actionIndicator" style="display:none;">
+        <img src="./images/progress_bar.gif">
+      </div>
+      <div class="clearfix separate" id="actionButtons"> 
       <div style="display:inline" id="controls"> 
         <!---Delivery Options---><br />
         <cfsilent>
@@ -325,6 +328,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             <cfset currentEmailid = "">
             <cfset showDelete = true>
             <cfset showScheduler = false>
+            <cfset rc.emailBean.setDeliveryDate('')>
             <cfelse>
             <cfset formAction = "update">
             <cfset currentEmailid = rc.emailid>
