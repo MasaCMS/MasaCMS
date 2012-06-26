@@ -259,6 +259,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       </cfif>
     </div>
  </div> <!--- End Tab Container --->
+      <div class="clearfix separate" id="actionIndicator" style="display:none;">
+        <img src="./images/progress_bar.gif">
+      </div>
       <div class="clearfix separate" id="actionButtons"> 
       <div style="display:inline" id="controls"> 
         <!---Delivery Options---><br />
@@ -273,7 +276,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             <cfset formAction = "add">
             <cfset currentEmailid = "">
             <cfset showDelete = true>
-            <cfset showScheduler = isDate(rc.emailBean.getDeliveryDate())>
+            <cfset showScheduler = false>
+            <cfset rc.emailBean.setDeliveryDate('')>
             <cfelse>
             <cfset formAction = "update">
             <cfset currentEmailid = rc.emailid>
@@ -289,7 +293,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           </cfif>
        </div>
         <div style="display:none" id="scheduler"> #application.rbFactory.getKeyValue(session.rb,'email.deliverydate')#<br />
-          <input type="text" class="textAlt datepicker" id="deliveryDate" name="deliveryDate" value="#LSDateFormat(rc.emailBean.getDeliveryDate(),session.dateKeyFormat)#" onblur="onDeliveryDateBlur(this.value);">
+          <input type="text" class="textAlt datepicker" id="deliveryDate" name="deliveryDate" value="#LSDateFormat(rc.emailBean.getDeliveryDate(),session.dateKeyFormat)#">
           <!---<input class="calendar" type="image" src="images/icons/cal_24.png" width="14" height="14" onclick="window.open('date_picker/index.cfm?form=form1&field=deliveryDate&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">--->
           <cfsilent>
           <cfset timehour = "">
