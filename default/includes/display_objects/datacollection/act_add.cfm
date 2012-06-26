@@ -113,7 +113,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset form = structDelete(form, "fieldnameOrder")>
 	
-<cfelseif application.configBean.getCompiler() eq "Railo">
+<cfelseif application.configBean.getCompiler() eq "Railo" 
+	and not (
+		structKeyExists(request,"fieldnames") and len(request.fieldnames)
+	)>
 	<cfif not isBinary(GetHttpRequestData().content)>
 		<cfset request.fieldnames=""/>
 		<cfloop list="#GetHttpRequestData().content#" delimiters="&" index="variables.j">
