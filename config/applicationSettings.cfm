@@ -81,11 +81,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="request.muraShowTrace" default="false"/>
 	<cfparam name="request.muraValidateDomain" default="true"/>
 	
-	<cfset baseDir= left(this.configPath,len(this.configPath)-8) /><cfif not fileExists(variables.baseDir & "/config/settings.ini.cfm")>
+	<cfset baseDir= left(this.configPath,len(this.configPath)-8) />
+	<cfif not fileExists(baseDir & "/config/settings.ini.cfm")>
 		<cftry>
-		<cffile action="copy" source="#variables.baseDir#/config/templates/settings.template.cfm" destination="#variables.baseDir#/config/settings.ini.cfm" mode="777">
+		<cffile action="copy" source="#baseDir#/config/templates/settings.template.cfm" destination="#baseDir#/config/settings.ini.cfm" mode="777">
 		<cfcatch>
-			<cffile action="copy" source="#variables.baseDir#/config/templates/settings.template.cfm" destination="#variables.baseDir#/config/settings.ini.cfm">
+			<cffile action="copy" source="#baseDir#/config/templates/settings.template.cfm" destination="#baseDir#/config/settings.ini.cfm">
 		</cfcatch>
 		</cftry>
 	</cfif>
