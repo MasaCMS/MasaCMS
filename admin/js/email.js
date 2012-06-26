@@ -69,6 +69,10 @@
 		return false;
 		
 	}
+
+	function onDeliveryDateBlur(val){
+		document.forms.form1.deliveryDate.setAttribute("value",val);
+	}
 	
 	function showMessageEditor()
 	{
