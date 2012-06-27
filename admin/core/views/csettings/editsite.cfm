@@ -584,7 +584,7 @@ to your own modified versions of Mura CMS.
       <div id="tabImages">
       
      <div class="control-group">
-      <label class="control-label">Small (Thumbnail) Image Size<</label>
+      <label class="control-label">Small (Thumbnail) Image Size</label>
       <div class="controls">
         <input name="gallerySmallScale" type="text" class="text short" value="#rc.siteBean.getGallerySmallScale()#" size="5" maxlength="5">px
       </div>
@@ -762,37 +762,34 @@ to your own modified versions of Mura CMS.
       <cfset extendSetBean=extendSets[s]/>
       <cfset style=extendSetBean.getStyle()/><cfif not len(style)><cfset started=true/></cfif>
         <span class="extendset" extendsetid="#extendSetBean.getExtendSetID()#" categoryid="#extendSetBean.getCategoryID()#" #style#>
-        <input name="extendSetID" type="hidden" value="#extendSetBean.getExtendSetID()#"/>
-         <fieldset>
-         <legend>#extendSetBean.getName()#</legend>
-        <cfsilent>
-        <cfset attributesArray=extendSetBean.getAttributes() />
-        </cfsilent>
-        
-        <cfloop from="1" to="#arrayLen(attributesArray)#" index="a">  
-          <cfset attributeBean=attributesArray[a]/>
-          <cfset attributeValue=rc.siteBean.getvalue(attributeBean.getName(),'useMuraDefault') />
-          
-          <div class="control-group">
+  <input name="extendSetID" type="hidden" value="#extendSetBean.getExtendSetID()#"/>
+  <fieldset><legend>#extendSetBean.getName()#</legend>
+  <cfsilent>
+  <cfset attributesArray=extendSetBean.getAttributes() />
+  </cfsilent>
+  <cfloop from="1" to="#arrayLen(attributesArray)#" index="a">  
+    <cfset attributeBean=attributesArray[a]/>
+    <cfset attributeValue=rc.siteBean.getvalue(attributeBean.getName(),'useMuraDefault') />
+    <div class="control-group">
           <label class="control-label">
-          <cfif len(attributeBean.getHint())>
-          <a href="##" class="tooltip">#attributeBean.getLabel()# <span>#attributeBean.gethint()#</span></a>
-          <cfelse>
-          #attributeBean.getLabel()#
-          </cfif>
-          <cfif attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'> <a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#attributeValue#" target="_blank">[Download]</a> <input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/> Delete</cfif>
-          </label>
-          <!--- if it's an hidden type attribute then flip it to be a textbox so it can be editable through the admin --->
-          <cfif attributeBean.getType() IS "Hidden">
-            <cfset attributeBean.setType( "TextBox" ) />
-          </cfif> 
-          <div class="controls">
-            #attributeBean.renderAttribute(attributeValue)#
-          </div>
-          </div>
-        </cfloop>
-         </fieldset>
-        </span>
+      <cfif len(attributeBean.getHint())>
+      <a href="##" rel="tooltip" title="#HTMLEditFormat(attributeBean.gethint())#">#attributeBean.getLabel()#</a>
+      <cfelse>
+      #attributeBean.getLabel()#
+      </cfif>
+      <cfif attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'> <a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#attributeValue#" target="_blank">[Download]</a> <input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/> Delete</cfif>
+      </label>
+      <!--- if it's an hidden type attribute then flip it to be a textbox so it can be editable through the admin --->
+      <cfif attributeBean.getType() IS "Hidden">
+        <cfset attributeBean.setType( "TextBox" ) />
+      </cfif> 
+      <div class="controls">
+        #attributeBean.renderAttribute(attributeValue)#
+      </div>
+    </div>
+  </cfloop>
+  </fieldset>
+  </span>
       </cfloop>
      
       </div>
@@ -891,7 +888,7 @@ to your own modified versions of Mura CMS.
 	  
     <cfif application.configBean.getPostBundles()>
 	  	<div class="control-group">
-      <label class="control-label"><a class="tooltip">Upload Bundle File <span>Uploading large files via a web browser can produce inconsistent results.</span></a></label>
+      <label class="control-label"><a rel="tooltip" title="Uploading large files via a web browser can produce inconsistent results.">Upload Bundle File</a></label>
       <div class="controls"><input type="file" name="bundleFile" accept=".zip"/>
     </div>
     </div>
@@ -899,7 +896,6 @@ to your own modified versions of Mura CMS.
 	  	<input type="hidden" name="bundleFile" value=""/>
 	  </cfif>
 	 
-
 	  </div>
     </div>
     <input type="hidden" name="action" value="update">

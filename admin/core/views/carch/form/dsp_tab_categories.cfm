@@ -49,7 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <div id="tabCategorization">
 <dl class="oneColumn">
-<dt class="first"><cfoutput><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecategories')#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.availableCategories")#</span></a></cfoutput></dt>
+<dt class="first"><cfoutput><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.availableCategories"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecategories')#</a></cfoutput></dt>
 <dd class="categoryAssignment" id="categoryContainer"><cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" contentBean="#rc.contentBean#" rsCategoryAssign="#rc.rsCategoryAssign#"></dd>
 </dl>
 </div>

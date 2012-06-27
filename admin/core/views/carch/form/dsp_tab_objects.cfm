@@ -52,17 +52,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabList=listAppend(tabList,"tabContentobjects")>
 <cfoutput>
 <div id="tabContentobjects">
-<dl class="oneColumn">
-<dt class="first"><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritancerules')#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.inheritanceRules")#</span></a></dt>
-<dd><input type="radio" name="inheritObjects" id="ioi" value="Inherit" <cfif rc.contentBean.getinheritObjects() eq 'inherit' or rc.contentBean.getinheritObjects() eq ''>checked</cfif>> <label for="ioi">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritcascade')#</label>
-	<input type="radio" name="inheritObjects" id="ioc" value="Cascade" <cfif rc.contentBean.getinheritObjects() eq 'cascade'>checked</cfif>> <label for="ioc">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startnewcascade')#</label> 
-	<input type="radio" name="inheritObjects" id="ior" value="Reject" <cfif rc.contentBean.getinheritObjects() eq 'reject'>checked</cfif>> <label for="ior">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.donotinheritcascade')#</label>
-	</dd>
+<div class="control-group">
+      <label class="control-label" class=""><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.inheritanceRules")#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritancerules'))#</a></label>
+      <div class="controls"><label for="ioi" class="radio"><input type="radio" name="inheritObjects" id="ioi" value="Inherit" <cfif rc.contentBean.getinheritObjects() eq 'inherit' or rc.contentBean.getinheritObjects() eq ''>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritcascade')#</label>
+	<label for="ioc" class="radio"><input type="radio" name="inheritObjects" id="ioc" value="Cascade" <cfif rc.contentBean.getinheritObjects() eq 'cascade'>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startnewcascade')#</label> 
+	<label for="ior" class="radio"><input type="radio" name="inheritObjects" id="ior" value="Reject" <cfif rc.contentBean.getinheritObjects() eq 'reject'>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.donotinheritcascade')#</label>
+	</div>
+    </div>
 	<!---
 	<cfset hideObjects = not request.rsContentObjects1.recordcount and not request.rsContentObjects2.recordcount and not request.rsContentObjects3.recordcount />
 	--->
-<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentobjects')#</dt>
-<dd id="editObjects">
+<div class="control-group">
+      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentobjects')#</label>
+      <div class="controls" id="editObjects">
 <!---<a href="javascript:;" onClick="javascript: toggleDisplay('editObjects'); return false">Display Objects</a>
 <div id="editObjects" style="display: none;">--->
 	<table class="displayObjects">		
@@ -103,8 +105,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<table>
 							<tr>
 							<td class="nested">
-							<input type="button" value=">>" onclick="addDisplayObject('availableObjects',#r#,true);" class="objectNav"><br />
-							<input type="button" value="<<" onclick="deleteDisplayObject(#r#);" class="objectNav">
+							<input type="button" value=">>" onclick="addDisplayObject('availableObjects',#r#,true);" class="objectNav btn"><br />
+							<input type="button" value="<<" onclick="deleteDisplayObject(#r#);" class="objectNav btn">
 							</td>
 							<td class="nested">
 							<cfif listlen(application.settingsManager.getSite(rc.siteid).getcolumnNames(),"^") gte r><strong>#listgetat(application.settingsManager.getSite(rc.siteid).getcolumnNames(),r,"^")#</strong> <cfelse><strong>Region #r#</strong></cfif> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentobjects')#<br />
@@ -118,8 +120,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<input type="hidden" name="objectList#r#" id="objectList#r#" value="#variables["objectlist#r#"]#">
 				
 							</td>
-							<td  class="nested"><input type="button" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.up')#" onclick="moveDisplayObjectUp(#r#);" class="objectNav"><br />
-							<input type="button" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.down')#" onclick="moveDisplayObjectDown(#r#);" class="objectNav">
+							<td  class="nested"><input type="button" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.up')#" onclick="moveDisplayObjectUp(#r#);" class="objectNav btn"><br />
+							<input type="button" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.down')#" onclick="moveDisplayObjectDown(#r#);" class="objectNav btn">
 							
 							</td>
 							</tr>
@@ -130,7 +132,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			
 	</table>
-</dd>	  
+</div>
+</div>  
 </dl></div>				
 <cfinclude template="../dsp_configuratorJS.cfm">
 </cfoutput>

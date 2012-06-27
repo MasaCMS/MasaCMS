@@ -87,7 +87,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div class="control-group">
   <label class="control-label">
-  	<a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,'changesets.publishdate')#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.changesetpublishdate")#</span></a>
+  	<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.changesetpublishdate"))#">#application.rbFactory.getKeyValue(session.rb,'changesets.publishdate')#</a>
   	</label>
   <div class="controls">
   	<cfif rc.changeset.getPublished()>

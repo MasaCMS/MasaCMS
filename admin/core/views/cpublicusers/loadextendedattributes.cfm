@@ -74,29 +74,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif  userBean.getType() eq 2><cfset style=extendSetBean.getStyle()/><cfif not len(style)><cfset started=true/></cfif></cfif>
 	<span class="extendset" extendsetid="#extendSetBean.getExtendSetID()#" categoryid="#extendSetBean.getCategoryID()#" #style#>
 	<input name="extendSetID" type="hidden" value="#extendSetBean.getExtendSetID()#"/>
-	<dt <cfif not started>class="first"<cfset started=true/><cfelse>class="separate"</cfif>>#extendSetBean.getName()#</dt>
+	<fieldset><legend>#extendSetBean.getName()#</legend>
 	<cfsilent>
 	<cfset attributesArray=extendSetBean.getAttributes() />
 	</cfsilent>
-	<dd><dl><cfloop from="1" to="#arrayLen(attributesArray)#" index="a">	
+	<cfloop from="1" to="#arrayLen(attributesArray)#" index="a">	
 		<cfset attributeBean=attributesArray[a]/>
 		<cfset attributeValue=userBean.getvalue(attributeBean.getName(),'useMuraDefault') />
-		<dt>
-		<cfif len(attributeBean.getHint())>
-		<a href="##" class="tooltip">#attributeBean.getLabel()# <cfif attributeBean.getType() IS "Hidden"><strong>[Hidden]</strong></cfif> <span>#attributeBean.gethint()#</span></a>
-		<cfelse>
-		#attributeBean.getLabel()# <cfif attributeBean.getType() IS "Hidden"><strong>[Hidden]</strong></cfif>
-		</cfif>
-		<cfif attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'> <a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#attributeValue#" target="_blank">[Download]</a> <input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/> Delete</cfif>
-		</dt>
-		
-		<!--- if it's an hidden type attribute then flip it to be a textbox so it can be editable through the admin --->
-		<cfif attributeBean.getType() IS "Hidden">
-			<cfset attributeBean.setType( "TextBox" ) />
-		</cfif>	
-		
-		<dd>#attributeBean.renderAttribute(attributeValue)#</dd>
-	</cfloop></dl></dd>
+		<div class="control-group">
+	      	<label class="control-label">
+			<cfif len(attributeBean.getHint())>
+			<a href="##" rel="tooltip" title="#HTMLEditFormat(attributeBean.gethint())#">#attributeBean.getLabel()#</a>
+			<cfelse>
+			#attributeBean.getLabel()#
+			</cfif>
+			<cfif attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'> <a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#attributeValue#" target="_blank">[Download]</a> <input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/> Delete</cfif>
+			</label>
+			<!--- if it's an hidden type attribute then flip it to be a textbox so it can be editable through the admin --->
+			<cfif attributeBean.getType() IS "Hidden">
+				<cfset attributeBean.setType( "TextBox" ) />
+			</cfif>	
+			<div class="controls">
+				#attributeBean.renderAttribute(attributeValue)#
+			</div>
+		</div>
+	</cfloop>
+	</fieldset>
 	</span>
 </cfloop>
 </dl>
@@ -121,29 +124,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif  userBean.getType() eq 2><cfset style=extendSetBean.getStyle()/><cfif not len(style)><cfset started=true/></cfif></cfif>
 	<span class="extendset" extendsetid="#extendSetBean.getExtendSetID()#" categoryid="#extendSetBean.getCategoryID()#" #style#>
 	<input name="extendSetID" type="hidden" value="#extendSetBean.getExtendSetID()#"/>
-	<dt <cfif not started>class="first"<cfset started=true/><cfelse>class="separate"</cfif>>#extendSetBean.getName()#</dt>
+	<fieldset><legend>#extendSetBean.getName()#</legend>
 	<cfsilent>
 	<cfset attributesArray=extendSetBean.getAttributes() />
 	</cfsilent>
-	<dd><dl><cfloop from="1" to="#arrayLen(attributesArray)#" index="a">	
+	<cfloop from="1" to="#arrayLen(attributesArray)#" index="a">	
 		<cfset attributeBean=attributesArray[a]/>
 		<cfset attributeValue=userBean.getvalue(attributeBean.getName(),'useMuraDefault') />
-		<dt>
-		<cfif len(attributeBean.getHint())>
-		<a href="##" class="tooltip">#attributeBean.getLabel()# <cfif attributeBean.getType() IS "Hidden"><strong>[Hidden]</strong></cfif> <span>#attributeBean.gethint()#</span></a>
-		<cfelse>
-		#attributeBean.getLabel()# <cfif attributeBean.getType() IS "Hidden"><strong>[Hidden]</strong></cfif>
-		</cfif>
-		<cfif attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'> <a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#attributeValue#" target="_blank">[Download]</a> <input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/> Delete</cfif>
-		</dt>
-		
-		<!--- if it's an hidden type attribute then flip it to be a textbox so it can be editable through the admin --->
-		<cfif attributeBean.getType() IS "Hidden">
-			<cfset attributeBean.setType( "TextBox" ) />
-		</cfif>	
-		
-		<dd>#attributeBean.renderAttribute(attributeValue)#</dd>
-	</cfloop></dl></dd>
+		<div class="control-group">
+	      	<label class="control-label">
+			<cfif len(attributeBean.getHint())>
+			<a href="##" rel="tooltip" title="#HTMLEditFormat(attributeBean.gethint())#">#attributeBean.getLabel()#</a>
+			<cfelse>
+			#attributeBean.getLabel()#
+			</cfif>
+			<cfif attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'> <a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#attributeValue#" target="_blank">[Download]</a> <input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/> Delete</cfif>
+			</label>
+			<!--- if it's an hidden type attribute then flip it to be a textbox so it can be editable through the admin --->
+			<cfif attributeBean.getType() IS "Hidden">
+				<cfset attributeBean.setType( "TextBox" ) />
+			</cfif>	
+			<div class="controls">
+				#attributeBean.renderAttribute(attributeValue)#
+			</div>
+		</div>
+	</cfloop>
+	</fieldset>
 	</span>
 </cfloop>
 </cfif>

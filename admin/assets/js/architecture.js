@@ -791,6 +791,8 @@ function setExtendedAttributes(data){
 	setDatePickers("#extendSetsBasic .datepicker",dtLocale);
 	setColorPickers("#extendSetsDefault .colorpicker");
 	setColorPickers("#extendSetsBasic .colorpicker");
+	setToolsTips("#extendSetsDefault");
+	setToolTips("#extendSetsBasic");
 }
 
 function checkExtendSetTargeting(){
@@ -908,7 +910,8 @@ function loadCategoryFeatureStartStop(id,display,siteID){
   jQuery.get(url + "?" + pars, 
 			function(data) {
 			jQuery("#" + id).html(data);
-			setDatePickers("#" + id +" .datepicker",dtLocale)
+			setDatePickers("#" + id +" .datepicker",dtLocale);
+			setToolTips("#" + id);
 			}
 	);
   
@@ -1263,6 +1266,7 @@ function initQuickEdits(){
 					jQuery.get(url + "?" + pars, function(data){
 						jQuery("#mura-quickEditor").html(data);
 						setDatePickers(".mura-quickEdit-datepicker",dtLocale,dtCh);	
+						setToolTips(".mura-quickEdit-datepicker");
 						if(jQuery("#hasDraftsMessage").length){
 						   dd.addClass("hasDraft");
 						}

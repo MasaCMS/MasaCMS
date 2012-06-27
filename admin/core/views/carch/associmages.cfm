@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div style="display:none" id="selectAssocImageResults">
 </cfif>
 <dl>
-<dt><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchforassocimage')#<span>#application.rbFactory.getKeyValue(session.rb,'tooltip.searchforassocimage')#</span></a></dt>
+<dt><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'tooltip.searchforassocimage'))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchforassocimage')#</a></dt>
 <dd><input id="assets/imagesearch" name="assets/imagesearch" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" maxlength="50"/><input type="button" class="submit" onclick="loadAssocImages('#rc.siteid#','#htmlEditFormat(rc.fileid)#','#htmlEditFormat(rc.contentid)#',document.getElementById('imageSearch').value,0);return false;" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.search')#" /></dd>
 </dl>
 <cfif rc.isNew>

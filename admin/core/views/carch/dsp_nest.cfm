@@ -154,7 +154,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif attributes.rsNest.Display eq 1 and attributes.rsNest.approved>
 			#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#
 		<cfelseif attributes.rsNest.Display eq 2 and attributes.rsNest.approved>
-			<cfif verdict neq 'editor'><a href="##" class="tooltip"></cfif><span>#LSDateFormat(attributes.rsNest.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(attributes.rsNest.displaystop,"short")#</span><cfif verdict neq 'editor'></a></cfif>
+			<cfif verdict neq 'editor'><a href="##" rel="tooltip" title="#HTMLEditFormat(LSDateFormat(attributes.rsNest.displaystart,"short"))#&nbsp;-&nbsp;#LSDateFormat(attributes.rsNest.displaystop,"short")#"></cfif><cfif verdict neq 'editor'></a></cfif>
 		<cfelse>
 			#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#
 		</cfif>

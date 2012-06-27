@@ -797,6 +797,12 @@ function setColorPickers(target){
 	);	
 }
 
+function setToolTips(target){	
+	jQuery(target).tooltip({
+      	selector: "a[rel=tooltip]"
+    });
+}
+
 function setTabs(target,activetab){
 	jQuery(target).each(
 		function(index) {			

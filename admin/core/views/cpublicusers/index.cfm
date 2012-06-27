@@ -74,7 +74,14 @@ var sessionTimeout=#evaluate("application.configBean.getValue('sessionTimeout') 
 </script>
 #session.dateKey#
 <script type="text/javascript">
-	jQuery(document).ready(function(){setDatePickers(".datepicker",dtLocale);setTabs(".tabs",0);setHTMLEditors();setAccordions(".accordion",0)});
+	jQuery(document).ready(
+		function(){
+			setDatePickers(".datepicker",dtLocale);
+			setTabs(".tabs",0);
+			setHTMLEditors();
+			setAccordions(".accordion",0);
+			setToolTips(".container");
+		});
 </script>
 <script language="JavaScript" type="text/javascript">
 <!--

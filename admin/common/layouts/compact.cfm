@@ -129,6 +129,7 @@ var siteid='#session.siteid#';
 			setAccordions(".accordion",#rc.activePanel#);
 			setCheckboxTrees();
 			setColorPickers(".colorpicker");
+			setToolTips(".container");
 			if (top.location != self.location) {
 				frontEndProxy = new Porthole.WindowProxy("#session.frontEndProxyLoc##application.configBean.getContext()#/admin/assets/js/porthole/proxy.html");
 				frontEndProxy.postMessage("cmd=resizeFrontEndToolsModal&frameHeight=" + Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight));

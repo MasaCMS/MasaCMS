@@ -154,6 +154,7 @@
 				setAccordions(".accordion",#rc.activePanel#);
 				setCheckboxTrees();
 				setColorPickers(".colorpicker");
+				setToolTips(".container");
 			});
 	</script>
 
@@ -249,7 +250,7 @@
     <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-collapse.js"></script>
     <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-carousel.js"></script>
     <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-typeahead.js"></script>
-
+  
   </body>
 </html>
 </cfoutput>
