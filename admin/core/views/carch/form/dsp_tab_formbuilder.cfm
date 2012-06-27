@@ -50,51 +50,85 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabList=listAppend(tabList,"tabBasic")>
 <cfoutput>
 <div id="tabBasic">
-<dl class="oneColumn">
+
 	<input type="hidden" id="menuTitle" name="menuTitle" value="">
-	<dt class="first">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#</dt>
-	<dd><input type="text" id="title" name="title" value="#HTMLEditFormat(rc.contentBean.getTitle())#"  maxlength="255" class="textLong" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#"></dd>
+	<div class="control-group">
+		<label class="control-label">
+			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#
+		</label>
+		<div class="controls"><input type="text" id="title" name="title" value="#HTMLEditFormat(rc.contentBean.getTitle())#"  maxlength="255" class="textLong" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#">
+	</div>
+	</div>
 
 <cfif rc.type neq 'Form' and  rc.type neq 'Component' >
-	<dt><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.contentSummary"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.summary")#</a> <a href="##" id="editSummaryLink" onclick="javascript: toggleDisplay('editSummary','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#'); editSummary();return false">[#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.expand")#]</a></dt>
-	<dd id="editSummary" style="display:none;">
-	<cfoutput><textarea name="summary" id="summary" cols="96" rows="10"><cfif application.configBean.getValue("htmlEditorType") neq "none" or len(rc.contentBean.getSummary())>#HTMLEditFormat(rc.contentBean.getSummary())#<cfelse><p></p></cfif></textarea></cfoutput>
-	</dd>
+	<div class="control-group">
+		<label class="control-label">
+			<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.contentSummary"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.summary")#</a> <a href="##" id="editSummaryLink" onclick="javascript: toggleDisplay('editSummary','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#'); editSummary();return false">[#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.expand")#]</a>
+		</label>
+		<div class="controls" id="editSummary" style="display:none;">
+			<cfoutput><textarea name="summary" id="summary" cols="96" rows="10"><cfif application.configBean.getValue("htmlEditorType") neq "none" or len(rc.contentBean.getSummary())>#HTMLEditFormat(rc.contentBean.getSummary())#<cfelse><p></p></cfif></textarea></cfoutput>
+		</div>
+	</div>
 </cfif>
 
-	<dt class="separate">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.content")#</dt>
-	<dd id="bodyContainer">
-		
-		
-		<cfinclude template="dsp_formbuilder.cfm">	
-			
-	</dd>
+	<div class="control-group">
+		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.content")#</label>
+		<div class="controls" id="bodyContainer">
+			<cfinclude template="dsp_formbuilder.cfm">		
+		</div>
+	</div>
 
 <span id="extendSetsBasic"></span>
 
 <cfif rc.type eq 'Form'>
-	<dt class="separate"><input name="responseChart" id="rc" type="CHECKBOX" value="1" <cfif rc.contentBean.getresponseChart() eq 1>checked </cfif> class="checkbox"> <label for="rc">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.ispoll')#</label></dt> 
-	<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.confirmationmessage')#</dt>
-	<dd><textarea name="responseMessage">#HTMLEditFormat(rc.contentBean.getresponseMessage())#</textarea></dd>
-	<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.responsesendto')#</dt>
-	<dd><input name="responseSendTo" value="#HTMLEditFormat(rc.contentBean.getresponseSendTo())#" class="text"></dd> 
+	<div class="control-group">
+		<div class="controls">
+			<label for="rc" class="checkbox">
+				<input name="responseChart" id="rc" type="CHECKBOX" value="1" <cfif rc.contentBean.getresponseChart() eq 1>checked </cfif> class="checkbox"> 
+				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.ispoll')#
+			</label>
+		</div>
+	</div> 
+	<div class="control-group">
+		<label class="control-label">
+			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.confirmationmessage')#
+		</label>
+		<div class="controls">
+			<textarea name="responseMessage">#HTMLEditFormat(rc.contentBean.getresponseMessage())#</textarea>
+		</div>
+	<div class="control-group">
+		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.responsesendto')#
+		</label>
+		<div class="controls">
+			<input name="responseSendTo" value="#HTMLEditFormat(rc.contentBean.getresponseSendTo())#" class="text">
+		</div> 
+	</div>
 </cfif>
 
-<dt><input type="checkbox" name="dspNotify"  id="dspnotify" onclick="loadNotify('#rc.siteid#','#rc.contentid#','#rc.parentid#');"  class="checkbox"> <label for="dspnotify"><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.notifyReview"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notifyforreview')#</a></label></dt>
-<dd id="selectNotify" style="display: none;"></dd>
-
-	<dd style="display:none;">
-		<input type="hidden" name="displayStart" value="">
-		<input type="hidden" name="displayStop" value="">
-		<input type="hidden" name="display" value="1">
-		<input type="hidden" name="parentid" value="#rc.parentid#">
-	</dd>
-
-<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.addnotes')# <a href="##" id="editNoteLink" onclick="javascript: toggleDisplay('editNote','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');return false">[#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#]</a></dt>
-<dd id="editNote" style="display: none;">
-<textarea name="notes" rows="8" class="alt" id="abstract"></textarea>	
-</dd>
-</dl>
+<div class="control-group">
+	<div class="controls">
+		<label for="dspnotify" class="checkbox">
+		<input type="checkbox" name="dspNotify"  id="dspnotify" onclick="loadNotify('#rc.siteid#','#rc.contentid#','#rc.parentid#');"  class="checkbox"> 
+				<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.notifyReview"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notifyforreview')#</a></label>
+	</div>
+	<div class="controls" id="selectNotify" style="display: none;"></div>
+</div>
+	
+<input type="hidden" name="displayStart" value="">
+<input type="hidden" name="displayStop" value="">
+<input type="hidden" name="display" value="1">
+<input type="hidden" name="parentid" value="#rc.parentid#">
+	
+<div class="control-group">
+	<label class="control-label">
+		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.addnotes')# <a href="##" id="editNoteLink" onclick="javascript: toggleDisplay('editNote','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');return false">
+			[#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#]
+		</a>
+	</label>
+	<div class="container" id="editNote" style="display: none;">
+		<textarea name="notes" rows="8" class="alt" id="abstract"></textarea>	
+	</div>
+</div>
 </div>
 <cfif application.configBean.getValue("htmlEditorType") neq "none" and rc.contentBean.getSummary() neq '' and rc.contentBean.getSummary() neq "<p></p>">
 	<script>

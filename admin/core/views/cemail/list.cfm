@@ -144,8 +144,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <div class="controls"><input type="text"  name="subject" value="#session.emaillist.subject#" class="textbox">
       </div>
 </div>
-<input type="hidden" name="doSearch" value="true"/>			  
-<input type="button" class="submit" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'email.filter')#" />
+<input type="hidden" name="doSearch" value="true"/>
+<div class="form-actions">			  
+<input type="button" class="submit btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'email.filter')#" />
+</div>
 </form>
 </div>
 
