@@ -75,7 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<dl class="oneColumn" id="configurator">
 					<dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</dt>
-					<dd><select name="imageSize" class="objectParam  dropdown" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
+					<dd><select name="assets/imagesize" class="objectParam  dropdown" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
 						<cfloop list="Small,Medium,Large,Custom" index="i">
 							<option value="#lcase(i)#"<cfif i eq feed.getImageSize()> selected</cfif>>#I#</option>
 						</cfloop>

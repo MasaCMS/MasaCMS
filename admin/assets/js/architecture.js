@@ -1233,7 +1233,7 @@ function setAsSorted(){
 
 
 var quickEditTmpl = '<div class="mura-quickEdit" id="mura-quickEditor">';
-	quickEditTmpl += '<img class="loader" src="images/ajax-loader-big.gif" />';
+	quickEditTmpl += '<img class="loader" src="assets/images/ajax-loader-big.gif" />';
 	quickEditTmpl += '</div>';      		
 	     
 function initQuickEdits(){
@@ -1252,7 +1252,7 @@ function initQuickEdits(){
 					
 					jQuery("#mura-quickEditor").remove();
 					jQuery("#selected").attr("id","");
-					jQuery('#selectedIcon').attr("id","").attr("src","images/icons/template_24x24.png");
+					jQuery('#selectedIcon').attr("id","").attr("src","assets/images/icons/template_24x24.png");
 					jQuery(this).parent().prepend(quickEditTmpl);
 					
 					var qe = jQuery("#mura-quickEditor")
@@ -1270,7 +1270,7 @@ function initQuickEdits(){
 						if(attribute == 'template'){
 							var img= dd.find("img:first");
 							if(img.length){
-								img.attr("id","selectedIcon").attr("src","images/icons/template_24x24-on.png")
+								img.attr("id","selectedIcon").attr("src","assets/images/icons/template_24x24-on.png")
 							}
 						}
 						
@@ -1323,7 +1323,7 @@ function saveQuickEdit(){
 	
 	var pars=jQuery.extend({},basePars,attributeParams);
 
-	jQuery("#mura-quickEditor").html('<img class="loader" src="images/ajax-loader-big.gif" />');
+	jQuery("#mura-quickEditor").html('<img class="loader" src="assets/images/ajax-loader-big.gif" />');
 	
 	jQuery.post('index.cfm',pars,
 		function(data){		
@@ -1340,7 +1340,7 @@ function saveQuickEdit(){
 
 function closeQuickEdit(){
 	jQuery('#selected').attr("id","");
-	jQuery('#selectedIcon').attr("id","").attr("src","images/icons/template_24x24.png");
+	jQuery('#selectedIcon').attr("id","").attr("src","assets/images/icons/template_24x24.png");
 	jQuery('.mura-quickEdit').remove();
 }
 

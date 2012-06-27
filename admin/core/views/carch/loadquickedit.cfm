@@ -108,7 +108,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<select id="mura-quickEdit-stopDayPart" class="dropdown"><option value="AM">AM</option><option value="PM" <cfif (LSisDate(content.getdisplaystop()) and (hour(content.getdisplaystop()) gte 12)) or not LSisDate(content.getdisplaystop())>selected</cfif>>PM</option></select></li>
 		</ol>	</cfif>
 	<div class="buttons">
-	<input type="button" name="submit" value="Submit" class="submit" onclick="saveQuickEdit(this);" />
+	<input type="button" name="submit" value="Submit" class="submit btn" onclick="saveQuickEdit(this);" />
 	</div>
 	</cfoutput>
 <cfelse>

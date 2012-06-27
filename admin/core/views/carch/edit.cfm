@@ -241,7 +241,7 @@ var hasBody=#subType.getHasBody()#;
 				<cfset rsRating=application.raterManager.getAvgRating(rc.contentBean.getcontentID(),rc.contentBean.getSiteID()) />
 				<cfif rsRating.recordcount>
 				<li>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.votes")#: <strong><cfif rsRating.recordcount>#rsRating.theCount#<cfelse>0</cfif></strong></li>
-				<li>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.averagerating")#: <img id="ratestars" src="images/rater/star_#application.raterManager.getStarText(rsRating.theAvg)#.gif" alt="#rsRating.theAvg# stars" border="0"></li>
+				<li>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.averagerating")#: <img id="ratestars" src="assets/images/rater/star_#application.raterManager.getStarText(rsRating.theAvg)#.gif" alt="#rsRating.theAvg# stars" border="0"></li>
 				</cfif>
 			</cfif>
 		<cfif rc.type eq "file" and rc.contentBean.getMajorVersion()>

@@ -142,7 +142,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           </select>
         </dd>
       </cfif>
-      <dd <cfif rc.topid neq '00000000000000000000000000000000001' and perm eq 'Editor'>class="button"</cfif>><input type="button" class="submit" id="submitSort" onclick="submitForm(document.forms.viewUpdate);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.update")#" /></dd>
+      <dd <cfif rc.topid neq '00000000000000000000000000000000001' and perm eq 'Editor'>class="button"</cfif>><input type="button" class="submit btn" id="submitSort" onclick="submitForm(document.forms.viewUpdate);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.update")#" /></dd>
     </dl>
     <input type="hidden" name="startrow" value="#rc.startrow#">
     <input type="hidden" name="orderperm" value="#perm#">
@@ -211,7 +211,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
        <dd class="template">
 	  		<cfif perm eq 'editor'><a class="mura-quickEditItem" data-attribute="template"></cfif>
 			<cfif len(rc.rstop.template) or len(rc.rstop.childTemplate)>
-				 <img class="icon" src="images/icons/template_24x24.png" /> 
+				 <img class="icon" src="assets/images/icons/template_24x24.png" /> 
 			<cfelse>
            		#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#
          	 </cfif>
