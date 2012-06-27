@@ -50,20 +50,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabList=listAppend(tabList,"tabBasic")>
 <cfoutput>
 <div id="tabBasic">
-
 	<input type="hidden" id="menuTitle" name="menuTitle" value="">
 	<div class="control-group">
 		<label class="control-label">
 			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#
 		</label>
-		<div class="controls"><input type="text" id="title" name="title" value="#HTMLEditFormat(rc.contentBean.getTitle())#"  maxlength="255" class="textLong" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#">
-	</div>
+		<div class="controls">
+			<input type="text" id="title" name="title" value="#HTMLEditFormat(rc.contentBean.getTitle())#"  maxlength="255" class="textLong" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#">
+		</div>
 	</div>
 
 <cfif rc.type neq 'Form' and  rc.type neq 'Component' >
 	<div class="control-group">
 		<label class="control-label">
-			<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.contentSummary"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.summary")#</a> <a href="##" id="editSummaryLink" onclick="javascript: toggleDisplay('editSummary','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#'); editSummary();return false">[#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.expand")#]</a>
+			<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.contentSummary"))#">
+				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.summary")#
+			</a> 
+			<a href="##" id="editSummaryLink" onclick="javascript: toggleDisplay('editSummary','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#'); editSummary();return false">
+				[#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.expand")#]
+			</a>
 		</label>
 		<div class="controls" id="editSummary" style="display:none;">
 			<cfoutput><textarea name="summary" id="summary" cols="96" rows="10"><cfif application.configBean.getValue("htmlEditorType") neq "none" or len(rc.contentBean.getSummary())>#HTMLEditFormat(rc.contentBean.getSummary())#<cfelse><p></p></cfif></textarea></cfoutput>
@@ -72,7 +77,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 
 	<div class="control-group">
-		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.content")#</label>
+		<label class="control-label">
+			#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.content")#
+		</label>
 		<div class="controls" id="bodyContainer">
 			<cfinclude template="dsp_formbuilder.cfm">		
 		</div>
@@ -96,6 +103,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="controls">
 			<textarea name="responseMessage">#HTMLEditFormat(rc.contentBean.getresponseMessage())#</textarea>
 		</div>
+	</div>
 	<div class="control-group">
 		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.responsesendto')#
 		</label>
@@ -125,7 +133,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			[#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#]
 		</a>
 	</label>
-	<div class="container" id="editNote" style="display: none;">
+	<div class="controls" id="editNote" style="display: none;">
 		<textarea name="notes" rows="8" class="alt" id="abstract"></textarea>	
 	</div>
 </div>
