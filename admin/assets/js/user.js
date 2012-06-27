@@ -77,7 +77,7 @@ function setExtendedAttributes(data){
 	setDatePickers("#extendSetsBasic .datepicker",dtLocale);
 	setColorPickers("#extendSetsDefault .colorpicker");
 	setColorPickers("#extendSetsBasic .colorpicker");
-	setToolsTips("#extendSetsDefault");
+	setToolTips("#extendSetsDefault");
 	setToolTips("#extendSetsBasic");
 }
 
