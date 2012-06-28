@@ -53,18 +53,56 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </ul>
 
 <form novalidate="novalidate" action="index.cfm?muraAction=cMailingList.updatemember" name="form1" method="post" onsubmit="return validate(this);">
-<dl class="oneColumn">
-<dt class="first">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.email')#</dt>
-<dd><input type=text name="email" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.emailrequired')#"></dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.firstname')#</dt>
-<dd><input type=text name="fname" class="text" /></dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.lastname')#</dt>
-<dd><input type=text name="lname" class="text" /></dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.company')#</dt>
-<dd><input type=text name="company" class="text" /></dd>
-<dt><input type="radio" name="action" id="a" value="add" checked> <label id="a">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.subscribe')#</label> <input type="radio" id="d" name="action" value="delete"> <label for="d">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.unsubscribe')#</label></dt>
-</dl>
-<input type="button" class="submit" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.submit')#" />
+<div class="control-group">
+	<label class="control-label">
+		#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.email')#
+	</label>
+	<div class="controls">
+		<input type=text name="email" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.emailrequired')#">
+	</div>
+</div>
+<div class="control-group">
+	<label class="control-label">
+		#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.firstname')#
+	</label>
+	<div class="controls">
+		<input type=text name="fname" class="text" />
+	</div>
+</div>
+
+<div class="control-group">
+	<label class="control-label">
+		#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.lastname')#
+	</label>
+	<div class="controls">
+		<input type=text name="lname" class="text" />
+	</div>
+</div>
+
+<div class="control-group">
+	<label class="control-label">
+		#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.company')#
+	</label>
+	<div class="controls">
+		<input type=text name="company" class="text" />
+	</div>
+</div>
+
+<div class="control-group">
+	<div class="controls">
+		<label for="a" class="radio">
+			<input type="radio" name="action" id="a" value="add" checked> 
+			#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.subscribe')#
+		</label> 
+		<label id="d" class="radio">
+			<input type="radio" id="d" name="action" value="delete"> 
+			 #application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.unsubscribe')#
+		</label>
+	</div>
+</div>
+<div id="actionButton" class="form-actions">
+<input type="button" class="submit btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.submit')#" />
+</div>
 <input type=hidden name="mlid" value="#rc.mlid#">
 <input type=hidden name="siteid" value="#HTMLEditFormat(rc.siteid)#">
 <input type=hidden name="isVerified" value="1">
