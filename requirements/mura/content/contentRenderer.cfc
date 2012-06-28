@@ -935,7 +935,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var href=""/>
 	<cfset var tp=""/>
-	<cfset var begin=iif(arguments.complete,de('http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de('')) />
+	<cfset var begin=iif(arguments.complete or (isDefined('request.siteID') and request.siteID neq arguments.siteID),de('http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de('')) />
 	<cfset var fileBean="">
 	
 	<cfif len(arguments.querystring) and not left(arguments.querystring,1) eq "?">
