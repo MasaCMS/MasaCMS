@@ -916,10 +916,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfreturn application.configBean.getStub() & "/" & arguments.siteID & "/"  />
 			</cfif>
 		</cfif>
-	</cfif>
-</cffunction>
-
-<cffunction name="createHREF" returntype="string" output="false" access="public">
+	<<cffunction name="createHREF" returntype="string" output="false" access="public">
 	<cfargument name="type" required="true" default="Page">
 	<cfargument name="filename" required="true">
 	<cfargument name="siteid" required="true" default="">
@@ -935,7 +932,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var href=""/>
 	<cfset var tp=""/>
-	<cfset var begin=iif(arguments.complete,de('http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de('')) />
+	<cfset var begin=iif(arguments.complete or variables.$.siteConfig('siteID') neq arguments.siteID,de('http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de('')) />
 	<cfset var fileBean="">
 	
 	<cfif len(arguments.querystring) and not left(arguments.querystring,1) eq "?">
@@ -964,9 +961,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 <cfreturn href />
-</cffunction>
-
-<cffunction name="createHREFforRSS" returntype="string" output="false" access="public">
+</cffunction>S" returntype="string" output="false" access="public">
 	<cfargument name="type" required="true" default="Page">
 	<cfargument name="filename" required="true">
 	<cfargument name="siteid" required="true">
