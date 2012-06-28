@@ -303,17 +303,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                 </li>
               </cfloop>
             </ul>
-          </dd>
-        </dl>
+          </div>
+        </div>
 
       </div>
       </cfif>
     </div>
- </div> <!--- End Tab Container --->
-      <div class="clearfix separate" id="actionIndicator" style="display:none;">
+ </div> 
+
+ <!--- End Tab Container --->
+      <div class="clearfix separate form-actions" id="actionIndicator" style="display:none;">
         <img src="./images/progress_bar.gif">
       </div>
-      <div class="clearfix separate" id="actionButtons"> 
+      <div class="clearfix separate form-actions" id="actionButtons"> 
       <div style="display:inline" id="controls"> 
         <!---Delivery Options---><br />
         <cfsilent>
