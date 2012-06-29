@@ -1006,7 +1006,6 @@ function loadSiteFlatByFilter(){
 function loadSiteManagerInTab(loader){
 		archViewLoaded=true;
 		window.scrollTo(0,0); 
-		jQuery("#viewTabs").tabs('select', 0); 
 		loader();
 		//document.getElementById("newContentMenu").style.visibility="hidden"; 
 		return false;
@@ -1021,7 +1020,7 @@ function loadSiteFlat(args)	{
 	
 	d.html('<img class="loadProgress" src="assets/images/progress_bar.gif">');
 	document.getElementById('newContentMenu').style.visibility="hidden";
-	
+
 	jQuery.post(url + "?" + pars, args, 
 		function(data) {
 			//try{

@@ -171,7 +171,7 @@ initTabs(Array("#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'us
 </script>	
 </cfif>
 
-	<div id="actionButtons" class="form-actions">
+	<div class="actionButtons form-actions">
 		<cfif rc.addressid eq ''>
         
 				<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'user.add')#" />

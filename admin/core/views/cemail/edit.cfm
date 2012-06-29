@@ -315,7 +315,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <div class="clearfix separate form-actions" id="actionIndicator" style="display:none;">
         <img src="./images/progress_bar.gif">
       </div>
-      <div class="clearfix separate form-actions" id="actionButtons"> 
+      <div class="clearfix separate form-actions actionButtons"> 
       <div style="display:inline" id="controls"> 
         <!---Delivery Options---><br />
         <cfsilent>

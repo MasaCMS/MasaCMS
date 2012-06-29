@@ -296,7 +296,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   </div>
 </div>
 
-<div class="form-actions" id="actionButtons">
+<div class="actionButtons form-actions">
 <input type="button" class="submit btn" onclick="submitForm(document.forms.searchFrm);" value="#application.rbFactory.getKeyValue(session.rb,"params.search")#" />
 </div>
 </form>

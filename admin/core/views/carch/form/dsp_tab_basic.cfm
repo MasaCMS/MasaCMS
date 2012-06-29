@@ -48,7 +48,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabList=listAppend(tabList,"tabBasic")>
 <cfset started=false>
 <cfoutput>
-<div id="tabBasic">		
+<div id="tabBasic" class="tab-pane">
+
+	<cfinclude template="dsp_type_selector.cfm">
+	
 	<cfswitch expression="#rc.type#">
 		<cfcase value="Page,Portal,Calendar,Gallery,File,Link">
 			<div class="control-group">

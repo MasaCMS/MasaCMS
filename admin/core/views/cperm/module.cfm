@@ -94,7 +94,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             </tr>
 	</cfif>
 		</table>
-<div id="actionButtons" class="form-actions">
+<div class="actionButtons form-actions">
 <input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'permissions.update')#" />
 </div>
 <input type="hidden" name="router" value="#cgi.HTTP_REFERER#">

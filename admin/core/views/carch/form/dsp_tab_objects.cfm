@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.contentobjects"))/>
 <cfset tabList=listAppend(tabList,"tabContentobjects")>
 <cfoutput>
-<div id="tabContentobjects">
+<div id="tabContentobjects" class="tab-pane">
 <div class="control-group">
       <label class="control-label"><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.inheritanceRules"))#">
       	#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritancerules')#
@@ -130,9 +130,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</table>
 					</cfloop>
 				</td>
-			  </tr>
-			
-			
+			  </tr>	
 	</table>
 </div>
 </div>  

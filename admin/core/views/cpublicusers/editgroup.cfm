@@ -137,7 +137,7 @@ loadExtendedAttributes('#rc.userbean.getUserID()#','1','#rc.userbean.getSubType(
 //initTabs(Array("#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.basic'))#","#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.extendedattributes'))#"),0,0,0);
 </script>	
 </cfif>
-<div id="actionButtons" class="alt form-actions">
+<div class="alt form-actions actionButtons">
 <cfif rc.userid eq ''>
 <input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'user.add')#" />
 <cfelse>

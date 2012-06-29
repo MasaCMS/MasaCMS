@@ -380,19 +380,20 @@ copyAll = 'false';
 
 <!---<img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">--->
 
-<div id="viewTabs" class="tabs initActiveTab" style="display:none">
-		<ul>
-			<li><a href="##tabArchitectual" onclick="return false;"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.architectural")#</span></a></li>
-			<li><a href="##tabFlat" onclick="return false;"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.flat")#</span></a></li>
-		</ul>
-		<div id="tabArchitectual">
+<div class="tabbable">
+	<ul id="viewTabs" class="nav nav-tabs initActiveTab">
+		<li><a href="##tabArchitectural" onclick="return false;">#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.architectural")#</a></li>
+		<li><a href="##tabFlat" onclick="return false;">#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.flat")#</a></li>
+	</ul>
+	<div class="tab-content"> 
+		<div id="tabArchitectural" class="tab-pane">
 		<div id="gridContainer"><img class="loadProgress" src="assets/images/progress_bar.gif"></div>
 		</div>
 		
-		<div id="tabFlat">
+		<div id="tabFlat" class="tab-pane">
 			<img class="loadProgress" src="assets/images/progress_bar.gif">
 		</div>
-		
+	</div>	
 </div>
 <script type="text/javascript">
 var archViewLoaded=false;
@@ -421,26 +422,38 @@ function initSiteManagerTabContent(index){
 
 	jQuery.get("./index.cfm","muraAction=carch.siteManagerTab&tab=" + index);
 	
+	jQuery("##viewTabs").on( "show", function(event,ui){
+	//alert(event.target)
+		var tab=event.target.toString();
+
+		if(tab.indexOf('tabArchitectural') != -1){
+			initSiteManagerTabContent(0);
+		} else if(tab.indexOf('tabFlat') != -1) {
+			initSiteManagerTabContent(1);
+		}
+	});	
+
 	switch(index){
 		case 0:
 		if (!archViewLoaded) {
 			loadSiteManager('#JSStringFormat(rc.siteID)#', '#JSStringFormat(rc.topid)#', '#JSStringFormat(rc.moduleid)#', '#JSStringFormat(rc.sortby)#', '#JSStringFormat(rc.sortdirection)#', '#JSStringFormat(rc.ptype)#', '#JSStringFormat(rc.startrow)#');
 			archViewLoaded = true;
+			jQuery('##viewTabs a[href="##tabArchitectural"]').tab('show');
 		}
 		break;
 		case 1:
 		if (!flatViewLoaded) {
 			loadSiteFlat(flatViewArgs);
 			flatViewLoaded = true;
+			jQuery('##viewTabs a[href="##tabFlat"]').tab('show');
 		}
 	}
 }
 
-jQuery("##viewTabs").bind( "tabsselect", function(event,ui){
-	initSiteManagerTabContent(ui.index)
-});	
 
-initSiteManagerTabContent(#rc.activeTab#);			
+jQuery(document).ready(function(){
+	initSiteManagerTabContent(#rc.activeTab#);	
+});
 </script>
 </cfoutput>
 <cfinclude template="draftpromptjs.cfm">

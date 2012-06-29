@@ -124,7 +124,7 @@ var siteid='#session.siteid#';
 	jQuery(document).ready(
 		function(){
 			setDatePickers(".datepicker",dtLocale);
-			setTabs(".tabs",#rc.activeTab#);
+			setTabs(".nav-tabs",#rc.activeTab#);
 			setHTMLEditors();
 			setAccordions(".accordion",#rc.activePanel#);
 			setCheckboxTrees();

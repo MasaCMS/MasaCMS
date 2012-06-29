@@ -49,7 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.basic"))/>
 <cfset tabList=listAppend(tabList,"tabBasic")>
 <cfoutput>
-<div id="tabBasic">
+<div id="tabBasic" class="tab-pane">
 	<input type="hidden" id="menuTitle" name="menuTitle" value="">
 	<div class="control-group">
 		<label class="control-label">

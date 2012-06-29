@@ -141,7 +141,7 @@ document.getElementById('responseDisplayFields').value=document.getElementById('
      </div>
   </div>
 
-<div id="actionButtons" class="form-actions">
+<div class="actionButtons form-actions">
   <input type="button" class="submit btn" onclick="submitForm(document.forms.frmDisplayFields,'setDisplay');" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.update')#" />
 </div>
 

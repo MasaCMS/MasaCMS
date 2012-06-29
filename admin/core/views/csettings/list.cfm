@@ -98,7 +98,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						confirmDialog(
 						'WARNING: DO NOT continue unless you have backed up all selected site files.',
 						function(){
-									$('#actionButtons').hide();
+									$('.actionButtons').hide();
 									$('#actionIndicator').show();
 									document.form1.submit();
 								}
@@ -193,7 +193,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<input type="button" class="submit btn" onclick="document.form1.submit();" value="Update Bind Order" />
 				</cfif>
 				<cfif  rc.siteUpdateSelect eq "true">
-					<div class="clearfix" id="actionButtons">
+					<div class="clearfix actionButtons">
 					<input type="button" class="submit" id="btnUpdateSites" value="Update Selected Sites to Latest Version" />
 					</div>
 					<div id="actionIndicator" style="display: none;">

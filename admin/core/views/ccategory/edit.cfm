@@ -182,7 +182,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   </div>
 </div>
 
-<div id="actionButtons" class="form-actions">
+<div class="actionButtons form-actions">
   <cfif rc.categoryID eq ''>
     <input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'categorymanager.add')#" />
     <input type=hidden name="categoryID" value="">

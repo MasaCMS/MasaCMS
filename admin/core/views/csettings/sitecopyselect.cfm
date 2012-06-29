@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h2>Site Copy Tool</h2>
 <!--- ><p class="notice">IMPORTANT: All content in the site that is being copied to will be replaced.</p> --->
 <p class="notice">IMPORTANT: All content in the destination site ("To") will be deleted and replaced with the source site's ("From") content.</p>
-<form action="index.cfm" onsubmit="if(validateForm(this)){jQuery('##actionButtons').hide();jQuery('##actionIndicator').show();return true;}else{return false;};">
+<form action="index.cfm" onsubmit="if(validateForm(this)){jQuery('.actionButtons').hide();jQuery('##actionIndicator').show();return true;}else{return false;};">
 <div class="control-group">
      <label class="control-label">From</label>
      <div class="controls"><select name="fromSiteID" required="true" message="The 'SOURCE' site is required.">
@@ -71,7 +71,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 
 <input type="hidden" name="muraAction" value="cSettings.sitecopy">
-<div class="clearfix form-actions" id="actionButtons">
+<div class="clearfix form-actions actionButtons">
 <input type="submit" value="Copy" class="btn">
 </div>
 </form>

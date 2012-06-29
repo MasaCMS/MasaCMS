@@ -606,16 +606,19 @@ function submitForm(frm,action,msg){
 
 		if(jQuery('#actionIndicator').length){
 			jQuery('#actionIndicator').show();
-			jQuery('#actionButtons').hide();
+			jQuery('.actionButtons').hide();
 		} else{
-			jQuery('#actionButtons').html(
+			jQuery('.actionButtons').each(function(){
+				jQuery(this).html(
 					'<div style="display:none;">' 
-					+ jQuery('#actionButtons').html() 
+					+ jQuery(this).html() 
 					+ '</div>'
 					+ '<img src="./assets/images/progress_bar.gif">'
 				);
+			});
 
-			//alert(jQuery('#actionButtons').html());
+
+			//alert(jQuery('.actionButtons').html());
 		}	
 
 		frm.submit();
@@ -804,6 +807,7 @@ function setToolTips(target){
 }
 
 function setTabs(target,activetab){
+	/*
 	jQuery(target).each(
 		function(index) {			
 			jQuery(this).tabs().fadeIn()
@@ -814,8 +818,15 @@ function setTabs(target,activetab){
 			 	}
 			)
 		}
-	);
+	);*/
+	$(target + ' a').click(function (e) {
+  		e.preventDefault();
+  		$(this).tab('show');
+		})
 	
+	$(target + ' li:first a').tab('show');
+
+	/*
 	jQuery(".ui-tabs .ui-tabs .ui-tabs-nav li").each(
 			function(index) {			
 				jQuery(this).removeClass("ui-corner-top").addClass("ui-corner-all");
@@ -827,22 +838,18 @@ function setTabs(target,activetab){
 				jQuery(this).tabs("select",activetab);
 			}
 		);
-	
+
+	*/
 	jQuery(".tabPreloader").each(
 			function(index) {			
 				jQuery(this).hide();
 			}
 		);
-	
-	jQuery(".tooltip").each(
-			function(index) {			
-				jQuery(this).attr("onclick","return false;");
-			}
-		);
 }
 
 function setAccordions(target,activepanel){
-	jQuery(target).each(
+	
+		jQuery(target).each(
 			function(index) {
 				if(activepanel != null){
 					jQuery(this).accordion({ active: activepanel })	
@@ -851,6 +858,7 @@ function setAccordions(target,activepanel){
 				}
 			}
 	);
+	//jQuery(target).collapse();
 }	
 
 function setCheckboxTrees(){

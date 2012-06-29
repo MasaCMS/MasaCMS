@@ -47,27 +47,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.relatedcontent"))/>
 <cfset tabList=listAppend(tabList,"tabRelatedcontent")>
 <cfoutput>
-<div id="tabRelatedcontent">
-<dl class="oneColumn">
-<dt class="first">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#: <span id="selectRelatedContent"> <a href="javascript:;" onclick="javascript: loadRelatedContent('#HTMLEditFormat(rc.siteid)#','',1);return false;">[#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.addrelatedcontent')#]</a></span></dt>
-<table id="relatedContent" class="table table-striped table-condensed"> 
-<tr>
-<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contenttitle')#</th>
-<th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type')#</th>
-<th class="administration">&nbsp;</th>
-</tr>
-<tbody id="RelatedContent">
-<cfif rc.rsRelatedContent.recordCount>
-<cfloop query="rc.rsRelatedContent">
-<tr id="c#rc.rsRelatedContent.contentID#">
-<td class="varWidth">#rc.rsRelatedContent.menuTitle#</td>
-<td>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.rsRelatedContent.type#')#</td>
-<td class="administration"><input type="hidden" name="relatedcontentid" value="#rc.rsRelatedContent.contentid#" /><ul class="clearfix"><li class="delete"><a title="Delete" href="##" onclick="return removeRelatedContent('c#rc.rsRelatedContent.contentid#','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.removerelatedcontent'))#');">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#</a></li></ul></td>
-</tr></cfloop>
-<cfelse>
-<tr>
-<td id="noFilters" colspan="4" class="noResults">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.norelatedcontent')#</td>
-</tr>
-</cfif></tbody>
-</table>
-</dl></div></cfoutput>
+<div id="tabRelatedcontent" class="tab-pane">
+	<dl class="oneColumn">
+		<dt class="first">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#: <span id="selectRelatedContent"> <a href="javascript:;" onclick="javascript: loadRelatedContent('#HTMLEditFormat(rc.siteid)#','',1);return false;">[#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.addrelatedcontent')#]</a></span></dt>
+			<table id="relatedContent" class="table table-striped table-condensed"> 
+			<tr>
+			<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contenttitle')#</th>
+			<th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type')#</th>
+			<th class="administration">&nbsp;</th>
+			</tr>
+			<tbody id="RelatedContent">
+			<cfif rc.rsRelatedContent.recordCount>
+			<cfloop query="rc.rsRelatedContent">
+			<tr id="c#rc.rsRelatedContent.contentID#">
+			<td class="varWidth">#rc.rsRelatedContent.menuTitle#</td>
+			<td>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.rsRelatedContent.type#')#</td>
+			<td class="administration"><input type="hidden" name="relatedcontentid" value="#rc.rsRelatedContent.contentid#" /><ul class="clearfix"><li class="delete"><a title="Delete" href="##" onclick="return removeRelatedContent('c#rc.rsRelatedContent.contentid#','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.removerelatedcontent'))#');">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#</a></li></ul></td>
+			</tr></cfloop>
+			<cfelse>
+			<tr>
+			<td id="noFilters" colspan="4" class="noResults">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.norelatedcontent')#</td>
+			</tr>
+			</cfif></tbody>
+		</table>
+	</dl>
+</div>
+
+</cfoutput>

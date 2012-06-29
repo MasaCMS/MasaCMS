@@ -221,6 +221,23 @@ var hasBody=#subType.getHasBody()#;
 	<cfelse>
 	<cfset rsPluginScripts=application.pluginManager.getScripts("on#rc.type#Edit",rc.siteID)>
 	</cfif>
+
+	<cfsavecontent variable="actionButtons">
+	<cfoutput>
+	<div class="clearfix actionButtons form-actions">
+		<cfif assignChangesets>
+		<input type="button" class="submit btn" onclick="saveToChangeset('#rc.contentBean.getChangesetID()#','#HTMLEditFormat(rc.siteID)#','');return false;" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset")#" />	
+		</cfif>
+		 <input type="button" class="submit btn" onclick="if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#" />
+		<cfif listFindNoCase("Page,Portal,Calendar,Gallery",rc.type)>
+		<input type="button" class="submit btn" onclick="document.contentForm.preview.value=1;if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraftandpreview"))#" />
+		</cfif>
+		<cfif rc.perm eq 'editor'>
+		<input type="button" class="submit btn" onclick="document.contentForm.approved.value=1;if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#" />
+		</cfif> 
+	</div>
+	</cfoutput>
+	</cfsavecontent>
 </cfsilent>
 
 <!--- check to see if the site has reached it's maximum amount of pages --->
@@ -336,7 +353,8 @@ var hasBody=#subType.getHasBody()#;
 			</ul>
 		</cfif>
 	</cfif>
-	
+
+	<!---
 	<cfif rc.compactDisplay neq "true">
 			<div class="selectContentType">
 			<cfif listFindNoCase(pageLevelList,rc.type)>
@@ -418,13 +436,13 @@ var hasBody=#subType.getHasBody()#;
 			
 		<input type="hidden" name="closeCompactDisplay" value="true" />
 	</cfif>
-	
+	--->
 	</cfoutput>
 	
 	<cfset tabLabelList=""/>
 	<cfset tabList="">
 	<cfsavecontent variable="tabContent">
-	
+
 		<cfif rc.type neq "Form">
 			<cfinclude template="form/dsp_tab_basic.cfm">	
 		<cfelse>
@@ -514,7 +532,7 @@ var hasBody=#subType.getHasBody()#;
 			<cfset tabID="tab" & application.contentRenderer.createCSSID(rsPluginScripts.name)>
 			<cfset tabList=listAppend(tabList,tabID)>
 			<cfset pluginEvent.setValue("tabList",tabLabelList)>
-				<div id="#tabID#">
+				<div id="#tabID#" class="-ab-pane">
 				<cfoutput>
 				<cfset rsPluginScript=application.pluginManager.getScripts("onContentEdit",rc.siteID,rsPluginScripts.moduleID)>
 				<cfif rsPluginScript.recordcount>
@@ -529,67 +547,59 @@ var hasBody=#subType.getHasBody()#;
 	</cfsavecontent>
 	<cfoutput>
 	<img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
-	<div class="tabs initActiveTab" style="display:none">
-		<ul>
-		<cfloop from="1" to="#listlen(tabList)#" index="t">
-		<li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
-		</cfloop>
+	<div class="tabbable tabs-left">
+		<ul class="nav nav-tabs initActiveTab">
+			<cfloop from="1" to="#listlen(tabList)#" index="t">
+			<li><a href="###listGetAt(tabList,t)#"><span>#listGetAt(tabLabelList,t)#</span></a></li>
+			</cfloop>
 		</ul>
-		#tabContent#
+		<div class="tab-content">		
+			#tabContent#
+			#actionButtons#
+		</div>
 	</div>
-	
+
+
 	<cfif assignChangesets>
 		<cfinclude template="form/dsp_changesets.cfm">
 	</cfif>
 	
-	<div class="clearfix" id="actionButtons" class="form-actions">
-		<cfif assignChangesets>
-		<input type="button" class="submit btn" onclick="saveToChangeset('#rc.contentBean.getChangesetID()#','#HTMLEditFormat(rc.siteID)#','');return false;" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset")#" />	
-		</cfif>
-		 <input type="button" class="submit btn" onclick="if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#" />
-		<cfif listFindNoCase("Page,Portal,Calendar,Gallery",rc.type)>
-		<input type="button" class="submit btn" onclick="document.contentForm.preview.value=1;if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraftandpreview"))#" />
-		</cfif>
-		<cfif rc.perm eq 'editor'>
-		<input type="button" class="submit btn" onclick="document.contentForm.approved.value=1;if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#" />
-		</cfif> 
-	</div>
-		<input name="approved" type="hidden" value="0">
-		<input name="muraPreviouslyApproved" type="hidden" value="#rc.contentBean.getApproved()#">
-		<input id="removePreviousChangeset" name="removePreviousChangeset" type="hidden" value="false">
-		<input id="changesetID" name="changesetID" type="hidden" value="">
-		<input name="preview" type="hidden" value="0">	
-		<cfif rc.type neq 'Link'>
-			<input name="filename" type="hidden" value="#rc.contentBean.getfilename()#">
-		</cfif>
-		<cfif not rc.contentBean.getIsNew()>
-			<input name="lastupdate" type="hidden" value="#LSDateFormat(rc.contentBean.getlastupdate(),session.dateKeyFormat)#">
-		</cfif>
-		<cfif rc.contentid eq '00000000000000000000000000000000001'>
-			<input name="isNav" type="hidden" value="1">
-		</cfif>
-		<cfif rc.type eq 'Form'>
-			<input name="responseDisplayFields" type="hidden" value="#rc.contentBean.getResponseDisplayFields()#">
-		</cfif>
-		<input name="action" type="hidden" value="add">
-		<input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
-		<input type="hidden" name="moduleid" value="#rc.moduleid#">
-		<input type="hidden" name="preserveID" value="#rc.contentBean.getPreserveID()#">
-		<input type="hidden" name="return" value="#rc.return#">
-		<input type="hidden" name="topid" value="#rc.topid#">
-		<input type="hidden" name="contentid" value="#rc.contentBean.getContentID()#">
-		<input type="hidden" name="ptype" value="#rc.ptype#">
-		<input type="hidden" name="type" value="#rc.type#">
-		<input type="hidden" name="subtype" value="#rc.contentBean.getSubType()#">
-		<input type="hidden" name="muraAction" value="cArch.update">
-		<input type="hidden" name="startrow" value="#rc.startrow#">
-		<input type="hidden" name="returnURL" id="txtReturnURL" value="#rc.returnURL#">
-		<input type="hidden" name="homeID" value="#rc.homeID#">
-		<cfif not  listFind(session.mura.memberships,'S2')>
-			<input type="hidden" name="isLocked" value="#rc.contentBean.getIsLocked()#">
-		</cfif>
-		<input name="OrderNo" type="hidden" value="<cfif rc.contentBean.getorderno() eq ''>0<cfelse>#rc.contentBean.getOrderNo()#</cfif>">
-				
+
+	<input name="approved" type="hidden" value="0">
+	<input name="muraPreviouslyApproved" type="hidden" value="#rc.contentBean.getApproved()#">
+	<input id="removePreviousChangeset" name="removePreviousChangeset" type="hidden" value="false">
+	<input id="changesetID" name="changesetID" type="hidden" value="">
+	<input name="preview" type="hidden" value="0">	
+	<cfif rc.type neq 'Link'>
+		<input name="filename" type="hidden" value="#rc.contentBean.getfilename()#">
+	</cfif>
+	<cfif not rc.contentBean.getIsNew()>
+		<input name="lastupdate" type="hidden" value="#LSDateFormat(rc.contentBean.getlastupdate(),session.dateKeyFormat)#">
+	</cfif>
+	<cfif rc.contentid eq '00000000000000000000000000000000001'>
+		<input name="isNav" type="hidden" value="1">
+	</cfif>
+	<cfif rc.type eq 'Form'>
+		<input name="responseDisplayFields" type="hidden" value="#rc.contentBean.getResponseDisplayFields()#">
+	</cfif>
+	<input name="action" type="hidden" value="add">
+	<input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
+	<input type="hidden" name="moduleid" value="#rc.moduleid#">
+	<input type="hidden" name="preserveID" value="#rc.contentBean.getPreserveID()#">
+	<input type="hidden" name="return" value="#rc.return#">
+	<input type="hidden" name="topid" value="#rc.topid#">
+	<input type="hidden" name="contentid" value="#rc.contentBean.getContentID()#">
+	<input type="hidden" name="ptype" value="#rc.ptype#">
+	<input type="hidden" name="type" value="#rc.type#">
+	<input type="hidden" name="subtype" value="#rc.contentBean.getSubType()#">
+	<input type="hidden" name="muraAction" value="cArch.update">
+	<input type="hidden" name="startrow" value="#rc.startrow#">
+	<input type="hidden" name="returnURL" id="txtReturnURL" value="#rc.returnURL#">
+	<input type="hidden" name="homeID" value="#rc.homeID#">
+	<cfif not  listFind(session.mura.memberships,'S2')>
+		<input type="hidden" name="isLocked" value="#rc.contentBean.getIsLocked()#">
+	</cfif>
+	<input name="OrderNo" type="hidden" value="<cfif rc.contentBean.getorderno() eq ''>0<cfelse>#rc.contentBean.getOrderNo()#</cfif>">			
 	</cfoutput>
 	</form>
 <cfelse>

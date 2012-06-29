@@ -59,7 +59,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 </div>
 
-<div id="actionButtons" class="form-actions">
+<div class="actionButtons form-actions">
 <input type="button" class="submit btn" onclick="document.form1.submit();" value="#application.rbFactory.getKeyValue(session.rb,'advertising.update')#" />
 </div>
 </form>

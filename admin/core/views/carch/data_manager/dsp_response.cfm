@@ -115,7 +115,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <input type="hidden" name="siteid" value="#HTMLEditFormat(session.siteid)#" />
 <input type="hidden" name="moduleid" value="#rc.moduleid#" />
 <input type="hidden" name="newSearch" value="1" />
-<div class="clearfix" id="actionButtons" class="form-actions">
+<div class="clearfix actionButtons form-actions">
 	<input type="button" class="submit btn" onclick="submitForm(document.forms.download);" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.viewdata')#"/></a>
 	<input type="button" class="submit btn" onclick="location.href='index.cfm?muraAction=cArch.downloaddata&siteid=#URLEncodedFormat(rc.siteid)#&contentid=#URLEncodedFormat(rc.contentid)#&date1=' + document.download.date1.value + '&hour1=' +document.download.hour1.value + '&minute1=' +document.download.minute1.value + '&date2=' + document.download.date2.value + '&hour2=' + document.download.hour2.value + '&minute2=' + document.download.minute2.value + '&sortBy=' +  document.download.sortBy.value + '&sortDirection=' +  document.download.sortDirection.value + '&filterBy='  + document.download.filterBy.value + '&keywords=' + document.download.keywords.value + '&columns=#rc.columns#';" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.download')#">
 </div>

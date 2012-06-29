@@ -98,7 +98,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 
 
-<div id="actionButtons" class="form-actions">
+<div class="actionButtons form-actions">
 <cfif rc.campaignid eq ''>
 	<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.add')#" />
 	<input type=hidden name="campaignID" value="">

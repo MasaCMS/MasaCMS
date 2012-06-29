@@ -386,7 +386,7 @@ select * from rsSubTypes where subType <> 'Default'
 </ul>
 #tabContent#
 </div>
-<div id="actionButtons" class="form-actions">	
+<div class="actionButtons form-actions">	
 		<cfif rc.userid eq ''>
 				<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'user.add')#" />
         <cfelse>

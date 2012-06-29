@@ -44,7 +44,7 @@
 	<div id="configurator">
 		<img src="assets/images/progress_bar.gif">
 	</div>	
-	<div id="actionButtons" style="display:none;">
+	<div class="actionButtons" style="display:none;">
 		<cfif assignChangesets>
 			<cfinclude template="form/dsp_changesets.cfm">
 		</cfif>
@@ -159,7 +159,7 @@ jQuery(document).ready(function(){
 			
 			if (availableObjectValidate(availableObject.params)) {
 				jQuery("##configurator").html('<img src="assets/images/progress_bar.gif">');
-				jQuery("##actionButtons").hide();
+				jQuery(".actionButtons").hide();
 				jQuery("##configuratorNotices").hide();
 				
 				jQuery.post("./index.cfm?muraAction=cArch.updateObjectParams", {
@@ -188,7 +188,7 @@ jQuery(document).ready(function(){
 			
 			if (availableObjectValidate(availableObject.params)) {
 				jQuery("##configurator").html('<img src="assets/images/progress_bar.gif">');
-				jQuery("##actionButtons").hide();
+				jQuery(".actionButtons").hide();
 				jQuery("##configuratorNotices").hide();
 				
 				jQuery.post("./index.cfm?muraAction=cArch.updateObjectParams", {
@@ -217,7 +217,7 @@ jQuery(document).ready(function(){
 				
 			if (availableObjectValidate(availableObject.params)) {
 				jQuery("##configurator").html('<img src="assets/images/progress_bar.gif">');
-				jQuery("##actionButtons").hide();
+				jQuery(".actionButtons").hide();
 				jQuery("##configuratorNotices").hide();
 				
 				jQuery.post("./index.cfm?muraAction=cArch.updateObjectParams",
@@ -264,7 +264,7 @@ function saveConfiguratorToChangeset(changesetid,removepreviouschangeset){
 			
 			if (availableObjectValidate(availableObject.params)) {
 				jQuery("##configurator").html('<img src="assets/images/progress_bar.gif">');
-				jQuery("##actionButtons").hide();
+				jQuery(".actionButtons").hide();
 				
 				jQuery.post("./index.cfm?muraAction=cArch.updateObjectParams", {
 					'contenthistid': '#JSStringFormat(rsDisplayObject.contentHistID)#',

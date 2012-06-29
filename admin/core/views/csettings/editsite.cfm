@@ -71,6 +71,20 @@ to your own modified versions of Mura CMS.
 <cfhtmlhead text='<script type="text/javascript" src="assets/js/ajax.js"></script>'>
 <cfhtmlhead text='<script type="text/javascript" src="assets/js/tab-view.js"></script>'>
  --->
+ <cfsavecontent variable="actionButtons">
+<cfoutput>
+  <div class="actionButtons form-actions">
+     <cfif rc.siteBean.getsiteid() eq ''> 
+      <input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="Add" />
+    <cfelse>
+    <cfif rc.siteBean.getsiteid() neq 'default'>
+    <input type="button" class="submit btn" onclick="return confirmDialog('#JSStringFormat("WARNING: A deleted site and all of it''s files cannot be recovered. Are you sure that you want to continue?")#','index.cfm?muraAction=cSettings.updateSite&action=delete&siteid=#rc.siteBean.getSiteID()#');" value="Delete" />
+    </cfif>
+        <input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'update');" value="Update" />
+     </cfif>
+   </div>
+</cfoutput>
+</cfsavecontent>
 <cfif arrayLen(extendSets)>
 <cfset tabLabelList='Basic,Contact Info,Shared Resources,Modules,Email,Images,Extranet,Display Regions,Extended Attributes,Deploy Bundle'>
 <cfset tabList='tabBasic,tabContactinfo,tabSharedresources,tabModules,tabEmail,tabImages,tabExtranet,tabDisplayregions,tabExtendedAttributes,tabBundles'>
@@ -79,15 +93,16 @@ to your own modified versions of Mura CMS.
 <cfset tabList='tabBasic,tabContactinfo,tabSharedresources,tabModules,tabEmail,tabImages,tabExtranet,tabDisplayregions,tabBundles'>
 </cfif>
 
- <img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
- <div class="tabs initActiveTab" style="display:none">
-  <ul>
-	<cfloop from="1" to="#listlen(tabList)#" index="t">
-	<li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
-	</cfloop>
+<img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
+<div class="tabbable tabs-left">
+  <ul class="nav nav-tabs initActiveTab">
+  	<cfloop from="1" to="#listlen(tabList)#" index="t">
+  	<li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
+  	</cfloop>
   </ul>
+  <div class="tab-content">
   <!--- Basic --->
-  	<div id="tabBasic">
+  	<div id="tabBasic" class="tab-pane">
     
     <div class="control-group">
       <label class="control-label">Site ID</label>
@@ -235,7 +250,7 @@ to your own modified versions of Mura CMS.
       </div>
       
        <!--- Default Contact Info --->
-      <div id="tabContactinfo">
+      <div id="tabContactinfo" class="tab-pane">
       
       <div class="control-group">
       <label class="control-label">Contact Name </label>
@@ -289,7 +304,7 @@ to your own modified versions of Mura CMS.
     </div>
       
        <!--- Shared Resources --->
-      <div id="tabSharedresources">
+      <div id="tabSharedresources" class="tab-pane">
       
       <div class="control-group">
       <label class="control-label">Member Pool</label>
@@ -351,7 +366,7 @@ to your own modified versions of Mura CMS.
       </div>
       
       <!--- Modules --->
-      <div id="tabModules">
+      <div id="tabModules" class="tab-pane">
       
       <div class="control-group">
       <label class="control-label">Extranet <span>(Password Protection)</span></label>
@@ -450,7 +465,7 @@ to your own modified versions of Mura CMS.
       </div>
       
       <!--- Email --->
-      <div id="tabEmail">
+      <div id="tabEmail" class="tab-pane">
       
       <div class="control-group">
       <label class="control-label">Default "From" Email Address</label>
@@ -581,7 +596,7 @@ to your own modified versions of Mura CMS.
       
            
       <!--- Galleries --->
-      <div id="tabImages">
+      <div id="tabImages" class="tab-pane">
       
      <div class="control-group">
       <label class="control-label">Small (Thumbnail) Image Size</label>
@@ -657,7 +672,7 @@ to your own modified versions of Mura CMS.
       </div>
       
       <!--- Extranet --->
-      <div id="tabExtranet">
+      <div id="tabExtranet" class="tab-pane">
       
       <div class="control-group">
       <label class="control-label">Allow Public Site Registration</label>
@@ -717,7 +732,7 @@ to your own modified versions of Mura CMS.
      
       </div>
       
-      <div id="tabDisplayregions">
+      <div id="tabDisplayregions" class="tab-pane">
       
       <div class="control-group">
       <label class="control-label">Number of Display Regions</label>
@@ -755,7 +770,7 @@ to your own modified versions of Mura CMS.
       </div>
 	 <!--- BEING EXTENDED ATTRIBUTES --->
     <cfif arrayLen(extendSets)>
-    <div id="tabExtendedAttributes">   
+    <div id="tabExtendedAttributes" class="tab-pane">   
       <cfset started=false />
       
       <cfloop from="1" to="#arrayLen(extendSets)#" index="s"> 
@@ -796,7 +811,7 @@ to your own modified versions of Mura CMS.
       </cfif>
       
       <!--- END EXTENDED ATTRIBUTES --->
-      <div id="tabBundles">
+      <div id="tabBundles" class="tab-pane">
       <div class="control-group">
       <label class="control-label"> 
 	  	Are you restoring a site from a backup bundle?
@@ -897,20 +912,12 @@ to your own modified versions of Mura CMS.
 	  </cfif>
 	 
 	  </div>
-    </div>
-    <input type="hidden" name="action" value="update">
-    
-    <div id="actionButtons" class="form-actions">
-	   <cfif rc.siteBean.getsiteid() eq ''> 
-      <input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="Add" />
-    <cfelse>
-		<cfif rc.siteBean.getsiteid() neq 'default'>
-		<input type="button" class="submit btn" onclick="return confirmDialog('#JSStringFormat("WARNING: A deleted site and all of it''s files cannot be recovered. Are you sure that you want to continue?")#','index.cfm?muraAction=cSettings.updateSite&action=delete&siteid=#rc.siteBean.getSiteID()#');" value="Delete" />
-		</cfif>
-      	<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'update');" value="Update" />
-     </cfif>
-	 </div>
-  </form>
+     #actionButtons#
+  </div>
+</div>
+  <input type="hidden" name="action" value="update">
+  
+</form>
 </cfoutput>
 
 <cfelse>

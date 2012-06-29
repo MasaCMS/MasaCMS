@@ -614,7 +614,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <input type="hidden" name="orderno" value="#HTMLEditFormat(rc.orderno)#" />
 <input type="hidden" name="regionid" value="#HTMLEditFormat(rc.regionID)#" />
 <!--- Button Begins --->
-<div id="actionButtons" class="clearfix form-actions">
+<div class="clearfix form-actions actionButtons">
 <cfif rc.feedID eq ''>
 	<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'collections.add')#" />
 	<input type="hidden" name="feedID" value="">
@@ -805,7 +805,7 @@ jQuery(document).ready(function(){
 </ul>
 #tabContent#
 </div>
-<div id="actionButtons" class="form-actions">
+<div class="actionButtons form-actions">
 <cfif rc.feedID eq ''>
 	<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'collections.add')#" />
 	<input type=hidden name="feedID" value="">
