@@ -961,7 +961,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 <cfreturn href />
-</cffunction>S" returntype="string" output="false" access="public">
+</cffunction>
+
+<cffunction name="createHREFforRSS" returntype="string" output="false" access="public">
 	<cfargument name="type" required="true" default="Page">
 	<cfargument name="filename" required="true">
 	<cfargument name="siteid" required="true">
