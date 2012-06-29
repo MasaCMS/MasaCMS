@@ -874,7 +874,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getURLStem" access="public" output="false" returntype="string">
 	<cfargument name="siteID">
 	<cfargument name="filename">
-	
+
 	<cfif len(arguments.filename)>
 		<cfif left(arguments.filename,1) neq "/">
 			<cfset arguments.filename= "/" & arguments.filename>
@@ -883,7 +883,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset arguments.filename=  arguments.filename & "/">
 		</cfif>
 	</cfif>
-	
+
 	<cfif not application.configBean.getSiteIDInURLS()>
 		<cfif arguments.filename neq ''>
 			<cfif application.configBean.getStub() eq ''>
@@ -916,7 +916,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfreturn application.configBean.getStub() & "/" & arguments.siteID & "/"  />
 			</cfif>
 		</cfif>
-	<<cffunction name="createHREF" returntype="string" output="false" access="public">
+	</cfif>
+</cffunction>
+
+<cffunction name="createHREF" returntype="string" output="false" access="public">
 	<cfargument name="type" required="true" default="Page">
 	<cfargument name="filename" required="true">
 	<cfargument name="siteid" required="true" default="">
