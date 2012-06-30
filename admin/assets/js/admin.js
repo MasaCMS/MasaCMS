@@ -804,9 +804,11 @@ function setToolTips(target){
 	jQuery(target).tooltip({
       	selector: "a[rel=tooltip]"
     });
-    jQuery(target + " > a[rel=tooltip]").click(function(e){
-    	e.preventDefault();
-    });
+
+    jQuery(target + ' a[rel=tooltip]').click(function (e) {
+  		e.preventDefault();
+  		return false
+		});
 }
 
 function setTabs(target,activetab){

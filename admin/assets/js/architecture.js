@@ -940,7 +940,8 @@ function loadSiteManager(siteid,topid,moduleid,sortby,sortdirection,ptype,startr
 						document.getElementById("newContentMenu").style.visibility="hidden";
 						stripe('stripe');
 						initQuickEdits();
-						initDraftPrompt();	
+						initDraftPrompt();
+						setToolTips("#gridContainer");	
 						if(r.perm.toLowerCase() == "editor" && r.sortby.toLowerCase() == 'orderno') {
 							jQuery("#sortableKids").sortable(
 								{
