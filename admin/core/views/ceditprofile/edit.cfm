@@ -68,14 +68,14 @@ select * from rsSubTypes where subType <> 'Default'
 	
 	<p>(*Required, **Required to login to Site)<p>
 
-<div class="tabs initActiveTab">
-<ul>
+<div class="tabbable tabs-left">
+<ul class="nav nav-tabs initActiveTab">
 <cfloop from="1" to="#listlen(tabList)#" index="t">
 <li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
 </cfloop>
 </ul>
-	
-<div id="tabBasic">
+<div class="tab-content">
+<div id="tabBasic" class="tab-pane">
 
 
 		<cfif rsNonDefault.recordcount>
@@ -153,7 +153,7 @@ select * from rsSubTypes where subType <> 'Default'
 	<span id="extendSetsBasic"></span>
 
 </div>
-<div id="tabAddressinformation">
+<div id="tabAddressinformation" class="tab-pane">
 
 	<div class="control-group">
      <label class="control-label"><ul class="navTask nav nav-pills"><li><a href="index.cfm?muraAction=cPrivateUsers.editAddress&userID=#session.mura.userID#&siteid=#rc.userBean.getsiteid()#&routeID=#rc.routeid#&addressID=&returnURL=#urlencodedformat(cgi.query_string)#">#application.rbFactory.getKeyValue(session.rb,'user.addnewaddress')#</a></li></ul></label>
@@ -188,7 +188,7 @@ select * from rsSubTypes where subType <> 'Default'
     </div>
 </div>
 
-<div id="tabInterests">
+<div id="tabInterests"class="tab-pane">
 		
 		<div class="control-group">
       		<label class="control-label">
@@ -211,7 +211,7 @@ select * from rsSubTypes where subType <> 'Default'
 		  </div>
     </div>
 <cfif rsSubTypes.recordcount>
-<div id="tabExtendedattributes">
+<div id="tabExtendedattributes" class="tab-pane">
 			<span id="extendSetsDefault"></span>
 			<script type="text/javascript">
 			loadExtendedAttributes('#rc.userbean.getUserID()#','#rc.userbean.getType()#','#rc.userBean.getSubType()#','#application.settingsManager.getSite(rc.userBean.getSiteID()).getPrivateUserPoolID()#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.userbean.getSiteID()).getThemeAssetPath()#');
@@ -242,11 +242,13 @@ select * from rsSubTypes where subType <> 'Default'
       	<div class="controls">
       		<input id="tags" name="tags" type="text" value="#HTMLEditFormat(rc.userBean.getTags())#" class="text">    </div>
     </div>
+</div>
 
+	<div class="actionButtons form-actions">
+	<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'user.update')#" />
+	</div>
 </div>
 </div>
-<div class="actionButtons formActions">
-<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'user.update')#" />
 </div>
 		<input type="hidden" name="type" value="2">
 		<input type="hidden" name="action" value="">

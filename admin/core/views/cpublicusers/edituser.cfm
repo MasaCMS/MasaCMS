@@ -89,7 +89,7 @@ select * from rsSubTypes where subType <> 'Default'
 </cfoutput>	
 <cfsavecontent variable="tabContent">
 <cfoutput>	
-<div id="tabBasic">
+<div id="tabBasic" class="tab-pane">
 	
 	<cfif rsNonDefault.recordcount>
 		
@@ -152,11 +152,11 @@ select * from rsSubTypes where subType <> 'Default'
       <div class="controls"><input  name="password2" autocomplete="off" type="password" value="" class="text"  message="#application.rbFactory.getKeyValue(session.rb,'user.passwordconfirm')#"></div>
     </div>
 
-<span id="extendSetsBasic"></span>		
+<span id="extendSetsBasic" class="tab-pane"></span>		
 
 </div>
 
-<div id="tabAddressinformation">
+<div id="tabAddressinformation" class="tab-pane">
 		<cfsilent>
 		<cfparam name="rc.address1" default=""/>
 		<cfparam name="rc.address2" default=""/>
@@ -265,7 +265,7 @@ select * from rsSubTypes where subType <> 'Default'
 		</cfif>
 		</dl>
 </div>
-<div id="tabGroupmemberships">
+<div id="tabGroupmemberships" class="tab-pane">
 		
 		<cfif rc.rsPublicGroups.recordcount>
 		 <div class="control-group">
@@ -283,7 +283,7 @@ select * from rsSubTypes where subType <> 'Default'
 		</cfif>
 		
 </div>	
-<div id="tabInterests">
+<div id="tabInterests" class="tab-pane">
 		
 			<cfif application.categoryManager.getCategoryCount(rc.siteid)>
 			<!---<ul class="interestGroups">--->
@@ -313,7 +313,7 @@ select * from rsSubTypes where subType <> 'Default'
 </div>
 <cfhtmlhead text='<script type="text/javascript" src="assets/js/user.js"></script>'>
 </cfif>
-	<div id="tabAdvanced">
+	<div id="tabAdvanced" class="tab-pane">
 		<div class="control-group">
       	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.emailbroadcaster')#</label>
       <div class="controls"><label class="radio"><input name="subscribe" type="radio" class="radio" value="1"<cfif rc.userBean.getsubscribe() eq 1>Checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'user.yes')#</label><label class="radio"><input name="subscribe" type="radio" class="radio" value="0"<cfif rc.userBean.getsubscribe() eq 0>Checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'user.no')#</label>
@@ -378,14 +378,14 @@ select * from rsSubTypes where subType <> 'Default'
 </cfsavecontent>	
 <cfoutput>	
 <img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
-<div class="tabs initActiveTab" style="display:none">
-<ul>
+<div class="tabbable tabs-left">
+<ul class="nav nav-tabs initActiveTab">
 <cfloop from="1" to="#listlen(tabList)#" index="t">
 <li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
 </cfloop>
 </ul>
+<div class="tab-content">
 #tabContent#
-</div>
 <div class="actionButtons form-actions">	
 		<cfif rc.userid eq ''>
 				<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'user.add')#" />
@@ -401,6 +401,9 @@ select * from rsSubTypes where subType <> 'Default'
 		<input type="hidden" name="ContactForm" value="">
 		<input type="hidden" name="isPublic" value="1">
 </div>
-	</cfoutput>
+</div>
+</div>
+
+</cfoutput>
 
 </form>
