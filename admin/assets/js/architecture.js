@@ -924,7 +924,7 @@ function loadSiteManager(siteid,topid,moduleid,sortby,sortdirection,ptype,startr
 	var url = 'index.cfm';
 	var pars = 'muraAction=cArch.loadSiteManager&siteid=' + siteid  + '&topid=' + topid  + '&moduleid=' + moduleid  + '&sortby=' + sortby  + '&sortdirection=' + sortdirection  + '&ptype=' + ptype  + '&startrow=' + startrow + '&cacheid=' + Math.random();
 	document.getElementById('newContentMenu').style.visibility="hidden";
-	jQuery('#viewTabs a[href="#tabArchitectural"]').tab('show');
+	//jQuery('#viewTabs a[href="#tabArchitectural"]').tab('show');
 	//location.href=url + "?" + pars;
 	var d = jQuery('#gridContainer');
 		if (!activeQuickEdit) {
@@ -1122,9 +1122,11 @@ function loadSiteFlat(args)	{
 				);
 				initDraftPrompt();
 				
+				/*
 				d.hide().animate({
 					'opacity': 'show'
 				}, 1000);
+				*/
 			}
 		);
 
