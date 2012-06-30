@@ -453,7 +453,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</div>
 			<div class="controls" id="expires-notify">
 				<label for="dspexpiresnotify" class="checkbox">
-						<input type="checkbox" name="dspExpiresNotify" id="dspexpiresnotify" onclick="loadExpiresNotify('#rc.siteid#','#rc.contenthistid#','#rc.parentid#');"  class="checkbox">
+					<input type="checkbox" name="dspExpiresNotify" id="dspexpiresnotify" onclick="loadExpiresNotify('#rc.siteid#','#rc.contenthistid#','#rc.parentid#');"  class="checkbox">
+						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expiresnotify')#
 				</label>
 			</div>
 			<div class="controls" id="selectExpiresNotify" style="display: none;"></div>

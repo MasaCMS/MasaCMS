@@ -100,15 +100,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     
     <img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
     
-    <div class="tabs initActiveTab" style="display:none">
-	
-	<ul>
+    <div class="tabbable">
+    <ul class="nav nav-tabs initActiveTab">
         <li><a href="##emailContent" onClick="return false;"><span>Email</span></a></li>
         <li><a href="##emailGroupsLists" onClick="return false;"><span>Recipients</span></a></li>
     </ul>
 
     <!--- Email --->
-    <div id="emailContent">
+    <div class="tab-content">
+    <div id="emailContent" class="tab-pane">
 
       <div class="control-group">
         <label class="control-label">
@@ -218,20 +218,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       </div>
       
       <!--- Recipients --->      
-       <div id="emailGroupsLists" class="clearfix">
+       <div id="emailGroupsLists" class="tab-pane">
       <!--- <h3>#application.rbFactory.getKeyValue(session.rb,'email.sendto')#:</h3> --->
      	
-     	<div class="tabs initActiveTab" style="display:none">
-	
-		<ul>
+     	 <div class="tabbable">
+        <ul class="nav nav-tabs initActiveTab">
 	        <cfif rc.rsPrivateGroups.recordcount><li><a href="##privateGroups" onClick="return false;"><span>Admin Groups</span></a></li></cfif>
 	        <cfif rc.rsPublicGroups.recordcount><li><a href="##publicGroups" onClick="return false;"><span>Site Member Groups</span></a></li></cfif>
 	        <cfif application.categoryManager.getInterestGroupCount(rc.siteID)><li><a href="##interestGroups" onClick="return false;"><span>Interest Groups</span></a></li></cfif>
 	        <cfif rc.rsMailingLists.recordcount><li><a href="##mailingLists" onClick="return false;"><span>Mailing Lists</span></a></li></cfif>
 	    </ul>
-     	
+     	<div class="tab-content">
       <cfif rc.rsPrivateGroups.recordcount>
-      <div id="privateGroups">
+      <div id="privateGroups" class="tab-pane">
       
       <div class="control-group">
         <label class="control-label">
@@ -253,7 +252,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       </cfif>
 
       <cfif rc.rsPublicGroups.recordcount>
-      <div id="publicGroups">
+      <div id="publicGroups" class="tab-pane">
         
         <div class="control-group">
         <label class="control-label">
@@ -274,7 +273,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
        </div>
       </cfif>
       <cfif application.categoryManager.getInterestGroupCount(rc.siteID)>
-      <div id="interestGroups">
+      <div id="interestGroups" class="tab-pane">
        
         <div class="control-group">
         <label class="control-label">
@@ -288,7 +287,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       </div>
       </cfif>
       <cfif rc.rsMailingLists.recordcount>
-      <div id="mailingLists">
+      <div id="mailingLists" class="tab-pane">
 
        <div class="control-group">
         <label class="control-label">
@@ -308,7 +307,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
       </div>
       </cfif>
+      </div>
     </div>
+ </div>
  </div> 
 
  <!--- End Tab Container --->
