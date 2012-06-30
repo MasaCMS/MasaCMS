@@ -393,7 +393,9 @@ copyAll = 'false';
 		</div>
 		
 		<div id="tabFlat" class="tab-pane">
-			<img class="loadProgress" src="assets/images/progress_bar.gif">
+			<div id="flatViewContainer">
+				<img class="loadProgress" src="assets/images/progress_bar.gif">
+			</div>
 		</div>
 	</div>	
 </div>

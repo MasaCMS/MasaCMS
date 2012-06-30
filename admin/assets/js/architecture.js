@@ -1018,7 +1018,7 @@ function loadSiteFlat(args)	{
 	var pars = 'muraAction=cArch.loadSiteFlat&cacheid=' + Math.random();
 
 	//location.href=url + "?" + pars;
-	var d = jQuery('#tabFlat');
+	var d = jQuery('#flatViewContainer');
 	
 	d.html('<img class="loadProgress" src="assets/images/progress_bar.gif">');
 	document.getElementById('newContentMenu').style.visibility="hidden";
@@ -1122,11 +1122,9 @@ function loadSiteFlat(args)	{
 				);
 				initDraftPrompt();
 				
-				/*
 				d.hide().animate({
 					'opacity': 'show'
 				}, 1000);
-				*/
 			}
 		);
 
