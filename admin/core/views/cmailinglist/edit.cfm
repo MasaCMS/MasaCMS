@@ -59,23 +59,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 
 <cfif rc.listBean.getispurge() neq 1>
-	<div class="control-group">
-		<label class="control-label">
-			#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.name')#
-		</label>
-		<div class="controls">
-			<input type=text name="Name" value="#HTMLEditFormat(rc.listBean.getname())#" required="true" message="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.namerequired')#" class="text">
+	<cfif rc.mlid eq ''>
+		<div class="control-group">
+			<label class="control-label">
+				#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.name')#
+			</label>
+			<div class="controls">
+				<input type=text name="Name" value="#HTMLEditFormat(rc.listBean.getname())#" required="true" message="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.namerequired')#" class="text">
+			</div>
 		</div>
-	</div>
-
-	<cfif rc.mlid neq ''>
-		<div class="tabs initActiveTab">
-		<ul>
+	<cfelse>
+		<div class="tabbable tabs-left">
+		<ul class="nav nav-tabs initActiveTab">
 		<cfloop from="1" to="#listlen(tabList)#" index="t">
 		<li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
 		</cfloop>
 		</ul>
-		<div id="tabBasic">
+		<div class="tab-content">
+		<div id="tabBasic" class="tab-pane">
+		<div class="control-group">
+			<label class="control-label">
+				#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.name')#
+			</label>
+			<div class="controls">
+				<input type=text name="Name" value="#HTMLEditFormat(rc.listBean.getname())#" required="true" message="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.namerequired')#" class="text">
+			</div>
+		</div>
 	</cfif>
 
 	<div class="control-group">
@@ -105,13 +114,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 	</div>
 
-	<div class="tabs">
-	<ul>
+	<div class="tabbable tabs-left">
+	<ul class="nav nav-tabs initActiveTab">
 	<cfloop from="1" to="#listlen(tabList)#" index="t">
 	<li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
 	</cfloop>
 	</ul>
-	<div id="tabBasic">
+	<div class="tab-content">
+	<div id="tabBasic" class="tab-pane">
 </cfif>
 
 <div class="control-group">
@@ -159,8 +169,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif rc.mlid neq ''>
 </div>
 <cfinclude template="dsp_tab_usage.cfm">
-</div>
-</cfif>
 <div class="clearfix" id="actionButtons" class="form-actions">			
 <cfif rc.mlid eq ''>
 	<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.add')#" />
@@ -173,8 +181,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<input type=hidden name="mlid" value="#rc.listBean.getmlid()#">
 </cfif>
 <input type="hidden" name="action" value="">
-</form>
 </div>
+</div>
+</div>
+</cfif>
+
+</form>
+
 </cfoutput>
 <!---
 <cfif rc.mlid neq ''>

@@ -87,7 +87,7 @@ select * from rsSubTypes where subType <> 'Default'
 </cfoutput>	
 <cfsavecontent variable="tabContent">
 <cfoutput>	
-<div id="tabBasic">
+<div id="tabBasic" class="tab-pane">
 	
 	<cfif rsNonDefault.recordcount>
 		
@@ -154,7 +154,7 @@ select * from rsSubTypes where subType <> 'Default'
 
 </div>
 
-<div id="tabAddressinformation">
+<div id="tabAddressinformation" class="tab-pane">
 		<cfsilent>
 		<cfparam name="rc.address1" default=""/>
 		<cfparam name="rc.address2" default=""/>
@@ -263,10 +263,10 @@ select * from rsSubTypes where subType <> 'Default'
 	</cfif>
 		
 </div>
-<div id="tabGroupmemberships">
+<div id="tabGroupmemberships" class="tab-pane">
 
 		
-		<div class="control-group">
+	<div class="control-group">
       <label class="control-label">
       	#application.rbFactory.getKeyValue(session.rb,'user.admingroups')#
       </label>
@@ -290,7 +290,7 @@ select * from rsSubTypes where subType <> 'Default'
     	</div>
 		</cfif>
 </div>	
-<div id="tabInterests">
+<div id="tabInterests" class="tab-pane">
 
 			<cfif application.categoryManager.getCategoryCount(rc.siteid)>
 			<!---<ul class="interestGroups">--->
@@ -313,7 +313,7 @@ select * from rsSubTypes where subType <> 'Default'
 </div>
 	
 <cfif rsSubTypes.recordcount>
-<div id="tabExtendedattributes">
+<div id="tabExtendedattributes" class="tab-pane">
 		<span id="extendSetsDefault"></span>
 		<script type="text/javascript">
 		loadExtendedAttributes('#rc.userbean.getUserID()#','#rc.userbean.getType()#','#rc.userBean.getSubType()#','#userPoolID#','#application.settingsManager.getSite(rc.siteid).getThemeAssetPath()#');
@@ -322,7 +322,7 @@ select * from rsSubTypes where subType <> 'Default'
 <cfhtmlhead text='<script type="text/javascript" src="assets/js/user.js"></script>'>
 </cfif>
 
-<div id="tabAdvanced">
+<div id="tabAdvanced" class="tab-pane">
 		
 
 		<cfif listFind(session.mura.memberships,'S2')>
@@ -391,7 +391,7 @@ select * from rsSubTypes where subType <> 'Default'
 		<cfset tabID="tab" & application.contentRenderer.createCSSID(rsPluginScripts.name)>
 		<cfset tabList=listAppend(tabList,tabID)>
 		<cfset pluginEvent.setValue("tabList",tabLabelList)>
-			<div id="#tabID#">
+			<div id="#tabID#" class="tab-pane">
 			<cfoutput>
 			<cfset rsPluginScript=application.pluginManager.getScripts("onUserEdit",rc.siteID,rsPluginScripts.moduleID)>
 			<cfif rsPluginScript.recordcount>
@@ -405,24 +405,28 @@ select * from rsSubTypes where subType <> 'Default'
 		</cfoutput>
 </cfsavecontent>	
 <cfoutput>	
-<img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
-<div class="tabs initActiveTab" style="display:none">
-<ul>
+
+<div class="tabbable tabs-left">
+<ul class="nav nav-tabs initActiveTab">
 <cfloop from="1" to="#listlen(tabList)#" index="t">
 <li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
 </cfloop>
 </ul>
+<div class="tab-content">
 #tabContent#
-</div>
-
-	<div class="actionButtons form-actions">
+<img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
+<div class="actionButtons form-actions">
 	<cfif rc.userid eq ''>
 		<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'user.add')#" />
     <cfelse>
         <input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.deleteuserconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'user.delete')#" /> 
 		<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'user.update')#" />
 	</cfif>
-	</div>
+</div>
+</div>
+</div>
+
+	
 	
 	<input type="hidden" name="type" value="2">
 	<input type="hidden" name="action" value="">

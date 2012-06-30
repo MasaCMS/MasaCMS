@@ -305,7 +305,7 @@ select * from rsSubTypes where subType <> 'Default'
 	</dl>
 </div>
 <cfif rsSubTypes.recordcount>
-<div id="tabExtendedattributes">
+<div id="tabExtendedattributes" class="tab-pane">
 	<span id="extendSetsDefault"></span>
 	<script type="text/javascript">
 	loadExtendedAttributes('#rc.userbean.getUserID()#','#rc.userbean.getType()#','#rc.userBean.getSubType()#','#userPoolID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteid).getThemeAssetPath()#');
@@ -363,7 +363,7 @@ select * from rsSubTypes where subType <> 'Default'
 		<cfset tabID="tab" & application.contentRenderer.createCSSID(rsPluginScripts.name)>
 		<cfset tabList=listAppend(tabList,tabID)>
 		<cfset pluginEvent.setValue("tabList",tabLabelList)>
-			<div id="#tabID#">
+			<div id="#tabID#" class="tab-pane">
 			<cfoutput>
 			<cfset rsPluginScript=application.pluginManager.getScripts("onUserEdit",rc.siteID,rsPluginScripts.moduleID)>
 			<cfif rsPluginScript.recordcount>
@@ -377,7 +377,6 @@ select * from rsSubTypes where subType <> 'Default'
 		</cfoutput>
 </cfsavecontent>	
 <cfoutput>	
-<img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
 <div class="tabbable tabs-left">
 <ul class="nav nav-tabs initActiveTab">
 <cfloop from="1" to="#listlen(tabList)#" index="t">
@@ -386,6 +385,7 @@ select * from rsSubTypes where subType <> 'Default'
 </ul>
 <div class="tab-content">
 #tabContent#
+<img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
 <div class="actionButtons form-actions">	
 		<cfif rc.userid eq ''>
 				<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'user.add')#" />

@@ -80,7 +80,6 @@ select * from rsSubTypes where subType <> 'Default'
 
 <form novalidate="novalidate" action="index.cfm?muraAction=cPublicUsers.update&userid=#URLEncodedFormat(rc.userid)#" enctype="multipart/form-data" method="post" name="form1" class="formclass" onsubmit="return validate(this);">
 <cfif rsSubTypes.recordcount>
-<img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
 <div class="tabbable tabs-left">
 <ul class="nav nav-tabs initActiveTab">
   <li><a href="##tabBasic" onclick="return false;"><span>#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'user.basic'))#</span></a></li>
@@ -143,6 +142,7 @@ select * from rsSubTypes where subType <> 'Default'
   <div id="tabExtendedattributes" class="tab-pane">
    <span id="extendSetsDefault"></span>	
   </div>
+    <img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
     #actionButtons#
   </div>
   </div>

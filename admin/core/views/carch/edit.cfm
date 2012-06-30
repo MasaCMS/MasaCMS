@@ -532,7 +532,7 @@ var hasBody=#subType.getHasBody()#;
 			<cfset tabID="tab" & application.contentRenderer.createCSSID(rsPluginScripts.name)>
 			<cfset tabList=listAppend(tabList,tabID)>
 			<cfset pluginEvent.setValue("tabList",tabLabelList)>
-				<div id="#tabID#" class="-ab-pane">
+				<div id="#tabID#" class="tab-pane">
 				<cfoutput>
 				<cfset rsPluginScript=application.pluginManager.getScripts("onContentEdit",rc.siteID,rsPluginScripts.moduleID)>
 				<cfif rsPluginScript.recordcount>
@@ -546,7 +546,7 @@ var hasBody=#subType.getHasBody()#;
 		</cfoutput>
 	</cfsavecontent>
 	<cfoutput>
-	<img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
+	
 	<div class="tabbable tabs-left">
 		<ul class="nav nav-tabs initActiveTab">
 			<cfloop from="1" to="#listlen(tabList)#" index="t">
@@ -555,6 +555,7 @@ var hasBody=#subType.getHasBody()#;
 		</ul>
 		<div class="tab-content">		
 			#tabContent#
+			<img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
 			#actionButtons#
 		</div>
 	</div>

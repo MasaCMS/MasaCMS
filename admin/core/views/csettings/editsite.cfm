@@ -93,7 +93,6 @@ to your own modified versions of Mura CMS.
 <cfset tabList='tabBasic,tabContactinfo,tabSharedresources,tabModules,tabEmail,tabImages,tabExtranet,tabDisplayregions,tabBundles'>
 </cfif>
 
-<img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
 <div class="tabbable tabs-left">
   <ul class="nav nav-tabs initActiveTab">
   	<cfloop from="1" to="#listlen(tabList)#" index="t">
@@ -912,6 +911,7 @@ to your own modified versions of Mura CMS.
 	  </cfif>
 	 
 	  </div>
+    <img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
      #actionButtons#
   </div>
 </div>
