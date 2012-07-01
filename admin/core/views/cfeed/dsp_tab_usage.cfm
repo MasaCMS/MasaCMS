@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent><cfoutput>
 <cfset tabLabellist=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,'collections.usagereport')) >
 <cfset tabList=listAppend(tabList,"tabUsagereport")>
-<div id="tabUsagereport">
+<div id="tabUsagereport" class="tab-pane">
 <dl class="oneColumn">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.usagetext')#:</dt>
  <table id="metadata" class="table table-striped table-condensed">

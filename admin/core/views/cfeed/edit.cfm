@@ -200,7 +200,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfsavecontent variable="tabContent">
 <cfoutput>
 <cfif not isObjectInstance>
-<div id="tabChoosecontent">
+<div id="tabChoosecontent" class="tab-pane">
 
 <div class="control-group">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.choosecontentfromsection')#: <span id="selectFilter"><a href="javascript:;" onclick="javascript: loadSiteFilters('#rc.siteid#','',1);return false;">[#application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#]</a></span>
@@ -316,7 +316,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </div>
 
-<div id="tabAdvancedfilters">
+<div id="tabAdvancedfilters" class="tab-pane">
 
 <div class="control-group">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.chooseadvancedfilters')#
@@ -376,7 +376,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 </cfif>
 
-<div id="tabDisplay">
+<div id="tabDisplay" class="tab-pane">
 
 <div id="configuratorTab">
 <cfif isObjectInstance><h4>#HTMLEditFormat(rc.feedBean.getName())#</h4></cfif>
@@ -391,21 +391,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  </div>
 	</div>
 
-<div id="feedCustomImageOptions"<cfif rc.feedBean.getImageSize() neq "custom"> style="display:none"</cfif>>
+	<div id="feedCustomImageOptions"<cfif rc.feedBean.getImageSize() neq "custom"> style="display:none"</cfif>>
 
-	<div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#
-      </label>
-	<div class="controls"><input name="#displaNamePrefix#imageWidth" data-displayobjectparam="imageWidth" class="text" value="#rc.feedBean.getImageWidth()#" />	  </div>
+		<div class="control-group">
+	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#
+	      </label>
+		<div class="controls"><input name="#displaNamePrefix#imageWidth" data-displayobjectparam="imageWidth" class="text" value="#rc.feedBean.getImageWidth()#" />	  </div>
+		</div>
+		<div class="control-group">
+	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#
+	      </label>
+		<div class="controls"><input name="#displaNamePrefix#imageHeight" data-displayobjectparam="imageHeight" class="text" value="#rc.feedBean.getImageHeight()#" />
+		  </div>
+		</div>
 	</div>
-	<div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#
-      </label>
-	<div class="controls"><input name="#displaNamePrefix#imageHeight" data-displayobjectparam="imageHeight" class="text" value="#rc.feedBean.getImageHeight()#" />
-	  </div>
-</div>
-
-</div>
 
 
 	<div class="control-group">
@@ -486,15 +485,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 </div>
 <cfif not isObjectInstance>
-	<div id="tabRss">
+<div id="tabRss" class="tab-pane">
 	<cfif rc.feedID neq ''>
-	<div class="control-group">
-     <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.url')#
-	</label>
-	<div class="controls">
-     <a title="#application.rbFactory.getKeyValue(session.rb,'collections.view')#" href="http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/feed/?feedID=#rc.feedID#" target="_blank">http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/feed/?feedID=#rc.feedID#</a>
-     </div>
-	</div>
+		<div class="control-group">
+	     <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.url')#
+		</label>
+		<div class="controls">
+	     <a title="#application.rbFactory.getKeyValue(session.rb,'collections.view')#" href="http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/feed/?feedID=#rc.feedID#" target="_blank">http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/feed/?feedID=#rc.feedID#</a>
+	     </div>
+		</div>
 	</cfif>
 	
 	<div class="control-group">
@@ -505,115 +504,98 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<div class="control-group">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.makedefault')#</label>
-	<div class="controls">
-	<label class="radio">
-	<input name="isDefault" type="radio" value="1" <cfif rc.feedBean.getIsDefault()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-	</label>
-	<label class="radio">
-	<input name="isDefault" type="radio" value="0" <cfif not rc.feedBean.getIsDefault()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
-	</label>
- 	</div>
+		<div class="controls">
+			<label class="radio">
+			<input name="isDefault" type="radio" value="1" <cfif rc.feedBean.getIsDefault()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+			</label>
+			<label class="radio">
+			<input name="isDefault" type="radio" value="0" <cfif not rc.feedBean.getIsDefault()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+			</label>
+ 		</div>
 	</div>
 	
 	<div class="control-group">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.isPublic')#</label>
-	<div class="controls">
-	<label class="radio">
-	<input name="isPublic" type="radio" value="1" <cfif rc.feedBean.getIsPublic()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-	</label>
-	<label class="radio">
-	<input name="isPublic" type="radio" value="0" <cfif not rc.feedBean.getIsPublic()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
-	</label>
+		<div class="controls">
+			<label class="radio">
+			<input name="isPublic" type="radio" value="1" <cfif rc.feedBean.getIsPublic()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+			</label>
+			<label class="radio">
+			<input name="isPublic" type="radio" value="0" <cfif not rc.feedBean.getIsPublic()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+			</label>
 	  </div>
 	</div>
 	
 	<div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.allowhtml')#</label>
-	<div class="controls">
-	<label class="radio">
-	<input name="allowHTML" type="radio" value="1" <cfif rc.feedBean.getAllowHTML()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-	</label>
-	<label class="radio">
-	<input name="allowHTML" type="radio" value="0" <cfif not rc.feedBean.getAllowHTML()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')#
-	</label> 
+      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.allowhtml')#</label>
+		<div class="controls">
+			<label class="radio">
+			<input name="allowHTML" type="radio" value="1" <cfif rc.feedBean.getAllowHTML()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+			</label>
+			<label class="radio">
+			<input name="allowHTML" type="radio" value="0" <cfif not rc.feedBean.getAllowHTML()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')#
+			</label> 
 	  </div>
 	</div>
 	
 	<div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.version')#</label>
-	<div class="controls"><select name="version" class="dropdown">
-	<cfloop list="RSS 2.0,RSS 0.920" index="v">
-	<option value="#v#" <cfif rc.feedBean.getVersion() eq v>selected</cfif>>#v#</option>
-	</cfloop>
-	</select>
-	  </div>
+      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.version')#</label>
+		<div class="controls">
+			<select name="version" class="dropdown">
+			<cfloop list="RSS 2.0,RSS 0.920" index="v">
+			<option value="#v#" <cfif rc.feedBean.getVersion() eq v>selected</cfif>>#v#</option>
+			</cfloop>
+			</select>
+		</div>
 	</div>
 	
 	<div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.language')#</label>
-	<div class="controls"><input name="lang" class="text" value="#htmlEditFormat(rc.feedBean.getlang())#" maxlength="50">
-	</dd>
-	<cfif application.settingsManager.getSite(rc.siteid).getextranet()>
+      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.language')#</label>
+		<div class="controls">
+			<input name="lang" class="text" value="#htmlEditFormat(rc.feedBean.getlang())#" maxlength="50">
+		</div>
+	</div>
+<cfif application.settingsManager.getSite(rc.siteid).getextranet()>
 	
 	<div class="control-group">
       <input name="restricted" type="CHECKBOX" value="1"   onclick="javascript: this.checked?toggleDisplay2('rg',true):toggleDisplay2('rg',false);" <cfif rc.feedBean.getrestricted() eq 1>checked </cfif> class="checkbox">
 		#application.rbFactory.getKeyValue(session.rb,'collections.restrictaccess')#
 		<div id="rg"  <cfif rc.feedBean.getrestricted() NEQ 1>style="display:none;"</cfif>>
-		<select name="restrictgroups" size="8" multiple="multiple" class="multiSelect" id="restrictGroups">
-		<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.globalsettings'))#">
-		<option value="RestrictAll" <cfif rc.feedBean.getrestrictgroups() eq 'RestrictAll'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictall')#</option>
-		<option value="" <cfif rc.feedBean.getrestrictgroups() eq ''>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.allowall')#</option>
-		</optgroup>
-		<cfquery dbtype="query" name="rsGroups">select * from rc.rsrestrictgroups where isPublic=1</cfquery>	
-		<cfif rsGroups.recordcount>
-		<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'user.membergroups'))#">
-		<cfloop query="rsGroups">
-		<option value="#rsGroups.userID#" <cfif listfind(rc.feedBean.getrestrictgroups(),rsGroups.userID)>Selected</cfif>>#rsGroups.groupname#</option>
-		</cfloop>
-		</optgroup>
-		</cfif>
-		<cfquery dbtype="query" name="rsGroups">select * from rc.rsrestrictgroups where isPublic=0</cfquery>	
-		<cfif rsGroups.recordcount>
-		<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'user.adminusergroups'))#">
-		<cfloop query="rsGroups">
-		<option value="#rsGroups.userID#" <cfif listfind(rc.feedBean.getrestrictgroups(),rsGroups.userID)>Selected</cfif>>#rsGroups.groupname#</option>
-		</cfloop>
-		</optgroup>
-		</cfif>
-		</select>
-		
+			<select name="restrictgroups" size="8" multiple="multiple" class="multiSelect" id="restrictGroups">
+			<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.globalsettings'))#">
+			<option value="RestrictAll" <cfif rc.feedBean.getrestrictgroups() eq 'RestrictAll'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictall')#</option>
+			<option value="" <cfif rc.feedBean.getrestrictgroups() eq ''>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.allowall')#</option>
+			</optgroup>
+			<cfquery dbtype="query" name="rsGroups">select * from rc.rsrestrictgroups where isPublic=1</cfquery>	
+			<cfif rsGroups.recordcount>
+			<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'user.membergroups'))#">
+			<cfloop query="rsGroups">
+			<option value="#rsGroups.userID#" <cfif listfind(rc.feedBean.getrestrictgroups(),rsGroups.userID)>Selected</cfif>>#rsGroups.groupname#</option>
+			</cfloop>
+			</optgroup>
+			</cfif>
+			<cfquery dbtype="query" name="rsGroups">select * from rc.rsrestrictgroups where isPublic=0</cfquery>	
+			<cfif rsGroups.recordcount>
+			<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'user.adminusergroups'))#">
+			<cfloop query="rsGroups">
+			<option value="#rsGroups.userID#" <cfif listfind(rc.feedBean.getrestrictgroups(),rsGroups.userID)>Selected</cfif>>#rsGroups.groupname#</option>
+			</cfloop>
+			</optgroup>
+			</cfif>
+			</select>
 		</div>
 	</div>
-</div>
 </cfif>
 	
-	</div>
-	<cfif rc.feedID neq ''>
+</div>
+<cfif rc.feedID neq ''>
 	<cfinclude template="dsp_tab_usage.cfm">
-	</cfif>
+</cfif>
 </cfif>
 </cfoutput>
 </cfsavecontent>
+<cfsavecontent variable="actionButtons">
 <cfoutput>
-<cfif not isObjectInstance>
-	<img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
-	<div class="tabs initActiveTab" style="display:none">
-	<ul>
-	<cfloop from="1" to="#listlen(tabList)#" index="t">
-	<li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
-	</cfloop>
-	</ul>
-	#tabContent#
-	</div>
-<cfelse>
-	#tabCOntent#
-</cfif>
-
-<input type="hidden" id="instanceParams" value='#rc.feedBean.getInstanceParams()#' name="instanceParams" />		
-<input type="hidden" name="assignmentID" value="#HTMLEditFormat(rc.assignmentID)#" />
-<input type="hidden" name="orderno" value="#HTMLEditFormat(rc.orderno)#" />
-<input type="hidden" name="regionid" value="#HTMLEditFormat(rc.regionID)#" />
-<!--- Button Begins --->
 <div class="clearfix form-actions actionButtons">
 <cfif rc.feedID eq ''>
 	<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'collections.add')#" />
@@ -637,6 +619,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 <input type="hidden" name="type" value="Local"><input name="isActive" type="hidden" value="1" />
 </div>
+</cfoutput>
+</cfsavecontent>
+<cfoutput>
+<cfif not isObjectInstance>
+	<div class="tabbable">
+		<ul class="nav nav-tabs initActiveTab">
+		<cfloop from="1" to="#listlen(tabList)#" index="t">
+		<li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
+		</cfloop>
+		</ul>
+		<div class="tab-content">
+			#tabContent#
+			<img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
+			#actionButtons#
+		</div>
+	</div>
+<cfelse>
+	#tabContent#
+</cfif>
+
+<input type="hidden" id="instanceParams" value='#rc.feedBean.getInstanceParams()#' name="instanceParams" />		
+<input type="hidden" name="assignmentID" value="#HTMLEditFormat(rc.assignmentID)#" />
+<input type="hidden" name="orderno" value="#HTMLEditFormat(rc.orderno)#" />
+<input type="hidden" name="regionid" value="#HTMLEditFormat(rc.regionID)#" />
+<!--- Button Begins --->
 </form>
 <!---
 <cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
@@ -708,7 +715,7 @@ jQuery(document).ready(function(){
 </cfoutput>
 <cfsavecontent variable='tabContent'>
 <cfoutput>
-<div id="tabBasic">
+<div id="tabBasic" class="tab-pane">
 	<div class="control-group">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</label>
       <div class="controls"><select name="maxItems" class="dropdown">
@@ -768,7 +775,7 @@ jQuery(document).ready(function(){
 	</dl>
 </div>
 
-<div id="tabCategorization">
+<div id="tabCategorization" class="tab-pane">
 	<div class="control-group">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.categoryassignments')#</label>
       <div class="controls">
@@ -780,7 +787,7 @@ jQuery(document).ready(function(){
 <cfif listFind(session.mura.memberships,'S2')>
 	<cfset tabLabellist=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,'collections.importlocation')) >
 	<cfset tabList=listAppend(tabList,"tabImportlocation")>
-	<div id="tabImportlocation">
+	<div id="tabImportlocation" class="tab-pane">
 	<div class="control-group">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.importlocation')#:<span id="move" class="text"> <cfif rc.feedbean.getparentid() neq ''>"#application.contentManager.getActiveContent(rc.feedBean.getParentID(),rc.feedBean.getSiteID()).getMenuTitle()#"<cfelse>"#application.rbFactory.getKeyValue(session.rb,'collections.noneselected')#"</cfif>
 				&nbsp;&nbsp;<a href="javascript:##;" onclick="javascript: loadSiteParents('#rc.siteid#','#rc.feedbean.getparentid()#','',1);return false;">[#application.rbFactory.getKeyValue(session.rb,'collections.selectnewlocation')#]</a>
@@ -796,34 +803,39 @@ jQuery(document).ready(function(){
 </cfoutput>
 </cfsavecontent>
 <cfoutput>
-<img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
-<div class="tabs initActiveTab" style="display:none">
-<ul>
-<cfloop from="1" to="#listlen(tabList)#" index="t">
-<li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
-</cfloop>
-</ul>
-#tabContent#
+
+<div class="tabbable">
+	<ul class="nav nav-tabs initActiveTab">
+	<cfloop from="1" to="#listlen(tabList)#" index="t">
+	<li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
+	</cfloop>
+	</ul>
+	<div class="tab-content">
+	#tabContent#
+	<img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
+
+	<div class="actionButtons form-actions">
+		<cfif rc.feedID eq ''>
+			<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'collections.add')#" />
+			<input type=hidden name="feedID" value="">
+			<input type="hidden" name="action" value="add">
+		<cfelse>
+			<cfif rc.compactDisplay neq "true">
+				<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'collections.deleteremoteconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'collections.delete')#" /> 
+			</cfif>
+			<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'collections.update')#" />
+			<cfif rc.compactDisplay eq "true">
+				<input type="hidden" name="closeCompactDisplay" value="true" />
+				<input type="hidden" name="homeID" value="#rc.homeID#" />
+			</cfif>
+			<input type=hidden name="feedID" value="#rc.feedBean.getfeedID()#">
+			<input type="hidden" name="action" value="update">
+		</cfif>
+		<input type="hidden" name="type" value="Remote">
+		</div>
+	</div>
 </div>
-<div class="actionButtons form-actions">
-<cfif rc.feedID eq ''>
-	<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'collections.add')#" />
-	<input type=hidden name="feedID" value="">
-	<input type="hidden" name="action" value="add">
-<cfelse>
-	<cfif rc.compactDisplay neq "true">
-		<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'collections.deleteremoteconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'collections.delete')#" /> 
-	</cfif>
-	<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'collections.update')#" />
-	<cfif rc.compactDisplay eq "true">
-		<input type="hidden" name="closeCompactDisplay" value="true" />
-		<input type="hidden" name="homeID" value="#rc.homeID#" />
-	</cfif>
-	<input type=hidden name="feedID" value="#rc.feedBean.getfeedID()#">
-	<input type="hidden" name="action" value="update">
-</cfif>
-<input type="hidden" name="type" value="Remote">
-</div>
+
 </form>
 <!---
 <cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
