@@ -1009,6 +1009,7 @@ function loadSiteManagerInTab(loader){
 		archViewLoaded=true;
 		window.scrollTo(0,0); 
 		loader();
+		jQuery('#viewTabs a[href="#tabArchitectural"]').tab('show');
 		//document.getElementById("newContentMenu").style.visibility="hidden"; 
 		return false;
 }

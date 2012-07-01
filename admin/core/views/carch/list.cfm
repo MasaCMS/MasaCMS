@@ -429,15 +429,13 @@ function initSiteManagerTabContent(index){
 	jQuery.get("./index.cfm","muraAction=carch.siteManagerTab&tab=" + index);
 	
 	if(!tabsInited){
-		jQuery("##viewTabs").on( "show", function(event,ui){
-		//alert(event.target)
-			var tab=event.target.toString();
-
-			if(tab.indexOf('tabArchitectural') != -1){
-				initSiteManagerTabContent(0);
-			} else if(tab.indexOf('tabFlat') != -1) {
-				initSiteManagerTabContent(1);
-			}
+		jQuery("##viewTabs a[href='##tabArchitectural']").click(function(e){
+			e.preventDefault();
+			initSiteManagerTabContent(0);
+		});
+		jQuery("##viewTabs a[href='##tabFlat']").click(function(e){
+			e.preventDefault();
+			initSiteManagerTabContent(1);
 		});
 		tabsInited=true;
 	}	
