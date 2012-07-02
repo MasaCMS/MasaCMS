@@ -72,28 +72,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 		</table>
 	
-		<cfset rc.rslist=rc.groups.publicGroups />
-		 <h3 class="divide">#application.rbFactory.getKeyValue(session.rb,'user.membergroups')#</h3>		<p>#application.rbFactory.getKeyValue(session.rb,'permissions.memberpermscript')#</p>
-		 <table class="table table-striped table-condensed">
-          <tr> 
-            <th>#application.rbFactory.getKeyValue(session.rb,'permissions.allow')#</th>
-            <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'permissions.group')#</th>
-          </tr>
-		  <cfif rc.rslist.recordcount>
-          <cfloop query="rc.rslist"> 
+<cfset rc.rslist=rc.groups.publicGroups />
+ <h3 class="divide">#application.rbFactory.getKeyValue(session.rb,'user.membergroups')#</h3>		<p>#application.rbFactory.getKeyValue(session.rb,'permissions.memberpermscript')#</p>
+ <table class="table table-striped table-condensed">
+    <tr> 
+        <th>#application.rbFactory.getKeyValue(session.rb,'permissions.allow')#</th>
+        <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'permissions.group')#</th>
+    </tr>
+	<cfif rc.rslist.recordcount>
+        <cfloop query="rc.rslist"> 
             <tr> 
-              <td><input type="checkbox" name="groupid" value="#rc.rslist.userid#"<cfif application.permUtility.getGroupPermVerdict(rc.contentid,rc.rslist.userid,'module',rc.siteid)>checked</cfif>></td>
-	      <td class="varWidth" nowrap>#rc.rslist.GroupName#</td>
+              	<td><input type="checkbox" name="groupid" value="#rc.rslist.userid#"<cfif application.permUtility.getGroupPermVerdict(rc.contentid,rc.rslist.userid,'module',rc.siteid)>checked</cfif>></td>
+	      		<td class="varWidth" nowrap>#rc.rslist.GroupName#</td>
 			</tr>
 		 </cfloop>
 	<cfelse>
 		 <tr> 
-              <td class="noResults" colspan="2">
-			 #application.rbFactory.getKeyValue(session.rb,'permissions.nogroups')#
-			  </td>
-            </tr>
+           <td class="noResults" colspan="2">
+			#application.rbFactory.getKeyValue(session.rb,'permissions.nogroups')#
+			</td>
+        </tr>
 	</cfif>
-		</table>
+</table>
 <div class="actionButtons form-actions">
 <input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'permissions.update')#" />
 </div>

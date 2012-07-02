@@ -104,48 +104,53 @@ select * from rsSubTypes where subType <> 'Default'
 	 <input type="hidden" name="subtype" value="Default"/>
 </cfif>
 		
-  <div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.groupname')#</label>
-      <div class="controls"><input type="text" class="text" name="groupname" value="#HTMLEditFormat(rc.userBean.getgroupname())#"  required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.groupname required')#"></div>
-    </div>
+<div class="control-group">
+  <label class="control-label">
+    #application.rbFactory.getKeyValue(session.rb,'user.groupname')#
+  </label>
+  <div class="controls"><input type="text" class="text" name="groupname" value="#HTMLEditFormat(rc.userBean.getgroupname())#"  required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.groupnamerequired')#">
+  </div>
+</div>
 
-  <div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.email')#</label>
-      <div class="controls"><input type="text" class="text" name="email" value="#HTMLEditFormat(rc.userBean.getemail())#" validate="email" message="#application.rbFactory.getKeyValue(session.rb,'user.emailvalidate')#"></div>
-    </div>
+<div class="control-group">
+  <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.email')#</label>
+  <div class="controls">
+    <input type="text" class="text" name="email" value="#HTMLEditFormat(rc.userBean.getemail())#" validate="email" message="#application.rbFactory.getKeyValue(session.rb,'user.emailvalidate')#">
+  </div>
+</div>
 
-  <div class="control-group">
-    <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.tablist')#</label>
-     <div class="controls">
+<div class="control-group">
+  <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.tablist')#</label>
+    <div class="controls">
       <select name="tablist" multiple="true">
       <option value=""<cfif not len(rc.userBean.getTablist())> selected</cfif>>All</option>
       <cfloop list="Basic,Meta Data,Content Objects,Categorization,Related Content,Extended Attributes,Advanced,Usage Report" index="t">
       <option value="#t#"<cfif listFindNoCase(rc.userBean.getTablist(),t)> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.#replace(t,' ','','all')#")#</option>
       </cfloop>
       </select>
-    </div>
   </div>
+</div>
 
-  <div class="control-group">
-    <div class="controls">
-      <label class="control-label">
-        <input type="checkbox" name="contactform" value="#HTMLEditFormat(rc.siteid)#" <cfif rc.userBean.getcontactform() eq rc.siteid>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,'user.contactform')#
-      </div>
-  </div>
+<div class="control-group">
+  <div class="controls">
+    <label class="control-label">
+      <input type="checkbox" name="contactform" value="#HTMLEditFormat(rc.siteid)#" <cfif rc.userBean.getcontactform() eq rc.siteid>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,'user.contactform')#
+    </div>
+</div>
 
 <span id="extendSetsBasic"></span>
 
 
 <cfif rsSubTypes.recordcount>
-  </div>
+</div>
 
-  <div id="tabExtendedattributes" class="tab-pane">
+<div id="tabExtendedattributes" class="tab-pane">
    <span id="extendSetsDefault"></span>	
-  </div>
+</div>
     <img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
     #actionButtons#
-  </div>
-  </div>
+</div>
+</div>
   <!---
   <cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
   <cfhtmlhead text='<script type="text/javascript" src="assets/js/tab-view.js"></script>'>

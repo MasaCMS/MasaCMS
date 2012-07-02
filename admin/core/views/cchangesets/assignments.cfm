@@ -60,7 +60,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rc.previewLink="http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?changesetID=#rc.changesetID#">
 <h4>#application.rbFactory.getKeyValue(session.rb,'changesets.filterview')#</h4>
 <p>#application.rbFactory.getKeyValue(session.rb,'changesets.filterviewnotice')#</p>
-<form novalidate="novalidate" id="assignmentSearch" name="assignmentSearch" method="get">
+<form class="form-inline" novalidate="novalidate" id="assignmentSearch" name="assignmentSearch" method="get">
 	<input name="keywords" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" maxlength="50" />
 	<input type="button" class="submit btn" onclick="return submitForm(document.forms.assignmentSearch);" value="Search" />
 	<input type="hidden" name="muraAction" value="cChangesets.assignments">

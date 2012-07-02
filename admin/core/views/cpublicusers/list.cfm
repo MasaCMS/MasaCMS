@@ -57,7 +57,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <h3>#application.rbFactory.getKeyValue(session.rb,'user.usergroups')#</h3>
 
-
         <table class="table table-striped table-condensed">
                   <tr> 
                     <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'user.name')# (<em>#application.rbFactory.getKeyValue(session.rb,'user.members')#</em>)</th>

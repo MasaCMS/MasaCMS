@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!--- <h3>#application.rbFactory.getKeyValue(session.rb,'changesets.filterview')#:</h3> --->
 <h3 class="alt">#application.rbFactory.getKeyValue(session.rb,'changesets.filterviewnotice')#</h3>
 
-<form novalidate="novalidate" id="changesetSearch" name="changesetSearch" method="get">
+<form class="form-inline" novalidate="novalidate" id="changesetSearch" name="changesetSearch" method="get">
 	<input name="keywords" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" maxlength="50" />
 	<input type="button" class="submit btn" onclick="submitForm(document.forms.changesetSearch);" value="Search" />
 	<input type="hidden" name="muraAction" value="cChangesets.list">
