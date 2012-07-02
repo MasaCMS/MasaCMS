@@ -82,13 +82,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfoutput>
 	</cfif>
 	<cfset application.userManager.getCurrentUser().setValue("errors","")>
-	<img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
-	<div class="tabs initActiveTab" style="display:none">
-		<ul>
+	
+	<div class="tabbable">
+		<ul class="nav nav-tabs initActiveTab">
 			<li><a href="#tabCurrentsites" onclick="return false;"><span>Current Sites</span></a></li>
 			<li><a href="#tabPlugins" onclick="return false;"><span>Plugins</span></a></li>
 		</ul>
-		<div id="tabCurrentsites"> <br/>
+	<div class="tab-content">
+		<div id="tabCurrentsites" class="tab-pane"> 
 			<script type="text/javascript" language="javascript">
 				jQuery(function ($) {
 					$('#checkall').click(function () {
@@ -210,7 +211,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfoutput>
 			</form>
 		</div>
-		<div id="tabPlugins"> <br/>
+		<div id="tabPlugins" class="tab-pane"> <br/>
 			<form novalidate="novalidate" name="frmNewPlugin" action="index.cfm?muraAction=cSettings.deployPlugin" enctype="multipart/form-data" method="post" onsubmit="return validateForm(this);">
 				Upload New Plugin<br/>
 				<input name="newPlugin" type="file" required="true" message="Please select a plugin file.">
@@ -250,6 +251,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</table>
 		</div>
+		<img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
+	</div>
 	</div>
 	<!---
 <cfparam name="rc.activeTab" default="0">
