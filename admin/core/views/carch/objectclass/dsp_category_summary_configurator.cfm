@@ -62,13 +62,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	data-object="category_summary" 
 	data-name="#HTMLEditFormat('#content.getMenuTitle()# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.categorysummary')#')#" 
 	data-objectid="#content.getContentID()#">
-		<dl class="oneColumn">
-			<dt class="first">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayrss')#</dt>
-			<dd>
-			<input name="displayRSS" type="radio" value="1" class="objectParam  radio" <cfif displayRSS>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-			<input name="displayRSS" type="radio" value="0" class="objectParam  radio" <cfif not displayRSS>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
-			</dd>
-		</dl>
+		<div class="control-group">
+			<label class="control-label">
+				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayrss')#
+			</label>
+			<div class="controls">
+				<label class="radio">	
+					<input name="displayRSS" type="radio" value="1" class="objectParam  radio" <cfif displayRSS>checked</cfif>>
+					#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+				</label>
+				<label class="radio">
+					<input name="displayRSS" type="radio" value="0" class="objectParam  radio" <cfif not displayRSS>checked</cfif>>
+				#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+				</label>
+			</div>
+		</div>
 	</div>
 
 </cfoutput>

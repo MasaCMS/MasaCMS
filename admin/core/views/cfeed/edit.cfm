@@ -558,8 +558,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif application.settingsManager.getSite(rc.siteid).getextranet()>
 	
 	<div class="control-group">
-      <input name="restricted" type="CHECKBOX" value="1"   onclick="javascript: this.checked?toggleDisplay2('rg',true):toggleDisplay2('rg',false);" <cfif rc.feedBean.getrestricted() eq 1>checked </cfif> class="checkbox">
-		#application.rbFactory.getKeyValue(session.rb,'collections.restrictaccess')#
+      	<label class="checkbox">
+      		<input name="restricted" type="CHECKBOX" value="1"   onclick="javascript: this.checked?toggleDisplay2('rg',true):toggleDisplay2('rg',false);" <cfif rc.feedBean.getrestricted() eq 1>checked </cfif> class="checkbox">
+			#application.rbFactory.getKeyValue(session.rb,'collections.restrictaccess')#
+		</label>
 		<div id="rg"  <cfif rc.feedBean.getrestricted() NEQ 1>style="display:none;"</cfif>>
 			<select name="restrictgroups" size="8" multiple="multiple" class="multiSelect" id="restrictGroups">
 			<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.globalsettings'))#">

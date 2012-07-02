@@ -45,17 +45,20 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-	<cfset rc.rsUserDefinedTemplates = application.contentManager.getComponents("00000000000000000000000000000000000", 
-	                                                                                 rc.siteid)/>
-	<select name="availableObjects" id="availableObjects" class="multiSelect" 
-	        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#" 
-	        style="width:310px;">
-		<cfloop query="rc.rsUserDefinedTemplates">
-			<option value="Component~#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.component')# - #rc.rsUserDefinedTemplates.menutitle#~#rc.rsUserDefinedTemplates.contentid#">
-				#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.type.component')# 
-				- 
-				#rc.rsUserDefinedTemplates.menutitle#
-			</option>
-		</cfloop>
-	</select>
+	<cfset rc.rsUserDefinedTemplates = application.contentManager.getComponents("00000000000000000000000000000000000", rc.siteid)/>
+	<div class="control-group">
+		<div class="controls">
+			<select name="availableObjects" id="availableObjects" class="multiSelect" 
+			        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#" 
+			        style="width:310px;">
+				<cfloop query="rc.rsUserDefinedTemplates">
+					<option value="Component~#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.component')# - #rc.rsUserDefinedTemplates.menutitle#~#rc.rsUserDefinedTemplates.contentid#">
+						#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.type.component')# 
+						- 
+						#rc.rsUserDefinedTemplates.menutitle#
+					</option>
+				</cfloop>
+			</select>
+		</div>
+	</div>
 </cfoutput>

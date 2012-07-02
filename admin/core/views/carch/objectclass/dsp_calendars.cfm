@@ -46,42 +46,47 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfset rc.rsSections = application.contentManager.getSections(rc.siteid, 'Calendar')/>
 <cfoutput>
-	<select name="subClassSelector" 
-	        onchange="loadObjectClass('#rc.siteid#','calendar',this.value,'#rc.contentid#','#rc.parentid#','#rc.contenthistid#',0,0);" 
-	        class="dropdown">
-		<option value="">
-			#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.selectcalendar')#
-		</option>
-		<cfloop query="rc.rsSections">
-			<option value="#rc.rsSections.contentID#" <cfif rc.rsSections.contentID eq rc.subclassid>selected</cfif>>#HTMLEditFormat(rc.rsSections.menutitle)#</option>
-		</cfloop>
-	</select>
-	<br/>
-	
-	<cfif rc.subclassid neq ''>
-		<select name="availableObjects" id="availableObjects" class="multiSelect" 
-		        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#" 
-		        style="width:310px;">
+<div class="control-group">
+	<div class="controls">
+		<select name="subClassSelector" 
+		        onchange="loadObjectClass('#rc.siteid#','calendar',this.value,'#rc.contentid#','#rc.parentid#','#rc.contenthistid#',0,0);" 
+		        class="dropdown">
+			<option value="">
+				#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.selectcalendar')#
+			</option>
 			<cfloop query="rc.rsSections">
-				<cfif rc.rsSections.contentID eq rc.subclassid>
-					<option value="{'object':'category_summary','name':'#JSStringFormat(rc.rsSections.menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.categorysummary')#','objectid':'#rc.rsSections.contentid#'}">
-						#HTMLEditFormat(rc.rsSections.menutitle)# 
-						- 
-						#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.categorysummary')#
-					</option>
-					<option value="{'object':'related_section_content','name':'#JSStringFormat(rc.rsSections.menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#','objectid':'#rc.rsSections.contentid#'}">
-						#HTMLEditFormat(rc.rsSections.menutitle)# 
-						- 
-						#application.rbFactory.getKeyValue(session.rb, 
-					                                    'sitemanager.content.fields.relatedcontent')#
-					</option>
-					<option value="calendar_nav~#HTMLEditFormat(rc.rsSections.menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.calendarnavigation')#~#rc.rsSections.contentid#">
-						#HTMLEditFormat(rc.rsSections.menutitle)# 
-						- 
-						#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.calendarnavigation')#
-					</option>
-				</cfif>
+				<option value="#rc.rsSections.contentID#" <cfif rc.rsSections.contentID eq rc.subclassid>selected</cfif>>#HTMLEditFormat(rc.rsSections.menutitle)#</option>
 			</cfloop>
 		</select>
+	</div>
+	
+	<cfif rc.subclassid neq ''>
+		<div class="controls">
+			<select name="availableObjects" id="availableObjects" class="multiSelect" 
+			        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#" 
+			        style="width:310px;">
+				<cfloop query="rc.rsSections">
+					<cfif rc.rsSections.contentID eq rc.subclassid>
+						<option value="{'object':'category_summary','name':'#JSStringFormat(rc.rsSections.menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.categorysummary')#','objectid':'#rc.rsSections.contentid#'}">
+							#HTMLEditFormat(rc.rsSections.menutitle)# 
+							- 
+							#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.categorysummary')#
+						</option>
+						<option value="{'object':'related_section_content','name':'#JSStringFormat(rc.rsSections.menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#','objectid':'#rc.rsSections.contentid#'}">
+							#HTMLEditFormat(rc.rsSections.menutitle)# 
+							- 
+							#application.rbFactory.getKeyValue(session.rb, 
+						                                    'sitemanager.content.fields.relatedcontent')#
+						</option>
+						<option value="calendar_nav~#HTMLEditFormat(rc.rsSections.menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.calendarnavigation')#~#rc.rsSections.contentid#">
+							#HTMLEditFormat(rc.rsSections.menutitle)# 
+							- 
+							#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.calendarnavigation')#
+						</option>
+					</cfif>
+				</cfloop>
+			</select>
+		</div>
 	</cfif>
+<div>
 </cfoutput>

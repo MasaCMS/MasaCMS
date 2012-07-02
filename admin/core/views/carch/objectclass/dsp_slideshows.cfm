@@ -46,6 +46,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfoutput>
+<div class="control-group">
+	<div class="controls">
 	<select name="availableObjects" 
 			id="availableObjects" 
 	        class="multiSelect" 
@@ -61,5 +63,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</option>
 		</cfloop>
 	</select>
-	
+	</div>
+</div>
 </cfoutput>

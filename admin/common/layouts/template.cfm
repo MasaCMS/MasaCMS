@@ -1,4 +1,4 @@
-<cfoutput><html lang="en">
+<cfoutput><html lang="#HTMLEditFormat(session.locale)#">
   <head>
   	<cfsilent>
   		<cfparam name="request.action" default="core:cplugin.plugin">

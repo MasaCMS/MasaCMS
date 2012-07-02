@@ -45,6 +45,8 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
+<div class="control-group">
+	<div class="controls">
 	<select name="availableObjects" id="availableObjects" class="multiSelect" 
 	        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#" 
 	        style="width:310px;">
@@ -61,4 +63,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</option>
 		</cfloop>
 	</select>
+	</div>
+</div>
 </cfoutput>

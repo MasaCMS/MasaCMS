@@ -58,76 +58,109 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	data-object="feed_slideshow" 
 	data-name="#HTMLEditFormat('#feed.getName()# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindexslideshow')#')#" 
 	data-objectid="#feed.getFeedID()#">
-				<h4>#HTMLEditFormat(feed.getName())#</h4>
-				<cfif rc.configuratorMode eq "frontEnd"
-					and application.permUtility.getDisplayObjectPerm(feed.getSiteID(),"feed",feed.getFeedD()) eq "editor">
-					<cfsilent>
-						<cfset editlink = "?muraAction=cFeed.edit">
-						<cfset editlink = editlink & "&amp;siteid=" & feed.getSiteID()>
-						<cfset editlink = editlink & "&amp;feedid=" & feed.getFeedID()>
-						<cfset editlink = editlink & "&amp;type=" & feed.getType()>
-						<cfset editlink = editlink & "&amp;homeID=" & rc.homeID>
-						<cfset editlink = editlink & "&amp;compactDisplay=true">
-					</cfsilent>
-					<ul class="navTask nav nav-pills">
-						<li><a href="#editlink#">#application.rbFactory.getKeyValue(session.rb,'collections.editdefaultsettings')#</a></li>
-					</ul>
-				</cfif>
-				<dl class="oneColumn" id="configurator">
-					<dt class="first">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</dt>
-					<dd><select name="assets/imagesize" class="objectParam  dropdown" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
+	
+	<h4>#HTMLEditFormat(feed.getName())#</h4>
+	<cfif rc.configuratorMode eq "frontEnd"
+		and application.permUtility.getDisplayObjectPerm(feed.getSiteID(),"feed",feed.getFeedD()) eq "editor">
+		<cfsilent>
+			<cfset editlink = "?muraAction=cFeed.edit">
+			<cfset editlink = editlink & "&amp;siteid=" & feed.getSiteID()>
+			<cfset editlink = editlink & "&amp;feedid=" & feed.getFeedID()>
+			<cfset editlink = editlink & "&amp;type=" & feed.getType()>
+			<cfset editlink = editlink & "&amp;homeID=" & rc.homeID>
+			<cfset editlink = editlink & "&amp;compactDisplay=true">
+		</cfsilent>
+		<ul class="navTask nav nav-pills">
+			<li><a href="#editlink#">#application.rbFactory.getKeyValue(session.rb,'collections.editdefaultsettings')#</a></li>
+		</ul>
+	</cfif>
+	<div id="configurator">
+		<div class="control-group">
+			<label class="control-label">
+				#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#
+			</label>
+			<div class="controls">
+				<select name="assets/imagesize" class="objectParam  dropdown" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
 						<cfloop list="Small,Medium,Large,Custom" index="i">
 							<option value="#lcase(i)#"<cfif i eq feed.getImageSize()> selected</cfif>>#I#</option>
 						</cfloop>
 						</select>
-					</dd>
-					<dd id="feedCustomImageOptions"<cfif feed.getImageSize() neq "custom"> style="display:none"</cfif>>
-						<dl>
-							<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</dt>
-							<dd><input name="imageWidth" class="objectParam  text" value="#feed.getImageWidth()#" /></dd>
-							<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</dt>
-							<dd><input name="imageHeight" class="objectParam  text" value="#feed.getImageHeight()#" /></dd>
-						</dl>
-					</dd>
+			</div>
+		</div>
+		<div class="control-group" id="feedCustomImageOptions"<cfif feed.getImageSize() neq "custom"> style="display:none"</cfif>>
+			<div class="control-group">
+				<label class="control-label">
+						#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#
+				</label>
+				<div class="controls">
+					<input name="imageWidth" class="objectParam  text" value="#feed.getImageWidth()#" />
+				</div>
+			</div>
 				
-				<dt>#application.rbFactory.getKeyValue(session.rb,'collections.displayname')#</dt>
-				<dd>
+			<div class="control-group">
+				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
+				<div class="controls"><input name="imageHeight" class="objectParam  text" value="#feed.getImageHeight()#" />
+				</div>
+			</div>
+				
+		</div>
+				
+		<div class="control-group">
+			<label class="control-label">
+				#application.rbFactory.getKeyValue(session.rb,'collections.displayname')#
+			</label>
+			<div class="controls">
 				<input name="displayName" type="radio" value="1" class="objectParam  radio" onchange="jQuery('##altNameContainer').toggle();"<cfif feed.getDisplayName()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
 				<input name="displayName" type="radio" value="0" class="objectParam  radio" onchange="jQuery('##altNameContainer').toggle();" <cfif not feed.getDisplayName()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
-				</dd>
-				<span id="altNameContainer"<cfif NOT feed.getDisplayName()> style="display:none;"</cfif>>
-				<dt>#application.rbFactory.getKeyValue(session.rb,'collections.altname')#</dt>
-				<dd><input name="altName" class="objectParam  text" value="#HTMLEditFormat(feed.getAltName())#" maxlength="50"></dd>
-				</span>
-				<dt>#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</dt>
-				<dd><select name="maxItems" class="objectParam  dropdown">
+			</div>
+		</div>
+		<div class="control-group" id="altNameContainer"<cfif NOT feed.getDisplayName()> style="display:none;"</cfif>>
+			<label class="control-label">
+				#application.rbFactory.getKeyValue(session.rb,'collections.altname')#
+			</label>
+			<div class="controls">
+				<input name="altName" class="objectParam  text" value="#HTMLEditFormat(feed.getAltName())#" maxlength="50"><
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label">
+				#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#
+			</label>
+			<div class="controls">
+				<select name="maxItems" class="objectParam  dropdown">
 				<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="m">
 				<option value="#m#" <cfif feed.getMaxItems() eq m>selected</cfif>>#m#</option>
 				</cfloop>
 				<option value="100000" <cfif feed.getMaxItems() eq 100000>selected</cfif>>ALL</option>
 				</select>
-				</dd>
-				<dt id="availableFields"><span>Available Fields</span> <span>Selected Fields</span></dt>
-				<dd>
-					<div class="sortableFields">
-					<p class="dragMsg"><span class="dragFrom">Drag Fields from Here&hellip;</span><span>&hellip;and Drop Them Here.</span></p>
-					<cfset displayList=feed.getDisplayList()>
-					<cfset availableList=feed.getAvailableDisplayList()>
-					
-					<ul id="availableListSort" class="displayListSortOptions">
-						<cfloop list="#availableList#" index="i">
-						<li class="ui-state-default">#trim(i)#</li>
-						</cfloop>
-					</ul>
-					
-					<ul id="displayListSort" class="displayListSortOptions">
-						<cfloop list="#displayList#" index="i">
-						<li class="ui-state-highlight">#trim(i)#</li>
-						</cfloop>
-					</ul>
-					<input type="hidden" id="displayList" class="objectParam " value="#displayList#" name="displayList"/>
-					</div>	
-				</dd>
-				</dl>
+			</div>
 		</div>
+		<div class="control-group" id="availableFields">
+				<label class="control-label">
+					Available Fields</span> <span>Selected Fields</span>
+				</label>
+				<div class="controls">
+					<div class="sortableFields">
+						<p class="dragMsg"><span class="dragFrom">Drag Fields from Here&hellip;</span><span>&hellip;and Drop Them Here.</span></p>
+							
+						<cfset displayList=feed.getDisplayList()>
+						<cfset availableList=feed.getAvailableDisplayList()>
+						
+						<ul id="availableListSort" class="displayListSortOptions">
+							<cfloop list="#availableList#" index="i">
+							<li class="ui-state-default">#trim(i)#</li>
+							</cfloop>
+						</ul>
+						
+						<ul id="displayListSort" class="displayListSortOptions">
+							<cfloop list="#displayList#" index="i">
+							<li class="ui-state-highlight">#trim(i)#</li>
+							</cfloop>
+						</ul>
+						<input type="hidden" id="displayList" class="objectParam " value="#displayList#" name="displayList"/>
+					</div>	
+				</div>
+		</div>
+	</div>
 </cfoutput>

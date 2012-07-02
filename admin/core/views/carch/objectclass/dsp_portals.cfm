@@ -46,6 +46,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfset rc.rsSections = application.contentManager.getSections(rc.siteid, 'Portal')/>
 <cfoutput>
+<div class="control-group">
+	<div class="controls">
 	<select name="subClassSelector" 
 	        onchange="loadObjectClass('#rc.siteid#','portal',this.value,'#rc.contentid#','#rc.parentid#','#rc.contenthistid#',0,0);" 
 	        class="dropdown">
@@ -56,9 +58,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<option value="#rc.rsSections.contentID#" <cfif rc.rsSections.contentID eq rc.subclassid>selected</cfif>>#HTMLEditFormat(rc.rsSections.menutitle)#</option>
 		</cfloop>
 	</select>
-	<br/>
+	</div>
 	
 	<cfif rc.subclassid neq ''>
+		<div class="controls">
 		<select name="availableObjects" id="availableObjects" class="multiSelect" 
 		        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#" 
 		        style="width:310px;">
@@ -88,5 +91,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</cfloop>
 		</select>
+		</div>
 	</cfif>
+</div>
 </cfoutput>

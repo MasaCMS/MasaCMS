@@ -224,12 +224,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</select>
 					</div>
 					<div class="controls" id="CustomImageOptions"<cfif rc.contentBean.getImageSize() neq "custom"> style="display:none"</cfif>>
-							<dl>
-								<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</dt>
-								<dd><input name="imageWidth" class="text" value="#rc.contentBean.getImageWidth()#" /></dd>
-								<dt>#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</dt>
-								<dd><input name="imageHeight" class="text" value="#rc.contentBean.getImageHeight()#" /></dd>
-							</dl>
+							<div class="control-group">
+								<label class="control-label">
+									#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#
+								</label>
+								<div class="controls">
+									<input name="imageWidth" class="text" value="#rc.contentBean.getImageWidth()#" />
+								</div>
+							</div>
+							<div class="control-group">
+								<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
+								<div class="controls">
+									<input name="imageHeight" class="text" value="#rc.contentBean.getImageHeight()#" />
+								</div>
+							</div>
 					</div>  
 				</div>
 
