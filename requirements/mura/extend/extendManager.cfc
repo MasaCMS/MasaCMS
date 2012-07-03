@@ -463,6 +463,7 @@ inner join tclassextendattributes on ( #arguments.dataTable#.attributeID=tclasse
 inner join tclassextendsets on (tclassextendattributes.extendsetID=tclassextendsets.extendsetID)
 inner join tclassextend on (tclassextendsets.subtypeID=tclassextend.subtypeID)
  where 
+<!---
 tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.type#">
 and 
 	(
@@ -471,6 +472,22 @@ and
 		or tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="Default">
 		</cfif>
 	)
+--->
+
+(
+	tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.type#">
+	<cfif not listFindNoCase("1,2,User,Group,Address,Site,Component,Form",arguments.type)>
+			or tclassextend.type='Base'
+	</cfif>
+)
+
+and (
+	<cfif arguments.subtype neq "Default">
+		tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.subtype#">
+		or
+	</cfif>
+	tclassextend.subtype='Default'
+)
 
 and baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.preserveID#">
 <cfif hasExtendSets>
@@ -521,6 +538,7 @@ inner join tclassextendattributes on ( #arguments.dataTable#.attributeID=tclasse
 inner join tclassextendsets on (tclassextendattributes.extendsetID=tclassextendsets.extendsetID)
 inner join tclassextend on (tclassextendsets.subtypeID=tclassextend.subtypeID)
  where 
+ <!---
 tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.type#">
 and 
 	(
@@ -529,6 +547,22 @@ and
 		or tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="Default">
 		</cfif>
 	)
+--->
+(
+	tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.type#">
+	<cfif not listFindNoCase("1,2,User,Group,Address,Site,Component,Form",arguments.type)>
+			or tclassextend.type='Base'
+	</cfif>
+)
+
+and (
+	<cfif arguments.subtype neq "Default">
+		tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.subtype#">
+		or
+	</cfif>
+	tclassextend.subtype='Default'
+)
+
 
 and baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.preserveID#">
 <cfif hasExtendSets>
@@ -586,6 +620,7 @@ inner join tclassextendattributes on ( #arguments.dataTable#.attributeID=tclasse
 inner join tclassextendsets on (tclassextendattributes.extendsetID=tclassextendsets.extendsetID)
 inner join tclassextend on (tclassextendsets.subtypeID=tclassextend.subtypeID)
  where 
+ <!---
 tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.type#">
 and 
 	(
@@ -594,6 +629,22 @@ and
 		or tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="Default">
 		</cfif>
 	)
+--->
+(
+	tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.type#">
+	<cfif not listFindNoCase("1,2,User,Group,Address,Site,Component,Form",arguments.type)>
+			or tclassextend.type='Base'
+	</cfif>
+)
+
+and (
+	<cfif arguments.subtype neq "Default">
+		tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.subtype#">
+		or
+	</cfif>
+	tclassextend.subtype='Default'
+)
+
 and baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.preserveID#">
 <cfif hasExtendSets>
 <cfset setLen=listLen(arguments.data.extendSetID)/>
