@@ -736,6 +736,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 			<cfset pluginEvent.setValue("newBean",newBean)>	
 			<cfset pluginEvent.setValue("contentBean",newBean)>
+			<cfset pluginEvent.setValue("activeBean",newBean)>
 			
 			<cfif newBean.getIsNew()>
 				<cfset newBean.setActive(1) />
@@ -756,9 +757,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<cfset pluginEvent.setValue("currentBean",currentBean)>
 				<cfset pluginEvent.setValue("activeBean",activeBean)>
-			<cfelse>
-				<cfset pluginEvent.setValue("currentBean",newBean)>
-				<cfset pluginEvent.setValue("activeBean",newBean)>
 			</cfif>
 		
 			<cfif newBean.getcontentID() eq ''>
