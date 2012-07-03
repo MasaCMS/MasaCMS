@@ -668,6 +668,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var doPurgeOutputCache=false>
 		<cfset var doPurgeContentDescendentsCache=false>
 		<cfset var doTrimVersionHistory=false>
+		<cfset var activeBean="">
 		
 		<!---IF THE DATA WAS SUBMITTED AS AN OBJECT UNPACK THE VALUES --->
 		<cfif isObject(arguments.data)>
@@ -735,6 +736,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 			<cfset pluginEvent.setValue("newBean",newBean)>	
 			<cfset pluginEvent.setValue("contentBean",newBean)>
+			<cfset pluginEvent.setValue("activeBean",newBean)>
 			
 			<cfif newBean.getIsNew()>
 				<cfset newBean.setActive(1) />
@@ -748,7 +750,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset arguments.data.preserveID=newBean.getContentHistID()>
 				</cfif>	
 				<cfset currentBean=read(contentHistID=arguments.data.preserveID,siteID=arguments.data.siteid) />
-				<cfset pluginEvent.setValue("currentBean",currentBean)>	
+				<cfif currentBean.getActive()>
+					<cfset activeBean=currentBean>
+				<cfelse>
+					<cfset activeBean=read(content=currentBean.getContentID(),siteID=arguments.data.siteid) />
+				</cfif>
+				<cfset pluginEvent.setValue("currentBean",currentBean)>
+				<cfset pluginEvent.setValue("activeBean",activeBean)>
 			</cfif>
 		
 			<cfif newBean.getcontentID() eq ''>
@@ -905,35 +913,40 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset newBean.setfilename(currentBean.getfilename())>
 						<cfset newBean.setOldfilename(currentBean.getfilename())>
 					</cfif>
-						
+					
 					<cfif 
 						(
-							(newBean.getapproved() or newBean.getIsNew())
-							 and newBean.getcontentid() neq '00000000000000000000000000000000001'
+							(newBean.getapproved() OR newBean.getIsNew())
+							 AND newBean.getcontentid() neq '00000000000000000000000000000000001'
 						) 
-							  and 
-							(newBean.getIsNew()
-							 or
+						
+						AND 
+						(
+							newBean.getIsNew()
+
+							OR
+
 							(
-							  not newBean.getIsNew() 
-							  and (
-								 	currentBean.getparentid() neq newBean.getparentid()
-								or getBean('contentUtility').formatFilename(currentBean.getURLtitle()) neq getBean('contentUtility').formatFilename(newBean.getURLtitle())
-								)
-							  )
+							  	NOT newBean.getIsNew() 
+							  	AND (
+								 		currentBean.getparentid() neq newBean.getparentid()
+										OR getBean('contentUtility').formatFilename(activeBean.getURLtitle()) neq getBean('contentUtility').formatFilename(newBean.getURLtitle())
+									)
 							 )
+						)
 									   
-						 	 and 
-							(
-							not 
+						AND 
+
+						(
+							NOT 
 								(
-								newBean.getparentid() eq '00000000000000000000000000000000001'
-							   	and  variables.settingsManager.getSite(newBean.getsiteid()).getlocking() eq 'top'
+									newBean.getparentid() eq '00000000000000000000000000000000001'
+							   		AND  variables.settingsManager.getSite(newBean.getsiteid()).getlocking() eq 'top'
 								) 
-						and not variables.settingsManager.getSite(newBean.getSiteID()).getlocking() eq 'all'
+							AND NOT variables.settingsManager.getSite(newBean.getSiteID()).getlocking() eq 'all'
 						)
 							
-						and not (not newBean.getIsNew() and newBean.getIsLocked())>
+						AND NOT (NOT newBean.getIsNew() AND newBean.getIsLocked())>
 										
 						<cfset getBean('contentUtility').setUniqueFilename(newBean) />
 												

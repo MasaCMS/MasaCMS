@@ -935,7 +935,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var href=""/>
 	<cfset var tp=""/>
-	<cfset var begin=iif(arguments.complete,de('http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de('')) />
+	<cfset var begin=iif(arguments.complete or variables.$.siteConfig('siteID') neq arguments.siteID,de('http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de('')) />
 	<cfset var fileBean="">
 	
 	<cfif len(arguments.querystring) and not left(arguments.querystring,1) eq "?">
@@ -2513,4 +2513,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn imageStyles.markup>
 
 </cffunction>
+
+
+	<cffunction name="getURLForFile" access="public" output="false" returntype="string">
+		<cfargument name="fileid" required="false" default="" />
+		<cfargument name="method" required="false" default="inline" />
+		<cfreturn '#application.configBean.getContext()#/tasks/render/file/?method=#arguments.method#&amp;fileID=#arguments.fileid#' >
+	</cffunction>
+
+	<cffunction name="getURLForImage" access="public" output="false" returntype="string">
+		<cfargument name="fileid" required="false" default="" />
+		<cfargument name="size" required="false" default="large" />
+		<cfargument name="direct" required="false" default="#this.directImages#" />
+		<cfargument name="complete" type="boolean" required="false" default="false" />
+		<cfargument name="height" required="false" default="AUTO" />
+		<cfargument name="width" required="false" default="AUTO" />
+		<cfscript>
+			var imageURL = getBean('fileManager').createHREFForImage(argumentCollection=arguments);
+			if ( IsSimpleValue(imageURL) ) {
+				return imageURL;
+			} else {
+				return '';
+			};
+		</cfscript>
+	</cffunction>
+
 </cfcomponent>
