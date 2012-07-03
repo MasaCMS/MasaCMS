@@ -692,6 +692,21 @@ and tclassextendattributes.type='File'
 
 </cffunction>
 
+<cffunction name="getTypeAsString" returntype="string">
+<cfargument name="type">
+
+<cfif isNumeric(arguments.type)>
+	<cfif arguments.type eq 1>
+	<cfreturn "User Group">
+	<cfelse>
+	<cfreturn "User">
+	</cfif>
+<cfelse>
+	<cfreturn arguments.type />
+</cfif>
+
+</cffunction>
+
 <cffunction name="getSubTypesByType" returntype="query">
 <cfargument name="type">
 <cfargument name="siteid">
