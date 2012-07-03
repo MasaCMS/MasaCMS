@@ -166,13 +166,16 @@ var hasBody=#subType.getHasBody()#;
 	</cfif>
 	<cfif listFindNoCase(extendedList,rc.type)>
 		<cfset rsSubTypes=application.classExtensionManager.getSubTypes(siteID=rc.siteID,activeOnly=true) />
+		<!---
 		<cfif rc.compactDisplay neq "true" and listFindNoCase("#pageLevelList#",rc.type)>
+		--->	
 			<cfquery name="rsSubTypes" dbtype="query">
 			select * from rsSubTypes
 			where 
 				type in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#pageLevelList#"/>)
 				or type='Base'
 			</cfquery>
+		<!---
 		<cfelse>
 			<cfquery name="rsSubTypes" dbtype="query">
 			select * from rsSubTypes
@@ -183,6 +186,7 @@ var hasBody=#subType.getHasBody()#;
 				<!---</cfif>--->
 			</cfquery>
 		</cfif>
+		--->
 		<cfif listFindNoCase("Component,File,Link",rc.type)>
 			<cfset baseTypeList=rc.type>
 		<cfelse>
@@ -254,26 +258,26 @@ var hasBody=#subType.getHasBody()#;
 	</cfif>
 	
 	<cfif rc.compactDisplay neq "true">
-	<ul class="metadata">
-		<cfif not rc.contentBean.getIsNew()>
-			<cfif listFindNoCase('Page,Portal,Calendar,Gallery,Link,File',rc.type)>
-				<cfset rsRating=application.raterManager.getAvgRating(rc.contentBean.getcontentID(),rc.contentBean.getSiteID()) />
-				<cfif rsRating.recordcount>
-				<li>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.votes")#: <strong><cfif rsRating.recordcount>#rsRating.theCount#<cfelse>0</cfif></strong></li>
-				<li>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.averagerating")#: <img id="ratestars" src="assets/images/rater/star_#application.raterManager.getStarText(rsRating.theAvg)#.gif" alt="#rsRating.theAvg# stars" border="0"></li>
+		<ul class="metadata">
+			<cfif not rc.contentBean.getIsNew()>
+				<cfif listFindNoCase('Page,Portal,Calendar,Gallery,Link,File',rc.type)>
+					<cfset rsRating=application.raterManager.getAvgRating(rc.contentBean.getcontentID(),rc.contentBean.getSiteID()) />
+					<cfif rsRating.recordcount>
+					<li>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.votes")#: <strong><cfif rsRating.recordcount>#rsRating.theCount#<cfelse>0</cfif></strong></li>
+					<li>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.averagerating")#: <img id="ratestars" src="assets/images/rater/star_#application.raterManager.getStarText(rsRating.theAvg)#.gif" alt="#rsRating.theAvg# stars" border="0"></li>
+					</cfif>
 				</cfif>
+			<cfif rc.type eq "file" and rc.contentBean.getMajorVersion()>
+					<li>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.file')#: <strong>#rc.contentBean.getMajorVersion()#.#rc.contentBean.getMinorVersion()#</strong></li>
 			</cfif>
-		<cfif rc.type eq "file" and rc.contentBean.getMajorVersion()>
-				<li>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.file')#: <strong>#rc.contentBean.getMajorVersion()#.#rc.contentBean.getMinorVersion()#</strong></li>
-		</cfif>
-		</cfif>
-		<li>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.update")#: <strong>#LSDateFormat(parseDateTime(rc.contentBean.getlastupdate()),session.dateKeyFormat)# #LSTimeFormat(parseDateTime(rc.contentBean.getlastupdate()),"short")#</strong></li>
-		<li>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.status")#: <strong><cfif not rc.contentBean.getIsNew()><cfif rc.contentBean.getactive() gt 0 and rc.contentBean.getapproved() gt 0>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.published")#<cfelseif rc.contentBean.getapproved() lt 1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#<cfelse>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.archived")#</cfif><cfelse>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#</cfif></strong></li>
-		<cfset started=false>
-		<li>
-			#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#: <strong>#HTMLEditFormat(rc.type)#</strong>
-		</li>
-	</ul>
+			</cfif>
+			<li>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.update")#: <strong>#LSDateFormat(parseDateTime(rc.contentBean.getlastupdate()),session.dateKeyFormat)# #LSTimeFormat(parseDateTime(rc.contentBean.getlastupdate()),"short")#</strong></li>
+			<li>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.status")#: <strong><cfif not rc.contentBean.getIsNew()><cfif rc.contentBean.getactive() gt 0 and rc.contentBean.getapproved() gt 0>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.published")#<cfelseif rc.contentBean.getapproved() lt 1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#<cfelse>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.archived")#</cfif><cfelse>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draft")#</cfif></strong></li>
+			<cfset started=false>
+			<li>
+				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#: <strong>#HTMLEditFormat(rc.type)#</strong>
+			</li>
+		</ul>
 	</cfif>
 	
 	<cfif rc.compactDisplay eq "true" and not ListFindNoCase(nodeLevelList,rc.type)>
@@ -284,9 +288,9 @@ var hasBody=#subType.getHasBody()#;
 		<cfset draftcheck=application.contentManager.getDraftPromptData(rc.contentBean.getContentID(),rc.contentBean.getSiteID())>
 		
 		<cfif yesNoFormat(draftcheck.showdialog) and draftcheck.historyid neq rc.contentBean.getContentHistID()>
-		<p class="notice">
-		#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.inline')#: <strong><a href="./?#replace(cgi.query_string,'#rc.contentBean.getContentHistID()#','#draftcheck.historyid#')#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.gotolatest')#</a></strong>
-		<p>
+			<p class="notice">
+			#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.inline')#: <strong><a href="./?#replace(cgi.query_string,'#rc.contentBean.getContentHistID()#','#draftcheck.historyid#')#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.gotolatest')#</a></strong>
+			<p>
 		</cfif>
 	</cfif>
 	

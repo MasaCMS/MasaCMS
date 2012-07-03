@@ -63,135 +63,133 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="#HTMLEditFormat(session.locale)#">
-<head>
-<title>#application.configBean.getTitle()#</title>
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <meta name="description" content="">
- <meta name="author" content="">
- <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
- <meta name="robots" content="noindex, nofollow, noarchive" />
-<meta http-equiv="cache control" content="no-cache, no-store, must-revalidate" />
+	<head>
+		<title>#application.configBean.getTitle()#</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="robots" content="noindex, nofollow, noarchive" />
+		<meta http-equiv="cache control" content="no-cache, no-store, must-revalidate" />
 
-<link href="#application.configBean.getContext()#/admin/assets/css/bootstrap.css" rel="stylesheet">
-    <style type="text/css">
-      body {
-        padding-top: 60px;
-        padding-bottom: 40px;
-      }
-    </style>
-<link href="#application.configBean.getContext()#/admin/assets/css/bootstrap-responsive.css" rel="stylesheet">
+		<link href="#application.configBean.getContext()#/admin/assets/css/bootstrap.css" rel="stylesheet">
+		    <style type="text/css">
+		      body {
+		        padding-top: 60px;
+		        padding-bottom: 40px;
+		      }
+		    </style>
+		<link href="#application.configBean.getContext()#/admin/assets/css/bootstrap-responsive.css" rel="stylesheet">
 
-<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-<!--[if lt IE 9]>
-   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-
-<!-- Le fav and touch icons -->
-<link rel="shortcut icon" href="#application.configBean.getContext()#/admin/assets/ico/favicon.ico">
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-144-precomposed.png">
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-114-precomposed.png">
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-72-precomposed.png">
-<link rel="apple-touch-icon-precomposed" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-57-precomposed.png">
- <!-- -->
-
-
-<script src="#application.configBean.getContext()#/admin/assets/js/admin.min.js" type="text/javascript" language="Javascript"></script>
-<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-<link href="#application.configBean.getContext()#/admin/assets/css/jquery/default/jquery.ui.all.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
-<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-resize.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckeditor/ckeditor.js"></script>
-<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckeditor/adapters/jquery.js"></script>
-<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckfinder/ckfinder.js"></script>
-
-<script src="#application.configBean.getContext()#/admin/assets/js/json2.js" type="text/javascript" language="Javascript"></script>
-<script src="#application.configBean.getContext()#/admin/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-<script type="text/javascript">
-var htmlEditorType='#application.configBean.getValue("htmlEditorType")#';
-var context='#application.configBean.getContext()#';
-var themepath='#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#';
-var rb='#lcase(session.rb)#';
-var siteid='#session.siteid#';
-</script>
-
-<style type="text/css"> html { overflow:hidden; } </style>
-#session.dateKey#
-<script type="text/javascript">
-	var frontEndProxy;
-	
-	jQuery(document).ready(
-		function(){
-			setDatePickers(".datepicker",dtLocale);
-			setTabs(".nav-tabs",#rc.activeTab#);
-			setHTMLEditors();
-			setAccordions(".accordion",#rc.activePanel#);
-			setCheckboxTrees();
-			setColorPickers(".colorpicker");
-			setToolTips(".container");
-			if (top.location != self.location) {
-				frontEndProxy = new Porthole.WindowProxy("#session.frontEndProxyLoc##application.configBean.getContext()#/admin/assets/js/porthole/proxy.html");
-				frontEndProxy.postMessage("cmd=resizeFrontEndToolsModal&frameHeight=" + Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight));
-				jQuery(this).resize(function(e){
-					frontEndProxy.postMessage("cmd=resizeFrontEndToolsModal&frameHeight=" + Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight));
-				});
-					
-									
-			}	
-		}
-	);
-</script>
-	#rc.ajax#
-	<cfinclude template="includes/dialog.cfm">
-	</head>
-	<body id="#rc.originalcircuit#" class="compact">
-	
-	 <div class="container">
-      <div class="row">
-        <div class="span12">#body#</div>
-	  	<footer>
-        <p>&copy; Company 2012</p>
-      </footer>
-
-    </div> 
-	</div><!-- /container -->
-	<cfif rc.originalcircuit neq 'cLogin' and rc.originalcircuit neq 'cFilemanager'>
-		<script type="text/javascript" language="javascript">
-			if(document.forms[2] != undefined && !document.forms[2].elements[0].disabled && document.forms[2].elements[0].focus){
-			document.forms[2].elements[0].focus();
-			}
-		</script>
-	<cfelseif  rc.originalcircuit neq 'cFilemanager'>
-		<script type="text/javascript" language="javascript">
-			document.forms[0].elements[0].focus();
-		</script>
-	</cfif>
-	<script type="text/javascript" language="javascript">
-		stripe('stripe');
-	</script>
-
-	<cfif cgi.http_user_agent contains 'msie'>
-		<!--[if IE 6]>
-		<script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/ie6notice.js"></script>
+		<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+		<!--[if lt IE 9]>
+		   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
-	</cfif>
 
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-transition.js"></script>
-    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-alert.js"></script>
-    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-modal.js"></script>
-    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-dropdown.js"></script>
-    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-scrollspy.js"></script>
-    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-tab.js"></script>
-    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-tooltip.js"></script>
-    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-popover.js"></script>
-    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-button.js"></script>
-    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-collapse.js"></script>
-    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-carousel.js"></script>
-    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-typeahead.js"></script>
+		<!-- Le fav and touch icons -->
+		<link rel="shortcut icon" href="#application.configBean.getContext()#/admin/assets/ico/favicon.ico">
+		<link rel="apple-touch-icon-precomposed" sizes="144x144" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-144-precomposed.png">
+		<link rel="apple-touch-icon-precomposed" sizes="114x114" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-114-precomposed.png">
+		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-72-precomposed.png">
+		<link rel="apple-touch-icon-precomposed" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-57-precomposed.png">
+		 <!-- -->
+
+
+		<script src="#application.configBean.getContext()#/admin/assets/js/admin.js" type="text/javascript" language="Javascript"></script>
+		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+		<link href="#application.configBean.getContext()#/admin/assets/css/jquery/default/jquery.ui.all.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-resize.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+		<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckeditor/ckeditor.js"></script>
+		<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckeditor/adapters/jquery.js"></script>
+		<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckfinder/ckfinder.js"></script>
+
+		<script src="#application.configBean.getContext()#/admin/assets/js/json2.js" type="text/javascript" language="Javascript"></script>
+		<script src="#application.configBean.getContext()#/admin/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+		<script type="text/javascript">
+		var htmlEditorType='#application.configBean.getValue("htmlEditorType")#';
+		var context='#application.configBean.getContext()#';
+		var themepath='#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#';
+		var rb='#lcase(session.rb)#';
+		var siteid='#session.siteid#';
+		</script>
+
+		<style type="text/css"> html { overflow:hidden; } </style>
+		#session.dateKey#
+		<script type="text/javascript">
+			var frontEndProxy;
+			
+			jQuery(document).ready(
+				function(){
+					setDatePickers(".datepicker",dtLocale);
+					setTabs(".nav-tabs",#rc.activeTab#);
+					setHTMLEditors();
+					setAccordions(".accordion",#rc.activePanel#);
+					setCheckboxTrees();
+					setColorPickers(".colorpicker");
+					setToolTips(".container");
+					if (top.location != self.location) {
+						frontEndProxy = new Porthole.WindowProxy("#session.frontEndProxyLoc##application.configBean.getContext()#/admin/assets/js/porthole/proxy.html");
+						frontEndProxy.postMessage("cmd=resizeFrontEndToolsModal&frameHeight=" + Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight));
+						jQuery(this).resize(function(e){
+							frontEndProxy.postMessage("cmd=resizeFrontEndToolsModal&frameHeight=" + Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight));
+						});
+							
+											
+					}	
+				}
+			);
+		</script>
+		#rc.ajax#
+		<cfinclude template="includes/dialog.cfm">
+	</head>
+	<body id="#rc.originalcircuit#" class="compact">	
+		<div class="container">
+	      	<div class="row">
+	        	<div class="span12">#body#</div>
+		  		<footer>
+	        	<p>&copy; Company 2012</p>
+	     	 </footer>
+	    	</div> 
+		</div><!-- /container -->
+		<cfif rc.originalcircuit neq 'cLogin' and rc.originalcircuit neq 'cFilemanager'>
+			<script type="text/javascript" language="javascript">
+				if(document.forms[2] != undefined && !document.forms[2].elements[0].disabled && document.forms[2].elements[0].focus){
+				document.forms[2].elements[0].focus();
+				}
+			</script>
+		<cfelseif  rc.originalcircuit neq 'cFilemanager'>
+			<script type="text/javascript" language="javascript">
+				document.forms[0].elements[0].focus();
+			</script>
+		</cfif>
+		<script type="text/javascript" language="javascript">
+			stripe('stripe');
+		</script>
+
+		<cfif cgi.http_user_agent contains 'msie'>
+			<!--[if IE 6]>
+			<script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/ie6notice.js"></script>
+			<![endif]-->
+		</cfif>
+
+	    <!-- Le javascript
+	    ================================================== -->
+	    <!-- Placed at the end of the document so the pages load faster -->
+	    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-transition.js"></script>
+	    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-alert.js"></script>
+	    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-modal.js"></script>
+	    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-dropdown.js"></script>
+	    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-scrollspy.js"></script>
+	    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-tab.js"></script>
+	    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-tooltip.js"></script>
+	    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-popover.js"></script>
+	    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-button.js"></script>
+	    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-collapse.js"></script>
+	    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-carousel.js"></script>
+	    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-typeahead.js"></script>
 	</body>
-	</html>
+</html>
 </cfoutput>
