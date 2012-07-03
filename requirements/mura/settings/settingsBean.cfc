@@ -711,7 +711,7 @@ s
 
 <cffunction name="getContentRenderer" output="false">
 <cfif not isObject(variables.instance.contentRenderer)>
-	<cfset variables.instance.contentRenderer=createObject("component","#getAssetMap()#.includes.contentRenderer")>
+	<cfset variables.instance.contentRenderer=createObject("component","#getAssetMap()#.includes.contentRenderer").injectMethod("$",getBean("$").init(variables.instance.siteID))>
 </cfif>
 <cfreturn variables.instance.contentRenderer>
 </cffunction>
