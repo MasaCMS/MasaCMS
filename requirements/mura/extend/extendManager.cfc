@@ -707,6 +707,23 @@ and tclassextendattributes.type='File'
 
 </cffunction>
 
+<cffunction name="getSubTypes" returntype="query">
+<cfargument name="siteid">
+<cfargument name="activeOnly" default="false">
+<cfset var rs = ""/>
+<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	select * from tclassextend 
+	where 
+	siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.siteid#">
+	<cfif arguments.activeOnly>
+		and isActive=1
+	</cfif>
+	order by type,subtype
+	</cfquery>
+
+<cfreturn rs />
+</cffunction>
+
 <cffunction name="getSubTypesByType" returntype="query">
 <cfargument name="type">
 <cfargument name="siteid">
