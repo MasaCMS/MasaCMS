@@ -321,7 +321,7 @@ document.getElementById('newZoom').style.display='none';
 
 document.getElementById(id).style.top=yPos + "px" ;
 document.getElementById(id).style.left=xPos + "px" ;
-document.getElementById(id).style.visibility="visible";
+document.getElementById(id).style.display="block";
 
 if(lastid!="" && lastid !=id){
 
@@ -366,12 +366,12 @@ function findPosY(obj)
 
 function keepMenu(id) {
 navTimer = setTimeout('hideMenu(lastid);',10000);
-document.getElementById(id).style.visibility="visible";
+document.getElementById(id).style.display="block";
 }
 
 function hideMenu(id) {
 if(navTimer!=null)clearTimeout(navTimer);
-document.getElementById(id).style.visibility="hidden";
+document.getElementById(id).style.display="none";
 }
 
 

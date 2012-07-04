@@ -100,12 +100,6 @@
 
     <!-- Le styles -->
     <link href="#application.configBean.getContext()#/admin/assets/css/bootstrap.css" rel="stylesheet">
-    <style type="text/css">
-      body {
-        padding-top: 60px;
-        padding-bottom: 40px;
-      }
-    </style>
     <link href="#application.configBean.getContext()#/admin/assets/css/bootstrap-responsive.css" rel="stylesheet">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -183,30 +177,22 @@
 	<![endif]-->
 	</cfif>
 	--->
-
-	<cfif rc.originalcircuit eq "cArch" and (rc.originalfuseaction eq "list" or rc.originalfuseaction eq "search") and (rc.moduleid eq '00000000000000000000000000000000000' or rc.moduleid eq '')>
-		<cfinclude template="/muraWRM/admin/core/views/carch/dsp_content_nav.cfm">
-	</cfif>
-	<cfinclude template="includes/dialog.cfm">
-
   </head>
-
   <body id="#rc.originalcircuit#">
-
     <cfinclude template="includes/header.cfm">
-
     <div class="container">
 
       <div class="row">
         <div class="span12">
-         <cftry><cfset siteName=application.settingsManager.getSite(session.siteid).getSite()><cfif len(siteName)><p id="currentSite">#application.rbFactory.getKeyValue(session.rb,"layout.currentsite")# &rarr; <a href="http://#application.settingsManager.getSite(session.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.configBean.getStub()#/<cfif application.configBean.getSiteIDInURLS()>#session.siteid#/</cfif>" target="_blank">#application.settingsManager.getSite(session.siteid).getSite()#</a></p></cfif><cfcatch></cfcatch></cftry>
-        <p id="welcome">
-          <strong>#application.rbFactory.getKeyValue(session.rb,"layout.welcome")#, #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#.</strong>
-          <cfif yesNoFormat(application.configBean.getValue("sessionTimeout"))> 
-              #application.rbFactory.getKeyValue(session.rb,"layout.loggedoutin")# <span id="clock">0:00:00</span>.
-          </cfif>
-        </p>
-        
+        <cfif rc.originalcircuit neq 'cLogin'>
+	         <cftry><cfset siteName=application.settingsManager.getSite(session.siteid).getSite()><cfif len(siteName)><p id="currentSite">#application.rbFactory.getKeyValue(session.rb,"layout.currentsite")# &rarr; <a href="http://#application.settingsManager.getSite(session.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.configBean.getStub()#/<cfif application.configBean.getSiteIDInURLS()>#session.siteid#/</cfif>" target="_blank">#application.settingsManager.getSite(session.siteid).getSite()#</a></p></cfif><cfcatch></cfcatch></cftry>
+	        <p id="welcome">
+	          <strong>#application.rbFactory.getKeyValue(session.rb,"layout.welcome")#, #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#.</strong>
+	          <cfif yesNoFormat(application.configBean.getValue("sessionTimeout"))> 
+	              #application.rbFactory.getKeyValue(session.rb,"layout.loggedoutin")# <span id="clock">0:00:00</span>.
+	          </cfif>
+	        </p>
+        </cfif>
           #body#
         </div>  
       </div>
@@ -217,24 +203,20 @@
         <p>&copy; Company 2012</p>
       </footer>
 
-    </div> <!-- /container -->
-    
+    </div> <!-- /container -->  
     <script type="text/javascript" language="javascript">
 		stripe('stripe');
 	</script>
-	<cfif  rc.originalcircuit neq 'cLogin' and yesNoFormat(application.configBean.getValue("sessionTimeout"))>
+	<cfif rc.originalcircuit neq 'cLogin' and yesNoFormat(application.configBean.getValue("sessionTimeout"))>
 		<script type="text/javascript" language="javascript">
 			window.setTimeout('CountDown()',100);
 		</script>
-	</cfif>
-	
+	</cfif>	
 	<cfif cgi.http_user_agent contains 'msie'>
 		<!--[if IE 6]>
 		<script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/ie6notice.js"></script>
 		<![endif]-->
 	</cfif>
-	
-
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
@@ -250,7 +232,10 @@
     <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-collapse.js"></script>
     <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-carousel.js"></script>
     <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-typeahead.js"></script>
-  
+  	<cfif rc.originalcircuit eq "cArch" and (rc.originalfuseaction eq "list" or rc.originalfuseaction eq "search") and (rc.moduleid eq '00000000000000000000000000000000000' or rc.moduleid eq '')>
+		<cfinclude template="/muraWRM/admin/core/views/carch/dsp_content_nav.cfm">
+	</cfif>
+	<cfinclude template="includes/dialog.cfm">
   </body>
 </html>
 </cfoutput>
