@@ -46,6 +46,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')><cfoutput>
-<ul>
+<ul class="nav-pills">
 <li<cfif rc.originalfuseaction eq "module"> class="current"</cfif>><a href="index.cfm?muraAction=cPerm.module&contentid=00000000000000000000000000000000010&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=00000000000000000000000000000000010">#application.rbFactory.getKeyValue(session.rb,'categorymanager.permissions')#</a></li>
 </ul></cfoutput></cfif>

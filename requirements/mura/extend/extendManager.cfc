@@ -78,7 +78,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>, 
 	tclassextendattributes.hint, tclassextendattributes.type inputtype, tclassextendattributes.required, 
 	tclassextendattributes.validation, tclassextendattributes.regex, tclassextendattributes.message, tclassextendattributes.optionlist, 
-	tclassextendattributes.optionlabellist, tclassextendattributes.defaultvalue
+	tclassextendattributes.optionlabellist, tclassextendattributes.defaultvalue,
+	tclassextend.hasSummary,tclassextend.hasBody,
+	<cfif variables.configBean.getDBType() eq "oracle">
+		to_char(tclassextend.description) as description
+	<cfelse>
+		tclassextend.description
+	</cfif>
 	from tclassextend
 	inner join tclassextendsets on (tclassextend.subtypeid=tclassextendsets.subtypeid)
 	inner join tclassextendattributes on (tclassextendsets.extendsetid=tclassextendattributes.extendsetid)
@@ -1233,6 +1239,7 @@ and tclassextendattributes.type='File'
 	<cfset destSubType.setIsActive(sourceSubType.getIsActive())>
 	<cfset destSubType.setHasSummary(sourceSubType.getHasSummary())>
 	<cfset destSubType.setHasBody(sourceSubType.getHasBody())>
+	<cfset destSubType.setDescription(sourceSubType.getDescription())>
 	
 	<cfset destSubType.save()>
 	

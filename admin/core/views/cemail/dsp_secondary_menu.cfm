@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfoutput>
 <!---<li<cfif rc.originalfuseaction eq "edit"> class="current"</cfif>><a href="index.cfm?muraAction=cEmail.edit&emailid=&siteid=#URLEncodedFormat(rc.siteid)#">Add Email</a></li> --->
-<ul>
+<ul class="nav nav-pills">
 <li<cfif rc.originalfuseaction eq "showAllBounces"> class="current"</cfif>><a href="index.cfm?muraAction=cEmail.showAllBounces&siteid=<cfoutput>#rc.siteid#</cfoutput>">#application.rbFactory.getKeyValue(session.rb,"email.bouncedemails")#</a>
 </li>
 <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')><li<cfif rc.originalfuseaction eq "module"> class="current"</cfif>><a href="index.cfm?muraAction=cPerm.module&contentid=00000000000000000000000000000000005&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=00000000000000000000000000000000005">#application.rbFactory.getKeyValue(session.rb,"email.permissions")#</a></li></cfif></ul></cfoutput>

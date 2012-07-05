@@ -44,7 +44,8 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfoutput><ul>
+<cfoutput>
+<ul class="nav nav-pills">
 <cfif application.configBean.getSessionHistory()>
 <li<cfif rc.originalfuseaction eq "sessionSearch"> class="current"</cfif>><a href="index.cfm?muraAction=cDashboard.sessionSearch&siteID=#session.siteid#&newSearch=true">#application.rbFactory.getKeyValue(session.rb,"dashboard.sessionsearch")#</a></li>
 <li<cfif rc.originalfuseaction eq "topContent"> class="current"</cfif>><a href="index.cfm?muraAction=cDashboard.topContent&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.topcontent")#</a></li>
@@ -53,4 +54,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 <li<cfif rc.originalfuseaction eq "topRated"> class="current"</cfif>><a href="index.cfm?muraAction=cDashboard.topRated&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.toprated")#</a></li>
 <li<cfif rc.originalfuseaction eq "recentComments"> class="current"</cfif>><a href="index.cfm?muraAction=cDashboard.recentComments&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments")#</a></li>
-</ul></cfoutput>
+</ul>
+</cfoutput>

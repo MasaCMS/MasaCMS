@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfoutput>
-<ul>
+<ul class="nav nav-pills">
 	<li<cfif rc.originalfuseaction eq "listadzones"> class="current"</cfif>><a href="index.cfm?muraAction=cAdvertising.listadzones&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.adzones')#</a></li>
 	<li<cfif rc.originalfuseaction eq "listAdvertisers"> class="current"</cfif>><a href="index.cfm?muraAction=cAdvertising.listAdvertisers&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.advertisers')#</a></li>
 	<li<cfif rc.originalfuseaction eq "listCampaigns"> class="current"</cfif>><a href="index.cfm?muraAction=cAdvertising.listCampaigns&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.campaigns')#</a></li>

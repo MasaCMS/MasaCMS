@@ -65,6 +65,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <dt class="subTypeContainer"<cfif subtype.getType() eq "Site"> style="display:none;"</cfif>>Sub Type</dt>
 <dd class="subTypeContainer"<cfif subtype.getType() eq "Site"> style="display:none;"</cfif>><input name="subType" id="subType" value="#HTMLEditFormat(subType.getSubType())#" required="true" maxlength="25"/></dd>
 
+<dt>Description</dt>
+<dd><textarea name="description" id="description">#HTMLEditFormat(subtype.getDescription())#</textarea></dd>
+
 <dt class="hasSummaryContainer">Show summary when editing?</dt>
 <dd class="hasSummaryContainer"><ul class="radioGroup"><li><input name="hasSummary" type="radio" class="radio" value="1"<cfif subType.gethasSummary() eq 1 >Checked</cfif>>Yes</li><li><input name="hasSummary" type="radio" class="radio" value="0"<cfif subType.gethasSummary() eq 0 >Checked</cfif>>No</li></ul></dd>
 

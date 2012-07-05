@@ -139,6 +139,20 @@ to your own modified versions of Mura CMS.
         <textarea name="domainAlias">#HTMLEditFormat(rc.siteBean.getDomainAlias())#</textarea>
       </div>
     </div>
+
+     <div class="control-group">
+      <label class="control-label">Enforce Primary Domain</label>
+      <div class="controls">
+       <label class="radio">
+       <input type="radio" name="enforcePrimaryDomain" value="0"<cfif rc.siteBean.getEnforcePrimaryDomain() neq 1> CHECKED</CFIF>>
+        Off&nbsp;&nbsp;
+        </label>
+        <label class="radio">
+       <input type="radio" name="enforcePrimaryDomain" value="1"<cfif rc.siteBean.getEnforcePrimaryDomain() eq 1> CHECKED</CFIF>>
+        On
+        </label>
+    </div>
+    </div>
 	 
    <div class="control-group">
       <label class="control-label">Locale</label>
@@ -181,10 +195,14 @@ to your own modified versions of Mura CMS.
       <div class="control-group">
       <label class="control-label">Site Caching</label>
       <div class="controls">
+       <label class="radio">
        <input type="radio" name="cache" value="0"<cfif rc.siteBean.getcache() neq 1> CHECKED</CFIF>>
         Off&nbsp;&nbsp;
+        </label>
+        <label class="radio">
        <input type="radio" name="cache" value="1"<cfif rc.siteBean.getcache() eq 1> CHECKED</CFIF>>
         On
+        </label>
 	  </div>
     </div>
 

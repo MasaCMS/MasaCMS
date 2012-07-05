@@ -45,7 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
-<cfoutput><ul>
+<cfoutput><ul class="nav nav-pills">
 <!---<li<cfif rc.originalfuseaction eq "edituser"> class="current"</cfif>><a href="index.cfm?muraAction=cPublicUsers.edituser&siteid=#URLEncodedFormat(rc.siteid)#&userid=">Add Member</a></li>
 <li<cfif rc.originalfuseaction eq "editgroup"> class="current"</cfif>><a href="index.cfm?muraAction=cPublicUsers.editgroup&siteid=#URLEncodedFormat(rc.siteid)#&userid=">Add Group</a></li>
 <li<cfif rc.originalfuseaction eq "advancedSearchForm" or  rc.originalfuseaction eq "advancedSearch"> class="current"</cfif>><a href="index.cfm?muraAction=cPublicUsers.advancedSearch&siteid=#URLEncodedFormat(rc.siteid)#&newSearch=true">Advanced Search</a></li>--->

@@ -60,7 +60,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 
 <cfif not isBlocked>
-<form novalidate="novalidate" id="loginForm" name="frmLogin" method="post" action="index.cfm">
+<form novalidate="novalidate" id="loginForm" name="frmLogin" method="post" action="index.cfm" onsubmit="return validateForm(this);">
 
 <div class="control-group">
     <label class="control-label">
@@ -139,7 +139,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</p>
 	<input id="email" name="email" type="text" class="text" align="absmiddle" onKeyPress="checkKeyPressed(event, 'sendLogin')"/>
 	</div></div>
-	<div class="form-actions">
+	<div class="form-actions actionButtons">
  		<input type="button" class="submit" onclick="document.sendLogin.submit();" value="#application.rbFactory.getKeyValue(session.rb,'login.submit')#" />
  	</div>
 		<input type="hidden" name="status" value="sendlogin" />

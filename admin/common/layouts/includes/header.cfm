@@ -90,7 +90,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
               <cfset hidelist="cLogin">
               <cfif not listfindNoCase(hidelist,rc.originalcircuit)>
-                <cfinclude template="dsp_secondary_menu_main.cfm">
+                <cfinclude template="dsp_module_menu.cfm">
               </cfif>
 
               <cfif session.siteid neq '' 
@@ -130,7 +130,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                     </ul>
                   </li>
                 </cfif>
-            </ul>
+                <cfif session.siteid neq '' and listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
+                 <li id="navEditProfile"><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cEditProfile.edit">#application.rbFactory.getKeyValue(session.rb,"layout.editprofile")#</a></li>
+                <li id="navHelp" class="dropdown">
+                  <a  class="dropdown-toggle" data-toggle="dropdown" href="http://www.getmura.com/index.cfm/support/">#application.rbFactory.getKeyValue(session.rb,"layout.help")#
+                   <b class="caret"></b>
+                  </a>
+                  <ul  class="dropdown-menu">
+                    <li><a id="navHelpDocs" href="http://www.getmura.com/support/" target="_blank">#application.rbFactory.getKeyValue(session.rb,"layout.support")#</a></li>
+                <li>
+                    <a id="navFckEditorDocs" href="http://docs.cksource.com/" target="_blank">#application.rbFactory.getKeyValue(session.rb,"layout.editordocumentation")#</a></li>
+                <li><a id="navProg-API" href="http://www.getmura.com/mura/5/components/" target="_blank">Component API</a></li>
+                <li><a id="navCSS-API" href="http://docs.getmura.com/index.cfm/developer-guides/" target="_blank">#application.rbFactory.getKeyValue(session.rb,"layout.developers")#</a></li>
+                   <li class="last"><a id="navHelpForums" href="http://www.getmura.com/forum/" target="_blank">#application.rbFactory.getKeyValue(session.rb,"layout.supportforum")#</a></li>
+                  </ul>
+                </li>
+                <li id="navLogout"><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cLogin.logout">#application.rbFactory.getKeyValue(session.rb,"layout.logout")#</a></li>
+                </cfif> 
+              </ul>
           </div><!--/.nav-collapse -->
      
     </div>
