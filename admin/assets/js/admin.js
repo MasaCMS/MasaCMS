@@ -182,6 +182,7 @@ function isEmail(cur){
 }
 
 function stripe(theclass) {
+  
   jQuery('table.' + theclass + ' tr').each(
 		function(index) {
 			if(index % 2){
@@ -203,13 +204,10 @@ function stripe(theclass) {
 }
 
 
-
 // PopUp Windows for Specific Functionality
 newWindow = null
 
 function toggleDisplay(id,expand,close){
-	
-	
 	
 		if(document.getElementById(id).style.display== 'none'){
 			

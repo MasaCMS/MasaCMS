@@ -103,7 +103,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
   <cfset rsExtend=application.configBean.getClassExtensionManager().getExtendedAttributeList(rc.siteid)>
 
-  <form novalidate="novalidate" class="viewUpdate" name="viewUpdate" method="post" action="./index.cfm?muraAction=cArch.list&siteid=#urlEncodedFormat(rc.siteID)#&moduleid=#urlEncodedFormat(rc.moduleID)#&topid=#urlEncodedFormat(rc.topID)#">
+  <form novalidate="novalidate" class="viewUpdate clearfix" name="viewUpdate" method="post" action="./index.cfm?muraAction=cArch.list&siteid=#urlEncodedFormat(rc.siteID)#&moduleid=#urlEncodedFormat(rc.moduleID)#&topid=#urlEncodedFormat(rc.topID)#">
     <h3 class="alt">#application.rbFactory.getKeyValue(session.rb,"sitemanager.modifyview")#</h3>
     <dl id="mura-view-options" class="clearfix">
       <dt class="rows">#application.rbFactory.getKeyValue(session.rb,"sitemanager.rowsdisplayed")#</dt>
@@ -146,7 +146,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     </dl>
     <input type="hidden" name="startrow" value="#rc.startrow#">
     <input type="hidden" name="orderperm" value="#perm#">
-	<input type="hidden" id="sorted" name="sorted" value="false">
+	  <input type="hidden" id="sorted" name="sorted" value="false">
     
     <!-- Begin Grid Header -->
     <div class="mura-grid stripe<cfif rc.sortBy neq 'orderno'> noDrag</cfif>">

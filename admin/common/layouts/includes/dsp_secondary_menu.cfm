@@ -88,6 +88,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  
       <!--- <cfif listFind(session.mura.memberships,'S2') or listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0')><li<cfif rc.originalcircuit eq 'cPrivateUsers'>id="current"</cfif>><a href="index.cfm?muraAction=cPrivateUsers.list&siteid=#session.siteid#" >Administrative Users</a><cfif rc.originalcircuit eq 'cPrivateUsers'><cfinclude template="../../view/vPrivateUsers/dsp_secondary_menu.cfm"></cfif></li></cfif> --->
      
+  <!---
 	 <cfif rc.originalcircuit eq 'cFilemanager'>
     <ul class="nav nav-pills">
 			<li<cfif session.resourceType eq 'assets'> class="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cFilemanager.default&siteid=#session.siteid#&resourceType=assets">#application.rbFactory.getKeyValue(session.rb,"layout.userassets")#</a></li>
@@ -102,6 +103,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</ul>
 	</cfif>
+  --->
   </cfoutput>
 </cfif>
 	

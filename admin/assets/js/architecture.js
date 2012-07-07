@@ -179,160 +179,160 @@ function getObj(name)
 }
 
 function showMenu(id,newcontent,obj,contentid,topid,parentid,siteid,type) {
-var navperm=newcontent.toLowerCase();
+	var navperm=newcontent.toLowerCase();
 
-if (window.innerHeight)
-	{
-		 var posTop = window.pageYOffset
+	if (window.innerHeight)
+		{
+			 var posTop = window.pageYOffset
+		}
+		else if (document.documentElement && document.documentElement.scrollTop)
+		{
+			var posTop = document.documentElement.scrollTop
+		}
+		else if (document.body)
+		{
+			 var posTop = document.body.scrollTop
+		}
+
+	if (window.innerWidth)
+		{
+			 var posLeft = window.pageXOffset
+		}
+		else if (document.documentElement && document.documentElement.scrollLeft)
+		{
+			var posLeft = document.documentElement.scrollLeft
+		}
+		else if (document.body)
+		{
+			 var posLeft = document.body.scrollLeft
+		}
+
+	var xPos = findPosX(obj);
+	var yPos = findPosY(obj);
+
+	xPos = xPos +20;
+
+	document.getElementById('newZoom').style.display='none';
+	document.getElementById('newZoomLink').style.display='none';
+	document.getElementById('newCopy').style.display='none';
+	document.getElementById('newCopyLink').style.display='none';
+	document.getElementById('newCopyAllLink').style.display='none';
+	document.getElementById('newPaste').style.display='none';
+	document.getElementById('newPasteLink').style.display='none';
+	document.getElementById('newPageLink').style.display='none';
+	document.getElementById('newLinkLink').style.display='none';
+	document.getElementById('newCalendarLink').style.display='none';
+	document.getElementById('newPortalLink').style.display='none';
+	document.getElementById('newFileLink').style.display='none';
+	document.getElementById('newGalleryLink').style.display='none';
+	document.getElementById('newGalleryItemLink').style.display='none';
+	document.getElementById('newPage').style.display='none';
+	document.getElementById('newLink').style.display='none';
+	document.getElementById('newCalendar').style.display='none';
+	document.getElementById('newPortal').style.display='none';
+	document.getElementById('newFile').style.display='none';
+	document.getElementById('newGallery').style.display='none';
+	document.getElementById('newGalleryItem').style.display='none';
+
+	document.getElementById('newGalleryItemMulti').style.display='none';
+	document.getElementById('newGalleryItemMultiLink').style.display='none';
+
+	//document.getElementById('newFileMulti').style.display='none';
+	//document.getElementById('newFileMultiLink').style.display='none';
+
+	document.getElementById('newZoomLink').onclick = function(){
+		loadSiteManagerInTab(function(){
+			return loadSiteManager(siteid, contentid, '00000000000000000000000000000000000', '', '', type, 1);
+		});
+		return false;
 	}
-	else if (document.documentElement && document.documentElement.scrollTop)
-	{
-		var posTop = document.documentElement.scrollTop
-	}
-	else if (document.body)
-	{
-		 var posTop = document.body.scrollTop
-	}
+	document.getElementById('newZoom').style.display='';
+	document.getElementById('newZoomLink').style.display='';
 
-if (window.innerWidth)
-	{
-		 var posLeft = window.pageXOffset
-	}
-	else if (document.documentElement && document.documentElement.scrollLeft)
-	{
-		var posLeft = document.documentElement.scrollLeft
-	}
-	else if (document.body)
-	{
-		 var posLeft = document.body.scrollLeft
+	if(navperm != 'none'){
+
+		document.getElementById('newCopyLink').href='javascript:copyThis(\'' + siteid + '\', \'' + contentid + '\',\'false\')';
+		document.getElementById('newCopyAllLink').href='javascript:copyThis(\'' + siteid + '\', \'' + contentid + '\',\'true\')';
+		document.getElementById('newCopy').style.display='';
+		document.getElementById('newCopyLink').style.display='';
+		document.getElementById('newCopyAllLink').style.display='';
+
 	}
 
-var xPos = findPosX(obj);
-var yPos = findPosY(obj);
+	if(navperm=='author' || navperm=='editor'){
 
-xPos = xPos +20;
+	document.getElementById('newPageLink').href=
+	'index.cfm?muraAction=cArch.edit&contentid=&parentid=' + contentid + '&type=Page&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
+	document.getElementById('newLinkLink').href=
+	'index.cfm?muraAction=cArch.edit&contentid=&parentid=' + contentid + '&type=Link&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
+	document.getElementById('newCalendarLink').href=
+	'index.cfm?muraAction=cArch.edit&contentid=&parentid=' + contentid + '&type=Calendar&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
+	document.getElementById('newPortalLink').href=
+	'index.cfm?muraAction=cArch.edit&contentid=&parentid=' + contentid + '&type=Portal&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
+	document.getElementById('newFileLink').href=
+	'index.cfm?muraAction=cArch.edit&contentid=&parentid=' + contentid + '&type=File&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
+	document.getElementById('newGalleryLink').href=
+	'index.cfm?muraAction=cArch.edit&contentid=&parentid=' + contentid + '&type=Gallery&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
+	document.getElementById('newGalleryItemLink').href=
+	'index.cfm?muraAction=cArch.edit&contentid=&parentid=' + contentid + '&type=File&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
+	document.getElementById('newGalleryItemMultiLink').href=
+	'index.cfm?muraAction=cArch.multiFileUpload&contentid=&parentid=' + contentid + '&type=File&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
+	//document.getElementById('newFileMultiLink').href=
+	//'index.cfm?muraAction=cArch.multiFileUpload&contentid=&parentid=' + contentid + '&type=File&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
 
-document.getElementById('newZoom').style.display='none';
-document.getElementById('newZoomLink').style.display='none';
-document.getElementById('newCopy').style.display='none';
-document.getElementById('newCopyLink').style.display='none';
-document.getElementById('newCopyAllLink').style.display='none';
-document.getElementById('newPaste').style.display='none';
-document.getElementById('newPasteLink').style.display='none';
-document.getElementById('newPageLink').style.display='none';
-document.getElementById('newLinkLink').style.display='none';
-document.getElementById('newCalendarLink').style.display='none';
-document.getElementById('newPortalLink').style.display='none';
-document.getElementById('newFileLink').style.display='none';
-document.getElementById('newGalleryLink').style.display='none';
-document.getElementById('newGalleryItemLink').style.display='none';
-document.getElementById('newPage').style.display='none';
-document.getElementById('newLink').style.display='none';
-document.getElementById('newCalendar').style.display='none';
-document.getElementById('newPortal').style.display='none';
-document.getElementById('newFile').style.display='none';
-document.getElementById('newGallery').style.display='none';
-document.getElementById('newGalleryItem').style.display='none';
+	if (copySiteID != "" && copyContentID != ""){
+		document.getElementById('newPasteLink').href='javascript:pasteThis(\'' + contentid + '\')';
+		document.getElementById('newPaste').style.display='';
+		document.getElementById('newPasteLink').style.display='';
+	}
 
-document.getElementById('newGalleryItemMulti').style.display='none';
-document.getElementById('newGalleryItemMultiLink').style.display='none';
+	if(type =='Gallery'){
+	document.getElementById('newGalleryItemLink').style.display='';
+	document.getElementById('newGalleryItem').style.display='';
+	document.getElementById('newGalleryItemMulti').style.display='';
+	document.getElementById('newGalleryItemMultiLink').style.display='';
+	document.getElementById('newCopy').style.border='';
+	} else if (type!='File' && type!='Link'){
+	document.getElementById('newPageLink').style.display='';
+	document.getElementById('newLinkLink').style.display='';
+	document.getElementById('newCalendarLink').style.display='';
+	document.getElementById('newPortalLink').style.display='';
+	document.getElementById('newFileLink').style.display='';
+	//document.getElementById('newFileMultiLink').style.display='';
+	document.getElementById('newGalleryLink').style.display='';
+	document.getElementById('newGalleryItemLink').style.display='none';
+	document.getElementById('newGalleryItemMultiLink').style.display='none';
+	document.getElementById('newPage').style.display='';
+	document.getElementById('newLink').style.display='';
+	document.getElementById('newCalendar').style.display='';
+	document.getElementById('newPortal').style.display='';
+	document.getElementById('newFile').style.display='';
+	//document.getElementById('newFileMulti').style.display='';
+	document.getElementById('newGallery').style.display='';
+	document.getElementById('newGalleryItem').style.display='none';
+	document.getElementById('newGalleryItemMulti').style.display='none';
+	document.getElementById('newCopy').style.border='';
+	} else {
+	document.getElementById('newCopy').style.border='0';
+	document.getElementById('newPaste').style.display='none';
+	document.getElementById('newZoom').style.display='none';
+	}	
+	}
 
-//document.getElementById('newFileMulti').style.display='none';
-//document.getElementById('newFileMultiLink').style.display='none';
+	document.getElementById(id).style.top=yPos + "px" ;
+	document.getElementById(id).style.left=xPos + "px" ;
 
-document.getElementById('newZoomLink').onclick = function(){
-	loadSiteManagerInTab(function(){
-		return loadSiteManager(siteid, contentid, '00000000000000000000000000000000000', '', '', type, 1);
-	});
-	return false;
-}
-document.getElementById('newZoom').style.display='';
-document.getElementById('newZoomLink').style.display='';
+	jQuery("#" + id).removeClass("hide");
 
-if(navperm != 'none'){
+	if(lastid!="" && lastid !=id){
+		hideMenu(lastid);
+	}
 
-	document.getElementById('newCopyLink').href='javascript:copyThis(\'' + siteid + '\', \'' + contentid + '\',\'false\')';
-	document.getElementById('newCopyAllLink').href='javascript:copyThis(\'' + siteid + '\', \'' + contentid + '\',\'true\')';
-	document.getElementById('newCopy').style.display='';
-	document.getElementById('newCopyLink').style.display='';
-	document.getElementById('newCopyAllLink').style.display='';
-
-}
-
-if(navperm=='author' || navperm=='editor'){
-
-document.getElementById('newPageLink').href=
-'index.cfm?muraAction=cArch.edit&contentid=&parentid=' + contentid + '&type=Page&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
-document.getElementById('newLinkLink').href=
-'index.cfm?muraAction=cArch.edit&contentid=&parentid=' + contentid + '&type=Link&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
-document.getElementById('newCalendarLink').href=
-'index.cfm?muraAction=cArch.edit&contentid=&parentid=' + contentid + '&type=Calendar&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
-document.getElementById('newPortalLink').href=
-'index.cfm?muraAction=cArch.edit&contentid=&parentid=' + contentid + '&type=Portal&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
-document.getElementById('newFileLink').href=
-'index.cfm?muraAction=cArch.edit&contentid=&parentid=' + contentid + '&type=File&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
-document.getElementById('newGalleryLink').href=
-'index.cfm?muraAction=cArch.edit&contentid=&parentid=' + contentid + '&type=Gallery&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
-document.getElementById('newGalleryItemLink').href=
-'index.cfm?muraAction=cArch.edit&contentid=&parentid=' + contentid + '&type=File&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
-document.getElementById('newGalleryItemMultiLink').href=
-'index.cfm?muraAction=cArch.multiFileUpload&contentid=&parentid=' + contentid + '&type=File&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
-//document.getElementById('newFileMultiLink').href=
-//'index.cfm?muraAction=cArch.multiFileUpload&contentid=&parentid=' + contentid + '&type=File&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
-
-if (copySiteID != "" && copyContentID != ""){
-	document.getElementById('newPasteLink').href='javascript:pasteThis(\'' + contentid + '\')';
-	document.getElementById('newPaste').style.display='';
-	document.getElementById('newPasteLink').style.display='';
+	navTimer = setTimeout('hideMenu(lastid);',10000);
+	lastid=id;
 }
 
-if(type =='Gallery'){
-document.getElementById('newGalleryItemLink').style.display='';
-document.getElementById('newGalleryItem').style.display='';
-document.getElementById('newGalleryItemMulti').style.display='';
-document.getElementById('newGalleryItemMultiLink').style.display='';
-document.getElementById('newCopy').style.border='';
-} else if (type!='File' && type!='Link'){
-document.getElementById('newPageLink').style.display='';
-document.getElementById('newLinkLink').style.display='';
-document.getElementById('newCalendarLink').style.display='';
-document.getElementById('newPortalLink').style.display='';
-document.getElementById('newFileLink').style.display='';
-//document.getElementById('newFileMultiLink').style.display='';
-document.getElementById('newGalleryLink').style.display='';
-document.getElementById('newGalleryItemLink').style.display='none';
-document.getElementById('newGalleryItemMultiLink').style.display='none';
-document.getElementById('newPage').style.display='';
-document.getElementById('newLink').style.display='';
-document.getElementById('newCalendar').style.display='';
-document.getElementById('newPortal').style.display='';
-document.getElementById('newFile').style.display='';
-//document.getElementById('newFileMulti').style.display='';
-document.getElementById('newGallery').style.display='';
-document.getElementById('newGalleryItem').style.display='none';
-document.getElementById('newGalleryItemMulti').style.display='none';
-document.getElementById('newCopy').style.border='';
-} else {
-document.getElementById('newCopy').style.border='0';
-document.getElementById('newPaste').style.display='none';
-document.getElementById('newZoom').style.display='none';
-}	
-}
-
-document.getElementById(id).style.top=yPos + "px" ;
-document.getElementById(id).style.left=xPos + "px" ;
-document.getElementById(id).style.display="block";
-
-if(lastid!="" && lastid !=id){
-
-hideMenu(lastid);
-}
-navTimer = setTimeout('hideMenu(lastid);',10000);
-lastid=id;
-}
-
-function findPosX(obj)
-{
+function findPosX(obj){
 	var curleft = 0;
 	if (obj.offsetParent)
 	{
@@ -347,8 +347,7 @@ function findPosX(obj)
 	return curleft;
 }
 
-function findPosY(obj)
-{
+function findPosY(obj){
 	var curtop = 0;
 	if (obj.offsetParent)
 	{
@@ -365,13 +364,15 @@ function findPosY(obj)
 
 
 function keepMenu(id) {
-navTimer = setTimeout('hideMenu(lastid);',10000);
-document.getElementById(id).style.display="block";
+	navTimer = setTimeout('hideMenu(lastid);',10000);
+	jQuery('#' + id).removeClass('hide');
+	//document.getElementById(id).style.display="block";
 }
 
 function hideMenu(id) {
-if(navTimer!=null)clearTimeout(navTimer);
-document.getElementById(id).style.display="none";
+	if(navTimer!=null)clearTimeout(navTimer);
+	jQuery('#' + id).addClass('hide');
+	//document.getElementById(id).style.display="none";
 }
 
 
@@ -923,7 +924,7 @@ activeQuickEdit=false;
 function loadSiteManager(siteid,topid,moduleid,sortby,sortdirection,ptype,startrow)	{
 	var url = 'index.cfm';
 	var pars = 'muraAction=cArch.loadSiteManager&siteid=' + siteid  + '&topid=' + topid  + '&moduleid=' + moduleid  + '&sortby=' + sortby  + '&sortdirection=' + sortdirection  + '&ptype=' + ptype  + '&startrow=' + startrow + '&cacheid=' + Math.random();
-	document.getElementById('newContentMenu').style.visibility="hidden";
+	jQuery('#newContentMenu').addClass('hide');
 	//jQuery('#viewTabs a[href="#tabArchitectural"]').tab('show');
 	//location.href=url + "?" + pars;
 	var d = jQuery('#gridContainer');
@@ -938,7 +939,7 @@ function loadSiteManager(siteid,topid,moduleid,sortby,sortdirection,ptype,startr
 							d.hide()
 						}
 						d.html(r.html);
-						document.getElementById("newContentMenu").style.visibility="hidden";
+						jQuery('#newContentMenu').addClass('hide');
 						stripe('stripe');
 						initQuickEdits();
 						initDraftPrompt();
@@ -1022,7 +1023,7 @@ function loadSiteFlat(args)	{
 	var d = jQuery('#flatViewContainer');
 	
 	d.html('<img class="loadProgress" src="assets/images/progress_bar.gif">');
-	document.getElementById('newContentMenu').style.visibility="hidden";
+	jQuery('#newContentMenu').addClass('hide');
 
 	jQuery.post(url + "?" + pars, args, 
 		function(data) {
@@ -1157,7 +1158,7 @@ function loadSiteSection(node, startrow)	{
 					node.find('.section:first').remove();
 					node.append(r.html);
 					
-					document.getElementById('newContentMenu').style.visibility="hidden";
+					jQuery('#newContentMenu').addClass('hide');
 					stripe('stripe');
 					initDraftPrompt();
 					initQuickEdits();
@@ -1185,7 +1186,7 @@ function loadSiteSection(node, startrow)	{
 				function(){
 					node.find('.section:first').remove();
 				    stripe('stripe');
-					document.getElementById('newContentMenu').style.visibility="hidden";
+					jQuery('#newContentMenu').addClass('hide');
 					sectionLoading = false;
 				}
 			);	
@@ -1209,7 +1210,7 @@ function refreshSiteSection(node, startrow)	{
 				node.find('.section:first').remove();
 				node.append(r.html);
 				
-				document.getElementById("newContentMenu").style.visibility = "hidden";
+				jQuery('#newContentMenu').addClass('hide');
 				stripe('stripe');
 				initDraftPrompt();
 				initQuickEdits();	

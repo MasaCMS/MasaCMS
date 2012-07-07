@@ -162,8 +162,9 @@
 		</script>
 	</cfif>
 
+	
+	<link href="#application.configBean.getContext()#/admin/assets/css/admin.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 	<!---
-	<link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 	<cfif cgi.http_user_agent contains 'msie'>
 	<!--[if LTE IE 7]>
 		<link href="#application.configBean.getContext()#/admin/assets/css/ie.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
@@ -210,9 +211,11 @@
       </footer>
 
     </div> <!-- /container -->  
+    <!---
     <script type="text/javascript" language="javascript">
 		stripe('stripe');
 	</script>
+	--->
 	<cfif rc.originalcircuit neq 'cLogin' and yesNoFormat(application.configBean.getValue("sessionTimeout"))>
 		<script type="text/javascript" language="javascript">
 			window.setTimeout('CountDown()',100);

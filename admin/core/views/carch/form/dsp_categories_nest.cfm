@@ -68,7 +68,7 @@ where categoryID='#rslist.categoryID#' and ContentHistID='#attributes.contentBea
 <cfset disabled="" />
 </cfif>
 </cfsilent>
-<li><div <cfif request.catNo mod 2>class="alt"</cfif>>#rslist.name#<cfif rslist.isOpen eq 1>
+<li><div class="mura-row<cfif request.catNo mod 2> alt</cfif>">#rslist.name#<cfif rslist.isOpen eq 1>
 <div class="column" <cfif request.catNo mod 2>class="alt"</cfif>>
 <select class="displayOptions" class="categoryid" categoryid="#rslist.categoryID#" name="categoryAssign#catTrim#" #disabled#  onchange="javascript: this.selectedIndex==3?loadCategoryFeatureStartStop('editDates#catTrim#',true,'#attributes.siteID#'):loadCategoryFeatureStartStop('editDates#catTrim#',false,'#attributes.siteID#');checkExtendSetTargeting(this.value);">
 <option <cfif not rsIsMember.recordcount>selected</cfif> value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</option>

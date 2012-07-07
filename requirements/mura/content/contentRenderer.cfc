@@ -359,7 +359,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfsavecontent variable="content">
 		<cfoutput>
-			 <ul class="navZoom breadcrumb">
+			 <ul class="navZoom">
 		<cfloop from="#crumbLen#" to="2" index="I" step="-1">
 		<cfsilent>
 		<cfif arguments.crumbdata[i].restricted eq 1><cfset locked="Locked"></cfif>
@@ -399,7 +399,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var I = 0 />
 		<cfsavecontent variable="content">
 		<cfoutput>
-		 <ul class="navZoom breadcrumb">
+		 <ul class="navZoom">
 		<cfloop from="#crumbLen#" to="2" index="I" step="-1">
 		<cfif arguments.crumbdata[i].restricted eq 1><cfset locked="Locked"></cfif>
 		<li class="#renderIcon(arguments.crumbdata[i].type,arguments.fileExt)##locked#">#HTMLEditformat(arguments.crumbdata[I].menutitle)# &raquo;</li>

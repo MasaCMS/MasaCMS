@@ -60,18 +60,36 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfelse>
 <cfset numRows=4>
 </cfif>
+<!---
+<cfset args=arrayNew(1)>
+<cfset args[1]="#nextN.startRow#-#nextn.through#">
+<cfset args[2]=nextn.TotalRecords>
+--->
 <cfsavecontent variable="pagelist"><cfoutput> 
-<tr>
-           <td class="add">&nbsp;</td>
-            <td class="title" colspan="#numRows#">
-      More: 
-		  <cfif nextN.currentpagenumber gt 1><a href="" onclick="return loadSiteManager('#JSStringFormat(rc.siteid)#','#JSStringFormat(rc.topid)#','00000000000000000000000000000000000','','','#JSStringFormat(rc.ptype)#',#nextN.previous#);">&laquo;&nbsp;Prev</a> </cfif>
+<div class="clearfix mura-results-wrapper">
+		<!---<p class="search-showing">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.paginationmeta"),args)#</p> --->     <ul class="moreResults pagination">
+		  <cfif nextN.currentpagenumber gt 1>
+		  	<li>
+		  	<a href="" onclick="return loadSiteManager('#JSStringFormat(rc.siteid)#','#JSStringFormat(rc.topid)#','00000000000000000000000000000000000','','','#JSStringFormat(rc.ptype)#',#nextN.previous#);">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.prev')#</a> 
+		  	</li>
+		  </cfif>
 		  <cfloop from="#nextN.firstPage#"  to="#nextN.lastPage#" index="i">
-		  <cfif nextN.currentpagenumber eq i> <strong>#i#</strong><cfelse>  <a href="" onclick="return loadSiteManager('#JSStringFormat(rc.siteid)#','#JSStringFormat(rc.topid)#','00000000000000000000000000000000000','','','#JSStringFormat(rc.ptype)#',#evaluate('(#i#*#nextN.recordsperpage#)-#nextN.recordsperpage#+1')#);">#i#</a> </cfif>
+		  <cfif nextN.currentpagenumber eq i> 
+		  		<li class="active"><a href="##">#i#</a></li>
+		  <cfelse>  
+		  		<li>
+		  			<a href="" onclick="return loadSiteManager('#JSStringFormat(rc.siteid)#','#JSStringFormat(rc.topid)#','00000000000000000000000000000000000','','','#JSStringFormat(rc.ptype)#',#evaluate('(#i#*#nextN.recordsperpage#)-#nextN.recordsperpage#+1')#);">#i#</a>
+		  		</li>
+		  	</cfif>
 	     </cfloop>
-		 <cfif nextN.currentpagenumber lt nextN.NumberOfPages><a href="" onclick="return loadSiteManager('#JSStringFormat(rc.siteid)#','#JSStringFormat(rc.topid)#','00000000000000000000000000000000000','','','#JSStringFormat(rc.ptype)#',#nextN.next#);">Next&nbsp;&raquo;</a> </cfif>
-		</td>
-          </tr></cfoutput>
+		 <cfif nextN.currentpagenumber lt nextN.NumberOfPages>
+		 	<li>
+		 		<a href="" onclick="return loadSiteManager('#JSStringFormat(rc.siteid)#','#JSStringFormat(rc.topid)#','00000000000000000000000000000000000','','','#JSStringFormat(rc.ptype)#',#nextN.next#);">#application.rbFactory.getKeyValue(session.rb,'sitemanager.next')#&nbsp;&raquo;</a> 
+		 	</li>
+		 </cfif>
+		</ul>
+</div>
+</cfoutput>
 </cfsavecontent>
 
 </cfif>

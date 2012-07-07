@@ -46,107 +46,110 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfset isBlocked=false />
-<div id="login"><cfoutput>
+<div id="login">
+<cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,'login.pleaselogin')#</h2>
 <cfif rc.status eq 'denied'>
-<p class="error">#application.rbFactory.getKeyValue(session.rb,'login.denied')#</p>
+	<p class="error">#application.rbFactory.getKeyValue(session.rb,'login.denied')#</p>
 <cfelseif rc.status eq 'failed'>
-<cfif structKeyExists(session, "blockLoginUntil") and isDate(session.blockLoginUntil) and session.blockLoginUntil gt now()>
-<cfset isBlocked=true />
-<p class="error">#application.rbFactory.getKeyValue(session.rb,'login.blocked')#</p>
-<cfelse>
-<p class="error">#application.rbFactory.getKeyValue(session.rb,'login.failed')#</p>
-</cfif>
+	<cfif structKeyExists(session, "blockLoginUntil") and isDate(session.blockLoginUntil) and session.blockLoginUntil gt now()>
+	<cfset isBlocked=true />
+	<p class="error">#application.rbFactory.getKeyValue(session.rb,'login.blocked')#</p>
+	<cfelse>
+	<p class="error">#application.rbFactory.getKeyValue(session.rb,'login.failed')#</p>
+	</cfif>
 </cfif>
 
 <cfif not isBlocked>
-<form novalidate="novalidate" id="loginForm" name="frmLogin" method="post" action="index.cfm" onsubmit="return validateForm(this);">
+<form novalidate="novalidate" id="loginForm" name="frmLogin" method="post" action="index.cfm" onsubmit="return submitForm(this);">
 
-<div class="control-group">
-    <label class="control-label">
-    	#application.rbFactory.getKeyValue(session.rb,'login.username')#
-    </label>
-    <div class="controls">
-      <input id="username" name="username" type="text" class="text">
-    </div>
- </div>
+	<div class="control-group">
+	    <label class="control-label">
+	    	#application.rbFactory.getKeyValue(session.rb,'login.username')#
+	    </label>
+	    <div class="controls">
+	      <input id="username" name="username" type="text" class="text">
+	    </div>
+	 </div>
 
-<div class="control-group">
-    <label class="control-label">
-      	#application.rbFactory.getKeyValue(session.rb,'login.password')#
- 	</label>
-    <div class="controls">
-      	<input id="password" type="password" name="password" class="text" onKeyPress="checkKeyPressed(event, 'loginForm')">
-  	</div>
-</div>
-
-<div class="control-group">
-      <label class="control-label">Language</label>
-      <div class="controls"><select name="rb">
-	<option value="en">English</option>
-	<option value="de"<cfif cookie.rb eq "de"> selected</cfif>>Deutsch</option>
-	<option value="fr"<cfif cookie.rb eq "fr"> selected</cfif>>Fran&ccedil;ais</option>
-	<option value="hu"<cfif cookie.rb eq "hu"> selected</cfif>>Hungarian</option>
-	<option value="it"<cfif cookie.rb eq "it"> selected</cfif>>Italian</option>
-	<!---<option value="no"<cfif cookie.rb eq "no"> selected</cfif>>Norwegian</option>--->
-	<option value="pt"<cfif cookie.rb eq "pt"> selected</cfif>>Portuguese</option>
-	<option value="es"<cfif cookie.rb eq "es"> selected</cfif>>Spanish</option>
-	<!---<option value="es">Spanish</option>--->
-	</select>
+	<div class="control-group">
+	    <label class="control-label">
+	      	#application.rbFactory.getKeyValue(session.rb,'login.password')#
+	 	</label>
+	    <div class="controls">
+	      	<input id="password" type="password" name="password" class="text" onKeyPress="checkKeyPressed(event, 'loginForm')">
+	  	</div>
 	</div>
+
+	<div class="control-group">
+	      <label class="control-label">Language</label>
+	      <div class="controls">
+	      	<select name="rb">
+				<option value="en">English</option>
+				<option value="de"<cfif cookie.rb eq "de"> selected</cfif>>Deutsch</option>
+				<option value="fr"<cfif cookie.rb eq "fr"> selected</cfif>>Fran&ccedil;ais</option>
+				<option value="hu"<cfif cookie.rb eq "hu"> selected</cfif>>Hungarian</option>
+				<option value="it"<cfif cookie.rb eq "it"> selected</cfif>>Italian</option>
+				<!---<option value="no"<cfif cookie.rb eq "no"> selected</cfif>>Norwegian</option>--->
+				<option value="pt"<cfif cookie.rb eq "pt"> selected</cfif>>Portuguese</option>
+				<option value="es"<cfif cookie.rb eq "es"> selected</cfif>>Spanish</option>
+				<!---<option value="es">Spanish</option>--->
+			</select>
+		</div>
+	</div>
+
+	<div class="control-group">
+	    <div class="controls">
+	     	<label for="rememberMe" class="radio">
+	      	<input type="checkbox" id="rememberMe" name="rememberMe" value="1" /> 
+	      	#application.rbFactory.getKeyValue(session.rb,'login.rememberme')#
+	      	</label>
+	 	</div>
+	</div>
+
+	<div class="form-actions actionButtons">
+		<input type="submit" class="submit btn" value="#application.rbFactory.getKeyValue(session.rb,'login.login')#" />
+	</div>
+
+	<input name="returnUrl" type="hidden" value="#HTMLEditFormat(rc.returnURL)#">
+	<input type="hidden" name="muraAction" value="cLogin.login">
+	<input type="hidden" name="isAdminLogin" value="true">
+	<input type="hidden" name="compactDisplay" value="#HTMLEditFormat(rc.compactDisplay)#">
+</form>
 </div>
 
-<div class="control-group">
-      <label class="control-label">
-      	#application.rbFactory.getKeyValue(session.rb,'login.rememberme')#
-      </label>
-      <div class="controls">
-      <input type="checkbox" id="rememberMe" name="rememberMe" value="1" /> <label for="rememberMe">
-      </label>
-  </div>
-</div>
-
-<div class="form-actions actionButtons">
-<input type="button" class="submit btn" onclick="document.frmLogin.submit();" value="#application.rbFactory.getKeyValue(session.rb,'login.login')#" />
-</div>
-<input name="returnUrl" type="hidden" value="#HTMLEditFormat(rc.returnURL)#">
-<input type="hidden" name="muraAction" value="cLogin.login">
-<input type="hidden" name="isAdminLogin" value="true">
-<input type="hidden" name="compactDisplay" value="#HTMLEditFormat(rc.compactDisplay)#">
- </form>
-</div>
-
-	<form novalidate="novalidate" id="sendLogin" name="sendLogin" method="post" action="index.cfm?muraAction=cLogin.main" onsubmit="javascript:if(document.sendLogin.email.value !=''){return true;}else{return false;}">
+	<form novalidate="novalidate" id="sendLogin" name="sendLogin" method="post" action="index.cfm?muraAction=cLogin.main" onsubmit="return submitForm(this);">
 	
 	<div class="control-group">
-      <label class="control-label">
+      	<label class="control-label">
 		#application.rbFactory.getKeyValue(session.rb,'login.forgetpassword')#
-	</label>
-      <div class="controls">
-	<p class="help-block">
-	<cfif rc.status eq 'sendLogin'>
-	  <cfset msg=application.userManager.sendLoginByEmail('#rc.email#','','#urlencodedformat("#listFirst(cgi.http_host,":")##cgi.SCRIPT_NAME#")#')>
-	<cfif left(msg,2) eq "No">
+		</label>
+      	<div class="controls">
+		<p class="help-block">
+			<cfif rc.status eq 'sendLogin'>
+			  <cfset msg=application.userManager.sendLoginByEmail('#rc.email#','','#urlencodedformat("#listFirst(cgi.http_host,":")##cgi.SCRIPT_NAME#")#')>
+			<cfif left(msg,2) eq "No">
 
-	#HTMLEditFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"login.noaccountexists"),rc.email))#		
-	<cfelseif left(msg,4) eq "Your">
-	#HTMLEditFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"login.messagesent"),rc.email))#
-	<cfelse>	#HTMLEditFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"login.invalidemail"),rc.email))#
-	</cfif>
-	<cfelse>
-	#application.rbFactory.getKeyValue(session.rb,'login.enteremail')#
-	</cfif>
-	</p>
-	<input id="email" name="email" type="text" class="text" align="absmiddle" onKeyPress="checkKeyPressed(event, 'sendLogin')"/>
-	</div></div>
+			#HTMLEditFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"login.noaccountexists"),rc.email))#		
+			<cfelseif left(msg,4) eq "Your">
+			#HTMLEditFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"login.messagesent"),rc.email))#
+			<cfelse>	#HTMLEditFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"login.invalidemail"),rc.email))#
+			</cfif>
+			<cfelse>
+			#application.rbFactory.getKeyValue(session.rb,'login.enteremail')#
+			</cfif>
+		</p>
+		<input id="email" name="email" type="text" class="text" align="absmiddle" onKeyPress="checkKeyPressed(event, 'sendLogin')"/>
+		</div>
+	</div>
 	<div class="form-actions actionButtons">
- 		<input type="button" class="submit" onclick="document.sendLogin.submit();" value="#application.rbFactory.getKeyValue(session.rb,'login.submit')#" />
- 	</div>
-		<input type="hidden" name="status" value="sendlogin" />
-		<input name="returnURL" type="hidden" value="#HTMLEditFormat(rc.returnURL)#">
-		<input type="hidden" name="isAdminLogin" value="true">
-		<input type="hidden" name="compactDisplay" value="#HTMLEditFormat(rc.compactDisplay)#">
-    </form>
+	 	<input type="submit" class="submit btn" value="#application.rbFactory.getKeyValue(session.rb,'login.submit')#" />
+	 </div>
+	<input type="hidden" name="status" value="sendlogin" />
+	<input name="returnURL" type="hidden" value="#HTMLEditFormat(rc.returnURL)#">
+	<input type="hidden" name="isAdminLogin" value="true">
+	<input type="hidden" name="compactDisplay" value="#HTMLEditFormat(rc.compactDisplay)#">
+   </form>
 </cfif></cfoutput>
 
 <cfsavecontent variable="headerStr">
