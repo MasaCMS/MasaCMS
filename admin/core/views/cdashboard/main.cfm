@@ -54,8 +54,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.dashboard")#</h2>
 
 <div class="wrap">
-
-<div id="contentPrimary">
+<div class="container-fluid">
+<div class="row-fluid">
+<div id="contentPrimary" class="span9">
 </cfoutput>
 <cfset rsPluginScripts=application.pluginManager.getScripts("onDashboardPrimaryTop",rc.siteID)>
 <cfoutput query="rsPluginScripts" group="pluginID">
@@ -138,7 +139,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cflocation url="index.cfm?muraAction=cArch.list&siteid=#session.siteID#&moduleid=00000000000000000000000000000000000&topid=00000000000000000000000000000000001" addtoken="false">
 </cfif>
 <cfoutput>
-<div id="contentSecondary" class="sidebar">
+<div id="contentSecondary" class="sidebar span3">
 
 <div id="editcontent">
 <h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.keywordsearch")#</h3>
@@ -215,4 +216,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfoutput>
 </div>
 </cfoutput>
+</div></div>
 </div></div>

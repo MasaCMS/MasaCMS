@@ -1881,10 +1881,6 @@ h4 + table {
 	float: left;
 }
 
-#popularContent th a {
-	font-weight: normal;
-	color: #444;
-}
 
 #popUp table {
 	width: 100%;
@@ -1929,27 +1925,10 @@ table + .divide {
 	font-weight: normal;
 }
 
-#cdashboard th span, #cdashboard td span {
-	color: #666;
-}
-
-.mura-table-grid table th a {
-	color: #000;
-}
-
-#cdashboard table th a {
-	color: #ff3a00;
-}
-
-#cdashboard #recentActivity th a, #cdashboard #memberActivity th a {
-	color: #78a8d4;
-}
-
 #cdashboard #recentcontent li {
 	margin: 0 0 .5em;
 	line-height: 1.25em;
 }
-
 
 .mura-table-grid td {
 	
