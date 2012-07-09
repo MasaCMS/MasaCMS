@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <cfset started=false>
 <div id="tab#ucase(replace(local.category,' ','','all'))#" class="tab-pane">
-<table class="table table-striped table-condensed">
+<table class="table table-striped table-bordered table-condensed">
 <tr>
 <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,"plugin.name")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"plugin.directory")#</th>

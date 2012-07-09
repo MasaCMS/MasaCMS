@@ -141,11 +141,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <div id="contentSecondary" class="sidebar span3">
 
-<div id="editcontent">
+<div id="editcontent" class="module well">
 <h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.keywordsearch")#</h3>
 <dl>
 <dt>#application.rbFactory.getKeyValue(session.rb,"dashboard.searchtext")#:</dt>
-<dd><form novalidate="novalidate" id="siteSearch" name="siteSearch" method="get"><input name="keywords" value="#HTMLEditFormat(session.keywords)#" type="text" class="text" align="absmiddle" />  
+<dd><form novalidate="novalidate" class="form-search" id="siteSearch" name="siteSearch" method="get"><input name="keywords" value="#HTMLEditFormat(session.keywords)#" type="text" class="text" align="absmiddle" />
 	<input type="button" class="submit btn" onclick="submitForm(document.forms.siteSearch);" value="Search" />
 	<input type="hidden" name="muraAction" value="cArch.list">
 	<input type="hidden" name="activetab" value="1">
@@ -166,7 +166,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 </cfoutput>
 <cfoutput>
-<div id="siteSummary" class="divide">
+<div id="siteSummary" class="module well">
 <h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.sitesummary")#</h3>
 <dl>
 <dt>#application.rbFactory.getKeyValue(session.rb,"dashboard.activepages")#</dt><dd>#application.dashboardManager.getcontentTypeCount(rc.siteID,"Page").total#</dd>
@@ -178,7 +178,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </dl>
 </div>
 
-<div id="recentcontent" class="divide">
+<div id="recentcontent" class="module well">
 <h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.recentcontent")#</h3>
 <cfset rsList=application.dashboardManager.getRecentUpdates(rc.siteID,5) />
 <ul>
@@ -194,7 +194,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 
 <cfset rsList=application.dashboardManager.getDraftList(rc.siteID,session.mura.userID,5) />
-<div id="drafts" class="divide">
+<div id="drafts" class="module well">
 <h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.draftsforreview")#</h3>
 <ul><cfif rsList.recordcount>
 	<cfloop query="rslist">

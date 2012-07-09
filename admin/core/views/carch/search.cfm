@@ -1,4 +1,4 @@
- <!--- This file is part of Mura CMS.
+<!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -64,7 +64,7 @@ copyContentID = '#session.copyContentID#';
 copySiteID = '#session.copySiteID#';
 </script>
 </cfoutput>
- <table class="table table-striped table-condensed">
+ <table class="table table-striped table-bordered table-condensed">
     <tr> 
 	  <th>&nbsp;</th>
       <th class="varWidth">Title</th>
@@ -157,14 +157,28 @@ copySiteID = '#session.copySiteID#';
         <td colspan="8" class="results"><em>Your search returned no results.</em></td>
       </tr>
     </cfif>
-	
-    <cfif rc.nextn.numberofpages gt 1><tr> 
-      <td colspan="8" class="results">More Results: <cfoutput>
-	<cfif rc.nextN.currentpagenumber gt 1> <a href="index.cfm?muraAction=cArch.search&siteid=#URLEncodedFormat(rc.siteid)#&keywords=#session.keywords#&startrow=#rc.nextn.previous#&moduleid=#rc.moduleid#">&laquo;&nbsp;Prev</a></cfif>	
-	<cfloop from="#rc.nextN.firstPage#"  to="#rc.nextn.lastPage#" index="i"><cfif rc.nextn.currentpagenumber eq i> #i# <cfelse> <a href="index.cfm?muraAction=cArch.search&siteid=#URLEncodedFormat(rc.siteid)#&keywords=#session.keywords#&startrow=#evaluate('(#i#*#rc.nextn.recordsperpage#)-#rc.nextn.recordsperpage#+1')#&moduleid=#rc.moduleid#">#i#</a> </cfif></cfloop>
-	<cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages><a href="index.cfm?muraAction=cArch.search&siteid=#URLEncodedFormat(rc.siteid)#&keywords=#session.keywords#&startrow=#rc.nextn.next#&moduleid=#rc.moduleid#">Next&nbsp;&raquo;</a></cfif> 
-	</td></tr>
+	</td></tr></table>
+    <cfif rc.nextn.numberofpages gt 1>
+    <cfoutput>
+    <ul class="pagination">
+	<cfif rc.nextN.currentpagenumber gt 1> 
+		<li>
+			<a href="index.cfm?muraAction=cArch.search&siteid=#URLEncodedFormat(rc.siteid)#&keywords=#session.keywords#&startrow=#rc.nextn.previous#&moduleid=#rc.moduleid#">&laquo;&nbsp;Prev</a>
+		</li>
+	</cfif>	
+	<cfloop from="#rc.nextN.firstPage#"  to="#rc.nextn.lastPage#" index="i">
+		<cfif rc.nextn.currentpagenumber eq i>
+			<li class="active"><a href="##">#i#</a></li>
+		<cfelse> 
+			<li><a href="index.cfm?muraAction=cArch.search&siteid=#URLEncodedFormat(rc.siteid)#&keywords=#session.keywords#&startrow=#evaluate('(#i#*#rc.nextn.recordsperpage#)-#rc.nextn.recordsperpage#+1')#&moduleid=#rc.moduleid#">#i#</a></li>
+		</cfif>
+	</cfloop>
+	<cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages>
+		<li>
+			<a href="index.cfm?muraAction=cArch.search&siteid=#URLEncodedFormat(rc.siteid)#&keywords=#session.keywords#&startrow=#rc.nextn.next#&moduleid=#rc.moduleid#">Next&nbsp;&raquo;</a>
+		</li>
+	</cfif> 
 	</cfoutput>
+	</ul>
 	</cfif> 
 </table>
-</td></tr></table>

@@ -279,7 +279,7 @@ td.scheduled a span {
 }
 
 .mura-grid-hdr dt, .mura-grid-hdr dd {
-	background: #FFFEFE url(../images/bg_th.jpg) repeat-x left bottom;
+	/*background: #FFFEFE url(../images/bg_th.jpg) repeat-x left bottom;*/
 	font-style: normal;
 	color: #000;
 	border: 1px solid #DBDBDB;
@@ -504,13 +504,6 @@ dt .add li.Page {
 	overflow: hidden;
 	float: none !important;
 	border: none;
-}
-
-.module {
-	margin-bottom: 1em;
-	padding: 1em;
-	background: #e9e9e9;
-	border-radius: 5px;
 }
 
 #mura-filter-category {
@@ -1898,7 +1891,8 @@ table + .divide {
 	margin-top: 0;
 }
 
-.mura-table-grid th {
+/*
+th {
 	margin: 0 !important;
 	background: #FFFEFE url(../images/bg_th.jpg) repeat-x left bottom;
 	font-style: normal;
@@ -1908,6 +1902,7 @@ table + .divide {
 	white-space: nowrap;
 	text-align: center;
 }
+*/
 
 .mura-table-grid th.alt {
 	text-align: left;

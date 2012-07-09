@@ -208,7 +208,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div class="controls">
 
-<table id="contentFilters" class="table table-striped table-condensed"> 
+<table id="contentFilters" class="table table-striped table-bordered table-condensed"> 
 <tr>
 <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'collections.section')#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,'collections.type')#</th>

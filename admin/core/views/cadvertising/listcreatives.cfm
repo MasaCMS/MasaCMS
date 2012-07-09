@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </form>
 <h2>#application.rbFactory.getKeyValue(session.rb,'advertising.viewcreativeassets')#</h2>
 
-<table class="table table-striped table-condensed">
+<table class="table table-striped table-bordered table-condensed">
 <tr>
 	<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'advertising.name')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.advertiser')#</th>

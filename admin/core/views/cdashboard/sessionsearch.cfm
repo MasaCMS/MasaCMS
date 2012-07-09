@@ -323,7 +323,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfoutput>
 	<h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.totalsessions")# (#rc.rslist.recordcount#)</h3>
 	
-<table class="table table-striped table-condensed"> 
+<table class="table table-striped table-bordered table-condensed"> 
 <tr>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.user")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.locale")#</th>

@@ -54,7 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
   <form novalidate="novalidate" method="post" name="form1" action="index.cfm?muraAction=cPerm.update&contentid=#URLEncodedFormat(rc.contentid)#&parentid=#URLEncodedFormat(rc.parentid)#">
            <h3>#application.rbFactory.getKeyValue(session.rb,'user.adminusergroups')#</h3>
-			<table class="table table-striped table-condensed">
+			<table class="table table-striped table-bordered table-condensed">
 			<tr> 
             <th>#application.rbFactory.getKeyValue(session.rb,'permissions.editor')#</th>
             <th>#application.rbFactory.getKeyValue(session.rb,'permissions.author')#</th>
@@ -87,7 +87,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="separate"></div>
 		<h3>#application.rbFactory.getKeyValue(session.rb,'user.membergroups')#</h3>
 		<p>#application.rbFactory.getKeyValue(session.rb,'permissions.memberpermscript')##application.rbFactory.getKeyValue(session.rb,'permissions.memberpermnodescript')#</p>
-		<table class="table table-striped table-condensed">
+		<table class="table table-striped table-bordered table-condensed">
 			<tr> 
             <th>#application.rbFactory.getKeyValue(session.rb,'permissions.editor')#</th>
             <th>#application.rbFactory.getKeyValue(session.rb,'permissions.author')#</th>

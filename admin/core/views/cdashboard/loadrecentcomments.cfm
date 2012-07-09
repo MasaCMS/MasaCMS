@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset request.layout="false">
 <cfinclude template="act_defaults.cfm">
 <cfset comments=application.contentManager.getRecentCommentsIterator(rc.siteID,5,false) />
-<cfoutput><table class="table table-striped table-condensed">
+<cfoutput><table class="table table-striped table-bordered table-condensed">
 <tr>
 	<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments")#</th>
 	<th class="dateTime">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments.posted")#</th>

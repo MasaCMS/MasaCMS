@@ -162,7 +162,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	#pagination#
 
-	<table class="mura-table-grid table table-striped table-condensed">
+	<table class="mura-table-grid table table-striped table-bordered table-condensed">
 		<tr>
 			<th></th>
 		  	<th class="item">#application.rbFactory.getKeyValue(session.rb,"sitemanager.item")#</th>
@@ -299,7 +299,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div class="sidebar span3">
 	<!---<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports")#</h3>--->
-	<ul id="navReports" class="module">
+	<ul id="navReports" class="module well">
 		<li><a href="" data-report=""<cfif not len($.event("report"))> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.all")#</a></li>
 		<li><a href="" data-report="expires"<cfif $.event("report") eq "expires"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.expires")#</a></li>
 		<li><a href="" data-report="myexpires"<cfif $.event("report") eq "myexpires"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.myexpires")#</a></li>
@@ -309,13 +309,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.filters")#</h3>
 	
-	<div id="filters" class="module">
+	<div id="filters" class="module well">
 	<h4>#application.rbFactory.getKeyValue(session.rb,"sitemanager.keywords")#</h4>
     <input class="text" id="contentKeywords" value="#HTMLEditFormat(session.flatViewArgs["#rc.siteID#"].keywords)#" type="text" size="20" />
   	</div>
 
     <cfif $.event("report") neq "lockedfiles">
-	<div class="module">
+	<div class="module well">
 		<h4>#application.rbFactory.getKeyValue(session.rb,"sitemanager.type")#</h4>
 		<select name="contentTypeFilter" id="contentTypeFilter">
 			<option value="">#application.rbFactory.getKeyValue(session.rb,"sitemanager.all")#</option>
@@ -337,7 +337,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfsilent>	
 	
 	<cfif tags.recordcount>
-		<div class="module" id="mura-filter-tags">
+		<div class="module well" id="mura-filter-tags">
 			<h4>#application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</h4>
 			<div id="svTagCloud">
 				<ol>
@@ -364,7 +364,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	<cfif $.getBean("categoryManager").getCategoryCount($.event("siteID"))>
-		<div class="module" id="mura-filter-category">
+		<div class="module well" id="mura-filter-category">
 		<h4>#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#</h4>
 		<cf_dsp_categories_nest siteID="#$.event('siteID')#" parentID="" nestLevel="0" categoryid="#$.event('categoryid')#">
 		</div>

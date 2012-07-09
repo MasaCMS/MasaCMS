@@ -60,14 +60,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfelse>
 <cfset numRows=4>
 </cfif>
-<!---
-<cfset args=arrayNew(1)>
-<cfset args[1]="#nextN.startRow#-#nextn.through#">
-<cfset args[2]=nextn.TotalRecords>
---->
+
 <cfsavecontent variable="pagelist"><cfoutput> 
-<div class="clearfix mura-results-wrapper">
-		<!---<p class="search-showing">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.paginationmeta"),args)#</p> --->     <ul class="moreResults pagination">
+		<cfset args=arrayNew(1)>
+		<cfset args[1]="#nextn.startrow#-#nextn.through#">
+		<cfset args[2]=nextn.totalrecords>
+		<div class="clearfix mura-results-wrapper">
+		<p class="search-showing">
+			#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.paginationmeta"),args)#
+		</p> 
+		 <ul class="moreResults pagination">
 		  <cfif nextN.currentpagenumber gt 1>
 		  	<li>
 		  	<a href="" onclick="return loadSiteManager('#JSStringFormat(rc.siteid)#','#JSStringFormat(rc.topid)#','00000000000000000000000000000000000','','','#JSStringFormat(rc.ptype)#',#nextN.previous#);">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.prev')#</a> 
@@ -88,7 +90,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 	</li>
 		 </cfif>
 		</ul>
-</div>
+		</div>
 </cfoutput>
 </cfsavecontent>
 

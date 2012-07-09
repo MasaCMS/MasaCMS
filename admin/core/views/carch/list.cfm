@@ -109,7 +109,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   </form>
   
   </cfoutput>
-  <table class="table table-striped table-condensed">
+  <table class="table table-striped table-bordered table-condensed">
     
 	<cfoutput>
 	<tr> 
@@ -185,12 +185,37 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
   <cfif rc.nextn.numberofpages gt 1>
     <cfoutput> 
- 	#application.rbFactory.getKeyValue(session.rb,'sitemanager.moreresults')#: 
-		
-		 <cfif rc.nextN.currentpagenumber gt 1> <a href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&topid=#URLEncodedFormat(rc.topid)#&startrow=#rc.nextN.previous#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.prev')#</a></cfif>
-		<cfloop from="#rc.nextn.firstPage#"  to="#rc.nextn.lastPage#" index="i"><cfif rc.nextn.currentpagenumber eq i> #i# <cfelse> <a href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&topid=#URLEncodedFormat(rc.topid)#&startrow=#evaluate('(#i#*#rc.nextn.recordsperpage#)-#rc.nextn.recordsperpage#+1')#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">#i#</a> </cfif></cfloop>
-		 <cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages><a href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&topid=#URLEncodedFormat(rc.topid)#&startrow=#rc.nextN.next#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.next')#&nbsp;&raquo;</a></cfif>
+    	<cfset args=arrayNew(1)>
+		<cfset args[1]="#rc.nextn.startrow#-#rc.nextn.through#">
+		<cfset args[2]=rc.nextn.totalrecords>
+		<div class="mura-results-wrapper">
+		<p class="clearfix search-showing">
+			#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.paginationmeta"),args)#
+		</p> 
+		<ul class="pagination">
+		 <cfif rc.nextN.currentpagenumber gt 1>
+			
+					<li>	
+				 	<a href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&topid=#URLEncodedFormat(rc.topid)#&startrow=#rc.nextN.previous#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.prev')#</a>
+				 	</li>
+				 </cfif>
+				<cfloop from="#rc.nextn.firstPage#"  to="#rc.nextn.lastPage#" index="i">
+					<cfif rc.nextn.currentpagenumber eq i> 
+						<li class="active"><a href="##">#i#</a></li> 
+					<cfelse> 
+						<li>
+						<a href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&topid=#URLEncodedFormat(rc.topid)#&startrow=#evaluate('(#i#*#rc.nextn.recordsperpage#)-#rc.nextn.recordsperpage#+1')#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">#i#</a></li>
+					</cfif>
+				</cfloop>
+				<cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages>
+					<li>
+						<a href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&topid=#URLEncodedFormat(rc.topid)#&startrow=#rc.nextN.next#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.next')#&nbsp;&raquo;</a>
+					</li>
+				</cfif>
+				</ul>
+			</div>
 		</cfoutput>
+			
    </cfif>
 <cfinclude template="draftpromptjs.cfm">
 

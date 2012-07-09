@@ -71,7 +71,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h4>#application.rbFactory.getKeyValue(session.rb,'changesets.previewlink')#</h4>
 <p><a title="Preview" href="##" onclick="return preview('#JSStringFormat(rc.previewLink)#','');">#HTMLEditFormat(rc.previewLink)#</a></p>
 <h4>#application.rbFactory.getKeyValue(session.rb,'changesets.sitearchitecture')#</h4>
- <table class="table table-striped table-condensed">
+ <table class="table table-striped table-bordered table-condensed">
     <tr> 
       <th class="varWidth">Title</th>
       <th class="administration">&nbsp;</th>
@@ -110,7 +110,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset rc.rslist=rc.componentAssignments.getQuery()>
 <h4>#application.rbFactory.getKeyValue(session.rb,'changesets.components')#</h4>
- <table class="table table-striped table-condensed">
+ <table class="table table-striped table-bordered table-condensed">
     <tr> 
       <th class="varWidth">Title</th>
       <th class="administration">&nbsp;</th>
@@ -149,7 +149,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset rc.rslist=rc.formAssignments.getQuery()>
 <h4>#application.rbFactory.getKeyValue(session.rb,'changesets.forms')#</h4>
- <table class="table table-striped table-condensed">
+ <table class="table table-striped table-bordered table-condensed">
     <tr> 
       <th class="varWidth">Title</th>
       <th class="administration">&nbsp;</th>

@@ -61,7 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
  </form>
 
-<table class="table table-striped table-condensed"> 
+<table class="table table-striped table-bordered table-condensed"> 
 <tr>
 <th class="varWidth">Label</th>
 <th>Type</th>

@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,'collections')#</h2>
 <h3>#application.rbFactory.getKeyValue(session.rb,'collections.localcontentindexes')#</h3>
 <ul class="navTask nav nav-pills"><li><a  title="#application.rbFactory.getKeyValue(session.rb,'collections.addocalindex')#" href="index.cfm?muraAction=cFeed.edit&feedID=&siteid=#URLEncodedFormat(rc.siteid)#&type=Local">#application.rbFactory.getKeyValue(session.rb,'collections.addlocalindex')#</a></li></ul>
-<table class="table table-striped table-condensed"> 
+<table class="table table-striped table-bordered table-condensed"> 
 <tr>
 <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'collections.index')#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,'collections.language')#</th>
@@ -77,7 +77,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <h3 class="divide">#application.rbFactory.getKeyValue(session.rb,'collections.remotecontentfeeds')#</h3>
 <ul class="navTask nav nav-pills"><li><a  title="#application.rbFactory.getKeyValue(session.rb,'collections.addremotefeed')#" href="index.cfm?muraAction=cFeed.edit&feedID=&siteid=#URLEncodedFormat(rc.siteid)#&type=Remote">#application.rbFactory.getKeyValue(session.rb,'collections.addremotefeed')#</a></li></ul>
-<table class="table table-striped table-condensed"> 
+<table class="table table-striped table-bordered table-condensed"> 
 <tr>
 <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'collections.feed')#</th>
 <th class="url">#application.rbFactory.getKeyValue(session.rb,'collections.url')#</th>

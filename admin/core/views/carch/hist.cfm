@@ -94,7 +94,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </ul>
 </cfoutput>
 <cfoutput>
-<table class="table table-striped table-condensed">
+<table class="table table-striped table-bordered table-condensed">
   <tr><th nowrap class="varWidth">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.title')#</th>
 <cfif rc.contentBean.getType() eq "file" and stats.getMajorVersion()><th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.file')#</th></cfif>
 <th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.notes')#</th>

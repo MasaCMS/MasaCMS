@@ -88,10 +88,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </table>
 
 <cfif comments.recordCount() and comments.pageCount() gt 1>
-#application.rbFactory.getKeyValue(session.rb,"dashboard.session.moreresults")#: <cfif comments.getPageIndex() gt 1> <a href="index.cfm?muraAction=cDashboard.recentComments&page=#evaluate('comments.getPageIndex()-1')#&siteid=#URLEncodedFormat(rc.siteid)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,"dashboard.session.prev")#</a></cfif>
-<cfloop from="1"  to="#comments.pageCount()#" index="i">
-	<cfif comments.getPageIndex() eq i> #i# <cfelse> <a href="index.cfm?muraAction=cDashBoard.recentComments&page=#i#&siteid=#URLEncodedFormat(rc.siteid)#">#i#</a> </cfif></cfloop>
-	<cfif comments.getPageIndex() lt comments.pageCount()><a href="index.cfm?muraAction=cDashboard.recentComments&page=#evaluate('comments.getPageIndex()+1')#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.next")#&nbsp;&raquo;</a></cfif> 
+	<ul class="pagination">
+		<cfif comments.getPageIndex() gt 1> 
+			<a href="index.cfm?muraAction=cDashboard.recentComments&page=#evaluate('comments.getPageIndex()-1')#&siteid=#URLEncodedFormat(rc.siteid)#"><li>&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,"dashboard.session.prev")#</a></li>
+			</cfif>
+		<cfloop from="1"  to="#comments.pageCount()#" index="i">
+			<cfif comments.getPageIndex() eq i>
+				<li class="active"> <a href="##">#i#</a></li> 
+			<cfelse> 
+				<li><a href="index.cfm?muraAction=cDashBoard.recentComments&page=#i#&siteid=#URLEncodedFormat(rc.siteid)#">#i#</a>
+				</li>
+			</cfif>
+		</cfloop>
+		<cfif comments.getPageIndex() lt comments.pageCount()>
+			<li><a href="index.cfm?muraAction=cDashboard.recentComments&page=#evaluate('comments.getPageIndex()+1')#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.next")#&nbsp;&raquo;</a></li>
+		</cfif>
+	</ul> 
 </cfif>	
 </cfoutput>
 

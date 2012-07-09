@@ -172,7 +172,7 @@ select * from rsSubTypes where subType <> 'Default'
 </cfoutput>
 </form>
       <cfif rc.userid neq ''><cfoutput><h3 class="separate">#application.rbFactory.getKeyValue(session.rb,'user.groupmembers')#</h3> 
-        <table class="table table-striped table-condensed">
+        <table class="table table-striped table-bordered table-condensed">
             <tr> 
               <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'user.name')#</th>
               <th>#application.rbFactory.getKeyValue(session.rb,'user.email')#</th>
@@ -184,12 +184,12 @@ select * from rsSubTypes where subType <> 'Default'
           <cfif rc.rsgrouplist.recordcount>
             <cfoutput query="rc.rsgrouplist" maxrows="#rc.nextN.recordsperPage#" startrow="#rc.startrow#"> 
 			  <tr> 
-                <td class="varWidth"><a href="index.cfm?muraAction=#iif(rc.rsgrouplist.isPublic,de('cPublicUsers'),de('cPrivateUsers'))#.edituser&userid=#rc.rsgrouplist.UserID#&routeid=#rc.userid#&siteid=#URLEncodedFormat(rc.siteid)#">#HTMLEditFormat(rc.rsgrouplist.lname)#, #HTMLEditFormat(rc.rsgrouplist.fname)# <cfif rc.rsgrouplist.company neq ''> (#HTMLEditFormat(rc.rsgrouplist.company)#)</cfif></a></td>
+                <td class="varWidth"><a href="index.cfm?muraAction=#iif(rc.rsgrouplist.isPublic,de('cPublicUsers'),de('cPublicUsers'))#.edituser&userid=#rc.rsgrouplist.UserID#&routeid=#rc.userid#&siteid=#URLEncodedFormat(rc.siteid)#">#HTMLEditFormat(rc.rsgrouplist.lname)#, #HTMLEditFormat(rc.rsgrouplist.fname)# <cfif rc.rsgrouplist.company neq ''> (#HTMLEditFormat(rc.rsgrouplist.company)#)</cfif></a></td>
                 <td><cfif rc.rsgrouplist.email gt ""><a href="mailto:#rc.rsgrouplist.email#">#email#</a><cfelse>&nbsp;</cfif></td>
                 <td>#LSDateFormat(rc.rsgrouplist.lastupdate,session.dateKeyFormat)#</td>
 				<td>#LSTimeFormat(rc.rsgrouplist.lastupdate,"short")#</td>
               <td>#rc.rsgrouplist.LastUpdateBy#</td>
-                <td class="administration"><ul class="group"><li class="edit"><a href="index.cfm?muraAction=#iif(rc.rsgrouplist.isPublic,de('cPublicUsers'),de('cPrivateUsers'))#.edituser&userid=#rc.rsgrouplist.UserID#&routeid=#rc.userid#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'user.edit')#</a></li><li class="delete"><a href="index.cfm?muraAction=cPublicUsers.removefromgroup&userid=#rc.rsgrouplist.UserID#&routeid=#rc.userid#&groupid=#rc.userid#&siteid=#URLEncodedFormat(rc.siteid)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.removeconfirm'))#',this.href)">#application.rbFactory.getKeyValue(session.rb,'user.remove')#</a></li></ul></td>
+                <td class="administration"><ul class="group"><li class="edit"><a href="index.cfm?muraAction=#iif(rc.rsgrouplist.isPublic,de('cPublicUsers'),de('cPublicUsers'))#.edituser&userid=#rc.rsgrouplist.UserID#&routeid=#rc.userid#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'user.edit')#</a></li><li class="delete"><a href="index.cfm?muraAction=cPublicUsers.removefromgroup&userid=#rc.rsgrouplist.UserID#&routeid=#rc.userid#&groupid=#rc.userid#&siteid=#URLEncodedFormat(rc.siteid)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.removeconfirm'))#',this.href)">#application.rbFactory.getKeyValue(session.rb,'user.remove')#</a></li></ul></td>
               </tr>
             </cfoutput> 
 	
@@ -200,15 +200,25 @@ select * from rsSubTypes where subType <> 'Default'
           </cfif>
 		   </table>
       </cfif>
-	
-	 <cfif rc.nextN.numberofpages gt 1>
-	  <p class="moreResults"><cfoutput>#application.rbFactory.getKeyValue(session.rb,'user.moreresults')#: 
-			<cfif rc.nextN.currentpagenumber gt 1>
-			<a href="index.cfm?muraAction=cPublicUsers.editgroup&startrow=#rc.nextn.previous#&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'user.prev')#</a> 
-			</cfif>
-		  <cfloop from="#rc.nextn.firstPage#"  to="#rc.nextN.lastPage#" index="i"><cfif rc.nextN.currentpagenumber eq i> <strong>#i#</strong><cfelse> <a href="index.cfm?muraAction=cPublicUsers.editgroup&startrow=#evaluate('(#i#*#rc.nextN.recordsperpage#)-#rc.nextN.recordsperpage#+1')#&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#">#i#</a> </cfif></cfloop>
-           <cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages>
-			<a href="index.cfm?muraAction=cPublicUsers.editgroup&startrow=#rc.nextn.next#&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'user.next')#&nbsp;&raquo;</a> 
-			</cfif> 
-		</cfoutput>
-	 </p></cfif>
+  <cfif rc.nextN.numberofpages gt 1> 
+    <cfoutput>
+      <ul class="pagination">
+      <cfif rc.nextN.currentpagenumber gt 1>
+        <li>
+       <a href="index.cfm?muraAction=cPublicUsers.editgroup&startrow=#rc.nextN.previous#&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'user.prev')#</a>
+       </li> 
+      </cfif>
+      <cfloop from="#rc.nextn.firstPage#"  to="#rc.nextN.lastPage#" index="i">
+        <cfif rc.nextN.currentpagenumber eq i><li class="active"><a href="##">#i#</a></li> 
+      <cfelse> 
+        <li>
+        <a href="index.cfm?muraAction=cPublicUsers.editgroup&startrow=#evaluate('(#i#*#rc.nextN.recordsperpage#)-#rc.nextN.recordsperpage#+1')#&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#">#i#</a> 
+        </li>
+      </cfif></cfloop>
+            <cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages>
+      <li>
+      <a href="index.cfm?muraAction=cPublicUsers.editgroup&startrow=#rc.nextN.next#&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'user.next')#&nbsp;&raquo;</a> 
+      </li>
+      </cfif>
+    </ul></cfoutput>
+  </cfif>

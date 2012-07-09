@@ -153,7 +153,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cfoutput>
 <div class="separate"></div>
-	  <table id="metadata" class="table table-striped table-condensed">
+	  <table id="metadata" class="table table-striped table-bordered table-condensed">
         <tr> 
 		  <cfset subjectDirection = "asc">
 		  <cfset createdDateDirection = "desc">
