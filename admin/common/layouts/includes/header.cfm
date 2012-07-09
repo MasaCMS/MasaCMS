@@ -73,7 +73,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                </cfif>
               
               <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown">
+                <a class="dropdown-toggle">
                   #application.rbFactory.getKeyValue(session.rb,"layout.selectsite")#
                   <b class="caret"></b>
                 </a>
@@ -98,7 +98,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                     or listFind(session.mura.memberships,'S2'
                   )>
                 <li id="navAdminUsers" class="dropdown">
-                  <a class="dropdown-toggle" data-toggle="dropdown" href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPrivateUsers.list&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.administrativeusers")#
+                  <a class="dropdown-toggle" href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPrivateUsers.list&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.administrativeusers")#
                   <b class="caret"></b>
                   </a>
                   <ul class="dropdown-menu">
@@ -111,7 +111,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
                <cfif listFind(session.mura.memberships,'S2')>
                   <li id="navSiteSettings" class="dropdown">
-                    <a  class="dropdown-toggle" data-toggle="dropdown" href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.list">
+                    <a  class="dropdown-toggle" href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.list">
                       #application.rbFactory.getKeyValue(session.rb,"layout.sitesettings")#
                       <b class="caret"></b>
                     </a>
@@ -133,7 +133,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                 <cfif session.siteid neq '' and listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
                  <li id="navEditProfile"><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cEditProfile.edit">#application.rbFactory.getKeyValue(session.rb,"layout.editprofile")#</a></li>
                 <li id="navHelp" class="dropdown">
-                  <a  class="dropdown-toggle" data-toggle="dropdown" href="http://www.getmura.com/index.cfm/support/">#application.rbFactory.getKeyValue(session.rb,"layout.help")#
+                  <a  class="dropdown-toggle" href="http://www.getmura.com/index.cfm/support/">#application.rbFactory.getKeyValue(session.rb,"layout.help")#
                    <b class="caret"></b>
                   </a>
                   <ul  class="dropdown-menu">

@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 <cfoutput>
 <li class="dropdown">
-  <a href="##" class="dropdown-toggle" data-toggle="dropdown">Modules <b class="caret"></b></a>
+  <a class="dropdown-toggle">#application.rbFactory.getKeyValue(session.rb,"layout.modules")# <b class="caret"></b></a>
   <ul id="navSecondary" class="dropdown-menu">
 		<cfif application.configBean.getDashboard()>
 		<li <cfif  rc.originalcircuit eq 'cDashboard'>id="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cDashboard.main&siteid=#session.siteid#&span=#session.dashboardSpan#">#application.rbFactory.getKeyValue(session.rb,"layout.dashboard")#</a>
