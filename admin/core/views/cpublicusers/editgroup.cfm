@@ -202,7 +202,14 @@ select * from rsSubTypes where subType <> 'Default'
       </cfif>
   <cfif rc.nextN.numberofpages gt 1> 
     <cfoutput>
-      <ul class="pagination">
+      <cfset args=arrayNew(1)>
+    <cfset args[1]="#rc.nextn.startrow#-#rc.nextn.through#">
+    <cfset args[2]=rc.nextn.totalrecords>
+    <div class="mura-results-wrapper">
+    <p class="clearfix search-showing">
+      #application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.paginationmeta"),args)#
+    </p> 
+    <ul class="pagination">
       <cfif rc.nextN.currentpagenumber gt 1>
         <li>
        <a href="index.cfm?muraAction=cPublicUsers.editgroup&startrow=#rc.nextN.previous#&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'user.prev')#</a>
@@ -220,5 +227,6 @@ select * from rsSubTypes where subType <> 'Default'
       <a href="index.cfm?muraAction=cPublicUsers.editgroup&startrow=#rc.nextN.next#&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'user.next')#&nbsp;&raquo;</a> 
       </li>
       </cfif>
-    </ul></cfoutput>
+    </ul>
+  </div></cfoutput>
   </cfif>

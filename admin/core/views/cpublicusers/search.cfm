@@ -89,7 +89,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif rc.nextN.numberofpages gt 1>
 <cfoutput>
-<ul class="pagination">
+<cfset args=arrayNew(1)>
+    <cfset args[1]="#rc.nextn.startrow#-#rc.nextn.through#">
+    <cfset args[2]=rc.nextn.totalrecords>
+    <div class="mura-results-wrapper">
+    <p class="clearfix search-showing">
+      #application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.paginationmeta"),args)#
+    </p> 
+    <ul class="pagination">
 <cfif rc.nextN.currentpagenumber gt 1> 
   <li>
     <a href="index.cfm?muraAction=cPublicUsers.search&startrow=#rc.nextN.previous#&lname=#urlencodedformat(rc.lname)#&siteid=#URLEncodedFormat(rc.siteid)#&search=#urlencodedformat(rc.search)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'user.prev')#</a>
@@ -107,5 +114,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   </li>
 </cfif> 
 </ul>
+</div>
 </cfoutput>
 </cfif>
