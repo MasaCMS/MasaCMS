@@ -219,26 +219,8 @@ function showMenu(id,newcontent,obj,contentid,topid,parentid,siteid,type) {
 	document.getElementById('newCopyAllLink').style.display='none';
 	document.getElementById('newPaste').style.display='none';
 	document.getElementById('newPasteLink').style.display='none';
-	document.getElementById('newPageLink').style.display='none';
-	document.getElementById('newLinkLink').style.display='none';
-	document.getElementById('newCalendarLink').style.display='none';
-	document.getElementById('newPortalLink').style.display='none';
-	document.getElementById('newFileLink').style.display='none';
-	document.getElementById('newGalleryLink').style.display='none';
-	document.getElementById('newGalleryItemLink').style.display='none';
-	document.getElementById('newPage').style.display='none';
-	document.getElementById('newLink').style.display='none';
-	document.getElementById('newCalendar').style.display='none';
-	document.getElementById('newPortal').style.display='none';
-	document.getElementById('newFile').style.display='none';
-	document.getElementById('newGallery').style.display='none';
-	document.getElementById('newGalleryItem').style.display='none';
-
-	document.getElementById('newGalleryItemMulti').style.display='none';
-	document.getElementById('newGalleryItemMultiLink').style.display='none';
-
-	//document.getElementById('newFileMulti').style.display='none';
-	//document.getElementById('newFileMultiLink').style.display='none';
+	document.getElementById('newContentLink').style.display='none';
+	document.getElementById('newContent').style.display='none';
 
 	document.getElementById('newZoomLink').onclick = function(){
 		loadSiteManagerInTab(function(){
@@ -261,62 +243,60 @@ function showMenu(id,newcontent,obj,contentid,topid,parentid,siteid,type) {
 
 	if(navperm=='author' || navperm=='editor'){
 
-	document.getElementById('newPageLink').href=
-	'index.cfm?muraAction=cArch.edit&contentid=&parentid=' + contentid + '&type=Page&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
-	document.getElementById('newLinkLink').href=
-	'index.cfm?muraAction=cArch.edit&contentid=&parentid=' + contentid + '&type=Link&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
-	document.getElementById('newCalendarLink').href=
-	'index.cfm?muraAction=cArch.edit&contentid=&parentid=' + contentid + '&type=Calendar&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
-	document.getElementById('newPortalLink').href=
-	'index.cfm?muraAction=cArch.edit&contentid=&parentid=' + contentid + '&type=Portal&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
-	document.getElementById('newFileLink').href=
-	'index.cfm?muraAction=cArch.edit&contentid=&parentid=' + contentid + '&type=File&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
-	document.getElementById('newGalleryLink').href=
-	'index.cfm?muraAction=cArch.edit&contentid=&parentid=' + contentid + '&type=Gallery&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
-	document.getElementById('newGalleryItemLink').href=
-	'index.cfm?muraAction=cArch.edit&contentid=&parentid=' + contentid + '&type=File&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
-	document.getElementById('newGalleryItemMultiLink').href=
-	'index.cfm?muraAction=cArch.multiFileUpload&contentid=&parentid=' + contentid + '&type=File&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
-	//document.getElementById('newFileMultiLink').href=
-	//'index.cfm?muraAction=cArch.multiFileUpload&contentid=&parentid=' + contentid + '&type=File&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
+		document.getElementById('newContentLink').onclick=function(){
+			
+			jQuery("#newContentContainer").remove();
+			jQuery("body").append('<div id="newContentMenuContainer" title="Loading..." style="display:none"><div id="newContentMenu"><img src="assets/images/progress_bar.gif"></div></div>');
 
-	if (copySiteID != "" && copyContentID != ""){
-		document.getElementById('newPasteLink').href='javascript:pasteThis(\'' + contentid + '\')';
-		document.getElementById('newPaste').style.display='';
-		document.getElementById('newPasteLink').style.display='';
-	}
+			jQuery("#newContentMenuContainer").dialog({
+				resizable: true,
+				modal: true,
+				width: 400,
+				position: getDialogPosition(),
+				buttons: {
+					Cancel: function() {
+							jQuery( this ).dialog( "close" );
+					}
+				},
+				open: function(){		
+					jQuery("#ui-dialog-title-newContentMenuContainer").html(newContentMenuTitle);
+					jQuery("#newContentMenuContainer").html('<div class="ui-dialog-content ui-widget-content"><img src="./assets/images/progress_bar.gif"></div>');
+					var url = 'index.cfm';
+					var pars = 'muraAction=cArch.loadnewcontentmenu&compactDisplay=true&siteid=' + siteid +'&contentid=' + contentid + '&parentid=' + parentid +'&cacheid=' + Math.random();
+					jQuery.get(url + "?" + pars, 
+							function(data) {
+							jQuery('#newContentMenuContainer').html(data);
+							}
+						);
+				},
+				close: function(){
+					jQuery(this).dialog("destroy");
+				}	
+		});
 
-	if(type =='Gallery'){
-	document.getElementById('newGalleryItemLink').style.display='';
-	document.getElementById('newGalleryItem').style.display='';
-	document.getElementById('newGalleryItemMulti').style.display='';
-	document.getElementById('newGalleryItemMultiLink').style.display='';
-	document.getElementById('newCopy').style.border='';
-	} else if (type!='File' && type!='Link'){
-	document.getElementById('newPageLink').style.display='';
-	document.getElementById('newLinkLink').style.display='';
-	document.getElementById('newCalendarLink').style.display='';
-	document.getElementById('newPortalLink').style.display='';
-	document.getElementById('newFileLink').style.display='';
-	//document.getElementById('newFileMultiLink').style.display='';
-	document.getElementById('newGalleryLink').style.display='';
-	document.getElementById('newGalleryItemLink').style.display='none';
-	document.getElementById('newGalleryItemMultiLink').style.display='none';
-	document.getElementById('newPage').style.display='';
-	document.getElementById('newLink').style.display='';
-	document.getElementById('newCalendar').style.display='';
-	document.getElementById('newPortal').style.display='';
-	document.getElementById('newFile').style.display='';
-	//document.getElementById('newFileMulti').style.display='';
-	document.getElementById('newGallery').style.display='';
-	document.getElementById('newGalleryItem').style.display='none';
-	document.getElementById('newGalleryItemMulti').style.display='none';
-	document.getElementById('newCopy').style.border='';
-	} else {
-	document.getElementById('newCopy').style.border='0';
-	document.getElementById('newPaste').style.display='none';
-	document.getElementById('newZoom').style.display='none';
-	}	
+		return false;
+		};
+
+		//.href='index.cfm?muraAction=cArch.edit&contentid=&parentid=' + contentid + '&type=Page&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
+
+	
+		if (copySiteID != "" && copyContentID != ""){
+			document.getElementById('newPasteLink').href='javascript:pasteThis(\'' + contentid + '\')';
+			document.getElementById('newPaste').style.display='';
+			document.getElementById('newPasteLink').style.display='';
+		}
+
+		if(type =='Gallery'){
+			document.getElementById('newCopy').style.border='';
+		} else if (type!='File' && type!='Link'){
+			document.getElementById('newContentLink').style.display='';
+			document.getElementById('newContent').style.display='';
+			document.getElementById('newCopy').style.border='';
+		} else {
+			document.getElementById('newCopy').style.border='0';
+			document.getElementById('newPaste').style.display='none';
+			document.getElementById('newZoom').style.display='none';
+		}	
 	}
 
 	document.getElementById(id).style.top=yPos + "px" ;

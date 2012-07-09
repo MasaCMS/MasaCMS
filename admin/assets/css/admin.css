@@ -1790,6 +1790,10 @@ div.menu {
 	background: url(../images/icons/paste_24.png) no-repeat 1px 5px;
 }
 
+.addNew #newContent a {
+	background: url(../images/icons/docs_24.png) no-repeat 1px 5px;
+}
+
 .addNew #newPage a {
 	background: url(../images/icons/docs_24.png) no-repeat 1px 5px;
 }

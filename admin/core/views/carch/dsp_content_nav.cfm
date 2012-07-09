@@ -55,15 +55,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     	<a href="" id="newCopyAllLink">#application.rbFactory.getKeyValue(session.rb,"sitemanager.copyall")#</a>
     </li>
 	<li id="newPaste"><a href="" id="newPasteLink">#application.rbFactory.getKeyValue(session.rb,"sitemanager.paste")#</a></li>
-	<li id="newPage"><a href="" id="newPageLink">#application.rbFactory.getKeyValue(session.rb,"sitemanager.addpage")#</a></li>
-    <li id="newLink"><a href="" id="newLinkLink">#application.rbFactory.getKeyValue(session.rb,"sitemanager.addlink")#</a></li>
-    <li id="newFile"><a href="" id="newFileLink">#application.rbFactory.getKeyValue(session.rb,"sitemanager.addfile")#</a></li>
-   <!---  <li id="newFileMulti"><a href="" id="newFileMultiLink">#application.rbFactory.getKeyValue(session.rb,"sitemanager.addmultifiles")#</a></li> --->
-	<li id="newPortal"><a href="" id="newPortalLink">#application.rbFactory.getKeyValue(session.rb,"sitemanager.addportal")#</a></li>
-    <li id="newCalendar"><a href="" id="newCalendarLink">#application.rbFactory.getKeyValue(session.rb,"sitemanager.addcalendar")#</a></li>
-    <li id="newGallery"><a href="" id="newGalleryLink">#application.rbFactory.getKeyValue(session.rb,"sitemanager.addgallery")#</a></li>
-    <li id="newGalleryItem"><a href="" id="newGalleryItemLink">#application.rbFactory.getKeyValue(session.rb,"sitemanager.addgalleryitem")#</a></li>
-	<li id="newGalleryItemMulti"><a href="" id="newGalleryItemMultiLink">#application.rbFactory.getKeyValue(session.rb,"sitemanager.addmultiitems")#</a></li>
+	<li id="newContent"><a href="" id="newContentLink">#application.rbFactory.getKeyValue(session.rb,"sitemanager.addcontent")#</a></li>
+
   </ul>
+</div>
+
+<div id="newContentDialog" title="Add New Content" class="hide">
+  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><span id="newContentContainer"></span></p>
 </div>
 </cfoutput>

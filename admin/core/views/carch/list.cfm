@@ -447,6 +447,8 @@ function initFlatViewArgs(){
 			};
 }
 
+
+var newContentMenuTitle='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.selectcontenttype"))#';
 var flatViewArgs=initFlatViewArgs();
 
 function initSiteManagerTabContent(index){
