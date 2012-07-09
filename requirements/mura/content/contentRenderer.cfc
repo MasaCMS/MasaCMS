@@ -2517,7 +2517,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getURLForFile" access="public" output="false" returntype="string">
 	<cfargument name="fileid" required="false" default="" />
 	<cfargument name="method" required="false" default="inline" />
-	<cfreturn '#application.configBean.getContext()#/tasks/render/file/?method=#arguments.method#&amp;fileID=#arguments.fileid#' >
+	<cfscript>
+		var rsFileData = getBean('fileManager').read(arguments.fileid);
+		if ( not rsFileData.recordcount ) {
+			return '';
+		} else {
+			return '#application.configBean.getContext()#/tasks/render/file/?method=#arguments.method#&amp;fileID=#arguments.fileid#';
+		}
+	</cfscript>
 </cffunction>
 
 <cffunction name="getURLForImage" access="public" output="false" returntype="string">
