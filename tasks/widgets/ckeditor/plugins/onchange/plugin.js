@@ -40,7 +40,7 @@ CKEDITOR.plugins.add( 'onchange',
 				editor.fire( 'change' );
 			}, editor.config.minimumChangeMilliseconds || 100);
 			
-			console.log('firing');
+			//console.log('firing');
 			
 		}
 		// Kill the timer on editor destroy
