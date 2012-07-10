@@ -47,6 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent extends="mura.iterator.queryIterator" output="false">
 	
 <cfset variables.addressBean="">
+<cfset variables.recordIDField="addressID">
 
 <cffunction name="packageRecord" access="public" output="false" returntype="any">	
 	<cfif NOT isObject(variables.addressBean)>
@@ -56,7 +57,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.addressBean.setAllValues( structCopy(variables.addressStructTemplate) )>
 	</cfif>
 	
-	<cfset  variables.addressBean.set(queryRowToStruct(variables.records,currentIndex()))>
+	<cfset variables.addressBean.set(queryRowToStruct(variables.records,currentIndex()))>
+	<cfset variables.addressBean.setValue('sourceIterator',this)>
+	
 	<cfreturn variables.addressBean>
 </cffunction>
 

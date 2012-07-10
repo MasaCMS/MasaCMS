@@ -26,12 +26,20 @@
 <cfcomponent extends="mura.cfobject" displayname="Iterator" output="false" hint="I am a Iterator object.">
 	<cfset variables.maxRecordsPerPage=1000>
 	<cfset variables.recordTranslator="">
+	<cfset variables.iteratorID="">
+	<cfset variables.recordIDField="id">
+
 	<cffunction name="init" access="public" output="false" returntype="any">
 		<cfset variables.recordIndex = 0 />
 		<cfset variables.pageIndex = 1 />
+		<cfset variables.iteratorID="i" & hash(createUUID())>
 		<cfreturn THIS />
 	</cffunction>
 	
+	<cffunction name="getIteratorID" access="public" output="false" returntype="any">
+		<cfreturn variables.iteratorID  />
+	</cffunction>
+
 	<cffunction name="currentIndex" access="public" output="false" returntype="numeric">
 		<cfreturn variables.recordIndex  />
 	</cffunction>
@@ -39,7 +47,25 @@
 	<cffunction name="getRecordIndex" access="public" output="false" returntype="numeric">
 		<cfreturn variables.recordIndex />
 	</cffunction>
+
+	<cffunction name="getRecordIdField" access="public" output="false" returntype="any">
+		<cfreturn variables.recordIDField />
+	</cffunction>
 	
+	<cffunction name="getPageIDList" access="public" output="false" returntype="any">
+		<cfset var idList="">
+		<cfset var i="">
+
+		<cfif getRecordCount()>
+			<cfloop from="#getFirstRecordOnPageIndex()#" to="#getLastRecordOnPageIndex()#" index="i">
+				<cfset idList=listAppend(idList,variables.records[getRecordIDField()][i])>
+			</cfloop>
+		</cfif>
+		
+		<cfreturn idList>
+		
+	</cffunction>
+
 	<cffunction name="getFirstRecordOnPageIndex" access="public" output="false" returntype="numeric">
 		<cfset var first = ((variables.pageIndex-1) * variables.maxRecordsPerPage)>
 		

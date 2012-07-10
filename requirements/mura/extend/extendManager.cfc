@@ -152,11 +152,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="type">
 	<cfargument name="subtype">
 	<cfargument name="siteid">
+	<cfargument name="sourceIterator" default="">
 	
 	<cfif structKeyExists(arguments,"type") and  structKeyExists(arguments,"subtype") and  structKeyExists(arguments,"siteID")>
-		<cfreturn createObject("component","mura.extend.extendData").init(variables.configBean,arguments.baseID,arguments.dataTable, arguments.type, arguments.subType, arguments.siteID) />	
+		<cfreturn createObject("component","mura.extend.extendData").init(
+			configBean=variables.configBean,
+			baseID=arguments.baseID,
+			dataTable=arguments.dataTable,
+			type=arguments.type,
+			subType=arguments.subType,
+			siteID=arguments.siteID,
+			sourceIterator=arguments.sourceIterator
+			) />	
 	<cfelse>
-		<cfreturn createObject("component","mura.extend.extendData").init(variables.configBean,arguments.baseID,arguments.dataTable) />
+		<cfreturn createObject("component","mura.extend.extendData").init(
+			configBean=variables.configBean,
+			baseID=arguments.baseID,
+			dataTable=arguments.dataTable,
+			sourceIterator=arguments.sourceIterator
+			) />
 	</cfif>
 </cffunction>
 
@@ -1404,6 +1418,5 @@ and tclassextendattributes.type='File'
 	</cfscript>
 	</cfif>
 </cffunction>
-
 
 </cfcomponent>
