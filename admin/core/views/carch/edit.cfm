@@ -194,7 +194,10 @@ var hasBody=#subType.getHasBody()#;
 		</cfif>
 		
 		<!--- If the node is new check to see if the parent type has a matching sub type. --->
-		<cfif rc.contentBean.getIsNew()>
+		<cfif rc.contentBean.getIsNew() and structKeyExists(rc,"subType") and len(rc.subtype)>
+			<cfset rc.contentBean.setSubType(rc.subtype)>
+		<!---
+		<cfelseif rc.contentBean.getIsNew()>
 			<cfquery name="rsParentSubType" dbtype="query">
 			select * from rsSubTypes
 			where 
@@ -204,6 +207,7 @@ var hasBody=#subType.getHasBody()#;
 			<cfif rsParentSubType.recordcount>
 				<cfset rc.contentBean.setSubType(rsParentSubType.subType)>
 			</cfif>
+		--->
 		</cfif>
 		
 		<cfif rsSubTypes.recordCount>

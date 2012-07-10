@@ -178,6 +178,43 @@ function getObj(name)
   }
 }
 
+function openNewContentMenu(contentid,siteid,topid,parentid,type){
+		
+			jQuery("#newContentMenuContainer").remove();
+			jQuery("body").append('<div id="newContentMenuContainer" title="Loading..." style="display:none"><div id="newContentMenu"><img src="assets/images/progress_bar.gif"></div></div>');
+
+			jQuery("#newContentMenuContainer").dialog({
+				resizable: true,
+				modal: true,
+				width: 400,
+				position: getDialogPosition(),
+				buttons: {
+					Cancel: function() {
+							jQuery( this ).dialog( "close" );
+					}
+				},
+				open: function(){
+					jQuery("#ui-dialog-title-newContentMenuContainer").html(newContentMenuTitle);
+					jQuery("#newContentMenuContainer").html('<div class="ui-dialog-content ui-widget-content"><img src="./assets/images/progress_bar.gif"></div>');
+					var url = 'index.cfm';
+					var pars = 'muraAction=cArch.loadnewcontentmenu&compactDisplay=true&siteid=' + siteid +'&contentid=' + contentid + '&parentid=' + parentid + '&topid=' + parentid + '&ptype=' + type +'&cacheid=' + Math.random();
+					jQuery.get(url + "?" + pars, 
+							function(data) {
+							jQuery('#newContentMenuContainer').html(data);
+							$("#newContentMenuContainer").dialog("option", "position", "center");
+							}
+						);		
+					
+				},
+				close: function(){
+					jQuery(this).dialog("destroy");
+					jQuery("#newContentMenuContainer").remove();
+				}	
+		});
+
+		return false;
+}
+
 function showMenu(id,newcontent,obj,contentid,topid,parentid,siteid,type) {
 	var navperm=newcontent.toLowerCase();
 
@@ -243,38 +280,9 @@ function showMenu(id,newcontent,obj,contentid,topid,parentid,siteid,type) {
 
 	if(navperm=='author' || navperm=='editor'){
 
-		document.getElementById('newContentLink').onclick=function(){
-			
-			jQuery("#newContentContainer").remove();
-			jQuery("body").append('<div id="newContentMenuContainer" title="Loading..." style="display:none"><div id="newContentMenu"><img src="assets/images/progress_bar.gif"></div></div>');
-
-			jQuery("#newContentMenuContainer").dialog({
-				resizable: true,
-				modal: true,
-				width: 400,
-				position: getDialogPosition(),
-				buttons: {
-					Cancel: function() {
-							jQuery( this ).dialog( "close" );
-					}
-				},
-				open: function(){		
-					jQuery("#ui-dialog-title-newContentMenuContainer").html(newContentMenuTitle);
-					jQuery("#newContentMenuContainer").html('<div class="ui-dialog-content ui-widget-content"><img src="./assets/images/progress_bar.gif"></div>');
-					var url = 'index.cfm';
-					var pars = 'muraAction=cArch.loadnewcontentmenu&compactDisplay=true&siteid=' + siteid +'&contentid=' + contentid + '&parentid=' + parentid +'&cacheid=' + Math.random();
-					jQuery.get(url + "?" + pars, 
-							function(data) {
-							jQuery('#newContentMenuContainer').html(data);
-							}
-						);
-				},
-				close: function(){
-					jQuery(this).dialog("destroy");
-				}	
-		});
-
-		return false;
+		document.getElementById('newContentLink').onclick=function(){			
+			openNewContentMenu(contentid,siteid,topid,parentid,type);
+			return false;
 		};
 
 		//.href='index.cfm?muraAction=cArch.edit&contentid=&parentid=' + contentid + '&type=Page&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
@@ -285,10 +293,8 @@ function showMenu(id,newcontent,obj,contentid,topid,parentid,siteid,type) {
 			document.getElementById('newPaste').style.display='';
 			document.getElementById('newPasteLink').style.display='';
 		}
-
-		if(type =='Gallery'){
-			document.getElementById('newCopy').style.border='';
-		} else if (type!='File' && type!='Link'){
+	
+		if (type!='File' && type!='Link'){
 			document.getElementById('newContentLink').style.display='';
 			document.getElementById('newContent').style.display='';
 			document.getElementById('newCopy').style.border='';

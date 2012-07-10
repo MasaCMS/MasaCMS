@@ -1322,6 +1322,22 @@ and tclassextendattributes.type='File'
 			if(isDefined("extXML.xmlAttributes.subtype")){
 				subType.setSubType( extXML.xmlAttributes.subtype );
 			}
+
+			if(isDefined("extXML.xmlAttributes.description")){
+				subType.setDescription( extXML.xmlAttributes.description );
+			}
+
+			if(isDefined("extXML.xmlAttributes.hassummary")){
+				subType.setHasSummary( extXML.xmlAttributes.hassummary );
+			}
+
+			if(isDefined("extXML.xmlAttributes.hasbody")){
+				subType.setHasBody( extXML.xmlAttributes.hasbody );
+			}
+
+			if(isDefined("extXML.xmlAttributes.isactive")){
+				subType.setIsActive( extXML.xmlAttributes.isactive );
+			}
 				      	
 			subType.setSiteID( arguments.siteID );
 			subType.load();
