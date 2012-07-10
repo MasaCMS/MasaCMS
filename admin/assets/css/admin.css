@@ -1747,7 +1747,7 @@ div.menu {
 	border-bottom: 1px dotted #D4D4D4;
 }
 
-.addNew ul li:last-child, .addNew #newGallery {
+.addNew ul li:last-child, .addNew #newGallery, .addNew #newCopy {
 	border-bottom: 0 !important;
 }
 
@@ -1764,7 +1764,7 @@ div.menu {
 }
 
 .addNew #newZoom {
-	border-bottom: 1px solid #D4D4D4;
+	border-bottom: 1px dotted #D4D4D4;
 }
 
 .addNew #newZoom a {
