@@ -14,7 +14,7 @@ StructAppend(attributes, form, "no");
 <cfparam name="attributes.siteid" default="#session.siteid#">
 <cfset request.rsList=application.contentManager.getPrivateSearch('#attributes.siteid#','#attributes.keywords#')/>
 <cfset request.nextn=application.utility.getNextN(request.rsList,30,attributes.startrow) />
-<cfset request.contentRenderer = createObject("component","#application.settingsManager.getSite(session.siteid).getAssetMap()#.includes.contentRenderer").init() />
+<cfset request.contentRenderer = application.settingsManager.getSite(attributes.siteID).getContentRenderer() />
 </cfsilent>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <cfoutput>
