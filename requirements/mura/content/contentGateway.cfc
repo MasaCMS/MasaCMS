@@ -116,7 +116,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 		<cfset var ID=arguments.contentid>
 		<cfset var I=0>
-		<cfset var rscontent = "" />
+		<cfset var rsCrumbData = "" />
 		<cfset var crumbdata=arraynew(1) />
 		<cfset var crumb= ""/>
 		<cfset var parentArray=arraynew(1) />
@@ -126,44 +126,44 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<cfloop condition="ID neq '00000000000000000000000000000000END'">
 
-			<cfquery name="rsContent" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+			<cfquery name="rsCrumbData" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 			select contenthistid, contentid, menutitle, filename, parentid, type, target, targetParams, 
 			siteid, restricted, restrictgroups,template,childTemplate,inheritObjects,metadesc,metakeywords,sortBy,
 			sortDirection from tcontent where active=1 and contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#ID#"/> and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 			</cfquery>
 			
 			<cfset crumb=structNew() />
-			<cfset crumb.type=rscontent.type />
-			<cfset crumb.filename=rscontent.filename />
-			<cfset crumb.menutitle=rscontent.menutitle />
-			<cfset crumb.target=rscontent.target />
-			<cfset crumb.contentid=rscontent.contentid />
-			<cfset crumb.parentid=rscontent.parentid />
-			<cfset crumb.siteid=rscontent.siteid />
-			<cfset crumb.restricted=rscontent.restricted />
-			<cfset crumb.restrictGroups=rscontent.restrictgroups />
-			<cfif len(rscontent.childTemplate)>
-				<cfset crumb.template=rscontent.childTemplate />
+			<cfset crumb.type=rsCrumbData.type />
+			<cfset crumb.filename=rsCrumbData.filename />
+			<cfset crumb.menutitle=rsCrumbData.menutitle />
+			<cfset crumb.target=rsCrumbData.target />
+			<cfset crumb.contentid=rsCrumbData.contentid />
+			<cfset crumb.parentid=rsCrumbData.parentid />
+			<cfset crumb.siteid=rsCrumbData.siteid />
+			<cfset crumb.restricted=rsCrumbData.restricted />
+			<cfset crumb.restrictGroups=rsCrumbData.restrictgroups />
+			<cfif len(rsCrumbData.childTemplate)>
+				<cfset crumb.template=rsCrumbData.childTemplate />
 			<cfelse>
-				<cfset crumb.template=rscontent.template />
+				<cfset crumb.template=rsCrumbData.template />
 			</cfif>
-			<cfset crumb.contenthistid=rscontent.contenthistid />
-			<cfset crumb.targetPrams=rscontent.targetParams />
-			<cfset crumb.metadesc=rscontent.metadesc />
-			<cfset crumb.metakeywords=rscontent.metakeywords />
-			<cfset crumb.sortBy=rscontent.sortBy />
-			<cfset crumb.sortDirection=rscontent.sortDirection />
-			<cfset crumb.inheritObjects=rscontent.inheritObjects />
+			<cfset crumb.contenthistid=rsCrumbData.contenthistid />
+			<cfset crumb.targetPrams=rsCrumbData.targetParams />
+			<cfset crumb.metadesc=rsCrumbData.metadesc />
+			<cfset crumb.metakeywords=rsCrumbData.metakeywords />
+			<cfset crumb.sortBy=rsCrumbData.sortBy />
+			<cfset crumb.sortDirection=rsCrumbData.sortDirection />
+			<cfset crumb.inheritObjects=rsCrumbData.inheritObjects />
 				
 			<cfset I=I+1>
 			<cfset arrayAppend(crumbdata,crumb) />
-			<cfif arguments.setInheritance and request.inheritedObjects eq "" and rscontent.inheritObjects eq 'cascade'>
-			<cfset request.inheritedObjects=rscontent.contenthistid>
+			<cfif arguments.setInheritance and request.inheritedObjects eq "" and rsCrumbData.inheritObjects eq 'cascade'>
+			<cfset request.inheritedObjects=rsCrumbData.contenthistid>
 			</cfif>
 			
-			<cfset arrayAppend(parentArray,rscontent.contentid) />
+			<cfset arrayAppend(parentArray,rsCrumbData.contentid) />
 			
-			<cfset ID=rscontent.parentid>
+			<cfset ID=rsCrumbData.parentid>
 			
 			<cfif I gt 50><cfthrow  type="custom" message="Crumdata Loop Error"></cfif>
 			</cfloop>
@@ -177,7 +177,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<cfelse>
 			
-			<cfquery name="rsContent" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+			<cfquery name="rsCrumbData" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 			select contenthistid, contentid, menutitle, filename, parentid, type, target, targetParams, 
 			siteid, restricted, restrictgroups,template,childTemplate,inheritObjects,metadesc,metakeywords,sortBy,
 			sortDirection,
@@ -194,36 +194,36 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			order by depth desc
 			</cfquery>
 		
-			<cfloop query="rsContent">
+			<cfloop query="rsCrumbData">
 			<cfset crumb=structNew() />
-			<cfset crumb.type=rscontent.type />
-			<cfset crumb.filename=rscontent.filename />
-			<cfset crumb.menutitle=rscontent.menutitle />
-			<cfset crumb.target=rscontent.target />
-			<cfset crumb.contentid=rscontent.contentid />
-			<cfset crumb.parentid=rscontent.parentid />
-			<cfset crumb.siteid=rscontent.siteid />
-			<cfset crumb.restricted=rscontent.restricted />
-			<cfset crumb.restrictGroups=rscontent.restrictgroups />
-			<cfif len(rscontent.childtemplate)>
-				<cfset crumb.template=rscontent.childtemplate />
+			<cfset crumb.type=rsCrumbData.type />
+			<cfset crumb.filename=rsCrumbData.filename />
+			<cfset crumb.menutitle=rsCrumbData.menutitle />
+			<cfset crumb.target=rsCrumbData.target />
+			<cfset crumb.contentid=rsCrumbData.contentid />
+			<cfset crumb.parentid=rsCrumbData.parentid />
+			<cfset crumb.siteid=rsCrumbData.siteid />
+			<cfset crumb.restricted=rsCrumbData.restricted />
+			<cfset crumb.restrictGroups=rsCrumbData.restrictgroups />
+			<cfif len(rsCrumbData.childtemplate)>
+				<cfset crumb.template=rsCrumbData.childtemplate />
 			<cfelse>
-				<cfset crumb.template=rscontent.template />
+				<cfset crumb.template=rsCrumbData.template />
 			</cfif>
-			<cfset crumb.contenthistid=rscontent.contenthistid />
-			<cfset crumb.targetPrams=rscontent.targetParams />
-			<cfset crumb.metadesc=rscontent.metadesc />
-			<cfset crumb.metakeywords=rscontent.metakeywords />
-			<cfset crumb.sortBy=rscontent.sortBy />
-			<cfset crumb.sortDirection=rscontent.sortDirection />
-			<cfset crumb.inheritObjects=rscontent.inheritObjects />
+			<cfset crumb.contenthistid=rsCrumbData.contenthistid />
+			<cfset crumb.targetPrams=rsCrumbData.targetParams />
+			<cfset crumb.metadesc=rsCrumbData.metadesc />
+			<cfset crumb.metakeywords=rsCrumbData.metakeywords />
+			<cfset crumb.sortBy=rsCrumbData.sortBy />
+			<cfset crumb.sortDirection=rsCrumbData.sortDirection />
+			<cfset crumb.inheritObjects=rsCrumbData.inheritObjects />
 			
 			<cfset arrayAppend(crumbdata,crumb) />
-			<cfif arguments.setInheritance and request.inheritedObjects eq "" and rscontent.inheritObjects eq 'cascade'>
-				<cfset request.inheritedObjects=rscontent.contenthistid>
+			<cfif arguments.setInheritance and request.inheritedObjects eq "" and rsCrumbData.inheritObjects eq 'cascade'>
+				<cfset request.inheritedObjects=rsCrumbData.contenthistid>
 			</cfif>
 			
-			<cfset arrayAppend(parentArray,rscontent.contentid) />
+			<cfset arrayAppend(parentArray,rsCrumbData.contentid) />
 			
 			</cfloop>
 			
@@ -239,11 +239,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getContentIDFromContentHistID" returntype="string" access="public" output="false">
 	<cfargument name="contenthistid" required="true" default="">
-	<cfset var rs="">
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" blockfactor="20"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfset var rsContentIDFromHistID="">
+	<cfquery name="rsContentIDFromHistID" datasource="#variables.configBean.getReadOnlyDatasource()#" blockfactor="20"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		select contentID from tcontent where contenthistid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contenthistid#">
 	</cfquery>
-	<cfreturn rs.contentID>
+	<cfreturn rsContentIDFromHistID.contentID>
 </cffunction>
 
 <cffunction name="getContentHistIDFromContentID" returntype="string" access="public" output="false">
@@ -1714,7 +1714,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var rs= ''/>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rsTagCloud" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select tag, count(tag) as tagCount from tcontenttags 
 	inner join tcontent on (tcontenttags.contenthistID=tcontent.contenthistID)
 	left Join tcontent tparent on (tcontent.parentid=tparent.contentid
@@ -1768,7 +1768,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	order by tag
 	</cfquery>
 	
-	<cfreturn rs />
+	<cfreturn rsTagCloud />
 </cffunction>
 
 <cffunction name="getObjects" access="public" returntype="query" output="false">
@@ -1800,8 +1800,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="inheritedObjects" required="yes" type="string" >
 	<cfargument name="siteID" required="yes" type="string" >
 	
-	<cfset var rsObjects=""/>
-	<cfquery datasource="#application.configBean.getReadOnlyDatasource()#" name="rsObjects"  username="#application.configBean.getReadOnlyDbUsername()#" password="#application.configBean.getReadOnlyDbPassword()#">
+	<cfset var rsObjectInheritence=""/>
+	<cfquery datasource="#application.configBean.getReadOnlyDatasource()#" name="rsObjectInheritence"  username="#application.configBean.getReadOnlyDbUsername()#" password="#application.configBean.getReadOnlyDbPassword()#">
 	select tcontentobjects.object, tcontentobjects.objectid, tcontentobjects.orderno, tcontentobjects.params, tplugindisplayobjects.configuratorInit from tcontentobjects
 	left join tplugindisplayobjects on (tcontentobjects.object='plugin' 
 										and tcontentobjects.objectID=tplugindisplayobjects.objectID)  
@@ -1813,7 +1813,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	order by orderno
 	</cfquery>
 	
-	<cfreturn rsObjects>
+	<cfreturn rsObjectInheritence>
 		
 </cffunction>
 

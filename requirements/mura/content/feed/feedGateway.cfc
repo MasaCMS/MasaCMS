@@ -60,9 +60,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="publicOnly" type="boolean" required="true" default="false">
 	<cfargument name="activeOnly" type="boolean" required="true" default="false">
 
-	<cfset var rs ="" />
+	<cfset var rsFeeds ="" />
 
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rsFeeds" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select * from tcontentfeeds
 	where siteID= <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.siteID#">
 	and Type= <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.type#">
@@ -76,22 +76,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	order by name
 	</cfquery>
 	
-	<cfreturn rs />
+	<cfreturn rsFeeds />
 </cffunction>
 
 <cffunction name="getDefaultFeeds" access="public" output="false" returntype="query">
 	<cfargument name="siteID" type="String">
 	
-	<cfset var rs ="" />
+	<cfset var rsDefaultFeeds ="" />
 
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rsDefaultFeeds" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select * from tcontentfeeds
 	where siteID= <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.siteID#">
 	and isDefault=1
 	order by name
 	</cfquery>
 	
-	<cfreturn rs />
+	<cfreturn rsDefaultFeeds />
 </cffunction>
 
 <cffunction name="getFeed" access="public" output="false" returntype="query">
@@ -100,7 +100,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="aggregation" required="true" type="boolean" default="false" />
 	
 	<cfset var c ="" />
-	<cfset var rs ="" />
+	<cfset var rsFeed ="" />
 	<cfset var contentLen =listLen(arguments.feedBean.getcontentID()) />
 	<cfset var categoryLen =listLen(arguments.feedBean.getCategoryID()) />
 	<cfset var rsParams=arguments.feedBean.getAdvancedParams() />
@@ -161,7 +161,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfloop>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" blockfactor="#blockFactor#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rsFeed" datasource="#variables.configBean.getReadOnlyDatasource()#" blockfactor="#blockFactor#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	<cfif dbType eq "oracle" and arguments.feedBean.getMaxItems()>select * from (</cfif>
 	select <cfif dbtype eq "mssql" and arguments.feedBean.getMaxItems()>top #arguments.feedBean.getMaxItems()#</cfif> 
 	tcontent.siteid, tcontent.title, tcontent.menutitle, tcontent.restricted, tcontent.restrictgroups, 
@@ -621,18 +621,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif dbType eq "oracle" and arguments.feedBean.getMaxItems()>) where ROWNUM <= <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.feedBean.getMaxItems()#" /> </cfif>
 	</cfquery>
 	
-	<cfreturn rs />
+	<cfreturn rsFeed />
 </cffunction>
 
 <cffunction name="getcontentItems" access="public" output="false" returntype="query">
 	<cfargument name="siteID" type="String">
 	<cfargument name="ContentID" type="String">
 	
-	<cfset var rs ="" />
+	<cfset var rsFeedItems ="" />
 	<cfset var theListLen =listLen(arguments.contentID) />
 	<cfset var I = 0 />
 
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rsFeedItems" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select contentID, menutitle, type from tcontent where
 	active=1 and
 	<cfif theListLen>
@@ -646,16 +646,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	</cfquery>
 	
-	<cfreturn rs />
+	<cfreturn rsFeedItems />
 </cffunction>
 
 <cffunction name="getFeedsByCategoryID" returntype="query" access="public" output="false">
 	<cfargument name="categoryID" type="string" />
 	<cfargument name="siteID" type="string" />
 	
-	<cfset var rs ="" />
+	<cfset var rsFeedByCategory ="" />
 
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rsFeedByCategory" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 
 	SELECT name, channelLink, type
 	FROM tcontentfeeds 
@@ -671,16 +671,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	</cfquery>
 	
-	<cfreturn rs />
+	<cfreturn rsFeedByCategory />
 </cffunction>
 
 <cffunction name="getTypeCount" access="public" output="false" returntype="query">
 	<cfargument name="siteID" type="String" required="true" default="">
 	<cfargument name="type" type="String" required="true" default="">
 	
-	<cfset var rs= ''/>
+	<cfset var rsFeedTypeCount= ''/>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rsFeedTypeCount" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	select count(*) as Total from tcontentfeeds
 	where isactive=1
 	<cfif arguments.siteID neq ''>
@@ -692,7 +692,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	</cfquery>
 	
-	<cfreturn rs />
+	<cfreturn rsFeedTypeCount />
 </cffunction>
 
 <cffunction name="renderActiveClause" output="true">

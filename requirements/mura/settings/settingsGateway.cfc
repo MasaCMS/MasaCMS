@@ -57,9 +57,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getList" access="public" output="false" returntype="query">
 	<cfargument name="sortBy" default="orderno">
 	<cfargument name="sortDirection" default="asc">
-	<cfset var rs = "" />
+	<cfset var rsSites = "" />
 
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#" cachedwithin="#createtimespan(1,0,0,0)#"  >
+	<cfquery name="rsSites" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#" cachedwithin="#createtimespan(1,0,0,0)#"  >
 	select * from tsettings order by 
 	<cfif listFindNoCase("domain,site,orderno",arguments.sortBy)>
 	#arguments.sortBy#
@@ -73,7 +73,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	</cfquery>
 	
-	<cfreturn rs />
+	<cfreturn rsSites />
 	
 </cffunction>
 

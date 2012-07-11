@@ -185,13 +185,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="loadData" access="public" returntype="void" output="false">
-<cfset var rs=""/>
+<cfset var rsExtendedAttributes=""/>
 <cfset var rsCombine=""/>
 <cfset var rsPreValue=""/>
 <cfset var dataTable=getDataTable() />
 <cfset var rsDefinitions=getDefinitionsQuery()>
 <cfset var tableModifier="">
-<cfset var pageQuery="">
+<cfset var rsExtended="">
 
 		<cfif variables.configBean.getDbType() eq "MSSQL">
 			 <cfset tableModifier="with (nolock)">
@@ -206,7 +206,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				)>
 
 			<cfif not isQuery(variables.instance.sourceIterator.getValue("page_extended#variables.instance.sourceIterator.getPageIndex()#"))>
-				<cfquery name="pageQuery" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+				<cfquery name="rsPage" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 					select #getDataTable()#.baseid, tclassextendattributes.name, tclassextendattributes.validation, 
 					<cfif variables.configBean.getDBType() eq "oracle">
 						to_char(tclassextendattributes.label) as label
@@ -233,17 +233,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 				</cfquery>
 
-				<cfset variables.instance.sourceIterator.setValue("page_extended#variables.instance.sourceIterator.getPageIndex()#",pageQuery)>
+				<cfset variables.instance.sourceIterator.setValue("page_extended#variables.instance.sourceIterator.getPageIndex()#",rsPage)>
 			<cfelse>
-				<cfset pageQuery=variables.instance.sourceIterator.getValue("page_extended#variables.instance.sourceIterator.getPageIndex()#")>
+				<cfset rsPage=variables.instance.sourceIterator.getValue("page_extended#variables.instance.sourceIterator.getPageIndex()#")>
 			</cfif>
 
-			<cfquery name="rs" dbtype="query">
-				select * from pageQuery
+			<cfquery name="rsExtended" dbtype="query">
+				select * from rsPage
 				where baseID='#getBaseID()#'
 			</cfquery>
 		<cfelse>
-			<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+			<cfquery name="rsExtended" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 			select #dataTable#.baseid, tclassextendattributes.name, tclassextendattributes.validation, 
 			<cfif variables.configBean.getDBType() eq "oracle">
 				to_char(tclassextendattributes.label) as label
@@ -267,7 +267,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif len(getType()) and len(getSubType()) and len(getSiteID())>
 			<cfquery name="rsCombine" dbtype="query">
 				select baseID, name, validation, label, attributeID, defaultValue, extendSetID<cfif variables.configBean.getDBType() neq "oracle">, attributeValue</cfif>
-				from rs
+				from rsExtended
 				
 				union all
 				
@@ -288,20 +288,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	                  </cfif>
 	                 subtype='Default'
 	                  )
-				<cfif rs.recordcount>
-				and attributeID not in (#valuelist(rs.attributeid)#)
+				<cfif rsExtended.recordcount>
+				and attributeID not in (#valuelist(rsExtended.attributeid)#)
 				</cfif>
 			
 			</cfquery>
 
 			<!--- Can't union in clob attribute value so they are manually added after the fact --->
 			<cfif variables.configBean.getDBType() eq "oracle">
-				<cfset queryAddColumn(rsPre,"attributeValue","cf_sql_varchar",arrayNew(1))>
+				<cfset queryAddColumn(rsCombine,"attributeValue","cf_sql_varchar",arrayNew(1))>
 
-				<cfloop query='rs'>
+				<cfloop query='rsExtendedAttributes'>
 					<cfloop query='rsCombine'>
-						<cfif rs.attributeID eq rsCombine.attributeID>
-							<cfset querySetCell(rsCombine, "attributeValue", rs.attributeValue, rsCombine.currentrow)>
+						<cfif rsExtended.attributeID eq rsCombine.attributeID>
+							<cfset querySetCell(rsCombine, "attributeValue", rsExtended.attributeValue, rsCombine.currentrow)>
 							<cfbreak>
 						</cfif>
 					</cfloop>	
@@ -309,16 +309,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				
 			</cfif>
 
-			<cfset rs=rsCombine>
+			<cfset rsExtended=rsCombine>
 
 		</cfif>
 
-		<cfloop query='rs'>
-			<cfset variables.instance.idLookup['id_#rs.attributeID#']=rs.currentRow>
-			<cfset variables.instance.nameLookup['name_#rs.attributeID#']=rs.currentRow>
+		<cfloop query='rsExtended'>
+			<cfset variables.instance.idLookup['id_#rsExtended.attributeID#']=rsExtended.currentRow>
+			<cfset variables.instance.nameLookup['name_#rsExtended.attributeID#']=rsExtended.currentRow>
 		</cfloop>
 		
-		<cfset variables.instance.data=rs />
+		<cfset variables.instance.data=rsExtended />
 		
 </cffunction>
 

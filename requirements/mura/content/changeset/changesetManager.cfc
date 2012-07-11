@@ -202,8 +202,8 @@
 <cfargument name="keywords">
 <cfargument name="sortBy">
 
-	<cfset var rs="">
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfset var rsChangeSets="">
+	<cfquery name="rsChangeSets" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select changesetID, siteID, name, description, created, publishDate, published, lastupdate, lastUpdateBy, remoteID, remotePubDate, remoteSourceURL
 	from tchangesets
 	where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
@@ -235,14 +235,14 @@
 	published, name
 	</cfif>
 	</cfquery>
-	<cfreturn rs>
+	<cfreturn rsChangeSets>
 </cffunction>
 
 <cffunction name="getPendingByContentID" access="public" returntype="any" output="false">
 <cfargument name="contentID">
 <cfargument name="siteID">
-	<cfset var rs="">
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfset var rsPendingChangeSets="">
+	<cfquery name="rsPendingChangeSets" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select tchangesets.changesetID, tcontent.contentID, tcontent.contenthistid, tcontent.siteID, tchangesets.name changesetName
 	from tcontent
 	inner join tchangesets on tcontent.changesetID=tchangesets.changesetID
@@ -250,13 +250,13 @@
 	and tcontent.contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#">
 	and tchangesets.published=0
 	</cfquery>
-	<cfreturn rs>
+	<cfreturn rsPendingChangeSets>
 </cffunction>
 
 <cffunction name="publishBySchedule" access="public" returntype="any" output="false">
-	<cfset var rs="">
+	<cfset var rsPendingChangeSets="">
 	
-	<cfquery name="rs" cachedwithin="#CreateTimeSpan(0, 0, 5, 0)#" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rsPendingChangeSets" cachedwithin="#CreateTimeSpan(0, 0, 5, 0)#" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select changesetID
 	from tchangesets
 	where tchangesets.published=0
@@ -265,8 +265,8 @@
 	order by tchangesets.publishDate asc
 	</cfquery>
 
-	<cfloop query="rs">
-		<cfset publish(rs.changesetID,true)>
+	<cfloop query="rsPendingChangeSets">
+		<cfset publish(rsPendingChangeSets.changesetID,true)>
 	</cfloop>	
 
 </cffunction>
