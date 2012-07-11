@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cfsavecontent variable="variables.fieldlist"><cfoutput>siteid,pagelimit,domain, domainAlias, contact,locking,site,mailserverip,mailserverusername,mailserverpassword,emailbroadcaster,emailbroadcasterlimit,extranet,extranetPublicReg,extranetssl,
+<cfsavecontent variable="variables.fieldlist"><cfoutput>siteid,pagelimit,domain,domainAlias,enforcePrimaryDomain,contact,locking,site,mailserverip,mailserverusername,mailserverpassword,emailbroadcaster,emailbroadcasterlimit,extranet,extranetPublicReg,extranetssl,
 cache, cacheCapacity, cacheFreeMemoryThreshold, viewdepth,nextn,dataCollection,ExportLocation,
 columnCount,primaryColumn,publicSubmission,adManager,columnNames,contactName,contactAddress,contactCity,contactState,contactZip,contactEmail,contactPhone,
 publicUserPoolID,PrivateUserPoolID,AdvertiserUserPoolID,displayPoolID,orderno,feedManager,
@@ -257,6 +257,7 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
          pagelimit = #arguments.bean.getpagelimit()#,
 		 domain=<cfif arguments.bean.getdomain('production') neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getdomain('production'))#" /><cfelse>null</cfif>,
 		 domainAlias=<cfif arguments.bean.getdomainAlias() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getdomainAlias())#" /><cfelse>null</cfif>,
+		 enforcePrimaryDomain = '#arguments.bean.getEnforcePrimaryDomain()#',
 		 contact=<cfif arguments.bean.getcontact() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getContact())#" /><cfelse>null</cfif>,
          locking = '#arguments.bean.getlocking()#',
 		 MailServerIP=<cfif arguments.bean.getMailServerIP() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getMailServerIP())#" /><cfelse>null</cfif>,
@@ -347,6 +348,7 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
          #arguments.bean.getpagelimit()# ,
 		 <cfif arguments.bean.getdomain('production') neq ''>'#trim(arguments.bean.getdomain('production'))#'<cfelse>null</cfif>,
 		 <cfif arguments.bean.getdomainAlias() neq ''>'#trim(arguments.bean.getdomainAlias())#'<cfelse>null</cfif>,
+		 '#arguments.bean.getEnforcePrimaryDomain()#',
 		<cfif arguments.bean.getcontact() neq ''>'#trim(arguments.bean.getcontact())#'<cfelse>null</cfif>,
          '#arguments.bean.getlocking()#',
 		   <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getsite()#" />,

@@ -54,6 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="domain" type="string" default="" required="true" />
 <cfproperty name="stagingDomain" type="string" default="" required="true" />
 <cfproperty name="domainAlias" type="string" default="" required="true" />
+<cfproperty name="enforcePrimaryDomain" type="int" default="0" required="true" />
 <cfproperty name="contact" type="string" default="" required="true" />
 <cfproperty name="mailServerIP" type="string" default="" required="true" />
 <cfproperty name="mailServerSMTPPort" type="string" default="25" required="true" />
@@ -126,6 +127,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.stagingDomain=""/>
 	<cfset variables.instance.Domain=""/>
 	<cfset variables.instance.DomainAlias="">
+	<cfset variables.instance.enforcePrimaryDomain=0>
 	<cfset variables.instance.Contact=""/>
 	<cfset variables.instance.MailServerIP=""/>
 	<cfset variables.instance.MailServerSMTPPort="25"/>
@@ -309,6 +311,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfreturn variables.instance.Domain />
 	</cfif>
+</cffunction>
+
+<cffunction name="setEnforcePrimaryDomain" access="public" output="false">
+	<cfargument name="enforcePrimaryDomain" />
+	<cfif isNumeric(arguments.enforcePrimaryDomain)>
+	<cfset variables.instance.enforcePrimaryDomain = arguments.enforcePrimaryDomain />
+	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="setHasFeedManager" output="false">
@@ -682,27 +692,33 @@ s
 	<cfset var i="">
 	<cfset var lineBreak=chr(13)&chr(10)>
 	
-	<cfif arguments.mode neq "partial">
+	<cfif variables.instance.enforcePrimaryDomain>
 		<cfif arguments.domain eq getDomain()>
 			<cfreturn true>
-		<cfelseif len(variables.instance.domainAlias)>
-			<cfloop list="#variables.instance.domainAlias#" delimiters="#lineBreak#" index="i">
-				<cfif arguments.domain eq i>
-					<cfreturn true>
-				</cfif>
-			</cfloop>
 		</cfif>
-	</cfif>
-	
-	<cfif arguments.mode neq "complete">
-		<cfif find(arguments.domain,getDomain())>
-			<cfreturn true>
-		<cfelseif len(variables.instance.domainAlias)>
-			<cfloop list="#variables.instance.domainAlias#" delimiters="#lineBreak#" index="i">
-				<cfif find(arguments.domain,i)>
-					<cfreturn true>
-				</cfif>
-			</cfloop>
+	<cfelse>
+		<cfif arguments.mode neq "partial">
+			<cfif arguments.domain eq getDomain()>
+				<cfreturn true>
+			<cfelseif len(variables.instance.domainAlias)>
+				<cfloop list="#variables.instance.domainAlias#" delimiters="#lineBreak#" index="i">
+					<cfif arguments.domain eq i>
+						<cfreturn true>
+					</cfif>
+				</cfloop>
+			</cfif>
+		</cfif>
+		
+		<cfif arguments.mode neq "complete">
+			<cfif find(arguments.domain,getDomain())>
+				<cfreturn true>
+			<cfelseif len(variables.instance.domainAlias)>
+				<cfloop list="#variables.instance.domainAlias#" delimiters="#lineBreak#" index="i">
+					<cfif find(arguments.domain,i)>
+						<cfreturn true>
+					</cfif>
+				</cfloop>
+			</cfif>
 		</cfif>
 	</cfif>
 

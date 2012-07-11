@@ -104,6 +104,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset nextn.previous=(nextn.previous*nextN.recordsperpage) - nextn.RecordsPerPage +1 />
 	
 	<cfset nextn.through=iif(nextn.totalRecords lt nextn.next,nextn.totalrecords,nextn.next-1)> 
+	<cfset nextn.startrow=arguments.startrow>
 	
 	<cfreturn nextn />
 </cffunction>

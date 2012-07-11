@@ -874,7 +874,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getURLStem" access="public" output="false" returntype="string">
 	<cfargument name="siteID">
 	<cfargument name="filename">
-	
+
 	<cfif len(arguments.filename)>
 		<cfif left(arguments.filename,1) neq "/">
 			<cfset arguments.filename= "/" & arguments.filename>
@@ -883,7 +883,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset arguments.filename=  arguments.filename & "/">
 		</cfif>
 	</cfif>
-	
+
 	<cfif not application.configBean.getSiteIDInURLS()>
 		<cfif arguments.filename neq ''>
 			<cfif application.configBean.getStub() eq ''>
@@ -2358,7 +2358,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rs=queryNew("page")>
 	<cfset var i=1>
 	<cfset var pageArray=ArrayNew(1)>
-	<cfset pageList=replaceNocase(pageList,"${pagebreak}","murapagebreak","ALL")>
+	<cfset var pageList=replaceNocase(pageList,"${pagebreak}","murapagebreak","ALL")>
 	<cftry>
 		<cfset pageArray=pageList.split("murapagebreak",-1)>
 		<cfcatch>
@@ -2514,35 +2514,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
+<cffunction name="getURLForFile" access="public" output="false" returntype="string">
+	<cfargument name="fileid" required="false" default="" />
+	<cfargument name="method" required="false" default="inline" />
+	<cfscript>
+		var rsFileData = getBean('fileManager').read(arguments.fileid);
+		if ( not rsFileData.recordcount ) {
+			return '';
+		} else {
+			return '#application.configBean.getContext()#/tasks/render/file/?method=#arguments.method#&amp;fileID=#arguments.fileid#';
+		}
+	</cfscript>
+</cffunction>
 
-	<cffunction name="getURLForFile" access="public" output="false" returntype="string">
-		<cfargument name="fileid" required="false" default="" />
-		<cfargument name="method" required="false" default="inline" />
-		<cfscript>
-			var rsFileData = getBean('fileManager').read(arguments.fileid);
-			if ( not rsFileData.recordcount ) {
-				return '';
-			} else {
-				return '#application.configBean.getContext()#/tasks/render/file/?method=#arguments.method#&amp;fileID=#arguments.fileid#';
-			}
-		</cfscript>
-	</cffunction>
-
-	<cffunction name="getURLForImage" access="public" output="false" returntype="string">
-		<cfargument name="fileid" required="false" default="" />
-		<cfargument name="size" required="false" default="large" />
-		<cfargument name="direct" required="false" default="#this.directImages#" />
-		<cfargument name="complete" type="boolean" required="false" default="false" />
-		<cfargument name="height" required="false" default="AUTO" />
-		<cfargument name="width" required="false" default="AUTO" />
-		<cfscript>
-			var imageURL = getBean('fileManager').createHREFForImage(argumentCollection=arguments);
-			if ( IsSimpleValue(imageURL) ) {
-				return imageURL;
-			} else {
-				return '';
-			};
-		</cfscript>
-	</cffunction>
-
+<cffunction name="getURLForImage" access="public" output="false" returntype="string">
+	<cfargument name="fileid" required="false" default="" />
+	<cfargument name="size" required="false" default="large" />
+	<cfargument name="direct" required="false" default="#this.directImages#" />
+	<cfargument name="complete" type="boolean" required="false" default="false" />
+	<cfargument name="height" required="false" default="AUTO" />
+	<cfargument name="width" required="false" default="AUTO" />
+	<cfscript>
+		var imageURL = getBean('fileManager').createHREFForImage(argumentCollection=arguments);
+		if ( IsSimpleValue(imageURL) ) {
+			return imageURL;
+		} else {
+			return '';
+		};
+	</cfscript>
+</cffunction>
 </cfcomponent>

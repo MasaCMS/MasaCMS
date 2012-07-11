@@ -200,13 +200,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="use404" required="true" default="false">
 	<cfargument name="contentBean" required="true" default="">
 	<cfargument name="type" required="true" default="">
+	<cfargument name="sourceIterator" required="true" default="">
 
 	<cfif not len(arguments.siteID)>
 		<cfthrow message="A 'SITEID' is required in order to read content. ">
 	</cfif>
 	
 	<cfif len(arguments.contenthistid)>
-		<cfreturn getcontentVersion(arguments.contenthistid, arguments.siteid, arguments.use404, arguments.contentBean)>
+		<cfreturn getcontentVersion(arguments.contenthistid, arguments.siteid, arguments.use404, arguments.contentBean, arguments.sourceIterator)>
 	<cfelseif structKeyExists(arguments,"filename")>
 		<cfreturn getActiveContentByFilename(arguments.filename, arguments.siteid, arguments.use404, arguments.contentBean,arguments.type)>
 	<cfelseif len(arguments.remoteid)>
@@ -216,7 +217,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelseif len(arguments.urltitle)>
 		<cfreturn getActiveByURLTitle(arguments.urltitle, arguments.siteid, arguments.use404, arguments.contentBean,arguments.type)>
 	<cfelse>	
-		<cfreturn getActiveContent(arguments.contentid, arguments.siteid, arguments.use404, arguments.contentBean)>
+		<cfreturn getActiveContent(arguments.contentid, arguments.siteid, arguments.use404, arguments.contentBean, arguments.sourceIterator)>
 	</cfif>
 	
 	</cffunction>
@@ -226,6 +227,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
 		<cfargument name="contentbean" required="true" default="">
+		<cfargument name="sourceIterator" required="true" default="">
 		<cfset var key= "version" & arguments.siteid & arguments.contentHistID />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory(name="data")>
@@ -235,7 +237,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
-				<cfset bean=variables.contentDAO.readVersion(arguments.contentHistID,arguments.siteid,arguments.use404,bean) />
+				<cfset bean=variables.contentDAO.readVersion(arguments.contentHistID,arguments.siteid,arguments.use404,bean,arguments.sourceIterator) />
 				<cfif not isArray(bean) and not bean.getIsNew()>
 					<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 				</cfif>
@@ -249,7 +251,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset bean.setValue("extendAutoComplete",false)>
 					<cfreturn bean />
 					<cfcatch>
-						<cfset bean=variables.contentDAO.readVersion(arguments.contentHistID,arguments.siteid,arguments.use404,bean) />
+						<cfset bean=variables.contentDAO.readVersion(arguments.contentHistID,arguments.siteid,arguments.use404,bean,arguments.sourceIterator) />
 						<cfif not isArray(bean) and not bean.getIsNew()>
 							<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 						</cfif>
@@ -258,7 +260,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cftry>
 			</cfif>
 		<cfelse>
-			<cfreturn variables.contentDAO.readVersion(arguments.contentHistID,arguments.siteid,arguments.use404,bean) />
+			<cfreturn variables.contentDAO.readVersion(arguments.contentHistID,arguments.siteid,arguments.use404,bean,arguments.sourceIterator) />
 		</cfif>
 	</cffunction>
 	
@@ -463,6 +465,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
 		<cfargument name="contentBean" required="true" default="">
+		<cfargument name="sourceIterator" required="true" default="">
 		<cfset var key="contentID" & arguments.siteid & arguments.contentID/>
 		<cfset var site=variables.settingsManager.getSite(arguments.siteid)/>
 		<cfset var cacheFactory=site.getCacheFactory(name="data")/>
@@ -472,7 +475,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
 			<cfif NOT cacheFactory.has( key )>
-				<cfset bean=variables.contentDAO.readActive(arguments.contentID,arguments.siteid,arguments.use404,bean)  />
+				<cfset bean=variables.contentDAO.readActive(arguments.contentID,arguments.siteid,arguments.use404,bean,arguments.sourceIterator)  />
 				<cfif not isArray(bean) and not bean.getIsNew()>
 					<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 				</cfif>
@@ -486,7 +489,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset bean.setValue("extendAutoComplete",false)>
 					<cfreturn bean />
 					<cfcatch>
-						<cfset bean=variables.contentDAO.readActive(arguments.contentID,arguments.siteid,arguments.use404,bean)  />
+						<cfset bean=variables.contentDAO.readActive(arguments.contentID,arguments.siteid,arguments.use404,bean,arguments.sourceIterator)  />
 						<cfif not isArray(bean) and not bean.getIsNew()>
 							<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 						</cfif>
@@ -495,7 +498,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cftry>
 			</cfif>
 		<cfelse>
-			<cfreturn variables.contentDAO.readActive(arguments.contentID,arguments.siteid,arguments.use404,bean) />
+			<cfreturn variables.contentDAO.readActive(arguments.contentID,arguments.siteid,arguments.use404,bean,arguments.sourceIterator) />
 		</cfif>
 	
 	</cffunction>

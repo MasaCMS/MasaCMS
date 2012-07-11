@@ -78,7 +78,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>, 
 	tclassextendattributes.hint, tclassextendattributes.type inputtype, tclassextendattributes.required, 
 	tclassextendattributes.validation, tclassextendattributes.regex, tclassextendattributes.message, tclassextendattributes.optionlist, 
-	tclassextendattributes.optionlabellist, tclassextendattributes.defaultvalue
+	tclassextendattributes.optionlabellist, tclassextendattributes.defaultvalue,
+	tclassextend.hasSummary,tclassextend.hasBody,
+	<cfif variables.configBean.getDBType() eq "oracle">
+		to_char(tclassextend.description) as description
+	<cfelse>
+		tclassextend.description
+	</cfif>
 	from tclassextend
 	inner join tclassextendsets on (tclassextend.subtypeid=tclassextendsets.subtypeid)
 	inner join tclassextendattributes on (tclassextendsets.extendsetid=tclassextendattributes.extendsetid)
@@ -146,11 +152,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="type">
 	<cfargument name="subtype">
 	<cfargument name="siteid">
+	<cfargument name="sourceIterator" default="">
 	
 	<cfif structKeyExists(arguments,"type") and  structKeyExists(arguments,"subtype") and  structKeyExists(arguments,"siteID")>
-		<cfreturn createObject("component","mura.extend.extendData").init(variables.configBean,arguments.baseID,arguments.dataTable, arguments.type, arguments.subType, arguments.siteID) />	
+		<cfreturn createObject("component","mura.extend.extendData").init(
+			configBean=variables.configBean,
+			baseID=arguments.baseID,
+			dataTable=arguments.dataTable,
+			type=arguments.type,
+			subType=arguments.subType,
+			siteID=arguments.siteID,
+			sourceIterator=arguments.sourceIterator
+			) />	
 	<cfelse>
-		<cfreturn createObject("component","mura.extend.extendData").init(variables.configBean,arguments.baseID,arguments.dataTable) />
+		<cfreturn createObject("component","mura.extend.extendData").init(
+			configBean=variables.configBean,
+			baseID=arguments.baseID,
+			dataTable=arguments.dataTable,
+			sourceIterator=arguments.sourceIterator
+			) />
 	</cfif>
 </cffunction>
 
@@ -1233,6 +1253,7 @@ and tclassextendattributes.type='File'
 	<cfset destSubType.setIsActive(sourceSubType.getIsActive())>
 	<cfset destSubType.setHasSummary(sourceSubType.getHasSummary())>
 	<cfset destSubType.setHasBody(sourceSubType.getHasBody())>
+	<cfset destSubType.setDescription(sourceSubType.getDescription())>
 	
 	<cfset destSubType.save()>
 	
@@ -1315,6 +1336,22 @@ and tclassextendattributes.type='File'
 			if(isDefined("extXML.xmlAttributes.subtype")){
 				subType.setSubType( extXML.xmlAttributes.subtype );
 			}
+
+			if(isDefined("extXML.xmlAttributes.description")){
+				subType.setDescription( extXML.xmlAttributes.description );
+			}
+
+			if(isDefined("extXML.xmlAttributes.hassummary")){
+				subType.setHasSummary( extXML.xmlAttributes.hassummary );
+			}
+
+			if(isDefined("extXML.xmlAttributes.hasbody")){
+				subType.setHasBody( extXML.xmlAttributes.hasbody );
+			}
+
+			if(isDefined("extXML.xmlAttributes.isactive")){
+				subType.setIsActive( extXML.xmlAttributes.isactive );
+			}
 				      	
 			subType.setSiteID( arguments.siteID );
 			subType.load();
@@ -1381,6 +1418,5 @@ and tclassextendattributes.type='File'
 	</cfscript>
 	</cfif>
 </cffunction>
-
 
 </cfcomponent>

@@ -635,7 +635,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not structKeyExists(arguments,"fileEXT")>
 		<cfset arguments.fileEXT=getBean("fileManager").readMeta(arguments.fileID).fileEXT>
 	</cfif>
-
+	
 	<cfif not ListFindNoCase('jpg,jpeg,png,gif', arguments.fileEXT)>
 		<cfreturn ''>
 	</cfif>

@@ -384,7 +384,6 @@
 <cfargument name="keywords" default="">
 	<cfset var rs=getAssignmentsQuery(argumentCollection=arguments)>
 	<cfset var it=getBean("contentIterator")>
-	<cfset it.setPackageBy("version")>
 	<cfset it.setQuery(rs)>
 	<cfreturn it>
 </cffunction>
