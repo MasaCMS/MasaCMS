@@ -298,7 +298,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif variables.configBean.getDBType() eq "oracle">
 				<cfset queryAddColumn(rsCombine,"attributeValue","cf_sql_varchar",arrayNew(1))>
 
-				<cfloop query='rsExtendedAttributes'>
+				<cfloop query='rsExtended'>
 					<cfloop query='rsCombine'>
 						<cfif rsExtended.attributeID eq rsCombine.attributeID>
 							<cfset querySetCell(rsCombine, "attributeValue", rsExtended.attributeValue, rsCombine.currentrow)>
