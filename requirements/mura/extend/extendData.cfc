@@ -55,6 +55,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.definitionsQuery="">
 <cfset variables.instance.contentRenderer="">
 <cfset variables.instance.sourceIterator="">
+<cfset variables.instance.idLookUp=structNew()>
+<cfset variables.instance.nameLookUp=structNew()>
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfargument name="configBean">
@@ -152,27 +154,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="useMuraDefault" type="boolean" required="true" default="false">
 <cfset var rs="" />
 <cfset var tempDate="">
-	<cfquery name="rs" dbType="query">
-		 select baseID,attributeValue,defaultValue,validation from variables.instance.data
-		 where lower(name)=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#lcase(key)#">
-		 <cfif isNumeric(arguments.key)>
-			 or attributeID=<cfqueryparam cfsqltype="cf_sql_numeric"  value="#key#">
-		 </cfif>
-	</cfquery>
-
-	<cfif rs.recordcount>
-		<cfif len(rs.baseID)>
-			<cfif rs.validation eq "Date">
-				<cfset tempDate=rs.attributeValue>
+<cfset var index=0>
+	
+	<cfif structKeyExists(variables.instance.nameLookUp,"name_#arguments.key#")>
+		<cfset index=variables.instance.nameLookUp["name_#arguments.key#"]>
+	<cfelseif structKeyExists(variables.instance.idLookUp,"id_#arguments.key#")>
+		<cfset index=variables.instance.idLookUp["id_#arguments.key#"]>
+	</cfif>
+		
+	<cfif index>
+		<cfif len(variables.instance.content.baseID[index])>
+			<cfif variables.instance.validation[index] eq "Date">
+				<cfset tempDate=variables.instance.attributeValue[index]>
 				<cftry>
 					<cfreturn parseDateTime(tempDate) />	
-					<cfcatch><cfreturn rs.attributeValue /></cfcatch>
+					<cfcatch><cfreturn variables.instance.attributeValue[index] /></cfcatch>
 				</cftry>	
 			<cfelse>
-				<cfreturn rs.attributeValue />
+				<cfreturn variables.instance.attributeValue[index] />
 			</cfif>
 		<cfelse>
-			<cfreturn getContentRenderer().setDynamicContent(rs.defaultValue) />
+			<cfreturn getContentRenderer().setDynamicContent(variables.instance.defaultValue[index]) />
 		</cfif>
 	<cfelseif arguments.useMuraDefault>
 		<cfreturn "useMuraDefault" />
@@ -184,7 +186,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="loadData" access="public" returntype="void" output="false">
 <cfset var rs=""/>
-<cfset var rsPre=""/>
+<cfset var rsCombine=""/>
 <cfset var rsPreValue=""/>
 <cfset var dataTable=getDataTable() />
 <cfset var rsDefinitions=getDefinitionsQuery()>
@@ -195,11 +197,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			 <cfset tableModifier="with (nolock)">
 		 </cfif>
 
-		<cfif isObject(variables.instance.sourceIterator) 
-			and (
+		<cfif isObject(variables.instance.sourceIterator) and (
 					variables.instance.sourceIterator.getNextN() lte 2000 
-					and 
-					variables.instance.sourceIterator.getRecordCount() lte 2000
+					or (
+						not variables.instance.sourceIterator.getNextN()
+						and variables.instance.sourceIterator.getRecordCount() lte 2000
+						)
 				)>
 
 			<cfif not isQuery(variables.instance.sourceIterator.getValue("page_extended#variables.instance.sourceIterator.getPageIndex()#"))>
@@ -255,50 +258,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			inner join tclassextendattributes #tableModifier# On (#dataTable#.attributeID=tclassextendattributes.attributeID)
 			where #dataTable#.baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getBaseID()#">
 			
-			<!---
-			<cfif variables.configBean.getDBType() eq "oracle" and len(getType()) and len(getSubType()) and len(getSiteID())>
-				Union All
-				
-				select 
-				#dataTable#.baseID, tclassextendattributes.name, tclassextendattributes.validation,
-				<cfif variables.configBean.getDBType() eq "oracle">
-					to_char(tclassextendattributes.label) as label
-				<cfelse>
-					tclassextendattributes.label
-				</cfif>,
-				tclassextendattributes.attributeID,tclassextendattributes.defaultValue,tclassextendattributes.extendSetID,
-				
-				#dataTable#.attributeValue
-				 
-				from tclassextend #tableModifier#
-				inner join tclassextendsets #tableModifier# On (tclassextend.subtypeid=tclassextendsets.subtypeid)
-				inner join tclassextendattributes #tableModifier# On (tclassextendsets.extendsetid=tclassextendattributes.extendsetid)
-				left join #dataTable# #tableModifier# on (
-													(
-														tclassextendattributes.attributeID=#dataTable#.attributeID
-														and  #dataTable#.baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getBaseID()#">
-													)
-												)
-				where tclassextend.siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
-				and 
-					(
-						tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getType()#">
-						<cfif not listFindNoCase("1,2,User,Group,Address,Site,Component,Form",getType())>
-							or tclassextend.type='Base'
-						</cfif>
-					)
-				and (
-					<cfif getSubType() neq "Default">
-					tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSubType()#">
-					or
-					</cfif>
-					tclassextend.subtype='Default'
-					)
-					
-				and #dataTable#.baseID is null
-				
-			</cfif>
-			--->
 			</cfquery>
 		</cfif>
 		
@@ -306,7 +265,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif variables.configBean.getDBType() neq "oracle" and len(getType()) and len(getSubType()) and len(getSiteID())>
 			--->
 		<cfif len(getType()) and len(getSubType()) and len(getSiteID())>
-			<cfquery name="rsPre" dbtype="query">
+			<cfquery name="rsCombine" dbtype="query">
 				select baseID, name, validation, label, attributeID, defaultValue, extendSetID<cfif variables.configBean.getDBType() neq "oracle">, attributeValue</cfif>
 				from rs
 				
@@ -340,9 +299,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset queryAddColumn(rsPre,"attributeValue","cf_sql_varchar",arrayNew(1))>
 
 				<cfloop query='rs'>
-					<cfloop query='rsPre'>
-						<cfif rs.attributeID eq rsPre.attributeID>
-							<cfset querySetCell(rsPre, "attributeValue", rs.attributeValue, rsPre.currentrow)>
+					<cfloop query='rsCombine'>
+						<cfif rs.attributeID eq rsCombine.attributeID>
+							<cfset querySetCell(rsCombine, "attributeValue", rs.attributeValue, rsCombine.currentrow)>
 							<cfbreak>
 						</cfif>
 					</cfloop>	
@@ -350,9 +309,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				
 			</cfif>
 
-			<cfset rs=rsPre>
+			<cfset rs=rsCombine>
 
 		</cfif>
+
+		<cfloop query='rs'>
+			<cfset variables.instance.idLookup['id_#rs.attributeID#']=rs.currentRow>
+			<cfset variables.instance.nameLookup['name_#rs.attributeID#']=rs.currentRow>
+		</cfloop>
 		
 		<cfset variables.instance.data=rs />
 		
