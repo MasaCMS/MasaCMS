@@ -80,7 +80,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="request.muraRequestStart" default="#getTickCount()#"/>
 	<cfparam name="request.muraShowTrace" default="false"/>
 	<cfparam name="request.muraValidateDomain" default="true"/>
-	<cfparam name="request.muraIteratorLookUp" default="#structNew()#"/>
 	
 	<cfset baseDir= left(this.configPath,len(this.configPath)-8) />
 	<cfif not fileExists(baseDir & "/config/settings.ini.cfm")>

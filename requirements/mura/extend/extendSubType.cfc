@@ -388,8 +388,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getDataTable() neq '',de('no'),de('yes'))#" value="#getDataTable()#">,
 		#getIsActive()#,
 		#getHasSummary()#,
-		#getHasBody()#),
+		#getHasBody()#,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getDescription() neq '',de('no'),de('yes'))#" value="#getDescription()#">
+		)
 		</cfquery>
 		<!---
 		<cfset extendSetBean=getExtendSetBean() />

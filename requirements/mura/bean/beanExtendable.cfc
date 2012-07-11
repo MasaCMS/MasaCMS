@@ -119,6 +119,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="purgeExtendedData" output="false" access="public">
 	<cfset variables.instance.extendData=""/>
 	<cfset variables.instance.extendAutoComplete = true />
+	<cfset variables.instance.sourceIterator = "" />
 	<cfreturn this>
 </cffunction>
  

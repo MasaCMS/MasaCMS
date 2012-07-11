@@ -184,6 +184,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="loadData" access="public" returntype="void" output="false">
 <cfset var rs=""/>
+<cfset var rsPre=""/>
+<cfset var rsPreValue=""/>
 <cfset var dataTable=getDataTable() />
 <cfset var rsDefinitions=getDefinitionsQuery()>
 <cfset var tableModifier="">
@@ -193,9 +195,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			 <cfset tableModifier="with (nolock)">
 		 </cfif>
 
-		<cfif isObject(variables.instance.sourceIterator) and variables.instance.sourceIterator.getNextN() lte 2000>
+		<cfif isObject(variables.instance.sourceIterator) 
+			and (
+					variables.instance.sourceIterator.getNextN() lte 2000 
+					and 
+					variables.instance.sourceIterator.getRecordCount() lte 2000
+				)>
 
-			<cfif not isDefined("request.muraIteratorLookup.#variables.instance.sourceIterator.getIteratorID()#_#variables.instance.sourceIterator.getPageIndex()#")>
+			<cfif not isQuery(variables.instance.sourceIterator.getValue("page_extended#variables.instance.sourceIterator.getPageIndex()#"))>
 				<cfquery name="pageQuery" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 					select #getDataTable()#.baseid, tclassextendattributes.name, tclassextendattributes.validation, 
 					<cfif variables.configBean.getDBType() eq "oracle">
@@ -209,14 +216,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					
 					from #getDataTable()# #tableModifier# 
 					inner join tclassextendattributes #tableModifier# On (#getDataTable()#.attributeID=tclassextendattributes.attributeID)
-					where #getDataTable()#.baseID 
-					in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#variables.instance.sourceIterator.getPageIDList()#">)
-						
+					<cfif variables.instance.sourceIterator.getRecordIdField() eq 'contentid'>
+						inner join tcontent #tableModifier# On (#getDataTable()#.baseid=tcontent.contenthistid)
+						where 
+						tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID#">
+						and tcontent.contentid 
+						in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#variables.instance.sourceIterator.getPageIDList()#">)
+						and tcontent.active=1
+						and tcontent.approved=1
+					<cfelse>
+						where #getDataTable()#.baseID 
+						in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#variables.instance.sourceIterator.getPageIDList()#">)
+					</cfif>
 				</cfquery>
 
-				<cfset request.muraIteratorLookup["#variables.instance.sourceIterator.getIteratorID()#_#variables.instance.sourceIterator.getPageIndex()#"]=pageQuery>
+				<cfset variables.instance.sourceIterator.setValue("page_extended#variables.instance.sourceIterator.getPageIndex()#",pageQuery)>
 			<cfelse>
-				<cfset pageQuery=request.muraIteratorLookup["#variables.instance.sourceIterator.getIteratorID()#_#variables.instance.sourceIterator.getPageIndex()#"]>
+				<cfset pageQuery=variables.instance.sourceIterator.getValue("page_extended#variables.instance.sourceIterator.getPageIndex()#")>
 			</cfif>
 
 			<cfquery name="rs" dbtype="query">
@@ -290,13 +306,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif variables.configBean.getDBType() neq "oracle" and len(getType()) and len(getSubType()) and len(getSiteID())>
 			--->
 		<cfif len(getType()) and len(getSubType()) and len(getSiteID())>
-			<cfquery name="rs" dbtype="query">
-				select baseID, name, validation, label, attributeID, defaultValue, extendSetID, attributeValue
+			<cfquery name="rsPre" dbtype="query">
+				select baseID, name, validation, label, attributeID, defaultValue, extendSetID<cfif variables.configBean.getDBType() neq "oracle">, attributeValue</cfif>
 				from rs
 				
 				union all
 				
-				select '' baseID, attributename, validation, label, attributeID, defaultValue, extendSetID, '' attributeValue
+				select '' baseID, attributename, validation, label, attributeID, defaultValue, extendSetID<cfif variables.configBean.getDBType() neq "oracle">, '' attributeValue</cfif>
 				from rsDefinitions
 				where siteID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
 				and (
@@ -318,6 +334,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			
 			</cfquery>
+
+			<!--- Can't union in clob attribute value so they are manually added after the fact --->
+			<cfif variables.configBean.getDBType() eq "oracle">
+				<cfset queryAddColumn(rsPre,"attributeValue","cf_sql_varchar",arrayNew(1))>
+
+				<cfloop query='rs'>
+					<cfloop query='rsPre'>
+						<cfif rs.attributeID eq rsPre.attributeID>
+							<cfset querySetCell(rsPre, "attributeValue", rs.attributeValue, rsPre.currentrow)>
+							<cfbreak>
+						</cfif>
+					</cfloop>	
+				</cfloop>
+				
+			</cfif>
+
+			<cfset rs=rsPre>
+
 		</cfif>
 		
 		<cfset variables.instance.data=rs />

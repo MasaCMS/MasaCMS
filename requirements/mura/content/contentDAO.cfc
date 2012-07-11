@@ -74,20 +74,43 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
 		<cfargument name="contentBean" required="true" default="">
+		<cfargument name="sourceIterator" required="true" default="">
 		<cfset var rsContent = queryNew('empty') />
 		<cfset var bean=arguments.contentBean />
-		
+
 		<cfif not isObject(bean)>
 			<cfset bean=getBean("content")>
 		</cfif>
-		
-		<cfif len(arguments.contentHistID)>	
-			<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rsContent"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-				select #variables.fieldlist#, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
-				left join tfiles on (tcontent.fileid=tfiles.fileid)
-				where tcontent.contenthistid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#" /> 
-				and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+
+		<cfif isObject(arguments.sourceIterator)>
+			<cfif not isQuery(arguments.sourceIterator.getValue("page#arguments.sourceIterator.getPageIndex()#"))>
+				<cfquery name="rsContent" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+					select #variables.fieldlist#, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
+					left join tfiles on (tcontent.fileid=tfiles.fileid)
+					where 
+					tcontent.contenthistid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.sourceIterator.getPageIDList()#">)
+					and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+				</cfquery>
+
+				<cfset arguments.sourceIterator.setValue("page#arguments.sourceIterator.getPageIndex()#",rsContent)>
+
+			</cfif>
+
+			<cfset rsContent=arguments.sourceIterator.getValue("page#arguments.sourceIterator.getPageIndex()#")>
+
+			<cfquery name="rsContent" dbtype="query">
+				select * from rsContent where contenthistid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contenthistid#" />
 			</cfquery>
+
+		<cfelse>
+			<cfif len(arguments.contentHistID)>	
+				<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rsContent"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+					select #variables.fieldlist#, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
+					left join tfiles on (tcontent.fileid=tfiles.fileid)
+					where tcontent.contenthistid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#" /> 
+					and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+				</cfquery>
+			</cfif>
 		</cfif>
 		
 		<cfif rsContent.recordCount>
@@ -123,6 +146,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		<cfargument name="siteID" type="string" required="yes" />
 		<cfargument name="use404" type="boolean" required="yes" default="false"/>
 		<cfargument name="contentBean" required="true" default="">
+		<cfargument name="sourceIterator" required="true" default="">
 		<cfset var rsContent = queryNew('empty') />
 		<cfset var bean=arguments.contentBean />
 		
@@ -130,15 +154,39 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 			<cfset bean=getBean("content")>
 		</cfif>
 		
-		<cfif len(arguments.contentID)>
-			<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rsContent"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-				select #variables.fieldlist#, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
-				left join tfiles on (tcontent.fileid=tfiles.fileid)
-				where tcontent.contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#" /> 
-				#renderActiveClause("tcontent",arguments.siteID)#
-				and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
-				and type in ('Page','Portal','File','Calendar','Link','Gallery','Component','Form')
+		<cfif isObject(arguments.sourceIterator)>
+			<cfif not isQuery(arguments.sourceIterator.getValue("page#arguments.sourceIterator.getPageIndex()#"))>
+				<cfquery name="rsContent" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+					select #variables.fieldlist#, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
+					left join tfiles on (tcontent.fileid=tfiles.fileid)
+					where 
+					tcontent.tcontentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.sourceIterator.getPageIDList()#">)
+					#renderActiveClause("tcontent",arguments.siteID)#
+					and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+					and type in ('Page','Portal','File','Calendar','Link','Gallery','Component','Form')
+				</cfquery>
+
+				<cfset arguments.sourceIterator.setValue("page#arguments.sourceIterator.getPageIndex()#",rsContent)>
+
+			</cfif>
+
+			<cfset rsContent=arguments.sourceIterator.getValue("page#arguments.sourceIterator.getPageIndex()#")>
+
+			<cfquery name="rsContent" dbtype="query">
+				select * from rsContent where contenthistid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contenthistid#" />
 			</cfquery>
+
+		<cfelse>
+			<cfif len(arguments.contentID)>
+				<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rsContent"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+					select #variables.fieldlist#, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
+					left join tfiles on (tcontent.fileid=tfiles.fileid)
+					where tcontent.contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#" /> 
+					#renderActiveClause("tcontent",arguments.siteID)#
+					and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+					and type in ('Page','Portal','File','Calendar','Link','Gallery','Component','Form')
+				</cfquery>
+			</cfif>
 		</cfif>
 		
 		<cfif rsContent.recordCount>

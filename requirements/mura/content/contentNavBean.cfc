@@ -100,10 +100,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 <cffunction name="set" access="public" returntype="any" output="false">
 	<cfargument name="contentStruct">
-	<cfargument name="iterator">
+	<cfargument name="sourceIterator">
 	
 	<cfset variables.instance.struct=arguments.contentStruct>
-	<cfset variables.sourceiterator=arguments.iterator>
+	<cfset variables.sourceiterator=arguments.sourceIterator>
 	
 	<cfif isObject(variables.instance.content)>
 		<cfset variables.instance.content.setIsNew(1)>
@@ -145,10 +145,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn variables.instance.content>
 	<cfelse>
 		<cfset variables.instance.content.setAllValues( structCopy(variables.instance.contentStructTemplate) )>
-		<cfif variables.sourceiterator.getPackageBy() eq "version" and structKeyExists(variables.instance.struct,"contentHistID")>
-			<cfset variables.instance.content=variables.contentManager.getContentVersion(contentHistID=variables.instance.struct.contentHistID, siteID=variables.instance.struct.siteID, contentBean=variables.instance.content)>
+		<cfif structKeyExists(variables.instance.struct,"contentHistID")>
+			<cfset variables.instance.content=variables.contentManager.getContentVersion(contentHistID=variables.instance.struct.contentHistID, siteID=variables.instance.struct.siteID, contentBean=variables.instance.content, sourceIterator=variables.sourceIterator)>
 		<cfelseif structKeyExists(variables.instance.struct,"contentID")>
-			<cfset variables.instance.content=variables.contentManager.getActiveContent(contentID=variables.instance.struct.contentID,siteID=variables.instance.struct.siteID, contentBean=variables.instance.content)>
+			<cfset variables.instance.content=variables.contentManager.getActiveContent(contentID=variables.instance.struct.contentID,siteID=variables.instance.struct.siteID, contentBean=variables.instance.content, sourceIterator=variables.sourceIterator)>
 		<cfelse>
 			<cfthrow message="The query you are iterating over does not contain either contentID or contentHistID">
 		</cfif>
@@ -192,7 +192,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="liveOnly" required="true" default="true">
 	<cfargument name="aggregation" required="true" default="false">
 	<cfset var q=getKidsQuery(arguments.aggregation) />
-	<cfset var it=getBean("contentIterator").init(packageBy="active")>
+	<cfset var it=getBean("contentIterator")>
 	
 	<cfif arguments.liveOnly>
 		<cfset q=getKidsQuery(arguments.aggregation) />
@@ -214,7 +214,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="sort" required="true" default="asc">
 	<cfargument name="setInheritance" required="true" type="boolean" default="false">
 	<cfset var a=getCrumbArray(setInheritance=arguments.setInheritance,sort=arguments.sort)>
-	<cfset var it=getBean("contentIterator").init()>
+	<cfset var it=getBean("contentIterator")>
 	<cfset it.setArray(a)>
 	<cfreturn it>
 </cffunction>

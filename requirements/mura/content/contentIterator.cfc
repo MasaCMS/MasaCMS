@@ -46,14 +46,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.iterator.queryIterator" output="false">
 
-<cfset variables.packageBy="active">
 <cfset variables.content="">
 <cfset variables.recordIDField="contenthistid">
 
 <cffunction name="init" access="public" output="false" returntype="any">
-	<cfargument name="packageBy" required="true" default="active">
 	<cfset super.init(argumentCollection=arguments)>
-	<cfset variables.packageBy=arguments.packageBy>
 	<cfset variables.content=getBean("contentNavBean")>
 
 	<cfreturn this />
@@ -75,14 +72,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.content>
 </cffunction>
 
-<cffunction name="setPackageBy" output="false" access="public">
-	<cfargument name="packageBy">
-	<cfset variables.packageBy=arguments.packageBy>
-	<cfreturn this>
-</cffunction>
-
-<cffunction name="getPackageBy" output="false" access="public">
-	<cfreturn variables.packageBy>
+<cffunction name="getRecordIdField" access="public" output="false" returntype="any">
+		<cfif isdefined("variables.records.contenthistid")>
+			<cfreturn "contenthistid">
+		<cfelse>
+			<cfreturn "contentid">
+		</cfif>
 </cffunction>
 
 <cffunction name="buildQueryFromList" output="false" access="public">
