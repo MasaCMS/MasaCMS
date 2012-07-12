@@ -66,7 +66,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset setDataType(arguments.dataType) />
 	<cfset setCondition(arguments.condition) />
 	<cfset setCriteria(arguments.criteria,arguments.condition) />
-	
 	<cfset validate()>
 	<cfreturn this>
 </cffunction>
@@ -150,9 +149,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var tmp="" />
 	
 	<cftry>
-		<cfset tmp=getBean('contentRenderer').setDynamicContent(arguments.criteria) />
+		<cfset tmp=getContentRenderer().setDynamicContent(arguments.criteria) />
 	<cfcatch><cfset tmp=arguments.criteria /></cfcatch>
 	</cftry>
+
 	<cfif tmp eq "null">
 		<cfset variables.criteria="null">
 	<cfelse>
@@ -245,6 +245,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfset setIsValid(true) />
 	</cfif>
+</cffunction>
+
+<cffunction name="getContentRenderer" output="false">
+	
+	<cfif structKeyExists(request,"servletEvent")>
+		<cfreturn request.servletEvent.getContentRenderer()>
+	<cfelseif structKeyExists(request,"event")>
+		<cfreturn request.event.getContentRenderer()>
+	<cfelseif isdefined('session.siteID') and len(session.siteID)>
+		<cfreturn getBean("$").init(session.siteID).getContentRenderer()>
+	<cfelse>
+		<cfreturn getBean("contentRenderer")>
+	</cfif>
+	
 </cffunction>
 
 </cfcomponent>

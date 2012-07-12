@@ -1766,9 +1766,9 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="runat">
 <cfargument name="siteID" required="true" default="">
 <cfargument name="moduleID" required="true" default="">
-<cfset var rs="">
+<cfset var rsScripts="">
 
-	<cfquery name="rs" dbtype="query">
+	<cfquery name="rsScripts" dbtype="query">
 	select pluginID, package, directory, scriptfile,name, docache, moduleID from variables.rsScripts 
 	where runat=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.runat#">
 	<cfif len(arguments.siteID)>
@@ -1779,7 +1779,7 @@ select * from tplugins order by #arguments.orderby#
 	</cfif>
 	order by loadPriority
 	</cfquery>
-<cfreturn rs/>
+<cfreturn rsScripts/>
 
 </cffunction>
 
