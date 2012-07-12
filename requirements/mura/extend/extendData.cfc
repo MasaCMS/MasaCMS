@@ -155,26 +155,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var rs="" />
 <cfset var tempDate="">
 <cfset var index=0>
-	
-	<cfif structKeyExists(variables.instance.nameLookUp,"name_#arguments.key#")>
-		<cfset index=variables.instance.nameLookUp["name_#arguments.key#"]>
-	<cfelseif structKeyExists(variables.instance.idLookUp,"id_#arguments.key#")>
-		<cfset index=variables.instance.idLookUp["id_#arguments.key#"]>
+<cfset var nameKey="name_" & hash(lcase(arguments.key))>
+<cfset var idKey="id_" & arguments.key>
+
+	<cfif structKeyExists(variables.instance.nameLookUp,nameKey)>
+		<cfset index=variables.instance.nameLookUp[nameKey]>
+	<cfelseif structKeyExists(variables.instance.idLookUp,idKey)>
+		<cfset index=variables.instance.idLookUp[idKey]>
 	</cfif>
 		
 	<cfif index>
-		<cfif len(variables.instance.content.baseID[index])>
-			<cfif variables.instance.validation[index] eq "Date">
-				<cfset tempDate=variables.instance.attributeValue[index]>
+		<cfif len(variables.instance.data.baseID[index])>
+			<cfif variables.instance.data.validation[index] eq "Date">
+				<cfset tempDate=variables.instance.data.attributeValue[index]>
 				<cftry>
 					<cfreturn parseDateTime(tempDate) />	
-					<cfcatch><cfreturn variables.instance.attributeValue[index] /></cfcatch>
+					<cfcatch><cfreturn variables.instance.data.attributeValue[index] /></cfcatch>
 				</cftry>	
 			<cfelse>
-				<cfreturn variables.instance.attributeValue[index] />
+				<cfreturn variables.instance.data.attributeValue[index] />
 			</cfif>
 		<cfelse>
-			<cfreturn getContentRenderer().setDynamicContent(variables.instance.defaultValue[index]) />
+			<cfreturn getContentRenderer().setDynamicContent(variables.instance.data.defaultValue[index]) />
 		</cfif>
 	<cfelseif arguments.useMuraDefault>
 		<cfreturn "useMuraDefault" />
@@ -308,18 +310,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfloop>
 				
 			</cfif>
-
+			
 			<cfset rsExtended=rsCombine>
 
 		</cfif>
 
 		<cfloop query='rsExtended'>
-			<cfset variables.instance.idLookup['id_#rsExtended.attributeID#']=rsExtended.currentRow>
-			<cfset variables.instance.nameLookup['name_#rsExtended.attributeID#']=rsExtended.currentRow>
+			<cfset variables.instance.idLookup['id_' & rsExtended.attributeID]=rsExtended.currentRow>
+			<cfset variables.instance.nameLookup["name_" & hash(lcase(rsExtended.name))]=rsExtended.currentRow>
 		</cfloop>
-		
+	
 		<cfset variables.instance.data=rsExtended />
-		
+
 </cffunction>
 
 <cffunction name="setAllValues" returntype="any" access="public" output="false">

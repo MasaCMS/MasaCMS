@@ -53,6 +53,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.criteria="" />
 <cfset variables.isValid=true />
 
+<cfif isDefined("request.contentRenderer")>
+	<cfset variables.renderer=request.contentRenderer>
+<cfelse>
+	<cfset variables.renderer=getBean('settingsManager').getSite(session.siteID).getContentRenderer()>
+</cfif>
+
 <cffunction name="init" returntype="any" access="public">
 	<cfargument name="relationship" default="">
 	<cfargument name="field" default="">
@@ -66,7 +72,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset setDataType(arguments.dataType) />
 	<cfset setCondition(arguments.condition) />
 	<cfset setCriteria(arguments.criteria,arguments.condition) />
-	
 	<cfset validate()>
 	<cfreturn this>
 </cffunction>
@@ -150,7 +155,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var tmp="" />
 	
 	<cftry>
-		<cfset tmp=getBean('contentRenderer').setDynamicContent(arguments.criteria) />
+		<cfset tmp=variables.renderer.setDynamicContent(arguments.criteria) />
 	<cfcatch><cfset tmp=arguments.criteria /></cfcatch>
 	</cftry>
 	<cfif tmp eq "null">

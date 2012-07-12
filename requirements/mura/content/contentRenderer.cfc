@@ -576,6 +576,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var thenav="" />
 	<cfset var menutype="" />
 	<cfset var nestedArgs=structNew()>
+	<cfset var tracepoint=initTracepoint("contentRenderer.dspPortalNav")>
 
 	<cfset nestedArgs.openCurrentOnly=true>
 	""
@@ -611,7 +612,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfset thenav=dspStandardNav(argumentCollection=nestedArgs) />
 	</cfif>
-			
+	<cfset commitTracePoint(tracePoint)>
+
 	<cfreturn thenav />
 </cffunction>
 
@@ -630,7 +632,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var thenav="" />
 	<cfset var menutype="" />
 	<cfset var nestedArgs=structNew()>
-	
+	<cfset var tracepoint=initTracepoint("contentRenderer.dspStandardNav")>
+
 	<cfset nestedArgs.openCurrentOnly=true>
 
 	<cfif variables.event.getValue('contentBean').getType() neq 'Gallery'>
@@ -662,11 +665,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 				<cfset theNav=dspSubNav(argumentCollection=arguments) />
 			</cfif>	
-			
-			<cfreturn thenav />
 	<cfelse>
-			<cfreturn dspPortalNav(argumentCollection=arguments) />
+			<cfset thenav=dspPortalNav(argumentCollection=arguments) />
 	</cfif>
+
+	<cfset commitTracePoint(tracePoint)>
+
+	<cfreturn thenav>
 </cffunction>
 
 <cffunction name="dspSubNav" output="false" returntype="string">
@@ -682,6 +687,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset var thenav="" />
 	<cfset var nestedArgs=structNew()>
+	<cfset var tracepoint=initTracepoint("contentRenderer.dspSubNav")>
 
 	<cfset nestedArgs.openCurrentOnly=true>
 
@@ -700,7 +706,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset theNav = dspNestedNav(argumentCollection=nestedArgs) />
 	</cfif>
 			
-			<cfreturn thenav />
+	<cfset commitTracePoint(tracePoint)>
+
+	<cfreturn thenav />
 </cffunction>
 
 <cffunction name="dspPeerNav" output="false" returntype="string">
@@ -717,6 +725,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var thenav="" />
 	<cfset var menutype = "" />
 	<cfset var nestedArgs=structNew()>
+	<cfset var tracepoint=initTracepoint("contentRenderer.dspPeerNav")>
 
 	<cfset nestedArgs.openCurrentOnly=true>
 
@@ -735,7 +744,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset structAppend(nestedArgs,arguments,false)>
 		<cfset theNav = dspNestedNav(argumentCollection=nestedArgs) />
 	</cfif>
-			
+	
+	<cfset commitTracePoint(tracePoint)>
+
 	<cfreturn theNav />
 </cffunction>
 
@@ -748,7 +759,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var current=1>
 		<cfset var next=1>
 		<cfset var prev=1>
-	
+		<cfset var tracepoint=initTracepoint("contentRenderer.dspSequentialNav")>
+
 		<cfif rsSection.recordcount and ((variables.event.getValue('r').restrict and variables.event.getValue('r').allow) or (not variables.event.getValue('r').restrict))>
 			<cfloop query="rsSection">
 			<cfif rssection.filename eq variables.event.getValue('contentBean').getfilename()>
@@ -777,6 +789,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</ul></cfoutput>
 			</cfsavecontent>
 		</cfif>
+
+		<cfset commitTracePoint(tracePoint)>
+
 		<cfreturn trim(theNav) />
 </cffunction>
 
@@ -789,6 +804,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var current=1>
 		<cfset var next=1>
 		<cfset var prev=1>
+		<cfset var tracepoint=initTracepoint("contentRenderer.dspGalleryNav")>
 		
 		<cfif rsSection.recordcount and ((variables.event.getValue('r').restrict and variables.event.getValue('r').allow) or (not variables.event.getValue('r').restrict))>
 			
@@ -817,6 +833,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</ul></cfoutput>
 			</cfsavecontent>
 		</cfif>
+
+		<cfset commitTracePoint(tracePoint)>
+		
 		<cfreturn trim(theNav) />
 </cffunction>
 
@@ -1866,15 +1885,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset var thenav="" />
 	<cfset var topIndex= arrayLen(this.crumbdata)-this.navOffSet />
-
+	<cfset var tracePoint=0>
 	<cfset arguments.contentid=this.crumbdata[topIndex].contentID>
 	<cfset arguments.viewDepth=arguments.viewDepth+1>
 	<cfset arguments.currDepth=1>
 	<cfset arguments.sortBy="orderno">
 	<cfset arguments.sortDirection="asc">
 	<cfset arguments.menuClass=arguments.class>
+	<cfset tracepoint=initTracepoint("contentRenderer.dspPrimaryNav")>
 	<cfset theNav = dspNestedNavPrimary(argumentCollection=arguments) />
-
+	<cfset commitTracePoint(tracePoint)>
 	<cfreturn thenav />
 </cffunction>
 
