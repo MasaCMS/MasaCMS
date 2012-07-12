@@ -362,13 +362,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getUserSites" access="public" output="false" returntype="query">
 <cfargument name="siteArray" type="array" required="yes" default="#arrayNew(1)#">
 <cfargument name="isS2" type="boolean" required="yes" default="false">
-	<cfset var rs=""/>
+	<cfset var rsSites=""/>
 	<cfset var counter=1/>
-	<cfset var rsSites=getList(sortby="site")/>
+	<cfset var rsAllSites=getList(sortby="site")/>
 	<cfset var s=0/>
 	
-	<cfquery name="rs" dbtype="query">
-		select * from rsSites
+	<cfquery name="rsSites" dbtype="query">
+		select * from rsAllSites
 		<cfif arrayLen(arguments.siteArray) and not arguments.isS2>
 			where siteid in (
 			<cfloop from="1" to="#arrayLen(arguments.siteArray)#" index="s">
@@ -382,7 +382,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 	</cfquery>
 
-	<cfreturn rs />
+	<cfreturn rsSites />
 </cffunction>
 
 <cffunction name="checkForBundle" output="false">

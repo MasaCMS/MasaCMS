@@ -77,14 +77,20 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		<cfargument name="sourceIterator" required="true" default="">
 		<cfset var rsContent = queryNew('empty') />
 		<cfset var bean=arguments.contentBean />
-
+		<cfset var rsPage="">
 		<cfif not isObject(bean)>
 			<cfset bean=getBean("content")>
 		</cfif>
 
-		<cfif isObject(arguments.sourceIterator)>
+		<cfif isObject(arguments.sourceIterator) and (
+					arguments.sourceIterator.getNextN() lte 2000 
+					or (
+						not arguments.sourceIterator.getNextN()
+						and arguments.sourceIterator.getRecordCount() lte 2000
+						)
+				)>
 			<cfif not isQuery(arguments.sourceIterator.getValue("page#arguments.sourceIterator.getPageIndex()#"))>
-				<cfquery name="rsContent" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+				<cfquery name="rsPage" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 					select #variables.fieldlist#, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
 					left join tfiles on (tcontent.fileid=tfiles.fileid)
 					where 
@@ -92,14 +98,14 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 					and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 				</cfquery>
 
-				<cfset arguments.sourceIterator.setValue("page#arguments.sourceIterator.getPageIndex()#",rsContent)>
+				<cfset arguments.sourceIterator.setValue("page#arguments.sourceIterator.getPageIndex()#",rsPage)>
 
 			</cfif>
 
-			<cfset rsContent=arguments.sourceIterator.getValue("page#arguments.sourceIterator.getPageIndex()#")>
+			<cfset rsPage=arguments.sourceIterator.getValue("page#arguments.sourceIterator.getPageIndex()#")>
 
 			<cfquery name="rsContent" dbtype="query">
-				select * from rsContent where contenthistid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contenthistid#" />
+				select * from rsPage where contenthistid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contenthistid#" />
 			</cfquery>
 
 		<cfelse>
@@ -149,14 +155,21 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		<cfargument name="sourceIterator" required="true" default="">
 		<cfset var rsContent = queryNew('empty') />
 		<cfset var bean=arguments.contentBean />
+		<cfset var rsPage="">
 		
 		<cfif not isObject(bean)>
 			<cfset bean=getBean("content")>
 		</cfif>
 		
-		<cfif isObject(arguments.sourceIterator)>
+		<cfif isObject(arguments.sourceIterator) and (
+					arguments.sourceIterator.getNextN() lte 2000 
+					or (
+						not arguments.sourceIterator.getNextN()
+						and arguments.sourceIterator.getRecordCount() lte 2000
+						)
+				)>
 			<cfif not isQuery(arguments.sourceIterator.getValue("page#arguments.sourceIterator.getPageIndex()#"))>
-				<cfquery name="rsContent" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+				<cfquery name="rsPage" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 					select #variables.fieldlist#, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
 					left join tfiles on (tcontent.fileid=tfiles.fileid)
 					where 
@@ -166,14 +179,14 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 					and type in ('Page','Portal','File','Calendar','Link','Gallery','Component','Form')
 				</cfquery>
 
-				<cfset arguments.sourceIterator.setValue("page#arguments.sourceIterator.getPageIndex()#",rsContent)>
+				<cfset arguments.sourceIterator.setValue("page#arguments.sourceIterator.getPageIndex()#",rsPage)>
 
 			</cfif>
 
-			<cfset rsContent=arguments.sourceIterator.getValue("page#arguments.sourceIterator.getPageIndex()#")>
+			<cfset rsPage=arguments.sourceIterator.getValue("page#arguments.sourceIterator.getPageIndex()#")>
 
 			<cfquery name="rsContent" dbtype="query">
-				select * from rsContent where contenthistid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contenthistid#" />
+				select * from rsPage where contenthistid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contenthistid#" />
 			</cfquery>
 
 		<cfelse>
