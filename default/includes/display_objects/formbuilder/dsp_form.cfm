@@ -78,7 +78,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			dataset=variables.dataset
 			)#			
 		<cfelseif variables.field.fieldtype.fieldtype neq "section">
-			<div class="mura-form-#variables.field.fieldtype.fieldtype#<cfif variables.field.isrequired> req</cfif> control-group">
+			<div class="mura-form-#variables.field.fieldtype.fieldtype#<cfif variables.field.isrequired> req</cfif> control-group fb#variables.field.name#">
 			#variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_#variables.field.fieldtype.fieldtype#.cfm',
 				field=variables.field,
 				dataset=variables.dataset

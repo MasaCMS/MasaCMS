@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfsavecontent variable="variables.strField">
 	<cfoutput>
 	#variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_label.cfm',field=arguments.field,dataset=arguments.dataset)#</label>
-	<select name="#arguments.field.name#"
+	<select name="#arguments.field.name#"#variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_common.cfm',field=arguments.field,dataset=arguments.dataset)#
 	</cfoutput>
 </cfsavecontent>
 </cfsilent>

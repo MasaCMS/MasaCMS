@@ -127,7 +127,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="init" access="public" returntype="any" output="false">
 	
 	<cfset super.init(argumentCollection=arguments)>
-	
+
 	<cfset variables.instance.ContentHistID = "" />
 	<cfset variables.instance.Contentid = "" />
 	<cfset variables.instance.preserveID = "" />
@@ -771,7 +771,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="liveOnly" required="true" default="true">
 	<cfargument name="aggregation" required="true" default="false">
 	<cfset var q="" />
-	<cfset var it=getBean("contentIterator").setPackageBy("active")>
+	<cfset var it=getBean("contentIterator")>
 	
 	<cfif arguments.liveOnly>
 		<cfset q=getKidsQuery(aggregation=arguments.aggregation) />
@@ -802,7 +802,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getVersionHistoryIterator" returnType="any" output="false" access="public">
 	<cfset var q=getVersionHistoryQuery() />
-	<cfset var it=getBean("contentIterator").setPackageBy("version")>
+	<cfset var it=getBean("contentIterator")>
 	<cfset it.setQuery(q)>
 	<cfreturn it>
 </cffunction>
@@ -834,7 +834,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="sortDirection" type="string" default="desc" >
 	
 	<cfset var q=getRelatedContentQuery(arguments.liveOnly, arguments.today,arguments.sortBy,arguments.sortDirection) />
-	<cfset var it=getBean("contentIterator").setPackageBy("active")>
+	<cfset var it=getBean("contentIterator")>
 	<cfset it.setQuery(q)>
 	<cfreturn it>
 </cffunction>

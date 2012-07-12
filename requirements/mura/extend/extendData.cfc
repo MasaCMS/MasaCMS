@@ -54,6 +54,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.siteID="">
 <cfset variables.instance.definitionsQuery="">
 <cfset variables.instance.contentRenderer="">
+<cfset variables.instance.sourceIterator="">
+<cfset variables.instance.idLookUp=structNew()>
+<cfset variables.instance.nameLookUp=structNew()>
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfargument name="configBean">
@@ -62,6 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="type"/>
 	<cfargument name="subType"/>
 	<cfargument name="siteID"/>
+	<cfargument name="sourceIterator" default=""/>
 	
 	<cfset variables.configBean=arguments.configBean />
 	<cfset setBaseID(arguments.baseID)/>
@@ -78,6 +82,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset setSiteID(arguments.siteID)/>
 	</cfif>
 	
+	<cfset setSourceIterator(arguments.sourceIterator)/>
+
 	<cfset loadData()/>
 	
 	<cfreturn this />
@@ -99,6 +105,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setDefinitions" returntype="void" access="public" output="false">
 	<cfargument name="definitions" />
 	<cfset variables.instance.definitions= arguments.definitions />
+</cffunction>
+
+<cffunction name="setSourceIterator" returntype="void" access="public" output="false">
+	<cfargument name="sourceIterator" />
+	<cfset variables.instance.sourceIterator= arguments.sourceIterator />
 </cffunction>
 
 
@@ -143,27 +154,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="useMuraDefault" type="boolean" required="true" default="false">
 <cfset var rs="" />
 <cfset var tempDate="">
-	<cfquery name="rs" dbType="query">
-		 select baseID,attributeValue,defaultValue,validation from variables.instance.data
-		 where lower(name)=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#lcase(key)#">
-		 <cfif isNumeric(arguments.key)>
-			 or attributeID=<cfqueryparam cfsqltype="cf_sql_numeric"  value="#key#">
-		 </cfif>
-	</cfquery>
+<cfset var index=0>
+<cfset var nameKey="name_" & hash(lcase(arguments.key))>
+<cfset var idKey="id_" & arguments.key>
 
-	<cfif rs.recordcount>
-		<cfif len(rs.baseID)>
-			<cfif rs.validation eq "Date">
-				<cfset tempDate=rs.attributeValue>
+	<cfif structKeyExists(variables.instance.nameLookUp,nameKey)>
+		<cfset index=variables.instance.nameLookUp[nameKey]>
+	<cfelseif structKeyExists(variables.instance.idLookUp,idKey)>
+		<cfset index=variables.instance.idLookUp[idKey]>
+	</cfif>
+		
+	<cfif index>
+		<cfif len(variables.instance.data.baseID[index])>
+			<cfif variables.instance.data.validation[index] eq "Date">
+				<cfset tempDate=variables.instance.data.attributeValue[index]>
 				<cftry>
 					<cfreturn parseDateTime(tempDate) />	
-					<cfcatch><cfreturn rs.attributeValue /></cfcatch>
+					<cfcatch><cfreturn variables.instance.data.attributeValue[index] /></cfcatch>
 				</cftry>	
 			<cfelse>
-				<cfreturn rs.attributeValue />
+				<cfreturn variables.instance.data.attributeValue[index] />
 			</cfif>
 		<cfelse>
-			<cfreturn getContentRenderer().setDynamicContent(rs.defaultValue) />
+			<cfreturn getContentRenderer().setDynamicContent(variables.instance.data.defaultValue[index]) />
 		</cfif>
 	<cfelseif arguments.useMuraDefault>
 		<cfreturn "useMuraDefault" />
@@ -174,83 +187,93 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="loadData" access="public" returntype="void" output="false">
-<cfset var rs=""/>
+<cfset var rsExtendedAttributes=""/>
+<cfset var rsCombine=""/>
+<cfset var rsPreValue=""/>
 <cfset var dataTable=getDataTable() />
 <cfset var rsDefinitions=getDefinitionsQuery()>
 <cfset var tableModifier="">
+<cfset var rsExtended="">
 
 		<cfif variables.configBean.getDbType() eq "MSSQL">
 			 <cfset tableModifier="with (nolock)">
 		 </cfif>
 
-		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-		select #dataTable#.baseid, tclassextendattributes.name, tclassextendattributes.validation, 
-		<cfif variables.configBean.getDBType() eq "oracle">
-			to_char(tclassextendattributes.label) as label
+		<cfif isObject(variables.instance.sourceIterator) and (
+					variables.instance.sourceIterator.getNextN() lte 2000 
+					or (
+						not variables.instance.sourceIterator.getNextN()
+						and variables.instance.sourceIterator.getRecordCount() lte 2000
+						)
+				)>
+
+			<cfif not isQuery(variables.instance.sourceIterator.getPageQuery("page_extended#variables.instance.sourceIterator.getPageIndex()#"))>
+				<cfquery name="rsPage" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+					select #getDataTable()#.baseid, tclassextendattributes.name, tclassextendattributes.validation, 
+					<cfif variables.configBean.getDBType() eq "oracle">
+						to_char(tclassextendattributes.label) as label
+					<cfelse>
+						tclassextendattributes.label
+					</cfif>, 
+					tclassextendattributes.attributeID,tclassextendattributes.defaultValue,tclassextendattributes.extendSetID,
+					
+					#getDataTable()#.attributeValue
+					
+					from #getDataTable()# #tableModifier# 
+					inner join tclassextendattributes #tableModifier# On (#getDataTable()#.attributeID=tclassextendattributes.attributeID)
+					<cfif variables.instance.sourceIterator.getRecordIdField() eq 'contentid'>
+						inner join tcontent #tableModifier# On (#getDataTable()#.baseid=tcontent.contenthistid)
+						where 
+						tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID#">
+						and tcontent.contentid 
+						in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#variables.instance.sourceIterator.getPageIDList()#">)
+						and tcontent.active=1
+						and tcontent.approved=1
+					<cfelse>
+						where #getDataTable()#.baseID 
+						in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#variables.instance.sourceIterator.getPageIDList()#">)
+					</cfif>
+				</cfquery>
+
+				<cfset variables.instance.sourceIterator.setPageQuery("page_extended#variables.instance.sourceIterator.getPageIndex()#",rsPage)>
+			<cfelse>
+				<cfset rsPage=variables.instance.sourceIterator.getPageQuery("page_extended#variables.instance.sourceIterator.getPageIndex()#")>
+			</cfif>
+
+			<cfquery name="rsExtended" dbtype="query">
+				select * from rsPage
+				where baseID='#getBaseID()#'
+			</cfquery>
 		<cfelse>
-			tclassextendattributes.label
-		</cfif>, 
-		tclassextendattributes.attributeID,tclassextendattributes.defaultValue,tclassextendattributes.extendSetID,
-		
-		#dataTable#.attributeValue
-		
-		from #dataTable# #tableModifier# 
-		inner join tclassextendattributes #tableModifier# On (#dataTable#.attributeID=tclassextendattributes.attributeID)
-		where #dataTable#.baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getBaseID()#">
-		
-		<cfif variables.configBean.getDBType() eq "oracle" and len(getType()) and len(getSubType()) and len(getSiteID())>
-			Union All
-			
-			select 
-			#dataTable#.baseID, tclassextendattributes.name, tclassextendattributes.validation,
+			<cfquery name="rsExtended" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+			select #dataTable#.baseid, tclassextendattributes.name, tclassextendattributes.validation, 
 			<cfif variables.configBean.getDBType() eq "oracle">
 				to_char(tclassextendattributes.label) as label
 			<cfelse>
 				tclassextendattributes.label
-			</cfif>,
+			</cfif>, 
 			tclassextendattributes.attributeID,tclassextendattributes.defaultValue,tclassextendattributes.extendSetID,
 			
 			#dataTable#.attributeValue
-			 
-			from tclassextend #tableModifier#
-			inner join tclassextendsets #tableModifier# On (tclassextend.subtypeid=tclassextendsets.subtypeid)
-			inner join tclassextendattributes #tableModifier# On (tclassextendsets.extendsetid=tclassextendattributes.extendsetid)
-			left join #dataTable# #tableModifier# on (
-												(
-													tclassextendattributes.attributeID=#dataTable#.attributeID
-													and  #dataTable#.baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getBaseID()#">
-												)
-											)
-			where tclassextend.siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
-			and 
-				(
-					tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getType()#">
-					<cfif not listFindNoCase("1,2,User,Group,Address,Site,Component,Form",getType())>
-						or tclassextend.type='Base'
-					</cfif>
-				)
-			and (
-				<cfif getSubType() neq "Default">
-				tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSubType()#">
-				or
-				</cfif>
-				tclassextend.subtype='Default'
-				)
-				
-			and #dataTable#.baseID is null
 			
+			from #dataTable# #tableModifier# 
+			inner join tclassextendattributes #tableModifier# On (#dataTable#.attributeID=tclassextendattributes.attributeID)
+			where #dataTable#.baseID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getBaseID()#">
+			
+			</cfquery>
 		</cfif>
-		</cfquery>
 		
+		<!---
 		<cfif variables.configBean.getDBType() neq "oracle" and len(getType()) and len(getSubType()) and len(getSiteID())>
-		
-			<cfquery name="rs" dbtype="query">
-				select baseID, name, validation, label, attributeID, defaultValue, extendSetID, attributeValue
-				from rs
+			--->
+		<cfif len(getType()) and len(getSubType()) and len(getSiteID())>
+			<cfquery name="rsCombine" dbtype="query">
+				select baseID, name, validation, label, attributeID, defaultValue, extendSetID<cfif variables.configBean.getDBType() neq "oracle">, attributeValue</cfif>
+				from rsExtended
 				
 				union all
 				
-				select '' baseID, attributename, validation, label, attributeID, defaultValue, extendSetID, '' attributeValue
+				select '' baseID, attributename, validation, label, attributeID, defaultValue, extendSetID<cfif variables.configBean.getDBType() neq "oracle">, '' attributeValue</cfif>
 				from rsDefinitions
 				where siteID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
 				and (
@@ -267,15 +290,38 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	                  </cfif>
 	                 subtype='Default'
 	                  )
-				<cfif rs.recordcount>
-				and attributeID not in (#valuelist(rs.attributeid)#)
+				<cfif rsExtended.recordcount>
+				and attributeID not in (#valuelist(rsExtended.attributeid)#)
 				</cfif>
 			
 			</cfquery>
+
+			<!--- Can't union in clob attribute value so they are manually added after the fact --->
+			<cfif variables.configBean.getDBType() eq "oracle">
+				<cfset queryAddColumn(rsCombine,"attributeValue","cf_sql_varchar",arrayNew(1))>
+
+				<cfloop query='rsExtended'>
+					<cfloop query='rsCombine'>
+						<cfif rsExtended.attributeID eq rsCombine.attributeID>
+							<cfset querySetCell(rsCombine, "attributeValue", rsExtended.attributeValue, rsCombine.currentrow)>
+							<cfbreak>
+						</cfif>
+					</cfloop>	
+				</cfloop>
+				
+			</cfif>
+			
+			<cfset rsExtended=rsCombine>
+
 		</cfif>
-		
-		<cfset variables.instance.data=rs />
-		
+
+		<cfloop query='rsExtended'>
+			<cfset variables.instance.idLookup['id_' & rsExtended.attributeID]=rsExtended.currentRow>
+			<cfset variables.instance.nameLookup["name_" & hash(lcase(rsExtended.name))]=rsExtended.currentRow>
+		</cfloop>
+	
+		<cfset variables.instance.data=rsExtended />
+
 </cffunction>
 
 <cffunction name="setAllValues" returntype="any" access="public" output="false">

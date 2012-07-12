@@ -47,6 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent extends="mura.iterator.queryIterator" output="false">
 
 <cfset variables.userBean ="">
+<cfset variables.recordIDField="userID">
 
 <cffunction name="packageRecord" access="public" output="false" returntype="any">
 	<cfif NOT isObject(variables.userBean)>
@@ -59,7 +60,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.userBean.set(queryRowToStruct(variables.records,currentIndex()))>
 	
 	<cfset getBean("userManager").setUserBeanMetaData(variables.userBean)/>
-	
+	<cfset variables.userBean.setValue('sourceIterator',this)>
+
 	<cfreturn variables.userBean>
 </cffunction>
 

@@ -60,7 +60,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<ul class="ui-tabs-nav">
 				<li class="ui-state-default ui-corner-top"><a href="##mura-tb-form-tab-basic"><span>Basic</span></a></li>
 				<li class="ui-state-default ui-corner-top"><a href="##mura-tb-form-tab-advanced"><span>Advanced</span></a></li>
-				<li class="ui-state-default ui-corner-top"><a href="##mura-tb-form-tab-validation"><span>Validation</span></a></li>
+				<!--<li class="ui-state-default ui-corner-top"><a href="##mura-tb-form-tab-validation"><span>Validation</span></a></li>-->
 			</ul>
 			
 			<div class="ui-tabs-panel" id="mura-tb-form-tab-basic">
@@ -96,7 +96,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</li>
 					</ul>
 				</div> <!--- End Tab Panel --->
-				
+				<!--
 				<div class="ui-tabs-panel" id="mura-tb-form-tab-validation">
 					<ul class="template-form">
 						<li>
@@ -123,7 +123,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							#mmRBF.getKeyValue(session.rb,'formbuilder.field.isrequired')#</label>
 						</li>
 					</ul>
-				</div> <!--- End Tab Panel --->
+				</div>
+				--> <!--- End Tab Panel --->
 				
 			</div> <!--- End ui-tabs --->
 		</div> <!--- End mura-tb-form --->

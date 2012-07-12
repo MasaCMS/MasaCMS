@@ -63,6 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.type = "Custom" />
 	<cfset variables.instance.subType = "Default" />
 	<cfset variables.instance.siteiD = "" />
+	<cfset variables.instance.sourceIterator = "" />
 	<cfreturn this>
 </cffunction>
 
@@ -110,7 +111,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getExtendedData" returntype="any" output="false" access="public">
 	<cfif not isObject(variables.instance.extendData)>
-	<cfset variables.instance.extendData=variables.configBean.getClassExtensionManager().getExtendedData(baseID:getExtendBaseID(), type:variables.instance.type, subType:variables.instance.subtype, siteID:variables.instance.siteID, dataTable=variables.instance.extendDataTable)/>
+	<cfset variables.instance.extendData=variables.configBean.getClassExtensionManager().getExtendedData(baseID:getExtendBaseID(), type:variables.instance.type, subType:variables.instance.subtype, siteID:variables.instance.siteID, dataTable=variables.instance.extendDataTable, sourceIterator=variables.instance.sourceIterator)/>
 	</cfif> 
 	<cfreturn variables.instance.extendData />
 </cffunction>
@@ -118,6 +119,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="purgeExtendedData" output="false" access="public">
 	<cfset variables.instance.extendData=""/>
 	<cfset variables.instance.extendAutoComplete = true />
+	<cfset variables.instance.sourceIterator = "" />
 	<cfreturn this>
 </cffunction>
  

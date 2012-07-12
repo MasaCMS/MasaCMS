@@ -2592,6 +2592,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							hasSummary=<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextend.hasSummary neq '',de('no'),de('yes'))#" value="#rstclassextend.hasSummary#">,
 							hasBody=<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextend.hasBody neq '',de('no'),de('yes'))#" value="#rstclassextend.hasBody#">,
 							</cfif>
+							<cfif isDefined("rstclassextend.description")>
+							description=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.description neq '',de('no'),de('yes'))#" value="#rstclassextend.description#">,
+							</cfif>
 							lastUpdateBy='System'
 							where subTypeID = <cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstclassextend.subTypeID)#">
 						</cfquery>
@@ -2601,6 +2604,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							isActive, notes, lastUpdate, dateCreated, 
 							<cfif isDefined("rstclassextend.hasSummary")>
 							hasSummary,hasBody,
+							</cfif>
+							<cfif isDefined("rstclassextend.description")>
+							description,
 							</cfif>
 							lastUpdateBy)
 							values
@@ -2619,6 +2625,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfif isDefined("rstclassextend.hasSummary")>
 							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextend.hasSummary neq '',de('no'),de('yes'))#" value="#rstclassextend.hasSummary#">,
 							<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextend.hasBody neq '',de('no'),de('yes'))#" value="#rstclassextend.hasBody#">,
+							</cfif>
+							<cfif isDefined("rstclassextend.description")>
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.description neq '',de('no'),de('yes'))#" value="#rstclassextend.description#">,
 							</cfif>
 							'System'
 							)
