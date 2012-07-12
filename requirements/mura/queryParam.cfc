@@ -53,12 +53,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.criteria="" />
 <cfset variables.isValid=true />
 
-<cfif isDefined("request.contentRenderer")>
-	<cfset variables.renderer=request.contentRenderer>
-<cfelse>
-	<cfset variables.renderer=getBean('settingsManager').getSite(session.siteID).getContentRenderer()>
-</cfif>
-
 <cffunction name="init" returntype="any" access="public">
 	<cfargument name="relationship" default="">
 	<cfargument name="field" default="">
@@ -155,7 +149,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var tmp="" />
 	
 	<cftry>
-		<cfset tmp=variables.renderer.setDynamicContent(arguments.criteria) />
+		<cfset tmp=getContentRenderer().setDynamicContent(arguments.criteria) />
 	<cfcatch><cfset tmp=arguments.criteria /></cfcatch>
 	</cftry>
 	<cfif tmp eq "null">
@@ -250,6 +244,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfset setIsValid(true) />
 	</cfif>
+</cffunction>
+
+<cffunction name="getContentRenderer" output="false">
+	
+	<cfif structKeyExists(request,"servletEvent")>
+		<cfreturn request.servletEvent.getContentRenderer()>
+	<cfelseif structKeyExists(request,"event")>
+		<cfreturn request.event.getContentRenderer()>
+	<cfelseif isdefined('session.siteID') and len(session.siteID)>
+		<cfreturn getBean("$").init(session.siteID).getContentRenderer()>
+	<cfelse>
+		<cfreturn getBean("contentRenderer")>
+	</cfif>
+	
 </cffunction>
 
 </cfcomponent>
