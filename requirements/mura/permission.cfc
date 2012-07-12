@@ -544,57 +544,57 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getModule" access="public" returntype="query" output="false">
 <cfargument name="data" type="struct" />
-<cfset var rs = "" />
-<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+<cfset var rsModulePerm = "" />
+<cfquery name="rsModulePerm" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 SELECT * FROM tcontent WHERE 
  ContentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.contentID#"/> and  siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/> and active=1
 </cfquery>
-<cfreturn rs />
+<cfreturn rsModulePerm />
 </cffunction>
 	
 <cffunction name="getGroupList" access="public" returntype="struct" output="false">
 <cfargument name="data" type="struct" />
-<cfset var rs = "" />
+<cfset var rsGroupList = "" />
 <cfset var returnStruct=structNew() />
-<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+<cfquery name="rsGroupList" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 select userid, groupname from tusers where type=1 and groupname <>'Admin' and isPublic=0 
 and siteid='#application.settingsManager.getSite(arguments.data.siteid).getPrivateUserPoolID()#' 
 order by groupname
 </cfquery>
 
-<cfset returnStruct.privateGroups=rs />
+<cfset returnStruct.privateGroups=rsGroupList />
 
-<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+<cfquery name="rsGroupList" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 select userid, groupname from tusers where type=1  and isPublic=1 
 and siteid='#application.settingsManager.getSite(arguments.data.siteid).getPublicUserPoolID()#' 
 order by groupname
 </cfquery>
 
-<cfset returnStruct.publicGroups=rs />
+<cfset returnStruct.publicGroups=rsGroupList />
 
 <cfreturn returnStruct />
 </cffunction>
 
 <cffunction name="getPermitedGroups"  access="public" returntype="query" output="false">
 <cfargument name="data" type="struct" />
-<cfset var rs = "" />
-<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"
+<cfset var rsGroupPermissions = "" />
+<cfquery name="rsGroupPermissions" datasource="#variables.configBean.getReadOnlyDatasource()#"
 username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 select * from tpermissions where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.contentID#"/> and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/> and type='module'
 </cfquery>
-<cfreturn rs />
+<cfreturn rsGroupPermissions />
 </cffunction>
 
 <cffunction name="getcontent" access="public" returntype="query" output="false">
 <cfargument name="data" type="struct" />
-<cfset var rs = "" />
-<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"
+<cfset var rsContent = "" />
+<cfquery name="rsContent" datasource="#variables.configBean.getReadOnlyDatasource()#"
 username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 SELECT tcontent.*, tfiles.fileEXT FROM tcontent 
 LEFT Join tfiles ON (tcontent.fileID=tfiles.fileID)
 WHERE tcontent.ContentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.contentID#"/> and tcontent.active=1 and tcontent.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/>
 </cfquery>
-<cfreturn rs />
+<cfreturn rsContent />
 </cffunction>
 
 <cffunction name="updateModule" access="public"  returntype="void" output="false">
