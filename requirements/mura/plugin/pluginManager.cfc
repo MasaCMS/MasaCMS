@@ -105,7 +105,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var rsScripts1="">
 <cfset var rsScripts2="">
 <cfset var siteIDadjusted="">
-
+<cfset var handlerData="">
 <cfquery name="variables.rsPlugins" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 select * from tplugins
 <cfif arguments.safeMode>
@@ -160,7 +160,11 @@ select * from rsScripts order by loadPriority
 </cfquery>
 
 <cfloop query="variables.rsScripts">
-	<cfif left(variables.rsScripts.runat,8) neq "onGlobal">
+	<cfset arrayAppend(variables.eventHandlers,variables.rsScripts.currentrow)>
+	<cfset handlerData=structNew()>
+	<cfset handlerData.index=arrayLen(variables.eventHandlers)>
+
+	<cfif left(variables.rsScripts.runat,8) neq "onGlobal" and variables.rsScripts.runat neq "onApplicationLoad">
 		<cfset siteIDadjusted=adjustSiteID(variables.rsScripts.siteID)>
 		<cfif not StructKeyExists(variables.siteListeners,siteIDadjusted)>
 			<cfset variables.siteListeners[siteIDadjusted]=structNew()>
@@ -168,12 +172,12 @@ select * from rsScripts order by loadPriority
 		<cfif not structKeyExists(variables.siteListeners[siteIDadjusted],variables.rsScripts.runat)>
 			<cfset variables.siteListeners[siteIDadjusted][variables.rsScripts.runat]=arrayNew(1)>
 		</cfif>
-		<cfset arrayAppend( variables.siteListeners[siteIDadjusted][variables.rsScripts.runat] , variables.rsScripts.currentrow)>
+		<cfset arrayAppend( variables.siteListeners[siteIDadjusted][variables.rsScripts.runat] , handlerData)>
 	<cfelse>	
 		<cfif not structKeyExists(variables.globalListeners,variables.rsScripts.runat)>
 			<cfset variables.globalListeners[variables.rsScripts.runat]=arrayNew(1)>
 		</cfif>
-		<cfset arrayAppend( variables.globalListeners[variables.rsScripts.runat],variables.rsScripts.currentrow)>
+		<cfset arrayAppend( variables.globalListeners[variables.rsScripts.runat], handlerData)>
 	</cfif>
 </cfloop>
 
@@ -1278,7 +1282,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var eventHandlerIndex="">
 	<cfset var eventHandler="">
 	<cfset var listenerArray="">
-	<cfset var isGlobalEvent=left(arguments.runat,8) eq "onGlobal">
+	<cfset var isGlobalEvent=left(arguments.runat,8) eq "onGlobal" or arguments.runat eq "onApplicationLoad">
 	<cfset var isValidEvent=false>
 	<cfset var siteIDadjusted=adjustSiteID(arguments.siteID)>
 	<cfset var muraScope="">
@@ -1486,7 +1490,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var i="">
 	<cfset var eventHandler="">
 	<cfset var listenerArray="">
-	<cfset var isGlobalEvent=left(arguments.runat,8) eq "onGlobal">
+	<cfset var isGlobalEvent=left(arguments.runat,8) eq "onGlobal" or arguments.runat eq "onApplicationLoad">
 	<cfset var isValidEvent=false>
 	<cfset var siteIDadjusted=adjustSiteID(arguments.siteID)>
 	<cfset var muraScope="">
