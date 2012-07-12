@@ -152,6 +152,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset tmp=getContentRenderer().setDynamicContent(arguments.criteria) />
 	<cfcatch><cfset tmp=arguments.criteria /></cfcatch>
 	</cftry>
+
 	<cfif tmp eq "null">
 		<cfset variables.criteria="null">
 	<cfelse>
