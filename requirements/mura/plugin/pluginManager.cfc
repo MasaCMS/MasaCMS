@@ -1998,25 +1998,27 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="jsLibLoaded" required="true" default="false">
 <cfargument name="compactDisplay" required="false" default="false" />
 
-<cfset var rc=structNew()>
+<cfset var fusebox=structNew()>
+<cfset var myFusebox=structNew()>
 <cfset var returnStr="">
 <cfset var moduleTitle=arguments.pageTitle>
+<cfset var attributes=structNew()>
 <cfset var layoutTemplate="template" />
 
-<cfset rc.layout =arguments.body>
-<cfset rc.ajax ="">
-<cfset rc.originalcircuit="cPlugins">
-<cfset rc.originalfuseaction="">
-<cfset rc.moduleID="">
-<cfset rc.jsLib=arguments.jsLib>
-<cfset rc.jsLibLoaded=arguments.jsLibLoaded>
+<cfset fusebox.layout =arguments.body>
+<cfset fusebox.ajax ="">
+<cfset myfusebox.originalcircuit="cPlugins">
+<cfset myfusebox.originalfuseaction="">
+<cfset attributes.moduleID="">
+<cfset attributes.jsLib=arguments.jsLib>
+<cfset attributes.jsLibLoaded=arguments.jsLibLoaded>
 
 <cfif arguments.compactDisplay>
 	<cfset layoutTemplate = "compact" />
 </cfif>
 
 <cfsavecontent variable="returnStr">
-	<cfinclude template="/#variables.configBean.getWebrootMap()#/admin/common/layouts/#layoutTemplate#.cfm">
+	<cfinclude template="/#variables.configBean.getWebrootMap()#/admin/common/layouts/includes/#layoutTemplate#.cfm">
 </cfsavecontent>
 
 <cfreturn returnStr/>
