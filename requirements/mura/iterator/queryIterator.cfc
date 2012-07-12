@@ -28,6 +28,7 @@
 	<cfset variables.recordTranslator="">
 	<cfset variables.iteratorID="">
 	<cfset variables.recordIDField="id">
+	<cfset variables.pageQueries=structNew()>
 
 	<cffunction name="init" access="public" output="false" returntype="any">
 		<cfset variables.recordIndex = 0 />
@@ -247,6 +248,31 @@
 		<cfset variables.recordTranslator=arguments.recordTranslator/>
 		<cfreturn this>
 	</cffunction>
+
+	<cffunction name="setPageQuery" returntype="any" access="public" output="false">
+	<cfargument name="queryName"  type="string" required="true">
+	<cfargument name="queryObject" default="" >
+
+		<cfset variables.pageQueries["#arguments.queryName#"]=arguments.queryObject />
+		<cfreturn this>
+	</cffunction>
+
+	<cffunction name="getPageQuery" returntype="any" access="public" output="false">
+	<cfargument name="queryName"  type="string" required="true">
+		
+		<cfif structKeyExists(variables.pageQueries,"#arguments.queryName#")>
+			<cfreturn variables.pageQueries["#arguments.queryName#"] />
+		<cfelse>
+			<cfreturn "" />
+		</cfif>
+
+	</cffunction>
+
+	<cffunction name="clearPageQueries" returntype="any" access="public" output="false">
+		<cfset variables.pageQueries=structNew()>
+		<cfreturn this>
+	</cffunction>
+
 	<!---
 	<cffunction name="each">
 		<cfargument name="action" hint="A function that will run per item in iterator.">

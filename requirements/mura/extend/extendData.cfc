@@ -205,7 +205,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						)
 				)>
 
-			<cfif not isQuery(variables.instance.sourceIterator.getValue("page_extended#variables.instance.sourceIterator.getPageIndex()#"))>
+			<cfif not isQuery(variables.instance.sourceIterator.getPageQuery("page_extended#variables.instance.sourceIterator.getPageIndex()#"))>
 				<cfquery name="rsPage" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 					select #getDataTable()#.baseid, tclassextendattributes.name, tclassextendattributes.validation, 
 					<cfif variables.configBean.getDBType() eq "oracle">
@@ -233,9 +233,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 				</cfquery>
 
-				<cfset variables.instance.sourceIterator.setValue("page_extended#variables.instance.sourceIterator.getPageIndex()#",rsPage)>
+				<cfset variables.instance.sourceIterator.setPageQuery("page_extended#variables.instance.sourceIterator.getPageIndex()#",rsPage)>
 			<cfelse>
-				<cfset rsPage=variables.instance.sourceIterator.getValue("page_extended#variables.instance.sourceIterator.getPageIndex()#")>
+				<cfset rsPage=variables.instance.sourceIterator.getPageQuery("page_extended#variables.instance.sourceIterator.getPageIndex()#")>
 			</cfif>
 
 			<cfquery name="rsExtended" dbtype="query">
