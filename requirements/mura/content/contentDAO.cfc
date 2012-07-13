@@ -1058,15 +1058,15 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfargument name="contentHistID" type="string" required="yes" default="" />
 	<cfargument name="siteid" type="string" required="yes" default="" />
 	
-	 <cfset var rs =""/>
+	 <cfset var rsRelatedItems =""/>
 	 <cfset var ItemList =""/>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rsRelatedItems" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		select relatedID from tcontentrelated
 		where contentHistID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contenthistID#"/> and siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	</cfquery>
 	
-	<cfset ItemList=valueList(rs.relatedID) />
+	<cfset ItemList=valueList(rsRelatedItems.relatedID) />
 	
 	<cfreturn ItemList />
 	
@@ -1115,9 +1115,9 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfargument name="sortOrder" type="string" required="true" default="asc">
 	<cfargument name="parentID" type="string" required="true" default="">
 	<cfargument name="filterByParentID" type="boolean" required="true" default="true">
-	<cfset var rs= ''/>
+	<cfset var rsComments= ''/>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rsComments" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select c.contentid, c.commentid, c.parentid, c.name, c.email, c.url, c.comments, c.entered, c.siteid, c.isApproved, c.subscribe, c.userID, c.path,
 	f.fileid, f.fileExt, k.kids
 	from tcontentcomments c 
@@ -1145,7 +1145,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	order by c.entered #arguments.sortOrder#
 	</cfquery>
 
-	<cfreturn rs />
+	<cfreturn rsComments />
 </cffunction>
 
 <cffunction name="readRecentComments" access="public" output="false" returntype="query">
@@ -1153,10 +1153,10 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfargument name="size" type="numeric" required="true" default="5">
 	<cfargument name="approvedOnly" type="boolean" required="true" default="true">
 	
-	<cfset var rs= ''/>
+	<cfset var rsRecentComments= ''/>
 	<cfset var dbType=variables.configBean.getDbType() />
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rsRecentComments" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	<cfif dbType eq "oracle" and arguments.size>select * from (</cfif>
 	select 
 	<cfif dbType eq "mssql" and arguments.size>Top #arguments.size#</cfif> 
@@ -1174,7 +1174,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfif dbType eq "oracle" and arguments.size>) where ROWNUM <=#arguments.size# </cfif>
 	</cfquery>
 	
-	<cfreturn rs />
+	<cfreturn rsRecentComments />
 </cffunction>
 
 <cffunction name="getCommentCount" access="public" output="false" returntype="numeric">
@@ -1183,22 +1183,22 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfargument name="isEditor" type="boolean" required="true" default="false">
 	<cfset var rs= ''/>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rsCommentCount" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select count(*) TotalComments from tcontentcomments where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentid#"/> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	<cfif not arguments.isEditor >
 	and isApproved=1
 	</cfif>
 	</cfquery>
 	
-	<cfreturn rs.TotalComments />
+	<cfreturn rsCommentCount.TotalComments />
 </cffunction>
 
 <cffunction name="getCommentSubscribers" access="public" output="false" returntype="query">
 	<cfargument name="contentID" type="String" required="true" default="">
 	<cfargument name="siteID" type="string" required="true" default="">
-	<cfset var rs= ''/>
+	<cfset var rsCommentSubscribers= ''/>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rsCommentSubscribers" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select distinct email from tcontentcomments 
 	where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentid#"/> 
 	and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
@@ -1207,7 +1207,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	and subscribe=1
 	</cfquery>
 	
-	<cfreturn rs />
+	<cfreturn rsCommentSubscribers />
 </cffunction>
 
 <cffunction name="renderActiveClause" output="true">
