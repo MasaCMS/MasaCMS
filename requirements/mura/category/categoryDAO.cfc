@@ -89,22 +89,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="read" access="public" output="false" returntype="any" >
 	<cfargument name="categoryID" type="string" />
 	<cfargument name="categoryBean" required="true" default=""/>
-	<cfset var rs ="" />
+	<cfset var rsCategory ="" />
 	<cfset var bean=arguments.categoryBean />
 	
 	<cfif not isObject(bean)>
 		<cfset bean=getBean("category")>
 	</cfif>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rsCategory" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	Select 
 	#variables.fieldlist#
 	from tcontentcategories where 
 	categoryID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.categoryID#" />
 	</cfquery>
 	
-	<cfif rs.recordcount>
-	<cfset bean.set(rs) />
+	<cfif rsCategory.recordcount>
+	<cfset bean.set(rsCategory) />
 	<cfset bean.setIsNew(0)>
 	</cfif>
 	
@@ -115,7 +115,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="name" type="string" />
 	<cfargument name="siteID" type="string" />
 	<cfargument name="categoryBean" required="true" default=""/>
-	<cfset var rs ="" />
+	<cfset var rsCategory ="" />
 	<cfset var beanArray=arrayNew(1)>
 	<cfset var utility="">
 	<cfset var bean=arguments.categoryBean />
@@ -124,7 +124,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset bean=getBean("category")>
 	</cfif>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rsCategory" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Select
 	#variables.fieldlist#
 	from tcontentcategories where 
@@ -132,16 +132,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</cfquery>
 	
-	<cfif rs.recordcount gt 1>
+	<cfif rsCategory.recordcount gt 1>
 		<cfset utility=getBean("utility")>
-		<cfloop query="rs">
-			<cfset bean=getBean("category").set(utility.queryRowToStruct(rs,rs.currentrow))>
+		<cfloop query="rsCategory">
+			<cfset bean=getBean("category").set(utility.queryRowToStruct(rsCategory,rsCategory.currentrow))>
 			<cfset bean.setIsNew(0)>
 			<cfset arrayAppend(beanArray,bean)>		
 		</cfloop>
 		<cfreturn beanArray>
-	<cfelseif rs.recordcount>
-		<cfset bean.set(rs) />
+	<cfelseif rsCategory.recordcount>
+		<cfset bean.set(rsCategory) />
 		<cfset bean.setIsNew(0)>
 	<cfelse>
 		<cfset bean.setSiteID(arguments.siteID)>
@@ -154,7 +154,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="filename" type="string" />
 	<cfargument name="siteID" type="string" />
 	<cfargument name="categoryBean" required="true" default=""/>
-	<cfset var rs ="" />
+	<cfset var rsCategory ="" />
 	<cfset var beanArray=arrayNew(1)>
 	<cfset var utility="">
 	<cfset var bean=arguments.categoryBean />
@@ -163,7 +163,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset bean=getBean("category")>
 	</cfif>
 
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rsCategory" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Select
 	#variables.fieldlist#
 	from tcontentcategories where 
@@ -171,16 +171,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</cfquery>
 	
-	<cfif rs.recordcount gt 1>
+	<cfif rsCategory.recordcount gt 1>
 		<cfset utility=getBean("utility")>
-		<cfloop query="rs">
-			<cfset bean=getBean("category").set(utility.queryRowToStruct(rs,rs.currentrow))>
+		<cfloop query="rsCategory">
+			<cfset bean=getBean("category").set(utility.queryRowToStruct(rsCategory,rsCategory.currentrow))>
 			<cfset bean.setIsNew(0)>
 			<cfset arrayAppend(beanArray,bean)>		
 		</cfloop>
 		<cfreturn beanArray>
-	<cfelseif rs.recordcount>
-		<cfset bean.set(rs) />
+	<cfelseif rsCategory.recordcount>
+		<cfset bean.set(rsCategory) />
 		<cfset bean.setIsNew(0)>
 	<cfelse>
 		<cfset bean.setSiteID(arguments.siteID)>
@@ -193,7 +193,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="remoteID" type="string" />
 	<cfargument name="siteID" type="string" />
 	<cfargument name="categoryBean" required="true" default=""/>
-	<cfset var rs ="" />
+	<cfset var rsCategory ="" />
 	<cfset var beanArray=arrayNew(1)>
 	<cfset var utility="">
 	<cfset var bean=arguments.categoryBean />
@@ -202,7 +202,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset bean=getBean("category")>
 	</cfif>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rsCategory" datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	Select
 	#variables.fieldlist#
 	from tcontentcategories where 
@@ -210,16 +210,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</cfquery>
 	
-	<cfif rs.recordcount gt 1>
+	<cfif rsCategory.recordcount gt 1>
 		<cfset utility=getBean("utility")>
-		<cfloop query="rs">
-			<cfset bean=getBean("category").set(utility.queryRowToStruct(rs,rs.currentrow))>
+		<cfloop query="rsCategory">
+			<cfset bean=getBean("category").set(utility.queryRowToStruct(rsCategory,rsCategory.currentrow))>
 			<cfset bean.setIsNew(0)>
 			<cfset arrayAppend(beanArray,bean)>		
 		</cfloop>
 		<cfreturn beanArray>
-	<cfelseif rs.recordcount>
-		<cfset bean.set(rs) />
+	<cfelseif rsCategory.recordcount>
+		<cfset bean.set(rsCategory) />
 		<cfset bean.setIsNew(0)>
 	<cfelse>
 		<cfset bean.setSiteID(arguments.siteID)>
@@ -336,9 +336,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="contentID" type="string" default=""/>
 	<cfargument name="siteID" type="string" default=""/>
 	
-	<cfset var rs = ""/>
+	<cfset var rsCategoryCurrentOrderNo = ""/>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rsCategoryCurrentOrderNo" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select distinct tcontentcategoryassign.orderno from tcontentcategoryassign  inner join tcontent
 	ON (tcontentcategoryassign.contentid=tcontent.contentid
 		and tcontentcategoryassign.siteid=tcontent.siteid)
@@ -348,8 +348,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	and tcontent.active=1
 	</cfquery>
 
-	<cfif rs.recordcount>
-		<cfreturn rs.orderno/>
+	<cfif rsCategoryCurrentOrderNo.recordcount>
+		<cfreturn rsCategoryCurrentOrderNo.orderno/>
 	<cfelse>
 		<cfreturn 0/>
 	</cfif>

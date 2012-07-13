@@ -140,9 +140,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="contentID" type="string" default="" required="yes"/>
 	<cfargument name="siteID" type="string" default="" required="yes"/>
 	
-	<cfset var rs=""/>
+	<cfset var rsAvgRating=""/>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rsAvgRating" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select avg(tcontentratings.rate) as theAvg, count(tcontentratings.contentID) as theCount, (count(tcontentratings.contentID)-downVotes) as upVotes, downVotes from tcontentratings
 	left join (select count(rate) as downVotes, contentID,siteID from tcontentratings
 				where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
@@ -156,7 +156,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	group by downVotes
 	</cfquery>
 		
- <cfreturn rs />
+ <cfreturn rsAvgRating />
 </cffunction>
 
 <cffunction name="getTopRated" access="public" output="true" returntype="query">
@@ -166,11 +166,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="startDate" type="string" required="true" default="">
 	<cfargument name="stopDate" type="string" required="true" default="">
 	
-	<cfset var rs=""/>
+	<cfset var rsTopRating=""/>
 	<cfset var stop=""/>
 	<cfset var start=""/>
 	<cfset var dbType=variables.configBean.getDbType() />
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rsTopRating" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	    <cfif dbType eq "oracle" and arguments.limit>select * from (</cfif>
 	    SELECT <cfif dbType eq "mssql" and arguments.limit>Top #arguments.limit#</cfif> tcontent.ContentHistID, tcontent.ContentID, tcontent.Approved, tcontent.filename, tcontent.Active,
 	    tcontent.Type, tcontent.OrderNo, tcontent.ParentID, tcontent.siteID,  tcontent.moduleID,
@@ -233,7 +233,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif dbType eq "oracle" and arguments.limit>) where ROWNUM <=1 </cfif>
 	</cfquery>
 		
- <cfreturn rs />
+ <cfreturn rsTopRating />
 </cffunction>
 	
 </cfcomponent>

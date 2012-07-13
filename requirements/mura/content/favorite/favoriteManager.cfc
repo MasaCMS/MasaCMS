@@ -65,8 +65,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="favoriteType" type="string" required="yes" default="all">
 		<cfargument name="siteID" type="string" required="yes">
 	
-		<cfset var rs = "" />
-		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfset var rsFavorites = "" />
+		<cfquery name="rsFavorites" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		select * from tusersfavorites
 		where userID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
 		
@@ -79,7 +79,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			order by dateCreated
 		</cfif>
 		</cfquery>
-		<cfreturn rs />
+		<cfreturn rsFavorites />
 	</cffunction>
 
 <cffunction name="getInternalContentFavorites" access="public" output="false" returntype="query">
@@ -87,9 +87,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteID" type="String">
 	<cfargument name="type" type="String" required="false" default="">
 	
-	<cfset var rs ="" />
+	<cfset var rsInternalFavorites ="" />
 
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rsInternalFavorites" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	SELECT tusersfavorites.favoriteID, tusersfavorites.favorite, tusersfavorites.dateCreated, tcontent.title, tcontent.releasedate, tcontent.menuTitle, tcontent.lastupdate, tcontent.summary, 
 	tcontent.filename, tcontent.type, tcontent.contentid,
 	tcontent.target,tcontent.targetParams, tcontent.restricted, tcontent.restrictgroups, tcontent.displaystart, tcontent.displaystop, tcontent.orderno,tcontent.sortBy,tcontent.sortDirection,
@@ -127,7 +127,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	ORDER BY tusersfavorites.dateCreated DESC
 	</cfquery>
 	
-	<cfreturn rs />
+	<cfreturn rsInternalFavorites />
 	
 	
 </cffunction>
@@ -148,9 +148,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="type" type="string" required="false">
 		
 		<cfset var returnVar = "" />
-		<cfset var rs = "" />
+		<cfset var rsFavorite = "" />
 		
-		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery name="rsFavorite" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		select favorite from tusersfavorites where favorite= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/>
 		and userID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
 			<cfif isDefined( "arguments.type" )>
@@ -158,7 +158,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfquery>
 	
-		<cfif rs.recordCount gt 0>
+		<cfif rsFavorite.recordCount gt 0>
 			<cfset returnVar = true />
 		<cfelse>
 			<cfset returnVar = false />
