@@ -368,6 +368,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset application.pluginManager.addEventHandler(variables.themeHandler,variables.rsSites.siteID)>
 			</cfif>	
 		</cfloop>
+
+		<!--- This looks for and update File and Link nodes that legacy urls --->
+		<cfquery name="variables.legacyURLs" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDbUserName()#" password="#application.configBean.getDbPassword()#">
+			select contentID,siteID from tcontent where type in ('File','Link')
+			and active=1
+			and body is null
+		</cfquery>
+
+	
+		<cfloop query="variables.legacyURLs">
+			<cfset application.contentManager.read(contentID=variables.legacyURLs.contentID,siteID=variables.legacyURLs.siteID).save()>
+		</cfloop>
+		<!--- --->
 		
 		<cfset application.sessionTrackingThrottle=false>	
 	</cfif>	

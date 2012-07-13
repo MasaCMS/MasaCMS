@@ -153,11 +153,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <td>#HTMLEditFormat(rc.rshist.lastUpdateBy)#</td> 
 <td class="administration"><ul class="three"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rshist.ContenthistID#&contentid=#rc.rshist.ContentID#&type=#rc.type#&parentid=#URLEncodedFormat(rc.parentid)#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&startrow=#rc.startrow#&moduleid=#rc.moduleid#&return=hist&compactDisplay=#rc.compactDisplay#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#</a></li>
 <cfswitch expression="#rc.rsHist.type#">
-<cfcase value="Page,Portal,Calendar,Gallery">
+<cfcase value="Page,Portal,Calendar,Gallery,Link">
 <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?previewid=#rc.rshist.contenthistid#&contentid=#URLEncodedFormat(rc.contentid)#','#rc.rshist.TargetParams#');">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.preview')#</a></li>
-</cfcase>
-<cfcase value="Link">
-<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.preview')#" href="##" onclick="return preview('#rc.rshist.filename#');">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.preview')#</a></li></li>
 </cfcase>
 <cfcase value="File">
 <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/?fileID=#rc.rshist.fileid#');">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.preview')#</a></li>

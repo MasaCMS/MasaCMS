@@ -401,11 +401,11 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 			<cfif arguments.filename neq ''>
 			 tcontent.filename=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.filename#" />
 			#renderActiveClause("tcontent",arguments.siteID)#
-			and tcontent.type in('Page','Portal','Calendar','Gallery','File') 
+			and tcontent.type in('Page','Portal','Calendar','Gallery','File','Link') 
 			<cfelse>
 			 tcontent.filename is null
 			#renderActiveClause("tcontent",arguments.siteID)#
-			 and tcontent.type in('Page','Portal','Calendar','Gallery') 
+			 and tcontent.type in('Page','Portal','Calendar','Gallery','File','Link') 
 			</cfif>
 			and  tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 			<cfif len(arguments.type)>

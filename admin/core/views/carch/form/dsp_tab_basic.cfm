@@ -286,7 +286,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	      		#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.url")#
 	      	</label>
 	     	<div class="controls">
-	     	 	<input type="text" id="url" name="filename" value="#HTMLEditFormat(rc.contentBean.getfilename())#" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.urlrequired')#">
+	     	 	<input type="text" id="url" name="body" value="#HTMLEditFormat(rc.contentBean.getbody())#" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.urlrequired')#">
 	     	</div>
 	    </div>
 	<cfelseif rc.type eq 'File'>

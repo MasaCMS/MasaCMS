@@ -905,19 +905,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getSiteID()#">
 					</cfquery>
 				</cfif>
-				<!--- End Changeset--->	
+				
+				<cfif not newBean.getIsNew()>	
+					<cfset newBean.setfilename(currentBean.getfilename())>
+					<cfset newBean.setOldfilename(currentBean.getfilename())>
+				</cfif>
 					
-				<!--- END CONTENT TYPE: ALL SITE TREE LEVEL CONTENT TYPES --->
-					
-				<!--- BEGIN CONTENT TYPE: PAGE, PORTAL, CALENDAR, GALLERY --->
-				<cfif listFindNoCase("Page,Portal,Calendar,Gallery",newBean.gettype())>
-						
-					<cfif not newBean.getIsNew()>	
-						<cfset newBean.setfilename(currentBean.getfilename())>
-						<cfset newBean.setOldfilename(currentBean.getfilename())>
-					</cfif>
-					
-					<cfif 
+				<cfif 
 						(
 							(newBean.getapproved() OR newBean.getIsNew())
 							 AND newBean.getcontentid() neq '00000000000000000000000000000000001'
@@ -949,32 +943,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							AND NOT variables.settingsManager.getSite(newBean.getSiteID()).getlocking() eq 'all'
 						)
 							
-						AND NOT (NOT newBean.getIsNew() AND newBean.getIsLocked())>
+						AND NOT (NOT newBean.getIsNew() AND newBean.getIsLocked())
+
+						OR listFindNoCase('Link,File',newBean.getType()) and newBean.getFilename() eq newBean.getBody()>
 										
-						<cfset getBean('contentUtility').setUniqueFilename(newBean) />
+					<cfset getBean('contentUtility').setUniqueFilename(newBean) />
 												
-						<cfif not newBean.getIsNew() and newBean.getoldfilename() neq newBean.getfilename() and len(newBean.getoldfilename())>
-							<cfset getBean('contentUtility').movelink(newBean.getSiteID(),newBean.getFilename(),currentBean.getFilename()) />	
-							<cfset getBean('contentUtility').move(newBean.getsiteid(),newBean.getFilename(),newBean.getOldFilename())>
-							<cfset doPurgeContentDescendentsCache=true>
-						</cfif>
+					<cfif not newBean.getIsNew() and newBean.getoldfilename() neq newBean.getfilename() and len(newBean.getoldfilename())>
+						<cfset getBean('contentUtility').movelink(newBean.getSiteID(),newBean.getFilename(),currentBean.getFilename()) />	
+						<cfset getBean('contentUtility').move(newBean.getsiteid(),newBean.getFilename(),newBean.getOldFilename())>
+						<cfset doPurgeContentDescendentsCache=true>
+					</cfif>
 								
-					</cfif>		
+				</cfif>		
 						
-					<cfif newBean.getIsNew()>
-						<cfset variables.contentDAO.createObjects(arguments.data,newBean,'') />
-					<cfelse>
-						<cfset variables.contentDAO.createObjects(arguments.data,newBean,currentBean.getcontentHistID()) />
-					</cfif>			
-				</cfif>
-				<!--- END CONTENT TYPE: PAGE, PORTAL, CALENDAR, GALLERY --->
-					
+				<cfif newBean.getIsNew()>
+					<cfset variables.contentDAO.createObjects(arguments.data,newBean,'') />
+				<cfelse>
+					<cfset variables.contentDAO.createObjects(arguments.data,newBean,currentBean.getcontentHistID()) />
+				</cfif>			
+				
+
 				<cfif newBean.getapproved() or newBean.getIsNew()>
-				<!--- BEGIN CONTENT TYPE: FILE, LINK --->	
+				<!--- BEGIN CONTENT TYPE: FILE, LINK 
 					<cfif listFindNoCase("Link,File",newBean.getType())>
 						<cfset getBean('contentUtility').setUniqueURLTitle(newBean) />
 					</cfif>
-					<!--- END CONTENT TYPE: FILE, LINK --->
+				 END CONTENT TYPE: FILE, LINK --->
 							
 					<!--- BEGIN CONTENT TYPE: COMPONENT, FORM --->	
 					<cfif listFindNoCase("Component,Form",newBean.getType())>
@@ -1014,7 +1009,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 						
 					<cfif newBean.getType() eq "File">
-						<cfset newBean.setfilename(tempFile.serverfile) />
+						<cfset newBean.setBody(tempFile.serverfile) />
 							
 						<cfif not isdefined("arguments.data.versionType")>
 							<cfset arguments.data.versionType="minor">
@@ -1900,6 +1895,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="querystring" required="true" default="">
 		<cfargument name="complete" type="boolean" required="true" default="false">
 		<cfargument name="showMeta" type="string" required="true" default="0">
+
 		<cfreturn variables.settingsManager.getSite(arguments.bean.getValue("siteID")).getContentRenderer().createHREF(arguments.bean.getValue("type"), arguments.bean.getValue("filename"), arguments.bean.getValue("siteID"), arguments.bean.getValue("contentID"), arguments.bean.getValue("target"), arguments.bean.getValue("targetParams"), arguments.queryString, application.configBean.getContext(), application.configBean.getStub(), application.configBean.getIndexFile(), arguments.complete, arguments.showMeta)>
 	</cffunction>
 

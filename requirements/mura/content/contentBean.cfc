@@ -479,6 +479,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.instance.contentid />
 </cffunction>
   
+ <cffunction name="getBody" returnType="string" output="false" access="public">
+    <!--- This used be to stored in the filename attribute for Links and Files --->
+    <cfif not len(variables.instance.body) and listFindNoCase('Link,File',variables.instance.type)>
+		<cfset variables.instance.body = variables.instance.filename />
+	</cfif>
+	<cfreturn variables.instance.body />
+</cffunction>
+
+ <cffunction name="getCompleteFilename()" returnType="string" output="false" access="public">
+    <!--- This used be to stored in the filename attribute for Links and Files --->
+    <cfif variables.instance.type eq "File">
+		<cfreturn variables.instance.filename & "/" & variables.instance.body />
+	<cfelse>
+		<cfreturn variables.instance.filename />
+	</cfif>
+</cffunction>
+
 <cffunction name="setDisplayStart" output="false" access="public">
     <cfargument name="DisplayStart" type="string" required="true">
 	<cfset variables.instance.displayStart = parseDateArg(arguments.displayStart) />

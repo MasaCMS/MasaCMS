@@ -955,8 +955,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var href=""/>
 	<cfset var tp=""/>
 	<cfset var begin=iif(arguments.complete or variables.$.siteConfig('siteID') neq arguments.siteID,de('http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de('')) />
-	<cfset var fileBean="">
-	
+	<cfset var lookUpBean="">
+
 	<cfif len(arguments.querystring) and not left(arguments.querystring,1) eq "?">
 		<cfset arguments.querystring="?" & arguments.querystring>
 	</cfif>
@@ -964,12 +964,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfswitch expression="#arguments.type#">
 		<cfcase value="Link,File">
 			<cfif not request.muraExportHTML>
-				<cfset href=HTMLEditFormat("#begin##arguments.context##getURLStem(arguments.siteid,'linkservid/#arguments.contentid#/showMeta/#arguments.showMeta#')##arguments.querystring#")/>
+				<cfset href=HTMLEditFormat("#begin##arguments.context##getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />
 			<cfelseif arguments.type eq "Link">
-				<cfset href=arguments.filename>
+				<cfset lookUpBean=variables.$.getBean("content").loadBy(contentID=arguments.contentID)>
+				<cfset href=lookUpBean.getBody()>
 			<cfelse>
-				<cfset fileBean=variables.$.getBean("content").loadBy(contentID=arguments.contentID)>
-				<cfset href="#arguments.context#/#arguments.siteID#/cache/file/#fileBean.getFileID()#/#fileBean.getFilename()#">
+				<cfset lookUpBean=variables.$.getBean("content").loadBy(contentID=arguments.contentID)>
+				<cfset href="#arguments.context#/#arguments.siteID#/cache/file/#lookUpBean.getFileID()#/#lookUpBean.getBody()#">
 			</cfif>
 		</cfcase>
 		<cfdefaultcase>

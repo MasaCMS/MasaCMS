@@ -96,7 +96,7 @@ function ckContent(draftremovalnotice){
 	}
 	
 	 if(document.contentForm.type.value=='Link' 
-		 	&& document.contentForm.filename.value == ''){
+		 	&& document.contentForm.body.value == ''){
 
 		alertDialog("The form field 'Url' is required"); 
 		return false;
