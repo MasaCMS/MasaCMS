@@ -143,6 +143,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif structKeyExists(this,"set#arguments.property#")>
 		<cfset evaluate("set#arguments.property#(arguments.propertyValue)") />
 	<cfelse>
+		<!---
 		<cfif not structKeyExists(variables.instance,arguments.property)>
 			<cfset extData=getExtendedData().getExtendSetDataByAttributeName(arguments.property)>
 			<cfif not structIsEmpty(extData)>
@@ -154,7 +155,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfloop>
 			</cfif>
 		</cfif>
-		
+		--->
 		<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
 		
 	</cfif>

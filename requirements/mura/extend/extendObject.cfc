@@ -17,6 +17,7 @@
 <cfargument name="configBean" default="#application.configBean#">
 <cfargument name="ID" default="">
 <cfargument name="remoteID" default="">
+<cfargument name="sourceIterator" default="">
 
 	<cfset super.init(argumentCollection=arguments)>
 
@@ -27,6 +28,7 @@
 	<cfset setConfigBean(arguments.configBean)>
 	<cfset setID(arguments.ID)>
 	<cfset variables.instance.remoteID=arguments.remoteID>
+	<cfset variables.instance.sourceIterator=arguments.sourceIterator>
 	
 	<cfreturn this>
 </cffunction>
