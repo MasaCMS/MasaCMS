@@ -176,7 +176,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tcontent.path, tcontent.created, tcontent.nextn, tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires,
 	tfiles.filename as AssocFilename
 
-	tcontent.filename + '/' + tfiles.filename as completeFilename
 	from tcontent
 	
 	<cfloop list="#jointables#" index="jointable">
