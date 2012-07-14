@@ -1920,7 +1920,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		order by [year] desc, [month] desc	
  	</cfquery>
 	
-	<cfreturn rs>
+	<cfreturn rsReleaseCountByMonth>
 </cffunction>
 
 <cffunction name="renderActiveClause" output="true">
