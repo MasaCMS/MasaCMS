@@ -1909,10 +1909,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfquery>
 	
 	<cfquery name="rsReleaseCountByMonth"dbtype="query">
-		select rspre.m,rspre.y, sum(rspre.items) items
+		select rsReleaseCountByMonth.m,rsReleaseCountByMonth.y, sum(rsReleaseCountByMonth.items) items
 		from rsReleaseCountByMonth
-		group by rspre.y,rspre.m
-		order by rspre.y,rspre.m desc 
+		group by rsReleaseCountByMonth.y,rsReleaseCountByMonth.m
+		order by rsReleaseCountByMonth.y,rsReleaseCountByMonth.m desc 
  	</cfquery>
 
 	<cfquery name="rsReleaseCountByMonth"dbtype="query">
