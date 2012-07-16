@@ -63,7 +63,7 @@ to your own modified versions of Mura CMS.
 		<cfif level>
 			<cfset class = class & iif(level lt 10,de(" indent-#level#"),de(" indent-10")) />
 		</cfif>
-		#$.dspObject_Include(thefile='comments/dsp_comment.cfm')#
+		#$.dspObject_Include(thefile='comments/dsp_comment.cfm', currentrow=request['rsSubComments#level#'].currentrow)#
 		<cfif request['rsSubComments#level#'].kids neq ''>
 			<cfset level = level+1 />
 			#$.dspObject_Include(thefile='comments/dsp_comments.cfm')#
