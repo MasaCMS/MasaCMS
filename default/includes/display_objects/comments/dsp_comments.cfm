@@ -42,7 +42,7 @@ to your own modified versions of Mura CMS.
 --->
 <cfsilent>
 <cfparam name="request.parentcommentid" default="" />
-<cfquery name="request.rsSubComments#level#" dbtype="query">
+<cfquery name="request.rsSubComments#variables.level#" dbtype="query">
 	SELECT
 		*
 	FROM
@@ -56,18 +56,18 @@ to your own modified versions of Mura CMS.
 </cfquery>
 </cfsilent>
 
-<cfif request['rsSubComments#level#'].recordcount>
-	<cfoutput query="request.rsSubComments#level#"  startrow="#request.startrow#">
-		<cfset request.parentcommentid = request['rsSubComments#level#'].commentid />
-		<cfset class=iif(request['rsSubComments#level#'].currentrow eq 1,de('first'),de(iif(request['rsSubComments#level#'].currentrow eq request['rsSubComments#level#'].recordcount,de('last'),de('')))) />
-		<cfif level>
-			<cfset class = class & iif(level lt 10,de(" indent-#level#"),de(" indent-10")) />
+<cfif request['rsSubComments#variables.level#'].recordcount>
+	<cfoutput query="request.rsSubComments#variables.level#"  startrow="#request.startrow#">
+		<cfset request.parentcommentid = request['rsSubComments#variables.level#'].commentid />
+		<cfset class=iif(request['rsSubComments#variables.level#'].currentrow eq 1,de('first'),de(iif(request['rsSubComments#variables.level#'].currentrow eq request['rsSubComments#variables.level#'].recordcount,de('last'),de('')))) />
+		<cfif variables.level>
+			<cfset class = class & iif(level lt 10,de(" indent-#variables.level#"),de(" indent-10")) />
 		</cfif>
-		#$.dspObject_Include(thefile='comments/dsp_comment.cfm')#
-		<cfif request['rsSubComments#level#'].kids neq ''>
-			<cfset level = level+1 />
+		#$.dspObject_Include(thefile='comments/dsp_comment.cfm', currentrow=request['rsSubComments#variables.level#'].currentrow)#
+		<cfif request['rsSubComments#variables.level#'].kids neq ''>
+			<cfset variables.level = variables.level+1 />
 			#$.dspObject_Include(thefile='comments/dsp_comments.cfm')#
-			<cfset level = level-1 />
+			<cfset variables.level = variables.level-1 />
 		</cfif>
 	</cfoutput>
 </cfif>

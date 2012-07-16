@@ -41,42 +41,43 @@ the GNU General Public License version 2 without this exception. You may, if you
 to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-	<cfset request.rsSubCommentsLevel = request['rsSubComments#level#'] />
+	<cfset request.rsSubCommentsLevel = request['rsSubComments#variables.level#'] />
+	<cfparam name="arguments.currentrow" default="1">
 </cfsilent>
 <cfoutput>
 	<!--- comment-#request.rsSubCommentsLevel.commentid# cannot change; used by nested comments --->
-	<dl class="#variables.class#" id="comment-#request.rsSubCommentsLevel.commentid#">
+	<dl class="#variables.class#" id="comment-#request.rsSubCommentsLevel.commentid[arguments.currentrow]#">
 		<dt>
-			<cfif request.rsSubCommentsLevel.url neq ''>
-				<a href="#request.rsSubCommentsLevel.url#" target="_blank">#htmleditformat(request.rsSubCommentsLevel.name)#</a>
+			<cfif request.rsSubCommentsLevel.url[arguments.currentrow] neq ''>
+				<a href="#request.rsSubCommentsLevel.url[arguments.currentrow]#" target="_blank">#htmleditformat(request.rsSubCommentsLevel.name[arguments.currentrow])#</a>
 			<cfelse>
-				#htmleditformat(request.rsSubCommentsLevel.name)#
+				#htmleditformat(request.rsSubCommentsLevel.name[arguments.currentrow])#
 			</cfif>
-			<cfif request.isEditor and request.rsSubCommentsLevel.email neq ''>
-				<a href="javascript:noSpam('#listFirst(htmlEditFormat(request.rsSubCommentsLevel.email),'@')#','#listlast(HTMLEditFormat(request.rsSubCommentsLevel.email),'@')#')" onfocus="this.blur();">#variables.$.rbKey('comments.email')#</a>
+			<cfif request.isEditor and request.rsSubCommentsLevel.email[arguments.currentrow] neq ''>
+				<a href="javascript:noSpam('#listFirst(htmlEditFormat(request.rsSubCommentsLevel.email[arguments.currentrow]),'@')#','#listlast(HTMLEditFormat(request.rsSubCommentsLevel.email[arguments.currentrow]),'@')#')" onfocus="this.blur();">#variables.$.rbKey('comments.email')#</a>
 			</cfif>
 			<cfif request.isEditor>
 				<cfif yesnoformat(application.configBean.getValue("editablecomments"))>
-					| <a class="editcomment" data-id="#request.rsSubCommentsLevel.commentID#">#variables.$.rbKey('comments.edit')#</a>
+					| <a class="editcomment" data-id="#request.rsSubCommentsLevel.commentID[arguments.currentrow]#">#variables.$.rbKey('comments.edit')#</a>
 				</cfif>
 				<cfif request.rsSubCommentsLevel.isApproved neq 1>
-					| <a href="./?approvedcommentid=#request.rsSubCommentsLevel.commentid#&nocache=1&linkServID=#variables.$.content('contentID')#" onClick="return confirm('Approve Comment?');">#variables.$.rbKey('comments.approve')#</a>
+					| <a href="./?approvedcommentid=#request.rsSubCommentsLevel.commentid[arguments.currentrow]#&nocache=1&linkServID=#variables.$.content('contentID')#" onClick="return confirm('Approve Comment?');">#variables.$.rbKey('comments.approve')#</a>
 				</cfif>
-				| <a href="./?deletecommentid=#request.rsSubCommentsLevel.commentid#&nocache=1&linkServID=#variables.$.content('contentID')#" onClick="return confirm('Delete Comment?');">#variables.$.rbKey('comments.delete')#</a>		
+				| <a href="./?deletecommentid=#request.rsSubCommentsLevel.commentid[arguments.currentrow]#&nocache=1&linkServID=#variables.$.content('contentID')#" onClick="return confirm('Delete Comment?');">#variables.$.rbKey('comments.delete')#</a>		
 			</cfif>
 		</dt>
 		<cfif len(variables.$.currentUser().getPhotoFileID())>
 			<dd class="gravatar"><img src="#variables.$.createHREFForImage(variables.$.currentUser().getSiteID(),variables.$.currentUser().getPhotoFileID(),'jpg', 'medium')#"></dd>
 		<cfelse>
-			<dd class="gravatar"><img src="http://www.gravatar.com/avatar/#lcase(Hash(lcase(request.rsSubCommentsLevel.email)))#" /></dd>
+			<dd class="gravatar"><img src="http://www.gravatar.com/avatar/#lcase(Hash(lcase(request.rsSubCommentsLevel.email[arguments.currentrow])))#" /></dd>
 		</cfif>
 		<dd class="comment">
-			#setParagraphs(htmleditformat(request.rsSubCommentsLevel.comments))#
+			#setParagraphs(htmleditformat(request.rsSubCommentsLevel.comments[arguments.currentrow]))#
 		</dd>
 		<dd class="dateTime">
-			#LSDateFormat(request.rsSubCommentsLevel.entered,"long")#, #LSTimeFormat(request.rsSubCommentsLevel.entered,"short")#
+			#LSDateFormat(request.rsSubCommentsLevel.entered[arguments.currentrow],"long")#, #LSTimeFormat(request.rsSubCommentsLevel.entered[arguments.currentrow],"short")#
 		</dd>
-		<dd class="reply"><a  data-id="#request.rsSubCommentsLevel.commentid#" href="##postcomment">#variables.$.rbKey('comments.reply')#</a></dd>
-		<dd id="postcomment-#request.rsSubCommentsLevel.commentid#"></dd>
+		<dd class="reply"><a  data-id="#request.rsSubCommentsLevel.commentid[arguments.currentrow]#" href="##postcomment">#variables.$.rbKey('comments.reply')#</a></dd>
+		<dd id="postcomment-#request.rsSubCommentsLevel.commentid[arguments.currentrow]#"></dd>
 	</dl>
 </cfoutput>
