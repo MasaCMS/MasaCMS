@@ -205,7 +205,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif len(arguments.contentBean.getFileID())>
 			<cfif arguments.contentBean.getType() eq "File">
 				<cfset variables.fileWriter.createDir("#arguments.exportDir##$.globalConfig('context')#/#arguments.contentBean.getSiteID()#/cache/file/#arguments.contentBean.getFileID()#")>
-				<cfset variables.fileWriter.copyFile(source="#$.globalConfig('fileDir')#/#arguments.contentBean.getSiteID()#/cache/file/#arguments.contentBean.getFileID()#.#arguments.contentBean.getFileEXT()#", destination="#arguments.exportDir##$.globalConfig('context')#/#arguments.contentBean.getSiteID()#/cache/file/#arguments.contentBean.getFileID()#/#arguments.contentBean.getFilename()#")>
+				<cfset variables.fileWriter.copyFile(source="#$.globalConfig('fileDir')#/#arguments.contentBean.getSiteID()#/cache/file/#arguments.contentBean.getFileID()#.#arguments.contentBean.getFileEXT()#", destination="#arguments.exportDir##$.globalConfig('context')#/#arguments.contentBean.getSiteID()#/cache/file/#arguments.contentBean.getFileID()#/#arguments.contentBean.getBody()#")>
 			</cfif>
 			
 			<cfif listFindNoCase("jpg,jpeg,gif,png",arguments.contentBean.getFileEXT())>

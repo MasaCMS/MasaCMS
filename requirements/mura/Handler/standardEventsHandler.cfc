@@ -548,7 +548,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="standardLinkTranslator" output="false" returnType="any">
 	<cfargument name="event" required="true">
-	<cfset var theLink=arguments.event.getValue('contentRenderer').setDynamicContent(arguments.event.getValue('contentBean').getFilename())>
+	<cfset var theLink=arguments.event.getValue('contentRenderer').setDynamicContent(arguments.event.getValue('contentBean').getBody())>
 	
 	<cfif left(theLink,1) eq "?">
 		<cfset theLink="/" & theLink>

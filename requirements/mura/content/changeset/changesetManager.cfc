@@ -24,34 +24,6 @@
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setValue" returntype="any" access="public" output="false">
-	<cfargument name="property"  type="string" required="true">
-	<cfargument name="propertyValue" default="" >
-	
-	<cfset var extData =structNew() />
-	<cfset var i = "">	
-	
-	<cfif structKeyExists(this,"set#property#")>
-		<cfset evaluate("set#property#(arguments.propertyValue)") />
-	<cfelseif structKeyExists(variables.instance,arguments.property)>
-		<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
-	<cfelse>
-		<cfset extData=getExtendedData().getExtendSetDataByAttributeName(arguments.property)>
-		<cfif not structIsEmpty(extData)>
-			<cfset structAppend(variables.instance,extData.data,false)>	
-			<cfloop list="#extData.extendSetID#" index="i">
-				<cfif not listFind(variables.instance.extendSetID,i)>
-					<cfset variables.instance.extendSetID=listAppend(variables.instance.extendSetID,i)>
-				</cfif>
-			</cfloop>
-		</cfif>
-			
-		<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
-		
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
 <cffunction name="read" access="public" returntype="any" output="false">
 	<cfargument name="changesetID" type="string" default=""/>
 	<cfargument name="name" type="string" default=""/>

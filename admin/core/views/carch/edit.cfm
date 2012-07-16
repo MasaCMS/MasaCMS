@@ -328,19 +328,12 @@ var hasBody=#subType.getHasBody()#;
 			<ul class="navTask nav nav-pills">
 			<cfif rc.compactDisplay neq "true" and (rc.contentBean.getfilename() neq '' or rc.contentid eq '00000000000000000000000000000000001')>
 				<cfswitch expression="#rc.type#">
-				<cfcase value="Page,Portal,Calendar,Gallery">
+				<cfcase value="Page,Portal,Calendar,Gallery,Link">
 					<cfif not rc.contentBean.getIsNew()>
 						<cfset currentBean=application.contentManager.getActiveContent(rc.contentID,rc.siteid) />
 						<li><a href="##" onclick="return openPreviewDialog('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,currentBean.getfilename())#','#currentBean.getTargetParams()#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewactive")#</a></li>
 					</cfif>
 					<li><a href="##" onclick="return openPreviewDialog('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?previewid=#rc.contentBean.getcontenthistid()#&contentid=#rc.contentBean.getcontentid()#','#rc.contentBean.getTargetParams()#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewversion")#</a></li>
-				</cfcase>
-				<cfcase value="Link">
-					<cfset currentBean=application.contentManager.getActiveContent(rc.contentID,rc.siteid) />
-					<cfif not rc.contentBean.getIsNew()>
-						<li><a href="##" onclick="return openPreviewDialog('#currentBean.getfilename()#','#currentBean.getTargetParams()#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewactive")#</a></li>
-					</cfif>
-					<li><a href="##" onclick="return openPreviewDialog('#rc.contentBean.getfilename()#','#rc.contentBean.getTargetParams()#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewversion")#</a></li>
 				</cfcase>
 				<cfcase value="File">	
 					<li><a href="##" href="##" onclick="return openPreviewDialog('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?LinkServID=#rc.contentid#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewactive")#</a></li>
