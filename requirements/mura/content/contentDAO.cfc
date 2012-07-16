@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cfsavecontent variable="variables.fieldlist"><cfoutput>tcontent.tcontent_ID,tcontent.Active,tcontent.Approved,tcontent.audience,tcontent.Body,tcontent.ContentHistID,
+<cfsavecontent variable="variables.fieldlist"><cfoutput>tcontent.Active,tcontent.Approved,tcontent.audience,tcontent.Body,tcontent.ContentHistID,
 tcontent.ContentID,tcontent.Credits,tcontent.Display,tcontent.DisplayStart,tcontent.DisplayStop,tcontent.featureStart,
 tcontent.featureStop,tcontent.FileID,tcontent.Filename,tcontent.forceSSL,tcontent.inheritObjects,tcontent.isFeature,
 tcontent.IsLocked,tcontent.IsNav,tcontent.keyPoints,tcontent.lastUpdate,tcontent.lastUpdateBy,tcontent.lastUpdateByID,
