@@ -173,7 +173,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 					select #variables.fieldlist#, tfiles.fileSize, tfiles.contentType, tfiles.contentSubType, tfiles.fileExt from tcontent 
 					left join tfiles on (tcontent.fileid=tfiles.fileid)
 					where 
-					tcontent.#getRecordIdField()# in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.sourceIterator.getPageIDList()#">)
+					tcontent.#arguments.sourceIterator.getRecordIdField()# in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.sourceIterator.getPageIDList()#">)
 					#renderActiveClause("tcontent",arguments.siteID)#
 					and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 					and type in ('Page','Portal','File','Calendar','Link','Gallery','Component','Form')
