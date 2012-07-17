@@ -222,19 +222,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					from #getDataTable()# #tableModifier# 
 					inner join tclassextendattributes #tableModifier# On (#getDataTable()#.attributeID=tclassextendattributes.attributeID)
 					<cfif variables.instance.sourceIterator.getRecordIdField() eq 'contentid'>
-						where #getDataTable()#.baseID 
-						in ( select contenthistID from tcontent where
-							tcontent.contentid 
-							in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#variables.instance.sourceIterator.getPageIDList()#">)
-							and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
-							and tcontent.active=1
-							)			
+						inner join tcontent #tableModifier# On (#getDataTable()#.baseid=tcontent.contenthistid)
+						where 
+						tcontent.contentid 
+						in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#variables.instance.sourceIterator.getPageIDList()#">)
+						and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
+						and tcontent.active=1
 					<cfelse>
 						where #getDataTable()#.baseID 
 						in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#variables.instance.sourceIterator.getPageIDList()#">)
 					</cfif>
 				</cfquery>
-				
+
 				<cfset variables.instance.sourceIterator.setPageQuery("page_extended#variables.instance.sourceIterator.getPageIndex()#",rsPage)>
 			<cfelse>
 				<cfset rsPage=variables.instance.sourceIterator.getPageQuery("page_extended#variables.instance.sourceIterator.getPageIndex()#")>
