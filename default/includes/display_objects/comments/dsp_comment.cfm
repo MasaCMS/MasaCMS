@@ -41,7 +41,7 @@ the GNU General Public License version 2 without this exception. You may, if you
 to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-	<cfset request.rsSubCommentsLevel = request['rsSubComments#level#'] />
+	<cfset request.rsSubCommentsLevel = request['rsSubComments#variables.level#'] />
 	<cfparam name="arguments.currentrow" default="1">
 </cfsilent>
 <cfoutput>

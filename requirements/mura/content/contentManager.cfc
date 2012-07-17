@@ -945,11 +945,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							
 						AND NOT (NOT newBean.getIsNew() AND newBean.getIsLocked())
 
-						OR listFindNoCase('Link,File',newBean.getType()) and newBean.getFilename() eq newBean.getBody()>
+						OR listFindNoCase('Link,File',newBean.getType()) and newBean.getMuraURLReset() eq "true">
 										
 					<cfset getBean('contentUtility').setUniqueFilename(newBean) />
 												
-					<cfif not newBean.getIsNew() and newBean.getoldfilename() neq newBean.getfilename() and len(newBean.getoldfilename())>
+					<cfif not listFindNoCase('Link,File',newBean.getType()) and not newBean.getIsNew() and newBean.getoldfilename() neq newBean.getfilename() and len(newBean.getoldfilename())>
 						<cfset getBean('contentUtility').movelink(newBean.getSiteID(),newBean.getFilename(),currentBean.getFilename()) />	
 						<cfset getBean('contentUtility').move(newBean.getsiteid(),newBean.getFilename(),newBean.getOldFilename())>
 						<cfset doPurgeContentDescendentsCache=true>
@@ -1161,15 +1161,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset trimArchiveHistory(newBean.getContentID(),newBean.getSiteID())>
 				</cfif>
 					
-				<!--- Make sure preview data is in sync --->	
-				<cfset changesetData=getCurrentUser().getValue("ChangesetPreviewData")>
-				<cfif isdefined("changesetData.changesetID")
-					and (
-							previousChangesetID eq changesetData.changesetID
-							or newBean.getChangesetID() eq changesetData.changesetID
-						)>
-					<cfset variables.changesetManager.setSessionPreviewData(changesetData.changesetID)>
-				</cfif>
+				<!--- Make sure preview data is in sync --->
+				<cfif isDefined('session.mura')>
+					<cfset changesetData=getCurrentUser().getValue("ChangesetPreviewData")>
+					<cfif isdefined("changesetData.changesetID")
+						and (
+								previousChangesetID eq changesetData.changesetID
+								or newBean.getChangesetID() eq changesetData.changesetID
+							)>
+						<cfset variables.changesetManager.setSessionPreviewData(changesetData.changesetID)>
+					</cfif>
+				</cfif>	
 					
 				<cfset variables.trashManager.takeOut(newBean)>
 					
