@@ -224,11 +224,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif variables.instance.sourceIterator.getRecordIdField() eq 'contentid'>
 						inner join tcontent #tableModifier# On (#getDataTable()#.baseid=tcontent.contenthistid)
 						where 
-						tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID#">
-						and tcontent.contentid 
+						tcontent.contentid 
 						in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#variables.instance.sourceIterator.getPageIDList()#">)
+						and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
 						and tcontent.active=1
-						and tcontent.approved=1
 					<cfelse>
 						where #getDataTable()#.baseID 
 						in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#variables.instance.sourceIterator.getPageIDList()#">)
