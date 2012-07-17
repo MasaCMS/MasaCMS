@@ -127,13 +127,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfloop condition="ID neq '00000000000000000000000000000000END'">
 
 			<cfquery name="rsCrumbData" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-			select contenthistid, contentid, menutitle, filename, parentid, type, target, targetParams, 
+			select contenthistid, contentid, menutitle, filename, parentid, type, subtype, target, targetParams, 
 			siteid, restricted, restrictgroups,template,childTemplate,inheritObjects,metadesc,metakeywords,sortBy,
 			sortDirection from tcontent where active=1 and contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#ID#"/> and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 			</cfquery>
 			
 			<cfset crumb=structNew() />
 			<cfset crumb.type=rsCrumbData.type />
+			<cfset crumb.subtype=rsCrumbData.subtype />
 			<cfset crumb.filename=rsCrumbData.filename />
 			<cfset crumb.menutitle=rsCrumbData.menutitle />
 			<cfset crumb.target=rsCrumbData.target />
@@ -178,7 +179,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 			
 			<cfquery name="rsCrumbData" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-			select contenthistid, contentid, menutitle, filename, parentid, type, target, targetParams, 
+			select contenthistid, contentid, menutitle, filename, parentid, type, subtype, target, targetParams, 
 			siteid, restricted, restrictgroups,template,childTemplate,inheritObjects,metadesc,metakeywords,sortBy,
 			sortDirection,
 			<cfif variables.configBean.getDBType() eq "MSSQL">
@@ -197,6 +198,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfloop query="rsCrumbData">
 			<cfset crumb=structNew() />
 			<cfset crumb.type=rsCrumbData.type />
+			<cfset crumb.subtype=rsCrumbData.subtype />
 			<cfset crumb.filename=rsCrumbData.filename />
 			<cfset crumb.menutitle=rsCrumbData.menutitle />
 			<cfset crumb.target=rsCrumbData.target />
