@@ -966,10 +966,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif not request.muraExportHTML>
 				<cfset href=HTMLEditFormat("#begin##arguments.context##getURLStem(arguments.siteid,'#arguments.filename#')##arguments.querystring#") />
 			<cfelseif arguments.type eq "Link">
-				<cfset lookUpBean=variables.$.getBean("content").loadBy(contentID=arguments.contentID)>
+				<cfset lookUpBean=application.serviceFactory.getBean("content").loadBy(contentID=arguments.contentID,siteID=arguments.siteID)>
 				<cfset href=lookUpBean.getBody()>
 			<cfelse>
-				<cfset lookUpBean=variables.$.getBean("content").loadBy(contentID=arguments.contentID)>
+				<cfset lookUpBean=application.serviceFactory.getBean("content").loadBy(contentID=arguments.contentID,siteID=arguments.siteID)>
 				<cfset href="#arguments.context#/#arguments.siteID#/cache/file/#lookUpBean.getFileID()#/#lookUpBean.getBody()#">
 			</cfif>
 		</cfcase>
