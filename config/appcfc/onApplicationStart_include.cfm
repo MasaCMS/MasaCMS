@@ -369,18 +369,35 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>	
 		</cfloop>
 
-		<!--- This looks for and update File and Link nodes that legacy urls 
+		<!--- This looks for and update File and Link nodes that legacy urls --->
 		<cfquery name="variables.legacyURLs" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDbUserName()#" password="#application.configBean.getDbPassword()#">
-			select contentID,siteID,filename from tcontent where type in ('File','Link')
+			select contenthistID, contentID,parentId,siteID,filename,urlTitle,filename from tcontent where type in ('File','Link')
 			and active=1
 			and body is null
+			and filename is not null
 		</cfquery>
-		<cfdump var="#variables.legacyURLs#" abort="true">
 		
-		<cfloop query="variables.legacyURLs">
-			<cfset application.contentManager.read(contentID=variables.legacyURLs.contentID,siteID=variables.legacyURLs.siteID).setBody(variables.legacyURLs.filename).setMuraURLReset('true').save()>
+		<cfset variables.legacyURLsIterator=application.serviceFactory.getBean("contentIterator").setQuery(variables.legacyURLs)>
+
+		<cfloop condition="variables.legacyURLsIterator.hasNext()">
+			<cfset variables.item=variables.legacyURLsIterator.next()>
+
+			<cfquery  datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDbUserName()#" password="#application.configBean.getDbPassword()#">
+				update tcontent set body=filename where 
+				contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getContentID()#">
+				and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getSiteID()#">
+			</cfquery>
+
+			<cfset application.serviceFactory.getBean("contentUtility").setUniqueFilename(variables.item)>
+
+			<cfquery  datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDbUserName()#" password="#application.configBean.getDbPassword()#">
+				update tcontent set filename=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getFilename()#">,
+				urlTitle=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getURLTitle()#">  where 
+				contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getContentID()#">
+				and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getSiteID()#">
+			</cfquery>
 		</cfloop>
-		--->
+		
 		<cfset application.sessionTrackingThrottle=false>	
 	</cfif>	
 </cflock>
