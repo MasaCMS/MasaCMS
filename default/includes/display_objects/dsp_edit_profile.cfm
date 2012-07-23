@@ -130,7 +130,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </ul>
 </fieldset>
 
-<cfif application.categoryManager.getCategoryCount(variables.$.event('siteID'))>
+<cfif application.categoryManager.getInterestGroupCount($.event('siteID'), TRUE) >
 <fieldset>
 	<legend>#variables.$.rbKey('user.interests')#:</legend>		
 			<cf_dsp_categories_nest siteid="#variables.$.event('siteID')#">
