@@ -131,10 +131,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </fieldset>
 
 <cfif application.categoryManager.getCategoryCount(variables.$.event('siteID'))>
-<fieldset>
-	<legend>#variables.$.rbKey('user.interests')#:</legend>		
-			<cf_dsp_categories_nest siteid="#variables.$.event('siteID')#">
-</fieldset>
+	<fieldset>
+		<legend>#variables.$.rbKey('user.interests')#:</legend>		
+		<cf_dsp_categories_nest siteid="#variables.$.event('siteID')#">
+	</fieldset>
 </cfif>
 <!--- This *should* work if you want to allow an avatar, but it hasn't been fully tested. If you need help with it, hit us up in the Mura forum.
 <fieldset>

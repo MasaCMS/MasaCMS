@@ -121,6 +121,13 @@
 
 </cffunction>
 
+<cffunction name="loadrepomanager" output="false">
+	<cfargument name="rc">
+
+	<cfset loadsitemanager(argumentCollection=arguments)>
+
+</cffunction>
+
 <cffunction name="draft" output="false">
 	<cfargument name="rc">
 	

@@ -409,6 +409,9 @@ copyAll = 'false';
 	<ul id="viewTabs" class="nav nav-tabs initActiveTab">
 		<li><a href="##tabArchitectural" onclick="return false;">#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.architectural")#</a></li>
 		<li><a href="##tabFlat" onclick="return false;">#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.flat")#</a></li>
+		<!---
+		<li><a href="##tabRepositories" onclick="return false;">#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.repository")#</a></li>
+		--->
 	</ul>
 	<div class="tab-content"> 
 		<div id="tabArchitectural" class="tab-pane">
@@ -422,12 +425,20 @@ copyAll = 'false';
 				<img class="loadProgress" src="assets/images/progress_bar.gif">
 			</div>
 		</div>
+		<!---
+		<div id="tabRepositories" class="tab-pane">
+			<div id="repoContainer">
+				<img class="loadProgress" src="assets/images/progress_bar.gif">
+			</div>
+		</div>
+		--->
 	</div>	
 </div>
 
 <script type="text/javascript">
 var archViewLoaded=false;
 var flatViewLoaded=false;
+//var repositoryViewLoaded=false;
 var tabsInited=false;
 
 function initFlatViewArgs(){
@@ -464,6 +475,12 @@ function initSiteManagerTabContent(index){
 			e.preventDefault();
 			initSiteManagerTabContent(1);
 		});
+		/*
+		jQuery("##viewTabs a[href='##tabRepositories']").click(function(e){
+			e.preventDefault();
+			initSiteManagerTabContent(2);
+		});
+ 		*/
 		tabsInited=true;
 	}	
 
@@ -481,6 +498,15 @@ function initSiteManagerTabContent(index){
 			flatViewLoaded = true;
 			jQuery('##viewTabs a[href="##tabFlat"]').tab('show');
 		}
+		/*
+		break;
+		case 2:
+		if (!repositoryViewLoaded) {
+			loadRepoManager('#JSStringFormat(rc.siteID)#', '#JSStringFormat(rc.topid)#', '#JSStringFormat(rc.moduleid)#', '#JSStringFormat(rc.sortby)#', '#JSStringFormat(rc.sortdirection)#', '#JSStringFormat(rc.ptype)#', '#JSStringFormat(rc.startrow)#');
+			repositoryViewLoaded = true;
+			jQuery('##viewTabs a[href="##tabRepositories"]').tab('show');
+		}
+		*/
 	}
 }
 

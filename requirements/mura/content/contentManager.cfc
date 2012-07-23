@@ -107,6 +107,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfreturn rs />
 	</cffunction>
+
+	<cffunction name="getRepositories" access="public" returntype="query" output="false">
+		<cfargument name="args" type="struct"/>
+		<cfset var rs ="" />
+		<cfset var data=arguments.args />
+		
+		<cfparam name="data.topid" default="00000000000000000000000000000000001" />
+		<cfparam name="data.sortBy" default="menutitle">
+		<cfparam name="data.sortDirection" default="asc">
+		<cfparam name="data.searchString" default="">
+		
+		<cfswitch expression="#data.moduleid#">
+			<cfcase value="00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000011,00000000000000000000000000000000012,00000000000000000000000000000000013" delimiters=",">
+				<cfset rs=variables.contentGateway.getNest(data.topid,data.siteid,data.sortBy,data.sortDirection,data.searchString) />
+			</cfcase>
+			<cfdefaultcase>
+				<cfset rs=variables.contentGateway.getTop(data.topid,data.siteid) />
+			</cfdefaultcase>
+		</cfswitch>
+		
+		<cfreturn rs />
+	</cffunction>
 	
 	<cffunction name="getNest" access="public" returntype="query" output="false">
 		<cfargument name="parentid" type="string"/>
