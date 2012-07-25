@@ -57,7 +57,7 @@ tcontent.responseDisplayFields,tcontent.responseMessage,tcontent.responseSendTo,
 tcontent.searchExclude,tcontent.SiteID,tcontent.sortBy,tcontent.sortDirection,tcontent.Summary,tcontent.Target,
 tcontent.TargetParams,tcontent.Template,tcontent.Title,tcontent.Type,tcontent.subType,tcontent.Path,tcontent.tags,
 tcontent.doCache,tcontent.created,tcontent.urltitle,tcontent.htmltitle,tcontent.mobileExclude,tcontent.changesetID,
-tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTemplate,tcontent.majorVersion,tcontent.minorVersion,tcontent.expires
+tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTemplate,tcontent.majorVersion,tcontent.minorVersion,tcontent.expires,tcontent.displayInterval
 </cfoutput></cfsavecontent>
 
 <cffunction name="init" access="public" returntype="any" output="false">
@@ -498,7 +498,8 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	  childTemplate,
 	  majorVersion,
 	  minorVersion,
-	  expires)
+	  expires,
+	  displayInterval)
       VALUES (
 	  	 <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentHistID()#">, 
          <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getContentID()#">,
@@ -629,7 +630,8 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 							second(arguments.contentBean.getExpires()))#">
 		<cfelse>
 			null
-		</cfif>
+		</cfif>,
+		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.contentBean.getDisplayInterval() neq '',de('no'),de('yes'))#" value="#arguments.contentBean.getDisplayInterval()#">
 		)
  </CFQUERY>
 

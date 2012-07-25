@@ -48,9 +48,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfargument name="configBean" type="any" required="yes" />
+	<cfargument name="contentIntervalManager" type="any" required="yes" />
 
 	<cfset variables.configBean=arguments.configBean />
 	<cfset variables.classExtensionManager=variables.configBean.getClassExtensionManager()>
+	<cfset variables.contentIntervalManager=arguments.contentIntervalManager>
 	<cfreturn this />
 </cffunction>
 
@@ -174,7 +176,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes,
 	tcontentstats.comments, tparent.type parentType, <cfif doKids> qKids.kids<cfelse> null as kids</cfif>,
 	tcontent.path, tcontent.created, tcontent.nextn, tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires,
-	tfiles.filename as AssocFilename
+	tfiles.filename as AssocFilename,tcontent.displayInterval,tcontent.display
 
 	from tcontent
 	
@@ -623,7 +625,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif dbType eq "oracle" and arguments.feedBean.getMaxItems()>) where ROWNUM <= <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.feedBean.getMaxItems()#" /> </cfif>
 	</cfquery>
 	
-	<cfreturn rsFeed />
+	<cfreturn variables.contentIntervalManager.applyByMenuTypeAndDate(query=rsFeed,menuType="default",menuDate=nowAdjusted) />
 </cffunction>
 
 <cffunction name="getcontentItems" access="public" output="false" returntype="query">

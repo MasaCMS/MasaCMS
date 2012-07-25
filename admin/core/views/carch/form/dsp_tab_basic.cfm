@@ -406,6 +406,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<select name="stopDayPart" class="dropdown span1"><option value="AM">AM</option><option value="PM" <cfif (LSisDate(rc.contentBean.getdisplaystop()) and (hour(rc.contentBean.getdisplaystop()) gte 12)) or not LSisDate(rc.contentBean.getdisplaystop())>selected</cfif>>PM</option></select>
 					</div>
 				</div>
+				<div class="control-group">
+					<label class="control-label">
+						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayInterval')#
+					</label>
+					<div class="controls">
+						<select name="displayInterval">
+							<cfloop list="Daily,Weekly,Bi-Weekly,Monthly,WeekDays,WeekEnds,Week1,Week2,Week3,Week4,WeekLast" index="i">
+							<option value="#i#"<cfif rc.contentBean.getDisplayInterval() eq i> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayInterval.#i#')#</option>
+							</cfloop>
+						</select>
+					</div>
+				</div>
 			</div>
 		</div>
 		

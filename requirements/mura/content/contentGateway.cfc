@@ -49,9 +49,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="init" returntype="any" access="public" output="true">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="settingsManager" type="any" required="yes"/>
+<cfargument name="contentIntervalManager" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
 		<cfset variables.settingsManager=arguments.settingsManager />
-		<cfset variables.classExtensionManager=variables.configBean.getClassExtensionManager()>
+		<cfset variables.contentIntervalManager=arguments.contentIntervalManager>
 <cfreturn this />
 </cffunction>
 
@@ -346,7 +347,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				,tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes
 				,tcontentstats.comments, '' as parentType, <cfif doKids> qKids.kids<cfelse>null as kids</cfif>,tcontent.path, tcontent.created, tcontent.nextn,
 				tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires,
-				tfiles.filename as AssocFilename
+				tfiles.filename as AssocFilename,tcontent.displayInterval,tcontent.display
 				
 				FROM tcontent 
 				Left Join tfiles #tableModifier# ON (tcontent.fileID=tfiles.fileID)
@@ -551,7 +552,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		</cfquery>
 	
-		 <cfreturn rsKids>
+		 <cfreturn variables.contentIntervalManager.applyByMenuTypeAndDate(query=rsKids,menuType=arguments.type,menuDate=nowAdjusted) />
 </cffunction>
 	
 <cffunction name="getKidsCategorySummary" returntype="query" output="false">
@@ -899,7 +900,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		tfiles.fileSize,tfiles.FileExt,tfiles.ContentType,tfiles.ContentSubType, tcontent.siteID, tcontent.featureStart,tcontent.featureStop,tcontent.template,tcontent.childTemplate,
 		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires,
 		tcontentstats.rating,tcontentstats.totalVotes, tcontentstats.comments,
-		tfiles.filename as AssocFilename
+		tfiles.filename as AssocFilename,tcontent.displayInterval
 	
 		FROM tcontent LEFT JOIN tcontent tcontent2 #tableModifier# ON tcontent.contentid=tcontent2.parentid
 		LEFT JOIN tfiles #tableModifier# On tcontent.FileID=tfiles.FileID and tcontent.siteID=tfiles.siteID
@@ -941,7 +942,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		tcontent.target,tcontent.targetParams,tcontent.islocked,tcontent.sortBy,tcontent.sortDirection,tcontent.releaseDate,
 		tfiles.fileSize,tfiles.FileExt,tfiles.ContentType,tfiles.ContentSubType, tcontent.created, tcontent.siteID, tcontent.featureStart,tcontent.featureStop,tcontent.template,tcontent.childTemplate,
 		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires,
-		tcontentstats.rating,tcontentstats.totalVotes, tcontentstats.comments
+		tcontentstats.rating,tcontentstats.totalVotes, tcontentstats.comments,tcontent.displayInterval
 		<cfif isExtendedSort>
 			,qExtendedSort.extendedSort	
 		</cfif>
@@ -2053,26 +2054,37 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						tcontent.display=2
 						
 						AND
-						(
-						  	(
-						  		tcontent.displayStart < #createODBCDateTime(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
-						  		AND  tcontent.displayStart >= #createODBCDateTime(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#
-						  	)
-						  	
-						  	or 
-						  	
-						  	(
-						  		tcontent.displayStop < #createODBCDateTime(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
-						  		AND  tcontent.displayStop >= #createODBCDateTime(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))# 
-						  	)
-						  	
-						  	or 
-						  	
-						  	(
-						  		tcontent.displayStart < #createODBCDateTime(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#
-						  		and tcontent.displayStop >= #createODBCDateTime(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
-						  	)
-						 )
+							(
+								(
+									tcontent.displayStart < #createODBCDateTime(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
+									AND  tcontent.displayStart >= #createODBCDateTime(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#
+								)
+											  	
+								or 
+											  	
+								(
+									tcontent.displayStop < #createODBCDateTime(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
+									AND  
+										(
+											tcontent.displayStop >= #createODBCDateTime(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))# 
+											or
+											tcontent.displayStop is null
+										)
+								)
+											  	
+								or 
+											  	
+								(
+									tcontent.displayStart < #createODBCDateTime(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#
+									and 
+										(
+											tcontent.displayStop >= #createODBCDateTime(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
+											or
+											tcontent.displayStop is null
+										)
+
+								)
+							)
 					  </cfcase>
 					  <cfcase value="ReleaseYear"> 
 						  (

@@ -124,6 +124,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="minorVersion" type="numeric" default="0" required="true" />
 <cfproperty name="expires" type="date" default="" required="true" />
 <cfproperty name="assocFilename" type="date" default="" required="true" />
+<cfproperty name="displayInterval" type="date" default="Daily" required="true" />
 
 <cffunction name="init" access="public" returntype="any" output="false">
 	
@@ -217,6 +218,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.minorVersion = 0 />
 	<cfset variables.instance.expires = "" />
 	<cfset variables.instance.assocFilename = "" />
+	<cfset variables.instance.displayInterval = "Daily" />
 	<cfset variables.instance.errors=structnew() />
 	
 	<cfset variables.kids = arrayNew(1) />
