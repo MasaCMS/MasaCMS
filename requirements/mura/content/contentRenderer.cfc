@@ -2564,17 +2564,4 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		};
 	</cfscript>
 </cffunction>
-
-<cffunction name="getCommentCount" access="public" output="false" returntype="string">
-	<cfargument name="contentid" required="false" default="#variables.$.content('contentid')#" />
-	<cfargument name="siteid" required="false" default="#variables.$.event('siteid')#" />
-	<cfscript>
-		var commentCount = 0;
-		try {
-			commentCount = Val(variables.contentGateway.getCommentCount(arguments.siteid, arguments.contentid));
-		} catch (any e) {};
-		return commentCount;
-	</cfscript>
-</cffunction>
-
 </cfcomponent>
