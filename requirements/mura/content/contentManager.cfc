@@ -1174,7 +1174,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache(name="output") />
 				</cfif>
 				<cfif doPurgeContentCache>
-					<cfset purgeContentCache(contentBean=newbean)>
+					<cfif isObject(currentBean)>
+						<cfset purgeContentCache(contentBean=currentBean)>
+					<cfelse>
+						<cfset purgeContentCache(contentBean=newBean)>
+					</cfif>
 				</cfif>
 				<cfif doPurgeContentDescendentsCache>
 					<cfset purgeContentDescendentsCache(contentBean=newbean)>
