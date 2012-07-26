@@ -341,7 +341,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setReadOnlyDatasource" access="public" output="false">
 	<cfargument name="readOnlyDatasource" type="String" />
-	<cfset variables.instance.Datasource = arguments.Datasource />
+	<cfset variables.instance.readOnlyDatasource = arguments.readOnlyDatasource />
 	<cfreturn this>
 </cffunction>
 

@@ -1157,10 +1157,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache(name="output") />
 				</cfif>
 				<cfif doPurgeContentCache>
-					<cfset purgeContentCache(contentBean=newbean)>
+					<cfset purgeContentCache(contentBean=currentBean)>
 				</cfif>
 				<cfif doPurgeContentDescendentsCache>
-					<cfset purgeContentDescendentsCache(contentBean=newbean)>
+					<cfset purgeContentDescendentsCache(contentBean=currentBean)>
 				</cfif>
 				<cfif doTrimVersionHistory>
 					<cfset trimArchiveHistory(newBean.getContentID(),newBean.getSiteID())>
