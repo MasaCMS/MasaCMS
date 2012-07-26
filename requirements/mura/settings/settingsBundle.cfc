@@ -1152,8 +1152,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			
 			<cfquery datasource="#arguments.dsn#" name="rssite">
-				select domain,siteid,theme,galleryMainScaleBy,galleryMediumScaleBy,gallerySmallScaleBy,
-			    galleryMainScale,galleryMediumScale,gallerySmallScale,columnCount,columnNames,primaryColumn,baseID
+				select domain,siteid,theme,
+				largeImageWidth,largeImageHeight,
+				smallImageWidth,smallImageHeight,
+				mediumImageWidth,mediumImageHeight,
+				columnCount,columnNames,primaryColumn,baseID
 			    from tsettings where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
 			</cfquery>
 			

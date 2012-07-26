@@ -226,12 +226,52 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						
 						theme=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.theme#">,
 						displayPoolID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">,
-						galleryMainScaleBy=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.galleryMainScaleBy#">,
-						galleryMediumScaleBy=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.galleryMediumScaleBy#">,
-						gallerySmallScaleBy=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.gallerySmallScaleBy#">,
-						galleryMainScale=<cfqueryparam cfsqltype="cf_sql_integer" value="#rssite.galleryMainScale#">,
-						galleryMediumScale=<cfqueryparam cfsqltype="cf_sql_integer" value="#rssite.galleryMediumScale#">,
-						gallerySmallScale=<cfqueryparam cfsqltype="cf_sql_integer" value="#rssite.gallerySmallScale#">
+						
+						<cfif not isDefined('rssite.largeImageWidth')>
+							<cfif rssite.galleryMainScaleBy eq 'x'>
+								largeImageHeight='Auto',
+								largeImageWidth=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.galleryMainScale#">,
+							<cfelse>
+								largeImageHeight=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.galleryMainScale#">,
+								largeImageWidth='Auto',
+							</cfif>
+						<cfelse>
+							largeImageHeight=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.largeImageHeight#">,
+							largeImageWidth=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.largeImageWidth#">,
+						</cfif>
+
+						<cfif not isDefined('rssite.smallImageWidth')>
+							<cfif rssite.gallerySmallScaleBy eq 's'>
+								smallImageHeight=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.gallerySmallScale#">,
+								smallImageWidth=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.gallerySmallScale#">,
+							<cfelseif rssite.gallerySmallScaleBy eq 'x'>
+								smallImageHeight='Auto',
+								smallImageWidth=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.gallerySmallScale#">,
+							<cfelse>
+								smallImageHeight=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.gallerySmallScale#">,
+								smallImageWidth='Auto',
+							</cfif>
+						<cfelse>
+							smallImageHeight=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.smallImageHeight#">,
+							smallImageWidth=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.smallImageWidth#">,
+						</cfif>
+
+						<cfif not isDefined('rssite.mediumImageWidth')>
+							<cfif rssite.galleryMediumScaleBy eq 's'>
+								mediumImageHeight=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.galleryMediumScale#">,
+								mediumImageWidth=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.galleryMediumScale#">,
+							<cfelseif rssite.galleryMediumScaleBy eq 'x'>
+								mediumImageHeight='Auto',
+								smallImageWidth=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.galleryMediumScale#">,
+							<cfelse>
+								mediumImageHeight=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.galleryMediumScale#">,
+								mediumImageWidth='Auto',
+							</cfif>
+						<cfelse>
+							mediumImageHeight=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.mediumImageHeight#">,
+							mediumImageWidth=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.mediumImageWidth#">,
+						</cfif>
+						
 						where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">
 					</cfquery>
 					<cfset application.settingsManager.setSites()>
@@ -359,6 +399,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif isdefined("rstContent.majorVersion")>
 					,majorVersion,minorVersion, expires
 					</cfif>
+					<cfif isdefined("rstContent.displayInterval")>
+					,displayInterval
+					</cfif>
 					)
 					values
 					(
@@ -432,18 +475,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.changesetID neq '',de('no'),de('yes'))#" value="#rstContent.changesetID#">
 					<!--- Check for new fields added in 5.5 --->
 					<cfif isdefined("rstContent.imageSize")>
-					,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.imageSize neq '',de('no'),de('yes'))#" value="#rstContent.imageSize#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.imageHeight neq '',de('no'),de('yes'))#" value="#rstContent.imageHeight#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.imageWidth neq '',de('no'),de('yes'))#" value="#rstContent.imageWidth#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.childTemplate neq '',de('no'),de('yes'))#" value="#rstContent.childTemplate#">
+						,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.imageSize neq '',de('no'),de('yes'))#" value="#rstContent.imageSize#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.imageHeight neq '',de('no'),de('yes'))#" value="#rstContent.imageHeight#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.imageWidth neq '',de('no'),de('yes'))#" value="#rstContent.imageWidth#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.childTemplate neq '',de('no'),de('yes'))#" value="#rstContent.childTemplate#">
 					</cfif>
 					<!--- Check for new fields added in 5.6 --->
 					<cfif isdefined("rstContent.majorVersion")>
-					,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstContent.majorVersion),de(rstContent.majorVersion),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstContent.minorVersion),de(rstContent.minorVersion),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstContent.expires),de('no'),de('yes'))#" value="#rstContent.expires#">
+						,
+						<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstContent.majorVersion),de(rstContent.majorVersion),de(0))#">,
+						<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstContent.minorVersion),de(rstContent.minorVersion),de(0))#">,
+						<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstContent.expires),de('no'),de('yes'))#" value="#rstContent.expires#">
+					</cfif>
+					<cfif isdefined("rstContent.displayInterval")>
+						,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.displayInterval neq '',de('no'),de('yes'))#" value="#rstContent.displayInterval#">,
 					</cfif>
 					)
 				</cfquery>
