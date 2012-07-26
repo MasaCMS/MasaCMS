@@ -280,9 +280,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var refused=false />
 		<cfset var serverFilename=arguments.file.serverfilename />
 		<cfset var serverDirectory=arguments.file.serverDirectory & "/"/>
-		<cfset var sourceImageScale=variables.configBean.getValue("sourceImageScale")>
-		<cfset var sourceImageScaleBy=variables.configBean.getValue("sourceImageScaleBy")>
-				
+		<cfset var site=variables.settingsManager.getSite(arguments.siteID)>
+
 		<cfset fileStruct.fileObj = '' />
 		<cfset fileStruct.fileObjSmall = '' />
 		<cfset fileStruct.fileObjMedium =  ''/>
@@ -304,43 +303,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!--- BEGIN IMAGE MANIPULATION --->
 		<cfif listFindNoCase('jpg,jpeg,png,gif',arguments.file.ServerFileExt)>
 			
-			<cfif variables.configBean.getFileStore() eq "fileDir">
-				<cfif not isNumeric(sourceImageScale)>
-					<cfset sourceImageScale=3000>
-				</cfif>
-				
-				<cfif not len(sourceImageScaleBy) or sourceImageScaleBy eq "w" or sourceImageScaleBy eq "width">
-					<cfset sourceImageScaleBy="x">
-				<cfelseif sourceImageScaleBy eq "h" or sourceImageScaleBy eq "Height">
-					<cfset sourceImageScaleBy="y">
-				</cfif>
-
-				<cfif listFindNoCase("x,y",sourceImageScaleBy)>
-					<cfset sourceImageScaleBy="x">
-				</cfif>
-				
-				<cfset fileStruct.fileObjSource =  '#serverDirectory##serverFilename#_source.#arguments.file.serverFileExt#'/>
-				<cfset resizeImage(fileStruct.fileObj,fileStruct.fileObjSource,sourceImageScaleBy,sourceImageScale,serverDirectory) />			
+			<cfif variables.configBean.getFileStore() eq "fileDir">		
+				<cfset fileStruct.fileObjSource =  '#serverDirectory##getCustomImage(image=fileStruct.fileObj,height='Auto',width=3000)#'/>						
+			<cfelse>
+				<cfset fileStruct.fileObjSource =fileStruct.fileObj>
 			</cfif>
 		
-			<cfset fileStruct.fileObjSmall = "#serverDirectory##serverFilename#_small.#arguments.file.serverFileExt#" />
-			<cfset resizeImage(fileStruct.fileObj,fileStruct.fileObjSmall,variables.settingsManager.getSite(arguments.siteID).getGallerySmallScaleBy(),variables.settingsManager.getSite(arguments.siteID).getGallerySmallScale(),serverDirectory) />
+			<cfset fileStruct.fileObjSmall = "#serverDirectory##getCustomImage(image=fileStruct.fileObjSource,height=site.getSmallImageHeight(),width=site.getSmallImageWidth())#" />
 			
 			<cfif variables.configBean.getFileStore() neq "fileDir">
 				<cfset fileStruct.fileObjSmall=fromPath2Binary(fileStruct.fileObjSmall,false) />
 				<cftry><cffile action="delete" file="#fileStruct.fileObjSmall#"><cfcatch></cfcatch></cftry>
 			</cfif>
 			
-			<cfset fileStruct.fileObjMedium = "#serverDirectory##serverFilename#_medium.#arguments.file.serverFileExt#" />
-			<cfset resizeImage(fileStruct.fileObj,fileStruct.fileObjMedium,variables.settingsManager.getSite(arguments.siteID).getGalleryMediumScaleBy(),variables.settingsManager.getSite(arguments.siteID).getGalleryMediumScale(),serverDirectory) />
+			<cfset fileStruct.fileObjMedium = "#serverDirectory##getCustomImage(image=fileStruct.fileObjSource,height=site.getMediumImageHeight(),width=site.getMediumImageWidth())#" />
 			
 			<cfif variables.configBean.getFileStore() neq "fileDir">
 				<cfset fileStruct.fileObjMedium=fromPath2Binary(fileStruct.fileObjMedium,false) />
 				<cftry><cffile action="delete" file="#fileStruct.fileObjMedium#"><cfcatch></cfcatch></cftry>
 			</cfif>
 
-			<cfset resizeImage(fileStruct.fileObj,fileStruct.fileObj,variables.settingsManager.getSite(arguments.siteID).getGalleryMainScaleBy(),variables.settingsManager.getSite(arguments.siteID).getGalleryMainScale(),serverDirectory) />			
-		
+			<cfset fileStruct.fileObjLarge = "#serverDirectory##getCustomImage(image=fileStruct.fileObjSource,height=site.getLargeImageHeight(),width=site.getLargeImageWidth())#" />			
+			<cffile action="delete" file="#fileStruct.fileObj#">
+			<cffile action="rename" destination="#fileStruct.fileObj#" source="#fileStruct.fileObjLarge#">
+			<cfset structDelete(fileStruct,"fileObjLarge")>
 		</cfif>
 		
 		<cfset fileStruct.theFile=fileStruct.fileObj/>

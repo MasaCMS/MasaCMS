@@ -91,12 +91,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="advertiserUserPoolID" type="string" default="" required="true" />
 <cfproperty name="displayPoolID" type="string" default="" required="true" />
 <cfproperty name="feedManager" type="numeric" default="0" required="true" />
-<cfproperty name="galleryMainScaleBy" type="string" default="y" required="true" />
-<cfproperty name="galleryMainScale" type="numeric" default="600" required="true" />
-<cfproperty name="gallerySmallScaleBy" type="string" default="s" required="true" />
-<cfproperty name="gallerySmallScale" type="numeric" default="80" required="true" />
-<cfproperty name="galleryMediumScaleBy" type="string" default="s" required="true" />
-<cfproperty name="galleryMediumScale" type="numeric" default="180" required="true" />
+<cfproperty name="largeImageHeight" type="string" default="AUTO" required="true" />
+<cfproperty name="largeImageWidth" type="numeric" default="600" required="true" />
+<cfproperty name="smallImageHeight" type="string" default="80" required="true" />
+<cfproperty name="smallImageWidth" type="numeric" default="80" required="true" />
+<cfproperty name="mediumImageHeight" type="string" default="180" required="true" />
+<cfproperty name="mediumImageWidth" type="numeric" default="180" required="true" />
 <cfproperty name="sendLoginScript" type="string" default="" required="true" />
 <cfproperty name="mailingListConfirmScript" type="string" default="" required="true" />
 <cfproperty name="reminderScript" type="string" default="" required="true" />
@@ -167,12 +167,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.AdvertiserUserPoolID=""/>
 	<cfset variables.instance.DisplayPoolID=""/>
 	<cfset variables.instance.feedManager=0/>
-	<cfset variables.instance.galleryMainScaleBy="y"/>
-	<cfset variables.instance.galleryMainScale=600/>
-	<cfset variables.instance.gallerySmallScaleBy="s"/>
-	<cfset variables.instance.gallerySmallScale=80/>
-	<cfset variables.instance.galleryMediumScaleBy="s"/>
-	<cfset variables.instance.galleryMediumScale=180/>
+	<cfset variables.instance.largeImageHeight='AUTO'/>
+	<cfset variables.instance.largeImageWidth='600'/>
+	<cfset variables.instance.smallImageHeight='80'/>
+	<cfset variables.instance.smallImageWidth='80'/>
+	<cfset variables.instance.mediumImageHeight='180'/>
+	<cfset variables.instance.mediumImageHeight='180'/>
 	<cfset variables.instance.sendLoginScript=""/>
 	<cfset variables.instance.mailingListConfirmScript=""/>
 	<cfset variables.instance.publicSubmissionApprovalScript=""/>
@@ -386,28 +386,64 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setGalleryMainScale" access="public" output="true">
-	<cfargument name="GalleryMainScale" type="any" required="yes" default="0" />
-	<cfif isNumeric(arguments.GalleryMainScale)>
-		<cfset variables.instance.GalleryMainScale = arguments.GalleryMainScale />
+<cffunction name="setSmallImageWidth" access="public" output="true">
+	<cfargument name="smallImageWidth" type="any" required="yes" default="0" />
+	<cfif isNumeric(arguments.smallImageWidth) and arguments.smallImageWidth or arguments.smallImageWidth eq 'AUTO'>
+		<cfset variables.instance.smallImageWidth = arguments.smallImageWidth />
 	</cfif>
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setGallerySmallScale" access="public" output="true">
-	<cfargument name="GallerySmallScale" type="any" required="yes" default="0" />
-	<cfif isNumeric(arguments.GallerySmallScale)>
-		<cfset variables.instance.GallerySmallScale = arguments.GallerySmallScale />
+<cffunction name="setSmallImageHeight" access="public" output="true">
+	<cfargument name="smallImageHeight" type="any" required="yes" default="0" />
+	<cfif isNumeric(arguments.smallImageHeight) and arguments.smallImageHeight or arguments.smallImageHeight eq 'AUTO'>
+		<cfset variables.instance.smallImageHeight = arguments.smallImageHeight />
 	</cfif>
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setGalleryMediumScale" access="public" output="true">
-	<cfargument name="GalleryMediumScale" type="any" required="yes" default="0" />
-	<cfif isNumeric(arguments.GalleryMediumScale)>
-		<cfset variables.instance.GalleryMediumScale = arguments.GalleryMediumScale />
+<cffunction name="setMediumImageWidth" access="public" output="true">
+	<cfargument name="mediumImageWidth" type="any" required="yes" default="0" />
+	<cfif isNumeric(arguments.mediumImageWidth) and arguments.mediumImageWidth or arguments.mediumImageWidth eq 'AUTO'>
+		<cfset variables.instance.mediumImageWidth = arguments.mediumImageWidth />
 	</cfif>
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="setMediumImageHeight" access="public" output="true">
+	<cfargument name="mediumImageHeight" type="any" required="yes" default="0" />
+	<cfif isNumeric(arguments.mediumImageHeight) and arguments.mediumImageHeight or arguments.mediumImageHeight eq 'AUTO'>
+		<cfset variables.instance.mediumImageHeight = arguments.mediumImageHeight />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setLargeImageWidth" access="public" output="true">
+	<cfargument name="largeImageWidth" type="any" required="yes" default="0" />
+	<cfif isNumeric(arguments.largeImageWidth) and  arguments.largeImageWidth or arguments.largeImageWidth eq 'AUTO'>
+		<cfset variables.instance.largeImageWidth = arguments.largeImageWidth />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setLargeImageHeight" access="public" output="true">
+	<cfargument name="largeImageHeight" type="any" required="yes" default="0" />
+	<cfif isNumeric(arguments.largeImageHeight) and  arguments.largeImageHeight or arguments.largeImageHeight eq 'AUTO'>
+		<cfset variables.instance.largeImageHeight = arguments.largeImageHeight />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getGallerySmallScale" output="false" hint="for legacy compatability">
+	<cfreturn variables.instance.smallImageWidth>
+</cffunction>
+
+<cffunction name="getGalleryMediumScale" output="false" hint="for legacy compatability">
+	<cfreturn variables.instance.mediumImageWidth>
+</cffunction>
+
+<cffunction name="getGalleryMainScale" output="false" hint="for legacy compatability">
+	<cfreturn variables.instance.largeImageWidth>
 </cffunction>
 
 <cffunction name="getLoginURL" returntype="String" access="public" output="false">

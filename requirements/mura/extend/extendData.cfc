@@ -209,7 +209,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<cfif not isQuery(variables.instance.sourceIterator.getPageQuery("page_extended#variables.instance.sourceIterator.getPageIndex()#"))>
 				<cfquery name="rsPage" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-					select #getDataTable()#.baseid, tclassextendattributes.name, tclassextendattributes.validation, 
+					select #getDataTable()#.baseid, tclassextendattributes.name, tclassextendattributes.type, tclassextendattributes.validation, 
 					<cfif variables.configBean.getDBType() eq "oracle">
 						to_char(tclassextendattributes.label) as label
 					<cfelse>
@@ -245,7 +245,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfquery>
 		<cfelse>
 			<cfquery name="rsExtended" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-			select #dataTable#.baseid, tclassextendattributes.name, tclassextendattributes.validation, 
+			select #dataTable#.baseid, tclassextendattributes.name, tclassextendattributes.type, tclassextendattributes.validation, 
 			<cfif variables.configBean.getDBType() eq "oracle">
 				to_char(tclassextendattributes.label) as label
 			<cfelse>
@@ -267,12 +267,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			--->
 		<cfif len(getType()) and len(getSubType()) and len(getSiteID())>
 			<cfquery name="rsCombine" dbtype="query">
-				select baseID, name, validation, label, attributeID, defaultValue, extendSetID<cfif variables.configBean.getDBType() neq "oracle">, attributeValue</cfif>
+				select baseID, name, type, validation, label, attributeID, defaultValue, extendSetID<cfif variables.configBean.getDBType() neq "oracle">, attributeValue</cfif>
 				from rsExtended
 				
 				union all
 				
-				select '' baseID, attributename, validation, label, attributeID, defaultValue, extendSetID<cfif variables.configBean.getDBType() neq "oracle">, '' attributeValue</cfif>
+				select '' baseID, attributename, type, validation, label, attributeID, defaultValue, extendSetID<cfif variables.configBean.getDBType() neq "oracle">, '' attributeValue</cfif>
 				from rsDefinitions
 				where siteID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
 				and (
@@ -399,6 +399,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfreturn variables.instance.contentRenderer>
+</cffunction>
+
+<cffunction name="getAttributesByType" output="false">
+	<cfargument name="type">
+	<cfset var rsImageAttributes="">
+
+	<cfquery name="rsImageAttributes" dbtype="query">
+		select * from variables.instance.data where type = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#">
+	</cfquery>
+	<cfreturn rsImageAttributes>
 </cffunction>
 
 </cfcomponent>

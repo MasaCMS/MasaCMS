@@ -535,7 +535,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rsCheck="">
 	<cfset var rsDir="">
 	<cfset var currentSite=variables.settingsManager.getSite(arguments.siteID)>
-	
+	<cfset var i="">
+	<cfset var currentSizeFile="">
+	<cfset var currentSizeFileTemp="">
+	<cfset var currentH="">
+	<cfset var currentW="">
+
 	<cfquery name="rsDB" datasource="#variables.configBean.getReadOnlyDatasource()#" password="#variables.configBean.getReadOnlyDbPassword()#" username="#variables.configBean.getReadOnlyDbUsername()#">
 	select fileID,fileEXT from tfiles 
 	where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
@@ -553,9 +558,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset currentMedium=filepath & rsDB.fileID & "_medium." & rsDB.fileEXT>
 			<cfset currentLarge=filepath & rsDB.fileID & "." & rsDB.fileEXT>
 			
-			<cfset variables.imageProcessor.resizeImage(currentSource, currentSmall, currentSite.getGallerySmallScaleBy(), currentSite.getGallerySmallScale(), filePath)>
-			<cfset variables.imageProcessor.resizeImage(currentSource, currentMedium, currentSite.getGalleryMediumScaleBy(), currentSite.getGalleryMediumScale(), filePath)>
-			<cfset variables.imageProcessor.resizeImage(currentSource, currentLarge, currentSite.getGalleryMainScaleBy(), currentSite.getGalleryMainScale(), filePath)>
+			<cfloop list="small,medium,large" index="i">
+				<cfset currentSizeFile=evaluate("current#i#")>
+				<cfif fileExists(currentSizeFile)>
+					<cfset fileDelete(currentSizeFile)>
+				</cfif>
+				<cfset currentH=evaluate('#currentSite.get#i#ImageHeight()#')>
+				<cfset currentW=evaluate('#currentSite.get#i#ImageWidth()#')>
+				<cfset currentSizeFileTemp="#filePath##variables.imageProcessor.getCustomImage(image=currentSource,height=currentH,width=currentW)#">
+				<cffile action="rename" source="#currentSizeFileTemp#" destination="#currentSizeFile#">
+			</cfloop>
 		</cfif>
 	</cfloop>
 	

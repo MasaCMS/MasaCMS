@@ -616,74 +616,64 @@ to your own modified versions of Mura CMS.
       <div id="tabImages" class="tab-pane">
       
      <div class="control-group">
-      <label class="control-label">Small (Thumbnail) Image Size</label>
+      <label class="control-label">Small (Thumbnail) Image</label>
       <div class="controls">
-        <input name="gallerySmallScale" type="text" class="text short" value="#rc.siteBean.getGallerySmallScale()#" size="5" maxlength="5">px
+        <div class="control-group">
+                <label class="control-label">Height</label>
+                <div class="controls">
+                  <input name="smallImageWidth" class="text" value="#rc.siteBean.getSmallImageWidth()#" />
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label">Width</label>
+                <div class="controls">
+                  <input name="smallImageHeight" class="text" value="#rc.siteBean.getSmallImageHeight()#" />
+                </div>
+           </div>
       </div>
     </div>
 	    
-      <div class="control-group">
-      <label class="control-label">Constrain Small Images by</label>
+  
+
+     <div class="control-group">
+      <label class="control-label">Medium Image</label>
       <div class="controls">
-        <label class="radio">
-        <input type="radio" name="gallerySmallScaleBy" value="x" <cfif rc.siteBean.getgallerySmallScaleBy() eq 'x'> CHECKED</CFIF>>
-       Width
-        </label>
-       <label class="radio">
-        <input type="radio" name="gallerySmallScaleBy" value="y" <cfif rc.siteBean.getgallerySmallScaleBy() eq 'y'> CHECKED</CFIF>>
-        Height
-      </label>
-        <label class="radio">
-		 <input type="radio" name="gallerySmallScaleBy" value="s" <cfif rc.siteBean.getgallerySmallScaleBy() neq 'x' and rc.siteBean.getgallerySmallScaleBy() neq 'y'> CHECKED</CFIF>>
-        Square <span>(Recommended)</span>
-      </label></div>
+       <div class="control-group">
+                <label class="control-label">Height</label>
+                <div class="controls">
+                  <input name="mediumImageWidth" class="text" value="#rc.siteBean.getMediumImageWidth()#" />
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label">Width</label>
+                <div class="controls">
+                  <input name="mediumImageHeight" class="text" value="#rc.siteBean.getMediumImageHeight()#" />
+                </div>
+           </div>
+      </div>
     </div>
       
-     <div class="control-group">
-      <label class="control-label">Medium Image Size</label>
-      <div class="controls">
-        <input name="galleryMediumScale" type="text" class="text short" value="#rc.siteBean.getGalleryMediumScale()#" size="5" maxlength="5">px
-      </div>
-    </div>
-	   
-     <div class="control-group">
-      <label class="control-label">Constrain Medium Images by</label>
-      <div class="controls">
-        <label class="radio">
-        <input type="radio" name="galleryMediumScaleBy" value="x" <cfif rc.siteBean.getgalleryMediumScaleBy() eq 'x'> CHECKED</CFIF>>
-       Width
-     </label>
-       <label class="radio">
-        <input type="radio" name="galleryMediumScaleBy" value="y" <cfif rc.siteBean.getgalleryMediumScaleBy() neq 's' and rc.siteBean.getgalleryMediumScaleBy() neq 'x'> CHECKED</CFIF>>
-        Height
-      </label>
-        <label class="radio">
-		 <input type="radio" name="galleryMediumScaleBy" value="s" <cfif rc.siteBean.getgalleryMediumScaleBy() eq 's' > CHECKED</CFIF>>
-        Square <span>(Recommended)</span>
-      </label>
-      </div>
-    </div>
+    
     
       <div class="control-group">
-      <label class="control-label">Large (Full) Image Size</label>
+      <label class="control-label">Large Image</label>
       <div class="controls">
-        <input name="galleryMainScale" type="text" class="text short" value="#rc.siteBean.getgalleryMainScale()#" size="5" maxlength="5">px
+        <div class="control-group">
+                <label class="control-label">Height</label>
+                <div class="controls">
+                  <input name="largeImageWidth" class="text" value="#rc.siteBean.getLargeImageWidth()#" />
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label">Width</label>
+                <div class="controls">
+                  <input name="largeImageHeight" class="text" value="#rc.siteBean.getLargeImageHeight()#" />
+                </div>
+           </div>
       </div>
     </div>
-	    
-      <div class="control-group">
-      <label class="control-label">Constrain Large Images by</label>
-      <div class="controls">
-        <label class="radio">
-        <input type="radio" name="galleryMainScaleBy" value="x" <cfif rc.siteBean.getgalleryMainScaleBy() eq 'x'> CHECKED</CFIF>>
-       Width
-     </label>
-       <label class="radio">
-        <input type="radio" name="galleryMainScaleBy" value="y" <cfif rc.siteBean.getgalleryMainScaleBy() neq 'x'> CHECKED</CFIF>>
-        Height
-      </label>
-    </div>
-    </div>
+      
+    
 
 
       </div>
