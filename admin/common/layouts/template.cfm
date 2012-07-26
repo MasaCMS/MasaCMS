@@ -1,4 +1,5 @@
-<cfoutput><html lang="#HTMLEditFormat(session.locale)#">
+<cfoutput>
+<html lang="#HTMLEditFormat(session.locale)#" class="mura">
   <head>
   	<cfsilent>
   		<cfparam name="request.action" default="core:cplugin.plugin">
@@ -98,42 +99,48 @@
 	<meta name="robots" content="noindex, nofollow, noarchive" />
 	<meta http-equiv="cache control" content="no-cache, no-store, must-revalidate" />
 
-    <!-- Le styles -->
-    <link href="#application.configBean.getContext()#/admin/assets/css/bootstrap.css" rel="stylesheet">
-    <link href="#application.configBean.getContext()#/admin/assets/css/bootstrap-responsive.css" rel="stylesheet">
-
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
-    <!---
     <!-- Le fav and touch icons -->
     <link rel="shortcut icon" href="#application.configBean.getContext()#/admin/assets/ico/favicon.ico">
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-144-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-57-precomposed.png">
-    <!-- -->
-    --->
+  
     <link rel="icon" href="#application.configBean.getContext()#/admin/images/favicon.ico" type="image/x-icon" />
 	<link rel="shortcut icon" href="#application.configBean.getContext()#/admin/images/favicon.ico" type="image/x-icon" />
 
+	<!-- Less CSS -->
+	<link href="#application.configBean.getContext()#/admin/assets/less/admin.less" rel="stylesheet/less" type="text/css" />
+	<script src="#application.configBean.getContext()#/admin/assets/js/less.js" type="text/javascript" language="Javascript"></script>
+	
+	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
     
+	<!-- Mura Admin JS -->
+	<script src="#application.configBean.getContext()#/admin/assets/js/admin.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
+	
+    <!-- jQuery UI -->
     <script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 	<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 	<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 	<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 	<link href="#application.configBean.getContext()#/admin/assets/css/jquery/default/jquery.ui.all.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
-	<script src="#application.configBean.getContext()#/admin/assets/js/admin.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
+	
+	<!-- CK Editor/Finder -->
 	<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckeditor/ckeditor.js"></script>
 	<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckeditor/adapters/jquery.js"></script>
 	<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckfinder/ckfinder.js"></script>
+	
+	<!-- Color Picker -->
 	<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/miniColors/jquery.miniColors.min.js?coreversion=#application.coreversion#"></script>
 	<link href="#application.configBean.getContext()#/tasks/widgets/miniColors/jquery.miniColors.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+	
+	<!-- JSON -->
 	<script src="#application.configBean.getContext()#/admin/assets/js/json2.js" type="text/javascript" language="Javascript"></script>
 	
-
+	<!-- Mura Vars -->
 	<script type="text/javascript">
 	var htmlEditorType='#application.configBean.getValue("htmlEditorType")#';
 	var context='#application.configBean.getContext()#';
@@ -167,21 +174,12 @@
 		</script>
 	</cfif>
 
-	
-	<link href="#application.configBean.getContext()#/admin/assets/css/admin.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 	<!---
 	<cfif cgi.http_user_agent contains 'msie'>
-	<!--[if LTE IE 7]>
+	<!--[if IE 7]>
 		<link href="#application.configBean.getContext()#/admin/assets/css/ie.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 	<![endif]-->
-	<!--[if IE 6]>
-		<script src="#application.configBean.getContext()#/admin/assets/js/DD_belatedPNG.js"></script>
-		<script>
-			//DD_belatedPNG.fix('##header h1,##navUtility ##navAdminUsers a,##navUtility ##navSiteSettings a,##navUtility ##navEditProfile a,##navUtility ##navHelp a');
-			DD_belatedPNG.fix('##header h1');
-		</script>
-	<![endif]-->
-	</cfif>
+		</cfif>
 	--->
   </head>
   <body id="#rc.originalcircuit#">

@@ -61,8 +61,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 </cfsilent>
 <cfoutput>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html lang="#HTMLEditFormat(session.locale)#">
+<!DOCTYPE html>
+<html lang="#HTMLEditFormat(session.locale)#" class="mura">
 	<head>
 		<title>#application.configBean.getTitle()#</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -92,7 +92,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<link rel="apple-touch-icon-precomposed" sizes="114x114" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-114-precomposed.png">
 		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-72-precomposed.png">
 		<link rel="apple-touch-icon-precomposed" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-57-precomposed.png">
-		 <!-- -->
 
 
 		<script src="#application.configBean.getContext()#/admin/assets/js/admin.js" type="text/javascript" language="Javascript"></script>
@@ -105,6 +104,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckeditor/ckeditor.js"></script>
 		<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckeditor/adapters/jquery.js"></script>
 		<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckfinder/ckfinder.js"></script>
+		
+		
 
 		<script src="#application.configBean.getContext()#/admin/assets/js/json2.js" type="text/javascript" language="Javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
@@ -117,6 +118,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</script>
 
 		<style type="text/css"> html { overflow:hidden; } </style>
+		<link href="#application.configBean.getContext()#/admin/assets/less/admin.less" rel="stylesheet/less" type="text/css" />
+		<script src="#application.configBean.getContext()#/admin/assets/js/less.js" type="text/javascript" language="Javascript"></script>
 		#session.dateKey#
 		<script type="text/javascript">
 			var frontEndProxy;
