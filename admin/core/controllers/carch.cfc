@@ -444,11 +444,4 @@
 	<cfabort>
 </cffunction>
 
-
-<cffunction name="cropimage" output="true">
-	<cfargument name="rc">
-	<cfset application.serviceFactory.getBean('fileManager').cropAndScale(argumentCollection=arguments.rc)>
-	<cfabort>
-</cffunction>
-
 </cfcomponent>

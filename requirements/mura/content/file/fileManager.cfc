@@ -708,7 +708,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 </cffunction>
 
-<cffunction name="cropAndScale">
+<cffunction name="cropAndScale" output="false">
 	<cfargument name="fileID">
 	<cfargument name="size">
 	<cfargument name="x">
@@ -720,7 +720,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var site=variables.settingsManager.getSite(rsMeta.siteID)>
 	<cfset var file="">
 	<cfset var source="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/#fileID#_source.#rsMeta.fileExt#">
-	<cfset var cropper="">
+	<cfset var cropper=structNew()>
 
 	<cfif listFindNoCase("small,medium,large",arguments.size) and rsMeta.recordcount>
 		
@@ -733,10 +733,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelse>
 			<cfset var file="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/#fileID#_#arguments.size#.#rsMeta.fileExt#">
 		</cfif>
-		
+
 		<cfset cropper=imageRead(source)>
 
-		<cfset imageCrop(cropper,arguments.x,arguments.y,arguments.width,arguments.width)>
+		<cfset imageCrop(cropper,arguments.x,arguments.y,arguments.width,arguments.height)>
 		<cfset ImageWrite(cropper,file,1)>
 		
 		<cfset variables.imageProcessor.resizeImage(
@@ -744,6 +744,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			height=evaluate("site.get#arguments.size#ImageHeight()"),
 			width=evaluate("site.get#arguments.size#ImageWidth()")
 		)>
+
+		<cfreturn ImageInfo(cropper)>
 	</cfif>
 </cffunction>
 
