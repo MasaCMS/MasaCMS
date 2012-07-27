@@ -53,7 +53,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.configBean=arguments.configBean/>
 		<cfset variables.settingsManager=arguments.settingsManager/>
 		<cfset variables.instance.imageInterpolation=arguments.configBean.getImageInterpolation()> 
-		
+		<cfset variables.fileWriter=getBean("fileWriter")>
+
 		<cfif StructKeyExists(SERVER,"bluedragon") and not listFindNoCase("bicubic,bilinear,nearest",variables.instance.imageInterpolation)>
 			<cfset variables.instance.imageInterpolation="bicubic">
 		</cfif>
@@ -80,13 +81,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var ReturnImageHTML = "">
 	<cfset var OriginalImageFilename = "" />
 	<cfset var OriginalImageType = "" />
-	<cfset var thisImage="">
 	<cfset var OriginalImageFile = trim(arguments.Image) />
 	<cfset var OriginalImagePath = GetDirectoryFromPath(OriginalImageFile) />
-	<cfset var ImageAspectRatio=0>
-	<cfset var NewAspectRatio=0>
-	<cfset var CropX=0>
-	<cfset var CropY=0>
+
 	
 	<cfif not len(arguments.image) 
 		or not listFindNoCase("png,gif,jpg,jpeg",listLast(arguments.image,"."))>
@@ -127,17 +124,37 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfreturn NewImageLocal>
 		</cfif>
 
-		<cfset ThisImage=imageRead(OriginalImageFile)>
+		<cfset variables.fileWriter.copyFile(source=OriginalImageFile,destination=NewImageSource)>
+		
+		<cfset resizeImage(height=arguments.height,width=arguments.width,image=NewImageSource)>
+			
+		<cfif not fileExists(NewImageSource)>
+			<cfset variables.fileWriter.copyFile(source=OriginalImageFile,destination=NewImageSource)>
+		</cfif>
+	</cfif>
+	
+	<cfreturn NewImageLocal />
+	</cffunction>
+
+	<cffunction name="resizeImage" output="false">
+		<cfargument name="Image" required="true" />
+		<cfargument name="Height" default="AUTO" />
+		<cfargument name="Width" default="AUTO" />
+		<cfset var thisImage=imageRead(arguments.image)>
+		<cfset var ImageAspectRatio=0>
+		<cfset var NewAspectRatio=0>
+		<cfset var CropX=0>
+		<cfset var CropY=0>
 
 		<cfif arguments.Width eq "AUTO">
 			<cfif ThisImage.height gt arguments.height>
 				<cfset ImageResize(ThisImage,'',arguments.height,variables.instance.imageInterpolation)>
-				<cfset ImageWrite(ThisImage,NewImageSource,1)>
+				<cfset ImageWrite(ThisImage,arguments.image,1)>
 			</cfif>
 		<cfelseif arguments.Height eq "AUTO">
 			<cfif ThisImage.width gt arguments.width>
 				<cfset ImageResize(ThisImage,arguments.width,'',variables.instance.imageInterpolation)>
-				<cfset ImageWrite(ThisImage,NewImageSource,1)>
+				<cfset ImageWrite(ThisImage,arguments.image,1)>
 			</cfif>
 		<cfelse>
 			<cfset ImageAspectRatio = ThisImage.Width / ThisImage.height />
@@ -146,29 +163,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif ImageAspectRatio eq NewAspectRatio>
 				<cfif ThisImage.width gt arguments.width>
 					<cfset ImageResize(ThisImage,arguments.width,'',variables.instance.imageInterpolation)>
-					<cfset ImageWrite(ThisImage,NewImageSource,1)>
+					<cfset ImageWrite(ThisImage,arguments.image,1)>
 				</cfif>
 			<cfelseif ImageAspectRatio lt NewAspectRatio>
 				<cfset ImageResize(ThisImage,arguments.width,'',variables.instance.imageInterpolation)>
 				<cfset CropY = (ThisImage.height - arguments.height)/2 />
 				<cfset ImageCrop(ThisImage, 0, CropY, arguments.Width, arguments.height) />
-				<cfset ImageWrite(ThisImage,NewImageSource,1)>
+				<cfset ImageWrite(ThisImage,arguments.image,1)>
 			<cfelseif ImageAspectRatio gt NewAspectRatio>
 				<cfset ImageResize(ThisImage,'',arguments.height,variables.instance.imageInterpolation)>
 				<cfset CropX = (ThisImage.width - arguments.width)/2 />
 				<cfset ImageCrop(ThisImage, CropX, 0, arguments.width, arguments.height) />
-				<cfset ImageWrite(ThisImage,NewImageSource,1)>
+				<cfset ImageWrite(ThisImage,arguments.image,1)>
 			</cfif>
 		</cfif>
-		
-		<cfif not fileExists(NewImageSource)>
-			<cfset getBean("fileWriter").copyFile(source=OriginalImageFile,destination=NewImageSource)>
-		</cfif>
-	</cfif>
-	
-	<cfreturn NewImageLocal />
+
 	</cffunction>
 
+	<!---
 	<cffunction name="resizeImage" returntype="void" x>
 		<cfargument name="source" required="Yes" type="string">
 		<cfargument name="target" required="Yes" type="string">
@@ -252,6 +264,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>		
 						
 	</cffunction>
+	--->
 
 	<cffunction name="fromPath2Binary" output="false">
         <cfargument name="path" type="string" required="yes">
@@ -335,8 +348,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset fileStruct.fileObj=fromPath2Binary(fileStruct.fileObj,false) />
 			<cftry><cffile action="delete" file="#fileStruct.fileObj#"><cfcatch></cfcatch></cftry>
 		</cfif>
-		
-		
+			
 		<!---<cftry><cffile action="delete" file="#theFile#"><cfcatch></cfcatch></cftry>--->
 		
 		<!--- END IMAGE MANIPULATION --->
