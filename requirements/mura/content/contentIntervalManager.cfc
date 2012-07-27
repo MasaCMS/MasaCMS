@@ -36,6 +36,9 @@
 	<cfset var LOCAL = StructNew() />
 	<cfset local.deleteList="" />
 	
+	<cfif not arguments.query.recordcount>
+		<cfreturn arguments.query>
+	</cfif>
 	<!--- 
 		Make sure that we are working with numeric dates 
 		that are DAY-only dates. 
@@ -49,7 +52,10 @@
 		the calednar itself, we won't have to worry about repeat
 		types or anything of that nature.
 	--->
-	<cfloop query="arguments.query">
+	<cfset local.currentrow=1>
+	<cfset local.recordcount=arguments.query.recordcount>
+
+	<cfloop from="1" to="#local.recordcount#" index="local.currentrow">
 	
 		<!--- 
 			No matter what kind of repeating event type we are 
@@ -61,19 +67,19 @@
 			is no end date on the event, then the TO date is the
 			end of the time period we are examining.
 		--->
-		<cfif arguments.query.display eq 2 
-		and len(arguments.query.displayInterval) 
-		and arguments.query.displayInterval neq 'daily'>
+		<cfif arguments.query.display[local.currentrow] eq 2 
+		and len(arguments.query.displayInterval[local.currentrow]) 
+		and arguments.query.displayInterval[local.currentrow] neq 'daily'>
 
-			<cfset LOCAL.DisplayStart=fix(arguments.query.displayStart)>
+			<cfset LOCAL.DisplayStart=fix(arguments.query.displayStart[local.currentrow])>
 			
-			<cfif isDate(arguments.query.displayStop)>
-				<cfset LOCAL.DisplayStop=fix(arguments.query.displayStop)>
+			<cfif isDate(arguments.query.displayStop[local.currentrow])>
+				<cfset LOCAL.DisplayStop=fix(arguments.query.displayStop[local.currentrow])>
 			<cfelse>
 				<cfset LOCAL.DisplayStop=0>
 			</cfif>
 
-			<cfif isDate(arguments.query.displayStop)>
+			<cfif isDate(arguments.query.displayStop[local.currentrow])>
 				
 				<!--- 
 					Since the event has an end date, get what ever 
@@ -122,7 +128,7 @@
 				and the number of items we need to skip per loop
 				iteration.
 			--->
-			<cfswitch expression="#arguments.query.displayInterval#">
+			<cfswitch expression="#arguments.query.displayInterval[local.currentrow]#">
 			
 				
 				<!--- Repeat weekly. --->
@@ -241,7 +247,7 @@
 						efficient, but the easist way of dealing 
 						with it.
 					--->
-					<cfset local.LoopIncrement=right(arguments.query.displayInterval,1)>
+					<cfset local.LoopIncrement=right(arguments.query.displayInterval[local.currentrow],1)>
 
 					<cfset LOCAL.From = Max(
 						LOCAL.DisplayStart,
@@ -249,7 +255,7 @@
 						) />
 					
 					<!--- Set the loop type and increment. --->
-					<cfif arguments.query.displayInterval eq 'weeklast'>
+					<cfif arguments.query.displayInterval[local.currentrow] eq 'weeklast'>
 						<cfset LOCAL.LoopType = "weeklast" />
 					<cfelse>
 						<cfset LOCAL.LoopType = "nthweek" />
@@ -400,15 +406,24 @@
 							Populate the event query. Add a row to 
 							the query and then copy over the data.
 						--->
-						<cfset QueryAddRow( arguments.query ) />
+						
+						<cfif not LOCAL.found>
+							<cfset querySetCell(arguments.query,"displayStart",parseDateTime(local.day),local.currentrow) />
+							<cfset querySetCell(arguments.query,"displayStop",parseDateTime(local.day),local.currentrow) />
+						<cfelse>
+							<cfset QueryAddRow( arguments.query ) />
+							
+							<!--- Set query data in the event query. --->
+							<cfloop list="#arguments.query.columnList#" index="local.i">
+								<cfset querySetCell(arguments.query,
+									local.i,
+									arguments.query[local.i][local.currentrow],
+									arguments.query.recordCount) />
+							</cfloop>
 
-						<!--- Set query data in the event query. --->
-						<cfloop list="#arguments.query.columnList#" index="local.i">
-							<cfset arguments.query[local.i][arguments.query.recordCount]=arguments.query[local.i][arguments.query.currentrow]/>	
-						</cfloop>
-
-						<cfset querySetCell(arguments.query,"displayStart",local.day,arguments.query.recordCount) />
-						<cfset querySetCell(arguments.query,"displayStop",local.day,arguments.query.recordCount) />
+							<cfset querySetCell(arguments.query,"displayStart",parseDateTime(local.day),arguments.query.recordCount) />
+							<cfset querySetCell(arguments.query,"displayStop",parseDateTime(local.day),arguments.query.recordCount) />
+						</cfif>
 						<cfset LOCAL.found = true />
 					</cfif>
 					
@@ -465,7 +480,7 @@
 <cfargument name="menuDate">
 
 	<cfswitch expression="#arguments.menuType#">
-		<cfcase value="default,Calendar,CalendarDate,calendar_features,ReleaseDate">
+		<cfcase value="default,Calendar,CalendarDate,calendar_features,ReleaseDate">	
 			<cfreturn apply(
 				query=arguments.query,
 				from=createODBCDateTime(arguments.menuDate),
@@ -490,7 +505,7 @@
 			/>
 		</cfcase>				
 		<cfdefaultcase>
-			<cfreturn argument.query>
+			<cfreturn arguments.query>
 		</cfdefaultcase>
 	</cfswitch>
 </cffunction>
