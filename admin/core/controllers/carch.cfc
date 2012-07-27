@@ -216,6 +216,8 @@
 	<cfargument name="rc">
 	<cfset var local=structNew()>
 	 
+	<cfset request.newImageIDList="">
+
 	<cfif not isNumeric(arguments.rc.orderno)>
 		<cfset arguments.rc.orderno=0>
 	</cfif>
@@ -253,6 +255,11 @@
 			 <cfset arguments.rc.contentBean=getBean('content').loadBy(contentHistID=arguments.rc.preserveID, siteid=arguments.rc.siteid).set(arguments.rc).save() />
 		<cfelse>
 			 <cfset arguments.rc.contentBean=getBean('content').loadBy(contentID=arguments.rc.contentID, siteid=arguments.rc.siteid).set(arguments.rc).save() />
+		</cfif>
+		<cfif len(request.newImageIDList)>
+			<cfset rc.fileid=request.newImageIDList>
+			<cfset rc.contenthistid=arguments.rc.contentBean.getContentHistID()>
+			<cfset variables.fw.redirect(action="cArch.imagedetails",append="contenthistid,siteid,fileid,compactDisplay")>
 		</cfif>
 	 </cfif>
 	 
