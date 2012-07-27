@@ -107,7 +107,7 @@
 
     function applyCropping(){
     	$('##applyingCoords').show();
-    	$('.btn').hide();
+    	$('##cropper .btn').hide();
  		
  		//location.href='./index.cfm?muraAction=carch.cropimage&fileid=' + currentFileID + '&size=' + currentSize + '&x=' + currentCoords.x + '&y=' + currentCoords.y + '&width=' + currentCoords.w + '&height=' + currentCoords.h + '&siteid=' + siteid;
 
