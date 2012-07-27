@@ -30,7 +30,11 @@
 				<cfset moduleTitle="Site Manager"/>
 			</cfcase>
 			<cfdefaultcase>
-			<cfset moduleTitle="Drafts">
+				<cfif rc.originalfuseaction eq "imagedetails">
+					<cfset moduleTitle="Image Details">
+				<cfelse>
+					<cfset moduleTitle="Drafts">
+				</cfif>	
 			</cfdefaultcase>
 			</cfswitch>
 		</cfcase>
