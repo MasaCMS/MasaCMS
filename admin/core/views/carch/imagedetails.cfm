@@ -157,6 +157,7 @@
     			$dialogHTML+='<br/><input type="hidden" name="coords" value="" id="coords">'; 
     			$dialogHTML+='<input class="btn" type="button"id="applyCoords" value="Apply Cropping" onclick="applyCropping();">';
     			$dialogHTML+='<img id="applyingCoords" src="./assets/images/progress_bar.gif" style="display:none">';
+    			$dialogHTML+='<input class="btn" type="button" value="Cancel" onclick="$(\'##cropper\').remove();">';
     			$dialogHTML+='</div></div>';
 
 	        var $dialog = $($dialogHTML);
