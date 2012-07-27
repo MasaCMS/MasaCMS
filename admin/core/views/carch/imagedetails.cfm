@@ -1,6 +1,10 @@
 
 <cfset $=application.serviceFactory.getBean('$').init(session.siteID)>
+<cfif len(rc.contenthistid)>
 <cfset rc.contentBean=$.getBean('content').loadBy(contentHistID=rc.contentHistID)>
+<cfelse>
+<cfset rc.userBean=$.getBean('user').loadBy(userID=rc.userID,siteID=rc.siteID)>
+</cfif>
 
 <cfif not (isDefined('rc.fileID') and len(rc.fileID))>
 	<cfset rc.rsfileAttributes=rc.contentBean.getExtendedData().getAttributesByType('File')>
@@ -55,27 +59,17 @@
 		<cfif len(rc.sourceImage)>		
 			<cfset rc.rsMeta=$.getBean('fileManager').readMeta(fileID=f)>
 			<h3>#HTMLEditFormat(rc.rsMeta.filename)#</h3>
-			<div class="control-group">
-			<label class="control-label">Small</label>
-			<div class="controls">
-				<img id="small#f#" src="#$.getURLForImage(fileID=f,size='small')#?cacheID=#createUUID()#"/>
-				<a href="##" class="cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#rc.smallImageRatio#" data-size="small">Re-Crop</a>
-			</div>
-			</div>
-			<div class="control-group">
-			<label class="control-label">Medium</label>
-			<div class="controls">
-				<img id="medium#f#" src="#$.getURLForImage(fileID=f,size='medium')#?cacheID=#createUUID()#"/>
-				<a href="##" class="cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#rc.mediumImageRatio#" data-size="medium">Re-Crop</a>
-			</div>
-			</div>		
-			<div class="control-group">
-			<label class="control-label">Large</label>
-			<div class="controls">
-				<img id="large#f#" src="#$.getURLForImage(fileID=f,size='large')#?cacheID=#createUUID()#"/>
-				<a href="##" class="cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#rc.largeImageRatio#" data-size="large">Re-Crop</a>
-			</div>
-			</div>
+			<cfloop list="Small,Medium,Large" index="s">
+				<div class="control-group">
+				<label class="control-label">#s#</label>
+				<div class="controls">
+					<img id="#lcase(s)##f#" src="#$.getURLForImage(fileID=f,size=lcase(s))#?cacheID=#createUUID()#"/>
+					<br/>
+					<button type="button" class="btn cropper-reset" data-fileid="#f#" data-size="#lcase(s)#">Reset</button>
+					<button type="button" class="btn cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#rc.smallImageRatio#" data-size="#lcase(s)#">Re-Crop</button>
+				</div>
+				</div>
+			</cfloop>
 		</cfif>
 	</cfloop>
 
@@ -117,21 +111,45 @@
  		
  		//location.href='./index.cfm?muraAction=carch.cropimage&fileid=' + currentFileID + '&size=' + currentSize + '&x=' + currentCoords.x + '&y=' + currentCoords.y + '&width=' + currentCoords.w + '&height=' + currentCoords.h + '&siteid=' + siteid;
 
-    	jQuery.get('./index.cfm?muraAction=carch.cropimage&fileid=' + currentFileID + '&size=' + currentSize + '&x=' + currentCoords.x + '&y=' + currentCoords.y + '&width=' + currentCoords.w + '&height=' + currentCoords.h + '&siteid=' + siteid,
+ 		if(typeof(currentCoords) == 'object'){
+	    	jQuery.get('./index.cfm?muraAction=carch.cropimage&fileid=' + currentFileID + '&size=' + currentSize + '&x=' + currentCoords.x + '&y=' + currentCoords.y + '&width=' + currentCoords.w + '&height=' + currentCoords.h + '&siteid=' + siteid,
+								function(data) {	
+									//alert(JSON.stringify(data));
+									reloadImg(currentSize + currentFileID);
+									resizeImg(currentSize + currentFileID,data.width,data.height);
+									$('##cropper').remove()
+								}
+							);
+		} else {
+			$('##cropper').remove();
+		}		
+    }
+
+    $('.cropper-reset').click(
+    	function(){
+
+    		currentFileID=$(this).attr('data-fileid');
+			currentSize=$(this).attr('data-size')
+			//alert(currentSize + currentFileID);
+
+    		jQuery.get('./index.cfm?muraAction=carch.cropimage&fileid=' + currentFileID + '&size=' + currentSize + '&siteid=' + siteid,
 							function(data) {	
 								//alert(JSON.stringify(data));
 								reloadImg(currentSize + currentFileID);
 								resizeImg(currentSize + currentFileID,data.width,data.height);
-								$('##cropper').remove()
 							}
 						);		
-    }
+
+    		
+    });
+	
 
     $('.cropper').click(
     	function(){
 
     		currentFileID=$(this).attr('data-fileid');
 			currentSize=$(this).attr('data-size');
+			currentCoords='';
 
     		var jcrop_api; 
     		var $dialogHTML='<div id="cropper"><div class="jc-dialog">';

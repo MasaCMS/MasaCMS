@@ -203,6 +203,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	  <cfset var origSiteID=arguments.rc.siteID>
 	
+	  <cfset request.newImageIDList="">
+
 	  <cfif arguments.rc.action eq 'Update'>
 	  	<cfset arguments.rc.userBean=variables.userManager.update(arguments.rc) />
 	  </cfif>
@@ -221,6 +223,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 
 	   <cfset arguments.rc.siteID=origSiteID>
 	 
+
+	   <cfif len(request.newImageIDList)>
+			<cfset rc.fileid=request.newImageIDList>
+			<cfset rc.userid=arguments.rc.userBean.getUserID()>
+			<cfset variables.fw.redirect(action="cArch.imagedetails",append="userid,siteid,fileid,compactDisplay")>
+	   </cfif>
+
 	  <cfif (arguments.rc.action neq 'delete' and structIsEmpty(arguments.rc.userBean.getErrors())) or arguments.rc.action eq 'delete'>
 	    <cfset route(arguments.rc)>
 	  </cfif>
