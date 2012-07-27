@@ -107,7 +107,7 @@
 
     function applyCropping(){
     	$('##applyingCoords').show();
-    	$('##applyCoords').hide();
+    	$('.btn').hide();
  		
  		//location.href='./index.cfm?muraAction=carch.cropimage&fileid=' + currentFileID + '&size=' + currentSize + '&x=' + currentCoords.x + '&y=' + currentCoords.y + '&width=' + currentCoords.w + '&height=' + currentCoords.h + '&siteid=' + siteid;
 
@@ -155,9 +155,9 @@
     		var $dialogHTML='<div id="cropper"><div class="jc-dialog">';
     			$dialogHTML+='<img id="crop-target" src="' + $(this).attr('data-src') + '" /> '; 
     			$dialogHTML+='<br/><input type="hidden" name="coords" value="" id="coords">'; 
+    			$dialogHTML+='<input class="btn" type="button" value="Cancel" onclick="$(\'##cropper\').remove();">';
     			$dialogHTML+='<input class="btn" type="button"id="applyCoords" value="Apply Cropping" onclick="applyCropping();">';
     			$dialogHTML+='<img id="applyingCoords" src="./assets/images/progress_bar.gif" style="display:none">';
-    			$dialogHTML+='<input class="btn" type="button" value="Cancel" onclick="$(\'##cropper\').remove();">';
     			$dialogHTML+='</div></div>';
 
 	        var $dialog = $($dialogHTML);
