@@ -41,6 +41,7 @@
 
 <ul class="navTask nav nav-pills">
 	<li><a href="./index.cfm?muraAction=cArch.edit&contenthistid=#rc.contentBean.getContentHistID()#&contentid=#rc.contentBean.getContentID()#&type=#rc.contentBean.getType()#&parentid=#rc.contentBean.getParentID()#&siteid=#rc.contentBean.getSiteID()#&moduleid=00000000000000000000000000000000000&startrow=1">Back to Content Form</a></li>
+	<li><a href="./index.cfm?muraAction=cArch.list&siteid=#rc.contentBean.getSiteID()#&moduleid=00000000000000000000000000000000000&startrow=1">Return to Site Manager</a></li>
 </ul>
 
 <cfif len(rc.fileID)>
