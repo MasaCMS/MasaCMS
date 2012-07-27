@@ -66,7 +66,7 @@
 					<img id="#lcase(s)##f#" src="#$.getURLForImage(fileID=f,size=lcase(s))#?cacheID=#createUUID()#"/>
 					<br/>
 					<button type="button" class="btn cropper-reset" data-fileid="#f#" data-size="#lcase(s)#">Reset</button>
-					<button type="button" class="btn cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#rc.smallImageRatio#" data-size="#lcase(s)#">Re-Crop</button>
+					<button type="button" class="btn cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#evaluate('rc.#s#ImageRatio')#" data-size="#lcase(s)#">Re-Crop</button>
 				</div>
 				</div>
 			</cfloop>
