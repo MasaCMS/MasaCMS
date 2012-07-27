@@ -64,9 +64,11 @@
 				<label class="control-label">#s#</label>
 				<div class="controls">
 					<img id="#lcase(s)##f#" src="#$.getURLForImage(fileID=f,size=lcase(s))#?cacheID=#createUUID()#"/>
-					<br/>
+					<div id="#lcase(s)##f#btns">
 					<button type="button" class="btn cropper-reset" data-fileid="#f#" data-size="#lcase(s)#">Reset</button>
 					<button type="button" class="btn cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#evaluate('rc.#s#ImageRatio')#" data-size="#lcase(s)#">Re-Crop</button>
+					<img src="./assets/images/progress_bar.gif" style="display:none">
+					</div>
 				</div>
 				</div>
 			</cfloop>
@@ -131,12 +133,17 @@
     		currentFileID=$(this).attr('data-fileid');
 			currentSize=$(this).attr('data-size')
 			//alert(currentSize + currentFileID);
+			
+    		$('##'  + currentSize + currentFileID + 'btns .btn').hide();
+    		$('##'  + currentSize + currentFileID + 'btns img').show();
 
     		jQuery.get('./index.cfm?muraAction=carch.cropimage&fileid=' + currentFileID + '&size=' + currentSize + '&siteid=' + siteid,
 							function(data) {	
 								//alert(JSON.stringify(data));
 								reloadImg(currentSize + currentFileID);
 								resizeImg(currentSize + currentFileID,data.width,data.height);
+								$('##'  + currentSize + currentFileID + 'btns .btn').show();
+    							$('##'  + currentSize + currentFileID + 'btns img').hide();
 							}
 						);		
 
