@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfset isBlocked=false />
-<div id="login">
+<div id="login" class="span4">
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,'login.pleaselogin')#</h2>
 <cfif rc.status eq 'denied'>
@@ -107,7 +107,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 	</div>
 	</div>
 
-	<div class="form-actions actionButtons">
+	<div class="actionButtons">
 		<input type="submit" class="submit btn" value="#application.rbFactory.getKeyValue(session.rb,'login.login')#" />
 	</div>
 
@@ -118,7 +118,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </form>
 </div>
 
-	<form novalidate="novalidate" id="sendLogin" name="sendLogin" method="post" action="index.cfm?muraAction=cLogin.main" onsubmit="return submitForm(this);">
+	<form novalidate="novalidate" id="sendLogin" class="span4" name="sendLogin" method="post" action="index.cfm?muraAction=cLogin.main" onsubmit="return submitForm(this);">
 	
 	<div class="control-group">
       	<label class="control-label">
@@ -142,7 +142,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<input id="email" name="email" type="text" class="text" align="absmiddle" onKeyPress="checkKeyPressed(event, 'sendLogin')"/>
 		</div>
 	</div>
-	<div class="form-actions actionButtons">
+	<div class="actionButtons">
 	 	<input type="submit" class="submit btn" value="#application.rbFactory.getKeyValue(session.rb,'login.submit')#" />
 	 </div>
 	<input type="hidden" name="status" value="sendlogin" />
