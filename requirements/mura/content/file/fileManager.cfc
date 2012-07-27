@@ -708,4 +708,37 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 </cffunction>
 
+<cffunction name="cropAndScale">
+	<cfargument name="fileID">
+	<cfargument name="size">
+	<cfargument name="x">
+	<cfargument name="y">
+	<cfargument name="height">
+	<cfargument name="width">
+
+	<cfset var rsMeta=readMeta(arguments.fileID)>
+	<cfset var site=variables.settingsManager.getSite(rsMeta.siteID)>
+	<cfset var file="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/#fileID#_#arguments.size#.#rsMeta.fileExt#">
+	<cfset var source="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/#fileID#_source.#rsMeta.fileExt#">
+	<cfset var cropper="">
+
+	<cfif listFindNoCase("small,medium,large",arguments.size) and rsMeta.recordcount>
+		
+		<cfif fileExists(file)>
+			<cfset fileDelete(file)>
+		</cfif>
+		
+		<cfset cropper=imageRead(source)>
+
+		<cfset imageCrop(cropper,arguments.x,arguments.y,arguments.width,arguments.width)>
+		<cfset ImageWrite(cropper,file,1)>
+		
+		<cfset variables.imageProcessor.resizeImage(
+			image=file,
+			height=evaluate("site.get#arguments.size#ImageHeight()"),
+			width=evaluate("site.get#arguments.size#ImageWidth()")
+		)>
+	</cfif>
+</cffunction>
+
 </cfcomponent>

@@ -180,6 +180,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfset variables.pluginManager.announceEvent("onFileCache", pluginEvent)>
 		<cfset variables.pluginManager.announceEvent("onAfterFileCache",pluginEvent)>
+
+		<cfif listFindNoCase('jpg,jpeg,png',arguments.fileExt) and isDefined('request.newImageIDList')>
+			<cfset request.newImageIDList=listAppend(request.newImageIDList,fileid)>
+		</cfif>
+
 		<cfreturn fileid />
 </cffunction>
 
