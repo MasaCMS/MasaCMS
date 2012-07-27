@@ -148,14 +148,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						  	
 						  	(
 						  		tcontent.displayStop < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime)))#">
-						  		AND  tcontent.displayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1)#"> 
+						  		AND  
+						  			(
+						  				tcontent.displayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1)#"> 
+						  				or tcontent.displayStop is null
+						  			)
 						  	)
 						  	
 						  	or 
 						  	
 						  	(
 						  		tcontent.displayStart < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1)#">
-						  		and tcontent.displayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime)))#"> 
+						  		and 
+						  			(
+						  				tcontent.displayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime)))#">
+						  				or tcontent.displayStop is null
+						  			) 
 						  	)
 						 )
 					  </cfcase>
