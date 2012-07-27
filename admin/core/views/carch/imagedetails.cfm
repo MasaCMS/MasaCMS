@@ -48,7 +48,7 @@
 </cfif>
 
 <ul class="navTask nav nav-pills">
-	<li><a href="javascript:window.history.back();return false;">Back</a></li>
+	<li><a href="#rc.contentBean.getEditURL(compactDisplay=rc.compactDisplay)#">Back to Content Form</a></li>
 	<!---<li><a href="./index.cfm?muraAction=cArch.list&siteid=#rc.contentBean.getSiteID()#&moduleid=00000000000000000000000000000000000&startrow=1">Site Manager</a></li>--->
 </ul>
 
