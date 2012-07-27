@@ -718,7 +718,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset var rsMeta=readMeta(arguments.fileID)>
 	<cfset var site=variables.settingsManager.getSite(rsMeta.siteID)>
-	<cfset var file="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/#fileID#_#arguments.size#.#rsMeta.fileExt#">
+	<cfset var file="">
 	<cfset var source="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/#fileID#_source.#rsMeta.fileExt#">
 	<cfset var cropper="">
 
@@ -726,6 +726,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfif fileExists(file)>
 			<cfset fileDelete(file)>
+		</cfif>
+		
+		<cfif arguments.size eq "large">
+			<cfset var file="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/#fileID#.#rsMeta.fileExt#">
+		<cfelse>
+			<cfset var file="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/#fileID#_#arguments.size#.#rsMeta.fileExt#">
 		</cfif>
 		
 		<cfset cropper=imageRead(source)>
