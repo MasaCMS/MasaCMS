@@ -1,14 +1,20 @@
 @import "../bootstrap/less/bootstrap.less";
 @import "../bootstrap/less/responsive.less";
 @import "variables.less";
+@import "login.less";
+@import "forms.less";
 
 .mura {
+
+	header {
+		background: url("../images/bg_header_login.png") repeat-x scroll 0 0 transparent;
+		height: 70px;
+		}
 
 	.navbar-inner {
 		.border-radius(0);
 		.box-shadow(0 0 0);
-		background: url("../images/bg_header_login.png") repeat-x scroll 0 0 transparent;
-		height: 70px;
+		background: transparent;
 		color: @gray;
 		position: relative;
 		
@@ -36,9 +42,14 @@
 			color: @grayLighter;
 		}
 		
+		
+		
 	} /* /navbar-inner */
 	
 	
+	.help-block {
+		color: @black;
+	}	
 	
 	/* @group Mura Grid */
 	

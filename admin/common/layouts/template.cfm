@@ -185,10 +185,9 @@
   <body id="#rc.originalcircuit#">
     <cfinclude template="includes/header.cfm">
 
-    <div class="container">
+    <div class="container-fluid">
 
       <div class="row">
-        <div class="span12">
         <cfif rc.originalcircuit neq 'cLogin'>
         	
         	<cfinclude template="includes/dsp_secondary_menu.cfm">
@@ -203,15 +202,14 @@
 
 
         </cfif>
-          #body#
-        </div>  
+          #body# 
       </div>
-
+<!---
       <hr>
 
       <footer>
         <p>&copy; Company 2012</p>
-      </footer>
+      </footer>--->
 
     </div> <!-- /container -->  
     <!---
