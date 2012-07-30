@@ -394,8 +394,8 @@
 <cfargument name="moduleid" default="">
 	<cfset var rs="">
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-	select menutitle, tcontent.siteid, tcontent.parentID, tcontent.path, tcontent.contentid, contenthistid, tcontent.fileID, type, tcontent.lastupdateby, active, approved, tcontent.lastupdate, 
-	display, displaystart, displaystop, tcontent.moduleid, isnav, notes,isfeature,inheritObjects,tcontent.filename,targetParams,releaseDate,
+	select tcontent.menutitle, tcontent.siteid, tcontent.parentID, tcontent.path, tcontent.contentid, tcontent.contenthistid, tcontent.fileID, tcontent.type, tcontent.lastupdateby, tcontent.active, tcontent.approved, tcontent.lastupdate, 
+	tcontent.display, tcontent.displaystart, tcontent.displaystop, tcontent.moduleid, tcontent.isnav, tcontent.notes,tcontent.isfeature,tcontent.inheritObjects,tcontent.filename,tcontent.targetParams,tcontent.releaseDate,
 	tcontent.changesetID, tfiles.fileExt, tcontent.title, tcontent.menutitle
 	from tcontent 
 	left join tfiles on tcontent.fileID=tfiles.fileID
@@ -410,7 +410,7 @@
 	<cfif len(arguments.moduleid)>
 		and tcontent.moduleid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleid#">
 	</cfif>
-	order by menutitle
+	order by tcontent.menutitle
 	</cfquery>
 	<cfreturn rs>
 </cffunction>
