@@ -170,11 +170,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="doesFileExist" returntype="boolean" access="public" output="false">
 		<cfargument name="siteid" type="string" required="true">
 		<cfargument name="filename" type="string" required="true">
+		<cfargument name="contentid" type="string" required="true">
 		<cfset var rs = "">
 		
 		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 			Select contentid from tcontent  where 
-			siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> and filename = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.filename#"/> and active=1 and type in ('Portal','Page','Calendar','Gallery')
+			siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
+			and filename = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.filename#"/> and active=1 and type in ('Portal','Page','Calendar','Gallery')
+			and contentid != <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentid#"/>
 		</cfquery>
 		
 		<cfif rs.recordcount>
@@ -277,7 +280,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 								<cfset pass=0>
 			       	
-								<cfloop condition="#doesFileExist(arguments.contentBean.getsiteid(),tempfile)#">
+								<cfloop condition="#doesFileExist(arguments.contentBean.getsiteid(),tempfile,arguments.contentBean.getContentID())#">
 									<cfset pass=pass+1>
 									<cfset tempfile="#newfile##pass#">
 								</cfloop>
@@ -583,7 +586,7 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 	
 	<cfset tempfile=arguments.contentBean.getFilename() />
 	
-	<cfloop condition="#doesFileExist(arguments.contentBean.getsiteid(),tempfile)#" >
+	<cfloop condition="#doesFileExist(arguments.contentBean.getsiteid(),tempfile,arguments.contentBean.getContentID())#" >
 		<cfset pass=pass+1>
 		<cfset tempfile=arguments.contentBean.getFilename() />
 		<cfif len(tempfile) eq 255>
