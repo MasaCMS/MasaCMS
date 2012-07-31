@@ -64,7 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div id="availableObjectParams"	
 		data-object="#rc.classid#" 
 		data-name="#HTMLEditFormat('#menutitle# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#')#" 
-		data-objectid="#feed.getFeedID()#">
+		data-objectid="#rc.objectID#">
 	</cfif>
 	
 	<cfif rc.classid eq "related_content">
