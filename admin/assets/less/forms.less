@@ -1,26 +1,31 @@
-.mura {
-	
-	select,
-	textarea,
-	input[type="text"],
-	input[type="password"],
-	input[type="datetime"],
-	input[type="datetime-local"],
-	input[type="date"],
-	input[type="month"],
-	input[type="time"],
-	input[type="week"],
-	input[type="number"],
-	input[type="email"],
-	input[type="url"],
-	input[type="search"],
-	input[type="tel"],
-	input[type="color"],
-	.uneditable-input {
-	  height: auto;
-	  font-size: @baseFontSize;
-	  line-height: @baseLineHeight;
-	  color: @grayDark;
-	}
-	
+select,
+textarea,
+input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"],
+.uneditable-input {
+  height: @baseLineHeight+10;
+  font-size: @baseFontSize;
+  padding: 5px;
+  line-height: @baseLineHeight;
+  color: @grayDark;
+}
+
+label.control-label {
+	font-weight: bold;
+}
+
+.add-on {
+	font-size: 15px;
 }

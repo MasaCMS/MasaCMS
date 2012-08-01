@@ -191,7 +191,7 @@
 
     <div class="container-fluid">
 
-      <div class="row">
+      <div class="row-fluid">
         <cfif rc.originalcircuit neq 'cLogin'>
         	
         	<cfinclude template="includes/dsp_secondary_menu.cfm">
@@ -203,17 +203,10 @@
 	              #application.rbFactory.getKeyValue(session.rb,"layout.loggedoutin")# <span id="clock">0:00:00</span>.
 	          </cfif>
 	        </p>
-
-
+	        
         </cfif>
           #body# 
       </div>
-<!---
-      <hr>
-
-      <footer>
-        <p>&copy; Company 2012</p>
-      </footer>--->
 
     </div> <!-- /container -->  
     <!---
