@@ -192,7 +192,7 @@
     <div class="container-fluid">
 
       <div class="row-fluid">
-        <cfif rc.originalcircuit neq 'cLogin'>
+      <!---  <cfif rc.originalcircuit neq 'cLogin'>
         	
         	<cfinclude template="includes/dsp_secondary_menu.cfm">
 
@@ -204,7 +204,7 @@
 	          </cfif>
 	        </p>
 	        
-        </cfif>
+        </cfif>--->
           #body# 
       </div>
 
