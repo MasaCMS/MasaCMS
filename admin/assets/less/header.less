@@ -4,12 +4,13 @@ header {
 	}
 
 .navbar-inner {
+
 	.border-radius(0);
 	.box-shadow(0 0 0);
 	background: transparent;
 	color: @gray;
 	position: relative;
-	
+
 	.brand {
 	    padding: 0;
 		background: url("../images/mura_logo.png") no-repeat scroll 0 0 transparent;
@@ -34,6 +35,16 @@ header {
 		color: @grayLighter;
 	}
 	
+	.nav li li a {
+		color: @black;
+	}
 	
+	ul.nav li.dropdown:hover ul.dropdown-menu{
+	    display: block;    
+	}
+	
+	.navbar .dropdown-menu {
+	 margin-top: 0px;
+	}
 	
 }
