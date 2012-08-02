@@ -1,0 +1,172 @@
+
+/*------------------------------------------------------------------
+
+[Responsive Stylesheet]
+
+	Project:		Base Admin Responsive
+	Version:		1.0
+	Last change:	05/21/2012
+	Assigned to:	Rod Howard (rh)
+
+
+[Table of contents]
+
+	1. Max Width: 767px
+	2. Max Width: 1200px
+	3. Max Width: 979px
+
+-------------------------------------------------------------------*/
+
+
+
+/*------------------------------------------------------------------
+[1. Max Width: 480px]
+*/
+
+@media (max-width: 480px) {
+	
+	.error-container h1 {
+		font-size: 72px;
+	}
+	
+}
+
+
+
+
+
+/*------------------------------------------------------------------
+[1. Max Width: 767px]
+*/
+
+@media (max-width: 767px) {
+    	
+	#main {
+		padding: 0 10px;
+		margin-right: -20px;
+		margin-left: -20px;	
+	}
+	
+	
+	.subnavbar {
+		margin-left: -20px;
+		margin-right: -20px;	
+	}
+	
+	
+	.subnavbar-inner {
+		height: auto;
+	}
+	
+	.subnavbar .container > ul {
+		width: 100%;
+		height: auto;
+		
+		border: none;
+	}
+	
+	.subnavbar .container > ul > li {
+		width: 33%;
+		height: 70px;
+		margin-bottom: 0;
+		
+		border: none;
+	}
+	
+    
+    
+    .subnavbar .container > ul > li.active > a {
+		font-size: 11px;
+    	background: transparent;
+    }
+	
+	.subnavbar .container > ul > li > a > i {	
+		display: inline-block;	
+		margin-bottom: 0;
+		
+		font-size: 20px;
+	}
+	
+	
+	.subnavbar-open-right .dropdown-menu {
+		left: auto;
+		right: 0;
+	}
+	
+	.subnavbar-open-right .dropdown-menu:before {
+		left: auto;
+		right: 12px;
+	}
+	.subnavbar-open-right .dropdown-menu:after {
+		left: auto;
+		right: 13px;
+	}
+	
+	.extra {
+		margin-right: -20px;
+		margin-left: -20px;
+	}
+	
+	.extra .container {
+		padding: 0 20px;
+	}
+	
+	.footer {
+		margin-right: -20px;
+		margin-left: -20px;
+	}
+	
+	.footer .container {
+		padding: 0 20px;
+	}
+	
+	.footer .footer-terms {
+		text-align: left;
+	}
+	
+	.footer .footer-terms a {
+		margin-left: 0;
+		margin-right: 1em;
+	}
+
+}
+    
+
+
+
+
+/*------------------------------------------------------------------
+[3. Max Width: 979px]
+*/
+
+@media (max-width: 979px) {
+	
+	.navbar-fixed-top {
+		position: static;
+		
+		margin-bottom: 0;
+	}
+	
+	.subnavbar {
+	}
+	
+	.subnavbar .container {		
+		width: auto;
+	}
+}
+
+
+
+
+
+
+/*------------------------------------------------------------------
+[2. Max Width: 1200px]
+*/
+
+@media (min-width: 1200px) {
+	.navbar .search-query {
+		width: 200px;
+	}
+	
+}

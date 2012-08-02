@@ -53,7 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 </cfsilent><cfoutput>
 <header>
-	<div class="navbar navbar-top">
+	<div class="navbar navbar-fixed-top">
 	  <div class="navbar-inner">
 	   <div class="container">
 	      <a class="brand" href="./index.cfm" title="Mura CMS by Blue River">#HTMLEditFormat(application.configBean.getTitle())#</a>
@@ -67,7 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	          </a>
 	         
 	          <div class="nav-collapse">
-	            <ul class="nav">
+	            <ul class="nav pull-right">
 	              
 	              <cfif application.configBean.getDashboard()>
 	                  <cfset baseURL="index.cfm?muraAction=cDashboard.main">
@@ -76,8 +76,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	               </cfif>
 	              
 	              <li class="dropdown">
-	                <a class="dropdown-toggle">
-	                  #application.rbFactory.getKeyValue(session.rb,"layout.selectsite")#
+	                <a class="dropdown-toggle" data-toggle="dropdown">
+	                  <i class="icon-globe"></i> #application.settingsManager.getSite(session.siteid).getSite()#
 	                  <b class="caret"></b>
 	                </a>
 	                
@@ -91,17 +91,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	                </ul>
 	              </li>
 	
-	              <cfset hidelist="cLogin">
-	              <cfif not listfindNoCase(hidelist,rc.originalcircuit)>
-	                <cfinclude template="dsp_module_menu.cfm">
-	              </cfif>
-	
-	              <cfif session.siteid neq '' 
+	              <!---<cfif session.siteid neq '' 
 	                  and listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') 
 	                    or listFind(session.mura.memberships,'S2'
 	                  )>
 	                <li id="navAdminUsers" class="dropdown">
-	                  <a class="dropdown-toggle" href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPrivateUsers.list&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.administrativeusers")#
+	                  <a class="dropdown-toggle" data-toggle="dropdown"><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,"layout.administrativeusers")#
 	                  <b class="caret"></b>
 	                  </a>
 	                  <ul class="dropdown-menu">
@@ -110,36 +105,37 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	                    <li class="last"><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPrivateUsers.editgroup&siteid=#session.siteid#&userid=">#application.rbFactory.getKeyValue(session.rb,"layout.addgroup")#</a></li>
 	                  </ul>
 	                </li>
-	              </cfif>
+	              </cfif>--->
 	
 	               <cfif listFind(session.mura.memberships,'S2')>
 	                  <li id="navSiteSettings" class="dropdown">
-	                    <a  class="dropdown-toggle" href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.list">
-	                      #application.rbFactory.getKeyValue(session.rb,"layout.sitesettings")#
+	                    <a class="dropdown-toggle" data-toggle="dropdown"><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.settings")#
 	                      <b class="caret"></b>
 	                    </a>
 	                    <ul class="dropdown-menu">
 	                    <li>
 	                        <a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.list">#application.rbFactory.getKeyValue(session.rb,"layout.globalsettings")#</a>
 	                    </li>
-	                    <li>
+	                    <!---<li>
 	                      <a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.editSite&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.editcurrentsite")#</a>
-	                    </li>
+	                    </li>--->
 	                    <li>
 	                      <a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.editSite&siteid=">#application.rbFactory.getKeyValue(session.rb,"layout.addsite")#</a>
 	                    </li>
-	                    <li class="last"><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.sitecopyselect">#application.rbFactory.getKeyValue(session.rb,"layout.sitecopytool")#</a>
+	                    <li><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.sitecopyselect">#application.rbFactory.getKeyValue(session.rb,"layout.sitecopytool")#</a>
 	                    </li>
+	                    <cfif listFind(session.mura.memberships,'S2')>
+	                     	<li><a href="#application.configBean.getContext()#/admin/index.cfm?#urlEncodedFormat(application.appreloadkey)#&reload=#urlEncodedFormat(application.appreloadkey)#">#application.rbFactory.getKeyValue(session.rb,"layout.reloadapplication")#</a></li>
+	                     </cfif>
 	                    </ul>
 	                  </li>
 	                </cfif>
-	                <cfif session.siteid neq '' and listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-	                 <li id="navEditProfile"><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cEditProfile.edit">#application.rbFactory.getKeyValue(session.rb,"layout.editprofile")#</a></li>
+	                 
 	                <li id="navHelp" class="dropdown">
-	                  <a  class="dropdown-toggle" href="http://www.getmura.com/index.cfm/support/">#application.rbFactory.getKeyValue(session.rb,"layout.help")#
+	                  <a class="dropdown-toggle" data-toggle="dropdown" href="http://www.getmura.com/index.cfm/support/"><i class="icon-question-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.help")#
 	                   <b class="caret"></b>
 	                  </a>
-	                  <ul  class="dropdown-menu">
+	                  <ul class="dropdown-menu">
 	                    <li><a id="navHelpDocs" href="http://www.getmura.com/support/" target="_blank">#application.rbFactory.getKeyValue(session.rb,"layout.support")#</a></li>
 	                <li>
 	                    <a id="navFckEditorDocs" href="http://docs.cksource.com/" target="_blank">#application.rbFactory.getKeyValue(session.rb,"layout.editordocumentation")#</a></li>
@@ -147,9 +143,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	                <li><a id="navCSS-API" href="http://docs.getmura.com/index.cfm/developer-guides/" target="_blank">#application.rbFactory.getKeyValue(session.rb,"layout.developers")#</a></li>
 	                   <li class="last"><a id="navHelpForums" href="http://www.getmura.com/forum/" target="_blank">#application.rbFactory.getKeyValue(session.rb,"layout.supportforum")#</a></li>
 	                  </ul>
-	                </li>
-	                <li id="navLogout"><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cLogin.logout">#application.rbFactory.getKeyValue(session.rb,"layout.logout")#</a></li>
-	                </cfif> 
+	                </li> 
+	                
+	                <cfif session.siteid neq '' and listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
+	                 <li id="navEditProfile" class="dropdown">
+	                 	<a class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i> #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#
+	                 		<b class="caret"></b></a>
+		                 <ul class="dropdown-menu">
+		                 <li>
+		                 <a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cEditProfile.edit"><i class="icon-pencil"> </i>#application.rbFactory.getKeyValue(session.rb,"layout.editprofile")#</a></li>
+		                 <li id="navLogout"><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cLogin.logout"><i class="icon-signout"> </i>#application.rbFactory.getKeyValue(session.rb,"layout.logout")#</a></li>
+		                 </ul>
+	                 </li>
+	                </cfif>
 	              </ul>
 	          </div><!--/.nav-collapse -->
 	     
@@ -158,5 +164,82 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	   </div>
 	  </div>
 	</div>
+	
+	 <cfif rc.originalcircuit neq 'cLogin'>
+	 
+	 <div class="subnavbar">
+	 
+	 	<div class="subnavbar-inner">
+	 	
+	 		<div class="container">
+	 
+	 			<ul class="mainnav">
+	 				
+	 				<cfif application.configBean.getDashboard()>
+	 				<li<cfif  rc.originalcircuit eq 'cDashboard'> class="active"</cfif>>
+	 					<a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cDashboard.main&siteid=#session.siteid#&span=#session.dashboardSpan#"><i class="icon-dashboard"></i><span>#application.rbFactory.getKeyValue(session.rb,"layout.dashboard")#</span></a>
+	 				</li>
+	 				</cfif>
+	 				
+	 				<li>
+	 					<a href="">
+	 						<i class="icon-list-alt"></i>
+	 						<span>Site Manager</span>
+	 					</a>	    				
+	 				</li>
+	 				
+	 				<cfset hidelist="cLogin">
+	 				<cfif not listfindNoCase(hidelist,rc.originalcircuit)>
+	 				  <cfinclude template="dsp_module_menu.cfm">
+	 				</cfif>
+	 				
+	 				<li class="dropdown">
+	 					<a class="dropdown-toggle" data-toggle="dropdown">
+	 						<i class="icon-group"></i>
+	 						<span>Users</span>
+	 						<b class="caret"></b>
+	 					</a>
+	 					
+	 					<ul class="dropdown-menu">
+	 					<li><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPrivateUsers.list&siteid=#session.siteid#"><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,"layout.viewadministrativeusers")#</a></li>
+	 					  <li><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPrivateUsers.edituser&siteid=#session.siteid#&userid="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.addadministrativeuser")#</a></li>
+	 					  <li class="last"><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPrivateUsers.editgroup&siteid=#session.siteid#&userid="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.addgroup")#</a></li>
+	 					  <li class="divider"></li>
+	 					  <cfif application.settingsManager.getSite(session.siteid).getextranet() and  application.permUtility.getModulePerm("00000000000000000000000000000000008","#session.siteid#")>
+	 					    <li <cfif rc.originalcircuit eq 'cPublicUsers' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000008')>class="active"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPublicUsers.list&siteid=#session.siteid#"><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,"user.viewsitemembers")#</a>
+	 					    </li>
+	 					  </cfif>
+	 					  <li><a href="index.cfm?muraAction=cPublicUsers.edituser&siteid=#URLEncodedFormat(rc.siteid)#&userid="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'user.addmember')#</a></li>
+	 					  <li><a href="index.cfm?muraAction=cPublicUsers.editgroup&siteid=#URLEncodedFormat(rc.siteid)#&userid="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'user.addgroup')#</a></li>
+	 					  
+	 					  </ul>			
+	 				</li>
+	 				 				
+	 				<li>					
+	 					<a href="">
+	 						<i class="icon-cogs"></i>
+	 						<span>Site Settings</span>
+	 					</a>  									
+	 				</li>
+	 			
+	 			</ul>
+	 
+	 		</div> <!-- /container -->
+	 	
+	 	</div> <!-- /subnavbar-inner -->
+	 
+	 </div> <!-- /subnavbar -->
+	        	
+	        	<cfinclude template="dsp_secondary_menu.cfm">
+	
+		         <cftry><cfset siteName=application.settingsManager.getSite(session.siteid).getSite()><cfif len(siteName)><p id="currentSite">#application.rbFactory.getKeyValue(session.rb,"layout.currentsite")# &rarr; <a href="http://#application.settingsManager.getSite(session.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.configBean.getStub()#/<cfif application.configBean.getSiteIDInURLS()>#session.siteid#/</cfif>" target="_blank">#application.settingsManager.getSite(session.siteid).getSite()#</a></p></cfif><cfcatch></cfcatch></cftry>
+		        <p id="welcome">
+		          <strong>#application.rbFactory.getKeyValue(session.rb,"layout.welcome")#, #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#.</strong>
+		          <cfif yesNoFormat(application.configBean.getValue("sessionTimeout"))> 
+		              #application.rbFactory.getKeyValue(session.rb,"layout.loggedoutin")# <span id="clock">0:00:00</span>.
+		          </cfif>
+		        </p>
+		        
+	        </cfif>
 </header>
 </cfoutput>
