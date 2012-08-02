@@ -46,43 +46,43 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfset isBlocked=false />
-<div id="login" class="span4">
+<div id="login">
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,'login.pleaselogin')#</h2>
 <cfif rc.status eq 'denied'>
-	<p class="error">#application.rbFactory.getKeyValue(session.rb,'login.denied')#</p>
+	<p class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,'login.denied')#</p>
 <cfelseif rc.status eq 'failed'>
 	<cfif structKeyExists(session, "blockLoginUntil") and isDate(session.blockLoginUntil) and session.blockLoginUntil gt now()>
 	<cfset isBlocked=true />
-	<p class="error">#application.rbFactory.getKeyValue(session.rb,'login.blocked')#</p>
+	<p class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,'login.blocked')#</p>
 	<cfelse>
-	<p class="error">#application.rbFactory.getKeyValue(session.rb,'login.failed')#</p>
+	<p class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,'login.failed')#</p>
 	</cfif>
 </cfif>
 
 <cfif not isBlocked>
 <form novalidate="novalidate" id="loginForm" name="frmLogin" method="post" action="index.cfm" onsubmit="return submitForm(this);">
 
-	<div class="control-group">
+	<!---<div class="control-group">
 	    <label class="control-label">
 	    	#application.rbFactory.getKeyValue(session.rb,'login.username')#
-	    </label>
-	    <div class="controls">
-	      <input id="username" name="username" type="text" class="text">
+	    </label>--->
+	    <div class="input-prepend">
+	      <span class="add-on"><i class="icon-user"></i></span><input id="username" name="username" type="text" class="text" placeholder="#application.rbFactory.getKeyValue(session.rb,'login.username')#">
 	    </div>
-	 </div>
+	 <!---</div>--->
 
-	<div class="control-group">
+	<!---<div class="control-group">
 	    <label class="control-label">
 	      	#application.rbFactory.getKeyValue(session.rb,'login.password')#
-	 	</label>
-	    <div class="controls">
-	      	<input id="password" type="password" name="password" class="text" onKeyPress="checkKeyPressed(event, 'loginForm')">
+	 	</label>--->
+	    <div class="input-prepend">
+	      	<span class="add-on"><i class="icon-key"></i></span><input id="password" type="password" name="password" class="text" onKeyPress="checkKeyPressed(event, 'loginForm')"  placeholder="#application.rbFactory.getKeyValue(session.rb,'login.password')#">
 	  	</div>
-	</div>
+	<!---</div>--->
 
 	<div class="control-group">
-	      <label class="control-label">Language</label>
+	      <!---<label class="control-label">Language</label>--->
 	      <div class="controls">
 	      	<select name="rb">
 				<option value="en">English</option>
@@ -98,17 +98,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 	</div>
 
-	<div class="control-group">
-	    <div class="controls">
-	     	<label for="rememberMe" class="radio">
-	      	<input type="checkbox" id="rememberMe" name="rememberMe" value="1" /> 
-	      	#application.rbFactory.getKeyValue(session.rb,'login.rememberme')#
+	<div id="remember-me">
+	      	<input type="checkbox" id="rememberMe" name="rememberMe" value="1" />
+	     	<label for="rememberMe">#application.rbFactory.getKeyValue(session.rb,'login.rememberme')#
 	      	</label>
-	 	</div>
 	</div>
 
-	<div class="actionButtons">
-		<input type="submit" class="submit btn" value="#application.rbFactory.getKeyValue(session.rb,'login.login')#" />
+	<div class="form-actions">
+		<input type="submit" class="submit btn btn-primary" value="#application.rbFactory.getKeyValue(session.rb,'login.login')#" />
 	</div>
 
 	<input name="returnUrl" type="hidden" value="#HTMLEditFormat(rc.returnURL)#">
@@ -118,7 +115,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </form>
 </div>
 
-	<form novalidate="novalidate" id="sendLogin" class="span4" name="sendLogin" method="post" action="index.cfm?muraAction=cLogin.main" onsubmit="return submitForm(this);">
+	<form novalidate="novalidate" id="sendLogin" name="sendLogin" method="post" action="index.cfm?muraAction=cLogin.main" onsubmit="return submitForm(this);">
 	
 	<div class="control-group">
       	<label class="control-label">
@@ -139,10 +136,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			#application.rbFactory.getKeyValue(session.rb,'login.enteremail')#
 			</cfif>
 		</p>
-		<input id="email" name="email" type="text" class="text" align="absmiddle" onKeyPress="checkKeyPressed(event, 'sendLogin')"/>
+			<div class="input-prepend">
+			  	<span class="add-on"><i class="icon-envelope"></i></span><input id="email" name="email" type="text" class="text"  onKeyPress="checkKeyPressed(event, 'sendLogin')" placeholder="Email Address" />
+			</div>
 		</div>
 	</div>
-	<div class="actionButtons">
+	<div class="form-actions">
 	 	<input type="submit" class="submit btn" value="#application.rbFactory.getKeyValue(session.rb,'login.submit')#" />
 	 </div>
 	<input type="hidden" name="status" value="sendlogin" />

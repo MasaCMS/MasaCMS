@@ -1,17 +1,66 @@
-.mura {
-	#clogin > .container-fluid > .row {
-		//.container-fixed();
-		width: 40%;
-		margin-top: 30px;
-		.center-block();
-	}
+#clogin > .container-fluid > .row {
+	max-width: 360px;
+	min-width: 270px;
+	margin-top: 30px;
+	.center-block();
+}
 	
-	#clogin #login, #clogin #sendLogin {
+#clogin {
+			
+	#login, #sendLogin {
 		//.makeColumn(3);
-		margin-bottom: 20px;
+		margin: 0 auto 20px;
 		padding: 26px 30px;
 		background: #f9f9f9;
 		.border-radius(6px);
 		.box-shadow(0px 0px 4px #999);
+		.clearfix;
 	}
+	
+	.input-prepend {
+		margin-bottom: 10px;	
+	}
+		
+	input[type="text"],input[type="password"] {
+		width: 91%;
+	}
+	
+	select {
+		width: auto;
+		margin-right: 1em;
+		.pull-left;
+	}
+	
+	label {
+		padding: 0;
+	}
+	
+	#remember-me {
+		.pull-left;
+		margin-right: 1em;
+	}
+	
+	#remember-me label {
+		line-height: 24px;
+		white-space: nowrap;
+	}
+	
+	#remember-me input {
+		.pull-left;
+		margin: 6px .5em 0 0;
+	}
+	
+	.form-actions {
+		.pull-right;
+		padding: 0;
+		margin-top: 0;
+		margin-bottom: 0;
+		background-color: transparent;
+		border-top: 0;
+	}
+	
+	/*.form-actions input {
+		.btn;
+	}*/
+		
 }
