@@ -349,6 +349,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rsttrashfiles=""/>
 		<cfset var rstformresponsepackets="">
 		<cfset var rstformresponsequestions="">
+		<cfset var rstimagesizes="">
 			<!--- pushed tables --->
 		
 			<!--- tcontent --->
@@ -1083,6 +1084,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(rstcontentcategories.remotePubDate neq '',de('no'),de('yes'))#" value="#rstcontentcategories.remotePubDate#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentcategories.filename neq '',de('no'),de('yes'))#" value="#rstcontentcategories.filename#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentcategories.urltitle neq '',de('no'),de('yes'))#" value="#rstcontentcategories.urltitle#">
+					)
+				</cfquery>
+			</cfloop>
+
+			<cfif not StructKeyExists(arguments,"Bundle")>
+				<cfquery datasource="#arguments.fromDSN#" name="rstimagesizes">
+					select * from timagesizes where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
+				</cfquery>
+			<cfelse>
+				<cfset rstimagesizes = arguments.Bundle.getValue("rstimagesizes")>
+			</cfif>
+
+			<cfif rstimagesizes.recordcount>
+				<cfquery datasource="#arguments.toDSN#">
+					delete from timagesizes where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
+				</cfquery>
+			</cfif>
+			<cfloop query="rstimagesizes">
+				<cfquery datasource="#arguments.toDSN#">
+					insert into timagesizes (sizeID,siteID,name,height,width)
+					values
+					(
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstimagesizes.sizeID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstimagesizes.name neq '',de('no'),de('yes'))#" value="#rstimagesizes.name#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstimagesizes.height neq '',de('no'),de('yes'))#" value="#rstimagesizes.height#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstimagesizes.width neq '',de('no'),de('yes'))#" value="#rstimagesizes.width#">
 					)
 				</cfquery>
 			</cfloop>
