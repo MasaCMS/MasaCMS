@@ -51,8 +51,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif not isDefined("session.mura.memberships")>
   <cflocation url="#application.configBean.getContext()#/admin/?muraAction=cLogin.logout" addtoken="false">
 </cfif>
-</cfsilent><cfoutput>
-<header>
+</cfsilent>
+
+<cfoutput>
+<!---<header>--->
 	<div class="navbar navbar-fixed-top">
 	  <div class="navbar-inner">
 	   <div class="container">
@@ -109,23 +111,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	               <cfif listFind(session.mura.memberships,'S2')>
 	                  <li id="navSiteSettings" class="dropdown">
-	                    <a class="dropdown-toggle" data-toggle="dropdown"><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.settings")#
+	                    <a class="dropdown-toggle" data-toggle="dropdown"><i class="icon-cogs"></i> #application.rbFactory.getKeyValue(session.rb,"layout.settings")#
 	                      <b class="caret"></b>
 	                    </a>
 	                    <ul class="dropdown-menu">
 	                    <li>
-	                        <a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.list">#application.rbFactory.getKeyValue(session.rb,"layout.globalsettings")#</a>
+	                        <a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.list"><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.globalsettings")#</a>
 	                    </li>
 	                    <!---<li>
 	                      <a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.editSite&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.editcurrentsite")#</a>
 	                    </li>--->
 	                    <li>
-	                      <a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.editSite&siteid=">#application.rbFactory.getKeyValue(session.rb,"layout.addsite")#</a>
+	                      <a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.editSite&siteid="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.addsite")#</a>
 	                    </li>
-	                    <li><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.sitecopyselect">#application.rbFactory.getKeyValue(session.rb,"layout.sitecopytool")#</a>
+	                    <li><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.sitecopyselect"><i class="icon-copy"></i> #application.rbFactory.getKeyValue(session.rb,"layout.sitecopytool")#</a>
 	                    </li>
 	                    <cfif listFind(session.mura.memberships,'S2')>
-	                     	<li><a href="#application.configBean.getContext()#/admin/index.cfm?#urlEncodedFormat(application.appreloadkey)#&reload=#urlEncodedFormat(application.appreloadkey)#">#application.rbFactory.getKeyValue(session.rb,"layout.reloadapplication")#</a></li>
+	                     	<li><a href="#application.configBean.getContext()#/admin/index.cfm?#urlEncodedFormat(application.appreloadkey)#&reload=#urlEncodedFormat(application.appreloadkey)#"><i class="icon-refresh"></i> #application.rbFactory.getKeyValue(session.rb,"layout.reloadapplication")#</a></li>
 	                     </cfif>
 	                    </ul>
 	                  </li>
@@ -136,12 +138,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	                   <b class="caret"></b>
 	                  </a>
 	                  <ul class="dropdown-menu">
-	                    <li><a id="navHelpDocs" href="http://www.getmura.com/support/" target="_blank">#application.rbFactory.getKeyValue(session.rb,"layout.support")#</a></li>
-	                <li>
-	                    <a id="navFckEditorDocs" href="http://docs.cksource.com/" target="_blank">#application.rbFactory.getKeyValue(session.rb,"layout.editordocumentation")#</a></li>
-	                <li><a id="navProg-API" href="http://www.getmura.com/mura/5/components/" target="_blank">Component API</a></li>
-	                <li><a id="navCSS-API" href="http://docs.getmura.com/index.cfm/developer-guides/" target="_blank">#application.rbFactory.getKeyValue(session.rb,"layout.developers")#</a></li>
-	                   <li class="last"><a id="navHelpForums" href="http://www.getmura.com/forum/" target="_blank">#application.rbFactory.getKeyValue(session.rb,"layout.supportforum")#</a></li>
+	                    <li><a id="navHelpDocs" href="http://www.getmura.com/support/" target="_blank"><i class="icon-info-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.support")#</a></li>
+	                	<li>
+	                    <a id="navFckEditorDocs" href="http://docs.cksource.com/" target="_blank"><i class="icon-bookmark"></i> #application.rbFactory.getKeyValue(session.rb,"layout.editordocumentation")#</a></li>
+	                <li><a id="navProg-API" href="http://www.getmura.com/mura/5/components/" target="_blank"><i class="icon-bookmark"></i> Component API</a></li>
+	                <li><a id="navCSS-API" href="http://docs.getmura.com/index.cfm/developer-guides/" target="_blank"><i class="icon-bookmark"></i> #application.rbFactory.getKeyValue(session.rb,"layout.developers")#</a></li>
+	                   <li class="last"><a id="navHelpForums" href="http://www.getmura.com/forum/" target="_blank"><i class="icon-bullhorn"></i> #application.rbFactory.getKeyValue(session.rb,"layout.supportforum")#</a></li>
 	                  </ul>
 	                </li> 
 	                
@@ -151,8 +153,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	                 		<b class="caret"></b></a>
 		                 <ul class="dropdown-menu">
 		                 <li>
-		                 <a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cEditProfile.edit"><i class="icon-pencil"> </i>#application.rbFactory.getKeyValue(session.rb,"layout.editprofile")#</a></li>
-		                 <li id="navLogout"><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cLogin.logout"><i class="icon-signout"> </i>#application.rbFactory.getKeyValue(session.rb,"layout.logout")#</a></li>
+		                 <a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cEditProfile.edit"><i class="icon-pencil"></i> #application.rbFactory.getKeyValue(session.rb,"layout.editprofile")#</a></li>
+		                 <li id="navLogout"><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cLogin.logout"><i class="icon-signout"></i> #application.rbFactory.getKeyValue(session.rb,"layout.logout")#</a></li>
 		                 </ul>
 	                 </li>
 	                </cfif>
@@ -182,9 +184,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 				</cfif>
 	 				
 	 				<li>
-	 					<a href="">
+	 					<a>
 	 						<i class="icon-list-alt"></i>
-	 						<span>Site Manager</span>
+	 						<span>#application.rbFactory.getKeyValue(session.rb,"layout.sitemanager")#</span>
 	 					</a>	    				
 	 				</li>
 	 				
@@ -196,7 +198,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 				<li class="dropdown">
 	 					<a class="dropdown-toggle" data-toggle="dropdown">
 	 						<i class="icon-group"></i>
-	 						<span>Users</span>
+	 						<span>#application.rbFactory.getKeyValue(session.rb,"layout.users")#</span>
 	 						<b class="caret"></b>
 	 					</a>
 	 					
@@ -215,11 +217,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 					  </ul>			
 	 				</li>
 	 				 				
-	 				<li>					
-	 					<a href="">
-	 						<i class="icon-cogs"></i>
-	 						<span>Site Settings</span>
-	 					</a>  									
+	 				<li class="dropdown">					
+	 					<a class="dropdown-toggle" data-toggle="dropdown">
+	 						<i class="icon-wrench"></i> <span>#application.rbFactory.getKeyValue(session.rb,"layout.sitesettings")#</span>
+	 					<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
+	 					<b class="caret"></b>
+	 					</cfif>
+	 					</a>
+	 				
+	 					
+		 				<ul class="dropdown-menu">
+		 					   <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')><li <cfif (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000000')>class='active'</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPerm.module&contentid=00000000000000000000000000000000000&siteid=#session.siteid#&moduleid=00000000000000000000000000000000000"><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.permissions")#</a></li>
+	 					</cfif>
+	 					
+	 					<li>
+	 					<a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cEditSite.edit"><i class="icon-pencil"> </i>#application.rbFactory.getKeyValue(session.rb,"layout.editcurrentsite")#</a></li>
+	 					
+		 				</ul>	
+	 			 									
 	 				</li>
 	 			
 	 			</ul>
@@ -231,15 +246,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 </div> <!-- /subnavbar -->
 	        	
 	        	<cfinclude template="dsp_secondary_menu.cfm">
-	
-		         <cftry><cfset siteName=application.settingsManager.getSite(session.siteid).getSite()><cfif len(siteName)><p id="currentSite">#application.rbFactory.getKeyValue(session.rb,"layout.currentsite")# &rarr; <a href="http://#application.settingsManager.getSite(session.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.configBean.getStub()#/<cfif application.configBean.getSiteIDInURLS()>#session.siteid#/</cfif>" target="_blank">#application.settingsManager.getSite(session.siteid).getSite()#</a></p></cfif><cfcatch></cfcatch></cftry>
-		        <p id="welcome">
-		          <strong>#application.rbFactory.getKeyValue(session.rb,"layout.welcome")#, #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#.</strong>
-		          <cfif yesNoFormat(application.configBean.getValue("sessionTimeout"))> 
-		              #application.rbFactory.getKeyValue(session.rb,"layout.loggedoutin")# <span id="clock">0:00:00</span>.
-		          </cfif>
-		        </p>
-		        
-	        </cfif>
-</header>
+	  </cfif>
+<!---</header>--->
 </cfoutput>
