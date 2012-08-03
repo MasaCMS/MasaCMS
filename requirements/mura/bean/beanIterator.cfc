@@ -44,79 +44,33 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="controller" output="false">
+<cfcomponent extends="mura.iterator.queryIterator" output="false">
 
-<cffunction name="setTrashManager" output="false">
-	<cfargument name="trashManager">
-	<cfset variables.trashManager=arguments.trashManager>
+<cfset variabes.beanClass="">
+
+<cffunction name="init" output="false">
+	<cfargument name="beanClass" default="">
+	<cfset super.init()>
+	<cfset setBeanClass(arguments.beanClass)>
+	<cfreturn this>
 </cffunction>
 
-<cffunction name="before" output="false">
-	<cfargument name="rc">
-
-	<cfif not listFind(session.mura.memberships,'S2')>
-		<cfset secure(arguments.rc)>
+<cffunction name="setBeanClass" output="false">
+	<cfargument name="beanClass">
+	<cfif len(arguments.beanClass)>
+		<cfset variables.beanClass=arguments.beanClass>
 	</cfif>
-	
-	<cfparam name="arguments.rc.pageNum" default="1">
-	<cfparam name="arguments.rc.siteID" default="#session.siteID#">
-	<cfparam name="arguments.rc.keywords" default="">
+	<cfreturn this>
 </cffunction>
 
-<cffunction name="list" output="false">
-	<cfargument name="rc">
-
-	<cfset arguments.rc.trashIterator=variables.trashManager.getIterator(argumentCollection=arguments.rc)>
-	<cfset arguments.rc.trashIterator.setNextN(20)>
-	
+<cffunction name="getBeanClass" output="false">
+	<cfreturn variables.beanClass=variabes.beanClass>
 </cffunction>
 
-<cffunction name="empty" output="false">
-	<cfargument name="rc">
-	
-	<cfset variables.trashManager.empty(argumentCollection=arguments.rc)>
-	<cfset variables.fw.redirect(action="cTrash.list",append="siteID")>
-	
+<cffunction name="packageRecord" access="public" output="false" returntype="any">
+	<cfset var bean=getBean("customImageSize")>
+	<cfset bean.set(queryRowToStruct(variables.records,currentIndex()))>
+	<cfreturn bean>
 </cffunction>
-
-<cffunction name="detail" output="false">
-	<cfargument name="rc">
 	
-	<cfset arguments.rc.trashItem=variables.trashManager.getTrashItem(arguments.rc.objectID)>
-	
-</cffunction>
-
-<cffunction name="restore" output="false">
-	<cfargument name="rc">
-	<cfset var obj="">
-	<cfset var it="">
-	<cfset var objectID="">
-
-	<cfif structKeyExists(arguments.rc,"deleteid")>
-		<cfset it=variables.trashManager.getIterator(deleteID=arguments.rc.deleteID)>
-		<cfloop condition="it.hasNext()">
-			<cfset obj=it.next()>
-			<cfset objectID=obj.getObjectID()>
-			<cfset obj=obj.getObject()>
-			<cfif structKeyExists(arguments.rc,"parentid") 
-				and len(arguments.rc.parentid) eq 35
-				and arguments.rc.parentID eq objectID>
-				<cfset obj.setParentID(arguments.rc.parentid)>
-			</cfif>
-			<cfset obj.setTopOrBottom("bottom").save()>
-		</cfloop>
-	<cfelse>
-		<cfset obj=variables.trashManager.getTrashItem(arguments.rc.objectID).getObject()>
-			<cfif structKeyExists(arguments.rc,"parentid") and len(arguments.rc.parentid) eq 35>
-				<cfset obj.setParentID(arguments.rc.parentid)>
-			</cfif>
-		<cfset obj.save()>
-	</cfif>
-
-	<cfset arguments.restoreID=arguments.rc.objectID>
-	<cfset variables.fw.redirect(action="cTrash.list",append="restoreID,siteID,keywords,pageNum")>
-	
-</cffunction>
-
-
 </cfcomponent>

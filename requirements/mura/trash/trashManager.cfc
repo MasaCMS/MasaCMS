@@ -171,13 +171,27 @@
 	<cfset var i="">
 	<cfset var rsRelated="">
 	<cfset var muraDeleteDateTime="">
+	<cfset var deleteID="">
+	<cfset var deleteIDHash="">
+	<cfset var orderno="">
 	
-	<cfif isDate(arguments.deleted.getValue("muraDeleteDateTime"))>
-		<cfset muraDeleteDateTime=arguments.deleted.getValue("muraDeleteDateTime")>
-	<cfelse>
-		<cfset muraDeleteDateTime=now()>
+	<cfif not isDate(arguments.deleted.getValue("muraDeleteDateTime"))>
+		<cfset arguments.deleted.setValue("muraDeleteDateTime",now())>
 	</cfif>
-	
+
+	<cfset muraDeleteDateTime=arguments.deleted.getValue("muraDeleteDateTime")>
+
+	<cfif not len(arguments.deleted.getValue("muraDeleteID"))>
+		<cfset arguments.deleted.setValue("muraDeleteID",createUUID())>
+	</cfif>
+
+	<cfset deleteID=arguments.deleted.getValue("muraDeleteID")>
+	<cfset deleteIDHash=Hash(deleteID)>
+
+	<cfparam name="request.delete#deleteIDHash#" default="0">
+
+	<cfset request["delete#deleteIDHash#"]=request["delete#deleteIDHash#"]+1>
+
 	<cfif listFindNoCase("campaignBean,creativeBean",objectClass)>
 		<cfset siteid=getBean('userManager').read(arguments.deleted.getUserID()).getSiteID()>
 	<cfelseif objectClass eq "placementBean">
@@ -245,7 +259,7 @@
 		
 		<cfif not rs.recordcount>
 			<cfquery datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
-				insert into ttrash (objectID,parentID,siteID,objectClass,objectLabel,objectType,objectSubType,objectString,deletedDate,deletedBy)
+				insert into ttrash (objectID,parentID,siteID,objectClass,objectLabel,objectType,objectSubType,objectString,deletedDate,deletedBy,deleteID,orderno)
 					values(	
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#evaluate('arguments.deleted.get#IDString#()')#" />,
 						<cfif structKeyExists(arguments.deleted,"getParentID")>
@@ -264,7 +278,9 @@
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#objectSubType#" />,
 						<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#allValues#" />,
 						<cfqueryparam cfsqltype="cf_sql_timestamp" value="#muraDeleteDateTime#">,
-						<cfqueryparam cfsqltype="cf_sql_varchar" value="#left($.currentUser('fullname'),50)#" />
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#left($.currentUser('fullname'),50)#" />,
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#deleteID#" />,
+						<cfqueryparam cfsqltype="cf_sql_numeric" value="#request['delete#deleteIDHash#']#" />
 					)			
 			</cfquery>
 		</cfif>
@@ -284,7 +300,7 @@
 	<cfset var allValues="">
 	
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" password="#variables.configBean.getReadOnlyDbPassword()#" username="#variables.configBean.getReadOnlyDbUsername()#">
-		select objectID,parentID,siteID,objectClass,objectLabel,objectType,objectSubType,objectString,deletedDate,deletedBy from ttrash where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectID#" />				
+		select objectID,parentID,siteID,objectClass,objectLabel,objectType,objectSubType,objectString,deletedDate,deletedBy,deleteID,orderno from ttrash where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectID#" />				
 	</cfquery>
 	
 	<cfif rs.recordcount>
@@ -293,6 +309,8 @@
 		<cfset allValues.fromMuraTrash=true>
 		<cfset allValues.muraDeleteDateTime=rs.deletedDate>
 		<cfset allValues.extendData="">
+		<cfset allValues.muraDeleteID=rs.deleteID>
+		<cfset allValues.muraDeleteOrderNO=rs.orderno>
 		<cfset retrieved.setAllValues(allValues)>
 	</cfif>
 	
@@ -304,7 +322,7 @@
 	<cfset var rs="">
 	
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" password="#variables.configBean.getReadOnlyDbPassword()#" username="#variables.configBean.getReadOnlyDbUsername()#">
-		select objectID,siteID,parentID,objectClass,objectType,objectSubType,objectLabel,deletedDate,deletedBy 
+		select objectID,siteID,parentID,objectClass,objectType,objectSubType,objectLabel,deletedDate,deletedBy,deleteID,orderno 
 		from ttrash where 
 		1=1
 		<cfif structKeyExists(arguments,"sinceDate")>
@@ -331,6 +349,9 @@
 		<cfif structKeyExists(arguments,"deletedBy")>
 		and deletedBy=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.deletedBy#">
 		</cfif>
+		<cfif structKeyExists(arguments,"deleteid")>
+		and deleteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.deleteid#">
+		</cfif>
 		<cfif structKeyExists(arguments,"objectLabel")>
 		and objectClass=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectLabel#">
 		</cfif>
@@ -349,7 +370,14 @@
 			)
 		</cfif>
 		
-		order by deletedDate desc		
+		order by 
+
+		<cfif isDefined('arguments.deleteID')>
+			orderno desc
+		<cfelse>
+			deletedDate desc
+		</cfif>
+				
 	</cfquery>
 	
 	<cfreturn rs>

@@ -1246,6 +1246,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not structKeyExists(arguments.data,"muraDeleteDateTime") or not isDate(arguments.data.muraDeleteDateTime) >
 		<cfset arguments.data.muraDeleteDateTime=now()>
 	</cfif>
+
+	<cfif not structKeyExists(arguments.data,"muraDeleteID") or not len(arguments.data.muraDeleteID)>
+		<cfset arguments.data.muraDeleteID=createUUID()>
+	</cfif>
 	
 	<cflock type="exclusive" name="editingContent#arguments.data.siteid##application.instanceID#" timeout="60">
 		<cfif arguments.data.contentID eq '00000000000000000000000000000000001'>
@@ -1262,12 +1266,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset subContent.contentID = rs.contentiD/>
 				<cfset subContent.siteID = arguments.data.siteID/>
 				<cfset subContent.muraDeleteDateTime = arguments.data.muraDeleteDateTime/>
+				<cfset subContent.muraDeleteID = arguments.data.muraDeleteID/>
 				<cfset deleteAll(subContent)/>
 			</cfloop>
 		</cfif>
 	
 		<cfset currentBean=variables.contentDAO.readActive(arguments.data.contentid,arguments.data.siteid) />
 		<cfset currentBean.setValue("muraDeleteDateTime",arguments.data.muraDeleteDateTime)>
+		<cfset currentBean.setValue("muraDeleteID",arguments.data.muraDeleteID)>
 		<cfset pluginEvent.setValue("contentBean",currentBean) />	
 		<cfif currentBean.getContentID() neq '00000000000000000000000000000000001'>
 				

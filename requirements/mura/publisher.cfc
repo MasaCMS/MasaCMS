@@ -349,6 +349,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rsttrashfiles=""/>
 		<cfset var rstformresponsepackets="">
 		<cfset var rstformresponsequestions="">
+		<cfset var rstimagesizes="">
 			<!--- pushed tables --->
 		
 			<!--- tcontent --->
@@ -1086,6 +1087,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					)
 				</cfquery>
 			</cfloop>
+
+			<cfif not StructKeyExists(arguments,"Bundle")>
+				<cfquery datasource="#arguments.fromDSN#" name="rstimagesizes">
+					select * from timagesizes where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
+				</cfquery>
+			<cfelse>
+				<cfset rstimagesizes = arguments.Bundle.getValue("rstimagesizes")>
+			</cfif>
+
+			<cfif rstimagesizes.recordcount>
+				<cfquery datasource="#arguments.toDSN#">
+					delete from timagesizes where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
+				</cfquery>
+			</cfif>
+			<cfloop query="rstimagesizes">
+				<cfquery datasource="#arguments.toDSN#">
+					insert into timagesizes (sizeID,siteID,name,height,width)
+					values
+					(
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstimagesizes.sizeID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstimagesizes.name neq '',de('no'),de('yes'))#" value="#rstimagesizes.name#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstimagesizes.height neq '',de('no'),de('yes'))#" value="#rstimagesizes.height#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstimagesizes.width neq '',de('no'),de('yes'))#" value="#rstimagesizes.width#">
+					)
+				</cfquery>
+			</cfloop>
 			
 			<cfif arguments.formDataMode neq "none" and structKeyExists(arguments,"Bundle")>
 				<cfset rstformresponsepackets = arguments.Bundle.getValue("rstformresponsepackets")>
@@ -1316,7 +1344,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 					
 					<cfquery datasource="#arguments.toDSN#">
-						insert into ttrash (objectID,parentID,siteID,objectClass,objectLabel,objectType,objectSubType,objectString,deletedDate,deletedBy)
+						insert into ttrash (objectID,parentID,siteID,objectClass,
+							objectLabel,objectType,objectSubType,objectString,deletedDate,deletedBy
+							<cfif isDefined("rsttrash.deleteid")>
+								,deleteID
+								,orderno
+							</cfif>)
 							values(	
 								<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rsttrash.objectID)#" />,
 								<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rsttrash.parentID)#" />,
@@ -1328,6 +1361,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#allValues#" />,
 								#createODBCDateTime(deletedDate)#,
 								<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsttrash.deletedBy#" />
+								<cfif isDefined("rsttrash.deleteid")>
+									,<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsttrash.deleteid#" />
+									,<cfqueryparam cfsqltype="cf_sql_numeric" value="#rsttrash.orderno#" />
+								</cfif>
 							)			
 					</cfquery>
 					

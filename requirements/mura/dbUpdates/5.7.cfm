@@ -85,3 +85,16 @@
 		where galleryMainScaleBy = 'y'
 	</cfquery>
 </cfif>
+
+<cfscript>
+	dbUtility.setTable("timagesizes")
+	.addColumn(column="sizeID",dataType="char",length="35")
+	.addColumn(column="siteID",dataType="varchar",length="35")
+	.addColumn(column="name",dataType="varchar",length="50")
+	.addColumn(column="height",dataType="varchar",length="10")
+	.addColumn(column="width",dataType="varchar",length="10");
+
+	dbUtility.setTable("ttrash")
+	.addColumn(column="deleteid",dataType="char",length="35")
+	.addColumn(column="orderno",dataType="int");
+</cfscript>

@@ -454,6 +454,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rsZipFile	= "" />
 		<cfset var requiredSpace=variables.configBean.getValue("BundleMinSpaceRequired")>
 		<cfset var rssite	= "" />
+		<cfset var rstimagesizes	= "" />
 		<!---<cfset var moduleIDSqlList="">--->
 		<cfset var i="">
 		<cfset var availableSpace=0>
@@ -1160,7 +1161,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			    from tsettings where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
 			</cfquery>
 			
-			<cfset setValue("rssite",rssite)>	
+			<cfset setValue("rssite",rssite)>
+
+			<cfquery datasource="#arguments.dsn#" name="rstimagesizes">
+				select *
+			    from timagesizes where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
+			</cfquery>	
+
 			<cfset setValue("assetPath",application.configBean.getAssetPath())>
 			<cfset setValue("context",application.configBean.getContext())>
 			
