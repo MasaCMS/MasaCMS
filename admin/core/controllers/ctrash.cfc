@@ -103,7 +103,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				and arguments.rc.parentID eq objectID>
 				<cfset obj.setParentID(arguments.rc.parentid)>
 			</cfif>
-			<cfset obj.save()>
+			<cfset obj.setTopOrBottom("bottom").save()>
 		</cfloop>
 	<cfelse>
 		<cfset obj=variables.trashManager.getTrashItem(arguments.rc.objectID).getObject()>
