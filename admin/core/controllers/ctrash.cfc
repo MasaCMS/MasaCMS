@@ -90,7 +90,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="rc">
 	<cfset var obj="">
 	<cfset var it="">
-	<cfset var id="">
+	<cfset var objectID="">
 
 	<cfif structKeyExists(arguments.rc,"deleteid")>
 		<cfset it=variables.trashManager.getIterator(deleteID=arguments.rc.deleteID)>
