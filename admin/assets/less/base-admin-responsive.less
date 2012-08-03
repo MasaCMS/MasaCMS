@@ -35,6 +35,8 @@
 
 
 
+
+
 /*------------------------------------------------------------------
 [1. Max Width: 767px]
 */
@@ -47,6 +49,10 @@
 		margin-left: -20px;	
 	}
 	
+	.brand img {
+		height: 30px;
+		width: auto;
+	}
 	
 	.subnavbar {
 		margin-left: -20px;
@@ -61,32 +67,37 @@
 	.subnavbar .container > ul {
 		width: 100%;
 		height: auto;
-		
-		border: none;
+		border: 0 !important;
+		margin: 0 !important;
 	}
 	
 	.subnavbar .container > ul > li {
 		width: 33%;
-		height: 70px;
+		height: auto;
 		margin-bottom: 0;
-		
-		border: none;
+		border: 0 !important;
 	}
-	
     
+    .subnavbar .container > ul > li > a {
+    	width: auto;
+    	padding: 0;
+    }
     
     .subnavbar .container > ul > li.active > a {
 		font-size: 11px;
     	background: transparent;
     }
-	
+    
+    .subnavbar .container > ul > li.active > a {
+    	background: @grayDarker;
+    	color: @gray;
+    }
+    
 	.subnavbar .container > ul > li > a > i {	
 		display: inline-block;	
 		margin-bottom: 0;
-		
 		font-size: 20px;
 	}
-	
 	
 	.subnavbar-open-right .dropdown-menu {
 		left: auto;

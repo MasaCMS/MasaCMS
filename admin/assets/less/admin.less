@@ -1,14 +1,11 @@
 .mura {
-	
 	@import "../bootstrap/less/bootstrap.less";
-	@import "../bootstrap/less/responsive.less";
 	@import "base-admin.less";
-	@import "base-admin-responsive.less";
 	@import "fonts.less";	
 	@import "font-awesome.less";
 	@import "variables.less";
-	@import "typography.less";
 	@import "header.less";
+	@import "typography.less";
 	@import "nav-zoom.less";
 	@import "grids.less";
 	@import "login.less";
@@ -22,17 +19,7 @@
 	}	
 	
 	/* @group New clear fix method: http://perishablepress.com/press/2009/12/06/new-clearfix-hack/ */
-	
-	.clearfix:after {
-		visibility: hidden;
-		display: block;
-		font-size: 0;
-		content: " ";
-		clear: both;
-		height: 0;
-		}
-	* html .clearfix             { zoom: 1; } /* IE6 */
-	*:first-child+html .clearfix { zoom: 1; } /* IE7 */
+
 	
 	/* @end */
 	
@@ -42,30 +29,34 @@
 	list-style: none;
 	}*/
 	
-	a img {
-		border: 0;
-	}
-	
-	img.fmImage {
-		border: 0 solid #fff;
-		margin: 10px;
-	}
-	
-	img.tabPreloader {
-		margin: 0 0 1em auto;
-	}
-	
-	img#assocImage {
-		clear: left !important;
-		float: none;
-		display: block;
-		padding: 1em 0;
-	}
-	
-	.well {
-		.box-shadow(0 0 0);
-		border: 0;
-	}
+//	a img {
+//		border: 0;
+//	}
+//	
+//	img.fmImage {
+//		border: 0 solid #fff;
+//		margin: 10px;
+//	}
+//	
+//	img.tabPreloader {
+//		margin: 0 0 1em auto;
+//	}
+//	
+//	img#assocImage {
+//		clear: left !important;
+//		float: none;
+//		display: block;
+//		padding: 1em 0;
+//	}
+//	
+//	.well {
+//		.box-shadow(0 0 0);
+//		border: 0;
+//	}
+
 
 
 } /* End .mura */
+
+@import "../bootstrap/less/responsive.less";
+@import "base-admin-responsive.less";
