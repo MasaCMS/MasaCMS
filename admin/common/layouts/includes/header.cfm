@@ -184,7 +184,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 				</cfif>
 	 				
 	 				<li<cfif  rc.originalcircuit eq 'cArch'> class="active"</cfif>>
-	 					<a href="#application.configBean.getContext()#/admin/index.cfm?fuseaction=cArch.list&siteid=#session.siteid#&moduleid=00000000000000000000000000000000000">
+	 					<a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cArch.list&siteid=#session.siteid#&moduleid=00000000000000000000000000000000000">
 	 						<i class="icon-list-alt"></i> <span>#application.rbFactory.getKeyValue(session.rb,"layout.sitemanager")#</span>
 	 					</a>	    				
 	 				</li>
