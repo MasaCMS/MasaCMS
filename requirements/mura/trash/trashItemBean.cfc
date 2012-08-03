@@ -54,6 +54,14 @@
 <cfreturn variables.instance.deletedBy>
 </cffunction>
 
+<cffunction name="getDeleteID" output="false">
+<cfreturn variables.instance.deleteID>
+</cffunction>
+
+<cffunction name="getOrderNO" output="false">
+<cfreturn variables.instance.orderno>
+</cffunction>
+
 <cffunction name="getObject" output="false">
 <cfreturn variables.trashManager.getObject(variables.instance.objectID)>
 </cffunction>

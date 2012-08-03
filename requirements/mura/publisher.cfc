@@ -1344,7 +1344,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 					
 					<cfquery datasource="#arguments.toDSN#">
-						insert into ttrash (objectID,parentID,siteID,objectClass,objectLabel,objectType,objectSubType,objectString,deletedDate,deletedBy)
+						insert into ttrash (objectID,parentID,siteID,objectClass,
+							objectLabel,objectType,objectSubType,objectString,deletedDate,deletedBy
+							<cfif isDefined("rsttrash.deleteid")>
+								,deleteID
+								,orderno
+							</cfif>)
 							values(	
 								<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rsttrash.objectID)#" />,
 								<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rsttrash.parentID)#" />,
@@ -1356,6 +1361,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#allValues#" />,
 								#createODBCDateTime(deletedDate)#,
 								<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsttrash.deletedBy#" />
+								<cfif isDefined("rsttrash.deleteid")>
+									,<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsttrash.deleteid#" />
+									,<cfqueryparam cfsqltype="cf_sql_numeric" value="#rsttrash.orderno#" />
+								</cfif>
 							)			
 					</cfquery>
 					

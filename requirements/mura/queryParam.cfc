@@ -121,7 +121,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 		<cfcase value="LTE">
 	 			<cfset variables.condition="<=" />
 	 		</cfcase>
-	 		<cfcase value="Begins,Contains">
+	 		<cfcase value="Begins,Contains,Like">
 		 		<cfif getDataType() eq "varchar">
 					<cfset variables.condition="like" />
 				<cfelse>

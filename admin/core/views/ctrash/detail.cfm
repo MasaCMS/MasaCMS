@@ -64,6 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <li><strong>SiteID:</strong> #htmlEditFormat(rc.trashItem.getSiteID())#</li>
 <li><strong>ParentID:</strong> #htmlEditFormat(rc.trashItem.getParentID())#</li>
 <li><strong>Object Class:</strong> #htmlEditFormat(rc.trashItem.getObjectClass())#</li>
+<li><strong>DeleteID:</strong> #htmlEditFormat(rc.trashItem.getDeleteID())#</li>
 <li><strong>Deleted Date:</strong> #LSDateFormat(rc.trashItem.getDeletedDate(),session.dateKeyFormat)# #LSTimeFormat(rc.trashItem.getDeletedDate(),"short")#</li>
 <li><strong>Deleted By:</strong> #htmlEditFormat(rc.trashItem.getDeletedBy())#</li>
 </ul>
@@ -71,6 +72,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif not listFindNoCase("Page,Portal,File,Link,Gallery,Calender",rc.trashItem.getObjectType())>
 <div class="clearfix form-actions actionButtons">
 <input type="button" class="submit btn" onclick="return confirmDialog('Restore Item From Trash?','?muraAction=cTrash.restore&objectID=#rc.trashItem.getObjectID()#&siteid=#rc.trashItem.getSiteID()#');" value="Restore Item" />
+<cfif len(rc.trashItem.getDeleteID())>
+<input type="button" class="submit btn" onclick="return confirmDialog('Restore All Items in Delete Transaction from Trash?','?muraAction=cTrash.restore&objectID=#rc.trashItem.getObjectID()#&deleteID=#rc.trashItem.getDeleteID()#&siteid=#rc.trashItem.getSiteID()#');" value="Restore All Items in Delete Transaction" />
+</cfif>
 </div>
 <cfelse>
 <cfset parentBean=application.serviceFactory.getBean("content").loadBy(contentID=rc.trashItem.getParentID(),siteID=rc.trashItem.getSiteID())>
@@ -82,11 +86,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</span>
 </div>
 <div class="clearfix form-actions actionButtons">
-<input type="button" class="submit btn" onclick="restoreContent();" value="Restore Item" />
+<input type="button" class="submit btn" onclick="restoreItem();" value="Restore Item" />
+<cfif len(rc.trashItem.getDeleteID())>
+<input type="button" class="submit btn" onclick="restoreAll();" value="Restore All Items in Delete Transaction" />
+</cfif>
 </div>
 
 <script>
-function restoreContent(){
+function restoreItem(){
 	var parentid="";
 
 	if(typeof(jQuery('##parentid').val()) != 'undefined' ){
@@ -102,7 +109,25 @@ function restoreContent(){
 		alertDialog('Please select a valid content parent.');
 	}
 }
+
+function restoreAll(){
+	var parentid="";
+
+	if(typeof(jQuery('##parentid').val()) != 'undefined' ){
+		parentid=jQuery('##parentid').val();
+	}else{
+		parentid=jQuery('input:radio[name=parentid]:checked').val();
+		
+	}
+	
+	if(parentid.length==35){
+		confirmDialog('Restore Item From Trash?',"?muraAction=cTrash.restore&siteID=#rc.trashItem.getSiteID()#&objectID=#rc.trashItem.getObjectID()#&&objectID=#rc.trashItem.getDeleteID()#parentid=" + parentid);
+	}else{
+		alertDialog('Please select a valid content parent.');
+	}
+}
 </script>
+
 
 </cfif>
 </cfoutput>

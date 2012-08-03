@@ -89,11 +89,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="restore" output="false">
 	<cfargument name="rc">
 	<cfset var obj="">
-	<cfset obj=variables.trashManager.getTrashItem(arguments.rc.objectID).getObject()>
-	<cfif structKeyExists(arguments.rc,"parentid") and len(arguments.rc.parentid) eq 35>
-		<cfset obj.setParentID(arguments.rc.parentid)>
+	<cfset var it="">
+	<cfset var id="">
+
+	<cfif structKeyExists(arguments.rc,"deleteid")>
+		<cfset it=variables.trashManager.getIterator(deleteID=arguments.rc.deleteID)>
+		<cfloop condition="it.hasNext()">
+			<cfset obj=it.next()>
+			<cfset objectID=obj.getObjectID()>
+			<cfset obj=obj.getObject()>
+			<cfif structKeyExists(arguments.rc,"parentid") 
+				and len(arguments.rc.parentid) eq 35
+				and arguments.rc.parentID eq objectID>
+				<cfset obj.setParentID(arguments.rc.parentid)>
+			</cfif>
+			<cfset obj.save()>
+		</cfloop>
+	<cfelse>
+		<cfset obj=variables.trashManager.getTrashItem(arguments.rc.objectID).getObject()>
+			<cfif structKeyExists(arguments.rc,"parentid") and len(arguments.rc.parentid) eq 35>
+				<cfset obj.setParentID(arguments.rc.parentid)>
+			</cfif>
+		<cfset obj.save()>
 	</cfif>
-	<cfset obj.save()>
+
 	<cfset arguments.restoreID=arguments.rc.objectID>
 	<cfset variables.fw.redirect(action="cTrash.list",append="restoreID,siteID,keywords,pageNum")>
 	
