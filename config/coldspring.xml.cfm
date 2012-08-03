@@ -79,6 +79,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 			<constructor-arg name="contentIntervalManager"><ref bean="contentIntervalManager" /></constructor-arg>
 		</bean>
+		<bean id="contentRenderer" class="mura.content.contentRenderer" singleton="true">
 		<bean id="contentIntervalManager" class="mura.content.contentIntervalManager" singleton="true"/>
 		<bean id="contentDAO" class="mura.content.contentDAO" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
