@@ -77,14 +77,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<cfif NOT cacheFactory.has( key )>			
 				<cfset crumbdata=buildCrumblist(arguments.contentID,arguments.siteID,arguments.setInheritance,arguments.path) />	
-				<cfreturn cacheFactory.get( key, crumbdata ) />
+				<cfif arrayLen(crumbdata) lt 50>
+					<cfreturn cacheFactory.get( key, crumbdata ) />
+				<cfelse>
+					<cfreturn crumbdata>
+				</cfif>
 			<cfelse>
 				<cftry>
 					<cfset crumbdata=cacheFactory.get( key ) />
 					
 					<cfif not isArray(crumbdata)>
 						<cfset crumbdata=buildCrumblist(arguments.contentID,arguments.siteID,arguments.setInheritance,arguments.path) />
-						<cfreturn cacheFactory.get( key, crumbdata ) />
+						<cfif arrayLen(crumbdata) lt 50>
+							<cfreturn cacheFactory.get( key, crumbdata ) />
+						<cfelse>
+							<cfreturn crumbdata>
+						</cfif>
 					</cfif>
 
 					<cfif arguments.setInheritance>
@@ -98,7 +106,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfreturn crumbdata />
 					<cfcatch>
 						<cfset crumbdata=buildCrumblist(arguments.contentID,arguments.siteID,arguments.setInheritance,arguments.path) />
-						<cfreturn cacheFactory.get( key, crumbdata ) />
+						<cfif arrayLen(crumbdata) lt 50>
+							<cfreturn cacheFactory.get( key, crumbdata ) />
+						<cfelse>
+							<cfreturn crumbdata>
+						</cfif>
 					</cfcatch>
 				</cftry>
 			</cfif>
