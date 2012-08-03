@@ -189,26 +189,16 @@
   <body id="#rc.originalcircuit#">
     <cfinclude template="includes/header.cfm">
 
-    <div class="container-fluid">
-
-      <div class="row-fluid">
-      <!---  <cfif rc.originalcircuit neq 'cLogin'>
-        	
-        	<cfinclude template="includes/dsp_secondary_menu.cfm">
-
-	         <cftry><cfset siteName=application.settingsManager.getSite(session.siteid).getSite()><cfif len(siteName)><p id="currentSite">#application.rbFactory.getKeyValue(session.rb,"layout.currentsite")# &rarr; <a href="http://#application.settingsManager.getSite(session.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.configBean.getStub()#/<cfif application.configBean.getSiteIDInURLS()>#session.siteid#/</cfif>" target="_blank">#application.settingsManager.getSite(session.siteid).getSite()#</a></p></cfif><cfcatch></cfcatch></cftry>
-	        <p id="welcome">
-	          <strong>#application.rbFactory.getKeyValue(session.rb,"layout.welcome")#, #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#.</strong>
-	          <cfif yesNoFormat(application.configBean.getValue("sessionTimeout"))> 
-	              #application.rbFactory.getKeyValue(session.rb,"layout.loggedoutin")# <span id="clock">0:00:00</span>.
-	          </cfif>
-	        </p>
-	        
-        </cfif>--->
-          #body# 
-      </div>
-
-    </div> <!-- /container -->  
+    <div class="main">
+      <div class="main-inner">
+         <div class="container">
+         	<div class="row">
+         		#body#
+         	</div> <!-- /row -->
+         </div> <!-- /container -->
+      </div> <!-- /main-inner -->
+    </div> <!-- /main -->  
+    
     <!---
     <script type="text/javascript" language="javascript">
 		stripe('stripe');
@@ -240,7 +230,7 @@
     <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-carousel.js"></script>
     <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-typeahead.js"></script>
   	<cfif rc.originalcircuit eq "cArch" and (rc.originalfuseaction eq "list" or rc.originalfuseaction eq "search") and (rc.moduleid eq '00000000000000000000000000000000000' or rc.moduleid eq '')>
-		<cfinclude template="/muraWRM/admin/core/views/carch/dsp_content_nav.cfm">
+	<cfinclude template="/muraWRM/admin/core/views/carch/dsp_content_nav.cfm">
 	</cfif>
 	<cfinclude template="includes/dialog.cfm">
   </body>

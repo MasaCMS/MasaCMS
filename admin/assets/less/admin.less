@@ -1,9 +1,11 @@
+@import "../bootstrap/less/bootstrap.less";
+@import "base-admin.less";
+@import "variables.less";
+
 .mura {
-	@import "../bootstrap/less/bootstrap.less";
-	@import "base-admin.less";
+	
 	@import "fonts.less";	
 	@import "font-awesome.less";
-	@import "variables.less";
 	@import "header.less";
 	@import "typography.less";
 	@import "nav-zoom.less";
@@ -16,18 +18,7 @@
 	
 	.help-block {
 		color: @black;
-	}	
-	
-	/* @group New clear fix method: http://perishablepress.com/press/2009/12/06/new-clearfix-hack/ */
-
-	
-	/* @end */
-	
-	/*ul, ol {
-	padding: 0;
-	margin: 0;
-	list-style: none;
-	}*/
+	}
 	
 //	a img {
 //		border: 0;
@@ -54,9 +45,8 @@
 //		border: 0;
 //	}
 
+	@import "../bootstrap/less/responsive.less"; 
+	/* "bootstrap/variables.less" commented out to avoid overriding styles */
+	@import "base-admin-responsive.less";
 
-
-} /* End .mura */
-
-@import "../bootstrap/less/responsive.less";
-@import "base-admin-responsive.less";
+} /* End #mura */

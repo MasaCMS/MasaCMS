@@ -58,8 +58,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div class="navbar navbar-fixed-top">
 	  <div class="navbar-inner">
 	   <div class="container">
-	      <a class="brand" href="./index.cfm" title="Mura CMS"><img src="#application.configBean.getContext()#/admin/assets/images/mura_logo.png"></a>
-	      <a class="brand-credit" title="Blue River" target="_blank" href="http://www.blueriver.com"></a>
+	      <a class="brand" href="http://www.getmura.com" title="Mura CMS"><img src="#application.configBean.getContext()#/admin/assets/images/mura_logo.png"></a>
+	      <!---<a class="brand-credit" title="Blue River" target="_blank" href="http://www.blueriver.com"></a>--->
 	      
 	      <cfif listFind(session.mura.memberships,'S2IsPrivate')>
 	       <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
