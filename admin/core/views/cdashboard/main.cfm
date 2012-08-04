@@ -71,9 +71,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <!-- Navbar Style -->
 <div id="nav-module-specific" class="btn-group">
-  <a class="btn"><i class="icon-caret-right"></i> Nav Item One</a>
-  <a class="btn"><i class="icon-caret-right"></i> Nav Item Two</a>
-  <a class="btn"><i class="icon-caret-right"></i> Nav Item Three</a>
+  <a class="btn">Nav Item One</a>
+  <a class="btn">Nav Item Two</a>
+  <a class="btn">Nav Item Three</a>
   <a class="btn" href=""><i class="icon-share-alt"></i> Return to <!-- Need rb key for this string --> #application.rbFactory.getKeyValue(session.rb,"dashboard.dashboard")#</a>
 </div>
 

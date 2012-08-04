@@ -223,13 +223,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 
 	 			<ul class="mainnav">
 	 				
+	 				<li id="select-site" class="dropdown">
+		 				<a class="dropdown-toggle" data-toggle="dropdown">
+		 				  <cfset theSiteList=application.settingsManager.getUserSites(session.siteArray,listFind(session.mura.memberships,'S2')) />
+		 				<i class="icon-globe"></i>
+		 				<span>#application.settingsManager.getSite(session.siteid).getSite()#</span>
+		 				<b class="caret"></b>
+		 				</a>
+	 				
+	 				<ul class="dropdown-menu">
+	 				    <cfloop query="theSiteList">
+	 				      <li<cfif session.siteID eq theSiteList.siteID> class="active"</cfif>>
+	 				        <a href="#baseURL#&amp;siteID=#theSiteList.siteID#">#HTMLEditFormat(theSiteList.site)#</a>
+	 				      </li>
+	 				    </cfloop>
+	 				</ul>
+	 				
+	 				</li>
+	 				
 	 				<cfif application.configBean.getDashboard()>
 	 				<li<cfif  rc.originalcircuit eq 'cDashboard'> class="active"</cfif>>
 	 					<a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cDashboard.main&siteid=#session.siteid#&span=#session.dashboardSpan#"> <i class="icon-dashboard"></i><span>#application.rbFactory.getKeyValue(session.rb,"layout.dashboard")#</span></a>
 	 				</li>
 	 				</cfif>
 	 				
-	 				<li<cfif  rc.originalcircuit eq 'cArch'> class="active"</cfif>>
+	 				<li <cfif  rc.originalcircuit eq 'cArch'> class="active"</cfif>>
 	 					<a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cArch.list&siteid=#session.siteid#&moduleid=00000000000000000000000000000000000">
 	 						<i class="icon-list-alt"></i> <span>#application.rbFactory.getKeyValue(session.rb,"layout.sitemanager")#</span>
 	 					</a>	    				
@@ -298,7 +316,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 			  </ul>
 	 			</div>--->
 	 			
-	 			<div id="select-site" class="btn-group">
+	 			<!---<div id="select-site" class="btn-group">
 	 			  <a class="btn dropdown-toggle" data-toggle="dropdown">
 	 			    <i class="icon-globe"></i> #application.settingsManager.getSite(session.siteid).getSite()#
 	 			    <span class="caret"></span>
@@ -311,7 +329,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 			        </li>
 	 			      </cfloop>
 	 			  </ul>
-	 			</div>
+	 			</div>--->
 	 
 	 		</div> <!-- /container -->
 	 	
