@@ -52,10 +52,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfinclude template="act_defaults.cfm"/>
 <cfoutput>
 <div class="span9">
-<h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.dashboard")#</h2>
-<select class="nav-secondary">
-<option>Secondary Nav goes here</option>
-</select>
+<h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.dashboard")# </h2>
+
+<!-- Button with Dropdown -->
+<div id="btn-module-specific" class="btn-group">
+  <a class="btn dropdown-toggle" data-toggle="dropdown" href=""><i class="icon-cog"></i>
+    Options
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu">
+    <li><a><i class="icon-caret-right"></i> Nav Item One</a></li>
+    <li><a><i class="icon-caret-right"></i> Nav Item Two</a></li>
+    <li><a><i class="icon-caret-right"></i> Nav Item Three</a></li>
+    <li class="divider"></li>
+    <li><a href=""><i class="icon-share-alt"></i> Return to <!---Need rb for this string---> #application.rbFactory.getKeyValue(session.rb,"dashboard.dashboard")#</a></li>
+  </ul>
+</div>
+
+<!-- Navbar Style -->
+<div id="nav-module-specific" class="btn-group">
+  <a class="btn"><i class="icon-caret-right"></i> Nav Item One</a>
+  <a class="btn"><i class="icon-caret-right"></i> Nav Item Two</a>
+  <a class="btn"><i class="icon-caret-right"></i> Nav Item Three</a>
+  <a class="btn" href=""><i class="icon-share-alt"></i> Return to <!-- Need rb key for this string --> #application.rbFactory.getKeyValue(session.rb,"dashboard.dashboard")#</a>
+</div>
+
 </cfoutput>
 <cfset rsPluginScripts=application.pluginManager.getScripts("onDashboardPrimaryTop",rc.siteID)>
 <cfoutput query="rsPluginScripts" group="pluginID">

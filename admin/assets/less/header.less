@@ -10,7 +10,7 @@ header {
 	
 	.navbar-inner {
 		padding: 0;	
-		background: #292929; /* @navbarBackground */
+		background: #333; /* @navbarBackground */
 		border-bottom: 1px solid #121212;		
 		.border-radius(0);
 		min-height: @navbarHeight;
@@ -61,7 +61,7 @@ header {
 			position: relative;
 	    	margin-bottom: 30px;
 	    	border-top: 1px solid #595959;
-	    	.box-shadow(0 1px 3px @gray);
+	    	.box-shadow(0 1px 4px @grayDark);
 	    }
 	    
 	.subnavbar-inner {
@@ -152,7 +152,7 @@ header {
 	    	.border-radius(0);
 	    }
 	    
-	.subnavbar .dropdown-menu::before {
+	/*.subnavbar .dropdown-menu::before {
 		content: '';
 		display: inline-block;
 		border-left: 7px solid transparent;
@@ -162,7 +162,7 @@ header {
 		position: absolute;
 		top: -7px;
 		left: 9px;
-	}
+	}*/
 	
 	.subnavbar .dropdown-menu::after {
 		content: '';
@@ -194,12 +194,13 @@ header {
 		
 		.btn {
 			color: @grayDark;
-			font-size: 12px;
-			line-height: 18px;
+			font-size: 11px;
+			/*line-height: 15px;*/
+			.border-radius(3);
 			.buttonBackground(@grayLighter, @grayLight);
 		
 			i {
-				font-size: 14px;
+				font-size: 13px;
 				color: @grayDark;
 				position: relative;
 				top: 1px;
@@ -208,7 +209,7 @@ header {
 		}
 		
 		.caret {
-			margin-top: 6px;
+			margin-top: 7px;
 			border-top-color: @black;
 			border-bottom-color: @black;
 		}
