@@ -51,12 +51,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
 <cfinclude template="act_defaults.cfm"/>
 <cfoutput>
+<div class="span9">
 <h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.dashboard")#</h2>
-
-<div class="wrap">
-<div class="container-fluid">
-<div class="row-fluid">
-<div id="contentPrimary" class="span9">
+<select class="nav-secondary">
+<option>Secondary Nav goes here</option>
+</select>
 </cfoutput>
 <cfset rsPluginScripts=application.pluginManager.getScripts("onDashboardPrimaryTop",rc.siteID)>
 <cfoutput query="rsPluginScripts" group="pluginID">
@@ -216,5 +215,4 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfoutput>
 </div>
 </cfoutput>
-</div></div>
-</div></div>
+</div>

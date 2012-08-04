@@ -1,3 +1,7 @@
+// -- Bootstrap File Edits --
+// Commented out glyphicons @import to avoid conflict with font-awesome
+// Commented out variables.less @import in responsive.less
+
 @import "../bootstrap/less/bootstrap.less";
 @import "base-admin.less";
 @import "variables.less";
@@ -6,8 +10,8 @@
 	
 	@import "fonts.less";	
 	@import "font-awesome.less";
-	@import "header.less";
 	@import "typography.less";
+	@import "header.less";
 	@import "nav-zoom.less";
 	@import "grids.less";
 	@import "login.less";
@@ -15,38 +19,41 @@
 	@import "tag-clouds.less";
 	@import "session-history.less";
 	@import "category-assignments.less";	
-	
+
+// Override bootstrap classes
+
 	.help-block {
 		color: @black;
 	}
 	
-//	a img {
-//		border: 0;
-//	}
-//	
-//	img.fmImage {
-//		border: 0 solid #fff;
-//		margin: 10px;
-//	}
-//	
-//	img.tabPreloader {
-//		margin: 0 0 1em auto;
-//	}
-//	
-//	img#assocImage {
-//		clear: left !important;
-//		float: none;
-//		display: block;
-//		padding: 1em 0;
-//	}
-//	
-//	.well {
-//		.box-shadow(0 0 0);
-//		border: 0;
-//	}
+	.well {
+			.box-shadow(0 0 0);
+			border: 0;
+		}
 
-	@import "../bootstrap/less/responsive.less"; 
-	/* "bootstrap/variables.less" commented out to avoid overriding styles */
-	@import "base-admin-responsive.less";
+// Additional Mura styles -- Move to separate file?
+	a img {
+		border: 0;
+	}
+	
+	img.fmImage {
+		border: 0 solid #fff;
+		margin: 10px;
+	}
+	
+	img.tabPreloader {
+		margin: 0 0 1em auto;
+	}
+	
+	img#assocImage {
+		clear: left !important;
+		float: none;
+		display: block;
+		padding: 1em 0;
+	}
 
-} /* End #mura */
+} /* End .mura */
+
+@import "../bootstrap/less/responsive.less";
+
+.mura { @import "base-admin-responsive.less"; }

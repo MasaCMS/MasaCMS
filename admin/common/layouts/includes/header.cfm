@@ -45,7 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-<cfparam name="rc.originalfuseaction" default="">
+<cfparam name="rc.originalmuraAction" default="">
 <cfparam name="rc.originalcircuit" default="">
 <cfparam name="rc.moduleid" default="">
 <cfif not isDefined("session.mura.memberships")>
@@ -68,48 +68,94 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	            <span class="icon-bar"></span>
 	          </a>
 	         
+	       <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-site-select">
+	            <span class="icon-globe"></span>
+	          </a>
+	              
+              <cfif application.configBean.getDashboard()>
+                  <cfset baseURL="index.cfm?muraAction=cDashboard.main">
+              <cfelse>
+                   <cfset baseURL="index.cfm?muraAction=cArch.list&amp;moduleID=00000000000000000000000000000000000&amp;topID=00000000000000000000000000000000001">
+               </cfif>
+	          
+	          <!--- Site Selection --->
+	         <div class="nav-collapse nav-site-select">
+	            <!---<ul class="nav">
+		          <li class="dropdown">
+		         	Current Site: 
+		            <a class="dropdown-toggle" data-toggle="dropdown">
+		              <i class="icon-globe"></i> #application.settingsManager.getSite(session.siteid).getSite()#
+		              <b class="caret"></b>
+		            </a>
+		            
+		            <cfset theSiteList=application.settingsManager.getUserSites(session.siteArray,listFind(session.mura.memberships,'S2')) />
+		            <ul class="dropdown-menu">
+		              <cfloop query="theSiteList">
+		                <li<cfif session.siteID eq theSiteList.siteID> class="active"</cfif>>
+		                  <a href="#baseURL#&amp;siteID=#theSiteList.siteID#">#HTMLEditFormat(theSiteList.site)#</a>
+		                </li>
+		              </cfloop>
+		            </ul>
+		          </li>
+	          </ul>--->             	 	
+	             	 	
+	             	 	<!--- <form novalidate="novalidate" id="siteSelect" name="siteSelect" method="get" action="#application.configBean.getContext()#/admin/">
+	             	 	 	<cfif application.configBean.getDashboard()>
+	             	 		<input type="hidden" name="muraAction" value="cDashboard.main">
+	             	 		<cfelse>
+	             	 		<input type="hidden" name="muraAction" value="cArch.list">
+	             	 		<input type="hidden" name="moduleID" value="00000000000000000000000000000000000">
+	             	 		<input type="hidden" name="topID" value="00000000000000000000000000000000001">
+	             	 		</cfif>
+	             	 		<!---<label>---><!---<i class="icon-globe"></i>---><!--- Current Site:</label>--->
+	             	 	  <select name="siteid" onchange="if(this.value != ''){document.forms.siteSelect.submit();}">
+	             	 			<!---<option vaue="">#application.rbFactory.getKeyValue(session.rb,"layout.selectsite")#</option>--->
+	             	 		    <cfset theSiteList=application.settingsManager.getUserSites(session.siteArray,listFind(session.mura.memberships,'S2')) />
+	             	 		  	<cfloop query="theSiteList">
+	             	 			<option value="#theSiteList.siteid#">#theSiteList.site#</option>
+	             	 			</cfloop>
+	             	 	  </select>
+	             	 	</form> --->	             	 	          
+	          </div>
+	         
 	          <div class="nav-collapse">
 	            <ul class="nav pull-right">
 	              
-	              <cfif application.configBean.getDashboard()>
-	                  <cfset baseURL="index.cfm?muraAction=cDashboard.main">
-	              <cfelse>
-	                   <cfset baseURL="index.cfm?muraAction=cArch.list&amp;moduleID=00000000000000000000000000000000000&amp;topID=00000000000000000000000000000000001">
-	               </cfif>
-	              
-	              <li class="dropdown">
-	                <a class="dropdown-toggle" data-toggle="dropdown">
-	                  <i class="icon-globe"></i> #application.settingsManager.getSite(session.siteid).getSite()#
-	                  <b class="caret"></b>
-	                </a>
-	                
-	                <cfset theSiteList=application.settingsManager.getUserSites(session.siteArray,listFind(session.mura.memberships,'S2')) />
-	                <ul class="dropdown-menu">
-	                  <cfloop query="theSiteList">
-	                    <li<cfif session.siteID eq theSiteList.siteID> class="active"</cfif>>
-	                      <a href="#baseURL#&amp;siteID=#theSiteList.siteID#">#HTMLEditFormat(theSiteList.site)#</a>
-	                    </li>
-	                  </cfloop>
-	                </ul>
-	              </li>
-	
-	              <!---<cfif session.siteid neq '' 
-	                  and listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') 
-	                    or listFind(session.mura.memberships,'S2'
-	                  )>
-	                <li id="navAdminUsers" class="dropdown">
-	                  <a class="dropdown-toggle" data-toggle="dropdown"><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,"layout.administrativeusers")#
-	                  <b class="caret"></b>
-	                  </a>
-	                  <ul class="dropdown-menu">
-	                  <li><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPrivateUsers.list&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.viewadministrativeusers")#</a></li>
-	                    <li><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPrivateUsers.edituser&siteid=#session.siteid#&userid=">#application.rbFactory.getKeyValue(session.rb,"layout.adduser")#</a></li>
-	                    <li class="last"><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPrivateUsers.editgroup&siteid=#session.siteid#&userid=">#application.rbFactory.getKeyValue(session.rb,"layout.addgroup")#</a></li>
-	                  </ul>
-	                </li>
-	              </cfif>--->
-	
+	              <!--- Global Settings --->	
 	               <cfif listFind(session.mura.memberships,'S2')>
+	              <li class="nav-site-select">
+	               	<form novalidate="novalidate" id="siteSelect" name="siteSelect" method="get" action="#application.configBean.getContext()#/admin/">
+	               	 	<cfif application.configBean.getDashboard()>
+	               		<input type="hidden" name="muraAction" value="cDashboard.main">
+	               		<cfelse>
+	               		<input type="hidden" name="muraAction" value="cArch.list">
+	               		<input type="hidden" name="moduleID" value="00000000000000000000000000000000000">
+	               		<input type="hidden" name="topID" value="00000000000000000000000000000000001">
+	               		</cfif>
+	               	  <select name="siteid" onchange="if(this.value != ''){document.forms.siteSelect.submit();}">
+	               			<option vaue="">#application.rbFactory.getKeyValue(session.rb,"layout.selectsite")#</option>
+	               		    <cfset theSiteList=application.settingsManager.getUserSites(session.siteArray,listFind(session.mura.memberships,'S2')) />
+	               		  	<cfloop query="theSiteList">
+	               			<option value="#theSiteList.siteid#">#theSiteList.site#</option>
+	               			</cfloop>
+	               	  </select>
+	               	</form>
+	               	
+	                 <!---<a class="dropdown-toggle" data-toggle="dropdown">
+	                   <i class="icon-globe"></i> #application.settingsManager.getSite(session.siteid).getSite()#
+	                   <b class="caret"></b>
+	                 </a>
+	                 
+	                 <cfset theSiteList=application.settingsManager.getUserSites(session.siteArray,listFind(session.mura.memberships,'S2')) />
+	                 <ul class="dropdown-menu">
+	                   <cfloop query="theSiteList">
+	                     <li<cfif session.siteID eq theSiteList.siteID> class="active"</cfif>>
+	                       <a href="#baseURL#&amp;siteID=#theSiteList.siteID#">#HTMLEditFormat(theSiteList.site)#</a>
+	                     </li>
+	                   </cfloop>
+	                 </ul>--->
+	               </li>
+	               
 	                  <li id="navSiteSettings" class="dropdown">
 	                    <a class="dropdown-toggle" data-toggle="dropdown"><i class="icon-cogs"></i> #application.rbFactory.getKeyValue(session.rb,"layout.settings")#
 	                      <b class="caret"></b>
@@ -243,7 +289,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 
 	 </div> <!-- /subnavbar -->
 	        	
-	        	<cfinclude template="dsp_secondary_menu.cfm">
+	 <div id="current-site">
+	 	<div class="container">
+	 		<i class="icon-globe"></i> <strong>Current Site:</strong> Site Name
+	 	</div>
+	 </div>
+	        	<!---<cfinclude template="dsp_secondary_menu.cfm">--->
 	  </cfif>
 </header>
 </cfoutput>
