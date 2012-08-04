@@ -123,14 +123,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	              
 	              <!--- Global Settings --->	
 	               <cfif listFind(session.mura.memberships,'S2')>
-	              <li class="nav-site-select">
+	              <!---<li class="nav-site-select">
 	               	<form novalidate="novalidate" id="siteSelect" name="siteSelect" method="get" action="#application.configBean.getContext()#/admin/">
 	               	 	<cfif application.configBean.getDashboard()>
-	               		<input type="hidden" name="muraAction" value="cDashboard.main">
-	               		<cfelse>
-	               		<input type="hidden" name="muraAction" value="cArch.list">
-	               		<input type="hidden" name="moduleID" value="00000000000000000000000000000000000">
-	               		<input type="hidden" name="topID" value="00000000000000000000000000000000001">
+		               		<input type="hidden" name="muraAction" value="cDashboard.main">
+		               		<cfelse>
+		               		<input type="hidden" name="muraAction" value="cArch.list">
+		               		<input type="hidden" name="moduleID" value="00000000000000000000000000000000000">
+		               		<input type="hidden" name="topID" value="00000000000000000000000000000000001">
 	               		</cfif>
 	               	  <select name="siteid" onchange="if(this.value != ''){document.forms.siteSelect.submit();}">
 	               			<option vaue="">#application.rbFactory.getKeyValue(session.rb,"layout.selectsite")#</option>
@@ -141,7 +141,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	               	  </select>
 	               	</form>
 	               	
-	                 <!---<a class="dropdown-toggle" data-toggle="dropdown">
+	                 <!--<a class="dropdown-toggle" data-toggle="dropdown">
 	                   <i class="icon-globe"></i> #application.settingsManager.getSite(session.siteid).getSite()#
 	                   <b class="caret"></b>
 	                 </a>
@@ -153,8 +153,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	                       <a href="#baseURL#&amp;siteID=#theSiteList.siteID#">#HTMLEditFormat(theSiteList.site)#</a>
 	                     </li>
 	                   </cfloop>
-	                 </ul>--->
-	               </li>
+	                 </ul>-->
+	               </li>--->
 	               
 	                  <li id="navSiteSettings" class="dropdown">
 	                    <a class="dropdown-toggle" data-toggle="dropdown"><i class="icon-cogs"></i> #application.rbFactory.getKeyValue(session.rb,"layout.settings")#
@@ -282,6 +282,36 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 				</li>
 	 			
 	 			</ul>
+	 			
+	 			<!---<div id="select-site" class="btn-group">
+	 			  <button class="btn"><i class="icon-globe"></i> #application.settingsManager.getSite(session.siteid).getSite()#</button>
+	 			  <button class="btn dropdown-toggle" data-toggle="dropdown">
+	 			    <span class="caret"></span>
+	 			  </button>
+	 			  <ul class="dropdown-menu">
+	 			    <cfset theSiteList=application.settingsManager.getUserSites(session.siteArray,listFind(session.mura.memberships,'S2')) />
+	 			      <cfloop query="theSiteList">
+	 			        <li<cfif session.siteID eq theSiteList.siteID> class="active"</cfif>>
+	 			          <a href="#baseURL#&amp;siteID=#theSiteList.siteID#">#HTMLEditFormat(theSiteList.site)#</a>
+	 			        </li>
+	 			      </cfloop>
+	 			  </ul>
+	 			</div>--->
+	 			
+	 			<div id="select-site" class="btn-group">
+	 			  <a class="btn dropdown-toggle" data-toggle="dropdown">
+	 			    <i class="icon-globe"></i> #application.settingsManager.getSite(session.siteid).getSite()#
+	 			    <span class="caret"></span>
+	 			  </a>
+	 			  <ul class="dropdown-menu">
+	 			    <cfset theSiteList=application.settingsManager.getUserSites(session.siteArray,listFind(session.mura.memberships,'S2')) />
+	 			      <cfloop query="theSiteList">
+	 			        <li<cfif session.siteID eq theSiteList.siteID> class="active"</cfif>>
+	 			          <a href="#baseURL#&amp;siteID=#theSiteList.siteID#">#HTMLEditFormat(theSiteList.site)#</a>
+	 			        </li>
+	 			      </cfloop>
+	 			  </ul>
+	 			</div>
 	 
 	 		</div> <!-- /container -->
 	 	
@@ -289,11 +319,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 
 	 </div> <!-- /subnavbar -->
 	        	
-	 <div id="current-site">
+	 <!---<div id="current-site">
 	 	<div class="container">
 	 		<i class="icon-globe"></i> <strong>Current Site:</strong> Site Name
 	 	</div>
-	 </div>
+	 </div>--->
 	        	<!---<cfinclude template="dsp_secondary_menu.cfm">--->
 	  </cfif>
 </header>

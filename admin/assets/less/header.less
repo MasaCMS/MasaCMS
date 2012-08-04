@@ -22,6 +22,7 @@ header {
 	
 	.navbar .nav > li > a {
 		padding: 5px 10px;
+		color: @gray;
 	}
 	
 	.navbar .brand {
@@ -30,7 +31,8 @@ header {
 		display: inline-block;
 		.ie7-inline-block();
 	    padding: 0;
-	    margin: 0;
+	    margin: 0 0 0 -4px;
+	    z-index: 1030;
 	}
 		
 	.navbar .brand-credit {
@@ -43,112 +45,23 @@ header {
 		width: 75px;
 	}
 	
-	.navbar .search-query {
-		background-color: #444;
-		width: 150px;
-		font-size: 11px;
-		font-weight: bold;
-	}
-	
-	.navbar .search-query::-webkit-input-placeholder {
-	    color: #666;
-	}
-	
-	.navbar .search-query:-moz-placeholder {
-	    color: #666;
-	}
-	
 	.nav-collapse {
 		float: right;
 	}
 	
-	/*.nav-site-select {
-		position: absolute;
-		right: 50%;
-		top: 0px;
-		float: none;
-		display: inline-block;
-		.ie7-inline-block();
-		margin: 0 0 0 -40%;
-		padding: 2px 5px;	
-		background: @grayDark;
-		color: @gray;
-		font-size: 11px;
-		.border-radius(0 0 3px 3px);
+	#navEditProfile .dropdown-toggle {
+		padding-right: 0;
 	}
-	
-	.nav-site-select ul {
-		margin: 0;
-	}
-	
-	.nav-site-select li a {
-		display: inline-block;
-		.ie7-inline-block();
-		margin-left: 4px;
-		padding: 0 !important;
-	}*/
-	
-/*	.nav-site-select {
-		position: absolute;
-		top: 48px;
-		right: 4px;
-		font-size: 11px;
-		background: @grayDark;
-		color: @white;
-		padding: 5px 4px  !important;
-		.border-radius(3px);
-	}*/
-	
-	.nav-site-select {
-		padding-top: 6px;
-	}
-	
-	.nav-site-select form {
-		margin-bottom: 0;
-	}
-	
-/*	.nav-site-select label {
-		float: left;
-		font-size: 11px;
-		margin: 0 5px 0 0;
-		display: inline-block;
-		.ie7-inline-block();
-	}
-	
-	.nav-site-select i {
-		font-size: 13px;
-		color: @grayDarker;
-		line-height: 1;
-	}*/
-	
-	.nav-site-select select {
-		display: inline-block;
-		.ie7-inline-block();
-		font-size: 11px;
-		height: 20px;
-		width: 160px;
-		color: @grayDarker;
-		margin-bottom: 0;
-	}
-	
-	/*.nav-site-select a {
-		display: inline-block;
-		.ie7-inline-block();
-		margin-top: 5px;
-		margin-left: 4px;
-		background: @orange;
-		color: @white;
-		padding: 0 5px 0 2px !important;
-		.border-radius(3px);
-	}*/
 	
 	/*------------------------------------------------------------------
 	[3. Subnavbar / .subnavbar]
 	*/
 	
 	.subnavbar {
-	    	margin-bottom: 0;
+			position: relative;
+	    	margin-bottom: 30px;
 	    	border-top: 1px solid #595959;
+	    	.box-shadow(0 1px 3px @gray);
 	    }
 	    
 	.subnavbar-inner {
@@ -156,6 +69,10 @@ header {
 		#gradient .vertical(#414141,#323232);	
 		border-bottom: 1px solid #000;
 		height: auto;
+	}
+	
+	.subnavbar .container {
+		position: relative;
 	}
 	
 	.subnavbar .container > ul {
@@ -217,7 +134,7 @@ header {
 	}
 	
 	.subnavbar .container > ul > li.active > a > i {
-		color: @grayDark;
+		color: @gray;
 		text-shadow: 0 1px 0 rgba(000, 000, 000, 1.0);
 	}
 	
@@ -269,17 +186,49 @@ header {
 		display: none;
 	}
 	
-	#current-site {
+	#select-site {
+		
+		position: absolute;
+		top: 16px;
+		right: 0;
+		
+		.btn {
+			color: @grayDark;
+			font-size: 12px;
+			line-height: 18px;
+			.buttonBackground(@grayLighter, @grayLight);
+		
+			i {
+				font-size: 14px;
+				color: @grayDark;
+				position: relative;
+				top: 1px;
+			}
+		
+		}
+		
+		.caret {
+			margin-top: 6px;
+			border-top-color: @black;
+			border-bottom-color: @black;
+		}
+		
+		.dropdown-menu {
+			font-size: 11px;
+		}
+	}
+	
+	/*#current-site {
 		font-size: 12px;
 		margin-bottom: 3em;
-		padding: .2em .2em .2em 0; /*116px*/
+		padding: .2em .2em .2em 0; /*116px*!/
 		color: @white;
-		background: @orange;
+		background: @gray;
 	}
 	
 	#current-site i {
 		font-size: 16px;
 		color: @grayDarker;
-	}
+	}*/
 
 } // End <header>
