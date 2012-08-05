@@ -131,15 +131,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="standardSetContentRendererHandler" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	<cfset var $=arguments.event.getValue("muraScope")>
-	<cfset var themeRenderer="">
-	<cfset arguments.event.setValue('contentRenderer',createObject("component","#arguments.event.getSite().getAssetMap()#.includes.contentRenderer").init(event=arguments.event,$=$,mura=$))/>
-	<cfif fileExists(expandPath(arguments.event.getSite().getThemeIncludePath()) & "/contentRenderer.cfc")>
-		<cfset themeRenderer=createObject("component","#arguments.event.getSite().getThemeAssetMap()#.contentRenderer").init()>
-		<cfset themeRenderer.injectMethod("mura",$)>
-		<cfset themeRenderer.injectMethod("$",$)>
-		<cfset themeRenderer.injectMethod("event",arguments.event)>
-		<cfset arguments.event.setValue("themeRenderer",themeRenderer)>
-	</cfif>
+	<cfset arguments.event.setValue('contentRenderer',arguments.event.getSite().getContentRenderer($))/>
+	<cfset arguments.event.setValue('themeRenderer',arguments.event.getSite().getThemeRenderer($))/>
 </cffunction>
 
 <cffunction name="standardSetContentHandler" output="false" returnType="any">

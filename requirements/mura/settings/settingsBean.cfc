@@ -114,6 +114,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="theme" type="string" default="" required="true" />
 <cfproperty name="javaLocale" type="string" default="" required="true" /> 
 <cfproperty name="orderno" type="numeric" default="0" required="true" />
+<cfproperty name="customImageSizeQuery" type="query" default="" required="true" />
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	
@@ -198,6 +199,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.subtype="Default"/>
 	<cfset variables.instance.baseID=createUUID()/>
 	<cfset variables.instance.orderno=0/>
+	<cfset variables.instance.customImageSizeQuery=0/>
 	
 	<cfreturn this />
 </cffunction>
@@ -762,21 +764,55 @@ s
 </cffunction>
 
 <cffunction name="getContentRenderer" output="false">
-<cfif not isObject(variables.instance.contentRenderer)>
-	<cfset variables.instance.contentRenderer=createObject("component","#getAssetMap()#.includes.contentRenderer").injectMethod("$",getBean("$").init(variables.instance.siteID))>
+<cfargument name="$" default="">
+<cfif not isObject(arguments.$)>
+	<cfif not isObject(variables.instance.contentRenderer)>
+		<cfset arguments.$=getBean("$")>
+		<cfset variables.instance.contentRenderer=createObject("component","#getAssetMap()#.includes.contentRenderer").init(event=arguments.$.event(),$=arguments.$,MURA=arguments.$)>
+	</cfif>
+	<cfreturn variables.instance.contentRenderer>
+<cfelse>
+	<cfreturn createObject("component","#getAssetMap()#.includes.contentRenderer").init(event=arguments.$.event(),$=arguments.$,MURA=arguments.$)>
 </cfif>
-<cfreturn variables.instance.contentRenderer>
 </cffunction>
 
 <cffunction name="getThemeRenderer" output="false">
-	<cfif not isObject(variables.instance.themeRenderer)>
-		<cfif fileExists(expandPath(getThemeIncludePath()) & "/contentRenderer.cfc")>
-			<cfset variables.instance.themeRenderer=createObject("component","#getThemeAssetMap()#.contentRenderer")>
-		<cfelse>
-			<cfset variables.instance.themeRenderer=createObject("component","mura.cfobject").init()>
-		</cfif>
-	</cfif>
-	<cfreturn variables.instance.themeRenderer>
+<cfargument name="$" default="">
+<cfscript>
+if(not isObject(arguments.$)){
+	if(not isObject(variables.instance.themeRenderer)){
+		arguments.$=getBean("$");
+		if(fileExists(expandPath(getThemeIncludePath()) & "/contentRenderer.cfc")){
+			variables.instance.themeRenderer=createObject("component","#getThemeAssetMap()#.contentRenderer")
+			.injectMethod("$",arguments.$)
+			.injectMethod("mura",arguments.$)
+			.injectMethod("event",arguments.$.event())
+			.init(event=arguments.$.event(),$=arguments.$,MURA=arguments.$);
+		} else {
+			variables.instance.themeRenderer=createObject("component","mura.cfobject")
+			.injectMethod("$",arguments.$)
+			.injectMethod("mura",arguments.$)
+			.injectMethod("event",arguments.$.event())
+			.init(event=arguments.$.event(),$=arguments.$,MURA=arguments.$);
+		}
+	}
+	return variables.instance.themeRenderer;
+} else {
+	if(fileExists(expandPath(getThemeIncludePath()) & "/contentRenderer.cfc")){
+		return createObject("component","#getThemeAssetMap()#.contentRenderer")
+			.injectMethod("$",arguments.$)
+			.injectMethod("mura",arguments.$)
+			.injectMethod("event",arguments.$.event())
+			.init(event=arguments.$.event(),$=arguments.$,MURA=arguments.$);
+	} else {
+		return createObject("component","mura.cfobject")
+			.injectMethod("$",arguments.$)
+			.injectMethod("mura",arguments.$)
+			.injectMethod("event",arguments.$.event())
+			.init(event=arguments.$.event(),$=arguments.$,MURA=arguments.$);
+	}
+}
+</cfscript>
 </cffunction>
 
 <cffunction name="exportHTML" output="false">
@@ -791,6 +827,21 @@ s
 <cffunction name="save" returnType="any" output="false" access="public">
 	<cfset setAllValues(application.settingsManager.save(this).getAllValues())>
 	<cfreturn this />
+</cffunction>
+
+<cffunction name="getCustomImageSizeQuery" output="false">
+	<cfargument name="reset" default="false">
+	
+	<cfif not isQuery(variables.instance.customImageSizeQuery) or arguments.reset>
+		<cfquery name="variables.instance.customImageSizeQuery" username="#variables.configBean.getDbUsername()#"  password="#variables.configBean.getDbPassword()#">
+			select sizeid,siteid,name,height,width from tcustomimages where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteid#">
+		</cfquery>
+	</cfif>
+	<cfreturn variables.instance.customImageSizeQuery>
+</cffunction>
+
+<cffunction name="getCustomImageSizeIterator" output="false">
+	<cfreturn getBean("imageSizeIterator").setQuery(getCustomImageSizeQuery())>
 </cffunction>
 
 <!---
