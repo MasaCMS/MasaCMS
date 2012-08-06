@@ -225,7 +225,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 				
 	 				<li id="select-site" class="dropdown">
 	 					
-		 				  <strong>Current Site</strong>
+		 				  <strong><!---<i class="icon-globe"></i> --->Current Site</strong>
 		 				<a class="dropdown-toggle" data-toggle="dropdown">
 		 				  <cfset theSiteList=application.settingsManager.getUserSites(session.siteArray,listFind(session.mura.memberships,'S2')) />
 		 				<!---<i class="icon-globe"></i>--->		 <i></i>				<span>#application.settingsManager.getSite(session.siteid).getSite()#</span>
