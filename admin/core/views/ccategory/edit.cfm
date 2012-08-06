@@ -48,6 +48,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfinclude template="js.cfm">
 <cfoutput>
 <h2><cfif rc.categoryID neq ''>#application.rbFactory.getKeyValue(session.rb,'categorymanager.editcontentcategory')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'categorymanager.addcontentcategory')#</cfif></h2>
+
+<cfinclude template="dsp_secondary_menu.cfm">
+
 #application.utility.displayErrors(rc.categoryBean.getErrors())#
 
 <span id="msg">

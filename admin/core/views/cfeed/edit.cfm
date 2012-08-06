@@ -157,6 +157,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 
 <cfoutput><h2><cfif len(rc.assignmentID)>#application.rbFactory.getKeyValue(session.rb,'collections.editlocalindexinstance')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'collections.editlocalindex')#</cfif></h2>
+
+<cfinclude template="dsp_secondary_menu.cfm">
+
 #application.utility.displayErrors(rc.feedBean.getErrors())#
 
 <cfif rc.compactDisplay eq "true" and not isObjectInstance>
@@ -682,6 +685,8 @@ jQuery(document).ready(function(){
 <cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.categorization')#">
 <cfset tablist="tabBasic,tabCategorization">
 <cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,'collections.editremotefeed')#</h2>
+
+<cfinclude template="dsp_secondary_menu.cfm">
 
 #application.utility.displayErrors(rc.feedBean.getErrors())#
 <cfif rc.feedID neq ''>

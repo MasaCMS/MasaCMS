@@ -51,6 +51,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="rc.orderBy" default="">
 <cfparam name="rc.page" default="1">
 <cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,"email.emailmanager")#</h2></cfoutput>
+
+<cfinclude template="dsp_secondary_menu.cfm">
+
 <cfsilent>
 	  <cfset startDate=createDate(year(now()),month(now()),1)>
 	  <cfset stopDate=createDate(year(now()),month(now()),day(now()))>
@@ -73,7 +76,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  <a href="index.cfm?muraAction=cEmail.showAllBounces&siteid=<cfoutput>#rc.siteid#</cfoutput>">View All Bounces</a>
 	  </div>--->
 	  <cfoutput>
-<ul class="navTask nav nav-pills"><li><a href="index.cfm?muraAction=cEmail.edit&emailid=&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,"email.addemail")#</a></li></ul>
 
 	  <div id="filterView">
 	  <h3>#application.rbFactory.getKeyValue(session.rb,"email.emails")#</h3></cfoutput>

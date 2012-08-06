@@ -43,7 +43,7 @@
 <cfoutput>
 <h2>Image Details</h2>
 
-
+<cfinclude template="dsp_secondary_menu.cfm">
 
 <cfif rc.compactDisplay neq "true" and isDefined('rc.contentBean')>
 	#application.contentRenderer.dspZoom(rc.contentBean.getCrumbArray(),rc.contentBean.getFileExt())#

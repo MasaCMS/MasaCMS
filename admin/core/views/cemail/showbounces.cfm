@@ -46,6 +46,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,"email.bouncedemailaddresses")#</h2>
+
+<cfinclude template="dsp_secondary_menu.cfm">
+
 <h3>#application.rbFactory.getKeyValue(session.rb,"email.emailaddressbounces")#</h3></cfoutput>
 <cfif rc.rsBounces.recordcount>
 	<ul class="metadata">

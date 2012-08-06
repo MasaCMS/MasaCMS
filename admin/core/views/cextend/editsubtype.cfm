@@ -49,9 +49,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset subType=application.classExtensionManager.getSubTypeByID(rc.subTypeID)>
 <h2><cfif len(rc.subTypeID)>Edit<cfelse>Add</cfif> Class Extension</h2>
 <cfoutput>
-<ul class="navTask nav nav-pills">
-<li><a href="index.cfm?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#">Class Extension Manager</a></li>
-</ul>
+<div id="nav-module-specific" class="btn-group">
+<a class="btn" href="index.cfm?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-share-alt"></i> Back to Class Extensions</a>
+</div>
 
 <form novalidate="novalidate" name="subTypeFrm" method="post" action="index.cfm" onsubit="return validateForm(this);">
 <dl class="oneColumn separate">

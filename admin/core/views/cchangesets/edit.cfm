@@ -46,14 +46,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfoutput>
 <h2><cfif rc.changesetID neq ''>#application.rbFactory.getKeyValue(session.rb,'changesets.editchangeset')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'changesets.addchangeset')#</cfif></h2>
-#application.utility.displayErrors(rc.changeset.getErrors())#
 
-<ul class="navTask nav nav-pills">
-<li><a  title="#application.rbFactory.getKeyValue(session.rb,'changesets.backtochangesets')#" href="index.cfm?muraAction=cChangesets.list&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'changesets.backtochangesets')#</a></li>
-<cfif not rc.changeset.getIsNew()>
-<li><a  title="#application.rbFactory.getKeyValue(session.rb,'changesets.viewassignments')#" href="index.cfm?muraAction=cChangesets.assignments&siteid=#URLEncodedFormat(rc.siteid)#&changesetID=#rc.changeset.getChangesetID()#">#application.rbFactory.getKeyValue(session.rb,'changesets.viewassignments')#</a></li>
-</cfif>
-</ul>
+<cfinclude template="dsp_secondary_menu.cfm">
+
+#application.utility.displayErrors(rc.changeset.getErrors())#
 
 <cfif rc.changeset.getPublished()>
 <p class="notice">

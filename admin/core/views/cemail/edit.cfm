@@ -51,6 +51,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfoutput>
   <h2>#application.rbFactory.getKeyValue(session.rb,'email.createeditemail')#</h2>
+
+  <cfinclude template="dsp_secondary_menu.cfm">
+  
   <cfif rc.emailid neq "">
     <ul class="metadata">
       <li><strong>#application.rbFactory.getKeyValue(session.rb,'email.datecreated')#:</strong> #LSDateFormat(rc.emailBean.getCreatedDate(),session.dateKeyFormat)#</li>

@@ -85,14 +85,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.componentmanager')#</h2>	
 </cfif>
 
-<ul class="navTask nav nav-pills">
-	<cfif rc.moduleid eq '00000000000000000000000000000000003'>
-	<li><a href="index.cfm?muraAction=cArch.edit&type=Component&contentid=&topid=#URLEncodedFormat(rc.topid)#&parentid=#rc.topid#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.addcomponent')#</a></li>
-	<cfelse>
-		<li><a href="index.cfm?muraAction=cArch.edit&type=Form&contentid=&topid=#URLEncodedFormat(rc.topid)#&parentid=#rc.topid#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&formType=editor">#application.rbFactory.getKeyValue(session.rb,'sitemanager.addformwitheditor')#</a></li>
-	<li><a href="index.cfm?muraAction=cArch.edit&type=Form&contentid=&topid=#URLEncodedFormat(rc.topid)#&parentid=#rc.topid#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&formType=builder">#application.rbFactory.getKeyValue(session.rb,'sitemanager.addformwithbuilder')#</a></li>
-	</cfif>
-</ul>
+<cfinclude template="dsp_secondary_menu.cfm">
 
   <h3 class="alt">#application.rbFactory.getKeyValue(session.rb,'sitemanager.filterview')#:</h3>
   <form class="form-inline" novalidate="novalidate" id="filterByTitle" action="index.cfm" method="get">

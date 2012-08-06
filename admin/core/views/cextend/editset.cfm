@@ -49,16 +49,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset extendSetBean=subType.loadSet(rc.extendSetID) />
 <h2><cfif len(rc.extendSetID)>Edit<cfelse>Add</cfif> Attribute Set</h2>
 <cfoutput>
-	
+
+<div id="nav-module-specific" class="btn-group">
+<a class="btn" href="index.cfm?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-share-alt"></i> Back to Class Extensions</a>
+<a class="btn" href="index.cfm?muraAction=cExtend.listSets&subTypeID=#rc.subTypeID#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-share-alt"></i> Back to Attribute Sets</a>
+</div>
+
 <ul class="metadata">
 <li><strong>Class Extension:</strong> #application.classExtensionManager.getTypeAsString(subType.getType())# / #subType.getSubType()#</li>
 </ul>
-
-<ul class="navTask nav nav-pills">
-<li><a href="index.cfm?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#">Class Extension Manager</a></li>
-<li><a href="index.cfm?muraAction=cExtend.listSets&subTypeID=#rc.subTypeID#&siteid=#URLEncodedFormat(rc.siteid)#">Back to Attribute Sets</a></li>
-</ul>
-
 
 <form novalidate="novalidate" name="form1" method="post" action="index.cfm" onsubit="return validateForm(this);">
 <dl class="oneColumn separate">

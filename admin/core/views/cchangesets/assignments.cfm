@@ -48,10 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <h2>Change Set Content List</h2>
 
-<ul class="navTask nav nav-pills">
-<li><a  title="#application.rbFactory.getKeyValue(session.rb,'changesets.backtochangesets')#" href="index.cfm?muraAction=cChangesets.list&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'changesets.backtochangesets')#</a></li>
-<li><a  title="#application.rbFactory.getKeyValue(session.rb,'changesets.vieweditform')#" href="index.cfm?muraAction=cChangesets.edit&siteid=#URLEncodedFormat(rc.siteid)#&changesetID=#HTMLEditFormat(rc.changesetID)#">#application.rbFactory.getKeyValue(session.rb,'changesets.vieweditform')#</a></li>
-</ul>
+<cfinclude template="dsp_secondary_menu.cfm">
 
 <h3>#application.rbFactory.getKeyValue(session.rb,'changesets.name')#</h3>
 <p>#HTMLEditFormat(rc.changeset.getName())#</p>

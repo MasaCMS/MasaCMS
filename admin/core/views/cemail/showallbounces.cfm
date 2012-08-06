@@ -48,6 +48,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <div id="allBounces">
 <h2>#application.rbFactory.getKeyValue(session.rb,"email.bouncedemailaddresses")#</h2>
+
+<cfinclude template="dsp_secondary_menu.cfm">
+
 <h3 class="alt">#application.rbFactory.getKeyValue(session.rb,"email.filterbynumberofbounces")#:</h3>
 <div id="advancedSearch" class="clearfix bounces">
 <form class="form-inline" novalidate="novalidate" action="index.cfm?muraAction=cEmail.showAllBounces" method="post" name="form1" id="filterBounces">

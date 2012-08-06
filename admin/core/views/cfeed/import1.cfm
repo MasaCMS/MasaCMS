@@ -48,6 +48,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,'collections.remotefeedimportselection')#</h2>
 
+<cfinclude template="dsp_secondary_menu.cfm">
+
 <form novalidate="novalidate" action="index.cfm?muraAction=cFeed.import2&feedid=#URLEncodedFormat(rc.feedid)#&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="contentForm" onsubmit="return false;">
 	<cfset feedBean=application.feedManager.read(rc.feedID) />
 	<h3>#feedBean.getName()#</h3>

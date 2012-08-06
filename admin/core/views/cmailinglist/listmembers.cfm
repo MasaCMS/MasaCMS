@@ -46,11 +46,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager')#</h2>
-<ul class="navTask nav nav-pills">
-<li><a href="index.cfm?muraAction=cMailingList.list&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager')#</a></li>
-<li><a href="index.cfm?muraAction=cMailingList.Edit&mlid=#rc.mlid#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.editmailinglist')#</a></li>
-<li><a href="index.cfm?muraAction=cMailingList.download&mlid=#rc.mlid#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.downloadmembers')#</a></li>
-</ul>
+
+<cfinclude template="dsp_secondary_menu.cfm">
 
 <form novalidate="novalidate" action="index.cfm?muraAction=cMailingList.updatemember" name="form1" method="post" onsubmit="return validate(this);">
 <div class="control-group">

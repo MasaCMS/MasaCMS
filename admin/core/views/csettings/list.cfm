@@ -49,22 +49,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="rc.siteUpdateSelect" default="false">
 <cfparam name="rc.siteAutoDeploySelect" default="false">
 <h2>Site Settings</h2>
-<ul class="navTask nav nav-pills">
+<div id="nav-module-specific" class="btn-group">
 	<cfif rc.action neq 'updateCore'>
-		<li><a href="index.cfm?muraAction=cSettings.list&action=updateCore" onclick="return confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.\n\nIf your are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.',this.href);">Update Core Files to Latest Version</a></li>
+		<a class="btn" href="index.cfm?muraAction=cSettings.list&action=updateCore" onclick="return confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.\n\nIf your are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.',this.href);">Update Core Files to Latest Version</a>
 		<cfif rc.siteUpdateSelect eq "true" or rc.siteSortBy eq "orderno">
-			<li><a href="index.cfm?muraAction=cSettings.list&siteSortBy=site">View Site List by Site Name</a></li>
+			<a class="btn"href="index.cfm?muraAction=cSettings.list&siteSortBy=site">View Site List by Site Name</a>
 		</cfif>
 		<cfif rc.siteSortBy neq "orderno">
-			<li><a href="index.cfm?muraAction=cSettings.list&siteSortBy=orderno">View Site List by Bind Order</a></li>
+			<a class="btn"href="index.cfm?muraAction=cSettings.list&siteSortBy=orderno">View Site List by Bind Order</a>
 		</cfif>
 		<cfif rc.siteUpdateSelect neq "true">
-			<li><a href="index.cfm?muraAction=cSettings.list&siteUpdateSelect=true">Multi-Site Version Update</a></li>
+			<a class="btn" href="index.cfm?muraAction=cSettings.list&siteUpdateSelect=true">Multi-Site Version Update</a>
 		</cfif>
 		<cfelse>
-		<li><a href="index.cfm?muraAction=cSettings.list">View Site List</a></li>
+		<a class="btn" href="index.cfm?muraAction=cSettings.list">View Site List</a>
 	</cfif>
-</ul>
+</div>
  
 <!--- site updates messaging --->
 <cfif StructKeyExists(rc, 'sitesUpdated') and IsSimpleValue(rc.sitesUpdated) and len(trim(rc.sitesUpdated))>

@@ -47,5 +47,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfoutput>
 <!---<li<cfif rc.originalfuseaction eq "edit"> class="current"</cfif>><a href="index.cfm?muraAction=cMailingList.edit&siteid=#URLEncodedFormat(rc.siteid)#&mlid=">Add Mailing List</a></li>--->
-<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')><ul class="nav nav-pills"><li><a href="index.cfm?muraAction=cPerm.module&contentid=00000000000000000000000000000000009&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=00000000000000000000000000000000009">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.permissions')#</a></li></ul></cfif>
+
+	<cfset rc.originalfuseaction=listLast(request.action,".")>
+	<div id="nav-module-specific" class="btn-group">	
+		<cfswitch expression="#rc.originalfuseaction#">
+			<cfcase value="list">
+				<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
+				<a class="btn" href="index.cfm?muraAction=cPerm.module&contentid=00000000000000000000000000000000009&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=00000000000000000000000000000000009">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.permissions')#</a>
+				</cfif>
+				<a class="btn" title="Add Mailing List" href="index.cfm?muraAction=cMailingList.edit&siteid=#URLEncodedFormat(rc.siteid)#&mlid=">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.addmailinglist')#</a>
+			</cfcase>
+			<cfcase value="edit">
+				<cfif rc.mlid neq ''>
+				<a class="btn" href="index.cfm?muraAction=cMailingList.listmembers&mlid=#rc.mlid#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.vieweditmembers')#
+				<a class="btn" href="index.cfm?muraAction=cMailingList.download&mlid=#rc.mlid#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.downloadmembers')#</a>
+				</cfif>
+				<a class="btn" href="index.cfm?muraAction=cMailingList.list&&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-share-alt"></i> #application.rbFactory.getKeyValue(session.rb,"mailinglistmanager.backtomailinglists")#</a>
+			</cfcase>
+			<cfcase value="listmembers">
+				<a class="btn" href="index.cfm?muraAction=cMailingList.Edit&mlid=#rc.mlid#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.editmailinglist')#</a>
+				<a class="btn" href="index.cfm?muraAction=cMailingList.download&mlid=#rc.mlid#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.downloadmembers')#</a>
+				<a class="btn" href="index.cfm?muraAction=cMailingList.list&&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-share-alt"></i> #application.rbFactory.getKeyValue(session.rb,"mailinglistmanager.backtomailinglists")#</a>
+			</cfcase>
+		</cfswitch>
+	</div>
+
 </cfoutput>

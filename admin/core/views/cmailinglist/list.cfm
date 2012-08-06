@@ -46,7 +46,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager')#</h2>
-<cfoutput><ul class="navTask nav nav-pills"><li><a title="Add Mailing List" href="index.cfm?muraAction=cMailingList.edit&siteid=#URLEncodedFormat(rc.siteid)#&mlid=">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.addmailinglist')#</a></li></ul></cfoutput>
+
+<cfinclude template="dsp_secondary_menu.cfm">
+
 <table class="table table-striped table-bordered table-condensed">
 <tr>
 	<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.currentmailinglists')#</th>

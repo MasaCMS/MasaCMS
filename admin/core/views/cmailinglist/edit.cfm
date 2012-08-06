@@ -51,12 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <h2>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager')#</h2>
 
-<cfif rc.mlid neq ''>
-	<ul class="navTask nav nav-pills">
-	<li><a href="index.cfm?muraAction=cMailingList.listmembers&mlid=#rc.mlid#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.vieweditmembers')#</a></li>
-	<li><a href="index.cfm?muraAction=cMailingList.download&mlid=#rc.mlid#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.downloadmembers')#</a></li>
-	</ul>
-</cfif>
+<cfinclude template="dsp_secondary_menu.cfm">
 
 <cfif rc.listBean.getispurge() neq 1>
 	<cfif rc.mlid eq ''>

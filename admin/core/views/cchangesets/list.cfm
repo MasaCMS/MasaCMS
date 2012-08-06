@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,"changesets")#</h2>
 
-<ul class="navTask nav nav-pills"><li><a  title="#application.rbFactory.getKeyValue(session.rb,'changesets.addchangeset')#" href="index.cfm?muraAction=cChangesets.edit&changesetID=&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'changesets.addchangeset')#</a></li></ul>
+<cfinclude template="dsp_secondary_menu.cfm">
 
 <!--- <h3>#application.rbFactory.getKeyValue(session.rb,'changesets.filterview')#:</h3> --->
 <h3 class="alt">#application.rbFactory.getKeyValue(session.rb,'changesets.filterviewnotice')#</h3>

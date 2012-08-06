@@ -50,18 +50,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset extendSet=subType.loadSet(rc.extendSetID)/>
 <cfset attributesArray=extendSet.getAttributes() />
 <h2>Manage Attributes Set</h2>
+
+<div id="nav-module-specific" class="btn-group">
+<a class="btn" href="index.cfm?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-share-alt"></i> Back to Class Extensions</a>
+<a class="btn" href="index.cfm?muraAction=cExtend.listSets&subTypeID=#URLEncodedFormat(rc.subTypeID)#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-share-alt"></i> Back to Attribute Sets</a>
+<a class="btn" href="index.cfm?muraAction=cExtend.editSubType&subTypeID=#URLEncodedFormat(rc.subTypeID)#&siteid=#URLEncodedFormat(rc.siteid)#">Edit Class Extension</a>
+<a class="btn" href="index.cfm?muraAction=cExtend.editSet&subTypeID=#URLEncodedFormat(rc.subTypeID)#&extendSetID=#URLEncodedFormat(rc.extendSetID)#&siteid=#URLEncodedFormat(rc.siteid)#">Edit Attribute Set</a>
+
+</div>
+
 <cfoutput>
 <ul class="metadata">
 		<li><strong>Class Extension:</strong> #application.classExtensionManager.getTypeAsString(subType.getType())# / #subType.getSubType()#</li>
 		<li><strong>Attributes Set:</strong> #extendSet.getName()#</li>
-</ul>
-
-<ul class="navTask nav nav-pills">
-<li><a href="index.cfm?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#">List All Class Extensions</a></li>
-<li><a href="index.cfm?muraAction=cExtend.editSubType&subTypeID=#URLEncodedFormat(rc.subTypeID)#&siteid=#URLEncodedFormat(rc.siteid)#">Edit Class Extension</a></li>
-<li><a href="index.cfm?muraAction=cExtend.editSet&subTypeID=#URLEncodedFormat(rc.subTypeID)#&extendSetID=#URLEncodedFormat(rc.extendSetID)#&siteid=#URLEncodedFormat(rc.siteid)#">Edit Attribute Set</a></li>
-<li><a href="index.cfm?muraAction=cExtend.listSets&subTypeID=#URLEncodedFormat(rc.subTypeID)#&siteid=#URLEncodedFormat(rc.siteid)#">Back to Attribute Sets</a></li>
-<!--- <li><a href="index.cfm?muraAction=cExtend.editSet&subTypeID=#rc.subTypeID#&&extendSetID=#rc.extendSetID#&siteid=#URLEncodedFormat(rc.siteid)#&attributeID=">Add Attribute</a></li> --->
 </ul>
 
 <cfset newAttribute=extendSet.getAttributeBean() />
