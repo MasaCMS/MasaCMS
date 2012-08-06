@@ -224,17 +224,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 			<ul class="mainnav">
 	 				
 	 				<li id="select-site" class="dropdown">
+	 					<strong>Current Site</strong>
 		 				<a class="dropdown-toggle" data-toggle="dropdown">
 		 				  <cfset theSiteList=application.settingsManager.getUserSites(session.siteArray,listFind(session.mura.memberships,'S2')) />
-		 				<i class="icon-globe"></i>
-		 				<span>#application.settingsManager.getSite(session.siteid).getSite()#</span>
+		 				<i class="icon-globe"></i>		 				<span>#application.settingsManager.getSite(session.siteid).getSite()#</span>
 		 				<b class="caret"></b>
 		 				</a>
 	 				
 	 				<ul class="dropdown-menu">
 	 				    <cfloop query="theSiteList">
 	 				      <li<cfif session.siteID eq theSiteList.siteID> class="active"</cfif>>
-	 				        <a href="#baseURL#&amp;siteID=#theSiteList.siteID#">#HTMLEditFormat(theSiteList.site)#</a>
+	 				        <a href="#baseURL#&amp;siteID=#theSiteList.siteID#"><i class="icon-globe"></i> #HTMLEditFormat(theSiteList.site)#</a>
 	 				      </li>
 	 				    </cfloop>
 	 				</ul>
@@ -293,7 +293,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 					</cfif>
 	 					
 	 					<li>
-	 					<a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.editSite&siteid=#session.siteid#"><i class="icon-pencil"> </i>#application.rbFactory.getKeyValue(session.rb,"layout.editcurrentsite")#</a></li>
+	 					<a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.editSite&siteid=#session.siteid#"><i class="icon-pencil"></i> #application.rbFactory.getKeyValue(session.rb,"layout.editcurrentsite")#</a></li>
 	 					
 		 				</ul>	
 	 			 									
