@@ -3,6 +3,7 @@
 			border-top: 0;
 			float: left;
 			background: #f9f9f9;
+			font-size: 12px;
 			
 			.ui-draggable-dragging {
 				/*border: 2px solid #fff;*/
@@ -19,6 +20,10 @@
 				overflow: hidden;
 				}
 			}*/
+			
+			ol,ul {
+				margin: 0;
+			}
 			
 			li {
 				clear: both;
@@ -1709,25 +1714,24 @@
 			padding: 6px;
 		}
 		
-		.addNew {
-			width: 140px;
-			position: absolute;
-			z-index: 20;
-			padding: 4px 8px;
-			background: #999;
-			-webkit-border-radius: 5px;
-			-moz-border-radius: 5px;
-			border-radius: 5px;
-			-webkit-box-shadow: 2px 2px 5px #666;
-			-moz-box-shadow: 2px 2px 5px #666;
-			box-shadow: 2px 2px 5px #666;
+.addNew {
+	width: 140px;
+	position: absolute;
+	z-index: 20;
+	padding: 4px 8px;
+	background: #999;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	-webkit-box-shadow: 2px 2px 5px #666;
+	-moz-box-shadow: 2px 2px 5px #666;
+	box-shadow: 2px 2px 5px #666;
+
+		ul {
+			margin: 0;
 		}
 		
-		.addNew ul {
-		
-		}
-		
-		.addNew li {
+		li {
 			list-style: none;
 			margin: 0;
 			padding: 0;
@@ -1736,11 +1740,11 @@
 			border-bottom: 1px dotted #D4D4D4;
 		}
 		
-		.addNew ul li:last-child, .addNew #newGallery, .addNew #newCopy {
+		ul li:last-child, #newGallery, #newCopy {
 			border-bottom: 0 !important;
 		}
 		
-		.addNew a {
+		a {
 			display: block;
 			text-decoration: none;
 			margin: 0;
@@ -1748,79 +1752,80 @@
 			color: #000;
 		}
 		
-		#ccategory .addNew a {
-			border-bottom: 0px;
-		}
-		
-		.addNew #newZoom {
+		#newZoom {
 			border-bottom: 1px dotted #D4D4D4;
 		}
 		
-		.addNew #newZoom a {
+		#newZoom a {
 			background: url(../images/icons/zoomi_24.png) no-repeat 1px 5px;
 		}
 		
-		.addNew #newCopy a {
+		#newCopy a {
 			background: url(../images/icons/copy_24.png) no-repeat 1px 5px;
 			float: left;
 		}
 		
-		.addNew #newCopy span {
+		#newCopy span {
 			float: left;
 			padding: 5px 4px 0;
 			color: #444;
 		}
 		
-		.addNew #newCopyLink {
+		#newCopyLink {
 			width: 2.7em;
 		}
 		
-		.addNew #newPaste a {
+		#newPaste a {
 			background: url(../images/icons/paste_24.png) no-repeat 1px 5px;
 		}
 		
-		.addNew #newContent a {
+		#newContent a {
 			background: url(../images/icons/docs_24.png) no-repeat 1px 5px;
 		}
 		
-		.addNew #newPage a {
+		#newPage a {
 			background: url(../images/icons/docs_24.png) no-repeat 1px 5px;
 		}
 		
-		.addNew #newLink a {
+		#newLink a {
 			background: url(../images/icons/web_24.png) no-repeat 1px 5px;
 		}
 		
-		.addNew #newFile a {
+		#newFile a {
 			background: url(../images/icons/cms_file.png) no-repeat 0px 5px;
 		}
 		
-		.addNew #newPortal a {
+		#newPortal a {
 			background: url(../images/icons/foldr_24.png) no-repeat 1px 5px;
 		}
 		
-		.addNew #newCalendar a {
+		#newCalendar a {
 			background: url(../images/icons/cal_24.png) no-repeat 1px 5px;
 		}
 		
-		.addNew #newGallery a {
+		#newGallery a {
 			background: url(../images/icons/smicn_24.png) no-repeat 1px 5px;
 			border: 0;
 		}
 		
-		.addNew #newGalleryItem a {
+		#newGalleryItem a {
 			background: url(../images/icons/image_24.png) no-repeat 1px 5px;
 		}
 		
-		.addNew #newGalleryItemMulti a {
+		#newGalleryItemMulti a {
 			background: url(../images/icons/image_24.png) no-repeat 1px 5px;
 			border: 0;
 		}
 		
-		.addNew a:hover {
+		a:hover {
 			color: #fff;
 			text-decoration: none;
 		}
+}
+
+#ccategory .addNew a {
+	border-bottom: 0px;
+}
 		
 		/* @end */
 		
