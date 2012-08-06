@@ -50,6 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div id="nav-module-specific" class="btn-group">
 <a class="btn" href="index.cfm?muraAction=cSettings.editSite&siteID=#URLEncodedFormat(rc.siteID)#"><i class="icon-share-alt"></i> Back to Site Settings</a>
 </div>
+
 <p>The bundle that you have requested has been created and is now available on your server at #rc.bundleFilePath#.</p>
 	<p class="notice"><strong>Important:</strong> Leaving large bundle files on server can lead to excessive disk space usage.</p>
 <cfif findNoCase(application.configBean.getWebRoot(),rc.bundleFilePath)>
