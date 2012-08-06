@@ -262,7 +262,7 @@ var hasBody=#subType.getHasBody()#;
 	</cfif>
 	
 	<cfif rc.compactDisplay neq "true">
-		<ul class="metadata">
+		<ul class="metadata-horizontal">
 			<cfif not rc.contentBean.getIsNew()>
 				<cfif listFindNoCase('Page,Portal,Calendar,Gallery,Link,File',rc.type)>
 					<cfset rsRating=application.raterManager.getAvgRating(rc.contentBean.getcontentID(),rc.contentBean.getSiteID()) />

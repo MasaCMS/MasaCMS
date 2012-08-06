@@ -13,7 +13,7 @@
 	@import "typography.less";
 	@import "header.less";
 	@import "navigation.less";
-	@import "grids.less";
+	@import "mura-grids.less";
 	@import "login.less";
 	@import "forms.less";
 	@import "tag-clouds.less";
@@ -56,6 +56,61 @@
 		display: block;
 		padding: 1em 0;
 	}
+	
+	/* @group Metadata List */
+	
+	.metadata-horizontal {
+		margin: 1px 0 0 0;
+		padding: .25em .5em;
+		list-style: none;
+		float: right;
+		background: #f9f9f9;
+		.border-radius(14px);
+		*width: 515px;
+		font-size: 11px;
+	}
+	
+	.metadata-horizontal li {
+		margin: 0 .5em .25em;
+		padding: 0;
+		color: #333;
+		float: right;
+		/*width: 30%;*/
+		line-height: 20px;
+	}
+	
+	.metadata-horizontal li strong {
+		padding: 0 .25em 0 0;
+	}
+	
+	.metadata-horizontal #ratestars {
+		position: relative;
+		top: 3px;
+	}
+	
+	.selectContentType {
+		margin-bottom: 1em;
+		clear: both;
+	}
+	
+	#csettings .metadata, #cextend .metadata {
+		float: left;
+		/*max-width: 50%;*/
+		margin: 1em;
+		padding-top: .5em;
+		overflow: hidden;
+		border-radius: 5px;
+	}
+	
+	#csettings .metadata li {
+		width: 31%;
+		margin-right: 1%;
+		margin-bottom: .5em;
+		float: left;
+		line-height: 1.2;
+	}
+	
+	/* @end */
 
 } /* End .mura */
 
