@@ -12,17 +12,17 @@
 <cfelseif session.resourceType eq "root">
 <h2>#application.rbFactory.getKeyValue(session.rb,"layout.applicationroot")#</h2>
 </cfif>
-<ul class="navTask nav nav-pills">
-  <li<cfif session.resourceType eq 'assets'> class="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cFilemanager.default&siteid=#session.siteid#&&resourceType=assets">#application.rbFactory.getKeyValue(session.rb,"layout.userassets")#</a></li>
+<div id="nav-module-specific" class="btn-group">
+  <a class="btn<cfif session.resourceType eq 'assets'> active</cfif>" href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cFilemanager.default&siteid=#session.siteid#&&resourceType=assets">#application.rbFactory.getKeyValue(session.rb,"layout.userassets")#</a>
   <cfif listFind(session.mura.memberships,'S2')>
 	  <cfif application.configBean.getValue('fmShowSiteFiles') neq 0>
-	 	 <li<cfif session.resourceType eq 'files'> class="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cFilemanager.default&siteid=#session.siteid#&resourceType=files">#application.rbFactory.getKeyValue(session.rb,"layout.sitefiles")#</a></li>
+	 	 <a class="btn<cfif session.resourceType eq 'file'> active</cfif>" href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cFilemanager.default&siteid=#session.siteid#&resourceType=files">#application.rbFactory.getKeyValue(session.rb,"layout.sitefiles")#</a>
 	  </cfif>
 	  <cfif listFind(session.mura.memberships,'S2') and application.configBean.getValue('fmShowApplicationRoot') neq 0>
-	  	<li<cfif session.resourceType eq 'root'> class="current"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cFilemanager.default&siteid=#session.siteid#&resourceType=root">#application.rbFactory.getKeyValue(session.rb,"layout.applicationroot")#</a></li>
+	  	<a class="btn<cfif session.resourceType eq 'root'> active</cfif>" href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cFilemanager.default&siteid=#session.siteid#&resourceType=root">#application.rbFactory.getKeyValue(session.rb,"layout.applicationroot")#</a>
 	  </cfif>
   </cfif>
-</ul>
+</div>
 <script type="text/javascript">
 var finder = new CKFinder();
 finder.basePath = '#application.configBean.getContext()#/tasks/widgets/ckfinder/';
