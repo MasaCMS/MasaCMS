@@ -120,7 +120,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfcase>
 		<cfcase value="imagedetail">
-			<cfif isdefined('rc.contentBean')></cfif>
+			<cfif isdefined('rc.contentBean')>
 				<a clas="btn" href="#rc.contentBean.getEditURL(compactDisplay=rc.compactDisplay)#"><i class="icon-share-alt"></i>Back to Content Form</a>
 			</cfif>
 		</cfcase>
