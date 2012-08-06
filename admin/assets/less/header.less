@@ -102,7 +102,7 @@ header {
 	.subnavbar .container > ul > li > a {
 		display: block;
 		height: auto;
-		min-height: 70px;
+		min-height: 60px;
 		width: 90px;
 		padding: 0 15px 0;
 		font-size: 12px;
@@ -121,7 +121,7 @@ header {
 		.size(18,20);
 		font-size: 24px;
 		line-height: 1;
-		margin-top: 18px; /* 8px w/o current site */
+		margin-top: 8px;
 		margin-bottom: 2px;	
 		color: @black;
 		text-shadow: 0 1px 0 rgba(255, 255, 255, .2);
@@ -186,30 +186,40 @@ header {
 		width: 160px;
 		position: relative;
 		/*#gradient .vertical(#323232,#414141);*/
-		/*background-color: #333;*/
-		box-shadow: inset 0px 0px 12px rgba(0, 0, 0, .4);
+		background-color: #555;
 		border-left: 0;
+	}
+	
+	#select-site a {
+		width: 130px;
+		box-shadow: inset 0px 0px 12px rgba(0, 0, 0, .3);
+	}
+	
+	#select-site li a {
+		width: 130px;
+		box-shadow: 0px 0px 0 rgba(0, 0, 0, 0);
 	}
 	
 	#select-site strong {
 		display: block;
-		width: 160px;
+		width: 92px;
+		margin: 0 0 0 -46px;
+		.border-radius(12);
 		font-family: SilkscreenNormal;
 		font-size: 8px;
 		font-weight: normal;
 		line-height: 1;
 		letter-spacing: 1px;
 		text-transform: uppercase;
-		color: @grayDark;
+		color: darken(@gray,10%);
 		/*background: hsla(0,0%,15%,.9);*/
 		background: #333;
+		/*#gradient .vertical(#414141,#323232);*/
 		padding: 3px 0;
 		position: absolute;
-		top: 0;
-		left: 0;	}
-	
-	#select-site a {
-		width: 130px;
+		top: 10px;
+		left: 50%;
+		box-shadow: 0px 0px 10px rgba(255,255,255,.12);
 	}
 	 
 	 #select-site i {
@@ -218,6 +228,7 @@ header {
 	    
 	 #select-site span {
 	 	.text-overflow;
+	 	color: darken(@gray,0%);
 	 	/*text-shadow: 0 0 6px rgba(255,255,255,.65);*/
 	 }
 	 
@@ -260,7 +271,6 @@ header {
 	/* Button Dropdown Selector
 	
 	#select-site {
-		
 		position: absolute;
 		top: 16px;
 		right: 0;
