@@ -47,7 +47,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <cfset rc.originalfuseaction=listLast(request.action,".")>
 <div id="nav-module-specific" class="btn-group">
-
 <a class="btn<cfif rc.originalfuseaction neq 'main'> active</cfif>" href="index.cfm?muraAction=cDashboard.main&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.overview")#</a>
 <cfif application.configBean.getSessionHistory()>
 <a class="btn <cfif rc.originalfuseaction eq 'sessionsearch'> active</cfif>" href="index.cfm?muraAction=cDashboard.sessionSearch&siteID=#session.siteid#&newSearch=true">#application.rbFactory.getKeyValue(session.rb,"dashboard.sessionsearch")#</a>

@@ -67,7 +67,10 @@ select * from rsSubTypes where subType <> 'Default'
 
 <cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,'user.groupform')#</h2>
 <cfif listfirst(listLast(rc.muraAction,":"),".") eq "editgroup" and rc.userid neq ''>
-<ul class="navTask nav nav-pills"><li><a href="javascript:extuserselect('#rc.userid#',1,<cfif listFind(session.mura.memberships,'S2')>1<cfelse>0</cfif>,'#rc.siteid#')">#application.rbFactory.getKeyValue(session.rb,'user.addmembertogroup')#</a></li></ul></cfif>
+<div id="nav-module-specific" class="btn-group">
+  <a class="btn" href="javascript:extuserselect('#rc.userid#',1,<cfif listFind(session.mura.memberships,'S2')>1<cfelse>0</cfif>,'#rc.siteid#')">#application.rbFactory.getKeyValue(session.rb,'user.addmembertogroup')#</a>
+</div>
+</cfif>
 
 <cfswitch expression="#rc.userBean.getperm()#">
 <cfcase value="1">
