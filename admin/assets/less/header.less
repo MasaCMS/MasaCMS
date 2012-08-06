@@ -200,10 +200,11 @@ header {
 		box-shadow: 0px 0px 0 rgba(0, 0, 0, 0);
 	}
 	
-	#select-site strong {
+	#select-site #select-site-btn {
 		display: block;
 		width: 92px;
 		margin: 0 0 0 -46px;
+		min-height: 0;
 		.border-radius(12);
 		font-family: SilkscreenNormal;
 		font-size: 8px;
@@ -219,20 +220,28 @@ header {
 		position: absolute;
 		top: 10px;
 		left: 50%;
-		box-shadow: 0px 0px 10px rgba(255,255,255,.12);
+		text-shadow: 0 0 0;
+		/*box-shadow: 0px 0px 10px rgba(255,255,255,.12);*/
+	}
+	
+	#select-site #select-site-btn:hover {
+		color: @white;
+		background: @orange;
+		box-shadow: 0px 0px 8px rgba(255,255,255,.35);
 	}
 	 
-	 #select-site i {
+	 #select-site-btn i {
 	 	/*text-shadow: 0 0 6px rgba(255,255,255,.65);*/
 	 }
 	    
-	 #select-site span {
+	 #select-site-btn span {
 	 	.text-overflow;
 	 	color: darken(@gray,0%);
+	 	color: @white;
 	 	/*text-shadow: 0 0 6px rgba(255,255,255,.65);*/
 	 }
 	 
-	 #select-site .dropdown-menu  i {
+	 #select-site-btn .dropdown-menu  i {
 	 	text-shadow: 0 0 0 !important;
 	 } 
 	 
