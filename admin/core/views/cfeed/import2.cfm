@@ -47,6 +47,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfinclude template="js.cfm">
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,'collections.remotefeedimport')#</h2>
+
+<cfinclude template="dsp_secondary_menu.cfm">
+
 <cfif not rc.theImport.success>
 <h3>#application.rbFactory.getKeyValue(session.rb,'collections.importfailed')#</h3>
 <p>#application.rbFactory.getKeyValue(session.rb,'collections.importfailedtext')#</p>

@@ -50,9 +50,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 
 
-<ul class="navTask nav nav-pills">
-<li><a href="index.cfm?muraAction=cExtend.editSubType&subTypeID=&siteid=#URLEncodedFormat(rc.siteid)#">Add Class Extension</a></li>
-</ul>
+<div id="nav-module-specific" class="btn-group">
+<a class="btn" href="index.cfm?muraAction=cExtend.editSubType&subTypeID=&siteid=#URLEncodedFormat(rc.siteid)#">Add Class Extension</a>
+</div>
 
 </cfoutput>
 <table class="table table-striped table-bordered table-condensed">

@@ -48,10 +48,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <h2>Trash Bin</h2>
 
-<ul class="navTask nav nav-pills">
-<li><a href="index.cfm?muraAction=cSettings.editSite&siteID=#URLEncodedFormat(rc.siteID)#">Back to Site Settings</a></li>
-<li><a href="index.cfm?muraAction=cTrash.empty&siteID=#URLEncodedFormat(rc.siteID)#" onclick="return confirmDialog('Empty Site Trash?', this.href);">Empty Trash</a></li>
-</ul>
+<div id="nav-module-specific" class="btn-group">
+<a class="btn" href="index.cfm?muraAction=cSettings.editSite&siteID=#URLEncodedFormat(rc.siteID)#"><i class="icon-share-alt"></i> Back to Site Settings</a>
+<a class="btn" href="index.cfm?muraAction=cTrash.empty&siteID=#URLEncodedFormat(rc.siteID)#" onclick="return confirmDialog('Empty Site Trash?', this.href);">Empty Trash</a>
+</div>
 
 <form novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
    <h3>Keyword Search</h3>

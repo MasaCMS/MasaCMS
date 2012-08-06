@@ -183,10 +183,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset setValue('HandlerFactory',application.pluginManager.getStandardEventFactory(getValue('siteid')))>
 	</cfif>
 	<cfif not valueExists("contentRenderer")>
-		<cfset setValue("contentRenderer",createObject("component","#application.settingsManager.getSite(getValue('siteid')).getAssetMap()#.includes.contentRenderer").init(event=this,$=getValue('MuraScope'),mura=getValue('MuraScope')))>
+		<cfset setValue("contentRenderer",getBean('settingsManager').getSite(getValue('siteID')).getContentRenderer(getValue('MuraScope')))>
 	</cfif>
 	<cfif not valueExists("themeRenderer") and fileExists(expandPath(getSite().getThemeIncludePath()) & "/contentRenderer.cfc")>
-		<cfset setValue("themeRenderer",createObject("component","#getSite().getThemeAssetMap()#.contentRenderer").init(event=this,$=getValue('MuraScope'),mura=getValue('MuraScope')))>
+		<cfset setValue("themeRenderer",getBean('settingsManager').getSite(getValue('siteID')).getThemeRenderer(getValue('MuraScope')))>
 	</cfif>	
 	<cfif not valueExists("localHandler") and fileExists(expandPath("/#application.configBean.getWebRootMap()#") & "/#getValue('siteid')#/includes/eventHandler.cfc")>
 		<cfset localHandler=createObject("component","#application.configBean.getWebRootMap()#.#getValue('siteid')#.includes.eventHandler").init()>

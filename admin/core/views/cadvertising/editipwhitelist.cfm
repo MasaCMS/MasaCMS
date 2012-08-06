@@ -46,6 +46,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,'advertising.ipwhitelist')#</h2>
+
+<cfinclude template="dsp_secondary_menu.cfm">
+
 <cfset newline= chr(13)& chr(10)>
 <p>#application.rbFactory.getKeyValue(session.rb,'advertising.yourcurrentip')#: <strong>#request.remoteAddr#</strong></p>
 <form novalidate="novalidate" name="form1" method="post" action="index.cfm?muraAction=cAdvertising.updateIPWhiteList&siteid=#URLEncodedFormat(rc.siteid)#">

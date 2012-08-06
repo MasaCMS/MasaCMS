@@ -62,36 +62,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#</h2>
+
 <cfif rc.compactDisplay neq 'true'>
-<cfif rc.moduleid eq '00000000000000000000000000000000000'>#application.contentRenderer.dspZoom(crumbdata,fileExt)#</cfif>
-</cfif>
-<ul class="navTask nav nav-pills">
-<!---<cfif rc.contentBean.getFilename() neq '' or rc.contentid eq '00000000000000000000000000000000001'>
-	<cfswitch expression="#rc.type#">
-<cfcase value="Page,Portal,Calendar">
-<li><a  href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.configBean.getStub()#/#rc.siteid#/#rc.contentBean.getFilename()##iif(rc.contentBean.getFilename() neq '',de('/'),de(''))##application.configBean.getIndexFile()#','#rc.contentBean.getTargetParams()#');">View Active #rc.type#</a></li>
-</cfcase>
-<cfcase value="Link">
-<li><a href="##" onclick="return preview('#rc.contentBean.getFilename()#');">View Active #rc.type#</a></li>
-</cfcase>
-<cfcase value="File">
-<li><a  href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/#rc.siteid#/linkserv/#application.configBean.getIndexFile()#?contentid=#rc.contentid#');">View Active #rc.type#</a></li>
-</cfcase>
-</cfswitch>
-</cfif>--->
-<cfswitch expression="#rc.type#">
-<cfcase value="Form">
-<cfif listFind(session.mura.memberships,'S2IsPrivate')>
-<li><a  href="index.cfm?muraAction=cArch.datamanager&contentid=#URLEncodedFormat(rc.contentid)#&siteid=#URLEncodedFormat(rc.siteid)#&topid=#URLEncodedFormat(rc.topid)#&moduleid=#rc.moduleid#&type=Form&parentid=#rc.moduleid#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.managedata')#</a></li>
-</cfif>
-</cfcase>
-</cfswitch>
-	<cfif rc.perm neq 'none'><li><a href="index.cfm?muraAction=cArch.update&action=deletehistall&contentid=#URLEncodedFormat(rc.contentid)#&type=#rc.type#&parentid=#URLEncodedFormat(rc.parentid)#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&startrow=#rc.startrow#&moduleid=#rc.moduleid#&compactDisplay=#rc.compactDisplay#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.clearversionhistoryconfirm'))#',this.href)">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.clearversionhistory')#</a></li></cfif>
-	<cfif rc.deletable and rc.compactDisplay neq 'true'><li><a href="index.cfm?muraAction=cArch.update&action=deleteall&contentid=#URLEncodedFormat(rc.contentid)#&type=#rc.type#&parentid=#URLEncodedFormat(rc.parentid)#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&startrow=#rc.startrow#&moduleid=#rc.moduleid#&compactDisplay=#rc.compactDisplay#" 
-		<cfif listFindNoCase(nodeLevelList,rc.contentBean.getType())>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),rc.contentBean.getMenutitle()))#',this.href)"<cfelse>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)"</cfif> >#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontent')#</a></li></cfif>
-	<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')><li><a href="index.cfm?muraAction=cPerm.main&contentid=#URLEncodedFormat(rc.contentid)#&type=#rc.type#&parentid=#URLEncodedFormat(rc.parentid)#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&startrow=#rc.startrow#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.permissions')#</a></li>
+	<cfinclude template="dsp_secondary_menu.cfm">
+
+	<cfif rc.moduleid eq '00000000000000000000000000000000000'>
+		#application.contentRenderer.dspZoom(crumbdata,fileExt)#
 	</cfif>
-</ul>
+</cfif>
+
 </cfoutput>
 <cfoutput>
 <table class="table table-striped table-bordered table-condensed">

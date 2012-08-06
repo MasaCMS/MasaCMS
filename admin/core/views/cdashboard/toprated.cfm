@@ -50,6 +50,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.topratedcontent")#</h2>
 
+<cfinclude template="dsp_secondary_menu.cfm">
+
 
 <h3 class="alt">#application.rbFactory.getKeyValue(session.rb,"params.daterange")#</h3>
 <form novalidate="novalidate" name="searchFrm" onsubmit="return validate(this);" id="advancedSearch">

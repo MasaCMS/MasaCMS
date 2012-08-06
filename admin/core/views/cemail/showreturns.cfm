@@ -47,6 +47,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfinclude template="js.cfm">
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,"email.clickdetail")#</h2>
+
+<cfinclude template="dsp_secondary_menu.cfm">
+
 <strong>#application.rbFactory.getKeyValue(session.rb,"email.userswhoclicked")#:</strong></cfoutput>
 <cfif rc.rsReturnsByUser.recordcount>
 	<ul class="metadata">

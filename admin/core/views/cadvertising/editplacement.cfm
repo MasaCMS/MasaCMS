@@ -48,11 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <h2>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"advertising.editcampaignplacement"),rc.campaignBean.getName())#</h2> 
 
-<ul class="navTask nav nav-pills">
-<li><a href="index.cfm?muraAction=cAdvertising.viewAdvertiser&&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.backtoadvertiser')#</a></li>
-<li><a href="index.cfm?muraAction=cAdvertising.editCampaign&&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#&campaignid=#URLEncodedFormat(rc.campaignid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.backtocampaign')#</a></li>
-<cfif rc.placementid neq ""><li><a href="index.cfm?muraAction=cAdvertising.viewReportByPlacement&placementid=#URLEncodedFormat(rc.placementid)#&campaignid=#URLEncodedFormat(rc.campaignid)#&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.viewplacementreport')#</a></li></cfif>
-</ul> 
+<cfinclude template="dsp_secondary_menu.cfm">
 
 <p class="overview">#application.rbFactory.getKeyValue(session.rb,'advertising.campaigndaterange')#: #LSDateFormat(rc.campaignBean.getStartDate(),session.dateKeyFormat)# - #LSDateFormat(rc.campaignBean.getEndDate(),session.dateKeyFormat)#</p>
 

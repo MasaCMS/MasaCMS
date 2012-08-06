@@ -47,9 +47,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,'advertising.creativeassetdetails')#</h2>
-<ul class="navTask nav nav-pills">
-<li><a href="index.cfm?muraAction=cAdvertising.viewAdvertiser&&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.backtoadvertiser')#</a></li>
-</ul>
+
+<cfinclude template="dsp_secondary_menu.cfm">
 
 <h3>#application.rbFactory.getKeyValue(session.rb,'advertising.creativeassetinformation')#</h3>
 #application.utility.displayErrors(rc.creativeBean.getErrors())#

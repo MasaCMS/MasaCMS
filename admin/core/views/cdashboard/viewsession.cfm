@@ -45,6 +45,9 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.sessionhistory")#</h2>
+
+<cfinclude template="dsp_secondary_menu.cfm">
+
 <cfsilent>
 <cfset lastAccessed=application.dashboardManager.getLastSessionDate(rc.rslist.urlToken,rc.rslist.originalUrlToken,rc.rslist.entered) />
 </cfsilent>

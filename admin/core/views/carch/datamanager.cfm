@@ -78,17 +78,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rc.fieldnames=application.dataCollectionManager.getCurrentFieldList(rc.contentid)/>>
 </cfsilent>
 <cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.managedata')#</h2>
-<ul class="navTask nav nav-pills">
-<li><a href="index.cfm?muraAction=cArch.hist&contentid=#URLEncodedFormat(rc.contentid)#&type=Form&parentid=00000000000000000000000000000000004&topid=00000000000000000000000000000000004&siteid=#URLEncodedFormat(rc.siteid)#&startrow=#rc.startrow#&moduleid=00000000000000000000000000000000004">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#</a> </li>
-<cfif rc.action neq ''>
-<li><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.managedate')#" href="index.cfm?muraAction=cArch.datamanager&contentid=#URLEncodedFormat(rc.contentid)#&type=Form&topid=00000000000000000000000000000000004&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=00000000000000000000000000000000004&parentid=00000000000000000000000000000000004">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.managedata')#</a></li>
-</cfif>
-<cfif rc.perm eq 'editor'>
-<li><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.editdisplay')#" href="index.cfm?muraAction=cArch.datamanager&contentid=#URLEncodedFormat(rc.contentid)#&type=Form&action=display&topid=00000000000000000000000000000000004&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=00000000000000000000000000000000004&parentid=00000000000000000000000000000000004">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.editdisplay')#</a></li>
-<li><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" href="index.cfm?muraAction=cArch.update&contentid=#URLEncodedFormat(rc.contentid)#&type=Form&action=deleteall&topid=00000000000000000000000000000000004&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=00000000000000000000000000000000004&parentid=00000000000000000000000000000000004" onClick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deleteformconfirm'))#',this.href)">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deleteform')#</a></li>
-</cfif>
-<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')><li><a href="index.cfm?muraAction=cPerm.main&contentid=#URLEncodedFormat(rc.contentid)#&type=Form&parentid=00000000000000000000000000000000004&topid=00000000000000000000000000000000004&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=00000000000000000000000000000000004&startrow=#rc.startrow#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.permissions')#</a></li></cfif>
-</ul>
+
+<cfinclude template="dsp_secondary_menu.cfm">
 
 <ul class="overview"><li>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#: <strong>#rc.contentBean.gettitle()#</strong></li>
 <li>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.totalrecordsavailable')#: <strong>#rc.rsDataInfo.CountEntered#</strong></li>

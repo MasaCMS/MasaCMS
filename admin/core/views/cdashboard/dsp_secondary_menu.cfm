@@ -45,14 +45,16 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<ul class="nav nav-pills">
+<cfset rc.originalfuseaction=listLast(request.action,".")>
+<div id="nav-module-specific" class="btn-group">
+<a class="btn<cfif rc.originalfuseaction neq 'main'> active</cfif>" href="index.cfm?muraAction=cDashboard.main&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.overview")#</a>
 <cfif application.configBean.getSessionHistory()>
-<li<cfif rc.originalfuseaction eq "sessionSearch"> class="current"</cfif>><a href="index.cfm?muraAction=cDashboard.sessionSearch&siteID=#session.siteid#&newSearch=true">#application.rbFactory.getKeyValue(session.rb,"dashboard.sessionsearch")#</a></li>
-<li<cfif rc.originalfuseaction eq "topContent"> class="current"</cfif>><a href="index.cfm?muraAction=cDashboard.topContent&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.topcontent")#</a></li>
-<li<cfif rc.originalfuseaction eq "topReferers"> class="current"</cfif>><a href="index.cfm?muraAction=cDashboard.topReferers&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.topreferrers")#</a></li>
-<li<cfif rc.originalfuseaction eq "topSearches"> class="current"</cfif>><a href="index.cfm?muraAction=cDashboard.topSearches&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.topsearches")#</a></li>
+<a class="btn <cfif rc.originalfuseaction eq 'sessionsearch'> active</cfif>" href="index.cfm?muraAction=cDashboard.sessionSearch&siteID=#session.siteid#&newSearch=true">#application.rbFactory.getKeyValue(session.rb,"dashboard.sessionsearch")#</a>
+<a class="btn <cfif rc.originalfuseaction eq 'topcontent'> active</cfif>"  href="index.cfm?muraAction=cDashboard.topContent&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.topcontent")#</a>
+<a class="btn <cfif rc.originalfuseaction eq 'topreferrers'> active</cfif>"  href="index.cfm?muraAction=cDashboard.topReferers&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.topreferrers")#</a>
+<a class="btn <cfif rc.originalfuseaction eq 'topsearches'> active</cfif>"  href="index.cfm?muraAction=cDashboard.topSearches&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.topsearches")#</a>
 </cfif>
-<li<cfif rc.originalfuseaction eq "topRated"> class="current"</cfif>><a href="index.cfm?muraAction=cDashboard.topRated&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.toprated")#</a></li>
-<li<cfif rc.originalfuseaction eq "recentComments"> class="current"</cfif>><a href="index.cfm?muraAction=cDashboard.recentComments&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments")#</a></li>
-</ul>
+<a class="btn <cfif rc.originalfuseaction eq 'toprated'> active</cfif>"  href="index.cfm?muraAction=cDashboard.topRated&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.toprated")#</a>
+<a class="btn <cfif rc.originalfuseaction eq 'recentcomments'> active</cfif>"  href="index.cfm?muraAction=cDashboard.recentComments&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments")#</a>
+</div>
 </cfoutput>

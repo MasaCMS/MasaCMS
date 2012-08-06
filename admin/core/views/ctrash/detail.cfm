@@ -52,9 +52,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <h2>Trash Detail</h2>
 
-<ul class="navTask nav nav-pills"
-<li><a href="index.cfm?muraAction=cTrash.list&siteID=#URLEncodedFormat(rc.trashItem.getSiteID())#&keywords=#URLEncodedFormat(rc.keywords)#&pageNum=#URLEncodedFormat(rc.pageNum)#">Back to Trash Bin</a></li>
-</ul>
+<div id="nav-module-specific" class="btn-group">
+<a class="btn" href="index.cfm?muraAction=cTrash.list&siteID=#URLEncodedFormat(rc.trashItem.getSiteID())#&keywords=#URLEncodedFormat(rc.keywords)#&pageNum=#URLEncodedFormat(rc.pageNum)#"><i class="icon-share-alt"></i>  Back to Trash Bin</a>
+</div>
 
 <ul>
 <li><strong>Label:</strong> #htmlEditFormat(rc.trashItem.getObjectLabel())#</li>
