@@ -102,7 +102,7 @@ header {
 	.subnavbar .container > ul > li > a {
 		display: block;
 		height: auto;
-		min-height: 70px;
+		min-height: 60px;
 		width: 90px;
 		padding: 0 15px 0;
 		font-size: 12px;
@@ -121,7 +121,7 @@ header {
 		.size(18,20);
 		font-size: 24px;
 		line-height: 1;
-		margin-top: 18px; /* 8px w/o current site */
+		margin-top: 8px;
 		margin-bottom: 2px;	
 		color: @black;
 		text-shadow: 0 1px 0 rgba(255, 255, 255, .2);
@@ -191,6 +191,10 @@ header {
 		border-left: 0;
 	}
 	
+	#select-site a {
+		width: 130px;
+	}
+	
 	#select-site strong {
 		display: block;
 		width: 160px;
@@ -203,13 +207,11 @@ header {
 		color: @grayDark;
 		/*background: hsla(0,0%,15%,.9);*/
 		background: #333;
-		padding: 3px 0;
+		padding: 4px 0;
 		position: absolute;
-		top: 0;
-		left: 0;	}
-	
-	#select-site a {
-		width: 130px;
+		top: 7px;
+		left: 0;
+		box-shadow: inset 0px 0px 12px rgba(0, 0, 0, .2);
 	}
 	 
 	 #select-site i {
@@ -260,7 +262,6 @@ header {
 	/* Button Dropdown Selector
 	
 	#select-site {
-		
 		position: absolute;
 		top: 16px;
 		right: 0;
