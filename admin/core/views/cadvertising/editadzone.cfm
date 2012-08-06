@@ -46,6 +46,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,'advertising.editadzone')#</h2>
+
+<cfinclude template="dsp_secondary_menu.cfm">
+
 #application.utility.displayErrors(rc.adZoneBean.getErrors())#
 
 <form novalidate="novalidate" name="form1" method="post" action="index.cfm?muraAction=cAdvertising.updateAdZone&siteid=#URLEncodedFormat(rc.siteid)#" onsubmit="return false;">

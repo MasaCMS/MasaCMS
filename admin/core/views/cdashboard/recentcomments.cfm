@@ -47,13 +47,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfinclude template="js.cfm">
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.comments")#</h2>
+
+<cfinclude template="dsp_secondary_menu.cfm">
+
 <cfparam name="rc.page" default="1">
 <cfset comments=application.contentManager.getRecentCommentsIterator(rc.siteID,100,false) />
 <cfset comments.setNextN(20)>
 <cfset comments.setPage(rc.page)>
 
 <h3 class="alt">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments.last100")#</h3>
-<table class="mura-table-grid">
+<table class="mura-table-grid table-striped table-bordered table-condensed">
 <tr>
 	<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments")#</th>
 	<th class="dateTime">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments.posted")#</th>

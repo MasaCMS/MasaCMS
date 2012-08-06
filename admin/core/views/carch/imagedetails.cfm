@@ -43,14 +43,11 @@
 <cfoutput>
 <h2>Image Details</h2>
 
+
+
 <cfif rc.compactDisplay neq "true" and isDefined('rc.contentBean')>
 	#application.contentRenderer.dspZoom(rc.contentBean.getCrumbArray(),rc.contentBean.getFileExt())#
 </cfif>
-
-<ul class="navTask nav nav-pills">
-	<li><a href="#rc.contentBean.getEditURL(compactDisplay=rc.compactDisplay)#">Back to Content Form</a></li>
-	<!---<li><a href="./index.cfm?muraAction=cArch.list&siteid=#rc.contentBean.getSiteID()#&moduleid=00000000000000000000000000000000000&startrow=1">Site Manager</a></li>--->
-</ul>
 
 <cfif len(rc.fileID)>
 

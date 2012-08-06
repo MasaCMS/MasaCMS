@@ -108,6 +108,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	(<cfif rc.spanType eq 'n'>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.spannow"),rc.span)#<cfelse>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.spannow"),rc.span)#</cfif>)
 </span></h2>
 
+<cfinclude template="dsp_secondary_menu.cfm">
+
 <h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.totalsessions")#: <strong>#rc.rslist.recordcount#</strong></h3>
 <div>
 <cfif rc.contentid neq ''>

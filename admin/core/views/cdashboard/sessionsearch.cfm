@@ -126,6 +126,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.advancedsearch")#</h2>
 
+<cfinclude template="dsp_secondary_menu.cfm">
+
 <form novalidate="novalidate"  method="get" name="searchFrm" id="advancedSearch" class="sessionHistory">
 <input type="hidden" name="startSearch" value="true"/>
 <div class="control-group">
