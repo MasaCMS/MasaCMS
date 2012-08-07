@@ -105,7 +105,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 
 	<div class="form-actions">
-		<input type="submit" class="submit btn btn-primary" value="#application.rbFactory.getKeyValue(session.rb,'login.login')#" />
+		<input type="submit" class="submit btn" value="#application.rbFactory.getKeyValue(session.rb,'login.login')#" />
 	</div>
 
 	<input name="returnUrl" type="hidden" value="#HTMLEditFormat(rc.returnURL)#">

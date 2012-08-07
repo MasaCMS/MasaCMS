@@ -104,49 +104,56 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   <cfset rsExtend=application.configBean.getClassExtensionManager().getExtendedAttributeList(rc.siteid)>
 
   <form novalidate="novalidate" class="viewUpdate clearfix" name="viewUpdate" method="post" action="./index.cfm?muraAction=cArch.list&siteid=#urlEncodedFormat(rc.siteID)#&moduleid=#urlEncodedFormat(rc.moduleID)#&topid=#urlEncodedFormat(rc.topID)#">
-    <h3 class="alt">#application.rbFactory.getKeyValue(session.rb,"sitemanager.modifyview")#</h3>
-    <dl id="mura-view-options" class="clearfix">
-      <dt class="rows">#application.rbFactory.getKeyValue(session.rb,"sitemanager.rowsdisplayed")#</dt>
-      <dd class="rows">
-        <input name="nextN" value="#session.mura.nextN#" type="text" class="text" size="2" maxlength="4" />
-      </dd>
-    <!---  <dt class="viewDepth">#application.rbFactory.getKeyValue(session.rb,"sitemanager.levelsdisplayed")#</dt>
-      <dd class="viewDepth">
-        <input name="viewDepth" value="#session.mura.viewDepth#" type="text" class="text" size="2" maxlength="4" />
-      </dd>--->
-      <cfif rc.topid neq '00000000000000000000000000000000001' 
-	  	  and (
-	  	  		perm eq 'Editor' 
-					or 
-				(perm eq 'Author' and application.configBean.getSortPermission() eq "author") 
-			  )>
-        <dt class="sort">#application.rbFactory.getKeyValue(session.rb,"sitemanager.sortnavigation")#</dt>
-        <dd class="sort">
-          <input type="hidden" name="saveSort" value="true">
-          <select name="sortBy" class="dropdown" onchange="setAsSorted();">
-            <option value="orderno" <cfif rc.sortBy eq 'orderno'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.manual")#</option>
-            <option value="releaseDate" <cfif rc.sortBy eq 'releaseDate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.releasedate")#</option>
-            <option value="lastUpdate" <cfif rc.sortBy eq 'lastUpdate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.updatedate")#</option>
-            <option value="created" <cfif rc.sortBy eq 'created'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.created")#</option>
-            <option value="menuTitle" <cfif rc.sortBy eq 'menuTitle'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.menutitle")#</option>
-            <option value="title" <cfif rc.sortBy eq 'title'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.longtitle")#</option>
-            <option value="rating" <cfif rc.sortBy eq 'rating'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.rating")#</option>
-            <option value="comments" <cfif rc.sortBy eq 'comments'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.comments")#</option>
-            <cfloop query="rsExtend">
-              <option value="#HTMLEditFormat(rsExtend.attribute)#" <cfif rc.sortBy eq rsExtend.attribute>selected</cfif>>#rsExtend.Type#/#rsExtend.subType# - #rsExtend.attribute#</option>
-            </cfloop>
-          </select>
-          <select name="sortDirection" class="dropdown" onchange="setAsSorted();">
-            <option value="asc" <cfif rc.sortDirection eq 'asc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.ascending")#</option>
-            <option value="desc" <cfif rc.sortDirection eq 'desc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.descending")#</option>
-          </select>
-        </dd>
-      </cfif>
-      <dd <cfif rc.topid neq '00000000000000000000000000000000001' and perm eq 'Editor'>class="button"</cfif>><input type="button" class="submit btn" id="submitSort" onclick="submitForm(document.forms.viewUpdate);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.update")#" /></dd>
-    </dl>
-    <input type="hidden" name="startrow" value="#rc.startrow#">
-    <input type="hidden" name="orderperm" value="#perm#">
-	  <input type="hidden" id="sorted" name="sorted" value="false">
+  
+  
+  <div class="btn-group" id="sm-modify-view">
+    <a class="btn dropdown-toggle" data-toggle="dropdown" href="">
+      <i class="icon-eye-open"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.modifyview")#
+      <span class="caret"></span>
+    </a>
+    <div class="dropdown-menu">
+      	  <h4>#application.rbFactory.getKeyValue(session.rb,'sitemanager.filterviewdesc')#</h4>
+      	  
+      	   #application.rbFactory.getKeyValue(session.rb,"sitemanager.rowsdisplayed")#
+        <input name="nextN" value="#session.mura.nextN#" type="text" class="text span1" size="2" maxlength="4" />
+        
+        <cfif rc.topid neq '00000000000000000000000000000000001' 
+          	  and (
+          	  		perm eq 'Editor' 
+        				or 
+        			(perm eq 'Author' and application.configBean.getSortPermission() eq "author") 
+        		  )>
+            #application.rbFactory.getKeyValue(session.rb,"sitemanager.sortnavigation")#
+            <input type="hidden" name="saveSort" value="true">
+              <select name="sortBy" class="dropdown" onchange="setAsSorted();">
+                <option value="orderno" <cfif rc.sortBy eq 'orderno'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.manual")#</option>
+                <option value="releaseDate" <cfif rc.sortBy eq 'releaseDate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.releasedate")#</option>
+                <option value="lastUpdate" <cfif rc.sortBy eq 'lastUpdate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.updatedate")#</option>
+                <option value="created" <cfif rc.sortBy eq 'created'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.created")#</option>
+                <option value="menuTitle" <cfif rc.sortBy eq 'menuTitle'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.menutitle")#</option>
+                <option value="title" <cfif rc.sortBy eq 'title'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.longtitle")#</option>
+                <option value="rating" <cfif rc.sortBy eq 'rating'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.rating")#</option>
+                <option value="comments" <cfif rc.sortBy eq 'comments'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.comments")#</option>
+                <cfloop query="rsExtend">
+                  <option value="#HTMLEditFormat(rsExtend.attribute)#" <cfif rc.sortBy eq rsExtend.attribute>selected</cfif>>#rsExtend.Type#/#rsExtend.subType# - #rsExtend.attribute#</option>
+                </cfloop>
+              </select>
+              <select name="sortDirection" class="dropdown" onchange="setAsSorted();">
+                <option value="asc" <cfif rc.sortDirection eq 'asc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.ascending")#</option>
+                <option value="desc" <cfif rc.sortDirection eq 'desc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.descending")#</option>
+              </select>
+          </cfif>
+          <!---<dd <cfif rc.topid neq '00000000000000000000000000000000001' and perm eq 'Editor'>class="button"</cfif>>--->
+          <input type="button" class="submit btn" id="submitSort" onclick="submitForm(document.forms.viewUpdate);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.update")#" /
+        <input type="hidden" name="startrow" value="#rc.startrow#">
+        <input type="hidden" name="orderperm" value="#perm#">
+         <input type="hidden" id="sorted" name="sorted" value="false">
+        
+    </div>
+  </div>
+     
+      
+      
     
     <!-- Begin Grid Header -->
     <div class="mura-grid stripe<cfif rc.sortBy neq 'orderno'> noDrag</cfif>">
