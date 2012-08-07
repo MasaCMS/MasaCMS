@@ -45,13 +45,15 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
-<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
+
 <cfoutput>
 <cfset rc.originalfuseaction=listLast(request.action,".")>
 <div id="nav-module-specific" class="btn-group">
 <cfswitch expression="#rc.originalfuseaction#">
 	<cfcase value="list">
+		<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
 		<a class="btn <cfif rc.originalfuseaction eq 'module'> active</cfif>" href="index.cfm?muraAction=cPerm.module&contentid=00000000000000000000000000000000010&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=00000000000000000000000000000000010">#application.rbFactory.getKeyValue(session.rb,'categorymanager.permissions')#</a>
+		</cfif>
 		<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,"categorymanager.addnewcategory")#" href="index.cfm?muraAction=cCategory.edit&categoryID=&parentID=&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,"categorymanager.addnewcategory")#</a>
 	</cfcase>
 	<cfdefaultcase>
@@ -60,4 +62,3 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfswitch>
 <div>
 </cfoutput>
-</cfif>
