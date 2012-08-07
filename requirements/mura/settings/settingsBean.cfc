@@ -114,7 +114,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="theme" type="string" default="" required="true" />
 <cfproperty name="javaLocale" type="string" default="" required="true" /> 
 <cfproperty name="orderno" type="numeric" default="0" required="true" />
-<cfproperty name="customImageSizeQuery" type="query" default="" required="true" />
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	
@@ -199,7 +198,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.subtype="Default"/>
 	<cfset variables.instance.baseID=createUUID()/>
 	<cfset variables.instance.orderno=0/>
-	<cfset variables.instance.customImageSizeQuery=0/>
 	
 	<cfreturn this />
 </cffunction>
@@ -831,13 +829,13 @@ if(not isObject(arguments.$)){
 
 <cffunction name="getCustomImageSizeQuery" output="false">
 	<cfargument name="reset" default="false">
+	<cfset var rsCustomImageSizeQuery="">
+
+	<cfquery name="rsCustomImageSizeQuery" username="#variables.configBean.getDbUsername()#"  password="#variables.configBean.getDbPassword()#">
+		select sizeid,siteid,name,height,width from timagesizes where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteid#">
+	</cfquery>
 	
-	<cfif not isQuery(variables.instance.customImageSizeQuery) or arguments.reset>
-		<cfquery name="variables.instance.customImageSizeQuery" username="#variables.configBean.getDbUsername()#"  password="#variables.configBean.getDbPassword()#">
-			select sizeid,siteid,name,height,width from tcustomimages where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteid#">
-		</cfquery>
-	</cfif>
-	<cfreturn variables.instance.customImageSizeQuery>
+	<cfreturn rsCustomImageSizeQuery>
 </cffunction>
 
 <cffunction name="getCustomImageSizeIterator" output="false">

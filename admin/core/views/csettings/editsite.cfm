@@ -633,8 +633,6 @@ to your own modified versions of Mura CMS.
       </div>
     </div>
 	    
-  
-
      <div class="control-group">
       <label class="control-label">Medium Image</label>
       <div class="controls">
@@ -653,8 +651,7 @@ to your own modified versions of Mura CMS.
       </div>
     </div>
       
-    
-    
+
       <div class="control-group">
       <label class="control-label">Large Image</label>
       <div class="controls">
@@ -672,9 +669,117 @@ to your own modified versions of Mura CMS.
            </div>
       </div>
     </div>
-      
+    <cfif len(rc.siteBean.getSiteID())>
+      <script>
+      function openCustomImageSize(sizeid,siteid){
     
+          jQuery("##custom-image-dialog").remove();
+          jQuery("body").append('<div id="custom-image-dialog" title="Loading..." style="display:none"><div id="newContentMenu"><img src="assets/images/progress_bar.gif"></div></div>');
 
+          var dialogoptions= {
+              Save: function() {
+                saveCustomImageSize();
+                jQuery( this ).dialog( "close" );
+              },
+              Cancel: function() {
+                 jQuery( this ).dialog( "close" );
+              }
+            };
+
+            if(sizeid != ''){
+              dialogoptions.Delete=function(){
+                deleteCustomImageSize();
+                jQuery( this ).dialog( "close" );
+              };
+            }
+
+          jQuery("##custom-image-dialog").dialog({
+            resizable: true,
+            modal: true,
+            width: 400,
+            position: getDialogPosition(),
+            buttons: dialogoptions,
+            open: function(){
+              jQuery("##ui-dialog-title-custom-image-dialog").html('Edit Custom Image Size');
+              jQuery("##custom-image-dialog").html('<div class="ui-dialog-content ui-widget-content"><img src="./assets/images/progress_bar.gif"></div>');
+              var url = 'index.cfm';
+              var pars = 'muraAction=cSettings.loadcustomimage&siteid=' + siteid +'&sizeid=' + sizeid  +'&cacheid=' + Math.random();
+              jQuery.get(url + "?" + pars, 
+                  function(data) {
+                  jQuery('##custom-image-dialog').html(data);
+                  $("##custom-image-dialog").dialog("option", "position", "center");
+                  }
+                );    
+              
+            },
+            close: function(){
+              jQuery(this).dialog("destroy");
+              jQuery("##custom-image-dialog").remove();
+            } 
+        });
+
+        return false;
+     }
+
+    function saveCustomImageSize(){
+      loadCustomImages(
+        {
+          sizeid:$('##custom-image-form').attr('data-sizeid'),
+          siteid:siteid,
+          name:$('##custom-image-name').val(),
+          height:$('##custom-image-height').val(),
+          width:$('##custom-image-width').val(),
+          imageaction:'save'
+        }
+      );
+     }
+
+    function deleteCustomImageSize(){
+      loadCustomImages(
+        {
+          sizeid:$('##custom-image-form').attr('data-sizeid'),
+          siteid:siteid,
+          name:'',
+          height:'',
+          width:'',
+          imageaction:'delete'
+        }
+      );
+     }
+
+     function loadCustomImages(imageoptions){
+        var merged=$.extend(
+            {
+              sizeid:'',
+              siteid:'',
+              name:'',
+              height:'',
+              width:'',
+              imageaction:''
+            },
+            imageoptions
+          );
+        var url = 'index.cfm';
+        var pars = 'muraAction=cSettings.loadcustomimages&siteid=' + merged.siteid + '&cacheid=' + Math.random();;
+    
+        jQuery.post(url + "?" + pars,
+          merged, 
+          function(data) {
+            jQuery('##custom-images-container').html(data);
+            }
+        );    
+     }
+
+     $(document).ready(function(){loadCustomImages({siteid:'#JSStringFormat(rc.siteBean.getSiteID())#'})});
+
+      </script>
+      
+      <h3>Custom Images</h3>
+      <p><a href="##" onclick="return openCustomImageSize('','#JSStringFormat(rc.siteBean.getSiteID())#')">Add Custom Image Size</a></p>
+      
+
+      <div id="custom-images-container"></div>
+      </cfif> 
 
       </div>
       
