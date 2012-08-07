@@ -174,6 +174,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		                    </li>
 		                    <cfif listFind(session.mura.memberships,'S2')>
 		                     	<li><a href="#application.configBean.getContext()#/admin/index.cfm?#urlEncodedFormat(application.appreloadkey)#&reload=#urlEncodedFormat(application.appreloadkey)#"><i class="icon-refresh"></i> #application.rbFactory.getKeyValue(session.rb,"layout.reloadapplication")#</a></li>
+		                     	
+		                     	<li>
+		                     		<a href="">
+		                     			<i class="icon-bolt"></i> Update Mura Core
+		                     		</a>
+		                     	</li>
 		                     </cfif>
 		                    </ul>
 	                  </li>
@@ -290,60 +296,59 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 				
 	 					
 		 				<ul class="dropdown-menu">
-		 					   <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')><li <cfif (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000000')>class='active'</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPerm.module&contentid=00000000000000000000000000000000000&siteid=#session.siteid#&moduleid=00000000000000000000000000000000000"><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.permissions")#</a></li>
-	 					</cfif>
-	 					
-	 					<li>
-	 					<a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.editSite&siteid=#session.siteid#"><i class="icon-pencil"></i> #application.rbFactory.getKeyValue(session.rb,"layout.editcurrentsite")#</a></li>
+		 					 <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
+		 					   <li <cfif (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000000')>class='active'</cfif>>
+		 					   		<a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPerm.module&contentid=00000000000000000000000000000000000&siteid=#session.siteid#&moduleid=00000000000000000000000000000000000">
+		 					   			<i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.permissions")#
+		 					   		</a>
+		 					   	</li>
+		 					<li>
+		 						<a href="">
+		 							<i class="icon-list-alt"></i> Class Extension Manager
+		 						</a>
+		 					</li>
+		 					
+		 					<li>
+		 						<a href="">
+		 							<i class="icon-gift"></i> Create Site Bundle
+		 						</a>
+		 					</li>
+		 					
+		 					<li>
+		 						<a href="">
+		 							<i class="icon-trash"></i> Trash Bin
+		 						</a>
+		 					</li>
+		 					
+		 					   <li <cfif (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000000')>class='active'</cfif>>
+		 					   		<a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPerm.module&contentid=00000000000000000000000000000000000&siteid=#session.siteid#&moduleid=00000000000000000000000000000000000">
+		 					   			<i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.permissions")#
+		 					   		</a>
+		 					   	</li>
+		 					</cfif>
+		 					
+		 					<li>
+		 						<a href="">
+		 							<i class="icon-bolt"></i> Update Site
+		 						</a>
+		 					</li>
+		 					
+		 					<li>
+		 						<a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.editSite&siteid=#session.siteid#">
+		 							<i class="icon-pencil"></i> #application.rbFactory.getKeyValue(session.rb,"layout.editcurrentsite")#
+		 						</a>
+		 					</li>
 	 					
 		 				</ul>	
 	 			 									
 	 				</li>
 	 			
-	 			</ul>
-	 			
-	 			<!---<div id="select-site" class="btn-group">
-	 			  <button class="btn"><i class="icon-globe"></i> #application.settingsManager.getSite(session.siteid).getSite()#</button>
-	 			  <button class="btn dropdown-toggle" data-toggle="dropdown">
-	 			    <span class="caret"></span>
-	 			  </button>
-	 			  <ul class="dropdown-menu">
-	 			    <cfset theSiteList=application.settingsManager.getUserSites(session.siteArray,listFind(session.mura.memberships,'S2')) />
-	 			      <cfloop query="theSiteList">
-	 			        <li<cfif session.siteID eq theSiteList.siteID> class="active"</cfif>>
-	 			          <a href="#baseURL#&amp;siteID=#theSiteList.siteID#">#HTMLEditFormat(theSiteList.site)#</a>
-	 			        </li>
-	 			      </cfloop>
-	 			  </ul>
-	 			</div>--->
-	 			
-	 			<!---<div id="select-site" class="btn-group">
-	 			  <a class="btn dropdown-toggle" data-toggle="dropdown">
-	 			    <i class="icon-globe"></i> #application.settingsManager.getSite(session.siteid).getSite()#
-	 			    <span class="caret"></span>
-	 			  </a>
-	 			  <ul class="dropdown-menu">
-	 			    <cfset theSiteList=application.settingsManager.getUserSites(session.siteArray,listFind(session.mura.memberships,'S2')) />
-	 			      <cfloop query="theSiteList">
-	 			        <li<cfif session.siteID eq theSiteList.siteID> class="active"</cfif>>
-	 			          <a href="#baseURL#&amp;siteID=#theSiteList.siteID#">#HTMLEditFormat(theSiteList.site)#</a>
-	 			        </li>
-	 			      </cfloop>
-	 			  </ul>
-	 			</div>--->
-	 
+	 			</ul>	 
 	 		</div> <!-- /container -->
 	 	
 	 	</div> <!-- /subnavbar-inner -->
 	 
 	 </div> <!-- /subnavbar -->
-	        	
-	 <!---<div id="current-site">
-	 	<div class="container">
-	 		<i class="icon-globe"></i> <strong>Current Site:</strong> Site Name
-	 	</div>
-	 </div>--->
-	        	<!---<cfinclude template="dsp_secondary_menu.cfm">--->
-	  </cfif>
+</cfif>
 </header>
 </cfoutput>

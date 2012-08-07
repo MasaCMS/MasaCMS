@@ -260,10 +260,6 @@ var hasBody=#subType.getHasBody()#;
 	<cfelse>
 		<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editcontent")#</h2>
 	</cfif>
-
-	<cfif rc.compactDisplay neq "true" or not listFindNoCase(nodeLevelList,rc.type)>	
-		<cfinclude template="dsp_secondary_menu.cfm">
-	</cfif>
 	
 	<cfif rc.compactDisplay neq "true">
 		<ul class="metadata-horizontal">
@@ -286,6 +282,10 @@ var hasBody=#subType.getHasBody()#;
 				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#: <strong>#HTMLEditFormat(rc.type)#</strong>
 			</li>
 		</ul>
+	</cfif>
+	
+	<cfif rc.compactDisplay neq "true" or not listFindNoCase(nodeLevelList,rc.type)>	
+		<cfinclude template="dsp_secondary_menu.cfm">
 	</cfif>
 	
 	<cfif rc.compactDisplay eq "true" and not ListFindNoCase(nodeLevelList,rc.type)>

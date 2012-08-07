@@ -13,7 +13,7 @@
 	@import "typography.less";
 	@import "header.less";
 	@import "navigation.less";
-	@import "mura-grids.less";
+	@import "mura-grid.less";
 	@import "login.less";
 	@import "forms.less";
 	@import "tag-clouds.less";
@@ -35,8 +35,22 @@
 			.box-shadow(0 0 0);
 			border: 0;
 		}
+		
+	.tabbable {
+		clear: both;
+	}
+	
+	.tooltip {
+		text-align: left !important;
+		line-height: 1.2;
+	}
 
 // Additional Mura styles -- Move to separate file?
+	
+	.navZoom {
+		.breadcrumb;
+	}
+	
 	a img {
 		border: 0;
 	}
@@ -55,6 +69,10 @@
 		float: none;
 		display: block;
 		padding: 1em 0;
+	}
+	
+	#sm-modify-view {
+		margin-bottom: @baseLineHeight;	
 	}
 	
 	/* @group Metadata List */

@@ -6,10 +6,7 @@
 			font-size: 12px;
 			
 			.ui-draggable-dragging {
-				/*border: 2px solid #fff;*/
-				-webkit-box-shadow: 0px 0px 8px #666;
-				-moz-box-shadow: 0px 0px 8px #666;
-				box-shadow: 0px 0px 8px #666;
+				.box-shadow(0px 0px 8px #666);
 				}
 			
 			/*Fix Firefox wrapping issue when zoomed in 1 level and dragging. Safari has a different issue when zoomed in and dragging where the row you're dragging gets positioned about 400 pixels below your cursor, not sure what the fix is. */
@@ -68,7 +65,7 @@
 			}
 			
 			dt {
-				width: 380px;
+				width: 634px;
 				text-align: left;
 				line-height: 12px;
 				min-height: 20px;
@@ -222,6 +219,10 @@
 			
 			.mura-grid-hdr dd {
 				border-left: 0;
+			}
+			
+			.mura-grid-hdr dd.admin {
+				border-right: 0;
 			}
 			
 			.mura-grid-hdr .add, #mura-nodes span.add {

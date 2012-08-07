@@ -85,21 +85,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.componentmanager')#</h2>	
 </cfif>
 
-<cfinclude template="dsp_secondary_menu.cfm">
+<div class="btn-group">
+  <a class="btn dropdown-toggle" data-toggle="dropdown" href="">
+    <i class="icon-eye-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.filterview')#
+    <span class="caret"></span>
+  </a>
+  <div class="dropdown-menu">
+    <form class="form-inline" novalidate="novalidate" id="filterByTitle" action="index.cfm" method="get">
+    	  <h4>#application.rbFactory.getKeyValue(session.rb,'sitemanager.filterviewdesc')#</h4>
+    	  <input type="text" name="searchString" value="#HTMLEditFormat(rc.searchString)#" class="text">
+    	  <input type="button" class="submit btn" onclick="document.getElementById('filterByTitle').submit();" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.filter')#" />
+    	  <input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#" />
+    	  <input type="hidden" name="topid" value="#rc.topID#" />
+    	  <input type="hidden" name="parentid" value="#rc.parentID#" />
+    	  <input type="hidden" name="moduleid" value="#rc.moduleID#" />
+    	  <input type="hidden" name="sortBy" value="" />
+    	  <input type="hidden" name="sortDirection" value="" />
+    	  <input type="hidden" name="muraAction" value="cArch.list" />
+    </form>
+  </div>
+</div>
 
-  <h3 class="alt">#application.rbFactory.getKeyValue(session.rb,'sitemanager.filterview')#:</h3>
-  <form class="form-inline" novalidate="novalidate" id="filterByTitle" action="index.cfm" method="get">
-	  <h4>#application.rbFactory.getKeyValue(session.rb,'sitemanager.filterviewdesc')#</h4>
-	  <input type="text" name="searchString" value="#HTMLEditFormat(rc.searchString)#" class="text">
-	  <input type="button" class="submit btn" onclick="document.getElementById('filterByTitle').submit();" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.filter')#" />
-	  <input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#" />
-	  <input type="hidden" name="topid" value="#rc.topID#" />
-	  <input type="hidden" name="parentid" value="#rc.parentID#" />
-	  <input type="hidden" name="moduleid" value="#rc.moduleID#" />
-	  <input type="hidden" name="sortBy" value="" />
-	  <input type="hidden" name="sortDirection" value="" />
-	  <input type="hidden" name="muraAction" value="cArch.list" />
-  </form>
+<cfinclude template="dsp_secondary_menu.cfm">
   
   </cfoutput>
   <table class="table table-striped table-bordered table-condensed">
