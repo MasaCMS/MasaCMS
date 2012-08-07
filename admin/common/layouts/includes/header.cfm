@@ -280,7 +280,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 					  </ul>			
 	 				</li>
 	 				 				
-	 				<li class="dropdown<cfif  rc.originalcircuit eq 'cSettings'> active</cfif>">					
+	 				<li class="dropdown<cfif listFindNoCase('csettings,cextend,ctrash',rc.originalcircuit) > active</cfif>">					
 	 					<a class="dropdown-toggle" data-toggle="dropdown">
 	 						<i class="icon-wrench"></i> <span>#application.rbFactory.getKeyValue(session.rb,"layout.sitesettings")#</span>
 	 					<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
