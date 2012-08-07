@@ -65,9 +65,9 @@ header {
 	    }
 	    
 	.subnavbar-inner {
-		background: #3A3A3A;
-		#gradient .vertical(#414141,#323232);	
-		border-bottom: 1px solid #000;
+		background: #474747;
+		/*.box-shadow(inset 0px 0px 16px rgba(0, 0, 0, .46));*/
+		border-bottom: 0 solid #444;
 		height: auto;
 	}
 	
@@ -79,9 +79,10 @@ header {
 			> ul {
 				display: inline-block;
 				padding: 0;
-				margin: 0 0 0 55px;
-				border-left: 1px solid #292929;
+				margin: 0;
+				/*border-left: 1px solid #292929;*/
 				border-right: 1px solid #4A4A4A;
+				border-left: 0;
 			}
 			
 			> ul > li {
@@ -92,8 +93,10 @@ header {
 				margin: 0;
 				text-align: center;
 				list-style: none;
+				#gradient .vertical(#474747,#313131);
 				border-left: 1px solid #4A4A4A;
 				border-right: 1px solid #292929;
+				/*border-bottom: 1px solid #444;*/
 			}
 			
 			> ul > li > ul > li {
@@ -141,7 +144,7 @@ header {
 			> ul > li.active {
 				
 				> a {
-					#gradient .vertical(#292929,#111);
+					#gradient .vertical(#363636,#222);
 					text-shadow: 0 -1px 0 rgba(0,0,0,1.0);
 					color: @white;
 				}
@@ -220,27 +223,23 @@ header {
 		}	
 
 		#select-site {
-			width: 160px;
+			display: block;
+			float: left;
+			min-width: 180px;
 			position: relative;
-			/*#gradient .vertical(#323232,#414141);*/
-			/*background-color: #555;*/
 			border-left: 0;
+			background: transparent;
+			margin: 0 10px 0 55px;
 		}
 		
-		#select-site a {
-			width: 130px;
-			box-shadow: inset 0px 0px 12px rgba(0, 0, 0, .3);
-		}
-		
-		#select-site li a {
-			width: 130px;
-			box-shadow: 0px 0px 0 rgba(0, 0, 0, 0);
+		#select-site:hover {
+			cursor: pointer;
 		}
 		
 		#select-site #select-site-btn {
 			display: block;
-			width: 92px;
-			margin: 0 0 0 -46px;
+			margin-top: 10px;
+			text-align: center;
 			min-height: 0;
 			.border-radius(15);
 			font-family: SilkscreenNormal;
@@ -250,13 +249,8 @@ header {
 			letter-spacing: 1px;
 			text-transform: uppercase;
 			color: @white;
-			/*background: hsla(0,0%,15%,.9);*/
 			background: @orange;
-			/*border: 1px solid #333;*/
 			padding: 4px 0 3px;
-			position: absolute;
-			top: 10px;
-			left: 50%;
 			text-shadow: 0 -1px 0 rgba(0,0,0,.2);
 			box-shadow: 0px 0px 8px rgba(0,0,0,.5);
 			
@@ -275,25 +269,42 @@ header {
 		
 		#select-site #select-site-btn:hover {
 			color: @white;
-			/*background: @orange;*/
-			/*border: 1px solid #999;*/
 			box-shadow: 0px 0px 8px rgba(255,255,255,.35);
+			text-decoration: none;
 		}
 		 
-		 #select-site-btn i {
-		 	/*text-shadow: 0 0 6px rgba(255,255,255,.65);*/
+		 #select-site .dropdown-menu {
+		 	width: 190px;
 		 }
-		    
-		 #select-site-btn span {
+		 
+		 #select-site .dropdown-menu a {
 		 	.text-overflow;
-		 	color: darken(@gray,0%);
-		 	color: @white;
-		 	/*text-shadow: 0 0 6px rgba(255,255,255,.65);*/
 		 }
 		 
 		 #select-site-btn .dropdown-menu  i {
 		 	text-shadow: 0 0 0 !important;
-		 } 	    
+		 }
+		
+		#select-site > a.dropdown-toggle {
+			display: block;
+			height: 30px;
+			margin-top: 4px;
+			padding: 0;
+			font-size: 12px;
+			font-weight: normal;
+			color: @white;
+			text-shadow: 0 -1px 0 rgba(000, 000, 000, 1.0);
+			text-align: center;
+		
+			> span {
+				display: block;
+				line-height: 16px;
+				.text-overflow;
+				white-space: nowrap;
+				color: darken(@gray,0%);
+				color: @white;
+			}
+		} 	    
 		
 		/* Button Dropdown Selector
 		
