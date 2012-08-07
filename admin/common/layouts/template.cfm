@@ -207,12 +207,13 @@
     <script type="text/javascript" language="javascript">
 		stripe('stripe');
 	</script>
-	--->
+	
 	<cfif rc.originalcircuit neq 'cLogin' and yesNoFormat(application.configBean.getValue("sessionTimeout"))>
 		<script type="text/javascript" language="javascript">
 			window.setTimeout('CountDown()',100);
 		</script>
 	</cfif>	
+	--->
 	<cfif cgi.http_user_agent contains 'msie'>
 		<!--[if IE 6]>
 		<script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/ie6notice.js"></script>

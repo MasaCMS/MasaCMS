@@ -47,11 +47,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <cfset rc.originalfuseaction=listLast(request.action,".")>
 <div id="nav-module-specific" class="btn-group">
-<a class="btn<cfif rc.originalfuseaction neq 'main'> active</cfif>" href="index.cfm?muraAction=cDashboard.main&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.overview")#</a>
+<a class="btn<cfif rc.originalfuseaction eq 'main'> active</cfif>" href="index.cfm?muraAction=cDashboard.main&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.overview")#</a>
 <cfif application.configBean.getSessionHistory()>
 <a class="btn <cfif rc.originalfuseaction eq 'sessionsearch'> active</cfif>" href="index.cfm?muraAction=cDashboard.sessionSearch&siteID=#session.siteid#&newSearch=true">#application.rbFactory.getKeyValue(session.rb,"dashboard.sessionsearch")#</a>
 <a class="btn <cfif rc.originalfuseaction eq 'topcontent'> active</cfif>"  href="index.cfm?muraAction=cDashboard.topContent&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.topcontent")#</a>
-<a class="btn <cfif rc.originalfuseaction eq 'topreferrers'> active</cfif>"  href="index.cfm?muraAction=cDashboard.topReferers&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.topreferrers")#</a>
+<a class="btn <cfif rc.originalfuseaction eq 'topreferers'> active</cfif>"  href="index.cfm?muraAction=cDashboard.topReferers&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.topreferrers")#</a>
 <a class="btn <cfif rc.originalfuseaction eq 'topsearches'> active</cfif>"  href="index.cfm?muraAction=cDashboard.topSearches&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.topsearches")#</a>
 </cfif>
 <a class="btn <cfif rc.originalfuseaction eq 'toprated'> active</cfif>"  href="index.cfm?muraAction=cDashboard.topRated&siteID=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"dashboard.toprated")#</a>
