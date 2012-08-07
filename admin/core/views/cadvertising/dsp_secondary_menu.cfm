@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <cfset rc.originalfuseaction=listLast(request.action,".")>
 <div id="nav-module-specific" class="btn-group">
-	<a class="btn <cfif rc.originalfuseaction eq 'listadvertizers'> active</cfif>" href="index.cfm?muraAction=cAdvertising.listAdvertisers&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.advertisers')#</a>
+	<a class="btn <cfif rc.originalfuseaction eq 'listadvertisers'> active</cfif>" href="index.cfm?muraAction=cAdvertising.listAdvertisers&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.advertisers')#</a>
 	<a class="btn <cfif rc.originalfuseaction eq 'listcampaigns'> active</cfif>" href="index.cfm?muraAction=cAdvertising.listCampaigns&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.campaigns')#</a>
 	<a class="btn <cfif rc.originalfuseaction eq 'listcreatives'> active</cfif>" href="index.cfm?muraAction=cAdvertising.listCreatives&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.creatives')#</a>
 	<a class="btn <cfif rc.originalfuseaction eq 'listadzones'> active</cfif>" href="index.cfm?muraAction=cAdvertising.listadzones&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.adzones')#</a>
