@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 <cfoutput>
 
-<li class="dropdown<cfif  rc.originalcircuit eq 'cDashboard'> active</cfif>">
+<li class="dropdown<cfif listFind('00000000000000000000000000000000003,0000000000000000000000000000000004',rc.moduleID) or listFindNoCase('cchangesets,cfeed,ccategory,cemail,cfilemanager,cadvertising,',rc.originalcircuit)> active</cfif>">
   <a class="dropdown-toggle" data-toggle="dropdown"><i class="icon-th-large"></i> <span>#application.rbFactory.getKeyValue(session.rb,"layout.modules")#</span> <b class="caret"></b></a>
   <ul id="navSecondary" class="dropdown-menu">
 		

@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfoutput>
 <cfset rc.originalfuseaction=listLast(request.action,".")>
-<cfset rc.originalcircuit=listFirst(listLast(request.action,":"))>
+<cfset rc.originalcircuit=listFirst(listLast(request.action,":"),".")>
 <div id="nav-module-specific" class="btn-group">
 	<cfswitch expression="#rc.moduleid#">
 		<cfcase value="00000000000000000000000000000000003,00000000000000000000000000000000004">

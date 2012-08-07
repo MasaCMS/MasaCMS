@@ -45,7 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-<cfparam name="rc.originalmuraAction" default="">
+<cfparam name="rc.originalfuseAction" default="">
 <cfparam name="rc.originalcircuit" default="">
 <cfparam name="rc.moduleid" default="">
 <cfif not isDefined("session.mura.memberships")>
@@ -248,7 +248,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 				</li>
 	 				</cfif>
 	 				
-	 				<li <cfif  rc.originalcircuit eq 'cArch'> class="active"</cfif>>
+	 				<li <cfif rc.originalcircuit eq 'cArch' and not listFind('00000000000000000000000000000000003,0000000000000000000000000000000004',rc.moduleID)> class="active"</cfif>>
 	 					<a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cArch.list&siteid=#session.siteid#&moduleid=00000000000000000000000000000000000">
 	 						<i class="icon-list-alt"></i> <span>#application.rbFactory.getKeyValue(session.rb,"layout.sitemanager")#</span>
 	 					</a>	    				
@@ -259,7 +259,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 				  <cfinclude template="dsp_module_menu.cfm">
 	 				</cfif>
 	 				
-	 				<li class="dropdown<cfif  rc.originalcircuit eq 'cPrivateusers'> active</cfif>">
+	 				<li class="dropdown<cfif listFindNoCase('cPrivateUsers,cPublicUsers',rc.originalcircuit)> active</cfif>">
 	 					<a class="dropdown-toggle" data-toggle="dropdown">
 	 						<i class="icon-group"></i> <span>#application.rbFactory.getKeyValue(session.rb,"layout.users")#</span>
 	 						<b class="caret"></b>
