@@ -51,6 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset attributesArray=extendSet.getAttributes() />
 <h2>Manage Attributes Set</h2>
 
+<cfoutput>
 <div id="nav-module-specific" class="btn-group">
 <a class="btn" href="index.cfm?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-share-alt"></i> Back to Class Extensions</a>
 <a class="btn" href="index.cfm?muraAction=cExtend.listSets&subTypeID=#URLEncodedFormat(rc.subTypeID)#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-share-alt"></i> Back to Attribute Sets</a>
@@ -59,7 +60,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </div>
 
-<cfoutput>
 <ul class="metadata">
 		<li><strong>Class Extension:</strong> #application.classExtensionManager.getTypeAsString(subType.getType())# / #subType.getSubType()#</li>
 		<li><strong>Attributes Set:</strong> #extendSet.getName()#</li>
