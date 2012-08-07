@@ -191,11 +191,13 @@
       <div class="main-inner">
          <div class="container">
          	<div class="row">
-         		<cfif request.action neq "core:cDashboard.main">
+         		<cfif request.action neq "core:cDashboard.main" 
+         			and request.action neq "core:cLogin.main">
          			<div class="span12">
          		</cfif>
          		#body#
-         		<cfif request.action neq "core:cDashboard.main">
+         		<cfif request.action neq "core:cDashboard.main"
+         			and request.action neq "core:cLogin.main">
          			</div>
          		</cfif>
          	</div> <!-- /row -->
