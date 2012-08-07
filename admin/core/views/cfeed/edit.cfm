@@ -387,9 +387,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#
       </label>
 	<div class="controls"><select name="#displaNamePrefix#imageSize" data-displayobjectparam="imageSize" class="dropdown" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
-		<cfloop list="Small,Medium,Large,Custom" index="i">
-		<option value="#lcase(i)#"<cfif i eq rc.feedBean.getImageSize()> selected</cfif>>#I#</option>
+		<cfloop list="Small,Medium,Large" index="i">
+			<option value="#lcase(i)#"<cfif i eq rc.feedBean.getImageSize()> selected</cfif>>#I#</option>
 		</cfloop>
+
+		<cfset imageSizes=application.settingsManager.getSite(rc.siteid).getCustomImageSizeIterator()>
+								
+		<cfloop condition="imageSizes.hasNext()">
+			<cfset image=imageSizes.next()>
+			<option value="#lcase(image.getName())#"<cfif image.getName() eq rc.feedBean.getImageSize()> selected</cfif>>#HTMLEditFormat(image.getName())#</option>
+		</cfloop>
+		<option value="custom"<cfif "custom" eq rc.feedBean.getImageSize()> selected</cfif>>Custom</option>
 	</select>
 	  </div>
 	</div>

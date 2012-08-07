@@ -75,6 +75,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="Image" required="true" />
 	<cfargument name="Height" default="AUTO" />
 	<cfargument name="Width" default="AUTO" />
+	<cfargument name="size" default="" />
+	<cfargument name="siteID" default="" />
 
 	<cfset var NewImageSource = "">
 	<cfset var NewImageLocal = "">
@@ -83,15 +85,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var OriginalImageType = "" />
 	<cfset var OriginalImageFile = trim(arguments.Image) />
 	<cfset var OriginalImagePath = GetDirectoryFromPath(OriginalImageFile) />
-
+	<cfset var customImageSize="">
 	
 	<cfif not len(arguments.image) 
 		or not listFindNoCase("png,gif,jpg,jpeg",listLast(arguments.image,"."))>
 		<cfreturn "">
 	</cfif>
-	
-	<cfset arguments.Width = trim(replaceNoCase(arguments.Width,"px","","all")) />
-	<cfset arguments.Height = trim(replaceNoCase(arguments.Height,"px","","all")) />
 	
 	<cfif not fileExists(OriginalImageFile)>
 		<cfset OriginalImageFile = expandPath(OriginalImageFile) />
@@ -105,11 +104,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset NewImageSource = OriginalImageFile />
 		<cfset NewImageLocal = arguments.Image />
 	<cfelse>
-		<cfset NewImageSource = "#OriginalImageFilename#_H#arguments.Height#_W#arguments.Width#.#OriginalImageType#" />
-		<cfset NewImageLocal = Replace(OriginalImageFile, ".#OriginalImageType#", "_H#arguments.height#_W#arguments.width#.#OriginalImageType#") />
+		<cfif len(arguments.size)>
+			<cfset NewImageSource = "#OriginalImageFilename#_#lcase(arguments.size)#" />
+			<cfset NewImageLocal = Replace(OriginalImageFile, ".#OriginalImageType#", "_#lcase(arguments.size)#.#OriginalImageType#") />
+		<cfelse>
+			<cfset arguments.Width = trim(replaceNoCase(arguments.Width,"px","","all")) />
+			<cfset arguments.Height = trim(replaceNoCase(arguments.Height,"px","","all")) />
+			<cfset NewImageSource = "#OriginalImageFilename#_H#arguments.Height#_W#arguments.Width#.#OriginalImageType#" />
+			<cfset NewImageLocal = Replace(OriginalImageFile, ".#OriginalImageType#", "_H#arguments.height#_W#arguments.width#.#OriginalImageType#") />		
+		</cfif>
 	</cfif>
 	
 	<cfset NewImageLocal = listLast(NewImageLocal,variables.configBean.getFileDelim())>
+
 		
 	<cfif not FileExists(NewImageSource)>
 	
@@ -126,6 +133,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfset variables.fileWriter.copyFile(source=OriginalImageFile,destination=NewImageSource)>
 		
+		<cfif len(arguments.size)>
+			<cfset customImageSize=getBean('imageSize').loadBy(name=arguments.size,siteID=arguments.siteID)>
+			<cfset arguments.Width = customImageSize.getWidth() />
+			<cfset arguments.Height = customImageSize.getHeight() />
+		</cfif>
+
 		<cfset resizeImage(height=arguments.height,width=arguments.width,image=NewImageSource)>
 			
 		<cfif not fileExists(NewImageSource)>

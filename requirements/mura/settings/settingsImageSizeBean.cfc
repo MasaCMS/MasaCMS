@@ -87,13 +87,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="loadBy" access="public" output="false">
-	<cfargument name="sizeID"  default="#variables.instance.sizeID#">
+	<cfargument name="sizeID">
+	<cfargument name="name">
+	<cfargument name="siteID">
 	
-	<cfif len(arguments.sizeID)>
-		<cfset variables.instance.sizeID=arguments.sizeID>
-	</cfif>
-
-	<cfset var rs=getQuery()>
+	
+	<cfset var rs=getQuery(argumentCollection=arguments)>
 
 	<cfif rs.recordcount>
 		<cfset set(rs) />
@@ -103,11 +102,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getQuery"  access="public" output="false" returntype="query">
+
+
 	<cfset var rs=""/>
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select * from timagesizes 
-	where 
+	where
+	<cfif structKeyExists(arguments,'sizeid')>
+	sizeid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.sizeID#">
+	<cfelseif structKeyExists(arguments,"name") and structKeyExists(arguments,"siteid")>
+	name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.name#">
+	and 
+	siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
+	<cfelse>
 	sizeid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.sizeID#">
+	</cfif>
+	
 	</cfquery>
 	
 	<cfreturn rs/>

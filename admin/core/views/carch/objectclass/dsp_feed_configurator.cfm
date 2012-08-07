@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfset $=application.serviceFactory.getBean("muraScope").init(rc.siteID)>
-<cfset feed=$.getBean("feed").loadBy(feedID=rc.feedID)>
+<cfset feed=$.getBean("feed").loadBy(feedID=feedID)>
 
 <cfif isDefined("form.params") and isJSON(form.params)>
 	<cfset feed.set(deserializeJSON(form.params))>
@@ -91,9 +91,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</label>
 				<div class="controls">
 					<select name="assets/imagesize" class="objectParam  dropdown" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
-						<cfloop list="Small,Medium,Large,Custom" index="i">
-							<option value="#lcase(i)#"<cfif i eq feed.getImageSize()> selected</cfif>>#I#</option>
-						</cfloop>
+						<cfloop list="Small,Medium,Large" index="i">
+						<option value="#lcase(i)#"<cfif i eq feed.getImageSize()> selected</cfif>>#I#</option>
+					</cfloop>
+
+					<cfset imageSizes=application.settingsManager.getSite(rc.siteid).getCustomImageSizeIterator()>
+													
+					<cfloop condition="imageSizes.hasNext()">
+						<cfset image=imageSizes.next()>
+						<option value="#lcase(image.getName())#"<cfif image.getName() eq feed.getImageSize()> selected</cfif>>#HTMLEditFormat(image.getName())#</option>
+					</cfloop>
+					<option value="custom"<cfif "custom" eq feed.getImageSize()> selected</cfif>>Custom</option>
 					</select>
 				</div>
 			</div>

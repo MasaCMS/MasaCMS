@@ -69,6 +69,26 @@
 				</div>
 				</div>
 			</cfloop>
+			<cfset imageSizes=application.settingsManager.getSite(rc.siteid).getCustomImageSizeIterator()>
+			<cfloop condition="imageSizes.hasNext()">
+				<cfset customImage=imageSizes.next()>
+				<cfif isNumeric(customImage.getHeight()) and isNumeric(customImage.getWidth())>
+					<cfset rc.customImageRatio=customImage.getWidth()/customImage.getHeight()>
+				<cfelse>
+					<cfset rc.customImageRatio=''>
+				</cfif>
+				<div class="control-group">
+				<label class="control-label">#HTMLEditFormat(customImage.getName())#</label>
+				<div class="controls">
+					<img id="#lcase(customImage.getName())##f#" src="#$.getURLForImage(fileID=f,size=lcase(customImage.getName()))#?cacheID=#createUUID()#"/>
+					<div id="#lcase(customImage.getName())##f#btns">
+					<button type="button" class="btn cropper-reset" data-fileid="#f#" data-size="#lcase(customImage.getName())#">Reset</button>
+					<button type="button" class="btn cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#rc.customImageRatio#" data-size="#lcase(customImage.getName())#">Re-Crop</button>
+					<img src="./assets/images/progress_bar.gif" style="display:none">
+					</div>
+				</div>
+				</div>
+			</cfloop>
 		</cfif>
 	</cfloop>
 
@@ -130,9 +150,11 @@
     		currentFileID=$(this).attr('data-fileid');
 			currentSize=$(this).attr('data-size')
 			//alert(currentSize + currentFileID);
-			
+
     		$('##'  + currentSize + currentFileID + 'btns .btn').hide();
     		$('##'  + currentSize + currentFileID + 'btns img').show();
+
+    		//location.href='./index.cfm?muraAction=carch.cropimage&fileid=' + currentFileID + '&size=' + currentSize + '&siteid=' + siteid;
 
     		jQuery.get('./index.cfm?muraAction=carch.cropimage&fileid=' + currentFileID + '&size=' + currentSize + '&siteid=' + siteid,
 							function(data) {	
