@@ -667,12 +667,13 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 
 <cffunction name="queryPermFilter" returntype="query" access="public" output="false">
 	<cfargument name="rawQuery" type="query">
-	<cfargument name="resultQuery" type="query" default="#newResultQuery()#">
+	<cfargument name="resultQuery" default="">
 	<cfargument name="siteID" type="string">
 	<cfargument name="hasModuleAccess" required="true" default="#getHasModuleAccess()#">
 	
 	<cfset var rows=0/>
 	<cfset var r=""/>
+	<cfset var i="">
 	<cfset var rs=arguments.resultQuery />
 	<cfset var hasPath=listFind(arguments.rawQuery.columnList,"PATH")/>
 	<cfif not isBoolean(arguments.hasModuleAccess)>
@@ -681,6 +682,12 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 		</cfif>
 		<cfset request.r.hasModuleAccess=getModulePerm('00000000000000000000000000000000000',arguments.siteID)>
 		<cfset arguments.hasModuleAccess=request.r.hasModuleAccess>
+	</cfif>
+
+	<cfif not isQuery(rs)>
+		<cfquery name="rs" dbtype="query">
+			select * from arguments.rawQuery where 0=1
+		</cfquery>
 	</cfif>
 	
 	<cfloop query="arguments.rawQuery">
@@ -692,60 +699,12 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 	<cfif not r.restrict or r.restrict and r.allow>
 		<cfset rows=rows+1/>
 		<cfset queryAddRow(rs,1)/>
-		<cfset querysetcell(rs,"contentid",arguments.rawQuery.contentid,rows)/>
-		<cfset querysetcell(rs,"contentHistid",arguments.rawQuery.contentHistid,rows)/>
-		<cfset querysetcell(rs,"siteid",request.siteid,rows)/>
-		<cfset querysetcell(rs,"filename",arguments.rawQuery.filename,rows)/>
-		<cfset querysetcell(rs,"menutitle",arguments.rawQuery.menutitle,rows)/>
-		<cfset querysetcell(rs,"title",arguments.rawQuery.title,rows)/>
-		<cfset querysetcell(rs,"targetParams",arguments.rawQuery.targetParams,rows)/>
-		<cfset querysetcell(rs,"Summary",arguments.rawQuery.summary,rows)/>
-		<cfset querysetcell(rs,"tags",arguments.rawQuery.tags,rows)/>
-		<cfset querysetcell(rs,"restricted",arguments.rawQuery.restricted,rows)/>
-		<cfset querysetcell(rs,"releasedate",arguments.rawQuery.releasedate,rows)/>
-		<cfset querysetcell(rs,"type",arguments.rawQuery.type,rows)/>
-		<cfset querysetcell(rs,"subtype",arguments.rawQuery.subtype,rows)/>
-		<cfset querysetcell(rs,"restrictGroups",arguments.rawQuery.restrictGroups,rows)/>
-		<cfset querysetcell(rs,"target",arguments.rawQuery.target,rows)/>
-		<cfset querysetcell(rs,"displaystart",arguments.rawQuery.displaystart,rows)/>
-		<cfset querysetcell(rs,"displaystop",arguments.rawQuery.displaystop,rows)/>
-		<cfset querysetcell(rs,"fileid",arguments.rawQuery.fileid,rows)/>
-		<cfset querysetcell(rs,"fileSize",arguments.rawQuery.fileSize,rows)/>
-		<cfset querysetcell(rs,"fileExt",arguments.rawQuery.fileExt,rows)/>
-		<cfset querysetcell(rs,"credits",arguments.rawQuery.credits,rows)/>
-		<cfset querysetcell(rs,"remoteSource",arguments.rawQuery.remoteSource,rows)/>
-		<cfset querysetcell(rs,"remoteSourceURL",arguments.rawQuery.remoteSourceURL,rows)/>
-		<cfset querysetcell(rs,"remoteURL",arguments.rawQuery.remoteURL,rows)/>
-		<cfset querysetcell(rs,"audience",arguments.rawQuery.audience,rows)/>
-		<cfset querysetcell(rs,"keyPoints",arguments.rawQuery.keyPoints,rows)/>
-		<cfset querysetcell(rs,"rating",arguments.rawQuery.rating,rows)/>
-		<cfset querysetcell(rs,"comments",arguments.rawQuery.comments,rows)/>
-		<cfset querysetcell(rs,"kids",arguments.rawQuery.kids,rows)/>
-		<cfset querysetcell(rs,"upVotes",arguments.rawQuery.upVotes,rows)/>
-		<cfset querysetcell(rs,"totalVotes",arguments.rawQuery.totalVotes,rows)/>
-		<cfset querysetcell(rs,"downVotes",arguments.rawQuery.downVotes,rows)/>
-		<cfset querysetcell(rs,"parentType",arguments.rawQuery.parentType,rows)/>
-		<cfset querysetcell(rs,"nextn",arguments.rawQuery.nextn,rows)/>
-		<cfif structKeyExists(arguments.rawQuery,"majorVersion")>
-			<cfset querysetcell(rs,"majorVersion",arguments.rawQuery.majorVersion,rows)/>
-		<cfelse>
-			<cfset querysetcell(rs,"majorVersion",0,rows)/>
-		</cfif>
-		<cfif structKeyExists(arguments.rawQuery,"minorVersion")>
-			<cfset querysetcell(rs,"minorVersion",arguments.rawQuery.minorVersion,rows)/>
-		<cfelse>
-			<cfset querysetcell(rs,"minorVersion",0,rows)/>
-		</cfif>
-		<cfif structKeyExists(arguments.rawQuery,"lockID")>
-			<cfset querysetcell(rs,"lockID",arguments.rawQuery.lockID,rows)/>
-		<cfelse>
-			<cfset querysetcell(rs,"lockID","",rows)/>
-		</cfif>
-		<cfif structKeyExists(arguments.rawQuery,"assocFilename")>
-			<cfset querysetcell(rs,"lockID",arguments.rawQuery.assocFilename,rows)/>
-		<cfelse>
-			<cfset querysetcell(rs,"lockID","",rows)/>
-		</cfif>
+		<cfloop list="#rs.columnList#" index="i">
+			<cfset querySetCell(rs,
+			i,
+			arguments.rawQuery[i][arguments.rawQuery.currentrow],
+			rows) />
+		</cfloop>
 	</cfif>
 	</cfloop>
 	

@@ -90,7 +90,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset variables.currentNextNIndex = 1>
 				<cfset variables.iterator.setPage(1)>
 			</cfif>
-			<cfset variables.nextN = variables.$.getBean('utility').getNextN(variables.rs, 
+			<cfset variables.nextN = variables.$.getBean('utility').getNextN(variables.iterator.getQuery(), 
 			                                                      variables.feedBean.getNextN(),
 			                                                      variables.currentNextNIndex)>
 		</cfsilent>
