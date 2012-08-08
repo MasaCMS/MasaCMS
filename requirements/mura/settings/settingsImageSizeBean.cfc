@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.bean.beanExtendable" output="false">
+<cfcomponent extends="mura.bean.bean" output="false">
  
 <cfproperty name="siteID" type="string" default="" required="true" />
 <cfproperty name="sizeID" type="string" default="" required="true" />
@@ -56,54 +56,74 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset super.init(argumentCollection=arguments)>
 	
-	<cfset variables.instance.SiteID=""/>
+	<cfset variables.instance.siteID=""/>
 	<cfset variables.instance.name=""/>
 	<cfset variables.instance.sizeID=createUUID()/>
+	<cfset variables.instance.width="AUTO"/>
 	<cfset variables.instance.height="AUTO"/>
-	<cfset variables.instance.height="AUTO"/>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setConfigBean" output="false">
+	<cfargument name="configBean">
+	<cfset variables.configBean=arguments.configBean>
 	<cfreturn this>
 </cffunction>
 
 <cffunction name="setHeight" output="false">
 <cfargument name="height">
-	<cfif not (isNumeric(arguments.height) or arguments.height eq "AUTO">
-		<cfset variables.height=arguments.height>
+	<cfif isNumeric(arguments.height) or arguments.height eq "AUTO">
+		<cfset variables.instance.height=arguments.height>
 	</cfif>
 	<cfreturn this>
 </cffunction>
 
 <cffunction name="setWidth" output="false">
 <cfargument name="width">
-	<cfif not (isNumeric(arguments.width) or arguments.width eq "AUTO">
-		<cfset variables.width=arguments.width>
+	<cfif isNumeric(arguments.width) or arguments.width eq "AUTO">
+		<cfset variables.instance.width=arguments.width>
 	</cfif>
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="loadBy"  access="public" output="false" returntype="void">
-	<cfargument name="sizeID"  default="#variables.instance.sizeID#">
+<cffunction name="loadBy" access="public" output="false">
+	<cfargument name="sizeID">
+	<cfargument name="name">
+	<cfargument name="siteID">
 	
-	<cfset variables.instance.sizeID=arguments.sizeID>
-
-	<cfset var rs=getQuery()>
+	
+	<cfset var rs=getQuery(argumentCollection=arguments)>
 
 	<cfif rs.recordcount>
 		<cfset set(rs) />
 	</cfif>
+
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getQuery"  access="public" output="false" returntype="query">
+
+
 	<cfset var rs=""/>
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select * from timagesizes 
-	where 
+	where
+	<cfif structKeyExists(arguments,'sizeid')>
+	sizeid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.sizeID#">
+	<cfelseif structKeyExists(arguments,"name") and structKeyExists(arguments,"siteid")>
+	name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.name#">
+	and 
+	siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
+	<cfelse>
 	sizeid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.sizeID#">
+	</cfif>
+	
 	</cfquery>
 	
 	<cfreturn rs/>
 </cffunction>
 
-<cffunction name="save"  access="public" output="false" returntype="void">
+<cffunction name="save"  access="public" output="false">
 	<cfset var rs=""/>
 
 	<cfif getQuery().recordcount>
@@ -113,19 +133,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#">,
 		name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.name#">,
 		height=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.height#">,
-		width=<<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.width#">,
+		width=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.width#">
 		where sizeid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.sizeID#">
 		</cfquery>
 		
 	<cfelse>
-	
+		
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		insert into timagesizes (sizeid,siteid,name,height,width) values(
-		sizeID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.sizeID#">,
-		siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#">,
-		name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.name#">,
-		height=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.height#">,
-		width=<<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.width#">,
+		<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.sizeID#">,
+		<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#">,
+		<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.name#">,
+		<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.height#">,
+		<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.width#">
 		)
 		</cfquery>
 		
@@ -134,7 +154,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="delete"  access="public" output="false" returntype="void">
+<cffunction name="delete"  access="public" output="false">
 
 	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		delete from timagesizes 

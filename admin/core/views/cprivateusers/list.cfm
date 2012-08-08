@@ -52,7 +52,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  		 <input id="search" name="search" type="text" class="text"> <input type="button" class="submit btn" onclick="submitForm(document.forms.form1);" value="Search" /><!--- <input type="button" class="submit" onclick="window.location='index.cfm?muraAction=cPrivateUsers.advancedSearchForm&siteid=#URLEncodedFormat(rc.siteid)#'"><span>Advanced</span></a> --->
 		  </form>
 		  <h2>#application.rbFactory.getKeyValue(session.rb,'user.adminusersgroups')#</h2>
-		  <h3>#application.rbFactory.getKeyValue(session.rb,'user.adminusergroups')#</h3>
+		  
+      <div id="nav-module-specific" class="btn-group"><a class="btn" href="index.cfm?muraAction=cPrivateUsers.edituser&siteid=#URLEncodedFormat(rc.siteid)#&userid=">#application.rbFactory.getKeyValue(session.rb,'user.addmember')#</a>
+      <a class="btn" href="index.cfm?muraAction=cPrivateUsers.editgroup&siteid=#URLEncodedFormat(rc.siteid)#&userid=">#application.rbFactory.getKeyValue(session.rb,'user.addgroup')#</a>
+      </div>
+
+      <h3>#application.rbFactory.getKeyValue(session.rb,'user.adminusergroups')#</h3>
 
 
         <table class="table table-striped table-bordered table-condensed">

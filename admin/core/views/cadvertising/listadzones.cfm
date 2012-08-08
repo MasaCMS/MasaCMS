@@ -46,20 +46,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfoutput>
 
-<h2>#application.rbFactory.getKeyValue(session.rb,'advertising.viewadzones')#</h2>
-
-<cfinclude template="dsp_secondary_menu.cfm">
-
 <form class="form-inline" novalidate="novalidate" id="siteSearch" name="siteSearch" method="get"><input name="keywords" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" maxlength="50" />  
 	<input type="button" class="submit btn" onclick="submitForm(document.forms.siteSearch);" value="#application.rbFactory.getKeyValue(session.rb,'advertising.search')#" />
 	<input type="hidden" name="muraAction" value="cAdvertising.listadzones">
 	<input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
 </form>
 
+<h2>#application.rbFactory.getKeyValue(session.rb,'advertising.viewadzones')#</h2>
+
+<cfinclude template="dsp_secondary_menu.cfm">
+
 <ul class="navTask nav nav-pills">
 <li><a href="index.cfm?muraAction=cAdvertising.editAdZone&adzoneid=&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.addnewadzone')#</a></li>
 </ul>
-
 
 <table class="table table-striped table-bordered table-condensed">
 <tr>

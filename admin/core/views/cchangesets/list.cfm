@@ -45,19 +45,21 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<h2>#application.rbFactory.getKeyValue(session.rb,"changesets")#</h2>
-
-<cfinclude template="dsp_secondary_menu.cfm">
-
-<!--- <h3>#application.rbFactory.getKeyValue(session.rb,'changesets.filterview')#:</h3> --->
-<h3 class="alt">#application.rbFactory.getKeyValue(session.rb,'changesets.filterviewnotice')#</h3>
-
 <form class="form-inline" novalidate="novalidate" id="changesetSearch" name="changesetSearch" method="get">
 	<input name="keywords" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" maxlength="50" />
 	<input type="button" class="submit btn" onclick="submitForm(document.forms.changesetSearch);" value="Search" />
 	<input type="hidden" name="muraAction" value="cChangesets.list">
 	<input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
 </form>
+
+<h2>#application.rbFactory.getKeyValue(session.rb,"changesets")#</h2>
+
+<cfinclude template="dsp_secondary_menu.cfm">
+
+<!--- <h3>#application.rbFactory.getKeyValue(session.rb,'changesets.filterview')#:</h3> --->
+<!---
+<h3 class="alt">#application.rbFactory.getKeyValue(session.rb,'changesets.filterviewnotice')#</h3>
+--->
 
 <table class="table table-striped table-bordered table-condensed"> 
 <tr>

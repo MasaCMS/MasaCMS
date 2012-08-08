@@ -176,7 +176,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfcase>
 			<cfcase value="imagedetails">
 				<cfif isdefined('rc.contentBean')>
-					<a clas="btn" href="#rc.contentBean.getEditURL(compactDisplay=rc.compactDisplay)#">
+					<a class="btn" href="#rc.contentBean.getEditURL(compactDisplay=rc.compactDisplay)#">
 						<i class="icon-share-alt"></i> 
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.backtocontent')#
 					</a>

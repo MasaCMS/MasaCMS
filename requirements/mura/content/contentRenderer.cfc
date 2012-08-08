@@ -2555,6 +2555,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="complete" type="boolean" required="false" default="false" />
 	<cfargument name="height" required="false" default="AUTO" />
 	<cfargument name="width" required="false" default="AUTO" />
+	<cfargument name="siteID" required="false" default="#variables.$.event('siteID')#" />
 	<cfscript>
 		var imageURL = getBean('fileManager').createHREFForImage(argumentCollection=arguments);
 		if ( IsSimpleValue(imageURL) ) {

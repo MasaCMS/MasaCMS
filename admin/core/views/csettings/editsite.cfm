@@ -55,7 +55,7 @@ to your own modified versions of Mura CMS.
 <cfif rc.action eq "updateFiles">
 <a href="index.cfm?muraAction=cSettings.editSite&siteid=#URLEncodedFormat(rc.siteid)#">Edit Site</a>
 <cfelse>
-<a  class="btn" href="index.cfm?muraAction=cSettings.editSite&siteid=#URLEncodedFormat(rc.siteid)#&action=updateFiles" onclick="return confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',this.href);">Update Site Files to Latest Version</a></li>
+<a  class="btn" href="index.cfm?muraAction=cSettings.editSite&siteid=#URLEncodedFormat(rc.siteid)#&action=updateFiles" onclick="return confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',this.href);">Update Site Files to Latest Version</a>
 <a  class="btn" href="?muraAction=cSettings.selectBundleOptions&siteID=#URLEncodedFormat(rc.siteBean.getSiteID())#">Create Site Bundle</a>
 <cfif len(rc.siteBean.getExportLocation()) and directoryExists(rc.siteBean.getExportLocation())>
 <a  class="btn" href="./?muraAction=csettings.exportHTML&siteID=#rc.siteBean.getSiteID()#"  onclick="return confirmDialog('Export static HTML files to #JSStringFormat("'#rc.siteBean.getExportLocation()#'")#.',this.href);">Export Static HTML (BETA)</a>
@@ -633,8 +633,6 @@ to your own modified versions of Mura CMS.
       </div>
     </div>
 	    
-  
-
      <div class="control-group">
       <label class="control-label">Medium Image</label>
       <div class="controls">
@@ -653,8 +651,7 @@ to your own modified versions of Mura CMS.
       </div>
     </div>
       
-    
-    
+
       <div class="control-group">
       <label class="control-label">Large Image</label>
       <div class="controls">
@@ -672,9 +669,117 @@ to your own modified versions of Mura CMS.
            </div>
       </div>
     </div>
-      
+    <cfif len(rc.siteBean.getSiteID())>
+      <script>
+      function openCustomImageSize(sizeid,siteid){
     
+          jQuery("##custom-image-dialog").remove();
+          jQuery("body").append('<div id="custom-image-dialog" title="Loading..." style="display:none"><div id="newContentMenu"><img src="assets/images/progress_bar.gif"></div></div>');
 
+          var dialogoptions= {
+              Save: function() {
+                saveCustomImageSize();
+                jQuery( this ).dialog( "close" );
+              },
+              Cancel: function() {
+                 jQuery( this ).dialog( "close" );
+              }
+            };
+
+            if(sizeid != ''){
+              dialogoptions.Delete=function(){
+                deleteCustomImageSize();
+                jQuery( this ).dialog( "close" );
+              };
+            }
+
+          jQuery("##custom-image-dialog").dialog({
+            resizable: true,
+            modal: true,
+            width: 400,
+            position: getDialogPosition(),
+            buttons: dialogoptions,
+            open: function(){
+              jQuery("##ui-dialog-title-custom-image-dialog").html('Edit Custom Image Size');
+              jQuery("##custom-image-dialog").html('<div class="ui-dialog-content ui-widget-content"><img src="./assets/images/progress_bar.gif"></div>');
+              var url = 'index.cfm';
+              var pars = 'muraAction=cSettings.loadcustomimage&siteid=' + siteid +'&sizeid=' + sizeid  +'&cacheid=' + Math.random();
+              jQuery.get(url + "?" + pars, 
+                  function(data) {
+                  jQuery('##custom-image-dialog').html(data);
+                  $("##custom-image-dialog").dialog("option", "position", "center");
+                  }
+                );    
+              
+            },
+            close: function(){
+              jQuery(this).dialog("destroy");
+              jQuery("##custom-image-dialog").remove();
+            } 
+        });
+
+        return false;
+     }
+
+    function saveCustomImageSize(){
+      loadCustomImages(
+        {
+          sizeid:$('##custom-image-form').attr('data-sizeid'),
+          siteid:siteid,
+          name:$('##custom-image-name').val(),
+          height:$('##custom-image-height').val(),
+          width:$('##custom-image-width').val(),
+          imageaction:'save'
+        }
+      );
+     }
+
+    function deleteCustomImageSize(){
+      loadCustomImages(
+        {
+          sizeid:$('##custom-image-form').attr('data-sizeid'),
+          siteid:siteid,
+          name:'',
+          height:'',
+          width:'',
+          imageaction:'delete'
+        }
+      );
+     }
+
+     function loadCustomImages(imageoptions){
+        var merged=$.extend(
+            {
+              sizeid:'',
+              siteid:'',
+              name:'',
+              height:'',
+              width:'',
+              imageaction:''
+            },
+            imageoptions
+          );
+        var url = 'index.cfm';
+        var pars = 'muraAction=cSettings.loadcustomimages&siteid=' + merged.siteid + '&cacheid=' + Math.random();;
+    
+        jQuery.post(url + "?" + pars,
+          merged, 
+          function(data) {
+            jQuery('##custom-images-container').html(data);
+            }
+        );    
+     }
+
+     $(document).ready(function(){loadCustomImages({siteid:'#JSStringFormat(rc.siteBean.getSiteID())#'})});
+
+      </script>
+      
+      <h3>Custom Images</h3>
+      <p><a href="##" onclick="return openCustomImageSize('','#JSStringFormat(rc.siteBean.getSiteID())#')">Add Custom Image Size</a></p>
+      
+
+      <div id="custom-images-container"></div>
+      </cfif> 
 
       </div>
       
@@ -799,7 +904,13 @@ to your own modified versions of Mura CMS.
       <cfelse>
       #attributeBean.getLabel()#
       </cfif>
-      <cfif attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'> <a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#attributeValue#" target="_blank">[Download]</a> <input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/> Delete</cfif>
+      <cfif attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'> 
+        
+        <cfif listFindNoCase("png,jpg,jpeg",application.serviceFactory.getBean("fileManager").readMeta(attributeValue).fileExt)>
+          <a href="./index.cfm?muraAction=cArch.imagedetails&siteid=#rc.siteBean.getSiteID()#&fileid=#attributeValue#"><img id="assocImage" src="#application.configBean.getContext()#/tasks/render/small/index.cfm?fileid=#attributeValue#&cacheID=#createUUID()#" /></a>
+        </cfif>
+
+        <a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#attributeValue#" target="_blank">[Download]</a> <input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/> Delete</cfif>
       </label>
       <!--- if it's an hidden type attribute then flip it to be a textbox so it can be editable through the admin --->
       <cfif attributeBean.getType() IS "Hidden">

@@ -46,20 +46,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfparam name="rc.keywords" default="">
 <cfoutput>
-<h2>Trash Bin</h2>
-
-<div id="nav-module-specific" class="btn-group">
-<a class="btn" href="index.cfm?muraAction=cSettings.editSite&siteID=#URLEncodedFormat(rc.siteID)#"><i class="icon-share-alt"></i> Back to Site Settings</a>
-<a class="btn" href="index.cfm?muraAction=cTrash.empty&siteID=#URLEncodedFormat(rc.siteID)#" onclick="return confirmDialog('Empty Site Trash?', this.href);">Empty Trash</a>
-</div>
-
-<form novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
+<form class="form-inline" novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
    <h3>Keyword Search</h3>
     <input name="keywords" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" align="absmiddle" />
     <input type="button" class="submit btn" onclick="submitForm(document.forms.siteSearch);" value="Search" />
     <input type="hidden" name="muraAction" value="cTrash.list">
     <input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
  </form>
+
+<h2>Trash Bin</h2>
+
+<div id="nav-module-specific" class="btn-group">
+<a class="btn" href="index.cfm?muraAction=cSettings.editSite&siteID=#URLEncodedFormat(rc.siteID)#"><i class="icon-share-alt"></i> Back to Site Settings</a>
+<a class="btn" href="index.cfm?muraAction=cTrash.empty&siteID=#URLEncodedFormat(rc.siteID)#" onclick="return confirmDialog('Empty Site Trash?', this.href);">Empty Trash</a>
+</div>
 
 <table class="table table-striped table-bordered table-condensed"> 
 <tr>

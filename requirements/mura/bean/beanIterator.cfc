@@ -68,7 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="packageRecord" access="public" output="false" returntype="any">
-	<cfset var bean=getBean("customImageSize")>
+	<cfset var bean=getBean(variabes.beanClass)>
 	<cfset bean.set(queryRowToStruct(variables.records,currentIndex()))>
 	<cfreturn bean>
 </cffunction>

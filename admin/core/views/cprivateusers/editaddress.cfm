@@ -51,7 +51,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput><form novalidate="novalidate" action="index.cfm?muraAction=cPrivateUsers.updateAddress&userid=#URLEncodedFormat(rc.userid)#&routeid=#rc.routeid#&siteid=#URLEncodedFormat(rc.siteid)#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);"  autocomplete="off" >
 	<h2>#application.rbFactory.getKeyValue(session.rb,'user.adminuseraddressform')#</h2>
 	
-	<!--- #application.utility.displayErrors(rc.addressBean.getErrors())# --->
+	<div id="nav-module-specific" class="btn-group">
+	<a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-share-alt"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
+	</div>
 	
 	<h3>#rc.userBean.getFname()# #rc.userBean.getlname()# <cfif find("activeTab",rc.returnURL)><a href="index.cfm?#rc.returnURL#"><cfelse><a href="index.cfm?#rc.returnURL#&activeTab=1"></cfif>[#application.rbFactory.getKeyValue(session.rb,'user.back')#]</a></h3>
 	

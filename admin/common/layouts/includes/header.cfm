@@ -51,6 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif not isDefined("session.mura.memberships")>
   <cflocation url="#application.configBean.getContext()#/admin/?muraAction=cLogin.logout" addtoken="false">
 </cfif>
+<cfset rc.siteBean=application.settingsManager.getSite(session.siteID)>
 </cfsilent>
 
 <cfoutput>
@@ -190,7 +191,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 		
 	 		<div id="select-site" class="dropdown">
 	 			
-	 			  <a id="select-site-btn" href="http://#application.settingsManager.getSite(session.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.configBean.getStub()#/<cfif application.configBean.getSiteIDInURLS()>#session.siteid#/</cfif> target="_blank">
+	 			  <a id="select-site-btn" href="http://#application.settingsManager.getSite(session.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.configBean.getStub()#/<cfif application.configBean.getSiteIDInURLS()>#session.siteid#/</cfif>" target="_blank">
 	 			  <!---<i class="icon-globe"></i> --->Current Site
 	 			  </a>
 	 			<a class="dropdown-toggle" data-toggle="dropdown">
@@ -247,85 +248,87 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 				<cfif not listfindNoCase(hidelist,rc.originalcircuit)>
 	 				  <cfinclude template="dsp_module_menu.cfm">
 	 				</cfif>
+	 				<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')
+	 					or (application.settingsManager.getSite(session.siteid).getextranet() and  application.permUtility.getModulePerm("00000000000000000000000000000000008","#session.siteid#"))>
+		 					<li class="dropdown<cfif listFindNoCase('cPrivateUsers,cPublicUsers',rc.originalcircuit)> active</cfif>">
+		 					<a class="dropdown-toggle" data-toggle="dropdown">
+		 						<i class="icon-group"></i> <span>#application.rbFactory.getKeyValue(session.rb,"layout.users")#</span>
+		 						<b class="caret"></b>
+		 					</a>
+		 					
+		 					<ul class="dropdown-menu">
+		 					<li><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPrivateUsers.list&siteid=#session.siteid#"><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,"layout.viewadministrativeusers")#</a></li>
+		 					  <li><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPrivateUsers.edituser&siteid=#session.siteid#&userid="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.addadministrativeuser")#</a></li>
+		 					  <li class="last"><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPrivateUsers.editgroup&siteid=#session.siteid#&userid="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.addgroup")#</a></li>
+		 					  <li class="divider"></li>
+		 					  <cfif application.settingsManager.getSite(session.siteid).getextranet() and  application.permUtility.getModulePerm("00000000000000000000000000000000008","#session.siteid#")>
+		 					    <li <cfif rc.originalcircuit eq 'cPublicUsers' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000008')>class="active"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPublicUsers.list&siteid=#session.siteid#"><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,"user.viewsitemembers")#</a>
+		 					    </li>
+		 					  </cfif>
+		 					  <li><a href="index.cfm?muraAction=cPublicUsers.edituser&siteid=#URLEncodedFormat(rc.siteid)#&userid="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'user.addmember')#</a></li>
+		 					  <li><a href="index.cfm?muraAction=cPublicUsers.editgroup&siteid=#URLEncodedFormat(rc.siteid)#&userid="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'user.addgroup')#</a></li>
+		 					  
+		 					  </ul>			
+	 					</li>
+	 				</cfif>
 	 				
-	 				<li class="dropdown<cfif listFindNoCase('cPrivateUsers,cPublicUsers',rc.originalcircuit)> active</cfif>">
+	 				<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
+	 					
+	 					<li class="dropdown<cfif listFindNoCase('csettings,cextend,ctrash',rc.originalcircuit) > active</cfif>">
+
 	 					<a class="dropdown-toggle" data-toggle="dropdown">
-	 						<i class="icon-group"></i> <span>#application.rbFactory.getKeyValue(session.rb,"layout.users")#</span>
+	 						<i class="icon-wrench"></i> <span>#application.rbFactory.getKeyValue(session.rb,"layout.sitesettings")#</span>
 	 						<b class="caret"></b>
 	 					</a>
 	 					
-	 					<ul class="dropdown-menu">
-	 					<li><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPrivateUsers.list&siteid=#session.siteid#"><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,"layout.viewadministrativeusers")#</a></li>
-	 					  <li><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPrivateUsers.edituser&siteid=#session.siteid#&userid="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.addadministrativeuser")#</a></li>
-	 					  <li class="last"><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPrivateUsers.editgroup&siteid=#session.siteid#&userid="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.addgroup")#</a></li>
-	 					  <li class="divider"></li>
-	 					  <cfif application.settingsManager.getSite(session.siteid).getextranet() and  application.permUtility.getModulePerm("00000000000000000000000000000000008","#session.siteid#")>
-	 					    <li <cfif rc.originalcircuit eq 'cPublicUsers' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000008')>class="active"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPublicUsers.list&siteid=#session.siteid#"><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,"user.viewsitemembers")#</a>
-	 					    </li>
-	 					  </cfif>
-	 					  <li><a href="index.cfm?muraAction=cPublicUsers.edituser&siteid=#URLEncodedFormat(rc.siteid)#&userid="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'user.addmember')#</a></li>
-	 					  <li><a href="index.cfm?muraAction=cPublicUsers.editgroup&siteid=#URLEncodedFormat(rc.siteid)#&userid="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'user.addgroup')#</a></li>
-	 					  
-	 					  </ul>			
-	 				</li>
-	 				 				
-	 				<li class="dropdown<cfif listFindNoCase('csettings,cextend,ctrash',rc.originalcircuit) > active</cfif>">					
-	 					<a class="dropdown-toggle" data-toggle="dropdown">
-	 						<i class="icon-wrench"></i> <span>#application.rbFactory.getKeyValue(session.rb,"layout.sitesettings")#</span>
-	 					<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-	 					<b class="caret"></b>
-	 					</cfif>
-	 					</a>
-	 				
-	 					
 		 				<ul class="dropdown-menu">
-		 					 <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
 		 					   <li <cfif (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000000')>class='active'</cfif>>
 		 					   		<a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPerm.module&contentid=00000000000000000000000000000000000&siteid=#session.siteid#&moduleid=00000000000000000000000000000000000">
 		 					   			<i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.permissions")#
 		 					   		</a>
 		 					   	</li>
+		 				 <cfif listFind(session.mura.memberships,'S2')>
 		 					<li>
-		 						<a href="">
+		 						<a href="index.cfm?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#">
 		 							<i class="icon-list-alt"></i> Class Extension Manager
 		 						</a>
 		 					</li>
 		 					
 		 					<li>
-		 						<a href="">
+		 						<a href="?muraAction=cSettings.selectBundleOptions&siteID=#URLEncodedFormat(rc.siteBean.getSiteID())#">
 		 							<i class="icon-gift"></i> Create Site Bundle
 		 						</a>
 		 					</li>
 		 					
 		 					<li>
-		 						<a href="">
+		 						<a href="index.cfm?muraAction=cTrash.list&siteID=#URLEncodedFormat(rc.siteid)#">
 		 							<i class="icon-trash"></i> Trash Bin
 		 						</a>
 		 					</li>
 		 					
-		 					   <li <cfif (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000000')>class='active'</cfif>>
-		 					   		<a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPerm.module&contentid=00000000000000000000000000000000000&siteid=#session.siteid#&moduleid=00000000000000000000000000000000000">
-		 					   			<i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.permissions")#
-		 					   		</a>
-		 					   	</li>
-		 					</cfif>
-		 					
 		 					<li>
-		 						<a href="">
+		 						<a href="index.cfm?muraAction=cSettings.editSite&siteid=#URLEncodedFormat(rc.siteid)#&action=updateFiles" onclick="return confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',this.href);">
 		 							<i class="icon-bolt"></i> Update Site
 		 						</a>
 		 					</li>
-		 					
+
+		 					<cfif len(rc.siteBean.getExportLocation()) and directoryExists(rc.siteBean.getExportLocation())>
+		 						<li>
+									<a href="./?muraAction=csettings.exportHTML&siteID=#rc.siteBean.getSiteID()#"  onclick="return confirmDialog('Export static HTML files to #JSStringFormat("'#rc.siteBean.getExportLocation()#'")#.',this.href);"><i class="icon-cog"></i> Export Static HTML (BETA)</a>
+								</li>
+							</cfif>
+										 					
 		 					<li>
 		 						<a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.editSite&siteid=#session.siteid#">
 		 							<i class="icon-pencil"></i> #application.rbFactory.getKeyValue(session.rb,"layout.editcurrentsite")#
 		 						</a>
 		 					</li>
+		 				</cfif>
 	 					
 		 				</ul>	
 	 			 									
 	 				</li>
-	 			
+	 				</cfif>
 	 			</ul>	 
 	 		</div> <!-- /container -->
 	 	
