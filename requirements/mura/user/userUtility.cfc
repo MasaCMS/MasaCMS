@@ -572,6 +572,7 @@ Thanks for using #contactName#</cfoutput>
 	<cfset var alphaLcase = "a|c|e|g|i|k|m|o|q|s|u|w|y|b|d|f|h|j|l|n|p|r|t|v|x|z">
 	<cfset var alphaUcase = "A|C|E|G|I|K|M|O|Q|S|U|W|Y|B|D|F|H|J|L|N|P|R|T|V|X|Z">
 	<cfset var numeric =    "0|2|4|6|8|9|7|5|3|1">
+	<cfset var special =    "@|!|$|%|^|&|+|=|,">
 	<cfset var ThisPass="">
 	<cfset var charlist=""/>
 	<cfset var thisNum=0/>
@@ -597,8 +598,12 @@ Thanks for using #contactName#</cfoutput>
 	 <cfcase value="numeric">
 	  <cfset charlist = numeric>
 	 </cfcase>
+	 
+	 <cfcase value="special">
+	  <cfset charlist = "#alphaLcase#|#numeric#|#alphaUcase#|#special#">
+	 </cfcase>
 	  
-	 <cfdefaultcase><cfthrow detail="Valid values of the attribute <b>CharSet</b> are Alpha, AlphaNumeric, and Numeric"> </cfdefaultcase> 
+	 <cfdefaultcase><cfthrow detail="Valid values of the attribute <b>CharSet</b> are Alpha, AlphaNumeric, Numeric, and Special"> </cfdefaultcase> 
 	</cfswitch>
 	
 	<cfloop from="1" to="#arguments.Length#" index="i">
