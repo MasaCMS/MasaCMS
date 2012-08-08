@@ -62,7 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset initArgs.siteID=arguments.data>
 			</cfif>
 			<cfset initArgs.muraScope=this>
-			<cfset setEvent(createObject("component","mura.event").init(initArgs))>
+			<cfset setEvent(createObject("component","mura.event").init(initArgs,this))>
 		</cfif>
 	</cfif>
 	
@@ -182,6 +182,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.instance.event=request.servletEvent>
 		<cfelseif structKeyExists(request,"event")>
 			<cfset variables.instance.event=request.event>
+		<cfelse>
+			<cfset variables.instance.event=createObject("component","mura.event").init($=this)>
 		</cfif>
 	</cfif>
 	<cfreturn variables.instance.event>

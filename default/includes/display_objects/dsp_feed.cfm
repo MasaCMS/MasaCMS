@@ -68,14 +68,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif variables.feedBean.getType() eq 'local'>
 		<cfsilent>
-			<cfset variables.rsPreFeed = application.feedManager.getFeed(variables.feedBean)/>
 			<cfif variables.$.siteConfig('extranet') eq 1 and variables.$.event('r').restrict eq 1>
-				<cfset variables.rs = variables.$.queryPermFilter(variables.rsPreFeed)/>
+				<cfset variables.iterator=variables.feedBean.getIterator(applyPermFilter=true)/>
 			<cfelse>
-				<cfset variables.rs = variables.rsPreFeed/>
+				<cfset variables.iterator=variables.feedBean.getIterator(applyPermFilter=false)/>
 			</cfif>
-			<cfset variables.iterator = variables.$.getBean("contentIterator")>
-			<cfset variables.iterator.setQuery(variables.rs, variables.feedBean.getNextN())>
 		
 			<cfset variables.checkMeta = variables.feedBean.getDisplayRatings() or variables.feedBean.getDisplayComments()>
 			<cfset variables.doMeta = 0/>

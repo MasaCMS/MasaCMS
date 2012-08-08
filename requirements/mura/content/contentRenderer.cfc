@@ -954,7 +954,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var href=""/>
 	<cfset var tp=""/>
-	<cfset var begin=iif(arguments.complete or isDefined('variables.$') and variables.$.siteConfig('siteID') neq arguments.siteID,de('http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de('')) />
+	<cfset var begin=iif(arguments.complete or isDefined('variables.$') and variables.$.event('siteID') neq arguments.siteID,de('http://#application.settingsManager.getSite(arguments.siteID).getDomain()##application.configBean.getServerPort()#'),de('')) />
 	<cfset var lookUpBean="">
 
 	<cfif len(arguments.querystring) and not left(arguments.querystring,1) eq "?">

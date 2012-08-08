@@ -74,16 +74,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.maxPortalItems=100>
 </cfif>
 
-<cfset variables.rsPreSection=variables.$.getBean('contentGateway').getKids('00000000000000000000000000000000000',variables.$.event('siteID'),variables.$.content('contentID'),variables.menuType,variables.menuDate,variables.maxPortalItems,variables.$.event('keywords'),0,variables.$.content('sortBy'),variables.$.content('sortDirection'),variables.$.event('categoryID'),variables.$.event('relatedID'),variables.$.event('tag'))>
-
 <cfif variables.$.siteConfig('extranet') eq 1 and variables.$.event('r').restrict eq 1>
-	<cfset variables.rssection=variables.$.queryPermFIlter(variables.rsPreSection)/>
+	<cfset variables.applyPermFilter=true/>
 <cfelse>
-	<cfset variables.rssection=variables.rsPreSection/>
+	<cfset variables.applyPermFilter=false/>
 </cfif>
-	
+<cfset variables.iterator=variables.$.getBean('contentGateway').getKidsIterator('00000000000000000000000000000000000',variables.$.event('siteID'),variables.$.content('contentID'),variables.menuType,variables.menuDate,variables.maxPortalItems,variables.$.event('keywords'),0,variables.$.content('sortBy'),variables.$.content('sortDirection'),variables.$.event('categoryID'),variables.$.event('relatedID'),variables.$.event('tag'),false,variables.applyPermFilter)>
+
 <cfset variables.iterator=variables.$.getBean("contentIterator")>
-<cfset variables.iterator.setQuery(variables.rsSection,variables.$.content('nextN'))>
+<cfset variables.iterator.setNextN(variables.$.content('nextN'))>
 
 <cfset variables.$.event("currentNextNID",variables.$.content('contentID'))>
 

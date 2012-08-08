@@ -656,18 +656,31 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 	
 </cffunction>
 
+<cffunction name="getHasModuleAccess" output="false">
+	<cfargument name="siteid">
+	<cfif isDefined('request.r.hasModuleAccess')>
+		<cfreturn request.r.hasModuleAccess>
+	<cfelse>
+		<cfreturn ''>
+	</cfif>
+</cffunction>
+
 <cffunction name="queryPermFilter" returntype="query" access="public" output="false">
 	<cfargument name="rawQuery" type="query">
-	<cfargument name="resultQuery" type="query">
+	<cfargument name="resultQuery" type="query" default="#newResultQuery()#">
 	<cfargument name="siteID" type="string">
-	<cfargument name="hasModuleAccess" required="true" default="">
+	<cfargument name="hasModuleAccess" required="true" default="#getHasModuleAccess()#">
 	
 	<cfset var rows=0/>
 	<cfset var r=""/>
 	<cfset var rs=arguments.resultQuery />
 	<cfset var hasPath=listFind(arguments.rawQuery.columnList,"PATH")/>
 	<cfif not isBoolean(arguments.hasModuleAccess)>
-		<cfset arguments.hasModuleAccess=getModulePerm('00000000000000000000000000000000000',arguments.siteID)>
+		<cfif not StructKeyExists(request,"r")>
+			<cfset request.r=structNew()>
+		</cfif>
+		<cfset request.r.hasModuleAccess=getModulePerm('00000000000000000000000000000000000',arguments.siteID)>
+		<cfset arguments.hasModuleAccess=request.r.hasModuleAccess>
 	</cfif>
 	
 	<cfloop query="arguments.rawQuery">

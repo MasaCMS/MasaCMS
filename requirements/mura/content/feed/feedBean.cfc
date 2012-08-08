@@ -356,12 +356,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getQuery" returnType="query" output="false" access="public">
 	<cfargument name="aggregation" required="true" default="false">
-	<cfreturn variables.feedManager.getFeed(this,"",arguments.aggregation) />
+	<cfargument name="applyPermFilter" required="true" default="false">
+	<cfreturn variables.feedManager.getFeed(feedBean=this,tag="",aggregation=arguments.aggregation,applyPermFilter=arguments.applyPermFilter) />
 </cffunction>
 
 <cffunction name="getIterator" returnType="any" output="false" access="public">
 	<cfargument name="aggregation" required="true" default="false">
-	<cfset var q=getQuery(aggregation=arguments.aggregation) />
+	<cfargument name="applyPermFilter" required="true" default="false">
+	<cfset var q=getQuery(aggregation=arguments.aggregation,applyPermFilter=arguments.applyPermFilter) />
 	<cfset var it=getBean("contentIterator")>
 	<cfset it.setQuery(q,variables.instance.nextn)>
 	<cfreturn it>

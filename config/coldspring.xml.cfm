@@ -78,6 +78,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
 			<constructor-arg name="contentIntervalManager"><ref bean="contentIntervalManager" /></constructor-arg>
+			<constructor-arg name="permUtility"><ref bean="permUtility" /></constructor-arg>
 		</bean>
 		<bean id="contentRenderer" class="mura.content.contentRenderer" singleton="true"/>
 		<bean id="contentIntervalManager" class="mura.content.contentIntervalManager" singleton="true"/>
@@ -373,6 +374,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<bean id="feedGateway" class="mura.content.feed.feedGateway" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="contentIntervalManager"><ref bean="contentIntervalManager" /></constructor-arg>
+			<constructor-arg name="permUtility"><ref bean="permUtility" /></constructor-arg>
 		</bean>
 		<bean id="feedDAO" class="mura.content.feed.feedDAO" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>

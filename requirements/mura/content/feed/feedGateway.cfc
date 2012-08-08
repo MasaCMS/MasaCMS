@@ -49,10 +49,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfargument name="configBean" type="any" required="yes" />
 	<cfargument name="contentIntervalManager" type="any" required="yes" />
+	<cfargument name="permUtility" type="any" required="yes" />
 
 	<cfset variables.configBean=arguments.configBean />
 	<cfset variables.classExtensionManager=variables.configBean.getClassExtensionManager()>
 	<cfset variables.contentIntervalManager=arguments.contentIntervalManager>
+	<cfset variables.permUtility=arguments.permUtility>
 	<cfreturn this />
 </cffunction>
 
@@ -625,6 +627,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif dbType eq "oracle" and arguments.feedBean.getMaxItems()>) where ROWNUM <= <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.feedBean.getMaxItems()#" /> </cfif>
 	</cfquery>
 	
+	<cfif arguments.applyPermFilter>
+		<cfset rsFeed=variables.permUtility.queryPermFilter(rawQuery=rsFeed,siteID=arguments.feedBean.getSiteID())>
+	</cfif>
+
 	<cfreturn variables.contentIntervalManager.applyByMenuTypeAndDate(query=rsFeed,menuType="default",menuDate=nowAdjusted) />
 </cffunction>
 

@@ -50,9 +50,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="settingsManager" type="any" required="yes"/>
 <cfargument name="contentIntervalManager" type="any" required="yes"/>
+<cfargument name="permUtility" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
 		<cfset variables.settingsManager=arguments.settingsManager />
 		<cfset variables.contentIntervalManager=arguments.contentIntervalManager>
+		<cfset variables.permUtility=arguments.permUtility>
 <cfreturn this />
 </cffunction>
 
@@ -296,8 +298,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfargument name="relatedID" type="string" required="yes" default="" >
 			<cfargument name="tag" type="string" required="yes" default="" >
 			<cfargument name="aggregation" type="boolean" required="yes" default="false" >
+			<cfargument name="applyPermFilter" type="boolean" required="yes" default="false" >
 			
-			<cfset var rs = getKids(arguments.moduleID, arguments.siteid, arguments.parentID, arguments.type, arguments.today, arguments.size, arguments.keywords, arguments.hasFeatures, arguments.sortBy, arguments.sortDirection, arguments.categoryID, arguments.relatedID, arguments.tag, arguments.aggregation)>
+			<cfset var rs = getKids(arguments.moduleID, arguments.siteid, arguments.parentID, arguments.type, arguments.today, arguments.size, arguments.keywords, arguments.hasFeatures, arguments.sortBy, arguments.sortDirection, arguments.categoryID, arguments.relatedID, arguments.tag, arguments.aggregation,arguments.applyPermFilter)>
 			<cfset var it = getBean("contentIterator")>
 			<cfset it.setQuery(rs)>
 			<cfreturn it/>	
@@ -318,6 +321,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfargument name="relatedID" type="string" required="yes" default="" >
 			<cfargument name="tag" type="string" required="yes" default="" >
 			<cfargument name="aggregation" type="boolean" required="yes" default="false" >
+			<cfargument name="applyPermFilter" type="boolean" required="yes" default="false" >
 			
 			<cfset var rsKids = ""/>
 			<cfset var relatedListLen = listLen(arguments.relatedID) />
@@ -563,8 +567,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif dbType eq "oracle" and arguments.size>) where ROWNUM <=#arguments.size# </cfif>
 
 		</cfquery>
-	
-		 <cfreturn variables.contentIntervalManager.applyByMenuTypeAndDate(query=rsKids,menuType=arguments.type,menuDate=nowAdjusted) />
+		
+		<cfif arguments.applyPermFilter>
+			<cfset rsKids=variables.permUtility.queryPermFilter(rawQuery=rsKids,siteID=arguments.siteID)>
+		</cfif>
+		
+		<cfreturn variables.contentIntervalManager.applyByMenuTypeAndDate(query=rsKids,menuType=arguments.type,menuDate=nowAdjusted) />
 </cffunction>
 	
 <cffunction name="getKidsCategorySummary" returntype="query" output="false">
