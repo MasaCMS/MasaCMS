@@ -66,6 +66,11 @@ select * from rsSubTypes where subType <> 'Default'
 </cfsavecontent>
 
 <cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,'user.groupform')#</h2>
+
+<div id="nav-module-specific" class="btn-group">
+  <a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-share-alt"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
+</div>
+
 <cfif listfirst(listLast(rc.muraAction,":"),".") eq "editgroup" and rc.userid neq ''>
 <div id="nav-module-specific" class="btn-group">
   <a class="btn" href="javascript:extuserselect('#rc.userid#',1,<cfif listFind(session.mura.memberships,'S2')>1<cfelse>0</cfif>,'#rc.siteid#')">#application.rbFactory.getKeyValue(session.rb,'user.addmembertogroup')#</a>

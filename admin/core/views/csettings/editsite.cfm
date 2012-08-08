@@ -55,7 +55,7 @@ to your own modified versions of Mura CMS.
 <cfif rc.action eq "updateFiles">
 <a href="index.cfm?muraAction=cSettings.editSite&siteid=#URLEncodedFormat(rc.siteid)#">Edit Site</a>
 <cfelse>
-<a  class="btn" href="index.cfm?muraAction=cSettings.editSite&siteid=#URLEncodedFormat(rc.siteid)#&action=updateFiles" onclick="return confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',this.href);">Update Site Files to Latest Version</a></li>
+<a  class="btn" href="index.cfm?muraAction=cSettings.editSite&siteid=#URLEncodedFormat(rc.siteid)#&action=updateFiles" onclick="return confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',this.href);">Update Site Files to Latest Version</a>
 <a  class="btn" href="?muraAction=cSettings.selectBundleOptions&siteID=#URLEncodedFormat(rc.siteBean.getSiteID())#">Create Site Bundle</a>
 <cfif len(rc.siteBean.getExportLocation()) and directoryExists(rc.siteBean.getExportLocation())>
 <a  class="btn" href="./?muraAction=csettings.exportHTML&siteID=#rc.siteBean.getSiteID()#"  onclick="return confirmDialog('Export static HTML files to #JSStringFormat("'#rc.siteBean.getExportLocation()#'")#.',this.href);">Export Static HTML (BETA)</a>

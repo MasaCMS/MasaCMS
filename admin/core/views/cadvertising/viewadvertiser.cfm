@@ -47,6 +47,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,'advertising.advertisersummary')#</h2>
 
+<cfinclude template="dsp_secondary_menu.cfm">
+
 <cfset rsAddress=rc.userBean.getAddresses()>
 <ul class="overview"><li><a href="index.cfm?muraAction=#iif(rc.userBean.getIsPublic(),de('cPublicUsers.editUser'),de('cPrivateUsers.editUser'))#&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#&routeid=adManager">#rc.userBean.getCompany()#</a></li>
   <li>#rc.userBean.getFname()# #rc.userBean.getLname()#</li>
@@ -59,9 +61,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <h3>#application.rbFactory.getKeyValue(session.rb,'advertising.campaigns')#</h3>
 
-<ul class="navTask nav nav-pills">
-<li><a href="index.cfm?muraAction=cAdvertising.editCampaign&campaignid=&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.addnewcampaign')#</a></li>
-</ul>
+<div id="nav-module-specific" class="btn-group">
+<a class="btn" href="index.cfm?muraAction=cAdvertising.editCampaign&campaignid=&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.addnewcampaign')#</a>
+</div>
 
 <table class="table table-striped table-bordered table-condensed">
 <tr>
@@ -93,9 +95,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <h3 class="divide">#application.rbFactory.getKeyValue(session.rb,'advertising.creatives')#</h3>
 
-<ul class="navTask nav nav-pills">
-<li><a href="index.cfm?muraAction=cAdvertising.editCreative&creativeid=&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.addnewcreative')#</a></li>
-</ul>
+<div id="nav-module-specific" class="btn-group">
+<a class="btn" href="index.cfm?muraAction=cAdvertising.editCreative&creativeid=&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.addnewcreative')#</a>
+</div>
 
 <table class="table table-striped table-bordered table-condensed">
 <tr>

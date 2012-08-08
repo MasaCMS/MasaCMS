@@ -100,10 +100,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.add')#" />
 	<input type=hidden name="campaignID" value="">
 <cfelse>
-	<input type="button" class="submit btn" onclick=submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'advertising.deletecampaignconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.delete')#" />
+	<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'advertising.deletecampaignconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.delete')#" />
 	<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.update')#" />
 	<input type=hidden name="campaignID" value="#rc.campaignBean.getCampaignID()#">
-	</cfif>
+</cfif>
 </div>
 <input type="hidden" name="action" value="">
 <input type="hidden" name="userID" value="#HTMLEditFormat(rc.userid)#">
@@ -113,9 +113,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfoutput>
 	<h3 class="divide">#application.rbFactory.getKeyValue(session.rb,'advertising.campaignplacements')#</h3>
-	<ul class="navTask nav nav-pills">
-	<li><a href="index.cfm?muraAction=cAdvertising.editPlacement&campaignid=#URLEncodedFormat(rc.campaignid)#&placementid=&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.addplacement')#</a></li>
-	</ul>
+	<div id="nav-module-specific" class="btn-group">
+	<a class="btn" href="index.cfm?muraAction=cAdvertising.editPlacement&campaignid=#URLEncodedFormat(rc.campaignid)#&placementid=&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.addplacement')#</a>
+	</div>
 	
 	<table class="table table-striped table-bordered table-condensed">
 	<tr>
