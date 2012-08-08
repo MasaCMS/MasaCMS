@@ -202,7 +202,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset queryAddRow(variables.instance.params,1)/>
 		<cfset rows = variables.instance.params.recordcount />
 		<cfset querysetcell(variables.instance.params,"param",rows,rows)/>
-		<cfset querysetcell(variables.instance.params,"field",formatField(arguments.field),rows)/>
+		<cfif structKeyExists(arguments,"column")>
+			<cfset querysetcell(variables.instance.params,"field",formatField(arguments.column),rows)/>
+		<cfelse>
+			<cfset querysetcell(variables.instance.params,"field",formatField(arguments.field),rows)/>
+		</cfif>
 		<cfset querysetcell(variables.instance.params,"relationship",arguments.relationship,rows)/>
 		<cfset querysetcell(variables.instance.params,"criteria",arguments.criteria,rows)/>
 		<cfset querysetcell(variables.instance.params,"condition",arguments.condition,rows)/>
