@@ -100,13 +100,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset OriginalImageType = listLast(OriginalImageFile,".") />
 	<cfset OriginalImageFilename = Replace(OriginalImageFile, ".#OriginalImageType#", "", "all") />
 	
-	<cfif arguments.Width eq "AUTO" and arguments.Height eq "AUTO">
-		<cfset NewImageSource = OriginalImageFile />
-		<cfset NewImageLocal = arguments.Image />
+	<cfif len(arguments.size)>
+		<cfset NewImageSource = "#OriginalImageFilename#_#lcase(arguments.size)#.#OriginalImageType#" />
+		<cfset NewImageLocal = Replace(OriginalImageFile, ".#OriginalImageType#", "_#lcase(arguments.size)#.#OriginalImageType#") />
 	<cfelse>
-		<cfif len(arguments.size)>
-			<cfset NewImageSource = "#OriginalImageFilename#_#lcase(arguments.size)#" />
-			<cfset NewImageLocal = Replace(OriginalImageFile, ".#OriginalImageType#", "_#lcase(arguments.size)#.#OriginalImageType#") />
+		<cfif arguments.Width eq "AUTO" and arguments.Height eq "AUTO">
+			<cfset NewImageSource = OriginalImageFile />
+			<cfset NewImageLocal = arguments.Image />
 		<cfelse>
 			<cfset arguments.Width = trim(replaceNoCase(arguments.Width,"px","","all")) />
 			<cfset arguments.Height = trim(replaceNoCase(arguments.Height,"px","","all")) />
@@ -116,17 +116,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	<cfset NewImageLocal = listLast(NewImageLocal,variables.configBean.getFileDelim())>
-
-		
-	<cfif not FileExists(NewImageSource)>
 	
+	<cfif not FileExists(NewImageSource)>
+		
 		<cfset OriginalImageFile = Replace(OriginalImageFile, ".#OriginalImageType#", "_source.#OriginalImageType#", "all") />
 		
 		<cfif not fileExists(OriginalImageFile)>
 			<cfset OriginalImageFile = Replace(OriginalImageFile, "_source.#OriginalImageType#", ".#OriginalImageType#", "all") />
 		</cfif>
 	
-		<!--- If the original file does not exist then it can create the custom image.--->
+		<!--- If the original file does not exist then it can't create the custom image.--->
 		<cfif not fileExists(OriginalImageFile)>
 			<cfreturn NewImageLocal>
 		</cfif>

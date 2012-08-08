@@ -536,7 +536,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rsCheck="">
 	<cfset var rsDir="">
 	<cfset var currentSite=variables.settingsManager.getSite(arguments.siteID)>
-
+	<cfset var check="">
 
 	<cfquery name="rsDB" datasource="#variables.configBean.getReadOnlyDatasource()#" password="#variables.configBean.getReadOnlyDbPassword()#" username="#variables.configBean.getReadOnlyDbUsername()#">
 	select fileID,fileEXT from tfiles 
@@ -559,9 +559,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfquery>
 
 	<cfif rsCheck.recordcount>
-		<cfloop query="rscheck">
-			<cffile action="delete" file="#filepath##rsCheck.name#">
-		</cfloop>
+		<cfset check=listGetAt(rsCheck.name,"_",2)>
+		<cfif len(check) gt 1>
+			<cfset check=mid(check,2,1)>
+			<cfif isNumeric(check)>
+				<cffile action="delete" file="#filepath##rsCheck.name#">
+			</cfif>
+		</cfif>
 	</cfif>
 	
 </cffunction>
@@ -661,7 +665,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset arguments.size="small">
 		</cfif>
 	
-		<cfif listFindNoCase('small,medium,large',arguments.size)>
+		<cfif listFindNoCase('small,medium,large,source',arguments.size)>
 			<cfif arguments.size eq "large">
 				<cfset imgSuffix="">
 			<cfelse>
@@ -669,7 +673,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			<cfset returnURL=application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & arguments.fileID & imgSuffix & "." & arguments.fileEXT>
 		<cfelseif arguments.size neq 'custom'>
-			<cfset returnURL = application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & getCustomImage(image="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##arguments.fileID#_#arguments.size#.#arguments.fileExt#",size=arguments.size,siteID=arguments.siteID)>
+			<cfset returnURL = application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & getCustomImage(image="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##arguments.fileID#.#arguments.fileExt#",size=arguments.size,siteID=arguments.siteID)>
 		<cfelse>
 			<cfif not len(arguments.width)>
 				<cfset arguments.width="auto">
