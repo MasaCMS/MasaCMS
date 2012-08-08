@@ -182,6 +182,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.instance.event=request.servletEvent>
 		<cfelseif structKeyExists(request,"event")>
 			<cfset variables.instance.event=request.event>
+		<cfelse>
+			<cfset variables.instance.eventcreateObject("component","mura.event").init($=this)>
 		</cfif>
 	</cfif>
 	<cfreturn variables.instance.event>

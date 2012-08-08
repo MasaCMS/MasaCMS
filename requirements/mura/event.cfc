@@ -50,19 +50,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="init" returntype="any" access="public" output="false">
 	<cfargument name="data"  type="any" default="#structNew()#">
+	<cfargument name="$">
 	
 	<cfset variables.event=arguments.data />
 	<cfif isdefined("form")><cfset structAppend(variables.event,form,false)/></cfif>
 	<cfset structAppend(variables.event,url,false)/>
+
+	<cfif structKeyExists(arguments,"$")>
+		<cfset setValue("MuraScope",arguments.$)>
+	<cfelse>
+		<cfset setValue("MuraScope",createObject("component","mura.MuraScope"))>
+	</cfif>
+	
+	<cfset getValue('MuraScope').setEvent(this)>
 	
 	<cfif len(getValue('siteid')) and application.settingsManager.siteExists(getValue('siteid'))>
 		<cfset loadSiteRelatedObjects()/>
 	<cfelse>
 		<cfset setValue("contentRenderer",getBean('contentRenderer'))>
 	</cfif>
-	
-	<cfset setValue("MuraScope",createObject("component","mura.MuraScope"))>
-	<cfset getValue('MuraScope').setEvent(this)>
 	
 	<cfreturn this />
 </cffunction>
