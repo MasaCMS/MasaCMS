@@ -537,6 +537,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rsDir="">
 	<cfset var currentSite=variables.settingsManager.getSite(arguments.siteID)>
 	<cfset var check="">
+	<cfset var currentSource="">
 
 	<cfquery name="rsDB" datasource="#variables.configBean.getReadOnlyDatasource()#" password="#variables.configBean.getReadOnlyDbPassword()#" username="#variables.configBean.getReadOnlyDbUsername()#">
 	select fileID,fileEXT from tfiles 
@@ -545,6 +546,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfquery>
 	
 	<cfloop query="rsDB">
+		<cfset currentSource=filepath & rsDB.fileID & "_source." & rsDB.fileEXT>
+		<cfif not fileExists(currentSource)>
+			<cfset currentSource=filepath & rsDB.fileID & "." & rsDB.fileEXT>
+		</cfif>
 		<cfif FileExists(currentSource)>
 			<cfloop list="small,medium,large" index="i">
 				<cfset cropAndScale(fileID=rsDB.fileID,size=i)>
