@@ -106,7 +106,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfswitch expression="#rc.type#">
 					<cfcase value="Form">
 						<cfif listFind(session.mura.memberships,'S2IsPrivate')>
-						<a class="btn" href="index.cfm?muraAction=cArch.datamanager&contentid=#URLEncodedFormat(rc.contentid)#&siteid=#URLEncodedFormat(rc.siteid)#&topid=#URLEncodedFormat(rc.topid)#&moduleid=#rc.moduleid#&type=Form&parentid=#rc.moduleid#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.managedata")#</a></li>
+						<a class="btn" href="index.cfm?muraAction=cArch.datamanager&contentid=#URLEncodedFormat(rc.contentid)#&siteid=#URLEncodedFormat(rc.siteid)#&topid=#URLEncodedFormat(rc.topid)#&moduleid=#rc.moduleid#&type=Form&parentid=#rc.moduleid#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.managedata")#</a>
 						</cfif>
 					</cfcase>
 					</cfswitch>
@@ -137,13 +137,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfcase value="Page,Portal,Calendar,Gallery,Link">
 						<cfif not rc.contentBean.getIsNew()>
 							<cfset currentBean=application.contentManager.getActiveContent(rc.contentID,rc.siteid) />
-							<a class="btn" href="##" onclick="return openPreviewDialog('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,currentBean.getfilename())#','#currentBean.getTargetParams()#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewactive")#</a></li>
+							<a class="btn" href="##" onclick="return openPreviewDialog('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,currentBean.getfilename())#','#currentBean.getTargetParams()#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewactive")#</a>
 						</cfif>
 						<a class="btn" href="##" onclick="return openPreviewDialog('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?previewid=#rc.contentBean.getcontenthistid()#&contentid=#rc.contentBean.getcontentid()#','#rc.contentBean.getTargetParams()#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewversion")#</a>
 					</cfcase>
 					<cfcase value="File">	
-						<a class="btn" href="##" href="##" onclick="return openPreviewDialog('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?LinkServID=#rc.contentid#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewactive")#</a></li>
-						<li><a href="##" href="##" onclick="return openPreviewDialog('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/?fileID=#rc.contentBean.getFileID()#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewversion")#</a>
+						<a class="btn" href="##" href="##" onclick="return openPreviewDialog('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?LinkServID=#rc.contentid#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewactive")#</a>
+						<a class="btn" href="##" href="##" onclick="return openPreviewDialog('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/?fileID=#rc.contentBean.getFileID()#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewversion")#</a>
 					</cfcase>
 					</cfswitch>
 				</cfif>
