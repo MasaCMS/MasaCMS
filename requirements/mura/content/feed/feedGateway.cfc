@@ -102,6 +102,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="feedBean" type="any">
 	<cfargument name="tag" required="true" default="" />
 	<cfargument name="aggregation" required="true" type="boolean" default="false" />
+	<cfargument name="applyPermFilter" required="true" type="boolean" default="false" />
 	
 	<cfset var c ="" />
 	<cfset var rsFeed ="" />
