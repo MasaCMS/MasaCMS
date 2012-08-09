@@ -50,6 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="init" output="false">
 	<cfargument name="data" hint="Can be an event object, struct or siteID">
+	
 	<cfset var initArgs=structNew()>
 	
 	<cfif structKeyExists(arguments,"data")>

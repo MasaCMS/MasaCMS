@@ -53,7 +53,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="$">
 
 	<cfset variables.event=arguments.data />
-	<cfif isdefined("form")><cfset structAppend(variables.event,form,false)/></cfif>
+	
+	<cfif isdefined("form")>
+		<cfset structAppend(variables.event,form,false)/>
+	</cfif>
+	
 	<cfset structAppend(variables.event,url,false)/>
 	
 	<cfif structKeyExists(arguments,"$")>
@@ -69,8 +73,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfset setValue("contentRenderer",getBean('contentRenderer'))>
 	</cfif>
-	
-
 	
 	<cfreturn this />
 </cffunction>
