@@ -223,6 +223,7 @@
 	<cfset var rsAttribute="">
 	<cfset var dataTable=getDataTable()>
 	<cfset var tableModifier="">
+	<cfset var hasExtendedSort= len(getSortBy()) and getSortBy() neq "random">
 
 	<cfif variables.configBean.getDbType() eq "MSSQL">
 		 <cfset tableModifier="with (nolock)">
@@ -247,7 +248,7 @@
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" blockfactor="#blockFactor#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	<cfif dbType eq "oracle" and getMaxItems()>select * from (</cfif>
 	select <cfif dbtype eq "mssql" and getMaxItems()>top #getMaxItems()#</cfif> 	
-	tclassextend.type,tclassextend.subtype,tclassextend.siteID, #dataTable#.baseID as ID, extendedSort
+	tclassextend.type,tclassextend.subtype,tclassextend.siteID, #dataTable#.baseID as ID<cfif hasExtendedSort>, extendedSort</cfif>
 	from #dataTable# #tableModifier#
 	INNER JOIN tclassextendattributes #tableModifier# on (#dataTable#.attributeID=tclassextendattributes.attributeID)
 	INNER JOIN tclassextendsets #tableModifier# on (tclassextendattributes.extendsetID=tclassextendsets.extendsetID)
@@ -329,7 +330,7 @@
 		<cfif started>)</cfif>
 	</cfif>
 	
-	Group By tclassextend.type,tclassextend.subtype,tclassextend.siteID, #dataTable#.baseID, extendedSort
+	Group By tclassextend.type,tclassextend.subtype,tclassextend.siteID, #dataTable#.baseID<cfif hasExtendedSort>, extendedSort</cfif>
 	
 	<cfif len(getSortBy())>
 		
