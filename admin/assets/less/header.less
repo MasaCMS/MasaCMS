@@ -83,6 +83,8 @@ header {
 				/*border-left: 1px solid #292929;*/
 				border-right: 1px solid #4A4A4A;
 				border-left: 0;
+				height: 60px;
+				float: left;
 			}
 			
 			> ul > li {
@@ -106,7 +108,7 @@ header {
 			> ul > li > a {
 				display: block;
 				height: auto;
-				min-height: 60px;
+				height: 60px;
 				width: 90px;
 				padding: 0 15px 0;
 				font-size: 12px;
@@ -224,12 +226,16 @@ header {
 
 		#select-site {
 			display: block;
-			float: right;
-			min-width: 220px;
+			float: left;
+//			width: 220px;
 			position: relative;
-			border-left: 0;
+			border: 6px solid #474747;
+			.border-radius(10px);
 			background: transparent;
-			margin: 0 0 0 0;
+			margin: 0 0 0 10px;
+			padding: 0 8px;
+			.box-shadow(inset 0 0 8px rgba(0,0,0,.5));
+			
 		}
 		
 		#select-site:hover {
@@ -239,7 +245,7 @@ header {
 		#select-site #select-site-btn {
 			display: block;
 			width: 100px;
-			margin: 10px auto 0;
+			margin: 7px auto 0;
 			text-align: center;
 			min-height: 0;
 			.border-radius(15);
@@ -253,7 +259,7 @@ header {
 			background: @orange;
 			padding: 4px 0 3px;
 			text-shadow: 0 -1px 0 rgba(0,0,0,.2);
-			box-shadow: 0px 0px 8px rgba(0,0,0,.5);
+			.box-shadow(0 0 8px rgba(0,0,0,.5));
 			
 			/* Matte BG */
 			/*#gradient .vertical(hsla(12,100%,54%,1),hsla(11,100%,40%,1));*/
@@ -273,23 +279,11 @@ header {
 			box-shadow: 0px 0px 8px rgba(255,255,255,.35);
 			text-decoration: none;
 		}
-		 
-		 #select-site .dropdown-menu {
-		 	width: 190px;
-		 }
-		 
-		 #select-site .dropdown-menu a {
-		 	.text-overflow;
-		 }
-		 
-		 #select-site-btn .dropdown-menu  i {
-		 	text-shadow: 0 0 0 !important;
-		 }
 		
 		#select-site > a.dropdown-toggle {
 			display: block;
-			height: 30px;
-			margin-top: 4px;
+			height: 24px;
+			margin-top: 3px;
 			padding: 0;
 			font-size: 12px;
 			font-weight: normal;
@@ -307,6 +301,18 @@ header {
 			}
 		} 	    
 		
+		 
+		 #select-site .dropdown-menu {
+		 	width: 190px;
+		 }
+		 
+		 #select-site .dropdown-menu a {
+		 	.text-overflow;
+		 }
+		 
+		 #select-site-btn .dropdown-menu  i {
+		 	text-shadow: 0 0 0 !important;
+		 }
 		/* Button Dropdown Selector
 		
 		#select-site {
