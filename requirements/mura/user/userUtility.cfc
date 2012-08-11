@@ -92,7 +92,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cflogout>
 		</cfif>
 		
-		<cfparam nameg=="session.blockLoginUntil" type="string" default="#strikes.blockedUntil()#" />
+		<cfparam name="session.blockLoginUntil" type="string" default="#strikes.blockedUntil()#" />
 		
 		<cfif len(arguments.siteID)>
 			<cfset variables.pluginManager.announceEvent('onSiteLogin',pluginEvent)/>
