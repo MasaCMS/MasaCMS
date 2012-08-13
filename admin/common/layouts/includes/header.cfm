@@ -85,39 +85,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	              
 	              <!--- Global Settings --->	
 	               <cfif listFind(session.mura.memberships,'S2')>
-	              <!---<li class="nav-site-select">
-	               	<form novalidate="novalidate" id="siteSelect" name="siteSelect" method="get" action="#application.configBean.getContext()#/admin/">
-	               	 	<cfif application.configBean.getDashboard()>
-		               		<input type="hidden" name="muraAction" value="cDashboard.main">
-		               		<cfelse>
-		               		<input type="hidden" name="muraAction" value="cArch.list">
-		               		<input type="hidden" name="moduleID" value="00000000000000000000000000000000000">
-		               		<input type="hidden" name="topID" value="00000000000000000000000000000000001">
-	               		</cfif>
-	               	  <select name="siteid" onchange="if(this.value != ''){document.forms.siteSelect.submit();}">
-	               			<option vaue="">#application.rbFactory.getKeyValue(session.rb,"layout.selectsite")#</option>
-	               		    <cfset theSiteList=application.settingsManager.getUserSites(session.siteArray,listFind(session.mura.memberships,'S2')) />
-	               		  	<cfloop query="theSiteList">
-	               			<option value="#theSiteList.siteid#">#theSiteList.site#</option>
-	               			</cfloop>
-	               	  </select>
-	               	</form>
-	               	
-	                 <!--<a class="dropdown-toggle" data-toggle="dropdown">
-	                   <i class="icon-globe"></i> #application.settingsManager.getSite(session.siteid).getSite()#
-	                   <b class="caret"></b>
-	                 </a>
-	                 
-	                 <cfset theSiteList=application.settingsManager.getUserSites(session.siteArray,listFind(session.mura.memberships,'S2')) />
-	                 <ul class="dropdown-menu">
-	                   <cfloop query="theSiteList">
-	                     <li<cfif session.siteID eq theSiteList.siteID> class="active"</cfif>>
-	                       <a href="#baseURL#&amp;siteID=#theSiteList.siteID#">#HTMLEditFormat(theSiteList.site)#</a>
-	                     </li>
-	                   </cfloop>
-	                 </ul>-->
-	               </li>--->
-	               
+	              	               
 	                  <li id="navGlobalSettings" class="dropdown">
 	                    <a class="dropdown-toggle" data-toggle="dropdown"><i class="icon-cogs"></i> #application.rbFactory.getKeyValue(session.rb,"layout.settings")#
 	                      <b class="caret"></b>
@@ -193,7 +161,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 
 	 			<ul class="mainnav">
 	 				
-	 				<!---<li id="select-site" class="dropdown">
+	 				<li id="select-site" class="dropdown">
 	 					
 		 				  <a id="select-site-btn" href="http://#application.settingsManager.getSite(session.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.configBean.getStub()#/<cfif application.configBean.getSiteIDInURLS()>#session.siteid#/</cfif> target="_blank">Current Site</a>
 		 				<a class="dropdown-toggle" data-toggle="dropdown">
@@ -210,7 +178,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 				    </cfloop>
 	 				</ul>
 	 				
-	 				</li>--->
+	 				</li>
 	 				
 	 				<cfif application.configBean.getDashboard()>
 	 				<li<cfif  rc.originalcircuit eq 'cDashboard'> class="active"</cfif>>
@@ -311,14 +279,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 				</cfif>
 	 			</ul>
 	 			
-	 			<div id="select-site" class="dropdown">
+	 			<!---<div id="select-site" class="dropdown">
 	 				
-	 				  <a id="select-site-btn" href="http://#application.settingsManager.getSite(session.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.configBean.getStub()#/<cfif application.configBean.getSiteIDInURLS()>#session.siteid#/</cfif>" target="_blank">
-	 				  <!---<i class="icon-globe"></i> --->Current Site
-	 				  </a>
+	 				  <a id="select-site-btn" href="http://#application.settingsManager.getSite(session.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.configBean.getStub()#/<cfif application.configBean.getSiteIDInURLS()>#session.siteid#/</cfif>" target="_blank">Current Site</a>
 	 				<a class="dropdown-toggle" data-toggle="dropdown">
 	 				  <cfset theSiteList=application.settingsManager.getUserSites(session.siteArray,listFind(session.mura.memberships,'S2')) />
-	 					<!---<i></i>--->
 	 					<span>#application.settingsManager.getSite(session.siteid).getSite()#</span>
 	 					<b class="caret"></b>
 	 				</a>
@@ -331,7 +296,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 				    </cfloop>
 	 				</ul>
 	 			
-	 			</div>
+	 			</div>--->
 	 			
 	 		</div> <!-- /container -->
 	 	
