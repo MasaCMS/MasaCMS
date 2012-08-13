@@ -1437,14 +1437,14 @@ and tclassextendattributes.type='File'
 						and (isnumeric(imagesizeXML.xmlAttributes.height) or imagesizeXML.xmlAttributes.height eq "AUTO")
 						and imagesizeXML.xmlAttributes.height neq evaluate('site.get#imagesizeXML.xmlAttributes.name#ImageHeight()')){	
 						evaluate('site.set#imagesizeXML.xmlAttributes.name#ImageHeight(imagesizeXML.xmlAttributes.height)');
-						dirty=true
+						dirty=true;
 					}
 
 					if(isDefined("imagesizeXML.xmlAttributes.width")
 						and (isnumeric(imagesizeXML.xmlAttributes.width) or imagesizeXML.xmlAttributes.width eq "AUTO")
 						and imagesizeXML.xmlAttributes.width neq evaluate('site.get#imagesizeXML.xmlAttributes.name#ImageWidth()')){						
 						evaluate('site.set#imagesizeXML.xmlAttributes.name#ImageWidth(imagesizeXML.xmlAttributes.width)');
-						dirty=true
+						dirty=true;
 					}
 
 				} else{ 
