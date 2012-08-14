@@ -138,13 +138,14 @@ select * from rsSubTypes where subType <> 'Default'
       </select>
   </div>
 </div>
-
+<!---
 <div class="control-group">
   <div class="controls">
     <label class="control-label">
       <input type="checkbox" name="contactform" value="#HTMLEditFormat(rc.siteid)#" <cfif rc.userBean.getcontactform() eq rc.siteid>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,'user.contactform')#
     </div>
 </div>
+--->
 
 <span id="extendSetsBasic"></span>
 
