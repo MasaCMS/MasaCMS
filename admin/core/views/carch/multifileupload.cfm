@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfinclude template="js.cfm">
 <cfsavecontent variable="str"><cfoutput>
-<link href="#application.configBean.getContext()#/admin/assets/js/fileuploader/css/jquery.fileupload-ui.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css">
+<link href="#application.configBean.getContext()#/admin/assets/css/jquery.fileupload-ui.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css">
 #session.dateKey#
 </cfoutput>
 </cfsavecontent>
@@ -73,7 +73,7 @@ Please select one image at a time to upload. Uploading will begin as soon as you
 </p>
 
     <!-- The file upload form used as target for the file upload widget -->
-    <form id="fileupload" action="./index.cfm" method="POST" enctype="multipart/form-data">
+    <form id="fileupload" action="#application.configBean.getContext()#/admin/" method="POST" enctype="multipart/form-data">
         <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
         <div class="row fileupload-buttonbar">
             <div class="span7">
@@ -81,7 +81,7 @@ Please select one image at a time to upload. Uploading will begin as soon as you
                 <span class="btn btn-success fileinput-button">
                     <i class="icon-plus icon-white"></i>
                     <span>Add files...</span>
-                    <input type="file" name="newfiles" multiple>
+                    <input type="file" name="files[]" multiple>
                 </span>
                 <button type="submit" class="btn btn-primary start">
                     <i class="icon-upload icon-white"></i>
@@ -219,33 +219,33 @@ Please select one image at a time to upload. Uploading will begin as soon as you
 {% } %}
 </script>
 
-<script src="#application.configBean.getContext()#/admin/assets/js/jquery/tmpl.min.js"></script>
+<script src="#application.configBean.getContext()#/admin/assets/js/jquery/tmpl.min.js?coreversion=#application.coreversion#"></script>
 <!-- The Load Image plugin is included for the preview images and image resizing functionality -->
-<script src="#application.configBean.getContext()#/admin/assets/js/fileuploader/js/load-image.min.js"></script>
+<script src="#application.configBean.getContext()#/admin/assets/js/jquery/load-image.min.js?coreversion=#application.coreversion#"></script>
 <!-- The Canvas to Blob plugin is included for image resizing functionality -->
-<script src="#application.configBean.getContext()#/admin/assets/js/fileuploader/js/canvas-to-blob.min.js"></script>
+<script src="#application.configBean.getContext()#/admin/assets/js/jqueryjs/canvas-to-blob.min.js?coreversion=#application.coreversion#"></script>
 <!-- Bootstrap JS and Bootstrap Image Gallery are not required, but included for the demo 
 <script src="http://blueimp.github.com/cdn/js/bootstrap.min.js"></script>
 <script src="http://blueimp.github.com/Bootstrap-Image-Gallery/js/bootstrap-image-gallery.min.js"></script>
 -->
 
 <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
-<script src="#application.configBean.getContext()#/admin/assets/js/fileuploader/js/jquery.iframe-transport.js"></script>
+<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.iframe-transport.js?coreversion=#application.coreversion#"></script>
 <!-- The basic File Upload plugin -->
-<script src="#application.configBean.getContext()#/admin/assets/js/fileuploader/js/jquery.fileupload.js"></script>
+<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.fileupload.js?coreversion=#application.coreversion#"></script>
 <!-- The File Upload file processing plugin -->
-<script src="#application.configBean.getContext()#/admin/assets/js/fileuploader/js/jquery.fileupload-fp.js"></script>
+<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.fileupload-fp.js?coreversion=#application.coreversion#"></script>
 <!-- The File Upload user interface plugin -->
-<script src="#application.configBean.getContext()#/admin/assets/js/fileuploader/js/jquery.fileupload-ui.js"></script>
+<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.fileupload-ui.js?coreversion=#application.coreversion#"></script>
 <!-- The localization script -->
-<script src="#application.configBean.getContext()#/admin/assets/js/fileuploader/js/locale.js"></script>
+<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.fileupload.locale.js?coreversion=#application.coreversion#"></script>
 <!-- The main application script -->
 <script>
 $(function () {
     'use strict';
 
     // Initialize the jQuery File Upload widget:
-    $('##fileupload').fileupload({paramName:'newfiles'});
+    $('##fileupload').fileupload({url:'#application.configBean.getContext()#/admin/index.cfm'});
 
     // Enable iframe cross-domain access via redirect option:
     /*$('##fileupload').fileupload(
