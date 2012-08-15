@@ -1879,7 +1879,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif isDefined('form.files')>
 		<cfif isArray(form.files)>
-			<cfcontent type="application/json; charset=utf-8">
+			<cfif CGI.HTTP_ACCEPT CONTAINS "application/json">
+   				<cfcontent type="application/json; charset=utf-8">
+   			<cfelse>
+   				<cfcontent type="text/plain; charset=utf-8">
+			</cfif>
 			<cfoutput>[</cfoutput>
 			<cfloop from="1" to="#arrayLen(form.files)#" index="f">
 				<cffile action="upload" result="tempFile" filefield="#form.files[f]#" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
@@ -1892,11 +1896,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					 update tfiles set contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getContentID()#"> 
 					 where fileid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getFileID()#">
 				</cfquery>
+				<cfset fileBean=read(contentHistID=fileBean.getContentHistID(),siteid=fileBean.getSiteID())>
 				<cfoutput>
 					{
 					    "name":"#JSStringFormat(fileBean.getTitle())#",
-					    "size":0,
-					    "url":"#JSStringFormat(fileBean.getImageURL(size='large'))#",
+					    "size":#fileBean.getFileSize()#,
+					    "url":"#JSStringFormat(fileBean.getImageURL(size='source'))#",
+					    "edit_url":"#JSStringFormat(fileBean.getEditURL())#",
 					    "thumbnail_url":"#JSStringFormat(fileBean.getImageURL(size='small'))#",
 					    "delete_url":"",
 					    "delete_type":"DELETE"
@@ -1907,7 +1913,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfoutput>]</cfoutput>
 			<cfabort>
 		<cfelse>
-			<cfcontent type="application/json; charset=utf-8">
+			<cfif CGI.HTTP_ACCEPT CONTAINS "application/json">
+   				<cfcontent type="application/json; charset=utf-8">
+   			<cfelse>
+   				<cfcontent type="text/plain; charset=utf-8">
+			</cfif>
 			<cfoutput>[</cfoutput>
 			<cfloop from="1" to="#listLen(form.files)#" index="f">
 				<cffile action="upload" result="tempFile" filefield="#listGetAt(form.files,f)#" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
@@ -1920,11 +1930,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					 update tfiles set contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getContentID()#"> 
 					 where fileid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getFileID()#">
 				</cfquery>
+				<cfset fileBean=read(contentHistID=fileBean.getContentHistID(),siteid=fileBean.getSiteID())>
 				<cfoutput>
 					{
 					    "name":"#JSStringFormat(fileBean.getTitle())#",
-					    "size":0,
-					    "url":"#JSStringFormat(fileBean.getImageURL(size='large'))#",
+					    "size":#fileBean.getFileSize()#,
+					    "url":"#JSStringFormat(fileBean.getImageURL(size='source'))#",
+					    "edit_url":"#JSStringFormat(fileBean.getEditURL())#",
 					    "thumbnail_url":"#JSStringFormat(fileBean.getImageURL(size='small'))#",
 					    "delete_url":"",
 					    "delete_type":"DELETE"
