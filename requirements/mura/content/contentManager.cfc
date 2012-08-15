@@ -1811,7 +1811,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset commentBean.saveSubscription() />
 	</cffunction>
 	
-	<cffunction name="multiFileUpload" access="public" output="false" returntype="void">
+	<cffunction name="multiFileUpload" access="public" output="true" returntype="void">
 	<cfargument name="data" type="struct"/>
 	<cfset var thefileStruct=structNew() />
 	<cfset var fileItem=structNew() />		
@@ -1876,6 +1876,68 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		<cfset f=f+1 />			
 	</cfloop>
+
+	<cfif isDefined('form.files')>
+		<cfif isArray(form.files)>
+			<cfcontent type="application/json; charset=utf-8">
+			<cfoutput>[</cfoutput>
+			<cfloop from="1" to="#arrayLen(form.files)#" index="f">
+				<cffile action="upload" result="tempFile" filefield="#form.files[f]#" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
+				<cfset theFileStruct=variables.fileManager.process(tempFile,arguments.data.siteid) />		
+				<cfset fileItem.title=tempFile.serverfile/>
+				<cfset fileItem.fileid=variables.fileManager.create(theFileStruct.fileObj, '', arguments.data.siteid, tempFile.ClientFile, tempFile.ContentType, tempFile.ContentSubType, tempFile.FileSize, "00000000000000000000000000000000000", tempFile.ServerFileExt, theFileStruct.fileObjSmall, theFileStruct.fileObjMedium, variables.utility.getUUID(), theFileStruct.fileObjSource) />
+				<cfset fileItem.filename=tempFile.serverfile/>
+				<cfset fileBean=add(structCopy(fileItem)) />
+				<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+					 update tfiles set contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getContentID()#"> 
+					 where fileid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getFileID()#">
+				</cfquery>
+				<cfoutput>
+					{
+					    "name":"#JSStringFormat(fileBean.getTitle())#",
+					    "size":0,
+					    "url":"#JSStringFormat(fileBean.getImageURL(size='large'))#",
+					    "thumbnail_url":"#JSStringFormat(fileBean.getImageURL(size='small'))#",
+					    "delete_url":"",
+					    "delete_type":"DELETE"
+					  }
+				<cfif f lt arrayLen(form.files)>,</cfif>
+				</cfoutput>
+			</cfloop>
+			<cfoutput>]</cfoutput>
+			<cfabort>
+		<cfelse>
+			<cfcontent type="application/json; charset=utf-8">
+			<cfoutput>[</cfoutput>
+			<cfloop from="1" to="#listLen(form.files)#" index="f">
+				<cffile action="upload" result="tempFile" filefield="#listGetAt(form.files,f)#" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
+				<cfset theFileStruct=variables.fileManager.process(tempFile,arguments.data.siteid) />		
+				<cfset fileItem.title=tempFile.serverfile/>
+				<cfset fileItem.fileid=variables.fileManager.create(theFileStruct.fileObj, '', arguments.data.siteid, tempFile.ClientFile, tempFile.ContentType, tempFile.ContentSubType, tempFile.FileSize, "00000000000000000000000000000000000", tempFile.ServerFileExt, theFileStruct.fileObjSmall, theFileStruct.fileObjMedium, variables.utility.getUUID(), theFileStruct.fileObjSource) />
+				<cfset fileItem.filename=tempFile.serverfile/>
+				<cfset fileBean=add(structCopy(fileItem)) />
+				<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+					 update tfiles set contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getContentID()#"> 
+					 where fileid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getFileID()#">
+				</cfquery>
+				<cfoutput>
+					{
+					    "name":"#JSStringFormat(fileBean.getTitle())#",
+					    "size":0,
+					    "url":"#JSStringFormat(fileBean.getImageURL(size='large'))#",
+					    "thumbnail_url":"#JSStringFormat(fileBean.getImageURL(size='small'))#",
+					    "delete_url":"",
+					    "delete_type":"DELETE"
+					  }
+				<cfif f lt listLen(form.files)>,</cfif>
+				</cfoutput>
+			</cfloop>
+			<cfoutput>]</cfoutput>
+			<cfabort>
+
+		</cfif>
+	</cfif>
+
 	</cffunction>
 
 	<cffunction name="getKidsQuery" returntype="query" output="false">

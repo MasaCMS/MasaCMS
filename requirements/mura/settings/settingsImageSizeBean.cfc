@@ -131,7 +131,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update timagesizes set
 		siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#">,
-		name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.name#">,
+		name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getBean('contentUtility').formatFilename(variables.instance.name)#">,
 		height=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.height#">,
 		width=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.width#">
 		where sizeid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.sizeID#">
@@ -143,7 +143,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		insert into timagesizes (sizeid,siteid,name,height,width) values(
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.sizeID#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#">,
-		<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.name#">,
+		<cfqueryparam cfsqltype="cf_sql_varchar" value="#getBean('contentUtility').formatFilename(variables.instance.name)#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.height#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.width#">
 		)
