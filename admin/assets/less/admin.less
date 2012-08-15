@@ -4,8 +4,8 @@
 // Commented out #grid > .core(70px, 30px); in responsive-1200px-min.less
 
 @import "../bootstrap/less/bootstrap.less";
-@import "base-admin.less";
 @import "variables.less";
+@import "base-admin.less";
 
 .mura {
 	
@@ -19,7 +19,8 @@
 	@import "forms.less";
 	@import "tag-clouds.less";
 	@import "session-history.less";
-	@import "category-assignments.less";	
+	@import "category-assignments.less";
+	@import "dashboard.less";	
 
 // Override bootstrap classes
 
@@ -35,6 +36,9 @@
 	.well {
 			.box-shadow(0 0 0);
 			border: 0;
+			padding: 1em;
+			background: @grayLighter;
+			clear: both;
 		}
 		
 	.tabbable {
