@@ -19,6 +19,8 @@
 <cfargument name="remoteID" default="">
 
 	<cfset super.init(argumentCollection=arguments)>
+	
+	<cfset variables.instance.ID = "">
 
 	<cfset setType(arguments.type)>
 	<cfset setSubType(arguments.subType)>

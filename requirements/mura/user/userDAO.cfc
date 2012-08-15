@@ -605,7 +605,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	Inner Join tusersinterests on tcontentcategories.categoryID=tusersinterests.categoryID
 	where userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#">
 	</cfquery>
-	<cfreturn rs />
+	<cfreturn rsInterestGroups />
 </cffunction>
 		
 <cffunction name="readInterestGroupIDs" returntype="query" access="public" output="false">
