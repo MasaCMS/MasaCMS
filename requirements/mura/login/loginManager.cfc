@@ -309,13 +309,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfif len(pluginEvent.getValue("siteID"))>
 		<cfset getPluginManager().announceEvent('onSiteLogout',pluginEvent)/>
+		<cfset getPluginManager().announceEvent('onBeforeSiteLogout',pluginEvent)/>
 	<cfelse>
 		<cfset getPluginManager().announceEvent('onGlobalLogout',pluginEvent)/>
+		<cfset getPluginManager().announceEvent('onBeforeGlobalLogout',pluginEvent)/>
 	</cfif>
+
 	<cflogout>
 	<cfset structclear(session) />
 	<cfcookie name="userid" expires="never" value="" />
 	<cfset variables.userUtility.setUserStruct()/>
+
+	<cfif len(pluginEvent.getValue("siteID"))>
+		<cfset getPluginManager().announceEvent('onAfterSiteLogout',pluginEvent)/>
+	<cfelse>
+		<cfset getPluginManager().announceEvent('onAfterGlobalLogout',pluginEvent)/>
+	</cfif>
 </cffunction>
 
 </cfcomponent>
