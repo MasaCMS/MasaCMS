@@ -20,6 +20,24 @@
 	<cfset $=event.getValue("MuraScope")>
 </cfsilent>
 <cfoutput>
+<cfif rc.compactDisplay eq "true">
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	if (top.location != self.location) {
+		if(jQuery("##ProxyIFrame").length){
+			jQuery("##ProxyIFrame").load(
+				function(){
+					frontEndProxy.postMessage("cmd=setWindowMode&mode=standard");
+				}
+			);	
+		} else {
+			frontEndProxy.postMessage("cmd=setWindowMode&mode=standard");
+		}
+	}
+});
+</script>
+</cfif> 
+
 <div id="configuratorContainer" style="width: 400px;">
 	<h2 id="configuratorHeader">Loading...</h2>
 	<div id="configuratorNotices" style="display:none;">
