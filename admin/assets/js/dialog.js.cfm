@@ -8,7 +8,7 @@
 	
 	var adminProxy;
 	var adminDomain=<cfif len($.globalConfig('admindomain'))>"#$.globalConfig('admindomain')#"<cfelse>location.hostname</cfif>;
-	var adminProtocal=<cfif application.configBean.getAdminSSL()>"https://";<cfelse>"http://"</cfif>;
+	var adminProtocal=<cfif application.configBean.getAdminSSL() or application.utility.isHTTPS()>"https://";<cfelse>"http://"</cfif>;
 	var adminProxyLoc=adminProtocal + adminDomain + "#$.globalConfig('serverPort')##$.globalConfig('context')#/admin/js/porthole/proxy.html";
 	var frontEndProxyLoc= location.protocol + "//" + location.hostname + "#$.globalConfig('serverPort')#";
 	
