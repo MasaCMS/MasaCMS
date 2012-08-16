@@ -64,7 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getBeanClass" output="false">
-	<cfreturn variables.beanClass=variabes.beanClass>
+	<cfreturn variables.beanClass>
 </cffunction>
 
 <cffunction name="packageRecord" access="public" output="false" returntype="any">
