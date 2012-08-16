@@ -67,9 +67,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <!---<h4>Recent Campaign Activity</h4>--->
 <table class="table table-striped table-bordered table-condensed">
+<thead>
 <tr>
 	<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.title")#</th><th>#application.rbFactory.getKeyValue(session.rb,"dashboard.sent")#</th><th>#application.rbFactory.getKeyValue(session.rb,"dashboard.opens")#</th><th>#application.rbFactory.getKeyValue(session.rb,"dashboard.clicks")#</th><th>#application.rbFactory.getKeyValue(session.rb,"dashboard.bounces")#</th>
 </tr>
+</thead>
+<tbody>
 <cfif rslist.recordcount>
 <cfloop query="rsList">
 <cfsilent>
@@ -85,4 +88,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfelse>
 <tr class="alt"><td class="noResults" colspan="5">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.noemails"),rc.span)#</td></tr>
 </cfif>
+</tbody>
 </table></div></cfoutput>

@@ -48,37 +48,51 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfinclude template="act_defaults.cfm">
 <cfoutput>
 <table class="table table-striped table-bordered table-condensed" id="recentActivity">
+<thead>
 <tr>
 	<th colspan="2">#application.rbFactory.getKeyValue(session.rb,"dashboard.recentactivity")#</th>
 </tr>
-<tr class="alt">
-	<th class="alt"><a href="index.cfm?muraAction=cDashboard.listSessions&siteid=#URLEncodedFormat(rc.siteid)#&membersOnly=false&visitorStatus=All&spanType=n&span=15">#application.rbFactory.getKeyValue(session.rb,"dashboard.currentvisitors")#</a> <span>(#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.spannow"),15)#)</span></th><td>#application.dashboardManager.getSiteSessionCount(rc.siteID,false,"All",15,"n")# </td>
+</thead>
+<tbody>
+<tr>
+	<td><a href="index.cfm?muraAction=cDashboard.listSessions&siteid=#URLEncodedFormat(rc.siteid)#&membersOnly=false&visitorStatus=All&spanType=n&span=15">#application.rbFactory.getKeyValue(session.rb,"dashboard.currentvisitors")#</a> <span>(#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.spannow"),15)#)</span></td>
+	<td>#application.dashboardManager.getSiteSessionCount(rc.siteID,false,"All",15,"n")# </td>
 </tr>
 <tr>
-	<th class="alt"><!--- <a href="index.cfm?muraAction=cDashboard.listSessions&siteid=#URLEncodedFormat(rc.siteid)#&membersOnly=false&spanType=#spanType#&span=#spanUnits#"> --->#application.rbFactory.getKeyValue(session.rb,"dashboard.visits")#<!--- </a> --->  <span>(#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.span"),rc.span)#)</span></th><td>#application.dashboardManager.getSiteSessionCount(rc.siteID,false,"All",spanUnits,spanType)#</td>
+	<td><!--- <a href="index.cfm?muraAction=cDashboard.listSessions&siteid=#URLEncodedFormat(rc.siteid)#&membersOnly=false&spanType=#spanType#&span=#spanUnits#"> --->#application.rbFactory.getKeyValue(session.rb,"dashboard.visits")#<!--- </a> --->  <span>(#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.span"),rc.span)#)</span></td>
+	<td>#application.dashboardManager.getSiteSessionCount(rc.siteID,false,"All",spanUnits,spanType)#</td>
 </tr>
-<tr class="alt">
-	<th class="alt">#application.rbFactory.getKeyValue(session.rb,"dashboard.returnvisits")# <span>(#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.span"),rc.span)#)</span></th><td>#application.dashboardManager.getSiteSessionCount(rc.siteID,false,"Return",spanUnits,spanType)#</td>
+<tr>
+	<td>#application.rbFactory.getKeyValue(session.rb,"dashboard.returnvisits")# <span>(#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.span"),rc.span)#)</span></td>
+	<td>#application.dashboardManager.getSiteSessionCount(rc.siteID,false,"Return",spanUnits,spanType)#</td>
 </tr>
+</tbody>
 </table>
 <cfif application.settingsManager.getSite(rc.siteID).getExtranet() eq 1>
 <table class="table table-striped table-bordered table-condensed" id="memberActivity">
+<thead>
 <tr>
 	<th colspan="2">#application.rbFactory.getKeyValue(session.rb,"dashboard.memberactivity")#</th>
 </tr>
-<tr class="alt">
-	<th class="alt"><a href="index.cfm?muraAction=cDashboard.listSessions&siteid=#URLEncodedFormat(rc.siteid)#&membersOnly=true&visitorStatus=All&spanType=n&span=15">#application.rbFactory.getKeyValue(session.rb,"dashboard.currentmembers")#</a><span> (#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.spannow"),15)#)</span></th><td>#application.dashboardManager.getSiteSessionCount(rc.siteID,true,false,15,"n")# </td>
+</thead>
+<tbody>
+<tr>
+	<td><a href="index.cfm?muraAction=cDashboard.listSessions&siteid=#URLEncodedFormat(rc.siteid)#&membersOnly=true&visitorStatus=All&spanType=n&span=15">#application.rbFactory.getKeyValue(session.rb,"dashboard.currentmembers")#</a><span> (#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.spannow"),15)#)</span></td>
+	<td>#application.dashboardManager.getSiteSessionCount(rc.siteID,true,false,15,"n")# </td>
 </tr>
 <tr>
-	<th class="alt"><!--- <a href="index.cfm?muraAction=cDashboard.listSessions&siteid=#URLEncodedFormat(rc.siteid)#&membersOnly=true&spanType=#spanType#&span=#spanUnits#"> --->#application.rbFactory.getKeyValue(session.rb,"dashboard.membervisits")#<!--- </a> ---><span> (#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.span"),rc.span)#)</span></th><td>#application.dashboardManager.getSiteSessionCount(rc.siteID,true,false,spanUnits,spanType)#</td>
+	<td><!--- <a href="index.cfm?muraAction=cDashboard.listSessions&siteid=#URLEncodedFormat(rc.siteid)#&membersOnly=true&spanType=#spanType#&span=#spanUnits#"> --->#application.rbFactory.getKeyValue(session.rb,"dashboard.membervisits")#<!--- </a> ---><span> (#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.span"),rc.span)#)</span></td>
+	<td>#application.dashboardManager.getSiteSessionCount(rc.siteID,true,false,spanUnits,spanType)#</td>
 </tr>
 <cfif application.settingsManager.getSite(rc.siteID).getExtranetPublicReg() eq 1>
-<tr class="alt">
-	<th class="alt"><cfif application.permUtility.getModulePerm('00000000000000000000000000000000008','#rc.siteid#')><a href="index.cfm?muraAction=cPublicUsers.advancedSearch&siteid=#URLEncodedFormat(rc.siteid)#&param=1&paramField1=#urlEncodedFormat('tusers.created^date')#&paramCondition1=GTE&paramCriteria1=#urlEncodedFormat(rc.startDate)#&paramRelationship1=and&inActive=">#application.rbFactory.getKeyValue(session.rb,"dashboard.memberregistrations")#</a><cfelse>#application.rbFactory.getKeyValue(session.rb,"dashboard.memberregistrations")#</cfif><span> (#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.span"),rc.span)#)</span></th><td>#application.dashboardManager.getCreatedMembers(rc.siteID,rc.startDate,rc.stopDate)#</td>
+<tr>
+	<td><cfif application.permUtility.getModulePerm('00000000000000000000000000000000008','#rc.siteid#')><a href="index.cfm?muraAction=cPublicUsers.advancedSearch&siteid=#URLEncodedFormat(rc.siteid)#&param=1&paramField1=#urlEncodedFormat('tusers.created^date')#&paramCondition1=GTE&paramCriteria1=#urlEncodedFormat(rc.startDate)#&paramRelationship1=and&inActive=">#application.rbFactory.getKeyValue(session.rb,"dashboard.memberregistrations")#</a><cfelse>#application.rbFactory.getKeyValue(session.rb,"dashboard.memberregistrations")#</cfif><span> (#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.span"),rc.span)#)</span></td>
+	<td>#application.dashboardManager.getCreatedMembers(rc.siteID,rc.startDate,rc.stopDate)#</td>
 </tr>
 </cfif>
 <!--- <tr>
 	<th class="alt">#application.rbFactory.getKeyValue(session.rb,"dashboard.mostactiveusers")#</th><td>##</td>
 </tr> --->
+</tbody>
 </table>
 </cfif></cfoutput>

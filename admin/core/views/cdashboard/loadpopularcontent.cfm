@@ -49,9 +49,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput><cfset rsList=application.dashboardManager.getTopContent(rc.siteID,3,false,"All",rc.startDate,rc.stopDate,true) />
 <cfset count=rsList.recordcount>
 <table class="table table-striped table-bordered table-condensed" id="topPages">
+<thead>
 <tr>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.pages")# <a href="index.cfm?muraAction=cDashboard.topContent&siteid=#URLEncodedFormat(rc.siteid)#&startDate=#URLEncodedFormat(rc.startDate)#&stopDate=#URLEncodedFormat(rc.stopDate)#">(#application.rbFactory.getKeyValue(session.rb,"dashboard.viewreport")#)</a></th>
 </tr>
+</thead>
+<tbody>
 <cfloop query="rslist">
 <tr<cfif rslist.currentrow mod 2> class="alt"</cfif>>
 	<td><cfswitch expression="#rslist.type#">
@@ -70,6 +73,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif count eq 0><tr class="alt"><td>&mdash;</td></tr></cfif>
 <cfif count lt 2><tr><td>&mdash;</td></tr></cfif>
 <cfif count lt 3><tr class="alt"><td>&mdash;</td></tr></cfif>
+</tbody>
 </table>
 <!---
 <cfset rsList=application.dashboardManager.getTopReferers(rc.siteID,3,rc.startDate,rc.stopDate) />

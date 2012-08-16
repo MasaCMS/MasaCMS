@@ -31,16 +31,31 @@ label.control-label {
 }
 
 #contentForm {
-	clear:  both;
+	clear: both;
 }
 
 #siteSearch {
-float: right;
-width: auto;
-margin: 0 0 2em;
-position: relative;
-right: 0;
-background: @grayLighter;
-padding: .75em .75em;
-border-radius: 5px;
+	float: right;
+	width: auto;
+	margin: 0 0 2em;
+	position: relative;
+	right: 0;
+	background: @grayLighter;
+	padding: .75em .75em;
+	.border-radius(5);
+	
+	input[type="text"],
+	input[type="password"] {
+		font-size: @baseFontSize - 2;
+		line-height: @baseLineHeight - 2;
+		height: @baseLineHeight+6;
+		padding: 2px;
+	}
+	
+	.btn {
+		font-size: @baseFontSize - 2;
+		font-weight: bold;
+		line-height: @baseLineHeight - 4;
+		height: @baseLineHeight + 6;
+	}
 }

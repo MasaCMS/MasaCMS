@@ -48,11 +48,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfinclude template="act_defaults.cfm">
 <cfset comments=application.contentManager.getRecentCommentsIterator(rc.siteID,5,false) />
 <cfoutput><table class="table table-striped table-bordered table-condensed">
+<thead>
 <tr>
 	<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments")#</th>
 	<th class="dateTime">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments.posted")#</th>
 	<th class="administration">&nbsp;</th>
 </tr>
+</thead>
+<tbody>
 <cfloop condition="comments.hasNext()">
 	<cfset comment=comments.next()>
 	<!---
@@ -73,5 +76,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</td>
 	</tr>
 	</cfloop>
+</tbody>
 	</table>
 </cfoutput>
