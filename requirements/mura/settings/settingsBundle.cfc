@@ -202,7 +202,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 
 					<cfif not started>
-						1=1
+						0=1
 					</cfif>
 				)	
 				
