@@ -34,8 +34,8 @@
 
 <cfsavecontent variable="rc.headertext">
 <cfoutput>
-  <script src="#$.globalConfig('content')#/tasks/widgets/jcrop/js/jquery.Jcrop.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="#$.globalConfig('content')#/tasks/widgets/jcrop//css/jquery.Jcrop.css" type="text/css" />
+  <script src="#$.globalConfig('content')#/admin/assets/js/jquery/jquery.Jcrop.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="#$.globalConfig('content')#/admin/assets/css/jquery/jquery.Jcrop.css" type="text/css" />
 </cfoutput>
 </cfsavecontent>
 <cfhtmlhead text="#rc.headertext#">

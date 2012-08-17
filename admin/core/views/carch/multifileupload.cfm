@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfinclude template="js.cfm">
 <cfsavecontent variable="str"><cfoutput>
-<link href="#application.configBean.getContext()#/admin/assets/css/jquery.fileupload-ui.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css">
+<link href="#application.configBean.getContext()#/admin/assets/css/jquery/jquery.fileupload-ui.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css">
 #session.dateKey#
 </cfoutput>
 </cfsavecontent>
