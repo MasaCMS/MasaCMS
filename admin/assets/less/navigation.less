@@ -1,34 +1,21 @@
 #nav-module-specific {
-	/*padding-bottom: @baseLineHeight;
-	border-bottom: 1px dotted @gray;*/
 	margin-bottom: @baseLineHeight * 1.5;
 	margin-left: 0;
 	clear: both;
 	
 	a.btn {
-		/*font-size: 11px;
-		color: darken(@grayDarker,20%);*/
-		box-shadow: 1px 1px 2px @gray;
+		/* box-shadow: 1px 1px 2px rgba(000,000,000,.15); */
 		text-shadow: (0 1px rgba(255,255,255,.99));
-		/*.buttonBackground(lighten(@blue,10%), @blue);*/
 			
 		i {
 			color: @gray;
-			/*opacity: .75;*/
 			text-shadow: (0 -1px rgba(000,000,000,.6));
 		}
 	}
 	
-	a.btn:hover, a.active {
-		/*.buttonBackground(lighten(@blue,40%),lighten(@blue,20%));*/
-		/*color: @black;*/
-		/*text-shadow: (0 -1px rgba(0,0,0,.5));*/
-		
-		i {
-			color: @grayDarker;
-			text-shadow: (0 -1px rgba(000,000,000,.6));
+	a.active, a:active {
+		box-shadow: rgba(0, 0, 0, 0.138438) 0px 1px 4px 0px inset, rgba(0, 0, 0, 0.036875) 0px 1px 2px 0px;
 		}
-	}
 }
 
 #btn-module-specific {
