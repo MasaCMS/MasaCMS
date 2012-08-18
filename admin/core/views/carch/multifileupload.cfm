@@ -81,7 +81,7 @@ Please select one or more images to upload.
                 <span class="btn btn-success fileinput-button">
                     <i class="icon-plus icon-white"></i>
                     <span>Add files...</span>
-                    <input type="file" name="files[]" multiple>
+                    <input type="file" name="files" multiple>
                 </span>
                 <button type="submit" class="btn btn-primary start">
                     <i class="icon-upload icon-white"></i>
@@ -223,7 +223,7 @@ Please select one or more images to upload.
 <!-- The Load Image plugin is included for the preview images and image resizing functionality -->
 <script src="#application.configBean.getContext()#/admin/assets/js/jquery/load-image.min.js?coreversion=#application.coreversion#"></script>
 <!-- The Canvas to Blob plugin is included for image resizing functionality -->
-<script src="#application.configBean.getContext()#/admin/assets/js/jqueryjs/canvas-to-blob.min.js?coreversion=#application.coreversion#"></script>
+<script src="#application.configBean.getContext()#/admin/assets/js/jquery/canvas-to-blob.min.js?coreversion=#application.coreversion#"></script>
 <!-- Bootstrap JS and Bootstrap Image Gallery are not required, but included for the demo 
 <script src="http://blueimp.github.com/cdn/js/bootstrap.min.js"></script>
 <script src="http://blueimp.github.com/Bootstrap-Image-Gallery/js/bootstrap-image-gallery.min.js"></script>

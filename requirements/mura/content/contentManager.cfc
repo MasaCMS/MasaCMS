@@ -1877,8 +1877,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset f=f+1 />			
 	</cfloop>
 
-	<cfif isDefined('form.files')>
-		<cfif isArray(form.files)>
+	<cfif isDefined('form.files') and isArray(form.files)>
+		<cftry>
 			<cfif CGI.HTTP_ACCEPT CONTAINS "application/json">
    				<cfcontent type="application/json; charset=utf-8">
    			<cfelse>
@@ -1886,7 +1886,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			<cfoutput>[</cfoutput>
 			<cfloop from="1" to="#arrayLen(form.files)#" index="f">
-				<cffile action="upload" result="tempFile" filefield="#form.files[f]#" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
+				<cffile action="upload" result="tempFile" filefield="#form.files#" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
 				<cfset theFileStruct=variables.fileManager.process(tempFile,arguments.data.siteid) />		
 				<cfset fileItem.title=tempFile.serverfile/>
 				<cfset fileItem.fileid=variables.fileManager.create(theFileStruct.fileObj, '', arguments.data.siteid, tempFile.ClientFile, tempFile.ContentType, tempFile.ContentSubType, tempFile.FileSize, "00000000000000000000000000000000000", tempFile.ServerFileExt, theFileStruct.fileObjSmall, theFileStruct.fileObjMedium, variables.utility.getUUID(), theFileStruct.fileObjSource) />
@@ -1912,15 +1912,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfloop>
 			<cfoutput>]</cfoutput>
 			<cfabort>
-		<cfelse>
+		<cfcatch>
+			<cflog log="application" text="Railo: #cfcatch.message#">
+			<cfabort>
+		</cfcatch>
+		</cftry>
+	</cfif>
+
+	<cfif structKeyExistS(form,'files') and isSimpleValue(form['files']) and len(form['files'])>
+		<cftry>
 			<cfif CGI.HTTP_ACCEPT CONTAINS "application/json">
    				<cfcontent type="application/json; charset=utf-8">
    			<cfelse>
    				<cfcontent type="text/plain; charset=utf-8">
 			</cfif>
 			<cfoutput>[</cfoutput>
-			<cfloop from="1" to="#listLen(form.files)#" index="f">
-				<cffile action="upload" result="tempFile" filefield="#listGetAt(form.files,f)#" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
+			<!---<cfloop from="1" to="#listLen(form['files'])#" index="f">--->
+				<cffile action="upload" result="tempFile" filefield="files" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
 				<cfset theFileStruct=variables.fileManager.process(tempFile,arguments.data.siteid) />		
 				<cfset fileItem.title=tempFile.serverfile/>
 				<cfset fileItem.fileid=variables.fileManager.create(theFileStruct.fileObj, '', arguments.data.siteid, tempFile.ClientFile, tempFile.ContentType, tempFile.ContentSubType, tempFile.FileSize, "00000000000000000000000000000000000", tempFile.ServerFileExt, theFileStruct.fileObjSmall, theFileStruct.fileObjMedium, variables.utility.getUUID(), theFileStruct.fileObjSource) />
@@ -1941,14 +1949,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					    "delete_url":"",
 					    "delete_type":"DELETE"
 					  }
-				<cfif f lt listLen(form.files)>,</cfif>
+				<!---<cfif f lt listLen(form['files'])>,</cfif>--->
 				</cfoutput>
-			</cfloop>
+			<!---</cfloop>--->
 			<cfoutput>]</cfoutput>
 			<cfabort>
-
-		</cfif>
+		<cfcatch>
+			<cflog log="application" text="CF: #cfcatch.message#">
+			<cfabort>
+		</cfcatch>
+		</cftry>
 	</cfif>
+
+	<cfabort>
+
 
 	</cffunction>
 
