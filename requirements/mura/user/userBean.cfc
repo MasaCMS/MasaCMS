@@ -608,4 +608,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getExtendBaseID" output="false">
 	<cfreturn getUserID()>
 </cffunction>
+
+<cffunction name="getImageURL" output="false">
+		<cfargument name="size" required="true" default="Large">
+		<cfargument name="direct" default="true"/>
+		<cfargument name="complete" default="false"/>
+		<cfargument name="height" default=""/>
+		<cfargument name="width" default=""/>
+		<cfreturn variables.settingsManager.getSite(variables.instance.siteID).getContentRenderer().createHREFForImage(variables.instance.siteID, variables.instance.photofileid, variables.instance.photofileEXT, arguments.size, arguments.direct, arguments.complete, arguments.height, arguments.width)>
+	</cffunction>
 </cfcomponent>
