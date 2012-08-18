@@ -112,7 +112,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <span class="caret"></span>
     </a>
     <div class="dropdown-menu">
-      	  <h4>#application.rbFactory.getKeyValue(session.rb,'sitemanager.filterviewdesc')#</h4>
+      	 <!---  <h4>#application.rbFactory.getKeyValue(session.rb,'sitemanager.filterviewdesc')#</h4> --->
       	  
       	   #application.rbFactory.getKeyValue(session.rb,"sitemanager.rowsdisplayed")#
         <input name="nextN" value="#session.mura.nextN#" type="text" class="text span1" size="2" maxlength="4" />
