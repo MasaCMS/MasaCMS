@@ -236,6 +236,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 					   		</a>
 		 					   	</li>
 		 				 <cfif listFind(session.mura.memberships,'S2')>
+
+		 				 	<li>
+		 						<a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.editSite&siteid=#session.siteid#">
+		 							<i class="icon-pencil"></i> #application.rbFactory.getKeyValue(session.rb,"layout.editcurrentsite")#
+		 						</a>
+		 					</li>
+		 					
 		 					<li>
 		 						<a href="index.cfm?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#">
 		 							<i class="icon-list-alt"></i> Class Extension Manager
@@ -265,12 +272,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<a href="./?muraAction=csettings.exportHTML&siteID=#rc.siteBean.getSiteID()#"  onclick="return confirmDialog('Export static HTML files to #JSStringFormat("'#rc.siteBean.getExportLocation()#'")#.',this.href);"><i class="icon-cog"></i> Export Static HTML (BETA)</a>
 								</li>
 							</cfif>
-										 					
-		 					<li>
-		 						<a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.editSite&siteid=#session.siteid#">
-		 							<i class="icon-pencil"></i> #application.rbFactory.getKeyValue(session.rb,"layout.editcurrentsite")#
-		 						</a>
-		 					</li>
+										 				
 		 				</cfif>
 	 					
 		 				</ul>	
