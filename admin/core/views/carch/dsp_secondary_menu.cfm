@@ -184,6 +184,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<i class="icon-share-alt"></i>
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.backtositemanager')#
 					</a>
+				<cfelse>
+					<a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-share-alt"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
 				</cfif>
 			</cfcase>
 			<cfcase value="datamanager">

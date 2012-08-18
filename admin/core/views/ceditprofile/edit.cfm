@@ -107,6 +107,21 @@ select * from rsSubTypes where subType <> 'Default'
       <div class="controls"><input id="lname" name="lname" type="text" value="#HTMLEditFormat(rc.userBean.getlname())#"  required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.lnamerequired')#" class="text">
           </div>
     </div>
+
+    <div class="control-group">
+      		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.image')#</label>
+      	<div class="controls">
+      		<input type="file" name="newFile" validate="regex" regex="(.+)(\.)(jpg|JPG)" message="Your logo must be a .JPG" value=""/>
+        </div>
+        <cfif len(rc.userBean.getPhotoFileID())>
+	        <div class="controls">
+	        	<a href="./index.cfm?muraAction=cArch.imagedetails&userid=#rc.userBean.getUserID()#&siteid=#rc.userBean.getSiteID()#&fileid=#rc.userBean.getPhotoFileID()#"><img id="assocImage" src="#application.configBean.getContext()#/tasks/render/medium/index.cfm?fileid=#rc.userBean.getPhotoFileID()#&cacheID=#createUUID()#" /></a>
+	        	<input type="checkbox" name="removePhotoFile" value="true"> #application.rbFactory.getKeyValue(session.rb,'user.delete')# 
+	        </div>
+        </cfif>
+    </div>
+
+   
 		
 		<div class="control-group">
       		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.company')#</label>

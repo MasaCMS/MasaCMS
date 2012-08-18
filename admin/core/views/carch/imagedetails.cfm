@@ -1,9 +1,9 @@
 
 <cfset $=application.serviceFactory.getBean('$').init(session.siteID)>
-<cfif len(rc.contenthistid)>
-<cfset rc.contentBean=$.getBean('content').loadBy(contentHistID=rc.contentHistID)>
+<cfif isDefined('url.userid')>
+	<cfset rc.userBean=$.getBean('user').loadBy(userID=rc.userID,siteID=rc.siteID)>
 <cfelse>
-<cfset rc.userBean=$.getBean('user').loadBy(userID=rc.userID,siteID=rc.siteID)>
+	<cfset rc.contentBean=$.getBean('content').loadBy(contentHistID=rc.contentHistID)>
 </cfif>
 
 <cfif not (isDefined('rc.fileID') and len(rc.fileID))>
