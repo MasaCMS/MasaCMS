@@ -91,11 +91,13 @@ Please select one or more images to upload.
                     <i class="icon-ban-circle icon-white"></i>
                     <span>Cancel upload</span>
                 </button>
+                <!---
                 <button type="button" class="btn btn-danger delete">
                     <i class="icon-trash icon-white"></i>
                     <span>Delete</span>
                 </button>
                 <input type="checkbox" class="toggle">
+                --->
             </div>
             <!-- The global progress information -->
             <div class="span5 fileupload-progress fade">
@@ -209,11 +211,13 @@ Please select one or more images to upload.
             <td colspan="2"></td>
         {% } %}
         <td class="delete">
+           <!---
             <button class="btn btn-danger" data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}">
                 <i class="icon-trash icon-white"></i>
                 <span>{%=locale.fileupload.destroy%}</span>
             </button>
             <input type="checkbox" name="delete" value="1">
+            --->
         </td>
     </tr>
 {% } %}
