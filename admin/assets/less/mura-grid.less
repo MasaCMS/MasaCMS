@@ -1,3 +1,7 @@
+#sm-modify-view .dropdown-menu {
+	padding: 10px;
+}
+
 .mura-grid {
 			border: 1px solid #DBDBDB;
 			border-top: 0;
@@ -209,6 +213,7 @@
 				padding-left: 5px;
 				padding-right: 5px;
 				height: 26px;
+				line-height: 26px;
 			}
 				
 			.mura-grid-hdr dt {
@@ -238,8 +243,11 @@
 			}
 			
 			.mura-grid-hdr a {
-				margin-top: 4px;
+				color: @grayDark;
 				font-weight: bold;
+				.inline-block();
+				line-height: 26px;
+				padding: 0;
 			}	
 			
 			.mura-grid-hdr dt a.tooltip {
