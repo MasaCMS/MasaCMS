@@ -60,6 +60,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<li class="new#i#"><a href="index.cfm?muraAction=cArch.edit&contentid=&parentid=#HTMLEditFormat(rc.contentid)#&type=#i#&subType=#rsItemTypes.subType#&topid=#HTMLEditFormat(rc.topid)#&siteid=#HTMLEditFormat(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#HTMLEditFormat(rc.ptype)#" id="new#i#Link">#application.rbFactory.getKeyValue(session.rb,"sitemanager.add#lcase(i)#")# / #rsItemTypes.subType#</a></li>
 	</cfloop>
 	</cfloop>
+	<li class="newGalleryItemMulti"><a href="index.cfm?muraAction=cArch.multiFileUpload&contentid=&parentid=#HTMLEditFormat(rc.contentid)#&type=File&topid=#HTMLEditFormat(rc.topid)#&siteid=#HTMLEditFormat(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#HTMLEditFormat(rc.ptype)#" id="newGalleryItemMultiLink">#application.rbFactory.getKeyValue(session.rb,"sitemanager.addmultiitems")#</a></li>
 <cfelse>
 	<li class="newGalleryItem"><a href="index.cfm?muraAction=cArch.edit&contentid=&parentid=#HTMLEditFormat(rc.contentid)#&type=File&topid=#HTMLEditFormat(rc.topid)#&siteid=#HTMLEditFormat(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#HTMLEditFormat(rc.ptype)#" id="newGalleryItemLink">#application.rbFactory.getKeyValue(session.rb,"sitemanager.addgalleryitem")#</a></li>
 	<cfquery name="rsItemTypes" dbtype="query">
