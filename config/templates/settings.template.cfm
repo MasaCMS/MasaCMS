@@ -19,6 +19,7 @@ datasource=
 dbtype=
 dbusername=
 dbpassword=
+dbtablespace=USERS
 context=
 stub=
 admindomain=

@@ -66,6 +66,7 @@ to your own modified versions of Mura CMS.
 <cfparam name="FORM.production_datasource" default="#settingsIni.get( "production", "datasource" )#" />
 <cfparam name="FORM.production_dbusername" default="#settingsIni.get( "production", "dbusername" )#" />
 <cfparam name="FORM.production_dbpassword" default="#settingsIni.get( "production", "dbpassword" )#" />
+<cfparam name="FORM.production_dbtablespace" default="#settingsIni.get( "production", "dbtablespace" )#" />
 <cfparam name="FORM.production_adminemail" default="#settingsIni.get( "production", "adminemail" )#" />
 <cfparam name="FORM.production_mailserverip" default="#settingsIni.get( "production", "mailserverip" )#" />
 <cfparam name="FORM.production_mailserverpopport" default="#settingsIni.get( "production", "mailserverpopport" )#" />
@@ -262,11 +263,18 @@ to your own modified versions of Mura CMS.
 				<!--- try to create the database --->
 				<!--- <cftry> --->
 					<!--- get selected DB type --->
+					<!---
 					<cfif server.coldfusion.productname eq "BlueDragon">
 						<cffile action="read" file="#ExpandPath('.')#/config/setup/db/#FORM.production_dbtype#.sql" variable="sql" />
 					<cfelse>
 						<cffile action="read" file="#getDirectoryFromPath( getCurrentTemplatePath() )#/db/#FORM.production_dbtype#.sql" variable="sql" />
 					</cfif>
+					--->
+					<cfset form.production_dbtablespace=ucase(form.production_dbtablespace)>
+					
+					<cfsavecontent variable="sql">
+						<cfinclude template="db/#FORM.production_dbtype#.sql">
+					</cfsavecontent>
 					<!---
 					<cfsavecontent variable="sql">
 	                	<cfinclude template="db/#FORM.production_dbtype#.sql">
@@ -638,6 +646,8 @@ if (server.ColdFusion.ProductName CONTAINS "Railo"){
 	
 	<dt><a href="" class="tooltip">Database Password<span>Only required on shared hosting. This is the same Password supplied to your DSN to allow Mura to connect to your database.</span></a></dt>
 	<dd><input type="password" name="production_dbpassword" value="#FORM.production_dbpassword#"></dd>
+	<dt><a href="" class="tooltip">Oracle TableSpace<span>Only required if you are using Oracle.</span></a></dt>
+	<dd><input type="text" name="production_dbtablesspace" value="#FORM.production_dbtablespace#"></dd>
 	
 	<input type="hidden" name="production_assetpath" value="#FORM.production_assetpath#">
 	<!---

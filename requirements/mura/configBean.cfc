@@ -75,6 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.dbType="mssql"/>
 <cfset variables.instance.dbUsername=""/>
 <cfset variables.instance.dbPassword=""/>
+<cfset variables.instance.dbtablespace="USERS"/>
 <!--- <cfset variables.instance.dbTransactionLevel="read_committed"/> --->
 <cfset variables.instance.debuggingEnabled="false"/>
 <cfset variables.instance.compiler="adobe"/>
@@ -548,6 +549,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setDbUsername" access="public" output="false">
 	<cfargument name="dbUsername" type="string" />
 	<cfset variables.instance.dbUsername = arguments.dbUsername />
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getDbTablespace" returntype="any" access="public" output="false">
+	<cfreturn variables.instance.dbTablespace />
+</cffunction>
+
+<cffunction name="setDbTablespace" access="public" output="false">
+	<cfargument name="dbTablespace" type="string" />
+	<cfset arguments.dbTablespace=trim(ucase(arguments.dbTablespace))>
+	<cfif len(arguments.dbTablespace)>
+		<cfset variables.instance.dbTablespace = arguments.dbTablespace/>
+	</cfif>
 	<cfreturn this>
 </cffunction>
 
