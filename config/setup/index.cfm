@@ -647,7 +647,7 @@ if (server.ColdFusion.ProductName CONTAINS "Railo"){
 	<dt><a href="" class="tooltip">Database Password<span>Only required on shared hosting. This is the same Password supplied to your DSN to allow Mura to connect to your database.</span></a></dt>
 	<dd><input type="password" name="production_dbpassword" value="#FORM.production_dbpassword#"></dd>
 	<dt><a href="" class="tooltip">Oracle TableSpace<span>Only required if you are using Oracle.</span></a></dt>
-	<dd><input type="text" name="production_dbtablesspace" value="#FORM.production_dbtablespace#"></dd>
+	<dd><input type="text" name="production_dbtablespace" value="#FORM.production_dbtablespace#"></dd>
 	
 	<input type="hidden" name="production_assetpath" value="#FORM.production_assetpath#">
 	<!---
