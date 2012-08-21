@@ -119,11 +119,11 @@
 			datasource="#variables.configBean.getDatasource()#"
 			username="#variables.configBean.getDbUsername()#"
 			password="#variables.configBean.getDbPassword()#">
-				SELECT column_name, data_length column_size, data_type type_name, data_default column_default_value, nullable is_nullable
+				SELECT column_name, data_length column_size, data_type type_name, data_default column_default_value, nullable is_nullable,data_precision 
 				FROM user_tab_cols
 				WHERE table_name=UPPER('#arguments.table#')
 		</cfquery>
-		
+	
 	</cfif>
 	
 	<cfreturn transformColumnMetaData(rs,arguments.table)>
@@ -183,16 +183,7 @@
 	</cfif>
 
 	<cfif not structIsEmpty(existing)
-		and (
-			(
-				existing.dataType neq arguments.datatype
-				and not
-					(
-						variables.configBean.getDbType() eq 'oracle'
-						and listFindNoCase('int,tinyint',existing.dataType)
-						and listFindNoCase('int,tinyint',arguments.dataType)
-					)
-			)
+			and (existing.dataType neq arguments.datatype
 			and not arguments.autoincrement
 			or (
 				listFindNoCase("char,varchar",arguments.datatype) 
@@ -202,29 +193,6 @@
 			or existing.default neq arguments.default
 			)
 		>
-			<!---
-			<cfif existing.dataType neq arguments.datatype
-				and not
-					(
-						variables.configBean.getDbType() eq "oracle"
-						and listFindNoCase("int,tinyint,number",existing.dataType)
-						and listFindNoCase("int,tinyint,number",arguments.dataType)
-					)>
-					<cfdump var="true">
-			<cfelse>
-				<cfdump var="false">
-			</cfif>
-
-			<cfdump var="#evaluate('not arguments.autoincrement')#">
-			<cfdump var="#evaluate('(
-				listFindNoCase("char,varchar",arguments.datatype) 
-				and arguments.length neq existing.length
-				)')#">
-			<cfdump var="#evaluate('existing.nullable neq arguments.nullable')#">
-			<cfdump var="#evaluate('existing.default neq arguments.default')#">
-			<cfdump var="#existing#">
-			<cfdump var="#arguments#" abort="true">
-			--->
 			<cftry>
 			<cfset alterColumn(argumentCollection=arguments)>
 			<cfcatch></cfcatch>
@@ -530,11 +498,10 @@
 				<cfset columnArgs.datatype="int">
 			</cfcase>
 			<cfcase value="number">
-				<!--- this doesn't work --->
-				<cfif arguments.rs.column_size eq 10>
-					<cfset columnArgs.datatype="int">
-				<cfelse>
+				<cfif arguments.rs.data_precision eq 3>
 					<cfset columnArgs.datatype="tinyint">
+				<cfelse>
+					<cfset columnArgs.datatype="int">	
 				</cfif>
 			</cfcase>
 			<cfcase value="tinyint">
