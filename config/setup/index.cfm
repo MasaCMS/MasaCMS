@@ -559,7 +559,7 @@ to your own modified versions of Mura CMS.
 <meta name="robots" content="noindex, nofollow, noarchive" />
 <script src="#webRoot#/admin/js/admin.js" type="text/javascript" language="Javascript"></script>
 <!--- added script (bsoylu 5/23/2010)  --->
-<script src="#webRoot#/admin/js/SetupUtilities.js?=1" type="text/javascript" language="Javascript"></script>
+<script src="#webRoot#/admin/assets/js/SetupUtilities.js?=1" type="text/javascript" language="Javascript"></script>
 
 <link href="#webRoot#/admin/css/admin.css" rel="stylesheet" type="text/css" />
 <link rel="icon" href="#webRoot#/admin/images/favicon.ico" type="image/x-icon" />
