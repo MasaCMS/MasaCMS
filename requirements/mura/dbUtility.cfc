@@ -202,7 +202,7 @@
 			or existing.default neq arguments.default
 			)
 		>
-			
+			<!---
 			<cfif existing.dataType neq arguments.datatype
 				and not
 					(
@@ -224,7 +224,7 @@
 			<cfdump var="#evaluate('existing.default neq arguments.default')#">
 			<cfdump var="#existing#">
 			<cfdump var="#arguments#" abort="true">
-			
+			--->
 			<cftry>
 			<cfset alterColumn(argumentCollection=arguments)>
 			<cfcatch></cfcatch>
@@ -333,7 +333,6 @@
 		<cfset arguments.datatype="int">
 	</cfif>
 
-	<cfdump var="#arguments#" abort='true'>
 	<cfif tableExists(arguments.table) and columnExists(arguments.column,arguments.table)>
 		<cfswitch expression="#variables.configBean.getDbType()#">
 			<cfcase value="mssql">
