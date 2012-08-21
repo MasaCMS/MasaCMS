@@ -1,6 +1,10 @@
 <cfcomponent extends="mura.cfobject" output="false">
 	<cfset variables.table="">
 
+	<cfset variables.columnLookUps=structNew()>
+	<cfset variables.indexLookUps=structNew()>
+	<cfset variables.fkLookUps=structNew()>
+
 <cffunction name="init" output="false">
 	<cfargument name="table" default="">
 		<cfset setTable(arguments.table)>
@@ -71,13 +75,21 @@
 	<cfset var rscheck="">
 	<cfset var tableArray=[]>
 
-	<cfdbinfo 
-		name="rsCheck"
-		datasource="#variables.configBean.getDatasource()#"
-		username="#variables.configBean.getDbUsername()#"
-		password="#variables.configBean.getDbPassword()#"
-		type="tables">
-
+	<cfif variables.configBean.getDbType() neq 'oracle'>
+		<cfdbinfo 
+			name="rsCheck"
+			datasource="#variables.configBean.getDatasource()#"
+			username="#variables.configBean.getDbUsername()#"
+			password="#variables.configBean.getDbPassword()#"
+			type="tables">
+	<cfelse>
+		<cfquery name="rscheck" datasource="#variables.configBean.getDatasource()#"
+			username="#variables.configBean.getDbUsername()#"
+			password="#variables.configBean.getDbPassword()#">
+			select TABLE_NAME from user_tables
+		</cfquery>
+	</cfif>
+	
 	<cfloop query="rscheck">
 		<cfset arrayAppend(tableArray, variables.utility.queryRowToStruct(rsCheck,rsCheck.currentRow))>
 	</cfloop>
@@ -144,7 +156,6 @@
 </cffunction>
 
 <cffunction name="addColumn" output="false">
-	<cfargument name="column" default="">
 	<cfargument name="datatype" default="varchar" hint="varchar,char,text,longtext,datetime,tinyint,int,float,double">
 	<cfargument name="length" default="50">
 	<cfargument name="nullable" default="true">
@@ -161,11 +172,27 @@
 	<cfif arguments.autoincrement>
 		<cfset arguments.datatype="int">
 		<cfset arguments.nullable=false>
+	<cfelseif not len(arguments.default)>
+		<cfset arguments.default="null">
+		<cfset arguments.nullable=true>
+	</cfif>
+
+	<cfif hasTable and not StructisEmpty(existing) and not len(existing.default)>
+		<cfset existing.default="null">
+		<cfset existing.nullable=true>
 	</cfif>
 
 	<cfif not structIsEmpty(existing)
 		and (
-			existing.dataType neq arguments.datatype
+			(
+				existing.dataType neq arguments.datatype
+				and not
+					(
+						variables.configBean.getDbType() eq 'oracle'
+						and listFindNoCase('int,tinyint',existing.dataType)
+						and listFindNoCase('int,tinyint',arguments.dataType)
+					)
+			)
 			and not arguments.autoincrement
 			or (
 				listFindNoCase("char,varchar",arguments.datatype) 
@@ -175,12 +202,36 @@
 			or existing.default neq arguments.default
 			)
 		>
+			<!---
+			<cfif existing.dataType neq arguments.datatype
+				and not
+					(
+						variables.configBean.getDbType() eq "oracle"
+						and listFindNoCase("int,tinyint,number",existing.dataType)
+						and listFindNoCase("int,tinyint,number",arguments.dataType)
+					)>
+					<cfdump var="true">
+			<cfelse>
+				<cfdump var="false">
+			</cfif>
+
+			<cfdump var="#evaluate('not arguments.autoincrement')#">
+			<cfdump var="#evaluate('(
+				listFindNoCase("char,varchar",arguments.datatype) 
+				and arguments.length neq existing.length
+				)')#">
+			<cfdump var="#evaluate('existing.nullable neq arguments.nullable')#">
+			<cfdump var="#evaluate('existing.default neq arguments.default')#">
+			<cfdump var="#existing#">
+			<cfdump var="#arguments#" abort="true">
+			--->
 			<cftry>
 			<cfset alterColumn(argumentCollection=arguments)>
 			<cfcatch></cfcatch>
 			</cftry>
 
 	<cfelseif not hasTable or structIsEmpty(existing)>
+		
 		<cfswitch expression="#variables.configBean.getDbType()#">
 		<cfcase value="mssql">
 			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
@@ -227,7 +278,7 @@
 				
 				<cfif arguments.datatype eq "longtext">
 					lob (#arguments.column#) STORE AS (
-					TABLESPACE "USERS" ENABLE STORAGE IN ROW CHUNK 8192 PCTVERSION 10
+					TABLESPACE "#variables.configBean.getDbTablespace()#" ENABLE STORAGE IN ROW CHUNK 8192 PCTVERSION 10
 					NOCACHE LOGGING
 					STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
 					PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT))
@@ -264,7 +315,7 @@
 			</cfif>
 		</cfcase>
 		</cfswitch>	
-	</cfif>
+	</cfif> 
 
 	<cfreturn this>
 </cffunction>
@@ -472,13 +523,14 @@
 				<cfset columnArgs.length=arguments.rs.column_size>
 			</cfcase>
 			<cfcase value="char">
-				<cfset columnArgs.datatype="varchar">
+				<cfset columnArgs.datatype="char">
 				<cfset columnArgs.length=arguments.rs.column_size>
 			</cfcase>
 			<cfcase value="int">
 				<cfset columnArgs.datatype="int">
 			</cfcase>
 			<cfcase value="number">
+				<!--- this doesn't work --->
 				<cfif arguments.rs.column_size eq 10>
 					<cfset columnArgs.datatype="int">
 				<cfelse>
@@ -511,15 +563,19 @@
 			<cfset columnArgs.nullable=false>
 		</cfif>
 
-		<cfif len(arguments.rs.column_default_value)>
-			<cfset columnArgs.default=arguments.rs.column_default_value>
+		<cfif len(trim(arguments.rs.column_default_value))>
+			<cfset columnArgs.default=trim(arguments.rs.column_default_value)>
 		</cfif>
 
-		<cfif len(columnArgs.default) and columnArgs.default neq "null"
-			and listFindNoCase("tinyint,int,float,double",columnArgs.datatype)>
+		<cfif len(columnArgs.default) 
+			and listFindNoCase("tinyint,int,float,double",columnArgs.datatype) 
+			and not (
+						isNumeric(columnArgs.default)
+						and columnArgs.default neq "null")
+			>
 			<cfset columnArgs.default=_parseInt(columnArgs.default)>
 		</cfif>
-
+		
 		<cfif not columnArgs.nullable and columnArgs.datatype eq "int" and isDefined('rs.is_primarykey') and arguments.rs.is_primarykey>
 			<cfset columnArgs.autoincrement=true>
 		</cfif>
