@@ -64,7 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<ol>
 				<cfloop from="1" to="#arrayLen(request.muraTraceRoute)#" index="i">
 					<cfset tracePoint=request.muraTraceRoute[i]>
-					<li>#HTMLEditFormat(tracePoint.detail)# <span class="duration">(<cfif isDefined("tracePoint.duration")>#tracePoint.duration#<cfelse>ERROR</cfif>)</span></li>
+					<li>#HTMLEditFormat(tracePoint.detail)# <span class="duration">(<cfif isDefined("tracePoint.duration")>#tracePoint.duration#<cfelse>ERROR</cfif> | <cfif isDefined("tracePoint.total")>#tracePoint.total#<cfelse>ERROR</cfif>)</span></li>
 				</cfloop>
 			</ol>
 			<p>Total: <strong>#evaluate((getTickCount()-request.muraRequestStart))# milliseconds</strong></p>

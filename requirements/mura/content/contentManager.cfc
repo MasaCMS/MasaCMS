@@ -49,14 +49,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset this.ExtendableList="Page,Portal,Calendar,Link,File,Gallery,Component">
 	
 	<cffunction name="init" access="public" returntype="any" output="false">
+		<cfargument name="configBean" type="any" required="yes"/>
 		<cfargument name="contentGateway" type="any" required="yes"/>
-		<cfargument name="contentDAO" type="any" required="yes"/>
+		<cfargument name="contentDAO" type="any" required="yes"/>	
 		<cfargument name="contentUtility" type="any" required="yes"/>
 		<cfargument name="reminderManager" type="any" required="yes"/>
 		<cfargument name="settingsManager" type="any" required="yes"/>
 		<cfargument name="utility" type="any" required="yes"/>
-		<cfargument name="categoryManager" type="any" required="yes"/>
-		<cfargument name="configBean" type="any" required="yes"/>
+		<cfargument name="categoryManager" type="any" required="yes"/>	
 		<cfargument name="fileManager" type="any" required="yes"/>
 		<cfargument name="pluginManager" type="any" required="yes"/>
 		<cfargument name="trashManager" type="any" required="yes"/>

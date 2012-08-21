@@ -61,7 +61,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cftry>
 		
 		<cfif not hasMappings>
+			<cfset variables.tracePoint=initTracePoint("Writing config/mappings.cfm")>
 			<cfinclude template="config/buildMainMappings.cfm">
+			<cfset commitTracePoint(variables.tracePoint)>
+			<cfset commitTracePoint(variables.tracePoint)>
 		</cfif>
 		
 	</cfif>
@@ -79,7 +82,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cftry>
 		
 		<cfif not hasMappings>
+			<cfset variables.tracePoint=initTracePoint("Writing plugin/mappings.cfm")>
 			<cfinclude template="config/buildPluginMappings.cfm">
+			<cfset commitTracePoint(variables.tracePoint)>
 		</cfif>
 		
 	</cfif>
@@ -97,7 +102,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cftry>
 		
 		<cfif not hasMappings>
+			<cfset variables.tracePoint=initTracePoint("Writing config/cfapplication.cfm")>
 			<cfinclude template="config/buildPluginCFApplication.cfm">
+			<cfset commitTracePoint(variables.tracePoint)>
 		</cfif>
 		
 	</cfif>

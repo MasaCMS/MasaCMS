@@ -1,3 +1,4 @@
+
 <cfscript>
 	dbUtility.setTable("tclassextend").addColumn(column="description",datatype="longtext");
 	dbUtility.setTable("tsettings")
@@ -20,12 +21,11 @@
 	
 	local.hasLarge=dbUtility.columnExists("largeImageHeight");
 
-	if(not local.hasMedium){
+	if(not local.hasLarge){
 		dbUtility.addColumn(column="largeImageHeight",datatype="varchar",length=20)
 			.addColumn(column="largeImageWidth",datatype="varchar",length=20);
 	}
 	
-
 	dbUtility.setTable("tcontent").addColumn(column="displayInterval",datatype="varchar",length=20);
 </cfscript>
 
@@ -98,3 +98,6 @@
 	.addColumn(column="deleteid",dataType="char",length="35")
 	.addColumn(column="orderno",dataType="int");
 </cfscript>
+
+
+

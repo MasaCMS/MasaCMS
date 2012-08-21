@@ -5,7 +5,7 @@
 <cftry>
 <cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 select tablist from tusers  where 0=1
-</cfquery>tusers
+</cfquery>
 <cfcatch>
 <cfset variables.DOUPDATE=true>
 </cfcatch>

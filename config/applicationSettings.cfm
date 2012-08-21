@@ -44,6 +44,41 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
+	<cfparam name="request.muraFrontEndRequest" default="false"/>
+	<cfparam name="request.muraChangesetPreview" default="false"/>
+	<cfparam name="request.muraExportHtml" default="false"/>
+	<cfparam name="request.muraMobileRequest" default="false"/>
+	<cfparam name="request.muraHandledEvents" default="#structNew()#"/>
+	<cfparam name="request.altTHeme" default=""/>
+	<cfparam name="request.customMuraScopeKeys" default="#structNew()#"/>
+	<cfparam name="request.muraTraceRoute" default="#arrayNew(1)#"/>
+	<cfparam name="request.muraRequestStart" default="#getTickCount()#"/>
+	<cfparam name="request.muraShowTrace" default="true"/>
+	<cfparam name="request.muraValidateDomain" default="true"/>
+
+	<cffunction name="initTracePoint" output="false">
+		<cfargument name="detail">
+		<cfset var tracePoint=structNew()>
+		<cfif not request.muraShowTrace>
+			<cfreturn 0>
+		</cfif>
+		<cfset tracePoint.detail=arguments.detail>
+		<cfset tracePoint.start=getTickCount()>
+		<cfset arrayAppend(request.muraTraceRoute,tracePoint)> 
+		<cfreturn arrayLen(request.muraTraceRoute)>
+	</cffunction>
+
+	<cffunction name="commitTracePoint" output="false">
+		<cfargument name="tracePointID">
+		<cfset var tracePoint="">
+		<cfif arguments.tracePointID>
+			<cfset tracePoint=request.muraTraceRoute[arguments.tracePointID]>
+			<cfset tracePoint.stop=getTickCount()>
+			<cfset tracePoint.duration=tracePoint.stop-tracePoint.start>
+			<cfset tracePoint.total=tracePoint.stop-request.muraRequestStart>
+		</cfif>	
+	</cffunction>
+
 	<cfset this.configPath=getDirectoryFromPath(getCurrentTemplatePath())>
 	<!--- Application name, should be unique --->
 	<cfset this.name = "mura" & hash(getCurrentTemplatePath()) />
@@ -69,35 +104,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<!--- Used to help CF work with missing files and dir indexes --->
 	<cfset this.welcomeFileList = "">
 	
-	<cfparam name="request.muraFrontEndRequest" default="false"/>
-	<cfparam name="request.muraChangesetPreview" default="false"/>
-	<cfparam name="request.muraExportHtml" default="false"/>
-	<cfparam name="request.muraMobileRequest" default="false"/>
-	<cfparam name="request.muraHandledEvents" default="#structNew()#"/>
-	<cfparam name="request.altTHeme" default=""/>
-	<cfparam name="request.customMuraScopeKeys" default="#structNew()#"/>
-	<cfparam name="request.muraTraceRoute" default="#arrayNew(1)#"/>
-	<cfparam name="request.muraRequestStart" default="#getTickCount()#"/>
-	<cfparam name="request.muraShowTrace" default="false"/>
-	<cfparam name="request.muraValidateDomain" default="true"/>
-	
 	<cfset baseDir= left(this.configPath,len(this.configPath)-8) />
 	<cfif not fileExists(baseDir & "/config/settings.ini.cfm")>
+		<cfset variables.tracePoint=initTracePoint("Writing config/settings.ini.cfm")>
 		<cftry>
 		<cffile action="copy" source="#baseDir#/config/templates/settings.template.cfm" destination="#baseDir#/config/settings.ini.cfm" mode="777">
 		<cfcatch>
 			<cffile action="copy" source="#baseDir#/config/templates/settings.template.cfm" destination="#baseDir#/config/settings.ini.cfm">
 		</cfcatch>
 		</cftry>
+		<cfset commitTracePoint(variables.tracePoint)>
 	</cfif>
 
 	<cfset this.baseDir=baseDir>
 	<cfset variables.baseDir=baseDir>
 	
+	<cfset variables.tracePoint=initTracePoint("Reading config/settings.ini.cfm")>
 	<cfset properties = createObject( 'java', 'java.util.Properties' ).init()>
 	<cfset fileStream = createObject( 'java', 'java.io.FileInputStream').init( getDirectoryFromPath(getCurrentTemplatePath()) & "/settings.ini.cfm")>
 	<cfset properties.load( fileStream )>
 	<cfset fileStream.close()>
+	<cfset commitTracePoint(variables.tracePoint)>
 
 	<!--- define custom coldfusion mappings. Keys are mapping names, values are full paths  --->
 	<cfif StructKeyExists(SERVER,"bluedragon") and not findNoCase("Windows",server.os.name)>

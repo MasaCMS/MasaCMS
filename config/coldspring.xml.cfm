@@ -57,8 +57,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</bean>
 		<bean id="contentManager" class="mura.content.contentManager" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
-			<constructor-arg name="contentGateway"><ref bean="contentGateway" /></constructor-arg>
-			<constructor-arg name="contentDAO"><ref bean="contentDAO" /></constructor-arg>
+			<constructor-arg name="contentGateway"><ref bean="contentGateway" /></constructor-arg>		
+			<constructor-arg name="contentDAO"><ref bean="contentDAO" /></constructor-arg>		
 			<constructor-arg name="contentUtility"><ref bean="contentUtility" /></constructor-arg>
 			<constructor-arg name="reminderManager"><ref bean="reminderManager" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
