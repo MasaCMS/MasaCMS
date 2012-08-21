@@ -214,6 +214,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset tracePoint=request.muraTraceRoute[arguments.tracePointID]>
 		<cfset tracePoint.stop=getTickCount()>
 		<cfset tracePoint.duration=tracePoint.stop-tracePoint.start>
+		<cfset tracePoint.total=tracePoint.stop-request.muraRequestStart>
 	</cfif>	
 </cffunction>
 
