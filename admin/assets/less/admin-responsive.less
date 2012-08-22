@@ -10,6 +10,16 @@
 		display: inline-block;
 	}
 	
+	#select-site {
+		width: 33.3%;
+	
+	#select-site-btn {
+		width: 94px !important;
+		margin: 0 0 0 -47px !important;
+		padding: 4px 0 3px !important;		
+			}
+		}
+	
 	.mura-grid {
 	
 		dt {
@@ -29,6 +39,23 @@
 	
 }
 
+
+/*
+	@media (min-width: 481px) and (max-width: 766px) {
+	
+		#select-site {
+		width: 60px !important;
+		background: blue !important;
+	
+	#select-site-btn {
+		width: 94px !important;
+		margin: 0 0 0 -47px !important;
+		padding: 4px 0 3px !important;		
+			}
+		}
+	}
+*/
+
  /* Landscape phone to portrait tablet */
   @media (max-width: 767px) {
 	
@@ -38,7 +65,7 @@
 		margin-left: -20px;	
 	}
 	
-	.navbar-fixed-top .navbar-inner {
+	.navbar .navbar-inner {
 		padding: 0 !important;
 	}
 	
@@ -47,129 +74,133 @@
 		width: auto;
 	}
 	
-	.subnavbar {
+	.nav-site {
 		margin-left: -20px;
 		margin-right: -20px;	
 	}
 	
-	.subnavbar-inner {
+	.nav-site-inner {
 		height: auto;
 	}
 	
-	.subnavbar .container > ul {
+	.nav-site .container > ul {
 		width: 100%;
 		height: auto;
 		border: 0 !important;
 		margin: 0 !important;
-	}
+		}
 	
-	.subnavbar .container > ul > li {
+	.nav-site .container > ul > li {
 		width: 33.3% !important;
 		height: auto;
 		margin-bottom: 0;
 		border: 0 !important;
-	}
+		}
     
-    .subnavbar .container > ul > li > a {
+    .nav-site .container > ul > li > a {
     	width: 100% !important;
     	padding: 0 !important;
-    }
+    	}
     
-    .subnavbar .container > ul > li.active > a {
+    .nav-site .container > ul > li.active > a {
 		font-size: 11px;
     	background: transparent;
-    }
+    	}
     
-    .subnavbar .container > ul > li.active > a {
+    .nav-site .container > ul > li.active > a {
     	background: @grayDarker;
     	color: @gray;
-    }
+    	}
     
-	.subnavbar .container > ul > li > a > i {	
+	.nav-site .container > ul > li > a > i {	
 		display: inline-block;	
 		margin-bottom: 0;
 		font-size: 20px;
-	}
+		}
 	
-	.subnavbar-open-right .dropdown-menu {
+	.nav-site-open-right .dropdown-menu {
 		left: auto;
 		right: 0;
-	}
+		}
 	
-	.subnavbar-open-right .dropdown-menu:before {
+	.nav-site-open-right .dropdown-menu:before {
 		left: auto;
 		right: 12px;
-	}
-	.subnavbar-open-right .dropdown-menu:after {
+		}
+	.nav-site-open-right .dropdown-menu:after {
 		left: auto;
 		right: 13px;
-	}
+		}
 	
 	#select-site {
-		width: auto;
-		min-width: 100%;
-		margin: 0;
-		float: none;
-	}
+		width: 33.3%;
+		background: yellow !important;
 	
-	#select-site a {
-//		width: 33.3%;
-	}
+	#select-site-btn {
+		width: 94px !important;
+		margin: 0 0 0 -47px !important;
+		padding: 4px 0 3px !important;		
+			}
+		}
 	
 	.extra {
 		margin-right: -20px;
 		margin-left: -20px;
-	}
+		}
 	
 	.extra .container {
 		padding: 0 20px;
-	}
+		}
 	
 	.footer {
 		margin-right: -20px;
 		margin-left: -20px;
-	}
+		}
 	
 	.footer .container {
 		padding: 0 20px;
-	}
+		}
 	
 	.footer .footer-terms {
 		text-align: left;
-	}
+		}
 	
 	.footer .footer-terms a {
 		margin-left: 0;
 		margin-right: 1em;
-	}
+		}
 	
-	.mura-grid dt {
-			width: 189px;
-			background: yellow;
-		}	
+	.mura-grid {
+	
+		dt {
+			width: 350px !important;
+		}
+	
+		.objects,
+		.updated {
+		display: none;
+		} 
+		
+	}	
 }
 
  /* Portrait tablet to landscape and desktop */
-  @media (min-width: 768px) and (max-width: 979px) {
-	
-	.navbar-fixed-top {
-		position: static;
-		margin-bottom: 0;
-	}
-	
-	.subnavbar {
-	}
-	
-	.subnavbar .container {		
+  @media (min-width: 768px) {
+
+		.nav-site .container {		
 		width: auto;
-	}
+			}	
+		}
+
+ @media (min-width: 768px) and (max-width: 829px) {
+ 
+		#select-site {
+		width: 80px !important;
+		background: purple;
+				}
 	
-}
+		}
 
 
 /* Large desktop */
-  @media (min-width: 1200px) {
-	  
-	  
-	
-}
+  @media (min-width: 1200px) {}

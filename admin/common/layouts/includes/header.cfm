@@ -151,9 +151,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	 <cfif rc.originalcircuit neq 'cLogin'>
 	 
-	 <div class="subnavbar">
+	 <div class="nav-site">
 	 
-	 	<div class="subnavbar-inner">
+	 	<div class="nav-site-inner">
 	 	
 	 		<div class="container">
 	 		
