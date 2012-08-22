@@ -103,7 +103,7 @@
 			
 			</cfif>
 		
-		
+			<cfdump var="#arguments.query.displayStart[local.currentrow]#" abort="true">
 			<!--- 
 				Set the default loop type and increment. We are 
 				going to default to 1 day at a time.
@@ -406,7 +406,6 @@
 							Populate the event query. Add a row to 
 							the query and then copy over the data.
 						--->
-						
 						<cfif not LOCAL.found>
 							<cfset querySetCell(arguments.query,"displayStart",parseDateTime(local.day),local.currentrow) />
 							<cfset querySetCell(arguments.query,"displayStop",parseDateTime(local.day),local.currentrow) />
@@ -447,13 +446,13 @@
 					<cfelse>
 						<!--- Add one to the offset. --->
 						
-						<cfset LOCAL.Day = Fix( 
+						<cfset LOCAL.Day = 
 							DateAdd(
 								LOCAL.LoopType,
 								(LOCAL.Offset * LOCAL.LoopIncrement),
 								LOCAL.From
 								) 
-							) />
+							 />
 					</cfif>
 
 				</cfloop>
