@@ -23,7 +23,8 @@ function fHandleAutoCreateChange() {
 		blnAutoCreate=true;
 		//enable radio button
 		document.getElementById("auto_create_on").disabled=false;
-		document.getElementById("auto_create_off").disabled=false;		
+		document.getElementById("auto_create_off").disabled=false;
+		document.getElementById("oracle-only").style.display='none';		
 		break;
 	case "oracle": case "h2":
 		//disable auto create for oracle		
@@ -31,6 +32,7 @@ function fHandleAutoCreateChange() {
 		document.getElementById("auto_create_on").disabled=true;
 		document.getElementById("auto_create_off").disabled=true;
 		document.getElementById("auto_create_off").checked=true;
+		document.getElementById("oracle-only").style.display='';
 		break;
 	}
 
