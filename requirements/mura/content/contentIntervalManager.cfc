@@ -45,7 +45,7 @@
 	--->
 	<cfset ARGUMENTS.From = Fix( ARGUMENTS.From ) />
 	<cfset ARGUMENTS.To = Fix( ARGUMENTS.To ) />
-		
+	
 	<!--- 
 		Now, we will loop over the raw events and populate the 
 		calculated events query. This way, when we are rendering
@@ -102,8 +102,7 @@
 				<cfset LOCAL.To = ARGUMENTS.To />
 			
 			</cfif>
-		
-			<cfdump var="#arguments.query.displayStart[local.currentrow]#" abort="true">
+			
 			<!--- 
 				Set the default loop type and increment. We are 
 				going to default to 1 day at a time.
@@ -406,9 +405,52 @@
 							Populate the event query. Add a row to 
 							the query and then copy over the data.
 						--->
+						
 						<cfif not LOCAL.found>
-							<cfset querySetCell(arguments.query,"displayStart",parseDateTime(local.day),local.currentrow) />
-							<cfset querySetCell(arguments.query,"displayStop",parseDateTime(local.day),local.currentrow) />
+							<cfset querySetCell(
+									arguments.query,
+									"displayStart",
+									createDateTime(
+										year(local.day),
+										month(local.day),
+										day(local.day),
+										hour(arguments.query['displayStart'][local.currentrow]),
+										minute(arguments.query['displayStart'][local.currentrow]),
+										0
+									),
+								local.currentrow
+							) />
+
+							<cfif isDate(arguments.query['displayStart'][local.currentrow])>
+								<cfset querySetCell(
+									arguments.query,
+									"displayStop",
+									createDateTime(
+										year(local.day),
+										month(local.day),
+										day(local.day),
+										hour(arguments.query['displayStop'][local.currentrow]),
+										minute(arguments.query['displayStop'][local.currentrow]),
+										0
+									),
+									local.currentrow
+								) />
+							<cfelse>
+								<cfset querySetCell(
+									arguments.query,
+									"displayStop",
+									createDateTime(
+										year(local.day),
+										month(local.day),
+										day(local.day),
+										hour(arguments.query['displayStart'][local.currentrow]),
+										minute(arguments.query['displayStart'][local.currentrow]),
+										0
+									),
+									local.currentrow
+								) />
+							</cfif>
+
 						<cfelse>
 							<cfset QueryAddRow( arguments.query ) />
 							
@@ -420,8 +462,50 @@
 									arguments.query.recordCount) />
 							</cfloop>
 
-							<cfset querySetCell(arguments.query,"displayStart",parseDateTime(local.day),arguments.query.recordCount) />
-							<cfset querySetCell(arguments.query,"displayStop",parseDateTime(local.day),arguments.query.recordCount) />
+							<cfset querySetCell(
+									arguments.query,
+									"displayStart",
+									createDateTime(
+										year(local.day),
+										month(local.day),
+										day(local.day),
+										hour(arguments.query['displayStart'][local.currentrow]),
+										minute(arguments.query['displayStart'][local.currentrow]),
+										0
+									),
+									arguments.query.recordCount
+								) />
+							
+							<cfif isDate(arguments.query['displayStart'][local.currentrow])>
+								<cfset querySetCell(
+									arguments.query,
+									"displayStop",
+									createDateTime(
+										year(local.day),
+										month(local.day),
+										day(local.day),
+										hour(arguments.query['displayStop'][local.currentrow]),
+										minute(arguments.query['displayStop'][local.currentrow]),
+										0
+									),
+									arguments.query.recordCount
+								) />
+							<cfelse>
+								<cfset querySetCell(
+									arguments.query,
+									"displayStop",
+									createDateTime(
+										year(local.day),
+										month(local.day),
+										day(local.day),
+										hour(arguments.query['displayStart'][local.currentrow]),
+										minute(arguments.query['displayStart'][local.currentrow]),
+										0
+									),
+									arguments.query.recordCount
+								) />
+
+							</cfif>
 						</cfif>
 						<cfset LOCAL.found = true />
 					</cfif>
@@ -446,13 +530,13 @@
 					<cfelse>
 						<!--- Add one to the offset. --->
 						
-						<cfset LOCAL.Day = 
+						<cfset LOCAL.Day = Fix( 
 							DateAdd(
 								LOCAL.LoopType,
 								(LOCAL.Offset * LOCAL.LoopIncrement),
 								LOCAL.From
 								) 
-							 />
+							) />
 					</cfif>
 
 				</cfloop>
