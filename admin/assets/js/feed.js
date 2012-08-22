@@ -48,7 +48,7 @@ function loadSiteFilters(siteid,keywords,isNew)	{
 		var url = 'index.cfm';
 		var pars = 'muraAction=cFeed.loadSite&compactDisplay=true&siteid=' + siteid + '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
 		var d = jQuery('#selectFilter');
-			d.html('<img class="loadProgress" src="images/progress_bar.gif">');
+			d.html('<div><img class="loadProgress" src="assets/images/progress_bar.gif"></div>');
 			jQuery.get(url + "?" + pars, 
 					function(data) {
 					jQuery("#selectFilter").html(data);
@@ -108,7 +108,7 @@ function loadSiteParents(siteid,parentid,keywords,isNew)	{
 		var url = 'index.cfm';
 		var pars = 'muraAction=cFeed.siteParents&compactDisplay=true&siteid=' + siteid + '&parentid=' +parentid+ '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
 		var d = jQuery('#move');
-			d.html('<img class="loadProgress" src="images/progress_bar.gif"><inut type=hidden name=parentid value=' + parentid + ' >');
+			d.html('<div><img class="loadProgress" src="assets/images/progress_bar.gif"><inut type=hidden name=parentid value=' + parentid + ' ></div>');
 			jQuery.get(url + "?" + pars, 
 					function(data) {
 					jQuery("#move").html(data);

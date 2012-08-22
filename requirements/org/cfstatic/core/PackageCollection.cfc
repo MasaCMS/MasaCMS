@@ -22,6 +22,8 @@
 		<cfargument name="cacheBust"        type="boolean" required="true" />
 		<cfargument name="includePattern"   type="string"  required="true" />
 		<cfargument name="excludePattern"   type="string"  required="true" />
+		<cfargument name="dependencies"     type="struct"  required="true" />
+		<cfargument name="outputDir"        type="string"  required="true" />
 
 		<cfscript>
 			_setRootDirectory ( arguments.rootDirectory  );
@@ -32,7 +34,10 @@
 			_setIncludePattern( arguments.includePattern );
 			_setExcludePattern( arguments.excludePattern );
 
-			_loadFromFiles();
+			_loadFromFiles(
+				  dependencies = arguments.dependencies
+				, outputDir    = arguments.outputDir
+			);
 
 			return this;
 		</cfscript>
@@ -43,7 +48,7 @@
 		<cfargument name="includeExternals" type="boolean" required="false" default="true" hint="Whether or not to download external dependencies and include them in the returned collection string" />
 
 		<cfscript>
-			var str			= createObject("java","java.lang.StringBuffer");
+			var str			= $getStringBuffer();
 			var packages	= getOrdered();
 			var i			= 0;
 
@@ -65,9 +70,8 @@
 		<cfargument name="charset"      type="string" required="false" default="utf-8" />
 
 		<cfscript>
-			var str			=  CreateObject("java","java.lang.StringBuffer");
+			var str			=  $getStringBuffer();
 			var included    = false;
-			var include     = "";
 			var minify		= "";
 			var packages	= "";
 			var i			= "";
@@ -91,15 +95,8 @@
 						}
 
 						// add the package's rendering if it is not filtered out
-						included = arguments.includePackages.contains(JavaCast('string', packages[i]));
-						if(not ArrayLen(arguments.includePackages) or included){
-							// if the package has been directly included, we do not want to filter on files also
-							if( included ){
-								include = ArrayNew(1);
-							} else {
-								include = arguments.includeFiles;
-							}
-							str.append( getPackage( packages[i] ).renderIncludes( minification = minify, includeFiles = include, charset=arguments.charset ) );
+						if( not ArrayLen(arguments.includePackages) or arguments.includePackages.contains(JavaCast('string', packages[i])) ){
+							str.append( getPackage( packages[i] ).renderIncludes( minification = minify, includeFiles = arguments.includeFiles, charset=arguments.charset ) );
 						}
 					}
 					break;
@@ -177,27 +174,36 @@
 
 <!--- private methods --->
 	<cffunction name="_loadFromFiles" access="private" returntype="void" output="false" hint="I instantiate the collection by looking through all files in the collection's root directory">
+		<cfargument name="dependencies" type="struct" required="true" />
+		<cfargument name="outputDir"    type="string" required="true" />
 		<cfscript>
 			var files		= $directoryList( _getRootDirectory(), '*.#_getFileType()#' );
 			var i			= 1;
 
 			for(i=1; i lte files.recordCount; i++){
-				_addStaticFile( $normalizeUnixAndWindowsPaths(files.directory[i] & '/' & files.name[i] ));
+				if ( files.directory[i] neq arguments.outputDir ) {
+					_addStaticFile(
+						  path         = $normalizeUnixAndWindowsPaths( files.directory[i] & '/' & files.name[i] )
+					    , dependencies = arguments.dependencies
+					);
+				}
 			}
 		</cfscript>
 	</cffunction>
 
 	<cffunction name="_addStaticFile" access="private" returntype="void" output="false" hint="I add a static file to the collection">
-		<cfargument name="path" type="string" required="true" />
+		<cfargument name="path"         type="string" required="true" />
+		<cfargument name="dependencies" type="struct" required="true" />
+
 		<cfscript>
-			var packageName		= "";
-			var package			= "";
-			var dependencies	= "";
+			var packageName     = "";
+			var package         = "";
+			var dependencyArray = "";
 			var dependency      = "";
-			var dependencyPath	= "";
-			var dependencyPkg	= "";
-			var file			= "";
-			var i				= "";
+			var dependencyPath  = "";
+			var dependencyPkg   = "";
+			var file            = "";
+			var i               = "";
 
 			if ( $shouldFileBeIncluded( arguments.path, _getIncludePattern(), _getExcludePattern() ) ){
 				packageName = _getPackageNameFromPath( arguments.path );
@@ -214,12 +220,19 @@
 					file = package.getStaticFile( arguments.path );
 
 					// ensure all dependencies are created as static files (including externals)
-					dependencies 	= file.getProperty( 'depends', ArrayNew(1), 'array' );
-					for(i=1; i LTE ArrayLen(dependencies); i++){
-						dependency = dependencies[i];
+					dependencyArray	= file.getProperty( 'depends', ArrayNew(1), 'array' );
+					if ( StructCount(dependencies) and StructKeyExists( dependencies.regular, path ) ) {
+						dependencyArray = $ArrayMerge( dependencyArray, dependencies.regular[path] );
+					}
+					if ( StructCount(dependencies) and StructKeyExists( dependencies.conditional, path ) ) {
+						file.setConditionalDependencies( dependencies.conditional[path] );
+					}
+
+					for(i=1; i LTE ArrayLen(dependencyArray); i++){
+						dependency = dependencyArray[i];
 
 						// calculate dependency path and package
-						if($isUrl(dependency)){
+						if ( $isUrl( dependency ) or _dependencyIsFullPath( dependency ) ) {
 							dependencyPath = dependency;
 						} else {
 							dependencyPath = _getRootdirectory() & dependency;
@@ -235,7 +248,7 @@
 
 						// add the static file (yes, a call to this method - we want n depth recursion)
 						try {
-							_addStaticFile( dependencyPath );
+							_addStaticFile( dependencyPath, dependencies );
 						} catch(any e) {
 							// if the thrown error is one of ours, we should rethrow it (bubbling up)
 							if(e.type EQ 'org.cfstatic.missingDependency'){
@@ -302,7 +315,6 @@
 			var i		 = "";
 
 			ArraySort( packages, 'text' );
-
 			for( i=1; i LTE ArrayLen(packages); i=i+1 ){
 				_addPackageToOrderedList( packages[i] );
 			}
@@ -366,6 +378,16 @@
 			}
 
 			return media;
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="_dependencyIsFullPath" access="private" returntype="boolean" output="false">
+		<cfargument name="dependency" type="string" required="true" />
+
+		<cfscript>
+			var rootDir = _getRootDirectory();
+
+			return Left( dependency, Len( rootDir ) ) EQ rootDir;
 		</cfscript>
 	</cffunction>
 

@@ -56,13 +56,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset session.mura.showTrace=url.showTrace>
 </cfif>
 
-<cfset request.muraShowTrace=session.mura.showTrace>
-
-<cfset variables.onRequestStartTracePoint=application.configBean.initTracePoint("application.onRequestStart()")>
-
 <cfif not isDefined("session.mura.showTrace")>
 	<cfset session.mura.showTrace=false>
 </cfif>
+
+<cfset request.muraShowTrace=session.mura.showTrace>
+
+<cfset variables.onRequestStartTracePoint=initTracePoint("application.onRequestStart()")>
 
 <cfif not isDefined("application.cfstatic")>
 	<cfset application.cfstatic=structNew()>
@@ -183,9 +183,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset request.muraMobileRequest=cookie.mobileFormat>
 
 <cfif not request.hasCFApplicationCFM and not fileExists("#expandPath('/muraWRM/config')#/cfapplication.cfm")>
-	<cfset variables.tracePoint=application.configBean.initTracePoint("Writing config/cfapplication.cfm")>
+	<cfset variables.tracePoint=initTracePoint("Writing config/cfapplication.cfm")>
 	<cfset application.serviceFactory.getBean("fileWriter").writeFile(file="#expandPath('/muraWRM/config')#/cfapplication.cfm", output='<!--- Add Custom Application.cfc Vars Here --->')>	
-	<cfset application.configBean.commitTracePoint(variables.tracePoint)>
+	<cfset commitTracePoint(variables.tracePoint)>
 </cfif>
 
 <cfif isDefined("application.changesetManager") and not 
@@ -198,9 +198,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				url.method eq "reload"
 			)
 	)>
-	<cfset variables.tracePoint=application.configBean.initTracePoint("mura.content.changesets.changesetManager.publishBySchedule()")>
+	<cfset variables.tracePoint=initTracePoint("mura.content.changesets.changesetManager.publishBySchedule()")>
 	<cfset application.changesetManager.publishBySchedule()>
-	<cfset application.configBean.commitTracePoint(variables.tracePoint)>
+	<cfset commitTracePoint(variables.tracePoint)>
 </cfif>
 
 
@@ -209,5 +209,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 <cfset application.pluginManager.executeScripts('onGlobalRequestStart')>
 <cfparam name="application.coreversion" default="#application.serviceFactory.getBean('autoUpdater').getCurrentVersion()#">
-<cfset application.configBean.commitTracePoint(variables.onRequestStartTracePoint)>
+<cfset commitTracePoint(variables.onRequestStartTracePoint)>
 
