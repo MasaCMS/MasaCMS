@@ -65,7 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <a class="btn" href="index.cfm?muraAction=cAdvertising.editCampaign&campaignid=&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.addnewcampaign')#</a>
 </div>
 
-<table class="table table-striped table-bordered table-condensed">
+<table class="table table-striped table-condensed">
 <tr>
 	<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'advertising.name')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.startdate')#</th>
@@ -99,7 +99,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <a class="btn" href="index.cfm?muraAction=cAdvertising.editCreative&creativeid=&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.addnewcreative')#</a>
 </div>
 
-<table class="table table-striped table-bordered table-condensed">
+<table class="table table-striped table-condensed">
 <tr>
 	<th class="title">#application.rbFactory.getKeyValue(session.rb,'advertising.name')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.assettype')#</th>

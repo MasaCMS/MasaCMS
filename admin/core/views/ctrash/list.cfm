@@ -61,7 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <a class="btn" href="index.cfm?muraAction=cTrash.empty&siteID=#URLEncodedFormat(rc.siteID)#" onclick="return confirmDialog('Empty Site Trash?', this.href);">Empty Trash</a>
 </div>
 
-<table class="table table-striped table-bordered table-condensed"> 
+<table class="table table-striped table-condensed"> 
 <tr>
 <th class="varWidth">Label</th>
 <th>Type</th>

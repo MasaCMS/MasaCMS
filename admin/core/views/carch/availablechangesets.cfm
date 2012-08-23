@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset currentChangeset=application.changesetManager.read(rc.changesetID)>
 <cfset changesets=application.changesetManager.getIterator(siteID=rc.siteID,published=0,publishdate=now(),publishDateOnly=false)>
 <cfoutput>
-<table class="table table-striped table-bordered table-condensed">
+<table class="table table-striped table-condensed">
 <tr>
 <th>&nbsp;</th>
 <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,"changesets.name")#</th>

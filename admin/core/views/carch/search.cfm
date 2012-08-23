@@ -64,7 +64,7 @@ copyContentID = '#session.copyContentID#';
 copySiteID = '#session.copySiteID#';
 </script>
 </cfoutput>
- <table class="table table-striped table-bordered table-condensed">
+ <table class="table table-striped table-condensed">
     <tr> 
 	  <th>&nbsp;</th>
       <th class="varWidth">Title</th>

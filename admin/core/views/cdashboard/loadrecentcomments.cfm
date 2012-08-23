@@ -47,35 +47,36 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset request.layout="false">
 <cfinclude template="act_defaults.cfm">
 <cfset comments=application.contentManager.getRecentCommentsIterator(rc.siteID,5,false) />
-<cfoutput><table class="table table-striped table-bordered table-condensed">
-<thead>
-<tr>
-	<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments")#</th>
-	<th class="dateTime">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments.posted")#</th>
-	<th class="administration">&nbsp;</th>
-</tr>
-</thead>
-<tbody>
-<cfloop condition="comments.hasNext()">
-	<cfset comment=comments.next()>
-	<!---
-	<cfset crumbdata=application.contentManager.getCrumbList(comment.getCommentID(),comment.getSiteID())/>
-	<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
-	--->
-	<cfset content=application.serviceFactory.getBean("content").loadBy(contentID=comment.getContentID(),siteID=session.siteID)>
-	<tr<cfif comments.currentIndex() mod 2> class="alt"</cfif>>
-		<cfset args=arrayNew(1)>
-		<cfset args[1]="<strong>#HTMLEditFormat(comment.getName())#</strong>">
-		<cfset args[2]="<strong>#HTMLEditFormat(content.getMenuTitle())#</strong>">
-		<td class="varWidth">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.comments.description"),args)#</td>
-		<td class="dateTime">#LSDateFormat(comment.getEntered(),session.dateKeyFormat)# #LSTimeFormat(comment.getEntered(),"short")#</td>
-		<td class="administration">
-		<ul class="one">
-			<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('#JSStringFormat(content.getURL(complete=1,queryString='##comment-#comment.getCommentID()#'))#','#content.getTargetParams()#');">#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#</a></li>
-		</ul>
-		</td>
+<cfoutput>
+<table class="table table-striped table-condensed">
+	<thead>
+	<tr>
+		<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments")#</th>
+		<th class="dateTime">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments.posted")#</th>
+		<th class="administration">&nbsp;</th>
 	</tr>
-	</cfloop>
-</tbody>
+	</thead>
+	<tbody>
+	<cfloop condition="comments.hasNext()">
+		<cfset comment=comments.next()>
+		<!---
+		<cfset crumbdata=application.contentManager.getCrumbList(comment.getCommentID(),comment.getSiteID())/>
+		<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
+		--->
+		<cfset content=application.serviceFactory.getBean("content").loadBy(contentID=comment.getContentID(),siteID=session.siteID)>
+		<tr<cfif comments.currentIndex() mod 2> class="alt"</cfif>>
+			<cfset args=arrayNew(1)>
+			<cfset args[1]="<strong>#HTMLEditFormat(comment.getName())#</strong>">
+			<cfset args[2]="<strong>#HTMLEditFormat(content.getMenuTitle())#</strong>">
+			<td class="varWidth">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.comments.description"),args)#</td>
+			<td class="dateTime">#LSDateFormat(comment.getEntered(),session.dateKeyFormat)# #LSTimeFormat(comment.getEntered(),"short")#</td>
+			<td class="administration">
+			<ul class="one">
+				<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('#JSStringFormat(content.getURL(complete=1,queryString='##comment-#comment.getCommentID()#'))#','#content.getTargetParams()#');">#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#</a></li>
+			</ul>
+			</td>
+		</tr>
+		</cfloop>
+	</tbody>
 	</table>
 </cfoutput>

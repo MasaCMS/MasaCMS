@@ -165,17 +165,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.sitesummary")#</h3>
 <dl>
 	<dt>#application.rbFactory.getKeyValue(session.rb,"dashboard.activepages")#</dt>
-	<dd><span class="badge badge-info">#application.dashboardManager.getcontentTypeCount(rc.siteID,"Page").total#</span></dd>
+	<dd><span class="badge">#application.dashboardManager.getcontentTypeCount(rc.siteID,"Page").total#</span></dd>
 	<dt>#application.rbFactory.getKeyValue(session.rb,"dashboard.files")#</dt>
-	<dd><span class="badge badge-info">#application.dashboardManager.getcontentTypeCount(rc.siteID,"File").total#</span></dd>
+	<dd><span class="badge">#application.dashboardManager.getcontentTypeCount(rc.siteID,"File").total#</span></dd>
 	<dt>#application.rbFactory.getKeyValue(session.rb,"dashboard.links")#</dt>
-	<dd><span class="badge badge-info">#application.dashboardManager.getcontentTypeCount(rc.siteID,"Link").total#</span></dd>
+	<dd><span class="badge">#application.dashboardManager.getcontentTypeCount(rc.siteID,"Link").total#</span></dd>
 	<dt>#application.rbFactory.getKeyValue(session.rb,"dashboard.internalfeeds")#</dt>
-	<dd><span class="badge badge-info">#application.dashboardManager.getFeedTypeCount(rc.siteID,"Local").total#</span></dd>
+	<dd><span class="badge">#application.dashboardManager.getFeedTypeCount(rc.siteID,"Local").total#</span></dd>
 	<cfif application.settingsManager.getSite(rc.siteID).getExtranet() eq 1><dt>#application.rbFactory.getKeyValue(session.rb,"dashboard.sitemembers")#</dt>
-	<dd><span class="badge badge-info">#application.dashboardManager.getTotalMembers(rc.siteID)#</span></dd></cfif>
+	<dd><span class="badge">#application.dashboardManager.getTotalMembers(rc.siteID)#</span></dd></cfif>
 	<dt>#application.rbFactory.getKeyValue(session.rb,"dashboard.administrativeusers")#</dt>
-	<dd><span class="badge badge-info">#application.dashboardManager.getTotalAdministrators(rc.siteID)#</span></dd>
+	<dd><span class="badge">#application.dashboardManager.getTotalAdministrators(rc.siteID)#</span></dd>
 </dl>
 </div>
 

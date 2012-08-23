@@ -37,10 +37,10 @@
 	
 	.well {
 			.box-shadow(0 0 0);
-			border: 0;
-			padding: 1em;
+			.well-small;
 			background: @grayLighter;
 			clear: both;
+			border: 1px solid transparent; /* Border 0 leaves artifcacting on corners in Safari 6 */
 		}
 		
 	.tabbable {
@@ -51,15 +51,19 @@
 		text-align: left !important;
 		line-height: 1.2;
 	}
+	
+	.badge {
+		background: darken(@gray,10%);
+	}
 
 // Additional Mura styles -- Move to separate file?
 	
 	.separate {
 		clear: both;
 		.clearfix;
-		margin-bottom: @baseLineHeight + 2px;
-		padding-top: @baseLineHeight + 8px;
-		background: url(../images/rule_dotted_big.gif) repeat-x;
+		margin-bottom: @baseLineHeight + 4px;
+		padding-bottom: @baseLineHeight;
+		background: url(../images/rule_dotted_big.gif) repeat-x bottom;
 		}
 	
 	.navZoom {

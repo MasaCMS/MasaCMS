@@ -22,7 +22,7 @@ height:#rc.height#<br/>
 width:#rc.width#<br/>
 --->
 <cfif images.hasNext()>
-<table class="table table-striped table-bordered table-condensed">
+<table class="table table-striped table-condensed">
 <tr>
 <th>Name</th>
 <th>Height</th>

@@ -61,12 +61,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  </cfif>
 </cfsilent>  
 
-<cfoutput><div id="emailBroadcasts" class="separate">
+<cfoutput><div id="emailBroadcasts">
 <h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.emailbroadcasts")# <span>(#lsDateFormat(emailStart,session.dateKeyFormat)# - #lsDateFormat(emailStop,session.dateKeyFormat)#)</span></h3>
 <dl><dt>#application.rbFactory.getKeyValue(session.rb,"dashboard.emailssent")#:</dt><dd>#emailsSent#</dd><dt>#application.rbFactory.getKeyValue(session.rb,"dashboard.emailsalloted")#:</dt><dd>#emailLimitText#</dd><dt>#application.rbFactory.getKeyValue(session.rb,"dashboard.emailsremaining")#:</dt><dd>#emailsRemainingText#</dd></dl>
 
 <!---<h4>Recent Campaign Activity</h4>--->
-<table class="table table-striped table-bordered table-condensed">
+<table class="table table-striped table-condensed">
 <thead>
 <tr>
 	<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.title")#</th><th>#application.rbFactory.getKeyValue(session.rb,"dashboard.sent")#</th><th>#application.rbFactory.getKeyValue(session.rb,"dashboard.opens")#</th><th>#application.rbFactory.getKeyValue(session.rb,"dashboard.clicks")#</th><th>#application.rbFactory.getKeyValue(session.rb,"dashboard.bounces")#</th>

@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div id="tabUsagereport" class="tab-pane">
 <dl class="oneColumn">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.usagetext')#:</dt>
- <table class="table table-striped table-bordered table-condensed">
+ <table class="table table-striped table-condensed">
     <tr> 
       <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.title')#</th>
       <th>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.display')#</th>

@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 
 </cfoutput>
-<table class="table table-striped table-bordered table-condensed">
+<table class="table table-striped table-condensed">
 <tr>
 	<th class="varWidth">Class Extension</th>
 	<th class="varWidth">Active</th>

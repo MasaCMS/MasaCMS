@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfinclude template="dsp_secondary_menu.cfm">
 
-<table class="table table-striped table-bordered table-condensed"> 
+<table class="table table-striped table-condensed"> 
 <tr>
 <th class="add">&nbsp;</td>
 <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,"categorymanager.category")#</th>

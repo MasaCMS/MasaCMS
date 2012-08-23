@@ -225,7 +225,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rc.nextN=application.utility.getNextN(rc.rsList,15,rc.startrow)/>
 
 </cfsilent><cfoutput>
-        <table class="table table-striped table-bordered table-condensed">
+        <table class="table table-striped table-condensed">
           <tr> 
             <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,"user.name")#</th>
             <th>#application.rbFactory.getKeyValue(session.rb,"user.email")#</th>

@@ -184,7 +184,7 @@ loadExtendedAttributes('#rc.userbean.getUserID()#','1','#rc.userbean.getSubType(
 
 	<cfif rc.userid neq ''>
       <cfoutput><h4 class="separate">#application.rbFactory.getKeyValue(session.rb,'user.groupmembers')#</h4> 
-        <table class="table table-striped table-bordered table-condensed">
+        <table class="table table-striped table-condensed">
             <tr> 
               <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'user.name')#</th>
               <th>#application.rbFactory.getKeyValue(session.rb,'user.email')#</th>

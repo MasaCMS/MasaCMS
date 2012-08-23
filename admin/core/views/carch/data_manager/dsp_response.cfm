@@ -126,7 +126,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rsData=application.dataCollectionManager.getData(rc)/>
 </cfsilent>
 <cfif rsData.recordcount>
-<table class="table table-striped table-bordered table-condensed">
+<table class="table table-striped table-condensed">
 <tr>
 <th>&nbsp;</th>
 <th><cfoutput>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.datetimeentered')#</cfoutput></th>

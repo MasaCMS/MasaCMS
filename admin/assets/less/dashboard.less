@@ -3,19 +3,34 @@
 	h3 {
 		line-height: 1;
 	}
+			
+	th,td {
+		white-space: nowrap;
+		}
+		
+		.count {
+		text-align: center;
+		}
 	
-	table {
-		margin-bottom: 0;
 	}
 	
-	#userActivity table {
-		margin-bottom: @baseLineHeight;
+	td.dateTime {
+		width: 1%;
+	}
+	
+	#recentFormActivity td {
+		width: 300px;
+	}
+	
+	#recentFormActivity td.total {
+		width: 1%;
+		text-align: center;
 	}
 	
 	#emailBroadcasts {
 	
 		dl {
-			margin: 0 0 .5em 0;
+			margin: 0 0 1em 0;
 		}
 		
 		dt, dd {
@@ -23,9 +38,15 @@
 			margin-right: .5em;
 		}
 		
+		dt {
+			font-weight: normal;
+			color: @grayDarker;
+		}
+		
 		dd {
 			margin: 0 1em 0 0;
 			padding: 0;
+			color: @grayDark;
 		}
 		
 	}
@@ -43,11 +64,12 @@
 			float: none;
 			
 			.search-query {
-				width: 133px;
+				width: 135px;
 				}
 			
 			input.btn {
 				float: right;
+				padding: 4px 10px;
 				}
 			}
 		

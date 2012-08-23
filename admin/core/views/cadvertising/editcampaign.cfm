@@ -117,7 +117,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<a class="btn" href="index.cfm?muraAction=cAdvertising.editPlacement&campaignid=#URLEncodedFormat(rc.campaignid)#&placementid=&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.addplacement')#</a>
 	</div>
 	
-	<table class="table table-striped table-bordered table-condensed">
+	<table class="table table-striped table-condensed">
 	<tr>
 		<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'advertising.adzone')#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,'advertising.creativeasset')#</th>
