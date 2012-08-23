@@ -81,8 +81,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-<title>#$siteConfig('site')# - #$.rbKey('stf.sendtoafriend')#</title>
-<link rel="stylesheet" href="#$.globalConfig('assetPath')#/css/style.css" type="text/css" media="all" />
+<title>#$.siteConfig('site')# - #$.rbKey('stf.sendtoafriend')#</title>
+<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.min.css" type="text/css" media="all" />
 </head>
 
 <body id="svSendToFriend">
