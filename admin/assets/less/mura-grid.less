@@ -1,5 +1,9 @@
 #sm-modify-view .dropdown-menu {
 	padding: 10px;
+	
+	input.text { 
+		margin: 0 0 0 2px;
+		}
 }
 
 .mura-grid {
@@ -48,7 +52,7 @@
 			}
 			
 			dl {
-				background-color: #f9f9f9;
+				background-color: @white;
 				float: left;
 				width: auto;
 				margin: 0;
@@ -57,7 +61,11 @@
 			}
 			
 			dl.alt {
-				background-color: #fcfeff;
+				background-color: @tableBackgroundAccent;
+			}
+			
+			dl.mura-grid-hdr {
+				#gradient .vertical(#fffefe,#f5f5f5);
 			}
 			
 			dt, dd  {
@@ -1732,12 +1740,8 @@
 	z-index: 20;
 	padding: 4px 8px;
 	background: #999;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
-	-webkit-box-shadow: 2px 2px 5px #666;
-	-moz-box-shadow: 2px 2px 5px #666;
-	box-shadow: 2px 2px 5px #666;
+	.border-radius(5px);
+	.box-shadow(1px 1px 4px #666);
 
 		ul {
 			margin: 0;
@@ -1760,20 +1764,18 @@
 			display: block;
 			text-decoration: none;
 			margin: 0;
-			padding: 6px 0 6px 18px;
+			padding: 6px 0 6px 16px;
 			color: #000;
+			background-position: left center !important;
+			background-repeat: no-repeat;
 		}
 		
-		#newZoom {
-			border-bottom: 1px dotted #D4D4D4;
-		}
+		#newZoom { border-bottom: 1px dotted #D4D4D4; }
 		
-		#newZoom a {
-			background: url(../images/icons/zoomi_24.png) no-repeat 1px 5px;
-		}
+		#newZoom a { background-image: url(../images/icons/zoomi_24.png); }
 		
 		#newCopy a {
-			background: url(../images/icons/copy_24.png) no-repeat 1px 5px;
+			background-image: url(../images/icons/copy_24.png);
 			float: left;
 		}
 		
@@ -1787,45 +1789,27 @@
 			width: 2.7em;
 		}
 		
-		#newPaste a {
-			background: url(../images/icons/paste_24.png) no-repeat 1px 5px;
+		#newCopyAllLink {
+			margin-left: 4px;
 		}
 		
-		#newContent a {
-			background: url(../images/icons/docs_24.png) no-repeat 1px 5px;
-		}
-		
-		#newPage a {
-			background: url(../images/icons/docs_24.png) no-repeat 1px 5px;
-		}
-		
-		#newLink a {
-			background: url(../images/icons/web_24.png) no-repeat 1px 5px;
-		}
-		
-		#newFile a {
-			background: url(../images/icons/cms_file.png) no-repeat 0px 5px;
-		}
-		
-		#newPortal a {
-			background: url(../images/icons/foldr_24.png) no-repeat 1px 5px;
-		}
-		
-		#newCalendar a {
-			background: url(../images/icons/cal_24.png) no-repeat 1px 5px;
-		}
+		#newPaste a { background-image: url(../images/icons/paste_24.png); }		
+		#newContent a { background-image: url(../images/icons/docs_24.png); }		
+		#newPage a { background-image: url(../images/icons/docs_24.png); }		
+		#newLink a { background-image: url(../images/icons/web_24.png); }		
+		#newFile a { background-image: url(../images/icons/cms_file.png); }		
+		#newPortal a { background-image: url(../images/icons/foldr_24.png); }		
+		#newCalendar a { background-image: url(../images/icons/cal_24.png); }
 		
 		#newGallery a {
-			background: url(../images/icons/smicn_24.png) no-repeat 1px 5px;
+			background-image: url(../images/icons/smicn_24.png);
 			border: 0;
 		}
 		
-		#newGalleryItem a {
-			background: url(../images/icons/image_24.png) no-repeat 1px 5px;
-		}
+		#newGalleryItem a { background-image: url(../images/icons/image_24.png); }
 		
 		#newGalleryItemMulti a {
-			background: url(../images/icons/image_24.png) no-repeat 1px 5px;
+			background-image: url(../images/icons/image_24.png);
 			border: 0;
 		}
 		
