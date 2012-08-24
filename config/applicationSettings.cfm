@@ -119,12 +119,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset this.baseDir=baseDir>
 	<cfset variables.baseDir=baseDir>
 	
-	<cfset variables.tracePoint=initTracePoint("Reading config/settings.ini.cfm")>
-	<cfset properties = createObject( 'java', 'java.util.Properties' ).init()>
-	<cfset fileStream = createObject( 'java', 'java.io.FileInputStream').init( getDirectoryFromPath(getCurrentTemplatePath()) & "/settings.ini.cfm")>
-	<cfset properties.load( fileStream )>
-	<cfset fileStream.close()>
-	<cfset commitTracePoint(variables.tracePoint)>
+	<cfif not isDefined("application.settingsINI") or (isDefined("application.appreloadkey") and isDefined("url.#application.appReloadKey#"))>
+		<cfset variables.tracePoint=initTracePoint("Reading config/settings.ini.cfm")>
+		<cfset application.settingsINI = createObject( 'java', 'java.util.Properties' ).init()>
+		<cfset fileStream = createObject( 'java', 'java.io.FileInputStream').init( getDirectoryFromPath(getCurrentTemplatePath()) & "/settings.ini.cfm")>
+		<cfset application.settingsINI.load( fileStream )>
+		<cfset fileStream.close()>
+		<cfset commitTracePoint(variables.tracePoint)>
+		<cfset application.appReloadKey = application.settingsINI.getProperty("appreloadkey","appreload") />
+	</cfif>
+
+	<cfset properties=application.settingsINI>
 
 	<!--- define custom coldfusion mappings. Keys are mapping names, values are full paths  --->
 	<cfif StructKeyExists(SERVER,"bluedragon") and not findNoCase("Windows",server.os.name)>

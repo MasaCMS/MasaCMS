@@ -62,8 +62,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset request.muraShowTrace=session.mura.showTrace>
 
-<cfset variables.onRequestStartTracePoint=initTracePoint("application.onRequestStart()")>
-
 <cfif not isDefined("application.cfstatic")>
 	<cfset application.cfstatic=structNew()>
 </cfif>
@@ -209,5 +207,4 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 <cfset application.pluginManager.executeScripts('onGlobalRequestStart')>
 <cfparam name="application.coreversion" default="#application.serviceFactory.getBean('autoUpdater').getCurrentVersion()#">
-<cfset commitTracePoint(variables.onRequestStartTracePoint)>
 
