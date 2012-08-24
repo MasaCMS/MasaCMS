@@ -119,12 +119,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset this.baseDir=baseDir>
 	<cfset variables.baseDir=baseDir>
 	
-	<cfset variables.tracePoint=initTracePoint("Reading config/settings.ini.cfm")>
-	<cfset properties = createObject( 'java', 'java.util.Properties' ).init()>
-	<cfset fileStream = createObject( 'java', 'java.io.FileInputStream').init( getDirectoryFromPath(getCurrentTemplatePath()) & "/settings.ini.cfm")>
-	<cfset properties.load( fileStream )>
-	<cfset fileStream.close()>
-	<cfset commitTracePoint(variables.tracePoint)>
+	<cfif not structKeyExists(application,"settingsINI") or (structKeyExists(application,"appreloadkey") and structKeyExists(url,application.appReloadKey))>
+		<cfset variables.tracePoint=initTracePoint("Reading config/settings.ini.cfm")>
+		<cfset application.settingsINI = createObject( 'java', 'java.util.Properties' ).init()>
+		<cfset fileStream = createObject( 'java', 'java.io.FileInputStream').init( getDirectoryFromPath(getCurrentTemplatePath()) & "/settings.ini.cfm")>
+		<cfset application.settingsINI.load( fileStream )>
+		<cfset fileStream.close()>
+		<cfset commitTracePoint(variables.tracePoint)>
+		<cfset application.appReloadKey = application.settingsINI.getProperty("appreloadkey","appreload") />
+	</cfif>
 
 	<!--- define custom coldfusion mappings. Keys are mapping names, values are full paths  --->
 	<cfif StructKeyExists(SERVER,"bluedragon") and not findNoCase("Windows",server.os.name)>
@@ -143,14 +146,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset this.mappings["/config"] = variables.mapPrefix & variables.baseDir & "/config">
 	
 	<cftry>
-		<cfinclude template="#properties.getProperty("context","")#/config/mappings.cfm">
+		<cfinclude template="#application.settingsINI.getProperty("context","")#/config/mappings.cfm">
 		<cfset hasMainMappings=true>
 		<cfcatch>
 			<cfset hasMainMappings=false>
 		</cfcatch>
 	</cftry>
 	<cftry>
-		<cfinclude template="#properties.getProperty("context","")#/plugins/mappings.cfm">
+		<cfinclude template="#application.settingsINI.getProperty("context","")#/plugins/mappings.cfm">
 		<cfset hasPluginMappings=true>
 		<cfcatch>
 			<cfset hasPluginMappings=false>
@@ -183,24 +186,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 
 	<!--- How long do session vars persist? --->
 	<cfif request.trackSession>
-		<cfset this.sessionTimeout = (properties.getProperty("sessionTimeout","180") / 24) / 60>
+		<cfset this.sessionTimeout = (application.settingsINI.getProperty("sessionTimeout","180") / 24) / 60>
 	<cfelse>
 		<cfset this.sessionTimeout = createTimeSpan(0,0,5,0)>
 	</cfif>
 	
 	<!--- define a list of custom tag paths. --->
-	<cfset this.customtagpaths = properties.getProperty("customtagpaths","") />
+	<cfset this.customtagpaths = application.settingsINI.getProperty("customtagpaths","") />
 	<cfset this.customtagpaths = listAppend(this.customtagpaths,variables.mapPrefix & variables.baseDir  &  "/requirements/custom_tags/")>
 	
-	<cfset this.clientManagement = properties.getProperty("clientManagement","false") />
-	<cfset this.clientStorage = properties.getProperty("clientStorage","registry") />
-	<cfset this.ormenabled = properties.getProperty("ormenabled","true") />
-	<cfset this.datasource = properties.getProperty("datasource","") />
+	<cfset this.clientManagement = application.settingsINI.getProperty("clientManagement","false") />
+	<cfset this.clientStorage = application.settingsINI.getProperty("clientStorage","registry") />
+	<cfset this.ormenabled = application.settingsINI.getProperty("ormenabled","true") />
+	<cfset this.datasource = application.settingsINI.getProperty("datasource","") />
 	<cfset this.ormSettings=structNew()>
 	<cfset this.ormSettings.cfclocation=arrayNew(1)>
-	
+
 	<cfif this.ormenabled>
-		<cfswitch expression="#properties.getProperty('dbtype','')#">
+		<cfswitch expression="#application.settingsINI.getProperty('dbtype','')#">
 			<cfcase value="mssql">
 				<cfset this.ormSettings.dialect = "MicrosoftSQLServer" />
 			</cfcase>
@@ -211,29 +214,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset this.ormSettings.dialect = "Oracle10g" />
 			</cfcase>
 		</cfswitch>
-		<cfset this.ormSettings.dbcreate = properties.getProperty("ormdbcreate","update") />
-		<cfif len(properties.getProperty("ormcfclocation",""))>
-			<cfset arrayAppend(this.ormSettings.cfclocation,properties.getProperty("ormcfclocation")) />
+		<cfset this.ormSettings.dbcreate = application.settingsINI.getProperty("ormdbcreate","update") />
+		<cfif len(application.settingsINI.getProperty("ormcfclocation",""))>
+			<cfset arrayAppend(this.ormSettings.cfclocation,application.settingsINI.getProperty("ormcfclocation")) />
 		</cfif>
-		<cfset this.ormSettings.flushAtRequestEnd = properties.getProperty("ormflushAtRequestEnd","false") />
-		<cfset this.ormsettings.eventhandling = properties.getProperty("ormeventhandling","true") />
-		<cfset this.ormSettings.automanageSession = properties.getProperty("ormautomanageSession","false") />
-		<cfset this.ormSettings.savemapping=properties.getProperty("ormsavemapping","false") />
-		<cfset this.ormSettings.skipCFCwitherror=properties.getProperty("ormskipCFCwitherror","false") />
-		<cfset this.ormSettings.useDBforMapping=properties.getProperty("ormuseDBforMapping","true") />
-		<cfset this.ormSettings.autogenmap=properties.getProperty("ormautogenmap","true") />
-		<cfset this.ormSettings.logsql=properties.getProperty("ormlogsql","false") />
+		<cfset this.ormSettings.flushAtRequestEnd = application.settingsINI.getProperty("ormflushAtRequestEnd","false") />
+		<cfset this.ormsettings.eventhandling = application.settingsINI.getProperty("ormeventhandling","true") />
+		<cfset this.ormSettings.automanageSession = application.settingsINI.getProperty("ormautomanageSession","false") />
+		<cfset this.ormSettings.savemapping=application.settingsINI.getProperty("ormsavemapping","false") />
+		<cfset this.ormSettings.skipCFCwitherror=application.settingsINI.getProperty("ormskipCFCwitherror","false") />
+		<cfset this.ormSettings.useDBforMapping=application.settingsINI.getProperty("ormuseDBforMapping","true") />
+		<cfset this.ormSettings.autogenmap=application.settingsINI.getProperty("ormautogenmap","true") />
+		<cfset this.ormSettings.logsql=application.settingsINI.getProperty("ormlogsql","false") />
 	</cfif>
 
 	<cftry>
-		<cfinclude template="#properties.getProperty("context","")#/plugins/cfapplication.cfm">
+		<cfinclude template="#application.settingsINI.getProperty("context","")#/plugins/cfapplication.cfm">
 		<cfset hasPluginCFApplication=true>
 		<cfcatch>
 			<cfset hasPluginCFApplication=false>
 		</cfcatch>
 	</cftry>
 	<cftry>
-		<cfinclude template="#properties.getProperty("context","")#/config/cfapplication.cfm">
+		<cfinclude template="#application.settingsINI.getProperty("context","")#/config/cfapplication.cfm">
 		<cfset request.hasCFApplicationCFM=true>
 		<cfcatch>
 			<cfset request.hasCFApplicationCFM=false>
