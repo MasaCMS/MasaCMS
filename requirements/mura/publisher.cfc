@@ -3137,13 +3137,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfif not StructKeyExists(arguments,"Bundle")>
 						<cfquery datasource="#arguments.fromDSN#" name="rstpluginscripts">
 							select * from tpluginscripts 
-							where moduleID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#"/>
+							where moduleID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rstplugins.moduleID#"/>
 						</cfquery>
 						<cfelse>
 							<cfset rstpluginscripts = arguments.Bundle.getValue("rstpluginscripts")>
 							<cfquery name="rsTemp" dbtype="query">
 								select * from rstpluginscripts
-								where moduleID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#"/>
+								where moduleID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rstplugins.moduleID#"/>
 							</cfquery>
 							<cfset rstpluginscripts = rsTemp>
 						</cfif>	
@@ -3171,13 +3171,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfif not StructKeyExists(arguments,"Bundle")>
 						<cfquery datasource="#arguments.fromDSN#" name="rstplugindisplayobjects">
 							select * from tplugindisplayobjects 
-							where moduleID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#"/>
+							where moduleID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rstplugins.moduleID#"/>
 						</cfquery>
 						<cfelse>
 							<cfset rstplugindisplayobjects = arguments.Bundle.getValue("rstplugindisplayobjects")>
 							<cfquery name="rsTemp" dbtype="query">
 								select * from rstplugindisplayobjects
-								where moduleID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#"/>
+								where moduleID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rstplugins.moduleID#"/>
 							</cfquery>
 							<cfset rstplugindisplayobjects = rsTemp>
 						</cfif>	
@@ -3214,13 +3214,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfif not StructKeyExists(arguments,"Bundle")>
 						<cfquery datasource="#arguments.fromDSN#" name="rstpluginsettings">
 							select * from tpluginsettings 
-							where moduleID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#"/>
+							where moduleID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rstplugins.moduleID#"/>
 						</cfquery>
 						<cfelse>
 							<cfset rstpluginsettings = arguments.Bundle.getValue("rstpluginsettings")>
 							<cfquery name="rsTemp" dbtype="query">
 								select * from rstpluginsettings
-								where moduleID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#"/>
+								where moduleID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rstplugins.moduleID#"/>
 							</cfquery>
 							<cfset rstpluginsettings = rsTemp>
 						</cfif>	
