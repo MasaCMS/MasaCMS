@@ -24,16 +24,20 @@ width:#rc.width#<br/>
 <cfif images.hasNext()>
 <table class="table table-striped table-condensed">
 <tr>
-<th>Name</th>
+<th >Name</th>
 <th>Height</th>
 <th>Width</th>
+<th class="administration"></th>
 </tr>
 <cfloop condition="images.hasNext()">
 <cfset image=images.next()>
 <tr>
-<td><a href="##" onclick="return openCustomImageSize('#image.getSizeID()#','#JSStringFormat(image.getSiteID())#');">#HTMLEditFormat(image.getName())#</a></td>
-<td><a href="##" onclick="return openCustomImageSize('#image.getSizeID()#','#JSStringFormat(image.getSiteID())#');">#HTMLEditFormat(image.getHeight())#</a></td>
-<td><a href="##" onclick="return openCustomImageSize('#image.getSizeID()#','#JSStringFormat(image.getSiteID())#');">#HTMLEditFormat(image.getWidth())#</a></td>
+<td class="varWidth">#HTMLEditFormat(image.getName())#</td>
+<td>#HTMLEditFormat(image.getHeight())#</td>
+<td>#HTMLEditFormat(image.getWidth())#</td>
+<td class="administration"><ul class="one">
+	<li class="edit"><a href="##" text="Edit" onclick="return openCustomImageSize('#image.getSizeID()#','#JSStringFormat(image.getSiteID())#');">Edit</a></li>
+</ul></td>
 </tr>
 </cfloop>
 </table>

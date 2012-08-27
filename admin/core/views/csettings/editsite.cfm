@@ -735,16 +735,18 @@ to your own modified versions of Mura CMS.
      }
 
     function deleteCustomImageSize(){
-      loadCustomImages(
-        {
-          sizeid:$('##custom-image-form').attr('data-sizeid'),
-          siteid:siteid,
-          name:'',
-          height:'',
-          width:'',
-          imageaction:'delete'
-        }
-      );
+      if(confirm('Delete custom image size?')){
+        loadCustomImages(
+          {
+            sizeid:$('##custom-image-form').attr('data-sizeid'),
+            siteid:siteid,
+            name:'',
+            height:'',
+            width:'',
+            imageaction:'delete'
+          }
+        );
+      }
      }
 
      function loadCustomImages(imageoptions){
