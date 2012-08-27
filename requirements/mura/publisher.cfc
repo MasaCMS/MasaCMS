@@ -3003,6 +3003,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var newdirectory="">
 		<cfset var rsTemp="">
 		<cfset var s="">
+		<cfset var pluginCFC="">
+		<cfset var pluginDir="">
+		<cfset var pluginConfig="">
 		
 			<cfif not StructKeyExists(arguments,"Bundle")>
 				<cfquery datasource="#arguments.fromDSN#" name="rstplugins">
@@ -3137,13 +3140,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfif not StructKeyExists(arguments,"Bundle")>
 						<cfquery datasource="#arguments.fromDSN#" name="rstpluginscripts">
 							select * from tpluginscripts 
-							where moduleID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#"/>
+							where moduleID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rstplugins.moduleID#"/>
 						</cfquery>
 						<cfelse>
 							<cfset rstpluginscripts = arguments.Bundle.getValue("rstpluginscripts")>
 							<cfquery name="rsTemp" dbtype="query">
 								select * from rstpluginscripts
-								where moduleID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#"/>
+								where moduleID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rstplugins.moduleID#"/>
 							</cfquery>
 							<cfset rstpluginscripts = rsTemp>
 						</cfif>	
@@ -3171,13 +3174,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfif not StructKeyExists(arguments,"Bundle")>
 						<cfquery datasource="#arguments.fromDSN#" name="rstplugindisplayobjects">
 							select * from tplugindisplayobjects 
-							where moduleID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#"/>
+							where moduleID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rstplugins.moduleID#"/>
 						</cfquery>
 						<cfelse>
 							<cfset rstplugindisplayobjects = arguments.Bundle.getValue("rstplugindisplayobjects")>
 							<cfquery name="rsTemp" dbtype="query">
 								select * from rstplugindisplayobjects
-								where moduleID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#"/>
+								where moduleID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rstplugins.moduleID#"/>
 							</cfquery>
 							<cfset rstplugindisplayobjects = rsTemp>
 						</cfif>	
@@ -3214,13 +3217,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfif not StructKeyExists(arguments,"Bundle")>
 						<cfquery datasource="#arguments.fromDSN#" name="rstpluginsettings">
 							select * from tpluginsettings 
-							where moduleID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#"/>
+							where moduleID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rstplugins.moduleID#"/>
 						</cfquery>
 						<cfelse>
 							<cfset rstpluginsettings = arguments.Bundle.getValue("rstpluginsettings")>
 							<cfquery name="rsTemp" dbtype="query">
 								select * from rstpluginsettings
-								where moduleID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#"/>
+								where moduleID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#rstplugins.moduleID#"/>
 							</cfquery>
 							<cfset rstpluginsettings = rsTemp>
 						</cfif>	
@@ -3240,7 +3243,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								)
 							</cfquery>
 						</cfloop>
+
+						<cfset pluginDir=variables.configBean.getPluginDir() & application.configBean.getFileDelim() & rstplugins.directory>
+					
+						<cfif fileExists("#pluginDir#/plugin/plugin.cfc")>	
+							<cfset pluginConfig=getPlugin(ID=keyFactory.get(rstplugins.moduleID), siteID="", cache=false)>
+							<cfset pluginCFC= createObject("component","plugins.#rstplugins.directory#.plugin.plugin") />
+							
+							<!--- only call the methods if they have been defined --->
+							<cfif structKeyExists(pluginCFC,"init")>
+								<cfset pluginCFC.init(pluginConfig)>
+								<cfif structKeyExists(pluginCFC,"fromBundle")>
+									<cfset pluginCFC.fromBundle(pluginConfig=pluginConfig,Bundle=this,keyFactory=arguments.keyFactory, siteID=arguments.siteID, errors=arguments.errors)>
+								</cfif>
+							</cfif>
+						</cfif>	
 					</cfif>
+
 				</cfloop>
 			
 	</cffunction>
