@@ -58,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfreturn this />
 </cffunction>
 
-<cffunction name="getCrumblist" returntype="array" access="public" output="false">
+<cffunction name="getCrumblist" returntype="any" access="public" output="false">
 		<cfargument name="contentid" required="true" default="">
 		<cfargument name="siteid" required="true" default="">
 		<cfargument name="setInheritance" required="true" type="boolean" default="false">
