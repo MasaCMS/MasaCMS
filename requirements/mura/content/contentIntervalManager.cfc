@@ -421,7 +421,7 @@
 								local.currentrow
 							) />
 
-							<cfif isDate(arguments.query['displayStart'][local.currentrow])>
+							<cfif isDate(arguments.query['displayStop'][local.currentrow])>
 								<cfset querySetCell(
 									arguments.query,
 									"displayStop",
@@ -476,7 +476,7 @@
 									arguments.query.recordCount
 								) />
 							
-							<cfif isDate(arguments.query['displayStart'][local.currentrow])>
+							<cfif isDate(arguments.query['displayStop'][local.currentrow])>
 								<cfset querySetCell(
 									arguments.query,
 									"displayStop",
