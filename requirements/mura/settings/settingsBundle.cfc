@@ -366,19 +366,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset pluginDir=variables.configBean.getPluginDir() & variables.fileDelim & qCheck.directory>
 				
 					<cfset variables.utility.copyDir( getBundle() & "plugins" & variables.fileDelim & rstplugins.directory, pluginDir )>
-					
-					<cfif fileExists("#pluginDir#/plugin/plugin.cfc")>	
-						<cfset pluginConfig=getPlugin(ID=keyFactory.get(rstplugins.moduleID), siteID="", cache=false)>
-						<cfset pluginCFC= createObject("component","plugins.#qCheck.directory#.plugin.plugin") />
-						
-						<!--- only call the methods if they have been defined --->
-						<cfif structKeyExists(pluginCFC,"init")>
-							<cfset pluginCFC.init(pluginConfig)>
-							<cfif structKeyExists(pluginCFC,"fromBundle")>
-								<cfset pluginCFC.fromBundle(pluginConfig=pluginConfig,Bundle=this,keyFactory=arguments.keyFactory, siteID=arguments.siteID, errors=arguments.errors)>
-							</cfif>
-						</cfif>
-					</cfif>	
+			
 				</cfif>
 			</cfloop>
 			
