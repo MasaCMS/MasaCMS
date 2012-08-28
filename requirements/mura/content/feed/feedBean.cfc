@@ -89,6 +89,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="displayList" type="string" default="Title,Date,Image,Summary,Tags,Credits" required="true" />
 <cfproperty name="liveOnly" type="numeric" default="1" required="true" />
 <cfproperty name="bean" type="string" default="content" required="true" />
+<cfproperty name="viewalllabel" type="string" default="" required="true" />
+<cfproperty name="viewalllink" type="string" default="View All" required="true" />
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfset super.init(argumentCollection=arguments)>
@@ -139,6 +141,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.liveOnly=1 />
 	<cfset variables.instance.bean="content" />
 	<cfset variables.instance.table="tcontent">
+	<cfset variables.instance.viewalllink="" />
+	<cfset variables.instance.viewalllabel="" />
 	
 	<cfreturn this />
 </cffunction>

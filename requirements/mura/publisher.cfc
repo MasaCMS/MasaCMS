@@ -718,6 +718,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif isdefined("rstcontentfeeds.imageSize")>
 					,imageSize,imageHeight,imageWidth,showExcludeSearch,showNavOnly,displaylist
 					</cfif>
+					<cfif isdefined("rstcontentfeeds.viewalllink")>
+					,viewalllink,viewalllabel
+					</cfif>
 					)
 					values
 					(
@@ -760,7 +763,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.showExcludeSearch),de(rstcontentfeeds.showExcludeSearch),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.showNavOnly),de(rstcontentfeeds.showNavOnly),de(0))#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.displaylist neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.displaylist#">
-					</cfif>		
+					</cfif>
+					<cfif isdefined("rstcontentfeeds.viewalllink")>
+					,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.viewalllink neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.viewalllink#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.viewalllabel neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.viewalllabel#">
+					</cfif>			
 					)
 				</cfquery>
 			</cfloop>

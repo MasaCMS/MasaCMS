@@ -158,7 +158,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfoutput><h2><cfif len(rc.assignmentID)>#application.rbFactory.getKeyValue(session.rb,'collections.editlocalindexinstance')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'collections.editlocalindex')#</cfif></h2>
 
+<cfif rc.compactDisplay neq "true">
 <cfinclude template="dsp_secondary_menu.cfm">
+</cfif>
 
 #application.utility.displayErrors(rc.feedBean.getErrors())#
 
@@ -439,6 +441,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			  </div>
 		</div>
 	</span>
+
+	<div class="control-group">
+		<label class="control-label">
+			#application.rbFactory.getKeyValue(session.rb,'collections.viewalllink')#
+		</label>
+		<div class="controls">
+			<input name="viewalllink" class="text" value="#HTMLEditFormat(rc.feedBean.getViewAllLink())#" maxlength="255">
+		</div>
+	</div>
+
+	<div class="control-group">
+		<label class="control-label">
+			#application.rbFactory.getKeyValue(session.rb,'collections.viewalllabel')#
+		</label>
+		<div class="controls">
+			<input name="viewalllabel" class="text" value="#HTMLEditFormat(rc.feedBean.getViewAllLabel())#" maxlength="100">
+		</div>
+	</div>
 
 	<div class="control-group">
 	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</label>
@@ -750,6 +770,24 @@ jQuery(document).ready(function(){
 	</cfloop>
 	</select>  </div>
     </div>
+
+    <div class="control-group">
+		<label class="control-label">
+			#application.rbFactory.getKeyValue(session.rb,'collections.viewalllink')#
+		</label>
+		<div class="controls">
+			<input name="viewalllink" class="text" value="#HTMLEditFormat(rc.feedBean.getViewAllLink())#" maxlength="255">
+		</div>
+	</div>
+
+	<div class="control-group">
+		<label class="control-label">
+			#application.rbFactory.getKeyValue(session.rb,'collections.viewalllabel')#
+		</label>
+		<div class="controls">
+			<input name="viewalllabel" class="text" value="#HTMLEditFormat(rc.feedBean.getViewAllLabel())#" maxlength="100">
+		</div>
+	</div>
 	
 	<div class="control-group">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.isactive')#</label>

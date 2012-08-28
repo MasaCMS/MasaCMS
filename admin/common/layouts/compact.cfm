@@ -153,10 +153,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	      	<div class="row">
 	        	<div class="span12">#body#</div>
 		  		<footer>
-	        	<p>&copy; Company 2012</p>
-	     	 </footer>
+	        	<!---<p>&copy; Company 2012</p>--->
+	     		</footer>
 	    	</div> 
 		</div><!-- /container -->
+		<!---
 		<cfif rc.originalcircuit neq 'cLogin' and rc.originalcircuit neq 'cFilemanager'>
 			<script type="text/javascript" language="javascript">
 				if(document.forms[2] != undefined && !document.forms[2].elements[0].disabled && document.forms[2].elements[0].focus){
@@ -171,7 +172,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<script type="text/javascript" language="javascript">
 			stripe('stripe');
 		</script>
-
+		--->
 		<cfif cgi.http_user_agent contains 'msie'>
 			<!--[if IE 6]>
 			<script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/ie6notice.js"></script>

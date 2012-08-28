@@ -62,16 +62,16 @@ jQuery(document).ready(function(){
 	<div id="configurator">
 		<img src="assets/images/progress_bar.gif">
 	</div>	
-	<div class="actionButtons" style="display:none;">
+	<div class="actionButtons form-actions">
 		<cfif assignChangesets>
 			<cfinclude template="form/dsp_changesets.cfm">
 		</cfif>
 		<cfif assignChangesets>
-			<input type="button" class="button" onclick="saveToChangeset('#rc.contentBean.getChangesetID()#','#HTMLEditFormat(rsDisplayObject.siteid)#','');return false;" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset")#" />	
+			<input type="button" class="button btn" onclick="saveToChangeset('#rc.contentBean.getChangesetID()#','#HTMLEditFormat(rsDisplayObject.siteid)#','');return false;" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset")#" />	
 		</cfif>
-		<input type="button" id="saveConfigDraft" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#"/>
-		<input type="button" id="previewConfigDraft" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.preview"))#"/>
-		<cfif rc.perm eq "Editor"><input type="button" id="publishConfig" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#"/></cfif>
+		<input type="button" class="btn" id="saveConfigDraft" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#"/>
+		<input type="button" class="btn" id="previewConfigDraft" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.preview"))#"/>
+		<cfif rc.perm eq "Editor"><input type="button" class="btn" id="publishConfig" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#"/></cfif>
 	</div>
 </div>
 <script>

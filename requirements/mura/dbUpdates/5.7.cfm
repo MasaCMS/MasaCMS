@@ -97,6 +97,10 @@
 	dbUtility.setTable("ttrash")
 	.addColumn(column="deleteid",dataType="char",length="35")
 	.addColumn(column="orderno",dataType="int");
+
+	dbUtility.setTable("tcontentfeeds")
+	.addColumn(column="viewalllink",dataType="varchar",length="255")
+	.addColumn(column="viewalllabel",dataType="varchar",length="100");
 </cfscript>
 
 

@@ -61,4 +61,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</select>
 	</div>
 </div>
+
+<div class="control-group">
+	<label class="control-label">
+		#application.rbFactory.getKeyValue(session.rb,'collections.viewalllink')#
+	</label>
+	<div class="controls">
+		<input name="viewalllink" class="objectParam  text" value="#HTMLEditFormat(feed.getViewAllLink())#" maxlength="50">
+	</div>
+</div>
+
+<div class="control-group">
+	<label class="control-label">
+		#application.rbFactory.getKeyValue(session.rb,'collections.viewalllabel')#
+	</label>
+	<div class="controls">
+		<input name="viewalllabel" class="objectParam  text" value="#HTMLEditFormat(feed.getViewAllLabel())#" maxlength="50">
+	</div>
+</div>
 </cfoutput>

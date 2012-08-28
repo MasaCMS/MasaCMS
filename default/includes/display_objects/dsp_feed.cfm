@@ -59,6 +59,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.contentListFields=listDeleteAt(variables.feedBean.getDisplayList(),listFindNoCase(variables.feedBean.getDisplayList(),"Summary"))>
 		<cfset variables.feedBean.setDisplayList(variables.contentListFields)>
 	</cfif>
+	<cfparam name="objectparams.viewalllink" default="">
+	<cfparam name="objectparams.viewalllabel" default="#$.rbKey('list.viewall')#">
 	
 </cfsilent>
 
@@ -112,6 +114,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								)#
 					<cfif variables.nextN.numberofpages gt 1>
 						#variables.$.dspObject_Include(thefile='dsp_nextN.cfm')#
+					</cfif>
+
+					<cfif len(objectParams.viewalllink)>
+						<a class="view-all" href="#objectParams.viewalllink#">#HTMLEditFormat(objectParams.viewalllabel)#</a>
 					</cfif>
 				</div>
 			</cfoutput>
@@ -172,6 +178,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfif arguments.hasSummary and structKeyExists(variables.feedData.itemArray[i],"summary")><dd class="summary">#variables.feedData.itemArray[i].summary.xmlText#</dd></cfif>
 							</dl>
 						</cfloop>
+					</cfif>
+
+					<cfif len(objectParams.viewalllink)>
+						<a class="view-all" href="#objectParams.viewalllink#">#HTMLEditFormat(objectParams.viewalllabel)#</a>
 					</cfif>
 				</div>
 			<cfelse>
