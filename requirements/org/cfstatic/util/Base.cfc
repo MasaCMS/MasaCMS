@@ -48,6 +48,12 @@
 		</cfloop>
 	</cffunction>
 
+	<cffunction name="$directoryCreate" access="public" returntype="any" output="false">
+		<cfargument name="directory" type="string" required="true" />
+
+		<cfdirectory action="create" directory="#arguments.directory#" />
+	</cffunction>
+
 	<cffunction name="$fileRead" access="private" returntype="string" output="false" hint="I return the content of the given file (path)">
 		<cfargument name="path" type="string" required="true" />
 
@@ -152,11 +158,14 @@
 		<cfargument name="delimiter" type="string" required="false" default="," />
 
 		<cfscript>
-			if( Right(arguments.list, Len(arguments.delimiter)) eq arguments.delimiter ){
-				arguments.list = Left( arguments.list, Len(arguments.list) - Len(arguments.delimiter ));
+			var delimiterAlreadyOnEnd = Right( arguments.list, Len( arguments.delimiter ) ) eq arguments.delimiter;
+			var isEmptyList           = not Len( arguments.list );
+
+			if ( delimiterAlreadyOnEnd or isEmptyList ) {
+				return arguments.list & arguments.value;
 			}
 
-			return ListAppend( arguments.list, arguments.value, arguments.delimiter );
+			return arguments.list & arguments.delimiter & arguments.value;
 		</cfscript>
 	</cffunction>
 
@@ -391,6 +400,35 @@
 
 			return StructKeyList( listStruct );
 		</cfscript>
+	</cffunction>
+
+	<cffunction name="$ensureFullDirectoryPath" access="private" returntype="string" output="false">
+		<cfargument name="dir" type="string" required="true" />
+		<cfscript>
+			if ( directoryExists( ExpandPath( arguments.dir ) ) ) {
+				return ExpandPath( arguments.dir );
+			}
+			return arguments.dir;
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="$ensureFullFilePath" access="private" returntype="string" output="false">
+		<cfargument name="file" type="string" required="true" />
+
+		<cfscript>
+			if ( fileExists( ExpandPath( arguments.file ) ) ) {
+				return ExpandPath( arguments.file );
+			}
+			return arguments.file;
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="$getStringBuffer" access="private" returntype="any" output="false">
+		<cfreturn CreateObject("java","java.lang.StringBuffer") />
+	</cffunction>
+
+	<cffunction name="$orderedStructNew" access="private" returntype="struct" output="false">
+		<cfreturn CreateObject( "java", "java.util.LinkedHashMap" ).init() />
 	</cffunction>
 
 <!--- accessors --->
