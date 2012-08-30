@@ -22,6 +22,35 @@ input[type="color"],
   color: @grayDark;
 }
 
+.ui-datepicker {
+
+	select {
+		margin-bottom: .75em !important;
+		width: 158px;
+		font-size: @qeFontSize;
+		padding: 2px 2px;
+		height: auto;
+		line-height: 1;
+		}
+	
+	.ui-datepicker-prev, .ui-datepicker-next {
+		top: 3px;
+		}
+		
+	table {
+		border: 0;
+	}
+	
+	th,td {
+		border: 0;
+		}
+
+}
+
+.ui-datepicker-month {
+	margin-right: 4px !important;
+}
+
 label.control-label {
 	font-weight: bold;
 }
@@ -46,15 +75,12 @@ label.control-label {
 	
 	input[type="text"],
 	input[type="password"] {
-		font-size: @baseFontSize - 2;
 		line-height: @baseLineHeight - 2;
 		height: @baseLineHeight+6;
 		padding: 2px;
 	}
 	
 	.btn {
-		font-size: @baseFontSize - 2;
-		font-weight: bold;
 		line-height: @baseLineHeight - 4;
 		height: @baseLineHeight + 6;
 	}

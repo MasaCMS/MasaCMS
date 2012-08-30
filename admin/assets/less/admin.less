@@ -40,23 +40,57 @@
 			.well-small;
 			background: @grayLighter;
 			clear: both;
-			border: 1px solid transparent; /* Border 0 leaves artifcacting on corners in Safari 6 */
+			border: 1px solid transparent; /* Border 0 leaves artifacting on corners in Safari 6 */
 		}
 		
 	.tabbable {
 		clear: both;
 	}
 	
-	.tooltip {
-		text-align: left !important;
-		line-height: 1.2;
-	}
+	a[rel="tooltip"] {
+		display: inline-block;
+		color: @grayDark;
+		padding-right: .25em;
+		text-decoration: none;
+		
+		i {
+			color: @gray;
+			}
+		
+		}
+			
+	div.tooltip {
+		
+		.tooltip-inner {
+			padding: 10px;
+			text-align: left;
+			line-height: 1.2;
+			}
+		
+		.tooltip-arrow {
+			padding: 0;
+			}
+		}
 	
 	.badge {
 		background: darken(@gray,10%);
 	}
 
 // Additional Mura styles -- Move to separate file?
+
+	.success {
+		.alert;
+		.alert-success;
+	}
+	
+	.notice {
+		.alert;
+	}
+	
+	.error {
+		.alert;
+		.alert-error;
+	}
 	
 	.separate {
 		clear: both;

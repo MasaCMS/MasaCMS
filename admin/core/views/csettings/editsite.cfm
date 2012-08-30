@@ -674,7 +674,7 @@ to your own modified versions of Mura CMS.
       function openCustomImageSize(sizeid,siteid){
     
           jQuery("##custom-image-dialog").remove();
-          jQuery("body").append('<div id="custom-image-dialog" title="Loading..." style="display:none"><div id="newContentMenu"><img src="assets/images/progress_bar.gif"></div></div>');
+          jQuery("body").append('<div id="custom-image-dialog" rel="tooltip" title="Loading..." style="display:none"><div id="newContentMenu"><img src="assets/images/progress_bar.gif"></div></div>');
 
           var dialogoptions= {
               Save: function() {
@@ -902,7 +902,7 @@ to your own modified versions of Mura CMS.
     <div class="control-group">
           <label class="control-label">
       <cfif len(attributeBean.getHint())>
-      <a href="##" rel="tooltip" title="#HTMLEditFormat(attributeBean.gethint())#">#attributeBean.getLabel()#</a>
+      <a href="##" title="#HTMLEditFormat(attributeBean.gethint())#">#attributeBean.getLabel()# <i class="icon-info-sign"></i></a>
       <cfelse>
       #attributeBean.getLabel()#
       </cfif>

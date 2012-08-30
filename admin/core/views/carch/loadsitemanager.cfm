@@ -158,19 +158,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <!-- Begin Grid Header -->
     <div class="mura-grid stripe<cfif rc.sortBy neq 'orderno'> noDrag</cfif>">
     <dl class="mura-grid-hdr">
-      <dt><span class="add"></span><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.managerTitle"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.title")#</a></dt>
+      <dt><span class="add"></span><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.managerTitle"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.title")# <i class="icon-info-sign"></i></a></dt>
       <cfif application.settingsManager.getSite(rc.siteid).getlocking() neq 'all'>
         <!---
 		<cfif rc.sortBy eq 'orderno'>
           <dd class="order"><a href="##" rel="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.order")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.managerOrder")#</span></a></dd>
         </cfif>
 		--->
-        <dd class="objects"><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.managerObjects"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.objects")#</a></dd>
-        <dd class="display"><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.managerDisplay"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.display")#</a></dd>
-        <dd class="template"><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.managerTemplate"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.template")#</a></dd>
+        <dd class="objects"><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.managerObjects"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.objects")# <i class="icon-info-sign"></i></a></dd>
+        <dd class="display"><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.managerDisplay"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.display")# <i class="icon-info-sign"></i></a></dd>
+        <dd class="template"><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.managerTemplate"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.template")# <i class="icon-info-sign"></i></a></dd>
       </cfif>
-      <dd class="nav"><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.managerNav"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.nav")#</a></dd>
-      <dd class="updated"><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.managerUpdated"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.updated")#</a></dd>
+      <dd class="nav"><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.managerNav"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.nav")# <i class="icon-info-sign"></i></a></dd>
+      <dd class="updated"><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.managerUpdated"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.updated")# <i class="icon-info-sign"></i></a></dd>
       <dd class="admin">&nbsp;</dd>
     </dl>
     <ul id="mura-nodes">
@@ -209,7 +209,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif rc.rstop.Display eq 1 and rc.rstop.approved >
             	#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#
             <cfelseif rc.rstop.Display eq 2 and rc.rstop.approved>
-           	 	<cfif perm neq 'editor'><a href="##" rel="tooltip" title="#HTMLEditFormat('#LSDateFormat(rc.rstop.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(rc.rstop.displaystop,"short")#')#"></cfif><cfif perm neq 'editor'></a></cfif>
+           	 	<cfif perm neq 'editor'><a href="##" rel="tooltip" title="#HTMLEditFormat('#LSDateFormat(rc.rstop.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(rc.rstop.displaystop,"short")#')#"></cfif><cfif perm neq 'editor'> <i class="icon-info-sign"></i></a></cfif>
             <cfelse>
            		 #application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#
          	</cfif>

@@ -84,7 +84,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="control-group">
 	      	<label class="control-label">
 			<cfif len(attributeBean.getHint())>
-			<a href="##" rel="tooltip" title="#HTMLEditFormat(attributeBean.gethint())#">#attributeBean.getLabel()#</a>
+			<a href="##" rel="tooltip" title="#HTMLEditFormat(attributeBean.gethint())#">#attributeBean.getLabel()# <i class="icon-info-sign"></i></a>
 			<cfelse>
 			#attributeBean.getLabel()#
 			</cfif>
@@ -140,7 +140,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="control-group">
 	      	<label class="control-label">
 			<cfif len(attributeBean.getHint())>
-			<a href="##" rel="tooltip" title="#HTMLEditFormat(attributeBean.gethint())#">#attributeBean.getLabel()#</a>
+			<a href="##" rel="tooltip" title="#HTMLEditFormat(attributeBean.gethint())#">#attributeBean.getLabel()# <i class="icon-info-sign"></i></a>
 			<cfelse>
 			#attributeBean.getLabel()#
 			</cfif>

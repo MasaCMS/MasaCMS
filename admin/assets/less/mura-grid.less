@@ -1,3 +1,7 @@
+#carch .tab-content {
+	overflow: visible; 
+}
+
 #sm-modify-view .dropdown-menu {
 	padding: 10px;
 	
@@ -286,24 +290,21 @@
 				margin: 0;
 			}
 		
-			.scheduled a
-			 {
-			 	/* Why is does this throw an error in less? */
-				/*.mura-grid td.scheduled a;*/
+			.scheduled a {
+				.inline-block();
+				.square(24px);
 				position: relative;
 				top: -2px;
-				display: inline-block;
-				height: 24px;
-				width: 24px;
 				background: url(../images/icons/cal.png) no-repeat 50% 50%;
+				padding: 0;
+				opacity: 100; // Inherits 0 from .tooltip
 			}
 			
 			#selected.scheduled a {
 				background: url(../images/icons/cal-on.png) no-repeat 50% 50%;
 			}
 			
-			.scheduled a span,
-			 {
+			.scheduled a span {
 			 	/* Why is does this throw an error in less? */
 				/*.mura-grid td.scheduled a span;*/
 				max-width: 110px;
@@ -1550,12 +1551,6 @@
 		
 		/* @end */
 		
-		dt a.tooltip, th.varWidth a.tooltip, .mura-table-header a.tooltip {
-			display: inline-block;
-			color: #000;
-			padding-right: 10px;
-		}
-		
 		
 		/* @group Quick Edit */
 		
@@ -1567,10 +1562,6 @@
 		
 		#selected .mura-quickEditItem {
 			font-weight: bold;
-		}
-		
-		#selected.template .mura-quickEditItem {
-			
 		}
 		
 		.mura-quickEdit {
@@ -1588,9 +1579,102 @@
 			padding: 8px 10px;
 			box-shadow: 0 2px 4px #333232;
 			white-space: normal;
+			font-size: @qeFontSize;
+			text-align: left;
+			
+			h1 {
+			color: #fff;
 			font-size: 11px;
 			text-align: left;
+			margin: 0 0 .75em 0;
+			font-weight: normal;
+			padding-right: 20px;
+			line-height: 1;
+				}
+		
+			.cancel {
+				position: absolute;
+				top: 4px;
+				right: 4px;
+				width: 14px;
+				height: 14px;
+				display: block;
+				text-indent: -9999px;
+				background: url('../images/btn_close_quick-edit.png') no-repeat right top;
+				cursor: pointer;
+				}
+		
+			img.loader {
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				margin-left: -16px;
+				margin-top: -16px;
+				width: 24px !important;
+				height: 24px !important;
+				}
+			
+			input.datepicker {
+				width: 151px;
+				}
+			
+			select {
+				margin-bottom: .75em;
+				width: 158px;
+				font-size: @qeFontSize;
+				padding: 2px 2px;
+				height: auto;
+				line-height: 1;
+				}
+			
+			.buttons {
+				text-align: center;
+				margin-top: .25em
+				}			
+				
+			.btn {
+				cursor: pointer;
+				margin: 0 auto;
+				padding: 1px 6px;
+				font-size: @qeFontSize;
+				}
+				
+			li {
+				text-align: left;
+				margin: 0;
+				padding: 0;
+				}
+			
+			li label {
+				width: 160px;
+				display: block;
+				color: #fff;
+				font-size: @qeFontSize;
+				clear: right;
+				text-align: left;
+				}
+			
+			li select {
+				width: 50px;
+				float: none;
+				}
+			
+			li input.datepicker {
+				width: 156px;
+				font-size: @qeFontSize;
+				color: #333232;
+				margin: 0 2px .75em 0;
+				padding: 2px;
+				height: 20px;
+				}
+			
+			li img {
+				padding: 0;
+				}
+
+			
 		}
+
 		
 		.template .mura-quickEdit {
 			bottom: 36px;
@@ -1611,87 +1695,7 @@
 		.mura-quickEdit:hover {
 			cursor: default;
 		}
-		
-		.mura-quickEdit h1 {
-			color: #fff;
-			font-size: 11px;
-			text-align: left;
-			margin-bottom: .25em;
-			font-weight: normal;
-			padding-right: 20px;
-		}
-		
-		.mura-quickEdit .cancel {
-			position: absolute;
-			top: 4px;
-			right: 4px;
-			width: 14px;
-			height: 14px;
-			display: block;
-			text-indent: -9999px;
-			background: url('../images/btn_close_quick-edit.png') no-repeat right top;
-			cursor: pointer;
-		}
-		
-		.mura-quickEdit img.loader {
-			position: absolute;
-			left: 50%;
-			top: 50%;
-			margin-left: -16px;
-			margin-top: -16px;
-			width: 24px !important;
-			height: 24px !important;
-		}
-		
-		.mura-quickEdit input.datepicker {
-			width: 151px;
-		}
-		
-		.mura-quickEdit select {
-			margin-bottom: .75em;
-			width: 158px;
-		}
-		
-		.mura-quickEdit .buttons {
-			text-align: center;
-		}
-		
-		.mura-quickEdit input.submit {
-			cursor: pointer;
-			margin: 0 auto;
-		}
-		.mura-quickEdit li {
-			text-align: left;
-			margin: 0;
-			padding: 0;
-		}
-		
-		.mura-quickEdit li label {
-			width: 160px;
-			display: block;
-			color: #fff;
-			font-size: 11px;
-			clear: right;
-			text-align: left;
-		}
-		
-		.mura-quickEdit li select {
-			width: 50px;
-			float: none;
-		}
-		
-		.mura-quickEdit li input.datepicker {
-			width: 151px;
-			font-size: 11px;
-			color: #333232;
-			margin: 0 2px 3px 0;
-			padding: 2px;
-		}
-		
-		.mura-quickEdit li img {
-			padding: 0;
-		}
-		
+				
 		.hasDraft .mura-quickEdit {
 			background: #ccc;
 			text-align: left;
@@ -1714,7 +1718,7 @@
 		}
 		
 		.hasDraft .mura-quickEdit p {
-			font-size: 11px !important;
+			font-size: @qeFontSize !important;
 		}
 		
 		.hasDraft .mura-quickEdit a.mura-quickEditItem {

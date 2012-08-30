@@ -5,7 +5,7 @@
 <div class="control-group">
    <label class="control-label">
 	<cfif rc.ptype eq 'Gallery' or rc.type neq 'File'>
-		<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'tooltip.selectimage'))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectimage')#</a>
+		<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'tooltip.selectimage'))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectimage')# <i class="icon-info-sign"></i></a>
 	<cfelse>
 		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectfile')#
 	</cfif>	

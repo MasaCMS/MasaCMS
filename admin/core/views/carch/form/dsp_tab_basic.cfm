@@ -57,7 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div class="control-group">
 			    <label class="control-label">
 			    	<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.pageTitle"))#">
-			    		#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.title")#
+			    		#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.title")# <i class="icon-info-sign"></i>
 					</a>
 			    </label>
 			    <div class="controls">
@@ -69,7 +69,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		      	<label class="control-label">
 		      		<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.AdditionalTitles"))#">
 		      			#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.AdditionalTitles")#
-		      		</a>
+		      		 <i class="icon-info-sign"></i></a>
 		      		<a href="##" id="editAdditionalTitlesLink" onclick="javascript: toggleDisplay('editAdditionalTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');return false">
 		      			[#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.expand")#]
 		      		</a>
@@ -80,7 +80,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			      		<label class="control-label">
 			      			<a href="##" rel="tooltip" title="#application.rbFactory.getKeyValue(session.rb,"tooltip.navigationTitle")#">
 			      				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.menutitle")#
-			      			</a>
+			      			 <i class="icon-info-sign"></i></a>
 			      		</label>
 						<div class="controls">
 							<input type="text" id="menuTitle" name="menuTitle" value="#HTMLEditFormat(rc.contentBean.getmenuTitle())#"  maxlength="255" class="textLong">
@@ -91,7 +91,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			      		<label class="control-label">
 			      			<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.urlTitle"))#">
 			      				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.urltitle")#
-			      			</a>
+			      			 <i class="icon-info-sign"></i></a>
 			      		</label>
 						<div class="controls">
 							<input type="text" id="urlTitle" name="urlTitle" value="#HTMLEditFormat(rc.contentBean.getURLTitle())#"  maxlength="255" class="textLong">
@@ -102,7 +102,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			      		<label class="control-label">
 			      			<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.htmlTitle"))#">
 			      				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.htmltitle")#
-			      			</a>
+			      			 <i class="icon-info-sign"></i></a>
 			      		</label>
 						<div class="controls">
 							<input type="text" id="htmlTitle" name="htmlTitle" value="#HTMLEditFormat(rc.contentBean.getHTMLTitle())#"  maxlength="255" class="textLong">
@@ -134,7 +134,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	      	<label class="control-label">
 	      		<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.contentSummary"))#">
 	      			#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.summary")#
-	      		</a> 
+	      		 <i class="icon-info-sign"></i></a> 
 	      		<a href="##" id="editSummaryLink" onclick="javascript: toggleDisplay('editSummary','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#'); editSummary();return false">
 	      			[#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.expand")#]
 	      		</a>
@@ -355,7 +355,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	      	<label class="control-label">
 	      		<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.contentReleaseDate"))#">
 	      			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.releasedate')#
-	      		</a>
+	      		 <i class="icon-info-sign"></i></a>
 	      	</label>
 	      	<div class="controls">
 				<input type="text" class="datepicker textAlt" name="releaseDate" value="#LSDateFormat(rc.contentBean.getreleasedate(),session.dateKeyFormat)#"  maxlength="12" >
@@ -373,7 +373,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	      	<label class="control-label">
 	      		<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.displayContent"))#">
 	      			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.display')#
-	      		</a>
+	      		 <i class="icon-info-sign"></i></a>
 	      	</label>
 	      	<div class="controls">
 	      		<select name="display" class="dropdown" onchange="javascript: this.selectedIndex==2?toggleDisplay2('editDates',true):toggleDisplay2('editDates',false);">
@@ -516,7 +516,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		      	<label for="isNav" class="checkbox">
 		      		<input name="isnav" id="isNav" type="CHECKBOX" value="1" <cfif rc.contentBean.getisnav() eq 1 or rc.contentBean.getisNew() eq 1>checked</cfif> class="checkbox"> 
 		      		<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.includeSiteNav"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.isnav')#
-		      		</a>
+		      		 <i class="icon-info-sign"></i></a>
 		      	</label>
 		    </div>
 		</div>
@@ -526,7 +526,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		     	<label for="Target" class="checkbox">
 		     	<input  name="target" id="Target" type="CHECKBOX" value="_blank" <cfif rc.contentBean.gettarget() eq "_blank">checked</cfif> class="checkbox" onclick="javascript: this.checked?toggleDisplay2('editTargetParams',true):toggleDisplay2('editTargetParams',false);"> 
 		     		<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.openNewWindow"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.newwindow')#
-		     		</a>
+		     		 <i class="icon-info-sign"></i></a>
 		     	</label>
 		     </div>  
 			<div class="controls" id="editTargetParams" <cfif  rc.contentBean.gettarget() neq "_blank">style="display: none;"</cfif>>
@@ -541,7 +541,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	      		<input type="checkbox" name="dspNotify"  id="dspnotify" onclick="loadNotify('#rc.siteid#','#rc.contentid#','#rc.parentid#');"  class="checkbox"> 
 	      		<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.notifyReview"))#">
 	      			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notifyforreview')#
-	      		</a>
+	      		 <i class="icon-info-sign"></i></a>
 	      	</label>
 	  	</div>
 	     <div class="controls" id="selectNotify" style="display: none;"></div>

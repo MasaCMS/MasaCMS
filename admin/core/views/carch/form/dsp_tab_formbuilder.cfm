@@ -65,7 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<label class="control-label">
 			<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.contentSummary"))#">
 				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.summary")#
-			</a> 
+			 <i class="icon-info-sign"></i></a> 
 			<a href="##" id="editSummaryLink" onclick="javascript: toggleDisplay('editSummary','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#'); editSummary();return false">
 				[#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.expand")#]
 			</a>
@@ -117,7 +117,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div class="controls">
 		<label for="dspnotify" class="checkbox">
 		<input type="checkbox" name="dspNotify"  id="dspnotify" onclick="loadNotify('#rc.siteid#','#rc.contentid#','#rc.parentid#');"  class="checkbox"> 
-				<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.notifyReview"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notifyforreview')#</a></label>
+				<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.notifyReview"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notifyforreview')# <i class="icon-info-sign"></i></a></label>
 	</div>
 	<div class="controls" id="selectNotify" style="display: none;"></div>
 </div>

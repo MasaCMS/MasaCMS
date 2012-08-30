@@ -234,7 +234,7 @@ var hasBody=#subType.getHasBody()#;
 
 	<cfsavecontent variable="actionButtons">
 	<cfoutput>
-	<div class="clearfix actionButtons form-actions">
+	<div class="actionButtons form-actions">
 		<cfif assignChangesets>
 		<input type="button" class="submit btn" onclick="saveToChangeset('#rc.contentBean.getChangesetID()#','#HTMLEditFormat(rc.siteID)#','');return false;" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset")#" />	
 		</cfif>

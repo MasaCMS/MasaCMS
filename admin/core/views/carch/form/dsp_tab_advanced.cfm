@@ -66,7 +66,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif rc.type neq 'Component' and rc.type neq 'Form'>
 				<div class="control-group">
 			      	<label class="control-label">
-			      		<cfoutput><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.layoutTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.layouttemplate')#</a></cfoutput>
+			      		<cfoutput><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.layoutTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.layouttemplate')# <i class="icon-info-sign"></i></a></cfoutput>
 			  		</label>
 			      <div class="controls">
 			      	<select name="template" class="dropdown">
@@ -86,7 +86,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<div class="control-group">
 			      	<label class="control-label">
-			      		<cfoutput><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.childTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.childtemplate')#</a></cfoutput>
+			      		<cfoutput><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.childTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.childtemplate')# <i class="icon-info-sign"></i></a></cfoutput>
 			      	</label>
 			      	<div class="controls">
 			      	<select name="childTemplate" class="dropdown">
@@ -107,7 +107,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			      	<label for="forceSSL" class="checkbox">
 			      	<input name="forceSSL" id="forceSSL" type="CHECKBOX" value="1" <cfif rc.contentBean.getForceSSL() eq "">checked <cfelseif rc.contentBean.getForceSSL() eq 1>checked</cfif> class="checkbox"> 
 			      	<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.makePageSecure"))#">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessltext'),application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.type#'))#
-			      	</a>
+			      	 <i class="icon-info-sign"></i></a>
 			  		</label>
 			      </div>
 			    </div>
@@ -163,7 +163,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif rc.type eq 'Component' and rc.rsTemplates.recordcount>
 				<div class="control-group">
 			      	<label class="control-label">
-			      		<cfoutput><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.layoutTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.layouttemplate')#></a></cfoutput>
+			      		<cfoutput><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.layoutTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.layouttemplate')#> <i class="icon-info-sign"></i></a></cfoutput>
 			      	</label> 
 			      	<div class="controls">
 			      		<select name="template" class="dropdown">
