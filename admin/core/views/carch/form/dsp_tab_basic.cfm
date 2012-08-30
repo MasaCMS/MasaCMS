@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabList=listAppend(tabList,"tabBasic")>
 <cfset started=false>
 <cfoutput>
-<div id="tabBasic" class="tab-pane">
+<div id="tabBasic" class="tab-pane fade">
 
 	<cfinclude template="dsp_type_selector.cfm">
 	

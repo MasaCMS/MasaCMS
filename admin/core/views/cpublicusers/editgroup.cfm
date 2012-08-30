@@ -94,7 +94,7 @@ select * from rsSubTypes where subType <> 'Default'
   <li><a href="##tabExtendedattributes" onclick="return false;"><span>#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'user.extendedattributes'))#</span></a></li>
 </ul>
 <div class="tab-content">
-  <div id="tabBasic" class="tab-pane">
+  <div id="tabBasic" class="tab-pane fade">
 </cfif>
 
 <cfif rsNonDefault.recordcount>
@@ -153,7 +153,7 @@ select * from rsSubTypes where subType <> 'Default'
 <cfif rsSubTypes.recordcount>
 </div>
 
-<div id="tabExtendedattributes" class="tab-pane">
+<div id="tabExtendedattributes" class="tab-pane fade">
    <span id="extendSetsDefault"></span>	
 </div>
     <img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">

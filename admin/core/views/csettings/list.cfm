@@ -89,7 +89,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<li><a href="#tabPlugins" onclick="return false;"><span>Plugins</span></a></li>
 		</ul>
 	<div class="tab-content">
-		<div id="tabCurrentsites" class="tab-pane"> 
+		<div id="tabCurrentsites" class="tab-pane fade"> 
 			<script type="text/javascript" language="javascript">
 				jQuery(function ($) {
 					$('#checkall').click(function () {
@@ -211,7 +211,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfoutput>
 			</form>
 		</div>
-		<div id="tabPlugins" class="tab-pane"> <br/>
+		<div id="tabPlugins" class="tab-pane fade"> <br/>
 			<form novalidate="novalidate" name="frmNewPlugin" action="index.cfm?muraAction=cSettings.deployPlugin" enctype="multipart/form-data" method="post" onsubmit="return validateForm(this);">
 				Upload New Plugin<br/>
 				<input name="newPlugin" type="file" required="true" message="Please select a plugin file.">

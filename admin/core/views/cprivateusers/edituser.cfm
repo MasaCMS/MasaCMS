@@ -91,7 +91,7 @@ select * from rsSubTypes where subType <> 'Default'
 </cfoutput>	
 <cfsavecontent variable="tabContent">
 <cfoutput>	
-<div id="tabBasic" class="tab-pane">
+<div id="tabBasic" class="tab-pane fade">
 	
 	<cfif rsNonDefault.recordcount>
 		
@@ -171,7 +171,7 @@ select * from rsSubTypes where subType <> 'Default'
 
 </div>
 
-<div id="tabAddressinformation" class="tab-pane">
+<div id="tabAddressinformation" class="tab-pane fade">
 		<cfsilent>
 		<cfparam name="rc.address1" default=""/>
 		<cfparam name="rc.address2" default=""/>
@@ -280,7 +280,7 @@ select * from rsSubTypes where subType <> 'Default'
 	</cfif>
 		
 </div>
-<div id="tabGroupmemberships" class="tab-pane">
+<div id="tabGroupmemberships" class="tab-pane fade">
 
 		
 	<div class="control-group">
@@ -307,7 +307,7 @@ select * from rsSubTypes where subType <> 'Default'
     	</div>
 		</cfif>
 </div>	
-<div id="tabInterests" class="tab-pane">
+<div id="tabInterests" class="tab-pane fade">
 
 			<cfif application.categoryManager.getCategoryCount(rc.siteid)>
 			<!---<ul class="interestGroups">--->
@@ -330,7 +330,7 @@ select * from rsSubTypes where subType <> 'Default'
 </div>
 	
 <cfif rsSubTypes.recordcount>
-<div id="tabExtendedattributes" class="tab-pane">
+<div id="tabExtendedattributes" class="tab-pane fade">
 		<span id="extendSetsDefault"></span>
 		<script type="text/javascript">
 		loadExtendedAttributes('#rc.userbean.getUserID()#','#rc.userbean.getType()#','#rc.userBean.getSubType()#','#userPoolID#','#application.settingsManager.getSite(rc.siteid).getThemeAssetPath()#');
@@ -339,7 +339,7 @@ select * from rsSubTypes where subType <> 'Default'
 <cfhtmlhead text='<script type="text/javascript" src="assets/js/user.js"></script>'>
 </cfif>
 
-<div id="tabAdvanced" class="tab-pane">
+<div id="tabAdvanced" class="tab-pane fade">
 		
 
 		<cfif listFind(session.mura.memberships,'S2')>
@@ -408,7 +408,7 @@ select * from rsSubTypes where subType <> 'Default'
 		<cfset tabID="tab" & application.contentRenderer.createCSSID(rsPluginScripts.name)>
 		<cfset tabList=listAppend(tabList,tabID)>
 		<cfset pluginEvent.setValue("tabList",tabLabelList)>
-			<div id="#tabID#" class="tab-pane">
+			<div id="#tabID#" class="tab-pane fade">
 			<cfoutput>
 			<cfset rsPluginScript=application.pluginManager.getScripts("onUserEdit",rc.siteID,rsPluginScripts.moduleID)>
 			<cfif rsPluginScript.recordcount>

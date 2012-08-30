@@ -26,162 +26,185 @@
 
 // Override bootstrap classes
 
-	.btn i {
-		position: relative;
-//		top: 1px;
+.btn i {
+	position: relative;
 	}
-	
-	.help-block {
-		color: @black;
+
+.help-block {
+	color: @black;
 	}
-	
-	.well {
-			.box-shadow(0 0 0);
-			.well-small;
-			background: @grayLighter;
-			clear: both;
-			border: 1px solid transparent; /* Border 0 leaves artifacting on corners in Safari 6 */
-		}
-		
-	.tabbable {
+
+.well {
+		.box-shadow(0 0 0);
+		.well-small;
+		background: @grayLighter;
 		clear: both;
+		border: 1px solid transparent; /* Border 0 leaves artifacting on corners in Safari 6 */
 	}
 	
-	a[rel="tooltip"] {
-		display: inline-block;
-		color: @grayDark;
-		padding-right: .25em;
-		text-decoration: none;
-		
-		i {
-			color: @gray;
-			}
-		
+.tabbable {
+	/* clear: both; */
+	}
+
+.nav-tabs {
+	border-right: 0;
+	
+	.active a {
+		border: 0;
+		.border-radius(5);
+		background: @grayLighter;
 		}
-			
-	div.tooltip {
-		
-		.tooltip-inner {
-			padding: 10px;
-			text-align: left;
-			line-height: 1.2;
-			}
-		
-		.tooltip-arrow {
-			padding: 0;
-			}
+	}
+
+.tab-content {
+	.makeColumn(10);
+	padding: 10px 3px;
+	margin-left: 0;
+	background: @grayLighter;
+	.border-radius(5);
+	}
+
+.tab-pane > * {
+	margin-left: 20px;
+	margin-right: 20px;
+	}
+
+a[rel="tooltip"] {
+	display: inline-block;
+	color: @grayDark;
+	padding-right: .25em;
+	text-decoration: none;
+	
+	i {
+		color: @gray;
+		font-size: 14px;
 		}
 	
-	.badge {
-		background: darken(@gray,10%);
+	}
+		
+div.tooltip {
+	
+	.tooltip-inner {
+		padding: 10px;
+		text-align: left;
+		line-height: 1.2;
+		}
+	
+	.tooltip-arrow {
+		padding: 0;
+		}
+	}
+
+.badge {
+	background: darken(@gray,10%);
 	}
 
 // Additional Mura styles -- Move to separate file?
 
-	.success {
-		.alert;
-		.alert-success;
+.success {
+	.alert;
+	.alert-success;
 	}
-	
-	.notice {
-		.alert;
+
+.notice {
+	.alert;
 	}
-	
-	.error {
-		.alert;
-		.alert-error;
+
+.error {
+	.alert;
+	.alert-error;
 	}
-	
-	.separate {
-		clear: both;
-		.clearfix;
-		margin-bottom: @baseLineHeight + 4px;
-		padding-bottom: @baseLineHeight;
-		background: url(../images/rule_dotted_big.gif) repeat-x bottom;
-		}
-	
-	.navZoom {
-		.breadcrumb;
-		}
-	
-	a img {
-		border: 0;
-		}
-	
-	img.fmImage {
-		border: 0 solid #fff;
-		margin: 10px;
-		}
-	
-	img.tabPreloader {
-		margin: 0 0 1em auto;
-		}
-	
-	img#assocImage {
-		clear: left !important;
-		float: none;
-		display: block;
-		padding: 1em 0;
-		}
-	
-	#sm-modify-view {
-		margin-bottom: @baseLineHeight;	
-		}
-	
-	/* @group Metadata List */
-	
-	.metadata-horizontal {
-		margin: 1px 0 0 0;
-		padding: .25em .5em;
-		list-style: none;
-		float: right;
-		background: #f9f9f9;
-		.border-radius(14px);
-		*width: 515px;
-		font-size: 11px;
+
+.separate {
+	clear: both;
+	.clearfix;
+	margin-bottom: @baseLineHeight + 4px;
+	padding-bottom: @baseLineHeight;
+	background: url(../images/rule_dotted_big.gif) repeat-x bottom;
 	}
-	
-	.metadata-horizontal li {
-		margin: 0 .5em .25em;
-		padding: 0;
-		color: #333;
-		float: right;
-		/*width: 30%;*/
-		line-height: 20px;
+
+.navZoom {
+	.breadcrumb;
 	}
-	
-	.metadata-horizontal li strong {
-		padding: 0 .25em 0 0;
+
+a img {
+	border: 0;
 	}
-	
-	.metadata-horizontal #ratestars {
-		position: relative;
-		top: 3px;
+
+img.fmImage {
+	border: 0 solid #fff;
+	margin: 10px;
 	}
-	
-	.selectContentType {
-		margin-bottom: 1em;
-		clear: both;
+
+img.tabPreloader {
+	margin: 0 0 1em auto;
 	}
-	
-	#csettings .metadata, #cextend .metadata {
-		float: left;
-		/*max-width: 50%;*/
-		margin: 1em;
-		padding-top: .5em;
-		overflow: hidden;
-		border-radius: 5px;
+
+img#assocImage {
+	clear: left !important;
+	float: none;
+	display: block;
+	padding: 1em 0;
 	}
-	
-	#csettings .metadata li {
-		width: 31%;
-		margin-right: 1%;
-		margin-bottom: .5em;
-		float: left;
-		line-height: 1.2;
+
+#sm-modify-view {
+	margin-bottom: @baseLineHeight;	
 	}
-	
-	/* @end */
+
+/* @group Metadata List */
+
+.metadata-horizontal {
+	margin: 1px 0 0 0;
+	padding: .25em .5em;
+	list-style: none;
+	float: right;
+	background: #f9f9f9;
+	.border-radius(14px);
+	*width: 515px;
+	font-size: 11px;
+	}
+
+.metadata-horizontal li {
+	margin: 0 .5em .25em;
+	padding: 0;
+	color: #333;
+	float: right;
+	/*width: 30%;*/
+	line-height: 20px;
+	}
+
+.metadata-horizontal li strong {
+	padding: 0 .25em 0 0;
+	}
+
+.metadata-horizontal #ratestars {
+	position: relative;
+	top: 3px;
+	}
+
+.selectContentType {
+	margin-bottom: 1em;
+	clear: both;
+	}
+
+#csettings .metadata, #cextend .metadata {
+	float: left;
+	/*max-width: 50%;*/
+	margin: 1em;
+	padding-top: .5em;
+	overflow: hidden;
+	border-radius: 5px;
+	}
+
+#csettings .metadata li {
+	width: 31%;
+	margin-right: 1%;
+	margin-bottom: .5em;
+	float: left;
+	line-height: 1.2;
+	}
+
+/* @end */
 	
 	
 

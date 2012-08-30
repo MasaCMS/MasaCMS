@@ -93,7 +93,7 @@ select * from rsSubTypes where subType <> 'Default'
 </cfoutput>	
 <cfsavecontent variable="tabContent">
 <cfoutput>	
-<div id="tabBasic" class="tab-pane">
+<div id="tabBasic" class="tab-pane fade">
 	
 	<cfif rsNonDefault.recordcount>
 		
@@ -169,11 +169,11 @@ select * from rsSubTypes where subType <> 'Default'
       <div class="controls"><input  name="password2" autocomplete="off" type="password" value="" class="text"  message="#application.rbFactory.getKeyValue(session.rb,'user.passwordconfirm')#"></div>
     </div>
 
-<span id="extendSetsBasic" class="tab-pane"></span>		
+<span id="extendSetsBasic" class="tab-pane fade"></span>		
 
 </div>
 
-<div id="tabAddressinformation" class="tab-pane">
+<div id="tabAddressinformation" class="tab-pane fade">
 		<cfsilent>
 		<cfparam name="rc.address1" default=""/>
 		<cfparam name="rc.address2" default=""/>
@@ -282,7 +282,7 @@ select * from rsSubTypes where subType <> 'Default'
 		</cfif>
 		</dl>
 </div>
-<div id="tabGroupmemberships" class="tab-pane">
+<div id="tabGroupmemberships" class="tab-pane fade">
 		
 		<cfif rc.rsPublicGroups.recordcount>
 		 <div class="control-group">
@@ -300,7 +300,7 @@ select * from rsSubTypes where subType <> 'Default'
 		</cfif>
 		
 </div>	
-<div id="tabInterests" class="tab-pane">
+<div id="tabInterests" class="tab-pane fade">
 		
 			<cfif application.categoryManager.getCategoryCount(rc.siteid)>
 			<!---<ul class="interestGroups">--->
@@ -322,7 +322,7 @@ select * from rsSubTypes where subType <> 'Default'
 	</dl>
 </div>
 <cfif rsSubTypes.recordcount>
-<div id="tabExtendedattributes" class="tab-pane">
+<div id="tabExtendedattributes" class="tab-pane fade">
 	<span id="extendSetsDefault"></span>
 	<script type="text/javascript">
 	loadExtendedAttributes('#rc.userbean.getUserID()#','#rc.userbean.getType()#','#rc.userBean.getSubType()#','#userPoolID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteid).getThemeAssetPath()#');
@@ -330,7 +330,7 @@ select * from rsSubTypes where subType <> 'Default'
 </div>
 <cfhtmlhead text='<script type="text/javascript" src="assets/js/user.js"></script>'>
 </cfif>
-	<div id="tabAdvanced" class="tab-pane">
+	<div id="tabAdvanced" class="tab-pane fade">
 		<div class="control-group">
       	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.emailbroadcaster')#</label>
       <div class="controls"><label class="radio"><input name="subscribe" type="radio" class="radio" value="1"<cfif rc.userBean.getsubscribe() eq 1>Checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'user.yes')#</label><label class="radio"><input name="subscribe" type="radio" class="radio" value="0"<cfif rc.userBean.getsubscribe() eq 0>Checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'user.no')#</label>
@@ -380,7 +380,7 @@ select * from rsSubTypes where subType <> 'Default'
 		<cfset tabID="tab" & application.contentRenderer.createCSSID(rsPluginScripts.name)>
 		<cfset tabList=listAppend(tabList,tabID)>
 		<cfset pluginEvent.setValue("tabList",tabLabelList)>
-			<div id="#tabID#" class="tab-pane">
+			<div id="#tabID#" class="tab-pane fade">
 			<cfoutput>
 			<cfset rsPluginScript=application.pluginManager.getScripts("onUserEdit",rc.siteID,rsPluginScripts.moduleID)>
 			<cfif rsPluginScript.recordcount>

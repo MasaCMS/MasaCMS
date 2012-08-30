@@ -414,19 +414,19 @@ copyAll = 'false';
 		--->
 	</ul>
 	<div class="tab-content"> 
-		<div id="tabArchitectural" class="tab-pane">
+		<div id="tabArchitectural" class="tab-pane fade">
 			<div id="gridContainer">
 				<img class="loadProgress" src="assets/images/progress_bar.gif">
 			</div>
 		</div>
 		
-		<div id="tabFlat" class="tab-pane">
+		<div id="tabFlat" class="tab-pane fade">
 			<div id="flatViewContainer">
 				<img class="loadProgress" src="assets/images/progress_bar.gif">
 			</div>
 		</div>
 		<!---
-		<div id="tabRepositories" class="tab-pane">
+		<div id="tabRepositories" class="tab-pane fade">
 			<div id="repoContainer">
 				<img class="loadProgress" src="assets/images/progress_bar.gif">
 			</div>

@@ -111,7 +111,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
     <!--- Email --->
     <div class="tab-content">
-    <div id="emailContent" class="tab-pane">
+    <div id="emailContent" class="tab-pane fade">
 
       <div class="control-group">
         <label class="control-label">
@@ -221,7 +221,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       </div>
       
       <!--- Recipients --->      
-       <div id="emailGroupsLists" class="tab-pane">
+       <div id="emailGroupsLists" class="tab-pane fade">
       <!--- <h3>#application.rbFactory.getKeyValue(session.rb,'email.sendto')#:</h3> --->
      	
      	 <div class="tabbable">
@@ -233,7 +233,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	    </ul>
      	<div class="tab-content">
       <cfif rc.rsPrivateGroups.recordcount>
-      <div id="privateGroups" class="tab-pane">
+      <div id="privateGroups" class="tab-pane fade">
       
       <div class="control-group">
         <label class="control-label">
@@ -255,7 +255,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       </cfif>
 
       <cfif rc.rsPublicGroups.recordcount>
-      <div id="publicGroups" class="tab-pane">
+      <div id="publicGroups" class="tab-pane fade">
         
         <div class="control-group">
         <label class="control-label">
@@ -276,7 +276,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
        </div>
       </cfif>
       <cfif application.categoryManager.getInterestGroupCount(rc.siteID)>
-      <div id="interestGroups" class="tab-pane">
+      <div id="interestGroups" class="tab-pane fade">
        
         <div class="control-group">
         <label class="control-label">
@@ -290,7 +290,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       </div>
       </cfif>
       <cfif rc.rsMailingLists.recordcount>
-      <div id="mailingLists" class="tab-pane">
+      <div id="mailingLists" class="tab-pane fade">
 
        <div class="control-group">
         <label class="control-label">

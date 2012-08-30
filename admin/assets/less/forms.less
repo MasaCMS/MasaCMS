@@ -22,6 +22,14 @@ input[type="color"],
   color: @grayDark;
 }
 
+label.radio.inline input[type="radio"] {
+	margin-top: 2px;
+}
+
+.form-actions {
+	clear: both;
+}
+
 .ui-datepicker {
 
 	select {
@@ -85,3 +93,63 @@ label.control-label {
 		height: @baseLineHeight + 6;
 	}
 }
+
+// Content Objects Tab
+#editObjects {
+	
+	> div {
+		.pull-left;
+		margin-right: 10px;
+		min-width: 300px;
+	}
+		
+		.region {
+			.clearfix;
+			}
+		
+		dl {
+			.pull-left;
+			margin: 0 6px 10px 0;
+			padding: 0 !important;
+			
+			dt {
+				margin-bottom: .5em;
+				font-weight: normal;
+				font-style: italic;
+			}
+			
+			dd {
+				margin: 0;
+				
+				}
+		}
+		
+		#availableRegions dl {
+			margin-left: 6px;
+		}
+		
+		.btn-group {
+			.pull-left;
+			height: 100px;
+			padding-top: 50px;
+			}
+
+		.multiSelect {
+			min-height: 100px;
+			height: auto;
+			width: 300px;
+			margin: 0;
+		}
+	
+	.btn {
+		width: 6px;
+		padding: 4px 10px;
+		
+		i {
+			position: relative;
+			top: 2px;
+			font-size: 12px;
+			text-shadow: 1px 0 0 @white;
+		}
+	}
+} // /#editObjects

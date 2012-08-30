@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.usagereport"))/>
 <cfset tabList=listAppend(tabList,"tabUsagereport")>
 <cfoutput>
-<div id="tabUsagereport" class="tab-pane">
+<div id="tabUsagereport" class="tab-pane fade">
 <dl class="oneColumn">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.usagedescription')#:</dt>
  <table class="table table-striped table-condensed">

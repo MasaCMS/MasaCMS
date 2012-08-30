@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.metadata"))/>
 <cfset tabList=listAppend(tabList,"tabMetadata")>
 <cfoutput>
-  <div id="tabMetadata" class="tab-pane">
+  <div id="tabMetadata" class="tab-pane fade">
 
   <div class="control-group">
   <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.description')#</label>

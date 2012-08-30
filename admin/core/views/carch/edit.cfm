@@ -507,7 +507,7 @@ var hasBody=#subType.getHasBody()#;
 			<cfset tabID="tab" & application.contentRenderer.createCSSID(rsPluginScripts.name)>
 			<cfset tabList=listAppend(tabList,tabID)>
 			<cfset pluginEvent.setValue("tabList",tabLabelList)>
-				<div id="#tabID#" class="tab-pane">
+				<div id="#tabID#" class="tab-pane fade">
 				<cfoutput>
 				<cfset rsPluginScript=application.pluginManager.getScripts("onContentEdit",rc.siteID,rsPluginScripts.moduleID)>
 				<cfif rsPluginScript.recordcount>
@@ -525,7 +525,7 @@ var hasBody=#subType.getHasBody()#;
 	<div class="tabbable tabs-left">
 		<ul class="nav nav-tabs initActiveTab">
 			<cfloop from="1" to="#listlen(tabList)#" index="t">
-			<li><a href="###listGetAt(tabList,t)#"><span>#listGetAt(tabLabelList,t)#</span></a></li>
+			<li><a href="###listGetAt(tabList,t)#" data-toggle="tab"><span>#listGetAt(tabLabelList,t)#</span></a></li>
 			</cfloop>
 		</ul>
 		<div class="tab-content">		

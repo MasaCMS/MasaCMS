@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfsilent>
 <cfset rsUsage=application.contentGateway.getUsage(rc.mlid) />
 </cfsilent><cfoutput>
-<div id="tabUsagereport" class="tab-pane">
+<div id="tabUsagereport" class="tab-pane fade">
 <dl class="oneColumn">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.usagetext')#:</dt>
  <table class="table table-striped table-condensed">

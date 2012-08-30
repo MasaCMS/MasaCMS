@@ -101,7 +101,7 @@ to your own modified versions of Mura CMS.
   </ul>
   <div class="tab-content">
   <!--- Basic --->
-  	<div id="tabBasic" class="tab-pane">
+  	<div id="tabBasic" class="tab-pane fade">
     
     <div class="control-group">
       <label class="control-label">Site ID</label>
@@ -267,7 +267,7 @@ to your own modified versions of Mura CMS.
       </div>
       
        <!--- Default Contact Info --->
-      <div id="tabContactinfo" class="tab-pane">
+      <div id="tabContactinfo" class="tab-pane fade">
       
       <div class="control-group">
       <label class="control-label">Contact Name </label>
@@ -321,7 +321,7 @@ to your own modified versions of Mura CMS.
     </div>
       
        <!--- Shared Resources --->
-      <div id="tabSharedresources" class="tab-pane">
+      <div id="tabSharedresources" class="tab-pane fade">
       
       <div class="control-group">
       <label class="control-label">Member Pool</label>
@@ -383,7 +383,7 @@ to your own modified versions of Mura CMS.
       </div>
       
       <!--- Modules --->
-      <div id="tabModules" class="tab-pane">
+      <div id="tabModules" class="tab-pane fade">
       
       <div class="control-group">
       <label class="control-label">Extranet <span>(Password Protection)</span></label>
@@ -482,7 +482,7 @@ to your own modified versions of Mura CMS.
       </div>
       
       <!--- Email --->
-      <div id="tabEmail" class="tab-pane">
+      <div id="tabEmail" class="tab-pane fade">
       
       <div class="control-group">
       <label class="control-label">Default "From" Email Address</label>
@@ -613,7 +613,7 @@ to your own modified versions of Mura CMS.
       
            
       <!--- Galleries --->
-      <div id="tabImages" class="tab-pane">
+      <div id="tabImages" class="tab-pane fade">
       
      <div class="control-group">
       <label class="control-label">Small (Thumbnail) Image</label>
@@ -786,7 +786,7 @@ to your own modified versions of Mura CMS.
       </div>
       
       <!--- Extranet --->
-      <div id="tabExtranet" class="tab-pane">
+      <div id="tabExtranet" class="tab-pane fade">
       
       <div class="control-group">
       <label class="control-label">Allow Public Site Registration</label>
@@ -846,7 +846,7 @@ to your own modified versions of Mura CMS.
      
       </div>
       
-      <div id="tabDisplayregions" class="tab-pane">
+      <div id="tabDisplayregions" class="tab-pane fade">
       
       <div class="control-group">
       <label class="control-label">Number of Display Regions</label>
@@ -884,7 +884,7 @@ to your own modified versions of Mura CMS.
       </div>
 	 <!--- BEING EXTENDED ATTRIBUTES --->
     <cfif arrayLen(extendSets)>
-    <div id="tabExtendedAttributes" class="tab-pane">   
+    <div id="tabExtendedAttributes" class="tab-pane fade">   
       <cfset started=false />
       
       <cfloop from="1" to="#arrayLen(extendSets)#" index="s"> 
@@ -931,7 +931,7 @@ to your own modified versions of Mura CMS.
       </cfif>
       
       <!--- END EXTENDED ATTRIBUTES --->
-      <div id="tabBundles" class="tab-pane">
+      <div id="tabBundles" class="tab-pane fade">
       <div class="control-group">
       <label class="control-label"> 
 	  	Are you restoring a site from a backup bundle?

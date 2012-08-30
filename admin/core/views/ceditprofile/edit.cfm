@@ -75,7 +75,7 @@ select * from rsSubTypes where subType <> 'Default'
 </cfloop>
 </ul>
 <div class="tab-content">
-<div id="tabBasic" class="tab-pane">
+<div id="tabBasic" class="tab-pane fade">
 
 
 		<cfif rsNonDefault.recordcount>
@@ -168,7 +168,7 @@ select * from rsSubTypes where subType <> 'Default'
 	<span id="extendSetsBasic"></span>
 
 </div>
-<div id="tabAddressinformation" class="tab-pane">
+<div id="tabAddressinformation" class="tab-pane fade">
 
 	<div class="control-group">
      <label class="control-label"><ul class="navTask nav nav-pills"><li><a href="index.cfm?muraAction=cPrivateUsers.editAddress&userID=#session.mura.userID#&siteid=#rc.userBean.getsiteid()#&routeID=#rc.routeid#&addressID=&returnURL=#urlencodedformat(cgi.query_string)#">#application.rbFactory.getKeyValue(session.rb,'user.addnewaddress')#</a></li></ul></label>
@@ -226,7 +226,7 @@ select * from rsSubTypes where subType <> 'Default'
 		  </div>
     </div>
 <cfif rsSubTypes.recordcount>
-<div id="tabExtendedattributes" class="tab-pane">
+<div id="tabExtendedattributes" class="tab-pane fade">
 			<span id="extendSetsDefault"></span>
 			<script type="text/javascript">
 			loadExtendedAttributes('#rc.userbean.getUserID()#','#rc.userbean.getType()#','#rc.userBean.getSubType()#','#application.settingsManager.getSite(rc.userBean.getSiteID()).getPrivateUserPoolID()#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.userbean.getSiteID()).getThemeAssetPath()#');

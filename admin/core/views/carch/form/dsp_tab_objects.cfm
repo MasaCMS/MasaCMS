@@ -46,94 +46,99 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfloop from="1" to="#application.settingsManager.getSite('siteID').getColumnCount()#" index="i">
-<cfparam name="request.rsContentObjects#i#.recordcount" default=0>
+  <cfparam name="request.rsContentObjects#i#.recordcount" default=0>
 </cfloop>
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.contentobjects"))/>
 <cfset tabList=listAppend(tabList,"tabContentobjects")>
+
 <cfoutput>
-<div id="tabContentobjects" class="tab-pane">
-<div class="control-group">
-      <label class="control-label"><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.inheritanceRules"))#">
-      	#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritancerules')#
-       <i class="icon-info-sign"></i></a></label>
-      <div class="controls"><label for="ioi" class="radio"><input type="radio" name="inheritObjects" id="ioi" value="Inherit" <cfif rc.contentBean.getinheritObjects() eq 'inherit' or rc.contentBean.getinheritObjects() eq ''>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritcascade')#</label>
-	<label for="ioc" class="radio"><input type="radio" name="inheritObjects" id="ioc" value="Cascade" <cfif rc.contentBean.getinheritObjects() eq 'cascade'>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startnewcascade')#</label> 
-	<label for="ior" class="radio"><input type="radio" name="inheritObjects" id="ior" value="Reject" <cfif rc.contentBean.getinheritObjects() eq 'reject'>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.donotinheritcascade')#</label>
-	</div>
+  <div id="tabContentobjects" class="tab-pane fade">
+    <div class="control-group">
+      <label class="control-label"> <a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.inheritanceRules"))#"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritancerules')# <i class="icon-info-sign"></i> </a> </label>
+      <div class="controls">
+        <label for="ioi" class="radio inline">
+          <input type="radio" name="inheritObjects" id="ioi" value="Inherit" <cfif rc.contentBean.getinheritObjects() eq 'inherit' or rc.contentBean.getinheritObjects() eq ''>checked</cfif>>
+#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritcascade')#           </label>
+        <label for="ioc" class="radio inline">
+          <input type="radio" name="inheritObjects" id="ioc" value="Cascade" <cfif rc.contentBean.getinheritObjects() eq 'cascade'>checked</cfif>>
+#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startnewcascade')#           </label>
+        <label for="ior" class="radio inline">
+          <input type="radio" name="inheritObjects" id="ior" value="Reject" <cfif rc.contentBean.getinheritObjects() eq 'reject'>checked</cfif>>
+#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.donotinheritcascade')#           </label>
+      </div>
     </div>
-	<!---
-	<cfset hideObjects = not request.rsContentObjects1.recordcount and not request.rsContentObjects2.recordcount and not request.rsContentObjects3.recordcount />
-	--->
-<div class="control-group">
+    
+    <div class="control-group">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentobjects')#</label>
       <div class="controls" id="editObjects">
-<!---<a href="javascript:;" onClick="javascript: toggleDisplay('editObjects'); return false">Display Objects</a>
-<div id="editObjects" style="display: none;">--->
-	<table class="displayObjects">		
-			 <tr>
-				<td  class="nested" rowspan="#application.settingsManager.getSite(rc.siteid).getcolumnCount()#" valign="top">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecontentobjects')#<br />
-				<select name="classSelector" onchange="loadObjectClass('#rc.siteid#',this.value,'','#rc.contentBean.getContentID()#','#rc.parentID#','#rc.contentBean.getContentHistID()#',0);" class="dropdown" id="dragme">
-				<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectobjecttype')#</option>
-				<option value="system">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.system')#</option>
-				<cfif application.settingsManager.getSite(rc.siteid).getemailbroadcaster()>
-				<option value="mailingList">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mailinglists')#</option>
-				</cfif>
-				<cfif application.settingsManager.getSite(rc.siteid).getAdManager()>
-				<option value="adzone">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.adregions')#</option>
-				</cfif>
-				<!--- <option value="category">Categories</option> --->
-				<option value="portal">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.portals')#</option>
-				<option value="calendar">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.calendars')#</option>
-				<option value="gallery">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.galleries')#</option>
-				<option value="component">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.components')#</option>
-				<cfif application.settingsManager.getSite(rc.siteid).getDataCollection()>
-				<option value="form">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forms')#</option>
-				</cfif>
-				<cfif application.settingsManager.getSite(rc.siteid).getHasfeedManager()>
-				<option value="localFeed">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindexes')#</option>
-				<option value="slideshow">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindexslideshows')#</option>
-				<option value="remoteFeed">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotefeeds')#</option>
-				</cfif>
-				<cfif fileExists("#application.configBean.getWebRoot()##application.configBean.getFileDelim()##rc.siteid##application.configBean.getFileDelim()#includes#application.configBean.getFileDelim()#display_objects#application.configBean.getFileDelim()#custom#application.configBean.getFileDelim()#admin#application.configBean.getFileDelim()#dsp_objectClassLabel.cfm")> 
-				<cfinclude template="/#application.configBean.getWebRootMap()#/#rc.siteID#/includes/display_objects/custom/admin/dsp_objectClassLabel.cfm" >
-				</cfif>
-				<option value="plugins">#application.rbFactory.getKeyValue(session.rb,'layout.plugins')#</option>
-				</select>
-				<div id="classList"></div>
-				</td>
-				<td class="nested">
-				<cfloop from="1" to="#application.settingsManager.getSite(rc.siteid).getcolumnCount()#" index="r"> 
-				
-							<table>
-							<tr>
-							<td class="nested">
-							<input type="button" value=">>" onclick="addDisplayObject('availableObjects',#r#,true);" class="objectNav btn"><br />
-							<input type="button" value="<<" onclick="deleteDisplayObject(#r#);" class="objectNav btn">
-							</td>
-							<td class="nested">
-							<cfif listlen(application.settingsManager.getSite(rc.siteid).getcolumnNames(),"^") gte r><strong>#listgetat(application.settingsManager.getSite(rc.siteid).getcolumnNames(),r,"^")#</strong> <cfelse><strong>Region #r#</strong></cfif> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentobjects')#<br />
-							<cfset variables["objectlist#r#"]="">
-							<select name="selectedObjects#r#" id="selectedObjects#r#" class="multiSelect displayRegions" multiple size="4" data-regionid="#r#">
-							<cfloop query="request.rsContentObjects#r#">
-							<option  value="#request["rsContentObjects#r#"].object#~#HTMLEditFormat(request["rsContentObjects#r#"].name)#~#request["rsContentObjects#r#"].objectid#~#HTMLEditFormat(request["rsContentObjects#r#"].params)#">#request["rsContentObjects#r#"].name#</option>
-							<cfset variables["objectlist#r#"]=listappend(variables["objectlist#r#"],"#request["rsContentObjects#r#"].object#~#HTMLEditFormat(request["rsContentObjects#r#"].name)#~#request["rsContentObjects#r#"].objectid#~#HTMLEditFormat(request["rsContentObjects#r#"].params)#","^")>
-							</cfloop>
-							</select>
-							<input type="hidden" name="objectList#r#" id="objectList#r#" value="#variables["objectlist#r#"]#">
-				
-							</td>
-							<td  class="nested"><input type="button" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.up')#" onclick="moveDisplayObjectUp(#r#);" class="objectNav btn"><br />
-							<input type="button" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.down')#" onclick="moveDisplayObjectDown(#r#);" class="objectNav btn">
-							
-							</td>
-							</tr>
-							</table>
-					</cfloop>
-				</td>
-			  </tr>	
-	</table>
-</div>
-</div>  
-</dl></div>				
-<cfinclude template="../dsp_configuratorJS.cfm">
+        <div id="availableObjects">
+          <dl>
+            <dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecontentobjects')#</dt>
+            <dd>
+              <select name="classSelector" onchange="loadObjectClass('#rc.siteid#',this.value,'','#rc.contentBean.getContentID()#','#rc.parentID#','#rc.contentBean.getContentHistID()#',0);" class="dropdown" id="dragme">
+                <option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectobjecttype')#</option>
+                <option value="system">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.system')#</option>
+                <cfif application.settingsManager.getSite(rc.siteid).getemailbroadcaster()>
+                  <option value="mailingList">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mailinglists')#</option>
+                </cfif>
+                <cfif application.settingsManager.getSite(rc.siteid).getAdManager()>
+                  <option value="adzone">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.adregions')#</option>
+                </cfif>
+                <!--- <option value="category">Categories</option> --->
+                <option value="portal">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.portals')#</option>
+                <option value="calendar">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.calendars')#</option>
+                <option value="gallery">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.galleries')#</option>
+                <option value="component">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.components')#</option>
+                <cfif application.settingsManager.getSite(rc.siteid).getDataCollection()>
+                  <option value="form">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forms')#</option>
+                </cfif>
+                <cfif application.settingsManager.getSite(rc.siteid).getHasfeedManager()>
+                  <option value="localFeed">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindexes')#</option>
+                  <option value="slideshow">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.localindexslideshows')#</option>
+                  <option value="remoteFeed">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotefeeds')#</option>
+                </cfif>
+                <cfif fileExists("#application.configBean.getWebRoot()##application.configBean.getFileDelim()##rc.siteid##application.configBean.getFileDelim()#includes#application.configBean.getFileDelim()#display_objects#application.configBean.getFileDelim()#custom#application.configBean.getFileDelim()#admin#application.configBean.getFileDelim()#dsp_objectClassLabel.cfm")>
+                  <cfinclude template="/#application.configBean.getWebRootMap()#/#rc.siteID#/includes/display_objects/custom/admin/dsp_objectClassLabel.cfm" >
+                </cfif>
+                <option value="plugins">#application.rbFactory.getKeyValue(session.rb,'layout.plugins')#</option>
+              </select>
+            </dd>
+          </dl>
+          <div id="classList"></div>
+        </div>
+        <div id="availableRegions">
+          <cfloop from="1" to="#application.settingsManager.getSite(rc.siteid).getcolumnCount()#" index="r">
+            <div class="region">
+              <div class="btn-group btn-group-vertical"> <a class="objectNav btn" onclick="addDisplayObject('availableObjects',#r#,true);"> <i class="icon-caret-right"></i></a> <a class="objectNav btn" onclick="deleteDisplayObject(#r#);"> <i class="icon-caret-left"></i></a> </div>
+              <cfif listlen(application.settingsManager.getSite(rc.siteid).getcolumnNames(),"^") gte r>
+                <dl>
+                <dt>#listgetat(application.settingsManager.getSite(rc.siteid).getcolumnNames(),r,"^")#
+                  <cfelse>
+                <dt>
+                Region #r#
+              </cfif>
+#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentobjects')#
+              </dt>
+              <cfset variables["objectlist#r#"]="">
+              <dd>
+                <select name="selectedObjects#r#" id="selectedObjects#r#" class="multiSelect displayRegions" multiple="multiple" size="4" data-regionid="#r#">
+                  <cfloop query="request.rsContentObjects#r#">
+                    <option  value="#request["rsContentObjects#r#"].object#~#HTMLEditFormat(request["rsContentObjects#r#"].name)#~#request["rsContentObjects#r#"].objectid#~#HTMLEditFormat(request["rsContentObjects#r#"].params)#">
+                    #request["rsContentObjects#r#"].name#
+						      
+                    </option>
+                    <cfset variables["objectlist#r#"]=listappend(variables["objectlist#r#"],"#request["rsContentObjects#r#"].object#~#HTMLEditFormat(request["rsContentObjects#r#"].name)#~#request["rsContentObjects#r#"].objectid#~#HTMLEditFormat(request["rsContentObjects#r#"].params)#","^")>
+                  </cfloop>
+                </select>
+                <input type="hidden" name="objectList#r#" id="objectList#r#" value="#variables["objectlist#r#"]#">
+              </dd>
+              </dl>
+              <div class="btn-group btn-group-vertical"> <a class="objectNav btn" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.up')#" onclick="moveDisplayObjectUp(#r#);"> <i class="icon-caret-up"></i></a> <a class="objectNav btn" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.down')#" onclick="moveDisplayObjectDown(#r#);"> <i class="icon-caret-down"></i></a> </div>
+            </div> <!--- /.region --->
+          </cfloop>
+        </div> <!--- /#availableRegions --->
+      </div> <!--- /#editObjects--->
+    </div> <!--- /.control-group --->
+  </div> <!--- /.tab-pane --->
+  <cfinclude template="../dsp_configuratorJS.cfm">
 </cfoutput>

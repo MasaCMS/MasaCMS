@@ -71,7 +71,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 		</ul>
 		<div class="tab-content">
-		<div id="tabBasic" class="tab-pane">
+		<div id="tabBasic" class="tab-pane fade">
 		<div class="control-group">
 			<label class="control-label">
 				#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.name')#
@@ -116,7 +116,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfloop>
 	</ul>
 	<div class="tab-content">
-	<div id="tabBasic" class="tab-pane">
+	<div id="tabBasic" class="tab-pane fade">
 </cfif>
 
 <div class="control-group">

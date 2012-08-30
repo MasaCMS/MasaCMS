@@ -83,7 +83,7 @@ select * from rsSubTypes where subType <> 'Default'
 <li><a href="##tabExtendedattributes" onclick="return false;"><span>#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'user.extendedattributes'))#</span></a></li>
 </ul>
 <div class="tab-content">
-<div id="tabBasic" class="tab-pane">
+<div id="tabBasic" class="tab-pane fade">
 </cfif>
 
 

@@ -205,7 +205,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfsavecontent variable="tabContent">
 <cfoutput>
 <cfif not isObjectInstance>
-<div id="tabChoosecontent" class="tab-pane">
+<div id="tabChoosecontent" class="tab-pane fade">
 
 <div class="control-group">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.choosecontentfromsection')#: <span id="selectFilter"><a href="javascript:;" onclick="javascript: loadSiteFilters('#rc.siteid#','',1);return false;">[#application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#]</a></span>
@@ -321,7 +321,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </div>
 
-<div id="tabAdvancedfilters" class="tab-pane">
+<div id="tabAdvancedfilters" class="tab-pane fade">
 
 <div class="control-group">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.chooseadvancedfilters')#
@@ -381,7 +381,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 </cfif>
 
-<div id="tabDisplay" class="tab-pane">
+<div id="tabDisplay" class="tab-pane fade">
 
 <div id="configuratorTab">
 <cfif isObjectInstance><h4>#HTMLEditFormat(rc.feedBean.getName())#</h4></cfif>
@@ -516,7 +516,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 </div>
 <cfif not isObjectInstance>
-<div id="tabRss" class="tab-pane">
+<div id="tabRss" class="tab-pane fade">
 	<cfif rc.feedID neq ''>
 		<div class="control-group">
 	     <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.url')#
@@ -750,7 +750,7 @@ jQuery(document).ready(function(){
 </cfoutput>
 <cfsavecontent variable='tabContent'>
 <cfoutput>
-<div id="tabBasic" class="tab-pane">
+<div id="tabBasic" class="tab-pane fade">
 	<div class="control-group">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</label>
       <div class="controls"><select name="maxItems" class="dropdown">
@@ -828,7 +828,7 @@ jQuery(document).ready(function(){
 	</dl>
 </div>
 
-<div id="tabCategorization" class="tab-pane">
+<div id="tabCategorization" class="tab-pane fade">
 	<div class="control-group">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.categoryassignments')#</label>
       <div class="controls">
@@ -840,7 +840,7 @@ jQuery(document).ready(function(){
 <cfif listFind(session.mura.memberships,'S2')>
 	<cfset tabLabellist=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,'collections.importlocation')) >
 	<cfset tabList=listAppend(tabList,"tabImportlocation")>
-	<div id="tabImportlocation" class="tab-pane">
+	<div id="tabImportlocation" class="tab-pane fade">
 	<div class="control-group">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.importlocation')#:<span id="move" class="text"> <cfif rc.feedbean.getparentid() neq ''>"#application.contentManager.getActiveContent(rc.feedBean.getParentID(),rc.feedBean.getSiteID()).getMenuTitle()#"<cfelse>"#application.rbFactory.getKeyValue(session.rb,'collections.noneselected')#"</cfif>
 				&nbsp;&nbsp;<a href="javascript:##;" onclick="javascript: loadSiteParents('#rc.siteid#','#rc.feedbean.getparentid()#','',1);return false;">[#application.rbFactory.getKeyValue(session.rb,'collections.selectnewlocation')#]</a>

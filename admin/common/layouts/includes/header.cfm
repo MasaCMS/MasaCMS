@@ -77,8 +77,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                   <cfset baseURL="index.cfm?muraAction=cDashboard.main">
               <cfelse>
                    <cfset baseURL="index.cfm?muraAction=cArch.list&amp;moduleID=00000000000000000000000000000000000&amp;topID=00000000000000000000000000000000001">
-               </cfif>           	 	          
-	          </div>
+               </cfif> 
 	         
 	          <div class="nav-collapse">
 	            <ul class="nav pull-right">
@@ -142,7 +141,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	                </cfif>
 	              </ul>
 	          </div><!--/.nav-collapse -->
-	     
+	          </div><!--/.container -->
 	    </div>
 	    </cfif>
 	   </div>
