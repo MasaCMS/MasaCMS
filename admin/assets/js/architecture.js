@@ -461,7 +461,7 @@ function loadSiteParents(siteid,contentid,parentid,keywords,isNew)	{
 	var url = 'index.cfm';
 	var pars = 'muraAction=cArch.siteParents&compactDisplay=true&siteid=' + siteid +'&contentid=' + contentid + '&parentid=' +parentid+ '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
 	var d = jQuery('#move');
-	d.html('<img src="assets/images/progress_bar.gif"><input type=hidden name=parentid value=' + parentid + ' >');
+	d.html('<div><img src="assets/images/progress_bar.gif"><input type=hidden name=parentid value=' + parentid + ' ></div>');
 	jQuery.get(url + "?" + pars, 
 			function(data) {
 			jQuery('#move').html(data);
@@ -487,7 +487,7 @@ function loadObjectClass(siteid,classid,subclassid,contentid,parentid,contenthis
 	var pars = 'muraAction=cArch.loadclass&compactDisplay=true&siteid=' + siteid +'&classid=' + classid  +'&subclassid=' + subclassid + '&contentid=' + contentid + '&parentid=' + parentid  +'&cacheid=' + Math.random();
 	var d=jQuery('#classList');
 
-	d.html('<img class="loadProgress" src="assets/images/progress_bar.gif">');
+	d.html('<div><img class="loadProgress" src="assets/images/progress_bar.gif"></div>');
 	jQuery.get(url + "?" + pars, 
 		function(data) {
 			jQuery('#classList').html(data);
@@ -518,7 +518,7 @@ function loadNotify(siteid,contentid,parentid)	{
 		var d = jQuery('#selectNotify');
 		if(d.html()==''){
 			d.show();
-			d.html('<img class="loadProgress" src="assets/images/progress_bar.gif">');
+			d.html('<div><img class="loadProgress" src="assets/images/progress_bar.gif"></div>');
 			jQuery.get(url + "?" + pars, 
 					function(data) {
 					jQuery('#selectNotify').html(data);
@@ -538,7 +538,7 @@ function loadExpiresNotify(siteid,contenthistid,parentid)	{
 		var d = jQuery('#selectExpiresNotify');
 		if(d.html()==''){
 			d.show();
-			d.html('<img class="loadProgress" src="assets/images/progress_bar.gif">');
+			d.html('<div><img class="loadProgress" src="assets/images/progress_bar.gif"></div>');
 			jQuery.get(url + "?" + pars, 
 					function(data) {
 					jQuery('#selectExpiresNotify').html(data);
@@ -560,7 +560,7 @@ function loadRelatedContent(siteid,keywords,isNew)	{
 		location.href="?" + pars;
 		}*/
 		var d = jQuery('#selectRelatedContent');
-			d.html('<img class="loadProgress" src="assets/images/progress_bar.gif">');
+			d.html('<div><img class="loadProgress" src="assets/images/progress_bar.gif"></div>');
 			jQuery.get(url + "?" + pars, 
 					function(data) {
 					jQuery('#selectRelatedContent').html(data);
