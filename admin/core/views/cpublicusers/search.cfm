@@ -52,7 +52,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </ul>
 <form class="form-inline" novalidate="novalidate" action="index.cfm" method="get" name="form1" id="siteSearch">
 	<h3>#application.rbFactory.getKeyValue(session.rb,'user.searchformembers')#</h3>
-<input id="search" name="search" value="#rc.search#" type="text" class="text">
+
+	<div class="input-append">
+	    <input id="search" name="search" style="width: 208px;" class="text" type="text" />
+	    <button type="button" class="submit btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'user.search')#" /><i class="icon-search"></i></button>
+	</div>
+
+<!--- <input id="search" name="search" value="#rc.search#" type="text" class="text"> --->
 <input type="hidden" name="muraAction" value="cPublicUsers.Search" />
 <input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
  <input type="button" class="submit btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'user.search')#" /></form>

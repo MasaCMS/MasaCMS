@@ -48,8 +48,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <form class="form-inline" novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
    <h3>Keyword Search</h3>
-    <input name="keywords" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" align="absmiddle" />
+
+   <div class="input-append">
+	   <input id="search" name="search" type="text" class="text" value="#HTMLEditFormat(rc.keywords)#">
+	    <button type="button" class="submit btn" onclick="submitForm(document.forms.siteSearch);" /><i class="icon-search"></i></button>
+	</div>
+    
+    <!---
+<input name="keywords" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" align="absmiddle" />
     <input type="button" class="submit btn" onclick="submitForm(document.forms.siteSearch);" value="Search" />
+--->
     <input type="hidden" name="muraAction" value="cTrash.list">
     <input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
  </form>

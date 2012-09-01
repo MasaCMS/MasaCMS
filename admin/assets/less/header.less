@@ -19,7 +19,7 @@ header {
 	}
 	
 	.navbar .nav a {
-		font-size: 11px;
+		font-size: @baseFontSize - 1;
 	}
 	
 	.navbar .nav > li > a {
@@ -171,6 +171,7 @@ header {
 		.dropdown .dropdown-menu a {
 			font-size: 12px;
 			color: @white;
+			padding-left: 10px;
 			}
 			
 		.dropdown-menu li > a:hover {
@@ -178,11 +179,15 @@ header {
 		}
 		
 		.dropdown-menu .active > a {
-			background-color: rgba(0,0,0,.2);
+			background-color: @grayDarker !important;
 		}
 		
-		.dropdown-menu li > a:hover i, .dropdown-menu .active > a i {
-			color: @grayDark !important;
+		.dropdown-menu li > a:hover i {
+			color: @white;
+		}
+		
+		.dropdown-menu .active > a i {
+			color: @gray;
 		}
 		
 		.dropdown .dropdown-menu i {

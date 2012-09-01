@@ -3,14 +3,28 @@ table {
 	.border-radius(0) !important;
 }
 
+table.cke_editor {
+	border: 0;
+	
+	th, td {
+		border: 0;
+	}
+}
+
 table td, table th {
-	font-size: @baseFontSize - 1;
+	font-size: @baseFontSize;
 	.border-radius(0) !important;
 }
 .table th {
 	#gradient .vertical(#fffefe,#f5f5f5);
 	color: #444;
 	text-transform: none;
+	font-weight: bold;
+	
+	a {
+		color: #444;
+		font-weight: bold;
+	}
 }
 .table td {
 	vertical-align: middle;

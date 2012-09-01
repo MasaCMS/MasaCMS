@@ -45,8 +45,12 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<form class="form-inline" novalidate="novalidate" id="siteSearch" name="siteSearch" method="get"><input name="keywords" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" />  
-	<input type="button" class="submit btn" onclick="submitForm(document.forms.siteSearch);" value="#application.rbFactory.getKeyValue(session.rb,'advertising.search')#" />
+<form class="form-inline" novalidate="novalidate" id="siteSearch" name="siteSearch" method="get"> 
+	<!--- <input name="keywords" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" /> <input type="button" class="submit btn" onclick="submitForm(document.forms.siteSearch);" value="#application.rbFactory.getKeyValue(session.rb,'advertising.search')#" /> --->
+	<div class="input-append">
+	    <input name="keywords" value="#HTMLEditFormat(session.keywords)#" type="text" class="text" />
+	    <button type="button" class="submit btn" onclick="submitForm(document.forms.siteSearch);" /><i class="icon-search"></i></button>
+	</div>	
 	<input type="hidden" name="muraAction" value="cAdvertising.listCampaigns">
 	<input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
 </form>

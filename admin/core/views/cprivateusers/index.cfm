@@ -107,7 +107,17 @@ function goAndClose(userid)	{
 <body id="popUp"><cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,'user.selectuser')#</h2>
 <form novalidate="novalidate" name="form1" method="post" action="" id="siteSearch" onSubmit="return validate(this);"><!---<label>#application.rbFactory.getKeyValue(session.rb,'user.lastnameorcompany')#</label>--->
-<input name="search"style="width: 208px;" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.lastnameorcompanyrequired')#"> <input type="button" class="submit" onClick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'user.search')#" />
+
+	<div class="input-append">
+	    <input style="width: 208px;" name="search" required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.lastnameorcompanyrequired')#" type="text" />
+	    <button type="button" class="submit btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'user.search')#" /><i class="icon-search"></i></button>
+	</div>
+
+<!---
+<input name="search"class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.lastnameorcompanyrequired')#">
+<input type="button" class="submit" onClick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'user.search')#" />
+--->
+
 </form></cfoutput>
 <cfif rslist.recordcount>
 <table class="mura-table-grid"><cfoutput>

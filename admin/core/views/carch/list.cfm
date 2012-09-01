@@ -84,8 +84,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfelse>
 <h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.componentmanager')#</h2>	
 </cfif>
-
-<div class="btn-group">
+<cfinclude template="dsp_secondary_menu.cfm">
+<div class="btn-group" id="filter-view">
   <a class="btn dropdown-toggle" data-toggle="dropdown" href="">
     <i class="icon-eye-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.filterview')#
     <span class="caret"></span>
@@ -105,8 +105,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     </form>
   </div>
 </div>
+<div class="notice" id="sitemgr-reorder">
+	When you're done re-ordering, click "Update."
+		<input type="button" class="submit btn pulse" id="submitSort" onclick="submitForm(document.forms.viewUpdate);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.update")#" />
+</div>
 
-<cfinclude template="dsp_secondary_menu.cfm">
   
   </cfoutput>
   <table class="table table-striped table-condensed">
@@ -393,17 +396,17 @@ copyAll = 'false';
  
 <h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sitemanager")#</h2>
 <form class="form-inline" novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
-    <!---<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.contentsearch")#</h3>--->
-    <input name="keywords" value="#HTMLEditFormat(session.keywords)#" type="text" class="text" align="absmiddle" />
-    <input type="button" class="submit btn" onclick="submitForm(document.forms.siteSearch);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.search")#" />
+	
+    <div class="input-append">
+	    <input name="keywords" value="#HTMLEditFormat(session.keywords)#" type="text" class="text" />
+	    <button type="button" class="submit btn" onclick="submitForm(document.forms.siteSearch);" /><i class="icon-search"></i><!--- #application.rbFactory.getKeyValue(session.rb,"sitemanager.search")# ---></button>
+    </div>
+    
     <input type="hidden" name="muraAction" value="cArch.list">
 	<input type="hidden" name="activetab" value="1">
     <input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
     <input type="hidden" name="moduleid" value="#rc.moduleid#">
 </form>
-
-
-<!---<img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">--->
 
 <div class="tabbable">
 	<ul id="viewTabs" class="nav nav-tabs initActiveTab">

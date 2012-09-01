@@ -48,10 +48,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 
 <form class="form-inline" novalidate="novalidate" action="index.cfm?muraAction=cPublicUsers.search&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="form1" id="siteSearch">
-	<!---<h3>#application.rbFactory.getKeyValue(session.rb,'user.searchformembers')#</h3>--->
+
+	<div class="input-append">
+	    <input id="search" name="search" type="text" class="text" />
+	    <button type="button" class="submit btn" onclick="submitForm(document.forms.form1);" /><i class="icon-search"></i></button>
+	</div>
+	<button type="button" class="submit btn" onclick="window.location='index.cfm?muraAction=cPublicUsers.advancedSearch&siteid=#URLEncodedFormat(rc.siteid)#&newSearch=true'" value="#application.rbFactory.getKeyValue(session.rb,'user.advanced')#" />#application.rbFactory.getKeyValue(session.rb,'user.advanced')#</button>
+
+<!---
 <input id="search" name="search" type="text" class="text"> 
 <input type="button" class="submit btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'user.search')#" />
-<input type="button" class="submit btn" onclick="window.location='index.cfm?muraAction=cPublicUsers.advancedSearch&siteid=#URLEncodedFormat(rc.siteid)#&newSearch=true'" value="#application.rbFactory.getKeyValue(session.rb,'user.advanced')#" /></form><h2>#application.rbFactory.getKeyValue(session.rb,'user.sitemembersgroups')#</h2>
+<input type="button" class="submit btn" onclick="window.location='index.cfm?muraAction=cPublicUsers.advancedSearch&siteid=#URLEncodedFormat(rc.siteid)#&newSearch=true'" value="#application.rbFactory.getKeyValue(session.rb,'user.advanced')#" /><
+--->
+</form>
+
+<h2>#application.rbFactory.getKeyValue(session.rb,'user.sitemembersgroups')#</h2>
 	
 <div id="nav-module-specific" class="btn-group"><a class="btn" href="index.cfm?muraAction=cPublicUsers.edituser&siteid=#URLEncodedFormat(rc.siteid)#&userid=">#application.rbFactory.getKeyValue(session.rb,'user.addmember')#</a>
 <a class="btn" href="index.cfm?muraAction=cPublicUsers.editgroup&siteid=#URLEncodedFormat(rc.siteid)#&userid=">#application.rbFactory.getKeyValue(session.rb,'user.addgroup')#</a>

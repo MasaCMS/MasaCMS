@@ -48,9 +48,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabList=listAppend(tabList,"tabCategorization")>
 <cfoutput>
 <div id="tabCategorization" class="tab-pane fade">
-	<dl class="oneColumn">
-		<dt class="first"><cfoutput><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.availableCategories"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecategories')# <i class="icon-info-sign"></i></a></cfoutput></dt>
-		<dd class="categoryAssignment" id="categoryContainer"><cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" contentBean="#rc.contentBean#" rsCategoryAssign="#rc.rsCategoryAssign#"></dd>
-	</dl>
+	<div class="control-group">
+		<label class="control-label">
+			<cfoutput>
+				<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.availableCategories"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecategories')# <i class="icon-info-sign"></i>
+				</a>
+			</cfoutput>
+		</label>
+		<div class="categoryAssignment controls" id="categoryContainer">
+			<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" contentBean="#rc.contentBean#" rsCategoryAssign="#rc.rsCategoryAssign#">
+		</div>
+	</div>
 </div>
 </cfoutput>

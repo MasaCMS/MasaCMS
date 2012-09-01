@@ -28,6 +28,7 @@
 
 .btn i {
 	position: relative;
+	text-shadow: 0 1px 0 rgba(255,255,255,1);
 	}
 
 .help-block {
@@ -43,31 +44,36 @@
 	}
 	
 .tabbable {
-	/* clear: both; */
+	clear: both;
 	}
 
-.nav-tabs {
-	border-right: 0;
+.tabs-left {
 	
-	.active a {
-		border: 0;
-		.border-radius(5);
+	> .nav-tabs {
+		border-right: 0;
+		.makeColumn(2);
+		margin-left: 0;
+		}
+
+	> .nav-tabs > li > a, > .nav-tabs > li > a:hover {
+		border: 0 !important;
+		.border-radius(4);
 		background: @grayLighter;
 		}
-	}
 
-.tab-content {
-	.makeColumn(10);
-	padding: 10px 3px;
-	margin-left: 0;
-	background: @grayLighter;
-	.border-radius(5);
-	}
+	.tab-content {
+		.makeColumn(10);
+		padding: 18px 0 0;
+		margin-left: 0;
+		background: @grayLighter;
+		.border-radius(4);
+		}
 
-.tab-pane > * {
-	margin-left: 20px;
-	margin-right: 20px;
-	}
+	.tab-pane > * {
+		margin-left: 20px;
+		margin-right: 20px;
+		}
+}
 
 a[rel="tooltip"] {
 	display: inline-block;

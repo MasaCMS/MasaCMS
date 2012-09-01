@@ -28,6 +28,11 @@ label.radio.inline input[type="radio"] {
 
 .form-actions {
 	clear: both;
+	margin: @baseLineHeight 0 0;
+	background: @grayLighter;
+	.border-radius(0 0 5px 5px);
+	border-top-color: @white;
+	border-top-width: 2px;
 }
 
 .ui-datepicker {
@@ -88,9 +93,28 @@ label.control-label {
 		padding: 2px;
 	}
 	
+	i {
+		font-size: 16px;
+		top: 2px;
+		}
+	
 	.btn {
 		line-height: @baseLineHeight - 4;
 		height: @baseLineHeight + 6;
+		padding: 0 8px;
+	}
+}
+
+.controls ul {
+	margin: 0;
+	list-style: none;
+	
+	select {
+		font-size: @baseFontSize - 1;
+		padding: 0;
+		line-height: 1;
+		height: 18px;
+		width: auto;
 	}
 }
 
@@ -122,7 +146,7 @@ label.control-label {
 				margin: 0;
 				
 				}
-		}
+			}
 		
 		#availableRegions dl {
 			margin-left: 6px;
@@ -153,3 +177,5 @@ label.control-label {
 		}
 	}
 } // /#editObjects
+
+// Categorization Tab
