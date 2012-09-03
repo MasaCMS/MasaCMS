@@ -71,7 +71,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <div class="control-group">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentobjects')#</label>
       <div class="controls" id="editObjects">
-        <div id="availableObjects">
+        <div id="availableObjectsContainer">
           <dl>
             <dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecontentobjects')#</dt>
             <dd>
