@@ -582,7 +582,7 @@ function addRelatedContent(contentID,contentType,title)	{
 			admin.className="administration";
 		var deleteLink=document.createElement("A");
 			deleteLink.setAttribute("href","#");
-			deleteLink.onclick=function (){jQuery("#c" + contentID).remove(); stripe('stripe');return false;}
+			deleteLink.onclick=function (){jQuery("#c" + contentID).remove();return false;}
 			deleteLink.appendChild(document.createTextNode('Delete'));
 	
 		var deleteUL=document.createElement("UL");
@@ -605,25 +605,18 @@ function addRelatedContent(contentID,contentType,title)	{
    			tbody.appendChild(row);
 		 if(jQuery('#noFilters').length) jQuery('#noFilters').hide();
 		
-		 stripe('stripe');
 		 dirtyRelatedContent = true;
 		 
   } 
   
- 
-
 function removeRelatedContent(contentID,confirmText){
 	if(confirm(confirmText)){
 		jQuery("#" + contentID).remove(); 
-		stripe('stripe');
 		dirtyRelatedContent = true;
 		}
 	return false;
 	}	
 	
-	
-
-
 function form_is_modified(oForm)
 {
 	for (var i = 0; i < oForm.elements.length; i++)
@@ -926,7 +919,6 @@ function loadSiteManager(siteid,topid,moduleid,sortby,sortdirection,ptype,startr
 						}
 						d.html(r.html);
 						jQuery('#newContentMenu').addClass('hide');
-						stripe('stripe');
 						initQuickEdits();
 						initDraftPrompt();
 						setToolTips("#gridContainer");	
@@ -934,7 +926,7 @@ function loadSiteManager(siteid,topid,moduleid,sortby,sortdirection,ptype,startr
 							jQuery("#sortableKids").sortable(
 								{
 				   					stop: function(event, ui) {
-				   					 	stripe('stripe');setAsSorted();
+				   					 	setAsSorted();
 				   					  	$(ui.item).removeClass('ui-draggable-dragging');
 				   				 	},
 				   					start: function(event, ui) {
@@ -983,7 +975,6 @@ function loadRepoManager(siteid,topid,moduleid,sortby,sortdirection,ptype,startr
 						}
 						d.html(r.html);
 						jQuery('#newContentMenu').addClass('hide');
-						stripe('stripe');
 						initQuickEdits();
 						initDraftPrompt();
 						setToolTips("#repoContainer");	
@@ -991,7 +982,7 @@ function loadRepoManager(siteid,topid,moduleid,sortby,sortdirection,ptype,startr
 							jQuery("#sortableKids").sortable(
 								{
 				   					stop: function(event, ui) {
-				   					 	stripe('stripe');setAsSorted();
+				   					 	setAsSorted();
 				   					  	$(ui.item).removeClass('ui-draggable-dragging');
 				   				 	},
 				   					start: function(event, ui) {
@@ -1076,7 +1067,6 @@ function loadSiteFlat(args)	{
 				//} catch(err){
 					d.html(data);	
 				//}
-				stripe('stripe');
 				setCheckboxTrees();
 				
 				jQuery("#svTagCloud a").click(
@@ -1202,7 +1192,6 @@ function loadSiteSection(node, startrow)	{
 					node.append(r.html);
 					
 					jQuery('#newContentMenu').addClass('hide');
-					stripe('stripe');
 					initDraftPrompt();
 					initQuickEdits();
 					
@@ -1228,7 +1217,6 @@ function loadSiteSection(node, startrow)	{
 			node.find('.section:first').fadeOut("fast",
 				function(){
 					node.find('.section:first').remove();
-				    stripe('stripe');
 					jQuery('#newContentMenu').addClass('hide');
 					sectionLoading = false;
 				}
@@ -1254,7 +1242,6 @@ function refreshSiteSection(node, startrow)	{
 				node.append(r.html);
 				
 				jQuery('#newContentMenu').addClass('hide');
-				stripe('stripe');
 				initDraftPrompt();
 				initQuickEdits();	
 			} 
@@ -1271,6 +1258,7 @@ function refreshSiteSection(node, startrow)	{
 }
 function setAsSorted(){	
 		jQuery('#sorted').val('true');	
+		jQuery('#sitemgr-reorder').fadeIn();
 		jQuery('#submitSort').pulse({
                 opacity: [.5,1]
             }, {
