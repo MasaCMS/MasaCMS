@@ -144,19 +144,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
               </select>
           </cfif>
           <!---<dd <cfif rc.topid neq '00000000000000000000000000000000001' and perm eq 'Editor'>class="button"</cfif>>--->
-          <input type="button" class="submit btn" id="submitSort" onclick="submitForm(document.forms.viewUpdate);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.update")#" />
+          <input type="button" class="submit btn" onclick="submitForm(document.forms.viewUpdate);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.update")#" />
         <input type="hidden" name="startrow" value="#rc.startrow#">
         <input type="hidden" name="orderperm" value="#perm#">
          <input type="hidden" id="sorted" name="sorted" value="false">
         
     </div>
   </div>
-     
-  <div class="notice" id="sitemgr-reorder">
-	When you're done re-ordering, click "Update." <input type="button" class="submit btn pulse" id="submitSort" onclick="submitForm(document.forms.viewUpdate);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.update")#" />
-	</div>
+  
+  <cfif rc.moduleid eq '00000000000000000000000000000000000' and rc.sortBy eq 'orderno'>  
+    <div class="notice" id="sitemgr-reorder" style="display:none">
+  	When you're done re-ordering, click "Update." <input type="button" class="submit btn pulse" id="submitSort" onclick="submitForm(document.forms.viewUpdate);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.update")#" />
+  	</div>
+  </cfif>
       
-    
     <!-- Begin Grid Header -->
     <div class="mura-grid stripe<cfif rc.sortBy neq 'orderno'> noDrag</cfif>">
     <dl class="mura-grid-hdr">
