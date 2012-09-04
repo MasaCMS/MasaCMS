@@ -1269,13 +1269,6 @@ function refreshSiteSection(node, startrow)	{
 function setAsSorted(){	
 		jQuery('#sorted').val('true');	
 		jQuery('#sitemgr-reorder').fadeIn();
-		jQuery('#submitSort').pulse({
-                opacity: [.5,1]
-            }, {
-                times: 999999,
-                duration: 750
-            });
-        jQuery('#submitSort').addClass('pulse');
 }
 
 
