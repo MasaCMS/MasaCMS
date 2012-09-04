@@ -582,7 +582,7 @@ function addRelatedContent(contentID,contentType,title)	{
 			admin.className="administration";
 		var deleteLink=document.createElement("A");
 			deleteLink.setAttribute("href","#");
-			deleteLink.onclick=function (){jQuery("#c" + contentID).remove();return false;}
+			deleteLink.onclick=function (){jQuery("#c" + contentID).remove();stripe('stripe');return false;}
 			deleteLink.appendChild(document.createTextNode('Delete'));
 	
 		var deleteUL=document.createElement("UL");
@@ -612,6 +612,7 @@ function addRelatedContent(contentID,contentType,title)	{
 function removeRelatedContent(contentID,confirmText){
 	if(confirm(confirmText)){
 		jQuery("#" + contentID).remove(); 
+		stripe('stripe');
 		dirtyRelatedContent = true;
 		}
 	return false;
@@ -919,6 +920,7 @@ function loadSiteManager(siteid,topid,moduleid,sortby,sortdirection,ptype,startr
 						}
 						d.html(r.html);
 						jQuery('#newContentMenu').addClass('hide');
+						stripe('stripe');
 						initQuickEdits();
 						initDraftPrompt();
 						setToolTips("#gridContainer");	
@@ -975,6 +977,7 @@ function loadRepoManager(siteid,topid,moduleid,sortby,sortdirection,ptype,startr
 						}
 						d.html(r.html);
 						jQuery('#newContentMenu').addClass('hide');
+						stripe('stripe');
 						initQuickEdits();
 						initDraftPrompt();
 						setToolTips("#repoContainer");	
@@ -982,6 +985,7 @@ function loadRepoManager(siteid,topid,moduleid,sortby,sortdirection,ptype,startr
 							jQuery("#sortableKids").sortable(
 								{
 				   					stop: function(event, ui) {
+				   						stripe('stripe');
 				   					 	setAsSorted();
 				   					  	$(ui.item).removeClass('ui-draggable-dragging');
 				   				 	},
@@ -1067,6 +1071,7 @@ function loadSiteFlat(args)	{
 				//} catch(err){
 					d.html(data);	
 				//}
+				stripe('stripe');
 				setCheckboxTrees();
 				
 				jQuery("#svTagCloud a").click(
@@ -1217,6 +1222,7 @@ function loadSiteSection(node, startrow)	{
 			node.find('.section:first').fadeOut("fast",
 				function(){
 					node.find('.section:first').remove();
+					stripe('stripe');
 					jQuery('#newContentMenu').addClass('hide');
 					sectionLoading = false;
 				}
@@ -1242,6 +1248,7 @@ function refreshSiteSection(node, startrow)	{
 				node.append(r.html);
 				
 				jQuery('#newContentMenu').addClass('hide');
+				stripe('stripe');
 				initDraftPrompt();
 				initQuickEdits();	
 			} 
