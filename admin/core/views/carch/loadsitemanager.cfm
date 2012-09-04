@@ -114,7 +114,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <div class="dropdown-menu">
       	 <!---  <h4>#application.rbFactory.getKeyValue(session.rb,'sitemanager.filterviewdesc')#</h4> --->
       	  
-      	   #application.rbFactory.getKeyValue(session.rb,"sitemanager.rowsdisplayed")#
+      	   <label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.rowsdisplayed")#</label>
         <input name="nextN" value="#session.mura.nextN#" type="text" class="text span1" size="2" maxlength="4" />
         
         <cfif rc.topid neq '00000000000000000000000000000000001' 

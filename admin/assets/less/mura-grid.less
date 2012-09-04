@@ -6,8 +6,17 @@
 	overflow: visible; 
 }
 
-#sm-modify-view .dropdown-menu {
+#sm-modify-view .dropdown-menu, #filter-view .dropdown-menu {
 	padding: 10px;
+	
+	form {
+		margin-bottom: 0;
+		
+		label {
+			display: block;
+			margin-bottom: .25em;
+			}
+		}
 	
 	input.text { 
 		margin: 0 0 0 2px;
@@ -16,6 +25,7 @@
 	select {
 		margin-bottom: 0;
 	}
+
 }
 
 .btn-group + #filter-view {

@@ -47,8 +47,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="rc.keywords" default="">
 <cfoutput>
 <form class="form-inline" novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
-   <h3>Keyword Search</h3>
-
    <div class="input-append">
 	   <input id="search" name="search" type="text" class="text" value="#HTMLEditFormat(rc.keywords)#">
 	    <button type="button" class="submit btn" onclick="submitForm(document.forms.siteSearch);" /><i class="icon-search"></i></button>
@@ -99,21 +97,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </table>
 
 <cfif rc.trashIterator.pageCount() gt 1>
-<p class="moreResults">More Results: 
-<cfif rc.pageNum gt 1>
-	<a href="?muraAction=cTrash.list&siteid=#URLEncodedFormat(rc.siteid)#&keywords=#URLEncodedFormat(rc.keywords)#&pageNum=#evaluate('rc.pageNum-1')#">&laquo;&nbsp;Previous</a> 
-</cfif>
-<cfloop from="1"  to="#rc.trashIterator.pageCount()#" index="i">
-	<cfif rc.pageNum eq i>
-		<strong>#i#</strong>
-	<cfelse>
-		<a href="?muraAction=cTrash.list&siteid=#URLEncodedFormat(rc.siteid)#&keywords=#URLEncodedFormat(rc.keywords)#&pageNum=#i#">#i#</a> 
-	</cfif>
-</cfloop>
-<cfif rc.pageNum lt rc.trashIterator.pageCount()>
-	<a href="?muraAction=cTrash.list&siteid=#URLEncodedFormat(rc.siteid)#&keywords=#URLEncodedFormat(rc.keywords)#&pageNum=#evaluate('rc.pageNum+1')#">Next&nbsp;&raquo;</a> 
-</cfif> 
-</p>
+<div class="pagination">
+	<ul>
+		<cfif rc.pageNum gt 1>
+			<li><a href="?muraAction=cTrash.list&siteid=#URLEncodedFormat(rc.siteid)#&keywords=#URLEncodedFormat(rc.keywords)#&pageNum=#evaluate('rc.pageNum-1')#"><i class="icon-caret-left"></i>Previous</a></li>
+		</cfif>
+		<cfloop from="1"  to="#rc.trashIterator.pageCount()#" index="i">
+		
+			<cfif rc.pageNum eq i>
+				<li class="active">#i#</li>
+			<cfelse>
+				<li><a href="?muraAction=cTrash.list&siteid=#URLEncodedFormat(rc.siteid)#&keywords=#URLEncodedFormat(rc.keywords)#&pageNum=#i#">#i#</a></li>
+			</cfif>
+		
+		</cfloop>
+		<cfif rc.pageNum lt rc.trashIterator.pageCount()>
+			<li><a href="?muraAction=cTrash.list&siteid=#URLEncodedFormat(rc.siteid)#&keywords=#URLEncodedFormat(rc.keywords)#&pageNum=#evaluate('rc.pageNum+1')#">Next<i class="icon-caret-right"></i></a></li>
+		</cfif>
+	</ul>
+</div>
 </cfif>
 </cfoutput>
 
