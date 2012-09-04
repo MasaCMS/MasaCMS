@@ -605,6 +605,7 @@ function addRelatedContent(contentID,contentType,title)	{
    			tbody.appendChild(row);
 		 if(jQuery('#noFilters').length) jQuery('#noFilters').hide();
 		
+		 stripe('stripe');
 		 dirtyRelatedContent = true;
 		 
   } 
@@ -928,6 +929,7 @@ function loadSiteManager(siteid,topid,moduleid,sortby,sortdirection,ptype,startr
 							jQuery("#sortableKids").sortable(
 								{
 				   					stop: function(event, ui) {
+				   						stripe('stripe');
 				   					 	setAsSorted();
 				   					  	$(ui.item).removeClass('ui-draggable-dragging');
 				   				 	},
@@ -1197,6 +1199,7 @@ function loadSiteSection(node, startrow)	{
 					node.append(r.html);
 					
 					jQuery('#newContentMenu').addClass('hide');
+					stripe('stripe');
 					initDraftPrompt();
 					initQuickEdits();
 					
