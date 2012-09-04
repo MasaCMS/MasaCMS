@@ -92,7 +92,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   </a>
   <div class="dropdown-menu">
     <form class="form-inline" novalidate="novalidate" id="filterByTitle" action="index.cfm" method="get">
-    	  <h4>#application.rbFactory.getKeyValue(session.rb,'sitemanager.filterviewdesc')#</h4>
+    	  <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.filterviewdesc')#</label>
     	  <input type="text" name="searchString" value="#HTMLEditFormat(rc.searchString)#" class="text">
     	  <input type="button" class="submit btn" onclick="document.getElementById('filterByTitle').submit();" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.filter')#" />
     	  <input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#" />
