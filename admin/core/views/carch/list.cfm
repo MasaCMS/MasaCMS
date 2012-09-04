@@ -105,11 +105,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     </form>
   </div>
 </div>
+
+<!---
 <div class="notice" id="sitemgr-reorder">
 	When you're done re-ordering, click "Update."
 		<input type="button" class="submit btn pulse" id="submitSort" onclick="submitForm(document.forms.viewUpdate);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.update")#" />
 </div>
-
+--->
   
   </cfoutput>
   <table class="table table-striped table-condensed">
