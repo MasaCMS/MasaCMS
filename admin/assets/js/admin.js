@@ -790,10 +790,13 @@ function setDatePickers(target,locale,delim){
 function setColorPickers(target){	
 	jQuery(target).each(
 		function(index){		
-				jQuery(this).miniColors({
-					letterCase: 'uppercase'
+				jQuery(this).colorpicker({
+					format: 'rgba'
 					}
-				);
+				).on('changeColor',function(e){
+					//var rgb=e.color.toRGB();
+					//jQuery(this).val('rgba('+rgb.r+','+rgb.g+','+rgb.b+','+rgb.a+')');
+				});
 		}
 	);	
 }

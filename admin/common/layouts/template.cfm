@@ -136,8 +136,8 @@
 	<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckfinder/ckfinder.js"></script>
 	
 	<!-- Color Picker -->
-	<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/miniColors/jquery.miniColors.min.js?coreversion=#application.coreversion#"></script>
-	<link href="#application.configBean.getContext()#/tasks/widgets/miniColors/jquery.miniColors.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/colorpicker/js/bootstrap-colorpicker.js?coreversion=#application.coreversion#"></script>
+	<link href="#application.configBean.getContext()#/tasks/widgets/colorpicker/css/colorpicker.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 	
 	<!-- JSON -->
 	<script src="#application.configBean.getContext()#/admin/assets/js/json2.js" type="text/javascript" language="Javascript"></script>
