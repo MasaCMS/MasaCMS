@@ -105,7 +105,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfloop from="1"  to="#rc.trashIterator.pageCount()#" index="i">
 		
 			<cfif rc.pageNum eq i>
-				<li class="active">#i#</li>
+				<li class="active"><a href="##">#i#</a></li>
 			<cfelse>
 				<li><a href="?muraAction=cTrash.list&siteid=#URLEncodedFormat(rc.siteid)#&keywords=#URLEncodedFormat(rc.keywords)#&pageNum=#i#">#i#</a></li>
 			</cfif>
