@@ -3,7 +3,7 @@
  * CKFinder
  * ========
  * http://ckfinder.com
- * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (C) 2007-2012, CKSource - Frederico Knabben. All rights reserved.
  *
  * The software, this file and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
@@ -51,6 +51,12 @@ hint="Trim char from the beginning and end of the string">
 		}
 	}
 </cfscript>
+<cfreturn string />
+</cffunction>
+
+<cffunction access="public" name="encodeUriComponent" output="false" returntype="string" hint="The clone of the JavaScript function">
+<cfargument name="string" type="string" required="yes">
+<cfset string = replacelist(URLEncodedFormat(string), "%2D,%2E,%5F,%7E,%21,%2A,%27,%28,%29", "-,.,_,~,!,*,',(,)")>
 <cfreturn string />
 </cffunction>
 

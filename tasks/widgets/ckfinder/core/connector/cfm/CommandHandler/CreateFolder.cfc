@@ -3,7 +3,7 @@
  * CKFinder
  * ========
  * http://ckfinder.com
- * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (C) 2007-2012, CKSource - Frederico Knabben. All rights reserved.
  *
  * The software, this file and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
@@ -29,7 +29,7 @@
 		<cfthrow errorcode="#REQUEST.constants.CKFINDER_CONNECTOR_ERROR_UNAUTHORIZED#" type="ckfinder" />
 	</cfif>
 
-	<cfif not fileSystem.checkFileName(URL.NewFolderName) or coreConfig.checkIsHiddenFolder(URL.NewFolderName)>
+	<cfif not fileSystem.checkFolderName(URL.NewFolderName) or coreConfig.checkIsHiddenFolder(URL.NewFolderName)>
 		<cfthrow errorcode="#REQUEST.constants.CKFINDER_CONNECTOR_ERROR_INVALID_NAME#" type="ckfinder">
 	</cfif>
 	<cfset newFolderPath = fileSystem.CombinePaths(THIS.currentFolder.getServerPath(), URL.NewFolderName) />

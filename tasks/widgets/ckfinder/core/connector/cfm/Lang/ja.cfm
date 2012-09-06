@@ -1,7 +1,7 @@
 <cfsilent>
 <cfprocessingdirective pageencoding="utf-8">
 <!---
-Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckfinder.com/license
 
  Defines the object for the Japanese language.
@@ -19,6 +19,7 @@ CKFLang = structNew();
 	CKFLang.Errors[105] = '拡張子が正しくありません。';
 	CKFLang.Errors[109] = '不正なリクエストです。';
 	CKFLang.Errors[110] = '不明なエラーが発生しました。';
+	CKFLang.Errors[111] = 'It was not possible to complete the request due to resulting file size.';
 	CKFLang.Errors[115] = '同じ名前のファイル/フォルダがすでに存在しています。';
 	CKFLang.Errors[116] = 'フォルダが見つかりませんでした。ページを更新して再度お試し下さい。';
 	CKFLang.Errors[117] = 'ファイルが見つかりませんでした。ページを更新して再度お試し下さい。';

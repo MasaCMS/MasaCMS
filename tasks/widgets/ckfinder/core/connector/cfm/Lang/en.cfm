@@ -1,7 +1,7 @@
 <cfsilent>
 <cfprocessingdirective pageencoding="utf-8">
 <!---
-Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckfinder.com/license
 
  Defines the object for the English language. This is the base file for all translations.
@@ -19,6 +19,7 @@ CKFLang = structNew();
 	CKFLang.Errors[105] = 'Invalid file extension.';
 	CKFLang.Errors[109] = 'Invalid request.';
 	CKFLang.Errors[110] = 'Unknown error.';
+	CKFLang.Errors[111] = 'It was not possible to complete the request due to resulting file size.';
 	CKFLang.Errors[115] = 'A file or folder with the same name already exists.';
 	CKFLang.Errors[116] = 'Folder not found. Please refresh and try again.';
 	CKFLang.Errors[117] = 'File not found. Please refresh the files list and try again.';

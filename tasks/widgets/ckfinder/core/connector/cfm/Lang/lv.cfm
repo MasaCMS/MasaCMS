@@ -1,7 +1,7 @@
 <cfsilent>
 <cfprocessingdirective pageencoding="utf-8">
 <!---
-Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckfinder.com/license
 
  Defines the object for the Latvian language.
@@ -19,6 +19,7 @@ CKFLang = structNew();
 	CKFLang.Errors[105] = 'Neatļauts faila paplašinājums.';
 	CKFLang.Errors[109] = 'Nederīgs pieprasījums.';
 	CKFLang.Errors[110] = 'Nezināma kļūda.';
+	CKFLang.Errors[111] = 'It was not possible to complete the request due to resulting file size.';
 	CKFLang.Errors[115] = 'Fails vai mape ar šādu nosaukumu jau pastāv.';
 	CKFLang.Errors[116] = 'Mape nav atrasta. Lūdzu pārlādējiet šo logu un mēģiniet vēlreiz.';
 	CKFLang.Errors[117] = 'Fails nav atrasts. Lūdzu pārlādējiet failu sarakstu un mēģiniet vēlreiz.';
