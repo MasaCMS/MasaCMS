@@ -1,7 +1,7 @@
 <cfsilent>
 <cfprocessingdirective pageencoding="utf-8">
 <!---
-Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckfinder.com/license
 
  Defines the object for the French language.
@@ -19,6 +19,7 @@ CKFLang = structNew();
 	CKFLang.Errors[105] = 'Extension de fichier invalide.';
 	CKFLang.Errors[109] = 'Demande invalide.';
 	CKFLang.Errors[110] = 'Erreur inconnue.';
+	CKFLang.Errors[111] = 'It was not possible to complete the request due to resulting file size.';
 	CKFLang.Errors[115] = 'Un fichier ou un dossier avec ce nom existe déjà.';
 	CKFLang.Errors[116] = 'Ce dossier n''existe pas. Veuillez rafraîchir la page et réessayer.';
 	CKFLang.Errors[117] = 'Ce fichier n''existe pas. Veuillez rafraîchir la page et réessayer.';
@@ -29,7 +30,7 @@ CKFLang = structNew();
 	CKFLang.Errors[204] = 'Le fichier téléversé est corrompu.';
 	CKFLang.Errors[205] = 'Aucun dossier temporaire n''est disponible sur le serveur.';
 	CKFLang.Errors[206] = 'Envoi interrompu pour raisons de sécurité. Le fichier contient des données de type HTML.';
-	CKFLang.Errors[207] = 'The uploaded file was renamed to "%1".';
+	CKFLang.Errors[207] = 'Le fichier téléchargé a été renommé "%1".';
 	CKFLang.Errors[300] = 'Le déplacement des fichiers a échoué.';
 	CKFLang.Errors[301] = 'La copie des fichiers a échoué.';
 	CKFLang.Errors[500] = 'L''interface de gestion des fichiers est désactivé. Contactez votre administrateur et vérifier le fichier de configuration de CKFinder.';

@@ -1,7 +1,7 @@
 <cfsilent>
 <cfprocessingdirective pageencoding="utf-8">
 <!---
-Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckfinder.com/license
 
  Defines the object for the Finnish language. Translated into Finnish 2010-12-15 by Petteri Salmela, updated.
@@ -19,6 +19,7 @@ CKFLang = structNew();
 	CKFLang.Errors[105] = 'Virheellinen tiedostotarkenne.';
 	CKFLang.Errors[109] = 'Virheellinen pyyntö.';
 	CKFLang.Errors[110] = 'Tuntematon virhe.';
+	CKFLang.Errors[111] = 'It was not possible to complete the request due to resulting file size.';
 	CKFLang.Errors[115] = 'Samanniminen tiedosto tai kansio on jo olemassa.';
 	CKFLang.Errors[116] = 'Kansiota ei löydy. Yritä uudelleen kansiopäivityksen jälkeen.';
 	CKFLang.Errors[117] = 'Tiedostoa ei löydy. Yritä uudelleen kansiopäivityksen jälkeen.';

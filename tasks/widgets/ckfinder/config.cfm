@@ -41,8 +41,8 @@ config.licenseKey = 'VSYA-KXHX-KXVB-8XHA-2L6P-66LF-FDMT';
  */
 
 //ATTENTION: The trailing slash is required.
-config.baseUrl = application.configBean.getAssetPath() & '/' & session.siteid & '/assets';
-config.baseDir = "#application.configBean.getAssetDir()##application.configBean.getFileDelim()##session.siteid##application.configBean.getFileDelim()#assets";
+config.baseUrl = application.configBean.getAssetPath() & '/' & session.siteid & '/assets/';
+config.baseDir = "#application.configBean.getAssetDir()##application.configBean.getFileDelim()##session.siteid##application.configBean.getFileDelim()#assets/";
 /*
  * Thumbnails : thumbnails settings. All thumbnails will end up in the same
  * directory, no matter the resource type.
@@ -161,8 +161,8 @@ application.serviceFactory.getBean("fileWriter").touchDir(config.resourceType[1]
 
 config.resourceType[2] = structNew();
 config.resourceType[2].name = 'Images';
-config.resourceType[2].url = config.baseUrl & '/Image';
-config.resourceType[2].directory = config.baseDir & '/Image';
+config.resourceType[2].url = config.baseUrl & 'Image';
+config.resourceType[2].directory = config.baseDir & 'Image';
 config.resourceType[2].maxSize = 0;
 config.resourceType[2].allowedExtensions = 'bmp,gif,jpeg,jpg,png';
 config.resourceType[2].deniedExtensions = '';
@@ -170,8 +170,8 @@ application.serviceFactory.getBean("fileWriter").touchDir(config.resourceType[2]
 
 config.resourceType[3] = structNew();
 config.resourceType[3].name = 'Flash';
-config.resourceType[3].url = config.baseUrl & '/Flash';
-config.resourceType[3].directory = config.baseDir & '/Flash';
+config.resourceType[3].url = config.baseUrl & 'Flash';
+config.resourceType[3].directory = config.baseDir & 'Flash';
 config.resourceType[3].maxSize = 0;
 config.resourceType[3].allowedExtensions = 'swf,flv';
 config.resourceType[3].deniedExtensions = '';
@@ -196,8 +196,8 @@ if (isdefined("url.type")){
 	  for (i=1; i lte rsSites.recordcount; i=(i+1)){
 	    temp = structNew();
 	    temp.name = '#rsSites.siteID[i]#_User_Assets';
-	    temp.url =  application.configBean.getAssetPath() & '/' & rsSites.siteID[i] & '/assets';
-	    temp.directory ="#application.configBean.getAssetDir()##application.configBean.getFileDelim()##rsSites.siteID[i]##application.configBean.getFileDelim()#assets";
+	    temp.url =  application.configBean.getAssetPath() & '/' & rsSites.siteID[i] & '/assets/';
+	    temp.directory ="#application.configBean.getAssetDir()##application.configBean.getFileDelim()##rsSites.siteID[i]##application.configBean.getFileDelim()#assets/";
 	    temp.maxSize = 0;
 	    if(application.configBean.getValue('fmAllowedExtensions') eq ''){
 	      temp.allowedExtensions = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,m4v';
@@ -211,8 +211,8 @@ if (isdefined("url.type")){
 	    if(application.configBean.getValue('fmShowSiteFiles') neq 0){
 	      temp = structNew();
 	      temp.name = '#rsSites.siteID[i]#_Site_Files';
-	      temp.url =  application.configBean.getContext() & '/' & rsSites.siteID[i];
-	      temp.directory =  application.configBean.getWebRoot() & '/' & rsSites.siteID[i];
+	      temp.url =  application.configBean.getContext() & '/' & rsSites.siteID[i] & '/' ;
+	      temp.directory =  application.configBean.getWebRoot() & '/' & rsSites.siteID[i] & '/';
 	      temp.maxSize = 0;
 	      temp.allowedExtensions = '';
 	      temp.deniedExtensions = '';

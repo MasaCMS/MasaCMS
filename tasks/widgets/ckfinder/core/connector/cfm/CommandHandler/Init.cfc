@@ -3,7 +3,7 @@
  * CKFinder
  * ========
  * http://ckfinder.com
- * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (C) 2007-2012, CKSource - Frederico Knabben. All rights reserved.
  *
  * The software, this file and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
@@ -20,6 +20,7 @@
 	<cfset var nodeConnectorInfo = XMLElemNew(THIS.xmlObject, "ConnectorInfo") />
 	<cfset var acl = APPLICATION.CreateCFC("Core.AccessControlConfig") />
 	<cfset var fileSystem = APPLICATION.CreateCFC("Utils.FileSystem") />
+	<cfset var coreConfig = APPLICATION.CreateCFC("Core.Config")>
 	<cfset var aclMask = 0 />
 	<cfset var view = "" />
 	<cfset var ln = "" />
@@ -35,6 +36,12 @@
 	<cfif THIS.config.thumbnails.enabled>
 		<cfset nodeConnectorInfo.xmlAttributes["thumbsUrl"] = THIS.currentFolder.getThumbsUrl()>
 		<cfset nodeConnectorInfo.xmlAttributes["thumbsDirectAccess"] = IIF((structkeyexists(REQUEST.config.thumbnails, "directAccess") and REQUEST.config.thumbnails.directAccess), "true", "false")>
+		<cfif structkeyexists(REQUEST.config.thumbnails, "maxWidth") and REQUEST.config.thumbnails.maxWidth>
+			<cfset nodeConnectorInfo.xmlAttributes["thumbsWidth"] = REQUEST.config.thumbnails.maxWidth>
+		</cfif>
+		<cfif structkeyexists(REQUEST.config.thumbnails, "maxHeight") and REQUEST.config.thumbnails.maxHeight>
+			<cfset nodeConnectorInfo.xmlAttributes["thumbsHeight"] = REQUEST.config.thumbnails.maxHeight>
+		</cfif>
 	</cfif>
 
 	<cfif structkeyexists(THIS.config, "plugins") and ArrayLen(THIS.config.plugins) gt 0>
@@ -83,7 +90,7 @@
 				nodeResourceType = XMLElemNew(THIS.xmlObject, "ResourceType");
 				nodeResourceType.xmlAttributes["name"] = THIS.config.resourceType[i].name;
 				nodeResourceType.xmlAttributes["url"] = fileSystem.FixUrl(THIS.config.resourceType[i].url);
-				nodeResourceType.xmlAttributes["hasChildren"] = fileSystem.hasChildren(THIS.config.resourceType[i].directory);
+				nodeResourceType.xmlAttributes["hasChildren"] = fileSystem.hasChildren(coreConfig, "/", THIS.config.resourceType[i].directory, THIS.config.resourceType[i].name);
 				nodeResourceType.xmlAttributes["allowedExtensions"] = THIS.config.resourceType[i].allowedExtensions;
 				nodeResourceType.xmlAttributes["deniedExtensions"] = THIS.config.resourceType[i].deniedExtensions;
 				nodeResourceType.xmlAttributes["hash"] = Mid(Hash(THIS.currentFolder.getServerPath(THIS.config.resourceType[i])), 1, 16);

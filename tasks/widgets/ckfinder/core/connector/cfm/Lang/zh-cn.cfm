@@ -1,7 +1,7 @@
 <cfsilent>
 <cfprocessingdirective pageencoding="utf-8">
 <!---
-Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckfinder.com/license
 
  Defines the object for the Chinese-Simplified language.
@@ -19,6 +19,7 @@ CKFLang = structNew();
 	CKFLang.Errors[105] = '无效的扩展名.';
 	CKFLang.Errors[109] = '无效请求.';
 	CKFLang.Errors[110] = '未知错误.';
+	CKFLang.Errors[111] = 'It was not possible to complete the request due to resulting file size.';
 	CKFLang.Errors[115] = '存在重名的文件或文件夹.';
 	CKFLang.Errors[116] = '文件夹不存在. 请刷新后再试.';
 	CKFLang.Errors[117] = '文件不存在. 请刷新列表后再试.';
