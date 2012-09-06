@@ -2147,7 +2147,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					 	 			tcontent.DisplayStart < #renderDateTimeArg(arguments.menuDateTime)#
 						  			AND 
 						  				(
-						  					tcontent.DisplayStop >= #enderDateTimeArg(arguments.menuDateTime)# or tcontent.DisplayStop is null
+						  					tcontent.DisplayStop >= #renderDateTimeArg(arguments.menuDateTime)# or tcontent.DisplayStop is null
 						  				)  
 						  		)
 						)
