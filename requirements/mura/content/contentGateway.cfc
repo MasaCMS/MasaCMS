@@ -1990,10 +1990,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						tcontent.Display = 2 	 
 					 	AND 
 						  (
-						  	tcontent.DisplayStart < #createODBCDateTime(dateadd("D",1,arguments.menuDateTime))#
+						  	tcontent.DisplayStart < #renderDateTimeArg(dateadd("D",1,arguments.menuDateTime))#
 						  	AND 
 						  		(
-						  			tcontent.DisplayStop >= #createODBCDateTime(arguments.menuDateTime)# or tcontent.DisplayStop is null
+						  			tcontent.DisplayStop >= #renderDateTimeArg(arguments.menuDateTime)# or tcontent.DisplayStop is null
 						  		)
 						  	)  
 					</cfcase>
@@ -2001,8 +2001,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					  	tcontent.Display = 2 	 
 					 	AND
 					  		(
-					  			tcontent.DisplayStart >= #createODBCDateTime(arguments.menuDateTime)# 
-					  			OR (tcontent.DisplayStart < #createODBCDateTime(arguments.menuDateTime)# AND tcontent.DisplayStop >= #createODBCDateTime(arguments.menuDateTime)#)
+					  			tcontent.DisplayStart >= #renderDateTimeArg(arguments.menuDateTime)# 
+					  			OR (tcontent.DisplayStart < #renderDateTimeArg(arguments.menuDateTime)# AND tcontent.DisplayStop >= #renderDateTimeArg(arguments.menuDateTime)#)
 					  		)
 					 </cfcase>
 					 <cfcase value="ReleaseDate">
@@ -2014,9 +2014,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						   	tcontent.Display = 2 	 
 						 	 	AND 
 						 	 	(
-						 	 		tcontent.DisplayStart < #createODBCDateTime(dateadd("D",1,arguments.menuDateTime))#
+						 	 		tcontent.DisplayStart < #renderDateTimeArg(dateadd("D",1,arguments.menuDateTime))#
 							  		AND (
-							  				tcontent.DisplayStop >= #createODBCDateTime(arguments.menuDateTime)# or tcontent.DisplayStop is null
+							  				tcontent.DisplayStop >= #renderDateTimeArg(arguments.menuDateTime)# or tcontent.DisplayStop is null
 							  			)  
 								)
 							)
@@ -2026,15 +2026,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						
 						(
 						  	(
-						  		tcontent.releaseDate < #createODBCDateTime(dateadd("D",1,arguments.menuDateTime))#
-						  		AND tcontent.releaseDate >= #createODBCDateTime(arguments.menuDateTime)#
+						  		tcontent.releaseDate < #renderDateTimeArg(dateadd("D",1,arguments.menuDateTime))#
+						  		AND tcontent.releaseDate >= #renderDateTimeArg(arguments.menuDateTime)#
 						  	)
 						  		
 						  	OR 
 						  	 (
 						  	 	tcontent.releaseDate is Null
-						  		AND tcontent.lastUpdate < #createODBCDateTime(dateadd("D",1,arguments.menuDateTime))#
-						  		AND tcontent.lastUpdate >= #createODBCDateTime(arguments.menuDateTime)#
+						  		AND tcontent.lastUpdate < #renderDateTimeArg(dateadd("D",1,arguments.menuDateTime))#
+						  		AND tcontent.lastUpdate >= #renderDateTimeArg(arguments.menuDateTime)#
 						  	)
 					  	)	
 					  	
@@ -2048,9 +2048,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						   	tcontent.Display = 2 	 
 						 	 	AND 
 						 	 	(
-						 	 		tcontent.DisplayStart < #createODBCDateTime(dateadd("D",1,arguments.menuDateTime))#
+						 	 		tcontent.DisplayStart < #renderDateTimeArg(dateadd("D",1,arguments.menuDateTime))#
 							  		AND (
-							  				tcontent.DisplayStop >= #createODBCDateTime(arguments.menuDateTime)# or tcontent.DisplayStop is null
+							  				tcontent.DisplayStop >= #renderDateTimeArg(arguments.menuDateTime)# or tcontent.DisplayStop is null
 							  			)  
 								)
 							)
@@ -2059,14 +2059,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						AND
 						(
 						  	(
-						  		tcontent.releaseDate < #createODBCDateTime(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
-						  		AND  tcontent.releaseDate >= #createODBCDateTime(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#) 
+						  		tcontent.releaseDate < #renderDateTimeArg(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
+						  		AND  tcontent.releaseDate >= #renderDateTimeArg(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#) 
 						  		
 						  	OR 
 					  		(
 					  			tcontent.releaseDate is Null
-					  			AND tcontent.lastUpdate < #createODBCDateTime(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
-					  			AND tcontent.lastUpdate >= #createODBCDateTime(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#
+					  			AND tcontent.lastUpdate < #renderDateTimeArg(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
+					  			AND tcontent.lastUpdate >= #renderDateTimeArg(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#
 					  		)  
 					  	)
 					   </cfcase>
@@ -2076,17 +2076,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						AND
 							(
 								(
-									tcontent.displayStart < #createODBCDateTime(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
-									AND  tcontent.displayStart >= #createODBCDateTime(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#
+									tcontent.displayStart < #renderDateTimeArg(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
+									AND  tcontent.displayStart >= #renderDateTimeArg(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#
 								)
 											  	
 								or 
 											  	
 								(
-									tcontent.displayStop < #createODBCDateTime(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
+									tcontent.displayStop < #renderDateTimeArg(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
 									AND  
 										(
-											tcontent.displayStop >= #createODBCDateTime(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))# 
+											tcontent.displayStop >= #renderDateTimeArg(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))# 
 											or
 											tcontent.displayStop is null
 										)
@@ -2095,10 +2095,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								or 
 											  	
 								(
-									tcontent.displayStart < #createODBCDateTime(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#
+									tcontent.displayStart < #renderDateTimeArg(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#
 									and 
 										(
-											tcontent.displayStop >= #createODBCDateTime(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
+											tcontent.displayStop >= #renderDateTimeArg(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
 											or
 											tcontent.displayStop is null
 										)
@@ -2115,8 +2115,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							        (
 							            tcontent.Display = 2	
 							                AND (
-							                    tcontent.DisplayStart < #createODBCDateTime(dateadd("D",1,arguments.menuDateTime))# AND (
-							                        tcontent.DisplayStop >= #createODBCDateTime(arguments.menuDateTime)# or tcontent.DisplayStop is null
+							                    tcontent.DisplayStart < #renderDateTimeArg(dateadd("D",1,arguments.menuDateTime))# AND (
+							                        tcontent.DisplayStop >= #renderDateTimeArg(arguments.menuDateTime)# or tcontent.DisplayStop is null
 							                    )
 							            )
 							    )
@@ -2124,10 +2124,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							) AND (
 							
 							    (
-							        tcontent.releaseDate < #createODBCDateTime(dateadd("D",1,createDate(year(arguments.menuDateTime),12,31)))# AND tcontent.releaseDate >= #createDate(year(arguments.menuDateTime),1,1)#)
+							        tcontent.releaseDate < #renderDateTimeArg(dateadd("D",1,createDate(year(arguments.menuDateTime),12,31)))# AND tcontent.releaseDate >= #renderDateTimeArg(createDate(year(arguments.menuDateTime),1,1))#)
 							    OR
 							        (
-							            tcontent.releaseDate is Null AND tcontent.lastUpdate < #createODBCDateTime(dateadd("D",1,createDate(year(arguments.menuDateTime),12,31)))# AND tcontent.lastUpdate >= #createODBCDateTime(createDate(year(arguments.menuDateTime),1,1))#			
+							            tcontent.releaseDate is Null AND tcontent.lastUpdate < #renderDateTimeArg(dateadd("D",1,createDate(year(arguments.menuDateTime),12,31)))# AND tcontent.lastUpdate >= #renderDateTimeArg(createDate(year(arguments.menuDateTime),1,1))#			
 							        )
 							    )
 					  </cfcase> 
@@ -2144,10 +2144,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					  		tcontent.Display = 2 	 
 					 		AND 
 					 	 		(
-					 	 			tcontent.DisplayStart < #createODBCDateTime(arguments.menuDateTime)#
+					 	 			tcontent.DisplayStart < #renderDateTimeArg(arguments.menuDateTime)#
 						  			AND 
 						  				(
-						  					tcontent.DisplayStop >= #createODBCDateTime(createODBCDateTime(arguments.menuDateTime))# or tcontent.DisplayStop is null
+						  					tcontent.DisplayStop >= #enderDateTimeArg(arguments.menuDateTime)# or tcontent.DisplayStop is null
 						  				)  
 						  		)
 						)
@@ -2155,6 +2155,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					  </cfdefaultcase>
 			</cfswitch>
 </cfoutput>
+</cffunction>
+
+<cffunction name="renderDateTimeArg" returntype="string" output="false">
+        <cfargument name="date">
+       
+        <cfif isDate(arguments.date)>
+        	<cfif variables.configBean.getCompiler() eq "Adobe" and variables.configBean.getDbType() eq "MSSQL">
+                <cfreturn "'" & dateFormat(createODBCDateTime(arguments.date), "yyyy-mm-dd") & 'T' & timeFormat(createODBCDateTime(arguments.date), "HH:mm:ss.l") & "'">
+        	<cfelse>
+        		<cfreturn createODBCDateTime(arguments.date)>
+        	</cfif>
+        <cfelse>
+            <cfreturn "null">
+        </cfif>
 </cffunction>
 
 <cffunction name="renderMobileClause" output="true">
