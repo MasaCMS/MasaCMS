@@ -113,20 +113,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset form = structDelete(form, "fieldnameOrder")>
 	
-<cfelseif application.configBean.getCompiler() eq "Railo" 
-	and not (
-		structKeyExists(request,"fieldnames") and len(request.fieldnames)
-	)>
-	<cfif not isBinary(GetHttpRequestData().content)>
-		<cfset request.fieldnames=""/>
-		<cfloop list="#GetHttpRequestData().content#" delimiters="&" index="variables.j">
-			<cfset variables.fieldname = listFirst(urlDecode(variables.j), "=")>
-			<cfif not listFindNoCase(request.fieldnames, variables.fieldname)>
-				<cfset request.fieldnames = listAppend(request.fieldnames, listFirst(urlDecode(variables.j), "="))>
-			</cfif>
-		</cfloop>
-	</cfif>
-	
+<cfelseif application.configBean.getCompiler() eq "Railo" >
+	<cfset request.fieldnames=""/>
+	<cfset variables.aRawForm = form.getRaw()>
+    
+    <cfloop from="1" to="#arrayLen(variables.aRawForm)#" index="variables.k">
+        <cfset request.fieldnames = listAppend(request.fieldnames, variables.aRawForm[variables.k].getName())>
+    </cfloop>
+
 <cfelseif not structKeyExists(request,"fieldnames")>
 	<cfset request.fieldnames=""/>
 	
