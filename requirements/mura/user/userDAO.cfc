@@ -282,7 +282,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 #arguments.userBean.gets2()#, 
 		 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getFname() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getFname()#">,
 		  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getLname() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getLname()#">, 
-         <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getPassword() neq '',de('no'),de('yes'))#" value="#iif(variables.configBean.getEncryptPasswords(),de('#variables.utility.toSecureHash(arguments.userBean.getPassword())#'),de('#arguments.userBean.getPassword()#'))#">,
+         <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getPassword() neq '',de('no'),de('yes'))#" value="#iif(variables.configBean.getEncryptPasswords(),de('#variables.utility.toBCryptHash(arguments.userBean.getPassword())#'),de('#arguments.userBean.getPassword()#'))#">,
 		 <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
 		 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getEmail() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getEmail()#">,
          <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getGroupName() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getGroupName()#">, 
@@ -376,7 +376,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  	 GroupName =  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getGroupname() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getGroupname()#">,  
          Email =  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getEmail() neq '',de('no'),de('yes'))#" value="#arguments.userBean.getEmail()#">,
         <cfif arguments.userBean.getPassword() neq ''>
-		 Password = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getPassword() neq '',de('no'),de('yes'))#" value="#iif(variables.configBean.getEncryptPasswords(),de('#variables.utility.toSecureHash(arguments.userBean.getPassword())#'),de('#arguments.userBean.getPassword()#'))#">,
+		 Password = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.userBean.getPassword() neq '',de('no'),de('yes'))#" value="#iif(variables.configBean.getEncryptPasswords(),de('#variables.utility.toBCryptHash(arguments.userBean.getPassword())#'),de('#arguments.userBean.getPassword()#'))#">,
 		 passwordCreated =<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">,
 		 </cfif>
 		 s2 =#arguments.userBean.gets2()#,
@@ -626,7 +626,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	 <cfquery  datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
       UPDATE tusers SET
-	  	 password =  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.password neq '',de('no'),de('yes'))#" value="#iif(variables.configBean.getEncryptPasswords(),de('#variables.utility.toSecureHash(arguments.password)#'),de('#arguments.password#'))#">,
+	  	 password =  <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.password neq '',de('no'),de('yes'))#" value="#iif(variables.configBean.getEncryptPasswords(),de('#variables.utility.toBCryptHash(arguments.password)#'),de('#arguments.password#'))#">,
 		 passwordCreated =<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
        WHERE UserID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"> 
    </CFQUERY>
@@ -641,7 +641,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
    </cfquery>
 	<cfif not variables.configBean.getEncryptPasswords()>
 		<cfquery name="rsUserHash" dbtype="query">
-	      SELECT userID,'#variables.utility.toSecureHash(rs.userHash)#' as userHash,siteID,isPublic from rsUserHash
+	      SELECT userID,'#variables.utility.toBCryptHash(rs.userHash)#' as userHash,siteID,isPublic from rsUserHash
 	   	</cfquery>
 	</cfif>
 	<cfreturn rsUserHash/>
