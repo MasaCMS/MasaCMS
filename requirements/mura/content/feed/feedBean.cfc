@@ -91,6 +91,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="bean" type="string" default="content" required="true" />
 <cfproperty name="viewalllabel" type="string" default="" required="true" />
 <cfproperty name="viewalllink" type="string" default="View All" required="true" />
+<cfproperty name="autoimport" type="numeric" default="0" required="true" />
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfset super.init(argumentCollection=arguments)>
@@ -143,6 +144,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.table="tcontent">
 	<cfset variables.instance.viewalllink="" />
 	<cfset variables.instance.viewalllabel="" />
+	<cfset variables.instance.autoimport=0 />
 	
 	<cfreturn this />
 </cffunction>
@@ -305,6 +307,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <cfargument name="ImageWidth" required="true">
 	<cfif isNumeric(arguments.ImageWidth)>
   	  <cfset variables.instance.ImageWidth = arguments.ImageWidth />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setAutoImport" output="false" access="public">
+    <cfargument name="autoimport" required="true">
+	<cfif isNumeric(arguments.autoimport)>
+  	  <cfset variables.instance.autoimport = arguments.autoimport />
 	</cfif>
 	<cfreturn this>
 </cffunction>

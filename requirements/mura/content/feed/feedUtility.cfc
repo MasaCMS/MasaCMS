@@ -66,6 +66,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var items = "" />
 	<cfset var maxItems = 0 />
 	<cfset var content = "" />
+	<cfset var contentBean = "" />
 	<cfset var i = "" />
 	<cfset var c = "" />
 
@@ -103,72 +104,78 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<cfloop from="#maxItems#" to="1" index="i" step="-1">
 			
-			<cfif isdefined('arguments.data.remoteID') and listFind(arguments.data.remoteID,items[i].guid.xmlText) >
-				<cfset feedItem = structNew() />
-				<cfset feedItem.remoteURL=left(items[i].link.xmlText,255) />
-				<cfset feedItem.title=left(items[i].title.xmlText,255) />
-				<cfset feedItem.summary="" />
+			<cfif isdefined('arguments.data.remoteID') and (arguments.data.remoteID eq 'All' or listFind(arguments.data.remoteID,items[i].guid.xmlText)) >
 				
-				<cfif structKeyExists(items[i],"description")>
-					<cfset feedItem.summary=items[i].description.xmlText />
-				<cfelseif  structKeyExists(items[i],"summary")>
-					<cfset feedItem.summary=items[i].summary.xmlText />
-				</cfif>
-				
-				<cfset feedItem.remotePubDate=items[i].pubDate.xmlText />
-				
-				<cfif isDate(items[i].pubDate.xmlText)>
-					<cfset feedItem.releaseDate=parseDateTime(items[i].pubDate.xmlText) />
-				</cfif>
-				
-				<cftry>
-					<cfset feedItem.remoteID=left(items[i].guid.xmlText,255) />
-					<cfcatch>
-						<cfset feedItem.remoteID=left(items[i].link.xmlText,255)> 
-					</cfcatch>
-				</cftry>
-				
-				<cftry>
-					<cfset content = xmlFeed.rss.channel.item[i]["content:encoded"]>
+				<cfset contentBean=getBean('content').loadBy(remoteID=items[i].guid.xmlText,siteID=theImport.feedBean.getSiteID())>
+
+				<cfif contentBean.getIsNew() or arguments.data.remoteID neq 'All'>
+					<cfset feedItem = structNew() />
+					<cfset feedItem.remoteURL=left(items[i].link.xmlText,255) />
+					<cfset feedItem.title=left(items[i].title.xmlText,255) />
+					<cfset feedItem.summary="" />
 					
-					<cfif ArrayLen(content)>
-						<cfset feedItem.body = content[1].xmlText>   
-					<cfelse>     
-						<cfif structKeyExists(items[i],"description")>
-							<cfset feedItem.body=items[i].description.xmlText />
-						<cfelseif structKeyExists(items[i],"summary")>
-							<cfset feedItem.body=items[i].summary.xmlText />
-						</cfif>   
+					<cfif structKeyExists(items[i],"description")>
+						<cfset feedItem.summary=items[i].description.xmlText />
+					<cfelseif  structKeyExists(items[i],"summary")>
+						<cfset feedItem.summary=items[i].summary.xmlText />
 					</cfif>
 					
-					<cfcatch>
-						<cfif structKeyExists(items[i],"description")>
-							<cfset feedItem.body=items[i].description.xmlText />
-						<cfelseif structKeyExists(items[i],"summary")>
-							<cfset feedItem.body=items[i].summary.xmlText />
-						</cfif> 
-					</cfcatch>
-				</cftry>
-				
-				<cfset feedItem.parentID=theImport.feedBean.getParentID() />
-				<cfset feedItem.siteID=theImport.feedBean.getSiteID() />
-				<cfset feedItem.approved=1 />
-				<cfset feedItem.type='Page' />
-				<cfset feedItem.display=1 />
-				<cfset feedItem.isNav=1 />
-				<cfset feedItem.moduleID='00000000000000000000000000000000000' />
-				<cfset feedItem.mode='import' />
-				<!---<cfset feedItem.releaseDate=dateformat(now(),"m/d/yy") />--->
-			
-				<cfif theImport.feedBean.getCategoryID() neq ''>
-					<cfloop from="1" to="#listLen(theImport.feedBean.getCategoryID())#" index="c">
-					<cfset feedItem["categoryAssign#replace(listGetAt(theImport.feedBean.getCategoryID(),c),'-','','ALL')#"]=0 />
-					</cfloop>
+					<cfset feedItem.remotePubDate=items[i].pubDate.xmlText />
+					
+					<cfif isDate(items[i].pubDate.xmlText)>
+						<cfset feedItem.releaseDate=parseDateTime(items[i].pubDate.xmlText) />
+					</cfif>
+					
+					<cftry>
+						<cfset feedItem.remoteID=left(items[i].guid.xmlText,255) />
+						<cfcatch>
+							<cfset feedItem.remoteID=left(items[i].link.xmlText,255)> 
+						</cfcatch>
+					</cftry>
+					
+					<cftry>
+						<cfset content = xmlFeed.rss.channel.item[i]["content:encoded"]>
+						
+						<cfif ArrayLen(content)>
+							<cfset feedItem.body = content[1].xmlText>   
+						<cfelse>     
+							<cfif structKeyExists(items[i],"description")>
+								<cfset feedItem.body=items[i].description.xmlText />
+							<cfelseif structKeyExists(items[i],"summary")>
+								<cfset feedItem.body=items[i].summary.xmlText />
+							</cfif>   
+						</cfif>
+						
+						<cfcatch>
+							<cfif structKeyExists(items[i],"description")>
+								<cfset feedItem.body=items[i].description.xmlText />
+							<cfelseif structKeyExists(items[i],"summary")>
+								<cfset feedItem.body=items[i].summary.xmlText />
+							</cfif> 
+						</cfcatch>
+					</cftry>
+					
+					<cfset feedItem.parentID=theImport.feedBean.getParentID() />
+					<cfset feedItem.siteID=theImport.feedBean.getSiteID() />
+					<cfset feedItem.approved=1 />
+					<cfset feedItem.type='Page' />
+					<cfset feedItem.display=1 />
+					<cfset feedItem.isNav=1 />
+					<cfset feedItem.moduleID='00000000000000000000000000000000000' />
+					<cfset feedItem.mode='import' />
+					<!---<cfset feedItem.releaseDate=dateformat(now(),"m/d/yy") />--->
+					
+					<cfif theImport.feedBean.getCategoryID() neq ''>
+						<cfloop from="1" to="#listLen(theImport.feedBean.getCategoryID())#" index="c">
+						<cfset feedItem["categoryAssign#replace(listGetAt(theImport.feedBean.getCategoryID(),c),'-','','ALL')#"]=0 />
+						</cfloop>
+					</cfif>
+					
+					<cfset contentBean.set(feedItem).save() />
 				</cfif>
-			
-				<cfset variables.contentManager.add(feedItem) />
 			</cfif>
-			</cfloop>
+		</cfloop>
+		
 		<cfset theImport.success=true/>
 		</cfcase>
 		<cfcase value="atom">

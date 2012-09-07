@@ -721,6 +721,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif isdefined("rstcontentfeeds.viewalllink")>
 					,viewalllink,viewalllabel
 					</cfif>
+					<cfif isdefined("rstcontentfeeds.autoimport")>
+					,autoimport
+					</cfif>
 					)
 					values
 					(
@@ -768,7 +771,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.viewalllink neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.viewalllink#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.viewalllabel neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.viewalllabel#">
-					</cfif>			
+					</cfif>
+					<cfif isdefined("rstcontentfeeds.autoimport")>
+					,
+					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.autoimport),de(rstcontentfeeds.autoimport),de(0))#">
+				
+					</cfif>				
 					)
 				</cfquery>
 			</cfloop>

@@ -104,6 +104,9 @@
 
 	dbUtility.setTable("tusers")
 	.addColumn(column="password",dataType="varchar",length="100");
+
+	dbUtility.setTable("tcontentfeeds")
+	.addColumn(column="autoimport",dataType="tinyint",default=0);
 </cfscript>
 
 
