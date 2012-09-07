@@ -116,11 +116,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			(
 			 variables.configBean.getEncryptPasswords()
-<<<<<<< HEAD
 			 and variables.globalUtility.checkBCryptHash(arguments.username,rsUser.password) 	
-=======
-			 and variables.globalUtility.checkSecureHash(arguments.username,rsUser.password) 	
->>>>>>> origin/bootstrap
 			)
 		)>
 			
