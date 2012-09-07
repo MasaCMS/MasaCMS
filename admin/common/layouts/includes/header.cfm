@@ -206,14 +206,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 					<ul class="dropdown-menu">
 		 					<li><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPrivateUsers.list&siteid=#session.siteid#"><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,"layout.viewadministrativeusers")#</a></li>
 		 					  <li><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPrivateUsers.edituser&siteid=#session.siteid#&userid="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.addadministrativeuser")#</a></li>
-		 					  <li class="last"><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPrivateUsers.editgroup&siteid=#session.siteid#&userid="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.addgroup")#</a></li>
+		 					  <li class="last"><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPrivateUsers.editgroup&siteid=#session.siteid#&userid="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.addadministrativegroup")#</a></li>
 		 					  <li class="divider"></li>
 		 					  <cfif application.settingsManager.getSite(session.siteid).getextranet() and  application.permUtility.getModulePerm("00000000000000000000000000000000008","#session.siteid#")>
 		 					    <li <cfif rc.originalcircuit eq 'cPublicUsers' or (rc.originalcircuit eq 'cPerm' and  rc.moduleid eq '00000000000000000000000000000000008')>class="active"</cfif>><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPublicUsers.list&siteid=#session.siteid#"><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,"user.viewsitemembers")#</a>
 		 					    </li>
 		 					  </cfif>
 		 					  <li><a href="index.cfm?muraAction=cPublicUsers.edituser&siteid=#URLEncodedFormat(rc.siteid)#&userid="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'user.addmember')#</a></li>
-		 					  <li><a href="index.cfm?muraAction=cPublicUsers.editgroup&siteid=#URLEncodedFormat(rc.siteid)#&userid="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'user.addgroup')#</a></li>
+		 					  <li><a href="index.cfm?muraAction=cPublicUsers.editgroup&siteid=#URLEncodedFormat(rc.siteid)#&userid="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'user.addmembergroup')#</a></li>
 		 					  
 		 					  </ul>			
 	 					</li>
