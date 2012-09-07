@@ -1,7 +1,7 @@
 <cfsilent>
 <cfprocessingdirective pageencoding="utf-8">
 <!---
-Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckfinder.com/license
 
  Defines the object for the Estonian language.
@@ -19,6 +19,7 @@ CKFLang = structNew();
 	CKFLang.Errors[105] = 'Sobimatu faililaiend.';
 	CKFLang.Errors[109] = 'Vigane päring.';
 	CKFLang.Errors[110] = 'Tundmatu viga.';
+	CKFLang.Errors[111] = 'It was not possible to complete the request due to resulting file size.';
 	CKFLang.Errors[115] = 'Sellenimeline fail või kaust on juba olemas.';
 	CKFLang.Errors[116] = 'Kausta ei leitud. Palun värskenda lehte ja proovi uuesti.';
 	CKFLang.Errors[117] = 'Faili ei leitud. Palun värskenda lehte ja proovi uuesti.';

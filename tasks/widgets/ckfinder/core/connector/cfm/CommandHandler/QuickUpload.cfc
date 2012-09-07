@@ -3,7 +3,7 @@
  * CKFinder
  * ========
  * http://ckfinder.com
- * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (C) 2007-2012, CKSource - Frederico Knabben. All rights reserved.
  *
  * The software, this file and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
@@ -23,7 +23,7 @@
 		<cfif ARGUMENTS.errorCode eq REQUEST.constants.CKFINDER_CONNECTOR_ERROR_UPLOADED_FILE_RENAMED or
 		ARGUMENTS.errorCode eq REQUEST.constants.CKFINDER_CONNECTOR_ERROR_NONE>
 		<cfoutput>
-		<script type="text/javascript">window.parent.OnUploadCompleted(#ARGUMENTS.errorCode#, '#THIS.currentFolder.getUrl()##replace(ARGUMENTS.fileName, "'", "\'")#','#replace(ARGUMENTS.fileName, "'", "\'")#','');</script>
+		<script type="text/javascript">window.parent.OnUploadCompleted(#ARGUMENTS.errorCode#, '#THIS.currentFolder.getUrl()##replace(APPLICATION.CreateCFC("Utils.Misc").encodeUriComponent(ARGUMENTS.fileName), "'", "\'")#','#replace(ARGUMENTS.fileName, "'", "\'")#','');</script>
 		</cfoutput>
 		<cfelse>
 		<cfoutput>
@@ -38,7 +38,7 @@
 		<cfif ARGUMENTS.errorCode eq REQUEST.constants.CKFINDER_CONNECTOR_ERROR_UPLOADED_FILE_RENAMED or
 		ARGUMENTS.errorCode eq REQUEST.constants.CKFINDER_CONNECTOR_ERROR_NONE>
 		<cfoutput>
-		<script type="text/javascript">window.parent.CKEDITOR.tools.callFunction(#funcNum#, '#THIS.currentFolder.getUrl()##replace(fileName, "'", "\'")#', '#replace(errorMsg, "'", "\'")#') ;</script>
+		<script type="text/javascript">window.parent.CKEDITOR.tools.callFunction(#funcNum#, '#THIS.currentFolder.getUrl()##replace(APPLICATION.CreateCFC("Utils.Misc").encodeUriComponent(ARGUMENTS.fileName), "'", "\'")#', '#replace(errorMsg, "'", "\'")#') ;</script>
 		</cfoutput>
 		<cfelse>
 		<cfoutput>

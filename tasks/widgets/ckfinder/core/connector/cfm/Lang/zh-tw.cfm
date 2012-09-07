@@ -1,7 +1,7 @@
 <cfsilent>
 <cfprocessingdirective pageencoding="utf-8">
 <!---
-Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckfinder.com/license
 
  Defines the object for the Chinese (Taiwan) language.
@@ -19,6 +19,7 @@ CKFLang = structNew();
 	CKFLang.Errors[105] = '無法上傳：不合法的副檔名 !';
 	CKFLang.Errors[109] = '不合法的請求 !';
 	CKFLang.Errors[110] = '不明錯誤 !';
+	CKFLang.Errors[111] = 'It was not possible to complete the request due to resulting file size.';
 	CKFLang.Errors[115] = '檔案或目錄名稱重複 !';
 	CKFLang.Errors[116] = '找不到目錄 ! 請先重新整理 , 然後再試一次 !';
 	CKFLang.Errors[117] = '找不到檔案 ! 請先重新整理 , 然後再試一次 !';

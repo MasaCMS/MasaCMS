@@ -6,7 +6,6 @@
 @import "../bootstrap/less/bootstrap.less";
 @import "variables.less";
 @import "mixins.less";
-@import "base-admin.less";
 
 .mura {
 	
@@ -22,7 +21,33 @@
 	@import "tag-clouds.less";
 	@import "session-history.less";
 	@import "category-assignments.less";
-	@import "dashboard.less";	
+	@import "dashboard.less";
+	
+// Layout
+
+.main {
+	padding-bottom: 2em;
+}
+
+.dropdown .dropdown-menu {
+	.border-radius(6);
+}
+
+.btn-icon-only {
+	padding-right: 3px;
+	padding-left: 3px;
+}
+
+.table td {
+	vertical-align: middle;
+}
+
+.table-bordered th {
+	#gradient .vertical(#FAFAFA,#E9E9E9);
+	font-size: 10px;
+	color: #444;
+	text-transform: uppercase;
+}
 
 // Override bootstrap classes
 
@@ -103,6 +128,7 @@ div.tooltip {
 
 .badge {
 	background: darken(@gray,10%);
+	font-size: @baseFontSize;
 	}
 
 // Additional Mura styles -- Move to separate file?

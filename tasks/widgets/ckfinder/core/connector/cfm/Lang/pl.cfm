@@ -1,7 +1,7 @@
 <cfsilent>
 <cfprocessingdirective pageencoding="utf-8">
 <!---
-Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckfinder.com/license
 
  Defines the object for the Polish language.
@@ -19,6 +19,7 @@ CKFLang = structNew();
 	CKFLang.Errors[105] = 'Nieprawidłowe rozszerzenie.';
 	CKFLang.Errors[109] = 'Nieprawiłowe żądanie.';
 	CKFLang.Errors[110] = 'Niezidentyfikowany błąd.';
+	CKFLang.Errors[111] = 'Wykonanie operacji nie powiodło się z powodu zbyt dużego rozmiaru pliku wynikowego.';
 	CKFLang.Errors[115] = 'Plik lub folder o podanej nazwie już istnieje.';
 	CKFLang.Errors[116] = 'Nie znaleziono folderu. Odśwież panel i spróbuj ponownie.';
 	CKFLang.Errors[117] = 'Nie znaleziono pliku. Odśwież listę plików i spróbuj ponownie.';

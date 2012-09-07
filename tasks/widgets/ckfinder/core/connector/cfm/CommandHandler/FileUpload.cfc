@@ -3,7 +3,7 @@
  * CKFinder
  * ========
  * http://ckfinder.com
- * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (C) 2007-2012, CKSource - Frederico Knabben. All rights reserved.
  *
  * The software, this file and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
@@ -23,28 +23,22 @@
 	<cfif isDefined('URL.response_type') and URL.response_type eq "txt">
 		<cfcontent reset="true" type="text/plain; charset=UTF-8">
 		<cfoutput>#fileName#|#errorMsg#</cfoutput>
-		<cfreturn true />
-	</cfif>
-	<cfif isDefined('URL.CKFinderFuncNum')>
-		<cfcontent reset="true" type="text/html; charset=UTF-8">
-		<cfif not Len(errorMsg) and errorCode >
-			<cfset errorMsg = APPLICATION.CreateCFC("Utils.Misc").getErrorMessage(errorCode, fileName)>
-		</cfif>
-		<cfset funcNum = ReReplace(URL.CKFinderFuncNum, "[^0-9]", "", "all")>
-		<cfif ARGUMENTS.errorCode eq REQUEST.constants.CKFINDER_CONNECTOR_ERROR_UPLOADED_FILE_RENAMED or
-		ARGUMENTS.errorCode eq REQUEST.constants.CKFINDER_CONNECTOR_ERROR_NONE>
-		<cfoutput>
-<script type="text/javascript">window.parent.CKFinder.tools.callFunction(#funcNum#, '#THIS.currentFolder.getUrl()##replace(fileName, "'", "\'")#', '#replace(errorMsg, "'", "\'")#') ;</script>
-		</cfoutput>
-		<cfelse>
-		<cfoutput>
-<script type="text/javascript">window.parent.CKFinder.tools.callFunction(#funcNum#, '', '#replace(errorMsg, "'", "\'")#') ;</script>
-		</cfoutput>
-		</cfif>
 	<cfelse>
-		<cfoutput>
-<script type="text/javascript">window.parent.OnUploadCompleted('#replace(fileName, "'", "\'")#', '#replace(errorMsg, "'", "\'")#') ;</script>
-		</cfoutput>
+		<cfif isDefined('URL.CKFinderFuncNum')>
+			<cfcontent reset="true" type="text/html; charset=UTF-8">
+			<cfif not Len(errorMsg) and errorCode >
+				<cfset errorMsg = APPLICATION.CreateCFC("Utils.Misc").getErrorMessage(errorCode, fileName)>
+			</cfif>
+			<cfset funcNum = ReReplace(URL.CKFinderFuncNum, "[^0-9]", "", "all")>
+			<cfif ARGUMENTS.errorCode eq REQUEST.constants.CKFINDER_CONNECTOR_ERROR_UPLOADED_FILE_RENAMED or
+			ARGUMENTS.errorCode eq REQUEST.constants.CKFINDER_CONNECTOR_ERROR_NONE>
+				<cfoutput><script type="text/javascript">window.parent.CKFinder.tools.callFunction(#funcNum#, '#THIS.currentFolder.getUrl()##replace(fileName, "'", "\'")#', '#replace(errorMsg, "'", "\'")#') ;</script></cfoutput>
+			<cfelse>
+				<cfoutput><script type="text/javascript">window.parent.CKFinder.tools.callFunction(#funcNum#, '', '#replace(errorMsg, "'", "\'")#') ;</script></cfoutput>
+			</cfif>
+		<cfelse>
+			<cfoutput><script type="text/javascript">window.parent.OnUploadCompleted('#replace(fileName, "'", "\'")#', '#replace(errorMsg, "'", "\'")#') ;</script></cfoutput>
+		</cfif>
 	</cfif>
 
 	<cfreturn true />
@@ -126,6 +120,9 @@
 	<cfset checkResult = THIS.currentFolder.checkExtension(CFFILE.ClientFile) />
 	<cfset unsafeFileName = checkResult[2] />
 	<cfset fileName = reReplace(unsafeFileName, "[\:\*\?\|\/]", "_", "all") />
+	<cfif isDefined( "REQUEST.Config.disallowUnsafeCharacters" ) and REQUEST.Config.disallowUnsafeCharacters>
+		<cfset fileName = reReplace(fileName, "[\;]", "_", "all") />
+	</cfif>
 	<cfif unsafeFileName neq fileName>
 		<cfset errorCode = REQUEST.constants.CKFINDER_CONNECTOR_ERROR_UPLOADED_INVALID_NAME_RENAMED />
 	</cfif>
