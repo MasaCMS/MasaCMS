@@ -50,9 +50,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="init" returntype="any" access="public" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="fileWriter" type="any" required="yes"/>
+<cfargument name="javaloader" type="any" required="yes"/>
 <cfset variables.configBean=arguments.configBean />
 <cfset variables.fileWriter=arguments.fileWriter />
 <cfset variables.javaVersion=listGetAt(createObject("java", "java.lang.System").getProperty("java.version"),2,".") />
+<cfset variables.bCrypt=arguments.javaloader.create("BCrypt")>
 <cfreturn this />
 </cffunction>
 
@@ -546,6 +548,17 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 	<cfargument name="obj">
 	<cfargument name="name">
 	<cfreturn getMetaData(arguments.obj).name eq arguments.name>
+</cffunction>
+
+<cffunction name="toSecureHash" output="false">
+	<cfargument name="string">
+	<cfreturn variables.bCrypt.hashpw(JavaCast('string',arguments.string), variables.bCrypt.gensalt())>
+</cffunction>
+
+<cffunction name="checkSecureHash" output="false">
+	<cfargument name="string">
+	<cfargument name="hash">
+	<cfreturn variables.bCrypt.checkpw(JavaCast('string',arguments.string), JavaCast('string',arguments.hash)) or hash(arguments.string) eq arguments.hash>
 </cffunction>
 
 </cfcomponent>

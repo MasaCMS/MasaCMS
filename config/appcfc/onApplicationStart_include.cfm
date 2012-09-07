@@ -177,7 +177,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfinclude template="/muraWRM/config/onGlobalConfig.cfm">
 		</cfif>
 		
-		
 		<cfif application.configBean.getValue("applyDBUpdates") or application.appAutoUpdated>
 			<cfset variables.tracepoint=variables.tracer.initTracepoint("Checking/Applying DB updates")> 
 			<cfset application.configBean.applyDbUpdates() />
