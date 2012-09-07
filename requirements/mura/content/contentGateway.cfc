@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.settingsManager=arguments.settingsManager />
 		<cfset variables.contentIntervalManager=arguments.contentIntervalManager>
 		<cfset variables.permUtility=arguments.permUtility>
-		<cfset variables.classExtensionManager=variables.confiBean.getClassExtensionManager()>
+		<cfset variables.classExtensionManager=variables.configBean.getClassExtensionManager()>
 <cfreturn this >
 </cffunction>
 
