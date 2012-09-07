@@ -55,7 +55,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.settingsManager=arguments.settingsManager />
 		<cfset variables.contentIntervalManager=arguments.contentIntervalManager>
 		<cfset variables.permUtility=arguments.permUtility>
-<cfreturn this />
+		<cfset variables.classExtensionManager=variables.confiBean.getClassExtensionManager()>
+<cfreturn this >
 </cffunction>
 
 <cffunction name="getCrumblist" returntype="any" access="public" output="false">
