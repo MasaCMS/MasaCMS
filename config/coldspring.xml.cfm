@@ -48,6 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<bean id="utility" <cfif application.cfversion neq 7>class="mura.utility"<cfelse>class="mura.utilityCF7"</cfif> singleton="true" >
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="fileWriter"><ref bean="fileWriter" /></constructor-arg>
+			<constructor-arg name="javaloader"><ref bean="javaloader" /></constructor-arg>
 		</bean>
 		<bean id="configBean" class="mura.configBean" singleton="true" />
 		<bean id="fileWriter" class="mura.fileWriter" singleton="true">
@@ -204,6 +205,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<bean id="userDAO" class="mura.user.userDAO" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="settingsManager"><ref bean="settingsManager" /></constructor-arg>
+			<constructor-arg name="utility"><ref bean="utility" /></constructor-arg>
 		</bean>
 		<bean id="userUtility" class="mura.user.userUtility" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
@@ -433,7 +435,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</bean>
 		<bean id="standardEventsHandler" class="mura.Handler.standardEventsHandler" singleton="true" />
 		<bean id="contentServer" class="mura.content.contentServer" singleton="true" />
-		<bean id="javaLoader" class="mura.javaloader.javaLoader" singleton="true"/>
+		<bean id="javaLoader" class="mura.javaloader.javaLoader" singleton="true">
+			<constructor-arg name="loadPaths">
+				<list>
+					<value>#expandPath('/mura/lib/mura.jar')#</value>
+					<value>#expandPath('/mura/lib/jBCrypt-0.3')#</value>
+				</list>
+			</constructor-arg>
+		</bean>
 		<bean id="autoUpdater" class="mura.autoUpdater.autoUpdater" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="fileWriter"><ref bean="fileWriter" /></constructor-arg>

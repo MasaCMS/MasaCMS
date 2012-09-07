@@ -550,12 +550,22 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 	<cfreturn getMetaData(arguments.obj).name eq arguments.name>
 </cffunction>
 
+<<<<<<< HEAD
+<cffunction name="toBCryptHash" output="false">
+	<cfargument name="string">
+	<cfargument name="logRounds" default="#variables.configBean.getBCryptLogRounds()#">
+	<cfreturn variables.bCrypt.hashpw(JavaCast('string',arguments.string), variables.bCrypt.gensalt(JavaCast('int',arguments.logRounds)))>
+</cffunction>
+
+<cffunction name="checkBCryptHash" output="false">
+=======
 <cffunction name="toSecureHash" output="false">
 	<cfargument name="string">
 	<cfreturn variables.bCrypt.hashpw(JavaCast('string',arguments.string), variables.bCrypt.gensalt())>
 </cffunction>
 
 <cffunction name="checkSecureHash" output="false">
+>>>>>>> origin/bootstrap
 	<cfargument name="string">
 	<cfargument name="hash">
 	<cfreturn variables.bCrypt.checkpw(JavaCast('string',arguments.string), JavaCast('string',arguments.hash)) or hash(arguments.string) eq arguments.hash>

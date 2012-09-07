@@ -142,6 +142,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.trackSessionInNewThread=1 />
 <cfset variables.instance.cfStaticJavaLoaderScope="application">
 <cfset variables.instance.URLTitleDelim="-">
+<cfset variables.instance.BCryptLogRounds=10>
 <cfset variables.dbUtility="">
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
@@ -1374,6 +1375,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="trackSessionInNewThread" type="string" />
 	<cfif isBoolean(arguments.trackSessionInNewThread)>
 		<cfset variables.instance.trackSessionInNewThread = arguments.trackSessionInNewThread />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getBCryptLogRounds" returntype="numeric" access="public" output="false">
+	<cfreturn variables.instance.BCryptLogRounds />
+</cffunction>
+
+<cffunction name="setBCryptLogRounds" access="public" output="false">
+	<cfargument name="BCryptLogRounds" type="String" />
+	<cfif isNumeric(arguments.BCryptLogRounds)>
+		<cfset variables.instance.BCryptLogRounds = arguments.BCryptLogRounds />
 	</cfif>
 	<cfreturn this>
 </cffunction>
