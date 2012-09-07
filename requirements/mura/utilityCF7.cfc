@@ -53,6 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.configBean=arguments.configBean />
 <cfset variables.fileWriter=arguments.fileWriter />
 <cfset variables.javaVersion=listGetAt(createObject("java", "java.lang.System").getProperty("java.version"),2,".") />
+<cfset variables.bCryptObject=getBean('javaloader').create("BCrypt")>
 <cfreturn this />
 </cffunction>
 
@@ -546,6 +547,17 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 	<cfargument name="obj">
 	<cfargument name="name">
 	<cfreturn getMetaData(arguments.obj).name eq arguments.name>
+</cffunction>
+
+<cffunction name="toSecureHash" output="false">
+	<arguments name="string">
+	<cfreturn variables.bCryptObject.hashpw(JavaCast(arguments.string,'string'), variables.bCryptObject.gensalt())>
+</cffunction>
+
+<cffunction name="checkSecureHash" output="false">
+	<arguments name="string">
+	<arguments name="hash">
+	<cfreturn variables.bCryptObject.(JavaCast(arguments.string,'string'), JavaCast(arguments.hash,'string')) or hash(arguments.string) eq arguments.hash>
 </cffunction>
 
 </cfcomponent>
