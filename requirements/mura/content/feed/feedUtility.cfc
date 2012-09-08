@@ -108,7 +108,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				
 				<cfset contentBean=getBean('content').loadBy(remoteID=items[i].guid.xmlText,siteID=theImport.feedBean.getSiteID())>
 
-				<cfif contentBean.getIsNew() or arguments.data.remoteID neq 'All'>
 					<cfset feedItem = structNew() />
 					<cfset feedItem.remoteURL=left(items[i].link.xmlText,255) />
 					<cfset feedItem.title=left(items[i].title.xmlText,255) />
@@ -172,7 +171,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 					
 					<cfset contentBean.set(feedItem).save() />
-				</cfif>
+					
+					<cfif not contentBean.getIsNew() and arguments.data.remoteID eq 'All'>
+						<cfset contentBean.deleteVersionHistory() />
+					</cfif>
 			</cfif>
 		</cfloop>
 		
@@ -196,3 +198,4 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 </cfcomponent>
+
