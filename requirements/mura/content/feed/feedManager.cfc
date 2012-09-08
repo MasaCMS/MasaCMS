@@ -178,9 +178,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="doImport" access="public" returntype="struct" output="false">
 	<cfargument name="data" type="struct" />		
-	
 	<cfreturn variables.feedUtility.doImport(arguments.data) />
 
+</cffunction>
+
+<cffunction name="doAutoImport" access="public" returntype="struct" output="false">		
+	<cfargument name="siteid">
+	<cfset var rs=getFeeds(arguments.siteid,'Remote',0,1)>
+	<cfset var importArgs=structNew()>
+
+	<cfset importArgs.remoteID='All'>
+
+	<cfloop query="rs">
+		<cfif rs.autoimport eq 1>
+			<cfset importArgs.feedID=rs.feedID>
+			<cfset variables.feedUtility.doImport(importArgs) >
+		</cfif>
+	</cfloop>
+	
 </cffunction>
 
 <cffunction name="update" access="public" returntype="any" output="false">

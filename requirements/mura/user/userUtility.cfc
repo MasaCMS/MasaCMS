@@ -103,17 +103,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfquery datasource="#application.configBean.getReadOnlyDatasource()#" name="rsUser" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		SELECT * FROM tusers WHERE
 		username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.username)#"> 
-		AND 
-		(
-			password=<cfqueryparam cfsqltype="cf_sql_varchar" value="#hash(trim(arguments.password))#">
-			<cfif not variables.configBean.getEncryptPasswords() and len(trim(arguments.password)) neq 32>
-			OR
-			password=<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.password)#">
-			</cfif>
-		)
 		AND Type = 2 
 		and inactive=0
 		</cfquery>
+		
+		<cfif rsUser.recordcount and not (
+			(
+			 not variables.configBean.getEncryptPasswords()
+			 and rsUser.password eq arguments.username
+			)
+			OR
+
+			(
+			 variables.configBean.getEncryptPasswords()
+			 and variables.globalUtility.checkBCryptHash(arguments.username,rsUser.password) 	
+			)
+		)>
+			
+			<cfquery  name="rsUser" dbtype="query">
+				SELECT * FROM rsUser
+				where 0=1
+			</cfquery>
+
+		</cfif>
 		
 		<!---
 		(not isDate(session.blockLoginUntil) 

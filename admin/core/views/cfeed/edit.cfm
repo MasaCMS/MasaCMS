@@ -848,6 +848,18 @@ jQuery(document).ready(function(){
 		</span>
 	  </div>
     </div>
+    <div class="control-group">
+      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.autoimport')#</label>
+      <div class="controls">
+     <label class="radio">
+	 <input name="autoImport" type="radio" value="1" <cfif rc.feedBean.getAutoImport()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+	</label>
+	<label class="radio">
+	<input name="autoImport" type="radio" value="0" <cfif not rc.feedBean.getAutoImport()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+	</label>
+	  </div>
+    </div>
+    </div>
 </cfif>
 
 <cfif rc.feedID neq ''>
