@@ -1,5 +1,5 @@
 #nav-module-specific {
-	margin-bottom: @baseLineHeight * 1.5;
+	margin-bottom: @baseLineHeight;  // * 1.5
 	margin-left: 0;
 	clear: both;
 	
@@ -70,6 +70,10 @@
 		
 }
 
+.nav-pills + table {
+	margin-top: @baseLineHeight;
+}
+
 // Pagination
 .mura-results-wrapper {
 
@@ -86,8 +90,7 @@
 
 .pagination {
 	
-	clear:both;
-	.pagination-right;
+	.pull-right;
 	margin: 0;
 	
 	li {

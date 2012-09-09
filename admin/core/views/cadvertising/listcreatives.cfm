@@ -59,9 +59,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfinclude template="dsp_secondary_menu.cfm">
 
-<table class="table table-striped table-condensed">
+<table class="table table-striped table-condensed mura-table-grid">
 <tr>
-	<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'advertising.name')#</th>
+	<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'advertising.name')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.advertiser')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.assettype')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.mediatype')#</th>
@@ -70,13 +70,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.datecreated')#</th> 
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.dateupdated')#</th> 
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.active')#</th>
-	<th class="administration">&nbsp;</th>
+	<th class="actions">&nbsp;</th>
 </tr></cfoutput>
 <cfif rc.rslist.recordcount>
 <cfoutput query="rc.rsList">
 	<tr>
-		<td class="varWidth"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?muraAction=cAdvertising.editCreative&userid=#rc.rslist.userid#&siteid=#URLEncodedFormat(rc.siteid)#&creativeid=#rc.rslist.creativeID#">#rc.rslist.name#</a></td>
-		<td class="varWidth">#rc.rslist.company#</td>
+		<td class="var-width"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?muraAction=cAdvertising.editCreative&userid=#rc.rslist.userid#&siteid=#URLEncodedFormat(rc.siteid)#&creativeid=#rc.rslist.creativeID#">#rc.rslist.name#</a></td>
+		<td class="var-width">#rc.rslist.company#</td>
 		<td>#application.rbFactory.getKeyValue(session.rb,'advertising.creativetype.#replace(rc.rslist.creativeType,' ','','all')#')#</td>
 		<td>#application.rbFactory.getKeyValue(session.rb,'advertising.mediatype.#rc.rslist.mediatype#')#</td>
 		<td>#rc.rslist.height#</td>
@@ -84,7 +84,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<td>#LSDateFormat(rc.rslist.dateCreated,session.dateKeyFormat)#</td>
 		<td>#LSDateFormat(rc.rslist.lastUpdate,session.dateKeyFormat)#</td>
 		<td>#application.rbFactory.getKeyValue(session.rb,'advertising.active')#</td>
-		<td class="administration"><ul class="creatives">
+		<td class="actions"><ul class="creatives">
 		<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?muraAction=cAdvertising.editCreative&userid=#rc.rslist.userid#&siteid=#URLEncodedFormat(rc.siteid)#&creativeid=#rc.rslist.creativeID#">#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#</a></li></ul>
 		</td></tr>
 </cfoutput>

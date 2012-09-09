@@ -59,7 +59,7 @@ function submitBundle(){
 			buttons: {
 				'YES': function() {
 					jQuery(this).dialog('close');
-					//jQuery(".actionButtons").hide();
+					//jQuery(".form-actions").hide();
 					//jQuery("##actionIndicator").show();
 					jQuery("##pluginSelectFrm").submit();
 					},
@@ -157,7 +157,7 @@ function checkAll (form) {
       </div>
     </div>
     
-    <div class="clearfix form-actions actionButtons">
+    <div class="clearfix form-actions">
     
     <!--- <cfif application.settingsManager.getSite(rc.siteid).getAdManager()> --->
       <p class="notice"><strong>Note:</strong> The Advertising Module &amp; Email Broadcaster are not included in Mura Bundles.</p>

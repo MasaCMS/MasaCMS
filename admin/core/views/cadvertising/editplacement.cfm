@@ -189,7 +189,7 @@ function uncheckAllHours() {
 	</div>
 </div>
 
-<div class="actionButtons form-actions">
+<div class="form-actions">
 <cfif rc.placementid eq ''>
 	<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.add')#" />
 	<input type=hidden name="placementID" value="">

@@ -176,7 +176,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif verdict eq 'editor'></a></cfif>
 	</dd>
     <dd class="updated">#LSDateFormat(attributes.rsnest.lastupdate,session.dateKeyFormat)# #LSTimeFormat(attributes.rsnest.lastupdate,"medium")#</dd>
-    <dd class="admin">
+    <dd class="actions">
     <ul>
     	<cfif not listFindNoCase('none,read',verdict)>
        <li class="edit"><a class="draftprompt"  data-siteid="#attributes.siteid#" data-contentid="#attributes.rsNest.contentid#" data-contenthistid="#attributes.rsNest.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?muraAction=cArch.edit&contenthistid=#attributes.rsNest.ContentHistID#&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#</a></li>

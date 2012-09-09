@@ -100,7 +100,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <dd><input type="text" name="optionLabelList"  value="#HTMLEditFormat(attributes.attributeBean.getOptionLabelList())#" /></dd>
 </dl>
 
-<div class="clearfix actionButtons">
+<div class="form-actions">
 <cfif attributes.action eq "add">
 	<input type="button" class="submit" onclick="submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'add');" value="Add" />
 	<input type="button" class="submit" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container').slideUp();jQuery('###HTMLEditFormat(attributes.formName)#close').hide();jQuery('###HTMLEditFormat(attributes.formName)#open').show();" value="Cancel" />

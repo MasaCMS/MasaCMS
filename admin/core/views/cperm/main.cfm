@@ -57,14 +57,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
   <form novalidate="novalidate" method="post" name="form1" action="index.cfm?muraAction=cPerm.update&contentid=#URLEncodedFormat(rc.contentid)#&parentid=#URLEncodedFormat(rc.parentid)#">
            <h3>#application.rbFactory.getKeyValue(session.rb,'user.adminusergroups')#</h3>
-			<table class="table table-striped table-condensed">
+			<table class="table table-striped table-condensed mura-table-grid">
 			<tr> 
             <th>#application.rbFactory.getKeyValue(session.rb,'permissions.editor')#</th>
             <th>#application.rbFactory.getKeyValue(session.rb,'permissions.author')#</th>
 			<th>#application.rbFactory.getKeyValue(session.rb,'permissions.inherit')#</th>
 			<cfif rc.moduleID eq '00000000000000000000000000000000000'><th>#application.rbFactory.getKeyValue(session.rb,'permissions.readonly')#</th></cfif>
 			<th>#application.rbFactory.getKeyValue(session.rb,'permissions.deny')#</th>
-            <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'permissions.group')#</th>
+            <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'permissions.group')#</th>
           </tr>
 		  <cfif rc.rslist.recordcount>
           <cfloop query="rc.rslist"> 
@@ -75,7 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		   <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="none" <cfif perm eq 'None'>checked</cfif>></td>
 		    <cfif rc.moduleID eq '00000000000000000000000000000000000'><td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="read" <cfif perm eq 'Read'>checked</cfif>></td></cfif>
 		    <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="deny" <cfif perm eq 'Deny'>checked</cfif>></td>
-		<td nowrap class="varWidth">#rc.rslist.GroupName#</td>
+		<td nowrap class="var-width">#rc.rslist.GroupName#</td>
             </tr></cfloop>
 		<cfelse>
 		 <tr> 
@@ -87,17 +87,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</table>
 		
 		<cfset rc.rslist=rc.groups.publicGroups />
-		<div class="separate"></div>
 		<h3>#application.rbFactory.getKeyValue(session.rb,'user.membergroups')#</h3>
 		<p>#application.rbFactory.getKeyValue(session.rb,'permissions.memberpermscript')##application.rbFactory.getKeyValue(session.rb,'permissions.memberpermnodescript')#</p>
-		<table class="table table-striped table-condensed">
+		<table class="table table-striped table-condensed mura-table-grid">
 			<tr> 
             <th>#application.rbFactory.getKeyValue(session.rb,'permissions.editor')#</th>
             <th>#application.rbFactory.getKeyValue(session.rb,'permissions.author')#</th>
 			<th>#application.rbFactory.getKeyValue(session.rb,'permissions.inherit')#</th>
 			<cfif rc.moduleID eq '00000000000000000000000000000000000'><th>#application.rbFactory.getKeyValue(session.rb,'permissions.readonly')#</th></cfif>
 			<th>#application.rbFactory.getKeyValue(session.rb,'permissions.deny')#</th>
-            <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'permissions.group')#</th>
+            <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'permissions.group')#</th>
           </tr>
 		  <cfif rc.rslist.recordcount>
           <cfloop query="rc.rslist"> 
@@ -108,7 +107,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		   <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="none" <cfif perm eq 'None'>checked</cfif>></td>
 		    <cfif rc.moduleID eq '00000000000000000000000000000000000'><td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="read" <cfif perm eq 'Read'>checked</cfif>></td></cfif>
 		    <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="deny" <cfif perm eq 'Deny'>checked</cfif>></td>
-		<td nowrap class="varWidth">#rc.rslist.GroupName#</td>
+		<td nowrap class="var-width">#rc.rslist.GroupName#</td>
             </tr></cfloop>
 		<cfelse>
 		 <tr> 
@@ -118,7 +117,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             </tr>
 		</cfif>
 		</table>
-	<div class="actionButtons form-actions">
+	<div class="form-actions">
 		 <input type="button" class="submit btn" onclick="javascript:document.form1.submit();" value="#application.rbFactory.getKeyValue(session.rb,'permissions.update')#" />
 	</div>
                     <input type="hidden" name="router" value="#cgi.HTTP_REFERER#">

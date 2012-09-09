@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset request.layout="false">
 <cfinclude template="act_defaults.cfm">
 <cfset rsList=application.dashboardManager.getRecentFormActivity(rc.siteID,5) />
-<cfoutput><table class="table table-striped table-condensed">
+<cfoutput><table class="table table-striped table-condensed mura-table-grid">
 <thead>
 <tr><th class="title">#application.rbFactory.getKeyValue(session.rb,"dashboard.title")#</th><th class="dateTime">#application.rbFactory.getKeyValue(session.rb,"dashboard.lastresponse")#</th><th class="total">#application.rbFactory.getKeyValue(session.rb,"dashboard.totalresponses")#</th></tr>
 </thead>

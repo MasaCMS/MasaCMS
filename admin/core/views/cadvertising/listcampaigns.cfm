@@ -59,23 +59,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfinclude template="dsp_secondary_menu.cfm">
 
-<table class="table table-striped table-condensed">
+<table class="table table-striped table-condensed mura-table-grid">
 <tr>
-	<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'advertising.campaign')#</th>
+	<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'advertising.campaign')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.advertiser')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.startdate')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.enddate')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.active')#</th>
-	<th class="administration">&nbsp;</th>
+	<th class="actions">&nbsp;</th>
 </tr></cfoutput>
 <cfif rc.rslist.recordcount>
 <cfoutput query="rc.rslist">
 	<tr>
-		<td class="varWidth"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?muraAction=cAdvertising.editCampaign&userid=#rc.rslist.userid#&campaignid=#rc.rslist.campaignid#&siteid=#URLEncodedFormat(rc.siteid)#">#name#</a></td>
+		<td class="var-width"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?muraAction=cAdvertising.editCampaign&userid=#rc.rslist.userid#&campaignid=#rc.rslist.campaignid#&siteid=#URLEncodedFormat(rc.siteid)#">#name#</a></td>
 		<td>#company#</td>
 		<td>#LSDateFormat(startdate,session.dateKeyFormat)#</td>
 		<td>#LSDateFormat(enddate,session.dateKeyFormat)#</td>	<td>#application.rbFactory.getKeyValue(session.rb,'advertising.#yesnoformat(isActive)#')#</td>
-		<td class="administration"><ul class="two">
+		<td class="actions"><ul class="two">
 		<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?muraAction=cAdvertising.editCampaign&userid=#rc.rslist.userid#&campaignid=#rc.rslist.campaignid#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#</a></li><li class="viewReport"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.viewcampaignreport')#" href="index.cfm?muraAction=cAdvertising.viewReportByCampaign&campaignid=#rc.rsList.campaignid#&userid=#rc.rslist.userid#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.viewreport')#</a></li></ul>
 		</td></tr>
 </cfoutput>

@@ -64,24 +64,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  <input type="button" class="submit btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'user.search')#" /></form>
 
 
-        <table class="table table-striped table-condensed">
+        <table class="table table-striped table-condensed mura-table-grid">
           <tr> 
-            <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'user.name')#</th>
+            <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'user.name')#</th>
             <th>#application.rbFactory.getKeyValue(session.rb,'user.email')#</th>
             <th>#application.rbFactory.getKeyValue(session.rb,'user.update')#</th>
             <th>#application.rbFactory.getKeyValue(session.rb,'user.time')#</th>
             <th>#application.rbFactory.getKeyValue(session.rb,'user.authoreditor')#</th>
-            <th class="administration">&nbsp;</th>
+            <th class="actions">&nbsp;</th>
           </tr></cfoutput>
           <cfif rc.rsList.recordcount>
             <cfoutput query="rc.rsList" maxrows="#rc.nextN.recordsperPage#" startrow="#rc.startrow#"> 
               <tr> 
-                <td class="varWidth"><a title="Edit" href="index.cfm?muraAction=cPublicUsers.edituser&userid=#rc.rsList.UserID#&type=2&siteid=#URLEncodedFormat(rc.siteid)#">#HTMLEditFormat(rc.rsList.lname)#, #HTMLEditFormat(rc.rsList.fname)# <cfif company neq ''> (#HTMLEditFormat(company)#)</cfif></a></td>
+                <td class="var-width"><a title="Edit" href="index.cfm?muraAction=cPublicUsers.edituser&userid=#rc.rsList.UserID#&type=2&siteid=#URLEncodedFormat(rc.siteid)#">#HTMLEditFormat(rc.rsList.lname)#, #HTMLEditFormat(rc.rsList.fname)# <cfif company neq ''> (#HTMLEditFormat(company)#)</cfif></a></td>
                 <td><cfif rc.rsList.email gt ""><a href="mailto:#HTMLEditFormat(rc.rsList.email)#">#HTMLEditFormat(rc.rsList.email)#</a><cfelse>&nbsp;</cfif></td>
                 <td>#LSDateFormat(rc.rslist.lastupdate,session.dateKeyFormat)#</td>
               <td>#LSTimeFormat(rc.rslist.lastupdate,"short")#</td>
 			  <td>#HTMLEditFormat(rc.rsList.LastUpdateBy)#</td>
-                <td class="administration"><ul class="one"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?muraAction=cPublicUsers.edituser&userid=#rc.rsList.UserID#&type=2&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'user.edit')#</a></li></ul></td>
+                <td class="actions"><ul class="one"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?muraAction=cPublicUsers.edituser&userid=#rc.rsList.UserID#&type=2&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'user.edit')#</a></li></ul></td>
               </tr>
             </cfoutput>
 			

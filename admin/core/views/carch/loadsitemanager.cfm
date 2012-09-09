@@ -174,7 +174,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       </cfif>
       <dd class="nav"><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.managerNav"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.nav")#</a></dd>
       <dd class="updated"><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.managerUpdated"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.updated")#</a></dd>
-      <dd class="admin">&nbsp;</dd>
+      <dd class="actions">&nbsp;</dd>
     </dl>
     <ul id="mura-nodes">
     <!-- Begin List of Nodes -->
@@ -234,7 +234,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  	<cfif perm eq 'editor'></a></cfif>
 	  </dd>
       <dd class="updated">#LSDateFormat(rc.rstop.lastupdate,session.dateKeyFormat)# #LSTimeFormat(rc.rstop.lastupdate,"medium")#</dd>
-      <dd class="admin">
+      <dd class="actions">
       	<ul>
           <cfif not listFindNoCase('none,read',perm)>
             <li class="edit"><a class="draftprompt" data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&siteid=#URLEncodedFormat(rc.siteid)#&contentid=#rc.topid#&topid=#URLEncodedFormat(rc.topid)#&type=#rc.rstop.type#&parentid=#rc.rstop.parentid#&moduleid=#rc.moduleid#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#</a></li>

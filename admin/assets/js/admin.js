@@ -604,9 +604,9 @@ function submitForm(frm,action,msg){
 
 		if(jQuery('#actionIndicator').length){
 			jQuery('#actionIndicator').show();
-			jQuery('.actionButtons').hide();
+			jQuery('.form-actions').hide();
 		} else{
-			jQuery('.actionButtons').each(function(){
+			jQuery('.form-actions').each(function(){
 				jQuery(this).html(
 					'<div style="display:none;">' 
 					+ jQuery(this).html() 
@@ -616,7 +616,7 @@ function submitForm(frm,action,msg){
 			});
 
 
-			//alert(jQuery('.actionButtons').html());
+			//alert(jQuery('.form-actions').html());
 		}	
 
 		frm.submit();

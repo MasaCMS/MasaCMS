@@ -99,7 +99,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						confirmDialog(
 						'WARNING: DO NOT continue unless you have backed up all selected site files.',
 						function(){
-									$('.actionButtons').hide();
+									$('.form-actions').hide();
 									$('#actionIndicator').show();
 									document.form1.submit();
 								}
@@ -109,7 +109,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				});
 			</script>
 			<form novalidate="novalidate" name="form1" id="form1" action="index.cfm?muraAction=csettings.list" method="post">
-				<table class="table table-striped table-condensed">
+				<table class="table table-striped table-condensed mura-table-grid">
 					<tr>
 						<cfif rc.siteUpdateSelect eq "true">
 							<th>
@@ -120,7 +120,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfif rc.siteSortBy eq "orderno">
 							<th>Bind Order</th>
 						</cfif>
-						<th class="varWidth">Site</th>
+						<th class="var-width">Site</th>
 						<th>Domain</th>
 						<th>Version</th>
 						<cfif application.configBean.getMode() eq 'staging'
@@ -130,7 +130,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<th>Last&nbsp;Deployment</th>
 						</cfif>
 						<!---<th>Site Version</th>--->
-						<th class="administration">&nbsp;</th>
+						<th class="actions">&nbsp;</th>
 					</tr>
 					<cfoutput query="rc.rsSites">
 					<tr>
@@ -148,7 +148,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<input type="hidden" value="#rc.rsSites.siteid#" name="orderid" />
 							</td>
 						</cfif>
-						<td class="varWidth"><a title="Edit" href="index.cfm?muraAction=cSettings.editSite&siteid=#rc.rsSites.siteid#">#rc.rsSites.site#</a></td>
+						<td class="var-width"><a title="Edit" href="index.cfm?muraAction=cSettings.editSite&siteid=#rc.rsSites.siteid#">#rc.rsSites.site#</a></td>
 						<td>
 							<cfif len(rc.rsSites.domain)>
 								#HTMLEditFormat(rc.rsSites.domain)#
@@ -171,7 +171,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								</cfif></td>
 						</cfif>
 						<!---<td>#application.autoUpdater.getCurrentCompleteVersion(rc.rsSites.siteid)#</td>--->
-						<td class="administration"><ul <cfif application.configBean.getMode() eq 'Staging'>class="three"<cfelse>class="two"</cfif>>
+						<td class="actions"><ul <cfif application.configBean.getMode() eq 'Staging'>class="three"<cfelse>class="two"</cfif>>
 								<li class="edit"><a title="Edit" href="index.cfm?muraAction=cSettings.editSite&siteid=#rc.rsSites.siteid#">Edit</a></li>
 								<cfif application.configBean.getMode() eq 'Staging'>
 									<cfif application.configBean.getValue('deployMode') eq "bundle">
@@ -194,7 +194,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<input type="button" class="submit btn" onclick="document.form1.submit();" value="Update Bind Order" />
 				</cfif>
 				<cfif  rc.siteUpdateSelect eq "true">
-					<div class="clearfix actionButtons">
+					<div class="form-actions">
 					<input type="button" class="submit btn" id="btnUpdateSites" value="Update Selected Sites to Latest Version" />
 					</div>
 					<div id="actionIndicator" style="display: none;">
@@ -217,28 +217,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<input name="newPlugin" type="file" required="true" message="Please select a plugin file.">
 				<input type="submit" value="Deploy" class="btn"/>
 			</form>
-			<table class="table table-striped table-condensed">
+			<table class="table table-striped table-condensed mura-table-grid">
 				<tr>
-					<th class="varWidth">Name</th>
+					<th class="var-width">Name</th>
 					<th>Directory</th>
 					<th>Category</th>
 					<th>Version</th>
 					<th>Provider</th>
 					<!--- <th>Provider URL</th> --->
 					<th>Plugin ID</th>
-					<th class="administration">&nbsp;</th>
+					<th class="actions">&nbsp;</th>
 				</tr>
 				<cfif rc.rsPlugins.recordcount>
 					<cfoutput query="rc.rsPlugins">
 					<tr>
-						<td class="varWidth"><a class="alt" title="view" href="#application.configBean.getContext()#/plugins/#rc.rsPlugins.directory#/">#htmlEditFormat(rc.rsPlugins.name)#</a></td>
+						<td class="var-width"><a class="alt" title="view" href="#application.configBean.getContext()#/plugins/#rc.rsPlugins.directory#/">#htmlEditFormat(rc.rsPlugins.name)#</a></td>
 						<td>#htmlEditFormat(rc.rsPlugins.directory)#</td>
 						<td>#htmlEditFormat(rc.rsPlugins.category)#</td>
 						<td>#htmlEditFormat(rc.rsPlugins.version)#</td>
 						<td><a class="alt" href="#rc.rsPlugins.providerurl#" target="_blank">#htmlEditFormat(rc.rsPlugins.provider)#</a></td>
 						<!--- <td><a href="#rc.rsPlugins.providerurl#" target="_blank">View</a></td> --->
 						<td>#rc.rsPlugins.pluginID#</td>
-						<td class="administration"><ul class="two">
+						<td class="actions"><ul class="two">
 								<li class="edit"><a title="Edit" href="index.cfm?muraAction=cSettings.editPlugin&moduleID=#rc.rsPlugins.moduleID#">Edit</a></li>
 								<li class="delete"><a title="Delete" href="index.cfm?muraAction=cSettings.deletePlugin&moduleID=#rc.rsPlugins.moduleID#" onclick="return confirmDialog('Delete #jsStringFormat("'#Ucase(rc.rsPlugins.name)#'")#?',this.href);">Delete</a></li>
 							</ul></td>

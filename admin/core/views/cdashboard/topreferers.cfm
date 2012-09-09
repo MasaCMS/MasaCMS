@@ -95,16 +95,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </form>
 
 <h3 class="alt">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.totalreferrals")#: <strong>#rstotal.referals#</strong></h3>
-<table class="table table-striped table-condensed">
+<table class="table table-striped table-condensed mura-table-grid">
 <tr>
-<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.referer")#</th>
+<th class="var-width">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.referer")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.count")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.percent")#</th>
 </tr>
 <cfif rslist.recordcount>
 <cfloop query="rslist">
 <tr>
-<td class="varWidth"><cfif rslist.referer neq 'Unknown'><a href="#rsList.referer#" target="_blank">#HTMLEditFormat(left(rslist.referer,120))#</a><cfelse>#HTMLEditFormat(rslist.referer)#</cfif></td>
+<td class="var-width"><cfif rslist.referer neq 'Unknown'><a href="#rsList.referer#" target="_blank">#HTMLEditFormat(left(rslist.referer,120))#</a><cfelse>#HTMLEditFormat(rslist.referer)#</cfif></td>
 <td>#rsList.referals#</td>
 <td>#decimalFormat((rsList.referals/rstotal.referals)*100)#%</td>
 </tr>

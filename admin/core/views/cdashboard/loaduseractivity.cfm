@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfinclude template="act_defaults.cfm">
 <cfoutput>
 <div id="userActivity" class="separate">
-	<table class="table table-striped table-condensed" id="recentActivity">
+	<table class="table table-striped table-condensed mura-table-grid" id="recentActivity">
 	<thead>
 	<tr>
 		<th colspan="2">#application.rbFactory.getKeyValue(session.rb,"dashboard.recentactivity")#</th>
@@ -71,7 +71,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</table>
 	
 	<cfif application.settingsManager.getSite(rc.siteID).getExtranet() eq 1>
-	<table class="table table-striped table-condensed" id="memberActivity">
+	<table class="table table-striped table-condensed mura-table-grid" id="memberActivity">
 	<thead>
 	<tr>
 		<th colspan="2">#application.rbFactory.getKeyValue(session.rb,"dashboard.memberactivity")#</th>

@@ -92,9 +92,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <input type="hidden" value="#HTMLEditFormat(rc.siteid)#" name="siteID"/>
 <input type="hidden" value="cDashboard.topRated" name="muraAction"/>
 </form>
-<table class="table table-striped table-condensed">
+<table class="table table-striped table-condensed mura-table-grid">
 <tr>
-<th class="varWidth">Content</th>
+<th class="var-width">Content</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.averagerating")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.votes")#</th>
 <th>&nbsp;</th>
@@ -105,10 +105,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset crumbdata=application.contentManager.getCrumbList(rsList.contentid, rc.siteid)/>
 </cfsilent>
 <tr>
-<td class="varWidth">#application.contentRenderer.dspZoom(crumbdata,rslist.fileEXT)#</td>
+<td class="var-width">#application.contentRenderer.dspZoom(crumbdata,rslist.fileEXT)#</td>
 <td><img src="images/rater/star_#application.raterManager.getStarText(rslist.theAvg)#.gif"/></td>
 <td>#rsList.theCount#</td>
-<td class="administration">
+<td class="actions">
 		<ul class="one">
 		<cfswitch expression="#rslist.type#">
 		<cfcase value="Page,Portal,Calendar,Gallery">

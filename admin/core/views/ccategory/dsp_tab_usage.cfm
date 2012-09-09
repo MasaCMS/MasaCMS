@@ -51,23 +51,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="page_aTab">
 <dl class="oneColumn">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'categorymanager.usagetext')#:</dt>
- <table class="table table-striped table-condensed">
+ <table class="table table-striped table-condensed mura-table-grid">
     <tr> 
-      <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'categorymanager.title')#</th>
+      <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'categorymanager.title')#</th>
       <th>#application.rbFactory.getKeyValue(session.rb,'categorymanager.display')#</th>
       <th>#application.rbFactory.getKeyValue(session.rb,'categorymanager.update')#</th>
-      <th class="administration">&nbsp;</th>
+      <th class="actions">&nbsp;</th>
     </tr></cfoutput>
     <cfif rsUsage.recordcount>
      <cfoutput query="rsUsage">
 		<cfset crumbdata=application.contentManager.getCrumbList(rsUsage.contentid, rc.siteid)/>
 		<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
         <tr>  
-          <td class="varWidth">#application.contentRenderer.dspZoom(crumbdata)#</td>
+          <td class="var-width">#application.contentRenderer.dspZoom(crumbdata)#</td>
 			   <td> 
 	    <cfif rsUsage.Display and (rsUsage.Display eq 1 and rsUsage.approved)>#application.rbFactory.getKeyValue(session.rb,'categorymanager.yes')#<cfelseif(rsUsage.Display eq 2 and rsUsage.approved)>#LSDateFormat(rsUsage.displaystart,session.dateKeyFormat)# - #LSDateFormat(rsUsage.displaystop,session.dateKeyFormat)#<cfelse>#application.rbFactory.getKeyValue(session.rb,'categorymanager.no')#</cfif></td>
 		<td>#LSDateFormat(rsUsage.lastupdate,session.dateKeyFormat)#</td>
-          <td class="administration"><ul class="two"><cfif verdict neq 'none'><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'categorymanager.edit')#" href="index.cfm?muraAction=cArch.edit&contenthistid=#rsUsage.ContentHistID#&contentid=#rsUsage.ContentID#&type=#rsUsage.type#&parentid=#rsUsage.parentID#&topid=#rsUsage.contentid#&siteid=#rsUsage.siteid#&moduleid=#rsUsage.moduleid#">#application.rbFactory.getKeyValue(session.rb,'categorymanager.edit')#</a></li><li class="versionHistory"><a title="#application.rbFactory.getKeyValue(session.rb,'categorymanager.versionhistory')#" href="index.cfm?muraAction=cArch.hist&contentid=#rsUsage.ContentID#&type=#rsUsage.type#&parentid=#rsUsage.parentID#&topid=#rsUsage.contentid#&siteid=#rsUsage.siteid#&moduleid=#rsUsage.moduleid#">#application.rbFactory.getKeyValue(session.rb,'categorymanager.versionhistory')#</a></li><cfelse><li class="editOff">#application.rbFactory.getKeyValue(session.rb,'categorymanager.edit')#</li><li class="versionHistoryOff">#application.rbFactory.getKeyValue(session.rb,'categorymanager.versionhistory')#</li></cfif></ul></td></tr>
+          <td class="actions"><ul class="two"><cfif verdict neq 'none'><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'categorymanager.edit')#" href="index.cfm?muraAction=cArch.edit&contenthistid=#rsUsage.ContentHistID#&contentid=#rsUsage.ContentID#&type=#rsUsage.type#&parentid=#rsUsage.parentID#&topid=#rsUsage.contentid#&siteid=#rsUsage.siteid#&moduleid=#rsUsage.moduleid#">#application.rbFactory.getKeyValue(session.rb,'categorymanager.edit')#</a></li><li class="versionHistory"><a title="#application.rbFactory.getKeyValue(session.rb,'categorymanager.versionhistory')#" href="index.cfm?muraAction=cArch.hist&contentid=#rsUsage.ContentID#&type=#rsUsage.type#&parentid=#rsUsage.parentID#&topid=#rsUsage.contentid#&siteid=#rsUsage.siteid#&moduleid=#rsUsage.moduleid#">#application.rbFactory.getKeyValue(session.rb,'categorymanager.versionhistory')#</a></li><cfelse><li class="editOff">#application.rbFactory.getKeyValue(session.rb,'categorymanager.edit')#</li><li class="versionHistoryOff">#application.rbFactory.getKeyValue(session.rb,'categorymanager.versionhistory')#</li></cfif></ul></td></tr>
        </cfoutput>
       <cfelse>
       <tr> 

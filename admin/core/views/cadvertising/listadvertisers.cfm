@@ -68,20 +68,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <li><a href="index.cfm?muraAction=cPublicUsers.editUser&userid=&siteid=#URLEncodedFormat(rc.siteid)#&groupid=#application.advertiserManager.getGroupID(rc.siteid)#&routeid=adManager">Add Advertiser</li>
 </ul> --->
 
-<table class="table table-striped table-condensed">
+<table class="table table-striped table-condensed mura-table-grid">
 <tr>
-	<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'advertising.advertiser')#</th>
+	<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'advertising.advertiser')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.contact')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.email')#</th>
-	<th class="administration">&nbsp;</th>
+	<th class="actions">&nbsp;</th>
 </tr></cfoutput>
 <cfif rc.rslist.recordcount>
 <cfoutput query="rc.rslist">
 	<tr>
-		<td class="varWidth"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?muraAction=cAdvertising.viewAdvertiser&userid=#rc.rslist.userid#&siteid=#URLEncodedFormat(rc.siteid)#">#company#</a></td>
+		<td class="var-width"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?muraAction=cAdvertising.viewAdvertiser&userid=#rc.rslist.userid#&siteid=#URLEncodedFormat(rc.siteid)#">#company#</a></td>
 		<td>#fname# #lname#</td>
 		<td><cfif email neq ''><a href="mailto:#email#">#email#</a><cfelse>&nbsp;</cfif></td>
-		<td class="administration"><ul class="advertisers"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?muraAction=cAdvertising.viewAdvertiser&userid=#rc.rslist.userid#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#</a></li></ul></td></tr>
+		<td class="actions"><ul class="advertisers"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?muraAction=cAdvertising.viewAdvertiser&userid=#rc.rslist.userid#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#</a></li></ul></td></tr>
 </cfoutput>
 <cfelse>
 <tr>

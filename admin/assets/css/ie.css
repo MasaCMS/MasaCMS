@@ -49,7 +49,7 @@ a.submit, #datePicker a.submit {
 	background: url(../images/btn.gif) no-repeat top left;
 	padding: 0 0 0 8px;
 }
-table td.administration li.rss { background: url(../images/icons/rss_14.gif) no-repeat; }
+table td.actions li.rss { background: url(../images/icons/rss_14.gif) no-repeat; }
 	
 #emailGroupsLists {
 	width: 640px;
@@ -102,16 +102,16 @@ form.sessionHistory a.submit {
 	width: 362px;
 }
 
-#mura-nodes li .admin {
+#mura-nodes li .actions {
 	width: 110px;
 	margin: 0;
 }
 
-#mura-nodes li .admin li {
+#mura-nodes li .actions li {
 	width: auto;
 }
 
-.mura-grid-hdr .admin {
+.mura-grid-hdr .actions {
 	width: 110px;
 }
 
@@ -302,30 +302,30 @@ dd.categoryAssignment input.textAlt {
 * html .addNew #newGallery a { background: url(../images/icons/ie6/smicn_24.gif) no-repeat 0px 5px; }
 * html .addNew #newGalleryItem a { background: url(../images/icons/ie6/image_24.gif) no-repeat 0px 5px; }
 
-* html table td.administration li.edit { background: url(../images/icons/ie6/edit_24.gif) no-repeat; }
-* html table td.administration li.versionHistory { background: url(../images/icons/ie6/hist_24.gif) no-repeat; }
-* html table td.administration li.permissions { background: url(../images/icons/ie6/group_24.gif) no-repeat; }
-* html table td.administration li.delete { background: url(../images/icons/ie6/remov_24.gif) no-repeat; }
-* html table td.administration li.viewReport { background: url(../images/icons/ie6/chart_24.gif) no-repeat; }
-* html table td.administration li.download { background: url(../images/icons/ie6/redo_24.gif) no-repeat; }
-* html table td.administration li.manageData { background: url(../images/icons/ie6/confg_24.gif) no-repeat; }
+* html table td.actions li.edit { background: url(../images/icons/ie6/edit_24.gif) no-repeat; }
+* html table td.actions li.versionHistory { background: url(../images/icons/ie6/hist_24.gif) no-repeat; }
+* html table td.actions li.permissions { background: url(../images/icons/ie6/group_24.gif) no-repeat; }
+* html table td.actions li.delete { background: url(../images/icons/ie6/remov_24.gif) no-repeat; }
+* html table td.actions li.viewReport { background: url(../images/icons/ie6/chart_24.gif) no-repeat; }
+* html table td.actions li.download { background: url(../images/icons/ie6/redo_24.gif) no-repeat; }
+* html table td.actions li.manageData { background: url(../images/icons/ie6/confg_24.gif) no-repeat; }
 
-* html table td.administration li.editOff { background: url(../images/icons/ie6/edit_24_off.gif) no-repeat; }
-* html table td.administration li.versionHistoryOff { background: url(../images/icons/ie6/hist_24_off.gif) no-repeat; }
-* html table td.administration li.permissionsOff { background: url(../images/icons/ie6/group_24_off.gif) no-repeat; }
-* html table td.administration li.deleteOff { background: url(../images/icons/ie6/remov_24_off.gif) no-repeat; }
+* html table td.actions li.editOff { background: url(../images/icons/ie6/edit_24_off.gif) no-repeat; }
+* html table td.actions li.versionHistoryOff { background: url(../images/icons/ie6/hist_24_off.gif) no-repeat; }
+* html table td.actions li.permissionsOff { background: url(../images/icons/ie6/group_24_off.gif) no-repeat; }
+* html table td.actions li.deleteOff { background: url(../images/icons/ie6/remov_24_off.gif) no-repeat; }
 
-* html table td.administration li.moveCopy { background: url(../images/icons/ie6/move_24.gif) no-repeat; }
-* html table td.administration li.source { background: url(../images/icons/ie6/notep_24.gif) no-repeat; }
-* html table td.administration li.rename { background: url(../images/icons/ie6/wiz_24.gif) no-repeat; }
-* html table td.administration li.viewUnzip { background: url(../images/icons/ie6/open_24.gif) no-repeat; }
-* html table td.administration li.manipulate { background: url(../images/icons/ie6/confg_24.gif) no-repeat; }
+* html table td.actions li.moveCopy { background: url(../images/icons/ie6/move_24.gif) no-repeat; }
+* html table td.actions li.source { background: url(../images/icons/ie6/notep_24.gif) no-repeat; }
+* html table td.actions li.rename { background: url(../images/icons/ie6/wiz_24.gif) no-repeat; }
+* html table td.actions li.viewUnzip { background: url(../images/icons/ie6/open_24.gif) no-repeat; }
+* html table td.actions li.manipulate { background: url(../images/icons/ie6/confg_24.gif) no-repeat; }
 
-* html table td.administration li.moveCopyOff { background: url(../images/icons/ie6/move_24_off.gif) no-repeat; }
-* html table td.administration li.sourceOff { background: url(../images/icons/ie6/notep_24_off.gif) no-repeat; }
-* html table td.administration li.renameOff { background: url(../images/icons/ie6/wiz_24_off.gif) no-repeat; }
-* html table td.administration li.viewUnzipOff { background: url(../images/icons/ie6/open_24_off.gif) no-repeat; }
-* html table td.administration li.manipulateOff { background: url(../images/icons/ie6/confg_24_off.gif) no-repeat; }
+* html table td.actions li.moveCopyOff { background: url(../images/icons/ie6/move_24_off.gif) no-repeat; }
+* html table td.actions li.sourceOff { background: url(../images/icons/ie6/notep_24_off.gif) no-repeat; }
+* html table td.actions li.renameOff { background: url(../images/icons/ie6/wiz_24_off.gif) no-repeat; }
+* html table td.actions li.viewUnzipOff { background: url(../images/icons/ie6/open_24_off.gif) no-repeat; }
+* html table td.actions li.manipulateOff { background: url(../images/icons/ie6/confg_24_off.gif) no-repeat; }
 
 * html #navZoom li.first {
     padding: 0 0 0 20px;
@@ -333,9 +333,9 @@ dd.categoryAssignment input.textAlt {
     }
     
 * html .mura-grid, * html #mura-nodes li, * html #mura-nodes dl, * html .mura-grid-hdr   { height: 1%; position: relative; width: 918px; }
-* html .mura-grid .admin li.deleteOff, * html .mura-grid .admin li.deleteOn { margin-right: 0; }
+* html .mura-grid .actions li.deleteOff, * html .mura-grid .actions li.deleteOn { margin-right: 0; }
 * html .mura-grid-hdr dt { width: 364px; }
-* html .mura-grid-hdr .admin { width: 113px; }
+* html .mura-grid-hdr .actions { width: 113px; }
 
 
 

@@ -109,9 +109,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfsilent>
 	
 	<cfoutput><h4>#month(theMonth)#/#year(theMonth)#</h4>
-	<table class="table table-striped table-condensed">
+	<table class="table table-striped table-condensed mura-table-grid">
 	<tr>
-	<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'advertising.adzone')#</th>
+	<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'advertising.adzone')#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,'advertising.creative')#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,'advertising.startdate')#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,'advertising.enddate')#</th>
@@ -125,7 +125,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<th>#application.rbFactory.getKeyValue(session.rb,'advertising.cpc')#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,'advertising.cpctotal')#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,'advertising.total')#</th>
-		<th class="administration">&nbsp;</th>
+		<th class="actions">&nbsp;</th>
 	</tr>
 		</cfoutput>
 		<cfoutput query="rsPlacements">
@@ -155,7 +155,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 	</cfsilent>
 	
 	<tr>
-				<td class="varWidth"><a href="index.cfm?muraAction=cAdvertising.editAdZone&siteid=#URLEncodedFormat(rc.siteid)#&adzoneid=#rsplacements.adzoneid#">#rsplacements.Adzone#</a></td>
+				<td class="var-width"><a href="index.cfm?muraAction=cAdvertising.editAdZone&siteid=#URLEncodedFormat(rc.siteid)#&adzoneid=#rsplacements.adzoneid#">#rsplacements.Adzone#</a></td>
 				<td><a href="index.cfm?muraAction=cAdvertising.editCreative&userid=#URLEncodedFormat(rc.userid)#&creativeid=#rsplacements.creativeid#&siteid=#URLEncodedFormat(rc.siteid)#">#rsplacements.creative#</a></td>
 				<td>#LSDateFormat(rsplacements.startdate,session.dateKeyFormat)#</td>
 				<td>#LSDateFormat(rsplacements.enddate,session.dateKeyFormat)#</td>
@@ -169,7 +169,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<td>#LSCurrencyFormat(rsplacements.costPerClick)#</td>
 				<td>#LSCurrencyFormat(rsplacements.costPerClick*Clicks)#</td>
 				<td>#LSCurrencyFormat((rsplacements.costPerClick*Clicks)+(rsplacements.costPerImp*Imps))#</td>
-				<td class="administration"><ul class="two">
+				<td class="actions"><ul class="two">
 				<li class="edit"><a title="Edit" href="index.cfm?muraAction=cAdvertising.editPlacement&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#&campaignid=#rc.campaignID#&placementid=#rsplacements.placementid#">Edit</a></li>
 				<li class="viewReport"><a title="View Placement Report" href="index.cfm?muraAction=cAdvertising.viewReportByPlacement&placementid=#rsPlacements.placementid#&campaignid=#rc.campaignid#&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#&date1=#LSDateFormat(theMonthBegin,session.dateKeyFormat)#&date2=#LSDateFormat(theMonthEnd,session.dateKeyFormat)#">View Report</a></li></ul>
 				</td>
@@ -187,7 +187,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<td>&nbsp;</td>
 				<td>#LSCurrencyFormat(cTotalClicksCost)#</td>
 				<td>#LSCurrencyFormat(cTotalImpsCost+cTotalClicksCost)#</td>
-				<td class="administration"></td>
+				<td class="actions"></td>
 				</tr>
 		</table><br />
 			</cfoutput>

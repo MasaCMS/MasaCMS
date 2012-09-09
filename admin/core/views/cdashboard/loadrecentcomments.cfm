@@ -48,12 +48,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfinclude template="act_defaults.cfm">
 <cfset comments=application.contentManager.getRecentCommentsIterator(rc.siteID,5,false) />
 <cfoutput>
-<table class="table table-striped table-condensed">
+<table class="table table-striped table-condensed mura-table-grid">
 	<thead>
 	<tr>
-		<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments")#</th>
+		<th class="var-width">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments")#</th>
 		<th class="dateTime">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments.posted")#</th>
-		<th class="administration">&nbsp;</th>
+		<th class="actions">&nbsp;</th>
 	</tr>
 	</thead>
 	<tbody>
@@ -68,9 +68,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset args=arrayNew(1)>
 			<cfset args[1]="<strong>#HTMLEditFormat(comment.getName())#</strong>">
 			<cfset args[2]="<strong>#HTMLEditFormat(content.getMenuTitle())#</strong>">
-			<td class="varWidth">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.comments.description"),args)#</td>
+			<td class="var-width">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.comments.description"),args)#</td>
 			<td class="dateTime">#LSDateFormat(comment.getEntered(),session.dateKeyFormat)# #LSTimeFormat(comment.getEntered(),"short")#</td>
-			<td class="administration">
+			<td class="actions">
 			<ul class="one">
 				<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('#JSStringFormat(content.getURL(complete=1,queryString='##comment-#comment.getCommentID()#'))#','#content.getTargetParams()#');">#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#</a></li>
 			</ul>

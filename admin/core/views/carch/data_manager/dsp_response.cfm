@@ -115,7 +115,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <input type="hidden" name="siteid" value="#HTMLEditFormat(session.siteid)#" />
 <input type="hidden" name="moduleid" value="#rc.moduleid#" />
 <input type="hidden" name="newSearch" value="1" />
-<div class="clearfix actionButtons form-actions">
+<div class="form-actions">
 	<input type="button" class="submit btn" onclick="submitForm(document.forms.download);" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.viewdata')#"/></a>
 	<input type="button" class="submit btn" onclick="location.href='index.cfm?muraAction=cArch.downloaddata&siteid=#URLEncodedFormat(rc.siteid)#&contentid=#URLEncodedFormat(rc.contentid)#&date1=' + document.download.date1.value + '&hour1=' +document.download.hour1.value + '&minute1=' +document.download.minute1.value + '&date2=' + document.download.date2.value + '&hour2=' + document.download.hour2.value + '&minute2=' + document.download.minute2.value + '&sortBy=' +  document.download.sortBy.value + '&sortDirection=' +  document.download.sortDirection.value + '&filterBy='  + document.download.filterBy.value + '&keywords=' + document.download.keywords.value + '&columns=#rc.columns#';" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.download')#">
 </div>
@@ -126,7 +126,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rsData=application.dataCollectionManager.getData(rc)/>
 </cfsilent>
 <cfif rsData.recordcount>
-<table class="table table-striped table-condensed">
+<table class="table table-striped table-condensed mura-table-grid">
 <tr>
 <th>&nbsp;</th>
 <th><cfoutput>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.datetimeentered')#</cfoutput></th>
@@ -139,7 +139,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <tr>
 <cftry>
 	<cfsilent><cfwddx action="wddx2cfml" input="#rsdata.data#" output="info"></cfsilent>
-	<td class="administration">
+	<td class="actions">
 		<ul class="two">
 			<li class="edit">
 				<a href="index.cfm?muraAction=cArch.datamanager&contentid=#URLEncodedFormat(rc.contentid)#&siteid=#URLEncodedFormat(rc.siteid)#&date1=#rc.date1#&hour1=#rc.hour1#&minute1=#rc.minute1#&date2=#rc.date2#&hour2=#rc.hour2#&minute2=#rc.minute2#&responseid=#rsdata.responseid#&action=edit&moduleid=#rc.moduleid#&sortBy=#urlEncodedFormat(rc.sortBy)#&sortDirection=#rc.sortDirection#&filterBy=#urlEncodedFormat(rc.filterBy)#&keywords=#urlEncodedFormat(rc.keywords)#">

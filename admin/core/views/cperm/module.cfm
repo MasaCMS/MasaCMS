@@ -50,19 +50,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div id="nav-module-specific" class="btn-group">
 	<a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-share-alt"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
 </div>
-<p>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"permissions.moduletext"),rc.rscontent.title)#</p>
+<p class="info">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"permissions.moduletext"),rc.rscontent.title)#</p>
   <form novalidate="novalidate"  method="post" name="form1" action="?muraAction=cPerm.updatemodule&contentid=#URLEncodedFormat(rc.contentid)#">
-        <h3 class="separate">#application.rbFactory.getKeyValue(session.rb,'user.adminusergroups')#</h3>
-		<table class="table table-striped table-condensed">
+        <h3>#application.rbFactory.getKeyValue(session.rb,'user.adminusergroups')#</h3>
+		<table class="table table-striped table-condensed mura-table-grid">
           <tr> 
             <th>#application.rbFactory.getKeyValue(session.rb,'permissions.allow')#</th>
-            <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'permissions.group')#</th>
+            <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'permissions.group')#</th>
           </tr>
 		  <cfif rc.rslist.recordcount>
           <cfloop query="rc.rslist"> 
             <tr> 
               <td><input type="checkbox" name="groupid" value="#rc.rslist.userid#"<cfif application.permUtility.getGroupPermVerdict(rc.contentid,rc.rslist.userid,'module',rc.siteid)>checked</cfif>></td>
-	      <td class="varWidth" nowrap>#rc.rslist.GroupName#</td>
+	      <td class="var-width" nowrap>#rc.rslist.GroupName#</td>
 			</tr>
 		 </cfloop>
 		<cfelse>
@@ -76,16 +76,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 <cfset rc.rslist=rc.groups.publicGroups />
  <h3 class="divide">#application.rbFactory.getKeyValue(session.rb,'user.membergroups')#</h3>		<p>#application.rbFactory.getKeyValue(session.rb,'permissions.memberpermscript')#</p>
- <table class="table table-striped table-condensed">
+ <table class="table table-striped table-condensed mura-table-grid">
     <tr> 
         <th>#application.rbFactory.getKeyValue(session.rb,'permissions.allow')#</th>
-        <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'permissions.group')#</th>
+        <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'permissions.group')#</th>
     </tr>
 	<cfif rc.rslist.recordcount>
         <cfloop query="rc.rslist"> 
             <tr> 
               	<td><input type="checkbox" name="groupid" value="#rc.rslist.userid#"<cfif application.permUtility.getGroupPermVerdict(rc.contentid,rc.rslist.userid,'module',rc.siteid)>checked</cfif>></td>
-	      		<td class="varWidth" nowrap>#rc.rslist.GroupName#</td>
+	      		<td class="var-width" nowrap>#rc.rslist.GroupName#</td>
 			</tr>
 		 </cfloop>
 	<cfelse>
@@ -96,7 +96,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         </tr>
 	</cfif>
 </table>
-<div class="actionButtons form-actions">
+<div class="form-actions">
 <input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'permissions.update')#" />
 </div>
 <input type="hidden" name="router" value="#cgi.HTTP_REFERER#">

@@ -64,24 +64,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <li><a href="index.cfm?muraAction=cAdvertising.editAdZone&adzoneid=&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.addnewadzone')#</a></li>
 </ul>
 
-<table class="table table-striped table-condensed">
+<table class="table table-striped table-condensed mura-table-grid">
 <tr>
-	<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'advertising.adzone')#</th>
+	<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'advertising.adzone')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.creativetype')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.height')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.width')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.active')#</th>
-	<th class="administration">&nbsp;</th>
+	<th class="actions">&nbsp;</th>
 </tr></cfoutput>
 <cfif rc.rslist.recordcount>
 <cfoutput query="rc.rslist">
 	<tr>
-		<td class="varWidth"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?muraAction=cAdvertising.editAdZone&adZoneid=#rc.rslist.adzoneid#&siteid=#URLEncodedFormat(rc.siteid)#">#name#</a></td>
+		<td class="var-width"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?muraAction=cAdvertising.editAdZone&adZoneid=#rc.rslist.adzoneid#&siteid=#URLEncodedFormat(rc.siteid)#">#name#</a></td>
 		<td>#creativeType#</td>
 		<td>#height#</td>
 		<td>#width#</td>
 	<td>#application.rbFactory.getKeyValue(session.rb,'advertising.#yesnoformat(isActive)#')#</td>
-		<td class="administration"><ul class="two">
+		<td class="actions"><ul class="two">
 		<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?muraAction=cAdvertising.editAdZone&adZoneid=#rc.rslist.adzoneid#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#</a></li>
 		<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.delte')#" href="index.cfm?muraAction=cAdvertising.updateAdZone&action=delete&adzoneid=#rc.rslist.adZoneid#&siteid=#URLEncodedFormat(rc.siteid)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'advertising.deleteadzoneconfirm'))#',this.href)">#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#</a></li></ul>
 		</td></tr>

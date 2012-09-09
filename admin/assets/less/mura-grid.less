@@ -6,7 +6,12 @@
 	overflow: visible; 
 }
 
+#filter-view {
+	margin: 0 0 @baseLineHeight 0;
+}
+
 #sm-modify-view .dropdown-menu, #filter-view .dropdown-menu {
+	
 	padding: 10px;
 	
 	form {
@@ -28,9 +33,6 @@
 
 }
 
-.btn-group + #filter-view {
-	margin-left: 0;
-}
 
 #sitemgr-reorder {
 
@@ -60,6 +62,10 @@
 				overflow: hidden;
 				}
 			}*/
+			
+			a {
+				color: @grayDarker;
+			}
 			
 			ol,ul {
 				margin: 0;
@@ -135,6 +141,7 @@
 				white-space: wrap;
 				padding: 4px 5px 4px 22px;
 				float: left;
+				color: @grayDarker;
 				
 			}
 			
@@ -223,14 +230,14 @@
 				width: 60px;
 			}*/
 			
-			.admin {
+			.actions {
 				width: 92px;
 				border-right: 0;
 			}
 			
-			.admin ul, td.administration ul {
+			.actions ul, td.actions ul {
 				margin: 0 auto;
-				float: left;
+				.inline-block;
 			}
 			
 			dt .add {
@@ -269,7 +276,7 @@
 				border-left: 0;
 			}
 			
-			.mura-grid-hdr dd.admin {
+			.mura-grid-hdr dd.actions {
 				border-right: 0;
 			}
 			
@@ -286,7 +293,7 @@
 			}
 			
 			.mura-grid-hdr a {
-				color: @grayDark;
+				color: @grayDarker;
 				font-weight: bold;
 				.inline-block();
 				line-height: 26px;
@@ -422,19 +429,23 @@
 		
 				
 				
-		.mura-table-grid td {
-			vertical-align: top;
-		}
+		.mura-table-grid {
+			
+			td {
+				vertical-align: top;
+				padding-top: 10px;
+			}
+			
+			td.item {
+				padding: 8px;
+				text-align: left;
+				white-space: wrap !important;
+			}
+			
+			a {
+				color: @grayDarker;
+			}
 		
-		.mura-table-grid td {
-			vertical-align: top;
-			padding-top: 10px;
-		}
-		
-		.mura-table-grid td.item {
-			padding: 8px;
-			text-align: left;
-			white-space: wrap !important;
 		}
 		
 		/* Interactions */
@@ -545,7 +556,11 @@
 			}
 		}
 		
-		.admin ul {
+		.actions {
+			position: relative;
+		}
+		
+		.actions ul {
 			padding: .35em .75em;
 			/*float: right;*/
 			position:  absolute;
@@ -558,7 +573,7 @@
 			display: none;
 		}
 		
-		tr:hover .admin ul {
+		tr:hover .actions ul {
 			display: block;
 			/*background: #fff;*/
 		}
@@ -992,8 +1007,8 @@
 		/* @end */
 		
 		
-		/* @group Admin Icons */
-		.administration ul, .admin ul {
+		/* @group Action Icons */
+		.actions ul, .actions ul {
 			margin: 0 auto;
 		}
 		
@@ -1013,7 +1028,7 @@
 			width: 72px !important;
 		}
 		
-		ul.five, ul.form, .admin ul { /* 5 Icons */
+		ul.five, ul.form { /* 5 Icons -- need .actions ul? */
 			width: 95px;
 		}
 		
@@ -1025,9 +1040,9 @@
 			width: 133px;
 		}
 		
-		.mura-grid .admin li,
-		.mura-table-grid .admin li,
-		td.administration li {
+		.mura-grid .actions li,
+		.mura-table-grid .actions li,
+		td.actions li {
 			list-style: none; 
 			float: left !important;
 			width: 14px;
@@ -1039,9 +1054,9 @@
 			border: 0;
 		}
 		
-		.mura-grid .admin a,
-		.mura-table-grid .admin li a,
-		td.administration li a {
+		.mura-grid .actions a,
+		.mura-table-grid .actions li a,
+		td.actions li a {
 			height: 18px;
 			width: 14px;
 			float: left;
@@ -1050,145 +1065,145 @@
 		
 		}
 		
-		.admin .add, .mura-grid .admin .select, table td.administration li.add, table td.administration .select {
+		.actions .add, .mura-grid .actions .select, table td.actions li.add, table td.actions .select {
 			background: url(../images/icons/add_16x16.png) no-repeat;
 		}
 		
-		.admin li.preview, table td.administration li.preview {
+		.actions li.preview, table td.actions li.preview {
 			background: url(../images/icons/opnbr_24.png) no-repeat;
 		}
 		
-		.admin li.edit, table td.administration li.edit {
+		.actions li.edit, table td.actions li.edit {
 			background: url(../images/icons/edit_24.png) no-repeat;
 		}
 		
-		.admin li.config, table td.administration li.config {
+		.actions li.config, table td.actions li.config {
 			background: url(../images/icons/apps_24.png) no-repeat;
 		}
 		
-		.admin li.versionHistory, table td.administration li.versionHistory {
+		.actions li.versionHistory, table td.actions li.versionHistory {
 			background: url(../images/icons/hist_24.png) no-repeat;
 		}
 		
-		.admin li.changeSets, table td.administration li.changeSets {
+		.actions li.changeSets, table td.actions li.changeSets {
 			background: url(../images/icons/change_set_24.png) no-repeat;
 		}
 		
 		
-		.admin li.permissions, table td.administration li.permissions {
+		.actions li.permissions, table td.actions li.permissions {
 			background: url(../images/icons/group_24.png) no-repeat;
 		}
 		
-		.admin li.delete, table td.administration li.delete {
+		.actions li.delete, table td.actions li.delete {
 			background: url(../images/icons/remov_24.png) no-repeat;
 			margin-right: 0;
 		}
 		
-		.admin li.viewDetails, table td.administration li.viewDetails {
+		.actions li.viewDetails, table td.actions li.viewDetails {
 			background: url(../images/icons/srch_24.png) no-repeat;
 		}
 		
-		.admin li.rss, table td.administration li.rss {
+		.actions li.rss, table td.actions li.rss {
 			background: url(../images/icons/rss_14.png) no-repeat;
 		}
 		
-		.admin li.viewReport, table td.administration li.viewReport {
+		.actions li.viewReport, table td.actions li.viewReport {
 			background: url(../images/icons/chart_24.png) no-repeat;
 		}
 		
-		.admin li.download, table td.administration li.download {
+		.actions li.download, table td.actions li.download {
 			background: url(../images/icons/download_24.png) no-repeat;
 		}
 		
-		.admin li.import, table td.administration li.import {
+		.actions li.import, table td.actions li.import {
 			background: url(../images/icons/download_24.png) no-repeat;
 		}
 		
-		.admin li.manageData, table td.administration li.manageData {
+		.actions li.manageData, table td.actions li.manageData {
 			background: url(../images/icons/confg_24.png) no-repeat;
 		}
 		
-		.admin li.deploy, table td.administration li.deploy {
+		.actions li.deploy, table td.actions li.deploy {
 			background: url(../images/icons/go_24.png) no-repeat;
 		}
 		
-		li.admin li.moveCopy, table td.administration li.moveCopy {
+		li.actions li.moveCopy, table td.actions li.moveCopy {
 			background: url(../images/icons/move_24.png) no-repeat;
 		}
 		
-		li.admin li.source, table td.administration li.source {
+		li.actions li.source, table td.actions li.source {
 			background: url(../images/icons/notep_24.png) no-repeat;
 		}
 		
-		.admin li.rename, table td.administration li.rename {
+		.actions li.rename, table td.actions li.rename {
 			background: url(../images/icons/wiz_24.png) no-repeat;
 		}
 		
-		.admin li.viewUnzip, table td.administration li.viewUnzip {
+		.actions li.viewUnzip, table td.actions li.viewUnzip {
 			background: url(../images/icons/open_24.png) no-repeat;
 		}
 		
-		.admin li.manipulate, table td.administration li.manipulate {
+		.actions li.manipulate, table td.actions li.manipulate {
 			background: url(../images/icons/confg_24.png) no-repeat;
 		}
 		
-		.admin li.addOff, table td.administration li.addOff {
+		.actions li.addOff, table td.actions li.addOff {
 			background: url(../images/icons/add_24_off.png) no-repeat;
 			text-indent: -999em;
 		}
 		
-		.admin li.editOff, table td.administration li.editOff {
+		.actions li.editOff, table td.actions li.editOff {
 			background: url(../images/icons/edit_24_off.png) no-repeat;
 			text-indent: -999em;
 		}
 		
-		.admin li.versionHistoryOff, table td.administration li.versionHistoryOff {
+		.actions li.versionHistoryOff, table td.actions li.versionHistoryOff {
 			background: url(../images/icons/hist_24_off.png) no-repeat;
 			text-indent: -999em;
 		}
 		
-		.admin li.permissionsOff, table td.administration li.permissionsOff {
+		.actions li.permissionsOff, table td.actions li.permissionsOff {
 			background: url(../images/icons/group_24_off.png) no-repeat;
 			text-indent: -999em;
 		}
 		
-		.admin li.deleteOff, table td.administration li.deleteOff {
+		.actions li.deleteOff, table td.actions li.deleteOff {
 			background: url(../images/icons/remov_24_off.png) no-repeat;
 			text-indent: -999em;
 			margin-right: 0;
 		}
 		
-		.admin li.moveCopyOff, table td.administration li.moveCopyOff {
+		.actions li.moveCopyOff, table td.actions li.moveCopyOff {
 			background: url(../images/icons/move_24_off.png) no-repeat;
 			text-indent: -999em;
 		}
 		
-		.admin li.sourceOff, table td.administration li.sourceOff {
+		.actions li.sourceOff, table td.actions li.sourceOff {
 			background: url(../images/icons/notep_24_off.png) no-repeat;
 			text-indent: -999em;
 		}
 		
-		.admin li.renameOff, table td.administration li.renameOff {
+		.actions li.renameOff, table td.actions li.renameOff {
 			background: url(../images/icons/wiz_24_off.png) no-repeat;
 			text-indent: -999em;
 		}
 		
-		.admin li.viewUnzipOff, table td.administration li.viewUnzipOff {
+		.actions li.viewUnzipOff, table td.actions li.viewUnzipOff {
 			background: url(../images/icons/open_24_off.png) no-repeat;
 			text-indent: -999em;
 		}
 		
-		.admin li.manipulateOff, table td.administration li.manipulateOff {
+		.actions li.manipulateOff {
 			background: url(../images/icons/confg_24_off.png) no-repeat;
 			text-indent: -999em;
 		}
 		
-		.admin li.manageDataOff, table td.administration li.manageDataOff {
+		.actions li.manageDataOff {
 			background: url(../images/icons/confg_24_off.png) no-repeat;
 			text-indent: -999em;
 		}
 		
-		.admin img.solo, td.administration img.solo {
+		.actions img.solo {
 			margin: 0 6px;
 		}
 		
@@ -1213,11 +1228,13 @@
 			white-space: nowrap;
 		}
 		
-		.admin {
+		/*
+			.actions { // Not sure what this is targeting
 			float: right;
 			margin-left: 2em;
 			position: relative;
-		}
+			}
+		*/
 		
 		/* @end */
 		
@@ -1370,151 +1387,153 @@
 		
 		/* @group Nested Heiarchical Lists - Categories */
 		
-		#ccategory ul.neston {
+		#ccategory {
+		
+		ul.neston {
 			list-style: none;
 			margin: 0 5px 0 0;
 			padding: 0;
 			background-image: none;
-			font-weight: bold;
+			/* font-weight: bold; */
 		}
 		
-		#ccategory ul.nestoff {
+		ul.nestoff {
 			list-style: none;
 			margin: 0 5px 0 0;
 			padding: 0;
-			font-weight: bold;
+			/* font-weight: bold; */
 		}
 		
-		#ccategory ul.nest1on {
+		ul.nest1on {
 			list-style: none;
 			background-image: none;
 			margin: 0 5px 0 16px;
 			padding: 0;
 		}
 		
-		#ccategory ul.nest1off {
+		ul.nest1off {
 			list-style: none;
 			margin: 0 5px 0 16px;
 			padding: 0;
 		}
 		
-		#ccategory ul.nest2on {
+		ul.nest2on {
 			list-style: none;
 			background-image: none;
 			margin: 0 5px 0 32px;
 			padding: 0;
 		}
 		
-		#ccategory ul.nest2off {
+		ul.nest2off {
 			list-style: none;
 			margin: 0 5px 0 32px;
 			padding: 0;
 		}
 		
-		#ccategory ul.nest3on {
+		ul.nest3on {
 			list-style: none;
 			background-image: none;
 			margin: 0 5px 0 48px;
 			padding: 0;
 		}
 		
-		#ccategory ul.nest3off {
+		ul.nest3off {
 			list-style: none;
 			margin: 0 5px 0 48px;
 			padding: 0;
 		}
 		
-		#ccategory ul.nest4on {
+		ul.nest4on {
 			list-style: none;
 			background-image: none;
 			margin: 0 5px 0 64px;
 			padding: 0;
 		}
 		
-		#ccategory ul.nest4off {
+		ul.nest4off {
 			list-style: none;
 			margin: 0 5px 0 64px;
 			padding: 0;
 		}
 		
-		#ccategory ul.nest5on {
+		ul.nest5on {
 			list-style: none;
 			background-image: none;
 			margin: 0 5px 0 80px;
 			padding: 0;
 		}
 		
-		#ccategory ul.nest5off {
+		ul.nest5off {
 			list-style: none;
 			margin: 0 5px 0 80px;
 			padding: 0;
 		}
 		
-		#ccategory ul.nest6on {
+		ul.nest6on {
 			list-style: none;
 			background-image: none;
 			margin: 0 5px 0 96px;
 			padding: 0;
 		}
 		
-		#ccategory ul.nest6off {
+		ul.nest6off {
 			list-style: none;
 			margin: 0 5px 0 96px;
 			padding: 0;
 		}
 		
-		#ccategory ul.nest7on {
+		ul.nest7on {
 			list-style: none;
 			background-image: none;
 			margin: 0 5px 0 112px;
 			padding: 0;
 		}
 		
-		#ccategory ul.nest7off {
+		ul.nest7off {
 			list-style: none;
 			margin: 0 5px 0 112px;
 			padding: 0;
 		}
 		
-		#ccategory ul.nest8on {
+		ul.nest8on {
 			list-style: none;
 			background-image: none;
 			margin: 0 5px 0 128px;
 			padding: 0;
 		}
 		
-		#ccategory ul.nest8off {
+		ul.nest8off {
 			list-style: none;
 			margin: 0 5px 0 128px;
 			padding: 0;
 		}
 		
-		#ccategory ul.nest9on {
+		ul.nest9on {
 			list-style: none;
 			background-image: none;
 			margin: 0 5px 0 128px;
 			padding: 0;
 		}
 		
-		#ccategory ul.nest9off {
+		ul.nest9off {
 			list-style: none;
 			margin: 0 5px 0 128px;
 			padding: 0;
 		}
 		
-		#ccategory ul.nest10on {
+		ul.nest10on {
 			list-style: none;
 			background-image: none;
 			margin: 0 5px 0 144px;
 			padding: 0;
 		}
 		
-		#ccategory ul.nest10off {
+		ul.nest10off {
 			list-style: none;
 			margin: 0 5px 0 144px;
 			padding: 0;
 		}
-		
+}	
 		/* @end */
 		
 		/* @group Site Map */
@@ -1845,253 +1864,255 @@
 			text-decoration: none;
 		}
 }
+		
+.mura-table-grid {
+	margin: 0 0 16px 0;
+	border-collapse: collapse;
+	border: 1px solid #DBDBDB;
+	clear: both;
+	width: 100%;
+}
+
+h4 + table {
+	margin-top: 1em;
+}
+
+#content #emailBroadcasts table {
+	width: 580px;
+	clear: both;
+}
+
+#siteSearch table#metadata { /*For FCKEditor PopUps*/
+	width: auto;
+}
+
+#userActivity table {
+	width: 49%;
+	float: right;
+	clear: none;
+}
+
+#userActivity #recentActivity {
+	float: left;
+}
+
+#popularContent table {
+	width: 49%;
+	float: right;
+	clear: none;
+}
+
+#popularContent #topPages{
+	float: left;
+}
+
+
+#popUp table {
+	width: 100%;
+}
+
+#ctrash table {
+	width: 920px;
+}
+
+table + .divide {
+	margin-top: 8px;
+}
+
+#cdashboard table + .divide {
+	margin-top: 0;
+}
+
+/*
+th {
+	margin: 0 !important;
+	background: #FFFEFE url(../images/bg_th.jpg) repeat-x left bottom;
+	font-style: normal;
+	color: #000;
+	padding: 4px 5px;
+	border: 1px solid #DBDBDB;
+	white-space: nowrap;
+	text-align: center;
+}
+*/
+
+.mura-table-grid th.alt {
+	text-align: left;
+	background-image: none;
+	background-color: #f9f9f9;
+	font-weight: normal;
+	border: 0;
+}
+
+#cdashboard table th, #cdashboard table td {
+	text-align: left;
+}
+
+.mura-table-grid th span {
+	font-weight: normal;
+}
+
+#cdashboard #recentcontent li {
+	margin: 0 0 .5em;
+	line-height: 1.25em;
+}
+
+.mura-table-grid td {
+	
+	padding: 4px 5px 4px 5px;
+	border-left: 1px solid #DBDBDB;
+	border-right: 1px solid #DBDBDB;
+	white-space: nowrap;
+	text-align: center;
+	width: 1%;
+}
+
+/*table table {
+	padding: 0;
+	border: 0;
+	white-space: normal;
+	background-color: transparent;
+	text-align: left;
+	width: auto;
+}
+
+table td table td {
+	padding: 0;
+	border: 0;
+	white-space: normal;
+	background-color: transparent;
+	text-align: left;
+	width: auto;
+}*/
+
+.mura-table-grid .alt td {
+	/*border: 1px solid #DBDBDB;*/
+	background-color: #fcfeff;
+}
+
+.mura-table-grid  td.email {
+	text-transform: lowercase;
+}
+
+.mura-table-grid  th.url, table td.url {
+	text-align: left;
+}
+
+.mura-table-grid  tr.alt th, .mura-table-grid  tr.alt td, .alt dl {
+	background-color: #FCFEFF;
+}
+
+.mura-table-grid .var-width {
+	width: 95%;
+	text-align: left;
+	white-space: normal;
+}
+
+
+
+.mura-table-grid td.add {
+	padding: 5px 4px 0;
+}
+
+.mura-table-grid td.add a, .mura-grid a.add {
+	display: block;
+	background: url(../images/icons/add_16x16.png) no-repeat center center;
+	width: 16px;
+	height: 16px;
+	padding: 0;
+}
+
+.mura-grid a.add { /* really only needed for ie7 */
+	width: 24px;
+	height: 28px;
+}
+
+#ccategory table td.add a, #cFeed table td.add a {
+	background: url(../images/icons/add_16x16.png) no-repeat center center;
+}
+
+/*#ccategory td.add a {
+	display: block;
+	background: url(../images/icons/new_32.png) no-repeat center center;
+	width: 12px;
+	height: 13px;
+	padding: 0;
+}*/
+
+table td.add a:hover {
+	text-decoration: none;
+}
+
+li.Page {
+	background: transparent url(../images/icons/files/icon_generic_small.gif) no-repeat;
+	margin: 0;
+}
+
+td li.Page {
+	padding: 2px 0 2px 30px;
+	background-position: 11px 1px;
+}
+
+table td.var-width li,
+table#fileList td.var-width a,
+.overview span
+ {
+	background-position: 11px 1px;
+	color: #333232;
+	text-decoration: none;
+	margin: 0;
+	padding: 2px 0 2px 30px;
+}
+
+table#fileList td.var-width a,
+.overview .type span {
+	padding: 2px 0 2px 20px;
+	background-position: 0px 1px;
+}
+
+#docTitle {
+	padding-left: 20px;
+	background-position: left center;
+}
+
+table.cfdebug {
+	width: auto !important;
+}
+
+table.cfdebug td {
+	text-align: left;
+	background: #fff;
+}
+
+table.cfdebug td a {
+	
+}
+
+.mura-row {
+	background: @white;
+}
+
+.table tbody tr:hover td,
+.table tbody tr:hover th,
+#mura-nodes dl:hover,
+.mura-row:hover {
+  background-color: @tableBackgroundHover;
+}
+
+.mura-row.alt {
+  background-color: @tableBackgroundAccent;
+}
+
+.mura-row.alt:hover {
+  background-color: @tableBackgroundHover;
+}
+
+// Category Manager
 
 #ccategory .addNew a {
 	border-bottom: 0px;
 }
-		
-		/* @end */
-		
-		/* @group Tables */
-		
-		table.mura-table-grid {
-			margin: 0 0 16px 0;
-			border-collapse: collapse;
-			border: 1px solid #DBDBDB;
-			clear: both;
-			width: 100%;
-		}
-		
-		h4 + table {
-			margin-top: 1em;
-		}
-		
-		#content #emailBroadcasts table {
-			width: 580px;
-			clear: both;
-		}
-		
-		#siteSearch table#metadata { /*For FCKEditor PopUps*/
-			width: auto;
-		}
-		
-		#userActivity table {
-			width: 49%;
-			float: right;
-			clear: none;
-		}
-		
-		#userActivity #recentActivity {
-			float: left;
-		}
-		
-		#popularContent table {
-			width: 49%;
-			float: right;
-			clear: none;
-		}
-		
-		#popularContent #topPages{
-			float: left;
-		}
-		
-		
-		#popUp table {
-			width: 100%;
-		}
-		
-		#ctrash table {
-			width: 920px;
-		}
-		
-		table + .divide {
-			margin-top: 8px;
-		}
-		
-		#cdashboard table + .divide {
-			margin-top: 0;
-		}
-		
-		/*
-		th {
-			margin: 0 !important;
-			background: #FFFEFE url(../images/bg_th.jpg) repeat-x left bottom;
-			font-style: normal;
-			color: #000;
-			padding: 4px 5px;
-			border: 1px solid #DBDBDB;
-			white-space: nowrap;
-			text-align: center;
-		}
-		*/
-		
-		.mura-table-grid th.alt {
-			text-align: left;
-			background-image: none;
-			background-color: #f9f9f9;
-			font-weight: normal;
-			border: 0;
-		}
-		
-		#cdashboard table th, #cdashboard table td {
-			text-align: left;
-		}
-		
-		.mura-table-grid th span {
-			font-weight: normal;
-		}
-		
-		#cdashboard #recentcontent li {
-			margin: 0 0 .5em;
-			line-height: 1.25em;
-		}
-		
-		.mura-table-grid td {
-			
-			padding: 4px 5px 4px 5px;
-			border-left: 1px solid #DBDBDB;
-			border-right: 1px solid #DBDBDB;
-			white-space: nowrap;
-			text-align: center;
-			width: 1%;
-		}
-		
-		/*table table {
-			padding: 0;
-			border: 0;
-			white-space: normal;
-			background-color: transparent;
-			text-align: left;
-			width: auto;
-		}
-		
-		table td table td {
-			padding: 0;
-			border: 0;
-			white-space: normal;
-			background-color: transparent;
-			text-align: left;
-			width: auto;
-		}*/
-		
-		.mura-table-grid .alt td {
-			/*border: 1px solid #DBDBDB;*/
-			background-color: #fcfeff;
-		}
-		
-		.mura-table-grid  td.email {
-			text-transform: lowercase;
-		}
-		
-		.mura-table-grid  th.url, table td.url {
-			text-align: left;
-		}
-		
-		.mura-table-grid  tr.alt th, .mura-table-grid  tr.alt td, .alt dl {
-			background-color: #FCFEFF;
-		}
-		
-		.mura-table-grid .varWidth {
-			width: 95%;
-			text-align: left;
-			white-space: normal;
-		}
-		
-		
-		
-		.mura-table-grid td.add {
-			padding: 5px 4px 0;
-		}
-		
-		.mura-table-grid td.add a, .mura-grid a.add {
-			display: block;
-			background: url(../images/icons/add_16x16.png) no-repeat center center;
-			width: 16px;
-			height: 16px;
-			padding: 0;
-		}
-		
-		.mura-grid a.add { /* really only needed for ie7 */
-			width: 24px;
-			height: 28px;
-		}
-		
-		#ccategory table td.add a, #cFeed table td.add a {
-			background: url(../images/icons/add_16x16.png) no-repeat center center;
-		}
-		
-		/*#ccategory td.add a {
-			display: block;
-			background: url(../images/icons/new_32.png) no-repeat center center;
-			width: 12px;
-			height: 13px;
-			padding: 0;
-		}*/
-		
-		table td.add a:hover {
-			text-decoration: none;
-		}
-		
-		li.Page {
-			background: transparent url(../images/icons/files/icon_generic_small.gif) no-repeat;
-			margin: 0;
-		}
-		
-		td li.Page {
-			padding: 2px 0 2px 30px;
-			background-position: 11px 1px;
-		}
-		
-		table td.varWidth li,
-		table#fileList td.varWidth a,
-		.overview span
-		 {
-			background-position: 11px 1px;
-			color: #333232;
-			text-decoration: none;
-			margin: 0;
-			padding: 2px 0 2px 30px;
-		}
-		
-		table#fileList td.varWidth a,
-		.overview .type span {
-			padding: 2px 0 2px 20px;
-			background-position: 0px 1px;
-		}
-		
-		#docTitle {
-			padding-left: 20px;
-			background-position: left center;
-		}
-		
-		table.cfdebug {
-			width: auto !important;
-		}
-		
-		table.cfdebug td {
-			text-align: left;
-			background: #fff;
-		}
-		
-		table.cfdebug td a {
-			
-		}
-		
-		.mura-row {
-			background: @white;
-		}
-		
-		.table tbody tr:hover td,
-		.table tbody tr:hover th,
-		#mura-nodes dl:hover,
-		.mura-row:hover {
-		  background-color: @tableBackgroundHover;
-		}
-		
-		.mura-row.alt {
-		  background-color: @tableBackgroundAccent;
-		}
-		
-		.mura-row.alt:hover {
-		  background-color: @tableBackgroundHover;
-		}
+
+#ccategory li {
+	padding-left: 0;
+}

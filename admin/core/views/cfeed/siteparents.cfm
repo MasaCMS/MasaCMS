@@ -56,19 +56,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfoutput>
 <br/><cfif not rc.isNew>
 <cfset rc.rsList=application.contentManager.getPrivateSearch(rc.siteid,rc.keywords)/>
- <table class="table table-striped table-condensed">
+ <table class="table table-striped table-condensed mura-table-grid">
     <tr> 
-      <th class="varWidth"><cfoutput>#application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#</cfoutput></th>
-	  <th class="administration">&nbsp;</th>
+      <th class="var-width"><cfoutput>#application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#</cfoutput></th>
+	  <th class="actions">&nbsp;</th>
     </tr><cfif rc.rslist.recordcount>
 	<tr class="alt"><cfoutput>  
 		<cfif rc.parentID neq ''>
 		<cfset parentCrumb=application.contentManager.getCrumbList(rc.parentid, rc.siteid)/>
-         <td class="varWidth">#application.contentRenderer.dspZoomNoLinks(parentCrumb)#</td>
+         <td class="var-width">#application.contentRenderer.dspZoomNoLinks(parentCrumb)#</td>
 		 <cfelse>
-		  <td class="varWidth">#application.rbFactory.getKeyValue(session.rb,'collections.noneselected')#</td>
+		  <td class="var-width">#application.rbFactory.getKeyValue(session.rb,'collections.noneselected')#</td>
 		 </cfif>
-		  <td class="administration"><input type="radio" name="parentid" value="#rc.parentid#" checked="checked"></td>
+		  <td class="actions"><input type="radio" name="parentid" value="#rc.parentid#" checked="checked"></td>
 		</tr></cfoutput>
      <cfoutput query="rc.rslist" startrow="1" maxrows="100">
 		<cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/> 
@@ -76,8 +76,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif verdict neq 'none'  and rc.parentID neq  rc.rslist.contentid and rc.rslist.type neq 'Link' and rc.rslist.type neq 'File'>	
 			<cfset counter=counter+1/>
 		<tr <cfif not(counter mod 2)>class="alt"</cfif>>  
-          <td class="varWidth">#application.contentRenderer.dspZoomNoLinks(crumbdata,rc.rslist.fileExt)#</td>
-		  <td class="administration"><input type="radio" name="parentid" value="#rc.rslist.contentid#"></td>
+          <td class="var-width">#application.contentRenderer.dspZoomNoLinks(crumbdata,rc.rslist.fileExt)#</td>
+		  <td class="actions"><input type="radio" name="parentid" value="#rc.rslist.contentid#"></td>
 		</tr>
 	 </cfif>
        </cfoutput>

@@ -575,7 +575,7 @@ function addRelatedContent(contentID,contentType,title)	{
 			row.id="c" + contentID;
 		var name = document.createElement("TD");
 			name.appendChild(document.createTextNode(title));
-			name.className="varWidth";
+			name.className="var-width";
 		var type = document.createElement("TD");
 			type.appendChild (document.createTextNode(contentType));
 		var admin = document.createElement("TD");

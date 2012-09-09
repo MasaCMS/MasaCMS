@@ -66,9 +66,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <h3>#application.rbFactory.getKeyValue(session.rb,'user.adminusergroups')#</h3>
 
 
-        <table class="table table-striped table-condensed">
+        <table class="table table-striped table-condensed mura-table-grid">
                   <tr> 
-                    <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'user.name')# (#application.rbFactory.getKeyValue(session.rb,'user.members')#)</th>
+                    <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'user.name')# (#application.rbFactory.getKeyValue(session.rb,'user.members')#)</th>
                     <th>#application.rbFactory.getKeyValue(session.rb,'user.email')#</th>
                     <th>#application.rbFactory.getKeyValue(session.rb,'user.update')#</th> 
                     <th>#application.rbFactory.getKeyValue(session.rb,'user.AuthorEditor')#</th>
@@ -76,7 +76,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                   </tr></cfoutput>
                 <cfoutput query="rc.rsgroups"> 
                   <tr> 
-                    <td class="varWidth"> 
+                    <td class="var-width"> 
                       <a title="Edit" href="index.cfm?muraAction=cPrivateUsers.editgroup&userid=#URLEncodedFormat(rc.rsgroups.userID)#&siteid=#URLEncodedFormat(rc.siteid)#">#HTMLEditFormat(rc.rsgroups.groupname)#</a>  (<cfif isNumeric(rc.rsgroups.counter)>#rc.rsgroups.counter#<cfelse>0</cfif>) 
                  </td>
                     <td> 
@@ -87,7 +87,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                     <td><cfif not rc.rsgroups.perm>
                   #LSDateFormat(rc.rsgroups.lastupdate,session.dateKeyFormat)# #LSTimeFormat(rc.rsgroups.lastupdate,"short")# <cfelse>&nbsp;</cfif></td>
                   <td><cfif not rc.rsgroups.perm>#HTMLEditFormat(rc.rsgroups.LastUpdateBy)#<cfelse>&nbsp;</cfif></td>
-                    <td class="administration"><ul class="users"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?muraAction=cPrivateUsers.editgroup&userid=#rc.rsgroups.UserID#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'user.edit')#</a></li><cfif not rc.rsgroups.perm><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'user.delete')#" href="index.cfm?muraAction=cPrivateUsers.update&action=delete&userid=#rc.rsgroups.UserID#&type=1&siteid=#URLEncodedFormat(rc.siteid)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.deletegroupconfirm'))#',this.href)">#application.rbFactory.getKeyValue(session.rb,'user.delete')#</a></li><cfelse><li class="deleteOff">#application.rbFactory.getKeyValue(session.rb,'user.delete')#</li></cfif></ul>
+                    <td class="actions"><ul class="users"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?muraAction=cPrivateUsers.editgroup&userid=#rc.rsgroups.UserID#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'user.edit')#</a></li><cfif not rc.rsgroups.perm><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'user.delete')#" href="index.cfm?muraAction=cPrivateUsers.update&action=delete&userid=#rc.rsgroups.UserID#&type=1&siteid=#URLEncodedFormat(rc.siteid)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.deletegroupconfirm'))#',this.href)">#application.rbFactory.getKeyValue(session.rb,'user.delete')#</a></li><cfelse><li class="deleteOff">#application.rbFactory.getKeyValue(session.rb,'user.delete')#</li></cfif></ul>
                   </td>
                 </tr>
                 </cfoutput> 

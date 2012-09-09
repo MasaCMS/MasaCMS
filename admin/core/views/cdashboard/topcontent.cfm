@@ -96,9 +96,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </form>
 
 <h3 class="alt">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.totalviews")#: <strong>#rstotal.hits#</strong></h3>
-<table class="table table-striped table-condensed">
+<table class="table table-striped table-condensed mura-table-grid">
 <tr>
-<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.content")#</th>
+<th class="var-width">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.content")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.views")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.percent")#</th>
 <th>&nbsp;</th>
@@ -109,10 +109,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset crumbdata=application.contentManager.getCrumbList(rsList.contentid, rc.siteid)/>
 </cfsilent>
 <tr>
-<td class="varWidth">#application.contentRenderer.dspZoom(crumbdata,rslist.fileEXT)#</td>
+<td class="var-width">#application.contentRenderer.dspZoom(crumbdata,rslist.fileEXT)#</td>
 <td>#rsList.hits#</td>
 <td>#decimalFormat((rsList.hits/rstotal.hits)*100)#%</td>
-<td class="administration">
+<td class="actions">
 <ul class="one">
 		<cfswitch expression="#rslist.type#">
 		<cfcase value="Page,Portal,Calendar,Gallery">
