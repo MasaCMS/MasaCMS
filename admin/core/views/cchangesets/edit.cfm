@@ -100,17 +100,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div class="actionButtons form-actions">
   <cfif rc.changesetID eq ''>
-    <input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'changesets.add')#" /><input type=hidden name="changesetID" value="">
+    <input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'changesets.add')#" />
   <cfelse>
     <input type="button" class="submit btn" value="#application.rbFactory.getKeyValue(session.rb,'changesets.delete')#" onclick="confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'changesets.deleteconfirm'))#','index.cfm?muraAction=cChangesets.delete&changesetID=#rc.changeset.getchangesetID()#&siteid=#URLEncodedFormat(rc.changeset.getSiteID())#')" /> 
     <input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'changesets.update')#" />
     <cfif not rc.changeset.getPublished()>
       <input type="button" class="submit btn" value="#application.rbFactory.getKeyValue(session.rb,'changesets.publishnow')#" onclick="confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'changesets.publishnowconfirm'))#','index.cfm?muraAction=cChangesets.publish&changesetID=#rc.changeset.getchangesetID()#&siteid=#URLEncodedFormat(rc.changeset.getSiteID())#')" /> 
-    </cfif>
-     <input type=hidden name="changesetID" value="#rc.changeset.getchangesetID()#">
+    </cfif>   
   </cfif>
-  <input type="hidden" name="action" value="">
 </div>
+<cfif rc.changesetID eq ''>
+<input type="hidden" name="changesetID" value="">
+<cfelse>
+<input type="hidden" name="changesetID" value="#rc.changeset.getchangesetID()#">
+</cfif>
+<input type="hidden" name="action" value="">
 </form>
 </cfoutput>
 

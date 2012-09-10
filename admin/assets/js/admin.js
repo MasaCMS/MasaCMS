@@ -606,12 +606,13 @@ function submitForm(frm,action,msg){
 			jQuery('#actionIndicator').show();
 			jQuery('.actionButtons').hide();
 		} else{
-			jQuery('.actionButtons').each(function(){
+			jQuery('.actionButtons,.form-actions').each(function(){
 				jQuery(this).html(
-					'<div style="display:none;">' 
+					'<img src="./assets/images/progress_bar.gif">'
+					+ '<div style="display:none;">' 
 					+ jQuery(this).html() 
 					+ '</div>'
-					+ '<img src="./assets/images/progress_bar.gif">'
+					
 				);
 			});
 
@@ -1024,3 +1025,14 @@ function openPreviewDialog(previewURL){
 
 	   return false;
 }
+
+function preloadimages(arr){
+    var newimages=[]
+    var arr=(typeof arr!="object")? [arr] : arr //force arr parameter to always be an array
+    for (var i=0; i<arr.length; i++){
+        newimages[i]=new Image()
+        newimages[i].src=arr[i]
+    }
+}
+
+preloadimages(['./assets/images/progress_bar.gif']);
