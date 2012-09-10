@@ -38,17 +38,6 @@
 	padding-left: 3px;
 }
 
-.table td {
-	vertical-align: middle;
-}
-
-.table-bordered th {
-	#gradient .vertical(#FAFAFA,#E9E9E9);
-	font-size: 10px;
-	color: #444;
-	text-transform: uppercase;
-}
-
 // Override bootstrap classes
 
 .btn i {
@@ -147,9 +136,14 @@ div.tooltip {
 	.alert-error;
 	}
 
+.info {
+	.alert;
+	.alert-info;
+	}
+
 .separate {
-	clear: both;
 	.clearfix;
+	clear: both;
 	margin-bottom: @baseLineHeight + 4px;
 	padding-bottom: @baseLineHeight;
 	background: url(../images/rule_dotted_big.gif) repeat-x bottom;

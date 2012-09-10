@@ -73,10 +73,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cfoutput>
 <cfoutput>
-<table class="table table-striped table-condensed">
-  <tr><th nowrap class="varWidth">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.title')#</th>
+<table class="table table-striped table-condensed mura-table-grid">
+<thead>
+  <tr><th class="var-width">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.title')#</th>
 <cfif rc.contentBean.getType() eq "file" and stats.getMajorVersion()><th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.file')#</th></cfif>
-<th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.notes')#</th>
+<th class="notes">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.notes')#</th>
 <cfif hasChangesets><th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.changeset')#</th></cfif> 
 <th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.status')#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.display')#</th>
@@ -86,7 +87,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.update')#</th> 
 <th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.time')#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.authoreditor')#</th> </cfoutput>
-<th nowrap class="administration">&nbsp;</th> </tr> 
+<th nowrap class="actions">&nbsp;</th>
+</tr> 
+</thead>
+<tbody>
 <cfoutput query="rc.rshist">
 <cfsilent>
 <cfif rc.rshist.active and rc.rshist.approved>
@@ -100,13 +104,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset versionStatus=application.rbFactory.getKeyValue(session.rb,'sitemanager.content.archived')>
 </cfif>
 </cfsilent> 
-<tr><td class="varWidth">
-<a title="Edit" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rshist.ContenthistID#&contentid=#rc.rshist.ContentID#&type=#rc.type#&parentid=#URLEncodedFormat(rc.parentid)#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&startrow=#rc.startrow#&moduleid=#rc.moduleid#&return=hist&compactDisplay=#rc.compactDisplay#">#HTMLEditFormat(left(rc.rshist.menutitle,90))#</a>
+<tr>
+<td class="title var-width">
+	<a title="Edit" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rshist.ContenthistID#&contentid=#rc.rshist.ContentID#&type=#rc.type#&parentid=#URLEncodedFormat(rc.parentid)#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&startrow=#rc.startrow#&moduleid=#rc.moduleid#&return=hist&compactDisplay=#rc.compactDisplay#">#HTMLEditFormat(left(rc.rshist.menutitle,90))#</a>
 </td>
-<cfif rc.contentBean.getType() eq "file" and stats.getMajorVersion()><td><cfif rc.rshist.majorversion>#rc.rshist.majorversion#.#rc.rshist.minorversion#<cfelse>&nbsp;</cfif></td></cfif>
-<td class="title"><cfif rc.rsHist.notes neq ''><a class="expand">View&nbsp;Note<span>#application.contentRenderer.setParagraphs(htmleditformat(rc.rshist.notes))#</span></a></cfif></td>
+<cfif rc.contentBean.getType() eq "file" and stats.getMajorVersion()>
+	<td>
+	<cfif rc.rshist.majorversion>
+		#rc.rshist.majorversion#.#rc.rshist.minorversion#
+		<cfelse>&nbsp;
+	</cfif>
+	</td>
+</cfif>
+<td class="notes"><cfif rc.rsHist.notes neq ''><a rel="tooltip" data-original-title="#application.contentRenderer.setParagraphs(htmleditformat(rc.rshist.notes))#">View&nbsp;Note</a></cfif></td>
 <cfif hasChangesets><td class="changeset"><cfif isDate(rc.rshist.changesetPublishDate)><a href="##" rel="tooltip" title="#HTMLEditFormat(LSDateFormat(rc.rshist.changesetPublishDate,"short"))#"> <i class="icon-info-sign"></i></a></cfif>#HTMLEditFormat(rc.rshist.changesetName)#</td></cfif> 
-<td nowrap class="status">#versionStatus#</td> 
+<td class="status">#versionStatus#</td> 
 <td class="display<cfif rc.rshist.Display eq 2> scheduled</cfif>"> 
 	<cfif rc.rshist.Display eq 1>
       #application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#
@@ -116,7 +128,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
        #application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#
      </cfif>
 </td>
-<cfif rc.contentBean.getType() neq "file"><td> #application.rbFactory.getKeyValue(session.rb,'sitemanager.#lcase(rc.rshist.inheritobjects)#')#</td></cfif>
+<cfif rc.contentBean.getType() neq "file">
+	<td class="objects">#application.rbFactory.getKeyValue(session.rb,'sitemanager.#lcase(rc.rshist.inheritobjects)#')#</td>
+</cfif>
 <td class="feature<cfif rc.rshist.isfeature eq 2>> scheduled</cfif>"> 
 	<cfif rc.rshist.isfeature eq 1>
 			#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#
@@ -126,11 +140,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#
 		</cfif>
 </td>
- <td> #application.rbFactory.getKeyValue(session.rb,'sitemanager.#yesnoformat(rc.rshist.isnav)#')#</td>
-<td>#LSDateFormat(rc.rshist.lastupdate,session.dateKeyFormat)#</td> 
-<td>#LSTimeFormat(rc.rshist.lastupdate,"short")#</td>
-<td>#HTMLEditFormat(rc.rshist.lastUpdateBy)#</td> 
-<td class="administration"><ul class="three"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rshist.ContenthistID#&contentid=#rc.rshist.ContentID#&type=#rc.type#&parentid=#URLEncodedFormat(rc.parentid)#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&startrow=#rc.startrow#&moduleid=#rc.moduleid#&return=hist&compactDisplay=#rc.compactDisplay#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#</a></li>
+<td class="nav-display">#application.rbFactory.getKeyValue(session.rb,'sitemanager.#yesnoformat(rc.rshist.isnav)#')#</td>
+<td class="last-updated">#LSDateFormat(rc.rshist.lastupdate,session.dateKeyFormat)#</td> 
+<td class="time">#LSTimeFormat(rc.rshist.lastupdate,"short")#</td>
+<td class="user">#HTMLEditFormat(rc.rshist.lastUpdateBy)#</td> 
+<td class="actions"><ul class="three"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rshist.ContenthistID#&contentid=#rc.rshist.ContentID#&type=#rc.type#&parentid=#URLEncodedFormat(rc.parentid)#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&startrow=#rc.startrow#&moduleid=#rc.moduleid#&return=hist&compactDisplay=#rc.compactDisplay#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#</a></li>
 <cfswitch expression="#rc.rsHist.type#">
 <cfcase value="Page,Portal,Calendar,Gallery,Link">
 <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?previewid=#rc.rshist.contenthistid#&contentid=#URLEncodedFormat(rc.contentid)#','#rc.rshist.TargetParams#');">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.preview')#</a></li>
@@ -139,5 +153,4 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/?fileID=#rc.rshist.fileid#');">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.preview')#</a></li>
 </cfcase>
 </cfswitch>
-<cfif not rc.rshist.active and (rc.perm neq 'none')><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" href="index.cfm?muraAction=cArch.update&contenthistid=#rc.rshist.ContentHistID#&action=delete&contentid=#URLEncodedFormat(rc.contentid)#&type=#rc.type#&parentid=#URLEncodedFormat(rc.parentid)#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&startrow=#rc.startrow#&moduleid=#rc.moduleid#&compactDisplay=#rc.compactDisplay#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deleteversionconfirm'))#',this.href)">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#</a></li><cfelse><li class="deleteOff">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#</li></cfif></ul></td></tr></cfoutput></table>
-</td></tr></table>
+<cfif not rc.rshist.active and (rc.perm neq 'none')><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" href="index.cfm?muraAction=cArch.update&contenthistid=#rc.rshist.ContentHistID#&action=delete&contentid=#URLEncodedFormat(rc.contentid)#&type=#rc.type#&parentid=#URLEncodedFormat(rc.parentid)#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&startrow=#rc.startrow#&moduleid=#rc.moduleid#&compactDisplay=#rc.compactDisplay#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deleteversionconfirm'))#',this.href)">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#</a></li><cfelse><li class="deleteOff">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#</li></cfif></ul></td></tr></cfoutput></tbody></table>

@@ -165,7 +165,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<tr>
 			<th></th>
 		  	<th class="item">#application.rbFactory.getKeyValue(session.rb,"sitemanager.item")#</th>
-			<!---<th nowrap class="administration">&nbsp;</th>--->
+			<!---<th nowrap class="actions">&nbsp;</th>--->
 		</tr> 
 	 	<cfif iterator.hasNext()>
 		<cfloop condition="iterator.hasNext()">
@@ -187,9 +187,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfsilent>	
 		<tr data-siteid="#item.getSiteID()#" data-contentid="#item.getContentID()#" data-contenthistid="#item.getContentHistID()#" data-sortby="#item.getSortBy()#" data-sortdirection="#item.getSortDirection()#" data-moduleid="#HTMLEditFormat(item.getModuleID())#" data-type="#item.getType()#">
 			<td class="add"><a class="add" href="javascript:;" onmouseover="showMenu('newContentMenu','#newcontent#',this,'#item.getContentID()#','#item.getContentID()#','#item.getContentID()#','#item.getSiteID()#','#item.getType()#');"></a></td>
-			<td class="varWidth item">
+			<td class="var-width item">
 			
-			<div class="admin">
+			<div class="actions">
 				<ul class="siteSummary <cfif item.gettype() neq 'File'>five<cfelse>six</cfif>">
 					<cfif not listFindNoCase('none,read',verdict)>
 				     <li class="edit"><a title="Edit" class="draftprompt" href="#editLink#">Edit</a></li>

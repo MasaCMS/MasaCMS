@@ -47,27 +47,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <cfset started=false>
 <div id="tab#ucase(replace(local.category,' ','','all'))#" class="tab-pane fade">
-<table class="table table-striped table-condensed">
+<table class="table table-striped table-condensed mura-table-grid">
 <tr>
-<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,"plugin.name")#</th>
+<th class="var-width">#application.rbFactory.getKeyValue(session.rb,"plugin.name")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"plugin.directory")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"plugin.category")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"plugin.version")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"plugin.provider")#</th>
 <!--- <th>#application.rbFactory.getKeyValue(session.rb,"plugin.providerurl")#</th> --->
 <th>Plugin ID</th>
-<th class="administration">&nbsp;</th>
+<th class="actions">&nbsp;</th>
 </tr>
 <cfloop query="rscategorylist">
 	<cfset started=true>
 	<tr>
-	<td class="varWidth"><a class="alt" href="#application.configBean.getContext()#/plugins/#rscategorylist.directory#/">#htmlEditFormat(rscategorylist.name)#</a></td>
+	<td class="var-width"><a class="alt" href="#application.configBean.getContext()#/plugins/#rscategorylist.directory#/">#htmlEditFormat(rscategorylist.name)#</a></td>
 	<td>#htmlEditFormat(rscategorylist.directory)#</td>
 	<td>#htmlEditFormat(rscategorylist.category)#</td>
 	<td>#htmlEditFormat(rscategorylist.version)#</td>
 	<td><a class="alt" href="#rscategorylist.providerurl#" target="_blank">#htmlEditFormat(rscategorylist.provider)#</a></td>
 	<td>#rscategorylist.pluginID#</td>
-	<td class="administration">
+	<td class="actions">
 	<ul class="two">
 	<cfif listFind(session.mura.memberships,'S2')>
 		<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'plugin.edit')#" href="index.cfm?muraAction=cSettings.editPlugin&moduleID=#rscategorylist.moduleID#">#application.rbFactory.getKeyValue(session.rb,'plugin.edit')#</a></li>

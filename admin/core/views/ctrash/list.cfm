@@ -67,28 +67,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <a class="btn" href="index.cfm?muraAction=cTrash.empty&siteID=#URLEncodedFormat(rc.siteID)#" onclick="return confirmDialog('Empty Site Trash?', this.href);">Empty Trash</a>
 </div>
 
-<table class="table table-striped table-condensed"> 
+<table class="table table-striped table-condensed mura-table-grid"> 
 <tr>
-<th class="varWidth">Label</th>
+<th class="var-width">Label</th>
 <th>Type</th>
 <th>SubType</th>
 <th>SiteID</th>
 <th>Date Deleted</th>
 <th>Date By</th>
-<th class="administration">&nbsp;</th>
+<th class="actions">&nbsp;</th>
 </tr>
 <cfset rc.trashIterator.setPage(rc.pageNum)>
 <cfif rc.trashIterator.hasNext()>
 <cfloop condition="rc.trashIterator.hasNext()">
 <cfset trashItem=rc.trashIterator.next()>
 <tr>
-<td class="varWidth"><a href="?muraAction=cTrash.detail&objectID=#trashItem.getObjectID()#&keywords=#URLEncodedFormat(rc.keywords)#&pageNum=#URLEncodedFormat(rc.pageNum)#">#htmlEditFormat(left(trashItem.getObjectLabel(),80))#</a></td>
+<td class="var-width"><a href="?muraAction=cTrash.detail&objectID=#trashItem.getObjectID()#&keywords=#URLEncodedFormat(rc.keywords)#&pageNum=#URLEncodedFormat(rc.pageNum)#">#htmlEditFormat(left(trashItem.getObjectLabel(),80))#</a></td>
 <td>#htmlEditFormat(trashItem.getObjectType())#</td>
 <td>#htmlEditFormat(trashItem.getObjectSubType())#</td>
 <td>#htmlEditFormat(trashItem.getSiteID())#</td>
 <td>#LSDateFormat(trashItem.getDeletedDate(),session.dateKeyFormat)# #LSTimeFormat(trashItem.getDeletedDate(),"short")#</td>
 <td>#htmlEditFormat(trashItem.getDeletedBy())#</td>
-<td class="administration"><ul><li class="edit"><a href="?muraAction=cTrash.detail&objectID=#trashItem.getObjectID()#&keywords=#URLEncodedFormat(rc.keywords)#&pageNum=#URLEncodedFormat(rc.pageNum)#">View Detail</a></li></ul></td>
+<td class="actions"><ul><li class="edit"><a href="?muraAction=cTrash.detail&objectID=#trashItem.getObjectID()#&keywords=#URLEncodedFormat(rc.keywords)#&pageNum=#URLEncodedFormat(rc.pageNum)#">View Detail</a></li></ul></td>
 </tr>
 </cfloop>
 <cfelse>

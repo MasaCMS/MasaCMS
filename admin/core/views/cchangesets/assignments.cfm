@@ -68,10 +68,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h4>#application.rbFactory.getKeyValue(session.rb,'changesets.previewlink')#</h4>
 <p><a title="Preview" href="##" onclick="return preview('#JSStringFormat(rc.previewLink)#','');">#HTMLEditFormat(rc.previewLink)#</a></p>
 <h4>#application.rbFactory.getKeyValue(session.rb,'changesets.sitearchitecture')#</h4>
- <table class="table table-striped table-condensed">
+ <table class="table table-striped table-condensed mura-table-grid">
     <tr> 
-      <th class="varWidth">Title</th>
-      <th class="administration">&nbsp;</th>
+      <th class="var-width">Title</th>
+      <th class="actions">&nbsp;</th>
     </tr>
     <cfif rc.rslist.recordcount>
      <cfloop query="rc.rslist">
@@ -80,8 +80,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
 		</cfsilent>
         <tr>  
-          <td class="title varWidth">#application.contentRenderer.dspZoom(crumbdata,rc.rsList.fileExt)#</td>
- 		  <td class="administration">
+          <td class="title var-width">#application.contentRenderer.dspZoom(crumbdata,rc.rsList.fileExt)#</td>
+ 		  <td class="actions">
 		<ul class="four">
 		<cfif verdict neq 'none'>
        		<li class="edit"><a title="Edit" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#URLEncodedFormat(rc.rslist.contentID)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.rslist.moduleid#&startrow=#rc.startrow#&return=changesets">Edit</a></li> 	
@@ -107,10 +107,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset rc.rslist=rc.componentAssignments.getQuery()>
 <h4>#application.rbFactory.getKeyValue(session.rb,'changesets.components')#</h4>
- <table class="table table-striped table-condensed">
+ <table class="table table-striped table-condensed mura-table-grid">
     <tr> 
-      <th class="varWidth">Title</th>
-      <th class="administration">&nbsp;</th>
+      <th class="var-width">Title</th>
+      <th class="actions">&nbsp;</th>
     </tr>
     <cfif rc.rslist.recordcount>
      <cfloop query="rc.rslist">
@@ -120,8 +120,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <cfset editlink="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.rslist.moduleid#&startrow=#rc.startrow#&return=changesets">
 		</cfsilent>
         <tr>  
-          <td class="title varWidth"><a href="#editlink#">#HTMLEditFormat(rc.rsList.title)#</a></td>
- 		  <td class="administration">
+          <td class="title var-width"><a href="#editlink#">#HTMLEditFormat(rc.rsList.title)#</a></td>
+ 		  <td class="actions">
 		<ul class="three">
 		<cfif verdict neq 'none'>
        		<li class="edit"><a title="Edit" href="#editlink#">Edit</a></li> 	
@@ -146,10 +146,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset rc.rslist=rc.formAssignments.getQuery()>
 <h4>#application.rbFactory.getKeyValue(session.rb,'changesets.forms')#</h4>
- <table class="table table-striped table-condensed">
+ <table class="table table-striped table-condensed mura-table-grid">
     <tr> 
-      <th class="varWidth">Title</th>
-      <th class="administration">&nbsp;</th>
+      <th class="var-width">Title</th>
+      <th class="actions">&nbsp;</th>
     </tr>
     <cfif rc.rslist.recordcount>
      <cfloop query="rc.rslist">
@@ -159,8 +159,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <cfset editlink="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.rslist.moduleid#&startrow=#rc.startrow#&return=changesets">
     </cfsilent>
         <tr>  
-          <td class="title varWidth"><a href="#editlink#">#HTMLEditFormat(rc.rsList.title)#</a></td>
-      <td class="administration">
+          <td class="title var-width"><a href="#editlink#">#HTMLEditFormat(rc.rsList.title)#</a></td>
+      <td class="actions">
     <ul class="three">
     <cfif verdict neq 'none'>
           <li class="edit"><a title="Edit" href="#editlink#">Edit;</a></li>  

@@ -94,7 +94,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfset rsList=application.dashboardManager.getTopKeywords(rc.siteID,3,false,"All",rc.startDate,rc.stopDate) />
 <cfset count=rsList.recordcount>
-<table class="table table-striped table-condensed" id="topSearches">
+<table class="table table-striped table-condensed mura-table-grid" id="topSearches">
 <thead>
 <tr>
 	<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.topsearches")# <a href="index.cfm?muraAction=cDashboard.topSearches&siteid=#URLEncodedFormat(rc.siteid)#&startDate=#URLEncodedFormat(rc.startDate)#&stopDate=#URLEncodedFormat(rc.stopDate)#">(View Report)</a></th>

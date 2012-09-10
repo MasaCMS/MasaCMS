@@ -1,6 +1,41 @@
-table {
+.table {
+
 	.table-bordered;
 	.border-radius(0) !important;
+
+	td, th {
+		font-size: @baseFontSize;
+		.border-radius(0) !important;
+		text-align: center;
+		color: @grayDarker;
+		}
+
+	th {
+		#gradient .vertical(#fffefe,#f5f5f5);
+		color: @grayDarker;
+		text-transform: none;
+		font-weight: bold;
+		white-space: nowrap;
+		}
+		
+	td {
+		vertical-align: middle;
+		}
+	
+	a {
+		color: @grayDarker;
+		}
+
+}
+
+.table { //Exceptions
+	
+	.time {
+		white-space: nowrap;
+	}
+	
+	
+	
 }
 
 table.cke_editor {
@@ -10,27 +45,3 @@ table.cke_editor {
 		border: 0;
 	}
 }
-
-table td, table th {
-	font-size: @baseFontSize;
-	.border-radius(0) !important;
-}
-.table th {
-	#gradient .vertical(#fffefe,#f5f5f5);
-	color: #444;
-	text-transform: none;
-	font-weight: bold;
-	
-	a {
-		color: #444;
-		font-weight: bold;
-	}
-}
-.table td {
-	vertical-align: middle;
-}
-
-.table a {
-	font-weight: normal;
-}
-

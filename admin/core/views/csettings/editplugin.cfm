@@ -296,7 +296,7 @@ and fileExists(licenseFile)>
 <input name="package" type="hidden" value="#htmlEditFormat(package)#"/>
 <input type="hidden" name="moduleID" value="#rc.moduleID#">
 </cfoutput>
-<div class="actionButtons form-actions">
+<div class="form-actions">
 <input type="submit" class="btn" value="Update">
 </div>
 </form>

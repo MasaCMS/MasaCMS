@@ -50,15 +50,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfinclude template="dsp_secondary_menu.cfm">
 
-<table class="table table-striped table-condensed"> 
+<table class="table table-striped table-condensed mura-table-grid"> 
+<thead>
 <tr>
 <th class="add">&nbsp;</td>
-<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,"categorymanager.category")#</th>
+<th class="var-width">#application.rbFactory.getKeyValue(session.rb,"categorymanager.category")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"categorymanager.assignable")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"categorymanager.interestgroup")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"categorymanager.active")#</th>
-<th class="administration">&nbsp;</th>
+<th class="actions">&nbsp;</th>
 </tr>
+<thead>
+<tbody class="nest">
 <cf_dsp_nest siteID="#rc.siteID#" parentID="" nestLevel="0" >
+</tbody>
 </table>
 </cfoutput>

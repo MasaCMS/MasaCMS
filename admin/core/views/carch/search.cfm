@@ -64,13 +64,13 @@ copyContentID = '#session.copyContentID#';
 copySiteID = '#session.copySiteID#';
 </script>
 </cfoutput>
- <table class="table table-striped table-condensed">
+ <table class="table table-striped table-condensed mura-table-grid">
     <tr> 
 	  <th>&nbsp;</th>
-      <th class="varWidth">Title</th>
+      <th class="var-width">Title</th>
       <th>Display</th>
       <th>Update</th>
-      <th class="administration">&nbsp;</th>
+      <th class="actions">&nbsp;</th>
     </tr>
     <cfif rc.rslist.recordcount>
      <cfoutput query="rc.rslist" maxrows="#rc.nextn.recordsperPage#" startrow="#rc.startrow#">
@@ -103,12 +103,12 @@ copySiteID = '#session.copySiteID#';
 	<!---<cfelse>
 		&nbsp;
 	</cfif>---></td>
-          <td class="title varWidth">#application.contentRenderer.dspZoom(crumbdata,rc.rsList.fileExt)#</td>
+          <td class="title var-width">#application.contentRenderer.dspZoom(crumbdata,rc.rsList.fileExt)#</td>
 			   <td> 
 	    <cfif rc.rslist.Display and (rc.rslist.Display eq 1 and rc.rslist.approved and rc.rslist.approved)>Yes<cfelseif(rc.rslist.Display eq 2 and rc.rslist.approved and rc.rslist.approved)>#LSDateFormat(rc.rslist.displaystart,session.dateKeyFormat)# - #LSDateFormat(rc.rslist.displaystop,session.dateKeyFormat)#<cfelse>No</cfif></td>
 		<td>#LSDateFormat(rc.rslist.lastupdate,session.dateKeyFormat)#</td>
         
- <td class="administration"><ul class="siteSummary five"><cfif not listFindNoCase('none,read',verdict)>
+ <td class="actions"><ul class="siteSummary five"><cfif not listFindNoCase('none,read',verdict)>
        <li class="edit"><a title="Edit" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&startrow=#rc.startrow#">&nbsp;</a></li>
 	   <cfswitch expression="#rc.rsList.type#">
 		<cfcase value="Page,Portal,Calendar,Gallery">

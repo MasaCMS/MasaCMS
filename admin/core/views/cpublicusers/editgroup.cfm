@@ -54,7 +54,7 @@ select * from rsSubTypes where subType <> 'Default'
 
 <cfsavecontent variable="actionButtons">
 <cfoutput>
-<div class="alt form-actions actionButtons">
+<div class="alt form-actions">
 <cfif rc.userid eq ''>
 <input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'user.add')#" />
 <cfelse>
@@ -181,9 +181,9 @@ select * from rsSubTypes where subType <> 'Default'
 </cfoutput>
 </form>
       <cfif rc.userid neq ''><cfoutput><h3 class="separate">#application.rbFactory.getKeyValue(session.rb,'user.groupmembers')#</h3> 
-        <table class="table table-striped table-condensed">
+        <table class="table table-striped table-condensed mura-table-grid">
             <tr> 
-              <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'user.name')#</th>
+              <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'user.name')#</th>
               <th>#application.rbFactory.getKeyValue(session.rb,'user.email')#</th>
               <th>#application.rbFactory.getKeyValue(session.rb,'user.update')#</th>
 			  <th>#application.rbFactory.getKeyValue(session.rb,'user.time')#</th>
@@ -193,12 +193,12 @@ select * from rsSubTypes where subType <> 'Default'
           <cfif rc.rsgrouplist.recordcount>
             <cfoutput query="rc.rsgrouplist" maxrows="#rc.nextN.recordsperPage#" startrow="#rc.startrow#"> 
 			  <tr> 
-                <td class="varWidth"><a href="index.cfm?muraAction=#iif(rc.rsgrouplist.isPublic,de('cPublicUsers'),de('cPublicUsers'))#.edituser&userid=#rc.rsgrouplist.UserID#&routeid=#rc.userid#&siteid=#URLEncodedFormat(rc.siteid)#">#HTMLEditFormat(rc.rsgrouplist.lname)#, #HTMLEditFormat(rc.rsgrouplist.fname)# <cfif rc.rsgrouplist.company neq ''> (#HTMLEditFormat(rc.rsgrouplist.company)#)</cfif></a></td>
+                <td class="var-width"><a href="index.cfm?muraAction=#iif(rc.rsgrouplist.isPublic,de('cPublicUsers'),de('cPublicUsers'))#.edituser&userid=#rc.rsgrouplist.UserID#&routeid=#rc.userid#&siteid=#URLEncodedFormat(rc.siteid)#">#HTMLEditFormat(rc.rsgrouplist.lname)#, #HTMLEditFormat(rc.rsgrouplist.fname)# <cfif rc.rsgrouplist.company neq ''> (#HTMLEditFormat(rc.rsgrouplist.company)#)</cfif></a></td>
                 <td><cfif rc.rsgrouplist.email gt ""><a href="mailto:#rc.rsgrouplist.email#">#email#</a><cfelse>&nbsp;</cfif></td>
                 <td>#LSDateFormat(rc.rsgrouplist.lastupdate,session.dateKeyFormat)#</td>
 				<td>#LSTimeFormat(rc.rsgrouplist.lastupdate,"short")#</td>
               <td>#rc.rsgrouplist.LastUpdateBy#</td>
-                <td class="administration"><ul class="group"><li class="edit"><a href="index.cfm?muraAction=#iif(rc.rsgrouplist.isPublic,de('cPublicUsers'),de('cPublicUsers'))#.edituser&userid=#rc.rsgrouplist.UserID#&routeid=#rc.userid#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'user.edit')#</a></li><li class="delete"><a href="index.cfm?muraAction=cPublicUsers.removefromgroup&userid=#rc.rsgrouplist.UserID#&routeid=#rc.userid#&groupid=#rc.userid#&siteid=#URLEncodedFormat(rc.siteid)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.removeconfirm'))#',this.href)">#application.rbFactory.getKeyValue(session.rb,'user.remove')#</a></li></ul></td>
+                <td class="actions"><ul class="group"><li class="edit"><a href="index.cfm?muraAction=#iif(rc.rsgrouplist.isPublic,de('cPublicUsers'),de('cPublicUsers'))#.edituser&userid=#rc.rsgrouplist.UserID#&routeid=#rc.userid#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'user.edit')#</a></li><li class="delete"><a href="index.cfm?muraAction=cPublicUsers.removefromgroup&userid=#rc.rsgrouplist.UserID#&routeid=#rc.userid#&groupid=#rc.userid#&siteid=#URLEncodedFormat(rc.siteid)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.removeconfirm'))#',this.href)">#application.rbFactory.getKeyValue(session.rb,'user.remove')#</a></li></ul></td>
               </tr>
             </cfoutput> 
 	

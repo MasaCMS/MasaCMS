@@ -83,7 +83,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cfloop>
 
-<div class="actionButtons form-actions">
+<div class="form-actions">
 <input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.update')#" /><input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'delete','This');" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponse')#" />
 </div>
 <input type="hidden" name="formid" value="#HTMLEditFormat(rc.contentid)#">

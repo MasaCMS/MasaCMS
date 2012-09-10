@@ -215,7 +215,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <table id="contentFilters" class="table table-striped table-bordered table-condensed"> 
 <tr>
-<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'collections.section')#</th>
+<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'collections.section')#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,'collections.type')#</th>
 <th>&nbsp;</th>
 </tr>
@@ -223,9 +223,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif rc.rslist.recordcount>
 <cfloop query="rc.rslist">
 <tr id="c#rc.rslist.contentID#">
-<td class="varWidth">#rc.rslist.menuTitle#</td>
+<td class="var-width">#rc.rslist.menuTitle#</td>
 <td>#rc.rslist.type#</td>
-<td class="administration"><input type="hidden" name="contentID" value="#rc.rslist.contentid#" /><ul class="clearfix"><li class="delete"><a title="Delete" href="##" onclick="return removeFilter('c#rc.rslist.contentid#');">#application.rbFactory.getKeyValue(session.rb,'collections.delete')#</a></li></ul></td>
+<td class="actions"><input type="hidden" name="contentID" value="#rc.rslist.contentid#" /><ul class="clearfix"><li class="delete"><a title="Delete" href="##" onclick="return removeFilter('c#rc.rslist.contentid#');">#application.rbFactory.getKeyValue(session.rb,'collections.delete')#</a></li></ul></td>
 </tr></cfloop>
 <cfelse>
 <tr>
@@ -629,7 +629,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsavecontent>
 <cfsavecontent variable="actionButtons">
 <cfoutput>
-<div class="clearfix form-actions actionButtons">
+<div class="clearfix form-actions">
 <cfif rc.feedID eq ''>
 	<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'collections.add')#" />
 	<input type="hidden" name="feedID" value="">
@@ -879,7 +879,7 @@ jQuery(document).ready(function(){
 	#tabContent#
 	<img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
 
-	<div class="actionButtons form-actions">
+	<div class="form-actions">
 		<cfif rc.feedID eq ''>
 			<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'collections.add')#" />
 			<input type=hidden name="feedID" value="">

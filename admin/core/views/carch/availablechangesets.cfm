@@ -48,23 +48,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset currentChangeset=application.changesetManager.read(rc.changesetID)>
 <cfset changesets=application.changesetManager.getIterator(siteID=rc.siteID,published=0,publishdate=now(),publishDateOnly=false)>
 <cfoutput>
-<table class="table table-striped table-condensed">
+<table class="table table-striped table-condensed mura-table-grid">
 <tr>
 <th>&nbsp;</th>
-<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,"changesets.name")#</th>
+<th class="var-width">#application.rbFactory.getKeyValue(session.rb,"changesets.name")#</th>
 </tr>
 <cfif changesets.hasNext()>
 <cfloop condition="changesets.hasNext()">
 <cfset changeset=changesets.next()>
 <tr>
 <td><input name="_changesetID" type="radio" onclick="removeChangesetPrompt(this.value);" value="#changeset.getChangesetID()#"<cfif changeset.getChangesetID() eq rc.changesetid> checked="true"</cfif>/></td>
-<td class="varWidth">#HTMLEditFormat(changeset.getName())#</td>
+<td class="var-width">#HTMLEditFormat(changeset.getName())#</td>
 </tr>
 </cfloop>
 <!---<cfif not currentChangeset.getIsNew()>--->
 <tr>
 <td><input name="_changesetID" type="radio" onclick="removeChangesetPrompt(this.value);" value=""<cfif not len(rc.changesetID)> checked="true"</cfif>/></td>
-<td class="varWidth">#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.none"))#</td>
+<td class="var-width">#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.none"))#</td>
 </tr>
 <!---</cfif>--->
 <cfelse>

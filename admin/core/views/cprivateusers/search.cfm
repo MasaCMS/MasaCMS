@@ -47,9 +47,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <h2>#application.rbFactory.getKeyValue(session.rb,'user.adminusersearchresults')#</h2>
 
-        <table class="table table-striped table-condensed">
+        <table class="table table-striped table-condensed mura-table-grid">
           <tr> 
-            <th class="varWidth">Name</th>
+            <th class="var-width">Name</th>
             <th>#application.rbFactory.getKeyValue(session.rb,'user.email')#</th>
             <th>#application.rbFactory.getKeyValue(session.rb,'user.update')#</th>
             <th>Time</th>
@@ -59,12 +59,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           <cfif rc.rsList.recordcount>
             <cfoutput query="rc.rsList" maxrows="#rc.nextN.recordsperPage#" startrow="#rc.startrow#"> 
               <tr> 
-                <td class="varWidth"><a  title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?muraAction=cPrivateUsers.edituser&userid=#rc.rsList.UserID#&type=2&siteid=#URLEncodedFormat(rc.siteid)#">#HTMLEditFormat(rc.rslist.lname)#, #HTMLEditFormat(rc.rslist.fname)# <cfif rc.rslist.company neq ''> (#HTMLEditFormat(rc.rslist.company)#)</cfif></a></td>
+                <td class="var-width"><a  title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?muraAction=cPrivateUsers.edituser&userid=#rc.rsList.UserID#&type=2&siteid=#URLEncodedFormat(rc.siteid)#">#HTMLEditFormat(rc.rslist.lname)#, #HTMLEditFormat(rc.rslist.fname)# <cfif rc.rslist.company neq ''> (#HTMLEditFormat(rc.rslist.company)#)</cfif></a></td>
                 <td><cfif rc.rsList.email gt ""><a href="mailto:#HTMLEditFormat(rc.rsList.email)#">#HTMLEditFormat(rc.rsList.email)#</a><cfelse>&nbsp;</cfif></td>
                 <td>#LSDateFormat(rc.rslist.lastupdate,session.dateKeyFormat)#</td>
               <td>#LSTimeFormat(rc.rslist.lastupdate,"short")#</td>
 			  <td>#HTMLEditFormat(rc.rsList.LastUpdateBy)#</td>
-                <td class="administration"><ul class="one"><li class="edit"><a  title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?muraAction=cPrivateUsers.edituser&userid=#rc.rsList.UserID#&type=2&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'user.edit')#</a></li></ul></td>
+                <td class="actions"><ul class="one"><li class="edit"><a  title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?muraAction=cPrivateUsers.edituser&userid=#rc.rsList.UserID#&type=2&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'user.edit')#</a></li></ul></td>
               </tr>
             </cfoutput>
 		 <cfelse>

@@ -56,18 +56,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 <br/><cfif not rc.isNew>
 <cfset rc.rsList=application.contentManager.getPrivateSearch(rc.siteid,rc.keywords)/>
- <table class="table table-striped table-condensed">
+ <table class="table table-striped table-condensed mura-table-grid">
     <tr> 
-      <th class="varWidth"><cfoutput><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'tooltip.addRelatedContent'))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.addrelatedcontent')# <i class="icon-info-sign"></i></a></cfoutput></th>
-	  <th class="administration">&nbsp;</th>
+      <th class="var-width"><cfoutput><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'tooltip.addRelatedContent'))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.addrelatedcontent')# <i class="icon-info-sign"></i></a></cfoutput></th>
+	  <th class="actions">&nbsp;</th>
     </tr><cfif rc.rslist.recordcount>
      <cfoutput query="rc.rslist" startrow="1" maxrows="100">	
 		<cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/>
         <cfif arrayLen(crumbdata) and structKeyExists(crumbdata[1],"parentArray") and not listFind(arraytolist(crumbdata[1].parentArray),rc.contentid)>
 		<cfset counter=counter+1/>
 		<tr <cfif not(counter mod 2)>class="alt"</cfif>>  
-          <td class="varWidth">#application.contentRenderer.dspZoomNoLinks(crumbdata,rc.rslist.fileExt)#</td>
-		  <td class="administration"><ul class="one"><li class="add"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.add')#" href="javascript:;" onClick="addRelatedContent('#rc.rslist.contentid#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.rslist.type#')#','#JSStringFormat(rc.rslist.menuTitle)#'); return false;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.add')#</a></li></ul>
+          <td class="var-width">#application.contentRenderer.dspZoomNoLinks(crumbdata,rc.rslist.fileExt)#</td>
+		  <td class="actions"><ul class="one"><li class="add"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.add')#" href="javascript:;" onClick="addRelatedContent('#rc.rslist.contentid#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.rslist.type#')#','#JSStringFormat(rc.rslist.menuTitle)#'); return false;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.add')#</a></li></ul>
 		  </td>
 		</tr>
 	 	</cfif>

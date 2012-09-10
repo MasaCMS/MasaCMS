@@ -65,8 +65,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div class="control-group">
   <label class="control-label">
-  	#application.rbFactory.getKeyValue(session.rb,'changesets.name')#
-	</label>
+    #application.rbFactory.getKeyValue(session.rb,'changesets.name')#
+  </label>
   <div class="controls">
   <input name="name" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'changesets.titlerequired')#" value="#HTMLEditFormat(rc.changeset.getName())#" maxlength="50">
    </div>
@@ -74,47 +74,42 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div class="control-group">
   <label class="control-label">
-  	#application.rbFactory.getKeyValue(session.rb,'changesets.description')#
+    #application.rbFactory.getKeyValue(session.rb,'changesets.description')#
   </label>
   <div class="controls">
-	<textarea name="description">#HTMLEditFormat(rc.changeset.getDescription())#</textarea>
+  <textarea name="description">#HTMLEditFormat(rc.changeset.getDescription())#</textarea>
   </div>
 </div>
 
 <div class="control-group">
   <label class="control-label">
-  	<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.changesetpublishdate"))#">#application.rbFactory.getKeyValue(session.rb,'changesets.publishdate')# <i class="icon-info-sign"></i></a>
-  	</label>
+    <a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.changesetpublishdate"))#">#application.rbFactory.getKeyValue(session.rb,'changesets.publishdate')# <i class="icon-info-sign"></i></a>
+    </label>
   <div class="controls">
-  	<cfif rc.changeset.getPublished()>
-		#LSDateFormat(rc.changeset.getLastUpdate(),session.dateKeyFormat)# #LSTimeFormat(rc.changeset.getLastUpdate(),"medium")#
-	<cfelse>
-		<input type="text" name="publishDate" value="#LSDateFormat(rc.changeset.getpublishdate(),session.dateKeyFormat)#"  maxlength="12" class="textAlt datepicker" />
+    <cfif rc.changeset.getPublished()>
+    #LSDateFormat(rc.changeset.getLastUpdate(),session.dateKeyFormat)# #LSTimeFormat(rc.changeset.getLastUpdate(),"medium")#
+  <cfelse>
+    <input type="text" name="publishDate" value="#LSDateFormat(rc.changeset.getpublishdate(),session.dateKeyFormat)#"  maxlength="12" class="textAlt datepicker" />
 
-		<select name="publishhour" class="dropdown"><cfloop from="1" to="12" index="h"><option value="#h#" <cfif not LSisDate(rc.changeset.getpublishDate())  and h eq 12 or (LSisDate(rc.changeset.getpublishDate()) and (hour(rc.changeset.getpublishDate()) eq h or (hour(rc.changeset.getpublishDate()) - 12) eq h or hour(rc.changeset.getpublishDate()) eq 0 and h eq 12))>selected</cfif>>#h#</option></cfloop></select>
-		<select name="publishMinute" class="dropdown"><cfloop from="0" to="59" index="m"><option value="#m#" <cfif LSisDate(rc.changeset.getpublishDate()) and minute(rc.changeset.getpublishDate()) eq m>selected</cfif>>#iif(len(m) eq 1,de('0#m#'),de('#m#'))#</option></cfloop></select>
-		<select name="publishDayPart" class="dropdown"><option value="AM">AM</option><option value="PM" <cfif LSisDate(rc.changeset.getpublishDate()) and hour(rc.changeset.getpublishDate()) gte 12>selected</cfif>>PM</option></select>
-	</cfif>
+    <select name="publishhour" class="dropdown"><cfloop from="1" to="12" index="h"><option value="#h#" <cfif not LSisDate(rc.changeset.getpublishDate())  and h eq 12 or (LSisDate(rc.changeset.getpublishDate()) and (hour(rc.changeset.getpublishDate()) eq h or (hour(rc.changeset.getpublishDate()) - 12) eq h or hour(rc.changeset.getpublishDate()) eq 0 and h eq 12))>selected</cfif>>#h#</option></cfloop></select>
+    <select name="publishMinute" class="dropdown"><cfloop from="0" to="59" index="m"><option value="#m#" <cfif LSisDate(rc.changeset.getpublishDate()) and minute(rc.changeset.getpublishDate()) eq m>selected</cfif>>#iif(len(m) eq 1,de('0#m#'),de('#m#'))#</option></cfloop></select>
+    <select name="publishDayPart" class="dropdown"><option value="AM">AM</option><option value="PM" <cfif LSisDate(rc.changeset.getpublishDate()) and hour(rc.changeset.getpublishDate()) gte 12>selected</cfif>>PM</option></select>
+  </cfif>
   </div>
 </div>
 
-<div class="actionButtons form-actions">
+<div class="form-actions">
   <cfif rc.changesetID eq ''>
-    <input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'changesets.add')#" />
+    <input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'changesets.add')#" /><input type=hidden name="changesetID" value="">
   <cfelse>
     <input type="button" class="submit btn" value="#application.rbFactory.getKeyValue(session.rb,'changesets.delete')#" onclick="confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'changesets.deleteconfirm'))#','index.cfm?muraAction=cChangesets.delete&changesetID=#rc.changeset.getchangesetID()#&siteid=#URLEncodedFormat(rc.changeset.getSiteID())#')" /> 
     <input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'changesets.update')#" />
     <cfif not rc.changeset.getPublished()>
       <input type="button" class="submit btn" value="#application.rbFactory.getKeyValue(session.rb,'changesets.publishnow')#" onclick="confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'changesets.publishnowconfirm'))#','index.cfm?muraAction=cChangesets.publish&changesetID=#rc.changeset.getchangesetID()#&siteid=#URLEncodedFormat(rc.changeset.getSiteID())#')" /> 
-    </cfif>   
+    </cfif>
+     <input type=hidden name="changesetID" value="#rc.changeset.getchangesetID()#">
   </cfif>
+  <input type="hidden" name="action" value="">
 </div>
-<cfif rc.changesetID eq ''>
-<input type="hidden" name="changesetID" value="">
-<cfelse>
-<input type="hidden" name="changesetID" value="#rc.changeset.getchangesetID()#">
-</cfif>
-<input type="hidden" name="action" value="">
 </form>
 </cfoutput>
-

@@ -141,7 +141,7 @@ select * from rsSubTypes where subType <> 'Default'
   <div id="tabExtendedattributes" class='tab-pane'>
     <span id="extendSetsDefault"></span>	
   </div>
-  <div class="actionButtons form-actions">
+  <div class="form-actions">
     <cfif rc.userid eq ''>
     <input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'user.add')#" />
     <cfelse>
@@ -164,7 +164,7 @@ loadExtendedAttributes('#rc.userbean.getUserID()#','1','#rc.userbean.getSubType(
 //initTabs(Array("#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.basic'))#","#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.extendedattributes'))#"),0,0,0);
 </script>	
 <cfelse>
-<div class="actionButtons form-actions">
+<div class="form-actions">
 <cfif rc.userid eq ''>
 <input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'user.add')#" />
 <cfelse>
@@ -184,9 +184,9 @@ loadExtendedAttributes('#rc.userbean.getUserID()#','1','#rc.userbean.getSubType(
 
 	<cfif rc.userid neq ''>
       <cfoutput><h4 class="separate">#application.rbFactory.getKeyValue(session.rb,'user.groupmembers')#</h4> 
-        <table class="table table-striped table-condensed">
+        <table class="table table-striped table-condensed mura-table-grid">
             <tr> 
-              <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'user.name')#</th>
+              <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'user.name')#</th>
               <th>#application.rbFactory.getKeyValue(session.rb,'user.email')#</th>
               <th>#application.rbFactory.getKeyValue(session.rb,'user.update')#</th>
 			  <th>#application.rbFactory.getKeyValue(session.rb,'user.time')#</th>
@@ -197,12 +197,12 @@ loadExtendedAttributes('#rc.userbean.getUserID()#','1','#rc.userbean.getSubType(
         <cfif rc.rsgrouplist.recordcount>
             <cfoutput query="rc.rsgrouplist" maxrows="#rc.nextN.recordsperPage#" startrow="#rc.startrow#"> 
 			  <tr> 
-                <td class="varWidth"><a href="index.cfm?muraAction=#iif(rc.rsgrouplist.isPublic,de('cPublicUsers'),de('cPrivateUsers'))#.edituser&userid=#rc.rsgrouplist.UserID#&routeid=#rc.userid#&siteid=#URLEncodedFormat(rc.siteid)#">#rc.rsgrouplist.lname#, #rc.rsgrouplist.fname# <cfif rc.rsgrouplist.company neq ''> (#rc.rsgrouplist.company#)</cfif></a></td>
+                <td class="var-width"><a href="index.cfm?muraAction=#iif(rc.rsgrouplist.isPublic,de('cPublicUsers'),de('cPrivateUsers'))#.edituser&userid=#rc.rsgrouplist.UserID#&routeid=#rc.userid#&siteid=#URLEncodedFormat(rc.siteid)#">#rc.rsgrouplist.lname#, #rc.rsgrouplist.fname# <cfif rc.rsgrouplist.company neq ''> (#rc.rsgrouplist.company#)</cfif></a></td>
                 <td><cfif rc.rsgrouplist.email gt ""><a href="mailto:#rc.rsgrouplist.email#">#rc.rsgrouplist.email#</a><cfelse>&nbsp;</cfif></td>
                 <td>#LSDateFormat(rc.rsgrouplist.lastupdate,session.dateKeyFormat)#</td>
 				<td>#LSTimeFormat(rc.rsgrouplist.lastupdate,"short")#</td>
               <td>#rc.rsgrouplist.LastUpdateBy#</td>
-                <td class="administration"><ul class="group"><li class="edit"><a href="index.cfm?muraAction=#iif(rc.rsgrouplist.isPublic,de('cPublicUsers'),de('cPrivateUsers'))#.edituser&userid=#rc.rsgrouplist.UserID#&routeid=#rc.userid#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'user.edit')#</a></li><li class="delete"><a href="index.cfm?muraAction=cPrivateUsers.removefromgroup&userid=#rc.rsgrouplist.UserID#&routeid=#rc.userid#&groupid=#rc.userid#&siteid=#URLEncodedFormat(rc.siteid)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.removeconfirm'))#',this.href)">#application.rbFactory.getKeyValue(session.rb,'user.remove')#</a></li></ul></td>
+                <td class="actions"><ul class="group"><li class="edit"><a href="index.cfm?muraAction=#iif(rc.rsgrouplist.isPublic,de('cPublicUsers'),de('cPrivateUsers'))#.edituser&userid=#rc.rsgrouplist.UserID#&routeid=#rc.userid#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'user.edit')#</a></li><li class="delete"><a href="index.cfm?muraAction=cPrivateUsers.removefromgroup&userid=#rc.rsgrouplist.UserID#&routeid=#rc.userid#&groupid=#rc.userid#&siteid=#URLEncodedFormat(rc.siteid)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.removeconfirm'))#',this.href)">#application.rbFactory.getKeyValue(session.rb,'user.remove')#</a></li></ul></td>
               </tr>
             </cfoutput> 
 		<cfelse>

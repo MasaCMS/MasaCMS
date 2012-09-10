@@ -298,7 +298,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   </div>
 </div>
 
-<div class="actionButtons form-actions">
+<div class="form-actions">
 <input type="button" class="submit btn" onclick="submitForm(document.forms.searchFrm);" value="#application.rbFactory.getKeyValue(session.rb,"params.search")#" />
 </div>
 </form>
@@ -325,7 +325,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfoutput>
 	<h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.totalsessions")# (#rc.rslist.recordcount#)</h3>
 	
-<table class="table table-striped table-condensed"> 
+<table class="table table-striped table-condensed mura-table-grid"> 
 <tr>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.user")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.locale")#</th>
@@ -344,7 +344,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <td>#LSDateFormat(rc.rslist.lastRequest,session.dateKeyFormat)# #LSTimeFormat(rc.rslist.lastRequest,"short")#</td>
 <td>#rc.rslist.views#</td>
 <td>#application.dashboardManager.getTimespan(rc.rslist.firstRequest,rc.rslist.lastRequest)#</td>
-<td class="administration"><ul class="one"><li class="viewDetails"><a title="View Details" href="index.cfm?muraAction=cDashboard.viewSession&urlToken=#urlEncodedFormat(rc.rslist.urlToken)#&siteid=#URLEncodedFormat(rc.siteid)#">View Details</a></li></ul></td>
+<td class="actions"><ul class="one"><li class="viewDetails"><a title="View Details" href="index.cfm?muraAction=cDashboard.viewSession&urlToken=#urlEncodedFormat(rc.rslist.urlToken)#&siteid=#URLEncodedFormat(rc.siteid)#">View Details</a></li></ul></td>
 </tr></cfloop>
 <cfelse>
 <tr>

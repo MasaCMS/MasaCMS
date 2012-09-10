@@ -79,7 +79,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <dt>Available Category Dependencies</dt>
 <dd class="categoryAssignment"><cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" extendSetBean="#extendSetBean#"></dd>
 </cfif></dl>
-<div class="clearfix actionButtons">
+<div class="form-actions">
 <cfif not len(rc.extendSetID)>
 	<input type="button" class="submit" onclick="submitForm(document.forms.form1,'add');" value="Add" />
 	<input type=hidden name="extendSetID" value="#createuuid()#">

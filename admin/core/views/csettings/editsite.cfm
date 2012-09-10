@@ -73,7 +73,7 @@ to your own modified versions of Mura CMS.
  --->
  <cfsavecontent variable="actionButtons">
 <cfoutput>
-  <div class="actionButtons form-actions">
+  <div class="form-actions">
      <cfif rc.siteBean.getsiteid() eq ''> 
       <input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="Add" />
     <cfelse>

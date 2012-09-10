@@ -55,18 +55,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 
 </cfoutput>
-<table class="table table-striped table-condensed">
+<table class="table table-striped table-condensed mura-table-grid">
 <tr>
-	<th class="varWidth">Class Extension</th>
-	<th class="varWidth">Active</th>
-	<th class="administration">&nbsp;</th>
+	<th class="var-width">Class Extension</th>
+	<th class="var-width">Active</th>
+	<th class="actions">&nbsp;</th>
 </tr>
 <cfif rslist.recordcount>
 <cfoutput query="rslist">
 	<tr>
-		<td class="varWidth"><a title="Edit" href="index.cfm?muraAction=cExtend.listSets&subTypeID=#rslist.subTypeID#&siteid=#URLEncodedFormat(rc.siteid)#">#application.classExtensionManager.getTypeAsString(rslist.type)# / #rslist.subtype#</a></td>
-		<td class="varWidth">#yesNoFormat(rslist.isactive)#</td>
-		<td class="administration"><ul class="two">
+		<td class="var-width"><a title="Edit" href="index.cfm?muraAction=cExtend.listSets&subTypeID=#rslist.subTypeID#&siteid=#URLEncodedFormat(rc.siteid)#">#application.classExtensionManager.getTypeAsString(rslist.type)# / #rslist.subtype#</a></td>
+		<td class="var-width">#yesNoFormat(rslist.isactive)#</td>
+		<td class="actions"><ul class="two">
 		<li class="edit"><a title="Edit" href="index.cfm?muraAction=cExtend.listSets&subTypeID=#rslist.subTypeID#&siteid=#URLEncodedFormat(rc.siteid)#">View Sets</a></li>
 		</ul>
 		</td></tr>

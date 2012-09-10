@@ -108,7 +108,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <table id="metadata" class="table table-striped table-bordered table-condensed">
 <tr>
-	<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.emails')# (#rc.rslist.recordcount#)</th>
+	<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.emails')# (#rc.rslist.recordcount#)</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.name')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.company')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.verified')#</th>
@@ -118,12 +118,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif rc.rslist.recordcount>
 <cfoutput query="rc.rslist" startrow="#rc.startrow#" maxrows="#rc.nextN.RecordsPerPage#">
 	<tr>
-		<td class="varWidth"><a href="mailto:#HTMLEditFormat(rc.rslist.email)#">#HTMLEditFormat(rc.rslist.email)#</a></td>
+		<td class="var-width"><a href="mailto:#HTMLEditFormat(rc.rslist.email)#">#HTMLEditFormat(rc.rslist.email)#</a></td>
 		<td>#HTMLEditFormat(rc.rslist.fname)#&nbsp;#HTMLEditFormat(rc.rslist.lname)#</td>
 		<td>#HTMLEditFormat(rc.rslist.company)#</td>
 		<td><cfif rc.rslist.isVerified eq 1>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.yes')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.no')#</cfif></td>
 		<td>#LSDateFormat(rc.rslist.created,session.dateKeyFormat)#</td>
-		<td class="administration"><ul class="mailingListMembers"><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#" href="index.cfm?muraAction=cMailingList.updatemember&action=delete&mlid=#rc.rslist.mlid#&email=#urlencodedformat(rc.rslist.email)#&siteid=#URLEncodedFormat(rc.siteid)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.deletememberconfirm'))#',this.href);">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#</a></li></ul></td></tr>
+		<td class="actions"><ul class="mailingListMembers"><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#" href="index.cfm?muraAction=cMailingList.updatemember&action=delete&mlid=#rc.rslist.mlid#&email=#urlencodedformat(rc.rslist.email)#&siteid=#URLEncodedFormat(rc.siteid)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.deletememberconfirm'))#',this.href);">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#</a></li></ul></td></tr>
 </cfoutput>
 <cfelse>
 <tr>

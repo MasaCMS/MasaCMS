@@ -70,7 +70,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </ul>
 
 <cfif not listFindNoCase("Page,Portal,File,Link,Gallery,Calender",rc.trashItem.getObjectType())>
-<div class="clearfix form-actions actionButtons">
+<div class="clearfix form-actions">
 <input type="button" class="submit btn" onclick="return confirmDialog('Restore Item From Trash?','?muraAction=cTrash.restore&objectID=#rc.trashItem.getObjectID()#&siteid=#rc.trashItem.getSiteID()#');" value="Restore Item" />
 <cfif len(rc.trashItem.getDeleteID())>
 <input type="button" class="submit btn" onclick="return confirmDialog('Restore All Items in Delete Transaction from Trash?','?muraAction=cTrash.restore&objectID=#rc.trashItem.getObjectID()#&deleteID=#rc.trashItem.getDeleteID()#&siteid=#rc.trashItem.getSiteID()#');" value="Restore All Items in Delete Transaction" />
@@ -85,7 +85,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<input type="hidden" id="parentid" name="parentid" value="#rc.trashItem.getParentID()#">
 	</span>
 </div>
-<div class="clearfix form-actions actionButtons">
+<div class="clearfix form-actions">
 <input type="button" class="submit btn" onclick="restoreItem();" value="Restore Item" />
 <cfif len(rc.trashItem.getDeleteID())>
 <input type="button" class="submit btn" onclick="restoreAll();" value="Restore All Items in Delete Transaction" />
