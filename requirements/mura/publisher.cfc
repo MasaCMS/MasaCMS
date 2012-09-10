@@ -3344,7 +3344,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfquery>
 						</cfloop>
 
-						<cfset pluginDir=variables.configBean.getPluginDir() & application.configBean.getFileDelim() & rstplugins.directory>
+						<cfset pluginDir=application.configBean.getPluginDir() & application.configBean.getFileDelim() & rstplugins.directory>
 					
 						<cfif fileExists("#pluginDir#/plugin/plugin.cfc")>	
 							<cfset pluginConfig=getPlugin(ID=keyFactory.get(rstplugins.moduleID), siteID="", cache=false)>
