@@ -1385,6 +1385,72 @@ function closeQuickEdit(){
 	jQuery('.mura-quickEdit').remove();
 }
 
+function initCategoryAssignments(){
+	jQuery(".mura-quickEditItem").click(
+			function(event){
+				event.preventDefault();
+			
+					var node = jQuery(this).parents("li:first");
+					var cattrim=node.attr("data-cattrim");
+
+					var categoryAssignment={
+						muraAction:'cArch.loadCategoryAssignment',
+						cattrim: node.attr("data-cattrim"),
+						siteID: node.attr("data-siteid"),
+						categoryID: node.attr("data-categoryid"),
+						categoryAssignment: $('#categoryAssign' + cattrim).val(),
+						featureStart: $('#featureStart' + cattrim).val(),
+						startHour: $('#startHour' + cattrim).val(),
+						startMinute: $('#startMinute' + cattrim).val(),
+						startDayPart: $('#startDayPart' + cattrim).val(),
+						featureStop: $('#featureStart' + cattrim).val(),
+						stopHour: $('#stopHour' + cattrim).val(),
+						stopMinute: $('#stopMinute' + cattrim).val(),
+						stopDayPart: $('#stopDayPart' + cattrim).val()
+					};
+	
+					jQuery("#mura-quickEditor").remove();
+					jQuery("#selected").attr("id","");
+					jQuery(this).parent().prepend(quickEditTmpl);
+					
+					var qe = jQuery("#mura-quickEditor")
+					var dd = qe.parents("dd:first");
+					
+					dd.attr("id","selected");
+					
+					jQuery.post("./index.cfm", 
+						categoryAssignment,
+						function(data){
+							jQuery("#mura-quickEditor").html(data);
+							setDatePickers(".mura-quickEdit-datepicker",dtLocale,dtCh);	
+							setToolTips(".mura-quickEdit-datepicker");
+						}
+					);
+				}			
+		);
+}
+
+function saveCategoryAssignment(){
+	var cattrim=$('#mura-quickEdit-cattrim').val();
+
+	$('#categoryAssign' + cattrim).val($('#mura-quickEdit-display').val());
+	$('#featureStart' + cattrim).val($('#mura-quickEdit-displayStart').val());
+	$('#startHour' + cattrim).val($('#mura-quickEdit-startHour').val());
+	$('#startMinute' + cattrim).val($('#mura-quickEdit-startMinute').val());
+	$('#startDayPart' + cattrim).val($('#mura-quickEdit-startDayPart').val());
+	$('#featureStop' + cattrim).val($('#mura-quickEdit-displayStop').val());
+	$('#stopHour' + cattrim).val($('#mura-quickEdit-stopHour').val());
+	$('#stopMinute' + cattrim).val($('#mura-quickEdit-stopMinute').val());
+	$('#stopDayPart' + cattrim).val($('mura-quickEdit-stopDayPart').val());
+	closeCategoryAssignment();
+}
+
+function closeCategoryAssignment(){
+	jQuery('#selected').attr("id","");
+	jQuery('.mura-quickEdit').remove();
+}
+
+
 var availableObjectTemplate="";
 var availalbeObjectParams={};
 var availableObject={};
