@@ -71,16 +71,20 @@ where categoryID='#rslist.categoryID#' and ContentHistID='#attributes.contentBea
 <li data-siteID="#attributes.contentBean.getSiteID()#" data-categoryid="#rslist.categoryid#" data-cattrim="#catTrim#"><div class="mura-row<cfif request.catNo mod 2> alt</cfif>">#rslist.name#<cfif rslist.isOpen eq 1>
 <div class="column" <cfif request.catNo mod 2>class="alt"</cfif>>
 
-	<div class="display<cfif rsIsMember.recordcount and rsIsMember.isFeature eq 2> scheduled</cfif>">
-			<a class="mura-quickEditItem<cfif rsIsMember.isFeature eq 2> tooltip</cfif>">
-			<cfif rsIsMember.isFeature eq 1>
-				#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#
-			<cfelseif rsIsMember.isFeature eq 2>
-				<cfif verdict neq 'editor'><a href="##" rel="tooltip" title="#HTMLEditFormat(LSDateFormat(rsIsMember.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rsIsMember.featurestop,"short")#"></cfif><cfif verdict neq 'editor'> <i class="icon-info-sign"></i></a></cfif>
-			<cfelse>
-				#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#
-			</cfif>
-			</a>
+	<div id="categoryLabelContainer#cattrim#">
+		<div class="categoryassignment<cfif rsIsMember.recordcount and rsIsMember.isFeature eq 2> scheduled</cfif>">
+				<a class="mura-quickEditItem<cfif rsIsMember.isFeature eq 2> tooltip</cfif>">
+				<cfif rsIsMember.isFeature eq '0'>
+					#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#
+				<cfelseif rsIsMember.isFeature eq '1'>
+					#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.feature')#
+				<cfelseif rsIsMember.isFeature eq '2'>
+					<a href="##" rel="tooltip" title="#HTMLEditFormat(LSDateFormat(rsIsMember.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rsIsMember.featurestop,"short")#"><i class="icon-info-sign"></i></a>
+				<cfelse>
+					#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#
+				</cfif>
+				</a>
+		</div>
 	</div>
 	<input type="hidden" id="categoryAssign#catTrim#" name="categoryAssign#catTrim#" 
 	<cfif not rsIsMember.recordcount>

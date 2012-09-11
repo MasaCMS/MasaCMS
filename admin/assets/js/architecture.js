@@ -1433,16 +1433,42 @@ function initCategoryAssignments(){
 function saveCategoryAssignment(){
 	var cattrim=$('#mura-quickEdit-cattrim').val();
 
-	$('#categoryAssign' + cattrim).val($('#mura-quickEdit-display').val());
-	$('#featureStart' + cattrim).val($('#mura-quickEdit-displayStart').val());
-	$('#startHour' + cattrim).val($('#mura-quickEdit-startHour').val());
-	$('#startMinute' + cattrim).val($('#mura-quickEdit-startMinute').val());
-	$('#startDayPart' + cattrim).val($('#mura-quickEdit-startDayPart').val());
-	$('#featureStop' + cattrim).val($('#mura-quickEdit-displayStop').val());
-	$('#stopHour' + cattrim).val($('#mura-quickEdit-stopHour').val());
-	$('#stopMinute' + cattrim).val($('#mura-quickEdit-stopMinute').val());
-	$('#stopDayPart' + cattrim).val($('mura-quickEdit-stopDayPart').val());
-	closeCategoryAssignment();
+	var categoryAssignment={
+	muraAction:'cArch.loadCategoryFeatureStartStop',
+	cattrim: cattrim,
+	categoryAssignment: $('#mura-quickEdit-display').val(),
+	featureStart: $('#mura-quickEdit-displayStart').val(),
+	startHour: $('#mura-quickEdit-startHour').val(),
+	startMinute: $('#mura-quickEdit-startMinute').val(),
+	startDayPart: $('#mura-quickEdit-startDayPart').val(),
+	featureStop: $('#mura-quickEdit-displayStop').val(),
+	stopHour: $('#mura-quickEdit-stopHour').val(),
+	stopMinute: $('#mura-quickEdit-stopMinute').val(),
+	stopDayPart: $('mura-quickEdit-stopDayPart').val()
+	};
+
+	//alert($('#mura-quickEdit-displayStart').val());
+
+	$('#categoryAssign' + cattrim).val(categoryAssignment.categoryAssignment);
+	$('#featureStart' + cattrim).val(categoryAssignment.featureStart);
+	$('#startHour' + cattrim).val(categoryAssignment.startHour);
+	$('#startMinute' + cattrim).val(categoryAssignment.startMinute);
+	$('#startDayPart' + cattrim).val(categoryAssignment.startDayPart);
+	$('#featureStop' + cattrim).val(categoryAssignment.featureStop);
+	$('#stopHour' + cattrim).val(categoryAssignment.stopHour);
+	$('#stopMinute' + cattrim).val(categoryAssignment.stopMinute);
+	$('#stopDayPart' + cattrim).val(categoryAssignment.stopDayPart);
+
+	jQuery.post("./index.cfm", 
+		categoryAssignment,
+		function(data){
+			$('#categoryLabelContainer' + cattrim).html(data);
+			closeCategoryAssignment();
+			setToolTips(".mura-quickEdit-datepicker");
+			initCategoryAssignments();
+		}
+	);
+	
 }
 
 function closeCategoryAssignment(){

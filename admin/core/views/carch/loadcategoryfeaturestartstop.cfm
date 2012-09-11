@@ -45,42 +45,18 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfset request.layout=false>
-<cfset catTrim = url.id>
-<cfsetting enableCFoutputOnly="true">
-<cfoutput><dt class="start">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startdatetime')#</dt><dd class="start"><input type="text" name="featureStart#catTrim#" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startdate')#" onclick="if(this.value=='Start Date'){this.value=''};" class="textAlt datepicker">
-		<select name="starthour#catTrim#"  class="dropdown span1">
-			<cfloop from="1" to="12" index="h">
-				<option value="#h#" <cfif h eq 12>selected</cfif>>#h#</option>
-			</cfloop>
-		</select>
-		<select name="startMinute#catTrim#" class="dropdown span1">
-			<cfloop from="0" to="59" index="m">
-				<option value="#m#">#iif(len(m) eq 1,de('0#m#'),de('#m#'))#</option>
-			</cfloop>
-		</select>
-		<select name="startDayPart#catTrim#" class="dropdown span1">
-			<option value="AM">AM</option>
-			<option value="PM">PM</option>
-		</select>
-	</dd> 
-	
-	<dt class="stop">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.stopdatetime')#</dt>
-	<dd class="stop">
-		<input type="text" name="featureStop#catTrim#" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.stopdate')#"  onclick="if(this.value=='Stop Date'){this.value=''};" class="textAlt datepicker">
-		<select name="stophour#catTrim#" class="dropdown span1">
-			<cfloop from="1" to="12" index="h">
-				<option value="#h#" <cfif h eq 11>selected</cfif>>#h#</option>
-			</cfloop>
-		</select>
-		<select name="stopMinute#catTrim#"  class="dropdown span1">
-			<cfloop from="0" to="59" index="m">
-				<option value="#m#" <cfif m eq 59>selected</cfif>>#iif(len(m) eq 1,de('0#m#'),de('#m#'))#</option>
-			</cfloop>
-		</select>
-		<select name="stopDayPart#catTrim#" class="dropdown span1">
-			<option value="AM">AM</option>
-			<option value="PM" selected>PM</option>
-		</select>
-	</dd>
+<cfoutput>
+<div class="categoryassignment<cfif rc.categoryAssignment eq '2'> scheduled</cfif>">
+		<a class="mura-quickEditItem<cfif rc.categoryAssignment eq '2'> tooltip</cfif>">
+		<cfif rc.categoryAssignment eq '0'>
+			#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#
+		<cfelseif rc.categoryAssignment eq '1'>
+			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.feature')#
+		<cfelseif rc.categoryAssignment eq '2'>
+			<a href="##" rel="tooltip" title="#HTMLEditFormat(LSDateFormat(rc.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rc.featurestop,"short")#"><i class="icon-info-sign"></i></a>
+		<cfelse>
+			#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#
+		</cfif>
+	</a>
+</div>
 </cfoutput>
-
