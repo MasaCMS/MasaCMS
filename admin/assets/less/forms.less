@@ -15,11 +15,20 @@ input[type="search"],
 input[type="tel"],
 input[type="color"],
 .uneditable-input {
-  height: @baseLineHeight+10;
+  height: @baseLineHeight;
   font-size: @baseFontSize;
-  padding: 5px;
+  padding: 4px;
   line-height: @baseLineHeight;
   color: @grayDark;
+}
+
+select, input[type="file"] {
+height: 28px;
+line-height: 28px;
+}
+
+textarea {
+	height: auto;
 }
 
 label.radio.inline input[type="radio"] {
@@ -33,13 +42,6 @@ label.radio.inline input[type="radio"] {
 	.border-radius(0 0 5px 5px);
 	border-top-color: @white;
 	border-top-width: 2px;
-}
-
-table + .form-actions {
-	/*
-	padding: 0;
-	background: none;
-	*/
 }
 
 .ui-datepicker {
