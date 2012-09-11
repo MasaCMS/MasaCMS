@@ -1,5 +1,5 @@
+<!DOCTYPE html>
 <cfoutput>
-<!doctype html>
 <html lang="#HTMLEditFormat(session.locale)#" class="mura">
   <head>
   	<cfsilent>

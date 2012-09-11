@@ -64,7 +64,9 @@ header {
 	
 	
 // Site-Specific Nav
-	
+
+
+
 .nav-site {
 
 	position: relative;
@@ -76,7 +78,7 @@ header {
 		background: #3A3A3A;
 		#gradient .vertical(#414141,#323232);	
 		border-bottom: 1px solid #000;
-		height: auto;
+		height: @navSiteHeight;
 	}
 	
 	.container {
@@ -93,7 +95,7 @@ header {
 		> ul > li {
 			float: left;
 			min-width: 50px;
-			height: auto;
+			height: @navSiteHeight;
 			padding: 0;
 			margin: 0;
 			text-align: center;
@@ -109,7 +111,7 @@ header {
 		> ul > li > a {
 			display: block;
 			height: auto;
-			min-height: 60px;
+			height: @navSiteHeight;
 			width: 90px;
 			padding: 0 15px 0;
 			font-size: @baseFontSize + 1;
@@ -240,17 +242,12 @@ header {
 	}	
 
 	#select-site {
-	
-		/* width: 160px; */
+
 		position: relative;
-		/*#gradient .vertical(#323232,#414141);*/
-		/*background-color: #555;*/
 		border-left: 0;
-	
-		a { /* Current Site Button */
-			width: 130px;
-			box-shadow: inset 0px 0px 12px rgba(0, 0, 0, .3);
-			}
+		padding-top: 22px;
+		height: 48px;
+		box-shadow: inset 0px 0px 12px rgba(0,0,0,.5);
 		
 		li a { /* Dropdown Items */
 			width: 130px;
@@ -258,11 +255,13 @@ header {
 			}
 		
 		#select-site-btn {
+			width: 130px;
+			box-shadow: inset 0px 0px 12px rgba(0, 0, 0, .3);
 			display: block;
 			width: 92px;
 			margin: 0 0 0 -46px;
-			min-height: 0;
-			.border-radius(15);
+			height: auto;
+			.border-radius(15px);
 			font-family: SilkscreenNormal;
 			font-size: 8px;
 			font-weight: normal;
@@ -270,12 +269,10 @@ header {
 			letter-spacing: 1px;
 			text-transform: uppercase;
 			color: @white;
-			/*background: hsla(0,0%,15%,.9);*/
 			background: @orange;
-			/*border: 1px solid #333;*/
 			padding: 4px 0 3px;
 			position: absolute;
-			top: 10px;
+			top: 16px;
 			left: 50%;
 			text-shadow: 0 -1px 0 rgba(0,0,0,.2);
 			box-shadow: 0px 0px 8px rgba(0,0,0,.5);
@@ -298,15 +295,17 @@ header {
 			box-shadow: 0px 0px 8px rgba(255,255,255,.35);
 			}
 		    
-		 #select-site-btn span {
+		 #select-site .dropdown-toggle span {
+		 
 		 	.text-overflow;
 		 	color: darken(@gray,0%);
 		 	color: @white;
 		 	}
 		 
-		 #select-site-btn .dropdown-menu  i {
+		 #select-site .dropdown-menu  i {
 		 	text-shadow: 0 0 0 !important;
-		 	} 	  
+		 	}
+		 	  
 	} // End #select-site  
 
 } // End .nav-site
