@@ -852,7 +852,7 @@ to your own modified versions of Mura CMS.
                 <h3>Important</h3>
                 <p>When you are done with setup, it is recommended you remove the "/config/setup" directory to maintain security. Once deleted, all settings can be edited in "/config/settings.ini.cfm" directly.</p>
                 <p class="error">The default <strong>Username and Password is the word "admin" for both fields</strong>. It is highly recommended that you change this immediately by editing your profile after logging into the Mura Admin.</p>
-                <input type="submit" name="#cookie.setupSubmitButtonComplete#" value="Finish Set Up and Take Me to the Mura Admin" />
+                <input type="submit" class="btn" name="#cookie.setupSubmitButtonComplete#" value="Finish Set Up and Take Me to the Mura Admin" />
               </div>
             </cfif>
             <h3>Required Settings</h3>
