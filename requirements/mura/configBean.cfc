@@ -1448,4 +1448,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.instance.customUrlVarDelimiters>
 </cffunction>
 
+<cffunction name="getDbColumnMetaData" output="false">
+	<cfargument name="column">
+	<cfargument name="table">
+	<cfreturn variables.dbUtility.columnMetaData(argumentCollection=arguments)>
+</cffunction>
+
 </cfcomponent>

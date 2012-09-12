@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset variables.relationship="" />
 <cfset variables.field="" />
-<cfset variables.dataType="varchar" />
+<cfset variables.dataType="" />
 <cfset variables.condition="" />
 <cfset variables.criteria="" />
 <cfset variables.isValid=true />
@@ -56,7 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="init" returntype="any" access="public">
 	<cfargument name="relationship" default="">
 	<cfargument name="field" default="">
-	<cfargument name="dataType" default="varchar">
+	<cfargument name="dataType" default="">
 	<cfargument name="condition" default="Equals">
 	<cfargument name="criteria" default="">
 	
@@ -225,6 +225,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getDataType">
+	<cfif not len(variables.dataType) and listlen(variables.field,".") eq 2>
+		<cfset variables.dataType=getBean("configBean").getDbColumnMetaData(column=listLast(variables.field,"."),table=listFirst(variables.field,".")).dataType>
+	</cfif>
 	<cfreturn variables.dataType />
 </cffunction>
 

@@ -1,9 +1,9 @@
 <cfcomponent extends="mura.cfobject" output="false">
 	<cfset variables.table="">
 
-	<cfset variables.columnLookUps=structNew()>
-	<cfset variables.indexLookUps=structNew()>
-	<cfset variables.fkLookUps=structNew()>
+	<cfset variables.tableMetaDataLookUp=structNew()>
+	<cfset variables.tableLookUp=structNew()>
+	<cfset variables.tableIndexLookUp=structNew()>
 
 <cffunction name="init" output="false">
 	<cfargument name="table" default="">
@@ -50,6 +50,9 @@
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
 			DROP TABLE #arguments.table#
 		</cfquery>
+		<cfset structDelete(variables.tableLookUp,arguments.table)>
+		<cfset structDelete(variables.tableMetaDataLookUp,arguments.table)>
+		<cfset structDelete(variables.tableIndexLookUp,arguments.table)>
 	</cfif>
 
 	<cfreturn this>
@@ -57,18 +60,22 @@
 
 <cffunction name="tableExists" output="false">
 	<cfargument name="table" default="#variables.table#">
-	<cfset var tableArray=tables(arguments.table)>
 	<cfset var i="">
-	
-	<cfif arrayLen(tableArray)>
-		<cfloop from="1" to="#arrayLen(tableArray)#" index="i">
-			<cfif tableArray[i].table_name eq arguments.table>
-				<cfreturn true>
-			</cfif>
-		</cfloop>
+	<cfset var tableArray=[]>
+
+	<cfif not structKeyExists(variables.tableLookUp,arguments.table)>
+		<cfset  tableArray=tables(arguments.table)>
+			
+		<cfif arrayLen(tableArray)>
+			<cfloop from="1" to="#arrayLen(tableArray)#" index="i">
+				<cfif tableArray[i].table_name eq arguments.table>
+					<cfset variables.tableLookUp[arguments.table]=true>
+					<cfbreak>
+				</cfif>
+			</cfloop>
+		</cfif>
 	</cfif>
-	
-	<cfreturn false>
+	<cfreturn variables.tableLookUp[arguments.table]>
 </cffunction>
 
 <cffunction name="tables" output="false">
@@ -103,30 +110,33 @@
 <cffunction name="columns" output="false">
 	<cfargument name="table" default="#variables.table#">
 	<cfset var rs ="">
-
-	<cfif variables.configBean.getDbType() neq "oracle">
-			<cfdbinfo 
-			name="rs"
-			datasource="#variables.configBean.getDatasource()#"
-			username="#variables.configBean.getDbUsername()#"
-			password="#variables.configBean.getDbPassword()#"
-			table="#arguments.table#"
-			type="columns">	
-	<cfelse>
-		
-		<cfquery
-			name="rs" 
-			datasource="#variables.configBean.getDatasource()#"
-			username="#variables.configBean.getDbUsername()#"
-			password="#variables.configBean.getDbPassword()#">
-				SELECT column_name, data_length column_size, data_type type_name, data_default column_default_value, nullable is_nullable,data_precision 
-				FROM user_tab_cols
-				WHERE table_name=UPPER('#arguments.table#')
-		</cfquery>
 	
+	<cfif not structKeyExists(variables.tableMetaDataLookUp,arguments.table)>
+		<cfif variables.configBean.getDbType() neq "oracle">
+				<cfdbinfo 
+				name="rs"
+				datasource="#variables.configBean.getDatasource()#"
+				username="#variables.configBean.getDbUsername()#"
+				password="#variables.configBean.getDbPassword()#"
+				table="#arguments.table#"
+				type="columns">	
+		<cfelse>
+			
+			<cfquery
+				name="rs" 
+				datasource="#variables.configBean.getDatasource()#"
+				username="#variables.configBean.getDbUsername()#"
+				password="#variables.configBean.getDbPassword()#">
+					SELECT column_name, data_length column_size, data_type type_name, data_default column_default_value, nullable is_nullable,data_precision 
+					FROM user_tab_cols
+					WHERE table_name=UPPER('#arguments.table#')
+			</cfquery>
+		</cfif>
+	
+		<cfset variables.tableMetaDataLookUp[arguments.table]=transformColumnMetaData(rs,arguments.table)>
 	</cfif>
-	
-	<cfreturn transformColumnMetaData(rs,arguments.table)>
+
+	<cfreturn variables.tableMetaDataLookUp[arguments.table]>
 </cffunction>
 
 <cffunction name="dropColumn" output="false">
@@ -151,6 +161,8 @@
 			</cfquery>
 		</cfcase>
 	</cfswitch>	
+
+	<cfset structDelete(variables.tableMetaDataLookUp,arguments.table)>
 	</cfif>
 	<cfreturn this>
 </cffunction>
@@ -177,12 +189,12 @@
 		<cfset arguments.nullable=true>
 	</cfif>
 
-	<cfif hasTable and not StructisEmpty(existing) and not len(existing.default)>
+	<cfif hasTable and len(existing.column) and not len(existing.default)>
 		<cfset existing.default="null">
 		<cfset existing.nullable=true>
 	</cfif>
 
-	<cfif not structIsEmpty(existing)
+	<cfif len(existing.column)
 			and (existing.dataType neq arguments.datatype
 			and not arguments.autoincrement
 			or (
@@ -198,7 +210,7 @@
 			<cfcatch></cfcatch>
 			</cftry>
 
-	<cfelseif not hasTable or structIsEmpty(existing)>
+	<cfelseif not hasTable or not len(existing.column)>
 		
 		<cfswitch expression="#variables.configBean.getDbType()#">
 		<cfcase value="mssql">
@@ -282,7 +294,9 @@
 				<cfset addPrimaryKey(argumentCollection=arguments)>
 			</cfif>
 		</cfcase>
-		</cfswitch>	
+		</cfswitch>
+
+		<cfset structDelete(variables.tableMetaDataLookUp,arguments.table)>	
 	</cfif> 
 
 	<cfreturn this>
@@ -328,6 +342,8 @@
 				</cfquery>
 			</cfcase>
 		</cfswitch>
+
+		<cfset structDelete(variables.tableMetaDataLookUp,arguments.table)>
 	<cfelse>
 		<cfset addColumn(argumentCollection=arguments)>
 	</cfif>
@@ -469,15 +485,7 @@
 	<cfset var columnsArray=[]>
 	<cfset var columnArgs={}>
 
-	<cfset var defaultArgs={
-					column="",
-					table="",
-					datatype="",
-					default="null",
-					nullable=true,
-					autoincrement=false,
-					length=50
-				}>
+	<cfset var defaultArgs=getDefaultColumnMetatData()>
 
 	<cfloop query="arguments.rs">
 		<cfset columnArgs=structCopy(defaultArgs)>
@@ -568,7 +576,19 @@
 		</cfloop>
 	</cfif>
 
-	<cfreturn structNew()>
+	<cfreturn getDefaultColumnMetatData()>
+</cffunction>
+
+<cffunction name="getDefaultColumnMetatData" output="false">
+	<cfreturn {
+				column="",
+				table="",
+				datatype="varchar",
+				default="null",
+				nullable=true,
+				autoincrement=false,
+				length=50
+				}>
 </cffunction>
 
 <!---------------- INDEXES --------------------------->
@@ -579,27 +599,29 @@
 	<cfset var rsCheck="">
 	
 	<cfif not indexExists(arguments.column,arguments.table)>
-	<cftry>
-		<cfswitch expression="#variables.configBean.getDbType()#">
-		<cfcase value="mssql">
-			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
-			CREATE INDEX #transformIndexName(argumentCollection=arguments)# ON #arguments.table# (#arguments.column#)
-			</cfquery>
-		</cfcase>
-		<cfcase value="mysql">
-			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
-			CREATE INDEX #transformIndexName(argumentCollection=arguments)# ON #arguments.table# (#arguments.column#)
-			</cfquery>
-		</cfcase>
-		<cfcase value="oracle">
-			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
-			CREATE INDEX #transformIndexName(argumentCollection=arguments)# ON #arguments.table# (#arguments.column#)
-			</cfquery>
-		</cfcase>
-		</cfswitch>	
-	<cfcatch></cfcatch>
-	</cftry>
+		<cftry>
+			<cfswitch expression="#variables.configBean.getDbType()#">
+			<cfcase value="mssql">
+				<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
+				CREATE INDEX #transformIndexName(argumentCollection=arguments)# ON #arguments.table# (#arguments.column#)
+				</cfquery>
+			</cfcase>
+			<cfcase value="mysql">
+				<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
+				CREATE INDEX #transformIndexName(argumentCollection=arguments)# ON #arguments.table# (#arguments.column#)
+				</cfquery>
+			</cfcase>
+			<cfcase value="oracle">
+				<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
+				CREATE INDEX #transformIndexName(argumentCollection=arguments)# ON #arguments.table# (#arguments.column#)
+				</cfquery>
+			</cfcase>
+			</cfswitch>	
+		<cfcatch></cfcatch>
+		</cftry>
+		<cfset structDelete(variables.tableIndexLookUp,arguments.table)>
 	</cfif>
+
 	<cfreturn this>
 </cffunction>
 
@@ -625,6 +647,8 @@
 				</cfquery>
 			</cfcase>
 		</cfswitch>	
+
+		<cfset structDelete(variables.tableIndexLookUp,arguments.table)>
 	</cfif>
 	<cfreturn this>
 </cffunction>
@@ -646,6 +670,7 @@
 	<cfargument name="table" default="#variables.table#">
 	<cfset var rs="">
 
+	<cfif not structKeyExists(variables.tableIndexLookUp,arguments.table)>
 	<cfdbinfo 
 		name="rs"
 		datasource="#variables.configBean.getDatasource()#"
@@ -653,7 +678,10 @@
 		password="#variables.configBean.getDbPassword()#"
 		table="#arguments.table#"
 		type="index">
-	<cfreturn buildIndexMetaData(rs,arguments.table)>
+	<cfset variables.tableIndexLookUp[arguments.table]= buildIndexMetaData(rs,arguments.table)>
+	</cfif>
+
+	<cfreturn variables.tableIndexLookUp[arguments.table]>
 </cffunction>
 
 <cffunction name="buildIndexMetaData" access="private" output="false">
@@ -942,8 +970,6 @@
 		table="#arguments.table#"
 		type="foreignKeys">
 
-
-	<cfreturn buildForeignKeyMetaData(rsCheck,arguments.table)>
 </cffunction>
 
 <cfscript>
