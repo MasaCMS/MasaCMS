@@ -192,7 +192,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="addParam" access="public" output="false">
-	<cfargument name="field" type="string" required="true" default="">
+	<cfargument name="field" hint="You can use 'Column' as an alias to field" type="string" required="true" default="">
 	<cfargument name="relationship" type="string" default="and" required="true">
 	<cfargument name="criteria" type="string" required="true" default="">
 	<cfargument name="condition" type="string" default="EQUALS" required="true">

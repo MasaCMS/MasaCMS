@@ -61,7 +61,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="criteria" default="">
 	
 	<cfset setIsValid(true) />
-	<cfset setField(arguments.Field) />
+	<cfif isDefined('arguments.column')>
+		<cfset setField(arguments.column) />
+	<cfelse>
+		<cfset setField(arguments.Field) />
+	</cfif>
 	<cfset setRelationship(arguments.relationship) />
 	<cfset setDataType(arguments.dataType) />
 	<cfset setCondition(arguments.condition) />
@@ -89,7 +93,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
+<cffunction name="setColumn">
+	<cfargument name="column">
+	<cfset setField(arguments.column) />
+</cffunction>
+
 <cffunction name="getField">
+	<cfreturn variables.field />
+</cffunction>
+
+<cffunction name="getColumn">
 	<cfreturn variables.field />
 </cffunction>
 
