@@ -69,7 +69,8 @@ where categoryID='#rslist.categoryID#' and ContentHistID='#attributes.contentBea
 </cfif>
 </cfsilent>
 <li data-siteID="#attributes.contentBean.getSiteID()#" data-categoryid="#rslist.categoryid#" data-cattrim="#catTrim#">
-	<div class="mura-row<cfif request.catNo mod 2> alt</cfif>">#rslist.name#
+	<div class="mura-row<cfif request.catNo mod 2> alt</cfif>">
+	#rslist.name#
 	<cfif rslist.isOpen eq 1>
 		<div id="categoryLabelContainer#cattrim#" class="column" <cfif request.catNo mod 2>class="alt"</cfif>>
 			<div class="categoryassignment<cfif rsIsMember.recordcount and rsIsMember.isFeature eq 2> scheduled</cfif>">
