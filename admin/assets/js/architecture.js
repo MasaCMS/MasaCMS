@@ -1399,18 +1399,35 @@ function initCategoryAssignments(){
 						siteID: node.attr("data-siteid"),
 						categoryID: node.attr("data-categoryid"),
 						categoryAssignment: $('#categoryAssign' + cattrim).val(),
-						featureStart: $('#featureStart' + cattrim).val(),
-						startHour: $('#startHour' + cattrim).val(),
-						startMinute: $('#startMinute' + cattrim).val(),
-						startDayPart: $('#startDayPart' + cattrim).val(),
-						featureStop: $('#featureStart' + cattrim).val(),
-						stopHour: $('#stopHour' + cattrim).val(),
-						stopMinute: $('#stopMinute' + cattrim).val(),
-						stopDayPart: $('#stopDayPart' + cattrim).val()
+						featureStart:'',
+						startHour: '',
+						startMinute: '',
+						startDayPart: '',
+						featureStop: '',
+						stopHour: '',
+						stopMinute: '',
+						stopDayPart: ''
 					};
+
+					if(categoryAssignment.categoryAssignment=='2'){		
+						$.extend(
+							categoryAssignment,
+							{
+								featureStart: $('#featureStart' + cattrim).val(),
+								startHour: $('#startHour' + cattrim).val(),
+								startMinute: $('#startMinute' + cattrim).val(),
+								startDayPart: $('#startDayPart' + cattrim).val(),
+								featureStop: $('#featureStart' + cattrim).val(),
+								stopHour: $('#stopHour' + cattrim).val(),
+								stopMinute: $('#stopMinute' + cattrim).val(),
+								stopDayPart: $('#stopDayPart' + cattrim).val()
+							}
+						);
+					}
 	
 					jQuery("#mura-quickEditor").remove();
 					jQuery("#selected").attr("id","");
+					jQuery('#selectedIcon').attr("id","").attr("src","assets/images/icons/template_24x24.png");
 					jQuery(this).parent().prepend(quickEditTmpl);
 					
 					var qe = jQuery("#mura-quickEditor")
@@ -1447,18 +1464,9 @@ function saveCategoryAssignment(){
 	stopDayPart: $('mura-quickEdit-stopDayPart').val()
 	};
 
-	//alert($('#mura-quickEdit-displayStart').val());
-
-	$('#categoryAssign' + cattrim).val(categoryAssignment.categoryAssignment);
-	$('#featureStart' + cattrim).val(categoryAssignment.featureStart);
-	$('#startHour' + cattrim).val(categoryAssignment.startHour);
-	$('#startMinute' + cattrim).val(categoryAssignment.startMinute);
-	$('#startDayPart' + cattrim).val(categoryAssignment.startDayPart);
-	$('#featureStop' + cattrim).val(categoryAssignment.featureStop);
-	$('#stopHour' + cattrim).val(categoryAssignment.stopHour);
-	$('#stopMinute' + cattrim).val(categoryAssignment.stopMinute);
-	$('#stopDayPart' + cattrim).val(categoryAssignment.stopDayPart);
-
+	//alert(JSON.stringify(categoryAssignment))
+	jQuery("#mura-quickEditor").html('<img class="loader" src="assets/images/ajax-loader-big.gif" />');
+	
 	jQuery.post("./index.cfm", 
 		categoryAssignment,
 		function(data){
