@@ -1423,6 +1423,7 @@ function initCategoryAssignments(){
 								stopDayPart: $('#stopDayPart' + cattrim).val()
 							}
 						);
+						//alert(JSON.stringify(categoryAssignment))
 					}
 	
 					jQuery("#mura-quickEditor").remove();
@@ -1454,19 +1455,20 @@ function saveCategoryAssignment(){
 	muraAction:'cArch.loadCategoryFeatureStartStop',
 	cattrim: cattrim,
 	categoryAssignment: $('#mura-quickEdit-display').val(),
-	featureStart: $('#mura-quickEdit-displayStart').val(),
+	featureStart: $('#mura-quickEdit-featureStart').val(),
 	startHour: $('#mura-quickEdit-startHour').val(),
 	startMinute: $('#mura-quickEdit-startMinute').val(),
 	startDayPart: $('#mura-quickEdit-startDayPart').val(),
-	featureStop: $('#mura-quickEdit-displayStop').val(),
+	featureStop: $('#mura-quickEdit-featureStop').val(),
 	stopHour: $('#mura-quickEdit-stopHour').val(),
 	stopMinute: $('#mura-quickEdit-stopMinute').val(),
-	stopDayPart: $('mura-quickEdit-stopDayPart').val()
+	stopDayPart: $('#mura-quickEdit-stopDayPart').val()
 	};
 
-	//alert(JSON.stringify(categoryAssignment))
+	//alert(JSON.stringify(categoryAssignment));
+
 	jQuery("#mura-quickEditor").html('<img class="loader" src="assets/images/ajax-loader-big.gif" />');
-	
+
 	jQuery.post("./index.cfm", 
 		categoryAssignment,
 		function(data){

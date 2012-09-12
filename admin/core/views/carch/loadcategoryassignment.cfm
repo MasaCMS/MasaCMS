@@ -66,7 +66,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<ol id="mura-quickEdit-displayDates"<cfif rc.categoryAssignment NEQ 2> style="display: none;"</cfif>>
 			<li><label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startdatetime')#</label>
-			<input type="text" id="mura-quickEdit-displayStart" value="#LSDateFormat(rc.featurestart,session.dateKeyFormat)#" class="textAlt datepicker mura-quickEdit-datepicker"><br />
+			<input type="text" id="mura-quickEdit-featureStart" value="#LSDateFormat(rc.featurestart,session.dateKeyFormat)#" class="textAlt datepicker mura-quickEdit-datepicker"><br />
 				<select id="mura-quickEdit-startHour" class="dropdown span1">
 					<cfloop from="1" to="12" index="h">
 						<option value="#h#" <cfif isNumeric(rc.startHour) and rc.startHour eq h or not isNumeric(rc.startHour) and h eq 12>selected</cfif>>#h#</option>
@@ -85,7 +85,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</select>
 			</li>
 			<li><label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.stopdatetime')#</label>
-			<input type="text" id="mura-quickEdit-displayStop" value="#LSDateFormat(rc.featureStop,session.dateKeyFormat)#" class="textAlt datepicker mura-quickEdit-datepicker"><br />
+			<input type="text" id="mura-quickEdit-featureStop" value="#LSDateFormat(rc.featureStop,session.dateKeyFormat)#" class="textAlt datepicker mura-quickEdit-datepicker"><br />
 				<select id="mura-quickEdit-stopHour" class="dropdown span1">
 					<cfloop from="1" to="12" index="h">
 						<option value="#h#" <cfif isNumeric(rc.stopHour) and rc.stopHour eq h or not isNumeric(rc.stopHour) and h eq 11>selected</cfif>>#h#</option>
