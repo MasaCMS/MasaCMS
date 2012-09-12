@@ -68,11 +68,12 @@ where categoryID='#rslist.categoryID#' and ContentHistID='#attributes.contentBea
 <cfset disabled="" />
 </cfif>
 </cfsilent>
-<li data-siteID="#attributes.contentBean.getSiteID()#" data-categoryid="#rslist.categoryid#" data-cattrim="#catTrim#"><div class="mura-row<cfif request.catNo mod 2> alt</cfif>">#rslist.name#<cfif rslist.isOpen eq 1>
-<div class="column" <cfif request.catNo mod 2>class="alt"</cfif>>
-
-	<div id="categoryLabelContainer#cattrim#">
-		<div class="categoryassignment<cfif rsIsMember.recordcount and rsIsMember.isFeature eq 2> scheduled</cfif>">
+<li data-siteID="#attributes.contentBean.getSiteID()#" data-categoryid="#rslist.categoryid#" data-cattrim="#catTrim#">
+	<div class="mura-row<cfif request.catNo mod 2> alt</cfif>">
+	#rslist.name#
+	<cfif rslist.isOpen eq 1>
+		<div id="categoryLabelContainer#cattrim#" class="column" <cfif request.catNo mod 2>class="alt"</cfif>>
+			<div class="categoryassignment<cfif rsIsMember.recordcount and rsIsMember.isFeature eq 2> scheduled</cfif>">
 				<a class="mura-quickEditItem<cfif rsIsMember.isFeature eq 2> tooltip</cfif>">
 				<cfif rsIsMember.isFeature eq '0'>
 					#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#
@@ -80,61 +81,58 @@ where categoryID='#rslist.categoryID#' and ContentHistID='#attributes.contentBea
 					#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.feature')#
 				<cfelseif rsIsMember.isFeature eq '2'>
 					<a href="##" rel="tooltip" title="#HTMLEditFormat(LSDateFormat(rsIsMember.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rsIsMember.featurestop,"short")#"><i class="icon-info-sign"></i></a>
+						
 				<cfelse>
 					#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#
 				</cfif>
 				</a>
+
+				<cfif not rsIsMember.recordcount>
+					<input type="hidden" id="categoryAssign#catTrim#" name="categoryAssign#catTrim#" value=""/>
+				<cfelseif rsIsMember.recordcount and not rsIsMember.isFeature>
+					<input type="hidden" id="categoryAssign#catTrim#" name="categoryAssign#catTrim#" value="0"/>
+				<cfelseif rsIsMember.recordcount and rsIsMember.isFeature eq 1>
+					<input type="hidden" id="categoryAssign#catTrim#" name="categoryAssign#catTrim#" value="1"/>
+				<cfelseif rsIsMember.recordcount and rsIsMember.isFeature eq 2>
+					<input type="hidden" id="categoryAssign#catTrim#" name="categoryAssign#catTrim#" value="2"/>
+						<input type="hidden" id="featureStart#catTrim#" name="featureStart#catTrim#" value="#LSDateFormat(rsIsMember.featurestart,session.dateKeyFormat)#">
+					<cfif isDate(rsIsMember.featurestart)>
+						<input type="hidden" id="startDayPart#catTrim#" name="startDayPart#catTrim#" value="AM"/>
+						<cfif hour(rsIsMember.featurestart) lt 12>
+							<input type="hidden" id="startHour#catTrim#" name="startHour#catTrim#" value="#hour(rsIsMember.featurestart)#">
+							<input type="hidden" id="startDayPart#catTrim#" name="startDayPart#catTrim#" value="AM">	
+						<cfelse>
+							<input type="hidden" id="startHour#catTrim#" name="startHour#catTrim#" value="#evaluate('hour(rsIsMember.featurestart)-12')#">
+							<input type="hidden" id="startDayPart#catTrim#" name="startDayPart#catTrim#" value="PM">	
+						</cfif>
+						<input type="hidden" id="startMinute#catTrim#" name="startMinute#catTrim#" value="#minute(rsIsMember.featurestart)#">	
+					<cfelse>
+						<input type="hidden" id="startHour#catTrim#" name="startHour#catTrim#" value="">
+						<input type="hidden" id="startMinute#catTrim#" name="startMinute#catTrim#" value="">
+						<input type="hidden" id="startDayPart#catTrim#" name="startDayPart#catTrim#" value="">	
+					</cfif>
+
+					<input type="hidden" id="featureStop#catTrim#" name="featureStop#catTrim#" value="#LSDateFormat(rsIsMember.featureStop,session.dateKeyFormat)#">
+					<cfif isDate(rsIsMember.featureStop)>
+						<input type="hidden" id="stopDayPart#catTrim#" name="stopDayPart#catTrim#" value="AM"/>
+						<cfif hour(rsIsMember.featureStop) lt 12>
+							<input type="hidden" id="stopHour#catTrim#" name="stopHour#catTrim#" value="#hour(rsIsMember.featureStop)#">
+							<input type="hidden" id="stopDayPart#catTrim#" name="stopDayPart#catTrim#" value="AM">	
+						<cfelse>
+							<input type="hidden" id="stopHour#catTrim#" name="stopHour#catTrim#" value="#evaluate('hour(rsIsMember.featureStop)-12')#">	
+							<input type="hidden" id="stopDayPart#catTrim#" name="stopDayPart#catTrim#" value="PM">
+						</cfif>
+					
+						<input type="hidden" id="stopMinute#catTrim#" name="stopMinute#catTrim#" value="#minute(rsIsMember.featureStop)#">	
+					<cfelse>
+						<input type="hidden" id="stopHour#catTrim#" name="stopHour#catTrim#" value="">
+						<input type="hidden" id="stopMinute#catTrim#" name="stopMinute#catTrim#" value="">
+						<input type="hidden" id="stopDayPart#catTrim#" name="stopDayPart#catTrim#" value="">	
+					</cfif>
+				</cfif>
+			</div>
 		</div>
-	</div>
-	<input type="hidden" id="categoryAssign#catTrim#" name="categoryAssign#catTrim#" 
-	<cfif not rsIsMember.recordcount>
-	value=""
-	<cfelseif rsIsMember.recordcount and not rsIsMember.isFeature>
-	value="0"
-	<cfelseif rsIsMember.recordcount and rsIsMember.isFeature eq 1>
-	value="1"
-	<cfelseif rsIsMember.recordcount and rsIsMember.isFeature eq 2>
-	value="2"
 	</cfif>
-	/>
-
-	<input type="hidden" id="featureStart#catTrim#" name="featureStart#catTrim#" value="#LSDateFormat(rsIsMember.featurestart,session.dateKeyFormat)#">
-	<cfif isDate(rsIsMember.featurestart)>
-		<input type="hidden" id="startDayPart#catTrim#" name="startDayPart#catTrim#" value="AM"/>
-		<cfif hour(rsIsMember.featurestart) lt 12>
-			<input type="hidden" id="startHour#catTrim#" name="startHour#catTrim#" value="#hour(rsIsMember.featurestart)#">
-			<input type="hidden" id="startDayPart#catTrim#" name="startDayPart#catTrim#" value="AM">	
-		<cfelse>
-			<input type="hidden" id="startHour#catTrim#" name="startHour#catTrim#" value="#evaluate('hour(rsIsMember.featurestart)-12')#">
-			<input type="hidden" id="startDayPart#catTrim#" name="startDayPart#catTrim#" value="PM">	
-		</cfif>
-		<input type="hidden" id="startMinute#catTrim#" name="startMinute#catTrim#" value="#minute(rsIsMember.featurestart)#">	
-	<cfelse>
-		<input type="hidden" id="startHour#catTrim#" name="startHour#catTrim#" value="">
-		<input type="hidden" id="startMinute#catTrim#" name="startMinute#catTrim#" value="">
-		<input type="hidden" id="startDayPart#catTrim#" name="startDayPart#catTrim#" value="">	
-	</cfif>
-
-	<input type="hidden" id="featureStop#catTrim#" name="featureStop#catTrim#" value="#LSDateFormat(rsIsMember.featureStop,session.dateKeyFormat)#">
-	<cfif isDate(rsIsMember.featureStop)>
-		<input type="hidden" id="stopDayPart#catTrim#" name="stopDayPart#catTrim#" value="AM"/>
-		<cfif hour(rsIsMember.featureStop) lt 12>
-			<input type="hidden" id="stopHour#catTrim#" name="stopHour#catTrim#" value="#hour(rsIsMember.featureStop)#">
-			<input type="hidden" id="stopDayPart#catTrim#" name="stopDayPart#catTrim#" value="AM">	
-		<cfelse>
-			<input type="hidden" id="stopHour#catTrim#" name="stopHour#catTrim#" value="#evaluate('hour(rsIsMember.featureStop)-12')#">	
-			<input type="hidden" id="stopDayPart#catTrim#" name="stopDayPart#catTrim#" value="PM">
-		</cfif>
-	
-		<input type="hidden" id="stopMinute#catTrim#" name="stopMinute#catTrim#" value="#minute(rsIsMember.featureStop)#">	
-	<cfelse>
-		<input type="hidden" id="stopHour#catTrim#" name="stopHour#catTrim#" value="">
-		<input type="hidden" id="stopMinute#catTrim#" name="stopMinute#catTrim#" value="">
-		<input type="hidden" id="stopDayPart#catTrim#" name="stopDayPart#catTrim#" value="">	
-	</cfif>
-
-</cfif>
-
 </div>
 <cfif rslist.hasKids>
 	<cf_dsp_categories_nest siteID="#attributes.siteID#" parentID="#rslist.categoryID#" nestLevel="#evaluate(attributes.nestLevel +1)#" contentBean="#attributes.contentBean#"

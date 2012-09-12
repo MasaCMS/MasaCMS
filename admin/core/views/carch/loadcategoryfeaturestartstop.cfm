@@ -48,12 +48,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <div class="categoryassignment<cfif rc.categoryAssignment eq '2'> scheduled</cfif>">
 		<a class="mura-quickEditItem<cfif rc.categoryAssignment eq '2'> tooltip</cfif>">
+		<input type="hidden" id="categoryAssign#catTrim#" name="categoryAssign#catTrim#" value="#HTMLEditFormat(rc.categoryAssignment)#"/>
 		<cfif rc.categoryAssignment eq '0'>
 			#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#
 		<cfelseif rc.categoryAssignment eq '1'>
 			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.feature')#
 		<cfelseif rc.categoryAssignment eq '2'>
 			<a href="##" rel="tooltip" title="#HTMLEditFormat(LSDateFormat(rc.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rc.featurestop,"short")#"><i class="icon-info-sign"></i></a>
+			<input type="hidden" id="featureStart#catTrim#" name="featureStart#catTrim#" value="#LSDateFormat(rc.featureStart,session.dateKeyFormat)#">
+			<input type="hidden" id="startHour#catTrim#" name="startHour#catTrim#" value="#HTMLEditFormat(rc.startHour)#">
+			<input type="hidden" id="startMinute#catTrim#" name="startMinute#catTrim#" value="#HTMLEditFormat(rc.startMinute)#">
+			<input type="hidden" id="startDayPart#catTrim#" name="startDayPart#catTrim#" value="#HTMLEditFormat(rc.startDayPart)#">
+			<input type="hidden" id="featureStop#catTrim#" name="featureStop#catTrim#" value="#LSDateFormat(rc.featureStop,session.dateKeyFormat)#">
+			<input type="hidden" id="stopHour#catTrim#" name="stopHour#catTrim#" value="#HTMLEditFormat(rc.stopHour)#">
+			<input type="hidden" id="stopMinute#catTrim#" name="stopMinute#catTrim#" value="#HTMLEditFormat(rc.stopMinute)#">
+			<input type="hidden" id="stopDayPart#catTrim#" name="stopDayPart#catTrim#" value="#HTMLEditFormat(rc.stopDayPart)#">
 		<cfelse>
 			#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#
 		</cfif>

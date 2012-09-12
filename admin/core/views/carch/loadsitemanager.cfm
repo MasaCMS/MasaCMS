@@ -203,10 +203,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           <dd class="order">&nbsp;</dd>
         </cfif>
 		--->
-        <dd class="objects">
-        	<cfif perm eq 'editor'><a class="mura-quickEditItem<cfif rc.rstop.Display eq 2 and rc.rstop.approved> scheduled</cfif>" data-attribute="inheritObjects"></cfif>
-        	#application.rbFactory.getKeyValue(session.rb,"sitemanager.#lcase(rc.rstop.inheritObjects)#")#</dd>
+      <dd class="objects">
+        	<cfif perm eq 'editor'>
+            <a class="mura-quickEditItem<cfif rc.rstop.Display eq 2 and rc.rstop.approved> scheduled</cfif>" data-attribute="inheritObjects">
+          </cfif>
+        	#application.rbFactory.getKeyValue(session.rb,"sitemanager.#lcase(rc.rstop.inheritObjects)#")#
        		<cfif perm eq 'editor'></a></cfif>
+      </dd>
 	    <dd class="display<cfif rc.rstop.Display eq 2 and rc.rstop.approved> scheduled</cfif>">
 			<cfif perm eq 'editor'><a class="mura-quickEditItem<cfif rc.rstop.Display eq 2 and rc.rstop.approved> tooltip</cfif>" data-attribute="display"></cfif>
 			<cfif rc.rstop.Display eq 1 and rc.rstop.approved >
