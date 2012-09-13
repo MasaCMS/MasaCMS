@@ -69,58 +69,52 @@ function getObj(name)
 
 function showMenu(id,obj,parentid,siteid) {
 		
-if (window.innerHeight)
-	{
+	if (window.innerHeight){
 		 var posTop = window.pageYOffset
 	}
-	else if (document.documentElement && document.documentElement.scrollTop)
-	{
+	else if (document.documentElement && document.documentElement.scrollTop){
 		var posTop = document.documentElement.scrollTop
 	}
-	else if (document.body)
-	{
-		 var posTop = document.body.scrollTop
+	else if (document.body){
+		var posTop = document.body.scrollTop
 	}
 
-if (window.innerWidth)
-	{
+	if (window.innerWidth){
 		 var posLeft = window.pageXOffset
 	}
-	else if (document.documentElement && document.documentElement.scrollLeft)
-	{
+	else if (document.documentElement && document.documentElement.scrollLeft){
 		var posLeft = document.documentElement.scrollLeft
 	}
-	else if (document.body)
-	{
+	else if (document.body){
 		 var posLeft = document.body.scrollLeft
 	}
 
-var xPos = findPosX(obj);
-var yPos = findPosY(obj);
+	var xPos = findPosX(obj);
+	var yPos = findPosY(obj);
 
-if(navigator.appName=="Microsoft Internet Explorer" && parseInt(navigator.appVersion) != 4){
-	xPos = xPos -14;
-	yPos = yPos -7;
-} else {
-	xPos = xPos +17;
-	yPos = yPos -9;
-	
-}
+	if(navigator.appName=="Microsoft Internet Explorer" && parseInt(navigator.appVersion) != 4){
+		xPos = xPos -14;
+		yPos = yPos -7;
+	} else {
+		xPos = xPos +17;
+		yPos = yPos -9;
+		
+	}
 
-document.getElementById(id).style.top=yPos + "px" ;
-document.getElementById(id).style.left=xPos + "px" ;
-document.getElementById(id).style.visibility="visible";
+	document.getElementById(id).style.top=yPos + "px" ;
+	document.getElementById(id).style.left=xPos + "px" ;
+	jQuery('#' + id).removeClass('hide');
 
-document.getElementById('newCategoryLink').href=
-'index.cfm?muraAction=cCategory.edit&parentid=' + parentid + '&siteid=' + siteid;
+	document.getElementById('newCategoryLink').href=
+	'index.cfm?muraAction=cCategory.edit&parentid=' + parentid + '&siteid=' + siteid;
 
 
-if(lastid!="" && lastid !=id){
+	if(lastid!="" && lastid !=id){
+		hideMenu(lastid);
+	}
 
-hideMenu(lastid);
-}
-navTimer = setTimeout('hideMenu(lastid);',6000);
-lastid=id;
+	navTimer = setTimeout('hideMenu(lastid);',6000);
+	lastid=id;
 }
 
 function findPosX(obj)
@@ -158,10 +152,10 @@ function findPosY(obj)
 
 function keepMenu(id) {
 navTimer = setTimeout('hideMenu(lastid);',6000);
-document.getElementById(id).style.visibility="visible";
+jQuery('#' + id).removeClass('hide');
 }
 
 function hideMenu(id) {
 if(navTimer!=null)clearTimeout(navTimer);
-document.getElementById(id).style.visibility="hidden";
+jQuery('#' + id).addClass('hide');
 }
