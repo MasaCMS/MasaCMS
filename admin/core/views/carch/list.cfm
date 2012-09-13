@@ -45,6 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfset event=request.event>
+<cfset $=request.event.getValue('MuraScope')>
 <cfinclude template="js.cfm">
 <cfswitch expression="#rc.moduleID#">
 
@@ -85,6 +86,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.componentmanager')#</h2>	
 </cfif>
 <cfinclude template="dsp_secondary_menu.cfm">
+
+<!---
 <div class="btn-group" id="filter-view">
   <a class="btn dropdown-toggle" data-toggle="dropdown" href="">
     <i class="icon-eye-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.filterview')#
@@ -106,45 +109,45 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   </div>
 </div>
 
-<!---
 <div class="notice" id="sitemgr-reorder">
 	When you're done re-ordering, click "Update."
 		<input type="button" class="submit btn pulse" id="submitSort" onclick="submitForm(document.forms.viewUpdate);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.update")#" />
 </div>
 --->
-  
-  </cfoutput>
-  <table class="table table-striped table-condensed mura-table-grid">
-    
-	<cfoutput>
-	<thead>
-	<tr> 
-      <th class="var-width"><a href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&topid=#URLEncodedFormat(rc.topid)#&parentid=#URLEncodedFormat(rc.parentid)#&moduleid=#rc.moduleID#&sortBy=title&sortDirection=#titleDirection#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.title')#</a></th>
-    <!--- <cfif rc.perm eq 'editor'><th class="order" width="30">Order</th></cfif>--->
-      <th><a href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&topid=#URLEncodedFormat(rc.topid)#&parentid=#URLEncodedFormat(rc.parentid)#&moduleid=#rc.moduleID#&sortBy=display&sortDirection=#displayDirection#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.display')#</a></th>
-      <th><a href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&topid=#URLEncodedFormat(rc.topid)#&parentid=#URLEncodedFormat(rc.parentid)#&moduleid=#rc.moduleID#&sortBy=lastUpdate&sortDirection=#lastUpdatedDirection#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.lastupdated')#</a></th>
-      <th class="actions">&nbsp;</th>
-    </tr>
-	</thead>
-	</cfoutput>
-	<tbody>
-    <cfif rc.rstop.recordcount>
-     <cfoutput query="rc.rsTop" maxrows="#rc.nextn.recordsperPage#" startrow="#rc.startrow#">
-	<cfsilent><cfif rc.perm neq 'editor'>
-	<cfset verdict=application.permUtility.getPerm(rc.rstop.contentid, rc.siteid)>
-	
-	<cfif verdict neq 'deny'>
-		<cfif verdict eq 'none'>
-			<cfset verdict=rc.perm>
+</cfoutput>
+<div class="row-fluid">
+	  <div id="main" class="span9">
+	  <table class="table table-striped table-condensed mura-table-grid">
+	    
+		<cfoutput>
+		<thead>
+		<tr> 
+	      <th class="var-width"><a href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&topid=#URLEncodedFormat(rc.topid)#&parentid=#URLEncodedFormat(rc.parentid)#&moduleid=#rc.moduleID#&sortBy=title&sortDirection=#titleDirection#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.title')#</a></th>
+	    <!--- <cfif rc.perm eq 'editor'><th class="order" width="30">Order</th></cfif>--->
+	      <th><a href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&topid=#URLEncodedFormat(rc.topid)#&parentid=#URLEncodedFormat(rc.parentid)#&moduleid=#rc.moduleID#&sortBy=display&sortDirection=#displayDirection#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.display')#</a></th>
+	      <th><a href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&topid=#URLEncodedFormat(rc.topid)#&parentid=#URLEncodedFormat(rc.parentid)#&moduleid=#rc.moduleID#&sortBy=lastUpdate&sortDirection=#lastUpdatedDirection#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.lastupdated')#</a></th>
+	      <th class="actions">&nbsp;</th>
+	    </tr>
+		</thead>
+		</cfoutput>
+		<tbody>
+	<cfif rc.rstop.recordcount>
+	<cfoutput query="rc.rsTop" maxrows="#rc.nextn.recordsperPage#" startrow="#rc.startrow#">
+		<cfsilent><cfif rc.perm neq 'editor'>
+			<cfset verdict=application.permUtility.getPerm(rc.rstop.contentid, rc.siteid)>
+			
+			<cfif verdict neq 'deny'>
+				<cfif verdict eq 'none'>
+					<cfset verdict=rc.perm>
+				</cfif>
+			<cfelse>
+				<cfset verdict = "none">
+			</cfif>
+			
+			<cfelse>
+		<cfset verdict='editor'>
 		</cfif>
-	<cfelse>
-		<cfset verdict = "none">
-	</cfif>
-	
-	<cfelse>
-<cfset verdict='editor'>
-</cfif>
-</cfsilent>
+		</cfsilent>
         <tr>  
           <td class="var-width"><cfif verdict neq 'none'><a class="draftprompt" data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#">#left(rc.rstop.menutitle,90)#</a><cfelse>#left(rc.rstop.menutitle,90)#</cfif></td>
           
@@ -225,6 +228,35 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfoutput>
 			
    </cfif>
+</div>
+<cfoutput>
+<div class="sidebar span3">
+	<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.filters")#</h3>
+	<form class="form-inline" novalidate="novalidate" id="filterByTitle" action="index.cfm" method="get">
+    	  <input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#" />
+    	  <input type="hidden" name="topid" value="#rc.topID#" />
+    	  <input type="hidden" name="parentid" value="#rc.parentID#" />
+    	  <input type="hidden" name="moduleid" value="#rc.moduleID#" />
+    	  <input type="hidden" name="sortBy" value="" />
+    	  <input type="hidden" name="sortDirection" value="" />
+    	  <input type="hidden" name="muraAction" value="cArch.list" />
+   
+		<div id="filters" class="module well">
+		<h4>#application.rbFactory.getKeyValue(session.rb,"sitemanager.keywords")#</h4>
+	     <input type="text" name="searchString" value="#HTMLEditFormat(rc.searchString)#" class="text" size="20">
+	  	</div>
+
+	  	<cfif $.getBean("categoryManager").getCategoryCount($.event("siteID"))>
+		<div class="module well" id="mura-filter-category">
+		<h4>#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#</h4>
+		<cf_dsp_categories_nest siteID="#$.event('siteID')#" parentID="" nestLevel="0" categoryid="#$.event('categoryid')#">
+		</div>
+	</cfif>
+
+	  	<input type="submit" class="btn" name="filterList" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#"/>
+  	 </form>
+</div>
+</cfoutput>
 <cfinclude template="draftpromptjs.cfm">
 
 
