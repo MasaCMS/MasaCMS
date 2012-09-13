@@ -466,6 +466,11 @@ var hasBody=#subType.getHasBody()#;
 			</cfif>
 		</cfcase>
 		<cfcase value="Component">
+			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Categorization')>
+			<cfif application.categoryManager.getCategoryCount(rc.siteID)>
+			<cfinclude template="form/dsp_tab_categories.cfm">
+			</cfif>
+			</cfif>
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Usage Report')>
 			<cfif not rc.contentBean.getIsNew()>
 			<cfinclude template="form/dsp_tab_usage.cfm">
@@ -473,6 +478,11 @@ var hasBody=#subType.getHasBody()#;
 			</cfif>		
 		</cfcase>
 		<cfcase value="Form">
+			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Categorization')>
+			<cfif application.categoryManager.getCategoryCount(rc.siteID)>
+			<cfinclude template="form/dsp_tab_categories.cfm">
+			</cfif>
+			</cfif>
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Usage Report')>
 			<cfif not rc.contentBean.getIsNew()>
 			<cfinclude template="form/dsp_tab_usage.cfm">

@@ -90,15 +90,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="args" type="struct"/>
 		<cfset var rs ="" />
 		<cfset var data=arguments.args />
-		
+		<cfset var feed="">
 		<cfparam name="data.topid" default="00000000000000000000000000000000001" />
 		<cfparam name="data.sortBy" default="menutitle">
 		<cfparam name="data.sortDirection" default="asc">
 		<cfparam name="data.searchString" default="">
+		<cfparam name="data.categoryid" default="">
 		
 		<cfswitch expression="#data.moduleid#">
-			<cfcase value="00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000011,00000000000000000000000000000000012,00000000000000000000000000000000013" delimiters=",">
+			<cfcase value="00000000000000000000000000000000011,00000000000000000000000000000000012,00000000000000000000000000000000013" delimiters=",">
 				<cfset rs=variables.contentGateway.getNest(data.topid,data.siteid,data.sortBy,data.sortDirection,data.searchString) />
+			</cfcase>
+			<cfcase value="00000000000000000000000000000000003,00000000000000000000000000000000004">
+				<cfset feed=getBean('feed')>
+				<cfif data.moduleID eq "00000000000000000000000000000000003">
+					<cfset feed.setType('Component')>
+				<cfelse>
+					<cfset feed.setType('Form')>
+				</cfif>
+				<cfset feed.setSiteID(data.siteID)>
+				<cfset feed.setCategoryID(data.categoryid)>
+				<cfset feed.setLiveOnly(0)>
+				<cfset feed.setSortBy('menutitle')>
+				<cfif len(data.searchString)>
+					<cfset feed.addParam(column='menutitle',condition='contains',criteria=data.searchString)>
+					<cfset feed.addParam(relationship='or',column='body',condition='contains',criteria=data.searchString)>
+				</cfif>
+				<cfset rs=feed.getQuery()>
 			</cfcase>
 			<cfdefaultcase>
 				<cfset rs=variables.contentGateway.getTop(data.topid,data.siteid) />

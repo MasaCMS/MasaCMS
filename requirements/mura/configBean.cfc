@@ -1448,10 +1448,51 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.instance.customUrlVarDelimiters>
 </cffunction>
 
-<cffunction name="getDbColumnMetaData" output="false">
+<cffunction name="getDbColumnCFType" output="false">
 	<cfargument name="column">
 	<cfargument name="table">
-	<cfreturn variables.dbUtility.columnMetaData(argumentCollection=arguments)>
+	<cfset var datatype=variables.dbUtility.columnMetaData(argumentCollection=arguments).datatype>
+
+	<cfswitch expression="#arguments.rs.type_name#">
+			<cfcase value="varchar,nvarchar,varchar2">
+				<!--- Add MSSQL nvarchar(max)--->
+				<cfset columnArgs.datatype="varchar">
+				<cfset columnArgs.length=arguments.rs.column_size>
+			</cfcase>
+			<cfcase value="char">
+				<cfset columnArgs.datatype="char">
+				<cfset columnArgs.length=arguments.rs.column_size>
+			</cfcase>
+			<cfcase value="int">
+				<cfset columnArgs.datatype="int">
+			</cfcase>
+			<cfcase value="number">
+				<cfif arguments.rs.data_precision eq 3>
+					<cfset columnArgs.datatype="tinyint">
+				<cfelse>
+					<cfset columnArgs.datatype="int">	
+				</cfif>
+			</cfcase>
+			<cfcase value="tinyint">
+				<cfset columnArgs.datatype="tinyint">
+			</cfcase>
+			<cfcase value="date,datetime">
+				<cfset columnArgs.datatype="datetime">
+			</cfcase>
+			<cfcase value="ntext,longtext,clob">
+				<cfset columnArgs.datatype="longtext">
+			</cfcase>
+			<cfcase value="text">
+				<cfset columnArgs.datatype="text">
+			</cfcase>
+			<cfcase value="float,binary_float">
+				<cfset columnArgs.datatype="float">
+			</cfcase>
+			<cfcase value="double,decimal,binary_double">
+				<cfset columnArgs.datatype="double">
+			</cfcase>
+		</cfswitch>
+
 </cffunction>
 
 </cfcomponent>

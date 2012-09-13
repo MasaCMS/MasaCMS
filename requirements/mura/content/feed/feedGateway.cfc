@@ -172,7 +172,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tcontent.siteid, tcontent.title, tcontent.menutitle, tcontent.restricted, tcontent.restrictgroups, 
 	tcontent.type, tcontent.subType, tcontent.filename, tcontent.displaystart, tcontent.displaystop,
 	tcontent.remotesource, tcontent.remoteURL,tcontent.remotesourceURL, tcontent.keypoints,
-	tcontent.contentID, tcontent.contentHistID,tcontent.target, tcontent.targetParams,
+	tcontent.contentID, tcontent.parentID, tcontent.approved, tcontent.isLocked, tcontent.contentHistID,tcontent.target, tcontent.targetParams,
 	tcontent.releaseDate, tcontent.lastupdate,tcontent.summary, 
 	tfiles.fileSize,tfiles.fileExt,tcontent.fileid,
 	tcontent.tags,tcontent.credits,tcontent.audience, tcontent.orderNo,
@@ -238,8 +238,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						   		#renderActiveClause("tcontent",arguments.feedBean.getSiteID(),arguments.feedBean.getLiveOnly())#
 							    #renderActiveClause("TKids",arguments.feedBean.getSiteID(),arguments.feedBean.getLiveOnly())#
 							    <cfif not arguments.feedBean.getShowExcludeSearch()> AND TKids.searchExclude = 0</cfif>
-							    <cfif arguments.feedBean.getShowNavOnly() and arguments.feedBean.getType() neq 'Component'>AND TKids.isNav = 1</cfif>
-							 	AND tcontent.moduleid = '00000000000000000000000000000000000'
+							    <cfif arguments.feedBean.getShowNavOnly() and not listFindNoCase('Form,Component',arguments.feedBean.getType())>AND TKids.isNav = 1</cfif>
+							 	<cfif arguments.feedBean.getType() eq "Remote">
+									<cfthrow message="This function is not available for remote feeds.">
+								<cfelseif arguments.feedBean.getType() eq "Component">
+									AND tcontent.moduleid = '00000000000000000000000000000000003'
+								<cfelseif arguments.feedBean.getType() eq "Form">
+									AND tcontent.moduleid = '00000000000000000000000000000000004'
+								<cfelse>
+									AND tcontent.moduleid = '00000000000000000000000000000000000'
+								</cfif>
 							 
 							<cfif rsParams.recordcount>
 							<cfset started=false>
@@ -422,13 +430,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	where
 	tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedBean.getsiteid()#">
 	#renderActiveClause("tcontent",arguments.feedBean.getSiteID(),arguments.feedBean.getLiveOnly())#
-	<cfif arguments.feedBean.getShowNavOnly() and arguments.feedBean.getType() neq 'Component'>
+	<cfif arguments.feedBean.getShowNavOnly() and not listFindNoCase('Form,Component',arguments.feedBean.getType())>
 	AND tcontent.isNav = 1
 	</cfif>
 	<cfif arguments.feedBean.getType() eq "Remote">
 		<cfthrow message="This function is not available for remote feeds.">
 	<cfelseif arguments.feedBean.getType() eq "Component">
 		AND tcontent.moduleid = '00000000000000000000000000000000003'
+	<cfelseif arguments.feedBean.getType() eq "Form">
+		AND tcontent.moduleid = '00000000000000000000000000000000004'
 	<cfelse>
 		AND tcontent.moduleid = '00000000000000000000000000000000000'
 	</cfif>
