@@ -60,32 +60,48 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </ul>
 
 <form novalidate="novalidate" name="form1" method="post" action="index.cfm" onsubit="return validateForm(this);">
-<dl class="oneColumn separate">
-<dt class="first">Attribute Set Name</dt>
-<dd><input name="name" value="#HTMLEditFormat(extendSetBean.getName())#" required="true"/></dd>
+
+
+<div class="control-group">
+	<label class="control-label">Attribute Set Name</label>
+	<div class="controls">
+	<input name="name" value="#HTMLEditFormat(extendSetBean.getName())#" required="true"/>
+	</div>
+</div>
+
 <cfif subType.getType() neq "Custom">
-<dt>Container</dt>
-<dd><select name="container">
-<option value="Default">Extended Attributes Tab</option>
-<cfif subType.getTYpe() neq "Site">
-<option value="Basic"<cfif extendSetBean.getContainer() eq "Basic"> selected</cfif>>Basic Tab</option></cfif>
-<option value="Custom"<cfif extendSetBean.getContainer() eq "Custom"> selected</cfif>>Custom UI</option>
-</select>
-</dd>
+	<div class="control-group">
+		<label class="control-label">Container</label>
+		<div class="controls">
+			<select name="container">
+				<option value="Default">Extended Attributes Tab</option>
+				<cfif subType.getTYpe() neq "Site">
+				<option value="Basic"<cfif extendSetBean.getContainer() eq "Basic"> selected</cfif>>Basic Tab</option></cfif>
+				<option value="Custom"<cfif extendSetBean.getContainer() eq "Custom"> selected</cfif>>Custom UI</option>
+			</select>
+		</div>
+	</div>
 <cfelse>
-<input name="container" value="Custom" type="hidden"/>	
+	<input name="container" value="Custom" type="hidden"/>	
 </cfif>
+
+<!---
 <cfif  not listFindNoCase("1,Site,Custom", subtype.getType()) and application.categoryManager.getCategoryCount(rc.siteID)>
-<dt>Available Category Dependencies</dt>
-<dd class="categoryAssignment"><cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" extendSetBean="#extendSetBean#"></dd>
-</cfif></dl>
+	<div class="control-group">
+		<label class="control-label">Available Category Dependencies</label>
+		<div class="controls categoryAssignment"><cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" extendSetBean="#extendSetBean#">
+		</div>
+	</div>
+</cfif>
+--->
+
 <div class="form-actions">
 <cfif not len(rc.extendSetID)>
-	<input type="button" class="submit" onclick="submitForm(document.forms.form1,'add');" value="Add" />
+	<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="Add" />
 	<input type=hidden name="extendSetID" value="#createuuid()#">
 <cfelse>
-	<input type="button" class="submit" onclick="submitForm(document.forms.form1,'delete','Delete Attribute Set?');" value="Delete" />
-	<input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="Update" />
+	<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'delete','Delete Attribute Set?');" value="Delete" />
+	<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'update');" value="Update" />
 	<input type=hidden name="extendSetID" value="#extendSetBean.getExtendSetID()#">
 </cfif>
 </div>

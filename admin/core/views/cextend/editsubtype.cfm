@@ -48,43 +48,64 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset typeList="1^tusers^userID^tclassextenddatauseractivity,2^tusers^userID^tclassextenddatauseractivity,Address^tuseraddresses^addressID^tclassextenddatauseractivity,Page^tcontent^contentHistID^tclassextenddata,Portal^tcontent^contentHistID^tclassextenddata,File^tcontent^contentHistID^tclassextenddata,Calendar^tcontent^contentHistID^tclassextenddata,Gallery^tcontent^contentHistID^tclassextenddata,Link^tcontent^contentHistID^tclassextenddata,Component^tcontent^contentHistID^tclassextenddata,Custom^custom^ID^tclassextenddata,Site^tsettings^baseID^tclassextenddata,Base^tcontent^contentHistID^tclassextenddata"/>
 <cfset subType=application.classExtensionManager.getSubTypeByID(rc.subTypeID)>
 <h2><cfif len(rc.subTypeID)>Edit<cfelse>Add</cfif> Class Extension</h2>
+
 <cfoutput>
 <div id="nav-module-specific" class="btn-group">
 <a class="btn" href="index.cfm?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-share-alt"></i> Back to Class Extensions</a>
 </div>
 
 <form novalidate="novalidate" name="subTypeFrm" method="post" action="index.cfm" onsubit="return validateForm(this);">
-<dl class="oneColumn separate">
-<dt class="first">Base Type</dt>
-<dd><select name="typeSelector" id="typeSelector" required="true" message="The BASE CLASS field is required." onchange="setBaseInfo(this.value);">
-	<option value="">Select</option>
-	<cfloop list="#typeList#" index="t"><option value="#t#" <cfif listFirst(t,'^') eq subType.getType()>selected</cfif>>#application.classExtensionManager.getTypeAsString(listFirst(t,'^'))#</option></cfloop>
-	</select>
-<!--- 	
-	<input name="type" value="#HTMLEditFormat(subType.getType())#" required="true"/> ---></dd>
-<dt class="subTypeContainer"<cfif subtype.getType() eq "Site"> style="display:none;"</cfif>>Sub Type</dt>
-<dd class="subTypeContainer"<cfif subtype.getType() eq "Site"> style="display:none;"</cfif>><input name="subType" id="subType" value="#HTMLEditFormat(subType.getSubType())#" required="true" maxlength="25"/></dd>
+<div class="control-group">
+	<label class="control-label">Base Type</label>
+	<div class="controls"><select name="typeSelector" id="typeSelector" required="true" message="The BASE CLASS field is required." onchange="setBaseInfo(this.value);">
+		<option value="">Select</option>
+		<cfloop list="#typeList#" index="t"><option value="#t#" <cfif listFirst(t,'^') eq subType.getType()>selected</cfif>>#application.classExtensionManager.getTypeAsString(listFirst(t,'^'))#</option></cfloop>
+		</select>
+	</div>
+</div>
+<div class="control-group subTypeContainer"<cfif subtype.getType() eq "Site"> style="display:none;"</cfif>>
+	<label class="control-label">Sub Type</label>
+	<div class="controls">
+		<input name="subType" id="subType" value="#HTMLEditFormat(subType.getSubType())#" required="true" maxlength="25"/>
+	</div>
+</div>
 
-<dt>Description</dt>
-<dd><textarea name="description" id="description">#HTMLEditFormat(subtype.getDescription())#</textarea></dd>
+<div class="control-group">
+<label class="control-label">Description</label>
+<div class="controls"><textarea name="description" id="description">#HTMLEditFormat(subtype.getDescription())#</textarea></div>
+</div>
 
-<dt class="hasSummaryContainer">Show summary when editing?</dt>
-<dd class="hasSummaryContainer"><ul class="radioGroup"><li><input name="hasSummary" type="radio" class="radio" value="1"<cfif subType.gethasSummary() eq 1 >Checked</cfif>>Yes</li><li><input name="hasSummary" type="radio" class="radio" value="0"<cfif subType.gethasSummary() eq 0 >Checked</cfif>>No</li></ul></dd>
+<div class="control-group hasSummaryContainer">
+	<label class="control-label">Show summary when editing?</label>
+	<div class="controls">
+	<label class="radio"><input name="hasSummary" type="radio" class="radio" value="1"<cfif subType.gethasSummary() eq 1 >Checked</cfif>>Yes</label>
+	<label class="radio"><input name="hasSummary" type="radio" class="radio" value="0"<cfif subType.gethasSummary() eq 0 >Checked</cfif>>No</label>
+	</div>
+</div>
 
-<dt class="hasBodyContainer">Show body when editing?</dt>
-<dd class="hasBodyContainer"> <ul class="radioGroup"><li><input name="hasBody" type="radio" class="radio" value="1"<cfif subType.gethasBody() eq 1 >Checked</cfif>>Yes</li><li><input name="hasBody" type="radio" class="radio" value="0"<cfif subType.gethasBody() eq 0 >Checked</cfif>>No</li></ul></dd>
+<div class="control-group hasBodyContainer">
+	<label class="control-label">Show body when editing?</label>
+	<div class="controls"> 
+		<label class="radio"><input name="hasBody" type="radio" class="radio" value="1"<cfif subType.gethasBody() eq 1 >Checked</cfif>>Yes</label>
+		<label class="radio"><input name="hasBody" type="radio" class="radio" value="0"<cfif subType.gethasBody() eq 0 >Checked</cfif>>No</label>
+	</div>
+</div>
 
-<dt>Is this class extension active?</dt>
-<dd><ul class="radioGroup"><li><input name="isActive" type="radio" class="radio" value="1"<cfif subType.getIsActive() eq 1 >Checked</cfif>>Yes</li><li><input name="isActive" type="radio" class="radio" value="0"<cfif subType.getIsActive() eq 0 >Checked</cfif>>No</li></ul></dd>
-</dl>
+<div class="control-group">
+	<label class="control-label">Is this class extension active?</label>
+<div class="controls">
+	<label class="radio"><input name="isActive" type="radio" class="radio" value="1"<cfif subType.getIsActive() eq 1 >Checked</cfif>>Yes</label>
+	<label class="radio"><input name="isActive" type="radio" class="radio" value="0"<cfif subType.getIsActive() eq 0 >Checked</cfif>>No</label>
+	</div>
+</div>
 
-<div class="clearfix" id="actionButtons">
+<div class="clearfix" id="form-actions">
 <cfif not len(rc.subTypeID)>
-	<input type="button" class="submit" onclick="submitForm(document.forms.subTypeFrm,'add');" value="Add" />
+	<input type="button" class="submit btn" onclick="submitForm(document.forms.subTypeFrm,'add');" value="Add" />
 	<input type=hidden name="subTypeID" value="#createuuid()#">
 <cfelse>
-	<input type="button" class="submit" onclick="submitForm(document.forms.subTypeFrm,'delete','Delete Class Extension?');" value="Delete" />
-	<input type="button" class="submit" onclick="submitForm(document.forms.subTypeFrm,'update');" value="Update" />
+	<input type="button" class="submit btn" onclick="submitForm(document.forms.subTypeFrm,'delete','Delete Class Extension?');" value="Delete" />
+	<input type="button" class="submit btn" onclick="submitForm(document.forms.subTypeFrm,'update');" value="Update" />
 	<input type=hidden name="subTypeID" value="#subType.getsubtypeID()#">
 </cfif>
 </div>

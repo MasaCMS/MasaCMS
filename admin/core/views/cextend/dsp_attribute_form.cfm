@@ -55,59 +55,104 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div style="display:none;" id="#HTMLEditFormat(attributes.formName)#container">
 </cfif>
 <form novalidate="novalidate" method="post" name="#HTMLEDitFormat(attributes.formName)#" action="index.cfm" onsubmit="return validateForm(this);">
-<dl class="oneColumn separate">
-<cfif attributes.action neq "add">
-<dt>Attribute ID</dt>
-<dd>#attributes.attributeBean.getAttributeID()#</dd>
-</cfif>
-<dt <cfif attributes.action eq "add">class="first"</cfif>>Name</dt>
-<dd><input type="text" name="name" required="true" value="#HTMLEditFormat(attributes.attributeBean.getName())#" /></dd>
-<dt>Label</dt>
-<dd><input type="text" name="label" value="#HTMLEditFormat(attributes.attributeBean.getLabel())#" /></dd>
 
-<dt>Hint</dt>
-<dd><input type="text" name="hint"  value="#HTMLEditFormat(attributes.attributeBean.getHint())#" /></dd>
-<dt>Input Type</dt>
-<dd><select name="type">
-	<cfloop list="#typelist#" index="t"><option value="#t#" <cfif attributes.attributeBean.getType() eq t>selected</cfif>>#t#</option></cfloop>
-	</select>
-</dd>
-<dt>Default Value</dt>
-<dd><input type="text" name="defaultValue"  value="#HTMLEditFormat(attributes.attributeBean.getDefaultvalue())#" /></dd>
-<dt>Required</dt>
-<dd><select name="required">
-	<option value="false" <cfif attributes.attributeBean.getRequired() eq "false">selected</cfif>>False</option>
-	<option value="true" <cfif attributes.attributeBean.getRequired() eq "true">selected</cfif>>True</option>
-	</select>
-</dd>
-<dt>Validate</dt>
-<dd><select name="validation">
-	<option value="" <cfif attributes.attributeBean.getValidation() eq "">selected</cfif>>None</option>
-	<option value="Date" <cfif attributes.attributeBean.getValidation() eq "Date">selected</cfif>>Date</option>
-	<option value="Numeric" <cfif attributes.attributeBean.getValidation() eq "Numeric">selected</cfif>>Numeric</option>
-	<option value="Email" <cfif attributes.attributeBean.getValidation() eq "Email">selected</cfif>>Email</option>
-	<option value="Regex" <cfif attributes.attributeBean.getValidation() eq "Regex">selected</cfif>>Regex</option>
-	<option value="Color" <cfif attributes.attributeBean.getValidation() eq "Color">selected</cfif>>Color</option>
-	</select>
-</dd>
-<dt>Regex</dt>
-<dd><input type="text" name="regex"  value="#HTMLEditFormat(attributes.attributeBean.getRegex())#" /></dd>
-<dt>Validation Message</dt>
-<dd><input type="text" name="message"  value="#HTMLEditFormat(attributes.attributeBean.getMessage())#" /></dd>
-<dt>Option List ("^" Delimiter)</dt>
-<dd><input type="text" name="optionList"  value="#HTMLEditFormat(attributes.attributeBean.getOptionList())#" /></dd>
-<dt>Option Label List (Optional, "^" Delimiter)</dt>
-<dd><input type="text" name="optionLabelList"  value="#HTMLEditFormat(attributes.attributeBean.getOptionLabelList())#" /></dd>
-</dl>
+<cfif attributes.action neq "add">
+<div class="control-group">
+	<label class="control-label">Attribute ID</label>
+	<div class="controls">
+		#attributes.attributeBean.getAttributeID()#
+	</div>
+</div>
+</cfif>
+<div class="control-group">
+	<label class="control-label">Name</label>
+	<div class="controls">
+		<input type="text" name="name" required="true" value="#HTMLEditFormat(attributes.attributeBean.getName())#" />
+	</div>
+</div>
+<div class="control-group">
+	<label class="control-label">Label</label>
+	<div class="controls">
+		<input type="text" name="label" value="#HTMLEditFormat(attributes.attributeBean.getLabel())#" />
+	</div>
+</div>
+<div class="control-group">
+	<label class="control-label">Hint</label>
+	<div class="controls">
+		<input type="text" name="hint" value="#HTMLEditFormat(attributes.attributeBean.getHint())#" />
+	</div>
+</div>
+<div class="control-group">
+	<label class="control-label">Input Type</label>
+	<div class="controls">
+		<select name="type">
+		<cfloop list="#typelist#" index="t">
+			<option value="#t#" <cfif attributes.attributeBean.getType() eq t>selected</cfif>>#t#</option>
+		</cfloop>
+		</select>
+	</div>
+</div>
+<div class="control-group">
+	<label class="control-label">Default Value</label>
+	<div class="controls">
+		<input type="text" name="defaultValue"  value="#HTMLEditFormat(attributes.attributeBean.getDefaultvalue())#" />
+	</div>
+</div>
+<div class="control-group">
+	<label class="control-label">Required</label>
+	<div class="controls">
+		<select name="required">
+			<option value="false" <cfif attributes.attributeBean.getRequired() eq "false">selected</cfif>>False</option>
+			<option value="true" <cfif attributes.attributeBean.getRequired() eq "true">selected</cfif>>True</option>
+		</select>
+	</div>
+</div>
+<div class="control-group">
+	<label class="control-label">Validate</label>
+	<div class="controls">
+		<select name="validation">
+			<option value="" <cfif attributes.attributeBean.getValidation() eq "">selected</cfif>>None</option>
+			<option value="Date" <cfif attributes.attributeBean.getValidation() eq "Date">selected</cfif>>Date</option>
+			<option value="Numeric" <cfif attributes.attributeBean.getValidation() eq "Numeric">selected</cfif>>Numeric</option>
+			<option value="Email" <cfif attributes.attributeBean.getValidation() eq "Email">selected</cfif>>Email</option>
+			<option value="Regex" <cfif attributes.attributeBean.getValidation() eq "Regex">selected</cfif>>Regex</option>
+			<option value="Color" <cfif attributes.attributeBean.getValidation() eq "Color">selected</cfif>>Color</option>
+		</select>
+	</div>
+</div>
+<div class="control-group">
+	<label class="control-label">Regex</label>
+	<div class="controls">
+		<input type="text" name="regex"  value="#HTMLEditFormat(attributes.attributeBean.getRegex())#" />
+	</div>
+</div>
+<div class="control-group">
+	<label class="control-label">Validation Message</label>
+	<div class="controls">
+		<input type="text" name="message"  value="#HTMLEditFormat(attributes.attributeBean.getMessage())#" />
+	</div>
+</div>
+<div class="control-group">
+	<label class="control-label">Option List ("^" Delimiter)</label>
+	<div class="controls">
+		<input type="text" name="optionList"  value="#HTMLEditFormat(attributes.attributeBean.getOptionList())#" />
+	</div>
+</div>
+<div class="control-group">
+	<label class="control-label">Option Label List (Optional, "^" Delimiter)</label>
+	<div class="controls">
+		<input type="text" name="optionLabelList"  value="#HTMLEditFormat(attributes.attributeBean.getOptionLabelList())#" />
+	</div>
+</div>
 
 <div class="form-actions">
 <cfif attributes.action eq "add">
-	<input type="button" class="submit" onclick="submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'add');" value="Add" />
-	<input type="button" class="submit" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container').slideUp();jQuery('###HTMLEditFormat(attributes.formName)#close').hide();jQuery('###HTMLEditFormat(attributes.formName)#open').show();" value="Cancel" />
+	<input type="button" class="submit btn" onclick="submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'add');" value="Add" />
+	<input type="button" class="submit btn" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container').slideUp();jQuery('###HTMLEditFormat(attributes.formName)#close').hide();jQuery('###HTMLEditFormat(attributes.formName)#open').show();" value="Cancel" />
 <cfelse>
-	<input type="button" class="submit" onclick="submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'update');" value="Update" />
-	<input type="button" class="submit" onclick="submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'delete','Delete Attribute?');" value="Delete" />
-	<input type="button" class="submit" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container'));jQuery('###HTMLEditFormat(attributes.formName)#close').hide();jQuery('###HTMLEditFormat(attributes.formName)#open').show();" value="Cancel" />
+	<input type="button" class="submit btn" onclick="submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'update');" value="Update" />
+	<input type="button" class="submit btn" onclick="submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'delete','Delete Attribute?');" value="Delete" />
+	<input type="button" class="submit btn" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container'));jQuery('###HTMLEditFormat(attributes.formName)#close').hide();jQuery('###HTMLEditFormat(attributes.formName)#open').show();" value="Cancel" />
 </cfif>
 </div>
 <input name="orderno" type="hidden" value="#attributes.attributeBean.getOrderno()#"/>
