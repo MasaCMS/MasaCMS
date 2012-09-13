@@ -239,6 +239,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="setSettingsManager">
+	<cfargument name="settingsManager">
+	<cfset variables.settingsManager=arguments.settingsManager>
+	<cfreturn settingsManager>
+</cffunction>
+
 <cffunction name="set" returnType="any" output="false" access="public">
     <cfargument name="content" type="any" required="true">
 	
@@ -437,6 +443,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not structIsEmpty(extErrors)>
 		<cfset structAppend(variables.instance.errors,extErrors)>
 	</cfif>
+
+	<cfif listFindNoCase('Form,Component',variables.instance.type)
+		and variables.contentManager.doesLoadKeyExist(this,'title',variables.instance.title)>
+			<cfset variables.instance.errors.titleconflict=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("sitemanager.titlenotunique")>
+	</cfif>
+	
+	<cfif variables.instance.isNew 
+		and listFindNoCase('File',variables.instance.type)
+		and not len(variables.instance.newfile)>
+			<cfset variables.instance.errors.filemissing=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("sitemanager.filemissing")>
+	</cfif>
+
 	<cfreturn this>	
 </cffunction>
  
