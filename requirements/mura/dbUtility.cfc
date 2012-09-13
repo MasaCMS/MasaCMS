@@ -1,8 +1,8 @@
 <cfcomponent extends="mura.cfobject" output="false">
 	<cfset variables.table="">
 
-	<cfset variables.tableMetaDataLookUp=structNew()>
 	<cfset variables.tableLookUp=structNew()>
+	<cfset variables.tableMetaDataLookUp=structNew()>
 	<cfset variables.tableIndexLookUp=structNew()>
 
 <cffunction name="init" output="false">
@@ -60,27 +60,16 @@
 
 <cffunction name="tableExists" output="false">
 	<cfargument name="table" default="#variables.table#">
-	<cfset var i="">
-	<cfset var tableArray=[]>
 
 	<cfif not structKeyExists(variables.tableLookUp,arguments.table)>
-		<cfset  tableArray=tables(arguments.table)>
-			
-		<cfif arrayLen(tableArray)>
-			<cfloop from="1" to="#arrayLen(tableArray)#" index="i">
-				<cfif tableArray[i].table_name eq arguments.table>
-					<cfset variables.tableLookUp[arguments.table]=true>
-					<cfbreak>
-				</cfif>
-			</cfloop>
-		</cfif>
+		<cfset variables.tableLookUp[arguments.table]=structKeyExists(tables(),arguments.table)>
 	</cfif>
 	<cfreturn variables.tableLookUp[arguments.table]>
 </cffunction>
 
 <cffunction name="tables" output="false">
 	<cfset var rscheck="">
-	<cfset var tableArray=[]>
+	<cfset var tablesStruct={}>
 
 	<cfif variables.configBean.getDbType() neq 'oracle'>
 		<cfdbinfo 
@@ -98,10 +87,10 @@
 	</cfif>
 	
 	<cfloop query="rscheck">
-		<cfset arrayAppend(tableArray, variables.utility.queryRowToStruct(rsCheck,rsCheck.currentRow))>
+		<cfset tableStruct[rsCheck.table_name]=variables.utility.queryRowToStruct(rsCheck,rsCheck.currentRow)>
 	</cfloop>
 
-	<cfreturn tableArray>
+	<cfreturn tableStruct>
 </cffunction>
 
 
@@ -465,24 +454,15 @@
 <cffunction name="columnExists" output="false">
 	<cfargument name="column">
 	<cfargument name="table" default="#variables.table#">
-	<cfset var columnsArray=columns(arguments.table)>
-	<cfset var i="">
 	
-	<cfif arrayLen(columnsArray)>
-		<cfloop from="1" to="#arrayLen(columnsArray)#" index="i">
-			<cfif columnsArray[i].column eq arguments.column>
-				<cfreturn true>
-			</cfif>
-		</cfloop>
-	</cfif>
+	<cfreturn structKeyExists(columns(arguments.table),arguments.column)>
 	
-	<cfreturn false>
 </cffunction>
 
 <cffunction name="transformColumnMetaData" access="private" output="false">
 <cfargument name="rs">
 <cfargument name="table">
-	<cfset var columnsArray=[]>
+	<cfset var columnsStruct={}>
 	<cfset var columnArgs={}>
 
 	<cfset var defaultArgs=getDefaultColumnMetatData()>
@@ -555,25 +535,20 @@
 			<cfset columnArgs.autoincrement=true>
 		</cfif>
 
-		<cfset arrayAppend(columnsArray,columnArgs)>
+		<cfset columnsStruct["#columnArgs.column#"]=columnArgs>
 	</cfloop>
 
-	<cfreturn columnsArray>
+	<cfreturn columnsStruct>
 
 </cffunction>
 
 <cffunction name="columnMetaData" output="false">
 	<cfargument name="column">
 	<cfargument name="table" default="#variables.table#">
-	<cfset var columnsArray=columns(arguments.table)>
-	<cfset var i ="">
-
-	<cfif arrayLen(columnsArray)>
-		<cfloop from="1" to="#arrayLen(columnsArray)#" index="i">
-			<cfif columnsArray[i].column eq arguments.column>
-				<cfreturn columnsArray[i]>
-			</cfif>
-		</cfloop>
+	<cfset var columnsStruct=columns(arguments.table)>
+	
+	<cfif structKeyExists(columnsStruct,arguments.column)>
+		<cfreturn columnsStruct[arguments.column]>
 	</cfif>
 
 	<cfreturn getDefaultColumnMetatData()>
