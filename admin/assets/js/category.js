@@ -92,14 +92,7 @@ function showMenu(id,obj,parentid,siteid) {
 	var xPos = findPosX(obj);
 	var yPos = findPosY(obj);
 
-	if(navigator.appName=="Microsoft Internet Explorer" && parseInt(navigator.appVersion) != 4){
-		xPos = xPos -14;
-		yPos = yPos -7;
-	} else {
-		xPos = xPos +17;
-		yPos = yPos -9;
-		
-	}
+	xPos = xPos +20;
 
 	document.getElementById(id).style.top=yPos + "px" ;
 	document.getElementById(id).style.left=xPos + "px" ;
