@@ -967,4 +967,40 @@ function _parseInt(String){
 }
 </cfscript>
 
+<cffunction name="columnParamType" output="false">
+	<cfargument name="column">
+	<cfargument name="table" default="#variables.table#">
+	
+	<cfset var datatype=columnMetaData(argumentCollection=arguments).datatype>
+
+	<cfswitch expression="#datatype#">
+			<cfcase value="varchar,nvarchar,varchar2">
+				<!--- Add MSSQL nvarchar(max)--->
+				<cfreturn "varchar">
+			</cfcase>
+			<cfcase value="char">
+				<cfreturn "char">
+			</cfcase>
+			<cfcase value="int,number,tinyint">
+				<cfreturn "numeric">
+			</cfcase>
+			<cfcase value="datetime">
+				<cfreturn "datetime">
+			</cfcase>
+			<cfcase value="date">
+				<cfreturn "date">
+			</cfcase>
+			<cfcase value="ntext,longtext,clob,text">
+				<cfreturn "longvarchar">
+			</cfcase>
+			<cfcase value="float,binary_float">
+				<cfreturn "float">
+			</cfcase>
+			<cfcase value="double,decimal,binary_double">
+				<cfreturn "double">
+			</cfcase>
+		</cfswitch>
+
+</cffunction>
+
 </cfcomponent>

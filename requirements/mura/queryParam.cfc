@@ -239,7 +239,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getDataType">
 	<cfif not len(variables.dataType) and listlen(variables.field,".") eq 2>
-		<cfset variables.dataType=getBean("configBean").getDbColumnMetaData(column=listLast(variables.field,"."),table=listFirst(variables.field,".")).dataType>
+		<cfset variables.dataType=getBean("configBean").columnParamType(column=listLast(variables.field,"."),table=listFirst(variables.field,".")).dataType>
 	</cfif>
 	<cfreturn variables.dataType />
 </cffunction>
