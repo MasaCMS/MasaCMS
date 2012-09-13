@@ -165,8 +165,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 				  <a id="select-site-btn" href="http://#application.settingsManager.getSite(session.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.configBean.getStub()#/<cfif application.configBean.getSiteIDInURLS()>#session.siteid#/</cfif>" target="_blank">Current Site</a>
 		 				<a class="dropdown-toggle" data-toggle="dropdown">
 		 				  <cfset theSiteList=application.settingsManager.getUserSites(session.siteArray,listFind(session.mura.memberships,'S2')) />
-		 				<i></i>				<span>#application.settingsManager.getSite(session.siteid).getSite()#</span>
-		 				<b class="caret"></b>
+			 				<!--- <i></i> --->
+			 				<div id="site-name">#application.settingsManager.getSite(session.siteid).getSite()#</div>
+			 				<b class="caret"></b>
 		 				</a>
 	 				
 	 				<ul class="dropdown-menu">
@@ -280,25 +281,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 				</li>
 	 				</cfif>
 	 			</ul>
-	 			
-	 			<!---<div id="select-site" class="dropdown">
-	 				
-	 				  <a id="select-site-btn" href="http://#application.settingsManager.getSite(session.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.configBean.getStub()#/<cfif application.configBean.getSiteIDInURLS()>#session.siteid#/</cfif>" target="_blank">Current Site</a>
-	 				<a class="dropdown-toggle" data-toggle="dropdown">
-	 				  <cfset theSiteList=application.settingsManager.getUserSites(session.siteArray,listFind(session.mura.memberships,'S2')) />
-	 					<span>#application.settingsManager.getSite(session.siteid).getSite()#</span>
-	 					<b class="caret"></b>
-	 				</a>
-	 			
-	 				<ul class="dropdown-menu">
-	 				    <cfloop query="theSiteList">
-	 				      <li<cfif session.siteID eq theSiteList.siteID> class="active"</cfif>>
-	 				        <a href="#baseURL#&amp;siteID=#theSiteList.siteID#"><i class="icon-globe"></i> #HTMLEditFormat(theSiteList.site)#</a>
-	 				      </li>
-	 				    </cfloop>
-	 				</ul>
-	 			
-	 			</div>--->
 	 			
 	 		</div> <!-- /container -->
 	 	
