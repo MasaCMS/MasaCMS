@@ -56,7 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <a class="btn" href="index.cfm?muraAction=cTrash.list&siteID=#URLEncodedFormat(rc.trashItem.getSiteID())#&keywords=#URLEncodedFormat(rc.keywords)#&pageNum=#URLEncodedFormat(rc.pageNum)#"><i class="icon-circle-arrow-left"></i>  Back to Trash Bin</a>
 </div>
 
-<ul>
+<ul class="metadata">
 <li><strong>Label:</strong> #htmlEditFormat(rc.trashItem.getObjectLabel())#</li>
 <li><strong>Type:</strong> #htmlEditFormat(rc.trashItem.getObjectType())#</li>
 <li><strong>SubType:</strong> #htmlEditFormat(rc.trashItem.getObjectSubType())#</li>

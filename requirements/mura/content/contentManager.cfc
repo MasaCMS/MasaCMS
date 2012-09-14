@@ -1013,7 +1013,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							
 					<!--- BEGIN CONTENT TYPE: COMPONENT, FORM --->	
 					<cfif listFindNoCase("Component,Form",newBean.getType())>
+						<!---
 						<cfset getBean('contentUtility').setUniqueTitle(newBean) />
+						--->
 						<cfset newBean.setMenuTitle(newBean.getTitle())>
 						<cfset newBean.setHTMLTitle(newBean.getTitle())>
 						<cfset newBean.setURLTitle(newBean.getTitle())>
@@ -2214,5 +2216,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="userid" type="string" required="true">
 	
 		<cfreturn variables.contentGateway.getExpiringContent(arguments.siteID,arguments.userID)>
+	</cffunction>
+
+	<cffunction name="doesLoadKeyExist" returntype="boolean" access="public" output="false">
+		<cfargument name="contentBean">
+		<cfargument name="field">
+		<cfargument name="fieldValue">
+
+		<cfreturn variables.contentUtility.doesLoadKeyExist(argumentCollection=arguments)>
 	</cffunction>
 </cfcomponent>
