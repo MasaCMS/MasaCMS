@@ -42,7 +42,7 @@
 
 .nav-pills {
 
-	margin-bottom: 0;
+	margin-bottom: @baseLineHeight;
 	
 	li {
 		margin-right: .25em;
@@ -61,7 +61,7 @@
 		height: 18px;
 		}
 		
-	li a.active {
+	li a.active, li a:hover {
 		color: darken(@gray,15%);
 		border: 1px solid darken(#ddd,7%);
 		.box-shadow(inset 0px 0px 5px rgba(0,0,0,.1));
@@ -71,9 +71,11 @@
 		
 }
 
-.nav-pills + table {
+/*
+.nav-pills + table, .nav-pills + div {
 	margin-top: @baseLineHeight;
 }
+*/
 
 // Pagination
 .mura-results-wrapper {

@@ -48,8 +48,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset typeList="TextBox,TextArea,HTMLEditor,SelectBox,MultiSelectBox,RadioGroup,File,Hidden"/>
 <cfoutput>
 <cfif attributes.action eq "add">
-<p><a href="javascript:;" id="#HTMLEditFormat(attributes.formName)#open" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container').slideDown();this.style.display='none';jQuery('###HTMLEditFormat(attributes.formName)#close').show();return false;">[Add New Attribute]</a></p>
-<p><a href="javascript:;" style="display:none;" id="#HTMLEditFormat(attributes.formName)#close" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container').slideUp();this.style.display='none';jQuery('###HTMLEditFormat(attributes.formName)#open').show();return false;">[Close]</a></p>
+<ul class="nav nav-pills">
+<li>
+<a href="javascript:;" id="#HTMLEditFormat(attributes.formName)#open" class="btn" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container').slideDown();this.style.display='none';jQuery('###HTMLEditFormat(attributes.formName)#close').show();return false;"><i class="icon-plus-sign"></i> Add New Attribute</a></li>
+<li><a href="javascript:;" class="btn" style="display:none;" id="#HTMLEditFormat(attributes.formName)#close" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container').slideUp();this.style.display='none';jQuery('###HTMLEditFormat(attributes.formName)#open').show();return false;"><i class="icon-eye-close"></i> Close</a></li>
+</ul>
 </cfif>
 <cfif attributes.action eq "add">
 <div style="display:none;" id="#HTMLEditFormat(attributes.formName)#container">
