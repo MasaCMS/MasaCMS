@@ -319,8 +319,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <div class="clearfix separate form-actions" id="actionIndicator" style="display:none;">
         <img src="./images/progress_bar.gif">
       </div>
-      <div class="separate form-actions"> 
-      <div style="display:inline" id="controls"> 
+      <div class="form-actions"> 
+      <div id="controls"> 
         <!---Delivery Options---><br />
         <cfsilent>
         <cfif rc.emailid eq "">
@@ -343,61 +343,68 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           </cfif>
         </cfif>
         </cfsilent>
-        <input type="button" class="submit btn" onClick="validateEmailForm('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.saveconfirm'))#')" value="#application.rbFactory.getKeyValue(session.rb,'email.save')#" /> 
-        <input type="button" class="submit btn" onClick="document.forms.form1.sendNow.value='true'; validateEmailForm('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.sendnowconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'email.sendnow')#" /> 
-        <input type="button" class="submit btn" onClick="openScheduler();" value="#application.rbFactory.getKeyValue(session.rb,'email.schedule')#" />
-        <input type="hidden" name="emailid" value="#currentEmailid#">
         <cfif showDelete>
-            <input type="button" class="submit btn" onClick="validateEmailForm('delete', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.deleteconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'email.delete')#" />
+            <button type="button" class="submit btn" onClick="validateEmailForm('delete', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.deleteconfirm'))#');"><i class="icon-remove"></i> #application.rbFactory.getKeyValue(session.rb,'email.delete')#</button>
           </cfif>
+        <button type="button" class="submit btn" onClick="validateEmailForm('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.saveconfirm'))#')"><i class="icon-save"></i> #application.rbFactory.getKeyValue(session.rb,'email.save')#</button>
+        <button type="button" class="submit btn" onClick="openScheduler();"><i class="icon-calendar"></i> #application.rbFactory.getKeyValue(session.rb,'email.schedule')#</button>
+        <button type="button" class="submit btn" onClick="document.forms.form1.sendNow.value='true'; validateEmailForm('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.sendnowconfirm'))#');"><i class="icon-share-alt"></i> #application.rbFactory.getKeyValue(session.rb,'email.sendnow')#</button>
+        <input type="hidden" name="emailid" value="#currentEmailid#">
        </div>
-        <div style="display:none" id="scheduler"> #application.rbFactory.getKeyValue(session.rb,'email.deliverydate')#<br />
-          <input type="text" class="textAlt datepicker" id="deliveryDate" name="deliveryDate" value="#LSDateFormat(rc.emailBean.getDeliveryDate(),session.dateKeyFormat)#">
-          <!---<input class="calendar" type="image" src="images/icons/cal_24.png" width="14" height="14" onclick="window.open('date_picker/index.cfm?form=form1&field=deliveryDate&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">--->
-          <cfsilent>
-          <cfset timehour = "">
-          <cfset timeminute = "">
-          <cfset timepart = "">
-          <cfset deliveryDate = rc.emailBean.getDeliveryDate()>
-          <cfset datecheck=LSisDate(deliveryDate)>
-          <cfif datecheck>
-            <cfset timehour=hour(deliveryDate) >
-            <cfset timeminute=minute(deliveryDate) >
-            <cfif timehour gte 12>
-              <cfset timehour=timehour -12>
-              <cfset timepart="PM">
-              <cfelse>
-              <cfset timepart="AM">
-            </cfif>
-            <cfif timeminute lt 30>
-              <cfset timeminute = 0>
-              <cfelse>
-              <cfset timeminute = 30>
-            </cfif>
-          </cfif>
-          </cfsilent>
-          <select name="timehour" class="dropdown">
-            <cfloop from="1" to="11" index="I">
-              <cfif len(I) eq 1>
-                <cfset hr="0#I#">
-                <cfelse>
-                <cfset hr="#I#">
-              </cfif>
-              <option value="#hr#" <cfif timehour eq I>selected</cfif>>#hr#</option>
-            </cfloop>
-            <option value="0" <cfif timehour eq 0>selected</cfif>>12</option>
-          </select>
-          <select name="timeminute" class="dropdown">
-            <option value="00" <cfif timeminute eq 0>selected</cfif>>00</option>
-            <option value="30" <cfif timeminute eq 30>selected</cfif>>30</option>
-          </select>
-          <select name="timepart" class="dropdown">
-            <option value="AM" <cfif timepart eq 'AM'>selected</cfif>>AM</option>
-            <option value="PM" <cfif timepart eq 'PM'>selected</cfif>>PM</option>
-          </select>
-          <input type="button" class="submit btn" onClick="validateScheduler('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.pleaseenterdate'))#', 'deliveryDate');" value="#application.rbFactory.getKeyValue(session.rb,'email.save')#"/> <input type="button" class="submit btn" onClick="closeScheduler()" value="#application.rbFactory.getKeyValue(session.rb,'email.cancel')#" /> </div>
+       
+        <div style="display:none" id="scheduler">
+	        <label>#application.rbFactory.getKeyValue(session.rb,'email.deliverydate')#</label>
+	          <div class="controls">
+	          <input type="text" class="datepicker input-medium" id="deliveryDate" name="deliveryDate" value="#LSDateFormat(rc.emailBean.getDeliveryDate(),session.dateKeyFormat)#">
+	          <cfsilent>
+	          <cfset timehour = "">
+	          <cfset timeminute = "">
+	          <cfset timepart = "">
+	          <cfset deliveryDate = rc.emailBean.getDeliveryDate()>
+	          <cfset datecheck=LSisDate(deliveryDate)>
+	          <cfif datecheck>
+	            <cfset timehour=hour(deliveryDate) >
+	            <cfset timeminute=minute(deliveryDate) >
+	            <cfif timehour gte 12>
+	              <cfset timehour=timehour -12>
+	              <cfset timepart="PM">
+	              <cfelse>
+	              <cfset timepart="AM">
+	            </cfif>
+	            <cfif timeminute lt 30>
+	              <cfset timeminute = 0>
+	              <cfelse>
+	              <cfset timeminute = 30>
+	            </cfif>
+	          </cfif>
+	          </cfsilent>
+	          <select name="timehour" class="span1">
+	            <cfloop from="1" to="11" index="I">
+	              <cfif len(I) eq 1>
+	                <cfset hr="0#I#">
+	                <cfelse>
+	                <cfset hr="#I#">
+	              </cfif>
+	              <option value="#hr#" <cfif timehour eq I>selected</cfif>>#hr#</option>
+	            </cfloop>
+	            <option value="0" <cfif timehour eq 0>selected</cfif>>12</option>
+	          </select>
+	          <select name="timeminute" class="span1">
+	            <option value="00" <cfif timeminute eq 0>selected</cfif>>00</option>
+	            <option value="30" <cfif timeminute eq 30>selected</cfif>>30</option>
+	          </select>
+	          <select name="timepart" class="span1">
+	            <option value="AM" <cfif timepart eq 'AM'>selected</cfif>>AM</option>
+	            <option value="PM" <cfif timepart eq 'PM'>selected</cfif>>PM</option>
+	          </select>
+	          <div>
+		          <button type="button" class="submit btn" onClick="validateScheduler('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.pleaseenterdate'))#', 'deliveryDate');"><i class="icon-save"></i> #application.rbFactory.getKeyValue(session.rb,'email.save')#</button>
+		          <button type="button" class="submit btn" onClick="closeScheduler()"><i class="icon-ban-circle"></i> #application.rbFactory.getKeyValue(session.rb,'email.cancel')#</button>
+		       </div>
+          </div>
         <input type="hidden" name="action" value="">
         <input type="hidden" name="sendNow" value="">
+        </div>
       </div>
 	  </div>
     
