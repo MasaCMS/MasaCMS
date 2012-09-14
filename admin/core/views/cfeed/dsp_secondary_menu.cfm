@@ -51,12 +51,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div id="nav-module-specific" class="btn-group">
 	<cfswitch expression="#rc.originalfuseaction#">
 		<cfcase value="list">
-			<a class="btn <cfif rc.originalfuseaction eq 'module'> active</cfif>" href="index.cfm?muraAction=cPerm.module&contentid=00000000000000000000000000000000011&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=00000000000000000000000000000000011">#application.rbFactory.getKeyValue(session.rb,'collections.permissions')#</a>
-			<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'collections.addlocalindex')#" href="index.cfm?muraAction=cFeed.edit&feedID=&siteid=#URLEncodedFormat(rc.siteid)#&type=Local">#application.rbFactory.getKeyValue(session.rb,'collections.addlocalindex')#</a>
-			<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'collections.addremotefeed')#" href="index.cfm?muraAction=cFeed.edit&feedID=&siteid=#URLEncodedFormat(rc.siteid)#&type=Remote">#application.rbFactory.getKeyValue(session.rb,'collections.addremotefeed')#</a>
+			<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'collections.addlocalindex')#" href="index.cfm?muraAction=cFeed.edit&feedID=&siteid=#URLEncodedFormat(rc.siteid)#&type=Local"><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'collections.addlocalindex')#</a>
+			<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'collections.addremotefeed')#" href="index.cfm?muraAction=cFeed.edit&feedID=&siteid=#URLEncodedFormat(rc.siteid)#&type=Remote"><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'collections.addremotefeed')#</a>
+			<a class="btn <cfif rc.originalfuseaction eq 'module'> active</cfif>" href="index.cfm?muraAction=cPerm.module&contentid=00000000000000000000000000000000011&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=00000000000000000000000000000000011"><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,'collections.permissions')#</a>
 		</cfcase>
 		<cfdefaultcase>
-			<a class="btn" href="index.cfm?muraAction=cFeed.list&&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-share-alt"></i> #application.rbFactory.getKeyValue(session.rb,"collections.backtocollections")#</a>
+			<a class="btn" href="index.cfm?muraAction=cFeed.list&&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-circle-arrow-left"></i> #application.rbFactory.getKeyValue(session.rb,"collections.backtocollections")#</a>
 		</cfdefaultcase>
 	</cfswitch>
 	</div>

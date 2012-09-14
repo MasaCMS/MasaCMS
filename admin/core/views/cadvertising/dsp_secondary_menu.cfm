@@ -48,37 +48,37 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <cfset rc.originalfuseaction=listLast(request.action,".")>
 <div id="nav-module-specific" class="btn-group">
-	<a class="btn <cfif findNoCase('advertiser',rc.originalfuseaction)> active</cfif>" href="index.cfm?muraAction=cAdvertising.listAdvertisers&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.advertisers')#</a>
-	<a class="btn <cfif findNoCase('campaign',rc.originalfuseaction) or findNoCase('placement',rc.originalfuseaction)> active</cfif>" href="index.cfm?muraAction=cAdvertising.listCampaigns&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.campaigns')#</a>
-	<a class="btn <cfif findNoCase('creative',rc.originalfuseaction)> active</cfif>" href="index.cfm?muraAction=cAdvertising.listCreatives&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.creatives')#</a>
-	<a class="btn <cfif findNoCase('adzone',rc.originalfuseaction)> active</cfif>" href="index.cfm?muraAction=cAdvertising.listadzones&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.adzones')#</a>
-	<a class="btn <cfif rc.originalfuseaction eq 'editipwhitelist'> active</cfif>" href="index.cfm?muraAction=cAdvertising.editIPWhitelist&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.ipwhitelist')#</a>
+	<a class="btn <cfif findNoCase('advertiser',rc.originalfuseaction)> active</cfif>" href="index.cfm?muraAction=cAdvertising.listAdvertisers&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-user"></i> #application.rbFactory.getKeyValue(session.rb,'advertising.advertisers')#</a>
+	<a class="btn <cfif findNoCase('campaign',rc.originalfuseaction) or findNoCase('placement',rc.originalfuseaction)> active</cfif>" href="index.cfm?muraAction=cAdvertising.listCampaigns&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-flag"></i> #application.rbFactory.getKeyValue(session.rb,'advertising.campaigns')#</a>
+	<a class="btn <cfif findNoCase('creative',rc.originalfuseaction)> active</cfif>" href="index.cfm?muraAction=cAdvertising.listCreatives&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-picture"></i> #application.rbFactory.getKeyValue(session.rb,'advertising.creatives')#</a>
+	<a class="btn <cfif findNoCase('adzone',rc.originalfuseaction)> active</cfif>" href="index.cfm?muraAction=cAdvertising.listadzones&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-pushpin"></i> #application.rbFactory.getKeyValue(session.rb,'advertising.adzones')#</a>
+	<a class="btn <cfif rc.originalfuseaction eq 'editipwhitelist'> active</cfif>" href="index.cfm?muraAction=cAdvertising.editIPWhitelist&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-ok-sign"></i> #application.rbFactory.getKeyValue(session.rb,'advertising.ipwhitelist')#</a>
 	<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-	<a class="btn <cfif rc.originalfuseaction eq 'module'> active</cfif>" href="index.cfm?muraAction=cPerm.module&contentid=00000000000000000000000000000000006&moduleid=00000000000000000000000000000000006&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.permissions')#</a>
+	<a class="btn <cfif rc.originalfuseaction eq 'module'> active</cfif>" href="index.cfm?muraAction=cPerm.module&contentid=00000000000000000000000000000000006&moduleid=00000000000000000000000000000000006&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,'advertising.permissions')#</a>
 	</cfif>
 
 	<cfswitch expression="=#rc.originalfuseaction#">
 		<cfcase value="editcampaign">
-			<a class="btn" href="index.cfm?muraAction=cAdvertising.viewAdvertiser&&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.backtoadvertiser')#</a>
-			<cfif rc.campaignid neq ""><a class="btn" href="index.cfm?muraAction=cAdvertising.viewReportByCampaign&campaignid=#URLEncodedFormat(rc.campaignid)#&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.viewcampaignreport')#</a></cfif>
+			<a class="btn" href="index.cfm?muraAction=cAdvertising.viewAdvertiser&&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#"><i class="icon-circle-arrow-left"></i> #application.rbFactory.getKeyValue(session.rb,'advertising.backtoadvertiser')#</a>
+			<cfif rc.campaignid neq ""><a class="btn" href="index.cfm?muraAction=cAdvertising.viewReportByCampaign&campaignid=#URLEncodedFormat(rc.campaignid)#&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#"><i class="icon-bar-chart"></i> #application.rbFactory.getKeyValue(session.rb,'advertising.viewcampaignreport')#</a></cfif>
 		</cfcase>
 		<cfcase value="editcreative">
-			<a class="btn" href="index.cfm?muraAction=cAdvertising.viewAdvertiser&&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.backtoadvertiser')#</a>
+			<a class="btn" href="index.cfm?muraAction=cAdvertising.viewAdvertiser&&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#"><i class="icon-circle-arrow-left"></i> #application.rbFactory.getKeyValue(session.rb,'advertising.backtoadvertiser')#</a>
 		</cfcase>
 		<cfcase value="editplacement">
-			<a class="btn" href="index.cfm?muraAction=cAdvertising.viewAdvertiser&&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.backtoadvertiser')#</a>
-			<a class="btn" href="index.cfm?muraAction=cAdvertising.editCampaign&&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#&campaignid=#URLEncodedFormat(rc.campaignid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.backtocampaign')#</a>
-			<cfif rc.placementid neq ""><a class="btn" href="index.cfm?muraAction=cAdvertising.viewReportByPlacement&placementid=#URLEncodedFormat(rc.placementid)#&campaignid=#URLEncodedFormat(rc.campaignid)#&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.viewplacementreport')#</a></cfif>
+			<a class="btn" href="index.cfm?muraAction=cAdvertising.viewAdvertiser&&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#"><i class="icon-circle-arrow-left"></i> #application.rbFactory.getKeyValue(session.rb,'advertising.backtoadvertiser')#</a>
+			<a class="btn" href="index.cfm?muraAction=cAdvertising.editCampaign&&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#&campaignid=#URLEncodedFormat(rc.campaignid)#"><i class="icon-circle-arrow-left"></i> #application.rbFactory.getKeyValue(session.rb,'advertising.backtocampaign')#</a>
+			<cfif rc.placementid neq ""><a class="btn" href="index.cfm?muraAction=cAdvertising.viewReportByPlacement&placementid=#URLEncodedFormat(rc.placementid)#&campaignid=#URLEncodedFormat(rc.campaignid)#&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-bar-chart"></i> #application.rbFactory.getKeyValue(session.rb,'advertising.viewplacementreport')#</a></cfif>
 		</cfcase>
 		<cfcase value="viewreportbycampaign">
-			<a class="btn" href="index.cfm?muraAction=cAdvertising.viewAdvertiser&&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.backtoadvertiser')#</a>
-			<a class="btn" href="index.cfm?muraAction=cAdvertising.editCampaign&&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#&campaignid=#rc.campaignid#">#application.rbFactory.getKeyValue(session.rb,'advertising.backtocampaign')#</a>
+			<a class="btn" href="index.cfm?muraAction=cAdvertising.viewAdvertiser&&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#"><i class="icon-circle-arrow-left"></i> #application.rbFactory.getKeyValue(session.rb,'advertising.backtoadvertiser')#</a>
+			<a class="btn" href="index.cfm?muraAction=cAdvertising.editCampaign&&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#&campaignid=#rc.campaignid#"><i class="icon-circle-arrow-left"></i> #application.rbFactory.getKeyValue(session.rb,'advertising.backtocampaign')#</a>
 		</cfcase>
 		<cfcase value="viewreportbyplacement">
-			<a class="btn" href="index.cfm?muraAction=cAdvertising.viewAdvertiser&&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.backtoadvertiser')#</a>
-			<a class="btn" href="index.cfm?muraAction=cAdvertising.editCampaign&&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#&campaignid=#rc.campaignid#">#application.rbFactory.getKeyValue(session.rb,'advertising.backtocampaign')#</a>
-			<a class="btn" href="index.cfm?muraAction=cAdvertising.editPlacement&&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#&campaignid=#rc.campaignid#&placementid=#rc.placementid#">#application.rbFactory.getKeyValue(session.rb,'advertising.backtoplacement')#</a>
-			<a class="btn" href="index.cfm?muraAction=cAdvertising.viewReportByCampaign&campaignid=#rc.campaignid#&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#&date1=#LSDateFormat(rc.date1,session.dateKeyFormat)#&date2=#LSDateFormat(rc.date2,session.dateKeyFormat)#">#application.rbFactory.getKeyValue(session.rb,'advertising.viewcampaignreport')#</a>
+			<a class="btn" href="index.cfm?muraAction=cAdvertising.viewAdvertiser&&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#"><i class="icon-circle-arrow-left"></i> #application.rbFactory.getKeyValue(session.rb,'advertising.backtoadvertiser')#</a>
+			<a class="btn" href="index.cfm?muraAction=cAdvertising.editCampaign&&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#&campaignid=#rc.campaignid#"><i class="icon-circle-arrow-left"></i> #application.rbFactory.getKeyValue(session.rb,'advertising.backtocampaign')#</a>
+			<a class="btn" href="index.cfm?muraAction=cAdvertising.editPlacement&&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#&campaignid=#rc.campaignid#&placementid=#rc.placementid#"><i class="icon-circle-arrow-left"></i> #application.rbFactory.getKeyValue(session.rb,'advertising.backtoplacement')#</a>
+			<a class="btn" href="index.cfm?muraAction=cAdvertising.viewReportByCampaign&campaignid=#rc.campaignid#&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#&date1=#LSDateFormat(rc.date1,session.dateKeyFormat)#&date2=#LSDateFormat(rc.date2,session.dateKeyFormat)#"><i class="icon-bar-chart"></i> #application.rbFactory.getKeyValue(session.rb,'advertising.viewcampaignreport')#</a>
 		</cfcase>
 	</cfswitch>
 </div></cfoutput>

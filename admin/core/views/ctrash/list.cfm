@@ -63,7 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h2>Trash Bin</h2>
 
 <div id="nav-module-specific" class="btn-group">
-<a class="btn" href="index.cfm?muraAction=cSettings.editSite&siteID=#URLEncodedFormat(rc.siteID)#"><i class="icon-share-alt"></i> Back to Site Settings</a>
+<a class="btn" href="index.cfm?muraAction=cSettings.editSite&siteID=#URLEncodedFormat(rc.siteID)#"><i class="icon-circle-arrow-left"></i> Back to Site Settings</a>
 <a class="btn" href="index.cfm?muraAction=cTrash.empty&siteID=#URLEncodedFormat(rc.siteID)#" onclick="return confirmDialog('Empty Site Trash?', this.href);">Empty Trash</a>
 </div>
 

@@ -64,8 +64,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <h2>#application.rbFactory.getKeyValue(session.rb,'user.sitemembersgroups')#</h2>
 	
-<div id="nav-module-specific" class="btn-group"><a class="btn" href="index.cfm?muraAction=cPublicUsers.edituser&siteid=#URLEncodedFormat(rc.siteid)#&userid=">#application.rbFactory.getKeyValue(session.rb,'user.addmember')#</a>
-<a class="btn" href="index.cfm?muraAction=cPublicUsers.editgroup&siteid=#URLEncodedFormat(rc.siteid)#&userid=">#application.rbFactory.getKeyValue(session.rb,'user.addgroup')#</a>
+<div id="nav-module-specific" class="btn-group"><a class="btn" href="index.cfm?muraAction=cPublicUsers.edituser&siteid=#URLEncodedFormat(rc.siteid)#&userid="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'user.addmember')#</a>
+<a class="btn" href="index.cfm?muraAction=cPublicUsers.editgroup&siteid=#URLEncodedFormat(rc.siteid)#&userid="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'user.addgroup')#</a>
 </div>
 
 

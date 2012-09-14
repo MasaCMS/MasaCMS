@@ -52,8 +52,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="rc.page" default="1">
 <cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,"email.emailmanager")#</h2></cfoutput>
 
-<cfinclude template="dsp_secondary_menu.cfm">
-
 <cfsilent>
 	  <cfset startDate=createDate(year(now()),month(now()),1)>
 	  <cfset stopDate=createDate(year(now()),month(now()),day(now()))>
@@ -75,80 +73,84 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  <h3>Bounces</h3>
 	  <a href="index.cfm?muraAction=cEmail.showAllBounces&siteid=<cfoutput>#rc.siteid#</cfoutput>">View All Bounces</a>
 	  </div>--->
+	  <cfinclude template="dsp_secondary_menu.cfm">
 	  <cfoutput>
 
-	  <div id="filterView">
+	  <div id="filterView" class="row-fluid">
 	  <h3>#application.rbFactory.getKeyValue(session.rb,"email.emails")#</h3></cfoutput>
 
-<form novalidate="novalidate" action="index.cfm?muraAction=cEmail.list&siteid=<cfoutput>#rc.siteid#</cfoutput>" method="post" name="form1" id="advancedSearch" class="clearfix">
+<form novalidate="novalidate" action="index.cfm?muraAction=cEmail.list&siteid=<cfoutput>#rc.siteid#</cfoutput>" method="post" name="form1" id="advancedSearch" class="container">
 
-<div class="control-group">
-      <label class="control-label">
-      	<cfoutput>#application.rbFactory.getKeyValue(session.rb,"email.filterby")#:
-      </label>
-      <div class="controls"><select name="groupID">
-      	<optgroup label="#application.rbFactory.getKeyValue(session.rb,'email.all')#">
-		<option value="">#application.rbFactory.getKeyValue(session.rb,"email.all")#</option>
-		</optgroup></cfoutput>
-		<option value=""></option>
-		<cfif rc.rsPrivateGroups.recordcount>
-			<optgroup label="<cfoutput>#application.rbFactory.getKeyValue(session.rb,'email.privategroups')#</cfoutput>">
-				<cfoutput query="rc.rsPrivateGroups">
-					<option value="#rc.rsPrivateGroups.UserID#" <cfif listfind(session.emaillist.groupid,rc.rsPrivateGroups.userid)>selected</cfif>>#rc.rsPrivateGroups.groupname#</option>
-		  		</cfoutput>
-			</optgroup>
-		    <option value=""></option>
-		</cfif>
-		<cfif rc.rsPublicGroups.recordcount>
-			<optgroup label="<cfoutput>#application.rbFactory.getKeyValue(session.rb,'email.publicgroups')#</cfoutput>">
-				<cfoutput query="rc.rsPublicGroups">
-					<option value="#rc.rsPublicGroups.UserID#" <cfif  listfind(session.emaillist.groupid,rc.rsPublicGroups.userid)>selected</cfif>>#rc.rsPublicGroups.groupname#</option>
-				</cfoutput>
-			</optgroup>
+<div class="row-fluid">
+	<div class="control-group span2">
+	      <label class="control-label">
+	      	<cfoutput>#application.rbFactory.getKeyValue(session.rb,"email.filterby")#:
+	      </label>
+	      <div class="controls"><select name="groupID" class="input-medium">
+	      	<optgroup label="#application.rbFactory.getKeyValue(session.rb,'email.all')#">
+			<option value="">#application.rbFactory.getKeyValue(session.rb,"email.all")#</option>
+			</optgroup></cfoutput>
 			<option value=""></option>
-		</cfif>
-		<cfif rc.rsMailingLists.recordcount>
-			<optgroup label="<cfoutput>#application.rbFactory.getKeyValue(session.rb,'email.mailinglist')#</cfoutput>">
-				<cfoutput query="rc.rsMailingLists">
-				<option value="#rc.rsMailingLists.mlid#" <cfif  listfind(session.emaillist.groupid,rc.rsMailingLists.mlid)>selected</cfif>>#rc.rsMailingLists.name#</option>
-				</cfoutput>
-			</optgroup>
-			<option value=""></option>
-		</cfif>
-	  </select>
-      </div>
-    </div><cfoutput>
+			<cfif rc.rsPrivateGroups.recordcount>
+				<optgroup label="<cfoutput>#application.rbFactory.getKeyValue(session.rb,'email.privategroups')#</cfoutput>">
+					<cfoutput query="rc.rsPrivateGroups">
+						<option value="#rc.rsPrivateGroups.UserID#" <cfif listfind(session.emaillist.groupid,rc.rsPrivateGroups.userid)>selected</cfif>>#rc.rsPrivateGroups.groupname#</option>
+			  		</cfoutput>
+				</optgroup>
+			    <option value=""></option>
+			</cfif>
+			<cfif rc.rsPublicGroups.recordcount>
+				<optgroup label="<cfoutput>#application.rbFactory.getKeyValue(session.rb,'email.publicgroups')#</cfoutput>">
+					<cfoutput query="rc.rsPublicGroups">
+						<option value="#rc.rsPublicGroups.UserID#" <cfif  listfind(session.emaillist.groupid,rc.rsPublicGroups.userid)>selected</cfif>>#rc.rsPublicGroups.groupname#</option>
+					</cfoutput>
+				</optgroup>
+				<option value=""></option>
+			</cfif>
+			<cfif rc.rsMailingLists.recordcount>
+				<optgroup label="<cfoutput>#application.rbFactory.getKeyValue(session.rb,'email.mailinglist')#</cfoutput>">
+					<cfoutput query="rc.rsMailingLists">
+					<option value="#rc.rsMailingLists.mlid#" <cfif  listfind(session.emaillist.groupid,rc.rsMailingLists.mlid)>selected</cfif>>#rc.rsMailingLists.name#</option>
+					</cfoutput>
+				</optgroup>
+				<option value=""></option>
+			</cfif>
+		  </select>
+	      </div>
+	    </div><cfoutput>
 
-<div class="control-group">
+<div class="control-group span3 offset1">
       <label class="control-label">
       	#application.rbFactory.getKeyValue(session.rb,'email.status')#
       </label>
       <div class="controls">
-      <label class="radio">
+      <label class="radio inline">
       <input type="radio"  name="status" value="2"  <cfif session.emaillist.status eq 2>checked</cfif>> 
       <span class="text">#application.rbFactory.getKeyValue(session.rb,'email.all')#</span> 
       </label>
-      <label class="radio">
+      <label class="radio inline">
       <input type="radio"  name="status" value="1" <cfif session.emaillist.status eq 1>checked</cfif>> 
       <span class="text">#application.rbFactory.getKeyValue(session.rb,'email.sent')#</span> 
       </label>
-       <label class="radio">
+       <label class="radio inline">
        	<input type="radio"  name="status" value="0"  <cfif session.emaillist.status eq 0>checked</cfif>> 
        <span class="text">#application.rbFactory.getKeyValue(session.rb,'email.queued')#</span>
    		</label>
       </div>
 </div>
+</div>
 
-<div class="control-group">
+<div class="control-group row-fluid">
       <label class="control-label">
       	#application.rbFactory.getKeyValue(session.rb,'email.subject')# <span>(#application.rbFactory.getKeyValue(session.rb,'email.leaveblanktoviewall')#)</span>
   	  </label>
-      <div class="controls"><input type="text"  name="subject" value="#session.emaillist.subject#" class="textbox">
+      <div class="controls"><input type="text"  name="subject" value="#session.emaillist.subject#" class="span6">
       </div>
 </div>
+
 <input type="hidden" name="doSearch" value="true"/>
 <div class="form-actions">			  
-<input type="button" class="submit btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'email.filter')#" />
+<button type="button" class="submit btn" onclick="submitForm(document.forms.form1);"><i class="icon-filter"></i> #application.rbFactory.getKeyValue(session.rb,'email.filter')#</button>
 </div>
 </form>
 </div>

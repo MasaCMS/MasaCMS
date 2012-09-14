@@ -51,15 +51,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div id="nav-module-specific" class="btn-group">
 		<cfswitch expression="#rc.originalfuseaction#">
 			<cfcase value="assignments">
-				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'changesets.backtochangesets')#" href="index.cfm?muraAction=cChangesets.list&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-share-alt"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.backtochangesets')#</a>
+				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'changesets.backtochangesets')#" href="index.cfm?muraAction=cChangesets.list&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-circle-arrow-left"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.backtochangesets')#</a>
 				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'changesets.vieweditform')#" href="index.cfm?muraAction=cChangesets.edit&siteid=#URLEncodedFormat(rc.siteid)#&changesetID=#HTMLEditFormat(rc.changesetID)#">#application.rbFactory.getKeyValue(session.rb,'changesets.vieweditform')#</a>
 			</cfcase>
 			<cfcase value="list">
-				<a class="btn <cfif rc.originalfuseaction eq 'module'> active</cfif>" href="index.cfm?muraAction=cPerm.module&contentid=00000000000000000000000000000000014&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=00000000000000000000000000000000014">#application.rbFactory.getKeyValue(session.rb,'changesets.permissions')#</a>
-				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'changesets.addchangeset')#" href="index.cfm?muraAction=cChangesets.edit&changesetID=&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'changesets.addchangeset')#</a>
+				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'changesets.addchangeset')#" href="index.cfm?muraAction=cChangesets.edit&changesetID=&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.addchangeset')#</a>
+				<a class="btn <cfif rc.originalfuseaction eq 'module'> active</cfif>" href="index.cfm?muraAction=cPerm.module&contentid=00000000000000000000000000000000014&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=00000000000000000000000000000000014"><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.permissions')#</a>
 			</cfcase>
 			<cfcase value="edit">
-				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'changesets.backtochangesets')#" href="index.cfm?muraAction=cChangesets.list&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-share-alt"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.backtochangesets')#</a>
+				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'changesets.backtochangesets')#" href="index.cfm?muraAction=cChangesets.list&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-circle-arrow-left"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.backtochangesets')#</a>
 				<cfif not rc.changeset.getIsNew()>
 					<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'changesets.viewassignments')#" href="index.cfm?muraAction=cChangesets.assignments&siteid=#URLEncodedFormat(rc.siteid)#&changesetID=#rc.changeset.getChangesetID()#">#application.rbFactory.getKeyValue(session.rb,'changesets.viewassignments')#</a>
 				</cfif>

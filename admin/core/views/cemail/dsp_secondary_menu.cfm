@@ -50,14 +50,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div id="nav-module-specific" class="btn-group">
 	<cfswitch expression="#rc.originalfuseaction#">
 		<cfcase value="list">
+			<a class="btn" href="index.cfm?muraAction=cEmail.edit&emailid=&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,"email.addemail")#</a>
+			<a class="btn<cfif rc.originalfuseaction eq "showAllBounces"> active</cfif>" href="index.cfm?muraAction=cEmail.showAllBounces&siteid=<cfoutput>#rc.siteid#</cfoutput>"><i class="icon-resize-small"></i> #application.rbFactory.getKeyValue(session.rb,"email.bouncedemails")#</a>
 			<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-				<a  class="btn" href="index.cfm?muraAction=cPerm.module&contentid=00000000000000000000000000000000005&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=00000000000000000000000000000000005">#application.rbFactory.getKeyValue(session.rb,"email.permissions")#</a>
+				<a  class="btn" href="index.cfm?muraAction=cPerm.module&contentid=00000000000000000000000000000000005&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=00000000000000000000000000000000005"><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,"email.permissions")#</a>
 			</cfif>
-			<a class="btn<cfif rc.originalfuseaction eq "showAllBounces"> active</cfif>" href="index.cfm?muraAction=cEmail.showAllBounces&siteid=<cfoutput>#rc.siteid#</cfoutput>">#application.rbFactory.getKeyValue(session.rb,"email.bouncedemails")#</a>
-			<a class="btn" href="index.cfm?muraAction=cEmail.edit&emailid=&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,"email.addemail")#</a>
 		</cfcase>
 		<cfdefaultcase>
-			<a class="btn" href="index.cfm?muraAction=cEmail.list&&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-share-alt"></i> #application.rbFactory.getKeyValue(session.rb,"email.backtolist")#</a>
+			<a class="btn" href="index.cfm?muraAction=cEmail.list&&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-circle-arrow-left"></i> #application.rbFactory.getKeyValue(session.rb,"email.backtolist")#</a>
 		</cfdefaultcase>
 	</cfswitch>
 	</div>

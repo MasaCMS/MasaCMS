@@ -52,12 +52,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h2>Manage Attributes Set</h2>
 
 <cfoutput>
-<div id="nav-module-specific" class="btn-group">
-<a class="btn" href="index.cfm?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-share-alt"></i> Back to Class Extensions</a>
-<a class="btn" href="index.cfm?muraAction=cExtend.listSets&subTypeID=#URLEncodedFormat(rc.subTypeID)#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-share-alt"></i> Back to Attribute Sets</a>
-<a class="btn" href="index.cfm?muraAction=cExtend.editSubType&subTypeID=#URLEncodedFormat(rc.subTypeID)#&siteid=#URLEncodedFormat(rc.siteid)#">Edit Class Extension</a>
-<a class="btn" href="index.cfm?muraAction=cExtend.editSet&subTypeID=#URLEncodedFormat(rc.subTypeID)#&extendSetID=#URLEncodedFormat(rc.extendSetID)#&siteid=#URLEncodedFormat(rc.siteid)#">Edit Attribute Set</a>
-
+<div id="nav-module-specific" class="btn-toolbar">
+	<div class="btn-group">
+	<a class="btn" href="index.cfm?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-circle-arrow-left"></i> Back to Class Extensions</a>
+	<a class="btn" href="index.cfm?muraAction=cExtend.editSubType&subTypeID=#URLEncodedFormat(rc.subTypeID)#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-pencil"></i> Edit Class Extension</a>
+	</div>
+	<div class="btn-group">
+	<a class="btn" href="index.cfm?muraAction=cExtend.listSets&subTypeID=#URLEncodedFormat(rc.subTypeID)#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-circle-arrow-left"></i> Back to Attribute Sets</a>
+	<a class="btn" href="index.cfm?muraAction=cExtend.editSet&subTypeID=#URLEncodedFormat(rc.subTypeID)#&extendSetID=#URLEncodedFormat(rc.extendSetID)#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-pencil"></i> Edit Attribute Set</a>
+	</div>
 </div>
 
 <ul class="metadata">
@@ -71,22 +74,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cf_dsp_attribute_form attributeBean="#newAttribute#" action="add" subTypeID="#rc.subTypeID#" formName="newFrm">
 
 <cfif arrayLen(attributesArray)>
-<a href="javascript:;" style="display:none;" id="saveSort" onclick="saveAttributeSort('attributesList');return false;">[Save Order]</a>
-<a href="javascript:;"  id="showSort" onclick="showSaveSort('attributesList');return false;">[Reorder]</a>
+<div class="btn-group">
+<a href="javascript:;" class="btn" style="display:none;" id="saveSort" onclick="saveAttributeSort('attributesList');return false;"><i class="icon-save"></i> Save Order</a>
+<a href="javascript:;" class="btn" id="showSort" onclick="showSaveSort('attributesList');return false;"><i class="icon-reorder"></i> Reorder</a>
+</div>
 </cfif>
 
-<p>
 <cfif arrayLen(attributesArray)>
 <ul id="attributesList">
 <cfloop from="1" to="#arrayLen(attributesArray)#" index="a">	
 <cfset attributeBean=attributesArray[a]/>
 <cfoutput>
 	<li attributeID="#attributeBean.getAttributeID()#">
-		<span id="handle#a#" class="handle" style="display:none;">[Drag]</span>
+		<span id="handle#a#" class="handle" style="display:none;"><i class="icon-move"></i> Drag</span>
 		#attributeBean.getName()#
-		<a title="Edit" href="javascript:;" id="editFrm#a#open" onclick="jQuery('##editFrm#a#container').slideDown();this.style.display='none';jQuery('##editFrm#a#close').show();return false;">[Edit]</a>
-		<a title="Edit" href="javascript:;" style="display:none;" id="editFrm#a#close" onclick="jQuery('##editFrm#a#container').slideUp();this.style.display='none';jQuery('##editFrm#a#open').show();return false;">[Close]</a>
-		<a title="Delete" href="index.cfm?muraAction=cExtend.updateAttribute&action=delete&subTypeID=#URLEncodedFormat(rc.subTypeID)#&extendSetID=#attributeBean.getExtendSetID()#&siteid=#URLEncodedFormat(rc.siteid)#&attributeID=#attributeBean.getAttributeID()#" onClick="return confirmDialog('Delete the attribute #jsStringFormat("'#attributeBean.getname()#'")#?',this.href)">[Delete]</a>
+		<a title="Edit" href="javascript:;" id="editFrm#a#open" onclick="jQuery('##editFrm#a#container').slideDown();this.style.display='none';jQuery('##editFrm#a#close').show();return false;"><i class="icon-pencil"></i> Edit</a>
+		<a title="Edit" href="javascript:;" style="display:none;" id="editFrm#a#close" onclick="jQuery('##editFrm#a#container').slideUp();this.style.display='none';jQuery('##editFrm#a#open').show();return false;"><i class="icon-eye-close"></i> Close</a>
+		<a title="Delete" href="index.cfm?muraAction=cExtend.updateAttribute&action=delete&subTypeID=#URLEncodedFormat(rc.subTypeID)#&extendSetID=#attributeBean.getExtendSetID()#&siteid=#URLEncodedFormat(rc.siteid)#&attributeID=#attributeBean.getAttributeID()#" onClick="return confirmDialog('Delete the attribute #jsStringFormat("'#attributeBean.getname()#'")#?',this.href)"><i class="icon-minus-sign"></i> Delete</a>
 
 	<div style="display:none;" id="editFrm#a#container">
 		<cf_dsp_attribute_form attributeBean="#attributeBean#" action="edit" subTypeID="#rc.subTypeID#" formName="editFrm#a#">
@@ -97,6 +101,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </ul>
 
 <cfelse>
-<p class="notice">This set has no attributes</p>
+<p class="notice">This set has no attributes.</p>
 </cfif>
 </cfoutput>

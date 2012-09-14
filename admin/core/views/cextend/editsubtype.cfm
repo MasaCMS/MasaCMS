@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h2><cfif len(rc.subTypeID)>Edit<cfelse>Add</cfif> Class Extension</h2>
 <cfoutput>
 <div id="nav-module-specific" class="btn-group">
-<a class="btn" href="index.cfm?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-share-alt"></i> Back to Class Extensions</a>
+<a class="btn" href="index.cfm?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-circle-arrow-left"></i> Back to Class Extensions</a>
 </div>
 
 <form novalidate="novalidate" name="subTypeFrm" method="post" action="index.cfm" onsubit="return validateForm(this);">

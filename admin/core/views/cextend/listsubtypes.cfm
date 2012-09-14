@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
 <div id="nav-module-specific" class="btn-group">
-<a class="btn" href="index.cfm?muraAction=cExtend.editSubType&subTypeID=&siteid=#URLEncodedFormat(rc.siteid)#">Add Class Extension</a>
+<a class="btn" href="index.cfm?muraAction=cExtend.editSubType&subTypeID=&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-plus-sign"></i> Add Class Extension</a>
 </div>
 
 </cfoutput>

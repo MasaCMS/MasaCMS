@@ -68,7 +68,7 @@ select * from rsSubTypes where subType <> 'Default'
 	<h2>#application.rbFactory.getKeyValue(session.rb,'user.memberform')#</h2>
 	
 	<div id="nav-module-specific" class="btn-group">
-	<a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-share-alt"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
+	<a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-circle-arrow-left"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
 	</div>
 
 	<cfif len(rc.userBean.getUsername())>

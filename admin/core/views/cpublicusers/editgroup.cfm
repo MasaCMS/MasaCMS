@@ -68,7 +68,7 @@ select * from rsSubTypes where subType <> 'Default'
 <cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,'user.groupform')#</h2>
 
 <div id="nav-module-specific" class="btn-group">
-  <a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-share-alt"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
+  <a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-circle-arrow-left"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
 </div>
 
 <cfif listfirst(listLast(rc.muraAction,":"),".") eq "editgroup" and rc.userid neq ''>
