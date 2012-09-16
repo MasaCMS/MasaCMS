@@ -27,8 +27,17 @@ height: 28px;
 line-height: 28px;
 }
 
-textarea {
-	height: auto;
+textarea,
+select[multiple],
+select[size] {
+  height: auto !important;
+}
+
+td, th {
+	> input[type="radio"],
+	> input[type="checkbox"] {
+	margin-top: 0;
+	}
 }
 
 label.radio.inline input[type="radio"] {

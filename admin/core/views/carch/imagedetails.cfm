@@ -34,8 +34,8 @@
 
 <cfsavecontent variable="rc.headertext">
 <cfoutput>
-  <script src="#$.globalConfig('content')#/admin/assets/js/jquery/jquery.Jcrop.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="#$.globalConfig('content')#/admin/assets/css/jquery/jquery.Jcrop.css" type="text/css" />
+<script src="#$.globalConfig('context')#/admin/assets/js/jquery/jquery.Jcrop.min.js" type="text/javascript"></script>
+<link rel="stylesheet" href="#$.globalConfig('context')#/admin/assets/css/jquery/jquery.Jcrop.min.css" type="text/css" />
 </cfoutput>
 </cfsavecontent>
 <cfhtmlhead text="#rc.headertext#">
@@ -58,15 +58,15 @@
 			<h3>#HTMLEditFormat(rc.rsMeta.filename)#</h3>
 			<cfloop list="Small,Medium,Large" index="s">
 				<div class="control-group">
-				<label class="control-label">#s#</label>
-				<div class="controls">
-					<img id="#lcase(s)##f#" src="#$.getURLForImage(fileID=f,size=lcase(s))#?cacheID=#createUUID()#"/>
-					<div id="#lcase(s)##f#btns">
-					<button type="button" class="btn cropper-reset" data-fileid="#f#" data-size="#lcase(s)#">Reset</button>
-					<button type="button" class="btn cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#evaluate('rc.#s#ImageRatio')#" data-size="#lcase(s)#">Re-Crop</button>
-					<img src="./assets/images/progress_bar.gif" style="display:none">
+					<label class="control-label">#s#</label>
+					<div class="controls">
+						<img id="#lcase(s)##f#" src="#$.getURLForImage(fileID=f,size=lcase(s))#?cacheID=#createUUID()#"/>
+						<div id="#lcase(s)##f#btns">
+							<button type="button" class="btn cropper-reset" data-fileid="#f#" data-size="#lcase(s)#">Reset</button>
+							<button type="button" class="btn cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#evaluate('rc.#s#ImageRatio')#" data-size="#lcase(s)#">Re-Crop</button>
+							<img src="./assets/images/progress_bar.gif" style="display:none">
+						</div>
 					</div>
-				</div>
 				</div>
 			</cfloop>
 			<cfset imageSizes=application.settingsManager.getSite(rc.siteid).getCustomImageSizeIterator()>
