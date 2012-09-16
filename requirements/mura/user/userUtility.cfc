@@ -115,16 +115,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			OR
 
 			(
+			 
 			 variables.configBean.getEncryptPasswords()
-			 and variables.globalUtility.checkBCryptHash(arguments.username,rsUser.password) 	
+			 and 
+			 	(
+			 		variables.globalUtility.checkBCryptHash(arguments.username,rsUser.password) 	
+					OR
+					hash(arguments.username) eq rsUser.password	
+				)
 			)
-		)>
-			
+		)>			
 			<cfquery  name="rsUser" dbtype="query">
 				SELECT * FROM rsUser
 				where 0=1
 			</cfquery>
+		</cfif>
 
+		<cfif rsUser.recordcount 
+			and variables.configBean.getEncryptPasswords() 
+			and hash(arguments.password) eq rsuser.password>
+			<cfset variables.userDAO.savePassword(rsuser.userid,arguments.password)>
 		</cfif>
 		
 		<!---

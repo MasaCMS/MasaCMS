@@ -562,7 +562,7 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 	<cftry>
 	<cfreturn variables.bCrypt.checkpw(JavaCast('string',arguments.string), JavaCast('string',arguments.hash))>
 	<cfcatch>
-		<cfreturn hash(arguments.string) eq arguments.hash>
+		<cfreturn false>
 	</cfcatch>
 	</cftry>
 </cffunction>
