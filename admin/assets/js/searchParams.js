@@ -55,12 +55,12 @@
 
 function addSearchParam(){
 	
-	var num =jQuery('#searchParams > li').length;
-	var str= '<li>' + jQuery('#searchParams > li').html() + '</li>';
+	var num =jQuery('#searchParams > .controls').length;
+	var str= '<div class="controls">' + jQuery('#searchParams > .controls').html() + '</div>';
 	jQuery('#searchParams').append(str);
-	var newParam = jQuery('#searchParams > li:last');
-	var newParamSelects = jQuery('#searchParams > li:last > select');
-	var newParamInputs = jQuery('#searchParams > li:last > input');
+	var newParam = jQuery('#searchParams > .controls:last');
+	var newParamSelects = jQuery('#searchParams > .controls:last > select');
+	var newParamInputs = jQuery('#searchParams > .controls:last > input');
 	
 	newParamSelects[0].selectedIndex=0;
 	newParamSelects[1].selectedIndex=0;
@@ -84,7 +84,7 @@ function setSearchParamNames(param,num){
 }
 
 function setSearchButtons(){
-	var params=jQuery('#searchParams > li');
+	var params=jQuery('#searchParams > .controls');
 	var num =params.length;
 	
 	if(num == 1){
