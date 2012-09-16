@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfoutput>
 </cfsavecontent>
 <cfoutput>
-<h2>Trash Detail</h2>
+<h1>Trash Detail</h1>
 
 <div id="nav-module-specific" class="btn-group">
 <a class="btn" href="index.cfm?muraAction=cTrash.list&siteID=#URLEncodedFormat(rc.trashItem.getSiteID())#&keywords=#URLEncodedFormat(rc.keywords)#&pageNum=#URLEncodedFormat(rc.pageNum)#"><i class="icon-circle-arrow-left"></i>  Back to Trash Bin</a>

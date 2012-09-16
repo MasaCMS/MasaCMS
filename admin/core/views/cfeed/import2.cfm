@@ -46,15 +46,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfinclude template="js.cfm">
 <cfoutput>
-<h2>#application.rbFactory.getKeyValue(session.rb,'collections.remotefeedimport')#</h2>
+<h1>#application.rbFactory.getKeyValue(session.rb,'collections.remotefeedimport')#</h1>
 
 <cfinclude template="dsp_secondary_menu.cfm">
 
 <cfif not rc.theImport.success>
-<h3>#application.rbFactory.getKeyValue(session.rb,'collections.importfailed')#</h3>
+<h2>#application.rbFactory.getKeyValue(session.rb,'collections.importfailed')#</h2>
 <p>#application.rbFactory.getKeyValue(session.rb,'collections.importfailedtext')#</p>
 <cfelse>
-<h3>#application.rbFactory.getKeyValue(session.rb,'collections.importsuccessful')#</h3>
+<h2>#application.rbFactory.getKeyValue(session.rb,'collections.importsuccessful')#</h2>
 <cfset crumbdata=application.contentManager.getCrumbList(rc.theImport.parentBean.getcontentID(), rc.siteid)/>
 #application.contentRenderer.dspZoom(crumbdata)#
 </cfif>

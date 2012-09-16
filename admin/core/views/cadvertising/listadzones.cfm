@@ -56,7 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
 </form>
 
-<h2>#application.rbFactory.getKeyValue(session.rb,'advertising.viewadzones')#</h2>
+<h1>#application.rbFactory.getKeyValue(session.rb,'advertising.viewadzones')#</h1>
 
 <cfinclude template="dsp_secondary_menu.cfm">
 

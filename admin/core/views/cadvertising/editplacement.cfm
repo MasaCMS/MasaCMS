@@ -46,13 +46,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfhtmlhead text="#session.dateKey#">
 <cfoutput>
-<h2>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"advertising.editcampaignplacement"),rc.campaignBean.getName())#</h2> 
+<h1>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"advertising.editcampaignplacement"),rc.campaignBean.getName())#</h1> 
 
 <cfinclude template="dsp_secondary_menu.cfm">
 
 <p class="overview">#application.rbFactory.getKeyValue(session.rb,'advertising.campaigndaterange')#: #LSDateFormat(rc.campaignBean.getStartDate(),session.dateKeyFormat)# - #LSDateFormat(rc.campaignBean.getEndDate(),session.dateKeyFormat)#</p>
 
-<h3>#application.rbFactory.getKeyValue(session.rb,'advertising.placementinformation')#</h3>
+<h2>#application.rbFactory.getKeyValue(session.rb,'advertising.placementinformation')#</h2>
 #application.utility.displayErrors(rc.placementBean.getErrors())#
 
 <form novalidate="novalidate" action="index.cfm?muraAction=cAdvertising.updatePlacement&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#&campaignid=#URLEncodedFormat(rc.campaignid)#" method="post" name="form1" onsubmit="return validate(this);">

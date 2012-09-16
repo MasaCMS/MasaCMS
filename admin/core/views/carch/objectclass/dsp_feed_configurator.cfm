@@ -68,7 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	data-objectid="#feed.getFeedID()#">	
 	</cfif>
 	
-	<h4>#HTMLEditFormat(feed.getName())#</h4>
+	<h3>#HTMLEditFormat(feed.getName())#</h3>
 	<cfif rc.configuratorMode eq "frontEnd"
 				and application.permUtility.getDisplayObjectPerm(feed.getSiteID(),"feed",feed.getFeedD()) eq "editor">
 		<cfsilent>

@@ -46,7 +46,7 @@ to your own modified versions of Mura CMS.
 <cfset extendSets=application.classExtensionManager.getSubTypeByName("Site","Default",rc.siteid).getExtendSets(inherit=true,container="Default",activeOnly=true) />
  <cfparam name="rc.action" default="">
 </cfsilent>
-<h2>Site Settings</h2>
+<h1>Site Settings</h1>
 <cfoutput>
 <cfif len(rc.siteid)>
 <div id="nav-module-specific" class="btn-group">
@@ -776,7 +776,7 @@ to your own modified versions of Mura CMS.
 
       </script>
       
-      <h3>Custom Images</h3>
+      <h2>Custom Images</h2>
       <p><a href="##" onclick="return openCustomImageSize('','#JSStringFormat(rc.siteBean.getSiteID())#')">Add Custom Image Size</a></p>
       
 
@@ -1057,7 +1057,7 @@ to your own modified versions of Mura CMS.
 </cfif>
 </p>
 <cfcatch>
-<h3>An Error has occured.</h3>
+<h2>An Error has occured.</h2>
 <cfdump var="#cfcatch.message#"><br/><br/>
 <cfdump var="#cfcatch.TagContext#">
 </cfcatch>

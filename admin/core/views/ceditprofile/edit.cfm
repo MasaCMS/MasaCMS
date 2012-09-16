@@ -60,7 +60,7 @@ select * from rsSubTypes where subType <> 'Default'
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,'user.advanced'))>
 <cfset tabList=listAppend(tabList,"tabAdvanced")>
 <form novalidate="novalidate" action="index.cfm?muraAction=cEditProfile.update" method="post" enctype="multipart/form-data" name="form1" class="columns" onsubmit="return validate(this);">
-<cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,'user.editprofile')#</h2>
+<cfoutput><h1>#application.rbFactory.getKeyValue(session.rb,'user.editprofile')#</h1>
 
 	<cfif not structIsEmpty(rc.userBean.getErrors())>
 		<p class="error">#application.utility.displayErrors(rc.userBean.getErrors())#</p>
@@ -212,7 +212,7 @@ select * from rsSubTypes where subType <> 'Default'
 				<cfloop collection="#application.settingsManager.getSites()#" item="site">
 					<cfif application.settingsManager.getSite(site).getPrivateUserPoolID() eq rc.userBean.getsiteID()>
 						<!---<li>--->
-							<cfoutput><h4>#application.settingsManager.getSite(site).getSite()#</h4>
+							<cfoutput><h3>#application.settingsManager.getSite(site).getSite()#</h3>
 							<div class="divide"></div>
 							</cfoutput>
 							<cf_dsp_categories_nest siteID="#rc.userBean.getsiteID()#" parentID="" categoryID="#rc.categoryID#" nestLevel="0" userBean="#rc.userBean#">

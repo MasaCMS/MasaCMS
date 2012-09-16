@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfinclude template="js.cfm">
 <cfset rslist=application.classExtensionManager.getSubTypes(siteID=rc.siteID,activeOnly=false) />
-<h2>Class Extension Attribute Sets</h2>
+<h1>Class Extension Attribute Sets</h1>
 
 <cfoutput>
 

@@ -46,11 +46,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfoutput>
-<h2>#application.rbFactory.getKeyValue(session.rb,'advertising.creativeassetdetails')#</h2>
+<h1>#application.rbFactory.getKeyValue(session.rb,'advertising.creativeassetdetails')#</h1>
 
 <cfinclude template="dsp_secondary_menu.cfm">
 
-<h3>#application.rbFactory.getKeyValue(session.rb,'advertising.creativeassetinformation')#</h3>
+<h2>#application.rbFactory.getKeyValue(session.rb,'advertising.creativeassetinformation')#</h2>
 #application.utility.displayErrors(rc.creativeBean.getErrors())#
 <form novalidate="novalidate" action="index.cfm?muraAction=cAdvertising.updateCreative&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#" enctype="multipart/form-data" method="post" name="form1" onsubmit="return validate(this);">
 

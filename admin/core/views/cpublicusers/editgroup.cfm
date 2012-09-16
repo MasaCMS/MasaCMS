@@ -65,7 +65,7 @@ select * from rsSubTypes where subType <> 'Default'
 </cfoutput>
 </cfsavecontent>
 
-<cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,'user.groupform')#</h2>
+<cfoutput><h1>#application.rbFactory.getKeyValue(session.rb,'user.groupform')#</h1>
 
 <div id="nav-module-specific" class="btn-group">
   <a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-circle-arrow-left"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
@@ -79,7 +79,7 @@ select * from rsSubTypes where subType <> 'Default'
 
 <cfswitch expression="#rc.userBean.getperm()#">
 <cfcase value="1">
-<!---topid form system groups---><h3><strong>Group:</strong> #rc.userBean.getgroupname()#</h3>
+<!---topid form system groups---><h2><strong>Group:</strong> #rc.userBean.getgroupname()#</h2>
 </cfcase>
 <cfdefaultcase>
 <!---top form non-system groups--->

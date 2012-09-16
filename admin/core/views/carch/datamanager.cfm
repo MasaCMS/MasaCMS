@@ -77,7 +77,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rc.rsDataInfo=application.contentManager.getDownloadselect(rc.contentid,rc.siteid) />
 <cfset rc.fieldnames=application.dataCollectionManager.getCurrentFieldList(rc.contentid)/>>
 </cfsilent>
-<cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.managedata')#</h2>
+<cfoutput><h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.managedata')#</h1>
 
 <cfinclude template="dsp_secondary_menu.cfm">
 

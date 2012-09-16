@@ -49,7 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rsList=application.dashboardManager.getTopReferers(rc.siteID,rc.limit,rc.startDate,rc.stopDate) />
 <cfset rsTotal=application.dashboardManager.getTotalReferers(rc.siteID,rc.startDate,rc.stopDate) />
 <cfoutput>
-<h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.topreferers")#</h2>
+<h1>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.topreferers")#</h1>
 
 <cfinclude template="dsp_secondary_menu.cfm">
 

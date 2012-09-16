@@ -254,11 +254,11 @@ var hasBody=#subType.getHasBody()#;
 <cfif (rc.rsPageCount.counter lt application.settingsManager.getSite(rc.siteid).getpagelimit() and  rc.contentBean.getIsNew()) or not rc.contentBean.getIsNew()>
 <cfoutput>
 	<cfif rc.type eq "Component">
-		<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editcomponent")#</h2>
+		<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editcomponent")#</h1>
 	<cfelseif rc.type eq "Form">
-		<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editform")#</h2>
+		<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editform")#</h1>
 	<cfelse>
-		<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editcontent")#</h2>
+		<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editcontent")#</h1>
 	</cfif>
 	
 	<cfif rc.compactDisplay neq "true">

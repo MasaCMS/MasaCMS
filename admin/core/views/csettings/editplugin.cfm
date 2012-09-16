@@ -53,7 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset package="">
 </cfif>
 </cfsilent>
-<h2>Plugin Settings</h2>
+<h1>Plugin Settings</h1>
 <cfoutput>
 <ul class="metadata">
 <li><strong>Name:</strong> #htmlEditFormat(rc.pluginXML.plugin.name.xmlText)#</li>

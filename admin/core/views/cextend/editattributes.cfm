@@ -49,7 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset subType=application.classExtensionManager.getSubTypeByID(rc.subTypeID) />
 <cfset extendSet=subType.loadSet(rc.extendSetID)/>
 <cfset attributesArray=extendSet.getAttributes() />
-<h2>Manage Attributes Set</h2>
+<h1>Manage Attributes Set</h1>
 
 <cfoutput>
 <div id="nav-module-specific" class="btn-toolbar">

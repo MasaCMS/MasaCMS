@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfset event=request.event>
 <cfinclude template="js.cfm">
-<cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,"categorymanager")#</h2>
+<cfoutput><h1>#application.rbFactory.getKeyValue(session.rb,"categorymanager")#</h1>
 
 <cfinclude template="dsp_secondary_menu.cfm">
 

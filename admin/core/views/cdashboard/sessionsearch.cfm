@@ -124,7 +124,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 
 <cfoutput>
-<h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.advancedsearch")#</h2>
+<h1>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.advancedsearch")#</h1>
 
 <cfinclude template="dsp_secondary_menu.cfm">
 
@@ -289,7 +289,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif not searchFailed>
 	<cfoutput>
-	<h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.totalsessions")# (#rc.rslist.recordcount#)</h3>
+	<h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.totalsessions")# (#rc.rslist.recordcount#)</h2>
 	
 <table class="table table-striped table-condensed mura-table-grid">
 <thead>
@@ -333,7 +333,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfoutput>
 <cfelse>
 <cfoutput>
-<h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.searchtimedout")#</h3> 
+<h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.searchtimedout")#</h2> 
 <p>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.searchtimedoutdesc")#</p>
 </cfoutput> 
 </cfif>

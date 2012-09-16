@@ -111,7 +111,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 
 <cfoutput>
-<h2>#application.rbFactory.getKeyValue(session.rb,"user.advancedmembersearch")#</h2>
+<h1>#application.rbFactory.getKeyValue(session.rb,"user.advancedmembersearch")#</h1>
 <ul class="navTask nav nav-pills">
 <li><a href="index.cfm?muraAction=cPublicUsers.search&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,"user.basicsearch")#</a></li>
 </ul>

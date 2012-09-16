@@ -52,14 +52,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfinclude template="act_defaults.cfm"/>
 <cfoutput>
 <div class="span9">
-<h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.dashboard")#</h2>
+<h1>#application.rbFactory.getKeyValue(session.rb,"dashboard.dashboard")#</h1>
 <cfinclude template="dsp_secondary_menu.cfm">
 </cfoutput>
 <cfset rsPluginScripts=application.pluginManager.getScripts("onDashboardPrimaryTop",rc.siteID)>
 <cfoutput query="rsPluginScripts" group="pluginID">
 <cfset rsPluginScript=application.pluginManager.getScripts("onDashboardPrimaryTop",rc.siteID,rsPluginScripts.moduleID)>
 <div<cfif not started> class="separate"</cfif>>
-	<h3>#HTMLEditformat(rsPluginScripts.name)#</h3>
+	<h2>#HTMLEditformat(rsPluginScripts.name)#</h2>
 	<cfoutput>
 	#application.pluginManager.renderScripts("onDashboardPrimaryTop",rc.siteid,pluginEvent,rsPluginScript)#
 	</cfoutput>
@@ -70,21 +70,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif application.configBean.getSessionHistory() >	
 <cfif not application.sessionTrackingThrottle>
 <div id="userActivity"<cfif started> class="separate"</cfif>>
-<h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.useractivity")# <span><a href="index.cfm?muraAction=cDashboard.sessionSearch&siteid=#URLEncodedFormat(rc.siteid)#&newSearch=true">(#application.rbFactory.getKeyValue(session.rb,"dashboard.advancedsessionsearch")#)</a></span></h3>
+<h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.useractivity")# <span><a href="index.cfm?muraAction=cDashboard.sessionSearch&siteid=#URLEncodedFormat(rc.siteid)#&newSearch=true">(#application.rbFactory.getKeyValue(session.rb,"dashboard.advancedsessionsearch")#)</a></span></h2>
 <span id="userActivityData"></span>
 </div>
 <script type="text/javascript">loadUserActivity('#rc.siteid#');</script>
 <cfset started=true>
 
 <div id="popularContent"<cfif started> class="separate"</cfif>>
-<h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.popularcontent")# <span>(#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.span"),rc.span)#)</span></h3>
+<h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.popularcontent")# <span>(#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.span"),rc.span)#)</span></h2>
 <span id="popularContentData"></span>
 </div>
 <script type="text/javascript">loadPopularContent('#rc.siteid#');</script>
 <cfset started=true>
 <cfelse>
 <div id="userActivity"<cfif started> class="separate"</cfif>>
-<h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.useractivity")#</h3>
+<h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.useractivity")#</h2>
 <p>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.trackingthrottled")# </p>
 </div>
 <cfset started=true>
@@ -93,7 +93,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif application.contentManager.getRecentCommentsQuery(session.siteID,1,false).recordCount>
 <div id="recentComments"<cfif started> class="separate"</cfif>>
-<h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.comments")# <span><a href="?muraAction=cDashboard.recentComments&siteID=#session.siteID#">(#application.rbFactory.getKeyValue(session.rb,"dashboard.comments.last100")#)</a></span></h3>
+<h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.comments")# <span><a href="?muraAction=cDashboard.recentComments&siteID=#session.siteID#">(#application.rbFactory.getKeyValue(session.rb,"dashboard.comments.last100")#)</a></span></h2>
 <span id="recentCommentsData"></span>
 </div>
 <script type="text/javascript">loadRecentComments('#rc.siteid#');</script>
@@ -102,7 +102,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif application.settingsManager.getSite(session.siteid).getdatacollection() and  application.permUtility.getModulePerm("00000000000000000000000000000000004","#session.siteid#")>
 <div id="recentFormActivity"<cfif started> class="separate"</cfif>>
-<h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.formactivity")#</h3>
+<h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.formactivity")#</h2>
 <span id="recentFormActivityData"></span>
 </div>
 <script type="text/javascript">loadFormActivity('#rc.siteid#');</script>
@@ -123,7 +123,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput query="rsPluginScripts" group="pluginID">
 <cfset rsPluginScript=application.pluginManager.getScripts("onDashboardPrimaryBottom",rc.siteID,rsPluginScripts.moduleID)>
 <div<cfif started> class="separate"</cfif>>
-	<h3>#HTMLEditformat(rsPluginScripts.name)#</h3>
+	<h2>#HTMLEditformat(rsPluginScripts.name)#</h2>
 	<cfoutput>
 	#application.pluginManager.renderScripts("onDashboardPrimaryBottom",rc.siteid,pluginEvent,rsPluginScript)#
 	</cfoutput>
@@ -139,7 +139,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div id="contentSecondary" class="sidebar span3">
 
 <div>
-<!--- <h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.keywordsearch")#</h3> --->
+<!--- <h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.keywordsearch")#</h2> --->
 <!--- <p>#application.rbFactory.getKeyValue(session.rb,"dashboard.searchtext")#:</p> --->
 <form novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
 	<!--- <input name="keywords" value="#HTMLEditFormat(session.keywords)#" type="text" class="search-query" placeholder="Enter Keywords" />
@@ -159,7 +159,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput query="rsPluginScripts" group="pluginID">
 <cfset rsPluginScript=application.pluginManager.getScripts("onDashboardSidebarTop",rc.siteID,rsPluginScripts.moduleID)>
 <div class="divide">
-	<h3>#HTMLEditformat(rsPluginScripts.name)#</h3>
+	<h2>#HTMLEditformat(rsPluginScripts.name)#</h2>
 	<cfoutput>
 	#application.pluginManager.renderScripts("onDashboardSidebarTop",rc.siteid,pluginEvent,rsPluginScript)#
 	</cfoutput>
@@ -167,7 +167,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfoutput>
 <cfoutput>
 <div id="siteSummary" class="well">
-<h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.sitesummary")#</h3>
+<h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.sitesummary")#</h2>
 <dl>
 	<dt>#application.rbFactory.getKeyValue(session.rb,"dashboard.activepages")#</dt>
 	<dd><span class="badge">#application.dashboardManager.getcontentTypeCount(rc.siteID,"Page").total#</span></dd>
@@ -185,7 +185,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 
 <div id="recentcontent" class="well">
-<h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.recentcontent")#</h3>
+<h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.recentcontent")#</h2>
 <cfset rsList=application.dashboardManager.getRecentUpdates(rc.siteID,5) />
 <ul>
 	<cfloop query="rslist">
@@ -201,7 +201,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset rsList=application.dashboardManager.getDraftList(rc.siteID,session.mura.userID,5) />
 <div id="drafts" class="well">
-<h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.draftsforreview")#</h3>
+<h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.draftsforreview")#</h2>
 <ul><cfif rsList.recordcount>
 	<cfloop query="rslist">
 	<li><a title="Version History" href="index.cfm?muraAction=cArch.hist&contentid=#rslist.ContentID#&type=#rslist.type#&parentid=#rslist.parentID#&topid=#rslist.contentID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rslist.moduleid#">#HTMLEditFormat(rsList.menuTitle)#</a> #application.rbFactory.getKeyValue(session.rb,"dashboard.by")# #HTMLEditFormat(rsList.lastUpdateBy)# <span>(#LSDateFormat(rsList.lastUpdate,session.dateKeyFormat)#)</span></li>
@@ -216,7 +216,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput query="rsPluginScripts" group="pluginID">
 <cfset rsPluginScript=application.pluginManager.getScripts("onDashboardSidebarBottom",rc.siteID,rsPluginScripts.moduleID)>
 <div class="divide">
-	<h3>#HTMLEditformat(rsPluginScripts.name)#</h3>
+	<h2>#HTMLEditformat(rsPluginScripts.name)#</h2>
 	<cfoutput>
 	#application.pluginManager.renderScripts("onDashboardSidebarBottom",rc.siteid,pluginEvent,rsPluginScript)#
 	</cfoutput>

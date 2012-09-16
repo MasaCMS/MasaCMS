@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="rc.siteSortBy" default="site">
 <cfparam name="rc.siteUpdateSelect" default="false">
 <cfparam name="rc.siteAutoDeploySelect" default="false">
-<h2>Site Settings</h2>
+<h1>Site Settings</h1>
 <div id="nav-module-specific" class="btn-toolbar">
 	<cfif rc.action neq 'updateCore'>
 	<div class="btn-group">
@@ -282,7 +282,7 @@ initTabs(Array("Current Sites","Plugins"),#rc.activeTab#,0,0);
 			</cfif>
 		</p>
 		<cfcatch>
-			<h3>An Error has occured.</h3>
+			<h2>An Error has occured.</h2>
 			<cfdump var="#cfcatch.message#">
 			<br/>
 			<br/>

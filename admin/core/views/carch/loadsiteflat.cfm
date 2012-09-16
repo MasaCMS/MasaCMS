@@ -149,7 +149,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="row-fluid">
 <div id="main" class="span9">
 	<div class="navSort">
-		<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sortby")#:</h3>
+		<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sortby")#:</h2>
 		<ul class="navTask nav nav-pills">
 			<!---<li><a href="" data-sortby="releasedate">Release Date</a></li>--->	
 			<li><a href="" data-sortby="lastupdate"<cfif $.event("sortBy") eq "lastUpdate"> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.lastupdated")#</a></li>
@@ -234,13 +234,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</div> 
 			
 
-			<h3>
+			<h2>
 				<cfif not listFindNoCase('none,read',verdict)>
 					<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#" class="draftprompt" href="index.cfm?muraAction=cArch.edit&contenthistid=#item.getContentHistID()#&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getParentID()#&topid=#URLEncodedFormat(item.getParentID())#&siteid=#URLEncodedFormat(item.getSiteid())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#">#HTMLEditFormat(item.getMenuTitle())#</a>
 				<cfelse>
 					#HTMLEditFormat(item.getMenuTitle())#
 				</cfif>	
-			</h3>
+			</h2>
 			<cfif listFindNoCase("png,jpg,jpeg,gif",item.getFileExt())>
 			<div class="thumbnail"><a title="Edit" class="draftprompt" href="#editLink#"><cfif hasCustomImage><img src="#item.getImageURL(height=80,width=80)#" /><cfelse><img src="#item.getImageURL(size='small')#" /></cfif></a></div>
 			</cfif>
@@ -293,7 +293,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
 <div class="sidebar span3">
-	<!---<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports")#</h3>--->
+	<!---<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports")#</h2>--->
 	<div class="well">
 		<ul id="navReports" class="nav nav-list">
 			<li><a href="" data-report=""<cfif not len($.event("report"))> class="active"</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.reports.all")#</a></li>
@@ -304,16 +304,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</ul>
 	</div>
 	
-	<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.filters")#</h3>
+	<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.filters")#</h2>
 	
 	<div id="filters" class="module well">
-	<h4>#application.rbFactory.getKeyValue(session.rb,"sitemanager.keywords")#</h4>
+	<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.keywords")#</h3>
     <input class="text" id="contentKeywords" value="#HTMLEditFormat(session.flatViewArgs["#rc.siteID#"].keywords)#" type="text" size="20" />
   	</div>
 
     <cfif $.event("report") neq "lockedfiles">
 	<div class="module well">
-		<h4>#application.rbFactory.getKeyValue(session.rb,"sitemanager.type")#</h4>
+		<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.type")#</h3>
 		<select name="contentTypeFilter" id="contentTypeFilter">
 			<option value="">#application.rbFactory.getKeyValue(session.rb,"sitemanager.all")#</option>
 			<cfloop list="#$.getBean('contentManager').TreeLevelList#" index="i">
@@ -335,7 +335,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif tags.recordcount>
 		<div class="module well" id="mura-filter-tags">
-			<h4>#application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</h4>
+			<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</h3>
 			<div id="svTagCloud">
 				<ol>
 				<cfloop query="tags"><cfsilent>
@@ -362,7 +362,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif $.getBean("categoryManager").getCategoryCount($.event("siteID"))>
 		<div class="module well" id="mura-filter-category">
-		<h4>#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#</h4>
+		<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#</h3>
 		<cf_dsp_categories_nest siteID="#$.event('siteID')#" parentID="" nestLevel="0" categoryid="#$.event('categoryid')#">
 		</div>
 	</cfif>

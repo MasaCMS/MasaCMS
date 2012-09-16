@@ -45,11 +45,11 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<h2>#application.rbFactory.getKeyValue(session.rb,"email.bouncedemailaddresses")#</h2>
+<h1>#application.rbFactory.getKeyValue(session.rb,"email.bouncedemailaddresses")#</h1>
 
 <cfinclude template="dsp_secondary_menu.cfm">
 
-<h3>#application.rbFactory.getKeyValue(session.rb,"email.emailaddressbounces")#</h3></cfoutput>
+<h2>#application.rbFactory.getKeyValue(session.rb,"email.emailaddressbounces")#</h2></cfoutput>
 <cfif rc.rsBounces.recordcount>
 	<ul class="metadata">
 		<cfoutput query="rc.rsBounces">

@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset isBlocked=false />
 <div id="login">
 <cfoutput>
-<h2>#application.rbFactory.getKeyValue(session.rb,'login.pleaselogin')#</h2>
+<h1>#application.rbFactory.getKeyValue(session.rb,'login.pleaselogin')#</h1>
 <cfif rc.status eq 'denied'>
 	<p class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,'login.denied')#</p>
 <cfelseif rc.status eq 'failed'>
