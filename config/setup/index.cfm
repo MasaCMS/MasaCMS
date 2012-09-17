@@ -656,13 +656,14 @@ to your own modified versions of Mura CMS.
             <input type="text" name="production_dbusername" value="#FORM.production_dbusername#">
           </div>
         </div>
-        <span id="oracle-only" style="display:none;">
+      
           <div class="control-group">
             <label class="control-label"><a href="" rel="tooltip" data-original-title="Only required on shared hosting. This is the same Password supplied to your DSN to allow Mura to connect to your database.">Database Password <i class="icon-info-sign"></i></a></label>
             <div class="controls">
               <input type="password" name="production_dbpassword" value="#FORM.production_dbpassword#">
             </div>
           </div>
+          <span id="oracle-only" style="display:none;">
           <div class="control-group">
             <label class="control-label"><a href="" rel="tooltip" data-original-title="Only required if you are using Oracle.">Oracle TableSpace <i class="icon-info-sign"></i></a></label>
             <div class="controls">
