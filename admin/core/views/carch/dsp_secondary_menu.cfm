@@ -187,6 +187,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfelse>
 					<a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-circle-arrow-left"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
 				</cfif>
+				<cfif (listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2'))>
+					<a class="btn" href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.editSite&siteid=#session.siteid###tabImages" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'imagedetails.edit-sizes'))#"><i class="icon-picture"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'imagedetails.editsizes'))#</a>
+				</cfif>
 			</cfcase>
 			<cfcase value="datamanager">
 				<a class="btn" href="index.cfm?muraAction=cArch.hist&contentid=#URLEncodedFormat(rc.contentid)#&type=Form&parentid=00000000000000000000000000000000004&topid=00000000000000000000000000000000004&siteid=#URLEncodedFormat(rc.siteid)#&startrow=#rc.startrow#&moduleid=00000000000000000000000000000000004"><i class="icon-book"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#</a>

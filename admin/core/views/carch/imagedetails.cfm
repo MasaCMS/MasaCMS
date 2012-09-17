@@ -49,24 +49,24 @@
 	#application.contentRenderer.dspZoom(rc.contentBean.getCrumbArray(),rc.contentBean.getFileExt())#
 </cfif>
 
+<div id="image-details">
 <cfif len(rc.fileID)>
-
 	<cfloop list="#rc.fileID#" index="f">	
 		<cfset rc.sourceImage=$.getURLForImage(fileID=f,size='source')>
 		<cfif len(rc.sourceImage)>		
 			<cfset rc.rsMeta=$.getBean('fileManager').readMeta(fileID=f)>
 			<h2>#HTMLEditFormat(rc.rsMeta.filename)#</h2>
 			<cfloop list="Small,Medium,Large" index="s">
-				<div class="control-group">
+				<div class="control-group divide">
 					<label class="control-label">#s#</label>
 					<div class="controls">
-						<img id="#lcase(s)##f#" src="#$.getURLForImage(fileID=f,size=lcase(s))#?cacheID=#createUUID()#"/>
-						<div id="#lcase(s)##f#btns">
-							<button type="button" class="btn cropper-reset" data-fileid="#f#" data-size="#lcase(s)#">Reset</button>
-							<button type="button" class="btn cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#evaluate('rc.#s#ImageRatio')#" data-size="#lcase(s)#">Re-Crop</button>
-							<img src="./assets/images/progress_bar.gif" style="display:none">
+						<div id="#lcase(s)##f#btns" class="btn-group">
+							<button type="button" class="btn cropper-reset" data-fileid="#f#" data-size="#lcase(s)#"><i class="icon-refresh"></i> Reset</button>
+							<button type="button" class="btn cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#evaluate('rc.#s#ImageRatio')#" data-size="#lcase(s)#"><i class="icon-screenshot"></i> Re-Crop</button>
 						</div>
 					</div>
+					<img src="./assets/images/progress_bar.gif" style="display:none">
+					<img id="#lcase(s)##f#" src="#$.getURLForImage(fileID=f,size=lcase(s))#?cacheID=#createUUID()#"/>
 				</div>
 			</cfloop>
 			<cfset imageSizes=application.settingsManager.getSite(rc.siteid).getCustomImageSizeIterator()>
@@ -77,16 +77,16 @@
 				<cfelse>
 					<cfset rc.customImageRatio=''>
 				</cfif>
-				<div class="control-group">
-				<label class="control-label">#HTMLEditFormat(customImage.getName())#</label>
-				<div class="controls">
-					<img id="#lcase(customImage.getName())##f#" src="#$.getURLForImage(fileID=f,size=lcase(customImage.getName()))#?cacheID=#createUUID()#"/>
-					<div id="#lcase(customImage.getName())##f#btns">
-					<button type="button" class="btn cropper-reset" data-fileid="#f#" data-size="#lcase(customImage.getName())#">Reset</button>
-					<button type="button" class="btn cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#rc.customImageRatio#" data-size="#lcase(customImage.getName())#">Re-Crop</button>
-					<img src="./assets/images/progress_bar.gif" style="display:none">
+				<div class="control-group divide">
+					<label class="control-label">#HTMLEditFormat(customImage.getName())#</label>
+					<div class="controls">
+						<div id="#lcase(customImage.getName())##f#btns" class="btn-group">
+							<button type="button" class="btn cropper-reset" data-fileid="#f#" data-size="#lcase(customImage.getName())#"><i class="icon-refresh"></i> Reset</button>
+							<button type="button" class="btn cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#rc.customImageRatio#" data-size="#lcase(customImage.getName())#"><i class="icon-screenshot"></i> Re-Crop</button>
+						</div>
 					</div>
-				</div>
+					<img src="./assets/images/progress_bar.gif" style="display:none">
+					<img id="#lcase(customImage.getName())##f#" src="#$.getURLForImage(fileID=f,size=lcase(customImage.getName()))#?cacheID=#createUUID()#"/>
 				</div>
 			</cfloop>
 		</cfif>
@@ -204,6 +204,7 @@
 	</script>
 	
     <!-- /Hidden dialog -->
+</div>
 <cfelse>
 	<p class="notice">This content does not have any image attached to it.</p>
 </cfif>
