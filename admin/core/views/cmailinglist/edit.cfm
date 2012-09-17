@@ -164,7 +164,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif rc.mlid neq ''>
 </div>
 <cfinclude template="dsp_tab_usage.cfm">
-<div class="clearfix" id="actionButtons" class="form-actions">			
+<div class="clearfix form-actions">			
 <cfif rc.mlid eq ''>
 	<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.add')#" />
 	<input type=hidden name="mlid" value="#createuuid()#">
@@ -184,11 +184,3 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </form>
 
 </cfoutput>
-<!---
-<cfif rc.mlid neq ''>
-<cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
-<cfhtmlhead text='<script type="text/javascript" src="assets/js/tab-view.js"></script>'>
-<cfoutput><script type="text/javascript">
-initTabs(Array("#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.basic'))#","#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.usagereport'))#"),0,0,0);
-</script></cfoutput>
-</cfif>--->

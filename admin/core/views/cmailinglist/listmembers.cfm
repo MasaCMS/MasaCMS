@@ -97,7 +97,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</label>
 	</div>
 </div>
-<div id="actionButton" class="form-actions">
+<div class="form-actions">
 <input type="button" class="submit btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.submit')#" />
 </div>
 <input type=hidden name="mlid" value="#rc.mlid#">

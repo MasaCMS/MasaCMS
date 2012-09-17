@@ -67,7 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfcase value="listmembers">
 				<a class="btn" href="index.cfm?muraAction=cMailingList.list&&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-circle-arrow-left"></i> #application.rbFactory.getKeyValue(session.rb,"mailinglistmanager.backtomailinglists")#</a>
 				<a class="btn" href="index.cfm?muraAction=cMailingList.Edit&mlid=#rc.mlid#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.editmailinglist')#</a>
-				<a class="btn" href="index.cfm?muraAction=cMailingList.download&mlid=#rc.mlid#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-download"></i>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.downloadmembers')#</a>		
+				<a class="btn" href="index.cfm?muraAction=cMailingList.download&mlid=#rc.mlid#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-download"></i> #application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.downloadmembers')#</a>		
 			</cfcase>
 		</cfswitch>
 	</div>
