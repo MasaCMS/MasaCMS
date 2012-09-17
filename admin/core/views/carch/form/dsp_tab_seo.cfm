@@ -82,7 +82,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</div>
 					</div>
 
+					 <div class="control-group">
+					  <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.description')#</label>
+					      <div class="controls"><textarea name="metadesc" rows="8" id="metadesc">#HTMLEditFormat(rc.contentBean.getMETADesc())#</textarea></div>
+					    </div>
 
+					  <div class="control-group">
+					  <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.keywords')#</label>
+					      <div class="controls"><textarea name="metakeywords" rows="8" id="metakeywords">#HTMLEditFormat(rc.contentBean.getMETAKEYWORDS())#</textarea></div>
+					    </div>
 
     <span id="extendset-container-seo" class="extendset-container"></span>
 

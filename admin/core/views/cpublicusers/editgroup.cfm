@@ -132,7 +132,7 @@ select * from rsSubTypes where subType <> 'Default'
     <div class="controls">
       <select name="tablist" multiple="true">
       <option value=""<cfif not len(rc.userBean.getTablist())> selected</cfif>>All</option>
-      <cfloop list="Basic,SEO,Meta Data,Template Assignments,Content Objects,Categorization,Related Content,Extended Attributes,Advanced,Usage Report,Publishing" index="t">
+      <cfloop list="Basic,SEO,Template Assignments,Content Objects,Categorization,Related Content,Extended Attributes,Advanced,Usage Report,Publishing" index="t">
       <option value="#t#"<cfif listFindNoCase(rc.userBean.getTablist(),t)> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.#replace(t,' ','','all')#")#</option>
       </cfloop>
       </select>
