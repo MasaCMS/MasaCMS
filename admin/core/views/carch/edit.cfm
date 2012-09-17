@@ -349,12 +349,10 @@ var hasBody=#subType.getHasBody()#;
 			<cfcase value="Page,Portal,Calendar,Gallery,File,Link">
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'SEO')>
 			<cfinclude template="form/dsp_tab_seo.cfm">
+			</cfif>		
+			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Navigation')>
+			<cfinclude template="form/dsp_tab_navigation.cfm">
 			</cfif>
-			<!---
-			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Meta Data')>
-			<cfinclude template="form/dsp_tab_meta.cfm">
-			</cfif>
-			--->
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Template Assignments')>
 			<cfinclude template="form/dsp_tab_templates.cfm">
 			</cfif>

@@ -165,28 +165,7 @@
 			</div>
 		</div>
 
-		<div class="control-group">
-		     <div class="controls">
-		      	<label for="isNav" class="checkbox">
-		      		<input name="isnav" id="isNav" type="CHECKBOX" value="1" <cfif rc.contentBean.getisnav() eq 1 or rc.contentBean.getisNew() eq 1>checked</cfif> class="checkbox"> 
-		      		<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.includeSiteNav"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.isnav')#
-		      		 <i class="icon-info-sign"></i></a>
-		      	</label>
-		    </div>
-		</div>
-
-		<div class="control-group">
-		    <div class="controls">
-		     	<label for="Target" class="checkbox">
-		     	<input  name="target" id="Target" type="CHECKBOX" value="_blank" <cfif rc.contentBean.gettarget() eq "_blank">checked</cfif> class="checkbox" onclick="javascript: this.checked?toggleDisplay2('editTargetParams',true):toggleDisplay2('editTargetParams',false);"> 
-		     		<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.openNewWindow"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.newwindow')#
-		     		 <i class="icon-info-sign"></i></a>
-		     	</label>
-		     </div>  
-			<div class="controls" id="editTargetParams" <cfif  rc.contentBean.gettarget() neq "_blank">style="display: none;"</cfif>>
-				<cfinclude template="dsp_buildtargetparams.cfm"> <input name="targetParams" value="#rc.contentBean.getTargetParams()#" type="hidden">
-			</div>
-		</div>
+		
 	</cfif>
 
 	<div class="control-group">

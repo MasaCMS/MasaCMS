@@ -536,7 +536,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 				</cfloop>
 			<cfelse>
-				<cfreturn "Basic,Meta Data,Content Objects,Categorization,Related Content,Extended Attributes,Advanced,Usage Report,SEO,Template Assignments,Publishing"> 
+				<cfreturn "Basic,Navigation,Content Objects,Categorization,Related Content,Extended Attributes,Advanced,Usage Report,SEO,Template Assignments,Publishing"> 
 			</cfif>
 		</cfloop>
 	</cfif>
