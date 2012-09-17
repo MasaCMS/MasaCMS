@@ -64,43 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 
 			<cfif rc.type neq 'Component' and rc.type neq 'Form'>
-				<div class="control-group">
-			      	<label class="control-label">
-			      		<cfoutput><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.layoutTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.layouttemplate')# <i class="icon-info-sign"></i></a></cfoutput>
-			  		</label>
-			      <div class="controls">
-			      	<select name="template" class="dropdown">
-						<cfif rc.contentid neq '00000000000000000000000000000000001'>
-							<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritfromparent')#</option>
-						</cfif>
-						<cfloop query="rc.rsTemplates">
-							<cfif right(rc.rsTemplates.name,4) eq ".cfm">
-								<cfoutput>
-									<option value="#rc.rsTemplates.name#" <cfif rc.contentBean.gettemplate() eq rc.rsTemplates.name>selected</cfif>>#rc.rsTemplates.name#</option>
-								</cfoutput>
-							</cfif>
-						</cfloop>
-					</select>
-				</div>
-			    </div>
-
-				<div class="control-group">
-			      	<label class="control-label">
-			      		<cfoutput><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.childTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.childtemplate')# <i class="icon-info-sign"></i></a></cfoutput>
-			      	</label>
-			      	<div class="controls">
-			      	<select name="childTemplate" class="dropdown">
-						<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.none')#</option>
-						<cfloop query="rc.rsTemplates">
-							<cfif right(rc.rsTemplates.name,4) eq ".cfm">
-								<cfoutput>
-									<option value="#rc.rsTemplates.name#" <cfif rc.contentBean.getchildTemplate() eq rc.rsTemplates.name>selected</cfif>>#rc.rsTemplates.name#</option>
-								</cfoutput>
-							</cfif>
-						</cfloop>
-					</select>
-				</div>
-			    </div>
+			
 
 				<div class="control-group">
 			      <div class="controls">
@@ -158,25 +122,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			    </div>
 				</cfif>
 				
-			</cfif>
-
-			<cfif rc.type eq 'Component' and rc.rsTemplates.recordcount>
-				<div class="control-group">
-			      	<label class="control-label">
-			      		<cfoutput><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.layoutTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.layouttemplate')#> <i class="icon-info-sign"></i></a></cfoutput>
-			      	</label> 
-			      	<div class="controls">
-			      		<select name="template" class="dropdown">
-							<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.none')#</option>
-							<cfloop query="rc.rsTemplates">
-							<cfif right(rc.rsTemplates.name,4) eq ".cfm">
-							<cfoutput>
-							<option value="#rc.rsTemplates.name#" <cfif rc.contentBean.getTemplate() eq rc.rsTemplates.name>selected</cfif>>#rc.rsTemplates.name#</option>
-							</cfoutput>
-							</cfif></cfloop>
-						</select>
-					</div>
-			    </div>
 			</cfif>
 
 			<cfif rc.type eq 'Form' >
@@ -332,5 +277,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<span id="extendset-container-advanced" class="extendset-container"></span>
 </div>
-</div>
+
 </cfoutput>

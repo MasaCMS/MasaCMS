@@ -75,8 +75,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="controls">
 			<select name="container">
 				<option value="Default">Extended Attributes</option>			
-				<cfif listFindNoCase('Page,Portal,File,Gallery,Calender',subType.getType())>
-					<cfloop list="Basic,Meta Data,Content Objects,Categorization,Related Content,Advanced" index="t">
+				<cfif listFindNoCase('Page,Portal,File,Gallery,Calender,Link',subType.getType())>
+					<cfloop list="Basic,Meta Data,Content Objects,Categorization,Related Content,SEO,Template Assignment,Publishing,Advanced" index="t">
 					<option value="#t#"<cfif extendSetBean.getContainer() eq t> selected</cfif>>
 	      			#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.#replace(t,' ','','all')#")#
 	      			</option>
