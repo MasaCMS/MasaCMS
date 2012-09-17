@@ -824,8 +824,10 @@ CREATE TABLE `tmailinglist` (
 --
 
 /*!40000 ALTER TABLE `tmailinglist` DISABLE KEYS */;
+<cfoutput>
 INSERT INTO `tmailinglist` (`MLID`,`SiteID`,`Name`,`Description`,`LastUpdate`,`isPurge`,`isPublic`) VALUES 
- ('22FC551F-FABE-EA01-C6EDD0885DDC1680','default','Please Remove Me from All Lists','',now(),1,1);
+ ('#createUUID()#','default','Please Remove Me from All Lists','',now(),1,1);
+</cfoutput>
 /*!40000 ALTER TABLE `tmailinglist` ENABLE KEYS */;
 
 
@@ -1132,9 +1134,11 @@ CREATE TABLE `tusers` (
 --
 
 /*!40000 ALTER TABLE `tusers` DISABLE KEYS */;
+<cfoutput>
 INSERT INTO `tusers` (`UserID`,`GroupName`,`Fname`,`Lname`,`UserName`,`Password`,`PasswordCreated`,`Email`,`Company`,`JobTitle`,`mobilePhone`,`Website`,`Type`,`subType`,`Ext`,`ContactForm`,`Admin`,`S2`,`LastLogin`,`LastUpdate`,`LastUpdateBy`,`LastUpdateByID`,`Perm`,`InActive`,`isPublic`,`SiteID`,`Subscribe`,`notes`,`description`,`interests`,`keepPrivate`,`photoFileID`,`IMName`,`IMService`,`created`,`remoteID`,`tags`) VALUES 
- ('22FC551F-FABE-EA01-C6EDD0885DDC1682',NULL,'Admin','User','admin','21232F297A57A5A743894A0E4A801FC3',now(),'admin@localhost.com',NULL,NULL,NULL,NULL,2,'Default',NULL,NULL,NULL,1,now(),now(),'System','22FC551F-FABE-EA01-C6EDD0885DDC1682',0,0,0,'default',0,NULL,NULL,NULL,0,NULL,NULL,NULL,now(),NULL,NULL),
- ('6300EE15-1320-5CC2-F9F48B9DBBA54D9F','Admin',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,'Default',NULL,NULL,NULL,0,NULL,now(),'System',NULL,1,0,0,'default',0,NULL,NULL,NULL,0,NULL,NULL,NULL,now(),NULL,NULL);
+ ('#createUUID()#',NULL,'Admin','User','admin','21232F297A57A5A743894A0E4A801FC3',now(),'admin@localhost.com',NULL,NULL,NULL,NULL,2,'Default',NULL,NULL,NULL,1,now(),now(),'System','22FC551F-FABE-EA01-C6EDD0885DDC1682',0,0,0,'default',0,NULL,NULL,NULL,0,NULL,NULL,NULL,now(),NULL,NULL),
+ ('#createUUID()#','Admin',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,'Default',NULL,NULL,NULL,0,NULL,now(),'System',NULL,1,0,0,'default',0,NULL,NULL,NULL,0,NULL,NULL,NULL,now(),NULL,NULL);
+</cfoutput>
 /*!40000 ALTER TABLE `tusers` ENABLE KEYS */;
 
 
