@@ -74,9 +74,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<label class="control-label">Container</label>
 		<div class="controls">
 			<select name="container">
-				<option value="Default">Extended Attributes Tab</option>
-				<cfif subType.getTYpe() neq "Site">
-				<option value="Basic"<cfif extendSetBean.getContainer() eq "Basic"> selected</cfif>>Basic Tab</option></cfif>
+				<option value="Default">Extended Attributes</option>			
+				<cfif listFindNoCase('Page,Portal,File,Gallery,Calender',subType.getType())>
+					<cfloop list="Basic,Meta Data,Content Objects,Categorization,Related Content,Advanced" index="t">
+					<option value="#t#"<cfif extendSetBean.getContainer() eq t> selected</cfif>>
+	      			#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.#replace(t,' ','','all')#")#
+	      			</option>
+	      		</cfloop>
+	      		<cfelseif listFindNoCase('Component,Form',subType.getType())>
+					<cfloop list="Basic,Categorization,Usage Report" index="t">
+					<option value="#t#"<cfif extendSetBean.getContainer() eq t> selected</cfif>>
+	      			#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.#replace(t,' ','','all')#")#
+	      			</option>
+	      		</cfloop>
+	      		<cfelseif subType.getType() neq 'site'>
+					<option value="Basic"<cfif extendSetBean.getContainer() eq "Basic"> selected</cfif>>Basic Tab</option>
+				</cfif>
 				<option value="Custom"<cfif extendSetBean.getContainer() eq "Custom"> selected</cfif>>Custom UI</option>
 			</select>
 		</div>
@@ -84,6 +97,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfelse>
 	<input name="container" value="Custom" type="hidden"/>	
 </cfif>
+
 
 <!---
 <cfif  not listFindNoCase("1,Site,Custom", subtype.getType()) and application.categoryManager.getCategoryCount(rc.siteID)>

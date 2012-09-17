@@ -71,6 +71,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif></tbody>
 		</table>
 	</dl>
+
+	<span id="extendset-container-relatedcontent" class="extendset-container"></span>
 </div>
 
 </cfoutput>

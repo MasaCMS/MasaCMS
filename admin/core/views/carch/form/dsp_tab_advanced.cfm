@@ -329,5 +329,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			 </fieldset>
 		</cfif>
 	</div>
+
+	<span id="extendset-container-advanced" class="extendset-container"></span>
+</div>
 </div>
 </cfoutput>

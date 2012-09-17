@@ -322,7 +322,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 	</cfif>
 
-	<span id="extendSetsBasic"></span>
+	<span id="extendset-container-basic" class="extendset-container"></span>
 
 	<cfif rc.type eq 'Form'>
 		<div class="control-group">

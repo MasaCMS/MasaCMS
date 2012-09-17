@@ -696,7 +696,7 @@ function pasteThis(parentID){
 	var d = jQuery('#newPasteLink');
 	d.css('background','url(/admin/images/ajax-loader.gif) no-repeat 1px 5px;');
 	reloadURL = jQuery('#newZoomLink').attr("href");
-
+	
 	jQuery.get(url + "?" + pars, 
 			function(data) {
 				loadSiteManagerInTab(
@@ -721,31 +721,31 @@ function loadExtendedAttributes(contentHistID,type,subType,_siteID,_context,_the
 		context=_context;
 		themeAssetPath=_themeAssetPath;
 		//location.href=url + "?" + pars;
-		var d = jQuery('#extendSetsDefault');
-		var b = jQuery('#extendSetsBasic');
-		if(d.length || b.length){	
-			
-			if(d.length)
-			{d.html('<img class="loadProgress" src="assets/images/progress_bar.gif">');}
-
-			if(b.length)
-			{b.html('<img class="loadProgress" src="assets/images/progress_bar.gif">');}
-			
-			jQuery.get(url + "?" + pars, 
-					function(data) {
-					setExtendedAttributes(data);
-					}
-			);
-		}
 		
+		$('.extendset-container').each(
+			function(){
+				if($(this).html() != ''){
+					$(this).html('<img class="loadProgress" src="assets/images/progress_bar.gif">');
+				}
+			}
+		);
+			
+		jQuery.get(url + "?" + pars, 
+			function(data) {
+			setExtendedAttributes(data);
+			}
+		);
+
 		return false;
 	}
 
 function setExtendedAttributes(data){
 	var r=eval("(" + data + ")");
 
-	jQuery("#extendSetsDefault").html(r.extended);
-	jQuery("#extendSetsBasic").html(r.basic);
+	$.each(r, function(name, value) {
+		//alert(name + ": " + value);
+    	$('#extendset-container-' + name).html(value);
+	});
 
 	if(!r.hassummary){
 		if(typeof hideSummaryEditor != 'undefined'){
