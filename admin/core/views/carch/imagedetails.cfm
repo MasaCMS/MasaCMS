@@ -41,7 +41,7 @@
 <cfhtmlhead text="#rc.headertext#">
 
 <cfoutput>
-<h2>Image Details</h2>
+<h1>Image Details</h1>
 
 <cfinclude template="dsp_secondary_menu.cfm">
 
@@ -55,7 +55,7 @@
 		<cfset rc.sourceImage=$.getURLForImage(fileID=f,size='source')>
 		<cfif len(rc.sourceImage)>		
 			<cfset rc.rsMeta=$.getBean('fileManager').readMeta(fileID=f)>
-			<h3>#HTMLEditFormat(rc.rsMeta.filename)#</h3>
+			<h2>#HTMLEditFormat(rc.rsMeta.filename)#</h2>
 			<cfloop list="Small,Medium,Large" index="s">
 				<div class="control-group">
 					<label class="control-label">#s#</label>
