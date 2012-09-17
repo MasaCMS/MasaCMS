@@ -81,9 +81,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfoutput>
 <cfif rc.moduleid eq '00000000000000000000000000000000004'>
-<h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.formsmanager')#</h2>
+<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.formsmanager')#</h1>
 <cfelse>
-<h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.componentmanager')#</h2>	
+<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.componentmanager')#</h1>	
 </cfif>
 <cfinclude template="dsp_secondary_menu.cfm">
 
@@ -231,7 +231,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 <cfoutput>
 <div class="sidebar span3">
-	<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.filters")#</h3>
+	<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.filters")#</h2>
 	<form class="form-inline" novalidate="novalidate" id="filterByTitle" action="index.cfm" method="get">
     	  <input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#" />
     	  <input type="hidden" name="topid" value="#rc.topID#" />
@@ -242,13 +242,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     	  <input type="hidden" name="muraAction" value="cArch.list" />
    
 		<div id="filters" class="module well">
-		<h4>#application.rbFactory.getKeyValue(session.rb,"sitemanager.keywords")#</h4>
+		<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.keywords")#</h3>
 	     <input type="text" name="searchString" value="#HTMLEditFormat(rc.searchString)#" class="text" size="20">
 	  	</div>
 
 	  	<cfif $.getBean("categoryManager").getCategoryCount($.event("siteID"))>
 		<div class="module well" id="mura-filter-category">
-		<h4>#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#</h4>
+		<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#</h3>
 		<cf_dsp_categories_nest siteID="#$.event('siteID')#" parentID="" nestLevel="0" categoryid="#$.event('categoryid')#">
 		</div>
 	</cfif>
@@ -431,7 +431,7 @@ copyAll = 'false';
 </cfif>
 </script>
  
-<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sitemanager")#</h2>
+<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sitemanager")#</h1>
 <form class="form-inline" novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
 	
     <div class="input-append">

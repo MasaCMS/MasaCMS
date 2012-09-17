@@ -86,7 +86,7 @@ function checkAll (form) {
    
 }
 </script>
-  <h2>Create Site Bundle</h2>
+  <h1>Create Site Bundle</h1>
   <div id="nav-module-specific" class="btn-group">
   <a class="btn" href="index.cfm?muraAction=cSettings.editSite&siteID=#URLEncodedFormat(rc.siteID)#"><i class="icon-circle-arrow-left"></i> Back to Site Settings</a>
   </div>

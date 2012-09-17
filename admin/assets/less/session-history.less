@@ -1,126 +1,32 @@
-#cdashboard form.sessionHistory dl, #advancedSearch, .overview, #advancedMemberSearch dl {
-	margin-bottom: 1em;
-	padding: 8px;
-	.well;
-}
-
-#cemail #advancedSearch {
-	margin-bottom: 16px;
-}
-
-#cemail #advancedSearch dl {
-	float: left;
-	margin-right: 2em;
-	margin-bottom: 1em;
-}
-
-#cemail #advancedSearch dd {
-	padding-bottom: 0;
-	margin-bottom: 0;
-}
-
-#cemail #advancedSearch .submit {
-	display: block;
-	clear: both;
-}
-
-
-#advancedMemberSearch dl {
-	padding-bottom: 8px;
-}
-
-#advancedSearch {
-	margin-bottom: 2em;
-}
-
 #cdashboard form#advancedSearch.sessionHistory {
 	padding: 0 0 32px;
 	margin: 0;
 	border: 0;
 	background: none;
-}
+	}
 
-form#filterBounces {
+#filterBounces {
 	margin-bottom: 0;
 	overflow: hidden;
-}
+	}
 
-form#filterBounces * {
+#filterBounces * {
 	margin-bottom: 0;
 	float: left;
 	position: relative;
 	top: 0;
-}
+	}
 
+#date-range {
 
-.sessionHistory dt, .sessionHistory dd {
-	display: block;
-	float: left;
-}
+	label, .controls {
+		.inline-block;
+		margin-right: .35em;	
+		}
+	}
 
-#memberVisitorOptions dt {
-	float: none;
-	clear: left;
-	display: block;
-	margin-bottom: 0;
-}
-
-#memberVisitorOptions dd {
-	float: none;
-	display: block;
-	margin-bottom: 1em;
-}
-
-.sessionHistory .where {
-	margin-bottom: 0;
-}
-
-.sessionHistory dt.where {
-	clear: left;
-}
-
-.sessionHistory dd.where {
-	width: 100%;
-	padding: 0;
-}
-
-.sessionHistory ul {
-	margin: 0;
-	padding: 0;
-}
-
-.sessionHistory li, #searchParams li {
-	margin-bottom: 1em;
-	padding: 0;
-}
-
-#advancedMemberSearch dd {
-	padding-bottom: 0;
-}
-
-
-.sessionHistory select {
-	margin-bottom: 0;
-}
-
-a.addCriteria {
-	background: url(../images/icons/add_16x16.png) no-repeat center left;
-	height: 16px !important;
-	/*width: 18px;*/
-	padding-left: 18px;/*
-	line-height: 18px !important;*/
-	color: #666;
-	display: inline-block;
-	zoom: 1; /* IE 7 Hack */
-	*display: inline;
-}
-
-a.removeCriteria {
-	background: url(../images/icons/del_32.png) no-repeat center left;
-	height: 14px;
-	width: 14px;
-	padding-left: 16px;
-	padding-right: 6px;
-	line-height: 14px;
-	color: #666;
-}
+.criteria, .criteria:hover {
+	font-size: 22px;
+	color: @gray;
+	text-decoration: none;
+	}

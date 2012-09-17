@@ -156,7 +156,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 </cfsilent>
 
-<cfoutput><h2><cfif len(rc.assignmentID)>#application.rbFactory.getKeyValue(session.rb,'collections.editlocalindexinstance')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'collections.editlocalindex')#</cfif></h2>
+<cfoutput><h1><cfif len(rc.assignmentID)>#application.rbFactory.getKeyValue(session.rb,'collections.editlocalindexinstance')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'collections.editlocalindex')#</cfif></h1>
 
 <cfif rc.compactDisplay neq "true">
 <cfinclude template="dsp_secondary_menu.cfm">
@@ -187,7 +187,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     </div>
 
 <cfelse>
-	<!---<h3>#HTMLEditFormat(rc.feedBean.getName())#</h3>--->
+	<!---<h2>#HTMLEditFormat(rc.feedBean.getName())#</h2>--->
 	<cfsilent>
 		<cfset editlink = "?muraAction=cFeed.edit">
 		<cfset editlink = editlink & "&amp;siteid=" & rc.feedBean.getSiteID()>
@@ -384,7 +384,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div id="tabDisplay" class="tab-pane fade">
 
 <div id="configuratorTab">
-<cfif isObjectInstance><h4>#HTMLEditFormat(rc.feedBean.getName())#</h4></cfif>
+<cfif isObjectInstance><h3>#HTMLEditFormat(rc.feedBean.getName())#</h3></cfif>
 	<div class="control-group">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#
       </label>
@@ -712,7 +712,7 @@ jQuery(document).ready(function(){
 
 <cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.categorization')#">
 <cfset tablist="tabBasic,tabCategorization">
-<cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,'collections.editremotefeed')#</h2>
+<cfoutput><h1>#application.rbFactory.getKeyValue(session.rb,'collections.editremotefeed')#</h1>
 
 <cfinclude template="dsp_secondary_menu.cfm">
 

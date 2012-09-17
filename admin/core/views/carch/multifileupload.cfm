@@ -63,7 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!--- check to see if the site has reached it's maximum amount of pages --->
 <cfif (rc.rsPageCount.counter lt application.settingsManager.getSite(rc.siteid).getpagelimit() and  rc.contentid eq '') or rc.contentid neq ''>
 <cfoutput>
-<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.mullifileupload")#</h2>
+<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.mullifileupload")#</h1>
 <cfif rc.compactDisplay neq "true">
 #application.contentRenderer.dspZoom(rc.crumbdata,fileExt)#
 </cfif>

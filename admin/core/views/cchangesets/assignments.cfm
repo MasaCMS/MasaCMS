@@ -46,16 +46,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfoutput>
-<h2>Change Set Content List</h2>
+<h1>Change Set Content List</h1>
 
 <cfinclude template="dsp_secondary_menu.cfm">
 
-<h3>#application.rbFactory.getKeyValue(session.rb,'changesets.name')#</h3>
+<h2>#application.rbFactory.getKeyValue(session.rb,'changesets.name')#</h2>
 <p>#HTMLEditFormat(rc.changeset.getName())#</p>
 
 <cfset rc.rslist=rc.siteAssignments.getQuery()>
 <cfset rc.previewLink="http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?changesetID=#rc.changesetID#">
-<h4>#application.rbFactory.getKeyValue(session.rb,'changesets.filterview')#</h4>
+<h3>#application.rbFactory.getKeyValue(session.rb,'changesets.filterview')#</h3>
 <p>#application.rbFactory.getKeyValue(session.rb,'changesets.filterviewnotice')#</p>
 <form class="form-inline" novalidate="novalidate" id="assignmentSearch" name="assignmentSearch" method="get">
 	<input name="keywords" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" maxlength="50" />
@@ -65,9 +65,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<input type="hidden" name="changesetID" value="#HTMLEditFormat(rc.changesetID)#">
 </form>
 
-<h4>#application.rbFactory.getKeyValue(session.rb,'changesets.previewlink')#</h4>
+<h3>#application.rbFactory.getKeyValue(session.rb,'changesets.previewlink')#</h3>
 <p><a title="Preview" href="##" onclick="return preview('#JSStringFormat(rc.previewLink)#','');">#HTMLEditFormat(rc.previewLink)#</a></p>
-<h4>#application.rbFactory.getKeyValue(session.rb,'changesets.sitearchitecture')#</h4>
+<h3>#application.rbFactory.getKeyValue(session.rb,'changesets.sitearchitecture')#</h3>
  <table class="table table-striped table-condensed mura-table-grid">
     <tr> 
       <th class="var-width">Title</th>
@@ -106,7 +106,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </td></tr></table>
 
 <cfset rc.rslist=rc.componentAssignments.getQuery()>
-<h4>#application.rbFactory.getKeyValue(session.rb,'changesets.components')#</h4>
+<h3>#application.rbFactory.getKeyValue(session.rb,'changesets.components')#</h3>
  <table class="table table-striped table-condensed mura-table-grid">
     <tr> 
       <th class="var-width">Title</th>
@@ -145,7 +145,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </td></tr></table>
 
 <cfset rc.rslist=rc.formAssignments.getQuery()>
-<h4>#application.rbFactory.getKeyValue(session.rb,'changesets.forms')#</h4>
+<h3>#application.rbFactory.getKeyValue(session.rb,'changesets.forms')#</h3>
  <table class="table table-striped table-condensed mura-table-grid">
     <tr> 
       <th class="var-width">Title</th>

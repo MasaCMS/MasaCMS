@@ -45,13 +45,13 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<h2>#application.rbFactory.getKeyValue(session.rb,'user.membersearchresults')#</h2>
+<h1>#application.rbFactory.getKeyValue(session.rb,'user.membersearchresults')#</h1>
 
 <ul class="navTask nav nav-pills">
 <li><a href="index.cfm?muraAction=cPublicUsers.advancedSearch&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'user.advancedmembersearch')#</a></li>
 </ul>
 <form class="form-inline" novalidate="novalidate" action="index.cfm" method="get" name="form1" id="siteSearch">
-	<h3>#application.rbFactory.getKeyValue(session.rb,'user.searchformembers')#</h3>
+	<h2>#application.rbFactory.getKeyValue(session.rb,'user.searchformembers')#</h2>
 
 	<div class="input-append">
 	    <input id="search" name="search" style="width: 208px;" class="text" type="text" />

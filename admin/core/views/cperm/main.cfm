@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rc.rslist=rc.groups.privateGroups />
 <cfset rc.crumbdata=application.contentManager.getCrumbList(rc.contentid,rc.siteid)>
 <cfoutput>
-<h2>#application.rbFactory.getKeyValue(session.rb,'permissions')#</h2>
+<h1>#application.rbFactory.getKeyValue(session.rb,'permissions')#</h1>
 <div id="nav-module-specific" class="btn-group">
 	<a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-circle-arrow-left"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
 </div>
@@ -56,7 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <p>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"permissions.nodetext"),rc.rscontent.title)#</p>	
 	
   <form novalidate="novalidate" method="post" name="form1" action="index.cfm?muraAction=cPerm.update&contentid=#URLEncodedFormat(rc.contentid)#&parentid=#URLEncodedFormat(rc.parentid)#">
-           <h3>#application.rbFactory.getKeyValue(session.rb,'user.adminusergroups')#</h3>
+           <h2>#application.rbFactory.getKeyValue(session.rb,'user.adminusergroups')#</h2>
 			<table class="table table-striped table-condensed mura-table-grid">
 			<tr> 
             <th>#application.rbFactory.getKeyValue(session.rb,'permissions.editor')#</th>
@@ -87,7 +87,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</table>
 		
 		<cfset rc.rslist=rc.groups.publicGroups />
-		<h3>#application.rbFactory.getKeyValue(session.rb,'user.membergroups')#</h3>
+		<h2>#application.rbFactory.getKeyValue(session.rb,'user.membergroups')#</h2>
 		<p>#application.rbFactory.getKeyValue(session.rb,'permissions.memberpermscript')##application.rbFactory.getKeyValue(session.rb,'permissions.memberpermnodescript')#</p>
 		<table class="table table-striped table-condensed mura-table-grid">
 			<tr> 

@@ -61,17 +61,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset rc.date2 = dateAdd("m", 12, rc.date1)>
 </cfif>
 <cfset theMonth=createDate(year(rc.date1),month(rc.date1),1) /></cfsilent>
-<cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,'advertising.campaignreport')#</h2>
+<cfoutput><h1>#application.rbFactory.getKeyValue(session.rb,'advertising.campaignreport')#</h1>
 
 <cfinclude template="dsp_secondary_menu.cfm">
 
-<h3>#application.rbFactory.getKeyValue(session.rb,'advertising.campaigninformation')#</h3>
+<h2>#application.rbFactory.getKeyValue(session.rb,'advertising.campaigninformation')#</h2>
 <ul class="overview"><li><strong>#application.rbFactory.getKeyValue(session.rb,'advertising.company')#:</strong> #rc.userBean.getcompany()#</li>
 <li><strong>#application.rbFactory.getKeyValue(session.rb,'advertising.campaign')#:</strong> #rc.campaignBean.getName()#</li>
 <li><strong>#application.rbFactory.getKeyValue(session.rb,'advertising.campaigndaterange')#:</strong>  #LSDateFormat(rc.campaignBean.getStartDate(),session.dateKeyFormat)#&nbsp;-&nbsp;#LSDateFormat(rc.campaignBean.getEndDate(),session.dateKeyFormat)#</li>
 <li><strong>#application.rbFactory.getKeyValue(session.rb,'advertising.reportdaterange')#:</strong> #LSDateFormat(rc.date1,session.dateKeyFormat)#&nbsp;-&nbsp;#LSDateFormat(rc.date2,session.dateKeyFormat)#</li></ul>
 
-<h3>#application.rbFactory.getKeyValue(session.rb,'advertising.reportdaterange')#</h3>
+<h2>#application.rbFactory.getKeyValue(session.rb,'advertising.reportdaterange')#</h2>
 <form novalidate="novalidate" action="index.cfm?muraAction=cAdvertising.viewReportByCampaign&campaignid=#rc.campaignid#&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="download" onsubmit="return validate(this);">
 #application.rbFactory.getKeyValue(session.rb,'advertising.from')# 
 <input type="text" class="dateSelect datepicker" name="date1"  validate="date" message="#application.rbFactory.getKeyValue(session.rb,'advertising.fromvalidate')#" required="true" value="#LSDateFormat(rc.date1,session.dateKeyFormat)#" > 
@@ -86,7 +86,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset fTotalImpsCost=0 />
 	<cfset fTotalClicksCost=0 />
 		
-	<h3>#application.rbFactory.getKeyValue(session.rb,'advertising.month')#</h3>
+	<h2>#application.rbFactory.getKeyValue(session.rb,'advertising.month')#</h2>
 	</cfoutput>
 <cfloop condition="#theMonth# lt #rc.date2#">
 	<cfsilent>
@@ -108,7 +108,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset cTotalBudget=0 />
 	</cfsilent>
 	
-	<cfoutput><h4>#month(theMonth)#/#year(theMonth)#</h4>
+	<cfoutput><h3>#month(theMonth)#/#year(theMonth)#</h3>
 	<table class="table table-striped table-condensed mura-table-grid">
 	<tr>
 	<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'advertising.adzone')#</th>
@@ -198,7 +198,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 	<cfset fTotalClicksCost=fTotalClicksCost+cTotalClicksCost />
 		</cfloop>
 <cfoutput>
-	<h3>#application.rbFactory.getKeyValue(session.rb,'advertising.total')#</h3>
+	<h2>#application.rbFactory.getKeyValue(session.rb,'advertising.total')#</h2>
 
 	<table id="metadata" class="table table-striped table-bordered table-condensed">
 	<tr>

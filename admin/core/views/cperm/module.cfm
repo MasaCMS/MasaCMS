@@ -46,13 +46,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfset rc.rslist=rc.groups.privateGroups />
 <cfoutput>
-<h2>#application.rbFactory.getKeyValue(session.rb,'permissions')#</h2>
+<h1>#application.rbFactory.getKeyValue(session.rb,'permissions')#</h1>
 <div id="nav-module-specific" class="btn-group">
 	<a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-circle-arrow-left"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
 </div>
 <p class="info">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"permissions.moduletext"),rc.rscontent.title)#</p>
   <form novalidate="novalidate"  method="post" name="form1" action="?muraAction=cPerm.updatemodule&contentid=#URLEncodedFormat(rc.contentid)#">
-        <h3>#application.rbFactory.getKeyValue(session.rb,'user.adminusergroups')#</h3>
+        <h2>#application.rbFactory.getKeyValue(session.rb,'user.adminusergroups')#</h2>
 		<table class="table table-striped table-condensed mura-table-grid">
           <tr> 
             <th>#application.rbFactory.getKeyValue(session.rb,'permissions.allow')#</th>

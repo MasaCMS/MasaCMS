@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 select * from rsSubTypes where subType <> 'Default'
 </cfquery>
 <cfoutput>
-<h2>#application.rbFactory.getKeyValue(session.rb,'user.admingroupform')#</h2>
+<h1>#application.rbFactory.getKeyValue(session.rb,'user.admingroupform')#</h1>
 
 <div id="nav-module-specific" class="btn-group">
   <a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-circle-arrow-left"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
@@ -67,7 +67,7 @@ select * from rsSubTypes where subType <> 'Default'
 	  	<cfcase value="1">
 		<!---topid form system groups--->
 		<cfoutput>
-		<h3><strong>#application.rbFactory.getKeyValue(session.rb,'user.group')#:</strong> #rc.userBean.getgroupname()#</h3>
+		<h2><strong>#application.rbFactory.getKeyValue(session.rb,'user.group')#:</strong> #rc.userBean.getgroupname()#</h2>
 		</cfoutput>
 		</cfcase>
 		<cfdefaultcase>

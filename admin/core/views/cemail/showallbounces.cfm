@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfinclude template="js.cfm">
 <cfoutput>
 <div id="allBounces">
-<h2>#application.rbFactory.getKeyValue(session.rb,"email.bouncedemailaddresses")#</h2>
+<h1>#application.rbFactory.getKeyValue(session.rb,"email.bouncedemailaddresses")#</h1>
 
 <cfinclude template="dsp_secondary_menu.cfm">
 

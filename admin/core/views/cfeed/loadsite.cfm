@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset counter=0 />
 <cfoutput>
 <div id="contentSearch" class="form-inline">
-<h3>#application.rbFactory.getKeyValue(session.rb,'collections.contentsearch')#</h3>
+<h2>#application.rbFactory.getKeyValue(session.rb,'collections.contentsearch')#</h2>
 	<input id="parentSearch" name="parentSearch" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" maxlength="50"/><input type="button" class="submit btn" onclick="loadSiteFilters('#rc.siteid#',document.getElementById('parentSearch').value,0);" value="#application.rbFactory.getKeyValue(session.rb,'collections.search')#" />
 	</div>
 </cfoutput>

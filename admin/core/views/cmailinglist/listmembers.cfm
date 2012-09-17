@@ -45,7 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<h2>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager')#</h2>
+<h1>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager')#</h1>
 
 <cfinclude template="dsp_secondary_menu.cfm">
 
@@ -104,7 +104,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <input type=hidden name="siteid" value="#HTMLEditFormat(rc.siteid)#">
 <input type=hidden name="isVerified" value="1">
 </form>
-<h3>#rc.listBean.getname()#</h3>
+<h2>#rc.listBean.getname()#</h2>
 
 <table id="metadata" class="table table-striped table-bordered table-condensed">
 <tr>

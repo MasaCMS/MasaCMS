@@ -68,9 +68,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	<cfif rc.classid eq "related_content">
-		<h4>#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent'))#</h4>
+		<h3>#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent'))#</h3>
 	<cfelse>
-		<h4>#HTMLEditFormat('#menutitle# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#')#</h4>
+		<h3>#HTMLEditFormat('#menutitle# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#')#</h3>
 	</cfif>
 	
 	<div id="configurator">

@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfhtmlhead text="#session.dateKey#">
 <cfset rsList=application.dashboardManager.getTopRated(rc.siteID,rc.threshold,rc.limit,rc.startDate,rc.stopDate) />
 <cfoutput>
-<h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.topratedcontent")#</h2>
+<h1>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.topratedcontent")#</h1>
 
 <cfinclude template="dsp_secondary_menu.cfm">
 

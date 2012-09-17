@@ -49,7 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <form novalidate="novalidate" action="index.cfm?muraAction=cMailingList.update" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);">
 
-<h2>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager')#</h2>
+<h1>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager')#</h1>
 
 <cfinclude template="dsp_secondary_menu.cfm">
 

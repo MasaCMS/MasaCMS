@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
 
 <cfoutput>
-  <h2>#application.rbFactory.getKeyValue(session.rb,'email.createeditemail')#</h2>
+  <h1>#application.rbFactory.getKeyValue(session.rb,'email.createeditemail')#</h1>
 
   <cfinclude template="dsp_secondary_menu.cfm">
   
@@ -222,7 +222,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       
       <!--- Recipients --->      
        <div id="emailGroupsLists" class="tab-pane fade">
-      <!--- <h3>#application.rbFactory.getKeyValue(session.rb,'email.sendto')#:</h3> --->
+      <!--- <h2>#application.rbFactory.getKeyValue(session.rb,'email.sendto')#:</h2> --->
      	
      	 <div class="tabbable">
         <ul class="nav nav-tabs initActiveTab">

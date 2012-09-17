@@ -60,7 +60,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
  </form>
 
-<h2>Trash Bin</h2>
+<h1>Trash Bin</h1>
 
 <div id="nav-module-specific" class="btn-group">
 <a class="btn" href="index.cfm?muraAction=cSettings.editSite&siteID=#URLEncodedFormat(rc.siteID)#"><i class="icon-circle-arrow-left"></i> Back to Site Settings</a>

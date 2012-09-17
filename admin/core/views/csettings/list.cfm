@@ -48,22 +48,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="rc.siteSortBy" default="site">
 <cfparam name="rc.siteUpdateSelect" default="false">
 <cfparam name="rc.siteAutoDeploySelect" default="false">
-<h2>Site Settings</h2>
-<div id="nav-module-specific" class="btn-group">
+<h1>Site Settings</h1>
+<div id="nav-module-specific" class="btn-toolbar">
 	<cfif rc.action neq 'updateCore'>
-		<a class="btn" href="index.cfm?muraAction=cSettings.list&action=updateCore" onclick="return confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.\n\nIf your are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.',this.href);">Update Core Files to Latest Version</a>
+	<div class="btn-group">
+		<a class="btn" href="index.cfm?muraAction=cSettings.list&action=updateCore" onclick="return confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.\n\nIf your are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.',this.href);"><i class="icon-bolt"></i> Update Core Files to Latest Version</a>
+		<cfif rc.siteUpdateSelect neq "true">
+			<a class="btn" href="index.cfm?muraAction=cSettings.list&siteUpdateSelect=true"><i class="icon-bolt"></i> Multi-Site Version Update</a>
+		</cfif>
+	</div>
+	<div class="btn-group">
 		<cfif rc.siteUpdateSelect eq "true" or rc.siteSortBy eq "orderno">
-			<a class="btn"href="index.cfm?muraAction=cSettings.list&siteSortBy=site">View Site List by Site Name</a>
+			<a class="btn" href="index.cfm?muraAction=cSettings.list&siteSortBy=site"><i class="icon-list"></i> View Site List by Site Name</a>
 		</cfif>
 		<cfif rc.siteSortBy neq "orderno">
-			<a class="btn"href="index.cfm?muraAction=cSettings.list&siteSortBy=orderno">View Site List by Bind Order</a>
-		</cfif>
-		<cfif rc.siteUpdateSelect neq "true">
-			<a class="btn" href="index.cfm?muraAction=cSettings.list&siteUpdateSelect=true">Multi-Site Version Update</a>
+			<a class="btn" href="index.cfm?muraAction=cSettings.list&siteSortBy=orderno"><i class="icon-list"></i> View Site List by Bind Order</a>
 		</cfif>
 		<cfelse>
-		<a class="btn" href="index.cfm?muraAction=cSettings.list">View Site List</a>
+		<a class="btn" href="index.cfm?muraAction=cSettings.list"><i class="icon-list"></i> View Site List</a>
 	</cfif>
+	</div>
 </div>
  
 <!--- site updates messaging --->
@@ -191,11 +195,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfoutput>
 				</table>
 				<cfif rc.siteSortBy eq "orderno">
-					<input type="button" class="submit btn" onclick="document.form1.submit();" value="Update Bind Order" />
+					<button type="button" class="btn" onclick="document.form1.submit();"><i class="icon-check"></i> Update Bind Order</button>
 				</cfif>
 				<cfif  rc.siteUpdateSelect eq "true">
 					<div class="form-actions">
-					<input type="button" class="submit btn" id="btnUpdateSites" value="Update Selected Sites to Latest Version" />
+					<button type="button" class="btn" id="btnUpdateSites"><i class="icon-bolt"></i> Update Selected Sites to Latest Version</button>
 					</div>
 					<div id="actionIndicator" style="display: none;">
 						<cfoutput><img class="loadProgress" src="#application.configBean.getContext()#/admin/assets/images/progress_bar.gif"></cfoutput>
@@ -204,7 +208,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif application.configBean.getMode() eq 'staging'
 						and rc.siteSortBy neq "orderno"
 						and rc.siteUpdateSelect neq "true">
-					<input type="button" class="submit btn" onclick="document.form1.submit();" value="Update Auto Deploy Settings" />	
+					<button type="button" class="btn" onclick="document.form1.submit();"><i class="icon-check"></i>Update Auto Deploy Settings</button>
 				</cfif>
 				<cfoutput>
 					<input type="hidden" name="siteSortBy" value="#htmlEditFormat(rc.siteSortBy)#" />
@@ -278,7 +282,7 @@ initTabs(Array("Current Sites","Plugins"),#rc.activeTab#,0,0);
 			</cfif>
 		</p>
 		<cfcatch>
-			<h3>An Error has occured.</h3>
+			<h2>An Error has occured.</h2>
 			<cfdump var="#cfcatch.message#">
 			<br/>
 			<br/>

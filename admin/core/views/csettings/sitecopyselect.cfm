@@ -45,7 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<h2>Site Copy Tool</h2>
+<h1>Site Copy Tool</h1>
 <!--- ><p class="notice">IMPORTANT: All content in the site that is being copied to will be replaced.</p> --->
 <p class="notice">IMPORTANT: All content in the destination site ("To") will be deleted and replaced with the source site's ("From") content.</p>
 <form action="index.cfm" onsubmit="if(validateForm(this)){jQuery('.form-actions').hide();jQuery('##actionIndicator').show();return true;}else{return false;};">

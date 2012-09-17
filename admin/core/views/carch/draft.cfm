@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfinclude template="js.cfm">
 <cfset listed=0><cfoutput>
-	<h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.drafts')#</h2>
+	<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.drafts')#</h1>
 	<table class="table table-striped table-condensed mura-table-grid">
     <tr> 
       <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'sitemanager.drafts.title')#</th>

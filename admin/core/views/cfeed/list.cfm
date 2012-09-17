@@ -44,11 +44,11 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,'collections')#</h2>
+<cfoutput><h1>#application.rbFactory.getKeyValue(session.rb,'collections')#</h1>
 
 <cfinclude template="dsp_secondary_menu.cfm">
 
-<h3>#application.rbFactory.getKeyValue(session.rb,'collections.localcontentindexes')#</h3>
+<h2>#application.rbFactory.getKeyValue(session.rb,'collections.localcontentindexes')#</h2>
 
 <table class="table table-striped table-condensed mura-table-grid"> 
 <tr>

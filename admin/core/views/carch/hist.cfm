@@ -61,7 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rc.deletable=((rc.parentid neq '00000000000000000000000000000000001' and application.settingsManager.getSite(rc.siteid).getlocking() neq 'all') or (rc.parentid eq '00000000000000000000000000000000001' and application.settingsManager.getSite(rc.siteid).getlocking() eq 'none')) and (rc.perm eq 'editor' and rc.contentid neq '00000000000000000000000000000000001') and rc.contentBean.getIsLocked() neq 1>
 </cfsilent>
 <cfoutput>
-<h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#</h2>
+<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#</h1>
 
 <cfif rc.compactDisplay neq 'true'>
 	<cfinclude template="dsp_secondary_menu.cfm">

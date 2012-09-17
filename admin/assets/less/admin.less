@@ -23,6 +23,8 @@
 	@import "category-assignments.less";
 	@import "dashboard.less";
 	@import "setup.less";
+	@import "site-settings.less";
+	@import "image-details.less";
 	
 // Layout
 
@@ -153,6 +155,14 @@ div.tooltip {
 	margin-bottom: @baseLineHeight + 4px;
 	padding-bottom: @baseLineHeight;
 	background: url(../images/rule_dotted_big.gif) repeat-x bottom;
+	}
+	
+.divide {
+	.clearfix;
+	clear: both;
+	margin-top: @baseLineHeight;
+	padding-top: @baseLineHeight - 4px;
+	border-top: 1px solid @grayLight;
 	}
 
 .navZoom {

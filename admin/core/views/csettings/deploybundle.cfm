@@ -51,7 +51,7 @@ to your own modified versions of Mura CMS.
 	});*/
 </script>
 
-<h2>Deploy Bundle</h2>
+<h1>Deploy Bundle</h1>
 <iframe frameborder="0" src="/tasks/bundle/feedback.cfm?siteID=<cfoutput>#rc.siteID#</cfoutput>"></iframe>
 
 <!---<cfoutput>#application.pluginManager.announceEvent("onAfterSiteDeployRender",event)#</cfoutput>--->

@@ -236,14 +236,14 @@ var hasBody=#subType.getHasBody()#;
 	<cfoutput>
 	<div class="form-actions">
 		<cfif assignChangesets>
-		<input type="button" class="submit btn" onclick="saveToChangeset('#rc.contentBean.getChangesetID()#','#HTMLEditFormat(rc.siteID)#','');return false;" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset")#" />	
+		<button type="button" class="submit btn" onclick="saveToChangeset('#rc.contentBean.getChangesetID()#','#HTMLEditFormat(rc.siteID)#','');return false;"><i class="icon-check"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset")#</button>	
 		</cfif>
-		 <input type="button" class="submit btn" onclick="if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#" />
+		 <button type="button" class="submit btn" onclick="if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="icon-check"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#</button>
 		<cfif listFindNoCase("Page,Portal,Calendar,Gallery",rc.type)>
-		<input type="button" class="submit btn" onclick="document.contentForm.preview.value=1;if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraftandpreview"))#" />
+		<button type="button" class="submit btn" onclick="document.contentForm.preview.value=1;if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="icon-eye-open"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraftandpreview"))#</button>
 		</cfif>
 		<cfif rc.perm eq 'editor'>
-		<input type="button" class="submit btn" onclick="document.contentForm.approved.value=1;if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#" />
+		<button type="button" class="submit btn" onclick="document.contentForm.approved.value=1;if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="icon-save"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#</button>
 		</cfif> 
 	</div>
 	</cfoutput>
@@ -254,11 +254,11 @@ var hasBody=#subType.getHasBody()#;
 <cfif (rc.rsPageCount.counter lt application.settingsManager.getSite(rc.siteid).getpagelimit() and  rc.contentBean.getIsNew()) or not rc.contentBean.getIsNew()>
 <cfoutput>
 	<cfif rc.type eq "Component">
-		<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editcomponent")#</h2>
+		<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editcomponent")#</h1>
 	<cfelseif rc.type eq "Form">
-		<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editform")#</h2>
+		<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editform")#</h1>
 	<cfelse>
-		<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editcontent")#</h2>
+		<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.editcontent")#</h1>
 	</cfif>
 	
 	<cfif rc.compactDisplay neq "true">

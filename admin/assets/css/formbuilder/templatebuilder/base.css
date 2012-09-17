@@ -62,7 +62,7 @@
 		position: relative;
 	}
 	
-	.mura-tb-form .mura-tb-header h3 {
+	.mura-tb-form .mura-tb-header h2 {
 		font-size: 15px;
 		min-height: 22px;
 		color: #666;
@@ -76,37 +76,37 @@
 		line-height: 1.1;
 	}
 	
-	.mura-tb-header.textfield h3 {
+	.mura-tb-header.textfield h2 {
 		background-image: url('../../../images/formbuilder/frm_textfield_big.png');
 	}
-	.mura-tb-header.textarea h3 {
+	.mura-tb-header.textarea h2 {
 		background-image: url('../../../images/formbuilder/frm_textarea_big.png');
 		/*background-position: left center;*/
 	}
-	.mura-tb-header.dropdown h3 {
+	.mura-tb-header.dropdown h2 {
 		background-image: url('../../../images/formbuilder/frm_dropdown_big.png');
 	}
-	.mura-tb-header.radio h3 {
+	.mura-tb-header.radio h2 {
 		background-image: url('../../../images/formbuilder/frm_radio_big.png');
 		padding-top: 4px;
 	}
-	.mura-tb-header.checkbox h3 {
+	.mura-tb-header.checkbox h2 {
 		background-image: url('../../../images/formbuilder/frm_checkbox_big.png');
 		padding-top: 4px;
 	}
-	.mura-tb-header.hiddenfield h3 {
+	.mura-tb-header.hiddenfield h2 {
 		background-image: url('../../../images/formbuilder/frm_hidden_big.png');
 	}
-	.mura-tb-header.fileuploadfield h3 {
+	.mura-tb-header.fileuploadfield h2 {
 		background-image: url('../../../images/formbuilder/frm_upload_big.png');
 		padding-left: 24px;
 	}
-	.mura-tb-header.textblock h3 {
+	.mura-tb-header.textblock h2 {
 		background-image: url('../../../images/formbuilder/frm_text_freeform_big.png');
 		padding-left: 34px;
 	}
 	
-	.mura-tb-form .mura-tb-header h3 span {
+	.mura-tb-form .mura-tb-header h2 span {
 		font-size: 15px;
 		font-weight: bold;
 	}

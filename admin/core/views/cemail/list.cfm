@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="rc.direction" default="">
 <cfparam name="rc.orderBy" default="">
 <cfparam name="rc.page" default="1">
-<cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,"email.emailmanager")#</h2></cfoutput>
+<cfoutput><h1>#application.rbFactory.getKeyValue(session.rb,"email.emailmanager")#</h1></cfoutput>
 
 <cfsilent>
 	  <cfset startDate=createDate(year(now()),month(now()),1)>
@@ -70,14 +70,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  <li>#application.rbFactory.getKeyValue(session.rb,"email.emailsremaining")#: <strong>#emailsRemainingText#</strong></li></ul>
 	  </cfoutput>
 	  <!---<div id="bounces" class="divide">
-	  <h3>Bounces</h3>
+	  <h2>Bounces</h2>
 	  <a href="index.cfm?muraAction=cEmail.showAllBounces&siteid=<cfoutput>#rc.siteid#</cfoutput>">View All Bounces</a>
 	  </div>--->
 	  <cfinclude template="dsp_secondary_menu.cfm">
 	  <cfoutput>
 
 	  <div id="filterView" class="row-fluid">
-	  <h3>#application.rbFactory.getKeyValue(session.rb,"email.emails")#</h3></cfoutput>
+	  <h2>#application.rbFactory.getKeyValue(session.rb,"email.emails")#</h2></cfoutput>
 
 <form novalidate="novalidate" action="index.cfm?muraAction=cEmail.list&siteid=<cfoutput>#rc.siteid#</cfoutput>" method="post" name="form1" id="advancedSearch" class="container">
 

@@ -46,11 +46,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfhtmlhead text="#session.dateKey#">
 <cfoutput>
-<h2>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"advertising.editcampaign"),rc.userBean.getCompany())#</h2>
+<h1>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"advertising.editcampaign"),rc.userBean.getCompany())#</h1>
 
 <cfinclude template="dsp_secondary_menu.cfm">
 
-<h3>#application.rbFactory.getKeyValue(session.rb,'advertising.campaigninformation')#</h3>
+<h2>#application.rbFactory.getKeyValue(session.rb,'advertising.campaigninformation')#</h2>
 
 #application.utility.displayErrors(rc.campaignBean.getErrors())#
 

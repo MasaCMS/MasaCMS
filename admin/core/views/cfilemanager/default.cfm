@@ -6,11 +6,11 @@
 </cfif>
 <cfoutput>
 <cfif session.resourceType eq "assets">
-<h2>#application.rbFactory.getKeyValue(session.rb,"layout.userassets")#</h2>
+<h1>#application.rbFactory.getKeyValue(session.rb,"layout.userassets")#</h1>
 <cfelseif session.resourceType eq "files">
-<h2>#application.rbFactory.getKeyValue(session.rb,"layout.sitefiles")#</h2>
+<h1>#application.rbFactory.getKeyValue(session.rb,"layout.sitefiles")#</h1>
 <cfelseif session.resourceType eq "root">
-<h2>#application.rbFactory.getKeyValue(session.rb,"layout.applicationroot")#</h2>
+<h1>#application.rbFactory.getKeyValue(session.rb,"layout.applicationroot")#</h1>
 </cfif>
 <div id="nav-module-specific" class="btn-group">
   <a class="btn<cfif session.resourceType eq 'assets'> active</cfif>" href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cFilemanager.default&siteid=#session.siteid#&&resourceType=assets"><i class="icon-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,"layout.userassets")#</a>

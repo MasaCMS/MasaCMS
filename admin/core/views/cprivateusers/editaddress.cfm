@@ -49,13 +49,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset addressBean=rc.userBean.getAddressBeanById(rc.addressID)>
 <cfset extendSets=application.classExtensionManager.getSubTypeByName("Address",rc.userBean.getsubtype(),rc.userBean.getSiteID()).getExtendSets(inherit=true,activeOnly=true) />
 <cfoutput><form novalidate="novalidate" action="index.cfm?muraAction=cPrivateUsers.updateAddress&userid=#URLEncodedFormat(rc.userid)#&routeid=#rc.routeid#&siteid=#URLEncodedFormat(rc.siteid)#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);"  autocomplete="off" >
-	<h2>#application.rbFactory.getKeyValue(session.rb,'user.adminuseraddressform')#</h2>
+	<h1>#application.rbFactory.getKeyValue(session.rb,'user.adminuseraddressform')#</h1>
 	
 	<div id="nav-module-specific" class="btn-group">
 	<a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-circle-arrow-left"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
 	</div>
 	
-	<h3>#rc.userBean.getFname()# #rc.userBean.getlname()# <cfif find("activeTab",rc.returnURL)><a href="index.cfm?#rc.returnURL#"><cfelse><a href="index.cfm?#rc.returnURL#&activeTab=1"></cfif>[#application.rbFactory.getKeyValue(session.rb,'user.back')#]</a></h3>
+	<h2>#rc.userBean.getFname()# #rc.userBean.getlname()# <cfif find("activeTab",rc.returnURL)><a href="index.cfm?#rc.returnURL#"><cfelse><a href="index.cfm?#rc.returnURL#&activeTab=1"></cfif>[#application.rbFactory.getKeyValue(session.rb,'user.back')#]</a></h2>
 	
 	<cfif arrayLen(extendSets)>
 	<br/>

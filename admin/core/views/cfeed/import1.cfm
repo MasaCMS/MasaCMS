@@ -46,13 +46,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfinclude template="js.cfm">
 <cfoutput>
-<h2>#application.rbFactory.getKeyValue(session.rb,'collections.remotefeedimportselection')#</h2>
+<h1>#application.rbFactory.getKeyValue(session.rb,'collections.remotefeedimportselection')#</h1>
 
 <cfinclude template="dsp_secondary_menu.cfm">
 
 <form novalidate="novalidate" action="index.cfm?muraAction=cFeed.import2&feedid=#URLEncodedFormat(rc.feedid)#&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="contentForm" onsubmit="return false;">
 	<cfset feedBean=application.feedManager.read(rc.feedID) />
-	<h3>#feedBean.getName()#</h3>
+	<h2>#feedBean.getName()#</h2>
 		</cfoutput>
 		
 	<CFHTTP url="#feedBean.getChannelLink()#" method="GET" resolveurl="Yes" throwOnError="Yes" />
