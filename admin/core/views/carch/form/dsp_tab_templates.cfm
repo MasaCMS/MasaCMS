@@ -105,6 +105,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			    </div>
 	</cfif>
 
-    <span id="extendset-container-templateassignments" class="extendset-container"></span>
+    <span id="extendset-container-templates" class="extendset-container"></span>
 
 </div></cfoutput>

@@ -353,7 +353,7 @@ var hasBody=#subType.getHasBody()#;
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Navigation')>
 			<cfinclude template="form/dsp_tab_navigation.cfm">
 			</cfif>
-			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Template Assignments')>
+			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Templates')>
 			<cfinclude template="form/dsp_tab_templates.cfm">
 			</cfif>
 			</cfcase>
