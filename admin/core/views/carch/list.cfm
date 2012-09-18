@@ -87,33 +87,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 <cfinclude template="dsp_secondary_menu.cfm">
 
-<!---
-<div class="btn-group" id="filter-view">
-  <a class="btn dropdown-toggle" data-toggle="dropdown" href="">
-    <i class="icon-eye-open"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.filterview')#
-    <span class="caret"></span>
-  </a>
-  <div class="dropdown-menu">
-    <form class="form-inline" novalidate="novalidate" id="filterByTitle" action="index.cfm" method="get">
-    	  <label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.filterviewdesc')#</label>
-    	  <input type="text" name="searchString" value="#HTMLEditFormat(rc.searchString)#" class="text">
-    	  <input type="button" class="submit btn" onclick="document.getElementById('filterByTitle').submit();" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.filter')#" />
-    	  <input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#" />
-    	  <input type="hidden" name="topid" value="#rc.topID#" />
-    	  <input type="hidden" name="parentid" value="#rc.parentID#" />
-    	  <input type="hidden" name="moduleid" value="#rc.moduleID#" />
-    	  <input type="hidden" name="sortBy" value="" />
-    	  <input type="hidden" name="sortDirection" value="" />
-    	  <input type="hidden" name="muraAction" value="cArch.list" />
-    </form>
-  </div>
-</div>
-
-<div class="notice" id="sitemgr-reorder">
-	When you're done re-ordering, click "Update."
-		<input type="button" class="submit btn pulse" id="submitSort" onclick="submitForm(document.forms.viewUpdate);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.update")#" />
-</div>
---->
 </cfoutput>
 <div class="row-fluid">
 	  <div id="main" class="span9">
@@ -189,8 +162,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       </tr>
     </cfif>
 	
-  <!---   <cfif rc.nextn.numberofpages gt 1><tr> 
-      <td colspan="7" class="noResults">More Results: <cfloop from="1"  to="#rc.nextn.numberofpages#" index="i"><cfoutput><cfif rc.nextn.currentpagenumber eq i> #i# <cfelse> <a href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&topid=#URLEncodedFormat(rc.topid)#&startrow=#evaluate('(#i#*#rc.nextn.recordsperpage#)-#rc.nextn.recordsperpage#+1')#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">#i#</a> </cfif></cfoutput></cfloop></td></tr></cfif> --->
   </table>
 </td></tr></tbody></table>
 
@@ -243,7 +214,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
    
 		<div id="filters" class="module well">
 		<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.keywords")#</h3>
-	     <input type="text" name="searchString" value="#HTMLEditFormat(rc.searchString)#" class="text" size="20">
+	     <input type="text" name="searchString" id="searchString" value="#HTMLEditFormat(rc.searchString)#" class="text" size="20">
 	  	</div>
 
 	  	<cfsilent>
@@ -292,7 +263,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<input type="hidden" name="tag" id="tag" value="#HTMLEditFormat($.event('tag'))#" />
 	  	<input type="submit" class="btn" name="filterList" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#"/>
 	  	<cfif len($.event('categoryID') & $.event('tag') & $.event('searchString'))>
-	  	<input type="button" class="btn" name="removeFilter" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.removefilter")#" onclick=""/>
+	  	<input type="button" class="btn" name="removeFilter" id="removeFilter" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.removefilter")#" onclick=""/>
 	  	</cfif>
   	 </form>
 
@@ -308,8 +279,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				);
 					
 				$('##tag').val(tag.toString());
-
+				
 				return true;
+	  	 	}
+	  	 );	
+
+	  	$('##removeFilter').click(
+	  		function(){
+		  	 	$('##tag').val('');
+				$('##searchString').val('');
+				$('input[name=categoryID]').attr('checked', false);
+				document.getElementById('filterByTitle').submit();
+
 	  	 	}
 	  	 );	
 
