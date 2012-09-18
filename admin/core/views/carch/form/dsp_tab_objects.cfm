@@ -139,6 +139,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         </div> <!--- /#availableRegions --->
       </div> <!--- /#editObjects--->
     </div> <!--- /.control-group --->
+
+    <span id="extendset-container-contentobjects" class="extendset-container"></span>
   </div> <!--- /.tab-pane --->
   <cfinclude template="../dsp_configuratorJS.cfm">
 </cfoutput>

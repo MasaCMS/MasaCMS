@@ -55,105 +55,60 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset subtype=application.classExtensionManager.getSubTypeByName(rc.type,rc.subtype,rc.siteid)>
 
-<cfsavecontent variable="returnsets.extended">
-<cfset extendSets=subtype.getExtendSets(inherit=true,container="Default",activeOnly=true) />
-<cfset started=false />
-<cfoutput>
-<cfif arrayLen(extendSets)>
-<div id="extendDL">
-<cfloop from="1" to="#arrayLen(extendSets)#" index="s">	
-<cfset extendSetBean=extendSets[s]/>
-<cfset style=extendSetBean.getStyle()/><cfif not len(style)><cfset started=true/></cfif>
-	<span class="extendset" extendsetid="#extendSetBean.getExtendSetID()#" categoryid="#extendSetBean.getCategoryID()#" #style#>
-	<input name="extendSetID" type="hidden" value="#extendSetBean.getExtendSetID()#"/>
-	<fieldset><legend>#extendSetBean.getName()#</legend>
-	<cfsilent>
-	<cfset attributesArray=extendSetBean.getAttributes() />
-	</cfsilent>
-	<cfloop from="1" to="#arrayLen(attributesArray)#" index="a">	
-		<cfset attributeBean=attributesArray[a]/>
-		<cfset attributeValue=contentBean.getvalue(attributeBean.getName(),'useMuraDefault') />
-		<div class="control-group">
-	      	<label class="control-label">
-			<cfif len(attributeBean.getHint())>
-			<a href="##" rel="tooltip" title="#HTMLEditFormat(attributeBean.gethint())#">#attributeBean.getLabel()# <i class="icon-info-sign"></i></a>
-			<cfelse>
-			#attributeBean.getLabel()#
-			</cfif>
-			<cfif attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'> 
-				
-				<cfif listFindNoCase("png,jpg,jpeg",application.serviceFactory.getBean("fileManager").readMeta(attributeValue).fileExt)>
-					<a href="./index.cfm?muraAction=cArch.imagedetails&contenthistid=#contentBean.getContentHistID()#&siteid=#contentBean.getSiteID()#&fileid=#attributeValue#"><img id="assocImage" src="#application.configBean.getContext()#/tasks/render/small/index.cfm?fileid=#attributeValue#&cacheID=#createUUID()#" /></a>
+<cfloop list="Default,Basic,Navigation,Content Objects,Categorization,Tags,Related Content,SEO,Templates,Publishing,Usage Report" index="container">
+	<cfsavecontent variable="returnsets.#replace(container,' ','','all')#">
+	<cfset extendSets=subtype.getExtendSets(inherit=true,container=container,activeOnly=true) />
+	<cfset started=false />
+	<cfoutput>
+	<cfif arrayLen(extendSets)>
+	<cfloop from="1" to="#arrayLen(extendSets)#" index="s">	
+	<cfset extendSetBean=extendSets[s]/>
+	<cfset style=extendSetBean.getStyle()/><cfif not len(style)><cfset started=true/></cfif>
+		<span class="extendset" extendsetid="#extendSetBean.getExtendSetID()#" categoryid="#extendSetBean.getCategoryID()#" #style#>
+		<input name="extendSetID" type="hidden" value="#extendSetBean.getExtendSetID()#"/>
+		<fieldset><legend>#extendSetBean.getName()#</legend>
+		<cfsilent>
+		<cfset attributesArray=extendSetBean.getAttributes() />
+		</cfsilent>
+		<cfloop from="1" to="#arrayLen(attributesArray)#" index="a">	
+			<cfset attributeBean=attributesArray[a]/>
+			<cfset attributeValue=contentBean.getvalue(attributeBean.getName(),'useMuraDefault') />
+			<div class="control-group">
+		      	<label class="control-label">
+				<cfif len(attributeBean.getHint())>
+				<a href="##" rel="tooltip" title="#HTMLEditFormat(attributeBean.gethint())#">#attributeBean.getLabel()# <i class="icon-info-sign"></i></a>
+				<cfelse>
+				#attributeBean.getLabel()#
 				</cfif>
+				<cfif attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'> 
+					<cfif listFindNoCase("png,jpg,jpeg",application.serviceFactory.getBean("fileManager").readMeta(attributeValue).fileExt)>
+						<a href="./index.cfm?muraAction=cArch.imagedetails&contenthistid=#contentBean.getContentHistID()#&siteid=#contentBean.getSiteID()#&fileid=#attributeValue#"><img id="assocImage" src="#application.configBean.getContext()#/tasks/render/small/index.cfm?fileid=#attributeValue#&cacheID=#createUUID()#" /></a>
+					</cfif>
 
-				<a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#attributeValue#" target="_blank">[Download]</a> <input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/> Delete</cfif>
-			</label>
-			<!--- if it's an hidden type attribute then flip it to be a textbox so it can be editable through the admin --->
-			<cfif attributeBean.getType() IS "Hidden">
-				<cfset attributeBean.setType( "TextBox" ) />
-			</cfif>	
-			<div class="controls">
-				#attributeBean.renderAttribute(attributeValue)#
+					<a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#attributeValue#" target="_blank">[Download]</a> <input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/> Delete</cfif>
+				</label>
+				<!--- if it's an hidden type attribute then flip it to be a textbox so it can be editable through the admin --->
+				<cfif attributeBean.getType() IS "Hidden">
+					<cfset attributeBean.setType( "TextBox" ) />
+				</cfif>	
+				<div class="controls">
+					#attributeBean.renderAttribute(attributeValue)#
+				</div>
 			</div>
-		</div>
+		</cfloop>
+		</fieldset>
+		</span>
 	</cfloop>
-	</fieldset>
-	</span>
+	</cfif>
 
-</cfloop>
-</div>
-</cfif>
-<div id="extendMessage" <cfif started>style="display:none"</cfif>>
-<p class="notice">There are currently no extended attributes available.</p><div>
-</cfoutput>
-</cfsavecontent>
-
-<cfsavecontent variable="returnsets.basic">
-<cfset extendSets=subtype.getExtendSets(inherit=true,container="Basic",activeOnly=true) />
-<cfset started=false />
-<cfoutput>
-<cfif arrayLen(extendSets)>
-<cfloop from="1" to="#arrayLen(extendSets)#" index="s">	
-<cfset extendSetBean=extendSets[s]/>
-<cfset style=extendSetBean.getStyle()/><cfif not len(style)><cfset started=true/></cfif>
-	<span class="extendset" extendsetid="#extendSetBean.getExtendSetID()#" categoryid="#extendSetBean.getCategoryID()#" #style#>
-	<input name="extendSetID" type="hidden" value="#extendSetBean.getExtendSetID()#"/>
-	<fieldset><legend>#extendSetBean.getName()#</legend>
-	<cfsilent>
-	<cfset attributesArray=extendSetBean.getAttributes() />
-	</cfsilent>
-	<cfloop from="1" to="#arrayLen(attributesArray)#" index="a">	
-		<cfset attributeBean=attributesArray[a]/>
-		<cfset attributeValue=contentBean.getvalue(attributeBean.getName(),'useMuraDefault') />
-		<div class="control-group">
-	      	<label class="control-label">
-			<cfif len(attributeBean.getHint())>
-			<a href="##" rel="tooltip" title="#HTMLEditFormat(attributeBean.gethint())#">#attributeBean.getLabel()# <i class="icon-info-sign"></i></a>
-			<cfelse>
-			#attributeBean.getLabel()#
-			</cfif>
-			<cfif attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'> 
-				<cfif listFindNoCase("png,jpg,jpeg",application.serviceFactory.getBean("fileManager").readMeta(attributeValue).fileExt)>
-					<a href="./index.cfm?muraAction=cArch.imagedetails&contenthistid=#contentBean.getContentHistID()#&siteid=#contentBean.getSiteID()#&fileid=#attributeValue#"><img id="assocImage" src="#application.configBean.getContext()#/tasks/render/small/index.cfm?fileid=#attributeValue#&cacheID=#createUUID()#" /></a>
-				</cfif>
-
-				<a href="#application.configBean.getContext()#/tasks/render/file/?fileID=#attributeValue#" target="_blank">[Download]</a> <input type="checkbox" value="true" name="extDelete#attributeBean.getAttributeID()#"/> Delete</cfif>
-			</label>
-			<!--- if it's an hidden type attribute then flip it to be a textbox so it can be editable through the admin --->
-			<cfif attributeBean.getType() IS "Hidden">
-				<cfset attributeBean.setType( "TextBox" ) />
-			</cfif>	
-			<div class="controls">
-				#attributeBean.renderAttribute(attributeValue)#
-			</div>
+	<cfif container eq 'Default'>
+		<div id="extendMessage" <cfif started>style="display:none"</cfif>>
+		<p class="notice">There are currently no extended attributes available.</p>
 		</div>
-	</cfloop>
-	</fieldset>
-	</span>
+	</cfif>
+	</cfoutput>
+	</cfsavecontent>
 </cfloop>
-</cfif>
-</cfoutput>
-</cfsavecontent>
 
 <cfset returnsets.hasSummary=subType.getHasSummary()>
 <cfset returnsets.hasBody=subType.getHasBody()>

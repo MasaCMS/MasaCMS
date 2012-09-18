@@ -325,93 +325,7 @@ var hasBody=#subType.getHasBody()#;
 	#application.pluginManager.renderEvent("on#rc.contentBean.getType()#EditMessageRender", pluginEvent)#
 	#application.pluginManager.renderEvent("on#rc.contentBean.getType()##rc.contentBean.getSubType()#EditMessageRender", pluginEvent)#
 	</span>
-	
-	
-	
 
-	<!---
-	<cfif rc.compactDisplay neq "true">
-			<div class="selectContentType">
-			<cfif listFindNoCase(pageLevelList,rc.type)>
-				<strong>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#:</strong>
-				<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#rc.contentBean.getcontentHistID()#',this.value,'#rc.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');">
-				<cfloop list="#baseTypeList#" index="t">
-				<cfsilent><cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery></cfsilent>
-				<option value="#t#^Default" <cfif rc.type eq t and rc.contentBean.getSubType() eq "Default">selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#</option>
-				<cfif rsst.recordcount>
-					<cfloop query="rsst">
-						<option value="#t#^#rsst.subtype#" <cfif rc.type eq t and rc.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#  / #rsst.subtype#</option>
-					</cfloop>
-				</cfif>
-				</cfloop>
-				</select>
-			<cfelseif rc.type eq 'File'>
-				<cfset t="File"/>
-				<cfsilent><cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery></cfsilent>
-				<cfif rsst.recordcount>
-				<strong>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#:</strong>
-				<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#rc.contentBean.getcontentHistID()#',this.value,'#rc.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');">
-				<option value="#t#^Default" <cfif rc.type eq t and rc.contentBean.getSubType() eq "Default">selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#t#")#</option>
-				<cfif rsst.recordcount>
-					<cfloop query="rsst">
-						<option value="#t#^#rsst.subtype#" <cfif rc.type eq t and rc.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")# / #rsst.subtype#</option>
-					</cfloop>
-				</cfif>
-				</select>
-				</cfif>
-			<cfelseif rc.type eq 'Link'>	
-				<cfset t="Link"/>
-				<cfsilent><cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery></cfsilent>
-				<cfif rsst.recordcount>
-				<strong>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#:</strong>
-				<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#rc.contentBean.getcontentHistID()#',this.value,'#rc.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');">
-				<option value="#t#^Default" <cfif rc.type eq t and rc.contentBean.getSubType() eq "Default">selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#</option>
-				<cfif rsst.recordcount>
-					<cfloop query="rsst">
-						<cfif rsst.subtype neq 'Default'><option value="#t#^#rsst.subtype#" <cfif rc.type eq t and rc.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#  / #rsst.subtype#</option></cfif>
-					</cfloop>
-				</cfif>
-				</select>
-				</cfif>
-			<cfelseif rc.type eq 'Component'>	
-				<cfset t="Component"/>
-				<cfsilent><cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery></cfsilent>
-				<cfif rsst.recordcount>
-				<strong>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#:</strong>
-				<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#rc.contentBean.getcontentHistID()#',this.value,'#rc.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');">
-				<option value="#t#^Default" <cfif rc.type eq t and rc.contentBean.getSubType() eq "Default">selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#</option>
-				<cfif rsst.recordcount>
-					<cfloop query="rsst">
-						<cfif rsst.subtype neq 'Default'><option value="#t#^#rsst.subtype#" <cfif rc.type eq t and rc.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#  / #rsst.subtype#</option></cfif>
-					</cfloop>
-				</cfif>
-				</select>
-				</cfif>
-			</cfif>
-		</div>
-	</cfif>
-	
-	<cfif rc.compactDisplay eq "true">
-		<cfif not listFindNoCase("Component,Form", rc.type)>
-			<cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#rc.type#"> and subtype not in ('Default','default')</cfquery>
-			<cfif rsst.recordcount>
-					<cfset t=rc.type/>
-					<cfsilent></cfsilent>
-					<div class="selectContentType">
-					<strong>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#:</strong>
-					<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#rc.contentBean.getcontentHistID()#',this.value,'#rc.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');">
-					<option value="#t#^Default" <cfif rc.type eq t and rc.contentBean.getSubType() eq "Default">selected</cfif>>#t#</option>
-					<cfloop query="rsst">
-						<option value="#t#^#rsst.subtype#" <cfif rc.type eq t and rc.contentBean.getSubType() eq rsst.subtype>selected</cfif>>#t#  / #rsst.subtype#</option>
-					</cfloop>
-					</select>	
-					</div>								
-			</cfif>
-		</cfif>
-			
-		<input type="hidden" name="closeCompactDisplay" value="true" />
-	</cfif>
-	--->
 	</cfoutput>
 	
 	<cfset tabLabelList=""/>
@@ -433,8 +347,14 @@ var hasBody=#subType.getHasBody()#;
 		
 		<cfswitch expression="#rc.type#">
 			<cfcase value="Page,Portal,Calendar,Gallery,File,Link">
-			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Meta Data')>
-			<cfinclude template="form/dsp_tab_meta.cfm">
+			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'SEO')>
+			<cfinclude template="form/dsp_tab_seo.cfm">
+			</cfif>		
+			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Navigation')>
+			<cfinclude template="form/dsp_tab_navigation.cfm">
+			</cfif>
+			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Templates')>
+			<cfinclude template="form/dsp_tab_templates.cfm">
 			</cfif>
 			</cfcase>
 		</cfswitch>
@@ -451,6 +371,9 @@ var hasBody=#subType.getHasBody()#;
 			<cfinclude template="form/dsp_tab_categories.cfm">
 			</cfif>
 			</cfif>
+			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
+			<cfinclude template="form/dsp_tab_tags.cfm">
+			</cfif>	
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Related Content')>
 			<cfinclude template="form/dsp_tab_related_content.cfm">
 			</cfif>
@@ -461,16 +384,27 @@ var hasBody=#subType.getHasBody()#;
 			<cfinclude template="form/dsp_tab_categories.cfm">
 			</cfif>
 			</cfif>
+			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
+			<cfinclude template="form/dsp_tab_tags.cfm">
+			</cfif>		
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Related Content')>
 			<cfinclude template="form/dsp_tab_related_content.cfm">
 			</cfif>
 		</cfcase>
 		<cfcase value="Component">
+			<cfif rc.rsTemplates.recordcount>
+				<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Template Assignments')>
+				<cfinclude template="form/dsp_tab_templates.cfm">
+				</cfif>
+			</cfif>
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Categorization')>
 			<cfif application.categoryManager.getCategoryCount(rc.siteID)>
 			<cfinclude template="form/dsp_tab_categories.cfm">
 			</cfif>
 			</cfif>
+			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
+			<cfinclude template="form/dsp_tab_tags.cfm">
+			</cfif>	
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Usage Report')>
 			<cfif not rc.contentBean.getIsNew()>
 			<cfinclude template="form/dsp_tab_usage.cfm">
@@ -483,6 +417,9 @@ var hasBody=#subType.getHasBody()#;
 			<cfinclude template="form/dsp_tab_categories.cfm">
 			</cfif>
 			</cfif>
+			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
+			<cfinclude template="form/dsp_tab_tags.cfm">
+			</cfif>	
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Usage Report')>
 			<cfif not rc.contentBean.getIsNew()>
 			<cfinclude template="form/dsp_tab_usage.cfm">
@@ -529,6 +466,12 @@ var hasBody=#subType.getHasBody()#;
 				</cfoutput>
 				</div>
 		</cfoutput>
+
+
+
+	<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Publishing')>
+		<cfinclude template="form/dsp_tab_publishing.cfm">
+	</cfif>
 	</cfsavecontent>
 	<cfoutput>
 	

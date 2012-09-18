@@ -246,15 +246,80 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	     <input type="text" name="searchString" value="#HTMLEditFormat(rc.searchString)#" class="text" size="20">
 	  	</div>
 
+	  	<cfsilent>
+		<cfset tags=$.getBean('contentGateway').getTagCloud(siteid=$.event('siteID'),moduleID=rc.moduleID) />
+		<cfset tagValueArray = ListToArray(ValueList(tags.tagCount))>
+		<cfset max = ArrayMax(tagValueArray)>
+		<cfset min = ArrayMin(tagValueArray)>
+		<cfset diff = max - min>
+		<cfset distribution = diff>
+		<cfset rbFactory=$.siteConfig().getRBFactory()>
+		</cfsilent>	
+	
+		<cfif tags.recordcount>
+			<div class="module well" id="mura-filter-tags">
+				<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</h3>
+				<div id="svTagCloud">
+					<ol>
+					<cfloop query="tags"><cfsilent>
+							<cfif tags.tagCount EQ min>
+							<cfset class="not-popular">
+						<cfelseif tags.tagCount EQ max>
+							<cfset class="ultra-popular">
+						<cfelseif tags.tagCount GT (min + (distribution/2))>
+							<cfset class="somewhat-popular">
+						<cfelseif tags.tagCount GT (min + distribution)>
+							<cfset class="mediumTag">
+						<cfelse>
+							<cfset class="not-very-popular">
+						</cfif>
+					
+						<cfset args = ArrayNew(1)>
+					    <cfset args[1] = tags.tagcount>
+					</cfsilent><li class="#class#"><span><cfif tags.tagcount gt 1> #rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemsare'), args)#<cfelse>#rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemis'), args)#</cfif> tagged with </span><a class="tag<cfif listFind($.event('tag'),tags.tag)> active</cfif>">#HTMLEditFormat(tags.tag)#</a></li>
+					</cfloop>
+					</ol>
+				</div>
+			</div>
+
+		</cfif>
 	  	<cfif $.getBean("categoryManager").getCategoryCount($.event("siteID"))>
 		<div class="module well" id="mura-filter-category">
 		<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#</h3>
 		<cf_dsp_categories_nest siteID="#$.event('siteID')#" parentID="" nestLevel="0" categoryid="#$.event('categoryid')#">
 		</div>
 	</cfif>
-
+		<input type="hidden" name="tag" id="tag" value="#HTMLEditFormat($.event('tag'))#" />
 	  	<input type="submit" class="btn" name="filterList" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#"/>
+	  	<cfif len($.event('categoryID') & $.event('tag') & $.event('searchString'))>
+	  	<input type="button" class="btn" name="removeFilter" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.removefilter")#" onclick=""/>
+	  	</cfif>
   	 </form>
+
+  	 <script> 	
+	  	$('##filterByTitle').submit(
+	  		function(){
+		  	 	var tag=[];
+
+		  	 	$("##svTagCloud .active").each(
+					function(){
+						tag.push($(this).html());
+					}
+				);
+					
+				$('##tag').val(tag.toString());
+
+				return true;
+	  	 	}
+	  	 );	
+
+		$("##svTagCloud a").click(
+			function(event){
+				event.preventDefault();
+				jQuery(this).toggleClass('active');
+			}
+		);
+	</script>
 </div>
 </cfoutput>
 <cfinclude template="draftpromptjs.cfm">

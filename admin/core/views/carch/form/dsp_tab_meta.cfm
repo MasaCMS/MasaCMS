@@ -69,5 +69,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <div class="controls"><input type="text" id="credits" name="credits" value="#HTMLEditFormat(rc.contentBean.getCredits())#"  maxlength="255" class="textLong"></div>
     </div>
 
+    <span id="extendset-container-metadata" class="extendset-container"></span>
 
 </div></cfoutput>

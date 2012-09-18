@@ -44,35 +44,46 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.relatedcontent"))/>
-<cfset tabList=listAppend(tabList,"tabRelatedcontent")>
+<cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.tags"))/>
+<cfset tabList=listAppend(tabList,"tabTags")>
 <cfoutput>
-<div id="tabRelatedcontent" class="tab-pane fade">
-	<dl class="oneColumn">
-		<dt class="first">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#: <span id="selectRelatedContent"> <a href="javascript:;" onclick="javascript: loadRelatedContent('#HTMLEditFormat(rc.siteid)#','',1);return false;">[#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.addrelatedcontent')#]</a></span></dt>
-			<table id="relatedContent" class="table table-striped table-bordered table-condensed"> 
-			<tr>
-			<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contenttitle')#</th>
-			<th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type')#</th>
-			<th class="actions">&nbsp;</th>
-			</tr>
-			<tbody id="RelatedContent">
-			<cfif rc.rsRelatedContent.recordCount>
-			<cfloop query="rc.rsRelatedContent">
-			<tr id="c#rc.rsRelatedContent.contentID#">
-			<td class="var-width">#rc.rsRelatedContent.menuTitle#</td>
-			<td>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.rsRelatedContent.type#')#</td>
-			<td class="actions"><input type="hidden" name="relatedcontentid" value="#rc.rsRelatedContent.contentid#" /><ul class="clearfix"><li class="delete"><a title="Delete" href="##" onclick="return removeRelatedContent('c#rc.rsRelatedContent.contentid#','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.removerelatedcontent'))#');">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#</a></li></ul></td>
-			</tr></cfloop>
-			<cfelse>
-			<tr>
-			<td id="noFilters" colspan="4" class="noResults">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.norelatedcontent')#</td>
-			</tr>
-			</cfif></tbody>
-		</table>
-	</dl>
+ <div id="tabTags" class="tab-pane fade">
 
-	<span id="extendset-container-relatedcontent" class="extendset-container"></span>
+<div class="control-group">
+   	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.tags')#</label>	    
+   	<div class="controls">
+   		<div id=tags class=tagSelector style="width:300px">
+		<cfloop list="#rc.contentBean.getTags()#" index="i">
+			<span class="tag">
+			#HTMLEditFormat(i)# <a>x</a>
+			<input name="tags" type="hidden" value="#HTMLEditFormat(i)#">
+			</span>
+		</cfloop>
+		<input type=text>
+		</div>
+   </div>
 </div>
 
-</cfoutput>
+<cfsilent>
+	<cfset tags=$.getBean('contentGateway').getTagCloud(siteid=$.event('siteID')) />
+</cfsilent>	
+
+<script>
+	<cfif tags.recordcount>
+	$(document).ready(function(){
+		var tags = [
+			<cfloop query="tags">
+			{ id: '#JSStringFormat(tags.tag)#', toString: function() { return '#JSStringFormat(tags.tag)#'; } }<cfif tags.currentrow lt tags.recordcount>,</cfif>
+			</cfloop>
+		];
+		$('##tags').tagSelector(tags, 'tags');
+	});
+	</cfif>
+</script>
+
+
+
+<span id="extendset-container-tags" class="extendset-container"></span>
+
+ </div>
+ </cfoutput>

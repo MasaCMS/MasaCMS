@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabList=listAppend(tabList,"tabExtendedattributes")>
 <cfoutput>
 <div id="tabExtendedattributes" class="tab-pane fade">
-	<span id="extendSetsDefault"></span>
+	<span id="extendset-container-default" class="extendset-container"></span>
 </div>
 
 </cfoutput>

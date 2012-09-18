@@ -130,6 +130,7 @@
 	<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 	<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 	<link href="#application.configBean.getContext()#/admin/assets/css/jquery/default/jquery.ui.all.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+	<link href="#application.configBean.getContext()#/admin/assets/css/jquery/jquery-tagselector.css?coreversion=#application.coreversion#" rel="stylesheet">
 	
 	<!-- CK Editor/Finder -->
 	<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckeditor/ckeditor.js"></script>
@@ -237,6 +238,7 @@
     <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-collapse.js"></script>
     <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-carousel.js"></script>
     <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-typeahead.js"></script>
+    <script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-tagselector.js?coreversion=#application.coreversion#"></script>
   	<cfif rc.originalcircuit eq "cArch" and (rc.originalfuseaction eq "list" or rc.originalfuseaction eq "search") and (rc.moduleid eq '00000000000000000000000000000000000' or rc.moduleid eq '')>
 	<cfinclude template="/muraWRM/admin/core/views/carch/dsp_content_nav.cfm">
 	</cfif>

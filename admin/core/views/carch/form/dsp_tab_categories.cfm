@@ -59,6 +59,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" contentBean="#rc.contentBean#" rsCategoryAssign="#rc.rsCategoryAssign#">
 		</div>
 	</div>
+
+	<span id="extendset-container-categorization" class="extendset-container"></span>
 </div>
 <script>initCategoryAssignments();</script>
 </cfoutput>

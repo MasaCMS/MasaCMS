@@ -83,5 +83,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  </table>
 </td></tr></table>
 </dl>
+
+<span id="extendset-container-usagereport" class="extendset-usagereport"></span>
 </div>
 </cfoutput>
