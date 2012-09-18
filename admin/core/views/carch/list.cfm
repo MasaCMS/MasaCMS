@@ -281,17 +281,45 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</ol>
 				</div>
 			</div>
+
 		</cfif>
-		
 	  	<cfif $.getBean("categoryManager").getCategoryCount($.event("siteID"))>
 		<div class="module well" id="mura-filter-category">
 		<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#</h3>
 		<cf_dsp_categories_nest siteID="#$.event('siteID')#" parentID="" nestLevel="0" categoryid="#$.event('categoryid')#">
 		</div>
 	</cfif>
-
+		<input type="hidden" name="tag" id="tag" value="#HTMLEditFormat($.event('tag'))#" />
 	  	<input type="submit" class="btn" name="filterList" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#"/>
+	  	<cfif len($.event('categoryID') & $.event('tag') & $.event('searchString'))>
+	  	<input type="button" class="btn" name="removeFilter" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.removefilter")#" onclick=""/>
+	  	</cfif>
   	 </form>
+
+  	 <script> 	
+	  	$('##filterByTitle').submit(
+	  		function(){
+		  	 	var tag=[];
+
+		  	 	$("##svTagCloud .active").each(
+					function(){
+						tag.push($(this).html());
+					}
+				);
+					
+				$('##tag').val(tag.toString());
+
+				return true;
+	  	 	}
+	  	 );	
+
+		$("##svTagCloud a").click(
+			function(event){
+				event.preventDefault();
+				jQuery(this).toggleClass('active');
+			}
+		);
+	</script>
 </div>
 </cfoutput>
 <cfinclude template="draftpromptjs.cfm">
