@@ -85,6 +85,9 @@ to your own modified versions of Mura CMS.
 <cfparam name="FORM.production_cfpassword" default="" />
 <cfparam name="FORM.production_databaseserver" default="localhost" />
 <cfparam name="FORM.auto_create" default="No" />
+<cfparam name="FORM.admin_username" default="admin" />
+<cfparam name="FORM.admin_password" default="admin" />
+
 <!--- this is a list of optional form elements that may not show up in the FORM.fieldnames list. to ensure they are there we simple ammend them in --->
 <cfset optionalFormElements = "production_usedefaultsmtpserver" />
 <cfloop list="#optionalFormElements#" index="optionalFormElement">
@@ -196,7 +199,7 @@ to your own modified versions of Mura CMS.
   <!--- MESSAGE STEPS --->
   <!--- CREATE DATABASE STEPS --->
   <!--- ************************ --->
-  
+  <cfset adminUserID=createUUID()>
   <!--- generate message --->
   <cfswitch expression="#errorType#">
     <!--- datasource --->
@@ -332,6 +335,13 @@ to your own modified versions of Mura CMS.
                 galleryMainScaleBy='y',
                 galleryMainScale=600
             </cfquery>
+             <cfquery datasource="#FORM.production_datasource#" username="#FORM.production_dbusername#" password="#FORM.production_dbpassword#">
+              UPDATE tusers
+              SET username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#form.admin_username#">,
+                password=<cfqueryparam cfsqltype="cf_sql_varchar" value="#hash(form.admin_password)#">
+              where userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#adminUserID#">
+            </cfquery>
+
             <cfset dbCreated=true />
             <!--- reset the error --->
             <cfset errorType = "" />
@@ -584,7 +594,9 @@ to your own modified versions of Mura CMS.
           <p id="congrats">Mura is now set up and ready to use.</p>
           <h3>Important</h3>
           <p>When you are done with setup, it is recommended you remove the "/config/setup" directory to maintain security. Once deleted, all settings can be edited in "/config/settings.ini.cfm" directly.</p>
-          <p class="error">The default <strong>Username and Password is the word "admin" for both fields</strong>. It is highly recommended that you change this immediately by editing your profile after logging into the Mura Admin.</p>
+          <cfif form.admin_username eq 'admin' adn form.admin_password eq 'admin'>
+            <p class="error">The default <strong>Username and Password is the word "admin" for both fields</strong>. It is highly recommended that you change this immediately by editing your profile after logging into the Mura Admin.</p>
+          </cfif>
           <input type="submit" class="btn" name="#cookie.setupSubmitButtonComplete#" value="Finish Set Up and Take Me to the Mura Admin" />
         </div>
       </cfif>
@@ -677,7 +689,22 @@ to your own modified versions of Mura CMS.
         <!--- port --->
         
         <input type="hidden" name="production_port" value="<cfif cgi.server_port IS "" AND FORM.production_port IS "">80<cfelse>#FORM.production_port#</cfif>">
-        <div class="control-group">
+       
+         <div class="control-group">
+          <label class="control-label"><a href="" rel="tooltip" data-original-title="This is the username of the Mura super user account that will be created">Super Admin Username <i class="icon-info-sign"></i></a></label>
+          <div class="controls">
+            <input type="text" name="admin_username" value="#FORM.admin_username#">
+          </div>
+        </div>
+      
+         <div class="control-group">
+          <label class="control-label"><a href="" rel="tooltip" data-original-title="This is the password of the Mura super user account that will be created">Super Admin Password <i class="icon-info-sign"></i></a></label>
+          <div class="controls">
+            <input type="text" name="admin_password" value="#FORM.admin_password#">
+          </div>
+        </div>
+
+         <div class="control-group">
           <label class="control-label"><a href="" rel="tooltip" data-original-title="The email address used by Mura to send global system emails. Example: user@domain.com.">Admin Email Address <i class="icon-info-sign"></i></a></label>
           <div class="controls">
             <input type="text" name="production_adminemail" value="#FORM.production_adminemail#">
