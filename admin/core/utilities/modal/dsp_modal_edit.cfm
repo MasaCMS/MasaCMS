@@ -44,19 +44,17 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<!---------------------------------------------->
-<!--- LET'S FIGURE OUT IF THE BROWSER IS IE6 --->
-<!---------------------------------------------->
-<cfset variables.isIeSix=FindNoCase('MSIE 6','#CGI.HTTP_USER_AGENT#') GREATER THAN 0>
 	
 <cfif FindNoCase('Opera','#CGI.HTTP_USER_AGENT#') LESS THAN 1>
 <cfparam name="Cookie.fetDisplay" default="">
 <cfoutput>
-<link href="#application.configBean.getContext()#/admin/assets/css/dialog.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+<link href="#application.configBean.getContext()#/admin/assets/less/dialog.less" rel="stylesheet" type="text/css" />
+<script src="#application.configBean.getContext()#/admin/assets/js/less.js" type="text/javascript" language="Javascript"></script>
+	
 <script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#"></script>
 <script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/dialog.js.cfm?siteid=#URLEncodedFormat(variables.$.event('siteid'))#&coreversion=#application.coreversion#"></script>
-<!---[if LT IE9]>
 
+<!---[if LT IE9]>
    <style type="text/css">
 
    ##frontEndToolsModalContainer {
@@ -66,7 +64,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
        } 
 
     </style>
-
 <![endif]--->
 
 <cfsilent>
@@ -145,34 +142,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.deleteLink = variables.deleteLink & "&amp;startrow=1">
 </cfsilent>
 
-<cfif variables.isIeSix>
-<!--------------------------------------------------------------------------------------------------------------->
-<!--- IE6 COMPATIBILITY FOR FRONT END TOOLS ----------->
-<!--------------------------------------------------------------------------------------------------------------->
-<link href="#application.configBean.getContext()#/admin/assets/css/dialogIE6.css" rel="stylesheet" type="text/css" />	
-</cfif>
-
-<cfif variables.isIeSix>
-	<!--- NAMED DIFFERENTLY TO USE THE IE6 COMPATIBLE dialogIE6.css --->
-	<img src="#application.configBean.getContext()#/admin/assets/images/ie6/logo_small_feTools.gif" id="frontEndToolsHandleIE6" onclick="if (document.getElementById('frontEndToolsIE6').style.display == 'none') { createCookie('FETDISPLAY','',5); } else { createCookie('FETDISPLAY','none',5); } toggleAdminToolbarIE6();" />
-	<div id="frontEndToolsIE6" style="display: #Cookie.fetDisplay#">						
-<cfelse>
-	<!--- USES STANDARD dialog.css --->
 	<img src="#application.configBean.getContext()#/admin/assets/images/logo_small_feTools.png" id="frontEndToolsHandle" onclick="if (document.getElementById('frontEndTools').style.display == 'none') { createCookie('FETDISPLAY','',5); } else { createCookie('FETDISPLAY','none',5); } toggleAdminToolbar();" />
 	<div id="frontEndTools" style="display: #Cookie.fetDisplay#">
-</cfif>
+
 		<ul>
 		<cfif not request.contentBean.getIsNew()>
 			<cfif ListFindNoCase('editor,author',request.r.perm) or listFind(session.mura.memberships,'S2')>
 			<li id="adminEditPage"><a href="#variables.editLink#" #variables.targetHook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#</a></li>
 				<cfif listFind("Page,Portal,Calendar,Gallery",request.contentBean.getType())>
-						<cfif variables.isIeSix>
-						<!--- USES JAVASCRIPT TO SHOW AND HIDE THE ADD MENU AS IT PLAYS NICE WITH IE6 --->
-						<li id="adminAddContent" onmouseover="showSubMenuIE6(this.id,'addMenuDropDown')" onmouseout="hideObjIE6('addMenuDropDown')"><a href="##" onclick="return false;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.add')#&hellip;</a>																						
-						<cfelse>							
+												
 						<li id="adminAddContent"><a href="##" onclick="return false;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.add')#&hellip;</a>						
 							
-						</cfif><ul id="addMenuDropDown">
+						<ul id="addMenuDropDown">
 						<cfif request.contentBean.getType() neq 'Gallery'>
 						<li id="adminNewPage"><a href="#variables.newLink#&amp;type=Page" #variables.targethook#>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.page')#</a></li>
 						<li id="adminNewLink"><a href="#variables.newLink#&amp;type=Link" #variables.targethook# >#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.link')#</a></li>
