@@ -1738,15 +1738,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="parentID" type="string" required="true" default="">
 	<cfargument name="categoryID" type="string" required="true" default="">
 	<cfargument name="rsContent" type="any" required="true" default="">
-	
+	<cfargument name="moduleID" type="string" required="true" default="00000000000000000000000000000000000">
 	<cfset var rsTagCloud= ''/>
 	
 	<cfquery name="rsTagCloud" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select tag, count(tag) as tagCount from tcontenttags 
 	inner join tcontent on (tcontenttags.contenthistID=tcontent.contenthistID)
+	<cfif arguments.moduleID eq '00000000000000000000000000000000000'>
 	left Join tcontent tparent on (tcontent.parentid=tparent.contentid
 					    			and tcontent.siteid=tparent.siteid
 					    			and tparent.active=1) 
+	</cfif>
 	<cfif len(arguments.categoryID)>
 		inner join tcontentcategoryassign
 		on (tcontent.contentHistID=tcontentcategoryassign.contentHistID)
@@ -1756,8 +1758,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	where tcontent.siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	  AND tcontent.Approved = 1
 	  AND tcontent.active = 1 
-      AND tcontent.isNav = 1 
-	  AND tcontent.moduleid =   '00000000000000000000000000000000000'
+      <cfif arguments.moduleID eq '00000000000000000000000000000000000'>AND tcontent.isNav = 1</cfif>
+	  AND tcontent.moduleid =   <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#"/>
 	
 	<cfif len(arguments.parentID)>
 		and tcontent.parentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#"/>
@@ -1766,7 +1768,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif len(arguments.categoryID)>
 		and tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.categoryID#%"/>
 	</cfif>
-	
+
 	  AND 
 		(
 			
@@ -1781,13 +1783,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> 
 						AND (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> or tcontent.DisplayStop is null)
 					)
-					OR tparent.type='Calendar'
+					<cfif arguments.moduleID eq '00000000000000000000000000000000000'>OR tparent.type='Calendar'</cfif>
 				  )			 
 			)		
 		
 		
 		) 
-		
+	
 	#renderMobileClause()#
 	
 	<cfif isQuery(arguments.rsContent)  and arguments.rsContent.recordcount> and contentID in (#quotedValuelist(arguments.rsContent.contentID)#)</cfif>

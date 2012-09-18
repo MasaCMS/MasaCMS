@@ -65,7 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 
 <cfsilent>
-	<cfset tags=$.getBean('contentGateway').getTagCloud($.event('siteID')) />
+	<cfset tags=$.getBean('contentGateway').getTagCloud(siteid=$.event('siteID')) />
 </cfsilent>	
 
 <script>

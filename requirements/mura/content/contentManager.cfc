@@ -96,6 +96,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfparam name="data.sortDirection" default="asc">
 		<cfparam name="data.searchString" default="">
 		<cfparam name="data.categoryid" default="">
+		<cfparam name="data.tag" default="">
 		
 		<cfswitch expression="#data.moduleid#">
 			<cfcase value="00000000000000000000000000000000011,00000000000000000000000000000000012,00000000000000000000000000000000013" delimiters=",">
@@ -108,37 +109,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfelse>
 					<cfset feed.setType('Form')>
 				</cfif>
+				
 				<cfset feed.setSiteID(data.siteID)>
 				<cfset feed.setCategoryID(data.categoryid)>
 				<cfset feed.setLiveOnly(0)>
 				<cfset feed.setSortBy('menutitle')>
-				<cfif len(data.searchString)>
-					<cfset feed.addParam(column='menutitle',condition='contains',criteria=data.searchString)>
-					<cfset feed.addParam(relationship='or',column='body',condition='contains',criteria=data.searchString)>
+				<cfif len(data.searchString)>	
+					<cfset subList=getPrivateSearch(data.siteid,data.searchString)>
+					<cfset feed.addParam(field="tcontent.contentID",datatype="varchar",condition="in",criteria=valuelist(subList.contentID))>
+				</cfif>
+				<cfif len(data.tag)>
+					<cfset feed.addParam(column="tcontenttags.tag",criteria=data.tag,condition="in")>
 				</cfif>
 				<cfset rs=feed.getQuery()>
-			</cfcase>
-			<cfdefaultcase>
-				<cfset rs=variables.contentGateway.getTop(data.topid,data.siteid) />
-			</cfdefaultcase>
-		</cfswitch>
-		
-		<cfreturn rs />
-	</cffunction>
-
-	<cffunction name="getRepositories" access="public" returntype="query" output="false">
-		<cfargument name="args" type="struct"/>
-		<cfset var rs ="" />
-		<cfset var data=arguments.args />
-		
-		<cfparam name="data.topid" default="00000000000000000000000000000000001" />
-		<cfparam name="data.sortBy" default="menutitle">
-		<cfparam name="data.sortDirection" default="asc">
-		<cfparam name="data.searchString" default="">
-		
-		<cfswitch expression="#data.moduleid#">
-			<cfcase value="00000000000000000000000000000000003,00000000000000000000000000000000004,00000000000000000000000000000000011,00000000000000000000000000000000012,00000000000000000000000000000000013" delimiters=",">
-				<cfset rs=variables.contentGateway.getNest(data.topid,data.siteid,data.sortBy,data.sortDirection,data.searchString) />
 			</cfcase>
 			<cfdefaultcase>
 				<cfset rs=variables.contentGateway.getTop(data.topid,data.siteid) />
