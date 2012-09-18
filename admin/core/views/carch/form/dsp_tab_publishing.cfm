@@ -6,6 +6,11 @@
 
 	<cfif rc.type neq 'Component' and rc.type neq 'Form'>
 		<div class="control-group">
+	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.credits')#</label>
+	      <div class="controls"><input type="text" id="credits" name="credits" value="#HTMLEditFormat(rc.contentBean.getCredits())#"  maxlength="255" class="textLong"></div>
+	    </div>
+
+		<div class="control-group">
 	      	<label class="control-label">
 	      		<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.contentReleaseDate"))#">
 	      			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.releasedate')#

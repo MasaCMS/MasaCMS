@@ -305,18 +305,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</div>
 		</div> 
 	</cfif>
-	<cfif rc.type neq 'Form' and  rc.type neq 'Component' >	
-	 <div class="control-group">
-   <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.tags')#</label>
-      <div class="controls"><input type="text" id="credits" name="tags" value="#HTMLEditFormat(rc.contentBean.getTags())#"  maxlength="255" class="textLong"></div>
-    </div>
 
-  <div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.credits')#</label>
-      <div class="controls"><input type="text" id="credits" name="credits" value="#HTMLEditFormat(rc.contentBean.getCredits())#"  maxlength="255" class="textLong"></div>
-    </div>
-    </cfif>
-    
 	<span id="extendset-container-basic" class="extendset-container"></span>
 
 </div>

@@ -371,6 +371,9 @@ var hasBody=#subType.getHasBody()#;
 			<cfinclude template="form/dsp_tab_categories.cfm">
 			</cfif>
 			</cfif>
+			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
+			<cfinclude template="form/dsp_tab_tags.cfm">
+			</cfif>	
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Related Content')>
 			<cfinclude template="form/dsp_tab_related_content.cfm">
 			</cfif>
@@ -381,6 +384,9 @@ var hasBody=#subType.getHasBody()#;
 			<cfinclude template="form/dsp_tab_categories.cfm">
 			</cfif>
 			</cfif>
+			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
+			<cfinclude template="form/dsp_tab_tags.cfm">
+			</cfif>		
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Related Content')>
 			<cfinclude template="form/dsp_tab_related_content.cfm">
 			</cfif>
@@ -396,6 +402,9 @@ var hasBody=#subType.getHasBody()#;
 			<cfinclude template="form/dsp_tab_categories.cfm">
 			</cfif>
 			</cfif>
+			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
+			<cfinclude template="form/dsp_tab_tags.cfm">
+			</cfif>	
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Usage Report')>
 			<cfif not rc.contentBean.getIsNew()>
 			<cfinclude template="form/dsp_tab_usage.cfm">
@@ -408,6 +417,9 @@ var hasBody=#subType.getHasBody()#;
 			<cfinclude template="form/dsp_tab_categories.cfm">
 			</cfif>
 			</cfif>
+			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Tags')>
+			<cfinclude template="form/dsp_tab_tags.cfm">
+			</cfif>	
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Usage Report')>
 			<cfif not rc.contentBean.getIsNew()>
 			<cfinclude template="form/dsp_tab_usage.cfm">
