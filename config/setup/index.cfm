@@ -594,7 +594,7 @@ to your own modified versions of Mura CMS.
           <p id="congrats">Mura is now set up and ready to use.</p>
           <h3>Important</h3>
           <p>When you are done with setup, it is recommended you remove the "/config/setup" directory to maintain security. Once deleted, all settings can be edited in "/config/settings.ini.cfm" directly.</p>
-          <cfif form.admin_username eq 'admin' adn form.admin_password eq 'admin'>
+          <cfif form.admin_username eq 'admin' and form.admin_password eq 'admin'>
             <p class="error">The default <strong>Username and Password is the word "admin" for both fields</strong>. It is highly recommended that you change this immediately by editing your profile after logging into the Mura Admin.</p>
           </cfif>
           <input type="submit" class="btn" name="#cookie.setupSubmitButtonComplete#" value="Finish Set Up and Take Me to the Mura Admin" />
