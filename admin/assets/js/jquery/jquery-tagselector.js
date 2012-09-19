@@ -28,6 +28,9 @@
 								.append('<a>x</a>')
 								.append($('<input type="hidden"/>').attr('name', name).val(ui.item.id))
 								.insertBefore(input);
+
+								input.val('');
+							
 							return true;
 						}
 					});
