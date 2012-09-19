@@ -1,21 +1,42 @@
 #image-details {
 	
 	.control-group {
-		/* .well; */
+		/*
+.inline-block;
+		width: 33%;
+		min-height: 200px;
+*/
 		}
 	
 	.control-label {
-		font-size: 22px;
-		margin-bottom: @baseLineHeight / 2;
+		font-size: 14px;
+		margin-bottom: 0;
+		margin-right: .75em;
+		font-weight: normal;
+		padding: 4px 10px;
+		background: @grayDark;
+		color: @white;
+		.border-radius(28px);
+		.inline-block;
+		
+		i {
+			color: @gray;
+			}
+		
 		}
 		
 	.controls {
 		margin-bottom: @baseLineHeight / 2;
+		.inline-block;
 		}
 		
 	img {
 		.well;
+		padding: 1em;
+		display: block;
+		clear: both;
 		margin-bottom: 0;
+		max-width: 100%;
 		}
 	
 }

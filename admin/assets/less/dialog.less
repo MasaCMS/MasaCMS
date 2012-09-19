@@ -1,6 +1,3 @@
-/* @override 
-	http://localhost:8500/muracms/admin/css/dialog.css */
-
 /* This file is part of Mura CMS. 
 
 	Mura CMS is free software: you can redistribute it and/or modify 
@@ -63,7 +60,11 @@
 
 /* @group Modal Dialog */
 
-
+@import "../bootstrap/less/mixins.less";
+@import "variables.less";
+@import "mixins.less";
+@import "fonts.less";	
+@import "font-awesome.less";
 
 #frontEndToolsModalContainer {
  /* position: [Set in dialog.js]; */
@@ -132,7 +133,6 @@
 	width: 100%;
 	z-index: 500000;
 	opacity: 0.7;
-	filter: alpha(opacity:70);
 }
 
 #dialog_overlay[id] {
@@ -166,52 +166,43 @@
 	top: -10px;
 }
 
-/*
-a#editFormCloseLink {
-	display: block;
-	position: absolute;
-	top: -12px;
-	left: -12px;
-	width: 24px;
-	height: 24px;
-	text-indent: -999em;
-	background: transparent url(/admin/images/dialog/close.png) no-repeat;
-}
-*/
-
 /* @end */
 
 /* @group Toolbar */
 
+@feToolBarBGStart:	hsla(0,0,.3,.98);
+@feToolBarBGEnd:	hsla(0,0,.18,.98);
+
 #frontEndTools {
-	background-image: -moz-linear-gradient(top, #444, #000); /* // FF 3.6+ */
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#444), to(#000)); /* // Safari 4+, Chrome 2+ */
-    background-image: -webkit-linear-gradient(top, #444, #000); /* // Safari 5.1+, Chrome 10+ */
-    background-image: -o-linear-gradient(top, #444, #000); /* // Opera 11.10 */
-    background-image: linear-gradient(to bottom, #444, #323232); /* // Standard, IE10 */
+
+//	#gradient .vertical(#414141,#323232) !important; 
+    background-image: -moz-linear-gradient(top, @feToolBarBGStart, @feToolBarBGEnd); // FF 3.6+
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@feToolBarBGStart), to(@feToolBarBGEnd)); // Safari 4+, Chrome 2+
+    background-image: -webkit-linear-gradient(top, @feToolBarBGStart, @feToolBarBGEnd); // Safari 5.1+, Chrome 10+
+    background-image: -o-linear-gradient(top, @feToolBarBGStart, @feToolBarBGEnd); // Opera 11.10
+    background-image: linear-gradient(to bottom, @feToolBarBGStart, @feToolBarBGEnd); // Standard, IE10
     background-repeat: repeat-x;
-    filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",argb(#444),argb(#000))); /* // IE9 and down */
+    filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",argb(@feToolBarBGStart),argb(@feToolBarBGEnd))); // IE9 and down
 
 	height: 30px !important;
 	left: 0px !important;
 	position: fixed !important;
-	top: 0px !important;
+	top: 0 !important;
 	width: 100% !important;
 	z-index: 499999 !important;
 	text-align: left !important;
 	font-weight: normal !important;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
-	
-	-webkit-box-shadow: 0 2px 4px rgba(0,0,0,.5);
-     -moz-box-shadow: 0 2px 4px rgba(0,0,0,.5);
-          box-shadow: 0px 2px 4px rgba(0,0,0,0.5);
+	.box-shadow(0 1px 3px rgba(0,0,0,.35)) !important;
+	/* border-top: 1px solid hsla(0,0,.6,.98); */
+	/* border-bottom: 1px solid hsla(0,0,.2,.98); */
 }
 
 #frontEndToolsHandle {
 	background: transparent !important;
 	left: 12px !important;
 	position: fixed !important;
-	top: 0px !important;
+	top: 0 !important;
 	z-index: 500001 !important;
 	cursor: pointer !important;
 	border: 0 !important;
@@ -220,115 +211,114 @@ a#editFormCloseLink {
 #frontEndTools ul {
 	height: 30px !important;
 	list-style: none !important;
-	margin: 0 0 0 50px !important;
+	margin: 0 0 0 37px !important;
 	padding: 0 !important;
+	border-right: 0 solid hsla(0,0,.33,.85);
+	border-left: 1px solid hsla(0,0,.19,.85);
 }
 
 #frontEndTools ul li {
-	color: #f0f0f0 !important;
-	color: rgba(255,255,255,.8) !important;
+	color: rgba(255,255,255,.85) !important;
 	float: left !important;
-	font-size: 11px !important;
-	line-height: 24px !important;
-	margin:0 18px 0 0 !important;
+	height: 30px !important;
+	margin:0 !important;
 	padding: 0 !important;
 	list-style: none !important;
 	font-weight: normal !important;
 	font-style: normal !important;
 	text-shadow: rgba(0,0,0,.8) 0px -1px 0px !important;
 	background: none !important;
+	text-shadow: 0 -1px 0 rgba(0,0,0,1) !important;
+	border-left: 1px solid hsla(0,0,.33,.85);
+	border-right: 1px solid hsla(0,0,.19,.85);
+}
+
+#frontEndTools ul li:first-child {
+	border-left: 0 !important;
+}
+
+#frontEndTools ul li#adminSiteManager, #frontEndTools ul li#adminSiteManager404 {
+	border-right: 0 !important;
 }
 
 #frontEndTools ul li a {
-	color: #f0f0f0 !important;
+	color: rgba(255,255,255,1) !important;
 	background: transparent !important;
-	font-size: 11px !important;
-	line-height: 30px !important;
-	padding: 2px 0 !important;
+	font-size: 12px !important;
+	line-height: 26px !important;
+	height: 28px !important;
+	padding: 0 1.25em 0 .75em !important;
 	text-decoration: none !important;font-weight: normal !important;
 	font-style: normal !important;
 	outline: 0 !important;
+	text-shadow: 0 -1px 0 rgba(0,0,0,.9) !important;
+}
+
+#frontEndTools i {
+	color:@black !important;
+	font-size: 16px !important;
+	text-shadow: 0 1px 0 rgba(255,255,255,.15) !important;
+	position: relative !important;
+	top: 1px !important;
+	width: 1.1em !important;
+}
+
+#frontEndTools #adminSiteManager i {
+	width: 1.3em !important;
 }
 
 #frontEndTools ul li a:hover {
-	color:#bbb !important;
+	color: @white !important;
+}
+
+#frontEndTools ul li a:hover i {
+	color: @gray !important;
+	text-shadow: 0 -1px 0 rgba(0,0,0,1) !important;
 }
 
 #frontEndTools ul#addMenuDropDown li a {
-	color:#bbb !important;
+	color: rgba(255,255,255,.85) !important;
 }
 
 #frontEndTools ul#addMenuDropDown li a:hover {
-	color:#f0f0f0 !important;
+	color: #fff !important;
 }
-
-/*
-#frontEndTools ul li#adminEditPage a {
-	background: url(../images/icons/edit_24.png) no-repeat scroll left center !important;
-}
-
-#frontEndTools ul li#adminAddContent a {
-	background: url(../images/icons/add_24.png) no-repeat scroll left center !important;
-}
-
-#frontEndTools ul li#adminDelete a {
-	background: url(../images/icons/remov_24.png) no-repeat scroll left center !important;
-}
-
-#frontEndTools ul li#adminVersionHistory a {
-	background: url(../images/icons/hist_24.png) no-repeat scroll left center !important;
-}
-
-#frontEndTools ul li#adminDashboard a {
-	background: url(../images/icons/dashboard_14.png) no-repeat scroll left center !important;
-}
-
-#frontEndTools ul li#adminPlugIns a {
-	background: url(../images/icons/apps_24.png) no-repeat scroll left center !important;
-}
-
-#frontEndTools ul li#adminSiteManager {
-	background: url(../images/bg_fetools_site_manager.png) no-repeat scroll left center !important;
-	padding-left: 17px !important;
-}
-
-#frontEndTools ul li#adminSiteManager a {
-	background: url(../images/icons/ntwrk_24.png) no-repeat scroll left center !important;
-}
-
-#frontEndTools ul li#adminSiteManager404 a {
-	background: url(../images/icons/ntwrk_24.png) no-repeat scroll left center !important;
-}
-*/
 
 #frontEndTools ul li#adminWelcome {
-	color: #f0f0f0 !important;
 	float: right !important;
 	margin-right: 10px !important;
-	padding: 2px 0 !important;
+	padding: 0 !important;
+	border: 0 !important;
+	font-size: 11px !important;
+	line-height: 30px !important;
+	color: @gray !important;
 }
 
 #frontEndTools ul li#adminLogOut {
 	float: right !important;
 	margin-right: 14px !important;
-	padding: 6px 0 0 0 !important;
+	padding: 4px 0 0 0 !important;
 	text-align: center !important;
+	border: 0 !important;
 }
 
 #frontEndTools ul li#adminLogOut a {
 	display: block !important;
-	font-size: 9px !important;
-	color: #555 !important;
-	padding: 1px 10px !important;
-	line-height: 16px !important;
+	color: darken(@grayDark,10%) !important;
+	font-size: 11px !important;
+	padding: 2px 8px 2px 6px !important;
+	line-height: 14px !important;
+	height: 16px !important;
 	text-shadow: none !important;
-	border-radius: 8px !important;
-	-webkit-border-radius: 8px !important;
-	-moz-border-radius: 8px !important;
+	.border-radius(14px) !important;
 	background: #898989 !important;
-	-webkit-box-shadow: 0px -1px 2px rgba(0,0,0,.25) inset !important;
-	-moz-box-shadow: 0px -1px 2px rgba(0,0,0,.25) inset !important;
-	box-shadow: 0px -1px 2px rgba(0,0,0,.25) inset !important;
+	.box-shadow(0 0 4px rgba(0,0,0,.75) inset) !important;
+	text-shadow: 0 1px 0 rgba(255,255,255,.2) !important;
+}
+
+#frontEndTools ul li#adminLogOut i {
+	font-size: 13px !important;
+	color: darken(@grayDark,10%) !important;
 }
 
 #frontEndTools ul li#adminLogOut a:hover {
@@ -337,21 +327,19 @@ a#editFormCloseLink {
 
 /* @group Add Content Nav */
 
-#frontEndTools li ul { /* all lists */
-	padding: .75em 1em .75em !important;
-	margin: -1px 0 0 -16px !important;
+#frontEndTools li ul { 
+	padding: .5em 0 !important;
+	margin: 2px 0 0 -1px !important;
 	list-style: none !important;
 	line-height: 1 !important;
 	background-image: none !important;
 	position: absolute !important;
-	border-top: 1px solid #4a4a4a !important;
-	background: #505050 !important;
+	background: hsla(0,0%,22%,.98) !important;
+	box-shadow: 0px 1px 6px @grayDark;
 	width: 12em !important;
 	left: -999em !important; /* using left instead of display to hide menus because display: none isn't read by screen readers */
+	border: 0 !important;
 	height: auto !important;
-	opacity: .98;
-	-moz-opacity: .98;
-	filter: alpha(opacity=98); /* Move to ie.css? */
 	-moz-border-radius-bottomleft: 5px;
 	-webkit-border-bottom-left-radius: 5px;
 	-moz-border-radius-bottomright: 5px;
@@ -367,16 +355,17 @@ a#editFormCloseLink {
 	width: 100% !important; /* width needed or else Opera goes nuts */
 	padding: 0 !important;
 	margin: 0 !important;
-	border-bottom: 1px dotted #666 !important;
-}
+	border: 0 !important;
+	}
 
 #frontEndTools li li a {
 	display: block !important;
-	width: 10em !important;
-	padding: 0 0 0 2em !important;
+	width: auto !important;
+	padding: 0 1em !important;
 	margin: 1px 0 !important;
-	line-height: 2.25 !important;
-	color: #fff !important;
+	line-height: 1.5 !important;
+	color: @white !important;
+	text-shadow: 0 0 0 !important;
 }
 
 #frontEndTools a:active, #frontEndTools a:selected,  #frontEndTools a:visited { 
@@ -384,9 +373,26 @@ a#editFormCloseLink {
     outline: none !important;
 }
 
+#frontEndTools li li a i {
+	width: 1.5em !important;
+	text-shadow: 0 0 0 !important;
+	color: @grayDark !important;
+	font-size: 14px !important;
+	top: 2px !important;
+	padding-right: .5em;
+}
+
+#frontEndTools li li a#adminNewPage i {
+	font-size: 20px !important;
+	}
+
+#frontEndTools li li a:hover i {
+	color: @gray !important;
+}
+
 #frontEndTools li li a:hover {
-	background-color: #999 !important;
-	color: #fff !important;
+	background-color: @blue !important;
+	color: @white !important;
 }
 
 #frontEndTools li:hover ul, #frontEndTools li.sfhover ul { /* lists nested under hovered list items */
@@ -395,42 +401,6 @@ a#editFormCloseLink {
 
 #frontEndTools li:hover ul a, #frontEndTools li.sfhover ul a { /* lists nested under hovered list items */
 	color: #000 !important;
-}
-
-#frontEndTools li li#adminNewPage a {
-	background: url(../images/icons/docs_24.png) no-repeat 4px center !important;
-}
-
-#frontEndTools li li#adminNewLink a {
-	background: url(../images/icons/web_24.png) no-repeat 4px center !important;
-}
-
-#frontEndTools li li#adminNewFile a {
-	background: url(../images/icons/cms_file.png) no-repeat 3px center !important;
-}
-
-#frontEndTools li li#adminNewPortal a {
-	background: url(../images/icons/foldr_24.png) no-repeat 4px center !important;
-}
-
-#frontEndTools li li#adminNewCalendar a {
-	background: url(../images/icons/cal_24.png) no-repeat 4px center !important;
-}
-
-#frontEndTools li li#adminNewGallery a {
-	background: url(../images/icons/smicn_24.png) no-repeat 4px center !important;
-}
-
-#frontEndTools li li#adminNewGalleryItem a {
-	background: url(../images/icons/image_24.png) no-repeat 4px center !important;
-}
-
-#frontEndTools li li#adminNewGalleryItemMulti a {
-	background: url(../images/icons/image_24.png) no-repeat 4px center !important;
-}
-
-#frontEndTools li li:last-child {
-	border: 0 !important;
 }
 
 /* @end */

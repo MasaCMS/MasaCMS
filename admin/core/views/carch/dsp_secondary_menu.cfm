@@ -181,7 +181,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.backtocontent')#
 					</a>
 					<a class="btn" href="index.cfm?&muraAction=cArch.list&siteid=#rc.siteid#&moduleid=00000000000000000000000000000000000">
-						<i class="icon-circle-arrow-left"></i>
+						<i class="icon-list-alt"></i>
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.backtositemanager')#
 					</a>
 				<cfelse>
