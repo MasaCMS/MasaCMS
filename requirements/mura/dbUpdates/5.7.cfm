@@ -107,6 +107,9 @@
 
 	dbUtility.setTable("tcontentfeeds")
 	.addColumn(column="autoimport",dataType="tinyint",default=0);
+
+	dbUtility.setTable("tcontent")
+	.addColumn(column="sourceID",dataType="char",length="35");
 </cfscript>
 
 

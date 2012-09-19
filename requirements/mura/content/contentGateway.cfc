@@ -364,7 +364,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				,tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes
 				,tcontentstats.comments, '' as parentType, <cfif doKids> qKids.kids<cfelse>null as kids</cfif>,tcontent.path, tcontent.created, tcontent.nextn,
 				tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires,
-				tfiles.filename as AssocFilename,tcontent.displayInterval,tcontent.display
+				tfiles.filename as AssocFilename,tcontent.displayInterval,tcontent.display, tcontent.sourceID
 				
 				FROM tcontent 
 				Left Join tfiles #tableModifier# ON (tcontent.fileID=tfiles.fileID)
@@ -921,7 +921,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		tfiles.fileSize,tfiles.FileExt,tfiles.ContentType,tfiles.ContentSubType, tcontent.siteID, tcontent.featureStart,tcontent.featureStop,tcontent.template,tcontent.childTemplate,
 		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires,
 		tcontentstats.rating,tcontentstats.totalVotes, tcontentstats.comments,
-		tfiles.filename as AssocFilename,tcontent.displayInterval
+		tfiles.filename as AssocFilename,tcontent.displayInterval, tcontent.sourceID
 	
 		FROM tcontent LEFT JOIN tcontent tcontent2 #tableModifier# ON tcontent.contentid=tcontent2.parentid
 		LEFT JOIN tfiles #tableModifier# On tcontent.FileID=tfiles.FileID and tcontent.siteID=tfiles.siteID
@@ -1086,7 +1086,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	select menutitle, tcontent.siteid, contentid, contenthistid, fileID, type, tcontent.lastupdateby, active, approved, tcontent.lastupdate, 
 	display, displaystart, displaystop, moduleid, isnav, notes,isfeature,featurestart,featurestop,inheritObjects,filename,targetParams,releaseDate,
 	tcontent.changesetID, tchangesets.name changesetName, tchangesets.published changsetPublished,tchangesets.publishDate changesetPublishDate , 
-	tcontent.majorVersion,tcontent.minorVersion
+	tcontent.majorVersion,tcontent.minorVersion, tcontent.sourceID
 	from tcontent 
 	left Join tchangesets on (tcontent.changesetID=tchangesets.changesetID)
 	where contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/> and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> order by tcontent.lastupdate desc

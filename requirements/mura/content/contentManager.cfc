@@ -748,8 +748,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset refused = true />
 			</cfif>
 		<cfelse>
-			<cfif isDefined('arguments.data.preserveID') and isValid('UUID',arguments.data.preserveID)>
-				<cfset newBean=read(contentHistID=arguments.data.preserveID,siteID=arguments.data.siteid) />
+			<cfif isDefined('arguments.data.sourceID') and isValid('UUID',arguments.data.sourceID)>
+				<cfset newBean=read(contentHistID=arguments.data.sourceID,siteID=arguments.data.siteid) />
 			<cfelse>
 				<cfset newBean=read(contentID=arguments.data.contentID,siteID=arguments.data.siteid) />
 			</cfif>
@@ -1224,8 +1224,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset variables.pluginManager.announceEvent("onAfter#newBean.getType()##newBean.getSubType()#Save",pluginEvent)>	
 			<!--- end save content --->	
 			<cfelse>
-				<cfif structKeyExists(arguments.data,"preserveID") and len(arguments.data.preserveID)>
-					<cfset newBean.setContentHistID(arguments.data.preserveID)>
+				<cfif structKeyExists(arguments.data,"sourceID") and len(arguments.data.sourceID)>
+					<cfset newBean.setContentHistID(arguments.data.sourceID)>
 				<cfelseif structKeyExists(arguments.data,"contentHistID") and len(arguments.data.contentHistID)>
 					<cfset newBean.setContentHistID(arguments.data.contentHistID)>
 				</cfif>	
