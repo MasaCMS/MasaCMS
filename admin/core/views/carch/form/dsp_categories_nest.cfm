@@ -62,11 +62,6 @@ select * from attributes.rsCategoryAssign
 where categoryID='#rslist.categoryID#' and ContentHistID='#attributes.contentBean.getcontentHistID()#'
 </cfquery>
 <cfset catTrim=replace(rslist.categoryID,'-','','ALL') />
-<cfif not application.permUtility.getCategoryPerm(rslist.restrictGroups,attributes.siteid)>
-<cfset disabled="disabled" />
-<cfelse>
-<cfset disabled="" />
-</cfif>
 </cfsilent>
 <li data-siteID="#attributes.contentBean.getSiteID()#" data-categoryid="#rslist.categoryid#" data-cattrim="#catTrim#">
 	<div class="mura-row<cfif request.catNo mod 2> alt</cfif>">
@@ -74,7 +69,7 @@ where categoryID='#rslist.categoryID#' and ContentHistID='#attributes.contentBea
 	<cfif rslist.isOpen eq 1>
 		<div id="categoryLabelContainer#cattrim#" class="column" <cfif request.catNo mod 2>class="alt"</cfif>>
 			<div class="categoryassignment<cfif rsIsMember.recordcount and rsIsMember.isFeature eq 2> scheduled</cfif>">
-				<a class="mura-quickEditItem<cfif rsIsMember.isFeature eq 2> tooltip</cfif>">
+				<a class="<cfif application.permUtility.getCategoryPerm(rslist.restrictGroups,attributes.siteid)>mura-quickEditItem</cfif><cfif rsIsMember.isFeature eq 2> tooltip</cfif>">
 				<cfif rsIsMember.isFeature eq '0'>
 					#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#
 				<cfelseif rsIsMember.isFeature eq '1'>
