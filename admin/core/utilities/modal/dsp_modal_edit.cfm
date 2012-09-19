@@ -95,15 +95,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.editLink = variables.editLink & "&amp;moduleid=" & request.contentBean.getModuleID()>
 	<cfset variables.editLink = variables.editLink & "&amp;compactDisplay=true">
 	
-	<cfset variables.newLink = variables.adminBase & "#application.configBean.getContext()#/admin/index.cfm?muraAction=cArch.edit">
-	<cfset variables.newLink = variables.newLink & "&amp;contentid=">
-	<cfset variables.newLink = variables.newLink & "&amp;parentid=" & request.contentBean.getContentID()>
+	<cfset variables.newLink = variables.adminBase & "#application.configBean.getContext()#/admin/index.cfm?muraAction=cArch.loadnewcontentmenu">
+	<cfset variables.newLink = variables.newLink & "&amp;contentid=" & request.contentBean.getContentID()>
 	<cfset variables.newLink = variables.newLink & "&amp;topid=00000000000000000000000000000000001">
 	<cfset variables.newLink = variables.newLink & "&amp;siteid=" & request.contentBean.getSiteID()>
 	<cfset variables.newLink = variables.newLink & "&amp;moduleid=" & "00000000000000000000000000000000000">
 	<cfset variables.newLink = variables.newLink & "&amp;ptype=" & request.contentBean.getType()>
 	<cfset variables.newLink = variables.newLink & "&amp;compactDisplay=true">
-	
+
+	<!---
+	'muraAction=cArch.loadnewcontentmenu&compactDisplay=true&siteid=' + siteid +'&contentid=' + contentid + '&parentid=' + parentid + '&topid=' + parentid + '&ptype=' + type +'&cacheid=' + Math.random();
+
 	<cfset variables.newMultiLink = variables.adminBase & "#application.configBean.getContext()#/admin/index.cfm?muraAction=cArch.multiFileUpload">
 	<cfset variables.newMultiLink = variables.newMultiLink & "&amp;contentid=">
 	<cfset variables.newMultiLink = variables.newMultiLink & "&amp;parentid=" & request.contentBean.getContentID()>
@@ -112,7 +114,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.newMultiLink = variables.newMultiLink & "&amp;moduleid=" & "00000000000000000000000000000000000">
 	<cfset variables.newMultiLink = variables.newMultiLink & "&amp;ptype=" & request.contentBean.getType()>
 	<cfset variables.newMultiLink = variables.newMultiLink & "&amp;compactDisplay=true">
-	
+	--->
 	<cfset variables.historyLink = variables.adminBase & "#application.configBean.getContext()#/admin/index.cfm?muraAction=cArch.hist">
 	<cfset variables.historyLink = variables.historyLink & "&amp;siteid=" & request.contentBean.getSiteID()>
 	<cfset variables.historyLink = variables.historyLink & "&amp;contentid=" & request.contentBean.getContentID()>
@@ -153,8 +155,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<li id="adminEditPage"><a href="#variables.editLink#" #variables.targetHook#><i class="icon-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#</a></li>
 				<cfif listFind("Page,Portal,Calendar,Gallery",request.contentBean.getType())>
 												
-						<li id="adminAddContent" class="dropdown"><a href="##" onclick="return false;"><i class="icon-plus"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.add')#&hellip;</a>						
-							
+						<li id="adminAddContent"><a href="#variables.newLink#" #variables.targethook# data-configurator="true"><i class="icon-plus"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.add')#&hellip;</a>						
+						<!---	
 						<ul id="addMenuDropDown" class="dropdown-menu">
 						<cfif request.contentBean.getType() neq 'Gallery'>
 						<li id="adminNewPage"><a href="#variables.newLink#&amp;type=Page" #variables.targethook#><i class="icon-file"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.page')#</a></li>
@@ -170,7 +172,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						#application.pluginManager.renderScripts("onFEToolbarAddRender",request.contentBean.getSiteID())#
 						#application.pluginManager.renderScripts("onFEToolbar#request.contentBean.getType()#AddRender",request.contentBean.getSiteID())#
 						#application.pluginManager.renderScripts("onFEToolbar#request.contentBean.getType()##request.contentBean.getSubType()#AddRender",request.contentBean.getSiteID())#
-						</ul>
+						</ul>--->
 					</li>
 				</cfif>
 				<li id="adminVersionHistory"><a href="#variables.historyLink#" #variables.targethook#><i class="icon-book"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#</a></li>
