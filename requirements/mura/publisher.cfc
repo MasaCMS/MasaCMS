@@ -403,6 +403,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif isdefined("rstContent.displayInterval")>
 					,displayInterval
 					</cfif>
+					<cfif isdefined("rstContent.sourceID")>
+					,sourceID
+					</cfif>
 					)
 					values
 					(
@@ -491,7 +494,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 					<cfif isdefined("rstContent.displayInterval")>
 						,
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.displayInterval neq '',de('no'),de('yes'))#" value="#rstContent.displayInterval#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.displayInterval neq '',de('no'),de('yes'))#" value="#rstContent.displayInterval#">
+					</cfif>
+					<cfif isdefined("rstContent.sourceID")>
+						,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.sourceID neq '',de('no'),de('yes'))#" value="#rstContent.sourceID#">
 					</cfif>
 					)
 				</cfquery>
