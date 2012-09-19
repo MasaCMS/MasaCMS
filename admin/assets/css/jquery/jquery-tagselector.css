@@ -1,3 +1,5 @@
+/* Conflicts with Bootstrap Styles
+
 input[type=text], input[type=password], .tagSelector {
 	background-color: #FFF;
     -moz-border-radius: 3px;
@@ -14,6 +16,9 @@ input[type=text], input[type=password], .tagSelector {
     padding: 4px 6px;
     vertical-align: baseline;
 }
+*/
+
+/*
 .tagSelector input {
 	border: none;
 	border-radius: 0;
@@ -27,8 +32,11 @@ input[type=text], input[type=password], .tagSelector {
     padding: 4px 0;
 	white-space: nowrap
 }
+*/
+
+/* Moved to forms.less
 .tagSelector .tag {
-	background: #375D81;
+	background: #69c;
 	border-radius: 3px;
     -moz-border-radius: 3px;
 	color: #FFF;
@@ -40,10 +48,10 @@ input[type=text], input[type=password], .tagSelector {
     vertical-align: baseline;
 }
 .tagSelector .tag a {
-	color: #FFF;
+	color: #fff;
 	cursor: pointer;
 }
 .tagSelector .tag a:hover {
-	color: #0099CC;
 	text-decoration: none;
 }
+*/
