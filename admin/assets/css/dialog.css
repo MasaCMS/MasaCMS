@@ -63,6 +63,8 @@
 
 /* @group Modal Dialog */
 
+
+
 #frontEndToolsModalContainer {
  /* position: [Set in dialog.js]; */
   display: block;
@@ -182,8 +184,15 @@ a#editFormCloseLink {
 /* @group Toolbar */
 
 #frontEndTools {
-	background: transparent url(../images/bg_fetools.png) repeat-x scroll 0% !important;
-	height: 36px !important;
+	background-image: -moz-linear-gradient(top, #444, #000); /* // FF 3.6+ */
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#444), to(#000)); /* // Safari 4+, Chrome 2+ */
+    background-image: -webkit-linear-gradient(top, #444, #000); /* // Safari 5.1+, Chrome 10+ */
+    background-image: -o-linear-gradient(top, #444, #000); /* // Opera 11.10 */
+    background-image: linear-gradient(to bottom, #444, #323232); /* // Standard, IE10 */
+    background-repeat: repeat-x;
+    filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",argb(#444),argb(#000))); /* // IE9 and down */
+
+	height: 30px !important;
 	left: 0px !important;
 	position: fixed !important;
 	top: 0px !important;
@@ -191,7 +200,11 @@ a#editFormCloseLink {
 	z-index: 499999 !important;
 	text-align: left !important;
 	font-weight: normal !important;
-	font-family: "Lucida Grande", Arial, Helvetica, sans-serif !important;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+	
+	-webkit-box-shadow: 0 2px 4px rgba(0,0,0,.5);
+     -moz-box-shadow: 0 2px 4px rgba(0,0,0,.5);
+          box-shadow: 0px 2px 4px rgba(0,0,0,0.5);
 }
 
 #frontEndToolsHandle {
@@ -205,7 +218,7 @@ a#editFormCloseLink {
 }
 
 #frontEndTools ul {
-	height: 36px !important;
+	height: 30px !important;
 	list-style: none !important;
 	margin: 0 0 0 50px !important;
 	padding: 0 !important;
@@ -216,12 +229,11 @@ a#editFormCloseLink {
 	color: rgba(255,255,255,.8) !important;
 	float: left !important;
 	font-size: 11px !important;
-	line-height: 26px !important;
+	line-height: 24px !important;
 	margin:0 18px 0 0 !important;
 	padding: 0 !important;
 	list-style: none !important;
 	font-weight: normal !important;
-	font-family: "Lucida Grande", Arial, Helvetica, sans-serif !important;
 	font-style: normal !important;
 	text-shadow: rgba(0,0,0,.8) 0px -1px 0px !important;
 	background: none !important;
@@ -232,9 +244,8 @@ a#editFormCloseLink {
 	background: transparent !important;
 	font-size: 11px !important;
 	line-height: 30px !important;
-	padding: 2px 0 2px 18px !important;
+	padding: 2px 0 !important;
 	text-decoration: none !important;font-weight: normal !important;
-	font-family: "Lucida Grande", Arial, Helvetica, sans-serif !important;
 	font-style: normal !important;
 	outline: 0 !important;
 }
@@ -251,6 +262,7 @@ a#editFormCloseLink {
 	color:#f0f0f0 !important;
 }
 
+/*
 #frontEndTools ul li#adminEditPage a {
 	background: url(../images/icons/edit_24.png) no-repeat scroll left center !important;
 }
@@ -287,6 +299,7 @@ a#editFormCloseLink {
 #frontEndTools ul li#adminSiteManager404 a {
 	background: url(../images/icons/ntwrk_24.png) no-repeat scroll left center !important;
 }
+*/
 
 #frontEndTools ul li#adminWelcome {
 	color: #f0f0f0 !important;
@@ -313,9 +326,9 @@ a#editFormCloseLink {
 	-webkit-border-radius: 8px !important;
 	-moz-border-radius: 8px !important;
 	background: #898989 !important;
-	-webkit-box-shadow: 0px -1px 2px rgba(255,255,255,.15) inset !important;
-	-moz-box-shadow: 0px -1px 2px rgba(255,255,255,.15) inset !important;
-	box-shadow: 0px -1px 2px rgba(255,255,255,.15) inset !important;
+	-webkit-box-shadow: 0px -1px 2px rgba(0,0,0,.25) inset !important;
+	-moz-box-shadow: 0px -1px 2px rgba(0,0,0,.25) inset !important;
+	box-shadow: 0px -1px 2px rgba(0,0,0,.25) inset !important;
 }
 
 #frontEndTools ul li#adminLogOut a:hover {
