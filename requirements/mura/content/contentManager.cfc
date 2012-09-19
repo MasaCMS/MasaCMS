@@ -772,10 +772,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 				
 			<cfif not newBean.getIsNew()>
-				<cfif not (isDefined('arguments.data.preserveID') and isValid('UUID',arguments.data.preserveID))>
-					<cfset arguments.data.preserveID=newBean.getContentHistID()>
+				<cfif not (isDefined('arguments.data.sourceID') and isValid('UUID',arguments.data.sourceID))>
+					<cfset arguments.data.sourceID=newBean.getContentHistID()>
 				</cfif>	
-				<cfset currentBean=read(contentHistID=arguments.data.preserveID,siteID=arguments.data.siteid) />
+				<cfset currentBean=read(contentHistID=arguments.data.sourceID,siteID=arguments.data.siteid) />
 				<cfif currentBean.getActive()>
 					<cfset activeBean=currentBean>
 				<cfelse>

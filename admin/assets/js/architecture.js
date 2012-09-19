@@ -197,7 +197,7 @@ function openNewContentMenu(contentid,siteid,topid,parentid,type){
 					jQuery("#ui-dialog-title-newContentMenuContainer").html(newContentMenuTitle);
 					jQuery("#newContentMenuContainer").html('<div class="ui-dialog-content ui-widget-content"><img src="./assets/images/progress_bar.gif"></div>');
 					var url = 'index.cfm';
-					var pars = 'muraAction=cArch.loadnewcontentmenu&compactDisplay=true&siteid=' + siteid +'&contentid=' + contentid + '&parentid=' + parentid + '&topid=' + parentid + '&ptype=' + type +'&cacheid=' + Math.random();
+					var pars = 'muraAction=cArch.loadnewcontentmenu&siteid=' + siteid +'&contentid=' + contentid + '&parentid=' + parentid + '&topid=' + parentid + '&ptype=' + type +'&cacheid=' + Math.random();
 					jQuery.get(url + "?" + pars, 
 							function(data) {
 							jQuery('#newContentMenuContainer').html(data);
