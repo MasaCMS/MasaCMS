@@ -53,7 +53,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif isDefined('rc.frontEndProxyLoc')>
 <h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.selectcontenttype")#</h2>
 </cfif>
-<ul class="nav nav-pills nav-stacked">
+<div class="add-content-ui">
+<ul>
 <cfif rc.ptype neq 'Gallery'>
 	<cfloop list="#typeList#" index="i">
 	<li class="new#i#"><a href="index.cfm?muraAction=cArch.edit&contentid=&parentid=#URLEncodedFormat(rc.contentid)#&type=#i#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#URLEncodedFormat(rc.ptype)#&compactDisplay=#URLEncodedFormat(rc.compactDisplay)#" id="new#i#Link"><i class="icon-file"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.add#lcase(i)#")#</a></li>
@@ -76,5 +77,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<li class="newGalleryItemMulti"><a href="index.cfm?muraAction=cArch.multiFileUpload&contentid=&parentid=#URLEncodedFormat(rc.contentid)#&type=File&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#URLEncodedFormat(rc.ptype)#&compactDisplay=#URLEncodedFormat(rc.compactDisplay)#" id="newGalleryItemMultiLink"><i class="icon-upload"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.addmultiitems")#</a></li>
 </cfif> 
   </ul>
+</div>
 </cfoutput>
 
