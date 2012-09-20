@@ -1199,8 +1199,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var location=getLocation(rsPlugin.directory) />
 	<cfset var pluginConfig=getConfig(arguments.moduleID) />
 	<cfset var pluginCFC="/">
-	
-	<cftry>
+
 	<!--- check to see is the plugin.cfc exists --->
 	<cfif fileExists(ExpandPath("/plugins") & "/" & pluginConfig.getDirectory() & "/plugin/plugin.cfc")>	
 		<cfset pluginCFC=createObject("component","plugins.#pluginConfig.getDirectory()#.plugin.plugin") />
@@ -1214,8 +1213,6 @@ select * from tplugins order by #arguments.orderby#
 			<cfset pluginCFC.delete() />
 		</cfif>
 	</cfif>
-	<cfcatch></cfcatch>
-	</cftry>
 
 	<cfif len(rsPlugin.directory) and directoryExists(location)>
 		<cfdirectory action="delete" directory="#location#" recurse="true">	
