@@ -59,7 +59,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif container eq 'Extended Attributes'>
 		<cfset container='Default'>
 	</cfif>
-	<cfset containerID=REreplace(container, "[^\\\w]", "_", "all")>
+	<cfset containerID=REreplace(container, "[^\\\w]", "", "all")>
 	<cfsavecontent variable="returnsets.#containerID#">
 	<cfset extendSets=subtype.getExtendSets(inherit=true,container=container,activeOnly=true) />
 	<cfset started=false />

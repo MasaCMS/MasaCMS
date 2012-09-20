@@ -2210,6 +2210,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cffunction>
 
 	<cffunction name="getTabList" output="false">
-		<cfreturn "Basic,Mobile,Layout & Objects,Categorization,Tags,Related Content,SEO,List Display Options,Extended Attributes,Advanced,Publishing,Usage Report">
+		<cfreturn "Basic,SEO,Mobile,List Display Options,Layout & Objects,Categorization,Tags,Related Content,Extended Attributes,Advanced,Publishing,Usage Report">
 	</cffunction>
 </cfcomponent>
