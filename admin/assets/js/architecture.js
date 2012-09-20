@@ -197,7 +197,7 @@ function openNewContentMenu(contentid,siteid,topid,parentid,type){
 					jQuery("#ui-dialog-title-newContentMenuContainer").html(newContentMenuTitle);
 					jQuery("#newContentMenuContainer").html('<div class="ui-dialog-content ui-widget-content"><img src="./assets/images/progress_bar.gif"></div>');
 					var url = 'index.cfm';
-					var pars = 'muraAction=cArch.loadnewcontentmenu&compactDisplay=true&siteid=' + siteid +'&contentid=' + contentid + '&parentid=' + parentid + '&topid=' + parentid + '&ptype=' + type +'&cacheid=' + Math.random();
+					var pars = 'muraAction=cArch.loadnewcontentmenu&siteid=' + siteid +'&contentid=' + contentid + '&parentid=' + parentid + '&topid=' + parentid + '&ptype=' + type +'&cacheid=' + Math.random();
 					jQuery.get(url + "?" + pars, 
 							function(data) {
 							jQuery('#newContentMenuContainer').html(data);
@@ -740,12 +740,21 @@ function loadExtendedAttributes(contentHistID,type,subType,_siteID,_context,_the
 	}
 
 function setExtendedAttributes(data){
+	//alert(data);
+
 	var r=eval("(" + data + ")");
 
 	$.each(r, function(name, value) {
 		//alert(name + ": " + value);
     	$('#extendset-container-' + name).html(value);
+
 	});
+
+	if(r.default == ''){
+		$('#tabExtendedAttributesLI').addClass('hide');
+	} else {
+		$('#tabExtendedAttributesLI').removeClass('hide');
+	}
 
 	if(!r.hassummary){
 		if(typeof hideSummaryEditor != 'undefined'){
@@ -769,12 +778,10 @@ function setExtendedAttributes(data){
 
 	checkExtendSetTargeting();
 	setHTMLEditors(context,themeAssetPath);
-	setDatePickers("#extendSetsDefault .datepicker",dtLocale);
-	setDatePickers("#extendSetsBasic .datepicker",dtLocale);
-	setColorPickers("#extendSetsDefault .colorpicker");
-	setColorPickers("#extendSetsBasic .colorpicker");
-	setToolTips("#extendSetsDefault");
-	setToolTips("#extendSetsBasic");
+	setDatePickers(".tab-content .datepicker",dtLocale);
+	setColorPickers(".tab-content .colorpicker");
+	setColorPickers(".tab-content .colorpicker");
+	setToolTips(".tab-content");
 }
 
 function checkExtendSetTargeting(){

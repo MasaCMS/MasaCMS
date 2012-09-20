@@ -63,6 +63,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			   </div>
 			</cfif>
 
+			
+			<cfif rc.contentBean.getType() eq 'Component'>
+			<div class="control-group">
+			      	<label class="control-label">
+			      		<cfoutput><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.layoutTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.layouttemplate')#> <i class="icon-info-sign"></i></a></cfoutput>
+			      	</label> 
+			      	<div class="controls">
+			      		<select name="template" class="dropdown">
+							<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.none')#</option>
+							<cfloop query="rc.rsTemplates">
+							<cfif right(rc.rsTemplates.name,4) eq ".cfm">
+							<cfoutput>
+							<option value="#rc.rsTemplates.name#" <cfif rc.contentBean.getTemplate() eq rc.rsTemplates.name>selected</cfif>>#rc.rsTemplates.name#</option>
+							</cfoutput>
+							</cfif></cfloop>
+						</select>
+					</div>
+			    </div>
+			</cfif>
+
 			<cfif rc.type neq 'Component' and rc.type neq 'Form'>
 			
 
@@ -75,38 +95,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			  		</label>
 			      </div>
 			    </div>
-				
-				<cfif application.settingsManager.getSite(rc.siteid).getextranet()>
-					<div class="control-group">
-			      	<div class="controls"><label for="Restricted" class="checkbox"><input name="restricted" id="Restricted" type="checkbox" value="1"  onclick="javascript: this.checked?toggleDisplay2('rg',true):toggleDisplay2('rg',false);" <cfif rc.contentBean.getrestricted() eq 1>checked </cfif> class="checkbox">
-					#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictaccess')#</label>
-					</div> 
-			      	<div class="controls"id="rg"<cfif rc.contentBean.getrestricted() NEQ 1> style="display:none;"</cfif>>
-					<select name="restrictgroups" size="8" multiple="multiple" class="multiSelect" id="restrictGroups">
-					<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.globalsettings'))#">
-					<option value="" <cfif rc.contentBean.getrestrictgroups() eq ''>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.allowall')#</option>
-					<option value="RestrictAll" <cfif rc.contentBean.getrestrictgroups() eq 'RestrictAll'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictall')#</option>
-					</optgroup>
-					<cfquery dbtype="query" name="rsGroups">select * from rc.rsrestrictgroups where isPublic=1</cfquery>	
-					<cfif rsGroups.recordcount>
-						<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'user.membergroups'))#">
-						<cfloop query="rsGroups">
-							<option value="#rsGroups.groupname#" <cfif listfind(rc.contentBean.getrestrictgroups(),rsGroups.groupname)>Selected</cfif>>#rsGroups.groupname#</option>
-						</cfloop>
-						</optgroup>
-					</cfif>
-					<cfquery dbtype="query" name="rsGroups">select * from rc.rsrestrictgroups where isPublic=0</cfquery>	
-					<cfif rsGroups.recordcount>
-						<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'user.adminusergroups'))#">
-						<cfloop query="rsGroups">
-							<option value="#rsGroups.groupname#" <cfif listfind(rc.contentBean.getrestrictgroups(),rsGroups.groupname)>Selected</cfif>>#rsGroups.groupname#</option>
-						</cfloop>
-						</optgroup>
-					</cfif>
-					</select>
-					</div>
-			    </div>
-				</cfif>
 				
 			</cfif>
 
@@ -143,90 +131,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				 </div>
 			    </div>
 			</cfif>
-
-			<cfif rc.type eq 'Portal' or rc.type eq 'Calendar' or rc.type eq 'Gallery'>
-				<div class="control-group">
-			      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label> 
-			      	<div class="controls">
-						<select name="assets/imagesize" class="dropdown" onchange="if(this.value=='custom'){jQuery('##CustomImageOptions').fadeIn('fast')}else{jQuery('##CustomImageOptions').hide();jQuery('##CustomImageOptions').find(':input').val('AUTO');}">
-							<cfloop list="Small,Medium,Large" index="i">
-								<option value="#lcase(i)#"<cfif i eq rc.contentBean.getImageSize()> selected</cfif>>#I#</option>
-							</cfloop>
-
-							<cfset imageSizes=application.settingsManager.getSite(rc.siteid).getCustomImageSizeIterator()>
-								
-							<cfloop condition="imageSizes.hasNext()">
-								<cfset image=imageSizes.next()>
-								<option value="#lcase(image.getName())#"<cfif image.getName() eq rc.contentBean.getImageSize()> selected</cfif>>#HTMLEditFormat(image.getName())#</option>
-							</cfloop>
-							<option value="custom"<cfif "custom" eq rc.contentBean.getImageSize()> selected</cfif>>Custom</option>
-						</select>
-					</div>
-					<div class="controls" id="CustomImageOptions"<cfif rc.contentBean.getImageSize() neq "custom"> style="display:none"</cfif>>
-							<div class="control-group">
-								<label class="control-label">
-									#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#
-								</label>
-								<div class="controls">
-									<input name="imageWidth" class="text" value="#rc.contentBean.getImageWidth()#" />
-								</div>
-							</div>
-							<div class="control-group">
-								<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
-								<div class="controls">
-									<input name="imageHeight" class="text" value="#rc.contentBean.getImageHeight()#" />
-								</div>
-							</div>
-					</div>  
-				</div>
-
-				<div class="control-group" id="availableFields">
-			      	<label class="control-label">
-			      		<span>Available Fields</span> <span>Selected Fields</span>
-			      	</label>
-				  	<div class="controls sortableFields">
-					
-						<p class="dragMsg"><span class="dragFrom">Drag Fields from Here&hellip;</span><span>&hellip;and Drop Them Here.</span></p>
-					
-						<cfset displayList=rc.contentBean.getDisplayList()>
-						<cfset availableList=rc.contentBean.getAvailableDisplayList()>
-						<cfif rc.type eq "Gallery">
-							<cfset finder=listFindNoCase(availableList,"Image")>
-							<cfif finder>
-								<cfset availableList=listDeleteAt(availableList,finder)>
-							</cfif>
-						</cfif>			
-						<ul id="contentAvailableListSort" class="contentDisplayListSortOptions">
-							<cfloop list="#availableList#" index="i">
-								<li class="ui-state-default">#trim(i)#</li>
-							</cfloop>
-						</ul>
-									
-						<ul id="contentDisplayListSort" class="contentDisplayListSortOptions">
-							<cfloop list="#displayList#" index="i">
-								<li class="ui-state-highlight">#trim(i)#</li>
-							</cfloop>
-						</ul>
-									
-						<input type="hidden" id="contentDisplayList" value="#displayList#" name="displayList"/>
-						
-						<script>
-							//Removed from jQuery(document).ready() because it would not fire in ie7 frontend editing.
-							setContentDisplayListSort();
-						</script>
-					</div>
-			    </div>
-
-				<div class="control-group">
-			      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.recordsperpage')#</label> 
-			      <div class="controls"><select name="nextN" class="dropdown">
-					<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="r">
-						<option value="#r#" <cfif r eq rc.contentBean.getNextN()>selected</cfif>>#r#</option>
-					</cfloop>
-					</select>
-				</div>
-			    </div>
-	</cfif>
 
 	<cfif (rc.type neq 'Component' and rc.type neq 'Form') and rc.contentBean.getcontentID() neq '00000000000000000000000000000000001'>
 		<fieldset>

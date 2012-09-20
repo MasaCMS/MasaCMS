@@ -118,7 +118,7 @@
 	
 	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+      <script src="#application.configBean.getContext()#/admin/assets/js/html5.js"></script>
     <![endif]-->
     
 	<!-- Mura Admin JS -->
@@ -130,7 +130,7 @@
 	<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 	<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 	<link href="#application.configBean.getContext()#/admin/assets/css/jquery/default/jquery.ui.all.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
-	<link href="#application.configBean.getContext()#/admin/assets/css/jquery/jquery-tagselector.css?coreversion=#application.coreversion#" rel="stylesheet">
+	<!--- <link href="#application.configBean.getContext()#/admin/assets/css/jquery/jquery-tagselector.css?coreversion=#application.coreversion#" rel="stylesheet"> --->
 	
 	<!-- CK Editor/Finder -->
 	<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckeditor/ckeditor.js"></script>
@@ -226,18 +226,7 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-transition.js"></script>
-    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-alert.js"></script>
-    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-modal.js"></script>
-    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-dropdown.js"></script>
-    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-scrollspy.js"></script>
-    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-tab.js"></script>
-    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-tooltip.js"></script>
-    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-popover.js"></script>
-    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-button.js"></script>
-    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-collapse.js"></script>
-    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-carousel.js"></script>
-    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-typeahead.js"></script>
+    <script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-tagselector.js?coreversion=#application.coreversion#"></script>
   	<cfif rc.originalcircuit eq "cArch" and (rc.originalfuseaction eq "list" or rc.originalfuseaction eq "search") and (rc.moduleid eq '00000000000000000000000000000000000' or rc.moduleid eq '')>
 	<cfinclude template="/muraWRM/admin/core/views/carch/dsp_content_nav.cfm">

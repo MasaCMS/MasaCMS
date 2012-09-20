@@ -626,35 +626,6 @@ function submitForm(frm,action,msg){
 	return false;
 }
 
-// Son of Suckerfish Dropdowns
-sfHover = function() {
-	if(document.getElementById("navUtility") != null){
-		var sfEls = document.getElementById("navUtility").getElementsByTagName("LI");
-		for (var i=0; i<sfEls.length; i++) {
-			sfEls[i].onmouseover=function() {
-				this.className+=" sfhover";
-			}
-			sfEls[i].onmouseout=function() {
-				this.className=this.className.replace(new RegExp(" sfhover\\b"), "");
-			}
-		}
-	}
-}
-if (window.attachEvent) window.attachEvent("onload", sfHover);
-	
-function checkKeyPressed(evt, form)
-{
-  evt = (evt) ? evt : (window.event) ? event : null;
-  if (evt)
-  {
-    var charCode = (evt.charCode) ? evt.charCode :
-                   ((evt.keyCode) ? evt.keyCode :
-                   ((evt.which) ? evt.which : 0));
-    if (charCode == 13) document.getElementById(form).submit();
-  }    
-}
-
-
 function preview(url,targetParams){
 	
 	if(targetParams==''){

@@ -52,10 +52,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="control-group">
    	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.tags')#</label>	    
    	<div class="controls">
-   		<div id=tags class=tagSelector style="width:300px">
+   		<div id=tags class=tagSelector>
 		<cfloop list="#rc.contentBean.getTags()#" index="i">
 			<span class="tag">
-			#HTMLEditFormat(i)# <a>x</a>
+			#HTMLEditFormat(i)# <a><i class="icon-remove-sign"></i></a>
 			<input name="tags" type="hidden" value="#HTMLEditFormat(i)#">
 			</span>
 		</cfloop>

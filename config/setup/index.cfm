@@ -84,6 +84,7 @@ to your own modified versions of Mura CMS.
 <!--- db create params (bsoylu 6/6/2010)  --->
 <cfparam name="FORM.production_cfpassword" default="" />
 <cfparam name="FORM.production_databaseserver" default="localhost" />
+<cfparam name="FORM.production_databasename" default="#Application.ApplicationName#" />
 <cfparam name="FORM.auto_create" default="No" />
 <cfparam name="FORM.admin_username" default="admin" />
 <cfparam name="FORM.admin_password" default="admin" />
@@ -227,7 +228,7 @@ to your own modified versions of Mura CMS.
             sArgs.DatabaseServer=Form.production_databaseserver; //TODO: need to add form field
             sArgs.UserName=Form.production_dbusername;
             sArgs.Password=Form.production_dbpassword;
-            sArgs.DatasourceName=Application.ApplicationName;
+            sArgs.DatasourceName=Form.production_databasename;
             //call ds creation, will automatically create corresponding DB with the same name as the DS
             sReturn=objDOA.fDSCreate(argumentCollection=sArgs);
             // (bsoylu 6/6/2010) display error message
@@ -236,7 +237,7 @@ to your own modified versions of Mura CMS.
               bProcessWithMessage = false;
             } else {
               // (bsoylu 6/7/2010) the default ds name is the App name, so we reset here
-              FORM.production_datasource = Application.ApplicationName;       
+              FORM.production_datasource = Form.production_databasename;       
             };
           </cfscript>
         </cfif>

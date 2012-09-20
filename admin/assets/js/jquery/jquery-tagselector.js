@@ -14,10 +14,26 @@
 					.delegate('.tag a', 'click', function() {
 						$(this).parent().remove();
 					});
+				
 				input.keydown(function(e) {
-						if (e.keyCode === $.ui.keyCode.TAB && $(this).data('autocomplete').menu.active)
+						
+						if (e.keyCode === $.ui.keyCode.TAB && $(this).data('autocomplete').menu.active){
 							e.preventDefault();
+						}
+
+						if(e.keyCode === $.ui.keyCode.ENTER){
+							e.preventDefault();
+							
+							var tag = $('<span class="tag"/>')
+								.text(input.val() + ' ')
+								.append('<a><i class="icon-remove-sign"></i></a>')
+								.append($('<input type="hidden"/>').attr('name', name).val(input.val()))
+								.insertBefore(input);
+
+								input.val('');
+						}
 					})
+
 					.autocomplete({
 						minLength: 0,
 						source: source,
@@ -25,7 +41,7 @@
 							//<span class=tag>@jcarrascal <a>Ã—</a><input type=hidden name=tag value=1/></span>
 							var tag = $('<span class="tag"/>')
 								.text(ui.item.toString() + ' ')
-								.append('<a>x</a>')
+								.append('<a><i class="icon-remove-sign"></i></a>')
 								.append($('<input type="hidden"/>').attr('name', name).val(ui.item.id))
 								.insertBefore(input);
 
@@ -34,12 +50,14 @@
 							return true;
 						}
 					});
+
 				input.data('autocomplete')._renderItem = function(ul, item) {
 						return $('<li/>')
 							.data('item.autocomplete', item)
 							.append($('<a/>').text(item.toString()))
 							.appendTo(ul);
 					};
+
 				input.data('autocomplete')._resizeMenu = function(ul, item) {
 						var ul = this.menu.element;
 						ul.outerWidth(Math.max(

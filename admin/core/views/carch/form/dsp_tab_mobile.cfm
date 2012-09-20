@@ -44,31 +44,20 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.metadata"))/>
-<cfset tabList=listAppend(tabList,"tabMetadata")>
+<cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.mobile"))/>
+<cfset tabList=listAppend(tabList,"tabMobile")>
 <cfoutput>
-  <div id="tabMetadata" class="tab-pane fade">
+  	<div id="tabMobile" class="tab-pane fade">
 
-  <div class="control-group">
-  <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.description')#</label>
-      <div class="controls"><textarea name="metadesc" rows="8" id="metadesc">#HTMLEditFormat(rc.contentBean.getMETADesc())#</textarea></div>
-    </div>
+  	<div class="control-group">
+		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude')#</label> 
+		<div class="controls">	
+		<label class="radio inline"><input type="radio" name="mobileExclude" value="0" checked<!---<cfif rc.contentBean.getMobileExclude() eq 0> selected</cfif>--->>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.always')#</option></label>
+			<label class="radio inline"><input type="radio" name="mobileExclude" value="2"<cfif rc.contentBean.getMobileExclude() eq 2> checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.mobile')#</label>
+			<label class="radio inline"><input type="radio" name="mobileExclude" value="1"<cfif rc.contentBean.getMobileExclude() eq 1> checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.standard')#</label>
+		</div>
+	</div>
 
-  <div class="control-group">
-  <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.keywords')#</label>
-      <div class="controls"><textarea name="metakeywords" rows="8" id="metakeywords">#HTMLEditFormat(rc.contentBean.getMETAKEYWORDS())#</textarea></div>
-    </div>
-
-  <div class="control-group">
-   <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.tags')#</label>
-      <div class="controls"><input type="text" id="credits" name="tags" value="#HTMLEditFormat(rc.contentBean.getTags())#"  maxlength="255" class="textLong"></div>
-    </div>
-
-  <div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.credits')#</label>
-      <div class="controls"><input type="text" id="credits" name="credits" value="#HTMLEditFormat(rc.contentBean.getCredits())#"  maxlength="255" class="textLong"></div>
-    </div>
-
-    <span id="extendset-container-metadata" class="extendset-container"></span>
+	<span id="extendset-container-mobile" class="extendset-container"></span>
 
 </div></cfoutput>

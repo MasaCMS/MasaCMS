@@ -76,6 +76,7 @@
   z-index: 99999;
   text-align: center; /* centers in quirks and IE */
   background: transparent url('../images/dialog/bg.png');
+//  #gradient .striped(@grayDark, @angle: 45deg);
 }
 
 #frontEndToolsModalBody {
@@ -84,11 +85,11 @@
   top: 50px;
   margin: 0 auto;
   padding: 0;
-  width: 950px;
+  width: 990px;
 }
 
 #frontEndToolsModaliframe {
-  width: 950px;
+  width: 100%;
 }
 
 .modal-configurator #frontEndToolsModaliframe {
@@ -185,9 +186,9 @@
     filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",argb(@feToolBarBGStart),argb(@feToolBarBGEnd))); // IE9 and down
 
 	height: 30px !important;
-	left: 0px !important;
 	position: fixed !important;
-	top: 0 !important;
+	left: 0px !important;
+	top: 0px !important;
 	width: 100% !important;
 	z-index: 499999 !important;
 	text-align: left !important;
@@ -213,14 +214,15 @@
 	list-style: none !important;
 	margin: 0 0 0 37px !important;
 	padding: 0 !important;
-	border-right: 0 solid hsla(0,0,.33,.85);
-	border-left: 1px solid hsla(0,0,.19,.85);
+	border-right: 0 solid hsla(0,0,.33,.85) !important;
+	border-left: 1px solid hsla(0,0,.19,.85) !important;
 }
 
 #frontEndTools ul li {
 	color: rgba(255,255,255,.85) !important;
 	float: left !important;
 	height: 30px !important;
+	line-height: 30px !important;
 	margin:0 !important;
 	padding: 0 !important;
 	list-style: none !important;
@@ -229,8 +231,8 @@
 	text-shadow: rgba(0,0,0,.8) 0px -1px 0px !important;
 	background: none !important;
 	text-shadow: 0 -1px 0 rgba(0,0,0,1) !important;
-	border-left: 1px solid hsla(0,0,.33,.85);
-	border-right: 1px solid hsla(0,0,.19,.85);
+	border-left: 1px solid hsla(0,0,.33,.85) !important;
+	border-right: 1px solid hsla(0,0,.19,.85) !important;
 }
 
 #frontEndTools ul li:first-child {
@@ -242,13 +244,15 @@
 }
 
 #frontEndTools ul li a {
+	display: block !important;
 	color: rgba(255,255,255,1) !important;
 	background: transparent !important;
 	font-size: 12px !important;
-	line-height: 26px !important;
-	height: 28px !important;
+	line-height: 29px !important;
+	height: 30px !important;
 	padding: 0 1.25em 0 .75em !important;
-	text-decoration: none !important;font-weight: normal !important;
+	text-decoration: none !important;
+	font-weight: normal !important;
 	font-style: normal !important;
 	outline: 0 !important;
 	text-shadow: 0 -1px 0 rgba(0,0,0,.9) !important;
@@ -259,8 +263,11 @@
 	font-size: 16px !important;
 	text-shadow: 0 1px 0 rgba(255,255,255,.15) !important;
 	position: relative !important;
-	top: 1px !important;
+	top: 2px !important;
 	width: 1.1em !important;
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+	line-height: 1 !important;
 }
 
 #frontEndTools #adminSiteManager i {
@@ -274,14 +281,6 @@
 #frontEndTools ul li a:hover i {
 	color: @gray !important;
 	text-shadow: 0 -1px 0 rgba(0,0,0,1) !important;
-}
-
-#frontEndTools ul#addMenuDropDown li a {
-	color: rgba(255,255,255,.85) !important;
-}
-
-#frontEndTools ul#addMenuDropDown li a:hover {
-	color: #fff !important;
 }
 
 #frontEndTools ul li#adminWelcome {
@@ -319,99 +318,11 @@
 #frontEndTools ul li#adminLogOut i {
 	font-size: 13px !important;
 	color: darken(@grayDark,10%) !important;
+	line-height: 14px !important;
+	height: 16px !important;
 }
 
 #frontEndTools ul li#adminLogOut a:hover {
 	
 }
-
-/* @group Add Content Nav */
-
-#frontEndTools li ul { 
-	padding: .5em 0 !important;
-	margin: 2px 0 0 -1px !important;
-	list-style: none !important;
-	line-height: 1 !important;
-	background-image: none !important;
-	position: absolute !important;
-	background: hsla(0,0%,22%,.98) !important;
-	box-shadow: 0px 1px 6px @grayDark;
-	width: 12em !important;
-	left: -999em !important; /* using left instead of display to hide menus because display: none isn't read by screen readers */
-	border: 0 !important;
-	height: auto !important;
-	-moz-border-radius-bottomleft: 5px;
-	-webkit-border-bottom-left-radius: 5px;
-	-moz-border-radius-bottomright: 5px;
-	-webkit-border-bottom-right-radius: 5px;
-	-webkit-box-shadow: 1px 2px 5px rgba(0,0,0,.7);
-	-moz-box-shadow: 1px 2px 5px rgba(0,0,0,.7);
-	box-shadow: 1px 2px 5px rgba(0,0,0,.7) !important;
-	color:#fff !important;
-}
-
-#frontEndTools li li { /* all list items */
-	float: left !important;
-	width: 100% !important; /* width needed or else Opera goes nuts */
-	padding: 0 !important;
-	margin: 0 !important;
-	border: 0 !important;
-	}
-
-#frontEndTools li li a {
-	display: block !important;
-	width: auto !important;
-	padding: 0 1em !important;
-	margin: 1px 0 !important;
-	line-height: 1.5 !important;
-	color: @white !important;
-	text-shadow: 0 0 0 !important;
-}
-
-#frontEndTools a:active, #frontEndTools a:selected,  #frontEndTools a:visited { 
-    border: none !important;
-    outline: none !important;
-}
-
-#frontEndTools li li a i {
-	width: 1.5em !important;
-	text-shadow: 0 0 0 !important;
-	color: @grayDark !important;
-	font-size: 14px !important;
-	top: 2px !important;
-	padding-right: .5em;
-}
-
-#frontEndTools li li a#adminNewPage i {
-	font-size: 20px !important;
-	}
-
-#frontEndTools li li a:hover i {
-	color: @gray !important;
-}
-
-#frontEndTools li li a:hover {
-	background-color: @blue !important;
-	color: @white !important;
-}
-
-#frontEndTools li:hover ul, #frontEndTools li.sfhover ul { /* lists nested under hovered list items */
-	left: auto !important;
-}
-
-#frontEndTools li:hover ul a, #frontEndTools li.sfhover ul a { /* lists nested under hovered list items */
-	color: #000 !important;
-}
-
-/* @end */
-
-/* @group IE7 Fixes */
-
-*:first-child+html #frontEndTools li ul { /* http://thatnorwegianguy.wordpress.com/2007/03/20/ie7-css-filter-hack/ */
-	margin: 24px 0 0 -70px !important;
-}
-
-/* @end */
-
-/* @end */
 

@@ -77,7 +77,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfswitch expression="#rc.type#">		
 						<cfcase value="Form">
 							<cfif listFind(session.mura.memberships,'S2IsPrivate')>
-							<a class="btn" href="index.cfm?muraAction=cArch.datamanager&contentid=#URLEncodedFormat(rc.contentid)#&siteid=#URLEncodedFormat(rc.siteid)#&topid=#URLEncodedFormat(rc.topid)#&moduleid=#rc.moduleid#&type=Form&parentid=#rc.moduleid#"><i class="icon-wrench"></i>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.managedata")#</a></li>
+							<a class="btn" href="index.cfm?muraAction=cArch.datamanager&contentid=#URLEncodedFormat(rc.contentid)#&siteid=#URLEncodedFormat(rc.siteid)#&topid=#URLEncodedFormat(rc.topid)#&moduleid=#rc.moduleid#&type=Form&parentid=#rc.moduleid#"><i class="icon-wrench"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.managedata")#</a></li>
 							</cfif>
 						</cfcase>
 						</cfswitch>
