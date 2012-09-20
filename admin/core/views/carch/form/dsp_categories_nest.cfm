@@ -44,101 +44,116 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-
-<cfsilent><cfparam name="attributes.siteID" default="">
-<cfparam name="attributes.parentID" default="">
-<cfparam name="attributes.nestLevel" default="1">
-<cfparam name="request.catNo" default="0">
-<cfset rslist=application.categoryManager.getCategories(attributes.siteID,attributes.ParentID) />
-</cfsilent>
-
-<cfif rslist.recordcount>
-<ul>
-<cfoutput query="rslist">
 <cfsilent>
-<cfset request.catNo=request.catNo+1 />	
-<cfquery name="rsIsMember" dbtype="query">
-select * from attributes.rsCategoryAssign
-where categoryID='#rslist.categoryID#' and ContentHistID='#attributes.contentBean.getcontentHistID()#'
-</cfquery>
-<cfset catTrim=replace(rslist.categoryID,'-','','ALL') />
-<cfif not application.permUtility.getCategoryPerm(rslist.restrictGroups,attributes.siteid)>
-<cfset disabled=true />
-<cfelse>
-<cfset disabled=false />
-</cfif>
+	<cfparam name="attributes.siteID" default="" />
+	<cfparam name="attributes.parentID" default="" />
+	<cfparam name="attributes.nestLevel" default="1" />
+	<cfparam name="request.catNo" default="0" />
+	<cfset rslist=application.categoryManager.getCategories(attributes.siteID,attributes.ParentID) />
 </cfsilent>
-<li data-siteID="#attributes.contentBean.getSiteID()#" data-categoryid="#rslist.categoryid#" data-cattrim="#catTrim#" data-disabled="#disabled#">
-	<div class="mura-row<cfif request.catNo mod 2> alt</cfif>">
-	#rslist.name#
-	<cfif rslist.isOpen eq 1>
-		<div id="categoryLabelContainer#cattrim#" class="column" <cfif request.catNo mod 2>class="alt"</cfif>>
-			<div class="categoryassignment<cfif rsIsMember.recordcount and rsIsMember.isFeature eq 2> scheduled</cfif>">
-				<a class="<cfif not disabled>mura-quickEditItem</cfif><cfif rsIsMember.isFeature eq 2> tooltip</cfif>">
-				<cfif rsIsMember.isFeature eq '0'>
-					#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#
-				<cfelseif rsIsMember.isFeature eq '1'>
-					#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.feature')#
-				<cfelseif rsIsMember.isFeature eq '2'>
-					<a href="##" rel="tooltip" title="#HTMLEditFormat(LSDateFormat(rsIsMember.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rsIsMember.featurestop,"short")#"><i class="icon-info-sign"></i></a>
-						
+<cfif rslist.recordcount>
+	<ul class="categorylist">
+		<cfoutput query="rslist">
+			<cfsilent>
+				<cfset request.catNo=request.catNo+1 />	
+				<cfquery name="rsIsMember" dbtype="query">
+					SELECT * 
+					FROM attributes.rsCategoryAssign
+					WHERE categoryID='#rslist.categoryID#'
+						AND ContentHistID='#attributes.contentBean.getcontentHistID()#'
+				</cfquery>
+				<cfset catTrim=replace(rslist.categoryID,'-','','ALL') />
+				<cfif not application.permUtility.getCategoryPerm(rslist.restrictGroups,attributes.siteid)>
+					<cfset disabled=true />
 				<cfelse>
-					#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#
+					<cfset disabled=false />
 				</cfif>
-				</a>
+			</cfsilent>
+			<li data-siteID="#attributes.contentBean.getSiteID()#" data-categoryid="#rslist.categoryid#" data-cattrim="#catTrim#" data-disabled="#disabled#">
+				<dl class="categoryitem<cfif request.catNo mod 2> alt</cfif>">
+					<!--- title --->
+					<dt class="categorytitle">
+						<span class="indent">#HTMLEditFormat(rslist.name)#</span>
+					</dt>
+					<!--- assignment --->
+					<dd class="categoryassignment">
+						<cfif rslist.isOpen eq 1>
+							<div id="categoryLabelContainer#cattrim#">
+								<div class="categoryassignmentcontent<cfif rsIsMember.recordcount and rsIsMember.isFeature eq 2> scheduled</cfif>">
+									<!--- Quick Edit --->
+									<a class="<cfif not disabled>mura-quickEditItem</cfif>"<cfif rsIsMember.isFeature eq 2> rel="tooltip" title="#HTMLEditFormat(LSDateFormat(rsIsMember.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rsIsMember.featurestop,"short")#"</cfif>>
+										<cfswitch expression="#rsIsMember.isFeature#">
+											<cfcase value="0">
+												#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.yes"))#
+											</cfcase>
+											<cfcase value="1">
+												#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.feature'))#
+											</cfcase>
+											<cfcase value="2">
+												<i class="icon-calendar icon-large"></i>
+											</cfcase>
+											<cfdefaultcase>
+												#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.no"))#
+											</cfdefaultcase>
+										</cfswitch>
+									</a><!--- /.mura-quickEditItem --->
+									<cfif not rsIsMember.recordcount>
+										<input type="hidden" id="categoryAssign#catTrim#" name="categoryAssign#catTrim#" value=""/>
+									<cfelseif rsIsMember.recordcount and not rsIsMember.isFeature>
+										<input type="hidden" id="categoryAssign#catTrim#" name="categoryAssign#catTrim#" value="0"/>
+									<cfelseif rsIsMember.recordcount and rsIsMember.isFeature eq 1>
+										<input type="hidden" id="categoryAssign#catTrim#" name="categoryAssign#catTrim#" value="1"/>
+									<cfelseif rsIsMember.recordcount and rsIsMember.isFeature eq 2>
+										<input type="hidden" id="categoryAssign#catTrim#" name="categoryAssign#catTrim#" value="2"/>
+											<input type="hidden" id="featureStart#catTrim#" name="featureStart#catTrim#" value="#LSDateFormat(rsIsMember.featurestart,session.dateKeyFormat)#">
+										<cfif isDate(rsIsMember.featurestart)>
+											<input type="hidden" id="startDayPart#catTrim#" name="startDayPart#catTrim#" value="AM"/>
+											<cfif hour(rsIsMember.featurestart) lt 12>
+												<input type="hidden" id="startHour#catTrim#" name="startHour#catTrim#" value="#hour(rsIsMember.featurestart)#">
+												<input type="hidden" id="startDayPart#catTrim#" name="startDayPart#catTrim#" value="AM">	
+											<cfelse>
+												<input type="hidden" id="startHour#catTrim#" name="startHour#catTrim#" value="#evaluate('hour(rsIsMember.featurestart)-12')#">
+												<input type="hidden" id="startDayPart#catTrim#" name="startDayPart#catTrim#" value="PM">	
+											</cfif>
+											<input type="hidden" id="startMinute#catTrim#" name="startMinute#catTrim#" value="#minute(rsIsMember.featurestart)#">	
+										<cfelse>
+											<input type="hidden" id="startHour#catTrim#" name="startHour#catTrim#" value="">
+											<input type="hidden" id="startMinute#catTrim#" name="startMinute#catTrim#" value="">
+											<input type="hidden" id="startDayPart#catTrim#" name="startDayPart#catTrim#" value="">	
+										</cfif>
 
-				<cfif not rsIsMember.recordcount>
-					<input type="hidden" id="categoryAssign#catTrim#" name="categoryAssign#catTrim#" value=""/>
-				<cfelseif rsIsMember.recordcount and not rsIsMember.isFeature>
-					<input type="hidden" id="categoryAssign#catTrim#" name="categoryAssign#catTrim#" value="0"/>
-				<cfelseif rsIsMember.recordcount and rsIsMember.isFeature eq 1>
-					<input type="hidden" id="categoryAssign#catTrim#" name="categoryAssign#catTrim#" value="1"/>
-				<cfelseif rsIsMember.recordcount and rsIsMember.isFeature eq 2>
-					<input type="hidden" id="categoryAssign#catTrim#" name="categoryAssign#catTrim#" value="2"/>
-						<input type="hidden" id="featureStart#catTrim#" name="featureStart#catTrim#" value="#LSDateFormat(rsIsMember.featurestart,session.dateKeyFormat)#">
-					<cfif isDate(rsIsMember.featurestart)>
-						<input type="hidden" id="startDayPart#catTrim#" name="startDayPart#catTrim#" value="AM"/>
-						<cfif hour(rsIsMember.featurestart) lt 12>
-							<input type="hidden" id="startHour#catTrim#" name="startHour#catTrim#" value="#hour(rsIsMember.featurestart)#">
-							<input type="hidden" id="startDayPart#catTrim#" name="startDayPart#catTrim#" value="AM">	
-						<cfelse>
-							<input type="hidden" id="startHour#catTrim#" name="startHour#catTrim#" value="#evaluate('hour(rsIsMember.featurestart)-12')#">
-							<input type="hidden" id="startDayPart#catTrim#" name="startDayPart#catTrim#" value="PM">	
+										<input type="hidden" id="featureStop#catTrim#" name="featureStop#catTrim#" value="#LSDateFormat(rsIsMember.featureStop,session.dateKeyFormat)#">
+										<cfif isDate(rsIsMember.featureStop)>
+											<input type="hidden" id="stopDayPart#catTrim#" name="stopDayPart#catTrim#" value="AM"/>
+											<cfif hour(rsIsMember.featureStop) lt 12>
+												<input type="hidden" id="stopHour#catTrim#" name="stopHour#catTrim#" value="#hour(rsIsMember.featureStop)#">
+												<input type="hidden" id="stopDayPart#catTrim#" name="stopDayPart#catTrim#" value="AM">	
+											<cfelse>
+												<input type="hidden" id="stopHour#catTrim#" name="stopHour#catTrim#" value="#evaluate('hour(rsIsMember.featureStop)-12')#">	
+												<input type="hidden" id="stopDayPart#catTrim#" name="stopDayPart#catTrim#" value="PM">
+											</cfif>
+										
+											<input type="hidden" id="stopMinute#catTrim#" name="stopMinute#catTrim#" value="#minute(rsIsMember.featureStop)#">	
+										<cfelse>
+											<input type="hidden" id="stopHour#catTrim#" name="stopHour#catTrim#" value="">
+											<input type="hidden" id="stopMinute#catTrim#" name="stopMinute#catTrim#" value="">
+											<input type="hidden" id="stopDayPart#catTrim#" name="stopDayPart#catTrim#" value="">	
+										</cfif>
+									</cfif>
+								</div><!--- /.categoryassignmentcontent --->
+							</div><!--- /.categoryLabelContainer --->
 						</cfif>
-						<input type="hidden" id="startMinute#catTrim#" name="startMinute#catTrim#" value="#minute(rsIsMember.featurestart)#">	
-					<cfelse>
-						<input type="hidden" id="startHour#catTrim#" name="startHour#catTrim#" value="">
-						<input type="hidden" id="startMinute#catTrim#" name="startMinute#catTrim#" value="">
-						<input type="hidden" id="startDayPart#catTrim#" name="startDayPart#catTrim#" value="">	
-					</cfif>
-
-					<input type="hidden" id="featureStop#catTrim#" name="featureStop#catTrim#" value="#LSDateFormat(rsIsMember.featureStop,session.dateKeyFormat)#">
-					<cfif isDate(rsIsMember.featureStop)>
-						<input type="hidden" id="stopDayPart#catTrim#" name="stopDayPart#catTrim#" value="AM"/>
-						<cfif hour(rsIsMember.featureStop) lt 12>
-							<input type="hidden" id="stopHour#catTrim#" name="stopHour#catTrim#" value="#hour(rsIsMember.featureStop)#">
-							<input type="hidden" id="stopDayPart#catTrim#" name="stopDayPart#catTrim#" value="AM">	
-						<cfelse>
-							<input type="hidden" id="stopHour#catTrim#" name="stopHour#catTrim#" value="#evaluate('hour(rsIsMember.featureStop)-12')#">	
-							<input type="hidden" id="stopDayPart#catTrim#" name="stopDayPart#catTrim#" value="PM">
-						</cfif>
-					
-						<input type="hidden" id="stopMinute#catTrim#" name="stopMinute#catTrim#" value="#minute(rsIsMember.featureStop)#">	
-					<cfelse>
-						<input type="hidden" id="stopHour#catTrim#" name="stopHour#catTrim#" value="">
-						<input type="hidden" id="stopMinute#catTrim#" name="stopMinute#catTrim#" value="">
-						<input type="hidden" id="stopDayPart#catTrim#" name="stopDayPart#catTrim#" value="">	
-					</cfif>
+					</dd><!--- /.categoryassignment --->
+				</dl><!--- /dl --->
+				<cfif rslist.hasKids>
+					<cf_dsp_categories_nest 
+						siteID="#attributes.siteID#" 
+						parentID="#rslist.categoryID#" 
+						nestLevel="#evaluate(attributes.nestLevel +1)#" 
+						contentBean="#attributes.contentBean#"
+						rsCategoryAssign="#attributes.rsCategoryAssign#">
 				</cfif>
-			</div>
-		</div>
-	</cfif>
-</div>
-<cfif rslist.hasKids>
-	<cf_dsp_categories_nest siteID="#attributes.siteID#" parentID="#rslist.categoryID#" nestLevel="#evaluate(attributes.nestLevel +1)#" contentBean="#attributes.contentBean#"
-	rsCategoryAssign="#attributes.rsCategoryAssign#">
-</cfif>
-</li>
-</cfoutput>
-</ul>
+			</li><!--- /.categoryitem --->
+		</cfoutput>
+	</ul><!--- /.categorylist --->
 </cfif>
