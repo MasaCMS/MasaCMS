@@ -46,10 +46,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfset request.layout=false>
 <cfoutput>
-<div class="categoryassignment<cfif rc.categoryAssignment eq '2'> scheduled</cfif>">
-		<a <cfif rc.categoryAssignment eq '2'>class="mura-quickEditItem tooltip"  title="#HTMLEditFormat(LSDateFormat(rc.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rc.featurestop,"short")#"<cfelse>class="mura-quickEditItem"</cfif>>
-			<cfswitch expression="#rc.categoryAssignment#">
-			
+	<div class="categoryassignmentcontent<cfif rc.categoryAssignment eq '2'> scheduled</cfif>">
+		<a class="mura-quickEditItem "  <cfif rc.categoryAssignment eq '2'>rel="tooltip" title="#HTMLEditFormat(LSDateFormat(rc.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rc.featurestop,"short")#"<cfelse>class="mura-quickEditItem"</cfif>>
+			<cfswitch expression="#rc.categoryAssignment#">		
 			<cfcase value="0">
 				#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#
 			</cfcase>
