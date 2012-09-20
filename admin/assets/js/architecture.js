@@ -1366,7 +1366,7 @@ function initCategoryAssignments(){
 								startHour: $('#startHour' + cattrim).val(),
 								startMinute: $('#startMinute' + cattrim).val(),
 								startDayPart: $('#startDayPart' + cattrim).val(),
-								featureStop: $('#featureStart' + cattrim).val(),
+								featureStop: $('#featureStop' + cattrim).val(),
 								stopHour: $('#stopHour' + cattrim).val(),
 								stopMinute: $('#stopMinute' + cattrim).val(),
 								stopDayPart: $('#stopDayPart' + cattrim).val()
