@@ -55,8 +55,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset subtype=application.classExtensionManager.getSubTypeByName(rc.type,rc.subtype,rc.siteid)>
 
-<cfloop list="Default,Basic,Navigation,Content Objects,Categorization,Tags,Related Content,SEO,Templates,Publishing,Usage Report" index="container">
-	<cfsavecontent variable="returnsets.#replace(container,' ','','all')#">
+<cfloop list="Default,Basic,Content Objects,Categorization,Tags,Related Content,SEO,List Display Options,Publishing,Usage Report" index="container">
+	<cfset containerID=replace(container,' ','','all')>
+	<cfsavecontent variable="returnsets.#containerID#">
 	<cfset extendSets=subtype.getExtendSets(inherit=true,container=container,activeOnly=true) />
 	<cfset started=false />
 	<cfoutput>
@@ -101,13 +102,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfloop>
 	</cfif>
 
+	<!---
 	<cfif container eq 'Default'>
 		<div id="extendMessage" <cfif started>style="display:none"</cfif>>
 		<p class="notice">There are currently no extended attributes available.</p>
 		</div>
 	</cfif>
+	--->
 	</cfoutput>
 	</cfsavecontent>
+
+	<cfset returnsets[containerID]=trim(returnsets[containerID])>
 </cfloop>
 
 <cfset returnsets.hasSummary=subType.getHasSummary()>
