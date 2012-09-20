@@ -350,11 +350,12 @@ var hasBody=#subType.getHasBody()#;
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'SEO')>
 			<cfinclude template="form/dsp_tab_seo.cfm">
 			</cfif>	
-			<cfif listFindNoCase('Portal,Gallery,Calender',rc.type) and not len(tabAssignments) or listFindNocase(tabAssignments,'List Display Options')>
-				<cfinclude template="form/dsp_tab_listdisplayoptions.cfm">
-			</cfif>	
 			</cfcase>
 		</cfswitch>
+
+		<cfif listFindNoCase('Portal,Gallery,Calender',rc.type) and (not len(tabAssignments) or listFindNocase(tabAssignments,'List Display Options'))>
+				<cfinclude template="form/dsp_tab_listdisplayoptions.cfm">
+			</cfif>	
 		
 		<cfswitch expression="#rc.type#">
 		<cfcase value="Page,Portal,Calendar,Gallery">
