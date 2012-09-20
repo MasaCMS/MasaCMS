@@ -2208,4 +2208,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfreturn variables.contentUtility.doesLoadKeyExist(argumentCollection=arguments)>
 	</cffunction>
+
+	<cffunction name="getTabList" output="false">
+		<cfreturn "Basic,Mobile,Layout & Objects,Categorization,Tags,Related Content,SEO,List Display Options,Extended Attributes,Advanced,Publishing,Usage Report">
+	</cffunction>
 </cfcomponent>

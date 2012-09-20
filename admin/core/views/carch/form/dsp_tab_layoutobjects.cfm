@@ -48,11 +48,50 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfloop from="1" to="#application.settingsManager.getSite('siteID').getColumnCount()#" index="i">
   <cfparam name="request.rsContentObjects#i#.recordcount" default=0>
 </cfloop>
-<cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.contentobjects"))/>
-<cfset tabList=listAppend(tabList,"tabContentobjects")>
+<cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.layoutobjects"))/>
+<cfset tabList=listAppend(tabList,"tabLayoutObjects")>
 
 <cfoutput>
-  <div id="tabContentobjects" class="tab-pane fade">
+  <div id="tabLayoutObjects" class="tab-pane fade">
+
+      <div class="control-group">
+              <label class="control-label">
+                <cfoutput><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.layoutTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.layouttemplate')# <i class="icon-info-sign"></i></a></cfoutput>
+            </label>
+            <div class="controls">
+              <select name="template" class="dropdown">
+            <cfif rc.contentid neq '00000000000000000000000000000000001'>
+              <option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritfromparent')#</option>
+            </cfif>
+            <cfloop query="rc.rsTemplates">
+              <cfif right(rc.rsTemplates.name,4) eq ".cfm">
+                <cfoutput>
+                  <option value="#rc.rsTemplates.name#" <cfif rc.contentBean.gettemplate() eq rc.rsTemplates.name>selected</cfif>>#rc.rsTemplates.name#</option>
+                </cfoutput>
+              </cfif>
+            </cfloop>
+          </select>
+        </div>
+      </div>
+
+      <div class="control-group">
+              <label class="control-label">
+                <cfoutput><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.childTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.childtemplate')# <i class="icon-info-sign"></i></a></cfoutput>
+              </label>
+              <div class="controls">
+              <select name="childTemplate" class="dropdown">
+            <option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.none')#</option>
+            <cfloop query="rc.rsTemplates">
+              <cfif right(rc.rsTemplates.name,4) eq ".cfm">
+                <cfoutput>
+                  <option value="#rc.rsTemplates.name#" <cfif rc.contentBean.getchildTemplate() eq rc.rsTemplates.name>selected</cfif>>#rc.rsTemplates.name#</option>
+                </cfoutput>
+              </cfif>
+            </cfloop>
+          </select>
+        </div>
+    </div>
+ 
     <div class="control-group">
       <label class="control-label"> <a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.inheritanceRules"))#"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritancerules')# <i class="icon-info-sign"></i> </a> </label>
       <div class="controls">
@@ -140,7 +179,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       </div> <!--- /#editObjects--->
     </div> <!--- /.control-group --->
 
-    <span id="extendset-container-contentobjects" class="extendset-container"></span>
+    <span id="extendset-container-layoutobjects" class="extendset-container"></span>
   </div> <!--- /.tab-pane --->
   <cfinclude template="../dsp_configuratorJS.cfm">
 </cfoutput>

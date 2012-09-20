@@ -3,7 +3,51 @@
 <cfset tabList=listAppend(tabList,"tabPublishing")>
 <cfoutput>
   <div id="tabPublishing" class="tab-pane fade">
+
+
   	<cfif listFindNoCase('Page,Portal,Calendar,Gallery,File,Link',rc.type)>
+  		<div class="control-group">
+			      <div class="controls">
+			      	<label for="forceSSL" class="checkbox">
+			      	<input name="forceSSL" id="forceSSL" type="CHECKBOX" value="1" <cfif rc.contentBean.getForceSSL() eq "">checked <cfelseif rc.contentBean.getForceSSL() eq 1>checked</cfif> class="checkbox"> 
+			      	<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.makePageSecure"))#">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessltext'),application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.type#'))#
+			      	 <i class="icon-info-sign"></i></a>
+			  		</label>
+			      </div>
+			    </div>
+				
+				<cfif application.settingsManager.getSite(rc.siteid).getextranet()>
+					<div class="control-group">
+			      	<div class="controls"><label for="Restricted" class="checkbox"><input name="restricted" id="Restricted" type="checkbox" value="1"  onclick="javascript: this.checked?toggleDisplay2('rg',true):toggleDisplay2('rg',false);" <cfif rc.contentBean.getrestricted() eq 1>checked </cfif> class="checkbox">
+					#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictaccess')#</label>
+					</div> 
+			      	<div class="controls"id="rg"<cfif rc.contentBean.getrestricted() NEQ 1> style="display:none;"</cfif>>
+					<select name="restrictgroups" size="8" multiple="multiple" class="multiSelect" id="restrictGroups">
+					<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.globalsettings'))#">
+					<option value="" <cfif rc.contentBean.getrestrictgroups() eq ''>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.allowall')#</option>
+					<option value="RestrictAll" <cfif rc.contentBean.getrestrictgroups() eq 'RestrictAll'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictall')#</option>
+					</optgroup>
+					<cfquery dbtype="query" name="rsGroups">select * from rc.rsrestrictgroups where isPublic=1</cfquery>	
+					<cfif rsGroups.recordcount>
+						<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'user.membergroups'))#">
+						<cfloop query="rsGroups">
+							<option value="#rsGroups.groupname#" <cfif listfind(rc.contentBean.getrestrictgroups(),rsGroups.groupname)>Selected</cfif>>#rsGroups.groupname#</option>
+						</cfloop>
+						</optgroup>
+					</cfif>
+					<cfquery dbtype="query" name="rsGroups">select * from rc.rsrestrictgroups where isPublic=0</cfquery>	
+					<cfif rsGroups.recordcount>
+						<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'user.adminusergroups'))#">
+						<cfloop query="rsGroups">
+							<option value="#rsGroups.groupname#" <cfif listfind(rc.contentBean.getrestrictgroups(),rsGroups.groupname)>Selected</cfif>>#rsGroups.groupname#</option>
+						</cfloop>
+						</optgroup>
+					</cfif>
+					</select>
+					</div>
+			    </div>
+			</cfif>
+
   		<div class="control-group">
 		     <div class="controls">
 		      	<label for="isNav" class="checkbox">
@@ -28,20 +72,10 @@
 		</div>
 
 		<div class="control-group">
-			      <div class="controls"><label for="searchExclude" class="checkbox"><input name="searchExclude" id="searchExclude" type="CHECKBOX" value="1" <cfif rc.contentBean.getSearchExclude() eq "">checked <cfelseif rc.contentBean.getSearchExclude() eq 1>checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchexclude')#</label> 
-			     </div>
-			    </div>
-
-				<div class="control-group">
-			      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude')#</label> 
-			      <div class="controls">	
-						<label class="radio inline"><input type="radio" name="mobileExclude" value="0" checked<!---<cfif rc.contentBean.getMobileExclude() eq 0> selected</cfif>--->>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.always')#</option></label>
-						<label class="radio inline"><input type="radio" name="mobileExclude" value="2"<cfif rc.contentBean.getMobileExclude() eq 2> checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.mobile')#</label>
-						<label class="radio inline"><input type="radio" name="mobileExclude" value="1"<cfif rc.contentBean.getMobileExclude() eq 1> checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude.standard')#</label>
-					</div>
-			    </div>
- 	</cfif>
-	<cfif listFindNoCase('Component,Form',rc.type)>
+			 <div class="controls"><label for="searchExclude" class="checkbox"><input name="searchExclude" id="searchExclude" type="CHECKBOX" value="1" <cfif rc.contentBean.getSearchExclude() eq "">checked <cfelseif rc.contentBean.getSearchExclude() eq 1>checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchexclude')#</label> 
+			</div>
+		</div>
+	
 		<div class="control-group">
 	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.credits')#</label>
 	      <div class="controls"><input type="text" id="credits" name="credits" value="#HTMLEditFormat(rc.contentBean.getCredits())#"  maxlength="255" class="textLong"></div>

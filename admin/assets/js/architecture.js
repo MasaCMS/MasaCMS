@@ -751,12 +751,10 @@ function setExtendedAttributes(data){
 	});
 
 	if(r.default == ''){
-		$('#tabExtendedattributesLI').addClass('hide');
+		$('#tabExtendedAttributesLI').addClass('hide');
 	} else {
-		$('#tabExtendedattributesLI').removeClass('hide');
+		$('#tabExtendedAttributesLI').removeClass('hide');
 	}
-
-
 
 	if(!r.hassummary){
 		if(typeof hideSummaryEditor != 'undefined'){

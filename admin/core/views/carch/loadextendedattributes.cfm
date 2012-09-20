@@ -55,8 +55,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset subtype=application.classExtensionManager.getSubTypeByName(rc.type,rc.subtype,rc.siteid)>
 
-<cfloop list="Default,Basic,Content Objects,Categorization,Tags,Related Content,SEO,List Display Options,Publishing,Usage Report" index="container">
-	<cfset containerID=replace(container,' ','','all')>
+<cfloop list="#application.contentManager.getTabList()#" index="container">
+	<cfif container eq 'Extended Attributes'>
+		<cfset container='Default'>
+	</cfif>
+	<cfset containerID=REreplace(container, "[^\\\w]", "_", "all")>
 	<cfsavecontent variable="returnsets.#containerID#">
 	<cfset extendSets=subtype.getExtendSets(inherit=true,container=container,activeOnly=true) />
 	<cfset started=false />

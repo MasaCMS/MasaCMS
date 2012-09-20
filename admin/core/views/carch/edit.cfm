@@ -345,24 +345,25 @@ var hasBody=#subType.getHasBody()#;
 			</cfif>
 		</cfif>
 		
-		<cfswitch expression="#rc.type#">
-			<cfcase value="Page,Portal,Calendar,Gallery,File,Link">
+		<cfif listFindNoCase('Page,Portal,Calendar,Gallery,File,Link',rc.type)>
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'SEO')>
 			<cfinclude template="form/dsp_tab_seo.cfm">
 			</cfif>	
-			</cfcase>
-		</cfswitch>
+			<cfif  not len(tabAssignments) or listFindNocase(tabAssignments,'Mobile')>
+				<cfinclude template="form/dsp_tab_mobile.cfm">
+			</cfif>	
+		</cfif>
 
 		<cfif listFindNoCase('Portal,Gallery,Calender',rc.type) and (not len(tabAssignments) or listFindNocase(tabAssignments,'List Display Options'))>
 				<cfinclude template="form/dsp_tab_listdisplayoptions.cfm">
-			</cfif>	
+		</cfif>	
 		
 		<cfswitch expression="#rc.type#">
 		<cfcase value="Page,Portal,Calendar,Gallery">
-			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Content Objects')>
-			<cfif listFind(session.mura.memberships,'S2IsPrivate')>
-			<cfinclude template="form/dsp_tab_objects.cfm">
-			</cfif>
+			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Layout & Objects')>
+				<cfif listFind(session.mura.memberships,'S2IsPrivate')>
+					<cfinclude template="form/dsp_tab_layoutobjects.cfm">
+				</cfif>
 			</cfif>
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Categorization')>
 			<cfif application.categoryManager.getCategoryCount(rc.siteID)>
@@ -390,11 +391,6 @@ var hasBody=#subType.getHasBody()#;
 			</cfif>
 		</cfcase>
 		<cfcase value="Component">
-			<cfif rc.rsTemplates.recordcount>
-				<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Template Assignments')>
-				<cfinclude template="form/dsp_tab_templates.cfm">
-				</cfif>
-			</cfif>
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Categorization')>
 			<cfif application.categoryManager.getCategoryCount(rc.siteID)>
 			<cfinclude template="form/dsp_tab_categories.cfm">
@@ -428,7 +424,6 @@ var hasBody=#subType.getHasBody()#;
 	
 	<cfswitch expression="#rc.type#">
 		<cfcase value="Page,Portal,Calendar,Gallery,Link,File,Component">
-		<cfif isExtended>
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Extended Attributes')>
 			<cfset extendSets=application.classExtensionManager.getSubTypeByName(rc.type,rc.contentBean.getSubType(),rc.siteid).getExtendSets(activeOnly=true) />
 			<cfinclude template="form/dsp_tab_extended_attributes.cfm">
@@ -438,7 +433,6 @@ var hasBody=#subType.getHasBody()#;
 			loadExtendedAttributes('#rc.contentbean.getcontentHistID()#','#rc.type#','#rc.contentBean.getSubType()#','#rc.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');
 			</script>
 			</cfoutput>
-		</cfif>
 		</cfcase>
 	</cfswitch>
 		
@@ -479,7 +473,7 @@ var hasBody=#subType.getHasBody()#;
 		<ul class="nav nav-tabs initActiveTab">
 			<cfloop from="1" to="#listlen(tabList)#" index="t">
 			<cfset currentTab=listGetAt(tabList,t)>
-			<li<cfif currentTab eq "tabExtendedattributes"> class="hide" id="tabExtendedattributesLI"</cfif>><a href="###currentTab#" data-toggle="tab"><span>#listGetAt(tabLabelList,t)#</span></a></li>
+			<li<cfif currentTab eq "tabExtendedAttributes"> class="hide" id="tabExtendedAttributesLI"</cfif>><a href="###currentTab#" data-toggle="tab"><span>#listGetAt(tabLabelList,t)#</span></a></li>
 			</cfloop>
 		</ul>
 		<div class="tab-content">		

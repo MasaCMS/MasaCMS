@@ -536,7 +536,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 				</cfloop>
 			<cfelse>
-				<cfreturn "Basic,Content Objects,List Display Options,Categorization,Tags,Related Content,Extended Attributes,Advanced,Usage Report,SEO,Publishing"> 
+				<cfreturn getBean('contentManager').getTabList()> 
 			</cfif>
 		</cfloop>
 	</cfif>
