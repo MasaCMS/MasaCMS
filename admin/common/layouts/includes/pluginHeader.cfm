@@ -55,8 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 <cfoutput>
 <cfparam name="Cookie.fetDisplay" default="">
-<cfset variables.isIeSix=FindNoCase('MSIE 6','#CGI.HTTP_USER_AGENT#') GREATER THAN 0>
-<!-- Begin Mura Toolbar. Optional. -->
+
 <cfif not arguments.jsLibLoaded>
 <cfif arguments.jsLib eq "jquery">
 <script src="#application.configBean.getContext()#/#application.settingsmanager.getSite(session.siteid).getDisplayPoolID()#/js/jquery/jquery.js" type="text/javascript"></script>
@@ -67,22 +66,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 </cfif>
 <script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/admin.js"></script>
-<link href="#application.configBean.getContext()#/admin/assets/css/dialog.css" rel="stylesheet" type="text/css" />
-<cfif variables.isIeSix>	
-<!--------------------------------------------------------------------------------------------------------------->
-<!--- IE6 COMPATIBILITY FOR FRONT END TOOLS, ADDED BY CHRIS HAYES JUN 30 2009  CHRIS AT HAYESDATA.COM ----------->
-<!--------------------------------------------------------------------------------------------------------------->
-<link href="#application.configBean.getContext()#/admin/assets/css/dialogIE6.css" rel="stylesheet" type="text/css" />
-<script>
-	function toggleAdminToolbarIE6(){
-	<cfif arguments.jsLib eq "jquery">
-		$("##frontEndToolsIE6").animate({opacity: "toggle"});
-	<cfelse>
-		Effect.toggle("frontEndToolsIE6", "appear");
-	</cfif>
-	};
-</script>
-<cfelse>
+<link href="#application.configBean.getContext()#/admin/assets/less/admin.less" rel="stylesheet/less" type="text/css" />
+<link href="#application.configBean.getContext()#/admin/assets/less/dialog.less" rel="stylesheet/less" type="text/css" />
+<script src="#application.configBean.getContext()#/admin/assets/js/less.js" type="text/javascript" language="Javascript"></script>
+
 <script type="text/javascript">
 function toggleAdminToolbar(){
 	<cfif arguments.jslib eq "jquery">
@@ -90,26 +77,16 @@ function toggleAdminToolbar(){
 		<cfelse>Effect.toggle("frontEndTools", "appear");
 	</cfif>
 	}
-</script>		
-</cfif>
+</script>
 
-<cfif variables.isIeSix>
-	<!--- NAMED DIFFERENTLY TO USE THE IE6 COMPATIBLE dialogIE6.css --->
-	<img src="#application.configBean.getContext()#/admin/images/icons/ie6/logo_small_feTools.gif" id="frontEndToolsHandleIE6" onclick="if (document.getElementById('frontEndToolsIE6').style.display == 'none') { createCookie('FETDISPLAY','',5); } else { createCookie('FETDISPLAY','none',5); } toggleAdminToolbarIE6();" />
-	<div id="frontEndToolsIE6" style="display: #Cookie.fetDisplay#">						
-<cfelse>
-	<!--- USES STANDARD dialog.css --->
-	<img src="#application.configBean.getContext()#/admin/images/logo_small_feTools.png" id="frontEndToolsHandle" onclick="if (document.getElementById('frontEndTools').style.display == 'none') { createCookie('FETDISPLAY','',5); } else { createCookie('FETDISPLAY','none',5); } toggleAdminToolbar();" />
-	<div id="frontEndTools" style="display: #Cookie.fetDisplay#">
-</cfif>
+	<img src="#application.configBean.getContext()#/admin/assets/images/logo_small_feTools.png" id="frontEndToolsHandle" onclick="if (document.getElementById('frontEndTools').style.display == 'none') { createCookie('FETDISPLAY','',5); } else { createCookie('FETDISPLAY','none',5); } toggleAdminToolbar();" />
+	<div id="frontEndTools" class="pluginHdr" style="display: #Cookie.fetDisplay#">
 			<ul>
-				<li id="adminPlugIns"><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPlugins.list&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.plugins")#</a></li>
-				<li id="adminSiteManager"><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cArch.list&siteid=#session.siteid#&moduleid=00000000000000000000000000000000000&topid=00000000000000000000000000000000001">#application.rbFactory.getKeyValue(session.rb,"layout.sitemanager")#</a></li>
-				<li id="adminDashboard"><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cDashboard.main&siteid=#session.siteid#&span=#session.dashboardSpan#">#application.rbFactory.getKeyValue(session.rb,"layout.dashboard")#</a></li>
-				<li id="adminLogOut"><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cLogin.logout">#application.rbFactory.getKeyValue(session.rb,"layout.logout")#</a></li>
+				<li id="adminPlugIns"><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPlugins.list&siteid=#session.siteid#"><i class="icon-cogs"></i> #application.rbFactory.getKeyValue(session.rb,"layout.plugins")#</a></li>
+				<li id="adminSiteManager"><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cArch.list&siteid=#session.siteid#&moduleid=00000000000000000000000000000000000&topid=00000000000000000000000000000000001"><i class="icon-list-alt"></i> #application.rbFactory.getKeyValue(session.rb,"layout.sitemanager")#</a></li>
+				<li id="adminDashboard"><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cDashboard.main&siteid=#session.siteid#&span=#session.dashboardSpan#"><i class="icon-dashboard"></i> #application.rbFactory.getKeyValue(session.rb,"layout.dashboard")#</a></li>
+				<li id="adminLogOut"><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cLogin.logout"><i class="icon-signout"></i> #application.rbFactory.getKeyValue(session.rb,"layout.logout")#</a></li>
 				<li id="adminWelcome">#application.rbFactory.getKeyValue(session.rb,"layout.welcome")#, #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#.</li>
 			</ul>
 		</div>
-
-<!-- End Mura Toolbar -->
 </cfoutput>

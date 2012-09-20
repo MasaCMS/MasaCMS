@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif FindNoCase('Opera','#CGI.HTTP_USER_AGENT#') LESS THAN 1>
 <cfparam name="Cookie.fetDisplay" default="">
 <cfoutput>
-<link href="#application.configBean.getContext()#/admin/assets/less/dialog.less" rel="stylesheet" type="text/less" />
+<link href="#application.configBean.getContext()#/admin/assets/less/dialog.less" rel="stylesheet/less" type="text/css" />
 <script src="#application.configBean.getContext()#/admin/assets/js/less.js" type="text/javascript" language="Javascript"></script>
 
 <!--- <link href="#application.configBean.getContext()#/admin/assets/css/dialog.css" rel="stylesheet" type="text/css" /> --->
@@ -155,7 +155,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<li id="adminEditPage"><a href="#variables.editLink#" #variables.targetHook#><i class="icon-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#</a></li>
 				<cfif listFind("Page,Portal,Calendar,Gallery",request.contentBean.getType())>
 												
-						<li id="adminAddContent"><a href="#variables.newLink#" #variables.targethook# data-configurator="true"><i class="icon-plus"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.add')#&hellip;</a>						
+						<li id="adminAddContent"><a href="#variables.newLink#" #variables.targethook# data-configurator="true"><i class="icon-plus"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.add')#</a>						
 						<!---	
 						<ul id="addMenuDropDown" class="dropdown-menu">
 						<cfif request.contentBean.getType() neq 'Gallery'>
