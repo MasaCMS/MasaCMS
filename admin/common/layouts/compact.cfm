@@ -77,7 +77,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 		<!--[if lt IE 9]>
-		   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		   <script src="#application.configBean.getContext()#/admin/assets/js/html5.js"></script>
 		<![endif]-->
 
 		<!-- Le fav and touch icons -->
@@ -146,34 +146,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			);
 		</script>
 		#rc.ajax#
-
-		<style type="text/css">
-			html { overflow:hidden; }
-			.compact .container {
-				width: 930px;
-				padding: 10px;
-			}
-			.compact .span12 {
-				width: 930px;
-			}
-			.compact .tabs-left > .nav-tabs {
-				width: 130px;
-			}
-		</style>
 	</head>
 
 	<body id="#rc.originalcircuit#" class="compact">
 		<cfinclude template="includes/dialog.cfm">
-		<div class="container">
-	      	<div class="row">
-	        	<div class="span12">#body#</div>
-	    	</div> 
-		</div><!-- /container -->
+	      	<div class="main">#body#</div>
 		<cfif cgi.http_user_agent contains 'msie'>
 			<!--[if IE 6]>
 			<script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/ie6notice.js"></script>
 			<![endif]-->
 		</cfif>
+		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-tagselector.js?coreversion=#application.coreversion#"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap.min.js"></script>
 	</body>
 </html>
