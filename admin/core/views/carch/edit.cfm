@@ -441,16 +441,12 @@ var hasBody=#subType.getHasBody()#;
 		</cfif>
 		</cfcase>
 	</cfswitch>
-
-		<cfif listFindNoCase('Page,Portal,Calendar,Gallery',rc.type) and not len(tabAssignments) or listFindNocase(tabAssignments,'Templates')>
-			<cfinclude template="form/dsp_tab_templates.cfm">
-		</cfif>
 		
-		<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Advanced')>
+	<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Advanced')>
 		<cfif listFind(session.mura.memberships,'S2IsPrivate')>
 		<cfinclude template="form/dsp_tab_advanced.cfm">
 		</cfif> 
-		</cfif>
+	</cfif>
 
 		<cfoutput query="rsPluginScripts" group="pluginID">
 			<!---<cfset tabLabelList=tabLabelList & ",'#jsStringFormat(rsPluginScripts.name)#'"/>--->
