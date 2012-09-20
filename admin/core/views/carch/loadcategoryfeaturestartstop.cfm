@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset request.layout=false>
 <cfoutput>
 <div class="categoryassignment<cfif rc.categoryAssignment eq '2'> scheduled</cfif>">
-		<a class="mura-quickEditItem<cfif rc.categoryAssignment eq '2'> tooltip</cfif>">
+	<a class="btn btn-mini mura-quickEditItem<cfif rc.categoryAssignment eq '2'> tooltip</cfif>">
 		<input type="hidden" id="categoryAssign#catTrim#" name="categoryAssign#catTrim#" value="#HTMLEditFormat(rc.categoryAssignment)#"/>
 		<cfif rc.categoryAssignment eq '0'>
 			#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#

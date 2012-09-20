@@ -1335,7 +1335,7 @@ function closeQuickEdit(){
 }
 
 function initCategoryAssignments(){
-	jQuery(".mura-quickEditItem").click(
+	jQuery(".mura-quickEditItem").toggle(
 			function(event){
 				event.preventDefault();
 			
@@ -1393,7 +1393,9 @@ function initCategoryAssignments(){
 							setToolTips(".mura-quickEdit-datepicker");
 						}
 					);
-				}			
+				}, function() {
+					closeQuickEdit();
+				}		
 		);
 }
 
