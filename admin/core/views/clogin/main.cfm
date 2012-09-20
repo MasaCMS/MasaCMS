@@ -60,6 +60,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cfif>
 
+<!--- Do not change the html comment below --->
+<!-- mura-primary-login-token -->
+
 <cfif not isBlocked>
 <form novalidate="novalidate" id="loginForm" name="frmLogin" method="post" action="index.cfm" onsubmit="return submitForm(this);">
 
