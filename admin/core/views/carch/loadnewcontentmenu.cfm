@@ -49,6 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif not isDefined('rc.frontEndProxyLoc')>
 	<cfset request.layout=false>
 </cfif>
+<cfset $=request.event.getValue("MuraScope")>
 <cfoutput>
 <cfif isDefined('rc.frontEndProxyLoc')>
 <h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.selectcontenttype")#</h2>
@@ -56,24 +57,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <ul class="nav nav-pills nav-stacked">
 <cfif rc.ptype neq 'Gallery'>
 	<cfloop list="#typeList#" index="i">
-	<li class="new#i#"><a href="index.cfm?muraAction=cArch.edit&contentid=&parentid=#URLEncodedFormat(rc.contentid)#&type=#i#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#URLEncodedFormat(rc.ptype)#&compactDisplay=#URLEncodedFormat(rc.compactDisplay)#" id="new#i#Link"><i class="icon-file"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.add#lcase(i)#")#</a></li>
+	<li class="new#i#"><a href="index.cfm?muraAction=cArch.edit&contentid=&parentid=#URLEncodedFormat(rc.contentid)#&type=#i#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#URLEncodedFormat(rc.ptype)#&compactDisplay=#URLEncodedFormat(rc.compactDisplay)#" id="new#i#Link"><i class="#$.iconClassByContentType(i)#"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.add#lcase(i)#")#</a></li>
 	<cfquery name="rsItemTypes" dbtype="query">
 	select * from rsSubTypes where lower(type)='#lcase(i)#' and lower(subtype) != 'default'
 	</cfquery>
 	<cfloop query="rsItemTypes">
-	<li class="new#i#"><a href="index.cfm?muraAction=cArch.edit&contentid=&parentid=#URLEncodedFormat(rc.contentid)#&type=#i#&subType=#rsItemTypes.subType#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#URLEncodedFormat(rc.ptype)#&compactDisplay=#URLEncodedFormat(rc.compactDisplay)#" id="new#i#Link"><i class="icon-file"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.add#lcase(i)#")# / #rsItemTypes.subType#</a></li>
+	<li class="new#i#"><a href="index.cfm?muraAction=cArch.edit&contentid=&parentid=#URLEncodedFormat(rc.contentid)#&type=#i#&subType=#rsItemTypes.subType#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#URLEncodedFormat(rc.ptype)#&compactDisplay=#URLEncodedFormat(rc.compactDisplay)#" id="new#i#Link"><i class="#$.iconClassByContentType(i)#"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.add#lcase(i)#")# / #rsItemTypes.subType#</a></li>
 	</cfloop>
 	</cfloop>
-	<li class="newGalleryItemMulti"><a href="index.cfm?muraAction=cArch.multiFileUpload&contentid=&parentid=#URLEncodedFormat(rc.contentid)#&type=File&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#URLEncodedFormat(rc.ptype)#&compactDisplay=#URLEncodedFormat(rc.compactDisplay)#" id="newGalleryItemMultiLink"><i class="icon-upload"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.addmultiitems")#</a></li>
+	<li class="newGalleryItemMulti"><a href="index.cfm?muraAction=cArch.multiFileUpload&contentid=&parentid=#URLEncodedFormat(rc.contentid)#&type=File&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#URLEncodedFormat(rc.ptype)#&compactDisplay=#URLEncodedFormat(rc.compactDisplay)#" id="newGalleryItemMultiLink"><i class="#$.iconClassByContentType('Quick')#"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.addmultiitems")#</a></li>
 <cfelse>
-	<li class="newGalleryItem"><a href="index.cfm?muraAction=cArch.edit&contentid=&parentid=#URLEncodedFormat(rc.contentid)#&type=File&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#URLEncodedFormat(rc.ptype)#&compactDisplay=#URLEncodedFormat(rc.compactDisplay)#" id="newGalleryItemLink"><i class="icon-picture"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.addgalleryitem")#</a></li>
+	<li class="newGalleryItem"><a href="index.cfm?muraAction=cArch.edit&contentid=&parentid=#URLEncodedFormat(rc.contentid)#&type=File&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#URLEncodedFormat(rc.ptype)#&compactDisplay=#URLEncodedFormat(rc.compactDisplay)#" id="newGalleryItemLink"><i class="#$.iconClassByContentType('GalleryItem')#"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.addgalleryitem")#</a></li>
 	<cfquery name="rsItemTypes" dbtype="query">
 	select * from rsSubTypes where lower(type)='file' and lower(subtype) != 'default'
 	</cfquery>
 	<cfloop query="rsItemTypes">
-	<li class="newFile"><a href="index.cfm?muraAction=cArch.edit&contentid=&parentid=#URLEncodedFormat(rc.contentid)#&type=File&subType=#rsItemTypes.subType#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#URLEncodedFormat(rc.ptype)#&compactDisplay=#URLEncodedFormat(rc.compactDisplay)#" id="newGalleryItem"><i class="icon-file"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.addgalleryItem")# / #rsItemTypes.subType#</a></li>
+	<li class="newFile"><a href="index.cfm?muraAction=cArch.edit&contentid=&parentid=#URLEncodedFormat(rc.contentid)#&type=File&subType=#rsItemTypes.subType#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#URLEncodedFormat(rc.ptype)#&compactDisplay=#URLEncodedFormat(rc.compactDisplay)#" id="newGalleryItem"><i class="i#$.iconClassByContentType('GalleryItem')#"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.addgalleryItem")# / #rsItemTypes.subType#</a></li>
 	</cfloop>
-	<li class="newGalleryItemMulti"><a href="index.cfm?muraAction=cArch.multiFileUpload&contentid=&parentid=#URLEncodedFormat(rc.contentid)#&type=File&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#URLEncodedFormat(rc.ptype)#&compactDisplay=#URLEncodedFormat(rc.compactDisplay)#" id="newGalleryItemMultiLink"><i class="icon-upload"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.addmultiitems")#</a></li>
+	<li class="newGalleryItemMulti"><a href="index.cfm?muraAction=cArch.multiFileUpload&contentid=&parentid=#URLEncodedFormat(rc.contentid)#&type=File&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#URLEncodedFormat(rc.ptype)#&compactDisplay=#URLEncodedFormat(rc.compactDisplay)#" id="newGalleryItemMultiLink"><i class="#$.iconClassByContentType('Quick')#"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.addmultiitems")#</a></li>
 </cfif> 
   </ul>
 </cfoutput>
