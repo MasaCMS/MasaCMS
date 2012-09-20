@@ -148,7 +148,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<div class="control-group">
 			      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label> 
 			      	<div class="controls">
-						<select name="assets/imagesize" class="dropdown" onchange="if(this.value=='custom'){jQuery('##CustomImageOptions').fadeIn('fast')}else{jQuery('##CustomImageOptions').hide();jQuery('##CustomImageOptions').find(':input').val('AUTO');}">
+						<select name="imageSize" class="dropdown" onchange="if(this.value=='custom'){jQuery('##CustomImageOptions').fadeIn('fast')}else{jQuery('##CustomImageOptions').hide();jQuery('##CustomImageOptions').find(':input').val('AUTO');}">
 							<cfloop list="Small,Medium,Large" index="i">
 								<option value="#lcase(i)#"<cfif i eq rc.contentBean.getImageSize()> selected</cfif>>#I#</option>
 							</cfloop>

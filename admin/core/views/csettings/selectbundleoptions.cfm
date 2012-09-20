@@ -61,7 +61,7 @@ function submitBundle(){
 					jQuery(this).dialog('close');
 					//jQuery(".form-actions").hide();
 					//jQuery("##actionIndicator").show();
-					jQuery("##pluginSelectFrm").submit();
+					submitForm(document.pluginSelectFrm);
 					},
 				'NO': function() {
 					jQuery(this).dialog('close');
@@ -157,14 +157,15 @@ function checkAll (form) {
       </div>
     </div>
     
-    <div class="clearfix form-actions">
-    
     <!--- <cfif application.settingsManager.getSite(rc.siteid).getAdManager()> --->
-      <p class="notice"><strong>Note:</strong> The Advertising Module &amp; Email Broadcaster are not included in Mura Bundles.</p>
-      <!--- </cfif>  --->
+    <p class="clearfix notice"><strong>Note:</strong> The Advertising Module &amp; Email Broadcaster are not included in Mura Bundles.
+    </p>
+
+    <!--- </cfif>  --->
+    <div class="clearfix form-actions">
+    <input type="button" onClick="return submitBundle();" value="Create Bundle" class="submit btn" />
+    </div>
     
-    <input type="button" onClick="return submitBundle();" value="Create Bundle" class="submit btn" /></div>
-    <div id="actionIndicator" style="display: none;"> <img class="loadProgress" src="#application.configBean.getContext()#/admin/assets/images/progress_bar.gif"> </div>
     <input type="hidden" name="muraAction" value="cSettings.createBundle"/>
     <input type="hidden" name="siteID" value="#HTMLEditFormat(rc.siteID)#"/>
   </form>
