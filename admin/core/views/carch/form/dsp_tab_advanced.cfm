@@ -63,45 +63,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			   </div>
 			</cfif>
 
-			<cfif rc.type neq 'Component' and rc.type neq 'Form'>
-  				<div class="control-group">
-			      	<label class="control-label">
-			      		<cfoutput><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.layoutTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.layouttemplate')# <i class="icon-info-sign"></i></a></cfoutput>
-			  		</label>
-			      <div class="controls">
-			      	<select name="template" class="dropdown">
-						<cfif rc.contentid neq '00000000000000000000000000000000001'>
-							<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritfromparent')#</option>
-						</cfif>
-						<cfloop query="rc.rsTemplates">
-							<cfif right(rc.rsTemplates.name,4) eq ".cfm">
-								<cfoutput>
-									<option value="#rc.rsTemplates.name#" <cfif rc.contentBean.gettemplate() eq rc.rsTemplates.name>selected</cfif>>#rc.rsTemplates.name#</option>
-								</cfoutput>
-							</cfif>
-						</cfloop>
-					</select>
-				</div>
-			    </div>
-
-				<div class="control-group">
-			      	<label class="control-label">
-			      		<cfoutput><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.childTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.childtemplate')# <i class="icon-info-sign"></i></a></cfoutput>
-			      	</label>
-			      	<div class="controls">
-			      	<select name="childTemplate" class="dropdown">
-						<option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.none')#</option>
-						<cfloop query="rc.rsTemplates">
-							<cfif right(rc.rsTemplates.name,4) eq ".cfm">
-								<cfoutput>
-									<option value="#rc.rsTemplates.name#" <cfif rc.contentBean.getchildTemplate() eq rc.rsTemplates.name>selected</cfif>>#rc.rsTemplates.name#</option>
-								</cfoutput>
-							</cfif>
-						</cfloop>
-					</select>
-				</div>
-			  </div>
-			<cfelseif rc.contentBean.getType() eq 'Component'>
+			
+			<cfif rc.contentBean.getType() eq 'Component'>
 			<div class="control-group">
 			      	<label class="control-label">
 			      		<cfoutput><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.layoutTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.layouttemplate')#> <i class="icon-info-sign"></i></a></cfoutput>
@@ -132,38 +95,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			  		</label>
 			      </div>
 			    </div>
-				
-				<cfif application.settingsManager.getSite(rc.siteid).getextranet()>
-					<div class="control-group">
-			      	<div class="controls"><label for="Restricted" class="checkbox"><input name="restricted" id="Restricted" type="checkbox" value="1"  onclick="javascript: this.checked?toggleDisplay2('rg',true):toggleDisplay2('rg',false);" <cfif rc.contentBean.getrestricted() eq 1>checked </cfif> class="checkbox">
-					#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictaccess')#</label>
-					</div> 
-			      	<div class="controls"id="rg"<cfif rc.contentBean.getrestricted() NEQ 1> style="display:none;"</cfif>>
-					<select name="restrictgroups" size="8" multiple="multiple" class="multiSelect" id="restrictGroups">
-					<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.globalsettings'))#">
-					<option value="" <cfif rc.contentBean.getrestrictgroups() eq ''>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.allowall')#</option>
-					<option value="RestrictAll" <cfif rc.contentBean.getrestrictgroups() eq 'RestrictAll'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictall')#</option>
-					</optgroup>
-					<cfquery dbtype="query" name="rsGroups">select * from rc.rsrestrictgroups where isPublic=1</cfquery>	
-					<cfif rsGroups.recordcount>
-						<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'user.membergroups'))#">
-						<cfloop query="rsGroups">
-							<option value="#rsGroups.groupname#" <cfif listfind(rc.contentBean.getrestrictgroups(),rsGroups.groupname)>Selected</cfif>>#rsGroups.groupname#</option>
-						</cfloop>
-						</optgroup>
-					</cfif>
-					<cfquery dbtype="query" name="rsGroups">select * from rc.rsrestrictgroups where isPublic=0</cfquery>	
-					<cfif rsGroups.recordcount>
-						<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'user.adminusergroups'))#">
-						<cfloop query="rsGroups">
-							<option value="#rsGroups.groupname#" <cfif listfind(rc.contentBean.getrestrictgroups(),rsGroups.groupname)>Selected</cfif>>#rsGroups.groupname#</option>
-						</cfloop>
-						</optgroup>
-					</cfif>
-					</select>
-					</div>
-			    </div>
-				</cfif>
 				
 			</cfif>
 

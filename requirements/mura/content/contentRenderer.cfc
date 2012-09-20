@@ -944,7 +944,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteid" required="true" default="">
 	<cfargument name="contentid" required="true" default="">
 	<cfargument name="target" required="true" default="">
-	<cfargument name="targetParams" required="true" default="">
+	<cfargument name="targetParams" required="true" default="" hint="deprecated, does not do anything.  May come be re-introduced for modal params">
 	<cfargument name="querystring" required="true" default="">
 	<cfargument name="context" type="string" required="true" default="#application.configBean.getContext()#">
 	<cfargument name="stub" type="string" required="true" default="#application.configBean.getStub()#">
@@ -979,8 +979,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfswitch>
 		
 	<cfif arguments.target eq "_blank" and arguments.showMeta eq 0>
-		<cfset tp=iif(arguments.targetParams neq "",de(",'#arguments.targetParams#'"),de("")) />
-		<cfset href="javascript:newWin=window.open('#href#','NewWin#replace('#rand()#','.','')#'#tp#);newWin.focus();void(0);" />
+		<cfset href="javascript:newWin=window.open('#href#','NewWin#replace('#rand()#','.','')#');newWin.focus();void(0);" />
 	</cfif>
 
 <cfreturn href />

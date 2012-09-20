@@ -44,23 +44,75 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
+
+<!---
+	NOTES:	
+		2012.09.20 * Need to get resource bundles updated to include a) tooltips and b) Category Assignment
+--->
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.categorization"))/>
 <cfset tabList=listAppend(tabList,"tabCategorization")>
 <cfoutput>
-<div id="tabCategorization" class="tab-pane fade">
-	<div class="control-group">
-		<label class="control-label">
-			<cfoutput>
-				<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.availableCategories"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecategories')# <i class="icon-info-sign"></i>
-				</a>
-			</cfoutput>
-		</label>
-		<div class="categoryAssignment controls" id="categoryContainer">
-			<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" contentBean="#rc.contentBean#" rsCategoryAssign="#rc.rsCategoryAssign#">
-		</div>
-	</div>
-
-	<span id="extendset-container-categorization" class="extendset-container"></span>
-</div>
-<script>initCategoryAssignments();</script>
+	<div id="tabCategorization" class="tab-pane fade">
+		<div class="mura-grid stripe">
+			<dl class="mura-grid-hdr">
+				<dt class="categorytitle">
+					<a class="indent" title="Displays the category title" rel="tooltip" href="##">
+						#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecategories'))#
+						<i class="icon-info-sign"></i>
+					</a>
+				</dt>
+				<dd class="categoryassignment">
+					<a title="Displays the category assignment" rel="tooltip" href="##">
+						Category Assignment 
+						<i class="icon-info-sign"></i>
+					</a>
+				</dd>
+			</dl><!--- /.mura-grid-hdr --->
+			<div class="control-group">
+				<cf_dsp_categories_nest 
+					siteID="#rc.siteID#" 
+					parentID="" 
+					nestLevel="0" 
+					contentBean="#rc.contentBean#" 
+					rsCategoryAssign="#rc.rsCategoryAssign#">
+			</div>
+			<span id="extendset-container-categorization" class="extendset-container"></span>
+		</div><!--- /.mura-grid --->
+	</div><!--- /tabCatgeorization --->
 </cfoutput>
+<style type="text/css">
+	#tabCategorization .indent {
+		padding-left: 1em;
+	}
+	#tabCategorization li .indent {
+		padding-left: 1em;
+	}
+	#tabCategorization li li .indent {
+		padding-left: 3em;
+	}
+	#tabCategorization li li li .indent {
+		padding-left: 5em;
+	}
+	#tabCategorization li li li li .indent {
+		padding-left: 7em;
+	}
+	#tabCategorization li li li li li .indent {
+		padding-left: 9em;
+	}
+	#tabCategorization li li li li li li .indent {
+		padding-left: 11em;
+	}
+	#tabCategorization li li li li li li li .indent {
+		padding-left: 13em;
+	}
+	#tabCategorization dt {
+		line-height: 28px;
+	}
+	#tabCategorization dd.categoryassignment {
+		width: 300px;
+	}
+	#tabCategorization .scheduled .icon-large:before {
+		width:auto;
+	}
+</style>
+<script>initCategoryAssignments();</script>

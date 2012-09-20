@@ -2021,7 +2021,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="complete" type="boolean" required="true" default="false">
 		<cfargument name="showMeta" type="string" required="true" default="0">
 
-		<cfreturn variables.settingsManager.getSite(arguments.bean.getValue("siteID")).getContentRenderer().createHREF(arguments.bean.getValue("type"), arguments.bean.getValue("filename"), arguments.bean.getValue("siteID"), arguments.bean.getValue("contentID"), arguments.bean.getValue("target"), arguments.bean.getValue("targetParams"), arguments.queryString, application.configBean.getContext(), application.configBean.getStub(), application.configBean.getIndexFile(), arguments.complete, arguments.showMeta)>
+		<cfreturn variables.settingsManager.getSite(arguments.bean.getValue("siteID")).getContentRenderer().createHREF(arguments.bean.getValue("type"), arguments.bean.getValue("filename"), arguments.bean.getValue("siteID"), arguments.bean.getValue("contentID"), arguments.bean.getValue("target"), 'arguments.bean.getValue("targetParams")', arguments.queryString, application.configBean.getContext(), application.configBean.getStub(), application.configBean.getIndexFile(), arguments.complete, arguments.showMeta)>
 	</cffunction>
 
 	<cffunction name="getImageURL" output="false">
@@ -2207,5 +2207,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="fieldValue">
 
 		<cfreturn variables.contentUtility.doesLoadKeyExist(argumentCollection=arguments)>
+	</cffunction>
+
+	<cffunction name="getTabList" output="false">
+		<cfreturn "Basic,SEO,Mobile,List Display Options,Layout & Objects,Categorization,Tags,Related Content,Extended Attributes,Advanced,Publishing,Usage Report">
 	</cffunction>
 </cfcomponent>

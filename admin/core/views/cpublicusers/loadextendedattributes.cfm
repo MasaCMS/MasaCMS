@@ -68,7 +68,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfsavecontent variable="returnsets.extended">
 <cfoutput>
 <cfif arrayLen(extendSets)>
-<dl class="oneColumn"   id="extendDL">
 <cfloop from="1" to="#arrayLen(extendSets)#" index="s">	
 <cfset extendSetBean=extendSets[s]/>
 <cfif  userBean.getType() eq 2><cfset style=extendSetBean.getStyle()/><cfif not len(style)><cfset started=true/></cfif></cfif>
@@ -108,10 +107,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</fieldset>
 	</span>
 </cfloop>
-</dl>
+
 </cfif>
-<dl class="oneColumn"  id="extendMessage" <cfif started>style="display:none"</cfif>>
-<dd><br/><em>There are currently no extended attributes available.</em></dd></dl></cfoutput>
 </cfsavecontent>
 <cfsilent>
 <cfset extendSets=application.classExtensionManager.getSubTypeByName(rc.type,rc.subtype,rc.siteid).getExtendSets(inherit=true,container="Basic",activeOnly=true) />
