@@ -7,7 +7,13 @@
 
   	<cfif listFindNoCase('Page,Portal,Calendar,Gallery,File,Link',rc.type)>
   		<div class="control-group">
-			      <div class="controls">
+
+  				<div class="control-group">
+			      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.credits')#</label>
+			      <div class="controls"><input type="text" id="credits" name="credits" value="#HTMLEditFormat(rc.contentBean.getCredits())#"  maxlength="255" class="textLong"></div>
+			    </div>
+			    
+			 	<div class="controls">
 			      	<label for="forceSSL" class="checkbox">
 			      	<input name="forceSSL" id="forceSSL" type="CHECKBOX" value="1" <cfif rc.contentBean.getForceSSL() eq "">checked <cfelseif rc.contentBean.getForceSSL() eq 1>checked</cfif> class="checkbox"> 
 			      	<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.makePageSecure"))#">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessltext'),application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.type#'))#
@@ -61,14 +67,11 @@
 		<div class="control-group">
 		    <div class="controls">
 		     	<label for="Target" class="checkbox">
-		     	<input  name="target" id="Target" type="CHECKBOX" value="_blank" <cfif rc.contentBean.gettarget() eq "_blank">checked</cfif> class="checkbox" onclick="javascript: this.checked?toggleDisplay2('editTargetParams',true):toggleDisplay2('editTargetParams',false);"> 
+		     	<input  name="target" id="Target" type="CHECKBOX" value="_blank" <cfif rc.contentBean.gettarget() eq "_blank">checked</cfif> class="checkbox" > 
 		     		<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.openNewWindow"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.newwindow')#
 		     		 <i class="icon-info-sign"></i></a>
 		     	</label>
 		     </div>  
-			<div class="controls" id="editTargetParams" <cfif  rc.contentBean.gettarget() neq "_blank">style="display: none;"</cfif>>
-				<cfinclude template="dsp_buildtargetparams.cfm"> <input name="targetParams" value="#rc.contentBean.getTargetParams()#" type="hidden">
-			</div>
 		</div>
 
 		<div class="control-group">
@@ -76,11 +79,6 @@
 			</div>
 		</div>
 	
-		<div class="control-group">
-	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.credits')#</label>
-	      <div class="controls"><input type="text" id="credits" name="credits" value="#HTMLEditFormat(rc.contentBean.getCredits())#"  maxlength="255" class="textLong"></div>
-	    </div>
-
 		<div class="control-group">
 	      	<label class="control-label">
 	      		<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.contentReleaseDate"))#">
