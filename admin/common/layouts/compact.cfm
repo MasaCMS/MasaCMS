@@ -87,7 +87,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-72-precomposed.png">
 		<link rel="apple-touch-icon-precomposed" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-57-precomposed.png">
 
-
 		<script src="#application.configBean.getContext()#/admin/assets/js/admin.js" type="text/javascript" language="Javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
@@ -115,42 +114,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		#session.dateKey#
 		<script type="text/javascript">
 			var frontEndProxy;
-			
-			jQuery(document).ready(
-				function(){
-					setDatePickers(".datepicker",dtLocale);
-					setTabs(".nav-tabs",#rc.activeTab#);
-					setHTMLEditors();
-					setAccordions(".accordion",#rc.activePanel#);
-					setCheckboxTrees();
-					setColorPickers(".colorpicker");
-					setToolTips(".container");
+			jQuery(document).ready(function(){
+				setDatePickers(".datepicker",dtLocale);
+				setTabs(".nav-tabs",#rc.activeTab#);
+				setHTMLEditors();
+				setAccordions(".accordion",#rc.activePanel#);
+				setCheckboxTrees();
+				setColorPickers(".colorpicker");
+				setToolTips(".container");
 
-					if (top.location != self.location) {
-						frontEndProxy = new Porthole.WindowProxy("#session.frontEndProxyLoc##application.configBean.getContext()#/admin/assets/js/porthole/proxy.html");
+				if (top.location != self.location) {
+					frontEndProxy = new Porthole.WindowProxy("#session.frontEndProxyLoc##application.configBean.getContext()#/admin/assets/js/porthole/proxy.html");
+					frontEndProxy.postMessage("cmd=resizeFrontEndToolsModal&frameHeight=" + Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight));
+					jQuery(this).resize(function(e){
 						frontEndProxy.postMessage("cmd=resizeFrontEndToolsModal&frameHeight=" + Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight));
-						jQuery(this).resize(function(e){
-							frontEndProxy.postMessage("cmd=resizeFrontEndToolsModal&frameHeight=" + Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight));
-						});					
-					};
-
-
-					var wArch = $('##carch').width();
-					var wContainer = $('.container').width();
-					var wForm = $('##contentForm').width();
-					console.log('wArch: ' + wArch);
-					console.log('wContainer: ' + wContainer);
-					console.log('wForm: ' + wForm);
-
-				}
-			);
+					});					
+				};
+			});
 		</script>
 		#rc.ajax#
 	</head>
-
 	<body id="#rc.originalcircuit#" class="compact">
 		<cfinclude template="includes/dialog.cfm">
-	      	<div class="main">#body#</div>
+		<div class="main">#body#</div>
 		<cfif cgi.http_user_agent contains 'msie'>
 			<!--[if IE 6]>
 			<script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/ie6notice.js"></script>
