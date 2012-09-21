@@ -107,9 +107,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</fieldset>
 	</span>
 </cfloop>
-
 </cfif>
+</cfoutput>
 </cfsavecontent>
+<cfset returnsets.extended=trim(returnsets.extended)>
 <cfsilent>
 <cfset extendSets=application.classExtensionManager.getSubTypeByName(rc.type,rc.subtype,rc.siteid).getExtendSets(inherit=true,container="Basic",activeOnly=true) />
 <cfif userBean.getType() eq 2>
@@ -164,4 +165,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 </cfoutput>
 </cfsavecontent>
+<cfset returnsets.basic=trim(returnsets.basic)>
 <cfoutput>#createObject("component","mura.json").encode(returnsets)#</cfoutput>

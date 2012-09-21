@@ -46,15 +46,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfset request.layout=false>
 <cfoutput>
-<div class="categoryassignment<cfif rc.categoryAssignment eq '2'> scheduled</cfif>">
-		<a class="mura-quickEditItem<cfif rc.categoryAssignment eq '2'> tooltip</cfif>">
+	<div class="categoryassignmentcontent<cfif rc.categoryAssignment eq '2'> scheduled</cfif>">
+		<a class="mura-quickEditItem "  <cfif rc.categoryAssignment eq '2'>rel="tooltip" title="#HTMLEditFormat(LSDateFormat(rc.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rc.featurestop,"short")#"<cfelse>class="mura-quickEditItem"</cfif>>
+			<cfswitch expression="#rc.categoryAssignment#">		
+			<cfcase value="0">
+				#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#
+			</cfcase>
+			<cfcase value="1">
+				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.feature')#
+			</cfcase>
+			<cfcase value="2">
+				<i class="icon-calendar icon-large"></i> 
+			</cfcase>
+			<cfdefaultcase>
+				#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#
+			</cfdefaultcase>
+			</cfswitch>
+		</a>
 		<input type="hidden" id="categoryAssign#catTrim#" name="categoryAssign#catTrim#" value="#HTMLEditFormat(rc.categoryAssignment)#"/>
-		<cfif rc.categoryAssignment eq '0'>
-			#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#
-		<cfelseif rc.categoryAssignment eq '1'>
-			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.feature')#
-		<cfelseif rc.categoryAssignment eq '2'>
-			<a href="##" rel="tooltip" title="#HTMLEditFormat(LSDateFormat(rc.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rc.featurestop,"short")#"><i class="icon-info-sign"></i></a>
+		<cfif rc.categoryAssignment eq 2>
 			<input type="hidden" id="featureStart#catTrim#" name="featureStart#catTrim#" value="#LSDateFormat(rc.featureStart,session.dateKeyFormat)#">
 			<input type="hidden" id="startHour#catTrim#" name="startHour#catTrim#" value="#HTMLEditFormat(rc.startHour)#">
 			<input type="hidden" id="startMinute#catTrim#" name="startMinute#catTrim#" value="#HTMLEditFormat(rc.startMinute)#">
@@ -63,9 +73,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<input type="hidden" id="stopHour#catTrim#" name="stopHour#catTrim#" value="#HTMLEditFormat(rc.stopHour)#">
 			<input type="hidden" id="stopMinute#catTrim#" name="stopMinute#catTrim#" value="#HTMLEditFormat(rc.stopMinute)#">
 			<input type="hidden" id="stopDayPart#catTrim#" name="stopDayPart#catTrim#" value="#HTMLEditFormat(rc.stopDayPart)#">
-		<cfelse>
-			#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#
 		</cfif>
-	</a>
-</div>
+	</div>
 </cfoutput>

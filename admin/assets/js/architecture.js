@@ -948,8 +948,10 @@ function loadSiteManager(siteid,topid,moduleid,sortby,sortdirection,ptype,startr
 							jQuery("#sortableKids").disableSelection();
 					 	}
 					} catch(err){
-							d.html(data);
-						
+						if(data.indexOf('mura-primary-login-token') != -1){
+							location.href='./';
+						}
+						d.html(data);
 					}
 					
 					if (!activeQuickEdit) {
@@ -1016,12 +1018,11 @@ function loadSiteFlat(args)	{
 
 	jQuery.post(url + "?" + pars, args, 
 		function(data) {
-			//try{
-				//var r=eval("(" + data + ")");
-				//d.html(r.html)	
-				//} catch(err){
-					d.html(data);	
-				//}
+				
+				if(data.indexOf('mura-primary-login-token') != -1){
+					location.href='./';
+				}
+				d.html(data);
 				stripe('stripe');
 				setCheckboxTrees();
 				
@@ -1158,7 +1159,10 @@ function loadSiteSection(node, startrow)	{
 					}
 				} 
 				catch (err) {
-					node.append(data);
+					if(data.indexOf('mura-primary-login-token') != -1){
+						location.href='./';
+					}
+					node.append(data);		
 				}
 				
 				sectionLoading = false;
@@ -1205,6 +1209,9 @@ function refreshSiteSection(node, startrow)	{
 				initQuickEdits();	
 			} 
 			catch (err) {
+				if(data.indexOf('mura-primary-login-token') != -1){
+						location.href='./';
+				}
 				node.append(data);
 			}
 			
@@ -1250,6 +1257,9 @@ function initQuickEdits(){
 					dd.attr("id","selected");
 					
 					jQuery.get(url + "?" + pars, function(data){
+						if(data.indexOf('mura-primary-login-token') != -1){
+							location.href='./';
+						}
 						jQuery("#mura-quickEditor").html(data);
 						setDatePickers(".mura-quickEdit-datepicker",dtLocale,dtCh);	
 						setToolTips(".mura-quickEdit-datepicker");
@@ -1316,7 +1326,10 @@ function saveQuickEdit(){
 	jQuery("#mura-quickEditor").html('<img class="loader" src="assets/images/ajax-loader-big.gif" />');
 	
 	jQuery.post('index.cfm',pars,
-		function(data){		
+		function(data){	
+			if(data.indexOf('mura-primary-login-token') != -1){
+				location.href='./';
+			}	
 			var parentNode=node.parents("li:first");
 			if (parentNode.length) {
 				refreshSiteSection(parentNode,1)
@@ -1366,7 +1379,7 @@ function initCategoryAssignments(){
 								startHour: $('#startHour' + cattrim).val(),
 								startMinute: $('#startMinute' + cattrim).val(),
 								startDayPart: $('#startDayPart' + cattrim).val(),
-								featureStop: $('#featureStart' + cattrim).val(),
+								featureStop: $('#featureStop' + cattrim).val(),
 								stopHour: $('#stopHour' + cattrim).val(),
 								stopMinute: $('#stopMinute' + cattrim).val(),
 								stopDayPart: $('#stopDayPart' + cattrim).val()
@@ -1421,6 +1434,9 @@ function saveCategoryAssignment(){
 	jQuery.post("./index.cfm", 
 		categoryAssignment,
 		function(data){
+			if(data.indexOf('mura-primary-login-token') != -1){
+				location.href='./';
+			}
 			$('#categoryLabelContainer' + cattrim).html(data);
 			closeCategoryAssignment();
 			setToolTips(".mura-quickEdit-datepicker");
@@ -1997,6 +2013,9 @@ function addDisplayObject(objectToAdd,regionid,configure){
 				resp = eval('(' + _resp + ')');
 			} 
 			catch (err) {
+				if(_resp.indexOf('mura-primary-login-token') != -1){
+					location.href='./';
+				}
 				resp = _resp;
 			}
 			

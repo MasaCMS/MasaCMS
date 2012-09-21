@@ -59,6 +59,9 @@ function loadExtendedAttributes(baseID,type,subType,_siteID,_context,_themeAsset
 			d.html('<img class="loadProgress" src="assets/images/progress_bar.gif">');
 			jQuery.get(url + "?" + pars, 
 					function(data) {
+					if(data.indexOf('mura-primary-login-token') != -1){
+						location.href='./';
+					}
 					setExtendedAttributes(data);
 					}
 			);
@@ -71,14 +74,18 @@ function setExtendedAttributes(data){
 	var r=eval("(" + data + ")");
 	jQuery("#extendSetsDefault").html(r.extended);
 	jQuery("#extendSetsBasic").html(r.basic);
+
+	if(r.extended==''){
+		$('#tabExtendedattributesLI').addClass('hide');
+	} else{
+		$('#tabExtendedattributesLI').removeClass('hide');
+	}
 	//checkExtendSetTargeting();
 	setHTMLEditors(context,themeAssetPath);
-	setDatePickers("#extendSetsDefault .datepicker",dtLocale);
-	setDatePickers("#extendSetsBasic .datepicker",dtLocale);
-	setColorPickers("#extendSetsDefault .colorpicker");
-	setColorPickers("#extendSetsBasic .colorpicker");
-	setToolTips("#extendSetsDefault");
-	setToolTips("#extendSetsBasic");
+	setDatePickers(".tabcontent .datepicker",dtLocale);
+	setColorPickers(".tabcontent .colorpicker");
+	setToolTips(".tabcontent");
+
 }
 
 function checkExtendSetTargeting(){
