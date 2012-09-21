@@ -89,7 +89,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif application.settingsManager.getSite(rc.siteID).getExtranetPublicReg() eq 1>
 	<tr>
 		<td><cfif application.permUtility.getModulePerm('00000000000000000000000000000000008','#rc.siteid#')><a href="index.cfm?muraAction=cPublicUsers.advancedSearch&siteid=#URLEncodedFormat(rc.siteid)#&param=1&paramField1=#urlEncodedFormat('tusers.created^date')#&paramCondition1=GTE&paramCriteria1=#urlEncodedFormat(rc.startDate)#&paramRelationship1=and&inActive=">#application.rbFactory.getKeyValue(session.rb,"dashboard.memberregistrations")#</a><cfelse>#application.rbFactory.getKeyValue(session.rb,"dashboard.memberregistrations")#</cfif><span> (#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.span"),rc.span)#)</span></td>
-		<td>#application.dashboardManager.getCreatedMembers(rc.siteID,rc.startDate,rc.stopDate)#</td>
+		<td class="count">#application.dashboardManager.getCreatedMembers(rc.siteID,rc.startDate,rc.stopDate)#</td>
 	</tr>
 	</cfif>
 	<!--- <tr>

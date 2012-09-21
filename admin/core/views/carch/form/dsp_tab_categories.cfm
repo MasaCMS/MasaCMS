@@ -44,11 +44,6 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-
-<!---
-	NOTES:	
-		2012.09.20 * Need to get resource bundles updated to include a) tooltips and b) Category Assignment
---->
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.categorization"))/>
 <cfset tabList=listAppend(tabList,"tabCategorization")>
 <cfoutput>
@@ -57,13 +52,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<dl class="mura-grid-hdr">
 				<dt class="categorytitle">
 					<span class="indent">
-						#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecategories'))#
+						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecategories')#
 					</span>
 				</dt>
 				<dd class="categoryassignmentwrapper">
-					Assignment 
-					<a title="Click a button to edit the category assignment." rel="tooltip" href="##">
-						<i class="icon-info-sign"></i>
+					<a title="#application.rbFactory.getKeyValue(session.rb,'tooltip.categoryassignment')#" rel="tooltip" href="##">
+						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.assignment')# <i class="icon-info-sign"></i>
 					</a>
 				</dd>
 			</dl><!--- /.mura-grid-hdr --->
@@ -79,49 +73,4 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div><!--- /.mura-grid --->
 	</div><!--- /tabCatgeorization --->
 </cfoutput>
-<style type="text/css">
-	#tabCategorization .mura-grid-hdr dt, #tabCategorization .mura-grid-hdr dd {
-		font-weight: bold;
-	}
-	#tabCategorization .indent {
-		padding-left: 1em;
-	}
-	#tabCategorization li .indent {
-		padding-left: 1em;
-	}
-	#tabCategorization li li .indent {
-		padding-left: 3em;
-	}
-	#tabCategorization li li li .indent {
-		padding-left: 5em;
-	}
-	#tabCategorization li li li li .indent {
-		padding-left: 7em;
-	}
-	#tabCategorization li li li li li .indent {
-		padding-left: 9em;
-	}
-	#tabCategorization li li li li li li .indent {
-		padding-left: 11em;
-	}
-	#tabCategorization li li li li li li li .indent {
-		padding-left: 13em;
-	}
-	#tabCategorization dt {
-		line-height: 28px;
-	}
-	#tabCategorization dt.categorytitle {
-		width:570px;
-	}
-	#tabCategorization dd.categoryassignmentwrapper {
-		width: 150px;
-		border-right:none;
-	}
-	#tabCategorization .btn {
-		width:80px;
-	}
-	#tabCategorization a[rel="tooltip"] {
-		padding-right:6px;
-	}
-</style>
 <script>initCategoryAssignments();</script>
