@@ -90,7 +90,9 @@
 
 #frontEndToolsModaliframe {
   width: 100%;
+  min-height: 400px;
   .border-radius(5px);
+  border: 6px solid @grayDark;
 }
 
 .modal-configurator #frontEndToolsModaliframe {
@@ -103,14 +105,14 @@
 
 #frontEndToolsModalClose {
 	position: absolute;
-	top: 8px;
-	right: 10px;
+	top: 31px;
+	right: 18px;
 	color: @gray;
 	.inline-block;
-	
+	/* text-shadow: -1px -1px 0 rgba(0,0,0,.4); */
+
 	i {
-		font-size: 22px;
-		text-shadow: 0 -1px 0 @grayDark;
+		font-size: 24px;
 		}
 }
 
@@ -173,11 +175,11 @@
 #carch.compact {
 	
 	h1 {
-	font-size: @baseFontSize + 8;
+	font-size: @baseFontSize + 12;
 	line-height: 1;
 	/* color: @grayDark; */
 	border-bottom: 1px solid @grayLight !important;
-	margin-bottom: .5em;
+	margin-bottom: .75em;
 	padding-bottom: .5em;
 	}
 	
@@ -191,45 +193,61 @@
 		
 		li {
 			.inline-block;
+			position: relative;
 			line-height: 1.1;
-			width: 20%;
-			height: 80px;
-			margin: 0 1% .5em 0;
+			width: 32.25%;
+			margin: 0 1% 8px 0;
 			text-align: center;
 			
 			a {
 				color: @white;
-				padding: 2%;
+				padding: 3%;
 				display: block;
-				background: @grayDark;
-				.border-radius(3px);
-				text-shadow: 0 -1px 0 rgba(0,0,0,.6);
+				#gradient .vertical(#414141,#323232);
+				.border-radius(4px);
+				text-shadow: 0 -1px 0 rgba(0,0,0,.99);
 				}
 			
 			a:hover {
 				text-decoration: none;
-				background: @grayDarker;
-				text-shadow: 0 -1px 0 rgba(0,0,0,.9);
+				#gradient .vertical(darken(#414141,10%),darken(#323232,10%));
+				
+				i {
+					/* color: @grayDarker; */
+					}
+				
 				}
 			
 			i {
-				font-size: 46px;
+				font-size: 42px;
 				line-height: 1;
 				width: auto;
 				height: 46px;
 				display: block;
 				padding: 0;
-				margin: 0 auto 4px;
-				color: @grayLight;
+				margin: 0 auto;
+				color: @gray;
 				}
+				
+			a[rel="tooltip"] {
+				position: absolute;
+				top: 4px;
+				right: 6px;
+				display: inline !important;
+				background: transparent;
+				
+				i {
+					font-size: 15px;
+					color: @grayDark;
+					text-shadow: 0 -1px 0 rgba(0,0,0,.9);
+					}
+				}
+
 		}
 		
-		/*
-li:nth-child(4n) {
+		li:nth-child(3n) {
 			margin-right: 0;
-			background: red;
 			}
-*/
 		
 		}
 	
@@ -243,16 +261,7 @@ li:nth-child(4n) {
 @feToolBarBGEnd:	hsla(0,0,.18,.98);
 
 #frontEndTools {
-
-//	#gradient .vertical(#414141,#323232) !important; 
-    background-image: -moz-linear-gradient(top, @feToolBarBGStart, @feToolBarBGEnd); // FF 3.6+
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@feToolBarBGStart), to(@feToolBarBGEnd)); // Safari 4+, Chrome 2+
-    background-image: -webkit-linear-gradient(top, @feToolBarBGStart, @feToolBarBGEnd); // Safari 5.1+, Chrome 10+
-    background-image: -o-linear-gradient(top, @feToolBarBGStart, @feToolBarBGEnd); // Opera 11.10
-    background-image: linear-gradient(to bottom, @feToolBarBGStart, @feToolBarBGEnd); // Standard, IE10
-    background-repeat: repeat-x;
-    filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",argb(@feToolBarBGStart),argb(@feToolBarBGEnd))); // IE9 and down
-
+	#gradient .vertical(@feToolBarBGStart,@feToolBarBGEnd);
 	height: 30px !important;
 	position: fixed !important;
 	left: 0px !important;

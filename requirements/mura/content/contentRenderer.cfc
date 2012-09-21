@@ -2571,7 +2571,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfswitch expression="#arguments.type#">
 	<cfcase value="Portal">
-		<cfreturn "icon-folder-close">
+		<cfreturn "icon-folder-open">
 	</cfcase>
 	<cfcase value="Calendar">
 		<cfreturn "icon-calendar">
@@ -2586,7 +2586,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn "icon-link">
 	</cfcase>
 	<cfcase value="Quick">
-		<cfreturn "icon-upload">
+		<cfreturn "icon-upload-alt">
+	</cfcase>
+	<cfcase value="File">
+		<cfreturn "icon-paper-clip">
 	</cfcase>
 	<cfdefaultcase>
 		<cfreturn "icon-file">
