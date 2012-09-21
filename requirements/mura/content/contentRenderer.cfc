@@ -2564,4 +2564,37 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		};
 	</cfscript>
 </cffunction>
+
+<cffunction name="iconClassByContentType" outout="false">
+	<cfargument name="type">
+	<cfargument name="subtype" default="Default">
+
+	<cfswitch expression="#arguments.type#">
+	<cfcase value="Portal">
+		<cfreturn "icon-folder-open">
+	</cfcase>
+	<cfcase value="Calendar">
+		<cfreturn "icon-calendar">
+	</cfcase>
+	<cfcase value="Gallery">
+		<cfreturn "icon-th">
+	</cfcase>
+	<cfcase value="GalleryItem">
+		<cfreturn "icon-picture">
+	</cfcase>
+	<cfcase value="Link">
+		<cfreturn "icon-link">
+	</cfcase>
+	<cfcase value="Quick">
+		<cfreturn "icon-upload-alt">
+	</cfcase>
+	<cfcase value="File">
+		<cfreturn "icon-paper-clip">
+	</cfcase>
+	<cfdefaultcase>
+		<cfreturn "icon-file">
+	</cfdefaultcase>
+	</cfswitch>
+
+</cffunction>
 </cfcomponent>

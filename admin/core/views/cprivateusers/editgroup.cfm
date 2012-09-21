@@ -80,7 +80,7 @@ select * from rsSubTypes where subType <> 'Default'
 <div class="tabbable tabs-left">
 <ul class="nav nav-tabs initActiveTab">
 <li><a href="##tabBasic" onclick="return false;"><span>#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'user.basic'))#</span></a></li>
-<li><a href="##tabExtendedattributes" onclick="return false;"><span>#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'user.extendedattributes'))#</span></a></li>
+<li id="tabExtendedattributesLI" class="hide"><a href="##tabExtendedattributes" onclick="return false;"><span>#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'user.extendedattributes'))#</span></a></li>
 </ul>
 <div class="tab-content">
 <div id="tabBasic" class="tab-pane fade">

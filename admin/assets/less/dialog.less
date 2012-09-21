@@ -90,30 +90,35 @@
 
 #frontEndToolsModaliframe {
   width: 100%;
+  min-height: 400px;
+  .border-radius(5px);
+  border: 6px solid @grayDark;
 }
 
 .modal-configurator #frontEndToolsModaliframe {
-  width: 430px !important;
+  width: 600px !important;
 }
 
 .modal-configurator #frontEndToolsModalBody {
-  width: 430px;
+  width: 600px;
 }
-
-/*This doesn't work so I'm adding a border on the iframe above to fake it*/
-/*.modal-configurator #frontEndToolsModalBody form {
-  width: 410px !important;
-}*/
 
 #frontEndToolsModalClose {
 	position: absolute;
-	display: block;
-	top: -1px;
-	right: -32px;
-	height: 33px;
-	width: 31px;
-	text-indent: -9999px;
-	background: transparent url('../images/btn_close_modal.png') no-repeat right center;
+	top: 35px;
+	right: 18px;
+	color: @gray;
+	.inline-block;
+	/* text-shadow: -1px -1px 0 rgba(0,0,0,.4); */
+
+	i {
+		font-size: 24px;
+		}
+}
+
+#frontEndToolsModalClose:hover {
+	text-decoration: none;
+	color: @grayDark;
 }
 
 #shadowbox_container {
@@ -167,6 +172,92 @@
 	top: -10px;
 }
 
+#carch.compact {
+	
+	h1 {
+	font-size: 26;
+	line-height: 1;
+	/* color: @grayDark; */
+	/* border-bottom: 1px solid @grayLight !important; */
+	margin-bottom: .75em;
+	/* padding-bottom: .5em; */
+	padding-right: 28px;
+	}
+	
+	.add-content-ui {
+		
+		ul {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			}
+		
+		li {
+			.inline-block;
+			.box-sizing(border-box);
+			position: relative;
+			line-height: 1.1;
+			width: 32.25%;
+			margin: 0 1% 8px 0;
+			text-align: center;
+			
+			a {
+				.btn-alt;
+				display: block;
+				}
+			
+			a:hover {
+				text-decoration: none;
+				#gradient .vertical(darken(#414141,10%),darken(#323232,10%));
+				
+				i {
+					color: @white;
+					}
+				
+				span {
+					color: @gray;
+					}
+				
+				}
+			
+			i {
+				font-size: 42px;
+				line-height: 1;
+				width: auto;
+				height: 41px;
+				display: block;
+				padding: 0;
+				margin: 0 auto;
+				color: @gray;
+				}
+				
+			a[rel="tooltip"] {
+				position: absolute;
+				top: 4px;
+				right: 6px;
+				display: inline-block !important;
+				height: 15px;
+				background: transparent;
+				border: 0;
+				z-index: 10;
+				
+				i {
+					font-size: 15px;
+					color: @grayDark;
+					text-shadow: 0 -1px 0 rgba(0,0,0,.9);
+					}
+				}
+
+		}
+		
+		li:nth-child(3n) {
+			margin-right: 0;
+			}
+		
+		}
+	
+}
+
 /* @end */
 
 /* @group Toolbar */
@@ -175,16 +266,7 @@
 @feToolBarBGEnd:	hsla(0,0,.18,.98);
 
 #frontEndTools {
-
-//	#gradient .vertical(#414141,#323232) !important; 
-    background-image: -moz-linear-gradient(top, @feToolBarBGStart, @feToolBarBGEnd); // FF 3.6+
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@feToolBarBGStart), to(@feToolBarBGEnd)); // Safari 4+, Chrome 2+
-    background-image: -webkit-linear-gradient(top, @feToolBarBGStart, @feToolBarBGEnd); // Safari 5.1+, Chrome 10+
-    background-image: -o-linear-gradient(top, @feToolBarBGStart, @feToolBarBGEnd); // Opera 11.10
-    background-image: linear-gradient(to bottom, @feToolBarBGStart, @feToolBarBGEnd); // Standard, IE10
-    background-repeat: repeat-x;
-    filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",argb(@feToolBarBGStart),argb(@feToolBarBGEnd))); // IE9 and down
-
+	#gradient .vertical(@feToolBarBGStart,@feToolBarBGEnd);
 	height: 30px !important;
 	position: fixed !important;
 	left: 0px !important;
@@ -325,4 +407,6 @@
 #frontEndTools ul li#adminLogOut a:hover {
 	
 }
+
+// Add Content 
 

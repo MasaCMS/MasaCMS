@@ -45,7 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<div id="alertDialog" title="Alert" class="hide">
-	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><span id="alertDialogMessage"></span></p>
+<div id="alertDialog" title="Alert" class="notice hide">
+	<span id="alertDialogMessage"></span>
 </div>
 </cfoutput>
