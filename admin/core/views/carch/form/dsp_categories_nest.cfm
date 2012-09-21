@@ -76,24 +76,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<span class="indent">#HTMLEditFormat(rslist.name)#</span>
 					</dt>
 					<!--- assignment --->
-					<dd class="categoryassignment">
+					<dd class="categoryassignmentwrapper">
 						<cfif rslist.isOpen eq 1>
 							<div id="categoryLabelContainer#cattrim#">
-								<div class="categoryassignmentcontent<cfif rsIsMember.recordcount and rsIsMember.isFeature eq 2> scheduled</cfif>">
+
+								<div class="categoryassignment<cfif rsIsMember.recordcount and rsIsMember.isFeature eq 2> scheduled</cfif>">
 									<!--- Quick Edit --->
-									<a class="<cfif not disabled>mura-quickEditItem</cfif>"<cfif rsIsMember.isFeature eq 2> rel="tooltip" title="#HTMLEditFormat(LSDateFormat(rsIsMember.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rsIsMember.featurestop,"short")#"</cfif>>
+									<a class="btn btn-mini dropdown-toggle<cfif not disabled> mura-quickEditItem</cfif>"<cfif rsIsMember.isFeature eq 2> rel="tooltip" title="#HTMLEditFormat(LSDateFormat(rsIsMember.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rsIsMember.featurestop,"short")#"</cfif>>
 										<cfswitch expression="#rsIsMember.isFeature#">
 											<cfcase value="0">
-												#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.yes"))#
+												#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#
 											</cfcase>
 											<cfcase value="1">
-												#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.feature'))#
+												#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.feature')#
 											</cfcase>
 											<cfcase value="2">
-												<i class="icon-calendar icon-large"></i>
+												<i class="icon-calendar"></i>
 											</cfcase>
 											<cfdefaultcase>
-												#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.no"))#
+												#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#
 											</cfdefaultcase>
 										</cfswitch>
 									</a><!--- /.mura-quickEditItem --->
@@ -121,7 +122,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											<input type="hidden" id="startMinute#catTrim#" name="startMinute#catTrim#" value="">
 											<input type="hidden" id="startDayPart#catTrim#" name="startDayPart#catTrim#" value="">	
 										</cfif>
-
+										<!--- feature stop --->
 										<input type="hidden" id="featureStop#catTrim#" name="featureStop#catTrim#" value="#LSDateFormat(rsIsMember.featureStop,session.dateKeyFormat)#">
 										<cfif isDate(rsIsMember.featureStop)>
 											<input type="hidden" id="stopDayPart#catTrim#" name="stopDayPart#catTrim#" value="AM"/>
@@ -132,7 +133,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 												<input type="hidden" id="stopHour#catTrim#" name="stopHour#catTrim#" value="#evaluate('hour(rsIsMember.featureStop)-12')#">	
 												<input type="hidden" id="stopDayPart#catTrim#" name="stopDayPart#catTrim#" value="PM">
 											</cfif>
-										
 											<input type="hidden" id="stopMinute#catTrim#" name="stopMinute#catTrim#" value="#minute(rsIsMember.featureStop)#">	
 										<cfelse>
 											<input type="hidden" id="stopHour#catTrim#" name="stopHour#catTrim#" value="">

@@ -46,12 +46,44 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.tags"))/>
 <cfset tabList=listAppend(tabList,"tabTags")>
+<cfset tags=$.getBean('contentGateway').getTagCloud(siteid=$.event('siteID')) />
+<div id="tabTags" class="tab-pane fade">
 <cfoutput>
- <div id="tabTags" class="tab-pane fade">
-
 <div class="control-group">
    	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.tags')#</label>	    
    	<div class="controls">
+   		<cfif tags.recordcount>
+   		<div id="svTagCloud">	
+			<cfsilent>
+				<cfset tags=$.getBean('contentGateway').getTagCloud($.event('siteID')) />
+				<cfset tagValueArray = ListToArray(ValueList(tags.tagCount))>
+				<cfset max = ArrayMax(tagValueArray)>
+				<cfset min = ArrayMin(tagValueArray)>
+				<cfset diff = max - min>
+				<cfset distribution = diff>
+				<cfset rbFactory=$.siteConfig().getRBFactory()>
+			</cfsilent>	
+			<ol>
+				<cfloop query="tags"><cfsilent>
+						<cfif tags.tagCount EQ min>
+						<cfset class="not-popular">
+					<cfelseif tags.tagCount EQ max>
+						<cfset class="ultra-popular">
+					<cfelseif tags.tagCount GT (min + (distribution/2))>
+						<cfset class="somewhat-popular">
+					<cfelseif tags.tagCount GT (min + distribution)>
+						<cfset class="mediumTag">
+					<cfelse>
+						<cfset class="not-very-popular">
+					</cfif>
+				
+					<cfset args = ArrayNew(1)>
+				    <cfset args[1] = tags.tagcount>
+				</cfsilent><li class="#class#"><span><cfif tags.tagcount gt 1> #rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemsare'), args)#<cfelse>#rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemis'), args)#</cfif> tagged with </span><a class="tag<cfif listFind(rc.contentBean.getTags(),tags.tag)> active</cfif>">#HTMLEditFormat(tags.tag)#</a></li>
+				</cfloop>
+			</ol>
+		</div>
+		</cfif>
    		<div id=tags class=tagSelector>
 		<cfloop list="#rc.contentBean.getTags()#" index="i">
 			<span class="tag">
@@ -63,10 +95,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
    </div>
 </div>
-
-<cfsilent>
-	<cfset tags=$.getBean('contentGateway').getTagCloud(siteid=$.event('siteID')) />
-</cfsilent>	
 
 <script>
 	<cfif tags.recordcount>
