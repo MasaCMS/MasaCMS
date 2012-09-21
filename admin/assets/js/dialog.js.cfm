@@ -65,7 +65,7 @@
 		
 		jQuery("##frontEndToolsModalTarget").html('<div id="frontEndToolsModalContainer" class="' + modalClass + '">' +
 		'<div id="frontEndToolsModalBody">' +
-		'<a id="frontEndToolsModalClose" style="display:none;" href="javascript:closeFrontEndToolsModal();">Close</a>' +
+		'<a id="frontEndToolsModalClose" style="display:none;" href="javascript:closeFrontEndToolsModal();"><i class="icon-remove-sign"></i></a>' +
 		'<iframe src="' + src + '" id="frontEndToolsModaliframe" scrolling="false" frameborder="0" style="overflow:hidden" name="frontEndToolsModaliframe"></iframe>' +
 		'</div>' +
 		'</div>');

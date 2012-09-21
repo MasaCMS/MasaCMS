@@ -75,7 +75,7 @@
   left: 0;
   z-index: 99999;
   text-align: center; /* centers in quirks and IE */
-  background: transparent url('../images/bg-modal.png');
+  background: transparent url('../images/dialog/bg.png');
 //  #gradient .striped(@grayDark, @angle: 45deg);
 }
 
@@ -90,6 +90,7 @@
 
 #frontEndToolsModaliframe {
   width: 100%;
+  .border-radius(5px);
 }
 
 .modal-configurator #frontEndToolsModaliframe {
@@ -100,20 +101,22 @@
   width: 600px;
 }
 
-/*This doesn't work so I'm adding a border on the iframe above to fake it*/
-/*.modal-configurator #frontEndToolsModalBody form {
-  width: 410px !important;
-}*/
-
 #frontEndToolsModalClose {
 	position: absolute;
-	display: block;
-	top: -1px;
-	right: -32px;
-	height: 33px;
-	width: 31px;
-	text-indent: -9999px;
-	background: transparent url('../images/btn_close_modal.png') no-repeat right center;
+	top: 8px;
+	right: 10px;
+	color: @gray;
+	.inline-block;
+	
+	i {
+		font-size: 22px;
+		text-shadow: 0 -1px 0 @grayDark;
+		}
+}
+
+#frontEndToolsModalClose:hover {
+	text-decoration: none;
+	color: @grayDark;
 }
 
 #shadowbox_container {
@@ -165,6 +168,71 @@
 	position: absolute;
 	left: -10px;
 	top: -10px;
+}
+
+#carch.compact {
+	
+	h1 {
+	font-size: @baseFontSize + 8;
+	line-height: 1;
+	/* color: @grayDark; */
+	border-bottom: 1px solid @grayLight !important;
+	margin-bottom: .5em;
+	padding-bottom: .5em;
+	}
+	
+	.add-content-ui {
+		
+		ul {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			}
+		
+		li {
+			.inline-block;
+			line-height: 1.1;
+			width: 20%;
+			height: 80px;
+			margin: 0 1% .5em 0;
+			text-align: center;
+			
+			a {
+				color: @white;
+				padding: 2%;
+				display: block;
+				background: @grayDark;
+				.border-radius(3px);
+				text-shadow: 0 -1px 0 rgba(0,0,0,.6);
+				}
+			
+			a:hover {
+				text-decoration: none;
+				background: @grayDarker;
+				text-shadow: 0 -1px 0 rgba(0,0,0,.9);
+				}
+			
+			i {
+				font-size: 46px;
+				line-height: 1;
+				width: auto;
+				height: 46px;
+				display: block;
+				padding: 0;
+				margin: 0 auto 4px;
+				color: @grayLight;
+				}
+		}
+		
+		/*
+li:nth-child(4n) {
+			margin-right: 0;
+			background: red;
+			}
+*/
+		
+		}
+	
 }
 
 /* @end */
@@ -326,4 +394,5 @@
 	
 }
 
-// 
+// Add Content 
+
