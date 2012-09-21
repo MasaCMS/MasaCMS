@@ -397,7 +397,7 @@ select * from rsSubTypes where subType <> 'Default'
 <div class="tabbable tabs-left">
 <ul class="nav nav-tabs initActiveTab">
 <cfloop from="1" to="#listlen(tabList)#" index="t">
-<li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
+<li<cfif listGetAt(tabList,t) eq 'tabExtendedattributes'>  id="tabExtendedattributesLI" class="hide"</cfif>><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
 </cfloop>
 </ul>
 <div class="tab-content">
