@@ -56,14 +56,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="mura-grid stripe">
 			<dl class="mura-grid-hdr">
 				<dt class="categorytitle">
-					<a class="indent" title="Displays the category title" rel="tooltip" href="##">
+					<span class="indent">
 						#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecategories'))#
-						<i class="icon-info-sign"></i>
-					</a>
+					</span>
 				</dt>
-				<dd class="categoryassignment">
-					<a title="Displays the category assignment" rel="tooltip" href="##">
-						Category Assignment 
+				<dd class="categoryassignmentwrapper">
+					Assignment 
+					<a title="Click a button to edit the category assignment." rel="tooltip" href="##">
 						<i class="icon-info-sign"></i>
 					</a>
 				</dd>
@@ -81,6 +80,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div><!--- /tabCatgeorization --->
 </cfoutput>
 <style type="text/css">
+	#tabCategorization .mura-grid-hdr dt, #tabCategorization .mura-grid-hdr dd {
+		font-weight: bold;
+	}
 	#tabCategorization .indent {
 		padding-left: 1em;
 	}
@@ -108,11 +110,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	#tabCategorization dt {
 		line-height: 28px;
 	}
-	#tabCategorization dd.categoryassignment {
-		width: 300px;
+	#tabCategorization dt.categorytitle {
+		width:570px;
 	}
-	#tabCategorization .scheduled .icon-large:before {
-		width:auto;
+	#tabCategorization dd.categoryassignmentwrapper {
+		width: 150px;
+		border-right:none;
+	}
+	#tabCategorization .btn {
+		width:80px;
+	}
+	#tabCategorization a[rel="tooltip"] {
+		padding-right:6px;
 	}
 </style>
 <script>initCategoryAssignments();</script>
