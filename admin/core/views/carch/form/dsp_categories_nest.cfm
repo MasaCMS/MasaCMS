@@ -85,16 +85,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<a class="btn btn-mini dropdown-toggle<cfif not disabled> mura-quickEditItem</cfif>"<cfif rsIsMember.isFeature eq 2> rel="tooltip" title="#HTMLEditFormat(LSDateFormat(rsIsMember.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rsIsMember.featurestop,"short")#"</cfif>>
 										<cfswitch expression="#rsIsMember.isFeature#">
 											<cfcase value="0">
-												#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.yes"))#
+												#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#
 											</cfcase>
 											<cfcase value="1">
-												#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.feature'))#
+												#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.feature')#
 											</cfcase>
 											<cfcase value="2">
 												<i class="icon-calendar"></i>
 											</cfcase>
 											<cfdefaultcase>
-												#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.no"))#
+												#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#
 											</cfdefaultcase>
 										</cfswitch>
 									</a><!--- /.mura-quickEditItem --->

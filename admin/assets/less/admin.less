@@ -257,7 +257,59 @@ img#assocImage {
 	}
 	
 /* @end */
+
+/* Categorization Tab */
+#tabCategorization {
+	.mura-grid-hdr {
+		dt, dd { font-weight: bold; }
+	}
+
+	.btn { width:80px; }
+
+	a[rel="tooltip"] { padding-right:6px; }
+
+
+	dl {
+		dt {
+			line-height: 28px;
+			&.categorytitle { 
+				width:570px;
+			}
+		}
+		dd.categoryassignmentwrapper {
+			width: 150px;
+			border-right:none;
+		}
+	}
+
+	.indent { padding-left: 1em; }
 	
+	li {
+		cursor: default;
+		.indent {
+			padding-left: 1em;
+		}
+		li .indent {
+			padding-left: 3em;
+		}
+		li li .indent {
+			padding-left: 5em;
+		}
+		li li li .indent {
+			padding-left: 7em;
+		}
+		li li li li .indent {
+			padding-left: 9em;
+		}
+		li li li li li .indent {
+			padding-left: 11em;
+		}
+		li li li li li li .indent {
+			padding-left: 13em;
+		}
+	}
+}
+/* End #tabCategorization */
 
 } /* End .mura */
 
