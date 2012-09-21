@@ -181,6 +181,7 @@
 	border-bottom: 1px solid @grayLight !important;
 	margin-bottom: .75em;
 	padding-bottom: .5em;
+	padding-right: 28px;
 	}
 	
 	.add-content-ui {
@@ -193,6 +194,7 @@
 		
 		li {
 			.inline-block;
+			.box-sizing(border-box);
 			position: relative;
 			line-height: 1.1;
 			width: 32.25%;
@@ -200,12 +202,8 @@
 			text-align: center;
 			
 			a {
-				color: @white;
-				padding: 3%;
+				.btn-alt;
 				display: block;
-				#gradient .vertical(#414141,#323232);
-				.border-radius(4px);
-				text-shadow: 0 -1px 0 rgba(0,0,0,.99);
 				}
 			
 			a:hover {
@@ -213,7 +211,11 @@
 				#gradient .vertical(darken(#414141,10%),darken(#323232,10%));
 				
 				i {
-					/* color: @grayDarker; */
+					color: @white;
+					}
+				
+				span {
+					color: @gray;
 					}
 				
 				}
@@ -222,7 +224,7 @@
 				font-size: 42px;
 				line-height: 1;
 				width: auto;
-				height: 46px;
+				height: 41px;
 				display: block;
 				padding: 0;
 				margin: 0 auto;
@@ -233,8 +235,11 @@
 				position: absolute;
 				top: 4px;
 				right: 6px;
-				display: inline !important;
+				display: inline-block !important;
+				height: 15px;
 				background: transparent;
+				border: 0;
+				z-index: 10;
 				
 				i {
 					font-size: 15px;
