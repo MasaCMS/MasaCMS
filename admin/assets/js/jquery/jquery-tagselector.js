@@ -21,7 +21,7 @@
 							e.preventDefault();
 						}
 
-						if(e.keyCode === $.ui.keyCode.ENTER){
+						if(e.keyCode === $.ui.keyCode.ENTER && !$(this).data('autocomplete').menu.active){
 							e.preventDefault();
 							
 							var tag = $('<span class="tag"/>')
