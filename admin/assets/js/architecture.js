@@ -186,13 +186,15 @@ function openNewContentMenu(contentid,siteid,topid,parentid,type){
 			jQuery("#newContentMenuContainer").dialog({
 				resizable: true,
 				modal: true,
-				width: 400,
+				width: 552,
 				position: getDialogPosition(),
-				buttons: {
+				/*
+buttons: {
 					Cancel: function() {
 							jQuery( this ).dialog( "close" );
 					}
 				},
+*/
 				open: function(){
 					jQuery("#ui-dialog-title-newContentMenuContainer").html(newContentMenuTitle);
 					jQuery("#newContentMenuContainer").html('<div class="ui-dialog-content ui-widget-content"><img src="./assets/images/progress_bar.gif"></div>');
@@ -1348,7 +1350,7 @@ function closeQuickEdit(){
 }
 
 function initCategoryAssignments(){
-	jQuery(".mura-quickEditItem").toggle(
+	jQuery(".mura-quickEditItem").click(
 			function(event){
 				event.preventDefault();
 			
@@ -1406,9 +1408,7 @@ function initCategoryAssignments(){
 							setToolTips(".mura-quickEdit-datepicker");
 						}
 					);
-				}, function() {
-					closeQuickEdit();
-				}		
+				}			
 		);
 }
 
