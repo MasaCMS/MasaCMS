@@ -184,7 +184,7 @@ function openNewContentMenu(contentid,siteid,topid,parentid,type){
 			jQuery("body").append('<div id="newContentMenuContainer" title="Loading..." style="display:none"><div id="newContentMenu"><img src="assets/images/progress_bar.gif"></div></div>');
 
 			jQuery("#newContentMenuContainer").dialog({
-				resizable: true,
+				resizable: false,
 				modal: true,
 				width: 552,
 				position: getDialogPosition(),
