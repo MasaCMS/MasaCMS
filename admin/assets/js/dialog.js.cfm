@@ -20,26 +20,16 @@
 			if (parameters["cmd"] == "setWindowMode") {			
 				if(parameters["mode"]=='configurator'){
 					frontEndModalWidth=frontEndModalWidthConfigurator;
+				} else if(parameters["mode"]=='custom'){
+					frontEndModalWidth=decodeURIComponent(parameters["width"]);
 				} else {
 					frontEndModalWidth=frontEndModalWidthStandard;
 				}
 				resizeFrontEndToolsModal();	
-			/*
-			} else if(parameters["cmd"] == "resizeWindow") {			
-				
-				if(jQuery.isNumeric(parameters["width"])){
-					frontEndModalWidth=parameters["width"];
-				}
-				if(jQuery.isNumeric(parameters["height"])){
-					frontEndModalHeight=parameters["height"];
-				}
-
-				resizeFrontEndToolsModal();	
-			*/
 			} else if(parameters["cmd"] == "setLocation"){
 				window.location=decodeURIComponent(parameters["location"]);
 			} else if(parameters["cmd"] == "resizeFrontEndToolsModal"){
-				resizeFrontEndToolsModal(decodeURIComponent(parameters["frameHeight"]));
+				resizeFrontEndToolsModal(decodeURIComponent(parameters["height"]));
 			}
 		}			
 	}
