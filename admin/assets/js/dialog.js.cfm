@@ -17,13 +17,22 @@
 			
 			var parameters = Porthole.WindowProxy.splitMessageParameters(messageEvent.data);
 			
-			if (parameters["cmd"] == "setWindowMode") {
-				if (parameters["mode"] == "configurator") {
-					frontEndModalIsConfigurator = true;
+			if (parameters["cmd"] == "setWindowMode") {			
+				if(parameters["mode"]=='configurator'){
+					frontEndModalWidth=frontEndModalWidthConfigurator;
+				} else {
+					frontEndModalWidth=frontEndModalWidthStandard;
 				}
-				else {
-					frontEndModalIsConfigurator = false;
+				resizeFrontEndToolsModal();	
+			} else if(parameters["cmd"] == "resizeWindow") {			
+				
+				if(jQuery.isNumeric(parameters["width"])){
+					frontEndModalWidth=parameters["width"];
 				}
+				if(jQuery.isNumeric(parameters["height"])){
+					frontEndModalHeight=parameters["height"];
+				}
+
 				resizeFrontEndToolsModal();	
 			} else if(parameters["cmd"] == "setLocation"){
 				window.location=decodeURIComponent(parameters["location"]);
@@ -44,26 +53,37 @@
 	
 	
 	<cfif $.getJsLib() eq "jquery">
+	var frontEndModalWidthStandard=990;
+	var frontEndModalWidthConfigurator=600;
 	var frontEndModalHeight=0;
-	var frontEndModalIsConfigurator=false;
-	
+	var frontEndModalWidth=0;
+
 	function openFrontEndToolsModal(a){
 		var src=a.href + "&frontEndProxyLoc=" + frontEndProxyLoc;
 		var isModal=jQuery(a).attr("data-configurator");
-		var modalClass="";
+		var width=jQuery(a).attr("data-configurator-width");
+		var height=jQuery(a).attr("data-configurator-height");
 		
-		if (isModal == undefined) {
-			frontEndModalIsConfigurator = false;
-		} else if (isModal == "true") {
-			frontEndModalIsConfigurator = true;
-			modalClass="modal-configurator";
-		} else {
-			frontEndModalIsConfigurator = false;
+		if(jQuery.isNumeric(width)){
+			frontEndModalWidth = width;
+		}
+		if(jQuery.isNumeric(height)){
+			frontEndModalHeight = height;
+		}
+
+		if(!frontEndModalHeight){
+			if (isModal == undefined) {
+				frontEndModalWidth = frontEndModalWidthStandard;
+			} else if (isModal == "true") {
+				frontEndModalWidth=frontEndModalWidthConfigurator;
+			} else {
+				frontEndModalWidth = frontEndModalWidthStandard;
+			}
 		}
 		
 		closeFrontEndToolsModal();
 		
-		jQuery("##frontEndToolsModalTarget").html('<div id="frontEndToolsModalContainer" class="' + modalClass + '">' +
+		jQuery("##frontEndToolsModalTarget").html('<div id="frontEndToolsModalContainer">' +
 		'<div id="frontEndToolsModalBody">' +
 		'<a id="frontEndToolsModalClose" style="display:none;" href="javascript:closeFrontEndToolsModal();"><i class="icon-remove-sign"></i></a>' +
 		'<iframe src="' + src + '" id="frontEndToolsModaliframe" scrolling="false" frameborder="0" style="overflow:hidden" name="frontEndToolsModaliframe"></iframe>' +
@@ -84,19 +104,17 @@
 			//if (frameDoc.body != null) {
 				var windowHeight = Math.max(frameHeight, jQuery(window).height());
 		
-				if (!frontEndModalIsConfigurator && frameHeight < jQuery(window).height()) {
+				if (frontEndModalWidth==frontEndModalWidthStandard 
+					&& frameHeight < jQuery(window).height()
+					) {
 					frameHeight= Math.max(jQuery(window).height() * .80,frameHeight);
 				}
+
+				jQuery('##frontEndToolsModalContainer ##frontEndToolsModalBody,##frontEndToolsModalContainer ##frontEndToolsModaliframe').width(frontEndModalWidth);
 				
 				frame.style.height = frameHeight + "px";
 				frameContainer.style.position = "absolute";
 				document.overflow = "auto"
-				
-				if(frontEndModalIsConfigurator){
-					jQuery("##frontEndToolsModalContainer").addClass("modal-configurator");
-				} else {
-					jQuery("##frontEndToolsModalContainer").removeClass("modal-configurator");
-				}
 				
 				if(windowHeight > frontEndModalHeight){	
 					frontEndModalHeight=windowHeight;
