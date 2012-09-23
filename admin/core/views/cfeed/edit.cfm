@@ -695,11 +695,11 @@ jQuery(document).ready(function(){
 		if(jQuery("##ProxyIFrame").length){
 			jQuery("##ProxyIFrame").load(
 				function(){
-					<cfif len(rc.assignmentID)>frontEndProxy.postMessage("cmd=setWindowMode&mode=configurator");<cfelse>frontEndProxy.postMessage("cmd=setWindowMode&mode=standard");</cfif>
+					<cfif len(rc.assignmentID)>frontEndProxy.postMessage("cmd=setWidth&width=configurator");<cfelse>frontEndProxy.postMessage("cmd=setWidth&width=standard");</cfif>
 				}
 			);	
 		} else {
-			<cfif len(rc.assignmentID)>frontEndProxy.postMessage("cmd=setWindowMode&mode=configurator");<cfelse>frontEndProxy.postMessage("cmd=setWindowMode&mode=standard");</cfif>
+			<cfif len(rc.assignmentID)>frontEndProxy.postMessage("cmd=setWidth&width=configurator");<cfelse>frontEndProxy.postMessage("cmd=setWidth&width=standard");</cfif>
 		}
 	}
 });
@@ -917,11 +917,11 @@ jQuery(document).ready(function(){
 		if(jQuery("##ProxyIFrame").length){
 			jQuery("##ProxyIFrame").load(
 				function(){
-					frontEndProxy.postMessage("cmd=setWindowMode&mode=standard");
+					frontEndProxy.postMessage("cmd=setWidth&width=standard");
 				}
 			);	
 		} else {
-			frontEndProxy.postMessage("cmd=setWindowMode&mode=standard");
+			frontEndProxy.postMessage("cmd=setWidth&width=standard");
 		}
 	}
 });

@@ -27,11 +27,11 @@ jQuery(document).ready(function(){
 		if(jQuery("##ProxyIFrame").length){
 			jQuery("##ProxyIFrame").load(
 				function(){
-					frontEndProxy.postMessage("cmd=setWindowMode&mode=standard");
+					frontEndProxy.postMessage("cmd=setWidth&width=standard");
 				}
 			);	
 		} else {
-			frontEndProxy.postMessage("cmd=setWindowMode&mode=standard");
+			frontEndProxy.postMessage("cmd=setWidth&width=standard");
 		}
 	}
 });
@@ -81,11 +81,11 @@ jQuery(document).ready(function(){
 	if(jQuery("##ProxyIFrame").length){
 		jQuery("##ProxyIFrame").load(
 			function(){
-				frontEndProxy.postMessage("cmd=setWindowMode&mode=configurator");
+				frontEndProxy.postMessage("cmd=setWidth&width=configurator");
 			}
 		);	
 	} else {
-		frontEndProxy.postMessage("cmd=setWindowMode&mode=configurator");
+		frontEndProxy.postMessage("cmd=setWidth&width=configurator");
 	}
 	
 	<cfswitch expression="#rsDisplayObject.object#">

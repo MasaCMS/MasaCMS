@@ -17,18 +17,18 @@
 			
 			var parameters = Porthole.WindowProxy.splitMessageParameters(messageEvent.data);
 			
-			if (parameters["cmd"] == "setWindowMode") {			
-				if(parameters["mode"]=='configurator'){
+			if (parameters["cmd"] == "setWidth") {			
+				if(parameters["width"]=='configurator'){
 					frontEndModalWidth=frontEndModalWidthConfigurator;
-				} else if(parameters["mode"]=='custom'){
-					frontEndModalWidth=decodeURIComponent(parameters["width"]);
+				} else if(jQuery.isNumeric(parameters["width"])){
+					frontEndModalWidth=parameters["width"];
 				} else {
 					frontEndModalWidth=frontEndModalWidthStandard;
 				}
 				resizeFrontEndToolsModal();	
 			} else if(parameters["cmd"] == "setLocation"){
 				window.location=decodeURIComponent(parameters["location"]);
-			} else if(parameters["cmd"] == "resizeFrontEndToolsModal"){
+			} else if(parameters["cmd"] == "setHeight"){
 				resizeFrontEndToolsModal(decodeURIComponent(parameters["height"]));
 			}
 		}			
