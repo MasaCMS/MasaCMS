@@ -63,6 +63,9 @@
 		var isModal=jQuery(a).attr("data-configurator");
 		var width=jQuery(a).attr("data-configurator-width");
 		var height=jQuery(a).attr("data-configurator-height");
+
+		frontEndModalHeight=0;
+		frontEndModalWidth=0;
 		
 		if(jQuery.isNumeric(width)){
 			frontEndModalWidth = width;
