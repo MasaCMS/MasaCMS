@@ -67,7 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfloop query="rsItemTypes">
 	<li class="new#i#">
 	<a href="##" rel="tooltip" data-original-title="Description goes here."><i class="icon-question-sign"></i></a>
-	<a href="index.cfm?muraAction=cArch.edit&contentid=&parentid=#URLEncodedFormat(rc.contentid)#&type=#i#&subType=#rsItemTypes.subType#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#URLEncodedFormat(rc.ptype)#&compactDisplay=#URLEncodedFormat(rc.compactDisplay)#" id="new#i#Link"><i class="#$.iconClassByContentType(i)#"></i> <span> #application.rbFactory.getKeyValue(session.rb,"sitemanager.add#lcase(i)#")# #rsItemTypes.subType#</span></a></li>
+	<a href="index.cfm?muraAction=cArch.edit&contentid=&parentid=#URLEncodedFormat(rc.contentid)#&type=#i#&subType=#rsItemTypes.subType#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#URLEncodedFormat(rc.ptype)#&compactDisplay=#URLEncodedFormat(rc.compactDisplay)#" id="new#i#Link"><i class="#$.iconClassByContentType(i)#"></i> <span> #application.rbFactory.getKeyValue(session.rb,"sitemanager.add#lcase(i)#")#/#rsItemTypes.subType#</span></a></li>
 	</cfloop>
 	</cfloop>
 	<li class="newGalleryItemMulti">
@@ -83,7 +83,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfloop query="rsItemTypes">
 	<li class="newFile">
 	<a href="##" rel="tooltip" data-original-title="Description goes here."><i class="icon-question-sign"></i></a>
-	<a href="index.cfm?muraAction=cArch.edit&contentid=&parentid=#URLEncodedFormat(rc.contentid)#&type=File&subType=#rsItemTypes.subType#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#URLEncodedFormat(rc.ptype)#&compactDisplay=#URLEncodedFormat(rc.compactDisplay)#" id="newGalleryItem"><i class="i#$.iconClassByContentType('GalleryItem')#"></i> <span><!--- #application.rbFactory.getKeyValue(session.rb,"sitemanager.addgalleryItem")# /  --->#rsItemTypes.subType#</span></a></li>
+	<a href="index.cfm?muraAction=cArch.edit&contentid=&parentid=#URLEncodedFormat(rc.contentid)#&type=File&subType=#rsItemTypes.subType#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#URLEncodedFormat(rc.ptype)#&compactDisplay=#URLEncodedFormat(rc.compactDisplay)#" id="newGalleryItem"><i class="i#$.iconClassByContentType('GalleryItem')#"></i> <span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.addgalleryItem")#/#rsItemTypes.subType#</span></a></li>
 	</cfloop>
 	<li class="newGalleryItemMulti">
 	<a href="##" rel="tooltip" data-original-title="Description goes here."><i class="icon-question-sign"></i></a>
