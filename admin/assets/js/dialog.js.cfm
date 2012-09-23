@@ -53,8 +53,7 @@
 	function openFrontEndToolsModal(a){
 		var src=a.href + "&frontEndProxyLoc=" + frontEndProxyLoc;
 		var isModal=jQuery(a).attr("data-configurator");
-		var width=jQuery(a).attr("data-configurator-width");
-		//var height=jQuery(a).attr("data-configurator-height");
+		var width=jQuery(a).attr("data-modal-width");
 
 		frontEndModalHeight=0;
 		frontEndModalWidth=0;
@@ -62,12 +61,6 @@
 		if(jQuery.isNumeric(width)){
 			frontEndModalWidth = width;
 		}
-		
-		/*
-		if(jQuery.isNumeric(height)){
-			frontEndModalHeight = height;
-		}
-		*/
 
 		if(!frontEndModalHeight){
 			if (isModal == undefined) {
