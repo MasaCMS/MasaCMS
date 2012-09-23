@@ -24,6 +24,7 @@
 					frontEndModalWidth=frontEndModalWidthStandard;
 				}
 				resizeFrontEndToolsModal();	
+			/*
 			} else if(parameters["cmd"] == "resizeWindow") {			
 				
 				if(jQuery.isNumeric(parameters["width"])){
@@ -34,6 +35,7 @@
 				}
 
 				resizeFrontEndToolsModal();	
+			*/
 			} else if(parameters["cmd"] == "setLocation"){
 				window.location=decodeURIComponent(parameters["location"]);
 			} else if(parameters["cmd"] == "resizeFrontEndToolsModal"){
@@ -62,7 +64,7 @@
 		var src=a.href + "&frontEndProxyLoc=" + frontEndProxyLoc;
 		var isModal=jQuery(a).attr("data-configurator");
 		var width=jQuery(a).attr("data-configurator-width");
-		var height=jQuery(a).attr("data-configurator-height");
+		//var height=jQuery(a).attr("data-configurator-height");
 
 		frontEndModalHeight=0;
 		frontEndModalWidth=0;
@@ -70,9 +72,12 @@
 		if(jQuery.isNumeric(width)){
 			frontEndModalWidth = width;
 		}
+		
+		/*
 		if(jQuery.isNumeric(height)){
 			frontEndModalHeight = height;
 		}
+		*/
 
 		if(!frontEndModalHeight){
 			if (isModal == undefined) {
