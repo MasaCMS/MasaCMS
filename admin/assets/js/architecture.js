@@ -1440,7 +1440,7 @@ buttons: {
 					location.href='./';
 				}
 				$('#categoryLabelContainer' + cattrim).html(data);
-				closeCategoryAssignment();
+				siteManager.closeCategoryAssignment();
 				setToolTips(".mura-quickEdit-datepicker");
 				siteManager.initCategoryAssignments();
 			}
