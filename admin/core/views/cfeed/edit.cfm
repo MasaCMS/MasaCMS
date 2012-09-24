@@ -323,13 +323,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div id="tabAdvancedfilters" class="tab-pane fade">
 
-<div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.chooseadvancedfilters')#
-      </label>
-	<div class="controls">
-		<ul id="searchParams">
+	<div class="control-group" id="searchParams">
+      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.chooseadvancedfilters')#
+      	</label>
 		<cfif not rsParams.recordcount>
-		<li><select name="paramRelationship1" style="display:none;" >
+		<div class="controls"><select name="paramRelationship1" style="display:none;" >
 			<option value="and">#application.rbFactory.getKeyValue(session.rb,'params.and')#</option>
 			<option value="or">#application.rbFactory.getKeyValue(session.rb,'params.or')#</option>
 		</select>
@@ -346,12 +344,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 		</select>
 		<input type="text" name="paramCriteria1">
-		<a class="removeCriteria" href="javascript:;" onclick="searchParams.removeSeachParam(this.parentNode);searchParams.setSearchButtons();return false;" style="display:none;">#application.rbFactory.getKeyValue(session.rb,'params.removecriteria')#</a>
-		<a class="addCriteria" href="javascript:;" onclick="searchParams.addSearchParam();searchParams.setSearchButtons();return false;">#application.rbFactory.getKeyValue(session.rb,'params.addcriteria')#</a>
-		</li>
+		<a class="criteria remove" href="javascript:;" onclick="searchParams.removeSeachParam(this.parentNode);searchParams.setSearchButtons();return false;" style="display:none;"><l class="icon-minus-sign"></i></a>
+		<a class="criteria add" href="javascript:;" onclick="searchParams.addSearchParam();searchParams.setSearchButtons();return false;"><l class="icon-plus-sign"></i></a>
+		</div>
 		<cfelse>
 		<cfloop query="rsParams">
-		<li>
+		<div class="controls">
 		<select name="paramRelationship#rsParams.currentRow#">
 			<option value="and" <cfif rsParams.criteria eq '' or rsParams.relationship eq "and">selected</cfif> >And</option>
 			<option value="or" <cfif rsParams.criteria neq '' and rsParams.relationship eq "or">selected</cfif> >Or</option>
@@ -369,12 +367,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 		</select>
 		<input type="text" name="paramCriteria#rsParams.currentRow#" value="#HTMLEditFormat(rsParams.criteria)#" >
-			<a class="removeCriteria" href="javascript:;" onclick="searchParams.removeSeachParam(this.parentNode);searchParams.setSearchButtons();return false;">#application.rbFactory.getKeyValue(session.rb,'params.removecriteria')#</a>
-		<a class="addCriteria" href="javascript:;" onclick="searchParams.addSearchParam();searchParams.setSearchButtons();return false;" >#application.rbFactory.getKeyValue(session.rb,'params.addcriteria')#</a>
-		</li>
+			<a class="criteria remove" href="javascript:;" onclick="searchParams.removeSeachParam(this.parentNode);searchParams.setSearchButtons();return false;"><l class="icon-minus-sign"></i></a>
+		<a class="criteria add" href="javascript:;" onclick="searchParams.addSearchParam();searchParams.setSearchButtons();return false;" ><l class="icon-plus-sign"></i></a>
+		</div>
 		</cfloop>
 		</cfif>
-		</ul>
   </div>
 </div>
 
