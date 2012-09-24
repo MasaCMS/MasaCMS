@@ -100,7 +100,7 @@ select * from rsSubTypes where subType <> 'Default'
 <cfif rsNonDefault.recordcount>
   <div class="control-group">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.type')#</label>
-        <div class="controls"><select name="subtype" class="dropdown" onchange="resetExtendedAttributes('#rc.userBean.getUserID()#','1',this.value,'#userPoolID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');">
+        <div class="controls"><select name="subtype" class="dropdown" onchange="userManager.resetExtendedAttributes('#rc.userBean.getUserID()#','1',this.value,'#userPoolID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');">
     	<option value="Default" <cfif  rc.userBean.getSubType() eq "Default">selected</cfif>> #application.rbFactory.getKeyValue(session.rb,'user.default')#</option>
     		<cfloop query="rsNonDefault">
     			<option value="#rsNonDefault.subtype#" <cfif rc.userBean.getSubType() eq rsNonDefault.subtype>selected</cfif>>#rsNonDefault.subtype#</option>
@@ -166,7 +166,7 @@ select * from rsSubTypes where subType <> 'Default'
   --->
   <cfhtmlhead text='<script type="text/javascript" src="assets/js/user.js"></script>'>
   <script type="text/javascript">
-  loadExtendedAttributes('#rc.userbean.getUserID()#','1','#rc.userbean.getSubType()#','#userPoolID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');	
+  userManager.loadExtendedAttributes('#rc.userbean.getUserID()#','1','#rc.userbean.getSubType()#','#userPoolID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');	
   //initTabs(Array("#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.basic'))#","#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.extendedattributes'))#"),0,0,0);
   </script>	
 <cfelse>

@@ -44,20 +44,23 @@
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
-	function openScheduler()
+var emailManager={
+
+	openScheduler: function()
 	{
-		var s = jQuery('#scheduler');
-		var c = jQuery('#controls');
+		var s = $('#scheduler');
+		var c = $('#controls');
 		c.css('display','none');
 		s.css('display','inline');
 		
 		return false;
 
-	}
-	function closeScheduler()
+	},
+
+	closeScheduler: function ()
 	{
-		var s = jQuery('#scheduler');	
-		var c = jQuery('#controls');
+		var s = $('#scheduler');	
+		var c = $('#controls');
 		s.css('display','none');
 		c.css('display','inline');
 		document.forms.form1.deliveryDate.value = '';
@@ -68,14 +71,14 @@
 		
 		return false;
 		
-	}
+	},
 	
-	function showMessageEditor()
+	showMessageEditor: function()
 	{
 		var selObj = document.getElementById('messageFormat');
 		var selIndex = selObj.selectedIndex;
-		var h = jQuery('#htmlMessage');
-		var t = jQuery('#textMessage');
+		var h = $('#htmlMessage');
+		var t = $('#textMessage');
 		
 		if (selObj.options[selIndex].value == "HTML")
 		{
@@ -93,14 +96,15 @@
 			t.css('display','inline');
 		}
 	
-	}
-	function validateEmailForm(formAction, errorMessage)
+	},
+
+	validateEmailForm: function(formAction, errorMessage)
 	{
 		document.forms.form1.action.value=formAction;
 		confirmDialog(errorMessage, 
 				function()
 				{
-					if(!checkContentLength()){
+					if(!emailManager.checkContentLength()){
 						return false;
 					}
 					
@@ -110,11 +114,11 @@
 		
 		
 		return false;
-	}
+	},
 	
-	function validateScheduler(formAction, errorMessage, formField)
+	validateScheduler: function(formAction, errorMessage, formField)
 	{
-		var f = jQuery("#" + formField);
+		var f = $("#" + formField);
 		document.forms.form1.action.value=formAction;
 		if (f.val() == ''){
 			alertDialog(errorMessage);
@@ -125,10 +129,9 @@
 		
 		return false;
 		
-	}
-	
-	
-function checkContentLength(){
+	},
+		
+	checkContentLength: function(){
 	/*
 	var bodyHTML =FCKeditorAPI.GetInstance('bodyHTML').GetXHTML();
 	var bodyHTMLLength = bodyHTML.length;
@@ -151,6 +154,7 @@ function checkContentLength(){
 			
 		*/
 			return true;
+	}
 }
 		
 

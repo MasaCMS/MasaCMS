@@ -68,8 +68,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 var draftremovalnotice=<cfif application.configBean.getPurgeDrafts() and event.getValue("suppressDraftNotice") neq "true" and rc.contentBean.hasDrafts()><cfoutput>'#jsStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.draftremovalnotice"))#'</cfoutput><cfelse>""</cfif>;
 </script>
 <cfif rc.compactDisplay neq "true" and application.configBean.getConfirmSaveAsDraft()><script>
-var requestedURL="";
-var formSubmitted=false;
+siteManager.requestedURL="";
+siteManager.formSubmitted=false;
 onload=function(){
 	var anchors=document.getElementsByTagName("A");
 	
@@ -84,14 +84,14 @@ onload=function(){
 }
 
 onunload=function(){
-	if(!formSubmitted && requestedURL != '')
+	if(!siteManager.formSubmitted && vrequestedURL != '')
 	{
 		conditionalExit();
 	}
 }
 
 function conditionalExit(msg){
-	if(form_is_modified(document.contentForm)){
+	if(siteManager.form_is_modified(document.contentForm)){
 	if(msg==null){
 		<cfoutput>msg="#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.saveasdraft"))#";</cfoutput>
 	}
@@ -99,11 +99,11 @@ function conditionalExit(msg){
 	jQuery("#alertDialog").dialog({
 			resizable: false,
 			modal: true,
-			position: getDialogPosition(),
+			position: siteManager.getDialogPosition(),
 			buttons: {
 				'Yes': function() {
 					jQuery(this).dialog('close');
-					if(ckContent()){
+					if(siteManager.ckContent()){
 						document.getElementById('contentForm').returnURL.value=requestedURL;
 						submitForm(document.contentForm,'add');
 						}
@@ -111,8 +111,8 @@ function conditionalExit(msg){
 					},
 				'No': function() {
 					jQuery(this).dialog('close');
-					location.href=requestedURL;
-					requestedURL="";
+					location.href=siteManager.requestedURL;
+					siteManager.requestedURL="";
 				}
 			}
 		});
@@ -238,12 +238,12 @@ var hasBody=#subType.getHasBody()#;
 		<cfif assignChangesets>
 		<button type="button" class="submit btn" onclick="saveToChangeset('#rc.contentBean.getChangesetID()#','#HTMLEditFormat(rc.siteID)#','');return false;"><i class="icon-check"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset")#</button>	
 		</cfif>
-		 <button type="button" class="submit btn" onclick="if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="icon-check"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#</button>
+		 <button type="button" class="submit btn" onclick="if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="icon-check"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#</button>
 		<cfif listFindNoCase("Page,Portal,Calendar,Gallery",rc.type)>
-		<button type="button" class="submit btn" onclick="document.contentForm.preview.value=1;if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="icon-eye-open"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraftandpreview"))#</button>
+		<button type="button" class="submit btn" onclick="document.contentForm.preview.value=1;if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="icon-eye-open"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraftandpreview"))#</button>
 		</cfif>
 		<cfif rc.perm eq 'editor'>
-		<button type="button" class="submit btn" onclick="document.contentForm.approved.value=1;if(ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="icon-save"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#</button>
+		<button type="button" class="submit btn" onclick="document.contentForm.approved.value=1;if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="icon-save"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#</button>
 		</cfif> 
 	</div>
 	</cfoutput>
@@ -430,7 +430,7 @@ var hasBody=#subType.getHasBody()#;
 			</cfif>
 			<cfoutput>
 			<script type="text/javascript">
-			loadExtendedAttributes('#rc.contentbean.getcontentHistID()#','#rc.type#','#rc.contentBean.getSubType()#','#rc.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');
+			siteManager.loadExtendedAttributes('#rc.contentbean.getcontentHistID()#','#rc.type#','#rc.contentBean.getSubType()#','#rc.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');
 			</script>
 			</cfoutput>
 		</cfcase>

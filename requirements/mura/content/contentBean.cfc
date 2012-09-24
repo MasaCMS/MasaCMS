@@ -451,7 +451,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif variables.instance.isNew 
 		and listFindNoCase('File',variables.instance.type)
-		and not len(variables.instance.newfile)>
+		and not (len(variables.instance.newfile) or len(variables.instance.fileID))>
 			<cfset variables.instance.errors.filemissing=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("sitemanager.filemissing")>
 	</cfif>
 

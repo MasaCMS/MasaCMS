@@ -39,12 +39,12 @@
 				<cfif rc.type neq 'File'>
 					<span id="selectAssocImage">
 					<input type="hidden" name="fileid" value="#htmlEditFormat(rc.contentBean.getfileid())#" />		
-					<a class="selectImage" href="javascript:##;" onclick="javascript: loadAssocImages('#htmlEditFormat(rc.siteid)#','#htmlEditFormat(rc.contentBean.getFileID())#','#htmlEditFormat(rc.contentID)#','',1);return false;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectassocimage')#</a>
+					<a class="selectImage" href="javascript:##;" onclick="javascript: siteManager.loadAssocImages('#htmlEditFormat(rc.siteid)#','#htmlEditFormat(rc.contentBean.getFileID())#','#htmlEditFormat(rc.contentID)#','',1);return false;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectassocimage')#</a>
 					</span>
 					
 					<span id="selectAssocImageReInit" style="display:none">
 						<input type="hidden" name="fileidReInit" value="#htmlEditFormat(rc.contentBean.getfileid())#" />
-						<a href="javascript:##;" onclick="javascript: loadAssocImages('#htmlEditFormat(rc.siteid)#','#htmlEditFormat(rc.contentBean.getFileID())#','#htmlEditFormat(rc.contentID)#','',1);return false;">[#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectassocimage')#]</a>
+						<a href="javascript:##;" onclick="javascript: siteManager.loadAssocImages('#htmlEditFormat(rc.siteid)#','#htmlEditFormat(rc.contentBean.getFileID())#','#htmlEditFormat(rc.contentID)#','',1);return false;">[#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectassocimage')#]</a>
 					</span>
 				<cfelse>
 					<input type="hidden" name="fileid" value="#htmlEditFormat(rc.contentBean.getFileID())#" />
@@ -71,7 +71,7 @@
 										jQuery("##msg-file-locked").fadeOut();
 										jQuery("##mura-file-unlock").hide();
 										jQuery("##mura-file-offline-edit").fadeIn();
-										hasFileLock=false;
+										siteManager.hasFileLock=false;
 										jQuery.post("./index.cfm",{muraAction:"carch.unlockfile",contentid:"#rc.contentBean.getContentID()#",siteid:"#rc.contentBean.getSiteID()#"})
 									}
 								);	
@@ -88,7 +88,7 @@
 										jQuery("##msg-file-locked").fadeIn();
 										jQuery("##mura-file-unlock").fadeIn();
 										jQuery(a).fadeOut();
-										hasFileLock=true;
+										siteManager.hasFileLock=true;
 										document.location="./index.cfm?muraAction=carch.lockfile&contentID=#rc.contentBean.getContentID()#&siteID=#rc.contentBean.getSiteID()#";
 									}
 								);	

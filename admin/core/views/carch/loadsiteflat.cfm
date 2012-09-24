@@ -186,7 +186,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset editLink="index.cfm?muraAction=cArch.edit&contenthistid=#item.getContentHistID()#&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getParentID()#&topid=#URLEncodedFormat(item.getParentID())#&siteid=#URLEncodedFormat(item.getSiteid())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#">
 		</cfsilent>	
 		<tr data-siteid="#item.getSiteID()#" data-contentid="#item.getContentID()#" data-contenthistid="#item.getContentHistID()#" data-sortby="#item.getSortBy()#" data-sortdirection="#item.getSortDirection()#" data-moduleid="#HTMLEditFormat(item.getModuleID())#" data-type="#item.getType()#">
-			<td class="add"><a class="add" href="javascript:;" onmouseover="showMenu('newContentMenu','#newcontent#',this,'#item.getContentID()#','#item.getContentID()#','#item.getContentID()#','#item.getSiteID()#','#item.getType()#');"></a></td>
+			<td class="add"><a class="add" href="javascript:;" onmouseover="siteManager.showMenu('newContentMenu','#newcontent#',this,'#item.getContentID()#','#item.getContentID()#','#item.getContentID()#','#item.getSiteID()#','#item.getType()#');"></a></td>
 			<td class="var-width item">
 			
 			<div class="actions">
@@ -367,9 +367,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 	</cfif>
 
-	<input type="button" class="btn" name="filterList" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#" onclick="loadSiteFlatByFilter();"/>
+	<input type="button" class="btn" name="filterList" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#" onclick="siteManager.loadSiteFlatByFilter();"/>
 	<cfif session.flatViewArgs["#rc.siteID#"].filtered><input type="button" class="btn" name="filterList" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.removefilter")#" onclick="flatViewArgs=jQuery.extend(initFlatViewArgs(),{report:'#JSStringFormat(session.flatViewArgs["#rc.siteID#"].report)#',sortby:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].sortby)#', 
-			sortdirection:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].sortdirection)#',tag:'',type:'',subtype:'',categoryid:'',keywords:'',filtered:false});loadSiteFlat(flatViewArgs);"/></cfif>
+			sortdirection:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].sortdirection)#',tag:'',type:'',subtype:'',categoryid:'',keywords:'',filtered:false});siteManager.loadSiteFlat(flatViewArgs);"/></cfif>
 </div>
 </div>
 <!---<cfdump var="#rc.test#">--->

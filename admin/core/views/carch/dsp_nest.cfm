@@ -125,10 +125,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <dl>
 <dt>
 	<!---<cfif (attributes.rsNest.type eq 'Page') or  (attributes.rsNest.type eq 'Portal')  or  (attributes.rsNest.type eq 'Calendar') or (attributes.rsNest.type eq 'Gallery')>--->
-	<a class="add" href="javascript:;" onmouseover="showMenu('newContentMenu','#newcontent#',this,'#attributes.rsNest.contentid#','#attributes.topid#','#attributes.rsNest.parentid#','#attributes.siteid#','#attributes.rsNest.type#');"></a>
+	<a class="add" href="javascript:;" onmouseover="siteManager.showMenu('newContentMenu','#newcontent#',this,'#attributes.rsNest.contentid#','#attributes.topid#','#attributes.rsNest.parentid#','#attributes.siteid#','#attributes.rsNest.type#');"></a>
 	
 	<cfif isNumeric(attributes.rsnest.hasKids) and attributes.rsNest.haskids>
-		<span <cfif isOpenSection>class="hasChildren-open"<cfelse>class="hasChildren-closed"</cfif> onclick="return loadSiteSection( jQuery(this).parents('li:first') , 1 , true);"></span>
+		<span <cfif isOpenSection>class="hasChildren-open"<cfelse>class="hasChildren-closed"</cfif> onclick="return siteManager.loadSiteSection( jQuery(this).parents('li:first') , 1 , true);"></span>
 	</cfif>
 	<cfif not listFindNoCase('none,read',verdict)>
 		<a class="#icon# title draftprompt" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?muraAction=cArch.edit&contenthistid=#attributes.rsNest.ContentHistID#&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">

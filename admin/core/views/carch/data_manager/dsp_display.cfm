@@ -76,9 +76,9 @@ document.getElementById('responseDisplayFields').value=document.getElementById('
         </select></td>
       <td><table>
           <tr>
-            <td class="nested"><input type="button" value=">>" onclick="addObject('availableFields','summaryList','summaryList2');" class="objectNav btn">
+            <td class="nested"><input type="button" value=">>" onclick="dataManager.addObject('availableFields','summaryList','summaryList2');" class="objectNav btn">
               <br />
-              <input type="button" value="<<" onclick="deleteObject('summaryList','summaryList2');" class="objectNav btn">            </td>
+              <input type="button" value="<<" onclick="dataManager.deleteObject('summaryList','summaryList2');" class="objectNav btn">            </td>
             <td class="nested"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.summarydisplayfields')#<br />
               <select name="summaryList" id="summaryList" size="4" class="multiSelect">
                 <cfif summaryList neq "">
@@ -88,14 +88,14 @@ document.getElementById('responseDisplayFields').value=document.getElementById('
                 </cfif>
               </select>
               <input type="hidden" name="summaryList2" id="summaryList2" value="#summaryList#" class="multiSelect">            </td>
-            <td  class="nested"><input type="button" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.up')#" onclick="moveUp('summaryList','summaryList2');" class="objectNav btn">
+            <td  class="nested"><input type="button" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.up')#" onclick="dataManager.moveUp('summaryList','summaryList2');" class="objectNav btn">
               <br />
-              <input type="button" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.down')#" onclick="moveDown('summaryList','summaryList2');" class="objectNav btn">            </td>
+              <input type="button" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.down')#" onclick="dataManager.moveDown('summaryList','summaryList2');" class="objectNav btn">            </td>
           </tr>
           <tr>
             <td class="nested"><input type="button" value=">>" onclick="addObject('availableFields','detailList','detailList2');" class="objectNav btn">
               <br />
-              <input type="button" value="<<" onclick="deleteObject('detailList','detailList2');" class="objectNav btn">            </td>
+              <input type="button" value="<<" onclick="dataManager.deleteObject('detailList','detailList2');" class="objectNav btn">            </td>
             <td class="nested"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.detaildisplayfields')#<br />
               <select name="detailList"  id="detailList" size="4" style="width:310px;">
                 <cfif detailList neq "">
@@ -105,9 +105,9 @@ document.getElementById('responseDisplayFields').value=document.getElementById('
                 </cfif>
               </select>
               <input type="hidden" name="detailList2" id="detailList2" value="#detailList#">            </td>
-            <td  class="nested"><input type="button" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.up')#" onclick="moveUp('detailList','detailList2');" class="objectNav btn">
+            <td  class="nested"><input type="button" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.up')#" onclick="dataManager.moveUp('detailList','detailList2');" class="objectNav btn">
               <br />
-              <input type="button" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.down')#" onclick="moveDown('detailList','detailList2');" class="objectNav btn">            </td>
+              <input type="button" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.down')#" onclick="dataManager.moveDown('detailList','detailList2');" class="objectNav btn">            </td>
           </tr>
         </table>
        </td>

@@ -198,25 +198,4 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 </form>
 </cfoutput>
-<!---
-<cfif rc.categoryID neq ''>
-<cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
-<cfhtmlhead text='<script type="text/javascript" src="assets/js/tab-view.js"></script>'>
-<cfoutput><script type="text/javascript">
-initTabs(Array("#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'categorymanager.basic'))#","#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'categorymanager.usagereport'))#"),0,0,0);
-</script></cfoutput>
-</cfif>--->
-<!---<ul id="features" style="height:150px;width:200px;">
-<cfloop query="rc.rslist">
-<cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/>
-<li id="features_#rc.rslist.currentrow#" style="cursor:n-resize">#application.contentRenderer.dspZoom(crumbdata)# #rc.rslist.menutitle#<input type="hidden" name="orderID" value="#rc.rslist.contentid#"/><input type="hidden" name="orderno" value="#rc.rslist.currentRow#"/></li>
-</cfloop>
-</ul>--->
-<!---<cfif rc.rslist.recordcount and rc.categoryBean.getSortBy() eq 'orderno'>
- <script type="text/javascript">
- // <![CDATA[
-   Sortable.create("features",
-     {dropOnEmpty:true,containment:["features"],constraint:true});
- // ]]>
- </script>
- </cfif>--->
+

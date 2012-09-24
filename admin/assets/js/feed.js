@@ -43,130 +43,128 @@
 	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
-
-function loadSiteFilters(siteid,keywords,isNew)	{
-		var url = 'index.cfm';
-		var pars = 'muraAction=cFeed.loadSite&compactDisplay=true&siteid=' + siteid + '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
-		var d = jQuery('#selectFilter');
-			d.html('<div><img class="loadProgress" src="assets/images/progress_bar.gif"></div>');
-			jQuery.get(url + "?" + pars, 
-					function(data) {
-					jQuery("#selectFilter").html(data);
-					}
-			);
-	}
-	 
-function addContentFilter(contentID,contentType,title)	{
-		var tbody = document.getElementById('contentFilters').getElementsByTagName("TBODY")[0];	
-		var row = document.createElement("TR");
-			row.id="c" + contentID;
-		var name = document.createElement("TD");
-			name.appendChild(document.createTextNode(title));
-			name.className="var-width";
-		var type = document.createElement("TD");
-			type.appendChild (document.createTextNode(contentType));
-		var admin = document.createElement("TD");
-			admin.className="administration";
-		var deleteLink=document.createElement("A");
-			deleteLink.setAttribute("href","#");
-			deleteLink.onclick=function (){jQuery("#c" + contentID).remove(); stripe('stripe');return false;}
-			deleteLink.appendChild(document.createTextNode('Delete'));
-	
-		var deleteUL=document.createElement("UL");
-			deleteUL.className="clearfix";
-		var deleteLI=document.createElement("LI");
-			deleteLI.className="delete";
-			deleteLI.appendChild(deleteLink);
-			deleteUL.appendChild(deleteLI);
-			
-		var content = document.createElement("INPUT");
-			content.setAttribute("type","hidden");
-			content.setAttribute("name","contentID");
-			content.setAttribute("value",contentID);
-			admin.appendChild(content);
-			admin.appendChild(deleteUL);
-			row.appendChild(name);
-			row.appendChild(type);
-			row.appendChild(admin);
-   			tbody.appendChild(row);
-		 if(jQuery('#noFilters').length) jQuery('#noFilters').hide();
-		
-		 stripe('stripe');
+var feedManager={
+	loadSiteFilters: function(siteid,keywords,isNew)	{
+			var url = 'index.cfm';
+			var pars = 'muraAction=cFeed.loadSite&compactDisplay=true&siteid=' + siteid + '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
+			var d = $('#selectFilter');
+				d.html('<div><img class="loadProgress" src="assets/images/progress_bar.gif"></div>');
+				$.get(url + "?" + pars, 
+						function(data) {
+						$("#selectFilter").html(data);
+						}
+				);
+		},
 		 
-  } 
-  
- 
+	addContentFilter: function(contentID,contentType,title)	{
+			var tbody = document.getElementById('contentFilters').getElementsByTagName("TBODY")[0];	
+			var row = document.createElement("TR");
+				row.id="c" + contentID;
+			var name = document.createElement("TD");
+				name.appendChild(document.createTextNode(title));
+				name.className="var-width";
+			var type = document.createElement("TD");
+				type.appendChild (document.createTextNode(contentType));
+			var admin = document.createElement("TD");
+				admin.className="administration";
+			var deleteLink=document.createElement("A");
+				deleteLink.setAttribute("href","#");
+				deleteLink.onclick=function (){$("#c" + contentID).remove(); stripe('stripe');return false;}
+				deleteLink.appendChild(document.createTextNode('Delete'));
+		
+			var deleteUL=document.createElement("UL");
+				deleteUL.className="clearfix";
+			var deleteLI=document.createElement("LI");
+				deleteLI.className="delete";
+				deleteLI.appendChild(deleteLink);
+				deleteUL.appendChild(deleteLI);
+				
+			var content = document.createElement("INPUT");
+				content.setAttribute("type","hidden");
+				content.setAttribute("name","contentID");
+				content.setAttribute("value",contentID);
+				admin.appendChild(content);
+				admin.appendChild(deleteUL);
+				row.appendChild(name);
+				row.appendChild(type);
+				row.appendChild(admin);
+	   			tbody.appendChild(row);
+			 if($('#noFilters').length) $('#noFilters').hide();
+			
+			 stripe('stripe');
+			 
+	},
+	 
+	removeFilter: function(id){
+		$("#" + id).remove(); 
+		stripe('stripe');
+		return false;
+		},	
+		
 
-function removeFilter(id){
-	jQuery("#" + id).remove(); 
-	stripe('stripe');
-	return false;
-	}	
-	
+	loadSiteParents: function(siteid,parentid,keywords,isNew)	{
+			var url = 'index.cfm';
+			var pars = 'muraAction=cFeed.siteParents&compactDisplay=true&siteid=' + siteid + '&parentid=' +parentid+ '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
+			var d = $('#move');
+				d.html('<div><img class="loadProgress" src="assets/images/progress_bar.gif"><inut type=hidden name=parentid value=' + parentid + ' ></div>');
+				$.get(url + "?" + pars, 
+						function(data) {
+						$("#move").html(data);
+						}
+				);
+		},
 
-function loadSiteParents(siteid,parentid,keywords,isNew)	{
-		var url = 'index.cfm';
-		var pars = 'muraAction=cFeed.siteParents&compactDisplay=true&siteid=' + siteid + '&parentid=' +parentid+ '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
-		var d = jQuery('#move');
-			d.html('<div><img class="loadProgress" src="assets/images/progress_bar.gif"><inut type=hidden name=parentid value=' + parentid + ' ></div>');
-			jQuery.get(url + "?" + pars, 
-					function(data) {
-					jQuery("#move").html(data);
+	confirmImport: function(){
+		
+		$("#alertDialogMessage").html('Import Selections?');
+		$("#alertDialog").dialog({
+				resizable: false,
+				modal: true,
+				buttons: {
+					'YES': function() {
+						$(this).dialog('close');
+						submitForm(document.forms.contentForm,'Import');
+						},
+					'NO': function() {
+						$(this).dialog('close');
 					}
-			);
-	}
-
-function confirmImport(){
-	
-	
-	jQuery("#alertDialogMessage").html('Import Selections?');
-	jQuery("#alertDialog").dialog({
-			resizable: false,
-			modal: true,
-			buttons: {
-				'YES': function() {
-					jQuery(this).dialog('close');
-					submitForm(document.forms.contentForm,'Import');
-					},
-				'NO': function() {
-					jQuery(this).dialog('close');
 				}
-			}
-		});
+			});
 
-	return false;	
-}
+		return false;	
+	},
 
-function setDisplayListSort(){
-	jQuery( "#availableListSort, #displayListSort" ).sortable({
-		connectWith: ".displayListSortOptions",
-		update: function(event){
-				event.stopPropagation();
-				jQuery("#displayList").val("");
-				jQuery("#displayListSort > li").each(function(){
-					var current = jQuery("#displayList").val();
-					
-					if (current != '') {
-						jQuery("#displayList").val( current + "," + jQuery.trim(jQuery(this).html()) );
-					}
-					else {
-						jQuery("#displayList").val( jQuery.trim(jQuery(this).html()) );
-					}
-							
-				});
-			}
-		}).disableSelection();
-}
+	setDisplayListSort: function(){
+		$( "#availableListSort, #displayListSort" ).sortable({
+			connectWith: ".displayListSortOptions",
+			update: function(event){
+					event.stopPropagation();
+					$("#displayList").val("");
+					$("#displayListSort > li").each(function(){
+						var current = $("#displayList").val();
+						
+						if (current != '') {
+							$("#displayList").val( current + "," + $.trim($(this).html()) );
+						}
+						else {
+							$("#displayList").val( $.trim($(this).html()) );
+						}
+								
+					});
+				}
+			}).disableSelection();
+	},
 
-function updateInstanceObject(){
+	updateInstanceObject: function(){
 		var availableObjectParams={};
-		jQuery("#tabDisplay").find(":input").each(
+		$("#tabDisplay").find(":input").each(
 			function(){
-				var item=jQuery(this);
+				var item=$(this);
 				if (item.attr("type") != "radio" || (item.attr("type") =="radio" && item.is(':checked'))) {
 					availableObjectParams[item.attr("data-displayobjectparam")] = item.val();
 				}
 			}
 		)
-		jQuery("#instanceParams").val(JSON.stringify( availableObjectParams));
+		$("#instanceParams").val(JSON.stringify( availableObjectParams));
 	}
+}

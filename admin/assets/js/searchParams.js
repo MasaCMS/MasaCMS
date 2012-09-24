@@ -53,79 +53,81 @@
 }*/
 
 
-function addSearchParam(){
-	
-	var num =jQuery('#searchParams > .controls').length;
-	var str= '<div class="controls">' + jQuery('#searchParams > .controls').html() + '</div>';
-	jQuery('#searchParams').append(str);
-	var newParam = jQuery('#searchParams > .controls:last');
-	var newParamSelects = jQuery('#searchParams > .controls:last > select');
-	var newParamInputs = jQuery('#searchParams > .controls:last > input');
-	
-	newParamSelects[0].selectedIndex=0;
-	newParamSelects[1].selectedIndex=0;
-	newParamSelects[2].selectedIndex=0;
-	newParamInputs[1].setAttribute('value','');
-	
-	setSearchParamNames(newParam,num + 1);
-}
-
-function setSearchParamNames(param,num){
-
-	var newParamSelects =jQuery(param).find("select");
-	var newParamInputs = jQuery(param).find("input");
-	
-	newParamSelects[0].setAttribute('name','paramRelationship' + num);
-	newParamSelects[1].setAttribute('name','paramField'  + num);
-	newParamSelects[2].setAttribute('name','paramCondition'  + num);
-	newParamInputs[0].setAttribute('value',num);
-	newParamInputs[1].setAttribute('name','paramCriteria' + num);
-	
-}
-
-function setSearchButtons(){
-	var params=jQuery('#searchParams > .controls');
-	var num =params.length;
-	
-	if(num == 1){
-		var buttons = params.find("a");
-			jQuery(buttons[0]).hide();
-			jQuery(buttons[1]).show();
-			params.find("select:first").hide();
-	} else {
-			
-		params.each(function(index){
-				if(index==0){
-					var buttons =jQuery(params[index]).find("a");
-					jQuery(params[index]).find('select:first').hide();
-					jQuery(buttons[0]).hide();
-					jQuery(buttons[1]).hide();
-				} else {
-					var buttons =jQuery(params[index]).find("a");
-					jQuery(params[index]).find('select:first').show();
-					
-					if(index!= num-1){
-						jQuery(buttons[0]).show();
-						jQuery(buttons[1]).hide();
-						
-					}else{
-						jQuery(buttons[0]).show();
-						jQuery(buttons[1]).show();
-					}
-					
-					 setSearchParamNames(params[index],index + 1);
-				}
-			}
-		);
+var searchParams={
+	addSearchParam: function(){
 		
+		var num =$('#searchParams > .controls').length;
+		var str= '<div class="controls">' + $('#searchParams > .controls').html() + '</div>';
+		$('#searchParams').append(str);
+		var newParam = $('#searchParams > .controls:last');
+		var newParamSelects = $('#searchParams > .controls:last > select');
+		var newParamInputs = $('#searchParams > .controls:last > input');
+		
+		newParamSelects[0].selectedIndex=0;
+		newParamSelects[1].selectedIndex=0;
+		newParamSelects[2].selectedIndex=0;
+		newParamInputs[1].setAttribute('value','');
+		
+		this.setSearchParamNames(newParam,num + 1);
+	},
+
+	setSearchParamNames: function(param,num){
+
+		var newParamSelects =$(param).find("select");
+		var newParamInputs = $(param).find("input");
+		
+		newParamSelects[0].setAttribute('name','paramRelationship' + num);
+		newParamSelects[1].setAttribute('name','paramField'  + num);
+		newParamSelects[2].setAttribute('name','paramCondition'  + num);
+		newParamInputs[0].setAttribute('value',num);
+		newParamInputs[1].setAttribute('name','paramCriteria' + num);
+		
+	},
+
+	setSearchButtons: function(){
+		var params=$('#searchParams > .controls');
+		var num =params.length;
+		
+		if(num == 1){
+			var buttons = params.find("a");
+				$(buttons[0]).hide();
+				$(buttons[1]).show();
+				params.find("select:first").hide();
+		} else {
+				
+			params.each(function(index){
+					if(index==0){
+						var buttons =$(params[index]).find("a");
+						$(params[index]).find('select:first').hide();
+						$(buttons[0]).hide();
+						$(buttons[1]).hide();
+					} else {
+						var buttons =$(params[index]).find("a");
+						$(params[index]).find('select:first').show();
+						
+						if(index!= num-1){
+							$(buttons[0]).show();
+							$(buttons[1]).hide();
+							
+						}else{
+							$(buttons[0]).show();
+							$(buttons[1]).show();
+						}
+						
+						 searchParams.setSearchParamNames(params[index],index + 1);
+					}
+				}
+			);
+			
+		}
+		
+		return false;
+	},
+
+	removeSeachParam: function(option){
+
+		new $(option).remove();
+		
+		return false;
 	}
-	
-	return false;
-}
-
-function removeSeachParam(option){
-
-	new jQuery(option).remove();
-	
-	return false;
 }

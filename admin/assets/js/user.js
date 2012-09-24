@@ -44,145 +44,147 @@
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
-function loadExtendedAttributes(baseID,type,subType,_siteID,_context,_themeAssetPath)	{
-		var url = 'index.cfm';
-		var pars = 'muraAction=cPublicUsers.loadExtendedAttributes&baseID=' + baseID +'&type=' + type  +'&subType=' + subType + '&siteID=' + _siteID + '&cacheid=' + Math.random();
-		
-		siteID=_siteID;
-		context=_context;
-		themeAssetPath=_themeAssetPath
-		
-		//location.href=url + "?" + pars;
-		var d = jQuery('#extendSetsDefault');
-		
-		if(d.length){
-			d.html('<img class="loadProgress" src="assets/images/progress_bar.gif">');
-			jQuery.get(url + "?" + pars, 
-					function(data) {
-					if(data.indexOf('mura-primary-login-token') != -1){
-						location.href='./';
-					}
-					setExtendedAttributes(data);
-					}
-			);
+var userManager={
+	loadExtendedAttributes: function(baseID,type,subType,_siteID,_context,_themeAssetPath)	{
+			var url = 'index.cfm';
+			var pars = 'muraAction=cPublicUsers.loadExtendedAttributes&baseID=' + baseID +'&type=' + type  +'&subType=' + subType + '&siteID=' + _siteID + '&cacheid=' + Math.random();
+			
+			siteID=_siteID;
+			context=_context;
+			themeAssetPath=_themeAssetPath
+			
+			//location.href=url + "?" + pars;
+			var d = $('#extendSetsDefault');
+			
+			if(d.length){
+				d.html('<img class="loadProgress" src="assets/images/progress_bar.gif">');
+				$.get(url + "?" + pars, 
+						function(data) {
+						if(data.indexOf('mura-primary-login-token') != -1){
+							location.href='./';
+						}
+						userManager.setExtendedAttributes(data);
+						}
+				);
+			}
+			
+			return false;
+		},
+
+	setExtendedAttributes: function(data){
+		var r=eval("(" + data + ")");
+		$("#extendSetsDefault").html(r.extended);
+		$("#extendSetsBasic").html(r.basic);
+
+		if(r.extended==''){
+			$('#tabExtendedattributesLI').addClass('hide');
+		} else{
+			$('#tabExtendedattributesLI').removeClass('hide');
 		}
+		//checkExtendSetTargeting();
+		setHTMLEditors(context,themeAssetPath);
+		setDatePickers(".tabcontent .datepicker",dtLocale);
+		setColorPickers(".tabcontent .colorpicker");
+		setToolTips(".tabcontent");
+
+	},
+
+	checkExtendSetTargeting: function(){
+		var extendSets=$('.extendset');
+		var found=false;
+		var started=false;
+		var empty=true;
 		
-		return false;
-	}
+		if (extendSets.length){
+			for(var s=0;s<extendSets.length;s++){
+				var extendSet=extendSets[s];
 
-function setExtendedAttributes(data){
-	var r=eval("(" + data + ")");
-	jQuery("#extendSetsDefault").html(r.extended);
-	jQuery("#extendSetsBasic").html(r.basic);
-
-	if(r.extended==''){
-		$('#tabExtendedattributesLI').addClass('hide');
-	} else{
-		$('#tabExtendedattributesLI').removeClass('hide');
-	}
-	//checkExtendSetTargeting();
-	setHTMLEditors(context,themeAssetPath);
-	setDatePickers(".tabcontent .datepicker",dtLocale);
-	setColorPickers(".tabcontent .colorpicker");
-	setToolTips(".tabcontent");
-
-}
-
-function checkExtendSetTargeting(){
-	var extendSets=jQuery('.extendset');
-	var found=false;
-	var started=false;
-	var empty=true;
-	
-	if (extendSets.length){
-		for(var s=0;s<extendSets.length;s++){
-			var extendSet=extendSets[s];
-
-			if(extendSet.getAttribute("categoryid") != undefined
-			&& extendSet.getAttribute("categoryid") != ""){
-				if(!started){
-				var categories=document.form1.categoryID;
-				started=true;
-				}
-				
-				for(var c=0;c<categories.length;c++){
-					var cat =categories[c];
-					var catID=categories[c].value;
-					var assignedID=extendSet.getAttribute("categoryid");
-					if(!found && catID != null && assignedID.indexOf(catID) > -1){
-						found=true;
-						membership=cat.checked;			
+				if(extendSet.getAttribute("categoryid") != undefined
+				&& extendSet.getAttribute("categoryid") != ""){
+					if(!started){
+					var categories=document.form1.categoryID;
+					started=true;
 					}
-				}
-				
-				if(found){
-					if(membership){
-						setFormElementsDisplay(extendSet,'');
-						extendSet.style.display='';	
-						empty=false;
+					
+					for(var c=0;c<categories.length;c++){
+						var cat =categories[c];
+						var catID=categories[c].value;
+						var assignedID=extendSet.getAttribute("categoryid");
+						if(!found && catID != null && assignedID.indexOf(catID) > -1){
+							found=true;
+							membership=cat.checked;			
+						}
+					}
+					
+					if(found){
+						if(membership){
+							userManager.setFormElementsDisplay(extendSet,'');
+							extendSet.style.display='';	
+							empty=false;
+						} else {
+							userManager.setFormElementsDisplay(extendSet,'none');
+							extendSet.style.display='none';
+							
+						}
 					} else {
-						setFormElementsDisplay(extendSet,'none');
+						userManager.setFormElementsDisplay(extendSet,'none');
 						extendSet.style.display='none';
 						
 					}
 				} else {
-					setFormElementsDisplay(extendSet,'none');
-					extendSet.style.display='none';
+					userManager.setFormElementsDisplay(extendSet,'');
+					extendSet.style.display='';
+					empty=false;
+					
 					
 				}
-			} else {
-				setFormElementsDisplay(extendSet,'');
-				extendSet.style.display='';
-				empty=false;
 				
 				
+				found=false;
 			}
 			
-			
-			found=false;
+			if(empty){
+				$('#extendMessage').show();
+				$('#extendDL').hide();
+			} else {
+				$('#extendMessage').hide();
+				$('#extendDL').show();
+			}
+		
+		}
+
+	},
+
+	resetExtendedAttributes: function(contentHistID,type,subtype,siteID,context,themeAssetPath)	{
+		this.loadExtendedAttributes(contentHistID,type,subtype,siteID,context,themeAssetPath);
+		//alert(dataArray[1]);
+	},
+
+	setFormElementsDisplay: function(container,display){
+		var inputs = container.getElementsByTagName('input');
+		//alert(inputs.length);
+		if(inputs.length){
+			for(var i=0;i < inputs.length;i++){
+				inputs[i].style.display=display;
+				//alert(inputs[i].style.display);
+			}
 		}
 		
-		if(empty){
-			jQuery('#extendMessage').show();
-			jQuery('#extendDL').hide();
-		} else {
-			jQuery('#extendMessage').hide();
-			jQuery('#extendDL').show();
+		inputs = container.getElementsByTagName('textarea');
+		
+		if(inputs.length){
+			for(var i=0;i < inputs.length;i++){
+				inputs[i].style.display=display;
+			}
 		}
-	
-	}
-
-}
-
-function resetExtendedAttributes(contentHistID,type,subtype,siteID,context,themeAssetPath)	{
-	loadExtendedAttributes(contentHistID,type,subtype,siteID,context,themeAssetPath);
-	//alert(dataArray[1]);
-}
-
-function setFormElementsDisplay(container,display){
-	var inputs = container.getElementsByTagName('input');
-	//alert(inputs.length);
-	if(inputs.length){
-		for(var i=0;i < inputs.length;i++){
-			inputs[i].style.display=display;
-			//alert(inputs[i].style.display);
+		
+		inputs = container.getElementsByTagName('select');
+		
+		if(inputs.length){
+			for(var i=0;i < inputs.length;i++){
+				inputs[i].style.display=display;
+			}
 		}
-	}
-	
-	inputs = container.getElementsByTagName('textarea');
-	
-	if(inputs.length){
-		for(var i=0;i < inputs.length;i++){
-			inputs[i].style.display=display;
-		}
-	}
-	
-	inputs = container.getElementsByTagName('select');
-	
-	if(inputs.length){
-		for(var i=0;i < inputs.length;i++){
-			inputs[i].style.display=display;
-		}
-	}
 
+	}
 }

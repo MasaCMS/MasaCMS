@@ -29,7 +29,7 @@ function saveToChangeset(changesetid,siteid,keywords){
 	var url = 'index.cfm';
 	var pars = 'muraAction=cArch.availablechangesets&compactDisplay=true&siteid=' + siteid  + '&keywords=' + keywords + '&changesetid=' + changesetid +'&cacheid=' + Math.random();
 	var d = jQuery('##changesetContainer');
-	d.html('<img class="loadProgress" src="assets/images/progress_bar.gif">');
+	d.html('<div><img class="loadProgress" src="assets/images/progress_bar.gif"></div>');
 	jQuery.get(url + "?" + pars, 
 			function(data) {
 			jQuery('##changesetContainer').html(data);
@@ -42,14 +42,14 @@ function saveToChangeset(changesetid,siteid,keywords){
 			buttons: {
 				'#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.save"))#': function() {
 					jQuery(this).dialog('close');
-					if (configuratorMode == 'backEnd') {
-						if(ckContent()){
+					if (siteManager.configuratorMode == 'backEnd') {
+						if(siteManager.ckContent()){
 							jQuery("##changesetID").val(currentChangesetSelection);
 							jQuery("##removePreviousChangeset").val(document.getElementById("_removePreviousChangeset").checked);
 							submitForm(document.contentForm, 'add');
 						}
 					} else {
-						saveConfiguratorToChangeset(currentChangesetSelection,document.getElementById("_removePreviousChangeset").checked);
+						siteManager.saveConfiguratorToChangeset(currentChangesetSelection,document.getElementById("_removePreviousChangeset").checked);
 					}
 						
 						return false;

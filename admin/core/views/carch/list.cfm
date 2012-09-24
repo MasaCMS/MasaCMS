@@ -556,14 +556,14 @@ function initSiteManagerTabContent(index){
 	switch(index){
 		case 0:
 		if (!archViewLoaded) {
-			loadSiteManager('#JSStringFormat(rc.siteID)#', '#JSStringFormat(rc.topid)#', '#JSStringFormat(rc.moduleid)#', '#JSStringFormat(rc.sortby)#', '#JSStringFormat(rc.sortdirection)#', '#JSStringFormat(rc.ptype)#', '#JSStringFormat(rc.startrow)#');
+			siteManager.loadSiteManager('#JSStringFormat(rc.siteID)#', '#JSStringFormat(rc.topid)#', '#JSStringFormat(rc.moduleid)#', '#JSStringFormat(rc.sortby)#', '#JSStringFormat(rc.sortdirection)#', '#JSStringFormat(rc.ptype)#', '#JSStringFormat(rc.startrow)#');
 			archViewLoaded = true;
 			jQuery('##viewTabs a[href="##tabArchitectural"]').tab('show');
 		}
 		break;
 		case 1:
 		if (!flatViewLoaded) {
-			loadSiteFlat(flatViewArgs);
+			siteManager.loadSiteFlat(flatViewArgs);
 			flatViewLoaded = true;
 			jQuery('##viewTabs a[href="##tabFlat"]').tab('show');
 		}

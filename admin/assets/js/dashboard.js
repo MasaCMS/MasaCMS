@@ -43,15 +43,15 @@
 	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
-
-function loadUserActivity(siteID)	{
+var dashboardManager={
+	loadUserActivity: function(siteID)	{
 		var url = 'index.cfm';
 		var pars = 'muraAction=cDashboard.loadUserActivity&siteID=' + siteID  + '&cacheid=' + Math.random();
 		
 		//location.href=url + "?" + pars;
-		var d = jQuery('#userActivityData');
+		var d = $('#userActivityData');
 			d.html('<img class="loadProgress" src="assets/images/progress_bar.gif">');
-			jQuery.get(url + "?" + pars, 
+			$.get(url + "?" + pars, 
 					function(data) {
 					d.html(data).animate({'opacity':'hide'},1000,null,
 							function(){
@@ -60,16 +60,16 @@ function loadUserActivity(siteID)	{
 					}
 			);
 		return false;
-	}
+	},
 	
-function loadPopularContent(siteID)	{
+	loadPopularContent: function(siteID)	{
 		var url = 'index.cfm';
 		var pars = 'muraAction=cDashboard.loadPopularContent&siteID=' + siteID  + '&cacheid=' + Math.random();
 		
 		//location.href=url + "?" + pars;
-		var d = jQuery('#popularContentData');
+		var d = $('#popularContentData');
 			d.html('<img class="loadProgress" src="assets/images/progress_bar.gif">');
-			jQuery.get(url + "?" + pars, 
+			$.get(url + "?" + pars, 
 					function(data) {
 					d.html(data).animate({'opacity':'hide'},1000,null,
 							function(){
@@ -78,35 +78,35 @@ function loadPopularContent(siteID)	{
 					}
 			);
 		return false;
-	}
+	},
 
-function loadRecentComments(siteID)	{
-	var url = 'index.cfm';
-	var pars = 'muraAction=cDashboard.loadRecentComments&siteID=' + siteID  + '&cacheid=' + Math.random();
-	
-	//location.href=url + "?" + pars;
-	var d = jQuery('#recentCommentsData');
-		d.html('<img class="loadProgress" src="assets/images/progress_bar.gif">');
-		jQuery.get(url + "?" + pars, 
-				function(data) {
-				d.html(data).animate({'opacity':'hide'},1000,null,
-						function(){
-							d.animate({'opacity':'show'},1000);
-						});
-				}
-		);
-	return false;
-}
+	loadRecentComments: function(siteID)	{
+		var url = 'index.cfm';
+		var pars = 'muraAction=cDashboard.loadRecentComments&siteID=' + siteID  + '&cacheid=' + Math.random();
+		
+		//location.href=url + "?" + pars;
+		var d = $('#recentCommentsData');
+			d.html('<img class="loadProgress" src="assets/images/progress_bar.gif">');
+			$.get(url + "?" + pars, 
+					function(data) {
+					d.html(data).animate({'opacity':'hide'},1000,null,
+							function(){
+								d.animate({'opacity':'show'},1000);
+							});
+					}
+			);
+		return false;
+	},
 
 	
-function loadFormActivity(siteID)	{
+	loadFormActivity: function(siteID)	{
 		var url = 'index.cfm';
 		var pars = 'muraAction=cDashboard.loadFormActivity&siteID=' + siteID  + '&cacheid=' + Math.random();
 		
 		//location.href=url + "?" + pars;
-		var d = jQuery('#recentFormActivityData');
+		var d = $('#recentFormActivityData');
 			d.html('<img class="loadProgress" src="assets/images/progress_bar.gif">');
-			jQuery.get(url + "?" + pars, 
+			$.get(url + "?" + pars, 
 					function(data) {
 					d.html(data).animate({'opacity':'hide'},1000,null,
 							function(){
@@ -115,16 +115,16 @@ function loadFormActivity(siteID)	{
 					}
 			);
 		return false;
-	}
+	},
 	
-function loadEmailActivity(siteID)	{
+	loadEmailActivity: function(siteID)	{
 		var url = 'index.cfm';
 		var pars = 'muraAction=cDashboard.loadEmailActivity&siteID=' + siteID  + '&cacheid=' + Math.random();
 		
 		//location.href=url + "?" + pars;
-		var d = jQuery('#emailBroadcastsData');
+		var d = $('#emailBroadcastsData');
 			d.html('<div id="emailBroadcasts" class="separate"><h3>Email Broadcasts</h3><img class="loadProgress" src="assets/images/progress_bar.gif"></div>');
-			jQuery.get(url + "?" + pars, 
+			$.get(url + "?" + pars, 
 					function(data) {
 					d.html(data).animate({'opacity':'hide'},1000,null,
 							function(){
@@ -134,4 +134,5 @@ function loadEmailActivity(siteID)	{
 			);
 		return false;
 	}
+}
 	

@@ -208,7 +208,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div id="tabChoosecontent" class="tab-pane fade">
 
 <div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.choosecontentfromsection')#: <span id="selectFilter"><a href="javascript:;" onclick="javascript: loadSiteFilters('#rc.siteid#','',1);return false;">[#application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#]</a></span>
+      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.choosecontentfromsection')#: <span id="selectFilter"><a href="javascript:;" onclick="javascript: feedManager.loadSiteFilters('#rc.siteid#','',1);return false;">[#application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#]</a></span>
 </label>
 
 <div class="controls">
@@ -323,13 +323,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div id="tabAdvancedfilters" class="tab-pane fade">
 
-<div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.chooseadvancedfilters')#
-      </label>
-	<div class="controls">
-		<ul id="searchParams">
+	<div class="control-group" id="searchParams">
+      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.chooseadvancedfilters')#
+      	</label>
 		<cfif not rsParams.recordcount>
-		<li><select name="paramRelationship1" style="display:none;" >
+		<div class="controls"><select name="paramRelationship1" style="display:none;" >
 			<option value="and">#application.rbFactory.getKeyValue(session.rb,'params.and')#</option>
 			<option value="or">#application.rbFactory.getKeyValue(session.rb,'params.or')#</option>
 		</select>
@@ -346,12 +344,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 		</select>
 		<input type="text" name="paramCriteria1">
-		<a class="removeCriteria" href="javascript:;" onclick="removeSeachParam(this.parentNode);setSearchButtons();return false;" style="display:none;">#application.rbFactory.getKeyValue(session.rb,'params.removecriteria')#</a>
-		<a class="addCriteria" href="javascript:;" onclick="addSearchParam();setSearchButtons();return false;">#application.rbFactory.getKeyValue(session.rb,'params.addcriteria')#</a>
-		</li>
+		<a class="criteria remove" href="javascript:;" onclick="searchParams.removeSeachParam(this.parentNode);searchParams.setSearchButtons();return false;" style="display:none;"><l class="icon-minus-sign"></i></a>
+		<a class="criteria add" href="javascript:;" onclick="searchParams.addSearchParam();searchParams.setSearchButtons();return false;"><l class="icon-plus-sign"></i></a>
+		</div>
 		<cfelse>
 		<cfloop query="rsParams">
-		<li>
+		<div class="controls">
 		<select name="paramRelationship#rsParams.currentRow#">
 			<option value="and" <cfif rsParams.criteria eq '' or rsParams.relationship eq "and">selected</cfif> >And</option>
 			<option value="or" <cfif rsParams.criteria neq '' and rsParams.relationship eq "or">selected</cfif> >Or</option>
@@ -369,12 +367,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 		</select>
 		<input type="text" name="paramCriteria#rsParams.currentRow#" value="#HTMLEditFormat(rsParams.criteria)#" >
-			<a class="removeCriteria" href="javascript:;" onclick="removeSeachParam(this.parentNode);setSearchButtons();return false;">#application.rbFactory.getKeyValue(session.rb,'params.removecriteria')#</a>
-		<a class="addCriteria" href="javascript:;" onclick="addSearchParam();setSearchButtons();return false;" >#application.rbFactory.getKeyValue(session.rb,'params.addcriteria')#</a>
-		</li>
+			<a class="criteria remove" href="javascript:;" onclick="searchParams.removeSeachParam(this.parentNode);searchParams.setSearchButtons();return false;"><l class="icon-minus-sign"></i></a>
+		<a class="criteria add" href="javascript:;" onclick="searchParams.addSearchParam();searchParams.setSearchButtons();return false;" ><l class="icon-plus-sign"></i></a>
+		</div>
 		</cfloop>
 		</cfif>
-		</ul>
   </div>
 </div>
 
@@ -507,7 +504,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<script>
 			jQuery(document).ready(
 				function(){
-					setDisplayListSort();
+					feedManager.setDisplayListSort();
 				}
 			);	
 		</script>
@@ -683,7 +680,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfhtmlhead text='<script type="text/javascript" src="assets/js/tab-view.js"></script>'>
 --->
 <script type="text/javascript">
-setSearchButtons();
+searchParams.setSearchButtons();
 </script>
 </cfoutput>
 
@@ -843,7 +840,7 @@ jQuery(document).ready(function(){
 	<div id="tabImportlocation" class="tab-pane fade">
 	<div class="control-group">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.importlocation')#:<span id="move" class="text"> <cfif rc.feedbean.getparentid() neq ''>"#application.contentManager.getActiveContent(rc.feedBean.getParentID(),rc.feedBean.getSiteID()).getMenuTitle()#"<cfelse>"#application.rbFactory.getKeyValue(session.rb,'collections.noneselected')#"</cfif>
-				&nbsp;&nbsp;<a href="javascript:##;" onclick="javascript: loadSiteParents('#rc.siteid#','#rc.feedbean.getparentid()#','',1);return false;">[#application.rbFactory.getKeyValue(session.rb,'collections.selectnewlocation')#]</a>
+				&nbsp;&nbsp;<a href="javascript:##;" onclick="javascript: feedManager.loadSiteParents('#rc.siteid#','#rc.feedbean.getparentid()#','',1);return false;">[#application.rbFactory.getKeyValue(session.rb,'collections.selectnewlocation')#]</a>
 				<input type="hidden" name="parentid" value="#rc.feedbean.getparentid()#">
 		</span>
 	  </div>

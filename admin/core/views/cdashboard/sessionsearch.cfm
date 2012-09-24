@@ -183,8 +183,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 		</select>
 		<input type="text" name="paramCriteria1">
-		<a class="criteria remove" href="javascript:;" onclick="removeSeachParam(this.parentNode);setSearchButtons();return false;" style="display:none;" title="#application.rbFactory.getKeyValue(session.rb,"params.removecriteria")#"><i class="icon-minus-sign"></i></a>
-		<a class="criteria add" href="javascript:;" onclick="addSearchParam();setSearchButtons();return false;" title="#application.rbFactory.getKeyValue(session.rb,"params.addcriteria")#"><i class="icon-plus-sign"></i></a>
+		<a class="criteria remove" href="javascript:;" onclick="searchParams.removeSeachParam(this.parentNode);searchParams.setSearchButtons();return false;" style="display:none;" title="#application.rbFactory.getKeyValue(session.rb,"params.removecriteria")#"><i class="icon-minus-sign"></i></a>
+		<a class="criteria add" href="javascript:;" onclick="searchParams.addSearchParam();searchParams.setSearchButtons();return false;" title="#application.rbFactory.getKeyValue(session.rb,"params.addcriteria")#"><i class="icon-plus-sign"></i></a>
 		</div>
 		<cfelse>
 		<cfloop from="1" to="#session.paramCount#" index="p">
@@ -218,8 +218,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 		</select>
 		<input type="text" name="paramCriteria#p#" value="#session.paramArray[p].criteria#" >
-			<a class="removeCriteria" href="javascript:;" onclick="removeSeachParam(this.parentNode);setSearchButtons();return false;"><span>#application.rbFactory.getKeyValue(session.rb,"params.removecriteria")#</span></a>
-		<a class="addCriteria" href="javascript:;" onclick="addSearchParam();setSearchButtons();return false;" ><span>#application.rbFactory.getKeyValue(session.rb,"params.addcriteria")#</span></a>
+			<a class="removeCriteria" href="javascript:;" onclick="searchParams.removeSeachParam(this.parentNode);searchParams.setSearchButtons();return false;"><span>#application.rbFactory.getKeyValue(session.rb,"params.removecriteria")#</span></a>
+		<a class="addCriteria" href="javascript:;" onclick="searchParams.addSearchParam();searchParams.setSearchButtons();return false;" ><span>#application.rbFactory.getKeyValue(session.rb,"params.addcriteria")#</span></a>
 		</div>
 		</cfloop>
 		</cfif>	

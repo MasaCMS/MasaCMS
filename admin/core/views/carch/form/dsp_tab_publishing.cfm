@@ -157,7 +157,7 @@
 	      				<cfif rc.contentBean.getIsNew()>
 	      					"#rc.crumbData[1].menutitle#"<cfelse>"#rc.crumbData[2].menutitle#"
 	      				</cfif>
-						&nbsp;&nbsp;<a href="javascript:##;" onclick="javascript: loadSiteParents('#rc.siteid#','#rc.contentid#','#rc.parentid#','',1);return false;">[#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectnewparent')#]</a>
+						&nbsp;&nbsp;<a href="javascript:##;" onclick="javascript: siteManager.loadSiteParents('#rc.siteid#','#rc.contentid#','#rc.parentid#','',1);return false;">[#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectnewparent')#]</a>
 						<input type="hidden" name="parentid" value="#rc.parentid#">
 					</span>
 				</label>
@@ -193,7 +193,7 @@
 			</div>
 			<div class="controls" id="expires-notify">
 				<label for="dspexpiresnotify" class="checkbox">
-					<input type="checkbox" name="dspExpiresNotify" id="dspexpiresnotify" onclick="loadExpiresNotify('#rc.siteid#','#rc.contenthistid#','#rc.parentid#');"  class="checkbox">
+					<input type="checkbox" name="dspExpiresNotify" id="dspexpiresnotify" onclick="siteManager.loadExpiresNotify('#rc.siteid#','#rc.contenthistid#','#rc.parentid#');"  class="checkbox">
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expiresnotify')#
 				</label>
 			</div>
@@ -245,7 +245,7 @@
 	<div class="control-group">
 		<div class="controls">
 	   		<label for="dspnotify" class="checkbox">
-	      		<input type="checkbox" name="dspNotify"  id="dspnotify" onclick="loadNotify('#rc.siteid#','#rc.contentid#','#rc.parentid#');"  class="checkbox"> 
+	      		<input type="checkbox" name="dspNotify"  id="dspnotify" onclick="siteManager.loadNotify('#rc.siteid#','#rc.contentid#','#rc.parentid#');"  class="checkbox"> 
 	      		<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.notifyReview"))#">
 	      			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notifyforreview')#
 	      		 <i class="icon-info-sign"></i></a>
