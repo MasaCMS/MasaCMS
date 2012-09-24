@@ -229,7 +229,7 @@ select * from rsSubTypes where subType <> 'Default'
 <div id="tabExtendedattributes" class="tab-pane fade">
 			<span id="extendSetsDefault"></span>
 			<script type="text/javascript">
-			loadExtendedAttributes('#rc.userbean.getUserID()#','#rc.userbean.getType()#','#rc.userBean.getSubType()#','#application.settingsManager.getSite(rc.userBean.getSiteID()).getPrivateUserPoolID()#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.userbean.getSiteID()).getThemeAssetPath()#');
+			userManager.loadExtendedAttributes('#rc.userbean.getUserID()#','#rc.userbean.getType()#','#rc.userBean.getSubType()#','#application.settingsManager.getSite(rc.userBean.getSiteID()).getPrivateUserPoolID()#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.userbean.getSiteID()).getThemeAssetPath()#');
 			</script>	
 </div>
 	<cfhtmlhead text='<script type="text/javascript" src="assets/js/user.js"></script>'>
