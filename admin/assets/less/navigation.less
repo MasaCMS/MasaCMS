@@ -28,20 +28,30 @@
 // Tabs 
 
 
-.tabbable.tabs-left {
+.tabbable {
 	
 	clear: both;
 	
+	> .nav-tabs {
+	font-weight: bold;
+		}
+	
+	.nav .active a {
+		color: @black;
+		}
+	
+}
+
+.tabs-left {
+
 	.nav a {
-		font-weight: bold;
 		font-size: 14px;
 		}
 
 	.nav .active a {
-		color: @black;
 		background: @grayLighter;
 		}
-	
+		
 	> .nav-tabs {
 		border-right: 0;
 		.makeColumn(2);
@@ -70,8 +80,7 @@
 	.tab-pane {
 		padding: 0 20px;
 		}
-}
-	
+	}
 // Pills
 
 .navSort {
