@@ -99,7 +99,7 @@ var siteManager={
 	 if(document.contentForm.type.value=='Link' 
 		 	&& document.contentForm.body.value == ''){
 
-		alertDialog("The form field 'Url' is required"); 
+		alertDialog("The form field 'URL' is required"); 
 		return false;
 	 }
 	 
