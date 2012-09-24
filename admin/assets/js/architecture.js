@@ -1228,7 +1228,7 @@ buttons: {
 	},     		
 	     
 	initQuickEdits: function(){
-		$(".mura-quickEditItem").click(
+		$(".mura-quickEditItem").toggle(
 				function(event){
 					event.preventDefault();
 					if (!this.activeQuickEdit) {
@@ -1271,6 +1271,9 @@ buttons: {
 							
 						});
 					}			
+				}, function(event) {
+					event.preventDefault();
+					siteManager.closeQuickEdit();
 				}
 			);
 	},
@@ -1343,7 +1346,7 @@ buttons: {
 	},
 
 	initCategoryAssignments: function(){
-		$(".mura-quickEditItem").click(
+		$(".mura-quickEditItem").toggle(
 				function(event){
 					event.preventDefault();
 				
@@ -1402,6 +1405,10 @@ buttons: {
 							}
 						);
 					}			
+				, function(event){
+					event.preventDefault();
+					siteManager.closeQuickEdit();
+				}
 			);
 	},
 
