@@ -49,7 +49,7 @@
 	#application.contentRenderer.dspZoom(rc.contentBean.getCrumbArray(),rc.contentBean.getFileExt())#
 </cfif>
 
-<div id="image-details">
+<div id="image-details" class="form-horizontal">
 <cfif len(rc.fileID)>
 	<cfloop list="#rc.fileID#" index="f">	
 		<cfset rc.sourceImage=$.getURLForImage(fileID=f,size='source')>
@@ -58,11 +58,11 @@
 			<h2><i class="icon-picture"></i> #HTMLEditFormat(rc.rsMeta.filename)#</h2>
 			<cfloop list="Small,Medium,Large" index="s">
 				<div class="control-group divide">
-					<label class="control-label"><span>Size:</span> #s#</label>
+					<label class="control-label">#s# (80x80) <a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.editSite&siteid=#session.siteid###tabImages"><i class="icon-edit"></i></a></label>
 					<div class="controls">
 						<div id="#lcase(s)##f#btns" class="btn-group">
-							<button type="button" class="btn cropper-reset" data-fileid="#f#" data-size="#lcase(s)#"><i class="icon-refresh"></i> Reset</button>
-							<button type="button" class="btn cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#evaluate('rc.#s#ImageRatio')#" data-size="#lcase(s)#"><i class="icon-screenshot"></i> Re-Crop</button>
+							<button type="button" class="btn btn-small cropper-reset" data-fileid="#f#" data-size="#lcase(s)#"><i class="icon-refresh"></i> Reset</button>
+							<button type="button" class="btn btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#evaluate('rc.#s#ImageRatio')#" data-size="#lcase(s)#"><i class="icon-screenshot"></i> Re-Crop</button>
 						</div>
 					</div>
 					<img src="./assets/images/progress_bar.gif" style="display:none">
@@ -78,11 +78,11 @@
 					<cfset rc.customImageRatio=''>
 				</cfif>
 				<div class="control-group divide">
-					<label class="control-label">#HTMLEditFormat(customImage.getName())#</label>
+					<label class="control-label">#HTMLEditFormat(customImage.getName())# (80x80) <a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.editSite&siteid=#session.siteid###tabImages"><i class="icon-edit"></i></a></label>
 					<div class="controls">
 						<div id="#lcase(customImage.getName())##f#btns" class="btn-group">
-							<button type="button" class="btn cropper-reset" data-fileid="#f#" data-size="#lcase(customImage.getName())#"><i class="icon-refresh"></i> Reset</button>
-							<button type="button" class="btn cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#rc.customImageRatio#" data-size="#lcase(customImage.getName())#"><i class="icon-screenshot"></i> Re-Crop</button>
+							<button type="button" class="btn btn-small cropper-reset" data-fileid="#f#" data-size="#lcase(customImage.getName())#"><i class="icon-refresh"></i> Reset</button>
+							<button type="button" class="btn btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#rc.customImageRatio#" data-size="#lcase(customImage.getName())#"><i class="icon-screenshot"></i> Re-Crop</button>
 						</div>
 					</div>
 					<img src="./assets/images/progress_bar.gif" style="display:none">

@@ -2,44 +2,39 @@
 	
 	h2 {
 		font-size: 24px;
-		color: @grayDark;
+		line-height: 1;
+		color: @grayDarker;
 		
 		i {
 			color: @gray;
+			font-size: 32px;
+			height: auto;
 			}
 		}
 	
 	.control-group {
-		/*
-		.inline-block;
-		width: 33%;
-		min-height: 200px;
-		*/
+
 		}
 	
 	.control-label {
-		.inline-block;
-		font-size: 20px;
-		line-height: 28px;
-		padding-right: .5em;
-		margin-right: .5em;
-		margin-bottom: 0;
+		text-align: left;
+		font-size: 18px;
+		line-height: 1;
+		margin-right: 1em;
+		margin-bottom: @baseLineHeight;
 		font-weight: normal;
-		border-right: 2px solid @grayLight;
-		background: @grayLight;
-		/*
-		padding: 5px 10px;
-		background: @grayDark;
-		color: @white;
-		.border-radius(28px);
-		*/
+		width: auto;
+		color: @grayDark;
+		
+			a {
+				color: @gray;
+				}
 		
 		}
 		
 	.controls {
-		margin-top: -4px;
-		/* margin-bottom: @baseLineHeight / 2; */
-		.inline-block;
+		margin-left: 0;
+		margin-bottom: @baseLineHeight;
 		}
 		
 	img {
