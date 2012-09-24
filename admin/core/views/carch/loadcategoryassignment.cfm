@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset $=application.serviceFactory.getBean("MuraScope").init(session.siteID)>
 	<cfoutput>
 	<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.categoryassignment')#</h1>
-	<span class="cancel" onclick="closeCategoryAssignment();">#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.cancel')#</span>
+	<span class="cancel" onclick="siteManager.closeCategoryAssignment();">#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.cancel')#</span>
 
 		<!---
 		<select id="mura-quickEdit-display" onchange="this.selectedIndex==2?toggleDisplay2('mura-quickEdit-displayDates',true):toggleDisplay2('mura-quickEdit-displayDates',false);">
@@ -106,7 +106,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</ol>	
 	<input type="hidden" id="mura-quickEdit-cattrim" value="#HTMLEditFormat(rc.cattrim)#">
 	<div class="buttons">
-	<input type="button" name="submit" value="Submit" class="submit btn" onclick="saveCategoryAssignment();" />
+	<input type="button" name="submit" value="Submit" class="submit btn" onclick="siteManager.saveCategoryAssignment();" />
 	</div>
 	</cfoutput>
 

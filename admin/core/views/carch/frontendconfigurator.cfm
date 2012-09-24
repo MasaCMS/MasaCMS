@@ -75,7 +75,7 @@ jQuery(document).ready(function(){
 	</div>
 </div>
 <script>
-var configuratorMode='frontEnd';
+var siteManager.configuratorMode='frontEnd';
 
 jQuery(document).ready(function(){
 	if(jQuery("##ProxyIFrame").length){
@@ -90,7 +90,7 @@ jQuery(document).ready(function(){
 	
 	<cfswitch expression="#rsDisplayObject.object#">
 		<cfcase value="feed,feed_no_summary,remoteFeed">	
-			initFeedConfigurator({
+			siteManager.initFeedConfigurator({
 						'object':'#JSStringFormat(rsDisplayObject.object)#',
 						'objectid':'#JSStringFormat(rsDisplayObject.objectid)#',
 						'name':'#JSStringFormat(rsDisplayObject.name)#',
@@ -104,7 +104,7 @@ jQuery(document).ready(function(){
 					});
 		</cfcase>
 		<cfcase value="feed_slideshow,feed_slideshow_no_summary">	
-			initSlideShowConfigurator({
+			siteManager.initSlideShowConfigurator({
 						'object':'#JSStringFormat(rsDisplayObject.object)#',
 						'objectid':'#JSStringFormat(rsDisplayObject.objectid)#',
 						'name':'#JSStringFormat(rsDisplayObject.name)#',
@@ -118,7 +118,7 @@ jQuery(document).ready(function(){
 					});
 		</cfcase>
 		<cfcase value="category_summary,category_summary_rss">	
-			initCategorySummaryConfigurator({
+			siteManager.initCategorySummaryConfigurator({
 						'object':'#JSStringFormat(rsDisplayObject.object)#',
 						'objectid':'#JSStringFormat(rsDisplayObject.objectid)#',
 						'name':'#JSStringFormat(rsDisplayObject.name)#',
@@ -132,7 +132,7 @@ jQuery(document).ready(function(){
 					});
 		</cfcase>
 		<cfcase value="related_content,related_section_content">	
-			initRelatedContentConfigurator({
+			siteManager.initRelatedContentConfigurator({
 						'object':'#JSStringFormat(rsDisplayObject.object)#',
 						'objectid':'#JSStringFormat(rsDisplayObject.objectid)#',
 						'name':'#JSStringFormat(rsDisplayObject.name)#',
@@ -173,9 +173,9 @@ jQuery(document).ready(function(){
 				return false;
 			}
 			
-			updateAvailableObject();
+			siteManager.updateAvailableObject();
 			
-			if (availableObjectValidate(availableObject.params)) {
+			if (siteManager.availableObjectValidate(siteManager.availableObject.params)) {
 				jQuery("##configurator").html('<img src="assets/images/progress_bar.gif">');
 				jQuery(".form-actions").hide();
 				jQuery("##configuratorNotices").hide();
@@ -186,7 +186,7 @@ jQuery(document).ready(function(){
 					'regionid': '#JSStringFormat(rsDisplayObject.columnid)#',
 					'orderno': '#JSStringFormat(rsDisplayObject.orderno)#',
 					'siteid': '#JSStringFormat(rsDisplayObject.siteid)#',
-					'params': JSON.stringify(availableObject.params),
+					'params': JSON.stringify(siteManager.availableObject.params),
 					'approved': 1,
 					'object': '#JSStringFormat(rsDisplayObject.object)#',
 					'name': '#JSStringFormat(rsDisplayObject.name)#',
@@ -202,9 +202,9 @@ jQuery(document).ready(function(){
 	jQuery("##saveConfigDraft").bind("click",
 		function(){
 			
-			updateAvailableObject();
+			siteManager.updateAvailableObject();
 			
-			if (availableObjectValidate(availableObject.params)) {
+			if (siteManager.availableObjectValidate(siteManager.availableObject.params)) {
 				jQuery("##configurator").html('<img src="assets/images/progress_bar.gif">');
 				jQuery(".form-actions").hide();
 				jQuery("##configuratorNotices").hide();
@@ -215,7 +215,7 @@ jQuery(document).ready(function(){
 					'regionid': '#JSStringFormat(rsDisplayObject.columnid)#',
 					'orderno': '#JSStringFormat(rsDisplayObject.orderno)#',
 					'siteid': '#JSStringFormat(rsDisplayObject.siteid)#',
-					'params': JSON.stringify(availableObject.params),
+					'params': JSON.stringify(siteManager.availableObject.params),
 					'approved': 0,
 					'object': '#JSStringFormat(rsDisplayObject.object)#',
 					'name': '#JSStringFormat(rsDisplayObject.name)#',
@@ -231,9 +231,9 @@ jQuery(document).ready(function(){
 		jQuery("##previewConfigDraft").bind("click",
 		function(){
 			
-			updateAvailableObject();
+			siteManager.updateAvailableObject();
 				
-			if (availableObjectValidate(availableObject.params)) {
+			if (siteManager.availableObjectValidate(siteManager.availableObject.params)) {
 				jQuery("##configurator").html('<img src="assets/images/progress_bar.gif">');
 				jQuery(".form-actions").hide();
 				jQuery("##configuratorNotices").hide();
@@ -245,7 +245,7 @@ jQuery(document).ready(function(){
 					'regionid':'#JSStringFormat(rsDisplayObject.columnid)#',
 					'orderno':'#JSStringFormat(rsDisplayObject.orderno)#',
 					'siteid':'#JSStringFormat(rsDisplayObject.siteid)#',
-					'params': JSON.stringify(availableObject.params),
+					'params': JSON.stringify(siteManager.availableObject.params),
 					'approved':0,
 					'object':'#JSStringFormat(rsDisplayObject.object)#',
 					'name': '#JSStringFormat(rsDisplayObject.name)#',
@@ -278,9 +278,9 @@ function saveConfiguratorToChangeset(changesetid,removepreviouschangeset){
 
 	confirmDialog(publishitemfromchangeset, 
 		function() {
-			updateAvailableObject();
+			siteManager.updateAvailableObject();
 			
-			if (availableObjectValidate(availableObject.params)) {
+			if (siteManager.availableObjectValidate(siteManager.availableObject.params)) {
 				jQuery("##configurator").html('<img src="assets/images/progress_bar.gif">');
 				jQuery(".form-actions").hide();
 				
@@ -290,7 +290,7 @@ function saveConfiguratorToChangeset(changesetid,removepreviouschangeset){
 					'regionid': '#JSStringFormat(rsDisplayObject.columnid)#',
 					'orderno': '#JSStringFormat(rsDisplayObject.orderno)#',
 					'siteid': '#JSStringFormat(rsDisplayObject.siteid)#',
-					'params': JSON.stringify(availableObject.params),
+					'params': JSON.stringify(siteManager.availableObject.params),
 					'approved': 0,
 					'object': '#JSStringFormat(rsDisplayObject.object)#',
 					'name': '#JSStringFormat(rsDisplayObject.name)#',

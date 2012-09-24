@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <div id="contentSearch" class="form-inline">
 <h2>#application.rbFactory.getKeyValue(session.rb,'collections.contentsearch')#</h2>
-	<input id="parentSearch" name="parentSearch" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" maxlength="50"/><input type="button" class="submit btn" onclick="loadSiteFilters('#rc.siteid#',document.getElementById('parentSearch').value,0);" value="#application.rbFactory.getKeyValue(session.rb,'collections.search')#" />
+	<input id="parentSearch" name="parentSearch" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" maxlength="50"/><input type="button" class="submit btn" onclick="feedManager.loadSiteFilters('#rc.siteid#',document.getElementById('parentSearch').value,0);" value="#application.rbFactory.getKeyValue(session.rb,'collections.search')#" />
 	</div>
 </cfoutput>
 <br/><cfif not rc.isNew>
@@ -68,7 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<tr <cfif not(counter mod 2)>class="alt"</cfif>>
 		
           <td class="var-width">#application.contentRenderer.dspZoomNoLinks(crumbdata,rc.rslist.fileExt)#</td>
-		<td class="actions"><ul class="one"><li class="add"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.add')#" href="javascript:;" onClick="addContentFilter('#rc.rslist.contentid#','#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.rslist.type#'))#','#JSStringFormat(rc.rslist.menuTitle)#'); return false;">&nbsp;</a></li></ul>
+		<td class="actions"><ul class="one"><li class="add"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.add')#" href="javascript:;" onClick="feedManager.addContentFilter('#rc.rslist.contentid#','#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.rslist.type#'))#','#JSStringFormat(rc.rslist.menuTitle)#'); return false;">&nbsp;</a></li></ul>
 		  </td>
 		</tr>
 	 	</cfif>

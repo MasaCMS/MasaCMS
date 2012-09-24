@@ -44,115 +44,118 @@
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
-function showSaveSort(id){
-	jQuery('#showSort').hide();
-	jQuery('#saveSort').show();
+var extendManager={
+
+	showSaveSort: function(id){
+	$('#showSort').hide();
+	$('#saveSort').show();
 	
-	jQuery(".handle").each(
+	$(".handle").each(
 		function(index) {
-			jQuery(this).show();
+			$(this).show();
 		}
 	);
 	
 	setSortable(id);
 	
-}
+	},
 	
-function showSort(id){
-	jQuery('#showSort').show();
-	jQuery('#saveSort').hide();
-	
-	jQuery(".handle").each(
-		function(index) {
-			jQuery(this).hide();
+	showSort: function(id){
+		$('#showSort').show();
+		$('#saveSort').hide();
+		
+		$(".handle").each(
+			function(index) {
+				$(this).hide();
+			}
+		);
+		
+		$("#" + id).sortable('destroy');
+		$("#" + id).enableSelection();
+		
+	},
+		
+	saveAttributeSort: function(id){
+		var attArray=new Array();
+		
+		$("#" + id + ' > li').each(
+			function(index) {
+				attArray.push( $(this).attr("attributeID") );
+			}
+		);
+		
+		var url = "index.cfm";
+		var pars = 'muraAction=cExtend.saveAttributeSort&attributeID=' + attArray.toString() + '&cacheID=' + Math.random();	
+		
+		//location.href=url + "?" + pars;
+		$.get(url + "?" + pars); 
+		showSort(id)
+	},
+
+	saveExtendSetSort: function(id){
+		var setArray=new Array();
+		
+		$("#" + id + ' > li').each(
+			function(index) {
+				setArray.push( $(this).attr("extendSetID") );
+			}
+		);
+
+		var url = "index.cfm";
+		var pars = 'muraAction=cExtend.saveExtendSetSort&extendSetID=' + setArray.toString() + '&cacheID=' + Math.random();	
+		
+		//location.href=url + "?" + pars;
+		$.get(url + "?" + pars); 	
+		showSort(id);
+	},
+
+	setSortable: function(id){	
+		$("#" + id).sortable();
+		$("#" + id).disableSelection();
+	},
+
+	setBaseInfo: function(str){
+		var dataArray=str.split("^");
+		
+		document.subTypeFrm.type.value=dataArray[0];
+		
+		if(dataArray.length > 1){
+			document.subTypeFrm.baseTable.value=dataArray[1];
+			document.subTypeFrm.baseKeyField.value=dataArray[2];
+			document.subTypeFrm.dataTable.value=dataArray[3];
 		}
-	);
-	
-	jQuery("#" + id).sortable('destroy');
-	jQuery("#" + id).enableSelection();
-	
-}
-	
-function saveAttributeSort(id){
-	var attArray=new Array();
-	
-	jQuery("#" + id + ' > li').each(
-		function(index) {
-			attArray.push( jQuery(this).attr("attributeID") );
+		if(dataArray[0]==""){
+			$(".subTypeContainer").hide();
+			$(".hasSummaryContainer").hide();
+			$(".hasBodyContainer").hide();
+		} else if(dataArray[0]=="Site"){
+			$(".subTypeContainer").hide();
+			$(".hasSummaryContainer").hide();
+			$(".hasBodyContainer").hide();
+			$("#subType").val("Default");
+		} else if(dataArray[0]=="1" 
+			|| dataArray[0]=="2"
+			|| dataArray[0]=="Address"
+			|| dataArray[0]=="Custom"
+			|| dataArray[0]=="Base"){
+			$(".subTypeContainer").show();
+			$(".hasSummaryContainer").hide();
+			$(".hasBodyContainer").hide();
+		} else if(dataArray[0]=="File" 
+			|| dataArray[0]=="Link"){
+			$(".subTypeContainer").show();
+			$(".hasSummaryContainer").show();
+			$(".hasBodyContainer").hide();
+		} else if(dataArray[0]=="Component" 
+			|| dataArray[0]=="Form"){
+			$(".subTypeContainer").show();
+			$(".hasSummaryContainer").hide();
+			$(".hasBodyContainer").show();
+		} else {
+			$(".subTypeContainer").show();
+			$(".hasSummaryContainer").show();
+			$(".hasBodyContainer").show();
 		}
-	);
-	
-	var url = "index.cfm";
-	var pars = 'muraAction=cExtend.saveAttributeSort&attributeID=' + attArray.toString() + '&cacheID=' + Math.random();	
-	
-	//location.href=url + "?" + pars;
-	jQuery.get(url + "?" + pars); 
-	showSort(id)
-}
-
-function saveExtendSetSort(id){
-	var setArray=new Array();
-	
-	jQuery("#" + id + ' > li').each(
-		function(index) {
-			setArray.push( jQuery(this).attr("extendSetID") );
-		}
-	);
-
-	var url = "index.cfm";
-	var pars = 'muraAction=cExtend.saveExtendSetSort&extendSetID=' + setArray.toString() + '&cacheID=' + Math.random();	
-	
-	//location.href=url + "?" + pars;
-	jQuery.get(url + "?" + pars); 	
-	showSort(id);
-}
-
-function setSortable(id){	
-	jQuery("#" + id).sortable();
-	jQuery("#" + id).disableSelection();
-}
-
-function setBaseInfo(str){
-	var dataArray=str.split("^");
-	
-	document.subTypeFrm.type.value=dataArray[0];
-	
-	if(dataArray.length > 1){
-		document.subTypeFrm.baseTable.value=dataArray[1];
-		document.subTypeFrm.baseKeyField.value=dataArray[2];
-		document.subTypeFrm.dataTable.value=dataArray[3];
+		
 	}
-	if(dataArray[0]==""){
-		jQuery(".subTypeContainer").hide();
-		jQuery(".hasSummaryContainer").hide();
-		jQuery(".hasBodyContainer").hide();
-	} else if(dataArray[0]=="Site"){
-		jQuery(".subTypeContainer").hide();
-		jQuery(".hasSummaryContainer").hide();
-		jQuery(".hasBodyContainer").hide();
-		jQuery("#subType").val("Default");
-	} else if(dataArray[0]=="1" 
-		|| dataArray[0]=="2"
-		|| dataArray[0]=="Address"
-		|| dataArray[0]=="Custom"
-		|| dataArray[0]=="Base"){
-		jQuery(".subTypeContainer").show();
-		jQuery(".hasSummaryContainer").hide();
-		jQuery(".hasBodyContainer").hide();
-	} else if(dataArray[0]=="File" 
-		|| dataArray[0]=="Link"){
-		jQuery(".subTypeContainer").show();
-		jQuery(".hasSummaryContainer").show();
-		jQuery(".hasBodyContainer").hide();
-	} else if(dataArray[0]=="Component" 
-		|| dataArray[0]=="Form"){
-		jQuery(".subTypeContainer").show();
-		jQuery(".hasSummaryContainer").hide();
-		jQuery(".hasBodyContainer").show();
-	} else {
-		jQuery(".subTypeContainer").show();
-		jQuery(".hasSummaryContainer").show();
-		jQuery(".hasBodyContainer").show();
-	}
-	
 }

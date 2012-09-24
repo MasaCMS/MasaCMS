@@ -49,7 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="control-group">
 	<div class="controls">
 		<select name="subClassSelector" 
-		        onchange="loadObjectClass('#rc.siteid#','calendar',this.value,'#rc.contentid#','#rc.parentid#','#rc.contenthistid#',0,0);" 
+		        onchange="siteManager.loadObjectClass('#rc.siteid#','calendar',this.value,'#rc.contentid#','#rc.parentid#','#rc.contenthistid#',0,0);" 
 		        class="dropdown">
 			<option value="">
 				#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.selectcalendar')#

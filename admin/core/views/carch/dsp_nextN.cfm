@@ -72,7 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 <ul class="moreResults pagination">
 		  <cfif nextN.currentpagenumber gt 1>
 		  	<li>
-		  	<a href="" onclick="return loadSiteManager('#JSStringFormat(rc.siteid)#','#JSStringFormat(rc.topid)#','00000000000000000000000000000000000','','','#JSStringFormat(rc.ptype)#',#nextN.previous#);">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.prev')#</a> 
+		  	<a href="" onclick="return siteManager.loadSiteManager('#JSStringFormat(rc.siteid)#','#JSStringFormat(rc.topid)#','00000000000000000000000000000000000','','','#JSStringFormat(rc.ptype)#',#nextN.previous#);">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.prev')#</a> 
 		  	</li>
 		  </cfif>
 		  <cfloop from="#nextN.firstPage#"  to="#nextN.lastPage#" index="i">
@@ -80,13 +80,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		  		<li class="active"><a href="##">#i#</a></li>
 		  <cfelse>  
 		  		<li>
-		  			<a href="" onclick="return loadSiteManager('#JSStringFormat(rc.siteid)#','#JSStringFormat(rc.topid)#','00000000000000000000000000000000000','','','#JSStringFormat(rc.ptype)#',#evaluate('(#i#*#nextN.recordsperpage#)-#nextN.recordsperpage#+1')#);">#i#</a>
+		  			<a href="" onclick="return siteManager.loadSiteManager('#JSStringFormat(rc.siteid)#','#JSStringFormat(rc.topid)#','00000000000000000000000000000000000','','','#JSStringFormat(rc.ptype)#',#evaluate('(#i#*#nextN.recordsperpage#)-#nextN.recordsperpage#+1')#);">#i#</a>
 		  		</li>
 		  	</cfif>
 	     </cfloop>
 		 <cfif nextN.currentpagenumber lt nextN.NumberOfPages>
 		 	<li>
-		 		<a href="" onclick="return loadSiteManager('#JSStringFormat(rc.siteid)#','#JSStringFormat(rc.topid)#','00000000000000000000000000000000000','','','#JSStringFormat(rc.ptype)#',#nextN.next#);">#application.rbFactory.getKeyValue(session.rb,'sitemanager.next')#&nbsp;&raquo;</a> 
+		 		<a href="" onclick="return siteManager.loadSiteManager('#JSStringFormat(rc.siteid)#','#JSStringFormat(rc.topid)#','00000000000000000000000000000000000','','','#JSStringFormat(rc.ptype)#',#nextN.next#);">#application.rbFactory.getKeyValue(session.rb,'sitemanager.next')#&nbsp;&raquo;</a> 
 		 	</li>
 		 </cfif>
 		</ul>

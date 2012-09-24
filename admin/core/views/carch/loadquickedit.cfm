@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif not content.hasDrafts()>
 	<cfoutput>
 	<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.edit#rc.attribute#')#</h1>
-	<span class="cancel" onclick="closeQuickEdit();">#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.cancel')#</span>
+	<span class="cancel" onclick="siteManager.closeQuickEdit();">#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.cancel')#</span>
 	
 	<cfif rc.attribute eq "isnav">
 		<select id="mura-quickEdit-isnav">
@@ -108,13 +108,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<select id="mura-quickEdit-stopDayPart" class="dropdown span1"><option value="AM">AM</option><option value="PM" <cfif (LSisDate(content.getdisplaystop()) and (hour(content.getdisplaystop()) gte 12)) or not LSisDate(content.getdisplaystop())>selected</cfif>>PM</option></select></li>
 		</ol>	</cfif>
 	<div class="buttons">
-	<input type="button" name="submit" value="Submit" class="submit btn" onclick="saveQuickEdit(this);" />
+	<input type="button" name="submit" value="Submit" class="submit btn" onclick="siteManager.saveQuickEdit(this);" />
 	</div>
 	</cfoutput>
 <cfelse>
 	<cfoutput>
 	<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.hasdraftstitle')# </h1>
-	<span class="cancel" onclick="closeQuickEdit();">#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.cancel')#</span>
+	<span class="cancel" onclick="siteManager.closeQuickEdit();">#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.cancel')#</span>
 		<p id="hasDraftsMessage">#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.hasdraftsmessage')#</p>
 	</cfoutput>
 </cfif>

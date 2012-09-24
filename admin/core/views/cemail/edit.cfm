@@ -145,7 +145,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           #application.rbFactory.getKeyValue(session.rb,'email.format')#
         </label>
         <div class="controls">
-          <select name="format" class="dropdown" onChange="showMessageEditor();" id="messageFormat">
+          <select name="format" class="dropdown" onChange="emailManager.showMessageEditor();" id="messageFormat">
             <option value="HTML">#application.rbFactory.getKeyValue(session.rb,'email.html')#</option>
             <option value="Text" <cfif rc.emailBean.getformat() eq 'Text'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'email.text')#</option>
             <option value="HTML & Text" <cfif rc.emailBean.getformat() eq 'HTML & Text'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'email.htmltext')#</option>
@@ -344,11 +344,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         </cfif>
         </cfsilent>
         <cfif showDelete>
-            <button type="button" class="submit btn" onClick="validateEmailForm('delete', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.deleteconfirm'))#');"><i class="icon-remove"></i> #application.rbFactory.getKeyValue(session.rb,'email.delete')#</button>
+            <button type="button" class="submit btn" onClick="emailManager.validateEmailForm('delete', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.deleteconfirm'))#');"><i class="icon-remove"></i> #application.rbFactory.getKeyValue(session.rb,'email.delete')#</button>
           </cfif>
-        <button type="button" class="submit btn" onClick="validateEmailForm('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.saveconfirm'))#')"><i class="icon-save"></i> #application.rbFactory.getKeyValue(session.rb,'email.save')#</button>
-        <button type="button" class="submit btn" onClick="openScheduler();"><i class="icon-calendar"></i> #application.rbFactory.getKeyValue(session.rb,'email.schedule')#</button>
-        <button type="button" class="submit btn" onClick="document.forms.form1.sendNow.value='true'; validateEmailForm('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.sendnowconfirm'))#');"><i class="icon-share-alt"></i> #application.rbFactory.getKeyValue(session.rb,'email.sendnow')#</button>
+        <button type="button" class="submit btn" onClick="emailManager.validateEmailForm('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.saveconfirm'))#')"><i class="icon-save"></i> #application.rbFactory.getKeyValue(session.rb,'email.save')#</button>
+        <button type="button" class="submit btn" onClick="emailManager.openScheduler();"><i class="icon-calendar"></i> #application.rbFactory.getKeyValue(session.rb,'email.schedule')#</button>
+        <button type="button" class="submit btn" onClick="document.forms.form1.sendNow.value='true'; emailManager.validateEmailForm('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.sendnowconfirm'))#');"><i class="icon-share-alt"></i> #application.rbFactory.getKeyValue(session.rb,'email.sendnow')#</button>
         <input type="hidden" name="emailid" value="#currentEmailid#">
        </div>
        
@@ -398,8 +398,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	            <option value="PM" <cfif timepart eq 'PM'>selected</cfif>>PM</option>
 	          </select>
 	          <div>
-		          <button type="button" class="submit btn" onClick="validateScheduler('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.pleaseenterdate'))#', 'deliveryDate');"><i class="icon-save"></i> #application.rbFactory.getKeyValue(session.rb,'email.save')#</button>
-		          <button type="button" class="submit btn" onClick="closeScheduler()"><i class="icon-ban-circle"></i> #application.rbFactory.getKeyValue(session.rb,'email.cancel')#</button>
+		          <button type="button" class="submit btn" onClick="emailManager.validateScheduler('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.pleaseenterdate'))#', 'deliveryDate');"><i class="icon-save"></i> #application.rbFactory.getKeyValue(session.rb,'email.save')#</button>
+		          <button type="button" class="submit btn" onClick="emailManager.closeScheduler()"><i class="icon-ban-circle"></i> #application.rbFactory.getKeyValue(session.rb,'email.cancel')#</button>
 		       </div>
           </div>
         <input type="hidden" name="action" value="">
@@ -412,13 +412,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfoutput>
 <cfif showScheduler and dateCheck>
   <script language="javascript">
-		openScheduler();
+		emailManager.openScheduler();
 	</script>
   <cfelse>
   <script language="javascript">
-		closeScheduler();
+		emailManager.closeScheduler();
 	</script>
 </cfif>
   <script language="javascript">
-		showMessageEditor();
+		emailManager.showMessageEditor();
   </script>
