@@ -54,7 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-circle-arrow-left"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
 	</div>
 	
-	<h2>#rc.userBean.getFname()# #rc.userBean.getlname()# <a href="index.cfm?muraAction=cPublicUsers.editUser&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#&routeid=#rc.routeid#">[#application.rbFactory.getKeyValue(session.rb,'user.back')#]</a></h2>
+	<h2>#rc.userBean.getFname()# #rc.userBean.getlname()#</h2>
 	
 	<cfif arrayLen(extendSets)>
 	<br/>
