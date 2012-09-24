@@ -43,110 +43,112 @@
 	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
-function addObject(availableList,publicList,privateList){
-   if(document.getElementById(availableList)==null
-	|| document.getElementById(availableList).selectedIndex ==-1){
-	   alert("Please select a field."); return false;}
-   var selectedObjects =document.getElementById(publicList);
-   var addIndex = document.getElementById(availableList).selectedIndex;
-   
-   if(addIndex < 0)return;
-   
-   var addoption =document.getElementById(availableList).options[addIndex]; 
- 
-	if(selectedObjects.options.length){
-		
-		for (var i=0;i < selectedObjects.options.length;i++){ 
-		
-			if(selectedObjects.options[i].value == addoption.value) {
-			selectedObjects.selectedIndex=i;
-			return;
+var dataManager={
+	addObject: function(availableList,publicList,privateList){
+	   if(document.getElementById(availableList)==null
+		|| document.getElementById(availableList).selectedIndex ==-1){
+		   alert("Please select a field."); return false;}
+	   var selectedObjects =document.getElementById(publicList);
+	   var addIndex = document.getElementById(availableList).selectedIndex;
+	   
+	   if(addIndex < 0)return;
+	   
+	   var addoption =document.getElementById(availableList).options[addIndex]; 
+	 
+		if(selectedObjects.options.length){
+			
+			for (var i=0;i < selectedObjects.options.length;i++){ 
+			
+				if(selectedObjects.options[i].value == addoption.value) {
+				selectedObjects.selectedIndex=i;
+				return;
+				}
 			}
 		}
-	}
-	
-	var myoption = document.createElement("option");
-	document.getElementById(publicList).appendChild(myoption);
-	myoption.text     = addoption.text;
-	myoption.value    = addoption.value;
-	myoption.selected = "selected";
-	
-	updateList(publicList,privateList);
-	
-}
+		
+		var myoption = document.createElement("option");
+		document.getElementById(publicList).appendChild(myoption);
+		myoption.text     = addoption.text;
+		myoption.value    = addoption.value;
+		myoption.selected = "selected";
+		
+		this.updateList(publicList,privateList);
+		
+	},
 
-function deleteObject(publicList,privateList){
-   var selectedObjects =document.getElementById(publicList);
-   var deleteIndex =selectedObjects.selectedIndex;
-   var len = (selectedObjects.options.length > 1)?selectedObjects.options.length-1:0;
-   if(deleteIndex < 0) return;
-	
-	selectedObjects.options[deleteIndex]=null; 
-	updateList(publicList,privateList);
-	if(selectedObjects.options.length){
-		selectedObjects.options[selectedObjects.options.length-1].selected=true;
-	}
-	 
-}
-
-function updateList(publicList,privateList){
-	var selectedObjects =document.getElementById(publicList);
-	var objectList=document.getElementById(privateList);
-	
-	objectList.value=""; 
-	
-	for (var i=0;i<selectedObjects.options.length;i++){ 
-		if(objectList.value!=""){
-			objectList.value += "^" + selectedObjects.options[i].value; 
+	deleteObject: function(publicList,privateList){
+	   var selectedObjects =document.getElementById(publicList);
+	   var deleteIndex =selectedObjects.selectedIndex;
+	   var len = (selectedObjects.options.length > 1)?selectedObjects.options.length-1:0;
+	   if(deleteIndex < 0) return;
+		
+		selectedObjects.options[deleteIndex]=null; 
+		this.updateList(publicList,privateList);
+		if(selectedObjects.options.length){
+			selectedObjects.options[selectedObjects.options.length-1].selected=true;
 		}
-		else
-		{
-			objectList.value = selectedObjects.options[i].value; 
+		 
+	},
+
+	updateList: function(publicList,privateList){
+		var selectedObjects =document.getElementById(publicList);
+		var objectList=document.getElementById(privateList);
+		
+		objectList.value=""; 
+		
+		for (var i=0;i<selectedObjects.options.length;i++){ 
+			if(objectList.value!=""){
+				objectList.value += "^" + selectedObjects.options[i].value; 
+			}
+			else
+			{
+				objectList.value = selectedObjects.options[i].value; 
+			}
 		}
+
+	},
+
+	moveUp: function(publicList,privateList){
+		var selectedObjects=document.getElementById(publicList);
+		var moverIndex=selectedObjects.selectedIndex;
+		if(moverIndex<1)return;
+
+		var moveroption = document.createElement("option");
+		var movedoption = document.createElement("option");
+
+		moveroption.text = selectedObjects.options[moverIndex].text; 
+		moveroption.value = selectedObjects.value;
+		moveroption.selected = "selected"
+
+		movedoption.text = selectedObjects.options[moverIndex-1].text;
+		movedoption.value = selectedObjects.options[moverIndex-1].value;
+
+		selectedObjects[moverIndex-1]=moveroption;
+		selectedObjects[moverIndex]=movedoption;
+
+		this.updateList(publicList,privateList);
+	},
+
+	moveDown: function(publicList,privateList){
+		var selectedObjects=document.getElementById(publicList);
+		var moverIndex=selectedObjects.selectedIndex;
+		if(moverIndex ==selectedObjects.length-1)return;
+
+		var moveroption = document.createElement("option");
+		var movedoption = document.createElement("option");
+
+		moveroption.text =selectedObjects.options[moverIndex].text; 
+		moveroption.value = selectedObjects.options[moverIndex].value;
+		moveroption.selected = "selected"
+
+		movedoption.text =  selectedObjects.options[moverIndex+1].text;
+		movedoption.value = selectedObjects.options[moverIndex+1].value;
+
+
+		selectedObjects.options[moverIndex+1]=moveroption;
+		selectedObjects.options[moverIndex]=movedoption;
+
+		this.updateList(publicList,privateList);
+
 	}
-
-}
-
-function moveUp(publicList,privateList){
-var selectedObjects=document.getElementById(publicList);
-var moverIndex=selectedObjects.selectedIndex;
-if(moverIndex<1)return;
-
-var moveroption = document.createElement("option");
-var movedoption = document.createElement("option");
-
-moveroption.text = selectedObjects.options[moverIndex].text; 
-moveroption.value = selectedObjects.value;
-moveroption.selected = "selected"
-
-movedoption.text = selectedObjects.options[moverIndex-1].text;
-movedoption.value = selectedObjects.options[moverIndex-1].value;
-
-selectedObjects[moverIndex-1]=moveroption;
-selectedObjects[moverIndex]=movedoption;
-
-updateList(publicList,privateList);
-}
-
-function moveDown(publicList,privateList){
-var selectedObjects=document.getElementById(publicList);
-var moverIndex=selectedObjects.selectedIndex;
-if(moverIndex ==selectedObjects.length-1)return;
-
-var moveroption = document.createElement("option");
-var movedoption = document.createElement("option");
-
-moveroption.text =selectedObjects.options[moverIndex].text; 
-moveroption.value = selectedObjects.options[moverIndex].value;
-moveroption.selected = "selected"
-
-movedoption.text =  selectedObjects.options[moverIndex+1].text;
-movedoption.value = selectedObjects.options[moverIndex+1].value;
-
-
-selectedObjects.options[moverIndex+1]=moveroption;
-selectedObjects.options[moverIndex]=movedoption;
-
-updateList(publicList,privateList);
-
 }
