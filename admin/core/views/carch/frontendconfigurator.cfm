@@ -75,7 +75,7 @@ jQuery(document).ready(function(){
 	</div>
 </div>
 <script>
-var siteManager.configuratorMode='frontEnd';
+siteManager.configuratorMode='frontEnd';
 
 jQuery(document).ready(function(){
 	if(jQuery("##ProxyIFrame").length){

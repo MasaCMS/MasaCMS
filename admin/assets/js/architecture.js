@@ -1968,7 +1968,7 @@ buttons: {
 			$("#configuratorContainer").dialog({
 				resizable: true,
 				modal: true,
-				width: 400,
+				width: 600,
 				position: getDialogPosition(),
 				buttons: {
 					Save: function(){
