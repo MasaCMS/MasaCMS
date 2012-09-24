@@ -1882,6 +1882,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset f=f+1 />			
 	</cfloop>
 
+	<!--- RAILO --->
 	<cfif isDefined('form.files') and isArray(form.files)>
 		<cftry>
 			<cfif CGI.HTTP_ACCEPT CONTAINS "application/json">
@@ -1924,6 +1925,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cftry>
 	</cfif>
 
+	<!--- ACF --->
 	<cfif structKeyExistS(form,'files') and isSimpleValue(form['files']) and len(form['files'])>
 		<cftry>
 			<cfif CGI.HTTP_ACCEPT CONTAINS "application/json">
