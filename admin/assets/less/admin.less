@@ -26,6 +26,8 @@
 	@import "site-settings.less";
 	@import "image-details.less";
 	@import "dialog.less";
+	@import "configurator.less";
+	@import "jquery-ui.less";
 	
 	
 // Layout
@@ -69,43 +71,6 @@ body.compact {
 		clear: both;
 		border: 1px solid transparent; /* Border 0 leaves artifacting on corners in Safari 6 */
 	}
-	
-.tabbable {
-	clear: both;
-	}
-
-.tabs-left {
-	
-	> .nav-tabs {
-		border-right: 0;
-		.makeColumn(2);
-		margin-left: 0;
-		}
-
-	> .nav-tabs > li > a, > .nav-tabs > li > a:hover {
-		border: 0 !important;
-		.border-radius(4);
-		background: @grayLighter;
-		}
-
-	.tab-content {
-		.makeColumn(10);
-		padding: 18px 0 0;
-		margin-left: 0;
-		background: @grayLighter;
-		.border-radius(4);
-		}
-
-	.tab-pane > * {
-		margin-left: 20px;
-		margin-right: 20px;
-		}
-}
-
-.compact .tab-content {
-/* 	width: 700px; */
-	
-}
 
 a[rel="tooltip"] {
 	display: inline-block;
