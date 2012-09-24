@@ -63,7 +63,7 @@ var userManager={
 						if(data.indexOf('mura-primary-login-token') != -1){
 							location.href='./';
 						}
-						setExtendedAttributes(data);
+						userManager.setExtendedAttributes(data);
 						}
 				);
 			}
@@ -118,21 +118,21 @@ var userManager={
 					
 					if(found){
 						if(membership){
-							setFormElementsDisplay(extendSet,'');
+							userManager.setFormElementsDisplay(extendSet,'');
 							extendSet.style.display='';	
 							empty=false;
 						} else {
-							setFormElementsDisplay(extendSet,'none');
+							userManager.setFormElementsDisplay(extendSet,'none');
 							extendSet.style.display='none';
 							
 						}
 					} else {
-						setFormElementsDisplay(extendSet,'none');
+						userManager.setFormElementsDisplay(extendSet,'none');
 						extendSet.style.display='none';
 						
 					}
 				} else {
-					setFormElementsDisplay(extendSet,'');
+					userManager.setFormElementsDisplay(extendSet,'');
 					extendSet.style.display='';
 					empty=false;
 					
@@ -156,7 +156,7 @@ var userManager={
 	},
 
 	resetExtendedAttributes: function(contentHistID,type,subtype,siteID,context,themeAssetPath)	{
-		loadExtendedAttributes(contentHistID,type,subtype,siteID,context,themeAssetPath);
+		this.loadExtendedAttributes(contentHistID,type,subtype,siteID,context,themeAssetPath);
 		//alert(dataArray[1]);
 	},
 
