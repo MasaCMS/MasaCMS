@@ -543,17 +543,17 @@ to your own modified versions of Mura CMS.
 <![endif]-->
 
 <!-- Mura Admin JS -->
-<script src="#application.configBean.getContext()#/admin/assets/js/admin.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
+<script src="#webroot#/admin/assets/js/admin.js" type="text/javascript" language="Javascript"></script>
 
 <!-- jQuery UI -->
-<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-<link href="#application.configBean.getContext()#/admin/assets/css/jquery/default/jquery.ui.all.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+<script src="#webroot#/admin/assets/js/jquery/jquery.js" type="text/javascript"></script>
+<script src="#webroot#/admin/assets/js/jquery/jquery.collapsibleCheckboxTree.js" type="text/javascript"></script>
+<script src="#webroot#/admin/assets/js/jquery/jquery-ui.js" type="text/javascript"></script>
+<script src="#webroot#/admin/assets/js/jquery/jquery-ui-i18n.min.js" type="text/javascript"></script>
+<link href="#webroot#/admin/assets/css/jquery/default/jquery.ui.all.css" rel="stylesheet" type="text/css" />
 
 <!-- JSON -->
-<script src="#application.configBean.getContext()#/admin/assets/js/json2.js" type="text/javascript" language="Javascript"></script>
+<script src="#webroot#/admin/assets/js/json2.js" type="text/javascript" language="Javascript"></script>
 
 <!--- added script (bsoylu 5/23/2010)  --->
 <script src="#webRoot#/admin/assets/js/SetupUtilities.js?=1" type="text/javascript" language="Javascript"></script>
@@ -562,7 +562,7 @@ to your own modified versions of Mura CMS.
 <!---
 <cfif cgi.http_user_agent contains 'msie'>
 <!--[if IE 7]>
-<link href="#webroot#/admin/assets/css/ie.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+<link href="#webroot#/admin/assets/css/ie.min.css" rel="stylesheet" type="text/css" />
 <![endif]-->
 </cfif>
 --->
@@ -589,7 +589,7 @@ to your own modified versions of Mura CMS.
     </cfif>
     
     <!--- need to pass on form object to JS to avoid exception, also added try/catch in admin js (bsoylu 6/7/2010) --->
-    <form id="frm" class="form-horizontal" name="frm" action="index.cfm" method="post" onclick="return validateForm(this);">
+    <form id="frm" class="form-horizontal" name="frm" action="index.cfm" method="post" onClick="return validateForm(this);">
       <cfif isDefined( "FORM.#cookie.setupSubmitButton#" ) AND errorType IS "">
         <div id="installationComplete" class="success">
           <p id="congrats">Mura is now set up and ready to use.</p>
@@ -620,7 +620,7 @@ to your own modified versions of Mura CMS.
         <div class="control-group">
           <label class="control-label"><a href="" rel="tooltip" data-original-title="Please select a database from the list of supported databases">Database <i class="icon-info-sign"></i></a></label>
           <div class="controls">
-            <select name="production_dbtype" id="production_dbtype" onchange="javascript:fHandleAutoCreateChange()">
+            <select name="production_dbtype" id="production_dbtype" onChange="javascript:fHandleAutoCreateChange()">
               <option value="">-- Select your Database Type --</option>
               <option value="mysql" <cfif FORM.production_dbtype IS "mysql">selected</cfif>>MySQL</option>
               <option value="mssql" <cfif FORM.production_dbtype IS "mssql">selected</cfif>>MSSQL</option>
@@ -629,13 +629,13 @@ to your own modified versions of Mura CMS.
           </div>
         </div>
         <div class="control-group">
-          <label class="control-label"><a href="" rel="tooltip" data-original-title="For MySQL and MS SQL Server, Mura can create the database and DSNs. You can create a database and use your own DSNs by setting this option to No." onclick="fHandleAutoCreateChange()">Auto Create Database <i class="icon-info-sign"></i></a></label>
+          <label class="control-label"><a href="" rel="tooltip" data-original-title="For MySQL and MS SQL Server, Mura can create the database and DSNs. You can create a database and use your own DSNs by setting this option to No." onClick="fHandleAutoCreateChange()">Auto Create Database <i class="icon-info-sign"></i></a></label>
           <div class="controls">
             <label class="inline radio">
               <input type="radio" name="auto_create" value="Yes" id="auto_create_on"  onclick="javascript:fHandleAutoCreateChange()">
               Yes</label>
             <label class="inline radio">
-              <input type="radio" name="auto_create" value="No" id="auto_create_off" checked onclick="javascript:fHandleAutoCreateChange()">
+              <input type="radio" name="auto_create" value="No" id="auto_create_off" checked onClick="javascript:fHandleAutoCreateChange()">
               No </label>
           </div>
         </div>
@@ -803,24 +803,24 @@ jQuery(document).ready(function(){
 </script>
 <cfif cgi.http_user_agent contains 'msie'>
 <!--[if IE 6]>
-<script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/ie6notice.js"></script>
+<script type="text/javascript" src="#webroot#/admin/assets/js/ie6notice.js"></script>
 <![endif]-->
 </cfif>
 <!-- Le javascript
 ================================================== --> 
 <!-- Placed at the end of the document so the pages load faster --> 
-<script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-transition.js"></script> 
-<script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-alert.js"></script> 
-<script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-modal.js"></script> 
-<script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-dropdown.js"></script> 
-<script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-scrollspy.js"></script> 
-<script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-tab.js"></script> 
-<script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-tooltip.js"></script> 
-<script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-popover.js"></script> 
-<script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-button.js"></script> 
-<script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-collapse.js"></script> 
-<script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-carousel.js"></script> 
-<script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap-typeahead.js"></script>
+<script src="#webroot#/admin/assets/bootstrap/js/bootstrap-transition.js"></script> 
+<script src="#webroot#/admin/assets/bootstrap/js/bootstrap-alert.js"></script> 
+<script src="#webroot#/admin/assets/bootstrap/js/bootstrap-modal.js"></script> 
+<script src="#webroot#/admin/assets/bootstrap/js/bootstrap-dropdown.js"></script> 
+<script src="#webroot#/admin/assets/bootstrap/js/bootstrap-scrollspy.js"></script> 
+<script src="#webroot#/admin/assets/bootstrap/js/bootstrap-tab.js"></script> 
+<script src="#webroot#/admin/assets/bootstrap/js/bootstrap-tooltip.js"></script> 
+<script src="#webroot#/admin/assets/bootstrap/js/bootstrap-popover.js"></script> 
+<script src="#webroot#/admin/assets/bootstrap/js/bootstrap-button.js"></script> 
+<script src="#webroot#/admin/assets/bootstrap/js/bootstrap-collapse.js"></script> 
+<script src="#webroot#/admin/assets/bootstrap/js/bootstrap-carousel.js"></script> 
+<script src="#webroot#/admin/assets/bootstrap/js/bootstrap-typeahead.js"></script>
 </body>
 </html>
 </cfoutput>
