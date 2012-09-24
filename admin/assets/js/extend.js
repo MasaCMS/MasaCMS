@@ -56,7 +56,7 @@ var extendManager={
 		}
 	);
 	
-	setSortable(id);
+	this.setSortable(id);
 	
 	},
 	
@@ -89,7 +89,7 @@ var extendManager={
 		
 		//location.href=url + "?" + pars;
 		$.get(url + "?" + pars); 
-		showSort(id)
+		this.showSort(id)
 	},
 
 	saveExtendSetSort: function(id){
@@ -106,7 +106,7 @@ var extendManager={
 		
 		//location.href=url + "?" + pars;
 		$.get(url + "?" + pars); 	
-		showSort(id);
+		this.showSort(id);
 	},
 
 	setSortable: function(id){	

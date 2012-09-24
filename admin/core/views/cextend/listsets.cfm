@@ -67,8 +67,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cfoutput>
 <cfif arrayLen(extendSets)>
-<a href="javascript:;" style="display:none;" id="saveSort" onclick="saveExtendSetSort('setList');return false;">[Save Order]</a>
-<a href="javascript:;"  id="showSort" onclick="showSaveSort('setList');return false;">[Reorder]</a>
+<a href="javascript:;" style="display:none;" id="saveSort" onclick="extendManager.saveExtendSetSort('setList');return false;">[Save Order]</a>
+<a href="javascript:;"  id="showSort" onclick="extendManager.showSaveSort('setList');return false;">[Reorder]</a>
 </cfif>
 
 <cfif arrayLen(extendSets)>
