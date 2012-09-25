@@ -45,36 +45,47 @@
 .tabs-left {
 
 	.nav a {
-		font-size: 14px;
+		font-size: 12px;
 		}
 
-	.nav .active a {
-		background: @grayLighter;
-		}
+	
 		
 	> .nav-tabs {
 		border-right: 0;
 		.makeColumn(2);
 		margin-left: 0;
+		margin-right: 0;
 		}
 
 	> .nav-tabs > li > a,
 	> .nav-tabs > li > a:hover {
 		border: 0 !important;
-		.border-radius(4px);
-		background: @grayLighter;
-		.btn;
+		#gradient .vertical(lighten(@grayLighter,1%),lighten(@grayLighter,.05%));
 		display: block;
-		padding: 1em;
+		padding: 1.25em 1em;
 		}
-
+		
+	> .nav-tabs > li:first-child > a {
+		.border-top-left-radius(4px);
+		}
+		
+	> .nav-tabs > li:last-child > a {
+		.border-bottom-left-radius(4px);
+		}
+		
+	.nav .active a {
+		
+		}
+		
 	/* Content */
 	.tab-content {
 		.makeColumn(10);
 		.border-radius(4px);
+		.border-top-left-radius(0);
 		padding: @baseLineHeight 0 0;
 		margin-left: 0;
-		/* background: @grayLighter; */
+		#gradient .vertical(lighten(@grayLighter,1.5%),@grayLighter);
+		.box-shadow(-1px 2px 12px rgba(0,0,0,.1);
 		}
 
 	.tab-pane {
