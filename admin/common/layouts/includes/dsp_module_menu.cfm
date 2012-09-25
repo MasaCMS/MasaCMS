@@ -121,12 +121,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
      <li class="dropdown-submenu<cfif rc.originalcircuit eq 'cPlugins' > active</cfif>">
      <a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cPlugins.list&siteid=#session.siteid#"><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.plugins")#</a>
 	     <cfset rc.rsplugins=application.pluginManager.getSitePlugins(siteID=session.siteid, applyPermFilter=true) />
+       <cfif rc.rsplugins.recordcount>
 	     <ul class="dropdown-menu">
 	     <cfloop query="rc.rsplugins">
 	         <li><a href="#application.configBean.getContext()#/plugins/#rc.rsplugins.directory#/"><i class="icon-cog"></i> #HTMLEditFormat(rc.rsplugins.name)#</a>
 	        </li>
 	     </cfloop>
 	     </ul>
+       </cfif>
      </li>
 
      <!---
