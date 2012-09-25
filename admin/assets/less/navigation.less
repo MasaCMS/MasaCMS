@@ -47,22 +47,27 @@
 	.nav a {
 		font-size: 12px;
 		}
-
-	
 		
 	> .nav-tabs {
 		border-right: 0;
 		.makeColumn(2);
 		margin-left: 0;
 		margin-right: 0;
+		padding-top: @baseLineHeight;
 		}
 
 	> .nav-tabs > li > a,
 	> .nav-tabs > li > a:hover {
 		border: 0 !important;
-		#gradient .vertical(lighten(@grayLighter,1%),lighten(@grayLighter,.05%));
+		background: @grayLight;
 		display: block;
 		padding: 1.25em 1em;
+		}
+		
+	> .nav-tabs > li > a,
+	> .nav-tabs > li > a:hover {
+		border: 0 !important;
+		#gradient .vertical(lighten(@grayLighter,1%),lighten(@grayLighter,.05%));
 		}
 		
 	> .nav-tabs > li:first-child > a {

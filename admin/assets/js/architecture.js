@@ -1831,7 +1831,7 @@ buttons: {
 		$("#configuratorContainer").dialog({
 				resizable: true,
 				modal: true,
-				width: 400,
+				// width: 400,
 				position: getDialogPosition(),
 				buttons: {
 					Cancel: function() {

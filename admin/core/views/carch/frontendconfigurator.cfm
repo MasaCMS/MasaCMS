@@ -38,7 +38,7 @@ jQuery(document).ready(function(){
 </script>
 </cfif> 
 
-<div id="configuratorContainer" style="width: 400px;">
+<div id="configuratorContainer">
 	<h2 id="configuratorHeader">Loading...</h2>
 	<div id="configuratorNotices" style="display:none;">
 	<cfif not rc.contentBean.getIsNew()>
