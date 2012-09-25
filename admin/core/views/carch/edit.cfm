@@ -242,7 +242,7 @@ var hasBody=#subType.getHasBody()#;
 		<cfif listFindNoCase("Page,Portal,Calendar,Gallery",rc.type)>
 		<button type="button" class="submit btn" onclick="document.contentForm.preview.value=1;if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="icon-eye-open"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraftandpreview"))#</button>
 		</cfif>
-		<cfif rc.perm eq 'editor'>
+		<cfif rc.perm eq 'editor' and not $.siteConfig('EnforceChangesets')>
 		<button type="button" class="submit btn" onclick="document.contentForm.approved.value=1;if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="icon-save"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#</button>
 		</cfif> 
 	</div>
