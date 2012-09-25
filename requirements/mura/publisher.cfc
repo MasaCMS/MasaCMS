@@ -3425,7 +3425,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfif structKeyExists(pluginCFC,"init")>
 								<cfset pluginCFC.init(pluginConfig)>
 								<cfif structKeyExists(pluginCFC,"fromBundle")>
-									<cfset pluginCFC.fromBundle(pluginConfig=pluginConfig,Bundle=this,keyFactory=arguments.keyFactory, siteID=arguments.siteID, errors=arguments.errors)>
+									<cfset pluginCFC.fromBundle(pluginConfig=pluginConfig,Bundle=this,keyFactory=arguments.keyFactory, siteID=arguments.toSiteID, errors=arguments.errors)>
 								</cfif>
 							</cfif>
 						</cfif>	
