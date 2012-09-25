@@ -1399,6 +1399,9 @@ buttons: {
 						$.post("./index.cfm", 
 							categoryAssignment,
 							function(data){
+								if(data.indexOf('mura-primary-login-token') != -1){
+									location.href='./';
+								}
 								$("#mura-quickEditor").html(data);
 								setDatePickers(".mura-quickEdit-datepicker",dtLocale,dtCh);	
 								setToolTips(".mura-quickEdit-datepicker");

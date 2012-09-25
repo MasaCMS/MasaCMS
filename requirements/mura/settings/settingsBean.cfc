@@ -114,6 +114,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="theme" type="string" default="" required="true" />
 <cfproperty name="javaLocale" type="string" default="" required="true" /> 
 <cfproperty name="orderno" type="numeric" default="0" required="true" />
+<cfproperty name="enforceChangesets" type="numeric" default="0" required="true" />
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	
@@ -198,6 +199,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.subtype="Default"/>
 	<cfset variables.instance.baseID=createUUID()/>
 	<cfset variables.instance.orderno=0/>
+	<cfset variables.instance.enforceChangesets=0/>
 	
 	<cfreturn this />
 </cffunction>

@@ -478,6 +478,20 @@ to your own modified versions of Mura CMS.
       </div>
     </div>
 
+     <div class="control-group">
+      <label class="control-label">Publishing through Change Sets Only</label>
+      <div class="controls">
+        <label class="radio">
+        <input type="radio" name="enforceChangesets" value="0" <cfif rc.siteBean.getEnforceChangesets() neq 1> CHECKED</CFIF>>
+        Off
+        </label>
+        <label class="radio">
+        <input type="radio" name="enforceChangesets" value="1" <cfif rc.siteBean.getEnforceChangesets() eq 1> CHECKED</CFIF>>
+        On
+      </label>
+      </div>
+    </div>
+
 
       </div>
       
