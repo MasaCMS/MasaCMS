@@ -168,6 +168,8 @@
 
 	<cfif hasTable>
 		<cfset existing=columnMetaData(arguments.column,arguments.table)>
+	<cfelse>
+		<cfset existing=getDefaultColumnMetatData()>
 	</cfif>
 
 	<cfif arguments.autoincrement>
@@ -286,6 +288,11 @@
 		</cfswitch>
 
 		<cfset structDelete(variables.tableMetaDataLookUp,arguments.table)>	
+		
+		<!--- if we just added the table, update the tableLookUp--->
+		<cfif not hasTable>
+			<cfset variables.tableLookUp[arguments.table] = true>
+		</cfif>
 	</cfif> 
 
 	<cfreturn this>

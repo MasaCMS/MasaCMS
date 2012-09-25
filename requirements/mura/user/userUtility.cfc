@@ -110,7 +110,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif rsUser.recordcount and not (
 			(
 			 not variables.configBean.getEncryptPasswords()
-			 and rsUser.password eq arguments.username
+			 and rsUser.password eq arguments.password
 			)
 			OR
 
@@ -119,9 +119,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			 variables.configBean.getEncryptPasswords()
 			 and 
 			 	(
-			 		variables.globalUtility.checkBCryptHash(arguments.username,rsUser.password) 	
+			 		variables.globalUtility.checkBCryptHash(arguments.password,rsUser.password) 	
 					OR
-					hash(arguments.username) eq rsUser.password	
+					hash(arguments.password) eq rsUser.password	
 				)
 			)
 		)>			
@@ -130,7 +130,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				where 0=1
 			</cfquery>
 		</cfif>
-
+		
 		<cfif rsUser.recordcount 
 			and variables.configBean.getEncryptPasswords() 
 			and hash(arguments.password) eq rsuser.password>

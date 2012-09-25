@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-circle-arrow-left"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
 	</div>
 	
-	<h2>#rc.userBean.getFname()# #rc.userBean.getlname()# <cfif find("activeTab",rc.returnURL)><a href="index.cfm?#rc.returnURL#"><cfelse><a href="index.cfm?#rc.returnURL#&activeTab=1"></cfif>[#application.rbFactory.getKeyValue(session.rb,'user.back')#]</a></h2>
+	<h2>#HTMLEditFormat(rc.userBean.getFname())# #HTMLEditFormat(rc.userBean.getlname())#</h2>
 	
 	<cfif arrayLen(extendSets)>
 	<br/>
