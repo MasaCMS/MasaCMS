@@ -315,10 +315,6 @@ var hasBody=#subType.getHasBody()#;
 	</cfif>
 	<form novalidate="novalidate" action="index.cfm" method="post" enctype="multipart/form-data" name="contentForm" onsubmit="return ckContent(draftremovalnotice);" id="contentForm">
 	
-	<cfif rc.compactDisplay neq "true" and rc.moduleid eq '00000000000000000000000000000000000'>
-		#application.contentRenderer.dspZoom(rc.crumbdata,fileExt)#
-	</cfif>
-	
 	<!--- This is plugin message targeting --->	
 	<span id="msg">
 	<cfif not listFindNoCase("Component,Form",rc.type)>#application.pluginManager.renderEvent("onContentEditMessageRender", pluginEvent)#</cfif>
@@ -326,6 +322,10 @@ var hasBody=#subType.getHasBody()#;
 	#application.pluginManager.renderEvent("on#rc.contentBean.getType()##rc.contentBean.getSubType()#EditMessageRender", pluginEvent)#
 	</span>
 
+	<cfif rc.compactDisplay neq "true" and rc.moduleid eq '00000000000000000000000000000000000'>
+		#application.contentRenderer.dspZoom(rc.crumbdata,fileExt)#
+	</cfif>
+	
 	</cfoutput>
 	
 	<cfset tabLabelList=""/>
