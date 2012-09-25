@@ -426,7 +426,7 @@ to your own modified versions of Mura CMS.
       <div class="controls">
         <label class="radio">
         <input type="radio" name="hasFeedManager" value="0" <cfif rc.siteBean.getHasFeedManager() neq 1> CHECKED</CFIF>>
-        Of
+        Off
       </label>
         <label class="radio">
         <input type="radio" name="hasFeedManager" value="1" <cfif rc.siteBean.getHasFeedManager()  eq 1> CHECKED</CFIF>>
