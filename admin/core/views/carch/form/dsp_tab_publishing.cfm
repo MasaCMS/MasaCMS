@@ -6,7 +6,7 @@
 
 
   	<cfif listFindNoCase('Page,Portal,Calendar,Gallery,File,Link',rc.type)>
-  		<div class="control-group">
+  		
 
   				<div class="control-group">
 			      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.credits')#</label>
