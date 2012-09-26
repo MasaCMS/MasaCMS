@@ -47,7 +47,7 @@ label.radio.inline input[type="radio"] {
 .form-actions {
 	clear: both;
 	margin: 0;
-	background: @grayLighter;
+	background: transparent;
 	.border-radius(0 0 5px 5px);
 	border-top-color: @white;
 	border-top-width: 0;
@@ -168,6 +168,19 @@ label.control-label {
 
 .control-group {
 	background: transparent;
+	border-top: 1px solid @white;
+	border-bottom: 1px solid #e8e8e8;
+	padding: @baseLineHeight;
+	margin-bottom: 0;
+}
+.control-group:first-child {
+	border-top: 0;
+	padding-top: 0;
+}
+
+.control-label, .control-label a {
+	color: @grayDarker !important;
+	font-size: 12px;
 }
 
 

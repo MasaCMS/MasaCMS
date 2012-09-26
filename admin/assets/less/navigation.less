@@ -47,46 +47,44 @@
 	> .nav-tabs {
 		border-right: 0;
 		.makeColumn(2);
-		/* width: 160px; */
 		margin-left: 0;
-		margin-right: 0;
-		padding-top: @baseLineHeight;
+		margin-right: 20px;
+		/* padding-top: @baseLineHeight; */
+		}
+	
+	> .nav-tabs > li {
+		margin-bottom: .5em;
 		}
 
 	> .nav-tabs > li > a,
 	> .nav-tabs > li > a:hover {
 		border: 0 !important;
-		/* background: @grayLight; */
 		display: block;
-		padding: 1.25em 1em;
+		padding: 1em .75em;
+		.border-radius(3px);
 		}
 		
 	> .nav-tabs > li.active > a {
 		border: 0 !important;
 		background: @grayLighter;
+		/* .box-shadow(rgba(0,0,0,0.12) 1px 1px 2px); */
+		/* .box-shadow(rgba(0,0,0,0.12) 0 0 3px); */
 		/* #gradient .vertical(lighten(@grayLighter,1%),lighten(@grayLighter,.05%)); */
-		}
-		
-	> .nav-tabs > li:first-child > a {
-		.border-top-left-radius(4px);
-		}
-		
-	> .nav-tabs > li:last-child > a {
-		.border-bottom-left-radius(4px);
 		}
 		
 	/* Content */
 	.tab-content {
 		.makeColumn(10);
-		.border-radius(4px);
+		.border-radius(3px);
 		padding: @baseLineHeight 0 0;
-		margin-left: 20px;
-		#gradient .vertical(lighten(@grayLighter,1.5%),@grayLighter);
-		.box-shadow(rgba(0,0,0,0.15) 0 0 5px);
+		margin-left: 0;
+		/* #gradient .vertical(hsl(0,0,99%),hsl(0,0,96%)); */
+		/* .box-shadow(rgba(0,0,0,0.13) 0 0 5px); */
+		background: @grayLighter;
 		}
 
 	.tab-pane {
-		padding: 0 20px;
+		padding: 0 0;
 		}
 	}
 // Pills
