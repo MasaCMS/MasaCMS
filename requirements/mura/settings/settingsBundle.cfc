@@ -358,12 +358,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfloop query="rstplugins">
 				
 				<cfif not structKeyExists(arguments.errors,rstplugins.moduleID)>
-					<!---
+					
 					<cfquery datasource="#arguments.dsn#" name="qCheck">
 						select directory from tplugins 
 						where moduleID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#keyFactory.get(rstplugins.moduleID)#"/>
 					</cfquery>
-					--->
+					
+					<cfif qCheck.recordcount and len(qCheck.directory)>
+						<cfset pluginDir=variables.configBean.getPluginDir() & variables.fileDelim & qCheck.directory>
+					<cfelse>
+						<cfset pluginDir=variables.configBean.getPluginDir() & variables.fileDelim & rstplugins.directory>
+					</cfif>
 					
 					<cfset pluginDir=variables.configBean.getPluginDir() & variables.fileDelim & rstplugins.directory>
 				
