@@ -42,50 +42,95 @@
 	
 }
 
-.tabs-right { // Content Editing, etc.
+.tabs-left { // Content Editing, etc.
 		
 	> .nav-tabs {
 		border: 0;
 		.makeColumn(2);
 		margin-left: 0;
-		margin-right: 0;
-		float: right;
-		/* padding-top: @baseLineHeight; */
 		}
 	
 	> .nav-tabs > li {
 		margin-bottom: .5em;
 		}
-
+		
 	> .nav-tabs > li > a,
 	> .nav-tabs > li > a:hover {
 		border: 0 !important;
 		display: block;
 		padding: 1em .75em;
 		.border-radius(3px);
+		position: relative;		
 		}
 		
-	> .nav-tabs > li.active > a {
-		border: 0 !important;
-		#gradient .vertical(hsl(0,0,99%),hsl(0,0,97%));
-		.box-shadow(0 1px 4px rgba(0,0,0,0.2));
+	.nav-tabs > li > a:hover {
+
+	
+		/*
+&:before {
+			position: absolute;
+			right: -4px;
+			top: 4px;
+			font-family: FontAwesome;
+			font-weight: normal;
+			font-style: normal;
+			display: inline-block;
+			width: 1em;
+			font-size: 20px;
+			line-height: 38px;
+			color: @grayLight;
+			display: inline-block;
+			content: "\f054";
+			text-shadow: 0 -1px 0 @gray;
+			}
+*/
+		
 		}
 		
+	> .nav-tabs > li.active {
+	
+		> a {
+			border: 0 !important;
+			#gradient .vertical(hsl(0,0,99%),hsl(0,0,97%));
+			.box-shadow(0 1px 4px rgba(0,0,0,0.2));
+			position: relative;
+			}
+				
+		/*
+> a:before {
+		position: absolute;
+		right: -4px;
+		top: 4px;
+		font-family: FontAwesome;
+		font-weight: normal;
+		font-style: normal;
+		display: inline-block;
+		width: 1em;
+		font-size: 20px;
+		line-height: 38px;
+		color: @grayLight;
+		display: inline-block;
+		content: "\f054";
+		text-shadow: 0 -1px 0 @gray;
+		}
+*/
+	}	
+
+				
 	/* Content */
 	.tab-content {
 		.makeColumn(10);
 		.border-radius(3px);
 		padding: @baseLineHeight 0 0;
 		margin-left: 0;
-		#gradient .vertical(hsl(0,0,99%),hsl(0,0,98%));
+		#gradient .vertical(hsl(0,0,98%),hsl(0,0,95%));
+		//#gradient .radial (hsl(100,0,99%),hsl(100,0,97%));
 		.box-shadow(0 1px 4px rgba(0,0,0,0.2));
-		/* background: @grayLight; */
-		/* border: @grayLight 3px solid; */
 		
 		}
 
 	.tab-pane {
-		padding: 0 @baseLineHeight;
+		padding: 0;
 		}
 	}
 // Pills
@@ -158,13 +203,8 @@
 	li a {
 		padding: 0 8px;
 		height: 26px;
-		line-height: 26px;
-		/*
-.inline-block;
-		float: none;
-*/
-		
-	}
+		line-height: 26px;		
+		}
 	
 	li a.active {
 		color: @grayDark;
@@ -180,7 +220,7 @@
 	clear: both;
 	border: 0 solid #f5f5f5 !important;
 	.border-radius(3px) !important;
-	#gradient .vertical(hsl(0,0,99%),hsl(0,0,97%));
+	#gradient .vertical(hsl(0,0,98%),hsl(0,0,96%));
 	.box-shadow(0 1px 4px rgba(0,0,0,0.2));
 	
 }

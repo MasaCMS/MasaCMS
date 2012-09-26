@@ -469,7 +469,7 @@ var hasBody=#subType.getHasBody()#;
 	</cfsavecontent>
 	<cfoutput>
 	
-	<div class="tabbable tabs-right">
+	<div class="tabbable tabs-left">
 		<ul class="nav nav-tabs initActiveTab">
 			<cfloop from="1" to="#listlen(tabList)#" index="t">
 			<cfset currentTab=listGetAt(tabList,t)>

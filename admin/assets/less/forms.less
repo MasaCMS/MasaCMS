@@ -21,18 +21,24 @@ input[type="color"],
   line-height: @baseLineHeight;
   color: @black;
   margin-bottom: 0;
+  width: 97%;
 }
 
 select, input[type="file"] {
 	height: 28px;
 	line-height: 28px;
 	margin-bottom: 0;
+	width: auto;
 }
 
 textarea,
 select[multiple],
 select[size] {
   height: auto !important;
+}
+
+textarea {
+  width: 97%;
 }
 
 td, th {
@@ -53,6 +59,7 @@ label.radio.inline input[type="radio"] {
 	.border-radius(0 0 5px 5px);
 	border-top-color: @white;
 	border-top-width: 0;
+	padding-top: 0;
 }
 
 label.control-label {
@@ -168,24 +175,22 @@ label.control-label {
 	}
 } // /#editObjects
 
-/*
 .control-group {
 	background: transparent;
 	border-top: 1px solid @white;
-	border-bottom: 1px solid #e8e8e8;
+	border-bottom: 1px solid hsl(100,0,94%);
 	padding: @baseLineHeight;
 	margin-bottom: 0;
+	.clearfix;
 }
-*/
 .control-group:first-child {
 	border-top: 0;
 	padding-top: 0;
 }
 
 .control-group:last-child {
-	margin-bottom: 0;
+	border-bottom: 0;
 }
-
 .control-label, .control-label a {
 	color: @grayDarker !important;
 	font-size: 13px;
@@ -197,7 +202,7 @@ label.control-label {
 	/* background: rgba(255,255,255,1); */
 	.border-radius(3px);
 	/* border: 2px solid @white; */
-	margin-bottom: @baseLineHeight;
+	/* margin-bottom: @baseLineHeight; */
 }
 
 
