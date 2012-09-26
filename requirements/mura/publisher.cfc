@@ -196,16 +196,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset getToWorkClassExtensions(argumentCollection=arguments)>
 		</cfif>
 		
-		<cfif arguments.pluginMode neq "none">
-			<cfset getToWorkPlugins(argumentCollection=arguments)>
-		</cfif>
-		
 		<cfif StructKeyExists(arguments,"Bundle")>
 			<cfset rssite=Bundle.getValue("rssite")>
 			<cfif isDefined("rssite.theme")>
 				<cfset themeDir=rssite.theme>
 			</cfif>
 			<cfset arguments.Bundle.unpackFiles( arguments.toSiteID,arguments.keyFactory,arguments.toDSN, arguments.moduleID, arguments.errors , arguments.renderingMode, arguments.contentMode, arguments.pluginMode, arguments.lastDeployment,arguments.keyMode,themeDir) />
+			
+			<cfif arguments.pluginMode neq "none">
+				<cfset getToWorkPlugins(argumentCollection=arguments)>
+			</cfif>
+
 			<cfif arguments.keyMode eq "copy" and arguments.contentMode eq "all">
 				<cfset arguments.Bundle.renameFiles( arguments.toSiteID,arguments.keyFactory,arguments.toDSN ) />
 			</cfif>
@@ -240,6 +241,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</cfif>
 			<cfset arguments.Bundle.cleanUp() />
+		<cfelse>
+			<cfif arguments.pluginMode neq "none">
+				<cfset getToWorkPlugins(argumentCollection=arguments)>
+			</cfif>
 		</cfif>
 		
 		<cfreturn arguments.errors>
