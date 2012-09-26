@@ -56,7 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.utility=arguments.utility />
 		<cfset variables.Gateway=arguments.settingsGateway />
 		<cfset variables.DAO=arguments.settingsDAO />
-		<cfset variables.clusterManager=arguments.clusterManager />	
+		<cfset variables.clusterManager=arguments.clusterManager />		
 		<cfset variables.classExtensionManager=variables.configBean.getClassExtensionManager()>
 		<cfset setSites() />
 <cfreturn this />
@@ -209,10 +209,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="update" access="public" output="false" returntype="any">
 	<cfargument name="data" type="struct" />
 	<cfset var bean=variables.DAO.read(arguments.data.SiteID) />
+	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
 
 	<cfset bean.set(arguments.data) />
+	<cfset pluginEvent.setValue('settingsBean',bean)>
+
 	<cfset bean.setModuleID("00000000000000000000000000000000000")>
 	<cfset bean.validate()>
+
+	<cfset getBean('pluginManager').announceEvent("onBeforeSiteUpdate",pluginEvent)>
+	<cfset getBean('pluginManager').announceEvent("onBeforeSiteSave",pluginEvent)>
 	
 	<cfif structIsEmpty(bean.getErrors())>
 		<cfset variables.utility.logEvent("SiteID:#bean.getSiteID()# Site:#bean.getSite()# was updated","mura-settings","Information",true) />
@@ -223,6 +229,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset checkForBundle(arguments.data,bean.getErrors())>
 		<cfset setSites() />
 		<cfset application.appInitialized=false>
+
+		<cfset getBean('pluginManager').announceEvent("onAfterSiteUpdate",pluginEvent)>
+		<cfset getBean('pluginManager').announceEvent("onAfterSiteSave",pluginEvent)>
 	</cfif>
 
 	<cfreturn bean />
@@ -233,6 +242,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteid" type="string" />
 	
 	<cfset var bean=read(arguments.siteid) />
+	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
+
+	<cfset pluginEvent.setValue('settingsBean',bean)>
+
+	<cfset getBean('pluginManager').announceEvent("onBeforeSiteDelete",pluginEvent)>
+
 	<cfset variables.utility.logEvent("SiteID:#arguments.siteid# Site:#bean.getSite()# was deleted","mura-settings","Information",true) />
 	<cfset variables.DAO.delete(arguments.siteid) />
 	<cfset setSites() />
@@ -248,17 +263,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.utility.deleteDir("#variables.configBean.getAssetDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#") />
 	<cfcatch></cfcatch>
 	</cftry>
+
+	<cfset getBean('pluginManager').announceEvent("onAfterSiteDelete",pluginEvent)>
+
 </cffunction>
 
 <cffunction name="create" access="public" output="false" returntype="any">
 	<cfargument name="data" type="struct" />
 	<cfset var rs=""/>
 	<cfset var bean=getBean("settingsBean") />
-	
+	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
+
 	<cfset bean.set(arguments.data) />
+	<cfset pluginEvent.setValue('settingsBean',bean)>
 	<cfset bean.setModuleID("00000000000000000000000000000000000")>
 	<cfset bean.validate()>
-	
+
+	<cfset getBean('pluginManager').announceEvent("onBeforeSiteCreate",pluginEvent)>
+	<cfset getBean('pluginManager').announceEvent("onBeforeSiteSave",pluginEvent)>
+
 	<cfif structIsEmpty(bean.getErrors()) and  bean.getSiteID() neq ''>
 		
 		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
@@ -286,6 +309,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset checkForBundle(arguments.data,bean.getErrors())>
 		<cfset setSites() />
 		<cfset application.appInitialized=false>
+
+		<cfset getBean('pluginManager').announceEvent("onAfterSiteCreate",pluginEvent)>
+		<cfset getBean('pluginManager').announceEvent("onAfterSiteSave",pluginEvent)>
 	</cfif>
 
 	<cfreturn bean />

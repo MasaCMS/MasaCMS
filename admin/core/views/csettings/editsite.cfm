@@ -31,7 +31,6 @@ a separately distributed license.
 /tasks/
 /config/
 /requirements/mura/
-
 You may copy and distribute such a combined work under the terms of GPL for Mura CMS, provided that you include
 the source code of that other code when and as the GNU GPL requires distribution of source code.
 
@@ -41,10 +40,12 @@ the GNU General Public License version 2 without this exception. You may, if you
 to your own modified versions of Mura CMS.
 --->
 <cfsilent>
- <cfset rsThemes=rc.siteBean.getThemes() />
- <cfset rsSites=application.settingsManager.getList() />
+<cfset rsThemes=rc.siteBean.getThemes() />
+<cfset variables.pluginEvent=createObject("component","mura.event").init(request.event.getAllValues())/>
+<cfset rsSites=application.settingsManager.getList() />
 <cfset extendSets=application.classExtensionManager.getSubTypeByName("Site","Default",rc.siteid).getExtendSets(inherit=true,container="Default",activeOnly=true) />
- <cfparam name="rc.action" default="">
+<cfparam name="rc.action" default="">
+<cfset rsPluginScripts=application.pluginManager.getScripts("onSiteEdit",rc.siteID)>
 </cfsilent>
 <h1>Site Settings</h1>
 <cfoutput>
@@ -92,7 +93,14 @@ to your own modified versions of Mura CMS.
 <cfset tabLabelList='Basic,Contact Info,Shared Resources,Modules,Email,Images,Extranet,Display Regions,Deploy Bundle'>
 <cfset tabList='tabBasic,tabContactinfo,tabSharedresources,tabModules,tabEmail,tabImages,tabExtranet,tabDisplayregions,tabBundles'>
 </cfif>
-
+</cfoutput>
+<cfoutput query="rsPluginScripts" group="pluginid">
+  <cfoutput>
+  <cfset tabLabelList=listAppend(tabLabelList,rsPluginScripts.name)/> 
+  <cfset tabList=listAppend(tabList,"tab" & application.contentRenderer.createCSSID(rsPluginScripts.name))>
+  </cfoutput>
+</cfoutput>
+<cfoutput>
 <div class="tabbable tabs-left">
   <ul class="nav nav-tabs initActiveTab">
   	<cfloop from="1" to="#listlen(tabList)#" index="t">
@@ -1046,6 +1054,20 @@ to your own modified versions of Mura CMS.
 	  </cfif>
 	 
 	  </div>
+  </cfoutput>
+  <cfoutput query="rsPluginScripts" group="pluginID">
+      <!---<cfset tabLabelList=tabLabelList & ",'#jsStringFormat(rsPluginScripts.name)#'"/>--->
+      <cfset tabID="tab" & application.contentRenderer.createCSSID(rsPluginScripts.name)>
+        <div id="#tabID#" class="tab-pane fade">
+        <cfoutput>
+        <cfset rsPluginScript=application.pluginManager.getScripts("onSiteEdit",rc.siteID,rsPluginScripts.moduleID)>
+        <cfif rsPluginScript.recordcount>
+        #application.pluginManager.renderScripts("onSiteEdit",rc.siteid,pluginEvent,rsPluginScript)#
+        </cfif>
+        </cfoutput>
+        </div>
+    </cfoutput>
+    <cfoutput>
     <img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
      #actionButtons#
   </div>
