@@ -37,18 +37,19 @@
 		}
 	
 	.nav .active a {
-		color: @black;
+		color: @grayDarker;
 		}
 	
 }
 
-.tabs-left { // Content Editing, etc.
+.tabs-right { // Content Editing, etc.
 		
 	> .nav-tabs {
-		border-right: 0;
+		border: 0;
 		.makeColumn(2);
 		margin-left: 0;
-		margin-right: 20px;
+		margin-right: 0;
+		float: right;
 		/* padding-top: @baseLineHeight; */
 		}
 	
@@ -66,10 +67,8 @@
 		
 	> .nav-tabs > li.active > a {
 		border: 0 !important;
-		background: @grayLighter;
-		/* .box-shadow(rgba(0,0,0,0.12) 1px 1px 2px); */
-		/* .box-shadow(rgba(0,0,0,0.12) 0 0 3px); */
-		/* #gradient .vertical(lighten(@grayLighter,1%),lighten(@grayLighter,.05%)); */
+		#gradient .vertical(hsl(0,0,99%),hsl(0,0,97%));
+		.box-shadow(0 1px 4px rgba(0,0,0,0.2));
 		}
 		
 	/* Content */
@@ -78,13 +77,15 @@
 		.border-radius(3px);
 		padding: @baseLineHeight 0 0;
 		margin-left: 0;
-		/* #gradient .vertical(hsl(0,0,99%),hsl(0,0,96%)); */
-		/* .box-shadow(rgba(0,0,0,0.13) 0 0 5px); */
-		background: @grayLighter;
+		#gradient .vertical(hsl(0,0,99%),hsl(0,0,98%));
+		.box-shadow(0 1px 4px rgba(0,0,0,0.2));
+		/* background: @grayLight; */
+		/* border: @grayLight 3px solid; */
+		
 		}
 
 	.tab-pane {
-		padding: 0 0;
+		padding: 0 @baseLineHeight;
 		}
 	}
 // Pills
@@ -179,9 +180,8 @@
 	clear: both;
 	border: 0 solid #f5f5f5 !important;
 	.border-radius(3px) !important;
-	// .box-shadow(0 2px 4px #ddd);
-	// #gradient .vertical(@startColor,@endColor);
-	background: @grayLighter;
+	#gradient .vertical(hsl(0,0,99%),hsl(0,0,97%));
+	.box-shadow(0 1px 4px rgba(0,0,0,0.2));
 	
 }
 

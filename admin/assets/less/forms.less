@@ -19,12 +19,14 @@ input[type="color"],
   font-size: @baseFontSize;
   padding: 4px;
   line-height: @baseLineHeight;
-  color: @grayDark;
+  color: @gray;
+  margin-bottom: 0;
 }
 
 select, input[type="file"] {
-height: 28px;
-line-height: 28px;
+	height: 28px;
+	line-height: 28px;
+	margin-bottom: 0;
 }
 
 textarea,
@@ -166,6 +168,7 @@ label.control-label {
 	}
 } // /#editObjects
 
+/*
 .control-group {
 	background: transparent;
 	border-top: 1px solid @white;
@@ -173,14 +176,28 @@ label.control-label {
 	padding: @baseLineHeight;
 	margin-bottom: 0;
 }
+*/
 .control-group:first-child {
 	border-top: 0;
 	padding-top: 0;
 }
 
+.control-group:last-child {
+	margin-bottom: 0;
+}
+
 .control-label, .control-label a {
 	color: @grayDarker !important;
-	font-size: 12px;
+	font-size: 13px;
+	text-shadow: 0 1px 0 @white;
+}
+
+.controls {
+	/* padding: 1em; */
+	/* background: rgba(255,255,255,1); */
+	.border-radius(3px);
+	/* border: 2px solid @white; */
+	margin-bottom: @baseLineHeight;
 }
 
 

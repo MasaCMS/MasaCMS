@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabList=listAppend(tabList,"tabBasic")>
 <cfset started=false>
 <cfoutput>
-<div id="tabBasic" class="tab-pane fade">
+<div id="tabBasic" class="tab-pane">
 
 	<cfinclude template="dsp_type_selector.cfm">
 	
@@ -61,7 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</a>
 			    </label>
 			    <div class="controls">
-			     	<input type="text" id="title" name="title" value="#HTMLEditFormat(rc.contentBean.gettitle())#"  maxlength="255" class="textLong" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#" <cfif not rc.contentBean.getIsNew() and not listFindNoCase('Link,File',rc.type)>onkeypress="openDisplay('editAdditionalTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');"</cfif>>
+			     	<input type="text" id="title" name="title" value="#HTMLEditFormat(rc.contentBean.gettitle())#"  maxlength="255" class="span7" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#" <cfif not rc.contentBean.getIsNew() and not listFindNoCase('Link,File',rc.type)>onkeypress="openDisplay('editAdditionalTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');"</cfif>>
 			     </div>
 		    </div>
 		<div class="control-group" id="editAdditionalTitles" style="display:none;">		
@@ -77,7 +77,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	      			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#
 	      		</label>
 	     		 <div class="controls">
-	     		 	<input type="text" id="title" name="title" value="#HTMLEditFormat(rc.contentBean.getTitle())#"  maxlength="255" class="textLong" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#">
+	     		 	<input type="text" id="title" name="title" value="#HTMLEditFormat(rc.contentBean.getTitle())#"  maxlength="255" class="span7" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#">
 	     		</div>
 	     	</div>
 		</cfdefaultcase>

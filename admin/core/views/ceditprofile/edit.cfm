@@ -68,14 +68,14 @@ select * from rsSubTypes where subType <> 'Default'
 	
 	<p>(*Required, **Required to login to Site)<p>
 
-<div class="tabbable tabs-left">
+<div class="tabbable tabs-right">
 <ul class="nav nav-tabs initActiveTab">
 <cfloop from="1" to="#listlen(tabList)#" index="t">
 <li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
 </cfloop>
 </ul>
 <div class="tab-content">
-<div id="tabBasic" class="tab-pane fade">
+<div id="tabBasic" class="tab-pane fade in">
 
 
 		<cfif rsNonDefault.recordcount>
