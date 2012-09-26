@@ -195,17 +195,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		and not (arguments.keyMode eq "publish" and not StructKeyExists(arguments,"Bundle"))>
 			<cfset getToWorkClassExtensions(argumentCollection=arguments)>
 		</cfif>
-		
-		<cfif arguments.pluginMode neq "none">
-			<cfset getToWorkPlugins(argumentCollection=arguments)>
-		</cfif>
-		
+			
 		<cfif StructKeyExists(arguments,"Bundle")>
 			<cfset rssite=Bundle.getValue("rssite")>
 			<cfif isDefined("rssite.theme")>
 				<cfset themeDir=rssite.theme>
 			</cfif>
 			<cfset arguments.Bundle.unpackFiles( arguments.toSiteID,arguments.keyFactory,arguments.toDSN, arguments.moduleID, arguments.errors , arguments.renderingMode, arguments.contentMode, arguments.pluginMode, arguments.lastDeployment,arguments.keyMode,themeDir) />
+			
+			<cfif arguments.pluginMode neq "none">
+				<cfset getToWorkPlugins(argumentCollection=arguments)>
+			</cfif>
+
 			<cfif arguments.keyMode eq "copy" and arguments.contentMode eq "all">
 				<cfset arguments.Bundle.renameFiles( arguments.toSiteID,arguments.keyFactory,arguments.toDSN ) />
 			</cfif>
@@ -280,6 +281,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</cfif>
 			<cfset arguments.Bundle.cleanUp() />
+		<cfelse>
+			<cfif arguments.pluginMode neq "none">
+				<cfset getToWorkPlugins(argumentCollection=arguments)>
+			</cfif>
 		</cfif>
 		
 		<cfreturn arguments.errors>
@@ -3416,12 +3421,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfloop>
 
 						<cfset pluginDir=application.configBean.getPluginDir() & application.configBean.getFileDelim() & rstplugins.directory>
-					
+
 						<cfif fileExists("#pluginDir#/plugin/plugin.cfc")>	
 							<cfset pluginConfig=getPlugin(ID=keyFactory.get(rstplugins.moduleID), siteID="", cache=false)>
 							<cfset pluginCFC= createObject("component","plugins.#rstplugins.directory#.plugin.plugin") />
 							
 							<!--- only call the methods if they have been defined --->
+							
 							<cfif structKeyExists(pluginCFC,"init")>
 								<cfset pluginCFC.init(pluginConfig)>
 								<cfif structKeyExists(pluginCFC,"fromBundle")>

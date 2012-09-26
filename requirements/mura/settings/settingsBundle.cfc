@@ -348,22 +348,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					where moduleID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true">)
 				</cfquery>
 			</cfif>
-			
+
 			<cfif not directoryExists(getBundle() & "plugins")>
 				<cfset variables.fileWriter.createDir(directory=getBundle() & "plugins")>
 			</cfif>
 			
-			<cfset variables.zipTool.Extract(zipFilePath=getBundle() & "pluginfiles.zip",extractPath=getBundle() & "plugins", overwriteFiles=true)>
-			
+			<cfset variables.zipTool.Extract(zipFilePath=getBundle() & "pluginfiles.zip",extractPath=getBundle() & "plugins", overwriteFiles=true)>			
+
 			<cfloop query="rstplugins">
 				
 				<cfif not structKeyExists(arguments.errors,rstplugins.moduleID)>
+					<!---
 					<cfquery datasource="#arguments.dsn#" name="qCheck">
 						select directory from tplugins 
 						where moduleID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#keyFactory.get(rstplugins.moduleID)#"/>
 					</cfquery>
+					--->
 					
-					<cfset pluginDir=variables.configBean.getPluginDir() & variables.fileDelim & qCheck.directory>
+					<cfset pluginDir=variables.configBean.getPluginDir() & variables.fileDelim & rstplugins.directory>
 				
 					<cfset variables.utility.copyDir( getBundle() & "plugins" & variables.fileDelim & rstplugins.directory, pluginDir )>
 			
