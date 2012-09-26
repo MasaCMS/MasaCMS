@@ -442,14 +442,13 @@ var hasBody=#subType.getHasBody()#;
 		</cfif> 
 	</cfif>
 
-		<cfoutput query="rsPluginScripts" group="pluginID">
-			<!---<cfset tabLabelList=tabLabelList & ",'#jsStringFormat(rsPluginScripts.name)#'"/>--->
-			<cfset tabLabelList=listAppend(tabLabelList,rsPluginScripts.name)/>
-			<cfset tabID="tab" & application.contentRenderer.createCSSID(rsPluginScripts.name)>
-			<cfset tabList=listAppend(tabList,tabID)>
-			<cfset pluginEvent.setValue("tabList",tabLabelList)>
-				<div id="#tabID#" class="tab-pane fade">
-				<cfoutput>
+	<cfoutput query="rsPluginScripts" group="pluginID">
+		<cfset tabLabelList=listAppend(tabLabelList,rsPluginScripts.name)/>
+		<cfset tabID="tab" & application.contentRenderer.createCSSID(rsPluginScripts.name)>
+		<cfset tabList=listAppend(tabList,tabID)>
+		<cfset pluginEvent.setValue("tabList",tabLabelList)>
+		<div id="#tabID#" class="tab-pane fade">
+			<cfoutput>
 				<cfset rsPluginScript=application.pluginManager.getScripts("onContentEdit",rc.siteID,rsPluginScripts.moduleID)>
 				<cfif rsPluginScript.recordcount>
 				#application.pluginManager.renderScripts("onContentEdit",rc.siteid,pluginEvent,rsPluginScript)#
@@ -457,9 +456,9 @@ var hasBody=#subType.getHasBody()#;
 				<cfset rsPluginScript=application.pluginManager.getScripts("on#rc.type#Edit",rc.siteID,rsPluginScripts.moduleID)>
 				#application.pluginManager.renderScripts("on#rc.type#Edit",rc.siteid,pluginEvent,rsPluginScript)#
 				</cfif>
-				</cfoutput>
-				</div>
-		</cfoutput>
+			</cfoutput>
+		</div>
+	</cfoutput>
 
 
 
