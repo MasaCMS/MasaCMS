@@ -57,6 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="trashManager" type="any" required="yes"/>
 <cfargument name="settingsManager" type="any" required="yes"/>
 <cfargument name="clusterManager" type="any" required="yes"/>
+<cfargument name="permUtility" type="any" required="yes"/>
 
 	<cfset variables.configBean=arguments.configBean />
 	<cfset variables.userDAO=arguments.userDAO />
@@ -69,6 +70,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.trashManager=arguments.trashManager />
 	<cfset variables.settingsManager=arguments.settingsManager />
 	<cfset variables.clusterManager=arguments.clusterManager />
+	<cfset variables.permUtility=arguments.permUtility />
+	
 	
 	<!---<cfset variables.userDAO.setUserManager(this)>--->
 	
@@ -929,6 +932,44 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var userFeedBean=createObject("component","mura.user.userFeedBean").init()>
 	<cfset userFeedBean.setUserManager(this)>
 	<cfreturn userFeedBean>
+</cffunction>
+
+<cffunction name="getReversePermLookUp" output="false">
+<cfargument name="siteid">
+
+	<cfset var rsLookUp="">
+
+	<cfif variables.permUtility.getModulePerm('00000000000000000000000000000000008',arguments.siteid)
+	or listFind(session.mura.memberships,'Admin;#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#;0')>
+		<cfreturn true>
+	</cfif>
+
+	<cfquery name="rsLookUp" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		select siteID 
+		from tsetting 
+		where publicUserPoolID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
+	</cfquery>
+
+	<cfloop query="rsLookUp">
+		<cfif variables.permUtility.getModulePerm('00000000000000000000000000000000008',rsLookUp.siteid)>
+			<cfreturn true>
+		</cfif>
+	</cfloop>
+
+	<cfquery name="rsLookUp" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		select siteID 
+		from tsetting 
+		where privateUserPoolID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
+	</cfquery>
+
+	<cfloop query="rsLookUp">
+		<cfif listFind(session.mura.memberships,'Admin;#variables.settingsManager.getSite(rsLookUp.siteid).getPrivateUserPoolID()#;0')>
+			<cfreturn true>
+		</cfif>
+	</cfloop>
+
+	<cfreturn false>
+
 </cffunction>
 
 </cfcomponent>
