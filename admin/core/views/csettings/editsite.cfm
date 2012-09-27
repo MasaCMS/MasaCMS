@@ -229,7 +229,7 @@ to your own modified versions of Mura CMS.
     </div>
      
       <div class="control-group">
-      <label class="control-label">Lock Site Architecture )></label>
+      <label class="control-label">Lock Site Architecture</label>
       <div class="controls">
         <p class="help-block">Restricts Addition or Deletion of Site Content</p>
         <input type="radio" name="locking" value="none" <cfif rc.siteBean.getlocking() eq 'none' or rc.siteBean.getlocking() eq ''> CHECKED</CFIF>>
