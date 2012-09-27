@@ -121,16 +121,20 @@
 	.tab-content {
 		.makeColumn(10);
 		.border-radius(3px);
-		padding: @baseLineHeight 0 0;
+		padding: 0;
 		margin-left: 0;
 		#gradient .vertical(hsl(0,0,98%),hsl(0,0,95%));
 		//#gradient .radial (hsl(100,0,99%),hsl(100,0,97%));
 		.box-shadow(0 1px 4px rgba(0,0,0,0.2));
-		
+		min-height: 600px;
 		}
 
-	.tab-pane {
-		padding: 0;
+	.tab-pane, .pane {
+		padding: @baseLineHeight 0 0;
+		margin: @baseLineHeight;
+		background: rgba(255,255,255,.73);
+		.border-radius(3px);
+		border: 1px solid rgba(240,240,240,.8);
 		}
 	}
 // Pills

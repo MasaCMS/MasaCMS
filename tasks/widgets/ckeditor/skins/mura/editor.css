@@ -11,7 +11,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	border: 0;
 	background: transparent;
 	text-decoration: none;
-	font: normal normal normal 11px "Lucida Grande", Arial, Helvetica, sans-serif;
+	font: normal normal normal 11px "Helvetica Neue", HelveticaNeue, Helvetica, Arial sans-serif;
 	width: auto;
 	height: auto;
 	border-collapse: collapse;
@@ -61,11 +61,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 }
 
 span.cke_skin_mura {
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	border-radius: 5px;
-	border: 1px solid #D3D3D3;
-	padding: 5px;
+	border: 0;
+	padding: 0;
 }
 
 .cke_skin_mura span.cke_browser_webkit,.cke_skin_mura span.cke_browser_gecko18 {
