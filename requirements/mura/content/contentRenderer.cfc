@@ -83,6 +83,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!--- This is duplicated for when the page title gets set to h1 ---> 
 <cfset this.subHead5="h6">
 <!--- These settings are for navigational display objects --->
+<cfset this.navWrapperClass="sidebar-nav well">
 <cfset this.liHasKidsClass="">
 <cfset this.liHasKidsCustomString="">
 <cfset this.liCurrentClass="current">

@@ -45,8 +45,8 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-<cfset variables.rsvariables.archive=variables.$.getBean('contentGateway').getReleaseCountByMonth(variables.$.event('siteID'),arguments.objectID)>
-<cfset hasvariables.archiveFilter=listFindNoCase("releaseMonth,releaseDate,releaseYear",variables.$.event("filterBy"))>
+<cfset variables.rsarchive=variables.$.getBean('contentGateway').getReleaseCountByMonth(variables.$.event('siteID'),arguments.objectID)>
+<cfset variables.hasArchiveFilter=listFindNoCase("releaseMonth,releaseDate,releaseYear",variables.$.event("filterBy"))>
 <cfif arguments.objectID eq variables.$.content("contentID")>
 	<cfset variables.archive=variables.$.content()>
 <cfelse>
@@ -54,12 +54,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 </cfsilent>
 <cfoutput>
-<div class="navvariables.archive well">
+<div class="#this.navWrapperClass#">
 <#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('list.archive')#</#variables.$.getHeaderTag('subHead1')#>
-<ul class="#this.ulTopClass# sidebar-nav">
-	<cfloop query="variables.rsvariables.archive">
-		<cfset isCurrentvariables.archive=hasvariables.archiveFilter and variables.$.event("month") eq variables.rsvariables.archive.month and variables.$.event("year") eq variables.rsvariables.archive.year>
-		<li<cfif isCurrentvariables.archive> class="#this.liCurrentClass#"</cfif>><a href="#variables.$.createHREF(filename='#variables.archive.getFilename()#/date/#variables.rsvariables.archive.year#/#variables.rsvariables.archive.month#/')#"<cfif isCurrentvariables.archive> class="current"</cfif>>#monthasstring(variables.rsvariables.archive.month)# #variables.rsvariables.archive.year# (#variables.rsvariables.archive.items#)</a></li>
+<ul class="#this.ulTopClass#">
+	<cfloop query="variables.rsarchive">
+		<cfset variables.isCurrentArchive=variables.hasArchiveFilter and variables.$.event("month") eq variables.rsarchive.month and variables.$.event("year") eq variables.rsarchive.year>
+		<li<cfif variables.isCurrentArchive> class="#this.liCurrentClass#"</cfif>><a href="#variables.$.createHREF(filename='#variables.archive.getFilename()#/date/#variables.rsarchive.year#/#variables.rsarchive.month#/')#"<cfif variables.isCurrentArchive> class="current"</cfif>>#monthasstring(variables.rsarchive.month)# #variables.rsarchive.year# (#variables.rsarchive.items#)</a></li>
 	</cfloop>
 </ul>
 </div>
