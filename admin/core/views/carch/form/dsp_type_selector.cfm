@@ -5,7 +5,7 @@
 				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#
 			</label>
 			<div class="controls">
-				<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#rc.contentBean.getcontentHistID()#',this.value,'#rc.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');">
+				<select name="typeSelector" class="dropdown" onchange="siteManager.resetExtendedAttributes('#rc.contentBean.getcontentHistID()#',this.value,'#rc.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');">
 				<cfloop list="#baseTypeList#" index="t">
 				<cfsilent>
 						<cfquery name="rsst" dbtype="query">select * from rsSubTypes where type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#t#"> and subtype not in ('Default','default')</cfquery>
@@ -31,7 +31,7 @@
 					#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#
 				</label>
 				<div class="controls">
-					<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#rc.contentBean.getcontentHistID()#',this.value,'#rc.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');">
+					<select name="typeSelector" class="dropdown" onchange="siteManager.resetExtendedAttributes('#rc.contentBean.getcontentHistID()#',this.value,'#rc.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');">
 						<option value="#t#^Default" <cfif rc.type eq t and rc.contentBean.getSubType() eq "Default">selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#t#")#</option>
 						<cfif rsst.recordcount>
 							<cfloop query="rsst">
@@ -51,7 +51,7 @@
 			<div class="control-group">
 				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#</label>
 				<div class="controls">
-					<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#rc.contentBean.getcontentHistID()#',this.value,'#rc.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');">
+					<select name="typeSelector" class="dropdown" onchange="siteManager.resetExtendedAttributes('#rc.contentBean.getcontentHistID()#',this.value,'#rc.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');">
 					<option value="#t#^Default" <cfif rc.type eq t and rc.contentBean.getSubType() eq "Default">selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#</option>
 					<cfif rsst.recordcount>
 						<cfloop query="rsst">
@@ -70,7 +70,7 @@
 			<div class="control-group">
 				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type")#</label>
 				<div class="controls">
-					<select name="typeSelector" class="dropdown" onchange="resetExtendedAttributes('#rc.contentBean.getcontentHistID()#',this.value,'#rc.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');">
+					<select name="typeSelector" class="dropdown" onchange="siteManager.resetExtendedAttributes('#rc.contentBean.getcontentHistID()#',this.value,'#rc.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');">
 					<option value="#t#^Default" <cfif rc.type eq t and rc.contentBean.getSubType() eq "Default">selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.type.#lcase(t)#")#</option>
 					<cfif rsst.recordcount>
 						<cfloop query="rsst">
