@@ -1396,4 +1396,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	<cfreturn arguments.rs>
 	</cffunction>
+
+	<cffunction name="valueExists" access="public" output="false">
+		<cfargument name="valueKey">
+		<cfreturn structKeyExists(variables.data,arguments.valueKey) />
+	</cffunction>
+
+	<cffunction name="getAllValues" access="public" output="false">
+		<cfreturn variables.data />
+	</cffunction>
 </cfcomponent>
