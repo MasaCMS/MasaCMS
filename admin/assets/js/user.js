@@ -53,7 +53,7 @@ var userManager={
 			context=_context;
 			themeAssetPath=_themeAssetPath
 			
-			location.href=url + "?" + pars;
+			//location.href=url + "?" + pars;
 			var d = $('#extendSetsDefault');
 			
 			if(d.length){
