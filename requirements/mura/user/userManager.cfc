@@ -946,7 +946,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfquery name="rsLookUp" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		select siteID 
-		from tsetting 
+		from tsettings 
 		where publicUserPoolID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
 	</cfquery>
 
@@ -958,7 +958,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfquery name="rsLookUp" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		select siteID 
-		from tsetting 
+		from tsettings 
 		where privateUserPoolID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
 	</cfquery>
 

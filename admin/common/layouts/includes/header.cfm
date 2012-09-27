@@ -128,7 +128,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	                  </ul>
 	                </li> 
 	                
-	                <cfif session.siteid neq '' and listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
+	                <cfif session.siteid neq '' and session.mura.isLoggedIn>
 	                 <li id="navEditProfile" class="dropdown">
 	                 	<a class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i> #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#
 	                 		<b class="caret"></b></a>

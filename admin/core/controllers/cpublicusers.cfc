@@ -64,6 +64,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					)
 			)>
 		<cfif (not listFind(session.mura.memberships,'Admin;#variables.settingsManager.getSite(arguments.rc.siteid).getPrivateUserPoolID()#;0') and not listFind(session.mura.memberships,'S2')) and not ( variables.permUtility.getModulePerm('00000000000000000000000000000000008','#rc.siteid#') and variables.permUtility.getModulePerm('00000000000000000000000000000000000','#rc.siteid#'))>
+			
+			<cfdump var="#variables.userManager.getReversePermLookUp(rc.siteID)#" abort="true">
+
 			<cfset secure(arguments.rc)>
 		</cfif>
 	</cfif>
