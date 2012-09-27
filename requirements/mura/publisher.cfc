@@ -3249,20 +3249,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfquery>
 						</cfloop>
 
-						<cfset pluginDir=application.configBean.getPluginDir() & application.configBean.getFileDelim() & rstplugins.directory>
-					
-						<cfif fileExists("#pluginDir#/plugin/plugin.cfc")>	
-							<cfset pluginConfig=getPlugin(ID=keyFactory.get(rstplugins.moduleID), siteID="", cache=false)>
-							<cfset pluginCFC= createObject("component","plugins.#rstplugins.directory#.plugin.plugin") />
-							
-							<!--- only call the methods if they have been defined --->
-							<cfif structKeyExists(pluginCFC,"init")>
-								<cfset pluginCFC.init(pluginConfig)>
-								<cfif structKeyExists(pluginCFC,"fromBundle")>
-									<cfset pluginCFC.fromBundle(pluginConfig=pluginConfig,Bundle=this,keyFactory=arguments.keyFactory, siteID=arguments.toSiteID, errors=arguments.errors)>
+						<cfif StructKeyExists(arguments,"Bundle")>
+							<cfset pluginDir=application.configBean.getPluginDir() & application.configBean.getFileDelim() & rstplugins.directory>
+
+							<cfif fileExists("#pluginDir#/plugin/plugin.cfc")>	
+								<cfset pluginConfig=getPlugin(ID=keyFactory.get(rstplugins.moduleID), siteID="", cache=false)>
+								<cfset pluginCFC= createObject("component","plugins.#rstplugins.directory#.plugin.plugin") />
+								
+								<!--- only call the methods if they have been defined --->
+								
+								<cfif structKeyExists(pluginCFC,"init")>
+									<cfset pluginCFC.init(pluginConfig)>
+									<cfif structKeyExists(pluginCFC,"fromBundle")>
+										<cfset pluginCFC.fromBundle(pluginConfig=pluginConfig,Bundle=arguments.bundle,keyFactory=arguments.keyFactory, siteID=arguments.toSiteID, errors=arguments.errors)>
+									</cfif>
 								</cfif>
-							</cfif>
-						</cfif>	
+							</cfif>	
+						</cfif>
 					</cfif>
 
 				</cfloop>

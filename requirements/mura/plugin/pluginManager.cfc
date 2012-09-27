@@ -863,8 +863,8 @@ select * from tplugins order by #arguments.orderby#
 		<cfset pluginConfig.setPackage(rs.package) />
 		<cfset pluginConfig.setDirectory(rs.directory) />
 		
-		<cfquery name="rs"  dbtype="query">
-		select * from variables.rsSettings where  moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.moduleID#">
+		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDBUsername()#" password="#variables.configBean.getReadOnlyDBPassword()#">
+		select * from tpluginsettings where  moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.moduleID#">
 		</cfquery>
 		
 		<cfloop query="rs">
