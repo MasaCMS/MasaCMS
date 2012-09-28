@@ -71,13 +71,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 		</cfcase>
 		<cfdefaultcase>
-			<input type="hidden" id="menuTitle" name="menuTitle" value="">
+			
 			<div class="control-group">
 	      		<label class="control-label">
 	      			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#
 	      		</label>
 	     		 <div class="controls">
 	     		 	<input type="text" id="title" name="title" value="#HTMLEditFormat(rc.contentBean.getTitle())#"  maxlength="255" class="span7" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#">
+	     		 	<input type="hidden" id="menuTitle" name="menuTitle" value="">
 	     		</div>
 	     	</div>
 		</cfdefaultcase>
