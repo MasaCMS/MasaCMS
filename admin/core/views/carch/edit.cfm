@@ -509,7 +509,7 @@ var hasBody=#subType.getHasBody()#;
 	<input name="action" type="hidden" value="add">
 	<input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
 	<input type="hidden" name="moduleid" value="#rc.moduleid#">
-	<input type="hidden" name="sourceID" value="#rc.contentBean.getSourceID()#">
+	<input type="hidden" name="sourceID" value="#rc.contentBean.getContentHistID()#">
 	<input type="hidden" name="return" value="#rc.return#">
 	<input type="hidden" name="topid" value="#rc.topid#">
 	<input type="hidden" name="contentid" value="#rc.contentBean.getContentID()#">
