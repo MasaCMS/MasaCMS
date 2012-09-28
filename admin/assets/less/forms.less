@@ -27,7 +27,7 @@ select, input[type="file"] {
 	height: 28px;
 	line-height: 28px;
 	margin-bottom: 0;
-	.box-shadow(0 0 0);
+	.box-shadow(0 0 0) !important;
 }
 
 textarea,
@@ -194,13 +194,16 @@ label.radio.inline input[type="radio"] {
 }
 
 .btn {
-  /*
-background-color: hsl(201, 0%, 93%) !important;
-  #gradient .vertical(hsl(0,0,99%),hsl(0,0,97%));
-*/
   border-color: #ededed #ededed hsl(201, 0%, 89.5%);
   color: @grayDark !important;
- /*  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.23); */
 }
 
+.mura-file {
+	font-size: 15px;
+}
 
+#assocImage {
+	border: 12px solid @gray;
+	.border-radius(3px);
+	margin-bottom: @baseLineHeight;
+}
