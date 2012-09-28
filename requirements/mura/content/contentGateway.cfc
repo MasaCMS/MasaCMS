@@ -963,7 +963,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		tcontent.target,tcontent.targetParams,tcontent.islocked,tcontent.sortBy,tcontent.sortDirection,tcontent.releaseDate,
 		tfiles.fileSize,tfiles.FileExt,tfiles.ContentType,tfiles.ContentSubType, tcontent.created, tcontent.siteID, tcontent.featureStart,tcontent.featureStop,tcontent.template,tcontent.childTemplate,
 		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires,
-		tcontentstats.rating,tcontentstats.totalVotes, tcontentstats.comments,tfiles.filename,tcontent.displayInterval
+		tcontentstats.rating,tcontentstats.totalVotes, tcontentstats.comments,tfiles.filename,tcontent.displayInterval, tcontent.sourceID
 		<cfif isExtendedSort>
 			,qExtendedSort.extendedSort	
 		</cfif>

@@ -919,7 +919,7 @@ buttons: {
 			}
 			$.get(url + "?" + pars, 
 					function(data) {
-						//try{
+						try{
 							var r=eval("(" + data + ")");
 							if (!siteManager.activeQuickEdit) {
 								d.hide()
@@ -945,14 +945,14 @@ buttons: {
 								);
 								$("#sortableKids").disableSelection();
 						 	}
-						/*
+						
 						} catch(err){
 							if(data.indexOf('mura-primary-login-token') != -1){
 								location.href='./';
 							}
 							d.html(data);
 						}
-						*/
+						
 						if (!siteManager.activeQuickEdit) {
 							d.hide().animate({
 								'opacity': 'show'
