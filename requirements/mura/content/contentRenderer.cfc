@@ -83,6 +83,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!--- This is duplicated for when the page title gets set to h1 ---> 
 <cfset this.subHead5="h6">
 <!--- These settings are for navigational display objects --->
+<cfset this.navWrapperClass="sidebar-nav well">
 <cfset this.liHasKidsClass="">
 <cfset this.liHasKidsCustomString="">
 <cfset this.liCurrentClass="current">
@@ -350,6 +351,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="crumbdata" required="yes" type="array">
 		<cfargument name="fileExt" type="string" default="">
 		<cfargument name="ajax" type="boolean" default="false">
+		<cfargument name="class" type="string" default="navZoom">
 		<cfset var content = "">
 		<cfset var locked = "">
 		<cfset var lastlocked = "">
@@ -359,7 +361,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfsavecontent variable="content">
 		<cfoutput>
-			 <ul class="navZoom">
+			 <ul class="#arguments.class#">
 		<cfloop from="#crumbLen#" to="2" index="I" step="-1">
 		<cfsilent>
 		<cfif arguments.crumbdata[i].restricted eq 1><cfset locked="Locked"></cfif>
@@ -392,6 +394,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="dspZoomNoLinks" returntype="string" output="false">
 		<cfargument name="crumbdata" required="yes" type="array">
 		<cfargument name="fileExt" type="string" default="">
+		<cfargument name="class" type="string" default="navZoom">
 		<cfset var content = "">
 		<cfset var locked = "">
 		<cfset var lastlocked = "">
@@ -399,7 +402,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var I = 0 />
 		<cfsavecontent variable="content">
 		<cfoutput>
-		 <ul class="navZoom">
+		 <ul class="#arguments.class#">
 		<cfloop from="#crumbLen#" to="2" index="I" step="-1">
 		<cfif arguments.crumbdata[i].restricted eq 1><cfset locked="Locked"></cfif>
 		<li class="#renderIcon(arguments.crumbdata[i].type,arguments.fileExt)##locked#">#HTMLEditformat(arguments.crumbdata[I].menutitle)# &raquo;</li>

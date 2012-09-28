@@ -46,5 +46,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <!--- Outputs nav of portal and calendar child content in sequence in the form of "Previous 1 2 3 4 5 Next" --->
 <cfif not listFind("Portal,Gallery",variables.$.content('type'))>
-<cfoutput>#dspSequentialNav()#</cfoutput>
+<cfoutput><nav class="#this.ulPaginationWrapperClass#">#dspSequentialNav()#</nav></cfoutput>
 </cfif>

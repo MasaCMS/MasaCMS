@@ -46,4 +46,4 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <!--- This outputs peer nav and the sub nav of the page you are on if there is any. It omits top level nav for the sake of redundancy and dead-ends if there is no content below the page you are on. Usually works best when used in conjunction with the breadcrumb nav since it changes as you get deeper into a site. --->
-<cfoutput><div id="navStandard" class="sidebar-nav well">#dspStandardNav()#</div></cfoutput>
+<cfoutput><nav id="navStandard" class="#this.navWrapperClass#">#dspStandardNav()#</nav></cfoutput>
