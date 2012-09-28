@@ -53,14 +53,14 @@
 				<cfif rc.type eq 'File' and not rc.contentBean.getIsNew()>
 					
 					<a class="mura-file #lcase(rc.contentBean.getFileExt())#" href="#application.configBean.getContext()#/tasks/render/file/index.cfm?fileid=#rc.contentBean.getFileID()#&method=attachment" onclick="return confirmDialog('#application.rbFactory.getKeyValue(session.rb,'sitemanager.downloadconfirm')#',this.href);">#HTMLEditFormat(rc.contentBean.getAssocFilename())#<cfif rc.contentBean.getMajorVersion()> (v#rc.contentBean.getMajorVersion()#.#rc.contentBean.getMinorVersion()#)</cfif></a>
-				
-					<a id="mura-file-unlock" class="btn-alt"  href=""<cfif not lockedByYou> style="display:none;"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlockfile')#</a>
-				 	<a id="mura-file-offline-edit" class="btn-alt"<cfif len(stats.getLockID())> style="display:none;"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.downloadforofflineediting')#</a>					
-					<cfif rc.contentBean.getcontentType() eq 'image'>
-						
+									
+					<cfif rc.contentBean.getcontentType() eq 'image'>				
 						<a href="./index.cfm?muraAction=cArch.imagedetails&contenthistid=#rc.contentBean.getContentHistID()#&siteid=#rc.contentBean.getSiteID()#&fileid=#rc.contentBean.getFileID()#&compactDisplay=#urlEncodedFormat(rc.compactDisplay)#"><img id="assocImage" src="#application.configBean.getContext()#/tasks/render/medium/index.cfm?fileid=#rc.contentBean.getFileID()#&cacheID=#createUUID()#" /></a>
-						
 					</cfif>
+					
+					<a id="mura-file-unlock" class="btn"  href=""<cfif not lockedByYou> style="display:none;"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlockfile')#</a>
+				 	<a id="mura-file-offline-edit" class="btn"<cfif len(stats.getLockID())> style="display:none;"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.downloadforofflineediting')#</a>
+					
 					<script>
 						jQuery("##mura-file-unlock").click(
 							function(event){
