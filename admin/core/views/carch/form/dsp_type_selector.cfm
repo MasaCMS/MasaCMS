@@ -84,5 +84,5 @@
 	</cfif>
 
 
-<input type="hidden" name="closeCompactDisplay" value="#HTMLEditFormat(rc.compactDisplay)#" />
+
 </cfoutput>

@@ -56,7 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 <script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 <script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui-i18n.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-<link href="#application.configBean.getContext()#/admin/assets/less/jquery.ui.less" rel="stylesheet/less" type="text/css" />
+<!--- <link href="#application.configBean.getContext()#/admin/assets/less/jquery.ui.less" rel="stylesheet/less" type="text/css" /> --->
 <script src="#application.configBean.getContext()#/admin/assets/js/admin.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
 <cfif application.configBean.getValue("htmlEditorType") eq "fckeditor">
 <script type="text/javascript" src="#application.configBean.getContext()#/wysiwyg/fckeditor.js"></script>
@@ -99,11 +99,12 @@ function goAndClose(userid)	{
 //-->
 </script>
 </cfoutput>
-<link href="../../css/admin.css" rel="stylesheet" type="text/css">
+<link href="../../css/admin-min.css" rel="stylesheet" type="text/css">
 <!--[if IE]>
 <link href="../../css/ie.css" rel="stylesheet" type="text/css" />
 <![endif]-->
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"></head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
 <body id="popUp"><cfoutput>
 <h1>#application.rbFactory.getKeyValue(session.rb,'user.selectuser')#</h1>
 <form novalidate="novalidate" name="form1" method="post" action="" id="siteSearch" onSubmit="return validate(this);"><!---<label>#application.rbFactory.getKeyValue(session.rb,'user.lastnameorcompany')#</label>--->

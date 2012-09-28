@@ -75,7 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif arrayLen(attributesArray)>
 <div class="btn-group">
-<a href="javascript:;" class="btn" style="display:none;" id="saveSort" onclick="extendManager.saveAttributeSort('attributesList');return false;"><i class="icon-save"></i> Save Order</a>
+<a href="javascript:;" class="btn" style="display:none;" id="saveSort" onclick="extendManager.saveAttributeSort('attributesList');return false;"><i class="icon-check"></i> Save Order</a>
 <a href="javascript:;" class="btn" id="showSort" onclick="extendManager.showSaveSort('attributesList');return false;"><i class="icon-reorder"></i> Reorder</a>
 </div>
 </cfif>
