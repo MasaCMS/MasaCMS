@@ -99,7 +99,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfsavecontent variable="data.html">
 <cfoutput>
 <cfif rc.type neq 'Component' and rc.type neq 'Creative'  and rc.type neq 'Form'>
-    #application.contentRenderer.dspZoom(crumbdata=crumbdata,ajax=true)#
+    #application.contentRenderer.dspZoom(crumbdata=crumbdata,ajax=true,class="navZoom alt")#
 </cfif>
   <cfset rsExtend=application.configBean.getClassExtensionManager().getExtendedAttributeList(rc.siteid)>
 

@@ -46,7 +46,7 @@
 <cfinclude template="dsp_secondary_menu.cfm">
 
 <cfif rc.compactDisplay neq "true" and isDefined('rc.contentBean')>
-	#application.contentRenderer.dspZoom(rc.contentBean.getCrumbArray(),rc.contentBean.getFileExt())#
+	#application.contentRenderer.dspZoom(crumbdata=rc.contentBean.getCrumbArray(),fileExt=rc.contentBean.getFileExt(),class="navZoom alt")#
 </cfif>
 
 <div id="image-details" class="form-horizontal pane-wrap">
