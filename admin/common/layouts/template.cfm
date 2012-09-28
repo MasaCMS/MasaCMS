@@ -113,8 +113,8 @@
 	<link rel="shortcut icon" href="#application.configBean.getContext()#/admin/images/favicon.ico" type="image/x-icon" />
 
 	<!-- Less CSS -->
-	<link href="#application.configBean.getContext()#/admin/assets/less/admin.less" rel="stylesheet/less" type="text/css" />
-	<script src="#application.configBean.getContext()#/admin/assets/js/less.js" type="text/javascript" language="Javascript"></script>
+	<link href="#application.configBean.getContext()#/admin/assets/css/admin-min.css" rel="stylesheet" type="text/css" />
+	<!--- <script src="#application.configBean.getContext()#/admin/assets/js/less.js" type="text/javascript" language="Javascript"></script> --->
 	
 	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
