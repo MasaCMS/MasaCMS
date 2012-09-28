@@ -60,8 +60,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<input type="hidden" name="moduleid" value="#rc.moduleid#">
 </form>
 <script>
-copyContentID = '#session.copyContentID#';
-copySiteID = '#session.copySiteID#';
+siteManager.copyContentID = '#session.copyContentID#';
+siteManager.copySiteID = '#session.copySiteID#';
 </script>
 </cfoutput>
  <table class="table table-striped table-condensed mura-table-grid">
