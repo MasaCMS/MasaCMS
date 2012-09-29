@@ -52,8 +52,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <h2>#application.rbFactory.getKeyValue(session.rb,'advertising.creativeassetinformation')#</h2>
 #application.utility.displayErrors(rc.creativeBean.getErrors())#
-<form novalidate="novalidate" action="index.cfm?muraAction=cAdvertising.updateCreative&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#" enctype="multipart/form-data" method="post" name="form1" onsubmit="return validate(this);">
-
+<form class="pane-wrap" novalidate="novalidate" action="index.cfm?muraAction=cAdvertising.updateCreative&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#" enctype="multipart/form-data" method="post" name="form1" onsubmit="return validate(this);">
+<div class="pane">
 <div class="control-group">
 	<label class="control-label">
 		#application.rbFactory.getKeyValue(session.rb,'advertising.name')#
@@ -187,7 +187,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div class="controls"><textarea name="notes" class="textArea">#HTMLEditFormat(rc.creativeBean.getNotes())#</textarea>
 	</div>
 </div>
-
+</div>
 <div class="form-actions">
 <cfif rc.creativeid eq ''>
 	<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.add')#" />

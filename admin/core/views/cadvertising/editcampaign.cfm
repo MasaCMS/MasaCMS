@@ -54,8 +54,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 #application.utility.displayErrors(rc.campaignBean.getErrors())#
 
-<form novalidate="novalidate" action="index.cfm?muraAction=cAdvertising.updateCampaign&siteid=#URLEncodedFormat(rc.siteid)#" name="form1"  method="post" onsubmit="return validate(this);">
-
+<form class="pane-wrap" novalidate="novalidate" action="index.cfm?muraAction=cAdvertising.updateCampaign&siteid=#URLEncodedFormat(rc.siteid)#" name="form1"  method="post" onsubmit="return validate(this);">
+<div class="pane"> 
 <div class="control-group">
 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.name')#</label>
 	<div class="controls"><input name="name" class="text" required="true" message="The 'Name' field is required." value="#HTMLEditFormat(rc.campaignBean.getName())#" maxlength="50">
@@ -93,7 +93,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div class="controls"><textarea name="notes" class="textArea">#HTMLEditFormat(rc.campaignBean.getNotes())#</textarea>	
 	</div>
 </div>
-
+</div>
 
 <div class="form-actions">
 <cfif rc.campaignid eq ''>

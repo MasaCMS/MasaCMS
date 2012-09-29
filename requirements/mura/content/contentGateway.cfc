@@ -1639,7 +1639,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tcontent.parentID
 	from tcontent inner join tcontentobjects on (tcontent.contentHistID=tcontentobjects.contentHistID)
 	where tcontent.active=1 
-	and objectID like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.objectID#%"/>
+	and  
+	<cfif len(arguments.objectID)>
+		objectID like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.objectID#%"/>
+	<cfelse>
+		0=1
+	</cfif>
 	</cfquery>
 	
 	<cfreturn rsUsage />
