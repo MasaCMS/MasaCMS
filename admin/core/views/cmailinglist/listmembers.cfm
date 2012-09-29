@@ -49,7 +49,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfinclude template="dsp_secondary_menu.cfm">
 
-<form novalidate="novalidate" action="index.cfm?muraAction=cMailingList.updatemember" name="form1" method="post" onsubmit="return validate(this);">
+<form class="pane-wrap" novalidate="novalidate" action="index.cfm?muraAction=cMailingList.updatemember" name="form1" method="post" onsubmit="return validate(this);">
+<div class="pane">
 <div class="control-group">
 	<label class="control-label">
 		#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.email')#
@@ -96,6 +97,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			 #application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.unsubscribe')#
 		</label>
 	</div>
+</div>
 </div>
 <div class="form-actions">
 <input type="button" class="submit btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.submit')#" />

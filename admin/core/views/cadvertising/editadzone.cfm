@@ -51,9 +51,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 #application.utility.displayErrors(rc.adZoneBean.getErrors())#
 
-<form novalidate="novalidate" name="form1" method="post" action="index.cfm?muraAction=cAdvertising.updateAdZone&siteid=#URLEncodedFormat(rc.siteid)#" onsubmit="return false;">
+<form <cfif rc.adZoneID neq ''>class="pane-wrap"</cfif> novalidate="novalidate" name="form1" method="post" action="index.cfm?muraAction=cAdvertising.updateAdZone&siteid=#URLEncodedFormat(rc.siteid)#" onsubmit="return false;">
 
 
+<cfif rc.adZoneID neq ''>
 <div class="tabbable">
 	<ul class="nav nav-tabs initActiveTab">
 		<li><a href="##tabBasic" onclick="return false;"><span>#application.rbFactory.getKeyValue(session.rb,'advertising.basic')#</span></a></li>
@@ -61,6 +62,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</ul>
 	<div class="tab-content">
 		<div id="tabBasic" class="tab-pane fade">
+<cfelse>
+	<div class="pane">
+</cfif>
 			<div class="control-group">
 				<label class="control-label">
 					#application.rbFactory.getKeyValue(session.rb,'advertising.name')#
@@ -115,9 +119,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<textarea name="notes" class="textArea">#HTMLEditFormat(rc.adZoneBean.getNotes())#</textarea>
 				</div>
 			</div>
-		</div>
+		
 
+		</div>
+		
+		<cfif rc.adZoneID neq ''>
 		<cfinclude template="dsp_tab_usage.cfm">
+		</cfif>
 
 		<div class="form-actions">
 			<cfif rc.adZoneid eq ''>
@@ -129,8 +137,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			<input type="hidden" name="action" value="add">
 		</div>
+<cfif rc.adZoneID neq ''>
 	</div>
 </div>
+</cfif>
 </form>
 </cfoutput>
 
