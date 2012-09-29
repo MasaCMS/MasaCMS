@@ -99,9 +99,7 @@ select * from rsSubTypes where subType <> 'Default'
   			</select>
 			   </div>
     	</div>
-		<cfelse>
-			<input type="hidden" name="subtype" value="Default"/>
-		</cfif>
+	</cfif>
 		
   <div class="control-group">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.groupname')#</label>
@@ -171,9 +169,12 @@ userManager.loadExtendedAttributes('#rc.userbean.getUserID()#','1','#rc.userbean
 <input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.deletegroupconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'user.delete')#" />
 <input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'user.update')#" />
 </cfif>
-<input type="hidden" name="action" value=""><input type="hidden" name="type" value="1"><input type="hidden" name="contact" value="0">
+<input type="hidden" name="action" value="">
+<input type="hidden" name="type" value="1">
+<input type="hidden" name="contact" value="0">
 <input type="hidden" name="isPublic" value="0">
 <input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
+<cfif not rsNonDefault.recordcount><input type="hidden" name="subtype" value="Default"/></cfif>
 </div>
 </cfif>
 </cfoutput>

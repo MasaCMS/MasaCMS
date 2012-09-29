@@ -93,21 +93,18 @@ select * from rsSubTypes where subType <> 'Default'
 <cfoutput>	
 <div id="tabBasic" class="tab-pane fade">
 	
-	<cfif rsNonDefault.recordcount>
-		
+	<cfif rsNonDefault.recordcount>	
 		<div class="control-group">
-      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.type')#</label>
-      <div class="controls"><select name="subtype" class="dropdown" onchange="userManager.resetExtendedAttributes('#rc.userBean.getUserID()#','2',this.value,'#userPoolID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteid).getThemeAssetPath()#');">
-			<option value="Default" <cfif  rc.userBean.getSubType() eq "Default">selected</cfif>> #application.rbFactory.getKeyValue(session.rb,'user.default')#</option>
-				<cfloop query="rsNonDefault">
-					<option value="#rsNonDefault.subtype#" <cfif rc.userBean.getSubType() eq rsNonDefault.subtype>selected</cfif>>#rsNonDefault.subtype#</option>
-				</cfloop>
-			</select>
-		</div>
+	      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.type')#</label>
+	     	<div class="controls"><select name="subtype" class="dropdown" onchange="userManager.resetExtendedAttributes('#rc.userBean.getUserID()#','2',this.value,'#userPoolID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteid).getThemeAssetPath()#');">
+				<option value="Default" <cfif  rc.userBean.getSubType() eq "Default">selected</cfif>> #application.rbFactory.getKeyValue(session.rb,'user.default')#</option>
+					<cfloop query="rsNonDefault">
+						<option value="#rsNonDefault.subtype#" <cfif rc.userBean.getSubType() eq rsNonDefault.subtype>selected</cfif>>#rsNonDefault.subtype#</option>
+					</cfloop>
+				</select>
+			</div>
     	</div>
-		<cfelse>
-			<input type="hidden" name="subtype" value="Default"/>
-		</cfif>
+	</cfif>
 		
 	<div class="control-group">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.fname')#*</label>
@@ -442,23 +439,14 @@ select * from rsSubTypes where subType <> 'Default'
 </div>
 </div>
 </div>
-
 	
-	
-	<input type="hidden" name="type" value="2">
-	<input type="hidden" name="action" value="">
-	<input type="hidden" name="contact" value="0">
-	<input type="hidden" name="groupid" value="">
-	<input type="hidden" name="ContactForm" value="">
-	<input type="hidden" name="isPublic" value="0">
-<!---
-<cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
-<cfhtmlhead text='<script type="text/javascript" src="assets/js/tab-view.js"></script>'>
-
-<script type="text/javascript">
-initTabs(Array(#tablist#),#rc.activeTab#,0,0);
-</script>
---->		
+<input type="hidden" name="type" value="2">
+<input type="hidden" name="action" value="">
+<input type="hidden" name="contact" value="0">
+<input type="hidden" name="groupid" value="">
+<input type="hidden" name="ContactForm" value="">
+<input type="hidden" name="isPublic" value="0">
+<cfif not rsNonDefault.recordcount><input type="hidden" name="subtype" value="Default"/></cfif>		
 </cfoutput>
 
 </form>
