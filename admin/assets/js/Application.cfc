@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cffunction name="onRequestStart">
 		<cfset var local=structNew()>
-		<cfif listLast(cgi.SCRIPT_NAME,"/") neq "dialog.js.cfm">
+		<cfif listLast(cgi.SCRIPT_NAME,".") eq "cfm"  and listLast(cgi.SCRIPT_NAME,"/") neq "dialog.js.cfm">
 		<cfoutput>Access Restricted.</cfoutput>
 		<cfabort>
 		</cfif>

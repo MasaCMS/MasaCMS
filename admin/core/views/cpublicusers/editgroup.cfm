@@ -108,8 +108,6 @@ select * from rsSubTypes where subType <> 'Default'
     	</select>
     </div>
   </div>
-<cfelse>
-	 <input type="hidden" name="subtype" value="Default"/>
 </cfif>
 		
 <div class="control-group">
@@ -173,9 +171,12 @@ select * from rsSubTypes where subType <> 'Default'
 #actionButtons#
 </cfif>
 
-<input type="hidden" name="action" value=""><input type="hidden" name="type" value="1"><input type="hidden" name="contact" value="0">
+<input type="hidden" name="action" value="">
+<input type="hidden" name="type" value="1">
+<input type="hidden" name="contact" value="0">
 <input type="hidden" name="isPublic" value="1">
 <input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
+<cfif not rsNonDefault.recordcount><input type="hidden" name="subtype" value="Default"/></cfif>
 </cfdefaultcase>
 </cfswitch>
 </cfoutput>
