@@ -242,9 +242,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteid" type="string" />
 	
 	<cfset var bean=read(arguments.siteid) />
-	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
-
-	<cfset pluginEvent.setValue('settingsBean',bean)>
+	<cfset var pluginEvent = createObject("component","mura.event") />
+	<cfset var data={sited=arguments.siteid,settingsBean=bean}>
+	<cfset pluginEvent.init(data)>
 
 	<cfset getBean('pluginManager').announceEvent("onBeforeSiteDelete",pluginEvent)>
 
