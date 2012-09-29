@@ -49,14 +49,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="rc.isNew" default="1">
 <cfset counter=0 />
 <cfoutput>
-<div class="form-inline">
-<h3 class="alt">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchforcontent')#</h3>
-	<input id="parentSearch" name="parentSearch" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" maxlength="50"/> <input type="button" class="submit btn" onclick="siteManager.loadRelatedContent('#rc.siteid#',document.getElementById('parentSearch').value,0);return false;" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.search')#" />
-</cfoutput>
+<div class="form-inline input-append">
+	<input id="parentSearch" name="parentSearch" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" maxlength="50" placeholder="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchforcontent')#" />
+	<button type="button" class="btn" onclick="siteManager.loadRelatedContent('#rc.siteid#',document.getElementById('parentSearch').value,0);return false;"><i class="icon-search"></i></button>
 </div>
-<br/><cfif not rc.isNew>
+</cfoutput>
+
+<cfif not rc.isNew>
 <cfset rc.rsList=application.contentManager.getPrivateSearch(rc.siteid,rc.keywords)/>
- <table class="table table-striped table-condensed mura-table-grid">
+ <table class="table table-striped table-bordered table-condensed">
     <tr> 
       <th class="var-width"><cfoutput><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'tooltip.addRelatedContent'))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.addrelatedcontent')# <i class="icon-info-sign"></i></a></cfoutput></th>
 	  <th class="actions">&nbsp;</th>

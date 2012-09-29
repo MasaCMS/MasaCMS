@@ -66,7 +66,7 @@ var feedManager={
 			var type = document.createElement("TD");
 				type.appendChild (document.createTextNode(contentType));
 			var admin = document.createElement("TD");
-				admin.className="administration";
+				admin.className="actions";
 			var deleteLink=document.createElement("A");
 				deleteLink.setAttribute("href","#");
 				deleteLink.onclick=function (){$("#c" + contentID).remove(); stripe('stripe');return false;}

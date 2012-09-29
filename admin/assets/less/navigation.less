@@ -25,133 +25,6 @@
 	margin-bottom: @baseLineHeight;
 }
 
-// Tabs 
-
-
-.tabbable {
-	
-	clear: both;
-	
-	> .nav-tabs {
-	font-weight: bold;
-		}
-	
-	.nav .active a {
-		color: @grayDarker;
-		}
-	
-}
-
-.tabs-left { // Content Editing, etc.
-		
-	> .nav-tabs {
-		border: 0;
-		.makeColumn(2);
-		margin-left: 0;
-		}
-	
-	> .nav-tabs > li {
-		margin-bottom: .5em;
-		}
-		
-	> .nav-tabs > li > a,
-	> .nav-tabs > li > a:hover {
-		border: 0 !important;
-		display: block;
-		padding: 1em .75em;
-		.border-radius(3px);
-		position: relative;		
-		}
-		
-	.nav-tabs > li > a:hover {
-
-	
-		/*
-&:before {
-			position: absolute;
-			right: -4px;
-			top: 4px;
-			font-family: FontAwesome;
-			font-weight: normal;
-			font-style: normal;
-			display: inline-block;
-			width: 1em;
-			font-size: 20px;
-			line-height: 38px;
-			color: @grayLight;
-			display: inline-block;
-			content: "\f054";
-			text-shadow: 0 -1px 0 @gray;
-			}
-*/
-		
-		}
-		
-	> .nav-tabs > li.active {
-	
-		> a {
-			border: 0 !important;
-			#gradient .vertical(hsl(0,0,99%),hsl(0,0,97%));
-			.box-shadow(0 1px 3px rgba(0,0,0,0.2));
-			position: relative;
-			}
-				
-		/*
-> a:before {
-		position: absolute;
-		right: -4px;
-		top: 4px;
-		font-family: FontAwesome;
-		font-weight: normal;
-		font-style: normal;
-		display: inline-block;
-		width: 1em;
-		font-size: 20px;
-		line-height: 38px;
-		color: @grayLight;
-		display: inline-block;
-		content: "\f054";
-		text-shadow: 0 -1px 0 @gray;
-		}
-*/
-	}	
-
-				
-	/* Content */
-	.tab-content {
-		.makeColumn(10);
-		.border-radius(3px);
-		padding: 0;
-		margin-left: 0;
-		#gradient .vertical(hsl(0,0,98%),hsl(0,0,95%));
-		//#gradient .radial (hsl(100,0,99%),hsl(100,0,97%));
-		.box-shadow(0 1px 3px rgba(0,0,0,0.2));
-		//min-height: 400px;
-		}
-
-	.tab-pane {
-		padding: @baseLineHeight 0 0;
-		margin: @baseLineHeight;
-		background: rgba(255,255,255,.73);
-		.border-radius(3px);
-		border: 1px solid rgba(240,240,240,.8);
-		}
-	}
-	
-.pane-wrap {
-	.tabs-left > .tab-content;
-	.makeColumn(12);
-	margin: 0 0 @baseLineHeight*2 0;
-}
-
-.pane {
-	
-	.tabs-left > .tab-pane;
-	
-	h2 {
-		padding: 0 @baseLineHeight;
-	}
-}
 // Pills
 
 .navSort {
@@ -212,6 +85,12 @@
 }
 
 // Zoom/Breadcrumb Nav
+
+
+.navZoom {
+	.breadcrumb;
+	background: none;
+	}
 
 .navZoom.alt {
 	list-style: none;

@@ -3,6 +3,7 @@
 // 2. Commented out variables.less @import (responsive.less, line 21) - Using our own
 // 3. Commented out #grid > .core(@gridColumnWidth1200, @gridGutterWidth1200); (responsive-1200px-min.less, line 9) - Don't need super-wide layouts
 
+@import "jquery.ui.less";
 @import "../bootstrap/less/bootstrap.less";
 @import "variables.less";
 @import "mixins.less";
@@ -18,6 +19,7 @@
 	@import "mura-grid.less";
 	@import "login.less";
 	@import "forms.less";
+	@import "tabs.less";
 	@import "tag-clouds.less";
 	@import "session-history.less";
 	@import "category-assignments.less";
@@ -27,7 +29,6 @@
 	@import "image-details.less";
 	@import "dialog.less";
 	@import "configurator.less";
-	@import "jquery.ui.less";
 	
 	
 // Layout
@@ -77,6 +78,14 @@ a[rel="tooltip"] {
 		}
 	
 	}
+	
+.input-prepend, .input-append {
+	
+	i {
+		font-size: 16px;
+		}
+	
+}
 		
 div.tooltip {
 	
@@ -137,10 +146,6 @@ div.tooltip {
 	border-top: 1px solid @grayLight;
 	}
 
-.navZoom {
-	.breadcrumb;
-	}
-
 a img {
 	border: 0;
 	}
@@ -152,13 +157,6 @@ img.fmImage {
 
 img.tabPreloader {
 	margin: 0 0 1em auto;
-	}
-
-img#assocImage {
-	clear: left !important;
-	float: none;
-	display: block;
-	padding: 1em 0;
 	}
 
 #sm-modify-view {
@@ -218,6 +216,11 @@ img#assocImage {
 
 /* Categorization Tab */
 #tabCategorization {
+
+	.mura-grid {
+		margin: 0 @gridGutterWidth @baseLineHeight;
+	}
+
 	.mura-grid-hdr {
 		dt, dd { font-weight: bold; }
 	}
@@ -232,7 +235,7 @@ img#assocImage {
 		dt {
 			line-height: 28px;
 			&.categorytitle { 
-				width:570px;
+				width:530px;
 			}
 		}
 		dd.categoryassignmentwrapper {
@@ -269,6 +272,13 @@ img#assocImage {
 	}
 }
 /* End #tabCategorization */
+
+#tabRelatedcontent {
+
+	table {
+		margin-top: @baseLineHeight;
+	}
+}
 
 } /* End .mura */
 

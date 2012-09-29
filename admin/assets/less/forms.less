@@ -17,9 +17,9 @@ input[type="color"],
 .uneditable-input {
   height: @baseLineHeight;
   font-size: @baseFontSize;
-  padding: 4px;
+  /* padding: 4px; */
   line-height: @baseLineHeight;
-  color: @black;
+  color: @grayDarker;
   margin-bottom: 0;
 }
 
@@ -28,6 +28,19 @@ select, input[type="file"] {
 	line-height: 28px;
 	margin-bottom: 0;
 	.box-shadow(0 0 0) !important;
+}
+
+
+.full-width {
+	width: 100%;
+	.box-sizing(border-box);
+	/* padding: 4px !important; */ // From BS defaults
+	
+}
+
+input.full-width {
+	line-height: @baseLineHeight !important;
+	height: 28px !important;
 }
 
 textarea,
@@ -47,6 +60,8 @@ label.radio.inline input[type="radio"] {
 	margin-top: 2px;
 }
 
+
+
 .form-actions {
 	clear: both;
 	margin: 0;
@@ -55,12 +70,8 @@ label.radio.inline input[type="radio"] {
 	border-top-color: @white;
 	border-top-width: 0;
 	padding-top: 0;
-	text-align: center;
-	
-	
+	text-align: center;	
 }
-
-
 
 .add-on {
 	font-size: 15px;
@@ -173,7 +184,7 @@ label.radio.inline input[type="radio"] {
 
 .control-group {
 	background: transparent;
-	padding: @baseLineHeight;
+	padding: @gridGutterWidth;
 	margin-bottom: 0;
 	border-top: 1px solid rgba(240,240,240,.8);
 	.clearfix;
@@ -203,7 +214,16 @@ label.radio.inline input[type="radio"] {
 }
 
 #assocImage {
-	border: 12px solid @gray;
+	border: 8px solid @grayLight;
 	.border-radius(3px);
 	margin-bottom: @baseLineHeight;
+	.box-sizing(border-box);
+	max-width: 100%;
+	clear: both !important;
+	float: none;
+	display: block;
+}
+
+#mura-file-unlock {
+	clear: both;
 }

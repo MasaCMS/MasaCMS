@@ -19,10 +19,10 @@
 			<input type="file" id="file" name="NewFile" <cfif rc.ptype eq 'Gallery' or rc.type neq 'File'>accept="image/jpeg,image/png" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.newimagevalidate')#"</cfif>>
 			<cfif rc.type eq "file" and not rc.contentBean.getIsNew()>
 				<p style="display:none;" id="mura-revision-type">
-					<label class="radio">
+					<label class="radio inline">
 						<input type="radio" name="versionType" value="major">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.major')#
 					</label>
-					<label class="radio">
+					<label class="radio inline">
 						<input type="radio" name="versionType" value="minor" checked />#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.minor')#
 					</label>
 				</p>
@@ -105,14 +105,13 @@
 			<cfset lockedBy=$.getBean("user").loadBy(stats.getLockID())>
 			<p id="msg-file-locked" class="error help-block">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.filelockedby"),"#HTMLEditFormat(lockedBy.getFName())# #HTMLEditFormat(lockedBy.getLName())#")#  <a href="mailto:#HTMLEditFormat(lockedBy.getEmail())#?subject=#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.fileunlockrequest'))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.requestfilerelease')#</a></p>
 			<a class="mura-file #lcase(rc.contentBean.getFileExt())#" href="#application.configBean.getContext()#/tasks/render/file/index.cfm?fileid=#rc.contentBean.getFileID()#&method=attachment" onclick="return confirmDialog('#application.rbFactory.getKeyValue(session.rb,'sitemanager.downloadconfirm')#',this.href);">#HTMLEditFormat(rc.contentBean.getAssocFilename())#<cfif rc.contentBean.getMajorVersion()> (v#rc.contentBean.getMajorVersion()#.#rc.contentBean.getMinorVersion()#)</cfif></a>
+			<cfif rc.contentBean.getcontentType() eq 'image'>
+				<img id="assocImage" src="#application.configBean.getContext()#/tasks/render/medium/index.cfm?fileid=#rc.contentBean.getFileID()#" />
+				</cfif>
 			 <cfif listFindNoCase(session.mura.memberships,"s2")><a id="mura-file-unlock" href="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.unlockfile')#</a></cfif>
 			<input type="hidden" name="fileid" value="#htmlEditFormat(rc.contentBean.getFileID())#" />
 		
-		<cfif rc.contentBean.getcontentType() eq 'image'>
-			
-				<img id="assocImage" src="#application.configBean.getContext()#/tasks/render/medium/index.cfm?fileid=#rc.contentBean.getFileID()#" />
-			
-		</cfif>
+		
 		<cfif listFindNoCase(session.mura.memberships,"s2")>
 		<script>
 			jQuery("##mura-file-unlock").click(

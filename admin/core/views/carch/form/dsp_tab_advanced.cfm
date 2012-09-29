@@ -88,6 +88,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<div class="control-group">
 			      <div class="controls">
+			      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessllabel')#</label>
 			      	<label for="forceSSL" class="checkbox">
 			      	<input name="forceSSL" id="forceSSL" type="CHECKBOX" value="1" <cfif rc.contentBean.getForceSSL() eq "">checked <cfelseif rc.contentBean.getForceSSL() eq 1>checked</cfif> class="checkbox"> 
 			      	<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.makePageSecure"))#">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessltext'),application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.type#'))#
@@ -100,6 +101,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<cfif rc.type eq 'Form' >
 				<div class="control-group">
+					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessllabel')#</label>
 				 	<div class="controls">
 			     		<label for="forceSSL" class="checkbox">
 			     			<input name="forceSSL" id="forceSSL" type="CHECKBOX" value="1" <cfif rc.contentBean.getForceSSL() eq "">checked <cfelseif rc.contentBean.getForceSSL() eq 1>checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessl')#
@@ -107,6 +109,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			    	</div>
 			    </div>
 			    <div class="control-group">
+					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displaytitlelabel')#</label>
 				 	<div class="controls">
 			      		<label for="displayTitle" class="checkbox">
 			      			<input name="displayTitle" id="displayTitle" type="CHECKBOX" value="1" <cfif rc.contentBean.getDisplayTitle() eq "">checked <cfelseif rc.contentBean.getDisplayTitle() eq 1>checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displaytitle')#
@@ -117,6 +120,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<cfif application.settingsManager.getSite(rc.siteid).getCache() and rc.type eq 'Component' or rc.type eq 'Form'>
 				<div class="control-group">
+					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.docachelabel')#</label>
 			      <div class="controls">
 			      		<label for="cacheItem" class="checkbox">
 			      			<input name="doCache" id="doCache" type="CHECKBOX" value="0"<cfif rc.contentBean.getDoCache() eq 0> checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.docache')#
@@ -127,41 +131,53 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			 
 			<cfif  rc.contentid neq '00000000000000000000000000000000001' and listFind(session.mura.memberships,'S2')>
 				<div class="control-group">
+				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.locknodelabel')#</label>
 			      <div class="controls"><label for="islocked" class="checkbox"><input name="isLocked" id="islocked" type="CHECKBOX" value="1" <cfif rc.contentBean.getIsLocked() eq "">checked <cfelseif rc.contentBean.getIsLocked() eq 1>checked</cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.locknode')#</label>
 				 </div>
 			    </div>
 			</cfif>
 
 	<cfif (rc.type neq 'Component' and rc.type neq 'Form') and rc.contentBean.getcontentID() neq '00000000000000000000000000000000001'>
-		<fieldset>
-			<legend>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remoteinformation')#</legend> 
-			     <div id="editRemote">
+		<!---
+<fieldset>
+			<legend>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remoteinformation')#</legend>
+---> 
+			     <!--- <div id="editRemote"> --->
 					<div class="control-group">
-			     	 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remoteid')#</label>
-			     	 	<div class="controls"><input type="text" id="remoteID" name="remoteID" value="#rc.contentBean.getRemoteID()#"  maxlength="255" class="text"></div>
+						<div class="row">
+							<div class="span4">
+					     	 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remoteid')#</label>
+					     	 	<div class="controls"><input type="text" id="remoteID" name="remoteID" value="#rc.contentBean.getRemoteID()#"  maxlength="255" class="span3"></div>
+							</div>
+				     	 	<div class="span4">
+					     	 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remoteurl')#</label>
+					      		<div class="controls"><input type="text" id="remoteURL" name="remoteURL" value="#rc.contentBean.getRemoteURL()#"  maxlength="255" class="span3"></div>
+				     	 	</div>
+						</div>
 			   		</div>
+
 					
 					<div class="control-group">
-			     	 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remoteurl')#</label>
-			      		<div class="controls"><input type="text" id="remoteURL" name="remoteURL" value="#rc.contentBean.getRemoteURL()#"  maxlength="255" class="text"></div>
+						<div class="row">
+						 	<div class="span4">
+				     	 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotepublicationdate')#</label>
+				      		<div class="controls"><input type="text" id="remotePubDate" name="remotePubDate" value="#rc.contentBean.getRemotePubDate()#"  maxlength="255" class="span3"></div>
+						 	</div>
+				      		
+				      		<div class="span4">
+				     	 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotesource')#</label>
+				      		<div class="controls"><input type="text" id="remoteSource" name="remoteSource" value="#rc.contentBean.getRemoteSource()#"  maxlength="255" class="span3"></div>
+				      		</div>
+						</div>
 			    	</div>
-					
-					<div class="control-group">
-			     	 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotepublicationdate')#</label>
-			      		<div class="controls"><input type="text" id="remotePubDate" name="remotePubDate" value="#rc.contentBean.getRemotePubDate()#"  maxlength="255" class="text"></div>
+			    	
+			    	<div class="control-group">
+				     	 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotesourceurl')#</label>
+				      		<div class="controls"><input type="text" id="remoteSourceURL" name="remoteSourceURL" value="#rc.contentBean.getRemoteSourceURL()#"  maxlength="255" class="span3"></div>
 			    	</div>
-					
-					<div class="control-group">
-			     	 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotesource')#</label>
-			      		<div class="controls"><input type="text" id="remoteSource" name="remoteSource" value="#rc.contentBean.getRemoteSource()#"  maxlength="255" class="text"></div>
-			    	</div>
-					
-					<div class="control-group">
-			     	 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotesourceurl')#</label>
-			      		<div class="controls"><input type="text" id="remoteSourceURL" name="remoteSourceURL" value="#rc.contentBean.getRemoteSourceURL()#"  maxlength="255" class="text"></div>
-			    	</div>
-			    </div>
-			 </fieldset>
+			    	
+			    <!--- </div> --->
+			 <!--- </fieldset> --->
 		</cfif>
 	</div>
 
