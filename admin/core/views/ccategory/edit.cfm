@@ -57,14 +57,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 #application.pluginManager.renderEvent("onCategoryEditMessageRender", event)#
 </span>
 
-<form novalidate="novalidate" action="index.cfm?muraAction=cCategory.update&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="form1" onsubmit="return validate(this);">
-
+<form class="pane-wrap" novalidate="novalidate" action="index.cfm?muraAction=cCategory.update&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="form1" onsubmit="return validate(this);">
+<div class="pane">
 <div class="control-group">
   <label class="control-label">
     #application.rbFactory.getKeyValue(session.rb,'categorymanager.name')#
   </label>
   <div class="controls">
-    <input name="name" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'categorymanager.namerequired')#" value="#HTMLEditFormat(rc.categoryBean.getName())#" maxlength="50">
+    <input name="name" class="span3" required="true" message="#application.rbFactory.getKeyValue(session.rb,'categorymanager.namerequired')#" value="#HTMLEditFormat(rc.categoryBean.getName())#" maxlength="50">
   </div>
 </div>
 
@@ -73,7 +73,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     #application.rbFactory.getKeyValue(session.rb,'categorymanager.urltitle')#
   </label>
   <div class="controls">
-    <input name="urltitle" class="text" value="#HTMLEditFormat(rc.categoryBean.getURLTitle())#" maxlength="255">
+    <input name="urltitle" class="span3" value="#HTMLEditFormat(rc.categoryBean.getURLTitle())#" maxlength="255">
   </div>
 </div>
 
@@ -184,7 +184,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <textarea name="notes" class="alt">#HTMLEditFormat(rc.categoryBean.getNotes())#</textarea>
   </div>
 </div>
-
+</div>
 <div class="form-actions">
   <cfif rc.categoryID eq ''>
     <input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'categorymanager.add')#" />
