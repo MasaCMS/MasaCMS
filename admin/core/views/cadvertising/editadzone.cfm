@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
 <cfif rc.adZoneID neq ''>
-<div class="tabbable">
+<div class="tabbable tabs-left">
 	<ul class="nav nav-tabs initActiveTab">
 		<li><a href="##tabBasic" onclick="return false;"><span>#application.rbFactory.getKeyValue(session.rb,'advertising.basic')#</span></a></li>
 		<li><a href="##tabUsagereport" onclick="return false;"><span>#application.rbFactory.getKeyValue(session.rb,'advertising.usagereport')#</span></a></li>
