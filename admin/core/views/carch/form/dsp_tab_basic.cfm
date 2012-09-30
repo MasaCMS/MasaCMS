@@ -49,7 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset started=false>
 <cfoutput>
 <div id="tabBasic" class="tab-pane">
-
+	<div class="fieldset">
 	<cfinclude template="dsp_type_selector.cfm">
 	
 	<cfswitch expression="#rc.type#">
@@ -61,7 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</a>
 			    </label>
 			    <div class="controls">
-			     	<input type="text" id="title" name="title" value="#HTMLEditFormat(rc.contentBean.gettitle())#"  maxlength="255" class="full-width" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#" <cfif not rc.contentBean.getIsNew() and not listFindNoCase('Link,File',rc.type)>onkeypress="openDisplay('editAdditionalTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');"</cfif>>
+			     	<input type="text" id="title" name="title" value="#HTMLEditFormat(rc.contentBean.gettitle())#"  maxlength="255" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#" <cfif not rc.contentBean.getIsNew() and not listFindNoCase('Link,File',rc.type)>onkeypress="openDisplay('editAdditionalTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');"</cfif>>
 			     </div>
 		    </div>
 		<div class="control-group" id="editAdditionalTitles" style="display:none;">		
@@ -77,7 +77,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	      			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#
 	      		</label>
 	     		 <div class="controls">
-	     		 	<input type="text" id="title" name="title" value="#HTMLEditFormat(rc.contentBean.getTitle())#"  maxlength="255" class="full-width" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#">
+	     		 	<input type="text" id="title" name="title" value="#HTMLEditFormat(rc.contentBean.getTitle())#"  maxlength="255" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#">
 	     		 	<input type="hidden" id="menuTitle" name="menuTitle" value="">
 	     		</div>
 	     	</div>
@@ -103,6 +103,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<textarea name="summary" id="summary" cols="96" rows="10"><cfif application.configBean.getValue("htmlEditorType") neq "none" or len(rc.contentBean.getSummary())>#HTMLEditFormat(rc.contentBean.getSummary())#<cfelse><p></p></cfif></textarea>
 				</cfoutput>
 			</div>
+			
 		</div>
 
 		<script>
@@ -134,7 +135,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfif rc.type eq 'Page' or rc.type eq 'Portal' or rc.type eq 'Gallery' or rc.type eq 'Calendar' or  rc.type eq 'Component' or  rc.type eq 'Form' >
-		<div class="control-group body-container">
+		<div class="control-group">
 	      	<label class="control-label">
 	      		#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.content")#
 	      	</label>
@@ -306,7 +307,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</div>
 		</div> 
 	</cfif>
-
+	</div> <!--- / .fieldset --->
+	
 	<span id="extendset-container-basic" class="extendset-container"></span>
 
 </div>

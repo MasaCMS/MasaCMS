@@ -49,8 +49,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabList=listAppend(tabList,"tabAdvanced")>
 <cfoutput>
 <div id="tabAdvanced" class="tab-pane fade">
-	<div id="configuratorTab">
-
+	<!--- <div id="configuratorTab"> --->
+		<div class="fieldset">
 			<div class="control-group">
 			      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentid')#</label>
 			      <div class="controls"><cfif len(rc.contentID) and len(rc.contentBean.getcontentID())>#rc.contentBean.getcontentID()#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notavailable')#</cfif></div>
@@ -136,50 +136,43 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				 </div>
 			    </div>
 			</cfif>
-
+	</div>
 	<cfif (rc.type neq 'Component' and rc.type neq 'Form') and rc.contentBean.getcontentID() neq '00000000000000000000000000000000001'>
-		<!---
-<fieldset>
-			<legend>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remoteinformation')#</legend>
----> 
+		<div class="fieldset">
+			<h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remoteinformation')#</h2> 
 			     <!--- <div id="editRemote"> --->
 					<div class="control-group">
-						<div class="row">
-							<div class="span4">
+							<div class="span6">
 					     	 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remoteid')#</label>
-					     	 	<div class="controls"><input type="text" id="remoteID" name="remoteID" value="#rc.contentBean.getRemoteID()#"  maxlength="255" class="span3"></div>
+					     	 	<div class="controls"><input type="text" id="remoteID" name="remoteID" value="#rc.contentBean.getRemoteID()#"  maxlength="255" class="span12"></div>
 							</div>
-				     	 	<div class="span4">
+				     	 	<div class="span6">
 					     	 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remoteurl')#</label>
-					      		<div class="controls"><input type="text" id="remoteURL" name="remoteURL" value="#rc.contentBean.getRemoteURL()#"  maxlength="255" class="span3"></div>
+					      		<div class="controls"><input type="text" id="remoteURL" name="remoteURL" value="#rc.contentBean.getRemoteURL()#"  maxlength="255" class="span12"></div>
 				     	 	</div>
-						</div>
 			   		</div>
 
 					
 					<div class="control-group">
-						<div class="row">
-						 	<div class="span4">
+						 	<div class="span6">
 				     	 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotepublicationdate')#</label>
-				      		<div class="controls"><input type="text" id="remotePubDate" name="remotePubDate" value="#rc.contentBean.getRemotePubDate()#"  maxlength="255" class="span3"></div>
+				      		<div class="controls"><input type="text" id="remotePubDate" name="remotePubDate" value="#rc.contentBean.getRemotePubDate()#"  maxlength="255" class="span12"></div>
 						 	</div>
 				      		
-				      		<div class="span4">
+				      		<div class="span6">
 				     	 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotesource')#</label>
-				      		<div class="controls"><input type="text" id="remoteSource" name="remoteSource" value="#rc.contentBean.getRemoteSource()#"  maxlength="255" class="span3"></div>
+				      		<div class="controls"><input type="text" id="remoteSource" name="remoteSource" value="#rc.contentBean.getRemoteSource()#"  maxlength="255" class="span12"></div>
 				      		</div>
-						</div>
 			    	</div>
 			    	
 			    	<div class="control-group">
-				     	 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotesourceurl')#</label>
-				      		<div class="controls"><input type="text" id="remoteSourceURL" name="remoteSourceURL" value="#rc.contentBean.getRemoteSourceURL()#"  maxlength="255" class="span3"></div>
+					     	 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.remotesourceurl')#</label>
+					      		<div class="controls"><input type="text" id="remoteSourceURL" name="remoteSourceURL" value="#rc.contentBean.getRemoteSourceURL()#"  maxlength="255" class="span6"></div>
 			    	</div>
 			    	
-			    <!--- </div> --->
-			 <!--- </fieldset> --->
+			    </div>
 		</cfif>
-	</div>
+	<!--- </div> --->
 
 	<span id="extendset-container-advanced" class="extendset-container"></span>
 </div>

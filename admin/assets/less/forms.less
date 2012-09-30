@@ -28,25 +28,13 @@ select, input[type="file"] {
 	line-height: 28px;
 	margin-bottom: 0;
 	.box-shadow(0 0 0) !important;
-}
-
-
-.full-width {
-	width: 100%;
-	.box-sizing(border-box);
-	/* padding: 4px !important; */ // From BS defaults
-	
-}
-
-input.full-width {
-	line-height: @baseLineHeight !important;
-	height: 28px !important;
+	width: auto !important;
 }
 
 textarea,
 select[multiple],
 select[size] {
-  height: auto !important;
+  height: auto;
 }
 
 td, th {
@@ -182,6 +170,30 @@ label.radio.inline input[type="radio"] {
 	}
 } // /#editObjects
 
+.fieldset { // Using an actual fieldset causes ck editor to grow crazy wide, will fix later. Don't forget reference below :)
+	padding: @gridGutterWidth 0 0;
+	margin: @gridGutterWidth;
+    background: rgba(255,255,255,.73);
+    .border-radius(5px);
+    border: 1px solid rgba(240,240,240,1);
+    position: relative;
+    max-width: 740px;
+    
+    &.padded {
+    	padding: @gridGutterWidth;
+    	padding-bottom: 0;
+    }
+}
+
+.fieldset h2 { // Using instead of Legend
+	margin: @baseLineHeight @gridGutterWidth 0;
+	padding-bottom: 0;
+	border: 0;
+	font-size: 14px;
+	line-height: 1;
+	color: @gray;
+}
+
 .control-group {
 	background: transparent;
 	padding: @gridGutterWidth;
@@ -189,10 +201,13 @@ label.radio.inline input[type="radio"] {
 	border-top: 1px solid rgba(240,240,240,.8);
 	.clearfix;
 }
-.control-group:first-child {
-	border-top: 0;
-	padding-top: 0;
+
+.fieldset > div:first-of-type
+ {
+	border-top: 0 !important;
+	padding-top: 0 !important;
 }
+
 .control-label, .control-label a {
 	color: @grayDarker !important;
 	font-size: 13px;
@@ -209,6 +224,7 @@ label.radio.inline input[type="radio"] {
   color: @grayDark !important;
 }
 
+// Basic Tab
 .mura-file {
 	font-size: 15px;
 }
@@ -224,6 +240,23 @@ label.radio.inline input[type="radio"] {
 	display: block;
 }
 
+#selectAssocImage {
+	margin-left: 3em;
+}
+
 #mura-file-unlock {
 	clear: both;
+}
+
+#deleteFileBox {
+	.inline-block;
+}
+
+#notifyEditor {
+	width: 100% !important;
+}
+
+select[multiple] {
+	border-color: @grayLight;
+	height: 118px;
 }

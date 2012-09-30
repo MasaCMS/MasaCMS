@@ -48,7 +48,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabList=listAppend(tabList,"tabCategorization")>
 <cfoutput>
 	<div id="tabCategorization" class="tab-pane fade">
-			<div class="control-group">
+		<div class="fieldset">
+		<div class="control-group">
 		<div class="mura-grid stripe">
 			<dl class="mura-grid-hdr">
 				<dt class="categorytitle">
@@ -70,7 +71,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					rsCategoryAssign="#rc.rsCategoryAssign#">
 			<span id="extendset-container-categorization" class="extendset-container"></span>
 		</div><!--- /.mura-grid --->
-			</div>
+		</div>
+		</div>
 	</div><!--- /tabCatgeorization --->
 </cfoutput>
 <script>siteManager.initCategoryAssignments();</script>

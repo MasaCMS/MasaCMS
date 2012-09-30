@@ -48,6 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabList=listAppend(tabList,"tabTags")>
 <cfset tags=$.getBean('contentGateway').getTagCloud(siteid=$.event('siteID')) />
 <div id="tabTags" class="tab-pane fade">
+<div class="fieldset">
 <cfoutput>
 <div class="control-group">
    	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.tags')#</label>	    
@@ -112,6 +113,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
 <span id="extendset-container-tags" class="extendset-container"></span>
-
+</div>
  </div>
  </cfoutput>

@@ -50,13 +50,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabList=listAppend(tabList,"tabBasic")>
 <cfoutput>
 <div id="tabBasic" class="tab-pane fade">
+<div class="fieldset">
 	<input type="hidden" id="menuTitle" name="menuTitle" value="">
 	<div class="control-group">
 		<label class="control-label">
 			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#
 		</label>
 		<div class="controls">
-			<input type="text" id="title" name="title" value="#HTMLEditFormat(rc.contentBean.getTitle())#"  maxlength="255" class="textLong" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#">
+			<input type="text" id="title" name="title" value="#HTMLEditFormat(rc.contentBean.getTitle())#"  maxlength="255" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#">
 		</div>
 	</div>
 
@@ -136,6 +137,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div class="controls" id="editNote" style="display: none;">
 		<textarea name="notes" rows="8" class="alt" id="abstract"></textarea>	
 	</div>
+</div>
 </div>
 </div>
 <cfif application.configBean.getValue("htmlEditorType") neq "none" and rc.contentBean.getSummary() neq '' and rc.contentBean.getSummary() neq "<p></p>">

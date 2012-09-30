@@ -476,7 +476,7 @@ var hasBody=#subType.getHasBody()#;
 			<li<cfif currentTab eq "tabExtendedAttributes"> class="hide" id="tabExtendedAttributesLI"</cfif>><a href="###currentTab#" data-toggle="tab"><span>#listGetAt(tabLabelList,t)#</span></a></li>
 			</cfloop>
 		</ul>
-		<div class="tab-content">		
+		<div class="tab-content row-fluid">		
 			#tabContent#
 			<img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
 			#actionButtons#

@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabList=listAppend(tabList,"tabSEO")>
 <cfoutput>
   <div id="tabSEO" class="tab-pane fade">
-
+	  <div class="fieldset">
 					<div class="control-group">
 			      		<label class="control-label">
 			      			<a href="##" rel="tooltip" title="#application.rbFactory.getKeyValue(session.rb,"tooltip.navigationTitle")#">
@@ -56,7 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			      			 <i class="icon-info-sign"></i></a>
 			      		</label>
 						<div class="controls">
-							<input type="text" id="menuTitle" name="menuTitle" value="#HTMLEditFormat(rc.contentBean.getmenuTitle())#"  maxlength="255" class="full-width">
+							<input type="text" id="menuTitle" name="menuTitle" value="#HTMLEditFormat(rc.contentBean.getmenuTitle())#"  maxlength="255" class="span12">
 						</div>
 					</div>
 							
@@ -67,7 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			      			 <i class="icon-info-sign"></i></a>
 			      		</label>
 						<div class="controls">
-								<input type="text" id="urlTitle" name="urlTitle" value="#HTMLEditFormat(rc.contentBean.getURLTitle())#"  maxlength="255" class="full-width">
+								<input type="text" id="urlTitle" name="urlTitle" value="#HTMLEditFormat(rc.contentBean.getURLTitle())#"  maxlength="255" class="span12">
 						</div>
 					</div>
 						
@@ -78,20 +78,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			      			 <i class="icon-info-sign"></i></a>
 			      		</label>
 						<div class="controls">
-							<input type="text" id="htmlTitle" name="htmlTitle" value="#HTMLEditFormat(rc.contentBean.getHTMLTitle())#"  maxlength="255" class="full-width">
+							<input type="text" id="htmlTitle" name="htmlTitle" value="#HTMLEditFormat(rc.contentBean.getHTMLTitle())#"  maxlength="255" class="span12">
 						</div>
 					</div>
 
 					 <div class="control-group">
 					  <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.description')#</label>
-					      <div class="controls"><textarea name="metadesc" rows="8" id="metadesc" class="full-width">#HTMLEditFormat(rc.contentBean.getMETADesc())#</textarea></div>
+					      <div class="controls"><textarea name="metadesc" rows="8" id="metadesc" class="span12">#HTMLEditFormat(rc.contentBean.getMETADesc())#</textarea></div>
 					    </div>
 
 					  <div class="control-group">
 					  <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.keywords')#</label>
-					      <div class="controls"><textarea name="metakeywords" rows="8" id="metakeywords" class="full-width">#HTMLEditFormat(rc.contentBean.getMETAKEYWORDS())#</textarea></div>
+					      <div class="controls"><textarea name="metakeywords" rows="8" id="metakeywords" class="span12">#HTMLEditFormat(rc.contentBean.getMETAKEYWORDS())#</textarea></div>
 					    </div>
 
     <span id="extendset-container-seo" class="extendset-container"></span>
-
+	  </div>
 </div></cfoutput>
