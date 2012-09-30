@@ -99,7 +99,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </table>
 </section>
-<div class="form-actions">
+<div class="form-actions no-offset">
 <input type="button" class="submit btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'permissions.update')#" />
 </div>
 <input type="hidden" name="router" value="#cgi.HTTP_REFERER#">

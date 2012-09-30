@@ -259,22 +259,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	      		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.componentassign')#
 	      	</label>
 	      	<div class="controls">
-				<label for="m1" class="checkbox">
+				<label for="m1" class="checkbox inline">
 					<input name="moduleAssign" type="CHECKBOX" id="m1" value="00000000000000000000000000000000000" <cfif listFind(rc.contentBean.getmoduleAssign(),'00000000000000000000000000000000000') or rc.contentBean.getIsNew()>checked </cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.sitemanager')#
 				</label>
 				
-				<label for="m2" class="checkbox">
+				<label for="m2" class="checkbox inline">
 					<input name="moduleAssign" type="CHECKBOX" id="m2" value="00000000000000000000000000000000003" <cfif listFind(rc.contentBean.getmoduleAssign(),'00000000000000000000000000000000003')>checked </cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.components')#
 				</label>
 
 				<cfif application.settingsManager.getSite(rc.siteid).getdatacollection()>
-					<label for="m3" class="checkbox">
+					<label for="m3" class="checkbox inline">
 						<input name="moduleAssign" type="CHECKBOX" id="m3" value="00000000000000000000000000000000004" <cfif listFind(rc.contentBean.getmoduleAssign(),'00000000000000000000000000000000004')>checked </cfif> class="checkbox">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formsmanager')#
 					</label>
 				</cfif>
 
 				<cfif application.settingsManager.getSite(rc.siteid).getemailbroadcaster()>
-					<label for="m4" class="checkbox">
+					<label for="m4" class="checkbox inline">
 						<input name="moduleAssign" type="CHECKBOX" id="m4"  value="00000000000000000000000000000000005" <cfif listFind(rc.contentBean.getmoduleAssign(),'00000000000000000000000000000000005')>checked </cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.emailbroadcaster')#
 					</label>
 				</cfif>

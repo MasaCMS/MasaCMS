@@ -44,11 +44,14 @@ td, th {
 	}
 }
 
-label.radio.inline input[type="radio"] {
-	margin-top: 2px;
+.radio.inline,
+.checkbox.inline {
+	margin-right: 1em;
+	
+	input {
+		margin-top: 2px;
+		}
 }
-
-
 
 .form-actions {
 	clear: both;
@@ -58,7 +61,11 @@ label.radio.inline input[type="radio"] {
 	border-top-color: @white;
 	border-top-width: 0;
 	padding-top: 0;
-	text-align: left;	
+	text-align: left;
+	
+	&.no-offset {
+		padding: 0 0 @baseLineHeight;
+		}
 }
 
 .add-on {
@@ -262,4 +269,5 @@ label.radio.inline input[type="radio"] {
 select[multiple] {
 	border-color: @grayLight;
 	height: 118px;
+	min-width: 220px !important;
 }

@@ -48,61 +48,65 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfinclude template="dsp_secondary_menu.cfm">
 
-<h2>#application.rbFactory.getKeyValue(session.rb,'collections.localcontentindexes')#</h2>
+<section>
+	<h2>#application.rbFactory.getKeyValue(session.rb,'collections.localcontentindexes')#</h2>
+	
+	<table class="table table-striped table-condensed table-bordered mura-table-grid"> 
+	<tr>
+	<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'collections.index')#</th>
+	<th>#application.rbFactory.getKeyValue(session.rb,'collections.language')#</th>
+	<th>#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</th>
+	<th>#application.rbFactory.getKeyValue(session.rb,'collections.featuresonly')#</th>
+	<th>#application.rbFactory.getKeyValue(session.rb,'collections.restricted')#</th>
+	<th>#application.rbFactory.getKeyValue(session.rb,'collections.active')#</th>
+	<th>&nbsp;</th>
+	</tr>
+	<cfif rc.rsLocal.recordcount>
+	<cfloop query="rc.rsLocal">
+	<tr>
+	<td class="var-width"><a title="Edit" href="index.cfm?muraAction=cFeed.edit&feedID=#rc.rsLocal.feedID#&siteid=#URLEncodedFormat(rc.siteid)#&type=Local">#rc.rsLocal.name#</a></td>
+	<td>#rc.rsLocal.lang#</td>
+	<td>#rc.rsLocal.maxItems#</td>
+	<td>#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.isFeaturesOnly)#')#</td>
+	<td>#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.restricted)#')#</td>
+	<td>#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.isActive)#')#</td>
+	<td class="actions"><ul class="rss"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.edit')#" href="index.cfm?muraAction=cFeed.edit&feedID=#rc.rsLocal.feedID#&siteid=#URLEncodedFormat(rc.siteid)#&type=Local">#application.rbFactory.getKeyValue(session.rb,'collections.edit')#</a></li><li class="rss"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.viewrss')#" href="http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/feed/?feedID=#rc.rsLocal.feedID#" target="_blank">#application.rbFactory.getKeyValue(session.rb,'collections.view')#</a></li><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.delete')#" href="index.cfm?muraAction=cFeed.update&action=delete&feedID=#rc.rsLocal.feedID#&siteid=#URLEncodedFormat(rc.siteid)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'collections.deletelocalconfirm'))#',this.href)">#application.rbFactory.getKeyValue(session.rb,'collections.delete')#</a></li></ul></td>
+	</tr></cfloop>
+	<cfelse>
+	<tr>
+	<td class="noResults" colspan="7">#application.rbFactory.getKeyValue(session.rb,'collections.nolocalindexes')#</td>
+	</tr>
+	</cfif>
+	</table>
+</section>
 
-<table class="table table-striped table-condensed table-bordered mura-table-grid"> 
-<tr>
-<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'collections.index')#</th>
-<th>#application.rbFactory.getKeyValue(session.rb,'collections.language')#</th>
-<th>#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</th>
-<th>#application.rbFactory.getKeyValue(session.rb,'collections.featuresonly')#</th>
-<th>#application.rbFactory.getKeyValue(session.rb,'collections.restricted')#</th>
-<th>#application.rbFactory.getKeyValue(session.rb,'collections.active')#</th>
-<th>&nbsp;</th>
-</tr>
-<cfif rc.rsLocal.recordcount>
-<cfloop query="rc.rsLocal">
-<tr>
-<td class="var-width"><a title="Edit" href="index.cfm?muraAction=cFeed.edit&feedID=#rc.rsLocal.feedID#&siteid=#URLEncodedFormat(rc.siteid)#&type=Local">#rc.rsLocal.name#</a></td>
-<td>#rc.rsLocal.lang#</td>
-<td>#rc.rsLocal.maxItems#</td>
-<td>#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.isFeaturesOnly)#')#</td>
-<td>#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.restricted)#')#</td>
-<td>#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.isActive)#')#</td>
-<td class="actions"><ul class="rss"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.edit')#" href="index.cfm?muraAction=cFeed.edit&feedID=#rc.rsLocal.feedID#&siteid=#URLEncodedFormat(rc.siteid)#&type=Local">#application.rbFactory.getKeyValue(session.rb,'collections.edit')#</a></li><li class="rss"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.viewrss')#" href="http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/feed/?feedID=#rc.rsLocal.feedID#" target="_blank">#application.rbFactory.getKeyValue(session.rb,'collections.view')#</a></li><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.delete')#" href="index.cfm?muraAction=cFeed.update&action=delete&feedID=#rc.rsLocal.feedID#&siteid=#URLEncodedFormat(rc.siteid)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'collections.deletelocalconfirm'))#',this.href)">#application.rbFactory.getKeyValue(session.rb,'collections.delete')#</a></li></ul></td>
-</tr></cfloop>
-<cfelse>
-<tr>
-<td class="noResults" colspan="7">#application.rbFactory.getKeyValue(session.rb,'collections.nolocalindexes')#</td>
-</tr>
-</cfif>
-</table>
-
-<h3 class="divide">#application.rbFactory.getKeyValue(session.rb,'collections.remotecontentfeeds')#</h3>
-
-<table class="table table-striped table-condensed table-bordered mura-table-grid"> 
-<tr>
-<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'collections.feed')#</th>
-<th class="url">#application.rbFactory.getKeyValue(session.rb,'collections.url')#</th>
-<th>#application.rbFactory.getKeyValue(session.rb,'collections.active')#</th>
-<th>&nbsp;</th>
-</tr>
-<cfif rc.rsRemote.recordcount>
-<cfloop query="rc.rsRemote">
-<tr>
-<td class="var-width"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.edit')#" href="index.cfm?muraAction=cFeed.edit&feedID=#rc.rsRemote.feedID#&siteid=#URLEncodedFormat(rc.siteid)#&type=Remote">#rc.rsRemote.name#</a></td>
-<td class="url">#left(rc.rsRemote.channelLink,70)#</td>
-<td>#yesnoFormat(rc.rsRemote.isactive)#</td>
-<td class="actions"><ul class="four"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.edit')#" href="index.cfm?muraAction=cFeed.edit&feedID=#rc.rsRemote.feedID#&siteid=#URLEncodedFormat(rc.siteid)#&type=Remote">#application.rbFactory.getKeyValue(session.rb,'collections.edit')#</a></li><li class="rss"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.viewfeed')#" href="#rc.rsRemote.channelLink#" target="_blank">#application.rbFactory.getKeyValue(session.rb,'collections.view')#</a></li>
-
-<li class="import"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.import')#" href="index.cfm?muraAction=cFeed.import1&feedID=#rc.rsRemote.feedID#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'collections.import')#</a></li>
-
-<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.delete')#" href="index.cfm?muraAction=cFeed.update&action=delete&feedID=#rc.rsRemote.feedID#&siteid=#URLEncodedFormat(rc.siteid)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'collections.deleteremoteconfirm'))#',this.href)">#application.rbFactory.getKeyValue(session.rb,'collections.delete')#</a></li></ul></td>
-</tr></cfloop>
-<cfelse>
-<tr>
-<td class="noResults" colspan="6">#application.rbFactory.getKeyValue(session.rb,'collections.noremotefeeds')#</td>
-</tr>
-</cfif>
-</table>
+<section>
+	<h2>#application.rbFactory.getKeyValue(session.rb,'collections.remotecontentfeeds')#</h2>
+	
+	<table class="table table-striped table-condensed table-bordered mura-table-grid"> 
+	<tr>
+	<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'collections.feed')#</th>
+	<th class="url">#application.rbFactory.getKeyValue(session.rb,'collections.url')#</th>
+	<th>#application.rbFactory.getKeyValue(session.rb,'collections.active')#</th>
+	<th>&nbsp;</th>
+	</tr>
+	<cfif rc.rsRemote.recordcount>
+	<cfloop query="rc.rsRemote">
+	<tr>
+	<td class="var-width"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.edit')#" href="index.cfm?muraAction=cFeed.edit&feedID=#rc.rsRemote.feedID#&siteid=#URLEncodedFormat(rc.siteid)#&type=Remote">#rc.rsRemote.name#</a></td>
+	<td class="url">#left(rc.rsRemote.channelLink,70)#</td>
+	<td>#yesnoFormat(rc.rsRemote.isactive)#</td>
+	<td class="actions"><ul class="four"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.edit')#" href="index.cfm?muraAction=cFeed.edit&feedID=#rc.rsRemote.feedID#&siteid=#URLEncodedFormat(rc.siteid)#&type=Remote">#application.rbFactory.getKeyValue(session.rb,'collections.edit')#</a></li><li class="rss"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.viewfeed')#" href="#rc.rsRemote.channelLink#" target="_blank">#application.rbFactory.getKeyValue(session.rb,'collections.view')#</a></li>
+	
+	<li class="import"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.import')#" href="index.cfm?muraAction=cFeed.import1&feedID=#rc.rsRemote.feedID#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'collections.import')#</a></li>
+	
+	<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.delete')#" href="index.cfm?muraAction=cFeed.update&action=delete&feedID=#rc.rsRemote.feedID#&siteid=#URLEncodedFormat(rc.siteid)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'collections.deleteremoteconfirm'))#',this.href)">#application.rbFactory.getKeyValue(session.rb,'collections.delete')#</a></li></ul></td>
+	</tr></cfloop>
+	<cfelse>
+	<tr>
+	<td class="noResults" colspan="6">#application.rbFactory.getKeyValue(session.rb,'collections.noremotefeeds')#</td>
+	</tr>
+	</cfif>
+	</table>
+</section>
 </cfoutput>
