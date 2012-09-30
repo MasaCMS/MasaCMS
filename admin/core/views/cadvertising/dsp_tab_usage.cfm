@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfsilent>
 <cfset rsUsage=application.contentGateway.getUsage(rc.adZoneID) />
 </cfsilent><cfoutput>
-<div id="tabUsagereport">
+<div id="tabUsagereport" class="tab-pane fade">
 <dl class="oneColumn">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'advertising.usagetext')#:</dt>
  <table class="table table-striped table-condensed mura-table-grid">
@@ -75,6 +75,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       </tr>
     </cfif>
 	  </table>
-</td></tr></table>
 </dl>
 </div>

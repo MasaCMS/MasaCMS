@@ -55,8 +55,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h2>#application.rbFactory.getKeyValue(session.rb,'advertising.placementinformation')#</h2>
 #application.utility.displayErrors(rc.placementBean.getErrors())#
 
-<form novalidate="novalidate" action="index.cfm?muraAction=cAdvertising.updatePlacement&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#&campaignid=#URLEncodedFormat(rc.campaignid)#" method="post" name="form1" onsubmit="return validate(this);">
-
+<form class="pane-wrap" novalidate="novalidate" action="index.cfm?muraAction=cAdvertising.updatePlacement&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#&campaignid=#URLEncodedFormat(rc.campaignid)#" method="post" name="form1" onsubmit="return validate(this);">
+<div class="pane">
 <div class="control-group">
 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.adzone')# (<em>#application.rbFactory.getKeyValue(session.rb,'advertising.dimensionscreativetype')#</em>)</label>
 	<div class="controls"><select name="adZoneID">
@@ -89,7 +89,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 </div>
 
-<dd class="divide">
 <script>
 function checkAllHours() {
 		 for(i=0;i<document.form1.hour.length;i++){document.form1.hour[i].checked=true;}
@@ -132,8 +131,7 @@ function uncheckAllHours() {
 </td>
 </tr>
 </table>
-	</div>
-</div>
+
 
 <cfif application.categoryManager.getCategoryCount(rc.siteid)>
 <div class="control-group">
@@ -188,7 +186,7 @@ function uncheckAllHours() {
 	<div class="controls"><textarea name="notes" class="textArea">#rc.placementBean.getNotes()#</textarea>
 	</div>
 </div>
-
+</div>
 <div class="form-actions">
 <cfif rc.placementid eq ''>
 	<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.add')#" />

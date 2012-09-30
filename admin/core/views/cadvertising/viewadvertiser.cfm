@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfinclude template="dsp_secondary_menu.cfm">
 
 <cfset rsAddress=rc.userBean.getAddresses()>
-<ul class="overview"><li><a href="index.cfm?muraAction=#iif(rc.userBean.getIsPublic(),de('cPublicUsers.editUser'),de('cPrivateUsers.editUser'))#&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#&routeid=adManager">#rc.userBean.getCompany()#</a></li>
+<ul class="metadata"><li><a href="index.cfm?muraAction=#iif(rc.userBean.getIsPublic(),de('cPublicUsers.editUser'),de('cPrivateUsers.editUser'))#&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#&routeid=adManager">#rc.userBean.getCompany()#</a></li>
   <li>#rc.userBean.getFname()# #rc.userBean.getLname()#</li>
   <li>#rsAddress.address1#</li>
   <cfif rsAddress.address2 neq ''><li>#rsAddress.address2#</li></cfif>
