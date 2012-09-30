@@ -58,7 +58,7 @@ label.radio.inline input[type="radio"] {
 	border-top-color: @white;
 	border-top-width: 0;
 	padding-top: 0;
-	text-align: center;	
+	text-align: left;	
 }
 
 .add-on {
@@ -177,7 +177,8 @@ label.radio.inline input[type="radio"] {
     .border-radius(5px);
     border: 1px solid rgba(240,240,240,1);
     position: relative;
-    max-width: 740px;
+    max-width: 100%;
+    .box-sizing(border-box);
     
     &.padded {
     	padding: @gridGutterWidth;
@@ -251,6 +252,8 @@ label.radio.inline input[type="radio"] {
 #deleteFileBox {
 	.inline-block;
 }
+
+// Advanced Tab
 
 #notifyEditor {
 	width: 100% !important;

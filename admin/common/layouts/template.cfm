@@ -190,7 +190,7 @@
     <div class="main">
       <div class="main-inner">
          <div class="container">
-         	<div class="row">
+         	<div class="row-fluid">
          		<cfif request.action neq "core:cDashboard.main" 
          			and request.action neq "core:cLogin.main">
          			<div class="span12">

@@ -92,7 +92,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <input type="hidden" value="#HTMLEditFormat(rc.siteid)#" name="siteID"/>
 <input type="hidden" value="cDashboard.topRated" name="muraAction"/>
 </form>
-<table class="table table-striped table-condensed mura-table-grid">
+<table class="table table-striped table-condensed table-bordered mura-table-grid">
 <tr>
 <th class="var-width">Content</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.averagerating")#</th>

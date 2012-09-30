@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <h2>#application.rbFactory.getKeyValue(session.rb,'collections.localcontentindexes')#</h2>
 
-<table class="table table-striped table-condensed mura-table-grid"> 
+<table class="table table-striped table-condensed table-bordered mura-table-grid"> 
 <tr>
 <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'collections.index')#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,'collections.language')#</th>
@@ -80,7 +80,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <h3 class="divide">#application.rbFactory.getKeyValue(session.rb,'collections.remotecontentfeeds')#</h3>
 
-<table class="table table-striped table-condensed mura-table-grid"> 
+<table class="table table-striped table-condensed table-bordered mura-table-grid"> 
 <tr>
 <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'collections.feed')#</th>
 <th class="url">#application.rbFactory.getKeyValue(session.rb,'collections.url')#</th>

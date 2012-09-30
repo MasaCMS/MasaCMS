@@ -91,7 +91,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h2>#application.rbFactory.getKeyValue(session.rb,'advertising.month')#</h2>
 
 	<h3>#request.rsdataImps.reportMonth#/#request.rsdataImps.reportYear#</h3>
-	 <table class="table table-striped table-condensed mura-table-grid">
+	 <table class="table table-striped table-condensed table-bordered mura-table-grid">
 	 	<tr>
 			  	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.hour')#</th>
 				<th>#application.rbFactory.getKeyValue(session.rb,'advertising.impressions')#</th>

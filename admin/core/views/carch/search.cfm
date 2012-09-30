@@ -64,7 +64,7 @@ siteManager.copyContentID = '#session.copyContentID#';
 siteManager.copySiteID = '#session.copySiteID#';
 </script>
 </cfoutput>
- <table class="table table-striped table-condensed mura-table-grid">
+ <table class="table table-striped table-condensed table-bordered mura-table-grid">
     <tr> 
 	  <th>&nbsp;</th>
       <th class="var-width">Title</th>

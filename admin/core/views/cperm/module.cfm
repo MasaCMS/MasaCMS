@@ -51,9 +51,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-circle-arrow-left"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
 </div>
 <p class="info">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"permissions.moduletext"),rc.rscontent.title)#</p>
+<section>
   <form novalidate="novalidate"  method="post" name="form1" action="?muraAction=cPerm.updatemodule&contentid=#URLEncodedFormat(rc.contentid)#">
         <h2>#application.rbFactory.getKeyValue(session.rb,'user.adminusergroups')#</h2>
-		<table class="table table-striped table-condensed mura-table-grid">
+		<table class="table table-striped table-condensed table-bordered mura-table-grid">
           <tr> 
             <th>#application.rbFactory.getKeyValue(session.rb,'permissions.allow')#</th>
             <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'permissions.group')#</th>
@@ -73,10 +74,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             </tr>
 	</cfif>
 		</table>
-	
+</section>
 <cfset rc.rslist=rc.groups.publicGroups />
- <h3 class="divide">#application.rbFactory.getKeyValue(session.rb,'user.membergroups')#</h3>		<p>#application.rbFactory.getKeyValue(session.rb,'permissions.memberpermscript')#</p>
- <table class="table table-striped table-condensed mura-table-grid">
+<section>
+ <h2>#application.rbFactory.getKeyValue(session.rb,'user.membergroups')#</h2>		<p>#application.rbFactory.getKeyValue(session.rb,'permissions.memberpermscript')#</p>
+ <table class="table table-striped table-condensed table-bordered mura-table-grid">
     <tr> 
         <th>#application.rbFactory.getKeyValue(session.rb,'permissions.allow')#</th>
         <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'permissions.group')#</th>
@@ -96,6 +98,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         </tr>
 	</cfif>
 </table>
+</section>
 <div class="form-actions">
 <input type="button" class="submit btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'permissions.update')#" />
 </div>

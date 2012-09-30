@@ -59,7 +59,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfinclude template="dsp_secondary_menu.cfm">
 
-<table class="table table-striped table-condensed mura-table-grid">
+<table class="table table-striped table-condensed table-bordered mura-table-grid">
 <tr>
 	<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'advertising.campaign')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.advertiser')#</th>

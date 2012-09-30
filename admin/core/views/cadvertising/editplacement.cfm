@@ -55,8 +55,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h2>#application.rbFactory.getKeyValue(session.rb,'advertising.placementinformation')#</h2>
 #application.utility.displayErrors(rc.placementBean.getErrors())#
 
-<form class="pane-wrap" novalidate="novalidate" action="index.cfm?muraAction=cAdvertising.updatePlacement&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#&campaignid=#URLEncodedFormat(rc.campaignid)#" method="post" name="form1" onsubmit="return validate(this);">
-<div class="pane">
+<form class="fieldset-wrap" novalidate="novalidate" action="index.cfm?muraAction=cAdvertising.updatePlacement&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#&campaignid=#URLEncodedFormat(rc.campaignid)#" method="post" name="form1" onsubmit="return validate(this);">
+<div class="fieldset">
 <div class="control-group">
 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.adzone')# (<em>#application.rbFactory.getKeyValue(session.rb,'advertising.dimensionscreativetype')#</em>)</label>
 	<div class="controls"><select name="adZoneID">

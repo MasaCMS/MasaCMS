@@ -49,8 +49,8 @@
 	#application.contentRenderer.dspZoom(crumbdata=rc.contentBean.getCrumbArray(),fileExt=rc.contentBean.getFileExt(),class="navZoom alt")#
 </cfif>
 
-<div id="image-details" class="form-horizontal pane-wrap">
-	<div class="pane">
+<div id="image-details" class="form-horizontal fieldset-wrap">
+	<div class="fieldset">
 	<cfif len(rc.fileID)>
 		<cfloop list="#rc.fileID#" index="f">	
 			<cfset rc.sourceImage=$.getURLForImage(fileID=f,size='source')>

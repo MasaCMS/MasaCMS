@@ -51,8 +51,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset newline= chr(13)& chr(10)>
 <p>#application.rbFactory.getKeyValue(session.rb,'advertising.yourcurrentip')#: <strong>#request.remoteAddr#</strong></p>
-<form class="pane-wrap" novalidate="novalidate" name="form1" method="post" action="index.cfm?muraAction=cAdvertising.updateIPWhiteList&siteid=#URLEncodedFormat(rc.siteid)#">
-<div class="pane">
+<form class="fieldset-wrap" novalidate="novalidate" name="form1" method="post" action="index.cfm?muraAction=cAdvertising.updateIPWhiteList&siteid=#URLEncodedFormat(rc.siteid)#">
+<div class="fieldset">
 <div class="control-group">
 	<label class="control-label">
 		#application.rbFactory.getKeyValue(session.rb,'advertising.iplist')#

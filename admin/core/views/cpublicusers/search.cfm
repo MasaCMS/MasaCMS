@@ -64,7 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  <input type="button" class="submit btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'user.search')#" /></form>
 
 
-        <table class="table table-striped table-condensed mura-table-grid">
+        <table class="table table-striped table-condensed table-bordered mura-table-grid">
           <tr> 
             <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'user.name')#</th>
             <th>#application.rbFactory.getKeyValue(session.rb,'user.email')#</th>

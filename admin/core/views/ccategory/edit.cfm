@@ -57,8 +57,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 #application.pluginManager.renderEvent("onCategoryEditMessageRender", event)#
 </span>
 
-<form class="pane-wrap" novalidate="novalidate" action="index.cfm?muraAction=cCategory.update&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="form1" onsubmit="return validate(this);">
-<div class="pane">
+<form class="fieldset-wrap" novalidate="novalidate" action="index.cfm?muraAction=cCategory.update&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="form1" onsubmit="return validate(this);">
+<div class="fieldset">
 <div class="control-group">
   <label class="control-label">
     #application.rbFactory.getKeyValue(session.rb,'categorymanager.name')#

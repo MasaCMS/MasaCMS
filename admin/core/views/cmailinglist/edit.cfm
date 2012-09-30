@@ -52,11 +52,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfinclude template="dsp_secondary_menu.cfm">
 
-<form <cfif rc.mlid eq ''>class="pane-wrap"</cfif> novalidate="novalidate" action="index.cfm?muraAction=cMailingList.update" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);">
+<form <cfif rc.mlid eq ''>class="fieldset-wrap"</cfif> novalidate="novalidate" action="index.cfm?muraAction=cMailingList.update" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);">
 
 <cfif rc.listBean.getispurge() neq 1>
 	<cfif rc.mlid eq ''>
-		<div class="pane">
+		<div class="fieldset">
 		<div class="control-group">
 			<label class="control-label">
 				#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.name')#

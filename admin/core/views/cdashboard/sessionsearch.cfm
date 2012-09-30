@@ -291,7 +291,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfoutput>
 	<h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.totalsessions")# (#rc.rslist.recordcount#)</h2>
 	
-<table class="table table-striped table-condensed mura-table-grid">
+<table class="table table-striped table-condensed table-bordered mura-table-grid">
 <thead>
 <tr>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.user")#</th>

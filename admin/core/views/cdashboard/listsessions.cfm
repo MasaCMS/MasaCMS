@@ -117,7 +117,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h3>#application.contentRenderer.dspZoom(crumbdata)#</h3>
 </cfif>
 
-<table class="table table-striped table-condensed mura-table-grid"> 
+<table class="table table-striped table-condensed table-bordered mura-table-grid"> 
 <tr>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.user")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.locale")#</th>

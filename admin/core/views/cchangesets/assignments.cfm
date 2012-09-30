@@ -68,7 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h3>#application.rbFactory.getKeyValue(session.rb,'changesets.previewlink')#</h3>
 <p><a title="Preview" href="##" onclick="return preview('#JSStringFormat(rc.previewLink)#','');">#HTMLEditFormat(rc.previewLink)#</a></p>
 <h3>#application.rbFactory.getKeyValue(session.rb,'changesets.sitearchitecture')#</h3>
- <table class="table table-striped table-condensed mura-table-grid">
+ <table class="table table-striped table-condensed table-bordered mura-table-grid">
     <tr> 
       <th class="var-width">Title</th>
       <th class="actions">&nbsp;</th>
@@ -107,7 +107,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset rc.rslist=rc.componentAssignments.getQuery()>
 <h3>#application.rbFactory.getKeyValue(session.rb,'changesets.components')#</h3>
- <table class="table table-striped table-condensed mura-table-grid">
+ <table class="table table-striped table-condensed table-bordered mura-table-grid">
     <tr> 
       <th class="var-width">Title</th>
       <th class="actions">&nbsp;</th>
@@ -146,7 +146,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset rc.rslist=rc.formAssignments.getQuery()>
 <h3>#application.rbFactory.getKeyValue(session.rb,'changesets.forms')#</h3>
- <table class="table table-striped table-condensed mura-table-grid">
+ <table class="table table-striped table-condensed table-bordered mura-table-grid">
     <tr> 
       <th class="var-width">Title</th>
       <th class="actions">&nbsp;</th>

@@ -54,7 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div id="tabUsagereport" class="tab-pane fade">
 <dl class="oneColumn">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.usagedescription')#:</dt>
- <table class="table table-striped table-condensed mura-table-grid">
+ <table class="table table-striped table-condensed table-bordered mura-table-grid">
     <tr> 
       <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#</th>
       <th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.display')#</th>

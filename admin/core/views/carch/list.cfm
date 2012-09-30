@@ -90,7 +90,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfoutput>
 <div class="row-fluid">
 	  <div id="main" class="span9">
-	  <table class="table table-striped table-condensed mura-table-grid">
+	  <table class="table table-striped table-condensed table-bordered mura-table-grid">
 	    
 		<cfoutput>
 		<thead>

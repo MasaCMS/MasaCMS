@@ -59,7 +59,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <li><strong>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.lengthofvisit")#:</strong> #application.dashboardManager.getTimespan(rc.rslist.entered[rc.rslist.recordcount],rc.rslist.entered[1])#</li>
 </ul>
 
-<table class="table table-striped table-condensed mura-table-grid"> 
+<table class="table table-striped table-condensed table-bordered mura-table-grid"> 
 <tr>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.user")#</th>
 <th class="var-width">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.content")#</th>

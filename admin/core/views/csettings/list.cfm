@@ -113,7 +113,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				});
 			</script>
 			<form novalidate="novalidate" name="form1" id="form1" action="index.cfm?muraAction=csettings.list" method="post">
-				<table class="table table-striped table-condensed mura-table-grid">
+				<table class="table table-striped table-condensed table-bordered mura-table-grid">
 					<tr>
 						<cfif rc.siteUpdateSelect eq "true">
 							<th>
@@ -221,7 +221,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<input name="newPlugin" type="file" required="true" message="Please select a plugin file.">
 				<input type="submit" value="Deploy" class="btn"/>
 			</form>
-			<table class="table table-striped table-condensed mura-table-grid">
+			<table class="table table-striped table-condensed table-bordered mura-table-grid">
 				<tr>
 					<th class="var-width">Name</th>
 					<th>Directory</th>

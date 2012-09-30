@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 #application.utility.displayErrors(rc.adZoneBean.getErrors())#
 
-<form <cfif rc.adZoneID neq ''>class="pane-wrap"</cfif> novalidate="novalidate" name="form1" method="post" action="index.cfm?muraAction=cAdvertising.updateAdZone&siteid=#URLEncodedFormat(rc.siteid)#" onsubmit="return false;">
+<form <cfif rc.adZoneID neq ''>class="fieldset-wrap"</cfif> novalidate="novalidate" name="form1" method="post" action="index.cfm?muraAction=cAdvertising.updateAdZone&siteid=#URLEncodedFormat(rc.siteid)#" onsubmit="return false;">
 
 
 <cfif rc.adZoneID neq ''>
@@ -63,7 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div class="tab-content">
 		<div id="tabBasic" class="tab-pane fade">
 <cfelse>
-	<div class="pane">
+	<div class="fieldset">
 </cfif>
 			<div class="control-group">
 				<label class="control-label">

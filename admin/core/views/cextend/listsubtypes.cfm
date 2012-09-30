@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 
 </cfoutput>
-<table class="table table-striped table-condensed mura-table-grid">
+<table class="table table-striped table-condensed table-bordered mura-table-grid">
 <tr>
 	<th class="var-width">Class Extension</th>
 	<th class="var-width">Active</th>
