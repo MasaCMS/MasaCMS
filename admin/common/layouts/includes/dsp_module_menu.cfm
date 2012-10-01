@@ -52,8 +52,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 <cfoutput>
 
-<li class="dropdown<cfif listFind('00000000000000000000000000000000003,0000000000000000000000000000000004',rc.moduleID) or not listFindNoCase('carch,cprivateusers,cpublicusers,csettings,cdashboard,ceditprofile,nmessage,ctrash,clogin,cextend',rc.originalcircuit)> active</cfif>">
-  <a class="dropdown-toggle" data-toggle="dropdown"><i class="icon-th-large"></i> <span>#application.rbFactory.getKeyValue(session.rb,"layout.modules")#</span> <b class="caret"></b></a>
+<li class="dropdown<cfif listFind('00000000000000000000000000000000003,00000000000000000000000000000000004',rc.moduleID) or not listFindNoCase('carch,cprivateusers,cpublicusers,csettings,cdashboard,ceditprofile,nmessage,ctrash,clogin,cextend',rc.originalcircuit)> active</cfif>">
+  <a class="dropdown-toggle" data-toggle="dropdown" href="##"><i class="icon-th-large"></i> <span>#application.rbFactory.getKeyValue(session.rb,"layout.modules")#</span> <b class="caret"></b></a>
   <ul id="navSecondary" class="dropdown-menu">
 		
       <!--- Made this a main subnav item
