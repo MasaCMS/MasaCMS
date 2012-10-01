@@ -75,7 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</tr></cfoutput>
 		</cfif>
     	<cfoutput query="rc.rslist" startrow="1" maxrows="100">
-			<cfif rc.rslist.contentid neq rc.parentid and rc.rslist.type neq 'File' and rc.rslist.type neq 'Link'>
+			<cfif rc.rslist.contentid neq rc.parentid>
 			<cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/>
 	        <cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
 			<cfif verdict neq 'none' and arrayLen(crumbdata) and structKeyExists(crumbdata[1],"parentArray") and not listFind(arraytolist(crumbdata[1].parentArray),rc.contentid) and rc.rslist.type neq 'Link' and rc.rslist.type neq 'File'>

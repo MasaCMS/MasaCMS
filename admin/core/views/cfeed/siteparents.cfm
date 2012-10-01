@@ -73,7 +73,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
      <cfoutput query="rc.rslist" startrow="1" maxrows="100">
 		<cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/> 
 		<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
-		<cfif verdict neq 'none'  and rc.parentID neq  rc.rslist.contentid and rc.rslist.type neq 'Link' and rc.rslist.type neq 'File'>	
+		<cfif verdict neq 'none'  and rc.parentID neq  rc.rslist.contentid>	
 			<cfset counter=counter+1/>
 		<tr <cfif not(counter mod 2)>class="alt"</cfif>>  
           <td class="var-width">#application.contentRenderer.dspZoomNoLinks(crumbdata,rc.rslist.fileExt)#</td>

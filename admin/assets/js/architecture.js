@@ -297,15 +297,15 @@ buttons: {
 				document.getElementById('newPasteLink').style.display='';
 			}
 		
-			if (type!='File' && type!='Link'){
+			//if (type!='File' && type!='Link'){
 				document.getElementById('newContentLink').style.display='';
 				document.getElementById('newContent').style.display='';
 				document.getElementById('newCopy').style.border='';
-			} else {
+			/*} else {
 				document.getElementById('newCopy').style.border='0';
 				document.getElementById('newPaste').style.display='none';
 				document.getElementById('newZoom').style.display='none';
-			}	
+			}*/
 		}
 
 		document.getElementById(id).style.top=yPos + "px" ;

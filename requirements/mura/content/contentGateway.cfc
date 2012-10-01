@@ -1368,7 +1368,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						
 						
 				AND
-				tcontent.type in ('Page','Portal','Calendar','File','Link')
+				tcontent.type in ('Page','Portal','Calendar','File','Link','Gallery')
 				
 				AND tcontent.releaseDate is null
 				
@@ -1464,7 +1464,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						
 						
 				AND
-				tcontent.type in ('Page','Portal','Calendar','File','Link')
+				tcontent.type in ('Page','Portal','Calendar','File','Link','Gallery')
 				
 				AND tcontent.releaseDate is not null
 				
