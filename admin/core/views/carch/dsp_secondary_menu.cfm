@@ -190,7 +190,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<a class="btn" href="index.cfm?muraAction=cPerm.main&contentid=#URLEncodedFormat(rc.contentid)#&type=#rc.type#&parentid=#URLEncodedFormat(rc.parentid)#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&startrow=#rc.startrow#"><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.permissions')#</a>
 				</cfif>
 			</cfcase>
-			<cfcase value="imagedetails">
+			<cfcase value="imagedetails,multiFileUpload">
 				<cfif isdefined('rc.contentBean')>
 					<a class="btn" href="#rc.contentBean.getEditURL(compactDisplay=rc.compactDisplay)#">
 						<i class="icon-circle-arrow-left"></i> 
@@ -204,7 +204,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-circle-arrow-left"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
 				</cfif>
 				<cfif (listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2'))>
-					<a class="btn" href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.editSite&siteid=#session.siteid###tabImages" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'imagedetails.edit-sizes'))#"><i class="icon-picture"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'imagedetails.editsizes'))#</a>
+					<a class="btn" href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.editSite&siteid=#session.siteid###tabImages" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'imagedetails.editsizes'))#"><i class="icon-picture"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'imagedetails.editsizes'))#</a>
 				</cfif>
 			</cfcase>
 		</cfswitch>
