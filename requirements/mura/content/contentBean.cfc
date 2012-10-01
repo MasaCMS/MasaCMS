@@ -787,20 +787,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getKidsQuery" returnType="query" output="false" access="public">
 	<cfargument name="aggregation" required="true" default="false">
 	<cfargument name="applyPermFilter" required="true" default="false">
-	<cfreturn variables.contentManager.getKidsQuery(siteID:variables.instance.siteID, parentID:getContentID(), sortBy:variables.instance.sortBy, sortDirection:variables.instance.sortDirection, aggregation=arguments.aggregation,applyPermFilter=arguments.applyPermFilter) />
+	<cfargument name="size" required="true" default="0">
+	<cfreturn variables.contentManager.getKidsQuery(siteID:variables.instance.siteID, parentID:getContentID(), sortBy:variables.instance.sortBy, sortDirection:variables.instance.sortDirection, aggregation=arguments.aggregation,applyPermFilter=arguments.applyPermFilter,size=arguments.size) />
 </cffunction>
 
 <cffunction name="getKidsIterator" returnType="any" output="false" access="public">
 	<cfargument name="liveOnly" required="true" default="true">
 	<cfargument name="aggregation" required="true" default="false">
 	<cfargument name="applyPermFilter" required="true" default="false">
+	<cfargument name="size" required="true" default="0">
 	<cfset var q="" />
 	<cfset var it=getBean("contentIterator")>
 	
 	<cfif arguments.liveOnly>
-		<cfset q=getKidsQuery(aggregation=arguments.aggregation,applyPermFilter=arguments.applyPermFilter) />
+		<cfset q=getKidsQuery(aggregation=arguments.aggregation,applyPermFilter=arguments.applyPermFilter,size=arguments.size) />
 	<cfelse>
-		<cfset q=variables.contentManager.getNest( parentID:getContentID(), siteID:variables.instance.siteID, sortBy:variables.instance.sortby, sortDirection:variables.instance.sortdirection) />
+		<cfset q=variables.contentManager.getNest( parentID:getContentID(), siteID:variables.instance.siteID, sortBy:variables.instance.sortby, sortDirection:variables.instance.sortdirection,size=arguments.size) />
 	</cfif>
 	<cfset it.setQuery(q,variables.instance.nextn)>
 	
