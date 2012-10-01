@@ -86,7 +86,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	               <cfif listFind(session.mura.memberships,'S2')>
 	              	               
 	                  <li id="navGlobalSettings" class="dropdown">
-	                    <a class="dropdown-toggle" data-toggle="dropdown"><i class="icon-cogs"></i> #application.rbFactory.getKeyValue(session.rb,"layout.settings")#
+	                    <a class="dropdown-toggle" data-toggle="dropdown" href="##"><i class="icon-cogs"></i> #application.rbFactory.getKeyValue(session.rb,"layout.settings")#
 	                      <b class="caret"></b>
 	                    </a>
 		                    <ul class="dropdown-menu">
@@ -115,7 +115,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	                </cfif>
 	                 
 	                <li id="navHelp" class="dropdown">
-	                  <a class="dropdown-toggle" data-toggle="dropdown" href="http://www.getmura.com/index.cfm/support/"><i class="icon-question-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.help")#
+	                  <a class="dropdown-toggle" data-toggle="dropdown" href="##"><i class="icon-question-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.help")#
 	                   <b class="caret"></b>
 	                  </a>
 	                  <ul class="dropdown-menu">
@@ -130,7 +130,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	                
 	                <cfif session.siteid neq '' and session.mura.isLoggedIn>
 	                 <li id="navEditProfile" class="dropdown">
-	                 	<a class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i> #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#
+	                 	<a class="dropdown-toggle" data-toggle="dropdown" href="##"><i class="icon-user"></i> #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#
 	                 		<b class="caret"></b></a>
 		                 <ul class="dropdown-menu">
 		                 <li>
@@ -163,7 +163,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 				<li id="select-site" class="dropdown">
 	 					
 		 				  <a id="select-site-btn" href="http://#application.settingsManager.getSite(session.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.configBean.getStub()#/<cfif application.configBean.getSiteIDInURLS()>#session.siteid#/</cfif>" target="_blank">Current Site</a>
-		 				<a class="dropdown-toggle" data-toggle="dropdown">
+		 				<a class="dropdown-toggle" data-toggle="dropdown" href="##">
 		 				  <cfset theSiteList=application.settingsManager.getUserSites(session.siteArray,listFind(session.mura.memberships,'S2')) />
 			 				<!--- <i></i> --->
 			 				<div id="site-name">#application.settingsManager.getSite(session.siteid).getSite()#</div>
@@ -186,7 +186,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 				</li>
 	 				</cfif>
 	 				
-	 				<li <cfif rc.originalcircuit eq 'cArch' and not listFind('00000000000000000000000000000000003,0000000000000000000000000000000004',rc.moduleID)> class="active"</cfif>>
+	 				<li <cfif rc.originalcircuit eq 'cArch' and not listFind('00000000000000000000000000000000003,00000000000000000000000000000000004',rc.moduleID)> class="active"</cfif>>
 	 					<a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cArch.list&siteid=#session.siteid#&moduleid=00000000000000000000000000000000000">
 	 						<i class="icon-list-alt"></i> <span>#application.rbFactory.getKeyValue(session.rb,"layout.sitemanager")#</span>
 	 					</a>	    				
@@ -199,7 +199,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 				<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')
 	 					or (application.settingsManager.getSite(session.siteid).getextranet() and  application.permUtility.getModulePerm("00000000000000000000000000000000008","#session.siteid#"))>
 		 					<li class="dropdown<cfif listFindNoCase('cPrivateUsers,cPublicUsers',rc.originalcircuit)> active</cfif>">
-		 					<a class="dropdown-toggle" data-toggle="dropdown">
+		 					<a class="dropdown-toggle" data-toggle="dropdown" href="##">
 		 						<i class="icon-group"></i> <span>#application.rbFactory.getKeyValue(session.rb,"layout.users")#</span>
 		 						<b class="caret"></b>
 		 					</a>
@@ -227,7 +227,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 					
 	 					<li class="dropdown<cfif listFindNoCase('csettings,cextend,ctrash',rc.originalcircuit) > active</cfif>">
 
-	 					<a class="dropdown-toggle" data-toggle="dropdown">
+	 					<a class="dropdown-toggle" data-toggle="dropdown" href="##">
 	 						<i class="icon-wrench"></i> <span>#application.rbFactory.getKeyValue(session.rb,"layout.sitesettings")#</span>
 	 						<b class="caret"></b>
 	 					</a>
