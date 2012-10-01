@@ -80,19 +80,20 @@ jQuery(document).ready(function(){
 <!--- check to see if the site has reached it's maximum amount of pages --->
 <cfif (rc.rsPageCount.counter lt application.settingsManager.getSite(rc.siteid).getpagelimit() and  rc.contentid eq '') or rc.contentid neq ''>
 <cfoutput>
-<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.mullifileupload")#</h1>
+<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.multifileupload")#</h1>
+
+<cfinclude template="dsp_secondary_menu.cfm">
+
 <cfif rc.compactDisplay neq "true">
-#application.contentRenderer.dspZoom(rc.crumbdata,fileExt)#
+    #application.contentRenderer.dspZoom(crumbdata=rc.crumbdata,fileExt=fileExt,class="navZoom alt")#
 </cfif>
 
-<p>
-Please select one or more images to upload.
-</p>
+    <h4>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.multifileuploadinstructions")#</h4>
 
     <!-- The file upload form used as target for the file upload widget -->
     <form id="fileupload" action="#application.configBean.getContext()#/admin/" method="POST" enctype="multipart/form-data">
         <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
-        <div class="row fileupload-buttonbar">
+        <div class="fileupload-buttonbar">
             <div class="span7">
                 <!-- The fileinput-button span is used to style the file input field as button -->
                 <span class="btn btn-success fileinput-button">
