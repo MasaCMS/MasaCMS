@@ -305,25 +305,17 @@ select * from rsSubTypes where subType <> 'Default'
 		</cfif>
 </div>	
 <div id="tabInterests" class="tab-pane fade">
-		<cfset hasCategories=false>
-			<!---<ul class="interestGroups">--->
-				<cfloop collection="#application.settingsManager.getSites()#" item="site">
-					<cfif application.settingsManager.getSite(site).getPrivateUserPoolID() eq rc.siteid or application.settingsManager.getSite( rc.siteid).getPrivateUserPoolID() eq site>
-						<cfset hasCategories=true>
-
-						<!---<li>--->
-							<cfoutput><h3>#application.settingsManager.getSite(site).getSite()#</h3>
-							<div class="divide"></div>
-							</cfoutput>
-							<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" categoryID="#rc.categoryID#" nestLevel="0"  userBean="#rc.userBean#">
+	<!---<ul class="interestGroups">--->
+	<cfloop collection="#application.settingsManager.getSites()#" item="site">
+		<cfif application.settingsManager.getSite(site).getPrivateUserPoolID() eq application.settingsManager.getSite(rc.siteID).getPrivateUserPoolID()>
+			<!---<li>--->
+				<cfoutput><h3>#application.settingsManager.getSite(site).getSite()#</h3>
+				<div class="divide"></div>
+				</cfoutput>
+				<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" categoryID="#rc.categoryID#" nestLevel="0"  userBean="#rc.userBean#">
 						<!---</li>--->
-					</cfif>
-				</cfloop>
-			<!---</ul>--->
-		
-		<cfif not hasCategories>
-			<p class="notice">#application.rbFactory.getKeyValue(session.rb,'user.nointerestcategories')#</p>
-		</cfif> 
+		</cfif>
+	</cfloop> 
 
 </div>
 	

@@ -44,18 +44,21 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-
 <cfsilent><cfparam name="attributes.siteID" default="">
 <cfparam name="attributes.parentID" default="">
 <cfparam name="attributes.categoryID" default="">
 <cfparam name="attributes.nestLevel" default="1">
-<cfset rslist=application.categoryManager.getPublicInterestGroups(attributes.siteID,attributes.ParentID) />
+<cfset rslist=application.categoryManager.getPrivateInterestGroups(attributes.siteID,attributes.ParentID) />
 </cfsilent>
 <cfif rslist.recordcount>
 <ul<cfif not attributes.nestLevel> class="checkboxTree"</cfif>>
 <cfoutput query="rslist">
-<li><cfif rslist.isOpen eq 1><input type="checkbox" name="categoryID" class="checkbox" <cfif listfind(attributes.userBean.getCategoryID(),rslist.categoryID) or listfind(attributes.categoryID,rslist.CategoryID)>checked</cfif> value="#rslist.categoryID#" onclick="checkExtendSetTargeting();"> </cfif>#rslist.name#
-<cf_dsp_categories_nest siteID="#attributes.siteID#" parentID="#rslist.categoryID#" categoryID="#attributes.categoryID#" nestLevel="#evaluate(attributes.nestLevel +1)#" userBean="#attributes.userBean#"></li>
+<li>
+<cfif rslist.isOpen eq 1><input type="checkbox" name="categoryID" class="checkbox" <cfif listfind(attributes.userBean.getCategoryID(),rslist.categoryID) or listfind(attributes.categoryID,rslist.CategoryID)>checked</cfif> value="#rslist.categoryID#"> </cfif>#rslist.name#
+<cfif rslist.hasKids><cf_dsp_categories_nest siteID="#attributes.siteID#" parentID="#rslist.categoryID#" categoryID="#attributes.categoryID#" nestLevel="#evaluate(attributes.nestLevel +1)#" userBean="#attributes.userBean#"></cfif>
+</li>
 </cfoutput>
 </ul>
-</cfif>
+<cfelseif attribute.parentID eq ''>
+<p class="notice">#application.rbFactory.getKeyValue(session.rb,'user.nointerestcategories')#</p>
+</cfif> 

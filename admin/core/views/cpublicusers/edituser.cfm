@@ -299,25 +299,18 @@ select * from rsSubTypes where subType <> 'Default'
 		
 </div>	
 <div id="tabInterests" class="tab-pane fade">
-		
-			<cfif application.categoryManager.getCategoryCount(rc.siteid)>
-			<!---<ul class="interestGroups">--->
-				<cfloop collection="#application.settingsManager.getSites()#" item="site">
-					<cfif application.settingsManager.getSite(site).getPrivateUserPoolID() eq rc.siteid>
-						<!---<li>--->
-							<cfoutput><h3>#application.settingsManager.getSite(site).getSite()#</h3></cfoutput>
-							<div class="divide"></div>
-							<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" categoryID="#rc.categoryID#" nestLevel="0" userBean="#rc.userBean#">
+				
+	<!---<ul class="interestGroups">--->
+	<cfloop collection="#application.settingsManager.getSites()#" item="site">
+		<cfif application.settingsManager.getSite(site).getPublicUserPoolID() eq application.settingsManager.getSite(site).getPublicUserPoolID(rc.siteID)>
+			<!---<li>--->
+				<cfoutput><h3>#application.settingsManager.getSite(site).getSite()#</h3></cfoutput>
+				<div class="divide"></div>
+				<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" categoryID="#rc.categoryID#" nestLevel="0" userBean="#rc.userBean#">
 						<!---</li>--->
-					</cfif>
-				</cfloop>
-			<!---</ul>--->
-			<cfelse>
-			<em>#application.rbFactory.getKeyValue(session.rb,'user.nointerestcategories')#</em>
-			</cfif> 
-		
-		
-	</dl>
+		</cfif>
+	</cfloop>
+
 </div>
 <cfif rsSubTypes.recordcount>
 <div id="tabExtendedattributes" class="tab-pane fade">
