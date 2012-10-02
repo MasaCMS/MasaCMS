@@ -58,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   <li>#rsAddress.phone#</li>
 </ul>
 
-
+<section>
 <h2>#application.rbFactory.getKeyValue(session.rb,'advertising.campaigns')#</h2>
 
 <div id="nav-module-specific" class="btn-group">
@@ -92,8 +92,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</tr>
 </cfif>
 </table>
+</section>
 <cfoutput>
-<h3 class="divide">#application.rbFactory.getKeyValue(session.rb,'advertising.creatives')#</h3>
+<section>
+<h2>#application.rbFactory.getKeyValue(session.rb,'advertising.creatives')#</h2>
 
 <div id="nav-module-specific" class="btn-group">
 <a class="btn" href="index.cfm?muraAction=cAdvertising.editCreative&creativeid=&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.addnewcreative')#</a>
@@ -133,3 +135,4 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</tr>
 </cfif>
 </table>
+</section>

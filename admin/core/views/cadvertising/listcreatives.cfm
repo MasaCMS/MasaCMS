@@ -62,7 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <table class="table table-striped table-condensed table-bordered mura-table-grid">
 <tr>
 	<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'advertising.name')#</th>
-	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.advertiser')#</th>
+	<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'advertising.advertiser')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.assettype')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.mediatype')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.height')#</th>

@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfinclude template="dsp_secondary_menu.cfm">
 
-<h2>#application.rbFactory.getKeyValue(session.rb,'advertising.campaigninformation')#</h2>
+<!--- <h2>#application.rbFactory.getKeyValue(session.rb,'advertising.campaigninformation')#</h2> --->
 
 #application.utility.displayErrors(rc.campaignBean.getErrors())#
 
@@ -58,39 +58,43 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="fieldset"> 
 <div class="control-group">
 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.name')#</label>
-	<div class="controls"><input name="name" class="text" required="true" message="The 'Name' field is required." value="#HTMLEditFormat(rc.campaignBean.getName())#" maxlength="50">
+	<div class="controls"><input name="name" type="text" required="true" message="The 'Name' field is required." value="#HTMLEditFormat(rc.campaignBean.getName())#" maxlength="50">
 	</div>
 </div>
 
 <div class="control-group">
+<div class="span6">
 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.startdate')#</label>
-	<div class="controls"><input name="startDate" class="text datepicker" validate="date" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.startdatevalidate')#" value="#LSDateFormat(rc.campaignBean.getStartDate(),session.dateKeyFormat)#">
+	<div class="controls"><input name="startDate" type="text" class="datepicker" validate="date" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.startdatevalidate')#" value="#LSDateFormat(rc.campaignBean.getStartDate(),session.dateKeyFormat)#">
 	</div>
 </div>
 
-<div class="control-group">
+<div class="span6">
 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.enddate')#</label>
-	<div class="controls"><input name="endDate" class="text datepicker" validate="date" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.enddatevalidate')#" value="#LSDateFormat(rc.campaignBean.getEndDate(),session.dateKeyFormat)#">
+	<div class="controls"><input name="endDate" type="text" class="datepicker" validate="date" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.enddatevalidate')#" value="#LSDateFormat(rc.campaignBean.getEndDate(),session.dateKeyFormat)#">
 	</div>
+</div>
+
 </div>
 
 <div class="control-group">
 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.isactive')#</label>
 	<div class="controls">
-		<label class="radio" for="isActiveYes">
+		<label class="radio inline" for="isActiveYes">
 			<input name="isActive" id="isActiveYes" type="radio" value="1" <cfif rc.campaignBean.getIsActive()>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,'advertising.yes')#
 		</label> 
-		<label class="radio" for="isActiveNo">
+		<label class="radio inline" for="isActiveNo">
 			<input name="isActive" id="isActiveNo" type="radio" value="0" <cfif not rc.campaignBean.getIsActive()>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,'advertising.no')#
 		</label>
 	</div>
 </div>
 
+
 <div class="control-group">
 	<label class="control-label">
 		#application.rbFactory.getKeyValue(session.rb,'advertising.notes')#
 	</label>
-	<div class="controls"><textarea name="notes" class="textArea">#HTMLEditFormat(rc.campaignBean.getNotes())#</textarea>	
+	<div class="controls"><textarea name="notes" class="span12" rows="6">#HTMLEditFormat(rc.campaignBean.getNotes())#</textarea>	
 	</div>
 </div>
 </div>
