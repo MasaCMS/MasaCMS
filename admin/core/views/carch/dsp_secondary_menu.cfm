@@ -203,7 +203,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfelse>
 					<a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-circle-arrow-left"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
 				</cfif>
-				<cfif (listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2'))>
+				<cfif listFind(session.mura.memberships,'S2')>
 					<a class="btn" href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.editSite&siteid=#session.siteid###tabImages" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'imagedetails.editsizes'))#"><i class="icon-picture"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'imagedetails.editsizes'))#</a>
 				</cfif>
 			</cfcase>
