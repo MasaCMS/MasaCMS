@@ -205,6 +205,8 @@ buttons: {
 							function(data) {
 							$('#newContentMenuContainer').html(data);
 							$("#newContentMenuContainer").dialog("option", "position", "center");
+							setToolTips('.add-content-ui');
+
 							}
 						);		
 					
