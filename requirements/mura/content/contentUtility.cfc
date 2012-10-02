@@ -1466,7 +1466,7 @@ and parentID is null
 				</cfif>
 			</cfif>
 
-			<!---<cfset setCategoriesFromExternalAssignments( arguments.$,contentBean,newContentBean ) />--->
+			<cfset setCategoriesFromExternalAssignments(contentBean,newContentBean ) />
 
 			<cfset newContentBean.save() />
 		</cfif>
@@ -1590,14 +1590,13 @@ and parentID is null
 		<cfset var categoryIterator = arguments.sourceContentBean.getCategoriesIterator() />
 		<cfset var categoryBean = "" />
 		<cfset var newCategoryBean = "" />
-		 		
+		
 		<cfset categoryIterator.setNextN(0) />
 
 		<cfloop condition="#categoryIterator.hasNext()#">
-			<cfset categoryBean = categoryIterator.next() />
+			<cfset categoryBean = categoryIterator.next() />	
 			<cfset newCategoryBean = getBean('category').loadBy( remoteID=categoryBean.getCategoryID(),siteID=arguments.newContentBean.getSiteID() ) />
-
-			<cfset arguments.newContentBean.setCategory( newCategoryBean.getCategoryID(),categoryBean.getMembership(),categoryBean.getFeatureStart(),categoryBean.getFeatureStop() ) />
+			<cfset arguments.newContentBean.setCategory( newCategoryBean.getCategoryID(),categoryBean.getIsFeature(),categoryBean.getFeatureStart(),categoryBean.getFeatureStop() ) />
 		</cfloop>
 		
 	</cffunction>
