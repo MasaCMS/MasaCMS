@@ -291,21 +291,21 @@ buttons: {
 			//.href='index.cfm?muraAction=cArch.edit&contentid=&parentid=' + contentid + '&type=Page&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
 
 		
-			if (copySiteID != "" && this.copyContentID != ""){
+			if (this.copySiteID != "" && this.copyContentID != ""){
 				document.getElementById('newPasteLink').href='javascript:siteManager.pasteThis(\'' + contentid + '\')';
 				document.getElementById('newPaste').style.display='';
 				document.getElementById('newPasteLink').style.display='';
 			}
 		
-			if (type!='File' && type!='Link'){
+			//if (type!='File' && type!='Link'){
 				document.getElementById('newContentLink').style.display='';
 				document.getElementById('newContent').style.display='';
 				document.getElementById('newCopy').style.border='';
-			} else {
+			/*} else {
 				document.getElementById('newCopy').style.border='0';
 				document.getElementById('newPaste').style.display='none';
 				document.getElementById('newZoom').style.display='none';
-			}	
+			}*/
 		}
 
 		document.getElementById(id).style.top=yPos + "px" ;

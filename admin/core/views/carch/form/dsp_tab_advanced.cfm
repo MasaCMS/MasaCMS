@@ -67,7 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif rc.contentBean.getType() eq 'Component'>
 			<div class="control-group">
 			      	<label class="control-label">
-			      		<cfoutput><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.layoutTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.layouttemplate')#> <i class="icon-info-sign"></i></a></cfoutput>
+			      		<cfoutput><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.layoutTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.layouttemplate')# <i class="icon-info-sign"></i></a></cfoutput>
 			      	</label> 
 			      	<div class="controls">
 			      		<select name="template" class="dropdown">

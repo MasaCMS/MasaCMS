@@ -172,7 +172,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                 <input type="hidden" name="objectList#r#" id="objectList#r#" value="#variables["objectlist#r#"]#">
               </dd>
               </dl>
-              <div class="btn-group btn-group-vertical"> <a class="objectNav btn" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.up')#" onclick="moveDisplayObjectUp(#r#);"> <i class="icon-caret-up"></i></a> <a class="objectNav btn" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.down')#" onclick="moveDisplayObjectDown(#r#);"> <i class="icon-caret-down"></i></a> </div>
+              <div class="btn-group btn-group-vertical"> <a class="objectNav btn" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.up')#" onclick="siteManager.moveDisplayObjectUp(#r#);"> <i class="icon-caret-up"></i></a> <a class="objectNav btn" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.down')#" onclick="siteManager.moveDisplayObjectDown(#r#);"> <i class="icon-caret-down"></i></a> </div>
             </div> <!--- /.region --->
           </cfloop>
         </div> <!--- /#availableRegions --->

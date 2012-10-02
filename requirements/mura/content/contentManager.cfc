@@ -972,7 +972,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 										
 					<cfset getBean('contentUtility').setUniqueFilename(newBean) />
 												
-					<cfif not listFindNoCase('Link,File',newBean.getType()) and not newBean.getIsNew() and newBean.getoldfilename() neq newBean.getfilename() and len(newBean.getoldfilename())>
+					<cfif not newBean.getIsNew() and newBean.getoldfilename() neq newBean.getfilename() and len(newBean.getoldfilename())>
 						<cfset getBean('contentUtility').movelink(newBean.getSiteID(),newBean.getFilename(),currentBean.getFilename()) />	
 						<cfset getBean('contentUtility').move(newBean.getsiteid(),newBean.getFilename(),newBean.getOldFilename())>
 						<cfset doPurgeContentDescendentsCache=true>

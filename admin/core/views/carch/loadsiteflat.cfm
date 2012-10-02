@@ -249,7 +249,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<p class="locked-offline">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.filelockedby"),"#HTMLEditFormat(lockedBy.getFName())# #HTMLEditFormat(lockedBy.getLName())#")#</p>
 				</cfif>
 				
-				#application.contentRenderer.dspZoom(crumbdata,item.getFileEXT(),true)#
+				#application.contentRenderer.dspZoom(crumbData=crumbdata,ajax=true)#
 				
 				<ul class="nodeMeta">
 					<cfsilent><cfset args=arrayNew(1)>

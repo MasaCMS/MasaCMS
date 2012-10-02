@@ -80,7 +80,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
 		</cfsilent>
         <tr>  
-          <td class="title var-width">#application.contentRenderer.dspZoom(crumbdata,rc.rsList.fileExt)#</td>
+          <td class="title var-width">#application.contentRenderer.dspZoom(crumbdata)#</td>
  		  <td class="actions">
 		<ul class="four">
 		<cfif verdict neq 'none'>

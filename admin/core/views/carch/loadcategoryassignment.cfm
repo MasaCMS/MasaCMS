@@ -69,7 +69,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<input type="text" id="mura-quickEdit-featureStart" value="#LSDateFormat(rc.featurestart,session.dateKeyFormat)#" class="textAlt datepicker mura-quickEdit-datepicker"><br />
 				<select id="mura-quickEdit-startHour" class="dropdown span1">
 					<cfloop from="1" to="12" index="h">
-						<option value="#h#" <cfif isNumeric(rc.startHour) and rc.startHour eq h or not isNumeric(rc.startHour) and h eq 12>selected</cfif>>#h#</option>
+						<option value="#h#" <cfif isNumeric(rc.startHour) and (rc.startHour eq h or rc.startHour eq 0 and h eq 12) or not isNumeric(rc.startHour) and h eq 12>selected</cfif>>#h#</option>
 					</cfloop>
 				</select>
 				<select id="mura-quickEdit-startMinute" class="dropdown span1">
@@ -88,7 +88,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<input type="text" id="mura-quickEdit-featureStop" value="#LSDateFormat(rc.featureStop,session.dateKeyFormat)#" class="textAlt datepicker mura-quickEdit-datepicker"><br />
 				<select id="mura-quickEdit-stopHour" class="dropdown span1">
 					<cfloop from="1" to="12" index="h">
-						<option value="#h#" <cfif isNumeric(rc.stopHour) and rc.stopHour eq h or not isNumeric(rc.stopHour) and h eq 11>selected</cfif>>#h#</option>
+						<option value="#h#" <cfif isNumeric(rc.stopHour) and (rc.stopHour eq h or rc.stopHour eq 0 and h eq 12) or not isNumeric(rc.stopHour) and h eq 11>selected</cfif>>#h#</option>
 					</cfloop>
 				</select>
 				<select id="mura-quickEdit-stopMinute" class="dropdown span1">

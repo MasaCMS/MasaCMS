@@ -109,7 +109,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset crumbdata=application.contentManager.getCrumbList(rsList.contentid, rc.siteid)/>
 </cfsilent>
 <tr>
-<td class="var-width">#application.contentRenderer.dspZoom(crumbdata,rslist.fileEXT)#</td>
+<td class="var-width">#application.contentRenderer.dspZoom(crumbdata)#</td>
 <td>#rsList.hits#</td>
 <td>#decimalFormat((rsList.hits/rstotal.hits)*100)#%</td>
 <td class="actions">

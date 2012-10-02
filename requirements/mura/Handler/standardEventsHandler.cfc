@@ -265,7 +265,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfcase value="File,Link">
 			
 		<cfif arguments.event.getValue('isOnDisplay') and ((not arguments.event.getValue('r').restrict) or (arguments.event.getValue('r').restrict and arguments.event.getValue('r').allow))>			
-			<cfif arguments.event.getValue('showMeta') neq 1>
+			<cfif arguments.event.getValue('showMeta') neq 1 and not $.content().getKidsQuery(size=1).recordcount>
 				<cfswitch expression="#arguments.event.getValue('contentBean').getType()#">
 					<cfcase value="Link">
 						<cfif not renderer.showItemMeta("Link") or arguments.event.getValue('showMeta') eq 2>

@@ -726,26 +726,39 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setCategory" returntype="any" access="public" output="false">
 	<cfargument name="categoryID"  required="true" default=""/>
-	<cfargument name="membership"  required="true" default="0"/>
+	<cfargument name="isFeature"  required="true" default="0"/>
 	<cfargument name="featureStart"  required="true" default=""/>	
 	<cfargument name="featureStop"  required="true" default=""/>	
 	
 	<cfset var catTrim=replace(arguments.categoryID,'-','','ALL')>
 	
-	<cfset variables.instance["categoryAssign#catTrim#"]=arguments.membership />
+	<cfset variables.instance["categoryAssign#catTrim#"]=arguments.isFeature />
 	
-	<cfif arguments.membership eq "2">
+	<cfif arguments.isFeature eq "2">
 		<cfif isdate(arguments.featureStart)>
-		<cfset variables.instance['featureStart#catTrim#']=arguments.featureStart />
-		<cfset variables.instance['starthour#catTrim#']=hour(arguments.featureStart)+1 />
-		<cfset variables.instance['startMinute#catTrim#']=minute(arguments.featureStart) />
-		<cfset variables.instance['startDayPart#catTrim#']=dateFormat(arguments.featureStart,"tt") />
+			<cfset variables.instance['featureStart#catTrim#']=arguments.featureStart />
+			<cfset variables.instance['startDayPart#catTrim#']=timeFormat(arguments.featureStart,"tt") />
+			<cfset variables.instance['starthour#catTrim#']=hour(arguments.featureStart) />
+			<cfif variables.instance['startDayPart#catTrim#'] eq 'pm'>
+				<cfset variables.instance['starthour#catTrim#']=variables.instance['starthour#catTrim#']-12>
+			</cfif>
+			<cfset variables.instance['startMinute#catTrim#']=minute(arguments.featureStart) />
+		<cfelse>
+			<cfset variables.instance["categoryAssign#catTrim#"]=1 />
 		</cfif>
 		<cfif isdate(arguments.featureStop)>
-		<cfset variables.instance['featureStop#catTrim#']=arguments.featureStop />
-		<cfset variables.instance['stophour#catTrim#']=hour(arguments.featureStop)+1 />
-		<cfset variables.instance['stopMinute#catTrim#']=minute(arguments.featureStop) />
-		<cfset variables.instance['stopDayPart#catTrim#']=dateFormat(arguments.featureStop,"tt") />
+			<cfset variables.instance['featureStop#catTrim#']=arguments.featureStop />
+			<cfset variables.instance['stopDayPart#catTrim#']=timeFormat(arguments.featureStop,"tt") />
+			<cfset variables.instance['stophour#catTrim#']=hour(arguments.featureStop) />
+			<cfif variables.instance['stopDayPart#catTrim#'] eq 'pm'>
+				<cfset variables.instance['stophour#catTrim#']=variables.instance['stophour#catTrim#']-12>
+			</cfif>
+			<cfset variables.instance['stopMinute#catTrim#']=minute(arguments.featureStop) />
+		<cfelse>
+			<cfset variables.instance['featureStop#catTrim#']="" />
+			<cfset variables.instance['stopDayPart#catTrim#']="" />
+			<cfset variables.instance['stophour#catTrim#']="" />
+			<cfset variables.instance['stopMinute#catTrim#']="" />
 		</cfif>
 	</cfif>
 	<cfreturn this>
@@ -787,20 +800,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getKidsQuery" returnType="query" output="false" access="public">
 	<cfargument name="aggregation" required="true" default="false">
 	<cfargument name="applyPermFilter" required="true" default="false">
-	<cfreturn variables.contentManager.getKidsQuery(siteID:variables.instance.siteID, parentID:getContentID(), sortBy:variables.instance.sortBy, sortDirection:variables.instance.sortDirection, aggregation=arguments.aggregation,applyPermFilter=arguments.applyPermFilter) />
+	<cfargument name="size" required="true" default="0">
+	<cfreturn variables.contentManager.getKidsQuery(siteID:variables.instance.siteID, parentID:getContentID(), sortBy:variables.instance.sortBy, sortDirection:variables.instance.sortDirection, aggregation=arguments.aggregation,applyPermFilter=arguments.applyPermFilter,size=arguments.size) />
 </cffunction>
 
 <cffunction name="getKidsIterator" returnType="any" output="false" access="public">
 	<cfargument name="liveOnly" required="true" default="true">
 	<cfargument name="aggregation" required="true" default="false">
 	<cfargument name="applyPermFilter" required="true" default="false">
+	<cfargument name="size" required="true" default="0">
 	<cfset var q="" />
 	<cfset var it=getBean("contentIterator")>
 	
 	<cfif arguments.liveOnly>
-		<cfset q=getKidsQuery(aggregation=arguments.aggregation,applyPermFilter=arguments.applyPermFilter) />
+		<cfset q=getKidsQuery(aggregation=arguments.aggregation,applyPermFilter=arguments.applyPermFilter,size=arguments.size) />
 	<cfelse>
-		<cfset q=variables.contentManager.getNest( parentID:getContentID(), siteID:variables.instance.siteID, sortBy:variables.instance.sortby, sortDirection:variables.instance.sortdirection) />
+		<cfset q=variables.contentManager.getNest( parentID:getContentID(), siteID:variables.instance.siteID, sortBy:variables.instance.sortby, sortDirection:variables.instance.sortdirection,size=arguments.size) />
 	</cfif>
 	<cfset it.setQuery(q,variables.instance.nextn)>
 	

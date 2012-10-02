@@ -349,7 +349,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="dspZoom" returntype="string" output="false">
 		<cfargument name="crumbdata" required="yes" type="array">
-		<cfargument name="fileExt" type="string" default="">
+		<cfargument name="fileExt" type="string" default="" hint="deprecated, this is now in the crumbData">
 		<cfargument name="ajax" type="boolean" default="false">
 		<cfargument name="class" type="string" default="navZoom">
 		<cfset var content = "">
@@ -366,7 +366,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfsilent>
 		<cfif arguments.crumbdata[i].restricted eq 1><cfset locked="Locked"></cfif>
 		</cfsilent>
-		<li class="#renderIcon(arguments.crumbdata[i].type,arguments.fileExt)##locked#">
+		<li class="#renderIcon(arguments.crumbdata[i].type,arguments.crumbdata[i].fileExt)##locked#">
 		<a <cfif arguments.ajax> 
 			href="" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#arguments.crumbdata[I].siteid#','#arguments.crumbdata[I].contentid#','00000000000000000000000000000000000','','','#arguments.crumbdata[I].type#',1)});"
 		<cfelse>
@@ -378,12 +378,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset lastlocked="Locked">
 		</cfif>
 		</cfsilent>
-		<li class="#renderIcon(arguments.crumbdata[1].type,arguments.fileExt)##lastlocked#"><strong><cfif listFindNoCase("Portal,Page,Gallery,Calendar",arguments.crumbdata[1].type)>
+		<li class="#renderIcon(arguments.crumbdata[1].type,arguments.crumbdata[i].fileExt)##lastlocked#"><strong>
 		<a <cfif arguments.ajax> 
 			href="" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#arguments.crumbdata[1].siteid#','#arguments.crumbdata[1].contentid#','00000000000000000000000000000000000','','','#arguments.crumbdata[1].type#',1)});"
 		<cfelse>
 			href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cArch.list&siteid=#arguments.crumbdata[1].siteid#&topid=#arguments.crumbdata[1].contentid#&moduleid=00000000000000000000000000000000000&activeTab=0"
-		</cfif>>#HTMLEditformat(arguments.crumbdata[1].menutitle)#</a><cfelse><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cArch.list&siteid=#arguments.crumbdata[1].siteid#&topid=#arguments.crumbdata[1].parentid#&moduleid=00000000000000000000000000000000000&activeTab=0">#HTMLEditformat(crumbdata[1].menutitle)#</a></cfif></strong></li></ul>
+		</cfif>>#HTMLEditformat(arguments.crumbdata[1].menutitle)#</a></strong></li></ul>
 	
 		</cfoutput>
 		</cfsavecontent>
@@ -393,7 +393,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="dspZoomNoLinks" returntype="string" output="false">
 		<cfargument name="crumbdata" required="yes" type="array">
-		<cfargument name="fileExt" type="string" default="">
+		<cfargument name="fileExt" type="string" default="" hint="deprecated, this is now in the crumbData">
 		<cfargument name="class" type="string" default="navZoom">
 		<cfset var content = "">
 		<cfset var locked = "">
@@ -405,8 +405,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 <ul class="#arguments.class#">
 		<cfloop from="#crumbLen#" to="2" index="I" step="-1">
 		<cfif arguments.crumbdata[i].restricted eq 1><cfset locked="Locked"></cfif>
-		<li class="#renderIcon(arguments.crumbdata[i].type,arguments.fileExt)##locked#">#HTMLEditformat(arguments.crumbdata[I].menutitle)# &raquo;</li>
-		</cfloop><cfif locked eq "Locked" or arguments.crumbdata[1].restricted eq 1><cfset lastlocked="Locked"></cfif><li class="#renderIcon(arguments.crumbdata[1].type,arguments.fileExt)##lastlocked#"><strong><cfif arguments.crumbdata[1].type eq 'Page' or arguments.crumbdata[1].type eq 'Portal' or arguments.crumbdata[1].type eq 'Calendar'>#HTMLEditformat(arguments.crumbdata[1].menutitle)#<cfelse>#HTMLEditformat(crumbdata[1].menutitle)#</cfif></strong></li></ul></cfoutput></cfsavecontent>
+		<li class="#renderIcon(arguments.crumbdata[i].type,arguments.crumbdata[i].fileExt)##locked#">#HTMLEditformat(arguments.crumbdata[I].menutitle)# &raquo;</li>
+		</cfloop><cfif locked eq "Locked" or arguments.crumbdata[1].restricted eq 1><cfset lastlocked="Locked"></cfif><li class="#renderIcon(arguments.crumbdata[1].type,arguments.crumbdata[i].fileExt)##lastlocked#"><strong><cfif arguments.crumbdata[1].type eq 'Page' or arguments.crumbdata[1].type eq 'Portal' or arguments.crumbdata[1].type eq 'Calendar'>#HTMLEditformat(arguments.crumbdata[1].menutitle)#<cfelse>#HTMLEditformat(crumbdata[1].menutitle)#</cfif></strong></li></ul></cfoutput></cfsavecontent>
 		<cfreturn content />
 </cffunction>
 

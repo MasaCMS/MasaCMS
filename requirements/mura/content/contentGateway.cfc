@@ -143,9 +143,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfloop condition="ID neq '00000000000000000000000000000000END'">
 
 			<cfquery name="rsCrumbData" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-			select contenthistid, contentid, menutitle, filename, parentid, type, subtype, target, targetParams, 
-			siteid, restricted, restrictgroups,template,childTemplate,inheritObjects,metadesc,metakeywords,sortBy,
-			sortDirection from tcontent where active=1 and contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#ID#"/> and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+			select tcontent.contenthistid, tcontent.contentid, tcontent.menutitle, tcontent.filename, tcontent.parentid, tcontent.type, 
+			tcontent.subtype, tcontent.target, tcontent.targetParams, 
+			tcontent.siteid, tcontent.restricted, tcontent.restrictgroups,tcontent.template,tcontent.childTemplate,tcontent.inheritObjects,tcontent.metadesc,tcontent.metakeywords,tcontent.sortBy,
+			tcontent.sortDirection,tfiles.fileExt
+			from tcontent 
+			left join tfiles on(tcontent.fileID=tfiles.fileID)
+			where tcontent.active=1 
+			and tcontent.contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#ID#"/> 
+			and tcontent.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 			</cfquery>
 			
 			<cfset crumb=structNew() />
@@ -171,6 +177,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset crumb.sortBy=rsCrumbData.sortBy />
 			<cfset crumb.sortDirection=rsCrumbData.sortDirection />
 			<cfset crumb.inheritObjects=rsCrumbData.inheritObjects />
+			<cfset crumb.fileExt=rsCrumbData.fileExt />
 				
 			<cfset I=I+1>
 			<cfset arrayAppend(crumbdata,crumb) />
@@ -195,19 +202,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 			
 			<cfquery name="rsCrumbData" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-			select contenthistid, contentid, menutitle, filename, parentid, type, subtype, target, targetParams, 
-			siteid, restricted, restrictgroups,template,childTemplate,inheritObjects,metadesc,metakeywords,sortBy,
-			sortDirection,
+			select tcontent.contenthistid, tcontent.contentid, tcontent.menutitle, tcontent.filename, tcontent.parentid, tcontent.type, 
+			tcontent.subtype, tcontent.target, tcontent.targetParams, 
+			tcontent.siteid, tcontent.restricted, tcontent.restrictgroups,tcontent.template,tcontent.childTemplate,tcontent.inheritObjects,tcontent.metadesc,tcontent.metakeywords,tcontent.sortBy,
+			tcontent.sortDirection,
 			<cfif variables.configBean.getDBType() eq "MSSQL">
-			len(Cast(path as varchar(1000))) depth
+			len(Cast(tcontent.path as varchar(1000))) depth
 			<cfelse>
-			length(path) depth
+			length(tcontent.path) depth
 			</cfif> 
+			,tfiles.fileExt
 			
-			from tcontent where 
-			contentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.path#">)
-			and active=1 
-			and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+			from tcontent  
+			left join tfiles on(tcontent.fileID=tfiles.fileID)
+			where
+			tcontent.contentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.path#">)
+			and tcontent.active=1 
+			and tcontent.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 			order by depth desc
 			</cfquery>
 		
@@ -235,6 +246,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset crumb.sortBy=rsCrumbData.sortBy />
 			<cfset crumb.sortDirection=rsCrumbData.sortDirection />
 			<cfset crumb.inheritObjects=rsCrumbData.inheritObjects />
+			<cfset crumb.fileExt=rsCrumbData.fileExt />
 			
 			<cfset arrayAppend(crumbdata,crumb) />
 			<cfif arguments.setInheritance and request.inheritedObjects eq "" and rsCrumbData.inheritObjects eq 'cascade'>
@@ -1368,7 +1380,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						
 						
 				AND
-				tcontent.type in ('Page','Portal','Calendar','File','Link')
+				tcontent.type in ('Page','Portal','Calendar','File','Link','Gallery')
 				
 				AND tcontent.releaseDate is null
 				
@@ -1464,7 +1476,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						
 						
 				AND
-				tcontent.type in ('Page','Portal','Calendar','File','Link')
+				tcontent.type in ('Page','Portal','Calendar','File','Link','Gallery')
 				
 				AND tcontent.releaseDate is not null
 				

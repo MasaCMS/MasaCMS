@@ -49,7 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="rc.isNew" default="1">
 <cfset counter=0 />
 <cfoutput>
-<a onclick="jQuery('##selectAssocImageReInit > input').attr('name','fileid');jQuery('##selectAssocImage').html(jQuery('##selectAssocImageReInit').html());jQuery('##selectAssocImageReInit > input').attr('name','fileidReInit');">[#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchforassocimagecancel')#]</a>
+<a class="selectImage btn btn-small" onclick="jQuery('##selectAssocImageReInit > input').attr('name','fileid');jQuery('##selectAssocImage').html(jQuery('##selectAssocImageReInit').html());jQuery('##selectAssocImageReInit > input').attr('name','fileidReInit');">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchforassocimagecancel')#</a>
 <br/><br/>
 <cfif rc.isNew>
 <div style="display:none" id="selectAssocImageResults">

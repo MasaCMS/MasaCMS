@@ -235,12 +235,13 @@ var hasBody=#subType.getHasBody()#;
 	<cfsavecontent variable="actionButtons">
 	<cfoutput>
 	<div class="form-actions">
-		<cfif assignChangesets>
-		<button type="button" class="submit btn" onclick="saveToChangeset('#rc.contentBean.getChangesetID()#','#HTMLEditFormat(rc.siteID)#','');return false;"><i class="icon-check"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset")#</button>	
-		</cfif>
+	
 		 <button type="button" class="submit btn" onclick="if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="icon-check"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#</button>
 		<cfif listFindNoCase("Page,Portal,Calendar,Gallery",rc.type)>
 		<button type="button" class="submit btn" onclick="document.contentForm.preview.value=1;if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="icon-eye-open"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraftandpreview"))#</button>
+		</cfif>
+		<cfif assignChangesets>
+		<button type="button" class="submit btn" onclick="saveToChangeset('#rc.contentBean.getChangesetID()#','#HTMLEditFormat(rc.siteID)#','');return false;"><i class="icon-check"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset")#</button>	
 		</cfif>
 		<cfif rc.perm eq 'editor' and not $.siteConfig('EnforceChangesets')>
 		<button type="button" class="submit btn" onclick="document.contentForm.approved.value=1;if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="icon-check"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#</button>
@@ -323,7 +324,7 @@ var hasBody=#subType.getHasBody()#;
 	</span>
 
 	<cfif rc.compactDisplay neq "true" and rc.moduleid eq '00000000000000000000000000000000000'>
-		#application.contentRenderer.dspZoom(crumbdata=rc.crumbdata,fileExt=fileExt,class="navZoom alt")#
+		#application.contentRenderer.dspZoom(crumbdata=rc.crumbdata,class="navZoom alt")#
 	</cfif>
 	
 	</cfoutput>

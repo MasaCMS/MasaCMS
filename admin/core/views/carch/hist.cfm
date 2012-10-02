@@ -67,7 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfinclude template="dsp_secondary_menu.cfm">
 
 	<cfif rc.moduleid eq '00000000000000000000000000000000000'>
-		#application.contentRenderer.dspZoom(crumbdata=crumbdata,fileExt=fileExt,class="navZoom alt")#
+		#application.contentRenderer.dspZoom(crumbdata=crumbdata,class="navZoom alt")#
 	</cfif>
 </cfif>
 

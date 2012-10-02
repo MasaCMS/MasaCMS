@@ -1336,4 +1336,270 @@ and parentID is null
 	
 </cffunction>
 
+
+	<cffunction name="duplicateExternalContent" returntype="any" output="true" >
+		<cfargument name="contentID">
+		<cfargument name="destinationSiteID">
+		<cfargument name="sourceSiteID">
+		<cfargument name="includeChildren" type="boolean" default="false">
+		<cfargument name="siteSynced" type="boolean" default="false">
+		
+		<cfset var originalContentBean = "" />
+		<cfset var contentBean = "" />
+		<cfset var newContentBean = "" />
+		<cfset var parentBean = "" />
+
+		<cfset var rsObjects = "" />
+		<cfset var rsFileIDs = "" />
+		
+		<cfset var x = "" />
+		<cfset var y = "" />
+
+		<cfset var extendData = "" />
+
+		<cfset var newFileID = "" />
+		<cfset var childrenIterator = "" />
+		<cfset var delim = variables.configBean.getFileDelim() />
+		<cfset var sourceFileLocation = "#variables.configBean.getFileDir()##delim##arguments.sourceSiteID##delim#cache#delim#file#delim#" />
+		<cfset var destFileLocation = "#variables.configBean.getFileDir()##delim##arguments.destinationSiteID##delim#cache#delim#file#delim#" />
+
+		<cfif contentID eq '00000000000000000000000000000000001'>
+			<cfreturn />
+		</cfif>
+
+		<cfif not arguments.siteSynced>
+			<cfset variables.configBean.getClassExtensionManager().syncDefinitions( arguments.sourceSiteID,arguments.destinationSiteID ) />
+			<cfset duplicateExternalCategories( arguments.destinationSiteID,arguments.sourceSiteID ) />
+			<cfset arguments.siteSynced = true />
+		</cfif>
+
+		<cfset originalContentBean = getBean('content').loadBy(remoteID=arguments.contentID,siteID=arguments.destinationSiteID) />
+		<cfset contentBean = getBean('content').loadBy(contentID=arguments.contentID,siteID=arguments.sourceSiteID ) />
+
+		<!--- content does not exist --->
+		<cfif originalContentBean.getIsNew()>
+			<cfset newContentBean = getBean('content') />
+			<cfset newContentBean.set(content=contentBean.getAllValues() ) />
+			
+			<!--- does page exist? --->
+			<cfif contentBean.getIsNew()>
+				<cfreturn false />
+			</cfif>
+			
+			<!--- see if parent exists (excluding home), using original parentID --->			
+			<cfif contentBean.getParentID() neq "00000000000000000000000000000000001">
+				<!--- if no parent, we create the parent --->
+				<cfset parentBean = getBean('content').loadBy(remoteID=contentBean.getParentID(),siteID=arguments.destinationSiteID ) />
+
+				<cfif parentBean.getIsNew()>
+					<cfset duplicateExternalContent( contentBean.getParentID(),arguments.destinationSiteID,arguments.sourceSiteID,false,arguments.siteSynced ) />
+					<cfset parentBean = getBean('content').loadBy(remoteID=contentBean.getParentID(),siteID=arguments.destinationSiteID ) />
+
+					<cfset newContentBean.setParentID( parentBean.getContentID() ) />
+				<cfelse>
+
+						<!--- if parent is found, set it into the duplicated contentBean --->
+					<cfset newContentBean.setParentID( parentBean.getContentID() ) />
+				</cfif>
+			<cfelse>
+				<cfset newContentBean.setParentID( "00000000000000000000000000000000001" ) />
+			</cfif>
+
+			<cfloop from="1" to="#variables.settingsManager.getSite(arguments.destinationSiteID).getcolumncount()#" index="x">
+				<cfset rsObjects = contentBean.getDisplayRegion(x)>
+				
+				<cfif rsObjects.recordCount>
+					<cfloop query="rsObjects">
+						<cfset newContentBean.addDisplayObject( regionID=x,object=rsObjects.object,objectID=rsObjects.objectID,name=rsObjects.name,params=rsObjects.params,orderNo=rsObjects.orderno )>
+					</cfloop>
+				</cfif>
+			</cfloop>
+
+			<cfset newContentBean.setSiteID( arguments.destinationSiteID ) />
+			<cfset newContentBean.setContentID( getBean('utility').getUUID() ) />
+			<cfset newContentBean.setRemoteID( arguments.contentID ) />
+			<cfset newContentBean.setDisplayID( 0 ) />
+			
+			<cfset newContentBean.setSiteID( arguments.destinationSiteID ) />
+			
+			<cfset rsFileIDs = getExtendFileIDs( newContentBean.getExtendedData().getAllValues() ) />
+			
+			<cfloop query="rsFileIDs">
+				<cfset rsfileData = getBean('fileManager').readMeta(rsFileIDs.attributeValue)>
+				<cfif rsfileData.recordCount>
+					
+					<cfif len(rsfileData.fileID)>
+						<cfset tempFile = StructNew() />
+
+						<!--- cfif  _source exists --->
+<!---
+						<cfif fileExists("#sourceFileLocation##rsfileData.fileID#_source.#rsfileData.fileExt#")>
+							<cfset tempFile = getBean('fileManager').emulateUpload("#sourceFileLocation##rsfileData.fileID#_source.#rsfileData.fileExt#")>
+						<cfelseif fileExists("#sourceFileLocation##rsfileData.fileID#.#rsfileData.fileExt#")>
+--->
+							<cfset tempFile = getBean('fileManager').emulateUpload("#sourceFileLocation##rsfileData.fileID#.#rsfileData.fileExt#")>
+<!---	
+						</cfif>
+--->
+						<cfif structCount(tempFile) and fileExists("#tempFile.serverDirectory##delim##tempfile.serverfile#")>
+							<cfset theFileStruct = getBean('fileManager').process(tempFile,newContentBean.getSiteID()) />
+							<cfset newContentBean.setValue(rsFileIDs.name,getBean('fileManager').create(theFileStruct.fileObj,newContentBean.getcontentID(),newContentBean.getSiteID(),rsfileData.filename,tempFile.ContentType,tempFile.ContentSubType,tempFile.FileSize,newContentBean.getModuleID(),tempFile.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium,getBean('utility').getUUID(),theFileStruct.fileObjSource))>
+						<cfelse>
+							<cfset newContentBean.setValue(rsFileIDs.name,"")>
+						</cfif>
+					</cfif>
+				</cfif>
+			</cfloop>
+			
+			<cfif len( newContentBean.getFileID() )>
+				<cfset rsfileData = getBean('fileManager').readMeta(newContentBean.getFileID())>
+				<cfif rsfileData.recordCount>
+					<cfif fileExists("#sourceFileLocation##rsfileData.fileID#_source.#rsfileData.fileExt#")>
+						<cfset tempFile = getBean('fileManager').emulateUpload("#sourceFileLocation##rsfileData.fileID#_source.#rsfileData.fileExt#")>
+					<cfelse>
+						<cfset tempFile = getBean('fileManager').emulateUpload("#sourceFileLocation##rsfileData.fileID#.#rsfileData.fileExt#")>
+					</cfif>
+					<cfset tempFile = getBean('fileManager').emulateUpload("#sourceFileLocation##rsfileData.fileID#.#rsfileData.fileExt#")>
+					
+					<cfset theFileStruct = getBean('fileManager').process(tempFile,newContentBean.getSiteID()) />
+					<cfset newContentBean.setFileID(getBean('fileManager').create(theFileStruct.fileObj,newContentBean.getcontentID(),newContentBean.getSiteID(),rsfileData.filename,tempFile.ContentType,tempFile.ContentSubType,tempFile.FileSize,newContentBean.getModuleID(),tempFile.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium,getBean('utility').getUUID(),theFileStruct.fileObjSource))>
+				</cfif>
+			</cfif>
+
+			<cfset setCategoriesFromExternalAssignments(contentBean,newContentBean ) />
+
+			<cfset newContentBean.save() />
+		</cfif>
+
+		<cfif arguments.includeChildren eq true>
+			<cfset childrenIterator = contentBean.getKidsIterator() />
+			<cfset childrenIterator.setNextN(0) />
+			<cfset childrenIterator.end() />
+
+			<cfloop condition="childrenIterator.hasPrevious()">
+				<cfset childContentBean = childrenIterator.previous() />
+				
+				<cfset duplicateExternalContent(childContentBean.getContentID(),arguments.destinationSiteID,arguments.sourceSiteID,true,arguments.siteSynced ) />
+			</cfloop>
+		</cfif>
+		
+	</cffunction>
+
+	<cffunction name="getExtendFileIDs" returntype="query">
+		<cfargument name="contentExtendData">
+
+		<cfset var rsAttributeIDs = QueryNew('null') />
+		<cfset var rsFileIDs = QueryNew('null') />
+
+		<cfquery name="rsAttributeIDs" dbtype="query">
+			SELECT
+				attributeID
+			FROM
+				arguments.contentExtendData.definitions
+			WHERE
+				INPUTTYPE = 'File'
+		</cfquery>
+	
+		<cfif rsAttributeIDs.recordCount>
+			<cfquery name="rsFileIDs" dbtype="query">
+				SELECT
+					*
+				FROM
+					arguments.contentExtendData.data
+				WHERE
+					attributeID IN (#ValueList(rsAttributeIDs.attributeID)#)
+				AND
+					attributeValue != ''
+			</cfquery>
+		</cfif>
+				
+		<cfreturn rsFileIDs />
+	</cffunction>
+
+	<cffunction name="duplicateExternalCategories" returntype="any">
+		<cfargument name="destinationSiteID">
+		<cfargument name="sourceSiteID">
+		<cfargument name="categoryID" default="">
+		<cfargument name="parentID" default="">
+	
+		<cfset var rsCategories = "" />
+		<cfset var rsCategoryExists = "" />
+		<cfset var newCategoryBean = "" />
+
+		<cfset var data = StructNew() />
+		<cfset var column = "" />
+
+		<cfquery name="rsCategories" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+			SELECT
+				*
+			FROM
+				tcontentcategories
+			WHERE
+				siteID = <cfqueryparam value="#arguments.sourceSiteID#" cfsqltype="cf_sql_varchar">
+			AND
+				<cfif not len(arguments.categoryID)>
+				parentID IS NULL
+				<cfelse>
+				parentID = <cfqueryparam value="#arguments.categoryID#" cfsqltype="cf_sql_varchar">
+				</cfif>
+		</cfquery>
+		
+		<cfloop query="rsCategories">
+			<cfquery name="rsCategoryExists"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+				SELECT
+					categoryID
+				FROM
+					tcontentcategories
+				WHERE
+					siteID = <cfqueryparam value="#arguments.destinationSiteID#" cfsqltype="cf_sql_varchar">
+				AND
+					remoteID = <cfqueryparam value="#rsCategories.categoryID#" cfsqltype="cf_sql_varchar">
+			</cfquery>
+			
+			<cfif not rsCategoryExists.recordCount>
+				<cfset data = StructNew() />
+
+				<cfloop list="#rsCategories.columnlist#" index="column" >
+					<cfset data[column] = rsCategories[column][currentRow] />
+				</cfloop>
+				
+				<cfset data.categoryID = "" />
+				<cfset data.siteID = arguments.destinationSiteID />
+				<cfset data.remoteID = rsCategories.categoryID />
+				<cfif not len(arguments.parentID)>
+					<cfset structDelete(data,"parentID") />
+				<cfelse>
+					<cfset data.parentID = arguments.parentID />
+				</cfif>
+
+				<cfset data.path = "" />
+				
+				<cfset newCategoryBean = getBean('categoryManager').create(data) />
+				<cfset duplicateExternalCategories(arguments.destinationSiteID,arguments.sourceSiteID,rsCategories['categoryID'][currentRow],newCategoryBean.getCategoryID() ) />
+			<cfelse>
+				<cfset duplicateExternalCategories(arguments.destinationSiteID,arguments.sourceSiteID,rsCategories['categoryID'][currentRow],rsCategoryExists.categoryID ) />
+			</cfif>
+
+		</cfloop>
+	</cffunction>
+	
+	<cffunction name="setCategoriesFromExternalAssignments" returntype="any">
+		<cfargument name="sourceContentBean">
+		<cfargument name="newContentBean">
+
+		<cfset var categoryIterator = arguments.sourceContentBean.getCategoriesIterator() />
+		<cfset var categoryBean = "" />
+		<cfset var newCategoryBean = "" />
+		
+		<cfset categoryIterator.setNextN(0) />
+
+		<cfloop condition="#categoryIterator.hasNext()#">
+			<cfset categoryBean = categoryIterator.next() />	
+			<cfset newCategoryBean = getBean('category').loadBy( remoteID=categoryBean.getCategoryID(),siteID=arguments.newContentBean.getSiteID() ) />
+			<cfset arguments.newContentBean.setCategory( newCategoryBean.getCategoryID(),categoryBean.getIsFeature(),categoryBean.getFeatureStart(),categoryBean.getFeatureStop() ) />
+		</cfloop>
+		
+	</cffunction>
+
+
 </cfcomponent>

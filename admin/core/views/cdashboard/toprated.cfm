@@ -105,7 +105,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset crumbdata=application.contentManager.getCrumbList(rsList.contentid, rc.siteid)/>
 </cfsilent>
 <tr>
-<td class="var-width">#application.contentRenderer.dspZoom(crumbdata,rslist.fileEXT)#</td>
+<td class="var-width">#application.contentRenderer.dspZoom(crumbdata)#</td>
 <td><img src="images/rater/star_#application.raterManager.getStarText(rslist.theAvg)#.gif"/></td>
 <td>#rsList.theCount#</td>
 <td class="actions">
