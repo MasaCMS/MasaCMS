@@ -57,8 +57,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<label class="control-label">
 		#application.rbFactory.getKeyValue(session.rb,'advertising.iplist')#
 	</label>
-	<p class="notice help-block">#application.rbFactory.getKeyValue(session.rb,'advertising.iplistnote')#</p>
-	<div class="controls"><textarea name="IPWhiteList" class="alt"><cfloop query="rc.rslist">#rc.rslist.ip##newLine#</cfloop></textarea>
+	<p class="info help-block">#application.rbFactory.getKeyValue(session.rb,'advertising.iplistnote')#</p>
+	<div class="controls"><textarea name="IPWhiteList" class="span6" rows="6"><cfloop query="rc.rslist">#rc.rslist.ip##newLine#</cfloop></textarea>
 	</div>
 </div>
 </div>
