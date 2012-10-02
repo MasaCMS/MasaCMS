@@ -60,4 +60,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </li>
 </cfoutput>
 </ul>
-</cfif>
+<cfelseif attribute.parentID eq ''>
+<p class="notice">#application.rbFactory.getKeyValue(session.rb,'user.nointerestcategories')#</p>
+</cfif> 

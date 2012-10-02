@@ -305,11 +305,12 @@ select * from rsSubTypes where subType <> 'Default'
 		</cfif>
 </div>	
 <div id="tabInterests" class="tab-pane fade">
-
-			<cfif application.categoryManager.getCategoryCount(rc.siteid)>
+		<cfset hasCategories=false>
 			<!---<ul class="interestGroups">--->
 				<cfloop collection="#application.settingsManager.getSites()#" item="site">
-					<cfif application.settingsManager.getSite(site).getPrivateUserPoolID() eq rc.siteid>
+					<cfif application.settingsManager.getSite(site).getPrivateUserPoolID() eq rc.siteid or application.settingsManager.getSite( rc.siteid).getPrivateUserPoolID() eq site>
+						<cfset hasCategories=true>
+
 						<!---<li>--->
 							<cfoutput><h3>#application.settingsManager.getSite(site).getSite()#</h3>
 							<div class="divide"></div>
@@ -319,11 +320,11 @@ select * from rsSubTypes where subType <> 'Default'
 					</cfif>
 				</cfloop>
 			<!---</ul>--->
-			<cfelse>
+		
+		<cfif not hasCategories>
 			<p class="notice">#application.rbFactory.getKeyValue(session.rb,'user.nointerestcategories')#</p>
-			</cfif> 
-		</dd>
-	
+		</cfif> 
+
 </div>
 	
 <cfif rsSubTypes.recordcount>
