@@ -96,16 +96,16 @@ jQuery(document).ready(function(){
         <div class="fileupload-buttonbar">
             <div class="span7">
                 <!-- The fileinput-button span is used to style the file input field as button -->
-                <span class="btn btn-success fileinput-button">
+                <span class="btn fileinput-button">
                     <i class="icon-plus icon-white"></i>
                     <span>Add files...</span>
                     <input type="file" name="files" multiple>
                 </span>
-                <button type="submit" class="btn btn-primary start">
+                <button type="submit" class="btn start">
                     <i class="icon-upload icon-white"></i>
                     <span>Start upload</span>
                 </button>
-                <button type="reset" class="btn btn-warning cancel">
+                <button type="reset" class="btn cancel">
                     <i class="icon-ban-circle icon-white"></i>
                     <span>Cancel upload</span>
                 </button>
@@ -192,7 +192,7 @@ jQuery(document).ready(function(){
                 <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar" style="width:0%;"></div></div>
             </td>
             <td class="start">{% if (!o.options.autoUpload) { %}
-                <button class="btn btn-primary">
+                <button class="btn">
                     <i class="icon-upload icon-white"></i>
                     <span>{%=locale.fileupload.start%}</span>
                 </button>
@@ -201,7 +201,7 @@ jQuery(document).ready(function(){
             <td colspan="2"></td>
         {% } %}
         <td class="cancel">{% if (!i) { %}
-            <button class="btn btn-warning">
+            <button class="btn">
                 <i class="icon-ban-circle icon-white"></i>
                 <span>{%=locale.fileupload.cancel%}</span>
             </button>
