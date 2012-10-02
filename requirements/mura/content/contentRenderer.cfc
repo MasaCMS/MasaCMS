@@ -349,7 +349,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="dspZoom" returntype="string" output="false">
 		<cfargument name="crumbdata" required="yes" type="array">
-		<cfargument name="fileExt" type="string" default="">
+		<cfargument name="fileExt" type="string" default="" hint="deprecated, this is now in the crumbData">
 		<cfargument name="ajax" type="boolean" default="false">
 		<cfargument name="class" type="string" default="navZoom">
 		<cfset var content = "">
@@ -393,7 +393,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="dspZoomNoLinks" returntype="string" output="false">
 		<cfargument name="crumbdata" required="yes" type="array">
-		<cfargument name="fileExt" type="string" default="">
+		<cfargument name="fileExt" type="string" default="" hint="deprecated, this is now in the crumbData">
 		<cfargument name="class" type="string" default="navZoom">
 		<cfset var content = "">
 		<cfset var locked = "">
