@@ -213,8 +213,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif> 
 			,tfiles.fileExt
 			
-			from tcontent where 
+			from tcontent  
 			left join tfiles on(tcontent.fileID=tfiles.fileID)
+			where
 			tcontent.contentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.path#">)
 			and tcontent.active=1 
 			and tcontent.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
