@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfinclude template="act_defaults.cfm">
 <cfoutput><cfset rsList=application.dashboardManager.getTopContent(rc.siteID,3,false,"All",rc.startDate,rc.stopDate,true) />
 <cfset count=rsList.recordcount>
-<table class="table table-striped table-bordered table-condensed" id="topPages">
+<table class="table table-striped table-condensed table-bordered mura-table-grid" id="topPages">
 	<thead>
 		<tr>
 			<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.pages")# <a href="index.cfm?muraAction=cDashboard.topContent&siteid=#URLEncodedFormat(rc.siteid)#&startDate=#URLEncodedFormat(rc.startDate)#&stopDate=#URLEncodedFormat(rc.stopDate)#">(#application.rbFactory.getKeyValue(session.rb,"dashboard.viewreport")#)</a></th>

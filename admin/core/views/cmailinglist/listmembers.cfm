@@ -108,7 +108,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </form>
 <h2>#rc.listBean.getname()#</h2>
 
-<table id="metadata" class="table table-striped table-bordered table-condensed">
+<table id="metadata" class="table table-striped table-condensed table-bordered mura-table-grid">
 <tr>
 	<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.emails')# (#rc.rslist.recordcount#)</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.name')#</th>

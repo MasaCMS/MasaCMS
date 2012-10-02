@@ -1,6 +1,6 @@
 select,
 textarea,
-input[type="text"],
+input[type="text"],input.text,
 input[type="password"],
 input[type="datetime"],
 input[type="datetime-local"],
@@ -28,7 +28,7 @@ select, input[type="file"] {
 	line-height: 28px;
 	margin-bottom: 0;
 	.box-shadow(0 0 0) !important;
-	width: auto !important;
+	
 }
 
 textarea,
@@ -37,7 +37,11 @@ select[size] {
   height: auto;
 }
 
-td, th {
+select.time {
+	width: 4em;
+}
+
+td, th, .checkBoxTree li {
 	> input[type="radio"],
 	> input[type="checkbox"] {
 	margin-top: 0;
@@ -227,9 +231,32 @@ td, th {
 	.border-radius(3px);
 }
 
+.controls + .controls {
+	margin-top: @baseLineHeight/2;
+}
+
 .btn {
   border-color: #ededed #ededed hsl(201, 0%, 89.5%);
   color: @grayDark !important;
+}
+
+// Various Search Utilities
+.criteria {
+	font-size: 22px;
+	color: @gray;
+	text-decoration: none;
+	.inline-block;
+	position: relative;
+	
+	&:hover {
+		color: @grayDark;
+		}
+	
+	i {
+		position: relative;
+		top: 5px;
+		}
+	
 }
 
 // Basic Tab
@@ -270,4 +297,10 @@ select[multiple] {
 	border-color: @grayLight;
 	height: 118px;
 	min-width: 220px !important;
+}
+
+// Content Collections
+
+#selectFilter a {
+	font-weight: normal;
 }

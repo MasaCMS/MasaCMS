@@ -57,7 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif not rc.isNew>
 <cfset rc.rsList=application.contentManager.getPrivateSearch(rc.siteid,rc.keywords)/>
- <table class="table table-striped table-bordered table-condensed">
+ <table class="table table-striped table-condensed table-bordered mura-table-grid">
     <tr> 
       <th class="var-width"><cfoutput><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'tooltip.addRelatedContent'))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.addrelatedcontent')# <i class="icon-info-sign"></i></a></cfoutput></th>
 	  <th class="actions">&nbsp;</th>

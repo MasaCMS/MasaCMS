@@ -1,9 +1,8 @@
-@jQueryPath: '../css/jquery/default'; // Used in jquery.ui.bootstrap.less also
+@jQueryPath: 'jquery/default'; 
 @fontAwesomePath: '../font/font-awesome';
 
 @import "variables.less";
-@import "jquery.ui.bootstrap.less";
-@import "default/jquery.ui.base.css";
+@import "jquery/default/jquery.ui.base.css";
 @import "jquery.ui.bootstrap.less";
 
 @font-face {
@@ -32,7 +31,7 @@
 .ui-datepicker {
 
 	select {
-		margin-bottom: .75em !important;
+		margin-bottom: 0;
 		width: 158px;
 		font-size: @qeFontSize;
 		padding: 2px;

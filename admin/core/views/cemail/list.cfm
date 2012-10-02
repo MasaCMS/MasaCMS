@@ -157,7 +157,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cfoutput>
 <div class="separate"></div>
-	  <table id="metadata" class="table table-striped table-bordered table-condensed">
+	  <table id="metadata" class="table table-striped table-condensed table-bordered mura-table-grid">
         <tr> 
 		  <cfset subjectDirection = "asc">
 		  <cfset createdDateDirection = "desc">

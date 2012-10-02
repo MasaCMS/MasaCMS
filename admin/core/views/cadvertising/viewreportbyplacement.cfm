@@ -155,7 +155,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
    </cfsilent>
 	<h2>#application.rbFactory.getKeyValue(session.rb,'advertising.total')#</h2>
 	
-	 <table border="0" cellpadding="3" cellspacing="0" id="metadata" class="table table-striped table-bordered table-condensed">
+	 <table border="0" cellpadding="3" cellspacing="0" id="metadata" class="table table-striped table-condensed table-bordered mura-table-grid">
 			<tr>
 			  	<th>&nbsp;</th>
 				<th>#application.rbFactory.getKeyValue(session.rb,'advertising.impressions')#</th>

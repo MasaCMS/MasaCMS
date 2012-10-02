@@ -200,7 +200,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 	<h2>#application.rbFactory.getKeyValue(session.rb,'advertising.total')#</h2>
 
-	<table id="metadata" class="table table-striped table-bordered table-condensed">
+	<table id="metadata" class="table table-striped table-condensed table-bordered mura-table-grid">
 	<tr>
 		<th>#application.rbFactory.getKeyValue(session.rb,'advertising.totalm')#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,'advertising.cpmtotal')#</th>
