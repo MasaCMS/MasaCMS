@@ -173,7 +173,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.smallImageHeight='80'/>
 	<cfset variables.instance.smallImageWidth='80'/>
 	<cfset variables.instance.mediumImageHeight='180'/>
-	<cfset variables.instance.mediumImageHeight='180'/>
+	<cfset variables.instance.mediumImageWidth='180'/>
 	<cfset variables.instance.sendLoginScript=""/>
 	<cfset variables.instance.mailingListConfirmScript=""/>
 	<cfset variables.instance.publicSubmissionApprovalScript=""/>
