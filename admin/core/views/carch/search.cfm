@@ -103,7 +103,7 @@ siteManager.copySiteID = '#session.copySiteID#';
 	<!---<cfelse>
 		&nbsp;
 	</cfif>---></td>
-          <td class="title var-width">#application.contentRenderer.dspZoom(crumbdata,rc.rsList.fileExt)#</td>
+          <td class="title var-width">#application.contentRenderer.dspZoom(crumbdata)#</td>
 			   <td> 
 	    <cfif rc.rslist.Display and (rc.rslist.Display eq 1 and rc.rslist.approved and rc.rslist.approved)>Yes<cfelseif(rc.rslist.Display eq 2 and rc.rslist.approved and rc.rslist.approved)>#LSDateFormat(rc.rslist.displaystart,session.dateKeyFormat)# - #LSDateFormat(rc.rslist.displaystop,session.dateKeyFormat)#<cfelse>No</cfif></td>
 		<td>#LSDateFormat(rc.rslist.lastupdate,session.dateKeyFormat)#</td>

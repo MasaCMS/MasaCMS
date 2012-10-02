@@ -76,7 +76,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif verdict neq 'none'  and rc.parentID neq  rc.rslist.contentid>	
 			<cfset counter=counter+1/>
 		<tr <cfif not(counter mod 2)>class="alt"</cfif>>  
-          <td class="var-width">#application.contentRenderer.dspZoomNoLinks(crumbdata,rc.rslist.fileExt)#</td>
+          <td class="var-width">#application.contentRenderer.dspZoomNoLinks(crumbdata)#</td>
 		  <td class="actions"><input type="radio" name="parentid" value="#rc.rslist.contentid#"></td>
 		</tr>
 	 </cfif>

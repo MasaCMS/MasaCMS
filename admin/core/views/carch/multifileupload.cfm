@@ -85,7 +85,7 @@ jQuery(document).ready(function(){
 <cfinclude template="dsp_secondary_menu.cfm">
 
 <cfif rc.compactDisplay neq "true">
-    #application.contentRenderer.dspZoom(crumbdata=rc.crumbdata,fileExt=fileExt,class="navZoom alt")#
+    #application.contentRenderer.dspZoom(crumbdata=rc.crumbdata,class="navZoom alt")#
 </cfif>
 
     <h4>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.multifileuploadinstructions")#</h4>

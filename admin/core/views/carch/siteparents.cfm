@@ -81,7 +81,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif verdict neq 'none' and arrayLen(crumbdata) and structKeyExists(crumbdata[1],"parentArray") and not listFind(arraytolist(crumbdata[1].parentArray),rc.contentid) and rc.rslist.type neq 'Link' and rc.rslist.type neq 'File'>
 			<cfset counter=counter+1/>
 			<tr <cfif not(counter mod 2)>class="alt"</cfif>>  
-	          <td class="var-width">#application.contentRenderer.dspZoomNoLinks(crumbdata,rc.rslist.fileExt)#</td>
+	          <td class="var-width">#application.contentRenderer.dspZoomNoLinks(crumbdata)#</td>
 			  <td class="actions"><input type="radio" name="parentid" value="#rc.rslist.contentid#"></td>
 			</tr>
 		 	</cfif></cfif>

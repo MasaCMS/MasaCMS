@@ -324,7 +324,7 @@ var hasBody=#subType.getHasBody()#;
 	</span>
 
 	<cfif rc.compactDisplay neq "true" and rc.moduleid eq '00000000000000000000000000000000000'>
-		#application.contentRenderer.dspZoom(crumbdata=rc.crumbdata,fileExt=fileExt,class="navZoom alt")#
+		#application.contentRenderer.dspZoom(crumbdata=rc.crumbdata,class="navZoom alt")#
 	</cfif>
 	
 	</cfoutput>

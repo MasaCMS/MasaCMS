@@ -291,7 +291,7 @@ buttons: {
 			//.href='index.cfm?muraAction=cArch.edit&contentid=&parentid=' + contentid + '&type=Page&topid=' + topid + '&siteid=' + siteid + '&moduleid=00000000000000000000000000000000000&ptype=' + type;
 
 		
-			if (copySiteID != "" && this.copyContentID != ""){
+			if (this.copySiteID != "" && this.copyContentID != ""){
 				document.getElementById('newPasteLink').href='javascript:siteManager.pasteThis(\'' + contentid + '\')';
 				document.getElementById('newPaste').style.display='';
 				document.getElementById('newPasteLink').style.display='';

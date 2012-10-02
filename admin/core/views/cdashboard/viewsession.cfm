@@ -72,7 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/>
 <tr>
 <td><cfif rc.rslist.userid eq ''>Anonymous<cfelse>#HTMLEditFormat(rc.rslist.fname)# #HTMLEditFormat(rc.rslist.lname)#<cfif rc.rslist.company neq ''> (#HTMLEditFormat(rc.rslist.company)#)</cfif></cfif></td>
-<td class="var-width">#application.contentRenderer.dspZoom(crumbdata,rc.rslist.fileEXT)#</td>
+<td class="var-width">#application.contentRenderer.dspZoom(crumbdata)#</td>
 
 <td>#LSDateFormat(rc.rslist.entered,session.dateKeyFormat)# #LSTimeFormat(rc.rslist.entered,"short")#</td>
 <td><cfif rc.rslist.keywords neq ''>#HTMLEditFormat(rc.rslist.keywords)#<cfelse>&mdash;</cfif></td>
