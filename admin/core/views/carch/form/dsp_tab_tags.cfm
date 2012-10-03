@@ -92,7 +92,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<input name="tags" type="hidden" value="#HTMLEditFormat(i)#">
 			</span>
 		</cfloop>
-		<input type=text>
+		<input type="text" name="tags">
 		</div>
    </div>
 </div>
