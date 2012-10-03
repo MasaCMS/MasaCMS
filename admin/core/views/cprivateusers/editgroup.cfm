@@ -56,12 +56,13 @@ select * from rsSubTypes where subType <> 'Default'
 <div id="nav-module-specific" class="btn-group">
   <a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-circle-arrow-left"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
 </div>
-
-<cfif listFirst(listLast(rc.muraAction,":"),".") eq "editgroup" and rc.userid neq ''>
+<!---
+<cfif listLast(request.action,".") eq "editgroup" and rc.userid neq ''>
   <div id="nav-module-specific" class="btn-group">
     <a class="btn" href="javascript:intuserselect('#rc.userid#',1,<cfif listFind(session.mura.memberships,'S2')>1<cfelse>0</cfif>,'#rc.siteid#')">#application.rbFactory.getKeyValue(session.rb,'user.addadminusertogroup')#</a>
   </div>
 </cfif>
+--->
 </cfoutput>
 <cfswitch expression="#rc.userBean.getperm()#">
 	  <cfcase value="1">
