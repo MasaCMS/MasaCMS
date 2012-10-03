@@ -165,17 +165,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 
 <cfif not isdefined("cookie.mobileFormat")>
-	<cfif 
-		findNoCase("iphone",CGI.HTTP_USER_AGENT)
-		or
-			(
-				findNoCase("mobile",CGI.HTTP_USER_AGENT)
-				and not reFindNoCase("tablet|ipad|xoom",CGI.HTTP_USER_AGENT)
-			)>
-		<cfcookie name="mobileFormat" value="true" />
-	<cfelse>	
-		<cfcookie name="mobileFormat" value="false" />
-	</cfif>	
+	<cfset application.pluginManager.executeScripts('onGlobalMobileDetection')>
+
+	<cfif not isdefined("cookie.mobileFormat")>
+		<cfif 
+			findNoCase("iphone",CGI.HTTP_USER_AGENT)
+			or
+				(
+					findNoCase("mobile",CGI.HTTP_USER_AGENT)
+					and not reFindNoCase("tablet|ipad|xoom",CGI.HTTP_USER_AGENT)
+				)>
+			<cfcookie name="mobileFormat" value="true" />
+		<cfelse>	
+			<cfcookie name="mobileFormat" value="false" />
+		</cfif>	
+	</cfif>
 </cfif>
 
 <cfset request.muraMobileRequest=cookie.mobileFormat>

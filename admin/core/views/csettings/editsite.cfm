@@ -643,13 +643,14 @@ to your own modified versions of Mura CMS.
         <div class="control-group">
                 <label class="control-label">Height</label>
                 <div class="controls">
-                  <input name="smallImageWidth" class="text" value="#rc.siteBean.getSmallImageWidth()#" />
+                  <input name="smallImageHeight" class="text" value="#rc.siteBean.getSmallImageHeight()#" />
+                  
                 </div>
               </div>
               <div class="control-group">
                 <label class="control-label">Width</label>
                 <div class="controls">
-                  <input name="smallImageHeight" class="text" value="#rc.siteBean.getSmallImageHeight()#" />
+                 <input name="smallImageWidth" class="text" value="#rc.siteBean.getSmallImageWidth()#" />
                 </div>
            </div>
       </div>
@@ -661,13 +662,13 @@ to your own modified versions of Mura CMS.
        <div class="control-group">
                 <label class="control-label">Height</label>
                 <div class="controls">
-                  <input name="mediumImageWidth" class="text" value="#rc.siteBean.getMediumImageWidth()#" />
+                  <input name="mediumImageHeight" class="text" value="#rc.siteBean.getMediumImageHeight()#" />
                 </div>
               </div>
               <div class="control-group">
                 <label class="control-label">Width</label>
                 <div class="controls">
-                  <input name="mediumImageHeight" class="text" value="#rc.siteBean.getMediumImageHeight()#" />
+                   <input name="mediumImageWidth" class="text" value="#rc.siteBean.getMediumImageWidth()#" />
                 </div>
            </div>
       </div>
@@ -680,13 +681,13 @@ to your own modified versions of Mura CMS.
         <div class="control-group">
                 <label class="control-label">Height</label>
                 <div class="controls">
-                  <input name="largeImageWidth" class="text" value="#rc.siteBean.getLargeImageWidth()#" />
+                  <input name="largeImageHeight" class="text" value="#rc.siteBean.getLargeImageHeight()#" />
                 </div>
               </div>
               <div class="control-group">
                 <label class="control-label">Width</label>
                 <div class="controls">
-                  <input name="largeImageHeight" class="text" value="#rc.siteBean.getLargeImageHeight()#" />
+                   <input name="largeImageWidth" class="text" value="#rc.siteBean.getLargeImageWidth()#" />
                 </div>
            </div>
       </div>
