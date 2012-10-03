@@ -1,6 +1,3 @@
-/* @override 
-	http://localhost:8500/muracms/admin/css/formbuilder/templatebuilder/base.css */
-
 /* This file is part of Mura CMS. 
 
 	Mura CMS is free software: you can redistribute it and/or modify 
@@ -77,32 +74,32 @@
 	}
 	
 	.mura-tb-header.textfield h2 {
-		background-image: url('../../../images/formbuilder/frm_textfield_big.png');
+		background-image: url('../images/formbuilder/frm_textfield_big.png');
 	}
 	.mura-tb-header.textarea h2 {
-		background-image: url('../../../images/formbuilder/frm_textarea_big.png');
+		background-image: url('../images/formbuilder/frm_textarea_big.png');
 		/*background-position: left center;*/
 	}
 	.mura-tb-header.dropdown h2 {
-		background-image: url('../../../images/formbuilder/frm_dropdown_big.png');
+		background-image: url('../images/formbuilder/frm_dropdown_big.png');
 	}
 	.mura-tb-header.radio h2 {
-		background-image: url('../../../images/formbuilder/frm_radio_big.png');
+		background-image: url('../images/formbuilder/frm_radio_big.png');
 		padding-top: 4px;
 	}
 	.mura-tb-header.checkbox h2 {
-		background-image: url('../../../images/formbuilder/frm_checkbox_big.png');
+		background-image: url('../images/formbuilder/frm_checkbox_big.png');
 		padding-top: 4px;
 	}
 	.mura-tb-header.hiddenfield h2 {
-		background-image: url('../../../images/formbuilder/frm_hidden_big.png');
+		background-image: url('../images/formbuilder/frm_hidden_big.png');
 	}
 	.mura-tb-header.fileuploadfield h2 {
-		background-image: url('../../../images/formbuilder/frm_upload_big.png');
+		background-image: url('../images/formbuilder/frm_upload_big.png');
 		padding-left: 24px;
 	}
 	.mura-tb-header.textblock h2 {
-		background-image: url('../../../images/formbuilder/frm_text_freeform_big.png');
+		background-image: url('../images/formbuilder/frm_text_freeform_big.png');
 		padding-left: 34px;
 	}
 	
@@ -121,14 +118,6 @@
 		text-align: center;
 	}
 	
-	.mura-tb-form input.button,.mura-tb-form input.submit {
-		/*margin: 1px 3px;
-		border-radius: 4px;
-		-moz-border-radius: 4px;
-		-webkit-border-radius: 4px;
-		-moz-box-shadow: 1px 1px 1px #aaa;
-		-webkit-box-shadow: 1px 1px 1px #aaa;*/
-	}
 	.mura-tb-form input:active.button,.mura-tb-form input:active.submit {
 		-moz-box-shadow: none;
 		-webkit-box-shadow: none;
@@ -249,34 +238,18 @@
 	
 	#mura-tb-fields .ui-button {
 		border: 1px solid #c2c2c2;
-		background: -moz-linear-gradient(
-			top,
-			#ffffff 0%,
-			#cdcdcd);
-		background: -webkit-gradient(
-			linear, left top, left bottom, 
-			from(#ffffff),
-			to(#cdcdcd));
-		background: -webkit-linear-gradient(
-				linear, left top, left bottom, 
-				from(#ffffff),
-				to(#cdcdcd));
-		background: -ms-linear-gradient(
-				linear, left top, left bottom, 
-				from(#ffffff),
-				to(#cdcdcd));	
+		#gradient .vertical(#fff,#cdcdcd);
 	}
+	
 	.ui-icon-formfield {
-		background-image: url(../../../images/formbuilder/ui-icons-form-basic.png) !important;
+		background-image: url(../images/formbuilder/ui-icons-form-basic.png) !important;
 		background-repeat: no-repeat;
 		width: 24px;
 		height: 20px;
-		/*border: 1px solid #f2f2f2 !important;*/
 		padding: 6px;
-		border-radius: 4px;
-		-moz-border-radius: 4px;
-		-webkit-border-radius: 4px;
+		.border-radius(4px);
 	}
+	
 	#mura-templatebuilder .ui-button-text {
 		height: 32px;
 		line-height: 32px;
@@ -382,12 +355,9 @@
 }
 .mura-tb-menu {
 	border-bottom: 1px solid #a6a6a6;
-	background: url('../../../images/formbuilder/ui-toolbar-bg.jpg') repeat-x;
+	background: url('../images/formbuilder/ui-toolbar-bg.jpg') repeat-x;
 	padding: 4px;
-	height: 34px; /*
-	border-radius: 4px;
-	-moz-border-radius: 4px;
-	-webkit-border-radius: 4px;*/
+	height: 34px;
 }
 .mura-tb-menu ul.right,.mura-tb-header ul.right {
 	margin: 0;
@@ -407,14 +377,12 @@
 	border-left: 1px dotted #aaa;
 }
 .ui-button {
-	display: block;
-	padding: /*5px*/;
+	.inline-block;
+	padding: 0;
 	border: 1px solid #dcdcdc;
 	background-color: #eee;
-	border-radius: 4px;
-	-moz-border-radius: 4px;
-	-webkit-border-radius: 4px;
-}
+	.border-radius(4px);
+	}
 .ui-button.noframe {
 	border: 0;
 	padding: 0;
@@ -477,7 +445,7 @@
 
 #mura-tb-form {
 	/*border-top: 1px solid #d1d1d1;*/
-	background: url('../../../images/formbuilder/bg-shadows.png') repeat-y 274px 0;
+	background: url('../images/formbuilder/bg-shadows.png') repeat-y 206px 0;
 	background-color: #d7d7d6;
 }
 #mura-tb-form-fields {
@@ -569,28 +537,28 @@
 }
 
 #mura-tb-fields li.field-textfield div {
-	background-image: url('../../../images/formbuilder/frm_textfield_big.png');
+	background-image: url('../images/formbuilder/frm_textfield_big.png');
 }
 #mura-tb-fields li.field-textarea div {
-	background-image: url('../../../images/formbuilder/frm_textarea_big.png');
+	background-image: url('../images/formbuilder/frm_textarea_big.png');
 }
 #mura-tb-fields li.field-dropdown div {
-	background-image: url('../../../images/formbuilder/frm_dropdown_big.png');
+	background-image: url('../images/formbuilder/frm_dropdown_big.png');
 }
 #mura-tb-fields li.field-radio div {
-	background-image: url('../../../images/formbuilder/frm_radio_big.png');
+	background-image: url('../images/formbuilder/frm_radio_big.png');
 }
 #mura-tb-fields li.field-checkbox div {
-	background-image: url('../../../images/formbuilder/frm_checkbox_big.png');
+	background-image: url('../images/formbuilder/frm_checkbox_big.png');
 }
 #mura-tb-fields li.field-hidden div {
-	background-image: url('../../../images/formbuilder/frm_hidden_big.png');
+	background-image: url('../images/formbuilder/frm_hidden_big.png');
 }
 #mura-tb-fields li.field-file div {
-	background-image: url('../../../images/formbuilder/frm_upload_big.png');
+	background-image: url('../images/formbuilder/frm_upload_big.png');
 }
 #mura-tb-fields li.field-textblock div {
-	background-image: url('../../../images/formbuilder/frm_text_freeform_big.png');
+	background-image: url('../images/formbuilder/frm_text_freeform_big.png');
 }
 
 #mura-tb-form #mura-tb-fields li.field-section {
@@ -654,14 +622,14 @@
 	border-radius: 0;
 	width: 16px;
 	height: 16px;
-	background: transparent url('../../../images/formbuilder/data-delete.png') no-repeat center center !important;
+	background: transparent url('../images/formbuilder/data-delete.png') no-repeat center center !important;
 	border: 0 !important;
 }
 /* @group Grids for Fields with Options */
 
 #mura-tb-grid-table-header {
 	/*border-bottom: 1px solid #a6a6a6;*/
-	background: url('../../../images/formbuilder/ui-toolbar-bg.jpg') repeat-x left bottom;
+	background: url('../images/formbuilder/ui-toolbar-bg.jpg') repeat-x left bottom;
 	padding: 0;
 	font-size: 11px;
 	font-weight: bold;
@@ -742,7 +710,7 @@
 	border: 0 !important;
 	margin: 0 4px 0 0;
 	padding: 0 !important;
-	background: transparent url('../../../images/formbuilder/data-delete.png') no-repeat center center;
+	background: transparent url('../images/formbuilder/data-delete.png') no-repeat center center;
 	float: right;
 }
 #button-grid-add {
@@ -752,20 +720,12 @@
 	padding: 2px 6px 2px 20px;
 	text-align: left;
 	margin: 5px 8px 5px 0;
-	background: #999 url('../../../images/formbuilder/data-add.png') no-repeat 5px center;
+	background: #999 url('../images/formbuilder/data-add.png') no-repeat 5px center;
 	color: #fff;
 	-webkit-border-radius: 12px;
 	-moz-border-radius: 12px;
 	border-radius: 12px;
 }
-
-/*#mura-tb-grid li span.handle {
-	width: 10px !important;
-	height: 28px;
-	margin-right: 0;
-	padding: 0 !important;
-	background: transparent url('../../../images/formbuilder/data-handle.png') no-repeat center center;
-}*/
 
 #mura-tb-grid .mura-tb-grid-display {
 	padding: 2px 0px 0 4px;
@@ -779,33 +739,161 @@
 	border: 1px solid #ffc488;
 	background-color: #fff9f2;
 }
-#mura-tb-grid-table li span input {
+#mura-tb-grid-table {
+
+	li span input {
 	width: 94%;
 	padding: 4px;
 	background-color: #fcfcfc;
 	border: 1px solid #ddd;
+	}
+	
+	.button {
+		float: right;
+		margin-right: 5px;
+	}
+	.mura-tb-grid-handle {
+		background: transparent url('../images/formbuilder/data-handle.png') no-repeat center right;
+		float: left;	
+		width: 14px !important;
+		height: 26px;
+		margin-right: 6px;
+		cursor: move;
+	}
+	
+	li.alt {
+		background-color: #e8e8e8;
+	
+	li.alt span input {
+		background-color: #fff;
+		}
+	}
 }
-#mura-tb-grid-table .button {
-	float: right;
-	margin-right: 5px;
-}
-#mura-tb-grid-table .mura-tb-grid-handle {
-	background: transparent url('../../../images/formbuilder/data-handle.png') no-repeat center right;
-	float: left;	
-	width: 14px !important;
-	height: 26px;
-	margin-right: 6px;
-	cursor: move;
-}
-#mura-tb-grid-table li.alt {
-/*	background-color: #ffffff; */
-}
-#mura-tb-grid-table li.alt span input {
-	background-color: #fff;
-}
-#mura-tb-grid-table li.alt {
-	background-color: #e8e8e8;
-}
-
 /* @end */
 
+.ui-minigrid {
+	margin: 0 0 5px 0;
+	position: relative;
+}
+.ui-minigrid div {
+}
+.ui-minigrid .ui-resizable-handle {
+	background: url('custom-theme/images/ui-bg_dots-small_30_ee3a23_2x2.png');
+	opacity: .50;
+	filter:Alpha(Opacity=50);
+	top: 0;
+	height: 10px;
+}
+.ui-minigrid ul {
+	margin: 0;
+	padding: 0;
+	width: auto;
+}
+.ui-minigrid .left {
+	float: left;
+}
+.ui-minigrid .right {
+	float: right;
+}
+.ui-minigrid li {
+	clear: none !important;	
+	margin: 0 !important;
+	padding: 0 !important;
+	overflow: hidden !important;
+	list-style: none !important;
+}
+.ui-minigrid li.even {
+	background-color: #f0f0f0;
+}
+.ui-minigrid li.even .text {
+	background-color: #f6f6f6;
+}
+
+.ui-minigrid .ui-minigrid-buttonbar {
+	padding: 1px 2px 3px 1px !important;
+	border: 0;
+	height: 20px;
+}
+.ui-minigrid .ui-minigrid-modal {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background: url('images/modal.png'); 
+}
+.ui-minigrid .ui-minigrid-spinner {
+	height: 100%;
+	width: 100%;
+	background: url('images/spinner.gif') center center no-repeat; 
+}
+
+.ui-minigrid .ui-minigrid-boxed {
+/*	border: 1px solid #ccc; */
+	border: 0;
+	border-bottom: 0;
+}
+.ui-minigrid .ui-minigrid-header {
+}
+.ui-minigrid .ui-minigrid-header-list ul {
+	float: left;
+}
+.ui-minigrid .ui-minigrid-header span {
+	display: block;
+	padding: 2px 0 0 4px;
+}
+.ui-minigrid ul.column li {
+	list-style-type: none;
+	height: 19px !important;
+	float: left !important;
+	margin: 0 !important;
+	padding: 2px !important;
+	border-right: 1px solid #aaa !important;
+}
+.ui-minigrid .ui-minigrid-body {
+	padding: 0 !important;
+	position: relative !important;
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+.ui-minigrid .ui-minigrid-content li.row {
+	overflow-x: hidden;
+	display: block !important;
+	float: left !important;
+	padding: 0 !important;
+	margin: 0 !important;
+}
+.ui-minigrid .column li.col {
+}
+.ui-minigrid .column li.bit {
+	text-align: center !important;
+	width: 20px !important;
+}
+.ui-minigrid .column li.button {
+	width: 21px !important;
+	border: 0 !important;
+}
+.ui-minigrid .column li.sort {
+	width: 16px !important;
+	border: 0 !important;
+}
+.ui-minigrid span.handle {
+	display: block;
+	border: 0;
+}
+
+.ui-minigrid .column input.text {
+	border: 1px solid #aaa !important;
+	margin: 0 3px 0 1px !important;
+	height: 16px !important;
+	padding: 1px !important;
+}	
+.ui-minigrid .column input.checkbox {
+	bottom: 2px !important;
+	margin: 0 2px !important;
+	height: 20px !important;
+}
+.ui-minigrid .ui-minigrid-bordered {
+/*	border: 1px solid #ccc; */
+	border: 0;
+}

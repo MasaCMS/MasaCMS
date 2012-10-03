@@ -6,49 +6,49 @@
 	  <div class="fieldset">
 
   	<cfif listFindNoCase('Page,Portal,Calendar,Gallery,File,Link',rc.type)>
-  		
-
-  				<div class="control-group">
+		<div class="control-group">
   				
 			      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.credits')#</label>
 			      <div class="controls"><input type="text" id="credits" name="credits" value="#HTMLEditFormat(rc.contentBean.getCredits())#"  maxlength="255" class="span12"></div>
 			    </div> <!--- /end control-group --->
-				
-				<cfif application.settingsManager.getSite(rc.siteid).getextranet()>
-					<div class="control-group">
-			      	<div class="controls"><label for="Restricted" class="checkbox"><input name="restricted" id="Restricted" type="checkbox" value="1"  onclick="javascript: this.checked?toggleDisplay2('rg',true):toggleDisplay2('rg',false);" <cfif rc.contentBean.getrestricted() eq 1>checked </cfif> class="checkbox">
-					#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictaccess')#</label>
+					
+		<cfif application.settingsManager.getSite(rc.siteid).getextranet()>
+		<div class="control-group">
+	      	<div class="controls">
+				      	<label for="Restricted" class="checkbox"><input name="restricted" id="Restricted" type="checkbox" value="1"  onclick="javascript: this.checked?toggleDisplay2('rg',true):toggleDisplay2('rg',false);" <cfif rc.contentBean.getrestricted() eq 1>checked </cfif> class="checkbox">
+						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictaccess')#
+						</label>
 					</div> 
-			      	<div class="controls"id="rg"<cfif rc.contentBean.getrestricted() NEQ 1> style="display:none;"</cfif>>
-					<select name="restrictgroups" size="8" multiple="multiple" class="multiSelect" id="restrictGroups">
-					<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.globalsettings'))#">
-					<option value="" <cfif rc.contentBean.getrestrictgroups() eq ''>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.allowall')#</option>
-					<option value="RestrictAll" <cfif rc.contentBean.getrestrictgroups() eq 'RestrictAll'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictall')#</option>
-					</optgroup>
-					<cfquery dbtype="query" name="rsGroups">select * from rc.rsrestrictgroups where isPublic=1</cfquery>	
-					<cfif rsGroups.recordcount>
-						<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'user.membergroups'))#">
-						<cfloop query="rsGroups">
-							<option value="#rsGroups.groupname#" <cfif listfind(rc.contentBean.getrestrictgroups(),rsGroups.groupname)>Selected</cfif>>#rsGroups.groupname#</option>
-						</cfloop>
+	      	<div class="controls"id="rg"<cfif rc.contentBean.getrestricted() NEQ 1> style="display:none;"</cfif>>
+						<select name="restrictgroups" size="8" multiple="multiple" class="multiSelect" id="restrictGroups">
+						<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.globalsettings'))#">
+						<option value="" <cfif rc.contentBean.getrestrictgroups() eq ''>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.allowall')#</option>
+						<option value="RestrictAll" <cfif rc.contentBean.getrestrictgroups() eq 'RestrictAll'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictall')#</option>
 						</optgroup>
-					</cfif>
-					<cfquery dbtype="query" name="rsGroups">select * from rc.rsrestrictgroups where isPublic=0</cfquery>	
-					<cfif rsGroups.recordcount>
-						<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'user.adminusergroups'))#">
-						<cfloop query="rsGroups">
-							<option value="#rsGroups.groupname#" <cfif listfind(rc.contentBean.getrestrictgroups(),rsGroups.groupname)>Selected</cfif>>#rsGroups.groupname#</option>
-						</cfloop>
-						</optgroup>
-					</cfif>
-					</select>
+						<cfquery dbtype="query" name="rsGroups">select * from rc.rsrestrictgroups where isPublic=1</cfquery>	
+						<cfif rsGroups.recordcount>
+							<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'user.membergroups'))#">
+							<cfloop query="rsGroups">
+								<option value="#rsGroups.groupname#" <cfif listfind(rc.contentBean.getrestrictgroups(),rsGroups.groupname)>Selected</cfif>>#rsGroups.groupname#</option>
+							</cfloop>
+							</optgroup>
+						</cfif>
+						<cfquery dbtype="query" name="rsGroups">select * from rc.rsrestrictgroups where isPublic=0</cfquery>	
+						<cfif rsGroups.recordcount>
+							<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'user.adminusergroups'))#">
+							<cfloop query="rsGroups">
+								<option value="#rsGroups.groupname#" <cfif listfind(rc.contentBean.getrestrictgroups(),rsGroups.groupname)>Selected</cfif>>#rsGroups.groupname#</option>
+							</cfloop>
+							</optgroup>
+						</cfif>
+						</select>
 					</div>
-			    </div> <!--- /end control-group --->
-			</cfif>
+      	</div> <!--- /end control-group --->
+    </cfif>
 
   		<div class="control-group">
 		     <div class="controls">
-		      	<label for="isNav" class="checkbox">
+		      	<label for="isNav" class="checkbox inline">
 		      		<input name="isnav" id="isNav" type="CHECKBOX" value="1" <cfif rc.contentBean.getisnav() eq 1 or rc.contentBean.getisNew() eq 1>checked</cfif> class="checkbox"> 
 		      		<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.includeSiteNav"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.isnav')#
 		      		 <i class="icon-info-sign"></i></a>
@@ -80,10 +80,10 @@
 	      	<div class="controls">
 				<input type="text" class="datepicker span3" name="releaseDate" value="#LSDateFormat(rc.contentBean.getreleasedate(),session.dateKeyFormat)#"  maxlength="12" >
 				<select name="releasehour" class="time"><cfloop from="1" to="12" index="h"><option value="#h#" <cfif not LSisDate(rc.contentBean.getReleaseDate())  and h eq 12 or (LSisDate(rc.contentBean.getReleaseDate()) and (hour(rc.contentBean.getReleaseDate()) eq h or (hour(rc.contentBean.getReleaseDate()) - 12) eq h or hour(rc.contentBean.getReleaseDate()) eq 0 and h eq 12))>selected</cfif>>#h#</option></cfloop></select>
-				<select name="releaseMinute" class="time"><cfloop from="0" to="59" index="m"><option value="#m#" <cfif LSisDate(rc.contentBean.getReleaseDate()) and minute(rc.contentBean.getReleaseDate()) eq m>selected</cfif>>#iif(len(m) eq 1,de('0#m#'),de('#m#'))#</option></cfloop></select>
-				<select name="releaseDayPart" class="time"><option value="AM">AM</option><option value="PM" <cfif LSisDate(rc.contentBean.getReleaseDate()) and hour(rc.contentBean.getReleaseDate()) gte 12>selected</cfif>>PM</option></select>
-			</div>
-		</div> <!--- /end control-group --->
+					<select name="releaseMinute" class="time"><cfloop from="0" to="59" index="m"><option value="#m#" <cfif LSisDate(rc.contentBean.getReleaseDate()) and minute(rc.contentBean.getReleaseDate()) eq m>selected</cfif>>#iif(len(m) eq 1,de('0#m#'),de('#m#'))#</option></cfloop></select>
+					<select name="releaseDayPart" class="time"><option value="AM">AM</option><option value="PM" <cfif LSisDate(rc.contentBean.getReleaseDate()) and hour(rc.contentBean.getReleaseDate()) gte 12>selected</cfif>>PM</option></select>
+					</div>
+				</div> <!--- /end control-group --->
 	</cfif>	
 		
 	<cfif ((rc.parentid neq '00000000000000000000000000000000001' and application.settingsManager.getSite(rc.siteid).getlocking() neq 'all') or (rc.parentid eq '00000000000000000000000000000000001' and application.settingsManager.getSite(rc.siteid).getlocking() eq 'none')) and rc.contentid neq '00000000000000000000000000000000001'>
@@ -102,20 +102,14 @@
 					<option value="2"  <cfif  bydate> selected</CFIF>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.perstopstart')#</option>
 				</select>
 			</div>
-			<div class="controls" id="editDates" <cfif  not bydate>style="display: none;"</cfif>>
-				<div class="control-group">
-					<label class="control-label">
-					#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startdatetime')#
-					</label>
+			<div id="editDates" <cfif  not bydate>style="display: none;"</cfif>>
+					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startdatetime')#</label>
 					<div class="controls">
 						<input type="text" name="displayStart" value="#LSDateFormat(rc.contentBean.getdisplaystart(),session.dateKeyFormat)#" class="textAlt datepicker">
 						<select name="starthour" class="time"><cfloop from="1" to="12" index="h"><option value="#h#" <cfif not LSisDate(rc.contentBean.getdisplaystart())  and h eq 12 or (LSisDate(rc.contentBean.getdisplaystart()) and (hour(rc.contentBean.getdisplaystart()) eq h or (hour(rc.contentBean.getdisplaystart()) - 12) eq h or hour(rc.contentBean.getdisplaystart()) eq 0 and h eq 12))>selected</cfif>>#h#</option></cfloop></select>
 						<select name="startMinute" class="time"><cfloop from="0" to="59" index="m"><option value="#m#" <cfif LSisDate(rc.contentBean.getdisplaystart()) and minute(rc.contentBean.getdisplaystart()) eq m>selected</cfif>>#iif(len(m) eq 1,de('0#m#'),de('#m#'))#</option></cfloop></select>
-						<select name="startDayPart"><option value="AM">AM</option><option value="PM" <cfif LSisDate(rc.contentBean.getdisplaystart()) and hour(rc.contentBean.getdisplaystart()) gte 12>selected</cfif>>PM</option></select>
-					</div>
-				</div>
-
-				<div class="control-group">
+						<select name="startDayPart" class="time"><option value="AM">AM</option><option value="PM" <cfif LSisDate(rc.contentBean.getdisplaystart()) and hour(rc.contentBean.getdisplaystart()) gte 12>selected</cfif>>PM</option></select>
+					</div>			
 					<label class="control-label">
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.stopdatetime')#
 					</label>
@@ -125,13 +119,11 @@
 						<select name="stopMinute" class="time"><cfloop from="0" to="59" index="m"><option value="#m#" <cfif (not LSisDate(rc.contentBean.getdisplaystop()) and m eq 59) or (LSisDate(rc.contentBean.getdisplaystop()) and minute(rc.contentBean.getdisplaystop()) eq m)>selected</cfif>>#iif(len(m) eq 1,de('0#m#'),de('#m#'))#</option></cfloop></select>
 						<select name="stopDayPart" class="time"><option value="AM">AM</option><option value="PM" <cfif (LSisDate(rc.contentBean.getdisplaystop()) and (hour(rc.contentBean.getdisplaystop()) gte 12)) or not LSisDate(rc.contentBean.getdisplaystop())>selected</cfif>>PM</option></select>
 					</div>
-				</div>
-				<div class="control-group">
 					<label class="control-label">
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayInterval')#
 					</label>
 					<div class="controls">
-						<select name="displayInterval" class="time">
+						<select name="displayInterval" class="span2">
 							<cfloop list="Daily,Weekly,Bi-Weekly,Monthly,WeekDays,WeekEnds,Week1,Week2,Week3,Week4,WeekLast" index="i">
 							<option value="#i#"<cfif rc.contentBean.getDisplayInterval() eq i> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.displayInterval.#i#')#</option>
 							</cfloop>
@@ -139,7 +131,6 @@
 					</div>
 				</div>
 			</div>
-		</div> <!--- /end control-group --->
 		
 		<cfif rc.type neq 'Component' and application.settingsManager.getSite(rc.siteid).getlocking() neq 'all' and rc.type neq 'Form'>
 			<div class="control-group">
