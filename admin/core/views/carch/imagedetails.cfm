@@ -59,7 +59,7 @@
 				<h2><i class="icon-picture"></i> #HTMLEditFormat(rc.rsMeta.filename)#</h2>
 				<cfloop list="Small,Medium,Large" index="s">
 					<div class="control-group divide">
-						<label class="control-label">#s# (#$.siteConfig('#s#ImageHeight')#x#$.siteConfig('#s#ImageWidth')#)</label>
+						<label class="control-label">#s# (#$.siteConfig('#s#ImageWidth')#x#$.siteConfig('#s#ImageHeight')#)</label>
 						<div class="controls">
 							<div id="#lcase(s)##f#btns" class="btn-group">
 								<button type="button" class="btn btn-small cropper-reset" data-fileid="#f#" data-size="#lcase(s)#"><i class="icon-refresh"></i> Reset</button>
@@ -79,7 +79,7 @@
 						<cfset rc.customImageRatio=''>
 					</cfif>
 					<div class="control-group divide">
-						<label class="control-label">#HTMLEditFormat(customImage.getName())# (#customImage.getHeight()#x#customImage.getWidth()#)</label>
+						<label class="control-label">#HTMLEditFormat(customImage.getName())# (#customImage.getWidth()#x#customImage.getHeight()#)</label>
 						<div class="controls">
 							<div id="#lcase(customImage.getName())##f#btns" class="btn-group">
 								<button type="button" class="btn btn-small cropper-reset" data-fileid="#f#" data-size="#lcase(customImage.getName())#"><i class="icon-refresh"></i> Reset</button>
