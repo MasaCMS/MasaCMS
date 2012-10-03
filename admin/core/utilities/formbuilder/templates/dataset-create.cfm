@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <span>
 		<div id="dataset-create" class="mura-template-form">
-			<h3>#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.form')#: <span id="mura-template-form-label"></span></h3>
+			<h2>#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.form')#: <span id="mura-template-form-label"></span></h2>
 					<ul class="template-form">
 						<li>
 							<label for="dataset">#mmRBF.getKeyValue(session.rb,'formbuilder.dataset')#</label>

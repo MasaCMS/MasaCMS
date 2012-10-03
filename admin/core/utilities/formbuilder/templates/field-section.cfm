@@ -47,9 +47,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput><span>
 		<div class="mura-tb-form" id="formblock-${fieldid}">
 			<div class="mura-tb-header">
-				<h3><!---#mmRBF.getKeyValue(session.rb,'formbuilder.field.section')#:---> <span id="mura-tb-form-label"></span></h3>
+				<h2><!---#mmRBF.getKeyValue(session.rb,'formbuilder.field.section')#:---> <span id="mura-tb-form-label"></span></h2>
 				<ul class="mura-tb-nav-utility">
-					<li><div class="ui-button" id="button-trash" title="#mmRBF.getKeyValue(session.rb,'formbuilder.delete')#"></div></li>
+					<li><div id="button-trash" title="#mmRBF.getKeyValue(session.rb,'formbuilder.delete')#"></div></li>
 				</ul>
 			</div>
 			<ul class="template-form">

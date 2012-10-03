@@ -672,9 +672,9 @@
 
 			$_gridhead.append($row);
 
-			jQuery(".mura-tb-cell-input",$row).each( function() {
-				jQuery(this).width( (480/(settings.dataColumns.length+2)) );
-			});
+			//jQuery(".mura-tb-cell-input",$row).each( function() {
+			//	jQuery(this).width( (480/(settings.dataColumns.length+2)) );
+			//});
 		}
 		
 		function doAddRecord() {
