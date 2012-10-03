@@ -81,7 +81,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<a class="btn" href="index.cfm?muraAction=cPerm.main&contentid=#URLEncodedFormat(rc.contentid)#&type=Form&parentid=00000000000000000000000000000000004&topid=00000000000000000000000000000000004&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=00000000000000000000000000000000004&startrow=#rc.startrow#"><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.permissions')#</a>
 				</cfif>
 			</cfcase>
-				<cfcase value="edit">
+				<cfcase value="edit,update">
 					<a class="btn" href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&topid=#rc.moduleID#&parentid=#rc.moduleID#&moduleid=#rc.moduleID#"><i class="icon-circle-arrow-left"></i> 
 					<cfif rc.moduleid eq "00000000000000000000000000000000003">
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.backtocomponents')#
