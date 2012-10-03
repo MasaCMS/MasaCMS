@@ -33,8 +33,9 @@ Lazarus contentServer Sitemap
 	<cfset variables.menuType="CalendarMonth">
 </cfif>
 
-<cfif not isNumeric(variables.$.event('month'))>
-	<cfset variables.$.event('year',month(now()))>
+<cfif not isNumeric(variables.$.event('month')) 
+	or (isNumeric(variables.$.event('month')) and variables.$.event('month') gt 12)>
+	<cfset variables.$.event('month',month(now()))>
 </cfif>
 
 <cfif not isNumeric(variables.$.event('year'))>

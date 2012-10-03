@@ -110,8 +110,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelse>
 			<cfset arguments.Width = trim(replaceNoCase(arguments.Width,"px","","all")) />
 			<cfset arguments.Height = trim(replaceNoCase(arguments.Height,"px","","all")) />
-			<cfset NewImageSource = "#OriginalImageFilename#_H#arguments.Height#_W#arguments.Width#.#OriginalImageType#" />
-			<cfset NewImageLocal = Replace(OriginalImageFile, ".#OriginalImageType#", "_H#arguments.height#_W#arguments.width#.#OriginalImageType#") />		
+			<cfset NewImageSource = "#OriginalImageFilename#_W#arguments.Width#_H#arguments.Height#.#OriginalImageType#" />
+			<cfset NewImageLocal = Replace(OriginalImageFile, ".#OriginalImageType#", "_W#arguments.width#_H#arguments.height#.#OriginalImageType#") />		
 		</cfif>
 	</cfif>
 	
