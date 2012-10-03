@@ -128,6 +128,7 @@ var extendManager={
 			$(".subTypeContainer").hide();
 			$(".hasSummaryContainer").hide();
 			$(".hasBodyContainer").hide();
+			$(".availableSubTypesContainer").hide();
 		} else if(dataArray[0]=="Site"){
 			$(".subTypeContainer").hide();
 			$(".hasSummaryContainer").hide();
@@ -141,20 +142,24 @@ var extendManager={
 			$(".subTypeContainer").show();
 			$(".hasSummaryContainer").hide();
 			$(".hasBodyContainer").hide();
+			$(".availableSubTypesContainer").hide();
 		} else if(dataArray[0]=="File" 
 			|| dataArray[0]=="Link"){
 			$(".subTypeContainer").show();
 			$(".hasSummaryContainer").show();
 			$(".hasBodyContainer").hide();
+			$(".availableSubTypesContainer").show();
 		} else if(dataArray[0]=="Component" 
 			|| dataArray[0]=="Form"){
 			$(".subTypeContainer").show();
 			$(".hasSummaryContainer").hide();
 			$(".hasBodyContainer").show();
+			$(".availableSubTypesContainer").hide();
 		} else {
 			$(".subTypeContainer").show();
 			$(".hasSummaryContainer").show();
 			$(".hasBodyContainer").show();
+			$(".availableSubTypesContainer").show();
 		}
 		
 	}

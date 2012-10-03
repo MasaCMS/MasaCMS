@@ -1,9 +1,12 @@
 
 <cfscript>
-	dbUtility.setTable("tclassextend").addColumn(column="description",datatype="longtext");
+	dbUtility.setTable("tclassextend").addColumn(column="description",datatype="longtext")
+	.addColumn(column="availableSubTypes",datatype="longtext");
+
 	dbUtility.setTable("tsettings")
 		.addColumn(column="enforcePrimaryDomain",datatype="tinyint",default=0)
 		.addColumn(column="enforceChangesets",datatype="tinyint",default=0);
+
 
 	local.hasSmall=dbUtility.columnExists("smallImageHeight");
 
