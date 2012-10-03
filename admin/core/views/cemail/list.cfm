@@ -79,10 +79,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  <div id="filterView" class="row-fluid">
 	  <h2>#application.rbFactory.getKeyValue(session.rb,"email.emails")#</h2></cfoutput>
 
-<form novalidate="novalidate" action="index.cfm?muraAction=cEmail.list&siteid=<cfoutput>#rc.siteid#</cfoutput>" method="post" name="form1" id="advancedSearch" class="container">
+<form novalidate="novalidate" action="index.cfm?muraAction=cEmail.list&siteid=<cfoutput>#rc.siteid#</cfoutput>" method="post" name="form1" id="advancedSearch" class="fieldset-wrap">
 
-<div class="row-fluid">
-	<div class="control-group span2">
+<div class="fieldset">
+	<div class="control-group">
+		<div class="span3">
 	      <label class="control-label">
 	      	<cfoutput>#application.rbFactory.getKeyValue(session.rb,"email.filterby")#:
 	      </label>
@@ -117,35 +118,38 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		  </select>
 	      </div>
-	    </div><cfoutput>
+	    </div>
+<cfoutput>
 
-<div class="control-group span3 offset1">
-      <label class="control-label">
-      	#application.rbFactory.getKeyValue(session.rb,'email.status')#
-      </label>
-      <div class="controls">
-      <label class="radio inline">
-      <input type="radio"  name="status" value="2"  <cfif session.emaillist.status eq 2>checked</cfif>> 
-      <span class="text">#application.rbFactory.getKeyValue(session.rb,'email.all')#</span> 
-      </label>
-      <label class="radio inline">
-      <input type="radio"  name="status" value="1" <cfif session.emaillist.status eq 1>checked</cfif>> 
-      <span class="text">#application.rbFactory.getKeyValue(session.rb,'email.sent')#</span> 
-      </label>
-       <label class="radio inline">
-       	<input type="radio"  name="status" value="0"  <cfif session.emaillist.status eq 0>checked</cfif>> 
-       <span class="text">#application.rbFactory.getKeyValue(session.rb,'email.queued')#</span>
-   		</label>
-      </div>
+	<div class="span3">
+	      <label class="control-label">
+	      	#application.rbFactory.getKeyValue(session.rb,'email.status')#
+	      </label>
+	      <div class="controls">
+	      <label class="radio inline">
+	      <input type="radio"  name="status" value="2"  <cfif session.emaillist.status eq 2>checked</cfif>> 
+	      <span class="text">#application.rbFactory.getKeyValue(session.rb,'email.all')#</span> 
+	      </label>
+	      <label class="radio inline">
+	      <input type="radio"  name="status" value="1" <cfif session.emaillist.status eq 1>checked</cfif>> 
+	      <span class="text">#application.rbFactory.getKeyValue(session.rb,'email.sent')#</span> 
+	      </label>
+	       <label class="radio inline">
+	       	<input type="radio"  name="status" value="0"  <cfif session.emaillist.status eq 0>checked</cfif>> 
+	       <span class="text">#application.rbFactory.getKeyValue(session.rb,'email.queued')#</span>
+	   		</label>
+	      </div>
+	</div>
 </div>
-</div>
+	
+	<div class="control-group">
+	      <label class="control-label">
+	      	#application.rbFactory.getKeyValue(session.rb,'email.subject')# <span>(#application.rbFactory.getKeyValue(session.rb,'email.leaveblanktoviewall')#)</span>
+	  	  </label>
+	      <div class="controls"><input type="text"  name="subject" value="#session.emaillist.subject#" class="span6">
+	      </div>
+	</div>
 
-<div class="control-group row-fluid">
-      <label class="control-label">
-      	#application.rbFactory.getKeyValue(session.rb,'email.subject')# <span>(#application.rbFactory.getKeyValue(session.rb,'email.leaveblanktoviewall')#)</span>
-  	  </label>
-      <div class="controls"><input type="text"  name="subject" value="#session.emaillist.subject#" class="span6">
-      </div>
 </div>
 
 <input type="hidden" name="doSearch" value="true"/>
@@ -156,7 +160,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 
 </cfoutput>
-<div class="separate"></div>
 	  <table id="metadata" class="table table-striped table-condensed table-bordered mura-table-grid">
         <tr> 
 		  <cfset subjectDirection = "asc">

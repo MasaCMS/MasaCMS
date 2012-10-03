@@ -51,11 +51,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfinclude template="dsp_secondary_menu.cfm">
 
-<h3 class="alt">#application.rbFactory.getKeyValue(session.rb,"email.filterbynumberofbounces")#:</h3>
-<div id="advancedSearch" class="clearfix bounces">
-<form class="form-inline" novalidate="novalidate" action="index.cfm?muraAction=cEmail.showAllBounces" method="post" name="form1" id="filterBounces">
 
- <select name="bounceFilter">
+<form class="form-inline form-well" novalidate="novalidate" action="index.cfm?muraAction=cEmail.showAllBounces" method="post" name="form1" id="filterBounces">
+<h2>#application.rbFactory.getKeyValue(session.rb,"email.filterbynumberofbounces")#:</h2>
+ <select name="bounceFilter" class="span1">
 	<option value="">#application.rbFactory.getKeyValue(session.rb,"email.all")#</option>
 	<cfloop from="1" to="5" index="i">
 	  <option value="#i#"<cfif isDefined('rc.bounceFilter') and rc.bounceFilter eq i> selected</cfif>>#i#</option>
@@ -63,21 +62,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  </select>
 
 <input type="button" class="submit btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,"email.filter")#" />
-
-
 <cfoutput>			  
 	<input type="hidden" name="siteID" value="#rc.siteid#">
 </cfoutput>
 
 </form>
-</div>
-
-	<div class="separate"></div>
-	<h3 >#application.rbFactory.getKeyValue(session.rb,"email.emailaddressbounces")#</h3>
 </cfoutput>
 
 <cfif rc.rsBounces.recordcount>
-
+<h2>#application.rbFactory.getKeyValue(session.rb,"email.emailaddressbounces")#</h2>
 	<cfset bouncedEmailList = "">
 
 	<form novalidate="novalidate" action="index.cfm?muraAction=cEmail.deleteBounces" method="post" name="form2" id="bounces">

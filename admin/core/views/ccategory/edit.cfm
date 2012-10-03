@@ -64,7 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     #application.rbFactory.getKeyValue(session.rb,'categorymanager.name')#
   </label>
   <div class="controls">
-    <input name="name" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'categorymanager.namerequired')#" value="#HTMLEditFormat(rc.categoryBean.getName())#" maxlength="50">
+    <input type="text" name="name" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'categorymanager.namerequired')#" value="#HTMLEditFormat(rc.categoryBean.getName())#" maxlength="50">
   </div>
 </div>
 
@@ -73,12 +73,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     #application.rbFactory.getKeyValue(session.rb,'categorymanager.urltitle')#
   </label>
   <div class="controls">
-    <input name="urltitle" class="span12" value="#HTMLEditFormat(rc.categoryBean.getURLTitle())#" maxlength="255">
+    <input type="text" name="urltitle" class="span12" value="#HTMLEditFormat(rc.categoryBean.getURLTitle())#" maxlength="255">
   </div>
 </div>
 
 <div class="control-group">
-<div class="span3">  <label class="control-label">
+<div class="span6">
+<label class="control-label">
     #application.rbFactory.getKeyValue(session.rb,'categorymanager.parentcategory')#
   </label>
   <div class="controls">
@@ -86,9 +87,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <option value="">#application.rbFactory.getKeyValue(session.rb,'categorymanager.primary')#</option>
      <cf_dsp_parents siteID="#rc.siteID#" categoryID="#rc.categoryID#" parentID="" actualParentID="#rc.parentID#" nestLevel="1" >
       </select>
-    </div></div>
+    </div>
+</div>
 
-<div class="span3">
+<div class="span6">
   <label class="control-label">
     CategoryID
   </label>
@@ -134,7 +136,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   
   
   
-<div class="span3">  <label class="control-label">Active?</label>
+<div class="span6">  <label class="control-label">Active?</label>
   <div class="controls">
   	<label class="radio inline" for="isActiveYes">
       <input name="isActive" id="isActiveYes" type="radio" value="1" <cfif rc.categoryBean.getIsActive()>checked</cfif>> 
@@ -154,7 +156,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictaccess')#
   </label>
   <div class="controls">
-    	<select name="restrictgroups" size="8" multiple="multiple" id="restrictGroups" class="span12">
+    	<select name="restrictgroups" size="8" multiple="multiple" id="restrictGroups" class="span4">
 	       <optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.globalsettings'))#">
 	       <option value="" <cfif rc.categoryBean.getrestrictgroups() eq ''>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.allowall')#</option>
 	       <option value="RestrictAll" <cfif rc.categoryBean.getrestrictgroups() eq 'RestrictAll'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictall')#</option>	
