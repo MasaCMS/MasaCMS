@@ -114,39 +114,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div> 
 	</div>
 </cfif>
-
-<div class="control-group">
-	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notification')#</label>
-	<div class="controls">
-		<label for="dspnotify" class="checkbox">
-		<input type="checkbox" name="dspNotify"  id="dspnotify" onclick="loadNotify('#rc.siteid#','#rc.contentid#','#rc.parentid#');"  class="checkbox"> 
-				<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.notifyReview"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notifyforreview')# <i class="icon-info-sign"></i></a></label>
-	</div>
-	<div class="controls" id="selectNotify" style="display: none;"></div>
-</div>
-	
-<input type="hidden" name="displayStart" value="">
-<input type="hidden" name="displayStop" value="">
-<input type="hidden" name="display" value="1">
-<input type="hidden" name="parentid" value="#rc.parentid#">
-	
-<div class="control-group">
-	<label class="control-label">
-		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.addnotes')#
-		<a href="##" id="editNoteLink" onclick="javascript: toggleDisplay('editNote','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');return false">
-			[#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#]
-		</a>
-	</label>
-	<div class="controls" id="editNote" style="display: none;">
-		<textarea name="notes" rows="6" class="span6" id="abstract"></textarea>	
-	</div>
 </div>
 </div>
-</div>
-<cfif application.configBean.getValue("htmlEditorType") neq "none" and rc.contentBean.getSummary() neq '' and rc.contentBean.getSummary() neq "<p></p>">
-	<script>
-	toggleDisplay('editSummary','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');
-	editSummary();
-	</script>
-</cfif>
 </cfoutput>

@@ -65,7 +65,7 @@ select * from rsSubTypes where subType <> 'Default'
 <cfset tabList=listAppend(tabList,"tabAdvanced")>
 </cfsilent>
 <cfoutput><form novalidate="novalidate" action="index.cfm?muraAction=cPublicUsers.update&userid=#URLEncodedFormat(rc.userid)#&routeid=#rc.routeid#&siteid=#URLEncodedFormat(rc.siteid)#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);"  autocomplete="off" >
-	<h1>#application.rbFactory.getKeyValue(session.rb,'user.memberuserform')#</h1>
+	<h1>#application.rbFactory.getKeyValue(session.rb,'user.memberform')#</h1>
 	
 	<div id="nav-module-specific" class="btn-group">
 	<a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-circle-arrow-left"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
