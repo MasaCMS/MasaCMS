@@ -303,6 +303,7 @@ select * from rsSubTypes where subType <> 'Default'
 			<em>#application.rbFactory.getKeyValue(session.rb,'user.noaddressinformation')#</em>
 			</cfif>
 		</cfif>
+	</div>
 </div>		
 </div>
 

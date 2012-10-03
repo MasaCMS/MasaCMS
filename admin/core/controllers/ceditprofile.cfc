@@ -81,6 +81,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="arguments.rc.categoryID" default="" />
 	<cfparam name="arguments.rc.routeID" default="" />
 	<cfparam name="arguments.rc.error" default="#structnew()#" />
+	<cfparam name="arguments.rc.returnurl" default="" />
 	
 	<cfif not session.mura.isLoggedIn>
 		<cfset secure(arguments.rc)>

@@ -304,6 +304,7 @@ select * from rsSubTypes where subType <> 'Default'
 		</cfif>
 		</div>		
 </div>
+</div>
 
 <div id="tabGroupmemberships" class="tab-pane fade">
 <div class="fieldset">
