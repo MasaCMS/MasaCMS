@@ -70,7 +70,13 @@ var draftremovalnotice=<cfif application.configBean.getPurgeDrafts() and event.g
 <cfif rc.compactDisplay neq "true" and application.configBean.getConfirmSaveAsDraft()><script>
 siteManager.requestedURL="";
 siteManager.formSubmitted=false;
-onload=function(){
+<cfoutput>
+function setRequestedURL(){
+	siteManager.requestedURL=this.href
+	return conditionalExit("#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.saveasdraft"))#");
+}</cfoutput>
+
+$(document).ready(function(){
 	var anchors=document.getElementsByTagName("A");
 	
 	for(var i=0;i<anchors.length;i++){	
@@ -81,14 +87,14 @@ onload=function(){
 		}
 	}
 	
-}
+});
 
-onunload=function(){
-	if(!siteManager.formSubmitted && vrequestedURL != '')
+$(document).unload(function(){
+	if(!siteManager.formSubmitted && siteManager.requestedURL != '')
 	{
 		conditionalExit();
 	}
-}
+});
 
 function conditionalExit(msg){
 	if(siteManager.form_is_modified(document.contentForm)){
@@ -104,7 +110,7 @@ function conditionalExit(msg){
 				'Yes': function() {
 					jQuery(this).dialog('close');
 					if(siteManager.ckContent()){
-						document.getElementById('contentForm').returnURL.value=requestedURL;
+						document.getElementById('contentForm').returnURL.value=siteManager.requestedURL;
 						submitForm(document.contentForm,'add');
 						}
 						return false;
@@ -120,16 +126,11 @@ function conditionalExit(msg){
 		return false;	
 		
 	} else {
-		requestedURL="";
+		siteManager.requestedURL="";
 		return true;	
 	}
 
 }
-<cfoutput>
-function setRequestedURL(){
-	requestedURL=this.href
-	return conditionalExit("#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.saveasdraft"))#");
-}</cfoutput>
 </script>
 <cfelseif rc.compactDisplay eq "true">
 <script type="text/javascript">
