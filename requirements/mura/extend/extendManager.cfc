@@ -1351,6 +1351,10 @@ and tclassextendattributes.type='File'
 				subType.setDescription( extXML.xmlAttributes.description );
 			}
 
+			if(isDefined("extXML.xmlAttributes.availableSubTypes")){
+				subType.setDescription( extXML.xmlAttributes.availableSubTypes );
+			}
+
 			if(isDefined("extXML.xmlAttributes.hassummary")){
 				subType.setHasSummary( extXML.xmlAttributes.hassummary );
 			}
