@@ -97,6 +97,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
 		<cfset variables.pluginManager.announceEvent("onBeforeFileCache",pluginEvent)>
 		
+		<cfset arguments.fileExt=lcase(arguments.fileExt)>
+		
 		<cfswitch expression="#variables.configBean.getFileStore()#">
 			<cfcase value="fileDir">		
 				<cfif isBinary(arguments.fileObj)>
