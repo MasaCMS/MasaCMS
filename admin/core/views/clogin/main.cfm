@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfset isBlocked=false />
-<div id="login">
+<div id="login" class="span12">
 <cfoutput>
 <h1>#application.rbFactory.getKeyValue(session.rb,'login.pleaselogin')#</h1>
 <cfif rc.status eq 'denied'>
@@ -71,7 +71,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	    	#application.rbFactory.getKeyValue(session.rb,'login.username')#
 	    </label>--->
 	    <div class="input-prepend">
-	      <span class="add-on"><i class="icon-user"></i></span><input id="username" name="username" type="text" class="text" placeholder="#application.rbFactory.getKeyValue(session.rb,'login.username')#">
+	      <span class="add-on"><i class="icon-user"></i></span><input id="username" name="username" type="text" class="span11" placeholder="#application.rbFactory.getKeyValue(session.rb,'login.username')#">
 	    </div>
 	 <!---</div>--->
 
@@ -80,7 +80,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	      	#application.rbFactory.getKeyValue(session.rb,'login.password')#
 	 	</label>--->
 	    <div class="input-prepend">
-	      	<span class="add-on"><i class="icon-key"></i></span><input id="password" type="password" name="password" class="text" onKeyPress="checkKeyPressed(event, 'loginForm')"  placeholder="#application.rbFactory.getKeyValue(session.rb,'login.password')#">
+	      	<span class="add-on"><i class="icon-key"></i></span><input id="password" type="password" name="password" class="span11" onKeyPress="checkKeyPressed(event, 'loginForm')"  placeholder="#application.rbFactory.getKeyValue(session.rb,'login.password')#">
 	  	</div>
 	<!---</div>--->
 
@@ -98,17 +98,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<option value="es"<cfif cookie.rb eq "es"> selected</cfif>>Spanish</option>
 				<!---<option value="es">Spanish</option>--->
 			</select>
-		</div>
-	</div>
 
 	<div id="remember-me">
 	      	<input type="checkbox" id="rememberMe" name="rememberMe" value="1" />
 	     	<label for="rememberMe">#application.rbFactory.getKeyValue(session.rb,'login.rememberme')#
 	      	</label>
 	</div>
+		</div>
+	</div>
 
 	<div class="form-actions">
-		<input type="submit" class="submit btn" value="#application.rbFactory.getKeyValue(session.rb,'login.login')#" />
+		<input type="submit" class="btn" value="#application.rbFactory.getKeyValue(session.rb,'login.login')#" />
 	</div>
 
 	<input name="returnUrl" type="hidden" value="#HTMLEditFormat(rc.returnURL)#">
@@ -118,7 +118,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </form>
 </div>
 
-	<form novalidate="novalidate" id="sendLogin" name="sendLogin" method="post" action="index.cfm?muraAction=cLogin.main" onsubmit="return submitForm(this);">
+	<form novalidate="novalidate" class="span12" id="sendLogin" name="sendLogin" method="post" action="index.cfm?muraAction=cLogin.main" onsubmit="return submitForm(this);">
 	
 	<div class="control-group">
       	<label class="control-label">
@@ -140,7 +140,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</p>
 			<div class="input-prepend">
-			  	<span class="add-on"><i class="icon-envelope"></i></span><input id="email" name="email" type="text" class="text"  onKeyPress="checkKeyPressed(event, 'sendLogin')" placeholder="Email Address" />
+			  	<span class="add-on"><i class="icon-envelope"></i></span><input id="email" name="email" type="text" class="span11"  onKeyPress="checkKeyPressed(event, 'sendLogin')" placeholder="Email Address" />
 			</div>
 		</div>
 	</div>
