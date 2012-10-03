@@ -99,7 +99,7 @@ function conditionalExit(msg){
 	jQuery("#alertDialog").dialog({
 			resizable: false,
 			modal: true,
-			position: siteManager.getDialogPosition(),
+			position: getDialogPosition(),
 			buttons: {
 				'Yes': function() {
 					jQuery(this).dialog('close');
