@@ -259,7 +259,7 @@ select * from rsSubTypes where subType <> 'Default'
 		
 	<div class="control-group">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.hours')#</label>
-      <div class="controls"><textarea id="hours" name="hours" rows="6" class="span12">#HTMLEditFormat(rc.hours)#</textarea></div>
+      <div class="controls"><textarea id="hours" name="hours" rows="6" class="span6">#HTMLEditFormat(rc.hours)#</textarea></div>
     </div>
 
 	<input type="hidden" name="isPrimary" value="1" />
@@ -348,13 +348,18 @@ select * from rsSubTypes where subType <> 'Default'
 	<div id="tabAdvanced" class="tab-pane fade">
 	<div class="fieldset">
 		<div class="control-group">
-		<div class="span4">
-      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.emailbroadcaster')#</label>
-      <div class="controls"><label class="radio inline"><input name="subscribe" type="radio" class="radio" value="1"<cfif rc.userBean.getsubscribe() eq 1>Checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'user.yes')#</label><label class="radio inline"><input name="subscribe" type="radio" class="radio" value="0"<cfif rc.userBean.getsubscribe() eq 0>Checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'user.no')#</label>
-  		</div>
-  	</div>
-		
-  	<div class="span3">
+	
+	<cfif listFind(session.mura.memberships,'S2') or listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0')>
+
+	<div class="span4">
+      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.usertype')#</label>
+      	<div class="controls">
+	      	<label class="radio inline"><input name="switchToPrivate" type="radio" value="1"> #application.rbFactory.getKeyValue(session.rb,'user.administrative')#</label>
+	      	<label class="radio inline"><input name="switchToPrivate" type="radio" value="0" Checked> #application.rbFactory.getKeyValue(session.rb,'user.sitemember')#</label>
+	    </div>
+	</div>
+	</cfif>
+	<div class="span3">
      	 <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.inactive')#</label>
      	 <div class="controls">
 				<cfif application.settingsManager.getSite(rc.siteid).getAccountActivationScript() neq '' and rc.userID neq '' and rc.userBean.getInActive() eq 1>
@@ -370,7 +375,14 @@ select * from rsSubTypes where subType <> 'Default'
 				</cfif>
 		</div>
 	</div>
-</div>
+
+		<div class="span4">
+      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.emailbroadcaster')#</label>
+      <div class="controls"><label class="radio inline"><input name="subscribe" type="radio" class="radio" value="1"<cfif rc.userBean.getsubscribe() eq 1>Checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'user.yes')#</label><label class="radio inline"><input name="subscribe" type="radio" class="radio" value="0"<cfif rc.userBean.getsubscribe() eq 0>Checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'user.no')#</label>
+  		</div>
+  	</div>
+	
+  	</div>
 		
 <div class="control-group">
 	<div class="span12">
@@ -382,18 +394,6 @@ select * from rsSubTypes where subType <> 'Default'
  </div>
 
 <div class="control-group">
-	<cfif listFind(session.mura.memberships,'S2') or listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0')>
-
-	<div class="span4">
-      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.usertype')#</label>
-      	<div class="controls">
-	      	<label class="radio inline"><input name="switchToPrivate" type="radio" value="1"> #application.rbFactory.getKeyValue(session.rb,'user.administrative')#</label>
-	      	<label class="radio inline"><input name="switchToPrivate" type="radio" value="0" Checked> #application.rbFactory.getKeyValue(session.rb,'user.sitemember')#</label>
-	    </div>
-	</div>
-	</cfif>
-		
-	<div class="span8">
   		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.remoteid')#</label>
   		<div class="controls"><input id="remoteID" name="remoteID" type="text" value="#HTMLEditFormat(rc.userBean.getRemoteID())#" class="span12"></dd>
 	</div>
