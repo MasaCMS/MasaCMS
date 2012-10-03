@@ -80,13 +80,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif t neq 'Extended Attributes'>
 					<option value="#t#"<cfif extendSetBean.getContainer() eq t> selected</cfif>>
 					</cfif>
-	      			#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.#replace(t,' ','','all')#")#
+	      			#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.#REreplace(t, "[^\\\w]", "", "all")#")#
 	      			</option>
 	      		</cfloop>
 	      		<cfelseif listFindNoCase('Component,Form',subType.getType())>
 					<cfloop list="Basic,Categorization,Usage Report" index="t">
 					<option value="#t#"<cfif extendSetBean.getContainer() eq t> selected</cfif>>
-	      			#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.#replace(t,' ','','all')#")#
+	      			#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.#REreplace(t, "[^\\\w]", "", "all")#")#
 	      			</option>
 	      		</cfloop>
 	      		<cfelseif subType.getType() neq 'site'>

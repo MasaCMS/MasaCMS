@@ -57,7 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <form novalidate="novalidate" name="subTypeFrm" method="post" action="index.cfm" onsubit="return validateForm(this);">
 <div class="control-group">
 	<label class="control-label">Base Type</label>
-	<div class="controls"><select name="typeSelector" id="typeSelector" required="true" message="The BASE CLASS field is required." onchange="setBaseInfo(this.value);">
+	<div class="controls"><select name="typeSelector" id="typeSelector" required="true" message="The BASE CLASS field is required." onchange="extendManager.setBaseInfo(this.value);">
 		<option value="">Select</option>
 		<cfloop list="#typeList#" index="t"><option value="#t#" <cfif listFirst(t,'^') eq subType.getType()>selected</cfif>>#application.classExtensionManager.getTypeAsString(listFirst(t,'^'))#</option></cfloop>
 		</select>
@@ -91,11 +91,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 </div>
 
+<div class="control-group availableSubTypesContainer" >
+	<label class="control-label">Only allow users to add certian subtypes?</label>
+	<div class="controls"> 
+		<label class="radio" ><input name="hasAvailableSubTypes" type="radio" class="radio" value="1" <cfif len(subType.getAvailableSubtypes())>checked </cfif>
+		onclick="javascript:toggleDisplay2('rg',true);">Yes</label>
+		<label class="radio"><input name="hasAvailableSubTypes" type="radio" class="radio" value="0" <cfif not len(subType.getAvailableSubtypes())>checked </cfif>
+		onclick="javascript:toggleDisplay2('rg',false);">No</label>
+	</div>
+	<div class="controls" id="rg"<cfif not len(subType.getAvailableSubtypes())> style="display:none;"</cfif>>
+		<select name="availableSubTypes" size="8" multiple="multiple" class="multiSelect" id="availableSubTypes">
+
+		</select>			
+	</div>
+</div>
+
 <div class="control-group">
 	<label class="control-label">Is this class extension active?</label>
-<div class="controls">
-	<label class="radio"><input name="isActive" type="radio" class="radio" value="1"<cfif subType.getIsActive() eq 1 >Checked</cfif>>Yes</label>
-	<label class="radio"><input name="isActive" type="radio" class="radio" value="0"<cfif subType.getIsActive() eq 0 >Checked</cfif>>No</label>
+	<div class="controls">
+		<label class="radio"><input name="isActive" type="radio" class="radio" value="1"<cfif subType.getIsActive() eq 1 >Checked</cfif>>Yes</label>
+		<label class="radio"><input name="isActive" type="radio" class="radio" value="0"<cfif subType.getIsActive() eq 0 >Checked</cfif>>No</label>
 	</div>
 </div>
 
@@ -121,6 +136,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </form>
 
 <script>
-setBaseInfo(jQuery('##typeSelector').val());
+extendManager.setBaseInfo(jQuery('##typeSelector').val());
 </script>
 </cfoutput>
