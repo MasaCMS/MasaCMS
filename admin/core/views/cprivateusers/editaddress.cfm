@@ -48,7 +48,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rsAddress=rc.userBean.getAddressById(rc.addressID)>
 <cfset addressBean=rc.userBean.getAddressBeanById(rc.addressID)>
 <cfset extendSets=application.classExtensionManager.getSubTypeByName("Address",rc.userBean.getsubtype(),rc.userBean.getSiteID()).getExtendSets(inherit=true,activeOnly=true) />
-<cfoutput><form novalidate="novalidate" action="index.cfm?muraAction=cPrivateUsers.updateAddress&userid=#URLEncodedFormat(rc.userid)#&routeid=#rc.routeid#&siteid=#URLEncodedFormat(rc.siteid)#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);"  autocomplete="off" >
+<cfoutput>
+<form novalidate="novalidate" action="index.cfm?muraAction=cPrivateUsers.updateAddress&userid=#URLEncodedFormat(rc.userid)#&routeid=#rc.routeid#&siteid=#URLEncodedFormat(rc.siteid)#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);"  autocomplete="off">
 	<h1>#application.rbFactory.getKeyValue(session.rb,'user.adminuseraddressform')#</h1>
 	
 	<div id="nav-module-specific" class="btn-group">
@@ -57,14 +58,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<h2>#HTMLEditFormat(rc.userBean.getFname())# #HTMLEditFormat(rc.userBean.getlname())#</h2>
 	
-	<cfif arrayLen(extendSets)>
-	<br/>
-	<div id="page_tabView">
-	<div class="page_aTab">
-	</cfif>
-	
-
-		<div class="control-group">
+<div class="fieldset-wrap">
+<div class="fieldset">
+<div class="control-group">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.addressname')#</label>
       <div class="controls"><input id="addressName" name="addressName" type="text" value="#HTMLEditFormat(rsAddress.addressName)#"  class="text"></div>
     </div>
@@ -122,13 +118,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="control-group">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.hours')#</label>
       <div class="controls"><textarea id="hours" name="hours" >#HTMLEditFormat(rsAddress.hours)#</textarea></div>
-    </div>
+    </div></div>
 
 
 <!--- extended attributes as defined in the class extension manager --->
 <cfif arrayLen(extendSets)>
-</div>
-<div class="page_aTab">
 
 <cfloop from="1" to="#arrayLen(extendSets)#" index="s">	
 <cfset extendSetBean=extendSets[s]/>
@@ -164,8 +158,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfoutput>
 </cfloop>
 
-</div>
-</div>
 
 <cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
 <cfhtmlhead text='<script type="text/javascript" src="assets/js/tab-view.js"></script>'>
@@ -173,7 +165,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 initTabs(Array("#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.basic'))#","#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.extendedattributes'))#"),0,0,0);
 </script>	
 </cfif>
-
+</div>
 	<div class="form-actions">
 		<cfif rc.addressid eq ''>
         
