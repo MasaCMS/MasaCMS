@@ -91,17 +91,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 </div>
 
+<cfset rsSubTypes=application.classExtensionManager.getSubTypes(siteID=rc.siteID,activeOnly=true) />
 <div class="control-group availableSubTypesContainer" >
 	<label class="control-label">Only allow users to add certian subtypes?</label>
 	<div class="controls"> 
-		<label class="radio" ><input name="hasAvailableSubTypes" type="radio" class="radio" value="1" <cfif len(subType.getAvailableSubtypes())>checked </cfif>
+		<label class="radio" ><input name="hasAvailableSubTypes" type="radio" class="radio" value="1" <cfif len(subType.getAvailableSubTypes())>checked </cfif>
 		onclick="javascript:toggleDisplay2('rg',true);">Yes</label>
 		<label class="radio"><input name="hasAvailableSubTypes" type="radio" class="radio" value="0" <cfif not len(subType.getAvailableSubtypes())>checked </cfif>
 		onclick="javascript:toggleDisplay2('rg',false);">No</label>
 	</div>
-	<div class="controls" id="rg"<cfif not len(subType.getAvailableSubtypes())> style="display:none;"</cfif>>
+	<div class="controls" id="rg"<cfif not len(subType.getAvailableSubTypes())> style="display:none;"</cfif>>
 		<select name="availableSubTypes" size="8" multiple="multiple" class="multiSelect" id="availableSubTypes">
-
+		<cfloop list="Page,Portal,Calendar,Gallery,File,Link" index="i">
+			<option value="#i#/Default" <cfif listFindNoCase(subType.getAvailableSubTypes(),'#i#/Default')> selected</cfif>>#i#/Default</option>
+			<cfquery name="rsItemTypes" dbtype="query">
+			select * from rsSubTypes where lower(type)='#lcase(i)#' and lower(subtype) != 'default'
+			</cfquery>
+			<cfset _AvailableSubTypes=subType.getAvailableSubTypes()>
+			<cfloop query="rsItemTypes">
+			<option value="#i#/#rsItemTypes.subType#" <cfif listFindNoCase(_AvailableSubTypes,'#i#/#rsItemTypes.subType#')> selected</cfif>>#i#/#rsItemTypes.subType#</option>
+			</cfloop>
+		</cfloop>
 		</select>			
 	</div>
 </div>
