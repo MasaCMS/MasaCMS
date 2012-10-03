@@ -75,7 +75,7 @@ select * from rsSubTypes where subType <> 'Default'
 <cfoutput>
 #application.utility.displayErrors(rc.userBean.getErrors())#
 
- <form novalidate="novalidate" action="index.cfm?muraAction=cPrivateUsers.update&userid=#URLEncodedFormat(rc.userid)#" enctype="multipart/form-data" method="post" name="form1" onsubmit="return validate(this);">
+ <form class="fieldset-wrap" novalidate="novalidate" action="index.cfm?muraAction=cPrivateUsers.update&userid=#URLEncodedFormat(rc.userid)#" enctype="multipart/form-data" method="post" name="form1" onsubmit="return validate(this);">
 <cfif rsSubTypes.recordcount>
 <div class="tabbable tabs-left">
 <ul class="nav nav-tabs initActiveTab">
@@ -85,7 +85,7 @@ select * from rsSubTypes where subType <> 'Default'
 <div class="tab-content">
 <div id="tabBasic" class="tab-pane fade">
 </cfif>
-
+<div class="fieldset">
 
 <cfif rsNonDefault.recordcount>
 		<div class="control-group">
@@ -102,14 +102,16 @@ select * from rsSubTypes where subType <> 'Default'
 	</cfif>
 		
   <div class="control-group">
+  <div class="span6">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.groupname')#</label>
-      <div class="controls"><input type="text" class="text" name="groupname" value="#HTMLEditFormat(rc.userBean.getgroupname())#"  required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.groupnamerequired')#"></div>
+      <div class="controls"><input type="text" class="span12" name="groupname" value="#HTMLEditFormat(rc.userBean.getgroupname())#"  required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.groupnamerequired')#"></div>
     </div>
 
-  <div class="control-group">
+  <div class="span6">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.email')#</label>
-      <div class="controls"><input type="text" class="text" name="email" value="#HTMLEditFormat(rc.userBean.getemail())#"></div>
+      <div class="controls"><input type="text" class="span12" name="email" value="#HTMLEditFormat(rc.userBean.getemail())#"></div>
     </div>
+  </div>
 
   <div class="control-group">
    <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.tablist')#</label>
@@ -134,11 +136,14 @@ select * from rsSubTypes where subType <> 'Default'
   --->
   <span id="extendSetsBasic"></span>
 
-<cfif rsSubTypes.recordcount>
   </div>
+  
+<cfif rsSubTypes.recordcount>
   <div id="tabExtendedattributes" class='tab-pane'>
     <span id="extendSetsDefault"></span>	
   </div>
+
+
   <div class="form-actions">
     <cfif rc.userid eq ''>
     <input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'user.add')#" />
@@ -184,7 +189,7 @@ userManager.loadExtendedAttributes('#rc.userbean.getUserID()#','1','#rc.userbean
 
 
 	<cfif rc.userid neq ''>
-      <cfoutput><h4 class="separate">#application.rbFactory.getKeyValue(session.rb,'user.groupmembers')#</h4> 
+      <cfoutput> 
         <table class="table table-striped table-condensed table-bordered mura-table-grid">
             <tr> 
               <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'user.name')#</th>

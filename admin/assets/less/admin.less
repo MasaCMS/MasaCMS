@@ -19,6 +19,7 @@
 	@import "mura-grid.less";
 	@import "login.less";
 	@import "forms.less";
+	@import "form-builder.less";
 	@import "tabs.less";
 	@import "tag-clouds.less";
 	@import "session-history.less";
@@ -58,7 +59,7 @@ body.compact {
 	}
 
 .well {
-		.box-shadow(0 0 0);
+		.box-shadow(0 0 0) !important;
 		.well-small;
 		background: @grayLighter;
 		margin-bottom: @baseLineHeight;
@@ -128,6 +129,7 @@ div.tooltip {
 
 .success, .notice, .error, .info {
 	border-width: 2px;
+	line-height: 1.2;
 	}
 
 .separate {

@@ -93,6 +93,7 @@ select * from rsSubTypes where subType <> 'Default'
 <cfoutput>	
 <div id="tabBasic" class="tab-pane fade">
 	
+	<div class="fieldset">
 	<cfif rsNonDefault.recordcount>	
 		<div class="control-group">
 	      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.type')#</label>
@@ -107,16 +108,47 @@ select * from rsSubTypes where subType <> 'Default'
 	</cfif>
 		
 	<div class="control-group">
+	<div class="span6">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.fname')#*</label>
-      <div class="controls"><input id="fname" name="fname" type="text" value="#HTMLEditFormat(rc.userBean.getfname())#"  required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.fnamerequired')#" class="text"></div>
+      <div class="controls"><input id="fname" name="fname" type="text" value="#HTMLEditFormat(rc.userBean.getfname())#"  required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.fnamerequired')#" class="span12"></div>
+    </div>
+		
+	<div class="span6">
+      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.lname')#*</label>
+      <div class="controls"><input id="lname" name="lname" type="text" value="#HTMLEditFormat(rc.userBean.getlname())#"  required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.lnamerequired')#" class="span12"></div>
+    </div>
     </div>
 		
 	<div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.lname')#*</label>
-      <div class="controls"><input id="lname" name="lname" type="text" value="#HTMLEditFormat(rc.userBean.getlname())#"  required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.lnamerequired')#" class="text"></div>
+		<div class="span6">
+	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.company')#</label>
+	      <div class="controls"><input id="organization" name="company" type="text" value="#HTMLEditFormat(rc.userBean.getcompany())#"  class="span12"></div>
+	    </div>
+			
+		<div class="span6">
+	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.jobtitle')#</label>
+	      <div class="controls"><input id="jobtitle" name="jobtitle" type="text" value="#HTMLEditFormat(rc.userBean.getjobtitle())#"  class="span12"></div>
+	    </div>
+	</div>
+	
+	<div class="control-group">
+		<div class="span6">
+	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.email')#*</label>
+	      <div class="controls"><input id="email" name="email" type="text" value="#HTMLEditFormat(rc.userBean.getemail())#" class="span12" required="true" validate="email" message="#application.rbFactory.getKeyValue(session.rb,'user.emailvalidate')#"></div>
+	    </div>
+			
+		<div class="span6">
+	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.mobilephone')#</label>
+	      <div class="controls"><input id="mobilePhone" name="mobilePhone" type="text" value="#HTMLEditFormat(rc.userBean.getMobilePhone())#" class="span12"></div>
+	    </div>
     </div>
-
-    <div class="control-group">
+		
+	<div class="control-group">
+	<div class="span6">
+      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.username')#*</label>
+      <div class="controls"><input id="username"  name="usernameNoCache" type="text" value="#HTMLEditFormat(rc.userBean.getusername())#" class="span12" required="true" message="The 'Username' field is required" autocomplete="off"></div>
+    </div>
+    <div class="span6">
       		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.image')#</label>
       	<div class="controls">
       		<input type="file" name="newFile" validate="regex" regex="(.+)(\.)(jpg|JPG)" message="Your logo must be a .JPG" value=""/>
@@ -128,43 +160,22 @@ select * from rsSubTypes where subType <> 'Default'
 	        </div>
         </cfif>
     </div>
+</div>
 		
 	<div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.company')#</label>
-      <div class="controls"><input id="organization" name="company" type="text" value="#HTMLEditFormat(rc.userBean.getcompany())#"  class="text"></div>
-    </div>
-		
-	<div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.jobtitle')#</label>
-      <div class="controls"><input id="jobtitle" name="jobtitle" type="text" value="#HTMLEditFormat(rc.userBean.getjobtitle())#"  class="text"></div>
-    </div>
-		
-	<div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.mobilephone')#</label>
-      <div class="controls"><input id="mobilePhone" name="mobilePhone" type="text" value="#HTMLEditFormat(rc.userBean.getMobilePhone())#" class="text"></div>
-    </div>
-		
-	<div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.email')#*</label>
-      <div class="controls"><input id="email" name="email" type="text" value="#HTMLEditFormat(rc.userBean.getemail())#" class="text" required="true" validate="email" message="#application.rbFactory.getKeyValue(session.rb,'user.emailvalidate')#"></div>
-    </div>
-		
-	<div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.username')#*</label>
-      <div class="controls"><input id="username"  name="usernameNoCache" type="text" value="#HTMLEditFormat(rc.userBean.getusername())#" class="text" required="true" message="The 'Username' field is required" autocomplete="off"></div>
-    </div>
-		
-	<div class="control-group">
+	<div class="span6">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.newpassword')#**</label>
-      <div class="controls"><input name="passwordNoCache" autocomplete="off" validate="match" matchfield="password2" type="password" value="" class="text"  message="#application.rbFactory.getKeyValue(session.rb,'user.passwordmatchvalidate')#"></div>
+      <div class="controls"><input name="passwordNoCache" autocomplete="off" validate="match" matchfield="password2" type="password" value="" class="span12"  message="#application.rbFactory.getKeyValue(session.rb,'user.passwordmatchvalidate')#"></div>
     </div>
 		
-		<div class="control-group">
+		<div class="span6">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.newpasswordconfirm')#**</label>
-      <div class="controls"><input  name="password2" autocomplete="off" type="password" value="" class="text"  message="#application.rbFactory.getKeyValue(session.rb,'user.passwordconfirm')#"></div>
+      <div class="controls"><input  name="password2" autocomplete="off" type="password" value="" class="span12"  message="#application.rbFactory.getKeyValue(session.rb,'user.passwordconfirm')#"></div>
     </div>
+</div>
+<span id="extendSetsBasic"></span>
 
-<span id="extendSetsBasic"></span>		
+</div>
 
 </div>
 
@@ -184,60 +195,68 @@ select * from rsSubTypes where subType <> 'Default'
 		</cfsilent>
 	
 <cfif rc.userid eq ''>
-		
+<div class="fieldset">		
 	<div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.address1')#</label>
-      <div class="controls"><input id="address1" name="address1" type="text" value="#HTMLEditFormat(rc.address1)#"  class="text"></div>
+		<div class="span6">
+	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.address1')#</label>
+	      <div class="controls"><input id="address1" name="address1" type="text" value="#HTMLEditFormat(rc.address1)#"  class="span12"></div>
+	    </div>
+			
+		<div class="span6">
+	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.address2')#</label>
+	      <div class="controls"><input id="address2" name="address2" type="text" value="#HTMLEditFormat(rc.address2)#"  class="span12"></div>
+	    </div>
+    </div>		
+
+	<div class="control-group">
+		<div class="span5">
+	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.city')#</label>
+	      <div class="controls"><input id="city" name="city" type="text" value="#HTMLEditFormat(rc.city)#" class="span12"></div>
+	    </div>
+			
+		<div class="span1">
+	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.state')#</label>
+	      <div class="controls"><input id="state" name="state" type="text" value="#HTMLEditFormat(rc.state)#" class="span12"></div>
+	    </div>
+		
+		<div class="span2">
+	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.zip')#</label>
+	      <div class="controls"><input id="zip" name="zip" type="text" value="#HTMLEditFormat(rc.zip)#" class="span12"></div>
+	    </div>
+		
+		<div class="span4">
+	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.country')#</label>
+	      <div class="controls"><input id="country" name="country" type="text" value="#HTMLEditFormat(rc.country)#" class="span12"></div>
+	    </div>
     </div>
 		
 	<div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.address2')#</label>
-      <div class="controls"><input id="address2" name="address2" type="text" value="#HTMLEditFormat(rc.address2)#"  class="text"></div>
-    </div>
-		
+		<div class="span6">
+	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.phone')#</label>
+	      <div class="controls"><input id="phone" name="phone" type="text" value="#HTMLEditFormat(rc.phone)#" class="span12"></div>
+	    </div>	
+			
+		<div class="span6">
+	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.fax')#</label>
+	      <div class="controls"><input id="fax" name="fax" type="text" value="#HTMLEditFormat(rc.fax)#" class="span12"></div>
+	    </div> 
+	</div>		
+	
 	<div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.city')#</label>
-      <div class="controls"><input id="city" name="city" type="text" value="#HTMLEditFormat(rc.city)#" class="text"></div>
-    </div>
-		
-	<div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.state')#</label>
-      <div class="controls"><input id="state" name="state" type="text" value="#HTMLEditFormat(rc.state)#" class="text"></div>
-    </div>
-		
-	<div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.zip')#</label>
-      <div class="controls"><input id="zip" name="zip" type="text" value="#HTMLEditFormat(rc.zip)#" class="text"></div>
-    </div>
-		
-	<div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.country')#</label>
-      <div class="controls"><input id="country" name="country" type="text" value="#HTMLEditFormat(rc.country)#" class="text"></div>
-    </div>
-		
-	<div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.phone')#</label>
-      <div class="controls"><input id="phone" name="phone" type="text" value="#HTMLEditFormat(rc.phone)#" class="text"></div>
-    </div>	
-		
-	<div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.fax')#</label>
-      <div class="controls"><input id="fax" name="fax" type="text" value="#HTMLEditFormat(rc.fax)#" class="text"></div>
-    </div> 
-		
-	<div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.website')# (#application.rbFactory.getKeyValue(session.rb,'user.includehttp')#)</label>
-      <div class="controls"><input id="addressURL" name="addressURL" type="text" value="#HTMLEditFormat(rc.addressURL)#" class="text"></div>
-    </div>
-		
-	<div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.email')#</label>
-      <div class="controls"><input id="addressEmail" name="addressEmail" validate="email" message="#application.rbFactory.getKeyValue(session.rb,'user.emailvalidate')#" type="text" value="#HTMLEditFormat(rc.addressEmail)#" class="text"></div>
-    </div>
+		<div class="span6">
+	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.website')# (#application.rbFactory.getKeyValue(session.rb,'user.includehttp')#)</label>
+	      <div class="controls"><input id="addressURL" name="addressURL" type="text" value="#HTMLEditFormat(rc.addressURL)#" class="span12"></div>
+	    </div>
+			
+		<div class="span6">
+	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.email')#</label>
+	      <div class="controls"><input id="addressEmail" name="addressEmail" validate="email" message="#application.rbFactory.getKeyValue(session.rb,'user.emailvalidate')#" type="text" value="#HTMLEditFormat(rc.addressEmail)#" class="span12"></div>
+	    </div>
+	</div>
 		
 	<div class="control-group">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.hours')#</label>
-      <div class="controls"><textarea id="hours" name="hours" >#HTMLEditFormat(rc.hours)#</textarea></div>
+      <div class="controls"><textarea id="hours" name="hours" rows="6" class="span6" >#HTMLEditFormat(rc.hours)#</textarea></div>
     </div>
 
 	<input type="hidden" name="isPrimary" value="1" />
@@ -275,48 +294,47 @@ select * from rsSubTypes where subType <> 'Default'
 		<em>#application.rbFactory.getKeyValue(session.rb,'user.noaddressinformation')#</em>
 		</cfif>
 	</cfif>
-		
+</div>		
 </div>
-<div id="tabGroupmemberships" class="tab-pane fade">
 
+<div id="tabGroupmemberships" class="tab-pane fade">
+<div class="fieldset">
 		
 	<div class="control-group">
       <label class="control-label">
       	#application.rbFactory.getKeyValue(session.rb,'user.admingroups')#
       </label>
-      <div class="controls"><ul>
+      <div class="controls">
 			<cfloop query="rc.rsPrivateGroups">
-				<li><label class="checkbox"><input name="groupid" type="checkbox" class="checkbox" value="#rc.rsPrivateGroups.UserID#" <cfif listfind(rc.userBean.getgroupid(),rc.rsPrivateGroups.UserID) or listfind(rc.groupid,rc.rsPrivateGroups.UserID)>checked</cfif>>#rc.rsPrivateGroups.groupname#</label></li>
-			</cfloop></ul>
+				<label class="checkbox inline"><input name="groupid" type="checkbox" class="checkbox" value="#rc.rsPrivateGroups.UserID#" <cfif listfind(rc.userBean.getgroupid(),rc.rsPrivateGroups.UserID) or listfind(rc.groupid,rc.rsPrivateGroups.UserID)>checked</cfif>>#rc.rsPrivateGroups.groupname#</label>
+			</cfloop>
 		</div>
     	</div>
 		
 		<cfif rc.rsPublicGroups.recordcount>
 		
 		<div class="control-group">
-     	 <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.membergroups')#
-     	</label>
-      	<div class="controls"><ul>
+     	 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.membergroups')#</label>
+      		<div class="controls">
 			<cfloop query="rc.rsPublicGroups">
-				<li><label class="checkbox"><input name="groupid" type="checkbox" class="checkbox" value="#rc.rsPublicGroups.UserID#" <cfif listfind(rc.userBean.getgroupid(),rc.rsPublicGroups.UserID) or listfind(rc.groupid,rc.rsPublicGroups.UserID)>checked</cfif>>#rc.rsPublicGroups.site# - #rc.rsPublicGroups.groupname#</label></li>
-			</cfloop></ul>
-		</div>
+				<label class="checkbox inline"><input name="groupid" type="checkbox" class="checkbox" value="#rc.rsPublicGroups.UserID#" <cfif listfind(rc.userBean.getgroupid(),rc.rsPublicGroups.UserID) or listfind(rc.groupid,rc.rsPublicGroups.UserID)>checked</cfif>>#rc.rsPublicGroups.site# - #rc.rsPublicGroups.groupname#</label>
+			</cfloop>
+			</div>
     	</div>
 		</cfif>
+</div>
 </div>	
 <div id="tabInterests" class="tab-pane fade">
-	<!---<ul class="interestGroups">--->
-	<cfloop collection="#application.settingsManager.getSites()#" item="site">
-		<cfif application.settingsManager.getSite(site).getPrivateUserPoolID() eq application.settingsManager.getSite(rc.siteID).getPrivateUserPoolID()>
-			<!---<li>--->
-				<cfoutput><h3>#application.settingsManager.getSite(site).getSite()#</h3>
-				<div class="divide"></div>
-				</cfoutput>
-				<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" categoryID="#rc.categoryID#" nestLevel="0"  userBean="#rc.userBean#">
-						<!---</li>--->
-		</cfif>
-	</cfloop> 
-
+	<div class="fieldset">
+		<div class="control-group">
+			<cfloop collection="#application.settingsManager.getSites()#" item="site">
+				<cfif application.settingsManager.getSite(site).getPrivateUserPoolID() eq application.settingsManager.getSite(rc.siteID).getPrivateUserPoolID()>
+						<cfoutput><label class="control-label">#application.settingsManager.getSite(site).getSite()#</label></cfoutput>
+						<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" categoryID="#rc.categoryID#" nestLevel="0"  userBean="#rc.userBean#">
+				</cfif>
+			</cfloop> 
+		</div>
+	</div>
 </div>
 	
 <cfif rsSubTypes.recordcount>
@@ -330,66 +348,61 @@ select * from rsSubTypes where subType <> 'Default'
 </cfif>
 
 <div id="tabAdvanced" class="tab-pane fade">
-		
+<div class="fieldset">
 
+	<div class="control-group">
 		<cfif listFind(session.mura.memberships,'S2')>
-			<div class="control-group">
+		<div class="span6">
      	 <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.superadminaccount')#</label>
-      <div class="controls">
-      	<label class="radio"><input name="s2" type="radio" class="radio" value="1" <cfif rc.userBean.gets2() eq 1>Checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'user.yes')#</label>
-      	<label class="radio"><input name="s2" type="radio" class="radio" value="0" <cfif rc.userBean.gets2() eq 0>Checked</cfif>>
+     	 <div class="controls">
+      	<label class="radio inline"><input name="s2" type="radio" class="radio inline" value="1" <cfif rc.userBean.gets2() eq 1>Checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'user.yes')#</label>
+      	<label class="radio inline"><input name="s2" type="radio" class="radio inline" value="0" <cfif rc.userBean.gets2() eq 0>Checked</cfif>>
       		#application.rbFactory.getKeyValue(session.rb,'user.no')#
       		</label>
+      		</div>
       	</div>
-    	</div>
 		</cfif>
 		
-		<div class="control-group">
+		<div class="span6">
      	 <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.emailbroadcaster')#</label>
      	 <div class="controls">
-     	 	<label class="radio"><input name="subscribe" type="radio" class="radio" value="1"<cfif rc.userBean.getsubscribe() eq 1>Checked</cfif>>Yes</label>
-     	 	<label class="radio"><input name="subscribe" type="radio" class="radio" value="0"<cfif rc.userBean.getsubscribe() eq 0>Checked</cfif>>No</label>
+     	 	<label class="radio inline"><input name="subscribe" type="radio" class="radio inline" value="1"<cfif rc.userBean.getsubscribe() eq 1>Checked</cfif>>Yes</label>
+     	 	<label class="radio inline"><input name="subscribe" type="radio" class="radio inline" value="0"<cfif rc.userBean.getsubscribe() eq 0>Checked</cfif>>No</label>
      	 </div>
-    </div>
+     	 </div>
+    	</div>
 		
 		<div class="control-group">
-     	 <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.inactive')#</label>
-      <div class="controls">
-      	<label class="radio"><input name="InActive" type="radio" class="radio" value="0"<cfif rc.userBean.getInActive() eq 0 >Checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'user.yes')#</label>
-      	<label class="radio"><input name="InActive" type="radio" class="radio" value="1"<cfif rc.userBean.getInActive() eq 1 >Checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'user.no')#</label>
-      </div>
-    </div>
+			<div class="span6">
+		     	 <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.inactive')#</label>
+		     	 <div class="controls">
+		      	<label class="radio inline"><input name="InActive" type="radio" class="radio inline" value="0"<cfif rc.userBean.getInActive() eq 0 >Checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'user.yes')#</label>
+		      	<label class="radio inline"><input name="InActive" type="radio" class="radio inline" value="1"<cfif rc.userBean.getInActive() eq 1 >Checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'user.no')#</label>
+		      	</div>
+	      	</div>
+		
+		<div class="span6">
+	     	 <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.usertype')#</label>
+	     	 <div class="controls">
+	      	<label class="radio inline"><input name="switchToPublic" type="radio" class="radio inline" value="1"> 
+	      	#application.rbFactory.getKeyValue(session.rb,'user.sitemember')#</label><label class="radio inline">
+	      	<input name="switchToPublic" type="radio" class="radio inline" value="0" Checked> 
+	      	#application.rbFactory.getKeyValue(session.rb,'user.administrative')#</label>
+	      	</div>
+      	</div>
+	</div>
 		
 		<div class="control-group">
+		<div class="span6">
      	 <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.tags')#</label>
-      <div class="controls"><input id="tags" name="tags" type="text" value="#HTMLEditFormat(rc.userBean.getTags())#" class="text"></div>
-    </div>
-		
-		<div class="control-group">
-     	 <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.usertype')#</label>
-      <div class="controls">
-      	<label class="radio"><input name="switchToPublic" type="radio" class="radio" value="1"> 
-      	#application.rbFactory.getKeyValue(session.rb,'user.sitemember')#</label><label class="radio">
-      	<input name="switchToPublic" type="radio" class="radio" value="0" Checked> 
-      	#application.rbFactory.getKeyValue(session.rb,'user.administrative')#</label></div>
-    </div>
-		<!---
-		<div class="control-group">
-     	 <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.contactform')#</label>
-      	<div class="controls"><ul>
-			<cfloop collection="#application.settingsManager.getSites()#" item="site">
-				<cfif application.settingsManager.getSite(site).getPrivateUserPoolID() eq application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()>
-					<li><label class="checkbox"><input type="checkbox" class="checkbox" name="ContactForm" value="#site#" <cfif listfind(rc.userBean.getcontactform(),site)>Checked</cfif>>#application.settingsManager.getSite(site).getSite()#</label></li>
-				</cfif>
-			</cfloop></ul>
-			</div>
-		</div>
-		--->
-		<div class="control-group">
+     	 <div class="controls"><input id="tags" name="tags" type="text" value="#HTMLEditFormat(rc.userBean.getTags())#" class="span12"></div>
+     	 </div>
+		<div class="span6">
      	 <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.remoteid')#</label>
-      <div class="controls"><input id="remoteID" name="remoteID" type="text" value="#HTMLEditFormat(rc.userBean.getRemoteID())#"  class="text"></div>
+      <div class="controls"><input id="remoteID" name="remoteID" type="text" value="#HTMLEditFormat(rc.userBean.getRemoteID())#"  class="span12"></div>
+		</div>
     </div>
-		
+</div>		
 </div>
 	</cfoutput>
 		<cfoutput query="rsPluginScripts" group="pluginID">

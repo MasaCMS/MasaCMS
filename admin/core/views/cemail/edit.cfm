@@ -99,11 +99,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       </cfif>
     </ul>
   </cfif>
-  <form novalidate="novalidate" action="index.cfm?muraAction=cEmail.update&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="form1" onSubmit="return false;">
+<form class="" novalidate="novalidate" action="index.cfm?muraAction=cEmail.update&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="form1" onSubmit="return false;">
     
-    <img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
+<img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
     
-    <div class="tabbable">
+<div class="tabbable tabs-left">
     <ul class="nav nav-tabs initActiveTab">
         <li><a href="##emailContent" onClick="return false;"><span>Email</span></a></li>
         <li><a href="##emailGroupsLists" onClick="return false;"><span>Recipients</span></a></li>
@@ -112,33 +112,35 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <!--- Email --->
     <div class="tab-content">
     <div id="emailContent" class="tab-pane fade">
-
-      <div class="control-group">
+	  <div class="fieldset">
+      	<div class="control-group">
         <label class="control-label">
           #application.rbFactory.getKeyValue(session.rb,'email.subject')#
         </label>
       <div class="controls">
-          <input type="text" class="text" name="subject" value="#HTMLEditFormat(rc.emailBean.getsubject())#"  required="true" message="#application.rbFactory.getKeyValue(session.rb,'email.subjectrequired')#">
+          <input type="text" class="span12" name="subject" value="#HTMLEditFormat(rc.emailBean.getsubject())#"  required="true" message="#application.rbFactory.getKeyValue(session.rb,'email.subjectrequired')#">
         </div>
       </div>
         
         <div class="control-group">
+        <div class="span6">
         <label class="control-label">
           #application.rbFactory.getKeyValue(session.rb,'email.replytoemail')#
         </label>
         <div class="controls">
-          <input type="text" class="text" name="replyto" value="#iif(rc.emailid neq '',de("#rc.emailBean.getreplyto()#"),de("#application.settingsManager.getSite(rc.siteid).getcontact()#"))#"  required="true" validate="email" message="#application.rbFactory.getKeyValue(session.rb,'email.replytorequired')#" >
+          <input type="text" class="span12" name="replyto" value="#iif(rc.emailid neq '',de("#rc.emailBean.getreplyto()#"),de("#application.settingsManager.getSite(rc.siteid).getcontact()#"))#"  required="true" validate="email" message="#application.rbFactory.getKeyValue(session.rb,'email.replytorequired')#" >
           </div>
          </div>
         
-        <div class="control-group">
+        <div class="span6">
         <label class="control-label">
           #application.rbFactory.getKeyValue(session.rb,'email.fromlabel')#
           </label>
          <div class="controls">
-          <input type="text" class="text" name="fromLabel" value="#iif(rc.emailBean.getFromLabel() neq '',de("#HTMLEditFormat(rc.emailBean.getFromLabel())#"),de("#HTMLEditFormat(application.settingsManager.getSite(rc.siteid).getsite())#"))#"  required="true" message="The 'From Label' form field is required" >
+          <input type="text" class="span12" name="fromLabel" value="#iif(rc.emailBean.getFromLabel() neq '',de("#HTMLEditFormat(rc.emailBean.getFromLabel())#"),de("#HTMLEditFormat(application.settingsManager.getSite(rc.siteid).getsite())#"))#"  required="true" message="The 'From Label' form field is required" >
           </div>
          </div>
+        </div>
         
         <div class="control-group">
         <label class="control-label">
@@ -219,138 +221,107 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         </span>
 
       </div>
-      
-      <!--- Recipients --->      
-       <div id="emailGroupsLists" class="tab-pane fade">
-      <!--- <h2>#application.rbFactory.getKeyValue(session.rb,'email.sendto')#:</h2> --->
-     	
-     	 <div class="tabbable">
-        <ul class="nav nav-tabs initActiveTab">
-	        <cfif rc.rsPrivateGroups.recordcount><li><a href="##privateGroups" onClick="return false;"><span>Admin Groups</span></a></li></cfif>
-	        <cfif rc.rsPublicGroups.recordcount><li><a href="##publicGroups" onClick="return false;"><span>Site Member Groups</span></a></li></cfif>
-	        <cfif application.categoryManager.getInterestGroupCount(rc.siteID)><li><a href="##interestGroups" onClick="return false;"><span>Interest Groups</span></a></li></cfif>
-	        <cfif rc.rsMailingLists.recordcount><li><a href="##mailingLists" onClick="return false;"><span>Mailing Lists</span></a></li></cfif>
-	    </ul>
-     	<div class="tab-content">
-      <cfif rc.rsPrivateGroups.recordcount>
-      <div id="privateGroups" class="tab-pane fade">
-      
-      <div class="control-group">
-        <label class="control-label">
-            #application.rbFactory.getKeyValue(session.rb,'email.privategroups')#
-        </label>
-      <div class="controls">
-          <ul>
-            <cfloop query="rc.rsPrivateGroups">
-              <li>
-                <input type="checkbox" id="#rc.rsPrivateGroups.groupname##rc.rsPrivateGroups.UserID#" name="GroupID" class="checkbox" value="#rc.rsPrivateGroups.UserID#" <cfif  listfind(rc.emailBean.getgroupID(),rc.rsPrivateGroups.userid)>checked</cfif>>
-                <label for="#rc.rsPrivateGroups.groupname##rc.rsPrivateGroups.UserID#"><span class="text">#rc.rsPrivateGroups.groupname#</span></label>
-              </li>
-            </cfloop>
-          </ul>
-         </div>
-        </div>
-        
+    </div>  
+
+	<!--- Recipients --->      
+	<div id="emailGroupsLists" class="tab-pane fade">
+	<!--- <h2>#application.rbFactory.getKeyValue(session.rb,'email.sendto')#:</h2> --->     	
+	<div class="fieldset">
+	  
+	  <cfif rc.rsPrivateGroups.recordcount>
+	  <div id="privateGroups" class="control-group">
+	        <label class="control-label">
+	            #application.rbFactory.getKeyValue(session.rb,'email.privategroups')#
+	        </label>
+	      <div class="controls">
+	            <cfloop query="rc.rsPrivateGroups">
+	              <label class="checkbox inline">
+	                <input type="checkbox" id="#rc.rsPrivateGroups.groupname##rc.rsPrivateGroups.UserID#" name="GroupID" class="checkbox" value="#rc.rsPrivateGroups.UserID#" <cfif  listfind(rc.emailBean.getgroupID(),rc.rsPrivateGroups.userid)>checked</cfif>> #rc.rsPrivateGroups.groupname#</label>
+	            </cfloop>
+	      </div>
       </div>
       </cfif>
 
       <cfif rc.rsPublicGroups.recordcount>
-      <div id="publicGroups" class="tab-pane fade">
-        
-        <div class="control-group">
+      <div id="publicGroups" class="control-group">
         <label class="control-label">
             #application.rbFactory.getKeyValue(session.rb,'email.publicgroups')#
         </label>
         <div class="controls">
-            <ul>
               <cfloop query="rc.rsPublicGroups">
-                <li>
-                  <input type="checkbox" id="#rc.rsPublicGroups.groupname##rc.rsPublicGroups.UserID#" name="GroupID"  class="checkbox" value="#rc.rsPublicGroups.UserID#" <cfif  listfind(rc.emailBean.getgroupID(),rc.rsPublicGroups.userid)>checked</cfif>>
-                  <label for="#rc.rsPublicGroups.groupname##rc.rsPublicGroups.UserID#"><span class="text">#rc.rsPublicGroups.groupname#</span></label>
-                </li>
+                <label class="checkbox inline">
+                  <input type="checkbox" id="#rc.rsPublicGroups.groupname##rc.rsPublicGroups.UserID#" name="GroupID"  class="checkbox" value="#rc.rsPublicGroups.UserID#" <cfif  listfind(rc.emailBean.getgroupID(),rc.rsPublicGroups.userid)>checked</cfif>> #rc.rsPublicGroups.groupname#</label>
+                </label>
               </cfloop>
-            </ul>
            </div>
-        </div>
-
        </div>
       </cfif>
+      
+      
       <cfif application.categoryManager.getInterestGroupCount(rc.siteID)>
-      <div id="interestGroups" class="tab-pane fade">
-       
-        <div class="control-group">
+      <div id="interestGroups" class="control-group">
         <label class="control-label">
           #application.rbFactory.getKeyValue(session.rb,'email.userinterestgroups')#
         </label>
-        <div class="controls">
+        <div class="controls" id="mura-filter-category">
             <cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" groupid="#rc.emailBean.getgroupID()#">
         </div>
       </div>
-
-      </div>
       </cfif>
+      
+      
       <cfif rc.rsMailingLists.recordcount>
-      <div id="mailingLists" class="tab-pane fade">
-
-       <div class="control-group">
+      <div id="mailingLists" class="control-group">
         <label class="control-label">
           #application.rbFactory.getKeyValue(session.rb,'email.mailinglists')#
         </label>
-        <div class="controls">
-            <ul>
+        <div class="controls controls-row">
               <cfloop query="rc.rsMailingLists">
-                <li>
-                  <input type="checkbox" id="#rc.rsMailingLists.name##rc.rsMailingLists.mlid#" name="GroupID"  class="checkbox" value="#rc.rsMailingLists.mlid#" <cfif  listfind(rc.emailBean.getgroupID(),rc.rsMailingLists.mlid)>checked</cfif>>
-                  <label for="#rc.rsMailingLists.name##rc.rsMailingLists.mlid#"><span class="text">#rc.rsMailingLists.name#</span></label>
-                </li>
+                <label class="checkbox inline">
+                  <input type="checkbox" id="#rc.rsMailingLists.name##rc.rsMailingLists.mlid#" name="GroupID"  class="checkbox" value="#rc.rsMailingLists.mlid#" <cfif  listfind(rc.emailBean.getgroupID(),rc.rsMailingLists.mlid)>checked</cfif>>#rc.rsMailingLists.name#</span>
+                </label>
               </cfloop>
-            </ul>
           </div>
-        </div>
-
       </div>
       </cfif>
-      </div>
     </div>
- </div>
- </div> 
+	</div>
 
  <!--- End Tab Container --->
-      <div class="clearfix separate form-actions" id="actionIndicator" style="display:none;">
-        <img src="./images/progress_bar.gif">
-      </div>
-      <div class="form-actions"> 
-      <div id="controls"> 
-        <!---Delivery Options---><br />
-        <cfsilent>
-        <cfif rc.emailid eq "">
-          <cfset formAction = "add">
-          <cfset currentEmailid = "">
-          <cfset showDelete = false>
-          <cfset showScheduler = false>
-          <cfelse>
-          <cfif rc.emailBean.getStatus() eq 1>
-            <cfset formAction = "add">
-            <cfset currentEmailid = "">
-            <cfset showDelete = true>
-            <cfset showScheduler = false>
-            <cfset rc.emailBean.setDeliveryDate('')>
-            <cfelse>
-            <cfset formAction = "update">
-            <cfset currentEmailid = rc.emailid>
-            <cfset showDelete = true>
-            <cfset showScheduler = true>
-          </cfif>
-        </cfif>
-        </cfsilent>
-        <cfif showDelete>
-            <button type="button" class="submit btn" onClick="emailManager.validateEmailForm('delete', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.deleteconfirm'))#');"><i class="icon-remove"></i> #application.rbFactory.getKeyValue(session.rb,'email.delete')#</button>
-          </cfif>
-        <button type="button" class="submit btn" onClick="emailManager.validateEmailForm('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.saveconfirm'))#')"><i class="icon-check"></i> #application.rbFactory.getKeyValue(session.rb,'email.save')#</button>
-        <button type="button" class="submit btn" onClick="emailManager.openScheduler();"><i class="icon-calendar"></i> #application.rbFactory.getKeyValue(session.rb,'email.schedule')#</button>
-        <button type="button" class="submit btn" onClick="document.forms.form1.sendNow.value='true'; emailManager.validateEmailForm('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.sendnowconfirm'))#');"><i class="icon-share-alt"></i> #application.rbFactory.getKeyValue(session.rb,'email.sendnow')#</button>
-        <input type="hidden" name="emailid" value="#currentEmailid#">
-       </div>
+<div class="form-actions" style="display:none;">
+<img src="./images/progress_bar.gif">
+</div>
+<div class="form-actions"> 
+<!---Delivery Options--->
+	<cfsilent>
+	<cfif rc.emailid eq "">
+	<cfset formAction = "add">
+	<cfset currentEmailid = "">
+	<cfset showDelete = false>
+	<cfset showScheduler = false>
+	<cfelse>
+	<cfif rc.emailBean.getStatus() eq 1>
+	<cfset formAction = "add">
+	<cfset currentEmailid = "">
+	<cfset showDelete = true>
+	<cfset showScheduler = false>
+	<cfset rc.emailBean.setDeliveryDate('')>
+	<cfelse>
+	<cfset formAction = "update">
+	<cfset currentEmailid = rc.emailid>
+	<cfset showDelete = true>
+	<cfset showScheduler = true>
+	</cfif>
+	</cfif>
+	</cfsilent>
+	<cfif showDelete>
+	<button type="button" class="btn" onClick="emailManager.validateEmailForm('delete', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.deleteconfirm'))#');"><i class="icon-remove"></i> #application.rbFactory.getKeyValue(session.rb,'email.delete')#</button>
+	</cfif>
+	<button type="button" class="btn" onClick="emailManager.validateEmailForm('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.saveconfirm'))#')"><i class="icon-check"></i> #application.rbFactory.getKeyValue(session.rb,'email.save')#</button>
+	<button type="button" class="btn" onClick="emailManager.openScheduler();"><i class="icon-calendar"></i> #application.rbFactory.getKeyValue(session.rb,'email.schedule')#</button>
+	<button type="button" class="btn" onClick="document.forms.form1.sendNow.value='true'; emailManager.validateEmailForm('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.sendnowconfirm'))#');"><i class="icon-share-alt"></i> #application.rbFactory.getKeyValue(session.rb,'email.sendnow')#</button>
+	<input type="hidden" name="emailid" value="#currentEmailid#">
+</div>
        
         <div style="display:none" id="scheduler">
 	        <label>#application.rbFactory.getKeyValue(session.rb,'email.deliverydate')#</label>
@@ -398,17 +369,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	            <option value="PM" <cfif timepart eq 'PM'>selected</cfif>>PM</option>
 	          </select>
 	          <div>
-		          <button type="button" class="submit btn" onClick="emailManager.validateScheduler('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.pleaseenterdate'))#', 'deliveryDate');"><i class="icon-check"></i> #application.rbFactory.getKeyValue(session.rb,'email.save')#</button>
-		          <button type="button" class="submit btn" onClick="emailManager.closeScheduler()"><i class="icon-ban-circle"></i> #application.rbFactory.getKeyValue(session.rb,'email.cancel')#</button>
+		          <button type="button" class="btn" onClick="emailManager.validateScheduler('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.pleaseenterdate'))#', 'deliveryDate');"><i class="icon-check"></i> #application.rbFactory.getKeyValue(session.rb,'email.save')#</button>
+		          <button type="button" class="btn" onClick="emailManager.closeScheduler()"><i class="icon-ban-circle"></i> #application.rbFactory.getKeyValue(session.rb,'email.cancel')#</button>
 		       </div>
           </div>
         <input type="hidden" name="action" value="">
         <input type="hidden" name="sendNow" value="">
         </div>
       </div>
-	  </div>
     
-  </form>
+	
+ </div> 
+</form>
 </cfoutput>
 <cfif showScheduler and dateCheck>
   <script language="javascript">

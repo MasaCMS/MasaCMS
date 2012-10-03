@@ -90,8 +90,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif rc.type eq 'Form'>
 	<div class="control-group">
+		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formpresentation')#</label>
 		<div class="controls">
-			<label for="rc" class="checkbox">
+			<label for="rc" class="checkbox inline">
 				<input name="responseChart" id="rc" type="CHECKBOX" value="1" <cfif rc.contentBean.getresponseChart() eq 1>checked </cfif> class="checkbox"> 
 				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.ispoll')#
 			</label>
@@ -102,19 +103,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.confirmationmessage')#
 		</label>
 		<div class="controls">
-			<textarea name="responseMessage">#HTMLEditFormat(rc.contentBean.getresponseMessage())#</textarea>
+			<textarea name="responseMessage" rows="6" class="span12">#HTMLEditFormat(rc.contentBean.getresponseMessage())#</textarea>
 		</div>
 	</div>
 	<div class="control-group">
 		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.responsesendto')#
 		</label>
 		<div class="controls">
-			<input name="responseSendTo" value="#HTMLEditFormat(rc.contentBean.getresponseSendTo())#" class="text">
+			<input type="text" name="responseSendTo" value="#HTMLEditFormat(rc.contentBean.getresponseSendTo())#" class="span6">
 		</div> 
 	</div>
 </cfif>
 
 <div class="control-group">
+	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notification')#</label>
 	<div class="controls">
 		<label for="dspnotify" class="checkbox">
 		<input type="checkbox" name="dspNotify"  id="dspnotify" onclick="loadNotify('#rc.siteid#','#rc.contentid#','#rc.parentid#');"  class="checkbox"> 
@@ -130,12 +132,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 <div class="control-group">
 	<label class="control-label">
-		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.addnotes')# <a href="##" id="editNoteLink" onclick="javascript: toggleDisplay('editNote','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');return false">
+		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.addnotes')#
+		<a href="##" id="editNoteLink" onclick="javascript: toggleDisplay('editNote','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');return false">
 			[#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#]
 		</a>
 	</label>
 	<div class="controls" id="editNote" style="display: none;">
-		<textarea name="notes" rows="8" class="alt" id="abstract"></textarea>	
+		<textarea name="notes" rows="6" class="span6" id="abstract"></textarea>	
 	</div>
 </div>
 </div>
