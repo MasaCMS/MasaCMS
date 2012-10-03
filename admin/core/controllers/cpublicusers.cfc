@@ -101,6 +101,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="arguments.rc.search" default="" />
 	<cfparam name="arguments.rc.newsearch" default="false" />
 	<cfparam name="arguments.rc.error" default="#structnew()#" />
+	<cfparam name="arguments.rc.returnurl" default="" />
 	
 	<cfif arguments.rc.userid eq ''>
 		<cfparam name="arguments.rc.action" default="Add" />

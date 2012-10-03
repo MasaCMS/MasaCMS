@@ -48,7 +48,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rsAddress=rc.userBean.getAddressById(rc.addressID)>
 <cfset addressBean=rc.userBean.getAddressBeanById(rc.addressID)>
 <cfset extendSets=application.classExtensionManager.getSubTypeByName("Address",rc.userBean.getsubtype(),rc.userBean.getSiteID()).getExtendSets(inherit=true,activeOnly=true) />
-<cfoutput><form novalidate="novalidate" action="index.cfm?muraAction=cPrivateUsers.updateAddress&userid=#URLEncodedFormat(rc.userid)#&routeid=#rc.routeid#&siteid=#URLEncodedFormat(rc.siteid)#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);"  autocomplete="off" >
+<cfoutput>
+<form novalidate="novalidate" action="index.cfm?muraAction=cPrivateUsers.updateAddress&userid=#URLEncodedFormat(rc.userid)#&routeid=#rc.routeid#&siteid=#URLEncodedFormat(rc.siteid)#" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);"  autocomplete="off">
 	<h1>#application.rbFactory.getKeyValue(session.rb,'user.adminuseraddressform')#</h1>
 	
 	<div id="nav-module-specific" class="btn-group">
@@ -57,78 +58,80 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<h2>#HTMLEditFormat(rc.userBean.getFname())# #HTMLEditFormat(rc.userBean.getlname())#</h2>
 	
-	<cfif arrayLen(extendSets)>
-	<br/>
-	<div id="page_tabView">
-	<div class="page_aTab">
-	</cfif>
-	
-
+<div class="fieldset-wrap">
+	<div class="fieldset">
 		<div class="control-group">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.addressname')#</label>
-      <div class="controls"><input id="addressName" name="addressName" type="text" value="#HTMLEditFormat(rsAddress.addressName)#"  class="text"></div>
+      <div class="controls"><input id="addressName" name="addressName" type="text" value="#HTMLEditFormat(rsAddress.addressName)#"  class="span6"></div>
     </div>
 		
 		<div class="control-group">
+		<div class="span6">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.address1')#</label>
-      <div class="controls"><input id="address1" name="address1" type="text" value="#HTMLEditFormat(rsAddress.address1)#"  class="text"></div>
-    </div>
+      <div class="controls"><input id="address1" name="address1" type="text" value="#HTMLEditFormat(rsAddress.address1)#"  class="span12"></div>
+      </div>
 		
-		<div class="control-group">
+		<div class="span6">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.address2')#</label>
-      <div class="controls"><input id="address2" name="address2" type="text" value="#HTMLEditFormat(rsAddress.address2)#"  class="text"></div>
+      <div class="controls"><input id="address2" name="address2" type="text" value="#HTMLEditFormat(rsAddress.address2)#"  class="span12"></div>
     </div>
+</div>
 		
 		<div class="control-group">
+		<div class="span5">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.city')#</label>
-      <div class="controls"><input id="city" name="city" type="text" value="#HTMLEditFormat(rsAddress.city)#" class="text"></div>
+      <div class="controls"><input id="city" name="city" type="text" value="#HTMLEditFormat(rsAddress.city)#" class="span12"></div>
     </div>
 		
-		<div class="control-group">
+		<div class="span1">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.state')#</label>
-      <div class="controls"><input id="state" name="state" type="text" value="#HTMLEditFormat(rsAddress.state)#" class="text"></div>
+      <div class="controls"><input id="state" name="state" type="text" value="#HTMLEditFormat(rsAddress.state)#" class="span12"></div>
     </div>
 		
-		<div class="control-group">
+		<div class="span2">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.zip')#</label>
-      <div class="controls"><input id="zip" name="zip" type="text" value="#HTMLEditFormat(rsAddress.zip)#" class="text"></div>
+      <div class="controls"><input id="zip" name="zip" type="text" value="#HTMLEditFormat(rsAddress.zip)#" class="span12"></div>
     </div>
 		
-		<div class="control-group">
+		<div class="span4">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.country')#</label>
-      <div class="controls"><input id="country" name="country" type="text" value="#HTMLEditFormat(rsAddress.country)#" class="text"></div>
+      <div class="controls"><input id="country" name="country" type="text" value="#HTMLEditFormat(rsAddress.country)#" class="span12"></div>
+    </div>
     </div>
 		
 		<div class="control-group">
+		<div class="span6">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.phone')#</label>
-      <div class="controls"><input id="phone" name="phone" type="text" value="#HTMLEditFormat(rsAddress.phone)#" class="text"></div>
+      <div class="controls"><input id="phone" name="phone" type="text" value="#HTMLEditFormat(rsAddress.phone)#" class="span12"></div>
     </div>
 		
-		<div class="control-group">
+		<div class="span6">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.fax')#</label>
-      <div class="controls"><input id="fax" name="fax" type="text" value="#HTMLEditFormat(rsAddress.fax)#" class="text"></div>
+      <div class="controls"><input id="fax" name="fax" type="text" value="#HTMLEditFormat(rsAddress.fax)#" class="span12"></div>
+    </div>
     </div>
 		
 		<div class="control-group">
+		<div class="span6">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.website')# (#application.rbFactory.getKeyValue(session.rb,'user.includehttp')#)</label>
-      <div class="controls"><input id="addressURL" name="addressURL" type="text" value="#HTMLEditFormat(rsAddress.addressURL)#" class="text"></div>
+      <div class="controls"><input id="addressURL" name="addressURL" type="text" value="#HTMLEditFormat(rsAddress.addressURL)#" class="span12"></div>
     </div>
 		
-		<div class="control-group">
+		<div class="span6">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.email')#</label>
-      <div class="controls"><input id="addressEmail" name="addressEmail" validate="email" message="#application.rbFactory.getKeyValue(session.rb,'user.emailvalidate')#" type="text" value="#HTMLEditFormat(rsAddress.addressEmail)#" class="text"></div>
+      <div class="controls"><input id="addressEmail" name="addressEmail" validate="email" message="#application.rbFactory.getKeyValue(session.rb,'user.emailvalidate')#" type="text" value="#HTMLEditFormat(rsAddress.addressEmail)#" class="span12"></div>
+    </div>
     </div>
 		
 		<div class="control-group">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.hours')#</label>
-      <div class="controls"><textarea id="hours" name="hours" >#HTMLEditFormat(rsAddress.hours)#</textarea></div>
+      <div class="controls"><textarea rows="6" class="span6" id="hours" name="hours" >#HTMLEditFormat(rsAddress.hours)#</textarea>
+      </div>
     </div>
 
 
 <!--- extended attributes as defined in the class extension manager --->
 <cfif arrayLen(extendSets)>
-</div>
-<div class="page_aTab">
 
 <cfloop from="1" to="#arrayLen(extendSets)#" index="s">	
 <cfset extendSetBean=extendSets[s]/>
@@ -164,16 +167,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfoutput>
 </cfloop>
 
-</div>
-</div>
-
-<cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
-<cfhtmlhead text='<script type="text/javascript" src="assets/js/tab-view.js"></script>'>
-<script type="text/javascript">
-initTabs(Array("#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.basic'))#","#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.extendedattributes'))#"),0,0,0);
-</script>	
 </cfif>
-
+</div>
 	<div class="form-actions">
 		<cfif rc.addressid eq ''>
         
@@ -195,4 +190,5 @@ initTabs(Array("#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'us
 
 	</cfoutput>
 
+</div>
 </form>
