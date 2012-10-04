@@ -52,8 +52,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabList=listAppend(tabList,"tabUsagereport")>
 <cfoutput>
 <div id="tabUsagereport" class="tab-pane fade">
-<dl class="oneColumn">
-<dt class="first">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.usagedescription')#:</dt>
+<div class="fieldset">
+<div class="control-group">
+<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.usagedescription')#:</label>
  <table class="table table-striped table-condensed table-bordered mura-table-grid">
     <tr> 
       <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#</th>
@@ -73,17 +74,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           <td nowrap class="actions"><ul class="two"><cfif verdict neq 'none'><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.edit')#" href="index.cfm?muraAction=cArch.edit&contenthistid=#rsUsage.ContentHistID#&contentid=#rsUsage.ContentID#&type=#rsUsage.type#&parentid=#rsUsage.parentID#&topid=#rsUsage.contentid#&siteid=#rsUsage.siteid#&moduleid=#rsUsage.moduleid#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#</a></li><li class="versionHistory"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.versionhistory')#" href="index.cfm?muraAction=cArch.hist&contentid=#rsUsage.ContentID#&type=#rsUsage.type#&parentid=#rsUsage.parentID#&topid=#rsUsage.contentid#&siteid=#rsUsage.siteid#&moduleid=#rsUsage.moduleid#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.versionhistory')#</a></li><cfelse><li class="editOff">#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#</li><li class="versionHistoryOff">#application.rbFactory.getKeyValue(session.rb,'sitemanager.versionhistory')#</li></cfif></ul></td></tr>
        </cfoutput>
       <cfelse>
-     <cfoutput> <tr> 
-        <td colspan="7" class="noResults">
-#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.nousage'),lcase(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.contentBean.getType()#')))#
-</td>
+     <cfoutput>
+     <tr> 
+        <td colspan="7" class="noResults">		#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.nousage'),lcase(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.contentBean.getType()#')))#
+		</td>
       </tr>
     </cfoutput></cfif>
 <cfoutput>
 	  </table>
-</td></tr></table>
-</dl>
 
 <span id="extendset-container-usagereport" class="extendset-usagereport"></span>
-</div>
+</div> <!--- / .control-group --->
+</div> <!--- / .fieldset --->
+</div> <!--- / .tab --->
 </cfoutput>

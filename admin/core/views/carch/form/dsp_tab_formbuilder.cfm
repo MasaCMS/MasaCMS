@@ -110,7 +110,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.responsesendto')#
 		</label>
 		<div class="controls">
-			<input type="text" name="responseSendTo" value="#HTMLEditFormat(rc.contentBean.getresponseSendTo())#" class="span6">
+			<input type="text" name="responseSendTo" value="#HTMLEditFormat(rc.contentBean.getresponseSendTo())#" class="span12">
 		</div> 
 	</div>
 </cfif>

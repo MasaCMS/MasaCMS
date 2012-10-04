@@ -65,7 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</li>
 					</ul>
 					<div class="btn-wrap">
-					<input type="button" class="button" name="new-datasource" value="#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.createnew')#" />
+					<input type="button" class="btn" name="new-datasource" value="#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.createnew')#" />
 					</div>
 		</div>
 	</span>

@@ -99,7 +99,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</li>
 					</ul>
 					<div class="btn-wrap">
-								<input type="button" class="button" name="save-dataset" id="mura-tb-save-dataset" value="#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.update')#" />
+								<input type="button" class="btn" name="save-dataset" id="mura-tb-save-dataset" value="#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.update')#" />
 							</div>
 				</div>
 				</div>
