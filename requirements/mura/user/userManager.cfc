@@ -289,28 +289,34 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="userBean">
 	<cfargument name="broadcast" default="true">
 	<cfset var cache="">
-	
+	<cfset var poolIDs="">
+
 	<cfif not isDefined("arguments.userBean")>
 		<cfset arguments.userBean=read(userID=arguments.userID)>
 	</cfif>
 	
+	<cfset poolIds=getAssociatedUserPoolIDs(arguments.userBean.getSiteID())>
+	
 	<cfif NOT arguments.userBean.getIsNew()>
-		<cfset cache=variables.settingsManager.getSite(arguments.userBean.getSiteID()).getCacheFactory(name="data")>
-		
-		<cfset cache.purge("user" & arguments.userBean.getSiteID() & arguments.userBean.getUserID())>
-		<cfif len(arguments.userBean.getRemoteID())>
-			<cfset cache.purge("user" & userBean.getSiteID() & arguments.userBean.getRemoteID())>
-		</cfif>
-		<cfif len(arguments.userBean.getUsername())>
-			<cfset cache.purge("user" & arguments.userBean.getSiteID() & arguments.userBean.getUsername())>
-		</cfif>
-		<cfif len(arguments.userBean.getGroupname())>
-			<cfset cache.purge("user" & arguments.userBean.getSiteID() & arguments.userBean.getGroupname())>
-		</cfif>
-		
+		<cfloop list="#poolIDs#" index="p">
+			<cfset cache=variables.settingsManager.getSite(p).getCacheFactory(name="data")>
+			
+			<cfset cache.purge("user" & p & arguments.userBean.getUserID())>
+			<cfif len(arguments.userBean.getRemoteID())>
+				<cfset cache.purge("user" & p & arguments.userBean.getRemoteID())>
+			</cfif>
+			<cfif len(arguments.userBean.getUsername())>
+				<cfset cache.purge("user" & p & arguments.userBean.getUsername())>
+			</cfif>
+			<cfif len(arguments.userBean.getGroupname())>
+				<cfset cache.purge("user" & p & arguments.userBean.getGroupname())>
+			</cfif>
+		</cfloop>
+
 		<cfif arguments.broadcast>
 			<cfset variables.clusterManager.purgeUserCache(userID=arguments.userBean.getUserID())>
 		</cfif>
+
 	</cfif>
 </cffunction>
 
@@ -969,6 +975,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfloop>
 
 	<cfreturn false>
+
+</cffunction>
+
+<cffunction name="getAssociatedUserPoolIDs" output="false">
+<cfargument name="siteid">
+
+	<cfset var rsLookUp="">
+
+	<cfquery name="rsLookUp" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		select siteID
+		from tsettings 
+		where publicUserPoolID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
+		or privateUserPoolID=publicUserPoolID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
+	</cfquery>
+
+	<cfloop query="rslookUp">
+		<cfif not listFind(arguments.siteID,rsLookUp.siteID)>
+			<cfset arguments.siteID=listAppend(arguments.siteID,rsLookUp.siteID)>
+		</cfif>
+	</cfloop>
+
+	<cfreturn arguments.siteID>
 
 </cffunction>
 
