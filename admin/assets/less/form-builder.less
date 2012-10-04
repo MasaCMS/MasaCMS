@@ -688,11 +688,14 @@
 	margin: 0;
 	color: #000;
 	line-height: 20px !important;
-	width: 43% !important;
+}
+
+#mura-tb-grid-table li span {
+	width: 43%;
 }
 
 #mura-tb-grid-table-header li span {
-	width: 43% !important;
+	width: 47%;
 	margin-right: 2px;
 }
 
@@ -729,17 +732,17 @@
 	float: right;
 }
 #button-grid-add {
-	width: 65px !important;
+	.inline-block;
 	line-height: 20px;
 	border: 0 !important;
-	padding: 2px 6px 2px 20px;
+	padding: 2px 8px 2px 20px;
 	text-align: left;
 	margin: 5px 8px 5px 0;
 	background: #999 url('../images/formbuilder/data-add.png') no-repeat 5px center;
 	color: #fff;
-	-webkit-border-radius: 12px;
-	-moz-border-radius: 12px;
-	border-radius: 12px;
+	font-size: 11px;
+	.border-radius(12px);
+	text-shadow: 0 0 0 !important;
 }
 
 #mura-tb-grid .mura-tb-grid-display {
@@ -748,6 +751,7 @@
 	height: 18px;
 	background-color: #c7d7e2;
 }
+
 #mura-tb-grid-message {
 	margin: 0 10px;
 	padding: 3px 10px;
