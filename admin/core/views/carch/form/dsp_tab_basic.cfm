@@ -284,6 +284,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif rc.type eq 'Form'>
 		<div class="control-group">
+			<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.formpresentation')#</label>
 			<div class="controls">
 				<label for="rc" class="checkbox">
 	      			<input name="responseChart" id="rc" type="CHECKBOX" value="1" <cfif rc.contentBean.getresponseChart() eq 1>checked </cfif> class="checkbox"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.ispoll')#
@@ -295,7 +296,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				 #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.confirmationmessage')#
 			</label>
 			<div class="controls">
-				<textarea name="responseMessage">#HTMLEditFormat(rc.contentBean.getresponseMessage())#</textarea>
+				<textarea name="responseMessage" rows="6" class="span12">#HTMLEditFormat(rc.contentBean.getresponseMessage())#</textarea>
 			</div>
 		</div>
 		<div class="control-group">
@@ -303,7 +304,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.responsesendto')#
 			</label>
 			<div class="controls">
-				<input name="responseSendTo" value="#HTMLEditFormat(rc.contentBean.getresponseSendTo())#" class="text">
+				<input type="text" name="responseSendTo" value="#HTMLEditFormat(rc.contentBean.getresponseSendTo())#" class="span6">
 			</div>
 		</div> 
 	</cfif>
