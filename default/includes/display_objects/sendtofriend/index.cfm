@@ -59,7 +59,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </head>
 
 <body id="svSendToFriend">
-
+<cfif $.currentUser().isLoggedIn()>
 <cfform name="sendtofriend" method="post" action="sendlink.cfm">
 <fieldset>
 <legend>#$.rbKey('stf.sendtoafriend')#</legend>
@@ -81,9 +81,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <input type="hidden" name="siteID" value="#HTMLEditFormat($.event('siteID'))#"/>
 </fieldset>
 <div class="buttons"><input type="submit" name="btn_submit" value="#htmlEditFormat($.rbKey('stf.send'))#" alt="send" class="submit"></div>
+#$.dspObject_Include(thefile='dsp_form_protect.cfm')#
 </cfform>
 <script type="text/javascript"><!-- document.sendtofriend.fname.focus(); // --></script>
-
+<cfelse>
+	<p>You must be logged in to access this item.</a>
+</cfif>
 </body>
 </html>
 </cfoutput>
