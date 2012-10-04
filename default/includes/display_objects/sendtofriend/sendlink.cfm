@@ -54,7 +54,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif form.ccself><cfset form.sendto1=listappend(form.sendto1,form.email)></cfif>
 <cfset newline=Chr(13) & Chr(10)>
 <cfset success=true/>
+<cfset passedProtect=false/>
 <cftry>
+<cfif not $.currentUser().isLoggedIn()>
+	<cfthrow message="User must be logged in">
+</cfif>
+<cfset variables.cffp = CreateObject("component","cfformprotect.cffpVerify").init() />
+<cfif $.siteConfig().getContactEmail() neq "">
+	<cfset variables.cffp.updateConfig('emailServer', $.siteConfig().getMailServerIP())>
+	<cfset variables.cffp.updateConfig('emailUserName', $.siteConfig().getMailserverUsername(true))>
+	<cfset variables.cffp.updateConfig('emailPassword', $.siteConfig().getMailserverPassword())>
+	<cfset variables.cffp.updateConfig('emailFromAddress', $.siteConfig().getMailserverUsernameEmail())>
+	<cfset variables.cffp.updateConfig('emailToAddress', $.siteConfig().getContactEmail())>
+	<cfset variables.cffp.updateConfig('emailSubject', 'Spam form submission')>
+</cfif>
+
+<cfset passedProtect=variables.cffp.testSubmission(form)>
+<cfif not passedProtect>
+	<cfthrow message="Spam form submission">
+</cfif>
+
 <cfsavecontent variable="notifyText"><cfoutput>
 <cfif form.comments neq ''>
 #form.comments##newline##newline#</cfif>
@@ -63,7 +82,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 #link#
 
 #$.rbKey('stf.sentence2')#
-</cfoutput></cfsavecontent>
+</cfoutput>
+</cfsavecontent>
+
 <cfset email=application.serviceFactory.getBean('mailer') />
 <cfset email.sendText(notifyText,
 				form.sendto1,
@@ -71,26 +92,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				$.siteConfig('site'),
 				$.event('siteID'),
 				form.email) />
-<cfcatch>
-<cfset success=false/>
-</cfcatch>
+
+	<cfcatch>
+		<cfset success=false/>
+	</cfcatch>
 </cftry>
 </cfsilent>
 <cfoutput>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-<title>#$.siteConfig('site')# - #$.rbKey('stf.sendtoafriend')#</title>
-<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.min.css" type="text/css" media="all" />
-</head>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+		<title>#$.siteConfig('site')# - #$.rbKey('stf.sendtoafriend')#</title>
+		<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.min.css" type="text/css" media="all" />
+	</head>
 
-<body id="svSendToFriend">
-<cfif success>
-<h1 class="success">#$.rbKey('stf.yourlinkhasbeensent')#</h1>   
-<cfelse>
-<h1 class="error">#$.rbKey('stf.error')#</h1>  
-</cfif>
-</body>
+	<body id="svSendToFriend">
+		<cfif not passedProtect>
+			<h1 class="success">#$.rbKey('captcha.spam')#</h1>
+		<cfelse>
+			<cfif success>
+				<h1 class="success">#$.rbKey('stf.yourlinkhasbeensent')#</h1>   
+			<cfelse>
+				<h1 class="error">#$.rbKey('stf.error')#</h1>  
+			</cfif>
+		</cfif>
+	</body>
 </html>
 </cfoutput>
