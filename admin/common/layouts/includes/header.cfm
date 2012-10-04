@@ -248,12 +248,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 					   	</li>
 		 				 
 		 					<cfif listFind(session.mura.memberships,'S2')>
-		 					<li>
-		 						<a href="index.cfm?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#">
-		 							<i class="icon-list-alt"></i> Class Extension Manager
-		 						</a>
+		 					<li class="dropdown-submenu">
+		 					<a href="index.cfm?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-list-alt"></i> Class Extension Manager</a>
+		 						<ul class="dropdown-menu">
+			 						<li><a href="index.cfm?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#">
+			 							<i class="icon-cog"></i> Custom SubType
+			 						</a></li>
+		 						</ul>		
 		 					</li>
-		 					
+
 		 					<li>
 		 						<a href="?muraAction=cSettings.selectBundleOptions&siteID=#URLEncodedFormat(rc.siteBean.getSiteID())#">
 		 							<i class="icon-gift"></i> Create Site Bundle

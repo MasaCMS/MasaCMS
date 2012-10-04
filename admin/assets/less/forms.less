@@ -127,6 +127,11 @@ font-size: @baseFontSize - 1;
 	}
 }
 
+.help-inline, .help-block {
+	font-weight: normal;
+	color: @grayDark;
+	}
+
 // Content Objects Tab
 #editObjects {
 	
@@ -204,12 +209,12 @@ font-size: @baseFontSize - 1;
 }
 
 .fieldset h2 { // Using instead of Legend
-	margin: @baseLineHeight @gridGutterWidth 0;
+	margin: 0 0 @baseLineHeight/2 @gridGutterWidth;
 	padding-bottom: 0;
 	border: 0;
 	font-size: 14px;
 	line-height: 1;
-	color: @gray;
+	color: @grayDark;
 }
 
 .control-group {
