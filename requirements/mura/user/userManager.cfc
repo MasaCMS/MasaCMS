@@ -290,12 +290,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="broadcast" default="true">
 	<cfset var cache="">
 	<cfset var poolIDs="">
-
+	<cfset var p="">
+	
 	<cfif not isDefined("arguments.userBean")>
 		<cfset arguments.userBean=read(userID=arguments.userID)>
 	</cfif>
 	
-	<cfset poolIds=getAssociatedUserPoolIDs(arguments.userBean.getSiteID())>
+	<cfset poolIDs=getAssociatedUserPoolIDs(arguments.userBean.getSiteID())>
 	
 	<cfif NOT arguments.userBean.getIsNew()>
 		<cfloop list="#poolIDs#" index="p">
