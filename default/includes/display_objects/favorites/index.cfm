@@ -91,6 +91,7 @@
 	<ul>
 		<li id="favoriteExists" style="#variables.favoriteExistsStyle#"><a href="" onclick="return false;">Stored in favorites</a></li>
 		<li id="addFavorite" style="#addFavoriteStyle#"><a href="" onclick="return saveFavorite('#variables.userID#', '#arguments.siteID#', '#JSStringFormat(variables.menuTitle)#', '#variables.contentID#', '#variables.favoriteType#')">#variables.$.rbKey('favorites.addtofavorites')#</a></li>
+		<!---<li id="sendToFriend"><a rel="shadowbox;width=600;height=500" href="http://#variables.$.siteConfig('domain')##variables.$.globalConfig('ServerPort')##variables.$.globalConfig('context')#/#getSite().getDisplayPoolID()#/includes/display_objects/sendtofriend/index.cfm?link=#URLEncodedFormat(getCurrentURL())#&siteid=#variables.$.event('siteID')#">#variables.rbFactory.getResourceBundle().messageFormat(variables.$.rbKey('favorites.emailthis'),variables.$.rbKey('sitemanager.content.type.#variables.$.content('type')#'))#</a> </li>--->
 		<li id="print"><a href="javascript:window.print();void(0);">#rbFactory.getResourceBundle().messageFormat(variables.$.rbKey('favorites.printthis'),variables.$.rbKey('sitemanager.content.type.#variables.$.content('type')#'))#</a></li>
 		<!---<li id="discuss"><a href="/forum">Discuss #contentTypeString#</a></li>--->
 	</ul>
