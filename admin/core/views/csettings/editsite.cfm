@@ -72,14 +72,14 @@ to your own modified versions of Mura CMS.
 <cfhtmlhead text='<script type="text/javascript" src="assets/js/ajax.js"></script>'>
 <cfhtmlhead text='<script type="text/javascript" src="assets/js/tab-view.js"></script>'>
  --->
- <cfsavecontent variable="actionButtons">
+<cfsavecontent variable="actionButtons">
 <cfoutput>
   <div class="form-actions">
      <cfif rc.siteBean.getsiteid() eq ''> 
-      <input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="Add" />
+      <input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="Add" />
     <cfelse>
     <cfif rc.siteBean.getsiteid() neq 'default'>
-    <input type="button" class="submit btn" onclick="return confirmDialog('#JSStringFormat("WARNING: A deleted site and all of it''s files cannot be recovered. Are you sure that you want to continue?")#','index.cfm?muraAction=cSettings.updateSite&action=delete&siteid=#rc.siteBean.getSiteID()#');" value="Delete" />
+    <input type="button" class="btn" onclick="return confirmDialog('#JSStringFormat("WARNING: A deleted site and all of it''s files cannot be recovered. Are you sure that you want to continue?")#','index.cfm?muraAction=cSettings.updateSite&action=delete&siteid=#rc.siteBean.getSiteID()#');" value="Delete" />
     </cfif>
         <input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'update');" value="Update" />
      </cfif>
@@ -111,58 +111,60 @@ to your own modified versions of Mura CMS.
   <!--- Basic --->
   	<div id="tabBasic" class="tab-pane fade">
     
+    <div class="fieldset">
+    
     <div class="control-group">
-      <label class="control-label">Site ID</label>
-      <div class="controls">
-        <cfif rc.siteid eq ''>
-        <p class="help-block">Warning: no spaces, punctuation, dots or file delimiters</p>
-        <input name="siteid" type="text" class="text" value="#rc.siteBean.getsiteid()#" size="25" maxlength="25" required="true"><cfelse>#rc.siteBean.getsiteid()#<input name="siteid" type="hidden" value="#rc.siteBean.getsiteid()#"></cfif>
-      </div>
+	      <div class="span6">
+		      <label class="control-label">Site ID</label>
+		      <div class="controls">
+		        <cfif rc.siteid eq ''>
+			        <p class="help-block">Warning: No spaces, punctuation, dots or file delimiters allowed.</p>
+			        <input name="siteid" type="text" class="span6" value="#rc.siteBean.getsiteid()#" size="25" maxlength="25" required="true">
+		        <cfelse>
+			        <input class="span12" id="disabledInput" type="text" placeholder="#rc.siteBean.getsiteid()#" disabled>
+			        <input name="siteid" type="hidden" value="#rc.siteBean.getsiteid()#">
+		        </cfif>
+		      </div>
+	      </div>
+	
+	      <div class="span6">
+		      <label class="control-label">Site</label>
+		      <div class="controls">
+		        <input name="site" type="text" class="span12" value="#HTMLEditFormat(rc.siteBean.getsite())#" size="50" maxlength="50">
+		      </div>
+	    </div>
     </div>
-
-      <div class="control-group">
-      <label class="control-label">Site</label>
-      <div class="controls">
-        <input name="site" type="text" class="text" value="#HTMLEditFormat(rc.siteBean.getsite())#" size="50" maxlength="50">
-      </div>
-    </div>
-	 
+    
    <div class="control-group">
       <label class="control-label">Tag Line</label>
       <div class="controls">
-        <input name="tagline" type="text" class="text" value="#HTMLEditFormat(rc.siteBean.getTagline())#" size="50" maxlength="255">
+        <input name="tagline" type="text" class="span12" value="#HTMLEditFormat(rc.siteBean.getTagline())#" size="50" maxlength="255">
       </div>
     </div>
       
-      <div class="control-group">
-      <label class="control-label">Domain <span>(Example: www.google.com)</span></label>
-      <div class="controls">
-        <input name="domain" type="text" class="text" value="#HTMLEditFormat(rc.siteBean.getdomain('production'))#" size="50" maxlength="255">
-      </div>
-    </div>
+<div class="control-group">
+	    <div class="span6">
+		<label class="control-label">Domain <span>(Example: www.google.com)</span></label>
+		<div class="controls">
+		<input name="domain" type="text" class="span12" value="#HTMLEditFormat(rc.siteBean.getdomain('production'))#" size="50" maxlength="255">
+		</div>
+		<label class="control-label">Enforce Primary Domain</label>
+		<div class="controls">
+		<label class="radio inline"><input type="radio" name="enforcePrimaryDomain" value="0"<cfif rc.siteBean.getEnforcePrimaryDomain() neq 1> CHECKED</CFIF>>Off</label>
+		<label class="radio inline"><input type="radio" name="enforcePrimaryDomain" value="1"<cfif rc.siteBean.getEnforcePrimaryDomain() eq 1> CHECKED</CFIF>>On</label>
+		</div>
+		</div>
 	 
-   <div class="control-group">
+   <div class="span6">
       <label class="control-label">Domain Alias List <span>(Line Delimited)</span></label>
       <div class="controls">
-        <textarea name="domainAlias">#HTMLEditFormat(rc.siteBean.getDomainAlias())#</textarea>
+        <textarea name="domainAlias" rows="6" class="span12">#HTMLEditFormat(rc.siteBean.getDomainAlias())#</textarea>
       </div>
     </div>
-
-     <div class="control-group">
-      <label class="control-label">Enforce Primary Domain</label>
-      <div class="controls">
-       <label class="radio">
-       <input type="radio" name="enforcePrimaryDomain" value="0"<cfif rc.siteBean.getEnforcePrimaryDomain() neq 1> CHECKED</CFIF>>
-        Off&nbsp;&nbsp;
-        </label>
-        <label class="radio">
-       <input type="radio" name="enforcePrimaryDomain" value="1"<cfif rc.siteBean.getEnforcePrimaryDomain() eq 1> CHECKED</CFIF>>
-        On
-        </label>
-    </div>
-    </div>
+</div>
 	 
    <div class="control-group">
+   <div class="span6">
       <label class="control-label">Locale</label>
       <div class="controls">
 		<select name="siteLocale">
@@ -174,7 +176,7 @@ to your own modified versions of Mura CMS.
       </div>
     </div>
 
-	 <div class="control-group">
+	 <div class="span6">
       <label class="control-label">Theme</label>
       <div class="controls">
 		<select name="theme">
@@ -185,93 +187,80 @@ to your own modified versions of Mura CMS.
 		</select>
      </div>
     </div>
+    </div>
       
       <div class="control-group">
+      <div class="span6">
       <label class="control-label">Page Limit</label>
       <div class="controls">
         <input name="pagelimit" type="text" class="text short" value="#HTMLEditFormat(rc.siteBean.getpagelimit())#" size="5" maxlength="6">
      </div>
     </div>
       
-      <div class="control-group">
+      <div class="span6">
       <label class="control-label">Default  Rows <span>(in Site Manager)</span></label>
       <div class="controls">
         <input name="nextN" type="text" class="text short" value="#HTMLEditFormat(rc.siteBean.getnextN())#" size="5" maxlength="5">
      </div>
     </div>
+      </div>
       
-      <div class="control-group">
-      <label class="control-label">Site Caching</label>
-      <div class="controls">
-       <label class="radio">
-       <input type="radio" name="cache" value="0"<cfif rc.siteBean.getcache() neq 1> CHECKED</CFIF>>
-        Off&nbsp;&nbsp;
-        </label>
-        <label class="radio">
-       <input type="radio" name="cache" value="1"<cfif rc.siteBean.getcache() eq 1> CHECKED</CFIF>>
-        On
-        </label>
-	  </div>
-    </div>
+<div class="control-group">
+	<div class="span4">
+		<label class="control-label">Site Caching</label>
+		<div class="controls">
+		<label class="radio inline">
+		<input type="radio" name="cache" value="0"<cfif rc.siteBean.getcache() neq 1> CHECKED</CFIF>>Off</label>
+		<label class="radio inline">
+		<input type="radio" name="cache" value="1"<cfif rc.siteBean.getcache() eq 1> CHECKED</CFIF>>On</label>
+		</div>
+		</div>
 
-    <div class="control-group">
-      <label class="control-label">Cache Capacity <span>(0=Unlimited)</span></label>
+    <div class="span4">
+      <label class="control-label">Cache Capacity <span class="help-block">(0=Unlimited)</span></label>
       <div class="controls">
-        <input name="cacheCapacity" type="text" class="text short" value="#HTMLEditFormat(rc.siteBean.getCacheCapacity())#" size="15" maxlength="15">
+        <input name="cacheCapacity" type="text" class="span2" value="#HTMLEditFormat(rc.siteBean.getCacheCapacity())#" size="15" maxlength="15">
       </div>
     </div>
 	  
-    <div class="control-group">
-      <label class="control-label">Cache Free Memory Threshold <span>(Defaults to 60%)</span></label>
+    <div class="span4">
+      <label class="control-label">Cache Free Memory Threshold <span class="help-block">(Defaults to 60%)</span></label>
       <div class="controls">
-        <input name="cacheFreeMemoryThreshold" type="text" class="text short" value="#HTMLEditFormat(rc.siteBean.getCacheFreeMemoryThreshold())#" size="3" maxlength="3">%
+        <input name="cacheFreeMemoryThreshold" type="text" class="span2" value="#HTMLEditFormat(rc.siteBean.getCacheFreeMemoryThreshold())#" size="3" maxlength="3">%
        </div>
     </div>
-     
+</div>
+ 
       <div class="control-group">
+      <div class="span6">
       <label class="control-label">Lock Site Architecture</label>
       <div class="controls">
         <p class="help-block">Restricts Addition or Deletion of Site Content</p>
-        <input type="radio" name="locking" value="none" <cfif rc.siteBean.getlocking() eq 'none' or rc.siteBean.getlocking() eq ''> CHECKED</CFIF>>
-        None&nbsp;&nbsp;
-        <input type="radio" name="locking" value="all" <cfif rc.siteBean.getlocking() eq 'all'> CHECKED</CFIF>>
-        All &nbsp;&nbsp;
-        <input type="radio" name="locking" value="top" <cfif rc.siteBean.getlocking() eq 'top'> CHECKED</CFIF>>
-        Top
+        <label class="radio inline"><input type="radio" name="locking" value="none" <cfif rc.siteBean.getlocking() eq 'none' or rc.siteBean.getlocking() eq ''> CHECKED</CFIF>>None</label>
+        <label class="radio inline"><input type="radio" name="locking" value="all" <cfif rc.siteBean.getlocking() eq 'all'> CHECKED</CFIF>>All</label>
+        <label class="radio inline"><input type="radio" name="locking" value="top" <cfif rc.siteBean.getlocking() eq 'top'> CHECKED</CFIF>>Top</label>
         </div>
       </div>
 
-        <div class="control-group">
+        <div class="span6">
       <label class="control-label">Allow Comments to be Posted Without Site Admin Approval</label>
       <div class="controls">
-        <input type="radio" name="CommentApprovalDefault" value="1" <cfif rc.siteBean.getCommentApprovalDefault()  eq 1> CHECKED</CFIF>>
-        Yes&nbsp;
-        <input type="radio" name="CommentApprovalDefault" value="0" <cfif rc.siteBean.getCommentApprovalDefault() neq 1> CHECKED</CFIF>>
-       No
+        <label class="radio inline"><input type="radio" name="CommentApprovalDefault" value="1" <cfif rc.siteBean.getCommentApprovalDefault()  eq 1> CHECKED</CFIF>>
+        Yes</label>
+        <label class="radio inline"><input type="radio" name="CommentApprovalDefault" value="0" <cfif rc.siteBean.getCommentApprovalDefault() neq 1> CHECKED</CFIF>>No</label>
         </div>
     </div>
+  </div>
        
        <div class="control-group">
-      <label class="control-label">Static HTML Export Location (BETA)
-      </label>
+      <label class="control-label">Static HTML Export Location (BETA)</label>
       <div class="controls">
         <cfif len(rc.siteBean.getExportLocation()) and not directoryExists(rc.siteBean.getExportLocation())>
       <p class="error help-block">ERROR: The current value is not a valid directory</p>
     </cfif>
-        <input name="exportLocation" type="text" class="text" value="#rc.siteBean.getExportLocation()#" maxlength="100"/>
-     </div>
+        <input name="exportLocation" type="text" class="span12" value="#rc.siteBean.getExportLocation()#" maxlength="100"/>
+        </div>
     </div>
-     <!--- 
-	  <dt>Google API Key <a href="http://www.google.com/apis/maps/signup.html" target="_blank">(Required for Google Maps Support)</a></dt>
-      <dd>
-        <input name="googleAPIKey" type="text" class="text" value="#HTMLEditFormat(rc.siteBean.getGoogleAPIKey())#">
-      </dd>
-	   --->
-      <!--- <dt>Google Analytics Account #</dt>
-      <dd>
-        <input name="googleAnalyticsAcct" type="text" class="text" value="#HTMLEditFormat(rc.siteBean.getGoogleAnalyticsAcct())#">
-      </dd> --->
-
       </div>
       
        <!--- Default Contact Info --->
@@ -324,8 +313,8 @@ to your own modified versions of Mura CMS.
       <div class="controls">
         <input name="contactEmail" type="text" class="text" value="#HTMLEditFormat(rc.siteBean.getcontactEmail())#" size="50" maxlength="50" maxlength="100">
       </div>
-    </div>
-
+      </div>
+      </div>
     </div>
       
        <!--- Shared Resources --->
@@ -1069,6 +1058,8 @@ to your own modified versions of Mura CMS.
         </div>
     </cfoutput>
     <cfoutput>
+     
+      </div>
     <img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
      #actionButtons#
   </div>
