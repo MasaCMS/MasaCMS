@@ -326,7 +326,7 @@ to your own modified versions of Mura CMS.
         <div class="fieldset">
         <div class="control-group">
         <div class="span3">
-        	<label class="control-label">Member Pool</label>
+        	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.memberuserpool')#</label>
 	        <div class="controls">
 	            <select class="span12"  id="publicUserPoolID" name="publicUserPoolID" onchange="if(this.value!='' || jQuery('##privateUserPoolID').val()!=''){jQuery('##bundleImportUsersModeLI').hide();jQuery('##bundleImportUsersMode').attr('checked',false);}else{jQuery('##bundleImportUsersModeLI').show();}">
 	            <option value="">This site</option>
@@ -340,7 +340,7 @@ to your own modified versions of Mura CMS.
 	      </div>
 	      
         <div class="span3">
-        <label class="control-label">Administrative User Pool</label>
+        <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.systemuserpool')#</label>
         <div class="controls">
             <select class="span12"  id="privateUserPoolID" name="privateUserPoolID" onchange="if(this.value!='' || jQuery('##publicUserPoolID').val()!=''){jQuery('##bundleImportUsersModeLI').hide();jQuery('##bundleImportUsersMode').attr('checked',false);}else{jQuery('##bundleImportUsersModeLI').show();}">
             <option value="">This site</option>
@@ -354,7 +354,7 @@ to your own modified versions of Mura CMS.
       </div>
       
         <div class="span3">
-        <label class="control-label">Advertiser User Pool</label>
+        <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.advertiseruserpool')#</label>
         <div class="controls">
             <select class="span12"  name="advertiserUserPoolID">
             <option value="">This site</option>
@@ -367,7 +367,7 @@ to your own modified versions of Mura CMS.
           </div>
       </div>
         <div class="span3">
-        <label class="control-label">Display Object Pool</label>
+        <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.displayobjectpool')#</label>
         <div class="controls">
             <select class="span12"  name="displayPoolID">
             <option value="">This site</option>
