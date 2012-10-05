@@ -988,7 +988,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		select siteID
 		from tsettings 
 		where publicUserPoolID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
-		or privateUserPoolID=publicUserPoolID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
+		or privateUserPoolID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
 	</cfquery>
 
 	<cfloop query="rslookUp">
