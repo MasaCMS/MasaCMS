@@ -61,14 +61,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <a class="btn" href="index.cfm?muraAction=cExtend.editSet&subTypeID=#rc.subTypeID#&siteid=#URLEncodedFormat(rc.siteid)#&extendSetID="><i class="icon-plus-sign"></i> Add Attribute Set</a>
 </div>
 
-<ul class="metadata">
-		<li><strong>Class Extension:</strong> #application.classExtensionManager.getTypeAsString(subType.getType())# / #subType.getSubType()#</li>
-</ul>
+<h2>Class Extension: <strong>#application.classExtensionManager.getTypeAsString(subType.getType())#/#subType.getSubType()#</strong></h2>
 
 </cfoutput>
 <cfif arrayLen(extendSets)>
-<a href="javascript:;" style="display:none;" id="saveSort" onclick="extendManager.saveExtendSetSort('setList');return false;">[Save Order]</a>
-<a href="javascript:;"  id="showSort" onclick="extendManager.showSaveSort('setList');return false;">[Reorder]</a>
+<ul class="nav nav-pills">
+<li><a href="javascript:;" style="display:none;" id="saveSort" onclick="extendManager.saveExtendSetSort('setList');return false;"><i class="icon-check"></i> Save Order</a></li>
+<li><a href="javascript:;"  id="showSort" onclick="extendManager.showSaveSort('setList');return false;"><i class="icon-move"></i> Reorder</a></li>
+</ul>
 </cfif>
 
 <cfif arrayLen(extendSets)>
@@ -78,10 +78,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset extendSetBean=extendSets[s]/>
 <cfoutput>
 	<li extendSetID="#extendSetBean.getExtendSetID()#">
-	<span id="handle#s#" class="handle" style="display:none;">[Drag]</span>
+	<span id="handle#s#" class="handle" style="display:none;"><i class="icon-move"></i></span>
+		<a title="Edit" href="index.cfm?muraAction=cExtend.editAttributes&subTypeID=#rc.subTypeID#&extendSetID=#extendSetBean.getExtendSetID()#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-pencil"></i></a>
+		<a title="Delete" href="index.cfm?muraAction=cExtend.updateSet&action=delete&subTypeID=#rc.subTypeID#&extendSetID=#extendSetBean.getExtendSetID()#&siteid=#URLEncodedFormat(rc.siteid)#" onclick="return confirmDialog('Delete  #jsStringFormat("'#extendSetBean.getname()#'")#?',this.href)"><i class="icon-remove-sign"></i></a>
 	#extendSetBean.getName()#
-		<a title="Edit" href="index.cfm?muraAction=cExtend.editAttributes&subTypeID=#rc.subTypeID#&extendSetID=#extendSetBean.getExtendSetID()#&siteid=#URLEncodedFormat(rc.siteid)#">[Edit]</a>
-		<a title="Delete" href="index.cfm?muraAction=cExtend.updateSet&action=delete&subTypeID=#rc.subTypeID#&extendSetID=#extendSetBean.getExtendSetID()#&siteid=#URLEncodedFormat(rc.siteid)#" onclick="return confirmDialog('Delete  #jsStringFormat("'#extendSetBean.getname()#'")#?',this.href)">[Delete]</a>
 		</li>
 </cfoutput>
 </cfloop>

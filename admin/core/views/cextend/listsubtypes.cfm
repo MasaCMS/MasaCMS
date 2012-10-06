@@ -45,7 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfset rslist=application.classExtensionManager.getSubTypes(siteID=rc.siteID,activeOnly=false) />
-<h1>Class Extensions</h1>
+<h1>Class Extension Manager</h1>
 
 <cfoutput>
 
@@ -57,19 +57,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfoutput>
 <table class="table table-striped table-condensed table-bordered mura-table-grid">
 <tr>
-	<th class="var-width">Class Extension</th>
+	<th>Class Extension</th>	
+	<th class="var-width">Description</th>
 	<th>Active</th>
 	<th class="actions">&nbsp;</th>
 </tr>
 <cfif rslist.recordcount>
 <cfoutput query="rslist">
 	<tr>
-		<td class="var-width"><a title="Edit" href="index.cfm?muraAction=cExtend.listSets&subTypeID=#rslist.subTypeID#&siteid=#URLEncodedFormat(rc.siteid)#">#application.classExtensionManager.getTypeAsString(rslist.type)# / #rslist.subtype#</a></td>
-		<td >#yesNoFormat(rslist.isactive)#</td>
+		<td><a title="Edit" href="index.cfm?muraAction=cExtend.listSets&subTypeID=#rslist.subTypeID#&siteid=#URLEncodedFormat(rc.siteid)#">#application.classExtensionManager.getTypeAsString(rslist.type)# / #rslist.subtype#</a></td>
+		<td class="var-width">#rslist.description#</td>
+		<td>#yesNoFormat(rslist.isactive)#</td>
 		<td class="actions">
-			<ul class="one">
+			<ul class="two">
 				<li class="edit">
-					<a title="Edit" href="index.cfm?muraAction=cExtend.listSets&subTypeID=#rslist.subTypeID#&siteid=#URLEncodedFormat(rc.siteid)#">View Sets</a>
+					<a title="Edit" href="index.cfm?muraAction=cExtend.editSubType&subTypeID=#rc.subTypeID#&siteid=#URLEncodedFormat(rc.siteid)#">Edit</a>
+				</li>
+				<li class="add">
+					<a title="Add" href="index.cfm?muraAction=cExtend.listSets&subTypeID=#rslist.subTypeID#&siteid=#URLEncodedFormat(rc.siteid)#">View Sets</a>
 				</li>
 			</ul>
 		</td>
