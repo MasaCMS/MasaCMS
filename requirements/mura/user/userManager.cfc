@@ -994,7 +994,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif not listFind(arguments.siteID,rsLookUp.siteID)>
 			<cfset arguments.siteID=listAppend(arguments.siteID,rsLookUp.siteID)>
 		</cfif>
-	</cfloop>
+	</cfloop> 
 
 	<cfreturn arguments.siteID>
 
