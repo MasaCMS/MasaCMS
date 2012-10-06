@@ -225,7 +225,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 				</cfif>
 	 				
 	 				<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-	 					
+
 	 					<li class="dropdown<cfif listFindNoCase('csettings,cextend,ctrash',rc.originalcircuit) > active</cfif>">
 
 	 					<a class="dropdown-toggle" data-toggle="dropdown" href="##">
@@ -248,13 +248,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 					   	</li>
 		 				 
 		 					<cfif listFind(session.mura.memberships,'S2')>
-		 					<li class="dropdown-submenu">
+
+		 					<cfset rsExts=application.classExtensionManager.getSubTypes(siteID=rc.siteID,activeOnly=false) />
+
+		 					<li<cfif rsExts.recordcount> class="dropdown-submenu"</cfif>>
 		 					<a href="index.cfm?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-list-alt"></i> Class Extension Manager</a>
-		 						<ul class="dropdown-menu">
-			 						<li><a href="index.cfm?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#">
-			 							<i class="icon-cog"></i> Custom SubType
-			 						</a></li>
-		 						</ul>		
+		 						<cfif rsExts.recordcount>
+			 						<ul class="dropdown-menu">
+				 						<cfloop query="rsExts">
+				 						<li><a href="index.cfm?muraAction=cExtend.listSets&subTypeID=#rsExts.subtypeID#&siteid=#URLEncodedFormat(rc.siteid)#">
+				 							<i class="icon-cog"></i> #HTMLEditFormat(rsExts.type)#/#HTMLEditFormat(rsExts.subtype)#
+				 						</a></li>
+				 						</cfloop>
+			 						</ul>	
+		 						</cfif>	
 		 					</li>
 
 		 					<li>
