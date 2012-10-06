@@ -86,38 +86,38 @@ function checkAll (form) {
    
 }
 </script>
+
   <h1>Create Site Bundle</h1>
   <div id="nav-module-specific" class="btn-group">
   <a class="btn" href="index.cfm?muraAction=cSettings.editSite&siteID=#URLEncodedFormat(rc.siteID)#"><i class="icon-circle-arrow-left"></i> Back to Site Settings</a>
   </div>
-  <p>A Bundle includes a Site's architecture &amp; content, all rendering files (display objects, themes, javascript, etc.) and any of the items you select below. </p>
-  <form id="pluginSelectFrm" name="pluginSelectFrm" action="./index.cfm">
+  <p class="alert alert-info">A Bundle includes a Site's architecture &amp; content, all rendering files (display objects, themes, javascript, etc.) and any of the items you select below. </p>
+  
+  <form id="pluginSelectFrm" class="fieldset-wrap" name="pluginSelectFrm" action="./index.cfm">
+  <div class="fieldset">
     <div class="control-group">
       <label class="control-label">Include in Site Bundle:</label>
       <div class="controls">
-        <ul>
-          <li>
-            <input type="checkbox" name="includeTrash" value="true"/>
-            Items in Trash Bin</li>
-          <li>
-            <input type="checkbox" name="includeVersionHistory" value="true"/>
-            Content Version Histories</li>
-          <li>
-            <input type="checkbox" name="includeMetaData" value="true"/>
-            Content Comments and Ratings</li>
-          <li>
-            <input type="checkbox" name="includeMailingListMembers" value="true" />
-            Mailing List Members</li>
-          <li>
-            <input type="checkbox" name="includeFormData" value="true" />
-            Form Response Data</li>
+      
+            <label class="checkbox"><input type="checkbox" name="includeTrash" value="true"/>
+            Items in Trash Bin</label>
+            
+            <label class="checkbox"><input type="checkbox" name="includeVersionHistory" value="true"/>
+            Content Version Histories</label>
+            
+            <label class="checkbox"><input type="checkbox" name="includeMetaData" value="true"/>
+            Content Comments and Ratings</label>
+            
+            <label class="checkbox"><input type="checkbox" name="includeMailingListMembers" value="true" />
+            Mailing List Members</label>
+            
+            <label class="checkbox"><input type="checkbox" name="includeFormData" value="true" />
+            Form Response Data</label>
           <cfset siteBean=application.settingsManager.getSite(session.siteID)>
           <cfif siteBean.getPublicUserPoolID() eq siteBean.getSiteID() and siteBean.getPrivateUserPoolID() eq siteBean.getSiteID()>
-            <li>
-              <input type="checkbox" name="includeUsers" value="true" />
-              Site Members &amp; Administrative Users</li>
+            <label class="checkbox"><input type="checkbox" name="includeUsers" value="true" />
+              Site Members &amp; Administrative Users</label>
           </cfif>
-        </ul>
         </div>
     </div>
       
@@ -125,42 +125,39 @@ function checkAll (form) {
       <label class="control-label">Also include selected Plugins:</label>
       <div class="controls">
       <cfif rc.rsplugins.recordcount>
-        <p class="help-block"><a onClick="checkAll('pluginSelectFrm');">Select All</a></p>
+        <p class="help-block"><a onClick="checkAll('pluginSelectFrm');"><i class="icon-ok"></i> Select All</a></p>
       </cfif>
-        <ul>
         <cfif rc.rsplugins.recordcount>
           <cfloop query="rc.rsplugins">
-            <li>
-              <label for="">
+              <label class="checkbox">
                 <input type="checkbox" name="moduleID" value="#rc.rsplugins.moduleID#">
                 #HTMLEditFormat(rc.rsplugins.name)#</label>
-            </li>
           </cfloop>
-          </ul>
           <cfelse>
-          <p>This site currently has no plugins assigned to it.</p>
+          <p class="notice">This site currently has no plugins assigned to it.</p>
         </cfif>
         </div>
     </div>
      
       <div class="control-group">
       <label class="control-label">
-        Server Directory (Optional)</label></label>
+        Server Directory <span>(Optional)</span></label>
       <div class="controls">
         <p class="help-block">
           You can set the complete server path to the directory where you would like the bundle to be created.  If left blank the bundle file will immediately download from your browser after creation.
         </p>
-         <p class="help-block">Current Working Directory:#application.configBean.getWebRoot()##application.configBean.getFileDelim()#admin#application.configBean.getFileDelim()#temp
+         <p class="help-block">Current Working Directory:#application.configBean.getWebRoot()##application.configBean.getFileDelim()#admin#application.configBean.getFileDelim()#temp</p>
           <input type="button" class="btn" onclick="jQuery('##saveFileDir').val('#JSStringFormat('#application.configBean.getWebRoot()##application.configBean.getFileDelim()#admin#application.configBean.getFileDelim()#temp')#');" value="Select this Directory">
-        </p> 
+         
         <input class="text" type="text" name="saveFileDir" id="saveFileDir">
       </div>
     </div>
     
     <!--- <cfif application.settingsManager.getSite(rc.siteid).getAdManager()> --->
-    <p class="clearfix notice"><strong>Note:</strong> The Advertising Module &amp; Email Broadcaster are not included in Mura Bundles.
-    </p>
-
+	    <div class="control-group">
+	    <p class="notice"><strong>Note:</strong> The Advertising Module &amp; Email Broadcaster are not included in Mura Bundles.</p>
+	    </div>
+    </div>
     <!--- </cfif>  --->
     <div class="clearfix form-actions">
     <input type="button" onClick="return submitBundle();" value="Create Bundle" class="submit btn" />

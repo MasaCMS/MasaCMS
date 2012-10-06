@@ -3,33 +3,34 @@
 // 2. Commented out variables.less @import (responsive.less, line 21) - Using our own
 // 3. Commented out #grid > .core(@gridColumnWidth1200, @gridGutterWidth1200); (responsive-1200px-min.less, line 9) - Don't need super-wide layouts
 
-@import "jquery.ui.less";
-@import "../bootstrap/less/bootstrap.less";
-@import "variables.less";
-@import "mixins.less";
+@import url("jquery.ui.less");
+@import url("../bootstrap/less/bootstrap.less");
+@import url("variables.less");
+@import url("mixins.less");
 
 .mura {
 	
-	@import "fonts.less";	
-	@import "font-awesome.less";
-	@import "typography.less";
-	@import "header.less";
-	@import "navigation.less";
-	@import "tables.less";
-	@import "mura-grid.less";
-	@import "login.less";
-	@import "forms.less";
-	@import "form-builder.less";
-	@import "tabs.less";
-	@import "tag-clouds.less";
-	@import "session-history.less";
-	@import "category-assignments.less";
-	@import "dashboard.less";
-	@import "setup.less";
-	@import "site-settings.less";
-	@import "image-details.less";
-	@import "dialog.less";
-	@import "configurator.less";
+	@import url("fonts.less");	
+	@import url("font-awesome.less");
+	@import url("typography.less");
+	@import url("header.less");
+	@import url("navigation.less");
+	@import url("tables.less");
+	@import url("mura-grid.less");
+	@import url("login.less");
+	@import url("forms.less");
+	@import url("form-builder.less");
+	@import url("tabs.less");
+	@import url("tag-clouds.less");
+	@import url("session-history.less");
+	@import url("category-assignments.less");
+	@import url("dashboard.less");
+	@import url("setup.less");
+	@import url("site-settings.less");
+	@import url("image-details.less");
+	@import url("dialog.less");
+	@import url("configurator.less");
+	@import url("class-extension.less");
 	
 	
 // Layout
@@ -316,6 +317,6 @@ ul.checkboxTree li {
 
 } /* End .mura */
 
-@import "../bootstrap/less/responsive.less";
+@import url("../bootstrap/less/responsive.less");
 
-.mura { @import "admin-responsive.less"; }
+.mura { @import url("admin-responsive.less"); }
