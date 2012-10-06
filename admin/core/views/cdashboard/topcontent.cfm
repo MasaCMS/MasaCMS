@@ -55,12 +55,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <h3 class="alt">#application.rbFactory.getKeyValue(session.rb,"params.daterange")#</h3>
 <form novalidate="novalidate" name="searchFrm" onsubmit="return validate(this);" id="advancedSearch">
-
 <div class="control-group">
 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,"params.from")#
 </label>
       <div class="controls">
-		<input type="input" class="datepicker" name="startDate" value="#LSDateFormat(rc.startDate,session.dateKeyFormat)#" validate="date" message="The 'From' date is required." />
+		<input type="text" class="datepicker" name="startDate" value="#LSDateFormat(rc.startDate,session.dateKeyFormat)#" validate="date" message="The 'From' date is required." />
      </div>
  </div>
 
@@ -69,7 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		#application.rbFactory.getKeyValue(session.rb,"params.to")#
 	</label>
       <div class="controls">
-		<input type="input" class="datepicker" name="stopDate" value="#LSDateFormat(rc.stopDate,session.dateKeyFormat)#" validate="date" message="The 'To' date is required." />
+		<input type="text" class="datepicker" name="stopDate" value="#LSDateFormat(rc.stopDate,session.dateKeyFormat)#" validate="date" message="The 'To' date is required." />
      </div>
  </div>
 
@@ -86,7 +85,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     </div>
 </div>
 
-<div id="buttonActins" class="formActions">
+<div class="form-actions">
 	<input type="button" class="submit btn" onclick="submitForm(document.forms.searchFrm);" value="#application.rbFactory.getKeyValue(session.rb,"params.search")#" /></dd>
 </div>
 
