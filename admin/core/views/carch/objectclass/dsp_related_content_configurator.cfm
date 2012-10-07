@@ -75,41 +75,37 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<div id="configurator">
 		<div class="control-group">
-			<label class="control-label">
-				#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#
-			</label>
+		<div class="span4">
+	      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label>
 			<div class="controls">
-				<select name="imageSize" class="objectParam  dropdown" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
+				<select name="imageSize" data-displayobjectparam="imageSize" class="span12" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
 					<cfloop list="Small,Medium,Large" index="i">
 						<option value="#lcase(i)#"<cfif i eq feed.getImageSize()> selected</cfif>>#I#</option>
 					</cfloop>
-
+			
 					<cfset imageSizes=application.settingsManager.getSite(rc.siteid).getCustomImageSizeIterator()>
-													
+											
 					<cfloop condition="imageSizes.hasNext()">
 						<cfset image=imageSizes.next()>
 						<option value="#lcase(image.getName())#"<cfif image.getName() eq feed.getImageSize()> selected</cfif>>#HTMLEditFormat(image.getName())#</option>
 					</cfloop>
-					<option value="custom"<cfif "custom" eq feed.getImageSize()> selected</cfif>>Custom</option>
+						<option value="custom"<cfif "custom" eq feed.getImageSize()> selected</cfif>>Custom</option>
 				</select>
 			</div>
-			<div class="control-group" id="feedCustomImageOptions"<cfif feed.getImageSize() neq "custom"> style="display:none"</cfif>>
-				<div class="control-group">
-					<label class="control-label">
-						#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#
-					</label>
-					<div class="controls">
-						<input name="imageWidth" class="objectParam  text" value="#feed.getImageWidth()#" />
-					</div>
-				</div>
-				
-				<div class="control-group">
-					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
-					<div class="controls"><input name="imageHeight" class="objectParam  text" value="#feed.getImageHeight()#" />
-					</div>
-				</div>
-				
+		</div>
+	
+		<div id="feedCustomImageOptions" class="span6"<cfif feed.getImageSize() neq "custom"> style="display:none"</cfif>>
+		      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#
+		      </label>
+			<div class="controls">
+				<input class="span10" name="imageWidth" data-displayobjectparam="imageWidth" type="text" value="#feed.getImageWidth()#" />
 			</div>
+		      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
+		      <div class="controls">
+		      	<input class="span10" name="imageHeight" data-displayobjectparam="imageHeight" type="text" value="#feed.getImageHeight()#" />
+			  </div>
+		</div>	
+	</div>
 			
 			<div class="control-group" id="availableFields">
 				<label class="control-label">

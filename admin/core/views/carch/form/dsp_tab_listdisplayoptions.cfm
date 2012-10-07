@@ -49,47 +49,46 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
   <div id="tabListDisplayOptions" class="tab-pane fade">
 			<div class="control-group">
-			     <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label> 
-			      	<div class="controls">
-						<select name="imageSize" class="dropdown" onchange="if(this.value=='custom'){jQuery('##CustomImageOptions').fadeIn('fast')}else{jQuery('##CustomImageOptions').hide();jQuery('##CustomImageOptions').find(':input').val('AUTO');}">
-							<cfloop list="Small,Medium,Large" index="i">
-								<option value="#lcase(i)#"<cfif i eq rc.contentBean.getImageSize()> selected</cfif>>#I#</option>
-							</cfloop>
-
-							<cfset imageSizes=application.settingsManager.getSite(rc.siteid).getCustomImageSizeIterator()>
-								
-							<cfloop condition="imageSizes.hasNext()">
-								<cfset image=imageSizes.next()>
-								<option value="#lcase(image.getName())#"<cfif image.getName() eq rc.contentBean.getImageSize()> selected</cfif>>#HTMLEditFormat(image.getName())#</option>
-							</cfloop>
-							<option value="custom"<cfif "custom" eq rc.contentBean.getImageSize()> selected</cfif>>Custom</option>
-						</select>
-					</div>
-					<div class="controls" id="CustomImageOptions"<cfif rc.contentBean.getImageSize() neq "custom"> style="display:none"</cfif>>
-							<div class="control-group">
-								<label class="control-label">
-									#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#
-								</label>
-								<div class="controls">
-									<input name="imageWidth" class="text" value="#rc.contentBean.getImageWidth()#" />
-								</div>
-							</div>
-							<div class="control-group">
-								<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
-								<div class="controls">
-									<input name="imageHeight" class="text" value="#rc.contentBean.getImageHeight()#" />
-								</div>
-							</div>
-					</div>  
-				</div>
+		<div class="span4">
+	      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label>
+			<div class="controls">
+				<select name="imageSize" data-displayobjectparam="imageSize" class="span12" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
+					<cfloop list="Small,Medium,Large" index="i">
+						<option value="#lcase(i)#"<cfif i eq rc.contentBean.getImageSize()> selected</cfif>>#I#</option>
+					</cfloop>
+			
+					<cfset imageSizes=application.settingsManager.getSite(rc.siteid).getCustomImageSizeIterator()>
+											
+					<cfloop condition="imageSizes.hasNext()">
+						<cfset image=imageSizes.next()>
+						<option value="#lcase(image.getName())#"<cfif image.getName() eq rc.contentBean.getImageSize()> selected</cfif>>#HTMLEditFormat(image.getName())#</option>
+					</cfloop>
+						<option value="custom"<cfif "custom" eq rc.contentBean.getImageSize()> selected</cfif>>Custom</option>
+				</select>
+			</div>
+		</div>
+	
+		<div id="feedCustomImageOptions" class="span6"<cfif rc.contentBean.getImageSize() neq "custom"> style="display:none"</cfif>>
+		      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#
+		      </label>
+			<div class="controls">
+				<input class="span10" name="imageWidth" data-displayobjectparam="imageWidth" type="text" value="#rc.contentBean.getImageWidth()#" />
+			</div>
+		      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
+		      <div class="controls">
+		      	<input class="span10" name="imageHeight" data-displayobjectparam="imageHeight" type="text" value="#rc.contentBean.getImageHeight()#" />
+			  </div>
+		</div>	
+	</div>
 
 				<div class="control-group" id="availableFields">
 			      	<label class="control-label">
-			      		<span>Available Fields</span> <span>Selected Fields</span>
-			      	</label>
-				  	<div class="controls sortableFields">
-					
-						<p class="dragMsg"><span class="dragFrom">Drag Fields from Here&hellip;</span><span>&hellip;and Drop Them Here.</span></p>
+						<span class="span6">Available Fields</span> <span class="span6">Selected Fields</span>
+					</label>
+					<div id="sortableFields" class="controls">
+						<p class="dragMsg">
+							<span class="dragFrom span6">Drag Fields from Here&hellip;</span><span class="span6">&hellip;and Drop Them Here.</span>
+						</p>							
 					
 						<cfset displayList=rc.contentBean.getDisplayList()>
 						<cfset availableList=rc.contentBean.getAvailableDisplayList()>
@@ -99,13 +98,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfset availableList=listDeleteAt(availableList,finder)>
 							</cfif>
 						</cfif>			
-						<ul id="contentAvailableListSort" class="contentDisplayListSortOptions">
+						<ul id="availableListSort" class="displayListSortOptions span6">
 							<cfloop list="#availableList#" index="i">
 								<li class="ui-state-default">#trim(i)#</li>
 							</cfloop>
 						</ul>
-									
-						<ul id="contentDisplayListSort" class="contentDisplayListSortOptions">
+											
+						<ul id="displayListSort" class="displayListSortOptions span6">
 							<cfloop list="#displayList#" index="i">
 								<li class="ui-state-highlight">#trim(i)#</li>
 							</cfloop>

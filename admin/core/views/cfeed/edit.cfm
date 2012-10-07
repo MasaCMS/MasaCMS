@@ -406,7 +406,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		      	<input class="span10" name="#displaNamePrefix#imageHeight" data-displayobjectparam="imageHeight" type="text" value="#rc.feedBean.getImageHeight()#" />
 			  </div>
 		</div>	
-</div>
+	</div>
 
 <div class="control-group">
 <div class="span6">
