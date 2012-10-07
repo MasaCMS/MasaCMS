@@ -1,21 +1,18 @@
 #cextend {
 
-	#editFrm1container form {
-		margin-top: @baseLineHeight*2;
-	}
-
-	#saveSort {
-		/*
-		background-color: darken(@successBackground,50%);
-		color: @white; 
-		*/
-	}
+	#editFrm1container {
+	
+		form {
+			margin-top: @baseLineHeight*2;
+			}
+		}
 	
 	.attr-list {
 		
 		list-style: none;
 		margin: 0 0 @baseLineHeight*2 0;
 		width: 30%;
+		clear: both;
 		
 		li {
 			margin: 0 0 .25em;
@@ -24,6 +21,8 @@
 			.border-radius(3px);
 			position: relative;
 			line-height: 28px;
+			
+			form {background: red;}
 		
 				i {
 				font-size: 14px;
