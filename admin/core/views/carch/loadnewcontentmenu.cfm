@@ -95,15 +95,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</li>
 	</cfif>
 <cfelse>	
+	<cfquery name="rsItemTypes" dbtype="query">
+		select * from rsSubTypes where lower(type)='file' and lower(subtype) != 'default'
+	</cfquery>
 	<cfif not len($availableSubTypes) or listFindNoCase($availableSubTypes,'File/Default')>
 		<li class="newGalleryItem">
 			<cfif len(rsItemTypes.description)><a href="##" rel="tooltip" data-original-title="#HTMLEditFormat(rsItemTypes.description)#"><i class="icon-question-sign"></i></a></cfif>
 			<a href="index.cfm?muraAction=cArch.edit&contentid=&parentid=#URLEncodedFormat(rc.contentid)#&type=File&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteID)#&moduleid=00000000000000000000000000000000000&ptype=#URLEncodedFormat(rc.ptype)#&compactDisplay=#URLEncodedFormat(rc.compactDisplay)#" id="newGalleryItemLink"><i class="#$.iconClassByContentType('GalleryItem')#"></i> <span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.addgalleryitem")#</span></a>
 		</li>
 	</cfif>
-	<cfquery name="rsItemTypes" dbtype="query">
-	select * from rsSubTypes where lower(type)='file' and lower(subtype) != 'default'
-	</cfquery>
 	<cfloop query="rsItemTypes">
 	<cfif not len($availableSubTypes) or listFindNoCase($availableSubTypes,'File/#rsItemTypes.subType#')>
 		<li class="newFile">
