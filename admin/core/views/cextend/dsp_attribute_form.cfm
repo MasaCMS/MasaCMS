@@ -47,13 +47,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset typeList="TextBox,TextArea,HTMLEditor,SelectBox,MultiSelectBox,RadioGroup,File,Hidden"/>
 <cfoutput>
-<cfif attributes.action eq "add">
+
+
 <ul class="nav nav-pills">
+
+<cfif attributes.action eq "add">
 <li>
 <a href="javascript:;" id="#HTMLEditFormat(attributes.formName)#open" class="btn" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container').slideDown();this.style.display='none';jQuery('###HTMLEditFormat(attributes.formName)#close').show();return false;"><i class="icon-plus-sign"></i> Add New Attribute</a></li>
 <li><a href="javascript:;" class="btn" style="display:none;" id="#HTMLEditFormat(attributes.formName)#close" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container').slideUp();this.style.display='none';jQuery('###HTMLEditFormat(attributes.formName)#open').show();return false;"><i class="icon-eye-close"></i> Close</a></li>
-</ul>
 </cfif>
+
+<cfif arrayLen(attributesArray)>
+<li><a href="javascript:;" class="btn" style="display:none;" id="saveSort" onclick="extendManager.saveAttributeSort('attributesList');return false;"><i class="icon-check"></i> Save Order</a></li>
+<li><a href="javascript:;" class="btn" id="showSort" onclick="extendManager.showSaveSort('attributesList');return false;"><i class="icon-move"></i> Reorder</a></li>
+</cfif>
+</ul>
+
 <cfif attributes.action eq "add">
 <div style="display:none;" id="#HTMLEditFormat(attributes.formName)#container">
 </cfif>

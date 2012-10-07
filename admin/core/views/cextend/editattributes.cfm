@@ -49,6 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset subType=application.classExtensionManager.getSubTypeByID(rc.subTypeID) />
 <cfset extendSet=subType.loadSet(rc.extendSetID)/>
 <cfset attributesArray=extendSet.getAttributes() />
+
 <h1>Manage Attributes Set</h1>
 
 <cfoutput>
@@ -64,7 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 
 <ul class="metadata">
-	<li><strong>Class Extension:</strong> #application.classExtensionManager.getTypeAsString(subType.getType())# / #subType.getSubType()#</li>
+	<li><strong>Class Extension:</strong> #application.classExtensionManager.getTypeAsString(subType.getType())#/#subType.getSubType()#</li>
 	<li><strong>Attributes Set:</strong> #extendSet.getName()#</li>
 </ul>
 
@@ -73,13 +74,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset newAttribute.setOrderno(arrayLen(attributesArray)+1) />
 <cf_dsp_attribute_form attributeBean="#newAttribute#" action="add" subTypeID="#rc.subTypeID#" formName="newFrm">
 
+<!---
 <cfif arrayLen(attributesArray)>
-<p class="error">Matt, can we combine "re-order" button with the "add new attribute" button above?</p>
 <ul class="nav nav-pills">
 <li><a href="javascript:;" class="btn" style="display:none;" id="saveSort" onclick="extendManager.saveAttributeSort('attributesList');return false;"><i class="icon-check"></i> Save Order</a></li>
 <li><a href="javascript:;" class="btn" id="showSort" onclick="extendManager.showSaveSort('attributesList');return false;"><i class="icon-move"></i> Reorder</a></li>
 </ul>
 </cfif>
+--->
 
 <cfif arrayLen(attributesArray)>
 <ul id="attributesList" class="attr-list">
