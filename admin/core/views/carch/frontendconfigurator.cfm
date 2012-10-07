@@ -39,7 +39,7 @@ jQuery(document).ready(function(){
 </cfif> 
 
 <div id="configuratorContainer">
-	<h2 id="configuratorHeader">Loading...</h2>
+	<h1 id="configuratorHeader">Loading...</h1>
 	<div id="configuratorNotices" style="display:none;">
 	<cfif not rc.contentBean.getIsNew()>
 	<cfset draftcheck=application.contentManager.getDraftPromptData(rc.contentBean.getContentID(),rc.contentBean.getSiteID())>
@@ -67,7 +67,7 @@ jQuery(document).ready(function(){
 			<cfinclude template="form/dsp_changesets.cfm">
 		</cfif>
 		<cfif assignChangesets>
-			<input type="button" class="button btn" onclick="saveToChangeset('#rc.contentBean.getChangesetID()#','#HTMLEditFormat(rsDisplayObject.siteid)#','');return false;" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset")#" />	
+			<input type="button" class="btn" onclick="saveToChangeset('#rc.contentBean.getChangesetID()#','#HTMLEditFormat(rsDisplayObject.siteid)#','');return false;" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset")#" />	
 		</cfif>
 		<input type="button" class="btn" id="saveConfigDraft" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#"/>
 		<input type="button" class="btn" id="previewConfigDraft" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.preview"))#"/>

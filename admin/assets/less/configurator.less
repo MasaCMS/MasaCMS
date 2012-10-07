@@ -3,8 +3,65 @@
 	font-size: 11px;
 }
 
-#configurator p.no-options {
-	margin: 2em 0;
+#configurator {
+
+	.span3 {
+		width: 23.404255317% !important;
+		}
+	
+	.span4 {
+		width: 31.914893614% !important;
+		}
+	
+	.span6 {
+		width: 48.93617020799999% !important;
+		}
+		
+	.span8 {
+		width: 65.95744680199999% !important;
+		}
+		
+	.span10 {
+		width: 82.97872339599999% !important;
+		}
+	
+	.span12 {
+		width: 100% !important;
+		}
+
+	[class*="span"] { /* Overriding responsive styles becuase they get triggered by the width of the modal */
+		width: inherit;
+		float: left;
+		margin-left: 2.127659574%;
+		}
+
+	[class*="span"]:first-child {
+		margin-left: 0;
+		}
+
+	p.no-options {
+		margin: 2em 0;
+		}
+		
+	#sortableFields {
+	
+	> ul {
+		width: 48%;
+		float: left;
+		}
+		
+	#displayListSort {
+		
+		float: right;
+		
+		li {
+			font-size: 12px;
+			}
+		
+		}
+		
+	}
+
 }
 
 #configurator #sortableFields,

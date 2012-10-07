@@ -192,7 +192,7 @@ font-size: @baseFontSize - 1;
 	}
 } // /#editObjects
 
-.fieldset { // Using an actual fieldset causes ck editor to grow crazy wide, will fix later. Don't forget reference below :)
+.fieldset { // Using an actual fieldset causes ck editor to grow crazy wide, will fix later.
 	padding: @gridGutterWidth 0 0;
 	margin: @gridGutterWidth;
     background: rgba(255,255,255,.73);
@@ -206,30 +206,30 @@ font-size: @baseFontSize - 1;
     	padding: @gridGutterWidth;
     	padding-bottom: 0;
     }
-}
+    
+    h2 { // Using instead of Legend
+		margin: 0 0 @baseLineHeight/2 @gridGutterWidth;
+		padding-bottom: 0;
+		border: 0;
+		font-size: 14px;
+		line-height: 1;
+		color: @grayDark;
+		}
 
-.fieldset h2 { // Using instead of Legend
-	margin: 0 0 @baseLineHeight/2 @gridGutterWidth;
-	padding-bottom: 0;
-	border: 0;
-	font-size: 14px;
-	line-height: 1;
-	color: @grayDark;
-}
+	.control-group {
+		background: transparent;
+		padding: @gridGutterWidth;
+		margin-bottom: 0;
+		border-top: 1px solid rgba(240,240,240,.8);
+		.clearfix;
+		}
 
-.control-group {
-	background: transparent;
-	padding: @gridGutterWidth;
-	margin-bottom: 0;
-	border-top: 1px solid rgba(240,240,240,.8);
-	.clearfix;
-}
+	> div:first-of-type {
+		border-top: 0 !important;
+		padding-top: 0 !important;
+		}
 
-.fieldset > div:first-of-type
- {
-	border-top: 0 !important;
-	padding-top: 0 !important;
-}
+	}
 
 .control-label, .control-label a {
 	color: @grayDarker !important;
@@ -240,14 +240,14 @@ font-size: @baseFontSize - 1;
 
 .controls {
 	.border-radius(3px);
-}
-
-.controls + .controls {
+	
+	+ .controls {
 	margin-top: @baseLineHeight/2;
-}
+	}
 
-.controls + .control-label {
+	+ .control-label {
 	margin-top: @baseLineHeight;
+	}
 }
 
 .btn {
@@ -289,8 +289,7 @@ font-size: @baseFontSize - 1;
 	select {
 		margin-right: .5em;
 		}
-	
-}
+	}
 
 // Basic Tab
 .mura-file {
