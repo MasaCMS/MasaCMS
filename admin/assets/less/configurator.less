@@ -1,9 +1,4 @@
-#configurator,
-#configuratorTab {
-	font-size: 11px;
-}
-
-#configurator {
+.compact #configurator {
 
 	.span3 {
 		width: 23.404255317% !important;
@@ -64,13 +59,6 @@
 
 }
 
-#configurator #sortableFields,
-#configuratorTab #sortableFields {
-	overflow: hidden;
-	width: 100%;
-	/*max-width: 420px;*/
-}
-
 #availableFields {
 	margin-bottom: 0;
 }
@@ -102,26 +90,29 @@
 		.border-radius(3px);
 		
 		}
-}
 
-#availableListSort,
-#displayListSort,
-#contentAvailableListSort,
-#contentDisplayListSort  {
-	.box-sizing(border-box);
-	margin: 0;
-	padding: 12px;
-	list-style-type: none;
-	border: 1px dotted red;
-}
-
-#availableListSort,
-#contentAvailableListSort {
-	border: 1px dotted @grayLight;
-	min-height: 36px;
-	margin: 0 18px 0 0;
+	#availableListSort,
+	#displayListSort,
+	#contentAvailableListSort,
+	#contentDisplayListSort  {
+		.box-sizing(border-box);
+		margin: 0 0 @baseLineHeight;
+		padding: 12px;
+		list-style-type: none;
+		border: 1px dotted red;
+		width: 48%;
+		float: right;
+	}
 	
-	li {
-		margin-left: 0;
+	#availableListSort,
+	#contentAvailableListSort {
+		border: 1px dotted @grayLight;
+		min-height: 36px;
+		margin: 0 18px 0 0;
+		float: left;
+		
+		li {
+			margin-left: 0;
+		}
 	}
 }

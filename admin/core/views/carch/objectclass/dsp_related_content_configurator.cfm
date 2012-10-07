@@ -68,12 +68,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	<cfif rc.classid eq "related_content">
-		<h3>#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent'))#</h3>
+		<h2>#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent'))#</h2>
 	<cfelse>
-		<h3>#HTMLEditFormat('#menutitle# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#')#</h3>
+		<h2>#HTMLEditFormat('#menutitle# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#')#</h2>
 	</cfif>
 	
-	<div id="configurator">
+	<div id="configurator" class="fieldset-wrap">
+	<div class="fieldset">
 		<div class="control-group">
 		<div class="span4">
 	      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label>
@@ -172,6 +173,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<option value="desc" <cfif feed.getsortDirection() eq 'desc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.descending')#</option>
 					</select>
 				</div>
+			</div>
 			</div>
 		</div>	
 </cfoutput>
