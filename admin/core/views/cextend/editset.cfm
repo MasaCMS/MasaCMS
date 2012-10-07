@@ -59,19 +59,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <li><strong>Class Extension:</strong> #application.classExtensionManager.getTypeAsString(subType.getType())# / #subType.getSubType()#</li>
 </ul>
 
-<form novalidate="novalidate" name="form1" method="post" action="index.cfm" onsubit="return validateForm(this);">
+<form class="fieldset-wrap" novalidate="novalidate" name="form1" method="post" action="index.cfm" onsubit="return validateForm(this);">
 
+<div class="fieldset">
 
 <div class="control-group">
 	<label class="control-label">Attribute Set Name</label>
 	<div class="controls">
-	<input name="name" value="#HTMLEditFormat(extendSetBean.getName())#" required="true"/>
+	<input name="name" type="text" value="#HTMLEditFormat(extendSetBean.getName())#" required="true"/>
 	</div>
 </div>
 
 <cfif subType.getType() neq "Custom">
 	<div class="control-group">
-		<label class="control-label">Container</label>
+		<label class="control-label">Container (Tab)</label>
 		<div class="controls">
 			<select name="container">
 				<option value="Default">Extended Attributes</option>			
@@ -100,7 +101,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<input name="container" value="Custom" type="hidden"/>	
 </cfif>
 
-
 <!---
 <cfif  not listFindNoCase("1,Site,Custom", subtype.getType()) and application.categoryManager.getCategoryCount(rc.siteID)>
 	<div class="control-group">
@@ -111,6 +111,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 --->
 
+</div>
 <div class="form-actions">
 <cfif not len(rc.extendSetID)>
 	<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="Add" />
