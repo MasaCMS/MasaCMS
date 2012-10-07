@@ -1,18 +1,77 @@
 #cextend {
+
+	#editFrm1container form {
+		margin-top: @baseLineHeight*2;
+	}
+
+	#saveSort {
+		/*
+		background-color: darken(@successBackground,50%);
+		color: @white; 
+		*/
+	}
 	
-	#setList {
+	.attr-list {
 		
 		list-style: none;
-		margin: 0;
-		width: 25%;
+		margin: 0 0 @baseLineHeight*2 0;
+		width: 30%;
 		
 		li {
 			margin: 0 0 .25em;
-			padding: .5em .75em;
-			#gradient .vertical(#ccc,#666);
-			border: 1px solid #555;
-			.border-radius(3px);	
+			background: @grayLighter;
+			padding: .25em .5em;
+			.border-radius(3px);
+			position: relative;
+			line-height: 28px;
+		
+				i {
+				font-size: 14px;
+				width: 1em;
+				color: @grayDark;
+				
+				&.icon-move {
+					font-size: 18px;
+					width: 1.5em;
+					padding: 0;
+					position: relative;
+					top: 2px;
+					margin-right: 1em;
+					.border-radius(3px);
+					text-shadow: 0 1px 0 @white;
+					
+					&:hover {
+						cursor: hand !important;
+						color: @gray;
+						}
+					
+					}
+				
+				}
+	
+				.btns {
+
+					.inline-block;
+					margin-left: 2em;
+					.pull-right;
+				
+				.btn {
+					padding: 4px 6px;
+					}
+				
+				}
+				
+				p {
+					margin: 0 0 0 .5em;
+					.inline-block();
+					line-height: 1;
+				}
+			}		
+			
+		}
+		
+		&.ui-sortable li:hover {
+			background: @grayLight !important;
+			cursor: hand !important;
 		}
 	}
-	
-}

@@ -54,86 +54,95 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <a class="btn" href="index.cfm?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-circle-arrow-left"></i> Back to Class Extensions</a>
 </div>
 
-<form novalidate="novalidate" name="subTypeFrm" method="post" action="index.cfm" onsubit="return validateForm(this);">
-<div class="control-group">
-	<label class="control-label">Base Type</label>
-	<div class="controls"><select name="typeSelector" id="typeSelector" required="true" message="The BASE CLASS field is required." onchange="extendManager.setBaseInfo(this.value);">
-		<option value="">Select</option>
-		<cfloop list="#typeList#" index="t"><option value="#t#" <cfif listFirst(t,'^') eq subType.getType()>selected</cfif>>#application.classExtensionManager.getTypeAsString(listFirst(t,'^'))#</option></cfloop>
-		</select>
-	</div>
-</div>
-<div class="control-group subTypeContainer"<cfif subtype.getType() eq "Site"> style="display:none;"</cfif>>
-	<label class="control-label">Sub Type</label>
-	<div class="controls">
-		<input name="subType" id="subType" value="#HTMLEditFormat(subType.getSubType())#" required="true" maxlength="25"/>
-	</div>
-</div>
+<form class="fieldset-wrap" novalidate="novalidate" name="subTypeFrm" method="post" action="index.cfm" onsubit="return validateForm(this);">
 
-<div class="control-group">
-<label class="control-label">Description</label>
-<div class="controls"><textarea name="description" id="description">#HTMLEditFormat(subtype.getDescription())#</textarea></div>
-</div>
-
-<div class="control-group hasSummaryContainer">
-	<label class="control-label">Show summary when editing?</label>
-	<div class="controls">
-	<label class="radio"><input name="hasSummary" type="radio" class="radio" value="1"<cfif subType.gethasSummary() eq 1 >Checked</cfif>>Yes</label>
-	<label class="radio"><input name="hasSummary" type="radio" class="radio" value="0"<cfif subType.gethasSummary() eq 0 >Checked</cfif>>No</label>
+	<div class="fieldset">
+		<div class="control-group">
+	<div class="span4">
+		<label class="control-label">Base Type</label>
+		<div class="controls"><select name="typeSelector" id="typeSelector" required="true" message="The BASE CLASS field is required." onchange="extendManager.setBaseInfo(this.value);">
+			<option value="">Select</option>
+			<cfloop list="#typeList#" index="t"><option value="#t#" <cfif listFirst(t,'^') eq subType.getType()>selected</cfif>>#application.classExtensionManager.getTypeAsString(listFirst(t,'^'))#</option></cfloop>
+			</select>
+			</div>
+		</div>
+		<div class="span4 subTypeContainer"<cfif subtype.getType() eq "Site"> style="display:none;"</cfif>>
+			<label class="control-label">Sub Type</label>
+			<div class="controls">
+				<input class="span12" name="subType" id="subType" type="text" value="#HTMLEditFormat(subType.getSubType())#" required="true" maxlength="25"/>
+			</div>
+		</div>
 	</div>
-</div>
-
-<div class="control-group hasBodyContainer">
-	<label class="control-label">Show body when editing?</label>
-	<div class="controls"> 
-		<label class="radio"><input name="hasBody" type="radio" class="radio" value="1"<cfif subType.gethasBody() eq 1 >Checked</cfif>>Yes</label>
-		<label class="radio"><input name="hasBody" type="radio" class="radio" value="0"<cfif subType.gethasBody() eq 0 >Checked</cfif>>No</label>
+	
+		<div class="control-group">
+	<label class="control-label">Description</label>
+	<div class="controls"><textarea name="description" id="description" rows="6" class="span12">#HTMLEditFormat(subtype.getDescription())#</textarea></div>
 	</div>
-</div>
-
-<cfset rsSubTypes=application.classExtensionManager.getSubTypes(siteID=rc.siteID,activeOnly=true) />
-<div class="control-group availableSubTypesContainer" >
-	<label class="control-label">Only allow users to add certian subtypes?</label>
-	<div class="controls"> 
-		<label class="radio" ><input name="hasAvailableSubTypes" type="radio" class="radio" value="1" <cfif len(subType.getAvailableSubTypes())>checked </cfif>
-		onclick="javascript:toggleDisplay2('rg',true);">Yes</label>
-		<label class="radio"><input name="hasAvailableSubTypes" type="radio" class="radio" value="0" <cfif not len(subType.getAvailableSubtypes())>checked </cfif>
-		onclick="javascript:toggleDisplay2('rg',false);">No</label>
+		
+		<div class="control-group hasSummaryContainer">
+		<div class="span4">
+			<label class="control-label">Show "Summary" field when editing?</label>
+			<div class="controls">
+			<label class="radio inline"><input name="hasSummary" type="radio" class="radio inline" value="1"<cfif subType.gethasSummary() eq 1 >Checked</cfif>>Yes</label>
+			<label class="radio inline"><input name="hasSummary" type="radio" class="radio inline" value="0"<cfif subType.gethasSummary() eq 0 >Checked</cfif>>No</label>
+			</div>
+		</div>
+	
+	<div class="span4 hasBodyContainer">
+		<label class="control-label">Show "Body" field when editing?</label>
+		<div class="controls"> 
+			<label class="radio inline"><input name="hasBody" type="radio" class="radio inline" value="1"<cfif subType.gethasBody() eq 1 >Checked</cfif>>Yes</label>
+			<label class="radio inline"><input name="hasBody" type="radio" class="radio inline" value="0"<cfif subType.gethasBody() eq 0 >Checked</cfif>>No</label>
+		</div>
 	</div>
-	<div class="controls" id="rg"<cfif not len(subType.getAvailableSubTypes())> style="display:none;"</cfif>>
-		<select name="availableSubTypes" size="8" multiple="multiple" class="multiSelect" id="availableSubTypes">
-		<cfloop list="Page,Portal,Calendar,Gallery,File,Link" index="i">
-			<option value="#i#/Default" <cfif listFindNoCase(subType.getAvailableSubTypes(),'#i#/Default')> selected</cfif>>#i#/Default</option>
-			<cfquery name="rsItemTypes" dbtype="query">
-			select * from rsSubTypes where lower(type)='#lcase(i)#' and lower(subtype) != 'default'
-			</cfquery>
-			<cfset _AvailableSubTypes=subType.getAvailableSubTypes()>
-			<cfloop query="rsItemTypes">
-			<option value="#i#/#rsItemTypes.subType#" <cfif listFindNoCase(_AvailableSubTypes,'#i#/#rsItemTypes.subType#')> selected</cfif>>#i#/#rsItemTypes.subType#</option>
-			</cfloop>
-		</cfloop>
-		</select>			
+	
+	<div class="span4">
+			<label class="control-label">Status</label>
+			<div class="controls">
+					<label class="radio inline"><input name="isActive" type="radio" class="radio inline" value="1"<cfif subType.getIsActive() eq 1 >Checked</cfif>>Active</label>
+				<label class="radio inline"><input name="isActive" type="radio" class="radio inline" value="0"<cfif subType.getIsActive() eq 0 >Checked</cfif>>Inactive</label>
+			</div>
+		</div>
+</div>
+	
+		<cfset rsSubTypes=application.classExtensionManager.getSubTypes(siteID=rc.siteID,activeOnly=true) />
+		<div class="control-group">
+		<div class="span6 availableSubTypesContainer" >
+			<label class="control-label">Allow users to add only specific subtypes?</label>
+			<div class="controls"> 
+				<label class="radio inline" ><input name="hasAvailableSubTypes" type="radio" class="radio inline" value="1" <cfif len(subType.getAvailableSubTypes())>checked </cfif>
+				onclick="javascript:toggleDisplay2('rg',true);">Yes</label>
+				<label class="radio inline"><input name="hasAvailableSubTypes" type="radio" class="radio inline" value="0" <cfif not len(subType.getAvailableSubtypes())>checked </cfif>
+				onclick="javascript:toggleDisplay2('rg',false);">No</label>
+			</div>
+			<div class="controls" id="rg"<cfif not len(subType.getAvailableSubTypes())> style="display:none;"</cfif>>
+				<select name="availableSubTypes" size="8" multiple="multiple" class="multiSelect" id="availableSubTypes">
+				<cfloop list="Page,Portal,Calendar,Gallery,File,Link" index="i">
+					<option value="#i#/Default" <cfif listFindNoCase(subType.getAvailableSubTypes(),'#i#/Default')> selected</cfif>>#i#/Default</option>
+					<cfquery name="rsItemTypes" dbtype="query">
+					select * from rsSubTypes where lower(type)='#lcase(i)#' and lower(subtype) != 'default'
+					</cfquery>
+					<cfset _AvailableSubTypes=subType.getAvailableSubTypes()>
+					<cfloop query="rsItemTypes">
+					<option value="#i#/#rsItemTypes.subType#" <cfif listFindNoCase(_AvailableSubTypes,'#i#/#rsItemTypes.subType#')> selected</cfif>>#i#/#rsItemTypes.subType#</option>
+					</cfloop>
+				</cfloop>
+				</select>			
+			</div>
+		</div>
 	</div>
-</div>
-
-<div class="control-group">
-	<label class="control-label">Is this class extension active?</label>
-	<div class="controls">
-		<label class="radio"><input name="isActive" type="radio" class="radio" value="1"<cfif subType.getIsActive() eq 1 >Checked</cfif>>Yes</label>
-		<label class="radio"><input name="isActive" type="radio" class="radio" value="0"<cfif subType.getIsActive() eq 0 >Checked</cfif>>No</label>
 	</div>
-</div>
-
-<div class="clearfix" id="form-actions">
-<cfif not len(rc.subTypeID)>
-	<input type="button" class="submit btn" onclick="submitForm(document.forms.subTypeFrm,'add');" value="Add" />
-	<input type=hidden name="subTypeID" value="#createuuid()#">
-<cfelse>
-	<input type="button" class="submit btn" onclick="submitForm(document.forms.subTypeFrm,'delete','Delete Class Extension?');" value="Delete" />
-	<input type="button" class="submit btn" onclick="submitForm(document.forms.subTypeFrm,'update');" value="Update" />
-	<input type=hidden name="subTypeID" value="#subType.getsubtypeID()#">
-</cfif>
-</div>
+	
+	<div class="form-actions">
+	<cfif not len(rc.subTypeID)>
+		<input type="button" class="submit btn" onclick="submitForm(document.forms.subTypeFrm,'add');" value="Add" />
+		<input type=hidden name="subTypeID" value="#createuuid()#">
+	<cfelse>
+		<input type="button" class="submit btn" onclick="submitForm(document.forms.subTypeFrm,'delete','Delete Class Extension?');" value="Delete" />
+		<input type="button" class="submit btn" onclick="submitForm(document.forms.subTypeFrm,'update');" value="Update" />
+		<input type=hidden name="subTypeID" value="#subType.getsubtypeID()#">
+	</cfif>
+	</div>
 
 <input type="hidden" name="action" value="">
 <input name="muraAction" value="cExtend.updateSubType" type="hidden">

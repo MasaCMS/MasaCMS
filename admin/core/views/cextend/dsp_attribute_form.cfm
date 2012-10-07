@@ -47,18 +47,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset typeList="TextBox,TextArea,HTMLEditor,SelectBox,MultiSelectBox,RadioGroup,File,Hidden"/>
 <cfoutput>
-<cfif attributes.action eq "add">
+
+
 <ul class="nav nav-pills">
+
+<cfif attributes.action eq "add">
 <li>
 <a href="javascript:;" id="#HTMLEditFormat(attributes.formName)#open" class="btn" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container').slideDown();this.style.display='none';jQuery('###HTMLEditFormat(attributes.formName)#close').show();return false;"><i class="icon-plus-sign"></i> Add New Attribute</a></li>
 <li><a href="javascript:;" class="btn" style="display:none;" id="#HTMLEditFormat(attributes.formName)#close" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container').slideUp();this.style.display='none';jQuery('###HTMLEditFormat(attributes.formName)#open').show();return false;"><i class="icon-eye-close"></i> Close</a></li>
-</ul>
 </cfif>
+
+<cfif arrayLen(attributesArray)>
+<li><a href="javascript:;" class="btn" style="display:none;" id="saveSort" onclick="extendManager.saveAttributeSort('attributesList');return false;"><i class="icon-check"></i> Save Order</a></li>
+<li><a href="javascript:;" class="btn" id="showSort" onclick="extendManager.showSaveSort('attributesList');return false;"><i class="icon-move"></i> Reorder</a></li>
+</cfif>
+</ul>
+
 <cfif attributes.action eq "add">
 <div style="display:none;" id="#HTMLEditFormat(attributes.formName)#container">
 </cfif>
-<form novalidate="novalidate" method="post" name="#HTMLEDitFormat(attributes.formName)#" action="index.cfm" onsubmit="return validateForm(this);">
-
+<form class="fieldset-wrap" novalidate="novalidate" method="post" name="#HTMLEDitFormat(attributes.formName)#" action="index.cfm" onsubmit="return validateForm(this);">
+<div class="fieldset">
 <cfif attributes.action neq "add">
 <div class="control-group">
 	<label class="control-label">Attribute ID</label>
@@ -67,25 +76,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 </div>
 </cfif>
+
 <div class="control-group">
-	<label class="control-label">Name</label>
-	<div class="controls">
-		<input type="text" name="name" required="true" value="#HTMLEditFormat(attributes.attributeBean.getName())#" />
-	</div>
-</div>
-<div class="control-group">
+<div class="span4">
 	<label class="control-label">Label</label>
 	<div class="controls">
-		<input type="text" name="label" value="#HTMLEditFormat(attributes.attributeBean.getLabel())#" />
+		<input class="span12" type="text" name="label" value="#HTMLEditFormat(attributes.attributeBean.getLabel())#" />
 	</div>
 </div>
-<div class="control-group">
-	<label class="control-label">Hint</label>
+<div class="span4">
+	<label class="control-label">Name (No spaces)</label>
 	<div class="controls">
-		<input type="text" name="hint" value="#HTMLEditFormat(attributes.attributeBean.getHint())#" />
+		<input class="span12" type="text" name="name" required="true" value="#HTMLEditFormat(attributes.attributeBean.getName())#" />
 	</div>
 </div>
-<div class="control-group">
+<div class="span4">
 	<label class="control-label">Input Type</label>
 	<div class="controls">
 		<select name="type">
@@ -95,13 +100,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</select>
 	</div>
 </div>
+</div>
+
 <div class="control-group">
+<div class="span4">
 	<label class="control-label">Default Value</label>
 	<div class="controls">
-		<input type="text" name="defaultValue"  value="#HTMLEditFormat(attributes.attributeBean.getDefaultvalue())#" />
+		<input class="span12" type="text" name="defaultValue"  value="#HTMLEditFormat(attributes.attributeBean.getDefaultvalue())#" />
 	</div>
 </div>
-<div class="control-group">
+<div class="span4">
+	<label class="control-label">Tooltip</label>
+	<div class="controls">
+		<input class="span12" type="text" name="hint" value="#HTMLEditFormat(attributes.attributeBean.getHint())#" />
+	</div>
+</div>
+<div class="span4">
 	<label class="control-label">Required</label>
 	<div class="controls">
 		<select name="required">
@@ -110,7 +124,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</select>
 	</div>
 </div>
+</div>
+</div>
+<div class="fieldset">
 <div class="control-group">
+<div class="span4">
 	<label class="control-label">Validate</label>
 	<div class="controls">
 		<select name="validation">
@@ -123,39 +141,46 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</select>
 	</div>
 </div>
-<div class="control-group">
+<div class="span4">
 	<label class="control-label">Regex</label>
 	<div class="controls">
-		<input type="text" name="regex"  value="#HTMLEditFormat(attributes.attributeBean.getRegex())#" />
+		<input class="span12" type="text" name="regex"  value="#HTMLEditFormat(attributes.attributeBean.getRegex())#" />
 	</div>
 </div>
-<div class="control-group">
+<div class="span4">
 	<label class="control-label">Validation Message</label>
 	<div class="controls">
-		<input type="text" name="message"  value="#HTMLEditFormat(attributes.attributeBean.getMessage())#" />
+		<input class="span12" type="text" name="message"  value="#HTMLEditFormat(attributes.attributeBean.getMessage())#" />
 	</div>
 </div>
+</div>
+
+</div>
+<div class="fieldset">
 <div class="control-group">
+<div class="span4">
 	<label class="control-label">Option List ("^" Delimiter)</label>
 	<div class="controls">
-		<input type="text" name="optionList"  value="#HTMLEditFormat(attributes.attributeBean.getOptionList())#" />
+		<input class="span12" type="text" name="optionList"  value="#HTMLEditFormat(attributes.attributeBean.getOptionList())#" />
 	</div>
 </div>
-<div class="control-group">
+<div class="span8">
 	<label class="control-label">Option Label List (Optional, "^" Delimiter)</label>
 	<div class="controls">
-		<input type="text" name="optionLabelList"  value="#HTMLEditFormat(attributes.attributeBean.getOptionLabelList())#" />
+		<input class="span12" type="text" name="optionLabelList"  value="#HTMLEditFormat(attributes.attributeBean.getOptionLabelList())#" />
 	</div>
+</div>
+</div>
 </div>
 
 <div class="form-actions">
 <cfif attributes.action eq "add">
-	<input type="button" class="submit btn" onclick="submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'add');" value="Add" />
-	<input type="button" class="submit btn" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container').slideUp();jQuery('###HTMLEditFormat(attributes.formName)#close').hide();jQuery('###HTMLEditFormat(attributes.formName)#open').show();" value="Cancel" />
+	<input type="button" class="btn" onclick="submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'add');" value="Add" />
+	<input type="button" class="btn" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container').slideUp();jQuery('###HTMLEditFormat(attributes.formName)#close').hide();jQuery('###HTMLEditFormat(attributes.formName)#open').show();" value="Cancel" />
 <cfelse>
-	<input type="button" class="submit btn" onclick="submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'update');" value="Update" />
-	<input type="button" class="submit btn" onclick="submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'delete','Delete Attribute?');" value="Delete" />
-	<input type="button" class="submit btn" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container').slideUp();jQuery('###HTMLEditFormat(attributes.formName)#close').hide();jQuery('###HTMLEditFormat(attributes.formName)#open').show();" value="Cancel" />
+	<input type="button" class="btn" onclick="submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'update');" value="Update" />
+	<input type="button" class="btn" onclick="submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'delete','Delete Attribute?');" value="Delete" />
+	<input type="button" class="btn" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container').slideUp();jQuery('###HTMLEditFormat(attributes.formName)#close').hide();jQuery('###HTMLEditFormat(attributes.formName)#open').show();" value="Cancel" />
 </cfif>
 </div>
 <input name="orderno" type="hidden" value="#attributes.attributeBean.getOrderno()#"/>
