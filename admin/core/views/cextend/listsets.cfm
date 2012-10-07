@@ -61,15 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <a class="btn" href="index.cfm?muraAction=cExtend.editSet&subTypeID=#rc.subTypeID#&siteid=#URLEncodedFormat(rc.siteid)#&extendSetID="><i class="icon-plus-sign"></i> Add Attribute Set</a>
 </div>
 
-<h2>
-<!--- <cfif type="page">
-		<i class="icon-file"></i> 
-	<cfelseif type="portal">
-		<i class="icon-folder"></i>
-	<cfelseif type="link">
-		<i class="icon-link"></i> --->
-	
-		<i class="icon-file"></i> #application.classExtensionManager.getTypeAsString(subType.getType())#/#subType.getSubType()#</h2>
+<h2><i class="#application.settingsManager.getSite(rc.siteID).getContentRenderer(type=subType.getType(),subtype=subType.getSubType()).iconClassByContentType()#"></i> #application.classExtensionManager.getTypeAsString(subType.getType())#/#subType.getSubType()#</h2>
 
 </cfoutput>
 <cfif arrayLen(extendSets)>

@@ -2568,7 +2568,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfscript>
 </cffunction>
 
-<cffunction name="iconClassByContentType" outout="false">
+<cffunction name="iconClassByContentType" output="false">
 	<cfargument name="type">
 	<cfargument name="subtype" default="Default">
 
