@@ -2,7 +2,7 @@
     Project: Collapsible Checkbox Tree jQuery Plugin
     Version: 1.0.1
 	Author: Lewis Jenkins
-	Website: http://www.redcarrot.co.uk/2009/11/11/collapsible<i class="icon-minus-sign"></i>checkbox<i class="icon-minus-sign"></i>tree<i class="icon-minus-sign"></i>jquery<i class="icon-minus-sign"></i>plugin/
+	Website: http://www.redcarrot.co.uk/2009/11/11/collapsible<i class="icon-remove-sign"></i>checkbox<i class="icon-remove-sign"></i>tree<i class="icon-remove-sign"></i>jquery<i class="icon-remove-sign"></i>plugin/
     
     License:
         The CheckTree jQuery plugin is currently available for use in all personal or 
@@ -17,7 +17,7 @@
 			checkParents : true, // When checking a box, all parents are checked
 			checkChildren : false, // When checking a box, all children are checked
 			uncheckChildren : true, // When unchecking a box, all children are unchecked
-			initialState : 'default' // Options <i class="icon-minus-sign"></i> 'expand' (fully expanded), 'collapse' (fully collapsed) or default
+			initialState : 'default' // Options <i class="icon-remove-sign"></i> 'expand' (fully expanded), 'collapse' (fully collapsed) or default
 		};
 			
 		var options = $.extend(defaults, options); 
@@ -43,7 +43,7 @@
 			$("li:has(input:checked) > ul", $(this)).show();
 			// Add tree links
 			$("li", $(this)).prepend('<span class="">&nbsp;</span>');
-			$("li:has(> ul:not(:hidden)) > span", $(this)).addClass('expanded').html('<i class="icon-minus-sign"></i>');
+			$("li:has(> ul:not(:hidden)) > span", $(this)).addClass('expanded').html('<i class="icon-remove-sign"></i>');
 			$("li:has(> ul:hidden) > span", $(this)).addClass('collapsed').html('<i class="icon-plus-sign"></i>');
 			
 			// Checkbox function
@@ -55,7 +55,7 @@
 					// Show immediate children  of checked
 					$("> ul", $(this).parent("li")).fadeIn('fast');
 					// Update the tree
-					$("> span.collapsed", $(this).parent("li")).removeClass("collapsed").addClass("expanded").html('<i class="icon-minus-sign"></i>');
+					$("> span.collapsed", $(this).parent("li")).removeClass("collapsed").addClass("expanded").html('<i class="icon-remove-sign"></i>');
 					
 					// Check parents if necessary
 					if (defaults.checkParents) {
@@ -68,7 +68,7 @@
 						// Show all children of checked
 						$("ul", $(this).parent("li")).fadeIn('fast');
 						// Update the tree
-						$("span.collapsed", $(this).parent("li")).removeClass("collapsed").addClass("expanded").html('<i class="icon-minus-sign"></i>');
+						$("span.collapsed", $(this).parent("li")).removeClass("collapsed").addClass("expanded").html('<i class="icon-remove-sign"></i>');
 					}
 					
 					
@@ -96,7 +96,7 @@
 					// ... then expand
 					$("> ul", $(this).parent("li")).show();
 					// ... and update the html
-					$(this).removeClass("collapsed").addClass("expanded").html('<i class="icon-minus-sign"></i>');
+					$(this).removeClass("collapsed").addClass("expanded").html('<i class="icon-remove-sign"></i>');
 				
 				// If was previously expanded...
 				} else if ($(this).is(".expanded")) {
@@ -114,7 +114,7 @@
 				// Show all children			 
 				$("ul", $root).fadeIn('fast');
 				// and update the html
-				$("li:has(> ul) > span", $root).removeClass("collapsed").addClass("expanded").html('<i class="icon-minus-sign"></i>');
+				$("li:has(> ul) > span", $root).removeClass("collapsed").addClass("expanded").html('<i class="icon-remove-sign"></i>');
 				return false;
 			});
 	
@@ -132,7 +132,7 @@
 				// Show checked and immediate children of checked
 				$("li:has(input:checked) > ul", $root).fadeIn('fast');
 				// and update the html
-				$("li:has(> ul:not(:hidden)) > span", $root).removeClass('collapsed').addClass('expanded').html('<i class="icon-minus-sign"></i>');
+				$("li:has(> ul:not(:hidden)) > span", $root).removeClass('collapsed').addClass('expanded').html('<i class="icon-remove-sign"></i>');
 				$("li:has(> ul:hidden) > span", $root).removeClass('expanded').addClass('collapsed').html('<i class="icon-plus-sign"></i>');
 				return false;
 			});
