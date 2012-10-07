@@ -72,7 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset newAttribute=extendSet.getAttributeBean() />
 <cfset newAttribute.setSiteID(rc.siteID) />
 <cfset newAttribute.setOrderno(arrayLen(attributesArray)+1) />
-<cf_dsp_attribute_form attributeBean="#newAttribute#" action="add" subTypeID="#rc.subTypeID#" formName="newFrm">
+<cf_dsp_attribute_form attributesArray="#attributesArray#" attributeBean="#newAttribute#" action="add" subTypeID="#rc.subTypeID#" formName="newFrm">
 
 <!---
 <cfif arrayLen(attributesArray)>
