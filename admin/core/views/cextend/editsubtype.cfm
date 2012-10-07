@@ -133,7 +133,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 	</div>
 	
-	<div class="clearfix" id="form-actions">
+	<div class="form-actions">
 	<cfif not len(rc.subTypeID)>
 		<input type="button" class="submit btn" onclick="submitForm(document.forms.subTypeFrm,'add');" value="Add" />
 		<input type=hidden name="subTypeID" value="#createuuid()#">
