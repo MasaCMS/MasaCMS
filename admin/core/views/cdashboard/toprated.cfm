@@ -59,7 +59,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,"params.from")#
 </label>
       <div class="controls">
-		<input type="input" class="datepicker" name="startDate" value="#LSDateFormat(rc.startDate,session.dateKeyFormat)#" validate="date" message="The 'From' date is required." />
+		<input type="text" class="datepicker" name="startDate" value="#LSDateFormat(rc.startDate,session.dateKeyFormat)#" validate="date" message="The 'From' date is required." />
      </div>
  </div>
 
@@ -68,9 +68,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		#application.rbFactory.getKeyValue(session.rb,"params.to")#
 	</label>
       <div class="controls">
-		<input type="input" class="datepicker" name="stopDate" value="#LSDateFormat(rc.stopDate,session.dateKeyFormat)#" validate="date" message="The 'To' date is required." />
+		<input type="text" class="datepicker" name="stopDate" value="#LSDateFormat(rc.stopDate,session.dateKeyFormat)#" validate="date" message="The 'To' date is required." />
      </div>
  </div>
+
 
 
 <div class="control-group">
@@ -85,8 +86,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     </div>
 </div>
 
-<div id="buttonActins" class="formActions">
-	<input type="button" class="submit btn" onclick="submitForm(document.forms.searchFrm);" value="#application.rbFactory.getKeyValue(session.rb,"params.search")#" /></dd>
+<div class="form-actions">
+	<input type="button" class="submit btn" onclick="submitForm(document.forms.searchFrm);" value="#application.rbFactory.getKeyValue(session.rb,"params.search")#" />
 </div>
 
 <input type="hidden" value="#HTMLEditFormat(rc.siteid)#" name="siteID"/>

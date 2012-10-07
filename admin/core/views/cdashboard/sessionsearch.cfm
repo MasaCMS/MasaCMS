@@ -137,14 +137,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</label>
     <div class="controls"><input type="hidden" name="muraAction" value="cDashboard.sessionSearch" />
 	    <input type="hidden" name="siteID" value="#HTMLEditFormat(rc.siteid)#" />
-	    <input type="input" class="datepicker" name="startDate" value="#LSDateFormat(session.startDate,session.dateKeyFormat)#" validate="date" message="The 'From' date is required." />
+	    <input type="text" class="datepicker" name="startDate" value="#LSDateFormat(session.startDate,session.dateKeyFormat)#" validate="date" message="The 'From' date is required." />
     </div>
     
 	<label class="control-label">
 		#application.rbFactory.getKeyValue(session.rb,"params.to")#
 	</label>
       <div class="controls">
-	      <input type="input" class="datepicker" name="stopDate" value="#LSDateFormat(session.stopDate,session.dateKeyFormat)#" validate="date" message="The 'To' date is required." />
+	      <input type="text" class="datepicker" name="stopDate" value="#LSDateFormat(session.stopDate,session.dateKeyFormat)#" validate="date" message="The 'To' date is required." />
 	  </div>
 </div>
 
