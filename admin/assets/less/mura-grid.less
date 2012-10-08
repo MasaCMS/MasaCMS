@@ -422,9 +422,21 @@
 			font-weight: normal;
 		}
 		
-		.sidebar h2 {
-			font-size: 13px;
-			font-weight: bold;
+		.sidebar {
+		
+			.nav {
+				
+				.active {
+					font-weight: normal;
+					color: @grayDark;
+				}
+				
+			}
+		
+			h2 {
+				font-size: 13px;
+				font-weight: bold;
+				}
 		}
 		
 		
@@ -586,13 +598,17 @@
 			> ul { margin: 0; overflow: hidden; }
 			li { 
 				
-				min-width: 160px;
+				/* min-width: 160px; */
 				.text-overflow;
-				line-height: 1;
+				line-height: 18px;
+				
+				+ li {
+					
+				}
 				
 				span {
 					.inline-block();
-					width: 15px;
+					/* width: 15px; */
 				}
 				
 			}

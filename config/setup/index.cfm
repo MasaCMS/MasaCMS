@@ -583,13 +583,14 @@ to your own modified versions of Mura CMS.
 <div class="main">
   <div class="main-inner"> 
     <!---  <div class="container"> --->
-    <h2>Mura Set Up</h2>
+    <h1>Mura Set Up</h1>
     <cfif len( trim( message ) )>
       <p class="error">#message#</p>
     </cfif>
     
     <!--- need to pass on form object to JS to avoid exception, also added try/catch in admin js (bsoylu 6/7/2010) --->
     <form id="frm" class="form-horizontal" name="frm" action="index.cfm" method="post" onClick="return validateForm(this);">
+    <div class="fieldset">
       <cfif isDefined( "FORM.#cookie.setupSubmitButton#" ) AND errorType IS "">
         <div id="installationComplete" class="success">
           <p id="congrats">Mura is now set up and ready to use.</p>
