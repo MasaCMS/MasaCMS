@@ -104,13 +104,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfset availableList=listDeleteAt(availableList,finder)>
 							</cfif>
 						</cfif>			
-						<ul id="availableListSort" class="displayListSortOptions">
+						<ul id="contentAvailableListSort" class="contentDisplayListSortOptions">
 							<cfloop list="#availableList#" index="i">
 								<li class="ui-state-default">#trim(i)#</li>
 							</cfloop>
 						</ul>
 											
-						<ul id="displayListSort" class="displayListSortOptions">
+						<ul id="contentDisplayListSort" class="contentDisplayListSortOptions">
 							<cfloop list="#displayList#" index="i">
 								<li class="ui-state-highlight">#trim(i)#</li>
 							</cfloop>
@@ -120,7 +120,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						
 						<script>
 							//Removed from jQuery(document).ready() because it would not fire in ie7 frontend editing.
-							siteManager.setDisplayListSort();
+							siteManager.setContentDisplayListSort();
 						</script>
 					</div>
 			    </div>

@@ -1930,20 +1930,20 @@ buttons: {
 		});
 	},
 	
-	setDisplayListSort: function(){
-		$( "#availableListSort, #displayListSort" ).sortable({
-			connectWith: ".displayListSortOptions",
+	setContentDisplayListSort: function(){
+		$( "#contentAvailableListSort, #contentDisplayListSort" ).sortable({
+			connectWith: ".contentDisplayListSortOptions",
 			update: function(event){
 					event.stopPropagation();
-					$("#displayList").val("");
-					$("#displayListSort > li").each(function(){
-						var current = $("#displayList").val();
+					$("#contentDisplayList").val("");
+					$("#contentDisplayListSort > li").each(function(){
+						var current = $("#contentDisplayList").val();
 						
 						if (current != '') {
-							$("#displayList").val( current + "," + $.trim($(this).html()) );
+							$("#contentDisplayList").val( current + "," + $.trim($(this).html()) );
 						}
 						else {
-							$("#displayList").val( $.trim($(this).html()) );
+							$("#contentDisplayList").val( $.trim($(this).html()) );
 						}
 								
 					});
