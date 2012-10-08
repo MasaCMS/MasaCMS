@@ -85,7 +85,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfif feed.getType() eq "local">		
 
-	<div class="fieldset-wrap">
+	<div class="fieldset-wrap row-fluid">
 		<div class="fieldset">
 			<div class="control-group">
 				<div class="span4">

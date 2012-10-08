@@ -74,7 +74,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<li><a href="#editlink#">#application.rbFactory.getKeyValue(session.rb,'collections.editdefaultsettings')#</a></li>
 		</ul>
 	</cfif>
-	<div id="configurator" class="fieldset-wrap">
+	<div id="configurator" class="fieldset-wrap row-fluid">
 	<div class="fieldset">
 		<div class="control-group">
 		<div class="span4">
