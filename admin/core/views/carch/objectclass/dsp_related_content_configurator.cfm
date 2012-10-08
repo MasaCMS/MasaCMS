@@ -67,12 +67,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		data-objectid="#rc.objectID#">
 	</cfif>
 	
-	<cfif rc.classid eq "related_content">
-		<h2>#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent'))#</h2>
+			<!---<cfif rc.classid eq "related_content">
+
+<h2>#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent'))#</h2>
 	<cfelse>
 		<h2>#HTMLEditFormat('#menutitle# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#')#</h2>
 	</cfif>
 	
+--->
 	<div id="configurator" class="fieldset-wrap">
 	<div class="fieldset">
 		<div class="control-group">

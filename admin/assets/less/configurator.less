@@ -1,4 +1,4 @@
-.compact #configurator {
+.compact #configurator { /* Overriding responsive styles becuase they get triggered by the width of the modal */
 
 	.span3 {
 		width: 23.404255317% !important;
@@ -24,7 +24,7 @@
 		width: 100% !important;
 		}
 
-	[class*="span"] { /* Overriding responsive styles becuase they get triggered by the width of the modal */
+	[class*="span"] {
 		width: inherit;
 		float: left;
 		margin-left: 2.127659574%;
@@ -67,7 +67,7 @@
 	.inline-block;
 	}
 
-#sortableFields {
+#sortableFields, .sortableFields {
 	
 	.clearfix;
 	clear: both;
@@ -87,8 +87,10 @@
 		margin: 0 0 3px 0;
 		padding: @baseLineHeight/2;
 		cursor: move;
+		border: 0;
 		.border-radius(3px);
-		
+		/* #gradient .vertical(hsl(260,0%,90%),hsl(260,0%,86%)); */
+		background: darken(@grayLighter,6%);
 		}
 
 	#availableListSort,
@@ -114,5 +116,13 @@
 		li {
 			margin-left: 0;
 		}
+	}
+	
+	#displayListSort {
+		
+		li {
+			background: hsl(55,80%,88%);
+		}
+		
 	}
 }
