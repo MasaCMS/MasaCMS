@@ -57,6 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfcase>
 		<cfdefaultcase>
 			<a class="btn" href="index.cfm?muraAction=cFeed.list&&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-circle-arrow-left"></i> #application.rbFactory.getKeyValue(session.rb,"collections.backtocollections")#</a>
+			<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'collections.view')#" href="#rc.feedBean.getChannelLink()#" target="_blank"><i class="icon-rss"></i> #application.rbFactory.getKeyValue(session.rb,'collections.viewfeed')#</a>
 		</cfdefaultcase>
 	</cfswitch>
 	</div>
