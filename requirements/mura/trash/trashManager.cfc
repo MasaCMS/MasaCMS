@@ -273,7 +273,7 @@
 						</cfif>,
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#siteid#" />,
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#objectClass#" />,
-						<cfqueryparam cfsqltype="cf_sql_varchar" value="#labelString#" />,
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#evaluate('arguments.deleted.get#labelString#()')#" />,
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#objectType#" />,
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#objectSubType#" />,
 						<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#allValues#" />,
