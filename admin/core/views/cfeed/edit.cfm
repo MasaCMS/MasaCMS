@@ -724,7 +724,7 @@ jQuery(document).ready(function(){
 <cfif rc.compactDisplay eq "true">
 		<li><a onclick="history.go(-1);">#application.rbFactory.getKeyValue(session.rb,'collections.back')#</a></li>
 </cfif>
-<li><a title="#application.rbFactory.getKeyValue(session.rb,'collections.view')#" href="#rc.feedBean.getChannelLink()#" target="_blank">#application.rbFactory.getKeyValue(session.rb,'collections.viewfeed')#</a></li>
+<!--- <li><a title="#application.rbFactory.getKeyValue(session.rb,'collections.view')#" href="#rc.feedBean.getChannelLink()#" target="_blank">#application.rbFactory.getKeyValue(session.rb,'collections.viewfeed')#</a></li> --->
 </ul></cfif>
 
 <cfif rc.compactDisplay eq "true">
@@ -736,132 +736,151 @@ jQuery(document).ready(function(){
 </span>
 
 <form novalidate="novalidate" action="index.cfm?muraAction=cFeed.update&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="form1" onsubmit="return validate(this);">
-
-<div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.name')#</label>
-      <div class="controls"><input name="name" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.namerequired')#" value="#HTMLEditFormat(rc.feedBean.getName())#" maxlength="50">  </div>
-    </div>
-
-<div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.url')#
-  </label>
-      <div class="controls"><input name="channelLink" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.urlrequired')#" value="#HTMLEditFormat(rc.feedBean.getChannelLink())#" maxlength="250">  </div>
-    </div>
-
-<p class="divide" /></p>
 </cfoutput>
 <cfsavecontent variable='tabContent'>
 <cfoutput>
 <div id="tabBasic" class="tab-pane fade">
-	<div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</label>
-      <div class="controls"><select name="maxItems" class="dropdown">
-	<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="m">
-	<option value="#m#" <cfif rc.feedBean.getMaxItems() eq m>selected</cfif>>#m#</option>
-	</cfloop>
-	<option value="100000" <cfif rc.feedBean.getMaxItems() eq 100000>selected</cfif>>ALL</option>
-	</select>
-	  </div>
-    </div>
 
+<div class="fieldset">	
 	<div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.version')#</label>
-      <div class="controls"><select name="version" class="dropdown">
-	<cfloop list="RSS 0.920,RSS 2.0,Atom" index="v">
-	<option value="#v#" <cfif rc.feedBean.getVersion() eq v>selected</cfif>>#v#</option>
-	</cfloop>
-	</select>  </div>
+	<div class="span6">
+      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.name')#</label>
+      <div class="controls"><input name="name" type="text" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.namerequired')#" value="#HTMLEditFormat(rc.feedBean.getName())#" maxlength="50">  </div>
     </div>
+	<div class="span6">
+	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.url')#</label>
+	      <div class="controls">
+	      	<input name="channelLink" class="span12" type="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.urlrequired')#" value="#HTMLEditFormat(rc.feedBean.getChannelLink())#" maxlength="250">
+	      </div>
+	</div>
+</div>
 
-    <div class="control-group">
+<div class="control-group">
+    <div class="span6">
 		<label class="control-label">
 			#application.rbFactory.getKeyValue(session.rb,'collections.viewalllink')#
 		</label>
 		<div class="controls">
-			<input name="viewalllink" class="text" value="#HTMLEditFormat(rc.feedBean.getViewAllLink())#" maxlength="255">
+			<input name="viewalllink" class="span12" type="text" value="#HTMLEditFormat(rc.feedBean.getViewAllLink())#" maxlength="255">
 		</div>
 	</div>
 
-	<div class="control-group">
+	<div class="span6">
 		<label class="control-label">
 			#application.rbFactory.getKeyValue(session.rb,'collections.viewalllabel')#
 		</label>
 		<div class="controls">
-			<input name="viewalllabel" class="text" value="#HTMLEditFormat(rc.feedBean.getViewAllLabel())#" maxlength="100">
+			<input name="viewalllabel" class="span12" type="text" value="#HTMLEditFormat(rc.feedBean.getViewAllLabel())#" maxlength="100">
 		</div>
 	</div>
-	
+</div>
+
 	<div class="control-group">
+		<div class="span3">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.isactive')#</label>
       <div class="controls">
-     <label class="radio">
+     <label class="radio inline">
 	 <input name="isActive" type="radio" value="1" <cfif rc.feedBean.getIsActive()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
 	</label>
-	<label class="radio">
+	<label class="radio inline">
 	<input name="isActive" type="radio" value="0" <cfif not rc.feedBean.getIsActive()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
 	</label>
 	  </div>
     </div>
-	
-	<div class="control-group">
+		
+		<div class="span3">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.ispublic')#</label>
       <div class="controls">
-      	<label class="radio">
+      	<label class="radio inline">
 	<input name="isPublic" type="radio" value="1" <cfif rc.feedBean.getIsPublic()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
 	</label>
-<label class="radio">
+	<label class="radio inline">
 	<input name="isPublic" type="radio" value="0" <cfif not rc.feedBean.getIsPublic()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')#
 	</label> 
 	  </div>
     </div>
-	
-	<div class="control-group">
+		
+		<div class="span6">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.makedefault')#</label>
       <div class="controls">
-      	<label class="radio">
+      	<label class="radio inline">
 	<input name="isDefault" type="radio" value="1" <cfif rc.feedBean.getIsDefault()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
 	</label>
-<label class="radio">
-	<input name="isDefault" type="radio" value="0" <cfif not rc.feedBean.getIsDefault()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
-</label>
+	<label class="radio inline">
+		<input name="isDefault" type="radio" value="0" <cfif not rc.feedBean.getIsDefault()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+	</label>
 	  </div>
     </div>
+	</div>
+<div class="control-group">
 	
-	</dl>
+	<div class="span2">
+      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</label>
+      <div class="controls">
+	    <select class="span7" name="maxItems">
+			<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="m">
+			<option value="#m#" <cfif rc.feedBean.getMaxItems() eq m>selected</cfif>>#m#</option>
+			</cfloop>
+			<option value="100000" <cfif rc.feedBean.getMaxItems() eq 100000>selected</cfif>>ALL</option>
+		</select>
+	  </div>
+    </div>
+
+	<div class="span2">
+      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.version')#</label>
+      <div class="controls">
+      <select class="span7" name="version">
+		<cfloop list="RSS 0.920,RSS 2.0,Atom" index="v">
+		<option value="#v#" <cfif rc.feedBean.getVersion() eq v>selected</cfif>>#v#</option>
+		</cfloop>
+		</select>
+		</div>
+    </div>
+</div>
+
+	
+</div>
 </div>
 
 <div id="tabCategorization" class="tab-pane fade">
-	<div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.categoryassignments')#</label>
-      <div class="controls">
-	<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" feedID="#rc.feedID#" feedBean="#rc.feedBean#">
-	  </div>
-    </div>
+	<div class="fieldset">
+		<div class="control-group">
+			<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.categoryassignments')#</label>
+		    <div class="controls">
+				<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" feedID="#rc.feedID#" feedBean="#rc.feedBean#">
+			</div>
+		</div>
+	</div>
 </div>
 
 <cfif listFind(session.mura.memberships,'S2')>
 	<cfset tabLabellist=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,'collections.importlocation')) >
 	<cfset tabList=listAppend(tabList,"tabImportlocation")>
 	<div id="tabImportlocation" class="tab-pane fade">
-	<div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.importlocation')#:<span id="move" class="text"> <cfif rc.feedbean.getparentid() neq ''>"#application.contentManager.getActiveContent(rc.feedBean.getParentID(),rc.feedBean.getSiteID()).getMenuTitle()#"<cfelse>"#application.rbFactory.getKeyValue(session.rb,'collections.noneselected')#"</cfif>
-				&nbsp;&nbsp;<a href="javascript:##;" onclick="javascript: feedManager.loadSiteParents('#rc.siteid#','#rc.feedbean.getparentid()#','',1);return false;">[#application.rbFactory.getKeyValue(session.rb,'collections.selectnewlocation')#]</a>
-				<input type="hidden" name="parentid" value="#rc.feedbean.getparentid()#">
-		</span>
-	  </div>
-    </div>
-    <div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.autoimport')#</label>
-      <div class="controls">
-     <label class="radio">
+	<div class="fieldset">
+		<div class="control-group">
+	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.importlocation')#:</label>
+	      <div class="controls">
+	      	<span id="move" class="text">
+	      		<cfif rc.feedbean.getparentid() neq ''>"#application.contentManager.getActiveContent(rc.feedBean.getParentID(),rc.feedBean.getSiteID()).getMenuTitle()#"<cfelse>"#application.rbFactory.getKeyValue(session.rb,'collections.noneselected')#"</cfif>
+					&nbsp;&nbsp;<a class="btn btn-small"href="javascript:##;" onclick="javascript: feedManager.loadSiteParents('#rc.siteid#','#rc.feedbean.getparentid()#','',1);return false;">#application.rbFactory.getKeyValue(session.rb,'collections.selectnewlocation')#</a>
+					<input type="hidden" name="parentid" value="#rc.feedbean.getparentid()#">
+			</span>
+			</div>
+		</div>
+		<div class="control-group">
+	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.autoimport')#</label>
+	      <div class="controls">
+     <label class="radio inline">
 	 <input name="autoImport" type="radio" value="1" <cfif rc.feedBean.getAutoImport()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
 	</label>
-	<label class="radio">
+	<label class="radio inline">
 	<input name="autoImport" type="radio" value="0" <cfif not rc.feedBean.getAutoImport()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
 	</label>
 	  </div>
+	    </div>
     </div>
-    </div>
+</div>
 </cfif>
 
 <cfif rc.feedID neq ''>
@@ -871,8 +890,8 @@ jQuery(document).ready(function(){
 </cfsavecontent>
 <cfoutput>
 
-<div class="tabbable">
-	<ul class="nav nav-tabs initActiveTab">
+<div class="tabbable tabs-left">
+	<ul class="nav nav-tabs">
 	<cfloop from="1" to="#listlen(tabList)#" index="t">
 	<li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
 	</cfloop>
@@ -888,9 +907,9 @@ jQuery(document).ready(function(){
 			<input type="hidden" name="action" value="add">
 		<cfelse>
 			<cfif rc.compactDisplay neq "true">
-				<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'collections.deleteremoteconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'collections.delete')#" /> 
+				<input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'collections.deleteremoteconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'collections.delete')#" /> 
 			</cfif>
-			<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'collections.update')#" />
+			<input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'collections.update')#" />
 			<cfif rc.compactDisplay eq "true">
 				<input type="hidden" name="closeCompactDisplay" value="true" />
 				<input type="hidden" name="homeID" value="#rc.homeID#" />
