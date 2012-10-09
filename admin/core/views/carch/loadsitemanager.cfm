@@ -115,7 +115,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       	 <!---  <h3>#application.rbFactory.getKeyValue(session.rb,'sitemanager.filterviewdesc')#</h3> --->
       	  
       	   <label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.rowsdisplayed")#</label>
-        <input name="nextN" value="#session.mura.nextN#" type="text" class="text span1" size="2" maxlength="4" />
+        <input name="nextN" value="#session.mura.nextN#" type="text" class="input-small" size="2" maxlength="4" />
         
         <cfif rc.topid neq '00000000000000000000000000000000001' 
           	  and (
@@ -215,7 +215,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif rc.rstop.Display eq 1 and rc.rstop.approved >
             	#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#
             <cfelseif rc.rstop.Display eq 2 and rc.rstop.approved>
-           	 	<cfif perm neq 'editor'><a href="##" rel="tooltip" title="#HTMLEditFormat('#LSDateFormat(rc.rstop.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(rc.rstop.displaystop,"short")#')#"></cfif><cfif perm neq 'editor'> <i class="icon-info-sign"></i></a></cfif>
+           	 	<cfif perm neq 'editor'><a href="##" rel="tooltip" title="#HTMLEditFormat('#LSDateFormat(rc.rstop.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(rc.rstop.displaystop,"short")#')#"></cfif><cfif perm neq 'editor'> <i class="icon-question-sign"></i></a></cfif>
             <cfelse>
            		 #application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#
          	</cfif>

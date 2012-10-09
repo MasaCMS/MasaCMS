@@ -20,7 +20,7 @@ header {
 		position: relative;
 		}
 		
-	.nav a {
+	.nav li, .nav li a {
 		font-size: @baseFontSize - 1;
 		}
 	
@@ -54,6 +54,18 @@ header {
 		height: 28px;
 		width: 75px;
 		}	
+	
+	#version {
+		margin-left: 140px;
+		font-size: 11px;
+		.inline-block;
+		line-height: 30px;
+		color: @grayDark;
+		
+		span {
+			padding-right: 1em;
+		}
+	}
 	
 	.nav-collapse {
 	float: right;

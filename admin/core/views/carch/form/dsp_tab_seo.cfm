@@ -53,7 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			      		<label class="control-label">
 			      			<a href="##" rel="tooltip" title="#application.rbFactory.getKeyValue(session.rb,"tooltip.navigationTitle")#">
 			      				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.menutitle")#
-			      			 <i class="icon-info-sign"></i></a>
+			      			 <i class="icon-question-sign"></i></a>
 			      		</label>
 						<div class="controls">
 							<input type="text" id="menuTitle" name="menuTitle" value="#HTMLEditFormat(rc.contentBean.getmenuTitle())#"  maxlength="255" class="span12">
@@ -64,7 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			      		<label class="control-label">
 			      			<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.urlTitle"))#">
 			      				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.urltitle")#
-			      			 <i class="icon-info-sign"></i></a>
+			      			 <i class="icon-question-sign"></i></a>
 			      		</label>
 						<div class="controls">
 								<input type="text" id="urlTitle" name="urlTitle" value="#HTMLEditFormat(rc.contentBean.getURLTitle())#"  maxlength="255" class="span12">
@@ -75,7 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			      		<label class="control-label">
 			      			<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.htmlTitle"))#">
 			      				#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.htmltitle")#
-			      			 <i class="icon-info-sign"></i></a>
+			      			 <i class="icon-question-sign"></i></a>
 			      		</label>
 						<div class="controls">
 							<input type="text" id="htmlTitle" name="htmlTitle" value="#HTMLEditFormat(rc.contentBean.getHTMLTitle())#"  maxlength="255" class="span12">

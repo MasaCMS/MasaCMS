@@ -57,7 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div class="control-group">
 			    <label class="control-label">
 			    	<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.pageTitle"))#">
-			    		#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.title")# <i class="icon-info-sign"></i>
+			    		#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.title")# <i class="icon-question-sign"></i>
 					</a>
 			    </label>
 			    <div class="controls">
@@ -93,7 +93,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	      	<label class="control-label">
 	      		<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.contentSummary"))#">
 	      			#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.summary")#
-	      		 <i class="icon-info-sign"></i></a> 
+	      		 <i class="icon-question-sign"></i></a> 
 	      		<a href="##" id="editSummaryLink" onclick="javascript: toggleDisplay('editSummary','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#'); editSummary();return false">
 	      			[#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.expand")#]
 	      		</a>

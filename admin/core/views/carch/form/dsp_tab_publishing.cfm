@@ -51,7 +51,7 @@
 		      	<label for="isNav" class="checkbox inline">
 		      		<input name="isnav" id="isNav" type="CHECKBOX" value="1" <cfif rc.contentBean.getisnav() eq 1 or rc.contentBean.getisNew() eq 1>checked</cfif> class="checkbox"> 
 		      		<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.includeSiteNav"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.isnav')#
-		      		 <i class="icon-info-sign"></i></a>
+		      		 <i class="icon-question-sign"></i></a>
 		      	</label>
 		    </div>
 		</div> <!--- /end control-group --->
@@ -61,7 +61,7 @@
 		     	<label for="Target" class="checkbox">
 		     	<input  name="target" id="Target" type="CHECKBOX" value="_blank" <cfif rc.contentBean.gettarget() eq "_blank">checked</cfif> class="checkbox" > 
 		     		<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.openNewWindow"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.newwindow')#
-		     		 <i class="icon-info-sign"></i></a>
+		     		 <i class="icon-question-sign"></i></a>
 		     	</label>
 		     </div>  
 		</div> <!--- /end control-group --->
@@ -75,7 +75,7 @@
 	      	<label class="control-label">
 	      		<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.contentReleaseDate"))#">
 	      			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.releasedate')#
-	      		 <i class="icon-info-sign"></i></a>
+	      		 <i class="icon-question-sign"></i></a>
 	      	</label>
 	      	<div class="controls">
 				<input type="text" class="datepicker span3" name="releaseDate" value="#LSDateFormat(rc.contentBean.getreleasedate(),session.dateKeyFormat)#"  maxlength="12" >
@@ -93,7 +93,7 @@
 	      	<label class="control-label">
 	      		<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.displayContent"))#">
 	      			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.display')#
-	      		 <i class="icon-info-sign"></i></a>
+	      		 <i class="icon-question-sign"></i></a>
 	      	</label>
 	      	<div class="controls">
 	      		<select name="display" class="span3" onchange="javascript: this.selectedIndex==2?toggleDisplay2('editDates',true):toggleDisplay2('editDates',false);">
@@ -230,7 +230,7 @@
 	      		<input type="checkbox" name="dspNotify"  id="dspnotify" onclick="siteManager.loadNotify('#rc.siteid#','#rc.contentid#','#rc.parentid#');"  class="checkbox"> 
 	      		<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.notifyReview"))#">
 	      			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notifyforreview')#
-	      		 <i class="icon-info-sign"></i></a>
+	      		 <i class="icon-question-sign"></i></a>
 	      	</label>
 	  	</div>
 	     <div class="controls" id="selectNotify" style="display: none;"></div>

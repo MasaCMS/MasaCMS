@@ -192,7 +192,7 @@ and fileExists(licenseFile)>
 		<div class="control-group">
      	 <label class="control-label"
 		<cfif len(settingBean.getHint())>
-		<a href="##" rel="tooltip" title="#HTMLEditFormat(settingBean.gethint())#">#settingBean.getLabel()# <i class="icon-info-sign"></i></a>
+		<a href="##" rel="tooltip" title="#HTMLEditFormat(settingBean.gethint())#">#settingBean.getLabel()# <i class="icon-question-sign"></i></a>
 		<cfelse>
 		#settingBean.getLabel()#
 		</cfif>

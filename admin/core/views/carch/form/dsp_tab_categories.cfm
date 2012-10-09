@@ -59,7 +59,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</dt>
 				<dd class="categoryassignmentwrapper">
 					<a title="#application.rbFactory.getKeyValue(session.rb,'tooltip.categoryassignment')#" rel="tooltip" href="##">
-						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.assignment')# <i class="icon-info-sign"></i>
+						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.assignment')# <i class="icon-question-sign"></i>
 					</a>
 				</dd>
 			</dl><!--- /.mura-grid-hdr --->

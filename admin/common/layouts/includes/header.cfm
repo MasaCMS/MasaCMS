@@ -81,8 +81,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	         
 	          <div class="nav-collapse">
 	            <ul class="nav pull-right">
+	              <cfif session.mura.isLoggedIn>
+	              <li id="navVersion" class="dropdown">
+	               <a class="dropdown-toggle" data-toggle="dropdown" href="##"><i class="icon-info-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.version")#
+	                      <b class="caret"></b>
+	                    </a>
+	                <ul class="dropdown-menu">
+						<li><a href="##"><strong>Core Version</strong> #application.autoUpdater.getCurrentCompleteVersion()#</a></li>
+						<li><a href="##"><strong>Site Version</strong> #application.autoUpdater.getCurrentCompleteVersion(session.siteid)#</a></span>
+							<cfif application.configBean.getMode() eq 'Staging' and session.siteid neq '' and not listfind(hidelist,myfusebox.originalcircuit)>
+							<li><a href="##"><strong>Last Deployment</strong>
+								<cftry>
+								#LSDateFormat(application.settingsManager.getSite(session.siteid).getLastDeployment(),session.dateKeyFormat)# #LSTimeFormat(application.settingsManager.getSite(session.siteid).getLastDeployment(),"short")#
+									<cfcatch>
+									Never
+									</cfcatch>
+								</cftry>
+							</li>
+							</cfif>
+						</cfif> 
+	                </ul>
+	                </cfif>
+	              <!--- Global Settings --->
 	              
-	              <!--- Global Settings --->	
 	               <cfif listFind(session.mura.memberships,'S2')>
 	              	               
 	                  <li id="navGlobalSettings" class="dropdown">
@@ -111,15 +132,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		                     	</li>
 		                     </cfif>
 		                    </ul>
-	                  </li>
-	                </cfif>
 	                 
 	                <li id="navHelp" class="dropdown">
-	                  <a class="dropdown-toggle" data-toggle="dropdown" href="##"><i class="icon-question-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.help")#
+	                  <a class="dropdown-toggle" data-toggle="dropdown" href="##"><i class="icon-info-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.help")#
 	                   <b class="caret"></b>
 	                  </a>
 	                  <ul class="dropdown-menu">
-	                    <li><a id="navHelpDocs" href="http://www.getmura.com/support/" target="_blank"><i class="icon-info-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.support")#</a></li>
+	                    <li><a id="navHelpDocs" href="http://www.getmura.com/support/" target="_blank"><i class="icon-question-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.support")#</a></li>
 	                	<li>
 	                    <a id="navFckEditorDocs" href="http://docs.cksource.com/" target="_blank"><i class="icon-bookmark"></i> #application.rbFactory.getKeyValue(session.rb,"layout.editordocumentation")#</a></li>
 	                <li><a id="navProg-API" href="http://www.getmura.com/mura/5/components/" target="_blank"><i class="icon-bookmark"></i> Component API</a></li>
@@ -139,6 +158,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		                 </ul>
 	                 </li>
 	                </cfif>
+	                
 	              </ul>
 	          </div><!--/.nav-collapse -->
 	          </div><!--/.container -->
