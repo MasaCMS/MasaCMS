@@ -188,12 +188,14 @@ to your own modified versions of Mura CMS.
 	<cfargument name="rc">
 	<cfset variables.settingsManager.getSite(arguments.rc.siteID).exportHTML()>
 </cffunction>
+
 <cffunction name="sitecopy" output="false">
 	<cfargument name="rc">
 	<cfif arguments.rc.fromSiteID neq arguments.rc.toSiteID>
 		<cfset getBean('publisher').copy(fromSiteID=rc.fromSiteID,toSiteID=rc.toSiteID)>
 	</cfif>
 	<cfset variables.fw.redirect(action="cSettings.sitecopyresult",append="fromSiteID,toSiteID")>
+	<cfdump var="test3" abort="true">
 </cffunction>
 
 <cffunction name="createBundle" output="false">
