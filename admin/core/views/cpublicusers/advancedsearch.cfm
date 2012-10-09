@@ -117,12 +117,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </ul>
 <form novalidate="novalidate" id="advancedMemberSearch" action="index.cfm" method="get" name="form2">
  
- <div class="control-group">
+<div class="control-group" id="searchParams">
       <label class="control-label">#application.rbFactory.getKeyValue(session.rb,"user.searchcriteria")#</label>
       <div class="controls">
-		<ul id="searchParams">
 		<cfif rc.newSearch or (session.paramCircuit neq 'cPublicUsers' or not session.paramCount)>
-		<li><select name="paramRelationship1" style="display:none;" >
+		<select name="paramRelationship1" style="display:none;" >
 			<option value="and">#application.rbFactory.getKeyValue(session.rb,"params.and")#</option>
 			<option value="or">#application.rbFactory.getKeyValue(session.rb,"params.or")#</option>
 		</select>
@@ -139,12 +138,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 		</select>
 		<input type="text" name="paramCriteria1">
-		<a class="removeCriteria" href="javascript:;" onclick="removeSeachParam(this.parentNode);setSearchButtons();return false;" style="display:none;">#application.rbFactory.getKeyValue(session.rb,"params.removecriteria")#</a>
-		<a class="addCriteria" href="javascript:;" onclick="addSearchParam();setSearchButtons();return false;"><span>#application.rbFactory.getKeyValue(session.rb,"params.addcriteria")#</span></a>
-		</li>
+		<a class="criteria remove" href="javascript:;" onclick="searchParams.removeSeachParam(this.parentNode);searchParams.setSearchButtons();return false;" style="display:none;" title="#application.rbFactory.getKeyValue(session.rb,"params.removecriteria")#"><i class="icon-remove-sign"></i></a>
+		<a class="criteria add" href="javascript:;" onclick="searchParams.addSearchParam();searchParams.setSearchButtons();return false;" title="#application.rbFactory.getKeyValue(session.rb,"params.addcriteria")#"><i class="icon-plus-sign"></i></a>
 		<cfelse>
 		<cfloop from="1" to="#session.paramCount#" index="p">
-		<li>
 		<select name="paramRelationship#p#">
 			<option value="and" <cfif session.paramArray[p].relationship eq "and">selected</cfif> >#application.rbFactory.getKeyValue(session.rb,"params.and")#</option>
 			<option value="or" <cfif session.paramArray[p].relationship eq "or">selected</cfif> >#application.rbFactory.getKeyValue(session.rb,"params.or")#</option>
@@ -162,12 +159,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 		</select>
 		<input type="text" name="paramCriteria#p#" value="#session.paramArray[p].criteria#" >
-			<a class="removeCriteria" href="javascript:;" onclick="removeSeachParam(this.parentNode);setSearchButtons();return false;">#application.rbFactory.getKeyValue(session.rb,"params.removecriteria")#</a>
-		<a class="addCriteria" href="javascript:;" onclick="addSearchParam();setSearchButtons();return false;" >#application.rbFactory.getKeyValue(session.rb,"params.addcriteria")#</a>
-		</li>
+		<a class="removeCriteria" href="javascript:;" onclick="searchParams.removeSeachParam(this.parentNode);searchParams.setSearchButtons();return false;"><span>#application.rbFactory.getKeyValue(session.rb,"params.removecriteria")#</span></a>
+		<a class="addCriteria" href="javascript:;" onclick="searchParams.addSearchParam();searchParams.setSearchButtons();return false;" ><span>#application.rbFactory.getKeyValue(session.rb,"params.addcriteria")#</span></a>
 		</cfloop>
 		</cfif>
-		</ul>
+		</div>
 	</div>
     </div>
 	<!--- <cfif rc.rsGroups.recordcount>
@@ -218,7 +214,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif not rc.newSearch>
 
 <cfsilent>
-<cfset rc.rslist=application.userManager.getAdvancedSearch(session,rc.siteid,1) />
+<cfset rc.rslist=application.searchParams.getAdvancedSearch(session,rc.siteid,1) />
 <cfif rc.rslist.recordcount eq 1>
 	<cflocation url="index.cfm?muraAction=cPublicUsers.editUser&userid=#rc.rslist.userid#&siteid=#URLEncodedFormat(rc.siteid)#" />
 </cfif>
