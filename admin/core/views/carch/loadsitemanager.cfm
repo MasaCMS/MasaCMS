@@ -125,7 +125,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         		  )>
             #application.rbFactory.getKeyValue(session.rb,"sitemanager.sortnavigation")#
             <input type="hidden" name="saveSort" value="true">
-              <select name="sortBy" class="dropdown" onchange="setAsSorted();">
+              <select name="sortBy" class="dropdown" onchange="siteManager.setAsSorted();">
                 <option value="orderno" <cfif rc.sortBy eq 'orderno'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.manual")#</option>
                 <option value="releaseDate" <cfif rc.sortBy eq 'releaseDate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.releasedate")#</option>
                 <option value="lastUpdate" <cfif rc.sortBy eq 'lastUpdate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.updatedate")#</option>
@@ -138,7 +138,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                   <option value="#HTMLEditFormat(rsExtend.attribute)#" <cfif rc.sortBy eq rsExtend.attribute>selected</cfif>>#rsExtend.Type#/#rsExtend.subType# - #rsExtend.attribute#</option>
                 </cfloop>
               </select>
-              <select name="sortDirection" class="dropdown" onchange="setAsSorted();">
+              <select name="sortDirection" class="dropdown" onchange="siteManager.setAsSorted();">
                 <option value="asc" <cfif rc.sortDirection eq 'asc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.ascending")#</option>
                 <option value="desc" <cfif rc.sortDirection eq 'desc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.descending")#</option>
               </select>
