@@ -85,7 +85,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfif feed.getType() eq "local">		
 
-	<div class="fieldset-wrap">
+	<div class="fieldset-wrap row-fluid">
 		<div class="fieldset">
 			<div class="control-group">
 				<div class="span4">
@@ -110,14 +110,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<div class="span4">
 						<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</label>
 						<div class="controls">
-							<input class="objectParam span2" name="imageWidth" data-displayobjectparam="imageWidth" type="text" value="#feed.getImageWidth()#" />
+							<input class="objectParam span6" name="imageWidth" data-displayobjectparam="imageWidth" type="text" value="#feed.getImageWidth()#" />
 						</div>
 					</div>
 					
 					<div class="span4">	
 						<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
 						<div class="controls">
-				      		<input class="objectParam span2" name="imageHeight" data-displayobjectparam="imageHeight" type="text" value="#feed.getImageHeight()#" />
+				      		<input class="objectParam span6" name="imageHeight" data-displayobjectparam="imageHeight" type="text" value="#feed.getImageHeight()#" />
 				      	</div>
 				      </div>
 			     </span>
