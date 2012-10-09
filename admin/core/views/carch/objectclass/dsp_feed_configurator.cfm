@@ -236,7 +236,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					#application.rbFactory.getKeyValue(session.rb,'collections.viewalllink')#
 				</label>
 				<div class="controls">
-					<input name="viewalllink" class="objectParam text" value="#HTMLEditFormat(feed.getViewAllLink())#" maxlength="50">
+					<input name="viewalllink" class="objectParam span12" value="#HTMLEditFormat(feed.getViewAllLink())#" maxlength="50">
 				</div>
 			</div>
 				<div class="control-group">
@@ -244,7 +244,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					#application.rbFactory.getKeyValue(session.rb,'collections.viewalllabel')#
 				</label>
 				<div class="controls">
-					<input name="viewalllabel" class="objectParam text" value="#HTMLEditFormat(feed.getViewAllLabel())#" maxlength="50">
+					<input name="viewalllabel" class="objectParam span12" value="#HTMLEditFormat(feed.getViewAllLabel())#" maxlength="50">
 				</div>
 			</div>		
 			</cfif>
