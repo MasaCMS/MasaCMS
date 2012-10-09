@@ -112,20 +112,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <span class="caret"></span>
     </a>
     <div class="dropdown-menu">
-      	 <!---  <h3>#application.rbFactory.getKeyValue(session.rb,'sitemanager.filterviewdesc')#</h3> --->
-      	  
-      	   <label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.rowsdisplayed")#</label>
-        <input name="nextN" value="#session.mura.nextN#" type="text" class="input-small" size="2" maxlength="4" />
-        
+      	<!---  <h3>#application.rbFactory.getKeyValue(session.rb,'sitemanager.filterviewdesc')#</h3> --->
+      	<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.rowsdisplayed")#</label>
         <cfif rc.topid neq '00000000000000000000000000000000001' 
           	  and (
           	  		perm eq 'Editor' 
         				or 
         			(perm eq 'Author' and application.configBean.getSortPermission() eq "author") 
         		  )>
+            <input name="nextN" value="#session.mura.nextN#" type="text" class="input-small" size="2" maxlength="4" />
             #application.rbFactory.getKeyValue(session.rb,"sitemanager.sortnavigation")#
             <input type="hidden" name="saveSort" value="true">
-              <select name="sortBy" class="dropdown" onchange="setAsSorted();">
+              <select name="sortBy" class="dropdown" onchange="siteManager.setAsSorted();">
                 <option value="orderno" <cfif rc.sortBy eq 'orderno'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.manual")#</option>
                 <option value="releaseDate" <cfif rc.sortBy eq 'releaseDate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.releasedate")#</option>
                 <option value="lastUpdate" <cfif rc.sortBy eq 'lastUpdate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.updatedate")#</option>
@@ -138,19 +136,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                   <option value="#HTMLEditFormat(rsExtend.attribute)#" <cfif rc.sortBy eq rsExtend.attribute>selected</cfif>>#rsExtend.Type#/#rsExtend.subType# - #rsExtend.attribute#</option>
                 </cfloop>
               </select>
-              <select name="sortDirection" class="dropdown" onchange="setAsSorted();">
+              <select name="sortDirection" class="dropdown" onchange="siteManager.setAsSorted();">
                 <option value="asc" <cfif rc.sortDirection eq 'asc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.ascending")#</option>
                 <option value="desc" <cfif rc.sortDirection eq 'desc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.descending")#</option>
               </select>
+          <cfelse>
+            <input name="nextN" value="#session.mura.nextN#" type="text" class="text span4" size="2" maxlength="4" />
           </cfif>
           <!---<dd <cfif rc.topid neq '00000000000000000000000000000000001' and perm eq 'Editor'>class="button"</cfif>>--->
           <input type="button" class="submit btn" onclick="submitForm(document.forms.viewUpdate);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.update")#" />
         <input type="hidden" name="startrow" value="#rc.startrow#">
         <input type="hidden" name="orderperm" value="#perm#">
-         <input type="hidden" id="sorted" name="sorted" value="false">
-        
+        <input type="hidden" id="sorted" name="sorted" value="false">
     </div>
   </div>
+
+  <script>
+    $(document).ready(function(){
+      $('##sm-modify-view .dropdown-menu').click(function(e) {
+        e.stopPropagation();
+      })
+    })
+  </script>
   
   <cfif rc.moduleid eq '00000000000000000000000000000000000' and rc.sortBy eq 'orderno'>  
     <div class="notice" id="sitemgr-reorder" style="display:none">
@@ -215,7 +222,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif rc.rstop.Display eq 1 and rc.rstop.approved >
             	#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#
             <cfelseif rc.rstop.Display eq 2 and rc.rstop.approved>
-           	 	<cfif perm neq 'editor'><a href="##" rel="tooltip" title="#HTMLEditFormat('#LSDateFormat(rc.rstop.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(rc.rstop.displaystop,"short")#')#"></cfif><cfif perm neq 'editor'> <i class="icon-question-sign"></i></a></cfif>
+           	 	<cfif perm neq 'editor'><a href="##" rel="tooltip" title="#HTMLEditFormat('#LSDateFormat(rc.rstop.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(rc.rstop.displaystop,"short")#')#"></cfif><cfif perm neq 'editor'> <i class="icon-info-sign"></i></a></cfif>
             <cfelse>
            		 #application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#
          	</cfif>
