@@ -113,7 +113,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     </a>
     <div class="dropdown-menu">
       	 <!---  <h3>#application.rbFactory.getKeyValue(session.rb,'sitemanager.filterviewdesc')#</h3> --->
-      	  
       	   <label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.rowsdisplayed")#</label>
         <input name="nextN" value="#session.mura.nextN#" type="text" class="text span1" size="2" maxlength="4" />
         
@@ -147,10 +146,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           <input type="button" class="submit btn" onclick="submitForm(document.forms.viewUpdate);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.update")#" />
         <input type="hidden" name="startrow" value="#rc.startrow#">
         <input type="hidden" name="orderperm" value="#perm#">
-         <input type="hidden" id="sorted" name="sorted" value="false">
-        
+        <input type="hidden" id="sorted" name="sorted" value="false">
     </div>
   </div>
+
+  <script>
+    $(document).ready(function(){
+      $('##sm-modify-view .dropdown-menu').click(function(e) {
+        e.stopPropagation();
+      })
+    })
+  </script>
   
   <cfif rc.moduleid eq '00000000000000000000000000000000000' and rc.sortBy eq 'orderno'>  
     <div class="notice" id="sitemgr-reorder" style="display:none">
