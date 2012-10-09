@@ -107,19 +107,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset contentOptions[3][2]=application.rbFactory.getKeyValue(session.rb,"params.summary")>
 
 <cfset criterias[1][1]="Equals">
-<cfset criterias[1][2]=application.rbFactory.getKeyValue(session.rb,"params.equals")>
+<cfset criterias[1][2]=application.rbFactory.getKeyValue(session.rb,'params.equals')>
 <cfset criterias[2][1]="GT">
-<cfset criterias[2][2]=application.rbFactory.getKeyValue(session.rb,"params.gt")>
+<cfset criterias[2][2]=application.rbFactory.getKeyValue(session.rb,'params.gt')>
 <cfset criterias[3][1]="GTE">
-<cfset criterias[3][2]=application.rbFactory.getKeyValue(session.rb,"params.gte")>
+<cfset criterias[3][2]=application.rbFactory.getKeyValue(session.rb,'params.gte')>
 <cfset criterias[4][1]="LT">
-<cfset criterias[4][2]=application.rbFactory.getKeyValue(session.rb,"params.lt")>
+<cfset criterias[4][2]=application.rbFactory.getKeyValue(session.rb,'params.lt')>
 <cfset criterias[5][1]="LTE">
-<cfset criterias[5][2]=application.rbFactory.getKeyValue(session.rb,"params.lte")>
-<cfset criterias[6][1]="Begins">
-<cfset criterias[6][2]=application.rbFactory.getKeyValue(session.rb,"params.beginswith")>
-<cfset criterias[7][1]="Contains">
-<cfset criterias[7][2]=application.rbFactory.getKeyValue(session.rb,"params.contains")>
+<cfset criterias[5][2]=application.rbFactory.getKeyValue(session.rb,'params.lte')>
+<cfset criterias[6][1]="NEQ">
+<cfset criterias[6][2]=application.rbFactory.getKeyValue(session.rb,'params.neq')>
+<cfset criterias[7][1]="Begins">
+<cfset criterias[7][2]=application.rbFactory.getKeyValue(session.rb,'params.beginswith')>
+<cfset criterias[8][1]="Contains">
+<cfset criterias[8][2]=application.rbFactory.getKeyValue(session.rb,'params.contains')>
 
 </cfsilent>
 
@@ -218,7 +220,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 		</select>
 		<input type="text" name="paramCriteria#p#" value="#session.paramArray[p].criteria#" >
-			<a class="removeCriteria" href="javascript:;" onclick="searchParams.removeSeachParam(this.parentNode);searchParams.setSearchButtons();return false;"><span>#application.rbFactory.getKeyValue(session.rb,"params.removecriteria")#</span></a>
+		<a class="removeCriteria" href="javascript:;" onclick="searchParams.removeSeachParam(this.parentNode);searchParams.setSearchButtons();return false;"><span>#application.rbFactory.getKeyValue(session.rb,"params.removecriteria")#</span></a>
 		<a class="addCriteria" href="javascript:;" onclick="searchParams.addSearchParam();searchParams.setSearchButtons();return false;" ><span>#application.rbFactory.getKeyValue(session.rb,"params.addcriteria")#</span></a>
 		</div>
 		</cfloop>
@@ -285,7 +287,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cftry>
 </cfsilent>
 
-<script type="text/javascript">setSearchButtons();</script>
+<script type="text/javascript">searchParams.setSearchButtons();</script>
 
 <cfif not searchFailed>
 	<cfoutput>

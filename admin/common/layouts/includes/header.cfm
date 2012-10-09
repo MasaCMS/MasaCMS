@@ -246,7 +246,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 				
 	 				<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
 
-	 					<li class="dropdown<cfif listFindNoCase('csettings,cextend,ctrash',rc.originalcircuit) > active</cfif>">
+	 					<li class="dropdown<cfif listFindNoCase('csettings,cextend,ctrash',rc.originalcircuit) or (rc.moduleID eq '00000000000000000000000000000000000' and rc.originalcircuit eq 'cPerm')> active</cfif>">
 
 	 					<a class="dropdown-toggle" data-toggle="dropdown" href="##">
 	 						<i class="icon-wrench"></i> <span>#application.rbFactory.getKeyValue(session.rb,"layout.sitesettings")#</span>
