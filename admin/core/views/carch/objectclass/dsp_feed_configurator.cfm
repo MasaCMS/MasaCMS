@@ -85,13 +85,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfif feed.getType() eq "local">		
 
-	<div class="fieldset-wrap row-fluid">
+	<div class="fieldset-wrap">
 		<div class="fieldset">
 			<div class="control-group">
 				<div class="span4">
 			      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label>
 					<div class="controls">
-							<select name="imageSize" data-displayobjectparam="imageSize" class="span10" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
+							<select name="imageSize" data-displayobjectparam="imageSize" class="objectParam span10" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
 								<cfloop list="Small,Medium,Large" index="i">
 									<option value="#lcase(i)#"<cfif i eq feed.getImageSize()> selected</cfif>>#I#</option>
 								</cfloop>
@@ -110,14 +110,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<div class="span4">
 						<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#</label>
 						<div class="controls">
-							<input class="span2" name="imageWidth" data-displayobjectparam="imageWidth" type="text" value="#feed.getImageWidth()#" />
+							<input class="objectParam span2" name="imageWidth" data-displayobjectparam="imageWidth" type="text" value="#feed.getImageWidth()#" />
 						</div>
 					</div>
 					
 					<div class="span4">	
 						<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
 						<div class="controls">
-				      		<input class="span2" name="imageHeight" data-displayobjectparam="imageHeight" type="text" value="#feed.getImageHeight()#" />
+				      		<input class="objectParam span2" name="imageHeight" data-displayobjectparam="imageHeight" type="text" value="#feed.getImageHeight()#" />
 				      	</div>
 				      </div>
 			     </span>
@@ -128,11 +128,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.displayname')#</label>
 	<div class="controls">
 		<label class="radio inline">
-		<input name="displayName" data-displayobjectparam="displayName" type="radio" value="1" class="radio" onchange="jQuery('##altNameContainer').toggle();"<cfif feed.getDisplayName()>checked</cfif>>
+		<input name="displayName" data-displayobjectparam="displayName" type="radio" value="1" class="objectParam radio" onchange="jQuery('##altNameContainer').toggle();"<cfif feed.getDisplayName()>checked</cfif>>
 			#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
 		</label>
 		<label class="radio inline">
-		<input name="displayName" data-displayobjectparam="displayName" type="radio" value="0" class="radio" onchange="jQuery('##altNameContainer').toggle();" <cfif not feed.getDisplayName()>checked</cfif>>
+		<input name="displayName" data-displayobjectparam="displayName" type="radio" value="0" class="objectParam radio" onchange="jQuery('##altNameContainer').toggle();" <cfif not feed.getDisplayName()>checked</cfif>>
 		#application.rbFactory.getKeyValue(session.rb,'collections.no')#
 		</label> 
 	</div>
@@ -140,7 +140,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div id="altNameContainer" class="control-group"<cfif NOT feed.getDisplayName()> style="display:none;"</cfif>>
 	<div>
 	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.altname')#</label>
-		<div class="controls"><input class="span12" name="altName" data-displayobjectparam="altName" type="text" value="#HTMLEditFormat(feed.getAltName())#" maxlength="50">
+		<div class="controls"><input class="objectParam span12" name="altName" data-displayobjectparam="altName" type="text" value="#HTMLEditFormat(feed.getAltName())#" maxlength="50">
 		  </div>
 	</div>
 </div>
@@ -151,7 +151,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			#application.rbFactory.getKeyValue(session.rb,'collections.viewalllink')#
 		</label>
 		<div class="controls">
-			<input name="viewalllink" class="span12" type="text" value="#HTMLEditFormat(feed.getViewAllLink())#" maxlength="255">
+			<input name="viewalllink" class="objectParam span12" type="text" value="#HTMLEditFormat(feed.getViewAllLink())#" maxlength="255">
 		</div>
 	</div>
 
@@ -160,7 +160,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			#application.rbFactory.getKeyValue(session.rb,'collections.viewalllabel')#
 		</label>
 		<div class="controls">
-			<input name="viewalllabel" class="span12" type="text" value="#HTMLEditFormat(feed.getViewAllLabel())#" maxlength="100">
+			<input name="viewalllabel" class="objectParam span12" type="text" value="#HTMLEditFormat(feed.getViewAllLabel())#" maxlength="100">
 		</div>
 	</div>
 </div>
@@ -168,7 +168,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div class="span3">
 		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.maxitems')#</label>
 		<div class="controls">
-			<select name="maxItems" data-displayobjectparam="maxItems" class="span12">
+			<select name="maxItems" data-displayobjectparam="maxItems" class="objectParam span12">
 			<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="m">
 			<option value="#m#" <cfif feed.getMaxItems() eq m>selected</cfif>>#m#</option>
 			</cfloop>
@@ -178,7 +178,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 	<div class="span3">
 	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.itemsperpage')#</label>
-			<div class="controls"><select name="nextN" data-displayobjectparam="nextN" class="span12">
+			<div class="controls"><select name="nextN" data-displayobjectparam="nextN" class="objectParam span12">
 			<cfloop list="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,50,100" index="r">
 			<option value="#r#" <cfif r eq feed.getNextN()>selected</cfif>>#r#</option>
 			</cfloop>
@@ -210,7 +210,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<li class="ui-state-highlight">#trim(i)#</li>
 				</cfloop>
 			</ul>
-			<input type="hidden" id="displayList" value="#displayList#" name="displayList"  data-displayobjectparam="displayList"/>
+			<input type="hidden" id="displayList" class="objectParam" value="#displayList#" name="displayList"  data-displayobjectparam="displayList"/>
 		</div>	
 	</div>
 	
@@ -222,11 +222,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</label>
 				<div class="controls">
 					<label class="radio">
-						<input name="displaySummaries" type="radio" value="1" class="objectParam  radio" onchange="jQuery('##altNameContainer').toggle();"<cfif displaySummaries>checked</cfif>>
+						<input name="displaySummaries" type="radio" value="1" class="objectParam radio" onchange="jQuery('##altNameContainer').toggle();"<cfif displaySummaries>checked</cfif>>
 						#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
 					</label>
 					<label class="radio">
-						<input name="displaySummaries" type="radio" value="0" class="objectParam  radio" onchange="jQuery('##altNameContainer').toggle();" <cfif not displaySummaries>checked</cfif>>
+						<input name="displaySummaries" type="radio" value="0" class="objectParam radio" onchange="jQuery('##altNameContainer').toggle();" <cfif not displaySummaries>checked</cfif>>
 						#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
 					</label>
 				</div>
@@ -236,7 +236,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					#application.rbFactory.getKeyValue(session.rb,'collections.viewalllink')#
 				</label>
 				<div class="controls">
-					<input name="viewalllink" class="objectParam  text" value="#HTMLEditFormat(feed.getViewAllLink())#" maxlength="50">
+					<input name="viewalllink" class="objectParam text" value="#HTMLEditFormat(feed.getViewAllLink())#" maxlength="50">
 				</div>
 			</div>
 				<div class="control-group">
@@ -244,7 +244,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					#application.rbFactory.getKeyValue(session.rb,'collections.viewalllabel')#
 				</label>
 				<div class="controls">
-					<input name="viewalllabel" class="objectParam  text" value="#HTMLEditFormat(feed.getViewAllLabel())#" maxlength="50">
+					<input name="viewalllabel" class="objectParam text" value="#HTMLEditFormat(feed.getViewAllLabel())#" maxlength="50">
 				</div>
 			</div>		
 			</cfif>

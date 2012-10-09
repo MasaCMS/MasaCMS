@@ -80,7 +80,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="span4">
 	      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label>
 			<div class="controls">
-				<select name="imageSize" data-displayobjectparam="imageSize" class="span11" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
+				<select name="imageSize" data-displayobjectparam="imageSize" class="span12" onchange="if(this.value=='custom'){jQuery('##feedCustomImageOptions').fadeIn('fast')}else{jQuery('##feedCustomImageOptions').hide();jQuery('##feedCustomImageOptions').find(':input').val('AUTO');}">
 					<cfloop list="Small,Medium,Large" index="i">
 						<option value="#lcase(i)#"<cfif i eq feed.getImageSize()> selected</cfif>>#I#</option>
 					</cfloop>
@@ -101,13 +101,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagewidth')#
 		      </label>
 			<div class="controls">
-				<input class="span12" name="imageWidth" data-displayobjectparam="imageWidth" type="text" value="#feed.getImageWidth()#" />
+				<input class="objectParam span10" name="imageWidth" data-displayobjectparam="imageWidth" type="text" value="#feed.getImageWidth()#" />
 			</div>
 			</div>
 			<div class="span4">
 		      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imageheight')#</label>
 		      <div class="controls">
-		      	<input class="span12" name="imageHeight" data-displayobjectparam="imageHeight" type="text" value="#feed.getImageHeight()#" />
+		      	<input class="objectParam span10" name="imageHeight" data-displayobjectparam="imageHeight" type="text" value="#feed.getImageHeight()#" />
 			  </div>
 			</div>
 		</div>	
