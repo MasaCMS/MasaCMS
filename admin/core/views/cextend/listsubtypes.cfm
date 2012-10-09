@@ -71,7 +71,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<td class="actions">
 			<ul class="two">
 				<li class="edit">
-					<a title="Edit" href="index.cfm?muraAction=cExtend.editSubType&subTypeID=#rc.subTypeID#&siteid=#URLEncodedFormat(rc.siteid)#">Edit</a>
+					<a title="Edit" href="index.cfm?muraAction=cExtend.editSubType&subTypeID=#rslist.subTypeID#&siteid=#URLEncodedFormat(rc.siteid)#">Edit</a>
 				</li>
 				<li class="add">
 					<a title="Add" href="index.cfm?muraAction=cExtend.listSets&subTypeID=#rslist.subTypeID#&siteid=#URLEncodedFormat(rc.siteid)#">View Sets</a>
