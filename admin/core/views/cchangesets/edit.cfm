@@ -68,7 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     #application.rbFactory.getKeyValue(session.rb,'changesets.name')#
   </label>
   <div class="controls">
-  <input name="name" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'changesets.titlerequired')#" value="#HTMLEditFormat(rc.changeset.getName())#" maxlength="50">
+  <input name="name" type="text" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'changesets.titlerequired')#" value="#HTMLEditFormat(rc.changeset.getName())#" maxlength="50">
    </div>
 </div>
 
