@@ -112,16 +112,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <span class="caret"></span>
     </a>
     <div class="dropdown-menu">
-      	 <!---  <h3>#application.rbFactory.getKeyValue(session.rb,'sitemanager.filterviewdesc')#</h3> --->
-      	   <label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.rowsdisplayed")#</label>
-        <input name="nextN" value="#session.mura.nextN#" type="text" class="text span1" size="2" maxlength="4" />
-        
+      	<!---  <h3>#application.rbFactory.getKeyValue(session.rb,'sitemanager.filterviewdesc')#</h3> --->
+      	<label>#application.rbFactory.getKeyValue(session.rb,"sitemanager.rowsdisplayed")#</label>
         <cfif rc.topid neq '00000000000000000000000000000000001' 
           	  and (
           	  		perm eq 'Editor' 
         				or 
         			(perm eq 'Author' and application.configBean.getSortPermission() eq "author") 
         		  )>
+            <input name="nextN" value="#session.mura.nextN#" type="text" class="text span1" size="2" maxlength="4" />
             #application.rbFactory.getKeyValue(session.rb,"sitemanager.sortnavigation")#
             <input type="hidden" name="saveSort" value="true">
               <select name="sortBy" class="dropdown" onchange="siteManager.setAsSorted();">
@@ -141,6 +140,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                 <option value="asc" <cfif rc.sortDirection eq 'asc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.ascending")#</option>
                 <option value="desc" <cfif rc.sortDirection eq 'desc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.descending")#</option>
               </select>
+          <cfelse>
+            <input name="nextN" value="#session.mura.nextN#" type="text" class="text span4" size="2" maxlength="4" />
           </cfif>
           <!---<dd <cfif rc.topid neq '00000000000000000000000000000000001' and perm eq 'Editor'>class="button"</cfif>>--->
           <input type="button" class="submit btn" onclick="submitForm(document.forms.viewUpdate);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.update")#" />
