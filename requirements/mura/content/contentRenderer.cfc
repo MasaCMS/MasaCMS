@@ -88,7 +88,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.liHasKidsCustomString="">
 <cfset this.liCurrentClass="current">
 <cfset this.liCurrentCustomString="">
-<cfset this.liNestedClass="">
+<cfset this.liHasKidsNestedClass="">
 <cfset this.aHasKidsClass="">
 <cfset this.aHasKidsCustomString="">
 <cfset this.aCurrentClass="current">
@@ -431,7 +431,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="liHasKidsCustomString" required="true" default="#this.liHasKidsCustomString#">
 		<cfargument name="liCurrentClass" required="true" default="#this.liCurrentClass#">
 		<cfargument name="liCurrentCustomString" required="true" default="#this.liCurrentCustomString#">
-		<cfargument name="liNestedClass" required="true" default="#this.liNestedClass#">
+		<cfargument name="liHasKidsNestedClass" required="true" default="#this.liHasKidsNestedClass#">
 		<cfargument name="aHasKidsClass" required="true" default="#this.aHasKidsClass#">
 		<cfargument name="aHasKidsCustomString" required="true" default="#this.aHasKidsCustomString#">
 		<cfargument name="aCurrentClass" required="true" default="#this.aCurrentClass#">
@@ -492,8 +492,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				
 				
 
-				<cfif arguments.currDepth gt 1 and len(arguments.liNestedClass)>
-					<cfset itemClass=arguments.liNestedClass>
+				<cfif subnav and arguments.currDepth gt 1 and len(arguments.liHasKidsNestedClass)>
+					<cfset itemClass=arguments.liHasKidsNestedClass>
 				<cfelse>
 					<cfset itemClass="">
 				</cfif>
@@ -577,7 +577,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="liHasKidsCustomString" required="true" default="#this.liHasKidsCustomString#">
 	<cfargument name="liCurrentClass" required="true" default="#this.liCurrentClass#">
 	<cfargument name="liCurrentCustomString" required="true" default="#this.liCurrentCustomString#">
-	<cfargument name="liNestedClass" required="true" default="#this.liNestedClass#">
+	<cfargument name="liHasKidsNestedClass" required="true" default="#this.liHasKidsNestedClass#">
 	<cfargument name="aHasKidsClass" required="true" default="#this.aHasKidsClass#">
 	<cfargument name="aHasKidsCustomString" required="true" default="#this.aHasKidsCustomString#">
 	<cfargument name="aCurrentClass" required="true" default="#this.aCurrentClass#">
@@ -635,7 +635,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="liHasKidsCustomString" required="true" default="#this.liHasKidsCustomString#">
 	<cfargument name="liCurrentClass" required="true" default="#this.liCurrentClass#">
 	<cfargument name="liCurrentCustomString" required="true" default="#this.liCurrentCustomString#">
-	<cfargument name="liNestedClass" required="true" default="#this.liNestedClass#">
+	<cfargument name="liHasKidsNestedClass" required="true" default="#this.liHasKidsNestedClass#">
 	<cfargument name="aHasKidsClass" required="true" default="#this.aHasKidsClass#">
 	<cfargument name="aHasKidsCustomString" required="true" default="#this.aHasKidsCustomString#">
 	<cfargument name="aCurrentClass" required="true" default="#this.aCurrentClass#">
@@ -693,7 +693,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="liHasKidsCustomString" required="true" default="#this.liHasKidsCustomString#">
 	<cfargument name="liCurrentClass" required="true" default="#this.liCurrentClass#">
 	<cfargument name="liCurrentCustomString" required="true" default="#this.liCurrentCustomString#">
-	<cfargument name="liNestedClass" required="true" default="#this.liNestedClass#">
+	<cfargument name="liHasKidsNestedClass" required="true" default="#this.liHasKidsNestedClass#">
 	<cfargument name="aHasKidsClass" required="true" default="#this.aHasKidsClass#">
 	<cfargument name="aHasKidsCustomString" required="true" default="#this.aHasKidsCustomString#">
 	<cfargument name="aCurrentClass" required="true" default="#this.aCurrentClass#">
@@ -731,7 +731,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="liHasKidsCustomString" required="true" default="#this.liHasKidsCustomString#">
 	<cfargument name="liCurrentClass" required="true" default="#this.liCurrentClass#">
 	<cfargument name="liCurrentCustomString" required="true" default="#this.liCurrentCustomString#">
-	<cfargument name="liNestedClass" required="true" default="#this.liNestedClass#">
+	<cfargument name="liHasKidsNestedClass" required="true" default="#this.liHasKidsNestedClass#">
 	<cfargument name="aHasKidsClass" required="true" default="#this.aHasKidsClass#">
 	<cfargument name="aHasKidsCustomString" required="true" default="#this.aHasKidsCustomString#">
 	<cfargument name="aCurrentClass" required="true" default="#this.aCurrentClass#">
@@ -1726,7 +1726,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="liHasKidsCustomString" required="true" default="">
 		<cfargument name="liCurrentClass" required="true" default="#this.liCurrentClass#">
 		<cfargument name="liCurrentCustomString" required="true" default="">
-		<cfargument name="liNestedClass" required="true" default="#this.liNestedClass#">
+		<cfargument name="liHasKidsNestedClass" required="true" default="#this.liHasKidsNestedClass#">
 		<cfargument name="aHasKidsClass" required="true" default="">
 		<cfargument name="aHasKidsCustomString" required="true" default="">
 		<cfargument name="aCurrentClass" required="true" default="#this.aCurrentClass#">
@@ -1802,12 +1802,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset current=current+1>
 			<cfset nest=''>
 			
-			<cfif arguments.currDepth gt 1 and len(arguments.liNestedClass)>
-				<cfset itemClass=arguments.liNestedClass>
-			<cfelse>
-				<cfset itemClass="">
-			</cfif>
-			
 			<cfset isNotLimited= rsSection.type eq "Page" or 
 			not (
 				rsSection.type eq "Portal" and 
@@ -1849,6 +1843,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset structAppend(nestedArgs,arguments,false)>
 				<cfset nest=dspNestedNavPrimary(argumentCollection=nestedArgs) />
 				<cfset subnav=subnav and find("<li",nest)>
+			</cfif>
+
+			<cfif arguments.currDepth gt 1 and len(arguments.liHasKidsNestedClass)>
+				<cfset itemClass=arguments.liHasKidsNestedClass>
+			<cfelse>
+				<cfset itemClass="">
 			</cfif>
 			
 			<cfif current eq adjust>
