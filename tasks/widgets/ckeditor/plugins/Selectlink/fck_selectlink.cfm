@@ -16,81 +16,35 @@ StructAppend(attributes, form, "no");
 <cfset request.nextn=application.utility.getNextN(request.rsList,30,attributes.startrow) />
 <cfset request.contentRenderer = application.settingsManager.getSite(attributes.siteID).getContentRenderer() />
 </cfsilent>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!doctype html>
 <cfoutput>
-<html>
+<html class="mura">
 	<head>
 		<title>Select Link</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta content="noindex, nofollow" name="robots">
-		<script src="#application.configBean.getContext()#/admin/js/admin.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
-		<script src="#application.configBean.getContext()#/admin/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
-		<script src="#application.configBean.getContext()#/admin/js/prototype.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
-		<link href="#application.configBean.getContext()#/admin/css/admin.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+		<script src="#application.configBean.getContext()#/admin/assets/js/admin.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
+		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
+		<link href="#application.configBean.getContext()#/admin/assets/css/admin-min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 		<link rel="stylesheet" type="text/css" href="#application.configBean.getContext()#/tasks/widgets/ckeditor/skins/mura/dialog.css">
 </cfoutput>
-
-	<style>
-	.cke_dialog_ui_iframe {
-		background-image: none;
-		overflow: hidden !important;
-	}
-	
-	body#mura-select-link {
-		background: none;
-		overflow: hidden;
-	}
-	
-	#mura-select-link form {
-		width: 100%;
-	}
-	
-	#mura-select-link form.mura-link-search-result {
-		margin-bottom: 0;
-		padding-bottom: 0;
-	}
-	
-	#mura-select-link #mura-table-grid-container {
-		overflow: auto !important;
-		height: 287px;
-	}
-	
-	#mura-select-link .mura-table-grid {
-	    margin: 0;
-	}
-	
-	#mura-select-link .cke_skin_mura .cke_resizer {
-	    margin-right: 6px;
-	    margin-top: 30px;
-	}
-	
-	#cke_84_uiElement {
-		height: 375px !important;
-		overflow: visible !important;
-		zoom: 1;
-	}
-	
-	#cke_dialog_footer_80.cke_dialog_footer {
-	    padding: 0 !important;
-	}
-		
-	</style>
 </head>
 
 <body id="mura-select-link">
 <cfoutput>
 <h3>Keyword Search</h3>
-<form id="siteSearch" name="siteSearch" method="post"><input name="keywords" value="#HTMLEditFormat(attributes.keywords)#" type="text" class="text" maxlength="50"/>
+<form id="" name="siteSearch" method="post">
+ <input id="keywords" name="keywords" value="#HTMLEditFormat(attributes.keywords)#" type="text" class="span4" maxlength="50"/>
 	<input type="hidden" name="fuseaction" value="cArch.search">
 	<input type="hidden" name="siteid" value="#session.siteid#">
 	<input type="hidden" name="moduleid" value="00000000000000000000000000000000000">
-	<input  class="Button" type="submit" onClick="return submitForm(document.forms.siteSearch);" value="Search">
+	<input class="btn" type="submit" onClick="return submitForm(document.forms.siteSearch);" value="Search">
 </form>
 </cfoutput>
 <form class="mura-link-search-result" name="frmLinks" method="post" onSubmit="return false;">
 <cfif attributes.keywords neq ''>
 <div id="mura-table-grid-container">
- <table class="mura-table-grid stripe">
+ <table class="table table-condensed table-bordered table-striped mura-table-grid">
     <tr>
 	  <th class="actions">&nbsp;</th> 
       <th class="varWidth">Title</th>
@@ -99,8 +53,12 @@ StructAppend(attributes, form, "no");
      <cfoutput query="request.rslist" maxrows="#request.nextn.recordsperPage#" startrow="#attributes.startrow#">
 		<cfset crumbdata=application.contentManager.getCrumbList(request.rslist.contentid, attributes.siteid)/>
         <tr>
-        <td class="actions" id="test"><input type="radio" name="theLinks" id="theLinks#request.rslist.currentrow#" value="#htmlEditFormat(request.contentRenderer.createHREF(request.rslist.type,request.rslist.filename,session.siteid,request.rslist.contentid,request.rslist.target,request.rslist.targetParams,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile()))#^#htmleditformat(request.rslist.menutitle)#"<cfif request.rslist.currentrow eq 1> checked</cfif>></td>  
-          <td class="varWidth"><label for="theLinks#request.rslist.currentrow#">#application.contentRenderer.dspZoomNoLinks(crumbdata,request.rsList.fileExt)#</label></td>
+	        <td class="actions" id="test"><input type="radio" name="theLinks" id="theLinks#request.rslist.currentrow#" value="#htmlEditFormat(request.contentRenderer.createHREF(request.rslist.type,request.rslist.filename,session.siteid,request.rslist.contentid,request.rslist.target,request.rslist.targetParams,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile()))#^#htmleditformat(request.rslist.menutitle)#"<cfif request.rslist.currentrow eq 1> checked</cfif>>
+		        
+	        </td>  
+          <td class="varWidth">
+          	<label for="theLinks#request.rslist.currentrow#">#application.contentRenderer.dspZoomNoLinks(crumbdata,request.rsList.fileExt)#</label>
+          </td>
 		  
 		</tr>
        </cfoutput>
