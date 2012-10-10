@@ -1379,7 +1379,13 @@ and parentID is null
 		<!--- content does not exist --->
 		<cfif originalContentBean.getIsNew()>
 			<cfset newContentBean = getBean('content') />
-			<cfset newContentBean.set(content=contentBean.getAllValues() ) />
+			
+			<cfset sArgs = duplicate(contentBean.getAllValues()) />
+			<cfset StructDelete(sArgs,"ContentHistID")/>
+			<cfset StructDelete(sArgs,"ContentID")/>
+			<cfset StructDelete(sArgs,"SiteID")/>
+			
+			<cfset newContentBean.set(content=sArgs ) />
 			
 			<!--- does page exist? --->
 			<cfif contentBean.getIsNew()>
@@ -1405,6 +1411,10 @@ and parentID is null
 				<cfset newContentBean.setParentID( "00000000000000000000000000000000001" ) />
 			</cfif>
 
+			<cfset newContentBean.setSiteID( arguments.destinationSiteID ) />
+			<cfset newContentBean.setRemoteID( arguments.contentID ) />	
+			<cfset newContentBean.setSiteID( arguments.destinationSiteID ) />
+
 			<cfloop from="1" to="#variables.settingsManager.getSite(arguments.destinationSiteID).getcolumncount()#" index="x">
 				<cfset rsObjects = contentBean.getDisplayRegion(x)>
 				
@@ -1414,13 +1424,6 @@ and parentID is null
 					</cfloop>
 				</cfif>
 			</cfloop>
-
-			<cfset newContentBean.setSiteID( arguments.destinationSiteID ) />
-			<cfset newContentBean.setContentID( getBean('utility').getUUID() ) />
-			<cfset newContentBean.setRemoteID( arguments.contentID ) />
-			<cfset newContentBean.setDisplayID( 0 ) />
-			
-			<cfset newContentBean.setSiteID( arguments.destinationSiteID ) />
 			
 			<cfset rsFileIDs = getExtendFileIDs( newContentBean.getExtendedData().getAllValues() ) />
 			
