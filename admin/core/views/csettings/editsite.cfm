@@ -54,11 +54,11 @@ to your own modified versions of Mura CMS.
     <div id="nav-module-specific" class="btn-group"> <a class="btn" href="index.cfm?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-list-alt"></i> Class Extension Manager</a> <a  class="btn" href="index.cfm?muraAction=cTrash.list&siteID=#URLEncodedFormat(rc.siteid)#"><i class="icon-trash"></i> Trash Bin</a>
       <cfif rc.action eq "updateFiles">
         <a href="index.cfm?muraAction=cSettings.editSite&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-pencil"></i> Edit Site</a>
-        <cfelse>
+        <cfelseif application.configBean.getAllowAutoUpdates()>
         <a  class="btn" href="index.cfm?muraAction=cSettings.editSite&siteid=#URLEncodedFormat(rc.siteid)#&action=updateFiles" onclick="return confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',this.href);"><i class="icon-bolt"></i> Update Site Files to Latest Version</a> <a  class="btn" href="?muraAction=cSettings.selectBundleOptions&siteID=#URLEncodedFormat(rc.siteBean.getSiteID())#"><i class="icon-gift"></i> Create Site Bundle</a>
-        <cfif len(rc.siteBean.getExportLocation()) and directoryExists(rc.siteBean.getExportLocation())>
-          <a  class="btn" href="./?muraAction=csettings.exportHTML&siteID=#rc.siteBean.getSiteID()#"  onclick="return confirmDialog('Export static HTML files to #JSStringFormat("'#rc.siteBean.getExportLocation()#'")#.',this.href);"><i class="icon-share"></i> Export Static HTML (BETA)</a>
-        </cfif>
+      </cfif>
+      <cfif len(rc.siteBean.getExportLocation()) and directoryExists(rc.siteBean.getExportLocation())>
+        <a  class="btn" href="./?muraAction=csettings.exportHTML&siteID=#rc.siteBean.getSiteID()#"  onclick="return confirmDialog('Export static HTML files to #JSStringFormat("'#rc.siteBean.getExportLocation()#'")#.',this.href);"><i class="icon-share"></i> Export Static HTML (BETA)</a>
       </cfif>
     </div>
   </cfif>

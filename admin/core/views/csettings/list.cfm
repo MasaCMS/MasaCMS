@@ -51,22 +51,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h1>Site Settings</h1>
 <div id="nav-module-specific" class="btn-toolbar">
 	<cfif rc.action neq 'updateCore'>
-	<div class="btn-group">
-		<a class="btn" href="index.cfm?muraAction=cSettings.list&action=updateCore" onclick="return confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.\n\nIf your are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.',this.href);"><i class="icon-bolt"></i> Update Core Files to Latest Version</a>
-		<cfif rc.siteUpdateSelect neq "true">
-			<a class="btn" href="index.cfm?muraAction=cSettings.list&siteUpdateSelect=true"><i class="icon-bolt"></i> Multi-Site Version Update</a>
+		<cfif application.configBean.getAllowAutoUpdates()>
+			<div class="btn-group">
+				<a class="btn" href="index.cfm?muraAction=cSettings.list&action=updateCore" onclick="return confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.\n\nIf your are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.',this.href);"><i class="icon-bolt"></i> Update Core Files to Latest Version</a>
+				<cfif rc.siteUpdateSelect neq "true">
+					<a class="btn" href="index.cfm?muraAction=cSettings.list&siteUpdateSelect=true"><i class="icon-bolt"></i> Multi-Site Version Update</a>
+				</cfif>
+			</div>
 		</cfif>
-	</div>
-	<div class="btn-group">
-		<cfif rc.siteUpdateSelect eq "true" or rc.siteSortBy eq "orderno">
-			<a class="btn" href="index.cfm?muraAction=cSettings.list&siteSortBy=site"><i class="icon-list"></i> View Site List by Site Name</a>
+		<div class="btn-group">
+			<cfif rc.siteUpdateSelect eq "true" or rc.siteSortBy eq "orderno">
+				<a class="btn" href="index.cfm?muraAction=cSettings.list&siteSortBy=site"><i class="icon-list"></i> View Site List by Site Name</a>
+			</cfif>
+			<cfif rc.siteSortBy neq "orderno">
+				<a class="btn" href="index.cfm?muraAction=cSettings.list&siteSortBy=orderno"><i class="icon-list"></i> View Site List by Bind Order</a>
+			</cfif>
+			<cfelse>
+			<a class="btn" href="index.cfm?muraAction=cSettings.list"><i class="icon-list"></i> View Site List</a>
 		</cfif>
-		<cfif rc.siteSortBy neq "orderno">
-			<a class="btn" href="index.cfm?muraAction=cSettings.list&siteSortBy=orderno"><i class="icon-list"></i> View Site List by Bind Order</a>
-		</cfif>
-		<cfelse>
-		<a class="btn" href="index.cfm?muraAction=cSettings.list"><i class="icon-list"></i> View Site List</a>
-	</cfif>
 	</div>
 </div>
  
