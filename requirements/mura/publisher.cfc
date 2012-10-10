@@ -260,17 +260,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfif not isDefined('rssite.mediumImageWidth')>
 							<cfif rssite.galleryMediumScaleBy eq 's'>
 								mediumImageHeight=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.galleryMediumScale#">,
-								mediumImageWidth=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.galleryMediumScale#">,
+								mediumImageWidth=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.galleryMediumScale#">
 							<cfelseif rssite.galleryMediumScaleBy eq 'x'>
 								mediumImageHeight='Auto',
-								smallImageWidth=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.galleryMediumScale#">,
+								smallImageWidth=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.galleryMediumScale#">
 							<cfelse>
 								mediumImageHeight=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.galleryMediumScale#">,
-								mediumImageWidth='Auto',
+								mediumImageWidth='Auto'
 							</cfif>
 						<cfelse>
 							mediumImageHeight=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.mediumImageHeight#">,
-							mediumImageWidth=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.mediumImageWidth#">,
+							mediumImageWidth=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.mediumImageWidth#">
 						</cfif>
 						
 						where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">

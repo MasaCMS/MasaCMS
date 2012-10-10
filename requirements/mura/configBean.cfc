@@ -144,6 +144,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.URLTitleDelim="-">
 <cfset variables.instance.BCryptLogRounds=10>
 <cfset variables.dbUtility="">
+<cfset variables.instance.allowAutoUpdates=1>
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
@@ -1389,6 +1390,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.instance.BCryptLogRounds = arguments.BCryptLogRounds />
 	</cfif>
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="setAllowAutoUpdates" access="public" output="false">
+	<cfargument name="allowAutoUpdates" />
+	<cfif isBoolean(arguments.allowAutoUpdates)>
+		<cfset variables.instance.allowAutoUpdates = arguments.allowAutoUpdates />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getAllowAutoUpdates" returntype="boolean" access="public" output="false">
+	<cfreturn variables.instance.allowAutoUpdates />
 </cffunction>
 
 <cffunction name="getAllValues" returntype="any" access="public" output="false">

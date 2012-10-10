@@ -125,12 +125,13 @@ to your own modified versions of Mura CMS.
 			<cfif structKeyExists(variables.myRequest, "useProtect")>
 				<cfset variables.cffp = CreateObject("component","cfformprotect.cffpVerify").init() />
 				<cfif $.siteConfig().getContactEmail() neq "">
-				<cfset variables.cffp.updateConfig('emailServer', $.siteConfig().getMailServerIP())>
-				<cfset variables.cffp.updateConfig('emailUserName', $.siteConfig().getMailserverUsername(true))>
-				<cfset variables.cffp.updateConfig('emailPassword', $.siteConfig().getMailserverPassword())>
-				<cfset variables.cffp.updateConfig('emailFromAddress', $.siteConfig().getMailserverUsernameEmail())>
-				<cfset variables.cffp.updateConfig('emailToAddress', $.siteConfig().getContactEmail())>
-				<cfset variables.cffp.updateConfig('emailSubject', 'Spam form submission')>
+					<cfset variables.cffp.updateConfig('emailServer', $.siteConfig().getMailServerIP())>
+					<cfset variables.cffp.updateConfig('emailUserName', $.siteConfig().getMailserverUsername(true))>
+					<cfset variables.cffp.updateConfig('emailPassword', $.siteConfig().getMailserverPassword())>
+					<cfset variables.cffp.updateConfig('emailFromAddress', $.siteConfig().getMailserverUsernameEmail())>
+					<cfset variables.cffp.updateConfig('emailToAddress', $.siteConfig().getContactEmail())>
+					<cfset variables.cffp.updateConfig('emailSubject', 'Spam form submission')>
+				</cfif>
 			</cfif>
 			
 			<cfset variables.passedProtect = variables.cffp.testSubmission(variables.myRequest)>
