@@ -490,8 +490,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset subnav=subnav and find("<li",nest)>
 				</cfif>
 				
-				
-
 				<cfif subnav and arguments.currDepth gt 1 and len(arguments.liHasKidsNestedClass)>
 					<cfset itemClass=arguments.liHasKidsNestedClass>
 				<cfelse>
@@ -1845,7 +1843,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset subnav=subnav and find("<li",nest)>
 			</cfif>
 
-			<cfif arguments.currDepth gt 1 and len(arguments.liHasKidsNestedClass)>
+			<cfif subnav and arguments.currDepth gt 1 and len(arguments.liHasKidsNestedClass)>
 				<cfset itemClass=arguments.liHasKidsNestedClass>
 			<cfelse>
 				<cfset itemClass="">
