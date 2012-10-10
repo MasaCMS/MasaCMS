@@ -175,12 +175,18 @@ body .cke_dialog {
 }
 
 .cke_skin_mura input.cke_dialog_ui_input_text,.cke_skin_mura input.cke_dialog_ui_input_password {
-	background-color: white;
-	border: none;
-	padding: 0;
-	width: 100%;
-	height: 14px;
+	/* background-color: white; */
+	/* border: none; */
+	/* padding: 0; */
+	/* width: 100%; */
+	/* height: 14px; */
+	margin-bottom: 0;
 }
+
+#mura-select-link input#keywords {
+		margin-bottom: 0 !important;
+		color: #444 !important;
+	}
 
 .cke_skin_mura div.cke_dialog_ui_input_text,.cke_skin_mura div.cke_dialog_ui_input_password {
 	background-color: white;
@@ -287,15 +293,15 @@ body .cke_dialog {
 }
 
 .cke_skin_mura a.cke_dialog_ui_button_ok {
-	background-position: 0 -1143px;
+	/* background-position: 0 -1143px; */
 }
 
 .cke_skin_mura a.cke_dialog_ui_button_ok span {
-	background: transparent url(images/sprites.png) no-repeat scroll right -1219px;
+	/* background: transparent url(images/sprites.png) no-repeat scroll right -1219px; */
 }
 
 .cke_skin_mura .cke_rtl a.cke_dialog_ui_button_ok span {
-	background-position: left -1219px;
+	/* background-position: left -1219px; */
 }
 
 .cke_skin_mura .cke_browser_iequirks a.cke_dialog_ui_button_ok span,.cke_skin_mura .cke_browser_ie6 a.cke_dialog_ui_button_ok span {
@@ -304,15 +310,15 @@ body .cke_dialog {
 }
 
 .cke_skin_mura a.cke_dialog_ui_button_cancel {
-	background-position: 0 -1104px;
+	/* background-position: 0 -1104px; */
 }
 
 .cke_skin_mura a.cke_dialog_ui_button_cancel span {
-	background: transparent url(images/sprites.png) no-repeat scroll right -1245px;
+	/* background: transparent url(images/sprites.png) no-repeat scroll right -1245px; */
 }
 
 .cke_skin_mura .cke_rtl a.cke_dialog_ui_button_cancel span {
-	background-position: left -1245px;
+	/* background-position: left -1245px; */
 }
 
 .cke_skin_mura .cke_browser_iequirks a.cke_dialog_ui_button_cancel span,.cke_skin_mura .cke_browser_ie6 a.cke_dialog_ui_button_cancel span {
@@ -657,4 +663,53 @@ table.cke_dialog_contents table {
 table.cke_dialog_contents table td {
 	vertical-align: top;
 	text-align: left;
+}
+
+/* Moved from <head> of fck_selectlink.cfm */
+
+.cke_dialog_ui_iframe {
+	background-image: none;
+	overflow: hidden !important;
+}
+
+body#mura-select-link {
+	background: none;
+	overflow: hidden;
+}
+
+#mura-select-link form {
+	width: 100%;
+}
+
+#mura-select-link form.mura-link-search-result {
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+
+#mura-select-link #mura-table-grid-container {
+	overflow: auto !important;
+	height: 287px;
+}
+
+#mura-select-link .mura-table-grid {
+    margin: 0;
+}
+
+#mura-select-link .mura-table-grid th, #mura-select-link .mura-table-grid td {
+    text-align: left !important;
+}
+
+#mura-select-link .cke_skin_mura .cke_resizer {
+    margin-right: 6px;
+    margin-top: 30px;
+}
+
+#cke_84_uiElement {
+	height: 375px !important;
+	overflow: visible !important;
+	zoom: 1;
+}
+
+#cke_dialog_footer_80.cke_dialog_footer {
+    padding: 0 !important;
 }

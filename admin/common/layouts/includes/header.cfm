@@ -134,7 +134,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		                    </ul>
 	                 
 	                <li id="navHelp" class="dropdown">
-	                  <a class="dropdown-toggle" data-toggle="dropdown" href="##"><i class="icon-info-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.help")#
+	                  <a class="dropdown-toggle" data-toggle="dropdown" href="##"><i class="icon-question-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.help")#
 	                   <b class="caret"></b>
 	                  </a>
 	                  <ul class="dropdown-menu">

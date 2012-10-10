@@ -1,11 +1,11 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!doctype html>
 <html>
 	<head>
 		<title>Select Component</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta content="noindex, nofollow" name="robots">
 		<link rel="stylesheet" type="text/css" href="<cfoutput>#application.configBean.getContext()#</cfoutput>/tasks/widgets/ckeditor/skins/mura/dialog.css">
-		<!---<link href="<cfoutput>#application.configBean.getContext()#</cfoutput>/tasks/widgets/ckeditor/plugins/skins/mura/dialog.css" rel="stylesheet" type="text/css" />--->
+		<link href="#application.configBean.getContext()#/admin/assets/css/admin-min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 
 		<cfset rs=application.contentManager.getComponents(session.moduleid,session.siteid)/>
 	</head>
