@@ -74,9 +74,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	          </a>--->
 	              
               <cfif application.configBean.getDashboard()>
-                  <cfset baseURL="index.cfm?muraAction=cDashboard.main">
+                  <cfset baseURL="#application.configBean.getContext()#/admin/index.cfm?muraAction=cDashboard.main">
               <cfelse>
-                   <cfset baseURL="index.cfm?muraAction=cArch.list&amp;moduleID=00000000000000000000000000000000000&amp;topID=00000000000000000000000000000000001">
+                   <cfset baseURL="#application.configBean.getContext()#/admin/index.cfm?muraAction=cArch.list&amp;moduleID=00000000000000000000000000000000000&amp;topID=00000000000000000000000000000000001">
                </cfif> 
 	         
 	          <div class="nav-collapse">
