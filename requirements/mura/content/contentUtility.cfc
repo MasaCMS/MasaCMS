@@ -1412,8 +1412,8 @@ and parentID is null
 			</cfif>
 
 			<cfset newContentBean.setSiteID( arguments.destinationSiteID ) />
-			<cfset newContentBean.setRemoteID( arguments.contentID ) />	
-			<cfset newContentBean.setSiteID( arguments.destinationSiteID ) />
+			<cfset newContentBean.setRemoteID( arguments.contentID ) />
+			<cfset newContentBean.setApproved(1) />		
 
 			<cfloop from="1" to="#variables.settingsManager.getSite(arguments.destinationSiteID).getcolumncount()#" index="x">
 				<cfset rsObjects = contentBean.getDisplayRegion(x)>
