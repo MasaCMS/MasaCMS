@@ -565,6 +565,6 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 		<cfreturn false>
 	</cfcatch>
 	</cftry>
-</cffunction>
+</cffunction>				
 
 </cfcomponent>

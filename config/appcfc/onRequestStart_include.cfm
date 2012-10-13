@@ -48,6 +48,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif ( NOT structKeyExists( application, "setupComplete" ) or not application.appInitialized or structKeyExists(url,application.appReloadKey)) and isDefined("onApplicationStart")>
 	<cfset onApplicationStart()>
+<cfelse>
+	<cfset application.clusterManager.runCommands()>
+	<cfif not application.appInitialized>
+		<cfset onApplicationStart()>
+	</cfif>
 </cfif>
 
 <cfset application.userManager.setUserStructDefaults()>
