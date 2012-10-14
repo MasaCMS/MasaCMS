@@ -62,7 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <script type="text/javascript">
  
- summaryLoaded=false;
+ summaryLoaded=true;
 
  editSummary = function(){
  		<cfif application.configBean.getValue("htmlEditorType") neq "none">

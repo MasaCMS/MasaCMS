@@ -867,7 +867,7 @@ to your own modified versions of Mura CMS.
     <!--- Extended Attributes --->
     <cfif arrayLen(extendSets)>
         <div id="tabExtendedAttributes" class="tab-pane fade">
-	        	
+	       <div class="fieldset">
         <cfset started=false />
         <cfloop from="1" to="#arrayLen(extendSets)#" index="s">
             <cfset extendSetBean=extendSets[s]/>
@@ -911,6 +911,7 @@ to your own modified versions of Mura CMS.
             </div>
           </span>
           </cfloop>
+          </div>
         </div>
     </cfif>
     

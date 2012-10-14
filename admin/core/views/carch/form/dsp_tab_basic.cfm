@@ -94,9 +94,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	      		<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.contentSummary"))#">
 	      			#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.summary")#
 	      		 <i class="icon-question-sign"></i></a> 
-	      		<a href="##" id="editSummaryLink" onclick="javascript: toggleDisplay('editSummary','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#'); editSummary();return false">
+	      		<!---<a href="##" id="editSummaryLink" onclick="javascript: toggleDisplay('editSummary','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#'); editSummary();return false">
 	      			[#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.expand")#]
-	      		</a>
+	      		</a>--->
 	      	</label>
 	      	<div id="editSummary" class="controls summaryContainer" style="display:none;">
 				<cfoutput>
@@ -107,29 +107,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 
 		<script>
+			
 			hideSummaryEditor=function(){
 				if(typeof CKEDITOR.instances.summary != 'undefined'){
 					CKEDITOR.instances.summary.updateElement();
 					CKEDITOR.instances.summary.destroy();
 				}
 				jQuery(".summaryContainer").hide();
-				summaryLoaded=false;
+				summaryLoaded=true;
 			}
-
+			
 			showSummaryEditor=function(){
 				if(typeof CKEDITOR.instances.summary == 'undefined'){
 					jQuery(".summaryContainer").show();
-					jQuery("##editSummary").hide();
+					jQuery('##summary').ckeditor(
+		     		{ toolbar:'Summary',
+		     		  customConfig : 'config.js.cfm'},
+		     		htmlEditorOnComplete
+		     	);
 				}
 			}
 			<cfif not isExtended>
-			(function($){
-				var summary=$('##summary').val();
-				if(summary!='' && summary!='<p></p>'){
-					toggleDisplay('editSummary','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expand')#','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');
-					editSummary();
-				}
-			}(jQuery));
+			showSummaryEditor();
 			</cfif>
 		</script>
 	</cfif>
