@@ -114,6 +114,20 @@
 
 	dbUtility.setTable("tcontent")
 	.addColumn(column="sourceID",dataType="char",length="35");
+
+	dbUtility.setTable("tclusterpeers")
+	.addColumn(column="instanceID",dataType="char",length="35")
+	.addPrimaryKey("instanceID");
+
+	dbUtility.setTable("tclustercommands")
+	.addColumn(column="commandID",dataType="char",length="35")
+	.addColumn(column="instanceID",dataType="char",length="35")
+	.addColumn(column="command",dataType="longtext")
+	.addPrimaryKey("commandID");
+
+	dbUtility.setTable("tglobals").dropTable();
+
+
 </cfscript>
 
 

@@ -583,5 +583,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
+<cffunction name="remoteReload" output="false">
+		<cfset application.appInitialized=false>
+		<cfset application.broadcastInit=false>
+</cffunction>
 
 </cfcomponent>

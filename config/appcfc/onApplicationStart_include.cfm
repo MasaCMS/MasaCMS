@@ -239,9 +239,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset application.cfstatic=structNew()>			
 		<cfset application.appInitialized=true/>
 		<cfset application.appInitializedTime=now()>
-		<cfif application.broadcastInit>
-			<cfset application.clusterManager.reload()>
-		</cfif>
+		<cfset application.clusterManager.reload(broadcast=application.broadcastInit)>
 		<cfset application.broadcastInit=true/>
 		<cfset structDelete(application,"muraAdmin")>
 		<cfset structDelete(application,"proxyServices")>

@@ -2092,7 +2092,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="broadcast" default="true">
 	<cfset var history="">
 	<cfset var version="">
-	<cfset var cache=variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getCacheFactory(name="data")>	
+	<cfset var cache=variables.settingsManager.getSite(arguments.siteID).getCacheFactory(name="data")>	
 	
 	<cfif not isDefined("arguments.contentBean")>
 		<cfset arguments.contentBean=read(contentID=arguments.contentID,siteID=arguments.siteID)>
