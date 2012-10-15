@@ -138,7 +138,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				insert into tclustercommands (commandID,instanceID,command) 
 					values(
 					'#createUUID()#',
-					<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsPeers.instanceID#">
+					<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsPeers.instanceID#">,
 					<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.command#">
 					)
 			</cfquery>
