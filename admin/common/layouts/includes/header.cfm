@@ -277,7 +277,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			 						<ul class="dropdown-menu">
 				 						<cfloop query="rsExts">
 				 						<li><a href="index.cfm?muraAction=cExtend.listSets&subTypeID=#rsExts.subtypeID#&siteid=#URLEncodedFormat(rc.siteid)#">
-				 							<i class="icon-cog"></i> #HTMLEditFormat(rsExts.type)#/#HTMLEditFormat(rsExts.subtype)#
+				 							<i class="icon-cog"></i> 
+				 							<cfif rsExts.type eq 1>Group<cfelseif rsExts.type eq 2>User<cfelse>#HTMLEditFormat(rsExts.type)#</cfif>/#HTMLEditFormat(rsExts.subtype)#	
 				 						</a></li>
 				 						</cfloop>
 			 						</ul>	
