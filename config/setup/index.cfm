@@ -681,7 +681,7 @@ to your own modified versions of Mura CMS.
           <div class="control-group">
             <label class="control-label"><a href="" rel="tooltip" data-original-title="Only required if you are using Oracle.">Oracle TableSpace <i class="icon-question-sign"></i></a></label>
             <div class="controls">
-              <input type="text" name="production_dbtablsspace" value="#FORM.production_dbtablespace#">
+              <input type="text" name="production_dbtablespace" value="#FORM.production_dbtablespace#">
             </div>
           </div>
         </span>
