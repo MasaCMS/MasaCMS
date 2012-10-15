@@ -78,15 +78,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div class="control-group">
 <div class="span4">
-	<label class="control-label">Label</label>
-	<div class="controls">
-		<input class="span12" type="text" name="label" value="#HTMLEditFormat(attributes.attributeBean.getLabel())#" />
-	</div>
-</div>
-<div class="span4">
 	<label class="control-label">Name (No spaces)</label>
 	<div class="controls">
 		<input class="span12" type="text" name="name" required="true" value="#HTMLEditFormat(attributes.attributeBean.getName())#" />
+	</div>
+</div>
+<div class="span4">
+	<label class="control-label">Label</label>
+	<div class="controls">
+		<input class="span12" type="text" name="label" value="#HTMLEditFormat(attributes.attributeBean.getLabel())#" />
 	</div>
 </div>
 <div class="span4">
