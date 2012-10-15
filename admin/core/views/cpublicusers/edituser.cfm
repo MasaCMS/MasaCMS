@@ -343,12 +343,10 @@ select * from rsSubTypes where subType <> 'Default'
 	
 <cfif rsSubTypes.recordcount>
 <div id="tabExtendedattributes" class="tab-pane fade">
-		<div class="fieldset">
-		<span id="extendSetsDefault"></span>
-		</div>
-		<script type="text/javascript">
+	<span id="extendSetsDefault"></span>
+	<script type="text/javascript">
 		userManager.loadExtendedAttributes('#rc.userbean.getUserID()#','#rc.userbean.getType()#','#rc.userBean.getSubType()#','#userPoolID#','#application.settingsManager.getSite(rc.siteid).getThemeAssetPath()#');
-		</script>	
+	</script>	
 </div>
 <cfhtmlhead text='<script type="text/javascript" src="assets/js/user.js"></script>'>
 </cfif>

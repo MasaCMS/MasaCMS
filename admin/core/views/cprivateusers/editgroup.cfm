@@ -142,9 +142,7 @@ select * from rsSubTypes where subType <> 'Default'
           <cfif rsSubTypes.recordcount>
             </div>
             <div id="tabExtendedattributes" class='tab-pane'>
-              <div class="fieldset">
                 <span id="extendSetsDefault"></span>
-              </div>	
             </div>
 
 
