@@ -70,8 +70,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset style=extendSetBean.getStyle()/><cfif not len(style)><cfset started=true/></cfif>
 		<span class="extendset" extendsetid="#extendSetBean.getExtendSetID()#" categoryid="#extendSetBean.getCategoryID()#" #style#>
 		<input name="extendSetID" type="hidden" value="#extendSetBean.getExtendSetID()#"/>
-		<div class="fieldset">
-			<h2>#HTMLEditFormat(extendSetBean.getName())#</h2>
+		<h2>#HTMLEditFormat(extendSetBean.getName())#</h2>
 		<cfsilent>
 		<cfset attributesArray=extendSetBean.getAttributes() />
 		</cfsilent>
@@ -101,7 +100,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</div>
 			</div>
 		</cfloop>
-		</div><!--- /.fieldset --->
 		</span>
 	</cfloop>
 	</cfif>

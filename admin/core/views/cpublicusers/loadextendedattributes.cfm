@@ -73,7 +73,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif  userBean.getType() eq 2><cfset style=extendSetBean.getStyle()/><cfif not len(style)><cfset started=true/></cfif></cfif>
 	<span class="extendset" extendsetid="#extendSetBean.getExtendSetID()#" categoryid="#extendSetBean.getCategoryID()#" #style#>
 	<input name="extendSetID" type="hidden" value="#extendSetBean.getExtendSetID()#"/>
-	<fieldset><legend>#extendSetBean.getName()#</legend>
+	<h2>#extendSetBean.getName()#</h2>
 	<cfsilent>
 	<cfset attributesArray=extendSetBean.getAttributes() />
 	</cfsilent>
@@ -104,7 +104,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</div>
 		</div>
 	</cfloop>
-	</fieldset>
 	</span>
 </cfloop>
 </cfif>
@@ -128,7 +127,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif  userBean.getType() eq 2><cfset style=extendSetBean.getStyle()/><cfif not len(style)><cfset started=true/></cfif></cfif>
 	<span class="extendset" extendsetid="#extendSetBean.getExtendSetID()#" categoryid="#extendSetBean.getCategoryID()#" #style#>
 	<input name="extendSetID" type="hidden" value="#extendSetBean.getExtendSetID()#"/>
-	<fieldset><legend>#extendSetBean.getName()#</legend>
+	<h2>#extendSetBean.getName()#</h2>
 	<cfsilent>
 	<cfset attributesArray=extendSetBean.getAttributes() />
 	</cfsilent>
@@ -159,7 +158,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</div>
 		</div>
 	</cfloop>
-	</fieldset>
 	</span>
 </cfloop>
 </cfif>
