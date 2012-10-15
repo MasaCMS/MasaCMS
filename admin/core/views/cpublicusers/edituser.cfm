@@ -183,9 +183,10 @@ select * from rsSubTypes where subType <> 'Default'
 		        </div>
 	        </cfif>
 		</div>
-
-		<span id="extendSetsBasic"></span>
 	</div>
+	
+	<span id="extendSetsBasic"></span>
+	
 </div>
 
 <div id="tabAddressinformation" class="tab-pane fade">
