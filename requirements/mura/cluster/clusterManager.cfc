@@ -148,7 +148,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="reload" output="false" returntype="void">	
-	<cfargument name="broadcast">
+	<cfargument name="broadcast" default="true">
 
 	<cfif arguments.broadcast and variables.broadcastAppreloads>
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
