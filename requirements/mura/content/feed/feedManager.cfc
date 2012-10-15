@@ -260,16 +260,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var feedBean=read(arguments.feedID) />
 	<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
-	<cfset pluginEvent.setValue("feedBean",feedBean)>
-	<cfset pluginEvent.setValue("siteID",feedBean.getSiteID())>
-	
-	<cfset variables.pluginManager.announceEvent("onBeforeFeedDelete",pluginEvent)>
-	<cfset variables.trashManager.throwIn(feedBean)>
-	<cfset variables.globalUtility.logEvent("feedID:#feedBean.getfeedID()# Name:#feedBean.getName()# was deleted","mura-content","Information",true) />
-	<cfset variables.feedDAO.delete(arguments.feedID) />
-	
-	<cfset variables.pluginManager.announceEvent("onFeedDelete",pluginEvent)>
-	<cfset variables.pluginManager.announceEvent("onAfterFeedDelete",pluginEvent)>	
+
+	<cfif not feedBean.getIsLocked()>
+		<cfset pluginEvent.setValue("feedBean",feedBean)>
+		<cfset pluginEvent.setValue("siteID",feedBean.getSiteID())>
+		
+		<cfset variables.pluginManager.announceEvent("onBeforeFeedDelete",pluginEvent)>
+		<cfset variables.trashManager.throwIn(feedBean)>
+		<cfset variables.globalUtility.logEvent("feedID:#feedBean.getfeedID()# Name:#feedBean.getName()# was deleted","mura-content","Information",true) />
+		<cfset variables.feedDAO.delete(arguments.feedID) />
+		
+		<cfset variables.pluginManager.announceEvent("onFeedDelete",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onAfterFeedDelete",pluginEvent)>
+	</cfif>	
 
 </cffunction>
 
