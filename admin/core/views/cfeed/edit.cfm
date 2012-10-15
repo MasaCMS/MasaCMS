@@ -203,7 +203,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="fieldset">
 	<div class="control-group">
 	  <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.name')#
-	  <label class="control-label"><input type="text" name="name" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.namerequired')#" value="#HTMLEditFormat(rc.feedBean.getName())#" maxlength="50">
+	  <label class="control-label"><input type="text" name="name" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.namerequired')#" value="#HTMLEditFormat(rc.feedBean.getName())#" maxlength="50"<cfif rc.feedBean.getIsLocked()> disabled="disabled"</cfif>>
 	</div>
 
 <div class="control-group">
@@ -313,6 +313,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</label>
   </div>
 </div>
+
+<cfif listFind(session.mura.memberships,'S2')>
+	<div class="control-group">
+     <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.isLocked')#</label>
+		<div class="controls">
+		<label class="radio inline">
+		<input name="islocked" type="radio" value="1" class="radio" <cfif rc.feedBean.getIsLocked()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+		</label>
+		<label class="radio inline">
+		<input name="islocked" type="radio" value="0" class="radio" <cfif not rc.feedBean.getIsLocked()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+		</label>
+	  </div>
+	</div>
+</cfif>
 
 </div></div>
 

@@ -77,7 +77,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	      			#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.title')#
 	      		</label>
 	     		 <div class="controls">
-	     		 	<input type="text" id="title" name="title" value="#HTMLEditFormat(rc.contentBean.getTitle())#"  maxlength="255" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#">
+	     		 	<input type="text" id="title" name="title" value="#HTMLEditFormat(rc.contentBean.getTitle())#"  maxlength="255" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#"<cfif rc.contentBean.getIsLocked()> disabled="disabled"</cfif>>
 	     		 	<input type="hidden" id="menuTitle" name="menuTitle" value="">
 	     		</div>
 	     	</div>

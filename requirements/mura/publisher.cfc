@@ -937,6 +937,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif isdefined("rstcontentfeeds.autoimport")>
 					,autoimport
 					</cfif>
+					<cfif isdefined("rstcontentfeeds.isLocked")>
+					,isLocked
+					</cfif>
 					)
 					values
 					(
@@ -987,9 +990,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 					<cfif isdefined("rstcontentfeeds.autoimport")>
 					,
-					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.autoimport),de(rstcontentfeeds.autoimport),de(0))#">
-				
-					</cfif>				
+					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.autoimport),de(rstcontentfeeds.autoimport),de(0))#">			
+					</cfif>
+					<cfif isdefined("rstcontentfeeds.isLocked")>
+					,
+					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.isLocked),de(rstcontentfeeds.isLocked),de(0))#">			
+					</cfif>					
 					)
 				</cfquery>
 			</cfloop>

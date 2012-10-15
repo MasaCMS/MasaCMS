@@ -92,6 +92,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="viewalllabel" type="string" default="" required="true" />
 <cfproperty name="viewalllink" type="string" default="View All" required="true" />
 <cfproperty name="autoimport" type="numeric" default="0" required="true" />
+<cfproperty name="isLocked" type="numeric" default="0" required="true" />
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfset super.init(argumentCollection=arguments)>
@@ -145,6 +146,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.viewalllink="" />
 	<cfset variables.instance.viewalllabel="" />
 	<cfset variables.instance.autoimport=0 />
+	<cfset variables.instance.isLocked=0 />
 	
 	<cfreturn this />
 </cffunction>
@@ -257,6 +259,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="showNavOnly" type="any" />
 	<cfif isNumeric(arguments.showNavOnly)>
 	<cfset variables.instance.showNavOnly = arguments.showNavOnly />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setIsLocked" access="public" output="false">
+	<cfargument name="isLocked" type="any" />
+	<cfif isNumeric(arguments.isLocked)>
+	<cfset variables.instance.isLocked = arguments.isLocked />
 	</cfif>
 	<cfreturn this>
 </cffunction>

@@ -110,7 +110,8 @@
 	.addColumn(column="password",dataType="varchar",length="100");
 
 	dbUtility.setTable("tcontentfeeds")
-	.addColumn(column="autoimport",dataType="tinyint",default=0);
+	.addColumn(column="autoimport",dataType="tinyint",default=0)
+	.addColumn(column="isLocked",dataType="tinyint",default=0);
 
 	dbUtility.setTable("tcontent")
 	.addColumn(column="sourceID",dataType="char",length="35");
