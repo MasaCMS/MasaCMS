@@ -808,25 +808,60 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="table">
 	<cfset var rs ="">
 	
-	<cfif variables.instance.dbtype neq "oracle">
-			<cfdbinfo 
-			name="rs"
-			datasource="#getDatasource()#"
-			username="#getDbUsername()#"
-			password="#getDbPassword()#"
-			table="#arguments.table#"
-			type="columns">	
-	<cfelse>
-		<cfquery
-			name="rs" 
-			datasource="#getDatasource()#"
-			username="#getDbUsername()#"
-			password="#getDbPassword()#">
-				SELECT column_name, data_length column_size, data_type type_name
-				FROM user_tab_cols
-				WHERE table_name=UPPER('#arguments.table#')
-		</cfquery>
-	</cfif>
+	<cfswitch expression="#getDbType()#">
+			<cfcase value="oracle">
+				<cfquery
+				name="rs" 
+				datasource="#getDatasource()#"
+				username="#getDbUsername()#"
+				password="#getDbPassword()#">
+					SELECT column_name, 
+					data_length column_size, 
+					data_type type_name, 
+					data_default column_default_value,
+					nullable is_nullable,
+					 data_precision 
+					FROM user_tab_cols
+					WHERE table_name=UPPER('#arguments.table#')
+			</cfquery>
+			</cfcase>
+			<cfcase value="nuodb">
+				<cfquery
+				name="rs" 
+				datasource="#getDatasource()#"
+				username="#getDbUsername()#"
+				password="#getDbPassword()#">
+					SELECT field , 
+					length, 
+					datatype , 
+					defaultvalue, 
+					1  is_nullable, 
+					precision
+					FROM system.fields
+					WHERE tablename='#ucase(arguments.table)#'
+			</cfquery>
+			<cfquery
+				name="rs" 
+				dbtype="query">
+					SELECT field column_name, 
+					length column_size, 
+					datatype type_name, 
+					defaultvalue column_default_value, 
+					is_nullable, 
+					precision data_precision
+					FROM rs
+			</cfquery>
+			</cfcase>
+			<cfdefaultcase>
+				<cfdbinfo 
+				name="rs"
+				datasource="#getDatasource()#"
+				username="#getDbUsername()#"
+				password="#getDbPassword()#"
+				table="#table#"
+				type="columns">	
+			</cfdefaultcase>
+		</cfswitch>
 	
 	<cfreturn rs>
 </cffunction>

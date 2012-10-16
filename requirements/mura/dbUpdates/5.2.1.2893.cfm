@@ -109,6 +109,40 @@ CREATE INDEX IX_ttrash_parentid ON ttrash (parentid)
 	</cfcatch>
 	</cftry>
 </cfcase>
+<cfcase value="nuodb">
+
+	<cfif not dbUtility.tableExists('ttrash')>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	CREATE TABLE ttrash (
+	  objectID char(35) NOT NULL,
+	  parentID char(35) NOT NULL,
+	  siteID varchar(25) NOT NULL,
+	  objectClass varchar(50) NOT NULL,
+	  objectType varchar(50) NOT NULL,
+	  objectSubType varchar(50) NOT NULL,
+	  objectLabel varchar(255) NOT NULL,
+	  objectstring clob,
+	  deletedDate datetime default NULL,
+	  deletedBy varchar(50) NOT NULL,
+	  PRIMARY KEY  (objectID)
+	) 
+	</cfquery>
+
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		CREATE INDEX IX_ttrash_deleteddate on ttrash (deleteddate);
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		CREATE INDEX IX_ttrash_siteid on ttrash (siteID);
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		CREATE INDEX IX_ttrash_objecttype on ttrash (objectclass);
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		CREATE INDEX IX_ttrash_parentid on ttrash (parentID);
+	</cfquery>
+	</cfif>
+
+</cfcase>
 <cfcase value="oracle">
 <cfset variables.RUNDBUPDATE=false/>
 <cftry>
@@ -187,6 +221,11 @@ ALTER TABLE tfiles ADD deleted tinyint
 			</cfquery>
 		</cfcatch>
 	</cftry>
+</cfcase>
+<cfcase value="nuodb">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tfiles ADD COLUMN deleted smallint
+	</cfquery>
 </cfcase>
 <cfcase value="oracle">
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">

@@ -24,6 +24,9 @@ ALTER TABLE tsettings ADD useDefaultSMTPServer tinyint
 		</cfcatch>
 	</cftry>
 </cfcase>
+<cfcase value="suodb">
+<cfset dbUtility.addColumn(column='useDefaultSMTPServer',datatype='tinyint',default=0,table='tsettings')>
+</cfcase>
 <cfcase value="oracle">
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 ALTER TABLE tsettings ADD useDefaultSMTPServer NUMBER(3,0)

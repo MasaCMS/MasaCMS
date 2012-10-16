@@ -22,6 +22,11 @@ select * from tmailinglistmembers  where 0=1
 		</cfcatch>
 	</cftry>
 </cfcase>
+<cfcase value="nuodb">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tmailinglistmembers ADD COLUMN created datetime default NULL
+	</cfquery>
+</cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE "TMAILINGLISTMEMBERS" ADD "CREATED" DATE default null

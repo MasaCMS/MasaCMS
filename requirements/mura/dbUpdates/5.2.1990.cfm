@@ -49,6 +49,17 @@ select parentid from tcontentcomments  where 0=1
 	CREATE INDEX IX_tcontentcomments_parentID ON tcontentcomments (parentID)
 	</cfquery>
 </cfcase>
+<cfcase value="nuodb">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentcomments ADD parentID char(35) default NULL
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentcomments ADD path clob default NULL
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	CREATE INDEX IX_tcontentcomments_parentID ON tcontentcomments (parentID)
+	</cfquery>
+</cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE "TCONTENTCOMMENTS" ADD ("PARENTID" char(35))
@@ -86,6 +97,11 @@ select tagline from tsettings  where 0=1
 	</cfquery>
 </cfcase>
 <cfcase value="mysql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tsettings ADD tagline varchar(255) default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tsettings ADD tagline varchar(255) default NULL
 	</cfquery>
@@ -154,6 +170,20 @@ select params from tcontentobjects  where 0=1
 <cfcase value="mysql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontentobjects ADD Params longtext default NULL
+	</cfquery>
+	<cftry>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentobjects drop primary key
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentobjects add primary key (`ContentHistID`,`ObjectID`,`Object`,`ColumnID`,`OrderNo`)
+	</cfquery>
+	<cfcatch></cfcatch>
+	</cftry>
+</cfcase>
+<cfcase value="nuodb">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentobjects ADD Params clob
 	</cfquery>
 	<cftry>
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">

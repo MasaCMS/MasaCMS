@@ -16,6 +16,11 @@ select * from tplugindisplayobjects  where 0=1
 	ALTER TABLE tplugindisplayobjects ADD COLUMN displaymethod varchar(100) default NULL
 	</cfquery>
 </cfcase>
+<cfcase value="nuodb">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tplugindisplayobjects ADD COLUMN displaymethod varchar(100) default NULL
+	</cfquery>
+</cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE "TPLUGINDISPLAYOBJECTS" ADD "DISPLAYMETHOD" varchar2(100)
@@ -36,6 +41,11 @@ select * from tplugindisplayobjects where 0=1
 	</cfquery>
 </cfcase>
 <cfcase value="mysql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tplugindisplayobjects ADD COLUMN docache varchar(5) default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tplugindisplayobjects ADD COLUMN docache varchar(5) default NULL
 	</cfquery>
@@ -64,6 +74,11 @@ select * from tpluginscripts  where 0=1
 	</cfquery>
 </cfcase>
 <cfcase value="mysql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tpluginscripts ADD COLUMN docache varchar(5) default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tpluginscripts ADD COLUMN docache varchar(5) default NULL
 	</cfquery>
@@ -103,6 +118,11 @@ select * from tcontent  where 0=1
 			</cfquery>
 		</cfcatch>
 	</cftry>
+</cfcase>
+<cfcase value="nuodb">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontent ADD COLUMN created datetime default NULL
+	</cfquery>
 </cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">

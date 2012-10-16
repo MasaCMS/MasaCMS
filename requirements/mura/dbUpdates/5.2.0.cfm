@@ -72,6 +72,11 @@ select * from tcontentcomments  where 0=1
 	ALTER TABLE tcontentcomments ADD COLUMN userID char(35) default NULL
 	</cfquery>
 </cfcase>
+<cfcase value="nuodb">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentcomments ADD COLUMN userID char(35) default NULL
+	</cfquery>
+</cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE "TCONTENTCOMMENTS" ADD "USERID" char(35)
@@ -154,6 +159,35 @@ select * from tcontentcomments  where 0=1
 	</cftry>	
 	</cfif>
 </cfcase>
+<cfcase value="nuodb">
+	<cfset variables.RUNDBUPDATE=false/>
+	<cftry>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	select userID as CheckIfTableExists from tuserremotesessions where 0=1
+	</cfquery>
+	<cfcatch>
+	<cfset variables.RUNDBUPDATE=true/>
+	</cfcatch>
+	</cftry>
+	
+	<cfif variables.RUNDBUPDATE>
+	
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		CREATE TABLE tuserremotesessions (
+		  userID char(35) default NULL,
+		  authToken char(32) default NULL,
+		  data clob,
+		  created datetime default NULL,
+		  lastAccessed datetime NOT NULL,
+		  PRIMARY KEY  (userID)
+		) 
+		</cfquery>
+
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		 CREATE INDEX tuserremotesessions_authtoken on tuserremotesessions (authToken)
+		</cfquery>
+	</cfif>
+</cfcase>
 <cfcase value="oracle">
 	<cfset variables.RUNDBUPDATE=false/>
 	<cftry>
@@ -223,6 +257,14 @@ ALTER TABLE tsettings ADD cacheFreeMemoryThreshold int
 			</cfquery>
 		</cfcatch>
 	</cftry>
+</cfcase>
+<cfcase value="nuodb">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tsettings ADD COLUMN cacheCapacity int
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tsettings ADD COLUMN cacheFreeMemoryThreshold int
+	</cfquery>
 </cfcase>
 <cfcase value="oracle">
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
@@ -301,6 +343,28 @@ cacheCapacity=0
 	</cftry>	
 	</cfif>
 </cfcase>
+<cfcase value="nuodb">
+	<cfset variables.RUNDBUPDATE=false/>
+	<cftry>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	select username as CheckIfTableExists from tuserstrikes where 0=1
+	</cfquery>
+	<cfcatch>
+	<cfset variables.RUNDBUPDATE=true/>
+	</cfcatch>
+	</cftry>
+	
+	<cfif variables.RUNDBUPDATE>
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		CREATE TABLE tuserstrikes (
+		  username varchar(100) default NULL,
+		  strikes int default NULL,
+		  lastAttempt datetime NOT NULL,
+		  PRIMARY KEY  (username)
+		) 
+		</cfquery>	
+	</cfif>
+</cfcase>
 <cfcase value="oracle">
 	<cfset variables.RUNDBUPDATE=false/>
 	<cftry>
@@ -356,6 +420,11 @@ ALTER TABLE tplugins ADD loadPriority int
 			</cfquery>
 		</cfcatch>
 	</cftry>
+</cfcase>
+<cfcase value="nuodb">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tplugins ADD COLUMN loadPriority int
+	</cfquery>
 </cfcase>
 <cfcase value="oracle">
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">

@@ -121,6 +121,52 @@
 			</cfif>
 		</cftransaction>	
 	</cfcase>
+	<cfcase value="nuodb">
+		<cftransaction>
+			<cfif not dbUtility.setTable('tchangesets').tableExists()>
+				<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+					CREATE TABLE tchangesets (
+					  changesetID char(35),
+					  siteID varchar(25),
+					  name varchar(100),
+					  description clob,
+					  created datetime,
+					  publishDate datetime,
+					  published smallint,
+					  lastUpdate datetime,
+					  lastUpdateBy varchar(50),
+					  lastUpdateByID char(35),
+					  remoteID varchar(255),
+					  remotePubDate datetime,
+					  remoteSourceURL varchar(255),
+					  PRIMARY KEY  (changesetID)	 
+					) 
+				</cfquery>
+
+				<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+					CREATE INDEX IX_tchangesets_siteID on tchangesets (siteID)
+				</cfquery>
+				<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+					CREATE INDEX IX_tchangesets_publishDate on tchangesets (publishDate)
+				</cfquery>
+				<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+					CREATE INDEX IX_tchangesets_remoteID on tchangesets (remoteID)
+				</cfquery>
+				 
+	  
+			</cfif>
+
+			<cfif not dbUtility.setTable('tcontent').columnExists('changesetID')>
+				<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+					ALTER TABLE tcontent ADD COLUMN changesetID char(35) default NULL
+				</cfquery>
+						
+				<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+					CREATE INDEX IX_tcontent_changesetID ON tcontent (changesetID)
+				</cfquery>
+			</cfif>
+		</cftransaction>	
+	</cfcase>
 	<cfcase value="oracle">
 		<cfset variables.RUNDBUPDATE=false/>
 		<cftry>
@@ -339,6 +385,11 @@ ALTER TABLE tsettings ADD hasChangesets tinyint
 			</cfquery>
 		</cfcatch>
 	</cftry>
+</cfcase>
+<cfcase value="nuodb">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tsettings ADD COLUMN hasChangesets smallint 
+	</cfquery>
 </cfcase>
 <cfcase value="oracle">
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">

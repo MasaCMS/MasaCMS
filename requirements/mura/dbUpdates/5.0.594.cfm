@@ -228,6 +228,65 @@ ALTER TABLE [dbo].[tpluginsettings] WITH NOCHECK ADD
 	</cftry>
 	</cfif>
 </cfcase>
+
+<cfcase value="nuodb">
+		
+	
+	<cftransaction>
+	<cfif not dbUtility.tableExists('tplugins')>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	CREATE TABLE tplugins (
+	  pluginID integer generated always as identity (seq_tplugins),
+	  moduleID char(35) default NULL,
+	  name varchar(50) default NULL,
+	  created timestamp NOT NULL default ('now'),
+	  provider varchar(100) default NULL,
+	  providerURL varchar(100) default NULL,
+	  category varchar(50) default NULL,
+	  version varchar(50) default NULL,
+	  deployed smallint default NULL,
+	  PRIMARY KEY  (pluginID)
+	)
+	</cfquery>
+	</cfif>
+	
+	<cfif not dbUtility.tableExists('tplugindisplayobjects')>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		CREATE TABLE  tplugindisplayobjects (
+	  objectID char(35) NOT NULL default '',
+	  moduleID char(35) default NULL,
+	  name varchar(50) default NULL,
+	  location varchar(50) default NULL,
+	  displayObjectFile varchar(200) default NULL,
+	  PRIMARY KEY  (objectID)
+	) 
+	</cfquery>
+	</cfif>
+	
+	<cfif not dbUtility.tableExists('tpluginscripts')>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		CREATE TABLE tpluginscripts (
+	  scriptID char(35) NOT NULL default '',
+	  moduleID char(35) default NULL,
+	  runat varchar(50) default NULL,
+	  scriptfile varchar(200) default NULL,
+	  PRIMARY KEY  (scriptID)
+	) 
+	</cfquery>
+	</cfif>
+
+	<cfif not dbUtility.tableExists('tpluginsettings')>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		CREATE TABLE tpluginsettings (
+	  moduleID char(35) NOT NULL default '',
+	  name varchar(100) NOT NULL default '',
+	  settingValue clob,
+	  PRIMARY KEY  (moduleID,name)
+	) 
+	</cfquery>
+	</cfif>
+	</cftransaction>
+</cfcase>
 <cfcase value="oracle">
 <cfset variables.RUNDBUPDATE=false/>
 <cftry>

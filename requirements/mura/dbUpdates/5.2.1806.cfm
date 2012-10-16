@@ -35,6 +35,17 @@ select remoteID from tcontentfeeds  where 0=1
 	CREATE INDEX IX_feed_remoteID ON tcontentfeeds (remoteID)
 	</cfquery>
 </cfcase>
+<cfcase value="nuodb">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentfeeds ADD remoteID varchar(255) default NULL
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentfeeds ADD remoteSourceURL varchar(255) default NULL
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	CREATE INDEX IX_feed_remoteID ON tcontentfeeds (remoteID)
+	</cfquery>
+</cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE "TCONTENTFEEDS" ADD "REMOTEID" varchar2(255)
@@ -83,6 +94,17 @@ select remoteID from tcontentcategories  where 0=1
 	CREATE INDEX IX_category_remoteID ON tcontentcategories (remoteID)
 	</cfquery>
 </cfcase>
+<cfcase value="nuodb">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentcategories ADD remoteID varchar(255) default NULL
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentcategories ADD remoteSourceURL varchar(255) default NULL
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	CREATE INDEX IX_category_remoteID ON tcontentcategories (remoteID)
+	</cfquery>
+</cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE "TCONTENTCATEGORIES" ADD "REMOTEID" varchar2(255)
@@ -115,6 +137,11 @@ select container from tclassextendsets  where 0=1
 	</cfquery>
 </cfcase>
 <cfcase value="mysql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tclassextendsets ADD container varchar(50) default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tclassextendsets ADD container varchar(50) default NULL
 	</cfquery>

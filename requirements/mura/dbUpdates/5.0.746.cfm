@@ -16,6 +16,11 @@ select * from tadcreatives testTarget where 0=1
 	ALTER TABLE tadcreatives ADD COLUMN target varchar(10) default NULL
 	</cfquery>
 </cfcase>
+<cfcase value="nuodb">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tadcreatives ADD COLUMN target varchar(10) default NULL
+	</cfquery>
+</cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE "TADCREATIVES" ADD "TARGET" varchar2(10)

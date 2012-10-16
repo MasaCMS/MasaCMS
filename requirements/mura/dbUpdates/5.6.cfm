@@ -16,6 +16,11 @@
 	ALTER TABLE tcontent ADD COLUMN majorVersion int(11) NULL
 	</cfquery>
 </cfcase>
+<cfcase value="nuodb">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontent ADD COLUMN majorVersion int NULL
+	</cfquery>
+</cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontent ADD majorVersion NUMBER(10,0)
@@ -45,6 +50,11 @@
 <cfcase value="mysql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontent ADD COLUMN minorVersion int(11) NULL
+	</cfquery>
+</cfcase>
+<cfcase value="nuodb">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontent ADD COLUMN minorVersion int NULL
 	</cfquery>
 </cfcase>
 <cfcase value="oracle">
@@ -78,6 +88,11 @@
 	ALTER TABLE tcontentstats ADD COLUMN majorVersion int(11) NULL
 	</cfquery>
 </cfcase>
+<cfcase value="nuodb">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentstats ADD COLUMN majorVersion int NULL
+	</cfquery>
+</cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontentstats ADD majorVersion NUMBER(10,0)
@@ -107,6 +122,11 @@
 <cfcase value="mysql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontentstats ADD COLUMN minorVersion int(11) NULL
+	</cfquery>
+</cfcase>
+<cfcase value="nuodb">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentstats ADD COLUMN minorVersion int NULL
 	</cfquery>
 </cfcase>
 <cfcase value="oracle">
@@ -140,6 +160,11 @@
 	ALTER TABLE tcontentstats ADD COLUMN lockID char(35) default NULL
 	</cfquery>
 </cfcase>
+<cfcase value="nuodb">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentstats ADD COLUMN lockID char(35) default NULL
+	</cfquery>
+</cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontentstats ADD lockID char(35)
@@ -162,6 +187,11 @@
 	</cfquery>
 </cfcase>
 <cfcase value="mysql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentassignments ADD COLUMN type varchar(50) default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontentassignments ADD COLUMN type varchar(50) default NULL
 	</cfquery>
@@ -197,6 +227,11 @@
 	ALTER TABLE tcontent ADD COLUMN expires datetime default NULL
 	</cfquery>
 </cfcase>
+<cfcase value="nuodb">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontent ADD COLUMN expires datetime default NULL
+	</cfquery>
+</cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontent ADD expires date
@@ -219,6 +254,11 @@
 	</cfquery>
 </cfcase>
 <cfcase value="mysql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentcomments ADD COLUMN remoteID char(35) default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontentcomments ADD COLUMN remoteID char(35) default NULL
 	</cfquery>
@@ -253,6 +293,9 @@
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontentcomments MODIFY column url varchar(255)
 	</cfquery>
+</cfcase>
+<cfcase value="nuodb">
+	<cfset dbUtility.alterColumn(table='tcontentcomments',column='url',datatype='varchar',length=255)>
 </cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">

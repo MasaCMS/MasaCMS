@@ -16,6 +16,11 @@
 	ALTER TABLE tcontentfeeds ADD COLUMN imageSize varchar(15) default NULL
 	</cfquery>
 </cfcase>
+<cfcase value="nuodb">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentfeeds ADD COLUMN imageSize varchar(15) default NULL
+	</cfquery>
+</cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontentfeeds ADD imageSize varchar2(15)
@@ -42,6 +47,11 @@
 	ALTER TABLE tcontentfeeds ADD COLUMN imageHeight varchar(15) default NULL
 	</cfquery>
 </cfcase>
+<cfcase value="nuodb">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentfeeds ADD COLUMN imageHeight varchar(15) default NULL
+	</cfquery>
+</cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontentfeeds ADD imageHeight varchar2(15)
@@ -64,6 +74,11 @@
 	</cfquery>
 </cfcase>
 <cfcase value="mysql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentfeeds ADD COLUMN imageWidth varchar(15) default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontentfeeds ADD COLUMN imageWidth varchar(15) default NULL
 	</cfquery>
@@ -113,6 +128,11 @@ ALTER TABLE tcontentfeeds ADD displayList #MSSQLlob#
 	ALTER TABLE tcontentfeeds ADD COLUMN displayList longtext 
 	</cfquery>
 </cfcase>
+<cfcase value="nuodb">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentfeeds ADD COLUMN displayList clob 
+	</cfquery>
+</cfcase>
 <cfcase value="oracle">
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 ALTER TABLE tcontentfeeds ADD displayList clob
@@ -135,6 +155,11 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	</cfquery>
 </cfcase>
 <cfcase value="mysql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontent ADD COLUMN imageSize varchar(15) default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontent ADD COLUMN imageSize varchar(15) default NULL
 	</cfquery>
@@ -165,6 +190,11 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	ALTER TABLE tcontent ADD COLUMN imageHeight varchar(15) default NULL
 	</cfquery>
 </cfcase>
+<cfcase value="nuodb">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontent ADD COLUMN imageHeight varchar(15) default NULL
+	</cfquery>
+</cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontent ADD imageHeight varchar2(15)
@@ -191,6 +221,11 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	ALTER TABLE tcontent ADD COLUMN imageWidth varchar(15) default NULL
 	</cfquery>
 </cfcase>
+<cfcase value="nuodb">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontent ADD COLUMN imageWidth varchar(15) default NULL
+	</cfquery>
+</cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontent ADD imageWidth varchar2(15)
@@ -213,6 +248,11 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	</cfquery>
 </cfcase>
 <cfcase value="mysql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontent ADD COLUMN childTemplate varchar(50) default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontent ADD COLUMN childTemplate varchar(50) default NULL
 	</cfquery>
@@ -244,6 +284,11 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 <cfcase value="mysql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontent MODIFY column urltitle varchar(255)
+	</cfquery>
+</cfcase>
+<cfcase value="mysql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontent ALTER column urltitle varchar(255)
 	</cfquery>
 </cfcase>
 <cfcase value="oracle">
@@ -298,6 +343,11 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	ALTER TABLE tcontentfeeds ADD COLUMN showNavOnly tinyint(3) NULL
 	</cfquery>
 </cfcase>
+<cfcase value="nuodb">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentfeeds ADD COLUMN showNavOnly smallint NULL
+	</cfquery>
+</cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontentfeeds ADD showNavOnly NUMBER(3,0)
@@ -327,6 +377,11 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 <cfcase value="mysql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontentfeeds ADD COLUMN showExcludeSearch tinyint(3) NULL
+	</cfquery>
+</cfcase>
+<cfcase value="nuodb">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentfeeds ADD COLUMN showExcludeSearch smallint NULL
 	</cfquery>
 </cfcase>
 <cfcase value="oracle">
@@ -360,6 +415,11 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	ALTER TABLE tplugindisplayobjects ADD COLUMN configuratorInit varchar(50) default NULL
 	</cfquery>
 </cfcase>
+<cfcase value="nuodb">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tplugindisplayobjects ADD COLUMN configuratorInit varchar(50) default NULL
+	</cfquery>
+</cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tplugindisplayobjects ADD configuratorInit varchar2(50)
@@ -382,6 +442,11 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	</cfquery>
 </cfcase>
 <cfcase value="mysql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tplugindisplayobjects ADD COLUMN configuratorJS varchar(255) default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tplugindisplayobjects ADD COLUMN configuratorJS varchar(255) default NULL
 	</cfquery>
@@ -411,6 +476,9 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tsettings MODIFY column domain varchar(255)
 	</cfquery>
+</cfcase>
+<cfcase value="nuodb">
+	<cfset dbUtility.setTable('tsettings').alterColumn(column='domain',datatype='varchar',length=255)>
 </cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
@@ -449,6 +517,9 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tsettings MODIFY column columnNames text
 	</cfquery>
+</cfcase>
+<cfcase value="nuodb">	
+	<cfset dbUtility.setTable('tsettings').alterColumn(column='columnNames',datatype='longtext')>
 </cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
