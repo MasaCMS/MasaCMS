@@ -363,7 +363,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					select * from tcontent 
 					where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/> 
 					and (tcontent.active = 1 or (tcontent.changesetID is not null and tcontent.approved=0))
-					and type !='Module'
+					and type <>'Module'
 					<cfif isDate(arguments.lastDeployment)>
 						and lastUpdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.lastDeployment#">
 					</cfif>
@@ -374,7 +374,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfquery datasource="#arguments.toDSN#">
 				delete from tcontent 
 				where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
-				and type !='Module'
+				and type <>'Module'
 				<cfif isDate(arguments.lastDeployment)>
 					<cfif rstcontent.recordcount or rsDeleted.recordcount>
 						and (
@@ -3242,7 +3242,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfquery datasource="#arguments.toDSN#" name="rsCheck">
 								select moduleID from tplugins
 								where package=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rstplugins.package#"/>
-								and moduleID!=<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#"/>
+								and moduleID<><cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#"/>
 							</cfquery>
 							
 							<cfif rsCheck.recordcount>

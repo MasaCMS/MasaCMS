@@ -916,7 +916,7 @@ select * from tplugins order by #arguments.orderby#
 		<cfquery datasource="#variables.configBean.getDatasource()#" name="rsCheck" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 				select moduleID from tplugins
 				where package=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.args.package#"/>
-				and moduleID!=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.args.moduleID#"/>
+				and moduleID<><cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.args.moduleID#"/>
 		</cfquery>
 							
 		<cfif rsCheck.recordcount>

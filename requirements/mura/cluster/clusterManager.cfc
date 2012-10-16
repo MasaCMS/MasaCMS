@@ -155,7 +155,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			delete from tclustercommands
 		</cfquery>
 		<cfquery name="rsInstance" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
-			delete from tclusterpeers where instanceID!=<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.instanceID#">
+			delete from tclusterpeers where instanceID <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#application.instanceID#">
 		</cfquery>
 		<cfset broadcastCommand("getBean('siteManager').remoteReload()")>	
 	</cfif>

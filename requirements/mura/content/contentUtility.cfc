@@ -161,7 +161,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	or
 	(isPublic=0  and siteid='#variables.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#')
 	)
-	and groupname != 'Admin'
+	and groupname <> 'Admin'
 	order by isPublic desc, groupname
 	</cfquery>
 	<cfreturn rs />
@@ -1510,7 +1510,7 @@ and parentID is null
 				WHERE
 					attributeID IN (#ValueList(rsAttributeIDs.attributeID)#)
 				AND
-					attributeValue != ''
+					attributeValue <> ''
 			</cfquery>
 		</cfif>
 				

@@ -500,7 +500,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif len(arguments.siteID)>	
 			<cfquery datasource="#arguments.dsn#" name="rstcontent">
 				select * from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
-				and type !='Module'
+				and type <>'Module'
 				<cfif not arguments.includeVersionHistory>
 					and (active = 1 or (changesetID is not null and approved=0))
 				</cfif>

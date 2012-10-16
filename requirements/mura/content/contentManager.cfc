@@ -2166,7 +2166,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var args=structNew()>
 
 	<cfquery name="rsHist" dbtype="query">
-		select * from rsHist where approved=1 and active!=1
+		select * from rsHist where approved=1 and active <> 1
 	</cfquery>
 		
 	<cfif rsHist.recordcount gt arguments.limit>

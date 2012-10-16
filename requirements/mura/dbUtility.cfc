@@ -79,11 +79,13 @@
 			password="#variables.configBean.getDbPassword()#"
 			type="tables">
 
+			<!---
 			<cfif variables.configBean.getDbType() eq "nuodb">
 				<cfquery name="rscheck" dbtype="query">
 					select tablename as table_name from rscheck
 				</cfquery>
 			</cfif>
+			--->
 
 	<cfelse>
 		<cfquery name="rscheck" datasource="#variables.configBean.getDatasource()#"
@@ -125,6 +127,7 @@
 					WHERE table_name=UPPER('#arguments.table#')
 			</cfquery>
 			</cfcase>
+			<!---
 			<cfcase value="nuodb">
 				<cfquery
 				name="rs" 
@@ -152,6 +155,7 @@
 					FROM rs
 			</cfquery>
 			</cfcase>
+			--->
 			<cfdefaultcase>
 				<cfdbinfo 
 				name="rs"

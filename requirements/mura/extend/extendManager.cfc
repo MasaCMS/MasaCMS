@@ -201,7 +201,7 @@ select attributeID,name,validation,message from tclassextendattributes where
 ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
 		</cfloop>)
-		and type != 'File'
+		and type <> 'File'
 </cfquery>
 
 <cfloop query="rs">
@@ -289,7 +289,7 @@ select attributeID,name,validation,message from tclassextendattributes where
 ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
 		</cfloop>)
-		and type != 'File'
+		and type <> 'File'
 </cfquery>
 
 <cfloop query="rs">
@@ -596,7 +596,7 @@ and tclassextendattributes.extendSetID in (<cfloop from="1" to="#setLen#" index=
 		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
 		</cfloop>)
 </cfif>		
-and tclassextendattributes.type!='File'
+and tclassextendattributes.type<>'File'
 </cfquery>
 
 <cfloop query="rs">

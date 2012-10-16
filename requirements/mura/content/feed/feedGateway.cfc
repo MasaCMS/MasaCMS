@@ -443,7 +443,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		AND tcontent.moduleid = '00000000000000000000000000000000000'
 	</cfif>
 	<cfif not arguments.feedBean.getShowExcludeSearch()> AND tcontent.searchExclude = 0</cfif>
-	AND tcontent.type !='Module'
+	AND tcontent.type <>'Module'
 
 		<cfif rsParams.recordcount>
 		<cfset started=false>

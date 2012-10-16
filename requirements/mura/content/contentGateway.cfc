@@ -1855,7 +1855,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tcontentobjects.contenthistid ='#arguments.inheritedObjects#' 
 	and tcontentobjects.siteid='#arguments.siteid#'
 	and tcontentobjects.columnid=#arguments.columnID#
-	and tcontentobjects.object !='goToFirstChild'
+	and tcontentobjects.object <>'goToFirstChild'
 	order by orderno
 	</cfquery>
 	
