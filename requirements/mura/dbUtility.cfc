@@ -681,7 +681,7 @@
 			<cfset columnArgs.nullable=false>
 		</cfif>
 
-		<cfif len(trim(arguments.rs.column_default_value))>
+		<cfif isdefined('arguments.rs.column_default_value') and len(trim(arguments.rs.column_default_value))>
 			<cfset columnArgs.default=trim(arguments.rs.column_default_value)>
 		</cfif>
 
