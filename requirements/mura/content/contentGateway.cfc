@@ -208,6 +208,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			tcontent.sortDirection,
 			<cfif variables.configBean.getDBType() eq "MSSQL">
 			len(Cast(tcontent.path as varchar(1000))) depth
+			<cfelseif variables.configBean.getDBType() eq "NUODB">
+			char_length(tcontent.path) depth
 			<cfelse>
 			length(tcontent.path) depth
 			</cfif> 
@@ -577,6 +579,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfswitch>
 						
 				<cfif dbType eq "mysql" and arguments.size>limit #arguments.size#</cfif>
+				<cfif dbType eq "nuodb" and arguments.size>fetch #arguments.size#</cfif>
 				<cfif dbType eq "oracle" and arguments.size>) where ROWNUM <=#arguments.size# </cfif>
 
 		</cfquery>
@@ -812,8 +815,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	LEFT JOIN tcontentstats on (draft.contentID=tcontentstats.contentID 
 								and draft.siteID=tcontentstats.siteID
 								)
-	WHERE draft.Active=0 
-	AND active.Active=1 
+	WHERE draft.active=0 
+	AND active.active=1 
 	AND draft.lastUpdate>active.lastupdate 
 	and draft.changesetID is null
 	and tcontentassignments.userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
@@ -838,7 +841,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								and draft.siteID=tcontentstats.siteID
 								)
 	WHERE 
-		draft.Active=1 
+		draft.active=1 
 		AND draft.approved=0
 		and active.contentid is null
 		and draft.changesetID is null
@@ -863,8 +866,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	LEFT JOIN tcontentstats on (draft.contentID=tcontentstats.contentID 
 								and draft.siteID=tcontentstats.siteID
 								)
-	WHERE draft.Active=0 
-	AND active.Active=1 
+	WHERE draft.active=0 
+	AND active.active=1 
 	AND draft.lastUpdate>active.lastupdate 
 	and draft.changesetID is null
 	and draft.lastUpdateByID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
@@ -888,7 +891,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								and draft.siteID=tcontentstats.siteID
 								)
 	WHERE 
-		draft.Active=1 
+		draft.active=1 
 		AND draft.approved=0
 		and active.contentid is null
 		and draft.changesetID is null

@@ -122,7 +122,7 @@ CREATE INDEX IX_ttrash_parentid ON ttrash (parentid)
 	  objectSubType varchar(50) NOT NULL,
 	  objectLabel varchar(255) NOT NULL,
 	  objectstring clob,
-	  deletedDate datetime default NULL,
+	  deletedDate timestamp default NULL,
 	  deletedBy varchar(50) NOT NULL,
 	  PRIMARY KEY  (objectID)
 	) 

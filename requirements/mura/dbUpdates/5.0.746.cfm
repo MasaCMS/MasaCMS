@@ -59,6 +59,11 @@ ALTER TABLE tcontentcomments ADD subscribe tinyint
 		</cfcatch>
 	</cftry>
 </cfcase>
+<cfcase value="nuodb">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentcomments ADD COLUMN subscribe smallint 
+	</cfquery>
+</cfcase>
 <cfcase value="oracle">
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 ALTER TABLE tcontentcomments ADD subscribe NUMBER(3,0)
@@ -117,6 +122,11 @@ ALTER TABLE tcontent ADD doCache tinyint
 			</cfquery>
 		</cfcatch>
 	</cftry>
+</cfcase>
+<cfcase value="nuodb">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontent ADD COLUMN doCache smallint
+	</cfquery>
 </cfcase>
 <cfcase value="oracle">
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">

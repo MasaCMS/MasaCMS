@@ -182,7 +182,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset rsPeers="">
 
 	<cfquery name="rsPeers" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
-		select instanceID from tclusterpeers where instanceID!=<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.instanceID#">
+		select instanceID from tclusterpeers where instanceID <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#application.instanceID#">
 	</cfquery>
 
 	<cfreturn rsPeers>
