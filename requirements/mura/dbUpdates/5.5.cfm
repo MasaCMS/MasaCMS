@@ -286,7 +286,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	ALTER TABLE tcontent MODIFY column urltitle varchar(255)
 	</cfquery>
 </cfcase>
-<cfcase value="mysql">
+<cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontent ALTER column urltitle varchar(255)
 	</cfquery>
