@@ -177,8 +177,8 @@ select * from tcontentcomments  where 0=1
 		  userID char(35) default NULL,
 		  authToken char(32) default NULL,
 		  data clob,
-		  created datetime default NULL,
-		  lastAccessed datetime NOT NULL,
+		  created timestamp default NULL,
+		  lastAccessed timestamp NOT NULL,
 		  PRIMARY KEY  (userID)
 		) 
 		</cfquery>

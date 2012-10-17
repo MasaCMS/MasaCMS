@@ -130,14 +130,14 @@
 					  siteID varchar(25),
 					  name varchar(100),
 					  description clob,
-					  created datetime,
-					  publishDate datetime,
+					  created timestamp,
+					  publishDate timestamp,
 					  published smallint,
-					  lastUpdate datetime,
+					  lastUpdate timestamp,
 					  lastUpdateBy varchar(50),
 					  lastUpdateByID char(35),
 					  remoteID varchar(255),
-					  remotePubDate datetime,
+					  remotePubDate timestamp,
 					  remoteSourceURL varchar(255),
 					  PRIMARY KEY  (changesetID)	 
 					) 

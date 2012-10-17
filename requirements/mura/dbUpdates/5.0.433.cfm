@@ -24,7 +24,7 @@ ALTER TABLE tsettings ADD useDefaultSMTPServer tinyint
 		</cfcatch>
 	</cftry>
 </cfcase>
-<cfcase value="suodb">
+<cfcase value="nuodb">
 <cfset dbUtility.addColumn(column='useDefaultSMTPServer',datatype='tinyint',default=0,table='tsettings')>
 </cfcase>
 <cfcase value="oracle">

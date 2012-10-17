@@ -571,7 +571,7 @@
 					<cfreturn "smallint">
 				</cfcase>
 				<cfcase value="date,datetime">
-					<cfreturn "datetime">
+					<cfreturn "timestamp">
 				</cfcase>
 				<cfcase value="text">
 					<cfreturn "clob">
@@ -659,13 +659,13 @@
 					<cfset columnArgs.datatype="int">	
 				</cfif>
 			</cfcase>
-			<cfcase value="tinyint">
+			<cfcase value="tinyint,smallint">
 				<cfset columnArgs.datatype="tinyint">
 			</cfcase>
-			<cfcase value="date,datetime">
+			<cfcase value="date,datetime,timestamp">
 				<cfset columnArgs.datatype="datetime">
 			</cfcase>
-			<cfcase value="ntext,longtext,clob">
+			<cfcase value="ntext,longtext,clob,nclob">
 				<cfset columnArgs.datatype="longtext">
 			</cfcase>
 			<cfcase value="text">

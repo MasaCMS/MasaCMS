@@ -229,7 +229,7 @@
 </cfcase>
 <cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tcontent ADD COLUMN expires datetime default NULL
+	ALTER TABLE tcontent ADD COLUMN expires timestamp default NULL
 	</cfquery>
 </cfcase>
 <cfcase value="oracle">

@@ -121,7 +121,7 @@ select * from tcontent  where 0=1
 </cfcase>
 <cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tcontent ADD COLUMN created datetime default NULL
+	ALTER TABLE tcontent ADD COLUMN created timestamp default NULL
 	</cfquery>
 </cfcase>
 <cfcase value="oracle">

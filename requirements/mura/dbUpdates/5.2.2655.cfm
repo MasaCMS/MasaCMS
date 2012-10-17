@@ -24,7 +24,7 @@ select * from tmailinglistmembers  where 0=1
 </cfcase>
 <cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tmailinglistmembers ADD COLUMN created datetime default NULL
+	ALTER TABLE tmailinglistmembers ADD COLUMN created timestamp default NULL
 	</cfquery>
 </cfcase>
 <cfcase value="oracle">
@@ -108,6 +108,27 @@ select * from tclassextenddata  where 0=1
 			</cfquery>
 		</cfcatch>
 	</cftry>
+</cfcase>
+<cfcase value="nuodb">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tclassextenddata ADD COLUMN datetimevalue timestamp default NULL
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tclassextenddata ADD COLUMN numericvalue float default NULL
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tclassextenddata ADD COLUMN stringvalue varchar(255) default NULL
+	</cfquery>
+	
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	CREATE INDEX IX_extend_date1 ON tclassextenddata (datetimevalue)
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	CREATE INDEX IX_extend_numeric1 ON tclassextenddata (numericvalue)
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	CREATE INDEX IX_extend_string1 ON tclassextenddata (stringvalue)
+	</cfquery>
 </cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
@@ -211,6 +232,27 @@ select * from tclassextenddatauseractivity  where 0=1
 			</cfquery>
 		</cfcatch>
 	</cftry>
+</cfcase>
+<cfcase value="nuodb">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tclassextenddatauseractivity ADD COLUMN datetimevalue timestamp default NULL
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tclassextenddatauseractivity ADD COLUMN numericvalue float default NULL
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tclassextenddatauseractivity ADD COLUMN stringvalue varchar(255) default NULL
+	</cfquery>
+	
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	CREATE INDEX IX_extend_date2 ON tclassextenddatauseractivity (datetimevalue)
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	CREATE INDEX IX_extend_numeric2 ON tclassextenddatauseractivity (numericvalue)
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	CREATE INDEX IX_extend_string2 ON tclassextenddatauseractivity (stringvalue)
+	</cfquery>
 </cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">

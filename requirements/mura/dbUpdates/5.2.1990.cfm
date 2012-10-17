@@ -231,6 +231,11 @@ select remotePubDate from tcontentcategories  where 0=1
 	ALTER TABLE tcontentcategories ADD remotePubDate datetime default NULL
 	</cfquery>
 </cfcase>
+<cfcase value="nuodb">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentcategories ADD remotePubDate timestamp default NULL
+	</cfquery>
+</cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE "TCONTENTCATEGORIES" add "REMOTEPUBDATE" DATE
@@ -260,6 +265,11 @@ select remotePubDate from tcontentfeeds  where 0=1
 <cfcase value="mysql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontentfeeds ADD remotePubDate datetime default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="nuodb">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentfeeds ADD remotePubDate timestamp default NULL
 	</cfquery>
 </cfcase>
 <cfcase value="oracle">

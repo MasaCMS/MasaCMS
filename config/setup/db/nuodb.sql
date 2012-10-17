@@ -2,12 +2,12 @@
 CREATE TABLE tadcampaigns (
   campaignID char(35) NOT NULL default '',
   userID char(35) default NULL,
-  dateCreated datetime default NULL,
-  lastUpdate datetime default NULL,
+  dateCreated timestamp default NULL,
+  lastUpdate timestamp default NULL,
   lastUpdateBy varchar(50) default NULL,
   name varchar(50) default NULL,
-  startDate datetime default NULL,
-  endDate datetime default NULL,
+  startDate timestamp default NULL,
+  endDate timestamp default NULL,
   isActive int default NULL,
   notes clob,
   PRIMARY KEY  (campaignID)
@@ -16,8 +16,8 @@ CREATE TABLE tadcampaigns (
 CREATE TABLE tadcreatives (
   creativeID char(35) NOT NULL default '',
   userID char(35) default NULL,
-  dateCreated datetime default NULL,
-  lastUpdate datetime default ('now'),
+  dateCreated timestamp default NULL,
+  lastUpdate timestamp default ('now'),
   lastUpdateBy varchar(50) default NULL,
   name varchar(50) default NULL,
   creativeType varchar(50) default NULL,
@@ -56,11 +56,11 @@ CREATE TABLE tadplacements (
   campaignID char(35) default NULL,
   adZoneID char(35) default NULL,
   creativeID char(35) default NULL,
-  dateCreated datetime default NULL,
-  lastUpdate datetime default ('now'),
+  dateCreated timestamp default NULL,
+  lastUpdate timestamp default ('now'),
   lastUpdateBy varchar(50) default NULL,
-  startDate datetime default NULL,
-  endDate datetime default NULL,
+  startDate timestamp default NULL,
+  endDate timestamp default NULL,
   costPerImp decimal(18,5) default NULL,
   costPerClick decimal(18,2) default NULL,
   isExclusive int default NULL,
@@ -76,7 +76,7 @@ CREATE TABLE tadstats (
   statID integer generated always as identity (statID_seq),
   PlacementID char(35) default NULL,
   StatHour int default NULL,
-  StatDate datetime default NULL,
+  StatDate timestamp default NULL,
   Type varchar(50) default NULL,
   counter int default NULL,
    PRIMARY KEY  (statID)
@@ -86,8 +86,8 @@ CREATE TABLE tadstats (
 CREATE TABLE tadzones (
   adZoneID char(35) NOT NULL default '',
   siteID varchar(25) default NULL,
-  dateCreated datetime default NULL,
-  lastUpdate datetime default ('now'),
+  dateCreated timestamp default NULL,
+  lastUpdate timestamp default ('now'),
   lastUpdateBy varchar(50) default NULL,
   name varchar(50) default NULL,
   creativeType varchar(50) default NULL,
@@ -160,11 +160,11 @@ CREATE TABLE tcontent (
   MetaDesc clob,
   MetaKeyWords clob,
   Body clob,
-  lastUpdate datetime default ('now'),
+  lastUpdate timestamp default ('now'),
   lastUpdateBy varchar(50) default NULL,
   lastUpdateByID varchar(50) default NULL,
-  DisplayStart datetime default NULL,
-  DisplayStop datetime default NULL,
+  DisplayStart timestamp default NULL,
+  DisplayStop timestamp default NULL,
   Display smallint default NULL,
   Approved smallint default NULL,
   IsNav smallint default NULL,
@@ -181,13 +181,13 @@ CREATE TABLE tcontent (
   Notes clob,
   inheritObjects varchar(25) default NULL,
   isFeature smallint default NULL,
-  ReleaseDate datetime default NULL,
+  ReleaseDate timestamp default NULL,
   IsLocked smallint default NULL,
   nextN int default NULL,
   sortBy varchar(50) default NULL,
   sortDirection varchar(50) default NULL,
-  featureStart datetime default NULL,
-  featureStop datetime default NULL,
+  featureStart timestamp default NULL,
+  featureStop timestamp default NULL,
   forceSSL smallint NOT NULL default 0,
   audience clob,
   keyPoints clob,
@@ -266,8 +266,8 @@ CREATE TABLE tcontentcategories (
   categoryID char(35) NOT NULL default '',
   siteID varchar(25) default NULL,
   parentID char(35) default NULL,
-  dateCreated datetime default NULL,
-  lastUpdate datetime default ('now'),
+  dateCreated timestamp default NULL,
+  lastUpdate timestamp default ('now'),
   lastUpdateBy varchar(50) default NULL,
   name varchar(50) default NULL,
   notes clob,
@@ -290,8 +290,8 @@ CREATE TABLE tcontentcategoryassign (
   isFeature int default NULL,
   orderno int default NULL,
   siteID varchar(50) default NULL,
-  featureStart datetime default NULL,
-  featureStop datetime default NULL,
+  featureStart timestamp default NULL,
+  featureStop timestamp default NULL,
   PRIMARY KEY  (contentHistID,categoryID)
 ) ;
 
@@ -303,7 +303,7 @@ CREATE TABLE tcontentcomments (
   url varchar(50) default NULL,
   name varchar(50) default NULL,
   comments clob,
-  entered datetime default NULL,
+  entered timestamp default NULL,
   email varchar(100) default NULL,
   siteid varchar(25) default NULL,
   ip varchar(50) default NULL,
@@ -326,7 +326,7 @@ CREATE TABLE tcontenteventreminders (
   contentId char(35) NOT NULL default '',
   siteId varchar(35) NOT NULL default '',
   email varchar(200) NOT NULL default '',
-  RemindDate datetime default NULL,
+  RemindDate timestamp default NULL,
   RemindHour int default NULL,
   RemindMinute int default NULL,
   RemindInterval int default NULL,
@@ -368,8 +368,8 @@ CREATE TABLE tcontentfeeds (
   allowHTML smallint default NULL,
   lang varchar(50) default NULL,
   lastUpdateBy varchar(100) default NULL,
-  lastUpdate datetime default ('now'),
-  dateCreated datetime default NULL,
+  lastUpdate timestamp default ('now'),
+  dateCreated timestamp default NULL,
   restricted smallint default NULL,
   restrictGroups clob,
   version varchar(50) default NULL,
@@ -426,7 +426,7 @@ CREATE TABLE temailreturnstats (
   emailID char(35) default NULL,
   email varchar(100) default NULL,
   url clob,
-  created datetime default NULL
+  created timestamp default NULL
 ) ;
 
 
@@ -436,8 +436,8 @@ CREATE TABLE temails (
   Subject varchar(255) default NULL,
   BodyText clob,
   BodyHtml clob,
-  CreatedDate datetime default ('now'),
-  DeliveryDate datetime default NULL,
+  CreatedDate timestamp default ('now'),
+  DeliveryDate timestamp default NULL,
   status smallint default NULL,
   GroupList clob,
   LastUpdateBy varchar(50) default NULL,
@@ -460,7 +460,7 @@ CREATE TABLE temailstats (
   returnClick int NOT NULL default 0,
   bounce int NOT NULL default 0,
   sent int NOT NULL default 0,
-  Created datetime default NULL
+  Created timestamp default NULL
 ) ;
 
 
@@ -477,7 +477,7 @@ CREATE TABLE tfiles (
   contentType varchar(100) default NULL,
   contentSubType varchar(200) default NULL,
   fileExt varchar(50) default NULL,
-  created datetime default NULL,
+  created timestamp default NULL,
   PRIMARY KEY  (fileID)
 ) ;
 
@@ -488,7 +488,7 @@ CREATE TABLE tformresponsepackets (
   SiteID varchar(25) default NULL,
   FieldList clob,
   Data clob,
-  Entered datetime default NULL,
+  Entered timestamp default NULL,
   PRIMARY KEY  (ResponseID)
 ) ;
 
@@ -505,7 +505,7 @@ CREATE TABLE tformresponsequestions (
 
 
 CREATE TABLE tglobals (
-  appreload datetime default NULL,
+  appreload timestamp default NULL,
   loadlist clob
 ) ;
 
@@ -515,7 +515,7 @@ CREATE TABLE tmailinglist (
   SiteID varchar(25) default NULL,
   Name varchar(50) default NULL,
   Description clob,
-  LastUpdate datetime default ('now'),
+  LastUpdate timestamp default ('now'),
   isPurge int default NULL,
   isPublic int default NULL
 ) ;
@@ -548,7 +548,7 @@ CREATE TABLE tpermissions (
 CREATE TABLE tredirects (
   redirectID char(35) NOT NULL default '',
   URL clob,
-  created datetime default NULL,
+  created timestamp default NULL,
   PRIMARY KEY  (redirectID)
 ) ;
 
@@ -565,7 +565,7 @@ CREATE TABLE tsessiontracking (
   user_agent varchar(200) default NULL,
   script_name varchar(200) default NULL,
   urlToken varchar(130) NOT NULL default '',
-  entered datetime NOT NULL default '0000-00-00 00:00:00',
+  entered timestamp NOT NULL default '0000-00-00 00:00:00',
   country varchar(50) default NULL,
   lang varchar(50) default NULL,
   locale varchar(50) default NULL,
@@ -608,7 +608,7 @@ CREATE TABLE tsettings (
   primaryColumn int default NULL,
   publicSubmission int default NULL,
   AdManager int default NULL,
-  archiveDate datetime default NULL,
+  archiveDate timestamp default NULL,
   contactName varchar(50) default NULL,
   contactAddress varchar(50) default NULL,
   contactCity varchar(50) default NULL,
@@ -637,7 +637,7 @@ CREATE TABLE tsettings (
   editProfileURL varchar(255) default NULL,
   CommentApprovalDefault smallint default NULL,
   deploy smallint default NULL,
-  lastDeployment datetime default NULL,
+  lastDeployment timestamp default NULL,
   accountActivationScript clob,
   googleAPIKey varchar(100) default NULL,
   useDefaultSMTPServer smallint default NULL,
@@ -715,7 +715,7 @@ CREATE TABLE tusers (
   Lname varchar(50) default NULL,
   UserName varchar(50) default NULL,
   Password varchar(50) default NULL,
-  PasswordCreated datetime default NULL,
+  PasswordCreated timestamp default NULL,
   Email varchar(50) default NULL,
   Company varchar(50) default NULL,
   JobTitle varchar(50) default NULL,
@@ -727,8 +727,8 @@ CREATE TABLE tusers (
   ContactForm clob,
   Admin int default NULL,
   S2 int default NULL,
-  LastLogin datetime default ('now'),
-  LastUpdate datetime default ('now'),
+  LastLogin timestamp default ('now'),
+  LastUpdate timestamp default ('now'),
   LastUpdateBy varchar(50) default null,
   LastUpdateByID varchar(35) default NULL,
   Perm smallint default NULL,
@@ -751,8 +751,8 @@ CREATE TABLE tusers (
 
 <!---
 INSERT INTO tusers (UserID,GroupName,Fname,Lname,UserName,Password,PasswordCreated,Email,Company,JobTitle,mobilePhone,Website,Type,subType,Ext,ContactForm,Admin,S2,LastLogin,LastUpdate,LastUpdateBy,LastUpdateByID,Perm,InActive,isPublic,SiteID,Subscribe,notes,description,interests,keepPrivate,photoFileID,IMName,IMService,created,remoteID,tags) VALUES 
- ('#adminUserID#',NULL,'Admin','User','admin','21232F297A57A5A743894A0E4A801FC3',#createODBCDateTime(now())#,'admin@localhost.com',NULL,NULL,NULL,NULL,2,'Default',NULL,NULL,NULL,1,#createODBCDateTime(now())#,#createODBCDateTime(now())#,'System','22FC551F-FABE-EA01-C6EDD0885DDC1682',0,0,0,'default',0,NULL,NULL,NULL,0,NULL,NULL,NULL,#createODBCDateTime(now())#,NULL,NULL),
- ('#createUUID()#','Admin',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,'Default',NULL,NULL,NULL,0,NULL,#createODBCDateTime(now())#,'System',NULL,1,0,0,'default',0,NULL,NULL,NULL,0,NULL,NULL,NULL,#createODBCDateTime(now())#,NULL,NULL);
+ ('#adminUserID#',NULL,'Admin','User','admin','21232F297A57A5A743894A0E4A801FC3',#createODBCtimestamp(now())#,'admin@localhost.com',NULL,NULL,NULL,NULL,2,'Default',NULL,NULL,NULL,1,#createODBCtimestamp(now())#,#createODBCtimestamp(now())#,'System','22FC551F-FABE-EA01-C6EDD0885DDC1682',0,0,0,'default',0,NULL,NULL,NULL,0,NULL,NULL,NULL,#createODBCtimestamp(now())#,NULL,NULL),
+ ('#createUUID()#','Admin',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,'Default',NULL,NULL,NULL,0,NULL,#createODBCtimestamp(now())#,'System',NULL,1,0,0,'default',0,NULL,NULL,NULL,0,NULL,NULL,NULL,#createODBCtimestamp(now())#,NULL,NULL);
 --->
 
 CREATE TABLE tusersfavorites (
@@ -855,8 +855,8 @@ CREATE TABLE tclassextend (
 	subType varchar (50) NULL ,
 	isActive smallint NULL ,
 	notes clob ,
-	lastUpdate datetime NULL ,
-	dateCreated datetime NULL ,
+	lastUpdate timestamp NULL ,
+	dateCreated timestamp NULL ,
 	lastUpdateBy varchar (100)  NULL ,
 	PRIMARY KEY (subTypeID)
 ) ;
