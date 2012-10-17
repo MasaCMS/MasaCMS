@@ -2098,7 +2098,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.contentBean=read(contentID=arguments.contentID,siteID=arguments.siteID)>
 	</cfif>
 
-	<cfset cache=variables.settingsManager.getSite(arguments.contentBean.getSiteID()).getCacheFactory(name="data")>
+	<cfif not isDefined("arguments.contentBean")>
+		<cfset arguments.siteID=arguments.contentBean.getSiteID()>
+	</cfif>
+	
+	<cfset cache=variables.settingsManager.getSite(arguments.siteID).getCacheFactory(name="data")>
 	
 	<cfif NOT arguments.contentBean.getIsNew()>	
 		<cfset purgeContentCacheKey(cache, "contentID" & arguments.contentBean.getSiteID() & arguments.contentBean.getContentID(),false)>
