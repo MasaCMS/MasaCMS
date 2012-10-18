@@ -128,7 +128,10 @@
 
 	dbUtility.setTable("tglobals").dropTable();
 
-
+	dbUtility.setTable("tusers");
+	if(dbUtility.columnMetaData('password').length neq 100){
+		dbUtility.alterColumn(column="password",dataType="varchar",length="100");
+	}
 </cfscript>
 
 
