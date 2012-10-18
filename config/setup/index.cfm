@@ -590,18 +590,25 @@ to your own modified versions of Mura CMS.
     
     <!--- need to pass on form object to JS to avoid exception, also added try/catch in admin js (bsoylu 6/7/2010) --->
     <form id="frm" class="form-horizontal" name="frm" action="index.cfm" method="post" onClick="return validateForm(this);">
-    <div class="fieldset">
+   
       <cfif isDefined( "FORM.#cookie.setupSubmitButton#" ) AND errorType IS "">
-        <div id="installationComplete" class="success">
-          <p id="congrats">Mura is now set up and ready to use.</p>
+        <div id="installationComplete" class="alert alert-success">
+          Mura is now set up and ready to use.
+        </div>
+        <div class="alert alert-error">
           <h3>Important</h3>
           <p>When you are done with setup, it is recommended you remove the "/config/setup" directory to maintain security. Once deleted, all settings can be edited in "/config/settings.ini.cfm" directly.</p>
-          <cfif form.admin_username eq 'admin' and form.admin_password eq 'admin'>
+          <!---
+<cfif form.admin_username eq 'admin' and form.admin_password eq 'admin'>
             <p class="error">The default <strong>Username and Password is the word "admin" for both fields</strong>. It is highly recommended that you change this immediately by editing your profile after logging into the Mura Admin.</p>
           </cfif>
-          <input type="submit" class="btn" name="#cookie.setupSubmitButtonComplete#" value="Finish Set Up and Take Me to the Mura Admin" />
+--->
+          
         </div>
+        <div id="finishSetUp" class="form-actions"><input type="submit" class="btn" name="#cookie.setupSubmitButtonComplete#" value="Finish Set Up and Take Me to the Mura Admin" /></div>
       </cfif>
+      
+      <cfif isDefined( "FORM.#cookie.setupSubmitButton#" ) AND errorType IS NOT "">
       <h3>Required Settings</h3>
       <cfscript>
         //determine server type
@@ -715,8 +722,9 @@ to your own modified versions of Mura CMS.
       </fieldset>
       <h3>Optional Settings</h3>
       <p>By default, Mura is set to use the mail server specified in your application server. If you would like to override this setting to use a specific mail server and mail account, complete the settings below.</p>
-      <fieldset>
-        <div class="control-group">
+      <div class="fieldset">
+        <!---
+<div class="control-group">
           <label class="control-label"><a href="" rel="tooltip" data-original-title="The Mail Server used by Mura to send global system emails. Example: mail.domain.com, 278.23.45.697.">Mail Server <i class="icon-question-sign"></i></a></label>
           <div class="controls">
             <input type="text" name="production_mailserverip" value="#FORM.production_mailserverip#">
@@ -764,11 +772,11 @@ to your own modified versions of Mura CMS.
             </select>
           </div>
         </div>
+--->
         
         <!--- <cfdump var="#form.production_siteidinurls#"> --->
-        
         <div class="control-group">
-          <label class="control-label"><a href="" rel="tooltip" data-original-title="When SiteIDs are not in URLs you must ensure that each site has it's own unique domain.">Use SiteIDs in URLs <i class="icon-question-sign"></i></a></label>
+          <label class="control-label"><a href="" rel="tooltip" data-original-title="SiteID's are shown as sub-directories for each site in your Mura install. When SiteIDs are not in URLs you must ensure that each site has it's own unique domain.">Use SiteIDs in URLs <i class="icon-question-sign"></i></a></label>
           <div class="controls">
             <label class="inline radio">
               <input type="radio" name="production_siteidinurls" value="1" id="siteidinurls_on"<cfif yesNoFormat(form.production_siteidinurls)> checked</cfif>>
@@ -779,7 +787,7 @@ to your own modified versions of Mura CMS.
           </div>
         </div>
         <div class="control-group">
-          <label class="control-label"><a href="" rel="tooltip" data-original-title="If set to "No" you must ensure that you have properly configured your webserver's URL rewriting. Toggling this alone will not remove index.cfm from yoru URLs.">Use "index.cfm" in URLS <i class="icon-question-sign"></i></a></label>
+          <label class="control-label"><a href="" rel="tooltip" data-original-title="If set to 'No' you must ensure that you have properly configured your webserver's URL rewriting. Toggling this alone will not remove index.cfm from yoru URLs.">Use "index.cfm" in URLS <i class="icon-question-sign"></i></a></label>
           <div class="controls">
             <label class="inline radio">
               <input type="radio" name="production_indexfileinurls" value="1" id="indexfileinurls_on"<cfif yesNoFormat(form.production_indexfileinurls)> checked</cfif>>
@@ -789,12 +797,13 @@ to your own modified versions of Mura CMS.
               No </label>
           </div>
         </div>
-      </fieldset>
+      </div>
       <div class="form-actions">
         <input class="btn" type="submit" name="#cookie.setupSubmitButton#" value="Save Settings" />
       </div>
+      </cfif>
     </form>
-  </div>
+  
 </div>
 <script type="text/javascript" language="javascript">
 jQuery(document).ready(function(){
