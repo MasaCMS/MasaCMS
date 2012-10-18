@@ -448,26 +448,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </div>
 
-	<cfset rc.rsTemplates=application.settingsManager.getSite(rc.siteid).getTemplates('LocalIndex') />
-	<cfif rc.rsTemplates.recordcount>
-		 <div class="control-group">
-              <label class="control-label">
-                <cfoutput><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.feedTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'collections.customtemplate')# <i class="icon-question-sign"></i></a></cfoutput>
-              </label>
-              <div class="controls">
-              <select name="template" class="dropdown">
-            <option value="">#application.rbFactory.getKeyValue(session.rb,'collections.noneselected')#</option>
-            <cfloop query="rc.rsTemplates">
-              <cfif right(rc.rsTemplates.name,4) eq ".cfm">
-                <cfoutput>
-                  <option value="#rc.rsTemplates.name#" <cfif rc.feedBean.gettemplate() eq rc.rsTemplates.name>selected</cfif>>#rc.rsTemplates.name#</option>
-                </cfoutput>
-              </cfif>
-            </cfloop>
-          </select>
-        </div>
-    </div>
-	</cfif>
+<div class="control-group">
+	
+		<label class="control-label">
+			#application.rbFactory.getKeyValue(session.rb,'collections.cssclass')#
+		</label>
+		<div class="controls">
+			<input name="cssclass" class="span12"  data-displayobjectparam="cssclass" type="text" value="#HTMLEditFormat(rc.feedBean.getCssclass())#" maxlength="255">
+		</div>
+
+</div>
 	
 <div class="control-group">
 	<div class="span6">
@@ -475,7 +465,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			#application.rbFactory.getKeyValue(session.rb,'collections.viewalllink')#
 		</label>
 		<div class="controls">
-			<input name="viewalllink" class="span12" type="text" value="#HTMLEditFormat(rc.feedBean.getViewAllLink())#" maxlength="255">
+			<input name="viewalllink" class="span12" data-displayobjectparam="viewallink" type="text" value="#HTMLEditFormat(rc.feedBean.getViewAllLink())#" maxlength="255">
 		</div>
 	</div>
 
@@ -484,7 +474,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			#application.rbFactory.getKeyValue(session.rb,'collections.viewalllabel')#
 		</label>
 		<div class="controls">
-			<input name="viewalllabel" class="span12" type="text" value="#HTMLEditFormat(rc.feedBean.getViewAllLabel())#" maxlength="100">
+			<input name="viewalllabel" class="span12" data-displayobjectparam="viewalllabel" type="text" value="#HTMLEditFormat(rc.feedBean.getViewAllLabel())#" maxlength="100">
 		</div>
 	</div>
 </div>
@@ -876,25 +866,14 @@ jQuery(document).ready(function(){
 </div>
 
 <cfset rc.rsTemplates=application.settingsManager.getSite(rc.siteid).getTemplates('RemoteFeed') />
-<cfif rc.rsTemplates.recordcount>
-	 <div class="control-group">
-        <label class="control-label">
-            <cfoutput><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.feedTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'collections.customtemplate')# <i class="icon-question-sign"></i></a></cfoutput>
-        </label>
-        <div class="controls">
-        <select name="template" class="dropdown">
-            <option value="">#application.rbFactory.getKeyValue(session.rb,'collections.noneselected')#</option>
-            <cfloop query="rc.rsTemplates">
-              <cfif right(rc.rsTemplates.name,4) eq ".cfm">
-                <cfoutput>
-                  <option value="#rc.rsTemplates.name#" <cfif rc.feedBean.gettemplate() eq rc.rsTemplates.name>selected</cfif>>#rc.rsTemplates.name#</option>
-                </cfoutput>
-              </cfif>
-            </cfloop>
-        </select>
-        </div>
-    </div>
-</cfif>
+	<div class="control-group">	
+		<label class="control-label">
+			#application.rbFactory.getKeyValue(session.rb,'collections.cssclass')#
+		</label>
+		<div class="controls">
+			<input name="cssclass" class="span12"  data-displayobjectparam="cssclass" type="text" value="#HTMLEditFormat(rc.feedBean.getCssclass())#" maxlength="255">
+		</div>
+	</div>
 
 </div>
 </div>

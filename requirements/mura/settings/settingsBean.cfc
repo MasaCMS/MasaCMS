@@ -699,22 +699,9 @@ s
 	<cfset var dir="">
 	
 	<cfswitch expression="#arguments.type#">
-	<cfcase value="Component,RemoteFeed">
+	<cfcase value="Component">
 		
 		<cfset dir="#getTemplateIncludeDir()#/#lcase(arguments.type)#s">
-		
-		<cfif directoryExists(dir)>
-			<cfdirectory action="list" directory="#dir#" name="rs" filter="*.cfm">
-			<cfquery name="rs" dbType="query">
-			select * from rs order by name
-			</cfquery>
-		<cfelse>
-			<cfset rs=queryNew("empty")>
-		</cfif>
-	</cfcase>
-	<cfcase value="LocalIndex">
-		
-		<cfset dir="#getTemplateIncludeDir()#/localindexes">
 		
 		<cfif directoryExists(dir)>
 			<cfdirectory action="list" directory="#dir#" name="rs" filter="*.cfm">

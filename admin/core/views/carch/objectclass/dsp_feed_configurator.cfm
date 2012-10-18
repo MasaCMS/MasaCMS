@@ -124,7 +124,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			      
 			</div>
 			
-			<div class="control-group">
+	<div class="control-group">
 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.displayname')#</label>
 	<div class="controls">
 		<label class="radio inline">
@@ -144,8 +144,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		  </div>
 	</div>
 </div>
+
+	<div class="control-group">
+		<label class="control-label">
+			#application.rbFactory.getKeyValue(session.rb,'collections.cssclass')#
+		</label>
+		<div class="controls">
+			<input name="cssclass" class="objectParam span12" type="text" value="#HTMLEditFormat(feed.getCssClass())#" maxlength="255">
+		</div>
+	</div>
 			
-			<div class="control-group">
+	<div class="control-group">
 	<div class="span6">
 		<label class="control-label">
 			#application.rbFactory.getKeyValue(session.rb,'collections.viewalllink')#

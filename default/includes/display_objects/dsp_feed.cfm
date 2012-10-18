@@ -94,7 +94,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 		<cfif variables.iterator.getRecordCount()>
 			<cfoutput>
-				<div class="svSyndLocal svFeed svIndex clearfix" id="#variables.cssID#">
+				<div class="svSyndLocal svFeed svIndex clearfix #variables.feedBean.getCssClass()#" id="#variables.cssID#">
 					<cfif variables.feedBean.getDisplayName()>
 						<#variables.$.getHeaderTag('subHead1')#>#HTMLEditFormat(variables.feedBean.renderName())#</#variables.$.getHeaderTag('subHead1')#>
 					</cfif>
@@ -134,7 +134,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfsilent>
 		<cfoutput>
 			<cfif isDefined("variables.feedData.maxItems") and variables.feedData.maxItems>
-				<div class="svSyndRemote svIndex svFeed clearfix" id="#variables.cssID#">
+				<div class="svSyndRemote svIndex svFeed clearfix #variables.feedBean.getCssClass()#" id="#variables.cssID#">
 					<#variables.$.getHeaderTag('subHead1')#>#HTMLEditFormat(variables.feedBean.getName())#</#variables.$.getHeaderTag('subHead1')#>
 					<!--- UL MARKUP --->
 					<cfif variables.$.getListFormat() eq 'ul'>
