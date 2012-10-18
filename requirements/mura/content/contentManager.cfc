@@ -2098,7 +2098,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.contentBean=read(contentID=arguments.contentID,siteID=arguments.siteID)>
 	</cfif>
 
-	<cfif not isDefined("arguments.contentBean")>
+	<cfif not isDefined("arguments.siteID")>
 		<cfset arguments.siteID=arguments.contentBean.getSiteID()>
 	</cfif>
 	
