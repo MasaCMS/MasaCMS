@@ -388,7 +388,7 @@
 				</cfquery>
 			</cfcase>
 			<cfcase value="nuodb">
-				<cfset tempName="F" & hash(arguments.column)>
+				<cfset tempName="F" & left(hash(arguments.column),15)>
 				<cfif columnExists(table=arguments.table,column=tempName)>
 					<cfset dropColumn(table=arguments.table,column=tempName)>
 				</cfif>
@@ -412,7 +412,7 @@
 				</cfquery>
 			</cfcase>
 			<cfcase value="oracle">
-				<cfset tempName="F" & hash(arguments.column)>
+				<cfset tempName="F" & left(hash(arguments.column),15)>
 				<cfif columnExists(table=arguments.table,column=tempName)>
 					<cfset dropColumn(table=arguments.table,column=tempName)>
 				</cfif>
