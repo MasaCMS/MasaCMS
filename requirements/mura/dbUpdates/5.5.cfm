@@ -287,9 +287,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	</cfquery>
 </cfcase>
 <cfcase value="nuodb">
-	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tcontent ALTER column urltitle varchar(255)
-	</cfquery>
+	<cfset dbUtility.alterColumn(table='tcontent',column='urltitle',datatype='varchar',length=255)>
 </cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">

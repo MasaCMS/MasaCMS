@@ -749,11 +749,11 @@ CREATE TABLE tusers (
   PRIMARY KEY  (userID)
 ) ;
 
-<!---
+
 INSERT INTO tusers (UserID,GroupName,Fname,Lname,UserName,Password,PasswordCreated,Email,Company,JobTitle,mobilePhone,Website,Type,subType,Ext,ContactForm,Admin,S2,LastLogin,LastUpdate,LastUpdateBy,LastUpdateByID,Perm,InActive,isPublic,SiteID,Subscribe,notes,description,interests,keepPrivate,photoFileID,IMName,IMService,created,remoteID,tags) VALUES 
- ('#adminUserID#',NULL,'Admin','User','admin','21232F297A57A5A743894A0E4A801FC3',#createODBCtimestamp(now())#,'admin@localhost.com',NULL,NULL,NULL,NULL,2,'Default',NULL,NULL,NULL,1,#createODBCtimestamp(now())#,#createODBCtimestamp(now())#,'System','22FC551F-FABE-EA01-C6EDD0885DDC1682',0,0,0,'default',0,NULL,NULL,NULL,0,NULL,NULL,NULL,#createODBCtimestamp(now())#,NULL,NULL),
- ('#createUUID()#','Admin',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,'Default',NULL,NULL,NULL,0,NULL,#createODBCtimestamp(now())#,'System',NULL,1,0,0,'default',0,NULL,NULL,NULL,0,NULL,NULL,NULL,#createODBCtimestamp(now())#,NULL,NULL);
---->
+ ('#adminUserID#',NULL,'Admin','User','admin','21232F297A57A5A743894A0E4A801FC3','now','admin@localhost.com',NULL,NULL,NULL,NULL,2,'Default',NULL,NULL,NULL,1,'now','now','System','22FC551F-FABE-EA01-C6EDD0885DDC1682',0,0,0,'default',0,NULL,NULL,NULL,0,NULL,NULL,NULL,'now',NULL,NULL),
+ ('#createUUID()#','Admin',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,'Default',NULL,NULL,NULL,0,NULL,'now','System',NULL,1,0,0,'default',0,NULL,NULL,NULL,0,NULL,NULL,NULL,'now',NULL,NULL);
+
 
 CREATE TABLE tusersfavorites (
   favoriteID char(35) NOT NULL default '',
