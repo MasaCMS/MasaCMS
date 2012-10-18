@@ -918,7 +918,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfloop query="rs">
 			<cfif rs.objectID eq arguments.objectID
 				and rs.object eq arguments.object
-				and rs.orderno eq rs.orderno>
+				and rs.orderno eq arguments.orderno>
 				<cfset querysetcell(rs,"objectid",arguments.objectID,rs.currentrow)/>
 				<cfset querysetcell(rs,"object",arguments.object,rs.currentrow)/>
 				<cfset querysetcell(rs,"name",arguments.name,rs.currentrow)/>
