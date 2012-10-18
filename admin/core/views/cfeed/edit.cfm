@@ -389,6 +389,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div id="tabDisplay" class="tab-pane fade">
 <div class="fieldset">
 <cfif isObjectInstance><h2>#HTMLEditFormat(rc.feedBean.getName())#</h2></cfif>
+
 	<div class="control-group">
 		<div class="span4">
 	      	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.imagesize')#</label>
@@ -446,6 +447,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </span>
 
 </div>
+
+	<cfset rc.rsTemplates=application.settingsManager.getSite(rc.siteid).getTemplates('LocalIndex') />
+	<cfif rc.rsTemplates.recordcount>
+		 <div class="control-group">
+              <label class="control-label">
+                <cfoutput><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.feedTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'collections.customtemplate')# <i class="icon-question-sign"></i></a></cfoutput>
+              </label>
+              <div class="controls">
+              <select name="template" class="dropdown">
+            <option value="">#application.rbFactory.getKeyValue(session.rb,'collections.noneselected')#</option>
+            <cfloop query="rc.rsTemplates">
+              <cfif right(rc.rsTemplates.name,4) eq ".cfm">
+                <cfoutput>
+                  <option value="#rc.rsTemplates.name#" <cfif rc.feedBean.gettemplate() eq rc.rsTemplates.name>selected</cfif>>#rc.rsTemplates.name#</option>
+                </cfoutput>
+              </cfif>
+            </cfloop>
+          </select>
+        </div>
+    </div>
+	</cfif>
+	
 <div class="control-group">
 	<div class="span6">
 		<label class="control-label">
@@ -852,7 +875,27 @@ jQuery(document).ready(function(){
     </div>
 </div>
 
-	
+<cfset rc.rsTemplates=application.settingsManager.getSite(rc.siteid).getTemplates('RemoteFeed') />
+<cfif rc.rsTemplates.recordcount>
+	 <div class="control-group">
+        <label class="control-label">
+            <cfoutput><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.feedTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'collections.customtemplate')# <i class="icon-question-sign"></i></a></cfoutput>
+        </label>
+        <div class="controls">
+        <select name="template" class="dropdown">
+            <option value="">#application.rbFactory.getKeyValue(session.rb,'collections.noneselected')#</option>
+            <cfloop query="rc.rsTemplates">
+              <cfif right(rc.rsTemplates.name,4) eq ".cfm">
+                <cfoutput>
+                  <option value="#rc.rsTemplates.name#" <cfif rc.feedBean.gettemplate() eq rc.rsTemplates.name>selected</cfif>>#rc.rsTemplates.name#</option>
+                </cfoutput>
+              </cfif>
+            </cfloop>
+        </select>
+        </div>
+    </div>
+</cfif>
+
 </div>
 </div>
 

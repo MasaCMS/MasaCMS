@@ -940,6 +940,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif isdefined("rstcontentfeeds.isLocked")>
 					,isLocked
 					</cfif>
+					<cfif isdefined("rstcontentfeeds.template")>
+					,template
+					</cfif>
 					)
 					values
 					(
@@ -995,6 +998,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif isdefined("rstcontentfeeds.isLocked")>
 					,
 					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.isLocked),de(rstcontentfeeds.isLocked),de(0))#">			
+					</cfif>	
+					<cfif isdefined("rstcontentfeeds.template")>
+					,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.template neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.template#">			
 					</cfif>					
 					)
 				</cfquery>

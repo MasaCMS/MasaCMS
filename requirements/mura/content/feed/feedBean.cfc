@@ -93,6 +93,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="viewalllink" type="string" default="View All" required="true" />
 <cfproperty name="autoimport" type="numeric" default="0" required="true" />
 <cfproperty name="isLocked" type="numeric" default="0" required="true" />
+<cfproperty name="template" type="string" default="" required="true" />
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfset super.init(argumentCollection=arguments)>
@@ -147,6 +148,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.viewalllabel="" />
 	<cfset variables.instance.autoimport=0 />
 	<cfset variables.instance.isLocked=0 />
+	<cfset variables.instance.template="" />
 	
 	<cfreturn this />
 </cffunction>

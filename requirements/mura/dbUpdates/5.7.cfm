@@ -104,7 +104,8 @@
 
 	dbUtility.setTable("tcontentfeeds")
 	.addColumn(column="viewalllink",dataType="varchar",length="255")
-	.addColumn(column="viewalllabel",dataType="varchar",length="100");
+	.addColumn(column="viewalllabel",dataType="varchar",length="100")
+	.addColumn(column="template",dataType="varchar",length="100");
 
 	dbUtility.setTable("tusers")
 	.addColumn(column="password",dataType="varchar",length="100");
