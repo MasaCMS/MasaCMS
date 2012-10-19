@@ -569,6 +569,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
+<!--- For backward compatibility --->
+<cffunction name="dspPortalNav" output="false" returntype="string">
+	<cfreturn dspLocalRepoNav(argumentCollection=arguments)>
+</cffunction>
+<!--- --->
+
 <cffunction name="dspLocalRepoNav" output="false" returntype="string">
 	<cfargument name="class" default="#this.ulTopClass#" required="true">
 	<cfargument name="liHasKidsClass" required="true" default="#this.liHasKidsClass#">
@@ -1295,7 +1301,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfcase value="sub_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_sub.cfm",cacheKeyContentId)></cfcase>
 		<cfcase value="peer_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_peer.cfm",cacheKeyContentId)></cfcase>
 		<cfcase value="standard_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_standard.cfm",cacheKeyContentId)></cfcase>
-		<cfcase value="localrepo_nav,portal_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_portal.cfm",cacheKeyContentId)></cfcase>
+		<cfcase value="portal_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_portal.cfm",cacheKeyContentId)></cfcase>
+		<cfcase value="localrepo_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_localrepo.cfm",cacheKeyContentId)></cfcase>
 		<cfcase value="multilevel_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_multilevel.cfm",cacheKeyContentId)></cfcase>
 		<cfcase value="seq_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_sequential.cfm",cacheKeyContentId & variables.event.getValue('startRow'))></cfcase>
 		<cfcase value="top_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_top.cfm",cacheKeyContentId)></cfcase>
@@ -1556,7 +1563,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfcase value="LocalRepo">
 						<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
 						<cf_CacheOMatic key="LocalRepoBody#cacheStub##getListFormat()#" nocache="#variables.event.getValue('r').restrict#">
-						 <cfoutput>#dspObject_Include(thefile='dsp_portal.cfm')#</cfoutput>
+						 <cfoutput>#dspObject_Include(thefile='dsp_localrepo.cfm')#</cfoutput>
 						</cf_CacheOMatic>
 					</cfcase> 
 					<cfcase value="Calendar">
