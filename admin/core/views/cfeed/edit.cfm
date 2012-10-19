@@ -865,7 +865,6 @@ jQuery(document).ready(function(){
     </div>
 </div>
 
-<cfset rc.rsTemplates=application.settingsManager.getSite(rc.siteid).getTemplates('RemoteFeed') />
 	<div class="control-group">	
 		<label class="control-label">
 			#application.rbFactory.getKeyValue(session.rb,'collections.cssclass')#
