@@ -297,7 +297,7 @@ dd.categoryAssignment input.textAlt {
 * html .addNew #newPage a {  background: url(../images/icons/ie6/docs_24.gif) no-repeat 1px 5px; }
 * html .addNew #newLink a { background: url(../images/icons/ie6/web_24.gif) no-repeat 1px 5px; }
 * html .addNew #newFile a { background: url(../images/icons/ie6/cms_file.gif) no-repeat 1px 5px; }
-* html .addNew #newPortal a { background: url(../images/icons/ie6/foldr_24.gif) no-repeat 1px 5px; }
+* html .addNew #newLocalRepo a { background: url(../images/icons/ie6/foldr_24.gif) no-repeat 1px 5px; }
 * html .addNew #newCalendar a { background: url(../images/icons/ie6/cal_24.gif) no-repeat 1px 5px; }
 * html .addNew #newGallery a { background: url(../images/icons/ie6/smicn_24.gif) no-repeat 0px 5px; }
 * html .addNew #newGalleryItem a { background: url(../images/icons/ie6/image_24.gif) no-repeat 0px 5px; }

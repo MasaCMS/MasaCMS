@@ -249,7 +249,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           <cfif not listFindNoCase('none,read',perm)>
             <li class="edit"><a class="draftprompt" data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&siteid=#URLEncodedFormat(rc.siteid)#&contentid=#rc.topid#&topid=#URLEncodedFormat(rc.topid)#&type=#rc.rstop.type#&parentid=#rc.rstop.parentid#&moduleid=#rc.moduleid#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#</a></li>
             <cfswitch expression="#rc.rsTop.type#">
-              <cfcase value="Page,Portal,Calendar,Gallery">
+              <cfcase value="Page,LocalRepo,Calendar,Gallery">
               <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,rc.rsTop.filename)#','#rc.rsTop.targetParams#');">#HTMLEditFormat(left(rc.rsTop.menutitle,70))#</a></li>
               </cfcase>
               <cfcase value="Link">
@@ -271,7 +271,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             <cfelse>
             <li class="editOff"><a>Edit</a></li>
             <cfswitch expression="#rc.rsTop.type#">
-              <cfcase value="Page,Portal,Calendar,Gallery">
+              <cfcase value="Page,LocalRepo,Calendar,Gallery">
               <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,rc.rsTop.filename)#','#rc.rsTop.targetParams#');">#left(rc.rsTop.menutitle,70)#</a></li>
               </cfcase>
               <cfcase value="Link">

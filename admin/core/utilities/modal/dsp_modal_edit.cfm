@@ -153,7 +153,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif not request.contentBean.getIsNew()>
 			<cfif ListFindNoCase('editor,author',request.r.perm) or listFind(session.mura.memberships,'S2')>
 			<li id="adminEditPage"><a href="#variables.editLink#" #variables.targetHook#><i class="icon-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#</a></li>
-				<cfif listFind("Page,Portal,Calendar,Gallery,File,Link",request.contentBean.getType())>
+				<cfif listFind("Page,LocalRepo,Calendar,Gallery,File,Link",request.contentBean.getType())>
 												
 						<li id="adminAddContent"><a href="#variables.newLink#" #variables.targethook# data-configurator="true"><i class="icon-plus"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.add')#</a>						
 						<!---	
@@ -162,7 +162,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<li id="adminNewPage"><a href="#variables.newLink#&amp;type=Page" #variables.targethook#><i class="icon-file"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.page')#</a></li>
 						<li id="adminNewLink"><a href="#variables.newLink#&amp;type=Link" #variables.targethook# ><i class="icon-globe"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.link')#</a></li>
 						<li id="adminNewFile"><a href="#variables.newLink#&amp;type=File" #variables.targethook#><i class="icon-file"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.file')#</a></li>
-						<li id="adminNewPortal"><a href="#variables.newLink#&amp;type=Portal" #variables.targethook#><i class="icon-folder-close"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.portal')#</a></li>
+						<li id="adminNewLocalRepo"><a href="#variables.newLink#&amp;type=LocalRepo" #variables.targethook#><i class="icon-folder-close"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.LocalRepo')#</a></li>
 						<li id="adminNewCalendar"><a href="#variables.newLink#&amp;type=Calendar" #variables.targethook# ><i class="icon-calendar"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.calendar')#</a></li>
 						<li id="adminNewGallery"><a href="#variables.newLink#&amp;type=Gallery" #variables.targethook#><i class="icon-th"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.gallery')#</a></li>
 						<cfelse>

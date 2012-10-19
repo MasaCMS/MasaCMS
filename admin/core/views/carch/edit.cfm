@@ -47,10 +47,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset event=request.event>
 <cfinclude template="js.cfm">
 <cfset variables.pluginEvent=createObject("component","mura.event").init(event.getAllValues())/>
-<cfset pageLevelList="Page,Portal,Calendar,Gallery"/>
-<cfset extendedList="Page,Portal,Calendar,Gallery,Link,File,Component"/>
+<cfset pageLevelList="Page,LocalRepo,Calendar,Gallery"/>
+<cfset extendedList="Page,LocalRepo,Calendar,Gallery,Link,File,Component"/>
 <cfset isExtended=false>
-<cfset nodeLevelList="Page,Portal,Calendar,Gallery,Link,File"/>
+<cfset nodeLevelList="Page,LocalRepo,Calendar,Gallery,Link,File"/>
 <cfset hasChangesets=application.settingsManager.getSite(rc.siteID).getHasChangesets()>
 <cfset rc.perm=application.permUtility.getnodePerm(rc.crumbdata)>
 <cfif rc.parentID eq "" and not rc.contentBean.getIsNew()>
@@ -218,7 +218,7 @@ var hasBody=#subType.getHasBody()#;
 		</cfif>
 	</cfif>
 	
-	<cfif  ListFindNoCase("Page,Portal,Calendar,Link,File,Gallery",rc.type)>
+	<cfif  ListFindNoCase("Page,LocalRepo,Calendar,Link,File,Gallery",rc.type)>
 	<cfset rsPluginScripts1=application.pluginManager.getScripts("onContentEdit",rc.siteID)>
 	<cfset rsPluginScripts2=application.pluginManager.getScripts("on#rc.type#Edit",rc.siteID)>
 	<cfquery name="rsPluginScripts3" dbtype="query">
@@ -238,7 +238,7 @@ var hasBody=#subType.getHasBody()#;
 	<div class="form-actions">
 	
 		 <button type="button" class="submit btn" onclick="if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="icon-check"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#</button>
-		<cfif listFindNoCase("Page,Portal,Calendar,Gallery",rc.type)>
+		<cfif listFindNoCase("Page,LocalRepo,Calendar,Gallery",rc.type)>
 		<button type="button" class="submit btn" onclick="document.contentForm.preview.value=1;if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="icon-eye-open"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraftandpreview"))#</button>
 		</cfif>
 		<cfif assignChangesets>
@@ -266,7 +266,7 @@ var hasBody=#subType.getHasBody()#;
 	<cfif rc.compactDisplay neq "true">
 		<ul class="metadata-horizontal">
 			<cfif not rc.contentBean.getIsNew()>
-				<cfif listFindNoCase('Page,Portal,Calendar,Gallery,Link,File',rc.type)>
+				<cfif listFindNoCase('Page,LocalRepo,Calendar,Gallery,Link,File',rc.type)>
 					<cfset rsRating=application.raterManager.getAvgRating(rc.contentBean.getcontentID(),rc.contentBean.getSiteID()) />
 					<cfif rsRating.recordcount>
 					<li>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.votes")#: <strong><cfif rsRating.recordcount>#rsRating.theCount#<cfelse>0</cfif></strong></li>
@@ -347,7 +347,7 @@ var hasBody=#subType.getHasBody()#;
 			</cfif>
 		</cfif>
 		
-		<cfif listFindNoCase('Page,Portal,Calendar,Gallery,File,Link',rc.type)>
+		<cfif listFindNoCase('Page,LocalRepo,Calendar,Gallery,File,Link',rc.type)>
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'SEO')>
 			<cfinclude template="form/dsp_tab_seo.cfm">
 			</cfif>	
@@ -356,12 +356,12 @@ var hasBody=#subType.getHasBody()#;
 			</cfif>	
 		</cfif>
 
-		<cfif listFindNoCase('Portal,Gallery,Calender',rc.type) and (not len(tabAssignments) or listFindNocase(tabAssignments,'List Display Options'))>
+		<cfif listFindNoCase('LocalRepo,Gallery,Calender',rc.type) and (not len(tabAssignments) or listFindNocase(tabAssignments,'List Display Options'))>
 				<cfinclude template="form/dsp_tab_listdisplayoptions.cfm">
 		</cfif>	
 		
 		<cfswitch expression="#rc.type#">
-		<cfcase value="Page,Portal,Calendar,Gallery">
+		<cfcase value="Page,LocalRepo,Calendar,Gallery">
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Layout & Objects')>
 				<cfif listFind(session.mura.memberships,'S2IsPrivate')>
 					<cfinclude template="form/dsp_tab_layoutobjects.cfm">
@@ -425,7 +425,7 @@ var hasBody=#subType.getHasBody()#;
 	</cfswitch>
 	
 	<cfswitch expression="#rc.type#">
-		<cfcase value="Page,Portal,Calendar,Gallery,Link,File,Component">
+		<cfcase value="Page,LocalRepo,Calendar,Gallery,Link,File,Component">
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Extended Attributes')>
 			<cfset extendSets=application.classExtensionManager.getSubTypeByName(rc.type,rc.contentBean.getSubType(),rc.siteid).getExtendSets(activeOnly=true) />
 			<cfinclude template="form/dsp_tab_extended_attributes.cfm">

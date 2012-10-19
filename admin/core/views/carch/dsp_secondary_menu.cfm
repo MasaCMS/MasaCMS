@@ -150,7 +150,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif rc.contentid neq "">
 				<cfif (rc.contentBean.getfilename() neq '' or rc.contentid eq '00000000000000000000000000000000001')>
 					<cfswitch expression="#rc.type#">
-					<cfcase value="Page,Portal,Calendar,Gallery,Link">
+					<cfcase value="Page,LocalRepo,Calendar,Gallery,Link">
 						<cfif not rc.contentBean.getIsNew()>
 							<cfset currentBean=application.contentManager.getActiveContent(rc.contentID,rc.siteid) />
 							<a class="btn" href="##" onclick="return openPreviewDialog('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,currentBean.getfilename())#','#currentBean.getTargetParams()#');"><i class="icon-globe"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewactive")#</a>

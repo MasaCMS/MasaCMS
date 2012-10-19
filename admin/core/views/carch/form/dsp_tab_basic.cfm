@@ -53,7 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfinclude template="dsp_type_selector.cfm">
 	
 	<cfswitch expression="#rc.type#">
-		<cfcase value="Page,Portal,Calendar,Gallery,File,Link">
+		<cfcase value="Page,LocalRepo,Calendar,Gallery,File,Link">
 			<div class="control-group">
 			    <label class="control-label">
 			    	<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.pageTitle"))#">
@@ -84,7 +84,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfdefaultcase>
 	</cfswitch>
 
-	<cfif listFind("Page,Portal,Calendar,Gallery,Link",rc.type)>
+	<cfif listFind("Page,LocalRepo,Calendar,Gallery,Link",rc.type)>
 		<cfinclude template="dsp_file_selector.cfm">
 	</cfif>	
 
@@ -134,7 +134,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</script>
 	</cfif>
 
-	<cfif rc.type eq 'Page' or rc.type eq 'Portal' or rc.type eq 'Gallery' or rc.type eq 'Calendar' or  rc.type eq 'Component' or  rc.type eq 'Form' >
+	<cfif rc.type eq 'Page' or rc.type eq 'LocalRepo' or rc.type eq 'Gallery' or rc.type eq 'Calendar' or  rc.type eq 'Component' or  rc.type eq 'Form' >
 		<div class="control-group">
 	      	<label class="control-label">
 	      		#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.content")#

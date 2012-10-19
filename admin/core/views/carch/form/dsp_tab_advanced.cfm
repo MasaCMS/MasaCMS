@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentid')#</label>
 			      <div class="controls"><cfif len(rc.contentID) and len(rc.contentBean.getcontentID())>#rc.contentBean.getcontentID()#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notavailable')#</cfif></div>
 			    </div>
-			<cfif listFind("Gallery,Link,Portal,Page,Calendar",rc.type)>
+			<cfif listFind("Gallery,Link,LocalRepo,Page,Calendar",rc.type)>
 				<div class="control-group">
 			      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.currentfilename')#</label>
 			      <div class="controls"><cfif rc.contentBean.getContentID() eq "00000000000000000000000000000000001">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.emptystring')#<cfelseif len(rc.contentID) and len(rc.contentBean.getcontentID())>#rc.contentBean.getFilename()#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notavailable')#</cfif>

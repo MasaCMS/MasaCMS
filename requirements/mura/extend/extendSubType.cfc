@@ -173,6 +173,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setType" access="public" output="false">
 	<cfargument name="Type" type="String" />
+	<cfif arguments.type eq 'Portal'>
+		<cfset arguments.type='LocalRepo'>
+	</cfif>
 	<cfset variables.instance.Type = trim(arguments.Type) />
 	<cfreturn this>
 </cffunction>
@@ -322,7 +325,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif not len(getBaseTable())>
 		<cfswitch expression="#getType()#">
-			<cfcase value="Page,Portal,Component,File,Link,Calendar,Gallery">
+			<cfcase value="Page,LocalRepo,Component,File,Link,Calendar,Gallery">
 				<cfset setBaseTable("tcontent")>
 			</cfcase>
 			<cfcase value="1,2,User,Group,Address">
@@ -333,7 +336,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif not len(getBaseKeyField())>
 		<cfswitch expression="#getType()#">
-			<cfcase value="Page,Portal,Component,File,Link,Calendar,Gallery">
+			<cfcase value="Page,LocalRepo,Component,File,Link,Calendar,Gallery">
 				<cfset setBaseKeyField("contentHistID")>
 			</cfcase>
 			<cfcase value="1,2,User,Group,Address">
@@ -344,7 +347,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif not len(getDataTable())>
 		<cfswitch expression="#getType()#">
-			<cfcase value="Page,Portal,Component,File,Link,Calendar,Gallery">
+			<cfcase value="Page,LocalRepo,Component,File,Link,Calendar,Gallery">
 				<cfset setDataTable("tclassextenddata")>
 			</cfcase>
 			<cfcase value="1,2,User,Group,Address">

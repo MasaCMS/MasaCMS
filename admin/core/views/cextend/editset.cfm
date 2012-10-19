@@ -76,7 +76,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="controls">
 			<select name="container">
 				<option value="Default">Extended Attributes</option>			
-				<cfif listFindNoCase('Page,Portal,File,Gallery,Calender,Link',subType.getType())>
+				<cfif listFindNoCase('Page,LocalRepo,File,Gallery,Calender,Link',subType.getType())>
 					<cfloop list="#application.contentManager.getTabList()#" index="t">
 					<cfif t neq 'Extended Attributes'>
 					<option value="#t#"<cfif extendSetBean.getContainer() eq t> selected</cfif>>

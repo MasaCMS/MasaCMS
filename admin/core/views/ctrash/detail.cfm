@@ -69,7 +69,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <li><strong>Deleted By:</strong> #htmlEditFormat(rc.trashItem.getDeletedBy())#</li>
 </ul>
 
-<cfif not listFindNoCase("Page,Portal,File,Link,Gallery,Calender",rc.trashItem.getObjectType())>
+<cfif not listFindNoCase("Page,LocalRepo,File,Link,Gallery,Calender",rc.trashItem.getObjectType())>
 <div class="clearfix form-actions">
 <input type="button" class="submit btn" onclick="return confirmDialog('Restore Item From Trash?','?muraAction=cTrash.restore&objectID=#rc.trashItem.getObjectID()#&siteid=#rc.trashItem.getSiteID()#');" value="Restore Item" />
 <cfif len(rc.trashItem.getDeleteID())>

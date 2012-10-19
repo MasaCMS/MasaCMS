@@ -194,7 +194,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif not listFindNoCase('none,read',verdict)>
 				     <li class="edit"><a title="Edit" class="draftprompt" href="#editLink#">Edit</a></li>
 					   <cfswitch expression="#item.gettype()#">
-						<cfcase value="Page,Portal,Calendar,Gallery">
+						<cfcase value="Page,LocalRepo,Calendar,Gallery">
 						<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),item.getfilename())#','#item.gettargetParams()#');">Preview</a></li>
 						</cfcase>
 						<cfcase value="File,Link">
@@ -212,14 +212,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>
 				      <cfif deletable>
 				        <li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.delete')#" href="index.cfm?muraAction=cArch.update&contentid=#item.getContentID()#&type=#item.gettype()#&action=deleteall&topid=#item.getcontentID()#&siteid=#URLEncodedFormat(item.getSiteID())#&moduleid=#item.getmoduleid()#&parentid=#URLEncodedFormat(item.getParentID())#&startrow=#$.event('startrow')#"
-							<cfif listFindNoCase("Page,Portal,Calendar,Gallery,Link,File",item.gettype())>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),item.getmenutitle()))#',this.href)"<cfelse>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.delete')#</a></li>
+							<cfif listFindNoCase("Page,LocalRepo,Calendar,Gallery,Link,File",item.gettype())>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),item.getmenutitle()))#',this.href)"<cfelse>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.delete')#</a></li>
 				       <cfelseif rc.locking neq 'all'>
 				        <li class="deleteOff">Delete</li>
 				      </cfif>
 				  <cfelse>
 				      <li class="editOff">&nbsp;</li>
 						<cfswitch expression="#item.gettype()#">
-						<cfcase value="Page,Portal,Calendar,Gallery">
+						<cfcase value="Page,LocalRepo,Calendar,Gallery">
 						<li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),item.getfilename())#','#item.gettargetParams()#');">Preview</a></li>
 						</cfcase>
 						<cfcase value="File,Link">

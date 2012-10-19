@@ -124,7 +124,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                   <option value="adzone">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.adregions')#</option>
                 </cfif>
                 <!--- <option value="category">Categories</option> --->
-                <option value="portal">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.portals')#</option>
+                <option value="LocalRepo">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.LocalRepos')#</option>
                 <option value="calendar">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.calendars')#</option>
                 <option value="gallery">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.galleries')#</option>
                 <option value="component">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.components')#</option>

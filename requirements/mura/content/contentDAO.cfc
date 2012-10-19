@@ -183,7 +183,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 					tcontent.#arguments.sourceIterator.getRecordIdField()# in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.sourceIterator.getPageIDList()#">)
 					#renderActiveClause("tcontent",arguments.siteID)#
 					and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
-					and type in ('Page','Portal','File','Calendar','Link','Gallery','Component','Form')
+					and type in ('Page','LocalRepo','File','Calendar','Link','Gallery','Component','Form')
 				</cfquery>
 
 				<cfset arguments.sourceIterator.setPageQuery("page#arguments.sourceIterator.getPageIndex()#",rsPage)>
@@ -206,7 +206,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 					where tcontent.contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#" /> 
 					#renderActiveClause("tcontent",arguments.siteID)#
 					and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
-					and type in ('Page','Portal','File','Calendar','Link','Gallery','Component','Form')
+					and type in ('Page','LocalRepo','File','Calendar','Link','Gallery','Component','Form')
 				</cfquery>
 			</cfif>
 		</cfif>
@@ -265,7 +265,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 				<cfif len(arguments.type)>
 					and tcontent.type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#" />
 				<cfelse>
-					and type in ('Page','Portal','File','Calendar','Link','Gallery','Component','Form')
+					and type in ('Page','LocalRepo','File','Calendar','Link','Gallery','Component','Form')
 				</cfif>	
 			</cfquery>
 		</cfif>
@@ -317,7 +317,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 				<cfif len(arguments.type)>
 					and tcontent.type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#" />
 				<cfelse>
-					and type in ('Page','Portal','File','Calendar','Link','Gallery','Component','Form')
+					and type in ('Page','LocalRepo','File','Calendar','Link','Gallery','Component','Form')
 				</cfif>	
 			</cfquery>
 		</cfif>
@@ -369,7 +369,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 				<cfif len(arguments.type)>
 					and tcontent.type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#" />
 				<cfelse>
-					and type in ('Page','Portal','File','Calendar','Link','Gallery','Component','Form')
+					and type in ('Page','LocalRepo','File','Calendar','Link','Gallery','Component','Form')
 				</cfif>	
 			</cfquery>
 		</cfif>
@@ -418,17 +418,17 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 			<cfif arguments.filename neq ''>
 			 tcontent.filename=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.filename#" />
 			#renderActiveClause("tcontent",arguments.siteID)#
-			and tcontent.type in('Page','Portal','Calendar','Gallery','File','Link') 
+			and tcontent.type in('Page','LocalRepo','Calendar','Gallery','File','Link') 
 			<cfelse>
 			 tcontent.filename is null
 			#renderActiveClause("tcontent",arguments.siteID)#
-			 and tcontent.type in('Page','Portal','Calendar','Gallery','File','Link') 
+			 and tcontent.type in('Page','LocalRepo','Calendar','Gallery','File','Link') 
 			</cfif>
 			and  tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 			<cfif len(arguments.type)>
 				and tcontent.type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#" />
 			<cfelse>
-				and type in ('Page','Portal','File','Calendar','Link','Gallery','Component','Form')
+				and type in ('Page','LocalRepo','File','Calendar','Link','Gallery','Component','Form')
 			</cfif>	
 		</cfquery>
 

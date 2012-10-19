@@ -135,5 +135,11 @@
 	}
 </cfscript>
 
+<cfquery datasource="#getDatasource()#" username="#getDbUsername()#" password="#getDbPassword()#">
+	update tclassextend set type='LocalRepo' where type='Portal'
+</cfquery>
+<cfquery datasource="#getDatasource()#" username="#getDbUsername()#" password="#getDbPassword()#">
+	update tcontent set type='LocalRepo' where type='Portal'
+</cfquery>
 
 

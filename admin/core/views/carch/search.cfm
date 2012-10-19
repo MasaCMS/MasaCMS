@@ -98,7 +98,7 @@ siteManager.copySiteID = '#session.copySiteID#';
 	</cfsilent>
         <tr>  
 			     <td class="add">
-     <!---<cfif (rc.rslist.type eq 'Page') or  (rc.rslist.type eq 'Portal')  or  (rc.rslist.type eq 'Calendar') or (rc.rslist.type eq 'Gallery')>--->
+     <!---<cfif (rc.rslist.type eq 'Page') or  (rc.rslist.type eq 'LocalRepo')  or  (rc.rslist.type eq 'Calendar') or (rc.rslist.type eq 'Gallery')>--->
 		<a href="javascript:;" onmouseover="showMenu('newContentMenu','#newcontent#',this,'#rc.rslist.contentid#','#rc.rslist.contentid#','#rc.rslist.parentid#','#rc.siteid#','#rc.rslist.type#');">&nbsp;</a>
 	<!---<cfelse>
 		&nbsp;
@@ -111,7 +111,7 @@ siteManager.copySiteID = '#session.copySiteID#';
  <td class="actions"><ul class="siteSummary five"><cfif not listFindNoCase('none,read',verdict)>
        <li class="edit"><a title="Edit" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&startrow=#rc.startrow#">&nbsp;</a></li>
 	   <cfswitch expression="#rc.rsList.type#">
-		<cfcase value="Page,Portal,Calendar,Gallery">
+		<cfcase value="Page,LocalRepo,Calendar,Gallery">
 		<li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,rc.rsList.filename)#','#rc.rsList.targetParams#');">#left(rc.rsList.menutitle,70)#</a></li>
 		</cfcase>
 		<cfcase value="Link">
@@ -129,14 +129,14 @@ siteManager.copySiteID = '#session.copySiteID#';
 		</cfif>
         <cfif deletable>
           <li class="delete"><a title="Delete" href="index.cfm?muraAction=cArch.update&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&action=deleteall&topid=#rc.rsList.contentID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&parentid=#URLEncodedFormat(rc.parentid)#&startrow=#rc.startrow#"
-			<cfif listFindNoCase("Page,Portal,Calendar,Gallery,Link,File",rc.rsList.type)>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),rc.rslist.menutitle))#',this.href)"<cfelse>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)"</cfif>>&nbsp;</a></li>
+			<cfif listFindNoCase("Page,LocalRepo,Calendar,Gallery,Link,File",rc.rsList.type)>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),rc.rslist.menutitle))#',this.href)"<cfelse>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)"</cfif>>&nbsp;</a></li>
           <cfelseif rc.locking neq 'all'>
           <li class="deleteOff">Delete</li>
         </cfif>
         <cfelse>
         <li class="editOff">&nbsp;</li>
 		<cfswitch expression="#rc.rsList.type#">
-		<cfcase value="Page,Portal,Calendar,Gallery">
+		<cfcase value="Page,LocalRepo,Calendar,Gallery">
 		<li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,rc.rsList.filename)#','#rc.rsList.targetParams#');">#left(rc.rsList.menutitle,70)#</a></li>
 		</cfcase>
 		<cfcase value="Link">

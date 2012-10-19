@@ -5,7 +5,7 @@
   <div id="tabPublishing" class="tab-pane fade">
 	  <div class="fieldset">
 
-  	<cfif listFindNoCase('Page,Portal,Calendar,Gallery,File,Link',rc.type)>
+  	<cfif listFindNoCase('Page,LocalRepo,Calendar,Gallery,File,Link',rc.type)>
 		<div class="control-group">
   				
 			      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.credits')#</label>
@@ -122,7 +122,7 @@
 		
 	</cfif>
 
-	<cfif listFind("Page,Portal,Calendar,Gallery,Link,File,Link",rc.type)>
+	<cfif listFind("Page,LocalRepo,Calendar,Gallery,Link,File,Link",rc.type)>
 		<div class="control-group">
 	      	<label class="control-label">
 	      		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expires')#

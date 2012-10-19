@@ -216,7 +216,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 	</cfif>
 			
-	<cfif listFindNoCase("Portal,Gallery",arguments.contentBean.getType())>
+	<cfif listFindNoCase("LocalRepo,Gallery",arguments.contentBean.getType())>
 			<cfset rsSection=contentBean.getKidsQuery()>
 			<cfset nextN=application.utility.getNextN(rsSection,arguments.contentBean.getNextN(),1)>
 			

@@ -407,7 +407,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfloop from="#crumbLen#" to="2" index="I" step="-1">
 		<cfif arguments.crumbdata[i].restricted eq 1><cfset locked="Locked"></cfif>
 		<li class="#renderIcon(arguments.crumbdata[i].type,arguments.crumbdata[i].fileExt)##locked#">#HTMLEditformat(arguments.crumbdata[I].menutitle)# &raquo;</li>
-		</cfloop><cfif locked eq "Locked" or arguments.crumbdata[1].restricted eq 1><cfset lastlocked="Locked"></cfif><li class="#renderIcon(arguments.crumbdata[1].type,arguments.crumbdata[i].fileExt)##lastlocked#"><strong><cfif arguments.crumbdata[1].type eq 'Page' or arguments.crumbdata[1].type eq 'Portal' or arguments.crumbdata[1].type eq 'Calendar'>#HTMLEditformat(arguments.crumbdata[1].menutitle)#<cfelse>#HTMLEditformat(crumbdata[1].menutitle)#</cfif></strong></li></ul></cfoutput></cfsavecontent>
+		</cfloop><cfif locked eq "Locked" or arguments.crumbdata[1].restricted eq 1><cfset lastlocked="Locked"></cfif><li class="#renderIcon(arguments.crumbdata[1].type,arguments.crumbdata[i].fileExt)##lastlocked#"><strong><cfif arguments.crumbdata[1].type eq 'Page' or arguments.crumbdata[1].type eq 'LocalRepo' or arguments.crumbdata[1].type eq 'Calendar'>#HTMLEditformat(arguments.crumbdata[1].menutitle)#<cfelse>#HTMLEditformat(crumbdata[1].menutitle)#</cfif></strong></li></ul></cfoutput></cfsavecontent>
 		<cfreturn content />
 </cffunction>
 
@@ -472,7 +472,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif len(arguments.subNavExpression)>
 					<cfset subnav=evaluate(arguments.subNavExpression)>
 				<cfelse>
-					<cfset subnav=(((ListFind("Page,Portal,Calendar",rsSection.type)) and arguments.openCurrentOnly and (this.crumbData[this.navSelfIdx].contentID eq rsSection.contentid or this.crumbData[this.navSelfIdx].parentID eq rsSection.contentid) ) or ((listFindNoCase("Page,Calendar",rsSection.type)) and not arguments.openCurrentOnly)) and arguments.currDepth lt arguments.viewDepth and rsSection.type neq 'Gallery' and not (rsSection.restricted and not session.mura.isLoggedIn) >
+					<cfset subnav=(((ListFind("Page,LocalRepo,Calendar",rsSection.type)) and arguments.openCurrentOnly and (this.crumbData[this.navSelfIdx].contentID eq rsSection.contentid or this.crumbData[this.navSelfIdx].parentID eq rsSection.contentid) ) or ((listFindNoCase("Page,Calendar",rsSection.type)) and not arguments.openCurrentOnly)) and arguments.currDepth lt arguments.viewDepth and rsSection.type neq 'Gallery' and not (rsSection.restricted and not session.mura.isLoggedIn) >
 				</cfif>
 			
 				<cfset current=current+1>
@@ -569,7 +569,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="dspPortalNav" output="false" returntype="string">
+<cffunction name="dspLocalRepoNav" output="false" returntype="string">
 	<cfargument name="class" default="#this.ulTopClass#" required="true">
 	<cfargument name="liHasKidsClass" required="true" default="#this.liHasKidsClass#">
 	<cfargument name="liHasKidsCustomString" required="true" default="#this.liHasKidsCustomString#">
@@ -586,13 +586,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var thenav="" />
 	<cfset var menutype="" />
 	<cfset var nestedArgs=structNew()>
-	<cfset var tracepoint=initTracepoint("contentRenderer.dspPortalNav")>
+	<cfset var tracepoint=initTracepoint("contentRenderer.dspLocalRepoNav")>
 
 	<cfset nestedArgs.openCurrentOnly=true>
 	""
-	<cfif variables.event.getValue('contentBean').getType() eq 'Portal' or variables.event.getValue('contentBean').getType() eq 'Gallery'>
+	<cfif variables.event.getValue('contentBean').getType() eq 'LocalRepo' or variables.event.getValue('contentBean').getType() eq 'Gallery'>
 		<cfif arraylen(this.crumbdata) gt (this.navParentIdx+this.navOffSet)>
-			<cfif arraylen(this.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and (this.crumbdata[this.navGrandParentIdx].type neq 'Portal' or this.crumbdata[this.navGrandParentIdx].type neq 'Gallery') and not variables.contentGateway.getCount(variables.event.getValue('siteID'),this.crumbdata[this.navSelfIdx].contentID)>
+			<cfif arraylen(this.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and (this.crumbdata[this.navGrandParentIdx].type neq 'LocalRepo' or this.crumbdata[this.navGrandParentIdx].type neq 'Gallery') and not variables.contentGateway.getCount(variables.event.getValue('siteID'),this.crumbdata[this.navSelfIdx].contentID)>
 				<cfset nestedArgs.contentID=this.crumbdata[this.navGrandParentIdx].contentid>
 				<cfset nestedArgs.viewDepth=2>
 				<cfset nestedArgs.currDepth=1>
@@ -605,8 +605,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset thenav=dspPeerNav(argumentCollection=arguments) />
 			</cfif>
 		</cfif>
-	<cfelseif arrayLen(this.crumbdata) gt (this.navSelfIdx+this.navOffSet) and this.crumbdata[this.navParentIdx].type eq 'Portal' or (arraylen(this.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and this.crumbdata[this.navGrandParentIdx].type eq 'Portal')>
-		<cfif arraylen(this.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and this.crumbdata[this.navGrandParentIdx].type neq 'Portal' and not variables.contentGateway.getCount(variables.event.getValue('siteID'),this.crumbdata[this.navSelfIdx].contentID)>
+	<cfelseif arrayLen(this.crumbdata) gt (this.navSelfIdx+this.navOffSet) and this.crumbdata[this.navParentIdx].type eq 'LocalRepo' or (arraylen(this.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and this.crumbdata[this.navGrandParentIdx].type eq 'LocalRepo')>
+		<cfif arraylen(this.crumbdata) gt (this.navGrandParentIdx+this.navOffSet) and this.crumbdata[this.navGrandParentIdx].type neq 'LocalRepo' and not variables.contentGateway.getCount(variables.event.getValue('siteID'),this.crumbdata[this.navSelfIdx].contentID)>
 			<cfset nestedArgs.contentID=this.crumbdata[this.navGrandParentIdx].contentid>
 			<cfset nestedArgs.viewDepth=1>
 			<cfset nestedArgs.currDepth=1>
@@ -677,7 +677,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset theNav=dspSubNav(argumentCollection=arguments) />
 			</cfif>	
 	<cfelse>
-			<cfset thenav=dspPortalNav(argumentCollection=arguments) />
+			<cfset thenav=dspLocalRepoNav(argumentCollection=arguments) />
 	</cfif>
 
 	<cfset commitTracePoint(tracePoint)>
@@ -1295,7 +1295,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfcase value="sub_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_sub.cfm",cacheKeyContentId)></cfcase>
 		<cfcase value="peer_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_peer.cfm",cacheKeyContentId)></cfcase>
 		<cfcase value="standard_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_standard.cfm",cacheKeyContentId)></cfcase>
-		<cfcase value="portal_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_portal.cfm",cacheKeyContentId)></cfcase>
+		<cfcase value="localrepo_nav,portal_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_portal.cfm",cacheKeyContentId)></cfcase>
 		<cfcase value="multilevel_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_multilevel.cfm",cacheKeyContentId)></cfcase>
 		<cfcase value="seq_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_sequential.cfm",cacheKeyContentId & variables.event.getValue('startRow'))></cfcase>
 		<cfcase value="top_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_top.cfm",cacheKeyContentId)></cfcase>
@@ -1370,8 +1370,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfcase>		
 		<cfcase value="category_features"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_category_features.cfm",cacheKeyObjectId)></cfcase>
 		<cfcase value="category_features_no_summary"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_category_features.cfm",cacheKeyObjectId,false)></cfcase>
-		<cfcase value="category_portal_features"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_category_portal_features.cfm",cacheKeyObjectId)></cfcase>
-		<cfcase value="category_portal_features_no_summary"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_category_portal_features.cfm",cacheKeyObjectId,false)></cfcase>
+		<cfcase value="category_LocalRepo_features"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_category_LocalRepo_features.cfm",cacheKeyObjectId)></cfcase>
+		<cfcase value="category_LocalRepo_features_no_summary"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_category_LocalRepo_features.cfm",cacheKeyObjectId,false)></cfcase>
 		<!--- END DEPRICATED --->
 	</cfswitch>
 	<cfif showEditable>
@@ -1470,8 +1470,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						#dspCrumbListLinks("crumblist",arguments.crumbseparator)#
 					</cfif>			
 				</cfoutput>
+
+				<!--- For backwards compatibility --->
+				<cfif variables.event.getContentBean().getType() eq 'LocalRepo'>
+					<cfset eventOutput=application.pluginManager.renderEvent("onPortalBodyRender",variables.event)>
+					<cfif not len(eventOutput)>
+						<cfset eventOutput=application.pluginManager.renderEvent("onPortal#variables.event.getContentBean().getSubType()#BodyRender",variables.event)>
+					</cfif>
+				</cfif>
+				<!--- --->
 				
-				<cfset eventOutput=application.pluginManager.renderEvent("on#variables.event.getContentBean().getType()##variables.event.getContentBean().getSubType()#BodyRender",variables.event)>
+				<cfif not len(eventOutput)>
+					<cfset eventOutput=application.pluginManager.renderEvent("on#variables.event.getContentBean().getType()#BodyRender",variables.event)>
+				</cfif>
+				<cfif not len(eventOutput)>
+					<cfset eventOutput=application.pluginManager.renderEvent("on#variables.event.getContentBean().getType()##variables.event.getContentBean().getSubType()#BodyRender",variables.event)>
+				</cfif>
 				<cfif not len(eventOutput)>
 					<cfset eventOutput=application.pluginManager.renderEvent("on#variables.event.getContentBean().getType()#BodyRender",variables.event)>
 				</cfif>
@@ -1533,9 +1547,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfdefaultcase>
 					</cfswitch>
 					<cfswitch expression="#variables.event.getValue('contentBean').gettype()#">
-					<cfcase value="Portal">
+					<cfcase value="LocalRepo">
 						<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
-						<cf_CacheOMatic key="portalBody#cacheStub##getListFormat()#" nocache="#variables.event.getValue('r').restrict#">
+						<cf_CacheOMatic key="LocalRepoBody#cacheStub##getListFormat()#" nocache="#variables.event.getValue('r').restrict#">
 						 <cfoutput>#dspObject_Include(thefile='dsp_portal.cfm')#</cfoutput>
 						</cf_CacheOMatic>
 					</cfcase> 
@@ -1716,8 +1730,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="context" type="string" default="#application.configBean.getContext()#">
 		<cfargument name="stub" type="string" default="#application.configBean.getStub()#">
 		<cfargument name="displayHome" type="string" default="conditional">
-		<cfargument name="closePortals" type="string" default="">
-		<cfargument name="openPortals" type="string" default="">	
+		<cfargument name="closeLocalRepos" type="string" default="">
+		<cfargument name="openLocalRepos" type="string" default="">	
 		<cfargument name="menuClass" type="string" default="">
 		<cfargument name="showCurrentChildrenOnly" type="boolean" default="false">
 		<cfargument name="liHasKidsClass" required="true" default="">
@@ -1757,17 +1771,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset arguments.menuclass=arguments.ulTopClass>
 		</cfif>
 
-		<cfif len(arguments.closePortals)>
+		<cfif len(arguments.closeLocalRepos)>
 			<cfset limitingBy="closed">	
-			<cfif isBoolean(arguments.closePortals)>	
-				<cfset isLimitingOn=arguments.closePortals />
+			<cfif isBoolean(arguments.closeLocalRepos)>	
+				<cfset isLimitingOn=arguments.closeLocalRepos />
 			</cfif>
 		</cfif>
 		
-		<cfif len(arguments.openPortals)>
+		<cfif len(arguments.openLocalRepos)>
 			<cfset limitingBy="open">			
-			<cfif isBoolean(arguments.openPortals)>	
-				<cfif arguments.openPortals>
+			<cfif isBoolean(arguments.openLocalRepos)>	
+				<cfif arguments.openLocalRepos>
 					<cfset isLimitingOn=false />
 				<cfelse>
 					<cfset isLimitingOn=true />
@@ -1802,11 +1816,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<cfset isNotLimited= rsSection.type eq "Page" or 
 			not (
-				rsSection.type eq "Portal" and 
+				rsSection.type eq "LocalRepo" and 
 					(isLimitingOn or (
-										(limitingBy eq "closed" and listFind(arguments.closePortals,rsSection.contentid))
+										(limitingBy eq "closed" and listFind(arguments.closeLocalRepos,rsSection.contentid))
 									or  
-										(limitingBy eq "open" and not listFind(arguments.openPortals,rsSection.contentid))
+										(limitingBy eq "open" and not listFind(arguments.openLocalRepos,rsSection.contentid))
 									)
 										
 					) 
@@ -1897,8 +1911,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="viewDepth" type="numeric" default="1" required="true">
 	<cfargument name="id" type="string" required="true" default="navPrimary">
 	<cfargument name="displayHome" type="string" required="true" default="conditional">
-	<cfargument name="closePortals" type="string" default="">
-	<cfargument name="openPortals" type="string" default="">
+	<cfargument name="closeLocalRepos" type="string" default="">
+	<cfargument name="openLocalRepos" type="string" default="">
 	<cfargument name="class" type="string" default="">
 	<cfargument name="showCurrentChildrenOnly" type="boolean" default="false">
 
@@ -2589,7 +2603,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="subtype" default="Default">
 
 	<cfswitch expression="#arguments.type#">
-	<cfcase value="Portal">
+	<cfcase value="LocalRepo">
 		<cfreturn "icon-folder-open">
 	</cfcase>
 	<cfcase value="Calendar">

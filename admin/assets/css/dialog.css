@@ -409,7 +409,7 @@ a#editFormCloseLink {
 	background: url(../images/icons/cms_file.png) no-repeat 3px center !important;
 }
 
-#frontEndTools li li#adminNewPortal a {
+#frontEndTools li li#adminNewLocalRepo a {
 	background: url(../images/icons/foldr_24.png) no-repeat 4px center !important;
 }
 

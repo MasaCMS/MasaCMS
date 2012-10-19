@@ -124,7 +124,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <li data-siteid="#attributes.rsNest.siteid#" data-contentid="#attributes.rsNest.contentid#" data-contenthistid="#attributes.rsNest.contenthistid#" data-sortby="#attributes.rsNest.sortby#" data-sortdirection="#attributes.rsNest.sortdirection#" data-moduleid="#HTMLEditFormat(attributes.moduleid)#" data-type="#attributes.rsNest.type#">
 <dl>
 <dt>
-	<!---<cfif (attributes.rsNest.type eq 'Page') or  (attributes.rsNest.type eq 'Portal')  or  (attributes.rsNest.type eq 'Calendar') or (attributes.rsNest.type eq 'Gallery')>--->
+	<!---<cfif (attributes.rsNest.type eq 'Page') or  (attributes.rsNest.type eq 'LocalRepo')  or  (attributes.rsNest.type eq 'Calendar') or (attributes.rsNest.type eq 'Gallery')>--->
 	<a class="add" href="javascript:;" onmouseover="siteManager.showMenu('newContentMenu','#newcontent#',this,'#attributes.rsNest.contentid#','#attributes.topid#','#attributes.rsNest.parentid#','#attributes.siteid#','#attributes.rsNest.type#');"></a>
 	
 	<cfif isNumeric(attributes.rsnest.hasKids) and attributes.rsNest.haskids>
@@ -181,7 +181,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     	<cfif not listFindNoCase('none,read',verdict)>
        <li class="edit"><a class="draftprompt"  data-siteid="#attributes.siteid#" data-contentid="#attributes.rsNest.contentid#" data-contenthistid="#attributes.rsNest.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?muraAction=cArch.edit&contenthistid=#attributes.rsNest.ContentHistID#&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#</a></li>
 	   <cfswitch expression="#attributes.rsnest.type#">
-		<cfcase value="Page,Portal,Calendar,Gallery">
+		<cfcase value="Page,LocalRepo,Calendar,Gallery">
 		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,attributes.rsNest.filename)#','#attributes.rsnest.targetParams#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#</a></li>
 		</cfcase>
 		<cfcase value="File,Link">
@@ -202,7 +202,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         <cfelse>
         <li class="editOff"><a>&nbsp;</a></li>
 		<cfswitch expression="#attributes.rsnest.type#">
-		<cfcase value="Page,Portal,Calendar,Gallery">
+		<cfcase value="Page,LocalRepo,Calendar,Gallery">
 		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,attributes.rsNest.filename)#','#attributes.rsnest.targetParams#');">#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#</a></li>
 		</cfcase>
 		<cfcase value="File,Link">
@@ -213,7 +213,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<li class="permissionsOff"><a>#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#</a></li>
 		<li class="deleteOff"><a>#application.rbFactory.getKeyValue(session.rb,"sitemanager.delete")#</a></li>
       </cfif>
-		<cfif  ListFindNoCase("Page,Portal,Calendar,Link,File,Gallery",attributes.rsNest.type)>
+		<cfif  ListFindNoCase("Page,LocalRepo,Calendar,Link,File,Gallery",attributes.rsNest.type)>
 		#application.pluginManager.renderScripts("onContentList",attributes.siteid,attributes.pluginEvent)#
 		</cfif>
 		<cfset attributes.pluginEvent.setValue('type', attributes.rsnest.type)>

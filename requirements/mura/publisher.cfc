@@ -2704,7 +2704,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif arguments.usersMode neq "none">
 				<cfset typeList=typeList & ",">
 			</cfif>
-			<cfset typeList=typeList & "Custom,Page,Portal,Gallery,Calendar,Link,File,Component,Site,Base">
+			<cfset typeList=typeList & "Custom,Page,LocalRepo,Gallery,Calendar,Link,File,Component,Site,Base">
 		</cfif>
 		
 			<cfif not StructKeyExists(arguments,"Bundle")>

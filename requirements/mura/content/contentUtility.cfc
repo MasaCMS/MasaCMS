@@ -176,7 +176,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 			Select contentid from tcontent  where 
 			siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
-			and filename = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.filename#"/> and active=1 and type in ('Portal','Page','Calendar','Gallery','File','Link')
+			and filename = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.filename#"/> and active=1 and type in ('LocalRepo','Page','Calendar','Gallery','File','Link')
 			and contentid != <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentid#"/>
 		</cfquery>
 		
@@ -200,19 +200,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfswitch expression="#arguments.field#">
 			<cfcase value="filename">
 				and filename = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fieldValue#"/> 
-				and type in ('Portal','Page','Calendar','Gallery')
+				and type in ('LocalRepo','Page','Calendar','Gallery')
 			</cfcase>
 			<cfcase value="title">
 				and title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fieldValue#"/> 
-				and type in ('Portal','Page','Calendar','Gallery','File','Link','Component','Form')
+				and type in ('LocalRepo','Page','Calendar','Gallery','File','Link','Component','Form')
 			</cfcase>
 			<cfcase value="urltitle">
 				and urltitle like <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fieldValue#"/> 
-				and type in ('Portal','Page','Calendar','Gallery','File','Link')
+				and type in ('LocalRepo','Page','Calendar','Gallery','File','Link')
 			</cfcase>
 			<cfcase value="remoteID">
 				and remoteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fieldValue#"/> 
-				and type in ('Portal','Page','Calendar','Gallery','File','Link','Component','Form')
+				and type in ('LocalRepo','Page','Calendar','Gallery','File','Link','Component','Form')
 			</cfcase>
 			</cfswitch>
 			
@@ -248,21 +248,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cflock>
 	<cfcatch></cfcatch>
 	</cftry>
-<cfelseif arguments.contentBean.gettype() eq 'Page' or arguments.contentBean.gettype() eq 'Calendar' or arguments.contentBean.gettype() eq 'Portal' or arguments.contentBean.gettype() eq 'Gallery'>
+<cfelseif arguments.contentBean.gettype() eq 'Page' or arguments.contentBean.gettype() eq 'Calendar' or arguments.contentBean.gettype() eq 'LocalRepo' or arguments.contentBean.gettype() eq 'Gallery'>
 
 		<cftry>
 
 			<cfquery name="rsRelated" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 			select contentid, filename from tcontent where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getSiteID()#"> 
 			and filename like <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getfilename()#/%"/>
-			and active=1 and type in ('Page','Calendar','Portal','Gallery')
+			and active=1 and type in ('Page','Calendar','LocalRepo','Gallery')
 			</cfquery>
 			
 			
 			<cfquery name="rsParent" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 			select filename from tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getsiteID()#"/>
 			and contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getparentID()#"/>
-			and active=1 and type in ('Page','Calendar','Portal','Gallery')
+			and active=1 and type in ('Page','Calendar','LocalRepo','Gallery')
 			</cfquery>
 
 				
@@ -323,12 +323,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	update tcontent set filename=replace(filename,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.oldfilename#/"/>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.filename#/"/>) where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
 	and filename like <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.oldfilename#/%"/>
-	and active=1 and type in ('Page','Calendar','Portal','Gallery','Link','File')
+	and active=1 and type in ('Page','Calendar','LocalRepo','Gallery','Link','File')
 	</cfquery>
 	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	update tcontent set filename=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.filename#"/> where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
 	and filename = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.oldfilename#"/>
-	and active=1 and type in ('Page','Calendar','Portal','Gallery','Link','File')
+	and active=1 and type in ('Page','Calendar','LocalRepo','Gallery','Link','File')
 	</cfquery>
 	
 </cffunction>
@@ -352,7 +352,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif arguments.oldfilename neq "/">
 		<cfquery name="rslist" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-		select contenthistid, body from tcontent where type in ('Page','Calendar','Portal','Component','Form','Gallery')
+		select contenthistid, body from tcontent where type in ('Page','Calendar','LocalRepo','Component','Form','Gallery')
 		 and body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,arguments.oldfilename)#%"/>
 		 and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 		</cfquery>
@@ -367,7 +367,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 			
 		<cfquery name="rslist" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-		 select contenthistid, summary from tcontent where type in ('Page','Calendar','Portal','Component','Form','Gallery')
+		 select contenthistid, summary from tcontent where type in ('Page','Calendar','LocalRepo','Component','Form','Gallery')
 		 and summary like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,arguments.oldfilename)#%"/>
 		 and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 		</cfquery>
@@ -404,7 +404,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var versionLink="">
 	<cfset var historyLink="">
 	
-	<cfif listFind("Portal,Page,Calendar,Gallery,Link,File",arguments.contentBean.getType()) and arguments.contentBean.getContentID() neq '00000000000000000000000000000000001'>
+	<cfif listFind("LocalRepo,Page,Calendar,Gallery,Link,File",arguments.contentBean.getType()) and arguments.contentBean.getContentID() neq '00000000000000000000000000000000001'>
 		<cfset crumbData=getBean('contentGateway').getCrumblist(arguments.contentBean.getParentID(),arguments.contentBean.getSiteID())>
 		<cfset crumbStr=crumbData[arrayLen(crumbData)].menutitle />
 		<cfif arrayLen(crumbData) gt 1>
@@ -832,7 +832,7 @@ Sincerely,
 		<cfset contentBean.setDisplay(0)>
 	</cfif>
 	
-	<cfif listFindNoCase("Page,Portal,Gallery,Calendar",contentBean.getType())>
+	<cfif listFindNoCase("Page,LocalRepo,Gallery,Calendar",contentBean.getType())>
 		<cfset setUniqueFilename(contentBean)>
 	</cfif>
 	
@@ -1002,12 +1002,12 @@ and parentID is null
 		<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 		update tcontent set filename=replace(filename,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.find#"/>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.replace#"/>) where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 		and filename like <cfqueryparam value="%#arguments.find#%" cfsqltype="cf_sql_varchar">
-		and active=1 and type in ('Page','Calendar','Portal','Gallery','Link','Component','Form')
+		and active=1 and type in ('Page','Calendar','LocalRepo','Gallery','Link','Component','Form')
 		</cfquery>
 		
 		<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rs"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 			select contenthistid, body from tcontent where body like <cfqueryparam value="%#arguments.find#%" cfsqltype="cf_sql_varchar"> and siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-			and type in ('Page','Calendar','Portal','Gallery','Link','Component','Form')
+			and type in ('Page','Calendar','LocalRepo','Gallery','Link','Component','Form')
 		</cfquery>
 		
 		<cfloop query="rs">
@@ -1019,7 +1019,7 @@ and parentID is null
 	
 		<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rs"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 			select contenthistid, summary from tcontent where summary like <cfqueryparam value="%#arguments.find#%" cfsqltype="cf_sql_varchar"> and siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-			and type in ('Page','Calendar','Portal','Gallery','Link','Component','Form')
+			and type in ('Page','Calendar','LocalRepo','Gallery','Link','Component','Form')
 		</cfquery>
 		
 		<cfloop query="rs">
