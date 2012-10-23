@@ -337,7 +337,7 @@ select * from rsSubTypes where subType <> 'Default'
 </div>	
 <div id="tabInterests" class="tab-pane fade">
 	<div class="fieldset">
-		<div class="control-group">
+		<div id="mura-list-tree" class="control-group">
 			<cfloop collection="#application.settingsManager.getSites()#" item="site">
 				<cfif application.settingsManager.getSite(site).getPrivateUserPoolID() eq application.settingsManager.getSite(rc.siteID).getPrivateUserPoolID()>
 						<cfoutput><label class="control-label">#application.settingsManager.getSite(site).getSite()#</label></cfoutput>

@@ -263,7 +263,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         <label class="control-label">
           #application.rbFactory.getKeyValue(session.rb,'email.userinterestgroups')#
         </label>
-        <div class="controls" id="mura-filter-category">
+        <div class="controls" id="mura-list-tree">
             <cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" groupid="#rc.emailBean.getgroupID()#">
         </div>
       </div>

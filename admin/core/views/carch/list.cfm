@@ -255,7 +255,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		</cfif>
 	  	<cfif $.getBean("categoryManager").getCategoryCount($.event("siteID"))>
-		<div class="module well" id="mura-filter-category">
+		<div class="module well" id="mura-list-tree">
 		<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#</h3>
 		<cf_dsp_categories_nest siteID="#$.event('siteID')#" parentID="" nestLevel="0" categoryid="#$.event('categoryid')#">
 		</div>
