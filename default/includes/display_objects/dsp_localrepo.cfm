@@ -44,4 +44,116 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfinclude template="dsp_portal.cfm">
+
+<cfsilent>
+<cfif not isNumeric(variables.$.event('month'))>
+	<cfset variables.$.event('month',month(now()))>
+</cfif>
+
+<cfif not isNumeric(variables.$.event('year'))>
+	<cfset variables.$.event('year',year(now()))>
+</cfif>
+
+<cfif isNumeric(variables.$.event('day')) and variables.$.event('day')
+	and variables.$.event('filterBy') eq "releaseDate">
+	<cfset variables.menuType="releaseDate">
+	<cfset variables.menuDate=createDate(variables.$.event('year'),variables.$.event('month'),variables.$.event('day'))>
+<cfelseif variables.$.event('filterBy') eq "releaseMonth">
+	<cfset variables.menuType="releaseMonth">
+	<cfset variables.menuDate=createDate(variables.$.event('year'),variables.$.event('month'),1)>
+<cfelseif variables.$.event('filterBy') eq "releaseYear">
+	<cfset variables.menuType="releaseYear">
+	<cfset variables.menuDate=createDate(variables.$.event('year'),1,1)>
+<cfelse>
+	<cfset variables.menuDate=now()>
+	<cfset variables.menuType="default">
+</cfif>
+
+<cfset variables.maxPortalItems=variables.$.globalConfig("maxPortalItems")>
+<cfif not isNumeric(variables.maxPortalItems)>
+	<cfset variables.maxPortalItems=100>
+</cfif>
+
+<cfif variables.$.siteConfig('extranet') eq 1 and variables.$.event('r').restrict eq 1>
+	<cfset variables.applyPermFilter=true/>
+<cfelse>
+	<cfset variables.applyPermFilter=false/>
+</cfif>
+<cfset variables.iterator=variables.$.getBean('contentGateway').getKidsIterator('00000000000000000000000000000000000',variables.$.event('siteID'),variables.$.content('contentID'),variables.menuType,variables.menuDate,variables.maxPortalItems,variables.$.event('keywords'),0,variables.$.content('sortBy'),variables.$.content('sortDirection'),variables.$.event('categoryID'),variables.$.event('relatedID'),variables.$.event('tag'),false,variables.applyPermFilter)>
+
+<cfset variables.iterator.setNextN(variables.$.content('nextN'))>
+
+<cfset variables.$.event("currentNextNID",variables.$.content('contentID'))>
+
+<cfif not len(variables.$.event("nextNID")) or variables.$.event("nextNID") eq variables.$.event("currentNextNID")>
+	<cfif variables.$.content('NextN') gt 1>
+		<cfset variables.currentNextNIndex=variables.$.event("startRow")>
+		<cfset variables.iterator.setStartRow(variables.currentNextNIndex)>
+	<cfelse>
+		<cfset variables.currentNextNIndex=variables.$.event("pageNum")>
+		<cfset variables.iterator.setPage(variables.currentNextNIndex)>
+	</cfif>
+<cfelse>	
+	<cfset variables.currentNextNIndex=1>
+	<cfset variables.iterator.setPage(1)>
+</cfif>
+
+<cfset variables.nextN=variables.$.getBean('utility').getNextN(variables.iterator.getQuery(),variables.$.content('nextN'),variables.currentNextNIndex)>
+
+</cfsilent>
+
+<cfif variables.iterator.getRecordcount()>
+	<cfoutput>
+	<div id="svPortal" class="svIndex">
+		<cfsilent>
+			<cfif NOT len(variables.$.content("displayList"))>
+				<cfset variables.contentListFields="Date,Title,Image,Summary,ReadMore,Credits">
+				
+				<cfif variables.$.getBean('contentGateway').getHasComments(variables.$.event('siteid'),variables.$.content('contentID'))>
+					<cfset variables.contentListFields=listAppend(contentListFields,"Comments")>
+				</cfif>
+				
+				<cfset variables.contentListFields=listAppend(variables.contentListFields,"Tags")>
+				
+				<cfif variables.$.getBean('contentGateway').getHasRatings(variables.$.event('siteid'),variables.$.content('contentID'))>
+					<cfset variables.contentListFields=listAppend(variables.contentListFields,"Rating")>
+				</cfif>
+				<cfset variables.$.content("displayList",variables.contentListFields)>
+			</cfif>
+		</cfsilent>
+		#variables.$.dspObject_Include(thefile='dsp_content_list.cfm',
+			fields=variables.$.content("displayList"),
+			type="Portal", 
+			iterator= variables.iterator,
+			imageSize=variables.$.content("ImageSize"),
+			imageHeight=variables.$.content("ImageHeight"),
+			imageWidth=variables.$.content("ImageWidth")
+			)#
+		<cfif variables.nextn.numberofpages gt 1>
+			#variables.$.dspObject_Include(thefile='dsp_nextN.cfm')#
+		</cfif>	
+	</div>
+	</cfoutput>
+</cfif>
+
+<cfif not variables.iterator.getRecordCount()>
+     <cfoutput>
+     <cfif variables.$.event('filterBy') eq "releaseMonth">
+     <div id="svPortal">
+	     <br>
+	     <p>#variables.$.rbKey('list.nocontentmonth')#</p>    
+     </div>
+     <cfelseif variables.$.event('filterBy') eq "releaseDate">
+     <div id="svPortal">
+	     <br>
+	     <p>#variables.$.rbKey('list.nocontentday')#</p>
+     </div>
+     <cfelse>
+     <div id="svPortal">
+         <p>#variables.$.rbKey('list.nocontent')#</p>   
+     </div>
+     </cfif>
+     </cfoutput>
+</cfif>
+	
+
