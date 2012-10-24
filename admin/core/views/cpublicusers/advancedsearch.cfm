@@ -198,7 +198,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif not rc.newSearch>
 
 <cfsilent>
-<cfset rc.rslist=application.searchParams.getAdvancedSearch(session,rc.siteid,1) />
+<cfset rc.rslist=application.userManager.getAdvancedSearch(session,rc.siteid,1) />
 <cfif rc.rslist.recordcount eq 1>
 	<cflocation url="index.cfm?muraAction=cPublicUsers.editUser&userid=#rc.rslist.userid#&siteid=#URLEncodedFormat(rc.siteid)#" />
 </cfif>

@@ -7,8 +7,15 @@
 
 <cffunction name="init" output="false">
 	<cfargument name="table" default="">
+		<cfset purgeCache()>
 		<cfset setTable(arguments.table)>
 		<cfreturn this>
+</cffunction>
+
+<cffunction name="purgeCache" output="false">
+	<cfset variables.tableLookUp=structNew()>
+	<cfset variables.tableMetaDataLookUp=structNew()>
+	<cfset variables.tableIndexLookUp=structNew()>
 </cffunction>
 
 <cffunction name="setConfigBean" output="false">
