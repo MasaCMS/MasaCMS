@@ -78,7 +78,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 <cfset application.userManager.getCurrentUser().setValue("errors","")>
 
-<form novalidate="novalidate" class="clear" method="post" name="frmSettings" action="index.cfm?muraAction=cSettings.updatePlugin" onsubmit="return submitForm(document.frmSettings);">
+<form novalidate="novalidate" class="fieldset-wrap" method="post" name="frmSettings" action="index.cfm?muraAction=cSettings.updatePlugin" onsubmit="return submitForm(document.frmSettings);">
+<div class="fieldset">
 <cfsilent>
 
 <cfquery name="rsLocation" datasource="#application.configbean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
@@ -144,38 +145,40 @@ and fileExists(licenseFile)>
 <cfif hasLicense>
 <cffile file="#licenseFile#" action="read" variable="license">
 
-<div class="control-group">
+<div class="control-group" id="plugin-license">
       <label class="control-label">End User License Agreement</label>
       <div class="controls">
-<textarea readonly="true">
-#license#
-</textarea>
+		<textarea readonly="true" rows="16" class="span12">
+		#license#
+		</textarea>
+      </div>
+		<div class="controls">
+			<select class="span3" name="licenseStatus" required="true" message="You Must Accept the End User License Agreement in Order to Proceed." onchange="if(this.value=='accept'){document.getElementById('settingsContainter').style.display='block';}else{document.getElementById('settingsContainter').style.display='none';}">
+			<option value="">I Do Not Accept</option>
+			<option value="accept">I Accept</option>
+			</select>
+		</div>
 </div>
-    </div>
-<select name="licenseStatus" required="true" message="You Must Accept the End User License Agreement in Order to Proceed." onchange="if(this.value=='accept'){document.getElementById('settingsContainter').style.display='block';}else{document.getElementById('settingsContainter').style.display='none';}">
-<option value="">I Do Not Accept</option>
-<option value="accept">I Accept</option>
-</select>
-</div>
-    </div>
 <span id="settingsContainter" style="display:none">
 </cfif>
 
 <div class="control-group">
+	<div class="span3">
       <label class="control-label">Plugin Name (Alias)</label>
-      <div class="controls"><input name="pluginalias" type="text" value="#htmlEditFormat(rsPlugin.name)#" required="true" message="The 'Name' field is required." maxlength="100"/></div>
+      <div class="controls"><input name="pluginalias" class="span12" type="text" value="#htmlEditFormat(rsPlugin.name)#" required="true" message="The 'Name' field is required." maxlength="100"/></div>
     </div>
 
-<div class="control-group">
-      <label class="control-label">Load Priority</label>
-      <div class="controls"><select name="loadPriority">
-	<cfloop from="1" to="10" index="i">
-	<option value="#i#" <cfif rsPlugin.loadPriority eq i>selected</cfif>>#i#</option>
-	</cfloop>
-	</select>
+	<div class="span6">
+		<label class="control-label">Load Priority</label>
+		<div class="controls">
+			<select name="loadPriority" class="span2">
+			<cfloop from="1" to="10" index="i">
+			<option value="#i#" <cfif rsPlugin.loadPriority eq i>selected</cfif>>#i#</option>
+			</cfloop>
+			</select>
+		</div>
+	</div>
 </div>
-    </div>
-
 <cfif settingsLen>
 <cfloop from="1" to="#settingsLen#" index="i">
 		<cfsilent>
@@ -205,26 +208,29 @@ and fileExists(licenseFile)>
 <cfif objectsLen>
 
 <div class="control-group">
-      <label class="control-label">Display Objects</label>
-      <div class="controls"><ul>
-<cfloop from="1" to="#objectsLen#" index="i">
-<li>#htmlEditFormat(rc.pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes.name)#</li>
-</cfloop>
-</ul>
-</div>
-    </div>
+	<div class="span3">
+		<label class="control-label">Display Objects</label>
+		<div class="controls">
+			<ul>
+				<cfloop from="1" to="#objectsLen#" index="i">
+				<li>#htmlEditFormat(rc.pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes.name)#</li>
+				</cfloop>
+			</ul>
+		</div>
+	</div>
 
-<div class="control-group">
-      <label class="control-label">Display Objects Location</label>
-      <div class="controls"><select name="location" onchange="if(this.value=='local'){jQuery('##ov').show();}else{jQuery('##ov').hide();}">
-	<option value="global" <cfif location eq "global">selected</cfif>>global</option>
-	<option value="local" <cfif location eq "local">selected</cfif>>local</option>
-	</select>
-</div>
-    </div>
+	<div class="span3">
+		<label class="control-label">Display Objects Location</label>
+		<div class="controls">
+			<select class="span6" name="location" onchange="if(this.value=='local'){jQuery('##ov').show();}else{jQuery('##ov').hide();}">
+				<option value="global" <cfif location eq "global">selected</cfif>>Global</option>
+				<option value="local" <cfif location eq "local">selected</cfif>>Local</option>
+			</select>
+		</div>
+	</div>
 <span id="ov"<cfif location eq "global"> style="display:none;"</cfif>>
 
-<div class="control-group">
+<div class="span3">
       <label class="control-label">If Display Object Already Exists?</label>
       <div class="controls">
 <select name="overwrite">
@@ -232,12 +238,12 @@ and fileExists(licenseFile)>
 		<option value="true">Overwrite</option>
 </select>
 </div>
-    </div>
+</div>
 </span>
 <cfelse>
 <input type="hidden" name="location" value="global">
 </cfif>
-
+</div>
 
 <cfif scriptsLen>
 
@@ -281,14 +287,13 @@ and fileExists(licenseFile)>
 <cfset rsAssigned=application.pluginManager.getAssignedSites(rc.moduleID)>
 
 <div class="control-group">
-      <label class="control-label">Site Assignment</label>
-      <div class="controls"><ul>
-<cfloop query="rc.rsSites">
-<li><input type="checkbox" value="#rc.rsSites.siteID#" name="siteAssignID"<cfif listFind(valuelist(rsAssigned.siteID),rc.rsSites.siteID)> checked</cfif>> #rc.rsSites.site#</li>
-</cfloop>
-</ul>
+	<label class="control-label">Site Assignment</label>
+	<div class="controls">
+		<cfloop query="rc.rsSites">
+		<label class="checkbox"><input type="checkbox" value="#rc.rsSites.siteID#" name="siteAssignID"<cfif listFind(valuelist(rsAssigned.siteID),rc.rsSites.siteID)> checked</cfif>> #rc.rsSites.site#</label>
+		</cfloop>
+	</div>
 </div>
-    </div>
 <cfif hasLicense>
 </span>
 </cfif>
@@ -296,6 +301,7 @@ and fileExists(licenseFile)>
 <input name="package" type="hidden" value="#htmlEditFormat(package)#"/>
 <input type="hidden" name="moduleID" value="#rc.moduleID#">
 </cfoutput>
+</div>
 <div class="form-actions">
 <input type="submit" class="btn" value="Update">
 </div>
