@@ -55,38 +55,41 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <h3 class="alt">#application.rbFactory.getKeyValue(session.rb,"params.daterange")#</h3>
 
-<form novalidate="novalidate" name="searchFrm" onsubmit="return validate(this);" id="advancedSearch">
+<form novalidate="novalidate" name="searchFrm" onsubmit="return validate(this);" id="advancedSearch" class="fieldset-wrap">
 
-<div class="control-group">
-	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,"params.from")#
-</label>
-      <div class="controls">
-		<input type="text" class="datepicker" name="startDate" value="#LSDateFormat(rc.startDate,session.dateKeyFormat)#" validate="date" message="The 'From' date is required." />
-     </div>
- </div>
-
-<div class="control-group">
-	<label class="control-label">
-		#application.rbFactory.getKeyValue(session.rb,"params.to")#
+<div class="fieldset">
+	<div class="control-group">
+	<div class="span2">
+		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,"params.from")#
 	</label>
-      <div class="controls">
-		<input type="text" class="datepicker" name="stopDate" value="#LSDateFormat(rc.stopDate,session.dateKeyFormat)#" validate="date" message="The 'To' date is required." />
-     </div>
- </div>
-
-
-<div class="control-group">
-	<label class="control-label">
-		#application.rbFactory.getKeyValue(session.rb,"params.numberofitems")#
-	</label>
-      <div class="controls"><select name="limit">
-		<cfloop list="10,20,30,40,50,75,100" index="i">
-		<option value="#i#" <cfif rc.limit eq i>selected</cfif>>#i#</option>
-		</cfloop>
-	</select>
-    </div>
+	      <div class="controls">
+			<input type="text" class="datepicker span12" name="startDate" value="#LSDateFormat(rc.startDate,session.dateKeyFormat)#" validate="date" message="The 'From' date is required." />
+	     </div>
+	 </div>
+	
+	<div class="span2">
+		<label class="control-label">
+			#application.rbFactory.getKeyValue(session.rb,"params.to")#
+		</label>
+	      <div class="controls">
+			<input type="text" class="datepicker span12" name="stopDate" value="#LSDateFormat(rc.stopDate,session.dateKeyFormat)#" validate="date" message="The 'To' date is required." />
+	     </div>
+	 </div>
+	
+	
+	<div class="span2">
+		<label class="control-label">
+			#application.rbFactory.getKeyValue(session.rb,"params.numberofitems")#
+		</label>
+	      <div class="controls"><select name="limit" class="span6">
+			<cfloop list="10,20,30,40,50,75,100" index="i">
+			<option value="#i#" <cfif rc.limit eq i>selected</cfif>>#i#</option>
+			</cfloop>
+		</select>
+	    </div>
+	</div>
+	</div>
 </div>
-
 <div class="form-actions">
 	<input type="button" class="submit btn" onclick="submitForm(document.forms.searchFrm);" value="#application.rbFactory.getKeyValue(session.rb,"params.search")#" /></dd>
 </div>

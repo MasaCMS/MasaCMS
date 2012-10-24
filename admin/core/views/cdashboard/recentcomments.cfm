@@ -55,14 +55,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset comments.setNextN(20)>
 <cfset comments.setPage(rc.page)>
 
-<h3 class="alt">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments.last100")#</h3>
-<table class="mura-table-grid table-striped table-bordered table-condensed">
+<h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.comments.last100")#</h3>
+<table class="table table-striped table-condensed table-bordered mura-table-grid">
+<thead>
 <tr>
 	<th class="var-width">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments")#</th>
 	<th class="dateTime">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments.posted")#</th>
 	<th class="actions">&nbsp;</th>
 </tr>
+</thead>
+<tbody>
 <cfif comments.hasNext()>
+
 <cfloop condition="comments.hasNext()">
 	<cfset comment=comments.next()>
 	<!---
@@ -70,7 +74,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
 	--->
 	<cfset content=application.serviceFactory.getBean("content").loadBy(contentID=comment.getContentID(),siteID=session.siteID)>
-	<tr<cfif comments.currentIndex() mod 2> class="alt"</cfif>>
+
+	<tr>
 		<cfset args=arrayNew(1)>
 		<cfset args[1]="<strong>#HTMLEditFormat(comment.getName())#</strong>">
 		<cfset args[2]="<strong>#HTMLEditFormat(content.getMenuTitle())#</strong>">
@@ -85,9 +90,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfloop>
 <cfelse>
 <tr>
-<td class="noResults"colspan="3">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments.nocomments")#</td>
+<td class="noResults" colspan="3">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments.nocomments")#</td>
 </tr>
 </cfif>
+</tbody>
 </table>
 
 <cfif comments.recordCount() and comments.pageCount() gt 1>

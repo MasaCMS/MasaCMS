@@ -51,17 +51,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <li><a href="index.cfm?muraAction=cPublicUsers.advancedSearch&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'user.advancedmembersearch')#</a></li>
 </ul>
 <form class="form-inline" novalidate="novalidate" action="index.cfm" method="get" name="form1" id="siteSearch">
-	<h2>#application.rbFactory.getKeyValue(session.rb,'user.searchformembers')#</h2>
-
 	<div class="input-append">
-	    <input id="search" name="search" style="width: 208px;" class="text" type="text" />
+	    <input id="search" name="search" type="text" placeholder="#application.rbFactory.getKeyValue(session.rb,'user.searchformembers')#" />
 	    <button type="button" class="submit btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'user.search')#" /><i class="icon-search"></i></button>
+	    <button type="button" class="submit btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'user.search')#" />Advanced Search</button>
 	</div>
-
-<!--- <input id="search" name="search" value="#rc.search#" type="text" class="text"> --->
 <input type="hidden" name="muraAction" value="cPublicUsers.Search" />
 <input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
- <input type="button" class="submit btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'user.search')#" /></form>
+</form>
 
 
         <table class="table table-striped table-condensed table-bordered mura-table-grid">

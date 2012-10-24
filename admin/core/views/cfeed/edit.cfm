@@ -234,14 +234,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
 <cfif application.categoryManager.getCategoryCount(rc.siteid)>
-
-<div class="control-group" id="mura-list-tree">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.categoryfilters')#</label>
-      <div class="controls">
-	      <cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" feedID="#rc.feedID#" feedBean="#rc.feedBean#">
-	  </div>
-</div>
-
+	<div class="control-group">
+	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.categoryfilters')#</label>
+	      <div id="mura-list-tree" class="controls">
+		      <cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" feedID="#rc.feedID#" feedBean="#rc.feedBean#">
+		  </div>
+	</div>
 </cfif>
 
 <div class="control-group">
@@ -879,7 +877,7 @@ jQuery(document).ready(function(){
 
 <div id="tabCategorization" class="tab-pane fade">
 	<div class="fieldset">
-		<div class="control-group">
+		<div  class="control-group">
 			<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.categoryassignments')#</label>
 		    <div class="controls">
 				<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" feedID="#rc.feedID#" feedBean="#rc.feedBean#">

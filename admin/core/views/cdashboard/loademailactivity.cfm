@@ -81,12 +81,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset sent=application.emailManager.getStat(rslist.emailid,'sent')/>
 <cfset bounces=application.emailManager.getStat(rslist.emailid,'bounce')/>
 </cfsilent>				  
-<tr<cfif rslist.currentrow mod 2> class="alt"</cfif>>
+<tr>
 <td class="title"><a href="index.cfm?muraAction=cEmail.edit&siteid=#URLEncodedFormat(rc.siteid)#&emailID=#rslist.emailID#">#rsList.subject#</td><td>#sent#</td><td>#opens#</td><td>#clicks#</td><td>#bounces#</td>
 </tr>
 </cfloop>
 <cfelse>
-<tr class="alt"><td class="noResults" colspan="5">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.noemails"),rc.span)#</td></tr>
+<tr><td class="noResults" colspan="5">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.noemails"),rc.span)#</td></tr>
 </cfif>
 </tbody>
 </table></div></cfoutput>

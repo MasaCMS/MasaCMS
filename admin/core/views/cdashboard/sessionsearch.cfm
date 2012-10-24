@@ -130,7 +130,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfinclude template="dsp_secondary_menu.cfm">
 
-<form novalidate="novalidate"  method="get" name="searchFrm" id="advancedSearch" class="sessionHistory">
+<form novalidate="novalidate"  method="get" name="searchFrm" id="advancedSearch" class="sessionHistory fieldset-wrap">
+<div class="fieldset">
 <input type="hidden" name="startSearch" value="true"/>
 <div id="date-range" class="control-group">
 
@@ -265,7 +266,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     </label>
   </div>
 </div>
-
+</div>
 <div class="form-actions">
 <input type="button" class="submit btn" onclick="submitForm(document.forms.searchFrm);" value="#application.rbFactory.getKeyValue(session.rb,"params.search")#" />
 </div>

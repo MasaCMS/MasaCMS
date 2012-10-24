@@ -115,91 +115,75 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <ul class="navTask nav nav-pills">
 <li><a href="index.cfm?muraAction=cPublicUsers.search&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,"user.basicsearch")#</a></li>
 </ul>
-<form novalidate="novalidate" id="advancedMemberSearch" action="index.cfm" method="get" name="form2">
- 
-<div class="control-group" id="searchParams">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,"user.searchcriteria")#</label>
-      <div class="controls">
-		<cfif rc.newSearch or (session.paramCircuit neq 'cPublicUsers' or not session.paramCount)>
-		<select name="paramRelationship1" style="display:none;" >
-			<option value="and">#application.rbFactory.getKeyValue(session.rb,"params.and")#</option>
-			<option value="or">#application.rbFactory.getKeyValue(session.rb,"params.or")#</option>
-		</select>
-		<input type="hidden" name="param" value="1" />
-		<select name="paramField1">
-		<option value="">#application.rbFactory.getKeyValue(session.rb,"params.selectfield")#</option>
-		<cfloop from="1" to="#arrayLen(options)#" index="i">
-		<option value="#options[i][1]#">#options[i][2]#</option>
-		</cfloop>
-		</select>
-		<select name="paramCondition1">
-		<cfloop from="1" to="#arrayLen(criterias)#" index="i">
-		<option value="#criterias[i][1]#">#criterias[i][2]#</option>
-		</cfloop>
-		</select>
-		<input type="text" name="paramCriteria1">
-		<a class="criteria remove" href="javascript:;" onclick="searchParams.removeSeachParam(this.parentNode);searchParams.setSearchButtons();return false;" style="display:none;" title="#application.rbFactory.getKeyValue(session.rb,"params.removecriteria")#"><i class="icon-remove-sign"></i></a>
-		<a class="criteria add" href="javascript:;" onclick="searchParams.addSearchParam();searchParams.setSearchButtons();return false;" title="#application.rbFactory.getKeyValue(session.rb,"params.addcriteria")#"><i class="icon-plus-sign"></i></a>
-		<cfelse>
-		<cfloop from="1" to="#session.paramCount#" index="p">
-		<select name="paramRelationship#p#">
-			<option value="and" <cfif session.paramArray[p].relationship eq "and">selected</cfif> >#application.rbFactory.getKeyValue(session.rb,"params.and")#</option>
-			<option value="or" <cfif session.paramArray[p].relationship eq "or">selected</cfif> >#application.rbFactory.getKeyValue(session.rb,"params.or")#</option>
-		</select>
-		<input type="hidden" name="param" value="#p#" />
-		<select name="paramField#p#">
-		<option value="">#application.rbFactory.getKeyValue(session.rb,"params.selectfield")#</option>
-		<cfloop from="1" to="#arrayLen(options)#" index="i">
-		<option value="#options[i][1]#" <cfif session.paramArray[p].field eq options[i][1]>selected</cfif>>#options[i][2]#</option>
-		</cfloop>
-		</select>
-		<select name="paramCondition#p#">
-		<cfloop from="1" to="#arrayLen(criterias)#" index="i">
-		<option value="#criterias[i][1]#" <cfif session.paramArray[p].condition eq criterias[i][1]>selected</cfif>>#criterias[i][2]#</option>
-		</cfloop>
-		</select>
-		<input type="text" name="paramCriteria#p#" value="#session.paramArray[p].criteria#" >
-		<a class="removeCriteria" href="javascript:;" onclick="searchParams.removeSeachParam(this.parentNode);searchParams.setSearchButtons();return false;"><span>#application.rbFactory.getKeyValue(session.rb,"params.removecriteria")#</span></a>
-		<a class="addCriteria" href="javascript:;" onclick="searchParams.addSearchParam();searchParams.setSearchButtons();return false;" ><span>#application.rbFactory.getKeyValue(session.rb,"params.addcriteria")#</span></a>
-		</cfloop>
-		</cfif>
-		</div>
-	</div>
-    </div>
-	<!--- <cfif rc.rsGroups.recordcount>
-		<dt class="first">Groups</dt>
-		<dd>
-		<ul><cfloop query="rc.rsGroups">
-		<li><input name="GroupID" type="checkbox" class="checkbox" value="#rc.rsGroups.UserID#" <cfif listfind(session.paramGroups,rc.rsGroups.UserID) or listfind(rc.groupid,rc.rsGroups.UserID)>checked</cfif>> #rc.rsGroups.site# - #rc.rsGroups.groupname#</li>
-		</cfloop>
-		</ul>
-		</dd>
-	</cfif>
-	<cfif not structIsEmpty(application.settingsManager.getSite(rc.siteid).getCategoryFilterLookUp())>
-		<dt <cfif not rc.rsGroups.recordcount>class="first"</cfif>>Interest Groups</dt>
-		<dd>
-			<ul class="interestGroups">
-				<cfloop collection="#application.settingsManager.getSites()#" item="site">
-					<cfif application.settingsManager.getSite(site).getPrivateUserPoolID() eq rc.siteid>
-						<li>
-							<cfoutput>#application.settingsManager.getSite(site).getSite()#</cfoutput>
-							<cf_dsp_categories_nest_search siteID="#rc.siteID#" parentID="" categoryID="#session.paramCategories#" nestLevel="0" >
-						</li>
-					</cfif>
+<form class="fieldset-wrap" novalidate="novalidate" id="advancedMemberSearch" action="index.cfm" method="get" name="form2">
+<div class="fieldset">
+	<div class="control-group" id="searchParams">
+	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,"user.searchcriteria")#</label>
+	      <div class="controls">
+			<cfif rc.newSearch or (session.paramCircuit neq 'cPublicUsers' or not session.paramCount)>
+				<select name="paramRelationship1" style="display:none;" class="span2">
+					<option value="and">#application.rbFactory.getKeyValue(session.rb,"params.and")#</option>
+					<option value="or">#application.rbFactory.getKeyValue(session.rb,"params.or")#</option>
+				</select>
+				<input type="hidden" name="param" value="1" />
+				
+				<select name="paramField1" class="span2">
+				<option value="">#application.rbFactory.getKeyValue(session.rb,"params.selectfield")#</option>
+				<cfloop from="1" to="#arrayLen(options)#" index="i">
+				<option value="#options[i][1]#">#options[i][2]#</option>
 				</cfloop>
-			</ul>
-		</dd>
-	</cfif> --->
-	 <div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,"user.inactive")#</label>
-      <div class="controls">
-		<select name="inActive">
-			<option value="">All</option>
-			<option value="0" <cfif session.inactive eq 0>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"user.yes")#</option>
-			<option value="1" <cfif session.inactive eq 1>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"user.no")#</option>
-		</select>
+				</select>
+				
+				<select name="paramCondition1" class="span2">
+				<cfloop from="1" to="#arrayLen(criterias)#" index="i">
+				<option value="#criterias[i][1]#">#criterias[i][2]#</option>
+				</cfloop>
+				</select>
+				
+				<input type="text" name="paramCriteria1" class="span4">
+				<a class="criteria remove" href="javascript:;" onclick="searchParams.removeSeachParam(this.parentNode);searchParams.setSearchButtons();return false;" style="display:none;" title="#application.rbFactory.getKeyValue(session.rb,"params.removecriteria")#"><i class="icon-remove-sign"></i></a>
+				<a class="criteria add" href="javascript:;" onclick="searchParams.addSearchParam();searchParams.setSearchButtons();return false;" title="#application.rbFactory.getKeyValue(session.rb,"params.addcriteria")#"><i class="icon-plus-sign"></i></a>
+				
+			<cfelse>
+				<cfloop from="1" to="#session.paramCount#" index="p">
+				<select name="paramRelationship#p#" class="span2">
+					<option value="and" <cfif session.paramArray[p].relationship eq "and">selected</cfif> >#application.rbFactory.getKeyValue(session.rb,"params.and")#</option>
+					<option value="or" <cfif session.paramArray[p].relationship eq "or">selected</cfif> >#application.rbFactory.getKeyValue(session.rb,"params.or")#</option>
+				</select>
+				<input type="hidden" name="param" value="#p#" />
+				
+				<select name="paramField#p#" class="span2">
+				<option value="">#application.rbFactory.getKeyValue(session.rb,"params.selectfield")#</option>
+				<cfloop from="1" to="#arrayLen(options)#" index="i">
+				<option value="#options[i][1]#" <cfif session.paramArray[p].field eq options[i][1]>selected</cfif>>#options[i][2]#</option>
+				</cfloop>
+				</select>
+				
+				<select name="paramCondition#p#" class="span2">
+				<cfloop from="1" to="#arrayLen(criterias)#" index="i">
+				<option value="#criterias[i][1]#" <cfif session.paramArray[p].condition eq criterias[i][1]>selected</cfif>>#criterias[i][2]#</option>
+				</cfloop>
+				</select>
+				
+				<input type="text" name="paramCriteria#p#" value="#session.paramArray[p].criteria#" class="span4">
+				<a class="removeCriteria" href="javascript:;" onclick="searchParams.removeSeachParam(this.parentNode);searchParams.setSearchButtons();return false;"><span>#application.rbFactory.getKeyValue(session.rb,"params.removecriteria")#</span></a>
+				<a class="addCriteria" href="javascript:;" onclick="searchParams.addSearchParam();searchParams.setSearchButtons();return false;" ><span>#application.rbFactory.getKeyValue(session.rb,"params.addcriteria")#</span></a>
+				</cfloop>
+			</cfif>
+			</div>
 	</div>
-    </div>
+	
+		 <div class="control-group">
+	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,"user.inactive")#</label>
+	      <div class="controls">
+			<select name="inActive">
+				<option value="">All</option>
+				<option value="0" <cfif session.inactive eq 0>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"user.yes")#</option>
+				<option value="1" <cfif session.inactive eq 1>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"user.no")#</option>
+			</select>
+		</div>
+	    </div>
+</div>
 
 <div class="form-actions" id="actionButtoms">
 <input type="hidden" name="muraAction" value="cPublicUsers.advancedSearch" /><input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#"/>

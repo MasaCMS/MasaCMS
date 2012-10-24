@@ -64,7 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
 		--->
 		<cfset content=application.serviceFactory.getBean("content").loadBy(contentID=comment.getContentID(),siteID=session.siteID)>
-		<tr<cfif comments.currentIndex() mod 2> class="alt"</cfif>>
+		<tr>
 			<cfset args=arrayNew(1)>
 			<cfset args[1]="<strong>#HTMLEditFormat(comment.getName())#</strong>">
 			<cfset args[2]="<strong>#HTMLEditFormat(content.getMenuTitle())#</strong>">

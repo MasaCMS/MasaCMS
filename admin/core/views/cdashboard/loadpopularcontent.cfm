@@ -56,7 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</thead>
 <tbody>
 <cfloop query="rslist">
-<tr<cfif rslist.currentrow mod 2> class="alt"</cfif>>
+<tr>
 	<td><cfswitch expression="#rslist.type#">
 		<cfcase value="Page,LocalRepo,Calendar,Gallery">
 		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,rsList.filename)#','#rslist.targetParams#');">#HTMLEditFormat(left(rslist.menutitle,30-len(rsList.hits)))#</a>
@@ -70,9 +70,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfswitch> <span>(#rsList.hits# #application.rbFactory.getKeyValue(session.rb,"dashboard.views")#)</span></td>
 </tr>
 </cfloop>
-<cfif count eq 0><tr class="alt"><td>&mdash;</td></tr></cfif>
+<cfif count eq 0><tr><td>&mdash;</td></tr></cfif>
 <cfif count lt 2><tr><td>&mdash;</td></tr></cfif>
-<cfif count lt 3><tr class="alt"><td>&mdash;</td></tr></cfif>
+<cfif count lt 3><tr><td>&mdash;</td></tr></cfif>
 </tbody>
 </table>
 <!---
@@ -102,13 +102,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <thead>
 <tbody>
 <cfloop query="rslist">
-<tr<cfif rslist.currentrow mod 2> class="alt"</cfif>>
+<tr>
 	<td>#left(rsList.keywords,30-len(rsList.keywordCount))# <span>(#rsList.keywordCount# #application.rbFactory.getKeyValue(session.rb,"dashboard.searches")#)</span></td>
 </tr>
 </cfloop>
-<cfif count eq 0><tr class="alt"><td>&mdash;</td></tr></cfif>
+<cfif count eq 0><tr><td>&mdash;</td></tr></cfif>
 <cfif count lt 2><tr><td>&mdash;</td></tr></cfif>
-<cfif count lt 3><tr class="alt"><td>&mdash;</td></tr></cfif>
+<cfif count lt 3><tr><td>&mdash;</td></tr></cfif>
 </tbody>
 </table>
 <!---
