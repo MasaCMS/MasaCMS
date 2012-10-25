@@ -1,4 +1,4 @@
-header {
+header, #cPlugins {
 
 // Top NavBar
 	
@@ -133,7 +133,7 @@ header {
 			
 			> i {
 				display: inline-block;
-				.size(18,20);
+				.size(26px,20px) !important;
 				font-size: 24px;
 				line-height: 1;
 				margin-top: 9px;
@@ -333,7 +333,13 @@ header {
 	} // End #select-site  
 
 } // End .nav-site
-} // End <header>
+
+//	Showing dropdowns on :hover instead of click
+li.dropdown:hover > ul.dropdown-menu {
+    	display: block;    
+    	}
+
+} // End <header>, #cPlugins
 
 #cSetUp header {
 	height: 50px;
