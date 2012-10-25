@@ -272,16 +272,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="unSetGroupID" access="public" output="false">
+<cffunction name="removeGroupID" access="public" output="false">
 	<cfargument name="groupID" type="String" />
 	<cfset var i=0>
+	<cfset var offset=0>
 	
 	<cfif len(arguments.groupID)>
-		<cfset i=listFindNoCase(variables.instance.groupID,arguments.groupID)>
-	</cfif>
-
-	<cfif i>
-		 <cfset variables.instance.groupID = listDeleteAt(variables.instance.groupID,i) />
+		<cfloop list="#arguments.groupID#" index="i">
+		<cfif listFindNoCase(variables.instance.groupID,i)>
+	    	<cfset variables.instance.groupID = listDeleteAt(variables.instance.groupID,i-offset) /> />
+	    	<cfset offset=offset+1>
+	    </cfif>
+	    </cfloop> 
 	</cfif>
 	
 	<cfreturn this>
