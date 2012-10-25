@@ -271,6 +271,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfreturn this>
 </cffunction>
+
+<cffunction name="unSetGroupID" access="public" output="false">
+	<cfargument name="groupID" type="String" />
+	<cfset var i=0>
+	
+	<cfif len(arguments.groupID)>
+		<cfset i=listFindNoCase(variables.instance.groupID,arguments.groupID)>
+	</cfif>
+
+	<cfif i>
+		 <cfset variables.instance.groupID = listDeleteAt(variables.instance.groupID,i) />
+	</cfif>
+	
+	<cfreturn this>
+</cffunction>
   
 <cffunction name="setUsernameNoCache" output="false" access="public">
     <cfargument name="Username" type="string" required="true">
