@@ -27,37 +27,36 @@ StructAppend(attributes, form, "no");
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
 		<link href="#application.configBean.getContext()#/admin/assets/css/admin-min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 		<link rel="stylesheet" type="text/css" href="#application.configBean.getContext()#/tasks/widgets/ckeditor/skins/mura/dialog.css">
+	</head>
 </cfoutput>
-</head>
-
 <body id="mura-select-link">
 <cfoutput>
-<h3>Keyword Search</h3>
-<form id="" name="siteSearch" method="post">
+<h2>Keyword Search</h2>
+<form id="mura-link-search" name="siteSearch" method="post">
  <input id="keywords" name="keywords" value="#HTMLEditFormat(attributes.keywords)#" type="text" class="span4" maxlength="50"/>
 	<input type="hidden" name="fuseaction" value="cArch.search">
 	<input type="hidden" name="siteid" value="#session.siteid#">
 	<input type="hidden" name="moduleid" value="00000000000000000000000000000000000">
 	<input class="btn" type="submit" onClick="return submitForm(document.forms.siteSearch);" value="Search">
 </form>
+
 </cfoutput>
 <form class="mura-link-search-result" name="frmLinks" method="post" onSubmit="return false;">
 <cfif attributes.keywords neq ''>
 <div id="mura-table-grid-container">
  <table class="table table-condensed table-bordered table-striped mura-table-grid">
+ <thead>
     <tr>
-	  <th class="actions">&nbsp;</th> 
+	  <!--- <th class="actions">&nbsp;</th>  --->
       <th class="varWidth">Title</th>
     </tr>
+ </thead>
+ <tbody>
     <cfif request.rslist.recordcount>
      <cfoutput query="request.rslist" maxrows="#request.nextn.recordsperPage#" startrow="#attributes.startrow#">
 		<cfset crumbdata=application.contentManager.getCrumbList(request.rslist.contentid, attributes.siteid)/>
-        <tr>
-	        <td class="actions" id="test"><input type="radio" name="theLinks" id="theLinks#request.rslist.currentrow#" value="#htmlEditFormat(request.contentRenderer.createHREF(request.rslist.type,request.rslist.filename,session.siteid,request.rslist.contentid,request.rslist.target,request.rslist.targetParams,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile()))#^#htmleditformat(request.rslist.menutitle)#"<cfif request.rslist.currentrow eq 1> checked</cfif>>
-		        
-	        </td>  
-          <td class="varWidth">
-          	<label for="theLinks#request.rslist.currentrow#">#application.contentRenderer.dspZoomNoLinks(crumbdata,request.rsList.fileExt)#</label>
+        <tr><td class="varWidth">
+          	<input type="radio" name="theLinks" id="theLinks#request.rslist.currentrow#" value="#htmlEditFormat(request.contentRenderer.createHREF(request.rslist.type,request.rslist.filename,session.siteid,request.rslist.contentid,request.rslist.target,request.rslist.targetParams,'',application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile()))#^#htmleditformat(request.rslist.menutitle)#"<cfif request.rslist.currentrow eq 1> checked</cfif>> #application.contentRenderer.dspZoomNoLinks(crumbdata,request.rsList.fileExt)#
           </td>
 		  
 		</tr>
@@ -67,18 +66,26 @@ StructAppend(attributes, form, "no");
         <td colspan="2" class="results"><em>Your search returned no results.</em></td>
       </tr>
     </cfif>
-	
-    <cfif request.nextn.numberofpages gt 1><tr> 
-      <td colspan="7" class="results">More Results: <cfloop from="1"  to="#request.nextn.numberofpages#" index="i"><cfoutput><cfif request.nextn.currentpagenumber eq i> #i# <cfelse> <a href="?keywords=#attributes.keywords#&startrow=#evaluate('(#i#*#request.nextn.recordsperpage#)-#request.nextn.recordsperpage#+1')#">#i#</a> </cfif></cfoutput></cfloop></td></tr></cfif>
-  </table>
-</td></tr></table></div></cfif></form>
+</table>
 
-<script type="text/javascript" language="javascript">
-stripe('stripe');
-<cfif not ( len(attributes.keywords) and request.rslist.recordcount )>
-document.forms.siteSearch.keywords.focus();
+<cfif request.nextn.numberofpages gt 1>
+	<div  class="pagination">
+      <ul>
+      <cfloop from="1"  to="#request.nextn.numberofpages#" index="i">
+      	<cfoutput>
+      	<cfif request.nextn.currentpagenumber eq i><li class="active"><a href="##">#i#</a></li>
+      	<cfelse>
+      		<li><a href="?keywords=#attributes.keywords#&startrow=#evaluate('(#i#*#request.nextn.recordsperpage#)-#request.nextn.recordsperpage#+1')#">#i#</a></li>
+      	</cfif>
+      </cfoutput>
+      </cfloop>
+      </ul>
+	</div>
 </cfif>
-</script>
+
+</div></cfif></form>
+
+
 <div id="alertDialog" title="Alert" style="display:none">
 	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><span id="alertDialogMessage"></span></p>
 </div>

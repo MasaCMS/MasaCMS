@@ -197,12 +197,14 @@ font-size: @baseFontSize - 1;
 	}
 } // /#editObjects
 
+@formBorderColor:	rgba(0,0,0,.07);
+
 fieldset, .fieldset { // Using an actual fieldset causes ck editor to grow crazy wide, will fix later.
 	padding: @gridGutterWidth 0 0;
 	margin: @gridGutterWidth;
-    background: rgba(255,255,255,.73);
+    background: rgba(255,255,255,.6);
     .border-radius(5px);
-    border: 1px solid rgba(240,240,240,1);
+    border: 1px solid @formBorderColor;
     position: relative;
     max-width: 100%;
     .box-sizing(border-box);
@@ -225,7 +227,7 @@ fieldset, .fieldset { // Using an actual fieldset causes ck editor to grow crazy
 		background: transparent;
 		padding: @gridGutterWidth;
 		margin-bottom: 0;
-		border-top: 1px solid rgba(240,240,240,.8);
+		border-top: 1px solid @formBorderColor;
 		.clearfix;
 		}
 

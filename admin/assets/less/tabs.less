@@ -31,33 +31,9 @@
 	> .nav-tabs > li > a:hover {
 		border: 0 !important;
 		display: block;
-		padding: 1em .75em;
+		padding: .75em .5em;
 		.border-radius(3px);
 		position: relative;		
-		}
-		
-	.nav-tabs > li > a:hover {
-
-	
-		/*
-&:before {
-			position: absolute;
-			right: -4px;
-			top: 4px;
-			font-family: FontAwesome;
-			font-weight: normal;
-			font-style: normal;
-			display: inline-block;
-			width: 1em;
-			font-size: 20px;
-			line-height: 38px;
-			color: @grayLight;
-			display: inline-block;
-			content: "\f054";
-			text-shadow: 0 -1px 0 @gray;
-			}
-*/
-		
 		}
 		
 	> .nav-tabs > li.active {
@@ -65,28 +41,9 @@
 		> a {
 			border: 0 !important;
 			#gradient .vertical(hsl(0,0,99%),hsl(0,0,97%));
-			.box-shadow(0 1px 3px rgba(0,0,0,0.2));
+			.box-shadow(@globalDropShadow);
 			position: relative;
 			}
-				
-		/*
-> a:before {
-		position: absolute;
-		right: -4px;
-		top: 4px;
-		font-family: FontAwesome;
-		font-weight: normal;
-		font-style: normal;
-		display: inline-block;
-		width: 1em;
-		font-size: 20px;
-		line-height: 38px;
-		color: @grayLight;
-		display: inline-block;
-		content: "\f054";
-		text-shadow: 0 -1px 0 @gray;
-		}
-*/
 	}	
 
 				
@@ -97,19 +54,9 @@
 		padding: 0;
 		margin-left: 0;
 		#gradient .vertical(hsl(0,0,98%),hsl(0,0,95%));
-		//#gradient .radial (hsl(100,0,99%),hsl(100,0,97%));
-		.box-shadow(0 1px 3px rgba(0,0,0,0.2));
-		//min-height: 400px;
+		.box-shadow(@globalDropShadow);
 		}
-
-//	.tab-pane {
-//		padding: @gridGutterWidth 0 0;
-//		margin: @gridGutterWidth;
-//		background: rgba(255,255,255,.73);
-//		.border-radius(3px);
-//		border: 1px solid rgba(240,240,240,.8);
-//		}
-} // End .tabs-left
+	} // End .tabs-left
 
 .pane-padded {
 	padding: @gridGutterWidth @gridGutterWidth 0 !important;
