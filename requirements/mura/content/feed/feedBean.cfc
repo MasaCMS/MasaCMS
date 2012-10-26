@@ -208,6 +208,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="removeContentID" access="public" output="false">
+	<cfargument name="contentID" type="String" />
+	<cfset var i=0>
+	<cfset var offset=0>
+	
+	<cfif len(arguments.contentID)>
+		<cfloop from="1" to="#listLen(arguments.contentID)#" index="i">
+		<cfif listFindNoCase(variables.instance.contentID,listGetAt(arguments.contentID,i))>
+	    	<cfset variables.instance.contentID = listDeleteAt(variables.instance.contentID,i-offset) /> />
+	    	<cfset offset=offset+1>
+	    </cfif>
+	    </cfloop> 
+	</cfif>
+	
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="setCategoryID" access="public" output="false">
 	<cfargument name="categoryID" type="String" />
 	<cfargument name="append" type="boolean" default="false" required="true" />
@@ -222,6 +239,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	    </cfif> 
 	    </cfloop>
 	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="removeCategoryID" access="public" output="false">
+	<cfargument name="categoryID" type="String" />
+	<cfset var i=0>
+	<cfset var offset=0>
+	
+	<cfif len(arguments.categoryID)>
+		<cfloop from="1" to="#listLen(arguments.categoryID)#" index="i">
+		<cfif listFindNoCase(variables.instance.categoryID,listGetAt(arguments.categoryID,i))>
+	    	<cfset variables.instance.categoryID = listDeleteAt(variables.instance.categoryID,i-offset) /> />
+	    	<cfset offset=offset+1>
+	    </cfif>
+	    </cfloop> 
+	</cfif>
+	
 	<cfreturn this>
 </cffunction>
 

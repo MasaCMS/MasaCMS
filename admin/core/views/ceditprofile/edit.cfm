@@ -209,7 +209,7 @@ select * from rsSubTypes where subType <> 'Default'
 				</cfloop>
 				</table>
 				<cfelse>
-				<em>#application.rbFactory.getKeyValue(session.rb,'user.noaddressinformation')#</em>
+				<p class="notice">#application.rbFactory.getKeyValue(session.rb,'user.noaddressinformation')#</p>
 				</cfif>
 		    </div>
 		</div>
@@ -218,16 +218,12 @@ select * from rsSubTypes where subType <> 'Default'
 	<div id="tabInterests" class="tab-pane">
 		<div class="fieldset">
 			<div id="mura-list-tree" class="control-group">
-			<cfif application.categoryManager.getCategoryCount( rc.userBean.getsiteID())>
-				<cfloop collection="#application.settingsManager.getSites()#" item="site">
-					<cfif application.settingsManager.getSite(site).getPrivateUserPoolID() eq rc.userBean.getsiteID()>							
-						<label class="control-label"><cfoutput>#application.settingsManager.getSite(site).getSite()#</cfoutput></label>
-						<div class="controls"><cf_dsp_categories_nest siteID="#rc.userBean.getsiteID()#" parentID="" categoryID="#rc.categoryID#" nestLevel="0" userBean="#rc.userBean#"></div>						
-					</cfif>
-				</cfloop>
-			<cfelse>
-			<div class="controls"><em>#application.rbFactory.getKeyValue(session.rb,'user.nointerestcategories')#</em></div>
-			</cfif> 
+			<cfloop collection="#application.settingsManager.getSites()#" item="site">
+				<cfif application.settingsManager.getSite(site).getPrivateUserPoolID() eq application.settingsManager.getSite(rc.siteID).getPrivateUserPoolID()>
+						<cfoutput><label class="control-label">#application.settingsManager.getSite(site).getSite()#</label></cfoutput>
+						<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" categoryID="#rc.categoryID#" nestLevel="0"  userBean="#rc.userBean#">
+				</cfif>
+			</cfloop> 
 		</div>
 	    </div>
 	</div>
