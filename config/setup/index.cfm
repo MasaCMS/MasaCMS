@@ -604,10 +604,12 @@ to your own modified versions of Mura CMS.
 --->
           
         </div>
-        <div id="finishSetUp" class="form-actions"><input type="submit" class="btn" name="#cookie.setupSubmitButtonComplete#" value="Finish Set Up and Take Me to the Mura Admin" /></div>
-      </cfif>
+        <div id="finishSetUp" class="form-actions">
+        	<input type="submit" class="btn" name="#cookie.setupSubmitButtonComplete#" value="Finish Set Up and Take Me to the Mura Admin" />
+        </div>
+ 
       
-      <cfif isDefined( "FORM.#cookie.setupSubmitButton#" ) AND errorType IS NOT "">
+      <cfelse>
       <h3>Required Settings</h3>
       <cfscript>
         //determine server type
@@ -627,7 +629,7 @@ to your own modified versions of Mura CMS.
         <div class="control-group">
           <label class="control-label"><a href="" rel="tooltip" data-original-title="Please select a database from the list of supported databases">Database <i class="icon-question-sign"></i></a></label>
           <div class="controls">
-            <select name="production_dbtype" id="production_dbtype" onChange="javascript:fHandleAutoCreateChange()">
+            <select class="span2" name="production_dbtype" id="production_dbtype" onChange="javascript:fHandleAutoCreateChange()">
               <option value="">-- Select your Database Type --</option>
               <option value="mysql" <cfif FORM.production_dbtype IS "mysql">selected</cfif>>MySQL</option>
               <option value="mssql" <cfif FORM.production_dbtype IS "mssql">selected</cfif>>MSSQL</option>
