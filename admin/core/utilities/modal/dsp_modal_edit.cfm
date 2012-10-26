@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif FindNoCase('Opera','#CGI.HTTP_USER_AGENT#') LESS THAN 1>
 <cfparam name="Cookie.fetDisplay" default="">
 <cfoutput>
-<link href="#application.configBean.getContext()#/admin/assets/css/dialog.css" rel="stylesheet" type="text/css" />
+<link href="#application.configBean.getContext()#/admin/assets/css/dialog.min.css" rel="stylesheet" type="text/css" />
 
 <!--- <link href="#application.configBean.getContext()#/admin/assets/css/dialog.css" rel="stylesheet" type="text/css" /> --->
 	
