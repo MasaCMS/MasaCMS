@@ -533,9 +533,8 @@ to your own modified versions of Mura CMS.
 <link rel="icon" href="#webroot#/admin/images/favicon.ico" type="image/x-icon" />
 <link rel="shortcut icon" href="#webroot#/admin/images/favicon.ico" type="image/x-icon" />
 
-<!-- Less CSS -->
-<link href="#webroot#/admin/assets/less/admin.less" rel="stylesheet/less" type="text/css" />
-<script src="#webroot#/admin/assets/js/less.js" type="text/javascript" language="Javascript"></script>
+<!-- CSS -->
+<link href="#application.configBean.getContext()#/admin/assets/css/admin-min.css" rel="stylesheet" type="text/css" />
 
 <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
