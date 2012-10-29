@@ -1,0 +1,52 @@
+.mura-grid, .mura-table-grid {
+
+	
+	i {
+		font-size: 17px;
+		width: auto !important;
+		color: lighten(@grayDark,18%);
+		
+		&:hover { color: @grayDarker; }
+		
+		}
+			
+	.disabled i {
+		color: @gray;
+		}
+	
+	.actions {
+	
+		li {
+			list-style: none; 
+			.inline-block;
+			padding: 0 5px 0 0;
+			clear: none;
+			line-height: 22px;
+			}
+		
+		.edit { padding-right: 4px; }
+		.versionHistory { padding-right: 6px; }
+		
+			a {
+				
+				&:hover {
+					text-decoration: none;
+					}
+				
+				}
+		
+		}
+
+	.add i {
+		display: block;
+		padding-right: 2px;
+		font-size: 16px;
+		line-height: 28px;
+		}
+	
+	.template i {
+		font-size: 22px;
+	}
+		
+	/* .add:hover i { color: lighten(@grayDark,10%); } */
+}
