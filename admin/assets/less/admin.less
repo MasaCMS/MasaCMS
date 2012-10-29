@@ -12,6 +12,7 @@
 	
 	@import url("fonts.less");	
 	@import url("font-awesome.less");
+	@import url("icons.less");
 	@import url("typography.less");
 	@import url("header.less");
 	@import url("navigation.less");
@@ -239,13 +240,12 @@ ul.checkboxTree li {
 
 .metadata-horizontal {
 	margin: 1px 0 0 0;
-	padding: .25em .5em;
+	padding: .2em .5em;
 	list-style: none;
 	float: right;
 	background: #f9f9f9;
 	.border-radius(14px);
-	*width: 515px;
-	font-size: 12px;
+	font-size: @baseLineHeight;
 	}
 
 .metadata-horizontal li {
@@ -253,7 +253,6 @@ ul.checkboxTree li {
 	padding: 0;
 	color: #333;
 	float: right;
-	/*width: 30%;*/
 	line-height: 24px;
 	}
 
