@@ -386,7 +386,7 @@
 		<cfswitch expression="#variables.configBean.getDbType()#">
 			<cfcase value="mssql">
 				<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
-					ALTER TABLE #arguments.table# ALTER COLUMN #arguments.column# #transformDataType(arguments.datatype,arguments.length)# <cfif arguments.autoincrement>PRIMARY KEY IDENTITY<cfelse><cfif not arguments.nullable> not null </cfif> default <cfif arguments.default eq 'null' or listFindNoCase('int,tinyint',arguments.datatype)>#arguments.default#<cfelse>'#arguments.default#'</cfif></cfif>
+					ALTER TABLE #arguments.table# ALTER COLUMN #arguments.column# #transformDataType(arguments.datatype,arguments.length)# <cfif not arguments.nullable> not null <cfelse> null </cfif>
 				</cfquery>
 			</cfcase>
 			<cfcase value="mysql">
