@@ -54,6 +54,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfproperty name="siteID" type="string" default="" required="true" />
 	<cfproperty name="sortBy" type="string" default="" required="true" />
 	<cfproperty name="sortDirection" type="string" default="asc" required="true" />
+	<cfproperty name="additionalColumns" type="string" default="" required="true" />
+	<cfproperty name="sortTable" type="string" default="" required="true" />
 	
 <cffunction name="init" output="false">
 	<cfset super.init(argumentCollection=arguments)>
@@ -67,9 +69,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.tableFieldlist=""/>
 	<cfset variables.instance.nextN=0>
 	<cfset variables.instance.maxItems=0>
+	<cfset variables.instance.additionalColumns=""/>
+	<cfset variables.instance.sortTable=""/>
 
 	
 	<cfset variables.instance.params=queryNew("param,relationship,field,condition,criteria,dataType","integer,varchar,varchar,varchar,varchar,varchar" )  />
+	<cfset variables.instance.joins=arrayNew(1)  />
 	<cfreturn this/>
 </cffunction>
 
@@ -239,6 +244,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="clearParams">
 	<cfreturn clearAdvancedParams()>
+</cffunction>
+
+<cffunction name="addJoin" access="public" output="false">
+	<cfargument name="joinType" type="string" required="true" default="inner">
+	<cfargument name="table" type="string" required="true" default="">
+	<cfargument name="clause" type="string" required="true" default="">
+	
+	<cfset arrayAppend(variables.instance.joins, arguments)>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getJoins">
+	<cfreturn variables.instance.joins>
+</cffunction>
+
+<cffunction name="clearJoins">
+	<cfset variables.instance.joins=arrayNew(1)  />
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getQuery" returntype="query" output="false">
