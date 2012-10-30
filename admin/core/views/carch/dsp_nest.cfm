@@ -172,7 +172,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<dd class="template">
 	  	<cfif verdict eq 'editor'><a class="mura-quickEditItem" data-attribute="template"></cfif>
 		<cfif len(attributes.rsnest.template) or len(attributes.rsnest.template)>
-			 <i class="icon-columns"></i> 
+			 <i class="mico-layout-6"></i> 
 		<cfelse>
            	#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#
           </cfif>

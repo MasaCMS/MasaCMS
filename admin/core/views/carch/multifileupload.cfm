@@ -88,10 +88,12 @@ jQuery(document).ready(function(){
     #application.contentRenderer.dspZoom(crumbdata=rc.crumbdata,class="navZoom alt")#
 </cfif>
 
-    <h4>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.multifileuploadinstructions")#</h4>
+    <!--- <h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.multifileuploadinstructions")#</h2> --->
 
     <!-- The file upload form used as target for the file upload widget -->
     <form id="fileupload" action="#application.configBean.getContext()#/admin/" method="POST" enctype="multipart/form-data">
+    	<!-- Creating a visual target for files. Doesn't actually do anything. Pure eye candy. -->
+    	<div id="fileupload-target" class="alert alert-info"><p><i class="icon-plus-sign"></i>Drag and drop files to upload.</p></div>
         <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
         <div class="fileupload-buttonbar">
             <div class="span7">

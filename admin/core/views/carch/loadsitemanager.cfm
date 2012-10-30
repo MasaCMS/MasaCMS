@@ -186,13 +186,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <ul id="mura-nodes">
     <!-- Begin List of Nodes -->
     <li data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" data-moduleid="#HTMLEditFormat(rc.moduleid)#" data-sortby="#rc.rstop.sortby#" data-sortdirection="#rc.rstop.sortdirection#">
+      
       <dl id="top-node">
       <dt>
        
        <a class="add" href="javascript:;" onmouseover="siteManager.showMenu('newContentMenu','#newcontent#',this,'#rc.rstop.contentid#','#rc.topid#','#rc.rstop.parentid#','#rc.siteid#','#rc.rstop.type#');"><i class="icon-plus-sign"></i></a>
    
        <cfif isNumeric(rc.rstop.haskids) and rc.rstop.haskids>
-	    	<span class="hasChildren-open" onclick="siteManager.loadSiteManager('#JSStringFormat(rc.siteID)#','#JSStringFormat(rc.topid)#','#JSStringFormat(rc.moduleid)#','#JSStringFormat(rc.sortby)#','#JSStringFormat(rc.sortdirection)#','#JSStringFormat(rc.rstop.type)#',1);"></span>
+	    	<span class="hasChildren-open" onclick="siteManager.loadSiteManager('#JSStringFormat(rc.siteID)#','#JSStringFormat(rc.topid)#','#JSStringFormat(rc.moduleid)#','#JSStringFormat(rc.sortby)#','#JSStringFormat(rc.sortdirection)#','#JSStringFormat(rc.rstop.type)#',1);"><i class="icon-caret-down"></i></span>
 		</cfif>
         <cfif not listFindNoCase('none,read',perm)>
           <a class="#icon# title draftprompt" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&siteid=#URLEncodedFormat(rc.siteid)#&contentid=#rc.topid#&topid=#URLEncodedFormat(rc.topid)#&type=#rc.rstop.type#&parentid=#rc.rstop.parentid#&moduleid=#rc.moduleid#">
@@ -231,7 +232,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
        <dd class="template">
 	  		<cfif perm eq 'editor'><a class="mura-quickEditItem" data-attribute="template"></cfif>
 			<cfif len(rc.rstop.template) or len(rc.rstop.childTemplate)>
-				 <i class="icon-columns"></i> 
+				 <i class="mico-layout-6"></i> 
 			<cfelse>
            		#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#
          	 </cfif>
