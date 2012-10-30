@@ -115,7 +115,7 @@ to your own modified versions of Mura CMS.
   <cfset cleanIni( settingsPath ) />
   --->
   <!--- cflocate to the admin --->
-  <cflocation url="#webRoot#/admin/index.cfm?appreload" addtoken="false" />
+  <cflocation url="#context#/admin/index.cfm?appreload" addtoken="false" />
 </cfif>
 <!--- run save process --->
 <cfif isDefined( "FORM.#cookie.setupSubmitButton#" )>
@@ -385,7 +385,7 @@ to your own modified versions of Mura CMS.
   
   <!--- if errorFile variable is present then let's append it to the message so the error file can be found --->
   <cfif isDefined( "errorFile" )>
-    <cfset message = message & " <a href='#webRoot#/config/setup/errors/#listLast( errorFile, '/')#'>Review the error log</a>." />
+    <cfset message = message & " <a href='#context#/config/setup/errors/#listLast( errorFile, '/')#'>Review the error log</a>." />
   </cfif>
   <!--- if mail server username is not supplied then use the admin mail value --->
   <cfif NOT len( FORM.production_mailserverusername )>
@@ -525,16 +525,16 @@ to your own modified versions of Mura CMS.
 <meta http-equiv="cache control" content="no-cache, no-store, must-revalidate" />
 
 <!-- Le fav and touch icons -->
-<link rel="shortcut icon" href="#webroot#/admin/assets/ico/favicon.ico">
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="#webroot#/admin/assets/ico/apple-touch-icon-144-precomposed.png">
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="#webroot#/admin/assets/ico/apple-touch-icon-114-precomposed.png">
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="#webroot#/admin/assets/ico/apple-touch-icon-72-precomposed.png">
-<link rel="apple-touch-icon-precomposed" href="#webroot#/admin/assets/ico/apple-touch-icon-57-precomposed.png">
-<link rel="icon" href="#webroot#/admin/images/favicon.ico" type="image/x-icon" />
-<link rel="shortcut icon" href="#webroot#/admin/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="#context#/admin/assets/ico/favicon.ico">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="#context#/admin/assets/ico/apple-touch-icon-144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="#context#/admin/assets/ico/apple-touch-icon-114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="#context#/admin/assets/ico/apple-touch-icon-72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="#context#/admin/assets/ico/apple-touch-icon-57-precomposed.png">
+<link rel="icon" href="#context#/admin/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="#context#/admin/images/favicon.ico" type="image/x-icon" />
 
 <!-- CSS -->
-<link href="#application.configBean.getContext()#/admin/assets/css/admin-min.css" rel="stylesheet" type="text/css" />
+<link href="#context#/admin/assets/css/admin-min.css" rel="stylesheet" type="text/css" />
 
 <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
@@ -542,26 +542,26 @@ to your own modified versions of Mura CMS.
 <![endif]-->
 
 <!-- Mura Admin JS -->
-<script src="#webroot#/admin/assets/js/admin.js" type="text/javascript" language="Javascript"></script>
+<script src="#context#/admin/assets/js/admin.js" type="text/javascript" language="Javascript"></script>
 
 <!-- jQuery UI -->
-<script src="#webroot#/admin/assets/js/jquery/jquery.js" type="text/javascript"></script>
-<script src="#webroot#/admin/assets/js/jquery/jquery.collapsibleCheckboxTree.js" type="text/javascript"></script>
-<script src="#webroot#/admin/assets/js/jquery/jquery-ui.js" type="text/javascript"></script>
-<script src="#webroot#/admin/assets/js/jquery/jquery-ui-i18n.min.js" type="text/javascript"></script>
-<link href="#webroot#/admin/assets/css/jquery/default/jquery.ui.all.css" rel="stylesheet" type="text/css" />
+<script src="#context#/admin/assets/js/jquery/jquery.js" type="text/javascript"></script>
+<script src="#context#/admin/assets/js/jquery/jquery.collapsibleCheckboxTree.js" type="text/javascript"></script>
+<script src="#context#/admin/assets/js/jquery/jquery-ui.js" type="text/javascript"></script>
+<script src="#context#/admin/assets/js/jquery/jquery-ui-i18n.min.js" type="text/javascript"></script>
+<link href="#context#/admin/assets/css/jquery/default/jquery.ui.all.css" rel="stylesheet" type="text/css" />
 
 <!-- JSON -->
-<script src="#webroot#/admin/assets/js/json2.js" type="text/javascript" language="Javascript"></script>
+<script src="#context#/admin/assets/js/json2.js" type="text/javascript" language="Javascript"></script>
 
 <!--- added script (bsoylu 5/23/2010)  --->
-<script src="#webRoot#/admin/assets/js/SetupUtilities.js?=1" type="text/javascript" language="Javascript"></script>
-<link rel="icon" href="#webRoot#/admin/images/favicon.ico" type="image/x-icon" />
-<link rel="shortcut icon" href="#webRoot#/admin/images/favicon.ico" type="image/x-icon" />
+<script src="#context#/admin/assets/js/SetupUtilities.js?=1" type="text/javascript" language="Javascript"></script>
+<link rel="icon" href="#context#/admin/images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="#context#/admin/images/favicon.ico" type="image/x-icon" />
 <!---
 <cfif cgi.http_user_agent contains 'msie'>
 <!--[if IE 7]>
-<link href="#webroot#/admin/assets/css/ie.min.css" rel="stylesheet" type="text/css" />
+<link href="#context#/admin/assets/css/ie.min.css" rel="stylesheet" type="text/css" />
 <![endif]-->
 </cfif>
 --->
@@ -573,7 +573,7 @@ to your own modified versions of Mura CMS.
     <div class="navbar-inner">
       <div class="container">
         <a class="brand" href="http://www.getmura.com" title="Mura CMS">
-          <img src="admin/assets/images/mura_logo.png">
+          <img src="#context#/admin/assets/images/mura_logo.png">
         </a>
       </div>
     </div>
@@ -814,24 +814,24 @@ jQuery(document).ready(function(){
 </script>
 <cfif cgi.http_user_agent contains 'msie'>
 <!--[if IE 6]>
-<script type="text/javascript" src="#webroot#/admin/assets/js/ie6notice.js"></script>
+<script type="text/javascript" src="#context#/admin/assets/js/ie6notice.js"></script>
 <![endif]-->
 </cfif>
 <!-- Le javascript
 ================================================== --> 
 <!-- Placed at the end of the document so the pages load faster --> 
-<script src="#webroot#/admin/assets/bootstrap/js/bootstrap-transition.js"></script> 
-<script src="#webroot#/admin/assets/bootstrap/js/bootstrap-alert.js"></script> 
-<script src="#webroot#/admin/assets/bootstrap/js/bootstrap-modal.js"></script> 
-<script src="#webroot#/admin/assets/bootstrap/js/bootstrap-dropdown.js"></script> 
-<script src="#webroot#/admin/assets/bootstrap/js/bootstrap-scrollspy.js"></script> 
-<script src="#webroot#/admin/assets/bootstrap/js/bootstrap-tab.js"></script> 
-<script src="#webroot#/admin/assets/bootstrap/js/bootstrap-tooltip.js"></script> 
-<script src="#webroot#/admin/assets/bootstrap/js/bootstrap-popover.js"></script> 
-<script src="#webroot#/admin/assets/bootstrap/js/bootstrap-button.js"></script> 
-<script src="#webroot#/admin/assets/bootstrap/js/bootstrap-collapse.js"></script> 
-<script src="#webroot#/admin/assets/bootstrap/js/bootstrap-carousel.js"></script> 
-<script src="#webroot#/admin/assets/bootstrap/js/bootstrap-typeahead.js"></script>
+<script src="#context#/admin/assets/bootstrap/js/bootstrap-transition.js"></script> 
+<script src="#context#/admin/assets/bootstrap/js/bootstrap-alert.js"></script> 
+<script src="#context#/admin/assets/bootstrap/js/bootstrap-modal.js"></script> 
+<script src="#context#/admin/assets/bootstrap/js/bootstrap-dropdown.js"></script> 
+<script src="#context#/admin/assets/bootstrap/js/bootstrap-scrollspy.js"></script> 
+<script src="#context#/admin/assets/bootstrap/js/bootstrap-tab.js"></script> 
+<script src="#context#/admin/assets/bootstrap/js/bootstrap-tooltip.js"></script> 
+<script src="#context#/admin/assets/bootstrap/js/bootstrap-popover.js"></script> 
+<script src="#context#/admin/assets/bootstrap/js/bootstrap-button.js"></script> 
+<script src="#context#/admin/assets/bootstrap/js/bootstrap-collapse.js"></script> 
+<script src="#context#/admin/assets/bootstrap/js/bootstrap-carousel.js"></script> 
+<script src="#context#/admin/assets/bootstrap/js/bootstrap-typeahead.js"></script>
 </body>
 </html>
 </cfoutput>
