@@ -1134,10 +1134,10 @@ buttons: {
 			//location.href=url + "?" + pars;
 			var icon = node.find("span:first");
 			
-			if (icon.hasClass('hasChildren-closed')) {
+			if (icon.hasClass('hasChildren closed')) {
 			
-				icon.removeClass('hasChildren-closed');
-				icon.addClass('hasChildren-open');
+				icon.removeClass('hasChildren closed');
+				icon.addClass('hasChildren open');
 					
 				//d.append('<img class="loadProgress" src="assets/images/progress_bar.gif">');
 				//d.find(".loadProgress").show();
@@ -1171,8 +1171,8 @@ buttons: {
 			}
 			else {
 			
-				icon.removeClass('hasChildren-open');
-				icon.addClass('hasChildren-closed');
+				icon.removeClass('hasChildren open');
+				icon.addClass('hasChildren closed');
 				
 				$.get(url + "?" + pars);
 				
