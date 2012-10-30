@@ -22,7 +22,7 @@
 
     */
 
-@fontAwesomePath: '../font/font-awesome';
+@fontAwesomePath: '../fonts/font-awesome';
 
 @font-face {
   font-family: 'FontAwesome';
@@ -37,6 +37,15 @@
 
 /*  Font Awesome styles
     ------------------------------------------------------- */
+
+[data-icon]:before {
+	font-family: 'FontAwesome';
+	content: attr(data-icon);
+	speak: none;
+	font-weight: normal;
+	/* -webkit-font-smoothing: antialiased; */
+}
+
 [class^="icon-"]:before,
 [class*=" icon-"]:before {
   font-family: FontAwesome;
