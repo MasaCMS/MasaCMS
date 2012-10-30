@@ -160,29 +160,31 @@
 				margin-left: -15px;
 			}
 			
-			dt span.hasChildren-closed {
+			.hasChildren {
 				float: left;
-				display: block;
+				.inline-block;
 				width: 12px;
 				height: 28px;
+				line-height: 27px;
 				padding: 0;
 				margin-left: -11px;
-				background: url(../images/icons/right_on.gif) no-repeat 3px 50%;
-				cursor:pointer;
-			}
+				cursor: pointer;
 			
-			dt span.hasChildren, dt span.hasChildren-open {
-				float: left;
-				display: block;
-				width: 12px;
-				height: 28px;
-				line-height: 28px;
-				padding: 0;
-				margin-left: -11px;
-				/* background: url(../images/icons/down_on.gif) no-repeat left 50%; */
-				cursor:pointer;
-			}
+				&:before {
+					font-size: 13px;
+					color: @grayDark;
+					}
+				
+				&.open:before {
+					margin-top: 2px;
+					}
+					
+				&.closed:before {
+					margin-top: 2px;
+					}
 			
+			}
+						
 			.order {
 				width: 40px;
 			}
