@@ -110,6 +110,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				and right(variables.iniProperties[variables.p],1) eq "}">
 				<cfset variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-3)>
 				<cfset variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p])>
+			<cfelseif left(variables.iniProperties[variables.p],2) eq "{{"
+				and right(variables.iniProperties[variables.p],2) eq "}}">
+				<cfset variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-4)>
+				<cfset variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p])>
 			</cfif>		
 		</cfloop>		
 		
@@ -119,7 +123,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				and right(variables.iniProperties[variables.p],1) eq "}">
 				<cfset variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-3)>
 				<cfset variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p])>
-			</cfif>	
+			<cfelseif left(variables.iniProperties[variables.p],2) eq "{{"
+				and right(variables.iniProperties[variables.p],2) eq "}}">
+				<cfset variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-4)>
+				<cfset variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p])>
+			</cfif>		
 		</cfloop>
 		
 		<cfset variables.iniProperties.webroot = expandPath("/muraWRM") />
