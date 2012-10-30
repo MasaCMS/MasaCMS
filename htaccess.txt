@@ -1,3 +1,5 @@
+Options +FollowSymLinks
+
 # This is for rewriting urls "WITHOUT" siteIDs
 # To remove the Mura siteID directory and index.cfm from urls you must also set both siteIDInURLS and indexFileInURLs to 0 in your /config/setting.ini.cfm and reload Mura.
 RewriteEngine On 
