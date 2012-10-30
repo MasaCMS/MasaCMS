@@ -264,6 +264,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="hasJoin">
+	<cfargument name="table">
+	<cfset var join = "">
+	<cfset var returnVar = false>
+	
+	<cfloop array="#getJoins()#" index="join">
+		<cfif arguments.table eq join.table>
+			<cfset returnVar = true>
+		</cfif>
+	</cfloop>
+	
+	<cfreturn returnVar>
+</cffunction>
+
 <cffunction name="getQuery" returntype="query" output="false">
 	<cfset var rs="">
 	<cfset var param="">
