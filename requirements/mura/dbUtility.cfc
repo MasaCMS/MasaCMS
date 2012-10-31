@@ -717,6 +717,14 @@
 			>
 			<cfset columnArgs.default=_parseInt(columnArgs.default)>
 		</cfif>
+
+		<cfif listFindNoCase("tinyint,int,float,double",columnArgs.datatype) and not (isNumeric(columnArgs.default) or columnArgs.default eq 'null')>
+			<cfif columnArgs.nullable>
+				<cfset columnArgs.default='null'>
+			<cfelse>
+				<cfset columnArgs.default=0>
+			</cfif>
+		</cfif>
 		
 		<cfif not columnArgs.nullable and columnArgs.datatype eq "int" and isDefined('rs.is_primarykey') and arguments.rs.is_primarykey>
 			<cfset columnArgs.autoincrement=true>
