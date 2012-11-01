@@ -110,6 +110,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				and right(variables.iniProperties[variables.p],1) eq "}">
 				<cfset variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-3)>
 				<cfset variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p])>
+			<cfelseif left(variables.iniProperties[variables.p],2) eq "{{"
+				and right(variables.iniProperties[variables.p],2) eq "}}">
+				<cfset variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-4)>
+				<cfset variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p])>
 			</cfif>		
 		</cfloop>		
 		
@@ -119,7 +123,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				and right(variables.iniProperties[variables.p],1) eq "}">
 				<cfset variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-3)>
 				<cfset variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p])>
-			</cfif>	
+			<cfelseif left(variables.iniProperties[variables.p],2) eq "{{"
+				and right(variables.iniProperties[variables.p],2) eq "}}">
+				<cfset variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-4)>
+				<cfset variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p])>
+			</cfif>		
 		</cfloop>
 		
 		<cfset variables.iniProperties.webroot = expandPath("/muraWRM") />
@@ -395,7 +403,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getSiteID()#">
 			</cfquery>
 		</cfloop>
-		
+
+		<!--- Clean root admin directory --->
+		<cfdirectory action="list" directory="#expandPath('/muraWRM/admin/')#" name="local.rs">
+		<cfset local.tempDir=expandPath('/muraWRM/admin/temp/')>
+		<cfset local.fileWriter=application.serviceFactory.getBean('fileWriter')>
+		<cfloop query="local.rs">
+			<cfif not listFind('.gitignore,Application.cfc,assets,common,core,framework.cfc,index.cfm,temp',local.rs.name)>
+				<cfset local.fileWriter.touchDir(local.tempDir)>
+				<cfif local.rs.type eq 'dir'>
+					<cfset local.fileWriter.renameDir(directory=local.rs.directory & "/" & local.rs.name,newDirectory=local.rs.directory & "/temp/" & local.rs.name )>
+				<cfelse>
+					<cfset local.fileWriter.renameFile(source=local.rs.directory & "/" & local.rs.name,destination=local.rs.directory & "/temp/" & local.rs.name )>
+				</cfif>
+			</cfif>
+		</cfloop>
+
 		<cfset application.sessionTrackingThrottle=false>	
 	</cfif>	
 </cflock>

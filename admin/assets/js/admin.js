@@ -183,21 +183,21 @@ function isEmail(cur){
 
 function stripe(theclass) {
   
-  jQuery('table.' + theclass + ' tr').each(
+  $('table.' + theclass + ' tr').each(
 		function(index) {
 			if(index % 2){
-				jQuery(this).addClass('alt');	
+				$(this).addClass('alt');	
 			} else {
-				jQuery(this).removeClass('alt');
+				$(this).removeClass('alt');
 			}
 		}
 	);
-   jQuery('div.mura-grid.' + theclass + ' dl').each(
+   $('div.mura-grid.' + theclass + ' dl').each(
 		function(index) {
 			if(index % 2){
-				jQuery(this).addClass('alt');	
+				$(this).addClass('alt');	
 			} else {
-				jQuery(this).removeClass('alt');
+				$(this).removeClass('alt');
 			}
 		}
 	);
@@ -233,7 +233,7 @@ function openDisplay(id,close){
 		
 	if(document.getElementById(id).style.display== 'none'){
 		
-		 jQuery("#" + id).slideDown();
+		 $("#" + id).slideDown();
 		 if( document.getElementById(id + 'Link')){
 		  var theLink = document.getElementById(id + 'Link'); 
 		  theLink.innerHTML='[' + close + ']';
@@ -519,14 +519,14 @@ function validateForm(theForm) {
 				frmSelects[startAt].focus();
 			}
 			
-			jQuery("#alertDialogMessage").html(errors);
-			jQuery("#alertDialog").dialog({
+			$("#alertDialogMessage").html(errors);
+			$("#alertDialog").dialog({
 				resizable: false,
 				modal: true,
 				position: getDialogPosition(),
 				buttons: {
 					Ok: function() {
-						jQuery(this).dialog('close');
+						$(this).dialog('close');
 						if(firstErrorNode=="input"){
 							frmInputs[startAt].focus();
 						}
@@ -565,13 +565,13 @@ function submitForm(frm,action,msg){
 			
 		
 		} else if (action=='delete'){
-			jQuery("#alertDialogMessage").html(message);
-			jQuery("#alertDialog").dialog({
+			$("#alertDialogMessage").html(message);
+			$("#alertDialog").dialog({
 					modal: true,
 					position: getDialogPosition(),
 					buttons: {
 						'YES': function() {
-							jQuery(this).dialog('close');
+							$(this).dialog('close');
 							var frmInputs = currentFrm.getElementsByTagName("input");	
 							for (f=0; f < frmInputs.length; f++){
 								if(frmInputs[f].getAttribute('name')=='action'){
@@ -581,7 +581,7 @@ function submitForm(frm,action,msg){
 							currentFrm.submit();
 							},
 						'NO': function() {
-							jQuery(this).dialog('close');
+							$(this).dialog('close');
 						}
 					}
 				});
@@ -593,7 +593,7 @@ function submitForm(frm,action,msg){
 			if( htmlEditorType!='fckeditor'){
 				 for(var name in CKEDITOR.instances){
 				 	if (typeof(CKEDITOR.instances[name]) != 'undefined' && CKEDITOR.instances[name]!=null) {
-						if( jQuery('#' + name).length){
+						if( $('#' + name).length){
 							CKEDITOR.instances[name].updateElement();
 						} 
 					}
@@ -602,21 +602,21 @@ function submitForm(frm,action,msg){
 			}
 		}
 
-		if(jQuery('#actionIndicator').length){
-			jQuery('#actionIndicator').show();
-			jQuery('.form-actions').hide();
+		if($('#actionIndicator').length){
+			$('#actionIndicator').show();
+			$('.form-actions').hide();
 		} else{
-			jQuery('.form-actions').each(function(){
-				jQuery(this).html(
+			$('.form-actions').each(function(){
+				$(this).html(
 					'<div style="display:none;">' 
-					+ jQuery(this).html() 
+					+ $(this).html() 
 					+ '</div>'
 					+ '<img src="./assets/images/progress_bar.gif">'
 				);
 			});
 
 
-			//alert(jQuery('.form-actions').html());
+			//alert($('.form-actions').html());
 		}	
 
 		frm.submit();
@@ -685,11 +685,11 @@ function setHTMLEditors() {
 					instance.destroy(true);
 				} 
 				
-				if(jQuery(document.getElementById(allPageTags[i].id)).val() == ''){
-					jQuery(document.getElementById(allPageTags[i].id)).val("<p></p>")
+				if($(document.getElementById(allPageTags[i].id)).val() == ''){
+					$(document.getElementById(allPageTags[i].id)).val("<p></p>")
 				}
 				
-				jQuery(document.getElementById(allPageTags[i].id)).ckeditor( { toolbar: 'Default',customConfig : 'config.js.cfm' },htmlEditorOnComplete);
+				$(document.getElementById(allPageTags[i].id)).ckeditor( { toolbar: 'Default',customConfig : 'config.js.cfm' },htmlEditorOnComplete);
 				
 			}
 		}
@@ -704,7 +704,7 @@ function htmlEditorOnComplete( editorInstance ) {
 		editorInstance.ResetIsDirty();
 		var totalIntances=FCKeditorAPI.Instances;
 	}else{
-		var instance=jQuery(editorInstance).ckeditorGet();
+		var instance=$(editorInstance).ckeditorGet();
 		instance.resetDirty();
 		var totalIntances=CKEDITOR.instances;
 		CKFinder.setupCKEditor( 
@@ -733,24 +733,24 @@ function htmlEditorOnComplete( editorInstance ) {
 
 function setDatePickers(target,locale,delim){
 	
-	if(jQuery.datepicker.regional[locale]==undefined){
+	if($.datepicker.regional[locale]==undefined){
 		var _locale=locale.substring(0, 2);
 	}else{
 		var _locale=locale;
 	}
 
-	if(jQuery.datepicker.regional[_locale]!=undefined){
-		jQuery(target).each(
+	if($.datepicker.regional[_locale]!=undefined){
+		$(target).each(
 			function(index) {			
-				jQuery(this).datepicker(jQuery.datepicker.regional[_locale])
+				$(this).datepicker($.datepicker.regional[_locale])
 				.datepicker( "option", "changeYear", true )
 				.datepicker( "option", "changeMonth", true );
 			}
 		);
 	} else {
-		jQuery(target).each(
+		$(target).each(
 			function(index) {
-				jQuery(this).datepicker(jQuery.datepicker.regional[''])
+				$(this).datepicker($.datepicker.regional[''])
 				.datepicker( "option", "changeYear", true )
 				.datepicker( "option", "changeMonth", true );
 			}
@@ -759,25 +759,25 @@ function setDatePickers(target,locale,delim){
 }
 
 function setColorPickers(target){	
-	jQuery(target).each(
+	$(target).each(
 		function(index){		
-				jQuery(this).colorpicker({
+				$(this).colorpicker({
 					format: 'rgba'
 					}
 				).on('changeColor',function(e){
 					//var rgb=e.color.toRGB();
-					//jQuery(this).val('rgba('+rgb.r+','+rgb.g+','+rgb.b+','+rgb.a+')');
+					//$(this).val('rgba('+rgb.r+','+rgb.g+','+rgb.b+','+rgb.a+')');
 				});
 		}
 	);	
 }
 
 function setToolTips(target){	
-	jQuery(target).tooltip({
+	$(target).tooltip({
       	selector: "a[rel=tooltip]"
     });
 
-    jQuery(target + ' a[rel=tooltip]').click(function (e) {
+    $(target + ' a[rel=tooltip]').click(function (e) {
   		e.preventDefault();
   		return false
 		});
@@ -785,13 +785,13 @@ function setToolTips(target){
 
 function setTabs(target,activetab){
 	/*
-	jQuery(target).each(
+	$(target).each(
 		function(index) {			
-			jQuery(this).tabs().fadeIn()
+			$(this).tabs().fadeIn()
 			.find(".ui-corner-all")
 			.each(
 			 function(index){
-				 jQuery(this).removeClass("ui-corner-all");
+				 $(this).removeClass("ui-corner-all");
 			 	}
 			)
 		}
@@ -799,49 +799,56 @@ function setTabs(target,activetab){
 	$(target + ' a').click(function (e) {
   		e.preventDefault();
   		$(this).tab('show');
-		})
+	});
 	
-	$(target + ' li:first a').tab('show');
+	if(window.location.hash != "") {
+    	$(target + ' a[href="'+window.location.hash+'"]').tab('show'); 
+   	}else if(typeof(activetab) != 'undefined'){
+		$(target + ' li::nth-child(' + (activetab + 1)  + ') a').tab('show');
 
+   	} else {
+   		$(target + ' li:first a').tab('show');
+   	}
+ 
 	/*
-	jQuery(".ui-tabs .ui-tabs .ui-tabs-nav li").each(
+	$(".ui-tabs .ui-tabs .ui-tabs-nav li").each(
 			function(index) {			
-				jQuery(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+				$(this).removeClass("ui-corner-top").addClass("ui-corner-all");
 			}
 		);
 	
-	jQuery(".initActiveTab").each(
+	$(".initActiveTab").each(
 			function(index) {			
-				jQuery(this).tabs("select",activetab);
+				$(this).tabs("select",activetab);
 			}
 		);
 
 	*/
-	jQuery(".tabPreloader").each(
+	$(".tabPreloader").each(
 			function(index) {			
-				jQuery(this).hide();
+				$(this).hide();
 			}
 		);
 }
 
 function setAccordions(target,activepanel){
 	
-		jQuery(target).each(
+		$(target).each(
 			function(index) {
 				if(activepanel != null){
-					jQuery(this).accordion({ active: activepanel })	
+					$(this).accordion({ active: activepanel })	
 				} else {
-					jQuery(this).accordion();
+					$(this).accordion();
 				}
 			}
 	);
-	//jQuery(target).collapse();
+	//$(target).collapse();
 }	
 
 function setCheckboxTrees(){
-	jQuery('.checkboxTree').each(
+	$('.checkboxTree').each(
 		function(){
-			jQuery(this).collapsibleCheckboxTree({
+			$(this).collapsibleCheckboxTree({
 			checkParents : false, 
 			checkChildren : false, 
 			uncheckChildren : true, 
@@ -852,14 +859,14 @@ function setCheckboxTrees(){
 }
 
 function alertDialog(message) {
-jQuery("#alertDialogMessage").html(message);
-jQuery("#alertDialog").dialog({
+$("#alertDialogMessage").html(message);
+$("#alertDialog").dialog({
 	resizable: false,
 	modal: true,
 	position: getDialogPosition(),
 	buttons: {
 		Ok: function() {
-			jQuery(this).dialog('close');
+			$(this).dialog('close');
 		}
 	}
 });
@@ -871,14 +878,14 @@ function confirmDialog(message,yesAction,noAction){
 	_yesAction=yesAction;
 	_noAction=noAction;
 	
-	jQuery("#alertDialogMessage").html(message);
-	jQuery("#alertDialog").dialog({
+	$("#alertDialogMessage").html(message);
+	$("#alertDialog").dialog({
 			resizable: false,
 			modal: true,
 			position: getDialogPosition(),
 			buttons: {
 				'YES': function() {
-					jQuery(this).dialog('close');
+					$(this).dialog('close');
 					if(typeof(_yesAction)=='function'){
 						_yesAction();
 					} else {
@@ -887,7 +894,7 @@ function confirmDialog(message,yesAction,noAction){
 					
 					},
 				'NO': function() {
-					jQuery(this).dialog('close');
+					$(this).dialog('close');
 					if (typeof(_noAction) != 'undefined') {
 						if (typeof(_noAction) == 'function') {
 							_noAction();
@@ -962,10 +969,10 @@ function loadjscssfile(filename, filetype){
 function getDialogPosition(){
 	if(top.location != self.location) {
 		try {
-			var windowHeight = jQuery(window.parent).height();
-			var dialogHeight = jQuery("#configuratorContainer").height();
-			var scrollTop = jQuery(window.parent).scrollTop();
-			var editorTop = jQuery("#frontEndToolsModalBody", window.parent.document).position().top;
+			var windowHeight = $(window.parent).height();
+			var dialogHeight = $("#configuratorContainer").height();
+			var scrollTop = $(window.parent).scrollTop();
+			var editorTop = $("#frontEndToolsModalBody", window.parent.document).position().top;
 			var t = Math.floor((windowHeight - dialogHeight) / 2) + scrollTop - editorTop;
 			return ["center", t];
 		} 
@@ -984,7 +991,7 @@ function openPreviewDialog(previewURL){
 		previewURL=previewURL + '&muraadminpreview';
 	}
 
-	var $dialog = jQuery('<div></div>')
+	var $dialog = $('<div></div>')
 	    .html('<iframe style="border: 0px; " src="' + previewURL + '" width="1100" height="600"></iframe>')
 	    .dialog({
 	        width: 1100,

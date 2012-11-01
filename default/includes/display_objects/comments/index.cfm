@@ -41,7 +41,7 @@ the GNU General Public License version 2 without this exception. You may, if you
 to your own modified versions of Mura CMS.
 --->
 
-<cfif not listFind("Portal,Gallery",variables.$.content('type'))>
+<cfif not listFindNoCase("LocalRepo,Gallery",variables.$.content('type'))>
 	<cfswitch expression="#variables.$.getJsLib()#">
 		<cfcase value="jquery">
 			<cfset variables.$.getContentRenderer().loadJSLib() />

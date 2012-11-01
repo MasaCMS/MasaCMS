@@ -227,15 +227,19 @@
 	<cfif arguments.autoincrement>
 		<cfset arguments.datatype="int">
 		<cfset arguments.nullable=false>
+	<!---
 	<cfelseif not len(arguments.default)>
 		<cfset arguments.default="null">
 		<cfset arguments.nullable=true>
+	--->
 	</cfif>
 
+	<!---
 	<cfif hasTable and len(existing.column) and not len(existing.default)>
 		<cfset existing.default="null">
 		<cfset existing.nullable=true>
 	</cfif>
+	--->
 
 	<cfif len(existing.column)
 			and (existing.dataType neq arguments.datatype
@@ -701,8 +705,8 @@
 			<cfset columnArgs.nullable=false>
 		</cfif>
 
-		<cfif isdefined('arguments.rs.column_default_value') and len(trim(arguments.rs.column_default_value))>
-			<cfset columnArgs.default=trim(arguments.rs.column_default_value)>
+		<cfif isdefined('arguments.rs.column_default_value') and not (columnArgs.nullable and not len(arguments.rs.column_default_value))>
+			<cfset columnArgs.default=arguments.rs.column_default_value>
 		</cfif>
 
 		<cfif len(columnArgs.default) 
@@ -712,6 +716,14 @@
 						and columnArgs.default neq "null")
 			>
 			<cfset columnArgs.default=_parseInt(columnArgs.default)>
+		</cfif>
+
+		<cfif listFindNoCase("tinyint,int,float,double",columnArgs.datatype) and not (isNumeric(columnArgs.default) or columnArgs.default eq 'null')>
+			<cfif columnArgs.nullable>
+				<cfset columnArgs.default='null'>
+			<cfelse>
+				<cfset columnArgs.default=0>
+			</cfif>
 		</cfif>
 		
 		<cfif not columnArgs.nullable and columnArgs.datatype eq "int" and isDefined('rs.is_primarykey') and arguments.rs.is_primarykey>

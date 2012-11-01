@@ -1780,6 +1780,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var linkArgs=structNew()>
 		<cfset var started=false>
 
+		<cfif isDefined("arguments.closePortals")>
+			<cfset arguments.closeLocaRepos=arguments.closePortals>
+		</cfif>
+
+		<cfif isDefined("arguments.openPortals")>
+			<cfset arguments.openLocalRepos=arguments.openPortals>
+		</cfif>
+
 		<cfif isDefined("arguments.ulTopClass")>
 			<cfset arguments.menuclass=arguments.ulTopClass>
 		</cfif>
@@ -1932,6 +1940,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var thenav="" />
 	<cfset var topIndex= arrayLen(this.crumbdata)-this.navOffSet />
 	<cfset var tracePoint=0>
+
+	<cfif isDefined("arguments.closePortals")>
+		<cfset arguments.closeLocaRepos=arguments.closePortals>
+	</cfif>
+
+	<cfif isDefined("arguments.openPortals")>
+		<cfset arguments.openLocalRepos=arguments.openPortals>
+	</cfif>
+
 	<cfset arguments.contentid=this.crumbdata[topIndex].contentID>
 	<cfset arguments.viewDepth=arguments.viewDepth+1>
 	<cfset arguments.currDepth=1>
