@@ -129,14 +129,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif not fileExists(OriginalImageFile)>
 			<cfreturn NewImageLocal>
 		</cfif>
-
-		<cfset variables.fileWriter.copyFile(source=OriginalImageFile,destination=NewImageSource)>
-		
+	
 		<cfif len(arguments.size)>
 			<cfset customImageSize=getBean('imageSize').loadBy(name=arguments.size,siteID=arguments.siteID)>
 			<cfset arguments.Width = customImageSize.getWidth() />
 			<cfset arguments.Height = customImageSize.getHeight() />
 		</cfif>
+
+		<!--- If the custom image size is not valid return the small --->
+		<cfif not isNumeric(arguments.Width) and not isNumeric(arguments.Height)>
+			<cfreturn arguments.fileID & "_small." & OriginalImageType>
+		</cfif>
+
+		<cfset variables.fileWriter.copyFile(source=OriginalImageFile,destination=NewImageSource)>
 
 		<cfset resizeImage(height=arguments.height,width=arguments.width,image=NewImageSource)>
 			
