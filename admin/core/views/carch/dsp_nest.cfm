@@ -108,12 +108,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif attributes.rsNest.type eq 'File'>
 	<cfset icon=lcase(attributes.rsNest.fileExt)>
 	<cfif variables.restricted>
-		<cfset icon=icon & "Locked">
+		<cfset icon=icon & " locked">
 	</cfif>
 <cfelse>
 	<cfset icon=attributes.rsNest.type>
 	<cfif variables.restricted>
-		<cfset icon="#icon#Locked">
+		<cfset icon="#icon# locked">
 	</cfif>
 	<cfset icon=icon & " " & attributes.rsNest.subtype>
 </cfif>
@@ -121,7 +121,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset request.rowNum=request.rowNum+1>
 </cfsilent>
 <!--- Start LI for content Item --->
-<li data-siteid="#attributes.rsNest.siteid#" data-contentid="#attributes.rsNest.contentid#" data-contenthistid="#attributes.rsNest.contenthistid#" data-sortby="#attributes.rsNest.sortby#" data-sortdirection="#attributes.rsNest.sortdirection#" data-moduleid="#HTMLEditFormat(attributes.moduleid)#" data-type="#attributes.rsNest.type#">
+<li data-siteid="#attributes.rsNest.siteid#" data-contentid="#attributes.rsNest.contentid#" data-contenthistid="#attributes.rsNest.contenthistid#" data-sortby="#attributes.rsNest.sortby#" data-sortdirection="#attributes.rsNest.sortdirection#" data-moduleid="#HTMLEditFormat(attributes.moduleid)#" data-type="#attributes.rsNest.type#"<cfif variables.restricted> class="restricted"</cfif>>
 <dl>
 <dt>
 	<!---<cfif (attributes.rsNest.type eq 'Page') or  (attributes.rsNest.type eq 'LocalRepo')  or  (attributes.rsNest.type eq 'Calendar') or (attributes.rsNest.type eq 'Gallery')>--->
@@ -130,11 +130,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<a class="add" href="javascript:;" onmouseover="siteManager.showMenu('newContentMenu','#newcontent#',this,'#attributes.rsNest.contentid#','#attributes.topid#','#attributes.rsNest.parentid#','#attributes.siteid#','#attributes.rsNest.type#');"><i class="icon-plus-sign"></i></a>	
 	
 	<cfif isNumeric(attributes.rsnest.hasKids) and attributes.rsNest.haskids>
-		<span <cfif isOpenSection>class="hasChildren open icon-caret-down"<cfelse>class="hasChildren closed icon-caret-right"</cfif> onclick="return siteManager.loadSiteSection( jQuery(this).parents('li:first') , 1 , true);"></span>
+		<span <cfif isOpenSection>class="hasChildren open"<cfelse>class="hasChildren closed"</cfif> onclick="return siteManager.loadSiteSection( jQuery(this).parents('li:first') , 1 , true);"></span>
 	</cfif>
 	
 	<cfif not listFindNoCase('none,read',verdict)>
-		<a class="#icon# title draftprompt" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?muraAction=cArch.edit&contenthistid=#attributes.rsNest.ContentHistID#&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">
+		<a class="icon-mura-#lcase(icon)# <cfif attributes.rsNest.type eq 'File'>file</cfif> title draftprompt" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?muraAction=cArch.edit&contenthistid=#attributes.rsNest.ContentHistID#&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#">
 	<cfelse>
 		<a class="#icon# title">
 	</cfif>

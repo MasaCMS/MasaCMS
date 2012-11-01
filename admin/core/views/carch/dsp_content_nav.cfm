@@ -48,18 +48,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div id="newContentMenu" onMouseOut="siteManager.hideMenu('newContentMenu');" onMouseOver="siteManager.keepMenu('newContentMenu');" class="addNew hide">
   <ul>
   <!--- Need class="first" and class="last" on these list items --->
-    <li id="newZoom"><a href="" id="newZoomLink">#application.rbFactory.getKeyValue(session.rb,"sitemanager.zoom")#</a></li>
-    <li id="newContent"><a href="" id="newContentLink">#application.rbFactory.getKeyValue(session.rb,"sitemanager.addcontent")#</a></li>
-    <li id="newCopy">
-    	<a href="" id="newCopyLink">#application.rbFactory.getKeyValue(session.rb,"sitemanager.copy")#&nbsp;</a>
-    	<span>/</span>
-    	<a href="" id="newCopyAllLink">#application.rbFactory.getKeyValue(session.rb,"sitemanager.copyall")#</a>
-    </li>
-	<li id="newPaste"><a href="" id="newPasteLink">#application.rbFactory.getKeyValue(session.rb,"sitemanager.paste")#</a></li>
+    <li id="newZoom"><a href="##" id="newZoomLink">#application.rbFactory.getKeyValue(session.rb,"sitemanager.zoom")#</a></li>
+    <li id="newContent"><a href="##" id="newContentLink">#application.rbFactory.getKeyValue(session.rb,"sitemanager.addcontent")#</a></li>
+    <li id="newCopy"><a href="##" id="newCopyLink">#application.rbFactory.getKeyValue(session.rb,"sitemanager.copy")#</a></li>
+    <li id="newCopyAll"><a href="##" id="newCopyAllLink">#application.rbFactory.getKeyValue(session.rb,"sitemanager.copyall")#</a></li>
+	<li id="newPaste"><a href="##" id="newPasteLink">#application.rbFactory.getKeyValue(session.rb,"sitemanager.paste")#</a></li>
   </ul>
 </div>
 
 <div id="newContentDialog" title="Add New Content" class="hide">
-  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><span id="newContentContainer"></span></p>
+  <p>
+  	<span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
+  	<span id="newContentContainer"></span>
+  </p>
 </div>
 </cfoutput>
