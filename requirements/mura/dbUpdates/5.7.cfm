@@ -92,7 +92,7 @@
 
 <cfscript>
 	dbUtility.setTable("timagesizes")
-	.addColumn(column="sizeID",dataType="char",length="35",default='')
+	.addColumn(column="sizeID",dataType="char",length="35",nullable=false,default='')
 	.addColumn(column="siteID",dataType="varchar",length="35")
 	.addColumn(column="name",dataType="varchar",length="50")
 	.addColumn(column="height",dataType="varchar",length="10")
