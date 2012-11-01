@@ -309,7 +309,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var fileObjSource=""/>
 		<cfset var refused=false />
 		<cfset var serverFilename=arguments.file.serverfilename />
-		<cfset var serverDirectory=arguments.file.serverDirectory & "/"/>
+		<cfset var serverDirectory=arguments.file.serverDirectory & variables.configBean.getFileDelim() />
 		<cfset var site=variables.settingsManager.getSite(arguments.siteID)>
 
 		<cfset fileStruct.fileObj = '' />
