@@ -1731,16 +1731,18 @@
 		
 #newContentMenu {
 	
-	width: 140px;
+	width: 130px;
 	position: absolute;
 	z-index: 20;
 	padding: 0;
-	background: rgba(0,0,0,.85);
+	background: rgba(0,0,0,.9);
 	.border-radius(5px);
-	.box-shadow(1px 1px 2px rgba(0,0,0,.4));
+	.box-shadow(1px 1px 4px rgba(0,0,0,.65));	
 
 		ul {
 			margin: 0;
+			overflow: hidden;
+			.border-radius(5px);
 		}
 		
 		li {
@@ -1748,43 +1750,57 @@
 			margin: 0;
 			padding: 0;
 			position: relative;
-			overflow: hidden;
-			border-top: 1px solid rgba(255,255,255,.1);
-		
-				&:first-child {
-				border-top: 0;
-				}
+			border-top: 1px dotted rgba(255,255,255,.2);
+			
+				&:first-child { border-top: 0; }
 			}
 		
-		a {
+		li > a {
 			display: block;
 			text-decoration: none;
 			margin: 0;
-			padding: .25em 1em;
+			padding: .12em 1em;
 			line-height: 28px;
-			color: @white;		
+			color: @gray;		
 			text-shadow: 0 -1px 0 rgba(0,0,0,1.0);
 			
+				/* This worked great but "newContent" pseudo element wouldn't show for some reason.
 				&:before {
-				top: 2px;
+				top: 3px;
 				.icon-font('FontAwesome');
-				color: rgba(255,255,255,.5);
-				width: 1.2em;
+				color: rgba(255,255,255,.5) !important;
+				width: 18px;
+				margin-right: .5em;
+				text-align: center;
 				font-size: 16px;
-				}
-			}
-		
-		#newContent	a:before { content: '\f067'; }		
-		#newZoom a:before { content: '\f00e'; }		
-		#newCopy a:before, #newCopyAll a:before { content: '\f0c5'; }		
-		#newPaste a:before { content: '\f0ea'; }		
+				}*/
 				
-		a:hover {
-			color: #fff;
-			text-decoration: none;
-			background: @blue;
+				i {
+					font-size: 16px;
+					margin-right: .25em
+				}
+				
 			}
+			
+		li > a:hover {
+			color: @white;
+			text-decoration: none;
+			
+			i { color: @white; }
+									
+			}
+				
+		/*
+#newZoom a:before { content: '\f00e'; }		
+		#newContent	a:before { content: '\f067';  }
+		#newCopy a:before { content: '\f0c5'; }
+		#newCopyAll a:before { content: '\f0e8'; }		
+		#newPaste a:before { content: '\f0ea'; }
+*/		
+		
 	}
+	
+#newContentMenu #newContent	a:before { content: '\f067' !important;  }
 		
 .mura-table-grid {
 	margin: 0 0 16px 0;
