@@ -2548,6 +2548,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="setWidth" default="true">
 	
 	<cfset var imageStyles=structNew()>
+	<cfset var customImageSize="">
 	<cfset imageStyles.markup="">
 
 	<cfif arguments.size eq "" or 
@@ -2560,40 +2561,55 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.size = "main" />
 	</cfif>
 		
-	<cfif arguments.size neq "custom">
+	<cfif listFindNoCase('small,medium,large',arguments.size)>
 		<cfif variables.$.siteConfig('gallery#arguments.size#ScaleBy') eq 'x'>
 			<cfset imageStyles.paddingLeft=variables.$.siteConfig('gallery#arguments.size#Scale') + arguments.padding>
 			<cfset imageStyles.minHeight="auto">
 		<!--- Conditional styles for images constrained by height --->
 		<cfelseif variables.$.siteConfig('gallery#arguments.size#ScaleBy') eq 'y'>
-				<cfset imageStyles.paddingLeft="auto">
-				<cfset imageStyles.minHeight=variables.$.siteConfig('gallery#arguments.size#Scale') + arguments.padding>
-			<cfelse>
-			<!--- Styles for images cropped to square --->
-				<cfset imageStyles.paddingLeft=variables.$.siteConfig('gallery#arguments.size#Scale') + arguments.padding>
-				<cfset imageStyles.minHeight=variables.$.siteConfig('gallery#arguments.size#Scale') + arguments.padding>
-			</cfif>
+			<cfset imageStyles.paddingLeft="auto">
+			<cfset imageStyles.minHeight=variables.$.siteConfig('gallery#arguments.size#Scale') + arguments.padding>
 		<cfelse>
-			<cfif isNumeric(arguments.width)>
-				<cfset imageStyles.paddingLeft=arguments.width + arguments.padding>
-			<cfelse>
-				<cfset imageStyles.paddingLeft="auto">
-			</cfif>
-			<cfif isNumeric(arguments.height)>
-				<cfset imageStyles.minHeight=arguments.height + arguments.padding>
-			<cfelse>
-				<cfset imageStyles.minHeight="auto">
-			</cfif>
+			<!--- Styles for images cropped to square --->
+			<cfset imageStyles.paddingLeft=variables.$.siteConfig('gallery#arguments.size#Scale') + arguments.padding>
+			<cfset imageStyles.minHeight=variables.$.siteConfig('gallery#arguments.size#Scale') + arguments.padding>
 		</cfif>
+	<cfelseif arguments.size eq 'custom'>
+		<cfif isNumeric(arguments.width)>
+			<cfset imageStyles.paddingLeft=arguments.width + arguments.padding>
+		<cfelse>
+			<cfset imageStyles.paddingLeft="auto">
+		</cfif>
+		<cfif isNumeric(arguments.height)>
+			<cfset imageStyles.minHeight=arguments.height + arguments.padding>
+		<cfelse>
+			<cfset imageStyles.minHeight="auto">
+		</cfif>
+	<cfelse>
+		<cfset customImageSize=getBean('imageSize').loadBy(name=arguments.size,siteID=variables.$.event('siteID'))>
+		<cfset arguments.Width=customImageSize.getWidth() />
+		<cfset arguments.Height=customImageSize.getHeight() />
 		
-		<cfif imageStyles.minHeight neq "auto" and arguments.setHeight>
-			<cfset imageStyles.markup="#imageStyles.markup#min-height:#imageStyles.minHeight#px;">
+		<cfif isNumeric(arguments.width)>
+			<cfset imageStyles.paddingLeft=arguments.width + arguments.padding>
+		<cfelse>
+			<cfset imageStyles.paddingLeft="auto">
 		</cfif>
-		<cfif imageStyles.paddingLeft neq "auto" and arguments.setWidth>
-			<cfset imageStyles.markup="#imageStyles.markup#padding-left:#imageStyles.paddingLeft#px;">
+		<cfif isNumeric(arguments.height)>
+			<cfset imageStyles.minHeight=arguments.height + arguments.padding>
+		<cfelse>
+			<cfset imageStyles.minHeight="auto">
 		</cfif>
+	</cfif>
 		
-		<cfreturn imageStyles.markup>
+	<cfif imageStyles.minHeight neq "auto" and arguments.setHeight>
+		<cfset imageStyles.markup="#imageStyles.markup#min-height:#imageStyles.minHeight#px;">
+	</cfif>
+	<cfif imageStyles.paddingLeft neq "auto" and arguments.setWidth>
+		<cfset imageStyles.markup="#imageStyles.markup#padding-left:#imageStyles.paddingLeft#px;">
+	</cfif>
+		
+	<cfreturn imageStyles.markup>
 
 </cffunction>
 

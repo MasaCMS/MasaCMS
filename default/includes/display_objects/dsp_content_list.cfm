@@ -56,7 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset arguments.hasImages=listFindNoCase(arguments.fields,"Image")>
 	
 	<cfif arguments.hasImages>
-		<cfif not structKeyExists(arguments,"imageSize") or not listFindNoCase("small,medium,large,custom",arguments.imageSize) or variables.$.event("muraMobileRequest")>
+		<cfif not structKeyExists(arguments,"imageSize") or variables.$.event("muraMobileRequest")>
 			<cfset arguments.imageSize="small">
 		</cfif>
 		<cfif not structKeyExists(arguments,"imageHeight")>
