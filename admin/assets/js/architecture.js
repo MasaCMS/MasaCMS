@@ -258,6 +258,7 @@ buttons: {
 		document.getElementById('newZoomLink').style.display='none';
 		document.getElementById('newCopy').style.display='none';
 		document.getElementById('newCopyLink').style.display='none';
+		//document.getElementById('newCopyAll').style.display='none';
 		document.getElementById('newCopyAllLink').style.display='none';
 		document.getElementById('newPaste').style.display='none';
 		document.getElementById('newPasteLink').style.display='none';
@@ -319,7 +320,7 @@ buttons: {
 			this.hideMenu(this.lastid);
 		}
 
-		this.navTimer = setTimeout('siteManager.hideMenu(siteManager.lastid);',10000);
+		this.navTimer = setTimeout('siteManager.hideMenu(siteManager.lastid);',20000);
 		this.lastid=id;
 	},
 
@@ -354,7 +355,7 @@ buttons: {
 	},
 
 	keepMenu: function(id) {
-		this.navTimer = setTimeout('hideMenu(lastid);',10000);
+		this.navTimer = setTimeout('hideMenu(lastid);',20000);
 		$('#' + id).removeClass('hide');
 		//document.getElementById(id).style.display="block";
 	},
