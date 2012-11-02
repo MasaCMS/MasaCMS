@@ -182,7 +182,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <dd class="updated"><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.managerUpdated"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.updated")#</a></dd>
       <dd class="actions">&nbsp;</dd>
     </dl>
-    <ul id="mura-nodes">
+    <ul id="mura-nodes"<cfif arrayLen(crumbdata) gt 1 and crumbdata[2].type eq 'Gallery'> class="gallery"</cfif>>
     <!-- Begin List of Nodes -->
     <li data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" data-moduleid="#HTMLEditFormat(rc.moduleid)#" data-sortby="#rc.rstop.sortby#" data-sortdirection="#rc.rstop.sortdirection#" class="#lcase(rc.rstop.type)# <cfif r> restricted</cfif>">
       
