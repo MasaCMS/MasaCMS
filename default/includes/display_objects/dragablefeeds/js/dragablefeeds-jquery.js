@@ -62,7 +62,7 @@ function deleteRssFavorites(userID, siteID)
 		
 	$.ajax({
 		   type: "GET",
-		   url: context + '/tasks/favorites/deleteRSSFavorite.cfm',
+		   url: assetpath + '/includes/display_objects/favorites/ajax/deleteRSSFavorite.cfm',
 		   data: 'userID=' + userID + '&siteid=' + siteID + "&cacheBuster=" + Math.random()
 			  });
 			
@@ -79,7 +79,7 @@ function saveRssFavorite(userID, siteID, favoriteName, favoriteLocation, favorit
 
 		$.ajax({
 		  	type: "GET",
-			 url: context + '/tasks/favorites/saveFavorite.cfm',
+			 url: assetpath + '/includes/display_objects/favorites/ajax/saveFavorite.cfm',
 			 data: 'userID=' + userID + '&siteid=' + siteID + '&favoriteName=' + favoriteName + '&favoriteLocation=' + escape(favoriteLocation) + '&favoriteType=' + favoriteType + '&columnNumber=' + columnNumber + '&rowNumber=' + rowNumber + '&maxRssItems=' + maxRssItems + "&cacheBuster=" + Math.random()
 			 });
 

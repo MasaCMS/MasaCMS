@@ -119,7 +119,7 @@
 	});
 	
 	<!--- Indexes --->	
-	$('.svIndex ul:first').attr({
+	$('.svIndex > ul').attr({
  		'data-role': 'listview',
   		'data-inset': 'true',
   		'data-theme': 'c',

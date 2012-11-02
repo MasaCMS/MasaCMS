@@ -131,15 +131,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="sortDirection" type="string" required="yes" default="asc" />
 	<cfset var rs = "" />
 	<cfset var contentBean = "" />
+	<cfset var it=getBean('contentIterator')>
 		
 	<cfset rs=variables.contentManager.getNest(arguments.contentid,arguments.siteid,arguments.sortBy,arguments.sortDirection) />
-		
-	<cfloop query="rs">
-		<cfif rs.hasKids>
-			<cfset traverseSite(rs.contentID, arguments.siteid, arguments.exportDir,rs.sortBy,rs.sortDirection) />	
+	<cfset it.setQuery(rs)>	
+	<cfloop condition="it.hasNext()">
+		<cfset contentBean=it.next()>
+	 	
+	 	<cfif contentBean.getHasKids()>
+			<cfset traverseSite(contentBean.getContentID(), contentBean.getSiteID(), arguments.exportDir,contentBean.getSortBy(), contentBean.getSortDirection()) />	
 		</cfif>
 		
-		<cfset contentBean=getBean("contentNavBean").set( variables.utility.queryRowToStruct(rs,rs.currentRow)) />
 		<cfset exportNode(contentBean,arguments.exportDir)>
 		
 	</cfloop>
