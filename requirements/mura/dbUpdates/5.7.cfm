@@ -92,15 +92,19 @@
 
 <cfscript>
 	dbUtility.setTable("timagesizes")
-	.addColumn(column="sizeID",dataType="char",length="35")
+	.addColumn(column="sizeID",dataType="char",length="35",nullable=false,default='')
 	.addColumn(column="siteID",dataType="varchar",length="35")
 	.addColumn(column="name",dataType="varchar",length="50")
 	.addColumn(column="height",dataType="varchar",length="10")
-	.addColumn(column="width",dataType="varchar",length="10");
+	.addColumn(column="width",dataType="varchar",length="10")
+	.addPrimaryKey('sizeID')
+	.addIndex('sizeID')
+	.addIndex('siteID');
 
 	dbUtility.setTable("ttrash")
 	.addColumn(column="deleteid",dataType="char",length="35")
-	.addColumn(column="orderno",dataType="int");
+	.addColumn(column="orderno",dataType="int")
+	.addIndex('deleteid');
 
 	dbUtility.setTable("tcontentfeeds")
 	.addColumn(column="viewalllink",dataType="varchar",length="255")
@@ -125,7 +129,8 @@
 	.addColumn(column="commandID",dataType="char",length="35",nullable=false, default='')
 	.addColumn(column="instanceID",dataType="char",length="35")
 	.addColumn(column="command",dataType="longtext")
-	.addPrimaryKey("commandID");
+	.addPrimaryKey("commandID")
+	.addIndex("instanceID");
 
 	dbUtility.setTable("tglobals").dropTable();
 
