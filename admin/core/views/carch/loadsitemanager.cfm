@@ -84,12 +84,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif rc.rsTop.type eq 'File'>
 	<cfset icon=lcase(rc.rsTop.fileExt)>
 	<cfif r>
-		<cfset icon=icon & "Locked">
+		<cfset icon=icon & " locked">
 	</cfif>
 <cfelse>
 	<cfset icon=rc.rsTop.type>
 	<cfif r>
-		<cfset icon="#icon#Locked">
+		<cfset icon="#icon# locked">
 	</cfif>
 	<cfset icon=icon & " " & rc.rsTop.subtype>
 </cfif>
