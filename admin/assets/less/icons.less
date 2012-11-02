@@ -132,4 +132,21 @@
 				content: "\36";
 				font-size: 17px;
 				}
+				
+			&.gallery {
+				
+				+ .file.jpg:before,
+				+ .file.jpeg:before,
+				+ .file.png:before,
+				+ .file.gif:before {
+					.icon-font(FontAwesome);
+					content: "\f03e";
+					font-size: 19px;
+					top: 3px;
+					background: transparent;
+					padding: 0;
+					color: @iconColor;
+					}
+			}
+
 }

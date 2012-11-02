@@ -184,7 +184,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     </dl>
     <ul id="mura-nodes">
     <!-- Begin List of Nodes -->
-    <li data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" data-moduleid="#HTMLEditFormat(rc.moduleid)#" data-sortby="#rc.rstop.sortby#" data-sortdirection="#rc.rstop.sortdirection#"<cfif r> class="restricted"</cfif>>
+    <li data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" data-moduleid="#HTMLEditFormat(rc.moduleid)#" data-sortby="#rc.rstop.sortby#" data-sortdirection="#rc.rstop.sortdirection#" class="#lcase(rc.rstop.type)# <cfif r> restricted</cfif>">
       
       <dl id="top-node">
       <dt>
