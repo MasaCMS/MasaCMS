@@ -1,4 +1,4 @@
-@icon-color: lighten(@grayDark,22%);
+@iconColor: lighten(@grayDark,18%);
 
 .icon-font(@font) {
 	font-family: @font;
@@ -32,7 +32,7 @@
 	i {
 		font-size: 17px;
 		width: auto !important;
-		color: lighten(@grayDark,18%);
+		color: @iconColor;
 		
 		&:hover { color: @grayDarker; }
 		
@@ -67,7 +67,7 @@
 			padding-right: 2px;
 			font-size: 16px;
 			line-height: 28px;
-			color: @grayDark;
+			color: @iconColor;
 			}
 	
 	td.add i {  /* Tab Flat */
@@ -103,9 +103,7 @@
 					padding: 4px 4px 3px;
 					.border-radius(2px);
 					top: -2px;
-					text-shadow: 0 0 0;
-					/* width: 16px; */
-					/* letter-spacing: -1px; */
+					text-shadow: 0 0 0 !important;
 					overflow: hidden;					
 					}	
 				}
@@ -113,8 +111,8 @@
 			&.link:before { content: '\f0c1'; }
 			&.localrepo:before { content: '\f07b'; }
 			&.gallery:before { content: '\f00a'; }			
-			/* &.File:before { content: '\f0c6'; } */
-			&.calendar:before { content: '\f073'; }
+			/* &.file:before { content: '\f0c6'; } */
+			&.calendar:before { content: '\f073'; font-size: 21px; top: 3px; }
 			
 			&.jpg:before,
 			&.jpeg:before,
@@ -124,15 +122,6 @@
 				background: transparent;
 				padding: 0;
 				color: @grayDark;
-				content: "\f03e";
-				font-size: 19px;
-				top: 3px;
-				}
-				
-			&.jpg:before,
-			&.jpeg:before,
-			&.png:before,
-			&.gif:before { 
 				content: "\f03e";
 				font-size: 19px;
 				top: 3px;
