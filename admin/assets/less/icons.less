@@ -1,3 +1,5 @@
+@icon-color: lighten(@grayDark,22%);
+
 .icon-font(@font) {
 	font-family: @font;
 	font-weight: normal;
@@ -74,6 +76,7 @@
 		}
 }
 
+// Many styles overlap with .mura-grid styles for these, need to combine
 .navZoom li {
 			margin: 0;
 			padding: 2px 0 !important;
@@ -85,17 +88,42 @@
 				top: 2px;
 				color: @grayDark;
 			}
+			
+			&.file {
+					
+					/* margin-left: -3px; */
+					
+					&:before { 
+					content: attr(data-filetype);
+					font-family: 'SilkscreenNormal';
+					font-size: 8px;
+					line-height: 1;
+					background: @grayDark;
+					color: @white;
+					padding: 4px 4px 3px;
+					.border-radius(2px);
+					top: -2px;
+					text-shadow: 0 0 0;
+					/* width: 16px; */
+					/* letter-spacing: -1px; */
+					overflow: hidden;					
+					}	
+				}
 				
-			&.Link:before { content: '\f0c1'; }
-			&.LocalRepo:before { content: '\f07b'; }
-			&.Gallery:before { content: '\f00a'; }			
-			&.File:before { content: '\f0c6'; }
-			&.Calendar:before { content: '\f073'; }
+			&.link:before { content: '\f0c1'; }
+			&.localrepo:before { content: '\f07b'; }
+			&.gallery:before { content: '\f00a'; }			
+			/* &.File:before { content: '\f0c6'; } */
+			&.calendar:before { content: '\f073'; }
 			
 			&.jpg:before,
 			&.jpeg:before,
 			&.png:before,
-			&.gif:before { 
+			&.gif:before {
+				font-family: 'FontAwesome'; 
+				background: transparent;
+				padding: 0;
+				color: @grayDark;
 				content: "\f03e";
 				font-size: 19px;
 				top: 3px;
@@ -110,7 +138,7 @@
 				top: 3px;
 				}
 			
-			&.Page:before { 
+			&.page:before { 
 				.icon-font('mura-icons');
 				content: "\36";
 				font-size: 17px;

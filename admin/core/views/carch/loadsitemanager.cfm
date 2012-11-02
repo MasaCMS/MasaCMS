@@ -169,13 +169,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <!-- Begin Grid Header -->
     <div class="mura-grid stripe<cfif rc.sortBy neq 'orderno'> noDrag</cfif>">
     <dl class="mura-grid-hdr">
-      <dt><span class="add"></span><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.managerTitle"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.title")#</a></dt>
+      <dt>
+      		<span class="add"></span>
+      		<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.managerTitle"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.title")#</a>
+      </dt>
       <cfif application.settingsManager.getSite(rc.siteid).getlocking() neq 'all'>
-        <!---
-		<cfif rc.sortBy eq 'orderno'>
-          <dd class="order"><a href="##" rel="tooltip">#application.rbFactory.getKeyValue(session.rb,"sitemanager.order")#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.managerOrder")#</span></a></dd>
-        </cfif>
-		--->
         <dd class="objects"><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.managerObjects"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.objects")#</a></dd>
         <dd class="display"><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.managerDisplay"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.display")#</a></dd>
         <dd class="template"><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.managerTemplate"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.template")#</a></dd>
@@ -198,14 +196,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		
         <cfif not listFindNoCase('none,read',perm)>
-          <a class="icon-mura-#lcase(icon)# title draftprompt" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&siteid=#URLEncodedFormat(rc.siteid)#&contentid=#rc.topid#&topid=#URLEncodedFormat(rc.topid)#&type=#rc.rstop.type#&parentid=#rc.rstop.parentid#&moduleid=#rc.moduleid#">
+          <a class="<cfif rc.rstop.type eq 'File'>file #lcase(icon)#<cfelse>icon-mura-#lcase(icon)#</cfif> title draftprompt" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&siteid=#URLEncodedFormat(rc.siteid)#&contentid=#rc.topid#&topid=#URLEncodedFormat(rc.topid)#&type=#rc.rstop.type#&parentid=#rc.rstop.parentid#&moduleid=#rc.moduleid#"<cfif rc.rsTop.type eq 'File'> data-filetype="#lcase(rc.rsTop.fileExt)#"</cfif>>
         <cfelse>
 		  <a class="#icon# title">
 		</cfif>
 		#HTMLEditFormat(left(rc.rsTop.menutitle,70))#
         <cfif len(rc.rsTop.menutitle) gt 70>&hellip;</cfif>
           </a>
-        <div class="mura-title-fade"></div>
+        <!--- <div class="mura-title-fade"></div> --->
       </dt>
      <cfif application.settingsManager.getSite(rc.siteid).getlocking() neq 'all'>
         <!---

@@ -367,7 +367,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfsilent>
 		<cfif arguments.crumbdata[i].restricted eq 1><cfset locked="locked"></cfif>
 		</cfsilent>
-		<li class="#renderIcon(arguments.crumbdata[i].type,arguments.crumbdata[i].fileExt)# #locked#<cfif arguments.crumbdata[i].type eq 'File'> File</cfif>">
+		<li class="#lcase(renderIcon(arguments.crumbdata[i].type,arguments.crumbdata[i].fileExt))# #locked#<cfif arguments.crumbdata[i].type eq 'File'> file</cfif>"<cfif arguments.crumbdata[i].type eq 'File'> data-filetype="#renderIcon(arguments.crumbdata[i].type,arguments.crumbdata[i].fileExt)#"</cfif>>
 		<a <cfif arguments.ajax> 
 			href="" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#arguments.crumbdata[I].siteid#','#arguments.crumbdata[I].contentid#','00000000000000000000000000000000000','','','#arguments.crumbdata[I].type#',1)});"
 		<cfelse>
@@ -379,7 +379,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset lastlocked="locked">
 		</cfif>
 		</cfsilent>
-		<li class="#renderIcon(arguments.crumbdata[1].type,arguments.crumbdata[i].fileExt)# #lastlocked#<cfif arguments.crumbdata[i].type eq 'File'> File</cfif>"><strong>
+		<li class="#lcase(renderIcon(arguments.crumbdata[1].type,arguments.crumbdata[i].fileExt))# #lastlocked#<cfif arguments.crumbdata[i].type eq 'File'> file</cfif>"<cfif arguments.crumbdata[i].type eq 'File'> data-filetype="#lcase(renderIcon(arguments.crumbdata[i].type,arguments.crumbdata[i].fileExt))#"</cfif>><strong>
 		<a <cfif arguments.ajax> 
 			href="" onclick="return siteManager.loadSiteManagerInTab(function(){siteManager.loadSiteManager('#arguments.crumbdata[1].siteid#','#arguments.crumbdata[1].contentid#','00000000000000000000000000000000000','','','#arguments.crumbdata[1].type#',1)});"
 		<cfelse>
@@ -406,8 +406,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 <ul class="#arguments.class#">
 		<cfloop from="#crumbLen#" to="2" index="I" step="-1">
 		<cfif arguments.crumbdata[i].restricted eq 1><cfset locked="locked"></cfif>
-		<li class="#renderIcon(arguments.crumbdata[i].type,arguments.crumbdata[i].fileExt)# #locked#<cfif arguments.crumbdata[i].type eq 'File'> File</cfif>">#HTMLEditformat(arguments.crumbdata[I].menutitle)# &raquo;</li>
-		</cfloop><cfif locked eq "locked" or arguments.crumbdata[1].restricted eq 1><cfset lastlocked="locked"></cfif><li class="#renderIcon(arguments.crumbdata[1].type,arguments.crumbdata[i].fileExt)# #lastlocked#<cfif arguments.crumbdata[i].type eq 'File'> File</cfif>"><strong><cfif arguments.crumbdata[1].type eq 'Page' or arguments.crumbdata[1].type eq 'LocalRepo' or arguments.crumbdata[1].type eq 'Calendar'>#HTMLEditformat(arguments.crumbdata[1].menutitle)#<cfelse>#HTMLEditformat(crumbdata[1].menutitle)#</cfif></strong></li></ul></cfoutput></cfsavecontent>
+		<li class="#renderIcon(arguments.crumbdata[i].type,arguments.crumbdata[i].fileExt)# #locked#<cfif arguments.crumbdata[i].type eq 'File'> file</cfif>"<cfif arguments.crumbdata[i].type eq 'File'> data-filetype="#renderIcon(arguments.crumbdata[i].type,arguments.crumbdata[i].fileExt)#"</cfif>>#HTMLEditformat(arguments.crumbdata[I].menutitle)# &raquo;</li>
+		</cfloop><cfif locked eq "locked" or arguments.crumbdata[1].restricted eq 1><cfset lastlocked="locked"></cfif><li class="#renderIcon(arguments.crumbdata[1].type,arguments.crumbdata[i].fileExt)# #lastlocked#<cfif arguments.crumbdata[i].type eq 'File'> file</cfif>"><strong><cfif arguments.crumbdata[1].type eq 'Page' or arguments.crumbdata[1].type eq 'LocalRepo' or arguments.crumbdata[1].type eq 'Calendar'>#HTMLEditformat(arguments.crumbdata[1].menutitle)#<cfelse>#HTMLEditformat(crumbdata[1].menutitle)#</cfif></strong></li></ul></cfoutput></cfsavecontent>
 		<cfreturn content />
 </cffunction>
 

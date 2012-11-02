@@ -150,15 +150,7 @@
 				position: relative;
 				.text-overflow;
 				
-				&.locked {
-					
-					/* color: @orange;
-				
-					&:before {
-					color: @orange;
-					} */
-					
-				}
+				&.locked {}
 				
 				&:before { 		
 					position: relative;
@@ -167,26 +159,31 @@
 					margin-right: 2px;
 					font-size: 18px;
 					line-height: 14px;
-					color: lighten(@grayDark,22%);
+					color: @icon-color;
 					display: inline-block;
 					width: 22px;
 					text-align: center;
 					}
-				
-				&.file:before { 
+					
+				&.file {
+					
+					margin-left: -3px;
+					
+					&:before { 
 					content: attr(data-filetype);
 					font-family: 'SilkscreenNormal';
 					font-size: 8px;
 					line-height: 1;
-					background: lighten(@grayDark,22%);
 					color: @white;
-					padding: 4px 5px 3px;
+					background: @icon-color;
+					padding: 4px 4px 3px;
 					.border-radius(2px);
 					top: -2px;
 					/* width: 16px; */
 					/* letter-spacing: -1px; */
 					overflow: hidden;					
-					}
+					}	
+				}
 				
 				&.icon-mura-localrepo:before { content: "\f07b"; }
 				
@@ -195,8 +192,8 @@
 					content: "\36";
 					font-size: 17px;
 					top: 2px;
-					left: 2px;
-					width: 17px;
+					margin-left: 1px;
+					width: 21px;
 					}
 				
 				&.icon-mura-link:before { 
@@ -210,14 +207,22 @@
 					}
 					
 				&.icon-mura-gallery:before { content: "\f00a"; }
+
+			}
+			
+			.gallery {
 				
-				&.icon-mura-jpg:before,
-				&.icon-mura-jpeg:before,
-				&.icon-mura-png:before,
-				&.icon-mura-gif:before { 
+				.file.jpg:before,
+				.file.jpeg:before,
+				.file.png:before,
+				.file.gif:before {
+					.icon-font(FontAwesome);
 					content: "\f03e";
 					font-size: 19px;
 					top: 3px;
+					background: transparent;
+					padding: 0;
+					color: @icon-color;
 					}
 			}
 			
