@@ -76,6 +76,43 @@
 		}
 }
 
+
+
+#carch,#cchangesets,#carch,#cfeed,#cadvertising,#cemail,#cmailinglist,#cprivateusers,#cpublicusers {
+
+	.mura-table-grid .actions {
+		
+		li {
+			.icon-font('FontAwesome');
+			color: @iconColor;
+			font-size: 18px;
+			margin: 0 -18px 0 0;
+			padding-right: 3px !important;
+			
+			&.disabled {
+				color: @gray;
+			}
+			
+			&.edit:before { content: '\f040'; }
+			&.preview:before { content: '\f0ac'; }
+			&.delete:before { content: '\f057'; }
+			&.permissions:before { content: '\f0c0'; }
+			&.versionHistory:before { content: '\f02d'; }
+			&.download:before { content: '\f01a'; }
+			&.manageData:before { content: '\f0ad'; }
+			&.rss:before { content: '\f09e'; }
+			&.import:before { content: '\f019'; } /* truck \f0d1 */
+			&.viewReport:before { content: '\f080'; }
+			
+			> a, > span {
+				.inline-block;
+				width: 18px;
+				text-indent: -9999px;
+			}
+		}	
+	}
+}
+
 // Many styles overlap with .mura-grid styles for these, need to combine
 .navZoom li {
 			margin: 0;

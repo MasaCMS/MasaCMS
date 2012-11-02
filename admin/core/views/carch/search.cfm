@@ -125,16 +125,16 @@ siteManager.copySiteID = '#session.copySiteID#';
         <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
           <li class="permissions"><a title="Permissions" href="index.cfm?muraAction=cPerm.main&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#rc.rsList.contentID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&startrow=#rc.startrow#">&nbsp;</a></li>
         <cfelse>
-		  <li class="permissionsOff"><a>Permissions</a></li>
+		  <li class="permissions disabled"><a>Permissions</a></li>
 		</cfif>
         <cfif deletable>
           <li class="delete"><a title="Delete" href="index.cfm?muraAction=cArch.update&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&action=deleteall&topid=#rc.rsList.contentID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&parentid=#URLEncodedFormat(rc.parentid)#&startrow=#rc.startrow#"
 			<cfif listFindNoCase("Page,LocalRepo,Calendar,Gallery,Link,File",rc.rsList.type)>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),rc.rslist.menutitle))#',this.href)"<cfelse>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)"</cfif>>&nbsp;</a></li>
           <cfelseif rc.locking neq 'all'>
-          <li class="deleteOff">Delete</li>
+          <li class="delete disabled">Delete</li>
         </cfif>
         <cfelse>
-        <li class="editOff">&nbsp;</li>
+        <li class="edit disabled">&nbsp;</li>
 		<cfswitch expression="#rc.rsList.type#">
 		<cfcase value="Page,LocalRepo,Calendar,Gallery">
 		<li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,rc.rsList.filename)#','#rc.rsList.targetParams#');">#left(rc.rsList.menutitle,70)#</a></li>
@@ -146,9 +146,9 @@ siteManager.copySiteID = '#session.copySiteID#';
 		<li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?LinkServID=#rc.rsList.contentid#','#rc.rsList.targetParams#');">#left(rc.rsList.menutitle,70)#</a></li>
 		</cfcase>
 		</cfswitch>
-		<li class="versionHistoryOff"><a>Version History</a></li>
-		<li class="permissionsOff"><a>Permissions</a></li>
-		<li class="deleteOff"><a>Delete</a></li>
+		<li class="versionHistory disabled"><a>Version History</a></li>
+		<li class="permissions disabled"><a>Permissions</a></li>
+		<li class="delete disabled"><a>Delete</a></li>
       </cfif></ul></td>
 	
        </cfoutput>

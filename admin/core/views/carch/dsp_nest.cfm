@@ -121,7 +121,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset request.rowNum=request.rowNum+1>
 </cfsilent>
 <!--- Start LI for content Item --->
-<li data-siteid="#attributes.rsNest.siteid#" data-contentid="#attributes.rsNest.contentid#" data-contenthistid="#attributes.rsNest.contenthistid#" data-sortby="#attributes.rsNest.sortby#" data-sortdirection="#attributes.rsNest.sortdirection#" data-moduleid="#HTMLEditFormat(attributes.moduleid)#" data-type="#attributes.rsNest.type#" class="#lcase(attributes.rsNest.type)#<cfif variables.restricted>restricted</cfif>">
+<li data-siteid="#attributes.rsNest.siteid#" data-contentid="#attributes.rsNest.contentid#" data-contenthistid="#attributes.rsNest.contenthistid#" data-sortby="#attributes.rsNest.sortby#" data-sortdirection="#attributes.rsNest.sortdirection#" data-moduleid="#HTMLEditFormat(attributes.moduleid)#" data-type="#attributes.rsNest.type#" class="#lcase(attributes.rsNest.type)#<cfif variables.restricted> restricted</cfif>">
 <dl>
 <dt>
 	<!---<cfif (attributes.rsNest.type eq 'Page') or  (attributes.rsNest.type eq 'LocalRepo')  or  (attributes.rsNest.type eq 'Calendar') or (attributes.rsNest.type eq 'Gallery')>--->
