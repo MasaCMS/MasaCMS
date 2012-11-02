@@ -6,8 +6,26 @@
 	text-decoration: inherit;
 	}
 
-.mura-grid, .mura-table-grid {
-
+.mura-grid .actions, .mura-table-grid .actions {
+	
+	ul {
+		margin: 0 auto;
+		.inline-block;
+		}
+	
+	li {
+		list-style: none; 
+		.inline-block;
+		padding: 0 5px 0 0 !important;
+		clear: none !important;
+		line-height: 22px;
+		
+		&.delete { padding: 0; }
+		
+	a:hover {
+		text-decoration: none;
+		}
+	}
 	
 	i {
 		font-size: 17px;
@@ -24,22 +42,77 @@
 	
 	.actions {
 		
-		.edit { padding-right: 4px; }
-		.versionHistory { padding-right: 6px; }
+		.edit { padding: 0; margin-right: 0; }
+		.versionHistory { padding-right: 7px; }
+		.download i { 
+			font-size: 18px;
+			}
 		
-		}
-
-	.add i {
-		display: block;
-		padding-right: 2px;
-		font-size: 16px;
-		line-height: 28px;
 		}
 	
 	.template i {
 		font-size: 24px;
 	}
-	
 
 	/* .add:hover i { color: lighten(@grayDark,10%); } */
+}
+
+.mura-grid,
+.mura-table-grid {
+
+	.add i {
+			display: block;
+			padding-right: 2px;
+			font-size: 16px;
+			line-height: 28px;
+			color: @grayDark;
+			}
+	
+	td.add i {  /* Tab Flat */
+		font-size:18px;
+		line-height: 1;
+		}
+}
+
+.navZoom li {
+			margin: 0;
+			padding: 2px 0 !important;
+			
+			&:before {
+				.icon-font('FontAwesome');
+				font-size: 18px;
+				position: relative;
+				top: 2px;
+				color: @grayDark;
+			}
+				
+			&.Link:before { content: '\f0c1'; }
+			&.LocalRepo:before { content: '\f07b'; }
+			&.Gallery:before { content: '\f00a'; }			
+			&.File:before { content: '\f0c6'; }
+			&.Calendar:before { content: '\f073'; }
+			
+			&.jpg:before,
+			&.jpeg:before,
+			&.png:before,
+			&.gif:before { 
+				content: "\f03e";
+				font-size: 19px;
+				top: 3px;
+				}
+				
+			&.jpg:before,
+			&.jpeg:before,
+			&.png:before,
+			&.gif:before { 
+				content: "\f03e";
+				font-size: 19px;
+				top: 3px;
+				}
+			
+			&.Page:before { 
+				.icon-font('mura-icons');
+				content: "\36";
+				font-size: 17px;
+				}
 }

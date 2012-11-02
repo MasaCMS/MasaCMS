@@ -186,49 +186,49 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset editLink="index.cfm?muraAction=cArch.edit&contenthistid=#item.getContentHistID()#&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getParentID()#&topid=#URLEncodedFormat(item.getParentID())#&siteid=#URLEncodedFormat(item.getSiteid())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#">
 		</cfsilent>	
 		<tr data-siteid="#item.getSiteID()#" data-contentid="#item.getContentID()#" data-contenthistid="#item.getContentHistID()#" data-sortby="#item.getSortBy()#" data-sortdirection="#item.getSortDirection()#" data-moduleid="#HTMLEditFormat(item.getModuleID())#" data-type="#item.getType()#">
-			<td class="add"><a class="add" href="javascript:;" onmouseover="siteManager.showMenu('newContentMenu','#newcontent#',this,'#item.getContentID()#','#item.getContentID()#','#item.getContentID()#','#item.getSiteID()#','#item.getType()#');"></a></td>
+			<td class="add"><a class="add" href="javascript:;" onmouseover="siteManager.showMenu('newContentMenu','#newcontent#',this,'#item.getContentID()#','#item.getContentID()#','#item.getContentID()#','#item.getSiteID()#','#item.getType()#');"><i class="icon-plus-sign"></i></a></td>
 			<td class="var-width item">
 			
 			<div class="actions">
-				<ul class="siteSummary <cfif item.gettype() neq 'File'>five<cfelse>six</cfif>">
+				<ul class="siteSummary">
 					<cfif not listFindNoCase('none,read',verdict)>
-				     <li class="edit"><a title="Edit" class="draftprompt" href="#editLink#">Edit</a></li>
+				     <li class="edit"><a title="Edit" class="draftprompt" href="#editLink#"><i class="icon-pencil"></i></a></li>
 					   <cfswitch expression="#item.gettype()#">
 						<cfcase value="Page,LocalRepo,Calendar,Gallery">
-						<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),item.getfilename())#','#item.gettargetParams()#');">Preview</a></li>
+						<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),item.getfilename())#','#item.gettargetParams()#');"><i class="icon-globe"></i></a></li>
 						</cfcase>
 						<cfcase value="File,Link">
-						<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),"")#?LinkServID=#item.getcontentid()#','#item.gettargetParams()#');">Preview</a></li>
+						<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),"")#?LinkServID=#item.getcontentid()#','#item.gettargetParams()#');"><i class="icon-globe"></i></a></li>
 						<cfif item.getType() eq "File">
-						<li class="download"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.download')#" href="/tasks/render/file/?fileID=#item.getFileID()#&method=attachment" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.downloadconfirm'))#',this.href)">Download</a></li>
+						<li class="download"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.download')#" href="/tasks/render/file/?fileID=#item.getFileID()#&method=attachment" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.downloadconfirm'))#',this.href)"><i class="icon-download"></i></a></li>
 						</cfif>
 						</cfcase>
 						</cfswitch>
-					   <li class="versionHistory"><a title="Version History" href="index.cfm?muraAction=cArch.hist&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#item.getcontentID()#&siteid=#URLEncodedFormat(item.getSiteID())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#">Version History</a></li>
+					   <li class="versionHistory"><a title="Version History" href="index.cfm?muraAction=cArch.hist&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#item.getcontentID()#&siteid=#URLEncodedFormat(item.getSiteID())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#"><i class="icon-book"></i></a></li>
 				      <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(item.getSiteID()).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-				        <li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#" href="index.cfm?muraAction=cPerm.main&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#item.getcontentID()#&siteid=#URLEncodedFormat(item.getSiteID())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#</a></li>
+				        <li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#" href="index.cfm?muraAction=cPerm.main&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#item.getcontentID()#&siteid=#URLEncodedFormat(item.getSiteID())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#"><i class="icon-group"></i></a></li>
 				      <cfelse>
-						  <li class="permissionsOff"><a>#application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#</a></li>
+						  <li class="permissions disabled"><a><i class="icon-group"></i></a></li>
 						</cfif>
 				      <cfif deletable>
 				        <li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.delete')#" href="index.cfm?muraAction=cArch.update&contentid=#item.getContentID()#&type=#item.gettype()#&action=deleteall&topid=#item.getcontentID()#&siteid=#URLEncodedFormat(item.getSiteID())#&moduleid=#item.getmoduleid()#&parentid=#URLEncodedFormat(item.getParentID())#&startrow=#$.event('startrow')#"
-							<cfif listFindNoCase("Page,LocalRepo,Calendar,Gallery,Link,File",item.gettype())>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),item.getmenutitle()))#',this.href)"<cfelse>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)"</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.delete')#</a></li>
+							<cfif listFindNoCase("Page,LocalRepo,Calendar,Gallery,Link,File",item.gettype())>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),item.getmenutitle()))#',this.href)"<cfelse>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)"</cfif>><i class="icon-remove-sign"></i></a></li>
 				       <cfelseif rc.locking neq 'all'>
-				        <li class="deleteOff">Delete</li>
+				        <li class="delete disabled"><i class="icon-remove-sign"></i></li>
 				      </cfif>
 				  <cfelse>
-				      <li class="editOff">&nbsp;</li>
+				      <li class="edit disabled">&nbsp;</li>
 						<cfswitch expression="#item.gettype()#">
 						<cfcase value="Page,LocalRepo,Calendar,Gallery">
-						<li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),item.getfilename())#','#item.gettargetParams()#');">Preview</a></li>
+						<li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),item.getfilename())#','#item.gettargetParams()#');"><i class="icon-globe"></i></a></li>
 						</cfcase>
 						<cfcase value="File,Link">
-						<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),"")#?LinkServID=#item.getcontentid()#','#item.gettargetParams()#');">Preview</a></li>
+						<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),"")#?LinkServID=#item.getcontentid()#','#item.gettargetParams()#');"><i class="icon-globe"></i></a></li>
 						</cfcase>
 						</cfswitch>
-						<li class="versionHistoryOff"><a>Version History</a></li>
-						<li class="permissionsOff"><a>Permissions</a></li>
-						<li class="deleteOff"><a>Delete</a></li>
+						<li class="versionHistory disabled"><a><i class="icon-book"></i></a></li>
+						<li class="permissions disabled"><a><i class="icon-group"></i></a></li>
+						<li class="delete disabled"><a><i class="icon-remove-sign"></i></a></li>
 				</cfif>
 				</ul>
 			</div> 

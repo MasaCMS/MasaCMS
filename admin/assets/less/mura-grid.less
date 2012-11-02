@@ -213,8 +213,11 @@
 				
 				outline: 1px dashed red;
 				outline-offset: -1px;
+				position: static;
 				
-				&:before {
+				
+				/*
+&:before {
 					.icon-font('FontAwesome');
 					content: "\f023";
 					background: red;
@@ -226,9 +229,11 @@
 					color: @white;
 					.border-left-radius(4px);
 					position: absolute;
+					
 					margin-left: -23px;
 					margin-top: 0px;
 					}
+*/
 				
 				.restricted { 
 					outline: 0;
@@ -237,7 +242,7 @@
 						content: "";
 						background: transparent;
 						padding: 0;
-						width: auto;
+						width: 0;
 						}
 
 					}
@@ -330,24 +335,7 @@
 			.actions {
 				width: 92px;
 				border-right: 0;
-			
-				ul {
-					margin: 0 auto;
-					.inline-block;
-					}
-				
-				li {
-					list-style: none; 
-					.inline-block;
-					padding: 0 5px 0 0;
-					clear: none;
-					line-height: 22px;
-					
-				a:hover {
-					text-decoration: none;
-					}
 				}
-			}
 			
 			dt .add {
 				width: 16px;
@@ -505,9 +493,7 @@
 		
 		}	
 		/* @end */
-	
-	
-		
+
 		/* @end */
 		
 	#tabFlat {
@@ -561,13 +547,15 @@
 			td {
 				vertical-align: top;
 				padding-top: 10px;
-			}
+				
+				&.add { padding-top: 8px; }
 			
-			td.item {
-				padding: 8px;
-				text-align: left;
-				white-space: wrap !important;
-			}
+				&.item {
+					padding: 8px;
+					text-align: left;
+					white-space: wrap !important;
+					}
+				}
 			
 			a {
 				color: @grayDarker;
@@ -626,15 +614,6 @@
 			content: "";
 		}
 		
-		ul.nodeMeta .navZoom li {
-			padding-left: 18px;
-			margin-right: .25em;
-		}
-		
-		/*.item .nodeMeta .updated {
-			float: none;
-		}*/
-		
 		.thumbnail {
 			float: left;
 			margin: .35em .75em .5em 0;
@@ -688,19 +667,37 @@
 		}
 		
 		.actions ul {
-			padding: .35em .75em;
-			/*float: right;*/
-			position:  absolute;
+			padding: 3px 5px 3px 10px !important;
+			position: absolute;
 			top: 0;
 			right: 0;
-			background: #ddd;
+			background: rgba(0,0,0,.9);
 			.border-radius(12px);
 			display: none;
+			white-space: nowrap;
+			line-height: 1;
+			
+			li {
+				line-height: 1;
+				
+				&.edit { padding-right: 2px !important; }
+				&.preview { padding-right: 3px !important; }
+				&.download { padding-right: 2px !important; }
+				
+				
+				}
+		
+			i {
+				color: @grayDark;
+				line-height: 1;
+			}
+			
+			a:hover i { color: @white; }
+		
 		}
 		
 		tr:hover .actions ul {
-			display: block;
-			/*background: #fff;*/
+			.inline-block;
 		}
 	} /* End #tabFlat */ 
 		
@@ -794,308 +791,9 @@
 			display: inline-block;
 		}
 		
-		/* @group Default */
-		
-		.doc, .docx, .docm, .dotx, .dotm {
-			background-image: url(../images/icons/files/icon_doc_small.gif) !important;
-		}
-		
-		.jpg  {
-			background-image: url(../images/icons/files/icon_jpg_small.gif) !important;
-		}
-		
-		.psd {
-			background-image: url(../images/icons/files/icon_gif_small.gif) !important;
-		}
-		
-		.gif {
-			background-image: url(../images/icons/files/icon_gif_small.gif) !important;
-		}
-		
-		 .png {
-			background-image: url(../images/icons/files/icon_png_small.gif) !important;
-		}
-		
-		.pdf {
-			background-image: url(../images/icons/files/icon_pdf_small.gif) !important;
-		}
-		
-		.txt {
-			background-image: url(../images/icons/files/icon_txt_small.gif) !important;
-		}
-		
-		 .ppt, .pptx, .pptm, .potx, .potm, .ppam, .ppsx, .ppsm, .sldx, .sldm, .thmx {
-			background-image: url(../images/icons/files/icon_ppt_small.gif) !important;
-		}
-		
-		.xls, .xlsx, .xlsm, .xltx, .xltm, .xlsb, .xlam {
-			background-image: url(../images/icons/files/icon_xls_small.gif) !important;
-		}
-		
-		.mdb {
-			background-image: url(../images/icons/files/icon_mdb_small.gif) !important;
-		}
-		
-		.vsd {
-			background-image: url(../images/icons/files/icon_vsd_small.gif) !important;
-		}
-		
-		.mpp {
-			background-image: url(../images/icons/files/icon_mpp_small.gif) !important;
-		}
-		
-		.graffle {
-			background-image: url(../images/icons/files/icon_graffle_small.gif) !important;
-		}
-		
-		.oo3 {
-			background-image: url(../images/icons/files/icon_oo3_small.gif) !important;
-		}
-		
-		.mp3 {
-			background-image: url(../images/icons/files/icon_mp3_small.gif) !important;
-		}
-		
-		.ndd {
-			background-image: url(../images/icons/files/icon_ndd_small.gif) !important;
-		}
-		
-		.zip {
-			background-image: url(../images/icons/files/icon_zip_small.gif) !important;
-		}
-		
-		.css {
-			background-image: url(../images/icons/files/icon_css_small.gif) !important;
-		}
-		
-		.flv {
-			background-image: url(../images/icons/files/icon_flv_small.png) !important;
-		}
-		
-		.html, .htm {
-			background-image: url(../images/icons/files/icon_generic_small.gif) !important;
-		}
 		
 		/* @end */
-		
-		/* @group Locked */
-		
-		.docLocked, .docxLocked, .docmLocked, .dotxLocked, .dotmLocked {
-			background-image: url(../images/icons/files/icon_doc_small_locked.gif) !important;
-		}
-		
-		.jpgLocked {
-			background-image: url(../images/icons/files/icon_jpg_small_locked.gif) !important;
-		}
-		
-		.psdLocked {
-			background-image: url(../images/icons/files/icon_gif_small_locked.gif) !important;
-		}
-		
-		.gifLocked {
-			background-image: url(../images/icons/files/icon_gif_small_locked.gif) !important;
-		}
-		
-		.pngLocked {
-			background-image: url(../images/icons/files/icon_png_small_locked.gif) !important;
-		}
-		
-		.pdfLocked {
-			background-image: url(../images/icons/files/icon_pdf_small_locked.gif) !important;
-		}
-		
-		.txtLocked {
-			background-image: url(../images/icons/files/icon_txt_small_locked.gif) !important;
-		}
-		
-		.pptLocked, .pptxLocked, .pptmLocked, .potxLocked, .potmLocked, .ppamLocked, .ppsxLocked, .ppsmLocked, .sldxLocked, .sldmLocked, .thmxLocked {
-			background-image: url(../images/icons/files/icon_ppt_small_locked.gif) !important;
-		}
-		
-		.xlsLocked, .xlsxLocked, .xlsmLocked, .xltxLocked, .xltmLocked, .xlsbLocked, .xlamLocked {
-			background-image: url(../images/icons/files/icon_xls_small_locked.gif) !important;
-		}
-		
-		.mdbLocked {
-			background-image: url(../images/icons/files/icon_mdb_small_locked.gif) !important;
-		}
-		
-		.vsdLocked {
-			background-image: url(../images/icons/files/icon_vsd_small_locked.gif) !important;
-		}
-		
-		.mppLocked {
-			background-image: url(../images/icons/files/icon_mpp_small_locked.gif) !important;
-		}
-		
-		.graffleLocked {
-			background-image: url(../images/icons/files/icon_graffle_small_locked.gif) !important;
-		}
-		
-		.oo3Locked {
-			background-image: url(../images/icons/files/icon_oo3_small_locked.gif) !important;
-		}
-		
-		.mp3Locked {
-			background-image: url(../images/icons/files/icon_mp3_small_locked.gif) !important;
-		}
-		
-		.nddLocked {
-			background-image: url(../images/icons/files/icon_ndd_small_locked.gif) !important;
-		}
-		
-		.zipLocked {
-			background-image: url(../images/icons/files/icon_zip_small_locked.gif) !important;
-		}
-		
-		.cssLocked {
-			background-image: url(../images/icons/files/icon_flv_small_locked.gif) !important;
-		}
-		
-		.flvLocked {
-			background-image: url(../images/icons/files/icon_flv_small_locked.png) !important;
-		}
-		
-		.htmlLocked, .htmLocked, .cfmLocked, .cfcLocked, .csvLocked, .phpLocked, .rbLocked, .pyLocked, .javaLocked, .jspLocked  {
-			background-image: url(../images/icons/files/icon_generic_small_locked.gif) !important;
-		}
-		
-		/* @end */
-		
-		/* @end */
-		
-		/* @group Content Icons */
-		
-		.mura-grid li a.Link,
-		.navZoom li.Link  {
-			background: url(../images/icons/link.png) no-repeat 2px .7em;
-		}
-		
-		.mura-grid li a.LocalRepo,
-		.navZoom li.LocalRepo {
-			background: url(../images/icons/localrepo.png) no-repeat 0 .6em;
-		}
-		
-		.mura-grid li a.Gallery,
-		.navZoom li.Gallery {
-			background: url(../images/icons/smicn_32.png) no-repeat 3px .7em;
-		}
-		
-		.mura-grid li a.Image,
-		.navZoom li.Image {
-			background: url(../images/icons/image_32.png) no-repeat 0 .6em;
-		}
-		
-		.mura-grid li a.GalleryLocked,
-		.navZoom li.GalleryLocked {
-			background: url(../images/icons/smicn_32_locked.png) no-repeat 1px .7em;
-		}
-		
-		.mura-grid li a.ImageLocked,
-		.navZoom li.ImageLocked {
-			background: url(../images/icons/image_32_locked.png) no-repeat 0 .1em;
-		}
-		
-		.mura-grid li a.Calendar,
-		.navZoom li.Calendar {
-			background: url(../images/icons/calendar.gif) no-repeat 2px .6em;
-		}
-		
-		.mura-link-search-result .navZoom li.Calendar {
-			background: url(../images/icons/calendar.gif) no-repeat 2px center;
-		}
-		
-		.navZoom li.Calendar {
-			background: url(../images/icons/calendar.gif) no-repeat 2px .1em;
-		}
-		
-		.mura-grid li a.PageLocked,
-		.navZoom li.PageLocked {
-			background: url(../images/icons/files/icon_generic_small_locked.gif) no-repeat 1px .6em;
-		}
-		
-		.mura-grid li a.DocumentLocked,
-		.mura-grid li a.FileLocked,
-		.navZoom li.DocumentLocked,
-		.navZoom li.FileLocked {
-			background: url(../images/icons/document_locked.png) no-repeat 1px .1em;
-		}
-		
-		.mura-grid li a.LinkLocked,
-		.navZoom li.LinkLocked {
-			background: url(../images/icons/link_locked.png) no-repeat 1px .7em;
-		}
-		
-		.mura-grid li a.LocalRepoLocked,
-		.navZoom li.LocalRepoLocked {
-			background: url(../images/icons/localrepo_locked.png) no-repeat 0 .6em;
-		}
-		
-		.mura-grid li a.CalendarLocked,
-		.navZoom li.CalendarLocked {
-			background: url(../images/icons/calendar_locked.gif) no-repeat 1px .6em;
-		}
-		
-		.navZoom li,
-		.navZoom li.Link,
-		.navZoom li.Gallery,
-		.navZoom li.Image,
-		.navZoom li.Page,
-		.navZoom li.gif,
-		.navZoom li.jpg,
-		.navZoom li.psd,
-		.navZoom li.pdf,
-		.navZoom li.ppt,
-		.navZoom li.doc,
-		.navZoom li.png,
-		.navZoom li.txt,
-		.navZoom li.xls,
-		.navZoom li.mdb,
-		.navZoom li.vsd,
-		.navZoom li.mpp,
-		.navZoom li.graffle,
-		.navZoom li.mp3,
-		.navZoom li.ndd,
-		.navZoom li.zip,
-		.navZoom li.css,
-		.navZoom li.html,
-		.navZoom li.htm,
-		.navZoom li.LinkLocked,
-		.navZoom li.GalleryLocked,
-		.navZoom li.ImageLocked,
-		.navZoom li.PageLocked,
-		.navZoom li.gifLocked,
-		.navZoom li.jpgLocked,
-		.navZoom li.psdLocked,
-		.navZoom li.pdfLocked,
-		.navZoom li.pptLocked,
-		.navZoom li.docLocked,
-		.navZoom li.pngLocked,
-		.navZoom li.txtLocked,
-		.navZoom li.xlsLocked,
-		.navZoom li.mdbLocked,
-		.navZoom li.vsdLocked,
-		.navZoom li.mppLocked,
-		.navZoom li.graffleLocked,
-		.navZoom li.mp3Locked,
-		.navZoom li.nddLocked,
-		.navZoom li.zipLocked,
-		.navZoom li.cssLocked,
-		.navZoom li.htmlLocked,
-		.navZoom li.htmLocked   {
-			background-position: left center;
-			margin: 0;
-			padding: 2px 0 2px 18px !important;
-		}
-		
-		.navZoom li.LocalRepo, .navZoom li.LocalRepoLocked, .navZoom li.Calendar, .navZoom li.CalendarLocked {
-			background-position: left center;
-			
-			margin: 0;
-			padding: 2px 0 2px 20px !important;
-		}
-		
-		
+
 		table td li.Category {
 			margin: 0;
 			padding: 2px 0;
@@ -1106,15 +804,10 @@
 			padding: 2px 0;
 		}
 		
-		/*table td.order img {
-			margin: 0 1px 0 1px
-		}*/
-		
 		table td.title img {
 			margin-right: 3px;
 		}
-		
-		/* @end */
+
 		
 		
 		/* @group Action Icons */
@@ -1761,7 +1454,7 @@
 			margin: 0;
 			padding: .12em 1em;
 			line-height: 28px;
-			color: @gray;		
+			color: @grayDark;		
 			text-shadow: 0 -1px 0 rgba(0,0,0,1.0);
 			
 				/* This worked great but "newContent" pseudo element wouldn't show for some reason.
@@ -1783,7 +1476,7 @@
 			}
 			
 		li > a:hover {
-			color: @white;
+			color: @gray;
 			text-decoration: none;
 			
 			i { color: @white; }
@@ -1902,6 +1595,8 @@ th {
 	white-space: nowrap;
 	text-align: center;
 	width: 1%;
+	
+	&.add { padding-top: 6px; }
 }
 
 /*table table {
@@ -1980,25 +1675,14 @@ table td.add a:hover {
 	text-decoration: none;
 }
 
-li.Page {
-	background: transparent url(../images/icons/files/icon_generic_small.gif) no-repeat;
-	margin: 0;
-}
-
-td li.Page {
-	padding: 2px 0 2px 30px;
-	background-position: 11px 1px;
-}
-
 table td.var-width li,
 table#fileList td.var-width a,
 .overview span
  {
-	background-position: 11px 1px;
 	color: #333232;
 	text-decoration: none;
 	margin: 0;
-	padding: 2px 0 2px 30px;
+	padding: 0;
 }
 
 table#fileList td.var-width a,
