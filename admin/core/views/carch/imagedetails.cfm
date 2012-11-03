@@ -61,6 +61,14 @@
 				<a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))#" onclick="rotateImage('#JSStringFormat(rc.fileID)#'); return false;"><i class="icon-refresh"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))#</a>
 				
 				<a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))#" onclick="flipImage('#JSStringFormat(rc.fileID)#','horizontal'); return false;"><i class="icon-refresh"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# (horizontal)</a>
+
+				<a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))#" onclick="flipImage('#JSStringFormat(rc.fileID)#','vertical'); return false;"><i class="icon-refresh"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# (vertical)</a>
+
+				<a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))#" onclick="flipImage('#JSStringFormat(rc.fileID)#','diagonal'); return false;"><i class="icon-refresh"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# (diagonal)</a>
+
+				<a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))#" onclick="flipImage('#JSStringFormat(rc.fileID)#','antidiagonal'); return false;"><i class="icon-refresh"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# (antidiagonal)</a>
+
+
 				</div>
 
 				<cfloop list="Small,Medium,Large" index="s">
