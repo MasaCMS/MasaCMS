@@ -59,6 +59,8 @@
 				<h2><i class="icon-picture"></i> #HTMLEditFormat(rc.rsMeta.filename)#</h2>
 				<div class="control-group divide">
 				<a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))#" onclick="rotateImage('#JSStringFormat(rc.fileID)#'); return false;"><i class="icon-refresh"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))#</a>
+				
+				<a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))#" onclick="flipImage('#JSStringFormat(rc.fileID)#','horizontal'); return false;"><i class="icon-refresh"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# (horizontal)</a>
 				</div>
 
 				<cfloop list="Small,Medium,Large" index="s">
@@ -132,6 +134,18 @@
 	    	//location.href='./index.cfm?muraAction=carch.rotateimage&fileid=' + currentFileID + '&siteid=' + siteid;
 
 		    $.get('./index.cfm?muraAction=carch.rotateimage&fileid=' + _fileid + '&siteid=' + siteid + '&cacheid=' + Math.random(),
+				function(data) {	
+					//alert($(".cropper-reset[data-fileid='" + _fileid + "']").length);
+					$(".cropper-reset[data-fileid='" + _fileid + "']").trigger('click');
+				}
+			);	
+	    }
+
+	    function flipImage(fileid,transpose){
+			var _fileid=fileid
+	    	//location.href='./index.cfm?muraAction=carch.flipimage&fileid=' + currentFileID + '&siteid=' + siteid;
+
+		    $.get('./index.cfm?muraAction=carch.flipimage&fileid=' + _fileid + '&siteid=' + siteid + '&transpose=' + transpose + '&cacheid=' + Math.random(),
 				function(data) {	
 					//alert($(".cropper-reset[data-fileid='" + _fileid + "']").length);
 					$(".cropper-reset[data-fileid='" + _fileid + "']").trigger('click');

@@ -720,7 +720,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset arguments.size=lcase(arguments.size)>
 	
-	<cfif rsMeta.recordcount>
+	<cfif rsMeta.recordcount and IsImageFile(source)>
 		
 		<cfif not fileExists(source)>
 			<cfset source="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/#fileID#.#rsMeta.fileExt#">
@@ -781,15 +781,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="rotate">
 	<cfargument name="fileID">
+	<cfargument name="degrees" default="90">
 
 	<cfset var rsMeta=readMeta(arguments.fileID)>
 	<cfset var source="#application.configBean.getFileDir()#/#rsMeta.siteID#/cache/file/#arguments.fileID#_source.#rsMeta.fileExt#">
 	<cfset var myImage="">
 	
-	<cfif rsMeta.recordcount>
+	<cfif rsMeta.recordcount and IsImageFile(source)>
 		<cfscript>
 			myImage=imageRead(source);
-			ImageRotate(myImage,90);
+			ImageRotate(myImage,arguments.degrees);
+			imageWrite(myImage,source,1);
+		</cfscript>
+	</cfif>
+</cffunction>
+
+<cffunction name="flip">
+	<cfargument name="fileID">
+	<cfargument name="transpose" default="horizontal">
+
+	<cfset var rsMeta=readMeta(arguments.fileID)>
+	<cfset var source="#application.configBean.getFileDir()#/#rsMeta.siteID#/cache/file/#arguments.fileID#_source.#rsMeta.fileExt#">
+	<cfset var myImage="">
+	
+	<cfif rsMeta.recordcount and IsImageFile(source)>
+		<cfscript>
+			myImage=imageRead(source);
+			ImageFlip(myImage,arguments.transpose);
 			imageWrite(myImage,source,1);
 		</cfscript>
 	</cfif>
