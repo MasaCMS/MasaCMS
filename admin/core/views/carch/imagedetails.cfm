@@ -57,6 +57,10 @@
 			<cfif len(rc.sourceImage)>		
 				<cfset rc.rsMeta=$.getBean('fileManager').readMeta(fileID=f)>
 				<h2><i class="icon-picture"></i> #HTMLEditFormat(rc.rsMeta.filename)#</h2>
+				<div class="control-group divide">
+				<a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))#" onclick="rotateImage('#JSStringFormat(rc.fileID)#'); return false;"><i class="icon-circle-arrow-left"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))#</a>
+				</div>
+
 				<cfloop list="Small,Medium,Large" index="s">
 					<div class="control-group divide">
 						<label class="control-label">#s# (#$.siteConfig('#s#ImageWidth')#x#$.siteConfig('#s#ImageHeight')#)</label>
@@ -122,6 +126,18 @@
 		   $('##'+ id).css({'height':h,'width':w});
 		   return false;
 		}
+
+		function rotateImage(fileid){
+			var _fileid=fileid
+	    	//location.href='./index.cfm?muraAction=carch.rotateimage&fileid=' + currentFileID + '&siteid=' + siteid;
+
+		    $.get('./index.cfm?muraAction=carch.rotateimage&fileid=' + _fileid + '&siteid=' + siteid + '&cacheid=' + Math.random(),
+				function(data) {	
+					//alert($(".cropper-reset[data-fileid='" + _fileid + "']").length);
+					$(".cropper-reset[data-fileid='" + _fileid + "']").trigger('click');
+				}
+			);	
+	    }
 	
 	    function saveCoords(c){currentCoords=c};
 	
@@ -132,7 +148,7 @@
 	 		//location.href='./index.cfm?muraAction=carch.cropimage&fileid=' + currentFileID + '&size=' + currentSize + '&x=' + currentCoords.x + '&y=' + currentCoords.y + '&width=' + currentCoords.w + '&height=' + currentCoords.h + '&siteid=' + siteid;
 	
 	 		if(typeof(currentCoords) == 'object'){
-		    	jQuery.get('./index.cfm?muraAction=carch.cropimage&fileid=' + currentFileID + '&size=' + currentSize + '&x=' + currentCoords.x + '&y=' + currentCoords.y + '&width=' + currentCoords.w + '&height=' + currentCoords.h + '&siteid=' + siteid,
+		    	$.get('./index.cfm?muraAction=carch.cropimage&fileid=' + currentFileID + '&size=' + currentSize + '&x=' + currentCoords.x + '&y=' + currentCoords.y + '&width=' + currentCoords.w + '&height=' + currentCoords.h + '&siteid=' + siteid,
 									function(data) {	
 										//alert(JSON.stringify(data));
 										reloadImg(currentSize + currentFileID);
@@ -148,22 +164,22 @@
 	    $('.cropper-reset').click(
 	    	function(){
 	
-	    		currentFileID=$(this).attr('data-fileid');
-				currentSize=$(this).attr('data-size')
-				//alert(currentSize + currentFileID);
+	    		var resetFileID=$(this).attr('data-fileid');
+				var resetSize=$(this).attr('data-size')
+				//alert(resetSize + resetFileID);
 	
-	    		$('##'  + currentSize + currentFileID + 'btns .btn').hide();
-	    		$('##'  + currentSize + currentFileID + 'btns img').show();
+	    		$('##'  + resetSize + resetFileID + 'btns .btn').hide();
+	    		$('##'  + resetSize + resetFileID + 'btns img').show();
 	
-	    		//location.href='./index.cfm?muraAction=carch.cropimage&fileid=' + currentFileID + '&size=' + currentSize + '&siteid=' + siteid;
+	    		//location.href='./index.cfm?muraAction=carch.cropimage&fileid=' + resetFileID + '&size=' + resetSize + '&siteid=' + siteid;
 	
-	    		jQuery.get('./index.cfm?muraAction=carch.cropimage&fileid=' + currentFileID + '&size=' + currentSize + '&siteid=' + siteid,
+	    		$.get('./index.cfm?muraAction=carch.cropimage&fileid=' + resetFileID + '&size=' + resetSize + '&siteid=' + siteid + '&cacheid=' + Math.random(),
 								function(data) {	
 									//alert(JSON.stringify(data));
-									reloadImg(currentSize + currentFileID);
-									resizeImg(currentSize + currentFileID,data.width,data.height);
-									$('##'  + currentSize + currentFileID + 'btns .btn').show();
-	    							$('##'  + currentSize + currentFileID + 'btns img').hide();
+									reloadImg(resetSize + resetFileID);
+									resizeImg(resetSize + resetFileID,data.width,data.height);
+									$('##'  + resetSize + resetFileID + 'btns .btn').show();
+	    							$('##'  + resetSize + resetFileID + 'btns img').hide();
 								}
 							);		
 	
@@ -177,10 +193,10 @@
 	    		currentFileID=$(this).attr('data-fileid');
 				currentSize=$(this).attr('data-size');
 				currentCoords='';
-	
+				
 	    		var jcrop_api; 
 	    		var $dialogHTML='<div id="cropper"><div class="jc-dialog">';
-	    			$dialogHTML+='<img id="crop-target" src="' + $(this).attr('data-src') + '" /> '; 
+	    			$dialogHTML+='<img id="crop-target" src="' + $(this).attr('data-src') + '?cacheid=' + Math.random() +'" /> '; 
 	    			$dialogHTML+='<br/><input type="hidden" name="coords" value="" id="coords">'; 
 	    			$dialogHTML+='<input class="btn" type="button" value="Cancel" onclick="$(\'##cropper\').remove();">';
 	    			$dialogHTML+='<input class="btn" type="button"id="applyCoords" value="Apply Cropping" onclick="applyCropping();">';

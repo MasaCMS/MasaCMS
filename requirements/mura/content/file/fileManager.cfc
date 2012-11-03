@@ -779,4 +779,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
+<cffunction name="rotate">
+	<cfargument name="fileID">
+
+	<cfset var rsMeta=readMeta(arguments.fileID)>
+	<cfset var source="#application.configBean.getFileDir()#/#rsMeta.siteID#/cache/file/#arguments.fileID#_source.#rsMeta.fileExt#">
+	<cfset var myImage="">
+	
+	<cfif rsMeta.recordcount>
+		<cfscript>
+			myImage=imageRead(source);
+			ImageRotate(myImage,90);
+			imageWrite(myImage,source,1);
+		</cfscript>
+	</cfif>
+</cffunction>
+
 </cfcomponent>
