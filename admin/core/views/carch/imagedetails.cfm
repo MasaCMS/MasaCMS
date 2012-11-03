@@ -58,7 +58,7 @@
 				<cfset rc.rsMeta=$.getBean('fileManager').readMeta(fileID=f)>
 				<h2><i class="icon-picture"></i> #HTMLEditFormat(rc.rsMeta.filename)#</h2>
 				<div class="control-group divide">
-				<a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))#" onclick="rotateImage('#JSStringFormat(rc.fileID)#'); return false;"><i class="icon-circle-arrow-left"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))#</a>
+				<a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))#" onclick="rotateImage('#JSStringFormat(rc.fileID)#'); return false;"><i class="icon-refresh"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))#</a>
 				</div>
 
 				<cfloop list="Small,Medium,Large" index="s">
