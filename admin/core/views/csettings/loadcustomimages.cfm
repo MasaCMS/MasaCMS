@@ -36,7 +36,7 @@ width:#rc.width#<br/>
 <td>#HTMLEditFormat(image.getHeight())#</td>
 <td>#HTMLEditFormat(image.getWidth())#</td>
 <td class="actions"><ul class="one">
-	<li class="edit"><a href="##" text="Edit" onclick="return openCustomImageSize('#image.getSizeID()#','#JSStringFormat(image.getSiteID())#');">Edit</a></li>
+	<li class="edit"><a href="##" text="Edit" onclick="return openCustomImageSize('#image.getSizeID()#','#JSStringFormat(image.getSiteID())#');"><i class="icon-pencil"></i></a></li>
 </ul></td>
 </tr>
 </cfloop>

@@ -81,7 +81,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<td class="var-width"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?muraAction=cAdvertising.viewAdvertiser&userid=#rc.rslist.userid#&siteid=#URLEncodedFormat(rc.siteid)#">#company#</a></td>
 		<td>#fname# #lname#</td>
 		<td><cfif email neq ''><a href="mailto:#email#">#email#</a><cfelse>&nbsp;</cfif></td>
-		<td class="actions"><ul class="advertisers"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?muraAction=cAdvertising.viewAdvertiser&userid=#rc.rslist.userid#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#</a></li></ul></td></tr>
+		<td class="actions"><ul class="advertisers"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?muraAction=cAdvertising.viewAdvertiser&userid=#rc.rslist.userid#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-pencil"></i></a></li></ul></td></tr>
 </cfoutput>
 <cfelse>
 <tr>

@@ -22,7 +22,10 @@
 		clear: none !important;
 		line-height: 22px;
 		
-		&.delete { padding: 0; }
+		&.edit { padding: 0; margin-right: 0; }
+		&.version-history { padding-right: 7px; }
+		&.download i { font-size: 18px; }
+		&:last-child {padding-right: 0 !important;}
 		
 	a:hover {
 		text-decoration: none;
@@ -40,16 +43,6 @@
 			
 	.disabled i {
 		color: @gray;
-		}
-	
-	.actions {
-		
-		.edit { padding: 0; margin-right: 0; }
-		.versionHistory { padding-right: 7px; }
-		.download i { 
-			font-size: 18px;
-			}
-		
 		}
 	
 	.template i {
@@ -78,6 +71,7 @@
 
 
 
+/*
 #carch,#cchangesets,#carch,#cfeed,#cadvertising,#cemail,#cmailinglist,#cprivateusers,#cpublicusers {
 
 	.mura-table-grid .actions {
@@ -97,12 +91,12 @@
 			&.preview:before { content: '\f0ac'; }
 			&.delete:before { content: '\f057'; }
 			&.permissions:before { content: '\f0c0'; }
-			&.versionHistory:before { content: '\f02d'; }
+			&.version-history:before { content: '\f02d'; }
 			&.download:before { content: '\f01a'; }
-			&.manageData:before { content: '\f0ad'; }
+			&.manage-data:before { content: '\f0ad'; }
 			&.rss:before { content: '\f09e'; }
-			&.import:before { content: '\f019'; } /* truck \f0d1 */
-			&.viewReport:before { content: '\f080'; }
+			&.import:before { content: '\f019'; } // truck \f0d1
+			&.view-report:before { content: '\f080'; }
 			
 			> a, > span {
 				.inline-block;
@@ -112,6 +106,7 @@
 		}	
 	}
 }
+*/
 
 // Many styles overlap with .mura-grid styles for these, need to combine
 .navZoom li {

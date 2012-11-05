@@ -178,7 +178,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>
 						<!---<td>#application.autoUpdater.getCurrentCompleteVersion(rc.rsSites.siteid)#</td>--->
 						<td class="actions"><ul <cfif application.configBean.getMode() eq 'Staging'>class="three"<cfelse>class="two"</cfif>>
-								<li class="edit"><a title="Edit" href="index.cfm?muraAction=cSettings.editSite&siteid=#rc.rsSites.siteid#">Edit</a></li>
+								<li class="edit"><a title="Edit" href="index.cfm?muraAction=cSettings.editSite&siteid=#rc.rsSites.siteid#"><i class="icon-pencil"></i></a></li>
 								<cfif application.configBean.getMode() eq 'Staging'>
 									<cfif application.configBean.getValue('deployMode') eq "bundle">
 										<li class="deploy"><a href="?muraAction=cSettings.deploybundle&siteid=#rc.rsSites.siteid#" onclick="return confirmDialog('Deploy #JSStringFormat(rc.rsSites.site)# to production?',this.href);" title="Deploy">Deploy</a></li>
@@ -187,7 +187,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									</cfif>
 								</cfif>
 								<cfif rc.rsSites.siteid neq 'default'>
-									<li class="delete"><a title="Delete" href="index.cfm?muraAction=cSettings.updateSite&action=delete&siteid=#rc.rsSites.siteid#" onclick="return confirmDialog('#JSStringFormat("WARNING: A deleted site and all of it''s files cannot be recovered. Are you sure that you want to delete the site named '#Ucase(rc.rsSites.site)#'?")#',this.href);">Delete</a></li>
+									<li class="delete"><a title="Delete" href="index.cfm?muraAction=cSettings.updateSite&action=delete&siteid=#rc.rsSites.siteid#" onclick="return confirmDialog('#JSStringFormat("WARNING: A deleted site and all of it''s files cannot be recovered. Are you sure that you want to delete the site named '#Ucase(rc.rsSites.site)#'?")#',this.href);"><i class="icon-remove-sign"></i></a></li>
 									<cfelse>
 									<li class="delete disabled">Delete</li>
 								</cfif>
@@ -245,8 +245,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<!--- <td><a href="#rc.rsPlugins.providerurl#" target="_blank">View</a></td> --->
 						<td>#rc.rsPlugins.pluginID#</td>
 						<td class="actions"><ul class="two">
-								<li class="edit"><a title="Edit" href="index.cfm?muraAction=cSettings.editPlugin&moduleID=#rc.rsPlugins.moduleID#">Edit</a></li>
-								<li class="delete"><a title="Delete" href="index.cfm?muraAction=cSettings.deletePlugin&moduleID=#rc.rsPlugins.moduleID#" onclick="return confirmDialog('Delete #jsStringFormat("'#Ucase(rc.rsPlugins.name)#'")#?',this.href);">Delete</a></li>
+								<li class="edit"><a title="Edit" href="index.cfm?muraAction=cSettings.editPlugin&moduleID=#rc.rsPlugins.moduleID#"><i class="icon-pencil"></i></a></li>
+								<li class="delete"><a title="Delete" href="index.cfm?muraAction=cSettings.deletePlugin&moduleID=#rc.rsPlugins.moduleID#" onclick="return confirmDialog('Delete #jsStringFormat("'#Ucase(rc.rsPlugins.name)#'")#?',this.href);"><i class="icon-remove-sign"></i></a></li>
 							</ul></td>
 					</tr>
 					</cfoutput>

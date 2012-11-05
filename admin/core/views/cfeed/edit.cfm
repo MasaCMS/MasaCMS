@@ -221,7 +221,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<tr id="c#rc.rslist.contentID#">
 		<td class="var-width">#rc.rslist.menuTitle#</td>
 		<td>#rc.rslist.type#</td>
-		<td class="actions"><input type="hidden" name="contentID" value="#rc.rslist.contentid#" /><ul class="clearfix"><li class="delete"><a title="Delete" href="##" onclick="return feedManager.removeFilter('c#rc.rslist.contentid#');">#application.rbFactory.getKeyValue(session.rb,'collections.delete')#</a></li></ul></td>
+		<td class="actions"><input type="hidden" name="contentID" value="#rc.rslist.contentid#" /><ul class="clearfix"><li class="delete"><a title="Delete" href="##" onclick="return feedManager.removeFilter('c#rc.rslist.contentid#');"><i class="icon-remove-sign"></i></a></li></ul></td>
 		</tr></cfloop>
 		<cfelse>
 		<tr>

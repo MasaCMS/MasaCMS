@@ -88,7 +88,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <td>#htmlEditFormat(trashItem.getSiteID())#</td>
 <td>#LSDateFormat(trashItem.getDeletedDate(),session.dateKeyFormat)# #LSTimeFormat(trashItem.getDeletedDate(),"short")#</td>
 <td>#htmlEditFormat(trashItem.getDeletedBy())#</td>
-<td class="actions"><ul><li class="edit"><a href="?muraAction=cTrash.detail&objectID=#trashItem.getObjectID()#&keywords=#URLEncodedFormat(rc.keywords)#&pageNum=#URLEncodedFormat(rc.pageNum)#">View Detail</a></li></ul></td>
+<td class="actions"><ul><li class="edit"><a href="?muraAction=cTrash.detail&objectID=#trashItem.getObjectID()#&keywords=#URLEncodedFormat(rc.keywords)#&pageNum=#URLEncodedFormat(rc.pageNum)#"><i class="icon-pencil"></i></a></li></ul></td>
 </tr>
 </cfloop>
 <cfelse>

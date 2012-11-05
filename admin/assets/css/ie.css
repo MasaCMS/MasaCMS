@@ -303,15 +303,15 @@ dd.categoryAssignment input.textAlt {
 * html .addNew #newGalleryItem a { background: url(../images/icons/ie6/image_24.gif) no-repeat 0px 5px; }
 
 * html table td.actions li.edit { background: url(../images/icons/ie6/edit_24.gif) no-repeat; }
-* html table td.actions li.versionHistory { background: url(../images/icons/ie6/hist_24.gif) no-repeat; }
+* html table td.actions li.version-history { background: url(../images/icons/ie6/hist_24.gif) no-repeat; }
 * html table td.actions li.permissions { background: url(../images/icons/ie6/group_24.gif) no-repeat; }
 * html table td.actions li.delete { background: url(../images/icons/ie6/remov_24.gif) no-repeat; }
-* html table td.actions li.viewReport { background: url(../images/icons/ie6/chart_24.gif) no-repeat; }
+* html table td.actions li.view-report { background: url(../images/icons/ie6/chart_24.gif) no-repeat; }
 * html table td.actions li.download { background: url(../images/icons/ie6/redo_24.gif) no-repeat; }
-* html table td.actions li.manageData { background: url(../images/icons/ie6/confg_24.gif) no-repeat; }
+* html table td.actions li.manage-data { background: url(../images/icons/ie6/confg_24.gif) no-repeat; }
 
 * html table td.actions li.editOff { background: url(../images/icons/ie6/edit_24_off.gif) no-repeat; }
-* html table td.actions li.versionHistoryOff { background: url(../images/icons/ie6/hist_24_off.gif) no-repeat; }
+* html table td.actions li.version-historyOff { background: url(../images/icons/ie6/hist_24_off.gif) no-repeat; }
 * html table td.actions li.permissionsOff { background: url(../images/icons/ie6/group_24_off.gif) no-repeat; }
 * html table td.actions li.deleteOff { background: url(../images/icons/ie6/remov_24_off.gif) no-repeat; }
 

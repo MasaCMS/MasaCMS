@@ -204,7 +204,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>
 						</cfcase>
 						</cfswitch>
-					   <li class="versionHistory"><a title="Version History" href="index.cfm?muraAction=cArch.hist&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#item.getcontentID()#&siteid=#URLEncodedFormat(item.getSiteID())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#"><i class="icon-book"></i></a></li>
+					   <li class="version-history"><a title="Version History" href="index.cfm?muraAction=cArch.hist&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#item.getcontentID()#&siteid=#URLEncodedFormat(item.getSiteID())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#"><i class="icon-book"></i></a></li>
 				      <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(item.getSiteID()).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
 				        <li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#" href="index.cfm?muraAction=cPerm.main&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getparentID()#&topid=#item.getcontentID()#&siteid=#URLEncodedFormat(item.getSiteID())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#"><i class="icon-group"></i></a></li>
 				      <cfelse>
@@ -212,7 +212,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>
 				      <cfif deletable>
 				        <li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.delete')#" href="index.cfm?muraAction=cArch.update&contentid=#item.getContentID()#&type=#item.gettype()#&action=deleteall&topid=#item.getcontentID()#&siteid=#URLEncodedFormat(item.getSiteID())#&moduleid=#item.getmoduleid()#&parentid=#URLEncodedFormat(item.getParentID())#&startrow=#$.event('startrow')#"
-							<cfif listFindNoCase("Page,LocalRepo,Calendar,Gallery,Link,File",item.gettype())>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),item.getmenutitle()))#',this.href)"<cfelse>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)"</cfif>><i class="icon-remove-sign"></i></a></li>
+							<cfif listFindNoCase("Page,LocalRepo,Calendar,Gallery,Link,File",item.gettype())><i class="icon-remove-sign"></i></a></li>
 				       <cfelseif rc.locking neq 'all'>
 				        <li class="delete disabled"><i class="icon-remove-sign"></i></li>
 				      </cfif>
@@ -226,7 +226,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),"")#?LinkServID=#item.getcontentid()#','#item.gettargetParams()#');"><i class="icon-globe"></i></a></li>
 						</cfcase>
 						</cfswitch>
-						<li class="versionHistory disabled"><a><i class="icon-book"></i></a></li>
+						<li class="version-history disabled"><a><i class="icon-book"></i></a></li>
 						<li class="permissions disabled"><a><i class="icon-group"></i></a></li>
 						<li class="delete disabled"><a><i class="icon-remove-sign"></i></a></li>
 				</cfif>

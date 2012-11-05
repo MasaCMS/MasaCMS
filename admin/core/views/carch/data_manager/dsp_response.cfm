@@ -64,7 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cfsilent>
 
-<div id="manageData">
+<div id="manage-data">
 <cfif rc.rsDataInfo.CountEntered>
 <cfparam name="rc.columns" default="fixed" />
 <cfoutput>

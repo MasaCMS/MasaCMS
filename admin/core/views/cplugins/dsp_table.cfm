@@ -70,12 +70,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<td class="actions">
 	<ul class="two">
 	<cfif listFind(session.mura.memberships,'S2')>
-		<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'plugin.edit')#" href="index.cfm?muraAction=cSettings.editPlugin&moduleID=#rscategorylist.moduleID#">#application.rbFactory.getKeyValue(session.rb,'plugin.edit')#</a></li>
+		<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'plugin.edit')#" href="index.cfm?muraAction=cSettings.editPlugin&moduleID=#rscategorylist.moduleID#"><i class="icon-pencil"></i></a></li>
 	<cfelse>
 		<li class="edit disabled"><a>#application.rbFactory.getKeyValue(session.rb,'plugin.edit')#</a></li>
 	</cfif>
 	<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-		<li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'plugin.permissions')#" href="index.cfm?muraAction=cPerm.module&contentid=#rscategorylist.moduleID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rscategorylist.moduleID#">#application.rbFactory.getKeyValue(session.rb,'plugin.permissions')#</a></li>
+		<li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'plugin.permissions')#" href="index.cfm?muraAction=cPerm.module&contentid=#rscategorylist.moduleID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rscategorylist.moduleID#"><i class="icon-group"></i></a></li>
 	<cfelse>
 		<li class="permissions disabled"><a>#application.rbFactory.getKeyValue(session.rb,'plugin.permissions')#</a></li>
 	</cfif>
