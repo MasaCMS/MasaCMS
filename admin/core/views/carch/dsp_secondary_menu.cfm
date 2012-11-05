@@ -196,10 +196,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<i class="icon-circle-arrow-left"></i> 
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.backtocontent')#
 					</a>
+					<cfif rc.compactDisplay neq 'true'  and (listFindNoCase(session.mura.memberships,'S2IsPrivate;#rc.siteid#') or listFindNoCase(session.mura.memberships,'S2'))>	
 					<a class="btn" href="index.cfm?&muraAction=cArch.list&siteid=#rc.siteid#&moduleid=00000000000000000000000000000000000">
 						<i class="icon-list-alt"></i>
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.backtositemanager')#
 					</a>
+				</cfif>
 				<cfelse>
 					<a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-circle-arrow-left"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
 				</cfif>
