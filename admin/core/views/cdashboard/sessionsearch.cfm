@@ -316,7 +316,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <td>#LSDateFormat(rc.rslist.lastRequest,session.dateKeyFormat)# #LSTimeFormat(rc.rslist.lastRequest,"short")#</td>
 <td>#rc.rslist.views#</td>
 <td>#application.dashboardManager.getTimespan(rc.rslist.firstRequest,rc.rslist.lastRequest)#</td>
-<td class="actions"><ul class="one"><li class="viewDetails"><a title="View Details" href="index.cfm?muraAction=cDashboard.viewSession&urlToken=#urlEncodedFormat(rc.rslist.urlToken)#&siteid=#URLEncodedFormat(rc.siteid)#">View Details</a></li></ul></td>
+<td class="actions"><ul><li class="viewDetails"><a title="View Details" href="index.cfm?muraAction=cDashboard.viewSession&urlToken=#urlEncodedFormat(rc.rslist.urlToken)#&siteid=#URLEncodedFormat(rc.siteid)#">View Details</a></li></ul></td>
 </tr></cfloop>
 <cfelse>
 <tr>

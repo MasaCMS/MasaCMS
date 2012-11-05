@@ -77,7 +77,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <td>#LSDateFormat(rc.rslist.entered,session.dateKeyFormat)# #LSTimeFormat(rc.rslist.entered,"short")#</td>
 <td><cfif rc.rslist.keywords neq ''>#HTMLEditFormat(rc.rslist.keywords)#<cfelse>&mdash;</cfif></td>
 <td>#rc.rslist.locale#</td>
-<td class="actions"><ul class="one"><li class="preview"><cfswitch expression="#rc.rslist.type#">
+<td class="actions"><ul><li class="preview"><cfswitch expression="#rc.rslist.type#">
 		<cfcase value="Page,LocalRepo,Calendar,Gallery">
 		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,rc.rsList.filename)#','#rc.rslist.targetParams#');">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#</a>
 		</cfcase>

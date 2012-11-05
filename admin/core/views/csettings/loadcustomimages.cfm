@@ -35,7 +35,7 @@ width:#rc.width#<br/>
 <td class="var-width">#HTMLEditFormat(image.getName())#</td>
 <td>#HTMLEditFormat(image.getHeight())#</td>
 <td>#HTMLEditFormat(image.getWidth())#</td>
-<td class="actions"><ul class="one">
+<td class="actions"><ul>
 	<li class="edit"><a href="##" text="Edit" onclick="return openCustomImageSize('#image.getSizeID()#','#JSStringFormat(image.getSiteID())#');"><i class="icon-pencil"></i></a></li>
 </ul></td>
 </tr>

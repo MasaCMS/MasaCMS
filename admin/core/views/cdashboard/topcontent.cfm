@@ -109,7 +109,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <td>#rsList.hits#</td>
 <td>#decimalFormat((rsList.hits/rstotal.hits)*100)#%</td>
 <td class="actions">
-<ul class="one">
+<ul>
 		<cfswitch expression="#rslist.type#">
 		<cfcase value="Page,LocalRepo,Calendar,Gallery">
 		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,rsList.filename)#','#rslist.targetParams#');"><i class="icon-globe"></i></a></li>
