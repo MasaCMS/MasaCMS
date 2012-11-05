@@ -86,7 +86,7 @@
 								<button type="button" class="btn btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#evaluate('rc.#s#ImageRatio')#" data-size="#lcase(s)#"><i class="icon-screenshot"></i> Re-Crop</button>
 							</div>
 						</div>
-						<img src="./assets/images/progress_bar.gif" style="display:none">
+						<img id="#lcase(s)##f#loader" src="assets/images/ajax-loader.gif" style="display:none">
 						<img id="#lcase(s)##f#" src="#$.getURLForImage(fileID=f,size=lcase(s))#?cacheID=#createUUID()#"/>
 					</div>
 				</cfloop>
@@ -106,7 +106,7 @@
 								<button type="button" class="btn btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#rc.customImageRatio#" data-size="#lcase(customImage.getName())#"><i class="icon-screenshot"></i> Re-Crop</button>
 							</div>
 						</div>
-						<img src="./assets/images/progress_bar.gif" style="display:none">
+						<img id="#lcase(customImage.getName())##f#loader" src="assets/images/ajax-loader.gif" style="display:none">
 						<img id="#lcase(customImage.getName())##f#" src="#$.getURLForImage(fileID=f,size=lcase(customImage.getName()))#?cacheID=#createUUID()#"/>
 					</div>
 				</cfloop>
@@ -188,6 +188,8 @@
 	
 	    		$('##'  + resetSize + resetFileID + 'btns .btn').hide();
 	    		$('##'  + resetSize + resetFileID + 'btns img').show();
+	    		$('##'  + resetSize + resetFileID + 'loader').show();
+	    		$('##'  + resetSize + resetFileID ).hide();
 	
 	    		//location.href='./index.cfm?muraAction=carch.cropimage&fileid=' + resetFileID + '&size=' + resetSize + '&siteid=' + siteid;
 	
@@ -197,7 +199,10 @@
 									reloadImg(resetSize + resetFileID);
 									resizeImg(resetSize + resetFileID,data.width,data.height);
 									$('##'  + resetSize + resetFileID + 'btns .btn').show();
+									$('##'  + resetSize + resetFileID + 'btns .btn').show();
 	    							$('##'  + resetSize + resetFileID + 'btns img').hide();
+	    							$('##'  + resetSize + resetFileID + 'loader').hide();
+	    							$('##'  + resetSize + resetFileID ).show();
 								}
 							);		
 	
@@ -218,7 +223,7 @@
 	    			$dialogHTML+='<br/><input type="hidden" name="coords" value="" id="coords">'; 
 	    			$dialogHTML+='<input class="btn" type="button" value="Cancel" onclick="$(\'##cropper\').remove();">';
 	    			$dialogHTML+='<input class="btn" type="button"id="applyCoords" value="Apply Cropping" onclick="applyCropping();">';
-	    			$dialogHTML+='<img id="applyingCoords" src="./assets/images/progress_bar.gif" style="display:none">';
+	    			$dialogHTML+='<img id="applyingCoords" src="assets/images/ajax-loader.gif" style="display:none">';
 	    			$dialogHTML+='</div></div>';
 	
 		        var $dialog = $($dialogHTML);
