@@ -696,7 +696,7 @@ buttons: {
 		var url = 'index.cfm';
 		var pars = 'muraAction=cArch.copy&compactDisplay=true&siteid=' + this.copySiteID +'&copyAll=' + this.copyAll +'&contentid=' + this.copyContentID + '&parentid=' + parentID + '&cacheid=' + Math.random();
 		var d = $('#newPasteLink');
-		d.css('background','url(/admin/images/ajax-loader.gif) no-repeat 1px 5px;');
+		d.css('background','url(assets/images/ajax-loader.gif) no-repeat 1px 5px;');
 		this.reloadURL = $('#newZoomLink').attr("href");
 		
 		$.get(url + "?" + pars, 

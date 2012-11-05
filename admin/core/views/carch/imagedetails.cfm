@@ -57,6 +57,26 @@
 			<cfif len(rc.sourceImage)>		
 				<cfset rc.rsMeta=$.getBean('fileManager').readMeta(fileID=f)>
 				<h2><i class="icon-picture"></i> #HTMLEditFormat(rc.rsMeta.filename)#</h2>
+				<div class="control-group divide">
+					<label class="control-label">
+						#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.adjustimage'))#
+					</label>
+					<div class="controls">
+						<select id="image-actions">
+							<option value="">Select Action</option>
+							<option value="90"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))# (90)</option>
+							<option value="180"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))# (180)</option>
+							<option value="270"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))# (270)</option>
+							<option value="vertical"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# (horizontal)</option>
+							<option value="vertical"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# (vertical)</option>
+							<option value="diagonal"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# (diagonal)</option>
+							<option value="antidiagonal"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# (antidiagonal)</option>
+						</select>
+
+						<input type="button" onclick="flipImage('#JSStringFormat(f)#',$('##image-actions').val());" class="btn" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.apply'))#"/>
+					</div>
+				</div>
+
 				<cfloop list="Small,Medium,Large" index="s">
 					<div class="control-group divide">
 						<label class="control-label">#s# (#$.siteConfig('#s#ImageWidth')#x#$.siteConfig('#s#ImageHeight')#)</label>
@@ -66,7 +86,7 @@
 								<button type="button" class="btn btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#evaluate('rc.#s#ImageRatio')#" data-size="#lcase(s)#"><i class="icon-screenshot"></i> Re-Crop</button>
 							</div>
 						</div>
-						<img src="./assets/images/progress_bar.gif" style="display:none">
+						<img id="#lcase(s)##f#loader" src="assets/images/ajax-loader.gif" style="display:none">
 						<img id="#lcase(s)##f#" src="#$.getURLForImage(fileID=f,size=lcase(s))#?cacheID=#createUUID()#"/>
 					</div>
 				</cfloop>
@@ -86,7 +106,7 @@
 								<button type="button" class="btn btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#rc.customImageRatio#" data-size="#lcase(customImage.getName())#"><i class="icon-screenshot"></i> Re-Crop</button>
 							</div>
 						</div>
-						<img src="./assets/images/progress_bar.gif" style="display:none">
+						<img id="#lcase(customImage.getName())##f#loader" src="assets/images/ajax-loader.gif" style="display:none">
 						<img id="#lcase(customImage.getName())##f#" src="#$.getURLForImage(fileID=f,size=lcase(customImage.getName()))#?cacheID=#createUUID()#"/>
 					</div>
 				</cfloop>
@@ -122,6 +142,20 @@
 		   $('##'+ id).css({'height':h,'width':w});
 		   return false;
 		}
+
+	    function flipImage(fileid,transpose){
+			var _fileid=fileid
+	    	//location.href='./index.cfm?muraAction=carch.flipimage&fileid=' + currentFileID + '&siteid=' + siteid;
+	    	if(transpose != ''){
+	    		//alert(transpose);
+			    $.get('./index.cfm?muraAction=carch.flipimage&fileid=' + _fileid + '&siteid=' + siteid + '&transpose=' + transpose + '&cacheid=' + Math.random(),
+					function(data) {	
+						//alert($(".cropper-reset[data-fileid='" + _fileid + "']").length);
+						$(".cropper-reset[data-fileid='" + _fileid + "']").trigger('click');
+					}
+				);
+			}	
+	    }
 	
 	    function saveCoords(c){currentCoords=c};
 	
@@ -132,7 +166,7 @@
 	 		//location.href='./index.cfm?muraAction=carch.cropimage&fileid=' + currentFileID + '&size=' + currentSize + '&x=' + currentCoords.x + '&y=' + currentCoords.y + '&width=' + currentCoords.w + '&height=' + currentCoords.h + '&siteid=' + siteid;
 	
 	 		if(typeof(currentCoords) == 'object'){
-		    	jQuery.get('./index.cfm?muraAction=carch.cropimage&fileid=' + currentFileID + '&size=' + currentSize + '&x=' + currentCoords.x + '&y=' + currentCoords.y + '&width=' + currentCoords.w + '&height=' + currentCoords.h + '&siteid=' + siteid,
+		    	$.get('./index.cfm?muraAction=carch.cropimage&fileid=' + currentFileID + '&size=' + currentSize + '&x=' + currentCoords.x + '&y=' + currentCoords.y + '&width=' + currentCoords.w + '&height=' + currentCoords.h + '&siteid=' + siteid,
 									function(data) {	
 										//alert(JSON.stringify(data));
 										reloadImg(currentSize + currentFileID);
@@ -148,22 +182,27 @@
 	    $('.cropper-reset').click(
 	    	function(){
 	
-	    		currentFileID=$(this).attr('data-fileid');
-				currentSize=$(this).attr('data-size')
-				//alert(currentSize + currentFileID);
+	    		var resetFileID=$(this).attr('data-fileid');
+				var resetSize=$(this).attr('data-size')
+				//alert(resetSize + resetFileID);
 	
-	    		$('##'  + currentSize + currentFileID + 'btns .btn').hide();
-	    		$('##'  + currentSize + currentFileID + 'btns img').show();
+	    		$('##'  + resetSize + resetFileID + 'btns .btn').hide();
+	    		$('##'  + resetSize + resetFileID + 'btns img').show();
+	    		$('##'  + resetSize + resetFileID + 'loader').show();
+	    		$('##'  + resetSize + resetFileID ).hide();
 	
-	    		//location.href='./index.cfm?muraAction=carch.cropimage&fileid=' + currentFileID + '&size=' + currentSize + '&siteid=' + siteid;
+	    		//location.href='./index.cfm?muraAction=carch.cropimage&fileid=' + resetFileID + '&size=' + resetSize + '&siteid=' + siteid;
 	
-	    		jQuery.get('./index.cfm?muraAction=carch.cropimage&fileid=' + currentFileID + '&size=' + currentSize + '&siteid=' + siteid,
+	    		$.get('./index.cfm?muraAction=carch.cropimage&fileid=' + resetFileID + '&size=' + resetSize + '&siteid=' + siteid + '&cacheid=' + Math.random(),
 								function(data) {	
 									//alert(JSON.stringify(data));
-									reloadImg(currentSize + currentFileID);
-									resizeImg(currentSize + currentFileID,data.width,data.height);
-									$('##'  + currentSize + currentFileID + 'btns .btn').show();
-	    							$('##'  + currentSize + currentFileID + 'btns img').hide();
+									reloadImg(resetSize + resetFileID);
+									resizeImg(resetSize + resetFileID,data.width,data.height);
+									$('##'  + resetSize + resetFileID + 'btns .btn').show();
+									$('##'  + resetSize + resetFileID + 'btns .btn').show();
+	    							$('##'  + resetSize + resetFileID + 'btns img').hide();
+	    							$('##'  + resetSize + resetFileID + 'loader').hide();
+	    							$('##'  + resetSize + resetFileID ).show();
 								}
 							);		
 	
@@ -177,14 +216,14 @@
 	    		currentFileID=$(this).attr('data-fileid');
 				currentSize=$(this).attr('data-size');
 				currentCoords='';
-	
+				
 	    		var jcrop_api; 
 	    		var $dialogHTML='<div id="cropper"><div class="jc-dialog">';
-	    			$dialogHTML+='<img id="crop-target" src="' + $(this).attr('data-src') + '" /> '; 
+	    			$dialogHTML+='<img id="crop-target" src="' + $(this).attr('data-src') + '?cacheid=' + Math.random() +'" /> '; 
 	    			$dialogHTML+='<br/><input type="hidden" name="coords" value="" id="coords">'; 
 	    			$dialogHTML+='<input class="btn" type="button" value="Cancel" onclick="$(\'##cropper\').remove();">';
 	    			$dialogHTML+='<input class="btn" type="button"id="applyCoords" value="Apply Cropping" onclick="applyCropping();">';
-	    			$dialogHTML+='<img id="applyingCoords" src="./assets/images/progress_bar.gif" style="display:none">';
+	    			$dialogHTML+='<img id="applyingCoords" src="assets/images/ajax-loader.gif" style="display:none">';
 	    			$dialogHTML+='</div></div>';
 	
 		        var $dialog = $($dialogHTML);
@@ -202,6 +241,22 @@
 			        });
 	    		});
 	    });
+
+		<cfif rc.compactDisplay eq "true">
+		jQuery(document).ready(function(){
+			if (top.location != self.location) {
+				if(jQuery("##ProxyIFrame").length){
+					jQuery("##ProxyIFrame").load(
+						function(){
+							frontEndProxy.postMessage("cmd=setWidth&width=standard");
+						}
+					);	
+				} else {
+					frontEndProxy.postMessage("cmd=setWidth&width=standard");
+				}
+			}
+		});
+		</cfif> 
 		</script>
 		
 	    <!-- /Hidden dialog -->
