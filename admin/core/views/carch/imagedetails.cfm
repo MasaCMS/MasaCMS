@@ -241,6 +241,22 @@
 			        });
 	    		});
 	    });
+
+		<cfif rc.compactDisplay eq "true">
+		jQuery(document).ready(function(){
+			if (top.location != self.location) {
+				if(jQuery("##ProxyIFrame").length){
+					jQuery("##ProxyIFrame").load(
+						function(){
+							frontEndProxy.postMessage("cmd=setWidth&width=standard");
+						}
+					);	
+				} else {
+					frontEndProxy.postMessage("cmd=setWidth&width=standard");
+				}
+			}
+		});
+		</cfif> 
 		</script>
 		
 	    <!-- /Hidden dialog -->
