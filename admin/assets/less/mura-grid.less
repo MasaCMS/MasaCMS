@@ -1604,35 +1604,37 @@ th {
 	line-height: 1.25em;
 }
 
-.mura-table-grid td {
+.mura-grid, .mura-table-grid {
+
+	.add i {
+			display: block;
+			padding-right: 2px;
+			font-size: 16px;
+			line-height: 28px;
+			color: @iconColor;
+			}
 	
-	padding: 4px 5px 4px 5px;
-	border-left: 1px solid #DBDBDB;
-	border-right: 1px solid #DBDBDB;
-	white-space: nowrap;
-	text-align: center;
-	width: 1%;
-	
-	&.add { padding-top: 6px; }
+	td {
+		padding: 4px 5px 4px 5px;
+		border-left: 1px solid #DBDBDB;
+		border-right: 1px solid #DBDBDB;
+		white-space: nowrap;
+		text-align: center;
+		width: 1%;
+		
+		&.add {
+		
+			padding: 5px 4px 0;
+		
+			i {  /* Tab Flat */
+			font-size:18px;
+			line-height: 1;
+			}		
+		 }
+	}
 }
 
-/*table table {
-	padding: 0;
-	border: 0;
-	white-space: normal;
-	background-color: transparent;
-	text-align: left;
-	width: auto;
-}
-
-table td table td {
-	padding: 0;
-	border: 0;
-	white-space: normal;
-	background-color: transparent;
-	text-align: left;
-	width: auto;
-}*/
+#ccategory .mura-table-grid td.add { padding-top: 0; }
 
 .mura-table-grid .alt td {
 	/*border: 1px solid #DBDBDB;*/
@@ -1655,12 +1657,6 @@ table td table td {
 	width: 95%;
 	text-align: left;
 	white-space: normal;
-}
-
-
-
-.mura-table-grid td.add {
-	padding: 5px 4px 0;
 }
 
 .mura-table-grid td.add a, .mura-grid a.add {
