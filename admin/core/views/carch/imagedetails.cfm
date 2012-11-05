@@ -143,18 +143,6 @@
 		   return false;
 		}
 
-		function rotateImage(fileid){
-			var _fileid=fileid
-	    	//location.href='./index.cfm?muraAction=carch.rotateimage&fileid=' + currentFileID + '&siteid=' + siteid;
-
-		    $.get('./index.cfm?muraAction=carch.rotateimage&fileid=' + _fileid + '&siteid=' + siteid + '&cacheid=' + Math.random(),
-				function(data) {	
-					//alert($(".cropper-reset[data-fileid='" + _fileid + "']").length);
-					$(".cropper-reset[data-fileid='" + _fileid + "']").trigger('click');
-				}
-			);	
-	    }
-
 	    function flipImage(fileid,transpose){
 			var _fileid=fileid
 	    	//location.href='./index.cfm?muraAction=carch.flipimage&fileid=' + currentFileID + '&siteid=' + siteid;
