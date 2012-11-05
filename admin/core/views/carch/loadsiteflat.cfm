@@ -185,7 +185,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset deletable=((item.getParentID() neq '00000000000000000000000000000000001' and application.settingsManager.getSite(item.getSiteID()).getLocking() neq 'all') or (item.getParentID() eq '00000000000000000000000000000000001' and application.settingsManager.getSite(item.getSiteID()).getLocking() eq 'none')) and (verdict eq 'editor')  and item.getIsLocked() neq 1>
 		<cfset editLink="index.cfm?muraAction=cArch.edit&contenthistid=#item.getContentHistID()#&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getParentID()#&topid=#URLEncodedFormat(item.getParentID())#&siteid=#URLEncodedFormat(item.getSiteid())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#">
 		</cfsilent>
-		<cfloop>
+	
 		<tr data-siteid="#item.getSiteID()#" data-contentid="#item.getContentID()#" data-contenthistid="#item.getContentHistID()#" data-sortby="#item.getSortBy()#" data-sortdirection="#item.getSortDirection()#" data-moduleid="#HTMLEditFormat(item.getModuleID())#" data-type="#item.getType()#">
 			<td class="add"><a class="add" href="javascript:;" onmouseover="siteManager.showMenu('newContentMenu','#newcontent#',this,'#item.getContentID()#','#item.getContentID()#','#item.getContentID()#','#item.getSiteID()#','#item.getType()#');"><i class="icon-plus-sign"></i></a></td>
 			<td class="var-width item">
@@ -193,7 +193,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div class="actions">
 				<ul class="siteSummary">
 					<cfif not listFindNoCase('none,read',verdict)>
-					    
+					 
 					    <li class="edit"><a title="Edit" class="draftprompt" href="#editLink#"><i class="icon-pencil"></i></a></li>
 						
 						<cfswitch expression="#item.gettype()#">
@@ -222,7 +222,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					    <cfelseif rc.locking neq 'all'>
 					        <li class="delete disabled"><i class="icon-remove-sign"></i></li>
 					    </cfif>
-					 
+					
 					<cfelse>
 					    <li class="edit disabled">&nbsp;</li>
 						<cfswitch expression="#item.gettype()#">
@@ -237,6 +237,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<li class="permissions disabled"><a><i class="icon-group"></i></a></li>
 						<li class="delete disabled"><a><i class="icon-remove-sign"></i></a></li>
 					</cfif>
+					
 				</ul>
 			</div> 
 			
@@ -379,6 +380,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			sortdirection:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].sortdirection)#',tag:'',type:'',subtype:'',categoryid:'',keywords:'',filtered:false});siteManager.loadSiteFlat(flatViewArgs);"/></cfif>
 </div>
 </div>
+
 <!---<cfdump var="#rc.test#">--->
 </cfoutput>
 <!---</cfsavecontent>
