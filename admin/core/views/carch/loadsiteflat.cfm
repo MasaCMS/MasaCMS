@@ -217,12 +217,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>
 					    
 					    <cfif deletable>
-					        <li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.delete')#" href="index.cfm?muraAction=cArch.update&contentid=#item.getContentID()#&type=#item.gettype()#&action=deleteall&topid=#item.getcontentID()#&siteid=#URLEncodedFormat(item.getSiteID())#&moduleid=#item.getmoduleid()#&parentid=#URLEncodedFormat(item.getParentID())#&startrow=#$.event('startrow')#"
-								<cfif listFindNoCase("Page,LocalRepo,Calendar,Gallery,Link,File",item.gettype())><i class="icon-remove-sign"></i></a></li>
-					    		<cfelseif rc.locking neq 'all'>
-					        	<li class="delete disabled"><i class="icon-remove-sign"></i>
-					        	</cfif>
-					        </li>
+					        <li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.delete')#" href="index.cfm?muraAction=cArch.update&contentid=#item.getContentID()#&type=#item.gettype()#&action=deleteall&topid=#item.getcontentID()#&siteid=#URLEncodedFormat(item.getSiteID())#&moduleid=#item.getmoduleid()#&parentid=#URLEncodedFormat(item.getParentID())#&startrow=#$.event('startrow')#">
+							<i class="icon-remove-sign"></i></a></li>
+					    <cfelseif rc.locking neq 'all'>
+					        <li class="delete disabled"><i class="icon-remove-sign"></i></li>
 					    </cfif>
 					 
 					<cfelse>
