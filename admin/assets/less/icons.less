@@ -18,14 +18,26 @@
 	li {
 		list-style: none; 
 		.inline-block;
-		padding: 0 5px 0 0 !important;
+		float: none;
+		padding: 0;
+		margin-right: 2px;
 		clear: none !important;
 		line-height: 22px;
 		
-		&.edit { padding: 0; margin-right: 0; }
-		&.version-history { padding-right: 7px; }
+		&.edit { margin-right: 1px; }
+		&.version-history {  }
 		&.download i { font-size: 18px; }
-		&:last-child {padding-right: 0 !important;}
+		&.edit {  }
+		&.preview {  }
+		&.delete {  }
+		&.permissions {  }
+		&.version-history {  }
+		&.download {  }
+		&.manage-data {  }
+		&.rss {  }
+		&.import {  }
+		&.view-report {  }
+		&:last-child { padding-right: 0 !important; }
 		
 	a:hover {
 		text-decoration: none;

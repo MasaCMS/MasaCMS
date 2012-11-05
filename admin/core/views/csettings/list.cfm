@@ -244,7 +244,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<td><a class="alt" href="#rc.rsPlugins.providerurl#" target="_blank">#htmlEditFormat(rc.rsPlugins.provider)#</a></td>
 						<!--- <td><a href="#rc.rsPlugins.providerurl#" target="_blank">View</a></td> --->
 						<td>#rc.rsPlugins.pluginID#</td>
-						<td class="actions"><ul class="two">
+						<td class="actions"><ul>
 								<li class="edit"><a title="Edit" href="index.cfm?muraAction=cSettings.editPlugin&moduleID=#rc.rsPlugins.moduleID#"><i class="icon-pencil"></i></a></li>
 								<li class="delete"><a title="Delete" href="index.cfm?muraAction=cSettings.deletePlugin&moduleID=#rc.rsPlugins.moduleID#" onclick="return confirmDialog('Delete #jsStringFormat("'#Ucase(rc.rsPlugins.name)#'")#?',this.href);"><i class="icon-remove-sign"></i></a></li>
 							</ul></td>

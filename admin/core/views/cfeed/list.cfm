@@ -96,7 +96,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<td class="var-width"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.edit')#" href="index.cfm?muraAction=cFeed.edit&feedID=#rc.rsRemote.feedID#&siteid=#URLEncodedFormat(rc.siteid)#&type=Remote">#rc.rsRemote.name#</a></td>
 	<td class="url">#left(rc.rsRemote.channelLink,70)#</td>
 	<td>#yesnoFormat(rc.rsRemote.isactive)#</td>
-	<td class="actions"><ul class="four"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.edit')#" href="index.cfm?muraAction=cFeed.edit&feedID=#rc.rsRemote.feedID#&siteid=#URLEncodedFormat(rc.siteid)#&type=Remote"><i class="icon-pencil"></i></a></li><li class="rss"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.viewfeed')#" href="#rc.rsRemote.channelLink#" target="_blank"><i class="icon-rss"></i></a></li>
+	<td class="actions"><ul><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.edit')#" href="index.cfm?muraAction=cFeed.edit&feedID=#rc.rsRemote.feedID#&siteid=#URLEncodedFormat(rc.siteid)#&type=Remote"><i class="icon-pencil"></i></a></li><li class="rss"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.viewfeed')#" href="#rc.rsRemote.channelLink#" target="_blank"><i class="icon-rss"></i></a></li>
 	
 	<li class="import"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.import')#" href="index.cfm?muraAction=cFeed.import1&feedID=#rc.rsRemote.feedID#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-download-alt"></i></a></li>
 	

@@ -169,7 +169,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<td>#LSCurrencyFormat(rsplacements.costPerClick)#</td>
 				<td>#LSCurrencyFormat(rsplacements.costPerClick*Clicks)#</td>
 				<td>#LSCurrencyFormat((rsplacements.costPerClick*Clicks)+(rsplacements.costPerImp*Imps))#</td>
-				<td class="actions"><ul class="two">
+				<td class="actions"><ul>
 				<li class="edit"><a title="Edit" href="index.cfm?muraAction=cAdvertising.editPlacement&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#&campaignid=#rc.campaignID#&placementid=#rsplacements.placementid#"><i class="icon-pencil"></i></a></li>
 				<li class="view-report"><a title="View Placement Report" href="index.cfm?muraAction=cAdvertising.viewReportByPlacement&placementid=#rsPlacements.placementid#&campaignid=#rc.campaignid#&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#&date1=#LSDateFormat(theMonthBegin,session.dateKeyFormat)#&date2=#LSDateFormat(theMonthEnd,session.dateKeyFormat)#"><i class="icon-bar-chart"></i></a></li></ul>
 				</td>

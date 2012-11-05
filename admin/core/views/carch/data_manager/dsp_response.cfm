@@ -140,7 +140,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cftry>
 	<cfsilent><cfwddx action="wddx2cfml" input="#rsdata.data#" output="info"></cfsilent>
 	<td class="actions">
-		<ul class="two">
+		<ul>
 			<li class="edit">
 				<a href="index.cfm?muraAction=cArch.datamanager&contentid=#URLEncodedFormat(rc.contentid)#&siteid=#URLEncodedFormat(rc.siteid)#&date1=#rc.date1#&hour1=#rc.hour1#&minute1=#rc.minute1#&date2=#rc.date2#&hour2=#rc.hour2#&minute2=#rc.minute2#&responseid=#rsdata.responseid#&action=edit&moduleid=#rc.moduleid#&sortBy=#urlEncodedFormat(rc.sortBy)#&sortDirection=#rc.sortDirection#&filterBy=#urlEncodedFormat(rc.filterBy)#&keywords=#urlEncodedFormat(rc.keywords)#">
 					<img src="assets/images/icons/edit_24.png" width="14" height="14" border="0" />

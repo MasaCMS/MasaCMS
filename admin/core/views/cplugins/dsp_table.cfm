@@ -68,7 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<td><a class="alt" href="#rscategorylist.providerurl#" target="_blank">#htmlEditFormat(rscategorylist.provider)#</a></td>
 	<td>#rscategorylist.pluginID#</td>
 	<td class="actions">
-	<ul class="two">
+	<ul>
 	<cfif listFind(session.mura.memberships,'S2')>
 		<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'plugin.edit')#" href="index.cfm?muraAction=cSettings.editPlugin&moduleID=#rscategorylist.moduleID#"><i class="icon-pencil"></i></a></li>
 	<cfelse>

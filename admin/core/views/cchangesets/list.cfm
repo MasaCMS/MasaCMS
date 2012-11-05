@@ -78,7 +78,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<td><cfif isDate(rc.changeset.getPublishDate())>#LSDateFormat(rc.changeset.getPublishDate(),session.dateKeyFormat)# #LSTimeFormat(rc.changeset.getPublishDate(),"medium")#<cfelse>NA</cfif></td>
 	<td>#LSDateFormat(rc.changeset.getLastUpdate(),session.dateKeyFormat)# #LSTimeFormat(rc.changeset.getLastUpdate(),"medium")#</td>
 	<td class="actions">
-		<ul class="four">
+		<ul>
 			<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.edit')#" href="index.cfm?muraAction=cChangesets.edit&changesetID=#rc.changeset.getchangesetID()#&siteid=#URLEncodedFormat(rc.changeset.getSiteID())#"><i class="icon-pencil"></i></a></li>
 			<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?changesetID=#JSStringFormat(rc.changeset.getChangesetID())#','');"><i class="icon-globe"></i></a></li>
 			<li class="change-sets"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.assignments')#" href="index.cfm?muraAction=cChangesets.assignments&changesetID=#rc.changeset.getchangesetID()#&siteid=#URLEncodedFormat(rc.changeset.getSiteID())#"><i class="icon-check"></i></a></li>

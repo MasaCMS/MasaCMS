@@ -69,7 +69,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<td class="var-width">#rslist.description#</td>
 		<td>#yesNoFormat(rslist.isactive)#</td>
 		<td class="actions">
-			<ul class="two">
+			<ul>
 				<li class="edit">
 					<a title="Edit" href="index.cfm?muraAction=cExtend.editSubType&subTypeID=#rslist.subTypeID#&siteid=#URLEncodedFormat(rc.siteid)#">Edit</a>
 				</li>

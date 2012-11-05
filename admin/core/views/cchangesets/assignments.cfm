@@ -82,7 +82,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         <tr>  
           <td class="title var-width">#application.contentRenderer.dspZoom(crumbdata)#</td>
  		  <td class="actions">
-		<ul class="four">
+		<ul>
 		<cfif verdict neq 'none'>
        		<li class="edit"><a title="Edit" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#URLEncodedFormat(rc.rslist.contentID)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.rslist.moduleid#&startrow=#rc.startrow#&return=changesets"><i class="icon-pencil"></i></a></li> 	
 			<li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?changesetPreviewID=#JSStringFormat(rc.rslist.changesetID)#&linkServID=#JSStringFormat(rc.rslist.contentID)#','#rc.rsList.targetParams#');"><i class="icon-globe"></i></a></li>
@@ -119,7 +119,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         <tr>  
           <td class="title var-width"><a href="#editlink#">#HTMLEditFormat(rc.rsList.title)#</a></td>
  		  <td class="actions">
-		<ul class="three">
+		<ul>
 		<cfif verdict neq 'none'>
        		<li class="edit"><a title="Edit" href="#editlink#"><i class="icon-pencil"></i></a></li> 	
 		   	<li class="version-history"><a title="Version History" href="index.cfm?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.rslist.moduleID#&startrow=#rc.startrow#"><i class="icon-book"></i></a></li>   
@@ -158,7 +158,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         <tr>  
           <td class="title var-width"><a href="#editlink#">#HTMLEditFormat(rc.rsList.title)#</a></td>
       <td class="actions">
-    <ul class="three">
+    <ul>
     <cfif verdict neq 'none'>
           <li class="edit"><a title="Edit" href="#editlink#"><i class="icon-pencil"></i></a></li>  
         <li class="version-history"><a title="Version History" href="index.cfm?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.rslist.moduleID#&startrow=#rc.startrow#"><i class="icon-book"></i></a></li>   
