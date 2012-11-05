@@ -58,17 +58,23 @@
 				<cfset rc.rsMeta=$.getBean('fileManager').readMeta(fileID=f)>
 				<h2><i class="icon-picture"></i> #HTMLEditFormat(rc.rsMeta.filename)#</h2>
 				<div class="control-group divide">
-				<a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))#" onclick="rotateImage('#JSStringFormat(rc.fileID)#'); return false;"><i class="icon-refresh"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))#</a>
-				
-				<a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))#" onclick="flipImage('#JSStringFormat(rc.fileID)#','horizontal'); return false;"><i class="icon-refresh"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# (horizontal)</a>
+					<label class="control-label">
+						#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.adjustimage'))#
+					</label>
+					<div class="controls">
+						<select id="image-actions">
+							<option value="">Select Action</option>
+							<option value="90"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))# (90)</option>
+							<option value="180"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))# (180)</option>
+							<option value="270"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))# (270)</option>
+							<option value="vertical"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# (horizontal)</option>
+							<option value="vertical"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# (vertical)</option>
+							<option value="diagonal"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# (diagonal)</option>
+							<option value="antidiagonal"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# (antidiagonal)</option>
+						</select>
 
-				<a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))#" onclick="flipImage('#JSStringFormat(rc.fileID)#','vertical'); return false;"><i class="icon-refresh"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# (vertical)</a>
-
-				<a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))#" onclick="flipImage('#JSStringFormat(rc.fileID)#','diagonal'); return false;"><i class="icon-refresh"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# (diagonal)</a>
-
-				<a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))#" onclick="flipImage('#JSStringFormat(rc.fileID)#','antidiagonal'); return false;"><i class="icon-refresh"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# (antidiagonal)</a>
-
-
+						<input type="button" onclick="flipImage('#JSStringFormat(f)#',$('##image-actions').val());" class="btn" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.apply'))#"/>
+					</div>
 				</div>
 
 				<cfloop list="Small,Medium,Large" index="s">
@@ -152,13 +158,15 @@
 	    function flipImage(fileid,transpose){
 			var _fileid=fileid
 	    	//location.href='./index.cfm?muraAction=carch.flipimage&fileid=' + currentFileID + '&siteid=' + siteid;
-
-		    $.get('./index.cfm?muraAction=carch.flipimage&fileid=' + _fileid + '&siteid=' + siteid + '&transpose=' + transpose + '&cacheid=' + Math.random(),
-				function(data) {	
-					//alert($(".cropper-reset[data-fileid='" + _fileid + "']").length);
-					$(".cropper-reset[data-fileid='" + _fileid + "']").trigger('click');
-				}
-			);	
+	    	if(transpose != ''){
+	    		//alert(transpose);
+			    $.get('./index.cfm?muraAction=carch.flipimage&fileid=' + _fileid + '&siteid=' + siteid + '&transpose=' + transpose + '&cacheid=' + Math.random(),
+					function(data) {	
+						//alert($(".cropper-reset[data-fileid='" + _fileid + "']").length);
+						$(".cropper-reset[data-fileid='" + _fileid + "']").trigger('click');
+					}
+				);
+			}	
 	    }
 	
 	    function saveCoords(c){currentCoords=c};
