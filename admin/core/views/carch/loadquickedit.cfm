@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif not content.hasDrafts()>
 	<cfoutput>
 	<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.edit#rc.attribute#')#</h1>
-	<span class="cancel" onclick="siteManager.closeQuickEdit();">#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.cancel')#</span>
+	<span class="cancel" onclick="siteManager.closeQuickEdit();" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.cancel')#"><i class="icon-remove-sign"></i></span>
 	
 	<cfif rc.attribute eq "isnav">
 		<select id="mura-quickEdit-isnav">
@@ -107,14 +107,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<select id="mura-quickEdit-stopMinute" class="dropdown span1"><cfloop from="0" to="59" index="m"><option value="#m#" <cfif (not LSisDate(content.getdisplaystop()) and m eq 59) or (LSisDate(content.getdisplaystop()) and minute(content.getdisplaystop()) eq m)>selected</cfif>>#iif(len(m) eq 1,de('0#m#'),de('#m#'))#</option></cfloop></select>
 				<select id="mura-quickEdit-stopDayPart" class="dropdown span1"><option value="AM">AM</option><option value="PM" <cfif (LSisDate(content.getdisplaystop()) and (hour(content.getdisplaystop()) gte 12)) or not LSisDate(content.getdisplaystop())>selected</cfif>>PM</option></select></li>
 		</ol>	</cfif>
-	<div class="buttons">
-	<input type="button" name="submit" value="Submit" class="submit btn" onclick="siteManager.saveQuickEdit(this);" />
+	<div class="form-actions">
+	<input type="button" name="submit" value="Submit" class="btn" onclick="siteManager.saveQuickEdit(this);" />
 	</div>
 	</cfoutput>
 <cfelse>
 	<cfoutput>
 	<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.hasdraftstitle')# </h1>
-	<span class="cancel" onclick="siteManager.closeQuickEdit();">#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.cancel')#</span>
+	<span class="cancel" onclick="siteManager.closeQuickEdit();" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.cancel')#"><i class="icon-remove-sign"></i></span>
 		<p id="hasDraftsMessage">#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.hasdraftsmessage')#</p>
 	</cfoutput>
 </cfif>

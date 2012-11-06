@@ -219,7 +219,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
        		<cfif perm eq 'editor'></a></cfif>
       </dd>
 	    <dd class="display<cfif rc.rstop.Display eq 2 and rc.rstop.approved> scheduled</cfif>">
-			<cfif perm eq 'editor'><a class="mura-quickEditItem<cfif rc.rstop.Display eq 2 and rc.rstop.approved> tooltip</cfif>" data-attribute="display"></cfif>
+			<cfif perm eq 'editor'><a class="mura-quickEditItem<cfif rc.rstop.Display eq 2 and rc.rstop.approved> tooltip</cfif>" data-attribute="display">
+				<cfif rc.rstop.Display eq 2 and rc.rstop.approved>
+				<i class="icon-calendar"></i>
+				</cfif></cfif>
 			<cfif rc.rstop.Display eq 1 and rc.rstop.approved >
             	#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#
             <cfelseif rc.rstop.Display eq 2 and rc.rstop.approved>
@@ -232,7 +235,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
        <dd class="template">
 	  		<cfif perm eq 'editor'><a class="mura-quickEditItem" data-attribute="template"></cfif>
 			<cfif len(rc.rstop.template) or len(rc.rstop.childTemplate)>
-				 <i class="mico-layout-6"></i> 
+				 <i class="icon-list-alt"></i> 
 			<cfelse>
            		#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#
          	 </cfif>

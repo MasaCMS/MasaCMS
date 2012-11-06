@@ -154,11 +154,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</dd> 
 	<dd class="display<cfif attributes.rsNest.Display eq 2 and attributes.rsNest.approved> scheduled</cfif>">
 		<cfif verdict eq 'editor'>
-		<a class="mura-quickEditItem<cfif attributes.rsNest.Display eq 2 and attributes.rsNest.approved> tooltip</cfif>" data-attribute="display">
+		<a class="mura-quickEditItem<cfif attributes.rsNest.Display eq 2 and attributes.rsNest.approved> tooltip</cfif>" data-attribute="display"><cfif attributes.rsNest.Display eq 2 and attributes.rsNest.approved><i class="icon-calendar"></i></cfif>
 		</cfif>
 		
 		<cfif attributes.rsNest.Display eq 1 and attributes.rsNest.approved>
-			#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#
+		 #application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")# 
 		
 		<cfelseif attributes.rsNest.Display eq 2 and attributes.rsNest.approved>
 			<cfif verdict neq 'editor'>
@@ -167,7 +167,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif verdict neq 'editor'> <i class="icon-question-sign"></i></a></cfif>
 			
 		<cfelse>
-			#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#
+		#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#
 		</cfif>
 		<cfif verdict eq 'editor'></a></cfif>
 	</dd>
@@ -175,7 +175,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<dd class="template">
 	  	<cfif verdict eq 'editor'><a class="mura-quickEditItem" data-attribute="template"></cfif>
 		<cfif len(attributes.rsnest.template) or len(attributes.rsnest.template)>
-			 <i class="mico-layout-6"></i> 
+			 <i class="icon-list-alt"></i> 
 		<cfelse>
            	#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#
           </cfif>
@@ -184,7 +184,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 	<dd class="nav">
 		 <cfif verdict eq 'editor'><a class="mura-quickEditItem" data-attribute="isnav"></cfif>
-		#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(attributes.rsNest.isNav)#")#
+			 #application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(attributes.rsNest.isNav)#")#
 		<cfif verdict eq 'editor'></a></cfif>
 	</dd>
     <dd class="updated">#LSDateFormat(attributes.rsnest.lastupdate,session.dateKeyFormat)# #LSTimeFormat(attributes.rsnest.lastupdate,"medium")#</dd>

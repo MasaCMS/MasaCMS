@@ -317,15 +317,29 @@
 				width: 60px;
 			}
 			
-			td.scheduled a {
-				position: relative;
-				top: -2px;
-				display: inline-block;
-				.square(24px);
+			.template i { 
 				
-				&:before { 
-					.icon-font('FontAwesome');
-					content: "\f073"; }
+				font-size: 20px;
+				color: @iconColor;
+				
+				&:hover { text-decoration: none; color: @grayDarker; }
+				
+				}
+			
+			.scheduled a {
+				
+				i { 
+					position: relative;
+					top: 3px;
+					font-size: 21px;
+					color: @iconColor;
+					
+					&:hover {
+						text-decoration: none;
+						color: @grayDarker;
+						}
+					
+					}
 			}
 			
 			td.scheduled a span {
@@ -454,7 +468,7 @@
 			}
 			
 			#selected.scheduled a {
-				background: url(../images/icons/cal-on.png) no-repeat 50% 50%;
+				
 			}
 			
 			.scheduled a span {
@@ -1259,12 +1273,17 @@
 				position: absolute;
 				top: 4px;
 				right: 4px;
-				width: 14px;
-				height: 14px;
-				display: block;
-				text-indent: -9999px;
-				background: url('../images/btn_close_quick-edit.png') no-repeat right top;
 				cursor: pointer;
+				
+				i {
+					font-size: 16px;
+					color: @grayDark;
+					
+					&:hover {
+						color: @gray;
+						}
+					
+					}
 				}
 		
 			img.loader {
@@ -1290,9 +1309,10 @@
 				line-height: 1;
 				}
 			
-			.buttons {
+			.form-actions {
 				text-align: center;
-				margin-top: .25em
+				margin: .25em 0 0;
+				padding: 0;
 				}			
 				
 			.btn {
@@ -1337,7 +1357,6 @@
 
 			
 		}
-
 		
 		.template .mura-quickEdit {
 			bottom: 36px;
