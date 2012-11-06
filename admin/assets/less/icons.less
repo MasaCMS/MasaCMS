@@ -8,7 +8,11 @@
 	text-decoration: inherit;
 	}
 
-.mura-grid .actions, .mura-table-grid .actions {
+.mura-grid, .mura-table-grid {
+
+.actions {
+
+
 	
 	ul {
 		margin: 0 auto;
@@ -29,40 +33,57 @@
 		&.download i { font-size: 18px; }
 		&.edit {  }
 		&.preview {  }
-		&.delete {  }
-		&.permissions {  }
+		&.delete { margin-left: 1px; }
+		&.permissions { margin: 0 3px; }
 		&.version-history {  }
-		&.download {  }
+		&.download { margin: 0 2px 0 1px; }
 		&.manage-data {  }
-		&.rss {  }
+		&.rss { margin: 0 4px 0 3px; }
 		&.import {  }
 		&.view-report {  }
 		&:last-child { padding-right: 0 !important; }
+	
+	a {
+		display: inherit;
+		line-height: inherit;
 		
-	a:hover {
-		text-decoration: none;
+		:hover { text-decoration: none; }
 		}
-	}
 	
 	i {
 		font-size: 17px;
 		width: auto !important;
 		color: @iconColor;
+		/* text-shadow: 0 1px 0 rgba(255,255,255,1.0); */
 		
 		&:hover { color: @grayDarker; }
 		
-		}
-			
+		}	
+	
 	.disabled i {
 		color: @gray;
 		}
 	
 	.template i {
 		font-size: 24px;
+		}
 	}
+}		
+	/*
+tr:nth-child(even) i {
+		text-shadow: 0 -1px 1px rgba(0,0,0,.5);
+	}
+*/
 
-	/* .add:hover i { color: lighten(@grayDark,10%); } */
 }
+
+
+// Exceptions
+.actions li.edit + li.delete { margin-left: 0; }
+.actions li.edit + li.view-report { margin-left: 3px; }
+/* .actions li.edit + li.permissions { margin-left: 2px; } */
+
+.actions li.rss + li.import { margin-left: -2px; }
 
 /*
 #carch,#cchangesets,#carch,#cfeed,#cadvertising,#cemail,#cmailinglist,#cprivateusers,#cpublicusers {
