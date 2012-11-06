@@ -125,22 +125,50 @@
 // Category Lists/Interest Group Assignment
 
 #mura-list-tree {
+			
 			overflow-x: auto;
-			ul.checkBoxTree { overflow: visible; list-style: none; }
-			> ul { margin: 0; overflow: hidden;
+			
+			ul.checkBoxTree { 
+			
+				overflow: visible;
+				}
+			
+			> ul { 
+				
+				margin: 0;
+				overflow: hidden;
 			
 			li { 				
-				/* min-width: 160px; */
 				.text-overflow;
 				line-height: 18px;
+				list-style: none;
 				
 				span {
 					.inline-block();
-					/* width: 15px; */
-				}
+					color: #444;
+					cursor: default;
+					display: block;
+					float: left;
+					width: 1em;
+					margin: 0 .25em;
+					font-weight: bold;
+					font-size: 12px;
+					padding: 0 1px;
+					text-shadow: 0px 1px #fff;
 				
-			}
+					&:hover, {
+						color: @gray;
+						}
+	
+					.expanded, .collapsed {
+						cursor:pointer;
+						color: @gray;
+						}
+					}
+				
+			> input[type="radio"] { margin-top: 0; }
+			> input[type="checkbox"] { margin-top: -2px; }
 			
-			input[type="checkbox"] { margin-top: -2px; }
+			}
 		}
 	}
