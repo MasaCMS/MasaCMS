@@ -21,16 +21,22 @@
 		
 		list-style: none;
 		margin: 0 0 @baseLineHeight*2 0;
-		width: 30%;
 		clear: both;
 		
 		li {
+			.box-sizing(border-box);
+			float: left;
+			clear: both;
 			margin: 0 0 .25em;
 			background: @grayLighter;
 			padding: .25em .5em;
 			.border-radius(3px);
 			position: relative;
 			line-height: 28px;
+			z-index: 0;
+			
+			form { z-index: 10; }
+			.attr-edit { width: 100%; }
 			
 			a:hover { 
 				text-decoration: none;
@@ -39,30 +45,28 @@
 				color: @blue;
 					}
 				}
-			
-			form {background: red;}
 		
 				i {
-				font-size: 14px;
-				width: 1em;
-				color: @grayDark;
-				
-				&.icon-move {
-					font-size: 16px;
-					/* width: 1.5em; */
-					padding: 0;
-					margin-bottom: -2px;
-					position: relative;
-					top: 2px;
-					/* margin-right: 1em; */
-					.border-radius(3px);
-					text-shadow: 0 1px 0 @white;
-					line-height: 24px;
+					font-size: 14px;
+					width: 1em;
+					color: @grayDark;
 					
-					&:hover {
-						cursor: hand !important;
-						color: @gray;
-						}
+					&.icon-move {
+						font-size: 16px;
+						/* width: 1.5em; */
+						padding: 0;
+						margin-bottom: -2px;
+						position: relative;
+						top: 2px;
+						/* margin-right: 1em; */
+						.border-radius(3px);
+						text-shadow: 0 1px 0 @white;
+						line-height: 24px;
+						
+						&:hover {
+							cursor: hand !important;
+							color: @gray;
+							}
 					
 					}
 				

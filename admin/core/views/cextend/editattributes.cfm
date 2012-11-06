@@ -84,7 +84,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfif arrayLen(attributesArray)>
-<ul id="attributesList" class="attr-list">
+<ul id="attributesList" class="attr-list <!--- <cfif attributes.action eq "add">attr-add<cfelse> attr-edit</cfif> --->">
 <cfloop from="1" to="#arrayLen(attributesArray)#" index="a">	
 <cfset attributeBean=attributesArray[a]/>
 <cfoutput>

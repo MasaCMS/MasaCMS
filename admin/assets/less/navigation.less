@@ -95,11 +95,13 @@
 	margin: 0 0 @baseLineHeight !important;
 	padding: 6px 15px !important;
 	clear: both;
-	border: 0 solid #f5f5f5 !important;
+	//border: 0 solid #f5f5f5 !important;
 	.border-radius(3px) !important;
-	#gradient .vertical(hsl(0,0,98%),hsl(0,0,96%));
+	//#gradient .vertical(hsl(0,0,98%),hsl(0,0,96%));
 	.box-shadow(@globalDropShadow);
 	
+	.buttonBackground(@btnBackground, @btnBackgroundHighlight, @grayDark, 0 1px 1px rgba(255,255,255,.75));
+	.btn;
 }
 
 #content .notice .navZoom {
