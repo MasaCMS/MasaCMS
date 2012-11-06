@@ -105,7 +105,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
 	<cfset var rs=""/>
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery name="rs" cachedwithin="#createTimeSpan(0, 0, 0, 1)#" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select * from timagesizes 
 	where
 	<cfif structKeyExists(arguments,'sizeid')>
