@@ -115,7 +115,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;startrow=1">
 		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;compactDisplay=true">
 		--->
-		<cfset editableControl.innerHTML = variables.$generateEditableObjectControl(editableControl.editLink)>
+		<cfset editableControl.innerHTML = variables.$.generateEditableObjectControl(editableControl.editLink)>
 	</cfif>
 </cfsilent>
 
@@ -137,7 +137,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cfif>
 <cfif editableControl.innerHTML neq "">
-	<cfoutput>#variables.$renderEditableObjectFooter(editableControl.innerHTML)#</cfoutput>
+	<cfoutput>#variables.$.renderEditableObjectFooter(editableControl.innerHTML)#</cfoutput>
 </cfif>
 <cfif not variables.rsTemplate.doCache>
 	<cfset request.cacheItem=variables.rsTemplate.doCache/>
