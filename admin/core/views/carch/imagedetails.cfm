@@ -57,20 +57,20 @@
 			<cfif len(rc.sourceImage)>		
 				<cfset rc.rsMeta=$.getBean('fileManager').readMeta(fileID=f)>
 				<h2><i class="icon-picture"></i> #HTMLEditFormat(rc.rsMeta.filename)#</h2>
-				<div class="control-group divide">
+				<div id="image-orientation" class="control-group">
 					<label class="control-label">
 						#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.adjustimage'))#
 					</label>
 					<div class="controls">
 						<select id="image-actions">
-							<option value="">Select Action</option>
-							<option value="90"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))# (90)</option>
-							<option value="180"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))# (180)</option>
-							<option value="270"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))# (270)</option>
-							<option value="vertical"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# (horizontal)</option>
-							<option value="vertical"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# (vertical)</option>
-							<option value="diagonal"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# (diagonal)</option>
-							<option value="antidiagonal"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# (antidiagonal)</option>
+							<option value="">Please Select</option>
+							<option value="90"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))# &ndash; 90&deg;</option>
+							<option value="180"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))# &ndash; 180&deg;</option>
+							<option value="270"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))# &ndash; 270&deg;</option>
+							<option value="vertical"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# &ndash; Horizontal</option>
+							<option value="vertical"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# &ndash; Vertical</option>
+							<option value="diagonal"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# &ndash; Diagonal</option>
+							<option value="antidiagonal"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# &ndash; Anti-Diagonal</option>
 						</select>
 
 						<input type="button" onclick="flipImage('#JSStringFormat(f)#',$('##image-actions').val());" class="btn" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.apply'))#"/>
@@ -78,7 +78,7 @@
 				</div>
 
 				<cfloop list="Small,Medium,Large" index="s">
-					<div class="control-group divide">
+					<div class="control-group">
 						<label class="control-label">#s# (#$.siteConfig('#s#ImageWidth')#x#$.siteConfig('#s#ImageHeight')#)</label>
 						<div class="controls">
 							<div id="#lcase(s)##f#btns" class="btn-group">
@@ -98,7 +98,7 @@
 					<cfelse>
 						<cfset rc.customImageRatio=''>
 					</cfif>
-					<div class="control-group divide">
+					<div class="control-group">
 						<label class="control-label">#HTMLEditFormat(customImage.getName())# (#customImage.getWidth()#x#customImage.getHeight()#)</label>
 						<div class="controls">
 							<div id="#lcase(customImage.getName())##f#btns" class="btn-group">
