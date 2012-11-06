@@ -1,11 +1,11 @@
 .table {
 
-	/* .table-bordered; */
-	/* .border-radius(0) !important; */
+	.table-bordered;
+	.border-radius(0) !important;
 
 	td, th {
 		font-size: @baseFontSize;
-		/* .border-radius(0) !important; */
+		.border-radius(0) !important;
 		text-align: center;
 		color: @grayDarker;
 		}
@@ -16,6 +16,7 @@
 		text-transform: none;
 		font-weight: bold;
 		white-space: nowrap;
+		border-right: 1px solid @grayLight;
 		}
 		
 	td {
@@ -36,7 +37,7 @@
 	
 }
 
-.tab-pane th, .tab-pane td{
+.tab-pane th, .tab-pane td {
 	text-align: left;
 }
 
@@ -50,5 +51,5 @@ table.cke_editor {
 
 .fieldset > .mura-table-grid {
 		.box-sizing(border-box);
-		margin: 0 @gridGutterWidth @baseLineHeight;
+		/* margin: 0 @gridGutterWidth @baseLineHeight; */
 }

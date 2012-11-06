@@ -20,13 +20,18 @@ header, #cPlugins {
 		position: relative;
 		}
 		
+	li.dropdown > .dropdown-toggle .caret {
+		border-top-color: darken(@gray,16%);
+		border-bottom-color: darken(@gray,16%);
+		}
+		
 	.nav li, .nav li a {
 		font-size: @baseFontSize;
 		}
 	
 	.nav > li > a {
 		padding: 5px 10px;
-		color: @gray;
+		color: darken(@gray,16%);
 		text-shadow: 0 -1px 0 #000;
 		}
 	

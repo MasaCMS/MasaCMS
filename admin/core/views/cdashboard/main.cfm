@@ -111,7 +111,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif application.settingsManager.getSite(session.siteid).getemailbroadcaster() and  application.permUtility.getModulePerm("00000000000000000000000000000000009","#session.siteid#")>
 <span id="emailBroadcastsData">
-<div id="emailBroadcasts"<cfif started> class="separate"</cfif>>
+<div id="emailBroadcasts" class="separate">
 
 </div>
 </span>

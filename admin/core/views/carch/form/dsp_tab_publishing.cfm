@@ -48,7 +48,7 @@
 
   		<div class="control-group">
 		     <div class="controls">
-		      	<label for="isNav" class="checkbox inline">
+		      	<label for="isNav" class="checkbox">
 		      		<input name="isnav" id="isNav" type="CHECKBOX" value="1" <cfif rc.contentBean.getisnav() eq 1 or rc.contentBean.getisNew() eq 1>checked</cfif> class="checkbox"> 
 		      		<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.includeSiteNav"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.isnav')#
 		      		 <i class="icon-question-sign"></i></a>

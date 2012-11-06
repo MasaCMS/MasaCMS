@@ -52,12 +52,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<!--- #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#:  --->
 	<span id="selectRelatedContent"> <a class="btn" href="javascript:;" onclick="javascript: siteManager.loadRelatedContent('#HTMLEditFormat(rc.siteid)#','',1);return false;"><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.addrelatedcontent')#</a></span>
 		<table id="relatedContent" class="table table-striped table-condensed table-bordered mura-table-grid"> 
+			<thead>
 				<tr>
 				<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contenttitle')#</th>
 				<th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type')#</th>
 				<th class="actions">&nbsp;</th>
 				</tr>
-				<tbody id="RelatedContent">
+			</thead>
+			<tbody id="RelatedContent">
 				<cfif rc.rsRelatedContent.recordCount>
 				<cfloop query="rc.rsRelatedContent">
 				<tr id="c#rc.rsRelatedContent.contentID#">
@@ -73,8 +75,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<tr>
 				<td id="noFilters" colspan="4" class="noResults">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.norelatedcontent')#</td>
 				</tr>
-				</cfif></tbody>
-			</table>
+				</cfif>
+			</tbody>
+		</table>
 	
 		<span id="extendset-container-relatedcontent" class="extendset-container"></span>
 	</div>
