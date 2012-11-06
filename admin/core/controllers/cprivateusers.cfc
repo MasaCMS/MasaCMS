@@ -138,8 +138,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset structDelete(session.mura,"editBean")>
 
-	<cfif arguments.rc.routeid eq '' or arguments.rc.routeid eq 'adManager'>
-		<cfset variables.fw.redirect(action="cPrivateUsers.list",append="siteid")>
+	<cfif not len(arguments.rc.routeid) or arguments.rc.routeid eq 'adManager'>
+		<cfif len(arguments.rc.returnurl)>	
+			<cflocation url="#arguments.rc.returnurl#" addtoken="false">
+		<cfelse>
+			<cfset variables.fw.redirect(action="cPrivateUsers.list",append="siteid")>
+		</cfif>
 	</cfif>
 	<cfset arguments.rc.routeBean=variables.userManager.read(arguments.rc.routeid) />
 	

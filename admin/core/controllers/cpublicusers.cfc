@@ -149,8 +149,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset structDelete(session.mura,"editBean")>
 
-	<cfif arguments.rc.routeid eq ''>
-		<cfset variables.fw.redirect(action="cPublicUsers.list",append="siteid")>
+	<cfif not len(arguments.rc.routeid)>
+		<cfif len(arguments.rc.returnurl)>	
+			<cflocation url="#arguments.rc.returnurl#" addtoken="false">
+		<cfelse>
+			<cfset variables.fw.redirect(action="cPublicUsers.list",append="siteid")>
+		</cfif>
 	</cfif>
 	<cfif arguments.rc.routeid eq 'adManager' and arguments.rc.action neq 'delete'>
 		<cfset variables.fw.redirect(action="cAdvertising.viewAdvertiser",append="siteid,userid")>
@@ -169,7 +173,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="search" output="false">
 	<cfargument name="rc">
-	
+
 	<cfset arguments.rc.rslist=variables.userManager.getSearch(arguments.rc.search,arguments.rc.siteid,1) />
 	<cfif arguments.rc.rslist.recordcount eq 1>
 		<cfset arguments.rc.userID=rc.rslist.userid>

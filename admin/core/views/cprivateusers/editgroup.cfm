@@ -181,6 +181,7 @@ select * from rsSubTypes where subType <> 'Default'
             <input type="hidden" name="contact" value="0">
             <input type="hidden" name="isPublic" value="0">
             <input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
+            <input type="hidden" name="returnurl" value="#HTMLEditFormat(rc.returnurl)#">
             <cfif not rsNonDefault.recordcount><input type="hidden" name="subtype" value="Default"/></cfif>
           </div>
        </cfif>
