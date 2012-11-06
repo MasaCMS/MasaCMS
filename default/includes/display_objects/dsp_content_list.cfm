@@ -58,7 +58,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif arguments.hasImages>
 		<cfif not structKeyExists(arguments,"imageSize") or variables.$.event("muraMobileRequest")>
 			<cfset arguments.imageSize="small">
+			<cfset arguments.isCustomImage= false />		
+		<cfelseif not listFindNoCase('small,medium,large,custom',arguments.imagesize)>
+			<cfset arguments.customImageSize=getBean('imageSize').loadBy(name=arguments.imageSize,siteID=variables.$.event('siteID'))>
+			<cfset arguments.Width= arguments.customImageSize.getWidth() />
+			<cfset arguments.Height= arguments.customImageSize.getHeight() />
+			<cfset arguments.isCustomImage= true />			
 		</cfif>
+
 		<cfif not structKeyExists(arguments,"imageHeight")>
 			<cfset arguments.imageHeight="auto">
 		</cfif>
@@ -70,7 +77,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset arguments.imagePadding=20>
 		</cfif>
 
-		<cfset arguments.imageStyles='style="#variables.$.generateListImageSyles(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight,padding=arguments.imagePadding)#"'>
+		<cfif arguments.isCustomImage>
+			<cfset arguments.imageStyles='style="#variables.$.generateListImageSyles(size='custom',width=arguments.imageWidth,height=arguments.imageHeight,padding=arguments.imagePadding)#"'>
+		<cfelse>
+			<cfset arguments.imageStyles='style="#variables.$.generateListImageSyles(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight,padding=arguments.imagePadding)#"'>
+		</cfif>
 	</cfif>
 </cfsilent>	
 
