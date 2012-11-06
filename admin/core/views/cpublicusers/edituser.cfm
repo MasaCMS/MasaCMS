@@ -457,6 +457,7 @@ select * from rsSubTypes where subType <> 'Default'
 <input type="hidden" name="groupid" value="">
 <input type="hidden" name="ContactForm" value="">
 <input type="hidden" name="isPublic" value="1">
+<input type="hidden" name="returnurl" value="#HTMLEditFormat(rc.returnurl)#">
 <cfif not rsNonDefault.recordcount><input type="hidden" name="subtype" value="Default"/></cfif>		
 </cfoutput>
 
