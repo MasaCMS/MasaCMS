@@ -53,8 +53,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif attributes.action eq "add">
 <li>
-<a href="javascript:;" id="#HTMLEditFormat(attributes.formName)#open" class="btn" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container').slideDown();this.style.display='none';jQuery('###HTMLEditFormat(attributes.formName)#close').show();return false;"><i class="icon-plus-sign"></i> Add New Attribute</a></li>
-<li><a href="javascript:;" class="btn" style="display:none;" id="#HTMLEditFormat(attributes.formName)#close" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container').slideUp();this.style.display='none';jQuery('###HTMLEditFormat(attributes.formName)#open').show();return false;"><i class="icon-eye-close"></i> Close</a></li>
+<a href="javascript:;" id="#HTMLEditFormat(attributes.formName)#open" class="btn" onclick="$('###HTMLEditFormat(attributes.formName)#container').slideDown();this.style.display='none';$('###HTMLEditFormat(attributes.formName)#close').show();return false;"><i class="icon-plus-sign"></i> Add New Attribute</a></li>
+<li><a href="javascript:;" class="btn" style="display:none;" id="#HTMLEditFormat(attributes.formName)#close" onclick="$('###HTMLEditFormat(attributes.formName)#container').slideUp();this.style.display='none';$('###HTMLEditFormat(attributes.formName)#open').show();return false;"><i class="icon-eye-close"></i> Close</a></li>
 <cfif isDefined('attributes.attributesArray') and ArrayLen(attributes.attributesArray)>
 <li><a href="javascript:;" class="btn" style="display:none;" id="saveSort" onclick="extendManager.saveAttributeSort('attributesList');return false;"><i class="icon-check"></i> Save Order</a></li>
 <li><a href="javascript:;" class="btn" id="showSort" onclick="extendManager.showSaveSort('attributesList');return false;"><i class="icon-move"></i> Reorder</a></li>
@@ -175,11 +175,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="form-actions">
 <cfif attributes.action eq "add">
 	<input type="button" class="btn" onclick="submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'add');" value="Add" />
-	<input type="button" class="btn" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container').slideUp();jQuery('###HTMLEditFormat(attributes.formName)#close').hide();jQuery('###HTMLEditFormat(attributes.formName)#open').show();" value="Cancel" />
+	<input type="button" class="btn" onclick="$('###HTMLEditFormat(attributes.formName)#container').slideUp();$('###HTMLEditFormat(attributes.formName)#close').hide();$('###HTMLEditFormat(attributes.formName)#open').show();" value="Cancel" />
 <cfelse>
 	<input type="button" class="btn" onclick="submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'update');" value="Update" />
 	<input type="button" class="btn" onclick="submitForm(document.forms.#HTMLEditFormat(attributes.formName)#,'delete','Delete Attribute?');" value="Delete" />
-	<input type="button" class="btn" onclick="jQuery('###HTMLEditFormat(attributes.formName)#container').slideUp();jQuery('###HTMLEditFormat(attributes.formName)#close').hide();jQuery('###HTMLEditFormat(attributes.formName)#open').show();" value="Cancel" />
+	<input type="button" class="btn" onclick="$('###HTMLEditFormat(attributes.formName)#container').slideUp();$('###HTMLEditFormat(attributes.formName)#close').hide();$('###HTMLEditFormat(attributes.formName)#open').show();$('li[attributeid=#attributes.attributeBean.getAttributeID()#]').removeClass('attr-edit');" value="Cancel" />
 </cfif>
 </div>
 <input name="orderno" type="hidden" value="#attributes.attributeBean.getOrderno()#"/>
