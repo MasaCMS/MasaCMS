@@ -82,7 +82,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 								<div class="categoryassignment<cfif rsIsMember.recordcount and rsIsMember.isFeature eq 2> scheduled</cfif>">
 									<!--- Quick Edit --->
-									<a class="btn btn-mini dropdown-toggle<cfif not disabled> mura-quickEditItem</cfif>"<cfif rsIsMember.isFeature eq 2> rel="tooltip" title="#HTMLEditFormat(LSDateFormat(rsIsMember.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rsIsMember.featurestop,"short")#"</cfif>>
+									<a class="dropdown-toggle<cfif not disabled> mura-quickEditItem</cfif>"<cfif rsIsMember.isFeature eq 2> rel="tooltip" title="#HTMLEditFormat(LSDateFormat(rsIsMember.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rsIsMember.featurestop,"short")#"</cfif>>
 										<cfswitch expression="#rsIsMember.isFeature#">
 											<cfcase value="0">
 												#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#
