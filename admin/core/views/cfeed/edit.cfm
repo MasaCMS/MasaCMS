@@ -691,7 +691,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</ul>
 		<div class="tab-content">
 			#tabContent#
-			<img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
+			<img class="loadProgress tabPreloader" src="assets/images/ajax-loader.gif">
 			#actionButtons#
 		</div>
 	</div>
@@ -931,7 +931,7 @@ jQuery(document).ready(function(){
 	</ul>
 	<div class="tab-content">
 	#tabContent#
-	<img class="loadProgress tabPreloader" src="assets/images/progress_bar.gif">
+	<img class="loadProgress tabPreloader" src="assets/images/ajax-loader.gif">
 
 	<div class="form-actions">
 		<cfif rc.feedID eq ''>

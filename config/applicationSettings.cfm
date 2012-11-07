@@ -195,7 +195,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset this.clientManagement = properties.getProperty("clientManagement","false") />
 	<cfset this.clientStorage = properties.getProperty("clientStorage","registry") />
 	<cfset this.ormenabled = properties.getProperty("ormenabled","true") />
-	<cfset this.datasource = properties.getProperty("datasource","") />
+	<cfset this.datasource = structNew()>
+	<cfset this.datasource.name = properties.getProperty("datasource","") />
+	<cfset this.datasource.username = properties.getProperty("dbusername","")>
+	<cfset this.datasource.password = properties.getProperty("dbpassword","")>
 	<cfset this.ormSettings=structNew()>
 	<cfset this.ormSettings.cfclocation=arrayNew(1)>
 	

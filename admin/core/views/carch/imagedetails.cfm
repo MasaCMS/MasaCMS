@@ -148,11 +148,15 @@
 	    	//location.href='./index.cfm?muraAction=carch.flipimage&fileid=' + currentFileID + '&siteid=' + siteid;
 	    	if(transpose != ''){
 	    		//alert(transpose);
-			    $.get('./index.cfm?muraAction=carch.flipimage&fileid=' + _fileid + '&siteid=' + siteid + '&transpose=' + transpose + '&cacheid=' + Math.random(),
-					function(data) {	
-						//alert($(".cropper-reset[data-fileid='" + _fileid + "']").length);
-						$(".cropper-reset[data-fileid='" + _fileid + "']").trigger('click');
-					}
+	    		actionModal(
+		    			function(){
+				   		 $.get('./index.cfm?muraAction=carch.flipimage&fileid=' + _fileid + '&siteid=' + siteid + '&transpose=' + transpose + '&cacheid=' + Math.random(),
+							function(data) {	
+							//alert($(".cropper-reset[data-fileid='" + _fileid + "']").length);
+							$(".cropper-reset[data-fileid='" + _fileid + "']").trigger('click');
+							}
+						);
+			   		}
 				);
 			}	
 	    }
@@ -160,28 +164,35 @@
 	    function saveCoords(c){currentCoords=c};
 	
 	    function applyCropping(){
-	    	$('##applyingCoords').show();
-	    	$('##cropper .btn').hide();
-	 		
-	 		//location.href='./index.cfm?muraAction=carch.cropimage&fileid=' + currentFileID + '&size=' + currentSize + '&x=' + currentCoords.x + '&y=' + currentCoords.y + '&width=' + currentCoords.w + '&height=' + currentCoords.h + '&siteid=' + siteid;
-	
-	 		if(typeof(currentCoords) == 'object'){
-		    	$.get('./index.cfm?muraAction=carch.cropimage&fileid=' + currentFileID + '&size=' + currentSize + '&x=' + currentCoords.x + '&y=' + currentCoords.y + '&width=' + currentCoords.w + '&height=' + currentCoords.h + '&siteid=' + siteid,
-									function(data) {	
-										//alert(JSON.stringify(data));
-										reloadImg(currentSize + currentFileID);
-										resizeImg(currentSize + currentFileID,data.width,data.height);
-										$('##cropper').remove()
-									}
-								);
-			} else {
-				$('##cropper').remove();
-			}		
+
+	    	actionModal(function(){
+			    	$('##applyingCoords').show();
+			    	$('##cropper .btn').hide();
+			 		
+			 		//location.href='./index.cfm?muraAction=carch.cropimage&fileid=' + currentFileID + '&size=' + currentSize + '&x=' + currentCoords.x + '&y=' + currentCoords.y + '&width=' + currentCoords.w + '&height=' + currentCoords.h + '&siteid=' + siteid;
+			
+			 		if(typeof(currentCoords) == 'object'){
+				    	$.get('./index.cfm?muraAction=carch.cropimage&fileid=' + currentFileID + '&size=' + currentSize + '&x=' + currentCoords.x + '&y=' + currentCoords.y + '&width=' + currentCoords.w + '&height=' + currentCoords.h + '&siteid=' + siteid,
+											function(data) {	
+												//alert(JSON.stringify(data));
+												reloadImg(currentSize + currentFileID);
+												resizeImg(currentSize + currentFileID,data.width,data.height);
+												$('##cropper').remove()
+												$('##action-modal').remove();
+											}
+										);
+					} else {
+						$('##cropper').remove();
+						$('##action-modal').remove();
+					}
+				}
+			);		
 	    }
 	
 	    $('.cropper-reset').click(
 	    	function(){
-	
+				$('##action-modal').remove();
+
 	    		var resetFileID=$(this).attr('data-fileid');
 				var resetSize=$(this).attr('data-size')
 				//alert(resetSize + resetFileID);
