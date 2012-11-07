@@ -57,7 +57,7 @@ var userManager={
 			var d = $('#extendSetsDefault');
 			
 			if(d.length){
-				d.html('<img class="loadProgress" src="assets/images/progress_bar.gif">');
+				d.html('<img class="loadProgress" src="assets/images/ajax-loader.gif">');
 				$.get(url + "?" + pars, 
 						function(data) {
 						if(data.indexOf('mura-primary-login-token') != -1){

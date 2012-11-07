@@ -50,7 +50,7 @@ var dashboardManager={
 		
 		//location.href=url + "?" + pars;
 		var d = $('#userActivityData');
-			d.html('<img class="loadProgress" src="assets/images/progress_bar.gif">');
+			d.html('<img class="loadProgress" src="assets/images/ajax-loader.gif">');
 			$.get(url + "?" + pars, 
 					function(data) {
 					d.html(data).animate({'opacity':'hide'},1000,null,
@@ -68,7 +68,7 @@ var dashboardManager={
 		
 		//location.href=url + "?" + pars;
 		var d = $('#popularContentData');
-			d.html('<img class="loadProgress" src="assets/images/progress_bar.gif">');
+			d.html('<img class="loadProgress" src="assets/images/ajax-loader.gif">');
 			$.get(url + "?" + pars, 
 					function(data) {
 					d.html(data).animate({'opacity':'hide'},1000,null,
@@ -86,7 +86,7 @@ var dashboardManager={
 		
 		//location.href=url + "?" + pars;
 		var d = $('#recentCommentsData');
-			d.html('<img class="loadProgress" src="assets/images/progress_bar.gif">');
+			d.html('<img class="loadProgress" src="assets/images/ajax-loader.gif">');
 			$.get(url + "?" + pars, 
 					function(data) {
 					d.html(data).animate({'opacity':'hide'},1000,null,
@@ -105,7 +105,7 @@ var dashboardManager={
 		
 		//location.href=url + "?" + pars;
 		var d = $('#recentFormActivityData');
-			d.html('<img class="loadProgress" src="assets/images/progress_bar.gif">');
+			d.html('<img class="loadProgress" src="assets/images/ajax-loader.gif">');
 			$.get(url + "?" + pars, 
 					function(data) {
 					d.html(data).animate({'opacity':'hide'},1000,null,
@@ -123,7 +123,7 @@ var dashboardManager={
 		
 		//location.href=url + "?" + pars;
 		var d = $('#emailBroadcastsData');
-			d.html('<div id="emailBroadcasts" class="separate"><h3>Email Broadcasts</h3><img class="loadProgress" src="assets/images/progress_bar.gif"></div>');
+			d.html('<div id="emailBroadcasts" class="separate"><h3>Email Broadcasts</h3><img class="loadProgress" src="assets/images/ajax-loader.gif"></div>');
 			$.get(url + "?" + pars, 
 					function(data) {
 					d.html(data).animate({'opacity':'hide'},1000,null,

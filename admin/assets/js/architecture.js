@@ -182,7 +182,7 @@ var siteManager={
 	openNewContentMenu: function(contentid,siteid,topid,parentid,type){
 		
 			$("#newContentMenuContainer").remove();
-			$("body").append('<div id="newContentMenuContainer" title="Loading..." style="display:none"><div id="newContentMenu"><img src="assets/images/progress_bar.gif"></div></div>');
+			$("body").append('<div id="newContentMenuContainer" title="Loading..." style="display:none"><div id="newContentMenu"><img src="assets/images/ajax-loader.gif"></div></div>');
 
 			$("#newContentMenuContainer").dialog({
 				resizable: false,
@@ -198,7 +198,7 @@ buttons: {
 */
 				open: function(){
 					$("#ui-dialog-title-newContentMenuContainer").html(newContentMenuTitle);
-					$("#newContentMenuContainer").html('<div class="ui-dialog-content ui-widget-content"><img src="./assets/images/progress_bar.gif"></div>');
+					$("#newContentMenuContainer").html('<div class="ui-dialog-content ui-widget-content"><img src="./assets/images/ajax-loader.gif"></div>');
 					var url = 'index.cfm';
 					var pars = 'muraAction=cArch.loadnewcontentmenu&siteid=' + siteid +'&contentid=' + contentid + '&parentid=' + parentid + '&topid=' + parentid + '&ptype=' + type +'&cacheid=' + Math.random();
 					$.get(url + "?" + pars, 
@@ -463,7 +463,7 @@ buttons: {
 		var url = 'index.cfm';
 		var pars = 'muraAction=cArch.siteParents&compactDisplay=true&siteid=' + siteid +'&contentid=' + contentid + '&parentid=' +parentid+ '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
 		var d = $('#move');
-		d.html('<div><img src="assets/images/progress_bar.gif"><input type=hidden name=parentid value=' + parentid + ' ></div>');
+		d.html('<div><img src="assets/images/ajax-loader.gif"><input type=hidden name=parentid value=' + parentid + ' ></div>');
 		$.get(url + "?" + pars, 
 				function(data) {
 				$('#move').html(data);
@@ -475,7 +475,7 @@ buttons: {
 		var url = 'index.cfm';
 		var pars = 'muraAction=cArch.assocImages&compactDisplay=true&siteid=' + siteid +'&fileid=' + fileid + '&contentid=' + contentid + '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
 		var d = $('#selectAssocImage');
-		//d.html('<img class="loadProgress" src="assets/images/progress_bar.gif">');
+		//d.html('<img class="loadProgress" src="assets/images/ajax-loader.gif">');
 		$.get(url + "?" + pars, 
 				function(data) {
 				$('#selectAssocImage').html(data);
@@ -489,7 +489,7 @@ buttons: {
 		var pars = 'muraAction=cArch.loadclass&compactDisplay=true&siteid=' + siteid +'&classid=' + classid  +'&subclassid=' + subclassid + '&contentid=' + contentid + '&parentid=' + parentid  +'&cacheid=' + Math.random();
 		var d=$('#classList');
 
-		d.html('<div><img class="loadProgress" src="assets/images/progress_bar.gif"></div>');
+		d.html('<div><img class="loadProgress" src="assets/images/ajax-loader.gif"></div>');
 		$.get(url + "?" + pars, 
 			function(data) {
 				$('#classList').html(data);
@@ -520,7 +520,7 @@ buttons: {
 			var d = $('#selectNotify');
 			if(d.html()==''){
 				d.show();
-				d.html('<div><img class="loadProgress" src="assets/images/progress_bar.gif"></div>');
+				d.html('<div><img class="loadProgress" src="assets/images/ajax-loader.gif"></div>');
 				$.get(url + "?" + pars, 
 						function(data) {
 						$('#selectNotify').html(data);
@@ -540,7 +540,7 @@ buttons: {
 		var d = $('#selectExpiresNotify');
 		if(d.html()==''){
 			d.show();
-			d.html('<div><img class="loadProgress" src="assets/images/progress_bar.gif"></div>');
+			d.html('<div><img class="loadProgress" src="assets/images/ajax-loader.gif"></div>');
 			$.get(url + "?" + pars, 
 					function(data) {
 					$('#selectExpiresNotify').html(data);
@@ -562,7 +562,7 @@ buttons: {
 		location.href="?" + pars;
 		}*/
 		var d = $('#selectRelatedContent');
-			d.html('<div><img class="loadProgress" src="assets/images/progress_bar.gif"></div>');
+			d.html('<div><img class="loadProgress" src="assets/images/ajax-loader.gif"></div>');
 			$.get(url + "?" + pars, 
 					function(data) {
 					$('#selectRelatedContent').html(data);
@@ -727,7 +727,7 @@ buttons: {
 		$('.extendset-container').each(
 			function(){
 				if($(this).html() != ''){
-					$(this).html('<img class="loadProgress" src="assets/images/progress_bar.gif">');
+					$(this).html('<img class="loadProgress" src="assets/images/ajax-loader.gif">');
 				}
 			}
 		);
@@ -918,7 +918,7 @@ buttons: {
 		//location.href=url + "?" + pars;
 		var d = $('#gridContainer');
 			if (!this.activeQuickEdit) {
-				d.html('<img class="loadProgress" src="assets/images/progress_bar.gif">').show();
+				d.html('<img class="loadProgress" src="assets/images/ajax-loader.gif">').show();
 			}
 			$.get(url + "?" + pars, 
 					function(data) {
@@ -1015,7 +1015,7 @@ buttons: {
 		//location.href=url + "?" + pars;
 		var d = $('#flatViewContainer');
 		
-		d.html('<img class="loadProgress" src="assets/images/progress_bar.gif">');
+		d.html('<img class="loadProgress" src="assets/images/ajax-loader.gif">');
 		$('#newContentMenu').addClass('hide');
 
 		$.post(url + "?" + pars, args, 
@@ -1140,7 +1140,7 @@ buttons: {
 				icon.removeClass('hasChildren closed');
 				icon.addClass('hasChildren open');
 					
-				//d.append('<img class="loadProgress" src="assets/images/progress_bar.gif">');
+				//d.append('<img class="loadProgress" src="assets/images/ajax-loader.gif">');
 				//d.find(".loadProgress").show();
 				$.get(url + "?" + pars, function(data){
 					try {
@@ -1919,7 +1919,7 @@ buttons: {
 	resetConfiguratorContainer: function(){
 		//$(instance).dialog("destroy");
 		$("#configuratorContainer").remove();
-		$("body").append('<div id="configuratorContainer" title="Loading..." style="display:none"><div id="configurator"><img src="assets/images/progress_bar.gif"></div></div>');
+		$("body").append('<div id="configuratorContainer" title="Loading..." style="display:none"><div id="configurator"><img src="assets/images/ajax-loader.gif"></div></div>');
 	},
 	
 	initConfiguratorParams: function(){

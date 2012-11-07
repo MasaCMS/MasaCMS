@@ -1029,4 +1029,4 @@ spinnerArgs= {
 			  left: 'auto' // Left position relative to parent in px
 			}
 
-preloadimages(['./assets/images/progress_bar.gif']);
+preloadimages(['./assets/images/ajax-loader.gif']);
