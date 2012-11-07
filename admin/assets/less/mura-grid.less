@@ -764,7 +764,6 @@
 		}
 		
 		.mura-grid li dt a {
-			/* background: url(../images/icons/files/icon_generic_small.gif) 1px center no-repeat; */
 			text-decoration: none;
 			margin: 0;
 		}
@@ -789,15 +788,7 @@
 		
 		#msg-file-locked {
 			margin-bottom: .5em !important;
-			/*padding: .35em .35em .35em 26px !important;
-			background-image: url(../images/icons/sinfo_24.png);
-			background-position: 7px center;
-			background-repeat: no-repeat;*/
 			padding: .35em .75em !important;
-		}
-		
-		#msg-file-locked.error {
-		
 		}
 		
 		#msg-file-locked.error a {
@@ -1232,14 +1223,23 @@
 		/* @group Quick Edit */
 		
 		.mura-quickEditItem {
-			display: inline-block;
-			width: 100%;
 			cursor: pointer;
-		}
+			border-bottom: 1px dotted;
+				
+			
+			i {
+			
+				}
+			
+			&:hover {
+				color: @grayDark;
+				text-decoration: none;
+				}
+			}
 		
 		#selected .mura-quickEditItem {
 			font-weight: bold;
-		}
+			}
 		
 		.mura-quickEdit {
 			background-color: #272727;
