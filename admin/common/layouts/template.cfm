@@ -119,12 +119,16 @@
     <!--[if lt IE 9]>
       <script src="#application.configBean.getContext()#/admin/assets/js/html5.js"></script>
     <![endif]-->
-    
+
+    <!--- Spinner JS --->
+	<script src="#application.configBean.getContext()#/admin/assets/js/spin.min.js" type="text/javascript" language="Javascript"></script>
+
 	<!-- Mura Admin JS -->
 	<script src="#application.configBean.getContext()#/admin/assets/js/admin.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
 	
-    <!-- jQuery UI -->
+    <!-- jQuery -->
     <script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+    <script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.spin.js" type="text/javascript" language="Javascript"></script>
 	<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 	<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 	<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
@@ -138,7 +142,7 @@
 	<!-- Color Picker -->
 	<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/colorpicker/js/bootstrap-colorpicker.js?coreversion=#application.coreversion#"></script>
 	<link href="#application.configBean.getContext()#/tasks/widgets/colorpicker/css/colorpicker.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
-	
+
 	<!-- JSON -->
 	<script src="#application.configBean.getContext()#/admin/assets/js/json2.js" type="text/javascript" language="Javascript"></script>
 	
@@ -186,7 +190,6 @@
   </head>
   <body id="#rc.originalcircuit#">
     <cfinclude template="includes/header.cfm">
-
     <div class="main">
       <div class="main-inner">
          <div class="container">
