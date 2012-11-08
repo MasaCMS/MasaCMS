@@ -56,14 +56,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset arguments.hasImages=listFindNoCase(arguments.fields,"Image")>
 	
 	<cfif arguments.hasImages>
+		<cfset arguments.isCustomImage= false />	
+
 		<cfif not structKeyExists(arguments,"imageSize") or variables.$.event("muraMobileRequest")>
-			<cfset arguments.imageSize="small">
-			<cfset arguments.isCustomImage= false />		
+			<cfset arguments.imageSize="small">		
 		<cfelseif not listFindNoCase('small,medium,large,custom',arguments.imagesize)>
 			<cfset arguments.customImageSize=getBean('imageSize').loadBy(name=arguments.imageSize,siteID=variables.$.event('siteID'))>
-			<cfset arguments.Width= arguments.customImageSize.getWidth() />
-			<cfset arguments.Height= arguments.customImageSize.getHeight() />
-			<cfset arguments.isCustomImage= true />			
+			<cfset arguments.imageWidth= arguments.customImageSize.getWidth() />
+			<cfset arguments.imageHeight= arguments.customImageSize.getHeight() />
+			<cfset arguments.isCustomImage= true />	
 		</cfif>
 
 		<cfif not structKeyExists(arguments,"imageHeight")>
