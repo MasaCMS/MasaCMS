@@ -463,7 +463,7 @@ buttons: {
 		var url = 'index.cfm';
 		var pars = 'muraAction=cArch.siteParents&compactDisplay=true&siteid=' + siteid +'&contentid=' + contentid + '&parentid=' +parentid+ '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
 		var d = $('#move');
-		d.html('<div><img src="assets/images/ajax-loader.gif"><input type=hidden name=parentid value=' + parentid + ' ></div>');
+		d.html('<div class="load-inline"><input type=hidden name=parentid value=' + parentid + ' ></div>');
 		$.get(url + "?" + pars, 
 				function(data) {
 				$('#move').html(data);
@@ -475,7 +475,6 @@ buttons: {
 		var url = 'index.cfm';
 		var pars = 'muraAction=cArch.assocImages&compactDisplay=true&siteid=' + siteid +'&fileid=' + fileid + '&contentid=' + contentid + '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
 		var d = $('#selectAssocImage');
-		//d.html('<img class="loadProgress" src="assets/images/ajax-loader.gif">');
 		$.get(url + "?" + pars, 
 				function(data) {
 				$('#selectAssocImage').html(data);
@@ -489,7 +488,7 @@ buttons: {
 		var pars = 'muraAction=cArch.loadclass&compactDisplay=true&siteid=' + siteid +'&classid=' + classid  +'&subclassid=' + subclassid + '&contentid=' + contentid + '&parentid=' + parentid  +'&cacheid=' + Math.random();
 		var d=$('#classList');
 
-		d.html('<div><img class="loadProgress" src="assets/images/ajax-loader.gif"></div>');
+		d.html('<div class="load-inline"></div>');
 		$.get(url + "?" + pars, 
 			function(data) {
 				$('#classList').html(data);
@@ -520,7 +519,7 @@ buttons: {
 			var d = $('#selectNotify');
 			if(d.html()==''){
 				d.show();
-				d.html('<div><img class="loadProgress" src="assets/images/ajax-loader.gif"></div>');
+				d.html('<div class="load-inline"></div>');
 				$.get(url + "?" + pars, 
 						function(data) {
 						$('#selectNotify').html(data);
@@ -540,7 +539,7 @@ buttons: {
 		var d = $('#selectExpiresNotify');
 		if(d.html()==''){
 			d.show();
-			d.html('<div><img class="loadProgress" src="assets/images/ajax-loader.gif"></div>');
+			d.html('<div class="load-inline"></div>');
 			$.get(url + "?" + pars, 
 					function(data) {
 					$('#selectExpiresNotify').html(data);
@@ -562,7 +561,7 @@ buttons: {
 		location.href="?" + pars;
 		}*/
 		var d = $('#selectRelatedContent');
-			d.html('<div><img class="loadProgress" src="assets/images/ajax-loader.gif"></div>');
+			d.html('<div class="load-inline"></div>');
 			$.get(url + "?" + pars, 
 					function(data) {
 					$('#selectRelatedContent').html(data);
@@ -727,7 +726,7 @@ buttons: {
 		$('.extendset-container').each(
 			function(){
 				if($(this).html() != ''){
-					$(this).html('<img class="loadProgress" src="assets/images/ajax-loader.gif">');
+					$(this).html('<div class="load-inline"></div>');
 				}
 			}
 		);
@@ -918,7 +917,7 @@ buttons: {
 		//location.href=url + "?" + pars;
 		var d = $('#gridContainer');
 			if (!this.activeQuickEdit) {
-				d.html('<img class="loadProgress" src="assets/images/ajax-loader.gif">').show();
+				d.html('<div class="load-inline"></div>').show();
 			}
 			$.get(url + "?" + pars, 
 					function(data) {
@@ -1015,7 +1014,7 @@ buttons: {
 		//location.href=url + "?" + pars;
 		var d = $('#flatViewContainer');
 		
-		d.html('<img class="loadProgress" src="assets/images/ajax-loader.gif">');
+		d.html('<div class="load-inline"></div>');
 		$('#newContentMenu').addClass('hide');
 
 		$.post(url + "?" + pars, args, 
@@ -1140,7 +1139,6 @@ buttons: {
 				icon.removeClass('hasChildren closed');
 				icon.addClass('hasChildren open');
 					
-				//d.append('<img class="loadProgress" src="assets/images/ajax-loader.gif">');
 				//d.find(".loadProgress").show();
 				$.get(url + "?" + pars, function(data){
 					try {

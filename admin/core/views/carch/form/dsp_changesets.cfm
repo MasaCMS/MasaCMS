@@ -29,7 +29,7 @@ function saveToChangeset(changesetid,siteid,keywords){
 	var url = 'index.cfm';
 	var pars = 'muraAction=cArch.availablechangesets&compactDisplay=true&siteid=' + siteid  + '&keywords=' + keywords + '&changesetid=' + changesetid +'&cacheid=' + Math.random();
 	var d = jQuery('##changesetContainer');
-	d.html('<div><img class="loadProgress" src="assets/images/ajax-loader.gif"></div>');
+	d.html('<div class="load-inline"></div>');
 	jQuery.get(url + "?" + pars, 
 			function(data) {
 			jQuery('##changesetContainer').html(data);

@@ -48,7 +48,7 @@ var feedManager={
 			var url = 'index.cfm';
 			var pars = 'muraAction=cFeed.loadSite&compactDisplay=true&siteid=' + siteid + '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
 			var d = $('#selectFilter');
-				d.html('<div><img class="loadProgress" src="assets/images/ajax-loader.gif"></div>');
+				d.html('<div class="load-inline"></div>');
 				$.get(url + "?" + pars, 
 						function(data) {
 						$("#selectFilter").html(data);
@@ -106,7 +106,7 @@ var feedManager={
 			var url = 'index.cfm';
 			var pars = 'muraAction=cFeed.siteParents&compactDisplay=true&siteid=' + siteid + '&parentid=' +parentid+ '&keywords=' + keywords + '&isNew=' + isNew + '&cacheid=' + Math.random();
 			var d = $('#move');
-				d.html('<div><img class="loadProgress" src="assets/images/ajax-loader.gif"><inut type=hidden name=parentid value=' + parentid + ' ></div>');
+				d.html('<div class="load-inline"><inut type=hidden name=parentid value=' + parentid + ' ></div>');
 				$.get(url + "?" + pars, 
 						function(data) {
 						$("#move").html(data);
