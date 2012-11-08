@@ -189,7 +189,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfif rc.rsSites.siteid neq 'default'>
 									<li class="delete"><a title="Delete" href="index.cfm?muraAction=cSettings.updateSite&action=delete&siteid=#rc.rsSites.siteid#" onclick="return confirmDialog('#JSStringFormat("WARNING: A deleted site and all of it''s files cannot be recovered. Are you sure that you want to delete the site named '#Ucase(rc.rsSites.site)#'?")#',this.href);"><i class="icon-remove-sign"></i></a></li>
 									<cfelse>
-									<li class="delete disabled">Delete</li>
+									<li class="delete disabled"><i class="icon-remove-sign"></i></li>
 								</cfif>
 								<!---<li class="export"><a title="Export" href="index.cfm?muraAction=cArch.exportHtmlSite&siteid=#rc.rsSites.siteid#" onclick="return confirm('Export the #jsStringFormat("'#rc.rsSites.site#'")# Site?')">Export</a></li>--->
 							</ul></td>
