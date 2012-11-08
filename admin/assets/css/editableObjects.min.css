@@ -83,7 +83,8 @@
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
-  background: rgba(0, 0, 0, 0.05) url("../images/ajax-loader.gif") center center no-repeat;
+  background: transparent url("../images/ajax-loader.gif") center center no-repeat;
+  min-height: 60px;
 }
 .btn-alt {
   color: #ffffff;

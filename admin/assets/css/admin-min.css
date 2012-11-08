@@ -7604,7 +7604,8 @@ a.badge:hover {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
-  background: rgba(0, 0, 0, 0.05) url("../images/ajax-loader.gif") center center no-repeat;
+  background: transparent url("../images/ajax-loader.gif") center center no-repeat;
+  min-height: 60px;
 }
 .btn-alt {
   color: #ffffff;
@@ -13186,7 +13187,8 @@ font-size: 12px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
-  background: rgba(0, 0, 0, 0.05) url("../images/ajax-loader.gif") center center no-repeat;
+  background: transparent url("../images/ajax-loader.gif") center center no-repeat;
+  min-height: 60px;
 }
 .mura .btn-alt {
   color: #ffffff;
@@ -14752,7 +14754,7 @@ font-size: 12px;
   /* text-shadow: 0 1px 1px rgba(255,255,255,.15); */
 
   content: "\f05a";
-  color: #ffe7b0;
+  color: #ffc74a;
 }
 .mura .success {
   padding: 2px 9px 9px;
@@ -14794,6 +14796,7 @@ font-size: 12px;
   /* text-shadow: 0 1px 1px rgba(255,255,255,.15); */
 
   content: "\f087";
+  color: #d1d55d;
 }
 .mura .error {
   padding: 2px 9px 9px;
@@ -14835,6 +14838,7 @@ font-size: 12px;
   /* text-shadow: 0 1px 1px rgba(255,255,255,.15); */
 
   content: "\f071";
+  color: #ec7c94;
 }
 .mura .info {
   padding: 2px 9px 9px;
@@ -14876,6 +14880,7 @@ font-size: 12px;
   /* text-shadow: 0 1px 1px rgba(255,255,255,.15); */
 
   content: "\f05a";
+  color: #67cbdf;
 }
 .mura .separate,
 .mura .divide {
@@ -14908,9 +14913,6 @@ font-size: 12px;
 .mura img.fmImage {
   border: 0 solid #fff;
   margin: 10px;
-}
-.mura img.tabPreloader {
-  margin: 0 0 1em auto;
 }
 .mura #sm-modify-view {
   margin-bottom: 18px;

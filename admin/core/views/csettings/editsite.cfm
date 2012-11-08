@@ -650,7 +650,7 @@ to your own modified versions of Mura CMS.
       function openCustomImageSize(sizeid,siteid){
     
           jQuery("##custom-image-dialog").remove();
-          jQuery("body").append('<div id="custom-image-dialog" rel="tooltip" title="Loading..." style="display:none"><div id="newContentMenu"><img src="assets/images/ajax-loader.gif"></div></div>');
+          jQuery("body").append('<div id="custom-image-dialog" rel="tooltip" title="Loading..." style="display:none"><div id="newContentMenu"><div class="load-inline"></div></div></div>');
 
           var dialogoptions= {
               Save: function() {
@@ -677,7 +677,7 @@ to your own modified versions of Mura CMS.
             buttons: dialogoptions,
             open: function(){
               jQuery("##ui-dialog-title-custom-image-dialog").html('Edit Custom Image Size');
-              jQuery("##custom-image-dialog").html('<div class="ui-dialog-content ui-widget-content"><img src="./assets/images/ajax-loader.gif"></div>');
+              jQuery("##custom-image-dialog").html('<div class="ui-dialog-content ui-widget-content"><div class="load-inline"></div></div>');
               var url = 'index.cfm';
               var pars = 'muraAction=cSettings.loadcustomimage&siteid=' + siteid +'&sizeid=' + sizeid  +'&cacheid=' + Math.random();
               jQuery.get(url + "?" + pars, 
@@ -1031,7 +1031,7 @@ to your own modified versions of Mura CMS.
 #application.pluginManager.renderScripts("onSiteEdit",rc.siteid,pluginEvent,rsPluginScript)#
         </cfif>
       </cfoutput> </div>
-  </cfoutput> <cfoutput> <img class="loadProgress tabPreloader" src="assets/images/ajax-loader.gif"> #actionButtons#
+  </cfoutput> <cfoutput> <div class="load-inline tab-preloader"></div> #actionButtons#
     <input type="hidden" name="action" value="update">
     </form>
   </cfoutput>

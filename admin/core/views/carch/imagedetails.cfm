@@ -86,7 +86,7 @@
 								<button type="button" class="btn btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#evaluate('rc.#s#ImageRatio')#" data-size="#lcase(s)#"><i class="icon-screenshot"></i> Re-Crop</button>
 							</div>
 						</div>
-						<img id="#lcase(s)##f#loader" src="assets/images/ajax-loader.gif" style="display:none">
+						<div id="#lcase(s)##f#loader" class="load-inline" style="display:none"></div>
 						<img id="#lcase(s)##f#" src="#$.getURLForImage(fileID=f,size=lcase(s))#?cacheID=#createUUID()#"/>
 					</div>
 				</cfloop>
@@ -106,7 +106,7 @@
 								<button type="button" class="btn btn-small cropper" data-fileid="#f#" data-src="#rc.sourceImage#" data-filename="#rc.rsMeta.filename#" data-ratio="#rc.customImageRatio#" data-size="#lcase(customImage.getName())#"><i class="icon-screenshot"></i> Re-Crop</button>
 							</div>
 						</div>
-						<img id="#lcase(customImage.getName())##f#loader" src="assets/images/ajax-loader.gif" style="display:none">
+						<div id="#lcase(customImage.getName())##f#loader" class="load-inline" style="display:none"></div>
 						<img id="#lcase(customImage.getName())##f#" src="#$.getURLForImage(fileID=f,size=lcase(customImage.getName()))#?cacheID=#createUUID()#"/>
 					</div>
 				</cfloop>
@@ -231,10 +231,10 @@
 	    		var jcrop_api; 
 	    		var $dialogHTML='<div id="cropper"><div class="jc-dialog">';
 	    			$dialogHTML+='<img id="crop-target" src="' + $(this).attr('data-src') + '?cacheid=' + Math.random() +'" /> '; 
-	    			$dialogHTML+='<br/><input type="hidden" name="coords" value="" id="coords">'; 
+	    			$dialogHTML+='<input type="hidden" name="coords" value="" id="coords">'; 
 	    			$dialogHTML+='<input class="btn" type="button" value="Cancel" onclick="$(\'##cropper\').remove();">';
 	    			$dialogHTML+='<input class="btn" type="button"id="applyCoords" value="Apply Cropping" onclick="applyCropping();">';
-	    			$dialogHTML+='<img id="applyingCoords" src="assets/images/ajax-loader.gif" style="display:none">';
+	    			$dialogHTML+='<div id="applyingCoords" class="load-inline" style="display:none"></div>';
 	    			$dialogHTML+='</div></div>';
 	
 		        var $dialog = $($dialogHTML);
