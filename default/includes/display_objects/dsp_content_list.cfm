@@ -62,8 +62,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset arguments.imageSize="small">		
 		<cfelseif not listFindNoCase('small,medium,large,custom',arguments.imagesize)>
 			<cfset arguments.customImageSize=getBean('imageSize').loadBy(name=arguments.imageSize,siteID=variables.$.event('siteID'))>
-			<cfset arguments.Width= arguments.customImageSize.getWidth() />
-			<cfset arguments.Height= arguments.customImageSize.getHeight() />
+			<cfset arguments.imageWidth= arguments.customImageSize.getWidth() />
+			<cfset arguments.imageHeight= arguments.customImageSize.getHeight() />
 			<cfset arguments.isCustomImage= true />	
 		</cfif>
 
