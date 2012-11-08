@@ -110,11 +110,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 
 <cfif application.settingsManager.getSite(session.siteid).getemailbroadcaster() and  application.permUtility.getModulePerm("00000000000000000000000000000000009","#session.siteid#")>
-<span id="emailBroadcastsData">
-<div id="emailBroadcasts" class="separate">
 
+<div id="emailBroadcasts" class="separate">
+<span id="emailBroadcastsData"></span>
 </div>
-</span>
+
 <script type="text/javascript">dashboardManager.loadEmailActivity('#rc.siteid#');</script>
 <cfset started=true>
 </cfif>

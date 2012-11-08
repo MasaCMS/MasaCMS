@@ -61,8 +61,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  </cfif>
 </cfsilent>  
 
-<cfoutput><div id="emailBroadcasts" class="separate">
-<h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.emailbroadcasts")# <span>(#lsDateFormat(emailStart,session.dateKeyFormat)# - #lsDateFormat(emailStop,session.dateKeyFormat)#)</span></h2>
+<cfoutput>
+<h2><i class="icon-envelope-alt"></i> #application.rbFactory.getKeyValue(session.rb,"dashboard.emailbroadcasts")# <span>(#lsDateFormat(emailStart,session.dateKeyFormat)# - #lsDateFormat(emailStop,session.dateKeyFormat)#)</span></h2>
 <dl><dt>#application.rbFactory.getKeyValue(session.rb,"dashboard.emailssent")#:</dt><dd>#emailsSent#</dd><dt>#application.rbFactory.getKeyValue(session.rb,"dashboard.emailsalloted")#:</dt><dd>#emailLimitText#</dd><dt>#application.rbFactory.getKeyValue(session.rb,"dashboard.emailsremaining")#:</dt><dd>#emailsRemainingText#</dd></dl>
 
 <!---<h3>Recent Campaign Activity</h3>--->
@@ -89,4 +89,4 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <tr><td class="noResults" colspan="5">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.noemails"),rc.span)#</td></tr>
 </cfif>
 </tbody>
-</table></div></cfoutput>
+</table></cfoutput>

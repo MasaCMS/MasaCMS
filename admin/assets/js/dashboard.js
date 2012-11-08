@@ -123,7 +123,7 @@ var dashboardManager={
 		
 		//location.href=url + "?" + pars;
 		var d = $('#emailBroadcastsData');
-			d.html('<div id="emailBroadcasts" class="separate"><h3>Email Broadcasts</h3><div class="load-inline"></div></div>');
+			d.html('<div class="load-inline"></div>');
 			$.get(url + "?" + pars, 
 					function(data) {
 					d.html(data).animate({'opacity':'hide'},1000,null,

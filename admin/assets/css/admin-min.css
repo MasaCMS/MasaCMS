@@ -12835,6 +12835,9 @@ font-size: 12px;
 .mura #mura-list-tree > ul li > input[type="checkbox"] {
   margin-top: -2px;
 }
+.mura #cdashboard div#userActivity {
+  margin-top: 36px;
+}
 .mura #cdashboard .load-inline {
   height: 108px;
 }
