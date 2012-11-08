@@ -317,22 +317,31 @@
 				width: 60px;
 			}
 			
-			.template i { 
-				
-				font-size: 20px;
-				color: @iconColor;
-				
-				&:hover { text-decoration: none; color: @grayDarker; }
+			.template {
+			
+					i { 
+						.square(18px);
+						font-size: 20px;
+						color: @iconColor;
+						
+						&:hover { text-decoration: none; color: @grayDarker; }
+						
+						}
+					
+				a.template-set { border: 0; }
 				
 				}
 			
 			.scheduled a {
+			
+				border: 0;
 				
 				i { 
 					position: relative;
 					top: 3px;
 					font-size: 21px;
 					color: @iconColor;
+					.square(18px);
 					
 					&:hover {
 						text-decoration: none;
@@ -430,15 +439,6 @@
 				padding-left: 0;
 			}
 			
-			/*
-				dt .add li.Page {
-				background: transparent url(../images/icons/files/icon_generic_small.gif) no-repeat;
-				margin: 0;
-				padding: 2px 0 2px 30px;
-				background-position: 11px 1px;
-			}
-			*/
-			
 		}
 		
 		#mura-nodes {
@@ -458,22 +458,14 @@
 		
 			.scheduled a {
 				.inline-block();
-				.square(24px);
 				position: relative;
 				top: -2px;
-				/* background: url(../images/icons/cal.png) no-repeat 50% 50%; */
 				padding: 0;
 				opacity: 100; // Inherits 0 from .tooltip
 				z-index: 1;
 			}
 			
-			#selected.scheduled a {
-				
-			}
-			
 			.scheduled a span {
-			 	/* Why is does this throw an error in less? */
-				/*.mura-grid td.scheduled a span;*/
 				max-width: 110px;
 				text-align: center;
 			}
@@ -1224,8 +1216,7 @@
 		
 		.mura-quickEditItem {
 			cursor: pointer;
-			border-bottom: 1px dotted;
-				
+			border-bottom: 1px dotted;	
 			
 			i {
 			
