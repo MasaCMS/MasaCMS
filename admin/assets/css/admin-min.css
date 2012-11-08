@@ -883,11 +883,11 @@
 }
 /* Overlays */
 .ui-widget-overlay {
-  background-color: rgba(0, 0, 0, 0.85);
-  background-image: -webkit-gradient(radial, center center, 0, center center, 460, from(rgba(100, 100, 100, 0.85)), to(rgba(0, 0, 0, 0.85)));
-  background-image: -webkit-radial-gradient(circle, rgba(100, 100, 100, 0.85), rgba(0, 0, 0, 0.85));
-  background-image: -moz-radial-gradient(circle, rgba(100, 100, 100, 0.85), rgba(0, 0, 0, 0.85));
-  background-image: -o-radial-gradient(circle, rgba(100, 100, 100, 0.85), rgba(0, 0, 0, 0.85));
+  background-color: rgba(0, 0, 0, 0.8);
+  background-image: -webkit-gradient(radial, center center, 0, center center, 460, from(rgba(102, 102, 102, 0.8)), to(rgba(0, 0, 0, 0.8)));
+  background-image: -webkit-radial-gradient(circle, rgba(102, 102, 102, 0.8), rgba(0, 0, 0, 0.8));
+  background-image: -moz-radial-gradient(circle, rgba(102, 102, 102, 0.8), rgba(0, 0, 0, 0.8));
+  background-image: -o-radial-gradient(circle, rgba(102, 102, 102, 0.8), rgba(0, 0, 0, 0.8));
   background-repeat: no-repeat;
 }
 .ui-widget-shadow {
@@ -7591,13 +7591,20 @@ a.badge:hover {
 .affix {
   position: fixed;
 }
-.mura-modal {
-  background-color: rgba(0, 0, 0, 0.85);
-  background-image: -webkit-gradient(radial, center center, 0, center center, 460, from(rgba(100, 100, 100, 0.85)), to(rgba(0, 0, 0, 0.85)));
-  background-image: -webkit-radial-gradient(circle, rgba(100, 100, 100, 0.85), rgba(0, 0, 0, 0.85));
-  background-image: -moz-radial-gradient(circle, rgba(100, 100, 100, 0.85), rgba(0, 0, 0, 0.85));
-  background-image: -o-radial-gradient(circle, rgba(100, 100, 100, 0.85), rgba(0, 0, 0, 0.85));
+.mura-modal,
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.8);
+  background-image: -webkit-gradient(radial, center center, 0, center center, 460, from(rgba(102, 102, 102, 0.8)), to(rgba(0, 0, 0, 0.8)));
+  background-image: -webkit-radial-gradient(circle, rgba(102, 102, 102, 0.8), rgba(0, 0, 0, 0.8));
+  background-image: -moz-radial-gradient(circle, rgba(102, 102, 102, 0.8), rgba(0, 0, 0, 0.8));
+  background-image: -o-radial-gradient(circle, rgba(102, 102, 102, 0.8), rgba(0, 0, 0, 0.8));
   background-repeat: no-repeat;
+}
+.load-inline {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.05) url("../images/ajax-loader.gif") center center no-repeat;
 }
 .btn-alt {
   color: #ffffff;
@@ -7614,12 +7621,6 @@ a.badge:hover {
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
-  /*
-border-top: 1px solid @gray;
-	border-top-left-radius: 1px solid @gray;
-	border-left: 1px solid @gray;
-*/
-
   border-bottom: 1px solid #0d0d0d;
   border-bottom-right-radius: 1px solid #0d0d0d;
   border-right: 1px solid #0d0d0d;
@@ -12834,6 +12835,9 @@ font-size: 12px;
 .mura #mura-list-tree > ul li > input[type="checkbox"] {
   margin-top: -2px;
 }
+.mura #cdashboard .load-inline {
+  height: 108px;
+}
 .mura #cdashboard h2 {
   line-height: 1;
   color: #666666;
@@ -13099,13 +13103,20 @@ font-size: 12px;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-.mura .mura-modal {
-  background-color: rgba(0, 0, 0, 0.85);
-  background-image: -webkit-gradient(radial, center center, 0, center center, 460, from(rgba(100, 100, 100, 0.85)), to(rgba(0, 0, 0, 0.85)));
-  background-image: -webkit-radial-gradient(circle, rgba(100, 100, 100, 0.85), rgba(0, 0, 0, 0.85));
-  background-image: -moz-radial-gradient(circle, rgba(100, 100, 100, 0.85), rgba(0, 0, 0, 0.85));
-  background-image: -o-radial-gradient(circle, rgba(100, 100, 100, 0.85), rgba(0, 0, 0, 0.85));
+.mura .mura-modal,
+.mura .modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.8);
+  background-image: -webkit-gradient(radial, center center, 0, center center, 460, from(rgba(102, 102, 102, 0.8)), to(rgba(0, 0, 0, 0.8)));
+  background-image: -webkit-radial-gradient(circle, rgba(102, 102, 102, 0.8), rgba(0, 0, 0, 0.8));
+  background-image: -moz-radial-gradient(circle, rgba(102, 102, 102, 0.8), rgba(0, 0, 0, 0.8));
+  background-image: -o-radial-gradient(circle, rgba(102, 102, 102, 0.8), rgba(0, 0, 0, 0.8));
   background-repeat: no-repeat;
+}
+.mura .load-inline {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.05) url("../images/ajax-loader.gif") center center no-repeat;
 }
 .mura .btn-alt {
   color: #ffffff;
@@ -13122,12 +13133,6 @@ font-size: 12px;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
-  /*
-border-top: 1px solid @gray;
-	border-top-left-radius: 1px solid @gray;
-	border-left: 1px solid @gray;
-*/
-
   border-bottom: 1px solid #0d0d0d;
   border-bottom-right-radius: 1px solid #0d0d0d;
   border-right: 1px solid #0d0d0d;
@@ -13961,11 +13966,11 @@ border-top: 1px solid @gray;
   text-align: center;
   /* centers in quirks and IE */
 
-  background-color: rgba(0, 0, 0, 0.85);
-  background-image: -webkit-gradient(radial, center center, 0, center center, 460, from(rgba(100, 100, 100, 0.85)), to(rgba(0, 0, 0, 0.85)));
-  background-image: -webkit-radial-gradient(circle, rgba(100, 100, 100, 0.85), rgba(0, 0, 0, 0.85));
-  background-image: -moz-radial-gradient(circle, rgba(100, 100, 100, 0.85), rgba(0, 0, 0, 0.85));
-  background-image: -o-radial-gradient(circle, rgba(100, 100, 100, 0.85), rgba(0, 0, 0, 0.85));
+  background-color: rgba(0, 0, 0, 0.8);
+  background-image: -webkit-gradient(radial, center center, 0, center center, 460, from(rgba(102, 102, 102, 0.8)), to(rgba(0, 0, 0, 0.8)));
+  background-image: -webkit-radial-gradient(circle, rgba(102, 102, 102, 0.8), rgba(0, 0, 0, 0.8));
+  background-image: -moz-radial-gradient(circle, rgba(102, 102, 102, 0.8), rgba(0, 0, 0, 0.8));
+  background-image: -o-radial-gradient(circle, rgba(102, 102, 102, 0.8), rgba(0, 0, 0, 0.8));
   background-repeat: no-repeat;
 }
 .mura #frontEndToolsModalBody {
@@ -14109,12 +14114,6 @@ border-top: 1px solid @gray;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
-  /*
-border-top: 1px solid @gray;
-	border-top-left-radius: 1px solid @gray;
-	border-left: 1px solid @gray;
-*/
-
   border-bottom: 1px solid #0d0d0d;
   border-bottom-right-radius: 1px solid #0d0d0d;
   border-right: 1px solid #0d0d0d;

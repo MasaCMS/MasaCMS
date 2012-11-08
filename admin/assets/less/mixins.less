@@ -1,6 +1,10 @@
-.mura-modal {
-	#gradient .radial(rgba(100,100,100,.85),rgba(0,0,0,.85));
-}
+.mura-modal, .modal-backdrop { #gradient .radial(hsla(0,0%,40%,.8),hsla(0,0%,0%,.8)); }
+
+.load-inline { 
+	// #gradient .radial(hsla(0,0%,100%,.8),hsla(0,0%,90%,.8));
+	.border-radius(3px);
+	background: rgba(0,0,0,.05) url("../images/ajax-loader.gif") center center no-repeat;
+	}
 
 // Gradient Bar Colors for buttons and alerts
 .gradientBar(@primaryColor, @secondaryColor, @textColor: #fff, @textShadow: 0 -1px 0 rgba(0,0,0,.25)) {
@@ -23,11 +27,6 @@
 	#gradient .vertical(#414141,#323232);
 	text-shadow: 0 -1px 0 rgba(0,0,0,.99);
 	.border-radius(4px);
-	/*
-border-top: 1px solid @gray;
-	border-top-left-radius: 1px solid @gray;
-	border-left: 1px solid @gray;
-*/
 	border-bottom: 1px solid lighten(@grayDarker,5%);
 	border-bottom-right-radius: 1px solid lighten(@grayDarker,5%);
 	border-right: 1px solid lighten(@grayDarker,5%);
