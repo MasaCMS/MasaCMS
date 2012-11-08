@@ -110,9 +110,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </script>
 
-
+</div>
 
 <span id="extendset-container-tags" class="extendset-container"></span>
-</div>
+
+#$.announceEvent("onContentTagsTabRender")#
+
  </div>
  </cfoutput>

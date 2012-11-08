@@ -179,8 +179,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       </div> <!--- /#editObjects--->
     </div> <!--- /.control-group --->
 
-    <span id="extendset-container-layoutobjects" class="extendset-container"></span>
-  </div>
+  
+  </div>  
+
+  <span id="extendset-container-layoutobjects" class="extendset-container"></span>
+
+  #$.announceEvent("onContentLayoutObjectsTabRender")#
+
   </div> <!--- /.tab-pane --->
   <cfinclude template="../dsp_configuratorJS.cfm">
 </cfoutput>

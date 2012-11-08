@@ -204,6 +204,10 @@
 		</div>
 	</div> <!--- /end control-group --->
 
-  <span id="extendset-container-publishing" class="extendset-container"></span>
   </div>
+
+   <span id="extendset-container-publishing" class="extendset-container"></span>
+
+   #$.announceEvent("onContentPublishingTabRender")#
+
 </div></cfoutput>

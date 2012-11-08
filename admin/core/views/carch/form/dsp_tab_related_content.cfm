@@ -77,10 +77,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</tr>
 				</cfif>
 			</tbody>
-		</table>
-	
-		<span id="extendset-container-relatedcontent" class="extendset-container"></span>
+		</table>	
 	</div>
+
+	<span id="extendset-container-relatedcontent" class="extendset-container"></span>
+
+	#$.announceEvent("onContentSEOTabRender")#
 </div>
 
 </cfoutput>
