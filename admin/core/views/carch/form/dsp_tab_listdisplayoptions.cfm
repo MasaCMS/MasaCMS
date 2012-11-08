@@ -135,6 +135,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</div>
 			</div>
 
-    <span id="extendset-container-listdisplayoptions" class="extendset-container"></span>
-</div>
+   
+</div> 
+
+	<span id="extendset-container-listdisplayoptions" class="extendset-container"></span>
+
+	 #$.announceEvent("onContentListDisplayOptionsTabRender")#
+	 
 </div></cfoutput>

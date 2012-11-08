@@ -92,6 +92,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					      <div class="controls"><textarea name="metakeywords" rows="8" id="metakeywords" class="span12">#HTMLEditFormat(rc.contentBean.getMETAKEYWORDS())#</textarea></div>
 					    </div>
 
-    <span id="extendset-container-seo" class="extendset-container"></span>
 	  </div>
+
+	   <span id="extendset-container-seo" class="extendset-container"></span>
+
+	  #$.announceEvent("onContentSEOTabRender")#
+
 </div></cfoutput>

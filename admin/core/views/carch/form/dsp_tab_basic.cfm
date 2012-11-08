@@ -317,5 +317,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<span id="extendset-container-basic" class="extendset-container"></span>
 
+	#$.announceEvent("onContentBasicTabRender")#
+
 </div>
 </cfoutput>

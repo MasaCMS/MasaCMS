@@ -91,7 +91,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<script src="#application.configBean.getContext()#/admin/assets/js/spin.min.js" type="text/javascript" language="Javascript"></script>
 
 		<!-- Mura Admin JS -->
-		<script src="#application.configBean.getContext()#/admin/assets/js/admin.js" type="text/javascript" language="Javascript"></script>
+		<script src="#application.configBean.getContext()#/admin/assets/js/admin.min.js" type="text/javascript" language="Javascript"></script>
 
 		 <!-- jQuery -->
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript"></script>

@@ -61,4 +61,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<span id="extendset-container-mobile" class="extendset-container"></span>
 
+	#$.announceEvent("onContentMobileTabRender")#
+
 </div></cfoutput>

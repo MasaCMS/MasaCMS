@@ -69,10 +69,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					nestLevel="0" 
 					contentBean="#rc.contentBean#" 
 					rsCategoryAssign="#rc.rsCategoryAssign#">
-			<span id="extendset-container-categorization" class="extendset-container"></span>
+			
 		</div><!--- /.mura-grid --->
 		</div>
 		</div>
+
+		<span id="extendset-container-categorization" class="extendset-container"></span>
+
+
+		#$.announceEvent("onContentCategorizationTabRender")#
+		
 	</div><!--- /tabCatgeorization --->
 </cfoutput>
 <script>siteManager.initCategoryAssignments();</script>

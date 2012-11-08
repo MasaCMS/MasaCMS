@@ -83,8 +83,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 	  </table>
 
-<span id="extendset-container-usagereport" class="extendset-usagereport"></span>
+
 </div> <!--- / .control-group --->
 </div> <!--- / .fieldset --->
+
+<span id="extendset-container-usagereport" class="extendset-usagereport"></span>
+
+#$.announceEvent("onContentUsageReportTabRender")#
+
 </div> <!--- / .tab --->
 </cfoutput>
