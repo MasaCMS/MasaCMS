@@ -176,7 +176,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       <cfif application.settingsManager.getSite(rc.siteid).getlocking() neq 'all'>
         <dd class="objects"><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.managerObjects"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.objects")#</a></dd>
         <dd class="display"><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.managerDisplay"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.display")#</a></dd>
-        <dd class="template"><a href="##"<cfif len(rc.rstop.template)> class="template-set"</cfif> rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.managerTemplate"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.template")#</a></dd>
+        <dd class="template"><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.managerTemplate"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.template")#</a></dd>
       </cfif>
       <dd class="nav"><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.managerNav"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.nav")#</a></dd>
       <dd class="updated"><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.managerUpdated"))#">#application.rbFactory.getKeyValue(session.rb,"sitemanager.updated")#</a></dd>
@@ -233,7 +233,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif perm eq 'editor'></a></cfif>
 		</dd>
        <dd class="template">
-	  		<cfif perm eq 'editor'><a class="mura-quickEditItem" data-attribute="template"></cfif>
+	  		<cfif perm eq 'editor'><a class="mura-quickEditItem<cfif len(rc.rstop.template)> template-set</cfif>" data-attribute="template"></cfif>
 			<cfif len(rc.rstop.template) or len(rc.rstop.childTemplate)>
 				 <i class="icon-list-alt"></i> 
 			<cfelse>
