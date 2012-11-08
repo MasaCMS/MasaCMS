@@ -47,7 +47,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset request.layout="false">
 <cfinclude template="act_defaults.cfm">
 <cfoutput>
-<div id="userActivity" class="separate">
 	<table class="table table-striped table-condensed table-bordered mura-table-grid" id="recentActivity">
 	<thead>
 	<tr>
@@ -97,5 +96,4 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</tr> --->
 	</tbody>
 	</table>
-</div>
 </cfif></cfoutput>

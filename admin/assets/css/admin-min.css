@@ -7707,6 +7707,10 @@ a.badge:hover {
 
   /* @group Grids for Fields with Options */
 
+  /* Categorization Tab */
+
+  /* End #tabCategorization */
+
   /*form dt a, form dt label {
 		font-weight: normal !important;
 	}*/
@@ -7817,12 +7821,6 @@ a.badge:hover {
   /* @group Metadata List */
 
   /* @end */
-
-  /* Categorization Tab */
-
-  /* End #tabCategorization */
-
-  /* Modal Progress */
 
 }
 @font-face {
@@ -12619,6 +12617,62 @@ font-size: 12px;
 .mura .pane h2 {
   padding: 0 18px;
 }
+.mura #carch #tabCategorization .mura-grid {
+  margin: 0 20px 18px;
+}
+.mura #carch #tabCategorization .mura-grid-hdr dt,
+.mura #carch #tabCategorization .mura-grid-hdr dd {
+  font-weight: bold;
+}
+.mura #carch #tabCategorization .control-group {
+  padding: 0;
+}
+.mura #carch #tabCategorization .btn {
+  width: 80px;
+}
+.mura #carch #tabCategorization a[rel="tooltip"] {
+  padding-right: 6px;
+}
+.mura #carch #tabCategorization dl dt {
+  line-height: 28px;
+}
+.mura #carch #tabCategorization dl dt.categorytitle {
+  width: 530px;
+}
+.mura #carch #tabCategorization dl dd.categoryassignmentwrapper {
+  width: 150px;
+  border-right: none;
+}
+.mura #carch #tabCategorization .indent {
+  padding-left: 1em;
+}
+.mura #carch #tabCategorization li {
+  cursor: default;
+}
+.mura #carch #tabCategorization li .indent {
+  padding-left: 1em;
+}
+.mura #carch #tabCategorization li li .indent {
+  padding-left: 3em;
+}
+.mura #carch #tabCategorization li li li .indent {
+  padding-left: 5em;
+}
+.mura #carch #tabCategorization li li li li .indent {
+  padding-left: 7em;
+}
+.mura #carch #tabCategorization li li li li li .indent {
+  padding-left: 9em;
+}
+.mura #carch #tabCategorization li li li li li li .indent {
+  padding-left: 11em;
+}
+.mura #carch #tabCategorization li li li li li li li .indent {
+  padding-left: 13em;
+}
+.mura #tabRelatedcontent table {
+  margin-top: 18px;
+}
 .mura #svTagCloud ol {
   margin: 0 0 2em;
 }
@@ -12837,6 +12891,16 @@ font-size: 12px;
 }
 .mura #cdashboard div#userActivity {
   margin-top: 36px;
+  *zoom: 1;
+}
+.mura #cdashboard div#userActivity:before,
+.mura #cdashboard div#userActivity:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.mura #cdashboard div#userActivity:after {
+  clear: both;
 }
 .mura #cdashboard .load-inline {
   height: 108px;
@@ -12844,6 +12908,9 @@ font-size: 12px;
 .mura #cdashboard h2 {
   line-height: 1;
   color: #666666;
+}
+.mura #cdashboard table {
+  margin: 0;
 }
 .mura #cdashboard th,
 .mura #cdashboard td {
@@ -14534,6 +14601,9 @@ font-size: 12px;
 
   background: #fff;
 }
+.mura .main {
+  padding-bottom: 36px;
+}
 .mura .dropdown .dropdown-menu {
   -webkit-border-radius: 6;
   -moz-border-radius: 6;
@@ -14807,39 +14877,30 @@ font-size: 12px;
 
   content: "\f05a";
 }
-.mura .separate {
-  *zoom: 1;
-  clear: both;
-  /* padding-bottom: @baseLineHeight - 4px; */
-
-  margin-top: 12px;
-  /* border-bottom: 1px dashed @grayLight; */
-
-}
-.mura .separate:before,
-.mura .separate:after {
-  display: table;
-  content: "";
-  line-height: 0;
-}
-.mura .separate:after {
-  clear: both;
-}
+.mura .separate,
 .mura .divide {
   *zoom: 1;
   clear: both;
-  margin-top: 22px;
   padding-top: 18px;
-  border-top: 1px solid #e6e6e6;
+  margin-top: 22px;
 }
+.mura .separate:before,
 .mura .divide:before,
+.mura .separate:after,
 .mura .divide:after {
   display: table;
   content: "";
   line-height: 0;
 }
+.mura .separate:after,
 .mura .divide:after {
   clear: both;
+}
+.mura .separate {
+  border-top: 1px solid #e6e6e6;
+}
+.mura .divide {
+  border-top: 1px dotted #e6e6e6;
 }
 .mura a img {
   border: 0;
@@ -14915,61 +14976,5 @@ font-size: 12px;
 }
 .mura .metadata li {
   margin-bottom: .5em;
-}
-.mura #carch #tabCategorization .mura-grid {
-  margin: 0 20px 18px;
-}
-.mura #carch #tabCategorization .mura-grid-hdr dt,
-.mura #carch #tabCategorization .mura-grid-hdr dd {
-  font-weight: bold;
-}
-.mura #carch #tabCategorization .control-group {
-  padding: 0;
-}
-.mura #carch #tabCategorization .btn {
-  width: 80px;
-}
-.mura #carch #tabCategorization a[rel="tooltip"] {
-  padding-right: 6px;
-}
-.mura #carch #tabCategorization dl dt {
-  line-height: 28px;
-}
-.mura #carch #tabCategorization dl dt.categorytitle {
-  width: 530px;
-}
-.mura #carch #tabCategorization dl dd.categoryassignmentwrapper {
-  width: 150px;
-  border-right: none;
-}
-.mura #carch #tabCategorization .indent {
-  padding-left: 1em;
-}
-.mura #carch #tabCategorization li {
-  cursor: default;
-}
-.mura #carch #tabCategorization li .indent {
-  padding-left: 1em;
-}
-.mura #carch #tabCategorization li li .indent {
-  padding-left: 3em;
-}
-.mura #carch #tabCategorization li li li .indent {
-  padding-left: 5em;
-}
-.mura #carch #tabCategorization li li li li .indent {
-  padding-left: 7em;
-}
-.mura #carch #tabCategorization li li li li li .indent {
-  padding-left: 9em;
-}
-.mura #carch #tabCategorization li li li li li li .indent {
-  padding-left: 11em;
-}
-.mura #carch #tabCategorization li li li li li li li .indent {
-  padding-left: 13em;
-}
-.mura #tabRelatedcontent table {
-  margin-top: 18px;
 }
 /* End .mura */

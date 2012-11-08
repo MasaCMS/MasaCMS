@@ -58,7 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rsPluginScripts=application.pluginManager.getScripts("onDashboardPrimaryTop",rc.siteID)>
 <cfoutput query="rsPluginScripts" group="pluginID">
 <cfset rsPluginScript=application.pluginManager.getScripts("onDashboardPrimaryTop",rc.siteID,rsPluginScripts.moduleID)>
-<div<cfif not started> class="separate"</cfif>>
+<div<cfif not started> class="divide"</cfif>>
 	<h2>#HTMLEditformat(rsPluginScripts.name)#</h2>
 	<cfoutput>
 	#application.pluginManager.renderScripts("onDashboardPrimaryTop",rc.siteid,pluginEvent,rsPluginScript)#
@@ -69,21 +69,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <cfif application.configBean.getSessionHistory() >	
 <cfif not application.sessionTrackingThrottle>
-<div id="userActivity"<cfif started> class="separate"</cfif>>
+<div id="userActivity"<cfif started> class="divide"</cfif>>
 <h2><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,"dashboard.useractivity")# <span><a href="index.cfm?muraAction=cDashboard.sessionSearch&siteid=#URLEncodedFormat(rc.siteid)#&newSearch=true">(#application.rbFactory.getKeyValue(session.rb,"dashboard.advancedsessionsearch")#)</a></span></h2>
 <span id="userActivityData"></span>
 </div>
 <script type="text/javascript">dashboardManager.loadUserActivity('#rc.siteid#');</script>
 <cfset started=true>
 
-<div id="popularContent"<cfif started> class="separate"</cfif>>
+<div id="popularContent"<cfif started> class="divide"</cfif>>
 <h2><i class="icon-fire"></i> #application.rbFactory.getKeyValue(session.rb,"dashboard.popularcontent")# <span>(#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.span"),rc.span)#)</span></h2>
 <span id="popularContentData"></span>
 </div>
 <script type="text/javascript">dashboardManager.loadPopularContent('#rc.siteid#');</script>
 <cfset started=true>
 <cfelse>
-<div id="userActivity"<cfif started> class="separate"</cfif>>
+<div id="userActivity"<cfif started> class="divide"</cfif>>
 <h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.useractivity")#</h2>
 <p>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.trackingthrottled")# </p>
 </div>
@@ -92,7 +92,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 
 <cfif application.contentManager.getRecentCommentsQuery(session.siteID,1,false).recordCount>
-<div id="recentComments"<cfif started> class="separate"</cfif>>
+<div id="recentComments"<cfif started> class="divide"</cfif>>
 <h2><i class="icon-comments"></i> #application.rbFactory.getKeyValue(session.rb,"dashboard.comments")# <span><a href="?muraAction=cDashboard.recentComments&siteID=#session.siteID#">(#application.rbFactory.getKeyValue(session.rb,"dashboard.comments.last100")#)</a></span></h2>
 <span id="recentCommentsData"></span>
 </div>
@@ -101,7 +101,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 
 <cfif application.settingsManager.getSite(session.siteid).getdatacollection() and  application.permUtility.getModulePerm("00000000000000000000000000000000004","#session.siteid#")>
-<div id="recentFormActivity"<cfif started> class="separate"</cfif>>
+<div id="recentFormActivity"<cfif started> class="divide"</cfif>>
 <h2><i class="icon-list"></i> #application.rbFactory.getKeyValue(session.rb,"dashboard.formactivity")#</h2>
 <span id="recentFormActivityData"></span>
 </div>
@@ -111,7 +111,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif application.settingsManager.getSite(session.siteid).getemailbroadcaster() and  application.permUtility.getModulePerm("00000000000000000000000000000000009","#session.siteid#")>
 
-<div id="emailBroadcasts" class="separate">
+<div id="emailBroadcasts" class="divide">
 <span id="emailBroadcastsData"></span>
 </div>
 
@@ -122,7 +122,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rsPluginScripts=application.pluginManager.getScripts("onDashboardPrimaryBottom",rc.siteID)>
 <cfoutput query="rsPluginScripts" group="pluginID">
 <cfset rsPluginScript=application.pluginManager.getScripts("onDashboardPrimaryBottom",rc.siteID,rsPluginScripts.moduleID)>
-<div<cfif started> class="separate"</cfif>>
+<div<cfif started> class="divide"</cfif>>
 	<h2><i class="icon-cog"></i> #HTMLEditformat(rsPluginScripts.name)#</h2>
 	<cfoutput>
 	#application.pluginManager.renderScripts("onDashboardPrimaryBottom",rc.siteid,pluginEvent,rsPluginScript)#

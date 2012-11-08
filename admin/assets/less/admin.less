@@ -45,6 +45,8 @@ body.compact {
 	background: #fff;
 }
 
+.main { padding-bottom: @baseLineHeight*2; }
+
 // Override bootstrap classes
 
 .dropdown .dropdown-menu {
@@ -201,21 +203,19 @@ div.tooltip {
 	}
 
 
-.separate {
+.separate, .divide {
 	.clearfix;
 	clear: both;
-	/* padding-bottom: @baseLineHeight - 4px; */
-	margin-top: @baseLineHeight / 1.5;
-	/* border-bottom: 1px dashed @grayLight; */
-	//background: url(../images/rule_dotted_big.gif) repeat-x bottom;
+	padding-top: @baseLineHeight;
+	margin-top: @baseLineHeight+4px;
+	}
+
+.separate {
+	border-top: 1px solid @grayLight;
 	}
 	
 .divide {
-	.clearfix;
-	clear: both;
-	margin-top: @baseLineHeight + 4px;
-	padding-top: @baseLineHeight;
-	border-top: 1px solid @grayLight;
+	border-top: 1px dotted @grayLight;
 	}
 
 a img {
@@ -283,78 +283,6 @@ img.tabPreloader {
 	}
 	
 /* @end */
-
-/* Categorization Tab */
-#carch #tabCategorization {
-
-	.mura-grid {
-		margin: 0 @gridGutterWidth @baseLineHeight;
-	}
-
-	.mura-grid-hdr {
-		dt, dd { font-weight: bold; }
-	}
-	.control-group { padding:0; }
-
-	.btn { width:80px; }
-
-	a[rel="tooltip"] { padding-right:6px; }
-
-
-	dl {
-		dt {
-			line-height: 28px;
-			&.categorytitle { 
-				width:530px;
-			}
-		}
-		dd.categoryassignmentwrapper {
-			width: 150px;
-			border-right:none;
-		}
-	}
-
-	.indent { padding-left: 1em; }
-	
-	li {
-		cursor: default;
-		.indent {
-			padding-left: 1em;
-		}
-		li .indent {
-			padding-left: 3em;
-		}
-		li li .indent {
-			padding-left: 5em;
-		}
-		li li li .indent {
-			padding-left: 7em;
-		}
-		li li li li .indent {
-			padding-left: 9em;
-		}
-		li li li li li .indent {
-			padding-left: 11em;
-		}
-		li li li li li li .indent {
-			padding-left: 13em;
-		}
-	}
-}
-/* End #tabCategorization */
-
-#tabRelatedcontent {
-
-	table {
-		margin-top: @baseLineHeight;
-	}
-}
-
-/* Modal Progress */
-
-.modal-backdrop {
-	
-}
 
 } /* End .mura */
 
