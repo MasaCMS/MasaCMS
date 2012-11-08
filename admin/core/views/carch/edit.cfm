@@ -480,7 +480,7 @@ var hasBody=#subType.getHasBody()#;
 		</ul>
 		<div class="tab-content row-fluid">		
 			#tabContent#
-			<img class="loadProgress tabPreloader" src="assets/images/ajax-loader.gif">
+			<div class="load-inline tab-preloader"></div>
 			#actionButtons#
 		</div>
 	</div>

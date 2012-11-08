@@ -203,9 +203,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<div class="form-actions">
 					<button type="button" class="btn" id="btnUpdateSites"><i class="icon-bolt"></i> Update Selected Sites to Latest Version</button>
 					</div>
-					<div id="actionIndicator" style="display: none;">
-						<cfoutput><img class="loadProgress" src="#application.configBean.getContext()#/admin/assets/images/ajax-loader.gif"></cfoutput>
-					</div>
+					<div class="load-inline" style="display: none;"></div>
 				</cfif>
 				<cfif application.configBean.getMode() eq 'staging'
 						and rc.siteSortBy neq "orderno"
@@ -257,7 +255,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</table>
 		</div>
-		<img class="loadProgress tabPreloader" src="assets/images/ajax-loader.gif">
+		<div class="load-inline tab-preloader"></div>
 	</div>
 	</div>
 	<!---

@@ -182,7 +182,7 @@ var siteManager={
 	openNewContentMenu: function(contentid,siteid,topid,parentid,type){
 		
 			$("#newContentMenuContainer").remove();
-			$("body").append('<div id="newContentMenuContainer" title="Loading..." style="display:none"><div id="newContentMenu"><img src="assets/images/ajax-loader.gif"></div></div>');
+			$("body").append('<div id="newContentMenuContainer" title="Loading..." style="display:none"><div id="newContentMenu"><div class="load-inline"></div></div></div>');
 
 			$("#newContentMenuContainer").dialog({
 				resizable: false,
@@ -198,7 +198,7 @@ buttons: {
 */
 				open: function(){
 					$("#ui-dialog-title-newContentMenuContainer").html(newContentMenuTitle);
-					$("#newContentMenuContainer").html('<div class="ui-dialog-content ui-widget-content"><img src="./assets/images/ajax-loader.gif"></div>');
+					$("#newContentMenuContainer").html('<div class="ui-dialog-content ui-widget-content"><div class="load-inline"></div></div>');
 					var url = 'index.cfm';
 					var pars = 'muraAction=cArch.loadnewcontentmenu&siteid=' + siteid +'&contentid=' + contentid + '&parentid=' + parentid + '&topid=' + parentid + '&ptype=' + type +'&cacheid=' + Math.random();
 					$.get(url + "?" + pars, 
@@ -919,6 +919,7 @@ buttons: {
 			if (!this.activeQuickEdit) {
 				d.html('<div class="load-inline"></div>').show();
 			}
+			// return false;
 			$.get(url + "?" + pars, 
 					function(data) {
 						try{
@@ -1917,7 +1918,7 @@ buttons: {
 	resetConfiguratorContainer: function(){
 		//$(instance).dialog("destroy");
 		$("#configuratorContainer").remove();
-		$("body").append('<div id="configuratorContainer" title="Loading..." style="display:none"><div id="configurator"><img src="assets/images/ajax-loader.gif"></div></div>');
+		$("body").append('<div id="configuratorContainer" title="Loading..." style="display:none"><div id="configurator"><div class="load-inline"></div></div></div>');
 	},
 	
 	initConfiguratorParams: function(){

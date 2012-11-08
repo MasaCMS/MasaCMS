@@ -101,7 +101,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   </cfif>
 <form class="" novalidate="novalidate" action="index.cfm?muraAction=cEmail.update&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="form1" onSubmit="return false;">
     
-<img class="loadProgress tabPreloader" src="assets/images/ajax-loader.gif">
+<div class="load-inline tab-preloader"></div>
     
 <div class="tabbable tabs-left">
     <ul class="nav nav-tabs initActiveTab">

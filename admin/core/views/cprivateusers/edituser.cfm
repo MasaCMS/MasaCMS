@@ -445,7 +445,7 @@ select * from rsSubTypes where subType <> 'Default'
 </ul>
 <div class="tab-content">
 #tabContent#
-<img class="loadProgress tabPreloader" src="assets/images/ajax-loader.gif">
+<div class="load-inline tab-preloader"></div>
 <div class="form-actions">
 	<cfif rc.userid eq ''>
 		<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'user.add')#" />

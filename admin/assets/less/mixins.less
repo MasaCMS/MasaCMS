@@ -3,8 +3,11 @@
 .load-inline { 
 	// #gradient .radial(hsla(0,0%,100%,.8),hsla(0,0%,90%,.8));
 	.border-radius(3px);
-	background: rgba(0,0,0,.05) url("../images/ajax-loader.gif") center center no-repeat;
+	background: transparent url("../images/ajax-loader.gif") center center no-repeat;
+	min-height: 60px;
 	}
+
+
 
 // Gradient Bar Colors for buttons and alerts
 .gradientBar(@primaryColor, @secondaryColor, @textColor: #fff, @textShadow: 0 -1px 0 rgba(0,0,0,.25)) {

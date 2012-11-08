@@ -822,7 +822,7 @@ function setTabs(target,activetab){
 		);
 
 	*/
-	$(".tabPreloader").each(
+	$(".tab-preloader").each(
 			function(index) {			
 				$(this).hide();
 			}
@@ -1018,7 +1018,7 @@ spinnerArgs= {
 			  radius: 13, // The radius of the inner circle
 			  corners: 1, // Corner roundness (0..1)
 			  rotate: 0, // The rotation offset
-			  color: '#f0f8ff', // #rgb or #rrggbb
+			  color: '#fff', // #rgb or #rrggbb
 			  speed: 0.9, // Rounds per second
 			  trail: 60, // Afterglow percentage
 			  shadow: false, // Whether to render a shadow

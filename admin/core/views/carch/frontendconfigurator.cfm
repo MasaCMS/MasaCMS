@@ -60,7 +60,7 @@ jQuery(document).ready(function(){
 	</cfif>
 	</div>
 	<div id="configurator">
-		<img src="assets/images/ajax-loader.gif">
+		<div class="load-inline"></div>
 	</div>	
 	<div class="form-actions">
 		<cfif assignChangesets>
@@ -176,7 +176,7 @@ jQuery(document).ready(function(){
 			siteManager.updateAvailableObject();
 			
 			if (siteManager.availableObjectValidate(siteManager.availableObject.params)) {
-				jQuery("##configurator").html('<img src="assets/images/ajax-loader.gif">');
+				jQuery("##configurator").html('<div class="load-inline"></div>');
 				jQuery(".form-actions").hide();
 				jQuery("##configuratorNotices").hide();
 				
@@ -205,7 +205,7 @@ jQuery(document).ready(function(){
 			siteManager.updateAvailableObject();
 			
 			if (siteManager.availableObjectValidate(siteManager.availableObject.params)) {
-				jQuery("##configurator").html('<img src="assets/images/ajax-loader.gif">');
+				jQuery("##configurator").html('<div class="load-inline"></div>');
 				jQuery(".form-actions").hide();
 				jQuery("##configuratorNotices").hide();
 				
@@ -234,7 +234,7 @@ jQuery(document).ready(function(){
 			siteManager.updateAvailableObject();
 				
 			if (siteManager.availableObjectValidate(siteManager.availableObject.params)) {
-				jQuery("##configurator").html('<img src="assets/images/ajax-loader.gif">');
+				jQuery("##configurator").html('<div class="load-inline"></div>');
 				jQuery(".form-actions").hide();
 				jQuery("##configuratorNotices").hide();
 				
@@ -281,7 +281,7 @@ function saveConfiguratorToChangeset(changesetid,removepreviouschangeset){
 			siteManager.updateAvailableObject();
 			
 			if (siteManager.availableObjectValidate(siteManager.availableObject.params)) {
-				jQuery("##configurator").html('<img src="assets/images/ajax-loader.gif">');
+				jQuery("##configurator").html('<div class="load-inline"></div>');
 				jQuery(".form-actions").hide();
 				
 				jQuery.post("./index.cfm?muraAction=cArch.updateObjectParams", {

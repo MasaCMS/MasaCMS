@@ -165,7 +165,7 @@ div.tooltip {
 	&:before {
 		.alert-icon;	
 		content: "\f05a";
-		color: @warningBorder;
+		color: darken(@warningBorder,20%);
 		}
 	
 	}
@@ -177,6 +177,7 @@ div.tooltip {
 	&:before {
 		.alert-icon;
 		content: "\f087";
+		color: darken(@successBorder,20%);
 		}
 		
 	}
@@ -188,6 +189,7 @@ div.tooltip {
 	&:before {
 		.alert-icon;
 		content: "\f071";
+		color: darken(@errorBorder,20%);
 		}
 	}
 
@@ -198,6 +200,7 @@ div.tooltip {
 	&:before {
 		.alert-icon;
 		content: "\f05a";
+		color: darken(@infoBorder,20%);
 		}
 	
 	}
@@ -225,10 +228,6 @@ a img {
 img.fmImage {
 	border: 0 solid #fff;
 	margin: 10px;
-	}
-
-img.tabPreloader {
-	margin: 0 0 1em auto;
 	}
 
 #sm-modify-view {
