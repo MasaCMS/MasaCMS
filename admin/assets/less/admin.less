@@ -155,11 +155,12 @@ div.tooltip {
 .notice {
 	.alert;
 	background-color: @warningBackground;
-	border: 1px solid @warningBorder;
+	border-color: @warningBorder;
 	
 	&:before {
 		.alert-icon;	
 		content: "\f05a";
+		color: @warningBorder;
 		}
 	
 	}

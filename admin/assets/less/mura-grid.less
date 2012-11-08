@@ -771,32 +771,48 @@
 		}
 		
 		#mura-file-offline-edit {
-			background: #eee url(../images/icons/download_24.png) 7px center no-repeat;
-			padding-left: 24px;
 			margin-right: 1em;
 			display: block;
 			float: left;
-		}
-		
-		#msg-file-locked {
-			margin-bottom: .5em !important;
-			padding: .35em .75em !important;
+			padding-left: 12px;
+			
+			&:before {
+				.icon-font('FontAwesome');
+				content: '\f01a';
+				font-size: 18px;
+				margin-right: .25em;
+				position: relative;
+				top: 2px;
+			}
 		}
 		
 		#msg-file-locked.error a {
-			padding-left: 24px;
 			text-decoration: underline;
-			background-image: url(../images/icons/mail_24.png);
-			background-position: 7px center;
-			background-repeat: no-repeat;
+			
+			&:before {
+				.icon-font('FontAwesome');
+				content: '\f0e0'; // \f003 Envelope
+				font-size: 18px;
+				margin-right: .25em;
+				position: relative;
+				top: 2px;
+			}
 		}
 		
 		#mura-file-unlock {
 			text-decoration: none;
-			background: #eee url(../images/icons/ulock_24.png) 9px center no-repeat;
-			padding-left: 26px;
+			padding-left: 12px;
 			display: block;
 			float: left;
+			
+			&:before {
+				.icon-font('FontAwesome');
+				content: '\f09c';
+				font-size: 18px;
+				margin-right: .25em;
+				position: relative;
+				top: 2px;
+			}
 		}
 		
 		#content #mura-revision-type {

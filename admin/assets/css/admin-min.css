@@ -10408,29 +10408,55 @@ tr:nth-child(even) i {
   clear: left;
 }
 .mura #mura-file-offline-edit {
-  background: #eeeeee url(../images/icons/download_24.png) 7px center no-repeat;
-  padding-left: 24px;
   margin-right: 1em;
   display: block;
   float: left;
+  padding-left: 12px;
 }
-.mura #msg-file-locked {
-  margin-bottom: .5em !important;
-  padding: .35em .75em !important;
+.mura #mura-file-offline-edit:before {
+  font-family: 'FontAwesome';
+  font-weight: normal;
+  font-style: normal;
+  display: inline-block;
+  text-decoration: inherit;
+  content: '\f01a';
+  font-size: 18px;
+  margin-right: .25em;
+  position: relative;
+  top: 2px;
 }
 .mura #msg-file-locked.error a {
-  padding-left: 24px;
   text-decoration: underline;
-  background-image: url(../images/icons/mail_24.png);
-  background-position: 7px center;
-  background-repeat: no-repeat;
+}
+.mura #msg-file-locked.error a:before {
+  font-family: 'FontAwesome';
+  font-weight: normal;
+  font-style: normal;
+  display: inline-block;
+  text-decoration: inherit;
+  content: '\f0e0';
+  font-size: 18px;
+  margin-right: .25em;
+  position: relative;
+  top: 2px;
 }
 .mura #mura-file-unlock {
   text-decoration: none;
-  background: #eeeeee url(../images/icons/ulock_24.png) 9px center no-repeat;
-  padding-left: 26px;
+  padding-left: 12px;
   display: block;
   float: left;
+}
+.mura #mura-file-unlock:before {
+  font-family: 'FontAwesome';
+  font-weight: normal;
+  font-style: normal;
+  display: inline-block;
+  text-decoration: inherit;
+  content: '\f09c';
+  font-size: 18px;
+  margin-right: .25em;
+  position: relative;
+  top: 2px;
 }
 .mura #content #mura-revision-type {
   margin: 0;
@@ -14617,7 +14643,7 @@ border-top: 1px solid @gray;
   line-height: 1.2;
   clear: both;
   background-color: #fff6bf;
-  border: 1px solid #ffe7b0;
+  border-color: #ffe7b0;
 }
 .mura .notice ul,
 .mura .notice ol {
@@ -14646,6 +14672,7 @@ border-top: 1px solid @gray;
   /* text-shadow: 0 1px 1px rgba(255,255,255,.15); */
 
   content: "\f05a";
+  color: #ffe7b0;
 }
 .mura .success {
   padding: 2px 9px 9px;
