@@ -6,44 +6,29 @@ window.onload = function() {
 		el.innerHTML = '<span style="font-family: \'mura-icons\'">' + entity + '</span>' + html;
 	}
 	var icons = {
-			'icon-newspaper' : '&#x21;',
-			'icon-copy' : '&#x22;',
-			'icon-calendar' : '&#x23;',
-			'icon-box-add' : '&#x24;',
-			'icon-database' : '&#x25;',
-			'icon-cabinet' : '&#x26;',
-			'icon-cabinet-2' : '&#x27;',
-			'icon-calendar-2' : '&#x28;',
-			'icon-calendar-3' : '&#x29;',
-			'icon-file' : '&#x2a;',
-			'icon-window' : '&#x2b;',
-			'icon-file-2' : '&#x2c;',
-			'icon-file-3' : '&#x2d;',
-			'icon-files' : '&#x2e;',
-			'icon-cube' : '&#x2f;',
-			'icon-box' : '&#x30;',
-			'icon-box-2' : '&#x31;',
-			'icon-layout' : '&#x32;',
-			'icon-layout-2' : '&#x33;',
-			'icon-layout-3' : '&#x34;',
-			'icon-layout-4' : '&#x35;',
-			'icon-layout-5' : '&#x36;',
-			'icon-layout-6' : '&#x37;',
-			'icon-zip' : '&#x38;',
-			'icon-zip-2' : '&#x39;',
-			'icon-code' : '&#x3a;',
-			'icon-embed' : '&#x3b;',
-			'icon-file-powerpoint' : '&#x3c;',
-			'icon-file-excel' : '&#x3d;',
-			'icon-file-word' : '&#x3e;',
-			'icon-file-openoffice' : '&#x3f;',
-			'icon-file-pdf' : '&#x40;',
-			'icon-libreoffice' : '&#x41;',
-			'icon-file-css' : '&#x42;',
-			'icon-file-xml' : '&#x43;',
-			'icon-file-zip' : '&#x44;',
-			'icon-layers' : '&#x45;',
-			'icon-layers-alt' : '&#x46;'
+			'mico-file' : '&#x21;',
+			'mico-file-2' : '&#x22;',
+			'mico-copy' : '&#x23;',
+			'mico-folder' : '&#x24;',
+			'mico-folder-2' : '&#x25;',
+			'mico-database' : '&#x26;',
+			'mico-cube' : '&#x27;',
+			'mico-briefcase' : '&#x28;',
+			'mico-feed' : '&#x29;',
+			'mico-libreoffice' : '&#x2a;',
+			'mico-file-pdf' : '&#x2b;',
+			'mico-file-openoffice' : '&#x2c;',
+			'mico-file-word' : '&#x2d;',
+			'mico-file-excel' : '&#x2e;',
+			'mico-file-powerpoint' : '&#x2f;',
+			'mico-file-zip' : '&#x30;',
+			'mico-file-xml' : '&#x31;',
+			'mico-file-css' : '&#x32;',
+			'mico-locked' : '&#x33;',
+			'mico-file-3' : '&#x34;',
+			'mico-window' : '&#x35;',
+			'mico-document-alt-stroke' : '&#x36;',
+			'mico-document-alt-fill' : '&#x37;'
 		},
 		els = document.getElementsByTagName('*'),
 		i, attr, html, c, el;
@@ -54,7 +39,7 @@ window.onload = function() {
 			addIcon(el, attr);
 		}
 		c = el.className;
-		c = c.match(/icon-[^\s'"]+/);
+		c = c.match(/mico-[^\s'"]+/);
 		if (c) {
 			addIcon(el, icons[c[0]]);
 		}
