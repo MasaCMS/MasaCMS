@@ -14595,6 +14595,14 @@ border-top: 1px solid @gray;
 .mura .badge {
   background: #b3b3b3;
   font-size: 12px;
+  /* min-width: 22px; */
+
+  text-align: center;
+  display: inline-block;
+  *display: inline;
+  /* IE7 inline-block hack */
+
+  *zoom: 1;
 }
 .mura .alert {
   padding: 2px 9px 9px;
