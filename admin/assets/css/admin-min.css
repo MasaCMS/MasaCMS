@@ -9360,13 +9360,13 @@ tr:nth-child(even) i {
   margin-bottom: 18px;
 }
 .mura #nav-module-specific {
-  margin-bottom: 36px;
+  margin-bottom: 18px;
   margin-left: 0;
   clear: both;
 }
 .mura #nav-module-specific .btn {
   text-shadow: 0 1px rgba(255, 255, 255, 0.99);
-  padding: 4px 12px;
+  padding: 6px 12px;
 }
 .mura #nav-module-specific .btn i {
   color: #666666;
@@ -14595,6 +14595,14 @@ border-top: 1px solid @gray;
 .mura .badge {
   background: #b3b3b3;
   font-size: 12px;
+  /* min-width: 22px; */
+
+  text-align: center;
+  display: inline-block;
+  *display: inline;
+  /* IE7 inline-block hack */
+
+  *zoom: 1;
 }
 .mura .alert {
   padding: 2px 9px 9px;
