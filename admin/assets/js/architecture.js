@@ -751,7 +751,7 @@ buttons: {
 
 		});
 
-		if(r.default == ''){
+		if(r['default']==''){
 			$('#tabExtendedAttributesLI').addClass('hide');
 		} else {
 			$('#tabExtendedAttributesLI').removeClass('hide');
