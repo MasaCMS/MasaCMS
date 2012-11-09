@@ -271,18 +271,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		 					<cfset rsExts=application.classExtensionManager.getSubTypes(siteID=rc.siteID,activeOnly=false) />
 
-		 					<li<cfif rsExts.recordcount> class="dropdown-submenu"</cfif>>
+		 					<li class="dropdown-submenu">
 		 					<a href="index.cfm?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-list-alt"></i> Class Extension Manager</a>
-		 						<cfif rsExts.recordcount>
-			 						<ul class="dropdown-menu">
-				 						<cfloop query="rsExts">
-				 						<li><a href="index.cfm?muraAction=cExtend.listSets&subTypeID=#rsExts.subtypeID#&siteid=#URLEncodedFormat(rc.siteid)#">
+			 					<ul class="dropdown-menu">
+				 					<cfloop query="rsExts">
+				 						<li><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cExtend.listSets&subTypeID=#rsExts.subtypeID#&siteid=#URLEncodedFormat(rc.siteid)#">
 				 							<i class="icon-cog"></i> 
 				 							<cfif rsExts.type eq 1>Group<cfelseif rsExts.type eq 2>User<cfelse>#HTMLEditFormat(rsExts.type)#</cfif>/#HTMLEditFormat(rsExts.subtype)#	
 				 						</a></li>
-				 						</cfloop>
-			 						</ul>	
-		 						</cfif>	
+
+				 					</cfloop>
+				 					 <li><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cExtend.editSubType&subTypeID=&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.addclassextension")#</a>
+			 					</ul>	
 		 					</li>
 
 		 					<li>
