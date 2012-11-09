@@ -332,12 +332,12 @@
 			</cfquery>
 
 			<cfif not arguments.nullable> 
-				 <cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
-					ALTER TABLE #arguments.table# MODIFY (#arguments.column# NOT NULL ENABLE)
+				<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
+					ALTER TABLE #arguments.table# MODIFY (#arguments.column# NOT NULL DISABLE)
 				</cfquery>
 			<cfelse>
-				 <cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
-					ALTER TABLE #arguments.table# MODIFY (#arguments.column# NOT NULL DISABLE)
+				<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
+					ALTER TABLE #arguments.table# MODIFY (#arguments.column# NOT NULL ENABLE)
 				</cfquery>
 			</cfif>
 
@@ -447,14 +447,14 @@
 
 				<cfif not arguments.nullable> 
 					 <cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
-						ALTER TABLE #arguments.table# MODIFY (#arguments.column# NOT NULL ENABLE)
+						ALTER TABLE #arguments.table# MODIFY (#arguments.column# NOT NULL DISABLE)
 					</cfquery>
 				<cfelse>
 					 <cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
-						ALTER TABLE #arguments.table# MODIFY (#arguments.column# NOT NULL DISABLE)
+						ALTER TABLE #arguments.table# MODIFY (#arguments.column# NOT NULL ENABLE)
 					</cfquery>
 				</cfif>
-			
+
 				<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
 					UPDATE #arguments.table# SET #arguments.column#=#tempName#
 				</cfquery>
