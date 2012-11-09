@@ -317,19 +317,30 @@
 					ALTER TABLE #arguments.table# ADD <cfif variables.configBean.getDbType() eq "ORACLE">(</cfif>
 				</cfif>
 				
-				#arguments.column# #transformDataType(arguments.datatype,arguments.length)# <cfif not arguments.nullable> not null </cfif> default <cfif arguments.default eq 'null' or listFindNoCase('int,tinyint',arguments.datatype)>#arguments.default#<cfelse>'#arguments.default#'</cfif>
+				#arguments.column# #transformDataType(arguments.datatype,arguments.length)#  default <cfif arguments.default eq 'null' or listFindNoCase('int,tinyint',arguments.datatype)>#arguments.default#<cfelse>'#arguments.default#'</cfif>
 				
 				<cfif not hasTable or variables.configBean.getDbType() eq "ORACLE">)</cfif>
 				
 				<cfif arguments.datatype eq "longtext">
 					lob (#arguments.column#) STORE AS (
-					TABLESPACE "#variables.configBean.getDbTablespace()#" ENABLE STORAGE IN ROW CHUNK 8192 PCTVERSION 10
+					TABLESPACE #variables.configBean.getDbTablespace()# ENABLE STORAGE IN ROW CHUNK 8192 PCTVERSION 10
 					NOCACHE LOGGING
 					STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
 					PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT))
 				</cfif>
 
 			</cfquery>
+
+			<cfif not arguments.nullable> 
+				 <cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
+					ALTER TABLE #arguments.table# MODIFY (#arguments.column# NOT NULL ENABLE)
+				</cfquery>
+			<cfelse>
+				 <cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
+					ALTER TABLE #arguments.table# MODIFY (#arguments.column# NOT NULL DISABLE)
+				</cfquery>
+			</cfif>
+
 			<cfif arguments.autoincrement>				
 				
 				<cftry>
@@ -431,8 +442,19 @@
 					ALTER TABLE #arguments.table# RENAME COLUMN #arguments.column# to #tempName#
 				</cfquery>
 				<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
-					ALTER TABLE #arguments.table# ADD #arguments.column# #transformDataType(arguments.datatype,arguments.length)# <cfif not arguments.nullable> not null </cfif> default <cfif arguments.default eq 'null' or listFindNoCase('int,tinyint',arguments.datatype)>#arguments.default#<cfelse>'#arguments.default#'</cfif>
+					ALTER TABLE #arguments.table# ADD #arguments.column# #transformDataType(arguments.datatype,arguments.length)# default <cfif arguments.default eq 'null' or listFindNoCase('int,tinyint',arguments.datatype)>#arguments.default#<cfelse>'#arguments.default#'</cfif>
 				</cfquery>
+
+				<cfif not arguments.nullable> 
+					 <cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
+						ALTER TABLE #arguments.table# MODIFY (#arguments.column# NOT NULL ENABLE)
+					</cfquery>
+				<cfelse>
+					 <cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
+						ALTER TABLE #arguments.table# MODIFY (#arguments.column# NOT NULL DISABLE)
+					</cfquery>
+				</cfif>
+			
 				<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
 					UPDATE #arguments.table# SET #arguments.column#=#tempName#
 				</cfquery>
