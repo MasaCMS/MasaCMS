@@ -590,7 +590,6 @@ function actionModal(action) {
 	$('body').append('<div id="action-modal" class="modal-backdrop fade in"></div>');
 	$('#action-modal').spin(
 	spinnerArgs, action);
-
 }
 
 function preview(url, targetParams) {

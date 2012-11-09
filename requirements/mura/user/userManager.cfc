@@ -900,7 +900,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.fileManager.deleteVersion(arguments.userBean.getPhotoFileID()) />
 		</cfif>
 		<cfset theFileStruct=variables.fileManager.process(tempFile,arguments.userBean.getSiteID()) />
-		<cfset arguments.userBean.setPhotoFileID(variables.fileManager.create(theFileStruct.fileObj,arguments.userBean.getUserID(),arguments.userBean.getSiteID(),tempFile.ClientFile,tempFile.ContentType,tempFile.ContentSubType,tempFile.FileSize,'00000000000000000000000000000000008',tempFile.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium)) />
+		<cfset arguments.userBean.setPhotoFileID(variables.fileManager.create(theFileStruct.fileObj,arguments.userBean.getUserID(),arguments.userBean.getSiteID(),tempFile.ClientFile,tempFile.ContentType,tempFile.ContentSubType,tempFile.FileSize,'00000000000000000000000000000000008',tempFile.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium,variables.globalUtility.getUUID(),theFileStruct.fileObjSource)) />
 		<cfcatch>
 			<cfset error.photo="The file you uploaded appears to be corrupt. Please select another file to upload."/>
 			<cfset userBean.setErrors(error)/> 
