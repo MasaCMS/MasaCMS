@@ -43,96 +43,100 @@
 	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
-var dashboardManager={
-	loadUserActivity: function(siteID)	{
+var dashboardManager = {
+	loadUserActivity: function(siteID) {
 		var url = 'index.cfm';
-		var pars = 'muraAction=cDashboard.loadUserActivity&siteID=' + siteID  + '&cacheid=' + Math.random();
-		
+		var pars = 'muraAction=cDashboard.loadUserActivity&siteID=' + siteID + '&cacheid=' + Math.random();
+
 		//location.href=url + "?" + pars;
 		var d = $('#userActivityData');
-			d.html('<div class="load-inline"></div>');
-			$.get(url + "?" + pars, 
-					function(data) {
-					d.html(data).animate({'opacity':'hide'},1000,null,
-							function(){
-								d.animate({'opacity':'show'},1000);
-							});
-					}
-			);
+		d.html('<div class="load-inline"></div>');
+		$.get(url + "?" + pars, function(data) {
+			d.html(data).animate({
+				'opacity': 'hide'
+			}, 1000, null, function() {
+				d.animate({
+					'opacity': 'show'
+				}, 1000);
+			});
+		});
 		return false;
 	},
-	
-	loadPopularContent: function(siteID)	{
+
+	loadPopularContent: function(siteID) {
 		var url = 'index.cfm';
-		var pars = 'muraAction=cDashboard.loadPopularContent&siteID=' + siteID  + '&cacheid=' + Math.random();
-		
+		var pars = 'muraAction=cDashboard.loadPopularContent&siteID=' + siteID + '&cacheid=' + Math.random();
+
 		//location.href=url + "?" + pars;
 		var d = $('#popularContentData');
-			d.html('<div class="load-inline"></div>');
-			$.get(url + "?" + pars, 
-					function(data) {
-					d.html(data).animate({'opacity':'hide'},1000,null,
-							function(){
-								d.animate({'opacity':'show'},1000);
-							});
-					}
-			);
+		d.html('<div class="load-inline"></div>');
+		$.get(url + "?" + pars, function(data) {
+			d.html(data).animate({
+				'opacity': 'hide'
+			}, 1000, null, function() {
+				d.animate({
+					'opacity': 'show'
+				}, 1000);
+			});
+		});
 		return false;
 	},
 
-	loadRecentComments: function(siteID)	{
+	loadRecentComments: function(siteID) {
 		var url = 'index.cfm';
-		var pars = 'muraAction=cDashboard.loadRecentComments&siteID=' + siteID  + '&cacheid=' + Math.random();
-		
+		var pars = 'muraAction=cDashboard.loadRecentComments&siteID=' + siteID + '&cacheid=' + Math.random();
+
 		//location.href=url + "?" + pars;
 		var d = $('#recentCommentsData');
-			d.html('<div class="load-inline"></div>');
-			$.get(url + "?" + pars, 
-					function(data) {
-					d.html(data).animate({'opacity':'hide'},1000,null,
-							function(){
-								d.animate({'opacity':'show'},1000);
-							});
-					}
-			);
+		d.html('<div class="load-inline"></div>');
+		$.get(url + "?" + pars, function(data) {
+			d.html(data).animate({
+				'opacity': 'hide'
+			}, 1000, null, function() {
+				d.animate({
+					'opacity': 'show'
+				}, 1000);
+			});
+		});
 		return false;
 	},
 
-	
-	loadFormActivity: function(siteID)	{
+
+	loadFormActivity: function(siteID) {
 		var url = 'index.cfm';
-		var pars = 'muraAction=cDashboard.loadFormActivity&siteID=' + siteID  + '&cacheid=' + Math.random();
-		
+		var pars = 'muraAction=cDashboard.loadFormActivity&siteID=' + siteID + '&cacheid=' + Math.random();
+
 		//location.href=url + "?" + pars;
 		var d = $('#recentFormActivityData');
-			d.html('<div class="load-inline"></div>');
-			$.get(url + "?" + pars, 
-					function(data) {
-					d.html(data).animate({'opacity':'hide'},1000,null,
-							function(){
-								d.animate({'opacity':'show'},1000);
-							});
-					}
-			);
+		d.html('<div class="load-inline"></div>');
+		$.get(url + "?" + pars, function(data) {
+			d.html(data).animate({
+				'opacity': 'hide'
+			}, 1000, null, function() {
+				d.animate({
+					'opacity': 'show'
+				}, 1000);
+			});
+		});
 		return false;
 	},
-	
-	loadEmailActivity: function(siteID)	{
+
+	loadEmailActivity: function(siteID) {
 		var url = 'index.cfm';
-		var pars = 'muraAction=cDashboard.loadEmailActivity&siteID=' + siteID  + '&cacheid=' + Math.random();
-		
+		var pars = 'muraAction=cDashboard.loadEmailActivity&siteID=' + siteID + '&cacheid=' + Math.random();
+
 		//location.href=url + "?" + pars;
 		var d = $('#emailBroadcastsData');
-			d.html('<div class="load-inline"></div>');
-			$.get(url + "?" + pars, 
-					function(data) {
-					d.html(data).animate({'opacity':'hide'},1000,null,
-							function(){
-								d.animate({'opacity':'show'},1000);
-							});
-					}
-			);
+		d.html('<div class="load-inline"></div>');
+		$.get(url + "?" + pars, function(data) {
+			d.html(data).animate({
+				'opacity': 'hide'
+			}, 1000, null, function() {
+				d.animate({
+					'opacity': 'show'
+				}, 1000);
+			});
+		});
 		return false;
 	}
 }
-	
