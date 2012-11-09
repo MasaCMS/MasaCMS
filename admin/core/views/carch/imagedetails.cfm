@@ -130,13 +130,13 @@
 		function reloadImg(id) {
 		   var obj = document.getElementById(id);
 		   var src = obj.src;
-		   /*
+		 
 		   var pos = src.indexOf('?');
 		   if (pos >= 0) {
 		      src = src.substr(0, pos);
 		   }
-			*/
-		   obj.src = src + '&v=' + Math.random();
+			
+		   obj.src = src + '?v=' + Math.random();
 
 		   return false;
 		}
