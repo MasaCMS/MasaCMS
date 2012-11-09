@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <cfoutput>
 <html lang="#HTMLEditFormat(session.locale)#" class="mura">
   <head>
@@ -114,11 +115,6 @@
 
 	<!-- CSS -->
 	<link href="#application.configBean.getContext()#/admin/assets/css/admin-min.css" rel="stylesheet" type="text/css" />
-	
-	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="#application.configBean.getContext()#/admin/assets/js/html5.js"></script>
-    <![endif]-->
 
     <!--- Spinner JS --->
 	<script src="#application.configBean.getContext()#/admin/assets/js/spin.min.js" type="text/javascript" language="Javascript"></script>
@@ -132,7 +128,21 @@
 	<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 	<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 	<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-	<!--- <link href="#application.configBean.getContext()#/admin/assets/less/jquery.ui.less" rel="stylesheet/less" type="text/css" /> --->
+	<!--- <link href="#application.configBean.getContext()#/admin/assets/less/jquery.ui.less" rel="stylesheet/less" type="text/css" /> --->		
+	
+	<script src="#application.configBean.getContext()#/admin/assets/js/upgrade-notification.min.js" type="text/javascript" language="Javascript"></script>
+	<!--- <cfif cgi.http_user_agent contains 'msie'> --->
+	<!--[if IE 7]>
+	<link href="#application.configBean.getContext()#/admin/assets/css/ie/ie.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="#application.configBean.getContext()#/admin/assets/css/font-awesome-ie7.css">
+	<script src="#application.configBean.getContext()#/admin/assets/js/mura-font-lte-ie7.js" type="text/javascript" language="Javascript"></script>
+	<![endif]-->
+	<!--- </cfif> --->
+	
+	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="#application.configBean.getContext()#/admin/assets/js/html5.js"></script>
+    <![endif]-->
 	
 	<!-- CK Editor/Finder -->
 	<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckeditor/ckeditor.js"></script>
@@ -187,6 +197,17 @@
 	<![endif]-->
 		</cfif>
 	--->
+	
+	<!--[if IE 7]>
+	<link rel="stylesheet" href="#application.configBean.getContext()#/admin/assets/css/font-awesome-ie7.css">
+	<script src="#application.configBean.getContext()#/admin/assets/js/mura-font-lte-ie7.js" type="text/javascript" language="Javascript"></script>
+	<![endif]-->
+	
+	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="#application.configBean.getContext()#/admin/assets/js/html5.js"></script>
+    <![endif]-->
+    
   </head>
   <body id="#rc.originalcircuit#">
     <cfinclude template="includes/header.cfm">
