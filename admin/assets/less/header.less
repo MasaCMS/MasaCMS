@@ -12,7 +12,7 @@ header, #cPlugins {
 		.border-radius(0);
 		min-height: @navbarHeight;
 		padding: 0;
-		background: #292929;
+		background: #333;
 		border-bottom: 1px solid #121212;
 		}
 
@@ -57,22 +57,23 @@ header, #cPlugins {
 	.brand {
 	    top: 0;
 	    position: absolute;
-		display: inline-block;
-		.ie7-inline-block();
 	    padding: 0;
 	    margin: 0 0 0 -4px;
 	    z-index: 1000;
-	    font-weight: 600;
+	    .hide-text;
+	    background: transparent url(../images/mura_logo.png) no-repeat;
+	    height: 52px;
+	    width: 54px;
 	    }
 		
 	.brand-credit {
 		position: absolute;
 		top: 0;
-		left: 55px;
-		display: inline-block;
-		.ie7-inline-block();
+		left: 44px;
+	    .hide-text;
 		height: 28px;
-		width: 75px;
+		width: 76px;
+	    background: transparent url(../images/mura_logo.png) no-repeat top right;
 		}	
 	
 	#version {
@@ -118,7 +119,7 @@ header, #cPlugins {
 		height: 66px;
 	
 		> ul {
-			display: inline-block;
+			.inline-block;
 			padding: 0;
 			margin: 0 0 0 55px;
 			border-left: 1px solid #292929;
@@ -198,10 +199,11 @@ header, #cPlugins {
 	    
 	.dropdown {
 	
+	
 	.dropdown-menu {
 	    	.border-radius(0 0 5px 5px);
 	    	background: hsla(0,0%,22%,.98);
-	    	box-shadow: 0 4px 6px rgba(0,0,0,.50);
+	    	.box-shadow(0 4px 6px rgba(0,0,0,.50));
 	    	margin-left: -1px;
 	    	margin-top: 0 !important;
 	    	text-align: left;
@@ -213,6 +215,7 @@ header, #cPlugins {
 			.divider {
 		        	background: hsla(0,0%,20%,.98);
 		        	border-bottom: 1px solid hsla(0,0%,30%,.98);
+		        	behavior: @PIE;
 		        	}
 			    
 			a {
@@ -289,16 +292,15 @@ header, #cPlugins {
 		border-left: 0;
 		padding-top: 18px;
 		height: @navSiteHeight - 18px;
-		box-shadow: inset 0px 0px 12px rgba(0,0,0,.65);
+		.box-shadow(inset 0px 0px 12px rgba(0,0,0,.65));
 		
 		li a { /* Dropdown Items */
-			/* width: 130px; */
-			box-shadow: 0px 0px 0 rgba(0, 0, 0, 0);
+			.box-shadow(0px 0px 0 rgba(0, 0, 0, 0));
 			}
 		
 		#select-site-btn {
 			width: 130px;
-			box-shadow: inset 0px 0px 12px rgba(0, 0, 0, .3);
+			.box-shadow(~"inset 0 0 12px rgba(0, 0, 0, .3),0 0 8px rgba(0,0,0,.5)");
 			display: block;
 			width: 92px;
 			margin: 0 0 0 -46px;
@@ -318,7 +320,6 @@ header, #cPlugins {
 			top: 14px;
 			left: 50%;
 			text-shadow: 0 -1px 0 rgba(0,0,0,.2);
-			box-shadow: 0px 0px 8px rgba(0,0,0,.5);
 			
 			/* Matte BG */
 			/*#gradient .vertical(hsla(12,100%,54%,1),hsla(11,100%,40%,1));*/
@@ -330,7 +331,8 @@ header, #cPlugins {
 			background: -o-linear-gradient(top,  hsla(12,100%,55%,1) 0%,hsla(11,100%,62%,1) 50%,hsla(10,100%,49%,1) 51%,hsla(10,100%,49%,1) 71%,hsla(8,100%,51%,1) 100%); /* Opera 11.10+ */
 			background: -ms-linear-gradient(top,  hsla(12,100%,55%,1) 0%,hsla(11,100%,62%,1) 50%,hsla(10,100%,49%,1) 51%,hsla(10,100%,49%,1) 71%,hsla(8,100%,51%,1) 100%); /* IE10+ */
 			background: linear-gradient(to bottom,  hsla(12,100%,55%,1) 0%,hsla(11,100%,62%,1) 50%,hsla(10,100%,49%,1) 51%,hsla(10,100%,49%,1) 71%,hsla(8,100%,51%,1) 100%); /* W3C */
-			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff4719', endColorstr='#ff2807',GradientType=0 ); /* IE6-9 */					
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff4719', endColorstr='#ff2807',GradientType=0 ); /* IE6-9 */
+			behavior: @PIE;					
 			}
 		
 		#select-site-btn:hover {

@@ -44,8 +44,56 @@
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
-/* @group All Versions */
-.tab-content { background: red; }
+.mura {
+
+.navbar { /* Fixing IE7's z-index madness */
+	position: relative;
+	background: #333;
+	
+	.navbar-inner { filter: none; }
+	
+	* { z-index: 1000; }	
+	.dropdown-menu { z-index: 1020; }
+	
+	.brand, .brand-credit {text-indent: -9999px; }
+}
+
+.dropdown-menu li.divider { background: transparent; border-color: #666; }
+
+.nav-site {
+	
+	position: relative;
+	z-index: 1;
+	
+	.dropdown-menu {
+		z-index: 550;
+		background: #333;
+		border: 0;
+		}
+	}
+	
+#tabFlat .actions ul {
+	background: #333;		
+	}
+	
+.row-fluid [class*=''] {
+	min-height: 0;
+}
+
+#newContentMenu {
+
+	z-index: 20;
+	
+	ul { z-index: 30; background: #333; }
+	
+}
+
+#mura-nodes dt a {
+	font-family: Helvetica, Arial, sans-serif;
+}
+
+.fieldset-wrap { background: ; }
+fieldset, .fieldset { background: #f9f9f9; }
 	
 #emailGroupsLists {
 	width: 640px;
@@ -218,3 +266,4 @@ dd.categoryAssignment input.textAlt {
 	zoom: 1;
 	display: inline;
 	}
+}
