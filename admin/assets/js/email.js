@@ -44,95 +44,84 @@
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
-var emailManager={
+var emailManager = {
 
-	openScheduler: function()
-	{
+	openScheduler: function() {
 		var s = $('#scheduler');
 		var c = $('#controls');
-		c.css('display','none');
-		s.css('display','inline');
-		
+		c.css('display', 'none');
+		s.css('display', 'inline');
+
 		return false;
 
 	},
 
-	closeScheduler: function ()
-	{
-		var s = $('#scheduler');	
+	closeScheduler: function() {
+		var s = $('#scheduler');
 		var c = $('#controls');
-		s.css('display','none');
-		c.css('display','inline');
+		s.css('display', 'none');
+		c.css('display', 'inline');
 		document.forms.form1.deliveryDate.value = '';
 
 		document.forms.form1.timehour.selectedIndex = 7;
 		document.forms.form1.timeminute.selectedIndex = 0;
 		document.forms.form1.timepart.selectedIndex = 1;
-		
+
 		return false;
-		
+
 	},
-	
-	showMessageEditor: function()
-	{
+
+	showMessageEditor: function() {
 		var selObj = document.getElementById('messageFormat');
 		var selIndex = selObj.selectedIndex;
 		var h = $('#htmlMessage');
 		var t = $('#textMessage');
-		
-		if (selObj.options[selIndex].value == "HTML")
-		{
-			h.css('display','inline');
-			t.css('display','none');
+
+		if(selObj.options[selIndex].value == "HTML") {
+			h.css('display', 'inline');
+			t.css('display', 'none');
 		}
-		if (selObj.options[selIndex].value == "Text")
-		{
-			h.css('display','none');
-			t.css('display','inline');
+		if(selObj.options[selIndex].value == "Text") {
+			h.css('display', 'none');
+			t.css('display', 'inline');
 		}
-		if (selObj.options[selIndex].value == "HTML & Text")
-		{
-			h.css('display','inline');
-			t.css('display','inline');
+		if(selObj.options[selIndex].value == "HTML & Text") {
+			h.css('display', 'inline');
+			t.css('display', 'inline');
 		}
-	
+
 	},
 
-	validateEmailForm: function(formAction, errorMessage)
-	{
-		document.forms.form1.action.value=formAction;
-		confirmDialog(errorMessage, 
-				function()
-				{
-					if(!emailManager.checkContentLength()){
-						return false;
-					}
-					
-				submitForm(document.forms.form1);
-				}
-		);
-		
-		
+	validateEmailForm: function(formAction, errorMessage) {
+		document.forms.form1.action.value = formAction;
+		confirmDialog(errorMessage, function() {
+			if(!emailManager.checkContentLength()) {
+				return false;
+			}
+
+			submitForm(document.forms.form1);
+		});
+
+
 		return false;
 	},
-	
-	validateScheduler: function(formAction, errorMessage, formField)
-	{
+
+	validateScheduler: function(formAction, errorMessage, formField) {
 		var f = $("#" + formField);
-		document.forms.form1.action.value=formAction;
-		if (f.val() == ''){
+		document.forms.form1.action.value = formAction;
+		if(f.val() == '') {
 			alertDialog(errorMessage);
 			f.focus();
 		} else {
 			submitForm(document.forms.form1);
 		}
-		
+
 		return false;
-		
+
 	},
-		
-	checkContentLength: function(){
-	/*
+
+	checkContentLength: function() {
+		/*
 	var bodyHTML =FCKeditorAPI.GetInstance('bodyHTML').GetXHTML();
 	var bodyHTMLLength = bodyHTML.length;
 	var pageSize=32000;
@@ -153,8 +142,6 @@ var emailManager={
 			}
 			
 		*/
-			return true;
+		return true;
 	}
 }
-		
-

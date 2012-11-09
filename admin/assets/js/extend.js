@@ -44,113 +44,107 @@
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
-var extendManager={
+var extendManager = {
 
-	showSaveSort: function(id){
-	$('#showSort').hide();
-	$('#saveSort').show();
-	
-	$(".handle").each(
+	showSaveSort: function(id) {
+		$('#showSort').hide();
+		$('#saveSort').show();
+
+		$(".handle").each(
+
 		function(index) {
 			$(this).show();
-		}
-	);
-	
-	this.setSortable(id);
-	
+		});
+
+		this.setSortable(id);
+
 	},
-	
-	showSort: function(id){
+
+	showSort: function(id) {
 		$('#showSort').show();
 		$('#saveSort').hide();
-		
+
 		$(".handle").each(
-			function(index) {
-				$(this).hide();
-			}
-		);
-		
+
+		function(index) {
+			$(this).hide();
+		});
+
 		$("#" + id).sortable('destroy');
 		$("#" + id).enableSelection();
-		
+
 	},
-		
-	saveAttributeSort: function(id){
-		var attArray=new Array();
-		
+
+	saveAttributeSort: function(id) {
+		var attArray = new Array();
+
 		$("#" + id + ' > li').each(
-			function(index) {
-				attArray.push( $(this).attr("attributeID") );
-			}
-		);
-		
+
+		function(index) {
+			attArray.push($(this).attr("attributeID"));
+		});
+
 		var url = "index.cfm";
-		var pars = 'muraAction=cExtend.saveAttributeSort&attributeID=' + attArray.toString() + '&cacheID=' + Math.random();	
-		
+		var pars = 'muraAction=cExtend.saveAttributeSort&attributeID=' + attArray.toString() + '&cacheID=' + Math.random();
+
 		//location.href=url + "?" + pars;
-		$.get(url + "?" + pars); 
+		$.get(url + "?" + pars);
 		this.showSort(id)
 	},
 
-	saveExtendSetSort: function(id){
-		var setArray=new Array();
-		
+	saveExtendSetSort: function(id) {
+		var setArray = new Array();
+
 		$("#" + id + ' > li').each(
-			function(index) {
-				setArray.push( $(this).attr("extendSetID") );
-			}
-		);
+
+		function(index) {
+			setArray.push($(this).attr("extendSetID"));
+		});
 
 		var url = "index.cfm";
-		var pars = 'muraAction=cExtend.saveExtendSetSort&extendSetID=' + setArray.toString() + '&cacheID=' + Math.random();	
-		
+		var pars = 'muraAction=cExtend.saveExtendSetSort&extendSetID=' + setArray.toString() + '&cacheID=' + Math.random();
+
 		//location.href=url + "?" + pars;
-		$.get(url + "?" + pars); 	
+		$.get(url + "?" + pars);
 		this.showSort(id);
 	},
 
-	setSortable: function(id){	
+	setSortable: function(id) {
 		$("#" + id).sortable();
 		$("#" + id).disableSelection();
 	},
 
-	setBaseInfo: function(str){
-		var dataArray=str.split("^");
-		
-		document.subTypeFrm.type.value=dataArray[0];
-		
-		if(dataArray.length > 1){
-			document.subTypeFrm.baseTable.value=dataArray[1];
-			document.subTypeFrm.baseKeyField.value=dataArray[2];
-			document.subTypeFrm.dataTable.value=dataArray[3];
+	setBaseInfo: function(str) {
+		var dataArray = str.split("^");
+
+		document.subTypeFrm.type.value = dataArray[0];
+
+		if(dataArray.length > 1) {
+			document.subTypeFrm.baseTable.value = dataArray[1];
+			document.subTypeFrm.baseKeyField.value = dataArray[2];
+			document.subTypeFrm.dataTable.value = dataArray[3];
 		}
-		if(dataArray[0]==""){
+		if(dataArray[0] == "") {
 			$(".subTypeContainer").hide();
 			$(".hasSummaryContainer").hide();
 			$(".hasBodyContainer").hide();
 			$(".availableSubTypesContainer").hide();
-		} else if(dataArray[0]=="Site"){
+		} else if(dataArray[0] == "Site") {
 			$(".subTypeContainer").hide();
 			$(".hasSummaryContainer").hide();
 			$(".hasBodyContainer").hide();
 			$("#subType").val("Default");
-		} else if(dataArray[0]=="1" 
-			|| dataArray[0]=="2"
-			|| dataArray[0]=="Address"
-			|| dataArray[0]=="Custom"
-			|| dataArray[0]=="Base"){
+		} else if(dataArray[0] == "1" || dataArray[0] == "2" || dataArray[0] == "Address" || dataArray[0] == "Custom" || dataArray[0] == "Base") {
 			$(".subTypeContainer").show();
 			$(".hasSummaryContainer").hide();
 			$(".hasBodyContainer").hide();
 			$(".availableSubTypesContainer").hide();
-		} else if(dataArray[0]=="File" 
-			|| dataArray[0]=="Link"){
+		} else if(dataArray[0] == "File" || dataArray[0] == "Link") {
 			$(".subTypeContainer").show();
 			$(".hasSummaryContainer").show();
 			$(".hasBodyContainer").hide();
 			$(".availableSubTypesContainer").show();
-		} else if(dataArray[0]=="Component" 
-			|| dataArray[0]=="Form"){
+		} else if(dataArray[0] == "Component" || dataArray[0] == "Form") {
 			$(".subTypeContainer").show();
 			$(".hasSummaryContainer").hide();
 			$(".hasBodyContainer").show();
@@ -161,6 +155,6 @@ var extendManager={
 			$(".hasBodyContainer").show();
 			$(".availableSubTypesContainer").show();
 		}
-		
+
 	}
 }

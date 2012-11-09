@@ -1,4 +1,5 @@
 
+<cfsilent>
 <cfset $=application.serviceFactory.getBean('$').init(session.siteID)>
 <cfif isDefined('url.userid')>
 	<cfset rc.userBean=$.getBean('user').loadBy(userID=rc.userID,siteID=rc.siteID)>
@@ -39,7 +40,7 @@
 </cfoutput>
 </cfsavecontent>
 <cfhtmlhead text="#rc.headertext#">
-
+</cfsilent>
 <cfoutput>
 <h1>Image Details</h1>
 
@@ -67,7 +68,7 @@
 							<option value="90"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))# &ndash; 90&deg;</option>
 							<option value="180"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))# &ndash; 180&deg;</option>
 							<option value="270"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))# &ndash; 270&deg;</option>
-							<option value="vertical"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# &ndash; Horizontal</option>
+							<option value="horizontal"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# &ndash; Horizontal</option>
 							<option value="vertical"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# &ndash; Vertical</option>
 							<option value="diagonal"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# &ndash; Diagonal</option>
 							<option value="antidiagonal"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# &ndash; Anti-Diagonal</option>
@@ -129,12 +130,14 @@
 		function reloadImg(id) {
 		   var obj = document.getElementById(id);
 		   var src = obj.src;
+		 
 		   var pos = src.indexOf('?');
 		   if (pos >= 0) {
 		      src = src.substr(0, pos);
 		   }
-		   var date = new Date();
-		   obj.src = src + '?v=' + date.getTime();
+			
+		   obj.src = src + '?v=' + Math.random();
+
 		   return false;
 		}
 	
@@ -144,21 +147,43 @@
 		}
 
 	    function flipImage(fileid,transpose){
-			var _fileid=fileid
+			var _fileid=fileid;
 	    	//location.href='./index.cfm?muraAction=carch.flipimage&fileid=' + currentFileID + '&siteid=' + siteid;
+
 	    	if(transpose != ''){
 	    		//alert(transpose);
 	    		actionModal(
-		    			function(){
+		    		function(){
 				   		 $.get('./index.cfm?muraAction=carch.flipimage&fileid=' + _fileid + '&siteid=' + siteid + '&transpose=' + transpose + '&cacheid=' + Math.random(),
-							function(data) {	
-							//alert($(".cropper-reset[data-fileid='" + _fileid + "']").length);
-							$(".cropper-reset[data-fileid='" + _fileid + "']").trigger('click');
-							}
+							function(){
+					    		$('##action-modal').remove();
+								$(".cropper-reset[data-fileid='" + _fileid + "']").each(function(){
+									var resetFileID=$(this).attr('data-fileid');
+									var resetSize=$(this).attr('data-size');
+
+									$.ajax(
+								    	{
+								    		url:'./index.cfm?muraAction=carch.cropimage&fileid=' + resetFileID + '&size=' + resetSize + '&siteid=' + siteid + '&cacheid=' + Math.random(),
+											success: function(data) {	
+													//alert(JSON.stringify(data));
+														
+													reloadImg(resetSize + resetFileID);
+													resizeImg(resetSize + resetFileID,data.width,data.height);
+													return false;		
+												}	,
+											async:   false
+										}
+									);
+									
+
+								});							
+					    	}
 						);
 			   		}
 				);
 			}	
+
+		 return false;
 	    }
 	
 	    function saveCoords(c){currentCoords=c};
@@ -191,33 +216,29 @@
 	
 	    $('.cropper-reset').click(
 	    	function(){
-				$('##action-modal').remove();
-
+	    		$('##action-modal').remove();
 	    		var resetFileID=$(this).attr('data-fileid');
-				var resetSize=$(this).attr('data-size')
+				var resetSize=$(this).attr('data-size');
 				//alert(resetSize + resetFileID);
-	
-	    		$('##'  + resetSize + resetFileID + 'btns .btn').hide();
-	    		$('##'  + resetSize + resetFileID + 'btns img').show();
-	    		$('##'  + resetSize + resetFileID + 'loader').show();
-	    		$('##'  + resetSize + resetFileID ).hide();
-	
+
 	    		//location.href='./index.cfm?muraAction=carch.cropimage&fileid=' + resetFileID + '&size=' + resetSize + '&siteid=' + siteid;
-	
-	    		$.get('./index.cfm?muraAction=carch.cropimage&fileid=' + resetFileID + '&size=' + resetSize + '&siteid=' + siteid + '&cacheid=' + Math.random(),
-								function(data) {	
-									//alert(JSON.stringify(data));
-									reloadImg(resetSize + resetFileID);
-									resizeImg(resetSize + resetFileID,data.width,data.height);
-									$('##'  + resetSize + resetFileID + 'btns .btn').show();
-									$('##'  + resetSize + resetFileID + 'btns .btn').show();
-	    							$('##'  + resetSize + resetFileID + 'btns img').hide();
-	    							$('##'  + resetSize + resetFileID + 'loader').hide();
-	    							$('##'  + resetSize + resetFileID ).show();
-								}
-							);		
-	
-	    		
+				
+				actionModal(function(){
+				    $.ajax(
+				    	{
+				    		url:'./index.cfm?muraAction=carch.cropimage&fileid=' + resetFileID + '&size=' + resetSize + '&siteid=' + siteid + '&cacheid=' + Math.random(),
+							success: function(data) {	
+										//alert(JSON.stringify(data));
+										
+										reloadImg(resetSize + resetFileID);
+										resizeImg(resetSize + resetFileID,data.width,data.height);
+						    			$('##action-modal').remove();
+									},
+							async:   true
+						}		
+					)}
+				);
+			   		    		
 	    });
 		
 	
@@ -254,7 +275,7 @@
 	    });
 
 		<cfif rc.compactDisplay eq "true">
-		jQuery(document).ready(function(){
+		$(document).ready(function(){
 			if (top.location != self.location) {
 				if(jQuery("##ProxyIFrame").length){
 					jQuery("##ProxyIFrame").load(
