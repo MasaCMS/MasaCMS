@@ -68,7 +68,7 @@
 							<option value="90"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))# &ndash; 90&deg;</option>
 							<option value="180"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))# &ndash; 180&deg;</option>
 							<option value="270"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))# &ndash; 270&deg;</option>
-							<option value="vertical"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# &ndash; Horizontal</option>
+							<option value="horizontal"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# &ndash; Horizontal</option>
 							<option value="vertical"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# &ndash; Vertical</option>
 							<option value="diagonal"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# &ndash; Diagonal</option>
 							<option value="antidiagonal"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# &ndash; Anti-Diagonal</option>
