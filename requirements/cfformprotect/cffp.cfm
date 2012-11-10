@@ -1,6 +1,9 @@
 <!--- This path should start from the web root and work forward from
 			there, if you don't have it in the web root --->
+
+<!--- Custom For Mura --->
 <cfset cffpPath = "#application.configBean.getContext()#/requirements/cfformprotect">
+<!--- End Custom --->
 
 <!--- load the file that grabs all values from the ini file --->
 <cfinclude template="#cffpPath#/cffpConfig.cfm">

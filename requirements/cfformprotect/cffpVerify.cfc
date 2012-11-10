@@ -39,7 +39,7 @@ NOTES       : Dave Shuck - created
 
 	<cffunction name="init" access="public" output="false" returntype="cffpVerify">
 		<cfargument name="ConfigPath" required="false" default="#ExpandPath("/cfformprotect")#" type="string" />
-    <cfargument name="ConfigFilename" required="false" default="cffp.ini.cfm" type="string" />
+    <cfargument name="ConfigFilename" required="false" default="#application.configBean.getCFFPConfigFilename()#" type="string" />
 		<cfscript>
 		setConfig(arguments.ConfigPath, arguments.ConfigFilename);
 		this.ConfigPath = arguments.ConfigPath;
