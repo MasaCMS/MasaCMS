@@ -32,6 +32,7 @@ NOTES       : Dave Shuck - created
 			  									received. Update Akismet function to log to same file and not log as passed if
 			  									the key validation failed.
         Ben Elliott - 16 Jan 2009 - Added ability to specify ini config filename during init() and setConfig() with new cfargument 'ConfigFilename'. This new argument defaults to 'cffp.ini.cfm' for backwards compatability.
+        Jake Munson - 10 Oct 2012 - Added the LinkSleeve test.
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 </pre>
 ">
@@ -50,14 +51,7 @@ NOTES       : Dave Shuck - created
 	<cffunction name="getConfig" access="public" output="false" returntype="struct">
 		<cfreturn variables.Config />
 	</cffunction>
-	
-	<cffunction name="updateConfig" access="public" output="false" returntype="void">
-		<cfargument name="name" required="true">
-		<cfargument name="value" required="true">
-		
-		<cfset variables.Config[name] = value>
-	</cffunction>
-	
+
 	<cffunction name="setConfig" access="public" output="false" returntype="void">
 		<cfargument name="ConfigPath" required="true" />
     <cfargument name="ConfigFilename" required="true" />
@@ -137,7 +131,7 @@ NOTES       : Dave Shuck - created
 
 
 		// Test Akismet
-		//try	{
+		try	{
 			if (getConfig().akismet)	{
 				TestResults.akismet = testAkismet(arguments.FormStruct);
 				if (NOT TestResults.akismet.Pass)	{
@@ -145,8 +139,20 @@ NOTES       : Dave Shuck - created
 					TotalPoints = TotalPoints + getConfig().akismetPoints;
 				}
 			}
-		//}
-		//catch(any excpt)	{ /* an error occurred on this test, but we will move one */ }
+		}
+		catch(any excpt)	{ /* an error occurred on this test, but we will move one */ }
+
+		// Test LinkSleeve
+		try	{
+			if (getConfig().linkSleeve)	{
+				TestResults.linkSleeve = testLinkSleeve(arguments.FormStruct);
+				if (NOT TestResults.linkSleeve.Pass)	{
+					// LinkSleeve says this form submission is spam
+					TotalPoints = TotalPoints + getConfig().linkSleevePoints;
+				}
+			}
+		}
+		catch(any excpt)	{ /* an error occurred on this test, but we will move one */ }
 
 
 		// Test tooManyUrls
@@ -244,17 +250,17 @@ NOTES       : Dave Shuck - created
 		Result.Pass = true;
 
 		// Decrypt the initial form load time
-		if (StructKeyExists(arguments.FormStruct,"formfield1234567893") AND ListLen(form.formfield1234567893) eq 2)	{
-			FormDate = ListFirst(form.formfield1234567893)-19740206;
+		if (StructKeyExists(arguments.FormStruct,"formfield1234567893") AND ListLen(arguments.FormStruct.formfield1234567893) eq 2)	{
+			FormDate = ListFirst(arguments.FormStruct.formfield1234567893)-19740206;
 			if (Len(FormDate) EQ 7) {
 				FormDate = "0" & FormDate;
 			}
-			FormTime = ListLast(form.formfield1234567893)-19740206;
+			FormTime = ListLast(arguments.FormStruct.formfield1234567893)-19740206;
 			if (Len(FormTime))	{
 				// in original form, FormTime was always padded with a "0" below.  In my testing, this caused the timed test to fail
 				// consistantly after 9:59am due to the fact it was shifting the time digits one place to the right with 2 digit hours.
 				// To make this work I added NumberFormat()
-				FormTime = NumberFormat(FormTime,000000);
+				FormTime = NumberFormat(FormTime,'000000');
 			}
 
 			FormDateTime = CreateDateTime(Left(FormDate,4),Mid(FormDate,5,2),Right(FormDate,2),Left(FormTime,2),Mid(FormTime,3,2),Right(FormTime,2));
@@ -302,21 +308,23 @@ NOTES       : Dave Shuck - created
 				<cfhttpparam name="key" type="formfield" value="#getConfig().akismetAPIKey#" />
 				<cfhttpparam name="blog" type="formfield" value="#getConfig().akismetBlogURL#" />
 			</cfhttp>
+			<cfif AkismetHTTPRequest AND Trim(cfhttp.FileContent) EQ "valid">
+				<cfset AkismetKeyIsValid = true />
+				<cfset Result.ValidKey = true />
+			</cfif>
  			<cfcatch type="any">
 				<cfset AkismetHTTPRequest = false />
+				<cflog file="#logfile#" text="Akismet API key validation failed" />
 			</cfcatch>
 		</cftry>
-		<cfif AkismetHTTPRequest AND Trim(cfhttp.FileContent) EQ "valid">
-			<cfset AkismetKeyIsValid = true />
-			<cfset Result.ValidKey = true />
-		</cfif>
+
 		<cfif AkismetKeyIsValid>
 			<cftry>
 				<!--- send form contents to Akismet API --->
 				<cfhttp url="http://#getConfig().akismetAPIKey#.rest.akismet.com/1.1/comment-check" timeout="10" method="post">
 					<cfhttpparam name="key" type="formfield" value="#getConfig().akismetAPIKey#" />
 					<cfhttpparam name="blog" type="formfield" value="#getConfig().akismetBlogURL#" />
-					<cfhttpparam name="user_ip" type="formfield" value="#request.remoteAddr#" />
+					<cfhttpparam name="user_ip" type="formfield" value="#cgi.remote_addr#" />
 					<cfhttpparam name="user_agent" type="formfield" value="CFFormProtect/1.0 | Akismet/1.11" />
 					<cfhttpparam name="referrer" type="formfield" value="#cgi.http_referer#" />
 					<cfhttpparam name="comment_author" type="formfield" value="#arguments.FormStruct[getConfig().akismetFormNameField]#" />
@@ -328,17 +336,73 @@ NOTES       : Dave Shuck - created
 					</cfif>
 					<cfhttpparam name="comment_content" type="formfield" value="#arguments.FormStruct[getConfig().akismetFormBodyField]#" />
 				</cfhttp>
-				<cfcatch type="any">
-					<cfset akismetHTTPRequest = false />
-				</cfcatch>
-			</cftry>
 				<!--- check Akismet results --->
 				<cfif AkismetHTTPRequest AND Trim(cfhttp.FileContent)>
 					<!--- Akismet says this form submission is spam --->
 					<cfset Result.Pass = false />
 				</cfif>
+
+				<cfcatch type="any">
+					<cfset akismetHTTPRequest = false />
+					<cflog file="#logfile#" text="Akismet request failed" />
+				</cfcatch>
+			</cftry>
 		<cfelse>
 			<cflog file="#logfile#" text="Akismet API Key is invalid" />
+		</cfif>
+		<cfreturn Result />
+	</cffunction>
+
+	<cffunction name="testLinkSleeve" access="public" output="false" returntype="struct"
+				hint="I send form contents to the public LinkSleeve service to validate that it's not 'spammy'">
+		<cfargument name="FormStruct" required="true" type="struct" />
+		<cfscript>
+		var Result = StructNew();
+		Result.Pass = true;
+		var linkSleeveHTTPRequest = true;
+		var linkSleeveResult = 0;
+		var formData = "";
+		</cfscript>
+
+		<!--- lump all form data together to send to the LinkSleeve service --->
+		<cfloop list="#arguments.FormStruct.fieldNames#" index="formField">
+			<cfset formData = formData&" "&arguments.FormStruct[formField]>
+		</cfloop>
+
+		<cfsavecontent variable="linkSleeveXML"><?xml version="1.0" encoding="UTF-8"?>
+			<methodCall>
+				<methodName>slv</methodName>
+				<params>
+					<param>
+						<value><string><cfoutput>#formData#</cfoutput></string></value>
+					</param>
+				</params>
+			</methodCall>
+		</cfsavecontent>
+
+		<cftry>
+			<!--- send form contents to LinkSleeve API --->
+			<cfhttp method="post" url="http://www.linksleeve.org/slv.php" result="linkSleeveResponse" timeout="10">
+				<cfhttpparam type="HEADER" name="Content-Type" value="text/xml; charset=utf-8">
+				<cfhttpparam type="HEADER" name="Content-Length" value="#len(trim(linkSleeveXML))#">
+				<cfhttpparam type="BODY" value="#trim(linkSleeveXML)#">
+			</cfhttp>
+			<cfcatch type="any">
+				<cfset linkSleeveHTTPRequest = false />
+			</cfcatch>
+		</cftry>
+
+		<!--- check LinkSleeve results --->
+		<cfif linkSleeveHTTPRequest>
+			<cftry>
+				<cfset responseXML = xmlParse(linkSleeveResponse.fileContent)>
+				<cfset linkSleeveResult = responseXML.methodResponse.params.param.value.int.xmlText>
+				<cfif linkSleeveResult eq 0>
+					<!--- LinkSleeve says this form submission is spam --->
+					<cfset Result.Pass = false />
+				</cfif>
+				<cfcatch type="any"><!--- if there are any unforseen XML problems, just ignore. This should not happen :) ---></cfcatch>
+			</cftry>
 		</cfif>
 		<cfreturn Result />
 	</cffunction>
@@ -348,11 +412,12 @@ NOTES       : Dave Shuck - created
 		<cfscript>
 			var Result = StructNew();
 			var checkfield = "";
+			var urlRegex = "(?i)\b((?:[a-z][\w-]+:(?:/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'"".,<>?«»“”‘’]))";
 			var UrlCount = "";
 
 			Result.Pass = true;
 			for (checkfield in arguments.FormStruct)   {
-				UrlCount = arrayLen (lCase (arguments.FormStruct[checkfield]).split ('https?://')) - 1;
+				UrlCount = arrayLen(rematch(urlRegex,arguments.FormStruct[checkfield])) - 1;
 				if (UrlCount GTE getConfig().tooManyUrlsMaxUrls)   {
 					Result.Pass = false;
 					break;
@@ -400,7 +465,7 @@ NOTES       : Dave Shuck - created
 		<cfargument name="FormStruct" required="true" type="struct" />
 		<cfset var Result = StructNew()>
 		<cfset var apiKey = getConfig().projectHoneyPotAPIKey>
-		<cfset var visitorIP = request.remoteAddr> <!--- 93.174.93.221 is known to be bad --->
+		<cfset var visitorIP = cgi.remote_addr> <!--- 93.174.93.221 is known to be bad --->
 		<cfset var reversedIP = "">
 		<cfset var addressFound = 1>
 		<cfset var isSpammer = 0>
@@ -514,7 +579,7 @@ NOTES       : Dave Shuck - created
 						<cfset falsePositiveURL = replace("#getConfig().akismetBlogURL#cfformprotect/akismetFailure.cfm?type=ham","://","^^","all")>
 						<cfset falsePositiveURL = replace(falsePositiveURL,"//","/","all")>
 						<cfset falsePositiveURL = replace(falsePositiveURL,"^^","://","all")>
-						<cfset falsePositiveURL = falsePositiveURL&"&user_ip=#urlEncodedFormat(request.remoteAddr,'utf-8')#">
+						<cfset falsePositiveURL = falsePositiveURL&"&user_ip=#urlEncodedFormat(cgi.remote_addr,'utf-8')#">
 						<cfset falsePositiveURL = falsePositiveURL&"&referrer=#urlEncodedFormat(cgi.http_referer,'utf-8')#">
 						<cfset falsePositiveURL = falsePositiveURL&"&comment_author=#urlEncodedFormat(form[getConfig().akismetFormNameField],'utf-8')#">
 						<cfif getConfig().akismetFormEmailField neq "">
@@ -532,7 +597,7 @@ NOTES       : Dave Shuck - created
 						<cfset missedSpamURL = replace("#getConfig().akismetBlogURL#cfformprotect/akismetFailure.cfm?type=spam","://","^^","all")>
 						<cfset missedSpamURL = replace(missedSpamURL,"//","/","all")>
 						<cfset missedSpamURL = replace(missedSpamURL,"^^","://","all")>
-						<cfset missedSpamURL = missedSpamURL&"&user_ip=#urlEncodedFormat(request.remoteAddr,'utf-8')#">
+						<cfset missedSpamURL = missedSpamURL&"&user_ip=#urlEncodedFormat(cgi.remote_addr,'utf-8')#">
 						<cfset missedSpamURL = missedSpamURL&"&referrer=#urlEncodedFormat(cgi.http_referer,'utf-8')#">
 						<cfset missedSpamURL = missedSpamURL&"&comment_author=#urlEncodedFormat(form[getConfig().akismetFormNameField],'utf-8')#">
 						<cfif getConfig().akismetFormEmailField neq "">
@@ -558,7 +623,7 @@ NOTES       : Dave Shuck - created
 				Failure score: #totalPoints#<br />
 				Your failure threshold: #getConfig().failureLimit#
 			<br /><br />
-			IP address: #request.remoteAddr#<br />
+			IP address: #cgi.remote_addr#<br />
 			User agent: #cgi.http_user_agent#<br />
 			Previous page: #cgi.http_referer#<br />
 			Form variables:
@@ -608,7 +673,7 @@ NOTES       : Dave Shuck - created
 			<cfset falsePositiveURL = replace("#getConfig().akismetBlogURL#cfformprotect/akismetFailure.cfm?type=ham","://","^^","all")>
 			<cfset falsePositiveURL = replace(falsePositiveURL,"//","/","all")>
 			<cfset falsePositiveURL = replace(falsePositiveURL,"^^","://","all")>
-			<cfset falsePositiveURL = falsePositiveURL&"&user_ip=#urlEncodedFormat(request.remoteAddr,'utf-8')#">
+			<cfset falsePositiveURL = falsePositiveURL&"&user_ip=#urlEncodedFormat(cgi.remote_addr,'utf-8')#">
 			<cfset falsePositiveURL = falsePositiveURL&"&referrer=#urlEncodedFormat(cgi.http_referer,'utf-8')#">
 			<cfset falsePositiveURL = falsePositiveURL&"&comment_author=#urlEncodedFormat(form[getConfig().akismetFormNameField],'utf-8')#">
 			<cfif getConfig().akismetFormEmailField neq "">
@@ -626,7 +691,7 @@ NOTES       : Dave Shuck - created
 			<cfset missedSpamURL = replace("#getConfig().akismetBlogURL#cfformprotect/akismetFailure.cfm?type=spam","://","^^","all")>
 			<cfset missedSpamURL = replace(missedSpamURL,"//","/","all")>
 			<cfset missedSpamURL = replace(missedSpamURL,"^^","://","all")>
-			<cfset missedSpamURL = missedSpamURL&"&user_ip=#urlEncodedFormat(request.remoteAddr,'utf-8')#">
+			<cfset missedSpamURL = missedSpamURL&"&user_ip=#urlEncodedFormat(cgi.remote_addr,'utf-8')#">
 			<cfset missedSpamURL = missedSpamURL&"&referrer=#urlEncodedFormat(cgi.http_referer,'utf-8')#">
 			<cfset missedSpamURL = missedSpamURL&"&comment_author=#urlEncodedFormat(form[getConfig().akismetFormNameField],'utf-8')#">
 			<cfif getConfig().akismetFormEmailField neq "">
@@ -647,7 +712,7 @@ NOTES       : Dave Shuck - created
 		      <cfset LogText = LogText & "--- The user's IP address has been flagged by Project Honey Pot." />
 		</cfif>
 
-		<cfset LogText = LogText & "--- Failure score: #totalPoints#.  Your failure threshold: #getConfig().failureLimit#.  IP address: #request.remoteAddr#	User agent: #cgi.http_user_agent#	Previous page: #cgi.http_referer#" />
+		<cfset LogText = LogText & "--- Failure score: #totalPoints#.  Your failure threshold: #getConfig().failureLimit#.  IP address: #cgi.remote_addr#	User agent: #cgi.http_user_agent#	Previous page: #cgi.http_referer#" />
 
 		<cflog file="#arguments.LogFile#" text="#LogText#" />
 	</cffunction>
