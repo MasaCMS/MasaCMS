@@ -48,6 +48,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabList=listAppend(tabList,"tabSEO")>
 <cfoutput>
   <div id="tabSEO" class="tab-pane fade">
+
+  	<cf_dsp_rendertabevents context="top" tab="seo">
+
 	  <div class="fieldset">
 					<div class="control-group">
 			      		<label class="control-label">
@@ -96,6 +99,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	   <span id="extendset-container-seo" class="extendset-container"></span>
 
-	  #$.announceEvent("onContentSEOTabRender")#
+	  <cf_dsp_rendertabevents context="bottom" tab="seo">
 
 </div></cfoutput>

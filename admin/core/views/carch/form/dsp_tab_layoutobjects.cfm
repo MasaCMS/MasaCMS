@@ -53,7 +53,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfoutput>
   <div id="tabLayoutObjects" class="tab-pane fade">
-<div class="fieldset">
+
+  <cf_dsp_rendertabevents context="top" tab="layoutobjects"> 
+
+  <div class="fieldset">
       <div class="control-group">
               <label class="control-label">
                 <cfoutput><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.layoutTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.layouttemplate')# <i class="icon-question-sign"></i></a></cfoutput>
@@ -184,7 +187,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
   <span id="extendset-container-layoutobjects" class="extendset-container"></span>
 
-  #$.announceEvent("onContentLayoutObjectsTabRender")#
+  <cf_dsp_rendertabevents context="bottom" tab="layoutobjects">
 
   </div> <!--- /.tab-pane --->
   <cfinclude template="../dsp_configuratorJS.cfm">

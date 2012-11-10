@@ -3,7 +3,10 @@
 <cfset tabList=listAppend(tabList,"tabPublishing")>
 <cfoutput>
   <div id="tabPublishing" class="tab-pane fade">
-	  <div class="fieldset">
+		
+	<cf_dsp_rendertabevents context="top" tab="publishing">  
+
+	<div class="fieldset">
 
   	<cfif listFindNoCase('Page,LocalRepo,Calendar,Gallery,File,Link',rc.type)>
 		<div class="control-group">
@@ -208,6 +211,7 @@
 
    <span id="extendset-container-publishing" class="extendset-container"></span>
 
-   #$.announceEvent("onContentPublishingTabRender")#
+   <cf_dsp_rendertabevents context="bottom" tab="publishing">
+
 
 </div></cfoutput>

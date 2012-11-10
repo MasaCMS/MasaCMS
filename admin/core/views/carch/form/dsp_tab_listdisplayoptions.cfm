@@ -48,6 +48,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabList=listAppend(tabList,"tabListDisplayOptions")>
 <cfoutput>
   <div id="tabListDisplayOptions" class="tab-pane fade">
+
+  <cf_dsp_rendertabevents context="top" tab="displaylistoptions"> 
+
   <div class="fieldset">
 			<div class="control-group">
 				<div class="span2">
@@ -140,6 +143,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<span id="extendset-container-listdisplayoptions" class="extendset-container"></span>
 
-	 #$.announceEvent("onContentListDisplayOptionsTabRender")#
+	<cf_dsp_rendertabevents context="bottom" tab="displaylistoptions"> 
 	 
 </div></cfoutput>

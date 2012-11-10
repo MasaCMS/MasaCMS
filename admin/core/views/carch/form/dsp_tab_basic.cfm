@@ -49,6 +49,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset started=false>
 <cfoutput>
 <div id="tabBasic" class="tab-pane">
+
+	<cf_dsp_rendertabevents context="top" tab="basic">
+
 	<div class="fieldset">
 	<cfinclude template="dsp_type_selector.cfm">
 	
@@ -317,7 +320,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<span id="extendset-container-basic" class="extendset-container"></span>
 
-	#$.announceEvent("onContentBasicTabRender")#
+	<cf_dsp_rendertabevents context="bottom" tab="basic">
 
 </div>
 </cfoutput>

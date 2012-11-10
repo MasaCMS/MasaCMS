@@ -48,6 +48,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabList=listAppend(tabList,"tabCategorization")>
 <cfoutput>
 	<div id="tabCategorization" class="tab-pane fade">
+
+		<cf_dsp_rendertabevents context="top" tab="categorization">
+
 		<div class="fieldset">
 		<div class="control-group">
 		<div class="mura-grid stripe">
@@ -77,7 +80,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<span id="extendset-container-categorization" class="extendset-container"></span>
 
 
-		#$.announceEvent("onContentCategorizationTabRender")#
+		<cf_dsp_rendertabevents context="bottom" tab="categorization">
 		
 	</div><!--- /tabCatgeorization --->
 </cfoutput>
