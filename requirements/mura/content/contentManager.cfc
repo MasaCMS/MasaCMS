@@ -111,16 +111,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				
 				<cfset feed.setSiteID(data.siteID)>
+				<cfset feed.setMaxItems(0)>
 				<cfset feed.setCategoryID(data.categoryid)>
 				<cfset feed.setLiveOnly(0)>
 				<cfset feed.setSortBy('menutitle')>
-				<cfif len(data.searchString)>	
-					<cfset subList=getPrivateSearch(data.siteid,data.searchString)>
-					<cfset feed.addParam(field="tcontent.contentID",datatype="varchar",condition="in",criteria=valuelist(subList.contentID))>
+				<cfif len(data.searchString)>
+					<cfset feed.addParam(relationship="and (")>
+					<cfset feed.addParam(column="tcontent.title",criteria=data.searchString,condition="like")>
+					<cfset feed.addParam(relationship="or",column="tcontent.body",criteria=data.searchString,condition="like")>
+					<cfset feed.addParam(relationship=")")>
 				</cfif>
 				<cfif len(data.tag)>
 					<cfset feed.addParam(column="tcontenttags.tag",criteria=data.tag,condition="in")>
 				</cfif>
+				
 				<cfset rs=feed.getQuery()>
 			</cfcase>
 			<cfdefaultcase>
