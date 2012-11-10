@@ -324,7 +324,7 @@ NOTES       : Dave Shuck - created
 				<cfhttp url="http://#getConfig().akismetAPIKey#.rest.akismet.com/1.1/comment-check" timeout="10" method="post">
 					<cfhttpparam name="key" type="formfield" value="#getConfig().akismetAPIKey#" />
 					<cfhttpparam name="blog" type="formfield" value="#getConfig().akismetBlogURL#" />
-					<cfhttpparam name="user_ip" type="formfield" value="#cgi.remote_addr#" />
+					<cfhttpparam name="user_ip" type="formfield" value="#request.remoteAddr#" />
 					<cfhttpparam name="user_agent" type="formfield" value="CFFormProtect/1.0 | Akismet/1.11" />
 					<cfhttpparam name="referrer" type="formfield" value="#cgi.http_referer#" />
 					<cfhttpparam name="comment_author" type="formfield" value="#arguments.FormStruct[getConfig().akismetFormNameField]#" />
@@ -465,7 +465,7 @@ NOTES       : Dave Shuck - created
 		<cfargument name="FormStruct" required="true" type="struct" />
 		<cfset var Result = StructNew()>
 		<cfset var apiKey = getConfig().projectHoneyPotAPIKey>
-		<cfset var visitorIP = cgi.remote_addr> <!--- 93.174.93.221 is known to be bad --->
+		<cfset var visitorIP = request.remoteAddr> <!--- 93.174.93.221 is known to be bad --->
 		<cfset var reversedIP = "">
 		<cfset var addressFound = 1>
 		<cfset var isSpammer = 0>
@@ -579,7 +579,7 @@ NOTES       : Dave Shuck - created
 						<cfset falsePositiveURL = replace("#getConfig().akismetBlogURL#cfformprotect/akismetFailure.cfm?type=ham","://","^^","all")>
 						<cfset falsePositiveURL = replace(falsePositiveURL,"//","/","all")>
 						<cfset falsePositiveURL = replace(falsePositiveURL,"^^","://","all")>
-						<cfset falsePositiveURL = falsePositiveURL&"&user_ip=#urlEncodedFormat(cgi.remote_addr,'utf-8')#">
+						<cfset falsePositiveURL = falsePositiveURL&"&user_ip=#urlEncodedFormat(request.remoteAddr,'utf-8')#">
 						<cfset falsePositiveURL = falsePositiveURL&"&referrer=#urlEncodedFormat(cgi.http_referer,'utf-8')#">
 						<cfset falsePositiveURL = falsePositiveURL&"&comment_author=#urlEncodedFormat(form[getConfig().akismetFormNameField],'utf-8')#">
 						<cfif getConfig().akismetFormEmailField neq "">
@@ -597,7 +597,7 @@ NOTES       : Dave Shuck - created
 						<cfset missedSpamURL = replace("#getConfig().akismetBlogURL#cfformprotect/akismetFailure.cfm?type=spam","://","^^","all")>
 						<cfset missedSpamURL = replace(missedSpamURL,"//","/","all")>
 						<cfset missedSpamURL = replace(missedSpamURL,"^^","://","all")>
-						<cfset missedSpamURL = missedSpamURL&"&user_ip=#urlEncodedFormat(cgi.remote_addr,'utf-8')#">
+						<cfset missedSpamURL = missedSpamURL&"&user_ip=#urlEncodedFormat(request.remoteAddr,'utf-8')#">
 						<cfset missedSpamURL = missedSpamURL&"&referrer=#urlEncodedFormat(cgi.http_referer,'utf-8')#">
 						<cfset missedSpamURL = missedSpamURL&"&comment_author=#urlEncodedFormat(form[getConfig().akismetFormNameField],'utf-8')#">
 						<cfif getConfig().akismetFormEmailField neq "">
@@ -623,7 +623,7 @@ NOTES       : Dave Shuck - created
 				Failure score: #totalPoints#<br />
 				Your failure threshold: #getConfig().failureLimit#
 			<br /><br />
-			IP address: #cgi.remote_addr#<br />
+			IP address: #request.remoteAddr#<br />
 			User agent: #cgi.http_user_agent#<br />
 			Previous page: #cgi.http_referer#<br />
 			Form variables:
@@ -673,7 +673,7 @@ NOTES       : Dave Shuck - created
 			<cfset falsePositiveURL = replace("#getConfig().akismetBlogURL#cfformprotect/akismetFailure.cfm?type=ham","://","^^","all")>
 			<cfset falsePositiveURL = replace(falsePositiveURL,"//","/","all")>
 			<cfset falsePositiveURL = replace(falsePositiveURL,"^^","://","all")>
-			<cfset falsePositiveURL = falsePositiveURL&"&user_ip=#urlEncodedFormat(cgi.remote_addr,'utf-8')#">
+			<cfset falsePositiveURL = falsePositiveURL&"&user_ip=#urlEncodedFormat(request.remoteAddr,'utf-8')#">
 			<cfset falsePositiveURL = falsePositiveURL&"&referrer=#urlEncodedFormat(cgi.http_referer,'utf-8')#">
 			<cfset falsePositiveURL = falsePositiveURL&"&comment_author=#urlEncodedFormat(form[getConfig().akismetFormNameField],'utf-8')#">
 			<cfif getConfig().akismetFormEmailField neq "">
@@ -691,7 +691,7 @@ NOTES       : Dave Shuck - created
 			<cfset missedSpamURL = replace("#getConfig().akismetBlogURL#cfformprotect/akismetFailure.cfm?type=spam","://","^^","all")>
 			<cfset missedSpamURL = replace(missedSpamURL,"//","/","all")>
 			<cfset missedSpamURL = replace(missedSpamURL,"^^","://","all")>
-			<cfset missedSpamURL = missedSpamURL&"&user_ip=#urlEncodedFormat(cgi.remote_addr,'utf-8')#">
+			<cfset missedSpamURL = missedSpamURL&"&user_ip=#urlEncodedFormat(request.remoteAddr,'utf-8')#">
 			<cfset missedSpamURL = missedSpamURL&"&referrer=#urlEncodedFormat(cgi.http_referer,'utf-8')#">
 			<cfset missedSpamURL = missedSpamURL&"&comment_author=#urlEncodedFormat(form[getConfig().akismetFormNameField],'utf-8')#">
 			<cfif getConfig().akismetFormEmailField neq "">
@@ -712,7 +712,7 @@ NOTES       : Dave Shuck - created
 		      <cfset LogText = LogText & "--- The user's IP address has been flagged by Project Honey Pot." />
 		</cfif>
 
-		<cfset LogText = LogText & "--- Failure score: #totalPoints#.  Your failure threshold: #getConfig().failureLimit#.  IP address: #cgi.remote_addr#	User agent: #cgi.http_user_agent#	Previous page: #cgi.http_referer#" />
+		<cfset LogText = LogText & "--- Failure score: #totalPoints#.  Your failure threshold: #getConfig().failureLimit#.  IP address: #request.remoteAddr#	User agent: #cgi.http_user_agent#	Previous page: #cgi.http_referer#" />
 
 		<cflog file="#arguments.LogFile#" text="#LogText#" />
 	</cffunction>
