@@ -307,8 +307,8 @@ var hasBody=#subType.getHasBody()#;
 	<cfif hasChangesets and (not currentChangeset.getIsNew() or pendingChangesets.recordcount)>
 		<p class="notice">
 		<cfif pendingChangesets.recordcount>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetnodenotify")#: 
-		<cfloop query="pendingChangesets"><a href="?muraAction=cArch.edit&moduleID=#URLEncodedFormat(rc.moduleID)#&siteID=#URLEncodedFormat(rc.siteID)#&topID=#URLEncodedFormat(rc.topID)#&contentID=#URLEncodedFormat(rc.contentID)#&return=#URLEncodedFormat(rc.return)#&contentHistID=#pendingChangesets.contentHistID#&parentID=#URLEncodedFormat(rc.parentID)#&startrow=#URLEncodedFormat(rc.startrow)#&type=#URLEncodedFormat(rc.type)#">"#HTMLEditFormat(pendingChangesets.changesetName)#"</a><cfif pendingChangesets.currentrow lt pendingChangesets.recordcount>, </cfif></cfloop><br/></cfif>
-		<cfif not currentChangeset.getIsNew()>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetversionnotify")#: "#HTMLEditFormat(currentChangeset.getName())#"</cfif>
+		<cfloop query="pendingChangesets"><a href="?muraAction=cArch.edit&moduleID=#URLEncodedFormat(rc.moduleID)#&siteID=#URLEncodedFormat(rc.siteID)#&topID=#URLEncodedFormat(rc.topID)#&contentID=#URLEncodedFormat(rc.contentID)#&return=#URLEncodedFormat(rc.return)#&contentHistID=#pendingChangesets.contentHistID#&parentID=#URLEncodedFormat(rc.parentID)#&startrow=#URLEncodedFormat(rc.startrow)#&type=#URLEncodedFormat(rc.type)#"><strong>#HTMLEditFormat(pendingChangesets.changesetName)#</strong></a><cfif pendingChangesets.currentrow lt pendingChangesets.recordcount>, </cfif></cfloop><br/></cfif>
+		<cfif not currentChangeset.getIsNew()>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetversionnotify")#: <strong>#HTMLEditFormat(currentChangeset.getName())#</strong></cfif>
 		</p>
 	</cfif>
 
