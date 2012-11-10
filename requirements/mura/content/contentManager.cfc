@@ -113,12 +113,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset feed.setSiteID(data.siteID)>
 				<cfset feed.setMaxItems(0)>
 				<cfset feed.setCategoryID(data.categoryid)>
+				<cfset feed.setShowExcludeSearch(1)>
 				<cfset feed.setLiveOnly(0)>
 				<cfset feed.setSortBy('menutitle')>
 				<cfif len(data.searchString)>
-					<cfset feed.addParam(relationship="and (")>
-					<cfset feed.addParam(column="tcontent.title",criteria=data.searchString,condition="like")>
-					<cfset feed.addParam(relationship="or",column="tcontent.body",criteria=data.searchString,condition="like")>
+					<cfset feed.addParam(relationship="(")>
+					<cfset feed.addParam(column="tcontent.title",criteria=data.searchString,condition="contains")>
+					<cfset feed.addParam(relationship="or",column="tcontent.menutitle",criteria=data.searchString,condition="contains")>
+					<cfset feed.addParam(relationship="or",column="tcontent.body",criteria=data.searchString,condition="contains")>
 					<cfset feed.addParam(relationship=")")>
 				</cfif>
 				<cfif len(data.tag)>
@@ -126,6 +128,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				
 				<cfset rs=feed.getQuery()>
+
 			</cfcase>
 			<cfdefaultcase>
 				<cfset rs=variables.contentGateway.getTop(data.topid,data.siteid) />
