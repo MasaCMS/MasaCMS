@@ -116,7 +116,7 @@
 	<!-- CSS -->
 	<link href="#application.configBean.getContext()#/admin/assets/css/admin-min.css" rel="stylesheet" type="text/css" />
 
-    <!--- Spinner JS --->
+    <!-- Spinner JS -->
 	<script src="#application.configBean.getContext()#/admin/assets/js/spin.min.js" type="text/javascript" language="Javascript"></script>
 
 	<!-- Mura Admin JS -->
