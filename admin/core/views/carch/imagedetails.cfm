@@ -63,7 +63,7 @@
 						#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.adjustimage'))#
 					</label>
 					<div class="controls">
-						<select id="image-actions">
+						<select id="image-actions#f#">
 							<option value="">Please Select</option>
 							<option value="90"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))# &ndash; 90&deg;</option>
 							<option value="180"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.rotateimage'))# &ndash; 180&deg;</option>
@@ -74,7 +74,7 @@
 							<option value="antidiagonal"> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.flipimage'))# &ndash; Anti-Diagonal</option>
 						</select>
 
-						<input type="button" onclick="flipImage('#JSStringFormat(f)#',$('##image-actions').val());" class="btn" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.apply'))#"/>
+						<input type="button" onclick="flipImage('#JSStringFormat(f)#');" class="btn" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.apply'))#"/>
 					</div>
 				</div>
 
@@ -146,8 +146,9 @@
 		   return false;
 		}
 
-	    function flipImage(fileid,transpose){
+	    function flipImage(fileid){
 			var _fileid=fileid;
+			var transpose=$('##image-actions' + fileid).val()
 	    	//location.href='./index.cfm?muraAction=carch.flipimage&fileid=' + currentFileID + '&siteid=' + siteid;
 
 	    	if(transpose != ''){
