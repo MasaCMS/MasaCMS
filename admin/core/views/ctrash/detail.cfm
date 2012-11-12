@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfsavecontent variable="rc.ajax">
 <cfoutput>
-<script src="assets/js/architecture.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript" ></script>
+<script src="assets/js/architecture.js?coreversion=#application.coreversion#" type="text/javascript" ></script>
 </cfoutput>
 </cfsavecontent>
 <cfoutput>

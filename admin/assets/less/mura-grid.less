@@ -167,18 +167,24 @@
 					
 				&.file {
 					
-					margin-left: -3px;
+					/* margin-left: -3px; */
+					padding-left: 36px;
+					position: relative;
 					
-					&:before { 
+					&:before {
+					position: absolute;
+					top: 6px;
+					left: 2px;
 					content: attr(data-filetype);
 					font-family: 'SilkscreenNormal';
 					font-size: 8px;
 					line-height: 1;
+					.inline-block;
 					color: @white;
 					background: @iconColor;
 					padding: 4px 4px 3px;
 					.border-radius(2px);
-					top: -2px;
+					/* top: 3px; */
 					/* width: 16px; */
 					/* letter-spacing: -1px; */
 					overflow: hidden;					
@@ -462,6 +468,8 @@
 				padding: 0;
 				opacity: 100; // Inherits 0 from .tooltip
 				z-index: 1;
+				
+				i { z-index: 2; }
 			}
 			
 			.scheduled a span {
@@ -1568,10 +1576,11 @@ table + .divide {
 
 	.add i {
 			display: block;
-			padding-right: 2px;
+			width: 24px;
 			font-size: 16px;
-			line-height: 28px;
+			line-height: 27px;
 			color: @iconColor;
+			margin-top: 2px;
 			}
 	
 	td {

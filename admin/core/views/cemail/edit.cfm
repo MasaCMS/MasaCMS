@@ -190,7 +190,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
               <cfelse>
               <textarea name="bodyHTML" id="bodyHTML"><cfif len(rc.emailBean.getBodyHTML())>#HTMLEditFormat(rc.emailBean.getBodyHTML())#<cfelse><p></p></cfif>
 </textarea>
-              <script type="text/javascript" language="Javascript">
+              <script type="text/javascript">
 		var loadEditorCount = 0;
 		jQuery('##bodyHTML').ckeditor({
 			toolbar:'Default',
@@ -383,14 +383,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </form>
 </cfoutput>
 <cfif showScheduler and dateCheck>
-  <script language="javascript">
+  <script>
 		emailManager.openScheduler();
 	</script>
   <cfelse>
-  <script language="javascript">
+  <script>
 		emailManager.closeScheduler();
 	</script>
 </cfif>
-  <script language="javascript">
+  <script>
 		emailManager.showMessageEditor();
   </script>

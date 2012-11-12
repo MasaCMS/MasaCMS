@@ -147,7 +147,7 @@ tr:nth-child(even) i {
 					color: @white;
 					padding: 4px 4px 3px;
 					.border-radius(2px);
-					top: -2px;
+					/* top: -2px; */
 					text-shadow: 0 0 0 !important;
 					overflow: hidden;					
 					}	
@@ -185,6 +185,7 @@ tr:nth-child(even) i {
 				+ .file.png:before,
 				+ .file.gif:before {
 					.icon-font(FontAwesome);
+					position: relative;
 					content: "\f03e";
 					font-size: 19px;
 					top: 3px;

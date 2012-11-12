@@ -46,8 +46,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfsavecontent variable="rc.ajax">
 <cfoutput>
-<script src="assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript" ></script>
+<script src="assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript" ></script>
 <script src="assets/js/feed.min.js?coreversion=#application.coreversion#" type="text/javascript" language="javascript1.2" ></script>
-<script src="assets/js/searchParams.min.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript" ></script>
+<script src="assets/js/searchParams.min.js?coreversion=#application.coreversion#" type="text/javascript" ></script>
 </cfoutput>
 </cfsavecontent>

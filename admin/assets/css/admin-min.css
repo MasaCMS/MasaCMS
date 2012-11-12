@@ -8764,7 +8764,8 @@ tr:nth-child(even) i {
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
-  top: -2px;
+  /* top: -2px; */
+
   text-shadow: 0 0 0 !important;
   overflow: hidden;
 }
@@ -8812,6 +8813,7 @@ tr:nth-child(even) i {
   font-style: normal;
   display: inline-block;
   text-decoration: inherit;
+  position: relative;
   content: "\f03e";
   font-size: 19px;
   top: 3px;
@@ -9835,20 +9837,32 @@ tr:nth-child(even) i {
   text-align: center;
 }
 .mura .mura-grid dt a.title.file {
-  margin-left: -3px;
+  /* margin-left: -3px; */
+
+  padding-left: 36px;
+  position: relative;
 }
 .mura .mura-grid dt a.title.file:before {
+  position: absolute;
+  top: 6px;
+  left: 2px;
   content: attr(data-filetype);
   font-family: 'SilkscreenNormal';
   font-size: 8px;
   line-height: 1;
+  display: inline-block;
+  *display: inline;
+  /* IE7 inline-block hack */
+
+  *zoom: 1;
   color: #ffffff;
   background: #949494;
   padding: 4px 4px 3px;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
-  top: -2px;
+  /* top: 3px; */
+
   /* width: 16px; */
 
   /* letter-spacing: -1px; */
@@ -10112,6 +10126,9 @@ tr:nth-child(even) i {
   padding: 0;
   opacity: 100;
   z-index: 1;
+}
+.mura #mura-nodes .scheduled a i {
+  z-index: 2;
 }
 .mura #mura-nodes .scheduled a span {
   max-width: 110px;
@@ -11092,10 +11109,11 @@ tr:nth-child(even) i {
 .mura .mura-grid .add i,
 .mura .mura-table-grid .add i {
   display: block;
-  padding-right: 2px;
+  width: 24px;
   font-size: 16px;
-  line-height: 28px;
+  line-height: 27px;
   color: #949494;
+  margin-top: 2px;
 }
 .mura .mura-grid td,
 .mura .mura-table-grid td {
