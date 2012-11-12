@@ -1,7 +1,13 @@
-<!DOCTYPE html>
-
 <cfoutput>
+<!DOCTYPE html>
+<cfif cgi.http_user_agent contains 'msie'>
+<!--[if lt IE 7 ]><html class="mura ie ie6" lang="#HTMLEditFormat(session.locale)#"> <![endif]-->
+<!--[if IE 7 ]><html class="mura ie ie7" lang="#HTMLEditFormat(session.locale)#"> <![endif]-->
+<!--[if IE 8 ]><html class="mura ie ie8" lang="#HTMLEditFormat(session.locale)#"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="#HTMLEditFormat(session.locale)#" class="mura"> <!--<![endif]-->
+<cfelse>
 <html lang="#HTMLEditFormat(session.locale)#" class="mura">
+</cfif>
   <head>
   	<cfsilent>
   		<cfparam name="request.action" default="core:cplugin.plugin">
@@ -190,23 +196,21 @@
 		</script>
 	</cfif>
 
-	<!---
-	<cfif cgi.http_user_agent contains 'msie'>
-	<!--[if IE 7]>
-		<link href="#application.configBean.getContext()#/admin/assets/css/ie.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+	<!--- <cfif cgi.http_user_agent contains 'msie'> --->
+	<!--[if IE]>
+		<link href="#application.configBean.getContext()#/admin/assets/css/ie/ie.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+		<script src="#application.configBean.getContext()#/admin/assets/js/mura-font-lte-ie7.js" type="text/javascript" language="Javascript"></script>
 	<![endif]-->
-		</cfif>
-	--->
 	
 	<!--[if IE 7]>
 	<link rel="stylesheet" href="#application.configBean.getContext()#/admin/assets/css/font-awesome-ie7.css">
-	<script src="#application.configBean.getContext()#/admin/assets/js/mura-font-lte-ie7.js" type="text/javascript" language="Javascript"></script>
 	<![endif]-->
 	
 	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="#application.configBean.getContext()#/admin/assets/js/html5.js"></script>
     <![endif]-->
+	<!--- </cfif> --->
     
   </head>
   <body id="#rc.originalcircuit#">
@@ -241,8 +245,8 @@
 	</cfif>	
 	--->
 	<cfif cgi.http_user_agent contains 'msie'>
-		<!--[if IE 6]>
-		<script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/ie6notice.js"></script>
+		<!--[if LTE IE 7]>
+		<script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/uprgade-notification.min.js"></script>
 		<![endif]-->
 	</cfif>
     <!-- Le javascript

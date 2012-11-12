@@ -290,7 +290,6 @@
 					font-size: 13px;
 					color: lighten(@grayDark,18%);
 					margin-top: 2px;
-					/* text-shadow: -1px -1px 0px @grayDarker; */
 					}
 				
 				&.open:before { 
@@ -337,7 +336,7 @@
 				border: 0;
 				
 				i { 
-					position: relative;
+					
 					top: 3px;
 					font-size: 21px;
 					color: @iconColor;
@@ -374,7 +373,8 @@
 			
 			.actions {
 				width: 92px;
-				border-right: 0;
+				border-right: 0 !important;
+				padding-left: 4px !important;
 				}
 			
 			dt .add {
@@ -409,10 +409,6 @@
 			
 			.mura-grid-hdr dd {
 				border-left: 0;
-			}
-			
-			.mura-grid-hdr dd.actions {
-				border-right: 0;
 			}
 			
 			.mura-grid-hdr .add, #mura-nodes span.add {

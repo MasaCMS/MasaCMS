@@ -105,14 +105,15 @@ td.cke_dialog_contents {
 }
 
 .cke_skin_mura .cke_dialog_tabs {
-	height: 28px;
+	height: 26px;
 	display: inline-block;
 	_display: block;
 	margin-left: 0px;
 	margin-right: 10px;
 	margin-top: 12px;
-	position: absolute;
+	margin-bottom: 0;
 	z-index: 2;
+	padding-bottom: 0;
 }
 
 .cke_skin_mura .cke_browser_iequirks .cke_dialog_tabs,.cke_skin_mura .cke_browser_ie6 .cke_dialog_tabs,.cke_skin_mura .cke_browser_ie7 .cke_dialog_tabs {
@@ -133,7 +134,7 @@ td.cke_dialog_contents {
 	margin-right: 2px;
 	display: inline-block;
 	cursor: pointer;
-	border: 1px solid #dbdbdb;
+	border: 0px solid #dbdbdb;
 	border-bottom: 0;
 	-moz-border-radius-topleft: 5px;
 	-moz-border-radius-topright: 5px;

@@ -219,18 +219,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
        		<cfif perm eq 'editor'></a></cfif>
       </dd>
 	    <dd class="display<cfif rc.rstop.Display eq 2 and rc.rstop.approved> scheduled</cfif>">
-			<cfif perm eq 'editor'><a class="mura-quickEditItem<cfif rc.rstop.Display eq 2 and rc.rstop.approved> tooltip</cfif>" data-attribute="display">
-				<cfif rc.rstop.Display eq 2 and rc.rstop.approved>
-				<i class="icon-calendar"></i>
-				</cfif></cfif>
+	    <i class="icon-calendar"></i>
+			<!---
+<cfif perm eq 'editor'>
+				<a class="mura-quickEditItem<cfif rc.rstop.Display eq 2 and rc.rstop.approved> tooltip</cfif>" data-attribute="display">
+					<cfif rc.rstop.Display eq 2 and rc.rstop.approved>
+					<!--- <i class="icon-calendar"></i> --->Test
+					</cfif>
+				</cfif>
 			<cfif rc.rstop.Display eq 1 and rc.rstop.approved >
             	#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#
             <cfelseif rc.rstop.Display eq 2 and rc.rstop.approved>
-           	 	<cfif perm neq 'editor'><a href="##" rel="tooltip" title="#HTMLEditFormat('#LSDateFormat(rc.rstop.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(rc.rstop.displaystop,"short")#')#"></cfif><cfif perm neq 'editor'> <i class="icon-info-sign"></i></a></cfif>
-            <cfelse>
+           	 	<cfif perm neq 'editor'>
+           	 		<a href="##" rel="tooltip" title="#HTMLEditFormat('#LSDateFormat(rc.rstop.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(rc.rstop.displaystop,"short")#')#">
+           	 	</cfif>
+           	 	<cfif perm neq 'editor'>
+           	 	 <i class="icon-info-sign"></i></a>
+           	 	 </cfif>
+           	 <cfelse>
            		 #application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#
-         	</cfif>
+           		</cfif>
 			<cfif perm eq 'editor'></a></cfif>
+--->
 		</dd>
        <dd class="template">
 	  		<cfif perm eq 'editor'><a class="mura-quickEditItem<cfif len(rc.rstop.template)> template-set</cfif>" data-attribute="template"></cfif>

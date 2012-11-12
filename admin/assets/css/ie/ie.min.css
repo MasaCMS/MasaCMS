@@ -43,232 +43,242 @@
 	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
-.mura {
+.mura.ie {
+  /*
+&.ie9 {
+	
+	.dropdown-menu li.divider { background: transparent; border-color: #666; }
+	
+	.nav-site .dropdown-menu, #newContentMenu ul {
+		background: #333;
+		}
+	
+	.mura-grid .actions {
+		padding-left: 4px !important;
+		}
+	
+}
+*/
+
+}
+.mura.ie .navbar-inner {
+  filter: none;
+}
+.mura.ie .fieldset,
+.mura.ie fieldset {
+  background-color: #fdfdfd !important;
+}
+.mura.ie.ie7 {
+  /*
+#emailGroupsLists { width: 640px; }
+	
+	#cEmail #advancedSearch form {
+		margin: 0;
+		padding: 0 0 8px;
+	}
+	
+	form.sessionHistory dl {
+		width: 100% !important;
+	}
+	
+	form.sessionHistory a.submit {
+		clear: both;
+	}
+*/
+
   /* @group Nested Offsets */
 
   /* @end */
 
   /* @group Category Assignment */
 
-  /*
-	.separate {
-		clear: both;
-		margin: 0;
-		padding: 20px 0 0 0;
-		background: url(../images/rule_dotted_big.gif) repeat-x;
-	}
-	*/
-
 }
-.mura .navbar {
+.mura.ie.ie7 .navbar {
   /* Fixing IE7's z-index madness */
 
   position: relative;
   background: #333;
 }
-.mura .navbar .navbar-inner {
+.mura.ie.ie7 .navbar .navbar-inner {
   filter: none;
 }
-.mura .navbar * {
+.mura.ie.ie7 .navbar * {
   z-index: 1000;
 }
-.mura .navbar .dropdown-menu {
+.mura.ie.ie7 .navbar .dropdown-menu {
   z-index: 1020;
 }
-.mura .navbar .brand,
-.mura .navbar .brand-credit {
+.mura.ie.ie7 .navbar .brand,
+.mura.ie.ie7 .navbar .brand-credit {
   text-indent: -9999px;
 }
-.mura .dropdown-menu li.divider {
+.mura.ie.ie7 .dropdown-menu li.divider {
   background: transparent;
   border-color: #666;
 }
-.mura .nav-site {
+.mura.ie.ie7 .nav-site {
   position: relative;
   z-index: 1;
 }
-.mura .nav-site .dropdown-menu {
+.mura.ie.ie7 .nav-site .dropdown-menu {
   z-index: 550;
   background: #333;
   border: 0;
 }
-.mura #tabFlat .actions ul {
+.mura.ie.ie7 #tabFlat .actions ul {
   background: #333;
 }
-.mura .control-group .mura-grid li {
+.mura.ie.ie7 .control-group .mura-grid li {
   width: 100%;
 }
-.mura #newContentMenu {
+.mura.ie.ie7 .fieldset,
+.mura.ie.ie7 fieldset {
+  margin-top: 18px !important;
+}
+.mura.ie.ie7 #newContentMenu {
   z-index: 20;
 }
-.mura #newContentMenu ul {
+.mura.ie.ie7 #newContentMenu ul {
   z-index: 30;
   background: #333;
 }
-.mura #mura-nodes dt a {
+.mura.ie.ie7 #mura-nodes dt a {
   font-family: Helvetica, Arial, sans-serif;
 }
-.mura .fieldset-wrap {
-  background: ;
-}
-.mura fieldset,
-.mura .fieldset {
-  background: #f9f9f9;
-}
-.mura #emailGroupsLists {
-  width: 640px;
-}
-.mura #loginForm {
-  /* This is to fix the Login button being cut off in IE6 and IE7. */
-
-  padding: 0 0 2px 0;
-}
-.mura #cEmail form#bounces {
-  /* This is to fix the Delete button being cut off in IE6 and IE7. */
-
-  padding: 0 0 2px 0;
-}
-.mura #cEmail #advancedSearch form {
-  margin: 0;
-  padding: 0 0 8px;
-}
-.mura form.sessionHistory dl {
-  width: 100% !important;
-}
-.mura form.sessionHistory a.submit {
-  clear: both;
-}
-.mura .mura-grid li {
+.mura.ie.ie7 .mura-grid li {
   width: 914px;
 }
-.mura .mura-grid dt {
+.mura.ie.ie7 .mura-grid dt {
   width: 362px;
 }
-.mura #mura-nodes li .actions {
+.mura.ie.ie7 #mura-nodes li .actions {
   width: 110px;
   margin: 0;
 }
-.mura #mura-nodes li .actions li {
+.mura.ie.ie7 #mura-nodes li .actions li {
   width: auto;
 }
-.mura .mura-grid-hdr .actions {
+.mura.ie.ie7 .mura-grid-hdr .actions {
   width: 110px;
 }
-.mura .mura-grid li dt a.title {
+.mura.ie.ie7 .mura-grid li dt a.title {
   background-repeat: no-repeat !important;
   background-position: center left !important;
 }
-.mura #mura-nodes dt {
+.mura.ie.ie7 #mura-nodes dt {
   position: relative;
 }
-.mura #mura-nodes dt .mura-title-fade {
-  display: none;
-  /* Couldn't get the div to show up when absolutely positioned in IE so we're hiding it to make sure it doesn't blow anything up inadvertently */
-
-}
-.mura #mura-nodes li .title {
+.mura.ie.ie7 #mura-nodes li .title {
   width: 297px;
 }
-.mura #mura-nodes li li .title {
+.mura.ie.ie7 #mura-nodes li li .title {
   width: 281px;
 }
-.mura #mura-nodes li li li .title {
+.mura.ie.ie7 #mura-nodes li li li .title {
   width: 261px;
 }
-.mura #mura-nodes li li li li .title {
+.mura.ie.ie7 #mura-nodes li li li li .title {
   width: 241px;
 }
-.mura #mura-nodes li li li li li .title {
+.mura.ie.ie7 #mura-nodes li li li li li .title {
   width: 221px;
 }
-.mura #mura-nodes li li li li li li .title {
+.mura.ie.ie7 #mura-nodes li li li li li li .title {
   width: 201px;
 }
-.mura #mura-nodes li li li li li li li .title {
+.mura.ie.ie7 #mura-nodes li li li li li li li .title {
   width: 181px;
 }
-.mura #mura-nodes li li li li li li li li .title {
+.mura.ie.ie7 #mura-nodes li li li li li li li li .title {
   width: 161px;
 }
-.mura #mura-nodes li li li li li li li li li .title {
+.mura.ie.ie7 #mura-nodes li li li li li li li li li .title {
   width: 141px;
 }
-.mura #mura-nodes li li li li li li li li li li .title {
+.mura.ie.ie7 #mura-nodes li li li li li li li li li li .title {
   width: 121px;
 }
-.mura #mura-nodes li li li li li li li li li li li .title {
+.mura.ie.ie7 #mura-nodes li li li li li li li li li li li .title {
   width: 101px;
 }
-.mura #mura-nodes li li li li li li li li li li li li .title {
+.mura.ie.ie7 #mura-nodes li li li li li li li li li li li li .title {
   width: 81px;
 }
-.mura #mura-nodes li li li li li li li li li li li li li .title {
+.mura.ie.ie7 #mura-nodes li li li li li li li li li li li li li .title {
   width: 61px;
 }
-.mura dd.categoryAssignment {
+.mura.ie.ie7 dd.categoryAssignment {
   background: #fcfeff;
 }
-.mura dd.categoryAssignment div {
+.mura.ie.ie7 dd.categoryAssignment div {
   height: 24px;
   line-height: 24px;
 }
-.mura dd.categoryAssignment div div.column {
+.mura.ie.ie7 dd.categoryAssignment div div.column {
   top: 0;
   margin-top: 0 !important;
 }
-.mura dd.categoryAssignment select {
+.mura.ie.ie7 dd.categoryAssignment select {
   position: static;
   width: 4em;
   margin: 0 0 0 0;
 }
-.mura dd.categoryAssignment select.displayOptions {
+.mura.ie.ie7 dd.categoryAssignment select.displayOptions {
   margin: 0 0 0 10px;
   width: 7.5em;
 }
-.mura dd.categoryAssignment select.dropdown {
+.mura.ie.ie7 dd.categoryAssignment select.dropdown {
   position: relative;
   top: 3px;
 }
-.mura dd.categoryAssignment input.textAlt {
+.mura.ie.ie7 dd.categoryAssignment input.textAlt {
   width: 6.5em;
   margin: 0 0 0 0;
 }
-.mura .mura-quickEdit {
+.mura.ie.ie7 .mura-quickEdit {
   bottom: 24px;
 }
-.mura .template .mura-quickEdit {
+.mura.ie.ie7 .template .mura-quickEdit {
   bottom: 28px;
 }
-.mura .scheduled .mura-quickEdit {
+.mura.ie.ie7 .scheduled .mura-quickEdit {
   bottom: 28px;
 }
-.mura #mura-tb-grid .mura-tb-grid-checkbox {
+.mura.ie.ie7 #mura-tb-grid .mura-tb-grid-checkbox {
   margin: 0 4px 0 0;
   width: auto;
   padding: 0;
   border: 0;
 }
-.mura #content p.search-showing {
+.mura.ie.ie7 #content p.search-showing {
   font-size: 12px;
   margin-bottom: .5em;
 }
-.mura #tabFlat td .locked-offline {
+.mura.ie.ie7 #tabFlat td .locked-offline {
   zoom: 1;
   display: inline;
 }
-.mura #tabFlat .moreResults {
+.mura.ie.ie7 #tabFlat .moreResults {
   float: right;
   margin-bottom: 1em !important;
   zoom: 1;
 }
-.mura .navSequential li,
-.mura .moreResults li {
+.mura.ie.ie7 .navSequential li,
+.mura.ie.ie7 .moreResults li {
   zoom: 1;
   display: inline;
   margin: 0 1px;
 }
-.mura .navSequential li a,
-.mura .moreResults li a {
+.mura.ie.ie7 .navSequential li a,
+.mura.ie.ie7 .moreResults li a {
   zoom: 1;
   display: inline;
+}
+.mura.ie.ie8 .dropdown-menu li.divider {
+  background: transparent;
+  border-color: #666;
+}
+.mura.ie.ie8 .nav-site .dropdown-menu,
+.mura.ie.ie8 #newContentMenu ul {
+  background: #333;
 }
