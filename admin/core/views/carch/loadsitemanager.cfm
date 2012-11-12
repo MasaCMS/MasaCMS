@@ -224,16 +224,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif perm eq 'editor'><a class="mura-quickEditItem<cfif rc.rstop.Display eq 2 and rc.rstop.approved> tooltip</cfif>" data-attribute="display"></cfif>
 					
 			<cfif rc.rstop.Display eq 1 and rc.rstop.approved >
-            	1X #application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#
+            	#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#
             <cfelseif rc.rstop.Display eq 2 and rc.rstop.approved>
            	 	<cfif perm neq 'editor'>
-           	 		<a href="##" rel="tooltip" title="#HTMLEditFormat('#LSDateFormat(rc.rstop.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(rc.rstop.displaystop,"short")#')#">
-           	 	</cfif>
-           	 	<cfif perm neq 'editor'>
-           	 	 <i class="icon-info-sign"></i>2X</a>
+           	 		<a href="##" rel="tooltip" title="#HTMLEditFormat('#LSDateFormat(rc.rstop.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(rc.rstop.displaystop,"short")#')#"></a>
            	 	 </cfif>
+           	 	 <i class="icon-calendar"></i>
+           	 	 <cfif perm neq 'editor'></a></cfif>
            	 <cfelse>
-           		 3X#application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#
+           		 #application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#
            		</cfif>
 			<cfif perm eq 'editor'></a></cfif>
 			<!--- <i class="icon-calendar"></i> --->

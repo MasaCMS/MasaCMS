@@ -159,16 +159,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		
 		<cfif attributes.rsNest.Display eq 1 and attributes.rsNest.approved>
-		 1X #application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")# 
+		 #application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")# 
 		
 		<cfelseif attributes.rsNest.Display eq 2 and attributes.rsNest.approved>
 			<cfif verdict neq 'editor'>
-				<a href="##" rel="tooltip" title="#HTMLEditFormat(LSDateFormat(attributes.rsNest.displaystart,"short"))#&nbsp;-&nbsp;#LSDateFormat(attributes.rsNest.displaystop,"short")#"><i class="icon-question-sign"></i>
+				<a href="##" rel="tooltip" title="#HTMLEditFormat(LSDateFormat(attributes.rsNest.displaystart,"short"))#&nbsp;-&nbsp;#LSDateFormat(attributes.rsNest.displaystop,"short")#">
 			</cfif>
-			<cfif verdict neq 'editor'> </a>2X </cfif>
-			
+			<i class="icon-calendar"></i>
+			<cfif verdict neq 'editor'></a></cfif>
 		<cfelse>
-		3X #application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#
+		#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#
 		</cfif>
 		<cfif verdict eq 'editor'></a></cfif>
 	</dd>
