@@ -52,6 +52,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabList=listAppend(tabList,"tabUsagereport")>
 <cfoutput>
 <div id="tabUsagereport" class="tab-pane fade">
+
+<cf_dsp_rendertabevents context="top" tab="usagereport">
+
 <div class="fieldset">
 <div class="control-group">
 <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.usagedescription')#:</label>
@@ -89,7 +92,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <span id="extendset-container-usagereport" class="extendset-usagereport"></span>
 
-#$.announceEvent("onContentUsageReportTabRender")#
+<cf_dsp_rendertabevents context="bottom" tab="usagereport">
 
 </div> <!--- / .tab --->
 </cfoutput>

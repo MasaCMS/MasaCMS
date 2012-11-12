@@ -541,11 +541,15 @@ to your own modified versions of Mura CMS.
 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 
+<!-- Spinner JS -->
+<script src="#context#/admin/assets/js/spin.min.js" type="text/javascript" language="Javascript"></script>
+
 <!-- Mura Admin JS -->
 <script src="#context#/admin/assets/js/admin.js" type="text/javascript" language="Javascript"></script>
 
-<!-- jQuery UI -->
+<!-- jQuery -->
 <script src="#context#/admin/assets/js/jquery/jquery.js" type="text/javascript"></script>
+<script src="#context#/admin/assets/js/jquery/jquery.spin.js" type="text/javascript" language="Javascript"></script>
 <script src="#context#/admin/assets/js/jquery/jquery.collapsibleCheckboxTree.js" type="text/javascript"></script>
 <script src="#context#/admin/assets/js/jquery/jquery-ui.js" type="text/javascript"></script>
 <script src="#context#/admin/assets/js/jquery/jquery-ui-i18n.min.js" type="text/javascript"></script>
@@ -588,7 +592,18 @@ to your own modified versions of Mura CMS.
     </cfif>
     
     <!--- need to pass on form object to JS to avoid exception, also added try/catch in admin js (bsoylu 6/7/2010) --->
-    <form id="frm" class="form-horizontal" name="frm" action="index.cfm" method="post" onClick="return validateForm(this);">
+    <script>
+      function processInstallFrm(frm){
+        if(validateForm(frm)){
+          actionModal(function(){});
+          return true;
+        } else {
+          return false;
+        }
+      }
+
+    </script>
+    <form id="frm" class="form-horizontal" name="frm" action="index.cfm" method="post" onsubmit="return processInstallFrm(this);" onclick="return validateForm(this);">
    
       <cfif isDefined( "FORM.#cookie.setupSubmitButton#" ) AND errorType IS "">
         <div id="installationComplete" class="alert alert-success">

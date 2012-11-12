@@ -49,7 +49,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabList=listAppend(tabList,"tabAdvanced")>
 <cfoutput>
 <div id="tabAdvanced" class="tab-pane fade">
-	<!--- <div id="configuratorTab"> --->
+	
+	<cf_dsp_rendertabevents context="top" tab="advanced">
+
 		<div class="fieldset">
 			<div class="control-group">
 			      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.contentid')#</label>
@@ -175,6 +177,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<!--- </div> --->
 
 	<span id="extendset-container-advanced" class="extendset-container"></span>
+
+	<cf_dsp_rendertabevents context="bottom" tab="advanced">
+
 </div>
 
 </cfoutput>

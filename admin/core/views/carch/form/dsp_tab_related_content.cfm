@@ -48,6 +48,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabList=listAppend(tabList,"tabRelatedcontent")>
 <cfoutput>
 <div id="tabRelatedcontent" class="tab-pane">
+
+	<cf_dsp_rendertabevents context="top" tab="relatedcontent">  
+
 	<div class="fieldset padded">
 	<!--- #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#:  --->
 	<span id="selectRelatedContent"> <a class="btn" href="javascript:;" onclick="javascript: siteManager.loadRelatedContent('#HTMLEditFormat(rc.siteid)#','',1);return false;"><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.addrelatedcontent')#</a></span>
@@ -82,7 +85,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<span id="extendset-container-relatedcontent" class="extendset-container"></span>
 
-	#$.announceEvent("onContentSEOTabRender")#
+	<cf_dsp_rendertabevents context="bottom" tab="relatedcontent"> 
 </div>
 
 </cfoutput>

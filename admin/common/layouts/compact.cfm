@@ -87,7 +87,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-72-precomposed.png">
 		<link rel="apple-touch-icon-precomposed" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-57-precomposed.png">
 
-		 <!--- Spinner JS --->
+		 <!-- Spinner JS -->
 		<script src="#application.configBean.getContext()#/admin/assets/js/spin.min.js" type="text/javascript" language="Javascript"></script>
 
 		<!-- Mura Admin JS -->

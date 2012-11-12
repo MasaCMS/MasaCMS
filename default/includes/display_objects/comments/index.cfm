@@ -122,7 +122,7 @@ to your own modified versions of Mura CMS.
 				StructAppend(variables.myRequest, form, "no");
 			</cfscript>
 
-			<cfif structKeyExists(variables.myRequest, "useProtect")>
+			<!---<cfif structKeyExists(variables.myRequest, "useProtect")>--->
 				<cfset variables.cffp = CreateObject("component","cfformprotect.cffpVerify").init() />
 				<cfif $.siteConfig().getContactEmail() neq "">
 					<cfset variables.cffp.updateConfig('emailServer', $.siteConfig().getMailServerIP())>
@@ -132,7 +132,7 @@ to your own modified versions of Mura CMS.
 					<cfset variables.cffp.updateConfig('emailToAddress', $.siteConfig().getContactEmail())>
 					<cfset variables.cffp.updateConfig('emailSubject', 'Spam form submission')>
 				</cfif>
-			</cfif>
+			<!---</cfif>--->
 			
 			<cfset variables.passedProtect = variables.cffp.testSubmission(variables.myRequest)>
 							

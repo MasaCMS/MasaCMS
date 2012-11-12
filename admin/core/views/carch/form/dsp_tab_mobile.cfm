@@ -48,6 +48,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabList=listAppend(tabList,"tabMobile")>
 <cfoutput>
   	<div id="tabMobile" class="tab-pane fade">
+
+  	<cf_dsp_rendertabevents context="top" tab="mobile">  
+
 	<div class="fieldset">
 	  	<div class="control-group">
 			<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.mobileexclude')#</label> 
@@ -61,6 +64,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<span id="extendset-container-mobile" class="extendset-container"></span>
 
-	#$.announceEvent("onContentMobileTabRender")#
+	<cf_dsp_rendertabevents context="bottom" tab="mobile">  
 
 </div></cfoutput>

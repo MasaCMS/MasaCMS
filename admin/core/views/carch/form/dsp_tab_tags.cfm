@@ -48,6 +48,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabList=listAppend(tabList,"tabTags")>
 <cfset tags=$.getBean('contentGateway').getTagCloud(siteid=$.event('siteID')) />
 <div id="tabTags" class="tab-pane fade">
+
+<cf_dsp_rendertabevents context="top" tab="tags">
+
 <div class="fieldset">
 <cfoutput>
 <div class="control-group">
@@ -114,7 +117,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <span id="extendset-container-tags" class="extendset-container"></span>
 
-#$.announceEvent("onContentTagsTabRender")#
+<cf_dsp_rendertabevents context="bottom" tab="tags">
 
  </div>
  </cfoutput>
