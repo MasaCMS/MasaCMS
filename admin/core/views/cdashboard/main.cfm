@@ -143,10 +143,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!--- <p>#application.rbFactory.getKeyValue(session.rb,"dashboard.searchtext")#:</p> --->
 <form novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
 	<!--- <input name="keywords" value="#HTMLEditFormat(session.keywords)#" type="text" class="search-query" placeholder="Enter Keywords" />
-	<input type="button" class="submit btn" onclick="submitForm(document.forms.siteSearch);" value="Search" /> --->
+	<input type="button" class="btn" onclick="submitForm(document.forms.siteSearch);" value="Search" /> --->
 	<div class="input-append">
 	    <input name="keywords" value="#HTMLEditFormat(session.keywords)#" type="text" placeholder="Enter Keywords" />
-	    <button type="button" class="submit btn" onclick="submitForm(document.forms.siteSearch);" /><i class="icon-search"></i></button>
+	    <button type="button" class="btn" onclick="submitForm(document.forms.siteSearch);" /><i class="icon-search"></i></button>
 	</div>
 	<input type="hidden" name="muraAction" value="cArch.list">
 	<input type="hidden" name="activetab" value="1">

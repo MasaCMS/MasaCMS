@@ -187,8 +187,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <div class="form-actions" id="actionButtoms">
 <input type="hidden" name="muraAction" value="cPublicUsers.advancedSearch" /><input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#"/>
-<input type="button" class="submit btn" onclick="document.forms.form2.muraAction.value='cPublicUsers.advancedSearch';submitForm(document.forms.form2);" value="#application.rbFactory.getKeyValue(session.rb,"user.search")#" />
-<input type="button" class="submit btn" onclick="document.forms.form2.muraAction.value='cPublicUsers.advancedSearchToCSV';submitForm(document.forms.form2);" value="#application.rbFactory.getKeyValue(session.rb,"user.download")#" />
+<input type="button" class="btn" onclick="document.forms.form2.muraAction.value='cPublicUsers.advancedSearch';submitForm(document.forms.form2);" value="#application.rbFactory.getKeyValue(session.rb,"user.search")#" />
+<input type="button" class="btn" onclick="document.forms.form2.muraAction.value='cPublicUsers.advancedSearchToCSV';submitForm(document.forms.form2);" value="#application.rbFactory.getKeyValue(session.rb,"user.download")#" />
 </div>
 </form>
 </cfoutput>

@@ -100,14 +100,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 
 <div class="control-group">
-  <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.keywordsearch')#</label>
-  <div class="controls"><select name="filterBy" class="dropdown">
-<cfloop list="#rc.fieldnames#" index="f">
-<option value="#f#" <cfif f eq session.filterBy>selected</cfif>>#f#</option>
-</cfloop>
-</select>
-<input type="text" class="text" name="keywords" value="#session.datakeywords#">
-<</div>
+	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.keywordsearch')#</label>
+	<div class="controls">
+		<select name="filterBy" class="dropdown">
+		<cfloop list="#rc.fieldnames#" index="f">
+		<option value="#f#" <cfif f eq session.filterBy>selected</cfif>>#f#</option>
+		</cfloop>
+		</select>
+		<input type="text" class="text" name="keywords" value="#session.datakeywords#">
+	</div>
 </div>
 
 <input type="hidden" name="muraAction" value="cArch.datamanager" />
@@ -116,8 +117,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <input type="hidden" name="moduleid" value="#rc.moduleid#" />
 <input type="hidden" name="newSearch" value="1" />
 <div class="form-actions">
-	<input type="button" class="submit btn" onclick="submitForm(document.forms.download);" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.viewdata')#"/></a>
-	<input type="button" class="submit btn" onclick="location.href='index.cfm?muraAction=cArch.downloaddata&siteid=#URLEncodedFormat(rc.siteid)#&contentid=#URLEncodedFormat(rc.contentid)#&date1=' + document.download.date1.value + '&hour1=' +document.download.hour1.value + '&minute1=' +document.download.minute1.value + '&date2=' + document.download.date2.value + '&hour2=' + document.download.hour2.value + '&minute2=' + document.download.minute2.value + '&sortBy=' +  document.download.sortBy.value + '&sortDirection=' +  document.download.sortDirection.value + '&filterBy='  + document.download.filterBy.value + '&keywords=' + document.download.keywords.value + '&columns=#rc.columns#';" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.download')#">
+	<input type="button" class="btn" onclick="submitForm(document.forms.download);" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.viewdata')#"/>
+	<input type="button" class="btn" onclick="location.href='index.cfm?muraAction=cArch.downloaddata&siteid=#URLEncodedFormat(rc.siteid)#&contentid=#URLEncodedFormat(rc.contentid)#&date1=' + document.download.date1.value + '&hour1=' +document.download.hour1.value + '&minute1=' +document.download.minute1.value + '&date2=' + document.download.date2.value + '&hour2=' + document.download.hour2.value + '&minute2=' + document.download.minute2.value + '&sortBy=' +  document.download.sortBy.value + '&sortDirection=' +  document.download.sortDirection.value + '&filterBy='  + document.download.filterBy.value + '&keywords=' + document.download.keywords.value + '&columns=#rc.columns#';" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.download')#">
 </div>
 </form></cfoutput>
 </cfif>
@@ -142,16 +143,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<td class="actions">
 		<ul>
 			<li class="edit">
-				<a href="index.cfm?muraAction=cArch.datamanager&contentid=#URLEncodedFormat(rc.contentid)#&siteid=#URLEncodedFormat(rc.siteid)#&date1=#rc.date1#&hour1=#rc.hour1#&minute1=#rc.minute1#&date2=#rc.date2#&hour2=#rc.hour2#&minute2=#rc.minute2#&responseid=#rsdata.responseid#&action=edit&moduleid=#rc.moduleid#&sortBy=#urlEncodedFormat(rc.sortBy)#&sortDirection=#rc.sortDirection#&filterBy=#urlEncodedFormat(rc.filterBy)#&keywords=#urlEncodedFormat(rc.keywords)#">
-					<img src="assets/images/icons/edit_24.png" width="14" height="14" border="0" />
-					#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.edit')#
-				</a>
+				<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.edit')#" href="index.cfm?muraAction=cArch.datamanager&contentid=#URLEncodedFormat(rc.contentid)#&siteid=#URLEncodedFormat(rc.siteid)#&date1=#rc.date1#&hour1=#rc.hour1#&minute1=#rc.minute1#&date2=#rc.date2#&hour2=#rc.hour2#&minute2=#rc.minute2#&responseid=#rsdata.responseid#&action=edit&moduleid=#rc.moduleid#&sortBy=#urlEncodedFormat(rc.sortBy)#&sortDirection=#rc.sortDirection#&filterBy=#urlEncodedFormat(rc.filterBy)#&keywords=#urlEncodedFormat(rc.keywords)#"><i class="icon-pencil"></i></a>
 			</li>
 			<li class="delete">
-				<a href="index.cfm?muraAction=cArch.datamanager&contentid=#URLEncodedFormat(rc.contentid)#&siteid=#URLEncodedFormat(rc.siteid)#&date1=#rc.date1#&hour1=#rc.hour1#&minute1=#rc.minute1#&date2=#rc.date2#&hour2=#rc.hour2#&minute2=#rc.minute2#&responseid=#rsdata.responseid#&action=delete&moduleid=#rc.moduleid#&sortBy=#urlEncodedFormat(rc.sortBy)#&sortDirection=#rc.sortDirection#&filterBy=#urlEncodedFormat(rc.filterBy)#&keywords=#urlEncodedFormat(rc.keywords)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponseconfirm'))#',this.href)">
-					<img src="assets/images/icons/remov_24.png" width="14" height="14" border="0" />
-					#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponse')#
-				</a>
+				<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponse')#" href="index.cfm?muraAction=cArch.datamanager&contentid=#URLEncodedFormat(rc.contentid)#&siteid=#URLEncodedFormat(rc.siteid)#&date1=#rc.date1#&hour1=#rc.hour1#&minute1=#rc.minute1#&date2=#rc.date2#&hour2=#rc.hour2#&minute2=#rc.minute2#&responseid=#rsdata.responseid#&action=delete&moduleid=#rc.moduleid#&sortBy=#urlEncodedFormat(rc.sortBy)#&sortDirection=#rc.sortDirection#&filterBy=#urlEncodedFormat(rc.filterBy)#&keywords=#urlEncodedFormat(rc.keywords)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponseconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a>
 			</li>
 		</ul>
 	</td>

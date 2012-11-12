@@ -154,7 +154,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <input type="hidden" name="doSearch" value="true"/>
 <div class="form-actions">			  
-<button type="button" class="submit btn" onclick="submitForm(document.forms.form1);"><i class="icon-filter"></i> #application.rbFactory.getKeyValue(session.rb,'email.filter')#</button>
+<button type="button" class="btn" onclick="submitForm(document.forms.form1);"><i class="icon-filter"></i> #application.rbFactory.getKeyValue(session.rb,'email.filter')#</button>
 </div>
 </form>
 </div>
