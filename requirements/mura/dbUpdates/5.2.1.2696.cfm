@@ -60,6 +60,17 @@ ALTER TABLE [dbo].[tadplacementcategoryassign] WITH NOCHECK ADD
 	</cftry>
 	</cfif>
 </cfcase>
+<cfcase value="nuodb">	
+	<cfif not dbUtility.tableExists('tadplacementcategoryassign')>
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		CREATE TABLE tadplacementcategoryassign (
+			  placementID char(35) NOT NULL,
+			  categoryID char(35) NOT NULL,
+			  PRIMARY KEY  (placementID,categoryID)
+			) 
+		</cfquery>
+	</cfif>
+</cfcase>
 <cfcase value="oracle">
 <cfset variables.RUNDBUPDATE=false/>
 <cftry>
@@ -127,6 +138,15 @@ select * from tadplacements  where 0=1
 			
 		</cfcatch>
 	</cftry>
+</cfcase>
+<cfcase value="nuodb">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		ALTER TABLE tadplacements ADD COLUMN hasCategories int default NULL
+	</cfquery>
+
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		CREATE INDEX IX_ad_hascategories ON tadplacements (hasCategories)
+	</cfquery>
 </cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">

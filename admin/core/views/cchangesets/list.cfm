@@ -45,23 +45,27 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<h2>#application.rbFactory.getKeyValue(session.rb,"changesets")#</h2>
-
-<ul id="navTask"><li><a  title="#application.rbFactory.getKeyValue(session.rb,'changesets.addchangeset')#" href="index.cfm?muraAction=cChangesets.edit&changesetID=&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'changesets.addchangeset')#</a></li></ul>
-
-<!--- <h3>#application.rbFactory.getKeyValue(session.rb,'changesets.filterview')#:</h3> --->
-<h3 class="alt">#application.rbFactory.getKeyValue(session.rb,'changesets.filterviewnotice')#</h3>
-
-<form novalidate="novalidate" id="changesetSearch" name="changesetSearch" method="get">
+<form class="form-inline" novalidate="novalidate" id="changesetSearch" name="changesetSearch" method="get">
+	<div class="input-append">
 	<input name="keywords" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" maxlength="50" />
-	<input type="button" class="submit" onclick="submitForm(document.forms.changesetSearch);" value="Search" />
+	<button type="button" class="submit btn" onclick="submitForm(document.forms.changesetSearch);"><i class="icon-search"></i></button>
 	<input type="hidden" name="muraAction" value="cChangesets.list">
 	<input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
+	</div>
 </form>
 
-<table class="mura-table-grid stripe"> 
+<h1>#application.rbFactory.getKeyValue(session.rb,"changesets")#</h1>
+
+<cfinclude template="dsp_secondary_menu.cfm">
+
+<!--- <h2>#application.rbFactory.getKeyValue(session.rb,'changesets.filterview')#:</h2> --->
+<!---
+<h3 class="alt">#application.rbFactory.getKeyValue(session.rb,'changesets.filterviewnotice')#</h3>
+--->
+
+<table class="table table-striped table-condensed table-bordered mura-table-grid"> 
 <tr>
-<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'changesets.name')#</th>
+<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'changesets.name')#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,'changesets.datetopublish')#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,'changesets.lastupdate')#</th>
 <th>&nbsp;</th>
@@ -70,15 +74,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfloop condition="rc.changesets.hasNext()">
 <cfset rc.changeset=rc.changesets.next()>
 <tr>
-	<td class="varWidth"><a title="Edit" href="index.cfm?muraAction=cChangesets.edit&changesetID=#rc.changeset.getchangesetID()#&siteid=#URLEncodedFormat(rc.siteID)#">#HTMLEditFormat(rc.changeset.getName())#</a></td>
+	<td class="var-width"><a title="Edit" href="index.cfm?muraAction=cChangesets.edit&changesetID=#rc.changeset.getchangesetID()#&siteid=#URLEncodedFormat(rc.siteID)#">#HTMLEditFormat(rc.changeset.getName())#</a></td>
 	<td><cfif isDate(rc.changeset.getPublishDate())>#LSDateFormat(rc.changeset.getPublishDate(),session.dateKeyFormat)# #LSTimeFormat(rc.changeset.getPublishDate(),"medium")#<cfelse>NA</cfif></td>
 	<td>#LSDateFormat(rc.changeset.getLastUpdate(),session.dateKeyFormat)# #LSTimeFormat(rc.changeset.getLastUpdate(),"medium")#</td>
-	<td class="administration">
-		<ul class="four">
-			<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.edit')#" href="index.cfm?muraAction=cChangesets.edit&changesetID=#rc.changeset.getchangesetID()#&siteid=#URLEncodedFormat(rc.changeset.getSiteID())#">#application.rbFactory.getKeyValue(session.rb,'changesets.edit')#</a></li>
-			<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?changesetID=#JSStringFormat(rc.changeset.getChangesetID())#','');">#application.rbFactory.getKeyValue(session.rb,'changesets.preview')#</a></li>
-			<li class="changeSets"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.assignments')#" href="index.cfm?muraAction=cChangesets.assignments&changesetID=#rc.changeset.getchangesetID()#&siteid=#URLEncodedFormat(rc.changeset.getSiteID())#">#application.rbFactory.getKeyValue(session.rb,'changesets.assignments')#</a></li>
-			<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.delete')#" href="index.cfm?muraAction=cChangesets.delete&changesetID=#rc.changeset.getchangesetID()#&siteid=#URLEncodedFormat(rc.changeset.getSiteID())#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'changesets.deleteconfirm'))#',this.href)">#application.rbFactory.getKeyValue(session.rb,'changesets.delete')#</a></li>
+	<td class="actions">
+		<ul>
+			<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.edit')#" href="index.cfm?muraAction=cChangesets.edit&changesetID=#rc.changeset.getchangesetID()#&siteid=#URLEncodedFormat(rc.changeset.getSiteID())#"><i class="icon-pencil"></i></a></li>
+			<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?changesetID=#JSStringFormat(rc.changeset.getChangesetID())#','');"><i class="icon-globe"></i></a></li>
+			<li class="change-sets"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.assignments')#" href="index.cfm?muraAction=cChangesets.assignments&changesetID=#rc.changeset.getchangesetID()#&siteid=#URLEncodedFormat(rc.changeset.getSiteID())#"><i class="icon-check"></i></a></li>
+			<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'changesets.delete')#" href="index.cfm?muraAction=cChangesets.delete&changesetID=#rc.changeset.getchangesetID()#&siteid=#URLEncodedFormat(rc.changeset.getSiteID())#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'changesets.deleteconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li>
 		</ul>
 	</td>
 </tr></cfloop>

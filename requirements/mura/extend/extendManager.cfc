@@ -84,6 +84,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		to_char(tclassextend.description) as description
 	<cfelse>
 		tclassextend.description
+	</cfif>,
+	<cfif variables.configBean.getDBType() eq "oracle">
+		to_char(tclassextend.availableSubTypes) as availableSubTypes
+	<cfelse>
+		tclassextend.availableSubTypes
 	</cfif>
 	from tclassextend
 	inner join tclassextendsets on (tclassextend.subtypeid=tclassextendsets.subtypeid)
@@ -196,7 +201,7 @@ select attributeID,name,validation,message from tclassextendattributes where
 ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
 		</cfloop>)
-		and type != 'File'
+		and type <> 'File'
 </cfquery>
 
 <cfloop query="rs">
@@ -284,7 +289,7 @@ select attributeID,name,validation,message from tclassextendattributes where
 ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
 		</cfloop>)
-		and type != 'File'
+		and type <> 'File'
 </cfquery>
 
 <cfloop query="rs">
@@ -591,7 +596,7 @@ and tclassextendattributes.extendSetID in (<cfloop from="1" to="#setLen#" index=
 		'#listgetat(arguments.data.extendSetID,s)#'<cfif s lt setlen>,</cfif>
 		</cfloop>)
 </cfif>		
-and tclassextendattributes.type!='File'
+and tclassextendattributes.type<>'File'
 </cfquery>
 
 <cfloop query="rs">
@@ -1254,6 +1259,7 @@ and tclassextendattributes.type='File'
 	<cfset destSubType.setHasSummary(sourceSubType.getHasSummary())>
 	<cfset destSubType.setHasBody(sourceSubType.getHasBody())>
 	<cfset destSubType.setDescription(sourceSubType.getDescription())>
+	<cfset destSubType.setAvailableSubTypes(sourceSubType.getAvailableSubTypes())>
 	
 	<cfset destSubType.save()>
 	
@@ -1310,6 +1316,10 @@ and tclassextendattributes.type='File'
 	<cfset var attributeKeyList="">
 	<cfset var ak="">
 	<cfset var baseElement="">
+	<cfset var imagesize="">
+	<cfset var imagesizeXML="">
+	<cfset var site=getBean('settingsManager').getSite(arguments.siteid)>
+	<cfset var dirty=false>
 
 	<cfif isDefined("arguments.configXML.plugin")>
 		<cfset baseElement="plugin">
@@ -1339,6 +1349,10 @@ and tclassextendattributes.type='File'
 
 			if(isDefined("extXML.xmlAttributes.description")){
 				subType.setDescription( extXML.xmlAttributes.description );
+			}
+
+			if(isDefined("extXML.xmlAttributes.availableSubTypes")){
+				subType.setDescription( extXML.xmlAttributes.availableSubTypes );
 			}
 
 			if(isDefined("extXML.xmlAttributes.hassummary")){
@@ -1416,6 +1430,57 @@ and tclassextendattributes.type='File'
 			}
 		}
 	</cfscript>
+	</cfif>
+
+	<cfif len(baseElement) 
+		and (
+			isDefined("arguments.configXML.#baseElement#.imagesizes") 
+			and arraylen(arguments.configXML[baseElement].imagesizes)
+		)>
+		<cfscript>
+		for(ext=1;ext lte arraylen(arguments.configXML[baseElement].imagesizes.xmlChildren); ext=ext+1){
+			imagesizeXML=arguments.configXML[baseElement].imagesizes.imagesize[ext];
+			
+			if(isDefined("imagesizeXML.xmlAttributes.name")){
+				if(listFindNoCase('small,medium,large',imagesizeXML.xmlAttributes.name)){
+					if(isDefined("imagesizeXML.xmlAttributes.height")
+						and (isnumeric(imagesizeXML.xmlAttributes.height) or imagesizeXML.xmlAttributes.height eq "AUTO")
+						and imagesizeXML.xmlAttributes.height neq evaluate('site.get#imagesizeXML.xmlAttributes.name#ImageHeight()')){	
+						evaluate('site.set#imagesizeXML.xmlAttributes.name#ImageHeight(imagesizeXML.xmlAttributes.height)');
+						dirty=true;
+					}
+
+					if(isDefined("imagesizeXML.xmlAttributes.width")
+						and (isnumeric(imagesizeXML.xmlAttributes.width) or imagesizeXML.xmlAttributes.width eq "AUTO")
+						and imagesizeXML.xmlAttributes.width neq evaluate('site.get#imagesizeXML.xmlAttributes.name#ImageWidth()')){						
+						evaluate('site.set#imagesizeXML.xmlAttributes.name#ImageWidth(imagesizeXML.xmlAttributes.width)');
+						dirty=true;
+					}
+
+				} else{ 
+					imagesize=getBean('imagesize').loadBy(name=imagesizeXML.xmlAttributes.name,siteid=arguments.siteid);
+					imagesize.setName(imagesizeXML.xmlAttributes.name);
+					if(isDefined("imagesizeXML.xmlAttributes.height")){
+						imagesize.setHeight(imagesizeXML.xmlAttributes.height);
+					}
+					if(isDefined("imagesizeXML.xmlAttributes.width")){
+						imagesize.setHeight(imagesizeXML.xmlAttributes.width);
+					}
+
+					imagesize.setSiteID(arguments.siteid);
+					imagesize.save();
+				}
+			}
+			
+			if(dirty){
+				site.save();
+			}
+
+		}
+		</cfscript>
+
+
+
 	</cfif>
 </cffunction>
 

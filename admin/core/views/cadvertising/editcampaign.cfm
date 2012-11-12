@@ -46,42 +46,68 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfhtmlhead text="#session.dateKey#">
 <cfoutput>
-<h2>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"advertising.editcampaign"),rc.userBean.getCompany())#</h2>
-<ul id="navTask">
-<li><a href="index.cfm?muraAction=cAdvertising.viewAdvertiser&&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.backtoadvertiser')#</a></li>
-<cfif rc.campaignid neq ""><li><a href="index.cfm?muraAction=cAdvertising.viewReportByCampaign&campaignid=#URLEncodedFormat(rc.campaignid)#&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.viewcampaignreport')#</a></li></cfif>
-</ul>
+<h1>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"advertising.editcampaign"),rc.userBean.getCompany())#</h1>
 
-<h3>#application.rbFactory.getKeyValue(session.rb,'advertising.campaigninformation')#</h3>
+<cfinclude template="dsp_secondary_menu.cfm">
+
+<!--- <h2>#application.rbFactory.getKeyValue(session.rb,'advertising.campaigninformation')#</h2> --->
+
 #application.utility.displayErrors(rc.campaignBean.getErrors())#
-<form novalidate="novalidate" action="index.cfm?muraAction=cAdvertising.updateCampaign&siteid=#URLEncodedFormat(rc.siteid)#" name="form1"  method="post" onsubmit="return validate(this);">
-<dl class="oneColumn separate">
-<dt class="first">#application.rbFactory.getKeyValue(session.rb,'advertising.name')#</dt>
-<dd><input name="name" class="text" required="true" message="The 'Name' field is required." value="#HTMLEditFormat(rc.campaignBean.getName())#" maxlength="50"></dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'advertising.startdate')#</dt>
-<dd><input name="startDate" class="text datepicker" validate="date" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.startdatevalidate')#" value="#LSDateFormat(rc.campaignBean.getStartDate(),session.dateKeyFormat)#">
-<!---<input class="calendar" type="image" src="images/icons/cal_24.png" width="14" height="14" onclick="window.open('date_picker/index.cfm?form=form1&field=startDate&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">--->
-</dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'advertising.enddate')#</dt>
-<dd><input name="endDate" class="text datepicker" validate="date" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.enddatevalidate')#" value="#LSDateFormat(rc.campaignBean.getEndDate(),session.dateKeyFormat)#">
-<!---<input class="calendar" type="image" src="images/icons/cal_24.png" width="14" height="14" onclick="window.open('date_picker/index.cfm?form=form1&field=endDate&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;" >---></dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'advertising.isactive')#</dt>
-<dd>
-<input name="isActive" id="isActiveYes" type="radio" value="1" <cfif rc.campaignBean.getIsActive()>checked</cfif>> <label for="isActiveYes">#application.rbFactory.getKeyValue(session.rb,'advertising.yes')#</label> 
-<input name="isActive" id="isActiveNo" type="radio" value="0" <cfif not rc.campaignBean.getIsActive()>checked</cfif>> <label for="isActiveNo">#application.rbFactory.getKeyValue(session.rb,'advertising.no')#</label>
-</dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'advertising.notes')#</dt>
-<dd><textarea name="notes" class="textArea">#HTMLEditFormat(rc.campaignBean.getNotes())#</textarea></dd>
-</dl>
-<div id="actionButtons">
+
+<form class="fieldset-wrap" novalidate="novalidate" action="index.cfm?muraAction=cAdvertising.updateCampaign&siteid=#URLEncodedFormat(rc.siteid)#" name="form1"  method="post" onsubmit="return validate(this);">
+<div class="fieldset"> 
+<div class="control-group">
+	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.name')#</label>
+	<div class="controls"><input name="name" type="text" required="true" message="The 'Name' field is required." value="#HTMLEditFormat(rc.campaignBean.getName())#" maxlength="50">
+	</div>
+</div>
+
+<div class="control-group">
+<div class="span6">
+	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.startdate')#</label>
+	<div class="controls"><input name="startDate" type="text" class="datepicker" validate="date" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.startdatevalidate')#" value="#LSDateFormat(rc.campaignBean.getStartDate(),session.dateKeyFormat)#">
+	</div>
+</div>
+
+<div class="span6">
+	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.enddate')#</label>
+	<div class="controls"><input name="endDate" type="text" class="datepicker" validate="date" required="true" message="#application.rbFactory.getKeyValue(session.rb,'advertising.enddatevalidate')#" value="#LSDateFormat(rc.campaignBean.getEndDate(),session.dateKeyFormat)#">
+	</div>
+</div>
+
+</div>
+
+<div class="control-group">
+	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.isactive')#</label>
+	<div class="controls">
+		<label class="radio inline" for="isActiveYes">
+			<input name="isActive" id="isActiveYes" type="radio" value="1" <cfif rc.campaignBean.getIsActive()>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,'advertising.yes')#
+		</label> 
+		<label class="radio inline" for="isActiveNo">
+			<input name="isActive" id="isActiveNo" type="radio" value="0" <cfif not rc.campaignBean.getIsActive()>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,'advertising.no')#
+		</label>
+	</div>
+</div>
+
+
+<div class="control-group">
+	<label class="control-label">
+		#application.rbFactory.getKeyValue(session.rb,'advertising.notes')#
+	</label>
+	<div class="controls"><textarea name="notes" class="span12" rows="6">#HTMLEditFormat(rc.campaignBean.getNotes())#</textarea>	
+	</div>
+</div>
+</div>
+
+<div class="form-actions">
 <cfif rc.campaignid eq ''>
-	<input type="button" class="submit" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.add')#" />
+	<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.add')#" />
 	<input type=hidden name="campaignID" value="">
 <cfelse>
-	<input type="button" class="submit" onclick=submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'advertising.deletecampaignconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.delete')#" />
-	<input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.update')#" />
+	<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'advertising.deletecampaignconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.delete')#" />
+	<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.update')#" />
 	<input type=hidden name="campaignID" value="#rc.campaignBean.getCampaignID()#">
-	</cfif>
+</cfif>
 </div>
 <input type="hidden" name="action" value="">
 <input type="hidden" name="userID" value="#HTMLEditFormat(rc.userid)#">
@@ -91,13 +117,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfoutput>
 	<h3 class="divide">#application.rbFactory.getKeyValue(session.rb,'advertising.campaignplacements')#</h3>
-	<ul id="navTask">
-	<li><a href="index.cfm?muraAction=cAdvertising.editPlacement&campaignid=#URLEncodedFormat(rc.campaignid)#&placementid=&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.addplacement')#</a></li>
-	</ul>
+	<div id="nav-module-specific" class="btn-group">
+	<a class="btn" href="index.cfm?muraAction=cAdvertising.editPlacement&campaignid=#URLEncodedFormat(rc.campaignid)#&placementid=&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.addplacement')#</a>
+	</div>
 	
-	<table class="mura-table-grid stripe">
+	<table class="table table-striped table-condensed table-bordered mura-table-grid">
 	<tr>
-		<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'advertising.adzone')#</th>
+		<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'advertising.adzone')#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,'advertising.creativeasset')#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,'advertising.startdate')#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,'advertising.enddate')#</th>
@@ -111,7 +137,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<th>#application.rbFactory.getKeyValue(session.rb,'advertising.cpc')#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,'advertising.cpctotal')#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,'advertising.total')#</th>
-		<th class="administration">&nbsp;</th>
+		<th class="actions">&nbsp;</th>
 	</tr></cfoutput>
 	<cfif rc.rsPlacements.recordcount>
 		<cfsilent>
@@ -143,7 +169,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 		<cfset cTotalBudget=cTotalBudget+rc.rsPlacements.budget />
 	 	</cfsilent>
 			<tr>
-				<td class="varWidth"><a href="index.cfm?muraAction=cAdvertising.editAdZone&siteid=#URLEncodedFormat(rc.siteid)#&adzoneid=#rc.rsplacements.adzoneid#">#rc.rsPlacements.Adzone#</a></td>
+				<td class="var-width"><a href="index.cfm?muraAction=cAdvertising.editAdZone&siteid=#URLEncodedFormat(rc.siteid)#&adzoneid=#rc.rsplacements.adzoneid#">#rc.rsPlacements.Adzone#</a></td>
 				<td><a href="index.cfm?muraAction=cAdvertising.editCreative&userid=#URLEncodedFormat(rc.userid)#&creativeid=#rc.rsplacements.creativeid#&siteid=#URLEncodedFormat(rc.siteid)#">#rc.rsPlacements.creative#</a></td>
 				<td>#LSDateFormat(rc.rsPlacements.startdate,session.dateKeyFormat)#</td>
 				<td>#LSDateFormat(rc.rsPlacements.enddate,session.dateKeyFormat)#</td>
@@ -157,15 +183,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<td>#LSCurrencyFormat(rc.rsPlacements.costPerClick)#</td>
 				<td>#LSCurrencyFormat(rc.rsPlacements.costPerClick*Clicks)#</td>
 				<td>#LSCurrencyFormat((rc.rsPlacements.costPerClick*Clicks)+(rc.rsPlacements.costPerImp*Imps))#</td>
-				<td class="administration"><ul class="three">
-				<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?muraAction=cAdvertising.editPlacement&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#&campaignid=#rc.campaignID#&placementid=#rc.rsplacements.placementid#">#application.rbFactory.getKeyValue(session.rb,'user.edit')#</a></li>
-				<li class="viewReport"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.viewplacementreport')#" href="index.cfm?muraAction=cAdvertising.viewReportByPlacement&placementid=#rc.rsPlacements.placementid#&campaignid=#rc.campaignid#&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.viewplacementreport')#</a></li>
-				<li class="delete"><a title="#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.delete'))#" href="index.cfm?muraAction=cAdvertising.updatePlacement&action=delete&campaignid=#rc.campaignid#&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#&placementid=#rc.rsplacements.placementid#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'advertising.deleteplacementconfirm'))#',this.href)">#application.rbFactory.getKeyValue(session.rb,'user.delete')#</a></li></ul>
+				<td class="actions"><ul>
+				<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?muraAction=cAdvertising.editPlacement&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#&campaignid=#rc.campaignID#&placementid=#rc.rsplacements.placementid#"><i class="icon-pencil"></i></a></li>
+				<li class="view-report"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.viewplacementreport')#" href="index.cfm?muraAction=cAdvertising.viewReportByPlacement&placementid=#rc.rsPlacements.placementid#&campaignid=#rc.campaignid#&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-bar-chart"></i></a></li>
+				<li class="delete"><a title="#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.delete'))#" href="index.cfm?muraAction=cAdvertising.updatePlacement&action=delete&campaignid=#rc.campaignid#&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#&placementid=#rc.rsplacements.placementid#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'advertising.deleteplacementconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li></ul>
 				</td></tr>
 		</cfoutput>
 		<cfoutput>
 		<tr>
-				<td nowrap class="varWidth" align="right" colspan="6">#application.rbFactory.getKeyValue(session.rb,'advertising.totals')#:</td>
+				<td nowrap class="var-width" align="right" colspan="6">#application.rbFactory.getKeyValue(session.rb,'advertising.totals')#:</td>
 				<td>#LSCurrencyFormat(cTotalBudget)#</td>
 				<td>#cTotalImps#</td>
 				<td>&nbsp;</td>
@@ -180,7 +206,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfoutput>
 	<cfelse>
 		<tr>
-			<td nowrap class="varWidth" colspan="15"><em><cfoutput>#application.rbFactory.getKeyValue(session.rb,'advertising.nocampaignplacements')#</cfoutput></em></td>
+			<td nowrap class="var-width" colspan="15"><em><cfoutput>#application.rbFactory.getKeyValue(session.rb,'advertising.nocampaignplacements')#</cfoutput></em></td>
 		</tr>
 		</table>
 	</cfif>

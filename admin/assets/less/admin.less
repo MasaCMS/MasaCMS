@@ -1,0 +1,289 @@
+// -- Bootstrap File Edits --
+// 1. Commented out glyphicons @import to avoid conflict with font-awesome (bootstrap.less,line 30) 
+// 2. Commented out variables.less @import (responsive.less, line 21) - Using our own
+// 3. Commented out #grid > .core(@gridColumnWidth1200, @gridGutterWidth1200); (responsive-1200px-min.less, line 9) - Don't need super-wide layouts
+
+@import "jquery.ui.less";
+@import "../bootstrap/less/bootstrap.less";
+@import "variables.less";
+@import "mixins.less";
+
+.mura {
+	
+	@import "fonts.less";
+	@import "icons.less";
+	@import "typography.less";
+	@import "header.less";
+	@import "navigation.less";
+	@import "tables.less";
+	@import "mura-grid.less";
+	@import "login.less";
+	@import "forms.less";
+	@import "form-builder.less";
+	@import "tabs.less";
+	@import "tag-clouds.less";
+	@import "session-history.less";
+	@import "category-assignments.less";
+	@import "dashboard.less";
+	@import "setup.less";
+	@import "site-settings.less";
+	@import "image-details.less";
+	@import "dialog.less";
+	@import "configurator.less";
+	@import "class-extension.less";
+	
+	
+// Layout
+
+body.compact {
+	padding: 2em;
+	/*
+	padding: 19px;
+.border-radius(5px);
+	border: 6px solid @grayDark;
+*/
+	background: #fff;
+}
+
+.main { padding-bottom: @baseLineHeight*2; }
+
+// Override bootstrap classes
+
+.dropdown .dropdown-menu {
+	.border-radius(6);
+}
+
+.btn-icon-only {
+	padding-right: 3px;
+	padding-left: 3px;
+}
+
+.btn i {
+	position: relative;
+	text-shadow: 0 1px 0 rgba(255,255,255,1);
+	}
+	
+.nav-pills .btn {
+	padding-top: 6px;
+	padding-bottom: 6px;
+	border: 0;
+}
+
+.well {
+		.box-shadow(0 0 0) !important;
+		.well-small;
+		background: @grayLighter;
+		margin-bottom: @baseLineHeight;
+		clear: both;
+		border: 1px solid transparent; /* Border 0 leaves artifacting on corners in Safari 6 */
+	}
+	
+pre {
+	background-color: lighten(@blue,36%);
+	border: 0;
+	padding: @baseLineHeight;
+}
+
+a[rel="tooltip"] {
+	display: inline-block;
+	color: @grayDark;
+	padding-right: .25em;
+	text-decoration: none;
+	
+	i {
+		color: @gray;
+		font-size: 14px;
+		}
+	
+	}
+	
+.input-prepend, .input-append {
+	
+	i {
+		font-size: 16px;
+		}
+	
+}
+		
+div.tooltip {
+	
+	.tooltip-inner {
+		padding: 10px;
+		text-align: left;
+		line-height: 1.2;
+		}
+	
+	.tooltip-arrow {
+		padding: 0;
+		}
+	}
+
+.badge {
+	background: darken(@gray,10%);
+	font-size: @baseFontSize;
+	/* min-width: 22px; */
+	text-align: center;
+	.inline-block;
+	}
+
+// Additional Mura styles -- Move to separate file?
+.alert {
+	
+	padding: 2px 9px 9px;
+	margin-bottom: @baseLineHeight;
+	.border-radius(3px);
+	border: 2px solid;
+	line-height: 1.2;
+	clear: both;
+	
+	ul, ol {
+		margin: 0 0 0 @baseLineHeight;
+		padding: 0;
+		
+		li:last-child {
+			margin-bottom: 0;
+		}
+	}
+}
+
+.alert-icon {
+		.icon-font('FontAwesome');
+		font-size: 32px;
+		line-height: 1;
+		.inline-block;
+		margin-right: .25em;
+		position: relative;
+		top: 7px;
+		/* text-shadow: 0 1px 1px rgba(255,255,255,.15); */
+		}
+
+.notice {
+	.alert;
+	background-color: @warningBackground;
+	border-color: @warningBorder;
+	
+	&:before {
+		.alert-icon;	
+		content: "\f05a";
+		color: darken(@warningBorder,20%);
+		}
+	
+	}
+	
+.success {
+	.alert;
+	.alert-success;
+	
+	&:before {
+		.alert-icon;
+		content: "\f087";
+		color: darken(@successBorder,20%);
+		}
+		
+	}
+
+.error {
+	.alert;
+	.alert-error;
+	
+	&:before {
+		.alert-icon;
+		content: "\f071";
+		color: darken(@errorBorder,20%);
+		}
+	}
+
+.info {
+	.alert;
+	.alert-info;
+	
+	&:before {
+		.alert-icon;
+		content: "\f05a";
+		color: darken(@infoBorder,20%);
+		}
+	
+	}
+
+
+.separate, .divide {
+	.clearfix;
+	clear: both;
+	padding-top: @baseLineHeight;
+	margin-top: @baseLineHeight+4px;
+	}
+
+.separate {
+	border-top: 1px solid @grayLight;
+	}
+	
+.divide {
+	border-top: 1px dotted @grayLight;
+	}
+
+a img {
+	border: 0;
+	}
+
+img.fmImage {
+	border: 0 solid #fff;
+	margin: 10px;
+	}
+
+#sm-modify-view {
+	margin-bottom: @baseLineHeight;	
+	}
+
+/* @group Metadata List */
+
+.metadata-horizontal {
+	margin: 1px 0 0 0;
+	padding: .2em .5em;
+	list-style: none;
+	float: right;
+	background: #f9f9f9;
+	.border-radius(14px);
+	font-size: @baseFontSize;
+	}
+
+.metadata-horizontal li {
+	margin: 0 .5em .25em;
+	padding: 0;
+	color: #333;
+	float: right;
+	line-height: 24px;
+	}
+
+.metadata-horizontal li strong {
+	padding: 0 .25em 0 0;
+	}
+
+.metadata-horizontal #ratestars {
+	position: relative;
+	top: 3px;
+	}
+
+.selectContentType {
+	margin-bottom: 1em;
+	clear: both;
+	}
+
+.metadata {
+
+	.well;
+		
+	list-style: none;
+	margin-left: 0 !important;
+		
+		li {
+			margin-bottom: .5em;
+		}
+	
+	}
+	
+/* @end */
+
+} /* End .mura */
+
+// @import "../bootstrap/less/responsive.less";
+// .mura { @import "admin-responsive.less"; }

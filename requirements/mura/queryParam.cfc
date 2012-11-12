@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset variables.relationship="" />
 <cfset variables.field="" />
-<cfset variables.dataType="varchar" />
+<cfset variables.dataType="" />
 <cfset variables.condition="" />
 <cfset variables.criteria="" />
 <cfset variables.isValid=true />
@@ -56,12 +56,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="init" returntype="any" access="public">
 	<cfargument name="relationship" default="">
 	<cfargument name="field" default="">
-	<cfargument name="dataType" default="varchar">
+	<cfargument name="dataType" default="">
 	<cfargument name="condition" default="Equals">
 	<cfargument name="criteria" default="">
 	
 	<cfset setIsValid(true) />
-	<cfset setField(arguments.Field) />
+	<cfif isDefined('arguments.column')>
+		<cfset setField(arguments.column) />
+	<cfelse>
+		<cfset setField(arguments.Field) />
+	</cfif>
 	<cfset setRelationship(arguments.relationship) />
 	<cfset setDataType(arguments.dataType) />
 	<cfset setCondition(arguments.condition) />
@@ -89,7 +93,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
+<cffunction name="setColumn">
+	<cfargument name="column">
+	<cfset setField(arguments.column) />
+</cffunction>
+
 <cffunction name="getField">
+	<cfreturn variables.field />
+</cffunction>
+
+<cffunction name="getColumn">
 	<cfreturn variables.field />
 </cffunction>
 
@@ -121,7 +134,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 		<cfcase value="LTE">
 	 			<cfset variables.condition="<=" />
 	 		</cfcase>
-	 		<cfcase value="Begins,Contains">
+	 		<cfcase value="Begins,Contains,Like">
 		 		<cfif getDataType() eq "varchar">
 					<cfset variables.condition="like" />
 				<cfelse>
@@ -225,6 +238,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getDataType">
+	<cfif not len(variables.dataType) and listlen(variables.field,".") eq 2>
+		<cfset variables.dataType=getBean("configBean").columnParamType(column=listLast(variables.field,"."),table=listFirst(variables.field,".")).dataType>
+	</cfif>
 	<cfreturn variables.dataType />
 </cffunction>
 

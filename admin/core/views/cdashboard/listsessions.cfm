@@ -103,26 +103,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 </cfsilent>
 
-<cfoutput><h2><cfif rc.membersOnly>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.membersessions")#<cfelse>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.allsessions")#</cfif>
+<cfoutput><h1><cfif rc.membersOnly>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.membersessions")#<cfelse>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.allsessions")#</cfif>
 <span>
 	(<cfif rc.spanType eq 'n'>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.spannow"),rc.span)#<cfelse>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.spannow"),rc.span)#</cfif>)
-</span></h2>
+</span></h1>
 
-<h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.totalsessions")#: <strong>#rc.rslist.recordcount#</strong></h3>
+<cfinclude template="dsp_secondary_menu.cfm">
+
+<h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.totalsessions")#: <strong>#rc.rslist.recordcount#</strong></h2>
 <div>
 <cfif rc.contentid neq ''>
 <cfset crumbdata=application.contentManager.getCrumbList(rc.contentid, rc.siteid)/>
-<h4>#application.contentRenderer.dspZoom(crumbdata)#</h4>
+<h3>#application.contentRenderer.dspZoom(crumbdata)#</h3>
 </cfif>
 
-<table class="mura-table-grid stripe"> 
+<table class="table table-striped table-condensed table-bordered mura-table-grid"> 
 <tr>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.user")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.locale")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.lastrequest")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.views")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.lengthofvisit")#</th>
-<th class="administration">&nbsp;</th>
+<th class="actions">&nbsp;</th>
 </tr>
 <cfif rc.rslist.recordcount>
 <cfset rc.nextN=application.utility.getNextN(rc.rsList,20,rc.startrow)/>
@@ -134,7 +136,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <td>#LSDateFormat(rc.rslist.lastRequest,session.dateKeyFormat)# #LSTimeFormat(rc.rslist.lastRequest,"short")#</td>
 <td>#rc.rslist.views#</td>
 <td>#application.dashboardManager.getTimespan(rc.rslist.firstRequest,rc.rslist.lastRequest)#</td>
-<td class="administration"><ul class="one"><li class="viewDetails"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="index.cfm?muraAction=cDashboard.viewSession&urlToken=#urlEncodedFormat(rc.rslist.urlToken)#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#</a></li></ul></td>
+<td class="actions"><ul class="one"><li class="viewDetails"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="index.cfm?muraAction=cDashboard.viewSession&urlToken=#urlEncodedFormat(rc.rslist.urlToken)#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#</a></li></ul></td>
 </tr></cfloop>
 <cfelse>
 <tr>

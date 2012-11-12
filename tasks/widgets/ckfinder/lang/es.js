@@ -2,7 +2,7 @@
  * CKFinder
  * ========
  * http://ckfinder.com
- * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (C) 2007-2012, CKSource - Frederico Knabben. All rights reserved.
  *
  * The software, this file, and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
@@ -44,6 +44,7 @@ CKFinder.lang['es'] =
 	},
 
 
+	// Language direction, 'ltr' or 'rtl'.
 	dir : 'ltr',
 	HelpLang : 'es',
 	LangCode : 'es',
@@ -74,16 +75,18 @@ CKFinder.lang['es'] =
 	FolderDelete	: '¿Está seguro de que quiere borrar la carpeta "%1"?',
 	FolderRenaming	: ' (Renombrando...)',
 	FolderDeleting	: ' (Borrando...)',
+	DestinationFolder	: 'Destination Folder', // MISSING
 
 	// Files
 	FileRename		: 'Por favor, escriba el nuevo nombre del fichero: ',
 	FileRenameExt	: '¿Está seguro de querer cambiar la extensión del fichero? El fichero puede dejar de ser usable.',
 	FileRenaming	: 'Renombrando...',
 	FileDelete		: '¿Está seguro de que quiere borrar el fichero "%1"?',
+	FilesDelete	: 'Are you sure you want to delete %1 files?', // MISSING
 	FilesLoading	: 'Cargando...',
 	FilesEmpty		: 'Carpeta vacía',
-	FilesMoved		: 'Fichero %1 movido a %2:%3.',
-	FilesCopied		: 'Fichero %1 copiado a %2:%3.',
+	DestinationFile	: 'Destination File', // MISSING
+	SkippedFiles	: 'List of skipped files:', // MISSING
 
 	// Basket
 	BasketFolder		: 'Cesta',
@@ -92,13 +95,21 @@ CKFinder.lang['es'] =
 	BasketOpenFolder	: 'Abrir carpeta padre',
 	BasketTruncateConfirm : '¿Está seguro de querer quitar todos los ficheros de la cesta?',
 	BasketRemoveConfirm	: '¿Está seguro de querer quitar el fichero "%1" de la cesta?',
+	BasketRemoveConfirmMultiple	: 'Do you really want to remove %1 files from the basket?', // MISSING
 	BasketEmpty			: 'No hay ficheros en la cesta, arrastra y suelta algunos.',
 	BasketCopyFilesHere	: 'Copiar ficheros de la cesta',
 	BasketMoveFilesHere	: 'Mover ficheros de la cesta',
 
-	BasketPasteErrorOther	: 'Fichero %s error: %e',
-	BasketPasteMoveSuccess	: 'Los siguientes ficheros han sido movidos: %s',
-	BasketPasteCopySuccess	: 'Los siguientes ficheros han sido copiados: %s',
+	// Global messages
+	OperationCompletedSuccess	: 'Operation completed successfully.', // MISSING
+	OperationCompletedErrors		: 'Operation completed with errors.', // MISSING
+	FileError				: '%s: %e', // MISSING
+
+	// Move and Copy files
+	MovedFilesNumber		: 'Number of files moved: %s.', // MISSING
+	CopiedFilesNumber	: 'Number of files copied: %s.', // MISSING
+	MoveFailedList		: 'The following files could not be moved:<br />%s', // MISSING
+	CopyFailedList		: 'The following files could not be copied:<br />%s', // MISSING
 
 	// Toolbar Buttons (some used elsewhere)
 	Upload		: 'Añadir',
@@ -117,9 +128,10 @@ CKFinder.lang['es'] =
 	NewSubFolder	: 'Nueva Subcarpeta',
 	Rename			: 'Renombrar',
 	Delete			: 'Borrar',
+	DeleteFiles		: 'Delete Files', // MISSING
 
-	CopyDragDrop	: 'Copiar fichero aquí',
-	MoveDragDrop	: 'Mover fichero aquí',
+	CopyDragDrop	: 'Copiar aquí',
+	MoveDragDrop	: 'Mover aquí',
 
 	// Dialogs
 	RenameDlgTitle		: 'Renombrar',
@@ -129,6 +141,7 @@ CKFinder.lang['es'] =
 
 	FileOverwrite	: 'Sobreescribir',
 	FileAutorename	: 'Auto-renombrar',
+	ManuallyRename	: 'Manually rename', // MISSING
 
 	// Generic
 	OkBtn		: 'Aceptar',
@@ -152,6 +165,7 @@ CKFinder.lang['es'] =
 	UploadLabel			: 'Ficheros a subir',
 	UploadTotalFiles	: 'Total de ficheros:',
 	UploadTotalSize		: 'Tamaño total:',
+	UploadSend			: 'Añadir',
 	UploadAddFiles		: 'Añadir ficheros',
 	UploadClearFiles	: 'Borrar ficheros',
 	UploadCancel		: 'Cancelar subida',
@@ -168,11 +182,12 @@ CKFinder.lang['es'] =
 	SetDisplay		: 'Mostrar:',
 	SetDisplayName	: 'Nombre de fichero',
 	SetDisplayDate	: 'Fecha',
-	SetDisplaySize	: 'Peso del fichero',
+	SetDisplaySize	: 'Tamaño del fichero',
 	SetSort			: 'Ordenar:',
 	SetSortName		: 'por Nombre',
 	SetSortDate		: 'por Fecha',
-	SetSortSize		: 'por Peso',
+	SetSortSize		: 'por Tamaño',
+	SetSortExtension		: 'por Extensión',
 
 	// Status Bar
 	FilesCountEmpty : '<Carpeta vacía>',
@@ -180,8 +195,10 @@ CKFinder.lang['es'] =
 	FilesCountMany	: '%1 ficheros',
 
 	// Size and Speed
-	Kb				: '%1 kB',
-	KbPerSecond		: '%1 kB/s',
+	Kb				: '%1 KB',
+	Mb				: '%1 MB',
+	Gb				: '%1 GB',
+	SizePerSecond	: '%1/s',
 
 	// Connector Error Messages.
 	ErrorUnknown	: 'No ha sido posible completar la solicitud. (Error %1)',
@@ -196,6 +213,7 @@ CKFinder.lang['es'] =
 	105 : 'La extensión del archivo no es válida.',
 	109 : 'Petición inválida.',
 	110 : 'Error desconocido.',
+	111 : 'It was not possible to complete the request due to resulting file size.', // MISSING
 	115 : 'Ya existe un fichero o carpeta con ese nombre.',
 	116 : 'No se ha encontrado la carpeta. Por favor, actualice y pruebe de nuevo.',
 	117 : 'No se ha encontrado el fichero. Por favor, actualice la lista de ficheros y pruebe de nuevo.',
@@ -219,6 +237,8 @@ CKFinder.lang['es'] =
 		FileEmpty		: 'El nombre del fichero no puede estar vacío.',
 		FileExists		: 'El fichero %s ya existe.',
 		FolderEmpty		: 'El nombre de la carpeta no puede estar vacío.',
+		FolderExists	: 'Folder %s already exists.', // MISSING
+		FolderNameExists	: 'Folder already exists.', // MISSING
 
 		FileInvChar		: 'El nombre del fichero no puede contener ninguno de los caracteres siguientes: \n\\ / : * ? " < > |',
 		FolderInvChar	: 'El nombre de la carpeta no puede contener ninguno de los caracteres siguientes: \n\\ / : * ? " < > |',
@@ -267,5 +287,21 @@ CKFinder.lang['es'] =
 	{
 		maximize : 'Maximizar',
 		minimize : 'Minimizar'
+	},
+
+	Gallery :
+	{
+		current : 'Imagen {current} de {total}'
+	},
+
+	Zip :
+	{
+		extractHereLabel	: 'Extract here', // MISSING
+		extractToLabel		: 'Extract to...', // MISSING
+		downloadZipLabel	: 'Download as zip', // MISSING
+		compressZipLabel	: 'Compress to zip', // MISSING
+		removeAndExtract	: 'Remove existing and extract', // MISSING
+		extractAndOverwrite	: 'Extract overwriting existing files', // MISSING
+		extractSuccess		: 'File extracted successfully.' // MISSING
 	}
 };

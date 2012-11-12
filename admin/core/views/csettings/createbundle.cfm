@@ -45,10 +45,12 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<ul id="navTask">
-<li><a href="index.cfm?muraAction=cSettings.editSite&siteID=#URLEncodedFormat(rc.siteID)#">Back to Site Settings</a></li>
-</ul>
-<h2>Bundle Created</h2>
+<h1>Bundle Created</h1>
+
+<div id="nav-module-specific" class="btn-group">
+<a class="btn" href="index.cfm?muraAction=cSettings.editSite&siteID=#URLEncodedFormat(rc.siteID)#"><i class="icon-circle-arrow-left"></i> Back to Site Settings</a>
+</div>
+
 <p>The bundle that you have requested has been created and is now available on your server at #rc.bundleFilePath#.</p>
 	<p class="notice"><strong>Important:</strong> Leaving large bundle files on server can lead to excessive disk space usage.</p>
 <cfif findNoCase(application.configBean.getWebRoot(),rc.bundleFilePath)>

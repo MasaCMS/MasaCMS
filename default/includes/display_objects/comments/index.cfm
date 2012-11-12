@@ -41,7 +41,7 @@ the GNU General Public License version 2 without this exception. You may, if you
 to your own modified versions of Mura CMS.
 --->
 
-<cfif not listFind("Portal,Gallery",variables.$.content('type'))>
+<cfif not listFindNoCase("LocalRepo,Gallery",variables.$.content('type'))>
 	<cfswitch expression="#variables.$.getJsLib()#">
 		<cfcase value="jquery">
 			<cfset variables.$.getContentRenderer().loadJSLib() />
@@ -122,20 +122,20 @@ to your own modified versions of Mura CMS.
 				StructAppend(variables.myRequest, form, "no");
 			</cfscript>
 
-			<cfif structKeyExists(variables.myRequest, "useProtect")>
+			<!---<cfif structKeyExists(variables.myRequest, "useProtect")>--->
 				<cfset variables.cffp = CreateObject("component","cfformprotect.cffpVerify").init() />
-
-				<cfif application.settingsManager.getSite(variables.$.event('siteID')).getContactEmail() neq "">
-					<cfset variables.cffp.updateConfig('emailServer', application.settingsManager.getSite(variables.$.event('siteID')).getMailServerIP())>
-					<cfset variables.cffp.updateConfig('emailUserName', application.settingsManager.getSite(variables.$.event('siteID')).getMailserverUsername(true))>
-					<cfset variables.cffp.updateConfig('emailPassword', application.settingsManager.getSite(variables.$.event('siteID')).getMailserverPassword())>
-					<cfset variables.cffp.updateConfig('emailFromAddress', application.settingsManager.getSite(variables.$.event('siteID')).getMailserverUsernameEmail())>
-					<cfset variables.cffp.updateConfig('emailToAddress', application.settingsManager.getSite(variables.$.event('siteID')).getContactEmail())>
+				<cfif $.siteConfig().getContactEmail() neq "">
+					<cfset variables.cffp.updateConfig('emailServer', $.siteConfig().getMailServerIP())>
+					<cfset variables.cffp.updateConfig('emailUserName', $.siteConfig().getMailserverUsername(true))>
+					<cfset variables.cffp.updateConfig('emailPassword', $.siteConfig().getMailserverPassword())>
+					<cfset variables.cffp.updateConfig('emailFromAddress', $.siteConfig().getMailserverUsernameEmail())>
+					<cfset variables.cffp.updateConfig('emailToAddress', $.siteConfig().getContactEmail())>
 					<cfset variables.cffp.updateConfig('emailSubject', 'Spam form submission')>
 				</cfif>
-
-				<cfset variables.passedProtect = variables.cffp.testSubmission(variables.myRequest)>
-			</cfif>
+			<!---</cfif>--->
+			
+			<cfset variables.passedProtect = variables.cffp.testSubmission(variables.myRequest)>
+							
 
 			<cfif (request.hkey eq '' or request.hKey eq hash(lcase(request.ukey))) and variables.passedProtect>
 

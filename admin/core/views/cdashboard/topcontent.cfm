@@ -49,38 +49,52 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rsList=application.dashboardManager.getTopContent(rc.siteID,rc.limit,rc.membersOnly,rc.visitorStatus,rc.startDate,rc.stopDate) />
 <cfset rsTotal=application.dashboardManager.getTotalHits(rc.siteID,rc.membersOnly,rc.visitorStatus,rc.startDate,rc.stopDate) />
 <cfoutput>
-<h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.topviewedcontent")#</h2>
+<h1>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.topviewedcontent")#</h1>
+
+<cfinclude template="dsp_secondary_menu.cfm">
 
 <h3 class="alt">#application.rbFactory.getKeyValue(session.rb,"params.daterange")#</h3>
-<form novalidate="novalidate" name="searchFrm" onsubmit="return validate(this);" id="advancedSearch">
-<dl>
-<dt>#application.rbFactory.getKeyValue(session.rb,"params.from")#</dt>
-<dd>
-<input type="input" class="datepicker" name="startDate" value="#LSDateFormat(rc.startDate,session.dateKeyFormat)#" validate="date" message="The 'From' date is required." />
-<!---<input class="calendar" type="image" src="images/icons/cal_24.png" onclick="window.open('date_picker/index.cfm?form=searchFrm&field=startDate&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">--->
-</dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,"params.to")#</dt>
-<dd>
-<input type="input" class="datepicker" name="stopDate" value="#LSDateFormat(rc.stopDate,session.dateKeyFormat)#" validate="date" message="The 'To' date is required." />
-<!---<input class="calendar" type="image" src="images/icons/cal_24.png" onclick="window.open('date_picker/index.cfm?form=searchFrm&field=stopDate&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">--->
-</dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,"params.numberofitems")#</dt>
-<dd><select name="limit">
-		<cfloop list="10,20,30,40,50,75,100" index="i">
-		<option value="#i#" <cfif rc.limit eq i>selected</cfif>>#i#</option>
-		</cfloop>
-	</select>
-</dd>
-<dd><input type="button" class="submit" onclick="submitForm(document.forms.searchFrm);" value="#application.rbFactory.getKeyValue(session.rb,"params.search")#" /></dd>
-</dl>
+<form novalidate="novalidate" name="searchFrm" onsubmit="return validate(this);" id="advancedSearch" class="fieldset-wrap">
+<div class="fieldset">
+	<div class="control-group">
+		<div class="span2">
+		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,"params.from")#</label>
+	      <div class="controls">
+			<input type="text" class="datepicker span12" name="startDate" value="#LSDateFormat(rc.startDate,session.dateKeyFormat)#" validate="date" message="The 'From' date is required." />
+	     </div>
+	</div>
+	
+		<div class="span2">
+		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,"params.to")#</label>
+	      <div class="controls">
+			<input type="text" class="datepicker span12" name="stopDate" value="#LSDateFormat(rc.stopDate,session.dateKeyFormat)#" validate="date" message="The 'To' date is required." />
+	     </div>
+	</div>
+	 
+		<div class="span2">
+		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,"params.numberofitems")#</label>
+	      <div class="controls">
+	      	<select name="limit" class="span6">
+			<cfloop list="10,20,30,40,50,75,100" index="i">
+			<option value="#i#" <cfif rc.limit eq i>selected</cfif>>#i#</option>
+			</cfloop>
+			</select>
+		</div>
+	</div>
+	</div>
+</div>
+<div class="form-actions">
+	<input type="button" class="submit btn" onclick="submitForm(document.forms.searchFrm);" value="#application.rbFactory.getKeyValue(session.rb,"params.search")#" /></dd>
+</div>
+
 <input type="hidden" value="#HTMLEditFormat(rc.siteid)#" name="siteID"/>
 <input type="hidden" value="cDashboard.topContent" name="muraAction"/>
 </form>
 
 <h3 class="alt">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.totalviews")#: <strong>#rstotal.hits#</strong></h3>
-<table class="mura-table-grid stripe">
+<table class="table table-striped table-condensed table-bordered mura-table-grid">
 <tr>
-<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.content")#</th>
+<th class="var-width">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.content")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.views")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.percent")#</th>
 <th>&nbsp;</th>
@@ -91,20 +105,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset crumbdata=application.contentManager.getCrumbList(rsList.contentid, rc.siteid)/>
 </cfsilent>
 <tr>
-<td class="varWidth">#application.contentRenderer.dspZoom(crumbdata,rslist.fileEXT)#</td>
+<td class="var-width">#application.contentRenderer.dspZoom(crumbdata)#</td>
 <td>#rsList.hits#</td>
 <td>#decimalFormat((rsList.hits/rstotal.hits)*100)#%</td>
-<td class="administration">
-<ul class="one">
+<td class="actions">
+<ul>
 		<cfswitch expression="#rslist.type#">
-		<cfcase value="Page,Portal,Calendar,Gallery">
-		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,rsList.filename)#','#rslist.targetParams#');">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#</a></li>
+		<cfcase value="Page,LocalRepo,Calendar,Gallery">
+		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,rsList.filename)#','#rslist.targetParams#');"><i class="icon-globe"></i></a></li>
 		</cfcase>
 		<cfcase value="Link">
-		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('#rslist.filename#','#rslist.targetParams#');">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#</a></li>
+		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('#rslist.filename#','#rslist.targetParams#');"><i class="icon-globe"></i></a></li>
 		</cfcase>
 		<cfcase value="File">
-		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?LinkServID=#rslist.contentid#','#rslist.targetParams#');">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#</a></li>
+		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?LinkServID=#rslist.contentid#','#rslist.targetParams#');"><i class="icon-globe"></i></a></li>
 		</cfcase>
 		</cfswitch>	
 		</ul></td>

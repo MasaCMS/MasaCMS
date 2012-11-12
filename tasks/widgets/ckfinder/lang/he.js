@@ -2,7 +2,7 @@
  * CKFinder
  * ========
  * http://ckfinder.com
- * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (C) 2007-2012, CKSource - Frederico Knabben. All rights reserved.
  *
  * The software, this file, and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
@@ -12,8 +12,8 @@
  */
 
 /**
- * @fileOverview Defines the {@link CKFinder.lang} object, for the English
- *		language. This is the base file for all translations.
+ * @fileOverview Defines the {@link CKFinder.lang} object for the Hebrew
+ *		language.
  */
 
 /**
@@ -44,6 +44,7 @@ CKFinder.lang['he'] =
 	},
 
 
+	// Language direction, 'ltr' or 'rtl'.
 	dir : 'rtl',
 	HelpLang : 'en',
 	LangCode : 'he',
@@ -63,7 +64,7 @@ CKFinder.lang['he'] =
 	//		MM   : Minute (padding zero)
 	//		a    : Firt char of AM/PM
 	//		aa   : AM/PM
-	DateTime : 'm/d/yyyy h:MM aa',
+	DateTime : 'd/m/yyyy HH:MM',
 	DateAmPm : ['AM', 'PM'],
 
 	// Folders
@@ -74,16 +75,18 @@ CKFinder.lang['he'] =
 	FolderDelete	: 'האם למחוק את התיקיה "%1" ?',
 	FolderRenaming	: ' (משנה שם...)',
 	FolderDeleting	: ' (מוחק...)',
+	DestinationFolder	: 'תיקיית יעד',
 
 	// Files
 	FileRename		: 'יש להקליד שם חדש לקובץ: ',
 	FileRenameExt	: 'האם לשנות את הסיומת של הקובץ?',
 	FileRenaming	: 'משנה שם...',
 	FileDelete		: 'האם למחוק את הקובץ "%1"?',
+	FilesDelete	: 'האם למחוק %1 קבצים?',
 	FilesLoading	: 'טוען...',
 	FilesEmpty		: 'תיקיה ריקה',
-	FilesMoved		: 'קובץ %1 הוזז ל- %2:%3',
-	FilesCopied		: 'קובץ %1 הועתק ל- %2:%3',
+	DestinationFile	: 'קובץ יעד',
+	SkippedFiles	: 'רשימת קבצים שדולגו:',
 
 	// Basket
 	BasketFolder		: 'סל קבצים',
@@ -92,13 +95,21 @@ CKFinder.lang['he'] =
 	BasketOpenFolder	: 'פתיחת תיקיית אב',
 	BasketTruncateConfirm : 'האם למחוק את כל הקבצים מסל הקבצים?',
 	BasketRemoveConfirm	: 'האם למחוק את הקובץ "%1" מסל הקבצים?',
+	BasketRemoveConfirmMultiple	: 'האם למחוק %1 קבצים מסל הקבצים?',
 	BasketEmpty			: 'אין קבצים בסל הקבצים, יש לגרור לכאן קובץ.',
 	BasketCopyFilesHere	: 'העתקת קבצים מסל הקבצים',
 	BasketMoveFilesHere	: 'הזזת קבצים מסל הקבצים',
 
-	BasketPasteErrorOther	: 'שגיאה %e בקובץ %s',
-	BasketPasteMoveSuccess	: 'הקבצים הבאים הוזזו: %s',
-	BasketPasteCopySuccess	: 'הקבצים הבאים הועתקו: %s',
+	// Global messages
+	OperationCompletedSuccess	: 'הפעולה הושלמה בהצלחה.',
+	OperationCompletedErrors		: 'הפעולה הושלמה עם שגיאות.',
+	FileError				: '%s: %e',
+
+	// Move and Copy files
+	MovedFilesNumber		: 'מספר קבצים שהוזזו: %s.',
+	CopiedFilesNumber	: 'מספר קבצים שהועתקו: %s.',
+	MoveFailedList		: 'המערכת לא הצליחה להזיז את הקבצים הבאים:<br />%s',
+	CopyFailedList		: 'המערכת לא הצליחה להעתיק את הקבצים הבאים:<br />%s',
 
 	// Toolbar Buttons (some used elsewhere)
 	Upload		: 'העלאה',
@@ -117,6 +128,7 @@ CKFinder.lang['he'] =
 	NewSubFolder	: 'תת-תיקיה חדשה',
 	Rename			: 'שינוי שם',
 	Delete			: 'מחיקה',
+	DeleteFiles		: 'מחיקת קבצים',
 
 	CopyDragDrop	: 'העתקת קבצים לכאן',
 	MoveDragDrop	: 'הזזת קבצים לכאן',
@@ -129,6 +141,7 @@ CKFinder.lang['he'] =
 
 	FileOverwrite	: 'החלפה',
 	FileAutorename	: 'שינוי שם אוטומטי',
+	ManuallyRename	: 'שינוי שם ידני',
 
 	// Generic
 	OkBtn		: 'אישור',
@@ -149,15 +162,16 @@ CKFinder.lang['he'] =
 	UploadExtIncorrect	: 'סוג קובץ זה לא מאושר בתיקיה זאת.',
 
 	// Flash Uploads
-	UploadLabel			: 'להעלאה קבצים',
-	UploadTotalFiles	: ':קבצים כמות',
-	UploadTotalSize		: ':סופי גודל',
-	UploadAddFiles		: 'קבצים הוספת',
-	UploadClearFiles	: 'קבצים ניקוי',
-	UploadCancel		: 'העלאה ביטול',
-	UploadRemove		: 'מחיקה',
-	UploadRemoveTip		: '!f הקובץ מחיקת',
-	UploadUploaded		: 'הועלו !n%',
+	UploadLabel			: 'קבצים להעלאה',
+	UploadTotalFiles	: 'כמות קבצים:',
+	UploadTotalSize		: 'גודל סופי:',
+	UploadSend			: 'התחלת העלאה',
+	UploadAddFiles		: 'הוספת קבצים',
+	UploadClearFiles	: 'ניקוי קבצים',
+	UploadCancel		: 'ביטול העלאה',
+	UploadRemove		: 'מחיקה מהרשימה',
+	UploadRemoveTip		: 'מחיקת הקובץ !f',
+	UploadUploaded		: '!n% הועלו',
 	UploadProcessing	: 'מעבד...',
 
 	// Settings Panel
@@ -173,6 +187,7 @@ CKFinder.lang['he'] =
 	SetSortName		: 'לפי שם',
 	SetSortDate		: 'לפי תאריך',
 	SetSortSize		: 'לפי גודל',
+	SetSortExtension		: 'לפי סיומת (Extension)',
 
 	// Status Bar
 	FilesCountEmpty : '<תיקיה ריקה>',
@@ -180,32 +195,35 @@ CKFinder.lang['he'] =
 	FilesCountMany	: '%1 קבצים',
 
 	// Size and Speed
-	Kb				: '%1 kB',
-	KbPerSecond		: '%1 kB/s',
+	Kb				: '%1KB',
+	Mb				: '%1MB',
+	Gb				: '%1GB',
+	SizePerSecond	: '%1/s',
 
 	// Connector Error Messages.
 	ErrorUnknown	: 'לא היה ניתן להשלים את הבקשה. (שגיאה %1)',
 	Errors :
 	{
 	 10 : 'הוראה לא תקינה.',
-	 11 : 'סוג המשאב לא צויין בבקשה.',
+	 11 : 'סוג המשאב לא צויין בבקשה לשרת.',
 	 12 : 'סוג המשאב המצויין לא תקין.',
-	102 : 'שם קובץ או תיקיה לא תקין.',
-	103 : 'לא היה ניתן להשלים את הבקשב בשל הרשאות מוגבלות.',
-	104 : 'לא היה ניתן להשלים את הבקשב בשל הרשאות מערכת קבצים מוגבלות.',
-	105 : 'סיומת קובץ לא תקינה.',
+	102 : 'שם הקובץ או התיקיה לא תקין.',
+	103 : 'לא היה ניתן להשלים את הבקשה בשל הרשאות מוגבלות.',
+	104 : 'לא היה ניתן להשלים את הבקשה בשל הרשאות מערכת קבצים מוגבלות.',
+	105 : 'סיומת הקובץ לא תקינה.',
 	109 : 'בקשה לא תקינה.',
 	110 : 'שגיאה לא ידועה.',
-	115 : 'קובץ או תיקיה באותו שם כבר קיימ/ת.',
+	111 : 'לא ניתן היה להשלים את הבקשה בשל הגודל החריג של הקובץ הנוצר.',
+	115 : 'כבר קיים/ת קובץ או תיקיה באותו השם.',
 	116 : 'התיקיה לא נמצאה. נא לרענן ולנסות שוב.',
 	117 : 'הקובץ לא נמצא. נא לרענן ולנסות שוב.',
 	118 : 'כתובות המקור והיעד זהות.',
 	201 : 'קובץ עם אותו השם כבר קיים. שם הקובץ שהועלה שונה ל "%1"',
-	202 : 'קובץ לא תקין',
-	203 : 'קובץ לא תקין. גודל הקובץ גדול מדי.',
+	202 : 'הקובץ לא תקין.',
+	203 : 'הקובץ לא תקין. גודל הקובץ גדול מדי.',
 	204 : 'הקובץ המועלה לא תקין',
-	205 : 'תיקיה זמנית להעלאה לא קיימת בשרת.',
-	206 : 'העלאה בוטלה מסיבות אבטחה. הקובץ מכיל תוכן שדומה ל-HTML.',
+	205 : 'לא קיימת בשרת תיקיה זמנית להעלאת קבצים.',
+	206 : 'ההעלאה בוטלה מסיבות אבטחה. הקובץ מכיל תוכן שדומה ל-HTML.',
 	207 : 'שם הקובץ שהועלה שונה ל "%1"',
 	300 : 'העברת הקבצים נכשלה.',
 	301 : 'העתקת הקבצים נכשלה.',
@@ -219,6 +237,8 @@ CKFinder.lang['he'] =
 		FileEmpty		: 'שם הקובץ לא יכול להיות ריק',
 		FileExists		: 'הקובץ %s כבר קיים',
 		FolderEmpty		: 'שם התיקיה לא יכול להיות ריק',
+		FolderExists	: 'התיקיה %s כבר קיימת.',
+		FolderNameExists	: 'התיקיה כבר קיימת.',
 
 		FileInvChar		: 'שם הקובץ לא יכול לכלול תווים הבאים: \n\\ / : * ? " < > |',
 		FolderInvChar	: 'שם התיקיה לא יכול לכלול תווים הבאים: \n\\ / : * ? " < > |',
@@ -267,5 +287,21 @@ CKFinder.lang['he'] =
 	{
 		maximize : 'הגדלה למקסימום',
 		minimize : 'הקטנה למינימום'
+	},
+
+	Gallery :
+	{
+		current : 'תמונה {current} מתוך {total}'
+	},
+
+	Zip :
+	{
+		extractHereLabel	: 'חילוץ לפה',
+		extractToLabel		: 'חילוץ ל...',
+		downloadZipLabel	: 'הורדה כקובץ ZIP',
+		compressZipLabel	: 'דחיסה לקובץ ZIP',
+		removeAndExtract	: 'מחיקת הקובץ וחילוצו',
+		extractAndOverwrite	: 'חילוץ והחלפת קבצים קיימים',
+		extractSuccess		: 'הקבצים חולצו בהצלחה.'
 	}
 };

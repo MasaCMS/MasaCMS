@@ -48,12 +48,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfsilent>
 <cfset rsUsage=application.contentGateway.getUsage(rc.mlid) />
 </cfsilent><cfoutput>
-<div id="tabUsagereport">
+<div id="tabUsagereport" class="tab-pane fade">
 <dl class="oneColumn">
 <dt class="first">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.usagetext')#:</dt>
- <table class="mura-table-grid stripe">
+ <table class="table table-striped table-condensed table-bordered mura-table-grid">
     <tr> 
-      <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.title')#</th>
+      <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.title')#</th>
       <th>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.display')#</th>
       <th>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.update')#</th>
       <th>&nbsp;</th>
@@ -63,11 +63,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset crumbdata=application.contentManager.getCrumbList(rsUsage.contentid, rc.siteid)/>
 		<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
         <tr>  
-          <td class="varWidth">#application.contentRenderer.dspZoom(crumbdata)#</td>
+          <td class="var-width">#application.contentRenderer.dspZoom(crumbdata)#</td>
 			   <td nowrap> 
 	    <cfif rsUsage.Display and (rsUsage.Display eq 1 and rsUsage.approved)>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.yes')#<cfelseif(rsUsage.Display eq 2 and rsUsage.approved)>#LSDateFormat(rsUsage.displaystart,session.dateKeyFormat)# - #LSDateFormat(rsUsage.displaystop,session.dateKeyFormat)#<cfelse>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.no')#</cfif></td>
 		<td nowrap>#LSDateFormat(rsUsage.lastupdate,session.dateKeyFormat)#</td>
-          <td class="administration" nowrap><ul class="two"><cfif verdict neq 'none'><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.edit')#" href="index.cfm?muraAction=cArch.edit&contenthistid=#rsUsage.ContentHistID#&contentid=#rsUsage.ContentID#&type=#rsUsage.type#&parentid=#rsUsage.parentID#&topid=#rsUsage.contentid#&siteid=#rsUsage.siteid#&moduleid=#rsUsage.moduleid#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.edit')#</a></li><li class="versionHistory"><a title="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.versionhistory')#" href="index.cfm?muraAction=cArch.hist&contentid=#rsUsage.ContentID#&type=#rsUsage.type#&parentid=#rsUsage.parentID#&topid=#rsUsage.contentid#&siteid=#rsUsage.siteid#&moduleid=#rsUsage.moduleid#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.versionhistory')#</a></li><cfelse><li class="editOff">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.edit')#</li><li class="versionHistoryOff">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.versionhistory')#</li></cfif></ul></td></tr>
+          <td class="actions" nowrap><ul><cfif verdict neq 'none'><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.edit')#" href="index.cfm?muraAction=cArch.edit&contenthistid=#rsUsage.ContentHistID#&contentid=#rsUsage.ContentID#&type=#rsUsage.type#&parentid=#rsUsage.parentID#&topid=#rsUsage.contentid#&siteid=#rsUsage.siteid#&moduleid=#rsUsage.moduleid#"><i class="icon-pencil"></i></a></li><li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.versionhistory')#" href="index.cfm?muraAction=cArch.hist&contentid=#rsUsage.ContentID#&type=#rsUsage.type#&parentid=#rsUsage.parentID#&topid=#rsUsage.contentid#&siteid=#rsUsage.siteid#&moduleid=#rsUsage.moduleid#"><i class="icon-book"></i></a></li><cfelse><li class="edit disabled">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.edit')#</li><li class="version-history disabled">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.versionhistory')#</li></cfif></ul></td></tr>
        </cfoutput>
       <cfelse>
       <tr> 

@@ -50,6 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="init" output="false">
 	<cfargument name="data" hint="Can be an event object, struct or siteID">
+	
 	<cfset var initArgs=structNew()>
 	
 	<cfif structKeyExists(arguments,"data")>
@@ -62,7 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset initArgs.siteID=arguments.data>
 			</cfif>
 			<cfset initArgs.muraScope=this>
-			<cfset setEvent(createObject("component","mura.event").init(initArgs))>
+			<cfset setEvent(createObject("component","mura.event").init(initArgs,this))>
 		</cfif>
 	</cfif>
 	
@@ -183,7 +184,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelseif structKeyExists(request,"event")>
 			<cfset variables.instance.event=request.event>
 		<cfelse>
-			<cfset variables.instance.eventcreateObject("component","mura.event").init($=this)>
+			<cfset variables.instance.event=createObject("component","mura.event").init($=this)>
 		</cfif>
 	</cfif>
 	<cfreturn variables.instance.event>
@@ -221,10 +222,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif isObject(getEvent())>
 			<cfif structKeyExists(arguments,"propertyValue")>
 				<cfset getEvent().setValue(arguments.property,arguments.propertyValue)>
+				<cfreturn this>
+			<cfelse>
+				<cfreturn getEvent().getValue(arguments.property)>
 			</cfif>
-			
-			<cfreturn getEvent().getValue(arguments.property)>
-			
 		<cfelse>
 			<cfthrow message="The event is not set in the Mura Scope.">
 		</cfif>
@@ -240,10 +241,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif structKeyExists(arguments,"property")>
 		<cfif isObject(getContentBean())>
-		<cfif structKeyExists(arguments,"propertyValue")>
-			<cfset getContentBean().setValue(arguments.property,arguments.propertyValue)>
-		</cfif>
-		<cfreturn getContentBean().getValue(arguments.property)>
+			<cfif structKeyExists(arguments,"propertyValue")>
+				<cfset getContentBean().setValue(arguments.property,arguments.propertyValue)>
+				<cfreturn this>
+			<cfelse>
+				<cfreturn getContentBean().getValue(arguments.property)>
+			</cfif>
 		<cfelse>
 			<cfthrow message="The content is not set ine the Mura Scope.">
 		</cfif>
@@ -259,8 +262,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif structKeyExists(arguments,"property")>
 		<cfif structKeyExists(arguments,"propertyValue")>
 			<cfset getCurrentUser().setValue(arguments.property,arguments.propertyValue)>
+			<cfreturn this>
+		<cfelse>
+			<cfreturn getCurrentUser().getValue(arguments.property)>
 		</cfif>
-		<cfreturn getCurrentUser().getValue(arguments.property)>
 	<cfelse>
 		<cfreturn getCurrentUser()>
 	</cfif>
@@ -280,8 +285,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif structKeyExists(arguments,"property")>
 			<cfif structKeyExists(arguments,"propertyValue")>
 				<cfset site.setValue(arguments.property,arguments.propertyValue)>
+				<cfreturn this>
+			<cfelse>
+				<cfreturn site.getValue(arguments.property)>
 			</cfif>
-			<cfreturn site.getValue(arguments.property)>
 		<cfelse>
 			<cfreturn site>
 		</cfif>
@@ -298,13 +305,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif structKeyExists(arguments,"property")>
 		<cfif structKeyExists(arguments,"propertyValue")>
-				<cfinvoke component="#application.configBean#" method="set#arguments.property#">
-					<cfinvokeargument name="#arguments.property#" value="#arguments.propertyValue#">
-				</cfinvoke>
+			<cfinvoke component="#application.configBean#" method="set#arguments.property#">
+				<cfinvokeargument name="#arguments.property#" value="#arguments.propertyValue#">
+			</cfinvoke>
+			<cfreturn this>
 		<cfelse>
 			<cfinvoke component="#application.configBean#" method="get#arguments.property#" returnvariable="theValue">
+			<cfreturn theValue>
 		</cfif>
-		<cfreturn theValue>
 	<cfelse>
 		<cfreturn application.configBean>
 	</cfif>
@@ -318,13 +326,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var component=event('component')>
 	
 	<cfif structKeyExists(arguments,"property") and isStruct(component)>
-		<cfif structKeyExists(arguments,"property") and structKeyExists(component,arguments.property)>
-			
+		<cfif structKeyExists(arguments,"property") and structKeyExists(component,arguments.property)>		
 			<cfif structKeyExists(arguments,"propertyValue")>
 				<cfset component[arguments.property]=arguments.propertyValue>
+				<cfreturn this>
+			<cfelse>
+				<cfreturn component[arguments.property]>
 			</cfif>
-			
-			<cfreturn component[arguments.property]>
 		<cfelse>
 			<cfreturn "">
 		</cfif>

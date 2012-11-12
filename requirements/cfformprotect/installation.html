@@ -44,7 +44,40 @@ a img {border: 0}
     <strong>For full details of how CFFormProtect works, see the project page at
     <a href=http://cfformprotect.riaforge.org/ target=_blank>http://cfformprotect.riaforge<wbr>.org/</a></strong>
   </p><br />
-
+  <p>
+  <span style=FONT-WEIGHT:bold>Installation<br>
+  </span></p>
+  <ol>
+    <li>
+      Copy the cfformprotect folder into your web root.
+    </li>
+	<li>
+		On your form page, add this line of code:
+		&lt;cfset Cffp = CreateObject("component","cfformprotect.cffpVerify").init() /&gt;
+	</li>
+    <li>
+      Put &lt;cfinclude template="/cfformprotect/cffp.cfm"&gt; somewhere between
+      your form tags.
+    </li>
+    <li>
+      On your processing page include the following code:<br>
+      &lt;cfset Cffp =
+      CreateObject("component","cfformprotect.cffpVerify").init() /&gt;<br>
+      &lt;!--- now we can test the form submission ---&gt;<br>
+      &lt;cfif Cffp.testSubmission(form)&gt;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;!--- The submission has passed
+      the form test.&nbsp; Place processing here ---&gt;<br>
+      &lt;cfelse&gt;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;!--- The test failed.&nbsp; Take
+      appropriate failure action here. ---&gt;<br>
+      &lt;/cfif&gt;
+    </li>
+    <li>
+      Setup your email settings and Akismet in cffp.ini.cfm, if you want to use
+      those features (if you leave the email settings blank, you won't receive
+      an email when spammer tries to attack your forms)<br>
+    </li>
+  </ol><br />
   <p>
     <strong>Customization</strong>
   </p>
@@ -77,6 +110,9 @@ a img {border: 0}
 	<li>
 		If you want to use Project Honey Pot, sign up for an API key at <a href="http://www.projecthoneypot.org/">
 			http://www.projecthoneypot.org/</a>, and then configure the Project Honey Pot directives according to the directions below. 
+	</li>
+	<li>You can specify a different config file than the default (cffp.ini.cfm) in your init code.  Check out the 
+		init function in cffpVerify.cfc to see how to do this.
 	</li>
   </ul>
   <br /><br />
@@ -225,6 +261,28 @@ a img {border: 0}
 	</TR>
 	<TR>
 		<TD WIDTH=154>
+			<P>LinkSleeve</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>1</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>boolean</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>1, 0</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P STYLE="margin-bottom: 0in">Enable/disable
+			the LinkSleeve test.</P>
+			<P>Uses the public <a href="http://www.linksleeve.org/">LinkSleeve</a> service to test if
+			form contents are spam.</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
 			<P>tooManyUrls</P>
 		</TD>
 		<TD WIDTH=128>
@@ -297,7 +355,7 @@ a img {border: 0}
 				they maintain a huge database of known Spammer
 				IP addresses, and when a user submits your form, 
 				this test will check their IP address. This is off 
-				by default, because you have to provide the <a href="http://www.projecthoneypot.org/httpbl_configure.php">API key</a> 
+				by default, because you have to provide the API key 
 				in the second section.
 			</P>
 		</TD>
@@ -572,8 +630,7 @@ a img {border: 0}
 	</TR>
 	<TR>
 		<TD WIDTH=154 BGCOLOR="#e6e6e6">
-			<P><EM><B>Failure
-			Limit</B></EM></P>
+			<P><EM><B>Failure Limit</B></EM></P>
 		</TD>
 		<TD WIDTH=128 BGCOLOR="#e6e6e6">
 			<P><BR>
@@ -608,7 +665,7 @@ a img {border: 0}
 			</UL>
 		</TD>
 		<TD WIDTH=344>
-			<P>Point given for the mouse movement test.</P>
+			<P>Points given for the mouse movement test.</P>
 		</TD>
 	</TR>
 	<TR>
@@ -627,7 +684,7 @@ a img {border: 0}
 			</UL>
 		</TD>
 		<TD WIDTH=344>
-			<P>Point given for the used keyboard test.</P>
+			<P>Points given for the used keyboard test.</P>
 		</TD>
 	</TR>
 	<TR>
@@ -646,7 +703,7 @@ a img {border: 0}
 			</UL>
 		</TD>
 		<TD WIDTH=344>
-			<P>Point given for the timed form test.</P>
+			<P>Points given for the timed form test.</P>
 		</TD>
 	</TR>
 	<TR>
@@ -665,7 +722,7 @@ a img {border: 0}
 			</UL>
 		</TD>
 		<TD WIDTH=344>
-			<P>Point given for the hidden field test.</P>
+			<P>Points given for the hidden field test.</P>
 		</TD>
 	</TR>
 	<TR>
@@ -684,7 +741,26 @@ a img {border: 0}
 			</UL>
 		</TD>
 		<TD WIDTH=344>
-			<P>Point given for the Akismet test (if used).</P>
+			<P>Points given for the Akismet test (if used).</P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH=154>
+			<P>linkSleevePoints</P>
+		</TD>
+		<TD WIDTH=128>
+			<P>3</P>
+		</TD>
+		<TD WIDTH=73>
+			<P>numeric</P>
+		</TD>
+		<TD WIDTH=193>
+			<UL>
+				<P>whole number only</P>
+			</UL>
+		</TD>
+		<TD WIDTH=344>
+			<P>Points given for the LinkSleeve test.</P>
 		</TD>
 	</TR>
 	<TR>
@@ -703,7 +779,7 @@ a img {border: 0}
 			</UL>
 		</TD>
 		<TD WIDTH=344>
-			<P>Point given for the URL count test.</P>
+			<P>Points given for the URL count test.</P>
 		</TD>
 	</TR>
 	<TR>
@@ -722,7 +798,7 @@ a img {border: 0}
 			</UL>
 		</TD>
 		<TD WIDTH=344>
-			<P>Point given for the spam string test.</P>
+			<P>Points given for the spam string test.</P>
 		</TD>
 	</TR>
 	<TR>
@@ -741,7 +817,7 @@ a img {border: 0}
 			</UL>
 		</TD>
 		<TD WIDTH=344>
-			<P>Point given for the Project Honey Pot test (if used).</P>
+			<P>Points given for the Project Honey Pot test (if used).</P>
 		</TD>
 	</TR>
 	<TR>

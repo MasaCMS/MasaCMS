@@ -46,17 +46,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfset event=request.event>
 <cfinclude template="js.cfm">
-<cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,"categorymanager")#</h2>
-<ul id="navTask"><li><a  title="#application.rbFactory.getKeyValue(session.rb,"categorymanager.addnewcategory")#" href="index.cfm?muraAction=cCategory.edit&categoryID=&parentID=&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,"categorymanager.addnewcategory")#</a></li></ul>
-<table class="mura-table-grid stripe"> 
+<cfoutput><h1>#application.rbFactory.getKeyValue(session.rb,"categorymanager")#</h1>
+
+<cfinclude template="dsp_secondary_menu.cfm">
+
+<table class="table table-striped table-condensed table-bordered mura-table-grid"> 
+<thead>
 <tr>
 <th class="add">&nbsp;</td>
-<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,"categorymanager.category")#</th>
+<th class="var-width">#application.rbFactory.getKeyValue(session.rb,"categorymanager.category")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"categorymanager.assignable")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"categorymanager.interestgroup")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"categorymanager.active")#</th>
-<th class="administration">&nbsp;</th>
+<th class="actions">&nbsp;</th>
 </tr>
+<thead>
+<tbody class="nest">
 <cf_dsp_nest siteID="#rc.siteID#" parentID="" nestLevel="0" >
+</tbody>
 </table>
 </cfoutput>

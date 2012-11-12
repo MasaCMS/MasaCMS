@@ -89,6 +89,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="displayList" type="string" default="Title,Date,Image,Summary,Tags,Credits" required="true" />
 <cfproperty name="liveOnly" type="numeric" default="1" required="true" />
 <cfproperty name="bean" type="string" default="content" required="true" />
+<cfproperty name="viewalllabel" type="string" default="" required="true" />
+<cfproperty name="viewalllink" type="string" default="View All" required="true" />
+<cfproperty name="autoimport" type="numeric" default="0" required="true" />
+<cfproperty name="isLocked" type="numeric" default="0" required="true" />
+<cfproperty name="cssClass" type="string" default="" required="true" />
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfset super.init(argumentCollection=arguments)>
@@ -139,6 +144,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.liveOnly=1 />
 	<cfset variables.instance.bean="content" />
 	<cfset variables.instance.table="tcontent">
+	<cfset variables.instance.viewalllink="" />
+	<cfset variables.instance.viewalllabel="" />
+	<cfset variables.instance.autoimport=0 />
+	<cfset variables.instance.isLocked=0 />
+	<cfset variables.instance.cssClass="" />
 	
 	<cfreturn this />
 </cffunction>
@@ -198,6 +208,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="removeContentID" access="public" output="false">
+	<cfargument name="contentID" type="String" />
+	<cfset var i=0>
+	<cfset var offset=0>
+	
+	<cfif len(arguments.contentID)>
+		<cfloop from="1" to="#listLen(arguments.contentID)#" index="i">
+		<cfif listFindNoCase(variables.instance.contentID,listGetAt(arguments.contentID,i))>
+	    	<cfset variables.instance.contentID = listDeleteAt(variables.instance.contentID,i-offset) /> />
+	    	<cfset offset=offset+1>
+	    </cfif>
+	    </cfloop> 
+	</cfif>
+	
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="setCategoryID" access="public" output="false">
 	<cfargument name="categoryID" type="String" />
 	<cfargument name="append" type="boolean" default="false" required="true" />
@@ -212,6 +239,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	    </cfif> 
 	    </cfloop>
 	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="removeCategoryID" access="public" output="false">
+	<cfargument name="categoryID" type="String" />
+	<cfset var i=0>
+	<cfset var offset=0>
+	
+	<cfif len(arguments.categoryID)>
+		<cfloop from="1" to="#listLen(arguments.categoryID)#" index="i">
+		<cfif listFindNoCase(variables.instance.categoryID,listGetAt(arguments.categoryID,i))>
+	    	<cfset variables.instance.categoryID = listDeleteAt(variables.instance.categoryID,i-offset) /> />
+	    	<cfset offset=offset+1>
+	    </cfif>
+	    </cfloop> 
+	</cfif>
+	
 	<cfreturn this>
 </cffunction>
 
@@ -255,6 +299,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="setIsLocked" access="public" output="false">
+	<cfargument name="isLocked" type="any" />
+	<cfif isNumeric(arguments.isLocked)>
+	<cfset variables.instance.isLocked = arguments.isLocked />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="setShowExcludeSearch" access="public" output="false">
 	<cfargument name="showExcludeSearch" type="any" />
 	<cfif isNumeric(arguments.showExcludeSearch)>
@@ -265,7 +317,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setImageSize" output="false">
 	<cfargument name="imageSize">
-	<cfif listFindNoCase("small,medium,large,custom",arguments.imageSize)>
+	<cfif len(arguments.imageSize)>
 		<cfset variables.instance.imageSize = arguments.imageSize>
 	</cfif>	
 	<cfreturn this>
@@ -301,6 +353,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <cfargument name="ImageWidth" required="true">
 	<cfif isNumeric(arguments.ImageWidth)>
   	  <cfset variables.instance.ImageWidth = arguments.ImageWidth />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setAutoImport" output="false" access="public">
+    <cfargument name="autoimport" required="true">
+	<cfif isNumeric(arguments.autoimport)>
+  	  <cfset variables.instance.autoimport = arguments.autoimport />
 	</cfif>
 	<cfreturn this>
 </cffunction>
@@ -356,12 +416,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getQuery" returnType="query" output="false" access="public">
 	<cfargument name="aggregation" required="true" default="false">
-	<cfreturn variables.feedManager.getFeed(this,"",arguments.aggregation) />
+	<cfargument name="applyPermFilter" required="true" default="false">
+	<cfreturn variables.feedManager.getFeed(feedBean=this,tag="",aggregation=arguments.aggregation,applyPermFilter=arguments.applyPermFilter) />
 </cffunction>
 
 <cffunction name="getIterator" returnType="any" output="false" access="public">
 	<cfargument name="aggregation" required="true" default="false">
-	<cfset var q=getQuery(aggregation=arguments.aggregation) />
+	<cfargument name="applyPermFilter" required="true" default="false">
+	<cfset var q=getQuery(aggregation=arguments.aggregation,applyPermFilter=arguments.applyPermFilter) />
 	<cfset var it=getBean("contentIterator")>
 	<cfset it.setQuery(q,variables.instance.nextn)>
 	<cfreturn it>

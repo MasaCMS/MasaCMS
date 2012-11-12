@@ -64,22 +64,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cfsilent>
 
-<div id="manageData">
+<div id="manage-data">
 <cfif rc.rsDataInfo.CountEntered>
 <cfparam name="rc.columns" default="fixed" />
 <cfoutput>
 <form novalidate="novalidate" action="index.cfm" method="get" name="download" onsubmit="return validate(this);">
-<dl class="oneColumn">
-<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.from')#</dt>
-<dd><input type="text" class="datepicker" name="date1"  validate="date" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.tovalidate')#" required="true" value="#LSDateFormat(rc.date1,session.dateKeyFormat)#">   <select name="hour1"  class="dropdown"><cfloop from="0"to="23" index="h"><option value="#h#" <cfif hour(rc.rsDataInfo.firstentered) eq h>selected</cfif>><cfif h eq 0>12 AM<cfelseif h lt 12>#iif(len(h) lt 2,de('0#h#'),de('#h#'))# AM<cfelseif h eq 12>#iif(len(h) lt 2,de('0#h#'),de('#h#'))# PM<cfelse><cfset h2=h-12>#iif(len(h2) lt 2,de('0#h2#'),de('#h2#'))# PM</cfif></option></cfloop></select>
+
+<div class="control-group">
+  <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.from')#</label>
+  <div class="controls"><input type="text" class="datepicker" name="date1"  validate="date" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.tovalidate')#" required="true" value="#LSDateFormat(rc.date1,session.dateKeyFormat)#">   <select name="hour1"  class="dropdown"><cfloop from="0"to="23" index="h"><option value="#h#" <cfif hour(rc.rsDataInfo.firstentered) eq h>selected</cfif>><cfif h eq 0>12 AM<cfelseif h lt 12>#iif(len(h) lt 2,de('0#h#'),de('#h#'))# AM<cfelseif h eq 12>#iif(len(h) lt 2,de('0#h#'),de('#h#'))# PM<cfelse><cfset h2=h-12>#iif(len(h2) lt 2,de('0#h2#'),de('#h2#'))# PM</cfif></option></cfloop></select>
     <select name="minute1"  class="dropdown"><cfloop from="0"to="59" index="mn"><option value="#mn#" <cfif minute(rc.rsDataInfo.firstentered) eq mn>selected</cfif>>#iif(len(mn) lt 2,de('0#mn#'),de('#mn#'))#</option></cfloop></select>
-</dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.to')#</dt>
-<dd><input type="text" class="datepicker" name="date2" validate="date" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.tovalidate')#" required="true" value="#LSDateFormat(rc.date2,session.dateKeyFormat)#">    <select name="hour2"  class="dropdown"><cfloop from="0"to="23" index="h"><option value="#h#" <cfif hour(rc.rsDataInfo.Lastentered) eq h>selected</cfif>><cfif h eq 0>12 AM<cfelseif h lt 12>#iif(len(h) lt 2,de('0#h#'),de('#h#'))# AM<cfelseif h eq 12>#iif(len(h) lt 2,de('0#h#'),de('#h#'))# PM<cfelse><cfset h2=h-12>#iif(len(h2) lt 2,de('0#h2#'),de('#h2#'))# PM</cfif></option></cfloop></select>
+</div>
+</div>
+
+<div class="control-group">
+  <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.to')#</label>
+  <div class="controls"><input type="text" class="datepicker" name="date2" validate="date" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.tovalidate')#" required="true" value="#LSDateFormat(rc.date2,session.dateKeyFormat)#">    <select name="hour2"  class="dropdown"><cfloop from="0"to="23" index="h"><option value="#h#" <cfif hour(rc.rsDataInfo.Lastentered) eq h>selected</cfif>><cfif h eq 0>12 AM<cfelseif h lt 12>#iif(len(h) lt 2,de('0#h#'),de('#h#'))# AM<cfelseif h eq 12>#iif(len(h) lt 2,de('0#h#'),de('#h#'))# PM<cfelse><cfset h2=h-12>#iif(len(h2) lt 2,de('0#h2#'),de('#h2#'))# PM</cfif></option></cfloop></select>
     <select name="minute2"  class="dropdown"><cfloop from="0"to="59" index="mn"><option value="#mn#" <cfif minute(rc.rsDataInfo.lastentered) eq mn>selected</cfif>>#iif(len(mn) lt 2,de('0#mn#'),de('#mn#'))#</option></cfloop></select>
-</dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.sortby')#</dt>
-<dd><select name="sortBy" class="dropdown">
+</div>
+</div>
+
+<div class="control-group">
+  <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.sortby')#</label>
+  <div class="controls"><select name="sortBy" class="dropdown">
 <option value="Entered" <cfif "Entered" eq rc.sortBy>selected</cfif>>ENTERED</option>
 <cfloop list="#rc.fieldnames#" index="f">
 <option value="#f#" <cfif f eq rc.sortBy>selected</cfif>>#f#</option>
@@ -88,25 +95,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <select name="sortDirection" class="dropdown">
 <option value="asc" <cfif rc.sortDirection eq 'asc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.ascending')#</option>
 <option value="desc" <cfif rc.sortDirection eq 'desc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.descending')#</option>
-</select></dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.keywordsearch')#</dt>
-<dd><select name="filterBy" class="dropdown">
+</select>
+</div>
+</div>
+
+<div class="control-group">
+  <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.keywordsearch')#</label>
+  <div class="controls"><select name="filterBy" class="dropdown">
 <cfloop list="#rc.fieldnames#" index="f">
 <option value="#f#" <cfif f eq session.filterBy>selected</cfif>>#f#</option>
 </cfloop>
 </select>
 <input type="text" class="text" name="keywords" value="#session.datakeywords#">
-</dd>
-</dl>
+<</div>
+</div>
 
 <input type="hidden" name="muraAction" value="cArch.datamanager" />
 <input type="hidden" name="contentid" value="#HTMLEditFormat(rc.contentid)#" />
 <input type="hidden" name="siteid" value="#HTMLEditFormat(session.siteid)#" />
 <input type="hidden" name="moduleid" value="#rc.moduleid#" />
 <input type="hidden" name="newSearch" value="1" />
-<div class="clearfix" id="actionButtons">
-	<input type="button" class="submit" onclick="submitForm(document.forms.download);" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.viewdata')#"/></a>
-	<input type="button" class="submit" onclick="location.href='index.cfm?muraAction=cArch.downloaddata&siteid=#URLEncodedFormat(rc.siteid)#&contentid=#URLEncodedFormat(rc.contentid)#&date1=' + document.download.date1.value + '&hour1=' +document.download.hour1.value + '&minute1=' +document.download.minute1.value + '&date2=' + document.download.date2.value + '&hour2=' + document.download.hour2.value + '&minute2=' + document.download.minute2.value + '&sortBy=' +  document.download.sortBy.value + '&sortDirection=' +  document.download.sortDirection.value + '&filterBy='  + document.download.filterBy.value + '&keywords=' + document.download.keywords.value + '&columns=#rc.columns#';" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.download')#">
+<div class="form-actions">
+	<input type="button" class="submit btn" onclick="submitForm(document.forms.download);" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.viewdata')#"/></a>
+	<input type="button" class="submit btn" onclick="location.href='index.cfm?muraAction=cArch.downloaddata&siteid=#URLEncodedFormat(rc.siteid)#&contentid=#URLEncodedFormat(rc.contentid)#&date1=' + document.download.date1.value + '&hour1=' +document.download.hour1.value + '&minute1=' +document.download.minute1.value + '&date2=' + document.download.date2.value + '&hour2=' + document.download.hour2.value + '&minute2=' + document.download.minute2.value + '&sortBy=' +  document.download.sortBy.value + '&sortDirection=' +  document.download.sortDirection.value + '&filterBy='  + document.download.filterBy.value + '&keywords=' + document.download.keywords.value + '&columns=#rc.columns#';" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.download')#">
 </div>
 </form></cfoutput>
 </cfif>
@@ -115,7 +126,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rsData=application.dataCollectionManager.getData(rc)/>
 </cfsilent>
 <cfif rsData.recordcount>
-<table class="mura-table-grid stripe">
+<table class="table table-striped table-condensed table-bordered mura-table-grid">
 <tr>
 <th>&nbsp;</th>
 <th><cfoutput>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.datetimeentered')#</cfoutput></th>
@@ -128,17 +139,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <tr>
 <cftry>
 	<cfsilent><cfwddx action="wddx2cfml" input="#rsdata.data#" output="info"></cfsilent>
-	<td class="administration">
-		<ul class="two">
+	<td class="actions">
+		<ul>
 			<li class="edit">
 				<a href="index.cfm?muraAction=cArch.datamanager&contentid=#URLEncodedFormat(rc.contentid)#&siteid=#URLEncodedFormat(rc.siteid)#&date1=#rc.date1#&hour1=#rc.hour1#&minute1=#rc.minute1#&date2=#rc.date2#&hour2=#rc.hour2#&minute2=#rc.minute2#&responseid=#rsdata.responseid#&action=edit&moduleid=#rc.moduleid#&sortBy=#urlEncodedFormat(rc.sortBy)#&sortDirection=#rc.sortDirection#&filterBy=#urlEncodedFormat(rc.filterBy)#&keywords=#urlEncodedFormat(rc.keywords)#">
-					<img src="images/icons/edit_24.png" width="14" height="14" border="0" />
+					<img src="assets/images/icons/edit_24.png" width="14" height="14" border="0" />
 					#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.edit')#
 				</a>
 			</li>
 			<li class="delete">
 				<a href="index.cfm?muraAction=cArch.datamanager&contentid=#URLEncodedFormat(rc.contentid)#&siteid=#URLEncodedFormat(rc.siteid)#&date1=#rc.date1#&hour1=#rc.hour1#&minute1=#rc.minute1#&date2=#rc.date2#&hour2=#rc.hour2#&minute2=#rc.minute2#&responseid=#rsdata.responseid#&action=delete&moduleid=#rc.moduleid#&sortBy=#urlEncodedFormat(rc.sortBy)#&sortDirection=#rc.sortDirection#&filterBy=#urlEncodedFormat(rc.filterBy)#&keywords=#urlEncodedFormat(rc.keywords)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponseconfirm'))#',this.href)">
-					<img src="images/icons/remov_24.png" width="14" height="14" border="0" />
+					<img src="assets/images/icons/remov_24.png" width="14" height="14" border="0" />
 					#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.deleteresponse')#
 				</a>
 			</li>

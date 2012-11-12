@@ -395,6 +395,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var i="">
 	<cfset var dateArray=arrayNew(1)>
 	<cfset var categoryArray=arrayNew(1)>
+	<cfset var refArray=arrayNew(1)>
 	<cfset var fileArray=arrayNew(1)>
 	<cfset var currentArrayName="fileArray">
 	<cfset var currentItem="">
@@ -406,7 +407,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif listFindNoCase(application.configBean.getCustomURLVarDelimiters(),currentItem,"^")>
 			<cfset currentItem="params">
 		</cfif>
-		<cfif listFindNoCase('date,category,params,tag,linkservid,showmeta',currentItem)>
+		<cfif listFindNoCase('date,category,params,tag,linkservid,showmeta,ref',currentItem)>
 			<cfset currentArrayName="#currentItem#Array">
 		<cfelseif currentArrayName eq "paramsArray">
 			<cfif len(currentParam)>
@@ -429,10 +430,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelseif len(currentArrayName)>
 			<cfset evaluate("arrayAppend(#currentArrayName#,'#currentItem#')")>	
 		</cfif>
+
 	</cfloop>
 	
-	<cfset arguments.event.setValue("currentFilenameAdjusted",arrayToList(fileArray,"/"))>
-
+	<cfif arrayLen(refArray)>
+		<cfset arguments.event.setValue("currentFilenameAdjusted",arrayToList(refArray,"/"))>
+	<cfelse>
+		<cfset arguments.event.setValue("currentFilenameAdjusted",arrayToList(fileArray,"/"))>
+	</cfif>
+	
 	<cfif arrayLen(categoryArray)>
 		<cfset categoryBean=getBean("category").loadBy(filename=arrayToList(categoryArray,"/"), siteID=arguments.event.getValue('siteid'))>
 		<cfset arguments.event.setValue('categoryID',categoryBean.getCategoryID())>

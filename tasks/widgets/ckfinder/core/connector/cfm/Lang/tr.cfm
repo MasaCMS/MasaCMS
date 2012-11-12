@@ -1,10 +1,10 @@
 <cfsilent>
 <cfprocessingdirective pageencoding="utf-8">
 <!---
-Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckfinder.com/license
 
- Defines the object, for the Turkish language. This is the base file for all translations. Turkish translation by Abdullah M CEYLAN a.k.a. Kenan Balamir. Last updated: 26-07-2011
+ Defines the object, for the Turkish language. Turkish translation by Abdullah M CEYLAN a.k.a. Kenan Balamir. Updated.
 --->
 <cfscript>
 CKFLang = structNew();
@@ -19,6 +19,7 @@ CKFLang = structNew();
 	CKFLang.Errors[105] = 'Geçersiz dosya uzantısı.';
 	CKFLang.Errors[109] = 'Geçersiz istek.';
 	CKFLang.Errors[110] = 'Bilinmeyen hata.';
+	CKFLang.Errors[111] = 'It was not possible to complete the request due to resulting file size.';
 	CKFLang.Errors[115] = 'Aynı isimde bir dosya ya da klasör zaten var.';
 	CKFLang.Errors[116] = 'Klasör bulunamadı. Lütfen yenileyin ve tekrar deneyin.';
 	CKFLang.Errors[117] = 'Dosya bulunamadı. Lütfen dosya listesini yenileyin ve tekrar deneyin.';

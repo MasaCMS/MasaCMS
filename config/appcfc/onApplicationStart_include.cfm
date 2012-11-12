@@ -110,6 +110,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				and right(variables.iniProperties[variables.p],1) eq "}">
 				<cfset variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-3)>
 				<cfset variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p])>
+			<cfelseif left(variables.iniProperties[variables.p],2) eq "{{"
+				and right(variables.iniProperties[variables.p],2) eq "}}">
+				<cfset variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-4)>
+				<cfset variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p])>
 			</cfif>		
 		</cfloop>		
 		
@@ -119,7 +123,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				and right(variables.iniProperties[variables.p],1) eq "}">
 				<cfset variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-3)>
 				<cfset variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p])>
-			</cfif>	
+			<cfelseif left(variables.iniProperties[variables.p],2) eq "{{"
+				and right(variables.iniProperties[variables.p],2) eq "}}">
+				<cfset variables.iniProperties[variables.p]=mid(variables.iniProperties[variables.p],3,len(variables.iniProperties[variables.p])-4)>
+				<cfset variables.iniProperties[variables.p] = evaluate(variables.iniProperties[variables.p])>
+			</cfif>		
 		</cfloop>
 		
 		<cfset variables.iniProperties.webroot = expandPath("/muraWRM") />
@@ -186,7 +194,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset application.appAutoUpdated=false>
 		
 		<cfset variables.serviceList="settingsManager,contentManager,pluginManager,eventManager,contentRenderer,utility,contentUtility,contentGateway,categoryManager,clusterManager,contentServer,changesetManager,scriptProtectionFilter,permUtility,emailManager,loginManager,mailinglistManager,userManager,dataCollectionManager,advertiserManager,feedManager,sessionTrackingManager,favoriteManager,raterManager,dashboardManager,autoUpdater">
-
+	
 		<!--- These application level services use the beanServicePlaceHolder to lazy load the bean --->
 		<cfloop list="#variables.serviceList#" index="variables.i">
 			<cfset variables.tracepoint=variables.tracer.initTracepoint("Instantiating #variables.i#")> 	
@@ -239,9 +247,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset application.cfstatic=structNew()>			
 		<cfset application.appInitialized=true/>
 		<cfset application.appInitializedTime=now()>
-		<cfif application.broadcastInit>
-			<cfset application.clusterManager.reload()>
-		</cfif>
+		<cfset application.clusterManager.reload(broadcast=application.broadcastInit)>
 		<cfset application.broadcastInit=true/>
 		<cfset structDelete(application,"muraAdmin")>
 		<cfset structDelete(application,"proxyServices")>
@@ -368,7 +374,51 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset application.pluginManager.addEventHandler(variables.themeHandler,variables.rsSites.siteID)>
 			</cfif>	
 		</cfloop>
+
+		<!--- This looks for and update File and Link nodes that legacy urls --->
+		<cfquery name="variables.legacyURLs" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDbUserName()#" password="#application.configBean.getDbPassword()#">
+			select contenthistID, contentID,parentId,siteID,filename,urlTitle,filename from tcontent where type in ('File','Link')
+			and active=1
+			and body is null
+			and filename is not null
+		</cfquery>
 		
+		<cfset variables.legacyURLsIterator=application.serviceFactory.getBean("contentIterator").setQuery(variables.legacyURLs)>
+
+		<cfloop condition="variables.legacyURLsIterator.hasNext()">
+			<cfset variables.item=variables.legacyURLsIterator.next()>
+
+			<cfquery  datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDbUserName()#" password="#application.configBean.getDbPassword()#">
+				update tcontent set body=filename where 
+				contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getContentID()#">
+				and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getSiteID()#">
+			</cfquery>
+
+			<cfset application.serviceFactory.getBean("contentUtility").setUniqueFilename(variables.item)>
+
+			<cfquery  datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDbUserName()#" password="#application.configBean.getDbPassword()#">
+				update tcontent set filename=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getFilename()#">,
+				urlTitle=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getURLTitle()#">  where 
+				contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getContentID()#">
+				and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getSiteID()#">
+			</cfquery>
+		</cfloop>
+
+		<!--- Clean root admin directory --->
+		<cfdirectory action="list" directory="#expandPath('/muraWRM/admin/')#" name="local.rs">
+		<cfset local.tempDir=expandPath('/muraWRM/admin/temp/')>
+		<cfset local.fileWriter=application.serviceFactory.getBean('fileWriter')>
+		<cfloop query="local.rs">
+			<cfif not listFind('.gitignore,Application.cfc,assets,common,core,framework.cfc,index.cfm,temp',local.rs.name)>
+				<cfset local.fileWriter.touchDir(local.tempDir)>
+				<cfif local.rs.type eq 'dir'>
+					<cfset local.fileWriter.renameDir(directory=local.rs.directory & "/" & local.rs.name,newDirectory=local.rs.directory & "/temp/" & local.rs.name )>
+				<cfelse>
+					<cfset local.fileWriter.renameFile(source=local.rs.directory & "/" & local.rs.name,destination=local.rs.directory & "/temp/" & local.rs.name )>
+				</cfif>
+			</cfif>
+		</cfloop>
+
 		<cfset application.sessionTrackingThrottle=false>	
 	</cfif>	
 </cflock>

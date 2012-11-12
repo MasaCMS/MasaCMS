@@ -48,14 +48,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfinclude template="act_defaults.cfm">
 <cfoutput><cfset rsList=application.dashboardManager.getTopContent(rc.siteID,3,false,"All",rc.startDate,rc.stopDate,true) />
 <cfset count=rsList.recordcount>
-<table class="mura-table-grid stripe" id="topPages">
-<tr>
-<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.pages")# <a href="index.cfm?muraAction=cDashboard.topContent&siteid=#URLEncodedFormat(rc.siteid)#&startDate=#URLEncodedFormat(rc.startDate)#&stopDate=#URLEncodedFormat(rc.stopDate)#">(#application.rbFactory.getKeyValue(session.rb,"dashboard.viewreport")#)</a></th>
-</tr>
+<table class="table table-striped table-condensed table-bordered mura-table-grid" id="topPages">
+	<thead>
+		<tr>
+			<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.pages")# <a href="index.cfm?muraAction=cDashboard.topContent&siteid=#URLEncodedFormat(rc.siteid)#&startDate=#URLEncodedFormat(rc.startDate)#&stopDate=#URLEncodedFormat(rc.stopDate)#">(#application.rbFactory.getKeyValue(session.rb,"dashboard.viewreport")#)</a></th>
+		</tr>
+	</thead>
+<tbody>
 <cfloop query="rslist">
-<tr<cfif rslist.currentrow mod 2> class="alt"</cfif>>
+<tr>
 	<td><cfswitch expression="#rslist.type#">
-		<cfcase value="Page,Portal,Calendar,Gallery">
+		<cfcase value="Page,LocalRepo,Calendar,Gallery">
 		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,rsList.filename)#','#rslist.targetParams#');">#HTMLEditFormat(left(rslist.menutitle,30-len(rsList.hits)))#</a>
 		</cfcase>
 		<cfcase value="Link">
@@ -67,9 +70,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfswitch> <span>(#rsList.hits# #application.rbFactory.getKeyValue(session.rb,"dashboard.views")#)</span></td>
 </tr>
 </cfloop>
-<cfif count eq 0><tr class="alt"><td>&mdash;</td></tr></cfif>
+<cfif count eq 0><tr><td>&mdash;</td></tr></cfif>
 <cfif count lt 2><tr><td>&mdash;</td></tr></cfif>
-<cfif count lt 3><tr class="alt"><td>&mdash;</td></tr></cfif>
+<cfif count lt 3><tr><td>&mdash;</td></tr></cfif>
+</tbody>
 </table>
 <!---
 <cfset rsList=application.dashboardManager.getTopReferers(rc.siteID,3,rc.startDate,rc.stopDate) />
@@ -90,18 +94,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfset rsList=application.dashboardManager.getTopKeywords(rc.siteID,3,false,"All",rc.startDate,rc.stopDate) />
 <cfset count=rsList.recordcount>
-<table class="mura-table-grid stripe" id="topSearches">
+<table class="table table-striped table-condensed table-bordered mura-table-grid" id="topSearches">
+<thead>
 <tr>
 	<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.topsearches")# <a href="index.cfm?muraAction=cDashboard.topSearches&siteid=#URLEncodedFormat(rc.siteid)#&startDate=#URLEncodedFormat(rc.startDate)#&stopDate=#URLEncodedFormat(rc.stopDate)#">(View Report)</a></th>
 </tr>
+<thead>
+<tbody>
 <cfloop query="rslist">
-<tr<cfif rslist.currentrow mod 2> class="alt"</cfif>>
+<tr>
 	<td>#left(rsList.keywords,30-len(rsList.keywordCount))# <span>(#rsList.keywordCount# #application.rbFactory.getKeyValue(session.rb,"dashboard.searches")#)</span></td>
 </tr>
 </cfloop>
-<cfif count eq 0><tr class="alt"><td>&mdash;</td></tr></cfif>
+<cfif count eq 0><tr><td>&mdash;</td></tr></cfif>
 <cfif count lt 2><tr><td>&mdash;</td></tr></cfif>
-<cfif count lt 3><tr class="alt"><td>&mdash;</td></tr></cfif>
+<cfif count lt 3><tr><td>&mdash;</td></tr></cfif>
+</tbody>
 </table>
 <!---
 <cfset rsList=application.dashboardManager.getTopRated(rc.siteID,rc.threshold,3,rc.startDate,rc.stopDate) />
@@ -113,7 +121,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfloop query="rslist">
 <tr<cfif rslist.currentrow mod 2> class="alt"</cfif>>
 	<td><cfswitch expression="#rslist.type#">
-		<cfcase value="Page,Portal,Calendar,Gallery">
+		<cfcase value="Page,LocalRepo,Calendar,Gallery">
 		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,rsList.filename)#','#rslist.targetParams#');">#HTMLEditFormat(left(rslist.menutitle,28))#</a>
 		</cfcase>
 		<cfcase value="Link">

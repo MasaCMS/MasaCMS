@@ -57,6 +57,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.contentListFields=listDeleteAt(variables.feedBean.getDisplayList(),listFindNoCase(variables.feedBean.getDisplayList(),"Summary"))>
 		<cfset variables.feedBean.setDisplayList(variables.contentListFields)>
 	</cfif>
+	<cfparam name="objectparams.viewalllink" default="">
+	<cfparam name="objectparams.viewalllabel" default="#$.rbKey('list.viewall')#">
 </cfsilent>
 
 <cfif variables.feedBean.getIsActive()>
@@ -65,14 +67,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif variables.feedBean.getType() eq 'local'>
 		<cfsilent>
-			<cfset variables.rsPreFeed = application.feedManager.getFeed(variables.feedBean)/>
 			<cfif variables.$.siteConfig('extranet') eq 1 and variables.$.event('r').restrict eq 1>
-				<cfset variables.rs = variables.$.queryPermFilter(variables.rsPreFeed)/>
+				<cfset variables.iterator=variables.feedBean.getIterator(applyPermFilter=true)/>
 			<cfelse>
-				<cfset variables.rs = variables.rsPreFeed/>
+				<cfset variables.iterator=variables.feedBean.getIterator(applyPermFilter=false)/>
 			</cfif>
-			<cfset variables.iterator = variables.$.getBean("contentIterator")>
-			<cfset variables.iterator.setQuery(variables.rs, variables.feedBean.getNextN())>
 		
 			<cfset variables.checkMeta = variables.feedBean.getDisplayRatings() or variables.feedBean.getDisplayComments()>
 			<cfset variables.doMeta = 0/>
@@ -90,12 +89,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset variables.currentNextNIndex = 1>
 				<cfset variables.iterator.setPage(1)>
 			</cfif>
-			<cfset variables.nextN = variables.$.getBean('utility').getNextN(variables.rs,variables.feedBean.getNextN(),variables.currentNextNIndex)>
+			<cfset variables.nextN = variables.$.getBean('utility').getNextN(variables.iterator.getQuery(),variables.feedBean.getNextN(),variables.currentNextNIndex)>
 		</cfsilent>
 	
 		<cfif variables.iterator.getRecordCount()>
 			<cfoutput>
-				<div class="svSyndLocal svFeed svIndex clearfix" id="#variables.cssID#">
+				<div class="svSyndLocal svFeed svIndex clearfix #variables.feedBean.getCssClass()#" id="#variables.cssID#">
 					<cfif variables.feedBean.getDisplayName()>
 						<#variables.$.getHeaderTag('subHead1')#>#HTMLEditFormat(variables.feedBean.renderName())#</#variables.$.getHeaderTag('subHead1')#>
 					</cfif>
@@ -111,6 +110,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif variables.nextN.numberofpages gt 1>
 						#variables.$.dspObject_Include(thefile='dsp_nextN.cfm')#
 					</cfif>
+
+					<cfif len(objectParams.viewalllink)>
+						<a class="view-all" href="#objectParams.viewalllink#">#HTMLEditFormat(objectParams.viewalllabel)#</a>
+					</cfif>
 				</div>
 			</cfoutput>
 		<cfelse>
@@ -124,56 +127,56 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!---<cftry> --->
 		<cfsilent>
 			<cfset request.cacheItemTimespan = createTimeSpan(0, 0, 5, 0)>
-			<cfset variables.feedData = application.feedManager.getRemoteFeedData(variables.feedBean.getChannelLink(), variables.feedBean.getMaxItems())/>
+			<cfset variables.feedData = application.feedManager.getRemoteFeedData(variables.feedBean.getChannelLink(),variables.feedBean.getMaxItems())/>
 			<cfif not structIsEmpty(objectparams)>
 				<cfset arguments.hasSummary=objectparams.displaySummaries>	
 			</cfif>
 		</cfsilent>
 		<cfoutput>
 			<cfif isDefined("variables.feedData.maxItems") and variables.feedData.maxItems>
-				<div class="svSyndRemote svIndex svFeed clearfix" id="#variables.cssID#">
+				<div class="svSyndRemote svIndex svFeed clearfix #variables.feedBean.getCssClass()#" id="#variables.cssID#">
 					<#variables.$.getHeaderTag('subHead1')#>#HTMLEditFormat(variables.feedBean.getName())#</#variables.$.getHeaderTag('subHead1')#>
-					
-					<!---  UL MARKUP --->
-					<cfif variables.$.getListFormat() eq "ul">
+					<!--- UL MARKUP --->
+					<cfif variables.$.getListFormat() eq 'ul'>
 						<ul>
-						<cfif variables.feedData.type neq "atom">
-							<cfloop from="1" to="#variables.feedData.maxItems#" index="i">
-								<li<cfif (i EQ 1)> class="first"<cfelseif (i EQ variables.feedData.maxItems)> class="last"</cfif>>
-									<!--- Date stuff--->
-									<cfif structKeyExists(variables.feedData.itemArray[i],"pubDate")>
-										<cftry>
-										<cfset variables.itemDate=parseDateTime(variables.feedData.itemArray[i].pubDate.xmlText)>
-										<p class="releaseDate"><cfif isDate(variables.itemDate)>#LSDateFormat(variables.itemDate,variables.$.getLongDateFormat())#<cfelse>#variables.feedData.itemArray[i].pubDate.xmlText#</cfif></p>
-										<cfcatch></cfcatch>
-										</cftry>
-									<cfelseif structKeyExists(variables.feedData.itemArray[i],"dc:date")>
-										<cftry>
-										<cfset itemDate=parseDateTime(variables.feedData.itemArray[i]["dc:date"].xmlText)>
-										<p class="releaseDate"><cfif isDate(variables.itemDate)>#LSDateFormat(variables.itemDate,variables.$.getLongDateFormat())#<cfelse>#variables.feedData.itemArray[i]["dc:date"].xmlText#</cfif></p>
-										<cfcatch></cfcatch>
-										</cftry>
-									</cfif>
-									<h3><a href="#variables.feedData.itemArray[i].link.xmlText#" onclick="window.open(this.href); return false;">#variables.feedData.itemArray[i].title.xmlText#</a></h3>
-									<cfif arguments.hasSummary and structKeyExists(variables.feedData.itemArray[i],"description")><p class="summary">#variables.feedData.itemArray[i].description.xmlText#</p></cfif>
-								</ll>
-							</cfloop>
-						<cfelse>
-							<cfloop from="1" to="#variables.feedData.maxItems#" index="i">
-								<li<cfif (i EQ 1)> class="first"<cfelseif (i EQ variables.feedData.maxItems)> class="last"</cfif>>
-									<!--- Date stuff--->
-									<cfif structKeyExists(variables.feedData.itemArray[i],"updated")>
-										<cftry>
-										<cfset variables.itemDate=parseDateTime(variables.feedData.itemArray[i].updated.xmlText)>
-										<p class="releaseDate"><cfif isDate(variables.itemDate)>#LSDateFormat(variables.itemDate,variables.$.getLongDateFormat())#<cfelse>#variables.feedData.itemArray[i].updated.xmlText#</cfif></p>
-										<cfcatch></cfcatch>
-										</cftry>
-									</cfif>
-									<h3><a href="#variables.feedData.itemArray[i].link.XmlAttributes.href#" onclick="window.open(this.href); return false;">#variables.feedData.itemArray[i].title.xmlText#</a></h3>
-									<cfif arguments.hasSummary and structKeyExists(variables.feedData.itemArray[i],"summary")><p class="summary">#variables.feedData.itemArray[i].summary.xmlText#</p></cfif>
-								</li>
-							</cfloop>
-						</cfif>
+							<cfif variables.feedData.type neq "atom">
+								<cfloop from="1" to="#variables.feedData.maxItems#" index="i">
+									<li<cfif (i EQ 1)> class="first"<cfelseif (i EQ variables.feedData.maxItems)> class="last"</cfif>>
+										<!--- Date stuff--->
+										<cfif structKeyExists(variables.feedData.itemArray[i],"pubDate")>
+											<cftry>
+											<cfset variables.itemDate=parseDateTime(variables.feedData.itemArray[i].pubDate.xmlText)>
+											<p class="releaseDate"><cfif isDate(variables.itemDate)>#LSDateFormat(variables.itemDate,variables.$.getLongDateFormat())#<cfelse>#variables.feedData.itemArray[i].pubDate.xmlText#</cfif></p>
+											<cfcatch></cfcatch>
+											</cftry>
+										<cfelseif structKeyExists(variables.feedData.itemArray[i],"dc:date")>
+											<cftry>
+											<cfset itemDate=parseDateTime(variables.feedData.itemArray[i]["dc:date"].xmlText)>
+											<p class="releaseDate"><cfif isDate(variables.itemDate)>#LSDateFormat(variables.itemDate,variables.$.getLongDateFormat())#<cfelse>#variables.feedData.itemArray[i]["dc:date"].xmlText#</cfif></p>
+											<cfcatch></cfcatch>
+											</cftry>
+										</cfif>
+										<h3><a href="#variables.feedData.itemArray[i].link.xmlText#" onclick="window.open(this.href); return false;">#variables.feedData.itemArray[i].title.xmlText#</a></h3>
+										<cfif arguments.hasSummary and structKeyExists(variables.feedData.itemArray[i],"description")><p class="summary">#variables.feedData.itemArray[i].description.xmlText#</p></cfif>
+									</li>
+								</cfloop>
+							<cfelse>
+								<cfloop from="1" to="#variables.feedData.maxItems#" index="i">
+									<li<cfif (i EQ 1)> class="first"<cfelseif (i EQ variables.feedData.maxItems)> class="last"</cfif>>
+										<!--- Date stuff--->
+										<cfif structKeyExists(variables.feedData.itemArray[i],"updated")>
+											<cftry>
+											<cfset variables.itemDate=parseDateTime(variables.feedData.itemArray[i].updated.xmlText)>
+											<p class="releaseDate"><cfif isDate(variables.itemDate)>#LSDateFormat(variables.itemDate,variables.$.getLongDateFormat())#<cfelse>#variables.feedData.itemArray[i].updated.xmlText#</cfif></p>
+											<cfcatch></cfcatch>
+											</cftry>
+										</cfif>
+										<h3><a href="#variables.feedData.itemArray[i].link.XmlAttributes.href#" onclick="window.open(this.href); return false;">#variables.feedData.itemArray[i].title.xmlText#</a></h3>
+										<cfif arguments.hasSummary and structKeyExists(variables.feedData.itemArray[i],"summary")><p class="summary">#variables.feedData.itemArray[i].summary.xmlText#</p></cfif>
+									</li>
+								</cfloop>
+							</cfif>
+						</ul>
 					<cfelse>
 					<!--- DL MARKUP --->
 						<cfif variables.feedData.type neq "atom">
@@ -193,7 +196,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 										<cfcatch></cfcatch>
 										</cftry>
 									</cfif>
-									<dt><a href="#variables.feedData.itemArray[i].link.xmlText#" onclick="window.open(this.href); return false;">#variables.feedData.itemArray[i].title.xmlText#</a></dt>						
+									<dt><a href="#variables.feedData.itemArray[i].link.xmlText#" onclick="window.open(this.href); return false;">#variables.feedData.itemArray[i].title.xmlText#</a></dt>
 									<cfif arguments.hasSummary and structKeyExists(variables.feedData.itemArray[i],"description")><dd class="summary">#variables.feedData.itemArray[i].description.xmlText#</dd></cfif>
 								</dl>
 							</cfloop>
@@ -213,6 +216,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								</dl>
 							</cfloop>
 						</cfif>
+					</cfif>
+					<cfif len(objectParams.viewalllink)>
+						<a class="view-all" href="#objectParams.viewalllink#">#HTMLEditFormat(objectParams.viewalllabel)#</a>
 					</cfif>
 				</div>
 			<cfelse>

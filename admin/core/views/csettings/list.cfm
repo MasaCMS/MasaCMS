@@ -48,23 +48,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="rc.siteSortBy" default="site">
 <cfparam name="rc.siteUpdateSelect" default="false">
 <cfparam name="rc.siteAutoDeploySelect" default="false">
-<h2>Site Settings</h2>
-<ul id="navTask">
+<h1>Site Settings</h1>
+<div id="nav-module-specific" class="btn-toolbar">
 	<cfif rc.action neq 'updateCore'>
-		<li><a href="index.cfm?muraAction=cSettings.list&action=updateCore" onclick="return confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.\n\nIf your are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.',this.href);">Update Core Files to Latest Version</a></li>
-		<cfif rc.siteUpdateSelect eq "true" or rc.siteSortBy eq "orderno">
-			<li><a href="index.cfm?muraAction=cSettings.list&siteSortBy=site">View Site List by Site Name</a></li>
+		<cfif application.configBean.getAllowAutoUpdates()>
+			<div class="btn-group">
+				<a class="btn" href="index.cfm?muraAction=cSettings.list&action=updateCore" onclick="return confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.\n\nIf your are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.',this.href);"><i class="icon-bolt"></i> Update Core Files to Latest Version</a>
+				<cfif rc.siteUpdateSelect neq "true">
+					<a class="btn" href="index.cfm?muraAction=cSettings.list&siteUpdateSelect=true"><i class="icon-bolt"></i> Multi-Site Version Update</a>
+				</cfif>
+			</div>
 		</cfif>
-		<cfif rc.siteSortBy neq "orderno">
-			<li><a href="index.cfm?muraAction=cSettings.list&siteSortBy=orderno">View Site List by Bind Order</a></li>
+		<div class="btn-group">
+			<cfif rc.siteUpdateSelect eq "true" or rc.siteSortBy eq "orderno">
+				<a class="btn" href="index.cfm?muraAction=cSettings.list&siteSortBy=site"><i class="icon-list"></i> View Site List by Site Name</a>
+			</cfif>
+			<cfif rc.siteSortBy neq "orderno">
+				<a class="btn" href="index.cfm?muraAction=cSettings.list&siteSortBy=orderno"><i class="icon-list"></i> View Site List by Bind Order</a>
+			</cfif>
+			<cfelse>
+			<a class="btn" href="index.cfm?muraAction=cSettings.list"><i class="icon-list"></i> View Site List</a>
 		</cfif>
-		<cfif rc.siteUpdateSelect neq "true">
-			<li><a href="index.cfm?muraAction=cSettings.list&siteUpdateSelect=true">Multi-Site Version Update</a></li>
-		</cfif>
-		<cfelse>
-		<li><a href="index.cfm?muraAction=cSettings.list">View Site List</a></li>
-	</cfif>
-</ul>
+	</div>
+</div>
  
 <!--- site updates messaging --->
 <cfif StructKeyExists(rc, 'sitesUpdated') and IsSimpleValue(rc.sitesUpdated) and len(trim(rc.sitesUpdated))>
@@ -82,13 +88,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfoutput>
 	</cfif>
 	<cfset application.userManager.getCurrentUser().setValue("errors","")>
-	<img class="loadProgress tabPreloader" src="images/progress_bar.gif">
-	<div class="tabs initActiveTab" style="display:none">
-		<ul>
+	
+	<div class="tabbable">
+		<ul class="nav nav-tabs initActiveTab">
 			<li><a href="#tabCurrentsites" onclick="return false;"><span>Current Sites</span></a></li>
 			<li><a href="#tabPlugins" onclick="return false;"><span>Plugins</span></a></li>
 		</ul>
-		<div id="tabCurrentsites"> <br/>
+	<div class="tab-content">
+		<div id="tabCurrentsites" class="tab-pane fade"> 
 			<script type="text/javascript" language="javascript">
 				jQuery(function ($) {
 					$('#checkall').click(function () {
@@ -98,7 +105,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						confirmDialog(
 						'WARNING: DO NOT continue unless you have backed up all selected site files.',
 						function(){
-									$('#actionButtons').hide();
+									$('.form-actions').hide();
 									$('#actionIndicator').show();
 									document.form1.submit();
 								}
@@ -108,7 +115,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				});
 			</script>
 			<form novalidate="novalidate" name="form1" id="form1" action="index.cfm?muraAction=csettings.list" method="post">
-				<table class="mura-table-grid stripe">
+				<table class="table table-striped table-condensed table-bordered mura-table-grid">
 					<tr>
 						<cfif rc.siteUpdateSelect eq "true">
 							<th>
@@ -119,7 +126,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfif rc.siteSortBy eq "orderno">
 							<th>Bind Order</th>
 						</cfif>
-						<th class="varWidth">Site</th>
+						<th class="var-width">Site</th>
 						<th>Domain</th>
 						<th>Version</th>
 						<cfif application.configBean.getMode() eq 'staging'
@@ -129,7 +136,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<th>Last&nbsp;Deployment</th>
 						</cfif>
 						<!---<th>Site Version</th>--->
-						<th class="administration">&nbsp;</th>
+						<th class="actions">&nbsp;</th>
 					</tr>
 					<cfoutput query="rc.rsSites">
 					<tr>
@@ -147,7 +154,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<input type="hidden" value="#rc.rsSites.siteid#" name="orderid" />
 							</td>
 						</cfif>
-						<td class="varWidth"><a title="Edit" href="index.cfm?muraAction=cSettings.editSite&siteid=#rc.rsSites.siteid#">#rc.rsSites.site#</a></td>
+						<td class="var-width"><a title="Edit" href="index.cfm?muraAction=cSettings.editSite&siteid=#rc.rsSites.siteid#">#rc.rsSites.site#</a></td>
 						<td>
 							<cfif len(rc.rsSites.domain)>
 								#HTMLEditFormat(rc.rsSites.domain)#
@@ -170,8 +177,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								</cfif></td>
 						</cfif>
 						<!---<td>#application.autoUpdater.getCurrentCompleteVersion(rc.rsSites.siteid)#</td>--->
-						<td class="administration"><ul <cfif application.configBean.getMode() eq 'Staging'>class="three"<cfelse>class="two"</cfif>>
-								<li class="edit"><a title="Edit" href="index.cfm?muraAction=cSettings.editSite&siteid=#rc.rsSites.siteid#">Edit</a></li>
+						<td class="actions"><ul <cfif application.configBean.getMode() eq 'Staging'>class="three"<cfelse>class="two"</cfif>>
+								<li class="edit"><a title="Edit" href="index.cfm?muraAction=cSettings.editSite&siteid=#rc.rsSites.siteid#"><i class="icon-pencil"></i></a></li>
 								<cfif application.configBean.getMode() eq 'Staging'>
 									<cfif application.configBean.getValue('deployMode') eq "bundle">
 										<li class="deploy"><a href="?muraAction=cSettings.deploybundle&siteid=#rc.rsSites.siteid#" onclick="return confirmDialog('Deploy #JSStringFormat(rc.rsSites.site)# to production?',this.href);" title="Deploy">Deploy</a></li>
@@ -180,9 +187,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									</cfif>
 								</cfif>
 								<cfif rc.rsSites.siteid neq 'default'>
-									<li class="delete"><a title="Delete" href="index.cfm?muraAction=cSettings.updateSite&action=delete&siteid=#rc.rsSites.siteid#" onclick="return confirmDialog('#JSStringFormat("WARNING: A deleted site and all of it''s files cannot be recovered. Are you sure that you want to delete the site named '#Ucase(rc.rsSites.site)#'?")#',this.href);">Delete</a></li>
+									<li class="delete"><a title="Delete" href="index.cfm?muraAction=cSettings.updateSite&action=delete&siteid=#rc.rsSites.siteid#" onclick="return confirmDialog('#JSStringFormat("WARNING: A deleted site and all of it''s files cannot be recovered. Are you sure that you want to delete the site named '#Ucase(rc.rsSites.site)#'?")#',this.href);"><i class="icon-remove-sign"></i></a></li>
 									<cfelse>
-									<li class="deleteOff">&nbsp;</li>
+									<li class="delete disabled"><i class="icon-remove-sign"></i></li>
 								</cfif>
 								<!---<li class="export"><a title="Export" href="index.cfm?muraAction=cArch.exportHtmlSite&siteid=#rc.rsSites.siteid#" onclick="return confirm('Export the #jsStringFormat("'#rc.rsSites.site#'")# Site?')">Export</a></li>--->
 							</ul></td>
@@ -190,56 +197,54 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfoutput>
 				</table>
 				<cfif rc.siteSortBy eq "orderno">
-					<input type="button" class="submit" onclick="document.form1.submit();" value="Update Bind Order" />
+					<button type="button" class="btn" onclick="document.form1.submit();"><i class="icon-check"></i> Update Bind Order</button>
 				</cfif>
 				<cfif  rc.siteUpdateSelect eq "true">
-					<div class="clearfix" id="actionButtons">
-					<input type="button" class="submit" id="btnUpdateSites" value="Update Selected Sites to Latest Version" />
+					<div class="form-actions">
+					<button type="button" class="btn" id="btnUpdateSites"><i class="icon-bolt"></i> Update Selected Sites to Latest Version</button>
 					</div>
-					<div id="actionIndicator" style="display: none;">
-						<cfoutput><img class="loadProgress" src="#application.configBean.getContext()#/admin/images/progress_bar.gif"></cfoutput>
-					</div>
+					<div class="load-inline" style="display: none;"></div>
 				</cfif>
 				<cfif application.configBean.getMode() eq 'staging'
 						and rc.siteSortBy neq "orderno"
 						and rc.siteUpdateSelect neq "true">
-					<input type="button" class="submit" onclick="document.form1.submit();" value="Update Auto Deploy Settings" />	
+					<button type="button" class="btn" onclick="document.form1.submit();"><i class="icon-check"></i>Update Auto Deploy Settings</button>
 				</cfif>
 				<cfoutput>
 					<input type="hidden" name="siteSortBy" value="#htmlEditFormat(rc.siteSortBy)#" />
 				</cfoutput>
 			</form>
 		</div>
-		<div id="tabPlugins"> <br/>
+		<div id="tabPlugins" class="tab-pane fade"> <br/>
 			<form novalidate="novalidate" name="frmNewPlugin" action="index.cfm?muraAction=cSettings.deployPlugin" enctype="multipart/form-data" method="post" onsubmit="return validateForm(this);">
 				Upload New Plugin<br/>
 				<input name="newPlugin" type="file" required="true" message="Please select a plugin file.">
-				<input type="submit" value="Deploy"/>
+				<input type="submit" value="Deploy" class="btn"/>
 			</form>
-			<table class="mura-table-grid stripe">
+			<table class="table table-striped table-condensed table-bordered mura-table-grid">
 				<tr>
-					<th class="varWidth">Name</th>
+					<th class="var-width">Name</th>
 					<th>Directory</th>
 					<th>Category</th>
 					<th>Version</th>
 					<th>Provider</th>
 					<!--- <th>Provider URL</th> --->
 					<th>Plugin ID</th>
-					<th class="administration">&nbsp;</th>
+					<th class="actions">&nbsp;</th>
 				</tr>
 				<cfif rc.rsPlugins.recordcount>
 					<cfoutput query="rc.rsPlugins">
 					<tr>
-						<td class="varWidth"><a class="alt" title="view" href="#application.configBean.getContext()#/plugins/#rc.rsPlugins.directory#/">#htmlEditFormat(rc.rsPlugins.name)#</a></td>
+						<td class="var-width"><a class="alt" title="view" href="#application.configBean.getContext()#/plugins/#rc.rsPlugins.directory#/">#htmlEditFormat(rc.rsPlugins.name)#</a></td>
 						<td>#htmlEditFormat(rc.rsPlugins.directory)#</td>
 						<td>#htmlEditFormat(rc.rsPlugins.category)#</td>
 						<td>#htmlEditFormat(rc.rsPlugins.version)#</td>
 						<td><a class="alt" href="#rc.rsPlugins.providerurl#" target="_blank">#htmlEditFormat(rc.rsPlugins.provider)#</a></td>
 						<!--- <td><a href="#rc.rsPlugins.providerurl#" target="_blank">View</a></td> --->
 						<td>#rc.rsPlugins.pluginID#</td>
-						<td class="administration"><ul class="two">
-								<li class="edit"><a title="Edit" href="index.cfm?muraAction=cSettings.editPlugin&moduleID=#rc.rsPlugins.moduleID#">Edit</a></li>
-								<li class="delete"><a title="Delete" href="index.cfm?muraAction=cSettings.deletePlugin&moduleID=#rc.rsPlugins.moduleID#" onclick="return confirmDialog('Delete #jsStringFormat("'#Ucase(rc.rsPlugins.name)#'")#?',this.href);">Delete</a></li>
+						<td class="actions"><ul>
+								<li class="edit"><a title="Edit" href="index.cfm?muraAction=cSettings.editPlugin&moduleID=#rc.rsPlugins.moduleID#"><i class="icon-pencil"></i></a></li>
+								<li class="delete"><a title="Delete" href="index.cfm?muraAction=cSettings.deletePlugin&moduleID=#rc.rsPlugins.moduleID#" onclick="return confirmDialog('Delete #jsStringFormat("'#Ucase(rc.rsPlugins.name)#'")#?',this.href);"><i class="icon-remove-sign"></i></a></li>
 							</ul></td>
 					</tr>
 					</cfoutput>
@@ -250,11 +255,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</table>
 		</div>
+		<div class="load-inline tab-preloader"></div>
+	</div>
 	</div>
 	<!---
 <cfparam name="rc.activeTab" default="0">
 <cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
-<cfhtmlhead text='<script type="text/javascript" src="js/tab-view.js"></script>'>
+<cfhtmlhead text='<script type="text/javascript" src="assets/js/tab-view.js"></script>'>
 <cfoutput><script type="text/javascript">
 initTabs(Array("Current Sites","Plugins"),#rc.activeTab#,0,0);
 </script></cfoutput>--->
@@ -275,7 +282,7 @@ initTabs(Array("Current Sites","Plugins"),#rc.activeTab#,0,0);
 			</cfif>
 		</p>
 		<cfcatch>
-			<h3>An Error has occured.</h3>
+			<h2>An Error has occured.</h2>
 			<cfdump var="#cfcatch.message#">
 			<br/>
 			<br/>

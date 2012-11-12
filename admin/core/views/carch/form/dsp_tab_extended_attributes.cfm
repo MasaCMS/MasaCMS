@@ -45,7 +45,10 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.extendedattributes"))/>
-<cfset tabList=listAppend(tabList,"tabExtendedattributes")>
-<cfoutput><div id="tabExtendedattributes">
-<span id="extendSetsDefault"></span>
-</div></cfoutput>
+<cfset tabList=listAppend(tabList,"tabExtendedAttributes")>
+<cfoutput>
+<div id="tabExtendedAttributes" class="tab-pane fade">
+	<span id="extendset-container-default" class="extendset-container"></span>
+</div>
+
+</cfoutput>

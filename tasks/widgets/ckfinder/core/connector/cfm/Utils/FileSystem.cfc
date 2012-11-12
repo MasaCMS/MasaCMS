@@ -3,7 +3,7 @@
  * CKFinder
  * ========
  * http://ckfinder.com
- * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (C) 2007-2012, CKSource - Frederico Knabben. All rights reserved.
  *
  * The software, this file and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
@@ -94,7 +94,21 @@ hint="check if filename is valid">
 	if(REFindNoCase('\\|\/|\:|\?|\*|"|<|>|[[:cntrl:]]', ARGUMENTS.fileName)) {
 		return false;
 	}
+	if (isDefined( "REQUEST.Config.disallowUnsafeCharacters" ) and REQUEST.Config.disallowUnsafeCharacters and find( ";", ARGUMENTS.fileName )) {
+		return false;
+	}
 	return true;
+</cfscript>
+</cffunction>
+
+<cffunction name="checkFolderName" access="public" returntype="boolean" output="false"
+hint="check if foldername is valid">
+<cfargument name="folderName" type="string" required="true" />
+<cfscript>
+	if (isDefined( "REQUEST.Config.disallowUnsafeCharacters" ) and REQUEST.Config.disallowUnsafeCharacters and find( ".", ARGUMENTS.folderName )) {
+		return false;
+	}
+	return THIS.checkFileName(ARGUMENTS.folderName);
 </cfscript>
 </cffunction>
 
@@ -149,7 +163,7 @@ hint="check if filename is valid">
 <cffunction name="resolveUrl" access="public" returntype="String" output="false">
 	<cfargument name="baseUrl" required="true" type="String">
 	<cfscript>
-		return THIS.combinePaths(replaceNoCase(replace(getBaseTemplatePath(),"\","/","all"),CGI.script_name,""), ARGUMENTS.baseUrl);
+		return THIS.combinePaths(replaceNoCase(replace(getBaseTemplatePath(),"\","/","all"),CGI.script_name,""), REReplaceNoCase(ARGUMENTS.baseUrl, "^http(s)?://[^/]+", "", "ALL"));
 	</cfscript>
 </cffunction>
 
@@ -403,27 +417,35 @@ Returns false if file is invalid.
 </cffunction>
 
 <cffunction access="public" name="hasChildren" hint="return true if given folder has subfolders" returntype="boolean" description="return true if given folder has subfolders" output="false">
+	<cfargument name="config" required="true" type="any">
+	<cfargument name="clientPath" required="true" type="String">
 	<cfargument name="folderPath" required="true" type="String">
+	<cfargument name="resourceType" required="true" type="any">
 
-	<cfset var hasChildren = false />
 	<cfset var i =1 />
+	<cfset var filename = "">
+	<cfset var filetype = "">
+	<cfset var acl = APPLICATION.CreateCFC("Core.AccessControlConfig") />
 
-	<cftry>
-		<cfdirectory action="list" directory="#ARGUMENTS.folderPath#" name="qDirTemp" sort="type,name">
-		<cfcatch type="any">
-			<cfthrow errorcode="#REQUEST.constants.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED#" type="ckfinder" />
-		</cfcatch>
-	</cftry>
+	<cfdirectory action="list" directory="#ARGUMENTS.folderPath#" name="qDirTemp" sort="type,name">
 
 	<cfscript>
 		while( i lte qDirTemp.recordCount ) {
-			if (listFind(".,..", qDirTemp.name[i]) eq 0 and compareNoCase( qDirTemp.type[i], "FILE" ) neq 0) {
-				hasChildren = true;
-			}
+			foldername = qDirTemp.name[i];
+			foldertype = qDirTemp.type[i];
 			i=i+1;
+			if (listFind(".,..", foldername) eq 0 and compareNoCase( foldertype, "FILE" ) neq 0) {
+				// skip if hidden path
+				if (config.checkIsHiddenPath(clientPath & foldername & "/"))
+					continue;
+				aclMask = acl.getComputedMask(resourceType, clientPath & foldername & "/");
+				// return true if folder found with valid folder_view permissions
+				if (bitAnd(aclMask, REQUEST.constants.CKFINDER_CONNECTOR_ACL_FOLDER_VIEW) eq REQUEST.constants.CKFINDER_CONNECTOR_ACL_FOLDER_VIEW)
+					return true;
+			}
 		}
 	</cfscript>
-	<cfreturn hasChildren>
+	<cfreturn false>
 </cffunction>
 
 </cfcomponent>

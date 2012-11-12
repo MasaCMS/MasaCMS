@@ -223,6 +223,7 @@
 	<cfset var rsAttribute="">
 	<cfset var dataTable=getDataTable()>
 	<cfset var tableModifier="">
+	<cfset var hasExtendedSort= len(getSortBy()) and getSortBy() neq "random">
 
 	<cfif variables.configBean.getDbType() eq "MSSQL">
 		 <cfset tableModifier="with (nolock)">
@@ -247,7 +248,7 @@
 	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" blockfactor="#blockFactor#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	<cfif dbType eq "oracle" and getMaxItems()>select * from (</cfif>
 	select <cfif dbtype eq "mssql" and getMaxItems()>top #getMaxItems()#</cfif> 	
-	tclassextend.type,tclassextend.subtype,tclassextend.siteID, #dataTable#.baseID as ID<cfif len(getSortBy())>, extendedSort</cfif>
+	tclassextend.type,tclassextend.subtype,tclassextend.siteID, #dataTable#.baseID as ID<cfif hasExtendedSort>, extendedSort</cfif>
 	from #dataTable# #tableModifier#
 	INNER JOIN tclassextendattributes #tableModifier# on (#dataTable#.attributeID=tclassextendattributes.attributeID)
 	INNER JOIN tclassextendsets #tableModifier# on (tclassextendattributes.extendsetID=tclassextendsets.extendsetID)
@@ -289,29 +290,28 @@
 								 
 			<cfif param.getIsValid()>	
 				<cfif not started >
-					and (
-				</cfif>
-				<cfif listFindNoCase("openGrouping,(",param.getRelationship())>
-					(
-					<cfset openGrouping=true />
-				<cfelseif listFindNoCase("orOpenGrouping,or (",param.getRelationship())>
-					<cfif started>or</cfif> (
-					<cfset openGrouping=true />
-				<cfelseif listFindNoCase("andOpenGrouping,and (",param.getRelationship())>
-					<cfif started>and</cfif> (
-					<cfset openGrouping=true />
-				<cfelseif listFindNoCase("closeGrouping,)",param.getRelationship())>
-					)
+					<cfset started = true />and (
 				<cfelse>
-					<cfif not openGrouping and started>
-						#param.getRelationship()#
+					<cfif listFindNoCase("openGrouping,(",param.getRelationship())>
+						(
+						<cfset openGrouping=true />
+					<cfelseif listFindNoCase("orOpenGrouping,or (",param.getRelationship())>
+						or (
+						<cfset openGrouping=true />
+					<cfelseif listFindNoCase("andOpenGrouping,and (",param.getRelationship())>
+						and (
+						<cfset openGrouping=true />
+					<cfelseif listFindNoCase("closeGrouping,)",param.getRelationship())>
+						)
 					<cfelse>
+						<cfif not openGrouping>
+						#param.getRelationship()#
+						<cfelse>
 						<cfset openGrouping=false />
+						</cfif>
 					</cfif>
 				</cfif>
-				
-				<cfset started = true />
-				<cfif listLen(param.getField(),".") gt 1>			
+				<cfif  listLen(param.getField(),".") gt 1>			
 					#param.getField()# #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCondition() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>  	
 				<cfelseif len(param.getField())>
 					#dataTable#.baseID IN (
@@ -330,7 +330,7 @@
 		<cfif started>)</cfif>
 	</cfif>
 	
-	Group By tclassextend.type,tclassextend.subtype,tclassextend.siteID, #dataTable#.baseID<cfif len(getSortBy())>, extendedSort</cfif>
+	Group By tclassextend.type,tclassextend.subtype,tclassextend.siteID, #dataTable#.baseID<cfif hasExtendedSort>, extendedSort</cfif>
 	
 	<cfif len(getSortBy())>
 		

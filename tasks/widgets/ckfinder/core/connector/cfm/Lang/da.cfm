@@ -1,7 +1,7 @@
 <cfsilent>
 <cfprocessingdirective pageencoding="utf-8">
 <!---
-Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckfinder.com/license
 
  Defines the object for the Danish language.
@@ -19,6 +19,7 @@ CKFLang = structNew();
 	CKFLang.Errors[105] = 'Ugyldig filtype.';
 	CKFLang.Errors[109] = 'Ugyldig anmodning.';
 	CKFLang.Errors[110] = 'Ukendt fejl.';
+	CKFLang.Errors[111] = 'It was not possible to complete the request due to resulting file size.';
 	CKFLang.Errors[115] = 'En fil eller mappe med det samme navn eksisterer allerede.';
 	CKFLang.Errors[116] = 'Mappen blev ikke fundet. Opdatér listen eller prøv igen.';
 	CKFLang.Errors[117] = 'Filen blev ikke fundet. Opdatér listen eller prøv igen.';

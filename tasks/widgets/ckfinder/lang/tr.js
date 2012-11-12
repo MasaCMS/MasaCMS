@@ -2,7 +2,7 @@
  * CKFinder
  * ========
  * http://ckfinder.com
- * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (C) 2007-2012, CKSource - Frederico Knabben. All rights reserved.
  *
  * The software, this file, and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
@@ -13,10 +13,9 @@
 
 /**
  * @fileOverview Defines the {@link CKFinder.lang} object, for the Turkish
- *		language. This is the base file for all translations.
+ *		language.
  *
- *	Turkish translation by Abdullah M CEYLAN a.k.a. Kenan Balamir.
- * Last updated: 26-07-2011
+ *	Turkish translation by Abdullah M CEYLAN a.k.a. Kenan Balamir. Updated.
  */
 
 /**
@@ -47,6 +46,7 @@ CKFinder.lang['tr'] =
 	},
 
 
+	// Language direction, 'ltr' or 'rtl'.
 	dir : 'ltr',
 	HelpLang : 'en',
 	LangCode : 'tr',
@@ -77,16 +77,18 @@ CKFinder.lang['tr'] =
 	FolderDelete	: '"%1" klasörünü silmek istediğinizden emin misiniz?',
 	FolderRenaming	: ' (Yeniden adlandırılıyor...)',
 	FolderDeleting	: ' (Siliniyor...)',
+	DestinationFolder	: 'Destination Folder', // MISSING
 
 	// Files
 	FileRename		: 'Lütfen yeni dosyanın adını yazın: ',
 	FileRenameExt	: 'Dosya uzantısını değiştirmek istiyor musunuz? Bu, dosyayı kullanılamaz hale getirebilir.',
 	FileRenaming	: 'Yeniden adlandırılıyor...',
 	FileDelete		: '"%1" dosyasını silmek istediğinizden emin misiniz?',
+	FilesDelete	: 'Are you sure you want to delete %1 files?', // MISSING
 	FilesLoading	: 'Yükleniyor...',
 	FilesEmpty		: 'Klasör boş',
-	FilesMoved		: '%1 dosyası, %2:%3 içerisine taşındı',
-	FilesCopied		: '%1 dosyası, %2:%3 içerisine kopyalandı',
+	DestinationFile	: 'Destination File', // MISSING
+	SkippedFiles	: 'List of skipped files:', // MISSING
 
 	// Basket
 	BasketFolder		: 'Sepet',
@@ -95,13 +97,21 @@ CKFinder.lang['tr'] =
 	BasketOpenFolder	: 'Üst klasörü aç',
 	BasketTruncateConfirm : 'Sepetteki tüm dosyaları silmek istediğinizden emin misiniz?',
 	BasketRemoveConfirm	: 'Sepetteki %1% dosyasını silmek istediğinizden emin misiniz?',
+	BasketRemoveConfirmMultiple	: 'Do you really want to remove %1 files from the basket?', // MISSING
 	BasketEmpty			: 'Sepette hiç dosya yok, birkaç tane sürükleyip bırakabilirsiniz',
 	BasketCopyFilesHere	: 'Sepetten Dosya Kopyala',
 	BasketMoveFilesHere	: 'Sepetten Dosya Taşı',
 
-	BasketPasteErrorOther	: '%s Dosya Hatası: %e',
-	BasketPasteMoveSuccess	: 'Taşınan dosya: %s',
-	BasketPasteCopySuccess	: 'Kopyalanan dosya: %s',
+	// Global messages
+	OperationCompletedSuccess	: 'Operation completed successfully.', // MISSING
+	OperationCompletedErrors		: 'Operation completed with errors.', // MISSING
+	FileError				: '%s: %e', // MISSING
+
+	// Move and Copy files
+	MovedFilesNumber		: 'Number of files moved: %s.', // MISSING
+	CopiedFilesNumber	: 'Number of files copied: %s.', // MISSING
+	MoveFailedList		: 'The following files could not be moved:<br />%s', // MISSING
+	CopyFailedList		: 'The following files could not be copied:<br />%s', // MISSING
 
 	// Toolbar Buttons (some used elsewhere)
 	Upload		: 'Yükle',
@@ -120,9 +130,10 @@ CKFinder.lang['tr'] =
 	NewSubFolder	: 'Yeni Altklasör',
 	Rename			: 'Yeniden Adlandır',
 	Delete			: 'Sil',
+	DeleteFiles		: 'Delete Files', // MISSING
 
-	CopyDragDrop	: 'Dosyayı buraya kopyala',
-	MoveDragDrop	: 'Dosyayı buraya taşı',
+	CopyDragDrop	: 'Buraya kopyala',
+	MoveDragDrop	: 'Buraya taşı',
 
 	// Dialogs
 	RenameDlgTitle		: 'Yeniden Adlandır',
@@ -132,6 +143,7 @@ CKFinder.lang['tr'] =
 
 	FileOverwrite	: 'Üzerine yaz',
 	FileAutorename	: 'Oto-Yeniden Adlandır',
+	ManuallyRename	: 'Manually rename', // MISSING
 
 	// Generic
 	OkBtn		: 'Tamam',
@@ -152,16 +164,17 @@ CKFinder.lang['tr'] =
 	UploadExtIncorrect	: 'Bu dosya uzantısına, bu klasörde izin verilmiyor.',
 
 	// Flash Uploads
-	UploadLabel			: 'Files to Upload', // MISSING
-	UploadTotalFiles	: 'Total Files:', // MISSING
-	UploadTotalSize		: 'Total Size:', // MISSING
-	UploadAddFiles		: 'Add Files', // MISSING
-	UploadClearFiles	: 'Clear Files', // MISSING
-	UploadCancel		: 'Cancel Upload', // MISSING
-	UploadRemove		: 'Remove', // MISSING
-	UploadRemoveTip		: 'Remove !f', // MISSING
-	UploadUploaded		: 'Uploaded !n%', // MISSING
-	UploadProcessing	: 'Processing...', // MISSING
+	UploadLabel			: 'Gönderilecek Dosyalar',
+	UploadTotalFiles	: 'Toplam Dosyalar:',
+	UploadTotalSize		: 'Toplam Büyüklük:',
+	UploadSend			: 'Yükle',
+	UploadAddFiles		: 'Dosyaları Ekle',
+	UploadClearFiles	: 'Dosyaları Temizle',
+	UploadCancel		: 'Göndermeyi İptal Et',
+	UploadRemove		: 'Sil',
+	UploadRemoveTip		: '!f sil',
+	UploadUploaded		: '!n% gönderildi',
+	UploadProcessing	: 'Gönderiliyor...',
 
 	// Settings Panel
 	SetTitle		: 'Ayarlar',
@@ -176,6 +189,7 @@ CKFinder.lang['tr'] =
 	SetSortName		: 'Dosya adına göre',
 	SetSortDate		: 'Tarihe göre',
 	SetSortSize		: 'Boyuta göre',
+	SetSortExtension		: 'Uzantısına göre',
 
 	// Status Bar
 	FilesCountEmpty : '<Klasörde Dosya Yok>',
@@ -183,8 +197,10 @@ CKFinder.lang['tr'] =
 	FilesCountMany	: '%1 dosya',
 
 	// Size and Speed
-	Kb				: '%1 kB',
-	KbPerSecond		: '%1 kB/s',
+	Kb				: '%1 KB',
+	Mb				: '%1 MB',
+	Gb				: '%1 GB',
+	SizePerSecond	: '%1/sn',
 
 	// Connector Error Messages.
 	ErrorUnknown	: 'İsteğinizi yerine getirmek mümkün değil. (Hata %1)',
@@ -199,6 +215,7 @@ CKFinder.lang['tr'] =
 	105 : 'Geçersiz dosya uzantısı.',
 	109 : 'Geçersiz istek.',
 	110 : 'Bilinmeyen hata.',
+	111 : 'It was not possible to complete the request due to resulting file size.', // MISSING
 	115 : 'Aynı isimde bir dosya ya da klasör zaten var.',
 	116 : 'Klasör bulunamadı. Lütfen yenileyin ve tekrar deneyin.',
 	117 : 'Dosya bulunamadı. Lütfen dosya listesini yenileyin ve tekrar deneyin.',
@@ -222,14 +239,16 @@ CKFinder.lang['tr'] =
 		FileEmpty		: 'Dosya adı boş olamaz',
 		FileExists		: '%s dosyası zaten var',
 		FolderEmpty		: 'Klasör adı boş olamaz',
+		FolderExists	: 'Folder %s already exists.', // MISSING
+		FolderNameExists	: 'Folder already exists.', // MISSING
 
 		FileInvChar		: 'Dosya adının içermesi mümkün olmayan karakterler: \n\\ / : * ? " < > |',
 		FolderInvChar	: 'Klasör adının içermesi mümkün olmayan karakterler: \n\\ / : * ? " < > |',
 
 		PopupBlockView	: 'Dosyayı yeni pencerede açmak için, tarayıcı ayarlarından bu sitenin açılır pencerelerine izin vermeniz gerekiyor.',
-		XmlError		: 'It was not possible to properly load the XML response from the web server.', // MISSING
-		XmlEmpty		: 'It was not possible to load the XML response from the web server. The server returned an empty response.', // MISSING
-		XmlRawResponse	: 'Raw response from the server: %s' // MISSING
+		XmlError		: 'Web sunucusundan XML yanıtı düzgün bir şekilde yüklenemedi.',
+		XmlEmpty		: 'Web sunucusundan XML yanıtı düzgün bir şekilde yüklenemedi. Sunucudan boş cevap döndü.',
+		XmlRawResponse	: 'Sunucudan gelen ham mesaj: %s'
 	},
 
 	// Imageresize plugin
@@ -252,8 +271,8 @@ CKFinder.lang['tr'] =
 		noExtensionChange : 'Dosya uzantısı değiştirilemedi.',
 		imageSmall		: 'Kaynak resim çok küçük',
 		contextMenuName	: 'Boyutlandır',
-		lockRatio		: 'Lock ratio', // MISSING
-		resetSize		: 'Reset size' // MISSING
+		lockRatio		: 'Oranı kilitle',
+		resetSize		: 'Büyüklüğü sıfırla'
 	},
 
 	// Fileeditor plugin
@@ -268,7 +287,23 @@ CKFinder.lang['tr'] =
 
 	Maximize :
 	{
-		maximize : 'Maximize', // MISSING
-		minimize : 'Minimize' // MISSING
+		maximize : 'Büyült',
+		minimize : 'Küçült'
+	},
+
+	Gallery :
+	{
+		current : '{current} / {total} resim'
+	},
+
+	Zip :
+	{
+		extractHereLabel	: 'Extract here', // MISSING
+		extractToLabel		: 'Extract to...', // MISSING
+		downloadZipLabel	: 'Download as zip', // MISSING
+		compressZipLabel	: 'Compress to zip', // MISSING
+		removeAndExtract	: 'Remove existing and extract', // MISSING
+		extractAndOverwrite	: 'Extract overwriting existing files', // MISSING
+		extractSuccess		: 'File extracted successfully.' // MISSING
 	}
 };

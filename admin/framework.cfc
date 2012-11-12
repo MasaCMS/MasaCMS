@@ -445,7 +445,7 @@
 	 * note: you need to rename / disable onError() on OpenBD since it does
 	 * not seem to be passed exception or event correctly when something fails
 	 * in the code...
-	 */
+	*/
 	function onError( exception, event ) {
 
 		try {

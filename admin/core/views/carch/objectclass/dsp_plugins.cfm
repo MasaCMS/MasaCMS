@@ -51,8 +51,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rc.rsPlugins = application.pluginManager.getDisplayObjectsBySiteID(siteID=rc.siteid, 
                                                                               modulesOnly=true)/>
 <cfoutput>
+<div class="control-group">
+	<div class="controls">
 	<select name="subClassSelector" 
-	        onchange="loadObjectClass('#rc.siteid#','plugins',this.value,'#rc.contentid#','#rc.parentid#','#rc.contenthistid#',0,0);" 
+	        onchange="siteManager.loadObjectClass('#rc.siteid#','plugins',this.value,'#rc.contentid#','#rc.parentid#','#rc.contenthistid#',0,0);" 
 	        class="dropdown">
 		<option value="">
 			#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.selectplugin')#
@@ -63,7 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfloop>
 	</select>
-	<br/>
+	</div>
 </cfoutput>
 
 <cfif len(rc.subclassid)>
@@ -111,8 +113,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			)
 		</cfquery>
 		<cfoutput>
+		<div class="controls">
 			<select name="customObjectSelector" 
-			        onchange="loadObjectClass('#rc.siteid#','plugins',this.value,'#rc.contentid#','#rc.parentid#','#rc.contenthistid#',0,0);" 
+			        onchange="siteManager.loadObjectClass('#rc.siteid#','plugins',this.value,'#rc.contentid#','#rc.parentid#','#rc.contenthistid#',0,0);" 
 			        class="dropdown">
 				<option value="">
 					#application.rbFactory.getKeyValue(session.rb, 
@@ -124,7 +127,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 				</cfloop>
 			</select>
-			<br/>
+			</div>
 		</cfoutput>
 	</cfif>
 	<cfif not len(customOutput)>
@@ -137,6 +140,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			)
 		</cfquery>
 		<cfif rs.recordcount>
+			<div class="controls">
 			<cfoutput>
 				<select name="availableObjects" id="availableObjects" class="multiSelect" 
 				        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#" 
@@ -148,9 +152,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</option>
 			</cfoutput>
 			<cfoutput>
-				</select></cfoutput>
+				</select>
+			</cfoutput>
+			</div>
 		</cfif>
 	<cfelse>
 		<cfoutput>#customOutput#</cfoutput>
 	</cfif>
 </cfif>
+</div>

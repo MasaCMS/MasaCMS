@@ -1,7 +1,7 @@
 <cfsilent>
 <cfprocessingdirective pageencoding="utf-8">
 <!---
-Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckfinder.com/license
 
  Defines the object for the Dutch language.
@@ -19,6 +19,7 @@ CKFLang = structNew();
 	CKFLang.Errors[105] = 'Ongeldige bestandsextensie.';
 	CKFLang.Errors[109] = 'Ongeldige aanvraag.';
 	CKFLang.Errors[110] = 'Onbekende fout.';
+	CKFLang.Errors[111] = 'It was not possible to complete the request due to resulting file size.';
 	CKFLang.Errors[115] = 'Er bestaat al een bestand of map met deze naam.';
 	CKFLang.Errors[116] = 'Map niet gevonden, vernieuw de mappenlijst of kies een andere map.';
 	CKFLang.Errors[117] = 'Bestand niet gevonden, vernieuw de mappenlijst of kies een andere map.';

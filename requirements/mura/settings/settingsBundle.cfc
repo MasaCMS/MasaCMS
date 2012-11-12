@@ -348,17 +348,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					where moduleID in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true">)
 				</cfquery>
 			</cfif>
-			
+
 			<cfif not directoryExists(getBundle() & "plugins")>
 				<cfset variables.fileWriter.createDir(directory=getBundle() & "plugins")>
 			</cfif>
 			
-			<cfset variables.zipTool.Extract(zipFilePath=getBundle() & "pluginfiles.zip",extractPath=getBundle() & "plugins", overwriteFiles=true)>
-			
+			<cfset variables.zipTool.Extract(zipFilePath=getBundle() & "pluginfiles.zip",extractPath=getBundle() & "plugins", overwriteFiles=true)>			
+
 			<cfloop query="rstplugins">
 				
 				<cfif not structKeyExists(arguments.errors,rstplugins.moduleID)>
-					
 					<cfquery datasource="#arguments.dsn#" name="qCheck">
 						select directory from tplugins 
 						where moduleID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#keyFactory.get(rstplugins.moduleID)#"/>
@@ -369,11 +368,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfelse>
 						<cfset pluginDir=variables.configBean.getPluginDir() & variables.fileDelim & rstplugins.directory>
 					</cfif>
-					
-					<cfset pluginDir=variables.configBean.getPluginDir() & variables.fileDelim & rstplugins.directory>
 				
 					<cfset variables.utility.copyDir( getBundle() & "plugins" & variables.fileDelim & rstplugins.directory, pluginDir )>
-					
+			
 				</cfif>
 			</cfloop>
 			
@@ -449,6 +446,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rsZipFile	= "" />
 		<cfset var requiredSpace=variables.configBean.getValue("BundleMinSpaceRequired")>
 		<cfset var rssite	= "" />
+		<cfset var rstimagesizes	= "" />
 		<!---<cfset var moduleIDSqlList="">--->
 		<cfset var i="">
 		<cfset var availableSpace=0>
@@ -502,7 +500,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif len(arguments.siteID)>	
 			<cfquery datasource="#arguments.dsn#" name="rstcontent">
 				select * from tcontent where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
-				and type !='Module'
+				and type <>'Module'
 				<cfif not arguments.includeVersionHistory>
 					and (active = 1 or (changesetID is not null and approved=0))
 				</cfif>
@@ -1147,12 +1145,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			
 			<cfquery datasource="#arguments.dsn#" name="rssite">
-				select domain,siteid,theme,galleryMainScaleBy,galleryMediumScaleBy,gallerySmallScaleBy,
-			    galleryMainScale,galleryMediumScale,gallerySmallScale,columnCount,columnNames,primaryColumn,baseID
+				select domain,siteid,theme,
+				largeImageWidth,largeImageHeight,
+				smallImageWidth,smallImageHeight,
+				mediumImageWidth,mediumImageHeight,
+				columnCount,columnNames,primaryColumn,baseID
 			    from tsettings where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
 			</cfquery>
 			
-			<cfset setValue("rssite",rssite)>	
+			<cfset setValue("rssite",rssite)>
+
+			<cfquery datasource="#arguments.dsn#" name="rstimagesizes">
+				select *
+			    from timagesizes where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
+			</cfquery>	
+
 			<cfset setValue("assetPath",application.configBean.getAssetPath())>
 			<cfset setValue("context",application.configBean.getContext())>
 			

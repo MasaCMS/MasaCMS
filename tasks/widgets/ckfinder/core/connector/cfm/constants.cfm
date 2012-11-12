@@ -3,7 +3,7 @@
  * CKFinder
  * ========
  * http://ckfinder.com
- * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (C) 2007-2012, CKSource - Frederico Knabben. All rights reserved.
  *
  * The software, this file and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
@@ -38,6 +38,7 @@ constants.CKFINDER_CONNECTOR_ERROR_UPLOADED_WRONG_HTML_FILE=206;
 constants.CKFINDER_CONNECTOR_ERROR_UPLOADED_INVALID_NAME_RENAMED=207;
 constants.CKFINDER_CONNECTOR_ERROR_MOVE_FAILED=300;
 constants.CKFINDER_CONNECTOR_ERROR_COPY_FAILED=301;
+constants.CKFINDER_CONNECTOR_ERROR_DELETE_FAILED=302;
 constants.CKFINDER_CONNECTOR_ERROR_CONNECTOR_DISABLED=500;
 constants.CKFINDER_CONNECTOR_ERROR_THUMBNAILS_DISABLED=501;
 

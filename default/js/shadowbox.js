@@ -117,7 +117,7 @@ if(typeof Shadowbox == 'undefined'){
          *
          * @var     {Number}    overlayOpacity
          */
-        overlayOpacity:     0.85,
+        overlayOpacity:     0.8,
 
         /**
          * A background image to use for browsers such as FF Mac that don't

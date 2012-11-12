@@ -61,38 +61,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset rc.date2 = dateAdd("m", 12, rc.date1)>
 </cfif>
 <cfset theMonth=createDate(year(rc.date1),month(rc.date1),1) /></cfsilent>
-<cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,'advertising.campaignreport')#</h2>
-<ul id="navTask">
-<li><a href="index.cfm?muraAction=cAdvertising.viewAdvertiser&&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.backtoadvertiser')#</a></li>
-<li><a href="index.cfm?muraAction=cAdvertising.editCampaign&&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#&campaignid=#rc.campaignid#">#application.rbFactory.getKeyValue(session.rb,'advertising.backtocampaign')#</a></li>
-</ul> 
+<cfoutput><h1>#application.rbFactory.getKeyValue(session.rb,'advertising.campaignreport')#</h1>
 
-<h3>#application.rbFactory.getKeyValue(session.rb,'advertising.campaigninformation')#</h3>
+<cfinclude template="dsp_secondary_menu.cfm">
+
+<h2>#application.rbFactory.getKeyValue(session.rb,'advertising.campaigninformation')#</h2>
 <ul class="overview"><li><strong>#application.rbFactory.getKeyValue(session.rb,'advertising.company')#:</strong> #rc.userBean.getcompany()#</li>
 <li><strong>#application.rbFactory.getKeyValue(session.rb,'advertising.campaign')#:</strong> #rc.campaignBean.getName()#</li>
 <li><strong>#application.rbFactory.getKeyValue(session.rb,'advertising.campaigndaterange')#:</strong>  #LSDateFormat(rc.campaignBean.getStartDate(),session.dateKeyFormat)#&nbsp;-&nbsp;#LSDateFormat(rc.campaignBean.getEndDate(),session.dateKeyFormat)#</li>
 <li><strong>#application.rbFactory.getKeyValue(session.rb,'advertising.reportdaterange')#:</strong> #LSDateFormat(rc.date1,session.dateKeyFormat)#&nbsp;-&nbsp;#LSDateFormat(rc.date2,session.dateKeyFormat)#</li></ul>
 
-<h3>#application.rbFactory.getKeyValue(session.rb,'advertising.reportdaterange')#</h3>
+<h2>#application.rbFactory.getKeyValue(session.rb,'advertising.reportdaterange')#</h2>
 <form novalidate="novalidate" action="index.cfm?muraAction=cAdvertising.viewReportByCampaign&campaignid=#rc.campaignid#&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="download" onsubmit="return validate(this);">
-#application.rbFactory.getKeyValue(session.rb,'advertising.from')# <input type="text" class="dateSelect datepicker" name="date1"  validate="date" message="#application.rbFactory.getKeyValue(session.rb,'advertising.fromvalidate')#" required="true" value="#LSDateFormat(rc.date1,session.dateKeyFormat)#" > <!---<input class="calendar" type="image" src="images/icons/cal_24.png" width="14" height="14" onclick="window.open('date_picker/index.cfm?form=download&field=date1&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">--->
+#application.rbFactory.getKeyValue(session.rb,'advertising.from')# 
+<input type="text" class="dateSelect datepicker" name="date1"  validate="date" message="#application.rbFactory.getKeyValue(session.rb,'advertising.fromvalidate')#" required="true" value="#LSDateFormat(rc.date1,session.dateKeyFormat)#" > 
 &nbsp;#application.rbFactory.getKeyValue(session.rb,'advertising.to')# 
-<input type="text" class="dateSelect datepicker" name="date2" validate="date" message="#application.rbFactory.getKeyValue(session.rb,'advertising.tovalidate')#" required="true" value="#LSDateFormat(rc.date2,session.dateKeyFormat)#"><!---<input class="calendar" type="image" src="images/icons/cal_24.png" width="14" height="14" onclick="window.open('date_picker/index.cfm?form=download&field=date2&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">---> <input type="button" class="submit" onclick="document.download.submit();" value="#application.rbFactory.getKeyValue(session.rb,'advertising.view')#" /></form>
+<input type="text" class="dateSelect datepicker" name="date2" validate="date" message="#application.rbFactory.getKeyValue(session.rb,'advertising.tovalidate')#" required="true" value="#LSDateFormat(rc.date2,session.dateKeyFormat)#"> 
+<input type="button" class="submit btn" onclick="document.download.submit();" value="#application.rbFactory.getKeyValue(session.rb,'advertising.view')#" />
+</form>
 
-
-<!--- <cfif rc.userBean.getaddress() neq ''><strong>Address:</strong> #rc.userBean.getaddress()#<br/></cfif>
-<cfif rc.userBean.getcity() neq '' and rc.userBean.getstate() neq '' and rc.userBean.getzip() neq ''><strong>City/State/Zip:</strong> #rc.userBean.getcity()#, #rc.userBean.getstate()#  #rc.userBean.getzip()#<br/></cfif>
-<cfif rc.userBean.getphone1() neq ''><strong>Phone:</strong> #rc.userBean.getPhone1()#<br/></cfif>
-<cfif rc.userBean.getfax() neq ''><strong>Fax:</strong> #rc.userBean.getfax()#<br/></cfif>
-<cfif rc.userBean.getfname() neq '' or rc.userBean.getlname() neq ''><strong>Contact:</strong> #rc.userBean.getfname()# #rc.userBean.getlname()#<br/></cfif>
-<cfif rc.userBean.getemail() neq ''><strong>Email:</strong> <a href"mailto:#rc.userBean.getemail()#">#rc.userBean.getemail()#</a><br/></cfif> --->
 
 	<cfset fTotalImps=0 />
 	<cfset fTotalClicks=0 />
 	<cfset fTotalImpsCost=0 />
 	<cfset fTotalClicksCost=0 />
 		
-	<h3>#application.rbFactory.getKeyValue(session.rb,'advertising.month')#</h3>
+	<h2>#application.rbFactory.getKeyValue(session.rb,'advertising.month')#</h2>
 	</cfoutput>
 <cfloop condition="#theMonth# lt #rc.date2#">
 	<cfsilent>
@@ -114,10 +108,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset cTotalBudget=0 />
 	</cfsilent>
 	
-	<cfoutput><h4>#month(theMonth)#/#year(theMonth)#</h4>
-	<table class="mura-table-grid stripe">
+	<cfoutput><h3>#month(theMonth)#/#year(theMonth)#</h3>
+	<table class="table table-striped table-condensed table-bordered mura-table-grid">
 	<tr>
-	<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'advertising.adzone')#</th>
+	<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'advertising.adzone')#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,'advertising.creative')#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,'advertising.startdate')#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,'advertising.enddate')#</th>
@@ -131,7 +125,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<th>#application.rbFactory.getKeyValue(session.rb,'advertising.cpc')#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,'advertising.cpctotal')#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,'advertising.total')#</th>
-		<th class="administration">&nbsp;</th>
+		<th class="actions">&nbsp;</th>
 	</tr>
 		</cfoutput>
 		<cfoutput query="rsPlacements">
@@ -161,7 +155,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 	</cfsilent>
 	
 	<tr>
-				<td class="varWidth"><a href="index.cfm?muraAction=cAdvertising.editAdZone&siteid=#URLEncodedFormat(rc.siteid)#&adzoneid=#rsplacements.adzoneid#">#rsplacements.Adzone#</a></td>
+				<td class="var-width"><a href="index.cfm?muraAction=cAdvertising.editAdZone&siteid=#URLEncodedFormat(rc.siteid)#&adzoneid=#rsplacements.adzoneid#">#rsplacements.Adzone#</a></td>
 				<td><a href="index.cfm?muraAction=cAdvertising.editCreative&userid=#URLEncodedFormat(rc.userid)#&creativeid=#rsplacements.creativeid#&siteid=#URLEncodedFormat(rc.siteid)#">#rsplacements.creative#</a></td>
 				<td>#LSDateFormat(rsplacements.startdate,session.dateKeyFormat)#</td>
 				<td>#LSDateFormat(rsplacements.enddate,session.dateKeyFormat)#</td>
@@ -175,9 +169,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<td>#LSCurrencyFormat(rsplacements.costPerClick)#</td>
 				<td>#LSCurrencyFormat(rsplacements.costPerClick*Clicks)#</td>
 				<td>#LSCurrencyFormat((rsplacements.costPerClick*Clicks)+(rsplacements.costPerImp*Imps))#</td>
-				<td class="administration"><ul class="two">
-				<li class="edit"><a title="Edit" href="index.cfm?muraAction=cAdvertising.editPlacement&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#&campaignid=#rc.campaignID#&placementid=#rsplacements.placementid#">Edit</a></li>
-				<li class="viewReport"><a title="View Placement Report" href="index.cfm?muraAction=cAdvertising.viewReportByPlacement&placementid=#rsPlacements.placementid#&campaignid=#rc.campaignid#&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#&date1=#LSDateFormat(theMonthBegin,session.dateKeyFormat)#&date2=#LSDateFormat(theMonthEnd,session.dateKeyFormat)#">View Report</a></li></ul>
+				<td class="actions"><ul>
+				<li class="edit"><a title="Edit" href="index.cfm?muraAction=cAdvertising.editPlacement&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#&campaignid=#rc.campaignID#&placementid=#rsplacements.placementid#"><i class="icon-pencil"></i></a></li>
+				<li class="view-report"><a title="View Placement Report" href="index.cfm?muraAction=cAdvertising.viewReportByPlacement&placementid=#rsPlacements.placementid#&campaignid=#rc.campaignid#&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#&date1=#LSDateFormat(theMonthBegin,session.dateKeyFormat)#&date2=#LSDateFormat(theMonthEnd,session.dateKeyFormat)#"><i class="icon-bar-chart"></i></a></li></ul>
 				</td>
 				</tr>
 		
@@ -193,7 +187,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<td>&nbsp;</td>
 				<td>#LSCurrencyFormat(cTotalClicksCost)#</td>
 				<td>#LSCurrencyFormat(cTotalImpsCost+cTotalClicksCost)#</td>
-				<td class="administration"></td>
+				<td class="actions"></td>
 				</tr>
 		</table><br />
 			</cfoutput>
@@ -204,9 +198,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 	<cfset fTotalClicksCost=fTotalClicksCost+cTotalClicksCost />
 		</cfloop>
 <cfoutput>
-	<h3>#application.rbFactory.getKeyValue(session.rb,'advertising.total')#</h3>
+	<h2>#application.rbFactory.getKeyValue(session.rb,'advertising.total')#</h2>
 
-	<table id="metadata" class="mura-table-grid stripe">
+	<table id="metadata" class="table table-striped table-condensed table-bordered mura-table-grid">
 	<tr>
 		<th>#application.rbFactory.getKeyValue(session.rb,'advertising.totalm')#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,'advertising.cpmtotal')#</th>

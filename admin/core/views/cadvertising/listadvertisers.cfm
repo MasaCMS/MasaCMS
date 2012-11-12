@@ -45,35 +45,43 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<form novalidate="novalidate" id="siteSearch" name="siteSearch" method="get"><input name="keywords" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" maxlength="50" />  
-	
-<input type="button" class="submit" onclick="submitForm(document.forms.siteSearch);" value="#application.rbFactory.getKeyValue(session.rb,'advertising.search')#" />
+<form class="form-inline" novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
+ 
+<div class="input-append">
+	    <input name="keywords" value="#HTMLEditFormat(session.keywords)#" type="text" class="text" />
+	    <button type="button" class="submit btn" onclick="submitForm(document.forms.siteSearch);" /><i class="icon-search"></i></button>
+</div>	
+<!---<input name="keywords" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" maxlength="50" />
+<input type="button" class="submit btn" onclick="submitForm(document.forms.siteSearch);" value="#application.rbFactory.getKeyValue(session.rb,'advertising.search')#" /> --->
 	<input type="hidden" name="muraAction" value="cAdvertising.listAdvertisers">
 	<input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
 </form>
-<h2>#application.rbFactory.getKeyValue(session.rb,'advertising.viewadvertisers')#</h2>
+
+<h1>#application.rbFactory.getKeyValue(session.rb,'advertising.viewadvertisers')#</h1>
+
+<cfinclude template="dsp_secondary_menu.cfm">
 
 <!---<h3 class="alt">#application.rbFactory.getKeyValue(session.rb,'advertising.advertisersearch')#</h3>--->
 
 <!--- 
-<ul id="navTask">
+<ul class="navTask nav nav-pills">
 <li><a href="index.cfm?muraAction=cPublicUsers.editUser&userid=&siteid=#URLEncodedFormat(rc.siteid)#&groupid=#application.advertiserManager.getGroupID(rc.siteid)#&routeid=adManager">Add Advertiser</li>
 </ul> --->
 
-<table class="mura-table-grid stripe">
+<table class="table table-striped table-condensed table-bordered mura-table-grid">
 <tr>
-	<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'advertising.advertiser')#</th>
+	<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'advertising.advertiser')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.contact')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.email')#</th>
-	<th class="administration">&nbsp;</th>
+	<th class="actions">&nbsp;</th>
 </tr></cfoutput>
 <cfif rc.rslist.recordcount>
 <cfoutput query="rc.rslist">
 	<tr>
-		<td class="varWidth"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?muraAction=cAdvertising.viewAdvertiser&userid=#rc.rslist.userid#&siteid=#URLEncodedFormat(rc.siteid)#">#company#</a></td>
+		<td class="var-width"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?muraAction=cAdvertising.viewAdvertiser&userid=#rc.rslist.userid#&siteid=#URLEncodedFormat(rc.siteid)#">#company#</a></td>
 		<td>#fname# #lname#</td>
 		<td><cfif email neq ''><a href="mailto:#email#">#email#</a><cfelse>&nbsp;</cfif></td>
-		<td class="administration"><ul class="advertisers"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?muraAction=cAdvertising.viewAdvertiser&userid=#rc.rslist.userid#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#</a></li></ul></td></tr>
+		<td class="actions"><ul class="advertisers"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?muraAction=cAdvertising.viewAdvertiser&userid=#rc.rslist.userid#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-pencil"></i></a></li></ul></td></tr>
 </cfoutput>
 <cfelse>
 <tr>

@@ -1,7 +1,7 @@
 <cfsilent>
 <cfprocessingdirective pageencoding="utf-8">
 <!---
-Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckfinder.com/license
 
  Defines the object for the Russian language.
@@ -19,6 +19,7 @@ CKFLang = structNew();
 	CKFLang.Errors[105] = 'Неверное расширение файла.';
 	CKFLang.Errors[109] = 'Неверный запрос.';
 	CKFLang.Errors[110] = 'Неизвестная ошибка.';
+	CKFLang.Errors[111] = 'It was not possible to complete the request due to resulting file size.';
 	CKFLang.Errors[115] = 'Файл или папка с таким именем уже существует.';
 	CKFLang.Errors[116] = 'Папка не найдена. Пожалуйста, обновите вид папок и попробуйте еще раз.';
 	CKFLang.Errors[117] = 'Файл не найден. Пожалуйста, обновите список файлов и попробуйте еще раз.';

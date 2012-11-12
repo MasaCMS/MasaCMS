@@ -882,7 +882,7 @@ select * from tplugins order by #arguments.orderby#
 <cffunction name="getAssignedSites" returntype="query" output="false">
 <cfargument name="moduleID">
 	<cfset var rsAssignedSites=""/>
-	<cfquery name="rsAssignedSites" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery name="rsAssignedSites" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDBUsername()#" password="#variables.configBean.getReadOnlyDBPassword()#">
 	select siteID,moduleID from tcontent where  moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#">
 	</cfquery>
 	<cfreturn rsAssignedSites>
@@ -916,7 +916,7 @@ select * from tplugins order by #arguments.orderby#
 		<cfquery datasource="#variables.configBean.getDatasource()#" name="rsCheck" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 				select moduleID from tplugins
 				where package=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.args.package#"/>
-				and moduleID!=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.args.moduleID#"/>
+				and moduleID<><cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.args.moduleID#"/>
 		</cfquery>
 							
 		<cfif rsCheck.recordcount>
@@ -1199,8 +1199,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var location=getLocation(rsPlugin.directory) />
 	<cfset var pluginConfig=getConfig(arguments.moduleID) />
 	<cfset var pluginCFC="/">
-	
-	<cftry>
+
 	<!--- check to see is the plugin.cfc exists --->
 	<cfif fileExists(ExpandPath("/plugins") & "/" & pluginConfig.getDirectory() & "/plugin/plugin.cfc")>	
 		<cfset pluginCFC=createObject("component","plugins.#pluginConfig.getDirectory()#.plugin.plugin") />
@@ -1214,8 +1213,6 @@ select * from tplugins order by #arguments.orderby#
 			<cfset pluginCFC.delete() />
 		</cfif>
 	</cfif>
-	<cfcatch></cfcatch>
-	</cftry>
 
 	<cfif len(rsPlugin.directory) and directoryExists(location)>
 		<cfdirectory action="delete" directory="#location#" recurse="true">	
@@ -1998,27 +1995,25 @@ select * from tplugins order by #arguments.orderby#
 <cfargument name="jsLibLoaded" required="true" default="false">
 <cfargument name="compactDisplay" required="false" default="false" />
 
-<cfset var fusebox=structNew()>
-<cfset var myFusebox=structNew()>
+<cfset var rc=structNew()>
 <cfset var returnStr="">
 <cfset var moduleTitle=arguments.pageTitle>
-<cfset var attributes=structNew()>
 <cfset var layoutTemplate="template" />
 
-<cfset fusebox.layout =arguments.body>
-<cfset fusebox.ajax ="">
-<cfset myfusebox.originalcircuit="cPlugins">
-<cfset myfusebox.originalfuseaction="">
-<cfset attributes.moduleID="">
-<cfset attributes.jsLib=arguments.jsLib>
-<cfset attributes.jsLibLoaded=arguments.jsLibLoaded>
+<cfset rc.layout =arguments.body>
+<cfset rc.ajax ="">
+<cfset rc.originalcircuit="cPlugins">
+<cfset rc.originalfuseaction="">
+<cfset rc.moduleID="">
+<cfset rc.jsLib=arguments.jsLib>
+<cfset rc.jsLibLoaded=arguments.jsLibLoaded>
 
 <cfif arguments.compactDisplay>
 	<cfset layoutTemplate = "compact" />
 </cfif>
 
 <cfsavecontent variable="returnStr">
-	<cfinclude template="/#variables.configBean.getWebrootMap()#/admin/common/layouts/includes/#layoutTemplate#.cfm">
+	<cfinclude template="/#variables.configBean.getWebrootMap()#/admin/common/layouts/#layoutTemplate#.cfm">
 </cfsavecontent>
 
 <cfreturn returnStr/>

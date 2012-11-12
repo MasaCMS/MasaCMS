@@ -61,15 +61,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  </cfif>
 </cfsilent>  
 
-<cfoutput><div id="emailBroadcasts" class="separate">
-<h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.emailbroadcasts")# <span>(#lsDateFormat(emailStart,session.dateKeyFormat)# - #lsDateFormat(emailStop,session.dateKeyFormat)#)</span></h3>
+<cfoutput>
+<h2><i class="icon-envelope-alt"></i> #application.rbFactory.getKeyValue(session.rb,"dashboard.emailbroadcasts")# <span>(#lsDateFormat(emailStart,session.dateKeyFormat)# - #lsDateFormat(emailStop,session.dateKeyFormat)#)</span></h2>
 <dl><dt>#application.rbFactory.getKeyValue(session.rb,"dashboard.emailssent")#:</dt><dd>#emailsSent#</dd><dt>#application.rbFactory.getKeyValue(session.rb,"dashboard.emailsalloted")#:</dt><dd>#emailLimitText#</dd><dt>#application.rbFactory.getKeyValue(session.rb,"dashboard.emailsremaining")#:</dt><dd>#emailsRemainingText#</dd></dl>
 
-<!---<h4>Recent Campaign Activity</h4>--->
-<table class="mura-table-grid stripe">
+<!---<h3>Recent Campaign Activity</h3>--->
+<table class="table table-striped table-condensed table-bordered mura-table-grid">
+<thead>
 <tr>
 	<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.title")#</th><th>#application.rbFactory.getKeyValue(session.rb,"dashboard.sent")#</th><th>#application.rbFactory.getKeyValue(session.rb,"dashboard.opens")#</th><th>#application.rbFactory.getKeyValue(session.rb,"dashboard.clicks")#</th><th>#application.rbFactory.getKeyValue(session.rb,"dashboard.bounces")#</th>
 </tr>
+</thead>
+<tbody>
 <cfif rslist.recordcount>
 <cfloop query="rsList">
 <cfsilent>
@@ -78,11 +81,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset sent=application.emailManager.getStat(rslist.emailid,'sent')/>
 <cfset bounces=application.emailManager.getStat(rslist.emailid,'bounce')/>
 </cfsilent>				  
-<tr<cfif rslist.currentrow mod 2> class="alt"</cfif>>
+<tr>
 <td class="title"><a href="index.cfm?muraAction=cEmail.edit&siteid=#URLEncodedFormat(rc.siteid)#&emailID=#rslist.emailID#">#rsList.subject#</td><td>#sent#</td><td>#opens#</td><td>#clicks#</td><td>#bounces#</td>
 </tr>
 </cfloop>
 <cfelse>
-<tr class="alt"><td class="noResults" colspan="5">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.noemails"),rc.span)#</td></tr>
+<tr><td class="noResults" colspan="5">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.noemails"),rc.span)#</td></tr>
 </cfif>
-</table></div></cfoutput>
+</tbody>
+</table></cfoutput>

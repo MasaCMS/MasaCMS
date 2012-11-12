@@ -84,16 +84,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="feedBean"  type="any" />
 	<cfargument name="tag"  required="true" default="" />
 	<cfargument name="aggregation"  required="true" default="false" />
+	<cfargument name="applyPermFilter" required="true" default="false">
 
-	<cfreturn variables.feedgateway.getFeed(arguments.feedBean,arguments.tag,arguments.aggregation) />
+	<cfreturn variables.feedgateway.getFeed(arguments.feedBean,arguments.tag,arguments.aggregation,arguments.applyPermFilter) />
 </cffunction>
 
 <cffunction name="getFeedIterator" returntype="any" access="public" output="false">
 	<cfargument name="feedBean"  type="any" />
 	<cfargument name="tag"  required="true" default="" />
 	<cfargument name="aggregation"  required="true" default="false" />
+	<cfargument name="applyPermFilter" required="true" default="false">
 
-	<cfset var rs =  variables.feedgateway.getFeed(arguments.feedBean,arguments.tag,arguments.aggregation) />
+	<cfset var rs =  variables.feedgateway.getFeed(arguments.feedBean,arguments.tag,arguments.aggregation,arguments.applyPermFilter) />
 	<cfset var it = getBean("contentIterator")>
 	<cfset it.setQuery(rs)>
 	<cfreturn it/>	
@@ -176,9 +178,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="doImport" access="public" returntype="struct" output="false">
 	<cfargument name="data" type="struct" />		
-	
 	<cfreturn variables.feedUtility.doImport(arguments.data) />
 
+</cffunction>
+
+<cffunction name="doAutoImport" access="public" returntype="struct" output="false">		
+	<cfargument name="siteid">
+	<cfset var rs=getFeeds(arguments.siteid,'Remote',0,1)>
+	<cfset var importArgs=structNew()>
+
+	<cfset importArgs.remoteID='All'>
+
+	<cfloop query="rs">
+		<cfif rs.autoimport eq 1>
+			<cfset importArgs.feedID=rs.feedID>
+			<cfset variables.feedUtility.doImport(importArgs) >
+		</cfif>
+	</cfloop>
+	
 </cffunction>
 
 <cffunction name="update" access="public" returntype="any" output="false">
@@ -243,16 +260,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var feedBean=read(arguments.feedID) />
 	<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
-	<cfset pluginEvent.setValue("feedBean",feedBean)>
-	<cfset pluginEvent.setValue("siteID",feedBean.getSiteID())>
-	
-	<cfset variables.pluginManager.announceEvent("onBeforeFeedDelete",pluginEvent)>
-	<cfset variables.trashManager.throwIn(feedBean)>
-	<cfset variables.globalUtility.logEvent("feedID:#feedBean.getfeedID()# Name:#feedBean.getName()# was deleted","mura-content","Information",true) />
-	<cfset variables.feedDAO.delete(arguments.feedID) />
-	
-	<cfset variables.pluginManager.announceEvent("onFeedDelete",pluginEvent)>
-	<cfset variables.pluginManager.announceEvent("onAfterFeedDelete",pluginEvent)>	
+
+	<cfif not feedBean.getIsLocked()>
+		<cfset pluginEvent.setValue("feedBean",feedBean)>
+		<cfset pluginEvent.setValue("siteID",feedBean.getSiteID())>
+		
+		<cfset variables.pluginManager.announceEvent("onBeforeFeedDelete",pluginEvent)>
+		<cfset variables.trashManager.throwIn(feedBean)>
+		<cfset variables.globalUtility.logEvent("feedID:#feedBean.getfeedID()# Name:#feedBean.getName()# was deleted","mura-content","Information",true) />
+		<cfset variables.feedDAO.delete(arguments.feedID) />
+		
+		<cfset variables.pluginManager.announceEvent("onFeedDelete",pluginEvent)>
+		<cfset variables.pluginManager.announceEvent("onAfterFeedDelete",pluginEvent)>
+	</cfif>	
 
 </cffunction>
 

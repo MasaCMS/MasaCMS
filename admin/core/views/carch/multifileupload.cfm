@@ -46,10 +46,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfinclude template="js.cfm">
 <cfsavecontent variable="str"><cfoutput>
-<link href="#application.configBean.getContext()#/admin/js/fileuploader/fileuploader.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css">
-<!---<script src="#application.configBean.getContext()#/admin/js/fileuploader/fileuploader.js?coreversion=#application.coreversion#s" type="text/javascript"></script>--->
-<script src="#application.configBean.getContext()#/admin/js/fileuploader/ajaxupload.js?coreversion=#application.coreversion#s" type="text/javascript"></script>		
+<link href="#application.configBean.getContext()#/admin/assets/css/jquery/jquery.fileupload-ui.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css">
 #session.dateKey#
+<cfif rc.compactDisplay eq "true">
+<script type="text/javascript">
+jQuery(document).ready(function(){
+    if (top.location != self.location) {
+        if(jQuery("##ProxyIFrame").length){
+            jQuery("##ProxyIFrame").load(
+                function(){
+                    frontEndProxy.postMessage("cmd=setWidth&width=standard");
+                }
+            );  
+        } else {
+            frontEndProxy.postMessage("cmd=setWidth&width=standard");
+        }
+    }
+});
+</script>
+</cfif> 
 </cfoutput>
 </cfsavecontent>
 
@@ -65,98 +80,199 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!--- check to see if the site has reached it's maximum amount of pages --->
 <cfif (rc.rsPageCount.counter lt application.settingsManager.getSite(rc.siteid).getpagelimit() and  rc.contentid eq '') or rc.contentid neq ''>
 <cfoutput>
-<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.mullifileupload")#</h2>
+<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.multifileupload")#</h1>
+
+<cfinclude template="dsp_secondary_menu.cfm">
+
 <cfif rc.compactDisplay neq "true">
-#application.contentRenderer.dspZoom(rc.crumbdata,fileExt)#
+    #application.contentRenderer.dspZoom(crumbdata=rc.crumbdata,class="navZoom alt")#
 </cfif>
 
-<p>
-Please select one image at a time to upload. Uploading will begin as soon as you click Ok on the Open Dialog box.
-</p>
-<!---
-<div id="newfile">
-<noscript>
-<p>Please enable JavaScript to use file uploader.</p>
-<!-- or put a simple form for upload here -->
-</noscript>
+    <!--- <h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.multifileuploadinstructions")#</h2> --->
+
+    <!-- The file upload form used as target for the file upload widget -->
+    <form id="fileupload" action="#application.configBean.getContext()#/admin/" method="POST" enctype="multipart/form-data">
+    	<!-- Creating a visual target for files. Doesn't actually do anything. Pure eye candy. -->
+    	<div id="fileupload-target" class="alert alert-info"><p><i class="icon-plus-sign"></i>Drag and drop files to upload.</p></div>
+        <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+        <div class="fileupload-buttonbar">
+            <div class="span7">
+                <!-- The fileinput-button span is used to style the file input field as button -->
+                <span class="btn fileinput-button">
+                    <i class="icon-plus icon-white"></i>
+                    <span>Add files...</span>
+                    <input type="file" name="files" multiple>
+                </span>
+                <button type="submit" class="btn start">
+                    <i class="icon-upload icon-white"></i>
+                    <span>Start upload</span>
+                </button>
+                <button type="reset" class="btn cancel">
+                    <i class="icon-ban-circle icon-white"></i>
+                    <span>Cancel upload</span>
+                </button>
+                <!---
+                <button type="button" class="btn btn-danger delete">
+                    <i class="icon-trash icon-white"></i>
+                    <span>Delete</span>
+                </button>
+                <input type="checkbox" class="toggle">
+                --->
+            </div>
+            <!-- The global progress information -->
+            <div class="span5 fileupload-progress fade">
+                <!-- The global progress bar -->
+                <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                    <div class="bar" style="width:0%;"></div>
+                </div>
+                <!-- The extended global progress information -->
+                <div class="progress-extended">&nbsp;</div>
+            </div>
+        </div>
+        <!-- The loading indicator is shown during file processing -->
+        <div class="fileupload-loading"></div>
+        <br>
+        <!-- The table listing the files available for upload/download -->
+        <table role="presentation" class="table table-striped"><tbody class="files" data-toggle="modal-gallery" data-target="##modal-gallery"></tbody></table>
+      <input type="hidden" name="muraAction" value="cArch.update"/>
+      <input type="hidden" name="action" value="multiFileUpload"/>
+      <input type="hidden" name="siteid" value="#htmlEditFormat(rc.siteid)#"/>
+      <input type="hidden" name="moduleid" value="#htmlEditFormat(rc.moduleid)#"/>
+      <input type="hidden" name="topid" value="#htmlEditFormat(rc.topid)#"/>
+      <input type="hidden" name="ptype" value="#htmlEditFormat(rc.ptype)#"/>
+      <input type="hidden" name="parentid" value="#htmlEditFormat(rc.parentid)#"/>
+      <input type="hidden" name="contentid" value=""/>
+      <input type="hidden" name="type" value="File"/>
+      <input type="hidden" name="subtype" value="Default"/>
+      <input type="hidden" name="startrow" value="#rc.startrow#"/>
+      <input type="hidden" name="orderno" value="0"/>
+      <input type="hidden" name="approved" value="<cfif rc.perm eq 'editor'>1<cfelse>0</cfif>" />
+    </form>
+   
 </div>
-    <script>
-       jQuery(document).ready(function(){
-            var uploader = new qq.FileUploader({
-                element: document.getElementById('newfile'),
-                action: '#application.configBean.getContext()#/admin/index.cfm',
-                debug: true,
-                allowedExtensions: ["png","jpg","gif","jpeg"],
-				params:{
-							muraAction:'cArch.update',
-							action:'multiFileUpload',
-							siteid:'#jsStringFormat(rc.siteid)#',
-							moduleid:'#jsStringFormat(rc.moduleid)#',
-							topid:'#jsStringFormat(rc.topid)#',
-							ptype:'#jsStringFormat(rc.ptype)#',
-							parentid:'#jsStringFormat(rc.parentid)#',
-							contentid:'',
-							type:'File',
-							subtype:'Default',
-							startrow:#rc.startrow#,
-							orderno:0,
-							approved:<cfif rc.perm eq "editor">1<cfelse>0</cfif>
-									
-						}
-            });
-        });
-        
-    </script> 
+
+<!---
+<!-- modal-gallery is the modal dialog used for the image gallery -->
+<div id="modal-gallery" class="modal modal-gallery hide fade" data-filter=":odd">
+    <div class="modal-header">
+        <a class="close" data-dismiss="modal">&times;</a>
+        <h3 class="modal-title"></h3>
+    </div>
+    <div class="modal-body"><div class="modal-image"></div></div>
+    <div class="modal-footer">
+        <a class="btn modal-download" target="_blank">
+            <i class="icon-download"></i>
+            <span>Download</span>
+        </a>
+        <a class="btn btn-success modal-play modal-slideshow" data-slideshow="5000">
+            <i class="icon-play icon-white"></i>
+            <span>Slideshow</span>
+        </a>
+        <a class="btn btn-info modal-prev">
+            <i class="icon-arrow-left icon-white"></i>
+            <span>Previous</span>
+        </a>
+        <a class="btn btn-primary modal-next">
+            <span>Next</span>
+            <i class="icon-arrow-right icon-white"></i>
+        </a>
+    </div>
+</div>
 --->
 
-
-<script type="text/javascript">/*<![CDATA[*/
-   jQuery(document).ready(function(){
-       AjaxUpload.uploadCount = 0;
-       AjaxUpload.uploadDone = 0;
-       new AjaxUpload('uploadbutton', {
-           action: './index.cfm',
-           multiple: false,
-           name:'newfile1',
-                       data:{
-                               'muraAction':'cArch.update',
-                               'action':'multiFileUpload',
-                               'siteid':'#jsStringFormat(rc.siteid)#',
-                               'moduleid':'#jsStringFormat(rc.moduleid)#',
-                               'topid':'#jsStringFormat(rc.topid)#',
-                               'ptype':'#jsStringFormat(rc.ptype)#',
-                               'parentid':'#jsStringFormat(rc.parentid)#',
-                               'contentid':'',
-                               'type':'File',
-                               'subtype':'Default',
-                               'startrow':#rc.startrow#,
-                               'orderno':0,
-                               'approved':<cfif rc.perm eq "editor">1<cfelse>0</cfif>
-                       },
-                       onSubmit : function(file, ext){
-                               AjaxUpload.uploadCount += 1;
-                           // Allow only images. You should add security check on the server-side.
-                               if (ext && /^(jpg|png|jpeg|gif|JPG|PNG|JPEG|GIF|Jpg|Png|Jpeg|Gif)$/i.test(ext)){
-                                       jQuery('<li class="up' + AjaxUpload.uploadCount + '"><img src="#application.configBean.getContext()#/admin/images/progress_bar.gif"></li>').appendTo('##uploader .files');
-                               } else {
-                               // extension is not allowed
-                                       alertDialog('Error: only jpg, png, or gif images are allowed');
-                                       // cancel upload
-                                       return false;
-                               }
-                       },
-                       onComplete : function(file){
-                               AjaxUpload.uploadDone += 1;
-                               jQuery('.files li.up' + AjaxUpload.uploadDone).html(file);
-                       }
-               });
-
-   });/*]]>*/
+<!-- The template to display files available for upload -->
+<script id="template-upload" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-upload fade">
+        <td class="preview"><span class="fade"></span></td>
+        <td class="name"><span>{%=file.name%}</span></td>
+        <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+        {% if (file.error) { %}
+            <td class="error" colspan="2"><span class="label label-important">{%=locale.fileupload.error%}</span> {%=locale.fileupload.errors[file.error] || file.error%}</td>
+        {% } else if (o.files.valid && !i) { %}
+            <td>
+                <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar" style="width:0%;"></div></div>
+            </td>
+            <td class="start">{% if (!o.options.autoUpload) { %}
+                <button class="btn">
+                    <i class="icon-upload icon-white"></i>
+                    <span>{%=locale.fileupload.start%}</span>
+                </button>
+            {% } %}</td>
+        {% } else { %}
+            <td colspan="2"></td>
+        {% } %}
+        <td class="cancel">{% if (!i) { %}
+            <button class="btn">
+                <i class="icon-ban-circle icon-white"></i>
+                <span>{%=locale.fileupload.cancel%}</span>
+            </button>
+        {% } %}</td>
+    </tr>
+{% } %}
 </script>
-<div id="uploader">
-<p><input type="button" class="submit" id="uploadbutton" value="Upload Image" /></p>
-<ol class="files"></ol>
-</div>
+<!-- The template to display files available for download -->
+<script id="template-download" type="text/x-tmpl">
+{% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-download fade">
+        {% if (file.error) { %}
+            <td></td>
+            <td class="name"><span>{%=file.name%}</span></td>
+            <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+            <td class="error" colspan="2"><span class="label label-important">{%=locale.fileupload.error%}</span> {%=locale.fileupload.errors[file.error] || file.error%}</td>
+        {% } else { %}
+            <td class="preview">{% if (file.thumbnail_url) { %}
+                <a href="{%=file.edit_url%}" title="{%=file.name%}"<!--- rel="gallery" download="{%=file.name%}"--->><img src="{%=file.thumbnail_url%}"></a>
+            {% } %}</td>
+            <td class="name">
+                <a href="{%=file.edit_url%}" title="{%=file.name%}"<!---rel="{%=file.thumbnail_url&&'gallery'%}" download="{%=file.name%}"--->>{%=file.name%}</a>
+            </td>
+            <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+            <td colspan="2"></td>
+        {% } %}
+        <td class="delete">
+           <!---
+            <button class="btn btn-danger" data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}">
+                <i class="icon-trash icon-white"></i>
+                <span>{%=locale.fileupload.destroy%}</span>
+            </button>
+            <input type="checkbox" name="delete" value="1">
+            --->
+        </td>
+    </tr>
+{% } %}
+</script>
+
+<script src="#application.configBean.getContext()#/admin/assets/js/jquery/tmpl.min.js?coreversion=#application.coreversion#"></script>
+<!-- The Load Image plugin is included for the preview images and image resizing functionality -->
+<script src="#application.configBean.getContext()#/admin/assets/js/jquery/load-image.min.js?coreversion=#application.coreversion#"></script>
+<!-- The Canvas to Blob plugin is included for image resizing functionality -->
+<script src="#application.configBean.getContext()#/admin/assets/js/jquery/canvas-to-blob.min.js?coreversion=#application.coreversion#"></script>
+<!-- Bootstrap JS and Bootstrap Image Gallery are not required, but included for the demo 
+<script src="http://blueimp.github.com/cdn/js/bootstrap.min.js"></script>
+<script src="http://blueimp.github.com/Bootstrap-Image-Gallery/js/bootstrap-image-gallery.min.js"></script>
+-->
+
+<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.iframe-transport.js?coreversion=#application.coreversion#"></script>
+<!-- The basic File Upload plugin -->
+<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.fileupload.js?coreversion=#application.coreversion#"></script>
+<!-- The File Upload file processing plugin -->
+<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.fileupload-fp.js?coreversion=#application.coreversion#"></script>
+<!-- The File Upload user interface plugin -->
+<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.fileupload-ui.js?coreversion=#application.coreversion#"></script>
+<!-- The localization script -->
+<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.fileupload.locale.js?coreversion=#application.coreversion#"></script>
+<!-- The main application script -->
+<script>
+$(function () {
+    'use strict';
+
+    // Initialize the jQuery File Upload widget:
+    $('##fileupload').fileupload({url:'#application.configBean.getContext()#/admin/index.cfm'});
+
+});
+</script>
 </cfoutput>
 <cfelse>
 <div>

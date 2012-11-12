@@ -153,7 +153,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 
-	<cfset isExtendedSort=(not listFindNoCase(sortOptions,params.getSortBy()))>
+	<cfset isExtendedSort=(not listFindNoCase(sortOptions,params.getSortBy())) and not len(params.getSortTable())>
 	
 	<cfif len(arguments.siteID)>
 		<cfset params.setSiteID(arguments.siteID)>
@@ -174,17 +174,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfloop query="rsParams">
 		<cfif listLen(rsParams.field,".") eq 2>
 			<cfset jointable=listFirst(rsParams.field,".") >
-			<cfif jointable neq "tusers" and not listFind(jointables,jointable)>
+			<cfif jointable neq "tusers" and not listFind(jointables,jointable) and not params.hasJoin(jointable)>
 				<cfset jointables=listAppend(jointables,jointable)>
 			</cfif>
 		</cfif>
 	</cfloop>
 
 	<cfquery name="rsAdvancedUserSearch" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-	Select #variables.fieldList# from tusers 
+	Select #variables.fieldList# <cfif len(params.getAdditionalColumns())>,#params.getAdditionalColumns()#</cfif> from tusers 
 	left join tfiles on tusers.photofileID=tfiles.fileID
 	<cfloop list="#jointables#" index="jointable">
 	inner join #jointable# on (tusers.userid=#jointable#.userid)
+	</cfloop>
+	
+	<cfloop array="#params.getJoins()#" index="join">
+		#join.joinType# join #join.table# on #preserveSingleQuotes(join.clause)#
 	</cfloop>
 	
 	<cfif isExtendedSort>
@@ -250,7 +254,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#params.getSiteID()#">
 						and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
 						</cfif>
-						and #variables.classExtensionManager.getCastString(param.getField(),params.getSiteID())# #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#"><cfif isListParam>)</cfif>)
+						and #variables.classExtensionManager.getCastString(param.getField(),params.getSiteID())# #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#"><cfif isListParam>)</cfif>)
 				</cfif>
 			</cfif>						
 		</cfloop>
@@ -303,8 +307,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	order by
 	
-	<cfif isExtendedSort>
-			qExtendedSort.extendedSort #params.getSortDirection()#
+	<cfif len(params.getSortTable())>
+		#params.getSortTable()#.#params.getSortBy()# #params.getSortDirection()#
+	<cfelseif isExtendedSort>
+		qExtendedSort.extendedSort #params.getSortDirection()#
 	<cfelse>	
 		<cfif variables.configBean.getDbType() neq "oracle" or listFindNoCase("lastUpdate,created,isPublic",params.getSortBy())>
 			tusers.#params.getSortBy()# #params.getSortDirection()#

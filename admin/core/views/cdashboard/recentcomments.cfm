@@ -46,20 +46,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfinclude template="js.cfm">
 <cfoutput>
-<h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.comments")#</h2>
+<h1>#application.rbFactory.getKeyValue(session.rb,"dashboard.comments")#</h1>
+
+<cfinclude template="dsp_secondary_menu.cfm">
+
 <cfparam name="rc.page" default="1">
 <cfset comments=application.contentManager.getRecentCommentsIterator(rc.siteID,100,false) />
 <cfset comments.setNextN(20)>
 <cfset comments.setPage(rc.page)>
 
-<h3 class="alt">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments.last100")#</h3>
-<table class="mura-table-grid">
+<h3>#application.rbFactory.getKeyValue(session.rb,"dashboard.comments.last100")#</h3>
+<table class="table table-striped table-condensed table-bordered mura-table-grid">
+<thead>
 <tr>
-	<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments")#</th>
+	<th class="var-width">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments")#</th>
 	<th class="dateTime">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments.posted")#</th>
-	<th class="administration">&nbsp;</th>
+	<th class="actions">&nbsp;</th>
 </tr>
+</thead>
+<tbody>
 <cfif comments.hasNext()>
+
 <cfloop condition="comments.hasNext()">
 	<cfset comment=comments.next()>
 	<!---
@@ -67,31 +74,45 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
 	--->
 	<cfset content=application.serviceFactory.getBean("content").loadBy(contentID=comment.getContentID(),siteID=session.siteID)>
-	<tr<cfif comments.currentIndex() mod 2> class="alt"</cfif>>
+
+	<tr>
 		<cfset args=arrayNew(1)>
 		<cfset args[1]="<strong>#HTMLEditFormat(comment.getName())#</strong>">
 		<cfset args[2]="<strong>#HTMLEditFormat(content.getMenuTitle())#</strong>">
-		<td class="varWidth">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.comments.description"),args)#</td>
+		<td class="var-width">#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.comments.description"),args)#</td>
 		<td class="dateTime">#LSDateFormat(comment.getEntered(),session.dateKeyFormat)# #LSTimeFormat(comment.getEntered(),"short")#</td>
-		<td class="administration">
-		<ul class="one">
-			<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('#JSStringFormat(content.getURL(complete=1,queryString='##comment-#comment.getCommentID()#'))#','#content.getTargetParams()#');">#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#</a></li>
+		<td class="actions">
+		<ul>
+			<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.view")#" href="##" onclick="return preview('#JSStringFormat(content.getURL(complete=1,queryString='##comment-#comment.getCommentID()#'))#','#content.getTargetParams()#');"><i class="icon-globe"></i></a></li>
 		</ul>
 		</td>
 	</tr>
 	</cfloop>
 <cfelse>
 <tr>
-<td class="noResults"colspan="3">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments.nocomments")#</td>
+<td class="noResults" colspan="3">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments.nocomments")#</td>
 </tr>
 </cfif>
+</tbody>
 </table>
 
 <cfif comments.recordCount() and comments.pageCount() gt 1>
-#application.rbFactory.getKeyValue(session.rb,"dashboard.session.moreresults")#: <cfif comments.getPageIndex() gt 1> <a href="index.cfm?muraAction=cDashboard.recentComments&page=#evaluate('comments.getPageIndex()-1')#&siteid=#URLEncodedFormat(rc.siteid)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,"dashboard.session.prev")#</a></cfif>
-<cfloop from="1"  to="#comments.pageCount()#" index="i">
-	<cfif comments.getPageIndex() eq i> #i# <cfelse> <a href="index.cfm?muraAction=cDashBoard.recentComments&page=#i#&siteid=#URLEncodedFormat(rc.siteid)#">#i#</a> </cfif></cfloop>
-	<cfif comments.getPageIndex() lt comments.pageCount()><a href="index.cfm?muraAction=cDashboard.recentComments&page=#evaluate('comments.getPageIndex()+1')#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.next")#&nbsp;&raquo;</a></cfif> 
+	<ul class="pagination">
+		<cfif comments.getPageIndex() gt 1> 
+			<a href="index.cfm?muraAction=cDashboard.recentComments&page=#evaluate('comments.getPageIndex()-1')#&siteid=#URLEncodedFormat(rc.siteid)#"><li>&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,"dashboard.session.prev")#</a></li>
+			</cfif>
+		<cfloop from="1"  to="#comments.pageCount()#" index="i">
+			<cfif comments.getPageIndex() eq i>
+				<li class="active"> <a href="##">#i#</a></li> 
+			<cfelse> 
+				<li><a href="index.cfm?muraAction=cDashBoard.recentComments&page=#i#&siteid=#URLEncodedFormat(rc.siteid)#">#i#</a>
+				</li>
+			</cfif>
+		</cfloop>
+		<cfif comments.getPageIndex() lt comments.pageCount()>
+			<li><a href="index.cfm?muraAction=cDashboard.recentComments&page=#evaluate('comments.getPageIndex()+1')#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.next")#&nbsp;&raquo;</a></li>
+		</cfif>
+	</ul> 
 </cfif>	
 </cfoutput>
 

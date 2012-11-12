@@ -57,7 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput query="rsNest">
 <cfif rc.contentid neq rsnest.contentid>
 	<cfset variables.title=replace(rsNest.menutitle,",","","ALL")>
-	<cfif (rsnest.type eq 'Page' or rsnest.type eq 'Portal' or rsnest.type eq 'Calendar')>
+	<cfif (rsnest.type eq 'Page' or rsnest.type eq 'LocalRepo' or rsnest.type eq 'Calendar')>
 	<cfset "rc.#rc.parentlist#"=listappend(evaluate("rc.#rc.parentlist#"),"#rsnest.contentid#;#rsnest.filename#")>
 	<cfsavecontent variable="templabel"><cfif rc.nestlevel><cfloop  from="1" to="#rc.NestLevel#" index="I">&nbsp;&nbsp;</cfloop></cfif>#variables.title#</cfsavecontent>
 	<cfset "rc.#rc.parentlabels#"=listappend(evaluate("rc.#rc.parentlabels#"),templabel)>

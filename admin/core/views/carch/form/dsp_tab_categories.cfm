@@ -47,10 +47,41 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.categorization"))/>
 <cfset tabList=listAppend(tabList,"tabCategorization")>
 <cfoutput>
-<div id="tabCategorization">
-<dl class="oneColumn">
-<dt class="first"><cfoutput><a href="##" class="tooltip">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecategories')#<span>#application.rbFactory.getKeyValue(session.rb,"tooltip.availableCategories")#</span></a></cfoutput></dt>
-<dd class="categoryAssignment" id="categoryContainer"><cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" contentBean="#rc.contentBean#" rsCategoryAssign="#rc.rsCategoryAssign#"></dd>
-</dl>
-</div>
+	<div id="tabCategorization" class="tab-pane fade">
+
+		<cf_dsp_rendertabevents context="top" tab="categorization">
+
+		<div class="fieldset">
+		<div class="control-group">
+		<div class="mura-grid stripe">
+			<dl class="mura-grid-hdr">
+				<dt class="categorytitle">
+					<span class="indent">
+						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecategories')#
+					</span>
+				</dt>
+				<dd class="categoryassignmentwrapper">
+					<a title="#application.rbFactory.getKeyValue(session.rb,'tooltip.categoryassignment')#" rel="tooltip" href="##">
+						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.assignment')# <i class="icon-question-sign"></i>
+					</a>
+				</dd>
+			</dl><!--- /.mura-grid-hdr --->
+				<cf_dsp_categories_nest 
+					siteID="#rc.siteID#" 
+					parentID="" 
+					nestLevel="0" 
+					contentBean="#rc.contentBean#" 
+					rsCategoryAssign="#rc.rsCategoryAssign#">
+			
+		</div><!--- /.mura-grid --->
+		</div>
+		</div>
+
+		<span id="extendset-container-categorization" class="extendset-container"></span>
+
+
+		<cf_dsp_rendertabevents context="bottom" tab="categorization">
+		
+	</div><!--- /tabCatgeorization --->
 </cfoutput>
+<script>siteManager.initCategoryAssignments();</script>

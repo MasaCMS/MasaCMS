@@ -89,7 +89,7 @@
 	<cfparam name="arguments.rc.locking" default="false"/>
 	<cfparam name="arguments.rc.mobileExclude" default="0"/>
 	<cfparam name="arguments.rc.moduleAssign" default=""/>
-	
+	 
 	<cfif not isDefined("arguments.rc.topid")>
 		<cfparam name="session.topID" default="00000000000000000000000000000000001">
 		<cfset arguments.rc.topid=session.topID>
@@ -103,7 +103,6 @@
 	<cfargument name="rc">
 
 	<cfset arguments.rc.rsTop=variables.contentManager.getlist(arguments.rc) />
-	
 	<cfif arguments.rc.moduleid neq '00000000000000000000000000000000000'>
 		<cfset arguments.rc.nextN=variables.utility.getNextN(arguments.rc.rsTop,30,arguments.rc.startrow)/>
 	</cfif>
@@ -118,6 +117,13 @@
 	<cfif arguments.rc.moduleid neq '00000000000000000000000000000000000'>
 		<cfset arguments.rc.nextN=variables.utility.getNextN(arguments.rc.rsTop,30,arguments.rc.startrow)/>
 	</cfif>
+
+</cffunction>
+
+<cffunction name="loadrepomanager" output="false">
+	<cfargument name="rc">
+
+	<cfset loadsitemanager(argumentCollection=arguments)>
 
 </cffunction>
 
@@ -209,6 +215,8 @@
 	<cfargument name="rc">
 	<cfset var local=structNew()>
 	 
+	<cfset request.newImageIDList="">
+
 	<cfif not isNumeric(arguments.rc.orderno)>
 		<cfset arguments.rc.orderno=0>
 	</cfif>
@@ -242,10 +250,15 @@
 	 </cfif>
   
 	 <cfif arguments.rc.allowAction and arguments.rc.action eq 'add'>
-		<cfif structKeyExists(arguments.rc,"preserveID") and isValid('UUID',arguments.rc.preserveID)>
-			 <cfset arguments.rc.contentBean=getBean('content').loadBy(contentHistID=arguments.rc.preserveID, siteid=arguments.rc.siteid).set(arguments.rc).save() />
+		<cfif structKeyExists(arguments.rc,"sourceID") and isValid('UUID',arguments.rc.sourceID)>
+			 <cfset arguments.rc.contentBean=getBean('content').loadBy(contentHistID=arguments.rc.sourceID, siteid=arguments.rc.siteid).set(arguments.rc).save() />
 		<cfelse>
 			 <cfset arguments.rc.contentBean=getBean('content').loadBy(contentID=arguments.rc.contentID, siteid=arguments.rc.siteid).set(arguments.rc).save() />
+		</cfif>
+		<cfif len(request.newImageIDList)>
+			<cfset rc.fileid=request.newImageIDList>
+			<cfset rc.contenthistid=arguments.rc.contentBean.getContentHistID()>
+			<cfset variables.fw.redirect(action="cArch.imagedetails",append="contenthistid,siteid,fileid,compactDisplay")>
 		</cfif>
 	 </cfif>
 	 

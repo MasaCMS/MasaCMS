@@ -519,7 +519,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif rsCheck.recordcount>
 		<cfloop query="rscheck">
-			<cffile action="delete" file="#filepath##rsCheck.name#">
+			<cfset check=listGetAt(rsCheck.name,2,"_")>
+			<cfif len(check) gt 1>
+				<cfset check=mid(check,2,1)>
+				<cfif isNumeric(check)>
+					<cffile action="delete" file="#filepath##rsCheck.name#">
+				</cfif>
+			</cfif>
 		</cfloop>
 	</cfif>
 </cffunction>
@@ -527,15 +533,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="rebuildImageCache" output="false">
 <cfargument name="siteID">
 	<cfset var rsDB="">
-	<cfset var filePath="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/">
-	<cfset var currentSource="">
-	<cfset var currentSmall="">
-	<cfset var currentMedium="">
-	<cfset var currentLarge="">
 	<cfset var rsCheck="">
 	<cfset var rsDir="">
 	<cfset var currentSite=variables.settingsManager.getSite(arguments.siteID)>
-	
+	<cfset var check="">
+	<cfset var currentSource="">
+
 	<cfquery name="rsDB" datasource="#variables.configBean.getReadOnlyDatasource()#" password="#variables.configBean.getReadOnlyDbPassword()#" username="#variables.configBean.getReadOnlyDbUsername()#">
 	select fileID,fileEXT from tfiles 
 	where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
@@ -547,15 +550,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif not fileExists(currentSource)>
 			<cfset currentSource=filepath & rsDB.fileID & "." & rsDB.fileEXT>
 		</cfif>
-
 		<cfif FileExists(currentSource)>
-			<cfset currentSmall=filepath & rsDB.fileID & "_small." & rsDB.fileEXT>
-			<cfset currentMedium=filepath & rsDB.fileID & "_medium." & rsDB.fileEXT>
-			<cfset currentLarge=filepath & rsDB.fileID & "." & rsDB.fileEXT>
-			
-			<cfset variables.imageProcessor.resizeImage(currentSource, currentSmall, currentSite.getGallerySmallScaleBy(), currentSite.getGallerySmallScale(), filePath)>
-			<cfset variables.imageProcessor.resizeImage(currentSource, currentMedium, currentSite.getGalleryMediumScaleBy(), currentSite.getGalleryMediumScale(), filePath)>
-			<cfset variables.imageProcessor.resizeImage(currentSource, currentLarge, currentSite.getGalleryMainScaleBy(), currentSite.getGalleryMainScale(), filePath)>
+			<cfloop list="small,medium,large" index="i">
+				<cfset cropAndScale(fileID=rsDB.fileID,size=i)>
+			</cfloop>
 		</cfif>
 	</cfloop>
 	
@@ -566,9 +564,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfquery>
 
 	<cfif rsCheck.recordcount>
-		<cfloop query="rscheck">
-			<cffile action="delete" file="#filepath##rsCheck.name#">
-		</cfloop>
+		<cfset check=listGetAt(rsCheck.name,2,"_")>
+		<cfif len(check) gt 1>s
+			<cfset check=mid(check,2,1)>
+			<cfif isNumeric(check)>
+				<cffile action="delete" file="#filepath##rsCheck.name#">
+			</cfif>
+		</cfif>
 	</cfif>
 	
 </cffunction>
@@ -614,7 +616,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="Image" required="true" />
 	<cfargument name="Height" default="AUTO" />
 	<cfargument name="Width" default="AUTO" />
-
+	<cfargument name="size" default="" />
+	<cfargument name="siteID" default="" />
 	<cfreturn variables.imageProcessor.getCustomImage(argumentCollection=arguments) />
 </cffunction>
 
@@ -667,13 +670,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset arguments.size="small">
 		</cfif>
 	
-		<cfif arguments.size neq "Custom">
+		<cfif listFindNoCase('small,medium,large,source',arguments.size)>
 			<cfif arguments.size eq "large">
 				<cfset imgSuffix="">
 			<cfelse>
 				<cfset imgSuffix="_" & lcase(arguments.size)>
 			</cfif>
 			<cfset returnURL=application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & arguments.fileID & imgSuffix & "." & arguments.fileEXT>
+		<cfelseif arguments.size neq 'custom'>
+			<cfset returnURL = application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & getCustomImage(image="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##arguments.fileID#.#arguments.fileExt#",size=arguments.size,siteID=arguments.siteID)>
 		<cfelse>
 			<cfif not len(arguments.width)>
 				<cfset arguments.width="auto">
@@ -681,7 +686,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif not len(arguments.height)>
 				<cfset arguments.height="auto">
 			</cfif>
-			<cfset returnURL = application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & getCustomImage("#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##arguments.fileID#.#arguments.fileExt#",arguments.height,arguments.width)>
+			<cfset returnURL = application.configBean.getAssetPath() & "/" & arguments.siteID & "/cache/file/" & getCustomImage(image="#application.configBean.getFileDir()##application.configBean.getFileDelim()##arguments.siteid##application.configBean.getFileDelim()#cache#application.configBean.getFileDelim()#file#application.configBean.getFileDelim()##arguments.fileID#.#arguments.fileExt#",height=arguments.height,width=arguments.width,siteID=arguments.siteID)>
 		</cfif>
 	<cfelse>
 		<cfif arguments.size eq "large">
@@ -694,6 +699,118 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfreturn begin & returnURL>
 	
+</cffunction>
+
+<cffunction name="cropAndScale" output="false">
+	<cfargument name="fileID">
+	<cfargument name="size">
+	<cfargument name="x">
+	<cfargument name="y">
+	<cfargument name="height">
+	<cfargument name="width">
+	<cfargument name="siteid">
+
+
+	<cfset var rsMeta=readMeta(arguments.fileID)>
+	<cfset var site=variables.settingsManager.getSite(rsMeta.siteID)>
+	<cfset var file="">
+	<cfset var source="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/#fileID#_source.#rsMeta.fileExt#">
+	<cfset var cropper=structNew()>
+	<cfset var customImageSize="">
+
+	<cfset arguments.size=lcase(arguments.size)>
+	
+	<cfif rsMeta.recordcount and IsImageFile(source)>
+		
+		<cfif not fileExists(source)>
+			<cfset source="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/#fileID#.#rsMeta.fileExt#">
+		</cfif>
+
+		<cfif arguments.size eq "large">
+			<cfset var file="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/#fileID#.#rsMeta.fileExt#">
+		<cfelse>
+			<cfset var file="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/#fileID#_#arguments.size#.#rsMeta.fileExt#">
+		</cfif>
+
+		<cfif fileExists(file)>
+			<cfset fileDelete(file)>
+		</cfif>
+
+		<cfset cropper=imageRead(source)>
+
+		<cfif isDefined('arguments.x')>	
+			<cfset imageCrop(cropper,arguments.x,arguments.y,arguments.width,arguments.height)>
+			<cfset ImageWrite(cropper,file,1)>
+			
+			<cfif listFindNoCase('small,medium,large',arguments.size)>
+				<cfset variables.imageProcessor.resizeImage(
+					image=file,
+					height=evaluate("site.get#arguments.size#ImageHeight()"),
+					width=evaluate("site.get#arguments.size#ImageWidth()")
+				)>
+			<cfelse>
+				<cfset customImageSize=getBean('imageSize').loadBy(name=arguments.size,siteID=arguments.siteID)>
+				<cfset variables.imageProcessor.resizeImage(
+					image=file,
+					height=customImageSize.getHeight(),
+					width=customImageSize.getWidth()
+				)>
+			</cfif>
+		<cfelse>
+			<cfset ImageWrite(cropper,file,1)>
+			<cfif listFindNoCase('small,medium,large',arguments.size)>
+				<cfset variables.imageProcessor.resizeImage(
+					image=file,
+					height=evaluate("site.get#arguments.size#ImageHeight()"),
+					width=evaluate("site.get#arguments.size#ImageWidth()")
+				)>
+			<cfelse>
+				<cfset customImageSize=getBean('imageSize').loadBy(name=arguments.size,siteID=arguments.siteID)>
+				<cfset variables.imageProcessor.resizeImage(
+					image=file,
+					height=customImageSize.getHeight(),
+					width=customImageSize.getWidth()
+				)>
+			</cfif>
+		</cfif>
+
+		<cfset cropper=imageRead(file)>
+		<cfreturn ImageInfo(cropper)>
+	</cfif>
+</cffunction>
+
+<cffunction name="rotate">
+	<cfargument name="fileID">
+	<cfargument name="degrees" default="90">
+
+	<cfset var rsMeta=readMeta(arguments.fileID)>
+	<cfset var source="#application.configBean.getFileDir()#/#rsMeta.siteID#/cache/file/#arguments.fileID#_source.#rsMeta.fileExt#">
+	<cfset var myImage="">
+	
+	<cfif rsMeta.recordcount and IsImageFile(source)>
+		<cfscript>
+			myImage=imageRead(source);
+			ImageRotate(myImage,arguments.degrees);
+			imageWrite(myImage,source,1);
+		</cfscript>
+	</cfif>
+</cffunction>
+
+<cffunction name="flip">
+	<cfargument name="fileID">
+	<cfargument name="transpose" default="horizontal">
+
+	<cfset var rsMeta=readMeta(arguments.fileID)>
+	<cfset var source="#application.configBean.getFileDir()#/#rsMeta.siteID#/cache/file/#arguments.fileID#_source.#rsMeta.fileExt#">
+	<cfset var myImage="">
+	
+	<cfif rsMeta.recordcount and IsImageFile(source)>
+		<cfscript>
+			myImage=imageRead(source);
+			ImageFlip(myImage,arguments.transpose);
+			imageWrite(myImage,source,1);
+		</cfscript>
+	</cfif>
 </cffunction>
 
 </cfcomponent>

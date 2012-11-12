@@ -3,7 +3,7 @@
  * CKFinder
  * ========
  * http://ckfinder.com
- * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (C) 2007-2012, CKSource - Frederico Knabben. All rights reserved.
  *
  * The software, this file and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
@@ -19,6 +19,7 @@
 	<cfset var aclMask = 0 />
 	<cfset var nodeFolders = XMLElemNew(THIS.xmlObject, "Folders") />
 	<cfset var nodeFolder = "" />
+	<cfset var clientPath = "" />
 	<cfset var folderPath = THIS.currentFolder.getServerPath() />
 	<cfset var acl = APPLICATION.CreateCFC("Core.AccessControlConfig") />
 	<cfset var utils = APPLICATION.CreateCFC("Utils.Misc") />
@@ -44,7 +45,8 @@
 		while( i lte qDir.recordCount ) {
 			if (compareNoCase( qDir.type[i], "FILE" ) and not listFind(".,..", qDir.name[i])) {
 
-				aclMask = acl.getComputedMask(THIS.currentFolder.resourceTypeName, THIS.currentFolder.clientPath & qDir.name[i] & "/");
+				clientPath = THIS.currentFolder.clientPath & qDir.name[i] & "/";
+				aclMask = acl.getComputedMask(THIS.currentFolder.resourceTypeName, clientPath);
 				if (bitAnd(aclMask, REQUEST.constants.CKFINDER_CONNECTOR_ACL_FOLDER_VIEW) neq REQUEST.constants.CKFINDER_CONNECTOR_ACL_FOLDER_VIEW) {
 					i=i+1;
 					continue;
@@ -57,7 +59,7 @@
 				nodeFolder = XMLElemNew(THIS.xmlObject, "Folder");
 				nodeFolder.xmlAttributes["name"] = qDir.name[i];
 				nodeFolder.xmlAttributes["acl"] = aclMask;
-				nodeFolder.xmlAttributes["hasChildren"] = fileSystem.hasChildren(folderPath & qDir.name[i]);
+				nodeFolder.xmlAttributes["hasChildren"] = fileSystem.hasChildren(coreConfig, clientPath, folderPath & qDir.name[i] & "/", THIS.currentFolder.resourceTypeName);
 				ArrayAppend(nodeFolders.xmlChildren, nodeFolder);
 			}
 			i=i+1;

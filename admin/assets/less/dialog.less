@@ -1,0 +1,411 @@
+/* This file is part of Mura CMS. 
+
+	Mura CMS is free software: you can redistribute it and/or modify 
+	it under the terms of the GNU General Public License as published by 
+	the Free Software Foundation, Version 2 of the License. 
+
+	Mura CMS is distributed in the hope that it will be useful, 
+	but WITHOUT ANY WARRANTY; without even the implied warranty of 
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+	GNU General Public License for more details. 
+
+	You should have received a copy of the GNU General Public License 
+	along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>. 
+
+	Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
+	Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+	
+	However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
+	or libraries that are released under the GNU Lesser General Public License version 2.1.
+	
+	In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
+	independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
+	Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+	
+	Your custom code 
+	
+	• Must not alter any default objects in the Mura CMS database and
+	• May not alter the default display of the Mura CMS logo within Mura CMS and
+	• Must not alter any files in the following directories.
+	
+	 /admin/
+	 /tasks/
+	 /config/
+	 /requirements/mura/
+	 /Application.cfc
+	 /index.cfm
+	 /MuraProxy.cfc
+	
+	You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
+	under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
+	requires distribution of source code.
+	
+	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
+	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
+	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
+/*This file is part of Mura CMS.
+
+    Mura CMS is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, Version 2 of the License.
+
+    Mura CMS is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/* @group Modal Dialog */
+
+@import "../bootstrap/less/mixins.less";
+@import "variables.less";
+@import "mixins.less";
+@import "fonts.less";
+
+#frontEndToolsModalContainer {
+ /* position: [Set in dialog.js]; */
+  display: block;
+  /*height: [Set in dialog.js];*/
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 99999;
+  text-align: center; /* centers in quirks and IE */
+  .mura-modal();
+}
+
+#frontEndToolsModalBody {
+  position: relative;
+  overflow: visible;
+  top: 50px;
+  margin: 0 auto;
+  padding: 0;
+  background: transparent;
+  /* width: 990px; */
+}
+
+#frontEndToolsModaliframe {
+  width: 100%;
+  min-height: 400px;
+  background: transparent;
+  .border-radius(6px);
+}
+
+.modal-configurator #frontEndToolsModaliframe {
+  width: 600px !important;
+  background: transparent;
+}
+
+.modal-configurator #frontEndToolsModalBody {
+  width: 600px;
+}
+
+#frontEndToolsModalClose {
+	position: absolute;
+	top: 35px;
+	right: 18px;
+	color: @gray;
+	.inline-block;
+	/* text-shadow: -1px -1px 0 rgba(0,0,0,.4); */
+
+	i {
+		font-size: 24px;
+		}
+}
+
+#frontEndToolsModalClose:hover {
+	text-decoration: none;
+	color: @grayDark;
+}
+
+#shadowbox_container {
+	z-index: 499997;
+}
+
+#shadowbox_overlay {
+	z-index: 499996;
+}
+
+#dialog_overlay {
+	background-color: #000000;
+	display: none;
+	height: 100%;
+	left:0;
+	position: absolute;
+	top:0;
+	width: 100%;
+	z-index: 500000;
+	opacity: 0.8;
+}
+
+#dialog_overlay[id] {
+	position: fixed;
+}
+
+.editForm { /* Holds the edit content, iframe, etc. */
+	display: none;
+	padding: 2%;
+	position: absolute;
+	text-align: center;
+	top: 2%;
+	width: 90%;
+	height: 90%;
+	z-index: 499998;
+}
+
+.editForm[id] {
+	position: fixed;
+}
+
+#editFormIframeContainer {
+	background-color: #fff;
+	height: 100%;
+	position: relative;
+}
+
+#closeDiv {
+	position: absolute;
+	left: -10px;
+	top: -10px;
+}
+
+#carch.compact {
+	
+	h1 {
+	font-size: 26px;
+	line-height: 1;
+	/* color: @grayDark; */
+	/* border-bottom: 1px solid @grayLight !important; */
+	margin-bottom: .75em;
+	padding-right: 28px;
+	}	
+}
+
+.add-content-ui {
+		
+		ul {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			}
+		
+		li {
+			.inline-block;
+			.box-sizing(border-box);
+			position: relative;
+			line-height: 1.1;
+			width: 32%;
+			margin: 0 1% 8px 0;
+			text-align: center;
+			
+			a {
+				.btn-alt;
+				display: block;
+				}
+			
+			a:hover {
+				text-decoration: none;
+				#gradient .vertical(darken(#414141,10%),darken(#323232,10%));
+				
+				i {
+					color: @white;
+					}
+				
+				span {
+					color: @gray;
+					}
+				
+				}
+			
+			i {
+				font-size: 42px;
+				line-height: 1;
+				width: auto;
+				height: 41px;
+				display: block;
+				padding: 0;
+				margin: 0 auto;
+				color: @gray;
+				}
+				
+			a[rel="tooltip"] {
+				position: absolute;
+				top: 4px;
+				right: 6px;
+				display: inline-block !important;
+				height: 15px;
+				background: transparent;
+				border: 0;
+				z-index: 10;
+				
+				i {
+					font-size: 15px;
+					color: @grayDark;
+					text-shadow: 0 -1px 0 rgba(0,0,0,.9);
+					}
+				}
+
+		}
+		
+		li:nth-child(3n) {
+			margin-right: 0;
+			}
+		
+		}
+
+
+/* @end */
+
+/* @group Toolbar */
+
+@feToolBarBGStart:	hsla(0,0,.3,.98);
+@feToolBarBGEnd:	hsla(0,0,.18,.98);
+
+#frontEndTools {
+	#gradient .vertical(@feToolBarBGStart,@feToolBarBGEnd);
+	height: 30px !important;
+	position: fixed !important;
+	left: 0px !important;
+	top: 0px !important;
+	width: 100% !important;
+	z-index: 499999 !important;
+	text-align: left !important;
+	font-weight: normal !important;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+	.box-shadow(0 1px 3px rgba(0,0,0,.35)) !important;
+	/* border-top: 1px solid hsla(0,0,.6,.98); */
+	/* border-bottom: 1px solid hsla(0,0,.2,.98); */
+}
+
+#frontEndToolsHandle {
+	background: transparent !important;
+	left: 12px !important;
+	position: fixed !important;
+	top: 0 !important;
+	z-index: 500001 !important;
+	cursor: pointer !important;
+	border: 0 !important;
+}
+
+#frontEndTools ul {
+	height: 30px !important;
+	list-style: none !important;
+	margin: 0 0 0 37px !important;
+	padding: 0 !important;
+	border-right: 0 solid hsla(0,0,.33,.85) !important;
+	border-left: 1px solid hsla(0,0,.19,.85) !important;
+}
+
+#frontEndTools ul li {
+	color: rgba(255,255,255,.85) !important;
+	float: left !important;
+	height: 30px !important;
+	line-height: 30px !important;
+	margin:0 !important;
+	padding: 0 !important;
+	list-style: none !important;
+	font-weight: normal !important;
+	font-style: normal !important;
+	text-shadow: rgba(0,0,0,.8) 0px -1px 0px !important;
+	background: none !important;
+	text-shadow: 0 -1px 0 rgba(0,0,0,1) !important;
+	border-left: 1px solid hsla(0,0,.33,.85) !important;
+	border-right: 1px solid hsla(0,0,.19,.85) !important;
+}
+
+#frontEndTools ul li:first-child {
+	border-left: 0 !important;
+}
+
+#frontEndTools ul li#adminSiteManager, #frontEndTools ul li#adminSiteManager404 {
+	border-right: 0 !important;
+}
+
+#frontEndTools ul li a {
+	display: block !important;
+	color: rgba(255,255,255,1) !important;
+	background: transparent !important;
+	font-size: 12px !important;
+	line-height: 29px !important;
+	height: 30px !important;
+	padding: 0 1.25em 0 .75em !important;
+	text-decoration: none !important;
+	font-weight: normal !important;
+	font-style: normal !important;
+	outline: 0 !important;
+	text-shadow: 0 -1px 0 rgba(0,0,0,.9) !important;
+}
+
+#frontEndTools i {
+	color:@black !important;
+	font-size: 16px !important;
+	text-shadow: 0 1px 0 rgba(255,255,255,.15) !important;
+	position: relative !important;
+	top: 2px !important;
+	width: 1.1em !important;
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+	line-height: 1 !important;
+}
+
+#frontEndTools #adminSiteManager i {
+	width: 1.3em !important;
+}
+
+#frontEndTools ul li a:hover {
+	color: @white !important;
+}
+
+#frontEndTools ul li a:hover i {
+	color: @gray !important;
+	text-shadow: 0 -1px 0 rgba(0,0,0,1) !important;
+}
+
+#frontEndTools ul li#adminWelcome {
+	float: right !important;
+	margin-right: 10px !important;
+	padding: 0 !important;
+	border: 0 !important;
+	font-size: 11px !important;
+	line-height: 30px !important;
+	color: @gray !important;
+}
+
+#frontEndTools ul li#adminLogOut {
+	float: right !important;
+	margin-right: 14px !important;
+	padding: 4px 0 0 0 !important;
+	text-align: center !important;
+	border: 0 !important;
+}
+
+#frontEndTools ul li#adminLogOut a {
+	display: block !important;
+	color: darken(@grayDark,10%) !important;
+	font-size: 11px !important;
+	padding: 2px 8px 2px 6px !important;
+	line-height: 14px !important;
+	height: 16px !important;
+	text-shadow: none !important;
+	.border-radius(14px) !important;
+	background: #898989 !important;
+	.box-shadow(0 0 4px rgba(0,0,0,.75) inset) !important;
+	text-shadow: 0 1px 0 rgba(255,255,255,.2) !important;
+}
+
+#frontEndTools ul li#adminLogOut i {
+	font-size: 13px !important;
+	color: darken(@grayDark,10%) !important;
+	line-height: 14px !important;
+	height: 16px !important;
+}
+
+#frontEndTools ul li#adminLogOut a:hover {
+	
+}
+
+// Add Content 
+

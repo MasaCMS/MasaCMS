@@ -44,7 +44,10 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfoutput><h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.sessionhistory")#</h2>
+<cfoutput><h1>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.sessionhistory")#</h1>
+
+<cfinclude template="dsp_secondary_menu.cfm">
+
 <cfsilent>
 <cfset lastAccessed=application.dashboardManager.getLastSessionDate(rc.rslist.urlToken,rc.rslist.originalUrlToken,rc.rslist.entered) />
 </cfsilent>
@@ -56,10 +59,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <li><strong>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.lengthofvisit")#:</strong> #application.dashboardManager.getTimespan(rc.rslist.entered[rc.rslist.recordcount],rc.rslist.entered[1])#</li>
 </ul>
 
-<table class="mura-table-grid stripe"> 
+<table class="table table-striped table-condensed table-bordered mura-table-grid"> 
 <tr>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.user")#</th>
-<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.content")#</th>
+<th class="var-width">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.content")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.requesttime")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.keywords")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.locale")#</th>
@@ -69,13 +72,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/>
 <tr>
 <td><cfif rc.rslist.userid eq ''>Anonymous<cfelse>#HTMLEditFormat(rc.rslist.fname)# #HTMLEditFormat(rc.rslist.lname)#<cfif rc.rslist.company neq ''> (#HTMLEditFormat(rc.rslist.company)#)</cfif></cfif></td>
-<td class="varWidth">#application.contentRenderer.dspZoom(crumbdata,rc.rslist.fileEXT)#</td>
+<td class="var-width">#application.contentRenderer.dspZoom(crumbdata)#</td>
 
 <td>#LSDateFormat(rc.rslist.entered,session.dateKeyFormat)# #LSTimeFormat(rc.rslist.entered,"short")#</td>
 <td><cfif rc.rslist.keywords neq ''>#HTMLEditFormat(rc.rslist.keywords)#<cfelse>&mdash;</cfif></td>
 <td>#rc.rslist.locale#</td>
-<td class="administration"><ul class="one"><li class="preview"><cfswitch expression="#rc.rslist.type#">
-		<cfcase value="Page,Portal,Calendar,Gallery">
+<td class="actions"><ul><li class="preview"><cfswitch expression="#rc.rslist.type#">
+		<cfcase value="Page,LocalRepo,Calendar,Gallery">
 		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,rc.rsList.filename)#','#rc.rslist.targetParams#');">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#</a>
 		</cfcase>
 		<cfcase value="Link">

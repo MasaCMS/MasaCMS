@@ -45,10 +45,12 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<h2>#application.rbFactory.getKeyValue(session.rb,'advertising.advertisersummary')#</h2>
+<h1>#application.rbFactory.getKeyValue(session.rb,'advertising.advertisersummary')#</h1>
+
+<cfinclude template="dsp_secondary_menu.cfm">
 
 <cfset rsAddress=rc.userBean.getAddresses()>
-<ul class="overview"><li><a href="index.cfm?muraAction=#iif(rc.userBean.getIsPublic(),de('cPublicUsers.editUser'),de('cPrivateUsers.editUser'))#&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#&routeid=adManager">#rc.userBean.getCompany()#</a></li>
+<ul class="metadata"><li><a href="index.cfm?muraAction=#iif(rc.userBean.getIsPublic(),de('cPublicUsers.editUser'),de('cPrivateUsers.editUser'))#&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#&routeid=adManager">#rc.userBean.getCompany()#</a></li>
   <li>#rc.userBean.getFname()# #rc.userBean.getLname()#</li>
   <li>#rsAddress.address1#</li>
   <cfif rsAddress.address2 neq ''><li>#rsAddress.address2#</li></cfif>
@@ -56,32 +58,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   <li>#rsAddress.phone#</li>
 </ul>
 
+<section>
+<h2>#application.rbFactory.getKeyValue(session.rb,'advertising.campaigns')#</h2>
 
-<h3>#application.rbFactory.getKeyValue(session.rb,'advertising.campaigns')#</h3>
+<div id="nav-module-specific" class="btn-group">
+<a class="btn" href="index.cfm?muraAction=cAdvertising.editCampaign&campaignid=&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.addnewcampaign')#</a>
+</div>
 
-<ul id="navTask">
-<li><a href="index.cfm?muraAction=cAdvertising.editCampaign&campaignid=&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.addnewcampaign')#</a></li>
-</ul>
-
-<table class="mura-table-grid stripe">
+<table class="table table-striped table-condensed table-bordered mura-table-grid">
 <tr>
-	<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'advertising.name')#</th>
+	<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'advertising.name')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.startdate')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.enddate')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.active')#</th>
-	<th class="administration">&nbsp;</th>
+	<th class="actions">&nbsp;</th>
 </tr></cfoutput>
 <cfif rc.rsCampaigns.recordcount>
 <cfoutput query="rc.rsCampaigns">
 	<tr>
-		<td class="varWidth"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?muraAction=cAdvertising.editCampaign&userid=#rc.rsCampaigns.userid#&siteid=#URLEncodedFormat(rc.siteid)#&campaignid=#rc.rsCampaigns.campaignID#">#rc.rsCampaigns.name#</a></td>
+		<td class="var-width"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?muraAction=cAdvertising.editCampaign&userid=#rc.rsCampaigns.userid#&siteid=#URLEncodedFormat(rc.siteid)#&campaignid=#rc.rsCampaigns.campaignID#">#rc.rsCampaigns.name#</a></td>
 		<td>#LSDateFormat(rc.rsCampaigns.startdate,session.dateKeyFormat)#</td>
 		<td>#LSDateFormat(rc.rsCampaigns.enddate,session.dateKeyFormat)#</td>
 		<td>#application.rbFactory.getKeyValue(session.rb,'advertising.#yesnoformat(rc.rsCampaigns.isActive)#')#</td>
-		<td class="administration"><ul class="three">
-		<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?muraAction=cAdvertising.editCampaign&userid=#rc.rsCampaigns.userid#&siteid=#URLEncodedFormat(rc.siteid)#&campaignid=#rc.rsCampaigns.campaignID#">#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#</a></li>
-		<li class="viewReport"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.viewcmpaignreport')#" href="index.cfm?muraAction=cAdvertising.viewReportByCampaign&campaignid=#rc.rsCampaigns.campaignid#&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.viewreport')#</a></li>
-		<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.delete')#" href="index.cfm?muraAction=cAdvertising.updateCampaign&action=delete&campaignid=#rc.rsCampaigns.campaignid#&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'advertising.deletecampaignconfirm'))#',this.href)">#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#</a></li></ul>
+		<td class="actions"><ul>
+		<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?muraAction=cAdvertising.editCampaign&userid=#rc.rsCampaigns.userid#&siteid=#URLEncodedFormat(rc.siteid)#&campaignid=#rc.rsCampaigns.campaignID#"><i class="icon-pencil"></i></a></li>
+		<li class="view-report"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.viewcmpaignreport')#" href="index.cfm?muraAction=cAdvertising.viewReportByCampaign&campaignid=#rc.rsCampaigns.campaignid#&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-bar-chart"></i></a></li>
+		<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.delete')#" href="index.cfm?muraAction=cAdvertising.updateCampaign&action=delete&campaignid=#rc.rsCampaigns.campaignid#&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'advertising.deletecampaignconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li></ul>
 		</td></tr>
 </cfoutput>
 <cfelse>
@@ -90,14 +92,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</tr>
 </cfif>
 </table>
+</section>
 <cfoutput>
-<h3 class="divide">#application.rbFactory.getKeyValue(session.rb,'advertising.creatives')#</h3>
+<section>
+<h2>#application.rbFactory.getKeyValue(session.rb,'advertising.creatives')#</h2>
 
-<ul id="navTask">
-<li><a href="index.cfm?muraAction=cAdvertising.editCreative&creativeid=&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.addnewcreative')#</a></li>
-</ul>
+<div id="nav-module-specific" class="btn-group">
+<a class="btn" href="index.cfm?muraAction=cAdvertising.editCreative&creativeid=&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.addnewcreative')#</a>
+</div>
 
-<table class="mura-table-grid stripe">
+<table class="table table-striped table-condensed table-bordered mura-table-grid">
 <tr>
 	<th class="title">#application.rbFactory.getKeyValue(session.rb,'advertising.name')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.assettype')#</th>
@@ -107,12 +111,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.datecreated')#</th> 
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.dateupdated')#</th> 
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.active')#</th>
-	<th class="administration">&nbsp;</th>
+	<th class="actions">&nbsp;</th>
 </tr></cfoutput>
 <cfif rc.rsCreatives.recordcount>
 <cfoutput query="rc.rsCreatives">
 	<tr>
-		<td class="varWidth"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?muraAction=cAdvertising.editCreative&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#&creativeid=#rc.rsCreatives.creativeID#">#rc.rsCreatives.name#</a></td>
+		<td class="var-width"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?muraAction=cAdvertising.editCreative&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#&creativeid=#rc.rsCreatives.creativeID#">#rc.rsCreatives.name#</a></td>
 		<td>#application.rbFactory.getKeyValue(session.rb,'advertising.creativetype.#replace(rc.rsCreatives.creativeType,' ','','all')#')#</td>
 		<td>#application.rbFactory.getKeyValue(session.rb,'advertising.mediatype.#rc.rsCreatives.mediatype#')#</td>
 		<td>#rc.rsCreatives.height#</td>
@@ -120,9 +124,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<td>#LSDateFormat(rc.rsCreatives.dateCreated,session.dateKeyFormat)#</td>
 		<td>#LSDateFormat(rc.rsCreatives.lastUpdate,session.dateKeyFormat)#</td>
 		<td>#application.rbFactory.getKeyValue(session.rb,'advertising.#yesnoformat(rc.rsCreatives.isActive)#')#</td>
-		<td class="administration"><ul class="two">
-		<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?muraAction=cAdvertising.editCreative&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#&creativeid=#rc.rsCreatives.creativeID#">#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#</a></li>
-		<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.delete')#" href="index.cfm?muraAction=cAdvertising.updateCreative&action=delete&creativeid=#rc.rsCreatives.creativeid#&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'advertising.deletecreativeconfirm'))#',this.href)">#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#</a></li></ul>
+		<td class="actions"><ul>
+		<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?muraAction=cAdvertising.editCreative&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#&creativeid=#rc.rsCreatives.creativeID#"><i class="icon-pencil"></i></a></li>
+		<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.delete')#" href="index.cfm?muraAction=cAdvertising.updateCreative&action=delete&creativeid=#rc.rsCreatives.creativeid#&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'advertising.deletecreativeconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li></ul>
 		</td></tr>
 </cfoutput>
 <cfelse>
@@ -131,3 +135,4 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</tr>
 </cfif>
 </table>
+</section>

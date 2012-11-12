@@ -45,6 +45,6 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
-<cfoutput><h2>Access Denied</h2>
+<cfoutput><h1>Access Denied</h1>
 <p>You have successfully logged in. However, you user account has not been granted permission to access any sites. <br/> If you believe that this is an error, please feel free to contact the system <a href="mailto:#application.configBean.getAdminEmail()#">administrator.</a></p>
 </cfoutput>

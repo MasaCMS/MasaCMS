@@ -83,7 +83,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			SiteID=variables.records.SiteID[currentIndex()],
 			configBean=variables.configBean,
 			ID=variables.records.ID[currentIndex()],
-			manager=variables.manager) />
+			manager=variables.manager,
+			sourceIterator=this) />
 	
 	<cfif isObject(variables.recordTranslator)>
 		<cfset extendObject.setTranslator(variables.recordTranslator)>

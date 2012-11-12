@@ -45,20 +45,22 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<h2>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager')#</h2>
-<cfoutput><ul id="navTask"><li><a title="Add Mailing List" href="index.cfm?muraAction=cMailingList.edit&siteid=#URLEncodedFormat(rc.siteid)#&mlid=">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.addmailinglist')#</a></li></ul></cfoutput>
-<table class="mura-table-grid stripe">
+<h1>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager')#</h1>
+
+<cfinclude template="dsp_secondary_menu.cfm">
+
+<table class="table table-striped table-condensed table-bordered mura-table-grid">
 <tr>
-	<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.currentmailinglists')#</th>
+	<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.currentmailinglists')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.type')#</th>
 	<th>&nbsp;</th>
 </tr></cfoutput>
 <cfif rc.rslist.recordcount>
 <cfoutput query="rc.rslist">
 	<tr>
-		<td class="varWidth"><a title="Edit" href="index.cfm?muraAction=cMailingList.edit&mlid=#rc.rslist.mlid#&siteid=#URLEncodedFormat(rc.siteid)#">#HTMLEditFormat(rc.rslist.name)# (#rc.rslist.members#)</a></td>
+		<td class="var-width"><a title="Edit" href="index.cfm?muraAction=cMailingList.edit&mlid=#rc.rslist.mlid#&siteid=#URLEncodedFormat(rc.siteid)#">#HTMLEditFormat(rc.rslist.name)# (#rc.rslist.members#)</a></td>
 		<td><cfif rc.rslist.ispublic>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.public')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.private')#</cfif></td>
-		<td class="administration"><ul class="mailingLists"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.edit')#" href="index.cfm?muraAction=cMailingList.edit&mlid=#rc.rslist.mlid#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.edit')#</a></li><li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.viewmembership')#" href="index.cfm?muraAction=cMailingList.listmembers&mlid=#rc.rslist.mlid#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.viewmembership')#</a></li><cfif not rc.rslist.ispurge><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#" href="index.cfm?muraAction=cMailingList.update&action=delete&mlid=#rc.rslist.mlid#&siteid=#URLEncodedFormat(rc.siteid)#" onClick="return confirmDialog('#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.deleteconfirm')#',this.href);">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#</a></li><cfelse><li class="deleteOff">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#</li></cfif></ul></td></tr>
+		<td class="actions"><ul class="mailingLists"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.edit')#" href="index.cfm?muraAction=cMailingList.edit&mlid=#rc.rslist.mlid#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-pencil"></i></a></li><li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.viewmembership')#" href="index.cfm?muraAction=cMailingList.listmembers&mlid=#rc.rslist.mlid#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-group"></i></a></li><cfif not rc.rslist.ispurge><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#" href="index.cfm?muraAction=cMailingList.update&action=delete&mlid=#rc.rslist.mlid#&siteid=#URLEncodedFormat(rc.siteid)#" onClick="return confirmDialog('#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.deleteconfirm')#',this.href);"><i class="icon-remove-sign"></i></a></li><cfelse><li class="delete disabled"><span><i class="icon-remove-sign"></i></span></li></cfif></ul></td></tr>
 </cfoutput>
 <cfelse>
 <tr>

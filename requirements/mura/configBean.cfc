@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent extends="mura.cfobject" output="false">
 <cfset variables.instance=structNew()/>
 <cfset variables.instance.mode=""/>
-<cfset variables.instance.version="5.6"/> 
+<cfset variables.instance.version="6.0"/> 
 <cfset variables.instance.title=""/>
 <cfset variables.instance.webroot=""/>
 <cfset variables.instance.webrootmap=""/>
@@ -142,7 +142,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.trackSessionInNewThread=1 />
 <cfset variables.instance.cfStaticJavaLoaderScope="application">
 <cfset variables.instance.URLTitleDelim="-">
+<cfset variables.instance.BCryptLogRounds=10>
 <cfset variables.dbUtility="">
+<cfset variables.instance.allowAutoUpdates=1>
+<cfset variables.instance.CFFPConfigFilename="cffp.ini.cfm">
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
@@ -806,25 +809,60 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="table">
 	<cfset var rs ="">
 	
-	<cfif variables.instance.dbtype neq "oracle">
-			<cfdbinfo 
-			name="rs"
-			datasource="#getDatasource()#"
-			username="#getDbUsername()#"
-			password="#getDbPassword()#"
-			table="#arguments.table#"
-			type="columns">	
-	<cfelse>
-		<cfquery
-			name="rs" 
-			datasource="#getDatasource()#"
-			username="#getDbUsername()#"
-			password="#getDbPassword()#">
-				SELECT column_name, data_length column_size, data_type type_name
-				FROM user_tab_cols
-				WHERE table_name=UPPER('#arguments.table#')
-		</cfquery>
-	</cfif>
+	<cfswitch expression="#getDbType()#">
+			<cfcase value="oracle">
+				<cfquery
+				name="rs" 
+				datasource="#getDatasource()#"
+				username="#getDbUsername()#"
+				password="#getDbPassword()#">
+					SELECT column_name, 
+					data_length column_size, 
+					data_type type_name, 
+					data_default column_default_value,
+					nullable is_nullable,
+					 data_precision 
+					FROM user_tab_cols
+					WHERE table_name=UPPER('#arguments.table#')
+			</cfquery>
+			</cfcase>
+			<cfcase value="nuodb">
+				<cfquery
+				name="rs" 
+				datasource="#getDatasource()#"
+				username="#getDbUsername()#"
+				password="#getDbPassword()#">
+					SELECT field , 
+					length, 
+					datatype , 
+					defaultvalue, 
+					1  is_nullable, 
+					precision
+					FROM system.fields
+					WHERE tablename='#ucase(arguments.table)#'
+			</cfquery>
+			<cfquery
+				name="rs" 
+				dbtype="query">
+					SELECT field column_name, 
+					length column_size, 
+					datatype type_name, 
+					defaultvalue column_default_value, 
+					is_nullable, 
+					precision data_precision
+					FROM rs
+			</cfquery>
+			</cfcase>
+			<cfdefaultcase>
+				<cfdbinfo 
+				name="rs"
+				datasource="#getDatasource()#"
+				username="#getDbUsername()#"
+				password="#getDbPassword()#"
+				table="#table#"
+				type="columns">	
+			</cfdefaultcase>
+		</cfswitch>
 	
 	<cfreturn rs>
 </cffunction>
@@ -1378,6 +1416,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="getBCryptLogRounds" returntype="numeric" access="public" output="false">
+	<cfreturn variables.instance.BCryptLogRounds />
+</cffunction>
+
+<cffunction name="setBCryptLogRounds" access="public" output="false">
+	<cfargument name="BCryptLogRounds" type="String" />
+	<cfif isNumeric(arguments.BCryptLogRounds)>
+		<cfset variables.instance.BCryptLogRounds = arguments.BCryptLogRounds />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setAllowAutoUpdates" access="public" output="false">
+	<cfargument name="allowAutoUpdates" />
+	<cfif isBoolean(arguments.allowAutoUpdates)>
+		<cfset variables.instance.allowAutoUpdates = arguments.allowAutoUpdates />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getAllowAutoUpdates" returntype="boolean" access="public" output="false">
+	<cfreturn variables.instance.allowAutoUpdates />
+</cffunction>
+
 <cffunction name="getAllValues" returntype="any" access="public" output="false">
 	<cfreturn variables.instance />
 </cffunction>
@@ -1433,6 +1495,53 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getCustomVarDelimiters" output="false">
 	<cfreturn variables.instance.customUrlVarDelimiters>
+</cffunction>
+
+<cffunction name="getDbColumnCFType" output="false">
+	<cfargument name="column">
+	<cfargument name="table">
+	<cfset var datatype=variables.dbUtility.columnMetaData(argumentCollection=arguments).datatype>
+
+	<cfswitch expression="#arguments.rs.type_name#">
+			<cfcase value="varchar,nvarchar,varchar2">
+				<!--- Add MSSQL nvarchar(max)--->
+				<cfset columnArgs.datatype="varchar">
+				<cfset columnArgs.length=arguments.rs.column_size>
+			</cfcase>
+			<cfcase value="char">
+				<cfset columnArgs.datatype="char">
+				<cfset columnArgs.length=arguments.rs.column_size>
+			</cfcase>
+			<cfcase value="int">
+				<cfset columnArgs.datatype="int">
+			</cfcase>
+			<cfcase value="number">
+				<cfif arguments.rs.data_precision eq 3>
+					<cfset columnArgs.datatype="tinyint">
+				<cfelse>
+					<cfset columnArgs.datatype="int">	
+				</cfif>
+			</cfcase>
+			<cfcase value="tinyint">
+				<cfset columnArgs.datatype="tinyint">
+			</cfcase>
+			<cfcase value="date,datetime">
+				<cfset columnArgs.datatype="datetime">
+			</cfcase>
+			<cfcase value="ntext,longtext,clob">
+				<cfset columnArgs.datatype="longtext">
+			</cfcase>
+			<cfcase value="text">
+				<cfset columnArgs.datatype="text">
+			</cfcase>
+			<cfcase value="float,binary_float">
+				<cfset columnArgs.datatype="float">
+			</cfcase>
+			<cfcase value="double,decimal,binary_double">
+				<cfset columnArgs.datatype="double">
+			</cfcase>
+		</cfswitch>
+
 </cffunction>
 
 </cfcomponent>

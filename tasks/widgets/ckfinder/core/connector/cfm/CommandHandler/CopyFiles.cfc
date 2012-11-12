@@ -3,7 +3,7 @@
  * CKFinder
  * ========
  * http://ckfinder.com
- * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (C) 2007-2012, CKSource - Frederico Knabben. All rights reserved.
  *
  * The software, THIS file and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
@@ -15,7 +15,7 @@
 
 <cffunction access="public" name="buildXml" hint="send XML response" returntype="boolean" description="send response" output="true">
 
-	<cfset var i =1 />
+	<cfset var i = 0 />
 	<cfset var fileSystem = APPLICATION.CreateCFC("Utils.FileSystem") />
 	<cfset var coreConfig = APPLICATION.CreateCFC("Core.Config")>
 	<cfset var copied = 0 />
@@ -146,12 +146,12 @@
 			</cfif>
 			<cfif fileexists(destinationFilePath) and Find("overwrite", options) eq 0>
 				<cfif Find("autorename", options) neq 0>
-					<cfset iCounter = 1>
 					<cfscript>
 					fileName = name;
 					fileNameWithoutExtension = fileSystem.getFileNameWithoutExtension(name);
 					fileExtension = fileSystem.getFileExtension(name);
 
+					i = 0;
 					while (true)
 					{
 						destinationFilePath = fileSystem.CombinePaths(THIS.currentFolder.getServerPath(), fileName);
