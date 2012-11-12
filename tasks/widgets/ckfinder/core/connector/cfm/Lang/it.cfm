@@ -1,7 +1,7 @@
 <cfsilent>
 <cfprocessingdirective pageencoding="utf-8">
 <!---
-Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckfinder.com/license
 
  Defines the object for the Italian language.
@@ -19,6 +19,7 @@ CKFLang = structNew();
 	CKFLang.Errors[105] = 'L''estensione del file non è valida.';
 	CKFLang.Errors[109] = 'Richiesta invalida.';
 	CKFLang.Errors[110] = 'Errore sconosciuto.';
+	CKFLang.Errors[111] = 'It was not possible to complete the request due to resulting file size.';
 	CKFLang.Errors[115] = 'Un file o cartella con lo stesso nome è già esistente.';
 	CKFLang.Errors[116] = 'Cartella non trovata. Prego aggiornare e riprovare.';
 	CKFLang.Errors[117] = 'File non trovato. Prego aggirnare la lista dei file e riprovare.';

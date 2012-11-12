@@ -5,7 +5,7 @@
 <cftry>
 <cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 select tablist from tusers  where 0=1
-</cfquery>tusers
+</cfquery>
 <cfcatch>
 <cfset variables.DOUPDATE=true>
 </cfcatch>
@@ -19,6 +19,11 @@ select tablist from tusers  where 0=1
 	</cfquery>
 </cfcase>
 <cfcase value="mysql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tusers ADD tablist varchar(255) default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tusers ADD tablist varchar(255) default NULL
 	</cfquery>

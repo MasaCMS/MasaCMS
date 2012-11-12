@@ -49,10 +49,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="init" returntype="any" access="public" output="true">
 <cfargument name="configBean" type="any" required="yes"/>
 <cfargument name="settingsManager" type="any" required="yes"/>
+<cfargument name="contentIntervalManager" type="any" required="yes"/>
+<cfargument name="permUtility" type="any" required="yes"/>
 		<cfset variables.configBean=arguments.configBean />
 		<cfset variables.settingsManager=arguments.settingsManager />
+		<cfset variables.contentIntervalManager=arguments.contentIntervalManager>
+		<cfset variables.permUtility=arguments.permUtility>
 		<cfset variables.classExtensionManager=variables.configBean.getClassExtensionManager()>
-<cfreturn this />
+<cfreturn this >
 </cffunction>
 
 <cffunction name="getCrumblist" returntype="any" access="public" output="false">
@@ -139,9 +143,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfloop condition="ID neq '00000000000000000000000000000000END'">
 
 			<cfquery name="rsCrumbData" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-			select contenthistid, contentid, menutitle, filename, parentid, type, subtype, target, targetParams, 
-			siteid, restricted, restrictgroups,template,childTemplate,inheritObjects,metadesc,metakeywords,sortBy,
-			sortDirection from tcontent where active=1 and contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#ID#"/> and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+			select tcontent.contenthistid, tcontent.contentid, tcontent.menutitle, tcontent.filename, tcontent.parentid, tcontent.type, 
+			tcontent.subtype, tcontent.target, tcontent.targetParams, 
+			tcontent.siteid, tcontent.restricted, tcontent.restrictgroups,tcontent.template,tcontent.childTemplate,tcontent.inheritObjects,tcontent.metadesc,tcontent.metakeywords,tcontent.sortBy,
+			tcontent.sortDirection,tfiles.fileExt
+			from tcontent 
+			left join tfiles on(tcontent.fileID=tfiles.fileID)
+			where tcontent.active=1 
+			and tcontent.contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#ID#"/> 
+			and tcontent.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 			</cfquery>
 			
 			<cfset crumb=structNew() />
@@ -167,6 +177,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset crumb.sortBy=rsCrumbData.sortBy />
 			<cfset crumb.sortDirection=rsCrumbData.sortDirection />
 			<cfset crumb.inheritObjects=rsCrumbData.inheritObjects />
+			<cfset crumb.fileExt=rsCrumbData.fileExt />
 				
 			<cfset I=I+1>
 			<cfset arrayAppend(crumbdata,crumb) />
@@ -191,19 +202,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 			
 			<cfquery name="rsCrumbData" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-			select contenthistid, contentid, menutitle, filename, parentid, type, subtype, target, targetParams, 
-			siteid, restricted, restrictgroups,template,childTemplate,inheritObjects,metadesc,metakeywords,sortBy,
-			sortDirection,
+			select tcontent.contenthistid, tcontent.contentid, tcontent.menutitle, tcontent.filename, tcontent.parentid, tcontent.type, 
+			tcontent.subtype, tcontent.target, tcontent.targetParams, 
+			tcontent.siteid, tcontent.restricted, tcontent.restrictgroups,tcontent.template,tcontent.childTemplate,tcontent.inheritObjects,tcontent.metadesc,tcontent.metakeywords,tcontent.sortBy,
+			tcontent.sortDirection,
 			<cfif variables.configBean.getDBType() eq "MSSQL">
-			len(Cast(path as varchar(1000))) depth
+			len(Cast(tcontent.path as varchar(1000))) depth
+			<cfelseif variables.configBean.getDBType() eq "NUODB">
+			char_length(tcontent.path) depth
 			<cfelse>
-			length(path) depth
+			length(tcontent.path) depth
 			</cfif> 
+			,tfiles.fileExt
 			
-			from tcontent where 
-			contentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.path#">)
-			and active=1 
-			and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+			from tcontent  
+			left join tfiles on(tcontent.fileID=tfiles.fileID)
+			where
+			tcontent.contentID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.path#">)
+			and tcontent.active=1 
+			and tcontent.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 			order by depth desc
 			</cfquery>
 		
@@ -231,6 +248,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset crumb.sortBy=rsCrumbData.sortBy />
 			<cfset crumb.sortDirection=rsCrumbData.sortDirection />
 			<cfset crumb.inheritObjects=rsCrumbData.inheritObjects />
+			<cfset crumb.fileExt=rsCrumbData.fileExt />
 			
 			<cfset arrayAppend(crumbdata,crumb) />
 			<cfif arguments.setInheritance and request.inheritedObjects eq "" and rsCrumbData.inheritObjects eq 'cascade'>
@@ -295,8 +313,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfargument name="relatedID" type="string" required="yes" default="" >
 			<cfargument name="tag" type="string" required="yes" default="" >
 			<cfargument name="aggregation" type="boolean" required="yes" default="false" >
+			<cfargument name="applyPermFilter" type="boolean" required="yes" default="false" >
 			
-			<cfset var rs = getKids(arguments.moduleID, arguments.siteid, arguments.parentID, arguments.type, arguments.today, arguments.size, arguments.keywords, arguments.hasFeatures, arguments.sortBy, arguments.sortDirection, arguments.categoryID, arguments.relatedID, arguments.tag, arguments.aggregation)>
+			<cfset var rs = getKids(arguments.moduleID, arguments.siteid, arguments.parentID, arguments.type, arguments.today, arguments.size, arguments.keywords, arguments.hasFeatures, arguments.sortBy, arguments.sortDirection, arguments.categoryID, arguments.relatedID, arguments.tag, arguments.aggregation,arguments.applyPermFilter)>
 			<cfset var it = getBean("contentIterator")>
 			<cfset it.setQuery(rs)>
 			<cfreturn it/>	
@@ -317,6 +336,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfargument name="relatedID" type="string" required="yes" default="" >
 			<cfargument name="tag" type="string" required="yes" default="" >
 			<cfargument name="aggregation" type="boolean" required="yes" default="false" >
+			<cfargument name="applyPermFilter" type="boolean" required="yes" default="false" >
 			
 			<cfset var rsKids = ""/>
 			<cfset var relatedListLen = listLen(arguments.relatedID) />
@@ -356,8 +376,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				tcontent.fileid, credits, remoteSource, remoteSourceURL, remoteURL,
 				tfiles.fileSize,tfiles.fileExt, audience, keypoints
 				,tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes
-				,tcontentstats.comments, '' parentType, <cfif doKids> qKids.kids<cfelse>null as kids</cfif>,tcontent.path, tcontent.created, tcontent.nextn,
-				tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires
+				,tcontentstats.comments, '' as parentType, <cfif doKids> qKids.kids<cfelse>null as kids</cfif>,tcontent.path, tcontent.created, tcontent.nextn,
+				tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires,
+				tfiles.filename as AssocFilename,tcontent.displayInterval,tcontent.display, tcontent.sourceID
 				
 				FROM tcontent 
 				Left Join tfiles #tableModifier# ON (tcontent.fileID=tfiles.fileID)
@@ -558,11 +579,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfswitch>
 						
 				<cfif dbType eq "mysql" and arguments.size>limit #arguments.size#</cfif>
+				<cfif dbType eq "nuodb" and arguments.size>fetch #arguments.size#</cfif>
 				<cfif dbType eq "oracle" and arguments.size>) where ROWNUM <=#arguments.size# </cfif>
 
 		</cfquery>
-	
-		 <cfreturn rsKids>
+		
+		<cfif arguments.applyPermFilter>
+			<cfset rsKids=variables.permUtility.queryPermFilter(rawQuery=rsKids,siteID=arguments.siteID)>
+		</cfif>
+		
+		<cfreturn variables.contentIntervalManager.applyByMenuTypeAndDate(query=rsKids,menuType=arguments.type,menuDate=nowAdjusted) />
 </cffunction>
 	
 <cffunction name="getKidsCategorySummary" returntype="query" output="false">
@@ -743,7 +769,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rsSections"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select contentid, menutitle, type from tcontent where siteid='#arguments.siteid#' and 
 	<cfif arguments.type eq ''>
-	(type='Portal' or type='Calendar' or type='Gallery')
+	(type='LocalRepo' or type='Calendar' or type='Gallery')
 	<cfelse>
 	type= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#"/>
 	</cfif> 			
@@ -761,7 +787,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfquery name="rsPageCount" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	SELECT Count(tcontent.ContentID) AS counter
 	FROM tcontent
-	WHERE Type in ('Page','Portal','File','Calendar','Gallery') and 
+	WHERE Type in ('Page','LocalRepo','File','Calendar','Gallery') and 
 	 tcontent.active=1 and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	</cfquery>
 		
@@ -789,8 +815,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	LEFT JOIN tcontentstats on (draft.contentID=tcontentstats.contentID 
 								and draft.siteID=tcontentstats.siteID
 								)
-	WHERE draft.Active=0 
-	AND active.Active=1 
+	WHERE draft.active=0 
+	AND active.active=1 
 	AND draft.lastUpdate>active.lastupdate 
 	and draft.changesetID is null
 	and tcontentassignments.userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
@@ -815,7 +841,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								and draft.siteID=tcontentstats.siteID
 								)
 	WHERE 
-		draft.Active=1 
+		draft.active=1 
 		AND draft.approved=0
 		and active.contentid is null
 		and draft.changesetID is null
@@ -840,8 +866,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	LEFT JOIN tcontentstats on (draft.contentID=tcontentstats.contentID 
 								and draft.siteID=tcontentstats.siteID
 								)
-	WHERE draft.Active=0 
-	AND active.Active=1 
+	WHERE draft.active=0 
+	AND active.active=1 
 	AND draft.lastUpdate>active.lastupdate 
 	and draft.changesetID is null
 	and draft.lastUpdateByID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"/>
@@ -865,7 +891,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								and draft.siteID=tcontentstats.siteID
 								)
 	WHERE 
-		draft.Active=1 
+		draft.active=1 
 		AND draft.approved=0
 		and active.contentid is null
 		and draft.changesetID is null
@@ -909,7 +935,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		tcontent.targetParams,tcontent.islocked,tcontent.sortBy,tcontent.sortDirection,tcontent.releaseDate,
 		tfiles.fileSize,tfiles.FileExt,tfiles.ContentType,tfiles.ContentSubType, tcontent.siteID, tcontent.featureStart,tcontent.featureStop,tcontent.template,tcontent.childTemplate,
 		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires,
-		tcontentstats.rating,tcontentstats.totalVotes, tcontentstats.comments
+		tcontentstats.rating,tcontentstats.totalVotes, tcontentstats.comments,
+		tfiles.filename as AssocFilename,tcontent.displayInterval, tcontent.sourceID
 	
 		FROM tcontent LEFT JOIN tcontent tcontent2 #tableModifier# ON tcontent.contentid=tcontent2.parentid
 		LEFT JOIN tfiles #tableModifier# On tcontent.FileID=tfiles.FileID and tcontent.siteID=tfiles.siteID
@@ -936,7 +963,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				or tcontent.Type = 'Component' 
 				or tcontent.Type = 'Link'
 				or tcontent.Type = 'File' 
-				or tcontent.Type = 'Portal'
+				or tcontent.Type = 'LocalRepo'
 				or tcontent.Type = 'Calendar'
 				or tcontent.Type = 'Form'
 				or tcontent.Type = 'Gallery') 
@@ -951,7 +978,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		tcontent.target,tcontent.targetParams,tcontent.islocked,tcontent.sortBy,tcontent.sortDirection,tcontent.releaseDate,
 		tfiles.fileSize,tfiles.FileExt,tfiles.ContentType,tfiles.ContentSubType, tcontent.created, tcontent.siteID, tcontent.featureStart,tcontent.featureStop,tcontent.template,tcontent.childTemplate,
 		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires,
-		tcontentstats.rating,tcontentstats.totalVotes, tcontentstats.comments
+		tcontentstats.rating,tcontentstats.totalVotes, tcontentstats.comments,tfiles.filename,tcontent.displayInterval, tcontent.sourceID
 		<cfif isExtendedSort>
 			,qExtendedSort.extendedSort	
 		</cfif>
@@ -979,7 +1006,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</cfdefaultcase>
 		</cfswitch>
-		
+	
 		</cfquery>
 
 		<cfreturn rsNest />
@@ -1074,7 +1101,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	select menutitle, tcontent.siteid, contentid, contenthistid, fileID, type, tcontent.lastupdateby, active, approved, tcontent.lastupdate, 
 	display, displaystart, displaystop, moduleid, isnav, notes,isfeature,featurestart,featurestop,inheritObjects,filename,targetParams,releaseDate,
 	tcontent.changesetID, tchangesets.name changesetName, tchangesets.published changsetPublished,tchangesets.publishDate changesetPublishDate , 
-	tcontent.majorVersion,tcontent.minorVersion
+	tcontent.majorVersion,tcontent.minorVersion, tcontent.sourceID
 	from tcontent 
 	left Join tchangesets on (tcontent.changesetID=tchangesets.changesetID)
 	where contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/> and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> order by tcontent.lastupdate desc
@@ -1178,7 +1205,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, 
 	tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted, count(tcontent2.parentid) AS hasKids,tcontent.isfeature,tcontent.inheritObjects,tcontent.target,tcontent.targetParams,
 	tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt, 2 AS Priority, tcontent.nextn, tfiles.fileid,
-	tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires
+	tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires,tfiles.filename as assocFilename
 	FROM tcontent 
 	LEFT JOIN tcontent tcontent2 ON (tcontent.contentid=tcontent2.parentid)
 	LEFT JOIN tcontentstats on (tcontent.contentID=tcontentstats.contentID 
@@ -1207,7 +1234,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					AND
 					
 					
-					tcontent.type in ('Page','Portal','Calendar','File','Link','Gallery')
+					tcontent.type in ('Page','LocalRepo','Calendar','File','Link','Gallery')
 						
 						<cfif len(arguments.sectionID)>
 							and tcontent.path like  <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.sectionID#%">	
@@ -1237,7 +1264,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, 
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted,tcontent.isfeature,tcontent.inheritObjects,
 		tcontent.target,tcontent.targetParams,tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt, tcontent.nextn, tfiles.fileid,
-		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires
+		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires,tfiles.filename
 		
 		
 		<cfif kw neq ''>	
@@ -1247,7 +1274,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, 
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted, count(tcontent2.parentid) AS hasKids,tcontent.isfeature,tcontent.inheritObjects,tcontent.target,tcontent.targetParams,
 		tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt, 1 AS Priority, tcontent.nextn, tfiles.fileid,
-		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires
+		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires,tfiles.filename as assocFilename
 		FROM tcontent 
 		LEFT JOIN tcontent tcontent2 ON (tcontent.contentid=tcontent2.parentid)
 		LEFT JOIN tcontentstats on (tcontent.contentID=tcontentstats.contentID 
@@ -1272,7 +1299,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					AND
 					
 					
-					tcontent.type in ('Page','Portal','Calendar','File','Link','Gallery')
+					tcontent.type in ('Page','LocalRepo','Calendar','File','Link','Gallery')
 						
 						<cfif len(arguments.sectionID)>
 							and tcontent.path like  <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.sectionID#%">	
@@ -1287,7 +1314,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, 
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted,tcontent.isfeature,tcontent.inheritObjects,
 		tcontent.target,tcontent.targetParams,tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt,tcontent.nextn, tfiles.fileid,
-		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires
+		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires,tfiles.filename 
 	</cfif>
 	</cfquery> 
 	
@@ -1319,7 +1346,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tcontent.remoteURL,tfiles.fileSize,tfiles.fileExt,tcontent.fileID,tcontent.audience,tcontent.keyPoints,
 	tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes, 0 as kids, 
 	tparent.type parentType,tcontent.nextn,tcontent.path,tcontent.orderno,tcontent.lastupdate,tcontent.created,
-	tcontent.created sortdate, 0 sortpriority,tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires
+	tcontent.created sortdate, 0 sortpriority,tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, 
+	tcontent.expires,tfiles.filename as assocFilename
 	from tcontent Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
 	Left Join tcontent tparent on (tcontent.parentid=tparent.contentid
 						    			and tcontent.siteid=tparent.siteid
@@ -1355,7 +1383,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						
 						
 				AND
-				tcontent.type in ('Page','Portal','Calendar','File','Link','Gallery')
+				tcontent.type in ('Page','LocalRepo','Calendar','File','Link','Gallery')
 				
 				AND tcontent.releaseDate is null
 				
@@ -1414,7 +1442,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tcontent.remoteURL,tfiles.fileSize,tfiles.fileExt,tcontent.fileID,tcontent.audience,tcontent.keyPoints,
 	tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes, 0 as kids, 
 	tparent.type parentType,tcontent.nextn,tcontent.path,tcontent.orderno,tcontent.lastupdate,tcontent.created,
-	tcontent.releaseDate sortdate, 0 sortpriority,tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires
+	tcontent.releaseDate sortdate, 0 sortpriority,tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, 
+	tcontent.expires,tfiles.filename as assocFilename
 	from tcontent Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
 	Left Join tcontent tparent on (tcontent.parentid=tparent.contentid
 						    			and tcontent.siteid=tparent.siteid
@@ -1450,7 +1479,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						
 						
 				AND
-				tcontent.type in ('Page','Portal','Calendar','File','Link','Gallery')
+				tcontent.type in ('Page','LocalRepo','Calendar','File','Link','Gallery')
 				
 				AND tcontent.releaseDate is not null
 				
@@ -1625,7 +1654,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tcontent.parentID
 	from tcontent inner join tcontentobjects on (tcontent.contentHistID=tcontentobjects.contentHistID)
 	where tcontent.active=1 
-	and objectID like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.objectID#%"/>
+	and  
+	<cfif len(arguments.objectID)>
+		objectID like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.objectID#%"/>
+	<cfelse>
+		0=1
+	</cfif>
 	</cfquery>
 	
 	<cfreturn rsUsage />
@@ -1645,7 +1679,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfif arguments.type neq ''>
 		<cfif arguments.type eq 'Page'>
-		 and type in ('Page','Calendar','Portal','Gallery')
+		 and type in ('Page','Calendar','LocalRepo','Gallery')
 		<cfelse>
 		and type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#"/>
 		</cfif>
@@ -1724,15 +1758,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="parentID" type="string" required="true" default="">
 	<cfargument name="categoryID" type="string" required="true" default="">
 	<cfargument name="rsContent" type="any" required="true" default="">
-	
+	<cfargument name="moduleID" type="string" required="true" default="00000000000000000000000000000000000">
 	<cfset var rsTagCloud= ''/>
 	
 	<cfquery name="rsTagCloud" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select tag, count(tag) as tagCount from tcontenttags 
 	inner join tcontent on (tcontenttags.contenthistID=tcontent.contenthistID)
+	<cfif arguments.moduleID eq '00000000000000000000000000000000000'>
 	left Join tcontent tparent on (tcontent.parentid=tparent.contentid
 					    			and tcontent.siteid=tparent.siteid
 					    			and tparent.active=1) 
+	</cfif>
 	<cfif len(arguments.categoryID)>
 		inner join tcontentcategoryassign
 		on (tcontent.contentHistID=tcontentcategoryassign.contentHistID)
@@ -1742,8 +1778,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	where tcontent.siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	  AND tcontent.Approved = 1
 	  AND tcontent.active = 1 
-      AND tcontent.isNav = 1 
-	  AND tcontent.moduleid =   '00000000000000000000000000000000000'
+      <cfif arguments.moduleID eq '00000000000000000000000000000000000'>AND tcontent.isNav = 1</cfif>
+	  AND tcontent.moduleid =   <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#"/>
 	
 	<cfif len(arguments.parentID)>
 		and tcontent.parentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#"/>
@@ -1752,7 +1788,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif len(arguments.categoryID)>
 		and tcontentcategories.path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.categoryID#%"/>
 	</cfif>
-	
+
 	  AND 
 		(
 			
@@ -1767,13 +1803,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> 
 						AND (tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> or tcontent.DisplayStop is null)
 					)
-					OR tparent.type='Calendar'
+					<cfif arguments.moduleID eq '00000000000000000000000000000000000'>OR tparent.type='Calendar'</cfif>
 				  )			 
 			)		
 		
 		
 		) 
-		
+	
 	#renderMobileClause()#
 	
 	<cfif isQuery(arguments.rsContent)  and arguments.rsContent.recordcount> and contentID in (#quotedValuelist(arguments.rsContent.contentID)#)</cfif>
@@ -1822,7 +1858,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tcontentobjects.contenthistid ='#arguments.inheritedObjects#' 
 	and tcontentobjects.siteid='#arguments.siteid#'
 	and tcontentobjects.columnid=#arguments.columnID#
-	and tcontentobjects.object !='goToFirstChild'
+	and tcontentobjects.object <>'goToFirstChild'
 	order by orderno
 	</cfquery>
 	
@@ -1977,10 +2013,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						tcontent.Display = 2 	 
 					 	AND 
 						  (
-						  	tcontent.DisplayStart < #createODBCDateTime(dateadd("D",1,arguments.menuDateTime))#
+						  	tcontent.DisplayStart < #renderDateTimeArg(dateadd("D",1,arguments.menuDateTime))#
 						  	AND 
 						  		(
-						  			tcontent.DisplayStop >= #createODBCDateTime(arguments.menuDateTime)# or tcontent.DisplayStop is null
+						  			tcontent.DisplayStop >= #renderDateTimeArg(arguments.menuDateTime)# or tcontent.DisplayStop is null
 						  		)
 						  	)  
 					</cfcase>
@@ -1988,8 +2024,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					  	tcontent.Display = 2 	 
 					 	AND
 					  		(
-					  			tcontent.DisplayStart >= #createODBCDateTime(arguments.menuDateTime)# 
-					  			OR (tcontent.DisplayStart < #createODBCDateTime(arguments.menuDateTime)# AND tcontent.DisplayStop >= #createODBCDateTime(arguments.menuDateTime)#)
+					  			tcontent.DisplayStart >= #renderDateTimeArg(arguments.menuDateTime)# 
+					  			OR (tcontent.DisplayStart < #renderDateTimeArg(arguments.menuDateTime)# AND tcontent.DisplayStop >= #renderDateTimeArg(arguments.menuDateTime)#)
 					  		)
 					 </cfcase>
 					 <cfcase value="ReleaseDate">
@@ -2001,9 +2037,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						   	tcontent.Display = 2 	 
 						 	 	AND 
 						 	 	(
-						 	 		tcontent.DisplayStart < #createODBCDateTime(dateadd("D",1,arguments.menuDateTime))#
+						 	 		tcontent.DisplayStart < #renderDateTimeArg(dateadd("D",1,arguments.menuDateTime))#
 							  		AND (
-							  				tcontent.DisplayStop >= #createODBCDateTime(arguments.menuDateTime)# or tcontent.DisplayStop is null
+							  				tcontent.DisplayStop >= #renderDateTimeArg(arguments.menuDateTime)# or tcontent.DisplayStop is null
 							  			)  
 								)
 							)
@@ -2013,15 +2049,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						
 						(
 						  	(
-						  		tcontent.releaseDate < #createODBCDateTime(dateadd("D",1,arguments.menuDateTime))#
-						  		AND tcontent.releaseDate >= #createODBCDateTime(arguments.menuDateTime)#
+						  		tcontent.releaseDate < #renderDateTimeArg(dateadd("D",1,arguments.menuDateTime))#
+						  		AND tcontent.releaseDate >= #renderDateTimeArg(arguments.menuDateTime)#
 						  	)
 						  		
 						  	OR 
 						  	 (
 						  	 	tcontent.releaseDate is Null
-						  		AND tcontent.lastUpdate < #createODBCDateTime(dateadd("D",1,arguments.menuDateTime))#
-						  		AND tcontent.lastUpdate >= #createODBCDateTime(arguments.menuDateTime)#
+						  		AND tcontent.lastUpdate < #renderDateTimeArg(dateadd("D",1,arguments.menuDateTime))#
+						  		AND tcontent.lastUpdate >= #renderDateTimeArg(arguments.menuDateTime)#
 						  	)
 					  	)	
 					  	
@@ -2035,9 +2071,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						   	tcontent.Display = 2 	 
 						 	 	AND 
 						 	 	(
-						 	 		tcontent.DisplayStart < #createODBCDateTime(dateadd("D",1,arguments.menuDateTime))#
+						 	 		tcontent.DisplayStart < #renderDateTimeArg(dateadd("D",1,arguments.menuDateTime))#
 							  		AND (
-							  				tcontent.DisplayStop >= #createODBCDateTime(arguments.menuDateTime)# or tcontent.DisplayStop is null
+							  				tcontent.DisplayStop >= #renderDateTimeArg(arguments.menuDateTime)# or tcontent.DisplayStop is null
 							  			)  
 								)
 							)
@@ -2046,14 +2082,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						AND
 						(
 						  	(
-						  		tcontent.releaseDate < #createODBCDateTime(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
-						  		AND  tcontent.releaseDate >= #createODBCDateTime(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#) 
+						  		tcontent.releaseDate < #renderDateTimeArg(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
+						  		AND  tcontent.releaseDate >= #renderDateTimeArg(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#) 
 						  		
 						  	OR 
 					  		(
 					  			tcontent.releaseDate is Null
-					  			AND tcontent.lastUpdate < #createODBCDateTime(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
-					  			AND tcontent.lastUpdate >= #createODBCDateTime(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#
+					  			AND tcontent.lastUpdate < #renderDateTimeArg(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
+					  			AND tcontent.lastUpdate >= #renderDateTimeArg(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#
 					  		)  
 					  	)
 					   </cfcase>
@@ -2063,17 +2099,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						AND
 							(
 								(
-									tcontent.displayStart < #createODBCDateTime(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
-									AND  tcontent.displayStart >= #createODBCDateTime(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#
+									tcontent.displayStart < #renderDateTimeArg(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
+									AND  tcontent.displayStart >= #renderDateTimeArg(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#
 								)
 											  	
 								or 
 											  	
 								(
-									tcontent.displayStop < #createODBCDateTime(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
+									tcontent.displayStop < #renderDateTimeArg(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
 									AND  
 										(
-											tcontent.displayStop >= #createODBCDateTime(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))# 
+											tcontent.displayStop >= #renderDateTimeArg(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))# 
 											or
 											tcontent.displayStop is null
 										)
@@ -2082,10 +2118,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								or 
 											  	
 								(
-									tcontent.displayStart < #createODBCDateTime(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#
+									tcontent.displayStart < #renderDateTimeArg(createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),1))#
 									and 
 										(
-											tcontent.displayStop >= #createODBCDateTime(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
+											tcontent.displayStop >= #renderDateTimeArg(dateadd("D",1,createDate(year(arguments.menuDateTime),month(arguments.menuDateTime),daysInMonth(arguments.menuDateTime))))#
 											or
 											tcontent.displayStop is null
 										)
@@ -2102,8 +2138,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							        (
 							            tcontent.Display = 2	
 							                AND (
-							                    tcontent.DisplayStart < #createODBCDateTime(dateadd("D",1,arguments.menuDateTime))# AND (
-							                        tcontent.DisplayStop >= #createODBCDateTime(arguments.menuDateTime)# or tcontent.DisplayStop is null
+							                    tcontent.DisplayStart < #renderDateTimeArg(dateadd("D",1,arguments.menuDateTime))# AND (
+							                        tcontent.DisplayStop >= #renderDateTimeArg(arguments.menuDateTime)# or tcontent.DisplayStop is null
 							                    )
 							            )
 							    )
@@ -2111,10 +2147,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							) AND (
 							
 							    (
-							        tcontent.releaseDate < #createODBCDateTime(dateadd("D",1,createDate(year(arguments.menuDateTime),12,31)))# AND tcontent.releaseDate >= #createDate(year(arguments.menuDateTime),1,1)#)
+							        tcontent.releaseDate < #renderDateTimeArg(dateadd("D",1,createDate(year(arguments.menuDateTime),12,31)))# AND tcontent.releaseDate >= #renderDateTimeArg(createDate(year(arguments.menuDateTime),1,1))#)
 							    OR
 							        (
-							            tcontent.releaseDate is Null AND tcontent.lastUpdate < #createODBCDateTime(dateadd("D",1,createDate(year(arguments.menuDateTime),12,31)))# AND tcontent.lastUpdate >= #createODBCDateTime(createDate(year(arguments.menuDateTime),1,1))#			
+							            tcontent.releaseDate is Null AND tcontent.lastUpdate < #renderDateTimeArg(dateadd("D",1,createDate(year(arguments.menuDateTime),12,31)))# AND tcontent.lastUpdate >= #renderDateTimeArg(createDate(year(arguments.menuDateTime),1,1))#			
 							        )
 							    )
 					  </cfcase> 
@@ -2131,10 +2167,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					  		tcontent.Display = 2 	 
 					 		AND 
 					 	 		(
-					 	 			tcontent.DisplayStart < #createODBCDateTime(arguments.menuDateTime)#
+					 	 			tcontent.DisplayStart < #renderDateTimeArg(arguments.menuDateTime)#
 						  			AND 
 						  				(
-						  					tcontent.DisplayStop >= #createODBCDateTime(createODBCDateTime(arguments.menuDateTime))# or tcontent.DisplayStop is null
+						  					tcontent.DisplayStop >= #renderDateTimeArg(arguments.menuDateTime)# or tcontent.DisplayStop is null
 						  				)  
 						  		)
 						)
@@ -2142,6 +2178,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					  </cfdefaultcase>
 			</cfswitch>
 </cfoutput>
+</cffunction>
+
+<cffunction name="renderDateTimeArg" returntype="string" output="false">
+        <cfargument name="date">
+       
+        <cfif isDate(arguments.date)>
+        	<cfif variables.configBean.getCompiler() eq "Adobe" and variables.configBean.getDbType() eq "MSSQL">
+                <cfreturn "'" & dateFormat(createODBCDateTime(arguments.date), "yyyy-mm-dd") & 'T' & timeFormat(createODBCDateTime(arguments.date), "HH:mm:ss.l") & "'">
+        	<cfelse>
+        		<cfreturn createODBCDateTime(arguments.date)>
+        	</cfif>
+        <cfelse>
+            <cfreturn "null">
+        </cfif>
 </cffunction>
 
 <cffunction name="renderMobileClause" output="true">

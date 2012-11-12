@@ -19,7 +19,7 @@ However, as a special exception, the copyright holders of Mura CMS grant you per
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
 In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
+independent software modules (plugixns, themes and bundles), and to distribute these plugins, themes and bundles without 
 Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
 
 Your custom code 
@@ -45,6 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfset event=request.event>
+<cfset $=request.event.getValue('MuraScope')>
 <cfinclude template="js.cfm">
 <cfswitch expression="#rc.moduleID#">
 
@@ -80,95 +81,76 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfoutput>
 <cfif rc.moduleid eq '00000000000000000000000000000000004'>
-<h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.formsmanager')#</h2>
+<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.formsmanager')#</h1>
 <cfelse>
-<h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.componentmanager')#</h2>	
+<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.componentmanager')#</h1>	
 </cfif>
+<cfinclude template="dsp_secondary_menu.cfm">
 
-<ul id="navTask">
-	<cfif rc.moduleid eq '00000000000000000000000000000000003'>
-	<li><a href="index.cfm?muraAction=cArch.edit&type=Component&contentid=&topid=#URLEncodedFormat(rc.topid)#&parentid=#rc.topid#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.addcomponent')#</a></li>
-	<cfelse>
-		<li><a href="index.cfm?muraAction=cArch.edit&type=Form&contentid=&topid=#URLEncodedFormat(rc.topid)#&parentid=#rc.topid#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&formType=editor">#application.rbFactory.getKeyValue(session.rb,'sitemanager.addformwitheditor')#</a></li>
-	<li><a href="index.cfm?muraAction=cArch.edit&type=Form&contentid=&topid=#URLEncodedFormat(rc.topid)#&parentid=#rc.topid#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&formType=builder">#application.rbFactory.getKeyValue(session.rb,'sitemanager.addformwithbuilder')#</a></li>
-	</cfif>
-</ul>
-
-  <h3 class="alt">#application.rbFactory.getKeyValue(session.rb,'sitemanager.filterview')#:</h3>
-  <form novalidate="novalidate" id="filterByTitle" action="index.cfm" method="get">
-	  <h4>#application.rbFactory.getKeyValue(session.rb,'sitemanager.filterviewdesc')#</h4>
-	  <input type="text" name="searchString" value="#HTMLEditFormat(rc.searchString)#" class="text">
-	  <input type="button" class="submit" onclick="document.getElementById('filterByTitle').submit();" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.filter')#" />
-	  <input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#" />
-	  <input type="hidden" name="topid" value="#rc.topID#" />
-	  <input type="hidden" name="parentid" value="#rc.parentID#" />
-	  <input type="hidden" name="moduleid" value="#rc.moduleID#" />
-	  <input type="hidden" name="sortBy" value="" />
-	  <input type="hidden" name="sortDirection" value="" />
-	  <input type="hidden" name="muraAction" value="cArch.list" />
-  </form>
-  
-  </cfoutput>
-  <table class="mura-table-grid stripe">
-    
-	<cfoutput>
-	<tr> 
-      <th class="varWidth"><a href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&topid=#URLEncodedFormat(rc.topid)#&parentid=#URLEncodedFormat(rc.parentid)#&moduleid=#rc.moduleID#&sortBy=title&sortDirection=#titleDirection#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.title')#</a></th>
-    <!--- <cfif rc.perm eq 'editor'><th class="order" width="30">Order</th></cfif>--->
-      <th><a href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&topid=#URLEncodedFormat(rc.topid)#&parentid=#URLEncodedFormat(rc.parentid)#&moduleid=#rc.moduleID#&sortBy=display&sortDirection=#displayDirection#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.display')#</a></th>
-      <th><a href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&topid=#URLEncodedFormat(rc.topid)#&parentid=#URLEncodedFormat(rc.parentid)#&moduleid=#rc.moduleID#&sortBy=lastUpdate&sortDirection=#lastUpdatedDirection#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.lastupdated')#</a></th>
-      <th class="administration">&nbsp;</th>
-    </tr>
-	</cfoutput>
-    <cfif rc.rstop.recordcount>
-     <cfoutput query="rc.rsTop" maxrows="#rc.nextn.recordsperPage#" startrow="#rc.startrow#">
-	<cfsilent><cfif rc.perm neq 'editor'>
-	<cfset verdict=application.permUtility.getPerm(rc.rstop.contentid, rc.siteid)>
-	
-	<cfif verdict neq 'deny'>
-		<cfif verdict eq 'none'>
-			<cfset verdict=rc.perm>
+</cfoutput>
+<div class="row-fluid">
+	  <div id="main" class="span9">
+	  <table class="table table-striped table-condensed table-bordered mura-table-grid">
+	    
+		<cfoutput>
+		<thead>
+		<tr> 
+	      <th class="var-width"><a href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&topid=#URLEncodedFormat(rc.topid)#&parentid=#URLEncodedFormat(rc.parentid)#&moduleid=#rc.moduleID#&sortBy=title&sortDirection=#titleDirection#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.title')#</a></th>
+	    <!--- <cfif rc.perm eq 'editor'><th class="order" width="30">Order</th></cfif>--->
+	      <th><a href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&topid=#URLEncodedFormat(rc.topid)#&parentid=#URLEncodedFormat(rc.parentid)#&moduleid=#rc.moduleID#&sortBy=display&sortDirection=#displayDirection#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.display')#</a></th>
+	      <th><a href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&topid=#URLEncodedFormat(rc.topid)#&parentid=#URLEncodedFormat(rc.parentid)#&moduleid=#rc.moduleID#&sortBy=lastUpdate&sortDirection=#lastUpdatedDirection#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.lastupdated')#</a></th>
+	      <th class="actions">&nbsp;</th>
+	    </tr>
+		</thead>
+		</cfoutput>
+		<tbody>
+	<cfif rc.rstop.recordcount>
+	<cfoutput query="rc.rsTop" maxrows="#rc.nextn.recordsperPage#" startrow="#rc.startrow#">
+		<cfsilent><cfif rc.perm neq 'editor'>
+			<cfset verdict=application.permUtility.getPerm(rc.rstop.contentid, rc.siteid)>
+			
+			<cfif verdict neq 'deny'>
+				<cfif verdict eq 'none'>
+					<cfset verdict=rc.perm>
+				</cfif>
+			<cfelse>
+				<cfset verdict = "none">
+			</cfif>
+			
+			<cfelse>
+		<cfset verdict='editor'>
 		</cfif>
-	<cfelse>
-		<cfset verdict = "none">
-	</cfif>
-	
-	<cfelse>
-<cfset verdict='editor'>
-</cfif>
-</cfsilent>
+		</cfsilent>
         <tr>  
-          <td class="varWidth"><cfif verdict neq 'none'><a class="draftprompt" data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#">#left(rc.rstop.menutitle,90)#</a><cfelse>#left(rc.rstop.menutitle,90)#</cfif></td>
-          <!--- <cfif verdict eq 'editor'><td nowrap class="order"><cfif rc.rstop.currentrow neq 1><a href="index.cfm?muraAction=cArch.order&contentid=#rc.rstop.contentid#&parentid=#rc.rstop.parentid#&direction=down&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&startrow=#rc.startrow#&moduleid=#rc.moduleid#"><img src="images/icons/up_on.gif" width="9" height="6" border="0"></a><cfelse><img src="images/icons/up_off.gif" width="9" height="6" border="0"></cfif><cfif rc.rstop.currentrow lt rc.rstop.recordcount><a href="index.cfm?muraAction=cArch.order&contentid=#rc.rstop.contentid#&parentid=#rc.rstop.parentid#&direction=up&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&startrow=#rc.startrow#&moduleid=#rc.moduleid#"><img src="images/icons/down_on.gif" width="9" height="6" border="0"></a><cfelse><img src="images/icons/down_off.gif" width="9" height="6" border="0"></cfif></td>	--->  
+          <td class="var-width"><cfif verdict neq 'none'><a class="draftprompt" data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#">#left(rc.rstop.menutitle,90)#</a><cfelse>#left(rc.rstop.menutitle,90)#</cfif></td>
+          
 			   <td> 
 	    <cfif rc.rstop.Display and (rc.rstop.Display eq 1 and rc.rstop.approved and rc.rstop.approved)>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#<cfelseif(rc.rstop.Display eq 2 and rc.rstop.approved and rc.rstop.approved)>#LSDateFormat(rc.rstop.displaystart,"short")# - #LSDateFormat(rc.rstop.displaystop,"short")#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</cfif></td>
 		<td>#LSDateFormat(rc.rstop.lastupdate,session.dateKeyFormat)# #LSTimeFormat(rc.rstop.lastupdate,"medium")#</td>
-          <td class="administration">
+          <td class="actions">
 			<ul class="#lcase(rc.rstop.type)#">
 				<cfif verdict neq 'none'>
 				<li class="edit">
-					<a class="draftprompt" data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#"title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#</a></li>
-					<li class="versionHistory"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" href="index.cfm?muraAction=cArch.hist&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#</a></li>
+					<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#" class="draftprompt" data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#"title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#"><i class="icon-pencil"></i></a></li>
+					<li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" href="index.cfm?muraAction=cArch.hist&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#"><i class="icon-book"></i></a></li>
 					<cfif rc.moduleid eq '00000000000000000000000000000000004'>
-						<li class="manageData"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.managedata')#" href="index.cfm?muraAction=cArch.datamanager&contentid=#rc.rstop.ContentID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&contenthistid=#rc.rstop.ContentHistID#&topid=#URLEncodedFormat(rc.topid)#&parentid=#URLEncodedFormat(rc.parentid)#&type=Form">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.managedata')#</a></li>
+						<li class="manage-data"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.managedata')#" href="index.cfm?muraAction=cArch.datamanager&contentid=#rc.rstop.ContentID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&contenthistid=#rc.rstop.ContentHistID#&topid=#URLEncodedFormat(rc.topid)#&parentid=#URLEncodedFormat(rc.parentid)#&type=Form"><i class="icon-wrench"></i></a></li>
 					</cfif>
 					<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-						<li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.permissions')#" href="index.cfm?muraAction=cPerm.main&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&startrow=#rc.startrow#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.permissions')#</a>
-					<cfelse>
-						<li class="permissionsOff"><a>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.permissions')#</a></li>
+						<li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.permissions')#" href="index.cfm?muraAction=cPerm.main&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&startrow=#rc.startrow#"><i class="icon-group"></i></a></li>
 					</cfif>
 				<cfelse>
-					<li class="editOff">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#</li>
-					<li class="versionHistoryOff">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#</li>
+					<li class="edit disabled">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#</li>
+					<li class="version-history disabled">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#</li>
 					<cfif rc.moduleid eq '00000000000000000000000000000000004'>
-						<li class="manageDataOff">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.managedata')#</li>
+						<li class="manage-dataOff">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.managedata')#</li>
 					</cfif>
-					<li class="permissionsOff"><a>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.permissions')#</a></li>
+					<li class="permissions disabled"><a>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.permissions')#</a></li>
 				</cfif>
 				<cfif ((rc.locking neq 'all') or (rc.parentid eq '#rc.topid#' and rc.locking eq 'none')) and (verdict eq 'editor') and not rc.rsTop.isLocked eq 1>
-					<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" href="index.cfm?muraAction=cArch.update&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&action=deleteall&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&parentid=#URLEncodedFormat(rc.parentid)#" onClick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#</a></li>
+					<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" href="index.cfm?muraAction=cArch.update&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&action=deleteall&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&parentid=#URLEncodedFormat(rc.parentid)#" onClick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li>
 				<cfelseif rc.locking neq 'all'>
-					<li class="deleteOff">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#</li>
+					<li class="delete disabled">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#</li>
 				</cfif>
 			</ul></td></tr>
        </cfoutput>
@@ -178,20 +160,147 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       </tr>
     </cfif>
 	
-  <!---   <cfif rc.nextn.numberofpages gt 1><tr> 
-      <td colspan="7" class="noResults">More Results: <cfloop from="1"  to="#rc.nextn.numberofpages#" index="i"><cfoutput><cfif rc.nextn.currentpagenumber eq i> #i# <cfelse> <a href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&topid=#URLEncodedFormat(rc.topid)#&startrow=#evaluate('(#i#*#rc.nextn.recordsperpage#)-#rc.nextn.recordsperpage#+1')#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">#i#</a> </cfif></cfoutput></cfloop></td></tr></cfif> --->
   </table>
-</td></tr></table>
+</td></tr></tbody></table>
 
   <cfif rc.nextn.numberofpages gt 1>
     <cfoutput> 
- 	#application.rbFactory.getKeyValue(session.rb,'sitemanager.moreresults')#: 
-		
-		 <cfif rc.nextN.currentpagenumber gt 1> <a href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&topid=#URLEncodedFormat(rc.topid)#&startrow=#rc.nextN.previous#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.prev')#</a></cfif>
-		<cfloop from="#rc.nextn.firstPage#"  to="#rc.nextn.lastPage#" index="i"><cfif rc.nextn.currentpagenumber eq i> #i# <cfelse> <a href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&topid=#URLEncodedFormat(rc.topid)#&startrow=#evaluate('(#i#*#rc.nextn.recordsperpage#)-#rc.nextn.recordsperpage#+1')#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">#i#</a> </cfif></cfloop>
-		 <cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages><a href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&topid=#URLEncodedFormat(rc.topid)#&startrow=#rc.nextN.next#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.next')#&nbsp;&raquo;</a></cfif>
+    	<cfset args=arrayNew(1)>
+		<cfset args[1]="#rc.nextn.startrow#-#rc.nextn.through#">
+		<cfset args[2]=rc.nextn.totalrecords>
+		<div class="mura-results-wrapper">
+		<p class="clearfix search-showing">
+			#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.paginationmeta"),args)#
+		</p> 
+		<ul class="pagination">
+		 <cfif rc.nextN.currentpagenumber gt 1>
+			
+					<li>	
+				 	<a href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&topid=#URLEncodedFormat(rc.topid)#&startrow=#rc.nextN.previous#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.prev')#</a>
+				 	</li>
+				 </cfif>
+				<cfloop from="#rc.nextn.firstPage#"  to="#rc.nextn.lastPage#" index="i">
+					<cfif rc.nextn.currentpagenumber eq i> 
+						<li class="active"><a href="##">#i#</a></li> 
+					<cfelse> 
+						<li>
+						<a href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&topid=#URLEncodedFormat(rc.topid)#&startrow=#evaluate('(#i#*#rc.nextn.recordsperpage#)-#rc.nextn.recordsperpage#+1')#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">#i#</a></li>
+					</cfif>
+				</cfloop>
+				<cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages>
+					<li>
+						<a href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&topid=#URLEncodedFormat(rc.topid)#&startrow=#rc.nextN.next#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.next')#&nbsp;&raquo;</a>
+					</li>
+				</cfif>
+				</ul>
+			</div>
 		</cfoutput>
+			
    </cfif>
+</div>
+<cfoutput>
+<div class="sidebar span3">
+	<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.filters")#</h2>
+	<form class="form-inline" novalidate="novalidate" id="filterByTitle" action="index.cfm" method="get">
+    	  <input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#" />
+    	  <input type="hidden" name="topid" value="#rc.topID#" />
+    	  <input type="hidden" name="parentid" value="#rc.parentID#" />
+    	  <input type="hidden" name="moduleid" value="#rc.moduleID#" />
+    	  <input type="hidden" name="sortBy" value="" />
+    	  <input type="hidden" name="sortDirection" value="" />
+    	  <input type="hidden" name="muraAction" value="cArch.list" />
+   
+		<div id="filters" class="module well">
+		<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.keywords")#</h3>
+	     <input type="text" name="searchString" id="searchString" value="#HTMLEditFormat(rc.searchString)#" class="text" size="20">
+	  	</div>
+
+	  	<cfsilent>
+		<cfset tags=$.getBean('contentGateway').getTagCloud(siteid=$.event('siteID'),moduleID=rc.moduleID) />
+		<cfset tagValueArray = ListToArray(ValueList(tags.tagCount))>
+		<cfset max = ArrayMax(tagValueArray)>
+		<cfset min = ArrayMin(tagValueArray)>
+		<cfset diff = max - min>
+		<cfset distribution = diff>
+		<cfset rbFactory=$.siteConfig().getRBFactory()>
+		</cfsilent>	
+	
+		<cfif tags.recordcount>
+			<div class="module well" id="mura-filter-tags">
+				<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</h3>
+				<div id="svTagCloud">
+					<ol>
+					<cfloop query="tags"><cfsilent>
+							<cfif tags.tagCount EQ min>
+							<cfset class="not-popular">
+						<cfelseif tags.tagCount EQ max>
+							<cfset class="ultra-popular">
+						<cfelseif tags.tagCount GT (min + (distribution/2))>
+							<cfset class="somewhat-popular">
+						<cfelseif tags.tagCount GT (min + distribution)>
+							<cfset class="mediumTag">
+						<cfelse>
+							<cfset class="not-very-popular">
+						</cfif>
+					
+						<cfset args = ArrayNew(1)>
+					    <cfset args[1] = tags.tagcount>
+					</cfsilent><li class="#class#"><span><cfif tags.tagcount gt 1> #rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemsare'), args)#<cfelse>#rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemis'), args)#</cfif> tagged with </span><a class="tag<cfif listFind($.event('tag'),tags.tag)> active</cfif>">#HTMLEditFormat(tags.tag)#</a></li>
+					</cfloop>
+					</ol>
+				</div>
+			</div>
+
+		</cfif>
+	  	<cfif $.getBean("categoryManager").getCategoryCount($.event("siteID"))>
+		<div class="module well" id="mura-list-tree">
+		<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#</h3>
+		<cf_dsp_categories_nest siteID="#$.event('siteID')#" parentID="" nestLevel="0" categoryid="#$.event('categoryid')#">
+		</div>
+	</cfif>
+		<input type="hidden" name="tag" id="tag" value="#HTMLEditFormat($.event('tag'))#" />
+	  	<input type="submit" class="btn" name="filterList" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#"/>
+	  	<cfif len($.event('categoryID') & $.event('tag') & $.event('searchString'))>
+	  	<input type="button" class="btn" name="removeFilter" id="removeFilter" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.removefilter")#" onclick=""/>
+	  	</cfif>
+  	 </form>
+
+  	 <script> 	
+	  	$('##filterByTitle').submit(
+	  		function(){
+		  	 	var tag=[];
+
+		  	 	$("##svTagCloud .active").each(
+					function(){
+						tag.push($(this).html());
+					}
+				);
+					
+				$('##tag').val(tag.toString());
+				
+				return true;
+	  	 	}
+	  	 );	
+
+	  	$('##removeFilter').click(
+	  		function(){
+		  	 	$('##tag').val('');
+				$('##searchString').val('');
+				$('input[name=categoryID]').attr('checked', false);
+				document.getElementById('filterByTitle').submit();
+
+	  	 	}
+	  	 );	
+
+		$("##svTagCloud a").click(
+			function(event){
+				event.preventDefault();
+				jQuery(this).toggleClass('active');
+			}
+		);
+	</script>
+</div>
+</cfoutput>
 <cfinclude template="draftpromptjs.cfm">
 
 
@@ -303,7 +412,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset session.flatViewArgs["#session.siteID#"].report=""/>
 	<cfset session.keywords=url.keywords/>
 </cfif>
-<cfhtmlhead text='<script src="#application.configBean.getContext()#/admin/js/jquery/jquery-pulse.js?coreversion=#application.coreversion#" type="text/javascript"></script>'>
+<cfhtmlhead text='<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-pulse.js?coreversion=#application.coreversion#" type="text/javascript"></script>'>
 
 <cfif isdefined('rc.orderperm') and (rc.orderperm eq 'editor' or (rc.orderperm eq 'author' and application.configBean.getSortPermission() eq "author"))>
 	<cflock type="exclusive" name="editingContent#rc.siteid#" timeout="60">
@@ -366,37 +475,44 @@ copyAll = 'false';
 </cfif>
 </script>
  
-<h2>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sitemanager")#</h2>
-<form novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
-    <!---<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.contentsearch")#</h3>--->
-    <input name="keywords" value="#HTMLEditFormat(session.keywords)#" type="text" class="text" align="absmiddle" />
-    <input type="button" class="submit" onclick="submitForm(document.forms.siteSearch);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.search")#" />
+<h1>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sitemanager")#</h1>
+<form class="form-inline" novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
+	
+    <div class="input-append">
+	    <input name="keywords" value="#HTMLEditFormat(session.keywords)#" type="text" class="text" />
+	    <button type="button" class="submit btn" onclick="submitForm(document.forms.siteSearch);" /><i class="icon-search"></i><!--- #application.rbFactory.getKeyValue(session.rb,"sitemanager.search")# ---></button>
+    </div>
+    
     <input type="hidden" name="muraAction" value="cArch.list">
 	<input type="hidden" name="activetab" value="1">
     <input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
     <input type="hidden" name="moduleid" value="#rc.moduleid#">
 </form>
 
-
-<!---<img class="loadProgress tabPreloader" src="images/progress_bar.gif">--->
-
-<div id="viewTabs" class="tabs initActiveTab" style="display:none">
-		<ul>
-			<li><a href="##tabArchitectual" onclick="return false;"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.architectural")#</span></a></li>
-			<li><a href="##tabFlat" onclick="return false;"><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.flat")#</span></a></li>
-		</ul>
-		<div id="tabArchitectual">
-		<div id="gridContainer"><img class="loadProgress" src="images/progress_bar.gif"></div>
+<div class="tabbable">
+	<ul id="viewTabs" class="nav nav-tabs initActiveTab">
+		<li><a href="##tabArchitectural" onclick="return false;">#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.architectural")#</a></li>
+		<li><a href="##tabFlat" onclick="return false;">#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.flat")#</a></li>
+	</ul>
+	<div class="tab-content"> 
+		<div id="tabArchitectural" class="tab-pane fade">
+			<div id="gridContainer">
+				<div class="load-inline"></div>
+			</div>
 		</div>
 		
-		<div id="tabFlat">
-			<img class="loadProgress" src="images/progress_bar.gif">
+		<div id="tabFlat" class="tab-pane fade">
+			<div id="flatViewContainer">
+				<div class="load-inline"></div>
+			</div>
 		</div>
-		
+	</div>	
 </div>
+
 <script type="text/javascript">
 var archViewLoaded=false;
 var flatViewLoaded=false;
+var tabsInited=false;
 
 function initFlatViewArgs(){
 	return {siteid:'#JSStringFormat(session.siteID)#', 
@@ -415,32 +531,47 @@ function initFlatViewArgs(){
 			};
 }
 
+
+var newContentMenuTitle='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.selectcontenttype"))#';
 var flatViewArgs=initFlatViewArgs();
 
 function initSiteManagerTabContent(index){
 
 	jQuery.get("./index.cfm","muraAction=carch.siteManagerTab&tab=" + index);
 	
+	if(!tabsInited){
+		jQuery("##viewTabs a[href='##tabArchitectural']").click(function(e){
+			e.preventDefault();
+			initSiteManagerTabContent(0);
+		});
+		jQuery("##viewTabs a[href='##tabFlat']").click(function(e){
+			e.preventDefault();
+			initSiteManagerTabContent(1);
+		});
+		tabsInited=true;
+	}	
+
 	switch(index){
 		case 0:
 		if (!archViewLoaded) {
-			loadSiteManager('#JSStringFormat(rc.siteID)#', '#JSStringFormat(rc.topid)#', '#JSStringFormat(rc.moduleid)#', '#JSStringFormat(rc.sortby)#', '#JSStringFormat(rc.sortdirection)#', '#JSStringFormat(rc.ptype)#', '#JSStringFormat(rc.startrow)#');
+			siteManager.loadSiteManager('#JSStringFormat(rc.siteID)#', '#JSStringFormat(rc.topid)#', '#JSStringFormat(rc.moduleid)#', '#JSStringFormat(rc.sortby)#', '#JSStringFormat(rc.sortdirection)#', '#JSStringFormat(rc.ptype)#', '#JSStringFormat(rc.startrow)#');
 			archViewLoaded = true;
+			jQuery('##viewTabs a[href="##tabArchitectural"]').tab('show');
 		}
 		break;
 		case 1:
 		if (!flatViewLoaded) {
-			loadSiteFlat(flatViewArgs);
+			siteManager.loadSiteFlat(flatViewArgs);
 			flatViewLoaded = true;
+			jQuery('##viewTabs a[href="##tabFlat"]').tab('show');
 		}
 	}
 }
 
-jQuery("##viewTabs").bind( "tabsselect", function(event,ui){
-	initSiteManagerTabContent(ui.index)
-});	
 
-initSiteManagerTabContent(#rc.activeTab#);			
+jQuery(document).ready(function(){
+	initSiteManagerTabContent(#rc.activeTab#);	
+});
 </script>
 </cfoutput>
 <cfinclude template="draftpromptjs.cfm">

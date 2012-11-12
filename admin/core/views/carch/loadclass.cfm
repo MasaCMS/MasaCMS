@@ -64,8 +64,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfcase value="adzone">
 		<cfinclude template="objectclass/dsp_adzones.cfm">
 	</cfcase>
-	<cfcase value="portal">
-		<cfinclude template="objectclass/dsp_portals.cfm">
+	<cfcase value="LocalRepo">
+		<cfinclude template="objectclass/dsp_LocalRepos.cfm">
 	</cfcase>
 	<cfcase value="calendar">
 		<cfinclude template="objectclass/dsp_calendars.cfm">

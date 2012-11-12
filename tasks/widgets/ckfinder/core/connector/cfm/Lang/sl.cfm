@@ -1,7 +1,7 @@
 <cfsilent>
 <cfprocessingdirective pageencoding="utf-8">
 <!---
-Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckfinder.com/license
 
  Defines the object for the Slovenian language.
@@ -19,6 +19,7 @@ CKFLang = structNew();
 	CKFLang.Errors[105] = 'Napačna končnica datoteke.';
 	CKFLang.Errors[109] = 'Napačna zahteva.';
 	CKFLang.Errors[110] = 'Neznana napaka.';
+	CKFLang.Errors[111] = 'It was not possible to complete the request due to resulting file size.';
 	CKFLang.Errors[115] = 'Datoteka ali mapa s tem imenom že obstaja.';
 	CKFLang.Errors[116] = 'Mapa ni najdena. Prosimo osvežite okno in poskusite znova.';
 	CKFLang.Errors[117] = 'Datoteka ni najdena. Prosimo osvežite seznam datotek in poskusite znova.';

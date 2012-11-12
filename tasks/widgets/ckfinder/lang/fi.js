@@ -2,7 +2,7 @@
  * CKFinder
  * ========
  * http://ckfinder.com
- * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (C) 2007-2012, CKSource - Frederico Knabben. All rights reserved.
  *
  * The software, this file, and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
@@ -45,6 +45,7 @@ CKFinder.lang['fi'] =
 	},
 
 
+	// Language direction, 'ltr' or 'rtl'.
 	dir : 'ltr',
 	HelpLang : 'fi',
 	LangCode : 'fi',
@@ -75,16 +76,18 @@ CKFinder.lang['fi'] =
 	FolderDelete	: 'Haluatko varmasti poistaa kansion "%1"?',
 	FolderRenaming	: ' (Uudelleennimeää...)',
 	FolderDeleting	: ' (Poistaa...)',
+	DestinationFolder	: 'Destination Folder', // MISSING
 
 	// Files
 	FileRename		: 'Kirjoita uusi tiedostonimi: ',
 	FileRenameExt	: 'Haluatko varmasti muuttaa tiedostotarkennetta? Tiedosto voi muuttua käyttökelvottomaksi.',
 	FileRenaming	: 'Uudelleennimeää...',
 	FileDelete		: 'Haluatko varmasti poistaa tiedoston "%1"?',
+	FilesDelete	: 'Are you sure you want to delete %1 files?', // MISSING
 	FilesLoading	: 'Lataa...',
 	FilesEmpty		: 'Tyhjä kansio.',
-	FilesMoved		: 'Tiedosto %1 siirretty nimelle %2:%3.',
-	FilesCopied		: 'Tiedosto %1 kopioitu nimelle %2:%3.',
+	DestinationFile	: 'Destination File', // MISSING
+	SkippedFiles	: 'List of skipped files:', // MISSING
 
 	// Basket
 	BasketFolder		: 'Kori',
@@ -93,13 +96,21 @@ CKFinder.lang['fi'] =
 	BasketOpenFolder	: 'Avaa ylemmän tason kansio',
 	BasketTruncateConfirm : 'Haluatko todella poistaa kaikki tiedostot korista?',
 	BasketRemoveConfirm	: 'Haluatko todella poistaa tiedoston "%1" korista?',
+	BasketRemoveConfirmMultiple	: 'Do you really want to remove %1 files from the basket?', // MISSING
 	BasketEmpty			: 'Korissa ei ole tiedostoja. Lisää raahaamalla.',
 	BasketCopyFilesHere	: 'Kopioi tiedostot korista.',
 	BasketMoveFilesHere	: 'Siirrä tiedostot korista.',
 
-	BasketPasteErrorOther	: 'Tiedoston %s virhe: %e.',
-	BasketPasteMoveSuccess	: 'Seuraavat tiedostot siirrettiin: %s',
-	BasketPasteCopySuccess	: 'Seuraavat tiedostot kopioitiin: %s',
+	// Global messages
+	OperationCompletedSuccess	: 'Operation completed successfully.', // MISSING
+	OperationCompletedErrors		: 'Operation completed with errors.', // MISSING
+	FileError				: '%s: %e', // MISSING
+
+	// Move and Copy files
+	MovedFilesNumber		: 'Number of files moved: %s.', // MISSING
+	CopiedFilesNumber	: 'Number of files copied: %s.', // MISSING
+	MoveFailedList		: 'The following files could not be moved:<br />%s', // MISSING
+	CopyFailedList		: 'The following files could not be copied:<br />%s', // MISSING
 
 	// Toolbar Buttons (some used elsewhere)
 	Upload		: 'Lataa palvelimelle',
@@ -118,9 +129,10 @@ CKFinder.lang['fi'] =
 	NewSubFolder	: 'Uusi alikansio',
 	Rename			: 'Uudelleennimeä ',
 	Delete			: 'Poista',
+	DeleteFiles		: 'Delete Files', // MISSING
 
-	CopyDragDrop	: 'Kopioi tiedosto tähän',
-	MoveDragDrop	: 'Siirrä tiedosto tähän',
+	CopyDragDrop	: 'Kopioi tähän',
+	MoveDragDrop	: 'Siirrä tähän',
 
 	// Dialogs
 	RenameDlgTitle		: 'Nimeä uudelleen',
@@ -130,6 +142,7 @@ CKFinder.lang['fi'] =
 
 	FileOverwrite	: 'Ylikirjoita',
 	FileAutorename	: 'Nimeä uudelleen automaattisesti',
+	ManuallyRename	: 'Manually rename', // MISSING
 
 	// Generic
 	OkBtn		: 'OK',
@@ -153,6 +166,7 @@ CKFinder.lang['fi'] =
 	UploadLabel			: 'Ladattavat tiedostot',
 	UploadTotalFiles	: 'Tiedostoja yhteensä:',
 	UploadTotalSize		: 'Yhteenlaskettu tiedostokoko:',
+	UploadSend			: 'Lataa palvelimelle',
 	UploadAddFiles		: 'Lisää tiedostoja',
 	UploadClearFiles	: 'Poista tiedostot',
 	UploadCancel		: 'Peru lataus',
@@ -174,6 +188,7 @@ CKFinder.lang['fi'] =
 	SetSortName		: 'aakkosjärjestykseen',
 	SetSortDate		: 'päivämäärän mukaan',
 	SetSortSize		: 'tiedostokoon mukaan',
+	SetSortExtension		: 'tiedostopäätteen mukaan',
 
 	// Status Bar
 	FilesCountEmpty : '<Tyhjä kansio>',
@@ -182,7 +197,9 @@ CKFinder.lang['fi'] =
 
 	// Size and Speed
 	Kb				: '%1 kt',
-	KbPerSecond		: '%1 kt/s',
+	Mb				: '%1 Mt',
+	Gb				: '%1 Gt',
+	SizePerSecond	: '%1/s',
 
 	// Connector Error Messages.
 	ErrorUnknown	: 'Pyyntöä ei voitu suorittaa. (Virhe %1)',
@@ -197,6 +214,7 @@ CKFinder.lang['fi'] =
 	105 : 'Virheellinen tiedostotarkenne.',
 	109 : 'Virheellinen pyyntö.',
 	110 : 'Tuntematon virhe.',
+	111 : 'It was not possible to complete the request due to resulting file size.', // MISSING
 	115 : 'Samanniminen tiedosto tai kansio on jo olemassa.',
 	116 : 'Kansiota ei löydy. Yritä uudelleen kansiopäivityksen jälkeen.',
 	117 : 'Tiedostoa ei löydy. Yritä uudelleen kansiopäivityksen jälkeen.',
@@ -220,14 +238,16 @@ CKFinder.lang['fi'] =
 		FileEmpty		: 'Tiedosto on nimettävä!',
 		FileExists		: 'Tiedosto %s on jo olemassa.',
 		FolderEmpty		: 'Kansio on nimettävä!',
+		FolderExists	: 'Folder %s already exists.', // MISSING
+		FolderNameExists	: 'Folder already exists.', // MISSING
 
 		FileInvChar		: 'Tiedostonimi ei voi sisältää seuraavia merkkejä: \n\\ / : * ? " < > |',
 		FolderInvChar	: 'Kansionimi ei voi sisältää seuraavia merkkejä: \n\\ / : * ? " < > |',
 
 		PopupBlockView	: 'Tiedostoa ei voitu avata uuteen ikkunaan. Salli selaimesi asetuksissa ponnahdusikkunat tälle sivulle.',
-		XmlError		: 'It was not possible to properly load the XML response from the web server.', // MISSING
-		XmlEmpty		: 'It was not possible to load the XML response from the web server. The server returned an empty response.', // MISSING
-		XmlRawResponse	: 'Raw response from the server: %s' // MISSING
+		XmlError		: 'Web-palvelimen XML-vastausta ei pystytty kunnolla lataamaan.',
+		XmlEmpty		: 'Web-palvelimen XML vastausta ei pystytty lataamaan. Palvelin palautti tyhjän vastauksen.',
+		XmlRawResponse	: 'Palvelimen käsittelemätön vastaus: %s'
 	},
 
 	// Imageresize plugin
@@ -268,5 +288,21 @@ CKFinder.lang['fi'] =
 	{
 		maximize : 'Suurenna',
 		minimize : 'Pienennä'
+	},
+
+	Gallery :
+	{
+		current : 'Kuva {current} / {total}'
+	},
+
+	Zip :
+	{
+		extractHereLabel	: 'Extract here', // MISSING
+		extractToLabel		: 'Extract to...', // MISSING
+		downloadZipLabel	: 'Download as zip', // MISSING
+		compressZipLabel	: 'Compress to zip', // MISSING
+		removeAndExtract	: 'Remove existing and extract', // MISSING
+		extractAndOverwrite	: 'Extract overwriting existing files', // MISSING
+		extractSuccess		: 'File extracted successfully.' // MISSING
 	}
 };

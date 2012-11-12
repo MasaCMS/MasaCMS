@@ -50,10 +50,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 cache, cacheCapacity, cacheFreeMemoryThreshold, viewdepth,nextn,dataCollection,ExportLocation,
 columnCount,primaryColumn,publicSubmission,adManager,columnNames,contactName,contactAddress,contactCity,contactState,contactZip,contactEmail,contactPhone,
 publicUserPoolID,PrivateUserPoolID,AdvertiserUserPoolID,displayPoolID,orderno,feedManager,
-galleryMainScaleBy, galleryMainScale, gallerySmallScaleBy, gallerySmallScale, galleryMediumScaleBy, galleryMediumScale,
+largeImageHeight, largeImageWidth, smallImageHeight, smallImageWidth, mediumImageHeight, mediumImageWidth,
 sendLoginScript, mailingListConfirmScript,publicSubmissionApprovalScript,reminderScript,ExtranetPublicRegNotify,
 loginURL,editProfileURL,CommentApprovalDefault,deploy,accountActivationScript,
-googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPPort, mailserverTLS, mailserverSSL, theme, tagline,hasChangesets,baseID</cfoutput></cfsavecontent>
+googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPPort, mailserverTLS, mailserverSSL, theme, tagline,hasChangesets,baseID,enforceChangesets</cfoutput></cfsavecontent>
 
 <cffunction name="init" access="public" returntype="any" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
@@ -91,6 +91,10 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
 	<cftransaction>
 	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 	delete from tsettings where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
+	</cfquery>
+
+	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	delete from timagesizes where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 	</cfquery>
 
 	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -292,12 +296,13 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
 		 advertiserUserPoolID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getAdvertiserUserPoolID()#" />,
 		 displayPoolID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getDisplayPoolID()#" />,
 		 feedManager=#arguments.bean.getHasfeedManager()#,
-		 galleryMainScaleBy = '#arguments.bean.getGalleryMainScaleBy()#',
-		 galleryMainScale = #arguments.bean.getGalleryMainScale()#,
-		 gallerySmallScaleBy = '#arguments.bean.getGallerySmallScaleBy()#',
-		 gallerySmallScale = #arguments.bean.getGallerySmallScale()#,
-		 galleryMediumScaleBy = '#arguments.bean.getGalleryMediumScaleBy()#',
-		 galleryMediumScale = #arguments.bean.getGalleryMediumScale()#,
+		 
+		largeImageHeight = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getLargeImageHeight()#" />,
+		largeImageWidth = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getLargeImageWidth()#" />,
+		smallImageHeight = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getSmallImageHeight()#" />,
+		smallImageWidth = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getSmallImageWidth()#" />,
+		mediumImageHeight = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getMediumImageHeight()#" />,
+		mediumImageWidth = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getMediumImageWidth()#" />,
 		
 		 sendLoginScript=<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.bean.getSendLoginScript() neq '',de('no'),de('yes'))#" value="#arguments.bean.getSendLoginScript()#" />,
 		 mailingListConfirmScript=<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.bean.getMailingListConfirmScript() neq '',de('no'),de('yes'))#" value="#arguments.bean.getMailingListConfirmScript()#" />,
@@ -319,7 +324,8 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
 	 	 theme= <cfif arguments.bean.getTheme() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getTheme())#" /><cfelse>null</cfif>,
 	 	 tagline=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getTagline()#" />,
 	 	 hasChangesets=#arguments.bean.getHasChangesets()#,
-	 	 baseID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getBaseID()#" />
+	 	 baseID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getBaseID()#" />,
+	 	 EnforceChangesets=#arguments.bean.getEnforceChangesets()#
 		 
 		where siteid='#arguments.bean.getsiteid()#'
    </cfquery>
@@ -385,12 +391,13 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
 		   <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getDisplayPoolID()#" />,
 		   #orderno#,
 		   #arguments.bean.getHasfeedManager()#,
-		   '#arguments.bean.getGalleryMainScaleBy()#',
-		   #arguments.bean.getGalleryMainScale()#,
-		   '#arguments.bean.getGallerySmallScaleBy()#',
-		   #arguments.bean.getGallerySmallScale()#,
-		   '#arguments.bean.getGalleryMediumScaleBy()#',
-		   #arguments.bean.getGalleryMediumScale()#,
+		   
+		 <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getLargeImageHeight()#" />,
+		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getLargeImageWidth()#" />,
+		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getSmallImageHeight()#" />,
+		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getSmallImageWidth()#" />,
+		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getMediumImageHeight()#" />,
+		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getMediumImageWidth()#" />,
 	 
 		 <cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.bean.getSendLoginScript() neq '',de('no'),de('yes'))#" value="#arguments.bean.getSendLoginScript()#" />,
 		 <cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.bean.getMailingListConfirmScript() neq '',de('no'),de('yes'))#" value="#arguments.bean.getMailingListConfirmScript()#" />,
@@ -413,7 +420,8 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
 	 	 <cfif arguments.bean.getTheme() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getTheme())#" /><cfelse>null</cfif>,
 	 	 <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getTagline()#" />,
 	 	 #arguments.bean.getHasChangesets()#,
-	 	 <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getBaseID()#" />
+	 	 <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getBaseID()#" />,
+	 	 #arguments.bean.getEnforceChangesets()#
 		   )
    </cfquery>
   

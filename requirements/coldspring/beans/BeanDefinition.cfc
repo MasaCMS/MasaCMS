@@ -562,6 +562,7 @@
 			</cfif>
 			
 			<cfcatch type="any">
+				<!---
 				<cfif StructKeyExists(cfcatch, "line")>
 					<cfset additionalInfo = "<br/> Line: " & cfcatch.line />
 				</cfif>
@@ -571,6 +572,8 @@
 				<cfthrow type="coldspring.beanCreationException" 
 					message="Bean creation exception in #getBeanClass()#" 
 					detail="#cfcatch.message#:#cfcatch.detail#:#additionalInfo#">
+					--->
+				<cfrethrow>
 			</cfcatch>
 		</cftry>
 		

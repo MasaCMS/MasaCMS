@@ -45,8 +45,8 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
-<ul>
-<cfswitch expression="#myfusebox.originalfuseaction#">
+<ul class="nav nav-pills">
+<cfswitch expression="#rc.originalfuseaction#">
 <cfcase value="list">
 <li><a href="index.cfm?muraAction=cSettings.edit&siteid=">Add New Site</a></li>
 </cfcase>

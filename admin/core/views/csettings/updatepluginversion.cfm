@@ -45,7 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<h2>Update Plugin Version</h2>
+<h1>Update Plugin Version</h1>
 
 <ul class="metadata">
 <li><strong>Name:</strong> #htmlEditFormat(rc.pluginConfig.getName())#</li>
@@ -58,10 +58,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </ul>
 
 <p>Upload New Plugin Version</p>
-<form novalidate="novalidate" name="frmNewPlugin" action="index.cfm?muraAction=cSettings.deployPlugin" enctype="multipart/form-data" method="post" onsubmit="return validateForm(this);">
+<form novalidate="novalidate" name="frmNewPlugin" action="index.cfm?muraAction=cSettings.deployPlugin" enctype="multipart/form-data" method="post" onsubmit="return submitForm(document.frmNewPlugin);">
 <input name="newPlugin" type="file" required="true" message="Please select a plugin file.">
-<div id="actionButtons">
-<input type="submit" value="Deploy"/>
+<div class="form-actions">
+<input type="submit" value="Deploy" class="btn"/>
 </div>
 <input type="hidden" name="moduleID" value="#rc.pluginConfig.getModuleID()#">
 </form>

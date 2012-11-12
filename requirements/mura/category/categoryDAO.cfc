@@ -368,6 +368,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var sched = arguments.schedule />
 	
 	<cfif feature eq 2 AND isDate(sched.featureStart)>
+
 		<cfif sched.startdaypart eq "PM">
 			<cfset sched.starthour = sched.starthour + 12>
 			
@@ -386,6 +387,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	<cfif feature eq 2 AND isDate(sched.featurestop)>
+		
 		<cfif sched.stopdaypart eq "PM">
 			<cfset sched.stophour = sched.stophour + 12>
 			

@@ -1,7 +1,7 @@
 <cfsilent>
 <cfprocessingdirective pageencoding="utf-8">
 <!---
-Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckfinder.com/license
 
  Defines the object for the Lithuanian language.
@@ -19,6 +19,7 @@ CKFLang = structNew();
 	CKFLang.Errors[105] = 'Netinkamas failo plėtinys.';
 	CKFLang.Errors[109] = 'Netinkama užklausa.';
 	CKFLang.Errors[110] = 'Nežinoma klaida.';
+	CKFLang.Errors[111] = 'It was not possible to complete the request due to resulting file size.';
 	CKFLang.Errors[115] = 'Failas arba segtuvas su tuo pačiu pavadinimu jau yra.';
 	CKFLang.Errors[116] = 'Segtuvas nerastas. Pabandykite atnaujinti.';
 	CKFLang.Errors[117] = 'Failas nerastas. Pabandykite atnaujinti failų sąrašą.';

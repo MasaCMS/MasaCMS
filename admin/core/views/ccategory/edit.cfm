@@ -47,122 +47,162 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset event=request.event>
 <cfinclude template="js.cfm">
 <cfoutput>
-<h2><cfif rc.categoryID neq ''>#application.rbFactory.getKeyValue(session.rb,'categorymanager.editcontentcategory')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'categorymanager.addcontentcategory')#</cfif></h2>
+<h1><cfif rc.categoryID neq ''>#application.rbFactory.getKeyValue(session.rb,'categorymanager.editcontentcategory')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'categorymanager.addcontentcategory')#</cfif></h1>
+
+<cfinclude template="dsp_secondary_menu.cfm">
+
 #application.utility.displayErrors(rc.categoryBean.getErrors())#
 
 <span id="msg">
 #application.pluginManager.renderEvent("onCategoryEditMessageRender", event)#
 </span>
 
-<form novalidate="novalidate" action="index.cfm?muraAction=cCategory.update&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="form1" onsubmit="return validate(this);">
-<dl class="oneColumn separate">
-<dt class="first">#application.rbFactory.getKeyValue(session.rb,'categorymanager.name')#</dt>
-<dd><input name="name" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'categorymanager.namerequired')#" value="#HTMLEditFormat(rc.categoryBean.getName())#" maxlength="50"></dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'categorymanager.urltitle')#</dt>
-<dd><input name="urltitle" class="text" value="#HTMLEditFormat(rc.categoryBean.getURLTitle())#" maxlength="255"></dd>
-<!---
-<cfif rc.categoryID neq ''>
-</dl>
-<div id="page_tabView">
-<div class="page_aTab">
-<dl class="oneColumn">
-<dt class="first">
-<cfelse>
---->
-<dt>
-<!---</cfif>--->
-#application.rbFactory.getKeyValue(session.rb,'categorymanager.parentcategory')#</dt>
-<dd><select name="parentID">
-<option value="">#application.rbFactory.getKeyValue(session.rb,'categorymanager.primary')#</option>
-<cf_dsp_parents siteID="#rc.siteID#" categoryID="#rc.categoryID#" parentID="" actualParentID="#rc.parentID#" nestLevel="1" >
-</select></dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'categorymanager.isinterestgroup')#</dt>
-<dd>
-<input name="isInterestGroup" id="isInterestGroupYes" type="radio" value="1" <cfif rc.categoryBean.getIsInterestGroup()>checked</cfif>> <label for="isInterestGroupYes">#application.rbFactory.getKeyValue(session.rb,'categorymanager.yes')#</label> 
-<input name="isInterestGroup" id="isInterestGroupNo" type="radio" value="0" <cfif not rc.categoryBean.getIsInterestGroup()>checked</cfif>> <label for="isInterestGroupNo">#application.rbFactory.getKeyValue(session.rb,'categorymanager.no')#</label>
-</dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'categorymanager.allowcontentassignments')#</dt>
-<dd>
-<input name="isOpen" id="isOpenYes" type="radio" value="1" <cfif rc.categoryBean.getIsOpen()>checked</cfif>> <label for="isOpenYes">#application.rbFactory.getKeyValue(session.rb,'categorymanager.yes')#</label> 
-<input name="isOpen" id="isOpenNo" type="radio" value="0" <cfif not rc.categoryBean.getIsOpen()>checked</cfif>> <label for="isOpenNo">#application.rbFactory.getKeyValue(session.rb,'categorymanager.no')#</label> 
-</dd>
-<dt>Active?</dt>
-<dd>
-<input name="isActive" id="isActiveYes" type="radio" value="1" <cfif rc.categoryBean.getIsActive()>checked</cfif>> <label for="isActiveYes">#application.rbFactory.getKeyValue(session.rb,'categorymanager.yes')#</label> 
-<input name="isActive" id="isActiveNo" type="radio" value="0" <cfif not rc.categoryBean.getIsActive()>checked</cfif>> <label for="isActiveNo">#application.rbFactory.getKeyValue(session.rb,'categorymanager.no')#</label> 
-</dd>
-<!--- <dt>Sort By/Sort Direction:</dt>
-<dd>	<select name="sortBy" class="dropdown">
-		 <option value="orderno" <cfif rc.categoryBean.getSortBy() eq 'orderno'>selected</cfif>>Manually</option>
-		<option value="releaseDate" <cfif rc.categoryBean.getSortBy() eq 'releaseDate'>selected</cfif>>Release Date</option>
-		<option value="lastUpdate" <cfif rc.categoryBean.getSortBy() eq 'lastUpdate'>selected</cfif>>Update Date</option>
-		<option value="menuTitle" <cfif rc.categoryBean.getSortBy() eq 'menuTitle'>selected</cfif>>Menu Title</option>
-		<option value="title" <cfif rc.categoryBean.getSortBy() eq 'title'>selected</cfif>>Long Title</option>
-		</select>
-		<select name="sortDirection" class="dropdown">
-		<option value="asc" <cfif rc.categoryBean.getSortDirection() eq 'asc'>selected</cfif>>Ascending</option>
-		<option value="desc" <cfif rc.categoryBean.getSortDirection() eq 'desc'>selected</cfif>>Descending</option>
-		</select></dd> --->
+<form class="fieldset-wrap" novalidate="novalidate" action="index.cfm?muraAction=cCategory.update&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="form1" onsubmit="return validate(this);">
+<div class="fieldset">
+<div class="control-group">
+  <label class="control-label">
+    #application.rbFactory.getKeyValue(session.rb,'categorymanager.name')#
+  </label>
+  <div class="controls">
+    <input type="text" name="name" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'categorymanager.namerequired')#" value="#HTMLEditFormat(rc.categoryBean.getName())#" maxlength="50">
+  </div>
+</div>
+
+<div class="control-group">
+  <label class="control-label">
+    #application.rbFactory.getKeyValue(session.rb,'categorymanager.urltitle')#
+  </label>
+  <div class="controls">
+    <input type="text" name="urltitle" class="span12" value="#HTMLEditFormat(rc.categoryBean.getURLTitle())#" maxlength="255">
+  </div>
+</div>
+
+<div class="control-group">
+<div class="span6">
+<label class="control-label">
+    #application.rbFactory.getKeyValue(session.rb,'categorymanager.parentcategory')#
+  </label>
+  <div class="controls">
+    <select name="parentID">
+      <option value="">#application.rbFactory.getKeyValue(session.rb,'categorymanager.primary')#</option>
+     <cf_dsp_parents siteID="#rc.siteID#" categoryID="#rc.categoryID#" parentID="" actualParentID="#rc.parentID#" nestLevel="1" >
+      </select>
+    </div>
+</div>
+
+<div class="span6">
+  <label class="control-label">
+    CategoryID
+  </label>
+  <div class="controls">
+    <cfif len(rc.categoryID) and len(rc.categoryBean.getCategoryID())>
+      #rc.categoryBean.getCategoryID()#
+    <cfelse>
+      #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notavailable')#
+    </cfif>
+  </div>
+</div>
+
+</div>
+
+<div class="control-group">
+
+
+<div class="span3">  <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'categorymanager.isinterestgroup')#</label>
+  <div class="controls">
+  	<label class="radio inline" for="isInterestGroupYes">
+      <input name="isInterestGroup" id="isInterestGroupYes" type="radio" value="1" <cfif rc.categoryBean.getIsInterestGroup()>checked</cfif>> 
+      #application.rbFactory.getKeyValue(session.rb,'categorymanager.yes')#
+    </label>
+    <label class="radio inline" for="isInterestGroupNo"> 
+      <input name="isInterestGroup" id="isInterestGroupNo" type="radio" value="0" <cfif not rc.categoryBean.getIsInterestGroup()>checked</cfif>> 
+      #application.rbFactory.getKeyValue(session.rb,'categorymanager.no')#
+    </label>
+  </div></div>
+
+
+
+<div class="span3">  <label class="control-label">
+    #application.rbFactory.getKeyValue(session.rb,'categorymanager.allowcontentassignments')#
+  </label>
+  <div class="controls">
+  	<label class="radio inline" for="isOpenYes">
+      <input name="isOpen" id="isOpenYes" type="radio" value="1" <cfif rc.categoryBean.getIsOpen()>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,'categorymanager.yes')#
+    </label> 
+    <label class="radio inline" for="isOpenNo">
+     <input name="isOpen" id="isOpenNo" type="radio" value="0" <cfif not rc.categoryBean.getIsOpen()>checked</cfif>> #application.rbFactory.getKeyValue(session.rb,'categorymanager.no')#
+    </label> 
+  </div></div>
+  
+  
+  
+<div class="span6">  <label class="control-label">Active?</label>
+  <div class="controls">
+  	<label class="radio inline" for="isActiveYes">
+      <input name="isActive" id="isActiveYes" type="radio" value="1" <cfif rc.categoryBean.getIsActive()>checked</cfif>> 
+      #application.rbFactory.getKeyValue(session.rb,'categorymanager.yes')#
+    </label>
+    <label class="radio inline" for="isActiveNo"> 
+      <input name="isActive" id="isActiveNo" type="radio" value="0" <cfif not rc.categoryBean.getIsActive()>checked</cfif>> 
+      #application.rbFactory.getKeyValue(session.rb,'categorymanager.no')#
+    </label> 
+  </div></div>
+  
+</div>
+
 		
-<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictaccess')#</dt>
-	<dd>
-	<select name="restrictgroups" size="8" multiple="multiple" class="multiSelect" id="restrictGroups">
-	<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.globalsettings'))#">
-	<option value="" <cfif rc.categoryBean.getrestrictgroups() eq ''>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.allowall')#</option>
-	<option value="RestrictAll" <cfif rc.categoryBean.getrestrictgroups() eq 'RestrictAll'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictall')#</option>	
-	</optgroup>
-	<cfquery dbtype="query" name="rsGroups">select * from rc.rsrestrictgroups where isPublic=1</cfquery>	
-	<cfif rsGroups.recordcount>
-	<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'user.membergroups'))#">
-	<cfloop query="rsGroups">
-	<option value="#rsGroups.groupname#" <cfif listFindNoCase(rc.categoryBean.getrestrictgroups(),rsGroups.groupname)>Selected</cfif>>#rsGroups.groupname#</option>
-	</cfloop>
-	</optgroup>
-	</cfif>
-	<cfquery dbtype="query" name="rsGroups">select * from rc.rsrestrictgroups where isPublic=0</cfquery>	
-	<cfif rsGroups.recordcount>
-	<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'user.adminusergroups'))#">
-	<cfloop query="rsGroups">
-	<option value="#rsGroups.groupname#" <cfif listFindNoCase(rc.categoryBean.getrestrictgroups(),rsGroups.groupname)>Selected</cfif>>#rsGroups.groupname#</option>
-	</cfloop>
-	</optgroup>
-	</cfif>
-	</select></dd>
-<dt>CategoryID</dt>
-<dd><cfif len(rc.categoryID) and len(rc.categoryBean.getCategoryID())>#rc.categoryBean.getCategoryID()#<cfelse>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.notavailable')#</cfif></li>
-</dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'categorymanager.notes')#</dt>
-<dd><textarea name="notes" class="alt">#HTMLEditFormat(rc.categoryBean.getNotes())#</textarea></dd>
-</dl>
+<div class="control-group">
+  <label class="control-label">
+    #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictaccess')#
+  </label>
+  <div class="controls">
+    	<select name="restrictgroups" size="8" multiple="multiple" id="restrictGroups" class="span4">
+	       <optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.globalsettings'))#">
+	       <option value="" <cfif rc.categoryBean.getrestrictgroups() eq ''>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.allowall')#</option>
+	       <option value="RestrictAll" <cfif rc.categoryBean.getrestrictgroups() eq 'RestrictAll'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.restrictall')#</option>	
+	       </optgroup>
+	       <cfquery dbtype="query" name="rsGroups">select * from rc.rsrestrictgroups where isPublic=1</cfquery>	
+      	<cfif rsGroups.recordcount>
+      	<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'user.membergroups'))#">
+      	<cfloop query="rsGroups">
+      	<option value="#rsGroups.groupname#" <cfif listFindNoCase(rc.categoryBean.getrestrictgroups(),rsGroups.groupname)>Selected</cfif>>#rsGroups.groupname#</option>
+      	</cfloop>
+      	</optgroup>
+      	</cfif>
+      	<cfquery dbtype="query" name="rsGroups">select * from rc.rsrestrictgroups where isPublic=0</cfquery>	
+      	<cfif rsGroups.recordcount>
+      	<optgroup label="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'user.adminusergroups'))#">
+      	<cfloop query="rsGroups">
+      	<option value="#rsGroups.groupname#" <cfif listFindNoCase(rc.categoryBean.getrestrictgroups(),rsGroups.groupname)>Selected</cfif>>#rsGroups.groupname#</option>
+      	</cfloop>
+      	</optgroup>
+      	</cfif>
+	   </select>
+	</div>
+</div>
 
-<div id="actionButtons">
-<cfif rc.categoryID eq ''>
+	<div class="control-group">
+	  <label class="control-label">
+	    #application.rbFactory.getKeyValue(session.rb,'categorymanager.notes')#
+	  </label>
+	  <div class="controls">
+	    <textarea name="notes" class="span12" rows="8">#HTMLEditFormat(rc.categoryBean.getNotes())#</textarea>
+	  </div>
+	</div>
+	
+</div>
 
-<input type="button" class="submit" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'categorymanager.add')#" /><input type=hidden name="categoryID" value=""><cfelse> <input type="button" class="submit" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'categorymanager.deleteconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'categorymanager.delete')#" /> <input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'categorymanager.update')#" />
-<input type=hidden name="categoryID" value="#rc.categoryBean.getCategoryID()#"></cfif>
-<input type="hidden" name="action" value="">
+<div class="form-actions">
+  <cfif rc.categoryID eq ''>
+    <input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'categorymanager.add')#" />
+    <input type=hidden name="categoryID" value="">
+  <cfelse> 
+    <input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'categorymanager.deleteconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'categorymanager.delete')#" /> 
+    <input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'categorymanager.update')#" />
+    <input type=hidden name="categoryID" value="#rc.categoryBean.getCategoryID()#">
+  </cfif>
+  <input type="hidden" name="action" value="">
 </div>
 </form>
 </cfoutput>
-<!---
-<cfif rc.categoryID neq ''>
-<cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
-<cfhtmlhead text='<script type="text/javascript" src="js/tab-view.js"></script>'>
-<cfoutput><script type="text/javascript">
-initTabs(Array("#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'categorymanager.basic'))#","#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'categorymanager.usagereport'))#"),0,0,0);
-</script></cfoutput>
-</cfif>--->
-<!---<ul id="features" style="height:150px;width:200px;">
-<cfloop query="rc.rslist">
-<cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/>
-<li id="features_#rc.rslist.currentrow#" style="cursor:n-resize">#application.contentRenderer.dspZoom(crumbdata)# #rc.rslist.menutitle#<input type="hidden" name="orderID" value="#rc.rslist.contentid#"/><input type="hidden" name="orderno" value="#rc.rslist.currentRow#"/></li>
-</cfloop>
-</ul>--->
-<!---<cfif rc.rslist.recordcount and rc.categoryBean.getSortBy() eq 'orderno'>
- <script type="text/javascript">
- // <![CDATA[
-   Sortable.create("features",
-     {dropOnEmpty:true,containment:["features"],constraint:true});
- // ]]>
- </script>
- </cfif>--->
+

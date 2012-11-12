@@ -44,46 +44,51 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfsavecontent variable="rc.layout">
 <cfparam name="rc.keywords" default="">
 <cfoutput>
-<h2>Trash Bin</h2>
-
-<ul id="navTask"
-<li><a href="index.cfm?muraAction=cSettings.editSite&siteID=#URLEncodedFormat(rc.siteID)#">Back to Site Settings</a></li>
-<li><a href="index.cfm?muraAction=cTrash.empty&siteID=#URLEncodedFormat(rc.siteID)#" onclick="return confirmDialog('Empty Site Trash?', this.href);">Empty Trash</a></li>
-</ul>
-
-<form novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
-   <h3>Keyword Search</h3>
-    <input name="keywords" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" align="absmiddle" />
-    <input type="button" class="submit" onclick="submitForm(document.forms.siteSearch);" value="Search" />
+<form class="form-inline" novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
+   <div class="input-append">
+	   <input id="search" name="search" type="text" class="text" value="#HTMLEditFormat(rc.keywords)#">
+	    <button type="button" class="submit btn" onclick="submitForm(document.forms.siteSearch);" /><i class="icon-search"></i></button>
+	</div>
+    
+    <!---
+<input name="keywords" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" align="absmiddle" />
+    <input type="button" class="submit btn" onclick="submitForm(document.forms.siteSearch);" value="Search" />
+--->
     <input type="hidden" name="muraAction" value="cTrash.list">
     <input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
  </form>
 
-<table class="mura-table-grid stripe"> 
+<h1>Trash Bin</h1>
+
+<div id="nav-module-specific" class="btn-group">
+<a class="btn" href="index.cfm?muraAction=cSettings.editSite&siteID=#URLEncodedFormat(rc.siteID)#"><i class="icon-circle-arrow-left"></i> Back to Site Settings</a>
+<a class="btn" href="index.cfm?muraAction=cTrash.empty&siteID=#URLEncodedFormat(rc.siteID)#" onclick="return confirmDialog('Empty Site Trash?', this.href);">Empty Trash</a>
+</div>
+
+<table class="table table-striped table-condensed table-bordered mura-table-grid"> 
 <tr>
-<th class="varWidth">Label</th>
+<th class="var-width">Label</th>
 <th>Type</th>
 <th>SubType</th>
 <th>SiteID</th>
 <th>Date Deleted</th>
 <th>Date By</th>
-<th class="administration">&nbsp;</th>
+<th class="actions">&nbsp;</th>
 </tr>
 <cfset rc.trashIterator.setPage(rc.pageNum)>
 <cfif rc.trashIterator.hasNext()>
 <cfloop condition="rc.trashIterator.hasNext()">
 <cfset trashItem=rc.trashIterator.next()>
 <tr>
-<td class="varWidth"><a href="?muraAction=cTrash.detail&objectID=#trashItem.getObjectID()#&keywords=#URLEncodedFormat(rc.keywords)#&pageNum=#URLEncodedFormat(rc.pageNum)#">#htmlEditFormat(left(trashItem.getObjectLabel(),80))#</a></td>
+<td class="var-width"><a href="?muraAction=cTrash.detail&objectID=#trashItem.getObjectID()#&keywords=#URLEncodedFormat(rc.keywords)#&pageNum=#URLEncodedFormat(rc.pageNum)#">#htmlEditFormat(left(trashItem.getObjectLabel(),80))#</a></td>
 <td>#htmlEditFormat(trashItem.getObjectType())#</td>
 <td>#htmlEditFormat(trashItem.getObjectSubType())#</td>
 <td>#htmlEditFormat(trashItem.getSiteID())#</td>
 <td>#LSDateFormat(trashItem.getDeletedDate(),session.dateKeyFormat)# #LSTimeFormat(trashItem.getDeletedDate(),"short")#</td>
 <td>#htmlEditFormat(trashItem.getDeletedBy())#</td>
-<td class="administration"><ul><li class="edit"><a href="?muraAction=cTrash.detail&objectID=#trashItem.getObjectID()#&keywords=#URLEncodedFormat(rc.keywords)#&pageNum=#URLEncodedFormat(rc.pageNum)#">View Detail</a></li></ul></td>
+<td class="actions"><ul><li class="edit"><a href="?muraAction=cTrash.detail&objectID=#trashItem.getObjectID()#&keywords=#URLEncodedFormat(rc.keywords)#&pageNum=#URLEncodedFormat(rc.pageNum)#"><i class="icon-pencil"></i></a></li></ul></td>
 </tr>
 </cfloop>
 <cfelse>
@@ -92,22 +97,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </table>
 
 <cfif rc.trashIterator.pageCount() gt 1>
-<p class="moreResults">More Results: 
-<cfif rc.pageNum gt 1>
-	<a href="?muraAction=cTrash.list&siteid=#URLEncodedFormat(rc.siteid)#&keywords=#URLEncodedFormat(rc.keywords)#&pageNum=#evaluate('rc.pageNum-1')#">&laquo;&nbsp;Previous</a> 
+<div class="pagination">
+	<ul>
+		<cfif rc.pageNum gt 1>
+			<li><a href="?muraAction=cTrash.list&siteid=#URLEncodedFormat(rc.siteid)#&keywords=#URLEncodedFormat(rc.keywords)#&pageNum=#evaluate('rc.pageNum-1')#"><i class="icon-caret-left"></i>Previous</a></li>
+		</cfif>
+		<cfloop from="1"  to="#rc.trashIterator.pageCount()#" index="i">
+		
+			<cfif rc.pageNum eq i>
+				<li class="active"><a href="##">#i#</a></li>
+			<cfelse>
+				<li><a href="?muraAction=cTrash.list&siteid=#URLEncodedFormat(rc.siteid)#&keywords=#URLEncodedFormat(rc.keywords)#&pageNum=#i#">#i#</a></li>
+			</cfif>
+		
+		</cfloop>
+		<cfif rc.pageNum lt rc.trashIterator.pageCount()>
+			<li><a href="?muraAction=cTrash.list&siteid=#URLEncodedFormat(rc.siteid)#&keywords=#URLEncodedFormat(rc.keywords)#&pageNum=#evaluate('rc.pageNum+1')#">Next<i class="icon-caret-right"></i></a></li>
+		</cfif>
+	</ul>
+</div>
 </cfif>
-<cfloop from="1"  to="#rc.trashIterator.pageCount()#" index="i">
-	<cfif rc.pageNum eq i>
-		<strong>#i#</strong>
-	<cfelse>
-		<a href="?muraAction=cTrash.list&siteid=#URLEncodedFormat(rc.siteid)#&keywords=#URLEncodedFormat(rc.keywords)#&pageNum=#i#">#i#</a> 
-	</cfif>
-</cfloop>
-<cfif rc.pageNum lt rc.trashIterator.pageCount()>
-	<a href="?muraAction=cTrash.list&siteid=#URLEncodedFormat(rc.siteid)#&keywords=#URLEncodedFormat(rc.keywords)#&pageNum=#evaluate('rc.pageNum+1')#">Next&nbsp;&raquo;</a> 
-</cfif> 
-</p>
-</cfif>
-
 </cfoutput>
-</cfsavecontent>
+

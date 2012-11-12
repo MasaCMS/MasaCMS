@@ -24,34 +24,6 @@
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setValue" returntype="any" access="public" output="false">
-	<cfargument name="property"  type="string" required="true">
-	<cfargument name="propertyValue" default="" >
-	
-	<cfset var extData =structNew() />
-	<cfset var i = "">	
-	
-	<cfif structKeyExists(this,"set#property#")>
-		<cfset evaluate("set#property#(arguments.propertyValue)") />
-	<cfelseif structKeyExists(variables.instance,arguments.property)>
-		<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
-	<cfelse>
-		<cfset extData=getExtendedData().getExtendSetDataByAttributeName(arguments.property)>
-		<cfif not structIsEmpty(extData)>
-			<cfset structAppend(variables.instance,extData.data,false)>	
-			<cfloop list="#extData.extendSetID#" index="i">
-				<cfif not listFind(variables.instance.extendSetID,i)>
-					<cfset variables.instance.extendSetID=listAppend(variables.instance.extendSetID,i)>
-				</cfif>
-			</cfloop>
-		</cfif>
-			
-		<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
-		
-	</cfif>
-	<cfreturn this>
-</cffunction>
-
 <cffunction name="read" access="public" returntype="any" output="false">
 	<cfargument name="changesetID" type="string" default=""/>
 	<cfargument name="name" type="string" default=""/>
@@ -288,7 +260,7 @@
 		where tchangesets.published=0
 		and tchangesets.publishDate is not null
 		and tchangesets.publishDate <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#local.changeset.getPublishDate()#">
-		and tchangesets.changesetID != <cfqueryparam cfsqltype="cf_sql_varchar" value="#local.changeset.getChangesetID()#">
+		and tchangesets.changesetID <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#local.changeset.getChangesetID()#">
 		and tchangesets.siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#local.changeset.getSiteID()#">
 		order by tchangesets.publishDate asc
 		</cfquery>
@@ -394,7 +366,7 @@
 <cfargument name="moduleid" default="">
 	<cfset var rs="">
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-	select tcontent.menutitle, tcontent.siteid, tcontent.parentID, tcontent.path, tcontent.contentid, tcontent.contenthistid, tcontent.fileID, tcontent.type, tcontent.lastupdateby, tcontent.active, tcontent.approved, tcontent.lastupdate, 
+	select tcontent.menutitle, tcontent.siteid, tcontent.parentID, tcontent.path, tcontent.contentid, tcontent.contenthistid, tcontent.fileID, tcontent.type, tcontent.subtype, tcontent.lastupdateby, tcontent.active, tcontent.approved, tcontent.lastupdate, 
 	tcontent.display, tcontent.displaystart, tcontent.displaystop, tcontent.moduleid, tcontent.isnav, tcontent.notes,tcontent.isfeature,tcontent.inheritObjects,tcontent.filename,tcontent.targetParams,tcontent.releaseDate,
 	tcontent.changesetID, tfiles.fileExt, tcontent.title, tcontent.menutitle
 	from tcontent 
@@ -410,7 +382,7 @@
 	<cfif len(arguments.moduleid)>
 		and tcontent.moduleid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleid#">
 	</cfif>
-	order by tcontent.menutitle
+	order by menutitle
 	</cfquery>
 	<cfreturn rs>
 </cffunction>

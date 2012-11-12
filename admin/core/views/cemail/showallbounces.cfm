@@ -47,31 +47,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfinclude template="js.cfm">
 <cfoutput>
 <div id="allBounces">
-<h2>#application.rbFactory.getKeyValue(session.rb,"email.bouncedemailaddresses")#</h2>
-<h3 class="alt">#application.rbFactory.getKeyValue(session.rb,"email.filterbynumberofbounces")#:</h3>
-<div id="advancedSearch" class="clearfix bounces">
-<form novalidate="novalidate" action="index.cfm?muraAction=cEmail.showAllBounces" method="post" name="form1" id="filterBounces">
-<dl>
-<dt>
-	  <select name="bounceFilter">
-	  	<option value="">#application.rbFactory.getKeyValue(session.rb,"email.all")#</option>
-			<cfloop from="1" to="5" index="i">
-			  <option value="#i#"<cfif isDefined('rc.bounceFilter') and rc.bounceFilter eq i> selected</cfif>>#i#</option>
-			</cfloop>
-	  </select>
-</dt>
-<dd><input type="button" class="submit" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,"email.filter")#" /></dd>
-</dl>
+<h1>#application.rbFactory.getKeyValue(session.rb,"email.bouncedemailaddresses")#</h1>
 
+<cfinclude template="dsp_secondary_menu.cfm">
+
+
+<form class="form-inline form-well" novalidate="novalidate" action="index.cfm?muraAction=cEmail.showAllBounces" method="post" name="form1" id="filterBounces">
+<h2>#application.rbFactory.getKeyValue(session.rb,"email.filterbynumberofbounces")#:</h2>
+ <select name="bounceFilter" class="span1">
+	<option value="">#application.rbFactory.getKeyValue(session.rb,"email.all")#</option>
+	<cfloop from="1" to="5" index="i">
+	  <option value="#i#"<cfif isDefined('rc.bounceFilter') and rc.bounceFilter eq i> selected</cfif>>#i#</option>
+	</cfloop>
+ </select>
+
+<input type="button" class="submit btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,"email.filter")#" />
 <cfoutput>			  
 	<input type="hidden" name="siteID" value="#rc.siteid#">
 </cfoutput>
 
 </form>
-</div>
-<div class="separate"></div>
-<h3 >#application.rbFactory.getKeyValue(session.rb,"email.emailaddressbounces")#</h3></cfoutput>
+</cfoutput>
+
 <cfif rc.rsBounces.recordcount>
+<h2>#application.rbFactory.getKeyValue(session.rb,"email.emailaddressbounces")#</h2>
 	<cfset bouncedEmailList = "">
 
 	<form novalidate="novalidate" action="index.cfm?muraAction=cEmail.deleteBounces" method="post" name="form2" id="bounces">
@@ -85,7 +84,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfoutput>
 		<input type="hidden" value="#bouncedEmailList#" name="bouncedEmail" />
 		<input type="hidden" name="siteID" value="#rc.siteid#">
-		<input type="button" class="submit" onclick="submitForm(document.forms.form2,'delete','Delete bounced emails from mailing lists?');" value="#application.rbFactory.getKeyValue(session.rb,"email.delete")#" />
+		<input type="button" class="submit btn" onclick="submitForm(document.forms.form2,'delete','Delete bounced emails from mailing lists?');" value="#application.rbFactory.getKeyValue(session.rb,"email.delete")#" />
 		</cfoutput>
 	</form>
 </cfif>

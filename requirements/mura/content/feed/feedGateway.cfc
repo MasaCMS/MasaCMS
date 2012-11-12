@@ -48,9 +48,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfargument name="configBean" type="any" required="yes" />
+	<cfargument name="contentIntervalManager" type="any" required="yes" />
+	<cfargument name="permUtility" type="any" required="yes" />
 
 	<cfset variables.configBean=arguments.configBean />
 	<cfset variables.classExtensionManager=variables.configBean.getClassExtensionManager()>
+	<cfset variables.contentIntervalManager=arguments.contentIntervalManager>
+	<cfset variables.permUtility=arguments.permUtility>
 	<cfreturn this />
 </cffunction>
 
@@ -98,6 +102,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="feedBean" type="any">
 	<cfargument name="tag" required="true" default="" />
 	<cfargument name="aggregation" required="true" type="boolean" default="false" />
+	<cfargument name="applyPermFilter" required="true" type="boolean" default="false" />
 	
 	<cfset var c ="" />
 	<cfset var rsFeed ="" />
@@ -167,13 +172,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tcontent.siteid, tcontent.title, tcontent.menutitle, tcontent.restricted, tcontent.restrictgroups, 
 	tcontent.type, tcontent.subType, tcontent.filename, tcontent.displaystart, tcontent.displaystop,
 	tcontent.remotesource, tcontent.remoteURL,tcontent.remotesourceURL, tcontent.keypoints,
-	tcontent.contentID, tcontent.contentHistID,tcontent.target, tcontent.targetParams,
+	tcontent.contentID, tcontent.parentID, tcontent.approved, tcontent.isLocked, tcontent.contentHistID,tcontent.target, tcontent.targetParams,
 	tcontent.releaseDate, tcontent.lastupdate,tcontent.summary, 
 	tfiles.fileSize,tfiles.fileExt,tcontent.fileid,
 	tcontent.tags,tcontent.credits,tcontent.audience, tcontent.orderNo,
 	tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes,
 	tcontentstats.comments, tparent.type parentType, <cfif doKids> qKids.kids<cfelse> null as kids</cfif>,
-	tcontent.path, tcontent.created, tcontent.nextn, tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires
+	tcontent.path, tcontent.created, tcontent.nextn, tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires,
+	tfiles.filename as AssocFilename,tcontent.displayInterval,tcontent.display, tcontent.sourceID
+
 	from tcontent
 	
 	<cfloop list="#jointables#" index="jointable">
@@ -231,8 +238,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						   		#renderActiveClause("tcontent",arguments.feedBean.getSiteID(),arguments.feedBean.getLiveOnly())#
 							    #renderActiveClause("TKids",arguments.feedBean.getSiteID(),arguments.feedBean.getLiveOnly())#
 							    <cfif not arguments.feedBean.getShowExcludeSearch()> AND TKids.searchExclude = 0</cfif>
-							    <cfif arguments.feedBean.getShowNavOnly() and arguments.feedBean.getType() neq 'Component'>AND TKids.isNav = 1</cfif>
-							 	AND tcontent.moduleid = '00000000000000000000000000000000000'
+							    <cfif arguments.feedBean.getShowNavOnly() and not listFindNoCase('Form,Component',arguments.feedBean.getType())>AND TKids.isNav = 1</cfif>
+							 	<cfif arguments.feedBean.getType() eq "Remote">
+									<cfthrow message="This function is not available for remote feeds.">
+								<cfelseif arguments.feedBean.getType() eq "Component">
+									AND tcontent.moduleid = '00000000000000000000000000000000003'
+								<cfelseif arguments.feedBean.getType() eq "Form">
+									AND tcontent.moduleid = '00000000000000000000000000000000004'
+								<cfelse>
+									AND tcontent.moduleid = '00000000000000000000000000000000000'
+								</cfif>
 							 
 							<cfif rsParams.recordcount>
 							<cfset started=false>
@@ -289,7 +304,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getSiteID()#">
 											and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
 											</cfif>
-											and <cfif param.getCondition() neq "like">#variables.classExtensionManager.getCastString(param.getField(),arguments.feedBean.getSiteID())#<cfelse>attributeValue</cfif> #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#"><cfif isListParam>)</cfif>)
+											and <cfif param.getCondition() neq "like">#variables.classExtensionManager.getCastString(param.getField(),arguments.feedBean.getSiteID())#<cfelse>attributeValue</cfif> #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#"><cfif isListParam>)</cfif>)
 									</cfif>
 								</cfif>						
 							</cfloop>
@@ -415,18 +430,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	where
 	tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar"  value="#arguments.feedBean.getsiteid()#">
 	#renderActiveClause("tcontent",arguments.feedBean.getSiteID(),arguments.feedBean.getLiveOnly())#
-	<cfif arguments.feedBean.getShowNavOnly() and arguments.feedBean.getType() neq 'Component'>
+	<cfif arguments.feedBean.getShowNavOnly() and not listFindNoCase('Form,Component',arguments.feedBean.getType())>
 	AND tcontent.isNav = 1
 	</cfif>
 	<cfif arguments.feedBean.getType() eq "Remote">
 		<cfthrow message="This function is not available for remote feeds.">
 	<cfelseif arguments.feedBean.getType() eq "Component">
 		AND tcontent.moduleid = '00000000000000000000000000000000003'
+	<cfelseif arguments.feedBean.getType() eq "Form">
+		AND tcontent.moduleid = '00000000000000000000000000000000004'
 	<cfelse>
 		AND tcontent.moduleid = '00000000000000000000000000000000000'
 	</cfif>
 	<cfif not arguments.feedBean.getShowExcludeSearch()> AND tcontent.searchExclude = 0</cfif>
-	AND tcontent.type !='Module'
+	AND tcontent.type <>'Module'
 
 		<cfif rsParams.recordcount>
 		<cfset started=false>
@@ -483,7 +500,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.feedBean.getSiteID()#">
 						and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
 						</cfif>
-						and <cfif param.getCondition() neq "like">#variables.classExtensionManager.getCastString(param.getField(),arguments.feedBean.getSiteID())#<cfelse>attributeValue</cfif> #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#"><cfif isListParam>)</cfif>)
+						and <cfif param.getCondition() neq "like">#variables.classExtensionManager.getCastString(param.getField(),arguments.feedBean.getSiteID())#<cfelse>attributeValue</cfif> #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#"><cfif isListParam>)</cfif>)
 				</cfif>
 			</cfif>						
 		</cfloop>
@@ -617,11 +634,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfdefaultcase>
 	</cfswitch>
+	<cfif dbType eq "nuodb" and arguments.feedBean.getMaxItems()>fetch <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.feedBean.getMaxItems()#" /> </cfif>
 	<cfif dbType eq "mysql" and arguments.feedBean.getMaxItems()>limit <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.feedBean.getMaxItems()#" /> </cfif>
 	<cfif dbType eq "oracle" and arguments.feedBean.getMaxItems()>) where ROWNUM <= <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.feedBean.getMaxItems()#" /> </cfif>
 	</cfquery>
 	
-	<cfreturn rsFeed />
+	<cfif arguments.applyPermFilter>
+		<cfset rsFeed=variables.permUtility.queryPermFilter(rawQuery=rsFeed,siteID=arguments.feedBean.getSiteID())>
+	</cfif>
+
+	<cfreturn variables.contentIntervalManager.applyByMenuTypeAndDate(query=rsFeed,menuType="default",menuDate=nowAdjusted) />
 </cffunction>
 
 <cffunction name="getcontentItems" access="public" output="false" returntype="query">

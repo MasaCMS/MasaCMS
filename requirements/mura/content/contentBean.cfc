@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 <cfproperty name="contentHistID" type="string" default="" required="true" />
 <cfproperty name="contentID" type="string" default="" required="true" />
-<cfproperty name="preserveID" type="string" default="" required="true" />
+<cfproperty name="sourceID" type="string" default="" required="true" />
 <cfproperty name="active" type="numeric" default="0" required="true" />
 <cfproperty name="approved" type="numeric" default="0" required="true" />
 <cfproperty name="orderno" type="numeric" default="0" required="true" />
@@ -123,6 +123,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="majorVersion" type="numeric" default="0" required="true" />
 <cfproperty name="minorVersion" type="numeric" default="0" required="true" />
 <cfproperty name="expires" type="date" default="" required="true" />
+<cfproperty name="assocFilename" type="date" default="" required="true" />
+<cfproperty name="displayInterval" type="string" default="Daily" required="true" />
 
 <cffunction name="init" access="public" returntype="any" output="false">
 	
@@ -130,7 +132,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset variables.instance.ContentHistID = "" />
 	<cfset variables.instance.Contentid = "" />
-	<cfset variables.instance.preserveID = "" />
+	<cfset variables.instance.sourceID = "" />
 	<cfset variables.instance.Active = 0 />
 	<cfset variables.instance.OrderNo = 1 />
 	<cfset variables.instance.MetaDesc = "" />
@@ -215,6 +217,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.majorVersion = 0 />
 	<cfset variables.instance.minorVersion = 0 />
 	<cfset variables.instance.expires = "" />
+	<cfset variables.instance.assocFilename = "" />
+	<cfset variables.instance.displayInterval = "Daily" />
 	<cfset variables.instance.errors=structnew() />
 	
 	<cfset variables.kids = arrayNew(1) />
@@ -233,6 +237,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="configBean">
 	<cfset variables.configBean=arguments.configBean>
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="setSettingsManager">
+	<cfargument name="settingsManager">
+	<cfset variables.settingsManager=arguments.settingsManager>
+	<cfreturn settingsManager>
 </cffunction>
 
 <cffunction name="set" returnType="any" output="false" access="public">
@@ -433,6 +443,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not structIsEmpty(extErrors)>
 		<cfset structAppend(variables.instance.errors,extErrors)>
 	</cfif>
+
+	<cfif listFindNoCase('Form,Component',variables.instance.type)
+		and variables.contentManager.doesLoadKeyExist(this,'title',variables.instance.title)>
+			<cfset variables.instance.errors.titleconflict=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("sitemanager.titlenotunique")>
+	</cfif>
+	
+	<cfif variables.instance.isNew 
+		and listFindNoCase('File',variables.instance.type)
+		and not (len(variables.instance.newfile) or len(variables.instance.fileID))>
+			<cfset variables.instance.errors.filemissing=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("sitemanager.filemissing")>
+	</cfif>
+
 	<cfreturn this>	
 </cffunction>
  
@@ -478,7 +500,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfreturn variables.instance.contentid />
 </cffunction>
-  
+
 <cffunction name="setDisplayStart" output="false" access="public">
     <cfargument name="DisplayStart" type="string" required="true">
 	<cfset variables.instance.displayStart = parseDateArg(arguments.displayStart) />
@@ -505,6 +527,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   
 <cffunction name="setType" output="false" access="public">
     <cfargument name="Type" type="string" required="true">
+    
+    <cfif arguments.type eq 'Portal'>
+		<cfset arguments.type='LocalRepo'>
+	</cfif>
+	
     <cfset arguments.Type=trim(arguments.Type)>
 	
 	<cfif len(arguments.Type) and variables.instance.Type neq arguments.Type>
@@ -614,7 +641,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setImageSize" output="false">
 	<cfargument name="imageSize">
-	<cfif listFindNoCase("small,medium,large,custom",arguments.imageSize)>
+	<cfif len(arguments.imageSize)>
 		<cfset variables.instance.imageSize = arguments.imageSize>
 	</cfif>	
 	<cfreturn this>
@@ -704,26 +731,39 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setCategory" returntype="any" access="public" output="false">
 	<cfargument name="categoryID"  required="true" default=""/>
-	<cfargument name="membership"  required="true" default="0"/>
+	<cfargument name="isFeature"  required="true" default="0"/>
 	<cfargument name="featureStart"  required="true" default=""/>	
 	<cfargument name="featureStop"  required="true" default=""/>	
 	
 	<cfset var catTrim=replace(arguments.categoryID,'-','','ALL')>
 	
-	<cfset variables.instance["categoryAssign#catTrim#"]=arguments.membership />
+	<cfset variables.instance["categoryAssign#catTrim#"]=arguments.isFeature />
 	
-	<cfif arguments.membership eq "2">
+	<cfif arguments.isFeature eq "2">
 		<cfif isdate(arguments.featureStart)>
-		<cfset variables.instance['featureStart#catTrim#']=arguments.featureStart />
-		<cfset variables.instance['starthour#catTrim#']=hour(arguments.featureStart)+1 />
-		<cfset variables.instance['startMinute#catTrim#']=minute(arguments.featureStart) />
-		<cfset variables.instance['startDayPart#catTrim#']=dateFormat(arguments.featureStart,"tt") />
+			<cfset variables.instance['featureStart#catTrim#']=arguments.featureStart />
+			<cfset variables.instance['startDayPart#catTrim#']=timeFormat(arguments.featureStart,"tt") />
+			<cfset variables.instance['starthour#catTrim#']=hour(arguments.featureStart) />
+			<cfif variables.instance['startDayPart#catTrim#'] eq 'pm'>
+				<cfset variables.instance['starthour#catTrim#']=variables.instance['starthour#catTrim#']-12>
+			</cfif>
+			<cfset variables.instance['startMinute#catTrim#']=minute(arguments.featureStart) />
+		<cfelse>
+			<cfset variables.instance["categoryAssign#catTrim#"]=1 />
 		</cfif>
 		<cfif isdate(arguments.featureStop)>
-		<cfset variables.instance['featureStop#catTrim#']=arguments.featureStop />
-		<cfset variables.instance['stophour#catTrim#']=hour(arguments.featureStop)+1 />
-		<cfset variables.instance['stopMinute#catTrim#']=minute(arguments.featureStop) />
-		<cfset variables.instance['stopDayPart#catTrim#']=dateFormat(arguments.featureStop,"tt") />
+			<cfset variables.instance['featureStop#catTrim#']=arguments.featureStop />
+			<cfset variables.instance['stopDayPart#catTrim#']=timeFormat(arguments.featureStop,"tt") />
+			<cfset variables.instance['stophour#catTrim#']=hour(arguments.featureStop) />
+			<cfif variables.instance['stopDayPart#catTrim#'] eq 'pm'>
+				<cfset variables.instance['stophour#catTrim#']=variables.instance['stophour#catTrim#']-12>
+			</cfif>
+			<cfset variables.instance['stopMinute#catTrim#']=minute(arguments.featureStop) />
+		<cfelse>
+			<cfset variables.instance['featureStop#catTrim#']="" />
+			<cfset variables.instance['stopDayPart#catTrim#']="" />
+			<cfset variables.instance['stophour#catTrim#']="" />
+			<cfset variables.instance['stopMinute#catTrim#']="" />
 		</cfif>
 	</cfif>
 	<cfreturn this>
@@ -764,19 +804,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   
 <cffunction name="getKidsQuery" returnType="query" output="false" access="public">
 	<cfargument name="aggregation" required="true" default="false">
-	<cfreturn variables.contentManager.getKidsQuery(siteID:variables.instance.siteID, parentID:getContentID(), sortBy:variables.instance.sortBy, sortDirection:variables.instance.sortDirection, aggregation=arguments.aggregation) />
+	<cfargument name="applyPermFilter" required="true" default="false">
+	<cfargument name="size" required="true" default="0">
+	<cfreturn variables.contentManager.getKidsQuery(siteID:variables.instance.siteID, parentID:getContentID(), sortBy:variables.instance.sortBy, sortDirection:variables.instance.sortDirection, aggregation=arguments.aggregation,applyPermFilter=arguments.applyPermFilter,size=arguments.size) />
 </cffunction>
 
 <cffunction name="getKidsIterator" returnType="any" output="false" access="public">
 	<cfargument name="liveOnly" required="true" default="true">
 	<cfargument name="aggregation" required="true" default="false">
+	<cfargument name="applyPermFilter" required="true" default="false">
+	<cfargument name="size" required="true" default="0">
 	<cfset var q="" />
 	<cfset var it=getBean("contentIterator")>
 	
 	<cfif arguments.liveOnly>
-		<cfset q=getKidsQuery(aggregation=arguments.aggregation) />
+		<cfset q=getKidsQuery(aggregation=arguments.aggregation,applyPermFilter=arguments.applyPermFilter,size=arguments.size) />
 	<cfelse>
-		<cfset q=variables.contentManager.getNest( parentID:getContentID(), siteID:variables.instance.siteID, sortBy:variables.instance.sortby, sortDirection:variables.instance.sortdirection) />
+		<cfset q=variables.contentManager.getNest( parentID:getContentID(), siteID:variables.instance.siteID, sortBy:variables.instance.sortby, sortDirection:variables.instance.sortdirection,size=arguments.size) />
 	</cfif>
 	<cfset it.setQuery(q,variables.instance.nextn)>
 	
@@ -1057,7 +1101,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				variables.instance.display eq 2 and variables.instance.displayStart lte now()
 				AND (variables.instance.displayStop eq "" or variables.instance.displayStop gte now())
 			)
-			and (listFind("Page,Portal,Gallery,File,Calendar,Link,Form",variables.instance.type) or listFind(variables.instance.moduleAssign,'00000000000000000000000000000000000'))>
+			and (listFind("Page,LocalRepo,Gallery,File,Calendar,Link,Form",variables.instance.type) or listFind(variables.instance.moduleAssign,'00000000000000000000000000000000000'))>
 </cffunction>
 
 <cffunction name="getImageURL" output="false">

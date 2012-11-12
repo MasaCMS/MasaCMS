@@ -12,14 +12,14 @@ select count(*) counter from tcontent where path like <cfqueryparam cfsqltype="c
 				update tcontentcategories set path=replace(Cast(path as varchar(1000)),<cfqueryparam cfsqltype="cf_sql_varchar" value="'">,'')
 			</cfquery>
 		</cfcase>
-		<cfdefaultcase>
+		<cfcase value="mysql,oracle">
 			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 				update tcontent set path=replace(path,<cfqueryparam cfsqltype="cf_sql_varchar" value="'">,'')
 			</cfquery>
 			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 				update tcontentcategories set path=replace(path,<cfqueryparam cfsqltype="cf_sql_varchar" value="'">,'')
 			</cfquery>
-		</cfdefaultcase>
+		</cfcase>
 	</cfswitch>
 	
 </cfif>

@@ -56,7 +56,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="settingsManager" />
 	<cfargument name="contentManager" />
 	<cfargument name="utility" />
-	<cfargument name="filewriter" />
+	<cfargument name="filewriter" 
+	/>
 	<cfargument name="contentServer" />
 	<cfset variables.configBean=arguments.configBean>
 	<cfset variables.settingsManager=arguments.settingsManager>
@@ -207,7 +208,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif len(arguments.contentBean.getFileID())>
 			<cfif arguments.contentBean.getType() eq "File">
 				<cfset variables.fileWriter.createDir("#arguments.exportDir##$.globalConfig('context')#/#arguments.contentBean.getSiteID()#/cache/file/#arguments.contentBean.getFileID()#")>
-				<cfset variables.fileWriter.copyFile(source="#$.globalConfig('fileDir')#/#arguments.contentBean.getSiteID()#/cache/file/#arguments.contentBean.getFileID()#.#arguments.contentBean.getFileEXT()#", destination="#arguments.exportDir##$.globalConfig('context')#/#arguments.contentBean.getSiteID()#/cache/file/#arguments.contentBean.getFileID()#/#arguments.contentBean.getFilename()#")>
+				<cfset variables.fileWriter.copyFile(source="#$.globalConfig('fileDir')#/#arguments.contentBean.getSiteID()#/cache/file/#arguments.contentBean.getFileID()#.#arguments.contentBean.getFileEXT()#", destination="#arguments.exportDir##$.globalConfig('context')#/#arguments.contentBean.getSiteID()#/cache/file/#arguments.contentBean.getFileID()#/#arguments.contentBean.getAssocFilename()#")>
 			</cfif>
 			
 			<cfif listFindNoCase("jpg,jpeg,gif,png",arguments.contentBean.getFileEXT())>
@@ -218,7 +219,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 	</cfif>
 			
-	<cfif listFindNoCase("Portal,Gallery",arguments.contentBean.getType())>
+	<cfif listFindNoCase("LocalRepo,Gallery",arguments.contentBean.getType())>
 			<cfset rsSection=contentBean.getKidsQuery()>
 			<cfset nextN=application.utility.getNextN(rsSection,arguments.contentBean.getNextN(),1)>
 			

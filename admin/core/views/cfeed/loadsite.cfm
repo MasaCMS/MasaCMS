@@ -49,26 +49,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="rc.isNew" default="1">
 <cfset counter=0 />
 <cfoutput>
-<div id="contentSearch">
-<h3>#application.rbFactory.getKeyValue(session.rb,'collections.contentsearch')#</h3>
-	<input id="parentSearch" name="parentSearch" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" maxlength="50"/><input type="button" class="submit" onclick="loadSiteFilters('#rc.siteid#',document.getElementById('parentSearch').value,0);" value="#application.rbFactory.getKeyValue(session.rb,'collections.search')#" />
+<div id="contentSearch" class="form-inline">
+<h2>#application.rbFactory.getKeyValue(session.rb,'collections.contentsearch')#</h2>
+	<input id="parentSearch" name="parentSearch" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" maxlength="50"/><input type="button" class="submit btn" onclick="feedManager.loadSiteFilters('#rc.siteid#',document.getElementById('parentSearch').value,0);" value="#application.rbFactory.getKeyValue(session.rb,'collections.search')#" />
 	</div>
 </cfoutput>
-<cfif not rc.isNew>
+<br/><cfif not rc.isNew>
 <cfset rc.rsList=application.contentManager.getPrivateSearch(rc.siteid,rc.keywords)/>
- <table class="mura-table-grid stripe">
+ <table class="table table-striped table-condensed table-bordered mura-table-grid">
     <tr> 
-      <th class="varWidth"><cfoutput>#application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#</cfoutput></th>
-	  <th class="administration">&nbsp;</th>
+      <th class="var-width"><cfoutput>#application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#</cfoutput></th>
+	  <th class="actions">&nbsp;</th>
     </tr><cfif rc.rslist.recordcount>
      <cfoutput query="rc.rslist" startrow="1" maxrows="100">	
 		<cfset crumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/>
-        <cfif structKeyExists(crumbdata[1],"parentArray") and not listFind(arraytolist(crumbdata[1].parentArray),rc.contentid) and rc.rslist.type neq 'File' and rc.rslist.type neq 'Link'>
+        <cfif rc.rslist.type neq 'File' and rc.rslist.type neq 'Link'>
 		<cfset counter=counter+1/>
 		<tr <cfif not(counter mod 2)>class="alt"</cfif>>
 		
-          <td class="varWidth">#application.contentRenderer.dspZoomNoLinks(crumbdata,rc.rslist.fileExt)#</td>
-		<td class="administration"><ul class="one"><li class="add"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.add')#" href="javascript:;" onClick="addContentFilter('#rc.rslist.contentid#','#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.rslist.type#'))#','#JSStringFormat(rc.rslist.menuTitle)#'); return false;">&nbsp;</a></li></ul>
+          <td class="var-width">#application.contentRenderer.dspZoomNoLinks(crumbdata)#</td>
+		<td class="actions"><ul><li class="add"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.add')#" href="javascript:;" onClick="feedManager.addContentFilter('#rc.rslist.contentid#','#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.rslist.type#'))#','#JSStringFormat(rc.rslist.menuTitle)#'); return false;">&nbsp;</a></li></ul>
 		  </td>
 		</tr>
 	 	</cfif>

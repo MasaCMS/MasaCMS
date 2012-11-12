@@ -1,0 +1,62 @@
+#cSetUp {
+
+	.main { /* Similar to #login, #sendLogin in  login.less */
+		width: 485px;
+		padding: 26px 30px;
+		margin-bottom: @baseLineHeight;
+		background: #f9f9f9;
+		.border-radius(6px);
+		.box-shadow(0px 0px 4px #999);
+		.clearfix;
+		.center-block();
+		}
+		
+	.notice {
+		padding: 18px;
+		}
+		
+	form {
+		margin-bottom: 0;
+		}
+		
+	.fieldset, fieldset {
+		margin: 0 0 @baseLineHeight;
+		padding: 10px 0 !important;
+		}
+
+	.control-label {
+		width: 200px;
+		}
+	
+	.controls {
+		margin-left: 210px;
+		}
+	
+	.control-group {
+		margin-bottom: @baseLineHeight / 2;
+		padding-bottom: 0;
+		padding-top: 10px;
+		}
+	
+	.notice .control-group {
+		border-color: #ffe7b0;
+	}
+	
+	fieldset > .control-group:last-child {
+		margin-bottom: 0;
+		}
+		
+	.form-horizontal .form-actions {
+		text-align: center;
+		padding-left: 0;
+		padding-bottom: 0;
+		margin-top: 0;
+		margin-bottom: 0;
+		background-color: transparent;
+		border-top: 0;
+		}
+		
+	i {
+		color: darken(@gray,20%);
+		}
+}

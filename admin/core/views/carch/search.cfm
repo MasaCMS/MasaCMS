@@ -1,4 +1,4 @@
- <!--- This file is part of Mura CMS.
+<!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -50,27 +50,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="session.copySiteID" default="">
 <cfparam name="session.copyAll" default="false">
 <cfoutput>
-<h2>Site Search</h2>
+<h1>Site Search</h1>
 
-<h3>Keyword Search</h3>
-<form novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
-	<input name="keywords" value="#HTMLEditFormat(session.keywords)#" type="text" class="text" maxlength="50" /><input type="button" class="submit" onclick="submitForm(document.forms.siteSearch);" value="Search" />
+<h2>Keyword Search</h2>
+<form class="form-inline" novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">
+	<input name="keywords" value="#HTMLEditFormat(session.keywords)#" type="text" class="text" maxlength="50" /><input type="button" class="submit btn" onclick="submitForm(document.forms.siteSearch);" value="Search" />
 	<input type="hidden" name="muraAction" value="cArch.search">
 	<input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
 	<input type="hidden" name="moduleid" value="#rc.moduleid#">
 </form>
 <script>
-copyContentID = '#session.copyContentID#';
-copySiteID = '#session.copySiteID#';
+siteManager.copyContentID = '#session.copyContentID#';
+siteManager.copySiteID = '#session.copySiteID#';
 </script>
 </cfoutput>
- <table class="mura-table-grid stripe">
+ <table class="table table-striped table-condensed table-bordered mura-table-grid">
     <tr> 
 	  <th>&nbsp;</th>
-      <th class="varWidth">Title</th>
+      <th class="var-width">Title</th>
       <th>Display</th>
       <th>Update</th>
-      <th class="administration">&nbsp;</th>
+      <th class="actions">&nbsp;</th>
     </tr>
     <cfif rc.rslist.recordcount>
      <cfoutput query="rc.rslist" maxrows="#rc.nextn.recordsperPage#" startrow="#rc.startrow#">
@@ -98,57 +98,57 @@ copySiteID = '#session.copySiteID#';
 	</cfsilent>
         <tr>  
 			     <td class="add">
-     <!---<cfif (rc.rslist.type eq 'Page') or  (rc.rslist.type eq 'Portal')  or  (rc.rslist.type eq 'Calendar') or (rc.rslist.type eq 'Gallery')>--->
+     <!---<cfif (rc.rslist.type eq 'Page') or  (rc.rslist.type eq 'LocalRepo')  or  (rc.rslist.type eq 'Calendar') or (rc.rslist.type eq 'Gallery')>--->
 		<a href="javascript:;" onmouseover="showMenu('newContentMenu','#newcontent#',this,'#rc.rslist.contentid#','#rc.rslist.contentid#','#rc.rslist.parentid#','#rc.siteid#','#rc.rslist.type#');">&nbsp;</a>
 	<!---<cfelse>
 		&nbsp;
 	</cfif>---></td>
-          <td class="title varWidth">#application.contentRenderer.dspZoom(crumbdata,rc.rsList.fileExt)#</td>
+          <td class="title var-width">#application.contentRenderer.dspZoom(crumbdata)#</td>
 			   <td> 
 	    <cfif rc.rslist.Display and (rc.rslist.Display eq 1 and rc.rslist.approved and rc.rslist.approved)>Yes<cfelseif(rc.rslist.Display eq 2 and rc.rslist.approved and rc.rslist.approved)>#LSDateFormat(rc.rslist.displaystart,session.dateKeyFormat)# - #LSDateFormat(rc.rslist.displaystop,session.dateKeyFormat)#<cfelse>No</cfif></td>
 		<td>#LSDateFormat(rc.rslist.lastupdate,session.dateKeyFormat)#</td>
         
- <td class="administration"><ul class="siteSummary five"><cfif not listFindNoCase('none,read',verdict)>
-       <li class="edit"><a title="Edit" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&startrow=#rc.startrow#">&nbsp;</a></li>
+ <td class="actions"><ul class="siteSummary five"><cfif not listFindNoCase('none,read',verdict)>
+       <li class="edit"><a title="Edit" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rsList.ContentHistID#&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&startrow=#rc.startrow#"><i class="icon-pencil"></i></a></li>
 	   <cfswitch expression="#rc.rsList.type#">
-		<cfcase value="Page,Portal,Calendar,Gallery">
-		<li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,rc.rsList.filename)#','#rc.rsList.targetParams#');">#left(rc.rsList.menutitle,70)#</a></li>
+		<cfcase value="Page,LocalRepo,Calendar,Gallery">
+		<li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,rc.rsList.filename)#','#rc.rsList.targetParams#');"><i class="icon-globe"></i></a></li>
 		</cfcase>
 		<cfcase value="Link">
-		<li class="preview"><a title="Preview" href="##" onclick="return preview('#rc.rsList.filename#','#rc.rsList.targetParams#');">#left(rc.rsList.menutitle,70)#</a></li>
+		<li class="preview"><a title="Preview" href="##" onclick="return preview('#rc.rsList.filename#','#rc.rsList.targetParams#');"><i class="icon-globe"></i></a></li>
 		</cfcase>
 		<cfcase value="File">
-		<li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?LinkServID=#rc.rsList.contentid#','#rc.rsList.targetParams#');">#left(rc.rsList.menutitle,70)#</a></li>
+		<li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?LinkServID=#rc.rsList.contentid#','#rc.rsList.targetParams#');"><i class="icon-globe"></i></a></li>
 		</cfcase>
 		</cfswitch>
-	   <li class="versionHistory"><a title="Version History" href="index.cfm?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#rc.rsList.contentID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&startrow=#rc.startrow#">&nbsp;</a></li>
+	   <li class="version-history"><a title="Version History" href="index.cfm?muraAction=cArch.hist&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#rc.rsList.contentID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&startrow=#rc.startrow#"><i class="icon-book"></i></a></li>
         <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-          <li class="permissions"><a title="Permissions" href="index.cfm?muraAction=cPerm.main&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#rc.rsList.contentID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&startrow=#rc.startrow#">&nbsp;</a></li>
+          <li class="permissions"><a title="Permissions" href="index.cfm?muraAction=cPerm.main&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&parentid=#rc.rsList.parentID#&topid=#rc.rsList.contentID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&startrow=#rc.startrow#"><i class="icon-group"></i></a></li>
         <cfelse>
-		  <li class="permissionsOff"><a>Permissions</a></li>
+		  <li class="permissions disabled"><a>Permissions</a></li>
 		</cfif>
         <cfif deletable>
           <li class="delete"><a title="Delete" href="index.cfm?muraAction=cArch.update&contentid=#rc.rsList.ContentID#&type=#rc.rsList.type#&action=deleteall&topid=#rc.rsList.contentID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&parentid=#URLEncodedFormat(rc.parentid)#&startrow=#rc.startrow#"
-			<cfif listFindNoCase("Page,Portal,Calendar,Gallery,Link,File",rc.rsList.type)>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),rc.rslist.menutitle))#',this.href)"<cfelse>onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)"</cfif>>&nbsp;</a></li>
+			<cfif listFindNoCase("Page,LocalRepo,Calendar,Gallery,Link,File",rc.rsList.type)><i class="icon-remove-sign"></i></a></li>
           <cfelseif rc.locking neq 'all'>
-          <li class="deleteOff">Delete</li>
+          <li class="delete disabled">Delete</li>
         </cfif>
         <cfelse>
-        <li class="editOff">&nbsp;</li>
+        <li class="edit disabled">&nbsp;</li>
 		<cfswitch expression="#rc.rsList.type#">
-		<cfcase value="Page,Portal,Calendar,Gallery">
-		<li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,rc.rsList.filename)#','#rc.rsList.targetParams#');">#left(rc.rsList.menutitle,70)#</a></li>
+		<cfcase value="Page,LocalRepo,Calendar,Gallery">
+		<li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,rc.rsList.filename)#','#rc.rsList.targetParams#');"><i class="icon-globe"></i></a></li>
 		</cfcase>
 		<cfcase value="Link">
-		<li class="preview"><a title="Preview" href="##" onclick="return preview('#rc.rsList.filename#','#rc.rsList.targetParams#');">#left(rc.rsList.menutitle,70)#</a></li>
+		<li class="preview"><a title="Preview" href="##" onclick="return preview('#rc.rsList.filename#','#rc.rsList.targetParams#');"><i class="icon-globe"></i></a></li>
 		</cfcase>
 		<cfcase value="File">
-		<li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?LinkServID=#rc.rsList.contentid#','#rc.rsList.targetParams#');">#left(rc.rsList.menutitle,70)#</a></li>
+		<li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?LinkServID=#rc.rsList.contentid#','#rc.rsList.targetParams#');"><i class="icon-globe"></i></a></li>
 		</cfcase>
 		</cfswitch>
-		<li class="versionHistoryOff"><a>Version History</a></li>
-		<li class="permissionsOff"><a>Permissions</a></li>
-		<li class="deleteOff"><a>Delete</a></li>
+		<li class="version-history disabled"><a>Version History</a></li>
+		<li class="permissions disabled"><a>Permissions</a></li>
+		<li class="delete disabled"><a>Delete</a></li>
       </cfif></ul></td>
 	
        </cfoutput>
@@ -157,14 +157,36 @@ copySiteID = '#session.copySiteID#';
         <td colspan="8" class="results"><em>Your search returned no results.</em></td>
       </tr>
     </cfif>
-	
-    <cfif rc.nextn.numberofpages gt 1><tr> 
-      <td colspan="8" class="results">More Results: <cfoutput>
-	<cfif rc.nextN.currentpagenumber gt 1> <a href="index.cfm?muraAction=cArch.search&siteid=#URLEncodedFormat(rc.siteid)#&keywords=#session.keywords#&startrow=#rc.nextn.previous#&moduleid=#rc.moduleid#">&laquo;&nbsp;Prev</a></cfif>	
-	<cfloop from="#rc.nextN.firstPage#"  to="#rc.nextn.lastPage#" index="i"><cfif rc.nextn.currentpagenumber eq i> #i# <cfelse> <a href="index.cfm?muraAction=cArch.search&siteid=#URLEncodedFormat(rc.siteid)#&keywords=#session.keywords#&startrow=#evaluate('(#i#*#rc.nextn.recordsperpage#)-#rc.nextn.recordsperpage#+1')#&moduleid=#rc.moduleid#">#i#</a> </cfif></cfloop>
-	<cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages><a href="index.cfm?muraAction=cArch.search&siteid=#URLEncodedFormat(rc.siteid)#&keywords=#session.keywords#&startrow=#rc.nextn.next#&moduleid=#rc.moduleid#">Next&nbsp;&raquo;</a></cfif> 
-	</td></tr>
-	</cfoutput>
+	</td></tr></table>
+    <cfif rc.nextn.numberofpages gt 1>
+    <cfoutput>
+   <cfset args=arrayNew(1)>
+		<cfset args[1]="#rc.nextn.startrow#-#rc.nextn.through#">
+		<cfset args[2]=rc.nextn.totalrecords>
+		<div class="mura-results-wrapper">
+		<p class="clearfix search-showing">
+			#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.paginationmeta"),args)#
+		</p> 
+		<ul class="pagination">
+		<cfif rc.nextN.currentpagenumber gt 1> 
+			<li>
+				<a href="index.cfm?muraAction=cArch.search&siteid=#URLEncodedFormat(rc.siteid)#&keywords=#session.keywords#&startrow=#rc.nextn.previous#&moduleid=#rc.moduleid#">&laquo;&nbsp;Prev</a>
+			</li>
+		</cfif>	
+		<cfloop from="#rc.nextN.firstPage#"  to="#rc.nextn.lastPage#" index="i">
+			<cfif rc.nextn.currentpagenumber eq i>
+				<li class="active"><a href="##">#i#</a></li>
+			<cfelse> 
+				<li><a href="index.cfm?muraAction=cArch.search&siteid=#URLEncodedFormat(rc.siteid)#&keywords=#session.keywords#&startrow=#evaluate('(#i#*#rc.nextn.recordsperpage#)-#rc.nextn.recordsperpage#+1')#&moduleid=#rc.moduleid#">#i#</a></li>
+			</cfif>
+		</cfloop>
+		<cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages>
+			<li>
+				<a href="index.cfm?muraAction=cArch.search&siteid=#URLEncodedFormat(rc.siteid)#&keywords=#session.keywords#&startrow=#rc.nextn.next#&moduleid=#rc.moduleid#">Next&nbsp;&raquo;</a>
+			</li>
+		</cfif> 
+		</cfoutput>
+		</ul>
+		</div>
 	</cfif> 
 </table>
-</td></tr></table>

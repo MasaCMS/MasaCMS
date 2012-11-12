@@ -61,13 +61,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset application.emailManager.send() />
 
 <cfset emailList="" />
+
 <cfloop collection="#application.settingsManager.getSites()#" item="site"> 
-<cfset theEmail = application.settingsManager.getSite(site).getMailServerUsername() />
+	<cfset theEmail = application.settingsManager.getSite(site).getMailServerUsername() />
 	<cfif application.settingsManager.getSite(site).getEmailBroadcaster()>
 		<cfif not listFind(emailList,theEmail)>
 			<cfset application.emailManager.trackBounces(site) />
 			<cfset listAppend(emailList,theEmail) />
 		</cfif>
+	</cfif>
+	<cfif application.settingsManager.getSite(site).getFeedManager()>
+		<cfset application.feedManager.doAutoImport(site)>
 	</cfif>
 </cfloop>
 

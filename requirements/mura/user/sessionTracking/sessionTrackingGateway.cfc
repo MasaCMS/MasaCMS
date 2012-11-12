@@ -135,7 +135,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfswitch expression="#arguments.visitorStatus#">
 	<cfcase value="Return">
-	and tsessiontracking.urlToken != tsessiontracking.originalUrlToken
+	and tsessiontracking.urlToken <> tsessiontracking.originalUrlToken
 	</cfcase>
 	<cfcase value="New">
 	and tsessiontracking.urlToken = tsessiontracking.originalUrlToken
@@ -143,7 +143,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfswitch>
 	
 	<cfif arguments.excludeHome>
-	and tcontent.ContentID !='00000000000000000000000000000000001'
+	and tcontent.ContentID <>'00000000000000000000000000000000001'
 	</cfif>
 	
 	Group By tsessiontracking.contentID,
@@ -203,7 +203,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfswitch expression="#arguments.visitorStatus#">
 	<cfcase value="Return">
-	and tsessiontracking.urlToken != tsessiontracking.originalUrlToken
+	and tsessiontracking.urlToken <> tsessiontracking.originalUrlToken
 	</cfcase>
 	<cfcase value="New">
 	and tsessiontracking.urlToken = tsessiontracking.originalUrlToken
@@ -268,7 +268,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfswitch expression="#arguments.visitorStatus#">
 	<cfcase value="Return">
-	and tsessiontracking.urlToken != tsessiontracking.originalUrlToken
+	and tsessiontracking.urlToken <> tsessiontracking.originalUrlToken
 	</cfcase>
 	<cfcase value="New">
 	and tsessiontracking.urlToken = tsessiontracking.originalUrlToken
@@ -328,7 +328,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfswitch expression="#arguments.visitorStatus#">
 	<cfcase value="Return">
-	and tsessiontracking.urlToken != tsessiontracking.originalUrlToken
+	and tsessiontracking.urlToken <> tsessiontracking.originalUrlToken
 	</cfcase>
 	<cfcase value="New">
 	and tsessiontracking.urlToken = tsessiontracking.originalUrlToken
@@ -368,7 +368,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfswitch expression="#arguments.visitorStatus#">
 	<cfcase value="Return">
-	and tsessiontracking.urlToken != tsessiontracking.originalUrlToken
+	and tsessiontracking.urlToken <> tsessiontracking.originalUrlToken
 	</cfcase>
 	<cfcase value="New">
 	and tsessiontracking.urlToken = tsessiontracking.originalUrlToken
@@ -421,7 +421,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	and tsessiontracking.siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	
-	and tsessiontracking.referer !='Internal'
+	and tsessiontracking.referer <>'Internal'
 	
 	Group By tsessiontracking.referer
 	order by referals desc
@@ -469,7 +469,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	and tsessiontracking.siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	
-	and tsessiontracking.referer != 'Internal'
+	and tsessiontracking.referer <> 'Internal'
 		
 
 	</cfquery>
@@ -522,7 +522,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfswitch expression="#arguments.visitorStatus#">
 	<cfcase value="Return">
-	and tsessiontracking.urlToken != tsessiontracking.originalUrlToken
+	and tsessiontracking.urlToken <> tsessiontracking.originalUrlToken
 	</cfcase>
 	<cfcase value="New">
 	and tsessiontracking.urlToken = tsessiontracking.originalUrlToken
@@ -558,7 +558,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfswitch expression="#arguments.visitorStatus#">
 	<cfcase value="Return">
-	and tsessiontracking.urlToken != tsessiontracking.originalUrlToken
+	and tsessiontracking.urlToken <> tsessiontracking.originalUrlToken
 	</cfcase>
 	<cfcase value="New">
 	and tsessiontracking.urlToken = tsessiontracking.originalUrlToken
@@ -663,7 +663,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfswitch expression="#arguments.visitorStatus#">
 	<cfcase value="Return">
-	and tsessiontracking.urlToken != tsessiontracking.originalUrlToken
+	and tsessiontracking.urlToken <> tsessiontracking.originalUrlToken
 	</cfcase>
 	<cfcase value="New">
 	and tsessiontracking.urlToken = tsessiontracking.originalUrlToken
@@ -732,7 +732,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfswitch expression="#arguments.visitorStatus#">
 	<cfcase value="Return">
-	and tsessiontracking.urlToken != tsessiontracking.originalUrlToken
+	and tsessiontracking.urlToken <> tsessiontracking.originalUrlToken
 	</cfcase>
 	<cfcase value="New">
 	and tsessiontracking.urlToken = tsessiontracking.originalUrlToken

@@ -140,11 +140,19 @@ to your own modified versions of Mura CMS.
 <cffunction name="updateSite" output="false">
 	<cfargument name="rc">
 	<cfset var bean="">
+
+	<cfset request.newImageIDList="">
+
 	<cfif arguments.rc.action eq 'Update'>
 			<cfset bean=variables.settingsManager.update(arguments.rc)  />
 			<cfset variables.clusterManager.reload() />
 			<cfif not structIsEmpty(bean.getErrors())>
 				<cfset getCurrentUser().setValue("errors",bean.getErrors())>
+			<cfelse>
+				<cfif len(request.newImageIDList)>
+					<cfset rc.fileid=request.newImageIDList>
+					<cfset variables.fw.redirect(action="cArch.imagedetails",append="siteid,fileid,compactDisplay")>
+				</cfif>
 			</cfif>
 	</cfif>
 	<cfif arguments.rc.action eq 'Add'>
@@ -155,6 +163,11 @@ to your own modified versions of Mura CMS.
 			<cfset session.siteid=rc.siteid />
 			<cfif not structIsEmpty(bean.getErrors())>
 				<cfset getCurrentUser().setValue("errors",bean.getErrors())>
+			<cfelse>
+				<cfif len(request.newImageIDList)>
+					<cfset rc.fileid=request.newImageIDList>
+					<cfset variables.fw.redirect(action="cArch.imagedetails",append="siteid,fileid,compactDisplay")>
+				</cfif>
 			</cfif>
 	</cfif>
 	<cfif arguments.rc.action eq 'Delete'>
@@ -175,12 +188,14 @@ to your own modified versions of Mura CMS.
 	<cfargument name="rc">
 	<cfset variables.settingsManager.getSite(arguments.rc.siteID).exportHTML()>
 </cffunction>
+
 <cffunction name="sitecopy" output="false">
 	<cfargument name="rc">
 	<cfif arguments.rc.fromSiteID neq arguments.rc.toSiteID>
 		<cfset getBean('publisher').copy(fromSiteID=rc.fromSiteID,toSiteID=rc.toSiteID)>
 	</cfif>
 	<cfset variables.fw.redirect(action="cSettings.sitecopyresult",append="fromSiteID,toSiteID")>
+	<cfdump var="test3" abort="true">
 </cffunction>
 
 <cffunction name="createBundle" output="false">

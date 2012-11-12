@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="framework">
+<cfcomponent extends="framework" ouput="false">
 
 	<cfsetting showdebugoutput="no">
 	
@@ -180,6 +180,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfparam name="session.siteid" default="">
 		<cfparam name="session.keywords" default="">
 		<cfparam name="cookie.rb" default="">
+		<cfset request.context.currentURL="index.cfm?" & cgi.query_string>
 	
 		<cfif len(request.context.rb)>
 			<cfset session.rb=request.context.rb>

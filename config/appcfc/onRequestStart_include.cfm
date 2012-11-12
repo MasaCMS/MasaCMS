@@ -48,13 +48,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif ( NOT structKeyExists( application, "setupComplete" ) or not application.appInitialized or structKeyExists(url,application.appReloadKey)) and isDefined("onApplicationStart")>
 	<cfset onApplicationStart()>
+<cfelseif isdefined('application.clusterManager.runCommands')>
+	<cfset application.clusterManager.runCommands()>
+	<cfif not application.appInitialized>
+		<cfset onApplicationStart()>
+	</cfif>
 </cfif>
 
 <cfset application.userManager.setUserStructDefaults()>
 
+<cfif isDefined("url.showTrace") and isBoolean(url.showTrace)>
+	<cfset session.mura.showTrace=url.showTrace>
+</cfif>
+
 <cfif not isDefined("session.mura.showTrace")>
 	<cfset session.mura.showTrace=false>
 </cfif>
+
+<cfset request.muraShowTrace=session.mura.showTrace>
 
 <cfif not isDefined("application.cfstatic")>
 	<cfset application.cfstatic=structNew()>
@@ -66,12 +77,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif not StructKeyExists(cookie, 'userid')>
 	  <cfcookie name="userid" expires="never" value="">
 </cfif>
-
-<cfif isDefined("url.showTrace") and isBoolean(url.showTrace)>
-	<cfset session.mura.showTrace=url.showTrace>
-</cfif>
-
-<cfset request.muraShowTrace=session.mura.showTrace>
 	
 <!--- Making sure that session is valid --->
 <cftry>
@@ -165,23 +170,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 
 <cfif not isdefined("cookie.mobileFormat")>
-	<cfif 
-		findNoCase("iphone",CGI.HTTP_USER_AGENT)
-		or
-			(
-				findNoCase("mobile",CGI.HTTP_USER_AGENT)
-				and not reFindNoCase("tablet|ipad|xoom",CGI.HTTP_USER_AGENT)
-			)>
-		<cfcookie name="mobileFormat" value="true" />
-	<cfelse>	
-		<cfcookie name="mobileFormat" value="false" />
-	</cfif>	
+	<cfset application.pluginManager.executeScripts('onGlobalMobileDetection')>
+
+	<cfif not isdefined("cookie.mobileFormat")>
+		<cfif 
+			findNoCase("iphone",CGI.HTTP_USER_AGENT)
+			or
+				(
+					findNoCase("mobile",CGI.HTTP_USER_AGENT)
+					and not reFindNoCase("tablet|ipad|xoom",CGI.HTTP_USER_AGENT)
+				)>
+			<cfcookie name="mobileFormat" value="true" />
+		<cfelse>	
+			<cfcookie name="mobileFormat" value="false" />
+		</cfif>	
+	</cfif>
 </cfif>
 
 <cfset request.muraMobileRequest=cookie.mobileFormat>
 
 <cfif not request.hasCFApplicationCFM and not fileExists("#expandPath('/muraWRM/config')#/cfapplication.cfm")>
+	<cfset variables.tracePoint=initTracePoint("Writing config/cfapplication.cfm")>
 	<cfset application.serviceFactory.getBean("fileWriter").writeFile(file="#expandPath('/muraWRM/config')#/cfapplication.cfm", output='<!--- Add Custom Application.cfc Vars Here --->')>	
+	<cfset commitTracePoint(variables.tracePoint)>
 </cfif>
 
 <cfif isDefined("application.changesetManager") and not 
@@ -194,7 +205,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				url.method eq "reload"
 			)
 	)>
+	<cfset variables.tracePoint=initTracePoint("mura.content.changesets.changesetManager.publishBySchedule()")>
 	<cfset application.changesetManager.publishBySchedule()>
+	<cfset commitTracePoint(variables.tracePoint)>
 </cfif>
 
 

@@ -1,0 +1,57 @@
+/* Conflicts with Bootstrap Styles
+
+input[type=text], input[type=password], .tagSelector {
+	background-color: #FFF;
+    -moz-border-radius: 3px;
+	border-radius: 3px;
+    border: 1px solid #ADB9C2;
+    border-top-color: #8496A4;
+    border-left-color: #8496A4;
+	-moz-box-shadow: inset 1px 1px 3px 0 #CDCDCD;
+	-webkit-box-shadow: inset 1px 1px 3px 0 #CDCDCD;
+	box-shadow: inset 1px 1px 3px 0 #CDCDCD;
+	cursor: text;
+    display: inline-block;
+	overflow: hidden;
+    padding: 4px 6px;
+    vertical-align: baseline;
+}
+*/
+
+/*
+.tagSelector input {
+	border: none;
+	border-radius: 0;
+    -moz-border-radius: 0;
+	box-shadow: none;
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	width: auto;
+	min-width: 50px;
+	float: left;
+    padding: 4px 0;
+	white-space: nowrap
+}
+*/
+
+/* Moved to forms.less
+.tagSelector .tag {
+	background: #69c;
+	border-radius: 3px;
+    -moz-border-radius: 3px;
+	color: #FFF;
+	float: left;
+	height: 15px;
+	padding: 0.1em 0.4em 0.5em;
+	margin-right: 0.3em;
+	margin-bottom: 0.3em;
+    vertical-align: baseline;
+}
+.tagSelector .tag a {
+	color: #fff;
+	cursor: pointer;
+}
+.tagSelector .tag a:hover {
+	text-decoration: none;
+}
+*/

@@ -56,9 +56,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset arguments.hasImages=listFindNoCase(arguments.fields,"Image")>
 	
 	<cfif arguments.hasImages>
-		<cfif not structKeyExists(arguments,"imageSize") or not listFindNoCase("small,medium,large,custom",arguments.imageSize) or variables.$.event("muraMobileRequest")>
-			<cfset arguments.imageSize="small">
+		<cfset arguments.isCustomImage= false />	
+
+		<cfif not structKeyExists(arguments,"imageSize") or variables.$.event("muraMobileRequest")>
+			<cfset arguments.imageSize="small">		
+		<cfelseif not listFindNoCase('small,medium,large,custom',arguments.imagesize)>
+			<cfset arguments.customImageSize=getBean('imageSize').loadBy(name=arguments.imageSize,siteID=variables.$.event('siteID'))>
+			<cfset arguments.imageWidth= arguments.customImageSize.getWidth() />
+			<cfset arguments.imageHeight= arguments.customImageSize.getHeight() />
+			<cfset arguments.isCustomImage= true />	
 		</cfif>
+
 		<cfif not structKeyExists(arguments,"imageHeight")>
 			<cfset arguments.imageHeight="auto">
 		</cfif>
@@ -70,7 +78,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset arguments.imagePadding=20>
 		</cfif>
 
-		<cfset arguments.imageStyles='style="#variables.$.generateListImageSyles(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight,padding=arguments.imagePadding)#"'>
+		<cfif arguments.isCustomImage>
+			<cfset arguments.imageStyles='style="#variables.$.generateListImageSyles(size='custom',width=arguments.imageWidth,height=arguments.imageHeight,padding=arguments.imagePadding)#"'>
+		<cfelse>
+			<cfset arguments.imageStyles='style="#variables.$.generateListImageSyles(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight,padding=arguments.imagePadding)#"'>
+		</cfif>
 	</cfif>
 </cfsilent>	
 
@@ -105,7 +117,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfswitch expression="#arguments.field#">
 					<cfcase value="Image">
 						<cfif arguments.hasImage>
-							<cfif cookie.mobileFormat>
+							<cfif $.event('muraMobileRequest')>
 							<!---<div class="image">---><img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/><!---</div>--->
 							<cfelse>
 							<a class="image thumbnail" href="#arguments.item.getURL()#" title="#HTMLEditFormat(arguments.item.getValue('title'))#"><img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>	
@@ -152,7 +164,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfcase>
 					<cfcase value="Comments">
 						<cfif (arguments.item.getValue('type') eq 'Page' or showItemMeta(arguments.item.getValue('type')) or (len(arguments.item.getValue('fileID')) and showItemMeta(arguments.item.getValue('fileEXT')))) >
-							<cfif not cookie.mobileFormat>
+							<cfif not $.event('muraMobileRequest')>
 							 	<p class="comments">#variables.$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),'#variables.$.rbKey("list.comments")#(#variables.$.getBean('contentGateway').getCommentCount(variables.$.event('siteID'),arguments.item.getValue('contentID'))#)',arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),variables.$.event('siteID'),'##comments')#</p>
 							</cfif>
 						</cfif>
@@ -162,7 +174,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfset arguments.tagLen=listLen(arguments.item.getValue('tags')) />
 							<p class="tags">
 								#variables.$.rbKey('tagcloud.tags')#: 
-								<cfif cookie.mobileFormat>
+								<cfif $.event('muraMobileRequest')>
 								<cfloop from="1" to="#arguments.tagLen#" index="arguments.t">
 									<cfset arguments.tag=#trim(listgetAt(arguments.item.getValue('tags'),arguments.t))#>
 									#arguments.tag#<cfif arguments.tagLen gt arguments.t>, </cfif>

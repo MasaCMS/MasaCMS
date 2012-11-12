@@ -46,12 +46,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfinclude template="js.cfm">
 <cfset listed=0><cfoutput>
-	<h2>#application.rbFactory.getKeyValue(session.rb,'sitemanager.drafts')#</h2>
-	<table class="mura-table-grid stripe">
+	<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.drafts')#</h1>
+	<table class="table table-striped table-condensed table-bordered mura-table-grid">
     <tr> 
-      <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'sitemanager.drafts.title')#</th>
+      <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'sitemanager.drafts.title')#</th>
 	  <th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.drafts.contenttype')#</th>
-      <th class="administration">&nbsp;</th>
+      <th class="actions">&nbsp;</th>
     </tr></cfoutput>
    
       <cfoutput query="rc.rslist">
@@ -60,16 +60,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2') or itemperm eq 'editor' or itemperm eq 'author'>
       
 		<tr> 
-        <td class="varWidth">
+        <td class="var-width">
 <cfswitch expression="#rc.rslist.type#">
 <cfcase value="Form,Component">
 <a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.versionhistory')#" href="index.cfm?muraAction=cArch.hist&contentid=#rc.rslist.ContentID#&type=#rc.rslist.type#&parentid=#rc.rslist.parentID#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.rslist.moduleid#">#rc.rslist.menutitle#</a>
 </cfcase>
 <cfdefaultcase>
-#application.contentRenderer.dspZoom(itemcrumbdata,rc.rslist.fileExt)#</cfdefaultcase>
+#application.contentRenderer.dspZoom(itemcrumbdata)#</cfdefaultcase>
 </cfswitch></td>
 			<td>#rc.rslist.module#</td> 
-          <td class="administration"><ul class="drafts"><li class="versionHistory"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.versionhistory')#" href="index.cfm?muraAction=cArch.hist&contentid=#rc.rslist.ContentID#&type=#rc.rslist.type#&parentid=#rc.rslist.parentID#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.rslist.moduleid#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.versionhistory')#</a></li></ul></td>
+          <td class="actions"><ul class="drafts"><li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.versionhistory')#" href="index.cfm?muraAction=cArch.hist&contentid=#rc.rslist.ContentID#&type=#rc.rslist.type#&parentid=#rc.rslist.parentID#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.rslist.moduleid#"><i class="icon-book"></i></a></li></ul></td>
         </tr>
 		<cfset listed=1>
 	  </cfif>

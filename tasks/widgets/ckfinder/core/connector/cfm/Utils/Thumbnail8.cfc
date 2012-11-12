@@ -3,7 +3,7 @@
  * CKFinder
  * ========
  * http://ckfinder.com
- * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (C) 2007-2012, CKSource - Frederico Knabben. All rights reserved.
  *
  * The software, this file and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
@@ -22,6 +22,7 @@
 	<cfset var iFinalWidth = ARGUMENTS.maxWidth>
 	<cfset var iFinalHeight = ARGUMENTS.maxHeight>
 	<cfset var oSize = structNew()>
+	<cfset var destination="">
 	<cfimage action="info" source="#ARGUMENTS.filePath#" structname="objImageInfo">
 
 	<cfscript>
@@ -51,10 +52,14 @@
 
 	<!--- ColdFusion 9,0,0 has a bug, it cannot create a thumbnail from file with .Png extension... unless we change the name of a thumbnail to .png --->
 	<cfif isDefined("server.OS.Name") and FindNoCase("windows", server.OS.Name)>
-		<cfimage action="resize" source="#ARGUMENTS.filePath#" destination="#Lcase(ARGUMENTS.thumbPath)#" width="#oSize.Width#" height="#oSize.Height#" overwrite="yes">
+		<cfset destination="#Lcase(ARGUMENTS.thumbPath)#">
 	<cfelse>
-		<cfimage action="resize" source="#ARGUMENTS.filePath#" destination="#ARGUMENTS.thumbPath#" width="#oSize.Width#" height="#oSize.Height#" overwrite="yes">
+		<cfset destination="#ARGUMENTS.thumbPath#">
 	</cfif>
+	<cfimage action="read" source="#ARGUMENTS.filePath#" name="oImage" />
+	<cfset ImageResize(oImage, oSize.Width, oSize.Height, "highQuality")>
+	<cfset quality = (quality/100)>
+	<cfimage action="write" source="#oImage#" destination="#destination#" quality="#quality#" overwrite="yes">
 
 	<cfreturn true>
 </cffunction>

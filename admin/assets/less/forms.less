@@ -1,0 +1,393 @@
+select,
+textarea,
+input[type="text"],
+input.text,
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"],
+.uneditable-input {
+  height: @baseLineHeight;
+  font-size: @baseFontSize;
+  /* padding: 4px; */
+  line-height: @baseLineHeight;
+  color: @grayDarker;
+  margin-bottom: 0;
+}
+
+select, input[type="file"] {
+	height: 28px;
+	line-height: 28px;
+	margin-bottom: 0;
+	.box-shadow(0 0 0) !important;
+}
+
+textarea,
+select[multiple],
+select[size] {
+  height: auto;
+}
+
+select.time {
+	width: 4.5em;
+}
+
+.input-prepend .add-on {
+	height: 20px;
+}
+
+td, th {
+	> input[type="radio"],
+	> input[type="checkbox"] {
+	margin-top: 0;
+	}
+}
+
+.radio.inline,
+.checkbox.inline {
+	margin-right: .25em;
+	
+	input {
+		margin-top: 2px;
+		}
+}
+
+input + .help-block {
+	margin-top: @baseLineHeight/2;
+	margin-bottom: 0;
+}
+
+.form-actions {
+	clear: both;
+	margin: 0;
+	background: transparent;
+	.border-radius(0 0 5px 5px);
+	border-top-color: @white;
+	border-top-width: 0;
+	padding-top: 0;
+	text-align: left;
+	
+	&.no-offset {
+		padding: 0 0 @baseLineHeight;
+		}
+}
+
+.add-on {
+	font-size: 15px;
+}
+
+#contentForm {
+	clear: both;
+}
+
+#siteSearch, #changesetSearch {
+	float: right;
+	width: auto;
+	margin: 0 0 2em;
+	position: relative;
+	right: 0;
+	background: @grayLighter;
+	padding: .75em .75em;
+	.border-radius(3px);
+	
+	input[type="text"] {
+		line-height: @baseLineHeight - 2;
+		height: @baseLineHeight+6;
+		padding: 2px;
+	}
+	
+	i {
+		font-size: 16px;
+		top: 2px;
+		}
+	
+	.btn {
+		line-height: @baseLineHeight - 4;
+		height: @baseLineHeight + 12;
+		padding: 0 8px;
+	}
+}
+
+.controls ul {
+	margin: 0;
+	list-style: none;
+	
+	select {
+		/*
+font-size: @baseFontSize - 1;
+		padding: 0;
+		line-height: 1;
+		height: 18px;
+		width: auto;
+*/
+	}
+}
+
+.help-inline, .help-block {
+	font-weight: normal;
+	color: @grayDark;
+	}
+
+// Content Objects Tab
+#editObjects {
+	
+	> div {
+		.pull-left;
+		margin-right: 10px;
+		min-width: 300px;
+	}
+		
+		.region {
+			.clearfix;
+			}
+		
+		dl {
+			.pull-left;
+			margin: 0 6px 10px 0;
+			padding: 0 !important;
+			
+			dt {
+				margin-bottom: .5em;
+				font-weight: normal;
+				font-style: italic;
+			}
+			
+			dd {
+				margin: 0;
+				
+				}
+			}
+		
+		#availableRegions dl {
+			margin-left: 6px;
+		}
+		
+		.btn-group {
+			.pull-left;
+			height: 100px;
+			padding-top: 50px;
+			}
+
+		.multiSelect {
+			min-height: 100px;
+			height: auto;
+			width: 300px;
+			margin: 0;
+		}
+	
+	.btn {
+		width: 6px;
+		padding: 4px 10px;
+		
+		i {
+			position: relative;
+			top: 2px;
+			font-size: 12px;
+			text-shadow: 1px 0 0 @white;
+		}
+	}
+} // /#editObjects
+
+@formBorderColor:	rgba(0,0,0,.07);
+
+fieldset, .fieldset { // Using an actual fieldset causes ck editor to grow crazy wide, will fix later.
+	padding: @gridGutterWidth 0 0;
+	margin: @gridGutterWidth;
+    background: rgba(255,255,255,.6);
+    .border-radius(5px);
+    border: 1px solid @formBorderColor;
+    position: relative;
+    max-width: 100%;
+    .box-sizing(border-box);
+        
+    &.padded {
+    	padding: @gridGutterWidth;
+    	padding-bottom: 0;
+    }
+    
+    h2 { // Using instead of Legend
+		margin: 0 0 @baseLineHeight/2 @gridGutterWidth;
+		padding-bottom: 0;
+		border: 0;
+		font-size: 14px;
+		line-height: 1;
+		color: @grayDark;
+		}
+
+	.control-group {
+		background: transparent;
+		padding: @gridGutterWidth;
+		margin-bottom: 0;
+		border-top: 1px solid @formBorderColor;
+		.clearfix;
+		}
+
+	> div:first-of-type {
+		border-top: 0 !important;
+		padding-top: 0 !important;
+		}
+
+	}
+
+.control-label, .control-label a {
+	color: @grayDarker !important;
+	font-size: 13px;
+	font-weight: bold;
+	text-shadow: 0 1px 0 @white;
+}
+
+.controls {
+	.border-radius(3px);
+	
+	+ .controls {
+	margin-top: @baseLineHeight/2;
+	}
+
+	+ .control-label {
+	margin-top: @baseLineHeight;
+	}
+}
+
+.btn {
+  border-color: #ededed #ededed hsl(201, 0%, 89.5%);
+  color: @grayDark !important;
+  border-bottom-color: darken(#ededed, 10%);
+}
+
+// Various Search Utilities
+.criteria {
+	font-size: 22px;
+	color: @gray;
+	text-decoration: none;
+	.inline-block;
+	position: relative;
+	
+	&:hover {
+		color: @grayDark;
+		}
+	
+	i {
+		position: relative;
+		top: 5px;
+		}
+	
+}
+
+.form-well {
+	padding: @baseLineHeight;
+	background: @grayLighter;
+	.border-radius(3px);
+	
+	h2 {
+		font-size: 14px;
+		font-weight: normal;
+		margin-bottom: .8em;
+		}
+		
+	select {
+		margin-right: .5em;
+		}
+	}
+
+// Basic Tab
+.mura-file {
+	font-size: 15px;
+}
+
+#assocImage {
+	border: 8px solid @grayLight;
+	.border-radius(3px);
+	margin-bottom: @baseLineHeight;
+	.box-sizing(border-box);
+	max-width: 100%;
+	clear: both !important;
+	float: none;
+	display: block;
+}
+
+#selectAssocImage {
+	margin-left: 3em;
+}
+
+#mura-file-unlock {
+	clear: both;
+}
+
+#deleteFileBox {
+	.inline-block;
+}
+
+// Advanced Tab
+
+#notifyEditor {
+	width: 100% !important;
+}
+
+select[multiple] {
+	border-color: @grayLight;
+	height: 118px;
+	min-width: 220px !important;
+}
+
+// Content Collections
+
+#selectFilter a {
+	font-weight: normal;
+}
+
+// Display Objects & Layout
+#availableObjectsContainer {
+	
+	select#availableObjects {
+		width: 280px;
+	}
+	
+	.control-group {
+		padding: 0;
+	}
+	
+}
+
+// Edit Plugin
+#csettings {
+	
+	#plugin-license textarea {
+		height: 400px;
+	}
+	
+	input[type="checkbox"] {
+		margin-top: 2px;
+	}
+	
+}
+
+// Multi-File Upload
+#fileupload {
+	
+	#fileupload-target {
+		margin-bottom: @baseLineHeight;
+		padding: 2em;
+		
+		p {
+			text-align: center;
+			margin-bottom: 0 !important;
+			
+			i {
+				font-size: 72px;
+				color: darken(@blue,10%);
+				text-shadow: 0 1px 1px rgba(255,255,255,.65);
+				display: block;
+				margin: @baseLineHeight;
+			}
+		}
+	}
+}

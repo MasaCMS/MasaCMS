@@ -20,8 +20,26 @@
 	<cfset $=event.getValue("MuraScope")>
 </cfsilent>
 <cfoutput>
-<div id="configuratorContainer" style="width: 400px;">
-	<h2 id="configuratorHeader">Loading...</h2>
+<cfif rc.compactDisplay eq "true">
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	if (top.location != self.location) {
+		if(jQuery("##ProxyIFrame").length){
+			jQuery("##ProxyIFrame").load(
+				function(){
+					frontEndProxy.postMessage("cmd=setWidth&width=standard");
+				}
+			);	
+		} else {
+			frontEndProxy.postMessage("cmd=setWidth&width=standard");
+		}
+	}
+});
+</script>
+</cfif> 
+
+<div id="configuratorContainer">
+	<h1 id="configuratorHeader">Loading...</h1>
 	<div id="configuratorNotices" style="display:none;">
 	<cfif not rc.contentBean.getIsNew()>
 	<cfset draftcheck=application.contentManager.getDraftPromptData(rc.contentBean.getContentID(),rc.contentBean.getSiteID())>
@@ -42,37 +60,37 @@
 	</cfif>
 	</div>
 	<div id="configurator">
-		<img src="images/progress_bar.gif">
+		<div class="load-inline"></div>
 	</div>	
-	<div id="actionButtons" style="display:none;">
+	<div class="form-actions">
 		<cfif assignChangesets>
 			<cfinclude template="form/dsp_changesets.cfm">
 		</cfif>
 		<cfif assignChangesets>
-			<input type="button" class="button" onclick="saveToChangeset('#rc.contentBean.getChangesetID()#','#HTMLEditFormat(rsDisplayObject.siteid)#','');return false;" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset")#" />	
+			<input type="button" class="btn" onclick="saveToChangeset('#rc.contentBean.getChangesetID()#','#HTMLEditFormat(rsDisplayObject.siteid)#','');return false;" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset")#" />	
 		</cfif>
-		<input type="button" id="saveConfigDraft" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#"/>
-		<input type="button" id="previewConfigDraft" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.preview"))#"/>
-		<cfif rc.perm eq "Editor"><input type="button" id="publishConfig" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#"/></cfif>
+		<input type="button" class="btn" id="saveConfigDraft" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#"/>
+		<input type="button" class="btn" id="previewConfigDraft" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.preview"))#"/>
+		<cfif rc.perm eq "Editor"><input type="button" class="btn" id="publishConfig" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#"/></cfif>
 	</div>
 </div>
 <script>
-var configuratorMode='frontEnd';
+siteManager.configuratorMode='frontEnd';
 
 jQuery(document).ready(function(){
 	if(jQuery("##ProxyIFrame").length){
 		jQuery("##ProxyIFrame").load(
 			function(){
-				frontEndProxy.postMessage("cmd=setWindowMode&mode=configurator");
+				frontEndProxy.postMessage("cmd=setWidth&width=configurator");
 			}
 		);	
 	} else {
-		frontEndProxy.postMessage("cmd=setWindowMode&mode=configurator");
+		frontEndProxy.postMessage("cmd=setWidth&width=configurator");
 	}
 	
 	<cfswitch expression="#rsDisplayObject.object#">
 		<cfcase value="feed,feed_no_summary,remoteFeed">	
-			initFeedConfigurator({
+			siteManager.initFeedConfigurator({
 						'object':'#JSStringFormat(rsDisplayObject.object)#',
 						'objectid':'#JSStringFormat(rsDisplayObject.objectid)#',
 						'name':'#JSStringFormat(rsDisplayObject.name)#',
@@ -86,7 +104,7 @@ jQuery(document).ready(function(){
 					});
 		</cfcase>
 		<cfcase value="feed_slideshow,feed_slideshow_no_summary">	
-			initSlideShowConfigurator({
+			siteManager.initSlideShowConfigurator({
 						'object':'#JSStringFormat(rsDisplayObject.object)#',
 						'objectid':'#JSStringFormat(rsDisplayObject.objectid)#',
 						'name':'#JSStringFormat(rsDisplayObject.name)#',
@@ -100,7 +118,7 @@ jQuery(document).ready(function(){
 					});
 		</cfcase>
 		<cfcase value="category_summary,category_summary_rss">	
-			initCategorySummaryConfigurator({
+			siteManager.initCategorySummaryConfigurator({
 						'object':'#JSStringFormat(rsDisplayObject.object)#',
 						'objectid':'#JSStringFormat(rsDisplayObject.objectid)#',
 						'name':'#JSStringFormat(rsDisplayObject.name)#',
@@ -114,7 +132,7 @@ jQuery(document).ready(function(){
 					});
 		</cfcase>
 		<cfcase value="related_content,related_section_content">	
-			initRelatedContentConfigurator({
+			siteManager.initRelatedContentConfigurator({
 						'object':'#JSStringFormat(rsDisplayObject.object)#',
 						'objectid':'#JSStringFormat(rsDisplayObject.objectid)#',
 						'name':'#JSStringFormat(rsDisplayObject.name)#',
@@ -155,11 +173,11 @@ jQuery(document).ready(function(){
 				return false;
 			}
 			
-			updateAvailableObject();
+			siteManager.updateAvailableObject();
 			
-			if (availableObjectValidate(availableObject.params)) {
-				jQuery("##configurator").html('<img src="images/progress_bar.gif">');
-				jQuery("##actionButtons").hide();
+			if (siteManager.availableObjectValidate(siteManager.availableObject.params)) {
+				jQuery("##configurator").html('<div class="load-inline"></div>');
+				jQuery(".form-actions").hide();
 				jQuery("##configuratorNotices").hide();
 				
 				jQuery.post("./index.cfm?muraAction=cArch.updateObjectParams", {
@@ -168,7 +186,7 @@ jQuery(document).ready(function(){
 					'regionid': '#JSStringFormat(rsDisplayObject.columnid)#',
 					'orderno': '#JSStringFormat(rsDisplayObject.orderno)#',
 					'siteid': '#JSStringFormat(rsDisplayObject.siteid)#',
-					'params': JSON.stringify(availableObject.params),
+					'params': JSON.stringify(siteManager.availableObject.params),
 					'approved': 1,
 					'object': '#JSStringFormat(rsDisplayObject.object)#',
 					'name': '#JSStringFormat(rsDisplayObject.name)#',
@@ -184,11 +202,11 @@ jQuery(document).ready(function(){
 	jQuery("##saveConfigDraft").bind("click",
 		function(){
 			
-			updateAvailableObject();
+			siteManager.updateAvailableObject();
 			
-			if (availableObjectValidate(availableObject.params)) {
-				jQuery("##configurator").html('<img src="images/progress_bar.gif">');
-				jQuery("##actionButtons").hide();
+			if (siteManager.availableObjectValidate(siteManager.availableObject.params)) {
+				jQuery("##configurator").html('<div class="load-inline"></div>');
+				jQuery(".form-actions").hide();
 				jQuery("##configuratorNotices").hide();
 				
 				jQuery.post("./index.cfm?muraAction=cArch.updateObjectParams", {
@@ -197,7 +215,7 @@ jQuery(document).ready(function(){
 					'regionid': '#JSStringFormat(rsDisplayObject.columnid)#',
 					'orderno': '#JSStringFormat(rsDisplayObject.orderno)#',
 					'siteid': '#JSStringFormat(rsDisplayObject.siteid)#',
-					'params': JSON.stringify(availableObject.params),
+					'params': JSON.stringify(siteManager.availableObject.params),
 					'approved': 0,
 					'object': '#JSStringFormat(rsDisplayObject.object)#',
 					'name': '#JSStringFormat(rsDisplayObject.name)#',
@@ -213,11 +231,11 @@ jQuery(document).ready(function(){
 		jQuery("##previewConfigDraft").bind("click",
 		function(){
 			
-			updateAvailableObject();
+			siteManager.updateAvailableObject();
 				
-			if (availableObjectValidate(availableObject.params)) {
-				jQuery("##configurator").html('<img src="images/progress_bar.gif">');
-				jQuery("##actionButtons").hide();
+			if (siteManager.availableObjectValidate(siteManager.availableObject.params)) {
+				jQuery("##configurator").html('<div class="load-inline"></div>');
+				jQuery(".form-actions").hide();
 				jQuery("##configuratorNotices").hide();
 				
 				jQuery.post("./index.cfm?muraAction=cArch.updateObjectParams",
@@ -227,7 +245,7 @@ jQuery(document).ready(function(){
 					'regionid':'#JSStringFormat(rsDisplayObject.columnid)#',
 					'orderno':'#JSStringFormat(rsDisplayObject.orderno)#',
 					'siteid':'#JSStringFormat(rsDisplayObject.siteid)#',
-					'params': JSON.stringify(availableObject.params),
+					'params': JSON.stringify(siteManager.availableObject.params),
 					'approved':0,
 					'object':'#JSStringFormat(rsDisplayObject.object)#',
 					'name': '#JSStringFormat(rsDisplayObject.name)#',
@@ -260,11 +278,11 @@ function saveConfiguratorToChangeset(changesetid,removepreviouschangeset){
 
 	confirmDialog(publishitemfromchangeset, 
 		function() {
-			updateAvailableObject();
+			siteManager.updateAvailableObject();
 			
-			if (availableObjectValidate(availableObject.params)) {
-				jQuery("##configurator").html('<img src="images/progress_bar.gif">');
-				jQuery("##actionButtons").hide();
+			if (siteManager.availableObjectValidate(siteManager.availableObject.params)) {
+				jQuery("##configurator").html('<div class="load-inline"></div>');
+				jQuery(".form-actions").hide();
 				
 				jQuery.post("./index.cfm?muraAction=cArch.updateObjectParams", {
 					'contenthistid': '#JSStringFormat(rsDisplayObject.contentHistID)#',
@@ -272,7 +290,7 @@ function saveConfiguratorToChangeset(changesetid,removepreviouschangeset){
 					'regionid': '#JSStringFormat(rsDisplayObject.columnid)#',
 					'orderno': '#JSStringFormat(rsDisplayObject.orderno)#',
 					'siteid': '#JSStringFormat(rsDisplayObject.siteid)#',
-					'params': JSON.stringify(availableObject.params),
+					'params': JSON.stringify(siteManager.availableObject.params),
 					'approved': 0,
 					'object': '#JSStringFormat(rsDisplayObject.object)#',
 					'name': '#JSStringFormat(rsDisplayObject.name)#',

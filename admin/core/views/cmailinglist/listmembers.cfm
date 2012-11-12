@@ -45,35 +45,72 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<h2>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager')#</h2>
-<ul id="navTask">
-<li><a href="index.cfm?muraAction=cMailingList.list&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager')#</a></li>
-<li><a href="index.cfm?muraAction=cMailingList.Edit&mlid=#rc.mlid#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.editmailinglist')#</a></li>
-<li><a href="index.cfm?muraAction=cMailingList.download&mlid=#rc.mlid#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.downloadmembers')#</a></li>
-</ul>
+<h1>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager')#</h1>
 
-<form novalidate="novalidate" action="index.cfm?muraAction=cMailingList.updatemember" name="form1" method="post" onsubmit="return validate(this);">
-<dl class="oneColumn">
-<dt class="first">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.email')#</dt>
-<dd><input type=text name="email" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.emailrequired')#"></dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.firstname')#</dt>
-<dd><input type=text name="fname" class="text" /></dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.lastname')#</dt>
-<dd><input type=text name="lname" class="text" /></dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.company')#</dt>
-<dd><input type=text name="company" class="text" /></dd>
-<dt><input type="radio" name="action" id="a" value="add" checked> <label id="a">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.subscribe')#</label> <input type="radio" id="d" name="action" value="delete"> <label for="d">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.unsubscribe')#</label></dt>
-</dl>
-<input type="button" class="submit" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.submit')#" />
+<cfinclude template="dsp_secondary_menu.cfm">
+
+<form class="fieldset-wrap" novalidate="novalidate" action="index.cfm?muraAction=cMailingList.updatemember" name="form1" method="post" onsubmit="return validate(this);">
+<div class="fieldset">
+<div class="control-group">
+	<label class="control-label">
+		#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.email')#
+	</label>
+	<div class="controls">
+		<input type=text name="email" class="text" required="true" message="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.emailrequired')#">
+	</div>
+</div>
+<div class="control-group">
+	<label class="control-label">
+		#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.firstname')#
+	</label>
+	<div class="controls">
+		<input type=text name="fname" class="text" />
+	</div>
+</div>
+
+<div class="control-group">
+	<label class="control-label">
+		#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.lastname')#
+	</label>
+	<div class="controls">
+		<input type=text name="lname" class="text" />
+	</div>
+</div>
+
+<div class="control-group">
+	<label class="control-label">
+		#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.company')#
+	</label>
+	<div class="controls">
+		<input type=text name="company" class="text" />
+	</div>
+</div>
+
+<div class="control-group">
+	<div class="controls">
+		<label for="a" class="radio">
+			<input type="radio" name="action" id="a" value="add" checked> 
+			#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.subscribe')#
+		</label> 
+		<label id="d" class="radio">
+			<input type="radio" id="d" name="action" value="delete"> 
+			 #application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.unsubscribe')#
+		</label>
+	</div>
+</div>
+</div>
+<div class="form-actions">
+<input type="button" class="submit btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.submit')#" />
+</div>
 <input type=hidden name="mlid" value="#rc.mlid#">
 <input type=hidden name="siteid" value="#HTMLEditFormat(rc.siteid)#">
 <input type=hidden name="isVerified" value="1">
 </form>
-<h3>#rc.listBean.getname()#</h3>
+<h2>#rc.listBean.getname()#</h2>
 
-<table id="metadata" class="mura-table-grid stripe">
+<table id="metadata" class="table table-striped table-condensed table-bordered mura-table-grid">
 <tr>
-	<th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.emails')# (#rc.rslist.recordcount#)</th>
+	<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.emails')# (#rc.rslist.recordcount#)</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.name')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.company')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.verified')#</th>
@@ -83,12 +120,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif rc.rslist.recordcount>
 <cfoutput query="rc.rslist" startrow="#rc.startrow#" maxrows="#rc.nextN.RecordsPerPage#">
 	<tr>
-		<td class="varWidth"><a href="mailto:#HTMLEditFormat(rc.rslist.email)#">#HTMLEditFormat(rc.rslist.email)#</a></td>
+		<td class="var-width"><a href="mailto:#HTMLEditFormat(rc.rslist.email)#">#HTMLEditFormat(rc.rslist.email)#</a></td>
 		<td>#HTMLEditFormat(rc.rslist.fname)#&nbsp;#HTMLEditFormat(rc.rslist.lname)#</td>
 		<td>#HTMLEditFormat(rc.rslist.company)#</td>
 		<td><cfif rc.rslist.isVerified eq 1>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.yes')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.no')#</cfif></td>
 		<td>#LSDateFormat(rc.rslist.created,session.dateKeyFormat)#</td>
-		<td class="administration"><ul class="mailingListMembers"><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#" href="index.cfm?muraAction=cMailingList.updatemember&action=delete&mlid=#rc.rslist.mlid#&email=#urlencodedformat(rc.rslist.email)#&siteid=#URLEncodedFormat(rc.siteid)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.deletememberconfirm'))#',this.href);">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#</a></li></ul></td></tr>
+		<td class="actions"><ul class="mailingListMembers"><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#" href="index.cfm?muraAction=cMailingList.updatemember&action=delete&mlid=#rc.rslist.mlid#&email=#urlencodedformat(rc.rslist.email)#&siteid=#URLEncodedFormat(rc.siteid)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.deletememberconfirm'))#',this.href);"><i class="icon-remove-sign"></i></a></li></ul></td></tr>
 </cfoutput>
 <cfelse>
 <tr>

@@ -3,7 +3,7 @@
  * CKFinder
  * ========
  * http://ckfinder.com
- * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (C) 2007-2012, CKSource - Frederico Knabben. All rights reserved.
  *
  * The software, this file and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
@@ -149,7 +149,7 @@
 	<cfif not Len(this.basePath)>
 		<cfset this.basePath = this.defaultPath>
 	</cfif>
-	<cfif Left(this.basePath, 1) neq "/">
+	<cfif Left(this.basePath, 1) neq "/" and not find("://", this.basePath)>
 		<cfset this.basePath = mid(CGI.SCRIPT_NAME, 1, Len(CGI.SCRIPT_NAME) - Find("/", Reverse(CGI.SCRIPT_NAME))) & this.basePath>
 	</cfif>
 

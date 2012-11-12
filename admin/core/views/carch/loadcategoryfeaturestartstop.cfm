@@ -45,42 +45,34 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfset request.layout=false>
-<cfset catTrim = url.id>
-<cfsetting enableCFoutputOnly="true">
-<cfoutput><dt class="start">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startdatetime')#</dt><dd class="start"><input type="text" name="featureStart#catTrim#" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startdate')#" onclick="if(this.value=='Start Date'){this.value=''};" class="textAlt datepicker"><!---<img class="calendar" type="image" src="images/icons/cal_24.png"  hidefocus onClick="window.open('date_picker/index.cfm?form=contentForm&field=featureStart#catTrim#&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">--->
-		<select name="starthour#catTrim#"  class="dropdown">
-			<cfloop from="1" to="12" index="h">
-				<option value="#h#" <cfif h eq 12>selected</cfif>>#h#</option>
-			</cfloop>
-		</select>
-		<select name="startMinute#catTrim#" class="dropdown">
-			<cfloop from="0" to="59" index="m">
-				<option value="#m#">#iif(len(m) eq 1,de('0#m#'),de('#m#'))#</option>
-			</cfloop>
-		</select>
-		<select name="startDayPart#catTrim#" class="dropdown">
-			<option value="AM">AM</option>
-			<option value="PM">PM</option>
-		</select>
-	</dd> 
-	
-	<dt class="stop">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.stopdatetime')#</dt>
-	<dd class="stop">
-		<input type="text" name="featureStop#catTrim#" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.stopdate')#"  onclick="if(this.value=='Stop Date'){this.value=''};" class="textAlt datepicker"><!---<img class="calendar" type="image" src="images/icons/cal_24.png"  hidefocus onClick="window.open('date_picker/index.cfm?form=contentForm&field=featureStop#catTrim#&format=MDY','refWin','toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=yes,copyhistory=no,scrollbars=no,width=190,height=220,top=250,left=250');return false;">--->
-		<select name="stophour#catTrim#" class="dropdown">
-			<cfloop from="1" to="12" index="h">
-				<option value="#h#" <cfif h eq 11>selected</cfif>>#h#</option>
-			</cfloop>
-		</select>
-		<select name="stopMinute#catTrim#"  class="dropdown">
-			<cfloop from="0" to="59" index="m">
-				<option value="#m#" <cfif m eq 59>selected</cfif>>#iif(len(m) eq 1,de('0#m#'),de('#m#'))#</option>
-			</cfloop>
-		</select>
-		<select name="stopDayPart#catTrim#" class="dropdown">
-			<option value="AM">AM</option>
-			<option value="PM" selected>PM</option>
-		</select>
-	</dd>
+<cfoutput>
+	<div class="categoryassignmentcontent<cfif rc.categoryAssignment eq '2'> scheduled</cfif>">
+		<a class="dropdown-toggle mura-quickEditItem"<cfif rc.categoryAssignment eq '2'> rel="tooltip" title="#HTMLEditFormat(LSDateFormat(rc.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rc.featurestop,"short")#"<cfelse>class="mura-quickEditItem"</cfif>>
+			<cfswitch expression="#rc.categoryAssignment#">		
+				<cfcase value="0">
+					#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.yes"))#
+				</cfcase>
+				<cfcase value="1">
+					#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.feature'))#
+				</cfcase>
+				<cfcase value="2">
+					<i class="icon-calendar"></i> 
+				</cfcase>
+				<cfdefaultcase>
+					#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.no"))#
+				</cfdefaultcase>
+			</cfswitch>
+		</a>
+		<input type="hidden" id="categoryAssign#catTrim#" name="categoryAssign#catTrim#" value="#HTMLEditFormat(rc.categoryAssignment)#"/>
+		<cfif rc.categoryAssignment eq 2>
+			<input type="hidden" id="featureStart#catTrim#" name="featureStart#catTrim#" value="#LSDateFormat(rc.featureStart,session.dateKeyFormat)#">
+			<input type="hidden" id="startHour#catTrim#" name="startHour#catTrim#" value="#HTMLEditFormat(rc.startHour)#">
+			<input type="hidden" id="startMinute#catTrim#" name="startMinute#catTrim#" value="#HTMLEditFormat(rc.startMinute)#">
+			<input type="hidden" id="startDayPart#catTrim#" name="startDayPart#catTrim#" value="#HTMLEditFormat(rc.startDayPart)#">
+			<input type="hidden" id="featureStop#catTrim#" name="featureStop#catTrim#" value="#LSDateFormat(rc.featureStop,session.dateKeyFormat)#">
+			<input type="hidden" id="stopHour#catTrim#" name="stopHour#catTrim#" value="#HTMLEditFormat(rc.stopHour)#">
+			<input type="hidden" id="stopMinute#catTrim#" name="stopMinute#catTrim#" value="#HTMLEditFormat(rc.stopMinute)#">
+			<input type="hidden" id="stopDayPart#catTrim#" name="stopDayPart#catTrim#" value="#HTMLEditFormat(rc.stopDayPart)#">
+		</cfif>
+	</div>
 </cfoutput>
-

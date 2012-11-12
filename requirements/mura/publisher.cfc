@@ -195,7 +195,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		and not (arguments.keyMode eq "publish" and not StructKeyExists(arguments,"Bundle"))>
 			<cfset getToWorkClassExtensions(argumentCollection=arguments)>
 		</cfif>
-		
+			
 		<cfif StructKeyExists(arguments,"Bundle")>
 			<cfset rssite=Bundle.getValue("rssite")>
 			<cfif isDefined("rssite.theme")>
@@ -227,12 +227,52 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						
 						theme=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.theme#">,
 						displayPoolID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">,
-						galleryMainScaleBy=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.galleryMainScaleBy#">,
-						galleryMediumScaleBy=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.galleryMediumScaleBy#">,
-						gallerySmallScaleBy=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.gallerySmallScaleBy#">,
-						galleryMainScale=<cfqueryparam cfsqltype="cf_sql_integer" value="#rssite.galleryMainScale#">,
-						galleryMediumScale=<cfqueryparam cfsqltype="cf_sql_integer" value="#rssite.galleryMediumScale#">,
-						gallerySmallScale=<cfqueryparam cfsqltype="cf_sql_integer" value="#rssite.gallerySmallScale#">
+						
+						<cfif not isDefined('rssite.largeImageWidth')>
+							<cfif rssite.galleryMainScaleBy eq 'x'>
+								largeImageHeight='Auto',
+								largeImageWidth=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.galleryMainScale#">,
+							<cfelse>
+								largeImageHeight=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.galleryMainScale#">,
+								largeImageWidth='Auto',
+							</cfif>
+						<cfelse>
+							largeImageHeight=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.largeImageHeight#">,
+							largeImageWidth=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.largeImageWidth#">,
+						</cfif>
+
+						<cfif not isDefined('rssite.smallImageWidth')>
+							<cfif rssite.gallerySmallScaleBy eq 's'>
+								smallImageHeight=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.gallerySmallScale#">,
+								smallImageWidth=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.gallerySmallScale#">,
+							<cfelseif rssite.gallerySmallScaleBy eq 'x'>
+								smallImageHeight='Auto',
+								smallImageWidth=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.gallerySmallScale#">,
+							<cfelse>
+								smallImageHeight=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.gallerySmallScale#">,
+								smallImageWidth='Auto',
+							</cfif>
+						<cfelse>
+							smallImageHeight=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.smallImageHeight#">,
+							smallImageWidth=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.smallImageWidth#">,
+						</cfif>
+
+						<cfif not isDefined('rssite.mediumImageWidth')>
+							<cfif rssite.galleryMediumScaleBy eq 's'>
+								mediumImageHeight=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.galleryMediumScale#">,
+								mediumImageWidth=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.galleryMediumScale#">
+							<cfelseif rssite.galleryMediumScaleBy eq 'x'>
+								mediumImageHeight='Auto',
+								smallImageWidth=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.galleryMediumScale#">
+							<cfelse>
+								mediumImageHeight=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.galleryMediumScale#">,
+								mediumImageWidth='Auto'
+							</cfif>
+						<cfelse>
+							mediumImageHeight=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.mediumImageHeight#">,
+							mediumImageWidth=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.mediumImageWidth#">
+						</cfif>
+						
 						where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">
 					</cfquery>
 					<cfset application.settingsManager.setSites()>
@@ -314,6 +354,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rsttrashfiles=""/>
 		<cfset var rstformresponsepackets="">
 		<cfset var rstformresponsequestions="">
+		<cfset var rstimagesizes="">
 			<!--- pushed tables --->
 		
 			<!--- tcontent --->
@@ -322,7 +363,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					select * from tcontent 
 					where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/> 
 					and (tcontent.active = 1 or (tcontent.changesetID is not null and tcontent.approved=0))
-					and type !='Module'
+					and type <>'Module'
 					<cfif isDate(arguments.lastDeployment)>
 						and lastUpdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.lastDeployment#">
 					</cfif>
@@ -333,7 +374,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfquery datasource="#arguments.toDSN#">
 				delete from tcontent 
 				where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
-				and type !='Module'
+				and type <>'Module'
 				<cfif isDate(arguments.lastDeployment)>
 					<cfif rstcontent.recordcount or rsDeleted.recordcount>
 						and (
@@ -363,6 +404,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<!--- Check for new fields added in 5.6 --->
 					<cfif isdefined("rstContent.majorVersion")>
 					,majorVersion,minorVersion, expires
+					</cfif>
+					<cfif isdefined("rstContent.displayInterval")>
+					,displayInterval
+					</cfif>
+					<cfif isdefined("rstContent.sourceID")>
+					,sourceID
 					</cfif>
 					)
 					values
@@ -437,18 +484,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.changesetID neq '',de('no'),de('yes'))#" value="#rstContent.changesetID#">
 					<!--- Check for new fields added in 5.5 --->
 					<cfif isdefined("rstContent.imageSize")>
-					,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.imageSize neq '',de('no'),de('yes'))#" value="#rstContent.imageSize#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.imageHeight neq '',de('no'),de('yes'))#" value="#rstContent.imageHeight#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.imageWidth neq '',de('no'),de('yes'))#" value="#rstContent.imageWidth#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.childTemplate neq '',de('no'),de('yes'))#" value="#rstContent.childTemplate#">
+						,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.imageSize neq '',de('no'),de('yes'))#" value="#rstContent.imageSize#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.imageHeight neq '',de('no'),de('yes'))#" value="#rstContent.imageHeight#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.imageWidth neq '',de('no'),de('yes'))#" value="#rstContent.imageWidth#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.childTemplate neq '',de('no'),de('yes'))#" value="#rstContent.childTemplate#">
 					</cfif>
 					<!--- Check for new fields added in 5.6 --->
 					<cfif isdefined("rstContent.majorVersion")>
-					,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstContent.majorVersion),de(rstContent.majorVersion),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstContent.minorVersion),de(rstContent.minorVersion),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstContent.expires),de('no'),de('yes'))#" value="#rstContent.expires#">
+						,
+						<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstContent.majorVersion),de(rstContent.majorVersion),de(0))#">,
+						<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstContent.minorVersion),de(rstContent.minorVersion),de(0))#">,
+						<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstContent.expires),de('no'),de('yes'))#" value="#rstContent.expires#">
+					</cfif>
+					<cfif isdefined("rstContent.displayInterval")>
+						,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.displayInterval neq '',de('no'),de('yes'))#" value="#rstContent.displayInterval#">
+					</cfif>
+					<cfif isdefined("rstContent.sourceID")>
+						,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstContent.sourceID neq '',de('no'),de('yes'))#" value="#rstContent.sourceID#">
 					</cfif>
 					)
 				</cfquery>
@@ -638,184 +693,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					)
 				</cfquery>
 			</cfloop>
-			<!--- tcontentfeeds --->
-			<cfif not StructKeyExists(arguments,"Bundle")>
-				<cfquery datasource="#arguments.fromDSN#" name="rstcontentfeeds">
-					select * from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
-					<cfif isDate(arguments.lastDeployment)>
-						and lastUpdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.lastDeployment#">
-					</cfif>
-				</cfquery>
-			<cfelse>
-				<cfset rstcontentfeeds = arguments.Bundle.getValue("rstcontentfeeds")>
-			</cfif>
-			<cfquery datasource="#arguments.toDSN#">
-				delete from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
-				<cfif isDate(arguments.lastDeployment)>
-					<cfif rstcontentfeeds.recordcount or rsDeleted.recordcount>
-						and (
-						<cfif rstcontentfeeds.recordcount>
-							feedID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontentfeeds.contentID)#">)
-						</cfif>
-						<cfif rsDeleted.recordcount>
-							<cfif rstcontentfeeds.recordcount>or</cfif>
-							feedID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsDeleted.objectID)#">)
-						</cfif>
-						)
-					<cfelse>
-						and 0=1
-					</cfif>
-				</cfif>
-			</cfquery>
-			<cfloop query="rstcontentfeeds">
-				<cfquery datasource="#arguments.toDSN#">
-					insert into tcontentfeeds (allowHTML,channelLink,dateCreated,description,feedID,isActive,isDefault,isFeaturesOnly,isPublic,lang,lastUpdate,lastUpdateBy,maxItems,name,parentID,
-					restricted,restrictGroups,siteID,Type,version,sortBy,sortDirection,nextN,displayName,displayRatings,displayComments,altname,remoteID,remoteSourceURL,remotePubDate
-					<!--- Check for new fields added in 5.5 --->
-					<cfif isdefined("rstcontentfeeds.imageSize")>
-					,imageSize,imageHeight,imageWidth,showExcludeSearch,showNavOnly,displaylist
-					</cfif>
-					)
-					values
-					(
-					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.allowHTML),de(rstcontentfeeds.allowHTML),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.channelLink neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.channelLink#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstcontentfeeds.dateCreated),de('no'),de('yes'))#" value="#rstcontentfeeds.dateCreated#">,
-					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstcontentfeeds.description neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.description#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstcontentfeeds.feedID)#">,
-					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.isActive),de(rstcontentfeeds.isActive),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.isDefault),de(rstcontentfeeds.isDefault),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.isFeaturesOnly),de(rstcontentfeeds.isFeaturesOnly),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.isPublic),de(rstcontentfeeds.isPublic),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.lang neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.lang#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstcontentfeeds.lastUpdate),de('no'),de('yes'))#" value="#rstcontentfeeds.lastUpdate#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.lastUpdateBy neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.lastUpdateBy#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentfeeds.maxItems),de(rstcontentfeeds.maxItems),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.name neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.name#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.parentID neq '',de('no'),de('yes'))#" value="#keys.get(rstcontentfeeds.parentID)#">,
-					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.restricted),de(rstcontentfeeds.restricted),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstcontentfeeds.restrictGroups neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.restrictGroups#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteid#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.Type neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.Type#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.version neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.version#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.sortBy neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.sortBy#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.sortDirection neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.sortDirection#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentfeeds.nextN),de(rstcontentfeeds.nextN),de(20))#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentfeeds.displayName),de(rstcontentfeeds.displayName),de(1))#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentfeeds.displayRatings),de(rstcontentfeeds.displayRatings),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentfeeds.displayComments),de(rstcontentfeeds.displayComments),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.altname neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.altname#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.remoteid neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.remoteid#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.remoteSourceURL neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.remoteSourceURL#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(rstcontentfeeds.remotePubDate neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.remotePubDate#">
-					<!--- Check for new fields added in 5.5 --->
-					<cfif isdefined("rstcontentfeeds.imageSize")>
-					,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.imageSize neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.imageSize#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.imageHeight neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.imageHeight#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.imageWidth neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.imageWidth#">,
-					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.showExcludeSearch),de(rstcontentfeeds.showExcludeSearch),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.showNavOnly),de(rstcontentfeeds.showNavOnly),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.displaylist neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.displaylist#">
-					</cfif>		
-					)
-				</cfquery>
-			</cfloop>
 			
-			<!--- tcontentfeeditems --->
-			<cfquery datasource="#arguments.toDSN#">
-				delete from tcontentfeeditems where feedID in (select feedID from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>)
-				<cfif isDate(arguments.lastDeployment)>
-					<cfif rstcontentfeeds.recordcount or rsDeleted.recordcount>
-						and (
-						<cfif rstcontentfeeds.recordcount>
-							feedID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontentfeeds.contentID)#">)
-						</cfif>
-						<cfif rsDeleted.recordcount>
-							<cfif rstcontentfeeds.recordcount>or</cfif>
-							feedID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsDeleted.objectID)#">)
-						</cfif>
-						)
-					<cfelse>
-						and 0=1
-					</cfif>
-				</cfif>
-			</cfquery>
-			<cfif not StructKeyExists(arguments,"Bundle")>
-				<cfquery datasource="#arguments.fromDSN#" name="rstcontentFeedItems">
-					select * from tcontentfeeditems where feedID in (select feedID from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>)
-					<cfif isDate(arguments.lastDeployment)>
-						<cfif rstcontentfeeds.recordcount>
-							and feedID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontentfeeds.feedID)#">)
-						<cfelse>
-							and 0=1
-						</cfif>
-					</cfif>
-				</cfquery>
-			<cfelse>
-				<cfset rstcontentFeedItems = arguments.Bundle.getValue("rstcontentfeeditems")>
-			</cfif>
-			<cfloop query="rstcontentFeedItems">
-				<cfquery datasource="#arguments.toDSN#">
-					insert into tcontentfeeditems (feedID,itemID,type)
-					values
-					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstcontentFeedItems.feedID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstcontentFeedItems.itemID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentFeedItems.type neq '',de('no'),de('yes'))#" value="#rstcontentFeedItems.type#">
-					)
-				</cfquery>
-			</cfloop>
-		
-			<!--- tcontentfeedadvancedparams --->
-			<cfquery datasource="#arguments.toDSN#">
-				delete from tcontentfeedadvancedparams where feedID in (select feedID from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>)
-				<cfif isDate(arguments.lastDeployment)>
-					<cfif rstcontentfeeds.recordcount or rsDeleted.recordcount>
-						and (
-						<cfif rstcontentfeeds.recordcount>
-							feedID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontentfeeds.contentID)#">)
-						</cfif>
-						<cfif rsDeleted.recordcount>
-							<cfif rstcontentfeeds.recordcount>or</cfif>
-							feedID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsDeleted.objectID)#">)
-						</cfif>
-						)
-					<cfelse>
-						and 0=1
-					</cfif>
-				</cfif>
-			</cfquery>
-			<cfif not StructKeyExists(arguments,"Bundle")>
-				<cfquery datasource="#arguments.fromDSN#" name="rstcontentFeedAdvancedParams">
-					select * from tcontentfeedadvancedparams where feedID in (select feedID from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>)
-					<cfif isDate(arguments.lastDeployment)>
-						<cfif rstcontentfeeds.recordcount>
-							and feedID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontentfeeds.feedID)#">)
-						<cfelse>
-							and 0=1
-						</cfif>
-					</cfif>
-				</cfquery>
-			<cfelse>
-				<cfset rstcontentFeedAdvancedParams = arguments.Bundle.getValue("rstcontentFeedAdvancedParams")>
-			</cfif>
-			<cfloop query="rstcontentFeedAdvancedParams">
-				<cfquery datasource="#arguments.toDSN#">
-					insert into tcontentfeedadvancedparams (paramID,feedID,param,relationship,field,dataType,<cfif application.configBean.getDbType() eq "mysql">`condition`<cfelse>condition</cfif>,criteria)
-					values
-					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstcontentFeedAdvancedParams.paramID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstcontentFeedAdvancedParams.feedID)#">,
-					<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(isNumeric(rstcontentFeedAdvancedParams.param),de('no'),de('yes'))#" value="#rstcontentFeedAdvancedParams.param#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentFeedAdvancedParams.relationship neq '',de('no'),de('yes'))#" value="#rstcontentFeedAdvancedParams.relationship#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentFeedAdvancedParams.field neq '',de('no'),de('yes'))#" value="#rstcontentFeedAdvancedParams.field#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentFeedAdvancedParams.dataType neq '',de('no'),de('yes'))#" value="#rstcontentFeedAdvancedParams.dataType#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentFeedAdvancedParams.condition neq '',de('no'),de('yes'))#" value="#rstcontentFeedAdvancedParams.condition#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentFeedAdvancedParams.criteria neq '',de('no'),de('yes'))#" value="#rstcontentFeedAdvancedParams.criteria#">
-					)
-				</cfquery>
-			</cfloop>
 			<!--- tcontentrelated --->
 			<cfquery datasource="#arguments.toDSN#">
 				delete from tcontentrelated where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
@@ -861,79 +739,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					)
 				</cfquery>
 			</cfloop>
-			<!--- tmailinglist --->
-			<cfif not StructKeyExists(arguments,"Bundle")>
-				<cfquery datasource="#arguments.fromDSN#" name="rstMailinglist">
-					select * from tmailinglist where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
-					<cfif isDate(arguments.lastDeployment)>
-						 and lastUpdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.lastDeployment#">
-					</cfif>
-				</cfquery>
-			<cfelse>
-				<cfset rstMailinglist = arguments.Bundle.getValue("rstMailinglist")>
-			</cfif>
-			<cfquery datasource="#arguments.toDSN#">
-				delete from tmailinglist where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
-				<cfif isDate(arguments.lastDeployment)>
-					<cfif rstMailinglist.recordcount or rsDeleted.recordcount>
-						and (
-							lastUpdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.lastDeployment#">
-						<cfif rsDeleted.recordcount>
-							or
-							mlid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsDeleted.objectID)#">)
-						</cfif>
-						)
-					<cfelse>
-						and 0=1
-					</cfif>
-				</cfif>
-			</cfquery>
-			<cfloop query="rstMailinglist">
-				<cfquery datasource="#arguments.toDSN#">
-					insert into tmailinglist (Description,isPublic,isPurge,LastUpdate,MLID,Name,SiteID)
-					values
-					(
-					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstMailinglist.Description neq '',de('no'),de('yes'))#" value="#rstMailinglist.Description#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstMailinglist.isPublic),de(rstMailinglist.isPublic),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstMailinglist.isPurge),de(rstMailinglist.isPurge),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstMailinglist.LastUpdate),de('no'),de('yes'))#" value="#rstMailinglist.LastUpdate#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstMailinglist.MLID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstMailinglist.Name neq '',de('no'),de('yes'))#" value="#rstMailinglist.Name#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">
-					)
-				</cfquery>
-			</cfloop>
-			
-			<cfif arguments.mailingListMembersMode neq "none" and structKeyExists(arguments,"Bundle")>
-			
-			<cfset rstMailinglistmembers = arguments.Bundle.getValue("rstMailinglistmembers")>
-			
-			<cfquery datasource="#arguments.toDSN#">
-				delete from tmailinglistmembers where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
-			</cfquery>
-			
-			<cfloop query="rstMailinglistmembers">
-				<cfquery datasource="#arguments.toDSN#">
-					insert into tmailinglistmembers (MLID,Email,SiteID,fname,lname,company,isVerified,created)
-					values
-					(
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstMailinglistmembers.MLID)#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#rstMailinglistmembers.Email#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstMailinglistmembers.fname neq '',de('no'),de('yes'))#" value="#rstMailinglistmembers.fname#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstMailinglistmembers.lname neq '',de('no'),de('yes'))#" value="#rstMailinglistmembers.lname#">,
-					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstMailinglistmembers.company neq '',de('no'),de('yes'))#" value="#rstMailinglistmembers.company#">,
-					<cfif isNumeric(rstMailinglistmembers.isVerified)>
-						<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#rstMailinglistmembers.isVerified#">,
-					<cfelse>
-						0,
-					</cfif>
-					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstMailinglistmembers.created),de('no'),de('yes'))#" value="#rstMailinglistmembers.created#">
-					)
-				</cfquery>
-			</cfloop>
-			</cfif>
-			
+					
 			<!--- tchangesets --->		
 			<cfif not StructKeyExists(arguments,"Bundle")>
 				<cfquery datasource="#arguments.fromDSN#" name="rstchangesets">
@@ -1044,56 +850,257 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					)
 				</cfquery>
 			</cfloop>
-			
-			<cfif arguments.formDataMode neq "none" and structKeyExists(arguments,"Bundle")>
-				<cfset rstformresponsepackets = arguments.Bundle.getValue("rstformresponsepackets")>
-				
-				<cfquery datasource="#arguments.toDSN#">
-					delete from tformresponsepackets where siteID=<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">
+
+			<cfif not StructKeyExists(arguments,"Bundle")>
+				<cfquery datasource="#arguments.fromDSN#" name="rstimagesizes">
+					select * from timagesizes where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
 				</cfquery>
-				
-				<cfloop query="rstformresponsepackets">
-					<cfquery datasource="#arguments.toDSN#">
-						insert into tformresponsepackets (responseid,formid,siteid,fieldlist,data,entered)
-						values (
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstformresponsepackets.responseID)#">,
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstformresponsepackets.formID)#">,
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
-						<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstformresponsepackets.fieldlist neq '',de('no'),de('yes'))#" value="#rstformresponsepackets.fieldlist#">,
-						<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstformresponsepackets.data neq '',de('no'),de('yes'))#" value="#rstformresponsepackets.data#">,
-						<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstformresponsepackets.entered),de('no'),de('yes'))#" value="#rstformresponsepackets.entered#">	
-						)
-					</cfquery>
-				</cfloop>
-				
-				<cfset rstformresponsequestions = arguments.Bundle.getValue("rstformresponsequestions")>
-				
-				<cfquery datasource="#arguments.toDSN#">
-					delete from tformresponsequestions 
-					where formID in (
-									select contentID from tcontent where 
-									type='Form'
-									and active=1
-									and siteID=<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">
-									)
-				</cfquery>
-				
-				<cfloop query="rstformresponsequestions">
-					<cfquery datasource="#arguments.toDSN#">
-						insert into tformresponsequestions (responseid,formid,formField,formValue,pollValue)
-						values (
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstformresponsequestions.responseID)#">,
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstformresponsequestions.formID)#">,
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstformresponsequestions.formField neq '',de('no'),de('yes'))#" value="#rstformresponsequestions.formField#">,
-						<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstformresponsequestions.formValue neq '',de('no'),de('yes'))#" value="#rstformresponsequestions.formValue#">,
-						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstformresponsequestions.pollValue neq '',de('no'),de('yes'))#" value="#rstformresponsequestions.pollValue#">
-						)
-					</cfquery>
-				</cfloop>
+			<cfelse>
+				<cfset rstimagesizes = arguments.Bundle.getValue("rstimagesizes")>
 			</cfif>
+
+			<cfif rstimagesizes.recordcount>
+				<cfquery datasource="#arguments.toDSN#">
+					delete from timagesizes where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
+				</cfquery>
+			</cfif>
+			<cfloop query="rstimagesizes">
+				<cfquery datasource="#arguments.toDSN#">
+					insert into timagesizes (sizeID,siteID,name,height,width)
+					values
+					(
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstimagesizes.sizeID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstimagesizes.name neq '',de('no'),de('yes'))#" value="#rstimagesizes.name#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstimagesizes.height neq '',de('no'),de('yes'))#" value="#rstimagesizes.height#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstimagesizes.width neq '',de('no'),de('yes'))#" value="#rstimagesizes.width#">
+					)
+				</cfquery>
+			</cfloop>
+
 			<!--- synced tables--->
 			<cfset arguments.rstcontent=rstcontent>
+		
+			<cfset getToWorkFeeds(argumentCollection=arguments)>
+			<cfset getToWorkFormData(argumentCollection=arguments)>
+			<cfset getToWorkMailingLists(argumentCollection=arguments)>
 			
+	</cffunction>
+
+	<cffunction name="getToWorkFeeds" output="false">
+		<cfset var keys=arguments.keyFactory/>
+		<cfset var rstcontentfeeds=""/>
+		<cfset var rstcontentfeedsnew=""/>
+		<cfset var rstcontentfeeditems=""/>
+		<cfset var rstcontentfeedadvancedparams=""/>
+
+		<!--- tcontentfeeds --->
+			<cfif not StructKeyExists(arguments,"Bundle")>
+				<cfquery datasource="#arguments.fromDSN#" name="rstcontentfeeds">
+					select * from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
+					<cfif isDate(arguments.lastDeployment)>
+						and lastUpdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.lastDeployment#">
+					</cfif>
+				</cfquery>
+			<cfelse>
+				<cfset rstcontentfeeds = arguments.Bundle.getValue("rstcontentfeeds")>
+			</cfif>
+			<cfquery datasource="#arguments.toDSN#">
+				delete from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
+				<cfif isDate(arguments.lastDeployment)>
+					<cfif rstcontentfeeds.recordcount or rsDeleted.recordcount>
+						and (
+						<cfif rstcontentfeeds.recordcount>
+							feedID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontentfeeds.contentID)#">)
+						</cfif>
+						<cfif rsDeleted.recordcount>
+							<cfif rstcontentfeeds.recordcount>or</cfif>
+							feedID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsDeleted.objectID)#">)
+						</cfif>
+						)
+					<cfelse>
+						and 0=1
+					</cfif>
+				</cfif>
+			</cfquery>
+			<cfloop query="rstcontentfeeds">
+				<cfquery datasource="#arguments.toDSN#">
+					insert into tcontentfeeds (allowHTML,channelLink,dateCreated,description,feedID,isActive,isDefault,isFeaturesOnly,isPublic,lang,lastUpdate,lastUpdateBy,maxItems,name,parentID,
+					restricted,restrictGroups,siteID,Type,version,sortBy,sortDirection,nextN,displayName,displayRatings,displayComments,altname,remoteID,remoteSourceURL,remotePubDate
+					<!--- Check for new fields added in 5.5 --->
+					<cfif isdefined("rstcontentfeeds.imageSize")>
+					,imageSize,imageHeight,imageWidth,showExcludeSearch,showNavOnly,displaylist
+					</cfif>
+					<cfif isdefined("rstcontentfeeds.viewalllink")>
+					,viewalllink,viewalllabel
+					</cfif>
+					<cfif isdefined("rstcontentfeeds.autoimport")>
+					,autoimport
+					</cfif>
+					<cfif isdefined("rstcontentfeeds.isLocked")>
+					,isLocked
+					</cfif>
+					<cfif isdefined("rstcontentfeeds.cssclass")>
+					,cssclass
+					</cfif>
+					)
+					values
+					(
+					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.allowHTML),de(rstcontentfeeds.allowHTML),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.channelLink neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.channelLink#">,
+					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstcontentfeeds.dateCreated),de('no'),de('yes'))#" value="#rstcontentfeeds.dateCreated#">,
+					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstcontentfeeds.description neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.description#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstcontentfeeds.feedID)#">,
+					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.isActive),de(rstcontentfeeds.isActive),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.isDefault),de(rstcontentfeeds.isDefault),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.isFeaturesOnly),de(rstcontentfeeds.isFeaturesOnly),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.isPublic),de(rstcontentfeeds.isPublic),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.lang neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.lang#">,
+					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstcontentfeeds.lastUpdate),de('no'),de('yes'))#" value="#rstcontentfeeds.lastUpdate#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.lastUpdateBy neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.lastUpdateBy#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentfeeds.maxItems),de(rstcontentfeeds.maxItems),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.name neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.name#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.parentID neq '',de('no'),de('yes'))#" value="#keys.get(rstcontentfeeds.parentID)#">,
+					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.restricted),de(rstcontentfeeds.restricted),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstcontentfeeds.restrictGroups neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.restrictGroups#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteid#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.Type neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.Type#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.version neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.version#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.sortBy neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.sortBy#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.sortDirection neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.sortDirection#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentfeeds.nextN),de(rstcontentfeeds.nextN),de(20))#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentfeeds.displayName),de(rstcontentfeeds.displayName),de(1))#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentfeeds.displayRatings),de(rstcontentfeeds.displayRatings),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentfeeds.displayComments),de(rstcontentfeeds.displayComments),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.altname neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.altname#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.remoteid neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.remoteid#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.remoteSourceURL neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.remoteSourceURL#">,
+					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(rstcontentfeeds.remotePubDate neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.remotePubDate#">
+					<!--- Check for new fields added in 5.5 --->
+					<cfif isdefined("rstcontentfeeds.imageSize")>
+					,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.imageSize neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.imageSize#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.imageHeight neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.imageHeight#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.imageWidth neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.imageWidth#">,
+					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.showExcludeSearch),de(rstcontentfeeds.showExcludeSearch),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.showNavOnly),de(rstcontentfeeds.showNavOnly),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.displaylist neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.displaylist#">
+					</cfif>
+					<cfif isdefined("rstcontentfeeds.viewalllink")>
+					,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.viewalllink neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.viewalllink#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.viewalllabel neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.viewalllabel#">
+					</cfif>
+					<cfif isdefined("rstcontentfeeds.autoimport")>
+					,
+					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.autoimport),de(rstcontentfeeds.autoimport),de(0))#">			
+					</cfif>
+					<cfif isdefined("rstcontentfeeds.isLocked")>
+					,
+					<cfqueryparam cfsqltype="cf_sql_TINYINT" null="no" value="#iif(isNumeric(rstcontentfeeds.isLocked),de(rstcontentfeeds.isLocked),de(0))#">			
+					</cfif>	
+					<cfif isdefined("rstcontentfeeds.cssclass")>
+					,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentfeeds.cssclass neq '',de('no'),de('yes'))#" value="#rstcontentfeeds.cssclass#">			
+					</cfif>					
+					)
+				</cfquery>
+			</cfloop>
+			
+			<!--- tcontentfeeditems --->
+			<cfquery datasource="#arguments.toDSN#">
+				delete from tcontentfeeditems where feedID in (select feedID from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>)
+				<cfif isDate(arguments.lastDeployment)>
+					<cfif rstcontentfeeds.recordcount or rsDeleted.recordcount>
+						and (
+						<cfif rstcontentfeeds.recordcount>
+							feedID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontentfeeds.contentID)#">)
+						</cfif>
+						<cfif rsDeleted.recordcount>
+							<cfif rstcontentfeeds.recordcount>or</cfif>
+							feedID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsDeleted.objectID)#">)
+						</cfif>
+						)
+					<cfelse>
+						and 0=1
+					</cfif>
+				</cfif>
+			</cfquery>
+			<cfif not StructKeyExists(arguments,"Bundle")>
+				<cfquery datasource="#arguments.fromDSN#" name="rstcontentFeedItems">
+					select * from tcontentfeeditems where feedID in (select feedID from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>)
+					<cfif isDate(arguments.lastDeployment)>
+						<cfif rstcontentfeeds.recordcount>
+							and feedID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontentfeeds.feedID)#">)
+						<cfelse>
+							and 0=1
+						</cfif>
+					</cfif>
+				</cfquery>
+			<cfelse>
+				<cfset rstcontentFeedItems = arguments.Bundle.getValue("rstcontentfeeditems")>
+			</cfif>
+			<cfloop query="rstcontentFeedItems">
+				<cfquery datasource="#arguments.toDSN#">
+					insert into tcontentfeeditems (feedID,itemID,type)
+					values
+					(
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstcontentFeedItems.feedID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstcontentFeedItems.itemID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentFeedItems.type neq '',de('no'),de('yes'))#" value="#rstcontentFeedItems.type#">
+					)
+				</cfquery>
+			</cfloop>
+		
+			<!--- tcontentfeedadvancedparams --->
+			<cfquery datasource="#arguments.toDSN#">
+				delete from tcontentfeedadvancedparams where feedID in (select feedID from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>)
+				<cfif isDate(arguments.lastDeployment)>
+					<cfif rstcontentfeeds.recordcount or rsDeleted.recordcount>
+						and (
+						<cfif rstcontentfeeds.recordcount>
+							feedID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontentfeeds.contentID)#">)
+						</cfif>
+						<cfif rsDeleted.recordcount>
+							<cfif rstcontentfeeds.recordcount>or</cfif>
+							feedID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsDeleted.objectID)#">)
+						</cfif>
+						)
+					<cfelse>
+						and 0=1
+					</cfif>
+				</cfif>
+			</cfquery>
+			<cfif not StructKeyExists(arguments,"Bundle")>
+				<cfquery datasource="#arguments.fromDSN#" name="rstcontentFeedAdvancedParams">
+					select * from tcontentfeedadvancedparams where feedID in (select feedID from tcontentfeeds where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>)
+					<cfif isDate(arguments.lastDeployment)>
+						<cfif rstcontentfeeds.recordcount>
+							and feedID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rstcontentfeeds.feedID)#">)
+						<cfelse>
+							and 0=1
+						</cfif>
+					</cfif>
+				</cfquery>
+			<cfelse>
+				<cfset rstcontentFeedAdvancedParams = arguments.Bundle.getValue("rstcontentFeedAdvancedParams")>
+			</cfif>
+			<cfloop query="rstcontentFeedAdvancedParams">
+				<cfquery datasource="#arguments.toDSN#">
+					insert into tcontentfeedadvancedparams (paramID,feedID,param,relationship,field,dataType,<cfif application.configBean.getDbType() eq "mysql">`condition`<cfelse>condition</cfif>,criteria)
+					values
+					(
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstcontentFeedAdvancedParams.paramID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstcontentFeedAdvancedParams.feedID)#">,
+					<cfqueryparam cfsqltype="cf_sql_NUMERIC" null="#iif(isNumeric(rstcontentFeedAdvancedParams.param),de('no'),de('yes'))#" value="#rstcontentFeedAdvancedParams.param#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentFeedAdvancedParams.relationship neq '',de('no'),de('yes'))#" value="#rstcontentFeedAdvancedParams.relationship#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentFeedAdvancedParams.field neq '',de('no'),de('yes'))#" value="#rstcontentFeedAdvancedParams.field#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentFeedAdvancedParams.dataType neq '',de('no'),de('yes'))#" value="#rstcontentFeedAdvancedParams.dataType#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentFeedAdvancedParams.condition neq '',de('no'),de('yes'))#" value="#rstcontentFeedAdvancedParams.condition#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstcontentFeedAdvancedParams.criteria neq '',de('no'),de('yes'))#" value="#rstcontentFeedAdvancedParams.criteria#">
+					)
+				</cfquery>
+			</cfloop>
 	</cffunction>
 	
 	<cffunction name="getToWorkFiles" returntype="void" output="false">
@@ -1274,7 +1281,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 					
 					<cfquery datasource="#arguments.toDSN#">
-						insert into ttrash (objectID,parentID,siteID,objectClass,objectLabel,objectType,objectSubType,objectString,deletedDate,deletedBy)
+						insert into ttrash (objectID,parentID,siteID,objectClass,
+							objectLabel,objectType,objectSubType,objectString,deletedDate,deletedBy
+							<cfif isDefined("rsttrash.deleteid")>
+								,deleteID
+								,orderno
+							</cfif>)
 							values(	
 								<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rsttrash.objectID)#" />,
 								<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rsttrash.parentID)#" />,
@@ -1286,6 +1298,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#allValues#" />,
 								#createODBCDateTime(deletedDate)#,
 								<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsttrash.deletedBy#" />
+								<cfif isDefined("rsttrash.deleteid")>
+									,<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsttrash.deleteid#" />
+									,<cfqueryparam cfsqltype="cf_sql_numeric" value="#rsttrash.orderno#" />
+								</cfif>
 							)			
 					</cfquery>
 					
@@ -1404,6 +1420,174 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfloop>
 		</cfif>
 	
+	</cffunction>
+
+	<cffunction name="getToWorkFormData" returntype="void" output="false">
+		<cfargument name="fromSiteID" type="string" default="" required="true">
+		<cfargument name="toSiteID" type="string" default="" required="true">
+		<cfargument name="fromDSN" type="any" default="" required="true">
+		<cfargument name="toDSN" type="string" default="" required="true">
+		<cfargument name="contentMode" type="string" default="all" required="true">
+		<cfargument name="keyFactory" type="any" required="true">
+		<cfargument name="lastDeployment" default="" required="true">
+		<cfargument name="rsDeleted" required="true" default="#queryNew('objectID')#">	
+		<cfargument name="moduleID" type="any" required="false" default="">
+		<cfargument name="Bundle" type="any" required="false">
+		<cfargument name="errors" type="any" required="true">
+		<cfargument name="renderingMode" type="string" default="all" required="true">
+		<cfargument name="pluginMode" type="string" default="all" required="true">
+		<cfargument name="keyMode" type="string" default="copy" required="true">			
+		<cfargument name="mailingListMembersMode" type="string" default="none" required="true">
+		<cfargument name="formDataMode" type="string" default="none" required="true">
+		
+		<cfset var keys=arguments.keyFactory/>
+		<cfset var rstformresponsepackets="">
+		<cfset var rstformresponsequestions="">
+
+		<cfif arguments.formDataMode neq "none" and structKeyExists(arguments,"Bundle")>
+				<cfset rstformresponsepackets = arguments.Bundle.getValue("rstformresponsepackets")>
+				
+				<cfquery datasource="#arguments.toDSN#">
+					delete from tformresponsepackets where siteID=<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">
+				</cfquery>
+				
+				<cfloop query="rstformresponsepackets">
+					<cfquery datasource="#arguments.toDSN#">
+						insert into tformresponsepackets (responseid,formid,siteid,fieldlist,data,entered)
+						values (
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstformresponsepackets.responseID)#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstformresponsepackets.formID)#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
+						<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstformresponsepackets.fieldlist neq '',de('no'),de('yes'))#" value="#rstformresponsepackets.fieldlist#">,
+						<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstformresponsepackets.data neq '',de('no'),de('yes'))#" value="#rstformresponsepackets.data#">,
+						<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstformresponsepackets.entered),de('no'),de('yes'))#" value="#rstformresponsepackets.entered#">	
+						)
+					</cfquery>
+				</cfloop>
+				
+				<cfset rstformresponsequestions = arguments.Bundle.getValue("rstformresponsequestions")>
+				
+				<cfquery datasource="#arguments.toDSN#">
+					delete from tformresponsequestions 
+					where formID in (
+									select contentID from tcontent where 
+									type='Form'
+									and active=1
+									and siteID=<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">
+									)
+				</cfquery>
+				
+				<cfloop query="rstformresponsequestions">
+					<cfquery datasource="#arguments.toDSN#">
+						insert into tformresponsequestions (responseid,formid,formField,formValue,pollValue)
+						values (
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstformresponsequestions.responseID)#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstformresponsequestions.formID)#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstformresponsequestions.formField neq '',de('no'),de('yes'))#" value="#rstformresponsequestions.formField#">,
+						<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstformresponsequestions.formValue neq '',de('no'),de('yes'))#" value="#rstformresponsequestions.formValue#">,
+						<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstformresponsequestions.pollValue neq '',de('no'),de('yes'))#" value="#rstformresponsequestions.pollValue#">
+						)
+					</cfquery>
+				</cfloop>
+			</cfif>
+
+	</cffunction>
+
+	<cffunction name="getToWorkMailingLists" returntype="void" output="false">
+		<cfargument name="fromSiteID" type="string" default="" required="true">
+		<cfargument name="toSiteID" type="string" default="" required="true">
+		<cfargument name="fromDSN" type="any" default="" required="true">
+		<cfargument name="toDSN" type="string" default="" required="true">
+		<cfargument name="contentMode" type="string" default="all" required="true">
+		<cfargument name="keyFactory" type="any" required="true">
+		<cfargument name="lastDeployment" default="" required="true">
+		<cfargument name="rsDeleted" required="true" default="#queryNew('objectID')#">	
+		<cfargument name="moduleID" type="any" required="false" default="">
+		<cfargument name="Bundle" type="any" required="false">
+		<cfargument name="errors" type="any" required="true">
+		<cfargument name="renderingMode" type="string" default="all" required="true">
+		<cfargument name="pluginMode" type="string" default="all" required="true">
+		<cfargument name="keyMode" type="string" default="copy" required="true">			
+		<cfargument name="mailingListMembersMode" type="string" default="none" required="true">
+		<cfargument name="formDataMode" type="string" default="none" required="true">
+		
+		<cfset var keys=arguments.keyFactory/>
+		<cfset var rstMailinglist=""/>
+		<cfset var rstMailinglistnew=""/>
+		<cfset var rstMailinglistmembers="">
+
+		<cfif not StructKeyExists(arguments,"Bundle")>
+				<cfquery datasource="#arguments.fromDSN#" name="rstMailinglist">
+					select * from tmailinglist where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
+					<cfif isDate(arguments.lastDeployment)>
+						 and lastUpdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.lastDeployment#">
+					</cfif>
+				</cfquery>
+			<cfelse>
+				<cfset rstMailinglist = arguments.Bundle.getValue("rstMailinglist")>
+			</cfif>
+			<cfquery datasource="#arguments.toDSN#">
+				delete from tmailinglist where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
+				<cfif isDate(arguments.lastDeployment)>
+					<cfif rstMailinglist.recordcount or rsDeleted.recordcount>
+						and (
+							lastUpdate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.lastDeployment#">
+						<cfif rsDeleted.recordcount>
+							or
+							mlid in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#valueList(rsDeleted.objectID)#">)
+						</cfif>
+						)
+					<cfelse>
+						and 0=1
+					</cfif>
+				</cfif>
+			</cfquery>
+			<cfloop query="rstMailinglist">
+				<cfquery datasource="#arguments.toDSN#">
+					insert into tmailinglist (Description,isPublic,isPurge,LastUpdate,MLID,Name,SiteID)
+					values
+					(
+					<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstMailinglist.Description neq '',de('no'),de('yes'))#" value="#rstMailinglist.Description#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstMailinglist.isPublic),de(rstMailinglist.isPublic),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstMailinglist.isPurge),de(rstMailinglist.isPurge),de(0))#">,
+					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstMailinglist.LastUpdate),de('no'),de('yes'))#" value="#rstMailinglist.LastUpdate#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstMailinglist.MLID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstMailinglist.Name neq '',de('no'),de('yes'))#" value="#rstMailinglist.Name#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">
+					)
+				</cfquery>
+			</cfloop>
+			
+			<cfif arguments.mailingListMembersMode neq "none" and structKeyExists(arguments,"Bundle")>
+			
+			<cfset rstMailinglistmembers = arguments.Bundle.getValue("rstMailinglistmembers")>
+			
+			<cfquery datasource="#arguments.toDSN#">
+				delete from tmailinglistmembers where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.tositeid#"/>
+			</cfquery>
+			
+			<cfloop query="rstMailinglistmembers">
+				<cfquery datasource="#arguments.toDSN#">
+					insert into tmailinglistmembers (MLID,Email,SiteID,fname,lname,company,isVerified,created)
+					values
+					(
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstMailinglistmembers.MLID)#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#rstMailinglistmembers.Email#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.toSiteID#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstMailinglistmembers.fname neq '',de('no'),de('yes'))#" value="#rstMailinglistmembers.fname#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstMailinglistmembers.lname neq '',de('no'),de('yes'))#" value="#rstMailinglistmembers.lname#">,
+					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstMailinglistmembers.company neq '',de('no'),de('yes'))#" value="#rstMailinglistmembers.company#">,
+					<cfif isNumeric(rstMailinglistmembers.isVerified)>
+						<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#rstMailinglistmembers.isVerified#">,
+					<cfelse>
+						0,
+					</cfif>
+					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstMailinglistmembers.created),de('no'),de('yes'))#" value="#rstMailinglistmembers.created#">
+					)
+				</cfquery>
+			</cfloop>
+			</cfif>
+
 	</cffunction>
 
 	<cffunction name="getToWorkUsers" returntype="void" output="false">
@@ -2520,7 +2704,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif arguments.usersMode neq "none">
 				<cfset typeList=typeList & ",">
 			</cfif>
-			<cfset typeList=typeList & "Custom,Page,Portal,Gallery,Calendar,Link,File,Component,Site,Base">
+			<cfset typeList=typeList & "Custom,Page,LocalRepo,Gallery,Calendar,Link,File,Component,Site,Base">
 		</cfif>
 		
 			<cfif not StructKeyExists(arguments,"Bundle")>
@@ -2600,6 +2784,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfif isDefined("rstclassextend.description")>
 							description=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.description neq '',de('no'),de('yes'))#" value="#rstclassextend.description#">,
 							</cfif>
+							<cfif isDefined("rstclassextend.availableSubTypes")>
+							availableSubTypes=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.availableSubTypes neq '',de('no'),de('yes'))#" value="#rstclassextend.availableSubTypes#">,
+							</cfif>
 							lastUpdateBy='System'
 							where subTypeID = <cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstclassextend.subTypeID)#">
 						</cfquery>
@@ -2612,6 +2799,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfif>
 							<cfif isDefined("rstclassextend.description")>
 							description,
+							</cfif>
+							<cfif isDefined("rstclassextend.availableSubTypes")>
+							availableSubTypes,
 							</cfif>
 							lastUpdateBy)
 							values
@@ -2633,6 +2823,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfif>
 							<cfif isDefined("rstclassextend.description")>
 							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.description neq '',de('no'),de('yes'))#" value="#rstclassextend.description#">,
+							</cfif>
+							<cfif isDefined("rstclassextend.availableSubTypes")>
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.availableSubTypes neq '',de('no'),de('yes'))#" value="#rstclassextend.availableSubTypes#">,
 							</cfif>
 							'System'
 							)
@@ -3008,8 +3201,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var newdirectory="">
 		<cfset var rsTemp="">
 		<cfset var s="">
-		<cfset var pluginCFC="">
 		<cfset var pluginDir="">
+		<cfset var pluginCFC="">
 		<cfset var pluginConfig="">
 		
 			<cfif not StructKeyExists(arguments,"Bundle")>
@@ -3056,7 +3249,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfquery datasource="#arguments.toDSN#" name="rsCheck">
 								select moduleID from tplugins
 								where package=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rstplugins.package#"/>
-								and moduleID!=<cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#"/>
+								and moduleID<><cfqueryparam cfsqltype="cf_sql_varchar" value="#keys.get(rstplugins.moduleID)#"/>
 							</cfquery>
 							
 							<cfif rsCheck.recordcount>
@@ -3249,6 +3442,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfquery>
 						</cfloop>
 
+						
 						<cfif StructKeyExists(arguments,"Bundle")>
 							<cfset pluginDir=application.configBean.getPluginDir() & application.configBean.getFileDelim() & rstplugins.directory>
 

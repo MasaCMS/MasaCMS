@@ -82,6 +82,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.transient["categoryBean"]="mura.category.categoryBean" />
 	<cfset variables.transient["categoryFeedBean"]="mura.category.categoryFeedBean" />
 	<cfset variables.transient["settingsBean"]="mura.settings.settingsBean"/>
+	<cfset variables.transient["settingsImageSizeBean"]="mura.settings.settingsImageSizeBean"/>
+	<cfset variables.transient["settingsImageSizeIterator"]="mura.settings.settingsImageSizeIterator"/>
 	<cfset variables.transient["settingsBundle"]="mura.settings.settingsBundle"/>
 	<cfset variables.transient["userIterator"]="mura.user.userIterator"/>
 	<cfset variables.transient["userFeedBean"]="mura.user.userFeedBean"/>
@@ -120,6 +122,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.transientAlias["campaign"]="campaignBean"/>
 	<cfset variables.transientAlias["email"]="emailBean"/>
 	<cfset variables.transientAlias["adZone"]="adZoneBean"/>
+	<cfset variables.transientAlias["imageSize"]="settingsImageSizeBean"/>
+	<cfset variables.transientAlias["imageSizeIterator"]="settingsImageSizeIterator"/>
 	<cfset variables.transientAlias["$"]="MuraScope"/>
 	
 	<cffunction name="loadBeansFromXMLRaw" output="false">

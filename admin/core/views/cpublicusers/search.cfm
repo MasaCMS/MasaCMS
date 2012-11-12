@@ -45,37 +45,40 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfoutput>
-<h2>#application.rbFactory.getKeyValue(session.rb,'user.membersearchresults')#</h2>
+<h1>#application.rbFactory.getKeyValue(session.rb,'user.membersearchresults')#</h1>
 
-<ul id="navTask">
+<ul class="navTask nav nav-pills">
 <li><a href="index.cfm?muraAction=cPublicUsers.advancedSearch&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'user.advancedmembersearch')#</a></li>
 </ul>
-<form novalidate="novalidate" action="index.cfm" method="get" name="form1" id="siteSearch">
-	<h3>#application.rbFactory.getKeyValue(session.rb,'user.searchformembers')#</h3>
-<input id="search" name="search" value="#rc.search#" type="text" class="text">
+<form class="form-inline" novalidate="novalidate" action="index.cfm" method="get" name="form1" id="siteSearch">
+	<div class="input-append">
+	    <input id="search" name="search" type="text" placeholder="#application.rbFactory.getKeyValue(session.rb,'user.searchformembers')#" />
+	    <button type="button" class="submit btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'user.search')#" /><i class="icon-search"></i></button>
+	    <button type="button" class="submit btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'user.search')#" />Advanced Search</button>
+	</div>
 <input type="hidden" name="muraAction" value="cPublicUsers.Search" />
 <input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
- <input type="button" class="submit" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'user.search')#" /></form>
+</form>
 
 
-        <table class="mura-table-grid stripe">
+        <table class="table table-striped table-condensed table-bordered mura-table-grid">
           <tr> 
-            <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'user.name')#</th>
+            <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'user.name')#</th>
             <th>#application.rbFactory.getKeyValue(session.rb,'user.email')#</th>
             <th>#application.rbFactory.getKeyValue(session.rb,'user.update')#</th>
             <th>#application.rbFactory.getKeyValue(session.rb,'user.time')#</th>
             <th>#application.rbFactory.getKeyValue(session.rb,'user.authoreditor')#</th>
-            <th class="administration">&nbsp;</th>
+            <th class="actions">&nbsp;</th>
           </tr></cfoutput>
           <cfif rc.rsList.recordcount>
             <cfoutput query="rc.rsList" maxrows="#rc.nextN.recordsperPage#" startrow="#rc.startrow#"> 
               <tr> 
-                <td class="varWidth"><a title="Edit" href="index.cfm?muraAction=cPublicUsers.edituser&userid=#rc.rsList.UserID#&type=2&siteid=#URLEncodedFormat(rc.siteid)#">#HTMLEditFormat(rc.rsList.lname)#, #HTMLEditFormat(rc.rsList.fname)# <cfif company neq ''> (#HTMLEditFormat(company)#)</cfif></a></td>
+                <td class="var-width"><a title="Edit" href="index.cfm?muraAction=cPublicUsers.edituser&userid=#rc.rsList.UserID#&type=2&siteid=#URLEncodedFormat(rc.siteid)#&returnURL=#URLEncodedFormat(rc.currentURL)#">#HTMLEditFormat(rc.rsList.lname)#, #HTMLEditFormat(rc.rsList.fname)# <cfif company neq ''> (#HTMLEditFormat(company)#)</cfif></a></td>
                 <td><cfif rc.rsList.email gt ""><a href="mailto:#HTMLEditFormat(rc.rsList.email)#">#HTMLEditFormat(rc.rsList.email)#</a><cfelse>&nbsp;</cfif></td>
                 <td>#LSDateFormat(rc.rslist.lastupdate,session.dateKeyFormat)#</td>
               <td>#LSTimeFormat(rc.rslist.lastupdate,"short")#</td>
 			  <td>#HTMLEditFormat(rc.rsList.LastUpdateBy)#</td>
-                <td class="administration"><ul class="one"><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?muraAction=cPublicUsers.edituser&userid=#rc.rsList.UserID#&type=2&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'user.edit')#</a></li></ul></td>
+                <td class="actions"><ul><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?muraAction=cPublicUsers.edituser&userid=#rc.rsList.UserID#&type=2&siteid=#URLEncodedFormat(rc.siteid)#&returnURL=#URLEncodedFormat(rc.currentURL)#"><i class="icon-pencil"></i></a></li></ul></td>
               </tr>
             </cfoutput>
 			
@@ -88,9 +91,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
 <cfif rc.nextN.numberofpages gt 1>
-<cfoutput>#application.rbFactory.getKeyValue(session.rb,'user.moreresults')#:
-<cfif rc.nextN.currentpagenumber gt 1> <a href="index.cfm?muraAction=cPublicUsers.search&startrow=#rc.nextN.previous#&lname=#urlencodedformat(rc.lname)#&siteid=#URLEncodedFormat(rc.siteid)#&search=#urlencodedformat(rc.search)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'user.prev')#</a></cfif>	
- <cfloop from="#rc.nextN.firstPage#"  to="#rc.nextN.lastPage#" index="i"><cfif rc.nextN.currentpagenumber eq i> #i# <cfelse> <a href="index.cfm?muraAction=cPublicUsers.search&startrow=#evaluate('(#i#*#rc.nextN.recordsperpage#)-#rc.nextN.recordsperpage#+1')#&lname=#urlencodedformat(rc.lname)#&siteid=#URLEncodedFormat(rc.siteid)#&search=#urlencodedformat(rc.search)#">#i#</a> </cfif></cfloop>
-<cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages><a href="index.cfm?muraAction=cPublicUsers.search&startrow=#rc.nextN.next#&lname=#urlencodedformat(rc.lname)#&siteid=#URLEncodedFormat(rc.siteid)#&search=#urlencodedformat(rc.search)#">#application.rbFactory.getKeyValue(session.rb,'user.next')#&nbsp;&raquo;</a></cfif> 
+<cfoutput>
+<cfset args=arrayNew(1)>
+    <cfset args[1]="#rc.nextn.startrow#-#rc.nextn.through#">
+    <cfset args[2]=rc.nextn.totalrecords>
+    <div class="mura-results-wrapper">
+    <p class="clearfix search-showing">
+      #application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.paginationmeta"),args)#
+    </p> 
+    <ul class="pagination">
+<cfif rc.nextN.currentpagenumber gt 1> 
+  <li>
+    <a href="index.cfm?muraAction=cPublicUsers.search&startrow=#rc.nextN.previous#&lname=#urlencodedformat(rc.lname)#&siteid=#URLEncodedFormat(rc.siteid)#&search=#urlencodedformat(rc.search)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'user.prev')#</a>
+  </li>
+</cfif>	
+ <cfloop from="#rc.nextN.firstPage#"  to="#rc.nextN.lastPage#" index="i">
+  <cfif rc.nextN.currentpagenumber eq i>
+    <li class="active"><a href="##">#i#</a></li>
+  <cfelse> 
+    <li><a href="index.cfm?muraAction=cPublicUsers.search&startrow=#evaluate('(#i#*#rc.nextN.recordsperpage#)-#rc.nextN.recordsperpage#+1')#&lname=#urlencodedformat(rc.lname)#&siteid=#URLEncodedFormat(rc.siteid)#&search=#urlencodedformat(rc.search)#">#i#</a></li>
+  </cfif>
+</cfloop>
+<cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages>
+  <li><a href="index.cfm?muraAction=cPublicUsers.search&startrow=#rc.nextN.next#&lname=#urlencodedformat(rc.lname)#&siteid=#URLEncodedFormat(rc.siteid)#&search=#urlencodedformat(rc.search)#">#application.rbFactory.getKeyValue(session.rb,'user.next')#&nbsp;&raquo;</a>
+  </li>
+</cfif> 
+</ul>
+</div>
 </cfoutput>
 </cfif>

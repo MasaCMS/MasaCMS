@@ -46,85 +46,145 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfset tabLabelList="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.basic')#,#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.usagereport')#">
 <cfset tabList="tabBasic,tabUsagereport">
-<cfoutput><form novalidate="novalidate" action="index.cfm?muraAction=cMailingList.update" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);">
-<h2>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager')#</h2>
-<cfif rc.mlid neq ''><ul id="navTask">
-<li><a href="index.cfm?muraAction=cMailingList.listmembers&mlid=#rc.mlid#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.vieweditmembers')#</a></li>
-<li><a href="index.cfm?muraAction=cMailingList.download&mlid=#rc.mlid#&siteid=#URLEncodedFormat(rc.siteid)#">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.downloadmembers')#</a></li>
-</ul></cfif>
-<dl class="oneColumn separate"><cfif rc.listBean.getispurge() neq 1>
-<dt class="first">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.name')#</dt>
-<dd><input type=text name="Name" value="#HTMLEditFormat(rc.listBean.getname())#" required="true" message="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.namerequired')#" class="text"></dd>
-<cfif rc.mlid neq ''>
-</dl>
-<div class="tabs initActiveTab">
-<ul>
-<cfloop from="1" to="#listlen(tabList)#" index="t">
-<li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
-</cfloop>
-</ul>
-<div id="tabBasic">
-<dl class="oneColumn">
-<dt class="first">
-<cfelse>
-<dt>
-</cfif>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.type')#</dt>
-<dd>
-<input type="radio" value="1" id="isPublicYes" name="isPublic" <cfif rc.listBean.getisPublic() eq 1>checked</cfif>> <label for="isPublicYes">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.public')#</label> <input type="radio" value="0" id="isPublicNo" name="isPublic" <cfif rc.listBean.getisPublic() neq 1>checked</cfif>> <label for="isPublicNo">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.private')#</label>
-<input type=hidden name="ispurge" value="0">
-</dd>
-<dt>
-<cfelse>
-<dt class="first">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.masterdonotemaillistname')#</dt>
-<dd><input type=text name="Name" value="#HTMLEditFormat(rc.listBean.getname())#" required="true" message="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.namerequired')#" class="text"> <input type=hidden name="ispurge" value="1"><input type=hidden name="ispublic" value="1"></dd>
-</dl>
-<div class="tabs">
-<ul>
-<cfloop from="1" to="#listlen(tabList)#" index="t">
-<li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
-</cfloop>
-</ul>
-<div id="tabBasic">
-<dl class="oneColumn">
-<dt class="first">
-</cfif>
-#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.description')#</dt>
-<dd><textarea id="description" name="description" cols="17" rows="7" class="alt">#HTMLEditFormat(rc.listBean.getdescription())#</textarea><input type=hidden name="siteid" value="#HTMLEditFormat(rc.siteid)#"></dd>
-<dt>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.uploadlistmaintenancefile')#</dt>
-<dd><input type="radio" name="direction" id="da" value="add" checked> <label for="da">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.addaddressestolist')#</label></dd>
-<dd><input type="radio" name="direction" id="dm" value="remove"> <label for="dm">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.removeaddressesfromlist')#</label></dd>
-<dd><input type="radio" name="direction" id="dp" value="replace"> <label for="dp">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.replaceemaillistwithnewfile')#</label></dd>
+<cfoutput>
 
-<dt>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.uploademailaddressfile')#</dt>
-<dd><input type="file" name="listfile" accept="text/plain" ></dd>
-<cfif rc.mlid neq ''>
-<dt><input type="checkbox" id="cm" name="clearMembers" value="1" /> <label for="cm">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.clearoutexistingmembers')#</label></dt>
-</cfif></dl>      
-<cfif rc.mlid neq ''>
-</div>
-<cfinclude template="dsp_tab_usage.cfm">
-</div>
-</cfif>
-<div class="clearfix" id="actionButtons">			
-<cfif rc.mlid eq ''>
-	<input type="button" class="submit" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.add')#" />
-	<input type=hidden name="mlid" value="#createuuid()#">
+<h1>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager')#</h1>
+
+<cfinclude template="dsp_secondary_menu.cfm">
+
+<form <cfif rc.mlid eq ''>class="fieldset-wrap"</cfif> novalidate="novalidate" action="index.cfm?muraAction=cMailingList.update" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);">
+
+<cfif rc.listBean.getispurge() neq 1>
+	<cfif rc.mlid eq ''>
+		<div class="fieldset">
+		<div class="control-group">
+			<label class="control-label">
+				#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.name')#
+			</label>
+			<div class="controls">
+				<input type="text" name="Name" value="#HTMLEditFormat(rc.listBean.getname())#" required="true" message="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.namerequired')#" class="span12">
+			</div>
+		</div>
+	<cfelse>
+		<div class="tabbable tabs-left">
+		<ul class="nav nav-tabs initActiveTab">
+		<cfloop from="1" to="#listlen(tabList)#" index="t">
+		<li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
+		</cfloop>
+		</ul>
+		<div class="tab-content">
+		<div id="tabBasic" class="tab-pane fade">
+		<div class="control-group">
+			<label class="control-label">
+				#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.name')#
+			</label>
+			<div class="controls">
+				<input type=text name="Name" value="#HTMLEditFormat(rc.listBean.getname())#" required="true" message="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.namerequired')#" class="span12">
+			</div>
+		</div>
+	</cfif>
+
+	<div class="control-group">
+		<label class="control-label">
+			#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.type')#
+		</label>
+		<div class="controls">
+			<label for="isPublicYes" class="radio inline">
+				<input type="radio" value="1" id="isPublicYes" name="isPublic" <cfif rc.listBean.getisPublic() eq 1>checked</cfif>> 
+				#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.public')#
+			</label> 
+			<label for="isPublicNo" class="radio inline">
+				<input type="radio" value="0" id="isPublicNo" name="isPublic" <cfif rc.listBean.getisPublic() neq 1>checked</cfif>> 
+				#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.private')#
+			</label>
+				<input type=hidden name="ispurge" value="0">
+		</div>
+	</div>
+
 <cfelse>
-	<cfif not rc.listBean.getispurge()>
-		<input type="button" class="submit" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.deleteconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#" />
-	</cfif> 
-	<input type="button" class="submit" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.update')#" />
-	<input type=hidden name="mlid" value="#rc.listBean.getmlid()#">
+	<div class="tabbable tabs-left">
+	<ul class="nav nav-tabs initActiveTab">
+	<cfloop from="1" to="#listlen(tabList)#" index="t">
+	<li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
+	</cfloop>
+	</ul>
+	<div class="tab-content">
+	<div id="tabBasic" class="tab-pane fade">
+
+	<div class="control-group">
+		<label class="control-label">
+			#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.masterdonotemaillistname')#
+		</label>
+		<div class="controls">
+			<input type="text" name="Name" value="#HTMLEditFormat(rc.listBean.getname())#" required="true" message="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.namerequired')#" class="span12">
+			<input type=hidden name="ispurge" value="1"><input type=hidden name="ispublic" value="1">
+		</div>
+	</div>
 </cfif>
-<input type="hidden" name="action" value="">
-</form>
+
+<div class="control-group">
+	<label class="control-label">
+		#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.description')#
+	</label>
+	<div class="controls">
+		<textarea id="description" name="description" rows="6" class="span12">#HTMLEditFormat(rc.listBean.getdescription())#</textarea>
+		<input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
+	</div>
 </div>
-</cfoutput>
-<!---
+
+<div class="control-group">
+	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.uploadlistmaintenancefile')#</dt>
+	<div class="controls">
+		<label for="da" class="radio inline">
+			<input type="radio" name="direction" id="da" value="add" checked>#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.addaddressestolist')#
+		</label>
+		<label for="dm" class="radio inline">
+			<input type="radio" name="direction" id="dm" value="remove"> #application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.removeaddressesfromlist')#
+		</label>
+		<label for="dp" class="radio inline">
+			<input type="radio" name="direction" id="dp" value="replace"> #application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.replaceemaillistwithnewfile')#
+		</label>
+	</div>
+</div>
+
+<div class="control-group">
+	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.uploademailaddressfile')#</label>
+	<div class="controls">
+		<input type="file" name="listfile" accept="text/plain" >
+	</div>
+</div>
+
 <cfif rc.mlid neq ''>
-<cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
-<cfhtmlhead text='<script type="text/javascript" src="js/tab-view.js"></script>'>
-<cfoutput><script type="text/javascript">
-initTabs(Array("#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.basic'))#","#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.usagereport'))#"),0,0,0);
-</script></cfoutput>
-</cfif>--->
+<div class="control-group">
+	<div class="controls">
+		<label for="cm" class="checkbox inline">
+			<input type="checkbox" id="cm" name="clearMembers" value="1" /> #application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.clearoutexistingmembers')#
+		</label>
+	</div>
+</div>
+</cfif>      
+
+</div>
+<cfif rc.mlid neq ''>
+	<cfinclude template="dsp_tab_usage.cfm">
+</cfif>
+	
+	<div class="clearfix form-actions">			
+		<cfif rc.mlid eq ''>
+			<input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.add')#" />
+			<input type=hidden name="mlid" value="#createuuid()#">
+		<cfelse>
+			<cfif not rc.listBean.getispurge()>
+				<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.deleteconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.delete')#" />
+			</cfif> 
+			<input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.update')#" />
+			<input type=hidden name="mlid" value="#rc.listBean.getmlid()#">
+		</cfif>
+		<input type="hidden" name="action" value="">
+	</div>
+</div>
+</div>
+
+</form>
+
+</cfoutput>

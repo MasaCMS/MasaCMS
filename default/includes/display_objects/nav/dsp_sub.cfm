@@ -45,4 +45,4 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
-<cfoutput><div id="navSub" class="sidebar-nav well">#dspSubNav()#</div></cfoutput>
+<cfoutput><div id="navSub" class="#this.navWrapperClass#">#dspSubNav()#</div></cfoutput>

@@ -1,7 +1,7 @@
 <cfsilent>
 <cfprocessingdirective pageencoding="utf-8">
 <!---
-Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckfinder.com/license
 
  Defines the object for the Hungarian language.
@@ -19,6 +19,7 @@ CKFLang = structNew();
 	CKFLang.Errors[105] = 'Érvénytelen fájl kiterjesztés.';
 	CKFLang.Errors[109] = 'Érvénytelen kérés.';
 	CKFLang.Errors[110] = 'Ismeretlen hiba.';
+	CKFLang.Errors[111] = 'It was not possible to complete the request due to resulting file size.';
 	CKFLang.Errors[115] = 'A fálj vagy mappa már létezik ezen a néven.';
 	CKFLang.Errors[116] = 'Mappa nem található. Kérjük frissítsen és próbálja újra.';
 	CKFLang.Errors[117] = 'Fájl nem található. Kérjük frissítsen és próbálja újra.';

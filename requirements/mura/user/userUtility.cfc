@@ -103,17 +103,39 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfquery datasource="#application.configBean.getReadOnlyDatasource()#" name="rsUser" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		SELECT * FROM tusers WHERE
 		username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.username)#"> 
-		AND 
-		(
-			password=<cfqueryparam cfsqltype="cf_sql_varchar" value="#hash(trim(arguments.password))#">
-			<cfif not variables.configBean.getEncryptPasswords() and len(trim(arguments.password)) neq 32>
-			OR
-			password=<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.password)#">
-			</cfif>
-		)
 		AND Type = 2 
 		and inactive=0
 		</cfquery>
+		
+		<cfif rsUser.recordcount and not (
+			(
+			 not variables.configBean.getEncryptPasswords()
+			 and rsUser.password eq arguments.password
+			)
+			OR
+
+			(
+			 
+			 variables.configBean.getEncryptPasswords()
+			 and 
+			 	(
+			 		variables.globalUtility.checkBCryptHash(arguments.password,rsUser.password) 	
+					OR
+					hash(arguments.password) eq rsUser.password	
+				)
+			)
+		)>			
+			<cfquery  name="rsUser" dbtype="query">
+				SELECT * FROM rsUser
+				where 0=1
+			</cfquery>
+		</cfif>
+		
+		<cfif rsUser.recordcount 
+			and variables.configBean.getEncryptPasswords() 
+			and hash(arguments.password) eq rsuser.password>
+			<cfset variables.userDAO.savePassword(rsuser.userid,arguments.password)>
+		</cfif>
 		
 		<!---
 		(not isDate(session.blockLoginUntil) 
@@ -581,29 +603,31 @@ Thanks for using #contactName#</cfoutput>
 	
 	<cfswitch expression="#arguments.CharSet#">
 	
-	 <cfcase value="alpha">
-	  <cfset charlist = alphaLcase>
-	   <cfif arguments.UCase IS "Yes">
-		<cfset charList = listappend(charlist, alphaUcase, "|")>
-	   </cfif>
+	<cfcase value="alpha">
+		<cfset charlist = alphaLcase>
+	   	<cfif arguments.UCase IS "Yes">
+			<cfset charList = listappend(charlist, alphaUcase, "|")>
+	   	</cfif>
 	 </cfcase>
 	
-	 <cfcase value="alphanumeric">
-	  <cfset charlist = "#alphaLcase#|#numeric#">
-	   <cfif arguments.UCase IS "Yes">
-		<cfset charList = listappend(charlist, alphaUcase, "|")>
+	<cfcase value="alphanumeric">
+	  	<cfset charlist = "#alphaLcase#|#numeric#">
+	   	<cfif arguments.UCase IS "Yes">
+			<cfset charList = listappend(charlist, alphaUcase, "|")>
 	   </cfif>  
 	 </cfcase>
 	 
-	 <cfcase value="numeric">
-	  <cfset charlist = numeric>
-	 </cfcase>
-	 
-	 <cfcase value="special">
-	  <cfset charlist = "#alphaLcase#|#numeric#|#alphaUcase#|#special#">
+	<cfcase value="numeric">
+	  	<cfset charlist = numeric>
 	 </cfcase>
 	  
-	 <cfdefaultcase><cfthrow detail="Valid values of the attribute <b>CharSet</b> are Alpha, AlphaNumeric, Numeric, and Special"> </cfdefaultcase> 
+	<cfcase value="special">
+		<cfset charlist = "#alphaLcase#|#numeric#|#alphaUcase#|#special#">	
+	</cfcase>
+
+	 <cfdefaultcase>
+	 	<cfthrow detail="Valid values of the attribute <b>CharSet</b> are Alpha, AlphaNumeric, Numeric and Special">
+	 </cfdefaultcase> 
 	</cfswitch>
 	
 	<cfloop from="1" to="#arguments.Length#" index="i">

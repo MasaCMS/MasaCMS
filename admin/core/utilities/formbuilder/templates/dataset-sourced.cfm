@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 	<div id="mura-tb-grid" class="mura-tb-form">
 		<div id="dataset-sourced" class="mura-tb-header">
-			<h3>#mmRBF.getKeyValue(session.rb,'formbuilder.source')#</h3>
+			<h2>#mmRBF.getKeyValue(session.rb,'formbuilder.source')#</h2>
 			<ul class="right">
 				<li><div class="ui-button" id="button-grid-edit" title="#mmRBF.getKeyValue(session.rb,'formbuilder.dataset.edit')#"><span class="ui-icon ui-icon-pencil"></span></div></li>
 			</ul>

@@ -48,20 +48,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rc.rslist=rc.groups.privateGroups />
 <cfset rc.crumbdata=application.contentManager.getCrumbList(rc.contentid,rc.siteid)>
 <cfoutput>
-<h2>#application.rbFactory.getKeyValue(session.rb,'permissions')#</h2>
-<cfif rc.moduleid eq '00000000000000000000000000000000000'>#application.contentRenderer.dspZoom(rc.crumbdata,rc.rsContent.fileEXT)#</cfif>
+<h1>#application.rbFactory.getKeyValue(session.rb,'permissions')#</h1>
+<div id="nav-module-specific" class="btn-group">
+	<a class="btn" href="##" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#" onclick="window.history.back(); return false;"><i class="icon-circle-arrow-left"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.back'))#</a>
+</div>
+<cfif rc.moduleid eq '00000000000000000000000000000000000'>#application.contentRenderer.dspZoom(crumbdata=rc.crumbdata,class="navZoom alt")#</cfif>
 <p>#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"permissions.nodetext"),rc.rscontent.title)#</p>	
 	
   <form novalidate="novalidate" method="post" name="form1" action="index.cfm?muraAction=cPerm.update&contentid=#URLEncodedFormat(rc.contentid)#&parentid=#URLEncodedFormat(rc.parentid)#">
-           <h3>#application.rbFactory.getKeyValue(session.rb,'user.adminusergroups')#</h3>
-			<table class="mura-table-grid stripe">
+           <h2>#application.rbFactory.getKeyValue(session.rb,'user.adminusergroups')#</h2>
+			<table class="table table-striped table-condensed table-bordered mura-table-grid">
 			<tr> 
             <th>#application.rbFactory.getKeyValue(session.rb,'permissions.editor')#</th>
             <th>#application.rbFactory.getKeyValue(session.rb,'permissions.author')#</th>
 			<th>#application.rbFactory.getKeyValue(session.rb,'permissions.inherit')#</th>
 			<cfif rc.moduleID eq '00000000000000000000000000000000000'><th>#application.rbFactory.getKeyValue(session.rb,'permissions.readonly')#</th></cfif>
 			<th>#application.rbFactory.getKeyValue(session.rb,'permissions.deny')#</th>
-            <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'permissions.group')#</th>
+            <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'permissions.group')#</th>
           </tr>
 		  <cfif rc.rslist.recordcount>
           <cfloop query="rc.rslist"> 
@@ -72,7 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		   <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="none" <cfif perm eq 'None'>checked</cfif>></td>
 		    <cfif rc.moduleID eq '00000000000000000000000000000000000'><td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="read" <cfif perm eq 'Read'>checked</cfif>></td></cfif>
 		    <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="deny" <cfif perm eq 'Deny'>checked</cfif>></td>
-		<td nowrap class="varWidth">#rc.rslist.GroupName#</td>
+		<td nowrap class="var-width">#rc.rslist.GroupName#</td>
             </tr></cfloop>
 		<cfelse>
 		 <tr> 
@@ -84,17 +87,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</table>
 		
 		<cfset rc.rslist=rc.groups.publicGroups />
-		<div class="separate"></div>
-		<h3>#application.rbFactory.getKeyValue(session.rb,'user.membergroups')#</h3>
+		<h2>#application.rbFactory.getKeyValue(session.rb,'user.membergroups')#</h2>
 		<p>#application.rbFactory.getKeyValue(session.rb,'permissions.memberpermscript')##application.rbFactory.getKeyValue(session.rb,'permissions.memberpermnodescript')#</p>
-		<table class="mura-table-grid stripe">
+		<table class="table table-striped table-condensed table-bordered mura-table-grid">
 			<tr> 
             <th>#application.rbFactory.getKeyValue(session.rb,'permissions.editor')#</th>
             <th>#application.rbFactory.getKeyValue(session.rb,'permissions.author')#</th>
 			<th>#application.rbFactory.getKeyValue(session.rb,'permissions.inherit')#</th>
 			<cfif rc.moduleID eq '00000000000000000000000000000000000'><th>#application.rbFactory.getKeyValue(session.rb,'permissions.readonly')#</th></cfif>
 			<th>#application.rbFactory.getKeyValue(session.rb,'permissions.deny')#</th>
-            <th class="varWidth">#application.rbFactory.getKeyValue(session.rb,'permissions.group')#</th>
+            <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'permissions.group')#</th>
           </tr>
 		  <cfif rc.rslist.recordcount>
           <cfloop query="rc.rslist"> 
@@ -105,7 +107,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		   <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="none" <cfif perm eq 'None'>checked</cfif>></td>
 		    <cfif rc.moduleID eq '00000000000000000000000000000000000'><td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="read" <cfif perm eq 'Read'>checked</cfif>></td></cfif>
 		    <td><input name="p#replacelist(rc.rslist.userid,"-","")#" type="radio" class="checkbox" value="deny" <cfif perm eq 'Deny'>checked</cfif>></td>
-		<td nowrap class="varWidth">#rc.rslist.GroupName#</td>
+		<td nowrap class="var-width">#rc.rslist.GroupName#</td>
             </tr></cfloop>
 		<cfelse>
 		 <tr> 
@@ -115,8 +117,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             </tr>
 		</cfif>
 		</table>
-	<div id="actionButtons">
-		 <input type="button" class="submit" onclick="javascript:document.form1.submit();" value="#application.rbFactory.getKeyValue(session.rb,'permissions.update')#" />
+	<div class="form-actions no-offset">
+		 <input type="button" class="submit btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'permissions.update')#" />
 	</div>
                     <input type="hidden" name="router" value="#cgi.HTTP_REFERER#">
 					<input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">

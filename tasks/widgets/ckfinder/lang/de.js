@@ -2,7 +2,7 @@
  * CKFinder
  * ========
  * http://ckfinder.com
- * Copyright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
+ * Copyright (C) 2007-2012, CKSource - Frederico Knabben. All rights reserved.
  *
  * The software, this file, and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
@@ -32,18 +32,19 @@ CKFinder.lang['de'] =
 		confirmCancel	: 'Einige Optionen wurden geändert. Wollen Sie den Dialog dennoch schließen?',
 		ok				: 'OK',
 		cancel			: 'Abbrechen',
-		confirmationTitle	: 'Confirmation', // MISSING
-		messageTitle	: 'Information', // MISSING
+		confirmationTitle	: 'Bestätigung',
+		messageTitle	: 'Information',
 		inputTitle		: 'Frage',
 		undo			: 'Rückgängig',
 		redo			: 'Wiederherstellen',
-		skip			: 'Skip', // MISSING
-		skipAll			: 'Skip all', // MISSING
-		makeDecision	: 'What action should be taken?', // MISSING
-		rememberDecision: 'Remember my decision' // MISSING
+		skip			: 'Überspringen',
+		skipAll			: 'Alle überspringen',
+		makeDecision	: 'Bitte Auswahl treffen.',
+		rememberDecision: 'Entscheidung merken'
 	},
 
 
+	// Language direction, 'ltr' or 'rtl'.
 	dir : 'ltr',
 	HelpLang : 'en',
 	LangCode : 'de',
@@ -74,31 +75,41 @@ CKFinder.lang['de'] =
 	FolderDelete	: 'Wollen Sie wirklich den Ordner "%1" löschen?',
 	FolderRenaming	: ' (Umbenennen...)',
 	FolderDeleting	: ' (Löschen...)',
+	DestinationFolder	: 'Destination Folder', // MISSING
 
 	// Files
 	FileRename		: 'Bitte geben Sie den neuen Dateinamen an: ',
 	FileRenameExt	: 'Wollen Sie wirklich die Dateierweiterung ändern? Die Datei könnte unbrauchbar werden!',
 	FileRenaming	: 'Umbennenen...',
 	FileDelete		: 'Wollen Sie wirklich die Datei "%1" löschen?',
+	FilesDelete	: 'Are you sure you want to delete %1 files?', // MISSING
 	FilesLoading	: 'Laden...',
-	FilesEmpty		: 'The folder is empty.', // MISSING
-	FilesMoved		: 'File %1 moved to %2:%3.', // MISSING
-	FilesCopied		: 'File %1 copied to %2:%3.', // MISSING
+	FilesEmpty		: 'Verzeichnis ist leer.',
+	DestinationFile	: 'Destination File', // MISSING
+	SkippedFiles	: 'List of skipped files:', // MISSING
 
 	// Basket
-	BasketFolder		: 'Basket', // MISSING
-	BasketClear			: 'Clear Basket', // MISSING
-	BasketRemove		: 'Remove from Basket', // MISSING
-	BasketOpenFolder	: 'Open Parent Folder', // MISSING
-	BasketTruncateConfirm : 'Do you really want to remove all files from the basket?', // MISSING
-	BasketRemoveConfirm	: 'Do you really want to remove the file "%1" from the basket?', // MISSING
-	BasketEmpty			: 'No files in the basket, drag and drop some.', // MISSING
-	BasketCopyFilesHere	: 'Copy Files from Basket', // MISSING
-	BasketMoveFilesHere	: 'Move Files from Basket', // MISSING
+	BasketFolder		: 'Korb',
+	BasketClear			: 'Korb löschen',
+	BasketRemove		: 'Aus dem Korb entfernen',
+	BasketOpenFolder	: 'Übergeordneten Ordner öffnen',
+	BasketTruncateConfirm : 'Wollen Sie wirklich alle Dateien aus dem Korb entfernen?',
+	BasketRemoveConfirm	: 'Wollen Sie wirklich die Datei "%1" aus dem Korb entfernen?',
+	BasketRemoveConfirmMultiple	: 'Do you really want to remove %1 files from the basket?', // MISSING
+	BasketEmpty			: 'Keine Dateien im Korb, einfach welche reinziehen.',
+	BasketCopyFilesHere	: 'Dateien aus dem Korb kopieren',
+	BasketMoveFilesHere	: 'Dateien aus dem Korb verschieben',
 
-	BasketPasteErrorOther	: 'File %s error: %e', // MISSING
-	BasketPasteMoveSuccess	: 'The following files were moved: %s', // MISSING
-	BasketPasteCopySuccess	: 'The following files were copied: %s', // MISSING
+	// Global messages
+	OperationCompletedSuccess	: 'Operation completed successfully.', // MISSING
+	OperationCompletedErrors		: 'Operation completed with errors.', // MISSING
+	FileError				: '%s: %e', // MISSING
+
+	// Move and Copy files
+	MovedFilesNumber		: 'Number of files moved: %s.', // MISSING
+	CopiedFilesNumber	: 'Number of files copied: %s.', // MISSING
+	MoveFailedList		: 'The following files could not be moved:<br />%s', // MISSING
+	CopyFailedList		: 'The following files could not be copied:<br />%s', // MISSING
 
 	// Toolbar Buttons (some used elsewhere)
 	Upload		: 'Hochladen',
@@ -117,18 +128,20 @@ CKFinder.lang['de'] =
 	NewSubFolder	: 'Neues Unterverzeichnis',
 	Rename			: 'Umbenennen',
 	Delete			: 'Löschen',
+	DeleteFiles		: 'Delete Files', // MISSING
 
-	CopyDragDrop	: 'Copy File Here', // MISSING
-	MoveDragDrop	: 'Move File Here', // MISSING
+	CopyDragDrop	: 'Hierher kopieren',
+	MoveDragDrop	: 'Hierher verschieben',
 
 	// Dialogs
-	RenameDlgTitle		: 'Rename', // MISSING
-	NewNameDlgTitle		: 'New Name', // MISSING
-	FileExistsDlgTitle	: 'File Already Exists', // MISSING
+	RenameDlgTitle		: 'Umbenennen',
+	NewNameDlgTitle		: 'Neuer Name',
+	FileExistsDlgTitle	: 'Datei existiert bereits',
 	SysErrorDlgTitle : 'Systemfehler',
 
-	FileOverwrite	: 'Overwrite', // MISSING
-	FileAutorename	: 'Auto-rename', // MISSING
+	FileOverwrite	: 'Überschreiben',
+	FileAutorename	: 'Automatisch umbenennen',
+	ManuallyRename	: 'Manually rename', // MISSING
 
 	// Generic
 	OkBtn		: 'OK',
@@ -143,22 +156,23 @@ CKFinder.lang['de'] =
 	UploadBtnCancel		: 'Abbrechen',
 
 	UploadNoFileMsg		: 'Bitte wählen Sie eine Datei auf Ihrem Computer aus.',
-	UploadNoFolder		: 'Please select a folder before uploading.', // MISSING
-	UploadNoPerms		: 'File upload not allowed.', // MISSING
-	UploadUnknError		: 'Error sending the file.', // MISSING
-	UploadExtIncorrect	: 'File extension not allowed in this folder.', // MISSING
+	UploadNoFolder		: 'Bitte ein Verzeichnis vor dem Hochladen wählen.',
+	UploadNoPerms		: 'Datei hochladen nicht erlaubt.',
+	UploadUnknError		: 'Fehler bei Dateitragung.',
+	UploadExtIncorrect	: 'Dateinamekürzel nicht in diesem Verzeichnis erlaubt.',
 
 	// Flash Uploads
-	UploadLabel			: 'Files to Upload', // MISSING
-	UploadTotalFiles	: 'Total Files:', // MISSING
-	UploadTotalSize		: 'Total Size:', // MISSING
-	UploadAddFiles		: 'Add Files', // MISSING
-	UploadClearFiles	: 'Clear Files', // MISSING
-	UploadCancel		: 'Cancel Upload', // MISSING
+	UploadLabel			: 'Dateien zum Hochladen',
+	UploadTotalFiles	: 'Gesamtanzahl Dateien:',
+	UploadTotalSize		: 'Gesamtgröße:',
+	UploadSend			: 'Hochladen',
+	UploadAddFiles		: 'Datei hinzufügen',
+	UploadClearFiles	: 'Dateiliste löschen',
+	UploadCancel		: 'Upload abbrechen',
 	UploadRemove		: 'Entfernen',
-	UploadRemoveTip		: 'Remove !f', // MISSING
-	UploadUploaded		: 'Uploaded !n%', // MISSING
-	UploadProcessing	: 'Processing...', // MISSING
+	UploadRemoveTip		: 'Entfernen !f',
+	UploadUploaded		: 'Hochgeladen !n%',
+	UploadProcessing	: 'In Arbeit...',
 
 	// Settings Panel
 	SetTitle		: 'Einstellungen',
@@ -173,6 +187,7 @@ CKFinder.lang['de'] =
 	SetSortName		: 'nach Dateinamen',
 	SetSortDate		: 'nach Datum',
 	SetSortSize		: 'nach Größe',
+	SetSortExtension		: 'nach Dateiendung',
 
 	// Status Bar
 	FilesCountEmpty : '<Leeres Verzeichnis>',
@@ -180,8 +195,10 @@ CKFinder.lang['de'] =
 	FilesCountMany	: '%1 Datei',
 
 	// Size and Speed
-	Kb				: '%1 kB',
-	KbPerSecond		: '%1 kB/s',
+	Kb				: '%1 KB',
+	Mb				: '%1 MB',
+	Gb				: '%1 GB',
+	SizePerSecond	: '%1/s',
 
 	// Connector Error Messages.
 	ErrorUnknown	: 'Ihre Anfrage konnte nicht bearbeitet werden. (Fehler %1)',
@@ -196,10 +213,11 @@ CKFinder.lang['de'] =
 	105 : 'Invalid file extension.',
 	109 : 'Unbekannte Anfrage.',
 	110 : 'Unbekannter Fehler.',
+	111 : 'It was not possible to complete the request due to resulting file size.', // MISSING
 	115 : 'Es existiert bereits eine Datei oder ein Ordner mit dem gleichen Namen.',
 	116 : 'Verzeichnis nicht gefunden. Bitte aktualisieren Sie die Anzeige und versuchen es noch einmal.',
 	117 : 'Datei nicht gefunden. Bitte aktualisieren Sie die Dateiliste und versuchen es noch einmal.',
-	118 : 'Source and target paths are equal.', // MISSING
+	118 : 'Quell- und Zielpfad sind gleich.',
 	201 : 'Es existiert bereits eine Datei unter gleichem Namen. Die hochgeladene Datei wurde unter "%1" gespeichert.',
 	202 : 'Ungültige Datei.',
 	203 : 'ungültige Datei. Die Dateigröße ist zu groß.',
@@ -207,8 +225,8 @@ CKFinder.lang['de'] =
 	205 : 'Es existiert kein temp. Ordner für das Hochladen auf den Server.',
 	206 : 'Das Hochladen wurde aus Sicherheitsgründen abgebrochen. Die Datei enthält HTML-Daten.',
 	207 : 'Die hochgeladene Datei wurde unter "%1" gespeichert.',
-	300 : 'Moving file(s) failed.', // MISSING
-	301 : 'Copying file(s) failed.', // MISSING
+	300 : 'Verschieben der Dateien fehlgeschlagen.',
+	301 : 'Kopieren der Dateien fehlgeschlagen.',
 	500 : 'Der Dateibrowser wurde aus Sicherheitsgründen deaktiviert. Bitte benachrichtigen Sie Ihren Systemadministrator und prüfen Sie die Konfigurationsdatei.',
 	501 : 'Die Miniaturansicht wurde deaktivert.'
 	},
@@ -217,38 +235,40 @@ CKFinder.lang['de'] =
 	ErrorMsg :
 	{
 		FileEmpty		: 'Der Dateinamen darf nicht leer sein.',
-		FileExists		: 'File %s already exists.', // MISSING
+		FileExists		: 'Datei %s existiert bereits.',
 		FolderEmpty		: 'Der Verzeichnisname darf nicht leer sein.',
+		FolderExists	: 'Folder %s already exists.', // MISSING
+		FolderNameExists	: 'Folder already exists.', // MISSING
 
 		FileInvChar		: 'Der Dateinamen darf nicht eines der folgenden Zeichen enthalten: \n\\ / : * ? " < > |',
 		FolderInvChar	: 'Der Verzeichnisname darf nicht eines der folgenden Zeichen enthalten: \n\\ / : * ? " < > |',
 
 		PopupBlockView	: 'Die Datei konnte nicht in einem neuen Fenster geöffnet werden. Bitte deaktivieren Sie in Ihrem Browser alle Popup-Blocker für diese Seite.',
-		XmlError		: 'It was not possible to properly load the XML response from the web server.', // MISSING
-		XmlEmpty		: 'It was not possible to load the XML response from the web server. The server returned an empty response.', // MISSING
-		XmlRawResponse	: 'Raw response from the server: %s' // MISSING
+		XmlError		: 'Es war nicht möglich die XML-Antwort von dem Server herunterzuladen.',
+		XmlEmpty		: 'Es war nicht möglich die XML-Antwort von dem Server herunterzuladen. Der Server hat eine leere Nachricht zurückgeschickt.',
+		XmlRawResponse	: 'Raw-Antwort vom Server: %s'
 	},
 
 	// Imageresize plugin
 	Imageresize :
 	{
-		dialogTitle		: 'Resize %s', // MISSING
-		sizeTooBig		: 'Cannot set image height or width to a value bigger than the original size (%size).', // MISSING
-		resizeSuccess	: 'Image resized successfully.', // MISSING
-		thumbnailNew	: 'Create a new thumbnail', // MISSING
+		dialogTitle		: 'Größenänderung %s',
+		sizeTooBig		: 'Bildgröße kann nicht größer als das Originalbild werden (%size).',
+		resizeSuccess	: 'Bildgröße erfolgreich geändert.',
+		thumbnailNew	: 'Neues Vorschaubild erstellen',
 		thumbnailSmall	: 'Klein (%s)',
 		thumbnailMedium	: 'Mittel (%s)',
 		thumbnailLarge	: 'Groß (%s)',
-		newSize			: 'Set a new size', // MISSING
+		newSize			: 'Eine neue Größe setzen',
 		width			: 'Breite',
 		height			: 'Höhe',
-		invalidHeight	: 'Invalid height.', // MISSING
-		invalidWidth	: 'Invalid width.', // MISSING
-		invalidName		: 'Invalid file name.', // MISSING
-		newImage		: 'Create a new image', // MISSING
-		noExtensionChange : 'File extension cannot be changed.', // MISSING
-		imageSmall		: 'Source image is too small.', // MISSING
-		contextMenuName	: 'Resize', // MISSING
+		invalidHeight	: 'Ungültige Höhe.',
+		invalidWidth	: 'Ungültige Breite.',
+		invalidName		: 'Ungültiger Name.',
+		newImage		: 'Neues Bild erstellen',
+		noExtensionChange : 'Dateierweiterung kann nicht geändert werden.',
+		imageSmall		: 'Bildgröße zu klein.',
+		contextMenuName	: 'Größenänderung',
 		lockRatio		: 'Größenverhältnis beibehalten',
 		resetSize		: 'Größe zurücksetzen'
 	},
@@ -257,15 +277,31 @@ CKFinder.lang['de'] =
 	Fileeditor :
 	{
 		save			: 'Speichern',
-		fileOpenError	: 'Unable to open file.', // MISSING
-		fileSaveSuccess	: 'File saved successfully.', // MISSING
-		contextMenuName	: 'Edit', // MISSING
-		loadingFile		: 'Loading file, please wait...' // MISSING
+		fileOpenError	: 'Datei kann nicht geöffnet werden.',
+		fileSaveSuccess	: 'Datei erfolgreich gespeichert.',
+		contextMenuName	: 'Bearbeitung',
+		loadingFile		: 'Datei wird geladen, einen Moment noch...'
 	},
 
 	Maximize :
 	{
 		maximize : 'Maximieren',
 		minimize : 'Minimieren'
+	},
+
+	Gallery :
+	{
+		current : 'Bild {current} von {total}'
+	},
+
+	Zip :
+	{
+		extractHereLabel	: 'Extract here', // MISSING
+		extractToLabel		: 'Extract to...', // MISSING
+		downloadZipLabel	: 'Download as zip', // MISSING
+		compressZipLabel	: 'Compress to zip', // MISSING
+		removeAndExtract	: 'Remove existing and extract', // MISSING
+		extractAndOverwrite	: 'Extract overwriting existing files', // MISSING
+		extractSuccess		: 'File extracted successfully.' // MISSING
 	}
 };

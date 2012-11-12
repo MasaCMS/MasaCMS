@@ -53,7 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset package="">
 </cfif>
 </cfsilent>
-<h2>Plugin Settings</h2>
+<h1>Plugin Settings</h1>
 <cfoutput>
 <ul class="metadata">
 <li><strong>Name:</strong> #htmlEditFormat(rc.pluginXML.plugin.name.xmlText)#</li>
@@ -67,7 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
 <cfif rsPlugin.recordcount and rsPlugin.deployed>
-<ul id="navTask">
+<ul class="navTask nav nav-pills">
 <li><a href="index.cfm?muraAction=cSettings.updatePluginVersion&moduleid=#rc.moduleid#">Update Plugin Version</a></li>
 <li><a href="index.cfm?muraAction=cSettings.createBundle&moduleid=#rc.moduleid#&siteID=&BundleName=#URLEncodedFormat(application.serviceFactory.getBean('contentUtility').formatFilename(rsPlugin.name))#">Create and Download Plugin Bundle</a></li>
 </ul></cfif>
@@ -78,7 +78,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 <cfset application.userManager.getCurrentUser().setValue("errors","")>
 
-<form novalidate="novalidate" class="clear" method="post" name="frmSettings" action="index.cfm?muraAction=cSettings.updatePlugin" onsubmit="return validateForm(this);">
+<form novalidate="novalidate" class="fieldset-wrap" method="post" name="frmSettings" action="index.cfm?muraAction=cSettings.updatePlugin" onsubmit="return submitForm(document.frmSettings);">
+<div class="fieldset">
 <cfsilent>
 
 <cfquery name="rsLocation" datasource="#application.configbean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
@@ -130,7 +131,7 @@ and structKeyExists(rc.pluginXML.plugin.extensions,"extension")>
 </cfif>
 
 </cfsilent>
-<dl class="oneColumn">
+
 
 <cfset licenseFile="#application.configBean.getPluginDir()##application.configBean.getFileDelim()##rsPlugin.directory##application.configBean.getFileDelim()#license.txt">
 
@@ -143,31 +144,41 @@ and fileExists(licenseFile)>
 
 <cfif hasLicense>
 <cffile file="#licenseFile#" action="read" variable="license">
-<dt>End User License Agreement</dt>
-<dd>
-<textarea readonly="true">
-#license#
-</textarea>
-</dd>
-<select name="licenseStatus" required="true" message="You Must Accept the End User License Agreement in Order to Proceed." onchange="if(this.value=='accept'){document.getElementById('settingsContainter').style.display='block';}else{document.getElementById('settingsContainter').style.display='none';}">
-<option value="">I Do Not Accept</option>
-<option value="accept">I Accept</option>
-</select>
-</dd>
+
+<div class="control-group" id="plugin-license">
+      <label class="control-label">End User License Agreement</label>
+      <div class="controls">
+		<textarea readonly="true" rows="16" class="span12">
+		#license#
+		</textarea>
+      </div>
+		<div class="controls">
+			<select class="span3" name="licenseStatus" required="true" message="You Must Accept the End User License Agreement in Order to Proceed." onchange="if(this.value=='accept'){document.getElementById('settingsContainter').style.display='block';}else{document.getElementById('settingsContainter').style.display='none';}">
+			<option value="">I Do Not Accept</option>
+			<option value="accept">I Accept</option>
+			</select>
+		</div>
+</div>
 <span id="settingsContainter" style="display:none">
 </cfif>
 
-<dt>Plugin Name (Alias)</dt>	
-<dd><input name="pluginalias" type="text" value="#htmlEditFormat(rsPlugin.name)#" required="true" message="The 'Name' field is required." maxlength="100"/></dd>
+<div class="control-group">
+	<div class="span3">
+      <label class="control-label">Plugin Name (Alias)</label>
+      <div class="controls"><input name="pluginalias" class="span12" type="text" value="#htmlEditFormat(rsPlugin.name)#" required="true" message="The 'Name' field is required." maxlength="100"/></div>
+    </div>
 
-<dt>Load Priority</dt>
-<dd><select name="loadPriority">
-	<cfloop from="1" to="10" index="i">
-	<option value="#i#" <cfif rsPlugin.loadPriority eq i>selected</cfif>>#i#</option>
-	</cfloop>
-	</select>
-</dd>
-
+	<div class="span6">
+		<label class="control-label">Load Priority</label>
+		<div class="controls">
+			<select name="loadPriority" class="span2">
+			<cfloop from="1" to="10" index="i">
+			<option value="#i#" <cfif rsPlugin.loadPriority eq i>selected</cfif>>#i#</option>
+			</cfloop>
+			</select>
+		</div>
+	</div>
+</div>
 <cfif settingsLen>
 <cfloop from="1" to="#settingsLen#" index="i">
 		<cfsilent>
@@ -181,92 +192,118 @@ and fileExists(licenseFile)>
 			</cfif>
 		</cfif>
 		</cfsilent>
-		<dt>
+		<div class="control-group">
+     	 <label class="control-label"
 		<cfif len(settingBean.getHint())>
-		<a href="##" class="tooltip">#settingBean.getLabel()# <span>#settingBean.gethint()#</span></a>
+		<a href="##" rel="tooltip" title="#HTMLEditFormat(settingBean.gethint())#">#settingBean.getLabel()# <i class="icon-question-sign"></i></a>
 		<cfelse>
 		#settingBean.getLabel()#
 		</cfif>
-		</dt>
-		<dd>#settingBean.renderSetting(settingBean.getSettingValue())#</dd>
+		</label>
+      	<div class="controls">#settingBean.renderSetting(settingBean.getSettingValue())#</div>
+    </div>
 </cfloop>
 </cfif>
 
 <cfif objectsLen>
-<dt>Display Objects</dt>	
-<dd><ul>
-<cfloop from="1" to="#objectsLen#" index="i">
-<li>#htmlEditFormat(rc.pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes.name)#</li>
-</cfloop>
-</ul>
-</dd>
-<dt>Display Objects Location</dt>
-<dd><select name="location" onchange="if(this.value=='local'){jQuery('##ov').show();}else{jQuery('##ov').hide();}">
-	<option value="global" <cfif location eq "global">selected</cfif>>global</option>
-	<option value="local" <cfif location eq "local">selected</cfif>>local</option>
-	</select>
-</dd>
+
+<div class="control-group">
+	<div class="span3">
+		<label class="control-label">Display Objects</label>
+		<div class="controls">
+			<ul>
+				<cfloop from="1" to="#objectsLen#" index="i">
+				<li>#htmlEditFormat(rc.pluginXML.plugin.displayobjects.displayobject[i].xmlAttributes.name)#</li>
+				</cfloop>
+			</ul>
+		</div>
+	</div>
+
+	<div class="span3">
+		<label class="control-label">Display Objects Location</label>
+		<div class="controls">
+			<select class="span6" name="location" onchange="if(this.value=='local'){jQuery('##ov').show();}else{jQuery('##ov').hide();}">
+				<option value="global" <cfif location eq "global">selected</cfif>>Global</option>
+				<option value="local" <cfif location eq "local">selected</cfif>>Local</option>
+			</select>
+		</div>
+	</div>
 <span id="ov"<cfif location eq "global"> style="display:none;"</cfif>>
-<dt>If Display Object Already Exists?</dt>
-<dd>
+
+<div class="span3">
+      <label class="control-label">If Display Object Already Exists?</label>
+      <div class="controls">
 <select name="overwrite">
 		<option value="false">Do not overwrite </option>
 		<option value="true">Overwrite</option>
 </select>
-</dd>
+</div>
+</div>
 </span>
 <cfelse>
 <input type="hidden" name="location" value="global">
 </cfif>
-
+</div>
 
 <cfif scriptsLen>
-<dt>Scripts</dt>
-<dd><ul>
+
+<div class="control-group">
+      <label class="control-label">Scripts</label>
+      <div class="controls"><ul>
 <cfloop from="1" to="#scriptsLen#" index="i">
 	<li><cfif structKeyExists(rc.pluginXML.plugin.scripts.script[i].XmlAttributes,"runat")>#htmlEditFormat(rc.pluginXML.plugin.scripts.script[i].xmlAttributes.runat)#<cfelse>#htmlEditFormat(rc.pluginXML.plugin.scripts.script[i].xmlAttributes.event)#</cfif></li>
 </cfloop>
 </ul>
-</dd>
+</div>
+    </div>
 </cfif> 
 
 <cfif eventHandlersLen>
-<dt>Event Handlers</dt>
-<dd><ul>
+
+<div class="control-group">
+      <label class="control-label">Event Handlers</label>
+      <div class="controls"><ul>
 <cfloop from="1" to="#eventHandlersLen#" index="i">
 	<li><cfif structKeyExists(rc.pluginXML.plugin.eventHandlers.eventHandler[i].XmlAttributes,"runat")>#htmlEditFormat(rc.pluginXML.plugin.eventHandlers.eventHandler[i].xmlAttributes.runat)#<cfelse>#htmlEditFormat(rc.pluginXML.plugin.eventHandlers.eventHandler[i].xmlAttributes.event)#</cfif></li>
 </cfloop>
 </ul>
-</dd>
+</div>
+    </div>
 </cfif> 
 
 <cfif extensionsLen>
-<dt>Class Extensions</dt>
-<dd><ul>
+
+<dt>Class Extensions</label>
+      <div class="controls"><ul>
 <cfloop from="1" to="#extensionsLen#" index="i">
 	<li>#htmlEditFormat(rc.pluginXML.plugin.extensions.extension[i].xmlAttributes.type)#/<cfif structKeyExists(rc.pluginXML.plugin.extensions.extension[i].XmlAttributes,"subtype")>#htmlEditFormat(rc.pluginXML.plugin.extensions.extension[i].xmlAttributes.subtype)#<cfelse>Default</cfif></li>
 </cfloop>
 </ul>
-</dd>
+</div>
+    </div>
 
 </cfif>
 
 <cfset rsAssigned=application.pluginManager.getAssignedSites(rc.moduleID)>
-<dt>Site Assignment</dt>
-<dd><ul>
-<cfloop query="rc.rsSites">
-<li><input type="checkbox" value="#rc.rsSites.siteID#" name="siteAssignID"<cfif listFind(valuelist(rsAssigned.siteID),rc.rsSites.siteID)> checked</cfif>> #rc.rsSites.site#</li>
-</cfloop>
-</ul></dd>
+
+<div class="control-group">
+	<label class="control-label">Site Assignment</label>
+	<div class="controls">
+		<cfloop query="rc.rsSites">
+		<label class="checkbox"><input type="checkbox" value="#rc.rsSites.siteID#" name="siteAssignID"<cfif listFind(valuelist(rsAssigned.siteID),rc.rsSites.siteID)> checked</cfif>> #rc.rsSites.site#</label>
+		</cfloop>
+	</div>
+</div>
 <cfif hasLicense>
 </span>
 </cfif>
-</dl>
+
 <input name="package" type="hidden" value="#htmlEditFormat(package)#"/>
 <input type="hidden" name="moduleID" value="#rc.moduleID#">
 </cfoutput>
-<div id="actionButtons">
-<input type="submit" value="Update">
+</div>
+<div class="form-actions">
+<input type="submit" class="btn" value="Update">
 </div>
 </form>
 

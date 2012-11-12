@@ -59,10 +59,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="arguments.rc.extendSetID" default="" />
 	<cfparam name="arguments.rc.attibuteID" default="" />
 	<cfparam name="arguments.rc.siteID" default="" />
+	<cfparam name="arguments.rc.hasAvailableSubTypes" default="0" />
 </cffunction>
 
 <cffunction name="updateSubType" output="false">
 	<cfargument name="rc">
+	
+	<cfif not arguments.rc.hasAvailableSubTypes>
+		<cfset arguments.rc.availableSubTypes="">
+	</cfif>
 	
 	 <cfset arguments.rc.subtypeBean=application.classExtensionManager.getSubTypeByID(arguments.rc.subTypeID) />
 	  <cfset arguments.rc.subtypeBean.set(arguments.rc) />

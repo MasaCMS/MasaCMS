@@ -3,7 +3,7 @@
  * CKFinder
  * ========
  * http://ckfinder.com
- * Moveright (C) 2007-2011, CKSource - Frederico Knabben. All rights reserved.
+ * Moveright (C) 2007-2012, CKSource - Frederico Knabben. All rights reserved.
  *
  * The software, THIS file and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, moveing,
@@ -15,7 +15,7 @@
 
 <cffunction access="public" name="buildXml" hint="send XML response" returntype="boolean" description="send response" output="true">
 
-	<cfset var i =1 />
+	<cfset var i = 0 />
 	<cfset var fileSystem = APPLICATION.CreateCFC("Utils.FileSystem") />
 	<cfset var coreConfig = APPLICATION.CreateCFC("Core.Config")>
 	<cfset var moved = 0 />
@@ -32,6 +32,7 @@
 	<cfset var result = "" />
 	<cfset var currentFolder = "" />
 	<cfset var resourceTypeConfig = "" />
+	<cfset var thumbnailPath = "" />
 
 	<cfif not structkeyexists(FORM, "CKFinderCommand") or FORM.CKFinderCommand neq "true">
 		<cfthrow errorcode="#REQUEST.constants.CKFINDER_CONNECTOR_ERROR_INVALID_REQUEST#" type="ckfinder" />
@@ -114,6 +115,7 @@
 				</cfif>
 			</cfif>
 			<cfset currentFolderServerPath = currentFolder.getServerPath() >
+			<cfset thumbnailPath = fileSystem.CombinePaths(currentFolder.getThumbsServerPath(), filesystem.getThumbFileName(name)) />
 			<cfset sourceFilePath = fileSystem.CombinePaths(currentFolderServerPath, name)>
 			<!--- check #6 (hidden file name) --->
 			<cfif coreConfig.checkIsHiddenFile(name)>
@@ -150,6 +152,12 @@
 					<cffile action="delete" file="#destinationFilePath#">
 					<cffile action="copy" source="#sourceFilePath#" destination="#destinationFilePath#">
 					<cffile action="delete" file="#sourceFilePath#">
+					<cftry>
+						<cffile action="delete" file="#thumbnailPath#">
+						<!--- just handle silently this exception when deleting thumbnail fails --->
+						<cfcatch>
+						</cfcatch>
+					</cftry>
 					<cfset moved = moved +1>
 					<cfcatch type="any">
 						<cfset errorCode = REQUEST.constants.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED>
@@ -158,11 +166,11 @@
 					</cfcatch>
 					</cftry>
 				<cfelseif Find("autorename", options) neq 0>
-					<cfset iCounter = 1>
 					<cfscript>
 					fileName = name;
 					fileNameWithoutExtension = fileSystem.getFileNameWithoutExtension(name);
 					fileExtension = fileSystem.getFileExtension(name);
+					i = 0;
 
 					while (true)
 					{
@@ -180,6 +188,12 @@
 					<cftry>
 					<cffile action="copy" source="#sourceFilePath#" destination="#destinationFilePath#">
 					<cffile action="delete" file="#sourceFilePath#">
+					<cftry>
+						<cffile action="delete" file="#thumbnailPath#">
+						<!--- just handle silently this exception when deleting thumbnail fails --->
+						<cfcatch>
+						</cfcatch>
+					</cftry>
 					<cfset moved = moved +1>
 					<cfcatch type="any">
 						<cfset errorCode = REQUEST.constants.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED>
@@ -196,6 +210,12 @@
 				<cftry>
 				<cffile action="copy" source="#sourceFilePath#" destination="#destinationFilePath#">
 				<cffile action="delete" file="#sourceFilePath#">
+				<cftry>
+					<cffile action="delete" file="#thumbnailPath#">
+					<!--- just handle silently this exception when deleting thumbnail fails --->
+					<cfcatch>
+					</cfcatch>
+				</cftry>
 				<cfset moved = moved +1>
 				<cfcatch type="any">
 					<cfset errorCode = REQUEST.constants.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED>

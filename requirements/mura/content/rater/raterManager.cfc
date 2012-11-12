@@ -190,7 +190,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				or tcontent.Type = 'Component' 
 				or tcontent.Type = 'Link'
 				or tcontent.Type = 'File' 
-				or tcontent.Type = 'Portal'
+				or tcontent.Type = 'LocalRepo'
 				or tcontent.Type = 'Calendar'
 				or tcontent.Type = 'Form'
 				or tcontent.Type = 'Gallery') 
