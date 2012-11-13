@@ -53,7 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <head><cfoutput>
 <title>#application.rbFactory.getKeyValue(session.rb,'user.selectuser')#</title>
-<link href="#application.configBean.getContext()#/admin/assets/css/admin-min.css" rel="stylesheet" type="text/css" />
+<link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
 
 <script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 <script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui.js?coreversion=#application.coreversion#" type="text/javascript"></script>
@@ -101,7 +101,7 @@ function goAndClose(userid)	{
 //-->
 </script>
 </cfoutput>
-<link href="../../css/admin-min.css" rel="stylesheet" type="text/css">
+<link href="../../css/admin.min.css" rel="stylesheet" type="text/css">
 <!--[if IE]>
 <link href="../../css/ie.css" rel="stylesheet" type="text/css" />
 <![endif]-->

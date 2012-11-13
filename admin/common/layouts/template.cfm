@@ -120,7 +120,7 @@
 	<link rel="shortcut icon" href="#application.configBean.getContext()#/admin/images/favicon.ico" type="image/x-icon" />
 
 	<!-- CSS -->
-	<link href="#application.configBean.getContext()#/admin/assets/css/admin-min.css" rel="stylesheet" type="text/css" />
+	<link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
 
     <!-- Spinner JS -->
 	<script src="#application.configBean.getContext()#/admin/assets/js/spin.min.js" type="text/javascript"></script>

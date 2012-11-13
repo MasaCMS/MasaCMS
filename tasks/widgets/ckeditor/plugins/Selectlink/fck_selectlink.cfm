@@ -25,7 +25,7 @@ StructAppend(attributes, form, "no");
 		<meta content="noindex, nofollow" name="robots">
 		<script src="#application.configBean.getContext()#/admin/assets/js/admin.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
-		<link href="#application.configBean.getContext()#/admin/assets/css/admin-min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+		<link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 		<link rel="stylesheet" type="text/css" href="#application.configBean.getContext()#/tasks/widgets/ckeditor/skins/mura/dialog.css">
 	</head>
 </cfoutput>
