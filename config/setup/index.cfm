@@ -534,7 +534,7 @@ to your own modified versions of Mura CMS.
 <link rel="shortcut icon" href="#context#/admin/images/favicon.ico" type="image/x-icon" />
 
 <!-- CSS -->
-<link href="#context#/admin/assets/css/admin-min.css" rel="stylesheet" type="text/css" />
+<link href="#context#/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
 
 <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>

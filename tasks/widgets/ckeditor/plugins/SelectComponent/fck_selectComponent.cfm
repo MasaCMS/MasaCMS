@@ -4,7 +4,7 @@
 		<title>Select Component</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta content="noindex, nofollow" name="robots">
-		<link href="#application.configBean.getContext()#/admin/assets/css/admin-min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+		<link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 		<link rel="stylesheet" type="text/css" href="<cfoutput>#application.configBean.getContext()#</cfoutput>/tasks/widgets/ckeditor/skins/mura/dialog.css">
 
 		<cfset rs=application.contentManager.getComponents(session.moduleid,session.siteid)/>
