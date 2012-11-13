@@ -93,6 +93,9 @@
   /* @group Category Assignment */
 
 }
+.mura.ie.ie7 #mura-nodes .title.file {
+  padding-left: 0;
+}
 .mura.ie.ie7 .navbar {
   /* Fixing IE7's z-index madness */
 
