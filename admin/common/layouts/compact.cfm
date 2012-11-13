@@ -120,7 +120,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		var siteid='#session.siteid#';
 		</script>
 		
-		<link href="#application.configBean.getContext()#/admin/assets/css/admin-min.css" rel="stylesheet" type="text/css" />
+		<link href="#application.configBean.getContext()#/admin/assets/css/admin.min.css" rel="stylesheet" type="text/css" />
 		#session.dateKey#
 		<script type="text/javascript">
 			var frontEndProxy;
