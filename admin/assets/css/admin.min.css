@@ -14754,7 +14754,7 @@ font-size: 12px;
   cursor: hand !important;
 }
 .mura body.compact {
-  padding: 0;
+  padding: 25px;
   background: #fff;
 }
 .mura .main {
