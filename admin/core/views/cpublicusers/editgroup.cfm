@@ -107,7 +107,7 @@ select * from rsSubTypes where subType <> 'Default'
           		<div class="control-group">
                 <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.type')#</label>
                 <div class="controls">
-                  <select name="subtype" class="dropdown" onchange="userManager.resetExtendedAttributes('#rc.userBean.getUserID()#','1',this.value,'#userPoolID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');">
+                  <select name="subtype"  onchange="userManager.resetExtendedAttributes('#rc.userBean.getUserID()#','1',this.value,'#userPoolID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');">
             			<option value="Default" <cfif  rc.userBean.getSubType() eq "Default">selected</cfif>> #application.rbFactory.getKeyValue(session.rb,'user.default')#</option>
             				<cfloop query="rsNonDefault">
             					<option value="#rsNonDefault.subtype#" <cfif rc.userBean.getSubType() eq rsNonDefault.subtype>selected</cfif>>#rsNonDefault.subtype#</option>

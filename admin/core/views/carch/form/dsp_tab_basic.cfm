@@ -176,7 +176,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						
 						fckEditor.create(); // create the editor.
 					</cfscript>
-					<script type="text/javascript" language="Javascript">
+					<script type="text/javascript">
 					var loadEditorCount = 0;
 					
 					function FCKeditor_OnComplete( editorInstance ) { 	
@@ -195,7 +195,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<textarea name="body" id="body">#HTMLEditFormat(rc.contentBean.getBody())#</textarea>
 				<cfelse>	
 					<textarea name="body" id="body"><cfif len(rc.contentBean.getBody())>#HTMLEditFormat(rc.contentBean.getBody())#<cfelse><p></p></cfif></textarea>
-					<script type="text/javascript" language="Javascript">
+					<script type="text/javascript">
 					var loadEditorCount = 0;
 					<cfif rc.preview eq 1>var previewLaunched= false;</cfif>
 

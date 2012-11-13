@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 <cfhtmlhead text='<script src="assets/js/manage-data.js?coreversion=#application.coreversion#" type="text/javascript"></script>'>
 </cfsilent>
-<script language="javascript" type="text/javascript">
+<script type="text/javascript">
 function setFields(){
 document.getElementById('responseDisplayFields').value=document.getElementById('summaryList2').value + '~' + document.getElementById('detailList2').value;
 }

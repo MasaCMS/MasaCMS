@@ -123,25 +123,25 @@
 	<link href="#application.configBean.getContext()#/admin/assets/css/admin-min.css" rel="stylesheet" type="text/css" />
 
     <!-- Spinner JS -->
-	<script src="#application.configBean.getContext()#/admin/assets/js/spin.min.js" type="text/javascript" language="Javascript"></script>
+	<script src="#application.configBean.getContext()#/admin/assets/js/spin.min.js" type="text/javascript"></script>
 
 	<!-- Mura Admin JS -->
-	<script src="#application.configBean.getContext()#/admin/assets/js/admin.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript"></script>
+	<script src="#application.configBean.getContext()#/admin/assets/js/admin.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 	
     <!-- jQuery -->
     <script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-    <script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.spin.js" type="text/javascript" language="Javascript"></script>
+    <script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.spin.js" type="text/javascript"></script>
 	<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 	<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 	<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 	<!--- <link href="#application.configBean.getContext()#/admin/assets/less/jquery.ui.less" rel="stylesheet/less" type="text/css" /> --->		
 	
-	<script src="#application.configBean.getContext()#/admin/assets/js/upgrade-notification.min.js" type="text/javascript" language="Javascript"></script>
+	<script src="#application.configBean.getContext()#/admin/assets/js/upgrade-notification.min.js" type="text/javascript"></script>
 	<!--- <cfif cgi.http_user_agent contains 'msie'> --->
 	<!--[if IE 7]>
 	<link href="#application.configBean.getContext()#/admin/assets/css/ie/ie.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" href="#application.configBean.getContext()#/admin/assets/css/font-awesome-ie7.css">
-	<script src="#application.configBean.getContext()#/admin/assets/js/mura-font-lte-ie7.js" type="text/javascript" language="Javascript"></script>
+	<script src="#application.configBean.getContext()#/admin/assets/js/mura-font-lte-ie7.js" type="text/javascript"></script>
 	<![endif]-->
 	<!--- </cfif> --->
 	
@@ -160,7 +160,7 @@
 	<link href="#application.configBean.getContext()#/tasks/widgets/colorpicker/css/colorpicker.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 
 	<!-- JSON -->
-	<script src="#application.configBean.getContext()#/admin/assets/js/json2.js" type="text/javascript" language="Javascript"></script>
+	<script src="#application.configBean.getContext()#/admin/assets/js/json2.js" type="text/javascript"></script>
 	
 	<!-- Mura Vars -->
 	<script type="text/javascript">
@@ -189,7 +189,7 @@
 	#rc.ajax#
 
 	<cfif rc.originalcircuit neq "cLogin">
-		<script language="JavaScript">
+		<script>
 		if (top.location != self.location) {
 		    	top.location.replace(self.location)
 			}
@@ -199,7 +199,7 @@
 	<!--- <cfif cgi.http_user_agent contains 'msie'> --->
 	<!--[if IE]>
 		<link href="#application.configBean.getContext()#/admin/assets/css/ie/ie.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
-		<script src="#application.configBean.getContext()#/admin/assets/js/mura-font-lte-ie7.js" type="text/javascript" language="Javascript"></script>
+		<script src="#application.configBean.getContext()#/admin/assets/js/mura-font-lte-ie7.js" type="text/javascript"></script>
 	<![endif]-->
 	
 	<!--[if IE 7]>
@@ -234,12 +234,12 @@
     </div> <!-- /main -->  
     
     <!---
-    <script type="text/javascript" language="javascript">
+    <script type="text/javascript">
 		stripe('stripe');
 	</script>
 	
 	<cfif rc.originalcircuit neq 'cLogin' and yesNoFormat(application.configBean.getValue("sessionTimeout"))>
-		<script type="text/javascript" language="javascript">
+		<script type="text/javascript">
 			window.setTimeout('CountDown()',100);
 		</script>
 	</cfif>	

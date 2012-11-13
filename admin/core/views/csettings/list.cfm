@@ -96,7 +96,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</ul>
 	<div class="tab-content">
 		<div id="tabCurrentsites" class="tab-pane fade"> 
-			<script type="text/javascript" language="javascript">
+			<script type="text/javascript">
 				jQuery(function ($) {
 					$('#checkall').click(function () {
 						$(':checkbox.checkall').attr('checked', this.checked);

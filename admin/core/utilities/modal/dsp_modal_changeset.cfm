@@ -138,7 +138,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	</style>
 	<![endif]-->
-	<script language="javascript" type="text/javascript" src="#$.globalConfig('context')#/admin/assets/js/jquery/jquery.equalheights.js"></script>
+	<script type="text/javascript" src="#$.globalConfig('context')#/admin/assets/js/jquery/jquery.equalheights.js"></script>
 	
 	<script>
 	$(document).ready(function() {

@@ -204,7 +204,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h3 class="divide">#application.rbFactory.getKeyValue(session.rb,'advertising.currentasset')#</h3>
 <cfoutput>#application.advertiserManager.renderCreative(rc.creativeBean)#</cfoutput>
 </cfif></cfoutput>
-<script type="text/javascript" language="Javascript">
+<script type="text/javascript">
 	var loadEditorCount = 0;
 	jQuery('#textBody').ckeditor(
 	{ toolbar:'Default',
