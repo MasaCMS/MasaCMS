@@ -588,8 +588,17 @@ function submitForm(frm, action, msg) {
 
 function actionModal(action) {
 	$('body').append('<div id="action-modal" class="modal-backdrop fade in"></div>');
-	$('#action-modal').spin(
-	spinnerArgs, action);
+	if(typeof(action)=='string'){
+		$('#action-modal').spin(spinnerArgs, 
+			function(){
+				location.href=action;
+			}
+		);
+	} else {
+		$('#action-modal').spin(spinnerArgs, action);
+	}
+ 
+	return false;
 }
 
 function preview(url, targetParams) {
