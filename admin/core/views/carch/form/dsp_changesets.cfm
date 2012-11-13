@@ -1,6 +1,6 @@
 <cfoutput>
 <cfif not currentChangeset.getIsNew()>
-<p class="notice">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetnotenotify")#: "#currentChangeset.getName()#"</p>
+<p class="alert">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetnotenotify")#: "#currentChangeset.getName()#"</p>
 </cfif>
 <script>
 <cfif not currentChangeset.getIsNew() and not rc.contentBean.getApproved()>

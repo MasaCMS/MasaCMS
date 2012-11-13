@@ -419,7 +419,7 @@ to your own modified versions of Mura CMS.
 		        <div class="span3">
 			        <label class="control-label">Advertisement Manager</label>
 			        <div class="controls"> 
-			            <!--- <p class="notice">NOTE: The Advertisement Manager is not supported within Mura Bundles and Staging to Production configurations.</p> --->
+			            <!--- <p class="alert">NOTE: The Advertisement Manager is not supported within Mura Bundles and Staging to Production configurations.</p> --->
 			            <label class="radio inline"><input type="radio" name="adManager" value="0" <cfif rc.siteBean.getadManager() neq 1> CHECKED</CFIF>>Off</label>
 			            <label class="radio inline"><input type="radio" name="adManager" value="1" <cfif rc.siteBean.getadManager() eq 1> CHECKED</CFIF>>On</label>
 			          </div>
@@ -433,7 +433,7 @@ to your own modified versions of Mura CMS.
 		        <div class="span3">
 			        <label class="control-label">Email Broadcaster</label>
 			        <div class="controls"> 
-			            <!--- <p class="notice">NOTE: The Email Broadcaster is not supported within Mura Bundles.</p> --->
+			            <!--- <p class="alert">NOTE: The Email Broadcaster is not supported within Mura Bundles.</p> --->
 			            <label class="radio inline"><input type="radio" name="EmailBroadcaster" value="0" <cfif rc.siteBean.getemailbroadcaster() neq 1> CHECKED</CFIF>>Off</label>
 			            <label class="radio inline"><input type="radio" name="EmailBroadcaster" value="1" <cfif rc.siteBean.getemailbroadcaster()  eq 1> CHECKED</CFIF>>On</label>
 			        </div>

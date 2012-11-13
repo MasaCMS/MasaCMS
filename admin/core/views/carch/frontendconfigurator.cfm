@@ -45,14 +45,14 @@ jQuery(document).ready(function(){
 	<cfset draftcheck=application.contentManager.getDraftPromptData(rc.contentBean.getContentID(),rc.contentBean.getSiteID())>
 	
 	<cfif yesNoFormat(draftcheck.showdialog) and draftcheck.historyid neq rc.contentBean.getContentHistID()>
-	<p class="notice">
+	<p class="alert">
 	#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.inline')#: <strong><a href="?muraAction=cArch.edit&moduleID=#URLEncodedFormat(rc.contentBean.getModuleID())#&siteID=#URLEncodedFormat(rc.contentBean.getSiteID())#&topID=#URLEncodedFormat(rc.contentBean.getContentID())#&contentID=#URLEncodedFormat(rc.contentBean.getContentID())#&return=#URLEncodedFormat(rc.return)#&contentHistID=#draftcheck.historyID#&parentID=#URLEncodedFormat(rc.contentBean.getParentID())#&startrow=#URLEncodedFormat(rc.startrow)#&compactDisplay=true&homeID=#HTMLEditFormat(rc.homeBean.getContentID())#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.gotolatest')#</a></strong>
 	<p>
 	</cfif>
 	</cfif>
 	
 	<cfif hasChangesets and (not currentChangeset.getIsNew() or pendingChangesets.recordcount)>
-	<p class="notice">
+	<p class="alert">
 	<cfif pendingChangesets.recordcount>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetnodenotify")#: 
 	<cfloop query="pendingChangesets"><a href="?muraAction=cArch.edit&moduleID=#URLEncodedFormat(rc.contentBean.getModuleID())#&siteID=#URLEncodedFormat(rc.contentBean.getSiteID())#&topID=#URLEncodedFormat(rc.contentBean.getContentID())#&contentID=#URLEncodedFormat(rc.contentBean.getContentID())#&return=#URLEncodedFormat(rc.return)#&contentHistID=#pendingChangesets.contentHistID#&parentID=#URLEncodedFormat(rc.contentBean.getParentID())#&startrow=#URLEncodedFormat(rc.startrow)#&compactDisplay=true&homeID=#HTMLEditFormat(rc.homeBean.getContentID())#">"#HTMLEditFormat(pendingChangesets.changesetName)#"</a><cfif pendingChangesets.currentrow lt pendingChangesets.recordcount>, </cfif></cfloop><br/></cfif>
 	<cfif not currentChangeset.getIsNew()>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetversionnotify")#: "#HTMLEditFormat(currentChangeset.getName())#"</cfif>

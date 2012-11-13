@@ -46,8 +46,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfoutput>
 <h1>Site Copy Tool</h1>
-<!--- ><p class="notice">IMPORTANT: All content in the site that is being copied to will be replaced.</p> --->
-<p class="notice">IMPORTANT: All content in the destination site ("To") will be deleted and replaced with the source site's ("From") content.</p>
+<!--- ><p class="alert">IMPORTANT: All content in the site that is being copied to will be replaced.</p> --->
+<p class="alert">IMPORTANT: All content in the destination site ("To") will be deleted and replaced with the source site's ("From") content.</p>
 <form action="index.cfm" onsubmit="if(validateForm(this)){jQuery('.form-actions').hide();jQuery('##actionIndicator').show();return true;}else{return false;};">
 <div class="control-group">
      <label class="control-label">From</label>

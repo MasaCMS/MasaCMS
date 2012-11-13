@@ -576,9 +576,8 @@ to your own modified versions of Mura CMS.
   <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
       <div class="container">
-        <a class="brand" href="http://www.getmura.com" title="Mura CMS">
-          <img src="#context#/admin/assets/images/mura_logo.png">
-        </a>
+        <a class="brand" href="http://www.getmura.com" title="Mura CMS">Mura CMS</a>
+	      <div class="brand-credit">by Blue River</div>	
       </div>
     </div>
   </div>
@@ -603,24 +602,17 @@ to your own modified versions of Mura CMS.
       }
 
     </script>
-    <form id="frm" class="form-horizontal" name="frm" action="index.cfm" method="post" onsubmit="return processInstallFrm(this);" onclick="return validateForm(this);">
+    <form id="frm" class="form-horizontal<cfif isDefined( "FORM.#cookie.setupSubmitButton#" ) AND errorType IS ""> install-complete<cfelse> setup-form</cfif>" name="frm" action="index.cfm" method="post" onsubmit="return processInstallFrm(this);" onclick="return validateForm(this);">
    
       <cfif isDefined( "FORM.#cookie.setupSubmitButton#" ) AND errorType IS "">
         <div id="installationComplete" class="alert alert-success">
-          Mura is now set up and ready to use.
+          <p>Mura is now set up and ready to use.</p>
         </div>
         <div class="alert alert-error">
-          <h3>Important</h3>
-          <p>When you are done with setup, it is recommended you remove the "/config/setup" directory to maintain security. Once deleted, all settings can be edited in "/config/settings.ini.cfm" directly.</p>
-          <!---
-<cfif form.admin_username eq 'admin' and form.admin_password eq 'admin'>
-            <p class="error">The default <strong>Username and Password is the word "admin" for both fields</strong>. It is highly recommended that you change this immediately by editing your profile after logging into the Mura Admin.</p>
-          </cfif>
---->
+          <p>When you are done with setup, it is recommended you remove the "/config/setup" directory to maintain security. Once deleted, all settings can be edited in "/config/settings.ini.cfm" directly.</p></div>
           
-        </div>
         <div id="finishSetUp" class="form-actions">
-        	<input type="submit" class="btn" name="#cookie.setupSubmitButtonComplete#" value="Finish Set Up and Take Me to the Mura Admin" />
+        	<input type="submit" class="btn" name="#cookie.setupSubmitButtonComplete#" value="Login to Mura" />
         </div>
  
       
@@ -640,7 +632,7 @@ to your own modified versions of Mura CMS.
           theCFServer = "ColdFusion";
         };
       </cfscript>
-      <fieldset class="notice">
+      <fieldset class="alert">
         <div class="control-group">
           <label class="control-label"><a href="" rel="tooltip" data-original-title="Please select a database from the list of supported databases">Database <i class="icon-question-sign"></i></a></label>
           <div class="controls">

@@ -90,6 +90,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </ul>
  
 <cfelse>
-<p class="notice">There are currently no available attribute sets.</p>
+<p class="alert">There are currently no available attribute sets.</p>
 </cfif>
 

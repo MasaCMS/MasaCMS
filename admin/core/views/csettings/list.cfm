@@ -84,7 +84,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset errors=application.userManager.getCurrentUser().getValue("errors")>
 	<cfif isStruct(errors) and not structIsEmpty(errors)>
 		<cfoutput>
-		<p class="error">#application.utility.displayErrors(errors)#</p>
+		<p class="alert-error">#application.utility.displayErrors(errors)#</p>
 		</cfoutput>
 	</cfif>
 	<cfset application.userManager.getCurrentUser().setValue("errors","")>
@@ -105,10 +105,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						confirmDialog(
 						'WARNING: DO NOT continue unless you have backed up all selected site files.',
 						function(){
+							actionModal(
+								function(){
 									$('.form-actions').hide();
 									$('#actionIndicator').show();
 									document.form1.submit();
 								}
+							);
+						}
 						)
 
 					});
