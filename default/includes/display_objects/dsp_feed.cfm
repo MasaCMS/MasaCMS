@@ -128,7 +128,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfsilent>
 			<cfset request.cacheItemTimespan = createTimeSpan(0, 0, 5, 0)>
 			<cfset variables.feedData = application.feedManager.getRemoteFeedData(variables.feedBean.getChannelLink(),variables.feedBean.getMaxItems())/>
-			<cfif not structIsEmpty(objectparams)>
+			<cfif not structIsEmpty(objectparams) and structKeyExists(objectparams,'displaySummaries')>
 				<cfset arguments.hasSummary=objectparams.displaySummaries>	
 			</cfif>
 		</cfsilent>
