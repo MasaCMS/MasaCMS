@@ -154,6 +154,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
    </form>
 </cfif></cfoutput>
 
+<cfif rc.compactDisplay eq "true">
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	if (top.location != self.location) {
+		if(jQuery("##ProxyIFrame").length){
+			jQuery("##ProxyIFrame").load(
+				function(){
+					frontEndProxy.postMessage("cmd=setWidth&width=400");
+				}
+			);	
+		} else {
+			frontEndProxy.postMessage("cmd=setWidth&width=400");
+		}
+	}
+});
+</script>
+</cfif>
 <cfsavecontent variable="headerStr">
 <cfoutput><script type="text/javascript">
 if (top.location != self.location) {

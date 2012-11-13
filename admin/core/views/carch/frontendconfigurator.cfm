@@ -62,16 +62,20 @@ jQuery(document).ready(function(){
 	<div id="configurator">
 		<div class="load-inline"></div>
 	</div>	
-	<div class="form-actions">
-		<cfif assignChangesets>
-			<cfinclude template="form/dsp_changesets.cfm">
-		</cfif>
+
+	<cfif assignChangesets>
+		<cfinclude template="form/dsp_changesets.cfm">
+	</cfif>
+
+	<div class="form-actions">	
+		<input type="button" class="btn" id="saveConfigDraft" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#"/>
+		<input type="button" class="btn" id="previewConfigDraft" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.preview"))#"/>
 		<cfif assignChangesets>
 			<input type="button" class="btn" onclick="saveToChangeset('#rc.contentBean.getChangesetID()#','#HTMLEditFormat(rsDisplayObject.siteid)#','');return false;" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset")#" />	
 		</cfif>
-		<input type="button" class="btn" id="saveConfigDraft" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#"/>
-		<input type="button" class="btn" id="previewConfigDraft" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.preview"))#"/>
-		<cfif rc.perm eq "Editor"><input type="button" class="btn" id="publishConfig" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#"/></cfif>
+		<cfif rc.perm eq 'editor' and not $.siteConfig('EnforceChangesets')>
+			<input type="button" class="btn" id="publishConfig" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#"/>
+		</cfif>
 	</div>
 </div>
 <script>
