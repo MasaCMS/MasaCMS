@@ -10025,6 +10025,8 @@ tr:nth-child(even) i {
   width: 18px;
   height: 18px;
   position: relative;
+  z-index: 1000;
+  zoom: 1;
 }
 .mura .mura-grid .scheduled a i:hover {
   text-decoration: none;

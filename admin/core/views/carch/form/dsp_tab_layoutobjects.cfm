@@ -117,7 +117,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           <dl>
             <dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecontentobjects')#</dt>
             <dd>
-              <select name="classSelector" onchange="siteManager.loadObjectClass('#rc.siteid#',this.value,'','#rc.contentBean.getContentID()#','#rc.parentID#','#rc.contentBean.getContentHistID()#',0);" class="dropdown" id="dragme">
+              <select name="classSelector" onchange="siteManager.loadObjectClass('#rc.siteid#',this.value,'','#rc.contentBean.getContentID()#','#rc.parentID#','#rc.contentBean.getContentHistID()#',0);"  id="dragme">
                 <option value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectobjecttype')#</option>
                 <option value="system">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.system')#</option>
                 <cfif application.settingsManager.getSite(rc.siteid).getemailbroadcaster()>

@@ -147,7 +147,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           #application.rbFactory.getKeyValue(session.rb,'email.format')#
         </label>
         <div class="controls">
-          <select name="format" class="dropdown" onChange="emailManager.showMessageEditor();" id="messageFormat">
+          <select name="format"  onChange="emailManager.showMessageEditor();" id="messageFormat">
             <option value="HTML">#application.rbFactory.getKeyValue(session.rb,'email.html')#</option>
             <option value="Text" <cfif rc.emailBean.getformat() eq 'Text'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'email.text')#</option>
             <option value="HTML & Text" <cfif rc.emailBean.getformat() eq 'HTML & Text'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'email.htmltext')#</option>
