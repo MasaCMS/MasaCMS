@@ -997,6 +997,9 @@ ul.icons li .icon-large:before {
   /* width: 990px; */
 
 }
+#frontEndToolsModalBody body {
+  border: 6px solid #666;
+}
 #frontEndToolsModaliframe {
   width: 100%;
   min-height: 400px;

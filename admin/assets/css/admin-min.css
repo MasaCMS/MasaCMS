@@ -14203,6 +14203,9 @@ font-size: 12px;
   /* width: 990px; */
 
 }
+.mura #frontEndToolsModalBody body {
+  border: 6px solid #666;
+}
 .mura #frontEndToolsModaliframe {
   width: 100%;
   min-height: 400px;
