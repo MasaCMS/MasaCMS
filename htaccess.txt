@@ -14,4 +14,9 @@ RewriteRule ^([a-zA-Z0-9/-\s]+)$ /index.cfm%{REQUEST_URI} [PT]
 # RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-d
 # RewriteRule ^([a-zA-Z0-9-]{1,})/^([a-zA-Z0-9/-]+/tag/.+|tag/.+)$ /$1/index.cfm/$2 [PT]
 # RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-d
+# RewriteRule ^([a-zA-Z0-9-]{1,})/([a-zA-Z0-9/-\s]+)$ /$1/index.cfm/$2 [PT]load Mura.
+# RewriteEngine On
+# RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-d
+# RewriteRule ^([a-zA-Z0-9-]{1,})/^([a-zA-Z0-9/-]+/tag/.+|tag/.+)$ /$1/index.cfm/$2 [PT]
+# RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-d
 # RewriteRule ^([a-zA-Z0-9-]{1,})/([a-zA-Z0-9/-\s]+)$ /$1/index.cfm/$2 [PT]
