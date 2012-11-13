@@ -91,9 +91,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   <cfelse>
     <input type="text" name="publishDate" value="#LSDateFormat(rc.changeset.getpublishdate(),session.dateKeyFormat)#"  maxlength="12" class="textAlt datepicker" />
 
-    <select name="publishhour" class="dropdown span1"><cfloop from="1" to="12" index="h"><option value="#h#" <cfif not LSisDate(rc.changeset.getpublishDate())  and h eq 12 or (LSisDate(rc.changeset.getpublishDate()) and (hour(rc.changeset.getpublishDate()) eq h or (hour(rc.changeset.getpublishDate()) - 12) eq h or hour(rc.changeset.getpublishDate()) eq 0 and h eq 12))>selected</cfif>>#h#</option></cfloop></select>
-    <select name="publishMinute" class="dropdown span1"><cfloop from="0" to="59" index="m"><option value="#m#" <cfif LSisDate(rc.changeset.getpublishDate()) and minute(rc.changeset.getpublishDate()) eq m>selected</cfif>>#iif(len(m) eq 1,de('0#m#'),de('#m#'))#</option></cfloop></select>
-    <select name="publishDayPart" class="dropdown span1"><option value="AM">AM</option><option value="PM" <cfif LSisDate(rc.changeset.getpublishDate()) and hour(rc.changeset.getpublishDate()) gte 12>selected</cfif>>PM</option></select>
+    <select name="publishhour" class="span1"><cfloop from="1" to="12" index="h"><option value="#h#" <cfif not LSisDate(rc.changeset.getpublishDate())  and h eq 12 or (LSisDate(rc.changeset.getpublishDate()) and (hour(rc.changeset.getpublishDate()) eq h or (hour(rc.changeset.getpublishDate()) - 12) eq h or hour(rc.changeset.getpublishDate()) eq 0 and h eq 12))>selected</cfif>>#h#</option></cfloop></select>
+    <select name="publishMinute" class="span1"><cfloop from="0" to="59" index="m"><option value="#m#" <cfif LSisDate(rc.changeset.getpublishDate()) and minute(rc.changeset.getpublishDate()) eq m>selected</cfif>>#iif(len(m) eq 1,de('0#m#'),de('#m#'))#</option></cfloop></select>
+    <select name="publishDayPart" class="span1"><option value="AM">AM</option><option value="PM" <cfif LSisDate(rc.changeset.getpublishDate()) and hour(rc.changeset.getpublishDate()) gte 12>selected</cfif>>PM</option></select>
   </cfif>
   </div>
 </div>
@@ -101,12 +101,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 <div class="form-actions">
   <cfif rc.changesetID eq ''>
-    <input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'changesets.add')#" /><input type=hidden name="changesetID" value="">
+    <input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'changesets.add')#" /><input type=hidden name="changesetID" value="">
   <cfelse>
-    <input type="button" class="submit btn" value="#application.rbFactory.getKeyValue(session.rb,'changesets.delete')#" onclick="confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'changesets.deleteconfirm'))#','index.cfm?muraAction=cChangesets.delete&changesetID=#rc.changeset.getchangesetID()#&siteid=#URLEncodedFormat(rc.changeset.getSiteID())#')" /> 
-    <input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'changesets.update')#" />
+    <input type="button" class="btn" value="#application.rbFactory.getKeyValue(session.rb,'changesets.delete')#" onclick="confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'changesets.deleteconfirm'))#','index.cfm?muraAction=cChangesets.delete&changesetID=#rc.changeset.getchangesetID()#&siteid=#URLEncodedFormat(rc.changeset.getSiteID())#')" /> 
+    <input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'changesets.update')#" />
     <cfif not rc.changeset.getPublished()>
-      <input type="button" class="submit btn" value="#application.rbFactory.getKeyValue(session.rb,'changesets.publishnow')#" onclick="confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'changesets.publishnowconfirm'))#','index.cfm?muraAction=cChangesets.publish&changesetID=#rc.changeset.getchangesetID()#&siteid=#URLEncodedFormat(rc.changeset.getSiteID())#')" /> 
+      <input type="button" class="btn" value="#application.rbFactory.getKeyValue(session.rb,'changesets.publishnow')#" onclick="confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'changesets.publishnowconfirm'))#','index.cfm?muraAction=cChangesets.publish&changesetID=#rc.changeset.getchangesetID()#&siteid=#URLEncodedFormat(rc.changeset.getSiteID())#')" /> 
     </cfif>
      <input type=hidden name="changesetID" value="#rc.changeset.getchangesetID()#">
   </cfif>

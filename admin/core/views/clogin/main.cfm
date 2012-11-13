@@ -145,7 +145,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 	</div>
 	<div class="form-actions">
-	 	<input type="submit" class="submit btn" value="#application.rbFactory.getKeyValue(session.rb,'login.submit')#" />
+	 	<input type="submit" class="btn" value="#application.rbFactory.getKeyValue(session.rb,'login.submit')#" />
 	 </div>
 	<input type="hidden" name="status" value="sendlogin" />
 	<input name="returnURL" type="hidden" value="#HTMLEditFormat(rc.returnURL)#">

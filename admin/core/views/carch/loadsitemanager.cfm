@@ -124,7 +124,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             <input name="nextN" value="#session.mura.nextN#" type="text" class="input-small" size="2" maxlength="4" />
             #application.rbFactory.getKeyValue(session.rb,"sitemanager.sortnavigation")#
             <input type="hidden" name="saveSort" value="true">
-              <select name="sortBy" class="dropdown" onchange="siteManager.setAsSorted();">
+              <select name="sortBy"  onchange="siteManager.setAsSorted();">
                 <option value="orderno" <cfif rc.sortBy eq 'orderno'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.manual")#</option>
                 <option value="releaseDate" <cfif rc.sortBy eq 'releaseDate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.releasedate")#</option>
                 <option value="lastUpdate" <cfif rc.sortBy eq 'lastUpdate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.updatedate")#</option>
@@ -137,7 +137,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
                   <option value="#HTMLEditFormat(rsExtend.attribute)#" <cfif rc.sortBy eq rsExtend.attribute>selected</cfif>>#rsExtend.Type#/#rsExtend.subType# - #rsExtend.attribute#</option>
                 </cfloop>
               </select>
-              <select name="sortDirection" class="dropdown" onchange="siteManager.setAsSorted();">
+              <select name="sortDirection"  onchange="siteManager.setAsSorted();">
                 <option value="asc" <cfif rc.sortDirection eq 'asc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.ascending")#</option>
                 <option value="desc" <cfif rc.sortDirection eq 'desc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,"sitemanager.sort.descending")#</option>
               </select>
@@ -145,7 +145,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             <input name="nextN" value="#session.mura.nextN#" type="text" class="text span4" size="2" maxlength="4" />
           </cfif>
           <!---<dd <cfif rc.topid neq '00000000000000000000000000000000001' and perm eq 'Editor'>class="button"</cfif>>--->
-          <input type="button" class="submit btn" onclick="submitForm(document.forms.viewUpdate);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.update")#" />
+          <input type="button" class="btn" onclick="submitForm(document.forms.viewUpdate);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.update")#" />
         <input type="hidden" name="startrow" value="#rc.startrow#">
         <input type="hidden" name="orderperm" value="#perm#">
         <input type="hidden" id="sorted" name="sorted" value="false">
@@ -218,30 +218,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         	#application.rbFactory.getKeyValue(session.rb,"sitemanager.#lcase(rc.rstop.inheritObjects)#")#
        		<cfif perm eq 'editor'></a></cfif>
       </dd>
+      
 	    <dd class="display<cfif rc.rstop.Display eq 2 and rc.rstop.approved> scheduled</cfif>">
-	    <i class="icon-calendar"></i>
-			<!---
-<cfif perm eq 'editor'>
-				<a class="mura-quickEditItem<cfif rc.rstop.Display eq 2 and rc.rstop.approved> tooltip</cfif>" data-attribute="display">
-					<cfif rc.rstop.Display eq 2 and rc.rstop.approved>
-					<!--- <i class="icon-calendar"></i> --->Test
-					</cfif>
-				</cfif>
+	    
+			<cfif perm eq 'editor'><a class="mura-quickEditItem<cfif rc.rstop.Display eq 2 and rc.rstop.approved> tooltip</cfif>" data-attribute="display"></cfif>
+					
 			<cfif rc.rstop.Display eq 1 and rc.rstop.approved >
             	#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#
             <cfelseif rc.rstop.Display eq 2 and rc.rstop.approved>
            	 	<cfif perm neq 'editor'>
-           	 		<a href="##" rel="tooltip" title="#HTMLEditFormat('#LSDateFormat(rc.rstop.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(rc.rstop.displaystop,"short")#')#">
-           	 	</cfif>
-           	 	<cfif perm neq 'editor'>
-           	 	 <i class="icon-info-sign"></i></a>
+           	 		<a href="##" rel="tooltip" title="#HTMLEditFormat('#LSDateFormat(rc.rstop.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(rc.rstop.displaystop,"short")#')#"></a>
            	 	 </cfif>
+           	 	 <i class="icon-calendar"></i>
+           	 	 <cfif perm neq 'editor'></a></cfif>
            	 <cfelse>
            		 #application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#
            		</cfif>
 			<cfif perm eq 'editor'></a></cfif>
---->
+			<!--- <i class="icon-calendar"></i> --->
 		</dd>
+		
        <dd class="template">
 	  		<cfif perm eq 'editor'><a class="mura-quickEditItem<cfif len(rc.rstop.template)> template-set</cfif>" data-attribute="template"></cfif>
 			<cfif len(rc.rstop.template) or len(rc.rstop.childTemplate)>

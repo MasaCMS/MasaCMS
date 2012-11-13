@@ -91,7 +91,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 </div>
 <div class="form-actions">
-	<input type="button" class="submit btn" onclick="submitForm(document.forms.searchFrm);" value="#application.rbFactory.getKeyValue(session.rb,"params.search")#" /></dd>
+	<input type="button" class="btn" onclick="submitForm(document.forms.searchFrm);" value="#application.rbFactory.getKeyValue(session.rb,"params.search")#" /></dd>
 </div>
 
 <input type="hidden" value="#HTMLEditFormat(rc.siteid)#" name="siteID"/>

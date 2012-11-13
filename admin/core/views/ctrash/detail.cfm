@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfsavecontent variable="rc.ajax">
 <cfoutput>
-<script src="assets/js/architecture.js?coreversion=#application.coreversion#" type="text/javascript" language="Javascript" ></script>
+<script src="assets/js/architecture.js?coreversion=#application.coreversion#" type="text/javascript" ></script>
 </cfoutput>
 </cfsavecontent>
 <cfoutput>
@@ -71,9 +71,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif not listFindNoCase("Page,LocalRepo,File,Link,Gallery,Calender",rc.trashItem.getObjectType())>
 <div class="clearfix form-actions">
-<input type="button" class="submit btn" onclick="return confirmDialog('Restore Item From Trash?','?muraAction=cTrash.restore&objectID=#rc.trashItem.getObjectID()#&siteid=#rc.trashItem.getSiteID()#');" value="Restore Item" />
+<input type="button" class="btn" onclick="return confirmDialog('Restore Item From Trash?','?muraAction=cTrash.restore&objectID=#rc.trashItem.getObjectID()#&siteid=#rc.trashItem.getSiteID()#');" value="Restore Item" />
 <cfif len(rc.trashItem.getDeleteID())>
-<input type="button" class="submit btn" onclick="return confirmDialog('Restore All Items in Delete Transaction from Trash?','?muraAction=cTrash.restore&objectID=#rc.trashItem.getObjectID()#&deleteID=#rc.trashItem.getDeleteID()#&siteid=#rc.trashItem.getSiteID()#');" value="Restore All Items in Delete Transaction" />
+<input type="button" class="btn" onclick="return confirmDialog('Restore All Items in Delete Transaction from Trash?','?muraAction=cTrash.restore&objectID=#rc.trashItem.getObjectID()#&deleteID=#rc.trashItem.getDeleteID()#&siteid=#rc.trashItem.getSiteID()#');" value="Restore All Items in Delete Transaction" />
 </cfif>
 </div>
 <cfelse>
@@ -86,9 +86,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</span>
 </div>
 <div class="clearfix form-actions">
-<input type="button" class="submit btn" onclick="restoreItem();" value="Restore Item" />
+<input type="button" class="btn" onclick="restoreItem();" value="Restore Item" />
 <cfif len(rc.trashItem.getDeleteID())>
-<input type="button" class="submit btn" onclick="restoreAll();" value="Restore All Items in Delete Transaction" />
+<input type="button" class="btn" onclick="restoreAll();" value="Restore All Items in Delete Transaction" />
 </cfif>
 </div>
 

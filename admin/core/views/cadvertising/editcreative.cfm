@@ -190,11 +190,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 <div class="form-actions">
 <cfif rc.creativeid eq ''>
-	<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.add')#" />
+	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.add')#" />
 	<input type=hidden name="creativeID" value="">
 <cfelse> 
 	<input type="button" class="submit btn btn-delete" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'advertising.deletecreativeconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.delete')#" />
-	<input type="button" class="submit btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.update')#" />
+	<input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'advertising.update')#" />
 	<input type=hidden name="creativeid" value="#rc.creativeBean.getCreativeID()#">
 </cfif><input type="hidden" name="action" value="">
 </div>
@@ -204,7 +204,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h3 class="divide">#application.rbFactory.getKeyValue(session.rb,'advertising.currentasset')#</h3>
 <cfoutput>#application.advertiserManager.renderCreative(rc.creativeBean)#</cfoutput>
 </cfif></cfoutput>
-<script type="text/javascript" language="Javascript">
+<script type="text/javascript">
 	var loadEditorCount = 0;
 	jQuery('#textBody').ckeditor(
 	{ toolbar:'Default',

@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <div id="contentSearch" class="form-inline">
 <h2>#application.rbFactory.getKeyValue(session.rb,'collections.contentsearch')#</h2>
-	<input id="parentSearch" name="parentSearch" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" maxlength="50"/><input type="button" class="submit btn" onclick="feedManager.loadSiteFilters('#rc.siteid#',document.getElementById('parentSearch').value,0);" value="#application.rbFactory.getKeyValue(session.rb,'collections.search')#" />
+	<input id="parentSearch" name="parentSearch" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" maxlength="50"/><input type="button" class="btn" onclick="feedManager.loadSiteFilters('#rc.siteid#',document.getElementById('parentSearch').value,0);" value="#application.rbFactory.getKeyValue(session.rb,'collections.search')#" />
 	</div>
 </cfoutput>
 <br/><cfif not rc.isNew>

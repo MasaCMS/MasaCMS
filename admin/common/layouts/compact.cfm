@@ -88,14 +88,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<link rel="apple-touch-icon-precomposed" href="#application.configBean.getContext()#/admin/assets/ico/apple-touch-icon-57-precomposed.png">
 
 		 <!-- Spinner JS -->
-		<script src="#application.configBean.getContext()#/admin/assets/js/spin.min.js" type="text/javascript" language="Javascript"></script>
+		<script src="#application.configBean.getContext()#/admin/assets/js/spin.min.js" type="text/javascript"></script>
 
 		<!-- Mura Admin JS -->
-		<script src="#application.configBean.getContext()#/admin/assets/js/admin.min.js" type="text/javascript" language="Javascript"></script>
+		<script src="#application.configBean.getContext()#/admin/assets/js/admin.min.js" type="text/javascript"></script>
 
 		 <!-- jQuery -->
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.spin.js" type="text/javascript" language="Javascript"></script>
+		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.spin.js" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
@@ -106,7 +106,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckfinder/ckfinder.js"></script>
 
 		<!-- JSON -->
-		<script src="#application.configBean.getContext()#/admin/assets/js/json2.js" type="text/javascript" language="Javascript"></script>
+		<script src="#application.configBean.getContext()#/admin/assets/js/json2.js" type="text/javascript"></script>
 
 		<!-- Utilities to support iframe communication -->
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-resize.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>

@@ -767,13 +767,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rsSections = "">
 	
 	<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rsSections"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-	select contentid, menutitle, type from tcontent where siteid='#arguments.siteid#' and 
+	select contentid, menutitle, type, siteid, path from tcontent where siteid='#arguments.siteid#' and 
 	<cfif arguments.type eq ''>
 	(type='LocalRepo' or type='Calendar' or type='Gallery')
 	<cfelse>
 	type= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#"/>
 	</cfif> 			
-	and display=1
 	and approved=1 and active=1
 	</cfquery>
 		

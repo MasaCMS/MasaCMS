@@ -75,7 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <h2>#application.rbFactory.getKeyValue(session.rb,'advertising.reportdaterange')#</h2>
 <form novalidate="novalidate" action="index.cfm?muraAction=cAdvertising.viewReportByPlacement&campaignid=#rc.campaignid#&userid=#URLEncodedFormat(rc.userid)#&placementid=#rc.placementid#&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="download" onsubmit="return validate(this);">
-#application.rbFactory.getKeyValue(session.rb,'advertising.from')# <input type="text" class="text datepicker" name="date1"  validate="date" message="#application.rbFactory.getKeyValue(session.rb,'advertising.fromvalidate')#" required="true" value="#LSDateFormat(rc.date1,session.dateKeyFormat)#"><input type="button" class="submit btn" onclick="document.download.submit();" value="#application.rbFactory.getKeyValue(session.rb,'advertising.view')#" />
+#application.rbFactory.getKeyValue(session.rb,'advertising.from')# <input type="text" class="text datepicker" name="date1"  validate="date" message="#application.rbFactory.getKeyValue(session.rb,'advertising.fromvalidate')#" required="true" value="#LSDateFormat(rc.date1,session.dateKeyFormat)#"><input type="button" class="btn" onclick="document.download.submit();" value="#application.rbFactory.getKeyValue(session.rb,'advertising.view')#" />
 </form>
 </cfoutput>
 <cfset m=0>

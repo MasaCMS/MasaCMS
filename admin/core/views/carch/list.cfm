@@ -480,7 +480,7 @@ copyAll = 'false';
 	
     <div class="input-append">
 	    <input name="keywords" value="#HTMLEditFormat(session.keywords)#" type="text" class="text" />
-	    <button type="button" class="submit btn" onclick="submitForm(document.forms.siteSearch);" /><i class="icon-search"></i><!--- #application.rbFactory.getKeyValue(session.rb,"sitemanager.search")# ---></button>
+	    <button type="button" class="btn" onclick="submitForm(document.forms.siteSearch);" /><i class="icon-search"></i><!--- #application.rbFactory.getKeyValue(session.rb,"sitemanager.search")# ---></button>
     </div>
     
     <input type="hidden" name="muraAction" value="cArch.list">

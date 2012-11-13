@@ -77,7 +77,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <input type="text" class="dateSelect datepicker" name="date1"  validate="date" message="#application.rbFactory.getKeyValue(session.rb,'advertising.fromvalidate')#" required="true" value="#LSDateFormat(rc.date1,session.dateKeyFormat)#" > 
 &nbsp;#application.rbFactory.getKeyValue(session.rb,'advertising.to')# 
 <input type="text" class="dateSelect datepicker" name="date2" validate="date" message="#application.rbFactory.getKeyValue(session.rb,'advertising.tovalidate')#" required="true" value="#LSDateFormat(rc.date2,session.dateKeyFormat)#"> 
-<input type="button" class="submit btn" onclick="document.download.submit();" value="#application.rbFactory.getKeyValue(session.rb,'advertising.view')#" />
+<input type="button" class="btn" onclick="document.download.submit();" value="#application.rbFactory.getKeyValue(session.rb,'advertising.view')#" />
 </form>
 
 

@@ -123,7 +123,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif rc.rshist.Display eq 1>
       #application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#
     <cfelseif rc.rshist.Display eq 2>
-      <a href="##" rel="tooltip" title="#HTMLEditFormat('#LSDateFormat(rc.rshist.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(rc.rshist.displaystop,"short")#')#"> <i class="icon-question-sign"></i></a>
+      <a href="##" rel="tooltip" title="#HTMLEditFormat('#LSDateFormat(rc.rshist.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(rc.rshist.displaystop,"short")#')#"> <i class="icon-calendar"></i></a>
      <cfelse>
        #application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#
      </cfif>
@@ -135,7 +135,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif rc.rshist.isfeature eq 1>
 			#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#
 		<cfelseif rc.rshist.isfeature eq 2>
-			<a href="##" rel="tooltip" title="#HTMLEditFormat('#LSDateFormat(rc.rshist.featurestart,"short")#&nbsp;-&nbsp;#LSDateFormat(rc.rshist.featurestop,"short")#')#"> <i class="icon-question-sign"></i></a>
+			<a href="##" rel="tooltip" title="#HTMLEditFormat('#LSDateFormat(rc.rshist.featurestart,"short")#&nbsp;-&nbsp;#LSDateFormat(rc.rshist.featurestop,"short")#')#"> <i class="icon-calendar"></i></a>
 		<cfelse>
 			#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#
 		</cfif>

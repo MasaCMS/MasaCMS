@@ -112,7 +112,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	                    </a>
 		                    <ul class="dropdown-menu">
 		                    <li>
-		                        <a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.list"><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.globalsettings")#</a>
+		                        <a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.list"><i class="icon-cogs"></i> #application.rbFactory.getKeyValue(session.rb,"layout.globalsettings")#</a>
 		                    </li>
 		                    <!---<li>
 		                      <a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.editSite&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.editcurrentsite")#</a>
@@ -126,7 +126,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		                     	<li><a href="#application.configBean.getContext()#/admin/index.cfm?#urlEncodedFormat(application.appreloadkey)#&reload=#urlEncodedFormat(application.appreloadkey)#"><i class="icon-refresh"></i> #application.rbFactory.getKeyValue(session.rb,"layout.reloadapplication")#</a></li>
 		                     	
 		                     	<li>
-		                     		<a <cfif application.configBean.getAllowAutoUpdates()>href="index.cfm?muraAction=cSettings.list&action=updateCore" onclick="return confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.\n\nIf your are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.',this.href);"</cfif>>
+		                     		<a <cfif application.configBean.getAllowAutoUpdates()><!--- <cfif $.globalconfig('dbtype') eq "mssql"> --->href="index.cfm?muraAction=cSettings.list&action=updateCore" onclick="return confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.\n\nIf your are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.',this.href);"<!--- </cfif> ---></cfif>>
 		                     			<i class="icon-bolt"></i> Update Mura Core
 		                     		</a>
 		                     	</li>
@@ -272,16 +272,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 					<cfset rsExts=application.classExtensionManager.getSubTypes(siteID=rc.siteID,activeOnly=false) />
 
 		 					<li class="dropdown-submenu">
-		 					<a href="index.cfm?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-list-alt"></i> Class Extension Manager</a>
+		 					<a href="index.cfm?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-wrench"></i> Class Extension Manager</a>
 			 					<ul class="dropdown-menu">
 				 					<cfloop query="rsExts">
 				 						<li><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cExtend.listSets&subTypeID=#rsExts.subtypeID#&siteid=#URLEncodedFormat(rc.siteid)#">
 				 							<i class="icon-cog"></i> 
 				 							<cfif rsExts.type eq 1>Group<cfelseif rsExts.type eq 2>User<cfelse>#HTMLEditFormat(rsExts.type)#</cfif>/#HTMLEditFormat(rsExts.subtype)#	
 				 						</a></li>
-
 				 					</cfloop>
-				 					 <li><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cExtend.editSubType&subTypeID=&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.addclassextension")#</a>
+				 					 <li><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cExtend.editSubType&subTypeID=&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.addclassextension")#</a>
 			 					</ul>	
 		 					</li>
 
