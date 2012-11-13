@@ -151,10 +151,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 			#attributes.rsNest.inheritObjects#
 		<cfif verdict eq 'editor'></a></cfif>
-	</dd> 
+	</dd>
+	
 	<dd class="display<cfif attributes.rsNest.Display eq 2 and attributes.rsNest.approved> scheduled</cfif>">
 		<cfif verdict eq 'editor'>
-		<a class="mura-quickEditItem<cfif attributes.rsNest.Display eq 2 and attributes.rsNest.approved> tooltip</cfif>" data-attribute="display"><cfif attributes.rsNest.Display eq 2 and attributes.rsNest.approved><i class="icon-calendar"></i></cfif>
+		<a class="mura-quickEditItem" data-attribute="display">
 		</cfif>
 		
 		<cfif attributes.rsNest.Display eq 1 and attributes.rsNest.approved>
@@ -164,8 +165,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif verdict neq 'editor'>
 				<a href="##" rel="tooltip" title="#HTMLEditFormat(LSDateFormat(attributes.rsNest.displaystart,"short"))#&nbsp;-&nbsp;#LSDateFormat(attributes.rsNest.displaystop,"short")#">
 			</cfif>
-			<cfif verdict neq 'editor'> <i class="icon-question-sign"></i></a></cfif>
-			
+			<i class="icon-calendar"></i>
+			<cfif verdict neq 'editor'></a></cfif>
 		<cfelse>
 		#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#
 		</cfif>

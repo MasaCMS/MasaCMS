@@ -59,7 +59,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <p>#application.rbFactory.getKeyValue(session.rb,'changesets.filterviewnotice')#</p>
 <form class="form-inline" novalidate="novalidate" id="assignmentSearch" name="assignmentSearch" method="get">
 	<input name="keywords" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" maxlength="50" />
-	<input type="button" class="submit btn" onclick="return submitForm(document.forms.assignmentSearch);" value="Search" />
+	<input type="button" class="btn" onclick="return submitForm(document.forms.assignmentSearch);" value="Search" />
 	<input type="hidden" name="muraAction" value="cChangesets.assignments">
 	<input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
 	<input type="hidden" name="changesetID" value="#HTMLEditFormat(rc.changesetID)#">

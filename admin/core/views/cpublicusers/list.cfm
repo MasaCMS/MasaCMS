@@ -51,16 +51,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<div class="input-append">
 	    <input id="search" name="search" type="text" placeholder="Search for Users" />
-	    <button type="button" class="submit btn" onclick="submitForm(document.forms.form1);" /><i class="icon-search"></i></button>
-	<button type="button" class="submit btn" onclick="window.location='index.cfm?muraAction=cPublicUsers.advancedSearch&siteid=#URLEncodedFormat(rc.siteid)#&newSearch=true'" value="#application.rbFactory.getKeyValue(session.rb,'user.advanced')#" />#application.rbFactory.getKeyValue(session.rb,'user.advanced')#</button>
+	    <button type="button" class="btn" onclick="submitForm(document.forms.form1);" /><i class="icon-search"></i></button>
+	<button type="button" class="btn" onclick="window.location='index.cfm?muraAction=cPublicUsers.advancedSearch&siteid=#URLEncodedFormat(rc.siteid)#&newSearch=true'" value="#application.rbFactory.getKeyValue(session.rb,'user.advanced')#" />#application.rbFactory.getKeyValue(session.rb,'user.advanced')#</button>
   <input type="hidden" name='siteid' value="#HTMLEditFormat(rc.siteid)#"/>
   <input type="hidden" name='muraAction' value="cPublicUsers.search"/>
 	</div>
 
 <!---
 <input id="search" name="search" type="text" class="text"> 
-<input type="button" class="submit btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'user.search')#" />
-<input type="button" class="submit btn" onclick="window.location='index.cfm?muraAction=cPublicUsers.advancedSearch&siteid=#URLEncodedFormat(rc.siteid)#&newSearch=true'" value="#application.rbFactory.getKeyValue(session.rb,'user.advanced')#" /><
+<input type="button" class="btn" onclick="submitForm(document.forms.form1);" value="#application.rbFactory.getKeyValue(session.rb,'user.search')#" />
+<input type="button" class="btn" onclick="window.location='index.cfm?muraAction=cPublicUsers.advancedSearch&siteid=#URLEncodedFormat(rc.siteid)#&newSearch=true'" value="#application.rbFactory.getKeyValue(session.rb,'user.advanced')#" /><
 --->
 </form>
 

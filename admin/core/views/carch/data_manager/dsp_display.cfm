@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 <cfhtmlhead text='<script src="assets/js/manage-data.js?coreversion=#application.coreversion#" type="text/javascript"></script>'>
 </cfsilent>
-<script language="javascript" type="text/javascript">
+<script type="text/javascript">
 function setFields(){
 document.getElementById('responseDisplayFields').value=document.getElementById('summaryList2').value + '~' + document.getElementById('detailList2').value;
 }
@@ -142,7 +142,7 @@ document.getElementById('responseDisplayFields').value=document.getElementById('
   </div>
 
 <div class="form-actions">
-  <input type="button" class="submit btn" onclick="submitForm(document.forms.frmDisplayFields,'setDisplay');" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.update')#" />
+  <input type="button" class="btn" onclick="submitForm(document.forms.frmDisplayFields,'setDisplay');" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.update')#" />
 </div>
 
 <input type="hidden" value="setDisplay" name="action">

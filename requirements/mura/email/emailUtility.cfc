@@ -495,13 +495,21 @@ Select EmailID from temails where deliverydate <=<cfqueryparam cfsqltype="cf_sql
 		<cfset startPos = findNoCase("mura_broadcaster_start", body)>
 		<cfset endPos = findNoCase("mura_broadcaster_end", body)>
 		<cfif startPos gt 0 and endPos gt 0>
-			<cfset messageList = listAppend(messageList, UID) />
 			<cfset startPos = startPos + 22>
 			<cfset emailID = mid(body, startPos, endPos - startPos)>
 			<cfset emailID = trim(emailID)>
 
 			<!--- now get the "to" email" --->			
 			<cfset startPos = findNoCase("failed recipient:", body)>
+			
+			<cfif not startPos>
+				<cfset startPos = findNoCase("X-Failed-Recipient:", body)>
+			</cfif>
+
+			<cfif not startPos>
+				<cfset startPos = findNoCase("X-Failed-Recipients:", body)>
+			</cfif>
+			
 			<cfset endPos = findNoCase(newLine, body, startPos)>
 			<cfif startPos gt 0 and endPos gt 0>
 				<cfset startPos = startPos + 17>
@@ -509,7 +517,8 @@ Select EmailID from temails where deliverydate <=<cfqueryparam cfsqltype="cf_sql
 				<cfset email = trim(email)>
 				
 				<!--- now track the bounce --->
-				<cfset track(emailID, email, "bounce") />				
+				<cfset track(emailID, email, "bounce") />               
+       			<cfset messageList = listAppend(messageList, UID) />				
 			</cfif>
 		</cfif>
 	</cfloop>

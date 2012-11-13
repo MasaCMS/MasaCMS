@@ -49,7 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <form class="form-inline" novalidate="novalidate" id="siteSearch" name="siteSearch" method="get">  
 	<div class="input-append">
 		    <input name="keywords" value="#HTMLEditFormat(session.keywords)#" type="text" class="text" />
-		    <button type="button" class="submit btn" onclick="submitForm(document.forms.siteSearch);" /><i class="icon-search"></i></button>
+		    <button type="button" class="btn" onclick="submitForm(document.forms.siteSearch);" /><i class="icon-search"></i></button>
 	</div>
 <!--- <input name="keywords" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" maxlength="50" /> --->
 	<input type="hidden" name="muraAction" value="cAdvertising.listadzones">

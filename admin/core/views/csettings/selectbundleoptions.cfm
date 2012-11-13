@@ -160,7 +160,7 @@ function checkAll (form) {
     </div>
     <!--- </cfif>  --->
     <div class="clearfix form-actions">
-    <input type="button" onClick="return submitBundle();" value="Create Bundle" class="submit btn" />
+    <input type="button" onClick="return submitBundle();" value="Create Bundle" class="btn" />
     </div>
     
     <input type="hidden" name="muraAction" value="cSettings.createBundle"/>

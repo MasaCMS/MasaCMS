@@ -55,7 +55,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.selectLocalRepo')#
 		</option>
 		<cfloop query="rc.rsSections">
-			<option value="#rc.rsSections.contentID#" <cfif rc.rsSections.contentID eq rc.subclassid>selected</cfif>>#HTMLEditFormat(rc.rsSections.menutitle)#</option>
+			<cfsilent>
+				<cfset pathString=application.contentRenderer.dspZoomText(application.contentGateway.getCrumblist(contentid=rc.rsSections.contentid,siteid=rc.rsSections.siteid, path=rc.rsSections.path))>
+			</cfsilent>
+			<option value="#rc.rsSections.contentID#" <cfif rc.rsSections.contentID eq rc.subclassid>selected</cfif>>#HTMLEditFormat(pathString)#</option>
 		</cfloop>
 	</select>
 	</div>
@@ -67,24 +70,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		        style="width:310px;">
 			<cfloop query="rc.rsSections">
 				<cfif rc.rsSections.contentID eq rc.subclassid>
-					<option value="{'object':'category_summary','name':'#JSStringFormat(rc.rsSections.menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.categorysummary')#','objectid':'#rc.rsSections.contentid#'}">
-						#HTMLEditFormat(rc.rsSections.menutitle)# 
+					<cfsilent>
+					<cfset pathString=application.contentRenderer.dspZoomText(application.contentGateway.getCrumblist(contentid=rc.rsSections.contentid,siteid=rc.rsSections.siteid, path=rc.rsSections.path))>
+					</cfsilent>
+					<option value="{'object':'category_summary','name':'#JSStringFormat(pathString)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.categorysummary')#','objectid':'#rc.rsSections.contentid#'}">
+						#HTMLEditFormat(pathString)# 
 						- 
 						#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.categorysummary')#
 					</option>
-					<option value="{'object':'related_section_content','name':'#JSStringFormat(rc.rsSections.menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#','objectid':'#rc.rsSections.contentid#'}">
-						#HTMLEditFormat(rc.rsSections.menutitle)# 
+					<option value="{'object':'related_section_content','name':'#JSStringFormat(pathString)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#','objectid':'#rc.rsSections.contentid#'}">
+						#HTMLEditFormat(pathString)# 
 						- 
 						#application.rbFactory.getKeyValue(session.rb, 
 					                                    'sitemanager.content.fields.relatedcontent')#
 					</option>
-					<option value="calendar_nav~#HTMLEditFormat(rc.rsSections.menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.calendarnavigation')#~#rc.rsSections.contentid#">
-						#HTMLEditFormat(rc.rsSections.menutitle)# 
+					<option value="calendar_nav~#HTMLEditFormat(pathString)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.calendarnavigation')#~#rc.rsSections.contentid#">
+						#HTMLEditFormat(pathString)# 
 						- 
 						#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.calendarnavigation')#
 					</option>
-					<option value="archive_nav~#HTMLEditFormat(rc.rsSections.menutitle)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.archivenavigation')#~#rc.rsSections.contentid#">
-						#HTMLEditFormat(rc.rsSections.menutitle)# 
+					<option value="archive_nav~#HTMLEditFormat(pathString)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.archivenavigation')#~#rc.rsSections.contentid#">
+						#HTMLEditFormat(pathString)# 
 						- 
 						#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.archivenavigation')#
 					</option>

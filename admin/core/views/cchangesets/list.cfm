@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <form class="form-inline" novalidate="novalidate" id="changesetSearch" name="changesetSearch" method="get">
 	<div class="input-append">
 	<input name="keywords" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" maxlength="50" />
-	<button type="button" class="submit btn" onclick="submitForm(document.forms.changesetSearch);"><i class="icon-search"></i></button>
+	<button type="button" class="btn" onclick="submitForm(document.forms.changesetSearch);"><i class="icon-search"></i></button>
 	<input type="hidden" name="muraAction" value="cChangesets.list">
 	<input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
 	</div>

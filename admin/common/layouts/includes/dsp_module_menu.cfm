@@ -128,7 +128,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   	        </li>
   	     </cfloop> 
          <cfif listFind(session.mura.memberships,'S2')>
-          <li><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.list##tabPlugins"><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.addplugin")#</a>
+          <li><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.list##tabPlugins"><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.addplugin")#</a>
       </cfif>
   	   </ul>
         
