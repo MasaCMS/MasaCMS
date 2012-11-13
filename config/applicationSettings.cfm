@@ -197,7 +197,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset this.ormenabled = properties.getProperty("ormenabled","true") />
 	
 	<!--- You can't depend on 9 supporting datasource as struct --->
-	<cfif Left(SERVER.COLDFUSION.PRODUCTVERSION,Find(",",SERVER.COLDFUSION.PRODUCTVERSION)-1) gt 10>
+	<cfif Left(SERVER.COLDFUSION.PRODUCTVERSION,Find(",",SERVER.COLDFUSION.PRODUCTVERSION)-1) gt 9>
 		<cfset this.datasource = structNew()>
 		<cfset this.datasource.name = properties.getProperty("datasource","") />
 		<cfset this.datasource.username = properties.getProperty("dbusername","")>
