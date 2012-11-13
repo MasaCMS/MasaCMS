@@ -244,7 +244,7 @@ var hasBody=#subType.getHasBody()#;
 		<cfif assignChangesets>
 		<button type="button" class="btn" onclick="saveToChangeset('#rc.contentBean.getChangesetID()#','#HTMLEditFormat(rc.siteID)#','');return false;"><i class="icon-check"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset")#</button>	
 		</cfif>
-		<cfif rc.perm eq 'editor' and $.siteConfig('EnforceChangesets')>
+		<cfif rc.perm eq 'editor' and not $.siteConfig('EnforceChangesets')>
 		<button type="button" class="btn" onclick="document.contentForm.approved.value=1;if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="icon-check"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#</button>
 		</cfif> 
 	</div>
