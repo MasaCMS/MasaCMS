@@ -74,4 +74,4 @@ scriptProtect=true
 strongPasswords=0
 autoDiscoverPlugins=false
 maxPortalItems=100
-allowAutoUpdates=0
+allowAutoUpdates=1

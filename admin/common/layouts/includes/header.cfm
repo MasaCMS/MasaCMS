@@ -123,7 +123,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		                    <li><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.sitecopyselect"><i class="icon-copy"></i> #application.rbFactory.getKeyValue(session.rb,"layout.sitecopytool")#</a>
 		                    </li>
 		                    <cfif listFind(session.mura.memberships,'S2')>
-		                     	<li><a href="#application.configBean.getContext()#/admin/index.cfm?#urlEncodedFormat(application.appreloadkey)#&reload=#urlEncodedFormat(application.appreloadkey)#"><i class="icon-refresh"></i> #application.rbFactory.getKeyValue(session.rb,"layout.reloadapplication")#</a></li>
+		                     	<li><a href="#application.configBean.getContext()#/admin/index.cfm?#urlEncodedFormat(application.appreloadkey)#&reload=#urlEncodedFormat(application.appreloadkey)#" onclick="return actionModal(this.href);"><i class="icon-refresh"></i> #application.rbFactory.getKeyValue(session.rb,"layout.reloadapplication")#</a></li>
 		                     	
 		                     	<li>
 		                     		<a <cfif not isBoolean(application.configBean.getAllowAutoUpdates()) or application.configBean.getAllowAutoUpdates()><!--- <cfif $.globalconfig('dbtype') eq "mssql"> --->href="##" onclick="confirmDialog('WARNING: Do not update your core files unless you have backed up your current Mura install.\n\nIf your are using MSSQL you must uncheck Maintain Connections in your CF administrator datasource settings before proceeding. You may turn it back on after the update is complete.',function(){actionModal('index.cfm?muraAction=cSettings.list&action=updateCore')});return false;"<!--- </cfif> ---></cfif>>
