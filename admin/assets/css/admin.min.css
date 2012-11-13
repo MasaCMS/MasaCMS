@@ -9393,6 +9393,9 @@ tr:nth-child(even) i {
   -webkit-box-shadow: 0px 0px 0 rgba(0, 0, 0, 0);
   -moz-box-shadow: 0px 0px 0 rgba(0, 0, 0, 0);
   box-shadow: 0px 0px 0 rgba(0, 0, 0, 0);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .mura header .nav-site #select-site #select-site-btn,
 .mura #cPlugins .nav-site #select-site #select-site-btn {
