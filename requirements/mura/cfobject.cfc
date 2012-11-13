@@ -147,8 +147,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="deleteMethod" access="public" output="false">
 	<cfargument name="methodName" type="any" required="true" />
-	<cfset structKeyDelete(this,arguments.methodName)>
-	<cfset structKeyDelete(variables,arguments.methodName)>
+	<cfset StructDelete(this,arguments.methodName)>
+	<cfset StructDelete(variables,arguments.methodName)>
 </cffunction>
 
 <cffunction name="getAsJSON" access="public" output="false" returntype="String" >

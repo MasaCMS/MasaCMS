@@ -213,6 +213,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfcase value="oracle">
 				<cfset this.ormSettings.dialect = "Oracle10g" />
 			</cfcase>
+			<cfcase value="nuodb">
+				<cfset this.ormSettings.dialect = "nuodb" />
+			</cfcase>
 		</cfswitch>
 		<cfset this.ormSettings.dbcreate = properties.getProperty("ormdbcreate","update") />
 		<cfif len(properties.getProperty("ormcfclocation",""))>
