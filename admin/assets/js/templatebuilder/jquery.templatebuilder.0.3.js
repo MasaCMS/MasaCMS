@@ -228,7 +228,7 @@
 			_currentFieldLIBtn.addClass('selected');
 			_currentFieldLIBtn.append($pointer);
 
-			jQuery('.ui-button',_currentFieldLIBtn).each(function() {
+			jQuery('.mura-tb-nav-utility div',_currentFieldLIBtn).each(function() {
 				jQuery(this).click( function() {
 					switch ( jQuery(this).attr('id') ) {
 						case 'button-trash': {
