@@ -42,6 +42,6 @@ width:#rc.width#<br/>
 </cfloop>
 </table>
 <cfelse>
-	<p class="notice">There are currently no custom image sizes.</p>
+	<p class="alert">There are currently no custom image sizes.</p>
 </cfif>
 </cfoutput>

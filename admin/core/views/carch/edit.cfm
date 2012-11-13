@@ -291,21 +291,21 @@ var hasBody=#subType.getHasBody()#;
 	</cfif>
 	
 	<cfif rc.compactDisplay eq "true" and not ListFindNoCase(nodeLevelList,rc.type)>
-		<p class="notice">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
+		<p class="alert">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
 	</cfif>
 	
 	<cfif not rc.contentBean.getIsNew()>
 		<cfset draftcheck=application.contentManager.getDraftPromptData(rc.contentBean.getContentID(),rc.contentBean.getSiteID())>
 		
 		<cfif yesNoFormat(draftcheck.showdialog) and draftcheck.historyid neq rc.contentBean.getContentHistID()>
-			<p class="notice">
+			<p class="alert">
 			#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.inline')#: <strong><a href="./?#replace(cgi.query_string,'#rc.contentBean.getContentHistID()#','#draftcheck.historyid#')#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.gotolatest')#</a></strong>
 			<p>
 		</cfif>
 	</cfif>
 	
 	<cfif hasChangesets and (not currentChangeset.getIsNew() or pendingChangesets.recordcount)>
-		<p class="notice">
+		<p class="alert">
 		<cfif pendingChangesets.recordcount>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetnodenotify")#: 
 		<cfloop query="pendingChangesets"><a href="?muraAction=cArch.edit&moduleID=#URLEncodedFormat(rc.moduleID)#&siteID=#URLEncodedFormat(rc.siteID)#&topID=#URLEncodedFormat(rc.topID)#&contentID=#URLEncodedFormat(rc.contentID)#&return=#URLEncodedFormat(rc.return)#&contentHistID=#pendingChangesets.contentHistID#&parentID=#URLEncodedFormat(rc.parentID)#&startrow=#URLEncodedFormat(rc.startrow)#&type=#URLEncodedFormat(rc.type)#"><strong>#HTMLEditFormat(pendingChangesets.changesetName)#</strong></a><cfif pendingChangesets.currentrow lt pendingChangesets.recordcount>, </cfif></cfloop><br/></cfif>
 		<cfif not currentChangeset.getIsNew()>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetversionnotify")#: <strong>#HTMLEditFormat(currentChangeset.getName())#</strong></cfif>
@@ -313,7 +313,7 @@ var hasBody=#subType.getHasBody()#;
 	</cfif>
 
 	<cfif not structIsEmpty(rc.contentBean.getErrors())>
-		<div class="error">#application.utility.displayErrors(rc.contentBean.getErrors())#</div>
+		<div class="alert-error">#application.utility.displayErrors(rc.contentBean.getErrors())#</div>
 	</cfif>
 	<form novalidate="novalidate" action="index.cfm" method="post" enctype="multipart/form-data" name="contentForm" onsubmit="return ckContent(draftremovalnotice);" id="contentForm">
 	

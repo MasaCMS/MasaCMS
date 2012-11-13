@@ -4458,15 +4458,15 @@ input[type="checkbox"][readonly] {
 .control-group.warning > label,
 .control-group.warning .help-block,
 .control-group.warning .help-inline {
-  color: #514721;
+  color: #cc8801;
 }
 .control-group.warning .checkbox,
 .control-group.warning .radio,
 .control-group.warning input,
 .control-group.warning select,
 .control-group.warning textarea {
-  color: #514721;
-  border-color: #514721;
+  color: #cc8801;
+  border-color: #cc8801;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -4476,29 +4476,29 @@ input[type="checkbox"][readonly] {
 .control-group.warning input:focus,
 .control-group.warning select:focus,
 .control-group.warning textarea:focus {
-  border-color: #2d2712;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #99873f;
-  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #99873f;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #99873f;
+  border-color: #996601;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #febb35;
+  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #febb35;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #febb35;
 }
 .control-group.warning .input-prepend .add-on,
 .control-group.warning .input-append .add-on {
-  color: #514721;
-  background-color: #fff6bf;
-  border-color: #514721;
+  color: #cc8801;
+  background-color: #fff8ac;
+  border-color: #cc8801;
 }
 .control-group.error > label,
 .control-group.error .help-block,
 .control-group.error .help-inline {
-  color: #8a1f11;
+  color: #cc0101;
 }
 .control-group.error .checkbox,
 .control-group.error .radio,
 .control-group.error input,
 .control-group.error select,
 .control-group.error textarea {
-  color: #8a1f11;
-  border-color: #8a1f11;
+  color: #cc0101;
+  border-color: #cc0101;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -4508,29 +4508,29 @@ input[type="checkbox"][readonly] {
 .control-group.error input:focus,
 .control-group.error select:focus,
 .control-group.error textarea:focus {
-  border-color: #5d150b;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #e3351e;
-  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #e3351e;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #e3351e;
+  border-color: #990101;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #fe3535;
+  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #fe3535;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #fe3535;
 }
 .control-group.error .input-prepend .add-on,
 .control-group.error .input-append .add-on {
-  color: #8a1f11;
-  background-color: #fbe3e4;
-  border-color: #8a1f11;
+  color: #cc0101;
+  background-color: #ffcbcb;
+  border-color: #cc0101;
 }
 .control-group.success > label,
 .control-group.success .help-block,
 .control-group.success .help-inline {
-  color: #264409;
+  color: #6e8f3d;
 }
 .control-group.success .checkbox,
 .control-group.success .radio,
 .control-group.success input,
 .control-group.success select,
 .control-group.success textarea {
-  color: #264409;
-  border-color: #264409;
+  color: #6e8f3d;
+  border-color: #6e8f3d;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -4540,16 +4540,16 @@ input[type="checkbox"][readonly] {
 .control-group.success input:focus,
 .control-group.success select:focus,
 .control-group.success textarea:focus {
-  border-color: #0d1703;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #589e15;
-  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #589e15;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #589e15;
+  border-color: #536b2e;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #a1c270;
+  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #a1c270;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #a1c270;
 }
 .control-group.success .input-prepend .add-on,
 .control-group.success .input-append .add-on {
-  color: #264409;
-  background-color: #e6efc2;
-  border-color: #264409;
+  color: #6e8f3d;
+  background-color: #dbf0b8;
+  border-color: #6e8f3d;
 }
 input:focus:required:invalid,
 textarea:focus:required:invalid,
@@ -5088,13 +5088,13 @@ table .span24 {
   margin-left: 0;
 }
 .table tbody tr.success td {
-  background-color: #e6efc2;
+  background-color: #dbf0b8;
 }
 .table tbody tr.error td {
-  background-color: #fbe3e4;
+  background-color: #ffcbcb;
 }
 .table tbody tr.info td {
-  background-color: #d9edf7;
+  background-color: #bce9ff;
 }
 .dropup,
 .dropdown {
@@ -5942,12 +5942,12 @@ input[type="submit"].btn.btn-mini {
   padding: 8px 35px 8px 14px;
   margin-bottom: 18px;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-  background-color: #fff6bf;
-  border: 1px solid #ffe7b0;
+  background-color: #fff8ac;
+  border: 1px solid #f8c45d;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
-  color: #514721;
+  color: #cc8801;
 }
 .alert h4 {
   margin: 0;
@@ -5959,20 +5959,20 @@ input[type="submit"].btn.btn-mini {
   line-height: 18px;
 }
 .alert-success {
-  background-color: #e6efc2;
-  border-color: #e8eaae;
-  color: #264409;
+  background-color: #dbf0b8;
+  border-color: #6e8f3d;
+  color: #6e8f3d;
 }
 .alert-danger,
 .alert-error {
-  background-color: #fbe3e4;
-  border-color: #f9d6dd;
-  color: #8a1f11;
+  background-color: #ffcbcb;
+  border-color: #cc0101;
+  color: #cc0101;
 }
 .alert-info {
-  background-color: #d9edf7;
-  border-color: #bce8f1;
-  color: #3a87ad;
+  background-color: #bce9ff;
+  border-color: #4e7696;
+  color: #4e7696;
 }
 .alert-block {
   padding-top: 14px;
@@ -7301,11 +7301,11 @@ a.badge:hover {
 }
 .label-important,
 .badge-important {
-  background-color: #8a1f11;
+  background-color: #cc0101;
 }
 .label-important[href],
 .badge-important[href] {
-  background-color: #5d150b;
+  background-color: #990101;
 }
 .label-warning,
 .badge-warning {
@@ -7317,19 +7317,19 @@ a.badge:hover {
 }
 .label-success,
 .badge-success {
-  background-color: #264409;
+  background-color: #6e8f3d;
 }
 .label-success[href],
 .badge-success[href] {
-  background-color: #0d1703;
+  background-color: #536b2e;
 }
 .label-info,
 .badge-info {
-  background-color: #3a87ad;
+  background-color: #4e7696;
 }
 .label-info[href],
 .badge-info[href] {
-  background-color: #2d6987;
+  background-color: #3d5c74;
 }
 .label-inverse,
 .badge-inverse {
@@ -13198,9 +13198,6 @@ font-size: 12px;
 .mura #cSetUp .main:after {
   clear: both;
 }
-.mura #cSetUp .notice {
-  padding: 18px;
-}
 .mura #cSetUp form {
   margin-bottom: 0;
 }
@@ -13211,17 +13208,18 @@ font-size: 12px;
 }
 .mura #cSetUp .control-label {
   width: 200px;
+  color: #000000;
 }
 .mura #cSetUp .controls {
   margin-left: 210px;
+}
+.mura #cSetUp .controls label {
+  color: #000000 !important;
 }
 .mura #cSetUp .control-group {
   margin-bottom: 9px;
   padding-bottom: 0;
   padding-top: 10px;
-}
-.mura #cSetUp .notice .control-group {
-  border-color: #ffe7b0;
 }
 .mura #cSetUp fieldset > .control-group:last-child {
   margin-bottom: 0;
@@ -13237,6 +13235,16 @@ font-size: 12px;
 }
 .mura #cSetUp i {
   color: #999999;
+}
+.mura #cSetUp form.setup-form .alert {
+  padding: 18px;
+  background-color: #fff8ac;
+}
+.mura #cSetUp form.setup-form .alert:before {
+  content: '';
+}
+.mura #cSetUp form.setup-form .alert .control-group {
+  border-color: #f8c45d;
 }
 .mura #csettings select[name="orderno"] {
   width: 4em;
@@ -14830,14 +14838,19 @@ font-size: 12px;
   *zoom: 1;
 }
 .mura .alert {
-  padding: 2px 9px 9px;
+  padding: 12px 14px;
   margin-bottom: 18px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
-  border: 2px solid;
+  border: 2px solid #f8c45d;
   line-height: 1.2;
   clear: both;
+  min-height: 20px;
+  font-size: 12px;
+}
+.mura .alert p {
+  margin-bottom: 0;
 }
 .mura .alert ul,
 .mura .alert ol {
@@ -14848,190 +14861,53 @@ font-size: 12px;
 .mura .alert ol li:last-child {
   margin-bottom: 0;
 }
-.mura .alert-icon {
+.mura .alert:before {
   font-family: 'FontAwesome';
   font-weight: normal;
   font-style: normal;
   text-decoration: inherit;
   font-size: 32px;
-  line-height: 1;
-  display: inline-block;
-  *display: inline;
-  /* IE7 inline-block hack */
-
-  *zoom: 1;
-  margin-right: .25em;
-  position: relative;
-  top: 7px;
-  /* text-shadow: 0 1px 1px rgba(255,255,255,.15); */
-
-}
-.mura .notice {
-  padding: 2px 9px 9px;
-  margin-bottom: 18px;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  border: 2px solid;
   line-height: 1.2;
-  clear: both;
-  background-color: #fff6bf;
-  border-color: #ffe7b0;
-}
-.mura .notice ul,
-.mura .notice ol {
-  margin: 0 0 0 18px;
-  padding: 0;
-}
-.mura .notice ul li:last-child,
-.mura .notice ol li:last-child {
-  margin-bottom: 0;
-}
-.mura .notice:before {
-  font-family: 'FontAwesome';
-  font-weight: normal;
-  font-style: normal;
-  text-decoration: inherit;
-  font-size: 32px;
-  line-height: 1;
   display: inline-block;
   *display: inline;
   /* IE7 inline-block hack */
 
   *zoom: 1;
-  margin-right: .25em;
+  margin-right: 10px;
+  float: left;
   position: relative;
-  top: 7px;
-  /* text-shadow: 0 1px 1px rgba(255,255,255,.15); */
-
+  top: -6px;
   content: "\f05a";
-  color: #ffc74a;
-}
-.mura .success {
-  padding: 2px 9px 9px;
-  margin-bottom: 18px;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  border: 2px solid;
-  line-height: 1.2;
-  clear: both;
-  background-color: #e6efc2;
-  border-color: #e8eaae;
-  color: #264409;
-}
-.mura .success ul,
-.mura .success ol {
-  margin: 0 0 0 18px;
-  padding: 0;
-}
-.mura .success ul li:last-child,
-.mura .success ol li:last-child {
-  margin-bottom: 0;
-}
-.mura .success:before {
-  font-family: 'FontAwesome';
-  font-weight: normal;
-  font-style: normal;
-  text-decoration: inherit;
-  font-size: 32px;
-  line-height: 1;
-  display: inline-block;
-  *display: inline;
-  /* IE7 inline-block hack */
-
-  *zoom: 1;
-  margin-right: .25em;
-  position: relative;
-  top: 7px;
+  color: #f8c45d;
   /* text-shadow: 0 1px 1px rgba(255,255,255,.15); */
 
+}
+.mura .alert-success {
+  border-color: #6e8f3d;
+  background-color: #dbf0b8;
+  padding-bottom: 4px;
+}
+.mura .alert-success:before {
+  top: -10px;
   content: "\f087";
-  color: #d1d55d;
+  color: #6e8f3d;
 }
-.mura .error {
-  padding: 2px 9px 9px;
-  margin-bottom: 18px;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  border: 2px solid;
-  line-height: 1.2;
-  clear: both;
-  background-color: #fbe3e4;
-  border-color: #f9d6dd;
-  color: #8a1f11;
+.mura .alert-error {
+  border-color: #cc0101;
+  background-color: #ffcbcb;
 }
-.mura .error ul,
-.mura .error ol {
-  margin: 0 0 0 18px;
-  padding: 0;
-}
-.mura .error ul li:last-child,
-.mura .error ol li:last-child {
-  margin-bottom: 0;
-}
-.mura .error:before {
-  font-family: 'FontAwesome';
-  font-weight: normal;
-  font-style: normal;
-  text-decoration: inherit;
-  font-size: 32px;
-  line-height: 1;
-  display: inline-block;
-  *display: inline;
-  /* IE7 inline-block hack */
-
-  *zoom: 1;
-  margin-right: .25em;
-  position: relative;
-  top: 7px;
-  /* text-shadow: 0 1px 1px rgba(255,255,255,.15); */
-
+.mura .alert-error:before {
+  top: 0;
   content: "\f071";
-  color: #ec7c94;
+  color: #cc0101;
 }
-.mura .info {
-  padding: 2px 9px 9px;
-  margin-bottom: 18px;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  border: 2px solid;
-  line-height: 1.2;
-  clear: both;
-  background-color: #d9edf7;
-  border-color: #bce8f1;
-  color: #3a87ad;
+.mura .alert-info {
+  border-color: #4e7696;
+  background-color: #bce9ff;
 }
-.mura .info ul,
-.mura .info ol {
-  margin: 0 0 0 18px;
-  padding: 0;
-}
-.mura .info ul li:last-child,
-.mura .info ol li:last-child {
-  margin-bottom: 0;
-}
-.mura .info:before {
-  font-family: 'FontAwesome';
-  font-weight: normal;
-  font-style: normal;
-  text-decoration: inherit;
-  font-size: 32px;
-  line-height: 1;
-  display: inline-block;
-  *display: inline;
-  /* IE7 inline-block hack */
-
-  *zoom: 1;
-  margin-right: .25em;
-  position: relative;
-  top: 7px;
-  /* text-shadow: 0 1px 1px rgba(255,255,255,.15); */
-
+.mura .alert-info:before {
   content: "\f05a";
-  color: #67cbdf;
+  color: #4e7696;
 }
 .mura .separate,
 .mura .divide {

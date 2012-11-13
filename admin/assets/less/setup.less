@@ -11,10 +11,6 @@
 		.center-block();
 		}
 		
-	.notice {
-		padding: 18px;
-		}
-		
 	form {
 		margin-bottom: 0;
 		}
@@ -26,10 +22,16 @@
 
 	.control-label {
 		width: 200px;
+		color: @grayDarker;
 		}
+	
+	
 	
 	.controls {
 		margin-left: 210px;
+		
+		label { color: @grayDarker !important; }
+		
 		}
 	
 	.control-group {
@@ -37,10 +39,6 @@
 		padding-bottom: 0;
 		padding-top: 10px;
 		}
-	
-	.notice .control-group {
-		border-color: #ffe7b0;
-	}
 	
 	fieldset > .control-group:last-child {
 		margin-bottom: 0;
@@ -59,4 +57,18 @@
 	i {
 		color: darken(@gray,20%);
 		}
+	
+	form.setup-form .alert {
+		
+		padding: 18px;
+		background-color: @warningBackground;
+		
+		&:before { content: ''; }
+		
+		.control-group {
+			border-color: @warningBorder;
+			}
+		
+		}
+	
 }

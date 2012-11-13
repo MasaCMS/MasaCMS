@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 #application.utility.displayErrors(rc.changeset.getErrors())#
 
 <cfif rc.changeset.getPublished()>
-<p class="notice">
+<p class="alert">
 #application.rbFactory.getKeyValue(session.rb,'changesets.publishednotice')#
 </p>
 </cfif>

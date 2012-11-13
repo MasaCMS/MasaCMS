@@ -109,7 +109,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<!---
 	<cfif container eq 'Default'>
 		<div id="extendMessage" <cfif started>style="display:none"</cfif>>
-		<p class="notice">There are currently no extended attributes available.</p>
+		<p class="alert">There are currently no extended attributes available.</p>
 		</div>
 	</cfif>
 	--->
