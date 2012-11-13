@@ -105,10 +105,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						confirmDialog(
 						'WARNING: DO NOT continue unless you have backed up all selected site files.',
 						function(){
+							actionModal(
+								function(){
 									$('.form-actions').hide();
 									$('#actionIndicator').show();
 									document.form1.submit();
 								}
+							);
+						}
 						)
 
 					});
