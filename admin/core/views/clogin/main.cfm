@@ -161,11 +161,11 @@ jQuery(document).ready(function(){
 		if(jQuery("##ProxyIFrame").length){
 			jQuery("##ProxyIFrame").load(
 				function(){
-					frontEndProxy.postMessage("cmd=setWidth&width=configurator");
+					frontEndProxy.postMessage("cmd=setWidth&width=400");
 				}
 			);	
 		} else {
-			frontEndProxy.postMessage("cmd=setWidth&width=configurator");
+			frontEndProxy.postMessage("cmd=setWidth&width=400");
 		}
 	}
 });
