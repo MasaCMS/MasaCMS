@@ -323,6 +323,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="setEnforceChangesets" access="public" output="false">
+	<cfargument name="enforceChangesets" />
+	<cfif isNumeric(arguments.enforceChangesets)>
+		<cfset variables.instance.enforceChangesets = arguments.enforceChangesets />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="setHasFeedManager" output="false">
 	<cfargument name="feedManager" />
 	<cfset variables.instance.feedManager=arguments.feedManager>
