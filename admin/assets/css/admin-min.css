@@ -4458,15 +4458,15 @@ input[type="checkbox"][readonly] {
 .control-group.warning > label,
 .control-group.warning .help-block,
 .control-group.warning .help-inline {
-  color: #cc8801;
+  color: #835906;
 }
 .control-group.warning .checkbox,
 .control-group.warning .radio,
 .control-group.warning input,
 .control-group.warning select,
 .control-group.warning textarea {
-  color: #cc8801;
-  border-color: #cc8801;
+  color: #835906;
+  border-color: #835906;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -4476,16 +4476,16 @@ input[type="checkbox"][readonly] {
 .control-group.warning input:focus,
 .control-group.warning select:focus,
 .control-group.warning textarea:focus {
-  border-color: #996601;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #febb35;
-  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #febb35;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #febb35;
+  border-color: #523804;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #e59c0a;
+  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #e59c0a;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #e59c0a;
 }
 .control-group.warning .input-prepend .add-on,
 .control-group.warning .input-append .add-on {
-  color: #cc8801;
+  color: #835906;
   background-color: #fff8ac;
-  border-color: #cc8801;
+  border-color: #835906;
 }
 .control-group.error > label,
 .control-group.error .help-block,
@@ -4522,15 +4522,15 @@ input[type="checkbox"][readonly] {
 .control-group.success > label,
 .control-group.success .help-block,
 .control-group.success .help-inline {
-  color: #6e8f3d;
+  color: #587231;
 }
 .control-group.success .checkbox,
 .control-group.success .radio,
 .control-group.success input,
 .control-group.success select,
 .control-group.success textarea {
-  color: #6e8f3d;
-  border-color: #6e8f3d;
+  color: #587231;
+  border-color: #587231;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -4540,16 +4540,16 @@ input[type="checkbox"][readonly] {
 .control-group.success input:focus,
 .control-group.success select:focus,
 .control-group.success textarea:focus {
-  border-color: #536b2e;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #a1c270;
-  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #a1c270;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #a1c270;
+  border-color: #3c4f22;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #8eb653;
+  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #8eb653;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #8eb653;
 }
 .control-group.success .input-prepend .add-on,
 .control-group.success .input-append .add-on {
-  color: #6e8f3d;
+  color: #587231;
   background-color: #dbf0b8;
-  border-color: #6e8f3d;
+  border-color: #587231;
 }
 input:focus:required:invalid,
 textarea:focus:required:invalid,
@@ -5947,7 +5947,7 @@ input[type="submit"].btn.btn-mini {
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
-  color: #cc8801;
+  color: #835906;
 }
 .alert h4 {
   margin: 0;
@@ -5961,7 +5961,7 @@ input[type="submit"].btn.btn-mini {
 .alert-success {
   background-color: #dbf0b8;
   border-color: #6e8f3d;
-  color: #6e8f3d;
+  color: #587231;
 }
 .alert-danger,
 .alert-error {
@@ -7317,11 +7317,11 @@ a.badge:hover {
 }
 .label-success,
 .badge-success {
-  background-color: #6e8f3d;
+  background-color: #587231;
 }
 .label-success[href],
 .badge-success[href] {
-  background-color: #536b2e;
+  background-color: #3c4f22;
 }
 .label-info,
 .badge-info {
@@ -14852,6 +14852,9 @@ font-size: 12px;
 .mura .alert p {
   margin-bottom: 0;
 }
+.mura .alert p:first-child {
+  margin-top: 4px;
+}
 .mura .alert ul,
 .mura .alert ol {
   margin: 0 0 0 18px;
@@ -14876,7 +14879,7 @@ font-size: 12px;
   margin-right: 10px;
   float: left;
   position: relative;
-  top: -6px;
+  top: -5px;
   content: "\f05a";
   color: #f8c45d;
   /* text-shadow: 0 1px 1px rgba(255,255,255,.15); */
@@ -14885,10 +14888,10 @@ font-size: 12px;
 .mura .alert-success {
   border-color: #6e8f3d;
   background-color: #dbf0b8;
-  padding-bottom: 4px;
+  min-height: 20px;
 }
 .mura .alert-success:before {
-  top: -10px;
+  top: -6px;
   content: "\f087";
   color: #6e8f3d;
 }

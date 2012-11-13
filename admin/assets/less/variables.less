@@ -184,7 +184,7 @@
 
 // Form states and alerts
 // -------------------------
-@warningText:             rgb(204, 136, 1);
+@warningText:             darken(@warningBorder,40%);
 @warningBackground:       rgb(255, 248, 172);
 @warningBorder:			rgb(248, 196, 93);
 
@@ -192,9 +192,9 @@
 @errorBackground:         rgb(255, 203, 203);
 @errorBorder:             @errorText;
 
-@successText:             rgb(110, 143, 61);
+@successText:             darken(@successBorder,8%);
 @successBackground:       rgb(219, 240, 184);
-@successBorder:           @successText;
+@successBorder:           rgb(110, 143, 61);
 
 @infoText:                rgb(78, 118, 150);
 @infoBackground:          rgb(188, 233, 255);

@@ -139,6 +139,7 @@ div.tooltip {
 	font-size: @baseFontSize;
 	
 	p { margin-bottom: 0; }
+	p:first-child { margin-top: 4px; }
 	
 	ul, ol {
 		margin: 0 0 0 @baseLineHeight;
@@ -158,21 +159,20 @@ div.tooltip {
 		margin-right: @gridGutterWidth/2;
 		float: left;
 		position: relative;
-		top: -6px;
+		top: -5px;
 		content: "\f05a";
 		color: @warningBorder;
 		/* text-shadow: 0 1px 1px rgba(255,255,255,.15); */
 		}
 
-
 .alert-success {
 	
 	border-color: @successBorder;
 	background-color: @successBackground;
-	padding-bottom: 4px;
+	min-height: 20px;
 	
 	&:before {
-		top: -10px;
+		top: -6px;
 		content: "\f087";
 		color: @successBorder;
 		}

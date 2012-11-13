@@ -611,10 +611,6 @@ to your own modified versions of Mura CMS.
         <div class="alert alert-error">
           <p>When you are done with setup, it is recommended you remove the "/config/setup" directory to maintain security. Once deleted, all settings can be edited in "/config/settings.ini.cfm" directly.</p></div>
           
-         <div class="alert alert-info"><p>This is an "info" alert.</p></div>
-         
-         <div class="alert"><p>This is a plain ole alert.</p></div>
-          
         <div id="finishSetUp" class="form-actions">
         	<input type="submit" class="btn" name="#cookie.setupSubmitButtonComplete#" value="Login to Mura" />
         </div>
