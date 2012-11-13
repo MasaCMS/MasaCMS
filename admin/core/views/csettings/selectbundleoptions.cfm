@@ -134,7 +134,7 @@ function checkAll (form) {
                 #HTMLEditFormat(rc.rsplugins.name)#</label>
           </cfloop>
           <cfelse>
-          <p class="notice">This site currently has no plugins assigned to it.</p>
+          <p class="alert">This site currently has no plugins assigned to it.</p>
         </cfif>
         </div>
     </div>
@@ -155,7 +155,7 @@ function checkAll (form) {
     
     <!--- <cfif application.settingsManager.getSite(rc.siteid).getAdManager()> --->
 	    <div class="control-group">
-	    <p class="notice"><strong>Note:</strong> The Advertising Module &amp; Email Broadcaster are not included in Mura Bundles.</p>
+	    <p class="alert"><strong>Note:</strong> The Advertising Module &amp; Email Broadcaster are not included in Mura Bundles.</p>
 	    </div>
     </div>
     <!--- </cfif>  --->

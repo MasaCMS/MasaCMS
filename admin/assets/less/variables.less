@@ -184,21 +184,21 @@
 
 // Form states and alerts
 // -------------------------
-@warningText:             #514721;
-@warningBackground:       #FFF6BF;
-@warningBorder:           darken(spin(@warningBackground, -10), 3%);
+@warningText:             darken(@warningBorder,40%);
+@warningBackground:       rgb(255, 248, 172);
+@warningBorder:			rgb(248, 196, 93);
 
-@errorText:               #8a1f11;
-@errorBackground:         #FBE3E4;
-@errorBorder:             darken(spin(@errorBackground, -10), 3%);
+@errorText:               rgb(204, 1, 1);
+@errorBackground:         rgb(255, 203, 203);
+@errorBorder:             @errorText;
 
-@successText:             #264409;
-@successBackground:       #E6EFC2;
-@successBorder:           darken(spin(@successBackground, -10), 5%);
+@successText:             darken(@successBorder,8%);
+@successBackground:       rgb(219, 240, 184);
+@successBorder:           rgb(110, 143, 61);
 
-@infoText:                #3a87ad;
-@infoBackground:          #d9edf7;
-@infoBorder:              darken(spin(@infoBackground, -10), 7%);
+@infoText:                rgb(78, 118, 150);
+@infoBackground:          rgb(188, 233, 255);
+@infoBorder:              rgb(78, 118, 150);
 
 // GRID
 // --------------------------------------------------

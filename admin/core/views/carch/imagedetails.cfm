@@ -296,6 +296,6 @@
 	</div>
 </div>
 <cfelse>
-	<p class="notice">This content does not have any image attached to it.</p>
+	<p class="alert">This content does not have any image attached to it.</p>
 </cfif>
 </cfoutput>

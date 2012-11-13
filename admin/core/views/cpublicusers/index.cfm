@@ -136,7 +136,7 @@ function goAndClose(userid)	{
 <cfelseif form.search neq ''>
 <div class="separate"></div>
 <cfoutput>
-<div class="notice">#application.rbFactory.getKeyValue(session.rb,'user.nosearchresults')#.</div></cfoutput>
+<div class="alert">#application.rbFactory.getKeyValue(session.rb,'user.nosearchresults')#.</div></cfoutput>
 </cfif>
 </body>
 </html>

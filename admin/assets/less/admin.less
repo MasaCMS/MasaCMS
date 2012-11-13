@@ -129,12 +129,17 @@ div.tooltip {
 // Additional Mura styles -- Move to separate file?
 .alert {
 	
-	padding: 2px 9px 9px;
+	padding: 12px 14px;
 	margin-bottom: @baseLineHeight;
 	.border-radius(3px);
-	border: 2px solid;
+	border: 2px solid @warningBorder;
 	line-height: 1.2;
 	clear: both;
+	min-height: 20px;
+	font-size: @baseFontSize;
+	
+	p { margin-bottom: 0; }
+	p:first-child { margin-top: 4px; }
 	
 	ul, ol {
 		margin: 0 0 0 @baseLineHeight;
@@ -146,65 +151,55 @@ div.tooltip {
 	}
 }
 
-.alert-icon {
+.alert:before {
 		.icon-font('FontAwesome');
 		font-size: 32px;
-		line-height: 1;
-		.inline-block;
-		margin-right: .25em;
+		line-height: 1.2;
+		.inline-block();
+		margin-right: @gridGutterWidth/2;
+		float: left;
 		position: relative;
-		top: 7px;
+		top: -5px;
+		content: "\f05a";
+		color: @warningBorder;
 		/* text-shadow: 0 1px 1px rgba(255,255,255,.15); */
 		}
 
-.notice {
-	.alert;
-	background-color: @warningBackground;
-	border-color: @warningBorder;
+.alert-success {
+	
+	border-color: @successBorder;
+	background-color: @successBackground;
+	min-height: 20px;
 	
 	&:before {
-		.alert-icon;	
-		content: "\f05a";
-		color: darken(@warningBorder,20%);
-		}
-	
-	}
-	
-.success {
-	.alert;
-	.alert-success;
-	
-	&:before {
-		.alert-icon;
+		top: -6px;
 		content: "\f087";
-		color: darken(@successBorder,20%);
+		color: @successBorder;
 		}
-		
 	}
 
-.error {
-	.alert;
-	.alert-error;
+.alert-error {
+
+	border-color: @errorBorder;
+	background-color: @errorBackground;
 	
 	&:before {
-		.alert-icon;
+		top: 0;
 		content: "\f071";
-		color: darken(@errorBorder,20%);
+		color: @errorBorder;
 		}
 	}
 
-.info {
-	.alert;
-	.alert-info;
+.alert-info {
+
+	border-color: @infoBorder;
+	background-color: @infoBackground;
 	
 	&:before {
-		.alert-icon;
 		content: "\f05a";
-		color: darken(@infoBorder,20%);
+		color: @infoBorder;
 		}
-	
 	}
-
 
 .separate, .divide {
 	.clearfix;

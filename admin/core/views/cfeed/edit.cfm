@@ -165,7 +165,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 #application.utility.displayErrors(rc.feedBean.getErrors())#
 
 <cfif rc.compactDisplay eq "true" and not isObjectInstance>
-<p class="notice">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
+<p class="alert">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
 </cfif>
 
 <!-- This is plugin message targeting --->	
@@ -753,7 +753,7 @@ jQuery(document).ready(function(){
 </ul></cfif>
 
 <cfif rc.compactDisplay eq "true">
-<p class="notice">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
+<p class="alert">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
 </cfif>
 
 <span id="msg">

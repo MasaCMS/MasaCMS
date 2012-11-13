@@ -46,6 +46,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfoutput>
 <h1>Edit Content</h1>
-<p class="error">
+<p class="alert-error">
 This site has reached it's maximum number of pages allowed. If you are a Super Admin, this can be changed in Site Settings.</p> 
 </cfoutput>

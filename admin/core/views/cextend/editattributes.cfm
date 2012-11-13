@@ -105,6 +105,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </ul>
 
 <cfelse>
-<p class="notice">This set has no attributes.</p>
+<p class="alert">This set has no attributes.</p>
 </cfif>
 </cfoutput>
