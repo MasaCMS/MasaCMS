@@ -3334,7 +3334,8 @@ ul.icons li .icon-large:before {
 }
 /* @end */
 .ui-dialog {
-  border: 6px solid #666;
+  /* border: 6px solid #666; */
+
   border-radius: 4px;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -14212,7 +14213,7 @@ font-size: 12px;
 
 }
 .mura #frontEndToolsModalBody body {
-  border: 6px solid #666;
+  border: 6px solid #666666 !important;
 }
 .mura #frontEndToolsModaliframe {
   width: 100%;

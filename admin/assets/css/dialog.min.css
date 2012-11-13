@@ -998,7 +998,7 @@ ul.icons li .icon-large:before {
 
 }
 #frontEndToolsModalBody body {
-  border: 6px solid #666;
+  border: 6px solid #666666 !important;
 }
 #frontEndToolsModaliframe {
   width: 100%;
