@@ -140,9 +140,9 @@
 				min-height: 18px;
 				line-height: 20px;
 				white-space: wrap;
-				padding: 4px 5px 4px 0;
+				padding: 4px 5px 0 0;
 				float: left;
-				color: @grayDarker;			
+				color: @grayDarker;		
 			}
 			
 			dt a.title {
@@ -150,6 +150,7 @@
 				position: relative;
 				.text-overflow;
 				
+				&:hover { border-bottom: 1px dotted; }
 				&.locked {}
 				
 				&:before { 		
