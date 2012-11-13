@@ -14232,7 +14232,7 @@ font-size: 12px;
 }
 .mura #frontEndToolsModalClose {
   position: absolute;
-  top: 35px;
+  top: 23px;
   right: 18px;
   color: #cccccc;
   display: inline-block;
@@ -14754,13 +14754,7 @@ font-size: 12px;
   cursor: hand !important;
 }
 .mura body.compact {
-  padding: 2em;
-  /*
-	padding: 19px;
-.border-radius(5px);
-	border: 6px solid @grayDark;
-*/
-
+  padding: 10px;
   background: #fff;
 }
 .mura .main {
@@ -14845,13 +14839,14 @@ font-size: 12px;
   -moz-border-radius: 3px;
   border-radius: 3px;
   border: 2px solid #ffd324;
-  line-height: 1.2;
+  line-height: 20px;
   clear: both;
   min-height: 20px;
   font-size: 12px;
 }
 .mura .alert p {
   margin-bottom: 0;
+  line-height: 1.2;
 }
 .mura .alert p:first-child {
   margin-top: 4px;
