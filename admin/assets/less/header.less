@@ -144,6 +144,7 @@ header, #cPlugins {
 		}
 		
 		> ul > li > a {
+		
 			display: block;
 			min-height: @navSiteHeight;
 			min-width: 80px;
@@ -217,7 +218,9 @@ header, #cPlugins {
 		        	background: hsla(0,0%,20%,.98);
 		        	border-bottom: 1px solid hsla(0,0%,30%,.98);
 		        	}
-			    
+			
+			li { }
+			
 			a {
 				font-size: 12px;
 				color: @white;
@@ -296,6 +299,7 @@ header, #cPlugins {
 		
 		li a { /* Dropdown Items */
 			.box-shadow(0px 0px 0 rgba(0, 0, 0, 0));
+			.text-overflow();
 			}
 		
 		#select-site-btn {

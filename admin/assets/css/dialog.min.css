@@ -1178,14 +1178,14 @@ ul.icons li .icon-large:before {
 /* @end */
 /* @group Toolbar */
 #frontEndTools {
-  background-color: rgba(64, 64, 64, 0.98);
-  background-image: -moz-linear-gradient(top, rgba(77, 77, 77, 0.98), rgba(46, 46, 46, 0.98));
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(rgba(77, 77, 77, 0.98)), to(rgba(46, 46, 46, 0.98)));
-  background-image: -webkit-linear-gradient(top, rgba(77, 77, 77, 0.98), rgba(46, 46, 46, 0.98));
-  background-image: -o-linear-gradient(top, rgba(77, 77, 77, 0.98), rgba(46, 46, 46, 0.98));
-  background-image: linear-gradient(to bottom, rgba(77, 77, 77, 0.98), rgba(46, 46, 46, 0.98));
+  background-color: rgba(72, 72, 72, 0.8500000000000001);
+  background-image: -moz-linear-gradient(top, rgba(89, 89, 89, 0.85), rgba(46, 46, 46, 0.85));
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(rgba(89, 89, 89, 0.85)), to(rgba(46, 46, 46, 0.85)));
+  background-image: -webkit-linear-gradient(top, rgba(89, 89, 89, 0.85), rgba(46, 46, 46, 0.85));
+  background-image: -o-linear-gradient(top, rgba(89, 89, 89, 0.85), rgba(46, 46, 46, 0.85));
+  background-image: linear-gradient(to bottom, rgba(89, 89, 89, 0.85), rgba(46, 46, 46, 0.85));
   background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fa4d4d4d', endColorstr='#fa2e2e2e', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#d9595959', endColorstr='#d92e2e2e', GradientType=0);
   height: 30px !important;
   position: fixed !important;
   left: 0px !important;
@@ -1195,9 +1195,9 @@ ul.icons li .icon-large:before {
   text-align: left !important;
   font-weight: normal !important;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
-  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35) !important;
-  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35) !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35) !important;
+  -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.6) !important;
+  -moz-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.6) !important;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.6) !important;
   /* border-top: 1px solid hsla(0,0,.6,.98); */
 
   /* border-bottom: 1px solid hsla(0,0,.2,.98); */

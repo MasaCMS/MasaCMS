@@ -193,7 +193,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 				<ul class="dropdown-menu">
 	 				    <cfloop query="theSiteList">
 	 				      <li<cfif session.siteID eq theSiteList.siteID> class="active"</cfif>>
-	 				        <a href="#baseURL#&amp;siteID=#theSiteList.siteID#"><i class="icon-globe"></i> #HTMLEditFormat(theSiteList.site)#</a>
+	 				        <a href="#baseURL#&amp;siteID=#theSiteList.siteID#" title="#HTMLEditFormat(theSiteList.site)#"><i class="icon-globe"></i> #HTMLEditFormat(theSiteList.site)#</a>
 	 				      </li>
 	 				    </cfloop>
 	 				</ul>
