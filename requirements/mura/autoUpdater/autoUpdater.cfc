@@ -249,7 +249,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif isNumeric(version)>
 		<cfreturn version>
 	<cfelse>
-		<cfif variables.configBean.getValue("autoupdatemode") eq "preview">
+		<cfif trim(variables.configBean.getValue("autoupdatemode")) eq "preview">
 			<cfreturn getProductionData().preview>
 		<cfelse>
 			<cfreturn getProductionData().production>
