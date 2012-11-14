@@ -82,6 +82,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</cfcase>
 				<cfcase value="edit,update">
+					<cfif rc.compactDisplay neq 'true'>
 					<a class="btn" href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&topid=#rc.moduleID#&parentid=#rc.moduleID#&moduleid=#rc.moduleID#"><i class="icon-circle-arrow-left"></i> 
 					<cfif rc.moduleid eq "00000000000000000000000000000000003">
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.backtocomponents')#
@@ -89,6 +90,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.backtoforms')#
 					</cfif>
 					</a>
+					</cfif>
 					<cfif len(rc.contentID)>
 					<cfswitch expression="#rc.type#">		
 						<cfcase value="Form">
