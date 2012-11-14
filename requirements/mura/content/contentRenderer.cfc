@@ -2287,7 +2287,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset loadShadowboxJS() />
 				</cfif>
 				<cfif this.showEditableObjects and not request.muraExportHTML>
-					<cfset addToHTMLHEADQueue('editableObjects.cfm')>
+					<cfsavecontent variable="headerStr">
+						<cfoutput>
+<link href="#variables.$.globalConfig('context')#/admin/assets/css/editableObjects.min.css" rel="stylesheet" type="text/css" />
+</cfoutput>
+					</cfsavecontent>
 				</cfif>
 			</cfif>
 		<cfelseif arguments.queueType eq "FOOT">
