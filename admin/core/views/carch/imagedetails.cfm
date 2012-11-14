@@ -261,16 +261,28 @@
 		        var title=$(this).attr('data-filename');
 		        var scaleby=$(this).attr('data-scaleby');
 		        var aspectRatio=$(this).attr('data-ratio');
-		        $dialog.find('##crop-target').Jcrop({ boxHeight:600,boxWidth:600,aspectRatio:aspectRatio,onSelect:saveCoords,onChange:saveCoords},function(){
-			        jcrop_api = this;
-			        $dialog.dialog({
-			            modal: true,
-			            title: title,
-			            close: function(){ $dialog.remove(); },
-			            width: jcrop_api.getWidgetSize()[0]+4,
-			            resizable: false,
-			        });
-	    		});
+
+		        actionModal(function(){
+			       	 $dialog.find('##crop-target').Jcrop(
+			       	 	{ 
+			       	 		boxHeight:600,
+			       	 		boxWidth:600,
+			       	 		aspectRatio:aspectRatio,
+			       	 		onSelect:saveCoords,
+			       	 		onChange:saveCoords
+			       	 	},
+			       	 	function(){
+					        jcrop_api = this;
+					        $dialog.dialog({
+					            modal: true,
+					            title: title,
+					            close: function(){ $dialog.remove(); },
+					            width: jcrop_api.getWidgetSize()[0]+4,
+					            resizable: false,
+					        });
+					        $('##action-modal').remove();
+		    			});
+		       	});
 	    });
 
 		<cfif rc.compactDisplay eq "true">
