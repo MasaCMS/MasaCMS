@@ -68,6 +68,15 @@ NOTES       : Dave Shuck - created
 		</cfscript>
 	</cffunction>
 
+	<!--- Custom --->
+	<cffunction name="updateConfig" access="public" output="false" returntype="void">
+		<cfargument name="name" required="true">
+		<cfargument name="value" required="true">
+
+		<cfset variables.Config[name] = value>
+	</cffunction>
+	<!--- --->
+
 	<cffunction name="testSubmission" access="public" output="false" returntype="any">
 		<cfargument name="FormStruct" required="true" type="struct" />
 		<cfscript>
