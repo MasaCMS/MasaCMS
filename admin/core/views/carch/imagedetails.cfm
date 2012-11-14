@@ -192,8 +192,7 @@
 	    function applyCropping(){
 
 	    	actionModal(function(){
-			    	$('##applyingCoords').show();
-			    	$('##cropper .btn').hide();
+			    	//$('##cropper .btn').hide();
 			 		
 			 		//location.href='./index.cfm?muraAction=carch.cropimage&fileid=' + currentFileID + '&size=' + currentSize + '&x=' + currentCoords.x + '&y=' + currentCoords.y + '&width=' + currentCoords.w + '&height=' + currentCoords.h + '&siteid=' + siteid;
 			
@@ -256,23 +255,34 @@
 	    			$dialogHTML+='<input type="hidden" name="coords" value="" id="coords">'; 
 	    			$dialogHTML+='<input class="btn" type="button" value="Cancel" onclick="$(\'##cropper\').remove();">';
 	    			$dialogHTML+='<input class="btn" type="button"id="applyCoords" value="Apply Cropping" onclick="applyCropping();">';
-	    			$dialogHTML+='<div id="applyingCoords" class="load-inline" style="display:none"></div>';
 	    			$dialogHTML+='</div></div>';
 	
 		        var $dialog = $($dialogHTML);
 		        var title=$(this).attr('data-filename');
 		        var scaleby=$(this).attr('data-scaleby');
 		        var aspectRatio=$(this).attr('data-ratio');
-		        $dialog.find('##crop-target').Jcrop({ boxHeight:600,boxWidth:600,aspectRatio:aspectRatio,onSelect:saveCoords,onChange:saveCoords},function(){
-			        jcrop_api = this;
-			        $dialog.dialog({
-			            modal: true,
-			            title: title,
-			            close: function(){ $dialog.remove(); },
-			            width: jcrop_api.getWidgetSize()[0]+4,
-			            resizable: false,
-			        });
-	    		});
+
+		        actionModal(function(){
+			       	 $dialog.find('##crop-target').Jcrop(
+			       	 	{ 
+			       	 		boxHeight:600,
+			       	 		boxWidth:600,
+			       	 		aspectRatio:aspectRatio,
+			       	 		onSelect:saveCoords,
+			       	 		onChange:saveCoords
+			       	 	},
+			       	 	function(){
+					        jcrop_api = this;
+					        $dialog.dialog({
+					            modal: true,
+					            title: title,
+					            close: function(){ $dialog.remove(); },
+					            width: jcrop_api.getWidgetSize()[0]+4,
+					            resizable: false,
+					        });
+					        $('##action-modal').remove();
+		    			});
+		       	});
 	    });
 
 		<cfif rc.compactDisplay eq "true">
