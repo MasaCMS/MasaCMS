@@ -1298,7 +1298,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 			
 		<cfset variables.$.loadShadowBoxJS()>
-		<cfset variables.$.addToHTMLHeadQueue('editableObjects.cfm')>
+		<!---<cfset variables.$.addToHTMLHeadQueue('editableObjects.cfm')>--->
 			
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;compactDisplay=true">
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;homeID=" & variables.$.content("contentID")>
