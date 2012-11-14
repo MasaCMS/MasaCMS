@@ -111,11 +111,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						 	( 
 						   	tcontent.Display = 2 	 
 						 	 	AND 
-						 	 	(
-						 	 		tcontent.DisplayStart < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateadd("D",1,arguments.menuDateTime)#">
-							  		AND (
-							  				tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.menuDateTime#"> or tcontent.DisplayStop is null
-							  			)  
+								(
+									tcontent.DisplayStart <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
+									AND tcontent.DisplayStart < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateadd("M",1,arguments.menuDateTime)#">
+									AND (
+										tcontent.DisplayStop >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#"> 
+										or tcontent.DisplayStop is null
+									)
+
 								)
 							)
 						)

@@ -2065,15 +2065,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					   (
 						 	tcontent.Display = 1 
 						 	
-						 OR
+						 	OR
+
 						 	( 
-						   	tcontent.Display = 2 	 
-						 	 	AND 
-						 	 	(
-						 	 		tcontent.DisplayStart < #renderDateTimeArg(dateadd("D",1,arguments.menuDateTime))#
-							  		AND (
-							  				tcontent.DisplayStop >= #renderDateTimeArg(arguments.menuDateTime)# or tcontent.DisplayStop is null
-							  			)  
+						   		tcontent.Display = 2
+
+								AND 
+								(
+									tcontent.DisplayStart <= #renderDateTimeArg(now())# 
+									AND tcontent.DisplayStart < #renderDateTimeArg(dateadd("M",1,arguments.menuDateTime))#
+									AND (
+										tcontent.DisplayStop >= #renderDateTimeArg(now())# 
+										or tcontent.DisplayStop is null
+									)
+
 								)
 							)
 						)
