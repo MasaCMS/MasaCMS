@@ -80,7 +80,7 @@ to your own modified versions of Mura CMS.
           <input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="Add" />
           <cfelse>
           <cfif rc.siteBean.getsiteid() neq 'default'>
-            <input type="button" class="btn" onclick="return confirmDialog('#JSStringFormat("WARNING: A deleted site and all of it''s files cannot be recovered. Are you sure that you want to continue?")#',function(){actionModal('index.cfm?muraAction=cSettings.updateSite&action=delete&siteid=#rc.siteBean.getSiteID()#')});" value="Delete" />
+            <input type="button" class="btn" onclick="return confirmDialog('#JSStringFormat("WARNING: A deleted site and all of its files cannot be recovered. Are you sure that you want to continue?")#',function(){actionModal('index.cfm?muraAction=cSettings.updateSite&action=delete&siteid=#rc.siteBean.getSiteID()#')});" value="Delete" />
           </cfif>
           <input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="Update" />
         </cfif>

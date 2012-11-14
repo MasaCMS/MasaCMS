@@ -191,7 +191,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									</cfif>
 								</cfif>
 								<cfif rc.rsSites.siteid neq 'default'>
-									<li class="delete"><a title="Delete" href="##" onclick="confirmDialog('#JSStringFormat("WARNING: A deleted site and all of it''s files cannot be recovered. Are you sure that you want to delete the site named '#Ucase(rc.rsSites.site)#'?")#',function(){actionModal('index.cfm?muraAction=cSettings.updateSite&action=delete&siteid=#rc.rsSites.siteid#')});return false;"><i class="icon-remove-sign"></i></a></li>
+									<li class="delete"><a title="Delete" href="##" onclick="confirmDialog('#JSStringFormat("WARNING: A deleted site and all of its files cannot be recovered. Are you sure that you want to delete the site named '#Ucase(rc.rsSites.site)#'?")#',function(){actionModal('index.cfm?muraAction=cSettings.updateSite&action=delete&siteid=#rc.rsSites.siteid#')});return false;"><i class="icon-remove-sign"></i></a></li>
 									<cfelse>
 									<li class="delete disabled"><i class="icon-remove-sign"></i></li>
 								</cfif>
