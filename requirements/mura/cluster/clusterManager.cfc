@@ -108,6 +108,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="runCommands" output="false">	
 	<cfset var rsCommands="">
+
 	<cfquery name="rsCommands" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		select * from tclustercommands where instanceID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.instanceID#">
 	</cfquery>
@@ -135,11 +136,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif rsPeers.recordcount>
 		<cfloop query="rsPeers">
 			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
-				insert into tclustercommands (commandID,instanceID,command) 
+				insert into tclustercommands (commandID,instanceID,command,created) 
 					values(
 					'#createUUID()#',
 					<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsPeers.instanceID#">,
-					<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.command#">
+					<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.command#">,
+					<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
 					)
 			</cfquery>
 		</cfloop>
@@ -150,22 +152,38 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="reload" output="false" returntype="void">	
 	<cfargument name="broadcast" default="true">
 
+	<cfset touchInstance()>
+	
 	<cfif arguments.broadcast and variables.broadcastAppreloads>
+		<cfset broadcastCommand("getBean('settingsManager').remoteReload()")>
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
-			delete from tclustercommands
+			delete from tclustercommands where instanceid not in (select instanceid from tclusterpeers)
+			and created < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('d',-7,now())#">
 		</cfquery>
-		<cfquery name="rsInstance" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
-			delete from tclusterpeers where instanceID <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#application.instanceID#">
-		</cfquery>
-		<cfset broadcastCommand("getBean('siteManager').remoteReload()")>	
+		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
+			delete from tclusterpeers where instanceid <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#application.instanceID#">
+		</cfquery>	
 	</cfif>
 
+</cffunction>
+
+<cffunction name="touchInstance" output="false">
 	<cfif not hasInstance()>
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
 			insert into tclusterpeers (instanceID) values(<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.instanceID#">)
 		</cfquery>
 	</cfif>
+</cffunction>
 
+<cffunction name="purgeInstance" output="false">
+
+	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
+		delete from tclusterpeers where instanceid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.instanceID#">
+	</cfquery>
+	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
+		delete from tclustercommands where instanceid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.instanceID#">
+	</cfquery>
+	
 </cffunction>
 
 <cffunction name="hasInstance" output="false">	

@@ -129,6 +129,7 @@
 	.addColumn(column="commandID",dataType="char",length="35",nullable=false, default='')
 	.addColumn(column="instanceID",dataType="char",length="35")
 	.addColumn(column="command",dataType="longtext")
+	.addColumn(column="created",dataType="datetime")
 	.addPrimaryKey("commandID")
 	.addIndex("instanceID");
 
