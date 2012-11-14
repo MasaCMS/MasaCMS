@@ -158,7 +158,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset broadcastCommand("getBean('settingsManager').remoteReload()")>
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
 			delete from tclustercommands where instanceid not in (select instanceid from tclusterpeers)
-			and created < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('d',-7,now())#">
+			and created < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('d',-1,now())#">
 		</cfquery>
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
 			delete from tclusterpeers where instanceid <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#application.instanceID#">
