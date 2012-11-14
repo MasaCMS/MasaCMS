@@ -150,7 +150,7 @@ jQuery(document).ready(function(){
 					});
 		</cfcase>
 		<cfcase value="plugin">	
-			var configurator=getPluginConfigurator('#JSStringFormat(rsDisplayObject.objectid)#');
+			var configurator=siteManager.getPluginConfigurator('#JSStringFormat(rsDisplayObject.objectid)#');
 			window[configurator](
 				{
 					'object':'#JSStringFormat(rsDisplayObject.object)#',
