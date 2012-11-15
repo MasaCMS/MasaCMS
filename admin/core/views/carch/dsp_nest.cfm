@@ -132,11 +132,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif isNumeric(attributes.rsnest.hasKids) and attributes.rsNest.haskids>
 		<span <cfif isOpenSection>class="hasChildren open"<cfelse>class="hasChildren closed"</cfif> onclick="return siteManager.loadSiteSection( jQuery(this).parents('li:first') , 1 , true);"></span>
 	</cfif>
-	
+
+	<cfsilent>
+		<cfif verdict neq 'none' and listFindNoCase("jpg,jpeg,png,gif",listLast(attributes.rsnest.assocfilename,"."))>
+			<cfset atooltip=true>
+			<cfset atitle="<img src='#application.contentRenderer.getURLForImage(fileid=attributes.rsNest.fileid,size='small',siteid=attributes.rsnest.siteid,fileext=listLast(attributes.rsnest.assocfilename,"."))#'/>">
+		<cfelse>
+			<cfset atooltip=false>
+			<cfset atitle=application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")>
+		</cfif>
+	</cfsilent>
+
 	<cfif not listFindNoCase('none,read',verdict)>
-		<a class="<cfif attributes.rsNest.type eq 'File'>file #lcase(icon)#<cfelse>icon-mura-#lcase(icon)#</cfif> title draftprompt" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?muraAction=cArch.edit&contenthistid=#attributes.rsNest.ContentHistID#&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#"<cfif attributes.rsNest.type eq 'File'> data-filetype="#lcase(attributes.rsNest.fileExt)#"</cfif>>
+		<a class="<cfif attributes.rsNest.type eq 'File'>file #lcase(icon)#<cfelse>icon-mura-#lcase(icon)#</cfif> title draftprompt" title="#atitle#" href="index.cfm?muraAction=cArch.edit&contenthistid=#attributes.rsNest.ContentHistID#&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#"<cfif attributes.rsNest.type eq 'File'> data-filetype="#lcase(attributes.rsNest.fileExt)#"</cfif>  <cfif atooltip>rel="tooltip" data-html="true"</cfif>>
 	<cfelse>
-		<a class="<cfif attributes.rsNest.type eq 'File'>file #lcase(icon)#<cfelse>icon-mura-#lcase(icon)#</cfif> title"<cfif attributes.rsNest.type eq 'File'> data-filetype="#lcase(attributes.rsNest.fileExt)#"</cfif>>
+		<a class="<cfif attributes.rsNest.type eq 'File'>file #lcase(icon)#<cfelse>icon-mura-#lcase(icon)#</cfif> title"<cfif attributes.rsNest.type eq 'File'> data-filetype="#lcase(attributes.rsNest.fileExt)#"</cfif> <cfif atooltip>rel="tooltip" data-html="true" title="#atitle#"</cfif>>
 	</cfif>
 	#HTMLEditFormat(left(attributes.rsNest.menutitle,70))#
 	<cfif len(attributes.rsNest.menutitle) gt 70>&hellip;</cfif>

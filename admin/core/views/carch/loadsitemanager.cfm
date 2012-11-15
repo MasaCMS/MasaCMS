@@ -194,12 +194,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         <cfif isNumeric(rc.rstop.haskids) and rc.rstop.haskids>
 	    	<span class="hasChildren open" onclick="siteManager.loadSiteManager('#JSStringFormat(rc.siteID)#','#JSStringFormat(rc.topid)#','#JSStringFormat(rc.moduleid)#','#JSStringFormat(rc.sortby)#','#JSStringFormat(rc.sortdirection)#','#JSStringFormat(rc.rstop.type)#',1);"></span>
 		</cfif>
+
+      <cfsilent>
+      <cfif  perm neq 'none' and listFindNoCase("jpg,jpeg,png,gif",listLast(rc.rsTop.assocfilename,"."))>
+        <cfset atooltip=true>
+        <cfset atitle="<img src='#application.contentRenderer.getURLForImage(fileid=rc.rsTop.fileid,size='small',siteid=rc.rsTop.siteid,fileext=listLast(rc.rsTop.assocfilename,"."))#'/>">
+      <cfelse>
+        <cfset atooltip=false>
+        <cfset atitle=application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")>
+      </cfif>
+    </cfsilent>
 		
         <cfif not listFindNoCase('none,read',perm)>
-          <a class="<cfif rc.rstop.type eq 'File'>file #lcase(icon)#<cfelse>icon-mura-#lcase(icon)#</cfif> title draftprompt" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&siteid=#URLEncodedFormat(rc.siteid)#&contentid=#rc.topid#&topid=#URLEncodedFormat(rc.topid)#&type=#rc.rstop.type#&parentid=#rc.rstop.parentid#&moduleid=#rc.moduleid#"<cfif rc.rsTop.type eq 'File'> data-filetype="#lcase(rc.rsTop.fileExt)#"</cfif>>
+          <a class="<cfif rc.rstop.type eq 'File'>file #lcase(icon)#<cfelse>icon-mura-#lcase(icon)#</cfif> title draftprompt" title="#atitle#" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&siteid=#URLEncodedFormat(rc.siteid)#&contentid=#rc.topid#&topid=#URLEncodedFormat(rc.topid)#&type=#rc.rstop.type#&parentid=#rc.rstop.parentid#&moduleid=#rc.moduleid#"<cfif rc.rsTop.type eq 'File'> data-filetype="#lcase(rc.rsTop.fileExt)#"</cfif> <cfif atooltip>rel="tooltip" data-html="true"</cfif>>
         <cfelse>
-		  <a class="#icon# title">
-		</cfif>
+		      <a class="#icon# title" <cfif atooltip>rel="tooltip" data-html="true" title="#atitle#"</cfif>>
+		    </cfif>
 		#HTMLEditFormat(left(rc.rsTop.menutitle,70))#
         <cfif len(rc.rsTop.menutitle) gt 70>&hellip;</cfif>
           </a>
