@@ -235,7 +235,7 @@
 				           						url:'./index.cfm',
 				           						data:{
 				           							siteid:'#JSStringFormat(session.siteid)#',
-				           							alertid:'cachenotice',
+				           							alertid:$(_alert).attr('data-alertid'),
 				           							muraaction:'cdashboard.dismissAlert'
 				           						},
 				           						success: function(){
