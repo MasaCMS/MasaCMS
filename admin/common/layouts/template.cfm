@@ -219,8 +219,33 @@
       <div class="main-inner">
          <div class="container">
          		<cfif request.action neq "core:cLogin.main">
-	         		<cfif isdefined('session.siteID') and not application.settingsManager.getSite(session.siteID).getCache()>
-			           	<div id="system-notice" class="alert">#application.rbFactory.getKeyValue(session.rb,"layout.cachenotice")#<!--- <a href="##" class="close" data-dismiss="alert"><i class="icon-remove-sign"></i></a> ---></div>
+	         		<cfif isdefined('session.siteID')
+	         			 and not application.settingsManager.getSite(session.siteID).getCache() 
+	         			 and not structKeyExists(session.alerts[session.siteID],'cachenotice')>
+			           	<div id="system-notice" class="alert">#application.rbFactory.getKeyValue(session.rb,"layout.cachenotice")#
+			           	<a href="##" id="dismisscachenotice" class="close"><i class="icon-remove-sign"></i></a></div>
+			           	<script>
+			           		$(document).ready(function(){
+			           			$('##dismisscachenotice').click(
+			           				function(data){
+			           					$.ajax(
+			           						{
+				           						url:'./index.cfm',
+				           						data:{
+				           							siteid:'#JSStringFormat(session.siteid)#',
+				           							alertid:'cachenotice',
+				           							muraaction:'cdashboard.dismissAlert'
+				           						},
+				           						success: function(data){
+				           							$('##system-notice').remove();
+				           							//$('##system-notice').html(data);
+			           							}
+			           						}
+			           					);
+			           				}
+			           			);
+			           		});
+			           	</script>
 	         		</cfif>
          		</cfif>
          	<div class="row-fluid">
