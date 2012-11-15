@@ -53,7 +53,8 @@
 <div id="image-details" class="form-horizontal fieldset-wrap">
 	<div class="fieldset">
 	<cfif len(rc.fileID)>
-		<cfloop list="#rc.fileID#" index="f">	
+		<cfloop list="#rc.fileID#" index="f">
+			<cfset $.getBean('fileManager').touchSourceImage(f)>	
 			<cfset rc.sourceImage=$.getURLForImage(fileID=f,size='source')>
 			<cfif len(rc.sourceImage)>		
 				<cfset rc.rsMeta=$.getBean('fileManager').readMeta(fileID=f)>
