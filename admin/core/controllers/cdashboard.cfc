@@ -124,4 +124,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset arguments.rc.rslist=application.dashboardManager.getSessionHistory(arguments.rc.urlToken,arguments.rc.siteID)>
 </cffunction>
 
+<cffunction name="dismissAlert" output="false">
+	<cfargument name="rc">
+	<cfset var alerts=session.alerts[rc.siteid]>
+	<cfset alerts[rc.alertid]=false>
+	<cfabort>
+</cffunction>
+
 </cfcomponent>

@@ -179,6 +179,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfparam name="request.context.compactDisplay" default="false">
 		<cfparam name="session.siteid" default="">
 		<cfparam name="session.keywords" default="">
+		<cfparam name="session.alerts" default="#structNew()#">
 		<cfparam name="cookie.rb" default="">
 		<cfset request.context.currentURL="index.cfm?" & cgi.query_string>
 	
@@ -219,6 +220,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif not structKeyExists(request.context,"siteid")>
 			<cfset request.context.siteID=session.siteID>
 		</cfif>
+
+		<cfparam name="session.alerts.#session.siteid#" default="#structNew()#">
 		
 		<cfset request.event=createObject("component", "mura.event").init(request.context)>
 		
