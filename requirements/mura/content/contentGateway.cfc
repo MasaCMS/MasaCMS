@@ -935,7 +935,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		tfiles.fileSize,tfiles.FileExt,tfiles.ContentType,tfiles.ContentSubType, tcontent.siteID, tcontent.featureStart,tcontent.featureStop,tcontent.template,tcontent.childTemplate,
 		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires,
 		tcontentstats.rating,tcontentstats.totalVotes, tcontentstats.comments,
-		tfiles.filename as AssocFilename,tcontent.displayInterval, tcontent.sourceID
+		tfiles.filename as AssocFilename,tcontent.displayInterval, tcontent.sourceID, tcontent.fileid
 	
 		FROM tcontent LEFT JOIN tcontent tcontent2 #tableModifier# ON tcontent.contentid=tcontent2.parentid
 		LEFT JOIN tfiles #tableModifier# On tcontent.FileID=tfiles.FileID and tcontent.siteID=tfiles.siteID
@@ -981,6 +981,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif isExtendedSort>
 			,qExtendedSort.extendedSort	
 		</cfif>
+		,tcontent.fileid
 		
 		order by
 		<cfswitch expression="#arguments.sortBy#">
@@ -1050,14 +1051,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		SELECT tcontent.ContentHistID, tcontent.ContentID, tcontent.Approved, tcontent.filename, tcontent.Active, tcontent.Type, tcontent.subtype, tcontent.OrderNo, tcontent.ParentID, 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, 
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted, count(tcontent2.parentid) AS hasKids,tcontent.isFeature,tcontent.inheritObjects,tcontent.target,tcontent.targetParams,
-		tcontent.isLocked,tcontent.sortBy,tcontent.sortDirection,tcontent.releaseDate,tfiles.fileEXT, tcontent.featurestart, tcontent.featurestop,tcontent.template,tcontent.childTemplate
+		tcontent.isLocked,tcontent.sortBy,tcontent.sortDirection,tcontent.releaseDate,tfiles.fileEXT, tcontent.featurestart, tcontent.featurestop,tcontent.template,tcontent.childTemplate,
+		tfiles.filename 'assocFilename',tfiles.fileid, tcontent.siteid
 		FROM tcontent LEFT JOIN tcontent tcontent2 ON (tcontent.contentid=tcontent2.parentid)
 		LEFT JOIN tfiles On tcontent.FileID=tfiles.FileID
 		WHERE tcontent.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> and tcontent.Active=1 and tcontent.contentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.topID#"/>
 		group by tcontent.ContentHistID, tcontent.ContentID, tcontent.Approved, tcontent.filename, tcontent.Active, tcontent.Type, tcontent.subtype, tcontent.OrderNo, tcontent.ParentID, 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, 
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted,tcontent.isfeature,tcontent.inheritObjects,
-		tcontent.inheritObjects,tcontent.target,tcontent.targetParams,tcontent.isLocked,tcontent.sortBy,tcontent.sortDirection,tcontent.releaseDate,tfiles.fileEXT, tcontent.featurestart, tcontent.featurestop, tcontent.template,tcontent.childTemplate
+		tcontent.inheritObjects,tcontent.target,tcontent.targetParams,tcontent.isLocked,tcontent.sortBy,tcontent.sortDirection,tcontent.releaseDate,tfiles.fileEXT, tcontent.featurestart, tcontent.featurestop, tcontent.template,tcontent.childTemplate,
+		tcontent.featurestop,tcontent.template,tcontent.childTemplate,
+		tfiles.filename ,tfiles.fileid, tcontent.siteid
 		</cfquery>
 		
 		<cfreturn rsTop />

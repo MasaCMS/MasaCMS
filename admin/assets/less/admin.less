@@ -94,8 +94,7 @@ a[rel="tooltip"] {
 	i {
 		color: @gray;
 		font-size: 14px;
-		}
-	
+		}	
 	}
 	
 .input-prepend, .input-append {
@@ -103,10 +102,22 @@ a[rel="tooltip"] {
 	i {
 		font-size: 16px;
 		}
+	}
+		
+#system-notice {
+	
+	a {
+		right: 0;
+		top: 0;
+		}
 	
 }
-		
+
 div.tooltip {
+
+	&.in {
+		.opacity(100) !important;
+	}
 	
 	.tooltip-inner {
 		padding: 10px;
