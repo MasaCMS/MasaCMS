@@ -220,8 +220,9 @@
          <div class="container">
          		<cfif request.action neq "core:cLogin.main">
 	         		<cfif isdefined('session.siteID')
-	         			 and not application.settingsManager.getSite(session.siteID).getCache() 
-	         			 and not structKeyExists(session.alerts[session.siteID],'cachenotice')>
+	         			and (listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2'))
+	         			and not application.settingsManager.getSite(session.siteID).getCache() 
+	         			and not structKeyExists(session.alerts[session.siteID],'cachenotice')>
 			           	<div id="system-notice" class="alert">#application.rbFactory.getKeyValue(session.rb,"layout.cachenotice")#
 			           	<a href="##" id="dismisscachenotice" class="close"><i class="icon-remove-sign"></i></a></div>
 			           	<script>
