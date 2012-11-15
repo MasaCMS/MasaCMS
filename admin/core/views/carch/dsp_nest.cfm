@@ -136,7 +136,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfsilent>
 		<cfif verdict neq 'none' and listFindNoCase("jpg,jpeg,png,gif",listLast(attributes.rsnest.assocfilename,"."))>
 			<cfset atooltip=true>
-			<cfset atitle="<img src='#application.contentRenderer.getURLForImage(fileid=attributes.rsNest.fileid,size='small',siteid=attributes.rsnest.siteid,fileext=listLast(attributes.rsnest.assocfilename,"."))#'/>">
+			<cfset atitle="<img class='image-preview' src='#application.contentRenderer.getURLForImage(fileid=attributes.rsNest.fileid,size='small',siteid=attributes.rsnest.siteid,fileext=listLast(attributes.rsnest.assocfilename,"."))#'/>">
 		<cfelse>
 			<cfset atooltip=false>
 			<cfset atitle=application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")>

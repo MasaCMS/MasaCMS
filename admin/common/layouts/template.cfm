@@ -220,7 +220,7 @@
          <div class="container">
          		<cfif request.action neq "core:cLogin.main">
 	         		<cfif isdefined('session.siteID') and not application.settingsManager.getSite(session.siteID).getCache()>
-			           	<div class="alert">#application.rbFactory.getKeyValue(session.rb,"layout.cachenotice")#</div>
+			           	<div id="system-notice" class="alert">#application.rbFactory.getKeyValue(session.rb,"layout.cachenotice")#<!--- <a href="##" class="close" data-dismiss="alert"><i class="icon-remove-sign"></i></a> ---></div>
 	         		</cfif>
          		</cfif>
          	<div class="row-fluid">
