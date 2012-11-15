@@ -224,11 +224,12 @@
 	         			and not application.settingsManager.getSite(session.siteID).getCache() 
 	         			and not structKeyExists(session.alerts[session.siteID],'cachenotice')>
 			           	<div id="system-notice" class="alert">#application.rbFactory.getKeyValue(session.rb,"layout.cachenotice")#
-			           	<a href="##" id="dismisscachenotice" class="close"><i class="icon-remove-sign"></i></a></div>
+			           	<a href="##" data-alertid="cachenotice" class="close alert-dismiss"><i class="icon-remove-sign"></i></a></div>
 			           	<script>
 			           		$(document).ready(function(){
-			           			$('##dismisscachenotice').click(
-			           				function(data){
+			           			$('.alert-dismiss').click(
+			           				function(){
+			           					var _alert=this;
 			           					$.ajax(
 			           						{
 				           						url:'./index.cfm',
@@ -237,8 +238,8 @@
 				           							alertid:'cachenotice',
 				           							muraaction:'cdashboard.dismissAlert'
 				           						},
-				           						success: function(data){
-				           							$('##system-notice').remove();
+				           						success: function(){
+				           							$(_alert).parent('.alert').remove();
 				           							//$('##system-notice').html(data);
 			           							}
 			           						}
