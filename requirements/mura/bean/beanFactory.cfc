@@ -159,7 +159,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset variables.beanInjector.autowire(bean,variables.transient["#arguments.beanName#"])>
 			</cfif>
 		<cfelse>
-			<cfthrow message="The bean '#arguments.beanName#' does not exist">
+			<cfthrow message="The bean '#arguments.beanName#' does not exist" type="coldspring.NoSuchBeanDefinitionException">
 		</cfif>
 		
 		<cfreturn bean>
@@ -170,5 +170,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfreturn (structKeyExists(variables.transient,arguments.beanName) or structKeyExists(variables.transientAlias,arguments.beanName) or super.containsBean(arguments.beanName))>
 	</cffunction>
+	  
 	
 </cfcomponent>
