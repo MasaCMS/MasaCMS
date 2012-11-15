@@ -218,12 +218,12 @@
     <div class="main">
       <div class="main-inner">
          <div class="container">
-         	<div class="row-fluid">
          		<cfif request.action neq "core:cLogin.main">
 	         		<cfif isdefined('session.siteID') and not application.settingsManager.getSite(session.siteID).getCache()>
-			           	<p class="alert">#application.rbFactory.getKeyValue(session.rb,"layout.cachenotice")#</p>
+			           	<div class="alert">#application.rbFactory.getKeyValue(session.rb,"layout.cachenotice")#</div>
 	         		</cfif>
          		</cfif>
+         	<div class="row-fluid">
          		<cfif request.action neq "core:cDashboard.main" 
          			and request.action neq "core:cLogin.main">
          			<div class="span12">
