@@ -220,7 +220,9 @@
          <div class="container">
          		<cfif request.action neq "core:cLogin.main">
 	         		<cfif isdefined('session.siteID') and not application.settingsManager.getSite(session.siteID).getCache()>
-			           	<div id="system-notice" class="alert">#application.rbFactory.getKeyValue(session.rb,"layout.cachenotice")#<!--- <a href="##" class="close" data-dismiss="alert"><i class="icon-remove-sign"></i></a> ---></div>
+			           	<div id="system-notice" class="alert">#application.rbFactory.getKeyValue(session.rb,"layout.cachenotice")# 
+			           	<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
+				           	<a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.editSite&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.cachenotice-turnoncache")#</a></cfif><!--- <a href="##" class="close" data-dismiss="alert"><i class="icon-remove-sign"></i></a> ---></div>
 	         		</cfif>
          		</cfif>
          	<div class="row-fluid">
