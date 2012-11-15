@@ -436,7 +436,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</bean>
 		<bean id="standardEventsHandler" class="mura.Handler.standardEventsHandler" singleton="true" />
 		<bean id="contentServer" class="mura.content.contentServer" singleton="true" />
-		<bean id="javaLoader" class="mura.javaloader.javaLoader" singleton="true">
+		<bean id="javaloader" class="mura.javaloader.JavaLoader" singleton="true">
 			<constructor-arg name="loadPaths">
 				<list>
 					<value>#expandPath('/mura/lib/mura.jar')#</value>
