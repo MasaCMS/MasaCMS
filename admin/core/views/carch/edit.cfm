@@ -313,7 +313,7 @@ var hasBody=#subType.getHasBody()#;
 	</cfif>
 
 	<cfif not structIsEmpty(rc.contentBean.getErrors())>
-		<div class="alert-error">#application.utility.displayErrors(rc.contentBean.getErrors())#</div>
+		<div class="alert alert-error">#application.utility.displayErrors(rc.contentBean.getErrors())#</div>
 	</cfif>
 	<form novalidate="novalidate" action="index.cfm" method="post" enctype="multipart/form-data" name="contentForm" onsubmit="return ckContent(draftremovalnotice);" id="contentForm">
 	

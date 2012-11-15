@@ -714,22 +714,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rsMeta=readMeta(arguments.fileID)>
 	<cfset var site=variables.settingsManager.getSite(rsMeta.siteID)>
 	<cfset var file="">
-	<cfset var source="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/#fileID#_source.#rsMeta.fileExt#">
+	<cfset var source="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/#arguments.fileID#_source.#rsMeta.fileExt#">
 	<cfset var cropper=structNew()>
 	<cfset var customImageSize="">
 
 	<cfset arguments.size=lcase(arguments.size)>
 	
+	<cfif not fileExists(source)>
+		<cfset source="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/#arguments.fileID#.#rsMeta.fileExt#">
+	</cfif>
+
 	<cfif rsMeta.recordcount and IsImageFile(source)>
-		
-		<cfif not fileExists(source)>
-			<cfset source="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/#fileID#.#rsMeta.fileExt#">
-		</cfif>
 
 		<cfif arguments.size eq "large">
-			<cfset var file="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/#fileID#.#rsMeta.fileExt#">
+			<cfset var file="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/#arguments.fileID#.#rsMeta.fileExt#">
 		<cfelse>
-			<cfset var file="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/#fileID#_#arguments.size#.#rsMeta.fileExt#">
+			<cfset var file="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/#arguments.fileID#_#arguments.size#.#rsMeta.fileExt#">
 		</cfif>
 
 		<cfif fileExists(file)>
@@ -810,6 +810,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			ImageFlip(myImage,arguments.transpose);
 			imageWrite(myImage,source,1);
 		</cfscript>
+	</cfif>
+</cffunction>
+
+<cffunction name="touchSourceImage" output="false">
+	<cfargument name="fileID">
+
+	<cfset var rsMeta=readMeta(arguments.fileID)>
+	<cfset var source="#application.configBean.getFileDir()#/#rsMeta.siteID#/cache/file/#rsMeta.fileID#_source.#rsMeta.fileExt#">
+
+	<cfif rsMeta.recordcount and not fileExists(source)>	
+		<cfset getBean('fileWriter').copyFile(source="#application.configBean.getFileDir()#/#rsMeta.siteID#/cache/file/#rsMeta.fileID#.#rsMeta.fileExt#", destination=source)>	
 	</cfif>
 </cffunction>
 

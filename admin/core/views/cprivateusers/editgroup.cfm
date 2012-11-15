@@ -74,7 +74,10 @@ select * from rsSubTypes where subType <> 'Default'
 		<cfdefaultcase>
 		<!---top form non-system groups--->
     <cfoutput>
-    #application.utility.displayErrors(rc.userBean.getErrors())#
+      
+     <cfif not structIsEmpty(rc.userBean.getErrors())>
+       <p class="alert  alert-error">#application.utility.displayErrors(rc.userBean.getErrors())#</p>
+      </cfif>
 
      <form class="fieldset-wrap" novalidate="novalidate" action="index.cfm?muraAction=cPrivateUsers.update&userid=#URLEncodedFormat(rc.userid)#" enctype="multipart/form-data" method="post" name="form1" onsubmit="return validate(this);">
       <cfif rsSubTypes.recordcount>

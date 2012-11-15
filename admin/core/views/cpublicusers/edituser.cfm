@@ -77,7 +77,7 @@ select * from rsSubTypes where subType <> 'Default'
 			<cfset strikes.clear()>
 		</cfif>
 		<cfif strikes.isBlocked()>
-			<p class="alert-error">
+			<p class="alert alert-error">
 			#application.rbFactory.getKeyValue(session.rb,'user.blocked')#: #LSTimeFormat(strikes.blockedUntil(),"short")#
 			<a href="?muraAction=cPublicUsers.edituser&userid=#URLEncodedFormat(rc.userid)#&type=2&siteid=#URLEncodedFormat(rc.siteid)#&removeBlock">[#application.rbFactory.getKeyValue(session.rb,'user.remove')#]</a>
 			</p>
@@ -85,7 +85,7 @@ select * from rsSubTypes where subType <> 'Default'
 	</cfif>
 	
 	<cfif not structIsEmpty(rc.userBean.getErrors())>
-		<p class="alert-error">#application.utility.displayErrors(rc.userBean.getErrors())#</p>
+		<p class="alert  alert-error">#application.utility.displayErrors(rc.userBean.getErrors())#</p>
 	</cfif>
 	
 	<p>#application.rbFactory.getKeyValue(session.rb,'user.requiredtext')#</p>
