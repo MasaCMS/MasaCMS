@@ -224,39 +224,44 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 	
 		<cfelse>
+		<div class="fieldset-wrap row-fluid">
+			<div class="fieldset">
 			<cfset displaySummaries=yesNoFormat(feed.getValue("displaySummaries"))>
 				<div class="control-group">
 				<label class="control-label">
 					#application.rbFactory.getKeyValue(session.rb,'collections.displaysummaries')#
 				</label>
 				<div class="controls">
-					<label class="radio">
+					<label class="radio inline">
 						<input name="displaySummaries" type="radio" value="1" class="objectParam radio" onchange="jQuery('##altNameContainer').toggle();"<cfif displaySummaries>checked</cfif>>
 						#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
 					</label>
-					<label class="radio">
+					<label class="radio inline">
 						<input name="displaySummaries" type="radio" value="0" class="objectParam radio" onchange="jQuery('##altNameContainer').toggle();" <cfif not displaySummaries>checked</cfif>>
 						#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
 					</label>
 				</div>
 			</div>
-				<div class="control-group">
+			<div class="control-group">
+			<div class="span6">
 				<label class="control-label">
 					#application.rbFactory.getKeyValue(session.rb,'collections.viewalllink')#
 				</label>
 				<div class="controls">
-					<input name="viewalllink" class="objectParam span12" value="#HTMLEditFormat(feed.getViewAllLink())#" maxlength="50">
+					<input name="viewalllink" class="objectParam span12" type="text" value="#HTMLEditFormat(feed.getViewAllLink())#" maxlength="255">
 				</div>
 			</div>
-				<div class="control-group">
+
+			<div class="span6">
 				<label class="control-label">
 					#application.rbFactory.getKeyValue(session.rb,'collections.viewalllabel')#
 				</label>
 				<div class="controls">
-					<input name="viewalllabel" class="objectParam span12" value="#HTMLEditFormat(feed.getViewAllLabel())#" maxlength="50">
+					<input name="viewalllabel" class="objectParam span12" type="text" value="#HTMLEditFormat(feed.getViewAllLabel())#" maxlength="100">
 				</div>
-			</div>		
-			</cfif>
+			</div>
+			</div></div>
+		</cfif>
 	</div>
 </div>
 </cfoutput>
