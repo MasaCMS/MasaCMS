@@ -200,7 +200,7 @@ font-size: @baseFontSize - 1;
 @formBorderColor:	rgba(0,0,0,.07);
 
 fieldset, .fieldset { // Using an actual fieldset causes ck editor to grow crazy wide, will fix later.
-	padding: @gridGutterWidth 0 0;
+	padding: 12px 0 10px;
 	margin: @gridGutterWidth;
     background: rgba(255,255,255,.6);
     .border-radius(5px);
@@ -225,7 +225,7 @@ fieldset, .fieldset { // Using an actual fieldset causes ck editor to grow crazy
 
 	.control-group {
 		background: transparent;
-		padding: @gridGutterWidth;
+		padding: 10px @gridGutterWidth 14px;
 		margin-bottom: 0;
 		border-top: 1px solid @formBorderColor;
 		.clearfix;
@@ -237,6 +237,10 @@ fieldset, .fieldset { // Using an actual fieldset causes ck editor to grow crazy
 		}
 
 	}
+
+label:last-child {
+	margin-bottom: 0;
+}
 
 .control-label, .control-label a {
 	color: @grayDarker !important;
