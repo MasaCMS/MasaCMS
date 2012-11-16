@@ -303,7 +303,7 @@ and fileExists(licenseFile)>
 </cfoutput>
 </div>
 <div class="form-actions">
-<input type="submit" class="btn" value="Update">
+<button type="submit" class="btn"><i class="icon-ok-sign"></i> Update</button>
 </div>
 </form>
 

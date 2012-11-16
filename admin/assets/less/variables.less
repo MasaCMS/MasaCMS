@@ -78,11 +78,11 @@
 // Buttons
 // -------------------------
 @btnBackground:                     @grayLighter;
-@btnBackgroundHighlight:            darken(@grayLighter, 5%);
+@btnBackgroundHighlight:            darken(@grayLighter,5%);
 @btnBorder:                         darken(@btnBackgroundHighlight,2%);
 
 @btnPrimaryBackground:              @blue;
-@btnPrimaryBackgroundHighlight:     spin(@btnPrimaryBackground, 10%);
+@btnPrimaryBackgroundHighlight:     spin(@btnPrimaryBackground,10%);
 
 @btnInfoBackground:                 #5bc0de;
 @btnInfoBackgroundHighlight:        #2f96b4;
@@ -90,14 +90,17 @@
 @btnSuccessBackground:              #62c462;
 @btnSuccessBackgroundHighlight:     #51a351;
 
-@btnWarningBackground:              lighten(@orange, 15%);
+@btnWarningBackground:              lighten(@orange,15%);
 @btnWarningBackgroundHighlight:     @orange;
 
 @btnDangerBackground:               #ee5f5b;
 @btnDangerBackgroundHighlight:      #bd362f;
 
-@btnInverseBackground:              @gray;
-@btnInverseBackgroundHighlight:     @grayDarker;
+//@btnInverseBackground:              darken(@blue,5%);
+//@btnInverseBackgroundHighlight:     darken(@btnInverseBackground,15%);
+
+@btnInverseBackground:              darken(@gray,50%);
+@btnInverseBackgroundHighlight:     darken(@btnInverseBackground,15%);
 
 // Drop Shadows
 // -------------------------

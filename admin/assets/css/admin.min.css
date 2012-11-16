@@ -5650,17 +5650,17 @@ button.close {
 .btn-inverse {
   color: #ffffff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-  background-color: #7a7a7a;
-  background-image: -moz-linear-gradient(top, #cccccc, #000000);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#cccccc), to(#000000));
-  background-image: -webkit-linear-gradient(top, #cccccc, #000000);
-  background-image: -o-linear-gradient(top, #cccccc, #000000);
-  background-image: linear-gradient(to bottom, #cccccc, #000000);
+  background-color: #3d3d3d;
+  background-image: -moz-linear-gradient(top, #4d4d4d, #262626);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#4d4d4d), to(#262626));
+  background-image: -webkit-linear-gradient(top, #4d4d4d, #262626);
+  background-image: -o-linear-gradient(top, #4d4d4d, #262626);
+  background-image: linear-gradient(to bottom, #4d4d4d, #262626);
   background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffcccccc', endColorstr='#ff000000', GradientType=0);
-  border-color: #000000 #000000 #000000;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff4d4d4d', endColorstr='#ff262626', GradientType=0);
+  border-color: #262626 #262626 #000000;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  *background-color: #000000;
+  *background-color: #262626;
   /* Darken IE7 buttons by default so they stand out more given they won't have borders */
 
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
@@ -5671,12 +5671,12 @@ button.close {
 .btn-inverse.disabled,
 .btn-inverse[disabled] {
   color: #ffffff;
-  background-color: #000000;
-  *background-color: #000000;
+  background-color: #262626;
+  *background-color: #1a1a1a;
 }
 .btn-inverse:active,
 .btn-inverse.active {
-  background-color: #000000 \9;
+  background-color: #0d0d0d \9;
 }
 button.btn,
 input[type="submit"].btn {
@@ -5871,7 +5871,7 @@ input[type="submit"].btn.btn-mini {
   background-color: #2f96b4;
 }
 .btn-group.open .btn-inverse.dropdown-toggle {
-  background-color: #000000;
+  background-color: #262626;
 }
 .btn .caret {
   margin-top: 8px;
@@ -11691,12 +11691,66 @@ font-size: @baseFontSize - 1;
 .mura .btn {
   color: #666666;
 }
-.mura .tab-content .form-actions .btn {
+.mura .tab-content .form-actions,
+.mura .fieldset-wrap .form-actions {
+  text-align: center;
+}
+.mura .tab-content .form-actions .btn,
+.mura .fieldset-wrap .form-actions .btn {
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  background-color: #3d3d3d;
+  background-image: -moz-linear-gradient(top, #4d4d4d, #262626);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#4d4d4d), to(#262626));
+  background-image: -webkit-linear-gradient(top, #4d4d4d, #262626);
+  background-image: -o-linear-gradient(top, #4d4d4d, #262626);
+  background-image: linear-gradient(to bottom, #4d4d4d, #262626);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff4d4d4d', endColorstr='#ff262626', GradientType=0);
+  border-color: #262626 #262626 #000000;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color: #262626;
+  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
   border: 0;
   margin-right: 3px;
-  -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
-  -moz-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
+  -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 -1px rgba(0, 0, 0, 0.35);
+  /* color: @grayLight; */
+
+}
+.mura .tab-content .form-actions .btn:hover,
+.mura .fieldset-wrap .form-actions .btn:hover,
+.mura .tab-content .form-actions .btn:active,
+.mura .fieldset-wrap .form-actions .btn:active,
+.mura .tab-content .form-actions .btn.active,
+.mura .fieldset-wrap .form-actions .btn.active,
+.mura .tab-content .form-actions .btn.disabled,
+.mura .fieldset-wrap .form-actions .btn.disabled,
+.mura .tab-content .form-actions .btn[disabled],
+.mura .fieldset-wrap .form-actions .btn[disabled] {
+  color: #ffffff;
+  background-color: #262626;
+  *background-color: #1a1a1a;
+}
+.mura .tab-content .form-actions .btn:active,
+.mura .fieldset-wrap .form-actions .btn:active,
+.mura .tab-content .form-actions .btn.active,
+.mura .fieldset-wrap .form-actions .btn.active {
+  background-color: #0d0d0d \9;
+}
+.mura .tab-content .form-actions .btn .caret,
+.mura .fieldset-wrap .form-actions .btn .caret {
+  border-top-color: #ffffff;
+  border-bottom-color: #ffffff;
+}
+.mura .tab-content .form-actions .btn i,
+.mura .fieldset-wrap .form-actions .btn i {
+  color: #595959;
+  text-shadow: inherit;
 }
 .mura .criteria {
   font-size: 22px;
@@ -14865,6 +14919,7 @@ font-size: 12px;
 }
 .mura .alert {
   padding: 12px 14px;
+  margin-left: -1px;
   margin-bottom: 18px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
