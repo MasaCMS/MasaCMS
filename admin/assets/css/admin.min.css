@@ -11606,7 +11606,7 @@ font-size: @baseFontSize - 1;
 }
 .mura fieldset,
 .mura .fieldset {
-  padding: 20px 0 0;
+  padding: 12px 0 10px;
   margin: 20px;
   background: rgba(255, 255, 255, 0.6);
   -webkit-border-radius: 5px;
@@ -11636,7 +11636,7 @@ font-size: @baseFontSize - 1;
 .mura fieldset .control-group,
 .mura .fieldset .control-group {
   background: transparent;
-  padding: 20px;
+  padding: 10px 20px 14px;
   margin-bottom: 0;
   border-top: 1px solid rgba(0, 0, 0, 0.07);
   *zoom: 1;
@@ -11657,6 +11657,9 @@ font-size: @baseFontSize - 1;
 .mura .fieldset > div:first-of-type {
   border-top: 0 !important;
   padding-top: 0 !important;
+}
+.mura label:last-child {
+  margin-bottom: 0;
 }
 .mura .control-label,
 .mura .control-label a {
