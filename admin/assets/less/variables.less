@@ -77,9 +77,9 @@
 
 // Buttons
 // -------------------------
-@btnBackground:                     @white;
-@btnBackgroundHighlight:            darken(@white, 10%);
-@btnBorder:                         #ccc;
+@btnBackground:                     @grayLighter;
+@btnBackgroundHighlight:            darken(@grayLighter, 5%);
+@btnBorder:                         darken(@btnBackgroundHighlight,2%);
 
 @btnPrimaryBackground:              @blue;
 @btnPrimaryBackgroundHighlight:     spin(@btnPrimaryBackground, 10%);
@@ -101,7 +101,7 @@
 
 // Drop Shadows
 // -------------------------
-@globalDropShadow:					0 1px 3px rgba(0,0,0,0.2);
+@globalDropShadow:					0 1px 5px rgba(0,0,0,0.3);
 
 // Forms
 // -------------------------
@@ -111,6 +111,8 @@
 @inputBorderRadius:             2px;
 @inputDisabledBackground:       @grayLighter;
 @formActionsBackground:         transparent;
+@formBorderColor:				rgba(0,0,0,.07);
+@fieldsetBackground:			rgba(255,255,255,.65);
 
 // Dropdowns
 // -------------------------

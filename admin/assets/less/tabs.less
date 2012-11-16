@@ -40,7 +40,7 @@
 	
 		> a {
 			border: 0 !important;
-			#gradient .vertical(hsl(0,0,99%),hsl(0,0,97%));
+			#gradient .vertical(@btnBackground,@btnBackgroundHighlight);
 			.box-shadow(@globalDropShadow);
 			position: relative;
 			}
@@ -53,7 +53,7 @@
 		.border-radius(3px);
 		padding: 0;
 		margin-left: 0;
-		#gradient .vertical(hsl(0,0,98%),hsl(0,0,95%));
+		#gradient .vertical(darken(@btnBackground,2%),@btnBackgroundHighlight);
 		.box-shadow(@globalDropShadow);
 		behavior: @PIE;
 		}

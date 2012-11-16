@@ -197,7 +197,6 @@ font-size: @baseFontSize - 1;
 	}
 } // /#editObjects
 
-@formBorderColor:	rgba(0,0,0,.07);
 
 fieldset, .fieldset { // Using an actual fieldset causes ck editor to grow crazy wide, will fix later.
 	padding: 12px 0 10px;
@@ -262,9 +261,13 @@ label:last-child {
 }
 
 .btn {
-  border-color: #ededed #ededed hsl(201, 0%, 89.5%);
-  color: @grayDark !important;
-  border-bottom-color: darken(#ededed, 10%);
+  color: @grayDark;
+}
+
+.tab-content .form-actions .btn {
+	border: 0;
+	margin-right: 4px;
+	.box-shadow(@globalDropShadow);
 }
 
 // Various Search Utilities

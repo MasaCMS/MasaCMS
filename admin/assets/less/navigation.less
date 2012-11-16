@@ -1,11 +1,20 @@
 #nav-module-specific {
-	margin-bottom: @baseLineHeight;  // * 1.5
+	margin-bottom: @baseLineHeight+2px;  // +2px makes up for shadow
 	margin-left: 0;
+	.box-shadow(@globalDropShadow);
 	clear: both;
+	float: left;
+	.border-radius(3px);
+	
+	> .btn + .btn {
+		margin-left: 0;
+		}
 	
 	.btn {
 		text-shadow: (0 1px rgba(255,255,255,.99));
 		padding: 6px 12px;
+		border: 0;
+		border-right: 1px solid @btnBorder; 
 			
 		i {
 			color: darken(@gray,40%);
@@ -95,16 +104,11 @@
 	margin: 0 0 @baseLineHeight !important;
 	padding: 6px 15px !important;
 	clear: both;
-	//border: 0 solid #f5f5f5 !important;
-	//#gradient .vertical(hsl(0,0,98%),hsl(0,0,96%));
 	.border-radius(3px) !important;
 	.box-shadow(@globalDropShadow);
-	
-	.buttonBackground(@btnBackground, @btnBackgroundHighlight, @grayDark, 0 1px 1px rgba(255,255,255,.75));
 	.btn;
-	color: #666 !important;
-	border-color: #ededed #ededed #e4e4e4;
-	border-bottom-color: #d4d4d4;
+	.buttonBackground(@btnBackground, @btnBackgroundHighlight, @grayDark, 0 1px 1px rgba(255,255,255,.75));
+	border: 0;
 }
 
 #content .notice .navZoom {
