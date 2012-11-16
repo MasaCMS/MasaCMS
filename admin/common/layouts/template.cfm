@@ -239,7 +239,7 @@
 				           							muraaction:'cdashboard.dismissAlert'
 				           						},
 				           						success: function(){
-				           							$(_alert).parent('.alert').remove();
+				           							$(_alert).parent('.alert').fadeOut();
 				           							//$('##system-notice').html(data);
 			           							}
 			           						}
