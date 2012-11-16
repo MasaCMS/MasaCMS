@@ -58,6 +58,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfcase value="system">
 		<cfinclude template="objectclass/dsp_system.cfm">
 	</cfcase>
+	<cfcase value="navigation">
+		<cfinclude template="objectclass/dsp_navigation.cfm">
+	</cfcase>
 	<cfcase value="form">
 		<cfinclude template="objectclass/dsp_forms.cfm">
 	</cfcase>
