@@ -57,6 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.contentListFields=listDeleteAt(variables.feedBean.getDisplayList(),listFindNoCase(variables.feedBean.getDisplayList(),"Summary"))>
 		<cfset variables.feedBean.setDisplayList(variables.contentListFields)>
 	</cfif>
+	<cfparam name="objectparams.displaySummaries" default="true">
 	<cfparam name="objectparams.viewalllink" default="">
 	<cfparam name="objectparams.viewalllabel" default="#$.rbKey('list.viewall')#">
 </cfsilent>

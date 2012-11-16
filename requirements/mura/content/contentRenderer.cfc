@@ -1172,6 +1172,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfset objectParams=structNew()>
 	</cfif>
+
+	<!--- For backward compatability with old dsp_feed.cfm files --->
+	<cfif arguments.thefile eq "dsp_feed.cfm">
+		<cfparam name="objectParams.displaySummaries" default="true">	
+	</cfif>
 	
 	<cfsavecontent variable="theContent">
 	<cfif fileExists(expandedThemeObjectPath & fileDelim & arguments.theFile)>
