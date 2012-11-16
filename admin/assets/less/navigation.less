@@ -1,20 +1,22 @@
 #nav-module-specific {
 	margin-bottom: @baseLineHeight+2px;  // +2px makes up for shadow
 	margin-left: 0;
-	.box-shadow(@globalDropShadow);
 	clear: both;
-	float: left;
-	.border-radius(3px);
 	
-	> .btn + .btn {
+	.btn-group {
+	
+		margin-right: 3px;
+	
+		> .btn + .btn {
 		margin-left: 0;
 		}
+	}
 	
 	.btn {
-		text-shadow: (0 1px rgba(255,255,255,.99));
+		text-shadow: (0 1px rgba(255,255,255,1.0));
 		padding: 6px 12px;
 		border: 0;
-		border-right: 1px solid @btnBorder; 
+		.box-shadow(1px 1px 4px rgba(0,0,0,0.3));
 			
 		i {
 			color: darken(@gray,40%);

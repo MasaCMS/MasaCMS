@@ -9487,23 +9487,21 @@ tr:nth-child(even) i {
 .mura #nav-module-specific {
   margin-bottom: 20px;
   margin-left: 0;
-  -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
   clear: both;
-  float: left;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
 }
-.mura #nav-module-specific > .btn + .btn {
+.mura #nav-module-specific .btn-group {
+  margin-right: 3px;
+}
+.mura #nav-module-specific .btn-group > .btn + .btn {
   margin-left: 0;
 }
 .mura #nav-module-specific .btn {
-  text-shadow: 0 1px rgba(255, 255, 255, 0.99);
+  text-shadow: 0 1px #ffffff;
   padding: 6px 12px;
   border: 0;
-  border-right: 1px solid #e6e6e6;
+  -webkit-box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
 }
 .mura #nav-module-specific .btn i {
   color: #666666;
