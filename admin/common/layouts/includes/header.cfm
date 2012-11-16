@@ -289,7 +289,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 							<i class="icon-gift"></i> Create Site Bundle
 		 						</a>
 		 					</li>
-		 					
+
+							<li>
+		 						<a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.editSite&siteid=#session.siteid###tabBundles">
+		 							<i class="icon-download-alt"></i> Deploy Site Bundle
+		 						</a>
+		 					</li>
+
+									 					
 		 					<li>
 		 						<a href="index.cfm?muraAction=cTrash.list&siteID=#URLEncodedFormat(rc.siteid)#">
 		 							<i class="icon-trash"></i> Trash Bin

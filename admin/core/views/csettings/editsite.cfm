@@ -77,12 +77,12 @@ to your own modified versions of Mura CMS.
     <cfoutput>
       <div class="form-actions">
         <cfif rc.siteBean.getsiteid() eq ''>
-          <input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="Add" />
+          <button type="button" class="btn" onclick="submitForm(document.forms.form1,'add');"  /><i class="icon-plus-sign"></i>Add</button>
           <cfelse>
           <cfif rc.siteBean.getsiteid() neq 'default'>
-            <input type="button" class="btn" onclick="return confirmDialog('#JSStringFormat("WARNING: A deleted site and all of its files cannot be recovered. Are you sure that you want to continue?")#',function(){actionModal('index.cfm?muraAction=cSettings.updateSite&action=delete&siteid=#rc.siteBean.getSiteID()#')});" value="Delete" />
+            <button type="button" class="btn" onclick="return confirmDialog('#JSStringFormat("WARNING: A deleted site and all of its files cannot be recovered. Are you sure that you want to continue?")#',function(){actionModal('index.cfm?muraAction=cSettings.updateSite&action=delete&siteid=#rc.siteBean.getSiteID()#')});" /><i class="icon-remove-sign"></i> Delete</button>
           </cfif>
-          <input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="Update" />
+          <button type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" /><i class="icon-ok-sign"></i> Update</button>
         </cfif>
       </div>
     </cfoutput>
@@ -1041,7 +1041,7 @@ to your own modified versions of Mura CMS.
   <cftry>
     <cfset updated=application.autoUpdater.update(rc.siteid)>
     <cfset files=updated.files>
-    <p>Your site's files have been updated to version <cfoutput>#application.autoUpdater.getCurrentCompleteVersion(rc.siteid)#</cfoutput>.</p>
+    <p class="alert alert-success">Your site's files have been updated to version <cfoutput>#application.autoUpdater.getCurrentCompleteVersion(rc.siteid)#</cfoutput>.</p>
     <p> <strong>Updated Files <cfoutput>(#arrayLen(files)#)</cfoutput></strong><br/>
       <cfif arrayLen(files)>
         <cfoutput>

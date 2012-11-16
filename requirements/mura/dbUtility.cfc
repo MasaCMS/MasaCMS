@@ -334,11 +334,11 @@
 			<cftry>
 				<cfif not arguments.nullable> 
 					<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
-						ALTER TABLE #arguments.table# MODIFY (#arguments.column# NOT NULL DISABLE)
+						ALTER TABLE #arguments.table# MODIFY (#arguments.column# NOT NULL ENABLE)
 					</cfquery>
 				<cfelse>
 					<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
-						ALTER TABLE #arguments.table# MODIFY (#arguments.column# NOT NULL ENABLE)
+						ALTER TABLE #arguments.table# MODIFY (#arguments.column# NOT NULL DISABLE)
 					</cfquery>
 				</cfif>
 				<cfcatch></cfcatch>
@@ -451,11 +451,11 @@
 				<cftry>
 					<cfif not arguments.nullable> 
 						<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
-							ALTER TABLE #arguments.table# MODIFY (#arguments.column# NOT NULL DISABLE)
+							ALTER TABLE #arguments.table# MODIFY (#arguments.column# NOT NULL ENABLE)
 						</cfquery>
 					<cfelse>
 						<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
-							ALTER TABLE #arguments.table# MODIFY (#arguments.column# NOT NULL ENABLE)
+							ALTER TABLE #arguments.table# MODIFY (#arguments.column# NOT NULL DISABLE)
 						</cfquery>
 					</cfif>
 					<cfcatch></cfcatch>
