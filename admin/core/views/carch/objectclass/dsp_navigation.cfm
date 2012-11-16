@@ -1,4 +1,4 @@
-﻿<!--- This file is part of Mura CMS.
+<!--- This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	        size="#evaluate((application.settingsManager.getSite(rc.siteid).getcolumnCount() * 6)-4)#">
 		<cfset rc.rsObjects = application.contentManager.getSystemObjects(rc.siteid)/>
 		<cfquery name="rc.rsObjects" dbtype="query">
-			select * from rc.rsObjects where object not like '%nav%'
+			select * from rc.rsObjects where object like '%nav%'
 		</cfquery>
 		<cfloop query="rc.rsObjects">
 			<option value='{"object":"#JSStringFormat(rc.rsobjects.object)#","name":"#JSStringFormat(rc.rsObjects.name)#","objectid":"#createUUID()#"}'>
