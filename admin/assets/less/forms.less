@@ -262,6 +262,7 @@ label:last-child {
 
 .btn {
   color: @grayDark;
+  border-color: @btnBorder @btnBorder darken(@btnBorder, 10%);
 }
 
 .tab-content, .fieldset-wrap {
@@ -273,14 +274,12 @@ label:last-child {
 		.btn {
 			.btn-inverse;
 			border: 0;
-			margin-right: 3px;
-			.box-shadow(0 1px 5px rgba(0,0,0,0.5));
-			text-shadow: 0 -1px rgba(0,0,0,.35);
-			/* color: @grayLight; */
+			.box-shadow(0 1px 3px rgba(0,0,0,0.35));
+			text-shadow: 0 -1px 1px rgba(0,0,0,.35);
 			
 			i {
-				color: lighten(@btnInverseBackgroundHighlight,20%);
-				text-shadow: inherit;
+				color: darken(@btnInverseBackgroundHighlight,30%);
+				text-shadow: 0 1px 0 rgba(255,255,255,.25);
 				}
 			
 			}
@@ -414,4 +413,12 @@ select[multiple] {
 			}
 		}
 	}
+}
+
+// Custom Image Form
+
+#custom-image-form {
+	margin-bottom: @baseLineHeight;
+	.border-radius(5px);
+	.box-shadow(@globalDropShadow);
 }
