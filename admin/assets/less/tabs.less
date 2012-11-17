@@ -91,8 +91,6 @@
 	}
 	.control-group { padding:0; }
 
-	.btn { width:80px; }
-
 	a[rel="tooltip"] { padding-right:6px; }
 
 
@@ -111,28 +109,39 @@
 
 	.indent { padding-left: 1em; }
 	
+	.categorytitle > .indent.hasChildren {
+	
+		.mura-grid > .hasChildren;	
+		margin-left: 1em !important;
+		
+		&:before {
+			padding-right: .35em;
+			margin-right: .35em;
+			}	
+		}
+	
 	li {
 		cursor: default;
 		.indent {
-			padding-left: 1em;
+			padding-left: 2em;
 		}
 		li .indent {
-			padding-left: 3em;
+			padding-left: 4em;
 		}
 		li li .indent {
-			padding-left: 5em;
+			padding-left: 6em;
 		}
 		li li li .indent {
 			padding-left: 7em;
 		}
 		li li li li .indent {
-			padding-left: 9em;
+			padding-left: 10em;
 		}
 		li li li li li .indent {
-			padding-left: 11em;
+			padding-left: 12em;
 		}
 		li li li li li li .indent {
-			padding-left: 13em;
+			padding-left: 14em;
 		}
 	}
 }

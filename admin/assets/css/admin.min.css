@@ -12911,9 +12911,6 @@ font-size: 12px;
 .mura #carch #tabCategorization .control-group {
   padding: 0;
 }
-.mura #carch #tabCategorization .btn {
-  width: 80px;
-}
 .mura #carch #tabCategorization a[rel="tooltip"] {
   padding-right: 6px;
 }
@@ -12930,29 +12927,71 @@ font-size: 12px;
 .mura #carch #tabCategorization .indent {
   padding-left: 1em;
 }
+.mura #carch #tabCategorization .categorytitle > .indent.hasChildren {
+  float: left;
+  display: inline-block;
+  *display: inline;
+  /* IE7 inline-block hack */
+
+  *zoom: 1;
+  width: 12px;
+  height: 28px;
+  line-height: 27px;
+  padding: 0;
+  margin-left: -11px;
+  cursor: pointer;
+  margin-left: 1em !important;
+}
+.mura #carch #tabCategorization .categorytitle > .indent.hasChildren:before {
+  font-family: 'FontAwesome';
+  font-weight: normal;
+  font-style: normal;
+  display: inline-block;
+  text-decoration: inherit;
+  font-size: 13px;
+  color: #949494;
+  margin-top: 2px;
+}
+.mura #carch #tabCategorization .categorytitle > .indent.hasChildren.open:before {
+  content: "\f0d7";
+  /* Down Caret Icon */
+
+}
+.mura #carch #tabCategorization .categorytitle > .indent.hasChildren.closed:before {
+  content: "\f0da";
+  /* Right Caret Icon */
+
+}
+.mura #carch #tabCategorization .categorytitle > .indent.hasChildren.open + .icon-mura-localrepo:before {
+  content: "\f07c" !important;
+}
+.mura #carch #tabCategorization .categorytitle > .indent.hasChildren:before {
+  padding-right: .35em;
+  margin-right: .35em;
+}
 .mura #carch #tabCategorization li {
   cursor: default;
 }
 .mura #carch #tabCategorization li .indent {
-  padding-left: 1em;
+  padding-left: 2em;
 }
 .mura #carch #tabCategorization li li .indent {
-  padding-left: 3em;
+  padding-left: 4em;
 }
 .mura #carch #tabCategorization li li li .indent {
-  padding-left: 5em;
+  padding-left: 6em;
 }
 .mura #carch #tabCategorization li li li li .indent {
   padding-left: 7em;
 }
 .mura #carch #tabCategorization li li li li li .indent {
-  padding-left: 9em;
+  padding-left: 10em;
 }
 .mura #carch #tabCategorization li li li li li li .indent {
-  padding-left: 11em;
+  padding-left: 12em;
 }
 .mura #carch #tabCategorization li li li li li li li .indent {
-  padding-left: 13em;
+  padding-left: 14em;
 }
 .mura #tabRelatedcontent table {
   margin-top: 18px;
