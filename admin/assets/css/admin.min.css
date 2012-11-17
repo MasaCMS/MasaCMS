@@ -11288,12 +11288,21 @@ a:hover, a:active {
 }
 .mura .mura-table-grid td.add a,
 .mura .mura-grid a.add {
-  display: block;
-  /* background: url(../images/icons/add_16x16.png) no-repeat center center; */
+  display: inline-block;
+  *display: inline;
+  /* IE7 inline-block hack */
 
+  *zoom: 1;
   width: 16px;
   height: 16px;
+  margin: 0 auto;
   padding: 0;
+  text-align: center;
+}
+.mura .mura-table-grid td.add a i,
+.mura .mura-grid a.add i {
+  width: 16px;
+  margin: auto;
 }
 .mura .mura-grid a.add {
   /* really only needed for ie7 */

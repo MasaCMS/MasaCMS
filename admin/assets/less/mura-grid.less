@@ -1603,11 +1603,19 @@ table + .divide {
 }
 
 .mura-table-grid td.add a, .mura-grid a.add {
-	display: block;
-	/* background: url(../images/icons/add_16x16.png) no-repeat center center; */
+	.inline-block;
 	width: 16px;
 	height: 16px;
+	margin: 0 auto;
 	padding: 0;
+	text-align: center;
+	
+	
+	i {
+		width: 16px;
+		margin: auto;
+	}
+	
 }
 
 .mura-grid a.add { /* really only needed for ie7 */
