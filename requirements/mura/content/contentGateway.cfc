@@ -1544,7 +1544,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rsCategoriesByHistID = "">
 	
 	<cfquery name="rsCategoriesByHistID" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-		select tcontentcategoryassign.*, tcontentcategories.name, tcontentcategories.filename  from tcontentcategories inner join tcontentcategoryassign
+		select tcontentcategoryassign.*, tcontentcategories.name, tcontentcategories.filename, tcontentcategories.parentid, tcontentcategories.path from tcontentcategories inner join tcontentcategoryassign
 		ON (tcontentcategories.categoryID=tcontentcategoryassign.categoryID)
 		where tcontentcategoryassign.contentHistID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentHistID#"/>
 		Order By tcontentcategories.filename

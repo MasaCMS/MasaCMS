@@ -219,7 +219,7 @@
       <div class="main-inner">
          <div class="container">
          		<cfif request.action neq "core:cLogin.main">
-	         		<cfif isdefined('session.siteID')
+	         		<cfif isdefined('session.siteID') and isdefined('session.alerts.#session.siteid#')
 	         			and (listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2'))
 	         			and not application.settingsManager.getSite(session.siteID).getCache() 
 	         			and not structKeyExists(session.alerts[session.siteID],'cachenotice')>
