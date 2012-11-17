@@ -273,12 +273,13 @@ label:last-child {
 	
 		.btn {
 			.btn-inverse;
-			.box-shadow(0 1px 5px rgba(0,0,0,0.5));
-			text-shadow: 0 -1px rgba(0,0,0,.35);
+			border: 0;
+			.box-shadow(0 1px 3px rgba(0,0,0,0.35));
+			text-shadow: 0 -1px 1px rgba(0,0,0,.35);
 			
 			i {
-				color: lighten(@btnInverseBackgroundHighlight,40%);
-				text-shadow: inherit;
+				color: darken(@btnInverseBackgroundHighlight,30%);
+				text-shadow: 0 1px 0 rgba(255,255,255,.25);
 				}
 			
 			}
