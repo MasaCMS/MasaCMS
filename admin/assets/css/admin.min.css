@@ -8863,24 +8863,30 @@ tr:nth-child(even) i {
   color: #666666;
 }
 .mura .navZoom li.file {
-  /* margin-left: -3px; */
-
+  padding-left: 30px !important;
+  position: relative;
 }
 .mura .navZoom li.file:before {
+  position: absolute;
+  top: 0px;
+  left: 2px;
   content: attr(data-filetype);
   font-family: 'SilkscreenNormal';
   font-size: 8px;
   line-height: 1;
-  background: #666666;
+  display: inline-block;
+  *display: inline;
+  /* IE7 inline-block hack */
+
+  *zoom: 1;
   color: #ffffff;
+  background: #949494;
   padding: 4px 4px 3px;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
-  /* top: -2px; */
-
-  text-shadow: 0 0 0 !important;
   overflow: hidden;
+  text-shadow: 0 0 0;
 }
 .mura .navZoom li.link:before {
   content: '\f0c1';
@@ -9617,6 +9623,7 @@ a:hover, a:active {
   -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+  border-color: #ebebeb #ebebeb #d1d1d1;
   color: #666666;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
   background-color: #f3f3f3;
@@ -11705,6 +11712,7 @@ font-size: @baseFontSize - 1;
 }
 .mura .btn {
   color: #666666;
+  border-color: #ebebeb #ebebeb #d1d1d1;
 }
 .mura .tab-content .form-actions,
 .mura .fieldset-wrap .form-actions {
@@ -11728,14 +11736,10 @@ font-size: @baseFontSize - 1;
   /* Darken IE7 buttons by default so they stand out more given they won't have borders */
 
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
-  border: 0;
-  margin-right: 3px;
   -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
   -moz-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
   text-shadow: 0 -1px rgba(0, 0, 0, 0.35);
-  /* color: @grayLight; */
-
 }
 .mura .tab-content .form-actions .btn:hover,
 .mura .fieldset-wrap .form-actions .btn:hover,

@@ -262,6 +262,7 @@ label:last-child {
 
 .btn {
   color: @grayDark;
+  border-color: @btnBorder @btnBorder darken(@btnBorder, 10%);
 }
 
 .tab-content, .fieldset-wrap {
@@ -272,11 +273,8 @@ label:last-child {
 	
 		.btn {
 			.btn-inverse;
-			border: 0;
-			margin-right: 3px;
 			.box-shadow(0 1px 5px rgba(0,0,0,0.5));
 			text-shadow: 0 -1px rgba(0,0,0,.35);
-			/* color: @grayLight; */
 			
 			i {
 				color: lighten(@btnInverseBackgroundHighlight,40%);
