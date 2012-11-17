@@ -84,4 +84,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 	</div><!--- /tabCatgeorization --->
 </cfoutput>
-<script>siteManager.initCategoryAssignments();</script>
+<script>
+	siteManager.initCategoryAssignments();
+
+	$(document).ready(function(){
+		$('.hasChildren').click(function(){
+			var item=$(this).closest('ul.categorylist');		
+			$(item).find('ul.categorylist:first').toggleClass('hide');
+			$(this).toggleClass('open').toggleClass('closed');		
+		});
+		<cfset cats=rc.contentBean.getCategoriesIterator()>
+		<cfset itemList="">
+		<cfloop condition="cats.hasNext()">
+			<cfset cat=cats.next()>
+			<cfif listLen(cat.getPath()) gt 1>
+				<cfset to=listLen(cat.getPath())-1>
+				<cfloop from="1" to="#to#" index="i">
+					<cfset item=listGetAt(cat.getPath(),i)>
+					<cfset item=mid(item,2,len(item)-2)>
+					<cfif not listFind(itemlist,item)>
+						<cfoutput>$('##tabCategorization li[data-categoryid="#item#"]').find('span.hasChildren:first').trigger('click');</cfoutput>
+					<cfset itemlist=listAppend(itemList,item)>
+					</cfif>
+					
+				</cfloop>
+			</cfif>		
+		</cfloop>
+	});
+</script>
