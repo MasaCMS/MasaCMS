@@ -340,33 +340,6 @@
 				
 				}
 			
-			.scheduled a {
-			
-				border: 0;
-				
-				i { 
-					
-					top: 3px;
-					font-size: 21px;
-					color: @iconColor;
-					.square(18px);
-					position: relative;
-					z-index: 1000;
-					zoom: 1;
-					
-					&:hover {
-						text-decoration: none;
-						color: @grayDarker;
-						}
-					
-					}
-			}
-			
-			td.scheduled a span {
-				max-width: 110px;
-				text-align: center;
-			}
-			
 			.nav {
 				width: 50px;
 			}
@@ -1608,7 +1581,6 @@ table + .divide {
 #ccategory .mura-table-grid td.add { padding-top: 0; }
 
 .mura-table-grid .alt td {
-	/*border: 1px solid #DBDBDB;*/
 	background-color: #fcfeff;
 }
 
@@ -1662,6 +1634,37 @@ table#fileList td.var-width a,
 	padding: 2px 0 2px 20px;
 	background-position: 0px 1px;
 }
+
+.mura-grid, .mura-table-grid {
+	
+	.scheduled a {
+			
+				border: 0;
+				
+				i { 
+					
+					top: 3px;
+					font-size: 21px;
+					color: @iconColor;
+					.square(18px);
+					position: relative;
+					z-index: 1000;
+					zoom: 1;
+					
+					&:hover {
+						text-decoration: none;
+						color: @grayDarker;
+						}
+					
+					}
+			}
+			
+			td.scheduled a span {
+				max-width: 110px;
+				text-align: center;
+			}
+	
+		}
 
 #docTitle {
 	padding-left: 20px;

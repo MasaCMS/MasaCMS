@@ -5,18 +5,21 @@
 	
 	.btn-group {
 	
-		margin-right: 3px;
+		/* margin-right: 3px; */
 	
-		> .btn + .btn {
+		/*
+> .btn + .btn {
 		margin-left: 0;
 		}
+*/
 	}
 	
 	.btn {
 		text-shadow: (0 1px rgba(255,255,255,1.0));
 		padding: 6px 12px;
-		border: 0;
-		.box-shadow(1px 1px 4px rgba(0,0,0,0.3));
+		border-color: @btnBorder @btnBorder darken(@btnBorder, 10%);
+		/* .box-shadow(1px 1px 4px rgba(0,0,0,0.3)); */
+		/* .border-radius(2px); */
 			
 		i {
 			color: darken(@gray,40%);
@@ -25,39 +28,49 @@
 		}
 	}
 	
-	a.active, a:active {
-		.box-shadow(~"rgba(0, 0, 0, 0.138438) 0px 1px 4px 0px inset, rgba(0, 0, 0, 0.036875) 0px 1px 2px 0px");
+	/*
+a:hover, a:active {
+		.box-shadow(~"inset rgba(0, 0, 0, 0.138438) 0px 0 0 0px, 0 1px 5px rgba(0,0,0,0.3)");
 		}
-}
+	
+	a.active {
+		.box-shadow(~"inset rgba(0, 0, 0, 0.138438) 0px 1px 4px 0px, 1px 1px 4px rgba(0,0,0,0.3)");
+		}
+*/
+	}
 
 #btn-module-specific {
 	margin-bottom: @baseLineHeight;
-}
+	}
 
 // Pills
 
 .navSort {
 	margin-bottom: @baseLineHeight;
 	height: 32px;
-}
+	}
 
 .nav-pills {
 
 	margin-bottom: @baseLineHeight;
 	
-	li {
-		/* margin-right: .25em; */
-		}
+	li a { background: @grayLighter; }
+		
+	li a.active, li a:hover { background: @grayLight; }
+		
+	}
+
+.fieldset, fieldset {
 	
 	li a {
-		background: @grayLighter;
-		}
-		
-	li a.active, li a:hover {
 		background: @grayLight;
 		}
 		
-}
+	li a.active, li a:hover {
+		background: @gray;
+		}
+	
+	}
 
 // Pagination
 .mura-results-wrapper {
