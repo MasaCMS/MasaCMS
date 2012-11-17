@@ -340,33 +340,6 @@
 				
 				}
 			
-			.scheduled a {
-			
-				border: 0;
-				
-				i { 
-					
-					top: 3px;
-					font-size: 21px;
-					color: @iconColor;
-					.square(18px);
-					position: relative;
-					z-index: 1000;
-					zoom: 1;
-					
-					&:hover {
-						text-decoration: none;
-						color: @grayDarker;
-						}
-					
-					}
-			}
-			
-			td.scheduled a span {
-				max-width: 110px;
-				text-align: center;
-			}
-			
 			.nav {
 				width: 50px;
 			}
@@ -763,12 +736,13 @@
 		
 		.mura-file {
 			background-repeat: no-repeat;
-			padding: 4px 0 4px 20px;
-			background-position:left center;
+			padding: 4px 0;
 			margin: 0 1em 1em 0;
-			display: block;
+			display: block;/*
+
 			float: left;
 			clear: left;
+*/
 		}
 		
 		#mura-file-offline-edit {
@@ -1608,7 +1582,6 @@ table + .divide {
 #ccategory .mura-table-grid td.add { padding-top: 0; }
 
 .mura-table-grid .alt td {
-	/*border: 1px solid #DBDBDB;*/
 	background-color: #fcfeff;
 }
 
@@ -1630,12 +1603,24 @@ table + .divide {
 	white-space: normal;
 }
 
+.control-group > .mura-grid {
+	margin-top: 8px !important;
+}
+
 .mura-table-grid td.add a, .mura-grid a.add {
-	display: block;
-	/* background: url(../images/icons/add_16x16.png) no-repeat center center; */
+	.inline-block;
 	width: 16px;
 	height: 16px;
+	margin: 0 auto;
 	padding: 0;
+	text-align: center;
+	
+	
+	i {
+		width: 16px;
+		margin: 2px auto 0;
+	}
+	
 }
 
 .mura-grid a.add { /* really only needed for ie7 */
@@ -1662,6 +1647,37 @@ table#fileList td.var-width a,
 	padding: 2px 0 2px 20px;
 	background-position: 0px 1px;
 }
+
+.mura-grid, .mura-table-grid {
+	
+	.scheduled a {
+			
+				border: 0;
+				
+				i { 
+					
+					top: 3px;
+					font-size: 21px;
+					color: @iconColor;
+					.square(18px);
+					position: relative;
+					z-index: 1000;
+					zoom: 1;
+					
+					&:hover {
+						text-decoration: none;
+						color: @grayDarker;
+						}
+					
+					}
+			}
+			
+			td.scheduled a span {
+				max-width: 110px;
+				text-align: center;
+			}
+	
+		}
 
 #docTitle {
 	padding-left: 20px;

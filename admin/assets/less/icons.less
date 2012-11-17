@@ -136,22 +136,27 @@ tr:nth-child(even) i {
 			
 			&.file {
 					
-					/* margin-left: -3px; */
+					padding-left: 30px !important;
+					position: relative;
 					
-					&:before { 
+					&:before {
+					position: absolute;
+					top: 0px;
+					left: 2px;
 					content: attr(data-filetype);
 					font-family: 'SilkscreenNormal';
 					font-size: 8px;
 					line-height: 1;
-					background: @grayDark;
+					.inline-block;
 					color: @white;
+					background: @iconColor;
 					padding: 4px 4px 3px;
 					.border-radius(2px);
-					/* top: -2px; */
-					text-shadow: 0 0 0 !important;
-					overflow: hidden;					
+					overflow: hidden;
+					text-shadow: 0 0 0;				
 					}	
 				}
+
 				
 			&.link:before { content: '\f0c1'; }
 			&.localrepo:before { content: '\f07b'; }
