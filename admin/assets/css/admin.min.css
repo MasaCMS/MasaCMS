@@ -7790,6 +7790,20 @@ a.badge:hover {
 	color: #666;
 }*/
 
+  /*
+.fieldset, fieldset {
+	
+	li a {
+		background: @grayLight;
+		}
+		
+	li a.active, li a:hover {
+		background: @gray;
+		}
+	
+	}
+*/
+
   /* End #tabFlat */
   /* @group File Icons */
 
@@ -9546,16 +9560,6 @@ a:hover, a:active {
 .mura .nav-pills li a:hover {
   background: #e6e6e6;
 }
-.mura .fieldset li a,
-.mura fieldset li a {
-  background: #e6e6e6;
-}
-.mura .fieldset li a.active,
-.mura fieldset li a.active,
-.mura .fieldset li a:hover,
-.mura fieldset li a:hover {
-  background: #cccccc;
-}
 .mura .mura-results-wrapper {
   *zoom: 1;
 }
@@ -11286,6 +11290,9 @@ a:hover, a:active {
   text-align: left;
   white-space: normal;
 }
+.mura .control-group > .mura-grid {
+  margin-top: 8px !important;
+}
 .mura .mura-table-grid td.add a,
 .mura .mura-grid a.add {
   display: inline-block;
@@ -11302,7 +11309,7 @@ a:hover, a:active {
 .mura .mura-table-grid td.add a i,
 .mura .mura-grid a.add i {
   width: 16px;
-  margin: auto;
+  margin: 2px auto 0;
 }
 .mura .mura-grid a.add {
   /* really only needed for ie7 */
