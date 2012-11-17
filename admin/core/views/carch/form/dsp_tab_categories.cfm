@@ -86,7 +86,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfoutput>
 <script>
 	siteManager.initCategoryAssignments();
-
+	<!---
 	$(document).ready(function(){
 		$('.hasChildren').click(function(){
 			var item=$(this).closest('ul.categorylist');		
@@ -111,4 +111,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>		
 		</cfloop>
 	});
+	--->
 </script>
