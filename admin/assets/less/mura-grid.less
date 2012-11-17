@@ -226,7 +226,7 @@
 					.icon-font(FontAwesome);
 					content: "\f03e";
 					font-size: 19px;
-					top: 3px;
+					/* top: 3px; */
 					background: transparent;
 					padding: 0;
 					color: @iconColor;
@@ -239,26 +239,6 @@
 				outline-offset: -1px;
 				position: static;
 				
-				
-				/*
-&:before {
-					.icon-font('FontAwesome');
-					content: "\f023";
-					background: red;
-					width: 24px;
-					padding-top: 4px;
-					text-align: center;
-					font-size: 16px;
-					line-height: 24px;
-					color: @white;
-					.border-left-radius(4px);
-					position: absolute;
-					
-					margin-left: -23px;
-					margin-top: 0px;
-					}
-*/
-				
 				.restricted { 
 					outline: 0;
 					
@@ -270,6 +250,29 @@
 						}
 
 					}
+			
+				.marker {
+						
+						&:before {
+						.icon-font('FontAwesome');
+						display: block;
+						content: "\f023";
+						background: red;
+						.square(24px);
+						padding-top: 4px;
+						text-align: center;
+						font-size: 16px;
+						line-height: 24px;
+						color: @white;
+						.border-left-radius(4px);
+						position: absolute;
+						
+						margin-left: -24px;
+						margin-top: 0px;
+						}
+					}
+				
+				.restricted .marker { display: none; }
 			}
 			
 			dt a.tooltip {
@@ -327,12 +330,8 @@
 			
 					i { 
 						.square(18px);
-						font-size: 20px;
-						color: @iconColor;
 						position: relative;
 						top: 2px;
-						
-						&:hover { text-decoration: none; color: @grayDarker; }
 						
 						}
 					
@@ -346,6 +345,7 @@
 			
 			.updated {
 				width: 150px;
+				color: darken(@iconColor,10%);
 			}
 			
 			/*.date {
@@ -828,8 +828,6 @@
 		#manage-data td {
 			white-space: normal;
 			vertical-align: middle !important;
-			
-			/* &.actions ul { white-space: nowrap; } */
 				
 				.mForm-data p {
 					margin: 0;
@@ -848,7 +846,6 @@
 			list-style: none;
 			margin: 0 5px 0 0;
 			padding: 0;
-			/* background: url(../images/icons/down_on.gif) no-repeat 0 6px; */
 		}
 		
 		ul.nestoff {
@@ -859,7 +856,6 @@
 		
 		ul.nest1on {
 			list-style: none;
-			/* background: url(../images/icons/down_on.gif) no-repeat 0 6px; */
 			margin: 0 5px 0 16px;
 			padding: 0;
 		}
@@ -872,7 +868,6 @@
 		
 		ul.nest2on {
 			list-style: none;
-			/* background: url(../images/icons/down_on.gif) no-repeat 0 6px; */
 			margin: 0 5px 0 32px;
 			padding: 0;
 		}
@@ -885,7 +880,6 @@
 		
 		ul.nest3on {
 			list-style: none;
-			/* background: url(../images/icons/down_on.gif) no-repeat 0 6px; */
 			margin: 0 5px 0 48px;
 			padding: 0;
 		}
@@ -898,7 +892,6 @@
 		
 		ul.nest4on {
 			list-style: none;
-			/* background: url(../images/icons/down_on.gif) no-repeat 0 6px; */
 			margin: 0 5px 0 64px;
 			padding: 0;
 		}
@@ -911,7 +904,6 @@
 		
 		ul.nest5on {
 			list-style: none;
-			/* background: url(../images/icons/down_on.gif) no-repeat 0 6px; */
 			margin: 0 5px 0 80px;
 			padding: 0;
 		}
@@ -924,7 +916,6 @@
 		
 		ul.nest6on {
 			list-style: none;
-			/* background: url(../images/icons/down_on.gif) no-repeat 0 6px; */
 			margin: 0 5px 0 96px;
 			padding: 0;
 		}
@@ -937,7 +928,6 @@
 		
 		ul.nest7on {
 			list-style: none;
-			/* background: url(../images/icons/down_on.gif) no-repeat 0 6px; */
 			margin: 0 5px 0 112px;
 			padding: 0;
 		}
@@ -950,7 +940,6 @@
 		
 		ul.nest8on {
 			list-style: none;
-			/* background: url(../images/icons/down_on.gif) no-repeat 0 6px; */
 			margin: 0 5px 0 128px;
 			padding: 0;
 		}
@@ -963,7 +952,6 @@
 		
 		ul.nest9on {
 			list-style: none;
-			/* background: url(../images/icons/down_on.gif) no-repeat 0 6px; */
 			margin: 0 5px 0 128px;
 			padding: 0;
 		}
@@ -976,7 +964,6 @@
 		
 		ul.nest10on {
 			list-style: none;
-			/* background: url(../images/icons/down_on.gif) no-repeat 0 6px; */
 			margin: 0 5px 0 144px;
 			padding: 0;
 		}
@@ -1200,24 +1187,6 @@
 		
 		/* @group Quick Edit */
 		
-		.mura-quickEditItem {
-			cursor: pointer;
-			border-bottom: 1px dotted;	
-			
-			i {
-			
-				}
-			
-			&:hover {
-				color: @grayDark;
-				text-decoration: none;
-				}
-			}
-		
-		#selected .mura-quickEditItem {
-			font-weight: bold;
-			}
-		
 		.mura-quickEdit {
 			background-color: #272727;
 			opacity: .95;
@@ -1330,9 +1299,7 @@
 			
 			li img {
 				padding: 0;
-				}
-
-			
+				}			
 		}
 		
 		.template .mura-quickEdit {
@@ -1385,6 +1352,76 @@
 		}
 		
 		/* @end */
+	
+
+// Shared Grid Styles
+
+.mura-grid, .mura-table-grid {
+
+	.add i {
+			display: block;
+			width: 24px;
+			font-size: 16px;
+			line-height: 27px;
+			color: @iconColor;
+			margin-top: 2px;
+			}
+	
+	td {
+		padding: 4px 5px 4px 5px;
+		border-left: 1px solid #DBDBDB;
+		border-right: 1px solid #DBDBDB;
+		white-space: nowrap;
+		text-align: center;
+		width: 1%;
+		
+		&.add {
+		
+			padding: 5px 4px 0;
+		
+			i {  /* Tab Flat */
+				line-height: 1;
+				}	
+		 }
+	}
+	
+	i+span { display: none; } // Hiding <span> created for screen readers just in case the "title" isn't sufficient on a non-semantic element (i)
+	
+	i { 
+		font-size: 14px;
+		.square(18px);
+		color: lighten(@iconColor,10%);
+		
+		&.icon-ban-circle,
+		&.icon-eye-close { font-size: 16px; }
+		
+		&.icon-list-alt,
+		&.icon-calendar { font-size: 20px; }
+		
+		&.icon-minus { color: @grayLight; }	 
+		
+		}
+		
+	.mura-quickEditItem {
+			cursor: pointer;
+			/* border-bottom: 1px dotted; */	
+			
+			i {
+				color: @iconColor;
+				}
+			
+			&:hover i {
+				color: @grayDarker !important;
+				text-decoration: none;
+				}
+
+			// i.icon-minus { color: @gray; }	
+			
+			}
+		
+		#selected .mura-quickEditItem {
+			font-weight: bold;
+			}
 		
 		/* @group Add Content Nav/Menu */
 		
@@ -1396,6 +1433,11 @@
 			z-index: 20;
 			padding: 6px;
 		}
+}
+
+
+		
+// Add Content
 		
 #newContentMenu {
 	
@@ -1549,36 +1591,6 @@ table + .divide {
 	line-height: 1.25em;
 }
 
-.mura-grid, .mura-table-grid {
-
-	.add i {
-			display: block;
-			width: 24px;
-			font-size: 16px;
-			line-height: 27px;
-			color: @iconColor;
-			margin-top: 2px;
-			}
-	
-	td {
-		padding: 4px 5px 4px 5px;
-		border-left: 1px solid #DBDBDB;
-		border-right: 1px solid #DBDBDB;
-		white-space: nowrap;
-		text-align: center;
-		width: 1%;
-		
-		&.add {
-		
-			padding: 5px 4px 0;
-		
-			i {  /* Tab Flat */
-				line-height: 1;
-				}	
-		 }
-	}
-}
-
 #ccategory .mura-table-grid td.add { padding-top: 0; }
 
 .mura-table-grid .alt td {
@@ -1657,9 +1669,6 @@ table#fileList td.var-width a,
 				i { 
 					
 					top: 3px;
-					font-size: 21px;
-					color: @iconColor;
-					.square(18px);
 					position: relative;
 					z-index: 1000;
 					zoom: 1;
