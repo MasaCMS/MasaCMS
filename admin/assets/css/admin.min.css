@@ -10546,12 +10546,15 @@ a:hover, a:active {
 }
 .mura .mura-file {
   background-repeat: no-repeat;
-  padding: 4px 0 4px 20px;
-  background-position: left center;
+  padding: 4px 0;
   margin: 0 1em 1em 0;
   display: block;
-  float: left;
-  clear: left;
+  /*
+
+			float: left;
+			clear: left;
+*/
+
 }
 .mura #mura-file-offline-edit {
   margin-right: 1em;
