@@ -103,10 +103,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	                </ul>
 	                </cfif>
 	              <!--- Global Settings --->
-	              
-	               <cfif listFind(session.mura.memberships,'S2')>
+	               <cfif session.siteid neq '' and session.mura.isLoggedIn>
+	               		<cfif listFind(session.mura.memberships,'S2')>
 	              	               
-	                  <li id="navGlobalSettings" class="dropdown">
+	                  	<li id="navGlobalSettings" class="dropdown">
 	                    <a class="dropdown-toggle" data-toggle="dropdown" href="##"><i class="icon-cogs"></i> #application.rbFactory.getKeyValue(session.rb,"layout.settings")#
 	                      <b class="caret"></b>
 	                    </a>
@@ -122,7 +122,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		                    </li>
 		                    <li><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.sitecopyselect"><i class="icon-copy"></i> #application.rbFactory.getKeyValue(session.rb,"layout.sitecopytool")#</a>
 		                    </li>
-		                    <cfif listFind(session.mura.memberships,'S2')>
+		                   
 		                     	<li><a href="#application.configBean.getContext()#/admin/index.cfm?#urlEncodedFormat(application.appreloadkey)#&reload=#urlEncodedFormat(application.appreloadkey)#" onclick="return actionModal(this.href);"><i class="icon-refresh"></i> #application.rbFactory.getKeyValue(session.rb,"layout.reloadapplication")#</a></li>
 		                     	
 		                     	<li>
@@ -130,9 +130,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		                     			<i class="icon-bolt"></i> Update Mura Core
 		                     		</a>
 		                     	</li>
-		                     </cfif>
+		                   
 		                    </ul>
-	                 
+	                 </cfif>
+
 	                <li id="navHelp" class="dropdown">
 	                  <a class="dropdown-toggle" data-toggle="dropdown" href="##"><i class="icon-question-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.help")#
 	                   <b class="caret"></b>
@@ -146,8 +147,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	                   <li class="last"><a id="navHelpForums" href="http://www.getmura.com/forum/" target="_blank"><i class="icon-bullhorn"></i> #application.rbFactory.getKeyValue(session.rb,"layout.supportforum")#</a></li>
 	                  </ul>
 	                </li> 
-	                
-	                <cfif session.siteid neq '' and session.mura.isLoggedIn>
+	             
+	               
 	                 <li id="navEditProfile" class="dropdown">
 	                 	<a class="dropdown-toggle" data-toggle="dropdown" href="##"><i class="icon-user"></i> #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#
 	                 		<b class="caret"></b></a>
@@ -157,7 +158,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		                 <li id="navLogout"><a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cLogin.logout"><i class="icon-signout"></i> #application.rbFactory.getKeyValue(session.rb,"layout.logout")#</a></li>
 		                 </ul>
 	                 </li>
-	                </cfif>
+	               
 	                
 	              </ul>
 	          </div><!--/.nav-collapse -->
