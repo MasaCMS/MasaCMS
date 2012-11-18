@@ -57,10 +57,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif not rc.isNew>
 <cfset rc.rsList=application.contentManager.getPrivateSearch(rc.siteid,rc.keywords)/>
  <table class="table table-striped table-condensed table-bordered mura-table-grid">
+    <thead>
     <tr> 
       <th class="var-width"><cfoutput>#application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#</cfoutput></th>
 	  <th class="actions">&nbsp;</th>
-    </tr><cfif rc.rslist.recordcount>
+    </tr>
+    </thead>
+    <cfif rc.rslist.recordcount>
+    <tbody>
 	<tr class="alt"><cfoutput>  
 		<cfif rc.parentID neq ''>
 		<cfset parentCrumb=application.contentManager.getCrumbList(rc.parentid, rc.siteid)/>
@@ -86,8 +90,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		  <td class="noResults" colspan="2">#application.rbFactory.getKeyValue(session.rb,'collections.nosearchresults')#<input type="hidden" name="parentid" value="#rc.parentid#" /> </td>
 		</tr></cfoutput>
 		</cfif>
+		</tbody>
   </table>
-</td></tr></table>
 <cfelse>
 <cfoutput><input type="hidden" name="parentid" value="#rc.parentid#" /></cfoutput>
 </cfif>

@@ -528,12 +528,13 @@ buttons: {
 		admin.className = "actions";
 		var deleteLink = document.createElement("A");
 		deleteLink.setAttribute("href", "#");
+		deleteLink.setAttribute("title", "Delete");
 		deleteLink.onclick = function() {
 			$("#c" + contentID).remove();
 			stripe('stripe');
 			return false;
 		}
-		deleteLink.appendChild(document.createTextNode('Delete'));
+		deleteLink.appendChild(document.createTextNode('<i class="icon-remove-sign"></i>'));
 
 		var deleteUL = document.createElement("UL");
 		deleteUL.className = "one";

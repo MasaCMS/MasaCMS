@@ -67,12 +67,14 @@ var feedManager = {
 		admin.className = "actions";
 		var deleteLink = document.createElement("A");
 		deleteLink.setAttribute("href", "#");
+		deleteLink.setAttribute("title", "Delete");
 		deleteLink.onclick = function() {
 			$("#c" + contentID).remove();
 			stripe('stripe');
 			return false;
 		}
-		deleteLink.appendChild(document.createTextNode('Delete'));
+		var deleteIcon = document.createElement("I");	
+		deleteIcon.setAttribute("class", "icon-remove-sign");
 
 		var deleteUL = document.createElement("UL");
 		deleteUL.className = "clearfix";
