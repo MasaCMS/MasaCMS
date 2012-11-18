@@ -122,6 +122,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 <!--- Start LI for content Item --->
 <li data-siteid="#attributes.rsNest.siteid#" data-contentid="#attributes.rsNest.contentid#" data-contenthistid="#attributes.rsNest.contenthistid#" data-sortby="#attributes.rsNest.sortby#" data-sortdirection="#attributes.rsNest.sortdirection#" data-moduleid="#HTMLEditFormat(attributes.moduleid)#" data-type="#attributes.rsNest.type#" class="#lcase(attributes.rsNest.type)#<cfif variables.restricted> restricted</cfif>">
+<cfif variables.restricted><div class="marker"></div></cfif>
 <dl>
 <dt>
 	<!---<cfif (attributes.rsNest.type eq 'Page') or  (attributes.rsNest.type eq 'LocalRepo')  or  (attributes.rsNest.type eq 'Calendar') or (attributes.rsNest.type eq 'Gallery')>--->
@@ -159,7 +160,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif verdict eq 'editor'>
 		<a class="mura-quickEditItem" data-attribute="inheritObjects">
 		</cfif>
-			#attributes.rsNest.inheritObjects#
+			<cfif inheritObjects eq 'cascade'>
+				<i class="icon-arrow-down" title="#attributes.rsNest.inheritObjects#"></i>
+				<cfelseif inheritObjects eq 'reject'>
+					<i class="icon-ban-circle" title="#attributes.rsNest.inheritObjects#"></i>
+				<cfelse>
+					<i class="icon-minus" title="#attributes.rsNest.inheritObjects#"></i>
+			</cfif>
+			 <span>#attributes.rsNest.inheritObjects#</span>
 		<cfif verdict eq 'editor'></a></cfif>
 	</dd>
 	
@@ -169,7 +177,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		
 		<cfif attributes.rsNest.Display eq 1 and attributes.rsNest.approved>
-		 #application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")# 
+		 <i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#</span> 
 		
 		<cfelseif attributes.rsNest.Display eq 2 and attributes.rsNest.approved>
 			<cfif verdict neq 'editor'>
@@ -178,7 +186,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<i class="icon-calendar"></i>
 			<cfif verdict neq 'editor'></a></cfif>
 		<cfelse>
-		#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#
+		<i class="icon-eye-close" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#</span>
 		</cfif>
 		<cfif verdict eq 'editor'></a></cfif>
 	</dd>
@@ -186,16 +194,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<dd class="template">
 	  	<cfif verdict eq 'editor'><a class="mura-quickEditItem<cfif len(attributes.rsnest.template)> template-set</cfif>" data-attribute="template"></cfif>
 		<cfif len(attributes.rsnest.template) or len(attributes.rsnest.template)>
-			 <i class="icon-list-alt"></i> 
+			 <i class="icon-list-alt" title="#attributes.rsnest.template#"></i><span>#attributes.rsnest.template#</span>
 		<cfelse>
-           	#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#
+           	<i class="icon-minus" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#</span>
           </cfif>
 		<cfif verdict eq 'editor'></a></cfif>
 	</dd>
 </cfif>
 	<dd class="nav">
 		 <cfif verdict eq 'editor'><a class="mura-quickEditItem" data-attribute="isnav"></cfif>
-			 #application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(attributes.rsNest.isNav)#")#
+			 <cfif isnav><i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(attributes.rsNest.isNav)#")#"></i><cfelse><i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(attributes.rsNest.isNav)#")#"></i></cfif>
+			 <span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(attributes.rsNest.isNav)#")#</span>
 		<cfif verdict eq 'editor'></a></cfif>
 	</dd>
     <dd class="updated">#LSDateFormat(attributes.rsnest.lastupdate,session.dateKeyFormat)# #LSTimeFormat(attributes.rsnest.lastupdate,"medium")#</dd>

@@ -5972,7 +5972,7 @@ input[type="submit"].btn.btn-mini {
 }
 .alert-info {
   background-color: #bce9ff;
-  border-color: #4e7696;
+  border-color: #accfdd;
   color: #4e7696;
 }
 .alert-block {
@@ -7816,8 +7816,6 @@ a.badge:hover {
   /* @group Site Map */
 
   /* @group Quick Edit */
-
-  /* @group Add Content Nav/Menu */
 
   /* @group Previously template-from.css */
 
@@ -10058,7 +10056,8 @@ a:hover, a:active {
   text-decoration: inherit;
   content: "\f03e";
   font-size: 19px;
-  top: 3px;
+  /* top: 3px; */
+
   background: transparent;
   padding: 0;
   color: #949494;
@@ -10067,25 +10066,6 @@ a:hover, a:active {
   outline: 1px dashed red;
   outline-offset: -1px;
   position: static;
-  /*
-&:before {
-					.icon-font('FontAwesome');
-					content: "\f023";
-					background: red;
-					width: 24px;
-					padding-top: 4px;
-					text-align: center;
-					font-size: 16px;
-					line-height: 24px;
-					color: @white;
-					.border-left-radius(4px);
-					position: absolute;
-					
-					margin-left: -23px;
-					margin-top: 0px;
-					}
-*/
-
 }
 .mura .mura-grid .restricted .restricted {
   outline: 0;
@@ -10095,6 +10075,35 @@ a:hover, a:active {
   background: transparent;
   padding: 0;
   width: 0;
+}
+.mura .mura-grid .restricted .marker:before {
+  font-family: 'FontAwesome';
+  font-weight: normal;
+  font-style: normal;
+  display: inline-block;
+  text-decoration: inherit;
+  display: block;
+  content: "\f023";
+  background: red;
+  width: 24px;
+  height: 24px;
+  padding-top: 4px;
+  text-align: center;
+  font-size: 16px;
+  line-height: 24px;
+  color: #ffffff;
+  -webkit-border-top-left-radius: 4px;
+  -moz-border-radius-topleft: 4px;
+  border-top-left-radius: 4px;
+  -webkit-border-bottom-left-radius: 4px;
+  -moz-border-radius-bottomleft: 4px;
+  border-bottom-left-radius: 4px;
+  position: absolute;
+  margin-left: -24px;
+  margin-top: 0px;
+}
+.mura .mura-grid .restricted .restricted .marker {
+  display: none;
 }
 .mura .mura-grid dt a.tooltip {
   padding: 0 10px 0 20px;
@@ -10155,14 +10164,8 @@ a:hover, a:active {
 .mura .mura-grid .template i {
   width: 18px;
   height: 18px;
-  font-size: 20px;
-  color: #949494;
   position: relative;
   top: 2px;
-}
-.mura .mura-grid .template i:hover {
-  text-decoration: none;
-  color: #000000;
 }
 .mura .mura-grid .template a.template-set {
   border: 0;
@@ -10172,6 +10175,7 @@ a:hover, a:active {
 }
 .mura .mura-grid .updated {
   width: 150px;
+  color: #7a7a7a;
 }
 .mura .mura-grid .actions {
   width: 92px;
@@ -10638,8 +10642,6 @@ a:hover, a:active {
 .mura #manage-data td {
   white-space: normal;
   vertical-align: middle !important;
-  /* &.actions ul { white-space: nowrap; } */
-
 }
 .mura #manage-data td .mForm-data p {
   margin: 0;
@@ -10652,8 +10654,6 @@ a:hover, a:active {
   list-style: none;
   margin: 0 5px 0 0;
   padding: 0;
-  /* background: url(../images/icons/down_on.gif) no-repeat 0 6px; */
-
 }
 .mura ul.nestoff {
   list-style: none;
@@ -10662,8 +10662,6 @@ a:hover, a:active {
 }
 .mura ul.nest1on {
   list-style: none;
-  /* background: url(../images/icons/down_on.gif) no-repeat 0 6px; */
-
   margin: 0 5px 0 16px;
   padding: 0;
 }
@@ -10674,8 +10672,6 @@ a:hover, a:active {
 }
 .mura ul.nest2on {
   list-style: none;
-  /* background: url(../images/icons/down_on.gif) no-repeat 0 6px; */
-
   margin: 0 5px 0 32px;
   padding: 0;
 }
@@ -10686,8 +10682,6 @@ a:hover, a:active {
 }
 .mura ul.nest3on {
   list-style: none;
-  /* background: url(../images/icons/down_on.gif) no-repeat 0 6px; */
-
   margin: 0 5px 0 48px;
   padding: 0;
 }
@@ -10698,8 +10692,6 @@ a:hover, a:active {
 }
 .mura ul.nest4on {
   list-style: none;
-  /* background: url(../images/icons/down_on.gif) no-repeat 0 6px; */
-
   margin: 0 5px 0 64px;
   padding: 0;
 }
@@ -10710,8 +10702,6 @@ a:hover, a:active {
 }
 .mura ul.nest5on {
   list-style: none;
-  /* background: url(../images/icons/down_on.gif) no-repeat 0 6px; */
-
   margin: 0 5px 0 80px;
   padding: 0;
 }
@@ -10722,8 +10712,6 @@ a:hover, a:active {
 }
 .mura ul.nest6on {
   list-style: none;
-  /* background: url(../images/icons/down_on.gif) no-repeat 0 6px; */
-
   margin: 0 5px 0 96px;
   padding: 0;
 }
@@ -10734,8 +10722,6 @@ a:hover, a:active {
 }
 .mura ul.nest7on {
   list-style: none;
-  /* background: url(../images/icons/down_on.gif) no-repeat 0 6px; */
-
   margin: 0 5px 0 112px;
   padding: 0;
 }
@@ -10746,8 +10732,6 @@ a:hover, a:active {
 }
 .mura ul.nest8on {
   list-style: none;
-  /* background: url(../images/icons/down_on.gif) no-repeat 0 6px; */
-
   margin: 0 5px 0 128px;
   padding: 0;
 }
@@ -10758,8 +10742,6 @@ a:hover, a:active {
 }
 .mura ul.nest9on {
   list-style: none;
-  /* background: url(../images/icons/down_on.gif) no-repeat 0 6px; */
-
   margin: 0 5px 0 128px;
   padding: 0;
 }
@@ -10770,8 +10752,6 @@ a:hover, a:active {
 }
 .mura ul.nest10on {
   list-style: none;
-  /* background: url(../images/icons/down_on.gif) no-repeat 0 6px; */
-
   margin: 0 5px 0 144px;
   padding: 0;
 }
@@ -10947,17 +10927,6 @@ a:hover, a:active {
   clear: none;
   border: 0;
 }
-.mura .mura-quickEditItem {
-  cursor: pointer;
-  border-bottom: 1px dotted;
-}
-.mura .mura-quickEditItem:hover {
-  color: #666666;
-  text-decoration: none;
-}
-.mura #selected .mura-quickEditItem {
-  font-weight: bold;
-}
 .mura .mura-quickEdit {
   background-color: #272727;
   opacity: .95;
@@ -11098,7 +11067,86 @@ a:hover, a:active {
 .mura .hasDraft .mura-quickEdit a.mura-quickEditItem {
   border-bottom: 0;
 }
-.mura div.menu {
+.mura .mura-grid,
+.mura .mura-table-grid {
+  /* @group Add Content Nav/Menu */
+
+}
+.mura .mura-grid .add i,
+.mura .mura-table-grid .add i {
+  display: block;
+  width: 24px;
+  font-size: 16px;
+  line-height: 27px;
+  color: #949494;
+  margin-top: 2px;
+}
+.mura .mura-grid td,
+.mura .mura-table-grid td {
+  padding: 4px 5px 4px 5px;
+  border-left: 1px solid #DBDBDB;
+  border-right: 1px solid #DBDBDB;
+  white-space: nowrap;
+  text-align: center;
+  width: 1%;
+}
+.mura .mura-grid td.add,
+.mura .mura-table-grid td.add {
+  padding: 5px 4px 0;
+}
+.mura .mura-grid td.add i,
+.mura .mura-table-grid td.add i {
+  /* Tab Flat */
+
+  line-height: 1;
+}
+.mura .mura-grid i + span,
+.mura .mura-table-grid i + span {
+  display: none;
+}
+.mura .mura-grid i,
+.mura .mura-table-grid i {
+  font-size: 14px;
+  width: 18px;
+  height: 18px;
+  color: #adadad;
+}
+.mura .mura-grid i.icon-ban-circle,
+.mura .mura-table-grid i.icon-ban-circle,
+.mura .mura-grid i.icon-eye-close,
+.mura .mura-table-grid i.icon-eye-close {
+  font-size: 16px;
+}
+.mura .mura-grid i.icon-list-alt,
+.mura .mura-table-grid i.icon-list-alt,
+.mura .mura-grid i.icon-calendar,
+.mura .mura-table-grid i.icon-calendar {
+  font-size: 20px;
+}
+.mura .mura-grid i.icon-minus,
+.mura .mura-table-grid i.icon-minus {
+  color: #e6e6e6;
+}
+.mura .mura-grid .mura-quickEditItem,
+.mura .mura-table-grid .mura-quickEditItem {
+  cursor: pointer;
+  /* border-bottom: 1px dotted; */
+}
+.mura .mura-grid .mura-quickEditItem i,
+.mura .mura-table-grid .mura-quickEditItem i {
+  color: #949494;
+}
+.mura .mura-grid .mura-quickEditItem:hover i,
+.mura .mura-table-grid .mura-quickEditItem:hover i {
+  color: #000000 !important;
+  text-decoration: none;
+}
+.mura .mura-grid #selected .mura-quickEditItem,
+.mura .mura-table-grid #selected .mura-quickEditItem {
+  font-weight: bold;
+}
+.mura .mura-grid div.menu,
+.mura .mura-table-grid div.menu {
   position: absolute;
   background-color: #F2F2F2;
   layer-background-color: #CCCCCC;
@@ -11242,34 +11290,6 @@ a:hover, a:active {
   margin: 0 0 .5em;
   line-height: 1.25em;
 }
-.mura .mura-grid .add i,
-.mura .mura-table-grid .add i {
-  display: block;
-  width: 24px;
-  font-size: 16px;
-  line-height: 27px;
-  color: #949494;
-  margin-top: 2px;
-}
-.mura .mura-grid td,
-.mura .mura-table-grid td {
-  padding: 4px 5px 4px 5px;
-  border-left: 1px solid #DBDBDB;
-  border-right: 1px solid #DBDBDB;
-  white-space: nowrap;
-  text-align: center;
-  width: 1%;
-}
-.mura .mura-grid td.add,
-.mura .mura-table-grid td.add {
-  padding: 5px 4px 0;
-}
-.mura .mura-grid td.add i,
-.mura .mura-table-grid td.add i {
-  /* Tab Flat */
-
-  line-height: 1;
-}
 .mura #ccategory .mura-table-grid td.add {
   padding-top: 0;
 }
@@ -11343,10 +11363,6 @@ a:hover, a:active {
 .mura .mura-grid .scheduled a i,
 .mura .mura-table-grid .scheduled a i {
   top: 3px;
-  font-size: 21px;
-  color: #949494;
-  width: 18px;
-  height: 18px;
   position: relative;
   z-index: 1000;
   zoom: 1;
@@ -11580,6 +11596,9 @@ a:hover, a:active {
   line-height: 14px;
   height: 30px;
   padding: 0 8px;
+}
+.mura #contentSearch.form-inline {
+  margin-bottom: 18px;
 }
 .mura .controls ul {
   margin: 0;
@@ -12895,9 +12914,6 @@ font-size: 12px;
 .mura #carch #tabCategorization .control-group {
   padding: 0;
 }
-.mura #carch #tabCategorization .btn {
-  width: 80px;
-}
 .mura #carch #tabCategorization a[rel="tooltip"] {
   padding-right: 6px;
 }
@@ -12914,29 +12930,71 @@ font-size: 12px;
 .mura #carch #tabCategorization .indent {
   padding-left: 1em;
 }
+.mura #carch #tabCategorization .categorytitle > .indent.hasChildren {
+  float: left;
+  display: inline-block;
+  *display: inline;
+  /* IE7 inline-block hack */
+
+  *zoom: 1;
+  width: 12px;
+  height: 28px;
+  line-height: 27px;
+  padding: 0;
+  margin-left: -11px;
+  cursor: pointer;
+  margin-left: 1em !important;
+}
+.mura #carch #tabCategorization .categorytitle > .indent.hasChildren:before {
+  font-family: 'FontAwesome';
+  font-weight: normal;
+  font-style: normal;
+  display: inline-block;
+  text-decoration: inherit;
+  font-size: 13px;
+  color: #949494;
+  margin-top: 2px;
+}
+.mura #carch #tabCategorization .categorytitle > .indent.hasChildren.open:before {
+  content: "\f0d7";
+  /* Down Caret Icon */
+
+}
+.mura #carch #tabCategorization .categorytitle > .indent.hasChildren.closed:before {
+  content: "\f0da";
+  /* Right Caret Icon */
+
+}
+.mura #carch #tabCategorization .categorytitle > .indent.hasChildren.open + .icon-mura-localrepo:before {
+  content: "\f07c" !important;
+}
+.mura #carch #tabCategorization .categorytitle > .indent.hasChildren:before {
+  padding-right: .35em;
+  margin-right: .35em;
+}
 .mura #carch #tabCategorization li {
   cursor: default;
 }
 .mura #carch #tabCategorization li .indent {
-  padding-left: 1em;
+  padding-left: 2em;
 }
 .mura #carch #tabCategorization li li .indent {
-  padding-left: 3em;
+  padding-left: 4em;
 }
 .mura #carch #tabCategorization li li li .indent {
-  padding-left: 5em;
+  padding-left: 6em;
 }
 .mura #carch #tabCategorization li li li li .indent {
   padding-left: 7em;
 }
 .mura #carch #tabCategorization li li li li li .indent {
-  padding-left: 9em;
+  padding-left: 10em;
 }
 .mura #carch #tabCategorization li li li li li li .indent {
-  padding-left: 11em;
+  padding-left: 12em;
 }
 .mura #carch #tabCategorization li li li li li li li .indent {
-  padding-left: 13em;
+  padding-left: 14em;
 }
 .mura #tabRelatedcontent table {
   margin-top: 18px;
@@ -15035,7 +15093,7 @@ font-size: 12px;
   color: #cc0101;
 }
 .mura .alert-info {
-  border-color: #4e7696;
+  border-color: #accfdd;
   background-color: #bce9ff;
 }
 .mura .alert-info:before {

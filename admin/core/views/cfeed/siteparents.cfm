@@ -50,17 +50,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset counter=0 />
 <cfoutput>
 <div id="contentSearch" class="form-inline">
-<h3 class="alt">#application.rbFactory.getKeyValue(session.rb,'collections.contentsearch')#</h3>
-	<input id="parentSearch" name="parentSearch" value="#HTMLEditFormat(rc.keywords)#" type="text" class="text" maxlength="50"/><input type="button" class="btn" onclick="feedManager.loadSiteParents('#rc.siteid#','#rc.parentid#',document.getElementById('parentSearch').value,0);" value="#application.rbFactory.getKeyValue(session.rb,'collections.search')#" />
+	<input id="parentSearch" name="parentSearch" value="#HTMLEditFormat(rc.keywords)#" type="text" maxlength="50" placeholder="Search Content" /> <input type="button" class="btn" onclick="feedManager.loadSiteParents('#rc.siteid#','#rc.parentid#',document.getElementById('parentSearch').value,0);" value="#application.rbFactory.getKeyValue(session.rb,'collections.search')#" />
 </div>
 </cfoutput>
-<br/><cfif not rc.isNew>
+
+<cfif not rc.isNew>
 <cfset rc.rsList=application.contentManager.getPrivateSearch(rc.siteid,rc.keywords)/>
  <table class="table table-striped table-condensed table-bordered mura-table-grid">
+    <thead>
     <tr> 
       <th class="var-width"><cfoutput>#application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#</cfoutput></th>
 	  <th class="actions">&nbsp;</th>
-    </tr><cfif rc.rslist.recordcount>
+    </tr>
+    </thead>
+    <cfif rc.rslist.recordcount>
+    <tbody>
 	<tr class="alt"><cfoutput>  
 		<cfif rc.parentID neq ''>
 		<cfset parentCrumb=application.contentManager.getCrumbList(rc.parentid, rc.siteid)/>
@@ -86,8 +90,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		  <td class="noResults" colspan="2">#application.rbFactory.getKeyValue(session.rb,'collections.nosearchresults')#<input type="hidden" name="parentid" value="#rc.parentid#" /> </td>
 		</tr></cfoutput>
 		</cfif>
+		</tbody>
   </table>
-</td></tr></table>
 <cfelse>
 <cfoutput><input type="hidden" name="parentid" value="#rc.parentid#" /></cfoutput>
 </cfif>

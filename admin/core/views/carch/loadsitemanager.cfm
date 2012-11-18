@@ -225,7 +225,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         	<cfif perm eq 'editor'>
             <a class="mura-quickEditItem<cfif rc.rstop.Display eq 2 and rc.rstop.approved> scheduled</cfif>" data-attribute="inheritObjects">
           </cfif>
-        	#application.rbFactory.getKeyValue(session.rb,"sitemanager.#lcase(rc.rstop.inheritObjects)#")#
+        	<cfif rc.rstop.inheritObjects eq 'cascade'>
+				<i class="icon-arrow-down" title="#rc.rstop.inheritObjects#"></i>
+				<cfelseif rc.rstop.inheritObjects eq 'reject'>
+					<i class="icon-ban-circle" title="#rc.rstop.inheritObjects#"></i>
+				<cfelse>
+					<i class="icon-minus" title="#rc.rstop.inheritObjects#"></i>
+			</cfif>
+			 <span>#rc.rstop.inheritObjects#</span>
+        	
        		<cfif perm eq 'editor'></a></cfif>
       </dd>
       
@@ -234,7 +242,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif perm eq 'editor'><a class="mura-quickEditItem<cfif rc.rstop.Display eq 2 and rc.rstop.approved> tooltip</cfif>" data-attribute="display"></cfif>
 					
 			<cfif rc.rstop.Display eq 1 and rc.rstop.approved >
-            	#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#
+            	<i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#</span>
             <cfelseif rc.rstop.Display eq 2 and rc.rstop.approved>
            	 	<cfif perm neq 'editor'>
            	 		<a href="##" rel="tooltip" title="#HTMLEditFormat('#LSDateFormat(rc.rstop.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(rc.rstop.displaystop,"short")#')#"></a>
@@ -242,7 +250,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
            	 	 <i class="icon-calendar"></i>
            	 	 <cfif perm neq 'editor'></a></cfif>
            	 <cfelse>
-           		 #application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#
+           		 <i class="icon-eye-close" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#</span>
            		</cfif>
 			<cfif perm eq 'editor'></a></cfif>
 			<!--- <i class="icon-calendar"></i> --->
@@ -251,16 +259,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
        <dd class="template">
 	  		<cfif perm eq 'editor'><a class="mura-quickEditItem<cfif len(rc.rstop.template)> template-set</cfif>" data-attribute="template"></cfif>
 			<cfif len(rc.rstop.template) or len(rc.rstop.childTemplate)>
-				 <i class="icon-list-alt"></i> 
+				  <i class="icon-list-alt" title="#rc.rstop.template#"></i><span>#rc.rstop.template#</span> 
 			<cfelse>
-           		#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#
+           		<i class="icon-minus" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#</span>
          	 </cfif>
 			<cfif perm eq 'editor'></a></cfif>
 		</dd>
      </cfif>
       <dd class="nav">
 	  	<cfif perm eq 'editor'><a class="mura-quickEditItem" data-attribute="isnav"></cfif>
-		#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(rc.rstop.isnav)#")#
+			<cfif rc.rstop.isnav><i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(rc.rstop.isnav)#")#"></i><cfelse><i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(rc.rstop.isnav)#")#"></i></cfif>			 <span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(rc.rstop.isnav)#")#</span>
 	  	<cfif perm eq 'editor'></a></cfif>
 	  </dd>
       <dd class="updated">#LSDateFormat(rc.rstop.lastupdate,session.dateKeyFormat)# #LSTimeFormat(rc.rstop.lastupdate,"medium")#</dd>
