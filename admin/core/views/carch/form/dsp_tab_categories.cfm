@@ -87,11 +87,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <script>
 	siteManager.initCategoryAssignments();
 
+	function stripeCategories() {
+		var counter=0;
+		$('#tabCategorization dl').each(
+
+			function(index) {
+				if(!$(this).closest('ul.categorylist').hasClass('hide')){
+					counter++;
+					//alert(counter)
+					if(counter % 2) {
+						$(this).addClass('alt');
+					} else {
+						$(this).removeClass('alt');
+					}
+				}
+		});
+	}
+
 	$(document).ready(function(){
+		var catsInited=false;
 		$('.hasChildren').click(function(){
 			var item=$(this).closest('ul.categorylist');		
 			$(item).find('ul.categorylist:first').toggleClass('hide');
-			$(this).toggleClass('open').toggleClass('closed');		
+			$(this).toggleClass('open').toggleClass('closed');
+			if(catsInited){
+				stripeCategories();
+			}	
 		});
 		<cfset cats=rc.contentBean.getCategoriesIterator()>
 		<cfset itemList="">
@@ -110,5 +131,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfloop>
 			</cfif>		
 		</cfloop>
+		catsInited=true;
+		//alert('test')
+		stripeCategories();
 	});
 </script>

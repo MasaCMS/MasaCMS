@@ -70,7 +70,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</cfsilent>
 			<li data-siteID="#attributes.contentBean.getSiteID()#" data-categoryid="#rslist.categoryid#" data-cattrim="#catTrim#" data-disabled="#disabled#">
-				<dl class="categoryitem<cfif request.catNo mod 2> alt</cfif>">
+				<dl class="categoryitem">
 					<!--- title --->
 					<dt class="categorytitle">
 						<span class="indent<cfif rslist.hasKids> hasChildren closed</cfif>">#HTMLEditFormat(rslist.name)#</span>
