@@ -1385,12 +1385,21 @@
 		 }
 	}
 	
+	a > i { 
+		
+		/*
+text-shadow: 0 0 1px @blue;
+		text-stroke: 1px solid @white;
+*/
+		
+		}
+	
 	i+span { display: none; } // Hiding <span> created for screen readers just in case the "title" isn't sufficient on a non-semantic element (i)
 	
 	i { 
 		font-size: 14px;
 		.square(18px);
-		color: lighten(@iconColor,10%);
+		color: lighten(@iconColor,0%);
 		
 		&.icon-ban-circle,
 		&.icon-eye-close { font-size: 16px; }

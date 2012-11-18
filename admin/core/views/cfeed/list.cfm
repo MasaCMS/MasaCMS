@@ -67,9 +67,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<td class="var-width"><a title="Edit" href="index.cfm?muraAction=cFeed.edit&feedID=#rc.rsLocal.feedID#&siteid=#URLEncodedFormat(rc.siteid)#&type=Local">#rc.rsLocal.name#</a></td>
 	<td>#rc.rsLocal.lang#</td>
 	<td>#rc.rsLocal.maxItems#</td>
-	<td>#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.isFeaturesOnly)#')#</td>
-	<td>#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.restricted)#')#</td>
-	<td>#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.isActive)#')#</td>
+	<td>
+		<cfif isFeaturesOnly>
+			<i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.isFeaturesOnly)#')#"></i>
+		<cfelse>
+			<i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.isFeaturesOnly)#')#"></i>
+		</cfif>
+		<span>#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.isFeaturesOnly)#')#</span>
+	</td>
+	<td>
+		<cfif restricted>
+			<i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.restricted)#')#"></i>
+		<cfelse>
+			<i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.restricted)#')#"></i>
+		</cfif>
+		<span>#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.restricted)#')#</span>
+	</td>
+	<td>
+	<cfif isActive>
+			<i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.isActive)#')#"></i>
+		<cfelse>
+			<i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.isActive)#')#"></i>
+		</cfif>
+		<span>#application.rbFactory.getKeyValue(session.rb,'collections.#yesnoFormat(rc.rsLocal.isActive)#')#</span>
+	</td>
 	<td class="actions"><ul><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.edit')#" href="index.cfm?muraAction=cFeed.edit&feedID=#rc.rsLocal.feedID#&siteid=#URLEncodedFormat(rc.siteid)#&type=Local"><i class="icon-pencil"></i></a></li><li class="rss"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.viewrss')#" href="http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/feed/?feedID=#rc.rsLocal.feedID#" target="_blank"><i class="icon-rss"></i></a></li><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.delete')#" href="index.cfm?muraAction=cFeed.update&action=delete&feedID=#rc.rsLocal.feedID#&siteid=#URLEncodedFormat(rc.siteid)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'collections.deletelocalconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li></ul></td>
 	</tr></cfloop>
 	<cfelse>

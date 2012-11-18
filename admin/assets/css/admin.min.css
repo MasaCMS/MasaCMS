@@ -11100,6 +11100,14 @@ a:hover, a:active {
 
   line-height: 1;
 }
+.mura .mura-grid a > i,
+.mura .mura-table-grid a > i {
+  /*
+text-shadow: 0 0 1px @blue;
+		text-stroke: 1px solid @white;
+*/
+
+}
 .mura .mura-grid i + span,
 .mura .mura-table-grid i + span {
   display: none;
@@ -11109,7 +11117,7 @@ a:hover, a:active {
   font-size: 14px;
   width: 18px;
   height: 18px;
-  color: #adadad;
+  color: #949494;
 }
 .mura .mura-grid i.icon-ban-circle,
 .mura .mura-table-grid i.icon-ban-circle,
@@ -14988,7 +14996,7 @@ font-size: 12px;
   text-decoration: none;
 }
 .mura a[rel="tooltip"] i {
-  color: #cccccc;
+  color: #949494;
   font-size: 14px;
 }
 .mura .input-prepend i,

@@ -83,7 +83,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<td>#rc.rslist.width#</td>
 		<td>#LSDateFormat(rc.rslist.dateCreated,session.dateKeyFormat)#</td>
 		<td>#LSDateFormat(rc.rslist.lastUpdate,session.dateKeyFormat)#</td>
-		<td>#application.rbFactory.getKeyValue(session.rb,'advertising.active')#</td>
+		<td>
+		<cfif application.rbFactory.getKeyValue(session.rb,'advertising.active') eq 'active'>
+			<i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,'advertising.active')#"></i>
+		<cfelse>
+			<i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,'advertising.active')#"></i>
+		</cfif>
+		<span>#application.rbFactory.getKeyValue(session.rb,'advertising.active')#</span>
+		</td>
 		<td class="actions"><ul class="creatives">
 		<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?muraAction=cAdvertising.editCreative&userid=#rc.rslist.userid#&siteid=#URLEncodedFormat(rc.siteid)#&creativeid=#rc.rslist.creativeID#"><i class="icon-pencil"></i></a></li></ul>
 		</td></tr>
