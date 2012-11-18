@@ -5972,7 +5972,7 @@ input[type="submit"].btn.btn-mini {
 }
 .alert-info {
   background-color: #bce9ff;
-  border-color: #4e7696;
+  border-color: #accfdd;
   color: #4e7696;
 }
 .alert-block {
@@ -11597,6 +11597,9 @@ a:hover, a:active {
   height: 30px;
   padding: 0 8px;
 }
+.mura #contentSearch.form-inline {
+  margin-bottom: 18px;
+}
 .mura .controls ul {
   margin: 0;
   list-style: none;
@@ -15090,7 +15093,7 @@ font-size: 12px;
   color: #cc0101;
 }
 .mura .alert-info {
-  border-color: #4e7696;
+  border-color: #accfdd;
   background-color: #bce9ff;
 }
 .mura .alert-info:before {
