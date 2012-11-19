@@ -139,7 +139,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfelseif inheritObjects eq 'reject'>
 					<i class="icon-ban-circle" title="#rc.rshist.inheritobjects#"></i>
 				<cfelse>
-					<i class="icon-minus" title="#rc.rshist.inheritobjects#"></i>
+					<span class="bullet" title="#rc.rshist.inheritobjects#">&bull;</span>
 			</cfif>
 			<span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.#lcase(rc.rshist.inheritobjects)#')#</span></td>
 </cfif>

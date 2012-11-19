@@ -230,7 +230,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfelseif rc.rstop.inheritObjects eq 'reject'>
 					<i class="icon-ban-circle" title="#rc.rstop.inheritObjects#"></i>
 				<cfelse>
-					<i class="icon-minus" title="#rc.rstop.inheritObjects#"></i>
+					<span class="bullet" title="#rc.rstop.inheritObjects#">&bull;</span>
 			</cfif>
 			 <span>#rc.rstop.inheritObjects#</span>
         	
@@ -261,7 +261,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif len(rc.rstop.template) or len(rc.rstop.childTemplate)>
 				  <i class="icon-list-alt" title="#rc.rstop.template#"></i><span>#rc.rstop.template#</span> 
 			<cfelse>
-           		<i class="icon-minus" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#</span>
+				<span class="bullet" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#">&bull;</span>
+           		<span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#</span>
          	 </cfif>
 			<cfif perm eq 'editor'></a></cfif>
 		</dd>

@@ -11086,6 +11086,11 @@ a:hover, a:active {
   /* @group Add Content Nav/Menu */
 
 }
+.mura .mura-grid .bullet,
+.mura .mura-table-grid .bullet {
+  color: #949494;
+  font-size: 20px;
+}
 .mura .mura-grid .add i,
 .mura .mura-table-grid .add i {
   display: block;
@@ -11123,7 +11128,9 @@ text-shadow: 0 0 1px @blue;
 
 }
 .mura .mura-grid i + span,
-.mura .mura-table-grid i + span {
+.mura .mura-table-grid i + span,
+.mura .mura-grid .bullet + span,
+.mura .mura-table-grid .bullet + span {
   display: none;
 }
 .mura .mura-grid i,

@@ -165,7 +165,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfelseif inheritObjects eq 'reject'>
 					<i class="icon-ban-circle" title="#attributes.rsNest.inheritObjects#"></i>
 				<cfelse>
-					<i class="icon-minus" title="#attributes.rsNest.inheritObjects#"></i>
+					<span class="bullet" title="#attributes.rsNest.inheritObjects#">&bull;</span>
 			</cfif>
 			 <span>#attributes.rsNest.inheritObjects#</span>
 		<cfif verdict eq 'editor'></a></cfif>
@@ -196,7 +196,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif len(attributes.rsnest.template) or len(attributes.rsnest.template)>
 			 <i class="icon-list-alt" title="#attributes.rsnest.template#"></i><span>#attributes.rsnest.template#</span>
 		<cfelse>
-           	<i class="icon-minus" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#</span>
+			<span class="bullet" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#">&bull;</span>
+           	<span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#</span>
           </cfif>
 		<cfif verdict eq 'editor'></a></cfif>
 	</dd>
