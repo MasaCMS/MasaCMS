@@ -47,16 +47,6 @@
   /*
 &.ie9 {
 	
-	.dropdown-menu li.divider { background: transparent; border-color: #666; }
-	
-	.nav-site .dropdown-menu, #newContentMenu ul {
-		background: #333;
-		}
-	
-	.mura-grid .actions {
-		padding-left: 4px !important;
-		}
-	
 }
 */
 
@@ -279,6 +269,11 @@
 .mura.ie.ie7 .moreResults li a {
   zoom: 1;
   display: inline;
+}
+.mura.ie .mura-grid .scheduled a i,
+.mura.ie .mura-table-grid .scheduled a i {
+  z-index: 1000;
+  zoom: 1;
 }
 .mura.ie.ie8 .dropdown-menu li.divider {
   background: transparent;

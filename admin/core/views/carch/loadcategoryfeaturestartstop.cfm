@@ -53,10 +53,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<a class="dropdown-toggle mura-quickEditItem"<cfif rc.categoryAssignment eq '2'> rel="tooltip" title="#HTMLEditFormat(LSDateFormat(rc.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rc.featurestop,"short")#"<cfelse>class="mura-quickEditItem"</cfif>>
 			<cfswitch expression="#rc.categoryAssignment#">		
 				<cfcase value="0">
-					#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.no"))#
+					<i class="icon-ban-circle" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.no'))#"></i><span>#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.no'))#</span>
 				</cfcase>
 				<cfcase value="1">
-					#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.yes'))#
+					<i class="icon-ok" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.yes'))#"></i><span>#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.yes'))#</span>
 				</cfcase>
 				<cfcase value="2">
 					<i class="icon-calendar"></i> 

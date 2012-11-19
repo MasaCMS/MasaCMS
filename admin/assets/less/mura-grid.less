@@ -250,7 +250,7 @@
 			
 			.restricted {
 				
-				outline: 1px dashed red;
+				outline: 1px dashed @orange;
 				outline-offset: -1px;
 				position: static;
 				
@@ -272,7 +272,7 @@
 						.icon-font('FontAwesome');
 						display: block;
 						content: "\f023";
-						background: red;
+						background: @orange;
 						.square(24px);
 						padding-top: 4px;
 						text-align: center;
@@ -1698,8 +1698,6 @@ table#fileList td.var-width a,
 					
 					top: 3px;
 					position: relative;
-					z-index: 1000;
-					zoom: 1;
 					
 					&:hover {
 						text-decoration: none;

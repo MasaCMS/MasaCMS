@@ -10122,7 +10122,7 @@ a:hover, a:active {
   color: #949494;
 }
 .mura .mura-grid .restricted {
-  outline: 1px dashed red;
+  outline: 1px dashed #ff3a00;
   outline-offset: -1px;
   position: static;
 }
@@ -10143,7 +10143,7 @@ a:hover, a:active {
   text-decoration: inherit;
   display: block;
   content: "\f023";
-  background: red;
+  background: #ff3a00;
   width: 24px;
   height: 24px;
   padding-top: 4px;
@@ -11438,8 +11438,6 @@ text-shadow: 0 0 1px @blue;
 .mura .mura-table-grid .scheduled a i {
   top: 3px;
   position: relative;
-  z-index: 1000;
-  zoom: 1;
 }
 .mura .mura-grid .scheduled a i:hover,
 .mura .mura-table-grid .scheduled a i:hover {
