@@ -8865,13 +8865,15 @@ tr:nth-child(even) i {
 .mura .actions li.rss + li.import {
   margin-left: -2px;
 }
-.mura .navZoom li {
+.mura .navZoom li,
+.mura .navZoom.alt li {
   margin: 0;
   padding: 2px 0 !important;
   /* &.file:before { content: '\f0c6'; } */
 
 }
-.mura .navZoom li:before {
+.mura .navZoom li:before,
+.mura .navZoom.alt li:before {
   font-family: 'FontAwesome';
   font-weight: normal;
   font-style: normal;
@@ -8882,11 +8884,13 @@ tr:nth-child(even) i {
   top: 2px;
   color: #949494;
 }
-.mura .navZoom li.file {
+.mura .navZoom li.file,
+.mura .navZoom.alt li.file {
   padding-left: 30px !important;
   position: relative;
 }
-.mura .navZoom li.file:before {
+.mura .navZoom li.file:before,
+.mura .navZoom.alt li.file:before {
   position: absolute;
   top: 0px;
   left: 2px;
@@ -8909,29 +8913,53 @@ tr:nth-child(even) i {
   text-shadow: 0 0 0;
 }
 .mura .navZoom li.file.gif,
+.mura .navZoom.alt li.file.gif,
 .mura .navZoom li.file.png,
+.mura .navZoom.alt li.file.png,
 .mura .navZoom li.file.jpg,
-.mura .navZoom li.file.jpeg {
+.mura .navZoom.alt li.file.jpg,
+.mura .navZoom li.file.jpeg,
+.mura .navZoom.alt li.file.jpeg {
   padding-left: 0 !important;
 }
-.mura .navZoom li.link:before {
+.mura .navZoom li.file.gif:before,
+.mura .navZoom.alt li.file.gif:before,
+.mura .navZoom li.file.png:before,
+.mura .navZoom.alt li.file.png:before,
+.mura .navZoom li.file.jpg:before,
+.mura .navZoom.alt li.file.jpg:before,
+.mura .navZoom li.file.jpeg:before,
+.mura .navZoom.alt li.file.jpeg:before {
+  position: relative;
+  left: 0;
+  color: #949494 !important;
+}
+.mura .navZoom li.link:before,
+.mura .navZoom.alt li.link:before {
   content: '\f0c1';
 }
-.mura .navZoom li.folder:before {
+.mura .navZoom li.folder:before,
+.mura .navZoom.alt li.folder:before {
   content: '\f07b';
 }
-.mura .navZoom li.gallery:before {
+.mura .navZoom li.gallery:before,
+.mura .navZoom.alt li.gallery:before {
   content: '\f00a';
 }
-.mura .navZoom li.calendar:before {
+.mura .navZoom li.calendar:before,
+.mura .navZoom.alt li.calendar:before {
   content: '\f073';
   font-size: 21px;
   top: 3px;
 }
 .mura .navZoom li.jpg:before,
+.mura .navZoom.alt li.jpg:before,
 .mura .navZoom li.jpeg:before,
+.mura .navZoom.alt li.jpeg:before,
 .mura .navZoom li.png:before,
-.mura .navZoom li.gif:before {
+.mura .navZoom.alt li.png:before,
+.mura .navZoom li.gif:before,
+.mura .navZoom.alt li.gif:before {
   font-family: 'FontAwesome';
   background: transparent;
   padding: 0;
@@ -8940,7 +8968,8 @@ tr:nth-child(even) i {
   font-size: 19px;
   top: 3px;
 }
-.mura .navZoom li.page:before {
+.mura .navZoom li.page:before,
+.mura .navZoom.alt li.page:before {
   font-family: 'mura-icons';
   font-weight: normal;
   font-style: normal;
@@ -8950,9 +8979,13 @@ tr:nth-child(even) i {
   font-size: 17px;
 }
 .mura .navZoom li.gallery + .file.jpg:before,
+.mura .navZoom.alt li.gallery + .file.jpg:before,
 .mura .navZoom li.gallery + .file.jpeg:before,
+.mura .navZoom.alt li.gallery + .file.jpeg:before,
 .mura .navZoom li.gallery + .file.png:before,
-.mura .navZoom li.gallery + .file.gif:before {
+.mura .navZoom.alt li.gallery + .file.png:before,
+.mura .navZoom li.gallery + .file.gif:before,
+.mura .navZoom.alt li.gallery + .file.gif:before {
   font-family: FontAwesome;
   font-weight: normal;
   font-style: normal;
@@ -10033,6 +10066,19 @@ a:hover, a:active {
 
   overflow: hidden;
 }
+.mura .mura-grid dt a.title.file.gif,
+.mura .mura-grid dt a.title.file.png,
+.mura .mura-grid dt a.title.file.jpg,
+.mura .mura-grid dt a.title.file.jpeg {
+  padding-left: 0;
+}
+.mura .mura-grid dt a.title.file.gif:before,
+.mura .mura-grid dt a.title.file.png:before,
+.mura .mura-grid dt a.title.file.jpg:before,
+.mura .mura-grid dt a.title.file.jpeg:before {
+  position: relative;
+  top: 0px;
+}
 .mura .mura-grid dt a.title.icon-mura-folder:before {
   content: "\f07b";
 }
@@ -10070,8 +10116,7 @@ a:hover, a:active {
   text-decoration: inherit;
   content: "\f03e";
   font-size: 19px;
-  /* top: 3px; */
-
+  top: 2px !important;
   background: transparent;
   padding: 0;
   color: #949494;
@@ -11928,6 +11973,9 @@ font-size: @baseFontSize - 1;
 .mura #fileupload #fileupload-target {
   margin-bottom: 18px;
   padding: 2em;
+}
+.mura #fileupload #fileupload-target:before {
+  content: "";
 }
 .mura #fileupload #fileupload-target p {
   text-align: center;

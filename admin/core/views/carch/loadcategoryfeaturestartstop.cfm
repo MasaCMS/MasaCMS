@@ -45,15 +45,18 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfset request.layout=false>
+<cfif not isNumeric(rc.categoryAssignment)>
+	<cfset rc.categoryAssignment=0>
+</cfif>
 <cfoutput>
 	<div class="categoryassignmentcontent<cfif rc.categoryAssignment eq '2'> scheduled</cfif>">
 		<a class="dropdown-toggle mura-quickEditItem"<cfif rc.categoryAssignment eq '2'> rel="tooltip" title="#HTMLEditFormat(LSDateFormat(rc.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rc.featurestop,"short")#"<cfelse>class="mura-quickEditItem"</cfif>>
 			<cfswitch expression="#rc.categoryAssignment#">		
 				<cfcase value="0">
-					#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.yes"))#
+					#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.no"))#
 				</cfcase>
 				<cfcase value="1">
-					#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.feature'))#
+					#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.yes'))#
 				</cfcase>
 				<cfcase value="2">
 					<i class="icon-calendar"></i> 

@@ -61,8 +61,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</span>
 				</dt>
 				<dd class="categoryassignmentwrapper">
-					<a title="#application.rbFactory.getKeyValue(session.rb,'tooltip.categoryassignment')#" rel="tooltip" href="##">
-						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.assignment')# <i class="icon-question-sign"></i>
+					<a title="#application.rbFactory.getKeyValue(session.rb,'tooltip.categoryfeatureassignment')#" rel="tooltip" href="##">
+						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.feature')# <i class="icon-question-sign"></i>
 					</a>
 				</dd>
 			</dl><!--- /.mura-grid-hdr --->
@@ -87,31 +87,44 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <script>
 	siteManager.initCategoryAssignments();
 
-	function stripeCategories() {
-		var counter=0;
-		$('#tabCategorization dl').each(
-
-			function(index) {
-				if(!$(this).closest('ul.categorylist').hasClass('hide')){
-					counter++;
-					//alert(counter)
-					if(counter % 2) {
-						$(this).addClass('alt');
-					} else {
-						$(this).removeClass('alt');
+	var stripeCategories=function() {
+			var counter=0;
+			//alert($('#tabCategorization dl').length)
+			$('#tabCategorization dl').each(
+				function(index) {
+					//alert(index)
+					if(index && !$(this).parents('ul.categorylist:hidden').length)
+					{	
+						//alert($(this).parents('ul.categorylist').length);
+						counter++;
+						//alert(counter)
+						if(counter % 2) {
+							$(this).addClass('alt');
+						} else {
+							$(this).removeClass('alt');
+						}
 					}
-				}
-		});
-	}
+			});
+			//alert(counter)
+		}
 
 	$(document).ready(function(){
+
 		var catsInited=false;
+
 		$('.hasChildren').click(function(){
 			var item=$(this).closest('ul.categorylist');		
-			$(item).find('ul.categorylist:first').toggleClass('hide');
-			$(this).toggleClass('open').toggleClass('closed');
+			
 			if(catsInited){
+				$(item).find('ul.categorylist:first').toggle();
+				$(this).toggleClass('open');
+				$(this).toggleClass('closed');
 				stripeCategories();
+			} else {
+				$(item).find('ul.categorylist:first').show();
+				if(!$(this).hasClass('open')){
+					$(this).toggleClass('open').toggleClass('closed');	
+				}
 			}	
 		});
 		<cfset cats=rc.contentBean.getCategoriesIterator()>
@@ -131,8 +144,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfloop>
 			</cfif>		
 		</cfloop>
+		
 		catsInited=true;
-		//alert('test')
-		stripeCategories();
+
+		$('a[data-toggle="tab"]').on('shown', function (e) {		
+		  if(e.target.toString().indexOf('#tabCategorization') != -1){
+		  	stripeCategories()
+		  }	 
+		})
 	});
 </script>

@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset rslist=application.categoryManager.getCategories(attributes.siteID,attributes.ParentID) />
 </cfsilent>
 <cfif rslist.recordcount>
-	<ul class="categorylist<cfif len(attributes.parentid)> hide</cfif>" >
+	<ul class="categorylist"<cfif len(attributes.parentid)> style="display:none"</cfif>>
 		<cfoutput query="rslist">
 			<cfsilent>
 				<cfset request.catNo=request.catNo+1 />	
@@ -73,7 +73,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<dl class="categoryitem">
 					<!--- title --->
 					<dt class="categorytitle">
-						<span class="indent<cfif rslist.hasKids> hasChildren closed</cfif>">#HTMLEditFormat(rslist.name)#</span>
+						<span class="indent<cfif rslist.hasKids> hasChildren closed</cfif>"></span> <input name="categoryid" value="#rslist.categoryid#" type="checkbox" class="checkbox" <cfif rsIsMember.recordcount>	checked="true"</cfif>/> #HTMLEditFormat(rslist.name)#
 					</dt>
 					<!--- assignment --->
 					<dd class="categoryassignmentwrapper">
@@ -85,10 +85,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<a class="dropdown-toggle<cfif not disabled> mura-quickEditItem</cfif>"<cfif rsIsMember.isFeature eq 2> rel="tooltip" title="#HTMLEditFormat(LSDateFormat(rsIsMember.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rsIsMember.featurestop,"short")#"</cfif>>
 										<cfswitch expression="#rsIsMember.isFeature#">
 											<cfcase value="0">
-												#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#
+												#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#
 											</cfcase>
 											<cfcase value="1">
-												#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.feature')#
+												#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#
 											</cfcase>
 											<cfcase value="2">
 												<i class="icon-calendar"></i>
@@ -98,9 +98,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											</cfdefaultcase>
 										</cfswitch>
 									</a><!--- /.mura-quickEditItem --->
-									<cfif not rsIsMember.recordcount>
-										<input type="hidden" id="categoryAssign#catTrim#" name="categoryAssign#catTrim#" value=""/>
-									<cfelseif rsIsMember.recordcount and not rsIsMember.isFeature>
+									<cfif not rsIsMember.recordcount or not yesNoFormat(rsIsMember.isFeature)>
 										<input type="hidden" id="categoryAssign#catTrim#" name="categoryAssign#catTrim#" value="0"/>
 									<cfelseif rsIsMember.recordcount and rsIsMember.isFeature eq 1>
 										<input type="hidden" id="categoryAssign#catTrim#" name="categoryAssign#catTrim#" value="1"/>

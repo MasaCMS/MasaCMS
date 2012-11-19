@@ -189,8 +189,23 @@
 					/* width: 16px; */
 					/* letter-spacing: -1px; */
 					overflow: hidden;					
-					}	
+					}
+					
+					&.gif,
+					&.png,
+					&.jpg,
+					&.jpeg {
+					
+						padding-left: 0;	
+					
+						&:before {
+							position: relative;
+							top: 0px;
+						}
+					}
 				}
+				
+				
 				
 				&.icon-mura-folder:before { content: "\f07b"; }
 				
@@ -226,7 +241,7 @@
 					.icon-font(FontAwesome);
 					content: "\f03e";
 					font-size: 19px;
-					/* top: 3px; */
+					top: 2px !important;
 					background: transparent;
 					padding: 0;
 					color: @iconColor;

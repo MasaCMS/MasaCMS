@@ -220,6 +220,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.assocFilename = "" />
 	<cfset variables.instance.displayInterval = "Daily" />
 	<cfset variables.instance.errors=structnew() />
+	<cfset variables.instance.categoryID = "" />
 	
 	<cfset variables.kids = arrayNew(1) />
 	<cfset variables.displayRegions = structNew()>
@@ -738,6 +739,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var catTrim=replace(arguments.categoryID,'-','','ALL')>
 	
 	<cfset variables.instance["categoryAssign#catTrim#"]=arguments.isFeature />
+	
+	<cfif not listAppend(variables.instance.categoryID,arguments.categoryID)>
+		<cfset variables.instance.categoryID=listAppend(variables.instance.categoryID,arguments.categoryID)>
+	</cfif>
 	
 	<cfif arguments.isFeature eq "2">
 		<cfif isdate(arguments.featureStart)>
