@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset rslist=application.categoryManager.getCategories(attributes.siteID,attributes.ParentID) />
 </cfsilent>
 <cfif rslist.recordcount>
-	<ul class="categorylist<cfif len(attributes.parentid)> hide</cfif>" >
+	<ul class="categorylist"<cfif len(attributes.parentid)> style="display:none"</cfif>>
 		<cfoutput query="rslist">
 			<cfsilent>
 				<cfset request.catNo=request.catNo+1 />	
