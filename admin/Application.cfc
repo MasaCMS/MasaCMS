@@ -221,7 +221,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset request.context.siteID=session.siteID>
 		</cfif>
 
-		<cfparam name="session.alerts.#session.siteid#" default="#structNew()#">
+		<cfif not structKeyExists(session.alerts,'#session.siteid#')>
+			<cfset session.alerts['#session.siteid#']=structNew()>
+		</cfif>
+		
 		
 		<cfset request.event=createObject("component", "mura.event").init(request.context)>
 		
