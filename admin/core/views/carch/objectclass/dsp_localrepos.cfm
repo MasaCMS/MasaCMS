@@ -45,7 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-<cfset rc.rsSections = application.contentManager.getSections(rc.siteid, 'LocalRepo')/>
+<cfset rc.rsSections = application.contentManager.getSections(rc.siteid, 'Folder')/>
 
 <cfset pathStrings=arrayNew(1)>
 <cfloop query="rc.rsSections">
@@ -62,10 +62,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="control-group">
 	<div class="controls">
 	<select name="subClassSelector" 
-	        onchange="siteManager.loadObjectClass('#rc.siteid#','LocalRepo',this.value,'#rc.contentid#','#rc.parentid#','#rc.contenthistid#',0,0);" 
+	        onchange="siteManager.loadObjectClass('#rc.siteid#','Folder',this.value,'#rc.contentid#','#rc.parentid#','#rc.contenthistid#',0,0);" 
 	        class="dropdown">
 		<option value="">
-			#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.selectLocalRepo')#
+			#application.rbFactory.getKeyValue(session.rb, 'sitemanager.content.fields.selectFolder')#
 		</option>
 		<cfloop query="rc.rsSections">
 			<option value="#rc.rsSections.contentID#" <cfif rc.rsSections.contentID eq rc.subclassid>selected</cfif>>#HTMLEditFormat(rc.rsSections.pathString)#</option>

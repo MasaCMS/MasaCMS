@@ -8917,7 +8917,7 @@ tr:nth-child(even) i {
 .mura .navZoom li.link:before {
   content: '\f0c1';
 }
-.mura .navZoom li.localrepo:before {
+.mura .navZoom li.folder:before {
   content: '\f07b';
 }
 .mura .navZoom li.gallery:before {
@@ -10033,7 +10033,7 @@ a:hover, a:active {
 
   overflow: hidden;
 }
-.mura .mura-grid dt a.title.icon-mura-localrepo:before {
+.mura .mura-grid dt a.title.icon-mura-folder:before {
   content: "\f07b";
 }
 .mura .mura-grid dt a.title.icon-mura-page:before {
@@ -10161,7 +10161,7 @@ a:hover, a:active {
   /* Right Caret Icon */
 
 }
-.mura .mura-grid .hasChildren.open + .icon-mura-localrepo:before {
+.mura .mura-grid .hasChildren.open + .icon-mura-folder:before {
   content: "\f07c" !important;
 }
 .mura .mura-grid .order {
@@ -12994,7 +12994,7 @@ font-size: 12px;
   /* Right Caret Icon */
 
 }
-.mura #carch #tabCategorization .categorytitle > .indent.hasChildren.open + .icon-mura-localrepo:before {
+.mura #carch #tabCategorization .categorytitle > .indent.hasChildren.open + .icon-mura-folder:before {
   content: "\f07c" !important;
 }
 .mura #carch #tabCategorization .categorytitle > .indent.hasChildren:before {

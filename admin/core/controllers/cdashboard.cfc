@@ -126,7 +126,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="dismissAlert" output="false">
 	<cfargument name="rc">
-	<cfset var alerts=session.alerts[rc.siteid]>
+	<cfset var alerts=session.alerts['#rc.siteid#']>
 	<cfset alerts[rc.alertid]=false>
 	<cfabort>
 </cffunction>

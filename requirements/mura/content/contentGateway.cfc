@@ -769,7 +769,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rsSections"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select contentid, menutitle, type, siteid, path from tcontent where siteid='#arguments.siteid#' and 
 	<cfif arguments.type eq ''>
-	(type='LocalRepo' or type='Calendar' or type='Gallery')
+	(type='Folder' or type='Calendar' or type='Gallery')
 	<cfelse>
 	type= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#"/>
 	</cfif> 			
@@ -786,7 +786,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfquery name="rsPageCount" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	SELECT Count(tcontent.ContentID) AS counter
 	FROM tcontent
-	WHERE Type in ('Page','LocalRepo','File','Calendar','Gallery') and 
+	WHERE Type in ('Page','Folder','File','Calendar','Gallery') and 
 	 tcontent.active=1 and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 	</cfquery>
 		
@@ -962,7 +962,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				or tcontent.Type = 'Component' 
 				or tcontent.Type = 'Link'
 				or tcontent.Type = 'File' 
-				or tcontent.Type = 'LocalRepo'
+				or tcontent.Type = 'Folder'
 				or tcontent.Type = 'Calendar'
 				or tcontent.Type = 'Form'
 				or tcontent.Type = 'Gallery') 
@@ -1052,7 +1052,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, 
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted, count(tcontent2.parentid) AS hasKids,tcontent.isFeature,tcontent.inheritObjects,tcontent.target,tcontent.targetParams,
 		tcontent.isLocked,tcontent.sortBy,tcontent.sortDirection,tcontent.releaseDate,tfiles.fileEXT, tcontent.featurestart, tcontent.featurestop,tcontent.template,tcontent.childTemplate,
-		tfiles.filename 'assocFilename',tfiles.fileid, tcontent.siteid
+		tfiles.filename AS assocFilename,tfiles.fileid, tcontent.siteid
 		FROM tcontent LEFT JOIN tcontent tcontent2 ON (tcontent.contentid=tcontent2.parentid)
 		LEFT JOIN tfiles On tcontent.FileID=tfiles.FileID
 		WHERE tcontent.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> and tcontent.Active=1 and tcontent.contentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.topID#"/>
@@ -1237,7 +1237,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					AND
 					
 					
-					tcontent.type in ('Page','LocalRepo','Calendar','File','Link','Gallery')
+					tcontent.type in ('Page','Folder','Calendar','File','Link','Gallery')
 						
 						<cfif len(arguments.sectionID)>
 							and tcontent.path like  <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.sectionID#%">	
@@ -1302,7 +1302,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					AND
 					
 					
-					tcontent.type in ('Page','LocalRepo','Calendar','File','Link','Gallery')
+					tcontent.type in ('Page','Folder','Calendar','File','Link','Gallery')
 						
 						<cfif len(arguments.sectionID)>
 							and tcontent.path like  <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.sectionID#%">	
@@ -1386,7 +1386,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						
 						
 				AND
-				tcontent.type in ('Page','LocalRepo','Calendar','File','Link','Gallery')
+				tcontent.type in ('Page','Folder','Calendar','File','Link','Gallery')
 				
 				AND tcontent.releaseDate is null
 				
@@ -1482,7 +1482,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						
 						
 				AND
-				tcontent.type in ('Page','LocalRepo','Calendar','File','Link','Gallery')
+				tcontent.type in ('Page','Folder','Calendar','File','Link','Gallery')
 				
 				AND tcontent.releaseDate is not null
 				
@@ -1682,7 +1682,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfif arguments.type neq ''>
 		<cfif arguments.type eq 'Page'>
-		 and type in ('Page','Calendar','LocalRepo','Gallery')
+		 and type in ('Page','Calendar','Folder','Gallery')
 		<cfelse>
 		and type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#"/>
 		</cfif>
