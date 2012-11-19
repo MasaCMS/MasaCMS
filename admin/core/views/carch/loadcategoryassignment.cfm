@@ -45,9 +45,12 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfset request.layout=false>
+<cfif not isNumeric(rc.categoryAssignment)>
+	<cfset rc.categoryAssignment=0>
+</cfif>
 <cfset $=application.serviceFactory.getBean("MuraScope").init(session.siteID)>
 	<cfoutput>
-	<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.categoryassignment')#</h1>
+	<h1>#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.feature')#</h1>
 	<span class="cancel" onclick="siteManager.closeCategoryAssignment();" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.quickedit.cancel')#"><i class="icon-remove-sign"></i></span>
 
 		<!---
@@ -57,10 +60,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<option value="2"  <cfif content.getdisplay() EQ 2> selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.perstopstart')#</option>
 		</select>
 		--->
-		<select id="mura-quickEdit-display" onchange="this.selectedIndex==3?toggleDisplay2('mura-quickEdit-displayDates',true):toggleDisplay2('mura-quickEdit-displayDates',false);">
-		<option <cfif rc.categoryAssignment eq ''>selected</cfif> value="">#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</option>
-		<option <cfif rc.categoryAssignment eq '0'>selected</cfif> value="0">#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#</option>
-		<option value="1" <cfif rc.categoryAssignment eq '1'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.feature')#</option>
+		<select id="mura-quickEdit-display" onchange="this.selectedIndex==2?toggleDisplay2('mura-quickEdit-displayDates',true):toggleDisplay2('mura-quickEdit-displayDates',false);">
+		<option <cfif rc.categoryAssignment eq '0'>selected</cfif> value="0">#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</option>
+		<option value="1" <cfif rc.categoryAssignment eq '1'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#</option>
 		<option value="2" <cfif rc.categoryAssignment eq '2'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.scheduledfeature')#</option>
 		</select>
 		

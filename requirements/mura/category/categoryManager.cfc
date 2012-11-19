@@ -703,6 +703,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfloop query="rsCategories">
 		<cfif isdefined('arguments.data.categoryAssign#replace(rsCategories.categoryID,'-','','ALL')#')
+		and listFind(arguments.data.categoryid,rsCategories.categoryID)
 		and arguments.data['categoryAssign#replace(rsCategories.categoryID,'-','','ALL')#'] neq ''>
 		
 		<cfset catTrim=replace(rsCategories.categoryID,'-','','ALL') />

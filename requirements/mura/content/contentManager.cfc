@@ -827,7 +827,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 
 			<!--- For backwards compatibility --->
-			<cfif newBean.getType() eq 'LocalRep'>
+			<cfif newBean.getType() eq 'Folder'>
 				<cfset variables.pluginManager.announceEvent("onBeforePortalSave",pluginEvent)>
 				<cfset variables.pluginManager.announceEvent("onBeforePortal#newBean.getSubType()#Save",pluginEvent)>
 			</cfif>
@@ -1238,7 +1238,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 
 				<!--- For backwards compatibility --->
-				<cfif newBean.getType() eq 'LocalRep'>
+				<cfif newBean.getType() eq 'Folder'>
 					<cfset variables.pluginManager.announceEvent("onAfterPortalSave",pluginEvent)>
 					<cfset variables.pluginManager.announceEvent("onAfterPortal#newBean.getSubType()#Save",pluginEvent)>
 				</cfif>
