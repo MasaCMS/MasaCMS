@@ -8803,9 +8803,17 @@ tr:nth-child(even) i {
 .mura .mura-table-grid .actions li.delete {
   margin-left: 1px;
 }
+.mura .mura-grid .actions li.permissions + .delete,
+.mura .mura-table-grid .actions li.permissions + .delete {
+  margin-left: 0;
+}
 .mura .mura-grid .actions li.permissions,
 .mura .mura-table-grid .actions li.permissions {
   margin: 0 3px;
+}
+.mura .mura-grid .actions li.version-history + .permissions,
+.mura .mura-table-grid .actions li.version-history + .permissions {
+  margin-left: 1px;
 }
 .mura .mura-grid .actions li.download,
 .mura .mura-table-grid .actions li.download {

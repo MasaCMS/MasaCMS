@@ -27,12 +27,12 @@
 		line-height: 22px;
 		
 		&.edit { margin-right: 1px; }
-		&.version-history {  }
 		&.download i { font-size: 18px; }
 		&.preview {  }
 		&.delete { margin-left: 1px; }
+		&.permissions + .delete { margin-left: 0; }
 		&.permissions { margin: 0 3px; }
-		&.version-history {  }
+		&.version-history + .permissions { margin-left: 1px; }
 		&.download { margin: 0 2px 0 1px; }
 		&.manage-data {  }
 		&.rss { margin: 0 4px 0 3px; }
@@ -44,7 +44,12 @@
 		display: inherit;
 		line-height: inherit;
 		
-		:hover { text-decoration: none; }
+		:hover { text-decoration: none;	}
+		
+		i {
+				
+			}
+		
 		}
 	
 	i {
