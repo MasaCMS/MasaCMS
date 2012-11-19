@@ -61,7 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</span>
 				</dt>
 				<dd class="categoryassignmentwrapper">
-					<a title="#application.rbFactory.getKeyValue(session.rb,'tooltip.categoryassignment')#" rel="tooltip" href="##">
+					<a title="#application.rbFactory.getKeyValue(session.rb,'tooltip.categoryfeatureassignment')#" rel="tooltip" href="##">
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.feature')# <i class="icon-question-sign"></i>
 					</a>
 				</dd>
