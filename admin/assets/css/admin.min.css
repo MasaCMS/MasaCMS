@@ -8931,7 +8931,8 @@ tr:nth-child(even) i {
 .mura .navZoom li.file.jpeg:before,
 .mura .navZoom.alt li.file.jpeg:before {
   position: relative;
-  margin-right: 2px;
+  left: 0;
+  color: #949494 !important;
 }
 .mura .navZoom li.link:before,
 .mura .navZoom.alt li.link:before {
