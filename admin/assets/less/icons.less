@@ -12,8 +12,6 @@
 
 .actions {
 
-
-	
 	ul {
 		margin: 0 auto;
 		.inline-block;
@@ -131,7 +129,7 @@ tr:nth-child(even) i {
 				font-size: 18px;
 				position: relative;
 				top: 2px;
-				color: @grayDark;
+				color: @iconColor;
 			}
 			
 			&.file {
@@ -154,7 +152,15 @@ tr:nth-child(even) i {
 					.border-radius(2px);
 					overflow: hidden;
 					text-shadow: 0 0 0;				
-					}	
+					}
+				
+					&.gif,
+					&.png,
+					&.jpg,
+					&.jpeg {
+						padding-left: 0 !important;
+					}
+				
 				}
 
 				
@@ -195,7 +201,7 @@ tr:nth-child(even) i {
 					font-size: 19px;
 					top: 3px;
 					background: transparent;
-					padding: 0;
+					padding: 0 !important;
 					color: @iconColor;
 					}
 			}
