@@ -192,7 +192,7 @@
 					}	
 				}
 				
-				&.icon-mura-localrepo:before { content: "\f07b"; }
+				&.icon-mura-folder:before { content: "\f07b"; }
 				
 				&.icon-mura-page:before {
 					.icon-font('mura-icons');
@@ -310,7 +310,7 @@
 					content: "\f0da"; /* Right Caret Icon */
 					}
 				
-				&.open + .icon-mura-localrepo:before { content: "\f07c" !important; }
+				&.open + .icon-mura-folder:before { content: "\f07c" !important; }
 			
 			}
 						
@@ -1358,6 +1358,10 @@
 
 .mura-grid, .mura-table-grid {
 
+	.bullet { color: @iconColor;
+		font-size: 20px;
+		 }
+
 	.add i {
 			display: block;
 			width: 24px;
@@ -1394,7 +1398,7 @@ text-shadow: 0 0 1px @blue;
 		
 		}
 	
-	i+span { display: none; } // Hiding <span> created for screen readers just in case the "title" isn't sufficient on a non-semantic element (i)
+	i+span, .bullet+span { display: none; } // Hiding <span> created for screen readers just in case the "title" isn't sufficient on a non-semantic element (i)
 	
 	i { 
 		font-size: 14px;

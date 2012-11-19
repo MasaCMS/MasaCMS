@@ -45,8 +45,8 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
-	<cfset this.TreeLevelList="Page,LocalRepo,Calendar,Link,File,Gallery">
-	<cfset this.ExtendableList="Page,LocalRepo,Calendar,Link,File,Gallery,Component">
+	<cfset this.TreeLevelList="Page,Folder,Calendar,Link,File,Gallery">
+	<cfset this.ExtendableList="Page,Folder,Calendar,Link,File,Gallery,Component">
 	
 	<cffunction name="init" access="public" returntype="any" output="false">
 		<cfargument name="configBean" type="any" required="yes"/>
@@ -723,7 +723,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfthrow type="custom" message="The attribute 'PARENTID' is required when saving content.">
 		</cfif>
 		
-		<cfif not structKeyExists(arguments.data,"type") or (structKeyExists(arguments.data,"type") and not listFindNoCase("Form,Component,Page,LocalRepo,Gallery,Calendar,File,Link",arguments.data.type))>
+		<cfif not structKeyExists(arguments.data,"type") or (structKeyExists(arguments.data,"type") and not listFindNoCase("Form,Component,Page,Folder,Gallery,Calendar,File,Link",arguments.data.type))>
 			<cfthrow type="custom" message="A valid 'TYPE' is required when saving content.">
 		</cfif>
 		
@@ -733,7 +733,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 		<cfif arguments.data.type eq 'Portal'>
-			<cfset arguments.data.type='LocalRepo'>
+			<cfset arguments.data.type='Folder'>
 		</cfif>
 		
 		<cfif not structKeyExists(arguments.data,"display") or (structKeyExists(arguments.data,"display") and not isNumeric(arguments.data.display))>
@@ -1137,7 +1137,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 						 update tcontent set orderno=OrderNo+1 where parentid='#newBean.getparentid()#' 
 						 and siteid='#newBean.getsiteid()#' 
-						 and type in ('Page','LocalRepo','Link','File','Component','Calendar','Form') and active=1
+						 and type in ('Page','Folder','Link','File','Component','Calendar','Form') and active=1
 						 </cfquery>
 								 
 						 <cfset newBean.setOrderNo(1)>
@@ -1148,7 +1148,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 							 update tcontent set orderno=OrderNo-1 where parentid='#newBean.getparentid()#' 
 							 and siteid='#newBean.getsiteid()#' 
-							 and type in ('Page','LocalRepo','Link','File','Component','Calendar','Form') and active=1
+							 and type in ('Page','Folder','Link','File','Component','Calendar','Form') and active=1
 							 and orderno > #currentBean.getOrderNo()#
 								</cfquery>
 						</cfif>
@@ -1156,7 +1156,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfquery name="rsOrder" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 						 select max(orderno) as theBottom from tcontent where parentid='#newBean.getparentid()#' 
 						 and siteid='#newBean.getsiteid()#' 
-						 and type in ('Page','LocalRepo','Link','File','Component','Calendar','Form') and active=1
+						 and type in ('Page','Folder','Link','File','Component','Calendar','Form') and active=1
 						 </cfquery>
 							 
 						<cfif isNumeric(rsOrder.theBottom) and rsOrder.theBottom neq newBean.getOrderNo()>
@@ -1316,7 +1316,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 
 				<!--- For backwards compatibility --->
-				<cfif currentBean.getType() eq 'LocalRepo'>
+				<cfif currentBean.getType() eq 'Folder'>
 					<cfset variables.pluginManager.announceEvent("onPortalDelete",pluginEvent)>
 					<cfset variables.pluginManager.announceEvent("onBeforePortalDelete",pluginEvent)>
 				</cfif>
@@ -1338,7 +1338,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 
 				<!--- For backwards compatibility --->
-				<cfif currentBean.getType() eq 'LocalRepo'>
+				<cfif currentBean.getType() eq 'Folder'>
 					<cfset variables.pluginManager.announceEvent("onAfterPortalDelete",pluginEvent)>
 				</cfif>
 				<!--- --->
@@ -1395,7 +1395,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 		<!--- For backwards compatibility --->
-		<cfif currentBean.getType() eq 'LocalRepo'>
+		<cfif currentBean.getType() eq 'Folder'>
 			<cfset variables.pluginManager.announceEvent("onPortalDeleteVersionHistory",pluginEvent)>
 			<cfset variables.pluginManager.announceEvent("onBeforePortalDeleteVersionHistory",pluginEvent)>
 		</cfif>
@@ -1442,7 +1442,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 		<!--- For backwards compatibility --->
-		<cfif currentBean.getType() eq 'LocalRepo'>
+		<cfif currentBean.getType() eq 'Folder'>
 			<cfset variables.pluginManager.announceEvent("onAfterPortalDeleteVersionHistory",pluginEvent)>
 		</cfif>
 		<!--- --->
@@ -2134,7 +2134,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<cfif arguments.purgeTypes>
 			<!--- Purge any keys specifically assigned to a content type --->
-			<cfloop list="Page,LocalRepo,File,Calendar,Link,Gallery,Component,Form" index="i">
+			<cfloop list="Page,Folder,File,Calendar,Link,Gallery,Component,Form" index="i">
 				<cfset arguments.cache.purge(arguments.key & i)>
 			</cfloop>
 		</cfif>

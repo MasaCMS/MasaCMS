@@ -125,7 +125,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif variables.restricted><div class="marker"></div></cfif>
 <dl>
 <dt>
-	<!---<cfif (attributes.rsNest.type eq 'Page') or  (attributes.rsNest.type eq 'LocalRepo')  or  (attributes.rsNest.type eq 'Calendar') or (attributes.rsNest.type eq 'Gallery')>--->
+	<!---<cfif (attributes.rsNest.type eq 'Page') or  (attributes.rsNest.type eq 'Folder')  or  (attributes.rsNest.type eq 'Calendar') or (attributes.rsNest.type eq 'Gallery')>--->
 
 	
 	<a class="add" href="javascript:;" onmouseover="siteManager.showMenu('newContentMenu','#newcontent#',this,'#attributes.rsNest.contentid#','#attributes.topid#','#attributes.rsNest.parentid#','#attributes.siteid#','#attributes.rsNest.type#');"><i class="icon-plus-sign"></i></a>	
@@ -165,7 +165,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfelseif inheritObjects eq 'reject'>
 					<i class="icon-ban-circle" title="#attributes.rsNest.inheritObjects#"></i>
 				<cfelse>
-					<i class="icon-minus" title="#attributes.rsNest.inheritObjects#"></i>
+					<span class="bullet" title="#attributes.rsNest.inheritObjects#">&bull;</span>
 			</cfif>
 			 <span>#attributes.rsNest.inheritObjects#</span>
 		<cfif verdict eq 'editor'></a></cfif>
@@ -196,7 +196,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif len(attributes.rsnest.template) or len(attributes.rsnest.template)>
 			 <i class="icon-list-alt" title="#attributes.rsnest.template#"></i><span>#attributes.rsnest.template#</span>
 		<cfelse>
-           	<i class="icon-minus" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#</span>
+			<span class="bullet" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#">&bull;</span>
+           	<span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#</span>
           </cfif>
 		<cfif verdict eq 'editor'></a></cfif>
 	</dd>
@@ -213,7 +214,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     	<cfif not listFindNoCase('none,read',verdict)>
        <li class="edit"><a class="draftprompt"  data-siteid="#attributes.siteid#" data-contentid="#attributes.rsNest.contentid#" data-contenthistid="#attributes.rsNest.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?muraAction=cArch.edit&contenthistid=#attributes.rsNest.ContentHistID#&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#"><i class="icon-pencil"></i></a></li>
 	   <cfswitch expression="#attributes.rsnest.type#">
-		<cfcase value="Page,LocalRepo,Calendar,Gallery">
+		<cfcase value="Page,Folder,Calendar,Gallery">
 		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,attributes.rsNest.filename)#','#attributes.rsnest.targetParams#');"><i class="icon-globe"></i></a></li>
 		</cfcase>
 		<cfcase value="File,Link">
@@ -234,7 +235,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         <cfelse>
         <li class="edit disabled"><a>&nbsp;</a></li>
 		<cfswitch expression="#attributes.rsnest.type#">
-		<cfcase value="Page,LocalRepo,Calendar,Gallery">
+		<cfcase value="Page,Folder,Calendar,Gallery">
 		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,attributes.rsNest.filename)#','#attributes.rsnest.targetParams#');"><i class="icon-globe"></i></a></li>
 		</cfcase>
 		<cfcase value="File,Link">
@@ -245,7 +246,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<li class="permissions disabled"><a><i class="icon-group"></i></a></li>
 		<li class="delete disabled"><a><i class="icon-remove-sign"></i></a></li>
       </cfif>
-		<cfif  ListFindNoCase("Page,LocalRepo,Calendar,Link,File,Gallery",attributes.rsNest.type)>
+		<cfif  ListFindNoCase("Page,Folder,Calendar,Link,File,Gallery",attributes.rsNest.type)>
 		#application.pluginManager.renderScripts("onContentList",attributes.siteid,attributes.pluginEvent)#
 		</cfif>
 		<cfset attributes.pluginEvent.setValue('type', attributes.rsnest.type)>
