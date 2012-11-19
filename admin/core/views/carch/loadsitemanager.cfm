@@ -250,7 +250,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
            	 	 <i class="icon-calendar"></i>
            	 	 <cfif perm neq 'editor'></a></cfif>
            	 <cfelse>
-           		 <i class="icon-eye-close" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#</span>
+           		 <i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#</span>
            		</cfif>
 			<cfif perm eq 'editor'></a></cfif>
 			<!--- <i class="icon-calendar"></i> --->

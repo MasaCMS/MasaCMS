@@ -8803,9 +8803,17 @@ tr:nth-child(even) i {
 .mura .mura-table-grid .actions li.delete {
   margin-left: 1px;
 }
+.mura .mura-grid .actions li.permissions + .delete,
+.mura .mura-table-grid .actions li.permissions + .delete {
+  margin-left: 0;
+}
 .mura .mura-grid .actions li.permissions,
 .mura .mura-table-grid .actions li.permissions {
   margin: 0 3px;
+}
+.mura .mura-grid .actions li.version-history + .permissions,
+.mura .mura-table-grid .actions li.version-history + .permissions {
+  margin-left: 1px;
 }
 .mura .mura-grid .actions li.download,
 .mura .mura-table-grid .actions li.download {
@@ -8872,7 +8880,7 @@ tr:nth-child(even) i {
   font-size: 18px;
   position: relative;
   top: 2px;
-  color: #666666;
+  color: #949494;
 }
 .mura .navZoom li.file {
   padding-left: 30px !important;
@@ -8899,6 +8907,12 @@ tr:nth-child(even) i {
   border-radius: 2px;
   overflow: hidden;
   text-shadow: 0 0 0;
+}
+.mura .navZoom li.file.gif,
+.mura .navZoom li.file.png,
+.mura .navZoom li.file.jpg,
+.mura .navZoom li.file.jpeg {
+  padding-left: 0 !important;
 }
 .mura .navZoom li.link:before {
   content: '\f0c1';
@@ -8949,7 +8963,7 @@ tr:nth-child(even) i {
   font-size: 19px;
   top: 3px;
   background: transparent;
-  padding: 0;
+  padding: 0 !important;
   color: #949494;
 }
 .mura h1 {
@@ -11100,6 +11114,14 @@ a:hover, a:active {
 
   line-height: 1;
 }
+.mura .mura-grid a > i,
+.mura .mura-table-grid a > i {
+  /*
+text-shadow: 0 0 1px @blue;
+		text-stroke: 1px solid @white;
+*/
+
+}
 .mura .mura-grid i + span,
 .mura .mura-table-grid i + span {
   display: none;
@@ -11109,7 +11131,7 @@ a:hover, a:active {
   font-size: 14px;
   width: 18px;
   height: 18px;
-  color: #adadad;
+  color: #949494;
 }
 .mura .mura-grid i.icon-ban-circle,
 .mura .mura-table-grid i.icon-ban-circle,
@@ -14988,7 +15010,7 @@ font-size: 12px;
   text-decoration: none;
 }
 .mura a[rel="tooltip"] i {
-  color: #cccccc;
+  color: #949494;
   font-size: 14px;
 }
 .mura .input-prepend i,

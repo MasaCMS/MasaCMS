@@ -80,7 +80,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<td>#creativeType#</td>
 		<td>#height#</td>
 		<td>#width#</td>
-	<td>#application.rbFactory.getKeyValue(session.rb,'advertising.#yesnoformat(isActive)#')#</td>
+	<td>
+		<cfif isActive>
+			<i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,'advertising.#yesnoformat(isActive)#')#"></i>
+		<cfelse>
+			<i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,'advertising.#yesnoformat(isActive)#')#"></i>
+		</cfif>
+		<span>#application.rbFactory.getKeyValue(session.rb,'advertising.#yesnoformat(isActive)#')#</span>
+		</td>
 		<td class="actions"><ul>
 		<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?muraAction=cAdvertising.editAdZone&adZoneid=#rc.rslist.adzoneid#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-pencil"></i></a></li>
 		<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.delte')#" href="index.cfm?muraAction=cAdvertising.updateAdZone&action=delete&adzoneid=#rc.rslist.adZoneid#&siteid=#URLEncodedFormat(rc.siteid)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'advertising.deleteadzoneconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li></ul>

@@ -119,28 +119,47 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <td class="notes"><cfif rc.rsHist.notes neq ''><a rel="tooltip" data-original-title="#application.contentRenderer.setParagraphs(htmleditformat(rc.rshist.notes))#">View&nbsp;Note</a></cfif></td>
 <cfif hasChangesets><td class="changeset"><cfif isDate(rc.rshist.changesetPublishDate)><a href="##" rel="tooltip" title="#HTMLEditFormat(LSDateFormat(rc.rshist.changesetPublishDate,"short"))#"> <i class="icon-question-sign"></i></a></cfif>#HTMLEditFormat(rc.rshist.changesetName)#</td></cfif> 
 <td class="status">#versionStatus#</td> 
+
 <td class="display<cfif rc.rshist.Display eq 2> scheduled</cfif>"> 
 	<cfif rc.rshist.Display eq 1>
-      #application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#
+	<i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#</span> 
+      
     <cfelseif rc.rshist.Display eq 2>
       <a href="##" rel="tooltip" title="#HTMLEditFormat('#LSDateFormat(rc.rshist.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(rc.rshist.displaystop,"short")#')#"> <i class="icon-calendar"></i></a>
      <cfelse>
-       #application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#
-     </cfif>
+     <i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#
+"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#
+</span>
+    </cfif>
 </td>
 <cfif rc.contentBean.getType() neq "file">
-	<td class="objects">#application.rbFactory.getKeyValue(session.rb,'sitemanager.#lcase(rc.rshist.inheritobjects)#')#</td>
+	<td class="objects">
+	<cfif inheritObjects eq 'cascade'>
+				<i class="icon-arrow-down" title="#rc.rshist.inheritobjects#"></i>
+				<cfelseif inheritObjects eq 'reject'>
+					<i class="icon-ban-circle" title="#rc.rshist.inheritobjects#"></i>
+				<cfelse>
+					<i class="icon-minus" title="#rc.rshist.inheritobjects#"></i>
+			</cfif>
+			<span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.#lcase(rc.rshist.inheritobjects)#')#</span></td>
 </cfif>
 <td class="feature<cfif rc.rshist.isfeature eq 2>> scheduled</cfif>"> 
 	<cfif rc.rshist.isfeature eq 1>
-			#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#
+			<i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#
 		<cfelseif rc.rshist.isfeature eq 2>
 			<a href="##" rel="tooltip" title="#HTMLEditFormat('#LSDateFormat(rc.rshist.featurestart,"short")#&nbsp;-&nbsp;#LSDateFormat(rc.rshist.featurestop,"short")#')#"> <i class="icon-calendar"></i></a>
 		<cfelse>
-			#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#
+			<i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#"></i>
+			<span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.no")#</span>
 		</cfif>
 </td>
-<td class="nav-display">#application.rbFactory.getKeyValue(session.rb,'sitemanager.#yesnoformat(rc.rshist.isnav)#')#</td>
+<td class="nav-display">
+<cfif isnav>
+<i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.#yesnoformat(rc.rshist.isnav)#')#"></i>
+<cfelse><i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.#yesnoformat(rc.rshist.isnav)#')#"></i>
+</cfif>
+<span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.#yesnoformat(rc.rshist.isnav)#')#</span>
+			 </td>
 <td class="last-updated">#LSDateFormat(rc.rshist.lastupdate,session.dateKeyFormat)#</td> 
 <td class="time">#LSTimeFormat(rc.rshist.lastupdate,"short")#</td>
 <td class="user">#HTMLEditFormat(rc.rshist.lastUpdateBy)#</td> 
