@@ -204,7 +204,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					    <li class="edit"><a title="Edit" class="draftprompt" href="#editLink#"><i class="icon-pencil"></i></a></li>
 						
 						<cfswitch expression="#item.gettype()#">
-							<cfcase value="Page,LocalRepo,Calendar,Gallery">
+							<cfcase value="Page,Folder,Calendar,Gallery">
 							<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),item.getfilename())#','#item.gettargetParams()#');"><i class="icon-globe"></i></a></li>
 							</cfcase>
 							<cfcase value="File,Link">
@@ -233,7 +233,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfelse>
 					    <li class="edit disabled">&nbsp;</li>
 						<cfswitch expression="#item.gettype()#">
-							<cfcase value="Page,LocalRepo,Calendar,Gallery">
+							<cfcase value="Page,Folder,Calendar,Gallery">
 							<li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),item.getfilename())#','#item.gettargetParams()#');"><i class="icon-globe"></i></a></li>
 							</cfcase>
 							<cfcase value="File,Link">

@@ -142,10 +142,10 @@
 </cfscript>
 
 <cfquery datasource="#getDatasource()#" username="#getDbUsername()#" password="#getDbPassword()#">
-	update tclassextend set type='LocalRepo' where type='Portal'
+	update tclassextend set type='Folder' where type in ('Portal','LocalRepo')
 </cfquery>
 <cfquery datasource="#getDatasource()#" username="#getDbUsername()#" password="#getDbPassword()#">
-	update tcontent set type='LocalRepo' where type='Portal'
+	update tcontent set type='Folder' where type in ('Portal','LocalRepo')
 </cfquery>
 
 

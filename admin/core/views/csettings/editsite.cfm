@@ -807,7 +807,7 @@ to your own modified versions of Mura CMS.
           </div>
       </div>
         </div>
-        <!---  <dt>Allow Public Submission In To LocalRepos</dt>
+        <!---  <dt>Allow Public Submission In To Folders</dt>
       <dd>
         <input type="radio" name="publicSubmission" value="0" <cfif rc.siteBean.getpublicSubmission() neq 1> CHECKED</CFIF>>
         No&nbsp;&nbsp;

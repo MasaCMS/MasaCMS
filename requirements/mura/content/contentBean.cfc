@@ -529,7 +529,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     <cfargument name="Type" type="string" required="true">
     
     <cfif arguments.type eq 'Portal'>
-		<cfset arguments.type='LocalRepo'>
+		<cfset arguments.type='Folder'>
 	</cfif>
 	
     <cfset arguments.Type=trim(arguments.Type)>
@@ -1101,7 +1101,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				variables.instance.display eq 2 and variables.instance.displayStart lte now()
 				AND (variables.instance.displayStop eq "" or variables.instance.displayStop gte now())
 			)
-			and (listFind("Page,LocalRepo,Gallery,File,Calendar,Link,Form",variables.instance.type) or listFind(variables.instance.moduleAssign,'00000000000000000000000000000000000'))>
+			and (listFind("Page,Folder,Gallery,File,Calendar,Link,Form",variables.instance.type) or listFind(variables.instance.moduleAssign,'00000000000000000000000000000000000'))>
 </cffunction>
 
 <cffunction name="getImageURL" output="false">

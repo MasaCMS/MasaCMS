@@ -8,7 +8,7 @@
 
 	<div class="fieldset">
 
-  	<cfif listFindNoCase('Page,LocalRepo,Calendar,Gallery,File,Link',rc.type)>
+  	<cfif listFindNoCase('Page,Folder,Calendar,Gallery,File,Link',rc.type)>
 		<div class="control-group">
   				
 			      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.credits')#</label>
@@ -125,7 +125,7 @@
 		
 	</cfif>
 
-	<cfif listFind("Page,LocalRepo,Calendar,Gallery,Link,File,Link",rc.type)>
+	<cfif listFind("Page,Folder,Calendar,Gallery,Link,File,Link",rc.type)>
 		<div class="control-group">
 	      	<label class="control-label">
 	      		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.expires')#
