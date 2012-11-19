@@ -87,34 +87,41 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <script>
 	siteManager.initCategoryAssignments();
 
-	function stripeCategories() {
-		var counter=0;
-		$('#tabCategorization dl').each(
-
-			function(index) {
-				if(!$(this).closest('ul.categorylist').hasClass('hide')){
-					counter++;
-					//alert(counter)
-					if(counter % 2) {
-						$(this).addClass('alt');
-					} else {
-						$(this).removeClass('alt');
+	var stripeCategories=function() {
+			var counter=0;
+			//alert($('#tabCategorization dl').length)
+			$('#tabCategorization dl').each(
+				function(index) {
+					//alert(index)
+					if(index && !$(this).parents('ul.categorylist:hidden').length)
+					{	
+						//alert($(this).parents('ul.categorylist').length);
+						counter++;
+						//alert(counter)
+						if(counter % 2) {
+							$(this).addClass('alt');
+						} else {
+							$(this).removeClass('alt');
+						}
 					}
-				}
-		});
-	}
+			});
+			//alert(counter)
+		}
 
 	$(document).ready(function(){
+
 		var catsInited=false;
+
 		$('.hasChildren').click(function(){
 			var item=$(this).closest('ul.categorylist');		
 			
 			if(catsInited){
-				$(item).find('ul.categorylist:first').toggleClass('hide');
-				$(this).toggleClass('open').toggleClass('closed');
+				$(item).find('ul.categorylist:first').toggle();
+				$(this).toggleClass('open');
+				$(this).toggleClass('closed');
 				stripeCategories();
 			} else {
-				$(item).find('ul.categorylist:first').removeClass('hide');
+				$(item).find('ul.categorylist:first').show();
 				if(!$(this).hasClass('open')){
 					$(this).toggleClass('open').toggleClass('closed');	
 				}
@@ -137,8 +144,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfloop>
 			</cfif>		
 		</cfloop>
+		
 		catsInited=true;
-		//alert('test')
-		stripeCategories();
+
+		$('a[data-toggle="tab"]').on('shown', function (e) {		
+		  if(e.target.toString().indexOf('#tabCategorization') != -1){
+		  	stripeCategories()
+		  }	 
+		})
 	});
 </script>
