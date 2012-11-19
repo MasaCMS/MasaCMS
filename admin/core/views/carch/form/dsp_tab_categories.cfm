@@ -108,10 +108,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		var catsInited=false;
 		$('.hasChildren').click(function(){
 			var item=$(this).closest('ul.categorylist');		
-			$(item).find('ul.categorylist:first').toggleClass('hide');
-			$(this).toggleClass('open').toggleClass('closed');
+			
 			if(catsInited){
+				$(item).find('ul.categorylist:first').toggleClass('hide');
+				$(this).toggleClass('open').toggleClass('closed');
 				stripeCategories();
+			} else {
+				$(item).find('ul.categorylist:first').removeClass('hide');
+				if(!$(this).hasClass('open')){
+					$(this).toggleClass('open').toggleClass('closed');	
+				}
 			}	
 		});
 		<cfset cats=rc.contentBean.getCategoriesIterator()>
