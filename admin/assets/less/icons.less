@@ -46,10 +46,6 @@
 		
 		:hover { text-decoration: none;	}
 		
-		i {
-				
-			}
-		
 		}
 	
 	i {
@@ -125,7 +121,7 @@ tr:nth-child(even) i {
 */
 
 // Many styles overlap with .mura-grid styles for these, need to combine
-.navZoom li {
+.navZoom li, .navZoom.alt li {
 			margin: 0;
 			padding: 2px 0 !important;
 			
@@ -164,6 +160,11 @@ tr:nth-child(even) i {
 					&.jpg,
 					&.jpeg {
 						padding-left: 0 !important;
+						
+						&:before {
+							position: relative;
+							margin-right: 2px;
+						}
 					}
 				
 				}
