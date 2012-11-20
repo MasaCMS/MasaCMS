@@ -278,8 +278,14 @@ label:last-child {
 		.btn {
 			.btn-inverse;
 			border: 0;
-			.box-shadow(0 1px 3px rgba(0,0,0,0.35));
+			border-top: 2px solid rgba(0,0,0,.05);
+			border-right: 2px solid rgba(0,0,0,.05);
+			border-bottom: 2px solid rgba(255,255,255,.75);
+			border-left: 2px solid rgba(255,255,255,.75);
+			.border-radius(28px);
+			/* .box-shadow(0 2px 2px rgba(255,255,255,.6)); */
 			text-shadow: 0 -1px 1px rgba(0,0,0,.35);
+			margin: 0 .15em;
 			
 			i {
 				color: darken(@btnInverseBackgroundHighlight,30%);

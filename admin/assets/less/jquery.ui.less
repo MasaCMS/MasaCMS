@@ -16,6 +16,7 @@
 	button {
 		.btn;
 		.box-shadow(@globalDropShadow);
+		text-transform: capitalize;
 		}
 	}
 
@@ -125,9 +126,6 @@
 	position: relative;
 }
 
-.ui-dialog .ui-dialog-content {
-	padding: 0;
-}
 /* Tabs
 ----------------------------------*/
 
@@ -318,11 +316,11 @@
 
 .ui-dialog .ui-dialog-content {
 	height: auto !important;
-	padding-left: 0;
-	padding-right: 0;
+	padding: 1em;
 	font-size: 13px;
-	margin-bottom: 0;
+	margin-bottom: @baseLineHeight;
 	color: @grayDark;
+	background: @grayLighter;
 }
 
 .ui-dialog .ui-dialog-titlebar-close {
