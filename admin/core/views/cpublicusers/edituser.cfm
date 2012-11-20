@@ -389,9 +389,9 @@ select * from rsSubTypes where subType <> 'Default'
 		<div class="span6">
 	     	 <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.usertype')#</label>
 	     	 <div class="controls">
-	      	<label class="radio inline"><input name="switchToPublic" type="radio" class="radio inline" value="1"> 
+	      	<label class="radio inline"><input name="switchToPublic" type="radio" class="radio inline" value="1" Checked> 
 	      	#application.rbFactory.getKeyValue(session.rb,'user.sitemember')#</label><label class="radio inline">
-	      	<input name="switchToPublic" type="radio" class="radio inline" value="0" Checked> 
+	      	<input name="switchToPublic" type="radio" class="radio inline" value="0"> 
 	      	#application.rbFactory.getKeyValue(session.rb,'user.administrative')#</label>
 	      	</div>
       	</div>
