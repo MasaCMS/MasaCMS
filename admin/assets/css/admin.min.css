@@ -3032,6 +3032,7 @@ ul.icons li .icon-large:before {
   -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+  text-transform: capitalize;
 }
 .ui-dialog .ui-dialog-buttonpane button [class^="icon-"],
 .ui-dialog .ui-dialog-buttonpane button [class*=" icon-"] {
@@ -3188,9 +3189,6 @@ ul.icons li .icon-large:before {
   line-height: 1;
   float: none;
   position: relative;
-}
-.ui-dialog .ui-dialog-content {
-  padding: 0;
 }
 /* Tabs
 ----------------------------------*/
@@ -3353,11 +3351,11 @@ ul.icons li .icon-large:before {
 */
 .ui-dialog .ui-dialog-content {
   height: auto !important;
-  padding-left: 0;
-  padding-right: 0;
+  padding: 1em;
   font-size: 13px;
-  margin-bottom: 0;
+  margin-bottom: 18px;
   color: #666666;
+  background: #f7f7f7;
 }
 .ui-dialog .ui-dialog-titlebar-close {
   position: absolute;
@@ -10122,7 +10120,7 @@ a:hover, a:active {
   color: #949494;
 }
 .mura .mura-grid .restricted {
-  outline: 1px dashed red;
+  outline: 1px dashed #ff3a00;
   outline-offset: -1px;
   position: static;
 }
@@ -10143,7 +10141,7 @@ a:hover, a:active {
   text-decoration: inherit;
   display: block;
   content: "\f023";
-  background: red;
+  background: #ff3a00;
   width: 24px;
   height: 24px;
   padding-top: 4px;
@@ -10612,12 +10610,6 @@ a:hover, a:active {
   padding: 4px 0;
   margin: 0 1em 1em 0;
   display: block;
-  /*
-
-			float: left;
-			clear: left;
-*/
-
 }
 .mura #mura-file-offline-edit {
   margin-right: 1em;
@@ -11054,7 +11046,7 @@ a:hover, a:active {
 .mura .mura-quickEdit .btn {
   cursor: pointer;
   margin: 0 auto;
-  padding: 1px 6px;
+  padding: 1px 12px;
   font-size: 11px;
 }
 .mura .mura-quickEdit li {
@@ -11438,8 +11430,6 @@ text-shadow: 0 0 1px @blue;
 .mura .mura-table-grid .scheduled a i {
   top: 3px;
   position: relative;
-  z-index: 1000;
-  zoom: 1;
 }
 .mura .mura-grid .scheduled a i:hover,
 .mura .mura-table-grid .scheduled a i:hover {
@@ -11849,10 +11839,17 @@ font-size: @baseFontSize - 1;
 
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
   border: 0;
-  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
-  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  border-top: 2px solid rgba(0, 0, 0, 0.05);
+  border-right: 2px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.75);
+  border-left: 2px solid rgba(255, 255, 255, 0.75);
+  -webkit-border-radius: 28px;
+  -moz-border-radius: 28px;
+  border-radius: 28px;
+  /* .box-shadow(0 2px 2px rgba(255,255,255,.6)); */
+
   text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.35);
+  margin: 0 .15em;
 }
 .mura .tab-content .form-actions .btn:hover,
 .mura .fieldset-wrap .form-actions .btn:hover,
@@ -12982,32 +12979,77 @@ font-size: 12px;
   padding: 0 18px;
 }
 .mura #carch #tabCategorization .mura-grid {
-  margin: 0 20px 18px;
+  margin: 0;
+  width: 100%;
+}
+.mura #carch #tabCategorization .mura-grid li {
+  float: none;
+}
+.mura #carch #tabCategorization dl {
+  float: none;
+  width: 100%;
+  *zoom: 1;
+}
+.mura #carch #tabCategorization dl:before,
+.mura #carch #tabCategorization dl:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.mura #carch #tabCategorization dl:after {
+  clear: both;
+}
+.mura #carch #tabCategorization dl dt {
+  line-height: 28px;
+  width: auto;
+  max-width: 570px;
+  border-right: none;
+}
+.mura #carch #tabCategorization dl dd {
+  width: 100px;
+  border-left: 1px solid #e6e6e6;
+  border-right: none;
+  float: right;
 }
 .mura #carch #tabCategorization .mura-grid-hdr dt,
 .mura #carch #tabCategorization .mura-grid-hdr dd {
   font-weight: bold;
 }
-.mura #carch #tabCategorization .control-group {
-  padding: 0;
+.mura #carch #tabCategorization .mura-grid-hdr dt {
+  padding-left: 12px !important;
+  width: 100%;
 }
-.mura #carch #tabCategorization a[rel="tooltip"] {
-  padding-right: 6px;
+.mura #carch #tabCategorization #mura-nodes li li dt {
+  padding-left: 2em !important;
 }
-.mura #carch #tabCategorization dl dt {
-  line-height: 28px;
+.mura #carch #tabCategorization #mura-nodes li li li dt {
+  padding-left: 3em !important;
 }
-.mura #carch #tabCategorization dl dt.categorytitle {
-  width: 530px;
+.mura #carch #tabCategorization #mura-nodes li li li li dt {
+  padding-left: 4em !important;
 }
-.mura #carch #tabCategorization dl dd.categoryassignmentwrapper {
-  width: 150px;
-  border-right: none;
+.mura #carch #tabCategorization #mura-nodes li li li li li dt {
+  padding-left: 5em !important;
 }
-.mura #carch #tabCategorization .indent {
-  padding-left: 1em;
+.mura #carch #tabCategorization #mura-nodes li li li li li li dt {
+  padding-left: 6em !important;
 }
-.mura #carch #tabCategorization .categorytitle > .indent.hasChildren {
+.mura #carch #tabCategorization #mura-nodes li li li li li li li li dt {
+  padding-left: 7em !important;
+}
+.mura #carch #tabCategorization #mura-nodes li li li li li li li li li dt {
+  padding-left: 8em !important;
+}
+.mura #carch #tabCategorization #mura-nodes li li li li li li li li li li dt {
+  padding-left: 9em !important;
+}
+.mura #carch #tabCategorization #mura-nodes li li li li li li li li li li li dt {
+  padding-left: 10em !important;
+}
+.mura #carch #tabCategorization #mura-nodes li li li li li li li li li li li li dt {
+  padding-left: 11em !important;
+}
+.mura #carch #tabCategorization #mura-nodes .categorytitle > .hasChildren {
   float: left;
   display: inline-block;
   *display: inline;
@@ -13020,9 +13062,9 @@ font-size: 12px;
   padding: 0;
   margin-left: -11px;
   cursor: pointer;
-  margin-left: 1em !important;
+  margin-left: 1em;
 }
-.mura #carch #tabCategorization .categorytitle > .indent.hasChildren:before {
+.mura #carch #tabCategorization #mura-nodes .categorytitle > .hasChildren:before {
   font-family: 'FontAwesome';
   font-weight: normal;
   font-style: normal;
@@ -13032,46 +13074,44 @@ font-size: 12px;
   color: #949494;
   margin-top: 2px;
 }
-.mura #carch #tabCategorization .categorytitle > .indent.hasChildren.open:before {
+.mura #carch #tabCategorization #mura-nodes .categorytitle > .hasChildren.open:before {
   content: "\f0d7";
   /* Down Caret Icon */
 
 }
-.mura #carch #tabCategorization .categorytitle > .indent.hasChildren.closed:before {
+.mura #carch #tabCategorization #mura-nodes .categorytitle > .hasChildren.closed:before {
   content: "\f0da";
   /* Right Caret Icon */
 
 }
-.mura #carch #tabCategorization .categorytitle > .indent.hasChildren.open + .icon-mura-folder:before {
+.mura #carch #tabCategorization #mura-nodes .categorytitle > .hasChildren.open + .icon-mura-folder:before {
   content: "\f07c" !important;
 }
-.mura #carch #tabCategorization .categorytitle > .indent.hasChildren:before {
-  padding-right: .35em;
-  margin-right: .35em;
-}
-.mura #carch #tabCategorization li {
+.mura #carch #tabCategorization #mura-nodes dt > span {
+  display: inline-block;
+  *display: inline;
+  /* IE7 inline-block hack */
+
+  *zoom: 1;
   cursor: default;
+  width: 10px;
+  margin-left: 1em;
+  margin-right: 2px;
 }
-.mura #carch #tabCategorization li .indent {
-  padding-left: 2em;
+.mura #carch #tabCategorization #mura-nodes dt > label {
+  cursor: pointer;
+  display: inline-block;
+  *display: inline;
+  /* IE7 inline-block hack */
+
+  *zoom: 1;
+  line-height: 28px;
+  font-weight: normal;
 }
-.mura #carch #tabCategorization li li .indent {
-  padding-left: 4em;
-}
-.mura #carch #tabCategorization li li li .indent {
-  padding-left: 6em;
-}
-.mura #carch #tabCategorization li li li li .indent {
-  padding-left: 7em;
-}
-.mura #carch #tabCategorization li li li li li .indent {
-  padding-left: 10em;
-}
-.mura #carch #tabCategorization li li li li li li .indent {
-  padding-left: 12em;
-}
-.mura #carch #tabCategorization li li li li li li li .indent {
-  padding-left: 14em;
+.mura #carch #tabCategorization #mura-nodes dt > label input[type="checkbox"] {
+  margin-top: 0 !important;
+  position: relative;
+  top: -1px;
 }
 .mura #tabRelatedcontent table {
   margin-top: 18px;

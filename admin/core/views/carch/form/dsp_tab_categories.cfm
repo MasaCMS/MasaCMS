@@ -56,9 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="mura-grid stripe">
 			<dl class="mura-grid-hdr">
 				<dt class="categorytitle">
-					<span class="indent">
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecategories')#
-					</span>
 				</dt>
 				<dd class="categoryassignmentwrapper">
 					<a title="#application.rbFactory.getKeyValue(session.rb,'tooltip.categoryfeatureassignment')#" rel="tooltip" href="##">
@@ -113,15 +111,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		var catsInited=false;
 
 		$('.hasChildren').click(function(){
-			var item=$(this).closest('ul.categorylist');		
-			
 			if(catsInited){
-				$(item).find('ul.categorylist:first').toggle();
+				$(this).closest('li').find('ul.categorylist:first').toggle();
 				$(this).toggleClass('open');
 				$(this).toggleClass('closed');
 				stripeCategories();
 			} else {
-				$(item).find('ul.categorylist:first').show();
+				$(this).closest('li').find('ul.categorylist:first').show();
 				if(!$(this).hasClass('open')){
 					$(this).toggleClass('open').toggleClass('closed');	
 				}

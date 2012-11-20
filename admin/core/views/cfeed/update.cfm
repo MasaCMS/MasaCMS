@@ -66,11 +66,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			frontEndProxy = new Porthole.WindowProxy("#session.frontEndProxyLoc##application.configBean.getContext()#/admin/assets/js/porthole/proxy.html");
 			if (jQuery("##ProxyIFrame").length) {
 				jQuery("##ProxyIFrame").load(function(){
-					frontEndProxy.postMessage("cmd=setLocation&location=" + encodeURIComponent("#JSStringFormat(href)#"));
+					frontEndProxy.post({cmd:'setLocation',location: encodeURIComponent("#JSStringFormat(href)#")});
 				});
 			}
 			else {
-				frontEndProxy.postMessage("cmd=setLocation&location=" + encodeURIComponent("#JSStringFormat(href)#"));
+				frontEndProxy.post({cmd:'setLocation',location: encodeURIComponent("#JSStringFormat(href)#")});
 			}
 		} else {
 			location.href="#JSStringFormat(href)#";

@@ -136,14 +136,14 @@ function conditionalExit(msg){
 <script type="text/javascript">
 jQuery(document).ready(function(){
 	if (top.location != self.location) {
-		if(jQuery("##ProxyIFrame").length){
-			jQuery("##ProxyIFrame").load(
+		if(jQuery("#ProxyIFrame").length){
+			jQuery("#ProxyIFrame").load(
 				function(){
-					frontEndProxy.postMessage("cmd=setWidth&width=standard");
+					frontEndProxy.post({cmd:'setWidth',width:'standard'});
 				}
 			);	
 		} else {
-			frontEndProxy.postMessage("cmd=setWidth&width=standard");
+			frontEndProxy.post({cmd:'setWidth',width:'standard'});
 		}
 	}
 });

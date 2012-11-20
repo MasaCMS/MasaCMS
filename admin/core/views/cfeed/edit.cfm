@@ -722,11 +722,11 @@ jQuery(document).ready(function(){
 		if(jQuery("##ProxyIFrame").length){
 			jQuery("##ProxyIFrame").load(
 				function(){
-					<cfif len(rc.assignmentID)>frontEndProxy.postMessage("cmd=setWidth&width=configurator");<cfelse>frontEndProxy.postMessage("cmd=setWidth&width=standard");</cfif>
+					<cfif len(rc.assignmentID)>frontEndProxy.post({cmd:'setWidth',width:'configurator'});<cfelse>frontEndProxy.post({cmd:'setWidth',width:'standard'});</cfif>
 				}
 			);	
 		} else {
-			<cfif len(rc.assignmentID)>frontEndProxy.postMessage("cmd=setWidth&width=configurator");<cfelse>frontEndProxy.postMessage("cmd=setWidth&width=standard");</cfif>
+			<cfif len(rc.assignmentID)>frontEndProxy.post({cmd:'setWidth',width:'configurator'});<cfelse>frontEndProxy.post({cmd:'setWidth',width:'standard'});</cfif>
 		}
 	}
 });
@@ -971,11 +971,11 @@ jQuery(document).ready(function(){
 		if(jQuery("##ProxyIFrame").length){
 			jQuery("##ProxyIFrame").load(
 				function(){
-					frontEndProxy.postMessage("cmd=setWidth&width=standard");
+					frontEndProxy.post({cmd:'setWidth',width:'standard'});
 				}
 			);	
 		} else {
-			frontEndProxy.postMessage("cmd=setWidth&width=standard");
+			frontEndProxy.post({cmd:'setWidth',width:'standard'});
 		}
 	}
 });

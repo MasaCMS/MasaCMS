@@ -52,10 +52,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rslist=application.categoryManager.getCategories(attributes.siteID,attributes.ParentID,"") />
 </cfsilent>
 <cfif rslist.recordcount>
-<ul class="categories<cfif not attributes.nestLevel> checkboxTree</cfif>">
+<ul id="mura-nodes" class="categories<cfif not attributes.nestLevel> checkboxTree</cfif>">
 <cfoutput query="rslist">
 <li>
-<cfif rslist.isOpen eq 1><input type="checkbox" name="categoryID" class="checkbox" <cfif listfind(attributes.categoryID,rslist.CategoryID)>checked</cfif> value="#rslist.categoryID#"/> </cfif>#rslist.name#
+<cfif rslist.isOpen eq 1><label class="checkbox"><input type="checkbox" name="categoryID" class="checkbox" <cfif listfind(attributes.categoryID,rslist.CategoryID)>checked</cfif> value="#rslist.categoryID#"/> </cfif>#rslist.name#</label>
 <cfif rslist.hasKids>
 <cf_dsp_categories_nest siteID="#attributes.siteID#" parentID="#rslist.categoryID#" categoryID="#attributes.categoryID#" nestLevel="#evaluate(attributes.nestLevel +1)#" >
 </cfif>
