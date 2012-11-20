@@ -82,69 +82,94 @@
 /* Categorization Tab */
 #carch #tabCategorization {
 
-	.mura-grid {
-		margin: 0 @gridGutterWidth @baseLineHeight;
-	}
+	.mura-grid { 
+		margin: 0;
+		width: 100%;
+		
+		li {
+			float: none;
+			} 
+		
+		}
+
+	dl {
+	
+		float: none;
+		width: 100%;
+		.clearfix();
+		
+		dt {
+			line-height: 28px;
+			width: auto;
+			max-width: 570px;
+			border-right: none;
+			}
+
+		dd {
+			width: 100px;
+			border-left: 1px solid @tableBorder;
+			border-right: none;
+			float: right;
+			}
+		}
+
 
 	.mura-grid-hdr {
 		dt, dd { font-weight: bold; }
-	}
-	.control-group { padding:0; }
-
-	a[rel="tooltip"] { padding-right:6px; }
-
-
-	dl {
-		dt {
-			line-height: 28px;
-			&.categorytitle { 
-				width:530px;
+		dt { 
+			padding-left: 12px !important;
+			width: 100%;
 			}
-		}
-		dd.categoryassignmentwrapper {
-			width: 150px;
-			border-right:none;
+	}
+	
+	#mura-nodes {
+		
+		// !important needed to overrode .mura-grid styles
+		
+		li li dt { padding-left: 2em !important; }
+		li li li dt { padding-left: 3em !important; }
+		li li li li dt { padding-left: 4em !important; }
+		li li li li li dt { padding-left: 5em !important; }
+		li li li li li li dt { padding-left: 6em !important; }
+		li li li li li li li li dt { padding-left: 7em !important; }
+		li li li li li li li li li dt { padding-left: 8em !important; }
+		li li li li li li li li li li dt { padding-left: 9em !important; }
+		li li li li li li li li li li li dt { padding-left: 10em !important; }
+		li li li li li li li li li li li li dt { padding-left: 11em !important; }
+			
+		.categorytitle > .hasChildren { .mura-grid > .hasChildren; margin-left: 1em; }
+			
+		dt {
+		
+			> span {
+			
+				.inline-block;
+				cursor: default;
+				width: 10px;
+				margin-left: 1em;
+				margin-right: 2px;
+				}
+				
+			> label {
+			
+			cursor: pointer;
+			
+			.inline-block;
+			line-height: 28px;
+			font-weight: normal;
+			
+			input[type="checkbox"] {
+				margin-top: 0 !important;
+				position: relative;
+				top: -1px;
+				}
+			
+			}
+
+			}		
 		}
 	}
 
-	.indent { padding-left: 1em; }
-	
-	.categorytitle > .indent.hasChildren {
-	
-		.mura-grid > .hasChildren;	
-		margin-left: 1em !important;
-		
-		&:before {
-			padding-right: .35em;
-			margin-right: .35em;
-			}	
-		}
-	
-	li {
-		cursor: default;
-		.indent {
-			padding-left: 2em;
-		}
-		li .indent {
-			padding-left: 4em;
-		}
-		li li .indent {
-			padding-left: 6em;
-		}
-		li li li .indent {
-			padding-left: 7em;
-		}
-		li li li li .indent {
-			padding-left: 10em;
-		}
-		li li li li li .indent {
-			padding-left: 12em;
-		}
-		li li li li li li .indent {
-			padding-left: 14em;
-		}
-	}
-}
 /* End #tabCategorization */
 
 #tabRelatedcontent {

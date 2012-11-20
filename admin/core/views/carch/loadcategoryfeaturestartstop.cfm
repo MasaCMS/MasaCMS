@@ -59,10 +59,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<i class="icon-ok" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.yes'))#"></i><span>#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.yes'))#</span>
 				</cfcase>
 				<cfcase value="2">
-					<i class="icon-calendar"></i> 
+					<i class="icon-calendar" title="#HTMLEditFormat(LSDateFormat(rc.featurestart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rc.featurestop,"short")#"></i> 
 				</cfcase>
 				<cfdefaultcase>
-					#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.no"))#
+					<i class="icon-ban-circle" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.no'))#"></i><span>#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.no"))#</span>
 				</cfdefaultcase>
 			</cfswitch>
 		</a>

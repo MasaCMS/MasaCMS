@@ -56,9 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="mura-grid stripe">
 			<dl class="mura-grid-hdr">
 				<dt class="categorytitle">
-					<span class="indent">
 						#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.availablecategories')#
-					</span>
 				</dt>
 				<dd class="categoryassignmentwrapper">
 					<a title="#application.rbFactory.getKeyValue(session.rb,'tooltip.categoryfeatureassignment')#" rel="tooltip" href="##">
