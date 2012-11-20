@@ -9,13 +9,14 @@
 	var adminProxy;
 	var adminDomain=<cfif len($.globalConfig('admindomain'))>"#$.globalConfig('admindomain')#"<cfelse>location.hostname</cfif>;
 	var adminProtocal=<cfif application.configBean.getAdminSSL() or application.utility.isHTTPS()>"https://";<cfelse>"http://"</cfif>;
-	var adminProxyLoc=adminProtocal + adminDomain + "#$.globalConfig('serverPort')##$.globalConfig('context')#/admin/js/porthole/proxy.html";
+	var adminProxyLoc=adminProtocal + adminDomain + "#$.globalConfig('serverPort')##$.globalConfig('context')#/admin/assets/js/porthole/proxy.html";
 	var frontEndProxyLoc= location.protocol + "//" + location.hostname + "#$.globalConfig('serverPort')#";
 	
 	function onAdminMessage(messageEvent){
+
 		if (messageEvent.origin == adminProtocal + adminDomain + "#$.globalConfig('serverPort')#") {
 			
-			var parameters = Porthole.WindowProxy.splitMessageParameters(messageEvent.data);
+			var parameters=messageEvent.data;
 			
 			if (parameters["cmd"] == "setWidth") {			
 				if(parameters["width"]=='configurator'){

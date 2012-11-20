@@ -27,11 +27,11 @@ jQuery(document).ready(function(){
 		if(jQuery("##ProxyIFrame").length){
 			jQuery("##ProxyIFrame").load(
 				function(){
-					frontEndProxy.postMessage("cmd=setWidth&width=standard");
+					frontEndProxy.post({cmd:'setWidth',width:'standard'});
 				}
 			);	
 		} else {
-			frontEndProxy.postMessage("cmd=setWidth&width=standard");
+			frontEndProxy.post({cmd:'setWidth',width:'standard'});
 		}
 	}
 });
@@ -85,11 +85,11 @@ jQuery(document).ready(function(){
 	if(jQuery("##ProxyIFrame").length){
 		jQuery("##ProxyIFrame").load(
 			function(){
-				frontEndProxy.postMessage("cmd=setWidth&width=configurator");
+				frontEndProxy.post({cmd:'setWidth',width:'configurator'});
 			}
 		);	
 	} else {
-		frontEndProxy.postMessage("cmd=setWidth&width=configurator");
+		frontEndProxy.post({cmd:'setWidth',width:'configurator'});
 	}
 	
 	<cfswitch expression="#rsDisplayObject.object#">
@@ -198,7 +198,7 @@ jQuery(document).ready(function(){
 					'removepreviouschangeset': false,
 					'preview': 0
 				}, function(){
-					frontEndProxy.postMessage("cmd=setLocation&location=#jsStringFormat(rc.homeBean.getURL())#");
+					frontEndProxy.post({cmd:'setLocation',location:'#jsStringFormat(rc.homeBean.getURL())#'});
 				});
 			}
 		});
@@ -227,7 +227,7 @@ jQuery(document).ready(function(){
 					'removepreviouschangeset': false,
 					'preview': 0
 				}, function(){
-					frontEndProxy.postMessage("cmd=setLocation&location=#jsStringFormat(rc.homeBean.getURL())#");
+					frontEndProxy.post({cmd:'setLocation',location:'#jsStringFormat(rc.homeBean.getURL())#'});
 				});
 			}
 		});
@@ -269,7 +269,7 @@ jQuery(document).ready(function(){
 					</cfif>
 					//loc=loc + "contentID=" + resp.contentid;
 					loc=loc + "previewID=" + resp.contenthistid;
-					frontEndProxy.postMessage("cmd=setLocation&location=" + encodeURIComponent(loc) );
+					frontEndProxy.post({cmd:'setLocation',location:encodeURIComponent(loc)});
 				}
 			
 				);
@@ -302,7 +302,7 @@ function saveConfiguratorToChangeset(changesetid,removepreviouschangeset){
 					'removepreviouschangeset': removepreviouschangeset,
 					'preview': 0
 				}, function(){
-					frontEndProxy.postMessage("cmd=setLocation&location=#jsStringFormat(rc.homeBean.getURL())#");
+					frontEndProxy.post({cmd:'setLocation',location:'#jsStringFormat(rc.homeBean.getURL())#'});
 				});
 				
 			}
