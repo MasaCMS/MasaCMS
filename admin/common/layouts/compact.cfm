@@ -135,9 +135,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				if (top.location != self.location) {
 					frontEndProxy = new Porthole.WindowProxy("#session.frontEndProxyLoc##application.configBean.getContext()#/admin/assets/js/porthole/proxy.html");
-					frontEndProxy.postMessage("cmd=setHeight&height=" + Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight));
+					frontEndProxy.post({cmd:
+											'setHeight',
+											height:Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight)
+										});
 					jQuery(this).resize(function(e){
-						frontEndProxy.postMessage("cmd=setHeight&height=" + Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight));
+						frontEndProxy.post({cmd:
+											'setHeight',
+											height:Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight)
+										});
 					});					
 				};
 			});

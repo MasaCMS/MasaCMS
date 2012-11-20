@@ -13,9 +13,10 @@
 	var frontEndProxyLoc= location.protocol + "//" + location.hostname + "#$.globalConfig('serverPort')#";
 	
 	function onAdminMessage(messageEvent){
+
 		if (messageEvent.origin == adminProtocal + adminDomain + "#$.globalConfig('serverPort')#") {
 			
-			var parameters = Porthole.WindowProxy.splitMessageParameters(messageEvent.data);
+			var parameters=messageEvent.data;
 			
 			if (parameters["cmd"] == "setWidth") {			
 				if(parameters["width"]=='configurator'){
