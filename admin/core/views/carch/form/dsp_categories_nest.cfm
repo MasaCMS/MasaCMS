@@ -75,13 +75,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<dt class="categorytitle">
 						<span class="<cfif rslist.hasKids> hasChildren closed</cfif>"></span>
 						<label>
-							<input name="categoryid" value="#rslist.categoryid#" type="checkbox" class="checkbox" <cfif rsIsMember.recordcount>	checked="true"</cfif>/> #HTMLEditFormat(rslist.name)#
-						</label>
+							<input name="categoryid" value="#rslist.categoryid#" type="checkbox" <cfif rsIsMember.recordcount>	checked="true"</cfif>/> #HTMLEditFormat(rslist.name)#</label>
 					</dt>
 					<!--- assignment --->
 					<dd class="categoryassignmentwrapper">
 						<cfif rslist.isOpen eq 1>
-							<div id="categoryLabelContainer#cattrim#">
+							<div id="categoryLabelContainer#cattrim#" class="categoryLabelContainer">
 
 								<div class="categoryassignment<cfif rsIsMember.recordcount and rsIsMember.isFeature eq 2> scheduled</cfif>">
 									<!--- Quick Edit --->

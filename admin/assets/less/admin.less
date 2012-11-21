@@ -103,15 +103,6 @@ a[rel="tooltip"] {
 		font-size: 16px;
 		}
 	}
-		
-#system-notice {
-	
-	a {
-		right: 0;
-		top: 0;
-		}
-	
-}
 
 div.tooltip {
 
@@ -141,7 +132,7 @@ div.tooltip {
 // Additional Mura styles -- Move to separate file?
 .alert {
 	
-	padding: 12px 14px;
+	padding: 12px 30px 12px 14px;
 	margin-left: -1px;
 	margin-bottom: @baseLineHeight;
 	.border-radius(3px);
@@ -150,6 +141,7 @@ div.tooltip {
 	clear: both;
 	min-height: 20px;
 	font-size: @baseFontSize;
+	position: relative;
 	
 	p { margin-bottom: 0; line-height: 1.2; }
 	p:first-child { margin-top: 4px; }
@@ -160,8 +152,15 @@ div.tooltip {
 		
 		li:last-child {
 			margin-bottom: 0;
-		}
+		}	
+	
 	}
+	
+	.close {
+		position: absolute;
+		right: 10px;
+		top: 12px;
+		}
 }
 
 .alert:before {
@@ -197,7 +196,7 @@ div.tooltip {
 	background-color: @errorBackground;
 	
 	&:before {
-		top: 0;
+		top: -5px;
 		content: "\f071";
 		color: @errorBorder;
 		}

@@ -224,11 +224,11 @@
 	         			and not application.settingsManager.getSite(session.siteID).getCache()>
 	         			
 	         			<cfif isdefined('session.hasdefaultpassword') and not structKeyExists(session.alerts['#session.siteID#'],'defaultpasswordnotice')>
-	         					<div id="system-notice" class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,"layout.defaultpasswordnotice")#
+	         					<div class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,"layout.defaultpasswordnotice")#
 				           	<a href="##" data-alertid="defaultpasswordnotice" class="close alert-dismiss" data-dismiss="alert"><i class="icon-remove-sign"></i></a></div>
 	         			</cfif>
 	         			<cfif not structKeyExists(session.alerts['#session.siteID#'],'cachenotice')>
-				           	<div id="system-notice" class="alert">#application.rbFactory.getKeyValue(session.rb,"layout.cachenotice")#
+				           	<div class="alert">#application.rbFactory.getKeyValue(session.rb,"layout.cachenotice")#
 				           	<a href="##" data-alertid="cachenotice" class="close alert-dismiss" data-dismiss="alert"><i class="icon-remove-sign"></i></a></div>
 			           	</cfif>
 			           	<script>
