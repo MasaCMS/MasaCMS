@@ -782,7 +782,7 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 	
 	<cfquery datasource="#variables.configBean.getDatasource()#"
 		username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		Insert Into tpermissions (contentID,groupID,siteID,type) Value (
+		Insert Into tpermissions (contentID,groupID,siteID,type) Values (
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/> ,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.groupID#"/>,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>,
