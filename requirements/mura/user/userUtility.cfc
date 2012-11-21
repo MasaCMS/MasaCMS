@@ -155,6 +155,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				
 				<cfset loginByQuery(rsUser)/>
 				<cfset strikes.clear()>
+
+				<cfif arguments.password eq "admin" and arguments.username eq "admin">
+					<cfset session.hasdefaultpassword=true>
+				</cfif>
 				<cfif len(arguments.siteID)>
 					<cfset variables.pluginManager.announceEvent('onSiteLoginSuccess',pluginEvent)/>
 				<cfelse>
