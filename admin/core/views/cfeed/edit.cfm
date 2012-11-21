@@ -333,23 +333,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div class="control-group" id="searchParams">
       	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.chooseadvancedfilters')#</label>
 		<cfif not rsParams.recordcount>
-		<div class="controls form-inline"><select name="paramRelationship1" class="span3" style="display:none;" >
+		<div class="controls form-inline"><select name="paramRelationship1" class="span2" style="display:none;" >
 			<option value="and">#application.rbFactory.getKeyValue(session.rb,'params.and')#</option>
 			<option value="or">#application.rbFactory.getKeyValue(session.rb,'params.or')#</option>
 		</select>
 		<input type="hidden" name="param" value="1" />
-		<select name="paramField1" class="span3">
+		<select name="paramField1" class="span2">
 		<option value="">#application.rbFactory.getKeyValue(session.rb,'params.selectfield')#</option>
 		<cfloop from="1" to="#arrayLen(options)#" index="i">
 		<option value="#options[i][1]#">#options[i][2]#</option>
 		</cfloop>
 		</select>
-		<select name="paramCondition1">
+		<select name="paramCondition1" class="span2">
 		<cfloop from="1" to="#arrayLen(criterias)#" index="i">
 		<option value="#criterias[i][1]#">#criterias[i][2]#</option>
 		</cfloop>
 		</select>
-		<input type="text" name="paramCriteria1" class="">
+		<input type="text" name="paramCriteria1" class="span4">
 		<a class="criteria remove" href="javascript:;" onclick="searchParams.removeSeachParam(this.parentNode);searchParams.setSearchButtons();return false;" style="display:none;"><i class="icon-minus-sign"></i></a>
 		<a class="criteria add" href="javascript:;" onclick="searchParams.addSearchParam();searchParams.setSearchButtons();return false;"><i class="icon-plus-sign"></i></a>
 		</div>
