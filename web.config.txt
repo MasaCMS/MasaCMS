@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+<!--
+	NOTES:
+		- This only works for IIS7+
+		- If you wish to allow for missing "index.cfm" from the URL:
+			* make sure you have "IIS URL Rewrite Module 2.0" installed. Download available at http://www.iis.net/download/URLRewrite
+			* rename this document to "web.config" without the quotation marks
+			* choose one of the rewrite rules below to enable
+-->
+
+<system.webServer>
+	<rewrite>
+		<rules>
+
+		<!--
+			Allow for missing SiteID AND index.cfm from URL
+			NOTES:
+				- set enabled="true" to turn on!
+				- make sure "Mura CMS Rewrite Option 2" is enabled="false"
+				- update /config/settings.ini.cfm with the settings below:
+					siteidinurls=0
+					indexfileinurls=0
+				- reload Mura CMS
+		-->
+
+		<rule name="Mura CMS Rewrite TAG Option 1">
+       		<match url="^([a-zA-Z0-9/-]+/tag/.+|tag/.+)$" />
+       		<action type="Rewrite" url="/index.cfm/{R:1}" logRewrittenUrl="true" />
+		</rule>
+
+		<rule name="Mura CMS Rewrite Option 1" enabled="true">
+			<match url="^([a-zA-Z0-9/-]+)$" ignoreCase="false" />
+			<conditions logicalGrouping="MatchAll">
+				<add input="{DOCUMENT_ROOT}{URL}" matchType="IsDirectory" ignoreCase="false" negate="true" />
+			</conditions>
+			<action type="Rewrite" url="/index.cfm{URL}" />
+		</rule>	
+
+		<!--
+			Keep SiteID but allow for missing index.cfm from URL
+				NOTES:
+					- set enabled="true" to turn on!
+					- make sure "Mura CMS Rewrite Option 1" is enabled="false"
+					- update /config/settings.ini.cfm with the settings below:
+						siteidinurls=1
+						indexfileinurls=0
+					- reload Mura CMS
+		-->
+
+		<rule name="Mura CMS Rewrite TAG Option 2" enabled="false">
+       		<match url="^([a-zA-Z0-9-]{1,})/([a-zA-Z0-9/-]+/tag/.+|tag/.+)$" ignoreCase="false" />
+       		<conditions logicalGrouping="MatchAll">
+               <add input="{DOCUMENT_ROOT}{URL}" matchType="IsDirectory" ignoreCase="false" negate="true" />
+       		</conditions>
+       		<action type="Rewrite" url="/{R:1}/index.cfm/{R:2}" />
+		</rule>
+
+		<rule name="Mura CMS Rewrite Option 2" enabled="false">
+			<match url="^([a-zA-Z0-9-]{1,})/([a-zA-Z0-9/-]+)$" ignoreCase="false" />
+			<conditions logicalGrouping="MatchAll">
+				<add input="{DOCUMENT_ROOT}{URL}" matchType="IsDirectory" ignoreCase="false" negate="true" />
+			</conditions>
+			<action type="Rewrite" url="/{R:1}/index.cfm/{R:2}" />
+		</rule>
+		
+	</rules>
+</rewrite>
+
+<defaultDocument>
+	<files>
+		<remove value="index.cfm" />
+		<add value="index.cfm" />
+	</files>
+</defaultDocument>
+
+ <staticContent>
+  <mimeMap fileExtension=".woff" mimeType="application/octet-stream" />
+ </staticContent>
+
+</system.webServer>
+</configuration>

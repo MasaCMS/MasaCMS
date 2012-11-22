@@ -297,10 +297,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset application.serviceFactory.getBean("fileWriter").copyFile(source="#variables.basedir#/config/templates/robots.template.cfm", destination="#variables.basedir#/robots.txt")>
 		</cfif>
 
-		<cfif not fileExists(variables.basedir & "/.htaccess")>	
-			<cfset application.serviceFactory.getBean("fileWriter").copyFile(source="#variables.basedir#/config/templates/htaccess.template.cfm", destination="#variables.basedir#/.htaccess")>
-		</cfif>
-
 		<cfif not fileExists(variables.basedir & "/web.config")>	
 			<cfset application.serviceFactory.getBean("fileWriter").copyFile(source="#variables.basedir#/config/templates/web.config.template.cfm", destination="#variables.basedir#/web.config")>
 		</cfif>
