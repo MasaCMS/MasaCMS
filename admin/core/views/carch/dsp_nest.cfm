@@ -67,6 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset rsNext=application.contentManager.getNest(attributes.rsNest.contentid,attributes.siteid,attributes.rsNest.sortBy,attributes.rsNest.sortDirection)>
 	<cfset isMore=rsNext.recordcount gt attributes.nextN>
 <cfelse>
+	<cfset rsNext={recordcount=0}>
 	<cfset isMore=false />
 </cfif>
 
