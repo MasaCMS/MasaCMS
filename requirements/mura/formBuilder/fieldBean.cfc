@@ -87,7 +87,6 @@ to your own modified versions of Mura CMS.
 		<cfargument name="Rblabel" type="string" required="false" default="" />
 		<cfargument name="Cssstyle" type="string" required="false" default="" />
 		<cfargument name="placeholder" type="string" required="false" default="" />
-		<cfargument name="displaylegend" type="numeric" required="false" default="1" />
 		<cfargument name="ToolTip" type="string" required="false" default="" />
 		<cfargument name="OrderNo" type="numeric" required="false" default="0" />
 		<cfargument name="IsLocked" type="boolean" required="false" default="0" />
@@ -123,7 +122,6 @@ to your own modified versions of Mura CMS.
 		<cfset setRblabel( arguments.Rblabel ) />
 		<cfset setCssstyle( arguments.Cssstyle ) />
 		<cfset setPlaceHolder( arguments.placeholder ) />
-		<cfset setDisplayLegend( arguments.displaylegend ) />
 		<cfset setToolTip( arguments.ToolTip ) />
 		<cfset setOrderNo( arguments.OrderNo ) />
 		<cfset setIsLocked( arguments.IsLocked ) />
@@ -228,14 +226,6 @@ to your own modified versions of Mura CMS.
 	</cffunction>
 	<cffunction name="getPlaceHolder" access="public" returntype="string" output="false">
 		<cfreturn variables.instance.placeholder />
-	</cffunction>
-
-	<cffunction name="setDisplayLegend" access="public" returntype="void" output="false">
-		<cfargument name="displaylegend" type="numeric" required="true" />
-		<cfset variables.instance['displaylegend'] = arguments.displaylegend />
-	</cffunction>
-	<cffunction name="getDisplayLegend" access="public" returntype="numeric" output="false">
-		<cfreturn variables.instance.displaylegend />
 	</cffunction>
 	
 	<cffunction name="setToolTip" access="public" returntype="void" output="false">
