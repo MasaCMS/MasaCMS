@@ -94,7 +94,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<input class="text " type="text" name="cssclass" value="" maxlength="50" data-required='false' />
 						</li>
 						<li>
-							<label for="tooltip">#mmRBF.getKeyValue(session.rb,'formbuilder.field.placeholder')#</label>
+							<label for="placeholder">#mmRBF.getKeyValue(session.rb,'formbuilder.field.placeholder')#</label>
 							<input class="text " type="text" name="placeholder" value="" maxlength="255" data-required='false' />
 						</li>
 						<li>

@@ -61,6 +61,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<label for="name">#mmRBF.getKeyValue(session.rb,'formbuilder.field.name')#</label>
 					<input id="tb-name" class="text  disabled" name="name" type="text" value="" maxlength="50" disabled="true" />
 				</li>
+				<li class="checkbox">
+					<label for="displaylegend">
+						#mmRBF.getKeyValue(session.rb,'formbuilder.field.displaylegend')#</label>
+						<input type="checkbox" name="displaylegend" value="1">
+					</li>
 			</ul>
 		</div>
 	</span>

@@ -50,7 +50,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfoutput>
 <cfif request.fieldsetopen eq true></fieldset><cfset request.fieldsetopen = false /></cfif>
 <fieldset id="set-#arguments.field.name#">
+	<cfif not structkeyexists(arguments.field,'displaylegend') or arguments.field.displaylegend>
 	<legend>#arguments.field.label#</legend>
+	</cfif>
 	</cfoutput>
 </cfsavecontent>
 <!--- note that fieldsets are open --->
