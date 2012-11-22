@@ -70,6 +70,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<label for="name">#mmRBF.getKeyValue(session.rb,'formbuilder.field.name')#</label>
 							<input id="tb-name" class="text disabled" name="name" type="text" value="" maxlength="250" disabled="true" />
 						</li>
+						<li>
+							<label for="placeholder">#mmRBF.getKeyValue(session.rb,'formbuilder.field.placeholder')#</label>
+							<input class="text " type="text" name="placeholder" value="" maxlength="255" data-required='false' />
+						</li>
 					</ul>
 			</div>		
 		</div>

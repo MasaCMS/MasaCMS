@@ -50,6 +50,8 @@ to your own modified versions of Mura CMS.
 	<cfproperty name="Label" type="string" default="" maxlength="50" />
 	<cfproperty name="Rblabel" type="string" default="" maxlength="100" />
 	<cfproperty name="Cssstyle" type="string" default="" maxlength="50" />
+	<cfproperty name="placeholder" type="string" default="" maxlength="255" />
+	<cfproperty name="displaylegend" type="numeric" default="1" />
 	<cfproperty name="ToolTip" type="string" default="" maxlength="250" />
 	<cfproperty name="OrderNo" type="numeric" default="0" required="true" />
 	<cfproperty name="IsLocked" type="boolean" default="0" required="true" />
@@ -84,6 +86,8 @@ to your own modified versions of Mura CMS.
 		<cfargument name="Label" type="string" required="false" default="" />
 		<cfargument name="Rblabel" type="string" required="false" default="" />
 		<cfargument name="Cssstyle" type="string" required="false" default="" />
+		<cfargument name="placeholder" type="string" required="false" default="" />
+		<cfargument name="displaylegend" type="numeric" required="false" default="1" />
 		<cfargument name="ToolTip" type="string" required="false" default="" />
 		<cfargument name="OrderNo" type="numeric" required="false" default="0" />
 		<cfargument name="IsLocked" type="boolean" required="false" default="0" />
@@ -118,6 +122,8 @@ to your own modified versions of Mura CMS.
 		<cfset setLabel( arguments.Label ) />
 		<cfset setRblabel( arguments.Rblabel ) />
 		<cfset setCssstyle( arguments.Cssstyle ) />
+		<cfset setPlaceHolder( arguments.placeholder ) />
+		<cfset setDisplayLegend( arguments.displaylegend ) />
 		<cfset setToolTip( arguments.ToolTip ) />
 		<cfset setOrderNo( arguments.OrderNo ) />
 		<cfset setIsLocked( arguments.IsLocked ) />
@@ -214,6 +220,22 @@ to your own modified versions of Mura CMS.
 	</cffunction>
 	<cffunction name="getCssstyle" access="public" returntype="string" output="false">
 		<cfreturn variables.instance.Cssstyle />
+	</cffunction>
+
+	<cffunction name="setPlaceHolder" access="public" returntype="void" output="false">
+		<cfargument name="placeholder" type="string" required="true" />
+		<cfset variables.instance['placeholder'] = arguments.placeholder />
+	</cffunction>
+	<cffunction name="getPlaceHolder" access="public" returntype="string" output="false">
+		<cfreturn variables.instance.placeholder />
+	</cffunction>
+
+	<cffunction name="setDisplayLegend" access="public" returntype="void" output="false">
+		<cfargument name="displaylegend" type="numeric" required="true" />
+		<cfset variables.instance['displaylegend'] = arguments.displaylegend />
+	</cffunction>
+	<cffunction name="getDisplayLegend" access="public" returntype="numeric" output="false">
+		<cfreturn variables.instance.displaylegend />
 	</cffunction>
 	
 	<cffunction name="setToolTip" access="public" returntype="void" output="false">
