@@ -55,7 +55,7 @@
 		margin-left: 0;
 		#gradient .vertical(darken(@btnBackground,2%),@btnBackgroundHighlight);
 		.box-shadow(@globalDropShadow);
-		behavior: @PIE;
+		//behavior: @PIE;
 		}
 	} // End .tabs-left
 
@@ -88,6 +88,7 @@
 		
 		li {
 			float: none;
+			cursor: default;
 			} 
 		
 		}
@@ -153,7 +154,7 @@
 			> label {
 			
 			cursor: pointer;
-			
+			margin-bottom: 0;
 			.inline-block;
 			line-height: 28px;
 			font-weight: normal;

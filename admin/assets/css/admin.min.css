@@ -78,6 +78,15 @@
   left: 0;
   width: 100%;
   height: 100%;
+  background-color: #000;
+  filter: alpha(opacity=80);
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+  background-color: rgba(0, 0, 0, 0.8);
+  background-image: -webkit-gradient(radial, center center, 0, center center, 460, from(rgba(102, 102, 102, 0.8)), to(rgba(0, 0, 0, 0.8)));
+  background-image: -webkit-radial-gradient(circle, rgba(102, 102, 102, 0.8), rgba(0, 0, 0, 0.8));
+  background-image: -moz-radial-gradient(circle, rgba(102, 102, 102, 0.8), rgba(0, 0, 0, 0.8));
+  background-image: -o-radial-gradient(circle, rgba(102, 102, 102, 0.8), rgba(0, 0, 0, 0.8));
+  background-repeat: no-repeat;
 }
 /*
  * jQuery UI CSS Framework 1.8.16
@@ -883,6 +892,9 @@
 }
 /* Overlays */
 .ui-widget-overlay {
+  background-color: #000;
+  filter: alpha(opacity=80);
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
   background-color: rgba(0, 0, 0, 0.8);
   background-image: -webkit-gradient(radial, center center, 0, center center, 460, from(rgba(102, 102, 102, 0.8)), to(rgba(0, 0, 0, 0.8)));
   background-image: -webkit-radial-gradient(circle, rgba(102, 102, 102, 0.8), rgba(0, 0, 0, 0.8));
@@ -7704,6 +7716,9 @@ a.badge:hover {
 }
 .mura-modal,
 .modal-backdrop {
+  background-color: #000;
+  filter: alpha(opacity=80);
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
   background-color: rgba(0, 0, 0, 0.8);
   background-image: -webkit-gradient(radial, center center, 0, center center, 460, from(rgba(102, 102, 102, 0.8)), to(rgba(0, 0, 0, 0.8)));
   background-image: -webkit-radial-gradient(circle, rgba(102, 102, 102, 0.8), rgba(0, 0, 0, 0.8));
@@ -10196,13 +10211,9 @@ a:hover, a:active {
 }
 .mura .mura-grid .hasChildren.open:before {
   content: "\f0d7";
-  /* Down Caret Icon */
-
 }
 .mura .mura-grid .hasChildren.closed:before {
   content: "\f0da";
-  /* Right Caret Icon */
-
 }
 .mura .mura-grid .hasChildren.open + .icon-mura-folder:before {
   content: "\f07c" !important;
@@ -11581,6 +11592,11 @@ text-shadow: 0 0 1px @blue;
   -moz-box-shadow: 0 0 0 !important;
   box-shadow: 0 0 0 !important;
 }
+.mura input[type="checkbox"] {
+  -webkit-box-shadow: 0 0 0;
+  -moz-box-shadow: 0 0 0;
+  box-shadow: 0 0 0;
+}
 .mura textarea,
 .mura select[multiple],
 .mura select[size] {
@@ -11839,10 +11855,6 @@ font-size: @baseFontSize - 1;
 
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
   border: 0;
-  border-top: 2px solid rgba(0, 0, 0, 0.05);
-  border-right: 2px solid rgba(0, 0, 0, 0.05);
-  border-bottom: 2px solid rgba(255, 255, 255, 0.75);
-  border-left: 2px solid rgba(255, 255, 255, 0.75);
   -webkit-border-radius: 28px;
   -moz-border-radius: 28px;
   border-radius: 28px;
@@ -12945,7 +12957,6 @@ font-size: 12px;
   -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
-  behavior: url(assets/css/ie/PIE.htc);
 }
 .mura .pane-padded {
   padding: 20px 20px 0 !important;
@@ -12968,7 +12979,6 @@ font-size: 12px;
   -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
-  behavior: url(assets/css/ie/PIE.htc);
   float: left;
   margin-left: 20px;
   width: 940px;
@@ -12984,6 +12994,7 @@ font-size: 12px;
 }
 .mura #carch #tabCategorization .mura-grid li {
   float: none;
+  cursor: default;
 }
 .mura #carch #tabCategorization dl {
   float: none;
@@ -13076,13 +13087,9 @@ font-size: 12px;
 }
 .mura #carch #tabCategorization #mura-nodes .categorytitle > .hasChildren.open:before {
   content: "\f0d7";
-  /* Down Caret Icon */
-
 }
 .mura #carch #tabCategorization #mura-nodes .categorytitle > .hasChildren.closed:before {
   content: "\f0da";
-  /* Right Caret Icon */
-
 }
 .mura #carch #tabCategorization #mura-nodes .categorytitle > .hasChildren.open + .icon-mura-folder:before {
   content: "\f07c" !important;
@@ -13100,6 +13107,7 @@ font-size: 12px;
 }
 .mura #carch #tabCategorization #mura-nodes dt > label {
   cursor: pointer;
+  margin-bottom: 0;
   display: inline-block;
   *display: inline;
   /* IE7 inline-block hack */
@@ -13630,6 +13638,9 @@ font-size: 12px;
 }
 .mura .mura-modal,
 .mura .modal-backdrop {
+  background-color: #000;
+  filter: alpha(opacity=80);
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
   background-color: rgba(0, 0, 0, 0.8);
   background-image: -webkit-gradient(radial, center center, 0, center center, 460, from(rgba(102, 102, 102, 0.8)), to(rgba(0, 0, 0, 0.8)));
   background-image: -webkit-radial-gradient(circle, rgba(102, 102, 102, 0.8), rgba(0, 0, 0, 0.8));
@@ -14492,6 +14503,9 @@ font-size: 12px;
   text-align: center;
   /* centers in quirks and IE */
 
+  background-color: #000;
+  filter: alpha(opacity=80);
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
   background-color: rgba(0, 0, 0, 0.8);
   background-image: -webkit-gradient(radial, center center, 0, center center, 460, from(rgba(102, 102, 102, 0.8)), to(rgba(0, 0, 0, 0.8)));
   background-image: -webkit-radial-gradient(circle, rgba(102, 102, 102, 0.8), rgba(0, 0, 0, 0.8));
@@ -15112,10 +15126,6 @@ font-size: 12px;
 .mura .input-append i {
   font-size: 16px;
 }
-.mura #system-notice a {
-  right: 0;
-  top: 0;
-}
 .mura div.tooltip.in {
   opacity: 1 !important;
   filter: alpha(opacity=100) !important;
@@ -15141,7 +15151,7 @@ font-size: 12px;
   *zoom: 1;
 }
 .mura .alert {
-  padding: 12px 14px;
+  padding: 12px 30px 12px 14px;
   margin-left: -1px;
   margin-bottom: 18px;
   -webkit-border-radius: 3px;
@@ -15152,6 +15162,7 @@ font-size: 12px;
   clear: both;
   min-height: 20px;
   font-size: 12px;
+  position: relative;
 }
 .mura .alert p {
   margin-bottom: 0;
@@ -15168,6 +15179,11 @@ font-size: 12px;
 .mura .alert ul li:last-child,
 .mura .alert ol li:last-child {
   margin-bottom: 0;
+}
+.mura .alert .close {
+  position: absolute;
+  right: 10px;
+  top: 12px;
 }
 .mura .alert:before {
   font-family: 'FontAwesome';
@@ -15205,7 +15221,7 @@ font-size: 12px;
   background-color: #ffcbcb;
 }
 .mura .alert-error:before {
-  top: 0;
+  top: -5px;
   content: "\f071";
   color: #cc0101;
 }

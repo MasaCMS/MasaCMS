@@ -259,9 +259,25 @@
 		.scheduled a i {
 					z-index: 1000;
 					zoom: 1;
-					} 
-		}
+					}
+				
+/*
+	.mura-modal, .modal-backdrop { 
+	background: #222;
+	}
+*/
+					
+	// Font Awesome
 	
+	.ie7icon(@inner) { *zoom: ~"expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '@{inner}&nbsp;')"; }
+	
+	hasChildren.closed { .ie7icon('&#xf0da;'); }
+	hasChildren.open { .ie7icon('&#xf0d7;'); }
+	
+		}
+
+// IE 8
+
 &.ie8 {
 	
 	.dropdown-menu li.divider { background: transparent; border-color: #666; }
@@ -269,6 +285,21 @@
 	.nav-site .dropdown-menu, #newContentMenu ul {
 		background: #333;
 		}
+		
+	.row-fluid [class*="span"] { min-height: 22px; } /* Fixes form input height */
+	
+	#tabCategorization .mura-grid {
+
+		.categoryLabelContainer { padding-bottom: 0; }
+		label {margin-bottom: 0; }
+		}
+	
+/*
+	.mura-modal, .modal-backdrop {
+		background: #000;
+		opacity: .8;
+	}
+*/
 }
 
 /*

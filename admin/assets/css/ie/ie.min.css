@@ -270,10 +270,38 @@
   zoom: 1;
   display: inline;
 }
+.mura.ie .mura-grid,
+.mura.ie .mura-table-grid {
+  /*
+	.mura-modal, .modal-backdrop { 
+	background: #222;
+	}
+*/
+
+}
 .mura.ie .mura-grid .scheduled a i,
 .mura.ie .mura-table-grid .scheduled a i {
   z-index: 1000;
   zoom: 1;
+}
+.mura.ie .mura-grid hasChildren.closed,
+.mura.ie .mura-table-grid hasChildren.closed {
+  *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xf0da;&nbsp;');
+}
+.mura.ie .mura-grid hasChildren.open,
+.mura.ie .mura-table-grid hasChildren.open {
+  *zoom: expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '&#xf0d7;&nbsp;');
+}
+.mura.ie.ie8 {
+  /* Fixes form input height */
+
+  /*
+	.mura-modal, .modal-backdrop {
+		background: #000;
+		opacity: .8;
+	}
+*/
+
 }
 .mura.ie.ie8 .dropdown-menu li.divider {
   background: transparent;
@@ -282,4 +310,13 @@
 .mura.ie.ie8 .nav-site .dropdown-menu,
 .mura.ie.ie8 #newContentMenu ul {
   background: #333;
+}
+.mura.ie.ie8 .row-fluid [class*="span"] {
+  min-height: 22px;
+}
+.mura.ie.ie8 #tabCategorization .mura-grid .categoryLabelContainer {
+  padding-bottom: 0;
+}
+.mura.ie.ie8 #tabCategorization .mura-grid label {
+  margin-bottom: 0;
 }

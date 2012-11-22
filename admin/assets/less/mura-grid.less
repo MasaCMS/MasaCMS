@@ -313,16 +313,16 @@
 				&:before {
 					.icon-font('FontAwesome');
 					font-size: 13px;
-					color: lighten(@grayDark,18%);
+					color: @iconColor;
 					margin-top: 2px;
 					}
 				
 				&.open:before { 
-					content: "\f0d7"; /* Down Caret Icon */
+					content: "\f0d7"; // Down Caret Icon
 					}
 				
 				&.closed:before { 
-					content: "\f0da"; /* Right Caret Icon */
+					content: "\f0da"; // Right Caret Icon
 					}
 				
 				&.open + .icon-mura-folder:before { content: "\f07c" !important; }
