@@ -52,6 +52,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif structkeyexists(arguments.field,'size') and len(arguments.field.size)>
 	<cfset variables.strField = strField & ' size="#arguments.field.size#"' />
 </cfif>
+<cfif structkeyexists(arguments.field,'placeholder') and len(arguments.field.placeholder)>
+	<cfset variables.strField = strField & ' placeholder="#arguments.field.placeholder#"' />
+</cfif>
 <cfif structkeyexists(arguments.field,'maxlength') and len(arguments.field.maxlength)>
 	<cfset variables.strField = variables.strField & ' maxlength="#arguments.field.maxlength#"' />
 <cfelseif structkeyexists(arguments.field,'size') and len(arguments.field.size)>
