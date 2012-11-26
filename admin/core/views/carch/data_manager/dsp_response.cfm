@@ -142,8 +142,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfloop>
 </tr>
 </thead>
-<cfoutput query="rsData">
 <tbody>
+<cfoutput query="rsData">
 <tr>
 <cftry>
 	<cfsilent><cfwddx action="wddx2cfml" input="#rsdata.data#" output="info"></cfsilent>
