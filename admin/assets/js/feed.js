@@ -76,6 +76,8 @@ var feedManager = {
 		var deleteIcon = document.createElement("I");	
 		deleteIcon.setAttribute("class", "icon-remove-sign");
 
+		deleteLink.appendChild(deleteIcon);
+		
 		var deleteUL = document.createElement("UL");
 		deleteUL.className = "clearfix";
 		var deleteLI = document.createElement("LI");
