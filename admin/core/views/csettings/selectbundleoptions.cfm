@@ -61,7 +61,7 @@ function submitBundle(){
 					jQuery(this).dialog('close');
 					//jQuery(".form-actions").hide();
 					//jQuery("##actionIndicator").show();
-					submitForm(document.pluginSelectFrm);
+					document.pluginSelectFrm.submit();
 					},
 				'NO': function() {
 					jQuery(this).dialog('close');

@@ -740,7 +740,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset variables.instance["categoryAssign#catTrim#"]=arguments.isFeature />
 	
-	<cfif not listAppend(variables.instance.categoryID,arguments.categoryID)>
+	<cfif not listFind(variables.instance.categoryID,arguments.categoryID)>
 		<cfset variables.instance.categoryID=listAppend(variables.instance.categoryID,arguments.categoryID)>
 	</cfif>
 	
