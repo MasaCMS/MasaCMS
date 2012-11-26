@@ -356,6 +356,7 @@ select * from rsSubTypes where subType <> 'Default'
 <div class="fieldset">
 
 	<div class="control-group">
+		<!---
 		<cfif listFind(session.mura.memberships,'S2')>
 		<div class="span6">
      	 <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.superadminaccount')#</label>
@@ -367,7 +368,7 @@ select * from rsSubTypes where subType <> 'Default'
       		</div>
       	</div>
 		</cfif>
-		
+		--->
 		<div class="span6">
      	 <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.emailbroadcaster')#</label>
      	 <div class="controls">
@@ -389,9 +390,9 @@ select * from rsSubTypes where subType <> 'Default'
 		<div class="span6">
 	     	 <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'user.usertype')#</label>
 	     	 <div class="controls">
-	      	<label class="radio inline"><input name="switchToPublic" type="radio" class="radio inline" value="1" Checked> 
+	      	<label class="radio inline"><input name="switchToPrivate" type="radio" class="radio inline" value="0" Checked> 
 	      	#application.rbFactory.getKeyValue(session.rb,'user.sitemember')#</label><label class="radio inline">
-	      	<input name="switchToPublic" type="radio" class="radio inline" value="0"> 
+	      	<input name="switchToPrivate" type="radio" class="radio inline" value="1"> 
 	      	#application.rbFactory.getKeyValue(session.rb,'user.administrative')#</label>
 	      	</div>
       	</div>
