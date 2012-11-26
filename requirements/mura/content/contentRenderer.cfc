@@ -356,7 +356,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfsavecontent variable="content">
 		<cfoutput>
 		<cfloop from="#crumbLen#" to="2" index="I" step="-1">
-		#arguments.crumbdata[I].menutitle#  >
+		#arguments.crumbdata[I].menutitle#  &raquo;
 		</cfloop>
 		#arguments.crumbdata[1].menutitle#
 		</cfoutput>
