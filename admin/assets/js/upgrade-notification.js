@@ -1,29 +1,11 @@
 (function(document){
 
-    var ua = navigator.userAgent.toLowerCase(),
-    client = {
-        isIE:       ua.indexOf('msie') > -1,
-        isIE8:      ua.indexOf('msie 8') > -1
-    },
-    ltIE8 = client.isIE && !client.isIE8;
+    var ua = navigator.userAgent.toLowerCase();
 
-    if(ltIE8){
+    
 
-        var addLoadEvent = function(func) {
-            var oldonload = window.onload;
-            if (typeof window.onload != 'function') {
-                window.onload = func;
-            } else {
-                window.onload = function() {
-                    func();
-                    if (oldonload) {
-                        oldonload();
-                    }
-                };
-            }
-        };
-
-        addLoadEvent(function(){
+    if(ua.indexOf('msie 7') > -1 || ua.indexOf('msie 6') > -1){
+        $(document).ready(function(){
             var oldHtml = document.body.innerHTML,
             css_a = 'text-decoration: underline; color: black; font-weight:bold;',
             warningHtml = '',
@@ -44,8 +26,7 @@
             warningHtml += '<div style="text-align:left; margin:auto 10px;">';
             warningHtml += 'It looks like you are using an out-of-date version of Internet Explorer. In the future, Mura CMS will only support versions of Internet Explorer 8 and above. <a style="'+css_a+'" target="_blank" href="http://www.microsoft.com/windows/Internet-explorer/default.aspx">Click here</a> to download the latest version! Or you could try';
             warningHtml += ' <a style="'+css_a+'" target="_blank" href="http://www.mozilla.com/firefox/">Firefox</a>, ';
-            warningHtml += ' <a style="'+css_a+'" target=_blank" href="http://www.google.com/chrome">Chrome</a>, ';
-            warningHtml += ' <a style="'+css_a+'" target="_blank" href="http://www.opera.com/download/">Opera</a> or ';
+            warningHtml += ' <a style="'+css_a+'" target=_blank" href="http://www.google.com/chrome">Chrome</a> or ';
             warningHtml += ' <a style="'+css_a+'" target="_blank" href="http://www.apple.com/safari/download/">Safari</a>.';
             warningHtml += '</div>';
             warningHtml += '</div>';
@@ -60,4 +41,5 @@
             document.body.innerHTML = oldHTMLWrap + warningHtml;
         });
     }
+
 })(document);
