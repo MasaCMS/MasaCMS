@@ -90,6 +90,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset options[18][2]="Path"/>
 <cfset options[19][1]="tcontentcategoryassign.categoryID^varchar">
 <cfset options[19][2]="Category ID"/>
+<cfset options[20][1]="tcontent.filename^varchar">
+<cfset options[20][2]="Filename"/>
 
 
 <cfset rsExtend=application.configBean.getClassExtensionManager().getExtendedAttributeList(siteID=rc.siteid,baseTable="tcontent",activeOnly=true)>
