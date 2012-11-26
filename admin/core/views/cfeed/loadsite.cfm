@@ -72,7 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset counter=counter+1/>
 		<tr <cfif not(counter mod 2)>class="alt"</cfif>>
           <td class="var-width">#application.contentRenderer.dspZoomNoLinks(crumbdata)#</td>
-		<td class="actions"><ul><li class="add"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.add')#" href="javascript:;" onClick="feedManager.addContentFilter('#rc.rslist.contentid#','#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.rslist.type#'))#','#JSStringFormat(application.contentRenderer.dspZoomText(crumbdata))#'); return false;"><i class="icon-plus-sign"></i></a></li></ul>
+		<td class="actions"><ul><li class="add"><a title="#application.rbFactory.getKeyValue(session.rb,'collections.add')#" href="javascript:;" onClick="feedManager.addContentFilter('#rc.rslist.contentid#','#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.rslist.type#'))#','#JSStringFormat(application.contentRenderer.dspZoomText(crumbdata,"&raquo;"))#'); return false;"><i class="icon-plus-sign"></i></a></li></ul>
 		  </td>
 		</tr>
 	 	</cfif>

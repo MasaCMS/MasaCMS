@@ -350,13 +350,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="dspZoomText" returntype="string" output="false">
 		<cfargument name="crumbdata" required="yes" type="array">
+		<cfargument name="separator" required="yes" default=">">
 		<cfset var crumbLen=arrayLen(arguments.crumbdata)>
 		<cfset var I = 0 />
 		<cfset var content="">
 		<cfsavecontent variable="content">
 		<cfoutput>
 		<cfloop from="#crumbLen#" to="2" index="I" step="-1">
-		#arguments.crumbdata[I].menutitle#  &raquo;
+		#arguments.crumbdata[I].menutitle#  #arguments.separator#
 		</cfloop>
 		#arguments.crumbdata[1].menutitle#
 		</cfoutput>
