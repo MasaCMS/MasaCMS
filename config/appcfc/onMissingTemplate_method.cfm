@@ -48,9 +48,4 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="targetPage" required="true">
 	<cfset var local=structNew()>
 	<cfinclude template="/muraWRM/config/appcfc/onMissingTemplate_include.cfm">
-	<cfif len(local.pluginEvent.getValue("__MuraResponse__"))>
-		<cfreturn true>
-	<cfelse>
-		<cfreturn false>
-	</cfif>
 </cffunction>
