@@ -6,7 +6,7 @@
 				<cfset navbarContainerClass = 'container-fluid'>
 				<cfinclude template="inc/navbar.cfm">
 			</div>
-      		<div class="row-fluid">
+      		<div class="row-fluid content-container">
 	      		<div class="span3">
 	      		    #$.dspObjects(1)#
 	      		</div><!--/span3-->

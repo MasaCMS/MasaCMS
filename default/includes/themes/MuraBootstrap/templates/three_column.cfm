@@ -5,7 +5,7 @@
 			<div class="row">
 				<cfinclude template="inc/navbar.cfm">
 			</div>
-      		<div class="row">
+      		<div class="row content-container">
 	      		<div class="span3">
 	      		    #$.dspObjects(1)#
 	      		</div><!--/span3-->

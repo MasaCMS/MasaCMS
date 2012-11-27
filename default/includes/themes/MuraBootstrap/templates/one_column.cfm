@@ -5,8 +5,8 @@
 			<div class="row">
 				<cfinclude template="inc/navbar.cfm">
 			</div>
-			<div class="content row">
-				<div class="span12">
+			<div class="content-container row">
+				<div class="span12 content">
 					<cfinclude template="inc/breadcrumb.cfm">
 					#$.dspBody(body=$.content('body'),pageTitle=$.content('title'),crumbList=0,showMetaImage=1)#
 					#$.dspObjects(2)#

@@ -6,7 +6,7 @@
 				<cfset navbarContainerClass = 'container-fluid'>
 				<cfinclude template="inc/navbar.cfm">
 			</div>
-      		<div class="row-fluid">
+      		<div class="row-fluid content-container">
 				<div class="span9 content">
 					<cfinclude template="inc/breadcrumb.cfm">
 					#$.dspBody(body=$.content('body'),pageTitle=$.content('title'),crumbList=0,showMetaImage=1)#

@@ -5,8 +5,8 @@
 			<div class="row">
 				<cfinclude template="inc/navbar.cfm">
 			</div>
-			<div class="content row">
-				<div class="span12">
+			<div class=" content-container row">
+				<div class="span12 content">
 
 					<!---
 						The Carousel/Slideshow
