@@ -14,7 +14,7 @@
 </cfsilent>
 <cfoutput>
 <div id="svFavoritesList">
-	<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('favorites.favorites')#</#variables.$.getHeaderTag('subHead1')#>
+	<#variables.$.getHeaderTag('subHead1')#><i class="icon-heart"></i> #variables.$.rbKey('favorites.favorites')#</#variables.$.getHeaderTag('subHead1')#>
 <cfif len(getPersonalizationID())>
 	<!--- list the favorites --->
 	<cfset variables.rsFavorites = application.favoriteManager.getInternalContentFavorites(variables.$.getPersonalizationID(), variables.$.event('siteID')) />
@@ -30,10 +30,10 @@
 			<cfset variables.lid = replace(variables.rsFavorites.favoriteID, "-", "", "ALL") />
 			<cfset variables.contentLink = createHref(variables.rsFavorites.Type, variables.rsFavorites.filename, variables.$.event('siteID'), variables.rsFavorites.contentID, variables.rsFavorites.target,variables.rsFavorites.targetParams, '', '#variables.$.globalConfig('context')#', '#variables.$.globalConfig('stub')#', '', 'false') />
 			<cfset variables.contentLink = "<a href='#variables.contentLink#'>#HTMLEditFormat(variables.rsFavorites.menutitle)#</a>" />
-			<li id="favorite#variables.lid#"><a href="" onclick="return deleteFavorite('#variables.rsFavorites.favoriteID#', 'favorite#variables.lid#');" title="#xmlformat(variables.$.rbKey('favorites.removefromfavorites'))#" class="remove">[-]</a> #variables.contentLink#</li>
+			<li id="favorite#variables.lid#"><a href="" onclick="return deleteFavorite('#variables.rsFavorites.favoriteID#', 'favorite#variables.lid#');" title="#xmlformat(variables.$.rbKey('favorites.removefromfavorites'))#" class="remove"><i class="icon-remove-sign"></i></a> #variables.contentLink#</li>
 		</cfloop>
 		<cfif variables.rsFavorites.recordCount gt 5>
-			<li><a href="" onclick="return effectFunction();"><span>#variables.$.rbKey('favorites.morefavorites')#</span></a>
+			<li><a href="" onclick="return effectFunction();"><i class="icon-heart"></i><span>#variables.$.rbKey('favorites.morefavorites')#</span></a>
 				<ul id="favoriteListMore" style="display:none">
 				<cfloop query="variables.rsFavorites" startrow="6">
 					<cfif variables.$.content('contentID') eq variables.rsFavorites.contentid>
@@ -44,7 +44,7 @@
 				
 					<cfset variables.contentLink = variables.$.createHref(variables.rsFavorites.Type, variables.rsFavorites.filename, variables.$.event('siteID'), variables.rsFavorites.contentID, variables.rsFavorites.target,variables.rsFavorites.targetParams, '', '#variables.$.globalConfig('context')#', '#variables.$.globalConfig('stub')#', '', 'false') />
 					<cfset variables.contentLink = "<a href='#variables.contentLink#'>#HTMLEditFormat(variables.rsFavorites.menuTitle)#</a>" />
-					<li id="favorite#variables.lid#"><a href="" onclick="return deleteFavorite('#variables.rsFavorites.favoriteID#', 'favorite#variables.lid#');" title="#xmlformat(variables.$.rbKey('favorites.removefromfavorites'))#" class="remove">[-]</a> #variables.contentLink#</li>
+					<li id="favorite#variables.lid#"><a href="" onclick="return deleteFavorite('#variables.rsFavorites.favoriteID#', 'favorite#variables.lid#');" title="#xmlformat(variables.$.rbKey('favorites.removefromfavorites'))#" class="remove"><i class="icon-remove-sign"></i></a> #variables.contentLink#</li>
 				</cfloop>
 				</ul>
 			</li>
@@ -77,7 +77,7 @@
 </div>
 <cfif len(getPersonalizationID())>
 <div id="svPageTools">
-	<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('favorites.pagetools')#</#variables.$.getHeaderTag('subHead1')#>
+	<#variables.$.getHeaderTag('subHead1')#><i class="icon-wrench"></i> #variables.$.rbKey('favorites.pagetools')#</#variables.$.getHeaderTag('subHead1')#>
 	<cfif variables.favoriteExists>
 		<cfset variables.favoriteExistsStyle = "display:none;">
 		<cfset variables.addFavoriteStyle = "display:none;">
@@ -89,10 +89,9 @@
 		<cfset variables.addFavoriteStyle = "">
 	</cfif>
 	<ul>
-		<li id="favoriteExists" style="#variables.favoriteExistsStyle#"><a href="" onclick="return false;">Stored in favorites</a></li>
-		<li id="addFavorite" style="#addFavoriteStyle#"><a href="" onclick="return saveFavorite('#variables.userID#', '#arguments.siteID#', '#JSStringFormat(variables.menuTitle)#', '#variables.contentID#', '#variables.favoriteType#')">#variables.$.rbKey('favorites.addtofavorites')#</a></li>
-		<li id="print"><a href="javascript:window.print();void(0);">#rbFactory.getResourceBundle().messageFormat(variables.$.rbKey('favorites.printthis'),variables.$.rbKey('sitemanager.content.type.#variables.$.content('type')#'))#</a></li>
-		<!---<li id="discuss"><a href="/forum">Discuss #contentTypeString#</a></li>--->
+		<li id="favoriteExists" style="#variables.favoriteExistsStyle#"><a href="" onclick="return false;"><i class="icon-thumbs-up"></i> Stored in favorites</a></li>
+		<li id="addFavorite" style="#addFavoriteStyle#"><a href="" onclick="return saveFavorite('#variables.userID#', '#arguments.siteID#', '#JSStringFormat(variables.menuTitle)#', '#variables.contentID#', '#variables.favoriteType#')"><i class="icon-plus-sign"></i> #variables.$.rbKey('favorites.addtofavorites')#</a></li>
+		<li id="print"><a href="javascript:window.print();void(0);"><i class="icon-print"></i> #rbFactory.getResourceBundle().messageFormat(variables.$.rbKey('favorites.printthis'),variables.$.rbKey('sitemanager.content.type.#variables.$.content('type')#'))#</a></li>
 	</ul>
 </div>
 </cfif>

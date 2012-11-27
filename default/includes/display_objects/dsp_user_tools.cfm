@@ -56,11 +56,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<ol>
 				<li class="control-group">
 					<label class="control-label" for="txtUserName">#variables.$.rbKey('user.username')#</label>
-					<input type="text" id="txtUserName" class="text" name="username" />
+					<input type="text" id="txtUserName" name="username" />
 				</li>
 				<li class="control-group">
 					<label class="control-label" for="txtPassword">#variables.$.rbKey('user.password')#</label>
-					<input type="password" id="txtPassword" class="text" name="password" />
+					<input type="password" id="txtPassword" name="password" />
 				</li>
 				<li class="control-group">
 					<label class="checkbox" for="cbRemember"><input type="checkbox" id="cbRemember" class="checkbox first" name="rememberMe" value="1" />
@@ -81,8 +81,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div id="svSessionTools" class="clearfix">
 	<p id="welcome">#variables.$.rbKey('user.welcome')#, #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#</p>
  	<ul id="navSession">
-		<li id="navEditProfile"><a href="#application.settingsManager.getSite(variables.$.event('siteID')).getEditProfileURL()#&nocache=1&returnURL=#urlEncodedFormat(application.contentRenderer.getCurrentURL())#">#variables.$.rbKey('user.editprofile')#</a></li>
-		<li id="navLogout"><a href="?doaction=logout">#variables.$.rbKey('user.logout')#</a></li>
+		<li id="navEditProfile"><a href="#application.settingsManager.getSite(variables.$.event('siteID')).getEditProfileURL()#&nocache=1&returnURL=#urlEncodedFormat(application.contentRenderer.getCurrentURL())#"><i class="icon-user"></i> #variables.$.rbKey('user.editprofile')#</a></li>
+		<li id="navLogout"><a href="?doaction=logout"><i class="icon-signout"></i> #variables.$.rbKey('user.logout')#</a></li>
 	</ul>
 </div>
 </cfif>
