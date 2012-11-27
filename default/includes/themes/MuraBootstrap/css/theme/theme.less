@@ -54,6 +54,11 @@ a#logout {
 
 body {
 	padding-top: 0;
+	/* Transition for Front-End Toolbar Toggling */
+	-webkit-transition: margin-top 0.6s ease-in-out;
+    -o-transition: margin-top 0.6s ease-in-out;
+    -moz-transition: margin-top 0.6s ease-in-out;
+    transition: margin-top 0.6s ease-in-out;
 }
 
 
@@ -541,48 +546,86 @@ ul.dragableFeeds {
 .five { background-image: url(../../images/rater/star_five.png); }
 
 
-// Front-End Editing Theme Accommodations
+// Front-End Editing Theme Accommodations - Use this hook to adjust if the Mura Front-End Toolbar is obscuring navigation or something you or your users would rather not have obscured.
 
 .mura-edit-mode {
 	
 	body {
-		padding-top: 50px;
-	}
-	
+		margin-top: 50px;
+		/* Transition for Front-End Toolbar Toggling */
+		-webkit-transition: margin-top 0.6s ease-in-out;
+	    -o-transition: margin-top 0.6s ease-in-out;
+	    -moz-transition: margin-top 0.6s ease-in-out;
+	    transition: margin-top 0.6s ease-in-out;
+	}	
 }
 
 // RESPONSIVE
 // =========================================================
 
-/* Large desktop */
-@media (min-width: 1200px) {
+// Specific Styles 
 
-	body {
-		padding-top: 18px;
+@import url("responsive/large-display.less");
+@import url("responsive/default.less");
+@import url("responsive/portrait-tablets.less");
+@import url("responsive/phones-tablets.less");
+@import url("responsive/phones.less");
+
+// Shared Styles
+
+/* Retina Displays */
+
+// @media only screen and (-webkit-min-device-pixel-ratio : 1.5), only screen and (min-device-pixel-ratio : 1.5) { }
+
+/* Less than Desktop */
+@media (max-width: 979px) {
+
+	.content-container { margin-top: 60px; }
+
+	.nav-collapse .caret,
+	.nav-collapse .dropdown-menu { display: none !important; }
+	
+	.navbar {
+	
+		width: 100%;
+		position: fixed;
+		margin: 0 -20px;
+	
+		.navbar-inner {
+			
+			-webkit-border-radius: 0;
+			-moz-border-radius: 0;
+			-o-border-radius: 0;
+			border-radius: 0;
+
+			}
+	
+		form {
+			
+			white-space: nowrap;
+			
+			input { 
+				display: inline-block; 
+				width: 6em;
+				min-height: auto;
+				height: 26px;
+				box-sizing: border-box;
+				}
+			
+		}
+	
+		form .btn, #logout.btn {
+			font-size: 12px;
+			padding: 2px 6px;
+			margin-bottom: 0;
+			margin-right: 1em;
+		}
 	}
-
 }
 
-@media (min-width: 980px) and (max-width: 1199px) {
+/* Desktop and bigger */
+@media (min-width: 980px) {
 
-	body {
-		padding-top: 18px;
-	}
+		body { padding-top: 18px; }
 
 }
-
-/* Portrait tablet to landscape and desktop */
-@media (min-width: 768px) and (max-width: 979px) {
-}
-
-/* Landscape phone to portrait tablet */
-@media (max-width: 767px) {
-}
-
-/* Landscape phones and down */
-@media (max-width: 480px) {
-}
-
-
-
-

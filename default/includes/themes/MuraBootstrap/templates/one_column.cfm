@@ -1,12 +1,12 @@
 <cfoutput>
 	<cfinclude template="inc/html_head.cfm">
 	<body id="#$.getTopID()#" class="#$.createCSSid($.content('menuTitle'))#">
-		<div class="container">
-			<div class="row">
+		<div class="#$.getMBContainerClass()#">
+			<div class="#$.getMBRowClass()#">
 				<cfinclude template="inc/navbar.cfm">
 			</div>
-			<div class="content row">
-				<div class="span12">
+			<div class="#$.getMBRowClass()# content-container">
+				<div class="content span12">
 					<cfinclude template="inc/breadcrumb.cfm">
 					#$.dspBody(body=$.content('body'),pageTitle=$.content('title'),crumbList=0,showMetaImage=1)#
 					#$.dspObjects(2)#

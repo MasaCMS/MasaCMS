@@ -162,7 +162,7 @@
 	function toggleAdminToolbar(){
 		<cfif $.getJsLib() eq "jquery">
 			$("##frontEndTools").animate({opacity: "toggle"});
-			
+			$('HTML').toggleClass('mura-edit-mode');
 			$(".editableObject").each(
 				function(intIndex){
 					$(this).toggleClass('editableObjectHide');
