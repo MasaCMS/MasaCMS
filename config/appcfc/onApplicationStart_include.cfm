@@ -413,7 +413,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset local.tempDir=expandPath('/muraWRM/admin/temp/')>
 		<cfset local.fileWriter=application.serviceFactory.getBean('fileWriter')>
 		<cfloop query="local.rs">
-			<cfif not listFind('.gitignore,Application.cfc,assets,common,core,framework.cfc,index.cfm,temp',local.rs.name)>
+			<cfif not listFind('.gitignore,Application.cfc,assets,common,core,framework.cfc,index.cfm,temp,custom',local.rs.name)>
 				<cftry>
 				<cfset local.fileWriter.touchDir(local.tempDir)>
 				<cfif local.rs.type eq 'dir'>

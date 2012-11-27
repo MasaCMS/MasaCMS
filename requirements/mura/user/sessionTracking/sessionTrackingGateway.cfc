@@ -190,7 +190,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	LastRequest,min(entered)
 	firstRequest, count(urlToken) as views,
 	tsessiontracking.country,tsessiontracking.lang,tsessiontracking.locale,
-	tsessiontracking.userid,tsessiontracking.siteid 
+	tsessiontracking.userid,tsessiontracking.siteid,tsessiontracking.user_agent
 	from tsessiontracking #variables.tableModifier#
 	left join tusers #variables.tableModifier# on (tsessiontracking.userid = tusers.userid)
 	where
@@ -225,7 +225,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	)
 	group by fname,lname,company,urlToken,tsessiontracking.country,tsessiontracking.lang,tsessiontracking.locale,
-	tsessiontracking.userid,tsessiontracking.siteid 	
+	tsessiontracking.userid,tsessiontracking.siteid,tsessiontracking.user_agent	
 	order by LastRequest desc
 	</cfquery>
 	
@@ -629,7 +629,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 min(entered) AS FirstRequest,
 	count(tsessiontracking.urlToken) as views,
 	tsessiontracking.country, tsessiontracking.lang,tsessiontracking.locale,
-	tsessiontracking.userid, tsessiontracking.siteid
+	tsessiontracking.userid, tsessiontracking.siteid,tsessiontracking.user_agent
 	From tsessiontracking #variables.tableModifier#
 	inner join tcontent #variables.tableModifier# on (tsessiontracking.contentid=tcontent.contentID
 							and tsessiontracking.siteid=tcontent.siteID
@@ -684,7 +684,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	group by tsessiontracking.urlToken, 		
 	tsessiontracking.country,tsessiontracking.lang,tsessiontracking.locale,
-	tsessiontracking.userid,tsessiontracking.siteid 
+	tsessiontracking.userid,tsessiontracking.siteid,tsessiontracking.user_agent 
 	
 	Union
 	
@@ -693,7 +693,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 min(entered) AS FirstRequest,
 	count(tsessiontracking.urlToken) as views,
 	tsessiontracking.country, tsessiontracking.lang,tsessiontracking.locale,
-	tsessiontracking.userid, tsessiontracking.siteid
+	tsessiontracking.userid, tsessiontracking.siteid,tsessiontracking.user_agent
 	From tsessiontracking #variables.tableModifier#
 	inner join tusers #variables.tableModifier# on (tsessiontracking.userid=tusers.userID)
 	<cfif searchAddress>
@@ -754,14 +754,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	group by fname,lname,company,tsessiontracking.urlToken, 		
 	tsessiontracking.country,tsessiontracking.lang,tsessiontracking.locale,
-	tsessiontracking.userid,tsessiontracking.siteid 
+	tsessiontracking.userid,tsessiontracking.siteid,tsessiontracking.user_agent 
 	</cfquery>
 
 	<cfquery name="rs2" dbtype="query">
 	select fname,lname,company,urlToken, LastRequest,
 	FirstRequest,views,
 	country, lang, locale,
-	userid, siteid
+	userid, siteid,user_agent
 	from rs1
 	order by LastRequest desc
 	</cfquery>
