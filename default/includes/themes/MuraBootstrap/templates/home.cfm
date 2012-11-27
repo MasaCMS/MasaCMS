@@ -23,8 +23,8 @@
                  </div>
                </cfloop>
                  </div>
-                 <a class="left carousel-control" href="##myCarousel" data-slide="prev">&lt;</a>
-                 <a class="right carousel-control" href="##myCarousel" data-slide="next">&gt;</a>
+                 <a class="left carousel-control" href="##myCarousel" data-slide="prev">&lsaquo;</a>
+                 <a class="right carousel-control" href="##myCarousel" data-slide="next">&rsaquo;</a>
             </div>
 			</cfoutput>
 			<cfelse>
