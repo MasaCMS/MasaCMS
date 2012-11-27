@@ -80,9 +80,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfif>
 						</cfloop>
 					</div>
-					<cfif idx>
+					<cfif local.idx>
 						<!--- Carousel nav --->
-						<cfif idx gt 1>
+						<cfif local.idx gt 1>
 							<a class="left carousel-control" href="###arguments.cssID#" data-slide="prev">&lsaquo;</a>
 							<a class="right carousel-control" href="###arguments.cssID#" data-slide="next">&rsaquo;</a>
 						</cfif>
