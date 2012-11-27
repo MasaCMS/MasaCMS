@@ -5,8 +5,8 @@
 			<div class="#$.getMBRowClass()#">
 				<cfinclude template="inc/navbar.cfm">
 			</div>
-			<div class="content #$.getMBRowClass()#">
-				<div class="span12">
+			<div class="content-container #$.getMBRowClass()#">
+				<div class="span12 content">
 
 					<!---
 						The Carousel/Slideshow
