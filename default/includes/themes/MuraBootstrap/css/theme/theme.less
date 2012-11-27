@@ -53,7 +53,7 @@ a#logout {
 }
 
 body {
-	padding-top: 0;
+	padding-top: 18px;
 	/* Transition for Front-End Toolbar Toggling */
 	-webkit-transition: margin-top 0.6s ease-in-out;
     -o-transition: margin-top 0.6s ease-in-out;
@@ -68,6 +68,8 @@ body {
 	margin-bottom: @baseLineHeight;
 	padding: 8px 0;
 }
+
+.dropdown-menu { margin-top: 0; }
 
 .navbar form {
 
@@ -235,12 +237,6 @@ h2 {
 
 ul.nav li:hover ul.dropdown-menu {
     display: inline-block;   
-}
-
-.navbar .nav .dropdown .active > a { 
-	//Overriding bootstrap default becasue it looks weird to have the dropdown "active" nav item highlighted
-	color: #222;
-	background-color: #fff;
 }
 
 a.menu:after, .dropdown-toggle:after {
@@ -580,25 +576,10 @@ ul.dragableFeeds {
 /* Less than Desktop */
 @media (max-width: 979px) {
 
-	.content-container { margin-top: 60px; }
-
 	.nav-collapse .caret,
 	.nav-collapse .dropdown-menu { display: none !important; }
 	
 	.navbar {
-	
-		width: 100%;
-		position: fixed;
-		margin: 0 -20px;
-	
-		.navbar-inner {
-			
-			-webkit-border-radius: 0;
-			-moz-border-radius: 0;
-			-o-border-radius: 0;
-			border-radius: 0;
-
-			}
 	
 		form {
 			
@@ -626,6 +607,5 @@ ul.dragableFeeds {
 /* Desktop and bigger */
 @media (min-width: 980px) {
 
-		body { padding-top: 18px; }
 
 }
