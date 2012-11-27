@@ -82,8 +82,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</div>
 					<cfif idx>
 						<!--- Carousel nav --->
-						<a class="left carousel-control" href="###arguments.cssID#" data-slide="prev">&lsaquo;</a>
-						<a class="right carousel-control" href="###arguments.cssID#" data-slide="next">&rsaquo;</a>
+						<cfif idx gt 1>
+							<a class="left carousel-control" href="###arguments.cssID#" data-slide="prev">&lsaquo;</a>
+							<a class="right carousel-control" href="###arguments.cssID#" data-slide="next">&rsaquo;</a>
+						</cfif>
 					<cfelse>
 						<div class="alert alert-info alert-block">
 							<button type="button" class="close" data-dismiss="alert">x</button>
