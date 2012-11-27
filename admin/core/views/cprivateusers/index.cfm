@@ -109,7 +109,7 @@ function goAndClose(userid)	{
 </head>
 <body id="popUp"><cfoutput>
 <h1>#application.rbFactory.getKeyValue(session.rb,'user.selectuser')#</h1>
-<form novalidate="novalidate" name="form1" method="post" action="" id="siteSearch" onSubmit="return validate(this);"><!---<label>#application.rbFactory.getKeyValue(session.rb,'user.lastnameorcompany')#</label>--->
+<form novalidate="novalidate" name="form1" method="get" action="" id="siteSearch" onSubmit="return validate(this);"><!---<label>#application.rbFactory.getKeyValue(session.rb,'user.lastnameorcompany')#</label>--->
 
 	<div class="input-append">
 	    <input style="width: 208px;" name="search" required="true" message="#application.rbFactory.getKeyValue(session.rb,'user.lastnameorcompanyrequired')#" type="text" />
