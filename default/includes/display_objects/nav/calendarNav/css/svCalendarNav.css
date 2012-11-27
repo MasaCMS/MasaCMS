@@ -1,6 +1,6 @@
 #svCalendarNav { text-align: center; }
 
-#svCalendarNav table { 
+#svCalendarNav table {
 	border-collapse: collapse;
 	border-spacing: 0;
 	margin-bottom: 1em;
@@ -19,7 +19,7 @@
 	text-align: center;
 	padding: .5em;
 	}
-	
+
 #svCalendarNav a {
 	display: block;
 	text-align: center;

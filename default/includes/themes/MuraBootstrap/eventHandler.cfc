@@ -10,7 +10,7 @@
 			arguments.$.static(
 				outputDirectory = 'compiled'
 				, minifyMode = 'package' 
-				, checkForUpdates = true
+				, checkForUpdates = arguments.$.siteConfig('cache')
 			);
 		</cfscript>
 	</cffunction>

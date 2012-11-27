@@ -104,7 +104,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif variables.iterator.getRecordcount()>
 	<cfoutput>
-	<div id="mura-folder" class="svIndex">
+	<div id="svFolder" class="svIndex">
 		<cfsilent>
 			<cfif NOT len(variables.$.content("displayList"))>
 				<cfset variables.contentListFields="Date,Title,Image,Summary,ReadMore,Credits">

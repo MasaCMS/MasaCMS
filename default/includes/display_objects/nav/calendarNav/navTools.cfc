@@ -3,14 +3,14 @@
 <cffunction name="init" output="false">
 	<cfargument name="MuraScope">
 	<cfset $=arguments.MuraScope>
-	<cfset rbFactory=application.settingsManager.getSite(request.siteid).getRBFactory()>	
+	<cfset rbFactory=application.settingsManager.getSite(request.siteid).getRBFactory()>
 	<cfscript>
 	weekdayShort=$.rbKey('calendar.weekdayshort');
 	weekdayLong=$.rbKey('calendar.weekdaylong');
 	monthShort=$.rbKey('calendar.monthshort');
 	monthLong=$.rbKey('calendar.monthlong');
 	</cfscript>
-	
+
 	<cfreturn this>
 </cffunction>
 
@@ -22,7 +22,7 @@
 		<cfreturn I />
 		</cfif>
 		</cfloop>
-		
+
 		<cfreturn "" />
 </cffunction>
 
@@ -31,7 +31,7 @@
 	<cfargument name="today" type="date"  default="#now()#">
 	<cfargument name="navPath" type="string"  default="">
 
-	<cfset var rs = "">	
+	<cfset var rs = "">
 	<cfset var qrystr="">
 
 	<cfquery name="rs" dbtype="query">
@@ -40,24 +40,24 @@
 					  		(
 						  		releaseDate < <cfqueryparam value="#dateadd('D',1,arguments.today)#" cfsqltype="CF_SQL_DATE">
 						  		AND releaseDate >= <cfqueryparam value="#arguments.today#" cfsqltype="CF_SQL_DATE">
-						 	) 
-						  		
-						  	OR 
+						 	)
+
+						  	OR
 						  	 (
 						  	 	releaseDate is Null
-						  		AND lastUpdate < <cfqueryparam value="#dateadd('D',1,arguments.today)#" cfsqltype="CF_SQL_DATE">	
+						  		AND lastUpdate < <cfqueryparam value="#dateadd('D',1,arguments.today)#" cfsqltype="CF_SQL_DATE">
 						  		AND lastUpdate >= <cfqueryparam value="#arguments.today#" cfsqltype="CF_SQL_DATE">
 						  	)
 					  <cfelse>
 					 	DisplayStart < <cfqueryparam value="#dateadd('D',1,arguments.today)#" cfsqltype="CF_SQL_DATE">
-						
-						  	AND 
+
+						  	AND
 						  		(
 						  			DisplayStop >= <cfqueryparam value="#arguments.today#" cfsqltype="CF_SQL_DATE"> or DisplayStop =''
-						  		)	
+						  		)
 					  </cfif>
 	</cfquery>
-	
+
 	<cfif rs.recordcount>
 		<cfif request.day eq day(arguments.today)>
 		<cfreturn '<a href="#arguments.navPath#date/#year(arguments.today)#/#month(arguments.today)#/#day(arguments.today)#/#qrystr#" class="current">#day(arguments.today)#</a>' />
@@ -67,7 +67,7 @@
 	<cfelse>
 		<cfreturn "#day(arguments.today)#">
 	</cfif>
-	
+
 </cffunction>
 
 
@@ -130,7 +130,7 @@ dateShort = "#listGetAt(monthShort,navMonth,",")# #navYear#";
 	<cfset dayValue = listGetAt(weekdayShort,id,",")>
 	<cfset dayValueLong = listGetAt(weekdayLong,id,",")>
 	<td title="#dayValueLong#">#dayValue#</td>
-	
+
 	</cfloop>
 	</tr>
 </thead>
