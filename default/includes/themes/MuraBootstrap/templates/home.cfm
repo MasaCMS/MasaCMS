@@ -1,24 +1,30 @@
 <cfoutput>
 	<cfinclude template="inc/html_head.cfm">
 	<body id="#$.getTopID()#" class="#$.createCSSid($.content('menuTitle'))#" data-spy="scroll" data-target=".subnav" data-offset="50">
-		<cfinclude template="inc/navbar.cfm">
 		<div class="container">
+			<div class="row">
+				<cfinclude template="inc/navbar.cfm">
+			</div>
 			<div class="content row">
+				<div class="span12">
 
-				<!---
-					The Carousel/Slideshow
-					This method can be found in the theme's contentRenderer.cfc
-				--->
-				#$.dspCarouselByFeedName(feedName='Slideshow', showCaption=true, cssID='myCarousel')#
+					<!---
+						The Carousel/Slideshow
+						This method can be found in the theme's contentRenderer.cfc
+					--->
+					#$.dspCarouselByFeedName(feedName='Slideshow', showCaption=true, cssID='myCarousel')#
 
-				<!--- The content --->
-				#$.dspBody(body=$.content('body'), pageTitle='', crumbList=0, showMetaImage=true)#
+					<!--- The content --->
+					#$.dspBody(body=$.content('body'), pageTitle='', crumbList=0, showMetaImage=true)#
 
-				<!--- Display Objects assigned to display region 2 (Main Content) --->
-				#$.dspObjects(2)#
+					<!--- Display Objects assigned to display region 2 (Main Content) --->
+					#$.dspObjects(2)#
 
+				</div>
+			</div>
+			<div class="row">
+				<cfinclude template="inc/footer.cfm">
 			</div>
 		</div><!-- /.container -->
-		<cfinclude template="inc/footer.cfm">
 	<cfinclude template="inc/html_foot.cfm">
 </cfoutput>

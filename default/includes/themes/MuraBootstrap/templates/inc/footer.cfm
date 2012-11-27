@@ -1,5 +1,5 @@
 <cfoutput>
-	<div class="container">
+	<div class="span12">
 		<hr>
 		<footer>
 			<p class="pull-left">&copy; #HTMLEditFormat($.siteConfig('site'))# #year(now())#</p>

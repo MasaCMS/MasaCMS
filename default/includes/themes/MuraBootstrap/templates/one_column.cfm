@@ -1,14 +1,20 @@
 <cfoutput>
 	<cfinclude template="inc/html_head.cfm">
 	<body id="#$.getTopID()#" class="#$.createCSSid($.content('menuTitle'))#">
-		<cfinclude template="inc/navbar.cfm">
 		<div class="container">
-			<div class="content">
-				<cfinclude template="inc/breadcrumb.cfm">
+			<div class="row">
+				<cfinclude template="inc/navbar.cfm">
+			</div>
+			<div class="content row">
+				<div class="span12">
+					<cfinclude template="inc/breadcrumb.cfm">
 					#$.dspBody(body=$.content('body'),pageTitle=$.content('title'),crumbList=0,showMetaImage=1)#
 					#$.dspObjects(2)#
+				</div>
+			</div>
+			<div class="row">
+				<cfinclude template="inc/footer.cfm">
 			</div>
 		</div><!-- /.container -->
-		<cfinclude template="inc/footer.cfm">
 	<cfinclude template="inc/html_foot.cfm">
 </cfoutput>
