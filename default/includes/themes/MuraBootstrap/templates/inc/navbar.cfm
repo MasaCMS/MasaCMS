@@ -1,6 +1,6 @@
 <cfparam name="navbarContainerClass" default="container">
 <cfoutput>
-	<div class="navbar navbar-inverse navbar-fixed-top">
+	<div class="navbar navbar-inverse span12">
 		<div class="navbar-inner">
 			<div class="#navbarContainerClass#">
 				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
