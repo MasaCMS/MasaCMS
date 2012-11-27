@@ -75,7 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<dt class="categorytitle">
 						<span class="<cfif rslist.hasKids> hasChildren closed</cfif>"></span>
 						<label>
-							<input name="categoryid" value="#rslist.categoryid#" type="checkbox" <cfif rsIsMember.recordcount>	checked="true"</cfif>/> #HTMLEditFormat(rslist.name)#</label>
+							<cfif rslist.isOpen eq 1><input name="categoryid" value="#rslist.categoryid#" type="checkbox" <cfif rsIsMember.recordcount>	checked="true"</cfif>/> </cfif>#HTMLEditFormat(rslist.name)#</label>
 					</dt>
 					<!--- assignment --->
 					<dd class="categoryassignmentwrapper">
