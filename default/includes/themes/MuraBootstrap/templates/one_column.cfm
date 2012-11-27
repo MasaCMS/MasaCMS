@@ -5,7 +5,7 @@
 			<div class="#$.getMBRowClass()#">
 				<cfinclude template="inc/navbar.cfm">
 			</div>
-			<div class="#$.getMBRowClass()# content-container">
+			<div class="#$.getMBRowClass()#">
 				<div class="content span12">
 					<cfinclude template="inc/breadcrumb.cfm">
 					#$.dspBody(body=$.content('body'),pageTitle=$.content('title'),crumbList=0,showMetaImage=1)#
