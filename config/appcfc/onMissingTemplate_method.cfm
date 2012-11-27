@@ -44,13 +44,8 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cffunction name="onMissingTemplate" output="true">
+<cffunction name="onMissingTemplate" output="true" returntype="boolean">
 	<cfargument name="targetPage" required="true">
 	<cfset var local=structNew()>
 	<cfinclude template="/muraWRM/config/appcfc/onMissingTemplate_include.cfm">
-	<cfif len(local.pluginEvent.getValue("__MuraResponse__"))>
-		<cfreturn true>
-	<cfelse>
-		<cfreturn false>
-	</cfif>
 </cffunction>

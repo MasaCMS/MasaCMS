@@ -63,6 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif isDefined("application.contentServer")>
 		<cfset onRequestStart()>
 		<cfset application.contentServer.renderFilename(listDeleteAt(cgi.script_name, listLen(cgi.script_name,"/"), "/"))>
+		<cfset onRequestEnd()>
 		<cfreturn true>
 	</cfif>
 </cfif>
