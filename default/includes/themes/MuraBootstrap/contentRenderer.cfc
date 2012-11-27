@@ -48,5 +48,60 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent extends="mura.cfobject">
 
 	<!--- Add theme-specific methods here --->
+	<cffunction name="dspCarouselByFeedName" output="false">
+		<cfargument name="feedName" type="string" default="Slideshow" />
+		<cfargument name="showCaption" type="boolean" default="true" />
+		<cfargument name="width" type="numeric" default="1200" />
+		<cfargument name="height" type="numeric" default="500" />
+		<cfargument name="cssID" type="string" default="myCarousel" />
+		<cfset var local = {} />
+		<cfsavecontent variable="local.str"><cfoutput>
+			<!--- BEGIN: Bootstrap Carousel --->
+				<cfset local.feed = $.getBean('feed').loadBy(name=arguments.feedName)>
+				<cfset local.iterator = local.feed.getIterator()>
+				<cfif local.iterator.hasNext()>
+					<div id="#arguments.cssID#" class="carousel slide">
+						<!--- Carousel items --->
+						<div class="carousel-inner">
+							<cfset local.idx = 0>
+							<cfloop condition="local.iterator.hasNext()">
+								<cfset local.item=iterator.next()>
+								<cfif listFindNoCase('jpg,jpeg,gif,png', ListLast(local.item.getImageURL(), '.'))>
+									<cfset local.idx++>
+									<div class="item<cfif local.idx eq 1> active</cfif>">
+										<img src="#local.item.getImageURL(width=val(arguments.width),height=val(arguments.height))#" alt="#HTMLEditFormat(local.item.getTitle())#">
+										<cfif arguments.showCaption>
+											<div class="carousel-caption">
+												<h4><a href="#local.item.getURL()#">#HTMLEditFormat(local.item.getTitle())#</a></h4>
+												#local.item.getSummary()#
+											</div>
+										</cfif>
+									</div>
+								</cfif>
+							</cfloop>
+						</div>
+						<cfif idx>
+							<!--- Carousel nav --->
+							<a class="left carousel-control" href="###arguments.cssID#" data-slide="prev">&lsaquo;</a>
+							<a class="right carousel-control" href="###arguments.cssID#" data-slide="next">&rsaquo;</a>
+						<cfelse>
+							<div class="alert alert-info alert-block">
+								<button type="button" class="close" data-dismiss="alert">x</button>
+								<h4>Oh snap!</h4>
+								Your feed has no items <em>with images</em>.
+							</div>
+						</cfif>
+					</div>
+				<cfelse>
+					<div class="alert alert-info alert-block">
+						<button type="button" class="close" data-dismiss="alert">x</button>
+						<h4>Heads up!</h4>
+						Your feed has no items.
+					</div>
+				</cfif>
+				<!--- // END: Bootstrap Carousel --->
+		</cfoutput></cfsavecontent>
+		<cfreturn local.str />
+	</cffunction>
 
 </cfcomponent>
