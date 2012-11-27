@@ -104,7 +104,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif variables.iterator.getRecordcount()>
 	<cfoutput>
-	<div id="svPortal" class="svIndex">
+	<div id="mura-folder" class="svIndex">
 		<cfsilent>
 			<cfif NOT len(variables.$.content("displayList"))>
 				<cfset variables.contentListFields="Date,Title,Image,Summary,ReadMore,Credits">
@@ -139,17 +139,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif not variables.iterator.getRecordCount()>
      <cfoutput>
      <cfif variables.$.event('filterBy') eq "releaseMonth">
-     <div id="svPortal">
-	     <br>
+     <div id="mura-folder">
 	     <p>#variables.$.rbKey('list.nocontentmonth')#</p>    
      </div>
      <cfelseif variables.$.event('filterBy') eq "releaseDate">
-     <div id="svPortal">
-	     <br>
+     <div id="mura-folder">
 	     <p>#variables.$.rbKey('list.nocontentday')#</p>
      </div>
      <cfelse>
-     <div id="svPortal">
+     <div id="mura-folder">
          <p>#variables.$.rbKey('list.nocontent')#</p>   
      </div>
      </cfif>
