@@ -118,7 +118,6 @@ p.center { text-align: center; }
 }
 //end Crumblist
 
-
 /* @group Sequential Nav & More Results */
 
 .navSequential,
@@ -174,18 +173,22 @@ p.center { text-align: center; }
 // FORM Styles
 form {
 
-	.req { 
+	/*
+.req { 
 		label { background: url(../images/icon_star.png) no-repeat 100% 0; }
 		ins {
 			position: absolute;
 			left: -9999px;
 		}
 	}
+*/
 
-	li .req {
+	/*
+li .req {
 		padding-right: 7px;
 		background: url(../images/icon_star.png) no-repeat 100% 0;
 	}
+*/
 
 	&#login {
 		fieldset { margin-bottom: 0; }
@@ -622,24 +625,24 @@ table.svFlvPlayer td {
 #svGallery {
 
 	ul {
-		// list-style: none;
-		// margin: 0;
+		list-style: none;
+		margin: 0;
 
 		li {
 			/* width : auto; Width is set dynamically in /includes/display_objects/gallery/htmlhead/gallery.cfm */
 			/* Height is being set by jQuery based on the rendered height of the <li> to avoid float issues. */
-			// _height: 1%; /* IE 6 & lower */
-			// display: -moz-inline-stack; /* FF 2 */
-			// display: inline-block;
-			// *display: inline; /* IE 7 & lower */
+			_height: 1%; /* IE 6 & lower */
+			display: -moz-inline-stack; /* FF 2 */
+			display: inline-block;
+			*display: inline; /* IE 7 & lower */
 			font-size: 1.1em;
-			// list-style: none;
-			// float: left;
-			// margin: 0 2% 0 0;
-			// overflow: hidden;
-			// padding: 0 0 1.5em;
+			list-style: none;
+			float: left;
+			margin: 0 2% 0 0;
+			overflow: hidden;
+			padding: 0 0 1.5em;
 			text-align: center;
-			// zoom: 1; /* Trigger hasLayout for IE */
+			zoom: 1; /* Trigger hasLayout for IE */
 
 			a {
 				display: block;
@@ -1255,36 +1258,49 @@ li .cke_skin_mura {
 } //end Error, Notice, and Success
 
 
-// Rating
+.credits,
+.comments,
+.tags,
 .rating {
-	unicode-bidi: bidi-override;
-	direction: rtl;
-	font-size: 30px;
+	float: left;
+	margin-bottom: 0;
+	padding: 0 .75em 0 0;
+	font-size: 1em;
+	}
 
-	span.star {
-		display: inline-block;
-		font-family: FontAwesome;
-		font-style: normal;
-		font-weight: normal;
+.sidebar .credits,
+.sidebar .comments,
+.sidebar .tags,
+.sidebar .rating,
+aside .credits,
+aside .comments,
+aside .tags,
+aside .rating {
+	float: none;
+	margin-bottom: .35em;
+	padding: 0;
+	}
 
-		&:hover { cursor: pointer; }
-
-		&:before {
-			color: #999999;
-			content: "\f006";
-			padding-right: 5px;
+.rating {	
+		position: relative;
+		width: 110px;
+		background-repeat: no-repeat;
+		background-position: 3.5em 50%;
 		}
 
-		&:hover:before,
-		&:hover ~ span.star:before {
-		  content: "\f005";
-		  color: #e3cf7a;
-		}
+.rating span {
+	position: absolute;
+	left: -9999px;
+	}
 
-	} //end span.star
+.svIndex .credits {
+	color: #666;
+	}
 
-} //end Rating
-
+.svIndex .comments {
+	padding-left: 13px !important;
+	background: url(../images/icon_comments.png) no-repeat 0 50%;
+	}
 
 
 // Help Text

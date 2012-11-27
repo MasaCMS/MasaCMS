@@ -130,7 +130,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 	<cfif variables.iterator.getRecordCount()>
 	<div id="svGallery"> 
-			<ul variables.class="clearfix">
+			<ul class="clearfix">
 			<cfloop condition="variables.iterator.hasNext()">
 			<cfsilent>
 			<cfset variables.item=variables.iterator.next()>
@@ -144,7 +144,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfsilent>
 			<cfoutput>
 			<li class="#variables.class#"<cfif variables.imageWidth> style="width:#variables.imageWidth#px;"</cfif>>
-				<a href="#variables.item.getImageURL(size='large')#" title="#HTMLEditFormat(variables.item.getValue('title'))#" rel="shadowbox[gallery]" variables.class="gallery thumbnail"><img src="#variables.item.getImageURL(argumentCollection=imageArgs)#" alt="#HTMLEditFormat(variables.item.getValue('title'))#"/></a>	 
+				<a href="#variables.item.getImageURL(size='large')#" title="#HTMLEditFormat(variables.item.getValue('title'))#" rel="shadowbox[gallery]" class="gallery thumbnail"><img src="#variables.item.getImageURL(argumentCollection=imageArgs)#" alt="#HTMLEditFormat(variables.item.getValue('title'))#"/></a>	 
 			 	<dl>
 			 	<cfloop list="#variables.$.content("displayList")#" index="field">
 					<cfswitch expression="#field#">
@@ -159,23 +159,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfcase>
 						<cfcase value="Summary">
 						 	<cfif variables.item.getValue('summary') neq "" and variables.item.getValue('summary') neq "<p></p>">
-							 	<dd variables.class="summary">
+							 	<dd class="summary">
 							 	#variables.item.getValue('summary')#
 							 	</dd>
 						 	</cfif>
 						</cfcase>
 						<cfcase value="Credits">	 	
 						 	<cfif variables.item.getValue('credits') neq "">
-						 		<dd variables.class="credits">#variables.$.rbKey('list.by')# #HTMLEditFormat(variables.item.getValue('credits'))#</dd>
+						 		<dd class="credits">#variables.$.rbKey('list.by')# #HTMLEditFormat(variables.item.getValue('credits'))#</dd>
 						 	</cfif>
 						</cfcase>
 						<cfcase value="Comments">
-					 		<dd variables.class="comments"><a href="?linkServID=#variables.item.getValue('contentid')#&categoryID=#HTMLEditFormat(variables.$.event('categoryID'))#&relatedID=#HTMLEditFormat(request.relatedID)#" title="#HTMLEditFormat(variables.item.getValue('title'))#">#variables.$.rbKey('list.comments')# (#variables.$.getBean('contentGateway').getCommentCount(variables.$.event('siteID'),variables.item.getValue('contentid'))#)</a></dd>
+					 		<dd class="comments"><a href="?linkServID=#variables.item.getValue('contentid')#&categoryID=#HTMLEditFormat(variables.$.event('categoryID'))#&relatedID=#HTMLEditFormat(request.relatedID)#" title="#HTMLEditFormat(variables.item.getValue('title'))#">#variables.$.rbKey('list.comments')# (#variables.$.getBean('contentGateway').getCommentCount(variables.$.event('siteID'),variables.item.getValue('contentid'))#)</a></dd>
 					 	 </cfcase>
 						<cfcase value="Tags">
 						 	<cfif len(variables.item.getValue('tags'))>
 								<cfset tagLen=listLen(variables.item.getValue('tags')) />
-								<dd variables.class="tags">
+								<dd class="tags">
 									#variables.$.rbKey('tagcloud.tags')#: 
 									<cfloop from="1" to="#tagLen#" index="variables.t">
 									<cfset tag=#trim(listgetAt(variables.item.getValue('tags'),variables.t))#>
@@ -185,11 +185,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</cfif>
 					 	</cfcase>
 						<cfcase value="Rating">
-					 		<dd variables.class="ratings stars">#variables.$.rbKey('list.rating')#: <img variables.class="ratestars" src="#variables.$.siteConfig('themeAssetPath')#/images/rater/star_#application.raterManager.getStarText(variables.item.getValue('rating'))#.png" alt="<cfif isNumeric(variables.item.getValue('rating'))>#variables.item.getValue('rating')# star<cfif variables.item.getValue('rating') gt 1>s</cfif></cfif>" border="0"></dd>
+					 		<dd class="ratings stars">#variables.$.rbKey('list.rating')#: <img class="ratestars" src="#variables.$.siteConfig('themeAssetPath')#/images/rater/star_#application.raterManager.getStarText(variables.item.getValue('rating'))#.png" alt="<cfif isNumeric(variables.item.getValue('rating'))>#variables.item.getValue('rating')# star<cfif variables.item.getValue('rating') gt 1>s</cfif></cfif>" border="0"></dd>
 					 	</cfcase>
 					 	<cfdefaultcase>
 							<cfif len(variables.item.getValue(field))>
-							 	<dd variables.class="#lcase(field)#">#HTMLEditFormat(variables.item.getValue(field))#</dd>	 	
+							 	<dd class="#lcase(field)#">#HTMLEditFormat(variables.item.getValue(field))#</dd>	 	
 							</cfif>
 						</cfdefaultcase>
 					</cfswitch>
