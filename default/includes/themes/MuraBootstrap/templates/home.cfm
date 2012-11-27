@@ -5,7 +5,7 @@
 			<div class="#$.getMBRowClass()#">
 				<cfinclude template="inc/navbar.cfm">
 			</div>
-			<div class="content-container #$.getMBRowClass()#">
+			<div class="#$.getMBRowClass()#">
 				<div class="span12 content">
 
 					<!---
