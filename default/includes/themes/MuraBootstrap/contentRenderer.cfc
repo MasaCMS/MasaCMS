@@ -66,10 +66,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset local.idx = 0>
 						<cfloop condition="local.iterator.hasNext()">
 							<cfset local.item=iterator.next()>
-							<cfif listFindNoCase('jpg,jpeg,gif,png', ListLast(local.item.getImageURL(), '.'))>
+							<cfif ListFindNoCase('jpg,jpeg,gif,png', ListLast(local.item.getImageURL(), '.'))>
 								<cfset local.idx++>
 								<div class="item<cfif local.idx eq 1> active</cfif>">
-									<img src="#local.item.getImageURL(width=val(arguments.width),height=val(arguments.height))#" alt="#HTMLEditFormat(local.item.getTitle())#">
+									<img src="#local.item.getImageURL(width=Val(arguments.width),height=Val(arguments.height))#" alt="#HTMLEditFormat(local.item.getTitle())#">
 									<cfif arguments.showCaption>
 										<div class="carousel-caption">
 											<h4><a href="#local.item.getURL()#">#HTMLEditFormat(local.item.getTitle())#</a></h4>
