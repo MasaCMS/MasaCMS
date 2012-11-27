@@ -43,6 +43,7 @@
 #svAddNewFeed dd {
 	margin: 0 0 .5em 0 !important;
 	float: none !important;
+	white-space: nowrap;
 }
 
 #svAddNewFeed dl#rssInternal {
@@ -73,11 +74,13 @@
 }
 
 #svAddNewFeed button {
-	width: 30% !important;
+	/*
+width: 30% !important;
 	line-height: 20px;
 	padding: 0 !important;
 	margin: 0 0 0 .5em !important;
 	float: left;
+*/
 }
 
 #dragableBoxesColumn1 {

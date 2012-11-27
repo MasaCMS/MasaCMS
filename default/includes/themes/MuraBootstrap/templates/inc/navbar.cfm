@@ -1,5 +1,5 @@
 <cfoutput>
-	<div class="navbar navbar-inverse navbar-fixed-top">
+	<div class="navbar navbar-inverse span12">
 		<div class="navbar-inner">
 			<div class="#$.getMBContainerClass()#">
 				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">

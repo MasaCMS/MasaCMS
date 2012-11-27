@@ -54,6 +54,11 @@ a#logout {
 
 body {
 	padding-top: 0;
+	/* Transition for Front-End Toolbar Toggling */
+	-webkit-transition: padding 0.6s ease-in-out;
+    -o-transition: padding 0.6s ease-in-out;
+    -moz-transition: padding 0.6s ease-in-out;
+    transition: padding 0.6s ease-in-out;
 }
 
 
@@ -64,9 +69,11 @@ body {
 	padding: 8px 0;
 }
 
-// Hide login in navbar unless on 1200px or larger
-//.navbar #login { display: none; }
+.navbar form {
 
+	input, .btn { margin-top: 0; }
+
+}
 
 // INDEXES
 .content .svIndex {
@@ -514,8 +521,6 @@ ul.dragableFeeds {
 
 // Ratings
 
-/* @group Ratings */
-
 .content .svIndex .credits,
 .content .svIndex .comments,
 .content .svIndex .tags,
@@ -540,40 +545,25 @@ ul.dragableFeeds {
 .fourhalf { background-image: url(../../images/rater/star_fourhalf.png); }
 .five { background-image: url(../../images/rater/star_five.png); }
 
-/* @end */
+
+// Front-End Editing Theme Accommodations
+
+.mura-edit-mode {
+	
+	body {
+		padding-top: 50px;
+		/* Transition for Front-End Toolbar Toggling */
+		-webkit-transition: padding 0.6s ease-in-out;
+	    -o-transition: padding 0.6s ease-in-out;
+	    -moz-transition: padding 0.6s ease-in-out;
+	    transition: padding 0.6s ease-in-out;
+	}	
+}
 
 // RESPONSIVE
 // =========================================================
-
-/* Large desktop */
-@media (min-width: 1200px) {
-
-	body {
-		padding-top:5em;
-	}
-
-}
-
-@media (min-width: 980px) and (max-width: 1199px) {
-
-	body {
-		padding-top:5em;
-	}
-
-}
-
-/* Portrait tablet to landscape and desktop */
-@media (min-width: 768px) and (max-width: 979px) {
-}
-
-/* Landscape phone to portrait tablet */
-@media (max-width: 767px) {
-}
-
-/* Landscape phones and down */
-@media (max-width: 480px) {
-}
-
-
-
-
+@import url("responsive/large-display.less");
+@import url("responsive/default.less");
+@import url("responsive/portrait-tablets.less");
+@import url("responsive/phones-tablets.less");
+@import url("responsive/phones.less");
