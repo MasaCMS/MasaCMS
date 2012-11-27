@@ -173,18 +173,22 @@ p.center { text-align: center; }
 // FORM Styles
 form {
 
-	.req { 
+	/*
+.req { 
 		label { background: url(../images/icon_star.png) no-repeat 100% 0; }
 		ins {
 			position: absolute;
 			left: -9999px;
 		}
 	}
+*/
 
-	li .req {
+	/*
+li .req {
 		padding-right: 7px;
 		background: url(../images/icon_star.png) no-repeat 100% 0;
 	}
+*/
 
 	&#login {
 		fieldset { margin-bottom: 0; }
@@ -621,24 +625,24 @@ table.svFlvPlayer td {
 #svGallery {
 
 	ul {
-		// list-style: none;
-		// margin: 0;
+		list-style: none;
+		margin: 0;
 
 		li {
 			/* width : auto; Width is set dynamically in /includes/display_objects/gallery/htmlhead/gallery.cfm */
 			/* Height is being set by jQuery based on the rendered height of the <li> to avoid float issues. */
-			// _height: 1%; /* IE 6 & lower */
-			// display: -moz-inline-stack; /* FF 2 */
-			// display: inline-block;
-			// *display: inline; /* IE 7 & lower */
+			_height: 1%; /* IE 6 & lower */
+			display: -moz-inline-stack; /* FF 2 */
+			display: inline-block;
+			*display: inline; /* IE 7 & lower */
 			font-size: 1.1em;
-			// list-style: none;
-			// float: left;
-			// margin: 0 2% 0 0;
-			// overflow: hidden;
-			// padding: 0 0 1.5em;
+			list-style: none;
+			float: left;
+			margin: 0 2% 0 0;
+			overflow: hidden;
+			padding: 0 0 1.5em;
 			text-align: center;
-			// zoom: 1; /* Trigger hasLayout for IE */
+			zoom: 1; /* Trigger hasLayout for IE */
 
 			a {
 				display: block;
