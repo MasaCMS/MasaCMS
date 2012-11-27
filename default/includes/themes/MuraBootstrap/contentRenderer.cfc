@@ -51,9 +51,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cffunction name="dspCarouselByFeedName" output="false">
 		<cfargument name="feedName" type="string" default="Slideshow" />
 		<cfargument name="showCaption" type="boolean" default="true" />
+		<cfargument name="cssID" type="string" default="myCarousel" />
 		<cfargument name="width" type="numeric" default="1200" />
 		<cfargument name="height" type="numeric" default="500" />
-		<cfargument name="cssID" type="string" default="myCarousel" />
 		<cfset var local = {} />
 		<cfsavecontent variable="local.str"><cfoutput>
 			<!--- BEGIN: Bootstrap Carousel --->
