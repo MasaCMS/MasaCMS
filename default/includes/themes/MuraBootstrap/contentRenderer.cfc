@@ -52,15 +52,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="feedName" type="string" default="Slideshow" />
 		<cfargument name="showCaption" type="boolean" default="true" />
 		<cfargument name="cssID" type="string" default="myCarousel" />
-		<cfargument name="width" type="numeric" default="1200" />
+		<cfargument name="width" type="numeric" default="1280" />
 		<cfargument name="height" type="numeric" default="500" />
+		<cfargument name="interval" type="any" default="2000" />
 		<cfset var local = {} />
 		<cfsavecontent variable="local.str"><cfoutput>
 			<!--- BEGIN: Bootstrap Carousel --->
-			<cfset local.feed = $.getBean('feed').loadBy(name=arguments.feedName)>
+			<cfset local.feed = variables.$.getBean('feed').loadBy(name=arguments.feedName)>
 			<cfset local.iterator = local.feed.getIterator()>
 			<cfif local.iterator.hasNext()>
-				<div id="#arguments.cssID#" class="carousel slide">
+				<div id="#arguments.cssID#" class="carousel slide" data-interval="false">
 					<!--- Carousel items --->
 					<div class="carousel-inner">
 						<cfset local.idx = 0>
@@ -104,6 +105,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<!--- // END: Bootstrap Carousel --->
 		</cfoutput></cfsavecontent>
 		<cfreturn local.str />
+	</cffunction>
+
+	<cffunction name="getMBUseFluid" output="false">
+		<cfscript>
+			var local = {};
+
+			try {
+				local.useFluid = YesNoFormat(variables.$.siteConfig('mbUseFluid'));
+			} catch(any e) {
+				return false;
+			};
+
+			if ( local.useFluid ) {
+				return true;
+			} else {
+				return false;
+			};
+		</cfscript>
+	</cffunction>
+
+	<cffunction name="getMBContainerClass" output="false">
+		<cfreturn IIF(getMBUseFluid(), DE('container-fluid'), DE('container'))>
+	</cffunction>
+
+	<cffunction name="getMBRowClass" output="false">
+		<cfreturn IIF(getMBUseFluid(), DE('row-fluid'), DE('row'))>
 	</cffunction>
 
 </cfcomponent>
