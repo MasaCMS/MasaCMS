@@ -147,5 +147,11 @@
 <cfquery datasource="#getDatasource()#" username="#getDbUsername()#" password="#getDbPassword()#">
 	update tcontent set type='Folder' where type in ('Portal','LocalRepo')
 </cfquery>
+<cfquery datasource="#getDatasource()#" username="#getDbUsername()#" password="#getDbPassword()#">
+	update tsystemobjects set
+		object='folder_nav',
+		name='Folder Navigation'
+	where object='portal_nav'
+</cfquery>
 
 

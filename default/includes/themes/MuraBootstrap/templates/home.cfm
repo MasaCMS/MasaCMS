@@ -1,12 +1,12 @@
 <cfoutput>
 	<cfinclude template="inc/html_head.cfm">
 	<body id="#$.getTopID()#" class="#$.createCSSid($.content('menuTitle'))#" data-spy="scroll" data-target=".subnav" data-offset="50">
-		<div class="container">
-			<div class="row">
+		<div class="#$.getMBContainerClass()#">
+			<div class="#$.getMBRowClass()#">
 				<cfinclude template="inc/navbar.cfm">
 			</div>
-			<div class=" content-container row">
-				<div class="span12 content">
+			<div class="content #$.getMBRowClass()#">
+				<div class="span12">
 
 					<!---
 						The Carousel/Slideshow
@@ -22,7 +22,7 @@
 
 				</div>
 			</div>
-			<div class="row">
+			<div class="#$.getMBRowClass()#">
 				<cfinclude template="inc/footer.cfm">
 			</div>
 		</div><!-- /.container -->
