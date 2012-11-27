@@ -328,7 +328,7 @@ to your own modified versions of Mura CMS.
             <cfquery datasource="#FORM.production_datasource#" username="#FORM.production_dbusername#" password="#FORM.production_dbpassword#">
               UPDATE tsettings
               SET domain = '#listFirst(cgi.http_host,":")#',
-                theme = 'merced',
+                theme = 'MuraBootstrap',
                 gallerySmallScaleBy='s',
                 gallerySmallScale=80,
                 galleryMediumScaleBy='s',
