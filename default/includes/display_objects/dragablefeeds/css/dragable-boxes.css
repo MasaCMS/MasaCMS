@@ -70,7 +70,8 @@
 }
 
 #svAddNewFeed button {
-	width: 30% !important;
+	/*
+width: 30% !important;
 	line-height: 20px;
 	text-align: center;
 	padding: 0 !important;
@@ -79,6 +80,7 @@
 	background: #666;
 	float: left;
 	border: 0;
+*/
 }
 
 #dragableBoxesColumn1 {

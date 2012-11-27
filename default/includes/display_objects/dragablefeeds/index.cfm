@@ -95,15 +95,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<option value="#feedLink#">#name#</option>
 				</cfloop>
 				</cfoutput>
-			</select>
-			<button class="submit" type="button" onclick="createFeed(this.form)" value="Create">#$.rbKey('dragablefeeds.addfeed')#</button>
+			</select>&nbsp;<button class="btn" type="button" onclick="createFeed(this.form)" value="Create">#$.rbKey('dragablefeeds.addfeed')#</button>
 			</dd>
 		</dl>
 		<dl id="rssExternal">
 			<dt>#$.rbKey('dragablefeeds.addyourown')#</dt>
 			<dd class="textField">
-			<input type="text" name="rssURLtext" size="30" value="" maxlength="255">
-			<button class="submit" type="button" onclick="createFeed(this.form)" value="Create">#$.rbKey('dragablefeeds.addfeed')#</button>
+			<input type="text" name="rssURLtext" size="30" value="" maxlength="255">&nbsp;<button class="btn" type="button" onclick="createFeed(this.form)" value="Create">#$.rbKey('dragablefeeds.addfeed')#</button>
 			</dd>
 		</dl>
 	</form>
