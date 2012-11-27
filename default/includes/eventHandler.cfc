@@ -51,4 +51,90 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfoutput>#$.setDynamicContent($.content("body"))#</cfoutput>
 </cffunction>
 --->
+
+<!---
+<cffunction name="onRenderStart" output="false">
+		<cfargument name="$" hint="mura scope" />
+		<cfscript>
+			var renderer = arguments.$.getContentRenderer();
+
+			// general vars
+			renderer.jsLibLoaded = true;
+			renderer.generalWrapperClass = 'well';
+
+			// heading vars
+			renderer.headline = 'h1';
+			renderer.subHead1 = 'h2';
+			renderer.subHead2 = 'h3';
+			renderer.subHead3 = 'h4';
+			renderer.subHead4 = 'h5';
+			renderer.subHead5 = 'h6';
+
+			// nav and list item vars
+			renderer.navWrapperClass = 'well';
+			renderer.liHasKidsClass = '';
+			renderer.liHasKidsCustomString = '';
+			renderer.liCurrentClass = 'active';
+			renderer.liCurrentCustomString = '';
+			renderer.aHasKidsClass = '';
+			renderer.aHasKidsCustomString = '';
+			renderer.aCurrentClass = 'active';
+			renderer.aCurrentCustomString = '';
+			renderer.ulTopClass = 'nav nav-list';
+			renderer.ulNestedClass = 'nav nav-list';
+			renderer.ulNestedCustomString = '';
+			renderer.liNestedClass = '';
+
+			// pagination vars
+			renderer.ulPaginationClass = '';
+			renderer.ulPaginationWrapperClass = 'pagination';
+
+			// form vars
+			renderer.formWrapperClass = 'well';
+		</cfscript>
+	</cffunction>
+--->
+
+<cffunction name="onRenderStart" output="false">
+		<cfargument name="$">
+		<cfset var renderer=$.getContentRenderer()>
+
+		<!--- General Vars --->
+		<cfset renderer.generalWrapperClass="well"/>
+
+		<!--- Heading Vars --->
+		<cfset renderer.headline="h1"/>
+		<cfset renderer.subHead1="h2"/>
+		<cfset renderer.subHead2="h3"/>
+		<cfset renderer.subHead3="h4"/>
+		<cfset renderer.subHead4="h5"/>
+		<cfset renderer.subHead5="h6"/>
+
+		<!--- Nav and List Item Vars --->
+		<cfset renderer.navWrapperClass="well">
+		<cfset renderer.liHasKidsClass="">
+		<cfset renderer.liHasKidsCustomString="">
+
+		<cfset renderer.liCurrentClass="active">
+		<cfset renderer.liCurrentCustomString="">
+
+		<cfset renderer.aHasKidsClass="">
+		<cfset renderer.aHasKidsCustomString=''>
+		<cfset renderer.aCurrentClass="active">
+		<cfset renderer.aCurrentCustomString="">
+
+		<cfset renderer.ulTopClass="nav nav-list">
+		<cfset renderer.ulNestedClass="nav nav-list">
+		<cfset renderer.ulNestedCustomString="">
+		<cfset renderer.liNestedClass="">
+
+		<!--- Pagination Vars --->
+		<cfset renderer.ulPaginationClass="">
+		<cfset renderer.ulPaginationWrapperClass="pagination">
+
+		<!--- Form Vars --->
+		<cfset renderer.formWrapperClass="well"/>
+
+	</cffunction>
+
 </cfcomponent>
