@@ -1,7 +1,8 @@
+<cfparam name="navbarContainerClass" default="container">
 <cfoutput>
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="navbar-inner">
-			<div class="container">
+			<div class="#navbarContainerClass#">
 				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
@@ -13,20 +14,21 @@
 				<div class="nav-collapse collapse">
 					<cf_CacheOMatic key="dspPrimaryNav#$.content('contentid')#">
 						#$.dspPrimaryNav(
-							viewDepth="1",
-							id="navPrimary",
-							displayHome="Never",
-							closePortals="false",
-							showCurrentChildrenOnly="false",
-							ulTopClass="nav",
-							ulNestedClass="dropdown-menu",
-							liHasKidsClass="dropdown",
+							viewDepth=1,
+							id='navPrimary',
+							class='nav',
+							displayHome='Never',
+							closePortals=false,
+							showCurrentChildrenOnly=false,
+							ulTopClass='nav',
+							ulNestedClass='dropdown-menu',
+							liHasKidsClass='dropdown',
 							liHasKidsCustomString='',
 							liHasKidsNestedClass='',
 							liNestedClass='',
-							aHasKidsClass="dropdown-toggle",
+							aHasKidsClass='dropdown-toggle',
 							aHasKidsCustomString='role="button" data-toggle="dropdown" data-target="##"',
-							liCurrentClass="active",
+							liCurrentClass='active',
 							aCurrentClass=''
 						)#
 					</cf_cacheomatic>
@@ -36,7 +38,6 @@
 							openPortals/closePortals="contentid,contentid" 
 								(e.g. show specific sub-content in dropdown nav)
 					--->
-
 					<cfif $.currentUser().isLoggedIn()>
 						<a id="logout" class="btn" href="./?doaction=logout">Logout</a>
 					<cfelse>
@@ -50,7 +51,7 @@
 						</form>
 					</cfif>
 				</div><!--/.nav-collapse -->
-			</div><!-- /.container -->
+			</div><!-- .container -->
 		</div><!-- /.navbar-inner -->
 	</div><!-- /.navbar -->
 </cfoutput>
