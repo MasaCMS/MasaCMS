@@ -35,3 +35,4 @@ Thumbs.db
 *.sublime-project
 *.sublime-workspace
 *_notes/
+*.json
