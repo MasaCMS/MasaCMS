@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.navGrandParentIdx=3/>
 <cfset this.navDepthAdjust=0/>
 <cfset this.navSelfIdx=1/>
-<cfset this.jslib="prototype"/>
+<cfset this.jslib="jquery"/>
 <cfset this.jsLibLoaded=false/>
 <cfset this.longDateFormat="long"/>
 <cfset this.shortDateFormat="short"/>
@@ -97,6 +97,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.ulNestedCustomString="">
 <cfset this.ulTopClass="navSecondary">
 <cfset this.ulPaginationClass="navSequential">
+<cfset this.ulPaginationWrapperClass="pagination">
+<cfset this.formWrapperClass="well">
+<cfset this.generalWrapperClass="well">
+
 
 <cffunction name="init" returntype="any" access="public" output="false">
 <cfargument name="event" required="true" default="">
