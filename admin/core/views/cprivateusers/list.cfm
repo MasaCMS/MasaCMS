@@ -47,10 +47,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfoutput>
 
-		  <form class="form-inline" novalidate="novalidate" action="index.cfm?muraAction=cPrivateUsers.search&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="form1" id="siteSearch">
+		  <form class="form-inline" novalidate="novalidate" action="index.cfm?muraAction=cPrivateUsers.search&siteid=#URLEncodedFormat(rc.siteid)#" method="get" name="form1" id="siteSearch">
 	<div class="input-append">
 	   <input id="search" name="search" type="text" placeholder="Search for Users">
-	    <button type="button" class="btn" onclick="submitForm(document.forms.form1);" /><i class="icon-search"></i></button>
+	   <button type="button" class="btn" onclick="submitForm(document.forms.form1);" /><i class="icon-search"></i></button>
+    <input type="hidden" name='siteid' value="#HTMLEditFormat(rc.siteid)#"/>
+      <input type="hidden" name='muraAction' value="cPrivateUsers.search"/>
 	</div>
  		 <!---
 	 	<input id="search" name="search" type="text" class="text">
