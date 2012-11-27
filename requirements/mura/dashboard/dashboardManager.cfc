@@ -362,5 +362,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
+<cffunction name="getUserAgentFromSessionQuery" access="public" returntype="String">
+	<cfargument name="rsSession"/>
+	
+	<cfset var rs = "" />
+	
+	<cfquery name="rs" dbType="query">
+	select user_agent from arguments.rsSession where user_agent > ''
+	</cfquery>
+	
+	<cfif rs.recordcount>
+		<cfreturn rs.user_agent />
+	<cfelse>
+		<cfreturn "unknown" />
+	</cfif>
+</cffunction>
+
 
 </cfcomponent>
