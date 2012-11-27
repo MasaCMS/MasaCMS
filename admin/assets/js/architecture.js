@@ -533,8 +533,12 @@ buttons: {
 			$("#c" + contentID).remove();
 			stripe('stripe');
 			return false;
-		} 
-		deleteLink.appendChild(document.createTextNode('<i class="icon-remove-sign"></i>'));
+		}
+
+		var deleteIcon = document.createElement("I");	
+		deleteIcon.setAttribute("class", "icon-remove-sign");
+
+		deleteLink.appendChild(deleteIcon);
 
 		var deleteUL = document.createElement("UL");
 		deleteUL.className = "one";

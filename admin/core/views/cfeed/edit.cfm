@@ -90,12 +90,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset options[18][2]="Path"/>
 <cfset options[19][1]="tcontentcategoryassign.categoryID^varchar">
 <cfset options[19][2]="Category ID"/>
+<cfset options[20][1]="tcontent.filename^varchar">
+<cfset options[20][2]="Filename"/>
 
 
 <cfset rsExtend=application.configBean.getClassExtensionManager().getExtendedAttributeList(siteID=rc.siteid,baseTable="tcontent",activeOnly=true)>
 <cfloop query="rsExtend">
-<cfset options[rsExtend.currentRow + 19][1]="#rsExtend.attributeID#^varchar">
-<cfset options[rsExtend.currentRow + 19][2]="#rsExtend.Type#/#rsExtend.subType# - #rsExtend.attribute#"/>
+<cfset options[rsExtend.currentRow + 20][1]="#rsExtend.attributeID#^varchar">
+<cfset options[rsExtend.currentRow + 20][2]="#rsExtend.Type#/#rsExtend.subType# - #rsExtend.attribute#"/>
 </cfloop>
 
 <cfset criterias[1][1]="Equals">
@@ -218,8 +220,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<tbody id="ContentFilters">
 		<cfif rc.rslist.recordcount>
 		<cfloop query="rc.rslist">
+		<cfset itemcrumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/>
 		<tr id="c#rc.rslist.contentID#">
-		<td class="var-width">#rc.rslist.menuTitle#</td>
+		<td class="var-width">#application.contentRenderer.dspZoomNoLinks(itemcrumbdata)#</td>
 		<td>#rc.rslist.type#</td>
 		<td class="actions"><input type="hidden" name="contentID" value="#rc.rslist.contentid#" /><ul class="clearfix"><li class="delete"><a title="Delete" href="##" onclick="return feedManager.removeFilter('c#rc.rslist.contentid#');"><i class="icon-remove-sign"></i></a></li></ul></td>
 		</tr></cfloop>
