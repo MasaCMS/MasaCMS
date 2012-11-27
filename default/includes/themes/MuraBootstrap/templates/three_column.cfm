@@ -6,7 +6,7 @@
       		<div class="row">
 	      		<div class="span3">
 	      		    #$.dspObjects(1)#
-	      		</div><!--/span4-->
+	      		</div><!--/span3-->
 				<div class="span6">
 					<div class="content">
 						<cfinclude template="inc/breadcrumb.cfm">
@@ -19,5 +19,6 @@
 				</div><!--/span-->
 			</div><!--/row-->
 		<!-- /.container -->
-	<cfinclude template="inc/footer.cfm">
+		<cfinclude template="inc/footer.cfm">
+	<cfinclude template="inc/html_foot.cfm">
 </cfoutput>

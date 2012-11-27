@@ -14,5 +14,6 @@
 				</div><!-- /.span3 -->
 			</div><!-- /.row-fluid -->
 		</div><!-- /.container -->
-	<cfinclude template="inc/footer.cfm">
+		<cfinclude template="inc/footer-fluid.cfm">
+	<cfinclude template="inc/html_foot.cfm">
 </cfoutput>

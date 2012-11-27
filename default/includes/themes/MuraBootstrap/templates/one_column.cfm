@@ -9,5 +9,6 @@
 					#$.dspObjects(2)#
 			</div>
 		</div><!-- /.container -->
-	<cfinclude template="inc/footer.cfm">
+		<cfinclude template="inc/footer.cfm">
+	<cfinclude template="inc/html_foot.cfm">
 </cfoutput>

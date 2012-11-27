@@ -16,8 +16,9 @@
 				    #$.dspObjects(3)#
 				</div><!--/span-->
 			</div><!--/row-->
-		<!-- /.container -->
-	<cfinclude template="inc/footer.cfm">
+		</div><!-- /.container -->
+		<cfinclude template="inc/footer-fluid.cfm">
+	<cfinclude template="inc/html_foot.cfm">
 </cfoutput>
 
 
