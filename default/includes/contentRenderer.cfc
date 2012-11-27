@@ -46,50 +46,50 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfcomponent extends="mura.content.contentRenderer">
-<cfscript>
-	//this.jslib="jquery";
-	//this.navOffSet=0;
-	//this.navDepthLimit=1000;
-	//this.navParentIdx=2;
-	//this.navGrandParentIdx=3;
-	//this.navDepthAjust=0;
-	//this.navSelfIdx=1;
-	//this.jsLibLoaded=false;
-	//this.longDateFormat="long";
-	//this.shortDateFormat="short";
-	//this.showMetaList="jpg,jpeg,png,gif";
-	//this.imageInList="jpg,jpeg,png,gif";
-	//this.directImages=true;
-	//this.personalization="user";
-	//this.showAdminToolBar=true;
-	//this.showMemberToolBar=false;
-	//this.showEditableObjects=false;
-	//this.renderHTMLQueues=true;
-	//this.listFormat="dl";
-	//this.headline="h1"/>
-	//this.subHead1="h2"/>
-	//this.subHead2="h3"/>
-	//this.subHead3="h4"/>
-	//this.subHead4="h5"/>
-	//this.subHead5="h6";
-	//this.navWrapperClass="sidebar-nav well";
-	//this.liHasKidsClass="";
-	//this.liHasKidsCustomString="";
-	//this.liCurrentClass="current";
-	//this.liCurrentCustomString="";
-	//this.liHasKidsNestedClass="";
-	//this.aHasKidsClass="";
-	//this.aHasKidsCustomString="";
-	//this.aCurrentClass="current";
-	//this.aCurrentCustomString="";
-	//this.ulNestedClass="";
-	//this.ulNestedCustomString="";
-	//this.ulTopClass="navSecondary";
-	//this.ulPaginationClass="navSequential";
-	//this.ulPaginationWrapperClass="pagination";
-	//this.formWrapperClass="well";
-	//this.generalWrapperClass="well";
-</cfscript>
 
+	<cfscript>
+		//this.jslib="jquery";
+		//this.navOffSet=0;
+		//this.navDepthLimit=1000;
+		//this.navParentIdx=2;
+		//this.navGrandParentIdx=3;
+		//this.navDepthAjust=0;
+		//this.navSelfIdx=1;
+		//this.jsLibLoaded=false;
+		//this.longDateFormat="long";
+		//this.shortDateFormat="short";
+		//this.showMetaList="jpg,jpeg,png,gif";
+		//this.imageInList="jpg,jpeg,png,gif";
+		//this.directImages=true;
+		//this.personalization="user";
+		//this.showAdminToolBar=true;
+		//this.showMemberToolBar=false;
+		//this.showEditableObjects=false;
+		//this.renderHTMLQueues=true;
+		//this.listFormat="dl";
+		//this.headline="h1";
+		//this.subHead1="h2";
+		//this.subHead2="h3";
+		//this.subHead3="h4";
+		//this.subHead4="h5";
+		//this.subHead5="h6";
+		//this.navWrapperClass="sidebar-nav well";
+		//this.liHasKidsClass="";
+		//this.liHasKidsCustomString="";
+		//this.liCurrentClass="current";
+		//this.liCurrentCustomString="";
+		//this.liHasKidsNestedClass="";
+		//this.aHasKidsClass="";
+		//this.aHasKidsCustomString="";
+		//this.aCurrentClass="current";
+		//this.aCurrentCustomString="";
+		//this.ulNestedClass="";
+		//this.ulNestedCustomString="";
+		//this.ulTopClass="navSecondary";
+		//this.ulPaginationClass="navSequential";
+		//this.ulPaginationWrapperClass="pagination";
+		//this.formWrapperClass="well";
+		//this.generalWrapperClass="well";
+	</cfscript>
 
 </cfcomponent>
