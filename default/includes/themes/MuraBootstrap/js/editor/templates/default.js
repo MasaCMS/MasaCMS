@@ -20,15 +20,16 @@ if ( 'CKEDITOR' in window) {
                               image: 'template-cols2.gif',
                               description: 'An area with 2 equally wide columns',
                               html:
-                                      '<div class="columns2 clearfix">' +
-                                              '<div class="col">' +
-                                              '<h3>Edit or Delete Header</h3>'+
+                                      '<div class="row-fluid">' +
+                                              '<div class="span6">' +
+                                              '<h2>Edit or Delete Header</h2>'+
                                             '<p>Content for the first column goes here.</p>' +
                                             '</div>' +
 
-                                              '<div class="col">' +
-                                              '<h3>Edit or Delete Header</h3>'+
+                                              '<div class="span6">' +
+                                              '<h2>Edit or Delete Header</h2>'+
                                             '<p>Content for the second column goes here.</p>' +
+                                            '</div>' +
 
                                       '</div>'
                       },
@@ -37,19 +38,19 @@ if ( 'CKEDITOR' in window) {
                               image: 'template-cols3.gif',
                               description: 'An area with 3 equally wide columns',
                               html:
-                                      '<div class="columns3 clearfix">' +
-                                              '<div class="col">' +
-                                              '<h3>Edit or Delete Header</h3>'+
+                                      '<div class="row-fluid">' +
+                                              '<div class="span4">' +
+                                              '<h2>Edit or Delete Header</h2>'+
                                             '<p>Content for the first column goes here.</p>' +
                                             '</div>' +
 
-                                              '<div class="col">' +
-                                              '<h3>Edit or Delete Header</h3>'+
+                                              '<div class="span4">' +
+                                              '<h2>Edit or Delete Header</h2>'+
                                             '<p>Content for the second column goes here.</p>' +
                                             '</div>' +
 
-                                              '<div class="col">' +
-                                              '<h3>Edit or Delete Header</h3>'+
+                                              '<div class="span4">' +
+                                              '<h2>Edit or Delete Header</h2>'+
                                             '<p>Content for the third column goes here.</p>' +
                                             '</div>' +
                                       '</div>'
@@ -59,24 +60,24 @@ if ( 'CKEDITOR' in window) {
                               image: 'template-cols4.gif',
                               description: 'An area with 4 equally wide columns',
                               html:
-                                      '<div class="columns4 clearfix">' +
-                                              '<div class="col">' +
-                                              '<h3>Edit or Delete Header</h3>'+
+                                      '<div class="row-fluid">' +
+                                              '<div class="span3">' +
+                                              '<h2>Edit or Delete Header</h2>'+
                                             '<p>Content for the first column goes here.</p>' +
                                             '</div>' +
 
-                                              '<div class="col">' +
-                                              '<h3>Edit or Delete Header</h3>'+
+                                              '<div class="span3">' +
+                                              '<h2>Edit or Delete Header</h2>'+
                                             '<p>Content for the second column goes here.</p>' +
                                             '</div>' +
 
-                                              '<div class="col">' +
-                                              '<h3>Edit or Delete Header</h3>'+
+                                              '<div class="span3">' +
+                                              '<h2>Edit or Delete Header</h2>'+
                                             '<p>Content for the third column goes here.</p>' +
                                             '</div>' +
 
-                                              '<div class="col">' +
-                                              '<h3>Edit or Delete Header</h3>'+
+                                              '<div class="span3">' +
+                                              '<h2>Edit or Delete Header</h2>'+
                                             '<p>Content for the fourth column goes here.</p>' +
                                             '</div>' +
                                       '</div>'

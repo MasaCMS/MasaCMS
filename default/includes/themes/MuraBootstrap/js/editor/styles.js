@@ -41,9 +41,10 @@ if ( 'CKEDITOR' in window) {
 		{ name : 'Superscript'		, element : 'sup' },
 		*/
 
-		{ name : 'Notice'	, element : 'span', styles : { 'class' : 'notice' } },
-		{ name : 'Success'	, element : 'span', styles : { 'class' : 'success' } },
-		{ name : 'Error'	, element : 'span', styles : { 'class' : 'error' } },
+		{ name : 'Notice'	, element : 'span', styles : { 'class' : 'alert' } },
+		{ name : 'Success'	, element : 'span', styles : { 'class' : 'alert alert-success' } },
+		{ name : 'Error'	, element : 'span', styles : { 'class' : 'alert alert-error' } },
+		{ name : 'Error'	, element : 'span', styles : { 'class' : 'alert alert-info' } },
 
 		{ name : 'Marker: Yellow'	, element : 'span', styles : { 'background-color' : 'Yellow' } },
 		{ name : 'Marker: Green'	, element : 'span', styles : { 'background-color' : 'Lime' } },
@@ -76,7 +77,7 @@ if ( 'CKEDITOR' in window) {
 			element : 'img',
 			attributes :
 			{
-				'class' : 'left'
+				'class' : 'pull-left'
 			}
 		},
 
@@ -85,7 +86,7 @@ if ( 'CKEDITOR' in window) {
 			element : 'img',
 			attributes :
 			{
-				'class' : 'right'
+				'class' : 'pull-right'
 			}
 		},
 
