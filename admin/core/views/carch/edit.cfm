@@ -526,7 +526,8 @@ var hasBody=#subType.getHasBody()#;
 		<input type="hidden" name="isLocked" value="#rc.contentBean.getIsLocked()#">
 	</cfif>
 	<input name="OrderNo" type="hidden" value="<cfif rc.contentBean.getorderno() eq ''>0<cfelse>#rc.contentBean.getOrderNo()#</cfif>">
-	<input type="hidden" name="closeCompactDisplay" value="#HTMLEditFormat(rc.compactDisplay)#" />		
+	<input type="hidden" name="closeCompactDisplay" value="#HTMLEditFormat(rc.compactDisplay)#" />
+	<input type="hidden" name="compactDisplay" value="#HTMLEditFormat(rc.compactDisplay)#" />	
 	</cfoutput>
 	</form>
 <cfelse>
