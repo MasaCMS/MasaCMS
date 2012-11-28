@@ -114,7 +114,7 @@ to your own modified versions of Mura CMS.
             <div class="controls">
                 <cfif rc.siteid eq ''>
                 <input name="siteid" type="text" class="span12" value="#rc.siteBean.getsiteid()#" size="25" maxlength="25" required="true">
-                <p class="help-block notice">Warning: No spaces, punctuation, dots or file delimiters allowed.</p>
+                <p class="help-block alert">Warning: No spaces, punctuation, dots or file delimiters allowed.</p>
                 <cfelse>
                 <input class="span12"  id="disabledInput" type="text" placeholder="#rc.siteBean.getsiteid()#" disabled>
                 <input name="siteid" type="hidden" value="#rc.siteBean.getsiteid()#">
@@ -254,7 +254,7 @@ to your own modified versions of Mura CMS.
             <label class="control-label">Static HTML Export Location (BETA)</label>
             <div class="controls">
             <cfif len(rc.siteBean.getExportLocation()) and not directoryExists(rc.siteBean.getExportLocation())>
-                <p class="error help-block">ERROR: The current value is not a valid directory</p>
+                <p class="alert alert-error help-block">The current value is not a valid directory</p>
               </cfif>
             <input name="exportLocation" type="text" class="span12"  value="#rc.siteBean.getExportLocation()#" maxlength="100"/>
           </div>
@@ -959,8 +959,8 @@ to your own modified versions of Mura CMS.
                 All Plugins</label>
               </li>
           </ul>
-            <p class="notice help-block" style="display:none" id="contentRemovalNotice"><strong>Important:</strong> When importing content from a Mura bundle ALL of the existing content will be deleted.</p>
-            <p class="notice help-block" style="display:none" id="userNotice"><strong>Important:</strong> Importing users will remove all existing user data which may include the account that you are currently logged in as.</p>
+            <p class="alert help-block" style="display:none" id="contentRemovalNotice"><strong>Important:</strong> When importing content from a Mura bundle ALL of the existing content will be deleted.</p>
+            <p class="alert help-block" style="display:none" id="userNotice"><strong>Important:</strong> Importing users will remove all existing user data which may include the account that you are currently logged in as.</p>
           </div>
       </div>
         
@@ -973,7 +973,7 @@ to your own modified versions of Mura CMS.
 	            <input type="radio" name="bundleImportRenderingMode" value="theme" onchange="if(this.value!='none'){jQuery('##themeNotice').show();}else{jQuery('##themeNotice').hide();}">Theme Only</label>
 	            <label class="radio inline">
 	            <input type="radio" name="bundleImportRenderingMode" value="none" checked="checked" onchange="if(this.value!='none'){jQuery('##themeNotice').show();}else{jQuery('##themeNotice').hide();}">None</label>
-	            <p class="notice help-block" style="display:none" id="themeNotice"><strong>Important:</strong> Your site's theme assignment and gallery image settings will be updated.</p>
+	            <p class="alert help-block" style="display:none" id="themeNotice"><strong>Important:</strong> Your site's theme assignment and gallery image settings will be updated.</p>
 	        </div>
         </div>
         
@@ -984,7 +984,7 @@ to your own modified versions of Mura CMS.
           </cfif>
           </label>
         <div class="controls">
-            <p class="help-block notice">You can deploy a bundle that exists on the server by entering the complete server path to the Site Bundle here. This eliminates the need to upload the file via your web browser, avoiding some potential timeout issues.</p>
+            <p class="help-block alert">You can deploy a bundle that exists on the server by entering the complete server path to the Site Bundle here. This eliminates the need to upload the file via your web browser, avoiding some potential timeout issues.</p>
             <input class="text" type="text" name="serverBundlePath" id="serverBundlePath" value="">
             <input type="button" value="Browse Server" id="serverBundleBrowser"/>
             <script>

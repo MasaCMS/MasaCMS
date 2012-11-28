@@ -117,7 +117,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<p>#variables.$.rbKey('user.forgotloginmessage')#</p>
 
 			<cfif isdefined('msg2')>
-				<cfif FindNoCase('is not a valid',msg2)><div class="error">#HTMLEditFormat(variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('user.forgotnotvalid'),variables.$.event('email')))#<cfelseif FindNoCase('no account',msg2)><div class="error">#HTMLEditFormat(variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('user.forgotnotfound'),variables.$.event('email')))#<cfelse><div class="notice">#variables.$.rbKey('user.forgotsuccess')#</cfif></div>
+				<cfif FindNoCase('is not a valid',msg2)><div class="alert alert-error">#HTMLEditFormat(variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('user.forgotnotvalid'),variables.$.event('email')))#<cfelseif FindNoCase('no account',msg2)><div class="error">#HTMLEditFormat(variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('user.forgotnotfound'),variables.$.event('email')))#<cfelse><div class="alert">#variables.$.rbKey('user.forgotsuccess')#</cfif></div>
 			</cfif>
 
 			<div class="control-group">

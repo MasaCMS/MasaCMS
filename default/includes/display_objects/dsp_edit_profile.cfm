@@ -313,7 +313,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<p class="success">#variables.$.rbKey('user.thankyouinactive')#</p>
 		</div>
 	<cfelse>
-		<div id="editProfileMsg" class="required"><p class="notice">#variables.$.rbKey('user.thankyouactive')#</p></div>
+		<div id="editProfileMsg" class="required"><p class="alert">#variables.$.rbKey('user.thankyouactive')#</p></div>
 	</cfif>
 </cfif>
 </cfoutput>
