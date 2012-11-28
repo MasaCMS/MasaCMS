@@ -426,6 +426,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfloop>
 
+		<cfset local.bundleLoc=expandPath("/muraWRM/config/setup/deploy/bundle.zip")>
+		<cfif fileExists(local.bundleLoc) and application.contentGateway.getPageCount('default').counter eq 1>
+				<cfset application.settingsManager.restoreBundle(
+						bundleFile=local.bundleLoc, 
+						keyMode='publish',
+						siteID='default',
+						contentMode='all',
+						pluginMode='all'
+					)>
+				<cfset application.serviceFactory.getBean('fileWriter').renameFile(source=local.bundleLoc,destination=expandPath("/muraWRM/config/setup/deploy/#createUUID()#.zip"))>
+		</cfif>
+
 		<cfset application.sessionTrackingThrottle=false>	
 	</cfif>	
 </cflock>
