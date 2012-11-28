@@ -53,7 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="showCaption" type="boolean" default="true" />
 		<cfargument name="cssID" type="string" default="myCarousel" />
 		<cfargument name="width" type="numeric" default="1280" />
-		<cfargument name="height" type="numeric" default="500" />
+		<cfargument name="height" type="numeric" default="600" />
 		<cfargument name="interval" type="any" default="2000" />
 		<cfset var local = {} />
 		<cfsavecontent variable="local.str"><cfoutput>
@@ -89,7 +89,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>
 					<cfelse>
 						<div class="alert alert-info alert-block">
-							<button type="button" class="close" data-dismiss="alert">x</button>
+							<button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
 							<h4>Oh snap!</h4>
 							Your feed has no items <em>with images</em>.
 						</div>
@@ -97,7 +97,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</div>
 			<cfelse>
 				<div class="alert alert-info alert-block">
-					<button type="button" class="close" data-dismiss="alert">x</button>
+					<button type="button" class="close" data-dismiss="alert"><i class="icon-remove"></i></button>
 					<h4>Heads up!</h4>
 					Your feed has no items.
 				</div>
