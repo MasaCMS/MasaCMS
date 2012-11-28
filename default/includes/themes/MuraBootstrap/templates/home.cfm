@@ -9,14 +9,27 @@
 						The Carousel/Slideshow
 						This method can be found in the theme's contentRenderer.cfc
 					--->
-					#$.dspCarouselByFeedName(feedName='Slideshow', showCaption=true, cssID='myCarousel')#
+					#$.dspCarouselByFeedName(
+						feedName='Slideshow'
+						, showCaption=true
+						, cssID='myCarousel'
+						, width=1280
+						, height=500
+						, interval=5000
+						, autoStart=true
+					)#
 				</section>
 			</div>
 			
 			<div class="#$.getMBRowClass()#">
 				<section class="span9 content">
 					<!--- The content --->
-					#$.dspBody(body=$.content('body'), pageTitle='', crumbList=0, showMetaImage=true)#
+					#$.dspBody(
+						body=$.content('body')
+						, pageTitle=''
+						, crumbList=0
+						, showMetaImage=true
+					)#
 
 					<!--- Display Objects assigned to display region 2 (Main Content) --->
 					#$.dspObjects(2)#
