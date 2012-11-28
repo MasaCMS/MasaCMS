@@ -299,7 +299,7 @@
 					<cfset arguments.rc.contentid=rc.contentBean.getContentID()>
 					<cfset arguments.rc.contenthistid=rc.contentBean.getContentHistID()>
 					<cfset arguments.rc.preview=1>
-					<cfset variables.fw.redirect(action="cArch.edit",append="contenthistid,contentid,type,parentid,topid,siteid,moduleid,preview,startrow,return")>
+					<cfset variables.fw.redirect(action="cArch.edit",append="contenthistid,contentid,type,parentid,topid,siteid,moduleid,preview,startrow,return,compactDisplay")>
 				</cfif>
 			</cfif>
 	</cfif>
