@@ -19,5 +19,4 @@
 			<cfinclude template="inc/footer.cfm" />
 		</div><!-- /.container -->
 	<cfinclude template="inc/html_foot.cfm" />
-</cfoutput>de template="inc/html_foot.cfm">
 </cfoutput>
