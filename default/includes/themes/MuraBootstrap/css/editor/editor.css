@@ -44,27 +44,11 @@
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
 
-@import url(../../../../../css/mura.6.0.min.css);
-@import url(../../assets/bootstrap/css/bootstrap.min.css);
-@import url(../theme/theme.less.css);
+@import url("../../../../../css/mura.6.0.min.css");
+@import url("../../assets/bootstrap/css/bootstrap.min.css");
+@import url("../../assets/font-awesome/css/font-awesome.css");
+@import url("../theme/theme.less.css");
 
 body {
 	padding: 20px;
 }
-/*
-table {
-	border-collapse: separate;
-	border-spacing: 1px;
-	border: 1px dotted #ccc;
-}
-
-td {
-	border: 1px dotted #ccc;
-}
-
-th {
-	background: #f5f5f5;
-	font-weight: bold;
-}
-*/
-	
