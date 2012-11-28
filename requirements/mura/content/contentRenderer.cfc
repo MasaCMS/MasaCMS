@@ -2269,10 +2269,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfreturn ((listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(variables.event.getValue('siteID')).getPrivateUserPoolID()#') or listFind(session.mura.memberships,'S2')) or (listFindNoCase("editor,author",variables.event.getValue('r').perm) and this.showMemberToolBar)) and getShowAdminToolBar() />
 </cffunction>
 
-<cffunction name="hasFETools" output="false">
-	<cfreturn getShowModal() and not request.muraExportHTML>	
-</cffunction>
-
 <cffunction name="renderHTMLQueue" output="false">
 	<cfargument name="queueType">
 	<cfset var headerStr="" />
