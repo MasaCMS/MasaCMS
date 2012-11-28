@@ -691,10 +691,6 @@ table.svFlvPlayer td {
 }
 //end Gallery
 
-
-// Index
-// TODO: Change sv to mura-;
-// NOTE: changed order of classes to be alphabetical
 .svIndex  {
 	margin: 2em 0;
 
@@ -756,7 +752,6 @@ table.svFlvPlayer td {
 
 
 // Side Index
-// TODO: remove these no? Shouldn't Index depend on its container?
 .sidebar .svIndex,
 aside .svIndex {
 	margin: 0 0 2em 0;
@@ -767,7 +762,10 @@ aside .svIndex {
 		padding-top: 0;
 	}
 
-	dt, li h3 { margin: 0 0 .25em 0; }
+	dt, li h3 {
+		font-size: 16px;
+		margin: 0 0 .25em 0;
+		}
 
 	.credits,
 	.comments,
@@ -782,8 +780,7 @@ aside .svIndex {
 
 
 // Content Index
-// TODO: remove these no? Again, shouldn't Index depend on its container?
-.content .svIndex {
+.content .svIndex, section .svIndex {
 	border-top: 1px solid #ccc;
 	padding-top: 1em;
 }
@@ -807,7 +804,6 @@ aside .hasImage {
 
 
 // Slideshow
-// TODO: Do we move this to theme or plugin since there are several other better options?
 .svSlideshow {
 	clear: both;
 	position: relative;

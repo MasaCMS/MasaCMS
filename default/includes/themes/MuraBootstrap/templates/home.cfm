@@ -14,6 +14,7 @@
 					#$.dspCarouselByFeedName(feedName='Slideshow', showCaption=true, cssID='myCarousel')#
 				</section>
 			</div>
+			
 			<div class="#$.getMBRowClass()#">
 				<section class="span9 content">
 					<!--- The content --->
@@ -29,7 +30,9 @@
 					#$.dspObjects(3)#
 				</aside>
 			</div>
+			
 				<cfinclude template="inc/footer.cfm">
+				
 		</div><!-- /.container -->
 	<cfinclude template="inc/html_foot.cfm">
 </cfoutput>
