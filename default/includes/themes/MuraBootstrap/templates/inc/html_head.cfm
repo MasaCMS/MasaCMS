@@ -1,6 +1,6 @@
 <cfoutput>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"<cfif $.hasFETools()> class="mura-edit-mode"</cfif>>
 <head>
 	<!--- META
 	================================================== --->
