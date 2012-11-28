@@ -53,11 +53,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="feedName" type="string" default="Slideshow" />
 		<cfargument name="showCaption" type="boolean" default="true" />
 		<cfargument name="cssID" type="string" default="myCarousel" />
-		<cfargument name="width" type="numeric" default="1280" />
-		<cfargument name="height" type="numeric" default="500" />
+		<cfargument name="size" type="string" default="custom" hint="If you want to use a custom height/width, then use 'custom' ... otherwise, you can use 'small, medium, large' OR any other predefined custom image size 'name' you created via the back-end administrator." />
+		<cfargument name="width" type="numeric" default="1280" hint="width in pixels" />
+		<cfargument name="height" type="numeric" default="500" hint="height in pixels" />
 		<cfargument name="interval" type="any" default="5000" hint="Use either milliseconds OR use 'false' to NOT auto-advance to next slide." />
 		<cfargument name="autoStart" type="boolean" default="true" />
-		<cfset var local = {} />
+		<cfscript>
+			var local = {};
+			local.imageArgs = {};
+			if ( not Len(Trim(arguments.size)) or LCase(arguments.size) eq 'custom' ) {
+				local.imageArgs.width = Val(arguments.width);
+				local.imageArgs.height = Val(arguments.height);
+			} else {
+				local.imageArgs.size = arguments.size;
+			};
+		</cfscript>
 		<cfsavecontent variable="local.str"><cfoutput>
 			<!--- BEGIN: Bootstrap Carousel --->
 			<!--- IMPORTANT: This will only output items that have associated images --->
@@ -74,7 +84,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfset local.idx++>
 								<!--- row-fluid class on this fixes Firefox bug where slide height gets wonky on transition due to resizing of image via media queries --->
 								<div class="row-fluid item<cfif local.idx eq 1> active</cfif>">
-									<img src="#local.item.getImageURL(width=Val(arguments.width),height=Val(arguments.height))#" alt="#HTMLEditFormat(local.item.getTitle())#">
+									<img src="#local.item.getImageURL(argumentCollection=local.imageArgs)#" alt="#HTMLEditFormat(local.item.getTitle())#">
 									<cfif arguments.showCaption>
 										<div class="carousel-caption">
 											<h4><a href="#local.item.getURL()#">#HTMLEditFormat(local.item.getTitle())#</a></h4>
