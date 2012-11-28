@@ -20,6 +20,7 @@
 /crossdomain.xml
 compiled/
 *.less.css
+/temp
 
 # OS or Editor folders
 *~

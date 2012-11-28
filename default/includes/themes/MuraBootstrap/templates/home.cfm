@@ -1,13 +1,11 @@
 <cfoutput>
-	<cfinclude template="inc/html_head.cfm">
+	<cfinclude template="inc/html_head.cfm" />
 	<body id="#$.getTopID()#" class="#$.createCSSid($.content('menuTitle'))#" data-spy="scroll" data-target=".subnav" data-offset="50">
 		<div class="#$.getMBContainerClass()#">
-			
-			<cfinclude template="inc/navbar.cfm">
-				
+			<cfinclude template="inc/navbar.cfm" />
 			<div class="#$.getMBRowClass()#">
 				<section class="span12">
-				<!---
+					<!---
 						The Carousel/Slideshow
 						This method can be found in the theme's contentRenderer.cfc
 					--->
@@ -22,7 +20,6 @@
 
 					<!--- Display Objects assigned to display region 2 (Main Content) --->
 					#$.dspObjects(2)#
-
 				</section>
 				
 				<aside class="span3">
@@ -31,8 +28,8 @@
 				</aside>
 			</div>
 			
-				<cfinclude template="inc/footer.cfm">
-				
+			<cfinclude template="inc/footer.cfm" />
 		</div><!-- /.container -->
-	<cfinclude template="inc/html_foot.cfm">
+	<cfinclude template="inc/html_foot.cfm" />
 </cfoutput>
+utput>
