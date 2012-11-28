@@ -432,7 +432,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						bundleFile=local.bundleLoc, 
 						keyMode='publish',
 						siteID='default',
-						contentMode='all'
+						contentMode='all',
+						pluginMode='all'
 					)>
 				<cfset application.serviceFactory.getBean('fileWriter').renameFile(source=local.bundleLoc,destination=expandPath("/muraWRM/config/setup/deploy/#createUUID()#.zip"))>
 		</cfif>
