@@ -2270,7 +2270,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="hasFETools" output="false">
-	<cfreturn getShowModal() and not request.muraExportHTML>	
+	<cfreturn getShowModal() and not request.muraExportHTML and isDefined('cookie.fetDisplay') and cookie.fetDisplay neq 'none'>	
 </cffunction>
 
 <cffunction name="renderHTMLQueue" output="false">

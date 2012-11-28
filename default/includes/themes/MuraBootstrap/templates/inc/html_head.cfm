@@ -2,7 +2,6 @@
 <!DOCTYPE html>
 <html lang="en"<cfif $.hasFETools()> class="mura-edit-mode"</cfif>>
 <head>
-
 	<!--- META
 	================================================== --->
 	<meta charset="utf-8">
