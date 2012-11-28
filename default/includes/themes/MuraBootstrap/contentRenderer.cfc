@@ -61,6 +61,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfscript>
 			var local = {};
 			local.imageArgs = {};
+
+			if(not listFindNoCase('small,medium,large,custom',arguments.size)){
+				local.customImage=variables.$.getBean('imageSize').loadBy(name=arguments.size,siteID=variables.$.event('siteID'));
+				if(not local.customImage.getIsNew()){
+					arguments.size='custom';
+				}
+			}
+
 			if ( not Len(Trim(arguments.size)) or LCase(arguments.size) eq 'custom' ) {
 				local.imageArgs.width = Val(arguments.width);
 				local.imageArgs.height = Val(arguments.height);
