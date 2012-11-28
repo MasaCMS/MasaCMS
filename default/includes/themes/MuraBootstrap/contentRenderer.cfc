@@ -53,7 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="showCaption" type="boolean" default="true" />
 		<cfargument name="cssID" type="string" default="myCarousel" />
 		<cfargument name="width" type="numeric" default="1280" />
-		<cfargument name="height" type="numeric" default="600" />
+		<cfargument name="height" type="numeric" default="500" />
 		<cfargument name="interval" type="any" default="2000" />
 		<cfset var local = {} />
 		<cfsavecontent variable="local.str"><cfoutput>

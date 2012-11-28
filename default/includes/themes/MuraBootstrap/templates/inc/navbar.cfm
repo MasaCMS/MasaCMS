@@ -1,5 +1,6 @@
 <cfoutput>
-	<div class="navbar navbar-inverse span12">
+<header class="#$.getMBRowClass()#">
+	<nav class="navbar navbar-inverse span12">
 		<div class="navbar-inner">
 			<div class="#$.getMBContainerClass()#">
 				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -54,5 +55,6 @@
 				</div><!--/.nav-collapse -->
 			</div><!-- .container -->
 		</div><!-- /.navbar-inner -->
-	</div><!-- /.navbar -->
+	</nav><!-- /.navbar -->
+</header>
 </cfoutput>
