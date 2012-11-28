@@ -1,5 +1,4 @@
 <cfoutput>
-	<div class="#$.getMBRowClass()#">
 		<hr>
 		<footer>
 			<!--- <p class="pull-left">&copy; #HTMLEditFormat($.siteConfig('site'))# #year(now())#</p> --->
@@ -13,6 +12,5 @@
 
 			<p class="pull-right"><a href="##">Back to top</a></p>
 		</footer>
-	</div>
 	#$.dspThemeInclude('display_objects/sampleModalWindow.cfm')#
 </cfoutput>
