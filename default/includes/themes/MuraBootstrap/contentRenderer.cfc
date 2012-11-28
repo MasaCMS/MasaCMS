@@ -62,11 +62,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			var local = {};
 			local.imageArgs = {};
 
-			if ( not ListFindNoCase('small,medium,large,custom', arguments.size) ) {
-				local.customImage = variables.$.getBean('imageSize').loadBy(name=arguments.size,siteID=variables.$.event('siteID'));
-				if ( local.customImage.getIsNew() ) {
-					arguments.size = 'custom';
-				};
+			if ( not ListFindNoCase('small,medium,large,custom', arguments.size) and variables.$.getBean('imageSize').loadBy(name=arguments.size,siteID=variables.$.event('siteID')).getIsNew() ) {
+				arguments.size = 'custom';
 			};
 
 			if ( not Len(Trim(arguments.size)) or LCase(arguments.size) eq 'custom' ) {
