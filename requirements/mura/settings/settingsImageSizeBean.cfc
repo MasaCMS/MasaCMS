@@ -51,6 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="name" type="string" default="" required="true" />
 <cfproperty name="height" type="string" default="AUTO" required="true" />
 <cfproperty name="width" type="string" default="AUT0" required="true" />
+<cfproperty name="isNew" type="numeric" default="1" required="true" />
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	
@@ -61,6 +62,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.sizeID=createUUID()/>
 	<cfset variables.instance.width="AUTO"/>
 	<cfset variables.instance.height="AUTO"/>
+	<cfset variables.instance.isNew=1/>
+
 	<cfreturn this>
 </cffunction>
 
@@ -91,11 +94,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="name">
 	<cfargument name="siteID">
 	
-	
+	<cfset variables.instance.isNew=1/>
 	<cfset var rs=getQuery(argumentCollection=arguments)>
 
 	<cfif rs.recordcount>
 		<cfset set(rs) />
+		<cfset variables.instance.isNew=0/>
 	</cfif>
 
 	<cfreturn this>
