@@ -137,7 +137,9 @@ CKEDITOR.editorConfig = function( config )
 	<cfif fileExists(expandPath($.siteConfig("themeIncludePath") & '/css/editor/editor.css.cfm') )>
 		config.contentsCss='#$.siteConfig('themeAssetPath')#/css/editor/editor.css.cfm';
 	<cfelseif fileExists(expandPath($.siteConfig("themeIncludePath") & '/css/editor/editor.css') )>
-		config.contentsCss='#$.siteConfig('themeAssetPath')#/css/editor/editor.css';	
+		config.contentsCss='#$.siteConfig('themeAssetPath')#/css/editor/editor.css';
+	<cfelseif fileExists(expandPath($.siteConfig("themeIncludePath") & '/css/editor/editor.less') )>
+		config.contentsCss='#$.siteConfig('themeAssetPath')#/css/editor/editor.less.css';	
 	<cfelseif fileExists(expandPath($.siteConfig("themeIncludePath") & '/css/editor.css.cfm') )>
 		config.contentsCss='#$.siteConfig('themeAssetPath')#/css/editor.css.cfm';
 	<cfelse>		

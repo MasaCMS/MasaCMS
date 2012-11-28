@@ -9729,7 +9729,7 @@ a:hover, a:active {
 .mura .navZoom.alt.active {
   background-color: #d4d4d4 \9;
 }
-.mura #content .notice .navZoom {
+.mura #content .alert .navZoom {
   background: none;
   padding: 0;
   margin: 0;
@@ -9746,7 +9746,7 @@ a:hover, a:active {
 .mura .navZoom li a {
   padding: 2px 0;
 }
-.mura .notice p {
+.mura .alert p {
   margin-bottom: .5em;
 }
 .mura h2 + .navZoom {

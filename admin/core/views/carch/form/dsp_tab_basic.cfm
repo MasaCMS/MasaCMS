@@ -69,7 +69,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		    </div>
 		<div class="control-group" id="editAdditionalTitles" style="display:none;">		
 			<div class="controls" >
-				<p class="notice help-block">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.AdditionalTitlesnote")#</p>
+				<p class="alert help-block">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.AdditionalTitlesnote")#</p>
 			</div>
 		</div>
 		</cfcase>

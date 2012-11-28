@@ -155,7 +155,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="main row-fluid">#body#</div>
 		<cfif cgi.http_user_agent contains 'msie'>
 			<!--[if IE 6]>
-			<script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/ie6notice.js"></script>
+			<script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/upgrade-notification.min.js"></script>
 			<![endif]-->
 		</cfif>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-tagselector.js?coreversion=#application.coreversion#"></script>

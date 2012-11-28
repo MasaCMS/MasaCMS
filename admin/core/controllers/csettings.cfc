@@ -257,7 +257,7 @@ to your own modified versions of Mura CMS.
 							local.updated = application.autoUpdater.update(local.i);
 							local.files = local.updated.files;
 						</cfscript>
-						<div class="success">
+						<div class="alert alert-success">
 							<dl>
 								<dt>#local.i#</dt>
 								<dd>Updated to version #application.autoUpdater.getCurrentCompleteVersion(local.i)#</dd>
@@ -272,7 +272,7 @@ to your own modified versions of Mura CMS.
 							</dl>
 						</div>
 						<cfcatch>
-							<div class="error">
+							<div class="alert alert-error">
 								<h3>An error occurred while trying to update #local.i#</h3>
 								<cfif len(trim(cfcatch.message))>
 									<p><strong>Error Message</strong><br />#cfcatch.message#</p>
