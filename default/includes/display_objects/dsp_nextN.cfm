@@ -83,9 +83,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 </cfsilent>
 <cfoutput>
-<dl>
-	<cfif variables.nextN.recordsPerPage gt 1><dt>#variables.$.rbKey('list.moreresults')#:</dt></cfif>
-	<dd <cfif this.ulPaginationWrapperClass neq "">class="#this.ulPaginationWrapperClass#"</cfif>>
+	
+	<div <cfif this.ulPaginationWrapperClass neq "">class="#this.ulPaginationWrapperClass#"</cfif>>
 		<ul <cfif this.ulPaginationClass neq "">class="#this.ulPaginationClass#"</cfif>>
 		<cfif variables.nextN.currentpagenumber gt 1>
 		<cfif request.muraExportHtml>
@@ -121,6 +120,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfif>
 		</ul>
-	</dd>
-</dl>
+	</div>
 </cfoutput>
