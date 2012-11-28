@@ -426,17 +426,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfloop>
 
-
-		<cfif fileExists(expandPath("/muraWRM/config/setup/deploy/bundle.zip")) and application.contentGateway.getPageCount('default') eq 1>
-			<cfset local.homeBean=application.serviceFactory.getBean('content').loadBy(filename='',siteID='default')>
-			<cfif now() lt dateAdd('n',5,local.homeBean.getCreated())>
+		<cfset local.bundleLoc=expandPath("/muraWRM/config/setup/deploy/bundle.zip")>
+		<cfif fileExists(local.bundleLoc) and application.contentGateway.getPageCount('default').counter eq 1>
 				<cfset application.settingsManager.restoreBundle(
-						bundleFile=expandPath("/muraWRM/config/setup/deploy/bundle.zip"), 
+						bundleFile=local.bundleLoc, 
 						keyMode='publish',
 						siteID='default',
 						contentMode='all'
 					)>
-			</cfif>	
+				<cfset application.serviceFactory.getBean('fileWriter').renameFile(source=local.bundleLoc,destination=expandPath("/muraWRM/config/setup/deploy/#createUUID()#.zip"))>
 		</cfif>
 
 		<cfset application.sessionTrackingThrottle=false>	
