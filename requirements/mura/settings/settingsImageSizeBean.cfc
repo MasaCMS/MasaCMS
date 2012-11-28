@@ -152,8 +152,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.width#">
 		)
 		</cfquery>
-		
+
 	</cfif>
+
+	<cfset variables.instance.isNew=0/>
 
 	<cfreturn this>
 </cffunction>
@@ -164,7 +166,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		delete from timagesizes 
 		where sizeid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.sizeID#">
 	</cfquery>
-		
+	
+	<cfset variables.instance.isNew=1/>
+
 	<cfreturn this>
 </cffunction>
 
