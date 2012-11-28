@@ -58,6 +58,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var local = {} />
 		<cfsavecontent variable="local.str"><cfoutput>
 			<!--- BEGIN: Bootstrap Carousel --->
+			<!--- IMPORTANT: This will only output items that have associated images --->
 			<cfset local.feed = variables.$.getBean('feed').loadBy(name=arguments.feedName)>
 			<cfset local.iterator = local.feed.getIterator()>
 			<cfif local.iterator.hasNext()>
