@@ -1,5 +1,5 @@
 <cfoutput>
-	<div class="#$.getMBRowClass()# span12">
+	<div class="#$.getMBRowClass()#">
 		<hr>
 		<footer>
 			<!--- <p class="pull-left">&copy; #HTMLEditFormat($.siteConfig('site'))# #year(now())#</p> --->
