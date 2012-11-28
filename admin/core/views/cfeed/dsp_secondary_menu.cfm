@@ -57,7 +57,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfcase>
 		<cfdefaultcase>
 			<a class="btn" href="index.cfm?muraAction=cFeed.list&&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-circle-arrow-left"></i> #application.rbFactory.getKeyValue(session.rb,"collections.backtocollections")#</a>
-			<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'collections.view')#" href="#rc.feedBean.getChannelLink()#" target="_blank"><i class="icon-rss"></i> #application.rbFactory.getKeyValue(session.rb,'collections.viewfeed')#</a>
+			<cfif not rc.feedBean.getIsNew()>
+				<cfif rc.feedBean.getType() eq 'Local'>
+					<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'collections.view')#" href="http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/feed/?feedID=#rc.feedID#" target="_blank"><i class="icon-rss"></i> #application.rbFactory.getKeyValue(session.rb,'collections.viewfeed')#</a>
+				<cfelse>
+					<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'collections.view')#" href="#rc.feedBean.getChannelLink()#" target="_blank"><i class="icon-rss"></i> #application.rbFactory.getKeyValue(session.rb,'collections.viewfeed')#</a>
+				</cfif>
+			</cfif>
 		</cfdefaultcase>
 	</cfswitch>
 	</div>

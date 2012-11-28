@@ -1,8 +1,7 @@
 <cfoutput>
 <!DOCTYPE html>
-<html lang="en"<cfif $.hasFETools()> class="mura-edit-mode"</cfif>>
+<html lang="en">
 <head>
-
 	<!--- META
 	================================================== --->
 	<meta charset="utf-8">

@@ -139,7 +139,7 @@
 		});
 	});	
 	</cfif>
-	
+	<!---
 	function checkToolbarDisplay () {
 		<cfif Cookie.fetDisplay eq "none">
 			<cfif $.getJsLib() eq "jquery">
@@ -157,6 +157,29 @@
 			</cfif>
 		</cfif>
 	}
+	--->
+	
+	function checkToolbarDisplay () {
+		<cfif Cookie.fetDisplay eq "none">
+			<cfif $.getJsLib() eq "jquery">
+				$('HTML').removeClass('mura-edit-mode');
+				$(".editableObject").each(
+					function(intIndex){
+						$(this).addClass('editableObjectHide');
+					}
+				);
+			<cfelse>
+				$$(".editableObject").each(
+					function(o){
+						o.addClassName('editableObjectHide');
+					}
+				);
+			</cfif>
+		<cfelseif $.getJsLib() eq "jquery">
+			$('HTML').addClass('mura-edit-mode');
+		</cfif>
+	}
+	
 	
 <cfif not isIeSix>
 	function toggleAdminToolbar(){
