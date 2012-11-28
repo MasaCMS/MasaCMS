@@ -7,12 +7,14 @@
 				<section class="span12">
 					<!---
 						The Carousel/Slideshow
-						This method can be found in the theme's contentRenderer.cfc
+						Refer to the theme's contentRenderer.cfc for details on this method and its arguments/options
+						NOTE: Only content items with an 'Associated Image' will be rendered
 					--->
 					#$.dspCarouselByFeedName(
 						feedName='Slideshow'
 						, showCaption=true
 						, cssID='myCarousel'
+						, size='custom'
 						, width=1280
 						, height=500
 						, interval=5000
