@@ -53,10 +53,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="feedName" type="string" default="Slideshow" />
 		<cfargument name="showCaption" type="boolean" default="true" />
 		<cfargument name="cssID" type="string" default="myCarousel" />
-		<cfargument name="width" type="numeric" default="1260" />
+		<cfargument name="width" type="numeric" default="1280" />
 		<cfargument name="height" type="numeric" default="500" />
-		<cfargument name="interval" type="any" default="5000" />
-		<cfargument name="autoPlay" type="boolean" default="true" />
+		<cfargument name="interval" type="any" default="5000" hint="Use either milliseconds OR use 'false' to NOT auto-advance to next slide." />
+		<cfargument name="autoStart" type="boolean" default="true" />
 		<cfset var local = {} />
 		<cfsavecontent variable="local.str"><cfoutput>
 			<!--- BEGIN: Bootstrap Carousel --->
@@ -72,7 +72,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfset local.item=iterator.next()>
 							<cfif ListFindNoCase('jpg,jpeg,gif,png', ListLast(local.item.getImageURL(), '.'))>
 								<cfset local.idx++>
-								<div class="item<cfif local.idx eq 1> active</cfif>">
+								<!--- row-fluid class on this fixes Firefox bug where slide height gets wonky on transition due to resizing of image via media queries --->
+								<div class="row-fluid item<cfif local.idx eq 1> active</cfif>">
 									<img src="#local.item.getImageURL(width=Val(arguments.width),height=Val(arguments.height))#" alt="#HTMLEditFormat(local.item.getTitle())#">
 									<cfif arguments.showCaption>
 										<div class="carousel-caption">
@@ -89,8 +90,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfif local.idx gt 1>
 							<a class="left carousel-control" href="###arguments.cssID#" data-slide="prev">&lsaquo;</a>
 							<a class="right carousel-control" href="###arguments.cssID#" data-slide="next">&rsaquo;</a>
-							<!--- AutoPlay --->
-							<cfif arguments.autoPlay>
+							<!--- AutoStart --->
+							<cfif arguments.autoStart>
 								<script>jQuery(document).ready(function($){$('###arguments.cssID#').carousel({interval:#arguments.interval#});});</script>
 							</cfif>
 						</cfif>
