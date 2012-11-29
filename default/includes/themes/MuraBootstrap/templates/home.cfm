@@ -7,16 +7,31 @@
 				<section class="span12">
 					<!---
 						The Carousel/Slideshow
-						This method can be found in the theme's contentRenderer.cfc
+						Refer to the theme's contentRenderer.cfc for details on this method and its arguments/options
+						NOTE: Only content items with an 'Associated Image' will be rendered
 					--->
-					#$.dspCarouselByFeedName(feedName='Slideshow', showCaption=true, cssID='myCarousel')#
+					#$.dspCarouselByFeedName(
+						feedName='Slideshow'
+						, showCaption=true
+						, cssID='myCarousel'
+						, size='custom'
+						, width=1280
+						, height=500
+						, interval=5000
+						, autoStart=true
+					)#
 				</section>
 			</div>
 			
 			<div class="#$.getMBRowClass()#">
 				<section class="span9 content">
 					<!--- The content --->
-					#$.dspBody(body=$.content('body'), pageTitle='', crumbList=0, showMetaImage=true)#
+					#$.dspBody(
+						body=$.content('body')
+						, pageTitle=''
+						, crumbList=0
+						, showMetaImage=true
+					)#
 
 					<!--- Display Objects assigned to display region 2 (Main Content) --->
 					#$.dspObjects(2)#
