@@ -99,7 +99,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <tr>
 	<th>#application.rbFactory.getKeyValue(session.rb,"dashboard.topsearches")# <a href="index.cfm?muraAction=cDashboard.topSearches&siteid=#URLEncodedFormat(rc.siteid)#&startDate=#URLEncodedFormat(rc.startDate)#&stopDate=#URLEncodedFormat(rc.stopDate)#">(View Report)</a></th>
 </tr>
-<thead>
+</thead>
 <tbody>
 <cfloop query="rslist">
 <tr>
