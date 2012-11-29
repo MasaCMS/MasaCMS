@@ -400,12 +400,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<cfset application.serviceFactory.getBean("contentUtility").setUniqueFilename(variables.item)>
 
-			<cfquery  datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDbUserName()#" password="#application.configBean.getDbPassword()#">
-				update tcontent set filename=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getFilename()#">,
-				urlTitle=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getURLTitle()#">  where 
-				contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getContentID()#">
-				and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getSiteID()#">
-			</cfquery>
+			<cftry>
+				<cfquery  datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDbUserName()#" password="#application.configBean.getDbPassword()#">
+					update tcontent set filename=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getFilename()#">,
+					urlTitle=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getURLTitle()#">  where 
+					contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getContentID()#">
+					and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getSiteID()#">
+				</cfquery>
+				<cfcatch>
+					<cfthrow message="An error occured trying to create a filename for #variables.item.getFilename()#">
+				</cfcatch>
+			</cftry>
 		</cfloop>
 
 		<!--- Clean root admin directory --->
