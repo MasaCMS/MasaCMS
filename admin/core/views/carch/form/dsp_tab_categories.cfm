@@ -130,8 +130,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif listLen(cat.getPath()) gt 1>
 				<cfset to=listLen(cat.getPath())-1>
 				<cfloop from="1" to="#to#" index="i">
-					<cfset item=listGetAt(cat.getPath(),i)>
-					<cfset item=mid(item,2,len(item)-2)>
+					<cfset item=replace(listGetAt(cat.getPath(),i),"'","","all")>
 					<cfif not listFind(itemlist,item)>
 						<cfoutput>$('##tabCategorization li[data-categoryid="#item#"]').find('span.hasChildren:first').trigger('click');</cfoutput>
 					<cfset itemlist=listAppend(itemList,item)>
