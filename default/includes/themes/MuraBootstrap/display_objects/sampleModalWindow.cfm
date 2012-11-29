@@ -11,7 +11,7 @@
 			<p>Vestibulum tempor nunc nec felis scelerisque eget elementum erat dignissim. Ut vel ipsum mollis orci venenatis luctus. Aenean vehicula quam vel quam porttitor ac iaculis elit pulvinar. Proin consequat, ipsum eu venenatis semper, justo turpis posuere tortor, ac placerat metus nisl et lectus. Nulla cursus dui id nunc ullamcorper sed semper nisl lobortis. Aliquam erat volutpat. Phasellus arcu ante, imperdiet in ornare sed, laoreet eu massa.</p>
 		</div>
 		<div class="modal-footer">
-			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</a>
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
 		</div>
 	</div>
 </cfoutput>
