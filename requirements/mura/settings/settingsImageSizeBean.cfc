@@ -92,7 +92,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="loadBy" access="public" output="false">
 	<cfargument name="sizeID">
 	<cfargument name="name">
-	<cfargument name="siteID">
+	<cfargument name="siteID" default="#variables.instance.siteID#">
 	
 	<cfset variables.instance.isNew=1/>
 	<cfset var rs=getQuery(argumentCollection=arguments)>
