@@ -192,7 +192,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				and (
 							
 					<cfif not arguments.includeVersionHistory and rstfiles.recordcount>
-						fileID not in (<cfqueryparam cfsqltype="cf_sql_varchar" value="#valueList(rstfiles.fileID)#" list="true">)				
+						fileID not in (#QuotedValueList(rstfiles.fileID)#)				
 						<cfset started=true>
 					</cfif>
 							
