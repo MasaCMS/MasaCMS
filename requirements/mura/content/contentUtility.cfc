@@ -576,9 +576,9 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 	<cfset arguments.contentBean.setURLTitle(arguments.contentBean.getFilename())>
 	
 	<cfif arguments.contentBean.getparentid() neq '00000000000000000000000000000000001'>
-		<cfset parentFilename=left(parentBean.getfilename(),253)>
+		<cfset parentFilename=left(parentBean.getfilename(),250)>
 		<cfif right(parentFilename,1) eq "/">
-			<cfset parentFilename=left(parentBean.getfilename(),252)>
+			<cfset parentFilename=left(parentBean.getfilename(),250)>
 		</cfif>
 		
 		<cfset arguments.contentBean.setFilename(parentFilename & "/" & arguments.contentBean.getfilename()) />
@@ -589,8 +589,8 @@ http://#listFirst(cgi.http_host,":")##variables.configBean.getServerPort()##vari
 	<cfloop condition="#doesFileExist(arguments.contentBean.getsiteid(),tempfile,arguments.contentBean.getContentID())#" >
 		<cfset pass=pass+1>
 		<cfset tempfile=arguments.contentBean.getFilename() />
-		<cfif len(tempfile) eq 255>
-			<cfset tempfile=left(arguments.contentBean.getFilename(),255-len(pass)) />
+		<cfif len(tempfile) gt 250>
+			<cfset tempfile=left(arguments.contentBean.getFilename(),250-len(pass)) />
 			<cfif right(tempfile,1) eq "/">
 				<cfset tempfile=replace(left(tempfile,len(tempfile)-2) & "/","//","/")>
 			</cfif>
