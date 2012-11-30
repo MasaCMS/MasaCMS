@@ -257,7 +257,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</dd>
 		
        <dd class="template">
-	  		<cfif perm eq 'editor'><a class="mura-quickEditItem<cfif len(rc.rstop.template)> template-set</cfif>" data-attribute="template"></cfif>
+	  		<cfif perm eq 'editor'><a class="mura-quickEditItem<cfif len(rc.rstop.template) or len(rc.rstop.childtemplate)> template-set</cfif>" data-attribute="template"></cfif>
 			<cfif len(rc.rstop.template) or len(rc.rstop.childTemplate)>
 				  <i class="icon-list-alt" title="#rc.rstop.template#"></i><span>#rc.rstop.template#</span> 
 			<cfelse>
