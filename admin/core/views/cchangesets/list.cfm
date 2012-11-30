@@ -93,15 +93,35 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 </table>
 
-<cfif rc.changesets.pageCount() gt 1> 
-<p class="moreResults">#application.rbFactory.getKeyValue(session.rb,'changesets.moreresults')#:
-<cfif rc.changesets.getPageIndex() gt 1>
-<a href="index.cfm?muraAction=cChangesets.list&page=#evaluate('#rc.changesets.getPageIndex()#-1')#&siteid=#URLEncodedFormat(rc.siteid)#&keywords=#URLEncodedFormat(rc.keywords)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'user.prev')#</a> 
-</cfif>
-<cfloop from="1"  to="#rc.changesets.pageCount()#" index="i"><cfif rc.changesets.getPageIndex() eq i> <strong>#i#</strong> <cfelse> <a href="index.cfm?muraAction=cChangesets.list&page=#i#&siteid=#URLEncodedFormat(rc.siteid)#keywords=#URLEncodedFormat(rc.keywords)#">#i#</a></cfif></cfloop>
-<cfif rc.changesets.getPageIndex() lt rc.changesets.pagecount()>
-<a href="index.cfm?muraAction=cChangesets.list&page=#evaluate('#rc.changesets.getPageIndex()#+1')#&siteid=#URLEncodedFormat(rc.siteid)#&keywords=#URLEncodedFormat(rc.keywords)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'user.next')#</a> 
-</cfif>
-</p>
-</cfif>
+<!---<cfif rc.changesets.pageCount() gt 1> --->
+<cfset args=arrayNew(1)>
+<cfset args[1]="#rc.changesets.getFirstRecordOnPageIndex()#-#rc.changesets.getLastRecordOnPageIndex()#">
+<cfset args[2]=rc.changesets.getRecordcount()>
+<div class="clearfix mura-results-wrapper">
+	<p class="search-showing">
+		#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.paginationmeta"),args)#
+	</p> 
+	<ul class="moreResults pagination">
+	<cfif rc.changesets.getPageIndex() gt 1>
+	<li>
+		<a href="index.cfm?muraAction=cChangesets.list&page=#evaluate('#rc.changesets.getPageIndex()#-1')#&siteid=#URLEncodedFormat(rc.siteid)#&keywords=#URLEncodedFormat(rc.keywords)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'user.prev')#</a>
+	</li>
+	</cfif>
+	<cfloop from="1"  to="#rc.changesets.pageCount()#" index="i">
+		<cfif rc.changesets.getPageIndex() eq i> 
+			<li class="active"><a href="##">#i#</a></li>
+		<cfelse> 
+			<li>
+				<a href="index.cfm?muraAction=cChangesets.list&page=#i#&siteid=#URLEncodedFormat(rc.siteid)#keywords=#URLEncodedFormat(rc.keywords)#">#i#</a>
+			</li>
+		</cfif>
+	</cfloop>
+	<cfif rc.changesets.getPageIndex() lt rc.changesets.pagecount()>
+		<li>
+			<a href="index.cfm?muraAction=cChangesets.list&page=#evaluate('#rc.changesets.getPageIndex()#+1')#&siteid=#URLEncodedFormat(rc.siteid)#&keywords=#URLEncodedFormat(rc.keywords)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'user.next')#</a>
+		</li>
+	</cfif>
+	</ul>
+</div>
+<!---</cfif>--->
 </cfoutput>

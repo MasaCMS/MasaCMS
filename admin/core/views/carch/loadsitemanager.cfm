@@ -257,7 +257,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</dd>
 		
        <dd class="template">
-	  		<cfif perm eq 'editor'><a class="mura-quickEditItem<cfif len(rc.rstop.template)> template-set</cfif>" data-attribute="template"></cfif>
+	  		<cfif perm eq 'editor'><a class="mura-quickEditItem<cfif len(rc.rstop.template) or len(rc.rstop.childtemplate)> template-set</cfif>" data-attribute="template"></cfif>
 			<cfif len(rc.rstop.template) or len(rc.rstop.childTemplate)>
 				  <i class="icon-list-alt" title="#rc.rstop.template#"></i><span>#rc.rstop.template#</span> 
 			<cfelse>
@@ -292,13 +292,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
               <li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#" href="index.cfm?muraAction=cPerm.main&contentid=#rc.topid#&parentid=&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&type=#rc.rstop.type#"><i class="icon-group"></i></a></li>
               <cfelse>
-              <li class="permissions disabled"><a><i class="icon-group"></i>/a></li>
+              <li class="permissions disabled"><a><i class="icon-group"></i></a></li>
             </cfif>
             <cfif application.settingsManager.getSite(rc.siteid).getlocking() neq 'all'>
               <li class="delete disabled"><a><i class="icon-remove-sign"></i></a></li>
             </cfif>
             <cfelse>
-            <li class="edit disabled"><a>Edit</a></li>
+           <li class="edit disabled"><a>&nbsp;</a></li>
             <cfswitch expression="#rc.rsTop.type#">
               <cfcase value="Page,Folder,Calendar,Gallery">
               <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,rc.rsTop.filename)#','#rc.rsTop.targetParams#');"><i class="icon-globe"></i></a></li>
@@ -312,7 +312,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             </cfswitch>
             <li class="version-history disabled"><a><i class="icon-book"></i></a></li>
             <li class="permissions disabled"><a><i class="icon-group"></i></a></li>
-            <li class="delete disabled"><a><i class="icon-remove-sign"></i>/a></li>
+            <li class="delete disabled"><a><i class="icon-remove-sign"></i></a></li>
           </cfif>
 		<cfset pluginEvent.setValue('type', rc.rstop.type)>
         <cfset pluginEvent.setValue('filename', rc.rstop.filename)>
