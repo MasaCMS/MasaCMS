@@ -206,7 +206,7 @@ and fileExists(licenseFile)>
 </cfif>
 
 <cfif objectsLen>
-
+<div class="fieldset">
 <div class="control-group">
 	<div class="span3">
 		<label class="control-label">Display Objects</label>
@@ -240,13 +240,14 @@ and fileExists(licenseFile)>
 </div>
 </div>
 </span>
+</div>
 <cfelse>
 <input type="hidden" name="location" value="global">
 </cfif>
 </div>
 
 <cfif scriptsLen>
-
+<div class="fieldset">
 <div class="control-group">
       <label class="control-label">Scripts</label>
       <div class="controls"><ul>
@@ -255,11 +256,12 @@ and fileExists(licenseFile)>
 </cfloop>
 </ul>
 </div>
-    </div>
+</div>
+</div>
 </cfif> 
 
 <cfif eventHandlersLen>
-
+<div class="fieldset">
 <div class="control-group">
       <label class="control-label">Event Handlers</label>
       <div class="controls"><ul>
@@ -268,11 +270,12 @@ and fileExists(licenseFile)>
 </cfloop>
 </ul>
 </div>
-    </div>
+</div>
+</div>
 </cfif> 
 
 <cfif extensionsLen>
-
+<div class="fieldset">
 <dt>Class Extensions</label>
       <div class="controls"><ul>
 <cfloop from="1" to="#extensionsLen#" index="i">
@@ -280,12 +283,12 @@ and fileExists(licenseFile)>
 </cfloop>
 </ul>
 </div>
-    </div>
-
+</div>
+</div>
 </cfif>
 
 <cfset rsAssigned=application.pluginManager.getAssignedSites(rc.moduleID)>
-
+<div class="fieldset">
 <div class="control-group">
 	<label class="control-label">Site Assignment</label>
 	<div class="controls">
@@ -293,6 +296,7 @@ and fileExists(licenseFile)>
 		<label class="checkbox"><input type="checkbox" value="#rc.rsSites.siteID#" name="siteAssignID"<cfif listFind(valuelist(rsAssigned.siteID),rc.rsSites.siteID)> checked</cfif>> #rc.rsSites.site#</label>
 		</cfloop>
 	</div>
+</div>
 </div>
 <cfif hasLicense>
 </span>
