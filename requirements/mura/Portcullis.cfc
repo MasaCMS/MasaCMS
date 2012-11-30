@@ -262,7 +262,7 @@
 		FROM variables.internal.iplog
 		WHERE IP = <cfqueryparam cfsqltype="cf_sql_varchar" maxlength="50" value="#arguments.ipAddress#">
 		</cfquery>
-		<cfset attempts = find.attempts + 1/>
+		<cfset attempts = val(find.attempts) + 1/>
 		
 		<cfquery dbtype="query" name="variables.internal.iplog">
 		<cfif variables.instance.ipBlock eq true and variables.instance.allowedAttempts lte attempts>
