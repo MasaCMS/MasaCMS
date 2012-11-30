@@ -146,17 +146,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.permissions')#" href="index.cfm?muraAction=cPerm.main&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&startrow=#rc.startrow#"><i class="icon-group"></i></a></li>
 					</cfif>
 				<cfelse>
-					<li class="edit disabled">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#</li>
-					<li class="version-history disabled">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#</li>
+					<li class="edit disabled">&nbsp;</li>
+					<li class="version-history disabled"><i class="icon-book"></i></li>
 					<cfif rc.moduleid eq '00000000000000000000000000000000004'>
-						<li class="manage-dataOff">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.managedata')#</li>
+						<li class="manage-dataOff"><i class="icon-wrench"></i></li>
 					</cfif>
-					<li class="permissions disabled"><a>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.permissions')#</a></li>
+					<li class="permissions disabled"><a><i class="icon-group"></i></a></li>
 				</cfif>
 				<cfif ((rc.locking neq 'all') or (rc.parentid eq '#rc.topid#' and rc.locking eq 'none')) and (verdict eq 'editor') and not rc.rsTop.isLocked eq 1>
 					<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" href="index.cfm?muraAction=cArch.update&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&action=deleteall&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&parentid=#URLEncodedFormat(rc.parentid)#" onClick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li>
 				<cfelseif rc.locking neq 'all'>
-					<li class="delete disabled">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#</li>
+					<li class="delete disabled"><i class="icon-remove-sign"></i></li>
 				</cfif>
 			</ul></td></tr>
        </cfoutput>
