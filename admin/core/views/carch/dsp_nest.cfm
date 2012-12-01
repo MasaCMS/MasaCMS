@@ -234,7 +234,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           <li class="delete disabled"><a><i class="icon-remove-sign"></i></a></li>
         </cfif>
         <cfelse>
-        <li class="edit disabled"><a>&nbsp;</a></li>
+        <li class="edit disabled"><a><i class="icon-pencil"></i></a></li>
 		<cfswitch expression="#attributes.rsnest.type#">
 		<cfcase value="Page,Folder,Calendar,Gallery">
 		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,attributes.rsNest.filename)#','#attributes.rsnest.targetParams#');"><i class="icon-globe"></i></a></li>

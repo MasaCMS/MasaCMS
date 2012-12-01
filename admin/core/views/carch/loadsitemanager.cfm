@@ -297,8 +297,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             <cfif application.settingsManager.getSite(rc.siteid).getlocking() neq 'all'>
               <li class="delete disabled"><a><i class="icon-remove-sign"></i></a></li>
             </cfif>
-            <cfelse>
-           <li class="edit disabled"><a>&nbsp;</a></li>
+          <cfelse>
+           <li class="edit disabled"><a><i class="icon-pencil"></i></a></li>
             <cfswitch expression="#rc.rsTop.type#">
               <cfcase value="Page,Folder,Calendar,Gallery">
               <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,rc.rsTop.filename)#','#rc.rsTop.targetParams#');"><i class="icon-globe"></i></a></li>
