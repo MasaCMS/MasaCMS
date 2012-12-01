@@ -146,10 +146,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.permissions')#" href="index.cfm?muraAction=cPerm.main&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&startrow=#rc.startrow#"><i class="icon-group"></i></a></li>
 					</cfif>
 				<cfelse>
-					<li class="edit disabled">&nbsp;</li>
+					<li class="edit disabled"><a><i class="icon-pencil"></i></a></li>
 					<li class="version-history disabled"><i class="icon-book"></i></li>
 					<cfif rc.moduleid eq '00000000000000000000000000000000004'>
-						<li class="manage-dataOff"><i class="icon-wrench"></i></li>
+						<li class="manage-dataOff disabled"><i class="icon-wrench"></i></li>
 					</cfif>
 					<li class="permissions disabled"><a><i class="icon-group"></i></a></li>
 				</cfif>

@@ -231,7 +231,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					    </cfif>
 					
 					<cfelse>
-					    <li class="edit disabled">&nbsp;</li>
+					    <li class="edit disabled"><i class="icon-pencil"></i></li>
 						<cfswitch expression="#item.gettype()#">
 							<cfcase value="Page,Folder,Calendar,Gallery">
 							<li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),item.getfilename())#','#item.gettargetParams()#');"><i class="icon-globe"></i></a></li>
