@@ -67,7 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfloop query="rc.rsRelatedContent">
 				<cfset itemcrumbdata=application.contentManager.getCrumbList(rc.rsRelatedContent.contentid, rc.siteid)/>
 				<tr id="c#rc.rsRelatedContent.contentID#">
-				<td class="var-width">#application.contentRenderer.dspZoomNoLinks(itemcrumbdata)#</td>
+				<td class="var-width">#application.contentRenderer.dspZoom(itemcrumbdata)#</td>
 				<td>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.#rc.rsRelatedContent.type#')#</td>
 				<td class="actions">
 					<input type="hidden" name="relatedcontentid" value="#rc.rsRelatedContent.contentid#" />
