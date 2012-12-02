@@ -1,203 +1,140 @@
 ﻿/*
-Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.html or http://ckeditor.com/license
+ Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
+ For licensing, see LICENSE.html or http://ckeditor.com/license
 */
-CKEDITOR.dialog.add( 'textfield', function( editor )
-{
-	var autoAttributes =
-	{
-		value : 1,
-		size : 1,
-		maxLength : 1,
-        'data-required': 1,
+CKEDITOR.dialog.add("textfield", function (c) {
+    function e(a) {
+        var a = a.element,
+            b = this.getValue();
+        b ? a.setAttribute(this.id, b) : a.removeAttribute(this.id)
+    }
+    function f(a) {
+        this.setValue(a.hasAttribute(this.id) && a.getAttribute(this.id) || "")
+    }
+    var g = {
+        text: 1,
+        password: 1,
+      	'data-required': 1,
         'data-validate': 1,
         'data-message': 1,
         'data-regex': 1,
         'data-matchfield': 1,
         'data-label': 1
-	};
-
-	var acceptedTypes =
-	{
-		text : 1,
-		password : 1
-	};
-
-	return {
-		title : editor.lang.textfield.title,
-		minWidth : 350,
-		minHeight : 150,
-		onShow : function()
-		{
-			delete this.textField;
-
-			var element = this.getParentEditor().getSelection().getSelectedElement();
-			if ( element && element.getName() == "input" &&
-					( acceptedTypes[ element.getAttribute( 'type' ) ] || !element.getAttribute( 'type' ) ) )
-			{
-				this.textField = element;
-				this.setupContent( element );
-			}
-		},
-		onOk : function()
-		{
-			var editor,
-				element = this.textField,
-				isInsertMode = !element;
-
-			if ( isInsertMode )
-			{
-				editor = this.getParentEditor();
-				element = editor.document.createElement( 'input' );
-				element.setAttribute( 'type', 'text' );
-			}
-
-			if ( isInsertMode )
-				editor.insertElement( element );
-			this.commitContent( { element : element } );
-		},
-		onLoad : function()
-		{
-			var autoSetup = function( element )
-			{
-				var value = element.hasAttribute( this.id ) && element.getAttribute( this.id );
-				this.setValue( value || '' );
-			};
-
-			var autoCommit = function( data )
-			{
-				var element = data.element;
-				var value = this.getValue();
-
-				if ( value )
-					element.setAttribute( this.id, value );
-				else
-					element.removeAttribute( this.id );
-			};
-
-			this.foreach( function( contentObj )
-				{
-					if ( autoAttributes[ contentObj.id ] )
-					{
-						contentObj.setup = autoSetup;
-						contentObj.commit = autoCommit;
-					}
-				} );
-		},
-		contents : [
-			{
-				id : 'info',
-				label : editor.lang.textfield.title,
-				title : editor.lang.textfield.title,
-				elements : [
-					{
-						type : 'hbox',
-						widths : [ '50%', '50%' ],
-						children :
-						[
-							{
-								id : '_cke_saved_name',
-								type : 'text',
-								label : editor.lang.textfield.name,
-								'default' : '',
-								accessKey : 'N',
-								setup : function( element )
-								{
-									this.setValue(
-											element.data( 'cke-saved-name' ) ||
-											element.getAttribute( 'name' ) ||
-											'' );
-								},
-								commit : function( data )
-								{
-									var element = data.element;
-
-									if ( this.getValue() )
-										element.data( 'cke-saved-name', this.getValue() );
-									else
-									{
-										element.data( 'cke-saved-name', false );
-										element.removeAttribute( 'name' );
-									}
-								}
-							},
-							{
-								id : 'value',
-								type : 'text',
-								label : editor.lang.textfield.value,
-								'default' : '',
-								accessKey : 'V'
-							}
-						]
-					},
-					{
-						type : 'hbox',
-						widths : [ '50%', '50%' ],
-						children :
-						[
-							{
-								id : 'size',
-								type : 'text',
-								label : editor.lang.textfield.charWidth,
-								'default' : '',
-								accessKey : 'C',
-								style : 'width:50px',
-								validate : CKEDITOR.dialog.validate.integer( editor.lang.common.validateNumberFailed )
-							},
-							{
-								id : 'maxLength',
-								type : 'text',
-								label : editor.lang.textfield.maxChars,
-								'default' : '',
-								accessKey : 'M',
-								style : 'width:50px',
-								validate : CKEDITOR.dialog.validate.integer( editor.lang.common.validateNumberFailed )
-							}
-						],
-						onLoad : function()
-						{
-							// Repaint the style for IE7 (#6068)
-							if ( CKEDITOR.env.ie7Compat )
-								this.getElement().setStyle( 'zoom', '100%' );
-						}
-					},
-					{
-						id : 'type',
-						type : 'select',
-						label : editor.lang.textfield.type,
-						'default' : 'text',
-						accessKey : 'M',
-						items :
-						[
-							[ editor.lang.textfield.typeText, 'text' ],
-							[ editor.lang.textfield.typePass, 'password' ]
-						],
-						setup : function( element )
-						{
-							this.setValue( element.getAttribute( 'type' ) );
-						},
-						commit : function( data )
-						{
-							var element = data.element;
-
-							if ( CKEDITOR.env.ie )
-							{
-								var elementType = element.getAttribute( 'type' );
-								var myType = this.getValue();
-
-								if ( elementType != myType )
-								{
-									var replace = CKEDITOR.dom.element.createFromHtml( '<input type="' + myType + '"></input>', editor.document );
-									element.copyAttributes( replace, { type : 1 } );
-									replace.replace( element );
-									editor.getSelection().selectElement( replace );
-									data.element = replace;
-								}
-							}
-							else
-								element.setAttribute( 'type', this.getValue() );
-						}
-					},
+    };
+    return {
+        title: c.lang.forms.textfield.title,
+        minWidth: 350,
+        minHeight: 150,
+        onShow: function () {
+            delete this.textField;
+            var a = this.getParentEditor().getSelection().getSelectedElement();
+            if (a && "input" == a.getName() && (g[a.getAttribute("type")] || !a.getAttribute("type"))) this.textField = a, this.setupContent(a)
+        },
+        onOk: function () {
+            var a = this.getParentEditor(),
+                b = this.textField,
+                c = !b;
+            c && (b = a.document.createElement("input"), b.setAttribute("type", "text"));
+            b = {
+                element: b
+            };
+            c && a.insertElement(b.element);
+            this.commitContent(b);
+            c || a.getSelection().selectElement(b.element)
+        },
+        onLoad: function () {
+            this.foreach(function (a) {
+                if (a.getValue && (a.setup || (a.setup = f), !a.commit)) a.commit = e
+            })
+        },
+        contents: [{
+            id: "info",
+            label: c.lang.forms.textfield.title,
+            title: c.lang.forms.textfield.title,
+            elements: [{
+                type: "hbox",
+                widths: ["50%",
+                    "50%"],
+                children: [{
+                    id: "_cke_saved_name",
+                    type: "text",
+                    label: c.lang.forms.textfield.name,
+                    "default": "",
+                    accessKey: "N",
+                    setup: function (a) {
+                        this.setValue(a.data("cke-saved-name") || a.getAttribute("name") || "")
+                    },
+                    commit: function (a) {
+                        a = a.element;
+                        this.getValue() ? a.data("cke-saved-name", this.getValue()) : (a.data("cke-saved-name", !1), a.removeAttribute("name"))
+                    }
+                }, {
+                    id: "value",
+                    type: "text",
+                    label: c.lang.forms.textfield.value,
+                    "default": "",
+                    accessKey: "V",
+                    commit: function (a) {
+                        if (CKEDITOR.env.ie && !this.getValue()) {
+                            var b = a.element,
+                                d = new CKEDITOR.dom.element("input", c.document);
+                            b.copyAttributes(d, {
+                                value: 1
+                            });
+                            d.replace(b);
+                            a.element = d
+                        } else e.call(this, a)
+                    }
+                }]
+            }, {
+                type: "hbox",
+                widths: ["50%", "50%"],
+                children: [{
+                    id: "size",
+                    type: "text",
+                    label: c.lang.forms.textfield.charWidth,
+                    "default": "",
+                    accessKey: "C",
+                    style: "width:50px",
+                    validate: CKEDITOR.dialog.validate.integer(c.lang.common.validateNumberFailed)
+                }, {
+                    id: "maxLength",
+                    type: "text",
+                    label: c.lang.forms.textfield.maxChars,
+                    "default": "",
+                    accessKey: "M",
+                    style: "width:50px",
+                    validate: CKEDITOR.dialog.validate.integer(c.lang.common.validateNumberFailed)
+                }],
+                onLoad: function () {
+                    CKEDITOR.env.ie7Compat && this.getElement().setStyle("zoom", "100%")
+                }
+            }, {
+                id: "type",
+                type: "select",
+                label: c.lang.forms.textfield.type,
+                "default": "text",
+                accessKey: "M",
+                items: [
+                    [c.lang.forms.textfield.typeText, "text"],
+                    [c.lang.forms.textfield.typePass, "password"]
+                ],
+                setup: function (a) {
+                    this.setValue(a.getAttribute("type"))
+                },
+                commit: function (a) {
+                    var b = a.element;
+                    if (CKEDITOR.env.ie) {
+                        var d = b.getAttribute("type"),
+                            e = this.getValue();
+                        d != e && (d = CKEDITOR.dom.element.createFromHtml('<input type="' + e + '"></input>',
+                        c.document), b.copyAttributes(d, {
+                            type: 1
+                        }), d.replace(b), a.element = d)
+                    } else b.setAttribute("type", this.getValue())
+                }
+            }]
+        },
 		            {
 		                id: 'data-required',
 		                type: 'select',
@@ -239,9 +176,6 @@ CKEDITOR.dialog.add( 'textfield', function( editor )
 		                type: 'text',
 		                label: 'Match Field (Use when validate is set to Match)',
 		                'default': ''
-		            }
-				]
-			}
-		]
-	};
+		            }]
+    }
 });

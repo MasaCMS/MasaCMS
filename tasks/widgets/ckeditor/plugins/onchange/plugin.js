@@ -84,15 +84,17 @@ CKEDITOR.plugins.add( 'onchange',
 				if ( editor.mode != 'source' )
 					return;
 
+				/*
 				editor.textarea.on( 'keydown', function( event )
 					{
 						// Do not capture CTRL hotkeys.
 						if ( !event.data.$.ctrlKey && !event.data.$.metaKey )
 							somethingChanged();
 					});
+				*/
 
-				editor.textarea.on( 'drop', somethingChanged);
-				editor.textarea.on( 'input', somethingChanged);
+				//editor.textarea.on( 'drop', somethingChanged);
+				//editor.textarea.on( 'input', somethingChanged);
 			});
 
 		editor.on( 'afterCommandExec', function( event )
