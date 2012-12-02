@@ -45,7 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfsavecontent variable="variables.servicesXML"><cfoutput><beans>
-		<bean id="utility" <cfif application.cfversion neq 7>class="mura.utility"<cfelse>class="mura.utilityCF7"</cfif> singleton="true" >
+		<bean id="utility" class="mura.utility" singleton="true">
 			<constructor-arg name="configBean"><ref bean="configBean" /></constructor-arg>
 			<constructor-arg name="fileWriter"><ref bean="fileWriter" /></constructor-arg>
 			<constructor-arg name="javaloader"><ref bean="javaloader" /></constructor-arg>
@@ -420,7 +420,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<constructor-arg name="raterManager"><ref bean="raterManager" /></constructor-arg>
 			<constructor-arg name="feedGateway"><ref bean="feedGateway" /></constructor-arg>
 		</bean>
-		<bean id="publisher" <cfif (server.coldfusion.productname eq "ColdFusion Server" and listFirst(server.coldfusion.productversion) lt 8) or (server.coldfusion.productname eq "Railo" and listFirst(server.railo.version,".") lt 3)>class="mura.publisherLimited"<cfelse>class="mura.publisher"</cfif> singleton="true"/>
+		<bean id="publisher" class="mura.publisher" singleton="true"/>
 		<bean id="geoCoding" class="mura.geoCoding.googleGeoCode" singleton="true" />
 		<bean id="resourceBundleFactory" class="mura.resourceBundle.resourceBundleFactory" singleton="true" />
 		<bean id="pluginManager" class="mura.plugin.pluginManager" singleton="true">

@@ -58,11 +58,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.zipTool=createObject("component","mura.Zip")>
 
 <cffunction name="init" returntype="any" access="public" output="false">
-	<cfargument name="configBean">
-	<cfargument name="settingsManager">
-	<cfargument name="utility">
-	<cfargument name="standardEventsHandler">
-	<cfargument name="fileWriter"/>
+	<cfargument name="configBean" required="true">
+	<cfargument name="settingsManager" required="true">
+	<cfargument name="utility" required="true">
+	<cfargument name="standardEventsHandler" required="true">
+	<cfargument name="fileWriter" required="true">
 	
 	<cfset setConfigBean(arguments.configBean)>
 	<cfset setSettingsManager(arguments.settingsManager)>
