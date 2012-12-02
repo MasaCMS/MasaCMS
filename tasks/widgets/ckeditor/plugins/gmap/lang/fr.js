@@ -1,6 +1,4 @@
 ﻿CKEDITOR.plugins.setLang("gmap","fr",{
-  gmap:
-    {
 	 title:'Google Map',
 	 commonTab:'Info',
 	 HelpInfo:'Inserer une adresse pour recevoir une image de votre emplacement',
@@ -9,5 +7,4 @@
 	 Near:'Rapprocher',
 	 Far:'Éloigner',
 	 Zoom:'Zoom:'
-	}
 });
