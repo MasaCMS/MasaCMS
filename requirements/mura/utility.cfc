@@ -53,10 +53,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="javaloader" type="any" required="yes"/>
 <cfset variables.configBean=arguments.configBean />
 <cfset variables.fileWriter=arguments.fileWriter />
-<!---
+
 <cfset variables.javaVersion=listGetAt(createObject("java", "java.lang.System").getProperty("java.version"),2,".") />
 <cfset variables.bCrypt=arguments.javaloader.create("BCrypt")>
---->
 <cfreturn this >
 </cffunction>
 
