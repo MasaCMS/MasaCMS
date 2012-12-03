@@ -1343,6 +1343,8 @@ and parentID is null
 		<cfargument name="sourceSiteID">
 		<cfargument name="includeChildren" type="boolean" default="false">
 		<cfargument name="siteSynced" type="boolean" default="false">
+		<cfargument name="feedIDList" type="string" default="">
+		<cfargument name="contentIDList" type="string" default="">
 			
 		<cfset var contentBean = "" />
 		<cfset var newContentBean = "" />
@@ -1350,6 +1352,7 @@ and parentID is null
 	
 		<cfset var rsObjects = "" />
 		<cfset var rsFileIDs = "" />
+		<cfset var rsRelated = "" />
 		
 		<cfset var rsObjectParams = "" />
 		<cfset var objStruct = "" />
@@ -1364,8 +1367,12 @@ and parentID is null
 		<cfset var sourceFileLocation = "#variables.configBean.getFileDir()##delim##arguments.sourceSiteID##delim#cache#delim#file#delim#" />
 		<cfset var destFileLocation = "#variables.configBean.getFileDir()##delim##arguments.destinationSiteID##delim#cache#delim#file#delim#" />
 	
+		<cfset var sResponse = StructNew() />
+
+		<cfset sResponse.success = false />
+	
 		<cfif contentID eq '00000000000000000000000000000000001' or arguments.destinationSiteID eq arguments.sourceSiteID>
-			<cfreturn false />
+			<cfreturn sResponse />
 		</cfif>
 	
 		<cfif not arguments.siteSynced>
@@ -1377,16 +1384,19 @@ and parentID is null
 		<cfset newContentBean = getBean('content').loadBy(remoteID=arguments.contentID,siteID=arguments.destinationSiteID) />
 		<cfset contentBean = getBean('content').loadBy(contentID=arguments.contentID,siteID=arguments.sourceSiteID ) />
 	
+	
 				
 		<!--- does source page exist? --->
 		<cfif contentBean.getIsNew()>
-			<cfreturn false />
+			<cfreturn sResponse />
 		</cfif>
 
 		<!--- content does not exist --->
 		<cfif newContentBean.getIsNew()>
+			
 			<cfset newContentBean = getBean('content') />
 			<cfset sArgs = duplicate(contentBean.getAllValues()) />
+			<cfset rsRelated = contentBean.getRelatedContentQuery() />
 						
 			<cfset StructDelete(sArgs,"ContentHistID")/>
 			<cfset StructDelete(sArgs,"ContentID")/>
@@ -1394,6 +1404,9 @@ and parentID is null
 			<cfset StructDelete(sArgs,"SiteID")/>
 				
 			<cfset newContentBean.set( content=sArgs ) />
+			<cfif rsRelated.recordCount>
+				<cfset newContentBean.setRelatedContentID( valueList( rsRelated.contentID ) ) />
+			</cfif>
 					
 			<!--- see if parent exists (excluding home), using original parentID --->			
 			<cfif contentBean.getParentID() neq "00000000000000000000000000000000001">
@@ -1401,7 +1414,7 @@ and parentID is null
 				<cfset parentBean = getBean('content').loadBy(remoteID=contentBean.getParentID(),siteID=arguments.destinationSiteID ) />
 	
 				<cfif parentBean.getIsNew()>
-					<cfset duplicateExternalContent( contentBean.getParentID(),arguments.destinationSiteID,arguments.sourceSiteID,false,arguments.siteSynced ) />
+					<cfset duplicateExternalContent( contentBean.getParentID(),arguments.destinationSiteID,arguments.sourceSiteID,false,arguments.siteSynced,arguments.feedIDList,arguments.contentIDList ) />
 					<cfset parentBean = getBean('content').loadBy(remoteID=contentBean.getParentID(),siteID=arguments.destinationSiteID ) />
 
 					<cfset newContentBean.setParentID( parentBean.getContentID() ) />
@@ -1444,13 +1457,13 @@ and parentID is null
 
 						<cfswitch expression="#rsObjects.object#">
 							<cfcase value="Component,form">	
-								<cfset duplicateExternalContent(rsObjects.objectID,arguments.sourceSiteID,false,true) />
+								<cfset duplicateExternalContent(rsObjects.objectID,arguments.destinationSiteID,arguments.sourceSiteID,false,true,arguments.feedIDList,arguments.contentIDList) />
 							</cfcase>
 							<cfcase value="feed">	
-								<!--- TODO: feeds --->
+								<cfset arguments.feedIDList = listAppend(arguments.feedIDList,rsObjects.objectID) />
 							</cfcase>
 							<cfcase value="plugin">	
-								<cfset duplicateExternalContent(rsObjects.objectID,arguments.sourceSiteID,false,true) />
+								<cfset duplicateExternalContent(rsObjects.objectID,arguments.destinationSiteID,arguments.sourceSiteID,false,true,arguments.feedIDList,arguments.contentIDList) />
 								
 							
 								<cfif len( rsObjects.params ) and isJSON( rsObjects.params )>
@@ -1504,6 +1517,14 @@ and parentID is null
 
 
 			<cfset newContentBean.save() />
+			<cfset arguments.contentIDList = listAppend(arguments.contentIDList,newContentBean.getContentID()) />
+
+			<cfset sResponse.success = true />
+			<cfset sResponse.contentBean = newContentBean />
+			<cfset sResponse.feedIDList = arguments.feedIDList />
+			<cfset sResponse.contentIDList = arguments.contentIDList />
+			
+			<cfreturn sResponse />
 		</cfif>
 
 		<cfif arguments.includeChildren eq true>
@@ -1514,10 +1535,13 @@ and parentID is null
 			<cfloop condition="childrenIterator.hasPrevious()">
 				<cfset childContentBean = childrenIterator.previous() />
 				
-				<cfset duplicateExternalContent(childContentBean.getContentID(),arguments.destinationSiteID,arguments.sourceSiteID,true,arguments.siteSynced ) />
+				<cfset duplicateExternalContent(childContentBean.getContentID(),arguments.destinationSiteID,arguments.sourceSiteID,true,arguments.siteSynced,arguments.feedIDList,arguments.contentIDList ) />
 			</cfloop>
 		</cfif>
-		
+
+		<cfset sRespose.success = true />
+
+		<cfreturn sResponse />
 	</cffunction>
 
 	<cffunction name="duplicateExternalFeed" returntype="void">
@@ -1553,6 +1577,51 @@ and parentID is null
 		</cfloop>
 		
 		<cfset newFeedBean.save() /> 
+	</cffunction>
+
+	<cffunction name="updateRelatedContent" returntype="void">
+		<cfargument name="contentID">
+		<cfargument name="destinationSiteID">
+		<cfargument name="sourceSiteID">
+
+		<cfset var contentBean = getBean('content').loadBy(contentID=arguments.contentID,siteID=arguments.destinationSiteID) />
+		<cfset var relatedContentBean = "" /> 
+		<cfset var contentIDList = "" /> 
+		<cfset var relatedID = "" /> 
+		<cfset var rsUpdate = "" />
+		<cfset var rsRelated = "" />
+		
+		<!--- exit if the content exists --->
+		<cfif contentBean.getIsNew()>
+			<cfreturn />
+		</cfif>
+
+		<cfquery name="rsRelated" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		select contenthistid,relatedid from tcontentrelated
+		where contentid = <cfqueryparam value="#arguments.contentID#" cfsqltype="cf_sql_varchar">
+		and siteID = <cfqueryparam value="#arguments.destinationSiteID#" cfsqltype="cf_sql_varchar">
+		</cfquery>
+
+		<cfloop query="rsRelated">
+			<cfset relatedContentBean = getBean('content').loadBy(remoteID=rsRelated.relatedID,siteID=arguments.destinationSiteID ) />
+
+			<cfif not relatedContentBean.getIsNew()>
+				<cftry>
+				<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+				insert into tcontentrelated
+				(contentHistID,relatedID,contentID,siteID)
+				values
+				(
+				<cfqueryparam value="#contentBean.getContentHistID()#" cfsqltype="cf_sql_varchar">,
+				<cfqueryparam value="#relatedContentBean.getContentID()#" cfsqltype="cf_sql_varchar">,
+				<cfqueryparam value="#arguments.contentID#" cfsqltype="cf_sql_varchar">,
+				<cfqueryparam value="#arguments.destinationSiteID#" cfsqltype="cf_sql_varchar">
+				)
+				</cfquery>
+				<cfcatch></cfcatch>
+				</cftry>
+			</cfif>
+		</cfloop>
 	</cffunction>
 
 	<cffunction name="duplicateExternalSortOrder" returntype="void">
