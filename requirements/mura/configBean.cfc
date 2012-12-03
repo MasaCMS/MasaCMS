@@ -785,7 +785,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cffunction name="loadClassExtensionManager" returntype="any" access="public" output="false">
-	<cfset variables.instance.extensionManager=createObject("component","#getMapDir()#.extend.extendManager").init(this) />
+	<cfset variables.instance.extensionManager=createObject("component","mura.extend.extendManager").init(this) />
 	<cfreturn this>
 </cffunction>
 
