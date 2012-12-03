@@ -265,6 +265,17 @@
 
 /* @group Toolbar */
 
+
+#frontEndToolsHandle {
+	background: transparent !important;
+	left: 12px !important;
+	position: fixed !important;
+	top: 0 !important;
+	z-index: 500001 !important;
+	cursor: pointer !important;
+	border: 0 !important;
+}
+
 @feToolBarBGStart:	hsla(0,0,.35,.85);
 @feToolBarBGEnd:	hsla(0,0,.18,.85);
 
@@ -280,18 +291,6 @@
 	font-weight: normal !important;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 	.box-shadow(0 1px 5px rgba(0,0,0,.6)) !important;
-	/* border-top: 1px solid hsla(0,0,.6,.98); */
-	/* border-bottom: 1px solid hsla(0,0,.2,.98); */
-}
-
-#frontEndToolsHandle {
-	background: transparent !important;
-	left: 12px !important;
-	position: fixed !important;
-	top: 0 !important;
-	z-index: 500001 !important;
-	cursor: pointer !important;
-	border: 0 !important;
 }
 
 #frontEndTools ul {
@@ -410,5 +409,50 @@
 	
 }
 
-// Add Content 
+#frontEndTools ul li#adminSave {
+	
+	color: rgba(255,255,255,1.0) !important;
+	float: left !important;
+	line-height: 30px !important;
+	margin:0 !important;
+	margin-left: 40px !important;
+	padding: 4px 0 0 0 !important;
+	list-style: none !important;
+	font-weight: normal !important;
+	font-style: normal !important;
+	text-shadow: rgba(0,0,0,.8) 0px -1px 0px !important;
+	background: transparent !important;
+	text-shadow: 0 -1px 0 rgba(0,0,0,1) !important;
+	border: 0 !important;	
+}
 
+#frontEndTools ul li#adminSave a {
+	display: block !important;
+	color: @white !important;
+	font-size: 11px !important;
+	padding: 2px 8px 2px 6px !important;
+	line-height: 14px !important;
+	height: 16px !important;
+	text-shadow: none !important;
+	.border-radius(14px) !important;
+	background: @blue !important;
+	.box-shadow(0 0 4px rgba(0,0,0,.75)) !important;
+	text-shadow: 0 1px 0 rgba(255,255,255,.2) !important;
+	
+		.caret {
+						
+		} 
+	}
+	
+#frontEndTools ul li.dropdown-menu ul {
+
+}
+		
+#frontEndTools ul li.dropdown-menu ul li {
+			
+						
+}
+
+#frontEndTools ul li.dropdown-menu ul li a {
+	
+}

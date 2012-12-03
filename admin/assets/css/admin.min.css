@@ -14715,6 +14715,15 @@ font-size: 12px;
 .mura .add-content-ui li:nth-child(3n) {
   margin-right: 0;
 }
+.mura #frontEndToolsHandle {
+  background: transparent !important;
+  left: 12px !important;
+  position: fixed !important;
+  top: 0 !important;
+  z-index: 500001 !important;
+  cursor: pointer !important;
+  border: 0 !important;
+}
 .mura #frontEndTools {
   background-color: rgba(72, 72, 72, 0.8500000000000001);
   background-image: -moz-linear-gradient(top, rgba(89, 89, 89, 0.85), rgba(46, 46, 46, 0.85));
@@ -14736,19 +14745,6 @@ font-size: 12px;
   -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.6) !important;
   -moz-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.6) !important;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.6) !important;
-  /* border-top: 1px solid hsla(0,0,.6,.98); */
-
-  /* border-bottom: 1px solid hsla(0,0,.2,.98); */
-
-}
-.mura #frontEndToolsHandle {
-  background: transparent !important;
-  left: 12px !important;
-  position: fixed !important;
-  top: 0 !important;
-  z-index: 500001 !important;
-  cursor: pointer !important;
-  border: 0 !important;
 }
 .mura #frontEndTools ul {
   min-height: 30px !important;
@@ -14853,6 +14849,38 @@ font-size: 12px;
   color: #4d4d4d !important;
   line-height: 14px !important;
   height: 16px !important;
+}
+.mura #frontEndTools ul li#adminSave {
+  color: #ffffff !important;
+  float: left !important;
+  line-height: 30px !important;
+  margin: 0 !important;
+  margin-left: 40px !important;
+  padding: 4px 0 0 0 !important;
+  list-style: none !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  text-shadow: rgba(0, 0, 0, 0.8) 0px -1px 0px !important;
+  background: transparent !important;
+  text-shadow: 0 -1px 0 #000000 !important;
+  border: 0 !important;
+}
+.mura #frontEndTools ul li#adminSave a {
+  display: block !important;
+  color: #ffffff !important;
+  font-size: 11px !important;
+  padding: 2px 8px 2px 6px !important;
+  line-height: 14px !important;
+  height: 16px !important;
+  text-shadow: none !important;
+  -webkit-border-radius: 14px !important;
+  -moz-border-radius: 14px !important;
+  border-radius: 14px !important;
+  background: #6699cc !important;
+  -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.75) !important;
+  -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.75) !important;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.75) !important;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) !important;
 }
 .mura #availableFields {
   margin-bottom: 0;
