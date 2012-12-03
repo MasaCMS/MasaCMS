@@ -102,7 +102,7 @@
 							return false;
 						}
 						
-						tagContent = "dspInclude('" + includePath + "')";
+						tagContent = "$.dspInclude('" + includePath + "')";
 					}
 					else if (this.getContentElement('object', 'objectType').isVisible())
 					{
@@ -116,7 +116,7 @@
 							return false;
 						}
 						
-						tagContent = "dspObject('" + objectType + "', '" + contentId;
+						tagContent = "$.dspObject('" + objectType + "', '" + contentId;
 						if (siteId.length) tagContent += "', '" + siteId;
 						tagContent += "')";
 					}
