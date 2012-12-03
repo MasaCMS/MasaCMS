@@ -13612,6 +13612,9 @@ font-size: 12px;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
+.mura .jcrop-holder {
+  margin-bottom: 18px;
+}
 .mura .clearfix {
   *zoom: 1;
 }
