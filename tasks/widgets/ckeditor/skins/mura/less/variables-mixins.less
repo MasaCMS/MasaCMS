@@ -1,0 +1,42 @@
+@import "../../../../../../admin/assets/bootstrap/less/mixins.less";
+@import "../../../../../../admin/assets/less/variables.less";
+@import "../../../../../../admin/assets/less/mixins.less";
+
+// Variables
+@blue:			#69c;
+@blueLight:		#8cb3d9;
+
+
+// Mixins
+
+.btn-ui {
+	display: inline-block;
+*display:inline;
+*zoom:1;
+	padding: 2px 9px !important;
+	margin: 0;
+	text-align: center;
+	color: #333;
+	vertical-align: middle;
+	cursor: pointer;
+	border: 0;
+	.box-shadow(none);
+	.border-radius(24px);
+	.box-shadow(none);
+	
+	&:hover {
+		text-decoration: none;
+	}
+}
+
+.btn-ok() { 
+	color: #fff;
+	text-shadow: 0 -1px 0 @blueLight;
+	border-color: @blueLight @blueLight @blue;
+	#gradient .vertical(@blueLight,@blue);
+	}
+	
+.btn-ok-hover() { 
+	border-color: darken(@blueLight,10%) darken(@blueLight,10%) darken(@blue,10%);
+	#gradient .vertical(darken(@blueLight,10%),darken(@blue,10%));
+	}
