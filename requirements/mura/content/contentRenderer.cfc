@@ -197,12 +197,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="loadJSLib" returntype="void" output="false">
 	<cfif not this.jsLibLoaded>
 	<cfswitch expression="#getJsLib()#">
-		<cfcase value="jquery">
-			<cfset addToHTMLHeadQueue("jquery.cfm")>
-		</cfcase>
-		<cfdefaultcase>
+		<cfcase value="prototype">
 			<cfset addToHTMLHeadQueue("prototype.cfm")>
 			<cfset addToHTMLHeadQueue("scriptaculous.cfm")>
+		</cfcase>
+		<cfdefaultcase>
+			<cfset addToHTMLHeadQueue("jquery.cfm")>
 		</cfdefaultcase>
 		</cfswitch>
 	</cfif>
@@ -212,11 +212,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not cookie.mobileFormat>
 		<cfset loadJSLib() />
 		<cfswitch expression="#getJsLib()#">
-			<cfcase value="jquery">
-					<cfset addToHTMLHeadQueue("shadowbox-jquery.cfm")>
+			<cfcase value="prototype">
+				<cfset addToHTMLHeadQueue("shadowbox-prototype.cfm")>
 			</cfcase>
 			<cfdefaultcase>
-				<cfset addToHTMLHeadQueue("shadowbox-prototype.cfm")>
+				<cfset addToHTMLHeadQueue("shadowbox-jquery.cfm")>
 			</cfdefaultcase>
 		</cfswitch>			
 		<cfset addToHTMLHeadQueue("shadowbox.cfm")>
@@ -940,49 +940,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getURLStem" access="public" output="false" returntype="string">
 	<cfargument name="siteID">
 	<cfargument name="filename">
-
-	<cfif len(arguments.filename)>
-		<cfif left(arguments.filename,1) neq "/">
-			<cfset arguments.filename= "/" & arguments.filename>
-		</cfif>
-		<cfif right(arguments.filename,1) neq "/">
-			<cfset arguments.filename=  arguments.filename & "/">
-		</cfif>
-	</cfif>
-
-	<cfif not application.configBean.getSiteIDInURLS()>
-		<cfif arguments.filename neq ''>
-			<cfif application.configBean.getStub() eq ''>
-				<cfif application.configBean.getIndexFileInURLS() and not request.muraExportHTML>
-					<cfreturn "/index.cfm" &  arguments.filename />
-				<cfelse>
-					<cfreturn arguments.filename />
-				</cfif>
-			<cfelse>
-				<cfreturn application.configBean.getStub() & arguments.filename />
-			</cfif>
-		<cfelse>
-			<cfreturn "/" />
-		</cfif>
-	<cfelse>
-		<cfif arguments.filename neq ''>
-			<cfif not len(application.configBean.getStub())>
-				<cfif application.configBean.getIndexFileInURLS()>
-					<cfreturn "/" & arguments.siteID & "/index.cfm" & arguments.filename />
-				<cfelse>
-					<cfreturn "/" & arguments.siteID & arguments.filename />
-				</cfif>
-			<cfelse>
-				<cfreturn application.configBean.getStub() & "/" & arguments.siteID  & arguments.filename />
-			</cfif>
-		<cfelse>
-			<cfif not len(application.configBean.getStub())>
-				<cfreturn "/" & arguments.siteID & "/" />
-			<cfelse>
-				<cfreturn application.configBean.getStub() & "/" & arguments.siteID & "/"  />
-			</cfif>
-		</cfif>
-	</cfif>
+	<cfreturn application.contentServer.getURLStem(argumentCollection=arguments)>
 </cffunction>
 
 <cffunction name="createHREF" returntype="string" output="false" access="public">
@@ -1504,7 +1462,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 				 <cfoutput>
 					<cfif arguments.pageTitle neq ''>
-						<#getHeaderTag('headline')# class="pageTitle">#arguments.pagetitle#</#getHeaderTag('headline')#>
+						<#getHeaderTag('headline')# class="pageTitle">#renderEditableAttribute(attribute='title',value=arguments.pagetitle)#</#getHeaderTag('headline')#>
 					</cfif>
 					<cfif arguments.crumblist>
 						#dspCrumbListLinks("crumblist",arguments.crumbseparator)#
@@ -1589,7 +1547,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								</cfif>
 								</cfoutput>	
 						</cfif>		
-						<cfoutput>#dspMultiPageContent(arguments.body)#</cfoutput>
+						<cfoutput>
+							#renderEditableAttribute(attribute="body",value=dspMultiPageContent(arguments.body),type="htmlEditor")#	
+						</cfoutput>
 					</cfdefaultcase>
 					</cfswitch>
 					<cfswitch expression="#variables.event.getValue('contentBean').gettype()#">
@@ -2308,9 +2268,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<cfif this.showEditableObjects and not request.muraExportHTML>
 					<cfsavecontent variable="headerStr">
-						<cfoutput>
-<link href="#variables.$.globalConfig('context')#/admin/assets/css/editableObjects.min.css" rel="stylesheet" type="text/css" />
-</cfoutput>
+					<cfoutput>
+					<link href="#variables.$.globalConfig('context')#/admin/assets/css/editableObjects.min.css" rel="stylesheet" type="text/css" />
+					<script type="text/javascript" src="#variables.$.globalConfig('context')#/tasks/widgets/ckeditor/ckeditor.js"></script>
+					<script type="text/javascript" src="#variables.$.globalConfig('context')#/tasks/widgets/ckeditor/adapters/jquery.js"></script>	
+					</cfoutput>
 					</cfsavecontent>
 				</cfif>
 			</cfif>
@@ -2551,12 +2513,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="renderEditableObjectHeader" access="public" output="no" returntype="string">
 		<cfargument name="class" required="yes" default="">
+		<cfargument name="customWrapperString" required="yes" default="">
 		<cfset var str = "">
 		
 		<cfif this.showEditableObjects>		
 		<cfsavecontent variable="str">
 			<cfoutput>
-			<span class="editableObject #arguments.class#"><span class="editableObjectContents">
+			<span class="editableObject #arguments.class#" #customWrapperString#><span class="editableObjectContents">
 			</cfoutput>
 		</cfsavecontent>
 		</cfif>
@@ -2717,4 +2680,37 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfswitch>
 
 </cffunction>
+
+<cffunction name="renderEditableAttribute" output="false">
+	<cfargument name="attribute">
+	<cfargument name="type" default="text">
+	<cfargument name="required" default="false">
+	<cfargument name="validation" default="">
+	<cfargument name="message" default="">
+	<cfargument name="value">
+	<cfscript>
+		var returnString='';
+		if(hasFETools()){
+			returnString=' data-attribute="#arguments.attribute#" data-type="#arguments.type#"';
+			if(yesNoFormat(arguments.required)){
+				returnString=returnString & ' data-required="true"';
+			} else {
+				returnString=returnString & ' data-required="false"';
+			}
+			
+			if(len(arguments.validation)){
+				returnString=returnString & ' data-validation="#arguments.validation#"';
+			}
+			returnString=returnString & ' data-message="#HTMLEditFormat(arguments.message)#"';
+			if(arguments.type eq 'htmlEditor'){
+				return '<div style="display:block;" class="editableObject"><div style="display:inline;" contenteditable="true" id="mura-editable-attribute-#arguments.attribute#" class="mura-editable-attribute" #returnString#>#arguments.value#</div></div>';
+			} else {
+				return '<div style="display:inline;" contenteditable="true" id="mura-editable-attribute-#arguments.attribute#" class="editableObject mura-editable-attribute" #returnString#>#arguments.value#</div>';
+			}
+		} else {
+			return arguments.value;
+		}
+	</cfscript>
+</cffunction>
+
 </cfcomponent>

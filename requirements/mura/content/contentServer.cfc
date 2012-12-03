@@ -555,4 +555,52 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn response>
 </cffunction>
 
+<cffunction name="getURLStem" access="public" output="false" returntype="string">
+	<cfargument name="siteID">
+	<cfargument name="filename">
+
+	<cfif len(arguments.filename)>
+		<cfif left(arguments.filename,1) neq "/">
+			<cfset arguments.filename= "/" & arguments.filename>
+		</cfif>
+		<cfif right(arguments.filename,1) neq "/">
+			<cfset arguments.filename=  arguments.filename & "/">
+		</cfif>
+	</cfif>
+
+	<cfif not application.configBean.getSiteIDInURLS()>
+		<cfif arguments.filename neq ''>
+			<cfif application.configBean.getStub() eq ''>
+				<cfif application.configBean.getIndexFileInURLS() and not request.muraExportHTML>
+					<cfreturn "/index.cfm" &  arguments.filename />
+				<cfelse>
+					<cfreturn arguments.filename />
+				</cfif>
+			<cfelse>
+				<cfreturn application.configBean.getStub() & arguments.filename />
+			</cfif>
+		<cfelse>
+			<cfreturn "/" />
+		</cfif>
+	<cfelse>
+		<cfif arguments.filename neq ''>
+			<cfif not len(application.configBean.getStub())>
+				<cfif application.configBean.getIndexFileInURLS()>
+					<cfreturn "/" & arguments.siteID & "/index.cfm" & arguments.filename />
+				<cfelse>
+					<cfreturn "/" & arguments.siteID & arguments.filename />
+				</cfif>
+			<cfelse>
+				<cfreturn application.configBean.getStub() & "/" & arguments.siteID  & arguments.filename />
+			</cfif>
+		<cfelse>
+			<cfif not len(application.configBean.getStub())>
+				<cfreturn "/" & arguments.siteID & "/" />
+			<cfelse>
+				<cfreturn application.configBean.getStub() & "/" & arguments.siteID & "/"  />
+			</cfif>
+		</cfif>
+	</cfif>
+</cffunction>
+
 </cfcomponent>

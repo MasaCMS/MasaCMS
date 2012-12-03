@@ -49,9 +49,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="Cookie.fetDisplay" default="">
 <cfoutput>
 <link href="#application.configBean.getContext()#/admin/assets/css/dialog.min.css" rel="stylesheet" type="text/css" />
-	
+
+<!--- <link href="#application.configBean.getContext()#/admin/assets/css/dialog.css" rel="stylesheet" type="text/css" /> --->
 <script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#"></script>
 <script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/dialog.js.cfm?siteid=#URLEncodedFormat(variables.$.event('siteid'))#&coreversion=#application.coreversion#"></script>
+<script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/editableattributes.js.cfm?siteid=#URLEncodedFormat(variables.$.event('siteid'))#&contenthistid=#$.content('contenthistid')#"></script>
 
 <!---[if LT IE9]>
    <style type="text/css">
@@ -177,26 +179,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif (request.r.perm eq 'editor' or listFind(session.mura.memberships,'S2')) and request.contentBean.getFilename() neq "" and not request.contentBean.getIslocked()>
 				<li id="adminDelete"><a href="#variables.deleteLink#" onclick="return confirm('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),request.contentBean.getMenutitle()))#');"><i class="icon-remove-sign"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#</a></li>
 			</cfif>
-			<cfif listFind(session.mura.memberships,'S2IsPrivate')>
-				<li id="adminSiteManager">
-					<a href="#variables.adminLink#" target="admin">
-						<i class="icon-list-alt"></i> #application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#
-					</a>
-				</li>
-			</cfif>
-			
-			<li id="adminSave">
-				<a href="" class="dropdown-toggle" data-toggle="dropdown">
-					<i class="icon-ok-sign"></i> Save <b class="caret"></b>
-				</a>
-				<ul class="dropdown-menu">
-					<li id=""><a href="">Publish</a></li>
-					<li><a href="">Save as Draft</a></li>
-					<li><a href="">Save to Changeset</a></li>
-					<li><a href="">Cancel</a></li>
-				</ul>
-			</li>
-			
+			<cfif listFind(session.mura.memberships,'S2IsPrivate')><li id="adminSiteManager"><a href="#variables.adminLink#" target="admin"><i class="icon-list-alt"></i> #application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#</a></li></cfif>
 		<cfelse>
 			<cfif listFind(session.mura.memberships,'S2IsPrivate')>
 				<li id="adminSiteManager404"><a href="#adminLink#" target="admin">
