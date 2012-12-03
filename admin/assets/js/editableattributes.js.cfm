@@ -11,9 +11,11 @@
 
 								attribute.click(function(){$('##muracontentsave').fadeIn();});								
 								
-								if(attribute.attr('data-type').toLowerCase()=='htmleditor'){
+								if(attribute.attr('data-type').toLowerCase()=='htmleditor' && 
+									typeof(CKEDITOR.instances[attribute.attr('id')]) == 'undefined' 	
+								){
 									CKEDITOR.inline( 
-										document.getElementById( 'mura-editable-attribute-' + attribute.attr('data-attribute') ),
+										document.getElementById( attribute.attr('id') ),
 										{
 											toolbar: 'Default',
 											width: "75%",
@@ -38,7 +40,7 @@
 					},
 				getEditorInstance: function(attribute){
 					var attributeid='mura-editable-attribute-' + attribute;
-					if(typeof(CKEDITOR.instances[attributeid]) != 'undefined' && instance != CKEDITOR.instances[instance]) {
+					if(typeof(CKEDITOR.instances[attributeid]) != 'undefined') {
 						return CKEDITOR.instances[attributeid];
 					} else{
 						return null;
