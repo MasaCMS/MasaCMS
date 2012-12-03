@@ -17,7 +17,7 @@ CKEDITOR.editorConfig = function( config )
 	CKFinderBasePath='#application.configBean.getContext()#/tasks/widgets';
 	</cfoutput>
 	
-	config.skin = 'kama';
+	config.skin = 'moono';
 	
 	<cfoutput>
 	<cfif renderer.headline eq "h1">
