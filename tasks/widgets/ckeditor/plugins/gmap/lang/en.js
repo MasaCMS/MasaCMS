@@ -1,6 +1,4 @@
 ﻿CKEDITOR.plugins.setLang("gmap","en",{
-  gmap:
-    {
 	 title:'Google Map location',
 	 commonTab:'Info',
 	 HelpInfo:'Insert an address and receive an image of your location',
@@ -9,5 +7,4 @@
 	 Near:'Closest',
 	 Far:'Furthest',
 	 Zoom:'Zoom:'
-	}
 });

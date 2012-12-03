@@ -1,6 +1,6 @@
 /*
  * @file change event plugin for CKEditor
- * Copyright (C) 2011 Alfonso Mart�nez de Lizarrondo
+ * Copyright (C) 2011 Alfonso Martínez de Lizarrondo
  *
  * == BEGIN LICENSE ==
  *
@@ -25,13 +25,22 @@ CKEDITOR.plugins.add( 'onchange',
 {
 	init : function( editor )
 	{
-		// Test:
+//		// Test:
 //		editor.on( 'change', function(e) { console.log( e ) });
 
-		var timer;
+		var timer,
+			theMutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver,
+			observer;
+// http://dvcs.w3.org/hg/domcore/raw-file/tip/Overview.html#mutation-observers
+// http://hacks.mozilla.org/2012/05/dom-mutationobserver-reacting-to-dom-changes-without-killing-browser-performance/
+
 		// Avoid firing the event too often
 		function somethingChanged()
 		{
+			// don't fire events if the editor is readOnly as they are false detections
+			if (editor.readOnly)
+				return;
+
 			if (timer)
 				return;
 
@@ -39,27 +48,61 @@ CKEDITOR.plugins.add( 'onchange',
 				timer = 0;
 				editor.fire( 'change' );
 			}, editor.config.minimumChangeMilliseconds || 100);
-			
-			//console.log('firing');
-			
 		}
 		// Kill the timer on editor destroy
 		editor.on( 'destroy', function() { if ( timer ) clearTimeout( timer ); timer = null; });
 
-		// Set several listeners to watch for changes to the content
-		editor.on( 'saveSnapshot', function( evt )
+		// in theory this block should be enabled only for browsers that don't support MutationObservers,
+		// but it doesn't seem to fire correctly in all the situations. Maybe in the future...
 		{
-			if ( !evt.data || !evt.data.contentOnly )
+			// Set several listeners to watch for changes to the content
+			editor.on( 'saveSnapshot', function( evt )
+			{
+				if ( !evt.data || !evt.data.contentOnly )
+					somethingChanged();
+			});
+
+			var undoCmd = editor.getCommand('undo');
+			undoCmd && undoCmd.on( 'afterUndo', somethingChanged);
+			var redoCmd = editor.getCommand('redo');
+			redoCmd && redoCmd.on( 'afterRedo', somethingChanged);
+
+			editor.on( 'afterCommandExec', function( event )
+			{
+				if ( event.data.name == 'source' )
+					return;
+
+				if ( event.data.command.canUndo !== false )
+					somethingChanged();
+			} );
+		}
+
+		if ( theMutationObserver )
+		{
+			observer = new theMutationObserver( function( mutations ) {
 				somethingChanged();
-		});
+			} );
 
-
-		editor.getCommand('undo').on( 'afterUndo', somethingChanged);
-		editor.getCommand('redo').on( 'afterRedo', somethingChanged);
+			// To check that we are using a cool browser.
+			if (window.console && window.console.log)
+				console.log("Detecting changes using MutationObservers");
+		}
 
 		// Changes in WYSIWYG mode
 		editor.on( 'contentDom', function()
 			{
+				if ( observer )
+				{
+					// A notification is fired right now, but we don't want it so soon
+					setTimeout( function() {
+						observer.observe( editor.document.getBody().$, {
+							attributes: true,
+							childList: true,
+							characterData: true
+						  });
+					}, 100);
+				}
+
 				editor.document.on( 'keydown', function( event )
 					{
 						// Do not capture CTRL hotkeys.
@@ -68,7 +111,7 @@ CKEDITOR.plugins.add( 'onchange',
 
 						var keyCode = event.data.$.keyCode;
 						// Filter movement keys and related
-						if (keyCode==8 || keyCode == 13 || keyCode == 32 || ( keyCode >= 46 && keyCode <= 90) || ( keyCode >= 96 && keyCode <= 111) || ( keyCode >= 186 && keyCode <= 222)   )
+						if (keyCode==8 || keyCode == 13 || keyCode == 32 || ( keyCode >= 46 && keyCode <= 90) || ( keyCode >= 96 && keyCode <= 111) || ( keyCode >= 186 && keyCode <= 222) || keyCode == 229)
 							somethingChanged();
 					});
 
@@ -84,6 +127,7 @@ CKEDITOR.plugins.add( 'onchange',
 				if ( editor.mode != 'source' )
 					return;
 
+				try{
 				editor.textarea.on( 'keydown', function( event )
 					{
 						// Do not capture CTRL hotkeys.
@@ -93,16 +137,13 @@ CKEDITOR.plugins.add( 'onchange',
 
 				editor.textarea.on( 'drop', somethingChanged);
 				editor.textarea.on( 'input', somethingChanged);
+				if (CKEDITOR.env.ie)
+				{
+					editor.textarea.on( 'cut', somethingChanged);
+					editor.textarea.on( 'paste', somethingChanged);
+				}
+				} catch(e){}	
 			});
-
-		editor.on( 'afterCommandExec', function( event )
-		{
-			if ( event.data.name == 'source' )
-				return;
-
-			if ( event.data.command.canUndo !== false )
-				somethingChanged();
-		} );
 
 
 	} //Init
