@@ -54,16 +54,16 @@ CKEDITOR.editorConfig = function( config )
 	config.startupFocus=false;
 	
 	config.toolbar_Default = [
-	                                	['Source'],
-	                                	['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt'],
-	                                	['Undo','Redo','-','Find','Replace','-','RemoveFormat'],
-	                                	['BidiLtr','BidiRtl'],
-	                                	['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
-	                                	['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
-	                                	['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
-	                                	['Link','Unlink','Anchor'],
-	                                	['Image','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>],
-										['Styles','Format','-','Maximize','ShowBlocks','About']
+	                                	{name: 'group1', items:['Source']},
+	                                	{name: 'group2', items:['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt']},
+	                                	{name: 'group3', items:['Undo','Redo','-','Find','Replace','-','RemoveFormat']},
+	                                	{name: 'group4', items:['BidiLtr','BidiRtl']},
+	                                	{name: 'group5', items:['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript']},
+	                                	{name: 'group6', items:['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv']},
+	                                	{name: 'group7', items:['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
+	                                	{name: 'group8', items:['Link','Unlink','Anchor']},
+	                                	{name: 'group9', items:['Image','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
+										{name: 'group10', items:['Styles','Format','-','Maximize','ShowBlocks','About']}
 	                                ] ;
 	
 	config.toolbar_Summary = [
