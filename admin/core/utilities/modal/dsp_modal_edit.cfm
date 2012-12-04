@@ -48,10 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif FindNoCase('Opera','#CGI.HTTP_USER_AGENT#') LESS THAN 1>
 <cfparam name="Cookie.fetDisplay" default="">
 <cfoutput>
-<link href="#application.configBean.getContext()#/admin/assets/css/dialog.min.css" rel="stylesheet" type="text/css" />
-
-<!--- <link href="#application.configBean.getContext()#/admin/assets/css/dialog.css" rel="stylesheet" type="text/css" /> --->
-<script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#"></script>
+<link href="#application.configBean.getContext()#/admin/assets/css/dialog.min.css" rel="stylesheet" type="text/css" /><script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#"></script>
 <script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/dialog.js.cfm?siteid=#URLEncodedFormat(variables.$.event('siteid'))#&coreversion=#application.coreversion#"></script>
 <script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/editableattributes.js.cfm?siteid=#URLEncodedFormat(variables.$.event('siteid'))#&contenthistid=#$.content('contenthistid')#"></script>
 
@@ -180,6 +177,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<li id="adminDelete"><a href="#variables.deleteLink#" onclick="return confirm('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),request.contentBean.getMenutitle()))#');"><i class="icon-remove-sign"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#</a></li>
 			</cfif>
 			<cfif listFind(session.mura.memberships,'S2IsPrivate')><li id="adminSiteManager"><a href="#variables.adminLink#" target="admin"><i class="icon-list-alt"></i> #application.rbFactory.getKeyValue(session.rb,'layout.sitemanager')#</a></li></cfif>
+			
 		<cfelse>
 			<cfif listFind(session.mura.memberships,'S2IsPrivate')>
 				<li id="adminSiteManager404"><a href="#adminLink#" target="admin">
@@ -189,6 +187,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		<li id="adminLogOut"><a href="?doaction=logout"><i class="icon-signout"></i>#application.rbFactory.getKeyValue(session.rb,'layout.logout')#</a></li>
 		<li id="adminWelcome">#application.rbFactory.getKeyValue(session.rb,'layout.welcome')#, #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#.</li>
+		
+		<li id="adminSave" class="active dropdown">
+			<a href="" class="dropdown-toggle" data-toggle="dropdown">
+				<i class="icon-ok-sign"></i> Save</a>
+			<ul class="dropdown-menu">
+				<li id=""><a href=""><i class="icon-ok"></i> Publish</a></li>
+				<li><a href=""><i class="icon-ok"></i> Save as Draft</a></li>
+				<li class="dropdown-submenu"><a href=""><i class="icon-ok"></i> Save to Changeset</a>
+				
+					<ul class="dropdown-menu">
+						<li>
+							<a href="">Changeset 1</a>
+						</li>
+						<li>
+							<a href="">Lorem ipsum dolor sit amet nonummy adspicing</a>
+						</li>
+						<li>
+							<a href="">Changeset 3</a>
+						</li>
+					</ul>
+				</li>
+				<li><a href=""><i class="icon-ban-circle"></i> Cancel</a></li>
+			</ul>
+		</li>
 		</ul>
 		
 	</div>
