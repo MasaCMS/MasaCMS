@@ -38,15 +38,20 @@
 									if(attribute.attr('data-type').toLowerCase()=='htmleditor' && 
 										typeof(CKEDITOR.instances[attribute.attr('id')]) == 'undefined' 	
 									){
-										CKEDITOR.inline( 
+										var editor=CKEDITOR.inline( 
 											document.getElementById( attribute.attr('id') ),
 											{
 												toolbar: 'Default',
 												width: "75%",
 												customConfig: 'config.js.cfm'
-											},
-											muraInlineEditor.htmlEditorOnComplete
+											}
 										 );
+
+										 editor.on('change', function(){
+										 	if($('##adminSave').css('display') == 'none'){
+												$('##adminSave').fadeIn();	
+											}
+										 });
 									}
 								
 								}
@@ -67,6 +72,7 @@
 									}
 								}
 								muraInlineEditor.data.changesetid=changesetid;
+								muraInlineEditor.data.approve=0;
 							}
 
 							muraInlineEditor.save();
@@ -133,7 +139,7 @@
 					contentid: '#JSStringFormat(node.getContentID())#',
 					parentid: '#JSStringFormat(node.getParentID())#',
 					moduleid: '#JSStringFormat(node.getModuleID())#',
-					approve: 1,
+					approve: 0,
 					changesetid: ''
 					},
 				attributes: {},
