@@ -215,7 +215,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</ul>
 					</li>
 				</cfif>
-				<li><a class="mura-inline-cancel"><i class="icon-ban-circle"></i> Cancel</a></li>
+				<li><a class="mura-inline-cancel"><i class="icon-ban-circle"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.cancel"))#</a></li>
 			</ul>
 		</li>
 		</ul>

@@ -55,8 +55,19 @@
 						);
 
 						$('.mura-inline-save').click(function(){
-							muraInlineEditor.data.approve=$(this).attr('data-approve');
-							muraInlineEditor.data.changesetid=$(this).attr('data-changesetid');
+							var changesetid=$(this).attr('data-changesetid');
+
+							if(changsetid == ''){
+								muraInlineEditor.data.approve=$(this).attr('data-approve');
+							} else {
+								if(muraInlineEditor.data.changesetid != '' && muraInlineEditor.data.changesetid != changesetid){
+									if(confirm('#JSStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.removechangeset"),application.changesetManager.read(node.getChangesetID()).getName()))#')){
+										muraInlineEditor.data._removePreviousChangeset=true;
+									}
+								}
+								muraInlineEditor.data.changesetid=changesetid;
+							}
+
 							muraInlineEditor.save();
 						});
 
