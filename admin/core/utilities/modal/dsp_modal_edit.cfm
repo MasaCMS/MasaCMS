@@ -187,31 +187,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		<li id="adminLogOut"><a href="?doaction=logout"><i class="icon-signout"></i>#application.rbFactory.getKeyValue(session.rb,'layout.logout')#</a></li>
 		<li id="adminWelcome">#application.rbFactory.getKeyValue(session.rb,'layout.welcome')#, #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#.</li>
-		
-		<li id="adminSave" class="active dropdown">
+		<cfif listFindNoCase('editor,author',request.r.perm) or listFind(session.mura.memberships,'S2') >
+		<li id="adminSave" class="active dropdown" style="display:none">
 			<a href="" class="dropdown-toggle" data-toggle="dropdown">
 				<i class="icon-ok-sign"></i> Save</a>
 			<ul class="dropdown-menu">
-				<li id=""><a href=""><i class="icon-ok"></i> Publish</a></li>
-				<li><a href=""><i class="icon-ok"></i> Save as Draft</a></li>
-				<li class="dropdown-submenu"><a href=""><i class="icon-ok"></i> Save to Changeset</a>
-				
-					<ul class="dropdown-menu">
-						<li>
-							<a href="">Changeset 1</a>
-						</li>
-						<li>
-							<a href="">Lorem ipsum dolor sit amet nonummy adspicing</a>
-						</li>
-						<li>
-							<a href="">Changeset 3</a>
-						</li>
-					</ul>
-				</li>
-				<li><a href=""><i class="icon-ban-circle"></i> Cancel</a></li>
+				<cfif (request.r.perm  eq 'editor' or listFind(session.mura.memberships,'S2')) and not variables.$.siteConfig('EnforceChangesets')><li class="mura-inline-save" data-approve="1"><a><i class="icon-ok"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#</a></li></cfif>
+				<cfif listFindNoCase('editor,author',request.r.perm) or listFind(session.mura.memberships,'S2') ><li><a class="mura-inline-save" data-approve="0"><i class="icon-ok"></i>  #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#</a></li></cfif>
+				<cfif variables.$.siteConfig('HasChangesets') and (request.r.perm  eq 'editor' or listFind(session.mura.memberships,'S2')) >
+					<li class="dropdown-submenu"><a href=""><i class="icon-ok"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset"))#</a>			
+						<cfset currentChangeset=application.changesetManager.read(variables.$.content('changesetID'))>
+						<cfset changesets=application.changesetManager.getIterator(siteID=variables.$.event('siteid'),published=0,publishdate=now(),publishDateOnly=false)>
+						<ul class="dropdown-menu">
+							<cfloop condition="changesets.hasNext()">
+								<cfset changeset=changesets.next()>
+								<li>
+									<a class="mura-inline-save" data-approve="0" data-changesetid="#changeset.getChangesetID()#">#HTMLEditFormat(changeset.getName())#</a>
+								</li>
+							</cfloop>
+						</ul>
+					</li>
+				</cfif>
+				<li><a class="mura-inline-cancel"><i class="icon-ban-circle"></i> Cancel</a></li>
 			</ul>
 		</li>
 		</ul>
+		</cfif>
 		
 	</div>
 	

@@ -24,77 +24,81 @@
 		<cfset secure(arguments.rc)>
 	</cfif>
 
-	<cfparam name="arguments.rc.return" default=""/>
-	<cfparam name="arguments.rc.startrow" default="1"/>
-	<cfparam name="arguments.rc.contentHistID" default="#createuuid()#"/>
-	<cfparam name="arguments.rc.notify" default=""/>
-	<cfparam name="arguments.rc.preview" default="0"/>
-	<cfparam name="arguments.rc.size" default="20"/>
-	<cfparam name="arguments.rc.isNav" default="0"/>
-	<cfparam name="arguments.rc.isLocked" default="0"/>
-	<cfparam name="arguments.rc.forceSSL" default="0"/>
-	<cfparam name="arguments.rc.target" default="_self"/>
-	<cfparam name="arguments.rc.searchExclude" default="0"/>
-	<cfparam name="arguments.rc.restricted" default="0"/>
-	<cfparam name="arguments.rc.relatedcontentid" default=""/>
-	<cfparam name="arguments.rc.responseChart" default="0"/>
-	<cfparam name="arguments.rc.displayTitle" default="0"/>
-	<cfparam name="arguments.rc.closeCompactDisplay" default=""/>
-	<cfparam name="arguments.rc.compactDisplay" default=""/>
-	<cfparam name="arguments.rc.doCache" default="1"/>
-	<cfparam name="arguments.rc.returnURL" default=""/>
-	<cfparam name="arguments.rc.homeID" default=""/>
-	<cfparam name="arguments.rc.datasource" default="#variables.configBean.getDatasource()#"/>
-	<cfparam name="arguments.rc.parentid" default=""/>
-	<cfparam name="arguments.rc.menuTitle" default=""/>
-	<cfparam name="arguments.rc.title" default=""/>
-	<cfparam name="arguments.rc.action" default=""/>
-	<cfparam name="arguments.rc.ptype" default="Page"/>
-	<cfparam name="arguments.rc.contentid" default=""/>
-	<cfparam name="arguments.rc.contenthistid" default=""/>
-	<cfparam name="arguments.rc.type" default="Page"/>
-	<cfparam name="arguments.rc.body" default=""/>
-	<cfparam name="arguments.rc.oldbody" default=""/>
-	<cfparam name="arguments.rc.oldfilename" default=""/>
-	<cfparam name="arguments.rc.url" default=""/>
-	<cfparam name="arguments.rc.filename" default=""/>
-	<cfparam name="arguments.rc.metadesc" default=""/>
-	<cfparam name="arguments.rc.metakeywords" default=""/>
+	<cfparam name="arguments.rc.ajaxrequest" default="false"/>
 	<cfparam name="arguments.rc.orderno" default="0"/>
-	<cfparam name="arguments.rc.display" default="0"/>
-	<cfparam name="arguments.rc.displaystart" default=""/>
-	<cfparam name="arguments.rc.displaystop" default=""/>
-	<cfparam name="arguments.rc.abstract" default=""/>
-	<cfparam name="arguments.rc.frameid" default="0"/>
-	<cfparam name="arguments.rc.abstract" default=""/>
-	<cfparam name="arguments.rc.editor" default="0"/>
-	<cfparam name="arguments.rc.author" default="0"/>
-	<cfparam name="arguments.rc.moduleid" default="00000000000000000000000000000000000"/>
-	<cfparam name="arguments.rc.objectid" default=""/>
-	<cfparam name="arguments.rc.lastupdate" default=""/>
-	<cfparam name="arguments.rc.siteid" default=""/>
-	<cfparam name="arguments.rc.title" default=""/>
-	<cfparam name="arguments.rc.startrow" default="1"/>
-	<cfparam name="arguments.rc.lastupdate" default="#now()#"/>
-	<cfparam name="session.mura.viewDepth" default="#variables.settingsManager.getSite(arguments.rc.siteid).getviewdepth()#"/>
-	<cfparam name="session.mura.nextN" default="#variables.settingsManager.getSite(arguments.rc.siteid).getnextN()#"/>
-	<cfparam name="session.keywords" default=""/>
-	<cfparam name="arguments.rc.startrow" default="1"/>
-	<cfparam name="arguments.rc.date1" default=""/>
-	<cfparam name="arguments.rc.date2" default=""/>
-	<cfparam name="arguments.rc.return" default=""/>
-	<cfparam name="arguments.rc.forceSSL" default="0"/>
-	<cfparam name="arguments.rc.closeCompactDisplay" default=""/>
-	<cfparam name="arguments.rc.returnURL" default=""/>
-	<cfparam name="arguments.rc.locking" default="false"/>
-	<cfparam name="arguments.rc.mobileExclude" default="0"/>
-	<cfparam name="arguments.rc.moduleAssign" default=""/>
-	 
-	<cfif not isDefined("arguments.rc.topid")>
-		<cfparam name="session.topID" default="00000000000000000000000000000000001">
-		<cfset arguments.rc.topid=session.topID>
-	<cfelseif left(arguments.rc.topID,10) neq "0000000000" or arguments.rc.topID eq "00000000000000000000000000000000001">
-		<cfset session.topID=arguments.rc.topid>
+
+	<cfif not arguments.rc.ajaxrequest>
+		<cfparam name="arguments.rc.return" default=""/>
+		<cfparam name="arguments.rc.startrow" default="1"/>
+		<cfparam name="arguments.rc.contentHistID" default="#createuuid()#"/>
+		<cfparam name="arguments.rc.notify" default=""/>
+		<cfparam name="arguments.rc.preview" default="0"/>
+		<cfparam name="arguments.rc.size" default="20"/>
+		<cfparam name="arguments.rc.isNav" default="0"/>
+		<cfparam name="arguments.rc.isLocked" default="0"/>
+		<cfparam name="arguments.rc.forceSSL" default="0"/>
+		<cfparam name="arguments.rc.target" default="_self"/>
+		<cfparam name="arguments.rc.searchExclude" default="0"/>
+		<cfparam name="arguments.rc.restricted" default="0"/>
+		<cfparam name="arguments.rc.relatedcontentid" default=""/>
+		<cfparam name="arguments.rc.responseChart" default="0"/>
+		<cfparam name="arguments.rc.displayTitle" default="0"/>
+		<cfparam name="arguments.rc.closeCompactDisplay" default=""/>
+		<cfparam name="arguments.rc.compactDisplay" default=""/>
+		<cfparam name="arguments.rc.doCache" default="1"/>
+		<cfparam name="arguments.rc.returnURL" default=""/>
+		<cfparam name="arguments.rc.homeID" default=""/>
+		<cfparam name="arguments.rc.datasource" default="#variables.configBean.getDatasource()#"/>
+		<cfparam name="arguments.rc.parentid" default=""/>
+		<cfparam name="arguments.rc.menuTitle" default=""/>
+		<cfparam name="arguments.rc.title" default=""/>
+		<cfparam name="arguments.rc.action" default=""/>
+		<cfparam name="arguments.rc.ptype" default="Page"/>
+		<cfparam name="arguments.rc.contentid" default=""/>
+		<cfparam name="arguments.rc.contenthistid" default=""/>
+		<cfparam name="arguments.rc.type" default="Page"/>
+		<cfparam name="arguments.rc.body" default=""/>
+		<cfparam name="arguments.rc.oldbody" default=""/>
+		<cfparam name="arguments.rc.oldfilename" default=""/>
+		<cfparam name="arguments.rc.url" default=""/>
+		<cfparam name="arguments.rc.filename" default=""/>
+		<cfparam name="arguments.rc.metadesc" default=""/>
+		<cfparam name="arguments.rc.metakeywords" default=""/>
+		<cfparam name="arguments.rc.display" default="0"/>
+		<cfparam name="arguments.rc.displaystart" default=""/>
+		<cfparam name="arguments.rc.displaystop" default=""/>
+		<cfparam name="arguments.rc.abstract" default=""/>
+		<cfparam name="arguments.rc.frameid" default="0"/>
+		<cfparam name="arguments.rc.abstract" default=""/>
+		<cfparam name="arguments.rc.editor" default="0"/>
+		<cfparam name="arguments.rc.author" default="0"/>
+		<cfparam name="arguments.rc.moduleid" default="00000000000000000000000000000000000"/>
+		<cfparam name="arguments.rc.objectid" default=""/>
+		<cfparam name="arguments.rc.lastupdate" default=""/>
+		<cfparam name="arguments.rc.siteid" default=""/>
+		<cfparam name="arguments.rc.title" default=""/>
+		<cfparam name="arguments.rc.startrow" default="1"/>
+		<cfparam name="arguments.rc.lastupdate" default="#now()#"/>
+		<cfparam name="session.mura.viewDepth" default="#variables.settingsManager.getSite(arguments.rc.siteid).getviewdepth()#"/>
+		<cfparam name="session.mura.nextN" default="#variables.settingsManager.getSite(arguments.rc.siteid).getnextN()#"/>
+		<cfparam name="session.keywords" default=""/>
+		<cfparam name="arguments.rc.startrow" default="1"/>
+		<cfparam name="arguments.rc.date1" default=""/>
+		<cfparam name="arguments.rc.date2" default=""/>
+		<cfparam name="arguments.rc.return" default=""/>
+		<cfparam name="arguments.rc.forceSSL" default="0"/>
+		<cfparam name="arguments.rc.closeCompactDisplay" default=""/>
+		<cfparam name="arguments.rc.returnURL" default=""/>
+		<cfparam name="arguments.rc.locking" default="false"/>
+		<cfparam name="arguments.rc.mobileExclude" default="0"/>
+		<cfparam name="arguments.rc.moduleAssign" default=""/>
+		 
+		<cfif not isDefined("arguments.rc.topid")>
+			<cfparam name="session.topID" default="00000000000000000000000000000000001">
+			<cfset arguments.rc.topid=session.topID>
+		<cfelseif left(arguments.rc.topID,10) neq "0000000000" or arguments.rc.topID eq "00000000000000000000000000000000001">
+			<cfset session.topID=arguments.rc.topid>
+		</cfif>
 	</cfif>
 	
 </cffunction>
@@ -254,6 +258,9 @@
 			 <cfset arguments.rc.contentBean=getBean('content').loadBy(contentHistID=arguments.rc.sourceID, siteid=arguments.rc.siteid).set(arguments.rc).save() />
 		<cfelse>
 			 <cfset arguments.rc.contentBean=getBean('content').loadBy(contentID=arguments.rc.contentID, siteid=arguments.rc.siteid).set(arguments.rc).save() />
+		</cfif>
+		<cfif arguments.rc.ajaxrequest>
+			<cfabort>
 		</cfif>
 		<cfif len(request.newImageIDList)>
 			<cfset rc.fileid=request.newImageIDList>

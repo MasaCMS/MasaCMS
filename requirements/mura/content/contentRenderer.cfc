@@ -1462,7 +1462,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 				 <cfoutput>
 					<cfif arguments.pageTitle neq ''>
-						<#getHeaderTag('headline')# class="pageTitle">#renderEditableAttribute(attribute='title',value=arguments.pagetitle)#</#getHeaderTag('headline')#>
+						<#getHeaderTag('headline')# class="pageTitle"><cfif arguments.pageTitle eq $.content('title')>#renderEditableAttribute(attribute='title',value=arguments.pagetitle)#<cfelse>#arguments.pageTitle#</cfif></#getHeaderTag('headline')#>
 					</cfif>
 					<cfif arguments.crumblist>
 						#dspCrumbListLinks("crumblist",arguments.crumbseparator)#
@@ -1548,7 +1548,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								</cfoutput>	
 						</cfif>		
 						<cfoutput>
-							#renderEditableAttribute(attribute="body",value=dspMultiPageContent(arguments.body),type="htmlEditor")#	
+							#renderEditableAttribute(attribute="body",type="htmlEditor",value=setDynamicContent($.content('body')))#	
 						</cfoutput>
 					</cfdefaultcase>
 					</cfswitch>
@@ -2687,11 +2687,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="required" default="false">
 	<cfargument name="validation" default="">
 	<cfargument name="message" default="">
-	<cfargument name="value">
+	<cfargument name="enableMuraTag" default="true">
 	<cfscript>
 		var returnString='';
+		arguments.attribute=lcase(arguments.attribute);
+
+		if(not structKeyExists(arguments,'value')){
+			arguments.value=variables.$.content(arguments.attribute);
+		}
+
 		if(hasFETools()){
 			returnString=' data-attribute="#arguments.attribute#" data-type="#arguments.type#"';
+			
 			if(yesNoFormat(arguments.required)){
 				returnString=returnString & ' data-required="true"';
 			} else {
@@ -2703,7 +2710,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			}
 			returnString=returnString & ' data-message="#HTMLEditFormat(arguments.message)#"';
 			if(arguments.type eq 'htmlEditor'){
-				return '<div style="display:block;" class="editableObject"><div style="display:inline;" contenteditable="true" id="mura-editable-attribute-#arguments.attribute#" class="mura-editable-attribute" #returnString#>#arguments.value#</div></div>';
+				return '<div style="display:block;" class="editableObject"><div style="display:inline;" contenteditable="true" id="mura-editable-attribute-#arguments.attribute#" class="editableObject mura-editable-attribute" #returnString#>#arguments.value#</div></div>';
 			} else {
 				return '<div style="display:inline;" contenteditable="true" id="mura-editable-attribute-#arguments.attribute#" class="editableObject mura-editable-attribute" #returnString#>#arguments.value#</div>';
 			}
