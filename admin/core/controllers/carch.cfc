@@ -26,7 +26,8 @@
 
 	<cfparam name="arguments.rc.ajaxrequest" default="false"/>
 	<cfparam name="arguments.rc.orderno" default="0"/>
-
+	<cfparam name="arguments.rc.moduleid" default="00000000000000000000000000000000000"/>
+	
 	<cfif not arguments.rc.ajaxrequest>
 		<cfparam name="arguments.rc.return" default=""/>
 		<cfparam name="arguments.rc.startrow" default="1"/>
