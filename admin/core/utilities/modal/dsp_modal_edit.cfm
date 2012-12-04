@@ -200,12 +200,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset currentChangeset=application.changesetManager.read(variables.$.content('changesetID'))>
 						<cfset changesets=application.changesetManager.getIterator(siteID=variables.$.event('siteid'),published=0,publishdate=now(),publishDateOnly=false)>
 						<ul class="dropdown-menu">
+							<cfif changesets.hasNext()>
 							<cfloop condition="changesets.hasNext()">
 								<cfset changeset=changesets.next()>
 								<li>
 									<a class="mura-inline-save" data-approve="0" data-changesetid="#changeset.getChangesetID()#">#HTMLEditFormat(changeset.getName())#</a>
 								</li>
 							</cfloop>
+							<cfelse>
+								<li>
+									<a class="mura-inline-cancel">#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.noneavailable"))#</a>
+								</li>
+							</cfif>
 						</ul>
 					</li>
 				</cfif>
