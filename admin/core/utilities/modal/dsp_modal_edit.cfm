@@ -50,6 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <link href="#application.configBean.getContext()#/admin/assets/css/dialog.min.css" rel="stylesheet" type="text/css" /><script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#"></script>
 <script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/dialog.js.cfm?siteid=#URLEncodedFormat(variables.$.event('siteid'))#&coreversion=#application.coreversion#"></script>
+<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckfinder/ckfinder.js"></script>
 <script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/editableattributes.js.cfm?siteid=#URLEncodedFormat(variables.$.event('siteid'))#&contenthistid=#$.content('contenthistid')#"></script>
 
 <!---[if LT IE9]>

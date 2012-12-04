@@ -1462,7 +1462,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 				 <cfoutput>
 					<cfif arguments.pageTitle neq ''>
-						<#getHeaderTag('headline')# class="pageTitle"><cfif arguments.pageTitle eq $.content('title')>#renderEditableAttribute(attribute='title',value=arguments.pagetitle)#<cfelse>#arguments.pageTitle#</cfif></#getHeaderTag('headline')#>
+						<#getHeaderTag('headline')# class="pageTitle"><cfif arguments.pageTitle eq $.content('title')>#renderEditableAttribute(attribute='title')#<cfelse>#arguments.pageTitle#</cfif></#getHeaderTag('headline')#>
 					</cfif>
 					<cfif arguments.crumblist>
 						#dspCrumbListLinks("crumblist",arguments.crumbseparator)#
@@ -1511,13 +1511,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfoutput>
 								<div id="svAssetDetail" class="image">
 								<a href="#variables.$.content().getImageURL(size='large')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#variables.$.content().getImageURL(size='medium')#" class="imgMed thumbnail" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" /></a>
-								#setDynamicContent(variables.event.getValue('contentBean').getSummary(),variables.event.getValue('keywords'))#
+								#renderEditableAttribute(attribute="summary",type="htmlEditor")#
 								</div>
 								</cfoutput>
 						<cfelse>
 								<cfoutput>
 								<div id="svAssetDetail" class="file">
-								#setDynamicContent(variables.event.getValue('contentBean').getSummary(),variables.event.getValue('keywords'))#
+								#renderEditableAttribute(attribute="summary",type="htmlEditor")#
 								<a href="#application.configBean.getContext()#/#variables.event.getValue('siteID')#/?linkServID=#variables.event.getValue('contentBean').getContentID()#&amp;showMeta=2&amp;ext=.#variables.event.getValue('contentBean').getFileExt()#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" id="svAsset" class="#lcase(variables.event.getValue('contentBean').getFileExt())#">Download File</a>							
 								</div>
 								</cfoutput>
@@ -1526,7 +1526,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfcase value="Link">
 						<cfoutput>
 						<div id="svAssetDetail" class="link">
-							#setDynamicContent(variables.event.getValue('contentBean').getSummary(),variables.event.getValue('keywords'))#
+							#renderEditableAttribute(attribute="summary",type="htmlEditor")#	
 							<a href="#application.configBean.getContext()#/#variables.event.getValue('siteID')#/?linkServID=#variables.event.getValue('contentBean').getContentID()#&amp;showMeta=2" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" id="svAsset" class="url">View Link</a>							
 						</div>
 						</cfoutput>
@@ -1548,7 +1548,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								</cfoutput>	
 						</cfif>		
 						<cfoutput>
-							#renderEditableAttribute(attribute="body",type="htmlEditor",value=setDynamicContent($.content('body')))#	
+							#renderEditableAttribute(attribute="body",type="htmlEditor")#	
 						</cfoutput>
 					</cfdefaultcase>
 					</cfswitch>
@@ -2694,6 +2694,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		if(not structKeyExists(arguments,'value')){
 			arguments.value=variables.$.content(arguments.attribute);
+		}
+
+		if(arguments.enableMuraTag){
+			arguments.value=setDynamicContent(arguments.value);
 		}
 
 		if(hasFETools()){
