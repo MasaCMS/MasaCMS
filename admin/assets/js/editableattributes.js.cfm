@@ -57,8 +57,9 @@
 						$('.mura-inline-save').click(function(){
 							var changesetid=$(this).attr('data-changesetid');
 
-							if(changsetid == ''){
+							if(changesetid == ''){
 								muraInlineEditor.data.approve=$(this).attr('data-approve');
+								muraInlineEditor.data.changesetid='';
 							} else {
 								if(muraInlineEditor.data.changesetid != '' && muraInlineEditor.data.changesetid != changesetid){
 									if(confirm('#JSStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.removechangeset"),application.changesetManager.read(node.getChangesetID()).getName()))#')){
