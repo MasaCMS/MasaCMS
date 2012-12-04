@@ -31,9 +31,7 @@
 										}
 
 									}
-								);
-
-														
+								);													
 								
 								if(!(attributename in muraInlineEditor.attributes)){
 
@@ -55,7 +53,6 @@
 							}
 							
 						);
-
 
 						$('.mura-inline-save').click(function(){
 							muraInlineEditor.data.approve=$(this).attr('data-approve');
