@@ -1,5 +1,7 @@
+<cftry>
 <cfcontent reset="yes" type="application/javascript">
-<cfset node=application.serviceFactory.getBean('$').init(url.siteid).getBean('content').loadBy(contentHistID=url.contentHistID)>
+<cfif isDefined('url.siteID') and isDefined('url.contenthistid')>
+<cfset node=application.serviceFactory.getBean('contentManager').read(contentHistID=url.contentHistID,siteid=url.siteid)>
 <cfif not node.getIsNew()>
 	<cfoutput>
 	var muraInlineEditor={
@@ -144,3 +146,8 @@
 		muraInlineEditor.init();
 	});
 </cfif>
+</cfif>
+<cfcatch>
+	<cfdump var="#cfcatch#">
+</cfcatch>
+</cftry>
