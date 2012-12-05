@@ -89,4 +89,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn arguments.data>
 </cffunction>
 
+<cffunction name="ifOracleFixClobs" output="false">
+	<cfargument name="rs">
+	<cfif application.configBean.getDbType() eq 'Oracle'>
+		<cfreturn application.utility.fixOracleClobs(rs)>
+	<cfelse>
+		<cfreturn rs>
+	</cfif>
+</cffunction>
+
 </cfcomponent>

@@ -184,9 +184,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif perm.level neq 'Deny'>
 		<cfif not isBoolean(event.getValue("liveOnly"))>
-			<cfset event.setValue("__response__", content.getKidsQuery())>
+			<cfset event.setValue("__response__", ifOracleFixClobs(content.getKidsQuery()))>
 		<cfelse>
-			<cfset event.setValue("__response__", content.getKidsIterator(liveOnly=event.getValue("liveOnly")).getQuery())>
+			<cfset event.setValue("__response__", ifOracleFixClobs(content.getKidsIterator(liveOnly=event.getValue("liveOnly")).getQuery()))>
 		</cfif>
 	<cfelse>
 		<cfset event.setValue("__response__", "access denied")>
@@ -199,7 +199,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var perm=getPerm(event)>
 	
 	<cfif perm.level neq 'Deny'>
-		<cfset event.setValue("__response__", content.getCategoriesQuery())>
+		<cfset event.setValue("__response__", ifOracleFixClobs(content.getCategoriesQuery()))>
 	<cfelse>
 		<cfset event.setValue("__response__", "access denied")>
 	</cfif>
@@ -211,7 +211,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var perm=getPerm(event)>
 	
 	<cfif perm.level neq 'Deny'>
-		<cfset event.setValue("__response__", content.getRelateContentQuery())>
+		<cfset event.setValue("__response__", ifOracleFixClobs(content.getRelateContentQuery()))>
 	<cfelse>
 		<cfset event.setValue("__response__", "access denied")>
 	</cfif>

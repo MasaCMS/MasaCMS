@@ -75,3 +75,4 @@ strongPasswords=0
 autoDiscoverPlugins=false
 maxPortalItems=100
 allowAutoUpdates=1
+maxArchivedVersions=50

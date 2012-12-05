@@ -590,4 +590,28 @@ Blog:http://www.modernsignal.com/coldfusionhttponlycookie--->
 	<cfreturn trace>
 </cffunction>
 
+<cffunction name="fixOracleClobs" output="false">
+	<cfargument name="rs">
+		<cfset var rsmeta=getMetaData(arguments.rs)>
+		<cfset var clobArray=arrayNew(1)>
+		<cfset var i=1>
+		
+		<cfif arrayLen(rsmeta)>
+		<cfloop from="1" to="#arrayLen(rsmeta)#" index="i">
+			<cfif rsmeta[i].typename eq "clob">
+				<cfset arrayAppend(clobArray,rsmeta[i].name)>
+			</cfif>
+		</cfloop>
+		</cfif>
+		
+		<cfif arrayLen(clobArray)>
+		<cfloop query="arguments.rs">
+			<cfloop from="1" to="#arrayLen(clobArray)#" index="i">
+				 <cfset QuerySetCell(arguments.rs, clobArray[i],evaluate('arguments.rs.#clobArray[i]#'), arguments.rs.currentRow)>
+			</cfloop>
+		</cfloop>
+		</cfif>
+	<cfreturn arguments.rs>
+</cffunction>
+
 </cfcomponent>
