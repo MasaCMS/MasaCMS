@@ -1372,36 +1372,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var temp="">
 		
 		<cfif isQuery(arguments.value) and application.configBean.getDBType() eq "Oracle">
-			<cfset arguments.value=fixOracleClobs(arguments.value)>
+			<cfset arguments.value=variables.utility.fixOracleClobs(arguments.value)>
 		</cfif>
 		
 		<cfset variables.data["#name#"]=arguments.value>
 		<cfwddx action="cfml2wddx" input="#arguments.value#" output="temp">
 		<cffile action="write" output="#temp#" file="#variables.backupDir#wddx_#arguments.name#.xml"  charset="utf-8">
-	</cffunction>
-
-	<cffunction name="fixOracleClobs" output="false">
-	<cfargument name="rs">
-		<cfset var rsmeta=getMetaData(arguments.rs)>
-		<cfset var clobArray=arrayNew(1)>
-		<cfset var i=1>
-		
-		<cfif arrayLen(rsmeta)>
-		<cfloop from="1" to="#arrayLen(rsmeta)#" index="i">
-			<cfif rsmeta[i].typename eq "clob">
-				<cfset arrayAppend(clobArray,rsmeta[i].name)>
-			</cfif>
-		</cfloop>
-		</cfif>
-		
-		<cfif arrayLen(clobArray)>
-		<cfloop query="arguments.rs">
-			<cfloop from="1" to="#arrayLen(clobArray)#" index="i">
-				 <cfset QuerySetCell(arguments.rs, clobArray[i],evaluate('arguments.rs.#clobArray[i]#'), arguments.rs.currentRow)>
-			</cfloop>
-		</cfloop>
-		</cfif>
-	<cfreturn arguments.rs>
 	</cffunction>
 
 	<cffunction name="valueExists" access="public" output="false">

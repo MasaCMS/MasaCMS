@@ -56,7 +56,7 @@
   clear: both;
 }
 .hide-text {
-  font: a;
+  font: 0/0 a;
   color: transparent;
   text-shadow: none;
   background-color: transparent;
@@ -72,9 +72,10 @@
 }
 .mura-modal,
 .modal-backdrop {
-  background-color: #000;
-  filter: alpha(opacity=80);
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+  background-color: #222;
+  background: transparent;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#CC000000,endColorstr=#CC000000);
+  zoom: 1;
   background-color: rgba(0, 0, 0, 0.8);
   background-image: -webkit-gradient(radial, center center, 0, center center, 460, from(rgba(102, 102, 102, 0.8)), to(rgba(0, 0, 0, 0.8)));
   background-image: -webkit-radial-gradient(circle, rgba(102, 102, 102, 0.8), rgba(0, 0, 0, 0.8));
@@ -1064,8 +1065,7 @@ ul.icons li .icon-large:before {
   width: auto !important;
   height: auto !important;
   margin: 0 !important;
-  padding: 5px !important;
-  padding-bottom: 1px !important;
+  padding: 3px 5px 1px 5px !important;
   border: 0 !important;
   outline: 0 !important;
   text-indent: 0 !important;
@@ -1073,28 +1073,28 @@ ul.icons li .icon-large:before {
   text-transform: none !important;
   text-decoration: none !important;
   letter-spacing: 0 !important;
-  border: 1px solid rgba(204, 204, 204, 0.85) !important;
+  border: 0 solid rgba(204, 204, 204, 0.85) !important;
   -webkit-border-radius: 4px !important;
   -moz-border-radius: 4px !important;
   border-radius: 4px !important;
-  background-color: rgba(122, 122, 122, 0.75);
-  background-image: -moz-linear-gradient(top, rgba(153, 153, 153, 0.75), rgba(77, 77, 77, 0.75));
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(rgba(153, 153, 153, 0.75)), to(rgba(77, 77, 77, 0.75)));
-  background-image: -webkit-linear-gradient(top, rgba(153, 153, 153, 0.75), rgba(77, 77, 77, 0.75));
-  background-image: -o-linear-gradient(top, rgba(153, 153, 153, 0.75), rgba(77, 77, 77, 0.75));
-  background-image: linear-gradient(to bottom, rgba(153, 153, 153, 0.75), rgba(77, 77, 77, 0.75));
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bf999999', endColorstr='#bf4d4d4d', GradientType=0);
-  -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15) !important;
-  -moz-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15) !important;
-  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15) !important;
+  background-color: rgba(122, 122, 122, 0.75) !important;
+  background-image: -moz-linear-gradient(top, rgba(153, 153, 153, 0.75), rgba(77, 77, 77, 0.75)) !important;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(rgba(153, 153, 153, 0.75)), to(rgba(77, 77, 77, 0.75))) !important;
+  background-image: -webkit-linear-gradient(top, rgba(153, 153, 153, 0.75), rgba(77, 77, 77, 0.75)) !important;
+  background-image: -o-linear-gradient(top, rgba(153, 153, 153, 0.75), rgba(77, 77, 77, 0.75)) !important;
+  background-image: linear-gradient(to bottom, rgba(153, 153, 153, 0.75), rgba(77, 77, 77, 0.75)) !important;
+  background-repeat: repeat-x !important;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bf999999', endColorstr='#bf4d4d4d', GradientType=0) !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
 }
 .editableObject .editableObjectControl a:before {
-  font-family: FontAwesome;
+  font-family: FontAwesome !important;
   font-weight: normal !important;
   font-style: normal !important;
-  font-size: 16px;
-  line-height: 16px;
+  font-size: 16px !important;
+  line-height: 16px !important;
   display: inline-block !important;
   text-decoration: inherit !important;
   color: rgba(255, 255, 255, 0.9) !important;
@@ -1102,14 +1102,14 @@ ul.icons li .icon-large:before {
   text-shadow: 0 -1px 0 #000000 !important;
 }
 .editableObject .editableObjectControl a:hover {
-  background-color: rgba(61, 61, 61, 0.75);
-  background-image: -moz-linear-gradient(top, rgba(102, 102, 102, 0.75), rgba(0, 0, 0, 0.75));
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(rgba(102, 102, 102, 0.75)), to(rgba(0, 0, 0, 0.75)));
-  background-image: -webkit-linear-gradient(top, rgba(102, 102, 102, 0.75), rgba(0, 0, 0, 0.75));
-  background-image: -o-linear-gradient(top, rgba(102, 102, 102, 0.75), rgba(0, 0, 0, 0.75));
-  background-image: linear-gradient(to bottom, rgba(102, 102, 102, 0.75), rgba(0, 0, 0, 0.75));
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bf666666', endColorstr='#bf000000', GradientType=0);
+  background-color: rgba(61, 61, 61, 0.75) !important;
+  background-image: -moz-linear-gradient(top, rgba(102, 102, 102, 0.75), rgba(0, 0, 0, 0.75)) !important;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(rgba(102, 102, 102, 0.75)), to(rgba(0, 0, 0, 0.75))) !important;
+  background-image: -webkit-linear-gradient(top, rgba(102, 102, 102, 0.75), rgba(0, 0, 0, 0.75)) !important;
+  background-image: -o-linear-gradient(top, rgba(102, 102, 102, 0.75), rgba(0, 0, 0, 0.75)) !important;
+  background-image: linear-gradient(to bottom, rgba(102, 102, 102, 0.75), rgba(0, 0, 0, 0.75)) !important;
+  background-repeat: repeat-x !important;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bf666666', endColorstr='#bf000000', GradientType=0) !important;
 }
 .editableObjectHide:hover {
   outline-width: 0 !important;

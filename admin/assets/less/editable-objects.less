@@ -156,8 +156,7 @@
 	width: auto !important;
 	height: auto !important;
 	margin: 0 !important;
-	padding: 5px !important;
-	padding-bottom: 1px !important;
+	padding:  3px 5px 1px 5px !important;
 	border: 0 !important;
 	outline: 0 !important;
 	text-indent: 0 !important;
@@ -165,17 +164,17 @@
 	text-transform: none !important;
 	text-decoration: none !important;
 	letter-spacing: 0 !important;
-	border: 1px solid hsla(0,0%,80%,.85) !important;
+	border: 0 solid hsla(0,0%,80%,.85) !important;
 	.border-radius(4px) !important;
-	#gradient .vertical(hsla(0,0%,60%,.75),hsla(0,0%,30%,.75));
-	.box-shadow(1px 1px 2px hsla(0,0%,0%,.15)) !important;
+	#gradient .vertical(hsla(0,0%,60%,.75),hsla(0,0%,30%,.75)) !important;
+	.box-shadow(none) !important;
 	
 	&:before {
-		font-family: FontAwesome;
+		font-family: FontAwesome !important;
 		font-weight: normal !important;
 		font-style: normal !important;
-		font-size: 16px;
-		line-height: 16px;
+		font-size: 16px !important;
+		line-height: 16px !important;
 		display: inline-block !important;
 		text-decoration: inherit !important;
 		color: rgba(255,255,255,.9) !important;
@@ -184,7 +183,7 @@
 		}
 				
 	&:hover {
-		#gradient .vertical(hsla(0,0%,40%,.75),hsla(0,0%,0%,.75));
+		#gradient .vertical(hsla(0,0%,40%,.75),hsla(0,0%,0%,.75)) !important;
 		}
 	
 	}
