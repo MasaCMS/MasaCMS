@@ -416,9 +416,10 @@
 							$.post('#application.configBean.getContext()#/admin/index.cfm',
 								muraInlineEditor.data,
 								function(data){
-									location.reload();
+									var resp = eval('(' + data + ')');
+									location.href=resp.location;
 								}
-							)
+							);
 						}
 					}
 					return false;		
@@ -444,6 +445,7 @@
 									{	
 										if (!started) {
 										started=true;
+										startAt=prop;
 										}
 										
 										errors += getValidationMessage(theField,' is required.');
@@ -455,7 +457,7 @@
 									{	
 										if (!started) {
 										started=true;
-										firstErrorNode="input";
+										startAt=prop;
 										}
 										
 										errors += getValidationMessage(theField,' must be a valid email address.');
@@ -471,6 +473,7 @@
 										} else {
 											if (!started) {
 											started=true;
+											startAt=prop;
 											}
 											
 											errors += getValidationMessage(theField,' must be numeric.');
@@ -484,6 +487,7 @@
 										{
 											if (!started) {
 											started=true;
+											startAt=prop;
 											}
 										
 											 errors += getValidationMessage(theField,' is not valid.');
@@ -494,6 +498,7 @@
 									{
 										if (!started) {
 										started=true;
+										startAt=prop;
 										}
 										
 										errors += getValidationMessage(theField, ' must be a valid date [MM/DD/YYYY].' );
@@ -505,6 +510,7 @@
 						
 						if(errors != ""){	
 							alert(errors);
+							muraInlineEditor.attributes[startAt].focus();
 							return false;
 						}
 						else

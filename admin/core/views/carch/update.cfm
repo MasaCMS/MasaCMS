@@ -48,6 +48,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif isDefined("url.qqfile")>
 <cfoutput>{success:true}</cfoutput>
 <cfabort>
+<cfelseif rc.ajaxrequest>
+<cfoutput>{success:true,location:'#JSStringFormat(rc.contentBean.getURL())#'}</cfoutput>
 <cfelseif rc.action eq 'multiFileUpload'>
 <cfoutput>success</cfoutput>
 <cfabort>
