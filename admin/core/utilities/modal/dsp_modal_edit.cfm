@@ -49,9 +49,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="Cookie.fetDisplay" default="">
 <cfoutput>
 <link href="#application.configBean.getContext()#/admin/assets/css/dialog.min.css" rel="stylesheet" type="text/css" /><script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#"></script>
-<script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/dialog.js.cfm?siteid=#URLEncodedFormat(variables.$.event('siteid'))#&coreversion=#application.coreversion#"></script>
 <script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckfinder/ckfinder.js"></script>
-<script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/editableattributes.js.cfm?siteid=#URLEncodedFormat(variables.$.event('siteid'))#&contenthistid=#$.content('contenthistid')#"></script>
+<script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/frontendtools.js.cfm?siteid=#URLEncodedFormat(variables.$.event('siteid'))#&contenthistid=#$.content('contenthistid')#&coreversion=#application.coreversion#&showEditableObjects=#this.showEditableObjects#&cacheid=#createUUID()#"></script>
 
 <!---[if LT IE9]>
    <style type="text/css">
@@ -193,8 +192,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<a href="" class="dropdown-toggle" data-toggle="dropdown">
 				<i class="icon-ok-sign"></i> Save</a>
 			<ul class="dropdown-menu">
-				<cfif (request.r.perm  eq 'editor' or listFind(session.mura.memberships,'S2')) and not variables.$.siteConfig('EnforceChangesets')><li class="mura-inline-save" data-approve="1"><a><i class="icon-ok"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#</a></li></cfif>
-				<cfif listFindNoCase('editor,author',request.r.perm) or listFind(session.mura.memberships,'S2') ><li><a class="mura-inline-save" data-approve="0"><i class="icon-ok"></i>  #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#</a></li></cfif>
+				<cfif (request.r.perm  eq 'editor' or listFind(session.mura.memberships,'S2')) and not variables.$.siteConfig('EnforceChangesets')><li class="mura-inline-save" data-approved="1" data-changesetid=""><a><i class="icon-ok"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#</a></li></cfif>
+				<cfif listFindNoCase('editor,author',request.r.perm) or listFind(session.mura.memberships,'S2') ><li><a class="mura-inline-save" data-approved="0" data-changesetid=""><i class="icon-ok"></i>  #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#</a></li></cfif>
 				<cfif variables.$.siteConfig('HasChangesets') and (request.r.perm  eq 'editor' or listFind(session.mura.memberships,'S2')) >
 					<li class="dropdown-submenu"><a href=""><i class="icon-ok"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset"))#</a>			
 						<cfset currentChangeset=application.changesetManager.read(variables.$.content('changesetID'))>
@@ -204,7 +203,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfloop condition="changesets.hasNext()">
 								<cfset changeset=changesets.next()>
 								<li>
-									<a class="mura-inline-save" data-approve="0" data-changesetid="#changeset.getChangesetID()#">#HTMLEditFormat(changeset.getName())#</a>
+									<a class="mura-inline-save" data-approved="0" data-changesetid="#changeset.getChangesetID()#">#HTMLEditFormat(changeset.getName())#</a>
 								</li>
 							</cfloop>
 							<cfelse>

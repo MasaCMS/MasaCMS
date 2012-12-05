@@ -69,7 +69,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif not application.feedManager.allowFeed(feedBean=feed,userID=session.mura.userID) >
 			<cfset event.setValue("__response__", "access denied")>
 		<cfelse>
-			<cfset event.setValue("__response__", feed.getQuery())>
+			<cfset event.setValue("__response__", ifOracleFixClobs(feed.getQuery()))>
 		</cfif>
 </cffunction>
 

@@ -111,10 +111,6 @@ CKEDITOR.editorConfig = function( config )
 	config.extraPlugins = config.extraPlugins + ",muratag";
 	</cfif>
 
-	<cfif not FindNoCase('MSIE 7','#CGI.HTTP_USER_AGENT#')>
-	config.extraPlugins = config.extraPlugins + ",onchange";
-	</cfif>
-	
 	// Remove the Resize plugin as it does not make sense to use it in conjunction with the AutoGrow plugin.
 	//removePlugins : 'resize';
 	

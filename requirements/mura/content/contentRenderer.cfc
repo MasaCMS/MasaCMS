@@ -1462,7 +1462,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfelse>
 				 <cfoutput>
 					<cfif arguments.pageTitle neq ''>
-						<#getHeaderTag('headline')# class="pageTitle"><cfif arguments.pageTitle eq $.content('title')>#renderEditableAttribute(attribute='title')#<cfelse>#arguments.pageTitle#</cfif></#getHeaderTag('headline')#>
+						<#getHeaderTag('headline')# class="pageTitle"><cfif arguments.pageTitle eq $.content('title')>#renderEditableAttribute(attribute='title',required=true)#<cfelse>#arguments.pageTitle#</cfif></#getHeaderTag('headline')#>
 					</cfif>
 					<cfif arguments.crumblist>
 						#dspCrumbListLinks("crumblist",arguments.crumbseparator)#
@@ -2687,9 +2687,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="required" default="false">
 	<cfargument name="validation" default="">
 	<cfargument name="message" default="">
+	<cfargument name="label">
+	<cfargument name="value">
 	<cfargument name="enableMuraTag" default="true">
 	<cfscript>
-		var returnString='';
+		var dataString='';
+
+		if(not structKeyExists(arguments,'label')){
+			arguments.label=arguments.attribute;
+		}
+
 		arguments.attribute=lcase(arguments.attribute);
 
 		if(not structKeyExists(arguments,'value')){
@@ -2700,23 +2707,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			arguments.value=setDynamicContent(arguments.value);
 		}
 
-		if(hasFETools()){
-			returnString=' data-attribute="#arguments.attribute#" data-type="#arguments.type#"';
+		if(hasFETools() and this.showEditableObjects){
+			dataString=' data-attribute="#arguments.attribute#" data-type="#arguments.type#"';
 			
 			if(yesNoFormat(arguments.required)){
-				returnString=returnString & ' data-required="true"';
+				dataString=dataString & ' data-required="true"';
 			} else {
-				returnString=returnString & ' data-required="false"';
+				dataString=dataString & ' data-required="false"';
 			}
 			
 			if(len(arguments.validation)){
-				returnString=returnString & ' data-validation="#arguments.validation#"';
+				dataString=dataString & ' data-validate="#arguments.validation#"';
 			}
-			returnString=returnString & ' data-message="#HTMLEditFormat(arguments.message)#"';
+			dataString=dataString & ' data-message="#HTMLEditFormat(arguments.message)#"';
+			dataString=dataString & ' data-label="#HTMLEditFormat(arguments.label)#"';
 			if(arguments.type eq 'htmlEditor'){
-				return '<div style="display:block;" class="editableObject"><div style="display:inline;" contenteditable="true" id="mura-editable-attribute-#arguments.attribute#" class="mura-editable-attribute" #returnString#>#arguments.value#</div></div>';
+				return '<div style="display:block;" class="editableObject"><div style="display:inline;" contenteditable="true" id="mura-editable-attribute-#arguments.attribute#" class="editableObject mura-editable-attribute" #dataString#>#arguments.value#</div></div>';
 			} else {
-				return '<div style="display:inline;" contenteditable="true" id="mura-editable-attribute-#arguments.attribute#" class="editableObject mura-editable-attribute" #returnString#>#arguments.value#</div>';
+				return '<div style="display:inline;" contenteditable="true" id="mura-editable-attribute-#arguments.attribute#" class="editableObject mura-editable-attribute" #dataString#>#arguments.value#</div>';
 			}
 		} else {
 			return arguments.value;
