@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfcomponent extends="mura.content.contentRenderer">
-<cfset this.showEditableObjects=false/>
+
 	<cfscript>
 		//this.jslib="jquery";
 		//this.navOffSet=0;

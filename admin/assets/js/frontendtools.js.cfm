@@ -319,6 +319,17 @@
 												attribute.html(muraInlineEditor.preprocessed[attributename]);
 											}
 
+											attribute.getAttribute=function(p){
+													var value=$(this).attr(p);
+													if(value==''){
+														return undefined;
+													} else {
+														return value;
+													}
+												}
+
+											//alert(attribute.getAttribute('data-label'));
+
 											muraInlineEditor.attributes[attributename]=attribute;
 										}
 
@@ -389,10 +400,11 @@
 					if(typeof(CKEDITOR.instances[attributeid]) != 'undefined') {
 						return CKEDITOR.instances[attributeid].getData();
 					} else{
-						return muraInlineEditor.attributes[attribute].html();
+						return $.trim(muraInlineEditor.stripHTML(muraInlineEditor.attributes[attribute].html()));
 					}
 				},
 				save:function(){
+					if(muraInlineEditor.validate()){
 						var count=0;
 						for (var prop in muraInlineEditor.attributes) {
 							var attribute=$(muraInlineEditor.attributes[prop]).attr('data-attribute');
@@ -408,9 +420,98 @@
 								}
 							)
 						}
-
-						return false;
+					}
+					return false;		
+				},
+				stripHTML: function(html){
+					var tmp = document.createElement("DIV");
+					tmp.innerHTML = html;
+					return tmp.textContent||tmp.innerText;
+				},
+				validate: function(){
+						var errors="";
+						var setFocus=0;
+						var started=false;
+						var startAt;
+						var firstErrorNode;
+						var validationType='';
+						for (var prop in muraInlineEditor.attributes) {
+						 theField=muraInlineEditor.attributes[prop];
+						 validationType=getValidationType(theField);
+						 theValue=muraInlineEditor.getAttributeValue(prop);
+						 //alert(prop + ":" + theValue + " " + validationType);
+								if(getValidationIsRequired(theField) && theValue == "" )
+									{	
+										if (!started) {
+										started=true;
+										}
+										
+										errors += getValidationMessage(theField,' is required.');
+										 			
+									}
+								else if(validationType != ''){
+										
+									if(validationType=='EMAIL' && theValue != '' && !isEmail(theValue))
+									{	
+										if (!started) {
+										started=true;
+										firstErrorNode="input";
+										}
+										
+										errors += getValidationMessage(theField,' must be a valid email address.');
+												
+									}
 					
+									else if(validationType=='NUMERIC' && isNaN(theValue))
+									{	
+										if(!isNaN(theValue.replace(/\$|\,|\%/g,'')))
+										{
+											theField.html(theValue.replace(/\$|\,|\%/g,''));
+					
+										} else {
+											if (!started) {
+											started=true;
+											}
+											
+											errors += getValidationMessage(theField,' must be numeric.');
+										}					
+									}
+									
+									else if(validationType=='REGEX' && theValue !='' && hasValidationRegex(theField))
+									{	
+										var re = new RegExp(getValidationRegex(theField));
+										if(!theValue.match(re))
+										{
+											if (!started) {
+											started=true;
+											}
+										
+											 errors += getValidationMessage(theField,' is not valid.');
+										}					
+									}
+
+									else if(validationType=='DATE' && theValue != '' && !isDate(theValue))
+									{
+										if (!started) {
+										started=true;
+										}
+										
+										errors += getValidationMessage(theField, ' must be a valid date [MM/DD/YYYY].' );
+										 
+									}
+								}
+									
+							}
+						
+						if(errors != ""){	
+							alert(errors);
+							return false;
+						}
+						else
+						{
+							return true;
+						}
+
 				},
 				htmlEditorOnComplete: function(editorInstance) {
 					var instance = $(editorInstance).ckeditorGet();
