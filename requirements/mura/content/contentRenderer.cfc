@@ -2724,7 +2724,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			if(arguments.type eq 'htmlEditor'){
 				return '<div style="display:block;" class="editableObject"><div style="display:inline;" contenteditable="true" id="mura-editable-attribute-#arguments.attribute#" class="mura-editable-attribute" #dataString#>#arguments.value#</div></div>';
 			} else {
-				return '<div style="display:inline;" contenteditable="true" id="mura-editable-attribute-#arguments.attribute#" class="editableObject mura-editable-attribute" #dataString#>#arguments.value#</div>';
+				return '<div style="display:inline;" contenteditable="true" id="mura-editable-attribute-#arguments.attribute#" class="mura-editable-attribute inline" #dataString#>#arguments.value#</div>';
 			}
 		} else {
 			return arguments.value;
