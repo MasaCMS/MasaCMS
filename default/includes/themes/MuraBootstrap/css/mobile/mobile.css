@@ -61,7 +61,7 @@ dl.hasImage dd.image img {
 	display: block;
 }
 
-form ol, form ul {
+form ol, form ul, ul.thumbnails {
 	list-style: none;
 	margin: 0 0 2em;
 	padding: 0;

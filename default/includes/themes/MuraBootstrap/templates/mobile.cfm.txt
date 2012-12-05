@@ -105,7 +105,6 @@
 	
 </div><!-- /page -->
 
-<!---
 <script>
 	$('body').live('pagebeforecreate',init);
 	
@@ -167,8 +166,6 @@
 	
 }	
 </script>
---->
-
 
 </body>	
 </html>
