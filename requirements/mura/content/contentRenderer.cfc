@@ -2700,7 +2700,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			arguments.value=setDynamicContent(arguments.value);
 		}
 
-		if(hasFETools()){
+		if(hasFETools() and this.showEditableObjects){
 			returnString=' data-attribute="#arguments.attribute#" data-type="#arguments.type#"';
 			
 			if(yesNoFormat(arguments.required)){
