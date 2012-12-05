@@ -2707,7 +2707,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			arguments.value=setDynamicContent(arguments.value);
 		}
 
-		if(hasFETools() and this.showEditableObjects){
+		if(hasFETools() and this.showEditableObjects and (listFindNoCase('editor,auther',variables.$.event('r').perm) or listFind(session.mura.memberships,'S2')) ){
 			dataString=' data-attribute="#arguments.attribute#" data-type="#arguments.type#"';
 			
 			if(yesNoFormat(arguments.required)){
