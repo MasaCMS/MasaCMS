@@ -11307,9 +11307,6 @@ text-shadow: 0 0 1px @blue;
 .mura #newContentMenu li > a:hover i {
   color: #ffffff;
 }
-.mura #newContentMenu #newContent a:before {
-  content: '\f067' !important;
-}
 .mura .mura-table-grid {
   margin: 0 0 16px 0;
   border-collapse: collapse;
