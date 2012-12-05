@@ -280,6 +280,7 @@
 @feToolBarBGEnd:	hsla(0,0,.18,.85);
 
 #frontEndTools {
+	background: #333;
 	#gradient .vertical(@feToolBarBGStart,@feToolBarBGEnd);
 	min-height: 30px !important;
 	position: fixed !important;
@@ -496,15 +497,18 @@
 }
 
 #frontEndTools ul li.dropdown-submenu a {
-	max-width: 180px;
+	max-width: 180px !important;
 	.text-overflow();
 }
 
 #frontEndTools ul li.dropdown-submenu > a:after {
 	border-left-color: @grayLight !important;
 	margin-top: 1px !important;
-	margin-right: 0px !important;
+	margin-right: 0 !important;
+	margin-left: -5px !important;
 }
+
+.editableObject .cke_editable form { border: 0 !important; padding: 0 !important;}
 	
 /*
 #frontEndTools ul li.dropdown:hover > ul.dropdown-menu {

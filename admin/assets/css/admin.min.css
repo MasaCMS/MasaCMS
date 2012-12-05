@@ -3369,7 +3369,10 @@ ul.icons li .icon-large:before {
   font-size: 13px;
   margin-bottom: 18px;
   color: #666666;
-  background: #f7f7f7;
+  background: #e6e6e6;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
 }
 .ui-dialog .ui-dialog-titlebar-close {
   position: absolute;
@@ -14727,6 +14730,7 @@ font-size: 12px;
   border: 0 !important;
 }
 .mura #frontEndTools {
+  background: #333;
   background-color: rgba(72, 72, 72, 0.8500000000000001);
   background-image: -moz-linear-gradient(top, rgba(89, 89, 89, 0.85), rgba(46, 46, 46, 0.85));
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(rgba(89, 89, 89, 0.85)), to(rgba(46, 46, 46, 0.85)));
@@ -14945,7 +14949,7 @@ font-size: 12px;
   color: #cccccc !important;
 }
 .mura #frontEndTools ul li.dropdown-submenu a {
-  max-width: 180px;
+  max-width: 180px !important;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -14953,7 +14957,12 @@ font-size: 12px;
 .mura #frontEndTools ul li.dropdown-submenu > a:after {
   border-left-color: #e6e6e6 !important;
   margin-top: 1px !important;
-  margin-right: 0px !important;
+  margin-right: 0 !important;
+  margin-left: -5px !important;
+}
+.mura .editableObject .cke_editable form {
+  border: 0 !important;
+  padding: 0 !important;
 }
 .mura #availableFields {
   margin-bottom: 0;

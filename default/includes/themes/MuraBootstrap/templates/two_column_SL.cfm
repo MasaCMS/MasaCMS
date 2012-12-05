@@ -3,7 +3,7 @@
 	<body id="#$.getTopID()#" class="#$.createCSSid($.content('menuTitle'))#">
 		<div class="#$.getMBContainerClass()#">
 			<cfinclude template="inc/navbar.cfm" />
-      		<div class="#$.getMBRowClass()#">
+      		<div class="row-fluid">
 				<aside class="span3 sidebar">
 				    #$.dspObjects(1)#
 				</aside><!-- /.span -->
