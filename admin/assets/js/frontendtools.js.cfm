@@ -366,7 +366,8 @@
 							var changesetid=$(this).attr('data-changesetid');
 
 							if(changesetid == ''){
-								muraInlineEditor.data.approve=$(this).attr('data-approve');
+								//alert(1 + " " + $(this).attr('data-approved'))
+								muraInlineEditor.data.approved=$(this).attr('data-approved');
 								muraInlineEditor.data.changesetid='';
 							} else {
 								if(muraInlineEditor.data.changesetid != '' && muraInlineEditor.data.changesetid != changesetid){
@@ -374,8 +375,9 @@
 										muraInlineEditor.data._removePreviousChangeset=true;
 									}
 								}
+								//alert(changesetid)
 								muraInlineEditor.data.changesetid=changesetid;
-								muraInlineEditor.data.approve=0;
+								muraInlineEditor.data.approved=0;
 							}
 
 							muraInlineEditor.save();
@@ -538,7 +540,7 @@
 					contentid: '#JSStringFormat(node.getContentID())#',
 					parentid: '#JSStringFormat(node.getParentID())#',
 					moduleid: '#JSStringFormat(node.getModuleID())#',
-					approve: 0,
+					approved: 0,
 					changesetid: ''
 					},
 				attributes: {},
