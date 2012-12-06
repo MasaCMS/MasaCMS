@@ -1,0 +1,263 @@
+/**
+ * File:	mobile.less
+ * Author:	Blue River Interactive Group
+ */
+h1#site-title {
+	text-align: center;
+	margin: 0;
+	padding: 15px 15px 0;
+}
+
+.ui-li-desc {
+	&.credits, &.rating, &.readMore {
+		font-size: 12px;
+	}
+}
+
+#navSub ul {
+	padding-left: 0;
+}
+
+#navPrimary a, #navSub a {
+	text-decoration: none;
+}
+
+dl {
+	&:last-child {
+		margin: .75em 0 0 0 !important;
+		padding: .75em 0 0 0 !important;
+		border-top: 1px solid #bbb !important;
+		position: relative;
+	}
+
+	&:first-child {
+		margin: 0 !important;
+		padding: 0;
+		border: 0  !important;
+	}
+}
+
+dt {
+	margin-bottom: .25em !important;
+
+	a { text-decoration: none; }
+
+	.releaseDate {
+		font-size: .75em;
+		color: #333 !important;
+		margin-bottom: .5em !important;
+	}
+}
+
+
+dd {
+	&.summary {
+		margin-left: 0;
+		font-size: .75em;
+		p { margin: .5em 0; }
+	}
+}
+
+dl.hasImage dd.image { position: relative; }
+dl.hasImage dd.image img { display: block; }
+
+form ol, form ul, ul.thumbnails {
+	list-style: none;
+	margin: 0 0 2em;
+	padding: 0;
+}
+
+form {
+	li {
+		margin: 0 0 6px;
+		padding: 0;
+		&.ui-controlgroup { margin-bottom: 0; }
+	}
+
+	input[type=checkbox] { display: none; }
+}
+
+#svGallery {
+
+	li {
+		min-height: 0 !important;
+		height: auto !important;
+		padding-bottom: 2%;
+
+		a { margin-bottom: 0; }
+	}
+
+	dl { display: none; }
+}
+
+.svIndex {
+	margin-top: 0;
+
+	&>ul li { margin: 0; }
+
+	.releaseDate  {
+		margin: 0;
+		clear: both;
+	}
+
+	ul li h3  {
+		margin: 0 0 .5em;
+		font-size: 14px;
+	}
+
+	.credits {
+		margin-bottom: 0;
+		clear: both;
+	}
+}
+
+.stars a {
+	width: 14px;
+	height: 13px;
+	background: transparent url(../../images/rater/stars.png) no-repeat;
+}
+
+.zero { background-image: url(../../images/rater/star_zero.png); }
+.one { background-image: url(../../images/rater/star_one.png); }
+.onehalf { background-image: url(../images/rater/star_onehalf.png); }
+.two { background-image: url(../../images/rater/star_two.png); }
+.twohalf { background-image: url(../../images/rater/star_twohalf.png); }
+.three { background-image: url(../../images/rater/star_three.png); }
+.threehalf { background-image: url(../../images/rater/star_threehalf.png); }
+.four { background-image: url(../../images/rater/star_four.png); }
+.fourhalf { background-image: url(../../images/rater/star_fourhalf.png); }
+.five { background-image: url(../../images/rater/star_five.png); }
+
+.moreResults {
+	dt { font-size: 1em; }
+	dd { margin: 0; }
+	li {
+		margin: 0 -5px 0 0 !important; /* This is repeated here from the jQuery mobile CSS because it was getting overridden somehow. */
+	}
+}
+
+/* @group Globals - Forms
+===================================== */
+.required {
+	margin: 0 0 .5em .25em;
+	font-weight: normal;
+	color: #b00;
+}
+
+p.required {
+	padding-left: 7px;
+	background: url(../../../../../images/icon_star.png) no-repeat;
+}
+
+p#loginMsg.required {
+	margin-bottom: 2em;
+}
+
+form li.req {} /* could add background color */
+
+legend { padding-bottom: .75em; }
+
+.min-width-480px .ui-controlgroup-label {
+	width: 20%;
+	padding-left: 8px;
+}
+
+label.ui-input-text {
+	font-weight: bold;
+	padding-left: 8px;
+}
+
+.req {
+	label { background: url(../../../../../images/icon_star.png) no-repeat 0 0; }
+	ins {
+		position: absolute;
+		left: -9999px;
+	}
+	input {} /* could do { border: 1px solid darkred; color: darkred; } */
+}
+
+li .req ins {
+	padding-left: 8px;
+	background: url(../../../../../images/icon_star.png) no-repeat 100% 0;
+}
+
+
+/* @end Globals - Forms - Required Fields
+-------------------------------- */
+
+/* @group Calendar
+===================================== */
+#svCalendarNav th {
+	line-height: 1.2;
+	font-size: .9em;
+}
+
+.svCalendar {
+	table {
+		border-spacing: 0;
+		border-collapse: collapse;
+
+		th {
+			background: #666;
+			color: #fff;
+			text-shadow: 0 -1px 1px #000;
+			border: 0;
+
+			a {
+				color: #fff !important;
+				text-decoration: none;
+				font-size: 1.5em;
+				padding: 0;
+				line-height: 1.2;
+				&:hover {}
+			}
+		}
+
+		td {
+			height: 40px;
+			border: 1px solid #aaa;
+			background: #f9f9f9;
+
+			span.date { font-size: 1.25em; }
+		}
+
+	}
+
+	.dayofweek td { font-size: .75em; }
+}
+/* @end Calendar
+-------------------------------- */
+
+/* @group Draggable Feeds
+===================================== */
+#svRSSFeeds {
+	#dragableBoxesColumn1, #dragableBoxesColumn2 {
+		float: none !important;
+		width: 100% !important;
+	}
+}
+
+#svAddNewFeed {
+	dl {
+		width: 100% !important;
+		&#rssInternal, &#rssExternal {
+			float: none !important;
+		}
+	}
+	dd {
+		width: 100% !important;
+		input {
+			float: none !important;
+			width: 100% !important;
+		}
+	}
+}
+/* @end Draggable Feeds
+-------------------------------- */
+
+/*
+	Fixes iOS right roverflow issue with 100% width and padding
+*/
+.ui-header, .ui-footer, .ui-page-fullscreen .ui-header, .ui-page-fullscreen .ui-footer {
+	width: auto;
+}

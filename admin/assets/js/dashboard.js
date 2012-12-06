@@ -52,7 +52,8 @@ var dashboardManager = {
 		var d = $('#userActivityData');
 		d.html('<div class="load-inline"></div>');
 		$.get(url + "?" + pars, function(data) {
-			d.html(data).animate({
+			document.getElementById('userActivityData').innerHTML=data;
+			d.animate({
 				'opacity': 'hide'
 			}, 1000, null, function() {
 				d.animate({
@@ -71,7 +72,9 @@ var dashboardManager = {
 		var d = $('#popularContentData');
 		d.html('<div class="load-inline"></div>');
 		$.get(url + "?" + pars, function(data) {
-			d.html(data).animate({
+			document.getElementById('popularContentData').innerHTML=data;
+			//d.html(data);
+			d.animate({
 				'opacity': 'hide'
 			}, 1000, null, function() {
 				d.animate({
@@ -88,9 +91,10 @@ var dashboardManager = {
 
 		//location.href=url + "?" + pars;
 		var d = $('#recentCommentsData');
-		d.html('<div class="load-inline"></div>');
+		//d.html('<div class="load-inline"></div>');
 		$.get(url + "?" + pars, function(data) {
-			d.html(data).animate({
+			document.getElementById('recentCommentsData').innerHTML=data;
+			d.animate({
 				'opacity': 'hide'
 			}, 1000, null, function() {
 				d.animate({
@@ -110,7 +114,8 @@ var dashboardManager = {
 		var d = $('#recentFormActivityData');
 		d.html('<div class="load-inline"></div>');
 		$.get(url + "?" + pars, function(data) {
-			d.html(data).animate({
+			document.getElementById('recentFormActivityData').innerHTML=data;
+			d.animate({
 				'opacity': 'hide'
 			}, 1000, null, function() {
 				d.animate({
@@ -129,7 +134,8 @@ var dashboardManager = {
 		var d = $('#emailBroadcastsData');
 		d.html('<div class="load-inline"></div>');
 		$.get(url + "?" + pars, function(data) {
-			d.html(data).animate({
+			document.getElementById('emailBroadcastsData').innerHTML=data;
+			d.animate({
 				'opacity': 'hide'
 			}, 1000, null, function() {
 				d.animate({
