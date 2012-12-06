@@ -302,7 +302,7 @@ order by tformresponsepackets.entered asc
 <script type="text/javascript">
 		var frm=document.getElementById('#frmID#');
 			frm.setAttribute('action','?nocache=1');
-			frm.method='post';
+			frm.setAttribute('post','post');
 			if( frm.getAttribute('onsubmit') == null || frm.getAttribute('onsubmit')==''){
 				frm.onsubmit=function(){return validateForm(this);}
 			}
@@ -317,7 +317,7 @@ order by tformresponsepackets.entered asc
 			</cfif>
 		</cfif>
 		if( !(typeof(window.jQuery) != 'undefined' && typeof(window.jQuery.mobile) != 'undefined') ){
-			frm.action=frm.action + "###frmID#";
+			frm.setAttribute('action',frm.getAttribute('action'));
 		}
 </script></cfoutput>
 </cfsavecontent>
