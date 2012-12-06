@@ -7960,8 +7960,11 @@ a.badge:hover {
   /*
 #frontEndTools ul li.dropdown:hover > ul.dropdown-menu {
     	display: block !important;    
+  
+  
     	}
 */
+
   /* @group Metadata List */
 
   /* @end */
@@ -14511,7 +14514,6 @@ font-size: 12px;
   width: 100%;
   top: 0;
   left: 0;
-  z-index: 99999;
   text-align: center;
   /* centers in quirks and IE */
 
@@ -14533,8 +14535,6 @@ font-size: 12px;
   margin: 0 auto;
   padding: 0;
   background: transparent;
-  /* width: 990px; */
-
 }
 .mura #frontEndToolsModalBody body {
   border: 6px solid #666666 !important;
@@ -14909,24 +14909,26 @@ font-size: 12px;
   border-top-color: #264c73 !important;
   margin: 9px 0 0 4px !important;
 }
-.mura #frontEndTools > ul > li.dropdown > .dropdown-menu {
+.mura .mura-edit-mode #frontEndTools > ul > li.dropdown > .dropdown-menu {
   margin-top: 2px;
 }
-.mura #frontEndTools > ul > li.dropdown .dropdown-menu {
+.mura .mura-edit-mode #frontEndTools > ul > li#adminSave.dropdown .dropdown-menu {
   -webkit-border-radius: 5px !important;
   -moz-border-radius: 5px !important;
   border-radius: 5px !important;
   border: 0 !important;
-  background: rgba(46, 46, 46, 0.97) !important;
+  background-color: red !important;
+  /* background: hsla(0,0%,18%,.97) !important; */
+
   -webkit-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5) !important;
   -moz-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5) !important;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5) !important;
   text-align: left !important;
 }
-.mura #frontEndTools > ul > li.dropdown .dropdown-menu li {
+.mura .mura-edit-mode #frontEndTools > ul > li#adminSave.dropdown .dropdown-menu li {
   display: block !important;
 }
-.mura #frontEndTools > ul > li.dropdown .dropdown-menu a {
+.mura .mura-edit-mode #frontEndTools > ul > li#adminSave.dropdown .dropdown-menu a {
   font-size: 12px !important;
   color: #ffffff !important;
   padding: 5px 10px !important;
@@ -14935,17 +14937,17 @@ font-size: 12px;
   display: block !important;
   height: auto !important;
 }
-.mura #frontEndTools > ul > li.dropdown .dropdown-menu li > a:hover {
+.mura .mura-edit-mode #frontEndTools > ul > li#adminSave.dropdown .dropdown-menu li > a:hover {
   background: #000000 !important;
   color: #ffffff !important;
 }
-.mura #frontEndTools > ul > li.dropdown .dropdown-menu i {
+.mura .mura-edit-mode #frontEndTools > ul > li#adminSave.dropdown .dropdown-menu i {
   color: #666666 !important;
   top: 0px !important;
   font-size: 12px !important;
   margin-right: 2px;
 }
-.mura #frontEndTools > ul > li.dropdown .dropdown-menu li > a:hover i {
+.mura .mura-edit-mode #frontEndTools > ul > li#adminSave.dropdown .dropdown-menu li > a:hover i {
   color: #cccccc !important;
 }
 .mura #frontEndTools ul li.dropdown-submenu a {
@@ -14960,17 +14962,40 @@ font-size: 12px;
   margin-right: 0 !important;
   margin-left: -5px !important;
 }
-.mura .mura-editable-attribute {
+.mura .mura-editable {
+  outline: 1px dotted #ccc !important;
+  outline-offset: 5px !important;
   /* input:focus { box-shadow: none; border: 0; } */
 
 }
-.mura .mura-editable-attribute.inline:hover {
-  outline: 1px dotted red;
-  outline-offset: 5px;
+.mura .mura-editable.inline {
+  display: inline-block !important;
+  *display: inline !important;
+  /* IE7 inline-block hack */
+
+  *zoom: 1 !important;
+}
+.mura .mura-editable:hover {
+  outline: 1px dotted red !important;
 }
 .mura .editableObject .cke_editable form {
   border: 0 !important;
   padding: 0 !important;
+}
+.mura #frontEndToolsModalContainer {
+  z-index: 99999;
+}
+.mura #shadowbox_container {
+  z-index: 499997;
+}
+.mura #shadowbox_overlay {
+  z-index: 499996;
+}
+.mura #dialog_overlay {
+  z-index: 500000;
+}
+.mura .editForm {
+  z-index: 499998;
 }
 .mura #availableFields {
   margin-bottom: 0;

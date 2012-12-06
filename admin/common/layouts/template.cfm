@@ -1,10 +1,11 @@
 <cfoutput>
 <!DOCTYPE html>
 <cfif cgi.http_user_agent contains 'msie'>
+<meta content="IE=8; IE=9" http-equiv="X-UA-Compatible" />
 <!--[if lt IE 7 ]><html class="mura ie ie6" lang="#HTMLEditFormat(session.locale)#"> <![endif]-->
 <!--[if IE 7 ]><html class="mura ie ie7" lang="#HTMLEditFormat(session.locale)#"> <![endif]-->
 <!--[if IE 8 ]><html class="mura ie ie8" lang="#HTMLEditFormat(session.locale)#"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--><html lang="#HTMLEditFormat(session.locale)#" class="mura"> <!--<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="#HTMLEditFormat(session.locale)#" class="mura ie"><!--<![endif]-->
 <cfelse>
 <html lang="#HTMLEditFormat(session.locale)#" class="mura">
 </cfif>
@@ -102,6 +103,7 @@
 		<cfheader name="cache-control" value="no-cache, no-store, must-revalidate"> 
 		<cfheader name="expires" value="06 Nov 1994 08:37:34 GMT"> 
 	</cfsilent>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta charset="utf-8">
     <title>#application.configBean.getTitle()#<cfif len(moduleTitle)> - #HTMLEditFormat(moduleTitle)#</cfif></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
