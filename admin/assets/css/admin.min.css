@@ -14960,6 +14960,14 @@ font-size: 12px;
   margin-right: 0 !important;
   margin-left: -5px !important;
 }
+.mura .mura-editable-attribute {
+  /* input:focus { box-shadow: none; border: 0; } */
+
+}
+.mura .mura-editable-attribute.inline:hover {
+  outline: 1px dotted red;
+  outline-offset: 5px;
+}
 .mura .editableObject .cke_editable form {
   border: 0 !important;
   padding: 0 !important;

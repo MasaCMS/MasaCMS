@@ -286,7 +286,7 @@
 
 			jQuery(".tb-label").keyup(function() {
 				var val = jQuery(this).val();
-				var fval = val.replace(/[^A-Za-z|_]/g,"").toLowerCase();
+				var fval = val.replace(/^[\d\s\W]*|[^\w\d]/g,"").toLowerCase();
 
 				jQuery("#tb-name").val( fval );
 				jQuery("#tb-name").trigger('change');
