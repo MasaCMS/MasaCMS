@@ -27,11 +27,15 @@
 	<title>#HTMLEditFormat($.content('HTMLTitle'))# - #HTMLEditFormat($.siteConfig('site'))#</title>
 
 	<link rel="icon" href="#$.siteConfig('assetPath')#/images/favicon.ico" type="image/x-icon" />
-	<link rel="shortcut icon" href="#$.siteConfig('assetPath')#/images/favicon.ico" type="image/x-icon" />	
-	
-	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.6.min.css" />
+	<link rel="shortcut icon" href="#$.siteConfig('assetPath')#/images/favicon.ico" type="image/x-icon" />
+
+	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.6.0.min.css" />
 	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/jquery/mobile/jquery.mobile.min.css" />
-	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/css/mobile/mobile.css" />
+	<cf_CacheOMatic key="globalheadercss">
+		#$.static()
+			.include('/css/mobile/')
+			.renderIncludes('css')#
+	</cf_CacheOMatic>
 	
 	<script src="#$.siteConfig('assetPath')#/jquery/jquery.js"></script>
 	
@@ -140,12 +144,12 @@
   		'data-dividertheme': 'b'
 	});
 	
-	$('.svIndex .moreResults ul').attr({
+	$('.svIndex .moreResults ul, .pagination ul').attr({
 			'data-role': 'controlgroup',
 			'data-type': 'horizontal',
 	});
 	
-	$('.svIndex .moreResults ul li').attr({
+	$('.svIndex .moreResults ul li, .pagination ul li').attr({
 			'data-role': 'button',
 			'data-theme': 'c'
 	});
