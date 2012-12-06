@@ -312,7 +312,7 @@
   background: #333;
 }
 .mura.ie.ie8 .row-fluid [class*="span"] {
-  min-height: 22px;
+  min-height: 20px;
 }
 .mura.ie.ie8 #tabCategorization .mura-grid .categoryLabelContainer {
   padding-bottom: 0;
