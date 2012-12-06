@@ -297,266 +297,259 @@
 <cfif not node.getIsNew()>
 	<cfoutput>
 	var muraInlineEditor={
-				init: function(){
-						CKEDITOR.disableAutoInline = true;
+		init: function(){
+			CKEDITOR.disableAutoInline = true;
 
-						$('.mura-editable-attribute').each(
-							function(){
-								var attribute=$(this);
-								var attributename=attribute.attr('data-attribute').toLowerCase();
+			$('.mura-editable-attribute').each(
+			function(){
+				var attribute=$(this);
+				var attributename=attribute.attr('data-attribute').toLowerCase();
 
-								$(this).click(
-									function(){
-										var attribute=$(this);
-										var attributename=attribute.attr('data-attribute').toLowerCase();
+				$(this).click(
+					function(){
+						var attribute=$(this);
+						var attributename=attribute.attr('data-attribute').toLowerCase();
 
-										if($('##adminSave').css('display') == 'none'){
-											$('##adminSave').fadeIn();	
-										}	
+						if($('##adminSave').css('display') == 'none'){
+							$('##adminSave').fadeIn();	
+						}	
 
-										if(!(attributename in muraInlineEditor.attributes)){
-											if(attributename in muraInlineEditor.preprocessed){
-												attribute.html(muraInlineEditor.preprocessed[attributename]);
-											}
+						if(!(attributename in muraInlineEditor.attributes)){
+							if(attributename in muraInlineEditor.preprocessed){
+								attribute.html(muraInlineEditor.preprocessed[attributename]);
+							}
 
-											attribute.getAttribute=function(p){
-													var value=$(this).attr(p);
-													if(value==''){
-														return undefined;
-													} else {
-														return value;
-													}
-												}
-
-											//alert(attribute.getAttribute('data-label'));
-
-											muraInlineEditor.attributes[attributename]=attribute;
-										}
-
-									}
-								);													
-								
-								if(!(attributename in muraInlineEditor.attributes)){
-
-									if(attribute.attr('data-type').toLowerCase()=='htmleditor' && 
-										typeof(CKEDITOR.instances[attribute.attr('id')]) == 'undefined' 	
-									){
-										var editor=CKEDITOR.inline( 
-											document.getElementById( attribute.attr('id') ),
-											{
-												toolbar: 'Default',
-												width: "75%",
-												customConfig: 'config.js.cfm'
-											}
-										 );
-
-										 editor.on('change', function(){
-										 	if($('##adminSave').css('display') == 'none'){
-												$('##adminSave').fadeIn();	
-											}
-										 });
-									}
-								
+							attribute.getAttribute=function(p){
+							var value=$(this).attr(p);
+								if(value==''){
+									return undefined;
+								} else {
+									return value;
 								}
+							}
+
+							//alert(attribute.getAttribute('data-label'));
+
+							muraInlineEditor.attributes[attributename]=attribute;
+						}
+					}
+				);													
+								
+				if(!(attributename in muraInlineEditor.attributes)){
+
+					if(attribute.attr('data-type').toLowerCase()=='htmleditor' && 
+						typeof(CKEDITOR.instances[attribute.attr('id')]) == 'undefined' 	
+					){
+						var editor=CKEDITOR.inline( 
+						document.getElementById( attribute.attr('id') ),
+						{
+							toolbar: 'Default',
+							width: "75%",
+							customConfig: 'config.js.cfm'
+						});
+
+						editor.on('change', function(){
+							if($('##adminSave').css('display') == 'none'){
+								$('##adminSave').fadeIn();	
+							}
+						});
+					}
+								
+				}
+			});
+
+			$('.mura-inline-save').click(function(){
+				var changesetid=$(this).attr('data-changesetid');
+
+				if(changesetid == ''){
+					//alert(1 + " " + $(this).attr('data-approved'))
+					muraInlineEditor.data.approved=$(this).attr('data-approved');
+					muraInlineEditor.data.changesetid='';
+				} else {
+					if(muraInlineEditor.data.changesetid != '' && muraInlineEditor.data.changesetid != changesetid){
+						if(confirm('#JSStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.removechangeset"),application.changesetManager.read(node.getChangesetID()).getName()))#')){
+							muraInlineEditor.data._removePreviousChangeset=true;
+						}
+					}
+					//alert(changesetid)
+					muraInlineEditor.data.changesetid=changesetid;
+					muraInlineEditor.data.approved=0;
+				}
+
+				muraInlineEditor.save();
+			});
+
+			$('.mura-inline-cancel').click(function(){
+				location.reload();
+			});
+
+			//clean instances
+			for (var instance in CKEDITOR.instances) {
+				if(!$('##' + instance).length){
+					CKEDITOR.instances[instance].destroy(true);
+				}
+			}				 
+		},
+		getAttributeValue: function(attribute){
+			var attributeid='mura-editable-attribute-' + attribute;
+			if(typeof(CKEDITOR.instances[attributeid]) != 'undefined') {
+				return CKEDITOR.instances[attributeid].getData();
+			} else{
+				return $.trim(muraInlineEditor.stripHTML(muraInlineEditor.attributes[attribute].html()));
+			}
+		},
+		save:function(){
+			if(muraInlineEditor.validate()){
+				var count=0;
+				for (var prop in muraInlineEditor.attributes) {
+					var attribute=$(muraInlineEditor.attributes[prop]).attr('data-attribute');
+					muraInlineEditor.data[attribute]=muraInlineEditor.getAttributeValue(attribute);
+					count++;
+				}
+
+				if(count){
+					$.post('#application.configBean.getContext()#/admin/index.cfm',
+						muraInlineEditor.data,
+						function(data){
+							var resp = eval('(' + data + ')');
+							location.href=resp.location;
+						}
+					);
+				}
+			}
+			return false;		
+		},
+				stripHTML: function(html){
+			var tmp = document.createElement("DIV");
+			tmp.innerHTML = html;
+			return tmp.textContent||tmp.innerText;
+		},
+		validate: function(){
+				var errors="";
+				var setFocus=0;
+				var started=false;
+				var startAt;
+				var firstErrorNode;
+				var validationType='';
+				for (var prop in muraInlineEditor.attributes) {
+				 theField=muraInlineEditor.attributes[prop];
+				 validationType=getValidationType(theField);
+				 theValue=muraInlineEditor.getAttributeValue(prop);
+				 //alert(prop + ":" + theValue + " " + validationType);
+				if(getValidationIsRequired(theField) && theValue == "" )
+					{	
+						if (!started) {
+						started=true;
+						startAt=prop;
+						}
+						
+						errors += getValidationMessage(theField,' is required.');
+						 			
+					}
+				else if(validationType != ''){
+						
+					if(validationType=='EMAIL' && theValue != '' && !isEmail(theValue))
+					{	
+						if (!started) {
+						started=true;
+						startAt=prop;
+						}
+						
+						errors += getValidationMessage(theField,' must be a valid email address.');
+						
+					}
+			
+					else if(validationType=='NUMERIC' && isNaN(theValue))
+					{	
+						if(!isNaN(theValue.replace(/\$|\,|\%/g,'')))
+						{
+							theField.html(theValue.replace(/\$|\,|\%/g,''));
+			
+						} else {
+							if (!started) {
+							started=true;
+							startAt=prop;
 							}
 							
-						);
-
-						$('.mura-inline-save').click(function(){
-							var changesetid=$(this).attr('data-changesetid');
-
-							if(changesetid == ''){
-								//alert(1 + " " + $(this).attr('data-approved'))
-								muraInlineEditor.data.approved=$(this).attr('data-approved');
-								muraInlineEditor.data.changesetid='';
-							} else {
-								if(muraInlineEditor.data.changesetid != '' && muraInlineEditor.data.changesetid != changesetid){
-									if(confirm('#JSStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.removechangeset"),application.changesetManager.read(node.getChangesetID()).getName()))#')){
-										muraInlineEditor.data._removePreviousChangeset=true;
-									}
-								}
-								//alert(changesetid)
-								muraInlineEditor.data.changesetid=changesetid;
-								muraInlineEditor.data.approved=0;
-							}
-
-							muraInlineEditor.save();
-						});
-
-						$('.mura-inline-cancel').click(function(){
-							location.reload();
-						});
-
-						//clean instances
-						for (var instance in CKEDITOR.instances) {
-						   if(!$('##' + instance).length){
-									CKEDITOR.instances[instance].destroy(true);
-							}
-						}
-
-
-						 
-					},
-				getAttributeValue: function(attribute){
-					var attributeid='mura-editable-attribute-' + attribute;
-					if(typeof(CKEDITOR.instances[attributeid]) != 'undefined') {
-						return CKEDITOR.instances[attributeid].getData();
-					} else{
-						return $.trim(muraInlineEditor.stripHTML(muraInlineEditor.attributes[attribute].html()));
+							errors += getValidationMessage(theField,' must be numeric.');
+						}			
 					}
-				},
-				save:function(){
-					if(muraInlineEditor.validate()){
-						var count=0;
-						for (var prop in muraInlineEditor.attributes) {
-							var attribute=$(muraInlineEditor.attributes[prop]).attr('data-attribute');
-							muraInlineEditor.data[attribute]=muraInlineEditor.getAttributeValue(attribute);
-							count++;
-						}
-
-						if(count){
-							$.post('#application.configBean.getContext()#/admin/index.cfm',
-								muraInlineEditor.data,
-								function(data){
-									var resp = eval('(' + data + ')');
-									location.href=resp.location;
-								}
-							);
-						}
-					}
-					return false;		
-				},
-				stripHTML: function(html){
-					var tmp = document.createElement("DIV");
-					tmp.innerHTML = html;
-					return tmp.textContent||tmp.innerText;
-				},
-				validate: function(){
-						var errors="";
-						var setFocus=0;
-						var started=false;
-						var startAt;
-						var firstErrorNode;
-						var validationType='';
-						for (var prop in muraInlineEditor.attributes) {
-						 theField=muraInlineEditor.attributes[prop];
-						 validationType=getValidationType(theField);
-						 theValue=muraInlineEditor.getAttributeValue(prop);
-						 //alert(prop + ":" + theValue + " " + validationType);
-								if(getValidationIsRequired(theField) && theValue == "" )
-									{	
-										if (!started) {
-										started=true;
-										startAt=prop;
-										}
-										
-										errors += getValidationMessage(theField,' is required.');
-										 			
-									}
-								else if(validationType != ''){
-										
-									if(validationType=='EMAIL' && theValue != '' && !isEmail(theValue))
-									{	
-										if (!started) {
-										started=true;
-										startAt=prop;
-										}
-										
-										errors += getValidationMessage(theField,' must be a valid email address.');
-												
-									}
 					
-									else if(validationType=='NUMERIC' && isNaN(theValue))
-									{	
-										if(!isNaN(theValue.replace(/\$|\,|\%/g,'')))
-										{
-											theField.html(theValue.replace(/\$|\,|\%/g,''));
-					
-										} else {
-											if (!started) {
-											started=true;
-											startAt=prop;
-											}
-											
-											errors += getValidationMessage(theField,' must be numeric.');
-										}					
-									}
-									
-									else if(validationType=='REGEX' && theValue !='' && hasValidationRegex(theField))
-									{	
-										var re = new RegExp(getValidationRegex(theField));
-										if(!theValue.match(re))
-										{
-											if (!started) {
-											started=true;
-											startAt=prop;
-											}
-										
-											 errors += getValidationMessage(theField,' is not valid.');
-										}					
-									}
-
-									else if(validationType=='DATE' && theValue != '' && !isDate(theValue))
-									{
-										if (!started) {
-										started=true;
-										startAt=prop;
-										}
-										
-										errors += getValidationMessage(theField, ' must be a valid date [MM/DD/YYYY].' );
-										 
-									}
-								}
-									
+					else if(validationType=='REGEX' && theValue !='' && hasValidationRegex(theField))
+					{	
+						var re = new RegExp(getValidationRegex(theField));
+						if(!theValue.match(re))
+						{
+							if (!started) {
+							started=true;
+							startAt=prop;
 							}
 						
-						if(errors != ""){	
-							alert(errors);
-							muraInlineEditor.attributes[startAt].focus();
-							return false;
-						}
-						else
-						{
-							return true;
-						}
-
-				},
-				htmlEditorOnComplete: function(editorInstance) {
-					var instance = $(editorInstance).ckeditorGet();
-					instance.resetDirty();
-					var totalInstances = CKEDITOR.instances;
-					CKFinder.setupCKEditor(
-					instance, {
-						basePath: '#application.configBean.getContext()#/tasks/widgets/ckfinder/',
-						rememberLastFolder: false
-					});
-				},
-				data:{
-					muraaction: 'carch.update',
-					action: 'add',
-					ajaxrequest: true,
-					siteid: '#JSStringFormat(node.getSiteID())#',
-					sourceid: '#JSStringFormat(node.getContentHistID())#',
-					contentid: '#JSStringFormat(node.getContentID())#',
-					parentid: '#JSStringFormat(node.getParentID())#',
-					moduleid: '#JSStringFormat(node.getModuleID())#',
-					approved: 0,
-					changesetid: ''
-					},
-				attributes: {},
-				preprocessed: {
-				</cfoutput>
-				<cfscript>
-				started=false;
-				nodeCollection=node.getAllValues();
-				for(attribute in nodeCollection)
-					if(isSimpleValue(nodeCollection[attribute]) and reFindNoCase("(\{{|\[sava\]|\[mura\]).+?(\[/sava\]|\[/mura\]|}})",nodeCollection[attribute])){
-						if(started){writeOutput(",");}
-						writeOutput("'#JSStringFormat(lcase(attribute))#':'#JSStringFormat(trim(nodeCollection[attribute]))#'");
-						started=true;
+							 errors += getValidationMessage(theField,' is not valid.');
+						}			
 					}
-				</cfscript>
+
+					else if(validationType=='DATE' && theValue != '' && !isDate(theValue))
+					{
+						if (!started) {
+						started=true;
+						startAt=prop;
+						}
+						
+						errors += getValidationMessage(theField, ' must be a valid date [MM/DD/YYYY].' );
+						 
+					}
 				}
+					
+					}
+				
+				if(errors != ""){	
+					alert(errors);
+					muraInlineEditor.attributes[startAt].focus();
+					return false;
+				}
+				else
+				{
+					return true;
+				}
+
+		},
+		htmlEditorOnComplete: function(editorInstance) {
+			var instance = $(editorInstance).ckeditorGet();
+			instance.resetDirty();
+			var totalInstances = CKEDITOR.instances;
+			CKFinder.setupCKEditor(
+			instance, {
+				basePath: '#application.configBean.getContext()#/tasks/widgets/ckfinder/',
+				rememberLastFolder: false
+			});
+		},
+		data:{
+			muraaction: 'carch.update',
+			action: 'add',
+			ajaxrequest: true,
+			siteid: '#JSStringFormat(node.getSiteID())#',
+			sourceid: '#JSStringFormat(node.getContentHistID())#',
+			contentid: '#JSStringFormat(node.getContentID())#',
+			parentid: '#JSStringFormat(node.getParentID())#',
+			moduleid: '#JSStringFormat(node.getModuleID())#',
+			approved: 0,
+			changesetid: ''
+			},
+		attributes: {},
+		preprocessed: {
+		</cfoutput>
+		<cfscript>
+		started=false;
+		nodeCollection=node.getAllValues();
+		for(attribute in nodeCollection)
+			if(isSimpleValue(nodeCollection[attribute]) and reFindNoCase("(\{{|\[sava\]|\[mura\]).+?(\[/sava\]|\[/mura\]|}})",nodeCollection[attribute])){
+				if(started){writeOutput(",");}
+				writeOutput("'#JSStringFormat(lcase(attribute))#':'#JSStringFormat(trim(nodeCollection[attribute]))#'");
+				started=true;
+			}
+		</cfscript>
+		}
 			};
 	$(document).ready(function(){
 		muraInlineEditor.init();

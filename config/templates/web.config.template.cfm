@@ -10,9 +10,10 @@
 	</files>
 </defaultDocument>
 
- <staticContent>
-  <mimeMap fileExtension=".woff" mimeType="application/octet-stream" />
- </staticContent>
+<staticContent>
+ 	<remove fileExtension=".woff" />
+	<mimeMap fileExtension=".woff" mimeType="application/octet-stream" />
+</staticContent>
 
 </system.webServer>
 </configuration>
