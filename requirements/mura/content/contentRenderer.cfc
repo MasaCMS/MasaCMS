@@ -2708,8 +2708,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		if(arguments.enableMuraTag){
 			arguments.value=setDynamicContent(arguments.value);
 		}
-
-		if(hasFETools() and this.showInlineEditor and (listFindNoCase('editor,auther',variables.$.event('r').perm) or listFind(session.mura.memberships,'S2')) ){
+		
+		if(hasFETools() and this.showInlineEditor and (listFindNoCase('editor,author',variables.$.event('r').perm) or listFind(session.mura.memberships,'S2')) and not (reFindNoCase('(MSIE 8|MSIE 7|MSIE 6)', cgi.http_user_agent))){
 			
 			dataString=' data-attribute="#arguments.attribute#" data-type="#arguments.type#"';
 			
