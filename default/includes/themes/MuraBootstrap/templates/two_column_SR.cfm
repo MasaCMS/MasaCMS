@@ -3,7 +3,7 @@
 	<body id="#$.getTopID()#" class="#$.createCSSid($.content('menuTitle'))#">
 		<div class="#$.getMBContainerClass()#">
 			<cfinclude template="inc/navbar.cfm" />
-      		<div class="#$.getMBRowClass()#">
+      		<div class="row-fluid">
 				<section class="span9 content">
 					<cfinclude template="inc/breadcrumb.cfm" />
 					#$.dspBody(body=$.content('body'),pageTitle=$.content('title'),crumbList=0,showMetaImage=1)#

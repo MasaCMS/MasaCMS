@@ -1117,3 +1117,4 @@ ul.icons li .icon-large:before {
 .editableObjectHide ul.editableObjectControl {
   display: none !important;
 }
+/* .cke_editable, .cke_editable * { border: 0 !important; padding: inherit !important;} */
