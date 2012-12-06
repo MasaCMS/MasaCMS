@@ -1,6 +1,6 @@
 <cfoutput>
 <section id="why">
-  <div class="#$.getMBRowClass()#">
+  <div class="row-fluid">
     <div class="span4">
       <h3><i class="icon-bullhorn icon-large"></i> Desktop Font + Vectors</h3>
       The full desktop font and a pdf of vectors are now included. Happy designing.
@@ -14,7 +14,7 @@
       Font Awesome v2.0 now even supports IE7. If you need it, you have my condolences.
     </div>
   </div>
-  <div class="#$.getMBRowClass()#">
+  <div class="row-fluid">
     <div class="span4">
       <h3><i class="icon-flag icon-large"></i> One font, 220 icons</h3>
       In a single collection, Font Awesome is a pictographic language of web-related actions.
@@ -28,7 +28,7 @@
       Font Awesome won't trip up screen readers, unlike most icon fonts.
     </div>
   </div>
-  <div class="#$.getMBRowClass()#">
+  <div class="row-fluid">
     <div class="span4">
       <h3><i class="icon-thumbs-up icon-large"></i> Made for Twitter Bootstrap</h3>
       Designed from scratch to be fully backwards compatible with <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap 2.0</a>.
@@ -45,7 +45,7 @@
 </section>
 
 
-<section id="new-icons" class="#$.getMBRowClass()#">
+<section id="new-icons" class="row-fluid">
   <div class="span12">
     <h1>New Icons in 2.0</h1>
     <p>You asked, Font Awesome delivers with 70 shiny new icons in version 2.0. This giant set of new icons was requested on the Font Awesome GitHub project and includes icon parity with Bootstrap 2.0.3.</p>
@@ -143,7 +143,7 @@
 </section>
 
 
-<section id="all-icons" class="#$.getMBRowClass()#">
+<section id="all-icons" class="row-fluid">
   <div class="span12">
     <h1>All Icons by Category</h1>
     <!--<p>Inspired by the Glyphicon set that comes with <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap 2.0</a>, Font Awesome is designed from scratch for a full array of web-related actions.</p>-->
@@ -464,7 +464,7 @@
 <section id="examples">
   <h1>Examples</h1>
   <p>Many examples re-used from the Twitter Bootstrap documentation.</p>
-  <div class="#$.getMBRowClass()#">
+  <div class="row-fluid">
     <div class="span4">
       <div class="well">
         <p>Use Font Awesome icons in:</p>
@@ -548,7 +548,7 @@
 <section id="integration">
   <h1>Integration</h1>
   <p>It's easy to integrate Font Awesome into Twitter Bootstrap, or even use it on its own.</p>
-  <div class="#$.getMBRowClass()#">
+  <div class="row-fluid">
     <div class="span3">
       <h3>Bootstrap using LESS</h3>
       <p>Use this method if integrating with Twitter Bootstrap using LESS</p>
@@ -578,7 +578,7 @@
       </ol>
     </div>
   </div>
-  <div class="#$.getMBRowClass()#">
+  <div class="row-fluid">
     <div class="span3">
       <h3>Bootstrap using CSS</h3>
       <p>Use this method if integrating with Twitter Bootstrap using CSS.</p>
@@ -600,7 +600,7 @@
       </ol>
     </div>
   </div>
-  <div class="#$.getMBRowClass()#">
+  <div class="row-fluid">
     <div class="span3">
       <h3>Not using Bootstrap?</h3>
       <p>Font Awesome works just as well without Twitter Bootstrap.</p>
@@ -618,7 +618,7 @@
 
 <section id="code">
 <h1>Code</h1>
-<div class="#$.getMBRowClass()#">
+<div class="row-fluid">
   <div class="span3">
     <h3>Inline Icon</h3>
     <p>Place Font Awesome icons just about anywhere with the <code>&lt;i&gt;</code> tag.</p>
@@ -648,7 +648,7 @@
 </pre>
   </div>
 </div>
-<div class="#$.getMBRowClass()#">
+<div class="row-fluid">
   <div class="span3">
     <h3>Buttons</h3>
     <p>
@@ -690,7 +690,7 @@
 </pre>
   </div>
 </div>
-<div class="#$.getMBRowClass()#">
+<div class="row-fluid">
   <div class="span3">
     <h3>Button groups</h3>
     <p>
@@ -713,7 +713,7 @@
 </pre>
   </div>
 </div>
-<div class="#$.getMBRowClass()#">
+<div class="row-fluid">
   <div class="span3">
     <h3>Button dropdowns</h3>
     <p>
@@ -748,7 +748,7 @@
     <div class="alert alert-info"><i class="icon-info-sign"></i> Don't forget to add the appropriate JavaScript to enable button dropdowns.</div>
   </div>
 </div>
-<div class="#$.getMBRowClass()#">
+<div class="row-fluid">
   <div class="span3">
     <h3>Lists</h3>
     <p>
@@ -774,7 +774,7 @@
 </pre>
   </div>
 </div>
-<div class="#$.getMBRowClass()#">
+<div class="row-fluid">
   <div class="span3">
     <h3>Navigation</h3>
     <div class="well" style="padding: 8px 0;">
@@ -798,7 +798,7 @@
 </pre>
   </div>
 </div>
-<div class="#$.getMBRowClass()#">
+<div class="row-fluid">
   <div class="span3">
     <h3>Prepended form inputs</h3>
     <p>
@@ -829,7 +829,7 @@
 </pre>
   </div>
 </div>
-<div class="#$.getMBRowClass()#">
+<div class="row-fluid">
   <div class="span3">
     <h3>Custom CSS</h3>
     <p>Anything you can do with CSS font effects, you can do with Font Awesome.</p>
