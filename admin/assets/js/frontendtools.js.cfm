@@ -292,7 +292,7 @@
 </cfif>	
 </cfoutput>
 </cfif>
-<cfif isDefined('url.siteID') and isDefined('url.contenthistid') and isDefined('url.showEditableObjects') and url.showEditableObjects>
+<cfif isDefined('url.siteID') and isDefined('url.contenthistid') and isDefined('url.showInlineEditor') and url.showInlineEditor>
 <cfset node=application.serviceFactory.getBean('contentManager').read(contentHistID=url.contentHistID,siteid=url.siteid)>
 <cfif not node.getIsNew()>
 	<cfoutput>

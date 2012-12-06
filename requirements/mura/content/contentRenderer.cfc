@@ -64,10 +64,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset this.showAdminToolBar=false/>
 	<cfset this.showMemberToolBar=false/>
 	<cfset this.showEditableObjects=false/>
+	<cfset this.showInlineEditor=false/>
 <cfelse>
 	<cfset this.showAdminToolBar=true/>
 	<cfset this.showMemberToolBar=true/>
 	<cfset this.showEditableObjects=true/>
+	<cfset this.showInlineEditor=true/>
 </cfif>
 <!--- renderHTMLHead has been deprecated in favor of renderHTMLQueues---->
 <cfset this.renderHTMLHead=true/>
@@ -2707,7 +2709,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			arguments.value=setDynamicContent(arguments.value);
 		}
 
-		if(hasFETools() and this.showEditableObjects and (listFindNoCase('editor,auther',variables.$.event('r').perm) or listFind(session.mura.memberships,'S2')) ){
+		if(hasFETools() and this.showInlineEditor and (listFindNoCase('editor,auther',variables.$.event('r').perm) or listFind(session.mura.memberships,'S2')) ){
+			
 			dataString=' data-attribute="#arguments.attribute#" data-type="#arguments.type#"';
 			
 			if(yesNoFormat(arguments.required)){
