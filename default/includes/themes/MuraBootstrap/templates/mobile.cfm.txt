@@ -29,7 +29,6 @@
 	<link rel="icon" href="#$.siteConfig('assetPath')#/images/favicon.ico" type="image/x-icon" />
 	<link rel="shortcut icon" href="#$.siteConfig('assetPath')#/images/favicon.ico" type="image/x-icon" />
 
-
 	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.6.0.min.css" />
 	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/jquery/mobile/jquery.mobile.min.css" />
 	<cf_CacheOMatic key="globalheadercss">
