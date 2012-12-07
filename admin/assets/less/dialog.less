@@ -520,19 +520,21 @@
 	margin-left: -5px !important;
 }
 
-.mura-editable {
+.mura-edit-mode .mura-editable {
 
 	outline: 1px dotted #ccc !important;
 	outline-offset: 5px !important;
 	position: relative;
 	
-	ins { display: none; }
+	.mura-editable-label { display: none; }
 	
 	&.inline { .inline-block() !important; }
 	&:hover { outline: 1px dotted red !important;
 	
-		ins {
-			display: block !important;
+		.mura-editable-label {
+			.inline-block() !important;
+			width: auto !important;
+			text-align: left !important;
 			position: absolute !important;
 			font-size: 11px !important;
 			line-height: 1 !important;

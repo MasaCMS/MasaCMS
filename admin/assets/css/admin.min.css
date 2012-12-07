@@ -20184,26 +20184,32 @@ font-size: 12px;
   margin-right: 0 !important;
   margin-left: -5px !important;
 }
-.mura .mura-editable {
+.mura .mura-edit-mode .mura-editable {
   outline: 1px dotted #ccc !important;
   outline-offset: 5px !important;
   position: relative;
 }
-.mura .mura-editable ins {
+.mura .mura-edit-mode .mura-editable .mura-editable-label {
   display: none;
 }
-.mura .mura-editable.inline {
+.mura .mura-edit-mode .mura-editable.inline {
   display: inline-block !important;
   *display: inline !important;
   /* IE7 inline-block hack */
 
   *zoom: 1 !important;
 }
-.mura .mura-editable:hover {
+.mura .mura-edit-mode .mura-editable:hover {
   outline: 1px dotted red !important;
 }
-.mura .mura-editable:hover ins {
-  display: block !important;
+.mura .mura-edit-mode .mura-editable:hover .mura-editable-label {
+  display: inline-block !important;
+  *display: inline !important;
+  /* IE7 inline-block hack */
+
+  *zoom: 1 !important;
+  width: auto !important;
+  text-align: left !important;
   position: absolute !important;
   font-size: 11px !important;
   line-height: 1 !important;

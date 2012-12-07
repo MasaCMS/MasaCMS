@@ -2726,13 +2726,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			dataString=dataString & ' data-label="#HTMLEditFormat(arguments.label)#"';
 			if(arguments.type eq 'htmlEditor'){
 				return '<div class="mura-editable">
-							<ins>#ucase(arguments.attribute)#</ins>
-							<div contenteditable="true" id="mura-editable-attribute-#arguments.attribute#" class="mura-editable-attribute inline" #dataString#>#arguments.value#</div>
+							<label class="mura-editable-label">#ucase(arguments.attribute)#</label>
+							<div contenteditable="true" id="mura-editable-attribute-#arguments.attribute#" class="mura-editable-attribute mura-editable" #dataString#>#arguments.value#</div>
 						</div>';
 			} else {
-				return '<div class="mura-editable">
-							<ins>#ucase(arguments.attribute)#</ins>
-							<div contenteditable="true" id="mura-editable-attribute-#arguments.attribute#" class="mura-editable-attribute inline" #dataString#>#arguments.value#</div>
+				return '<div class="mura-editable inline">
+							<label class="mura-editable-label">#ucase(arguments.attribute)#</label>
+							<div contenteditable="true" id="mura-editable-attribute-#arguments.attribute#" class="mura-editable mura-editable-attribute inline" #dataString#>#arguments.value#</div>
 						</div>';
 			}
 		} else {
