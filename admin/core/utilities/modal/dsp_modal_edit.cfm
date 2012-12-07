@@ -48,7 +48,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif FindNoCase('Opera','#CGI.HTTP_USER_AGENT#') LESS THAN 1>
 <cfparam name="Cookie.fetDisplay" default="">
 <cfoutput>
-<link href="#application.configBean.getContext()#/admin/assets/css/dialog.min.css" rel="stylesheet" type="text/css" /><script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#"></script>
+<link href="#application.configBean.getContext()#/admin/assets/css/dialog.min.css" rel="stylesheet" type="text/css" />
+<!--- <script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap.min.js"></script> --->
+<script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#"></script>
 <script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckfinder/ckfinder.js"></script>
 <script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/frontendtools.js.cfm?siteid=#URLEncodedFormat(variables.$.event('siteid'))#&contenthistid=#$.content('contenthistid')#&coreversion=#application.coreversion#&showInlineEditor=#this.showInlineEditor#&cacheid=#createUUID()#"></script>
 
@@ -151,24 +153,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<li id="adminEditPage"><a href="#variables.editLink#" #variables.targetHook#><i class="icon-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#</a></li>
 				<cfif listFind("Page,Folder,Calendar,Gallery,File,Link",request.contentBean.getType())>
 												
-						<li id="adminAddContent"><a href="#variables.newLink#" #variables.targethook# data-configurator="true"><i class="icon-plus"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.add')#</a>						
-						<!---	
-						<ul id="addMenuDropDown" class="dropdown-menu">
-						<cfif request.contentBean.getType() neq 'Gallery'>
-						<li id="adminNewPage"><a href="#variables.newLink#&amp;type=Page" #variables.targethook#><i class="icon-file"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.page')#</a></li>
-						<li id="adminNewLink"><a href="#variables.newLink#&amp;type=Link" #variables.targethook# ><i class="icon-globe"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.link')#</a></li>
-						<li id="adminNewFile"><a href="#variables.newLink#&amp;type=File" #variables.targethook#><i class="icon-file"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.file')#</a></li>
-						<li id="adminNewFolder"><a href="#variables.newLink#&amp;type=Folder" #variables.targethook#><i class="icon-folder-close"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.Folder')#</a></li>
-						<li id="adminNewCalendar"><a href="#variables.newLink#&amp;type=Calendar" #variables.targethook# ><i class="icon-calendar"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.calendar')#</a></li>
-						<li id="adminNewGallery"><a href="#variables.newLink#&amp;type=Gallery" #variables.targethook#><i class="icon-th"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.gallery')#</a></li>
-						<cfelse>
-							<li id="adminNewGalleryItem"><a href="#variables.newLink#&amp;type=File" #variables.targethook#><i class="icon-picture"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.type.galleryitem')#</a></li>
-							<li id="adminNewGalleryItemMulti"><a href="#variables.newMultiLink#&amp;type=File" #variables.targethook#><i class="icon-th-list"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.addmultiitems')#</a></li>
-						</cfif>			
-						#application.pluginManager.renderScripts("onFEToolbarAddRender",request.contentBean.getSiteID())#
-						#application.pluginManager.renderScripts("onFEToolbar#request.contentBean.getType()#AddRender",request.contentBean.getSiteID())#
-						#application.pluginManager.renderScripts("onFEToolbar#request.contentBean.getType()##request.contentBean.getSubType()#AddRender",request.contentBean.getSiteID())#
-						</ul>--->
+						<li id="adminAddContent"><a href="#variables.newLink#" #variables.targethook# data-configurator="true"><i class="icon-plus"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.add')#</a>
 					</li>
 				</cfif>
 				<li id="adminVersionHistory"><a href="#variables.historyLink#" #variables.targethook#><i class="icon-book"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#</a></li>
@@ -188,7 +173,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<li id="adminLogOut"><a href="?doaction=logout"><i class="icon-signout"></i>#application.rbFactory.getKeyValue(session.rb,'layout.logout')#</a></li>
 		<li id="adminWelcome">#application.rbFactory.getKeyValue(session.rb,'layout.welcome')#, #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#.</li>
 		<cfif listFindNoCase('editor,author',request.r.perm) or listFind(session.mura.memberships,'S2') >
-		<li id="adminSave" class="active dropdown" style="display:none">
+		<li id="adminSave" class="dropdown" style="display:none">
 			<a href="" class="dropdown-toggle" data-toggle="dropdown">
 				<i class="icon-ok-sign"></i> Save</a>
 			<ul class="dropdown-menu">
