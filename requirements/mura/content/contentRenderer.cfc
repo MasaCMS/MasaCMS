@@ -1937,7 +1937,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var tracePoint=0>
 
 	<cfif isDefined("arguments.closePortals")>
-		<cfset arguments.closeLocaRepos=arguments.closePortals>
+		<cfset arguments.closeFolders=arguments.closePortals>
 	</cfif>
 
 	<cfif isDefined("arguments.openPortals")>
