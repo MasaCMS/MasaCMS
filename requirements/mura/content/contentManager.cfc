@@ -325,39 +325,41 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</cfif>
 		</cfif>
-		
-		<cfset key="filename" & arguments.siteid & arguments.filename  & arguments.type/>
-		
-		<cfif site.getCache() and not request.muraChangesetPreview>
-			<!--- check to see if it is cached. if not then pass in the context --->
-			<!--- otherwise grab it from the cache --->
-			<cfif NOT cacheFactory.has( key )>
-				<cfset bean=variables.contentDAO.readActiveByFilename(arguments.filename,arguments.siteid,arguments.use404,bean,arguments.type) />
-				<cfif not isArray(bean) and not bean.getIsNew()>
-					<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
-				</cfif>
-				<cfreturn bean/>
-			<cfelse>
-				<cftry>
-					<cfif not isObject(bean)>
-						<cfset bean=getBean("content")/>
+
+		<cfif len(arguments.filename)>
+			<cfset key="filename" & arguments.siteid & arguments.filename  & arguments.type/>
+			<cfif site.getCache() and not request.muraChangesetPreview>
+				<!--- check to see if it is cached. if not then pass in the context --->
+				<!--- otherwise grab it from the cache --->
+				<cfif NOT cacheFactory.has( key )>
+					<cfset bean=variables.contentDAO.readActiveByFilename(arguments.filename,arguments.siteid,arguments.use404,bean,arguments.type) />
+					<cfif not isArray(bean) and not bean.getIsNew()>
+						<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 					</cfif>
-					<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
-					<cfset bean.setValue("extendAutoComplete",false)>
-					<cfreturn bean />
-					<cfcatch>
-						<cfset bean=variables.contentDAO.readActiveByFilename(arguments.filename,arguments.siteid,arguments.use404,bean,arguments.type) />
-						<cfif not isArray(bean) and not bean.getIsNew()>
-							<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
+					<cfreturn bean/>
+				<cfelse>
+					<cftry>
+						<cfif not isObject(bean)>
+							<cfset bean=getBean("content")/>
 						</cfif>
-						<cfreturn bean/>
-					</cfcatch>
-				</cftry>
+						<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
+						<cfset bean.setValue("extendAutoComplete",false)>
+						<cfreturn bean />
+						<cfcatch>
+							<cfset bean=variables.contentDAO.readActiveByFilename(arguments.filename,arguments.siteid,arguments.use404,bean,arguments.type) />
+							<cfif not isArray(bean) and not bean.getIsNew()>
+								<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
+							</cfif>
+							<cfreturn bean/>
+						</cfcatch>
+					</cftry>
+				</cfif>
+			<cfelse>
+				<cfreturn variables.contentDAO.readActiveByFilename(arguments.filename,arguments.siteid,arguments.use404,bean,arguments.type)/>
 			</cfif>
 		<cfelse>
-			<cfreturn variables.contentDAO.readActiveByFilename(arguments.filename,arguments.siteid,arguments.use404,bean,arguments.type)/>
+			<cfreturn getActiveContent('00000000000000000000000000000000001', arguments.siteid, arguments.use404, arguments.contentBean, arguments.sourceIterator)>
 		</cfif>
-	
 	</cffunction>
 	
 	<cffunction name="getActiveByRemoteID" access="public" returntype="any" output="false">
