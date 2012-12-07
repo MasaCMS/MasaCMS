@@ -358,7 +358,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfreturn variables.contentDAO.readActiveByFilename(arguments.filename,arguments.siteid,arguments.use404,bean,arguments.type)/>
 			</cfif>
 		<cfelse>
-			<cfreturn getActiveContent('00000000000000000000000000000000001', arguments.siteid, arguments.use404, arguments.contentBean, arguments.sourceIterator)>
+			<cfset arguments.contentID='00000000000000000000000000000000001'>
+			<cfreturn getActiveContent(argumentCollection=arguments)>
 		</cfif>
 	</cffunction>
 	
