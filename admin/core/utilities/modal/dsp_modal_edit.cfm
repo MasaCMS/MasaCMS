@@ -174,7 +174,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<li id="adminWelcome">#application.rbFactory.getKeyValue(session.rb,'layout.welcome')#, #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#.</li>
 		<cfif listFindNoCase('editor,author',request.r.perm) or listFind(session.mura.memberships,'S2') >
 		<li id="adminSave" class="dropdown" style="display:none">
-			<a href="" class="dropdown-toggle">
+			<a href="" class="dropdown-toggle" onclick="return false;">
 				<i class="icon-ok-sign"></i> Save</a>
 			<ul class="dropdown-menu">
 				<cfif (request.r.perm  eq 'editor' or listFind(session.mura.memberships,'S2')) and not variables.$.siteConfig('EnforceChangesets')><li class="mura-inline-save" data-approved="1" data-changesetid=""><a><i class="icon-ok"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#</a></li></cfif>
