@@ -59,10 +59,10 @@
 */
 
 /* @group Modal Dialog */
-@import "../bootstrap/less/bootstrap.less";
 @import "../bootstrap/less/mixins.less";
-@import "variables.less";
 @import "mixins.less";
+@import "variables.less";
+@import "dropdowns.less";
 @import "fonts.less";
 
 #frontEndToolsModalContainer {
@@ -261,6 +261,7 @@
 
 /* @end */
 
+
 /* @group Toolbar */
 
 
@@ -278,9 +279,9 @@
 @feToolBarBGEnd:	hsla(0,0,.10,.85);
 
 #frontEndTools {
-	background: #222;
-	/* #gradient > .vertical(@feToolBarBGStart,@feToolBarBGEnd); */
-    background-color: mix(@feToolBarBGStart, @feToolBarBGEnd, 60%);
+	background: #333;
+	//#gradient > .vertical(@feToolBarBGStart,@feToolBarBGEnd);
+    //background-color: mix(@feToolBarBGStart, @feToolBarBGEnd, 60%);
     background-image: -moz-linear-gradient(top, @feToolBarBGStart, @feToolBarBGEnd); // FF 3.6+
     background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@feToolBarBGStart), to(@feToolBarBGEnd)); // Safari 4+, Chrome 2+
     background-image: -webkit-linear-gradient(top, @feToolBarBGStart, @feToolBarBGEnd); // Safari 5.1+, Chrome 10+
@@ -471,10 +472,11 @@
 
 		.border-bottom-radius(5px) !important;
 		border: 0 !important;
-		background-color: #222 !important;
+		background-color: #000 !important;
     	background: hsla(0,0%,18%,.97) !important;
     	.box-shadow(0 4px 6px rgba(0,0,0,.50)) !important;
-    	text-align: left !important;    	
+    	text-align: left !important; 
+    	margin-top: 0 !important;  	
 		
 		li { 
 			display: block !important;
@@ -523,7 +525,7 @@
 .mura-edit-mode .mura-editable {
 
 	outline: 1px dotted #ccc !important;
-	outline-offset: 5px !important;
+	/* outline-offset: 5px !important; */
 	position: relative;
 	
 	.mura-editable-label { display: none; }
@@ -541,8 +543,8 @@
 			color: #fff !important;
 			background: red !important;
 			padding: 4px !important;
-			top: -24px !important;
-			left: -6px !important;
+			top: -20px !important;
+			left: -1px !important;
 			font-weight: normal !important;
 			text-shadow: -1px -1px 0 rgba(0,0,0,.2);
 			}
@@ -560,3 +562,5 @@
 #dialog_overlay { z-index: 500000; }
 .editForm { z-index: 499998; }
 
+//Commented out in ckeditor.js
+//.cke_editable form { border: 1px dotted red; padding: 2px; }
