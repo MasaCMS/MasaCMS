@@ -64,10 +64,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset this.showAdminToolBar=false/>
 	<cfset this.showMemberToolBar=false/>
 	<cfset this.showEditableObjects=false/>
+	<cfset this.showInlineEditor=false/>
 <cfelse>
 	<cfset this.showAdminToolBar=true/>
 	<cfset this.showMemberToolBar=true/>
 	<cfset this.showEditableObjects=true/>
+	<cfset this.showInlineEditor=true/>
 </cfif>
 <!--- renderHTMLHead has been deprecated in favor of renderHTMLQueues---->
 <cfset this.renderHTMLHead=true/>
@@ -1935,7 +1937,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var tracePoint=0>
 
 	<cfif isDefined("arguments.closePortals")>
-		<cfset arguments.closeLocaRepos=arguments.closePortals>
+		<cfset arguments.closeFolders=arguments.closePortals>
 	</cfif>
 
 	<cfif isDefined("arguments.openPortals")>
@@ -2270,8 +2272,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfsavecontent variable="headerStr">
 					<cfoutput>
 					<link href="#variables.$.globalConfig('context')#/admin/assets/css/editableObjects.min.css" rel="stylesheet" type="text/css" />
-					<script type="text/javascript" src="#variables.$.globalConfig('context')#/tasks/widgets/ckeditor/ckeditor.js"></script>
-					<script type="text/javascript" src="#variables.$.globalConfig('context')#/tasks/widgets/ckeditor/adapters/jquery.js"></script>	
 					</cfoutput>
 					</cfsavecontent>
 				</cfif>
@@ -2706,8 +2706,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		if(arguments.enableMuraTag){
 			arguments.value=setDynamicContent(arguments.value);
 		}
-
-		if(hasFETools() and this.showEditableObjects and (listFindNoCase('editor,auther',variables.$.event('r').perm) or listFind(session.mura.memberships,'S2')) ){
+		
+		if(hasFETools() and this.showInlineEditor and (listFindNoCase('editor,author',variables.$.event('r').perm) or listFind(session.mura.memberships,'S2')) and not (reFindNoCase('(MSIE 8|MSIE 7|MSIE 6)', cgi.http_user_agent))){
+			
 			dataString=' data-attribute="#arguments.attribute#" data-type="#arguments.type#"';
 			
 			if(yesNoFormat(arguments.required)){
@@ -2722,9 +2723,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			dataString=dataString & ' data-message="#HTMLEditFormat(arguments.message)#"';
 			dataString=dataString & ' data-label="#HTMLEditFormat(arguments.label)#"';
 			if(arguments.type eq 'htmlEditor'){
-				return '<div style="display:block;" class="editableObject"><div style="display:inline;" contenteditable="true" id="mura-editable-attribute-#arguments.attribute#" class="mura-editable-attribute" #dataString#>#arguments.value#</div></div>';
+				return '<div class="mura-editable">
+							<label class="mura-editable-label">#ucase(arguments.attribute)#</label>
+							<div contenteditable="true" id="mura-editable-attribute-#arguments.attribute#" class="mura-editable-attribute mura-editable" #dataString#>#arguments.value#</div>
+						</div>';
 			} else {
-				return '<div style="display:inline;" contenteditable="true" id="mura-editable-attribute-#arguments.attribute#" class="mura-editable-attribute inline" #dataString#>#arguments.value#</div>';
+				return '<div class="mura-editable inline">
+							<label class="mura-editable-label">#ucase(arguments.attribute)#</label>
+							<div contenteditable="true" id="mura-editable-attribute-#arguments.attribute#" class="mura-editable mura-editable-attribute inline" #dataString#>#arguments.value#</div>
+						</div>';
 			}
 		} else {
 			return arguments.value;
