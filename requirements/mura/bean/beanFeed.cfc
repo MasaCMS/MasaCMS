@@ -285,7 +285,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var openGrouping=false>
 	<cfset var jointable="">
 	<cfset var jointableS="">
-	<cfset var dbType=variables.configBean.getDatasource()>
+	<cfset var dbType=variables.configBean.getDBType()>
 
 	<cfif not len(variables.instance.siteID)>
 		<cfthrow message="The 'SITEID' value must be set in order to search users.">
