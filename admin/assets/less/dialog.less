@@ -524,11 +524,27 @@
 
 	outline: 1px dotted #ccc !important;
 	outline-offset: 5px !important;
+	position: relative;
+	
+	ins { display: none; }
 	
 	&.inline { .inline-block() !important; }
-	&:hover { outline: 1px dotted red !important; }
-	/* input:focus { box-shadow: none; border: 0; } */
+	&:hover { outline: 1px dotted red !important;
 	
+		ins {
+			display: block !important;
+			position: absolute !important;
+			font-size: 11px !important;
+			line-height: 1 !important;
+			color: #fff !important;
+			background: red !important;
+			padding: 4px !important;
+			top: -24px !important;
+			left: -6px !important;
+			font-weight: normal !important;
+			text-shadow: -1px -1px 0 rgba(0,0,0,.2);
+			}
+		}	
 }
 .editableObject .cke_editable form { border: 0 !important; padding: 0 !important;}
 	

@@ -20187,8 +20187,10 @@ font-size: 12px;
 .mura .mura-editable {
   outline: 1px dotted #ccc !important;
   outline-offset: 5px !important;
-  /* input:focus { box-shadow: none; border: 0; } */
-
+  position: relative;
+}
+.mura .mura-editable ins {
+  display: none;
 }
 .mura .mura-editable.inline {
   display: inline-block !important;
@@ -20199,6 +20201,19 @@ font-size: 12px;
 }
 .mura .mura-editable:hover {
   outline: 1px dotted red !important;
+}
+.mura .mura-editable:hover ins {
+  display: block !important;
+  position: absolute !important;
+  font-size: 11px !important;
+  line-height: 1 !important;
+  color: #fff !important;
+  background: red !important;
+  padding: 4px !important;
+  top: -24px !important;
+  left: -6px !important;
+  font-weight: normal !important;
+  text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.2);
 }
 .mura .editableObject .cke_editable form {
   border: 0 !important;
