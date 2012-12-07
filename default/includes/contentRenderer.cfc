@@ -59,6 +59,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		//this.longDateFormat="long";
 		//this.shortDateFormat="short";
 		//this.showMetaList="jpg,jpeg,png,gif";
+		//this.showInlineEditor=true;
 		//this.imageInList="jpg,jpeg,png,gif";
 		//this.directImages=true;
 		//this.personalization="user";

@@ -59,10 +59,10 @@
 */
 
 /* @group Modal Dialog */
-
 @import "../bootstrap/less/mixins.less";
-@import "variables.less";
 @import "mixins.less";
+@import "variables.less";
+@import "dropdowns.less";
 @import "fonts.less";
 
 #frontEndToolsModalContainer {
@@ -72,7 +72,6 @@
   width: 100%;
   top: 0;
   left: 0;
-  z-index: 99999;
   text-align: center; /* centers in quirks and IE */
   .mura-modal();
 }
@@ -84,7 +83,6 @@
   margin: 0 auto;
   padding: 0;
   background: transparent;
-  /* width: 990px; */
   
   body {
 	  border: 6px solid @grayDark !important;
@@ -263,6 +261,7 @@
 
 /* @end */
 
+
 /* @group Toolbar */
 
 
@@ -276,12 +275,24 @@
 	border: 0 !important;
 }
 
-@feToolBarBGStart:	hsla(0,0,.35,.85);
-@feToolBarBGEnd:	hsla(0,0,.18,.85);
+@feToolBarBGStart:	hsla(0,0,.30,.85);
+@feToolBarBGEnd:	hsla(0,0,.10,.85);
 
 #frontEndTools {
 	background: #333;
-	#gradient .vertical(@feToolBarBGStart,@feToolBarBGEnd);
+	//#gradient > .vertical(@feToolBarBGStart,@feToolBarBGEnd);
+    //background-color: mix(@feToolBarBGStart, @feToolBarBGEnd, 60%);
+    background-image: -moz-linear-gradient(top, @feToolBarBGStart, @feToolBarBGEnd); // FF 3.6+
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@feToolBarBGStart), to(@feToolBarBGEnd)); // Safari 4+, Chrome 2+
+    background-image: -webkit-linear-gradient(top, @feToolBarBGStart, @feToolBarBGEnd); // Safari 5.1+, Chrome 10+
+    background-image: -o-linear-gradient(top, @feToolBarBGStart, @feToolBarBGEnd); // Opera 11.10
+    background-image: linear-gradient(to bottom, @feToolBarBGStart, @feToolBarBGEnd); // Standard, IE10
+    background-image: -ms-linear-gradient(top, @feToolBarBGStart 0%, @feToolBarBGEnd 100%);
+    background-image: linear-gradient(to bottom, @feToolBarBGStart 0%, @feToolBarBGEnd 100%);
+    background-repeat: repeat-x;
+    
+    //filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",argb(@feToolBarBGStart),argb(@feToolBarBGEnd))); // IE9 and down
+	
 	min-height: 30px !important;
 	position: fixed !important;
 	left: 0px !important;
@@ -432,7 +443,7 @@
 	padding: 1px 8px 1px 6px !important;
 	line-height: 21px !important;
 	height: 21px !important;
-	text-shadow: none !important;
+	/* text-shadow: none !important; */
 	.border-radius(4px) !important;
 	#gradient .vertical(@blue,@blueDark) !important;
 	.box-shadow(0 0 6px rgba(0,0,0,.5)) !important;
@@ -457,17 +468,20 @@
 		}
 }
 	
-#frontEndTools > ul > li.dropdown > .dropdown-menu { margin-top: 2px; }
-	
 #frontEndTools > ul > li.dropdown .dropdown-menu {
 
-		.border-radius(5px) !important;
+		.border-bottom-radius(5px) !important;
 		border: 0 !important;
+		background-color: #000 !important;
     	background: hsla(0,0%,18%,.97) !important;
     	.box-shadow(0 4px 6px rgba(0,0,0,.50)) !important;
-    	text-align: left !important;
+    	text-align: left !important; 
+    	margin-top: 0 !important;  	
 		
-		li { display: block !important; }
+		li { 
+			display: block !important;
+			margin-bottom: 0 !important;
+			}
 		
 		a {
 			font-size: 12px !important;
@@ -508,16 +522,45 @@
 	margin-left: -5px !important;
 }
 
-.mura-editable-attribute {
+.mura-edit-mode .mura-editable {
 
-	&.inline:hover { outline: 1px dotted red; outline-offset: 5px; }
-	/* input:focus { box-shadow: none; border: 0; } */
+	outline: 1px dotted #ccc !important;
+	/* outline-offset: 5px !important; */
+	position: relative;
 	
+	.mura-editable-label { display: none; }
+	
+	&.inline { .inline-block() !important; }
+	&:hover { outline: 1px dotted red !important;
+	
+		.mura-editable-label {
+			.inline-block() !important;
+			width: auto !important;
+			text-align: left !important;
+			position: absolute !important;
+			font-size: 11px !important;
+			line-height: 1 !important;
+			color: #fff !important;
+			background: red !important;
+			padding: 4px !important;
+			top: -20px !important;
+			left: -1px !important;
+			font-weight: normal !important;
+			text-shadow: -1px -1px 0 rgba(0,0,0,.2);
+			}
+		}	
 }
 .editableObject .cke_editable form { border: 0 !important; padding: 0 !important;}
 	
-/*
-#frontEndTools ul li.dropdown:hover > ul.dropdown-menu {
-    	display: block !important;    
-    	}
-*/
+#frontEndTools ul li.dropdown:hover > ul.dropdown-menu { display: block !important; }
+
+// Z-Indexes
+
+#frontEndToolsModalContainer { z-index: 99999; }
+#shadowbox_container { z-index: 499997; }
+#shadowbox_overlay { z-index: 499996; }
+#dialog_overlay { z-index: 500000; }
+.editForm { z-index: 499998; }
+
+//Commented out in ckeditor.js
+//.cke_editable form { border: 1px dotted red; padding: 2px; }
