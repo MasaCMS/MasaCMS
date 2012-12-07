@@ -2272,8 +2272,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfsavecontent variable="headerStr">
 					<cfoutput>
 					<link href="#variables.$.globalConfig('context')#/admin/assets/css/editableObjects.min.css" rel="stylesheet" type="text/css" />
-					<script type="text/javascript" src="#variables.$.globalConfig('context')#/tasks/widgets/ckeditor/ckeditor.js"></script>
-					<script type="text/javascript" src="#variables.$.globalConfig('context')#/tasks/widgets/ckeditor/adapters/jquery.js"></script>	
 					</cfoutput>
 					</cfsavecontent>
 				</cfif>

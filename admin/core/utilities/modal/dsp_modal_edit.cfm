@@ -49,9 +49,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="Cookie.fetDisplay" default="">
 <cfoutput>
 <link href="#application.configBean.getContext()#/admin/assets/css/dialog.min.css" rel="stylesheet" type="text/css" />
-<!--- <script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap.min.js"></script> --->
 <script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#"></script>
-<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckfinder/ckfinder.js"></script>
+<script>
+	if(!window.CKEDITOR){
+		document.write(unescape('%3Cscript src="#variables.$.globalConfig('context')#/tasks/widgets/ckeditor/ckeditor.js"%3E%3C/script%3E'));
+		document.write(unescape('%3Cscript src="#variables.$.globalConfig('context')#/tasks/widgets/ckeditor/adapters/jquery.js"%3E%3C/script%3E'));		
+	}
+	if(!window.CKFinder){
+		document.write(unescape('%3Cscript src="#application.configBean.getContext()#/tasks/widgets/ckfinder/ckfinder.js"%3E%3C/script%3E'));
+	}
+</script>
 <script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/frontendtools.js.cfm?siteid=#URLEncodedFormat(variables.$.event('siteid'))#&contenthistid=#$.content('contenthistid')#&coreversion=#application.coreversion#&showInlineEditor=#this.showInlineEditor#&cacheid=#createUUID()#"></script>
 
 <!---[if LT IE9]>
