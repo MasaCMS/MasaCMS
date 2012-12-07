@@ -505,7 +505,7 @@
 				
 				if(errors != ""){	
 					alert(errors);
-					muraInlineEditor.attributes[startAt].focus();
+					//muraInlineEditor.attributes[startAt].focus();
 					return false;
 				}
 				else
