@@ -2723,9 +2723,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			dataString=dataString & ' data-message="#HTMLEditFormat(arguments.message)#"';
 			dataString=dataString & ' data-label="#HTMLEditFormat(arguments.label)#"';
 
-			if(arguments.type eq 'HTMLEditor' ){
+			/*if(arguments.type eq 'HTMLEditor' ){
 				inline='';
-			}
+			}*/
 			
 			return '<div class="mura-editable#inline#">
 						<label class="mura-editable-label">#ucase(arguments.attribute)#</label>
