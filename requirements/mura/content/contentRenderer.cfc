@@ -71,6 +71,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset this.showEditableObjects=true/>
 	<cfset this.showInlineEditor=true/>
 </cfif>
+<cfset this.HTMLEditorDisplay=''>
 <!--- renderHTMLHead has been deprecated in favor of renderHTMLQueues---->
 <cfset this.renderHTMLHead=true/>
 <cfset this.renderHTMLQueues=true/>
@@ -2724,9 +2725,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			dataString=dataString & ' data-message="#HTMLEditFormat(arguments.message)#"';
 			dataString=dataString & ' data-label="#HTMLEditFormat(arguments.label)#"';
 
-			/*if(arguments.type eq 'HTMLEditor'){
-				inline='';
-			}*/
+			if(arguments.type eq 'HTMLEditor'){
+				inline=this.HTMLEditorDisplay;
+			}
 			
 			return '<div class="mura-editable#inline#">
 						<label class="mura-editable-label">#ucase(arguments.attribute)#</label>
