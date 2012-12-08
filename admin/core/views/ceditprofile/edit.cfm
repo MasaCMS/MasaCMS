@@ -63,7 +63,7 @@ select * from rsSubTypes where subType <> 'Default'
 <cfoutput><h1>#application.rbFactory.getKeyValue(session.rb,'user.editprofile')#</h1>
 
 	<cfif not structIsEmpty(rc.userBean.getErrors())>
-		<p class="alert-error">#application.utility.displayErrors(rc.userBean.getErrors())#</p>
+		<div class="alert alert-error">#application.utility.displayErrors(rc.userBean.getErrors())#</div>
 	</cfif>
 	
 	<p>(*Required, **Required to login to Site)<p>
