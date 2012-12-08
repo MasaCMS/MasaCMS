@@ -2692,6 +2692,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="enableMuraTag" default="true">
 	<cfscript>
 		var dataString='';
+		var inline=' inline';
 
 		if(not structKeyExists(arguments,'label')){
 			arguments.label=arguments.attribute;
@@ -2722,10 +2723,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			}
 			dataString=dataString & ' data-message="#HTMLEditFormat(arguments.message)#"';
 			dataString=dataString & ' data-label="#HTMLEditFormat(arguments.label)#"';
+
+			/*if(arguments.type eq 'HTMLEditor'){
+				inline='';
+			}*/
 			
-			return '<div class="mura-editable inline">
+			return '<div class="mura-editable#inline#">
 						<label class="mura-editable-label">#ucase(arguments.attribute)#</label>
-						<div contenteditable="true" id="mura-editable-attribute-#arguments.attribute#" class="mura-editable mura-editable-attribute inline" #dataString#>#arguments.value#</div>
+						<div contenteditable="true" id="mura-editable-attribute-#arguments.attribute#" class="mura-editable mura-editable-attribute#inline#" #dataString#>#arguments.value#</div>
 					</div>';
 			
 		} else {
