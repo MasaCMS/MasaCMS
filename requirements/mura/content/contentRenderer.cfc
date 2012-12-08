@@ -71,6 +71,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset this.showEditableObjects=true/>
 	<cfset this.showInlineEditor=true/>
 </cfif>
+<cfset this.HTMLEditorDisplay=''>
 <!--- renderHTMLHead has been deprecated in favor of renderHTMLQueues---->
 <cfset this.renderHTMLHead=true/>
 <cfset this.renderHTMLQueues=true/>
@@ -2692,6 +2693,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="enableMuraTag" default="true">
 	<cfscript>
 		var dataString='';
+		var inline=' inline';
 
 		if(not structKeyExists(arguments,'label')){
 			arguments.label=arguments.attribute;
@@ -2722,10 +2724,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			}
 			dataString=dataString & ' data-message="#HTMLEditFormat(arguments.message)#"';
 			dataString=dataString & ' data-label="#HTMLEditFormat(arguments.label)#"';
+
+			if(arguments.type eq 'HTMLEditor'){
+				inline=this.HTMLEditorDisplay;
+			}
 			
-			return '<div class="mura-editable inline">
+			return '<div class="mura-editable#inline#">
 						<label class="mura-editable-label">#ucase(arguments.attribute)#</label>
-						<div contenteditable="true" id="mura-editable-attribute-#arguments.attribute#" class="mura-editable mura-editable-attribute inline" #dataString#>#arguments.value#</div>
+						<div contenteditable="true" id="mura-editable-attribute-#arguments.attribute#" class="mura-editable mura-editable-attribute#inline#" #dataString#>#arguments.value#</div>
 					</div>';
 			
 		} else {
