@@ -522,34 +522,56 @@
 	margin-left: -5px !important;
 }
 
-.mura-edit-mode .mura-editable {
+body .mura-editable {
 
-	outline: 1px dotted #ccc !important;
-	/* outline-offset: 5px !important; */
-	position: relative;
+		position: relative;
+		
+		.mura-editable-attribute {
+		
+			outline: 1px dotted #ccc !important;
+		
+			&:hover, &:active, &:focus { outline: 1px dotted red !important; }
+		
+			}
+		
+		.mura-editable-label { display: none !important; }
+		
+		&.inline { .inline-block() !important; }
 	
-	.mura-editable-label { display: none; }
-	
-	&.inline { .inline-block() !important; }
-	&:hover { outline: 1px dotted red !important;
-	
-		.mura-editable-label {
-			.inline-block() !important;
+		&:hover .mura-editable-label {
+			position: absolute !important;
 			width: auto !important;
 			text-align: left !important;
-			position: absolute !important;
 			font-size: 11px !important;
 			line-height: 1 !important;
 			color: #fff !important;
-			background: red !important;
+			background: rgba(255,0,0,0.75) !important;
 			padding: 4px !important;
+			margin: 0 !important;
 			top: -20px !important;
 			left: -1px !important;
 			font-weight: normal !important;
-			text-shadow: -1px -1px 0 rgba(0,0,0,.2);
+			text-shadow: -1px -1px 0 rgba(0,0,0,.2) !important;
+			.inline-block() !important;
 			}
-		}	
-}
+	
+		&.disabled, &.disabled:hover { 
+		
+			outline: 0 !important;
+			
+			.mura-editable-label { display: none !important; }
+			
+			.mura-editable-attribute {
+		
+				outline: 0 !important;
+			
+				&:hover, &:active, &:focus { outline: 0 !important; }
+			
+				}
+			
+			}
+	}
+		
 .editableObject .cke_editable form { border: 0 !important; padding: 0 !important;}
 	
 #frontEndTools ul li.dropdown:hover > ul.dropdown-menu { display: block !important; }
