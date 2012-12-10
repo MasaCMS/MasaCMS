@@ -49,9 +49,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="Cookie.fetDisplay" default="">
 <cfoutput>
 <link href="#application.configBean.getContext()#/admin/assets/css/dialog.min.css" rel="stylesheet" type="text/css" />
-<!--- <script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap.min.js"></script> --->
 <script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/porthole/porthole.min.js?coreversion=#application.coreversion#"></script>
-<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckfinder/ckfinder.js"></script>
+<script>
+	if(!window.CKEDITOR){
+		document.write(unescape('%3Cscript src="#variables.$.globalConfig('context')#/tasks/widgets/ckeditor/ckeditor.js"%3E%3C/script%3E'));
+		document.write(unescape('%3Cscript src="#variables.$.globalConfig('context')#/tasks/widgets/ckeditor/adapters/jquery.js"%3E%3C/script%3E'));		
+	}
+	if(!window.CKFinder){
+		document.write(unescape('%3Cscript src="#application.configBean.getContext()#/tasks/widgets/ckfinder/ckfinder.js"%3E%3C/script%3E'));
+	}
+</script>
 <script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/frontendtools.js.cfm?siteid=#URLEncodedFormat(variables.$.event('siteid'))#&contenthistid=#$.content('contenthistid')#&coreversion=#application.coreversion#&showInlineEditor=#this.showInlineEditor#&cacheid=#createUUID()#"></script>
 
 <!---[if LT IE9]>
@@ -174,7 +181,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<li id="adminWelcome">#application.rbFactory.getKeyValue(session.rb,'layout.welcome')#, #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#.</li>
 		<cfif listFindNoCase('editor,author',request.r.perm) or listFind(session.mura.memberships,'S2') >
 		<li id="adminSave" class="dropdown" style="display:none">
-			<a href="" class="dropdown-toggle" data-toggle="dropdown">
+			<a href="" class="dropdown-toggle" onclick="return false;">
 				<i class="icon-ok-sign"></i> Save</a>
 			<ul class="dropdown-menu">
 				<cfif (request.r.perm  eq 'editor' or listFind(session.mura.memberships,'S2')) and not variables.$.siteConfig('EnforceChangesets')><li class="mura-inline-save" data-approved="1" data-changesetid=""><a><i class="icon-ok"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#</a></li></cfif>

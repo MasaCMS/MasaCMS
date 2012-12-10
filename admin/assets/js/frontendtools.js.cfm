@@ -163,11 +163,8 @@
 		<cfif Cookie.fetDisplay eq "none">
 			<cfif $.getJsLib() eq "jquery">
 				$('HTML').removeClass('mura-edit-mode');
-				$(".editableObject").each(
-					function(intIndex){
-						$(this).addClass('editableObjectHide');
-					}
-				);
+				$(".editableObject").addClass('editableObjectHide');
+				$(".mura-editable-label").css({display:'none'});
 			<cfelse>
 				$$(".editableObject").each(
 					function(o){
@@ -186,11 +183,15 @@
 		<cfif $.getJsLib() eq "jquery">
 			$("##frontEndTools").animate({opacity: "toggle"});
 			$('HTML').toggleClass('mura-edit-mode');
-			$(".editableObject").each(
-				function(intIndex){
-					$(this).toggleClass('editableObjectHide');
+			$(".editableObject").toggleClass('editableObjectHide');
+			
+			$(".mura-editable-label").each(function(){
+				if($(this).is(':visible')){
+					$(this).css({display:'none'});
+				} else {
+					$(this).css({display:''});
 				}
-			);
+			});
 		<cfelse>
 			Effect.toggle("frontEndTools", "appear");
 			
@@ -505,7 +506,7 @@
 				
 				if(errors != ""){	
 					alert(errors);
-					muraInlineEditor.attributes[startAt].focus();
+					//muraInlineEditor.attributes[startAt].focus();
 					return false;
 				}
 				else
