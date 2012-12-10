@@ -7957,8 +7957,6 @@ a.badge:hover {
 
   /* @group Toolbar */
 
-  /* /:hover */
-
   /* @group Metadata List */
 
   /* @end */
@@ -15130,6 +15128,8 @@ font-size: 12px;
   position: relative;
   /* &:hover { outline: 1px dotted red !important; */
 
+  /* /:hover */
+
 }
 .mura body .mura-editable .mura-editable-attribute {
   outline: 1px dotted #ccc !important;
@@ -15140,6 +15140,16 @@ font-size: 12px;
   outline: 1px dotted red !important;
 }
 .mura body .mura-editable .mura-editable-label {
+  display: none !important;
+}
+.mura body .mura-editable.inline {
+  display: inline-block !important;
+  *display: inline !important;
+  /* IE7 inline-block hack */
+
+  *zoom: 1 !important;
+}
+.mura body .mura-editable:hover .mura-editable-label {
   position: absolute !important;
   width: auto !important;
   text-align: left !important;
@@ -15153,16 +15163,6 @@ font-size: 12px;
   left: -1px !important;
   font-weight: normal !important;
   text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.2) !important;
-  display: none !important;
-}
-.mura body .mura-editable.inline {
-  display: inline-block !important;
-  *display: inline !important;
-  /* IE7 inline-block hack */
-
-  *zoom: 1 !important;
-}
-.mura body .mura-editable .mura-editable-label {
   display: inline-block !important;
   *display: inline !important;
   /* IE7 inline-block hack */
