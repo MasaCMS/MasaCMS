@@ -15123,13 +15123,7 @@ font-size: 12px;
   margin-left: -5px !important;
 }
 .mura body .mura-editable {
-  /* outline-offset: 5px !important; */
-
   position: relative;
-  /* &:hover { outline: 1px dotted red !important; */
-
-  /* /:hover */
-
 }
 .mura body .mura-editable .mura-editable-attribute {
   outline: 1px dotted #ccc !important;
@@ -15169,8 +15163,47 @@ font-size: 12px;
 
   *zoom: 1 !important;
 }
-.mura.disabled {
+.mura body .mura-editable.disabled,
+.mura body .mura-editable.disabled:hover {
   outline: 0 !important;
+}
+.mura body .mura-editable.disabled .mura-editable-label,
+.mura body .mura-editable.disabled:hover .mura-editable-label {
+  display: none !important;
+}
+.mura body .mura-editable.disabled .mura-editable-attribute,
+.mura body .mura-editable.disabled:hover .mura-editable-attribute {
+  outline: 0 !important;
+}
+.mura body .mura-editable.disabled .mura-editable-attribute:hover,
+.mura body .mura-editable.disabled:hover .mura-editable-attribute:hover,
+.mura body .mura-editable.disabled .mura-editable-attribute:active,
+.mura body .mura-editable.disabled:hover .mura-editable-attribute:active,
+.mura body .mura-editable.disabled .mura-editable-attribute:focus,
+.mura body .mura-editable.disabled:hover .mura-editable-attribute:focus {
+  outline: 0 !important;
+}
+.mura .editableObject .cke_editable form {
+  border: 0 !important;
+  padding: 0 !important;
+}
+.mura #frontEndTools ul li.dropdown:hover > ul.dropdown-menu {
+  display: block !important;
+}
+.mura #frontEndToolsModalContainer {
+  z-index: 99999;
+}
+.mura #shadowbox_container {
+  z-index: 499997;
+}
+.mura #shadowbox_overlay {
+  z-index: 499996;
+}
+.mura #dialog_overlay {
+  z-index: 500000;
+}
+.mura .editForm {
+  z-index: 499998;
 }
 .mura #availableFields {
   margin-bottom: 0;
