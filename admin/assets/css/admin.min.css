@@ -15169,6 +15169,9 @@ font-size: 12px;
 
   *zoom: 1 !important;
 }
+.mura.disabled {
+  outline: 0 !important;
+}
 .mura #availableFields {
   margin-bottom: 0;
 }
