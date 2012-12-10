@@ -11014,7 +11014,7 @@ a:hover, a:active {
   text-align: left;
 }
 .mura .mura-quickEdit h1 {
-  color: #fff;
+  color: #fff !important;
   font-size: 11px !important;
   text-align: left;
   margin: 0 0 .75em 0;
@@ -15122,43 +15122,66 @@ font-size: 12px;
   margin-right: 0 !important;
   margin-left: -5px !important;
 }
-.mura .mura-edit-mode .mura-editable {
-  outline: 1px dotted #ccc !important;
-  /* outline-offset: 5px !important; */
-
+.mura body .mura-editable {
   position: relative;
 }
-.mura .mura-edit-mode .mura-editable .mura-editable-label {
-  display: none;
+.mura body .mura-editable .mura-editable-attribute {
+  outline: 1px dotted #ccc !important;
 }
-.mura .mura-edit-mode .mura-editable.inline {
-  display: inline-block !important;
-  *display: inline !important;
-  /* IE7 inline-block hack */
-
-  *zoom: 1 !important;
-}
-.mura .mura-edit-mode .mura-editable:hover {
+.mura body .mura-editable .mura-editable-attribute:hover,
+.mura body .mura-editable .mura-editable-attribute:active,
+.mura body .mura-editable .mura-editable-attribute:focus {
   outline: 1px dotted red !important;
 }
-.mura .mura-edit-mode .mura-editable:hover .mura-editable-label {
+.mura body .mura-editable .mura-editable-label {
+  display: none !important;
+}
+.mura body .mura-editable.inline {
   display: inline-block !important;
   *display: inline !important;
   /* IE7 inline-block hack */
 
   *zoom: 1 !important;
+}
+.mura body .mura-editable:hover .mura-editable-label {
+  position: absolute !important;
   width: auto !important;
   text-align: left !important;
-  position: absolute !important;
   font-size: 11px !important;
   line-height: 1 !important;
   color: #fff !important;
-  background: red !important;
+  background: rgba(255, 0, 0, 0.75) !important;
   padding: 4px !important;
+  margin: 0 !important;
   top: -20px !important;
   left: -1px !important;
   font-weight: normal !important;
-  text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.2);
+  text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  display: inline-block !important;
+  *display: inline !important;
+  /* IE7 inline-block hack */
+
+  *zoom: 1 !important;
+}
+.mura body .mura-editable.disabled,
+.mura body .mura-editable.disabled:hover {
+  outline: 0 !important;
+}
+.mura body .mura-editable.disabled .mura-editable-label,
+.mura body .mura-editable.disabled:hover .mura-editable-label {
+  display: none !important;
+}
+.mura body .mura-editable.disabled .mura-editable-attribute,
+.mura body .mura-editable.disabled:hover .mura-editable-attribute {
+  outline: 0 !important;
+}
+.mura body .mura-editable.disabled .mura-editable-attribute:hover,
+.mura body .mura-editable.disabled:hover .mura-editable-attribute:hover,
+.mura body .mura-editable.disabled .mura-editable-attribute:active,
+.mura body .mura-editable.disabled:hover .mura-editable-attribute:active,
+.mura body .mura-editable.disabled .mura-editable-attribute:focus,
+.mura body .mura-editable.disabled:hover .mura-editable-attribute:focus {
+  outline: 0 !important;
 }
 .mura .editableObject .cke_editable form {
   border: 0 !important;
@@ -15492,6 +15515,7 @@ font-size: 12px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
+  background-color: #fff6bf;
   border: 2px solid #ffd324;
   line-height: 20px;
   clear: both;
