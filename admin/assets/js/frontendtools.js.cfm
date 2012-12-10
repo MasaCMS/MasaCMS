@@ -194,7 +194,7 @@
 				}
 			});
 
-			$(".mura-editable").togglelass('disabled');
+			$(".mura-editable").toggleClass('disabled');
 		<cfelse>
 			Effect.toggle("frontEndTools", "appear");
 			
