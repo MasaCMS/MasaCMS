@@ -15127,9 +15127,24 @@ font-size: 12px;
   /* outline-offset: 5px !important; */
 
   position: relative;
+  /* /:hover */
+
 }
 .mura .mura-edit-mode .mura-editable .mura-editable-label {
-  display: none;
+  position: absolute !important;
+  width: auto !important;
+  text-align: left !important;
+  font-size: 11px !important;
+  line-height: 1 !important;
+  color: #fff !important;
+  background: red !important;
+  padding: 4px !important;
+  margin: 0 !important;
+  top: -20px !important;
+  left: -1px !important;
+  font-weight: normal !important;
+  text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.2) !important;
+  display: none !important;
 }
 .mura .mura-edit-mode .mura-editable.inline {
   display: inline-block !important;
@@ -15147,18 +15162,6 @@ font-size: 12px;
   /* IE7 inline-block hack */
 
   *zoom: 1 !important;
-  width: auto !important;
-  text-align: left !important;
-  position: absolute !important;
-  font-size: 11px !important;
-  line-height: 1 !important;
-  color: #fff !important;
-  background: red !important;
-  padding: 4px !important;
-  top: -20px !important;
-  left: -1px !important;
-  font-weight: normal !important;
-  text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.2);
 }
 .mura .editableObject .cke_editable form {
   border: 0 !important;

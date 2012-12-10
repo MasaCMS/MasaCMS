@@ -528,28 +528,33 @@
 	/* outline-offset: 5px !important; */
 	position: relative;
 	
-	.mura-editable-label { display: none; }
-	
-	&.inline { .inline-block() !important; }
-	&:hover { outline: 1px dotted red !important;
-	
-		.mura-editable-label {
-			.inline-block() !important;
+	.mura-editable-label { 
+			position: absolute !important;
 			width: auto !important;
 			text-align: left !important;
-			position: absolute !important;
 			font-size: 11px !important;
 			line-height: 1 !important;
 			color: #fff !important;
 			background: red !important;
 			padding: 4px !important;
+			margin: 0 !important;
 			top: -20px !important;
 			left: -1px !important;
 			font-weight: normal !important;
-			text-shadow: -1px -1px 0 rgba(0,0,0,.2);
+			text-shadow: -1px -1px 0 rgba(0,0,0,.2) !important;
+			
+			display: none !important;
 			}
-		}	
-}
+	
+			&.inline { .inline-block() !important; }
+			&:hover { outline: 1px dotted red !important;
+	
+			.mura-editable-label {
+				.inline-block() !important;
+				}
+			}	/* /:hover */
+		}
+		
 .editableObject .cke_editable form { border: 0 !important; padding: 0 !important;}
 	
 #frontEndTools ul li.dropdown:hover > ul.dropdown-menu { display: block !important; }
