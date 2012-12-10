@@ -7957,6 +7957,8 @@ a.badge:hover {
 
   /* @group Toolbar */
 
+  /* /:hover */
+
   /* @group Metadata List */
 
   /* @end */
@@ -15122,22 +15124,29 @@ font-size: 12px;
   margin-right: 0 !important;
   margin-left: -5px !important;
 }
-.mura .mura-edit-mode .mura-editable {
-  outline: 1px dotted #ccc !important;
+.mura body .mura-editable {
   /* outline-offset: 5px !important; */
 
   position: relative;
-  /* /:hover */
+  /* &:hover { outline: 1px dotted red !important; */
 
 }
-.mura .mura-edit-mode .mura-editable .mura-editable-label {
+.mura body .mura-editable .mura-editable-attribute {
+  outline: 1px dotted #ccc !important;
+}
+.mura body .mura-editable .mura-editable-attribute:hover,
+.mura body .mura-editable .mura-editable-attribute:active,
+.mura body .mura-editable .mura-editable-attribute:focus {
+  outline: 1px dotted red !important;
+}
+.mura body .mura-editable .mura-editable-label {
   position: absolute !important;
   width: auto !important;
   text-align: left !important;
   font-size: 11px !important;
   line-height: 1 !important;
   color: #fff !important;
-  background: red !important;
+  background: rgba(255, 0, 0, 0.75) !important;
   padding: 4px !important;
   margin: 0 !important;
   top: -20px !important;
@@ -15146,44 +15155,19 @@ font-size: 12px;
   text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.2) !important;
   display: none !important;
 }
-.mura .mura-edit-mode .mura-editable.inline {
+.mura body .mura-editable.inline {
   display: inline-block !important;
   *display: inline !important;
   /* IE7 inline-block hack */
 
   *zoom: 1 !important;
 }
-.mura .mura-edit-mode .mura-editable:hover {
-  outline: 1px dotted red !important;
-}
-.mura .mura-edit-mode .mura-editable:hover .mura-editable-label {
+.mura body .mura-editable .mura-editable-label {
   display: inline-block !important;
   *display: inline !important;
   /* IE7 inline-block hack */
 
   *zoom: 1 !important;
-}
-.mura .editableObject .cke_editable form {
-  border: 0 !important;
-  padding: 0 !important;
-}
-.mura #frontEndTools ul li.dropdown:hover > ul.dropdown-menu {
-  display: block !important;
-}
-.mura #frontEndToolsModalContainer {
-  z-index: 99999;
-}
-.mura #shadowbox_container {
-  z-index: 499997;
-}
-.mura #shadowbox_overlay {
-  z-index: 499996;
-}
-.mura #dialog_overlay {
-  z-index: 500000;
-}
-.mura .editForm {
-  z-index: 499998;
 }
 .mura #availableFields {
   margin-bottom: 0;
