@@ -165,6 +165,7 @@
 				$('HTML').removeClass('mura-edit-mode');
 				$(".editableObject").addClass('editableObjectHide');
 				$(".mura-editable-label").css({display:'none'});
+				$(".mura-editable").addClass('disabled');
 			<cfelse>
 				$$(".editableObject").each(
 					function(o){
@@ -192,6 +193,8 @@
 					$(this).css({display:''});
 				}
 			});
+
+			$(".mura-editable").togglelass('disabled');
 		<cfelse>
 			Effect.toggle("frontEndTools", "appear");
 			
