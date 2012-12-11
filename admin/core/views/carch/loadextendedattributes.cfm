@@ -52,7 +52,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset contentBean=application.contentManager.getcontentVersion(rc.contentHistID,rc.siteID)/>
 </cfif>
 <cfset structDelete(session.mura,"editBean")>
-
+<cfset request.event.setValue('contentBean',contentBean)>
+<cfset $=request.event.getValue('MuraScope')>
 <cfset subtype=application.classExtensionManager.getSubTypeByName(rc.type,rc.subtype,rc.siteid)>
 
 <cfloop list="#application.contentManager.getTabList()#" index="container">
@@ -118,7 +119,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset returnsets[containerID]=trim(returnsets[containerID])>
 </cfloop>
+<!---
+<cfloop list="tabBasic,tabSEO,tabAdvanced,tabCategorization,tabExtendedAttributes,tabLayoutObjects,tabListDisplayOptions,tabMobile,tabPublishing,tabTags,tabUsagereport" index="tab">
+	<cfloop list="top,bottom" index="context">
+		<cfsavecontent variable="returnsets#tab#">
+			<cf_dsp_rendertabevents context="#context#" tab="#tab#">
+		</cfsavecontent>
 
+		<cfset returnsets[tab & context ]=trim(returnsets[tab & context])>
+	</cfloop>
+</cfloop>
+--->
 <cfset returnsets.hasSummary=subType.getHasSummary()>
 <cfset returnsets.hasBody=subType.getHasBody()>
 
