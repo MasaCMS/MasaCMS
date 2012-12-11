@@ -1255,7 +1255,6 @@ buttons: {
 			if(parentNode.parents('li:first').length) {
 				siteManager.refreshSiteSection(parentNode, 1)
 			} else {
-				alert(2)
 				var topNode = $("#top-node").parents("li:first");
 				siteManager.loadSiteManager(topNode.attr("data-siteid"), topNode.attr("data-contentid"), topNode.attr("data-moduleid"), topNode.attr("data-sortby"), topNode.attr("data-sortdirection"), topNode.attr("data-type"), 1);
 			}
