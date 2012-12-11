@@ -165,7 +165,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   	When you're done re-ordering, click "Update." <input type="button" class="submit btn pulse" id="submitSort" onclick="submitForm(document.forms.viewUpdate);" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.update")#" />
   	</div>
   </cfif>
-      
+
     <!-- Begin Grid Header -->
     <div class="mura-grid stripe<cfif rc.sortBy neq 'orderno'> noDrag</cfif>">
     <dl class="mura-grid-hdr">
