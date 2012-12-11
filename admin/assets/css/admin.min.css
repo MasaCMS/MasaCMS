@@ -7809,20 +7809,6 @@ a.badge:hover {
 	color: #666;
 }*/
 
-  /*
-.fieldset, fieldset {
-	
-	li a {
-		background: @grayLight;
-		}
-		
-	li a.active, li a:hover {
-		background: @gray;
-		}
-	
-	}
-*/
-
   /* End #tabFlat */
   /* @group File Icons */
 
@@ -9572,35 +9558,11 @@ tr:nth-child(even) i {
   margin-bottom: 20px;
   margin-left: 0;
   clear: both;
-  /*
-a:hover, a:active {
-		.box-shadow(~"inset rgba(0, 0, 0, 0.138438) 0px 0 0 0px, 0 1px 5px rgba(0,0,0,0.3)");
-		}
-	
-	a.active {
-		.box-shadow(~"inset rgba(0, 0, 0, 0.138438) 0px 1px 4px 0px, 1px 1px 4px rgba(0,0,0,0.3)");
-		}
-*/
-
-}
-.mura #nav-module-specific .btn-group {
-  /* margin-right: 3px; */
-
-  /*
-> .btn + .btn {
-		margin-left: 0;
-		}
-*/
-
 }
 .mura #nav-module-specific .btn {
   text-shadow: 0 1px #ffffff;
   padding: 6px 12px;
   border-color: #ebebeb #ebebeb #d1d1d1;
-  /* .box-shadow(1px 1px 4px rgba(0,0,0,0.3)); */
-
-  /* .border-radius(2px); */
-
 }
 .mura #nav-module-specific .btn i {
   color: #666666;
@@ -9883,6 +9845,10 @@ a:hover, a:active {
   box-sizing: border-box;
   /* margin: 0 @gridGutterWidth @baseLineHeight; */
 
+}
+.mura #mura-select-link td,
+.mura #mura-select-link th {
+  text-align: left;
 }
 .mura #carch h1 + .btn-group {
   clear: both;
@@ -11236,6 +11202,9 @@ text-shadow: 0 0 1px @blue;
   border: 0;
   z-index: 20;
   padding: 6px;
+}
+.mura #tabFlat .mura-table-grid .add i {
+  margin-top: 0;
 }
 .mura #newContentMenu {
   width: 130px;
