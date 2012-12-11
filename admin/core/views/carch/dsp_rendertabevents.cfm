@@ -2,11 +2,10 @@
 <cfoutput>
 <cftry>
 <cfif  ListFindNoCase(application.contentManager.TreeLevelList,$.content('type'))>			
-	#$.announceEvent("onContent#attributes.tab#tab#attributes.context#Render")#	
+	#$.renderEvent("onContent#attributes.tab##attributes.context#Render")#	
 </cfif>
-
-#$.announceEvent("on#$.content('type')##attributes.tab#tab#attributes.context#Render")#	
-#$.announceEvent("on#$.content('type')##$.content('subtype')##attributes.tab#tab#attributes.context#Render")#
+#$.renderEvent("on#$.content('type')##attributes.tab##attributes.context#Render")#	
+#$.renderEvent("on#$.content('type')##$.content('subtype')##attributes.tab##attributes.context#Render")#
 <cfcatch>
 	#cfcatch.message#
 </cfcatch>
