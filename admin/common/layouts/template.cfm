@@ -135,23 +135,25 @@
     <script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.spin.js" type="text/javascript"></script>
 	<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 	<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-	<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
-	<!--- <link href="#application.configBean.getContext()#/admin/assets/less/jquery.ui.less" rel="stylesheet/less" type="text/css" /> --->		
+	<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>		
 	
-	<script src="#application.configBean.getContext()#/admin/assets/js/upgrade-notification.min.js" type="text/javascript"></script>
-	<!--- <cfif cgi.http_user_agent contains 'msie'> --->
-	<!--[if IE 7]>
-	<link href="#application.configBean.getContext()#/admin/assets/css/ie/ie.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
-	<link rel="stylesheet" href="#application.configBean.getContext()#/admin/assets/css/font-awesome-ie7.css">
-	<script src="#application.configBean.getContext()#/admin/assets/js/mura-font-lte-ie7.js" type="text/javascript"></script>
-	<![endif]-->
-	<!--- </cfif> --->
-	
-	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<cfif cgi.http_user_agent contains 'msie'>
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="#application.configBean.getContext()#/admin/assets/js/html5.js"></script>
     <![endif]-->
 	
+	<!--[if lte IE 8]>
+	<link href="#application.configBean.getContext()#/admin/assets/css/ie/ie.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+	<![endif]-->
+	
+	<!--[if lte IE 7]>
+	<script src="#application.configBean.getContext()#/admin/assets/js/upgrade-notification.min.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="#application.configBean.getContext()#/admin/assets/css/font-awesome-ie7.css">
+	<script src="#application.configBean.getContext()#/admin/assets/js/mura-font-lte-ie7.js" type="text/javascript"></script>
+	<![endif]-->
+	</cfif>
+		
 	<!-- CK Editor/Finder -->
 	<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckeditor/ckeditor.js"></script>
 	<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckeditor/adapters/jquery.js"></script>

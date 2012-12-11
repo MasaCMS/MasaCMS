@@ -272,12 +272,6 @@
 }
 .mura.ie .mura-grid,
 .mura.ie .mura-table-grid {
-  /*
-	.mura-modal, .modal-backdrop { 
-	background: #222;
-	}
-*/
-
   /* This should work, but isn't for some reason... */
 
 }
@@ -298,11 +292,11 @@
   /* Fixes form input height */
 
   /*
-	.mura-modal, .modal-backdrop {
-		background: #000;
-		opacity: .8;
-	}
-*/
+		.mura-modal, .modal-backdrop {
+			background: #000;
+			opacity: .8;
+		}
+	*/
 
 }
 .mura.ie.ie8 .dropdown-menu li.divider {
@@ -321,4 +315,8 @@
 }
 .mura.ie.ie8 #tabCategorization .mura-grid label {
   margin-bottom: 0;
+}
+.mura.ie.ie8 input[type="text"] {
+  height: 20px !important;
+  min-height: 20px !important;
 }

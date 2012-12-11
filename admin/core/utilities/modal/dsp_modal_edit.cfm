@@ -68,10 +68,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
          background: transparent;
           filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=##00000085,endColorstr=##00000085);
           zoom: 1;
-       } 
+       }
 
     </style>
 <![endif]--->
+
 
 <cfsilent>
 	<cfif len(application.configBean.getAdminDomain())>
