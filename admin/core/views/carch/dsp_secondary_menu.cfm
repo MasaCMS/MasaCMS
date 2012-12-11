@@ -205,7 +205,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</a>
 					</cfif>
 					<cfif rc.compactDisplay eq 'true'>
-						<a class="btn" href="##" onclick="frontEndProxy.post({cmd:'setLocation',location:'#rc.contentBean.getURL()#'}); return false;">
+						<a class="btn" href="##" onclick="frontEndProxy.post({cmd:'setLocation',location:'#JSStringFormat(rc.contentBean.getURL())#'}); return false;">
 							<i class="icon-globe"></i>
 							#application.rbFactory.getKeyValue(session.rb,'sitemanager.viewcontent')#
 						</a>

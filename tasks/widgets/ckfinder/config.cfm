@@ -317,7 +317,7 @@ config.plugins = arrayNew(1);
 if (APPLICATION.CFVersion gte 8 or StructKeyExists(SERVER,"bluedragon")) {
   include("plugins/fileeditor/plugin.cfm");
   include("plugins/imageresize/plugin.cfm");
-  // include("plugins/watermark/plugin.cfm");
+  include("plugins/permissions/plugin.cfm");
 }
 </cfscript>
 
