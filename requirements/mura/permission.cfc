@@ -824,6 +824,216 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 	<cfset removePermission(arguments.moduleID,arguments.groupID,arguments.siteID)>
 	
 </cffunction>
+
+<cffunction name="getFilePermissions" returntype="string" access="public" output="false">
+<cfargument name="siteId" type="string" required="true">
+<cfargument name="path" type="string" required="true">
+
+<cfset var loc = StructNew()>
+<cfset loc.return = "deny">
+
+	<!--- Check for super admin --->
+	<cfif IsUserInRole('S2')>
+    
+    	<cfset loc.return = "editor">
+    
+    <cfelse>
+
+		<!--- List groups for current user --->
+        <cfset usrGroups = application.usermanager.readMemberships(application.usermanager.getCurrentUserID())>
+        <cfif usrGroups.RecordCount gt 0>
+        	<cfloop query="usrGroups">
+	            <cfset loc.GroupPerm = getFilePermissionsByGroup(usrGroups.groupid, arguments.siteid, arguments.path)>
+    	        <cfif comparePerm(loc.return, loc.GroupPerm)>
+        	        <cfset loc.return = loc.GroupPerm> <!--- Assign higher level, if found --->
+            	</cfif>
+            </cfloop>
+        </cfif>
+    </cfif>
+
+	<cfreturn loc.return>
+    
+</cffunction>
+
+<!--- Returns True if the "right" argument has greater permission level than "left". --->
+<cffunction name="comparePerm" returntype="boolean" access="private" output="false">
+<cfargument name="left" type="string" required="true">
+<cfargument name="right" type="string" required="true">
+
+	<cfset var ret = false>
+    <cfset var possibilities = "">
+    
+    <cfswitch expression="#arguments.left#">
+        <cfcase value="author">
+        	<cfset possibilities = "Editor">
+        </cfcase>
+        <cfcase value="read">
+        	<cfset possibilities = "Editor,Author">
+        </cfcase>
+        <cfcase value="deny">
+        	<cfset possibilities = "Editor,Author,Read">
+        </cfcase>
+    </cfswitch>
+    
+    <!--- If "right" argument is "greater" than "left", return True. --->
+    <cfif FindNoCase(#arguments.right#, #possibilities#) gt 0>
+    	<cfset ret = true>
+    </cfif>
+    
+    <cfreturn ret>
+
+</cffunction>
+
+<cffunction name="getFilePermissionsByGroup" returntype="string" access="public" output="false">
+<cfargument name="groupId" type="string" required="true">
+<cfargument name="siteId" type="string" required="true">
+<cfargument name="path" type="string" required="true">
+
+<cfset var loc = StructNew()>
+<cfset loc.return = "read"> <!--- Default --->
+
+	<cfscript>
+		// clean up paths
+		if (arguments.path eq '/') arguments.path = '';
+		if (arguments.path.endsWith('/')) arguments.path = left(arguments.path, len(arguments.path) -1);
+		if (arguments.path.startsWith('/')) arguments.path = right(arguments.path, len(arguments.path) -1);
+		
+		// Get array of folders
+		loc.ary = listtoarray(arguments.path, '/');
+	</cfscript>
+    
+    <!---
+    <cfsavecontent variable="loc.jon">
+    	<cfoutput><p>Called getFilePermissionsByGroup with these arguments:</p></cfoutput>
+        <cfdump var="#arguments#">
+    </cfsavecontent>
+    <cffile action="append" file="d:\cms_dev_svn\debug\log.htm" output="#loc.jon#">--->
+
+	<!--- Loop through list of folders, trying to find a match --->
+	<cfset loc.path = arguments.path>
+    <cfloop from="0" to="#ArrayLen(loc.ary) - 1#" index="loc.idx">
+    	<cfscript>
+        	loc.editFileName = loc.ary[ArrayLen(loc.ary) - loc.idx];
+       		loc.folderLength = len(loc.editFileName);
+			if (loc.idx eq arraylen(loc.ary) - 1)
+				loc.path = "";
+			else
+	    		loc.path = left(loc.path, len(loc.path) - loc.folderLength - 1);
+		</cfscript>
+
+		<!---
+        <cfsavecontent variable="loc.jon">
+            <cfoutput><p>Checking tdirectories for subdir='#loc.path#' and editfilename='#loc.editFileName#'</p></cfoutput>
+        </cfsavecontent>
+        <cffile action="append" file="d:\cms_dev_svn\debug\log.htm" output="#loc.jon#">--->
+
+		<!--- Check if a value exists in the database for this item --->
+	    <cfquery name="qExists" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+            select dirId from tdirectories
+            where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+                and subdir = <cfqueryparam cfsqltype="cf_sql_varchar" value="#loc.path#"/>
+                and editfilename = <cfqueryparam cfsqltype="cf_sql_varchar" value="#loc.editFileName#"/>
+		</cfquery>
+        
+        <!--- if a record exists, check for permissions --->
+        <cfif qExists.RecordCount gt 0>
+
+			<!---
+            <cfsavecontent variable="loc.jon">
+                <cfoutput><p>Checking tpermissions for contentid='#qExists.dirId#' and groupid='#arguments.groupId#'</p></cfoutput>
+            </cfsavecontent>
+            <cffile action="append" file="d:\cms_dev_svn\debug\log.htm" output="#loc.jon#">--->
+
+            <cfquery name="qPerm" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+                select type from tpermissions
+                where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+                    and contentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#qExists.dirId#"/>
+                    and groupid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.groupId#"/>
+            </cfquery>
+            
+	        <!--- if a permissions record exists, break loop and return value --->
+			<cfif qPerm.RecordCount gt 0>
+            	<cfset loc.return = qPerm.type>
+                <cfbreak>
+            </cfif>
+        </cfif>
+        
+    </cfloop>
+
+	<cfreturn loc.return>
+    
+</cffunction>
+
+<cffunction name="getDirectoryId" returntype="string" access="public" output="false">
+<cfargument name="data" type="struct">
+<cfset var ret = "">
+    <cfquery name="qExists" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+        select dirId from tdirectories
+        where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#data.siteid#"/>
+            and subdir = <cfqueryparam cfsqltype="cf_sql_varchar" value="#data.subdir#"/>
+            and editfilename = <cfqueryparam cfsqltype="cf_sql_varchar" value="#data.editfilename#"/>
+    </cfquery>
+    <cfif qExists.RecordCount gt 0>
+    	<cfset ret = qExists.dirId>
+    </cfif>
+    <cfreturn ret>
+</cffunction>
+
+<cffunction name="updateFile" returntype="void" access="public" output="false">
+<cfargument name="data" type="struct" />
+<cfargument name="siteid" type="string"/>
+
+<cfset var dirId = ""/>
+
 	
+    <!--- insert new directory entry, if needed, and get id --->
+	<cfquery name="qExists" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		select dirId from tdirectories
+        where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+        	and subdir = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.subdir#"/>
+            and editfilename = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.editfilename#"/>
+    </cfquery>
+    <cfif qExists.RecordCount gt 0>
+    	<cfset dirId = qExists.dirId>
+    <cfelse>
+        <cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+        	<cfset dirId = CreateUUID()>
+            insert into tdirectories (dirId, siteid, subdir, editfilename)
+            values (
+	            <cfqueryparam cfsqltype="cf_sql_varchar" value="#dirId#"/>,
+	            <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>,
+                <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.subdir#"/>,
+                <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.editfilename#"/>
+            )
+        </cfquery>
+    </cfif>
+
+	<!--- Delete existing entry in permissions table --->    
+	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		Delete From tpermissions
+        where contentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#dirId#"/>
+        	and groupid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.groupid#"/>
+        	and siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+	</cfquery>
+	
+
+	<!--- Update permissions table ---> 
+	<cfif StructKeyExists(arguments.data, "perm") and (ListContains("editor,author,readonly,deny", arguments.data["perm"]))>
+	 
+		<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			Insert Into tpermissions (ContentID, GroupID, Type, siteid)
+			values(
+				<cfqueryparam cfsqltype="cf_sql_varchar" value="#dirId#"/>,
+				<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.groupid#"/>,
+				<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.perm#"/>,
+				<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+			)
+		</cfquery>
+		
+	</cfif>
+	
+	<cfset variables.settingsManager.getSite(arguments.siteid).purgeCache()>
+</cffunction>
+
 
 </cfcomponent>

@@ -154,4 +154,14 @@
 	where object='portal_nav'
 </cfquery>
 
+<cfscript>
+	dbUtility.setTable("tdirectories")
+	.addColumn(column="dirID",dataType="char",length="35",nullable=false, default='')
+	.addColumn(column="siteID",dataType="varchar",length="35")
+	.addColumn(column="subdir",dataType="varchar",length="255")
+	.addColumn(column="editfilename",dataType="varchar",length="255")
+	.addPrimaryKey("dirID")
+	.addIndex("siteID");
+</cfscript>
+
 
