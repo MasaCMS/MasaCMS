@@ -49,7 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 	<div id="tabCategorization" class="tab-pane fade">
 
-		<cf_dsp_rendertabevents context="top" tab="categorization">
+		<span id="extendset-container-tabcategorizationtop" class="extendset-container"></span>
 
 		<div class="fieldset">
 		<div class="control-group">
@@ -76,9 +76,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 
 		<span id="extendset-container-categorization" class="extendset-container"></span>
-
-
-		<cf_dsp_rendertabevents context="bottom" tab="categorization">
+		<span id="extendset-container-tabcategorizationbottom" class="extendset-container"></span>
 		
 	</div><!--- /tabCatgeorization --->
 </cfoutput>

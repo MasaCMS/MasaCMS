@@ -45,6 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfset request.layout=false>
+<!---<cfset request.event=application.serviceFactory.getBean('$').init(request.event.getAllValues()).event()>--->
 <cfset returnsets=structNew()>
 <cfif isDefined("session.mura.editBean") and isInstanceOf(session.mura.editBean, "mura.content.contentBean") and session.mura.editBean.getContentHistID() eq rc.contentHistID>
 	<cfset contentBean=session.mura.editBean>
@@ -53,7 +54,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 <cfset structDelete(session.mura,"editBean")>
 <cfset request.event.setValue('contentBean',contentBean)>
-<cfset $=request.event.getValue('MuraScope')>
 <cfset subtype=application.classExtensionManager.getSubTypeByName(rc.type,rc.subtype,rc.siteid)>
 
 <cfloop list="#application.contentManager.getTabList()#" index="container">
@@ -119,17 +119,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset returnsets[containerID]=trim(returnsets[containerID])>
 </cfloop>
-<!---
-<cfloop list="tabBasic,tabSEO,tabAdvanced,tabCategorization,tabExtendedAttributes,tabLayoutObjects,tabListDisplayOptions,tabMobile,tabPublishing,tabTags,tabUsagereport" index="tab">
+<cftry>
+<cfparam name="rc.tablist" default="tabBasic,tabSEO,tabAdvanced,tabCategorization,tabExtendedAttributes,tabLayoutObjects,tabListDisplayOptions,tabMobile,tabPublishing,tabTags,tabUsagereport">
+<cfloop list="#rc.tablist#" index="tab">
 	<cfloop list="top,bottom" index="context">
-		<cfsavecontent variable="returnsets#tab#">
-			<cf_dsp_rendertabevents context="#context#" tab="#tab#">
+		<cfsavecontent variable="returnsets.#tab##context#">
+			<cfoutput> 
+				<cf_dsp_rendertabevents context="#context#" tab="#tab#">
+			</cfoutput>
 		</cfsavecontent>
 
 		<cfset returnsets[tab & context ]=trim(returnsets[tab & context])>
 	</cfloop>
 </cfloop>
---->
+<cfcatch>
+	<cfoutput>#cfcatch.message#</cfoutput>
+</cfcatch>
+</cftry>
+
 <cfset returnsets.hasSummary=subType.getHasSummary()>
 <cfset returnsets.hasBody=subType.getHasBody()>
 

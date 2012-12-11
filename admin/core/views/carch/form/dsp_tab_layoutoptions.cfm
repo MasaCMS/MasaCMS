@@ -48,13 +48,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfloop from="1" to="#application.settingsManager.getSite('siteID').getColumnCount()#" index="i">
   <cfparam name="request.rsContentObjects#i#.recordcount" default=0>
 </cfloop>
-<cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.layoutobjects"))/>
-<cfset tabList=listAppend(tabList,"tabLayoutObjects")>
+<cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.layoutoptions"))/>
+<cfset tabList=listAppend(tabList,"tabLayoutOptions")>
 
 <cfoutput>
-  <div id="tabLayoutObjects" class="tab-pane fade">
+  <div id="tabLayoutOptions" class="tab-pane fade">
 
-  <cf_dsp_rendertabevents context="top" tab="layoutobjects"> 
+  <span id="extendset-container-tablayoutoptionstop" class="extendset-container"></span>
 
   <div class="fieldset">
       <div class="control-group">
@@ -187,8 +187,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   </div>  
 
   <span id="extendset-container-layoutobjects" class="extendset-container"></span>
-
-  <cf_dsp_rendertabevents context="bottom" tab="layoutobjects">
+  <span id="extendset-container-tablayoutoptionsbottom" class="extendset-container"></span>
 
   </div> <!--- /.tab-pane --->
   <cfinclude template="../dsp_configuratorJS.cfm">
