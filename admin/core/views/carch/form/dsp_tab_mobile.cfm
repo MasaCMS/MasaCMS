@@ -49,7 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
   	<div id="tabMobile" class="tab-pane fade">
 
-  	<cf_dsp_rendertabevents context="top" tab="mobile">  
+  	<span id="extendset-container-tabmobiletop" class="extendset-container"></span>
 
 	<div class="fieldset">
 	  	<div class="control-group">
@@ -63,7 +63,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 
 	<span id="extendset-container-mobile" class="extendset-container"></span>
-
-	<cf_dsp_rendertabevents context="bottom" tab="mobile">  
+	<span id="extendset-container-tabmobilebottom" class="extendset-container"></span>
 
 </div></cfoutput>

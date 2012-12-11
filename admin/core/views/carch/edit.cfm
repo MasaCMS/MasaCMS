@@ -364,7 +364,7 @@ var hasBody=#subType.getHasBody()#;
 		<cfcase value="Page,Folder,Calendar,Gallery">
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Layout & Objects')>
 				<cfif listFind(session.mura.memberships,'S2IsPrivate')>
-					<cfinclude template="form/dsp_tab_layoutobjects.cfm">
+					<cfinclude template="form/dsp_tab_layoutoptions.cfm">
 				</cfif>
 			</cfif>
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Categorization')>
@@ -430,11 +430,6 @@ var hasBody=#subType.getHasBody()#;
 			<cfset extendSets=application.classExtensionManager.getSubTypeByName(rc.type,rc.contentBean.getSubType(),rc.siteid).getExtendSets(activeOnly=true) />
 			<cfinclude template="form/dsp_tab_extended_attributes.cfm">
 			</cfif>
-			<cfoutput>
-			<script type="text/javascript">
-			siteManager.loadExtendedAttributes('#rc.contentbean.getcontentHistID()#','#rc.type#','#rc.contentBean.getSubType()#','#rc.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');
-			</script>
-			</cfoutput>
 		</cfcase>
 	</cfswitch>
 		
@@ -490,6 +485,12 @@ var hasBody=#subType.getHasBody()#;
 		<cfinclude template="form/dsp_changesets.cfm">
 	</cfif>
 	
+	<cfif listFindNoCase("Page,Folder,Calendar,Gallery,Link,File,Component",rc.contentBean.getType())>
+		<script type="text/javascript">
+		siteManager.tablist='#JSStringFormat(lcase(tabList))#';
+		siteManager.loadExtendedAttributes('#rc.contentbean.getcontentHistID()#','#rc.type#','#rc.contentBean.getSubType()#','#rc.siteID#','#application.configBean.getContext()#','#application.settingsManager.getSite(rc.siteID).getThemeAssetPath()#');
+		</script>
+	</cfif>
 
 	<input name="approved" type="hidden" value="0">
 	<input name="muraPreviouslyApproved" type="hidden" value="#rc.contentBean.getApproved()#">
