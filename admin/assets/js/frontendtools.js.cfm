@@ -17,7 +17,7 @@
 		if (messageEvent.origin == adminProtocal + adminDomain + "#$.globalConfig('serverPort')#") {
 			
 			var parameters=messageEvent.data;
-			
+		
 			if (parameters["cmd"] == "setWidth") {			
 				if(parameters["width"]=='configurator'){
 					frontEndModalWidth=frontEndModalWidthConfigurator;
@@ -108,14 +108,15 @@
 				frameContainer.style.position = "absolute";
 				document.overflow = "auto"
 				
+				
 				if(windowHeight > frontEndModalHeight){	
 					frontEndModalHeight=windowHeight;
-					frameContainer.style.height=jQuery(document).height() + "px"
+					frameContainer.style.height=Math.max(frameHeight,jQuery(document).height()) + "px"
 					setTimeout(function(){
 						jQuery("##frontEndToolsModalClose").fadeIn("fast")
-					},1000);
-					
+					},1000);			
 				}
+				
 				
 			//}
 			//setTimeout(resizeFrontEndToolsModal, 250);
