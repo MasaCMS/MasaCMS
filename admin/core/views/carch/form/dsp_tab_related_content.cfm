@@ -49,7 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <div id="tabRelatedcontent" class="tab-pane">
 
-	<cf_dsp_rendertabevents context="top" tab="relatedcontent">  
+	<span id="extendset-container-tabrelatedcontenttop" class="extendset-container"></span>
 
 	<div class="fieldset padded">
 	<!--- #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.relatedcontent')#:  --->
@@ -85,8 +85,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 
 	<span id="extendset-container-relatedcontent" class="extendset-container"></span>
-
-	<cf_dsp_rendertabevents context="bottom" tab="relatedcontent"> 
+	<span id="extendset-container-tabrelatedcontentbottom" class="extendset-container"></span>
 </div>
 
 </cfoutput>
