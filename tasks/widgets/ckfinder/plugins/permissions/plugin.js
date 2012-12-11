@@ -242,7 +242,7 @@ CKFinder.addPlugin( 'permissions', function( api ) {
 		};
 	} );
 	
-	api.addFolderContextMenuOption( { label : 'Folder Permissions', command : "Permissions" } , function( api, file )
+	api.addFolderContextMenuOption( { label : 'Permissions', command : "Permissions" } , function( api, file )
 	{
 		api.openDialog('permDialog');
 	});
