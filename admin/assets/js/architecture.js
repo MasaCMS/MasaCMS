@@ -53,6 +53,7 @@ var siteManager = {
 	copyContentID: "",
 	copySiteID: "",
 	reloadURL: "",
+	tablist: "",
 
 	ckContent: function(draftremovalnotice) {
 
@@ -660,7 +661,7 @@ buttons: {
 
 	loadExtendedAttributes: function(contentHistID, type, subType, _siteID, _context, _themeAssetPath) {
 		var url = 'index.cfm';
-		var pars = 'muraAction=cArch.loadExtendedAttributes&contentHistID=' + contentHistID + '&type=' + type + '&subType=' + subType + '&siteID=' + _siteID + '&cacheid=' + Math.random();
+		var pars = 'muraAction=cArch.loadExtendedAttributes&contentHistID=' + contentHistID + '&type=' + type + '&subType=' + subType + '&siteID=' + _siteID + '&tablist=' + siteManager.tablist + '&cacheid=' + Math.random();
 
 		siteID = _siteID;
 		context = _context;

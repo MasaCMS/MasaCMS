@@ -4,7 +4,7 @@
 <cfoutput>
   <div id="tabPublishing" class="tab-pane fade">
 		
-	<cf_dsp_rendertabevents context="top" tab="publishing">  
+	<span id="extendset-container-tabpublishingtop" class="extendset-container"></span>
 
 	<div class="fieldset">
 
@@ -211,7 +211,7 @@
 
    <span id="extendset-container-publishing" class="extendset-container"></span>
 
-   <cf_dsp_rendertabevents context="bottom" tab="publishing">
+   <span id="extendset-container-tabpublishingbottom" class="extendset-container"></span>
 
 
 </div></cfoutput>

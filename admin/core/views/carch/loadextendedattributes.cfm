@@ -119,17 +119,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset returnsets[containerID]=trim(returnsets[containerID])>
 </cfloop>
-<!---
-<cfloop list="tabBasic,tabSEO,tabAdvanced,tabCategorization,tabExtendedAttributes,tabLayoutObjects,tabListDisplayOptions,tabMobile,tabPublishing,tabTags,tabUsagereport" index="tab">
+<cftry>
+<cfparam name="rc.tablist" default="tabBasic,tabSEO,tabAdvanced,tabCategorization,tabExtendedAttributes,tabLayoutObjects,tabListDisplayOptions,tabMobile,tabPublishing,tabTags,tabUsagereport">
+<cfloop list="#rc.tablist#" index="tab">
 	<cfloop list="top,bottom" index="context">
-		<cfsavecontent variable="returnsets#tab#">
+		<cfsavecontent variable="returnsets.#tab##context#">
 			<cf_dsp_rendertabevents context="#context#" tab="#tab#">
 		</cfsavecontent>
 
 		<cfset returnsets[tab & context ]=trim(returnsets[tab & context])>
 	</cfloop>
 </cfloop>
---->
+<cfcatch>
+	<cfoutput>#cfcatch.message#</cfoutput>
+</cfcatch>
+</cftry>
+
 <cfset returnsets.hasSummary=subType.getHasSummary()>
 <cfset returnsets.hasBody=subType.getHasBody()>
 

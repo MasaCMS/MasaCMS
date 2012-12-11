@@ -50,7 +50,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <div id="tabAdvanced" class="tab-pane fade">
 	
-	<cf_dsp_rendertabevents context="top" tab="advanced">
+	<span id="extendset-container-tabadvancedtop" class="extendset-container"></span>
 
 		<div class="fieldset">
 			<div class="control-group">
@@ -177,8 +177,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<!--- </div> --->
 
 	<span id="extendset-container-advanced" class="extendset-container"></span>
-
-	<cf_dsp_rendertabevents context="bottom" tab="advanced">
+	<span id="extendset-container-tabadvancedbottom" class="extendset-container"></span>
 
 </div>
 
