@@ -757,16 +757,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				and isDefined('arguments.data.remoteID') and arguments.data.remoteID neq ''>
 					
 			<cfset newBean=read(remoteID=arguments.data.remoteID,siteID=arguments.data.siteid) />
-			
 			<cfif  newBean.getIsNew() and (isDefined('arguments.data.remotePubDate') and arguments.data.remotePubDate eq newBean.getRemotePubDate()) >
 				<cfset refused = true />
+			<cfelse>
+				<cfset arguments.data.sourceID=newBean.getContentHistID()>
 			</cfif>
 		<cfelse>
-			<cfif isDefined('arguments.data.sourceID') and isValid('UUID',arguments.data.sourceID)>
-				<cfset newBean=read(contentHistID=arguments.data.sourceID,siteID=arguments.data.siteid) />
+			<cfif isDefined('arguments.data.contenthistid') and isValid('UUID',arguments.data.contenthistid)>
+				<cfset newBean=read(contentHistID=arguments.data.contenthistid,siteID=arguments.data.siteid) />
 			<cfelse>
 				<cfset newBean=read(contentID=arguments.data.contentID,siteID=arguments.data.siteid) />
 			</cfif>
+			<cfset arguments.data.sourceID=newBean.getContentHistID()>
 		</cfif>
 		
 		<cfif not refused>
@@ -786,9 +788,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 				
 			<cfif not newBean.getIsNew()>
-				<cfif not (isDefined('arguments.data.sourceID') and isValid('UUID',arguments.data.sourceID))>
-					<cfset arguments.data.sourceID=newBean.getContentHistID()>
-				</cfif>	
 				<cfset currentBean=read(contentHistID=arguments.data.sourceID,siteID=arguments.data.siteid) />
 				<cfif currentBean.getActive()>
 					<cfset activeBean=currentBean>

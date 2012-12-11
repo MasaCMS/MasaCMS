@@ -11014,7 +11014,7 @@ a:hover, a:active {
   text-align: left;
 }
 .mura .mura-quickEdit h1 {
-  color: #fff;
+  color: #fff !important;
   font-size: 11px !important;
   text-align: left;
   margin: 0 0 .75em 0;
@@ -15515,6 +15515,7 @@ font-size: 12px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
+  background-color: #fff6bf;
   border: 2px solid #ffd324;
   line-height: 20px;
   clear: both;
