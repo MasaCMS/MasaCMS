@@ -869,7 +869,7 @@ buttons: {
 				siteManager.initQuickEdits();
 				initDraftPrompt();
 				setToolTips("#gridContainer");
-				if(r.perm.toLowerCase() == "editor" && r.sortby.toLowerCase() == 'orderno') {
+				if(r.perm.toLowerCase() == "editor" && r.sortby.toLowerCase() == 'orderno') {	
 					$("#sortableKids").sortable({
 						stop: function(event, ui) {
 							stripe('stripe');
@@ -1251,7 +1251,8 @@ buttons: {
 				location.href = './';
 			}
 			var parentNode = node.parents("li:first");
-			if(parentNode.length) {
+			
+			if(parentNode.parents('li:first').length) {
 				siteManager.refreshSiteSection(parentNode, 1)
 			} else {
 				var topNode = $("#top-node").parents("li:first");

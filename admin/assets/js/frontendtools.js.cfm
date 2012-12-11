@@ -17,7 +17,7 @@
 		if (messageEvent.origin == adminProtocal + adminDomain + "#$.globalConfig('serverPort')#") {
 			
 			var parameters=messageEvent.data;
-			
+		
 			if (parameters["cmd"] == "setWidth") {			
 				if(parameters["width"]=='configurator'){
 					frontEndModalWidth=frontEndModalWidthConfigurator;
@@ -50,6 +50,7 @@
 	var frontEndModalWidthConfigurator=600;
 	var frontEndModalHeight=0;
 	var frontEndModalWidth=0;
+	var frontEndModalIE8=jQuery.browser.msie && +$.browser.version === 8;
 
 	function openFrontEndToolsModal(a){
 		var src=a.href + "&frontEndProxyLoc=" + frontEndProxyLoc;
@@ -108,14 +109,19 @@
 				frameContainer.style.position = "absolute";
 				document.overflow = "auto"
 				
+				
 				if(windowHeight > frontEndModalHeight){	
 					frontEndModalHeight=windowHeight;
-					frameContainer.style.height=jQuery(document).height() + "px"
+					if(frontEndModalIE8){
+						frameContainer.style.height=Math.max(frameHeight,jQuery(document).height()) + "px";
+					} else {
+						frameContainer.style.height=jQuery(document).height() + "px";
+					}
 					setTimeout(function(){
 						jQuery("##frontEndToolsModalClose").fadeIn("fast")
-					},1000);
-					
+					},1000);			
 				}
+				
 				
 			//}
 			//setTimeout(resizeFrontEndToolsModal, 250);

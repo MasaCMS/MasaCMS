@@ -394,7 +394,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
 <cfsavecontent variable="notifyText"><cfoutput>
-A comment has been posted to "#rscontent.title#" by #variables.instance.name#.
+A comment has been posted to "#rscontent.title#" by #variables.instance.name# (#variables.instance.email#).
+
+URL:
+#variables.instance.url#
 
 COMMENT:
 #variables.instance.comments#
