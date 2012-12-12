@@ -307,13 +307,18 @@
 <cfif not node.getIsNew()>
 	<cfoutput>
 	var muraInlineEditor={
-		init: function(){
+		inited: false,
+		init: function(){			
 			CKEDITOR.disableAutoInline = true;
+			muraInlineEditor.inited=true;
 
 			$('.mura-editable-attribute').each(
 			function(){
 				var attribute=$(this);
 				var attributename=attribute.attr('data-attribute').toLowerCase();
+
+				attribute.attr('contenteditable','true');
+				attribute.attr('title','');
 
 				$(this).click(
 					function(){
@@ -562,7 +567,12 @@
 		}
 			};
 	$(document).ready(function(){
-		muraInlineEditor.init();
+		$('.mura-editable-attribute').dblclick(function(){
+			if(!muraInlineEditor.inited){
+				muraInlineEditor.init();
+				$(this).focus();
+			}
+		});
 	});
 </cfif>
 </cfif>
