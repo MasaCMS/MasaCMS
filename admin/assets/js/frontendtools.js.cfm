@@ -330,7 +330,7 @@
 						if($('##adminSave').css('display') == 'none'){
 							$('##adminSave').fadeIn();	
 						}
-						
+				
 						if(!(attributename in muraInlineEditor.attributes)){
 							if(attributename in muraInlineEditor.preprocessed){
 								attribute.html(muraInlineEditor.preprocessed[attributename]);
@@ -416,7 +416,6 @@
 			}
 		},
 		save:function(){
-			isvalid
 			if(muraInlineEditor.validate()){
 				var count=0;
 				for (var prop in muraInlineEditor.attributes) {
