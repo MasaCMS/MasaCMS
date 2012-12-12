@@ -1,7 +1,9 @@
 <cfoutput>
+<!---
 <cfif not currentChangeset.getIsNew()>
-<p class="alert">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetnotenotify")#: "#currentChangeset.getName()#"</p>
+<p class="alert alert-notice">fff#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.changesetnotenotify")#: "#currentChangeset.getName()#"</p>
 </cfif>
+--->
 <script>
 <cfif not currentChangeset.getIsNew() and not rc.contentBean.getApproved()>
 var currentChangesetSelection="#rc.contentBean.getChangesetID()#";
