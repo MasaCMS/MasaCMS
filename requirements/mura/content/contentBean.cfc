@@ -1080,6 +1080,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="complete" type="boolean" required="true" default="false">
 	<cfargument name="showMeta" type="string" required="true" default="0">
 	 <cfreturn variables.contentManager.getURL(this, arguments.queryString,arguments.complete, arguments.showMeta)>
+</cffunction>
+
+<cffunction name="getAssocURL" output="false">
+	<cfif variables.instance.type eq 'Link'>
+		<cfreturn variables.instance.body>
+	<cfelse>
+		 <cfreturn variables.contentManager.getURL(this,'',true)>	
+	</cfif>
 </cffunction>		
 
 <cffunction name="getEditUrl" access="public" returntype="string" output="false">

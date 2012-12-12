@@ -2132,7 +2132,7 @@ select * from rs order by name
 
 <cffunction name="adjustSiteID" output="false">
 <cfargument name="siteID">
-<cfreturn "_" & rereplace(arguments.siteID,"[^a-zA-Z0-9]","","ALL")>
+<cfreturn "_" & lcase(rereplace(arguments.siteID,"[^a-zA-Z0-9]","","ALL"))>
 </cffunction>
 
 <cffunction name="deployBundle" output="false" hint="I return a struct of any errors that occured.">
