@@ -572,7 +572,7 @@
 		$('.mura-editable-attribute').dblclick(function(){
 			if(!muraInlineEditor.inited){
 				muraInlineEditor.init();
-				$(this).focus();
+				//$(this).focus();
 			}
 		});
 	});
