@@ -320,14 +320,16 @@
 				attribute.attr('contenteditable','true');
 				attribute.attr('title','');
 
+				if($('##adminSave').css('display') == 'none'){
+					$('##adminSave').fadeIn();	
+				}
+
+				$(this).unbind('dblclick');
+
 				$(this).click(
 					function(){
 						var attribute=$(this);
-						var attributename=attribute.attr('data-attribute').toLowerCase();
-
-						if($('##adminSave').css('display') == 'none'){
-							$('##adminSave').fadeIn();	
-						}	
+						var attributename=attribute.attr('data-attribute').toLowerCase();	
 
 						if(!(attributename in muraInlineEditor.attributes)){
 							if(attributename in muraInlineEditor.preprocessed){
