@@ -62,7 +62,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 <cfoutput>
 <!DOCTYPE html>
+<cfif cgi.http_user_agent contains 'msie'>
+<meta content="IE=8; IE=9" http-equiv="X-UA-Compatible" />
+<!--[if lt IE 7 ]><html class="mura ie ie6" lang="#HTMLEditFormat(session.locale)#"> <![endif]-->
+<!--[if IE 7 ]><html class="mura ie ie7" lang="#HTMLEditFormat(session.locale)#"> <![endif]-->
+<!--[if IE 8 ]><html class="mura ie ie8" lang="#HTMLEditFormat(session.locale)#"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="#HTMLEditFormat(session.locale)#" class="mura ie"><!--<![endif]-->
+<cfelse>
 <html lang="#HTMLEditFormat(session.locale)#" class="mura">
+</cfif>
 	<head>
 		<title>#application.configBean.getTitle()#</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -149,15 +157,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			});
 		</script>
 		#rc.ajax#
+		
+		<cfif cgi.http_user_agent contains 'msie'>
+		<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	    <!--[if lt IE 9]>
+	      <script src="#application.configBean.getContext()#/admin/assets/js/html5.js"></script>
+	    <![endif]-->
+		
+		<!--[if lte IE 8]>
+		<link href="#application.configBean.getContext()#/admin/assets/css/ie/ie.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+		<![endif]-->
+		
+		<!--[if lte IE 7]>
+		<script src="#application.configBean.getContext()#/admin/assets/js/upgrade-notification.min.js" type="text/javascript"></script>
+		<link rel="stylesheet" href="#application.configBean.getContext()#/admin/assets/css/font-awesome-ie7.css">
+		<script src="#application.configBean.getContext()#/admin/assets/js/mura-font-lte-ie7.js" type="text/javascript"></script>
+		<![endif]-->
+		</cfif>
+		
 	</head>
 	<body id="#rc.originalcircuit#" class="compact">
 		<cfinclude template="includes/dialog.cfm">
 		<div class="main row-fluid">#body#</div>
-		<cfif cgi.http_user_agent contains 'msie'>
-			<!--[if IE 6]>
-			<script type="text/javascript" src="#application.configBean.getContext()#/admin/assets/js/upgrade-notification.min.js"></script>
-			<![endif]-->
-		</cfif>
+		
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-tagselector.js?coreversion=#application.coreversion#"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap.min.js"></script>
 	</body>
