@@ -2729,8 +2729,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			}
 			
 			return '<div class="mura-editable#inline#">
-						<label class="mura-editable-label">#ucase(arguments.attribute)#</label>
-						<div contenteditable="true" id="mura-editable-attribute-#arguments.attribute#" class="mura-editable mura-editable-attribute#inline#" #dataString#>#arguments.value#</div>
+						<label class="mura-editable-label">#ucase(arguments.label)#</label>
+						<div contenteditable="false" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.doubleclicktoedit'))#" id="mura-editable-attribute-#arguments.attribute#" class="mura-editable mura-editable-attribute#inline#" #dataString#>#arguments.value#</div>
 					</div>';
 			
 		} else {
