@@ -1625,44 +1625,44 @@ and parentID is null
 	</cffunction>
 
 	<cffunction name="duplicateExternalSortOrder" returntype="void">
-		<cfargument name="parentID">
-		<cfargument name="destinationSiteID">
-		<cfargument name="sourceSiteID">
-		<cfargument name="includeChildren" type="boolean" default="false">
+        <cfargument name="destinationSiteID">
+        <cfargument name="sourceSiteID">
 
-		<cfset var rsSortOrder = "" />
-		<cfset var childContentBean = "" />
-		<cfset var contentBean = getBean('content').loadBy(contentID=arguments.parentID,siteID=arguments.destinationSiteID ) />
-		<cfset var childrenIterator = contentBean.getKidsIterator() />
+        <cfset var rsSortParent = "" />
+        <cfset var rsSortOrder = "" />
 
-		<cfquery name="rsSortOrder" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-			UPDATE tcontent
-				SET
-					tcontent.orderNo = tcontent_source.orderNo
-				FROM
-				tcontent
-				INNER JOIN
-				tcontent tcontent_source
-				ON
-					tcontent.remoteID = tcontent_source.contentID
-				WHERE
-					tcontent_source.active = 1
-				AND
-					tcontent.active = 1
-				AND
-					tcontent.parentID = <cfqueryparam value="#arguments.parentID#" cfsqltype="cf_sql_varchar" maxlength="35">
-		</cfquery>
-		
-		<cfif arguments.includeChildren eq true>
-			<cfset childrenIterator.setNextN(0) />
-	
-			<cfloop condition="childrenIterator.hasNext()">
-				<cfset childContentBean = childrenIterator.next() />
-				
-				<cfset duplicateExternalSortOrder(childContentBean.getContentID(),arguments.destinationSiteID,arguments.sourceSiteID,arguments.includeChildren ) />
-			</cfloop>
-		</cfif>
-	</cffunction>
+        <cfquery name="rsSortParent" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+            SELECT
+                orderNo,contentID
+            FROM
+                tcontent
+            WHERE
+                active = 1
+            AND
+                siteID = <cfqueryparam value="#arguments.sourceSiteID#" cfsqltype="cf_sql_varchar">
+            AND
+                contentID IN
+                (
+                SELECT remoteID FROM tcontent
+                WHERE
+                    remoteID != ''
+                AND
+                    active =1
+                )
+        </cfquery>
+                
+        <cfloop query="rsSortParent">
+            <cfquery name="rsSortOrder" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+                UPDATE tcontent
+                SET
+                    orderNo = <cfqueryparam value="#rsSortParent.orderNo#" cfsqltype="cf_sql_integer">
+                WHERE
+                    remoteID = <cfqueryparam value="#rsSortParent.contentID#" cfsqltype="cf_sql_varchar" maxlength="35">
+                AND
+                    siteID = <cfqueryparam value="#arguments.destinationSiteID#" cfsqltype="cf_sql_varchar">
+            </cfquery>
+        </cfloop>
+    </cffunction>
 
 
 	<cffunction name="getExtendFileIDs" returntype="query">
