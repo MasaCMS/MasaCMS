@@ -320,10 +320,6 @@
 				attribute.attr('contenteditable','true');
 				attribute.attr('title','');
 
-				if($('##adminSave').css('display') == 'none'){
-					$('##adminSave').fadeIn();	
-				}
-
 				$(this).unbind('dblclick');
 
 				$(this).click(
@@ -331,6 +327,10 @@
 						var attribute=$(this);
 						var attributename=attribute.attr('data-attribute').toLowerCase();	
 
+						if($('##adminSave').css('display') == 'none'){
+							$('##adminSave').fadeIn();	
+						}
+						
 						if(!(attributename in muraInlineEditor.attributes)){
 							if(attributename in muraInlineEditor.preprocessed){
 								attribute.html(muraInlineEditor.preprocessed[attributename]);
@@ -416,6 +416,7 @@
 			}
 		},
 		save:function(){
+			isvalid
 			if(muraInlineEditor.validate()){
 				var count=0;
 				for (var prop in muraInlineEditor.attributes) {
