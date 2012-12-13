@@ -170,8 +170,6 @@
 			<cfif $.getJsLib() eq "jquery">
 				$('HTML').removeClass('mura-edit-mode');
 				$(".editableObject").addClass('editableObjectHide');
-				$(".mura-editable-label").css({display:'none'});
-				$(".mura-editable").addClass('disabled');
 			<cfelse>
 				$$(".editableObject").each(
 					function(o){
@@ -192,15 +190,10 @@
 			$('HTML').toggleClass('mura-edit-mode');
 			$(".editableObject").toggleClass('editableObjectHide');
 			
-			$(".mura-editable-label").each(function(){
-				if($(this).is(':visible')){
-					$(this).css({display:'none'});
-				} else {
-					$(this).css({display:''});
-				}
-			});
+			if(muraInlineEditor.inited){
+				$(".mura-editable").toggleClass('inactive');
+			}
 
-			$(".mura-editable").toggleClass('disabled');
 		<cfelse>
 			Effect.toggle("frontEndTools", "appear");
 			
@@ -318,7 +311,7 @@
 			muraInlineEditor.inited=true;
 			$('##adminSave').fadeIn();	
 			$('.mura-editable').removeClass('inactive');
-			
+
 			$('.mura-editable-attribute').each(
 			function(){
 				var attribute=$(this);
