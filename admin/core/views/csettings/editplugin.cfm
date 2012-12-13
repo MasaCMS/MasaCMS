@@ -201,8 +201,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfloop>
 			</cfif>
 
-			<div class="fieldset">
-				<cfif objectsLen>
+			<cfif objectsLen>
+				<div class="fieldset">
 					<div class="control-group">
 						<div class="span3">
 							<label class="control-label">Display Objects</label>
@@ -237,10 +237,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							</div>
 						</span>
 					</div>
-				<cfelse>
-					<input type="hidden" name="location" value="global">
-				</cfif>
-			</div>
+				</div>
+			<cfelse>
+				<input type="hidden" name="location" value="global">
+			</cfif>
 
 			<cfif scriptsLen>
 				<div class="fieldset">
@@ -275,7 +275,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif extensionsLen>
 				<div class="fieldset">
 					<div class="control-group">
-						<label class="control-lable">Class Extensions</label>
+						<label class="control-label">Class Extensions</label>
 						<div class="controls">
 							<ul>
 								<cfloop from="1" to="#extensionsLen#" index="i">
