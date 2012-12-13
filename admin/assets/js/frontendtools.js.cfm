@@ -308,10 +308,17 @@
 	<cfoutput>
 	var muraInlineEditor={
 		inited: false,
-		init: function(){			
-			CKEDITOR.disableAutoInline = true;
-			muraInlineEditor.inited=true;
+		init: function(){
 
+			if(muraInlineEditor.inited){
+				return false;
+			}
+
+			CKEDITOR.disableAutoInline=true;
+			muraInlineEditor.inited=true;
+			$('##adminSave').fadeIn();	
+			$('.mura-editable').removeClass('inactive');
+			
 			$('.mura-editable-attribute').each(
 			function(){
 				var attribute=$(this);
@@ -325,11 +332,7 @@
 				$(this).click(
 					function(){
 						var attribute=$(this);
-						var attributename=attribute.attr('data-attribute').toLowerCase();	
-
-						if($('##adminSave').css('display') == 'none'){
-							$('##adminSave').fadeIn();	
-						}
+						var attributename=attribute.attr('data-attribute').toLowerCase();
 				
 						if(!(attributename in muraInlineEditor.attributes)){
 							if(attributename in muraInlineEditor.preprocessed){
@@ -405,7 +408,9 @@
 				if(!$('##' + instance).length){
 					CKEDITOR.instances[instance].destroy(true);
 				}
-			}				 
+			}
+
+			return false;				 
 		},
 		getAttributeValue: function(attribute){
 			var attributeid='mura-editable-attribute-' + attribute;
@@ -432,11 +437,13 @@
 							location.href=resp.location;
 						}
 					);
+				} else {
+					location.reload();
 				}
 			}
 			return false;		
 		},
-				stripHTML: function(html){
+		stripHTML: function(html){
 			var tmp = document.createElement("DIV");
 			tmp.innerHTML = html;
 			return tmp.textContent||tmp.innerText;
@@ -567,14 +574,7 @@
 			}
 		</cfscript>
 		}
-			};
-	$(document).ready(function(){
-		$('.mura-editable-attribute').dblclick(function(){
-			if(!muraInlineEditor.inited){
-				muraInlineEditor.init();
-				//$(this).focus();
-			}
-		});
-	});
+	};
+
 </cfif>
 </cfif>

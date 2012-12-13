@@ -158,13 +158,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<ul>
 		<cfif not request.contentBean.getIsNew()>
 			<cfif ListFindNoCase('editor,author',request.r.perm) or listFind(session.mura.memberships,'S2')>
-				<li id="adminEditPage" class="dropdown"><a href="#variables.editLink#" #variables.targetHook# class="dropdown-toggle"><i class="icon-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#</a>
+				<li id="adminEditPage" class="dropdown"><a class="dropdown-toggle"><i class="icon-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#</a>
 					<ul class="dropdown-menu">
 						<li id="adminFullEdit">
 							<a href="#variables.editLink#" #variables.targetHook#><i class="icon-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-full')#</a>
 						</li>
 						<li id="adminQuickEdit">
-							<a href="#variables.editLink#" #variables.targetHook#><i class="icon-bolt"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-quick')#</a>
+							<a onclick="return muraInlineEditor.init();"><i class="icon-bolt"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-quick')#</a>
 						</li>
 					</ul>				
 				</li>
