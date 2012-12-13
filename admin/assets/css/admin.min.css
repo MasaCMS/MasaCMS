@@ -15093,6 +15093,8 @@ font-size: 12px;
 }
 .mura body .mura-editable {
   position: relative;
+  min-height: 20px;
+  min-width: 20px;
 }
 .mura body .mura-editable .mura-editable-attribute {
   outline: 1px dotted #ccc !important;
