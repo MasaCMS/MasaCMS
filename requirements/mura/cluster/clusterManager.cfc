@@ -93,7 +93,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteID" required="true" default="">
 	
 	<cfif variables.broadcastCachePurges>
-		<cfset broadcastCommand("getBean('contentManager').purgeContentCache(content='#arguments.contentID#',siteID='#arguments.siteID#',broadcast=false)")>
+		<cfset broadcastCommand("getBean('contentManager').purgeContentCache(contentID='#arguments.contentID#',siteID='#arguments.siteID#',broadcast=false)")>
 	</cfif>
 </cffunction>
 
@@ -102,7 +102,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteID" required="true" default="">
 
 	<cfif variables.broadcastCachePurges>
-		<cfset broadcastCommand("getBean('contentManager').purgeContentDescendentsCache(content='#arguments.contentID#',siteID='#arguments.siteID#',broadcast=false)")>
+		<cfset broadcastCommand("getBean('contentManager').purgeContentDescendentsCache(contentID='#arguments.contentID#',siteID='#arguments.siteID#',broadcast=false)")>
 	</cfif>
 </cffunction>
 
