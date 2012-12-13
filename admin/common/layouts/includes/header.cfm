@@ -114,9 +114,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		                    <li>
 		                        <a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.list"><i class="icon-cogs"></i> #application.rbFactory.getKeyValue(session.rb,"layout.globalsettings")#</a>
 		                    </li>
-		                    <!---<li>
-		                      <a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.editSite&siteid=#session.siteid#">#application.rbFactory.getKeyValue(session.rb,"layout.editcurrentsite")#</a>
-		                    </li>--->
+		                    <li>
+		                        <a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.list##tabPlugins"><i class="icon-cog"></i> #application.rbFactory.getKeyValue(session.rb,"layout.globalsettings-plugins")#</a>
+		                    </li>
 		                    <li>
 		                      <a href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cSettings.editSite&siteid="><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.addsite")#</a>
 		                    </li>

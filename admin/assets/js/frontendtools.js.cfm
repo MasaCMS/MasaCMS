@@ -170,8 +170,6 @@
 			<cfif $.getJsLib() eq "jquery">
 				$('HTML').removeClass('mura-edit-mode');
 				$(".editableObject").addClass('editableObjectHide');
-				$(".mura-editable-label").css({display:'none'});
-				$(".mura-editable").addClass('disabled');
 			<cfelse>
 				$$(".editableObject").each(
 					function(o){
@@ -192,15 +190,10 @@
 			$('HTML').toggleClass('mura-edit-mode');
 			$(".editableObject").toggleClass('editableObjectHide');
 			
-			$(".mura-editable-label").each(function(){
-				if($(this).is(':visible')){
-					$(this).css({display:'none'});
-				} else {
-					$(this).css({display:''});
-				}
-			});
+			if(muraInlineEditor.inited){
+				$(".mura-editable").toggleClass('inactive');
+			}
 
-			$(".mura-editable").toggleClass('disabled');
 		<cfelse>
 			Effect.toggle("frontEndTools", "appear");
 			
@@ -308,9 +301,16 @@
 	<cfoutput>
 	var muraInlineEditor={
 		inited: false,
-		init: function(){			
-			CKEDITOR.disableAutoInline = true;
+		init: function(){
+
+			if(muraInlineEditor.inited){
+				return false;
+			}
+
+			CKEDITOR.disableAutoInline=true;
 			muraInlineEditor.inited=true;
+			$('##adminSave').fadeIn();	
+			$('.mura-editable').removeClass('inactive');
 
 			$('.mura-editable-attribute').each(
 			function(){
@@ -325,11 +325,7 @@
 				$(this).click(
 					function(){
 						var attribute=$(this);
-						var attributename=attribute.attr('data-attribute').toLowerCase();	
-
-						if($('##adminSave').css('display') == 'none'){
-							$('##adminSave').fadeIn();	
-						}
+						var attributename=attribute.attr('data-attribute').toLowerCase();
 				
 						if(!(attributename in muraInlineEditor.attributes)){
 							if(attributename in muraInlineEditor.preprocessed){
@@ -405,7 +401,9 @@
 				if(!$('##' + instance).length){
 					CKEDITOR.instances[instance].destroy(true);
 				}
-			}				 
+			}
+
+			return false;				 
 		},
 		getAttributeValue: function(attribute){
 			var attributeid='mura-editable-attribute-' + attribute;
@@ -432,11 +430,13 @@
 							location.href=resp.location;
 						}
 					);
+				} else {
+					location.reload();
 				}
 			}
 			return false;		
 		},
-				stripHTML: function(html){
+		stripHTML: function(html){
 			var tmp = document.createElement("DIV");
 			tmp.innerHTML = html;
 			return tmp.textContent||tmp.innerText;
@@ -567,14 +567,7 @@
 			}
 		</cfscript>
 		}
-			};
-	$(document).ready(function(){
-		$('.mura-editable-attribute').dblclick(function(){
-			if(!muraInlineEditor.inited){
-				muraInlineEditor.init();
-				//$(this).focus();
-			}
-		});
-	});
+	};
+
 </cfif>
 </cfif>

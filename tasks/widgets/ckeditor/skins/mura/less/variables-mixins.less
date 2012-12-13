@@ -10,28 +10,34 @@
 // Mixins
 
 .btn-ui {
-	display: inline-block;
-*display:inline;
-*zoom:1;
-	padding: 2px 9px !important;
+	.inline-block;
+	padding: 2px 11px !important;
 	margin: 0;
 	text-align: center;
 	color: #333;
 	vertical-align: middle;
 	cursor: pointer;
 	border: 0;
+	line-height: 18px;
+	font-weight: bold !important;
 	.box-shadow(none);
 	.border-radius(24px);
-	.box-shadow(none);
 	
 	&:hover {
 		text-decoration: none;
 	}
+	
+	/*
+&:active, &:focus {
+		padding: inherit !important;
+	}
+*/
 }
 
-.btn-ok() { 
+.btn-ok() {
 	color: #fff;
-	text-shadow: 0 -1px 0 @blueLight;
+	text-shadow: 0 -1px 0 rgba(0,0,0,.75);
+	border-width: 1px;
 	border-color: @blueLight @blueLight @blue;
 	#gradient .vertical(@blueLight,@blue);
 	}
