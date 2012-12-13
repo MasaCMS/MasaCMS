@@ -58,7 +58,7 @@
     along with Mura CMS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* @group Modal Dialog */
+// Modal Dialog
 @import "../bootstrap/less/mixins.less";
 @import "mixins.less";
 @import "variables.less";
@@ -67,8 +67,8 @@
 
 #frontEndToolsModalContainer {
  /* position: [Set in dialog.js]; */
-  display: block;
   /*height: [Set in dialog.js];*/
+  display: block;
   width: 100%;
   top: 0;
   left: 0;
@@ -290,7 +290,7 @@
     background-image: -ms-linear-gradient(top, @feToolBarBGStart 0%, @feToolBarBGEnd 100%);
     background-image: linear-gradient(to bottom, @feToolBarBGStart 0%, @feToolBarBGEnd 100%);
     background-repeat: repeat-x;
-    
+    // Commented out because it blows up dropdowns in IE
     //filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",argb(@feToolBarBGStart),argb(@feToolBarBGEnd))); // IE9 and down
 	
 	min-height: 30px !important;
@@ -328,6 +328,7 @@
 	text-shadow: 0 -1px 0 rgba(0,0,0,1) !important;
 	border-left: 1px solid hsla(0,0,.33,.85) !important;
 	border-right: 1px solid hsla(0,0,.19,.85) !important;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 }
 
 #frontEndTools > ul > li:first-child {
@@ -351,6 +352,7 @@
 	font-style: normal !important;
 	outline: 0 !important;
 	text-shadow: 0 -1px 0 rgba(0,0,0,.9) !important;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 }
 
 #frontEndTools i {
@@ -363,6 +365,7 @@
 	padding-top: 0 !important;
 	padding-bottom: 0 !important;
 	line-height: 1 !important;
+	overflow: visible !important;
 }
 
 #frontEndTools > #adminSiteManager i {
@@ -448,6 +451,7 @@
 	#gradient .vertical(@blue,@blueDark) !important;
 	.box-shadow(0 0 6px rgba(0,0,0,.5)) !important;
 	text-shadow: 0 -1px 1px @blueDarker !important;
+	cursor: hand !important;
 	
 	> i { color: @blueDarker !important; }
 	
@@ -476,11 +480,13 @@
     	background: hsla(0,0%,18%,.97) !important;
     	.box-shadow(0 4px 6px rgba(0,0,0,.50)) !important;
     	text-align: left !important; 
-    	margin-top: 0 !important;  	
+    	margin-top: 0 !important;  
+		cursor: hand !important;
 		
 		li { 
 			display: block !important;
 			margin-bottom: 0 !important;
+			cursor: hand !important;
 			}
 		
 		a {
@@ -491,11 +497,13 @@
 			float: none !important;
 			display: block !important;
 			height: auto !important;
+			cursor: hand !important;
 			}
 			
 		li > a:hover {
 			background: @grayDarker !important;
 			color: @white !important;
+			cursor: hand !important;
 			}
 		
 		i {
@@ -506,7 +514,7 @@
 			}
 		
 		li > a:hover i {
-			color: @gray !important;
+			color: @blue !important;
 			}
 }
 
