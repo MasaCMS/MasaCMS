@@ -1088,7 +1088,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		 <cfreturn variables.contentManager.getURL(this,'',true)>	
 	</cfif>
-</cffunction>		
+</cffunction>
+
+<cffunction name="setAssocURL" output="false">
+	<cfargument name="assocURL">
+	<cfif variables.instance.type eq 'Link'>
+		<cfset variables.instance.body=arguments.assocURL>	
+	</cfif>
+	<cfreturn this>
+</cffunction>			
 
 <cffunction name="getEditUrl" access="public" returntype="string" output="false">
 	<cfargument name="compactDisplay" type="any" required="true" default="false"/>
