@@ -192,7 +192,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset crumbdata=application.contentManager.getCrumbList(rslist.contentid, rc.siteid)/>
 	<cfset verdict=application.permUtility.getnodePerm(crumbdata)/>
 	<cfif verdict neq 'none'>
-	<li><a title="Version History" href="index.cfm?muraAction=cArch.hist&contentid=#rslist.ContentID#&type=#rslist.type#&parentid=#rslist.parentID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rslist.moduleid#">#HTMLEditFormat(rsList.menuTitle)#</a> #application.rbFactory.getKeyValue(session.rb,"dashboard.by")# #HTMLEditFormat(rsList.lastUpdateBy)# <span>(#LSDateFormat(rsList.lastUpdate,session.dateKeyFormat)#)</span></li>
+	<li><a title="Version History" href="index.cfm?muraAction=cArch.hist&contentid=#rslist.ContentID#&type=#rslist.type#&parentid=#rslist.parentID#&topid=#rslist.contentID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rslist.moduleid#">#HTMLEditFormat(rsList.menuTitle)#</a> #application.rbFactory.getKeyValue(session.rb,"dashboard.by")# #HTMLEditFormat(rsList.lastUpdateBy)# <span>(#LSDateFormat(rsList.lastUpdate,session.dateKeyFormat)#)</span></li>
 	<cfelse><li>#HTMLEditFormat(rslist.menuTitle)# #application.rbFactory.getKeyValue(session.rb,"dashboard.by")# #HTMLEditFormat(rsList.lastUpdateBy)# <span>(#LSDateFormat(rsList.lastUpdate,session.dateKeyFormat)#)</span></li>
 	</cfif>
 	</cfloop>
@@ -204,7 +204,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h2>#application.rbFactory.getKeyValue(session.rb,"dashboard.draftsforreview")#</h2>
 <ul><cfif rsList.recordcount>
 	<cfloop query="rslist">
-	<li><a title="Version History" href="index.cfm?muraAction=cArch.hist&contentid=#rslist.ContentID#&type=#rslist.type#&parentid=#rslist.parentID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rslist.moduleid#">#HTMLEditFormat(rsList.menuTitle)#</a> #application.rbFactory.getKeyValue(session.rb,"dashboard.by")# #HTMLEditFormat(rsList.lastUpdateBy)# <span>(#LSDateFormat(rsList.lastUpdate,session.dateKeyFormat)#)</span></li>
+	<li><a title="Version History" href="index.cfm?muraAction=cArch.hist&contentid=#rslist.ContentID#&type=#rslist.type#&parentid=#rslist.parentID#&topid=#rslist.contentID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rslist.moduleid#">#HTMLEditFormat(rsList.menuTitle)#</a> #application.rbFactory.getKeyValue(session.rb,"dashboard.by")# #HTMLEditFormat(rsList.lastUpdateBy)# <span>(#LSDateFormat(rsList.lastUpdate,session.dateKeyFormat)#)</span></li>
 	</cfloop>
 	<cfelse>
 	<li>#application.rbFactory.getKeyValue(session.rb,"dashboard.nodrafts")#</li>
