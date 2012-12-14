@@ -94,7 +94,6 @@
 		/* Site Summary & Drafts */
 		
 		dl {
-			.dl-horizontal;
 			margin-bottom: 0;
 			.clearfix;
 			}
@@ -102,17 +101,21 @@
 		dt,dd {
 			margin-bottom: .5em;
 			line-height: 1.5 !important;
-			float: left;
 			display: block;
 			}
 		
 		dt {
 			text-align: left !important;
+			float: left;
+			clear: left;
 			font-weight: normal;
+			max-width: 100px;
 			}
 		
 		dd {
-			margin-left: 3em !important;			
+			/* margin-left: 3em !important; */
+			float: right;
+			clear: right;			
 			}
 		
 		ul {
