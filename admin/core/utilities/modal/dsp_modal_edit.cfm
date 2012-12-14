@@ -163,9 +163,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<li id="adminFullEdit">
 							<a href="#variables.editLink#" #variables.targetHook#><i class="icon-pencil"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-full')#</a>
 						</li>
+						<cfif this.showInlineEditor>	
 						<li id="adminQuickEdit">
 							<a onclick="return muraInlineEditor.init();"><i class="icon-bolt"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit-quick')#</a>
 						</li>
+						</cfif>
 					</ul>				
 				</li>
 				<cfif listFind("Page,Folder,Calendar,Gallery,File,Link",request.contentBean.getType())>
