@@ -12,8 +12,30 @@
 	.nav .active a {
 		color: @grayDarker;
 		}
+
+	// TABS
+	// ----
+	
+	// Give the tabs something to sit on
+	.nav-tabs {
+	  border-bottom-width: 2px;
+	}
+	// Make the list-items overlay the bottom border
+	.nav-tabs > li {
+	  margin-bottom: -2px;
+	}
+	// Actual tabs (as links)
+	.nav-tabs > li > a {
+	  border-width: 2px;
+	  }
+	// Active state, and it's :hover to override normal :hover
+	.nav-tabs > .active > a,
+	.nav-tabs > .active > a:hover {
+	  border-width: 2px;
+	}
 	
 }
+
 
 .tabs-left { // Content Editing, etc.
 		
