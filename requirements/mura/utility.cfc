@@ -164,6 +164,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.fileWriter.copyFile(source="#webroot#/config/templates/site/eventHandler.template.cfc", destination="#webroot#/#arguments.siteid#/includes/eventHandler.cfc")>
 	</cfif>
 
+	<cfif not directoryExists("#webroot#/#arguments.siteid#/includes/email")> 
+		<cfset variables.fileWriter.createDir(directory="#webroot#/#arguments.siteid#/includes/email")>
+	</cfif>
+
 	<cfif not fileExists("#webroot#/#arguments.siteid#/includes/email.template.cfm")> 
 		<cfset variables.fileWriter.copyFile(source="#webroot#/config/templates/site/email.template.cfm", destination="#webroot#/#arguments.siteid#/includes/email/inc_email.cfm")>
 	</cfif>
