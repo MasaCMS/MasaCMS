@@ -131,7 +131,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="createRequiredSiteDirectories" returntype="void" output="false" access="public">
 <cfargument name="siteid" type="string" default="" required="yes"/>
-	
+	<cfset var webroot=expandPath('/muraWRM')>
+
 	<!--- make sure that the file cache directory exists, for node level files --->
 	<cfif not directoryExists("#variables.configBean.getFileDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#cache#variables.configBean.getFileDelim()#file")> 
 	
@@ -149,6 +150,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<!--- make sure that the asset directory exists, for fckeditor assets --->
 	<cfif not directoryExists("#variables.configBean.getAssetDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#assets")> 
 		<cfset variables.fileWriter.createDir(directory="#variables.configBean.getAssetDir()##variables.configBean.getFileDelim()##arguments.siteid##variables.configBean.getFileDelim()#assets")>
+	</cfif>
+
+	<cfif not fileExists("#webroot#/#arguments.siteid#/includes/contentRenderer.cfc")> 
+		<cfset variables.fileWriter.copyFile(source="#webroot#/config/templates/site/contentRenderer.template.cfc", destination="#webroot#/#arguments.siteid#/includes/contentRenderer.cfc")>
+	</cfif>
+
+	<cfif not fileExists("#webroot#/#arguments.siteid#/includes/Application.cfc")> 
+		<cfset variables.fileWriter.copyFile(source="#webroot#/config/templates/site/application.template.cfc", destination="#webroot#/#arguments.siteid#/includes/Application.cfc")>
+	</cfif>
+
+	<cfif not fileExists("#webroot#/#arguments.siteid#/includes/eventHandler.template.cfc")> 
+		<cfset variables.fileWriter.copyFile(source="#webroot#/config/templates/site/eventHandler.template.cfc", destination="#webroot#/#arguments.siteid#/includes/eventHandler.cfc")>
 	</cfif>
 	
 </cffunction>
