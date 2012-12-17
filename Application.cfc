@@ -66,7 +66,6 @@ component output="false" {
 			variables.tracePoint=initTracePoint("Writing config/mappings.cfm");
 			include "config/buildMainMappings.cfm";
 			commitTracePoint(variables.tracePoint);
-			commitTracePoint(variables.tracePoint);
 		}
 		
 	}
