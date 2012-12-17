@@ -200,7 +200,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfswitch expression="#arguments.field#">
 			<cfcase value="filename">
 				and filename = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fieldValue#"/> 
-				and type in ('Folder','Page','Calendar','Gallery')
+				and type in ('Folder','Page','Calendar','Gallery','Link','File')
 			</cfcase>
 			<cfcase value="title">
 				and title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fieldValue#"/> 
