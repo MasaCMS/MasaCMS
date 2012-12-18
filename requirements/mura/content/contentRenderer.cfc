@@ -200,11 +200,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not this.jsLibLoaded>
 	<cfswitch expression="#getJsLib()#">
 		<cfcase value="prototype">
-			<cfset addToHTMLHeadQueue("prototype.cfm")>
-			<cfset addToHTMLHeadQueue("scriptaculous.cfm")>
+			<cfset addToHTMLHeadQueue("prototype.cfm","prepend")>
+			<cfset addToHTMLHeadQueue("scriptaculous.cfm","prepend")>
 		</cfcase>
 		<cfdefaultcase>
-			<cfset addToHTMLHeadQueue("jquery.cfm")>
+			<cfset addToHTMLHeadQueue("jquery.cfm","prepend")>
 		</cfdefaultcase>
 		</cfswitch>
 	</cfif>
@@ -2259,10 +2259,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif getRenderHTMLQueues()>
 		
 		<cfif arguments.queueType eq "HEAD">
-			<!--- ensure that the js lb is always there --->
-			<cfset loadJSLib() />
+			
 			<!--- Add global.js --->
 			<cfset addToHTMLHEADQueue('global.cfm',"prepend")>
+
+			<!--- ensure that the js lb is always there --->
+			<cfset loadJSLib() />
 					
 			<!--- Add modal edit --->
 			<cfif getShowModal()>

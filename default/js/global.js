@@ -771,7 +771,7 @@ function getHTMLEditorConfig(customConfig) {
 	return htmlEditorConfig;
 }
 
-addLoadEvent(setKeyCheck);
+$(document).ready(setKeyCheck);
 
 //Event.observe(window, 'load', setKeyCheck, false);
 
