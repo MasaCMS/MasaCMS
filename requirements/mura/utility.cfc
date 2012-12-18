@@ -160,7 +160,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.fileWriter.copyFile(source="#webroot#/config/templates/site/application.template.cfc", destination="#webroot#/#arguments.siteid#/includes/Application.cfc")>
 	</cfif>
 
-	<cfif not fileExists("#webroot#/#arguments.siteid#/includes/eventHandler.template.cfc")> 
+	<cfif not fileExists("#webroot#/#arguments.siteid#/includes/eventHandler.cfc")> 
 		<cfset variables.fileWriter.copyFile(source="#webroot#/config/templates/site/eventHandler.template.cfc", destination="#webroot#/#arguments.siteid#/includes/eventHandler.cfc")>
 	</cfif>
 
