@@ -1,4 +1,4 @@
-<!--- This file is part of Mura CMS.
+/*This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -10,7 +10,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
+along with Mura CMS. If not, see <http://www.gnu.org/licenses/;.
 
 Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
@@ -43,77 +43,82 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
-<cfcomponent output="false">
-	<cfinclude template="config/applicationSettings.cfm">
+*/
+component output="false" {
+	include "config/applicationSettings.cfm";
 	
-	<cfif not hasMainMappings>
-		<!--- Try and include global mappings --->
-		<cfset canWriteMode=true>
-		<cfset canWriteMappings=true>
-		<cfset hasMappings=true>
+	if(not hasMainMappings){
+		//Try and include global mappings;
+		canWriteMode=true;
+		canWriteMappings=true;
+		hasMappings=true;
 		
-		<cftry>
-			<cfinclude template="config/mappings.cfm">
-			<cfcatch type="missingInclude">
-				<cfset hasMappings=false>
-			</cfcatch>
-		</cftry>
+		try{
+			include "config/mappings.cfm";
+		}
+		catch(any e){
+			if(e.type eq 'missingInclude'){
+				hasMappings=false;
+			}
+		}
 		
-		<cfif not hasMappings>
-			<cfset variables.tracePoint=initTracePoint("Writing config/mappings.cfm")>
-			<cfinclude template="config/buildMainMappings.cfm">
-			<cfset commitTracePoint(variables.tracePoint)>
-			<cfset commitTracePoint(variables.tracePoint)>
-		</cfif>
+		if(not hasMappings){
+			variables.tracePoint=initTracePoint("Writing config/mappings.cfm");
+			include "config/buildMainMappings.cfm";
+			commitTracePoint(variables.tracePoint);
+		}
 		
-	</cfif>
+	}
 	
-	<cfif not hasPluginMappings>
-		<!--- Try and include plugin mappings --->
-		<cfset canWriteMode=true>
-		<cfset hasMappings=true>
-		<cfset canWriteMappings=true>
-		<cftry>
-			<cfinclude template="plugins/mappings.cfm">
-			<cfcatch type="missingInclude">
-				<cfset hasMappings=false>
-			</cfcatch>
-		</cftry>
+	if(not hasPluginMappings){
+		//Try and include plugin mappings
+		canWriteMode=true;
+		hasMappings=true;
+		canWriteMappings=true;
+		try{
+			include "plugins/mappings.cfm";
+		}
+		catch(any e){
+			if(e.type eq 'missingInclude'){
+				hasMappings=false;
+			}
+		}
 		
-		<cfif not hasMappings>
-			<cfset variables.tracePoint=initTracePoint("Writing plugin/mappings.cfm")>
-			<cfinclude template="config/buildPluginMappings.cfm">
-			<cfset commitTracePoint(variables.tracePoint)>
-		</cfif>
+		if(not hasMappings){
+			variables.tracePoint=initTracePoint("Writing plugin/mappings.cfm");
+			include "config/buildPluginMappings.cfm";
+			commitTracePoint(variables.tracePoint);
+		}
 		
-	</cfif>
+	}
 	
-	<cfif not hasPluginCFApplication>
-		<!--- Try and include plugin mappings --->
-		<cfset canWriteMode=true>
-		<cfset hasMappings=true>
-		<cfset canWriteMappings=true>
-		<cftry>
-			<cfinclude template="plugins/cfapplication.cfm">
-			<cfcatch type="missingInclude">
-				<cfset hasMappings=false>
-			</cfcatch>
-		</cftry>
+	if(not hasPluginCFApplication){
+		//Try and include plugin mappings
+		canWriteMode=true;
+		hasMappings=true;
+		canWriteMappings=true;
+		try{
+			include "plugins/cfapplication.cfm";
+		}
+		catch(any e){
+			if(e.type eq 'missingInclude'){
+				hasMappings=false;
+			}
+		}
 		
-		<cfif not hasMappings>
-			<cfset variables.tracePoint=initTracePoint("Writing config/cfapplication.cfm")>
-			<cfinclude template="config/buildPluginCFApplication.cfm">
-			<cfset commitTracePoint(variables.tracePoint)>
-		</cfif>
+		if(not hasMappings){
+			variables.tracePoint=initTracePoint("Writing config/cfapplication.cfm");
+			include "config/buildPluginCFApplication.cfm";
+			commitTracePoint(variables.tracePoint);
+		}
 		
-	</cfif>
+	}
 	
-	<cfinclude template="config/appcfc/onApplicationStart_method.cfm">
-	<cfinclude template="config/appcfc/onRequestStart_scriptProtect_method.cfm">
-	<cfinclude template="config/appcfc/onRequestEnd_method.cfm">
-	<cfinclude template="config/appcfc/onSessionStart_method.cfm">
-	<cfinclude template="config/appcfc/onSessionEnd_method.cfm">
-	<cfinclude template="config/appcfc/onError_method.cfm">
-	<cfinclude template="config/appcfc/onMissingTemplate_method.cfm">
-</cfcomponent>
+	include "config/appcfc/onApplicationStart_method.cfm";
+	include "config/appcfc/onRequestStart_scriptProtect_method.cfm";
+	include "config/appcfc/onRequestEnd_method.cfm";
+	include "config/appcfc/onSessionStart_method.cfm";
+	include "config/appcfc/onSessionEnd_method.cfm";
+	include "config/appcfc/onError_method.cfm";
+	include "config/appcfc/onMissingTemplate_method.cfm";
+}
