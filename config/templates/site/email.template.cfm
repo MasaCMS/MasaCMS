@@ -53,7 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </head>
 <body text="##000000" link="##000000" vlink="##000000" alink="##000000" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" >
 #bodyHtml#
-<p><cfoutput>To unsubscribe, <a href="#unsubscribe#">please click here</a>. To forward, <a href="#forward#">please click here</a>.</p>
+<p><cfoutput>To unsubscribe, <a href="#unsubscribe#">please click here</a>.</p>
 #trackOpen#</cfoutput>
 </body>
 </html></cfoutput>
