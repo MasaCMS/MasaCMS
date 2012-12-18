@@ -283,6 +283,7 @@
 	text-align: left !important;
 	font-weight: normal !important;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+	overflow: visible !important;
 	.box-shadow(0 1px 5px rgba(0,0,0,.6)) !important;
 }
 
@@ -293,6 +294,7 @@
 	padding: 0 !important;
 	border-right: 0 solid hsla(0,0,.33,.85) !important;
 	border-left: 1px solid hsla(0,0,.19,.85) !important;
+	overflow: visible !important;
 }
 
 #frontEndTools > ul > li {
@@ -310,6 +312,7 @@
 	border-left: 1px solid hsla(0,0,.33,.85) !important;
 	border-right: 1px solid hsla(0,0,.19,.85) !important;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+	overflow: visible !important;
 	
 	&.dropdown > a > .caret {
 		margin: 12px 0 0 4px !important;
@@ -495,7 +498,7 @@
 			color: @grayDark !important;
 			top: 0px !important;
 			font-size: 12px !important;
-			margin-right: 2px;
+			margin-right: 2px !important;
 			}
 		
 		li > a:hover i {
@@ -521,9 +524,9 @@
 
 body .mura-editable {
 
-		position: relative;
-		min-height: 20px;
-		min-width: 20px;
+		position: relative !important;
+		min-height: 20px !important;
+		min-width: 20px !important;
 		
 		.mura-editable-attribute {
 		
@@ -575,7 +578,7 @@ body .mura-editable {
 		
 .editableObject .cke_editable form { border: 0 !important; padding: 0 !important;}
 	
-#frontEndTools ul li.dropdown:hover > ul.dropdown-menu { display: block !important; }
+.mura-edit-mode #frontEndTools > ul > li.dropdown:hover > ul.dropdown-menu { display: block !important; }
 
 // Z-Indexes
 
