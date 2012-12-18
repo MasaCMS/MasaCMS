@@ -4,8 +4,6 @@
 <cfset $=application.serviceFactory.getBean("MuraScope").init(url.siteID)>
 <cfparam name="Cookie.fetDisplay" default="">
 <cfoutput>	
-	addLoadEvent(checkToolbarDisplay);
-	
 	var adminProxy;
 	var adminDomain=<cfif len($.globalConfig('admindomain'))>"#$.globalConfig('admindomain')#"<cfelse>location.hostname</cfif>;
 	var adminProtocal=<cfif application.configBean.getAdminSSL() or application.utility.isHTTPS()>"https://";<cfelse>"http://"</cfif>;
@@ -42,10 +40,6 @@
 			adminProxy.addEventListener(onAdminMessage);
 	}
 	
-	addLoadEvent(initAdminProxy);
-	
-	
-	<cfif $.getJsLib() eq "jquery">
 	var frontEndModalWidthStandard=990;
 	var frontEndModalWidthConfigurator=600;
 	var frontEndModalHeight=0;
@@ -133,76 +127,25 @@
 		jQuery('##frontEndToolsModalContainer').remove();
 	}	
 	
-
-	
-	jQuery(document).ready(function(){
-		jQuery(".frontEndToolsModal").each(
-			function(){
-				jQuery(this).click(function(event){
-					event.preventDefault();
-					openFrontEndToolsModal(this);
-				});
-		});
-	});	
-	</cfif>
-	<!---
 	function checkToolbarDisplay () {
 		<cfif Cookie.fetDisplay eq "none">
-			<cfif $.getJsLib() eq "jquery">
-				$(".editableObject").each(
-					function(intIndex){
-						$(this).addClass('editableObjectHide');
-					}
-				);
-			<cfelse>
-				$$(".editableObject").each(
-					function(o){
-						o.addClassName('editableObjectHide');
-					}
-				);
-			</cfif>
-		</cfif>
-	}
-	--->
-	
-	function checkToolbarDisplay () {
-		<cfif Cookie.fetDisplay eq "none">
-			<cfif $.getJsLib() eq "jquery">
-				$('HTML').removeClass('mura-edit-mode');
-				$(".editableObject").addClass('editableObjectHide');
-			<cfelse>
-				$$(".editableObject").each(
-					function(o){
-						o.addClassName('editableObjectHide');
-					}
-				);
-			</cfif>
-		<cfelseif $.getJsLib() eq "jquery">
+			$('HTML').removeClass('mura-edit-mode');
+			$(".editableObject").addClass('editableObjectHide');
+		<cfelse>
 			$('HTML').addClass('mura-edit-mode');
 		</cfif>
 	}
 	
 	
-<cfif not isIeSix>
-	function toggleAdminToolbar(){
-		<cfif $.getJsLib() eq "jquery">
-			$("##frontEndTools").animate({opacity: "toggle"});
-			$('HTML').toggleClass('mura-edit-mode');
-			$(".editableObject").toggleClass('editableObjectHide');
-			
-			if(muraInlineEditor.inited){
-				$(".mura-editable").toggleClass('inactive');
-			}
 
-		<cfelse>
-			Effect.toggle("frontEndTools", "appear");
+	function toggleAdminToolbar(){
+		$("##frontEndTools").animate({opacity: "toggle"});
+		$('HTML').toggleClass('mura-edit-mode');
+		$(".editableObject").toggleClass('editableObjectHide');
 			
-			$$(".editableObject").each(
-				function(o){
-					o.toggleClassName('editableObjectHide');
-				}
-			);
-		</cfif>
+		if(muraInlineEditor.inited){
+			$(".mura-editable").toggleClass('inactive');
+		}
 	}
 
 	function resizeEditableObjects(){
@@ -233,66 +176,26 @@
 		);
 	}
 
-	jQuery(document).ready(
-		function($) {
+	jQuery(document).ready(		
+		function(){
+			jQuery(".frontEndToolsModal").each(
+				function(){
+					jQuery(this).click(function(event){
+						event.preventDefault();
+						openFrontEndToolsModal(this);
+					}
+				);
+			});
+			
 			resizeEditableObjects();
+			checkToolbarDisplay();
+			initAdminProxy();
 		}
 	);
 
 	$(window).resize(function() {
   		resizeEditableObjects();
 	});
-
-
-<cfelse>
-	function toggleAdminToolbarIE6(){
-	<cfif $.getJsLib() eq "jquery">
-		$("##frontEndToolsIE6").animate({opacity: "toggle"});
-		
-		$(".editableObject").each(
-			function(intIndex){
-				$(this).toggleClass('editableObjectHide');
-			}
-		);
-		
-	<cfelse>
-		Effect.toggle("frontEndToolsIE6", "appear");
-		
-		$$(".editableObject").each(
-			function(o){
-				o.toggleClassName('editableObjectHide');
-			}
-		);
-	</cfif>
-	};
-					
-	function showSubMenuIE6(callerId,elementId){
-		var callerElement = document.getElementById(callerId);					
-		var xCoord = callerElement.offsetLeft;
-		var yCoord = callerElement.offsetTop + callerElement.offsetHeight + 0;		
-		var minWidth = callerElement.offsetWidth;
-		var subMenu = document.getElementById(elementId);
-							
-		if(subMenu){			
-			subMenu.style.position = 'absolute';
-			subMenu.style.left = xCoord + 'px';
-			subMenu.style.top = yCoord + 'px';					
-		};			
-		showObjIE6(elementId);					
-	};
-		
-	function showObjIE6(elementId){			
-		if(document.getElementById(elementId)){
-			document.getElementById(elementId).style.display = '';
-		};
-	};
-			
-	function hideObjIE6(elementId){			
-		if(document.getElementById(elementId)){
-			document.getElementById(elementId).style.display = 'none';
-		};
-	};
-</cfif>	
 </cfoutput>
 </cfif>
 <cfif isDefined('url.siteID') and isDefined('url.contenthistid') and isDefined('url.showInlineEditor') and url.showInlineEditor>
