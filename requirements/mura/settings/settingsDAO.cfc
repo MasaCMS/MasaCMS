@@ -713,7 +713,7 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
 
  <cfquery  datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
         INSERT INTO tusers  (UserID, s2, Fname, Lname, Password, Email, GroupName, Type, subType, ContactForm, LastUpdate, lastupdateby, lastupdatebyid, InActive, username,  perm, isPublic,
-		company,jobtitle,subscribe,siteid,website,notes,keepPrivate)
+		company,jobtitle,subscribe,siteid,website,notes,keepPrivate,created)
      VALUES(
          '#createUUID()#',
 		 0, 
@@ -738,7 +738,8 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
 		 '#arguments.bean.getSiteID()#',
 		  null,
 		  null,
-		  0)
+		  0,
+		  <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">)
 		 
    </cfquery>
 
