@@ -496,7 +496,7 @@ copyAll = 'false';
 </form>
 
 <div class="tabbable">
-	<ul id="viewTabs" class="nav nav-tabs mura initActiveTab">
+	<ul id="viewTabs" class="nav nav-tabs tabs initActiveTab">
 		<li><a href="##tabArchitectural" onclick="return false;">#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.architectural")#</a></li>
 		<li><a href="##tabFlat" onclick="return false;">#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.flat")#</a></li>
 	</ul>
