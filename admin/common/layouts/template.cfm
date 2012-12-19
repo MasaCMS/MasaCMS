@@ -181,7 +181,7 @@
 	<script type="text/javascript">
 		jQuery(document).ready(function(){
 				setDatePickers(".datepicker",dtLocale);
-				setTabs(".mura.nav-tabs",#rc.activeTab#);
+				setTabs(".tabs",#rc.activeTab#);
 				setHTMLEditors();
 				setAccordions(".accordion",#rc.activePanel#);
 				setCheckboxTrees();

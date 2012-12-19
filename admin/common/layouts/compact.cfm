@@ -134,7 +134,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			var frontEndProxy;
 			jQuery(document).ready(function(){
 				setDatePickers(".datepicker",dtLocale);
-				setTabs(".mura.nav-tabs",#rc.activeTab#);
+				setTabs(".tabs",#rc.activeTab#);
 				setHTMLEditors();
 				setAccordions(".accordion",#rc.activePanel#);
 				setCheckboxTrees();
