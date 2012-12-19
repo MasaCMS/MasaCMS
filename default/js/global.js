@@ -593,22 +593,6 @@ function setImageOffSets(margin,type,selector){
 
 }
 
-// Son of Suckerfish Dropdowns
-sfHover = function() {
-	if(document.getElementById("navPrimary") != undefined){
-	var sfEls = document.getElementById("navPrimary").getElementsByTagName("LI");
-		for (var i=0; i<sfEls.length; i++) {
-			sfEls[i].onmouseover=function() {
-				this.className+=" sfhover";
-			}
-			sfEls[i].onmouseout=function() {
-				this.className=this.className.replace(new RegExp(" sfhover\\b"), "");
-			}
-		}
-	}
-}
-if (window.attachEvent) window.attachEvent("onload", sfHover); //Event.observe(window, 'load', sfHover, false); 
-
 function addLoadEvent(func) {
    var oldonload = window.onload;
    if (typeof window.onload != 'function') {
@@ -633,7 +617,7 @@ function addUnloadEvent(func) {
    }
   }
 
-function keyCheck(e){
+function muraLoginCheck(e){
 	var key = (window.event) ? event.keyCode : e.keyCode;
 	
 	if(typeof(pressed_keys)=='undefined'){
@@ -681,8 +665,8 @@ function keyCheck(e){
 }
 
 
-function setKeyCheck(){
-	document.onkeydown=keyCheck;
+function setMuraLoginCheck(){
+	document.onkeydown=muraLoginCheck;
 }
 
 
@@ -771,7 +755,7 @@ function getHTMLEditorConfig(customConfig) {
 	return htmlEditorConfig;
 }
 
-$(document).ready(setKeyCheck);
+$(document).ready(setMuraLoginCheck);
 
 //Event.observe(window, 'load', setKeyCheck, false);
 
