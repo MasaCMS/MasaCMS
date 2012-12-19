@@ -215,7 +215,7 @@
 <cfargument name="siteID">
 	<cfset var rsPendingChangeSets="">
 	<cfquery name="rsPendingChangeSets" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-	select tchangesets.changesetID, tcontent.contentID, tcontent.contenthistid, tcontent.siteID, tchangesets.name changesetName, tcontent.lastupdate
+	select tchangesets.changesetID, tcontent.contentID, tcontent.contenthistid, tcontent.siteID, tchangesets.name changesetName
 	from tcontent
 	inner join tchangesets on tcontent.changesetID=tchangesets.changesetID
 	where tcontent.siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
@@ -366,7 +366,7 @@
 <cfargument name="moduleid" default="">
 	<cfset var rs="">
 	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-	select tcontent.siteid, tcontent.parentID, tcontent.path, tcontent.contentid, tcontent.contenthistid, tcontent.fileID, tcontent.type, tcontent.subtype, tcontent.lastupdateby, tcontent.active, tcontent.approved, tcontent.lastupdate, 
+	select tcontent.menutitle, tcontent.siteid, tcontent.parentID, tcontent.path, tcontent.contentid, tcontent.contenthistid, tcontent.fileID, tcontent.type, tcontent.subtype, tcontent.lastupdateby, tcontent.active, tcontent.approved, tcontent.lastupdate, 
 	tcontent.display, tcontent.displaystart, tcontent.displaystop, tcontent.moduleid, tcontent.isnav, tcontent.notes,tcontent.isfeature,tcontent.inheritObjects,tcontent.filename,tcontent.targetParams,tcontent.releaseDate,
 	tcontent.changesetID, tfiles.fileExt, tcontent.title, tcontent.menutitle
 	from tcontent 
@@ -382,7 +382,7 @@
 	<cfif len(arguments.moduleid)>
 		and tcontent.moduleid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleid#">
 	</cfif>
-	order by tcontent.menutitle
+	order by menutitle
 	</cfquery>
 	<cfreturn rs>
 </cffunction>

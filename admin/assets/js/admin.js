@@ -43,7 +43,7 @@
 	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
- 
+
 function loadObject(url, target, message) {
 	// branch for native XMLHttpRequest object
 	var req;
@@ -183,28 +183,6 @@ function isEmail(cur) {
 		return true;
 	}
 
-}
-
-function isColor(c){
-    var i= 0, itm,
-    M= c.replace(/ +/g, '').match(/(rgba?)|(\d+(\.\d+)?%?)|(\.\d+)/g);
-    if(M && M.length> 3){
-        while(i<3){
-            itm= M[++i];
-            if(itm.indexOf('%')!= -1){
-                itm= Math.round(parseFloat(itm)*2.55);
-            }
-            else itm= parseInt(itm);
-            if(itm<0 || itm> 255) return NaN;
-            M[i]= itm;
-        }
-        if(c.indexOf('rgba')=== 0){
-            if(M[4]==undefined ||M[4]<0 || M[4]> 1) return NaN;
-        }
-        else if(M[4]) return NaN;
-        return M[0]+'('+M.slice(1).join(',')+')';
-    }
-    return NaN;
 }
 
 function stripe(theclass) {
@@ -417,8 +395,8 @@ function validateForm(theForm) {
 						errors += getValidationMessage(theField, ' must be numeric.');
 					}
 				} else if(validationType == 'COLOR' && theField.value != '') {
-					//var re = new RegExp("^#?([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?$");
-					if(!isColor(theField.value)) {
+					var re = new RegExp("^#?([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?$");
+					if(!theField.value.match(re)) {
 						if(!started) {
 							started = true;
 							startAt = f;
@@ -761,8 +739,8 @@ function setColorPickers(target) {
 		$(this).colorpicker({
 			format: 'rgba'
 		}).on('changeColor', function(e) {
-			var rgb=e.color.toRGB();
-			$(this).val('rgba('+rgb.r+','+rgb.g+','+rgb.b+','+rgb.a+')');
+			//var rgb=e.color.toRGB();
+			//$(this).val('rgba('+rgb.r+','+rgb.g+','+rgb.b+','+rgb.a+')');
 		});
 	});
 }
@@ -1040,10 +1018,10 @@ spinnerArgs = {
 	left: 'auto' // Left position relative to parent in px
 }
 
-//preloadimages(['./assets/images/ajax-loader.gif']);
+preloadimages(['./assets/images/ajax-loader.gif']);
 
 function removePunctuation(item){
 	$(item).val(
-		$(item).val().replace(/[^\w\s-]|/g, "").replace(/\s+/g, "")
+		$(item).val().replace(/[^\w\s]|_/g, "").replace(/\s+/g, "")
 	);
 }

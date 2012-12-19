@@ -24,16 +24,16 @@
 		padding: 0;
 		margin-right: 2px;
 		clear: none !important;
-		line-height: 16px;
+		line-height: 22px;
 		
 		&.edit { margin-right: 1px; }
-		&.download i { font-size: 16px; top: 1px; }
+		&.download i { font-size: 18px; }
 		&.preview {  }
 		&.delete { margin-left: 1px; }
 		&.permissions + .delete { margin-left: 0; }
 		&.permissions { margin: 0 3px; }
-		&.version-history + .permissions { margin-left: 2px; }
-		&.download { margin: 0 2px 0 0; }
+		&.version-history + .permissions { margin-left: 1px; }
+		&.download { margin: 0 2px 0 1px; }
 		&.manage-data {  }
 		&.rss { margin: 0 4px 0 3px; }
 		&.import {  }
@@ -49,11 +49,9 @@
 		}
 	
 	i {
-		font-size: 14px;
-		height: 16px;
+		font-size: 17px;
 		width: auto !important;
 		color: @iconColor;
-		position: relative;
 		/* text-shadow: 0 1px 0 rgba(255,255,255,1.0); */
 		
 		&:hover { color: @grayDarker; }
@@ -174,7 +172,7 @@ tr:nth-child(even) i {
 
 				
 			&.link:before { content: '\f0c1'; }
-			&.folder:before { content: '\f114'; }
+			&.folder:before { content: '\f07b'; }
 			&.gallery:before { content: '\f00a'; }			
 			/* &.file:before { content: '\f0c6'; } */
 			&.calendar:before { content: '\f073'; font-size: 21px; top: 3px; }
@@ -193,9 +191,9 @@ tr:nth-child(even) i {
 				}
 			
 			&.page:before { 
-				.icon-font('FontAwesome');
-				content: "\f016";
-				font-size: 18px;
+				.icon-font('mura-icons');
+				content: "\36";
+				font-size: 17px;
 				}
 				
 			&.gallery {

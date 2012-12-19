@@ -122,7 +122,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset request.rowNum=request.rowNum+1>
 </cfsilent>
 <!--- Start LI for content Item --->
-<li data-siteid="#attributes.rsNest.siteid#" data-contentid="#attributes.rsNest.contentid#" data-contenthistid="#attributes.rsNest.contenthistid#" data-sortby="#attributes.rsNest.sortby#" data-sortdirection="#attributes.rsNest.sortdirection#" data-moduleid="#HTMLEditFormat(attributes.moduleid)#" data-type="#attributes.rsNest.type#" class="#lcase(attributes.rsNest.type)# mura-node-data<cfif variables.restricted> restricted</cfif>">
+<li data-siteid="#attributes.rsNest.siteid#" data-contentid="#attributes.rsNest.contentid#" data-contenthistid="#attributes.rsNest.contenthistid#" data-sortby="#attributes.rsNest.sortby#" data-sortdirection="#attributes.rsNest.sortdirection#" data-moduleid="#HTMLEditFormat(attributes.moduleid)#" data-type="#attributes.rsNest.type#" class="#lcase(attributes.rsNest.type)#<cfif variables.restricted> restricted</cfif>">
 <cfif variables.restricted><div class="marker"></div></cfif>
 <dl>
 <dt>
@@ -150,9 +150,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<a class="<cfif attributes.rsNest.type eq 'File'>file #lcase(icon)#<cfelse>icon-mura-#lcase(icon)#</cfif> title"<cfif attributes.rsNest.type eq 'File'> data-filetype="#lcase(attributes.rsNest.fileExt)#"</cfif> <cfif atooltip>rel="tooltip" data-html="true" title="#atitle#"</cfif>>
 	</cfif>
-	#HTMLEditFormat(left(attributes.rsNest.menutitle,75))#<cfif len(attributes.rsNest.menutitle) gt 75>&hellip;</cfif>
+	#HTMLEditFormat(left(attributes.rsNest.menutitle,70))#
+	<cfif len(attributes.rsNest.menutitle) gt 70>&hellip;</cfif>
 	<cfif isMore><span class="hasMore">&nbsp;(#application.rbFactory.getKeyValue(session.rb,"sitemanager.more")#)</span></cfif></a>
-	<div class="mura-title-fade"></div>
+	<!--- <div class="mura-title-fade"></div> --->
 </dt>	
 
 <cfif attributes.locking neq 'all'>

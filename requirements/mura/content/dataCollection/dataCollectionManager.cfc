@@ -302,7 +302,7 @@ order by tformresponsepackets.entered asc
 <script type="text/javascript">
 		var frm=document.getElementById('#frmID#');
 			frm.setAttribute('action','?nocache=1');
-			frm.setAttribute('method','post');
+			frm.setAttribute('post','post');
 			if( frm.getAttribute('onsubmit') == null || frm.getAttribute('onsubmit')==''){
 				frm.onsubmit=function(){return validateForm(this);}
 			}
@@ -313,7 +313,7 @@ order by tformresponsepackets.entered asc
 					for (p=0; p < poll.length; p++) {
 							if(poll[p].type =='radio'){polllist.push(escape(poll[p].value));}
 						}
-				if(polllist.length > 0) {frm.setAttribute('action','?nocache=1&polllist='+ polllist.toString());}		
+				if(polllist.length > 0) {frm.setAttribute('?nocache=1&polllist='+ polllist.toString());}		
 			</cfif>
 		</cfif>
 		if( !(typeof(window.jQuery) != 'undefined' && typeof(window.jQuery.mobile) != 'undefined') ){

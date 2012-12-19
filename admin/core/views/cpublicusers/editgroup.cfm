@@ -97,7 +97,7 @@ select * from rsSubTypes where subType <> 'Default'
      <form class="fieldset-wrap" novalidate="novalidate" action="index.cfm?muraAction=cPublicUsers.update&userid=#URLEncodedFormat(rc.userid)#" enctype="multipart/form-data" method="post" name="form1" onsubmit="return validate(this);">
       <cfif rsSubTypes.recordcount>
         <div class="tabbable tabs-left">
-        <ul class="nav nav-tabs tabs initActiveTab">
+        <ul class="nav nav-tabs initActiveTab">
         <li><a href="##tabBasic" onclick="return false;"><span>#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'user.basic'))#</span></a></li>
         <li id="tabExtendedattributesLI" class="hide"><a href="##tabExtendedattributes" onclick="return false;"><span>#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'user.extendedattributes'))#</span></a></li>
         </ul>

@@ -80,13 +80,11 @@ $(document).ready(function(){
 	var anchors=document.getElementsByTagName("A");
 	
 	for(var i=0;i<anchors.length;i++){	
-		try{
-			if (typeof(anchors[i].onclick) != 'function' 
-				&& typeof(anchors[i].getAttribute('href')) == 'string' 
-				&& anchors[i].getAttribute('href').indexOf('#') == -1) {
-	   			anchors[i].onclick = setRequestedURL;
-			}
-		} catch(err){}
+		if (typeof(anchors[i].onclick) != 'function' 
+			&& typeof(anchors[i].getAttribute('href')) == 'string' 
+			&& anchors[i].getAttribute('href').indexOf('#') == -1) {
+   			anchors[i].onclick = setRequestedURL;
+		}
 	}
 	
 });
@@ -103,8 +101,6 @@ function conditionalExit(msg){
 	if(msg==null){
 		<cfoutput>msg="#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.saveasdraft"))#";</cfoutput>
 	}
-
-	document.contentForm.approved.value=0;
 	jQuery("#alertDialog").html(msg);
 	jQuery("#alertDialog").dialog({
 			resizable: false,
@@ -177,7 +173,7 @@ var hasBody=#subType.getHasBody()#;
 			<cfquery name="rsSubTypes" dbtype="query">
 			select * from rsSubTypes
 			where 
-				type in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#extendedList#"/>)
+				type in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#pageLevelList#"/>)
 				or type='Base'
 			</cfquery>
 		<!---
@@ -241,12 +237,12 @@ var hasBody=#subType.getHasBody()#;
 	<cfoutput>
 	<div class="form-actions">
 	
-		 <button type="button" class="btn" onclick="document.contentForm.approved.value=0;if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="icon-check"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#</button>
+		 <button type="button" class="btn" onclick="if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="icon-check"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#</button>
 		<cfif listFindNoCase("Page,Folder,Calendar,Gallery",rc.type)>
-		<button type="button" class="btn" onclick="document.contentForm.approved.value=0;document.contentForm.preview.value=1;if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="icon-eye-open"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraftandpreview"))#</button>
+		<button type="button" class="btn" onclick="document.contentForm.preview.value=1;if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="icon-eye-open"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraftandpreview"))#</button>
 		</cfif>
 		<cfif assignChangesets>
-		<button type="button" class="btn" onclick="document.contentForm.approved.value=0;saveToChangeset('#rc.contentBean.getChangesetID()#','#HTMLEditFormat(rc.siteID)#','');return false;"><i class="icon-check"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset"))#</button>	
+		<button type="button" class="btn" onclick="saveToChangeset('#rc.contentBean.getChangesetID()#','#HTMLEditFormat(rc.siteID)#','');return false;"><i class="icon-check"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset"))#</button>	
 		</cfif>
 		<cfif rc.perm eq 'editor' and not $.siteConfig('EnforceChangesets')>
 		<button type="button" class="btn" onclick="document.contentForm.approved.value=1;if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="icon-check"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.publish"))#</button>
@@ -316,14 +312,9 @@ var hasBody=#subType.getHasBody()#;
 		</p>
 	</cfif>
 
-	<cfif len(rc.contentBean.getNotes())>
-		<p class="alert">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.notes")#: #HTMLEditFormat(rc.contentBean.getNotes())#</p>
-	</cfif>
-
 	<cfif not structIsEmpty(rc.contentBean.getErrors())>
 		<div class="alert alert-error">#application.utility.displayErrors(rc.contentBean.getErrors())#</div>
 	</cfif>
-
 	<form novalidate="novalidate" action="index.cfm" method="post" enctype="multipart/form-data" name="contentForm" onsubmit="return ckContent(draftremovalnotice);" id="contentForm">
 	
 	<!--- This is plugin message targeting --->	
@@ -373,7 +364,7 @@ var hasBody=#subType.getHasBody()#;
 		<cfcase value="Page,Folder,Calendar,Gallery">
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Layout & Objects')>
 				<cfif listFind(session.mura.memberships,'S2IsPrivate')>
-					<cfinclude template="form/dsp_tab_layoutobjects.cfm">
+					<cfinclude template="form/dsp_tab_layoutoptions.cfm">
 				</cfif>
 			</cfif>
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Categorization')>
@@ -476,7 +467,7 @@ var hasBody=#subType.getHasBody()#;
 	<cfoutput>
 	
 	<div class="tabbable tabs-left">
-		<ul class="nav nav-tabs tabs initActiveTab">
+		<ul class="nav nav-tabs initActiveTab">
 			<cfloop from="1" to="#listlen(tabList)#" index="t">
 			<cfset currentTab=listGetAt(tabList,t)>
 			<li<cfif currentTab eq "tabExtendedAttributes"> class="hide" id="tabExtendedAttributesLI"</cfif>><a href="###currentTab#" data-toggle="tab"><span>#listGetAt(tabLabelList,t)#</span></a></li>
@@ -520,18 +511,18 @@ var hasBody=#subType.getHasBody()#;
 	</cfif>
 	<input name="action" type="hidden" value="add">
 	<input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
-	<input type="hidden" name="moduleid" value="#HTMLEditFormat(rc.moduleid)#">
+	<input type="hidden" name="moduleid" value="#rc.moduleid#">
 	<input type="hidden" name="contenthistid" value="#rc.contentBean.getContentHistID()#">
-	<input type="hidden" name="return" value="#HTMLEditFormat(rc.return)#">
-	<input type="hidden" name="topid" value="#HTMLEditFormat(rc.topid)#">
+	<input type="hidden" name="return" value="#rc.return#">
+	<input type="hidden" name="topid" value="#rc.topid#">
 	<input type="hidden" name="contentid" value="#rc.contentBean.getContentID()#">
-	<input type="hidden" name="ptype" value="#HTMLEditFormat(rc.ptype)#">
-	<input type="hidden" name="type" value="#HTMLEditFormat(rc.type)#">
+	<input type="hidden" name="ptype" value="#rc.ptype#">
+	<input type="hidden" name="type" value="#rc.type#">
 	<input type="hidden" name="subtype" value="#rc.contentBean.getSubType()#">
 	<input type="hidden" name="muraAction" value="cArch.update">
-	<input type="hidden" name="startrow" value="#HTMLEditFormat(rc.startrow)#">
-	<input type="hidden" name="returnURL" id="txtReturnURL" value="#HTMLEditFormat(rc.returnURL)#">
-	<input type="hidden" name="homeID" value="#HTMLEditFormat(rc.homeID)#">
+	<input type="hidden" name="startrow" value="#rc.startrow#">
+	<input type="hidden" name="returnURL" id="txtReturnURL" value="#rc.returnURL#">
+	<input type="hidden" name="homeID" value="#rc.homeID#">
 	<cfif not  listFind(session.mura.memberships,'S2')>
 		<input type="hidden" name="isLocked" value="#rc.contentBean.getIsLocked()#">
 	</cfif>

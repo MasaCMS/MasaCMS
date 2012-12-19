@@ -58,7 +58,7 @@ CKEDITOR.editorConfig = function( config )
 	                                	{name: 'group2', items:['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt']},
 	                                	{name: 'group3', items:['Undo','Redo','-','Find','Replace','-','RemoveFormat']},
 	                                	{name: 'group4', items:['BidiLtr','BidiRtl']},
-	                                	{name: 'group5', items:['Bold','Italic','Underline','Strike','-','Subscript','Superscript']},'/',
+	                                	{name: 'group5', items:['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript']},'/',
 	                                	{name: 'group6', items:['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv']},
 	                                	{name: 'group7', items:['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
 	                                	{name: 'group8', items:['Link','Unlink','Anchor']},'/',
@@ -71,7 +71,7 @@ CKEDITOR.editorConfig = function( config )
 										['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt'],
 										['Undo','Redo','-','Find','Replace','-','RemoveFormat'],
 										['BidiLtr','BidiRtl'],
-										['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
+										['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
 										['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
 										['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
 										['Link','Unlink','Anchor'],
@@ -84,7 +84,7 @@ CKEDITOR.editorConfig = function( config )
 										['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt'],
 										['Undo','Redo','-','Find','Replace','-','RemoveFormat'],
 										['BidiLtr','BidiRtl'],
-										['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
+										['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
 										['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
 										['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
 										['Link','Unlink','Anchor'],
@@ -105,14 +105,11 @@ CKEDITOR.editorConfig = function( config )
 	                                	['Source'],['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','Image']
 	                                ] ;
 
-	config.extraPlugins = 'SelectComponent,media,Selectlink,gmap,tableresize,onchange,justify,find,bidi,div,showblocks,forms,templates,pagebreak';
+	config.extraPlugins = 'SelectComponent,media,Selectlink,gmap,tableresize,onchange';
 
 	<cfif application.configBean.getEnableMuraTag()>
 	config.extraPlugins = config.extraPlugins + ",muratag";
 	</cfif>
-	
-	config.protectedSource.push( /<i class\=\"[\s\S]*?\"\>/g ); //allows beginning <i class=""> tag
-	config.protectedSource.push( /<\/i\>/g ); //allows ending </i> tag
 
 	// Remove the Resize plugin as it does not make sense to use it in conjunction with the AutoGrow plugin.
 	//removePlugins : 'resize';

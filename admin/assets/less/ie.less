@@ -46,31 +46,9 @@
 
 .mura.ie {
 	
-	// All IE
 	.navbar-inner { filter: none; }
 	.fieldset, fieldset { background-color: #fdfdfd !important; }
-	
-	.mura-grid dt a.title {
-					overflow-x: hidden !important;
-					text-overflow: clip !important;
-					font-family: sans-serif;
-					
-						&:before {
-							font-family: FontAwesome; // Resetting fonts, title would display serif, :before would display no icon without resetting
-							}
-					
-					}
-	
-	
-	input[type="radio"], input[type="checkbox"] {
-		padding-left: 10px;
-		box-shadow: none;
-		vertical-align: middle;
-		min-height: 0;
-		padding-top: 0;
-		}
-		
-	// IE7
+
 	&.ie7 {
 	
 	div.tooltip { background: #222; }
@@ -292,41 +270,42 @@
 	
 		}
 
-	// IE 8
+// IE 8
 
-	&.ie8 {
-		
-		.dropdown-menu li.divider { background: transparent; border-color: #666; }
-		
-		.nav-site .dropdown-menu, #newContentMenu ul { background: #333; }
-			
-		.row-fluid [class*="span"] { min-height: 18px; } /* Fixes form input height */
-		
-		#tabCategorization .mura-grid {
+&.ie8 {
 	
-			.categoryLabelContainer { padding-bottom: 0; }
-			label {margin-bottom: 0; }
-			}
-			
-		
-			
-	}
+	.dropdown-menu li.divider { background: transparent; border-color: #666; }
 	
-	
-	&.ie8, &.ie9 {
+	.nav-site .dropdown-menu, #newContentMenu ul {
+		background: #333;
+		}
 		
-		#clogin {
-			
-			input[type="text"],input[type="password"] {
-				width: 270px;
-				}
-			}
-			
+	.row-fluid [class*="span"] { min-height: 20px; } /* Fixes form input height */
+	
+	#tabCategorization .mura-grid {
 
-	}
-
-	&.ie9 {
+		.categoryLabelContainer { padding-bottom: 0; }
+		label {margin-bottom: 0; }
+		}
 		
-	}
+	input[type="text"] { 
+		
+		height: 24px !important;
+		min-height: 24px !important;
+		}
+	
+	/*
+		.mura-modal, .modal-backdrop {
+			background: #000;
+			opacity: .8;
+		}
+	*/
+}
+
+/*
+&.ie9 {
+	
+}
+*/
 
 }

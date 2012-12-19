@@ -232,9 +232,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="event" required="true">
 	
 	<cfif application.utility.isHTTPS()>
-		<cflocation addtoken="no" url="http://#application.settingsManager.getSite(arguments.event.getValue('siteID')).getDomain()##application.configBean.getServerPort()##arguments.event.getContentRenderer().getCurrentURL(complete=false,filterVars=false)#">
+		<cflocation addtoken="no" url="http://#application.settingsManager.getSite(arguments.event.getValue('siteID')).getDomain()##application.configBean.getServerPort()##arguments.event.getContentRenderer().getCurrentURL(false)#">
 	<cfelse>
-		<cflocation addtoken="no" url="https://#application.settingsManager.getSite(arguments.event.getValue('siteID')).getDomain()##application.configBean.getServerPort()##arguments.event.getContentRenderer().getCurrentURL(complete=false,filterVars=false)#">
+		<cflocation addtoken="no" url="https://#application.settingsManager.getSite(arguments.event.getValue('siteID')).getDomain()##application.configBean.getServerPort()##arguments.event.getContentRenderer().getCurrentURL(false)#">
 	</cfif>
 </cffunction>
 
@@ -275,7 +275,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>
 					</cfcase>
 					<cfcase value="File">		
-						<cfif not renderer.showItemMeta(arguments.event.getValue('contentBean').getFileExt()) or arguments.event.getValue('showMeta') eq 2 or listFindNoCase('attachment,inline',arguments.event.getValue('method'))>
+						<cfif not renderer.showItemMeta(arguments.event.getValue('contentBean').getFileExt()) or arguments.event.getValue('showMeta') eq 2>
 							<!---<cftry>--->
 							<cfset translator=arguments.event.getHandler('standardFileTranslation')>
 							<!---
@@ -536,7 +536,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!--- TRANSLATORS --->
 <cffunction name="standardFileTranslator" output="false" returnType="any">
 	<cfargument name="event" required="true">
-	<cfset arguments.event.getValue('contentRenderer').renderFile(arguments.event.getValue('contentBean').getFileID(),arguments.event.getValue('method'),arguments.event.getValue('size')) />
+	<cfset arguments.event.getValue('contentRenderer').renderFile(arguments.event.getValue('contentBean').getFileID()) />
 </cffunction>
 
 <cffunction name="standardLinkTranslator" output="false" returnType="any">

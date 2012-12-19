@@ -364,11 +364,11 @@ Purpose:    Utlitity class for loading Java Classes
 	<cfdirectory action="list" name="qJars" directory="#path#" filter="*.jar" sort="name desc"/>
 	<cfloop query="qJars">
 		<cfscript>
-			libName = ListGetAt(qJars.name, 1, "-");
+			libName = ListGetAt(name, 1, "-");
 			//let's not use the lib's that have the same name, but a lower datestamp
 			if(NOT ListFind(jarList, libName))
 			{
-				ArrayAppend(aJars, path & "/" & qJars.name);
+				ArrayAppend(aJars, path & "/" & name);
 				jarList = ListAppend(jarList, libName);
 			}
 		</cfscript>

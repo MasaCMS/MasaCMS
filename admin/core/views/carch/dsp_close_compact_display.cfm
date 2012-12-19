@@ -49,7 +49,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <cfsilent>
-<cfparam name="session.frontEndProxyLoc" default="">
 <cfset event=request.event>
 <cfset contentRenderer=application.settingsManager.getSite(event.getValue("siteID")).getContentRenderer()>
 <cfset href = "">

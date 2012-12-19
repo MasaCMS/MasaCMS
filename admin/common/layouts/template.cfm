@@ -5,7 +5,6 @@
 <!--[if lt IE 7 ]><html class="mura ie ie6" lang="#HTMLEditFormat(session.locale)#"> <![endif]-->
 <!--[if IE 7 ]><html class="mura ie ie7" lang="#HTMLEditFormat(session.locale)#"> <![endif]-->
 <!--[if IE 8 ]><html class="mura ie ie8" lang="#HTMLEditFormat(session.locale)#"> <![endif]-->
-<!--[if IE 9 ]><html class="mura ie ie9" lang="#HTMLEditFormat(session.locale)#"> <![endif]-->
 <!--[if (gte IE 9)|!(IE)]><!--><html lang="#HTMLEditFormat(session.locale)#" class="mura ie"><!--<![endif]-->
 <cfelse>
 <html lang="#HTMLEditFormat(session.locale)#" class="mura">
@@ -19,19 +18,12 @@
 		<cfparam name="rc.jsLibLoaded" default="false">
 		<cfparam name="rc.activetab" default="0">
 		<cfparam name="rc.activepanel" default="0">
-		<cfparam name="rc.renderMuraAlerts" default="true">
 		<cfparam name="rc.siteid" default='#session.siteID#'>
 		<cfparam name="application.coreversion" default="#application.serviceFactory.getBean('autoUpdater').getCurrentVersion()#">
-		
 		<!--- This code is just to prevent errors when people update past version 5.2.2652 --->
 		<cfif not len(rc.siteID)>
-			<cfset rc.siteID="default">
+		<cfset rc.siteID="default">
 		</cfif>
-
-		<cfif not structKeyExists(rc,"$")>
-			<cfset rc.$=application.serviceFactory.getBean('$').init(session.siteid)>
-		</cfif>  
-
 		<cfparam name="moduleTitle" default="">
 		<cfif not len(moduleTitle)>
 		<cfswitch expression="#rc.originalcircuit#">
@@ -157,7 +149,7 @@
 	
 	<!--[if lte IE 7]>
 	<script src="#application.configBean.getContext()#/admin/assets/js/upgrade-notification.min.js" type="text/javascript"></script>
-	<link rel="stylesheet" href="#application.configBean.getContext()#/admin/assets/css/font-awesome-ie7.min.css">
+	<link rel="stylesheet" href="#application.configBean.getContext()#/admin/assets/css/font-awesome-ie7.css">
 	<script src="#application.configBean.getContext()#/admin/assets/js/mura-font-lte-ie7.js" type="text/javascript"></script>
 	<![endif]-->
 	</cfif>
@@ -189,15 +181,13 @@
 	<script type="text/javascript">
 		jQuery(document).ready(function(){
 				setDatePickers(".datepicker",dtLocale);
-				setTabs(".tabs",#rc.activeTab#);
+				setTabs(".nav-tabs",#rc.activeTab#);
 				setHTMLEditors();
 				setAccordions(".accordion",#rc.activePanel#);
 				setCheckboxTrees();
 				setColorPickers(".colorpicker");
 				setToolTips(".container");
 			});
-
-		preloadimages(['#application.configBean.getContext()#/admin/assets/images/ajax-loader.gif']);
 	</script>
 
 	#rc.ajax#
@@ -225,22 +215,23 @@
       <script src="#application.configBean.getContext()#/admin/assets/js/html5.js"></script>
     <![endif]-->
 	<!--- </cfif> --->
-    #rc.$.renderEvent('onAdminHTMLHeadRender')#
+    
   </head>
   <body id="#rc.originalcircuit#">
     <cfinclude template="includes/header.cfm">
     <div class="main">
       <div class="main-inner">
          <div class="container">
-         		<cfif request.action neq "core:cLogin.main" and rc.renderMuraAlerts>
+         		<cfif request.action neq "core:cLogin.main">
 	         		<cfif isdefined('session.siteID') and isdefined('session.alerts') and structKeyExists(session.alerts,'#session.siteid#')
-	         			and (listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2'))>
+	         			and (listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2'))
+	         			and not application.settingsManager.getSite(session.siteID).getCache()>
 	         			
 	         			<cfif isdefined('session.hasdefaultpassword') and not structKeyExists(session.alerts['#session.siteID#'],'defaultpasswordnotice')>
 	         					<div class="alert alert-error">#application.rbFactory.getKeyValue(session.rb,"layout.defaultpasswordnotice")#
 				           	<a href="##" data-alertid="defaultpasswordnotice" class="close alert-dismiss" data-dismiss="alert"><i class="icon-remove-sign"></i></a></div>
 	         			</cfif>
-	         			<cfif not application.settingsManager.getSite(session.siteID).getCache() and not structKeyExists(session.alerts['#session.siteID#'],'cachenotice')>
+	         			<cfif not structKeyExists(session.alerts['#session.siteID#'],'cachenotice')>
 				           	<div class="alert">#application.rbFactory.getKeyValue(session.rb,"layout.cachenotice")#
 				           	<a href="##" data-alertid="cachenotice" class="close alert-dismiss" data-dismiss="alert"><i class="icon-remove-sign"></i></a></div>
 			           	</cfif>
@@ -310,7 +301,6 @@
 	<cfinclude template="/muraWRM/admin/core/views/carch/dsp_content_nav.cfm">
 	</cfif>
 	<cfinclude template="includes/dialog.cfm">
-	#rc.$.renderEvent('onAdminHTMLFootRender')#
   </body>
 </html>
 </cfoutput>

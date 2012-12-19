@@ -1083,7 +1083,7 @@ buttons: {
 						siteManager.initQuickEdits();
 
 						//The fadeIn in ie8 causes a rendering issue
-						if(!(document.all && document.querySelector && !document.addEventListener)) {
+						if(!($.browser.msie && parseInt($.browser.version) == 8)) {
 							node.find('.section:first').hide().fadeIn("slow");
 						}
 					} catch(err) {
@@ -1347,8 +1347,7 @@ buttons: {
 			featureStop: $('#mura-quickEdit-featureStop').val(),
 			stopHour: $('#mura-quickEdit-stopHour').val(),
 			stopMinute: $('#mura-quickEdit-stopMinute').val(),
-			stopDayPart: $('#mura-quickEdit-stopDayPart').val(),
-			siteid: siteid
+			stopDayPart: $('#mura-quickEdit-stopDayPart').val()
 		};
 
 		//alert(JSON.stringify(categoryAssignment));

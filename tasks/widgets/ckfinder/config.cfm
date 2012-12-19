@@ -48,8 +48,8 @@ config.baseDir = "#application.configBean.getAssetDir()##application.configBean.
  * directory, no matter the resource type.
  */
 config.thumbnails = structNew();
-config.thumbnails.url = config.baseUrl & 'Thumbs';
-config.thumbnails.baseDir = config.baseDir & 'Thumbs';
+config.thumbnails.url = config.baseUrl & '/Thumbs';
+config.thumbnails.baseDir = config.baseDir & '/Thumbs';
 config.thumbnails.enabled = true;
 config.thumbnails.directAccess = true;
 config.thumbnails.maxWidth = 100;
@@ -152,10 +152,10 @@ config.resourceType = arrayNew(1);
 
 config.resourceType[1] = structNew();
 config.resourceType[1].name = 'Files';
-config.resourceType[1].url = config.baseUrl & 'File';
-config.resourceType[1].directory = config.baseDir & 'File';
+config.resourceType[1].url = config.baseUrl & '/File';
+config.resourceType[1].directory = config.baseDir & '/File';
 config.resourceType[1].maxSize = 0;
-config.resourceType[1].allowedExtensions = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ics,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,m4v,less';
+config.resourceType[1].allowedExtensions = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ics,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,m4v';
 config.resourceType[1].deniedExtensions = '';
 application.serviceFactory.getBean("fileWriter").touchDir(config.resourceType[1].directory);
 
@@ -200,7 +200,7 @@ if (isdefined("url.type")){
 	    temp.directory ="#application.configBean.getAssetDir()##application.configBean.getFileDelim()##rsSites.siteID[i]##application.configBean.getFileDelim()#assets/";
 	    temp.maxSize = 0;
 	    if(application.configBean.getValue('fmAllowedExtensions') eq ''){
-	      temp.allowedExtensions = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,m4v,less';
+	      temp.allowedExtensions = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pptx,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,zip,m4v';
 	    } else {
 	      temp.allowedExtensions = application.configBean.getValue('fmAllowedExtensions');    
 	    }

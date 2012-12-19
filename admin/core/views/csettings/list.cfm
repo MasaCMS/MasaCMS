@@ -90,7 +90,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset application.userManager.getCurrentUser().setValue("errors","")>
 	
 	<div class="tabbable">
-		<ul class="nav nav-tabs tabs initActiveTab">
+		<ul class="nav nav-tabs initActiveTab">
 			<li><a href="#tabCurrentsites" onclick="return false;"><span>Current Sites</span></a></li>
 			<li><a href="#tabPlugins" onclick="return false;"><span>Plugins</span></a></li>
 		</ul>

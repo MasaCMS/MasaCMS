@@ -106,7 +106,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent> 
 <tr>
 <td class="title var-width">
-	<a title="Edit" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rshist.ContenthistID#&contentid=#rc.rshist.ContentID#&type=#URLEncodedFormat(rc.type)#&parentid=#URLEncodedFormat(rc.parentid)#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&startrow=#URLEncodedFormat(rc.startrow)#&moduleid=#URLEncodedFormat(rc.moduleid)#&return=hist&compactDisplay=#URLEncodedFormat(rc.compactdisplay)#">#HTMLEditFormat(left(rc.rshist.menutitle,90))#</a>
+	<a title="Edit" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rshist.ContenthistID#&contentid=#rc.rshist.ContentID#&type=#rc.type#&parentid=#URLEncodedFormat(rc.parentid)#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&startrow=#rc.startrow#&moduleid=#rc.moduleid#&return=hist&compactDisplay=#rc.compactDisplay#">#HTMLEditFormat(left(rc.rshist.menutitle,90))#</a>
 </td>
 <cfif rc.contentBean.getType() eq "file" and stats.getMajorVersion()>
 	<td>
@@ -121,12 +121,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <td class="status">#versionStatus#</td> 
 
 <td class="display<cfif rc.rshist.Display eq 2> scheduled</cfif>"> 
-	<cfif rc.rshist.Display and (rc.rshist.Display eq 1 and rc.rshist.approved)>
-		<i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#"></i><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#</span>
-	<cfelseif(rc.rshist.Display eq 2 and rc.rshist.approved and rc.rshist.approved)>#LSDateFormat(rc.rshist.displaystart,"short")# - #LSDateFormat(rc.rshist.displaystop,"short")#
-	<cfelse>
-		<i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#"></i><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</span>
-	</cfif>
+	<cfif rc.rshist.Display eq 1>
+	<i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#</span> 
+      
+    <cfelseif rc.rshist.Display eq 2>
+      <a href="##" rel="tooltip" title="#HTMLEditFormat('#LSDateFormat(rc.rshist.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(rc.rshist.displaystop,"short")#')#"> <i class="icon-calendar"></i></a>
+     <cfelse>
+     <i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#
+"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#
+</span>
+    </cfif>
 </td>
 <cfif rc.contentBean.getType() neq "file">
 	<td class="objects">
@@ -159,7 +163,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <td class="last-updated">#LSDateFormat(rc.rshist.lastupdate,session.dateKeyFormat)#</td> 
 <td class="time">#LSTimeFormat(rc.rshist.lastupdate,"short")#</td>
 <td class="user">#HTMLEditFormat(rc.rshist.lastUpdateBy)#</td> 
-<td class="actions"><ul><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rshist.ContenthistID#&contentid=#rc.rshist.ContentID#&type=#URLEncodedFormat(rc.type)#&parentid=#URLEncodedFormat(rc.parentid)#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&startrow=#URLEncodedFormat(rc.startrow)#&moduleid=#URLEncodedFormat(rc.moduleid)#&return=hist&compactDisplay=#URLEncodedFormat(rc.compactdisplay)#"><i class="icon-pencil"></i></a></li>
+<td class="actions"><ul><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rshist.ContenthistID#&contentid=#rc.rshist.ContentID#&type=#rc.type#&parentid=#URLEncodedFormat(rc.parentid)#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&startrow=#rc.startrow#&moduleid=#rc.moduleid#&return=hist&compactDisplay=#rc.compactDisplay#"><i class="icon-pencil"></i></a></li>
 <cfswitch expression="#rc.rsHist.type#">
 <cfcase value="Page,Folder,Calendar,Gallery,Link,File">
 	<cfset previewURL='http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,rc.contentBean.getFilename())#?previewid=#rc.rshist.contenthistid#'>
@@ -171,22 +175,4 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfcase>
 </cfswitch>
 
-<cfif not rc.rshist.active and (rc.perm neq 'none')><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" href="index.cfm?muraAction=cArch.update&contenthistid=#rc.rshist.ContentHistID#&action=delete&contentid=#URLEncodedFormat(rc.contentid)#&type=#URLEncodedFormat(rc.type)#&parentid=#URLEncodedFormat(rc.parentid)#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&startrow=#URLEncodedFormat(rc.startrow)#&moduleid=#URLEncodedFormat(rc.moduleid)#&compactDisplay=#URLEncodedFormat(rc.compactdisplay)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deleteversionconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li><cfelse><li class="delete disabled"><span><i class="icon-remove-sign"></i></span></li></cfif></ul></td></tr></cfoutput></tbody></table>
-
-<cfif rc.compactDisplay eq "true">
-<script type="text/javascript">
-jQuery(document).ready(function(){
-	if (top.location != self.location) {
-		if(jQuery("#ProxyIFrame").length){
-			jQuery("#ProxyIFrame").load(
-				function(){
-					frontEndProxy.post({cmd:'setWidth',width:'standard'});
-				}
-			);	
-		} else {
-			frontEndProxy.post({cmd:'setWidth',width:'standard'});
-		}
-	}
-});
-</script>
-</cfif> 
+<cfif not rc.rshist.active and (rc.perm neq 'none')><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" href="index.cfm?muraAction=cArch.update&contenthistid=#rc.rshist.ContentHistID#&action=delete&contentid=#URLEncodedFormat(rc.contentid)#&type=#rc.type#&parentid=#URLEncodedFormat(rc.parentid)#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&startrow=#rc.startrow#&moduleid=#rc.moduleid#&compactDisplay=#rc.compactDisplay#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deleteversionconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li><cfelse><li class="delete disabled"><span><i class="icon-remove-sign"></i></span></li></cfif></ul></td></tr></cfoutput></tbody></table>

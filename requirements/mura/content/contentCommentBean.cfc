@@ -63,6 +63,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="remoteID" type="string" default="" required="true" />
 <cfproperty name="isNew" type="numeric" default="1" required="true" />
 
+<cfset variables.contentRenderer=getBean('contentRenderer')/>
+
 <cffunction name="init" returntype="any" output="false" access="public">
 	
 	<cfset super.init(argumentCollection=arguments)>
@@ -78,6 +80,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.entered=now()/>
 	<cfset variables.instance.subscribe=0/>
 	<cfset variables.instance.isApproved=0/>
+	<cfset variables.contentRenderer=application.contentRenderer/>
 	<cfset variables.instance.userID=""/>
 	<cfset variables.instance.path=""/>
 	<cfset variables.instance.kids=0/>
@@ -174,6 +177,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="setContentRenderer" access="public" output="false">
+	<cfargument name="contentRenderer" />
+	<cfset variables.contentRenderer = arguments.contentRenderer />
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="load" access="public" output="false">
 	<cfargument name="commentID">
 	<cfargument name="remoteID">
@@ -243,6 +252,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="save" access="public" output="false">
+	<cfargument name="contentRenderer" default="#variables.contentRenderer#" required="true" hint="I'm the contentRenderer used to render links sent to subscribers.">
 	<cfargument name="script" required="true" default="" hint="I'm the script that is sent to the subscribers.">
 	<cfargument name="subject" required="true" default="" hint="I'm the subject that is sent to the subscribers.">
 	<cfargument name="notify" required="true" default="false" hint="I tell whether to notify subscribers.">
@@ -326,7 +336,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif variables.instance.isApproved>
 		<cfset saveSubscription()>
 		<cfif isBoolean(pluginEvent.getValue("notify")) and pluginEvent.getValue("notify")>
-			<cfset notifySubscribers(arguments.script,arguments.subject)>
+			<cfset notifySubscribers(arguments.contentRenderer,arguments.script,arguments.subject)>
 		</cfif>
 	</cfif>
 	
@@ -345,36 +355,44 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="sendNotification"  access="public" output="false">
-	<cfargument name="script" required="true" default="">
-	<cfset var rsContent="">
-	<cfset var notifyText="">
-	<cfset var email="">
-	<cfset var contactEmail="">
-	<cfset var serverpath="">
-	<cfset var configBean=variables.configBean>
-	<cfset var settingsManager=variables.settingsManager>
-	<cfset var utility=getBean("utility")>
-	<cfset var contentBean=getBean('content').loadBy(contentid=variables.instance.contentID)>
+<cfargument name="script" required="true" default="">
+<cfargument name="contentRenderer" required="true" default="#variables.contentRenderer#">
 
-	<cfif len(settingsManager.getSite(variables.instance.siteID).getContactEmail())>
-		<cfset contactEmail=settingsManager.getSite(variables.instance.siteID).getContactEmail()>
-	<cfelse>
-		<cfset contactEmail=settingsManager.getSite(variables.instance.siteID).getContact()>
-	</cfif>
-	<cfif not len(arguments.script)>
-		<cfquery name="rsContent" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-			select title from tcontent 
-			where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#">
-			and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#">
-			and active=1
-		</cfquery>
-		<cfset serverpath = "http://#listFirst(cgi.http_host,':')##configBean.getServerPort()##configBean.getContext()#/">
-		<cfif configBean.getSiteIDInURLS()>
-			<cfset serverpath &= '#variables.instance.siteID#/'>
-		</cfif>
-		<cfif configBean.getIndexFileInURLS()>
-			<cfset serverpath &= 'index.cfm/'>
-		</cfif>
+<cfset var rsContent="">
+<cfset var notifyText="">
+<cfset var email="">
+<cfset var contactEmail="">
+<cfset var serverpath="">
+<cfset var configBean=variables.configBean>
+<cfset var settingsManager=variables.settingsManager>
+<cfset var utility=getBean("utility")>
+
+<cfif len(settingsManager.getSite(variables.instance.siteID).getContactEmail())>
+	<cfset contactEmail=settingsManager.getSite(variables.instance.siteID).getContactEmail()>
+<cfelse>
+	<cfset contactEmail=settingsManager.getSite(variables.instance.siteID).getContact()>
+</cfif>
+
+<cfif not len(arguments.script)>
+
+<cfquery name="rsContent" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	select title from tcontent 
+	where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#">
+	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#">
+	and active=1
+</cfquery>
+
+<cfset serverpath = "http://#listFirst(cgi.http_host,':')##configBean.getServerPort()##configBean.getContext()#/">
+
+<cfif configBean.getSiteIDInURLS()>
+    <cfset serverpath &= '#variables.instance.siteID#/'>
+</cfif>
+
+<cfif configBean.getIndexFileInURLS()>
+    <cfset serverpath &= 'index.cfm/'>
+</cfif>
+
+
 <cfsavecontent variable="notifyText"><cfoutput>
 A comment has been posted to "#rscontent.title#" by #variables.instance.name# (#variables.instance.email#).
 
@@ -385,44 +403,56 @@ COMMENT:
 #variables.instance.comments#
 
 Approve
-#serverpath##utility.createRedirectID(contentBean.getURL(complete=true,querystring='approvedcommentID=#getCommentID()#'))#
+#serverpath##utility.createRedirectID(arguments.contentRenderer.getCurrentURL(true,"approvedcommentID=#getCommentID()#"))#
 
 Delete
-#serverpath##utility.createRedirectID(contentBean.getURL(complete=true,querystring='deletecommentID=#getCommentID()#'))#
+#serverpath##utility.createRedirectID(arguments.contentRenderer.getCurrentURL(true,"deletecommentID=#getCommentID()#"))#
 
 View
-#serverpath##utility.createRedirectID(contentBean.getURL(complete=true))#
+#serverpath##utility.createRedirectID(arguments.contentRenderer.getCurrentURL())#
 </cfoutput></cfsavecontent>
-	<cfelse>
-		<cfset notifyText=arguments.script />
-	</cfif>
-	<cfset email=variables.mailer />
-	<cfset email.sendText(notifyText,contactEmail,variables.instance.name,'New Comment',variables.instance.siteID) />
-	<cfreturn this>
+
+<cfelse>
+
+<cfset notifyText=arguments.script />
+
+</cfif>
+
+<cfset email=variables.mailer />
+<cfset email.sendText(notifyText,
+						contactEmail,
+						variables.instance.name,
+						'New Comment',
+						variables.instance.siteID) />
+						
+<cfreturn this>
 </cffunction>
 
 <cffunction name="notifySubscribers" access="public" output="false">
-	<cfargument name="script" required="true" default="">
-	<cfargument name="subject" required="true" default="">
-	<cfargument name="notifyAdmin" required="true" default="true">
-	<cfset var site=variables.settingsManager.getSite(variables.instance.siteID)>
-	<cfset var rsContent="">
-	<cfset var notifyText="">
-	<cfset var notifysubject=arguments.subject>
-	<cfset var email=variables.mailer>
-	<cfset var rsSubscribers=variables.contentDAO.getCommentSubscribers(variables.instance.contentID,variables.instance.siteID)>
-	<cfset var contentBean=getBean('content').loadBy(contentid=variables.instance.contentID)>
-	<cfquery name="rsContent" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-		select title from tcontent 
-		where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#">
-		and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#">
-		and active=1
-	</cfquery>
-	<cfif not len(notifySubject)>
-		<cfset notifySubject="New Comment on '#rscontent.title#'">
-	</cfif>
+<cfargument name="contentRenderer" required="true" default="#getBean('contentRenderer')#">
+<cfargument name="script" required="true" default="">
+<cfargument name="subject" required="true" default="">
+<cfargument name="notifyAdmin" required="true" default="true">
+<cfset var site=variables.settingsManager.getSite(variables.instance.siteID)>
+<cfset var rsContent="">
+<cfset var notifyText="">
+<cfset var notifysubject=arguments.subject>
+<cfset var email="">
+<cfset var rsSubscribers=variables.contentDAO.getCommentSubscribers(variables.instance.contentID,variables.instance.siteID)>
 
-	<cfif not len(arguments.script)>
+<cfquery name="rsContent" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	select title from tcontent 
+	where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#">
+	and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#">
+	and active=1
+</cfquery>
+
+<cfif not len(notifySubject)>
+	<cfset notifySubject="New Comment on '#rscontent.title#'">
+</cfif>
+
+<cfif not len(arguments.script)>
+
 <cfsavecontent variable="notifyText"><cfoutput>
 A comment has been posted to "#rscontent.title#" by #variables.instance.name#.
 
@@ -430,28 +460,36 @@ COMMENT:
 #variables.instance.comments#
 
 View 
-#contentBean.getURL(complete=true)#
+#arguments.contentRenderer.getCurrentURL()#
 
 To Unsubscribe Click Here:
 </cfoutput></cfsavecontent>
-	<cfelse>
-		<cfset notifyText=arguments.script />
-	</cfif>
-	<cfloop query="rsSubscribers">
-		<cfset email.sendText(notifyText & contentBean.getURL(complete=true,querystring="commentUnsubscribe=#URLEncodedFormat(rsSubscribers.email)#"),
-								rsSubscribers.email,
-								site.getSite(),
-								notifySubject,
-								variables.instance.siteID)>
-	</cfloop>
-	<cfif arguments.notifyAdmin and len(site.getContactEmail())>
-		<cfset email.sendText(notifyText & contentBean.getURL(complete=true,querystring="commentUnsubscribe=#URLEncodedFormat(rsSubscribers.email)#"),
-								site.getContactEmail(),
-								site.getSite(),
-								notifySubject,
-								variables.instance.siteID)>
-	</cfif>
-	<cfreturn this>
+
+<cfelse>
+
+<cfset notifyText=arguments.script />
+
+</cfif>
+
+<cfset email=variables.mailer />
+
+<cfloop query="rsSubscribers">
+	<cfset email.sendText(notifyText & arguments.contentRenderer.getCurrentURL(true,"commentUnsubscribe=#URLEncodedFormat(rsSubscribers.email)#"),
+							rsSubscribers.email,
+							site.getSite(),
+							notifySubject,
+							variables.instance.siteID) />
+</cfloop>
+
+<cfif arguments.notifyAdmin and len(site.getContactEmail())>
+	<cfset email.sendText(notifyText & arguments.contentRenderer.getCurrentURL(true,"commentUnsubscribe=#URLEncodedFormat(site.getContactEmail())#"),
+							site.getContactEmail(),
+							site.getSite(),
+							notifySubject,
+							variables.instance.siteID) />
+</cfif>
+
+<cfreturn this>
 </cffunction>
 
 <cffunction name="getKidsQuery" returnType="query" output="false" access="public">

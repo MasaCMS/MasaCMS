@@ -162,9 +162,6 @@
 	.addColumn(column="editfilename",dataType="varchar",length="255")
 	.addPrimaryKey("dirID")
 	.addIndex("siteID");
-
-	dbUtility.setTable("tcontentfeeds").addColumn(column="imageSize",dataType="varchar",length="50");
-	dbUtility.setTable("tcontent").addColumn(column="imageSize",dataType="varchar",length="50");
 </cfscript>
 
 

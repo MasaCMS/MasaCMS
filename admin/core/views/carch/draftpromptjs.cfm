@@ -7,7 +7,12 @@ jQuery(function(){
 function initDraftPrompt(){
 	jQuery('a.draftprompt').click(function(e){
 		e.preventDefault(); // stop the link's normal clicking behavior
-		var node = jQuery(this).parents(".mura-node-data:first");		
+		var node = jQuery(this).parents("li:first");
+		
+		if(!node.attr('data-contentid')){
+			node = jQuery(this).parents("tr:first");
+		}
+		
 		var a = jQuery(this);
 		
 		jQuery.ajax({

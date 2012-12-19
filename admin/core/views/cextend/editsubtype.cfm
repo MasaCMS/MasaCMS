@@ -72,7 +72,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<input class="span12" name="subType" id="subType" type="text" value="#HTMLEditFormat(subType.getSubType())#" required="true" maxlength="25"/>
 			</div>
 		</div>
-	</div> 
+	</div>
 	
 		<div class="control-group">
 	<label class="control-label">Description</label>

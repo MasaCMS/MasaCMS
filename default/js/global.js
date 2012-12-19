@@ -69,6 +69,7 @@ function isInteger(s){
     return true;
 }
 
+
 function createDate(str){
 					
 	var valueArray = str.split("/");
@@ -437,6 +438,30 @@ function validateForm(theForm) {
 
 }
 
+
+// This code was taken from http://techfeed.net/blog/index.cfm/2007/2/6/JavaScript-URL-variables
+function getURLVar(urlVarName) {
+//divide the URL in half at the '?'
+var urlHalves = String(document.location).split('?');
+var urlVarValue = '';
+if(urlHalves[1]){
+//load all the name/value pairs into an array
+var urlVars = urlHalves[1].split('&');
+//loop over the list, and find the specified url variable
+for(i=0; i<=(urlVars.length); i++){
+if(urlVars[i]){
+//load the name/value pair into an array
+var urlVarPair = urlVars[i].split('=');
+if (urlVarPair[0] && urlVarPair[0] == urlVarName) {
+//I found a variable that matches, load it's value into the return variable
+urlVarValue = urlVarPair[1];
+}
+}
+}
+}
+return unescape(urlVarValue);   
+}
+
 function submitForm(frm,action,theClass){
 
 	if(validateForm(frm)){
@@ -456,6 +481,19 @@ function submitForm(frm,action,theClass){
 	}	
 	return false;
 }
+
+
+function isMacIE5(){
+			var agt=navigator.userAgent.toLowerCase(); 
+			var ie   = (agt.indexOf("msie") != -1);
+			var mac    = (agt.indexOf("mac")!=-1); 
+			
+				if(mac && ie){
+					return false;
+				}else{
+					return true;
+				}	
+} 
 
 function createCookie(name,value,days) {
 	if (days) {
@@ -482,6 +520,79 @@ function eraseCookie(name) {
 	createCookie(name,"",-1);
 }
 
+function setMuraImageOffSets(margin){
+	setImageOffSets(margin,"class","syndLocal");
+	setImageOffSets(margin,"id","portal");
+}
+
+function setImageOffSets(margin,type,selector){
+
+	if(type=="class"){
+		var portals=document.getElementsByClassName(selector);
+	} else {
+		var portals=new Array(1); 
+		portals[0]=document.getElementById(selector);
+	}
+	
+	if(portals[0] != null){
+	
+		for(var p=0;p<portals.length;p++){
+			
+			var items=portals[p].getElementsByTagName("DL");
+			
+			for (var i=0;i<items.length;i++){
+				var img = null;
+				if(items[i].getElementsByTagName("DD").length > 0){
+					var dd = items[i].getElementsByTagName("DD")[0];
+					if(dd.getElementsByTagName("IMG").length  > 0){
+						img=dd.getElementsByTagName("IMG")[0];
+					} else if (dd.getElementsByTagName("P").length > 0){
+						var pArray=dd.getElementsByTagName("P");
+						for(var p=0; p <pArray.length; p++){ 
+							if(pArray[p].getElementsByTagName("IMG").length > 0){
+								img= pArray[p].getElementsByTagName("IMG")[0];
+								break;
+							}
+						}
+					}
+					
+					if(img != null){
+						title=new Element.extend(items[i].getElementsByTagName("DT")[0]);	
+						img.onload=function(){
+							var hOffset=0;
+							if(this.parentNode.parentNode.getElementsByTagName("DT")[0] != undefined){	
+								var container=new Element.extend(this.parentNode.parentNode);	
+							} else {
+								var container=new Element.extend(this.parentNode.parentNode.parentNode);	
+							}
+							var title=new Element.extend(container.getElementsByTagName("DT")[0]);	
+							hOffset=title.getHeight();
+							
+							var pArray=container.getElementsByTagName("DD")[0].getElementsByTagName("P");
+							
+							if(pArray.length){;
+								for(var p=0; p <pArray.length; p++){ 
+										if(pArray[p].getElementsByTagName("IMG").length){
+										break;
+									}else{											
+										var addP= new Element.extend(pArray[p]);
+										addP.style.marginLeft=this.width + margin + 'px';
+										hOffset=hOffset + addP.getHeight() + addP.style.marginBottom + addP.style.marginTop;
+									}
+								}
+							}
+							title.style.marginLeft=this.width + margin + 'px';
+							this.style.marginTop=-hOffset + "px";
+							obj.style.cssFloat = "left";
+						}
+					}	
+				}				
+			} 
+		}	
+	} 
+
+}
+
 function addLoadEvent(func) {
    var oldonload = window.onload;
    if (typeof window.onload != 'function') {
@@ -493,7 +604,19 @@ function addLoadEvent(func) {
     }
    }
   }
- 
+  
+function addUnloadEvent(func) {
+   var oldonunload = window.onunload;
+   if (typeof window.onunload != 'function') {
+    window.onunload = func;
+   } else {
+    window.onunload = function() {
+     oldonunload();
+     func();
+    }
+   }
+  }
+
 function muraLoginCheck(e){
 	var key = (window.event) ? event.keyCode : e.keyCode;
 	
@@ -544,6 +667,16 @@ function muraLoginCheck(e){
 
 function setMuraLoginCheck(){
 	document.onkeydown=muraLoginCheck;
+}
+
+
+function fadeToggle(id){
+	if(jslib=='jquery'){
+		$("#" + id).animate({opacity: 'toggle'});
+	}else {	
+		Effect.toggle(id, 'appear');
+	}
+
 }
 
 function setHTMLEditors(height,width,config) {
@@ -603,6 +736,11 @@ function htmlEditorOnComplete( editorInstance ) {
  
 }
 
+function extendObject(obj1,obj2){
+	for (var attrname in obj2) { obj1[attrname] = obj2[attrname]; }
+	return obj1;
+}
+
 function getHTMLEditorConfig(customConfig) {
 	var attrname='';
 	var htmlEditorConfig={
@@ -615,11 +753,6 @@ function getHTMLEditorConfig(customConfig) {
 	}
 	
 	return htmlEditorConfig;
-}
-
-function extendObject(obj1,obj2){
-	for (var attrname in obj2) { obj1[attrname] = obj2[attrname]; }
-	return obj1;
 }
 
 $(document).ready(setMuraLoginCheck);

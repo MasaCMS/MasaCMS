@@ -317,7 +317,7 @@ select * from rsSubTypes where subType <> 'Default'
 	      	</label>
 	     	<div class="controls">
 	     	<cfloop query="rc.rspublicgroups">
-				<label class="checkbox">
+				<label class="checkbox inline">
 					<input name="groupid" type="checkbox" value="#rc.rspublicgroups.UserID#" <cfif listfind(rc.userBean.getgroupid(),rc.rspublicgroups.UserID) or listfind(rc.groupid,rc.rsPublicGroups.UserID)>checked</cfif>> #rc.rspublicgroups.groupname#
 				</label>
 				</cfloop>
@@ -433,7 +433,7 @@ select * from rsSubTypes where subType <> 'Default'
 <cfoutput>	
 
 <div class="tabbable tabs-left">
-<ul class="nav nav-tabs tabs initActiveTab">
+<ul class="nav nav-tabs initActiveTab">
 <cfloop from="1" to="#listlen(tabList)#" index="t">
 <li<cfif listGetAt(tabList,t) eq 'tabExtendedattributes'> id="tabExtendedattributesLI" class="hide"</cfif>><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
 </cfloop>

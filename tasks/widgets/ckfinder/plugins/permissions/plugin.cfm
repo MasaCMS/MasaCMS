@@ -7,7 +7,7 @@
 	<cfargument name="command" required="true" type="String">
 
 	<!--- Check permissions, if necessary. --->
-	<cfif listcontains("CopyFiles,CreateFolder,DeleteFiles,DeleteFolder,FileUpload,GetFiles,MoveFiles,RenameFile,RenameFolder", command)>
+	<cfif listcontains("CopyFiles,CreateFolder,DeleteFile,DeleteFolder,FileUpload,GetFiles,MoveFiles,RenameFile,RenameFolder", command)>
     	<cfset oPerm = CreateObject("component", "Permission")>
         <cfset oPerm.checkPerms(arguments.command)>
     <cfelseif command eq "GetDefaultPath">
@@ -16,7 +16,6 @@
         <cfreturn false />
     <cfelseif command eq "Permissions">
     	<cfset oPerm = CreateObject("component", "Permission")>
-        <cfset oPerm.checkPerms(arguments.command)>
         <cfset oPerm.sendResponse()>
         <cfreturn false />
     <cfelseif command eq "PermChange">
@@ -24,7 +23,7 @@
         <cfset oPerm.sendResponse()>
         <cfreturn false />
    	</cfif>
-
+    
     <cfreturn true />
     
 </cffunction>

@@ -145,7 +145,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="renderFile" output="true" access="public">
 <cfargument name="fileID" type="string">
 <cfargument name="method" type="string" required="true" default="inline">
-<cfargument name="size" type="string" required="true" default="">
 
 	<cfset var rsFileData="" />
 	<cfset var delim="" />
@@ -154,12 +153,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var pluginManager=getBean("pluginManager")>	
 	<cfset var pluginEvent = createObject("component","mura.event") />
 	<cfset var fileCheck="" />
-
-	<cfif not len(arguments.method)>
-		<cfset arguments.method="inline">
-	</cfif>
 	
-	<cfif not isValid("UUID",arguments.fileID) or find(".",arguments.size)>
+	<cfif not isValid("UUID",arguments.fileID)>
 		<cfset getBean("contentServer").render404()>
 	</cfif>
 	
@@ -192,15 +187,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset pluginEvent.init(arguments)>
 				<cfset pluginManager.announceEvent("onBeforeFileRender",pluginEvent)>
 				<cfset delim=variables.configBean.getFileDelim() />
-				<cfif listFindNoCase('png,jpg,jpeg,gif',rsFileData.fileExt) and len(arguments.size)>				
-					<cfset theFileLocation="#variables.configBean.getFileDir()##delim##rsFileData.siteid##delim#cache#delim#file#delim##arguments.fileID#_#arguments.size#.#rsFileData.fileExt#" />
-					<cfif not fileExists(theFileLocation)>
-						<cfset theFileLocation="#variables.configBean.getFileDir()##delim##rsFileData.siteid##delim#cache#delim#file#delim##arguments.fileID#.#rsFileData.fileExt#" />
-					</cfif>
-				<cfelse>
-					<cfset theFileLocation="#variables.configBean.getFileDir()##delim##rsFileData.siteid##delim#cache#delim#file#delim##arguments.fileID#.#rsFileData.fileExt#" />
-				</cfif>
-				
+				<cfset theFileLocation="#variables.configBean.getFileDir()##delim##rsFileData.siteid##delim#cache#delim#file#delim##arguments.fileID#.#rsFileData.fileExt#" />
 				<cfset streamFile(theFileLocation,rsfileData.filename,"#rsfileData.contentType#/#rsfileData.contentSubType#",arguments.method,rsfileData.created)>
 				<cfset pluginManager.announceEvent("onAfterFileRender",pluginEvent)>
 			</cfcase>
@@ -624,7 +611,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="siteID">
 <cfargument name="fileID">
 <cfargument name="fileExt">
-<cfargument name="size" required="true" default="undefined">
+<cfargument name="size" required="true" default="large">
 <cfargument name="direct" required="true" default="#this.directImages#">
 <cfargument name="complete" type="boolean" required="true" default="false">
 <cfargument name="height" default=""/>
@@ -654,35 +641,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif arguments.direct and application.configBean.getFileStore() eq "fileDir">
 
-		<cfif arguments.size eq 'undefined'>
-			<cfif (isNumeric(arguments.width) or isNumeric(arguments.height))>
-				<cfset arguments.size ='Custom'>
-			<cfelse>
-				<cfset arguments.size ='Large'>
-			</cfif>
-		</cfif>
-
-		<cfif arguments.size neq 'Custom'>			
+		<cfif not listFindNoCase('small,medium,large,source',arguments.size)>			
 			<cfset arguments.width="auto">
 			<cfset arguments.height="auto">
-		<cfelse>
-			<cfif not isNumeric(arguments.width)>
-				<cfset arguments.width="auto">
-			</cfif>
-
-			<cfif not isNumeric(arguments.height)>
-				<cfset arguments.height="auto">
-			</cfif>
-
-			<cfif isNumeric(arguments.height) or isNumeric(arguments.width)>
-				<cfset arguments.size="Custom">
-			</cfif>
-
-			<cfif arguments.size eq "Custom" and arguments.height eq "auto" and arguments.width eq "auto">
-				<cfset arguments.size="small">
-			</cfif>
 		</cfif>
 		
+		<cfif not isNumeric(arguments.width)>
+			<cfset arguments.width="auto">
+		</cfif>
+		<cfif not isNumeric(arguments.height)>
+			<cfset arguments.height="auto">
+		</cfif>
+
+		<cfif isNumeric(arguments.height) or isNumeric(arguments.width)>
+			<cfset arguments.size="Custom">
+		</cfif>
+		
+		<cfif arguments.size eq "Custom" and arguments.height eq "auto" and arguments.width eq "auto">
+			<cfset arguments.size="small">
+		</cfif>
+	
 		<cfif listFindNoCase('small,medium,large,source',arguments.size)>
 			<cfif arguments.size eq "large">
 				<cfset imgSuffix="">

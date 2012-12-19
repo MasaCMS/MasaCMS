@@ -99,7 +99,7 @@ to your own modified versions of Mura CMS.
       <cfset tabList=listAppend(tabList,"tab" & application.contentRenderer.createCSSID(rsPluginScripts.name))>
     </cfoutput> </cfoutput> <cfoutput>
     <div class="tabbable tabs-left">
-    <ul class="nav nav-tabs tabs initActiveTab">
+    <ul class="nav nav-tabs initActiveTab">
         <cfloop from="1" to="#listlen(tabList)#" index="t">
         <li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
       </cfloop>
@@ -453,7 +453,7 @@ to your own modified versions of Mura CMS.
 	        
       
 	        <div class="span3">
-        <label class="control-label">Content Staging Manager</label>
+        <label class="control-label">Change Sets Manager</label>
         <div class="controls">
             <label class="radio inline">
             <input type="radio" name="hasChangesets" value="0" <cfif rc.siteBean.getHasChangesets() neq 1> CHECKED</CFIF>>
@@ -890,7 +890,7 @@ to your own modified versions of Mura CMS.
               <div class="control-group">
                   <label class="control-label">
                   <cfif len(attributeBean.getHint())>
-                      <a rel="tooltip" href="##" title="#HTMLEditFormat(attributeBean.gethint())#">#attributeBean.getLabel()# <i class="icon-question-sign"></i></a>
+                      <a href="##" title="#HTMLEditFormat(attributeBean.gethint())#">#attributeBean.getLabel()# <i class="icon-question-sign"></i></a>
                       <cfelse>
 #attributeBean.getLabel()#
                     </cfif>

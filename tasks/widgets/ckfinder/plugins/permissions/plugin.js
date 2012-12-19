@@ -22,11 +22,12 @@ CKFinder.addPlugin( 'permissions', function( api ) {
 
 			if ( xml.checkError() )
 				return;
-		
+				
 			privateListSimple = new Array();
 			publicListSimple = new Array();
 			var privateList = new Array();
 			var publicList = new Array();
+				
 
 			g_subdir = xml.selectSingleNode( 'Connector/Path/@subdir' ).value;
 			g_editfilename = xml.selectSingleNode( 'Connector/Path/@editFileName' ).value;
@@ -49,18 +50,16 @@ CKFinder.addPlugin( 'permissions', function( api ) {
 			for (var i = 0; i < private.length; i++) {
 				var perm = private[i].getAttribute('perm');
 				var groupid = private[i].getAttribute('groupid');
-				var groupname = private[i].getAttribute('name');
-				privateListSimple[i] = [groupname, groupid ];
-				privateList[i] = [ groupname + ' - ' + perm, groupname, perm, groupid ];
+				privateListSimple[i] = [private[i].textContent, groupid ];
+				privateList[i] = [ private[i].textContent + ' - ' + perm, private[i].textContent, perm, groupid ];
 			}
 
 			var public = xml.selectNodes('Connector/Public/Group')
 			for (var i = 0; i < public.length; i++) {
 				var perm = public[i].getAttribute('perm');
 				var groupid = public[i].getAttribute('groupid');
-				var groupname = public[i].getAttribute('name');
-				publicListSimple[i] = [groupname, groupid ];
-				publicList[i] = [ groupname + ' - ' + perm, groupname, perm, groupid ];
+				publicListSimple[i] = [public[i].textContent, groupid ];
+				publicList[i] = [ public[i].textContent + ' - ' + perm, public[i].textContent, perm, groupid ];
 			}
 			
 			var privategroups = dialog.getContentElement('tab1', 'privateperms');
@@ -95,8 +94,6 @@ CKFinder.addPlugin( 'permissions', function( api ) {
 				
 				// Populate select, based on whether we need private or public groups.
 				var ary = (bPrivateFlag) ? privateListSimple : publicListSimple;
-				groups.add('Select Group', '');
-
 				for (var i=0; i<ary.length; i++) {
 					groups.add(ary[i][0], ary[i][1]);
 				}
@@ -118,14 +115,12 @@ CKFinder.addPlugin( 'permissions', function( api ) {
 					{
 						if ( xml.checkError() )
 							return;
-
-						updatePerms(dlgMain);
 							
 					}
 				);
 				
 				// Update dialog to show changes.				
-				//updatePerms(dlgMain);
+				updatePerms(dlgMain);
 				return undefined;
 			},
 			contents : [
@@ -197,7 +192,7 @@ CKFinder.addPlugin( 'permissions', function( api ) {
 								{
 									type: 'select',
 									id: 'privateperms',
-									label: 'System Groups',
+									label: labels.admingroups,
 									size: 5,
 									style: 'width: 220px;',
 									items: []
@@ -219,7 +214,7 @@ CKFinder.addPlugin( 'permissions', function( api ) {
 								{
 									type: 'select',
 									id: 'publicperms',
-									label: 'Member Groups',
+									label: labels.membergroups,
 									size: 5,
 									style: 'width: 220px;',
 									items: []
@@ -249,18 +244,7 @@ CKFinder.addPlugin( 'permissions', function( api ) {
 	
 	api.addFolderContextMenuOption( { label : 'Permissions', command : "Permissions" } , function( api, file )
 	{
-		api.connector.sendCommandPost( 'Permissions', null,
-			{
-				subdir: ''
-			},
-			function( xml )
-			{
-				if ( xml.checkError() )
-					return;
-							
-					api.openDialog('permDialog');
-				}
-		);
+		api.openDialog('permDialog');
 	});
 
 	/*

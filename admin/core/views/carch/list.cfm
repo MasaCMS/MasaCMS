@@ -125,11 +125,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           <td class="var-width"><cfif verdict neq 'none'><a class="draftprompt" data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#">#left(rc.rstop.menutitle,90)#</a><cfelse>#left(rc.rstop.menutitle,90)#</cfif></td>
           
 			   <td>
-			    <cfif rc.rstop.Display and (rc.rstop.Display eq 1 and rc.rstop.approved)>
+			    <cfif rc.rstop.Display and (rc.rstop.Display eq 1 and rc.rstop.approved and rc.rstop.approved)>
 			    	<i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#"></i><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#</span>
-			    <cfelseif(rc.rstop.Display eq 2 and rc.rstop.approved)>#LSDateFormat(rc.rstop.displaystart,"short")# - #LSDateFormat(rc.rstop.displaystop,"short")#
+			    <cfelseif(rc.rstop.Display eq 2 and rc.rstop.approved and rc.rstop.approved)>#LSDateFormat(rc.rstop.displaystart,"short")# - #LSDateFormat(rc.rstop.displaystop,"short")#
 			    <cfelse>
-			    <i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#"></i><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</span>
+			    <i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#"></i><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</span>
 			    </cfif>
 			    </td>
 		<td>#LSDateFormat(rc.rstop.lastupdate,session.dateKeyFormat)# #LSTimeFormat(rc.rstop.lastupdate,"medium")#</td>
@@ -496,7 +496,7 @@ copyAll = 'false';
 </form>
 
 <div class="tabbable">
-	<ul id="viewTabs" class="nav nav-tabs tabs initActiveTab">
+	<ul id="viewTabs" class="nav nav-tabs initActiveTab">
 		<li><a href="##tabArchitectural" onclick="return false;">#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.architectural")#</a></li>
 		<li><a href="##tabFlat" onclick="return false;">#application.rbFactory.getKeyValue(session.rb,"sitemanager.view.flat")#</a></li>
 	</ul>

@@ -38,10 +38,10 @@
 							ulNestedClass='dropdown-menu',
 							liHasKidsClass='dropdown',
 							liHasKidsCustomString='',
-							liHasKidsNestedClass='dropdown-submenu',
+							liHasKidsNestedClass='',
 							liNestedClass='',
 							aHasKidsClass='dropdown-toggle',
-							aHasKidsCustomString='',
+							aHasKidsCustomString='role="button" data-toggle="dropdown" data-target="##"',
 							liCurrentClass='active',
 							aCurrentClass=''
 						)#

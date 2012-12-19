@@ -138,7 +138,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<!--- If the custom image size is not valid return the small --->
 		<cfif not isNumeric(arguments.Width) and not isNumeric(arguments.Height)>
-			<cfreturn "#OriginalImageFilename#_small.#OriginalImageType#">
+			<cfreturn arguments.fileID & "_small." & OriginalImageType>
 		</cfif>
 
 		<cfset variables.fileWriter.copyFile(source=OriginalImageFile,destination=NewImageSource)>
@@ -334,7 +334,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif listFindNoCase('jpg,jpeg,png,gif',arguments.file.ServerFileExt)>
 			
 			<cfif variables.configBean.getFileStore() eq "fileDir">		
-				<cfset fileStruct.fileObjSource =  '#serverDirectory##getCustomImage(image=fileStruct.fileObj,height='Auto',width=variables.configBean.getMaxSourceImageWidth())#'/>						
+				<cfset fileStruct.fileObjSource =  '#serverDirectory##getCustomImage(image=fileStruct.fileObj,height='Auto',width=3000)#'/>						
 			<cfelse>
 				<cfset fileStruct.fileObjSource =fileStruct.fileObj>
 			</cfif>

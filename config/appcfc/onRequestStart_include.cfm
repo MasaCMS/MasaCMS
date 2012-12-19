@@ -45,48 +45,13 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfparam name="local" default="#structNew()#">
-<cfparam name="application.setupComplete" default="false">
-<cfparam name="application.appInitialized" default="false">
-<cfprocessingdirective pageencoding="utf-8"/>
-	
-<!--- Double check that the application has started properly.
-If it has not set application.appInitialized=false. --->
-<cftry>
-	<cfif not application.settingsManager.validate()>
-		<cfset application.appInitialized=false>
-	</cfif>
+
+<cfif ( NOT structKeyExists( application, "setupComplete" ) or not application.appInitialized or structKeyExists(url,application.appReloadKey)) and isDefined("onApplicationStart")>
+	<cfset onApplicationStart()>
+<cfelseif isdefined('application.clusterManager.runCommands')>
 	<cfset application.clusterManager.runCommands()>
 	<cfif not application.appInitialized>
-		<cfset request.muraAppreloaded=false>
-	</cfif>
-	<cfcatch>
-		<cfset application.appInitialized=false>
-		<cfset request.muraAppreloaded=false>
-	</cfcatch>
-</cftry>	
-
-<cfif isDefined("onApplicationStart") >
-	<cfif (
-			not application.setupComplete
-		OR
-		(
-			not request.muraAppreloaded
-			and 
-				( 
-					not application.appInitialized 
-					or structKeyExists(url,application.appReloadKey)
-				)
-		)
-	)
-	>
 		<cfset onApplicationStart()>
-	</cfif>
-
-	<cfif not application.setupComplete and request.muraAppreloaded>
-		<cfset renderSetup = true />
-		<!--- go to the index.cfm page (setup) --->
-		<cfinclude template="/muraWRM/config/setup/index.cfm">	
-		<cfabort>
 	</cfif>
 </cfif>
 
@@ -94,7 +59,9 @@ If it has not set application.appInitialized=false. --->
 
 <cfif isDefined("url.showTrace") and isBoolean(url.showTrace)>
 	<cfset session.mura.showTrace=url.showTrace>
-<cfelseif not isDefined("session.mura.showTrace")>
+</cfif>
+
+<cfif not isDefined("session.mura.showTrace")>
 	<cfset session.mura.showTrace=false>
 </cfif>
 
@@ -103,6 +70,9 @@ If it has not set application.appInitialized=false. --->
 <cfif not isDefined("application.cfstatic")>
 	<cfset application.cfstatic=structNew()>
 </cfif>
+
+<cfprocessingdirective pageencoding="utf-8"/>
+<cfsetting requestTimeout = "1000">
 
 <cfif not StructKeyExists(cookie, 'userid')>
 	  <cfcookie name="userid" expires="never" value="">

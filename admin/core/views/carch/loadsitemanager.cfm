@@ -184,7 +184,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     </dl>
     <ul id="mura-nodes"<cfif arrayLen(crumbdata) gt 1 and crumbdata[2].type eq 'Gallery'> class="gallery"</cfif>>
     <!-- Begin List of Nodes -->
-    <li data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" data-moduleid="#HTMLEditFormat(rc.moduleid)#" data-sortby="#rc.rstop.sortby#" data-sortdirection="#rc.rstop.sortdirection#" class="#lcase(rc.rstop.type)# mura-node-data<cfif r> restricted</cfif>">
+    <li data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" data-moduleid="#HTMLEditFormat(rc.moduleid)#" data-sortby="#rc.rstop.sortby#" data-sortdirection="#rc.rstop.sortdirection#" class="#lcase(rc.rstop.type)# <cfif r> restricted</cfif>">
      <cfif r><div class="marker"></div></cfif>
       <dl id="top-node">
       <dt>
@@ -210,9 +210,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         <cfelse>
 		      <a class="#icon# title" <cfif atooltip>rel="tooltip" data-html="true" title="#atitle#"</cfif>>
 		    </cfif>
-		#HTMLEditFormat(left(rc.rsTop.menutitle,75))#<cfif len(rc.rsTop.menutitle) gt 75>&hellip;</cfif>
+		#HTMLEditFormat(left(rc.rsTop.menutitle,70))#
+        <cfif len(rc.rsTop.menutitle) gt 70>&hellip;</cfif>
           </a>
-        <div class="mura-title-fade"></div>
+        <!--- <div class="mura-title-fade"></div> --->
       </dt>
      <cfif application.settingsManager.getSite(rc.siteid).getlocking() neq 'all'>
         <!---

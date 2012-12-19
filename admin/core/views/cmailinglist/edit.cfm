@@ -67,7 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 	<cfelse>
 		<div class="tabbable tabs-left">
-		<ul class="nav nav-tabs tabs initActiveTab">
+		<ul class="nav nav-tabs initActiveTab">
 		<cfloop from="1" to="#listlen(tabList)#" index="t">
 		<li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
 		</cfloop>
@@ -103,7 +103,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfelse>
 	<div class="tabbable tabs-left">
-	<ul class="nav nav-tabs tabs initActiveTab">
+	<ul class="nav nav-tabs initActiveTab">
 	<cfloop from="1" to="#listlen(tabList)#" index="t">
 	<li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
 	</cfloop>

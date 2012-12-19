@@ -163,22 +163,6 @@
 			</cfquery>
 			</cfcase>
 			--->
-			<cfcase value="mssql">
-			<cfquery
-				name="rs" 
-				datasource="#variables.configBean.getDatasource()#"
-				username="#variables.configBean.getDbUsername()#"
-				password="#variables.configBean.getDbPassword()#">
-					select column_name,
-					character_maximum_length column_size,
-					data_type type_name,
-					column_default column_default_value,
-					is_nullable,
-					numeric_precision data_precision
-					from INFORMATION_SCHEMA.COLUMNS
-					where TABLE_NAME='#arguments.table#'
-			</cfquery>
-			</cfcase>
 			<cfdefaultcase>
 				<cfdbinfo 
 				name="rs"
@@ -564,38 +548,22 @@
 					<cfreturn "datetime">
 				</cfcase>
 				<cfcase value="text,longtext">
+					<cfquery name="MSSQLversion" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
+						EXEC sp_MSgetversion
+					</cfquery>
+	
 					<cftry>
-						<cfquery name="MSSQLversion"  
-							datasource="#variables.configBean.getDatasource()#"
-							username="#variables.configBean.getDbUsername()#"
-							password="#variables.configBean.getDbPassword()#">
-							SELECT CONVERT(varchar(100), SERVERPROPERTY('ProductVersion')) as version
-						</cfquery>
-						<cfset MSSQLversion=listFirst(MSSQLversion.version,".")>
-						<cfcatch></cfcatch>
+						<cfset MSSQLversion=left(MSSQLversion.CHARACTER_VALUE,1)>
+						<cfcatch>
+							<cfset MSSQLversion=mid(MSSQLversion.COMPUTED_COLUMN_1,1,find(".",MSSQLversion.COMPUTED_COLUMN_1)-1)>
+						</cfcatch>
 					</cftry>
-
-					<cfif not MSSQLversion>
-						<cfquery name="MSSQLversion"
-							datasource="#variables.configBean.getDatasource()#"
-							username="#variables.configBean.getDbUsername()#"
-							password="#variables.configBean.getDbPassword()#">
-							EXEC sp_MSgetversion
-						</cfquery>
 					
-						<cftry>
-							<cfset MSSQLversion=left(MSSQLversion.CHARACTER_VALUE,1)>
-							<cfcatch>
-								<cfset MSSQLversion=mid(MSSQLversion.COMPUTED_COLUMN_1,1,find(".",MSSQLversion.COMPUTED_COLUMN_1)-1)>
-							</cfcatch>
-						</cftry>
-					</cfif>
-
 					<cfif MSSQLversion neq 8>
-						<cfreturn "[nvarchar](max)">
+						<cfreturn "nvarchar(max)">
 					<cfelse>
-						<cfreturn "[ntext]">
-					</cfif>		
+						<cfreturn "ntext">
+					</cfif>
 				</cfcase>
 				<cfcase value="float">
 					<cfreturn "float">
@@ -919,14 +887,14 @@
 	<cfargument name="table">
 	<cfset var index={}>
 	<cfset var indexArray=[]>
-	
+
  	<cfif rs.recordcount>
 		<cfloop query="rs">
 			<cfset index={table=arguments.table,
 					column=rs.column_name,
 					name=rs.index_name
 					}>
-			<cfif not isBoolean(rs.NON_UNIQUE) or not rs.NON_UNIQUE>
+			<cfif rs.NON_UNIQUE>
 				<cfset index.unique=false>
 			<cfelse>
 				<cfset index.unique=true>

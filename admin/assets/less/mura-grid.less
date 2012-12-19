@@ -140,7 +140,7 @@
 				min-height: 18px;
 				line-height: 20px;
 				white-space: wrap;
-				padding: 5px 5px 0 0;
+				padding: 4px 5px 0 0;
 				float: left;
 				color: @grayDarker;		
 			}
@@ -207,15 +207,12 @@
 				
 				
 				
-				&.icon-mura-folder:before { 
-					content: "\f114";
-					top: 2px;
-					}
+				&.icon-mura-folder:before { content: "\f07b"; }
 				
 				&.icon-mura-page:before {
-					.icon-font('FontAwesome');
-					content: "\f016";
-					font-size: 20px;
+					.icon-font('mura-icons');
+					content: "\36";
+					font-size: 17px;
 					top: 2px;
 					margin-left: 1px;
 					width: 21px;
@@ -227,8 +224,8 @@
 				
 				&.icon-mura-calendar:before {
 					content: "\f073";
-					font-size: 16px;
-					top: 2px;
+					font-size: 22px;
+					top: 5px;
 					}
 					
 				&.icon-mura-gallery:before { content: "\f00a"; }
@@ -328,7 +325,7 @@
 					content: "\f0da"; // Right Caret Icon
 					}
 				
-				&.open + .icon-mura-folder:before { content: "\f115" !important; }
+				&.open + .icon-mura-folder:before { content: "\f07c" !important; }
 			
 			}
 						
@@ -1232,16 +1229,15 @@
 			.cancel {
 				position: absolute;
 				top: 4px;
-				right: 2px;
+				right: 4px;
 				cursor: pointer;
 				
 				i {
 					font-size: 16px;
-					color: @gray;
-					text-shadow: 0 -1px 0 #000;
+					color: @grayDark;
 					
 					&:hover {
-						color: @grayDark;
+						color: @gray;
 						}
 					
 					}
@@ -1349,37 +1345,16 @@
 			background: url('../images/quickedit-bottom-hasdraft.png') no-repeat center bottom;
 		}
 		
-		.hasDraft .mura-quickEdit > i {
-				float: left !important;
-				margin-left: -4px !important;
-				font-size: 20px !important;
-				}
-		
 		.hasDraft .mura-quickEdit h1 {
-			color: #333 !important;
-			font-weight: bold !important;
-			font-size: 16px !important;
-			line-height: 20px !important;
-			margin-bottom: 2px !important;
+			color: #333232;
+			font-weight: bold;
+			background: url('../images/icons/unsubscribe_24x24.png') no-repeat left top;
+			height: 24px;
+			line-height: 26px;
+			padding-left: 28px;
 		}
 		
-		.hasDraft .mura-quickEdit .cancel {
-				
-				i {
-					font-size: 16px;
-					color: @grayDark;
-					text-shadow: 0 1px 0 #fff;
-					
-					&:hover {
-						color: @grayDarker;
-						}
-					
-					}
-				}
-		
 		.hasDraft .mura-quickEdit p {
-			clear: both;
-			line-height: 1.2;
 			font-size: @qeFontSize !important;
 		}
 		
@@ -1536,12 +1511,8 @@ text-shadow: 0 0 1px @blue;
 				
 				i {
 					font-size: 16px;
-					margin-right: .25em;
-					position: relative;
-					top: 2px;
+					margin-right: .25em
 				}
-				
-				&#newZoom i { top: 0; }
 				
 			}
 			

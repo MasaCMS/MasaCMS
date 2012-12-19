@@ -1,8 +1,8 @@
 ﻿/*
  * CKFinder
  * ========
- * http://cksource.com/ckfinder
- * Copyright (C) 2007-2013, CKSource - Frederico Knabben. All rights reserved.
+ * http://ckfinder.com
+ * Copyright (C) 2007-2012, CKSource - Frederico Knabben. All rights reserved.
  *
  * The software, this file, and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
@@ -30,7 +30,7 @@ CKFinder.lang['ja'] =
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, は利用できません。</span>',
 		confirmCancel	: '変更された項目があります。ウィンドウを閉じてもいいですか？',
-		ok				: 'OK',
+		ok				: '適用',
 		cancel			: 'キャンセル',
 		confirmationTitle	: '確認',
 		messageTitle	: 'インフォメーション',
@@ -40,7 +40,7 @@ CKFinder.lang['ja'] =
 		skip			: 'スキップ',
 		skipAll			: 'すべてスキップ',
 		makeDecision	: 'どうしますか？',
-		rememberDecision: '全てに適用する'
+		rememberDecision: '注意：'
 	},
 
 
@@ -68,25 +68,25 @@ CKFinder.lang['ja'] =
 	DateAmPm : ['AM', 'PM'],
 
 	// Folders
-	FoldersTitle	: 'フォルダ',
+	FoldersTitle	: 'Folders',
 	FolderLoading	: '読み込み中...',
 	FolderNew		: '新しいフォルダ名を入力してください: ',
 	FolderRename	: '新しいフォルダ名を入力してください: ',
 	FolderDelete	: '本当にフォルダ「"%1"」を削除してもよろしいですか？',
 	FolderRenaming	: ' (リネーム中...)',
 	FolderDeleting	: ' (削除中...)',
-	DestinationFolder	: '適用するフォルダ',
+	DestinationFolder	: 'Destination Folder', // MISSING
 
 	// Files
 	FileRename		: '新しいファイル名を入力してください: ',
 	FileRenameExt	: 'ファイルが使えなくなる可能性がありますが、本当に拡張子を変更してもよろしいですか？',
 	FileRenaming	: 'リネーム中...',
 	FileDelete		: '本当に「"%1"」を削除してもよろしいですか？',
-	FilesDelete	: 'これらの %1 つのファイルを削除してもよろしいですか？ ',
+	FilesDelete	: 'Are you sure you want to delete %1 files?', // MISSING
 	FilesLoading	: '読み込み中...',
 	FilesEmpty		: 'ファイルがありません',
-	DestinationFile	: '適用するファイル',
-	SkippedFiles	: 'スキップしたファイルのリスト:',
+	DestinationFile	: 'Destination File', // MISSING
+	SkippedFiles	: 'List of skipped files:', // MISSING
 
 	// Basket
 	BasketFolder		: 'Basket',
@@ -128,7 +128,7 @@ CKFinder.lang['ja'] =
 	NewSubFolder	: '新しいフォルダに入れる',
 	Rename			: 'ファイル名の変更',
 	Delete			: '削除',
-	DeleteFiles		: 'ファイルを削除する',
+	DeleteFiles		: 'Delete Files', // MISSING
 
 	CopyDragDrop	: 'コピーするファイルをここにドロップしてください',
 	MoveDragDrop	: '移動するファイルをここにドロップしてください',
@@ -140,8 +140,8 @@ CKFinder.lang['ja'] =
 	SysErrorDlgTitle : 'システムエラー',
 
 	FileOverwrite	: '上書き',
-	FileAutorename	: '自動でリネーム',
-	ManuallyRename	: '手動でリネーム',
+	FileAutorename	: 'A自動でリネーム',
+	ManuallyRename	: 'Manually rename', // MISSING
 
 	// Generic
 	OkBtn		: 'OK',
@@ -162,17 +162,17 @@ CKFinder.lang['ja'] =
 	UploadExtIncorrect	: '選択されたファイルの拡張子は許可されていません。',
 
 	// Flash Uploads
-	UploadLabel			: 'アップロード',
-	UploadTotalFiles	: 'アップロードしたファイル数:',
-	UploadTotalSize		: 'ファイルサイズ:',
+	UploadLabel			: 'Files to Upload', // MISSING
+	UploadTotalFiles	: 'Total Files:', // MISSING
+	UploadTotalSize		: 'Total Size:', // MISSING
 	UploadSend			: 'アップロード',
-	UploadAddFiles		: 'ファイルを追加',
-	UploadClearFiles	: 'クリア',
-	UploadCancel		: 'キャンセル',
-	UploadRemove		: '削除',
-	UploadRemoveTip		: '!fを削除しました',
-	UploadUploaded		: '!n%をアップロードしました',
-	UploadProcessing	: 'アップロード中...',
+	UploadAddFiles		: 'Add Files', // MISSING
+	UploadClearFiles	: 'Clear Files', // MISSING
+	UploadCancel		: 'Cancel Upload', // MISSING
+	UploadRemove		: 'Remove', // MISSING
+	UploadRemoveTip		: 'Remove !f', // MISSING
+	UploadUploaded		: 'Uploaded !n%', // MISSING
+	UploadProcessing	: 'Processing...', // MISSING
 
 	// Settings Panel
 	SetTitle		: '表示のカスタマイズ',
@@ -187,7 +187,7 @@ CKFinder.lang['ja'] =
 	SetSortName		: 'ファイル名',
 	SetSortDate		: '日付',
 	SetSortSize		: 'サイズ',
-	SetSortExtension		: '拡張子',
+	SetSortExtension		: 'by Extension', // MISSING
 
 	// Status Bar
 	FilesCountEmpty : '<フォルダ内にファイルがありません>',
@@ -236,9 +236,9 @@ CKFinder.lang['ja'] =
 	{
 		FileEmpty		: 'ファイル名を入力してください',
 		FileExists		: ' %s はすでに存在しています。別の名前を入力してください。',
-		FolderEmpty		: 'フォルダ名を入力してください。',
-		FolderExists	: 'フォルダ %s は既に存在しています。',
-		FolderNameExists	: 'フォルダは既に存在しています。',
+		FolderEmpty		: 'フォルダ名を入力してください',
+		FolderExists	: 'Folder %s already exists.', // MISSING
+		FolderNameExists	: 'Folder already exists.', // MISSING
 
 		FileInvChar		: 'ファイルに以下の文字は使えません: \n\\ / : * ? " < > |',
 		FolderInvChar	: 'フォルダに以下の文字は使えません: \n\\ / : * ? " < > |',
@@ -296,12 +296,12 @@ CKFinder.lang['ja'] =
 
 	Zip :
 	{
-		extractHereLabel	: 'ここに解凍する',
-		extractToLabel		: 'フォルダを指定して解凍する',
-		downloadZipLabel	: 'zipファイルでダウンロード',
-		compressZipLabel	: 'zipファイルにする',
-		removeAndExtract	: '既存のファイルを削除して解凍しました。',
-		extractAndOverwrite	: '解凍して既存のファイルに上書きしました。',
-		extractSuccess		: '解凍が完了しました。'
+		extractHereLabel	: 'Extract here', // MISSING
+		extractToLabel		: 'Extract to...', // MISSING
+		downloadZipLabel	: 'Download as zip', // MISSING
+		compressZipLabel	: 'Compress to zip', // MISSING
+		removeAndExtract	: 'Remove existing and extract', // MISSING
+		extractAndOverwrite	: 'Extract overwriting existing files', // MISSING
+		extractSuccess		: 'File extracted successfully.' // MISSING
 	}
 };
