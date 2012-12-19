@@ -70,7 +70,7 @@ select * from rsSubTypes where subType <> 'Default'
 
 <div class="tabbable tabs-left">
 
-	<ul class="nav nav-tabs initActiveTab">
+	<ul class="nav nav-tabs mura initActiveTab">
 	<cfloop from="1" to="#listlen(tabList)#" index="t">
 	<li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
 	</cfloop>
