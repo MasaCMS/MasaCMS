@@ -687,7 +687,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <cfif not isObjectInstance>
 	<div class="tabbable tabs-left">
-		<ul class="nav nav-tabs initActiveTab">
+		<ul class="nav nav-tabs mura initActiveTab">
 		<cfloop from="1" to="#listlen(tabList)#" index="t">
 		<li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
 		</cfloop>
@@ -927,7 +927,7 @@ jQuery(document).ready(function(){
 <cfoutput>
 
 <div class="tabbable tabs-left">
-	<ul class="nav nav-tabs">
+	<ul class="nav nav-tabs mura">
 	<cfloop from="1" to="#listlen(tabList)#" index="t">
 	<li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
 	</cfloop>

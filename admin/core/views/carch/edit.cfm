@@ -467,7 +467,7 @@ var hasBody=#subType.getHasBody()#;
 	<cfoutput>
 	
 	<div class="tabbable tabs-left">
-		<ul class="nav nav-tabs initActiveTab">
+		<ul class="nav nav-tabs mura initActiveTab">
 			<cfloop from="1" to="#listlen(tabList)#" index="t">
 			<cfset currentTab=listGetAt(tabList,t)>
 			<li<cfif currentTab eq "tabExtendedAttributes"> class="hide" id="tabExtendedAttributesLI"</cfif>><a href="###currentTab#" data-toggle="tab"><span>#listGetAt(tabLabelList,t)#</span></a></li>

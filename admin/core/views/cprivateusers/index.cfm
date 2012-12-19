@@ -79,7 +79,7 @@ var sessionTimeout=#evaluate("application.configBean.getValue('sessionTimeout') 
 	jQuery(document).ready(
 		function(){
 			setDatePickers(".datepicker",dtLocale);
-			setTabs(".nav-tabs",0);setHTMLEditors();
+			setTabs(".mura.nav-tabs",0);setHTMLEditors();
 			setAccordions(".accordion",0);
 			setToolTips(".container");
 		});
