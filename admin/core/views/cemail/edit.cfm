@@ -104,7 +104,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="load-inline tab-preloader"></div>
     
 <div class="tabbable tabs-left">
-    <ul class="nav nav-tabs initActiveTab">
+    <ul class="nav nav-tabs mura initActiveTab">
         <li><a href="##emailContent" onClick="return false;"><span>Email</span></a></li>
         <li><a href="##emailGroupsLists" onClick="return false;"><span>Recipients</span></a></li>
     </ul>
