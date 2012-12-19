@@ -89,7 +89,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	                <ul class="dropdown-menu">
 						<li><a href="##"><strong>Core Version</strong> #application.autoUpdater.getCurrentCompleteVersion()#</a></li>
 						<li><a href="##"><strong>Site Version</strong> #application.autoUpdater.getCurrentCompleteVersion(session.siteid)#</a></span>
-							<cfif application.configBean.getMode() eq 'Staging' and session.siteid neq '' and not listfind(hidelist,myfusebox.originalcircuit)>
+							<cfif application.configBean.getMode() eq 'Staging' and session.siteid neq '' and session.mura.isLoggedIn>
 							<li><a href="##"><strong>Last Deployment</strong>
 								<cftry>
 								#LSDateFormat(application.settingsManager.getSite(session.siteid).getLastDeployment(),session.dateKeyFormat)# #LSTimeFormat(application.settingsManager.getSite(session.siteid).getLastDeployment(),"short")#
