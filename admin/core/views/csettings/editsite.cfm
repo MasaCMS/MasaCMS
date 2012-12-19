@@ -113,7 +113,7 @@ to your own modified versions of Mura CMS.
             <label class="control-label">Site ID</label>
             <div class="controls">
                 <cfif rc.siteid eq ''>
-                <input name="siteid" type="text" class="span12" value="#rc.siteBean.getsiteid()#" size="25" maxlength="25" required="true">
+                <input name="siteid" type="text" class="span12" value="#rc.siteBean.getsiteid()#" size="25" maxlength="25" required="true" onchange="removePunctuation(this);">
                 <p class="help-block alert">Warning: No spaces, punctuation, dots or file delimiters allowed.</p>
                 <cfelse>
                 <input class="span12"  id="disabledInput" type="text" placeholder="#rc.siteBean.getsiteid()#" disabled>
