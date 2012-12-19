@@ -49,7 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset started=false>
 	<div class="tabbable">
-		<ul class="nav nav-tabs mura initActiveTab">
+		<ul class="nav nav-tabs tabs initActiveTab">
 		<li><a href="##tab#ucase('Application')#" onclick="return false;"><span>Application</span></a></li>
 		<li><a href="##tab#ucase('Utility')#" onclick="return false;"><span>Utility</span></a></li>
 		<cfloop collection="#rc.plugingroups#" item="local.category" >
