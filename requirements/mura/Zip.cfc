@@ -333,15 +333,15 @@
 				<cfloop list="#arguments.extractDirs#" index="i" delimiters="|">
 				<cfif started>or</cfif>
 				<cfif right(i,1) neq delim>
-				entry like '#i##delim#%'
+				entry like '#PathFormat(i)##delim#%'
 				<cfelse>
-				entry like '#i#%'
+				entry like '#PathFormat(i)#%'
 				</cfif>
 				<cfset started=true>
 				</cfloop>
 				</cfquery>
 				<cfloop query="rsDir">
-					<cfset extractStruct["#hash(rsdir.entry)#"]=true>
+					<cfset extractStruct["#hash(PathFormat(rsdir.entry))#"]=true>
 				</cfloop>
 			</cfif>
 			
@@ -352,15 +352,15 @@
 				<cfloop list="#arguments.excludeDirs#" index="i" delimiters="|">
 				<cfif started>or</cfif>
 				<cfif right(i,1) neq delim>
-				entry like '#i##delim#%'
+				entry like '#PathFormat(i)##delim#%'
 				<cfelse>
-				entry like '#i#%'
+				entry like '#PathFormat(i)#%'
 				</cfif>
 				<cfset started=true>
 				</cfloop>
 				</cfquery>
 				<cfloop query="rsDir">
-					<cfset excludeStruct["#hash(rsdir.entry)#"]=true>
+					<cfset excludeStruct["#hash(PathFormat(rsdir.entry))#"]=true>
 				</cfloop>
 			</cfif>
 		
