@@ -56,7 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset contentBean = $.getBean("content").loadBy(contentID=favorite.getFavorite()) />
 <cfset contentLink = $.createHref(contentBean.getType(), contentBean.getFilename(), url.siteid, favorite.getfavorite(), '', '', '', '#$.globalConfig('context')#', '#$.globalConfig('stub')#', '', 'false') />
 <cfset contentLink = "<a href='#contentLink#'>#favoriteName#</a>" />
-<cfset contentLink = "<a href="""" onClick=""return deleteFavorite('#favorite.getfavoriteID()#', 'favorite#lid#');"" title=""#xmlformat($.rbKey('favorites.removefromfavorites'))#"" class=""remove""><i class="icon-remove-sign"></i></a> " & contentLink />
+<cfset contentLink = "<a href="""" onClick=""return deleteFavorite('#favorite.getfavoriteID()#', 'favorite#lid#');"" title=""#xmlformat($.rbKey('favorites.removefromfavorites'))#"" class=""remove""><i class=""icon-remove-sign""></i></a> " & contentLink />
 <cfset favoriteStruct = structNew() />
 <cfset favoriteStruct.lid = lid />
 <cfset favoriteStruct.link = contentLink />
