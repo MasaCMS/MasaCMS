@@ -890,7 +890,7 @@ to your own modified versions of Mura CMS.
               <div class="control-group">
                   <label class="control-label">
                   <cfif len(attributeBean.getHint())>
-                      <a href="##" title="#HTMLEditFormat(attributeBean.gethint())#">#attributeBean.getLabel()# <i class="icon-question-sign"></i></a>
+                      <a rel="tooltip" href="##" title="#HTMLEditFormat(attributeBean.gethint())#">#attributeBean.getLabel()# <i class="icon-question-sign"></i></a>
                       <cfelse>
 #attributeBean.getLabel()#
                     </cfif>
