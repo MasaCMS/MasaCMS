@@ -238,7 +238,7 @@ var hasBody=#subType.getHasBody()#;
 	<div class="form-actions">
 	
 		 <button type="button" class="btn" onclick="if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="icon-check"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#</button>
-		<cfif listFindNoCase("Page,Folder,Calendar,Gallery",rc.type)>
+		<cfif rc.compactDisplay neq 'true' and listFindNoCase("Page,Folder,Calendar,Gallery",rc.type)>
 		<button type="button" class="btn" onclick="document.contentForm.preview.value=1;if(siteManager.ckContent(draftremovalnotice)){submitForm(document.contentForm,'add');}"><i class="icon-eye-open"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraftandpreview"))#</button>
 		</cfif>
 		<cfif assignChangesets>
