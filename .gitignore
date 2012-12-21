@@ -8,6 +8,10 @@
 /robots.txt
 /default/assets
 /default/cache
+/default/includes/Application.cfc
+/default/includes/contentRenderer.cfc
+/default/includes/email/
+/default/includes/eventHandler.cfc
 /dev
 /web.config
 /.htaccess
