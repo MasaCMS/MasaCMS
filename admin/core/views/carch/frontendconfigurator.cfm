@@ -69,9 +69,7 @@ jQuery(document).ready(function(){
 
 	<div class="form-actions">	
 		<input type="button" class="btn" id="saveConfigDraft" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#"/>
-		<!---
 		<input type="button" class="btn" id="previewConfigDraft" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.preview"))#"/>
-		--->
 		<cfif assignChangesets>
 			<input type="button" class="btn" onclick="saveToChangeset('#rc.contentBean.getChangesetID()#','#HTMLEditFormat(rsDisplayObject.siteid)#','');return false;" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset")#" />	
 		</cfif>
@@ -205,7 +203,6 @@ jQuery(document).ready(function(){
 			}
 		});
 	
-	/*
 	jQuery("##saveConfigDraft").bind("click",
 		function(){
 			
@@ -234,9 +231,8 @@ jQuery(document).ready(function(){
 				});
 			}
 		});
-	*/
 		
-		jQuery("##saveConfigDraft").bind("click",
+		jQuery("##previewConfigDraft").bind("click",
 		function(){
 			
 			siteManager.updateAvailableObject();
