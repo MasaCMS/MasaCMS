@@ -1352,7 +1352,7 @@ and tclassextendattributes.type='File'
 			}
 
 			if(isDefined("extXML.xmlAttributes.availableSubTypes")){
-				subType.setDescription( extXML.xmlAttributes.availableSubTypes );
+				subType.setAvailableSubTypes( extXML.xmlAttributes.availableSubTypes );
 			}
 
 			if(isDefined("extXML.xmlAttributes.hassummary")){
