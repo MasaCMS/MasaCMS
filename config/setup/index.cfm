@@ -587,7 +587,7 @@ to your own modified versions of Mura CMS.
     <!---  <div class="container"> --->
     <h1>Mura Set Up</h1>
     <cfif len( trim( message ) )>
-      <p class="error">#message#</p>
+      <p class="alert alert-error">#message#</p>
     </cfif>
     
     <!--- need to pass on form object to JS to avoid exception, also added try/catch in admin js (bsoylu 6/7/2010) --->
@@ -608,9 +608,10 @@ to your own modified versions of Mura CMS.
         <div id="installationComplete" class="alert alert-success">
           <p>Mura is now set up and ready to use.</p>
         </div>
+       <!---
         <div class="alert alert-error">
           <p>When you are done with setup, it is recommended you remove the "/config/setup" directory to maintain security. Once deleted, all settings can be edited in "/config/settings.ini.cfm" directly.</p></div>
-          
+        --->  
         <div id="finishSetUp" class="form-actions">
         	<input type="submit" class="btn" name="#cookie.setupSubmitButtonComplete#" value="Login to Mura" />
         </div>
