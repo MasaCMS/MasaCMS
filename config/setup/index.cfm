@@ -110,7 +110,7 @@ to your own modified versions of Mura CMS.
 <cfparam name="FORM.production_context" default="#context#" />
 
 <!--- state we are done --->
-<cfif isDefined( "FORM.#cookie.setupSubmitButtonComplete#" )>
+<cfif isDefined( "FORM.#session.setupSubmitButtonComplete#" )>
 	<!--- state we are done --->
 	<!---
 	<cfset settingsIni.set( "settings", "installed", 1 ) />
@@ -123,7 +123,7 @@ to your own modified versions of Mura CMS.
 </cfif>
 
 <!--- run save process --->
-<cfif isDefined( "FORM.#cookie.setupSubmitButton#" )>
+<cfif isDefined( "FORM.#session.setupSubmitButton#" )>
 	<!--- save settings --->
 	<cfset validSections = "production,settings" />
 	
@@ -583,13 +583,13 @@ to your own modified versions of Mura CMS.
 <form id="frm" name="frm" action="index.cfm" method="post" onclick="return validateForm(this);">
 
 
-<cfif isDefined( "FORM.#cookie.setupSubmitButton#" ) AND errorType IS "">
+<cfif isDefined( "FORM.#session.setupSubmitButton#" ) AND errorType IS "">
 		<div id="installationComplete" class="success">
 			<p id="congrats">Mura is now set up and ready to use.</p>
 			<h3>Important</h3>
 			<p>When you are done with setup, it is recommended you remove the "/config/setup" directory to maintain security. Once deleted, all settings can be edited in "/config/settings.ini.cfm" directly.</p>
 			<p class="error">The default <strong>Username and Password is the word "admin" for both fields</strong>. It is highly recommended that you change this immediately by editing your profile after logging into the Mura Admin.</p>
-			<input type="submit" name="#cookie.setupSubmitButtonComplete#" value="Finish Set Up and Take Me to the Mura Admin" />
+			<input type="submit" name="#session.setupSubmitButtonComplete#" value="Finish Set Up and Take Me to the Mura Admin" />
 		</div>
 </cfif>
 
@@ -721,7 +721,7 @@ if (server.ColdFusion.ProductName CONTAINS "Railo"){
 	</dd>
 	</dl>
 
-	<input class="submit" type="submit" name="#cookie.setupSubmitButton#" value="Save Settings" />
+	<input class="submit" type="submit" name="#session.setupSubmitButton#" value="Save Settings" />
 </form>
 </cfoutput>
 
