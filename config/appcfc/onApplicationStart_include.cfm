@@ -64,14 +64,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif directoryExists( variables.basedir & "/config/setup" )>
 			<cfset structDelete( application, "setupComplete") />
 			<!--- check the settings --->
-			<cfparam name="application.setupSubmitButton" default="A#hash( createUUID() )#" />
-			<cfparam name="application.setupSubmitButtonComplete" default="A#hash( createUUID() )#" />
+			<cfparam name="session.setupSubmitButton" default="A#hash( createUUID() )#" />
+			<cfparam name="session.setupSubmitButtonComplete" default="A#hash( createUUID() )#" />
 			
 			<cfif trim( getProfileString( variables.basedir & "/config/settings.ini.cfm" , "production", "datasource" ) ) IS NOT ""
 					AND (
-						NOT isDefined( "FORM.#application.setupSubmitButton#" )
+						NOT isDefined( "FORM.#session.setupSubmitButton#" )
 						AND
-						NOT isDefined( "FORM.#application.setupSubmitButtonComplete#" )
+						NOT isDefined( "FORM.#session.setupSubmitButtonComplete#" )
 						)
 				>		
 						
