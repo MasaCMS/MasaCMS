@@ -55,6 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="request.muraRequestStart" default="#getTickCount()#"/>
 	<cfparam name="request.muraShowTrace" default="true"/>
 	<cfparam name="request.muraValidateDomain" default="true"/>
+	<cfparam name="request.muraAppreloaded" default="false"/>
 
 	<cffunction name="initTracePoint" output="false">
 		<cfargument name="detail">

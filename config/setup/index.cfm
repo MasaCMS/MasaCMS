@@ -107,7 +107,7 @@ to your own modified versions of Mura CMS.
 </cfif>
 <cfparam name="FORM.production_context" default="#context#" />
 <!--- state we are done --->
-<cfif isDefined( "FORM.#cookie.setupSubmitButtonComplete#" )>
+<cfif isDefined( "FORM.#application.setupSubmitButtonComplete#" )>
   <!--- state we are done --->
   <!---
   <cfset settingsIni.set( "settings", "installed", 1 ) />
@@ -118,7 +118,7 @@ to your own modified versions of Mura CMS.
   <cflocation url="#context#/admin/index.cfm?appreload" addtoken="false" />
 </cfif>
 <!--- run save process --->
-<cfif isDefined( "FORM.#cookie.setupSubmitButton#" )>
+<cfif isDefined( "FORM.#application.setupSubmitButton#" )>
   <!--- save settings --->
   <cfset validSections = "production,settings" />
   <!--- ************************ --->
@@ -602,9 +602,9 @@ to your own modified versions of Mura CMS.
       }
 
     </script>
-    <form id="frm" class="form-horizontal<cfif isDefined( "FORM.#cookie.setupSubmitButton#" ) AND errorType IS ""> install-complete<cfelse> setup-form</cfif>" name="frm" action="index.cfm" method="post" onsubmit="return processInstallFrm(this);" onclick="return validateForm(this);">
+    <form id="frm" class="form-horizontal<cfif isDefined( "FORM.#application.setupSubmitButton#" ) AND errorType IS ""> install-complete<cfelse> setup-form</cfif>" name="frm" action="index.cfm" method="post" onsubmit="return processInstallFrm(this);" onclick="return validateForm(this);">
    
-      <cfif isDefined( "FORM.#cookie.setupSubmitButton#" ) AND errorType IS "">
+      <cfif isDefined( "FORM.#application.setupSubmitButton#" ) AND errorType IS "">
         <div id="installationComplete" class="alert alert-success">
           <p>Mura is now set up and ready to use.</p>
         </div>
@@ -613,7 +613,7 @@ to your own modified versions of Mura CMS.
           <p>When you are done with setup, it is recommended you remove the "/config/setup" directory to maintain security. Once deleted, all settings can be edited in "/config/settings.ini.cfm" directly.</p></div>
          
         <div id="finishSetUp" class="form-actions">
-        	<input type="submit" class="btn" name="#cookie.setupSubmitButtonComplete#" value="Login to Mura" />
+        	<input type="submit" class="btn" name="#application.setupSubmitButtonComplete#" value="Login to Mura" />
         </div>
  
       
@@ -808,7 +808,7 @@ to your own modified versions of Mura CMS.
         </div>
       </div>
       <div class="form-actions">
-        <input class="btn" type="submit" name="#cookie.setupSubmitButton#" value="Save Settings" />
+        <input class="btn" type="submit" name="#application.setupSubmitButton#" value="Save Settings" />
       </div>
       </cfif>
     </form>
