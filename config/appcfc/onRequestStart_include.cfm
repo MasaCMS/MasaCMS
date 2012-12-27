@@ -46,7 +46,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfparam name="local" default="#structNew()#">
 
-<cfif ( NOT structKeyExists( application, "setupComplete" ) or not application.appInitialized or structKeyExists(url,application.appReloadKey)) and isDefined("onApplicationStart")>
+<cfif ( NOT structKeyExists( application, "setupComplete" ) or not application.appInitialized or structKeyExists(url,application.appReloadKey)) and isDefined("onApplicationStart")>	
+	<cfset structDelete(cookie,"setupSubmitButton")>
+	<cfset structDelete(cookie,"setupSubmitButtonComplete")>
 	<cfset onApplicationStart()>
 <cfelseif isdefined('application.clusterManager.runCommands')>
 	<cfset application.clusterManager.runCommands()>
