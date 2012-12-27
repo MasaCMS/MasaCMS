@@ -64,14 +64,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif directoryExists( variables.basedir & "/config/setup" )>
 			<cfset structDelete( application, "setupComplete") />
 			<!--- check the settings --->
-			<cfparam name="cookie.setupSubmitButton" default="A#hash( createUUID() )#" />
-			<cfparam name="cookie.setupSubmitButtonComplete" default="A#hash( createUUID() )#" />
+			<cfparam name="application.setupSubmitButton" default="A#hash( createUUID() )#" />
+			<cfparam name="application.setupSubmitButtonComplete" default="A#hash( createUUID() )#" />
 			
 			<cfif trim( getProfileString( variables.basedir & "/config/settings.ini.cfm" , "production", "datasource" ) ) IS NOT ""
 					AND (
-						NOT isDefined( "FORM.#cookie.setupSubmitButton#" )
+						NOT isDefined( "FORM.#application.setupSubmitButton#" )
 						AND
-						NOT isDefined( "FORM.#cookie.setupSubmitButtonComplete#" )
+						NOT isDefined( "FORM.#application.setupSubmitButtonComplete#" )
 						)
 				>		
 						
@@ -81,23 +81,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif NOT fileExists( variables.basedir & "/config/setup/index.cfm" )>
 					<cfthrow message="Your setup directory is incomplete. Please reset it up from the Mura source." />
 				</cfif>
-					
-				<cfset renderSetup = true />
-				<!--- go to the index.cfm page (setup) --->
-				<cfinclude template="/muraWRM/config/setup/index.cfm"><cfabort>
-				</cfif>	
-			</cfif>
+				<cfset application.setupComplete = false />
+			</cfif>	
+		</cfif>
 	<cfelse>		
 		<cfset application.setupComplete=true>
 	</cfif>
 </cfif>	
 
-<cfif (not application.appInitialized or structKeyExists(url,application.appReloadKey))>
+<cfif application.setupComplete and (not application.appInitialized or structKeyExists(url,application.appReloadKey))>
 <cflock name="appInitBlock#application.instanceID#" type="exclusive" timeout="200">	
 	<!--- Since the request may of had to wait double thak that code sitll needs to run --->
 	<cfif (not application.appInitialized or structKeyExists(url,application.appReloadKey))>
 		
 		<cfset request.muraShowTrace=true>
+		<cfset request.muraAppreloaded=true>
 		
 		<cfset variables.iniPath = "#variables.basedir#/config/settings.ini.cfm" />
 		

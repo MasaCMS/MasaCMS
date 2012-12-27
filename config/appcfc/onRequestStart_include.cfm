@@ -46,19 +46,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfparam name="local" default="#structNew()#">
 
-<cfif ( NOT structKeyExists( application, "setupComplete" ) or not application.appInitialized or structKeyExists(url,application.appReloadKey)) and isDefined("onApplicationStart")>	
-	<cfset structDelete(cookie,"setupSubmitButton")>
-	<cfset structDelete(cookie,"setupSubmitButtonComplete")>
-	<cfset onApplicationStart()>
-<cfelseif isdefined('application.clusterManager.runCommands')>
-	<cfset application.clusterManager.runCommands()>
-	<cfif not application.appInitialized>
-		<cfset onApplicationStart()>
-	</cfif>
+<cfif not application.setupComplete>
+	<cfset renderSetup = true />
+	<!--- go to the index.cfm page (setup) --->
+	<cfinclude template="/muraWRM/config/setup/index.cfm">	
+	<cfabort>
 </cfif>
 
-<cfset structDelete(cookie,"setupSubmitButton")>
-<cfset structDelete(cookie,"setupSubmitButtonComplete")>
+<cfif not request.muraAppreloaded>
+	<cfif ( NOT structKeyExists( application, "setupComplete" ) or not application.appInitialized or structKeyExists(url,application.appReloadKey)) and isDefined("onApplicationStart")>	
+		<cfset onApplicationStart()>
+	<cfelseif isdefined('application.clusterManager.runCommands')>
+		<cfset application.clusterManager.runCommands()>
+		<cfif not application.appInitialized>
+			<cfset onApplicationStart()>
+		</cfif>
+	</cfif>
+</cfif>
 
 <cfset application.userManager.setUserStructDefaults()>
 
