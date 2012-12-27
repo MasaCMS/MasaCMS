@@ -64,14 +64,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif directoryExists( variables.basedir & "/config/setup" )>
 			<cfset structDelete( application, "setupComplete") />
 			<!--- check the settings --->
-			<cfparam name="application.setupSubmitButton" default="A#hash( createUUID() )#" />
-			<cfparam name="application.setupSubmitButtonComplete" default="A#hash( createUUID() )#" />
+			<cfparam name="cookie.setupSubmitButton" default="A#hash( createUUID() )#" />
+			<cfparam name="cookie.setupSubmitButtonComplete" default="A#hash( createUUID() )#" />
 			
 			<cfif trim( getProfileString( variables.basedir & "/config/settings.ini.cfm" , "production", "datasource" ) ) IS NOT ""
 					AND (
-						NOT isDefined( "FORM.#application.setupSubmitButton#" )
+						NOT isDefined( "FORM.#cookie.setupSubmitButton#" )
 						AND
-						NOT isDefined( "FORM.#application.setupSubmitButtonComplete#" )
+						NOT isDefined( "FORM.#cookie.setupSubmitButtonComplete#" )
 						)
 				>		
 						
@@ -443,7 +443,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset application.serviceFactory.getBean('fileWriter').renameFile(source=local.bundleLoc,destination=expandPath("/muraWRM/config/setup/deploy/#createUUID()#.zip"))>
 		</cfif>
 
-		<cfset application.sessionTrackingThrottle=false>	
+		<cfset application.sessionTrackingThrottle=false>
+	
 	</cfif>	
 </cflock>
 </cfif>	 
