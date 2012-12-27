@@ -55,6 +55,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cfif>
 
+<cfset structDelete(cookie,"setupSubmitButton")>
+<cfset structDelete(cookie,"setupSubmitButtonComplete")>
+
 <cfset application.userManager.setUserStructDefaults()>
 
 <cfif isDefined("url.showTrace") and isBoolean(url.showTrace)>

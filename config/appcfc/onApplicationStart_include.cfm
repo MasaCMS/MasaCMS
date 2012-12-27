@@ -443,7 +443,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset application.serviceFactory.getBean('fileWriter').renameFile(source=local.bundleLoc,destination=expandPath("/muraWRM/config/setup/deploy/#createUUID()#.zip"))>
 		</cfif>
 
-		<cfset application.sessionTrackingThrottle=false>	
+		<cfset application.sessionTrackingThrottle=false>
+	
 	</cfif>	
 </cflock>
 </cfif>	 
