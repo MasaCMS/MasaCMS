@@ -53,14 +53,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfabort>
 </cfif>
 
-<cfif not request.muraAppreloaded>
-	<cfif ( NOT structKeyExists( application, "setupComplete" ) or not application.appInitialized or structKeyExists(url,application.appReloadKey)) and isDefined("onApplicationStart")>	
+<cfif not request.muraAppreloaded and (( NOT structKeyExists( application, "setupComplete" ) or not application.appInitialized or structKeyExists(url,application.appReloadKey)) and isDefined("onApplicationStart"))>	
+	<cfset onApplicationStart()>
+<cfelseif isdefined('application.clusterManager.runCommands')>
+	<cfset application.clusterManager.runCommands()>
+	<cfif not application.appInitialized>
 		<cfset onApplicationStart()>
-	<cfelseif isdefined('application.clusterManager.runCommands')>
-		<cfset application.clusterManager.runCommands()>
-		<cfif not application.appInitialized>
-			<cfset onApplicationStart()>
-		</cfif>
 	</cfif>
 </cfif>
 
