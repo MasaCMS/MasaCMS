@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfparam name="local" default="#structNew()#">
 
-<cfif not application.setupComplete>
+<cfif isDefined('application.setupComplete') and not application.setupComplete>
 	<cfset renderSetup = true />
 	<!--- go to the index.cfm page (setup) --->
 	<cfinclude template="/muraWRM/config/setup/index.cfm">	
