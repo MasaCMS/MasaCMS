@@ -1022,6 +1022,6 @@ preloadimages(['./assets/images/ajax-loader.gif']);
 
 function removePunctuation(item){
 	$(item).val(
-		$(item).val().replace(/[^\w\s]|_/g, "").replace(/\s+/g, "")
+		$(item).val().replace(/[^\w\s-]|/g, "").replace(/\s+/g, "")
 	);
 }
