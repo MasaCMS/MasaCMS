@@ -94,6 +94,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<!--- Since the request may of had to wait double thak that code sitll needs to run --->
 	<cfif (not application.appInitialized or structKeyExists(url,application.appReloadKey))>
 		
+		<cfset application.appInitialized=false/>
 		<cfset request.muraShowTrace=true>
 		<cfset request.muraAppreloaded=true>
 		
