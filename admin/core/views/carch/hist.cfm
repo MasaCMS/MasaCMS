@@ -176,3 +176,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfswitch>
 
 <cfif not rc.rshist.active and (rc.perm neq 'none')><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" href="index.cfm?muraAction=cArch.update&contenthistid=#rc.rshist.ContentHistID#&action=delete&contentid=#URLEncodedFormat(rc.contentid)#&type=#rc.type#&parentid=#URLEncodedFormat(rc.parentid)#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&startrow=#rc.startrow#&moduleid=#rc.moduleid#&compactDisplay=#rc.compactDisplay#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deleteversionconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li><cfelse><li class="delete disabled"><span><i class="icon-remove-sign"></i></span></li></cfif></ul></td></tr></cfoutput></tbody></table>
+
+<cfif rc.compactDisplay eq "true">
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	if (top.location != self.location) {
+		if(jQuery("#ProxyIFrame").length){
+			jQuery("#ProxyIFrame").load(
+				function(){
+					frontEndProxy.post({cmd:'setWidth',width:'standard'});
+				}
+			);	
+		} else {
+			frontEndProxy.post({cmd:'setWidth',width:'standard'});
+		}
+	}
+});
+</script>
+</cfif> 
