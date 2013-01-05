@@ -75,7 +75,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cfif>
 
-<cfif not isDefined("session.mura.showTrace")>
+<cfset application.userManager.setUserStructDefaults()>
+
+<cfif isDefined("url.showTrace") and isBoolean(url.showTrace)>
+	<cfset session.mura.showTrace=url.showTrace>
+<cfelseif not isDefined("session.mura.showTrace")>
 	<cfset session.mura.showTrace=false>
 </cfif>
 
