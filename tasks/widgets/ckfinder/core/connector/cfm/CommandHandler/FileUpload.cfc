@@ -2,8 +2,8 @@
 <!---
  * CKFinder
  * ========
- * http://ckfinder.com
- * Copyright (C) 2007-2012, CKSource - Frederico Knabben. All rights reserved.
+ * http://cksource.com/ckfinder
+ * Copyright (C) 2007-2013, CKSource - Frederico Knabben. All rights reserved.
  *
  * The software, this file and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
@@ -191,12 +191,15 @@
 	</cfif>
 
 	<!--- resolve name conflicts --->
+	<cfset originalFileName = fileName>
+	<cfset fileNameWithoutExtension = fileSystem.getFileNameWithoutExtension(fileName)>
+	<cfset fileExtension = fileSystem.getFileExtension(fileName)>
+	<cfif REFindNoCase('^(AUX|COM[0-9]|CLOCK\$|CON|NUL|PRN|LPT[0-9])$', fileNameWithoutExtension)>
+		<cfset THIS.throwError(REQUEST.constants.CKFINDER_CONNECTOR_ERROR_INVALID_NAME) />
+		<cfreturn false />
+	</cfif>
+
 	<cfscript>
-
-		originalFileName = fileName;
-		fileNameWithoutExtension = fileSystem.getFileNameWithoutExtension(fileName);
-		fileExtension = fileSystem.getFileExtension(fileName);
-
 		while (true)
 		{
 			filePath = currentFolderServerPath & fileName;

@@ -1,6 +1,6 @@
 ﻿/*
-Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.html or http://ckfinder.com/license
+Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.html or http://cksource.com/ckfinder/license
 */
 
 CKFinder.customConfig = function( config )
@@ -12,5 +12,5 @@ CKFinder.customConfig = function( config )
 	// Sample configuration options:
 	// config.uiColor = '#BDE31E';
 	// config.language = 'fr';
-	   config.removePlugins = 'flashupload,basket';
+	config.removePlugins = 'flashupload,basket';
 };
