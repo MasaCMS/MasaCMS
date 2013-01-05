@@ -1,8 +1,8 @@
 ﻿/*
  * CKFinder
  * ========
- * http://ckfinder.com
- * Copyright (C) 2007-2012, CKSource - Frederico Knabben. All rights reserved.
+ * http://cksource.com/ckfinder
+ * Copyright (C) 2007-2013, CKSource - Frederico Knabben. All rights reserved.
  *
  * The software, this file, and its contents are subject to the CKFinder
  * License. Please read the license.txt file before using, installing, copying,
@@ -75,18 +75,18 @@ CKFinder.lang['ca'] =
 	FolderDelete	: 'Estàs segur que vols esborrar la carpeta "%1"?',
 	FolderRenaming	: ' (Canviant el nom...)',
 	FolderDeleting	: ' (Esborrant...)',
-	DestinationFolder	: 'Destination Folder', // MISSING
+	DestinationFolder	: 'Carpeta de destinació',
 
 	// Files
 	FileRename		: 'Si us plau, escriu el nom del fitxer: ',
 	FileRenameExt	: 'Estàs segur de canviar la extensió del fitxer? El fitxer pot quedar inservible.',
 	FileRenaming	: 'Canviant el nom...',
 	FileDelete		: 'Estàs segur d\'esborrar el fitxer "%1"?',
-	FilesDelete	: 'Are you sure you want to delete %1 files?', // MISSING
+	FilesDelete	: 'Estàs segur d\'esborrar els %1 fitxers?',
 	FilesLoading	: 'Carregant...',
 	FilesEmpty		: 'Carpeta buida',
-	DestinationFile	: 'Destination File', // MISSING
-	SkippedFiles	: 'List of skipped files:', // MISSING
+	DestinationFile	: 'Fitxer de destinació',
+	SkippedFiles	: 'Llista dels fitxers omesos:',
 
 	// Basket
 	BasketFolder		: 'Cistella',
@@ -95,21 +95,21 @@ CKFinder.lang['ca'] =
 	BasketOpenFolder	: 'Obrir carpeta pare',
 	BasketTruncateConfirm : 'Estàs segur de treure tots els fitxers de la cistella?',
 	BasketRemoveConfirm	: 'Estàs segur de treure el fitxer "%1" de la cistella?',
-	BasketRemoveConfirmMultiple	: 'Do you really want to remove %1 files from the basket?', // MISSING
+	BasketRemoveConfirmMultiple	: 'Estàs segur de treure els %1 fitxers de la cistella?',
 	BasketEmpty			: 'No hi ha fitxers a la cistella, arrossega i deixa anar alguns.',
 	BasketCopyFilesHere	: 'Copiar fitxers de la cistella',
 	BasketMoveFilesHere	: 'Moure fitxers de la cistella',
 
 	// Global messages
-	OperationCompletedSuccess	: 'Operation completed successfully.', // MISSING
-	OperationCompletedErrors		: 'Operation completed with errors.', // MISSING
-	FileError				: '%s: %e', // MISSING
+	OperationCompletedSuccess	: 'Operació completada correctament.',
+	OperationCompletedErrors		: 'Operació completada amb errors.',
+	FileError				: '%s: %e',
 
 	// Move and Copy files
-	MovedFilesNumber		: 'Number of files moved: %s.', // MISSING
-	CopiedFilesNumber	: 'Number of files copied: %s.', // MISSING
-	MoveFailedList		: 'The following files could not be moved:<br />%s', // MISSING
-	CopyFailedList		: 'The following files could not be copied:<br />%s', // MISSING
+	MovedFilesNumber		: 'Número de fitxers moguts: %s.',
+	CopiedFilesNumber	: 'Número de fitxers copiats: %s.',
+	MoveFailedList		: 'Els següents fitxers no s\'han pogut moure:<br />%s',
+	CopyFailedList		: 'Els següents fitxers no s\'han pogut copiar:<br />%s',
 
 	// Toolbar Buttons (some used elsewhere)
 	Upload		: 'Afegir',
@@ -128,7 +128,7 @@ CKFinder.lang['ca'] =
 	NewSubFolder	: 'Nova Subcarpeta',
 	Rename			: 'Canviar el nom',
 	Delete			: 'Esborrar',
-	DeleteFiles		: 'Delete Files', // MISSING
+	DeleteFiles		: 'Esborrar Fitxers',
 
 	CopyDragDrop	: 'Copiar aquí',
 	MoveDragDrop	: 'Moure aquí',
@@ -141,7 +141,7 @@ CKFinder.lang['ca'] =
 
 	FileOverwrite	: 'Sobreescriure',
 	FileAutorename	: 'Auto-renombrar',
-	ManuallyRename	: 'Manually rename', // MISSING
+	ManuallyRename	: 'Renombrar manualment',
 
 	// Generic
 	OkBtn		: 'Acceptar',
@@ -213,7 +213,7 @@ CKFinder.lang['ca'] =
 	105 : 'La extensió del fitxer no es vàlida.',
 	109 : 'Petició invàlida.',
 	110 : 'Error desconegut.',
-	111 : 'It was not possible to complete the request due to resulting file size.', // MISSING
+	111 : 'No ha estat possible completar l\'operació a causa de la grandària del fitxer resultant.',
 	115 : 'Ja existeix un fitxer o carpeta amb aquest nom.',
 	116 : 'No s\'ha trobat la carpeta. Si us plau, actualitzi i torni-ho a provar.',
 	117 : 'No s\'ha trobat el fitxer. Si us plau, actualitzi i torni-ho a provar.',
@@ -237,8 +237,8 @@ CKFinder.lang['ca'] =
 		FileEmpty		: 'El nom del fitxer no pot estar buit.',
 		FileExists		: 'El fitxer %s ja existeix.',
 		FolderEmpty		: 'El nom de la carpeta no pot estar buit.',
-		FolderExists	: 'Folder %s already exists.', // MISSING
-		FolderNameExists	: 'Folder already exists.', // MISSING
+		FolderExists	: 'La carpeta %s ja existeix.',
+		FolderNameExists	: 'La carpeta ja existeix.',
 
 		FileInvChar		: 'El nom del fitxer no pot contenir cap dels caràcters següents: \n\\ / : * ? " < > |',
 		FolderInvChar	: 'El nom de la carpeta no pot contenir cap dels caràcters següents: \n\\ / : * ? " < > |',
@@ -296,12 +296,12 @@ CKFinder.lang['ca'] =
 
 	Zip :
 	{
-		extractHereLabel	: 'Extract here', // MISSING
-		extractToLabel		: 'Extract to...', // MISSING
-		downloadZipLabel	: 'Download as zip', // MISSING
-		compressZipLabel	: 'Compress to zip', // MISSING
-		removeAndExtract	: 'Remove existing and extract', // MISSING
-		extractAndOverwrite	: 'Extract overwriting existing files', // MISSING
-		extractSuccess		: 'File extracted successfully.' // MISSING
+		extractHereLabel	: 'Extreure aquí',
+		extractToLabel		: 'Extreure a...',
+		downloadZipLabel	: 'Descarregar en zip',
+		compressZipLabel	: 'Comprimir en zip',
+		removeAndExtract	: 'Eliminar els existents i extreure',
+		extractAndOverwrite	: 'Extreure sobreescrivint els fitxers existents',
+		extractSuccess		: 'Fitxer extret correctament.'
 	}
 };
