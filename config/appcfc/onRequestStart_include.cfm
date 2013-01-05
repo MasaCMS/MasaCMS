@@ -64,7 +64,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								and structKeyExists(application.settingsManager, "getList")
 							)
 				)
-			>	
+			>
+		<cfset url[application.appReloadKey]=true>	
 		<cfset onApplicationStart()>
 	<cfelseif isdefined('application.clusterManager.runCommands')>
 		<cfset application.clusterManager.runCommands()>
