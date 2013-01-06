@@ -53,19 +53,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfabort>
 </cfif>
 
+<!--- Double check that the application has start properly.
+If it has not set the appreload key in the URL scope. --->
+<cfif  not (
+				structKeyExists(application, "settingsManager")
+				and structKeyExists(application.settingsManager, "getSites")
+				and not structIsEmpty(application.settingsManager.getSites())
+			)>			
+	<cfset url[application.appReloadKey]=true>
+</cfif>
+<!--- End application start double check --->
+
 <cfif isDefined("onApplicationStart")>
 	<cfif not request.muraAppreloaded 
 			and 
 				( NOT structKeyExists( application, "setupComplete" ) 
 					or not application.appInitialized 
 					or structKeyExists(url,application.appReloadKey)
-					or not (
-								structKeyExists(application, "settingsManager")
-								and structKeyExists(application.settingsManager, "getList")
-							)
 				)
 			>
-		<cfset url[application.appReloadKey]=true>	
 		<cfset onApplicationStart()>
 	<cfelseif isdefined('application.clusterManager.runCommands')>
 		<cfset application.clusterManager.runCommands()>
