@@ -46,17 +46,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfparam name="local" default="#structNew()#">
 
+<cftry>
+	<cfset application.settingsManager.getSites()>
+	<cfcatch>
+		<cfset application.appInitialized=false>
+	</cfcatch>
+</cftry>
+
 <cfif isDefined("onApplicationStart") and 
 		( 
 			NOT structKeyExists( application, "setupComplete" ) 
 			or not application.appInitialized 
 			or structKeyExists(url,application.appReloadKey)
-			or not (
-						structKeyExists(application, "settingsManager")
-						and structKeyExists(application.settingsManager, "getList")
-					)
 		)>
-	<cfset url[application.appReloadKey]=true>
 	<cfset onApplicationStart()>
 </cfif>
 
