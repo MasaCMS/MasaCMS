@@ -53,8 +53,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfabort>
 </cfif>
 
-<!--- Double check that the application has start properly.
-If it has not set the appreload key in the URL scope. --->
+<!--- Double check that the application has started properly.
+If it has not set application.appInitialized=false. --->
 <cfif  not (
 				structKeyExists(application, "settingsManager")
 				and structKeyExists(application.settingsManager, "getSites")
