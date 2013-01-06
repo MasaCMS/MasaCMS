@@ -55,14 +55,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <!--- Double check that the application has started properly.
 If it has not set application.appInitialized=false. --->
-<cfif  not (
-				structKeyExists(application, "settingsManager")
-				and structKeyExists(application.settingsManager, "getSites")
-				and not structIsEmpty(application.settingsManager.getSites())
-			)>			
+<cfif not isDefined("application.settingsManager.getSites") 
+	or (
+		isDefined("application.settingsManager.getSites") 
+			and structIsEmpty(application.settingsManager.getSites())
+		)>			
 	<cfset application.appInitialized=false>
+	<cfset request.muraAppreloaded=false>
 </cfif>
-<!--- End application start double check --->
+
+<!--- If the app has already started run cluster commands.
+This may result in settings application.appInitialized=false. --->
+<cfif isdefined('application.clusterManager.runCommands')>
+	<cfset application.clusterManager.runCommands()>
+	<cfif not application.appInitialized>
+		<cfset request.muraAppreloaded=false>
+	</cfif>
+</cfif>
 
 <cfif isDefined("onApplicationStart")>
 	<cfif not request.muraAppreloaded 
@@ -73,11 +82,6 @@ If it has not set application.appInitialized=false. --->
 				)
 			>
 		<cfset onApplicationStart()>
-	<cfelseif isdefined('application.clusterManager.runCommands')>
-		<cfset application.clusterManager.runCommands()>
-		<cfif not application.appInitialized>
-			<cfset onApplicationStart()>
-		</cfif>
 	</cfif>
 </cfif>
 
