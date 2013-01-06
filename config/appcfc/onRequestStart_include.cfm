@@ -60,7 +60,7 @@ If it has not set the appreload key in the URL scope. --->
 				and structKeyExists(application.settingsManager, "getSites")
 				and not structIsEmpty(application.settingsManager.getSites())
 			)>			
-	<cfset url[application.appReloadKey]=true>
+	<cfset application.appInitialized=false>
 </cfif>
 <!--- End application start double check --->
 
