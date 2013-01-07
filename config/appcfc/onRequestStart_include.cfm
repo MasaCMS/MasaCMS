@@ -46,13 +46,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfparam name="local" default="#structNew()#">
 
-<cfif isDefined('application.setupComplete') and not application.setupComplete>
-	<cfset renderSetup = true />
-	<!--- go to the index.cfm page (setup) --->
-	<cfinclude template="/muraWRM/config/setup/index.cfm">	
-	<cfabort>
-</cfif>
-
 <!--- Double check that the application has started properly.
 If it has not set application.appInitialized=false. --->
 <cftry>
@@ -82,6 +75,13 @@ This may result in settings application.appInitialized=false. --->
 			>
 		<cfset onApplicationStart()>
 	</cfif>
+</cfif>
+
+<cfif isDefined('application.setupComplete') and not application.setupComplete>
+	<cfset renderSetup = true />
+	<!--- go to the index.cfm page (setup) --->
+	<cfinclude template="/muraWRM/config/setup/index.cfm">	
+	<cfabort>
 </cfif>
 
 <cfset application.userManager.setUserStructDefaults()>
