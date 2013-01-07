@@ -641,7 +641,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif arguments.direct and application.configBean.getFileStore() eq "fileDir">
 
-		<cfif not listFindNoCase('small,medium,large,source',arguments.size)>			
+		<cfif arguments.size neq 'Custom'>			
 			<cfset arguments.width="auto">
 			<cfset arguments.height="auto">
 		</cfif>
