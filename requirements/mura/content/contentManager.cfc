@@ -2086,7 +2086,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cffunction name="getImageURL" output="false">
 		<cfargument name="bean" required="true">
-		<cfargument name="size" required="true" default="Large">
+		<cfargument name="size" required="true" default="undefined">
 		<cfargument name="direct" default="true"/>
 		<cfargument name="complete" default="false"/>
 		<cfargument name="height" default=""/>
