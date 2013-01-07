@@ -611,7 +611,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="siteID">
 <cfargument name="fileID">
 <cfargument name="fileExt">
-<cfargument name="size" required="true" default="large">
+<cfargument name="size" required="true" default="undefined">
 <cfargument name="direct" required="true" default="#this.directImages#">
 <cfargument name="complete" type="boolean" required="true" default="false">
 <cfargument name="height" default=""/>
@@ -641,26 +641,35 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif arguments.direct and application.configBean.getFileStore() eq "fileDir">
 
+		<cfif arguments.size eq 'undefined'>
+			<cfif (isNumeric(arguments.width) or isNumeric(arguments.height))>
+				<cfset arguments.size ='Custom'>
+			<cfelse>
+				<cfset arguments.size ='Large'>
+			</cfif>
+		</cfif>
+
 		<cfif arguments.size neq 'Custom'>			
 			<cfset arguments.width="auto">
 			<cfset arguments.height="auto">
-		</cfif>
-		
-		<cfif not isNumeric(arguments.width)>
-			<cfset arguments.width="auto">
-		</cfif>
-		<cfif not isNumeric(arguments.height)>
-			<cfset arguments.height="auto">
-		</cfif>
+		<cfelse>
+			<cfif not isNumeric(arguments.width)>
+				<cfset arguments.width="auto">
+			</cfif>
 
-		<cfif isNumeric(arguments.height) or isNumeric(arguments.width)>
-			<cfset arguments.size="Custom">
+			<cfif not isNumeric(arguments.height)>
+				<cfset arguments.height="auto">
+			</cfif>
+
+			<cfif isNumeric(arguments.height) or isNumeric(arguments.width)>
+				<cfset arguments.size="Custom">
+			</cfif>
+
+			<cfif arguments.size eq "Custom" and arguments.height eq "auto" and arguments.width eq "auto">
+				<cfset arguments.size="small">
+			</cfif>
 		</cfif>
 		
-		<cfif arguments.size eq "Custom" and arguments.height eq "auto" and arguments.width eq "auto">
-			<cfset arguments.size="small">
-		</cfif>
-	
 		<cfif listFindNoCase('small,medium,large,source',arguments.size)>
 			<cfif arguments.size eq "large">
 				<cfset imgSuffix="">

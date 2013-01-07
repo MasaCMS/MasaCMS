@@ -1029,7 +1029,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="siteID">
 <cfargument name="fileID">
 <cfargument name="fileExt">
-<cfargument name="size" required="true" default="large">
+<cfargument name="size" required="true" default="undefined">
 <cfargument name="direct" required="true" default="#this.directImages#">
 <cfargument name="complete" type="boolean" required="true" default="false">
 <cfargument name="height" default=""/>
