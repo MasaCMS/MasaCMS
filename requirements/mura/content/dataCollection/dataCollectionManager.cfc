@@ -302,7 +302,7 @@ order by tformresponsepackets.entered asc
 <script type="text/javascript">
 		var frm=document.getElementById('#frmID#');
 			frm.setAttribute('action','?nocache=1');
-			frm.setAttribute('post','post');
+			frm.setAttribute('method','post');
 			if( frm.getAttribute('onsubmit') == null || frm.getAttribute('onsubmit')==''){
 				frm.onsubmit=function(){return validateForm(this);}
 			}
