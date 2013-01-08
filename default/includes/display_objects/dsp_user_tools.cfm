@@ -71,7 +71,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<input type="hidden" name="doaction" value="login" />
 				<button type="submit" class="submit btn">#variables.$.rbKey('user.signin')#</button>
 			</div>
-			<cfif application.settingsManager.getSite(variables.$.event('siteID')).getExtranetPublicReg()><p>#variables.$.rbKey('user.notregistered')# <a href="#application.settingsManager.getSite(variables.$.event('siteID')).getEditProfileURL()#&returnURL=#urlEncodedFormat(application.contentRenderer.getCurrentURL())#">#variables.$.rbKey('user.signup')#</a></p></cfif>
+			<cfif application.settingsManager.getSite(variables.$.event('siteID')).getExtranetPublicReg()><p>#variables.$.rbKey('user.notregistered')# <a href="#variables.$.siteConfig().getEditProfileURL()#&returnURL=#urlEncodedFormat(variables.$.getCurrentURL())#">#variables.$.rbKey('user.signup')#</a></p></cfif>
 		</form>
 	</div>
 </cfoutput>
@@ -81,7 +81,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div id="svSessionTools" class="clearfix">
 	<p id="welcome">#variables.$.rbKey('user.welcome')#, #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#</p>
  	<ul id="navSession">
-		<li id="navEditProfile"><a href="#application.settingsManager.getSite(variables.$.event('siteID')).getEditProfileURL()#&nocache=1&returnURL=#urlEncodedFormat(application.contentRenderer.getCurrentURL())#"><i class="icon-user"></i> #variables.$.rbKey('user.editprofile')#</a></li>
+		<li id="navEditProfile"><a href="#variables.$.siteConfig().getEditProfileURL()#&nocache=1&returnURL=#urlEncodedFormat(variables.$.getCurrentURL())#"><i class="icon-user"></i> #variables.$.rbKey('user.editprofile')#</a></li>
 		<li id="navLogout"><a href="?doaction=logout"><i class="icon-signout"></i> #variables.$.rbKey('user.logout')#</a></li>
 	</ul>
 </div>
