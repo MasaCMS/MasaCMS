@@ -101,24 +101,6 @@
 	
 <cfswitch expression="#getDbType()#">
 <cfcase value="mssql">
-	
-<cfquery name="MSSQLversion" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	EXEC sp_MSgetversion
-</cfquery>
-	
-<cftry>
-	<cfset MSSQLversion=left(MSSQLversion.CHARACTER_VALUE,1)>
-	<cfcatch>
-		<cfset MSSQLversion=mid(MSSQLversion.COMPUTED_COLUMN_1,1,find(".",MSSQLversion.COMPUTED_COLUMN_1)-1)>
-	</cfcatch>
-</cftry>
-
-<cfif MSSQLversion neq 8>
-	<cfset MSSQLlob="[nvarchar](max) NULL">
-<cfelse>
-	<cfset MSSQLlob="[ntext]">
-</cfif>
-
 <cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 ALTER TABLE tcontentfeeds ADD displayList #MSSQLlob# 
 </cfquery>

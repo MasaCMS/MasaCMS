@@ -269,14 +269,10 @@ to your own modified versions of Mura CMS.
               <cfcase value="mssql">
                 <!--- if we are working with a SQL db we go ahead and delimit with GO so we can loop over each sql even --->  
                 <cfquery name="MSSQLversion" datasource="#FORM.production_datasource#" username="#FORM.production_dbusername#" password="#FORM.production_dbpassword#">
-                  EXEC sp_MSgetversion
+                  SELECT CONVERT(varchar(100), SERVERPROPERTY('ProductVersion')) as version
                 </cfquery>
-                <cftry>
-                  <cfset MSSQLversion=left(MSSQLversion.CHARACTER_VALUE,1)>
-                  <cfcatch>
-                    <cfset MSSQLversion=mid(MSSQLversion.COMPUTED_COLUMN_1,1,find(".",MSSQLversion.COMPUTED_COLUMN_1)-1)>
-                  </cfcatch>
-                </cftry>
+                <cfset MSSQLversion=listFirst(MSSQLversion.version,".")>
+
                 <cfset sql = REReplaceNoCase( sql, "\nGO", ";", "ALL") />
                 <cfset aSql = ListToArray(sql, ';')>
                 <!--- loop over items --->

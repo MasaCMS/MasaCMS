@@ -163,6 +163,22 @@
 			</cfquery>
 			</cfcase>
 			--->
+			<cfcase value="mssql">
+			<cfquery
+				name="rs" 
+				datasource="#variables.configBean.getDatasource()#"
+				username="#variables.configBean.getDbUsername()#"
+				password="#variables.configBean.getDbPassword()#">
+					select column_name,
+					character_maximum_length column_size,
+					data_type type_name,
+					column_default column_default_value,
+					is_nullable,
+					numeric_precision data_precision
+					from INFORMATION_SCHEMA.COLUMNS
+					where TABLE_NAME='#arguments.table#'
+			</cfquery>
+			</cfcase>
 			<cfdefaultcase>
 				<cfdbinfo 
 				name="rs"
@@ -887,14 +903,14 @@
 	<cfargument name="table">
 	<cfset var index={}>
 	<cfset var indexArray=[]>
-
+	
  	<cfif rs.recordcount>
 		<cfloop query="rs">
 			<cfset index={table=arguments.table,
 					column=rs.column_name,
 					name=rs.index_name
 					}>
-			<cfif rs.NON_UNIQUE>
+			<cfif not isBoolean(rs.NON_UNIQUE) or not rs.NON_UNIQUE>
 				<cfset index.unique=false>
 			<cfelse>
 				<cfset index.unique=true>

@@ -16,24 +16,7 @@
 		<cfif variables.RUNDBUPDATE>
 		
 		<cftransaction>
-		
-			<cfquery name="MSSQLversion" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-				EXEC sp_MSgetversion
-			</cfquery>
-				
-			<cftry>
-				<cfset MSSQLversion=left(MSSQLversion.CHARACTER_VALUE,1)>
-				<cfcatch>
-					<cfset MSSQLversion=mid(MSSQLversion.COMPUTED_COLUMN_1,1,find(".",MSSQLversion.COMPUTED_COLUMN_1)-1)>
-				</cfcatch>
-			</cftry>
-			
-			<cfif MSSQLversion neq 8>
-				<cfset MSSQLlob="[nvarchar](max) NULL">
-			<cfelse>
-				<cfset MSSQLlob="[ntext]">
-			</cfif>
-		
+
 			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 			CREATE TABLE [dbo].[tchangesets] ( 
 				  [changesetID] 	[char](35)		NOT NULL 	DEFAULT (Left(NewID(), 23) + Right(NewID(),12)),
