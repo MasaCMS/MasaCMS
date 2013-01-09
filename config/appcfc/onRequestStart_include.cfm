@@ -50,34 +50,36 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 If it has not set application.appInitialized=false. --->
 <cftry>
 	<cfset application.settingsManager.getSites()>
+	<cfset application.clusterManager.runCommands()>
+	<cfif not application.appInitialized>
+		<cfset request.muraAppreloaded=false>
+	</cfif>
 	<cfcatch>
 		<cfset application.appInitialized=false>
 		<cfset request.muraAppreloaded=false>
 	</cfcatch>
 </cftry>	
 
-<!--- If the app has already started run cluster commands.
-This may result in settings application.appInitialized=false. --->
-<cfif isdefined('application.clusterManager.runCommands')>
-	<cfset application.clusterManager.runCommands()>
-	<cfif not application.appInitialized>
-		<cfset request.muraAppreloaded=false>
-	</cfif>
-</cfif>
+<cfparam name="application.setupComplete" default="false">
 
-<cfif isDefined("onApplicationStart")>
-	<cfif not request.muraAppreloaded 
+<cfif isDefined("onApplicationStart") 
+	and (
+			not application.setupComplete
+		OR
+		(
+			not request.muraAppreloaded
 			and 
-				( NOT structKeyExists( application, "setupComplete" ) 
-					or not application.appInitialized 
+				( 
+					not application.appInitialized 
 					or structKeyExists(url,application.appReloadKey)
 				)
-			>
-		<cfset onApplicationStart()>
-	</cfif>
+		)
+	)
+	>
+	<cfset onApplicationStart()>
 </cfif>
 
-<cfif isDefined('application.setupComplete') and not application.setupComplete>
+<cfif not application.setupComplete>
 	<cfset renderSetup = true />
 	<!--- go to the index.cfm page (setup) --->
 	<cfinclude template="/muraWRM/config/setup/index.cfm">	
