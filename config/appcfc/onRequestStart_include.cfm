@@ -79,7 +79,7 @@ If it has not set application.appInitialized=false. --->
 		<cfset onApplicationStart()>
 	</cfif>
 
-	<cfif not application.setupComplete and isDefined('request.muraAppreloaded')>
+	<cfif not application.setupComplete and request.muraAppreloaded>
 		<cfset renderSetup = true />
 		<!--- go to the index.cfm page (setup) --->
 		<cfinclude template="/muraWRM/config/setup/index.cfm">	
