@@ -45,6 +45,8 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfparam name="local" default="#structNew()#">
+<cfparam name="application.setupComplete" default="false">
+<cfparam name="application.appInitialized" default="false">
 
 <!--- Double check that the application has started properly.
 If it has not set application.appInitialized=false. --->
@@ -60,10 +62,8 @@ If it has not set application.appInitialized=false. --->
 	</cfcatch>
 </cftry>	
 
-<cfparam name="application.setupComplete" default="false">
-
-<cfif isDefined("onApplicationStart") 
-	and (
+<cfif isDefined("onApplicationStart") >
+	<cfif (
 			not application.setupComplete
 		OR
 		(
@@ -76,14 +76,15 @@ If it has not set application.appInitialized=false. --->
 		)
 	)
 	>
-	<cfset onApplicationStart()>
-</cfif>
+		<cfset onApplicationStart()>
+	</cfif>
 
-<cfif not application.setupComplete>
-	<cfset renderSetup = true />
-	<!--- go to the index.cfm page (setup) --->
-	<cfinclude template="/muraWRM/config/setup/index.cfm">	
-	<cfabort>
+	<cfif not application.setupComplete and isDefined('request.muraAppreloaded')>
+		<cfset renderSetup = true />
+		<!--- go to the index.cfm page (setup) --->
+		<cfinclude template="/muraWRM/config/setup/index.cfm">	
+		<cfabort>
+	</cfif>
 </cfif>
 
 <cfset application.userManager.setUserStructDefaults()>
