@@ -53,6 +53,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="application.sessionTrackingThrottle" default="true"/>
 <cfparam name="application.instanceID" default="#createUUID()#" />
 <cfparam name="application.CFVersion" default="#listFirst(SERVER.COLDFUSION.PRODUCTVERSION)#" />
+<cfparam name="application.setupComplete" default="false" />
+<cfset request.muraAppreloaded=true>
+
 <!--- this is here for CF8 compatibility --->
 <cfset variables.baseDir=this.baseDir>
 <cfprocessingdirective pageencoding="utf-8"/>
@@ -62,7 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif NOT structKeyExists( application, "setupComplete" ) OR (not application.appInitialized or structKeyExists(url,application.appReloadKey) )>
 	<cfif getProfileString( variables.basedir & "/config/settings.ini.cfm", "settings", "mode" ) eq "production">
 		<cfif directoryExists( variables.basedir & "/config/setup" )>
-			<cfset structDelete( application, "setupComplete") />
+			<cfset application.setupComplete = false />
 			<!--- check the settings --->
 			<cfparam name="application.setupSubmitButton" default="A#hash( createUUID() )#" />
 			<cfparam name="application.setupSubmitButtonComplete" default="A#hash( createUUID() )#" />
@@ -81,6 +84,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif NOT fileExists( variables.basedir & "/config/setup/index.cfm" )>
 					<cfthrow message="Your setup directory is incomplete. Please reset it up from the Mura source." />
 				</cfif>
+
 				<cfset application.setupComplete = false />
 			</cfif>	
 		</cfif>
@@ -96,7 +100,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfset application.appInitialized=false>
 		<cfset request.muraShowTrace=true>
-		<cfset request.muraAppreloaded=true>
 		
 		<cfset variables.iniPath = "#variables.basedir#/config/settings.ini.cfm" />
 		
