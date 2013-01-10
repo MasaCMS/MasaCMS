@@ -62,7 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfsetting requestTimeout = "1000"> 
 
 <!--- do a settings setup check --->
-<cfif NOT structKeyExists( application, "setupComplete" ) OR (not application.appInitialized or structKeyExists(url,application.appReloadKey) )>
+<cfif NOT application.setupComplete OR (not application.appInitialized or structKeyExists(url,application.appReloadKey) )>
 	<cfif getProfileString( variables.basedir & "/config/settings.ini.cfm", "settings", "mode" ) eq "production">
 		<cfif directoryExists( variables.basedir & "/config/setup" )>
 			<cfset application.setupComplete = false />
