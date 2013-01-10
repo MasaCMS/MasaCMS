@@ -364,7 +364,7 @@ var hasBody=#subType.getHasBody()#;
 		<cfcase value="Page,Folder,Calendar,Gallery">
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Layout & Objects')>
 				<cfif listFind(session.mura.memberships,'S2IsPrivate')>
-					<cfinclude template="form/dsp_tab_layoutoptions.cfm">
+					<cfinclude template="form/dsp_tab_layoutobjects.cfm">
 				</cfif>
 			</cfif>
 			<cfif not len(tabAssignments) or listFindNocase(tabAssignments,'Categorization')>
