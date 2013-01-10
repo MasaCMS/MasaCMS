@@ -105,7 +105,7 @@ CKEDITOR.editorConfig = function( config )
 	                                	['Source'],['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','Image']
 	                                ] ;
 
-	config.extraPlugins = 'SelectComponent,media,Selectlink,gmap,tableresize,onchange';
+	config.extraPlugins = 'SelectComponent,media,Selectlink,gmap,tableresize,onchange,justify';
 
 	<cfif application.configBean.getEnableMuraTag()>
 	config.extraPlugins = config.extraPlugins + ",muratag";
