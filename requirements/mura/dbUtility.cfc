@@ -564,22 +564,38 @@
 					<cfreturn "datetime">
 				</cfcase>
 				<cfcase value="text,longtext">
-					<cfquery name="MSSQLversion" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
-						EXEC sp_MSgetversion
-					</cfquery>
-	
 					<cftry>
-						<cfset MSSQLversion=left(MSSQLversion.CHARACTER_VALUE,1)>
-						<cfcatch>
-							<cfset MSSQLversion=mid(MSSQLversion.COMPUTED_COLUMN_1,1,find(".",MSSQLversion.COMPUTED_COLUMN_1)-1)>
-						</cfcatch>
+						<cfquery name="MSSQLversion"  
+							datasource="#variables.configBean.getDatasource()#"
+							username="#variables.configBean.getDbUsername()#"
+							password="#variables.configBean.getDbPassword()#">
+							SELECT CONVERT(varchar(100), SERVERPROPERTY('ProductVersion')) as version
+						</cfquery>
+						<cfset MSSQLversion=listFirst(MSSQLversion.version,".")>
+						<cfcatch></cfcatch>
 					</cftry>
+
+					<cfif not MSSQLversion>
+						<cfquery name="MSSQLversion"
+							datasource="#variables.configBean.getDatasource()#"
+							username="#variables.configBean.getDbUsername()#"
+							password="#variables.configBean.getDbPassword()#">
+							EXEC sp_MSgetversion
+						</cfquery>
 					
-					<cfif MSSQLversion neq 8>
-						<cfreturn "nvarchar(max)">
-					<cfelse>
-						<cfreturn "ntext">
+						<cftry>
+							<cfset MSSQLversion=left(MSSQLversion.CHARACTER_VALUE,1)>
+							<cfcatch>
+								<cfset MSSQLversion=mid(MSSQLversion.COMPUTED_COLUMN_1,1,find(".",MSSQLversion.COMPUTED_COLUMN_1)-1)>
+							</cfcatch>
+						</cftry>
 					</cfif>
+
+					<cfif MSSQLversion neq 8>
+						<cfreturn "[nvarchar](max)">
+					<cfelse>
+						<cfreturn "[ntext]">
+					</cfif>		
 				</cfcase>
 				<cfcase value="float">
 					<cfreturn "float">
