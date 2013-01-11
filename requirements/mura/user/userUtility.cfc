@@ -320,6 +320,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="email" type="string">
 	<cfargument name="siteid" type="string" required="yes" default="">
 	<cfargument name="returnURL" type="string" required="yes" default="#listFirst(cgi.http_host,":")##cgi.SCRIPT_NAME#">
+	<cfargument name="subject" required="yes" type="string" default=""/>
+	<cfargument name="message" type="string" default="">
 	<cfset var msg="No account currently exists with the email address '#arguments.email#'.">
 	<cfset var struser=structnew()>
 	<cfset var rsuser = ""/>
@@ -346,8 +348,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfelse>
 									<cfset struser.from=variables.settingsManager.getSite(arguments.siteid).getSite()>
 								</cfif>
+
+								<cfif not len(arguments.subject)>
+									<cfset arguments.subject='#struser.from# Account Information'>
+								</cfif>
 								
-								<cfset sendLogin(struser,'#arguments.email#','#struser.from#','#struser.from# Account Information','#arguments.siteid#','','')>
+								<cfset sendLogin(struser,'#arguments.email#','#struser.from#',arguments.subject,'#arguments.siteid#','','',arguments.message)>
 								<cfset msg="Your account information has been sent to you.">
 							</cfif>
 						</cfloop>
@@ -363,6 +369,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="siteid" type="string" required="yes" default="" >
 	<cfargument name="returnURL" type="string" required="yes" default="#listFirst(cgi.http_host,":")##cgi.SCRIPT_NAME#">
 	<cfargument name="isPublicReg" required="yes" type="boolean" default="false"/>
+	<cfargument name="subject" required="yes" type="string" default=""/>
+	<cfargument name="message" type="string" default="">
 	
 	<cfset var struser=structnew()>
 	<cfset var bcc="">
@@ -384,8 +392,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif arguments.isPublicReg and variables.settingsManager.getSite(arguments.siteid).getExtranetPublicRegNotify() neq ''>
 			<cfset bcc=variables.settingsManager.getSite(arguments.siteid).getExtranetPublicRegNotify()>
 		</cfif>
+
+		<cfif not len(arguments.subject)>
+			<cfset arguments.subject='#struser.from# Account Information'>
+		</cfif>
 								
-		<cfset sendLogin(struser,'#arguments.userBean.getEmail()#','#struser.from#','#struser.from# Account Information','#arguments.siteid#','',bcc)>
+		<cfset sendLogin(struser,'#arguments.userBean.getEmail()#','#struser.from#',arguments.subject,'#arguments.siteid#','',bcc,arguments.message)>
 	
 	<cfreturn true/>
 </cffunction>
@@ -398,6 +410,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="siteid" type="string" default="">
 <cfargument name="reply" required="yes" type="string" default="">
 <cfargument name="bcc"  required="yes" type="string" default="">
+<cfargument name="message" type="string" default="">
 
 <cfset var sendLoginScript=""/>
 <cfset var mailText=""/>
