@@ -16,7 +16,7 @@
   <a class="btn<cfif session.resourceType eq 'assets'> active</cfif>" href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cFilemanager.default&siteid=#session.siteid#&&resourceType=assets"><i class="icon-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,"layout.userassets")#</a>
   <cfif listFind(session.mura.memberships,'S2')>
 	  <cfif application.configBean.getValue('fmShowSiteFiles') neq 0>
-	 	 <a class="btn<cfif session.resourceType eq 'file'> active</cfif>" href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cFilemanager.default&siteid=#session.siteid#&resourceType=files"><i class="icon-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,"layout.sitefiles")#</a>
+	 	 <a class="btn<cfif session.resourceType eq 'files'> active</cfif>" href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cFilemanager.default&siteid=#session.siteid#&resourceType=files"><i class="icon-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,"layout.sitefiles")#</a>
 	  </cfif>
 	  <cfif listFind(session.mura.memberships,'S2') and application.configBean.getValue('fmShowApplicationRoot') neq 0>
 	  	<a class="btn<cfif session.resourceType eq 'root'> active</cfif>" href="#application.configBean.getContext()#/admin/index.cfm?muraAction=cFilemanager.default&siteid=#session.siteid#&resourceType=root"><i class="icon-folder-open"></i> #application.rbFactory.getKeyValue(session.rb,"layout.applicationroot")#</a>
