@@ -56,9 +56,9 @@ CKEDITOR.editorConfig = function( config )
 	config.toolbar_Default = [
 	                                	{name: 'group1', items:['Source']},
 	                                	{name: 'group2', items:['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt']},
-	                                	{name: 'group3', items:['Undo','Redo','-','Find','Replace','-','RemoveFormat']},
+	                                	{name: 'group3', items:['Undo','Redo','-','Find','-','RemoveFormat']},
 	                                	{name: 'group4', items:['BidiLtr','BidiRtl']},
-	                                	{name: 'group5', items:['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript']},'/',
+	                                	{name: 'group5', items:['Bold','Italic','Underline','Strike','-','Subscript','Superscript']},'/',
 	                                	{name: 'group6', items:['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv']},
 	                                	{name: 'group7', items:['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
 	                                	{name: 'group8', items:['Link','Unlink','Anchor']},'/',
@@ -71,7 +71,7 @@ CKEDITOR.editorConfig = function( config )
 										['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt'],
 										['Undo','Redo','-','Find','Replace','-','RemoveFormat'],
 										['BidiLtr','BidiRtl'],
-										['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
+										['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
 										['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
 										['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
 										['Link','Unlink','Anchor'],
@@ -84,7 +84,7 @@ CKEDITOR.editorConfig = function( config )
 										['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt'],
 										['Undo','Redo','-','Find','Replace','-','RemoveFormat'],
 										['BidiLtr','BidiRtl'],
-										['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
+										['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
 										['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
 										['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
 										['Link','Unlink','Anchor'],
@@ -105,7 +105,7 @@ CKEDITOR.editorConfig = function( config )
 	                                	['Source'],['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','Image']
 	                                ] ;
 
-	config.extraPlugins = 'SelectComponent,media,Selectlink,gmap,tableresize,onchange,justify';
+	config.extraPlugins = 'SelectComponent,media,Selectlink,gmap,tableresize,onchange,justify,find,bidi,div,showblocks';
 
 	<cfif application.configBean.getEnableMuraTag()>
 	config.extraPlugins = config.extraPlugins + ",muratag";
