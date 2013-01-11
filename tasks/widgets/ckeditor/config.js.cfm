@@ -56,7 +56,7 @@ CKEDITOR.editorConfig = function( config )
 	config.toolbar_Default = [
 	                                	{name: 'group1', items:['Source']},
 	                                	{name: 'group2', items:['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt']},
-	                                	{name: 'group3', items:['Undo','Redo','-','Find','-','RemoveFormat']},
+	                                	{name: 'group3', items:['Undo','Redo','-','Find','Replace','-','RemoveFormat']},
 	                                	{name: 'group4', items:['BidiLtr','BidiRtl']},
 	                                	{name: 'group5', items:['Bold','Italic','Underline','Strike','-','Subscript','Superscript']},'/',
 	                                	{name: 'group6', items:['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv']},
