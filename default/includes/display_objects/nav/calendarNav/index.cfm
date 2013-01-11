@@ -21,7 +21,7 @@
 <cfset navMonth=request.month >
 <cfset navYear=request.year >
 <cfset navDay=request.day >
-<cfif rsSection.type eq "Portal">
+<cfif rsSection.type eq "Folder">
 	<cfset navType = "releaseMonth">
 <cfelse>
 	<cfset navType = "CalendarMonth">
