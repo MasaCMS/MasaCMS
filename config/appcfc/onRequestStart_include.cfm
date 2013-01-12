@@ -47,7 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="local" default="#structNew()#">
 
 <cftry>
-	<cfset application.settingsManager.getSites()>
+	<cfset application.appInitialized=application.settingsManager.validate()>
 	<cfcatch>
 		<cfset application.appInitialized=false>
 	</cfcatch>
