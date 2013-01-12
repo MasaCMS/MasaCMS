@@ -62,6 +62,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfreturn this />
 </cffunction>
 
+<cffunction name="validate" output="true">
+	<cfreturn isObject(variables.configBean)
+	and isObject(variables.utility)
+	and isObject(variables.Gateway)
+	and isObject(variables.DAO)
+	and isObject(variables.clusterManager)
+	and isObject(variables.classExtensionManager)
+	and isDefined('variables.sites') 
+	and not structIsEmpty(variables.sites)>
+</cffunction>
+
 <cffunction name="getBean" output="false">
 	<cfargument name="beanName" default="site">
 	<cfreturn super.getBean(arguments.beanName)>

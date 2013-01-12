@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!--- Double check that the application has started properly.
 If it has not set application.appInitialized=false. --->
 <cftry>
-	<cfset application.settingsManager.getSites()>
+	<cfset application.appInitialized=application.settingsManager.validate()>
 	<cfset application.clusterManager.runCommands()>
 	<cfif not application.appInitialized>
 		<cfset request.muraAppreloaded=false>
