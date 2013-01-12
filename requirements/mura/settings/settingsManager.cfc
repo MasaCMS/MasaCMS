@@ -62,7 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfreturn this />
 </cffunction>
 
-<cffunction name="validate" output="true">
+<cffunction name="validate" output="false">
 	<cfreturn isObject(variables.configBean)
 	and isObject(variables.utility)
 	and isObject(variables.Gateway)
