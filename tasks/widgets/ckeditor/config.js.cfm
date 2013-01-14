@@ -111,8 +111,8 @@ CKEDITOR.editorConfig = function( config )
 	config.extraPlugins = config.extraPlugins + ",muratag";
 	</cfif>
 	
-	config.protectedSource.push( /<i[\s\S]*?\>/g ); //allows beginning <i> tag
-	config.protectedSource.push( /<\/i[\s\S]*?\>/g ); //allows ending </i> tag
+	config.protectedSource.push( /<i class\=\"[\s\S]*?\"\>/g ); //allows beginning <i class=""> tag
+	config.protectedSource.push( /<\/i\>/g ); //allows ending </i> tag
 
 	// Remove the Resize plugin as it does not make sense to use it in conjunction with the AutoGrow plugin.
 	//removePlugins : 'resize';
