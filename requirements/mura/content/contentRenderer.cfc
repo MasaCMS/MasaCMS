@@ -2431,13 +2431,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="location">
 	<cfargument name="addToken" required="true" default="false">
 	<cfargument name="statusCode" required="true" default="301">
-	
-	<cfif server.coldfusion.productname eq "ColdFusion Server" and listFirst(server.coldfusion.productversion) lt 8>
-		<cfset createObject("component","contentRedirectLimited").init(arguments.location,arguments.addToken) />
-	<cfelse>
-		<cfset createObject("component","contentRedirect").init(arguments.location,arguments.addToken,arguments.statusCode) />
-	</cfif>
-	
+	<cflocation url="#arguments.location#" addtoken="#arguments.addToken#" statusCode="#arguments.statusCode#">
 </cffunction>
 
 <cffunction name="getPagesQuery" returntype="query" output="false">
