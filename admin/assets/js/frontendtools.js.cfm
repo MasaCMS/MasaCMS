@@ -12,7 +12,8 @@
 	
 	function onAdminMessage(messageEvent){
 
-		if (messageEvent.origin == adminProtocal + adminDomain + "#$.globalConfig('serverPort')#") {
+		if (messageEvent.origin == 'http://' + adminDomain + "#$.globalConfig('serverPort')#"
+			|| messageEvent.origin == 'https://' + adminDomain + "#$.globalConfig('serverPort')#") {
 			
 			var parameters=messageEvent.data;
 		
