@@ -33,6 +33,7 @@
 	--->
 	 
 	<!---Start of settings--->
+	<cfset variables.instance={}>
 	<cfset variables.instance.log = not StructKeyExists(SERVER,"bluedragon")/>	
 	<cfset variables.instance.ipBlock = not StructKeyExists(SERVER,"bluedragon")/>										<!---Requires variables.instance.log set to true--->
 	<cfset variables.instance.allowedAttempts = 10/>
