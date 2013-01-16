@@ -398,6 +398,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				update tcontent set body=filename where 
 				contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getContentID()#">
 				and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.item.getSiteID()#">
+				and body is null
 			</cfquery>
 
 			<cfset application.serviceFactory.getBean("contentUtility").setUniqueFilename(variables.item)>
