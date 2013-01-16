@@ -382,7 +382,7 @@
 	<cfif len(arguments.moduleid)>
 		and tcontent.moduleid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleid#">
 	</cfif>
-	order by menutitle
+	order by tcontent.menutitle
 	</cfquery>
 	<cfreturn rs>
 </cffunction>
