@@ -124,8 +124,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  
 </cffunction>
 
+<cffunction name="import1" output="false">
+	<cfargument name="rc">	
+	<cfset arguments.rc.feedBean=variables.feedManager.read(arguments.rc.feedID) />
+</cffunction>
+
 <cffunction name="import2" output="false">
 	<cfargument name="rc">	
+	<cfset arguments.rc.feedBean=variables.feedManager.read(arguments.rc.feedID) />
 	<cfset arguments.rc.theImport=variables.feedManager.doImport(arguments.rc) />
 </cffunction>
 
