@@ -101,7 +101,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfswitch>
 	<cfif rc.formatsupported>
 	<div class="form-actions">
-	<cfoutput><input type="button" class="btn" onclick="confirmImport();" value="#application.rbFactory.getKeyValue(session.rb,'collections.import')#" /></cfoutput>
+	<cfoutput><input type="button" class="btn" onclick="feedManager.confirmImport();" value="#application.rbFactory.getKeyValue(session.rb,'collections.import')#" /></cfoutput>
 	</div>
 	<input type="hidden" name="action" value="import" />
 	</cfif>
