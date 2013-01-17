@@ -44,6 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
+<cfset rc.formatsupported=true>
 <cfinclude template="js.cfm">
 <cfoutput>
 <h1>#application.rbFactory.getKeyValue(session.rb,'collections.remotefeedimportselection')#</h1>
@@ -94,11 +95,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		</cfcase>
 		<cfcase value="atom">
-			<cfoutput><p>#application.rbFactory.getKeyValue(session.rb,'collections.formatnosupported')#</p></cfoutput>
+			<cfset rc.formatsupported=false>
+			<cfoutput><p>#application.rbFactory.getKeyValue(session.rb,'collections.formatnotsupport')#</p></cfoutput>
 		</cfcase>
 	</cfswitch>
+	<cfif rc.formatsupported>
 	<div class="form-actions">
 	<cfoutput><input type="button" class="btn" onclick="confirmImport();" value="#application.rbFactory.getKeyValue(session.rb,'collections.import')#" /></cfoutput>
 	</div>
 	<input type="hidden" name="action" value="import" />
+	</cfif>
 </form>
