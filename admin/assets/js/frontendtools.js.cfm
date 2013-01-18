@@ -3,7 +3,10 @@
 <cfset isIeSix=FindNoCase('MSIE 6','#CGI.HTTP_USER_AGENT#') GREATER THAN 0>
 <cfset $=application.serviceFactory.getBean("MuraScope").init(url.siteID)>
 <cfparam name="Cookie.fetDisplay" default="">
-<cfoutput>	
+<cfoutput>
+
+	var ieVersion = /*@cc_on (function() {switch(@_jscript_version) {case 1.0: return 3; case 3.0: return 4; case 5.0: return 5; case 5.1: return 5; case 5.5: return 5.5; case 5.6: return 6; case 5.7: return 7; case 5.8: return 8; case 9: return 9; case 10: return 10;}})() || @*/ 0;
+
 	var adminProxy;
 	var adminDomain=<cfif len($.globalConfig('admindomain'))>"#$.globalConfig('admindomain')#"<cfelse>location.hostname</cfif>;
 	var adminProtocal=<cfif application.configBean.getAdminSSL() or application.utility.isHTTPS()>"https://";<cfelse>"http://"</cfif>;
@@ -45,8 +48,8 @@
 	var frontEndModalWidthConfigurator=600;
 	var frontEndModalHeight=0;
 	var frontEndModalWidth=0;
-	var frontEndModalIE8=jQuery.browser.msie && +$.browser.version === 8;
-
+	var frontEndModalIE8=(ieVersion==8);
+	
 	function openFrontEndToolsModal(a){
 		var src=a.href + "&frontEndProxyLoc=" + frontEndProxyLoc;
 		var isModal=jQuery(a).attr("data-configurator");
