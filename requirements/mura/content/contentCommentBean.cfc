@@ -364,6 +364,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var configBean=variables.configBean>
 	<cfset var settingsManager=variables.settingsManager>
 	<cfset var utility=getBean("utility")>
+	<cfset var contentBean=getBean('content').loadBy(contentid=variables.instance.contentID)>
+
 	<cfif len(settingsManager.getSite(variables.instance.siteID).getContactEmail())>
 		<cfset contactEmail=settingsManager.getSite(variables.instance.siteID).getContactEmail()>
 	<cfelse>
@@ -393,13 +395,13 @@ COMMENT:
 #variables.instance.comments#
 
 Approve
-#serverpath##utility.createRedirectID(getBean('content').loadBy(contentid=variables.instance.contentID).getURL(complete=true,querystring='approvedcommentID=#getCommentID()#'))#
+#serverpath##utility.createRedirectID(contentBean.getURL(complete=true,querystring='approvedcommentID=#getCommentID()#'))#
 
 Delete
-#serverpath##utility.createRedirectID(getBean('content').loadBy(contentid=variables.instance.contentID).getURL(complete=true,querystring='deletecommentID=#getCommentID()#'))#
+#serverpath##utility.createRedirectID(contentBean.getURL(complete=true,querystring='deletecommentID=#getCommentID()#'))#
 
 View
-#serverpath##utility.createRedirectID(getBean('content').loadBy(contentid=variables.instance.contentID).getURL(complete=true))#
+#serverpath##utility.createRedirectID(contentBean.getURL(complete=true))#
 </cfoutput></cfsavecontent>
 	<cfelse>
 		<cfset notifyText=arguments.script />
@@ -419,6 +421,7 @@ View
 	<cfset var notifysubject=arguments.subject>
 	<cfset var email=variables.mailer>
 	<cfset var rsSubscribers=variables.contentDAO.getCommentSubscribers(variables.instance.contentID,variables.instance.siteID)>
+	<cfset var contentBean=getBean('content').loadBy(contentid=variables.instance.contentID)>
 	<cfquery name="rsContent" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		select title from tcontent 
 		where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#">
@@ -437,7 +440,7 @@ COMMENT:
 #variables.instance.comments#
 
 View 
-#getBean('content').loadBy(contentid=variables.instance.contentID).getURL(complete=true)#
+#contentBean.getURL(complete=true)#
 
 To Unsubscribe Click Here:
 </cfoutput></cfsavecontent>
@@ -445,14 +448,14 @@ To Unsubscribe Click Here:
 		<cfset notifyText=arguments.script />
 	</cfif>
 	<cfloop query="rsSubscribers">
-		<cfset email.sendText(notifyText & getBean('content').loadBy(contentid=variables.instance.contentID).getURL(complete=true,querystring="commentUnsubscribe=#URLEncodedFormat(rsSubscribers.email)#"),
+		<cfset email.sendText(notifyText & contentBean.getURL(complete=true,querystring="commentUnsubscribe=#URLEncodedFormat(rsSubscribers.email)#"),
 								rsSubscribers.email,
 								site.getSite(),
 								notifySubject,
 								variables.instance.siteID)>
 	</cfloop>
 	<cfif arguments.notifyAdmin and len(site.getContactEmail())>
-		<cfset email.sendText(notifyText & getBean('content').loadBy(contentid=variables.instance.contentID).getURL(complete=true,querystring="commentUnsubscribe=#URLEncodedFormat(rsSubscribers.email)#"),
+		<cfset email.sendText(notifyText & contentBean.getURL(complete=true,querystring="commentUnsubscribe=#URLEncodedFormat(rsSubscribers.email)#"),
 								site.getContactEmail(),
 								site.getSite(),
 								notifySubject,
