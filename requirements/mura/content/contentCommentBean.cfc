@@ -177,12 +177,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setContentRenderer" access="public" output="false">
-	<cfargument name="contentRenderer" />
-	<cfset variables.contentRenderer = arguments.contentRenderer />
-	<cfreturn this>
-</cffunction>
-
 <cffunction name="load" access="public" output="false">
 	<cfargument name="commentID">
 	<cfargument name="remoteID">
@@ -252,7 +246,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="save" access="public" output="false">
-	<cfargument name="contentRenderer" default="#variables.contentRenderer#" required="true" hint="I'm the contentRenderer used to render links sent to subscribers.">
 	<cfargument name="script" required="true" default="" hint="I'm the script that is sent to the subscribers.">
 	<cfargument name="subject" required="true" default="" hint="I'm the subject that is sent to the subscribers.">
 	<cfargument name="notify" required="true" default="false" hint="I tell whether to notify subscribers.">
@@ -336,7 +329,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif variables.instance.isApproved>
 		<cfset saveSubscription()>
 		<cfif isBoolean(pluginEvent.getValue("notify")) and pluginEvent.getValue("notify")>
-			<cfset notifySubscribers(arguments.contentRenderer,arguments.script,arguments.subject)>
+			<cfset notifySubscribers(arguments.script,arguments.subject)>
 		</cfif>
 	</cfif>
 	
