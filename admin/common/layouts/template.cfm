@@ -18,6 +18,7 @@
 		<cfparam name="rc.jsLibLoaded" default="false">
 		<cfparam name="rc.activetab" default="0">
 		<cfparam name="rc.activepanel" default="0">
+		<cfparam name="rc.renderMuraAlerts" default="true">
 		<cfparam name="rc.siteid" default='#session.siteID#'>
 		<cfparam name="application.coreversion" default="#application.serviceFactory.getBean('autoUpdater').getCurrentVersion()#">
 		<!--- This code is just to prevent errors when people update past version 5.2.2652 --->
@@ -222,7 +223,7 @@
     <div class="main">
       <div class="main-inner">
          <div class="container">
-         		<cfif request.action neq "core:cLogin.main">
+         		<cfif request.action neq "core:cLogin.main" and rc.renderMuraAlerts>
 	         		<cfif isdefined('session.siteID') and isdefined('session.alerts') and structKeyExists(session.alerts,'#session.siteid#')
 	         			and (listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(session.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2'))>
 	         			

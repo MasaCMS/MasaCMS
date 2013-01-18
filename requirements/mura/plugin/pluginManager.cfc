@@ -2007,6 +2007,7 @@ select * from tplugins order by #arguments.orderby#
 <cfset rc.moduleID="">
 <cfset rc.jsLib=arguments.jsLib>
 <cfset rc.jsLibLoaded=arguments.jsLibLoaded>
+<cfset rc.renderMuraAlerts=false>
 
 <cfif arguments.compactDisplay>
 	<cfset layoutTemplate = "compact" />
