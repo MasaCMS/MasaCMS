@@ -1083,7 +1083,7 @@ buttons: {
 						siteManager.initQuickEdits();
 
 						//The fadeIn in ie8 causes a rendering issue
-						if(!(ieVersion == 8)) {
+						if(!(document.all && document.querySelector && !document.addEventListener)) {
 							node.find('.section:first').hide().fadeIn("slow");
 						}
 					} catch(err) {
