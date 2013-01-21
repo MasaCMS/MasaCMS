@@ -93,7 +93,7 @@ document.getElementById('responseDisplayFields').value=document.getElementById('
               <input type="button" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.down')#" onclick="dataManager.moveDown('summaryList','summaryList2');" class="objectNav btn">            </td>
           </tr>
           <tr>
-            <td class="nested"><input type="button" value=">>" onclick="addObject('availableFields','detailList','detailList2');" class="objectNav btn">
+            <td class="nested"><input type="button" value=">>" onclick="dataManager.addObject('availableFields','detailList','detailList2');" class="objectNav btn">
               <br />
               <input type="button" value="<<" onclick="dataManager.deleteObject('detailList','detailList2');" class="objectNav btn">            </td>
             <td class="nested"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.detaildisplayfields')#<br />
