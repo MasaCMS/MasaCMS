@@ -453,7 +453,7 @@ to your own modified versions of Mura CMS.
 	        
       
 	        <div class="span3">
-        <label class="control-label">Change Sets Manager</label>
+        <label class="control-label">Content Staging Manager</label>
         <div class="controls">
             <label class="radio inline">
             <input type="radio" name="hasChangesets" value="0" <cfif rc.siteBean.getHasChangesets() neq 1> CHECKED</CFIF>>
