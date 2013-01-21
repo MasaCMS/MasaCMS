@@ -536,7 +536,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!--- TRANSLATORS --->
 <cffunction name="standardFileTranslator" output="false" returnType="any">
 	<cfargument name="event" required="true">
-	<cfset arguments.event.getValue('contentRenderer').renderFile(arguments.event.getValue('contentBean').getFileID()) />
+	<cfset arguments.event.getValue('contentRenderer').renderFile(arguments.event.getValue('contentBean').getFileID(),arguments.event.getValue('method'),arguments.event.getValue('size')) />
 </cffunction>
 
 <cffunction name="standardLinkTranslator" output="false" returnType="any">

@@ -141,6 +141,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.cfStaticJavaLoaderScope="application">
 <cfset variables.instance.URLTitleDelim="-">
 <cfset variables.instance.BCryptLogRounds=10>
+<cfset variables.instance.maxSourceImageWIdth=3000>
 <cfset variables.dbUtility="">
 <cfset variables.instance.allowAutoUpdates=1>
 <cfset variables.instance.CFFPConfigFilename="cffp.ini.cfm">
@@ -1196,6 +1197,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="proxyPort" type="String" />
 	<cfif isnumeric(arguments.proxyPort)>
 	<cfset variables.instance.proxyPort = arguments.proxyPort />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setMaxSourceImageWidth" access="public" output="false">
+	<cfargument name="maxSourceImageWidth" type="String" />
+	<cfif isnumeric(arguments.maxSourceImageWidth)>
+	<cfset variables.instance.maxSourceImageWidth = arguments.maxSourceImageWidth />
 	</cfif>
 	<cfreturn this>
 </cffunction>

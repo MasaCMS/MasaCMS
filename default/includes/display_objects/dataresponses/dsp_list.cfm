@@ -98,6 +98,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</div>
 </cfif>
 <cfelse>
-<em>There is currently no variables.data collected</em>
+<em>There is currently no data collected</em>
 </cfif>
 </div>

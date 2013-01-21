@@ -2005,7 +2005,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="renderFile" output="true" access="public">
 <cfargument name="fileID" type="string">
 <cfargument name="method" type="string" required="true" default="inline">
-	<cfset getBean('fileManager').renderFile(arguments.fileid,arguments.method) />
+<cfargument name="size" type="string" required="true" default="">
+	<cfset getBean('fileManager').renderFile(arguments.fileid,arguments.method,arguments.size) />
 </cffunction>
 
 <cffunction name="renderSmall" output="true" access="public">

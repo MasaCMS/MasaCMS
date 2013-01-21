@@ -334,7 +334,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif listFindNoCase('jpg,jpeg,png,gif',arguments.file.ServerFileExt)>
 			
 			<cfif variables.configBean.getFileStore() eq "fileDir">		
-				<cfset fileStruct.fileObjSource =  '#serverDirectory##getCustomImage(image=fileStruct.fileObj,height='Auto',width=3000)#'/>						
+				<cfset fileStruct.fileObjSource =  '#serverDirectory##getCustomImage(image=fileStruct.fileObj,height='Auto',width=variables.configBean.getMaxSourceImageWidth())#'/>						
 			<cfelse>
 				<cfset fileStruct.fileObjSource =fileStruct.fileObj>
 			</cfif>
