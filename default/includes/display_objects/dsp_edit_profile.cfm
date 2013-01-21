@@ -68,7 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<!--- <a id="editSubscriptions" href="##">Edit Email Subscriptions</a> --->
-	<form name="profile" id="profile" action="?nocache=1" class="form-horizontal <cfif this.generalWrapperClass neq "">#this.formWrapperClass#</cfif>" method="post" onsubmit="return validate(this);"  enctype="multipart/form-data" novalidate="novalidate">
+	<form name="profile" id="profile" action="?nocache=1" class="form-horizontal <cfif this.generalWrapperClass neq "">#this.formWrapperClass#</cfif>" method="post" onsubmit="return validateForm(this);"  enctype="multipart/form-data" novalidate="novalidate">
 
 		<fieldset>
 
@@ -114,7 +114,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<div class="control-group">
 					<label class="control-label required" for="email2xt">#variables.$.rbKey('user.emailconfirm')#</label>
 					<div class="controls">
-						<input type="text" id="email2xt" name="email" value="" maxlength="50" required="true" validate="match" matchfield="email" placeholder="#variables.$.rbKey('user.emailconfirm')#" message="#HTMLEditFormat(variables.$.rbKey('user.emailconfirmvalidate'))#" />
+						<input type="text" id="email2xt" name="email2" value="" maxlength="50" required="true" validate="match" matchfield="email" placeholder="#variables.$.rbKey('user.emailconfirm')#" message="#HTMLEditFormat(variables.$.rbKey('user.emailconfirmvalidate'))#" />
 					</div>
 				</div>
 
@@ -122,14 +122,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<div class="control-group">
 					<label class="control-label required" for="passwordtxt">#variables.$.rbKey('user.password')#</label>
 					<div class="controls">
-						<input type="password" id="passwordtxt" validate="match" matchfield="password2" value=""  maxlength="50" required="true" placeholder="#variables.$.rbKey('user.password')#" message="#HTMLEditFormat(variables.$.rbKey('user.passwordvalidate'))#" />
+						<input type="password" name="passwordNoCache" id="passwordtxt" validate="match" matchfield="password2" value=""  maxlength="50" required="true" placeholder="#variables.$.rbKey('user.password')#" message="#HTMLEditFormat(variables.$.rbKey('user.passwordvalidate'))#" />
 					</div>
 				</div>
 
 				<div class="control-group">
 					<label class="control-label required" for="password2txt">#variables.$.rbKey('user.passwordconfirm')#</label>
 					<div class="controls">
-						<input type="password" id="password2txt" validate="match" matchfield="password2"  value=""  maxlength="50" required="true" placeholder="#variables.$.rbKey('user.passwordconfirm')#" message="#HTMLEditFormat(variables.$.rbKey('user.passwordconfirmrequired'))#" />
+						<input type="password" name="password2" id="password2txt" value=""  maxlength="50" required="true" placeholder="#variables.$.rbKey('user.passwordconfirm')#" message="#HTMLEditFormat(variables.$.rbKey('user.passwordconfirmrequired'))#" />
 					</div>
 				</div>
 
@@ -148,14 +148,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<div class="control-group">
 					<label class="control-label required" for="passwordtxt">#variables.$.rbKey('user.password')#</label>
 					<div class="controls">
-						<input type="password" id="passwordtxt" validate="match" matchfield="password2" value=""  maxlength="50" required="true" placeholder="#variables.$.rbKey('user.password')#" message="#HTMLEditFormat(variables.$.rbKey('user.passwordvalidate'))#" />
+						<input type="password" name="passwordNoCache" id="passwordtxt" validate="match" matchfield="password2" value=""  maxlength="50" required="false" placeholder="#variables.$.rbKey('user.password')#" message="#HTMLEditFormat(variables.$.rbKey('user.passwordvalidate'))#" />
 					</div>
 				</div>
 
 				<div class="control-group">
 					<label class="control-label required" for="password2txt">#variables.$.rbKey('user.passwordconfirm')#</label>
 					<div class="controls">
-						<input type="password" id="password2txt" validate="match" matchfield="password2" value=""  maxlength="50" required="true" placeholder="#variables.$.rbKey('user.passwordconfirm')#" message="#HTMLEditFormat(variables.$.rbKey('user.passwordconfirmrequired'))#" />
+						<input type="password" name="password2" id="password2txt" value=""  maxlength="50" required="false" placeholder="#variables.$.rbKey('user.passwordconfirm')#" message="#HTMLEditFormat(variables.$.rbKey('user.passwordconfirmrequired'))#" />
 					</div>
 				</div>
 
@@ -275,6 +275,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<input type="hidden" name="siteid" value="#HTMLEditFormat(variables.$.event('siteID'))#" />
 				<input type="hidden" name="returnURL" value="#HTMLEditFormat(request.returnURL)#" />
 				<input type="hidden" name="display" value="editprofile" />
+
 			</div>
 		</div>
 	</form>
