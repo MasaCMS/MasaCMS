@@ -53,7 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   <cfset summaryList="">
   <cfset detailList="">
 </cfif>
-<cfhtmlhead text='<script src="assets/js/manage-data.js?coreversion=#application.coreversion#" type="text/javascript"></script>'>
+<cfhtmlhead text='<script src="assets/js/manageData.js?coreversion=#application.coreversion#" type="text/javascript"></script>'>
 </cfsilent>
 <script type="text/javascript">
 function setFields(){
@@ -93,7 +93,7 @@ document.getElementById('responseDisplayFields').value=document.getElementById('
               <input type="button" value="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.down')#" onclick="dataManager.moveDown('summaryList','summaryList2');" class="objectNav btn">            </td>
           </tr>
           <tr>
-            <td class="nested"><input type="button" value=">>" onclick="addObject('availableFields','detailList','detailList2');" class="objectNav btn">
+            <td class="nested"><input type="button" value=">>" onclick="dataManager.addObject('availableFields','detailList','detailList2');" class="objectNav btn">
               <br />
               <input type="button" value="<<" onclick="dataManager.deleteObject('detailList','detailList2');" class="objectNav btn">            </td>
             <td class="nested"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.detaildisplayfields')#<br />

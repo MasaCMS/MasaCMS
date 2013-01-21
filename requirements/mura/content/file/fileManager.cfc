@@ -192,7 +192,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset pluginEvent.init(arguments)>
 				<cfset pluginManager.announceEvent("onBeforeFileRender",pluginEvent)>
 				<cfset delim=variables.configBean.getFileDelim() />
-				<cfif listFindNoCase('png,jpg,jpeg,gif',rsFileData.fileExt) and arguments.size>				
+				<cfif listFindNoCase('png,jpg,jpeg,gif',rsFileData.fileExt) and len(arguments.size)>				
 					<cfset theFileLocation="#variables.configBean.getFileDir()##delim##rsFileData.siteid##delim#cache#delim#file#delim##arguments.fileID#_#arguments.size#.#rsFileData.fileExt#" />
 					<cfif not fileExists(theFileLocation)>
 						<cfset theFileLocation="#variables.configBean.getFileDir()##delim##rsFileData.siteid##delim#cache#delim#file#delim##arguments.fileID#.#rsFileData.fileExt#" />
