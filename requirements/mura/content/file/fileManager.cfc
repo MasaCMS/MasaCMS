@@ -145,6 +145,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="renderFile" output="true" access="public">
 <cfargument name="fileID" type="string">
 <cfargument name="method" type="string" required="true" default="inline">
+<cfargument name="size" type="string" required="true" default="">
 
 	<cfset var rsFileData="" />
 	<cfset var delim="" />
@@ -153,8 +154,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var pluginManager=getBean("pluginManager")>	
 	<cfset var pluginEvent = createObject("component","mura.event") />
 	<cfset var fileCheck="" />
+
+	<cfif not len(arguments.method)>
+		<cfset arguments.method="inline">
+	</cfif>
 	
-	<cfif not isValid("UUID",arguments.fileID)>
+	<cfif not isValid("UUID",arguments.fileID) or find(".",arguments.size)>
 		<cfset getBean("contentServer").render404()>
 	</cfif>
 	
@@ -187,7 +192,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset pluginEvent.init(arguments)>
 				<cfset pluginManager.announceEvent("onBeforeFileRender",pluginEvent)>
 				<cfset delim=variables.configBean.getFileDelim() />
-				<cfset theFileLocation="#variables.configBean.getFileDir()##delim##rsFileData.siteid##delim#cache#delim#file#delim##arguments.fileID#.#rsFileData.fileExt#" />
+				<cfif listFindNoCase('png,jpg,jpeg,gif',rsFileData.fileExt) and arguments.size>				
+					<cfset theFileLocation="#variables.configBean.getFileDir()##delim##rsFileData.siteid##delim#cache#delim#file#delim##arguments.fileID#_#arguments.size#.#rsFileData.fileExt#" />
+					<cfif not fileExists(theFileLocation)>
+						<cfset theFileLocation="#variables.configBean.getFileDir()##delim##rsFileData.siteid##delim#cache#delim#file#delim##arguments.fileID#.#rsFileData.fileExt#" />
+					</cfif>
+				<cfelse>
+					<cfset theFileLocation="#variables.configBean.getFileDir()##delim##rsFileData.siteid##delim#cache#delim#file#delim##arguments.fileID#.#rsFileData.fileExt#" />
+				</cfif>
+				
 				<cfset streamFile(theFileLocation,rsfileData.filename,"#rsfileData.contentType#/#rsfileData.contentSubType#",arguments.method,rsfileData.created)>
 				<cfset pluginManager.announceEvent("onAfterFileRender",pluginEvent)>
 			</cfcase>
