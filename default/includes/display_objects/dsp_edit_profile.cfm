@@ -114,7 +114,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<div class="control-group">
 					<label class="control-label required" for="email2xt">#variables.$.rbKey('user.emailconfirm')#</label>
 					<div class="controls">
-						<input type="text" id="email2xt" name="email" value="" maxlength="50" required="true" validate="match" matchfield="email" placeholder="#variables.$.rbKey('user.emailconfirm')#" message="#HTMLEditFormat(variables.$.rbKey('user.emailconfirmvalidate'))#" />
+						<input type="text" id="email2xt" name="email2" value="" maxlength="50" required="true" validate="match" matchfield="email" placeholder="#variables.$.rbKey('user.emailconfirm')#" message="#HTMLEditFormat(variables.$.rbKey('user.emailconfirmvalidate'))#" />
 					</div>
 				</div>
 
