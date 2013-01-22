@@ -74,7 +74,7 @@
                 <cfthrow errorcode="#REQUEST.constants.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED#" type="ckfinder" />
             </cfif>
         <cfelseif arguments.command eq "MoveFiles">
-            <cfif not hasPermission(THIS.currentFolder.getURL(), "editor")>
+            <cfif not (hasPermission(THIS.currentFolder.getURL(), "editor") and hasPermission("#APPLICATION.CreateCFC("Core.Config").getResourceTypeConfig(url.type).url##form['FILES[0][FOLDER]']#","editor"))>
                 <cfthrow errorcode="#REQUEST.constants.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED#" type="ckfinder" />
             </cfif>
          </cfif>
