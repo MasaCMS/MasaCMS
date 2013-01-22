@@ -47,17 +47,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfsilent>
 <cfset variables.rsData=application.dataCollectionManager.read(request.responseid)/>
-<cfif variables.$.content('ResponseDisplayFields') neq ''>
-<cfset variables.fieldnames=replace(listLast(variables.$.content('ResponseDisplayFields'),"~"),"^",",","ALL")/>
+<cfif variables.formBean.getValue('ResponseDisplayFields') neq ''>
+<cfset variables.fieldnames=replace(listLast(variables.formBean.getValue('ResponseDisplayFields'),"~"),"^",",","ALL")/>
 <cfelse>
-<cfset variables.fieldnames=application.dataCollectionManager.getCurrentFieldList(variables.$.content('contentID'))/>
+<cfset variables.fieldnames=application.dataCollectionManager.getCurrentFieldList(variables.formBean.getValue('contentID'))/>
 </cfif>
 <cfwddx action="wddx2cfml" input="#variables.rsData.data#" output="variables.info">
 </cfsilent>
 <cfoutput>
 <div id="dsp_detail" class="dataResponses">
 <#variables.$.getHeaderTag('subHead1')#>#variables.$.content('title')#</#variables.$.getHeaderTag('subHead1')#>
-<a class="actionItem" href="##" onclick="history.go(-1)">Return to List</a>
+<a class="actionItem" href="##" onclick="history.go(-1); return false;">Return to List</a>
 <dl>
 <cfloop list="#variables.fieldnames#" index="variables.f">
 	<cftry><cfset variables.fValue=variables.info['#variables.f#']><cfcatch><cfset variables.fValue=""></cfcatch></cftry>

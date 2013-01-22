@@ -46,10 +46,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfsilent>
-<cfset variables.data.sortby=variables.$.content('sortBy')/>
-<cfset variables.data.sortDirection=variables.$.content('sortDirection')/>
-<cfset variables.data.siteid=variables.$.content('siteID')/>
-<cfset variables.data.contentid=variables.$.content('contentID')/>
+<cfset variables.data.sortby=variables.formBean.getValue('sortBy')/>
+<cfset variables.data.sortDirection=variables.formBean.getValue('sortDirection')/>
+<cfset variables.data.siteid=variables.formBean.getValue('siteID')/>
+<cfset variables.data.contentid=variables.formBean.getValue('contentID')/>
 <cfset variables.data.keywords=request.keywords />
 <cfset variables.data.fieldnames=application.dataCollectionManager.getCurrentFieldList(variables.data.contentid)/>
 <cfset variables.rsdata=application.dataCollectionManager.getdata(variables.data)/>
