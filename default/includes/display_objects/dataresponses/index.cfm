@@ -49,7 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="variables.rssite">
 select siteid from tcontent where contentid='#arguments.objectid#' and active=1
 </cfquery>
-
+<cfset variables.formBean=$.getBean('content').loadBy(contentID=arguments.objectID)>
 <cfswitch expression="#request.fuseaction#">
 <cfcase value="list">
 <cfinclude template="dsp_list.cfm">
