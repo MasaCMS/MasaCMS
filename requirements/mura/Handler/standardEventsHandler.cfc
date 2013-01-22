@@ -275,7 +275,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>
 					</cfcase>
 					<cfcase value="File">		
-						<cfif not renderer.showItemMeta(arguments.event.getValue('contentBean').getFileExt()) or arguments.event.getValue('showMeta') eq 2>
+						<cfif not renderer.showItemMeta(arguments.event.getValue('contentBean').getFileExt()) or arguments.event.getValue('showMeta') eq 2 or listFindNoCase('attachment,inline',arguments.event.getValue('method'))>
 							<!---<cftry>--->
 							<cfset translator=arguments.event.getHandler('standardFileTranslation')>
 							<!---
