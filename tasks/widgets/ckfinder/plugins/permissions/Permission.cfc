@@ -65,7 +65,7 @@
         <cfelseif listFindNoCase("FileUpload,RenameFile,RenameFolder",arguments.command)>
             <cflog text="#cgi.query_string#">
 			<cfif not hasPermission(THIS.currentFolder.getURL(), "author")>
-                <cfset THIS.throwError(REQUEST.constants.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED) />
+                <cfthrow errorcode="#REQUEST.constants.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED#" type="ckfinder" />
                 <cfreturn false />
             </cfif>
         <cfelseif arguments.command eq "GetFiles">
