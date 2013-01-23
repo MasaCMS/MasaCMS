@@ -48,8 +48,8 @@ config.baseDir = "#application.configBean.getAssetDir()##application.configBean.
  * directory, no matter the resource type.
  */
 config.thumbnails = structNew();
-config.thumbnails.url = config.baseUrl & '/Thumbs';
-config.thumbnails.baseDir = config.baseDir & '/Thumbs';
+config.thumbnails.url = config.baseUrl & 'Thumbs';
+config.thumbnails.baseDir = config.baseDir & 'Thumbs';
 config.thumbnails.enabled = true;
 config.thumbnails.directAccess = true;
 config.thumbnails.maxWidth = 100;

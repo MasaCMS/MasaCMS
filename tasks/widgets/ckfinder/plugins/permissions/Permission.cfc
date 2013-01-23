@@ -51,8 +51,12 @@
     	<cfargument name="command" required="true" type="string">
 
 		<cfset var fileSystem = APPLICATION.CreateCFC("Utils.FileSystem") />
-	    <cfif listFindNoCase("CopyFiles,CreateFolder,DeleteFile", arguments.command)>
+	    <cfif listFindNoCase("CreateFolder,DeleteFiles", arguments.command)>
 			<cfif not hasPermission(THIS.currentFolder.getURL(), "editor")>
+                <cfthrow errorcode="#REQUEST.constants.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED#" type="ckfinder" />
+            </cfif>
+         <cfelseif arguments.command eq 'CopyFiles'>
+            <cfif not (hasPermission(THIS.currentFolder.getURL(), "editor") and hasPermission("#APPLICATION.CreateCFC("Core.Config").getResourceTypeConfig(url.type).url##form['FILES[0][FOLDER]']#","read"))>
                 <cfthrow errorcode="#REQUEST.constants.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED#" type="ckfinder" />
             </cfif>
         <cfelseif arguments.command eq "DeleteFolder">
@@ -67,7 +71,6 @@
                 <cfthrow errorcode="#REQUEST.constants.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED#" type="ckfinder" />
             </cfif>
         <cfelseif arguments.command eq "GetFiles">
-	        <!---<cfthrow message="This is a test calling hasPermission for 'read' with #THIS.currentFolder.getURL()#: #hasPermission(this.currentFolder.getURL(), 'read')# " />--->
 			<cfif not hasPermission(THIS.currentFolder.getURL(), "read")>
                 <cfthrow errorcode="#REQUEST.constants.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED#" type="ckfinder" />
             </cfif>
