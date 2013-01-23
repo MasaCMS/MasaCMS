@@ -16,6 +16,7 @@
         <cfreturn false />
     <cfelseif command eq "Permissions">
     	<cfset oPerm = CreateObject("component", "Permission")>
+        <cfset oPerm.checkPerms(arguments.command)>
         <cfset oPerm.sendResponse()>
         <cfreturn false />
     <cfelseif command eq "PermChange">

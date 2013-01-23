@@ -192,7 +192,7 @@ CKFinder.addPlugin( 'permissions', function( api ) {
 								{
 									type: 'select',
 									id: 'privateperms',
-									label: labels.admingroups,
+									label: 'System Groups',
 									size: 5,
 									style: 'width: 220px;',
 									items: []
@@ -214,7 +214,7 @@ CKFinder.addPlugin( 'permissions', function( api ) {
 								{
 									type: 'select',
 									id: 'publicperms',
-									label: labels.membergroups,
+									label: 'Member Groups',
 									size: 5,
 									style: 'width: 220px;',
 									items: []
@@ -244,7 +244,18 @@ CKFinder.addPlugin( 'permissions', function( api ) {
 	
 	api.addFolderContextMenuOption( { label : 'Permissions', command : "Permissions" } , function( api, file )
 	{
-		api.openDialog('permDialog');
+		api.connector.sendCommandPost( 'Permissions', null,
+			{
+				subdir: ''
+			},
+			function( xml )
+			{
+				if ( xml.checkError() )
+					return;
+							
+					api.openDialog('permDialog');
+				}
+		);
 	});
 
 	/*
