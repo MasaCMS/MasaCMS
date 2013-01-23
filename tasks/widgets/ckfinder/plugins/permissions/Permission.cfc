@@ -51,8 +51,7 @@
     	<cfargument name="command" required="true" type="string">
 
 		<cfset var fileSystem = APPLICATION.CreateCFC("Utils.FileSystem") />
-        
-	    <cfif listcontains("CopyFiles,CreateFolder,DeleteFile", arguments.command)>
+	    <cfif listFindNoCase("CopyFiles,CreateFolder,DeleteFile", arguments.command)>
 			<cfif not hasPermission(THIS.currentFolder.getURL(), "editor")>
                 <cfthrow errorcode="#REQUEST.constants.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED#" type="ckfinder" />
             </cfif>
@@ -63,7 +62,8 @@
             <cfif not isFolderEmpty(THIS.currentFolder.getServerPath())>
                 <cfthrow message="Cannot delete folder since it is not empty." />
             </cfif>        	
-        <cfelseif arguments.command eq "FileUpload,RenameFile,RenameFolder">
+        <cfelseif listFindNoCase("FileUpload,RenameFile,RenameFolder",arguments.command)>
+            <cflog text="#cgi.query_string#">
 			<cfif not hasPermission(THIS.currentFolder.getURL(), "author")>
                 <cfset THIS.throwError(REQUEST.constants.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED) />
                 <cfreturn false />
@@ -75,6 +75,10 @@
             </cfif>
         <cfelseif arguments.command eq "MoveFiles">
             <cfif not (hasPermission(THIS.currentFolder.getURL(), "editor") and hasPermission("#APPLICATION.CreateCFC("Core.Config").getResourceTypeConfig(url.type).url##form['FILES[0][FOLDER]']#","editor"))>
+                <cfthrow errorcode="#REQUEST.constants.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED#" type="ckfinder" />
+            </cfif>
+         <cfelseif arguments.command eq "Permissions">
+            <cfif not(application.permUtility.isUserInGroup('Admin',session.siteid,1) or application.permUtility.isS2())>
                 <cfthrow errorcode="#REQUEST.constants.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED#" type="ckfinder" />
             </cfif>
          </cfif>
@@ -115,7 +119,7 @@
 		<!--- Labels --->
 		<cfscript>
 			var nodeLabels = XMLElemNew(THIS.xmlObject, "Labels");
-			nodeLabels.xmlAttributes["admingroups"] = application.rbFactory.getKeyValue(session.rb,'user.adminusergroups');
+			nodeLabels.xmlAttributes["admingroups"] = application.rbFactory.getKeyValue(session.rb,'user.admingroups');
 			nodeLabels.xmlAttributes["membergroups"] = application.rbFactory.getKeyValue(session.rb,'user.membergroups');
 			nodeLabels.xmlAttributes["permissions"] = application.rbFactory.getKeyValue(session.rb,'permissions');
 			nodeLabels.xmlAttributes["editor"] = application.rbFactory.getKeyValue(session.rb,'permissions.editor');
