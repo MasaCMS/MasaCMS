@@ -287,7 +287,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif> 
 		from tcontentcategories where 
 		categoryID in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#arguments.path#">)
-		and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteIDs#"/>
+		and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 		order by depth <cfif arguments.sort eq "desc">desc<cfelse>asc</cfif>
 	</cfquery>	
 	
