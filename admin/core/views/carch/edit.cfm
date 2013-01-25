@@ -173,7 +173,7 @@ var hasBody=#subType.getHasBody()#;
 			<cfquery name="rsSubTypes" dbtype="query">
 			select * from rsSubTypes
 			where 
-				type in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#pageLevelList#"/>)
+				type in (<cfqueryparam cfsqltype="cf_sql_varchar" list="true" value="#extendedList#"/>)
 				or type='Base'
 			</cfquery>
 		<!---
