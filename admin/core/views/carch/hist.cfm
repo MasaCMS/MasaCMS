@@ -121,16 +121,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <td class="status">#versionStatus#</td> 
 
 <td class="display<cfif rc.rshist.Display eq 2> scheduled</cfif>"> 
-	<cfif rc.rshist.Display eq 1>
-	<i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.true")#</span> 
-      
-    <cfelseif rc.rshist.Display eq 2>
-      <a href="##" rel="tooltip" title="#HTMLEditFormat('#LSDateFormat(rc.rshist.displaystart,"short")#&nbsp;-&nbsp;#LSDateFormat(rc.rshist.displaystop,"short")#')#"> <i class="icon-calendar"></i></a>
-     <cfelse>
-     <i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#
-"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.false")#
-</span>
-    </cfif>
+	<cfif rc.rshist.Display and (rc.rshist.Display eq 1 and rc.rshist.approved)>
+		<i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#"></i><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#</span>
+	<cfelseif(rc.rshist.Display eq 2 and rc.rshist.approved and rc.rshist.approved)>#LSDateFormat(rc.rshist.displaystart,"short")# - #LSDateFormat(rc.rshist.displaystop,"short")#
+	<cfelse>
+		<i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#"></i><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.no')#</span>
+	</cfif>
 </td>
 <cfif rc.contentBean.getType() neq "file">
 	<td class="objects">
