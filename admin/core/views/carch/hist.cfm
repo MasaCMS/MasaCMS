@@ -121,7 +121,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <td class="status">#versionStatus#</td> 
 
 <td class="display<cfif rc.rshist.Display eq 2> scheduled</cfif>"> 
-	<cfif rc.rshist.Display and (rc.rshist.Display eq 1 and rc.rshist.approved and rc.rshist.approved)>
+	<cfif rc.rshist.Display and (rc.rshist.Display eq 1 and rc.rshist.approved)>
 		<i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#"></i><span>#application.rbFactory.getKeyValue(session.rb,'sitemanager.yes')#</span>
 	<cfelseif(rc.rshist.Display eq 2 and rc.rshist.approved and rc.rshist.approved)>#LSDateFormat(rc.rshist.displaystart,"short")# - #LSDateFormat(rc.rshist.displaystop,"short")#
 	<cfelse>
