@@ -532,7 +532,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset arguments.errors.message=arguments.errors.message & "<br/>SQL: " & cfcatch.sql>
 		</cfif>
 		<cfif isDefined("cfcatch.detail") and len(cfcatch.detail)>
-			<cfset arguments.errors.message=arguments.errors.detail & "<br/>DETAIL: " & cfcatch.detail>
+			<cfset arguments.errors.message=arguments.errors.message & "<br/>DETAIL: " & cfcatch.detail>
 		</cfif>
 	</cfcatch>
 	</cftry>
