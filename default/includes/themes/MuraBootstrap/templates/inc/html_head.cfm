@@ -8,8 +8,8 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<title>#HTMLEditFormat($.content('HTMLTitle'))# - #HTMLEditFormat($.siteConfig('site'))#</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="#HTMLEditFormat($.content('MetaDesc'))#">
-	<meta name="keywords" content="#HTMLEditFormat($.content('getMetaKeywords'))#">
+	<meta name="description" content="#HTMLEditFormat($.content('metaDesc'))#">
+	<meta name="keywords" content="#HTMLEditFormat($.content('metaKeywords'))#">
 	<cfif len($.content('credits'))><meta name="author" content="#HTMLEditFormat($.content('credits'))#" /></cfif>
 	<meta name="generator" content="Mura CMS #$.globalConfig('version')#" />
 
