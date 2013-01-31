@@ -88,10 +88,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
 		<cfset var strikes = createObject("component","mura.user.userstrikes").init(arguments.username,variables.configBean) />
 		
-		<cfif yesNoFormat(variables.configBean.getValue("useLegacySessions"))>
-			<cflogout>
-		</cfif>
-		
 		<cfparam name="session.blockLoginUntil" type="string" default="#strikes.blockedUntil()#" />
 		
 		<cfif len(arguments.siteID)>
@@ -196,7 +192,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var lastLogin = now() />
 		<cfset var pluginEvent = createObject("component","mura.event").init(arguments) />
 		
-		<cflogout>
 		<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#" name="rsUser">
 		SELECT * FROM tusers WHERE userid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.userID#"> AND Type = 2
 		and inactive=0
@@ -237,60 +232,64 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var lastLogin = now() />
 		<cfset var rsGetRoles = "" />
 		<cfset var user=""/>
+		
+		<cfset structDelete(session,'siteArray')>
 
-				<cfquery name="RsGetRoles" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-				Select groupname, isPublic, siteid from tusers where userid in
-				(Select GroupID from tusersmemb where userid='#rsuser.userid#')
-				</cfquery>
+		<cfquery name="RsGetRoles" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+			Select groupname, isPublic, siteid from tusers where userid in
+			(Select GroupID from tusersmemb where userid='#rsuser.userid#')
+		</cfquery>
 				
-				<cfloop query="rsGetRoles">
-					<cfset rolelist=listappend(rolelist, "#rsGetRoles.groupname#;#rsGetRoles.siteid#;#rsGetRoles.isPublic#")>
-				</cfloop>
+		<cfloop query="rsGetRoles">
+			<cfset rolelist=listappend(rolelist, "#rsGetRoles.groupname#;#rsGetRoles.siteid#;#rsGetRoles.isPublic#")>
+		</cfloop>
 							
-				<cfif not rsUser.isPublic>
-					<cfset rolelist=listappend(rolelist, 'S2IsPrivate;#rsuser.siteid#')>
-					<cfset rolelist=listappend(rolelist, 'S2IsPrivate')>
-				<cfelse>
-					<cfset rolelist=listappend(rolelist, 'S2IsPublic;#rsuser.siteid#')>
-					<cfset rolelist=listappend(rolelist, 'S2IsPublic')>
-				</cfif>
+		<cfif not rsUser.isPublic>
+			<cfset rolelist=listappend(rolelist, 'S2IsPrivate;#rsuser.siteid#')>
+			<cfset rolelist=listappend(rolelist, 'S2IsPrivate')>
+		<cfelse>
+			<cfset rolelist=listappend(rolelist, 'S2IsPublic;#rsuser.siteid#')>
+			<cfset rolelist=listappend(rolelist, 'S2IsPublic')>
+		</cfif>
 					
-				<cfif rsuser.s2>
-					<cfset rolelist=listappend(rolelist, 'S2')>
-				</cfif>
+		<cfif rsuser.s2>
+			<cfset rolelist=listappend(rolelist, 'S2')>
+		</cfif>
 				
-				<cfif yesNoFormat(variables.configBean.getValue("useLegacySessions"))>
-					<cfif isDate(rsuser.lastLogin)>
-						<cfset lastLogin=rsuser.lastLogin/>
-					</cfif>
+		<cfif yesNoFormat(variables.configBean.getValue("useLegacySessions"))>
+			<cflogout>
+
+			<cfif isDate(rsuser.lastLogin)>
+				<cfset lastLogin=rsuser.lastLogin/>
+			</cfif>
 					
-					<cfif rsuser.company neq ''>
-						<cfset group=rsuser.company>
-					<cfelse>
-						<cfset group="#rsUser.Fname# #rsUser.Lname#">
-					</cfif>
+			<cfif rsuser.company neq ''>
+				<cfset group=rsuser.company>
+			<cfelse>
+				<cfset group="#rsUser.Fname# #rsUser.Lname#">
+			</cfif>
 					
-					<cfif rsuser.lname eq '' and rsuser.fname eq ''>
-						<cfset user=rsuser.company>
-					<cfelse>
-						<cfset user="#rsUser.Fname# #rsUser.Lname#">
-					</cfif>
+			<cfif rsuser.lname eq '' and rsuser.fname eq ''>
+				<cfset user=rsuser.company>
+			<cfelse>
+				<cfset user="#rsUser.Fname# #rsUser.Lname#">
+			</cfif>
 					
-					<cflogin>
-					<cfloginuser name="#rsuser.userID#^#user#^#dateFormat(lastLogin,'m/d/yy')#^#group#^#rsUser.username#^#dateFormat(rsUser.passwordCreated,'m/d/yy')#^#rsUser.password#"
-					 roles="#rolelist#"
-					 password="#rsUser.password#">
-					</cflogin>	
-				</cfif>
+			<cflogin>
+			<cfloginuser name="#rsuser.userID#^#user#^#dateFormat(lastLogin,'m/d/yy')#^#group#^#rsUser.username#^#dateFormat(rsUser.passwordCreated,'m/d/yy')#^#rsUser.password#"
+			 roles="#rolelist#"
+			password="#rsUser.password#">
+			</cflogin>	
+		</cfif>
 				
-				<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-				UPDATE tusers SET LastLogin = <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
-				WHERE tusers.UserID='#rsUser.UserID#'
-				</cfquery>
+		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		UPDATE tusers SET LastLogin = <cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
+		WHERE tusers.UserID='#rsUser.UserID#'
+		</cfquery>
 				
-				<cfset setUserStruct(rsuser,rolelist)>
-				
-				<cfset variables.globalUtility.logEvent("UserID:#rsuser.userid# Name:#rsuser.fname# #rsuser.lname# logged in at #now()#","mura-users","Information",true) />
+		<cfset setUserStruct(rsuser,rolelist)>
+		
+		<cfset variables.globalUtility.logEvent("UserID:#rsuser.userid# Name:#rsuser.fname# #rsuser.lname# logged in at #now()#","mura-users","Information",true) />
 
 
 </cffunction>
