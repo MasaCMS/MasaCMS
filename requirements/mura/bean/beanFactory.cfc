@@ -136,7 +136,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="targetService">
 		<cfset var bean="">
 	
-		<cfif super.containsBean(arguments.beanName)>
+		<cfif super.containsBean(arguments.beanName) OR left(arguments.beanName, 1) IS "&">
 			<cfif structKeyExists(arguments,"targetService")>
 				<cfreturn createObject("component","beanServicePlaceholder").init(argumentCollection=arguments)>
 			<cfelse>
