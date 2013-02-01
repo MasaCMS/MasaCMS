@@ -90,6 +90,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</div>
 
 	</div>	
-	<textarea id="mura-formdata" name="body">#rc.contentBean.getBody()#</textarea>
+	<textarea id="mura-formdata" name="body">#replace(rc.contentBean.getBody(),"&quot;","\""","all")#</textarea>
 	
 </cfoutput>
