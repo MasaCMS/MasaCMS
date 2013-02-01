@@ -218,11 +218,12 @@
 		</cfif>
 		<!--- store categories --->
 		<cfset arguments.deleted.setValue("categoriesFromMuraTrash",  getBean("contentManager").getCategoriesByHistID( arguments.deleted.getContentHistID() )  )>
-	</cfif>
-
-	<cfif configBean.getDbType() eq 'Oracle'>
-		<cfset fixValues = getBean('utility').fixOracleClobs(arguments.deleted.getAllValues().categoriesFromMuraTrash)>
-		<cfset arguments.deleted = arguments.deleted.setValue('categoriesFromMuraTrash', fixValues)>
+	
+		<cfif configBean.getDbType() eq 'Oracle'>
+			<cfset fixValues = getBean('utility').fixOracleClobs(arguments.deleted.getAllValues().categoriesFromMuraTrash)>
+			<cfset arguments.deleted = arguments.deleted.setValue('categoriesFromMuraTrash', fixValues)>
+		</cfif>
+	
 	</cfif>
 	
 	<cfwddx action="cfml2wddx" input="#arguments.deleted.getAllValues()#" output="allValues">
