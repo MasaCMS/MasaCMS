@@ -1550,7 +1550,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								</cfoutput>	
 						</cfif>		
 						<cfoutput>
-							#renderEditableAttribute(attribute="body",type="htmlEditor")#	
+							#renderEditableAttribute(attribute="body",type="htmlEditor",value=arguments.body)#	
 						</cfoutput>
 					</cfdefaultcase>
 					</cfswitch>
