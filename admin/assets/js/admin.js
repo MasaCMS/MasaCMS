@@ -1018,7 +1018,7 @@ spinnerArgs = {
 	left: 'auto' // Left position relative to parent in px
 }
 
-preloadimages(['./assets/images/ajax-loader.gif']);
+//preloadimages(['./assets/images/ajax-loader.gif']);
 
 function removePunctuation(item){
 	$(item).val(
