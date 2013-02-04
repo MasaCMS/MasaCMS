@@ -189,6 +189,8 @@
 				setColorPickers(".colorpicker");
 				setToolTips(".container");
 			});
+
+		preloadimages(['#application.configBean.getContext()#/admin/assets/images/ajax-loader.gif']);
 	</script>
 
 	#rc.ajax#

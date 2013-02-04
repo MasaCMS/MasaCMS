@@ -155,6 +155,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					});					
 				};
 			});
+
+			preloadimages(['#application.configBean.getContext()#/admin/assets/images/ajax-loader.gif'])
 		</script>
 		#rc.ajax#
 		
