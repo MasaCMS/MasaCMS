@@ -227,7 +227,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		
 		<cfset request.event=createObject("component", "mura.event").init(request.context)>
-		
+		<cfset request.context.$=request.event.getValue('MuraScope')>
+
 		<cfif request.context.moduleid neq ''>
 			<cfset session.moduleid = request.context.moduleid>
 		</cfif>
