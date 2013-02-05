@@ -1279,7 +1279,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var eventHandlerIndex="">
 	<cfset var eventHandler="">
 	<cfset var listenerArray="">
-	<cfset var isGlobalEvent=left(arguments.runat,8) eq "onGlobal" or arguments.runat eq "onApplicationLoad">
+	<cfset var isGlobalEvent=findNoCase('global',arguments.runat) or arguments.runat eq "onApplicationLoad">
 	<cfset var isValidEvent=false>
 	<cfset var siteIDadjusted=adjustSiteID(arguments.siteID)>
 	<cfset var muraScope="">
@@ -1487,7 +1487,7 @@ select * from tplugins order by #arguments.orderby#
 	<cfset var i="">
 	<cfset var eventHandler="">
 	<cfset var listenerArray="">
-	<cfset var isGlobalEvent=left(arguments.runat,8) eq "onGlobal" or arguments.runat eq "onApplicationLoad">
+	<cfset var isGlobalEvent=findNoCase('global',arguments.runat) or arguments.runat eq "onApplicationLoad">
 	<cfset var isValidEvent=false>
 	<cfset var siteIDadjusted=adjustSiteID(arguments.siteID)>
 	<cfset var muraScope="">
@@ -2089,7 +2089,7 @@ select * from rs order by name
 		<cfif left(i,2) eq "on" or left(i,8) eq "standard">
 			<cfset handlerData=structNew()>
 			<cfset handlerData.index=arrayLen(variables.eventHandlers)>
-			<cfif left(i,8) neq "onGlobal">
+			<cfif not findNoCase('global',i)>
 				<cfif not structKeyExists(variables.siteListeners[siteIDadjusted],i)>
 					<cfset variables.siteListeners[siteIDadjusted][i]=arrayNew(1)>
 				</cfif>
