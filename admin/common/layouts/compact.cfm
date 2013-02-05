@@ -61,7 +61,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 
 <cfif not structKeyExists(rc,"$")>
-	<cfset rc.$=getBean('$').init(session.siteid)>
+	<cfset rc.$=application.serviceFactory.getBean('$').init(session.siteid)>
 </cfif> 
 </cfsilent>
 <cfoutput>

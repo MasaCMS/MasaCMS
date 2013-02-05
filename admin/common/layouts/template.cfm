@@ -28,7 +28,7 @@
 		</cfif>
 
 		<cfif not structKeyExists(rc,"$")>
-			<cfset rc.$=getBean('$').init(session.siteid)>
+			<cfset rc.$=application.serviceFactory.getBean('$').init(session.siteid)>
 		</cfif>  
 
 		<cfparam name="moduleTitle" default="">
