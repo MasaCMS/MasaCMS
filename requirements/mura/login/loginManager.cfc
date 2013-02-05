@@ -302,11 +302,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="logout" returntype="void" access="public" output="false">
 	<cfset var pluginEvent="">
+
 	<cfif structKeyExists(request,"servletEvent")>
 		<cfset pluginEvent=request.servletEvent>
+	<cfelseif structKeyExists(request,"event")>
+		<cfset pluginEvent=request.event>
 	<cfelse>
-		<cfset pluginEvent = createObject("component","mura.event").init(session) />
+		<cfset pluginEvent = new mura.event() />
 	</cfif>
+
 	<cfif len(pluginEvent.getValue("siteID"))>
 		<cfset getPluginManager().announceEvent('onSiteLogout',pluginEvent)/>
 		<cfset getPluginManager().announceEvent('onBeforeSiteLogout',pluginEvent)/>
