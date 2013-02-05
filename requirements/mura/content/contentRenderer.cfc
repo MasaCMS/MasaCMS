@@ -2733,6 +2733,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			if(arguments.type eq 'HTMLEditor' ){
 				inline='';
+
+				if(not len(arguments.value)){
+					arguments.value="<p></p>";
+				}
 			}
 			
 			return '<div class="mura-editable inactive#inline#">
