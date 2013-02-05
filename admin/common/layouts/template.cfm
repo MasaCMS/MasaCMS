@@ -21,10 +21,16 @@
 		<cfparam name="rc.renderMuraAlerts" default="true">
 		<cfparam name="rc.siteid" default='#session.siteID#'>
 		<cfparam name="application.coreversion" default="#application.serviceFactory.getBean('autoUpdater').getCurrentVersion()#">
+		
 		<!--- This code is just to prevent errors when people update past version 5.2.2652 --->
 		<cfif not len(rc.siteID)>
-		<cfset rc.siteID="default">
+			<cfset rc.siteID="default">
 		</cfif>
+
+		<cfif not structKeyExists(rc,"$")>
+			<cfset rc.$=getBean('$').init(session.siteid)>
+		</cfif>  
+
 		<cfparam name="moduleTitle" default="">
 		<cfif not len(moduleTitle)>
 		<cfswitch expression="#rc.originalcircuit#">
