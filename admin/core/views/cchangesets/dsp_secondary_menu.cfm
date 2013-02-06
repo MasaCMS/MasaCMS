@@ -45,8 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
-<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-	<cfoutput>
+<cfoutput>
 	<cfset rc.originalfuseaction=listLast(request.action,".")>
 	<div id="nav-module-specific" class="btn-group">
 		<cfswitch expression="#rc.originalfuseaction#">
@@ -56,7 +55,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfcase>
 			<cfcase value="list">
 				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'changesets.addchangeset')#" href="index.cfm?muraAction=cChangesets.edit&changesetID=&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.addchangeset')#</a>
+				<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
 				<a class="btn <cfif rc.originalfuseaction eq 'module'> active</cfif>" href="index.cfm?muraAction=cPerm.module&contentid=00000000000000000000000000000000014&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=00000000000000000000000000000000014"><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.permissions')#</a>
+				</cfif>
 			</cfcase>
 			<cfcase value="edit">
 				<a class="btn" title="#application.rbFactory.getKeyValue(session.rb,'changesets.backtochangesets')#" href="index.cfm?muraAction=cChangesets.list&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-circle-arrow-left"></i> #application.rbFactory.getKeyValue(session.rb,'changesets.backtochangesets')#</a>
@@ -66,5 +67,4 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfcase>
 		</cfswitch>
 	</div>
-	</cfoutput>
-</cfif>
+</cfoutput>
