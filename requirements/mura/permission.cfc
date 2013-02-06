@@ -634,7 +634,7 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 <cfargument name="siteID" required="true" default="" />		
 	
 	<cfif arguments.siteID neq ''>
-		<cfreturn listFindNoCase(session.mura.memberships,'S2IsPrivate;#arguments.siteid#') />
+		<cfreturn listFindNoCase(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#') />
 	<cfelse>
 		<cfreturn listFindNoCase(session.mura.memberships,'S2IsPrivate') />
 	</cfif>
@@ -645,15 +645,15 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 <cfargument name="group" required="true" default="" />		
 <cfargument name="siteID" required="true" default="" />
 <cfargument name="isPublic" required="true" default="1" />
-	
-	<cfreturn listFindNoCase(session.mura.memberships,'#arguments.group#;#arguments.siteid#;#arguments.isPublic#') />
-		
+	<cfif arguments.isPublic>
+		<cfreturn listFindNoCase(session.mura.memberships,'#arguments.group#;#application.settingsManager.getSite(arguments.siteid).getPublicUserPoolID()#;#arguments.isPublic#') />
+	<cfelse>
+		<cfreturn listFindNoCase(session.mura.memberships,'#arguments.group#;#application.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#;#arguments.isPublic#') />
+	</cfif>	
 </cffunction>
 
 <cffunction name="isS2" access="public" returntype="boolean" output="false">
-	
 	<cfreturn listFindNoCase(session.mura.memberships,'S2') />
-	
 </cffunction>
 
 <cffunction name="getHasModuleAccess" output="false">
