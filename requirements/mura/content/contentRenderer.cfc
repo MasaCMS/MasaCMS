@@ -60,6 +60,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.imageInList="jpg,jpeg,png,gif">
 <cfset this.directImages=true/>
 <cfset this.personalization="user">
+<cfset this.hasEditableObjects=false>
 <cfif isDefined('url.muraadminpreview')>
 	<cfset this.showAdminToolBar=false/>
 	<cfset this.showMemberToolBar=false/>
@@ -74,7 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!--- renderHTMLHead has been deprecated in favor of renderHTMLQueues---->
 <cfset this.renderHTMLHead=true/>
 <cfset this.renderHTMLQueues=true/>
-<cfset this.enableMuraTag=getConfigBean().getEnableMuraTag() />
+<cfset this.enableMuraTag=true />
 <cfset this.crumbdata=arrayNew(1)/>
 <cfset this.listFormat="dl">
 <cfset this.headline="h2"/>
@@ -122,6 +123,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfset variables.contentGateway=getBean('contentGateway')>
+	<cfset this.enableMuraTag=getConfigBean().getEnableMuraTag() />
 
 <cfreturn this />
 </cffunction>
@@ -1285,11 +1287,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset editableControl.editLink = editableControl.editLink & "&amp;orderno=" & arguments.orderno>
 			<cfset editableControl.editLink = editableControl.editLink & "&amp;siteID=" & arguments.siteID>
 		</cfif>
-	</cfif>
 
-	<cfif showEditable>
+		<cfset this.hasEditableObjects=true>
+	
 		<cfset theObject=variables.$.renderEditableObjectHeader(editableControl.class)>
 	</cfif>
+
 	<cfswitch expression="#arguments.object#">
 		<cfcase value="sub_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_sub.cfm",cacheKeyContentId)></cfcase>
 		<cfcase value="peer_nav"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"nav/dsp_peer.cfm",cacheKeyContentId)></cfcase>
@@ -2243,12 +2246,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getShowModal" output="false">
-<cfreturn ((listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(variables.event.getValue('siteID')).getPrivateUserPoolID()#') or listFind(session.mura.memberships,'S2')) or (listFindNoCase("editor,author",variables.event.getValue('r').perm) and this.showMemberToolBar)) and getShowAdminToolBar() />
+<cfreturn getShowToolbar() or (this.showEditableObjects and this.hasEditableObjects and not request.muraExportHTML) />
+</cffunction>
+
+<cffunction name="getShowToolbar" output="false">
+<cfreturn ((listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(variables.event.getValue('siteID')).getPrivateUserPoolID()#') or listFind(session.mura.memberships,'S2')) or (listFindNoCase("editor,author",variables.event.getValue('r').perm) and this.showMemberToolBar)) and getShowAdminToolBar() and not request.muraExportHTML />
 </cffunction>
 
 <cffunction name="hasFETools" output="false">
-	<!---and isDefined('cookie.fetDisplay') and cookie.fetDisplay neq 'none'--->
-	<cfreturn getShowModal() and not request.muraExportHTML >	
+<cfreturn getShowToolbar() />
+</cffunction>
+
+<cffunction name="getShowInlineEditor" output="false">
+<cfreturn  getShowToolbar() and this.showInlineEditor/>
 </cffunction>
 
 <cffunction name="renderHTMLQueue" output="false">
@@ -2282,7 +2292,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif getJSLib() eq "prototype">
 					<cfset loadShadowboxJS() />
 				</cfif>
-				<cfif this.showEditableObjects and not request.muraExportHTML>
+				<cfif this.showEditableObjects>
 					<cfsavecontent variable="headerStr">
 					<cfoutput>
 					<link href="#variables.$.globalConfig('context')#/admin/assets/css/editableObjects.min.css" rel="stylesheet" type="text/css" />
@@ -2549,7 +2559,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfreturn str>
 </cffunction>
-
 
 <cffunction name="generateListImageSyles" output="false">
 	<cfargument name="size" default="small">
