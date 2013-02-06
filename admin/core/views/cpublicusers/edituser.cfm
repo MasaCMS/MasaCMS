@@ -317,7 +317,7 @@ select * from rsSubTypes where subType <> 'Default'
 	      	</label>
 	     	<div class="controls">
 	     	<cfloop query="rc.rspublicgroups">
-				<label class="checkbox inline">
+				<label class="checkbox">
 					<input name="groupid" type="checkbox" value="#rc.rspublicgroups.UserID#" <cfif listfind(rc.userBean.getgroupid(),rc.rspublicgroups.UserID) or listfind(rc.groupid,rc.rsPublicGroups.UserID)>checked</cfif>> #rc.rspublicgroups.groupname#
 				</label>
 				</cfloop>
