@@ -224,11 +224,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				
 			</div>
-			
-			<cfif getJSLib() eq "jquery">
-				<div id="frontEndToolsModalTarget"></div>
-			</cfif>
 		</cfoutput>
 	</cfif>
+
+	<cfif getJSLib() eq "jquery">
+		<cfoutput><div id="frontEndToolsModalTarget"></div></cfoutput>
+	</cfif>
+	
 </cfif>
 
