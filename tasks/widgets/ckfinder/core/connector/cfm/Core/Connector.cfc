@@ -31,7 +31,13 @@
 
 			<!--- execute command ---->
 			<cftry>
-				<cfset oObject=APPLICATION.CreateCFC("CommandHandler." & #command#)>
+				<!--- This is a hack because for some reason the DeleteFiles command can't be found --->
+				<cfif command eq "DeleteFiles">
+					<cfset oObject=APPLICATION.CreateCFC("CommandHandler.DeleteFile")>
+				<cfelse>
+					<cfset oObject=APPLICATION.CreateCFC("CommandHandler." & #command#)>
+				</cfif>
+				
 				<cfset result=oObject.sendResponse()>
 
 			<!--- actually, errors should be catched inside command handlers and this never should happen --->
