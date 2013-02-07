@@ -75,7 +75,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!--- renderHTMLHead has been deprecated in favor of renderHTMLQueues---->
 <cfset this.renderHTMLHead=true/>
 <cfset this.renderHTMLQueues=true/>
-<cfset this.enableMuraTag=true />
 <cfset this.crumbdata=arrayNew(1)/>
 <cfset this.listFormat="dl">
 <cfset this.headline="h2"/>
@@ -123,8 +122,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfset variables.contentGateway=getBean('contentGateway')>
-	<cfset this.enableMuraTag=getConfigBean().getEnableMuraTag() />
 
+	<cfif not isDefined('this.enableMuraTag')>
+		<cfset this.enableMuraTag=getConfigBean().getEnableMuraTag() />
+	</cfif>
+	
 <cfreturn this />
 </cffunction>
 
@@ -2137,6 +2139,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var regex2="">
 	<cfset var finder=reFindNoCase(regex1,body,1,"true")>
 	<cfset var tempValue="">
+	
+	<cfparam name="this.enableMuraTag" default="true" />
 	
 	<!--- It the Mura tag is not enabled just return the submitted string --->
 	<cfif not this.enableMuraTag>
