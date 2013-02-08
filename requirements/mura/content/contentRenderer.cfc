@@ -1624,7 +1624,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="queryPermFilter" returntype="query" access="public" output="false">
 	<cfargument name="rawQuery" type="query">
 	
-	<cfreturn application.permUtility.queryPermFilter(arguments.rawQuery,newResultQuery(),variables.event.getValue('siteID'),variables.event.getValue('r').hasModuleAccess)/>
+	<cfreturn application.permUtility.queryPermFilter(arguments.rawQuery,'',variables.event.getValue('siteID'),variables.event.getValue('r').hasModuleAccess)/>
 </cffunction>
 	
 <cffunction name="newResultQuery" returntype="query" access="public" output="false">
