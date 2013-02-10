@@ -2587,13 +2587,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 		
 	<cfif listFindNoCase('small,medium,large',arguments.size)>
-		<cfif isNumeric(variables.$.siteConfig('smallImageWidth'))>
-			<cfset imageStyles.paddingLeft=variables.$.siteConfig('smallImageWidth') + arguments.padding>
+		<cfif isNumeric(variables.$.siteConfig('#arguments.size#ImageWidth'))>
+			<cfset imageStyles.paddingLeft=variables.$.siteConfig('#arguments.size#ImageWidth') + arguments.padding>
 		<cfelse>
 			<cfset imageStyles.paddingLeft="auto">
 		</cfif>
-		<cfif isNumeric(variables.$.siteConfig('smallImageHeight'))>
-			<cfset imageStyles.minHeight=variables.$.siteConfig('smallImageHeight') + arguments.padding>
+		<cfif isNumeric(variables.$.siteConfig('#arguments.size#ImageHeight'))>
+			<cfset imageStyles.minHeight=variables.$.siteConfig('#arguments.size#ImageHeight') + arguments.padding>
 		<cfelse>
 			<cfset imageStyles.minHeight="auto">
 		</cfif>
