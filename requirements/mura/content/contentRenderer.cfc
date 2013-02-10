@@ -2587,17 +2587,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 		
 	<cfif listFindNoCase('small,medium,large',arguments.size)>
-		<cfif variables.$.siteConfig('gallery#arguments.size#ScaleBy') eq 'x'>
-			<cfset imageStyles.paddingLeft=variables.$.siteConfig('gallery#arguments.size#Scale') + arguments.padding>
-			<cfset imageStyles.minHeight="auto">
-		<!--- Conditional styles for images constrained by height --->
-		<cfelseif variables.$.siteConfig('gallery#arguments.size#ScaleBy') eq 'y'>
-			<cfset imageStyles.paddingLeft="auto">
-			<cfset imageStyles.minHeight=variables.$.siteConfig('gallery#arguments.size#Scale') + arguments.padding>
+		<cfif isNumeric(variables.$.siteConfig('#arguments.size#ImageWidth'))>
+			<cfset imageStyles.paddingLeft=variables.$.siteConfig('#arguments.size#ImageWidth') + arguments.padding>
 		<cfelse>
-			<!--- Styles for images cropped to square --->
-			<cfset imageStyles.paddingLeft=variables.$.siteConfig('gallery#arguments.size#Scale') + arguments.padding>
-			<cfset imageStyles.minHeight=variables.$.siteConfig('gallery#arguments.size#Scale') + arguments.padding>
+			<cfset imageStyles.paddingLeft="auto">
+		</cfif>
+		<cfif isNumeric(variables.$.siteConfig('#arguments.size#ImageHeight'))>
+			<cfset imageStyles.minHeight=variables.$.siteConfig('#arguments.size#ImageHeight') + arguments.padding>
+		<cfelse>
+			<cfset imageStyles.minHeight="auto">
 		</cfif>
 	<cfelseif arguments.size eq 'custom'>
 		<cfif isNumeric(arguments.width)>
