@@ -210,8 +210,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         <cfelse>
 		      <a class="#icon# title" <cfif atooltip>rel="tooltip" data-html="true" title="#atitle#"</cfif>>
 		    </cfif>
-		#HTMLEditFormat(left(rc.rsTop.menutitle,70))#
-        <cfif len(rc.rsTop.menutitle) gt 70>&hellip;</cfif>
+		#HTMLEditFormat(left(rc.rsTop.menutitle,56))#<cfif len(rc.rsTop.menutitle) gt 56>&hellip;</cfif>
           </a>
         <!--- <div class="mura-title-fade"></div> --->
       </dt>
