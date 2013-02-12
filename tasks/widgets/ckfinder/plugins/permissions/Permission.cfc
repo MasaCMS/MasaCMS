@@ -140,7 +140,7 @@
                 <cfset var perm=application.permUtility.getGroupPerm(request.rslist.userid,attributes.contentid,attributes.siteid)/>
                 <cfscript>
 					var node = XMLElemNew(THIS.xmlObject, "Group");
-					node.xmlText = request.rslist.GroupName;
+					node.xmlAttributes["name"] = request.rslist.GroupName;
 					node.xmlAttributes["perm"] = perm;
 					node.xmlAttributes["groupid"] = request.rslist.UserID;
 					ArrayAppend(private.xmlChildren, node);
@@ -157,7 +157,7 @@
                 <cfset var perm=application.permUtility.getGroupPerm(request.rslist.userid,attributes.contentid,attributes.siteid)/>
                 <cfscript>
 					var node = XMLElemNew(THIS.xmlObject, "Group");
-					node.xmlText = request.rslist.GroupName;
+					node.xmlAttributes["name"] = request.rslist.GroupName;
 					node.xmlAttributes["perm"] = perm;
 					node.xmlAttributes["groupid"] = request.rslist.UserID;
 					ArrayAppend(private.xmlChildren, node);
