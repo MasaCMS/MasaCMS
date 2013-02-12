@@ -890,7 +890,7 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 <cfargument name="path" type="string" required="true">
 
 <cfset var loc = StructNew()>
-<cfset loc.return = "read"> <!--- Default --->
+<cfset loc.return = "editor"> <!--- Default --->
 
 	<cfscript>
 		// clean up paths
@@ -928,32 +928,33 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
         <cffile action="append" file="d:\cms_dev_svn\debug\log.htm" output="#loc.jon#">--->
 
 		<!--- Check if a value exists in the database for this item --->
-	    <cfquery name="qExists" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-            select dirId from tdirectories
-            where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
-                and subdir = <cfqueryparam cfsqltype="cf_sql_varchar" value="#loc.path#"/>
-                and editfilename = <cfqueryparam cfsqltype="cf_sql_varchar" value="#loc.editFileName#"/>
+	    <cfquery name="loc.qExists" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+            select tdirectories.dirId from tdirectories
+            inner join tpermissions on (tdirectories.dirId=tpermissions.contentid)
+            where tdirectories.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
+                and tdirectories.subdir = <cfqueryparam cfsqltype="cf_sql_varchar" value="#loc.path#"/>
+                and tdirectories.editfilename = <cfqueryparam cfsqltype="cf_sql_varchar" value="#loc.editFileName#"/>
 		</cfquery>
         
         <!--- if a record exists, check for permissions --->
-        <cfif qExists.RecordCount gt 0>
-
+        <cfif loc.qExists.RecordCount gt 0>
+        	<cfset loc.return = "deny">
 			<!---
             <cfsavecontent variable="loc.jon">
                 <cfoutput><p>Checking tpermissions for contentid='#qExists.dirId#' and groupid='#arguments.groupId#'</p></cfoutput>
             </cfsavecontent>
             <cffile action="append" file="d:\cms_dev_svn\debug\log.htm" output="#loc.jon#">--->
 
-            <cfquery name="qPerm" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+            <cfquery name="loc.qPerm" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
                 select type from tpermissions
                 where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
-                    and contentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#qExists.dirId#"/>
+                    and contentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#loc.qExists.dirId#"/>
                     and groupid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.groupId#"/>
             </cfquery>
             
 	        <!--- if a permissions record exists, break loop and return value --->
-			<cfif qPerm.RecordCount gt 0>
-            	<cfset loc.return = qPerm.type>
+			<cfif loc.qPerm.RecordCount gt 0>
+            	<cfset loc.return = loc.qPerm.type>
                 <cfbreak>
             </cfif>
         </cfif>
@@ -983,8 +984,8 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 <cfargument name="data" type="struct" />
 <cfargument name="siteid" type="string"/>
 
-<cfset var dirId = ""/>
-
+<cfset var dirId=""/>
+<cfset var qExists=""/>
 	
     <!--- insert new directory entry, if needed, and get id --->
 	<cfquery name="qExists" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
@@ -996,8 +997,8 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
     <cfif qExists.RecordCount gt 0>
     	<cfset dirId = qExists.dirId>
     <cfelse>
+    	<cfset dirId = CreateUUID()>
         <cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-        	<cfset dirId = CreateUUID()>
             insert into tdirectories (dirId, siteid, subdir, editfilename)
             values (
 	            <cfqueryparam cfsqltype="cf_sql_varchar" value="#dirId#"/>,
