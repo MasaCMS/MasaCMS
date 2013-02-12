@@ -150,9 +150,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<a class="<cfif attributes.rsNest.type eq 'File'>file #lcase(icon)#<cfelse>icon-mura-#lcase(icon)#</cfif> title"<cfif attributes.rsNest.type eq 'File'> data-filetype="#lcase(attributes.rsNest.fileExt)#"</cfif> <cfif atooltip>rel="tooltip" data-html="true" title="#atitle#"</cfif>>
 	</cfif>
-	#HTMLEditFormat(left(attributes.rsNest.menutitle,58))#<cfif len(attributes.rsNest.menutitle) gt 58>&hellip;</cfif>
+	#HTMLEditFormat(left(attributes.rsNest.menutitle,70))#<cfif len(attributes.rsNest.menutitle) gt 70>&hellip;</cfif>
 	<cfif isMore><span class="hasMore">&nbsp;(#application.rbFactory.getKeyValue(session.rb,"sitemanager.more")#)</span></cfif></a>
-	<!--- <div class="mura-title-fade"></div> --->
+	<div class="mura-title-fade"></div>
 </dt>	
 
 <cfif attributes.locking neq 'all'>
