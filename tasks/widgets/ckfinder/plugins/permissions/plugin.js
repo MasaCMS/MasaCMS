@@ -50,16 +50,18 @@ CKFinder.addPlugin( 'permissions', function( api ) {
 			for (var i = 0; i < private.length; i++) {
 				var perm = private[i].getAttribute('perm');
 				var groupid = private[i].getAttribute('groupid');
-				privateListSimple[i] = [private[i].textContent, groupid ];
-				privateList[i] = [ private[i].textContent + ' - ' + perm, private[i].textContent, perm, groupid ];
+				var groupname = private[i].getAttribute('name');
+				privateListSimple[i] = [groupname, groupid ];
+				privateList[i] = [ groupname + ' - ' + perm, groupname, perm, groupid ];
 			}
 
 			var public = xml.selectNodes('Connector/Public/Group')
 			for (var i = 0; i < public.length; i++) {
 				var perm = public[i].getAttribute('perm');
 				var groupid = public[i].getAttribute('groupid');
-				publicListSimple[i] = [public[i].textContent, groupid ];
-				publicList[i] = [ public[i].textContent + ' - ' + perm, public[i].textContent, perm, groupid ];
+				var groupname = public[i].getAttribute('name');
+				publicListSimple[i] = [groupname, groupid ];
+				publicList[i] = [ groupname + ' - ' + perm, groupname, perm, groupid ];
 			}
 			
 			var privategroups = dialog.getContentElement('tab1', 'privateperms');
