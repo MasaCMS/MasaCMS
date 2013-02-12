@@ -833,7 +833,7 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 <cfset loc.return = "deny">
 
 	<!--- Check for super admin --->
-	<cfif isS2() or isUserInGroup('Admin',getBean('siteManager').getSite(arguments.siteID).getPrivateUserPoolID(),0)>
+	<cfif isS2() or isUserInGroup('Admin',getBean('settingsManager').getSite(arguments.siteID).getPrivateUserPoolID(),0)>
     
     	<cfset loc.return = "editor">
     
