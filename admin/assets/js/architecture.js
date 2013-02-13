@@ -1347,7 +1347,8 @@ buttons: {
 			featureStop: $('#mura-quickEdit-featureStop').val(),
 			stopHour: $('#mura-quickEdit-stopHour').val(),
 			stopMinute: $('#mura-quickEdit-stopMinute').val(),
-			stopDayPart: $('#mura-quickEdit-stopDayPart').val()
+			stopDayPart: $('#mura-quickEdit-stopDayPart').val(),
+			siteid: siteid
 		};
 
 		//alert(JSON.stringify(categoryAssignment));
