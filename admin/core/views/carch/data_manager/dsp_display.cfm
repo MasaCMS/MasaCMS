@@ -47,8 +47,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfsilent>
 <cfif rc.contentBean.getResponseDisplayFields() neq "~">
-  <cfset summaryList=listfirst(rc.contentBean.getResponseDisplayFields(),"~")>
-  <cfset detailList=listLast(rc.contentBean.getResponseDisplayFields(),"~")>
+  <cfset summaryList=listLast(rc.contentBean.getResponseDisplayFields(),"~")>
+  <cfset detailList=listFirst(rc.contentBean.getResponseDisplayFields(),"~")>
   <cfelse>
   <cfset summaryList="">
   <cfset detailList="">
