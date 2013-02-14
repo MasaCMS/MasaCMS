@@ -72,8 +72,6 @@ ALTER TABLE tcontentcomments ADD subscribe NUMBER(3,0)
 </cfswitch>
 </cfif>
 
-</cfif>
-
 <cfset dbUtility.setTable("tcontentfeeds").addColumn(column="altname",dataType="varchar",length="250")>
 
 <!--- make sure tcontentcomment.cacheItem exists --->
