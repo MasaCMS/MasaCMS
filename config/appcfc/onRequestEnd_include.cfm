@@ -45,10 +45,12 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfparam name="local" default="#structNew()#">
-<cfif isDefined("request.servletEvent")>
-	<cfset application.eventManager.announceEvent("onGlobalRequestEnd",request.servletEvent)>
-<cfelseif isDefined("request.event")>
-	<cfset application.eventManager.announceEvent("onGlobalRequestEnd",request.event)>
-<cfelse>
-	<cfset application.eventManager.announceEvent("onGlobalRequestEnd",createObject("component","mura.cfobject"))>
+<cfif isDefined("application.eventManager")>
+	<cfif isDefined("request.servletEvent")>
+		<cfset application.eventManager.announceEvent("onGlobalRequestEnd",request.servletEvent)>
+	<cfelseif isDefined("request.event")>
+		<cfset application.eventManager.announceEvent("onGlobalRequestEnd",request.event)>
+	<cfelse>
+		<cfset application.eventManager.announceEvent("onGlobalRequestEnd",createObject("component","mura.cfobject"))>
+	</cfif>
 </cfif>
