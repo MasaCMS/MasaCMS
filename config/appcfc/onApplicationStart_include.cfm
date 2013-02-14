@@ -325,7 +325,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<!--- Fire local onApplicationLoad events--->
 		<cfset variables.rsSites=application.settingsManager.getList() />
-		<cfset variables.themeHash=structNew()>
+		
 		<cfloop query="variables.rsSites">
 			
 			<cfset variables.siteBean=application.settingsManager.getSite(variables.rsSites.siteID)>
