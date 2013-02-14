@@ -339,9 +339,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset variables.themeConfig="">
 			</cfif>
 			
-			<cfset variables.hashID = hash(variables.themedir&variables.rsSites.siteID) /><!--- more than one site might be pointing at this theme --->
-			<cfif len(variables.themeConfig) and not structKeyExists(variables.themeHash,variables.hashID)>
-				<cfset variables.themeHash[variables.hashID]=variables.themedir />
+			
+			<cfif len(variables.themeConfig)>
 				
 				<cfif variables.themeConfig eq "config.xml.cfm">
 					<cfsavecontent variable="variables.themeConfig">
