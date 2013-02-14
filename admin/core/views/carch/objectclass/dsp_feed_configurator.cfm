@@ -140,7 +140,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<div id="altNameContainer" class="control-group"<cfif NOT feed.getDisplayName()> style="display:none;"</cfif>>
 	<div>
 	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.altname')#</label>
-		<div class="controls"><input class="objectParam span12" name="altName" data-displayobjectparam="altName" type="text" value="#HTMLEditFormat(feed.getAltName())#" maxlength="50">
+		<div class="controls"><input class="objectParam span12" name="altName" data-displayobjectparam="altName" type="text" value="#HTMLEditFormat(feed.getAltName())#" maxlength="250">
 		  </div>
 	</div>
 </div>

@@ -205,7 +205,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="fieldset">
 	<div class="control-group">
 	  <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.name')#
-	  <label class="control-label"><input type="text" name="name" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.namerequired')#" value="#HTMLEditFormat(rc.feedBean.getName())#" maxlength="50"<cfif rc.feedBean.getIsLocked()> disabled="disabled"</cfif>>
+	  <label class="control-label"><input type="text" name="name" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.namerequired')#" value="#HTMLEditFormat(rc.feedBean.getName())#" maxlength="250"<cfif rc.feedBean.getIsLocked()> disabled="disabled"</cfif>>
 	</div>
 
 <div class="control-group">
@@ -442,7 +442,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <span id="altNameContainer" class="span6"<cfif NOT rc.feedBean.getDisplayName()> style="display:none;"</cfif>>
 	<div>
 	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.altname')#</label>
-		<div class="controls"><input class="span12" name="#displaNamePrefix#altName" data-displayobjectparam="altName" type="text" value="#HTMLEditFormat(rc.feedBean.getAltName())#" maxlength="50">
+		<div class="controls"><input class="span12" name="#displaNamePrefix#altName" data-displayobjectparam="altName" type="text" value="#HTMLEditFormat(rc.feedBean.getAltName())#" maxlength="250">
 		  </div>
 	</div>
 </span>
