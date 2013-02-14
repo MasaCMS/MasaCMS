@@ -339,8 +339,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset variables.themeConfig="">
 			</cfif>
 			
-			<cfif len(variables.themeConfig) and not structKeyExists(variables.themeHash,hash(variables.themedir))>
-				<cfset variables.themeHash[hash(variables.themedir)]=variables.themedir>
+			
+			<cfif len(variables.themeConfig)>
 				
 				<cfif variables.themeConfig eq "config.xml.cfm">
 					<cfsavecontent variable="variables.themeConfig">
