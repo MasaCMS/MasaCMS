@@ -72,31 +72,7 @@ ALTER TABLE tcontentcomments ADD subscribe NUMBER(3,0)
 </cfswitch>
 </cfif>
 
-<!--- make sure tcontentfeeds.altName exists --->
-
-<cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-select * from tcontentfeeds testAltName where 0=1
-</cfquery>
-
-<cfif not listFindNoCase(rsCheck.columnlist,"altName")>
-<cfswitch expression="#getDbType()#">
-<cfcase value="mssql">
-	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tcontentfeeds ADD altName [nvarchar](50) default NULL
-	</cfquery>
-</cfcase>
-<cfcase value="mysql">
-	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tcontentfeeds ADD COLUMN altName varchar(50) default NULL
-	</cfquery>
-</cfcase>
-<cfcase value="oracle">
-	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE "TCONTENTFEEDS" ADD altname varchar2(50)
-	</cfquery>
-</cfcase>
-</cfswitch>
-</cfif>
+<cfset dbUtility.setTable("tcontentfeeds").addColumn(column="altname",dataType="varchar",length="250")>
 
 <!--- make sure tcontentcomment.cacheItem exists --->
 <cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">

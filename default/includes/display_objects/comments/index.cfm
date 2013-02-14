@@ -150,7 +150,7 @@ to your own modified versions of Mura CMS.
 				
 				
 				<cfif request.commenteditmode eq "add">
-					<cfset commentBean=application.contentManager.saveComment(submittedData,event.getContentRenderer()) />
+					<cfset commentBean=application.contentManager.saveComment(submittedData) />
 				<cfelseif request.commenteditmode eq "edit" and request.isEditor>
 					
 					<cfset variables.commentBean=application.contentManager.getCommentBean().setCommentID(request.commentID).load()>
