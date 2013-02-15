@@ -77,7 +77,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset started=true>
 
 <div id="popularContent"<cfif started> class="divide"</cfif>>
-<h2><i class="icon-fire"></i> #application.rbFactory.getKeyValue(session.rb,"dashboard.popularcontent")# <span>(#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.span"),rc.span)#)</span></h2>
+<h2><i class="icon-thumbs-up"></i> #application.rbFactory.getKeyValue(session.rb,"dashboard.popularcontent")# <span>(#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.span"),rc.span)#)</span></h2>
 <span id="popularContentData"></span>
 </div>
 <script type="text/javascript">dashboardManager.loadPopularContent('#rc.siteid#');</script>
