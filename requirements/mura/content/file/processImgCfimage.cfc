@@ -138,7 +138,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		<!--- If the custom image size is not valid return the small --->
 		<cfif not isNumeric(arguments.Width) and not isNumeric(arguments.Height)>
-			<cfreturn arguments.fileID & "_small." & OriginalImageType>
+			<cfreturn "#OriginalImageFilename#_small.#OriginalImageType#">
 		</cfif>
 
 		<cfset variables.fileWriter.copyFile(source=OriginalImageFile,destination=NewImageSource)>
