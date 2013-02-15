@@ -140,7 +140,7 @@
 				min-height: 18px;
 				line-height: 20px;
 				white-space: wrap;
-				padding: 4px 5px 0 0;
+				padding: 5px 5px 0 0;
 				float: left;
 				color: @grayDarker;	
 			}
@@ -208,12 +208,16 @@
 				
 				
 				
-				&.icon-mura-folder:before { content: "\f07b"; }
+				&.icon-mura-folder:before { 
+					content: "\f114";
+					top: 2px;
+					font-size: 19px;
+					}
 				
 				&.icon-mura-page:before {
-					.icon-font('mura-icons');
-					content: "\36";
-					font-size: 17px;
+					.icon-font('FontAwesome');
+					content: "\f016";
+					font-size: 20px;
 					top: 2px;
 					margin-left: 1px;
 					width: 21px;
@@ -225,8 +229,8 @@
 				
 				&.icon-mura-calendar:before {
 					content: "\f073";
-					font-size: 22px;
-					top: 5px;
+					font-size: 16px;
+					top: 2px;
 					}
 					
 				&.icon-mura-gallery:before { content: "\f00a"; }
@@ -326,7 +330,7 @@
 					content: "\f0da"; // Right Caret Icon
 					}
 				
-				&.open + .icon-mura-folder:before { content: "\f07c" !important; }
+				&.open + .icon-mura-folder:before { content: "\f115" !important; }
 			
 			}
 						
@@ -1512,8 +1516,12 @@ text-shadow: 0 0 1px @blue;
 				
 				i {
 					font-size: 16px;
-					margin-right: .25em
+					margin-right: .25em;
+					position: relative;
+					top: 2px;
 				}
+				
+				&#newZoom i { top: 0; }
 				
 			}
 			
