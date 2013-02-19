@@ -550,6 +550,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="setTitle" output="false" access="public">
+    <cfargument name="title" type="string" required="true">
+   	<cfset arguments.title=trim(arguments.title)>
+
+   	<cfif len(arguments.title)>
+		<cfset variables.instance.title =arguments.title />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="setFilename" output="false">
 	<cfargument name="filename">
 	<cfset variables.instance.filename=left(arguments.filename,255)>
