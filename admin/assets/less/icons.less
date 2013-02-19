@@ -24,16 +24,16 @@
 		padding: 0;
 		margin-right: 2px;
 		clear: none !important;
-		line-height: 22px;
+		line-height: 16px;
 		
 		&.edit { margin-right: 1px; }
-		&.download i { font-size: 18px; }
+		&.download i { font-size: 16px; top: 1px; }
 		&.preview {  }
 		&.delete { margin-left: 1px; }
 		&.permissions + .delete { margin-left: 0; }
 		&.permissions { margin: 0 3px; }
-		&.version-history + .permissions { margin-left: 1px; }
-		&.download { margin: 0 2px 0 1px; }
+		&.version-history + .permissions { margin-left: 2px; }
+		&.download { margin: 0 2px 0 0; }
 		&.manage-data {  }
 		&.rss { margin: 0 4px 0 3px; }
 		&.import {  }
@@ -50,8 +50,10 @@
 	
 	i {
 		font-size: 14px;
+		height: 16px;
 		width: auto !important;
 		color: @iconColor;
+		position: relative;
 		/* text-shadow: 0 1px 0 rgba(255,255,255,1.0); */
 		
 		&:hover { color: @grayDarker; }
