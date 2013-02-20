@@ -235,7 +235,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	        </label>
 	      <div class="controls">
 	            <cfloop query="rc.rsPrivateGroups">
-	              <label class="checkbox inline">
+	              <label class="checkbox">
 	                <input type="checkbox" id="#rc.rsPrivateGroups.groupname##rc.rsPrivateGroups.UserID#" name="GroupID" class="checkbox" value="#rc.rsPrivateGroups.UserID#" <cfif  listfind(rc.emailBean.getgroupID(),rc.rsPrivateGroups.userid)>checked</cfif>> #rc.rsPrivateGroups.groupname#</label>
 	            </cfloop>
 	      </div>
@@ -249,7 +249,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         </label>
         <div class="controls">
               <cfloop query="rc.rsPublicGroups">
-                <label class="checkbox inline">
+                <label class="checkbox">
                   <input type="checkbox" id="#rc.rsPublicGroups.groupname##rc.rsPublicGroups.UserID#" name="GroupID"  class="checkbox" value="#rc.rsPublicGroups.UserID#" <cfif  listfind(rc.emailBean.getgroupID(),rc.rsPublicGroups.userid)>checked</cfif>> #rc.rsPublicGroups.groupname#</label>
                 </label>
               </cfloop>
@@ -277,7 +277,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         </label>
         <div class="controls controls-row">
               <cfloop query="rc.rsMailingLists">
-                <label class="checkbox inline">
+                <label class="checkbox">
                   <input type="checkbox" id="#rc.rsMailingLists.name##rc.rsMailingLists.mlid#" name="GroupID"  class="checkbox" value="#rc.rsMailingLists.mlid#" <cfif  listfind(rc.emailBean.getgroupID(),rc.rsMailingLists.mlid)>checked</cfif>>#rc.rsMailingLists.name#</span>
                 </label>
               </cfloop>
