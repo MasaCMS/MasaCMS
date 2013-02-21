@@ -57,7 +57,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   <span id="extendset-container-tablayoutobjectstop" class="extendset-container"></span>
 
   <div class="fieldset">
+  
       <div class="control-group">
+      
+        <div class="span6">
               <label class="control-label">
                 <cfoutput><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.layoutTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.layouttemplate')# <i class="icon-question-sign"></i></a></cfoutput>
             </label>
@@ -75,10 +78,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             </cfloop>
           </select>
         </div>
-      </div>
-
-      <div class="control-group">
-              <label class="control-label">
+        </div>
+        <div class="span6">
+        <label class="control-label">
                 <cfoutput><a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.childTemplate"))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.childtemplate')# <i class="icon-question-sign"></i></a></cfoutput>
               </label>
               <div class="controls">
@@ -93,7 +95,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             </cfloop>
           </select>
         </div>
-    </div>
+        </div>
+
+      </div>
  
     <div class="control-group">
       <label class="control-label"> <a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.inheritanceRules"))#"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritancerules')# <i class="icon-question-sign"></i> </a> </label>
