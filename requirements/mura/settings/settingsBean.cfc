@@ -554,7 +554,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="purgeCache" access="public" output="false">
-	<cfargument name="name" default="data" hint="data, output or both">
+	<cfargument name="name" default="output" hint="data, output or both">
 	<cfargument name="broadcast" default="true">
 	<cfset getCacheFactory(name=arguments.name).purgeAll()>
 	<cfif arguments.broadcast>

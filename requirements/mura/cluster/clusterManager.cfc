@@ -60,7 +60,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="name" required="true" default="both" hint="data, output or both">
 
 	<cfif variables.broadcastCachePurges>
-		<cfset broadcastCommand("getBean('settingsManager').getSite('#arguments.siteID#').purgeCache(name='#arguments.name#',broadcast=false)")>
+		<cfif listFindNoCase('output,data',arguments.name)>
+			<cfset broadcastCommand("getBean('settingsManager').getSite('#arguments.siteID#').purgeCache(name='#arguments.name#',broadcast=false)")>
+		<cfelse>
+			<cfset broadcastCommand("getBean('settingsManager').getSite('#arguments.siteID#').purgeCache(name='output',broadcast=false)")>
+			<cfset broadcastCommand("getBean('settingsManager').getSite('#arguments.siteID#').purgeCache(name='data',broadcast=false)")>
+		</cfif>
+		
 	</cfif>
 </cffunction>
 
