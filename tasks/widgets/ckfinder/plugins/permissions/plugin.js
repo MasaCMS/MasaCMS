@@ -96,6 +96,8 @@ CKFinder.addPlugin( 'permissions', function( api ) {
 				
 				// Populate select, based on whether we need private or public groups.
 				var ary = (bPrivateFlag) ? privateListSimple : publicListSimple;
+				groups.add('Select Group', '');
+
 				for (var i=0; i<ary.length; i++) {
 					groups.add(ary[i][0], ary[i][1]);
 				}
