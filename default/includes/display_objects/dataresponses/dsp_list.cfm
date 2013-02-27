@@ -54,7 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif len(variables.formBean.getValue('ResponseDisplayFields')) gt 0 and variables.formBean.getValue('ResponseDisplayFields') neq "~">
 	<cfset variables.data.fieldnames=replace(listLast(variables.formBean.getValue('ResponseDisplayFields'),"~"), "^", ",", "ALL")>
 <cfelse>
-	<cfset variables.data.fieldnames=application.dataCollectionManager.getCurrentFieldList(rc.contentid)/>
+	<cfset variables.data.fieldnames=application.dataCollectionManager.getCurrentFieldList(variables.data.contentid)/>
 </cfif>
 <cfset variables.rsdata=application.dataCollectionManager.getdata(variables.data)/>
 </cfsilent>
