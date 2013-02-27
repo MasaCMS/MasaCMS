@@ -111,7 +111,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <form id="#variables.frmID#" class="#variables.$.siteConfig('bsFormLayout')#" method="post"<cfif isMultipart>enctype="multipart/form-data"</cfif>>
 	#variables.frmFieldContents#
-	<div class="form-actions buttons"><input type="submit" class="btn" value="Submit"></div>
+	<div class="form-actions buttons"><input type="submit" class="btn" value="#$.rbKey('form.submit')#"></div>
 	#variables.$.dspObject_Include(thefile='dsp_form_protect.cfm')#
 	<!---#$.dspObject_Include(thefile='dsp_captcha.cfm')#--->
 </form>
