@@ -47,10 +47,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfsilent>
 <cfset variables.rsData=application.dataCollectionManager.read(request.responseid)/>
-<cfif len(variables.formBean.getValue('ResponseDisplayFields')) gt 0 and variables.formBean.getValue('ResponseDisplayFields') neq "~">
-	<cfset variables.fieldnames=replace(listFirst(variables.formBean.getValue('ResponseDisplayFields'),"~"), "^", ",", "ALL")>
+<cfif variables.formBean.getValue('ResponseDisplayFields') neq ''>
+<cfset variables.fieldnames=replace(listLast(variables.formBean.getValue('ResponseDisplayFields'),"~"),"^",",","ALL")/>
 <cfelse>
-	<cfset variables.fieldnames=application.dataCollectionManager.getCurrentFieldList(rc.contentid)/>
+<cfset variables.fieldnames=application.dataCollectionManager.getCurrentFieldList(variables.formBean.getValue('contentID'))/>
 </cfif>
 <cfwddx action="wddx2cfml" input="#variables.rsData.data#" output="variables.info">
 </cfsilent>

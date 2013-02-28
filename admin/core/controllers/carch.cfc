@@ -25,7 +25,6 @@
 	</cfif>
 
 	<cfparam name="arguments.rc.ajaxrequest" default="false"/>
-	<cfparam name="arguments.rc.orderno" default="0"/>
 	<cfparam name="arguments.rc.moduleid" default="00000000000000000000000000000000000"/>
 	
 	<cfif not arguments.rc.ajaxrequest>
@@ -93,6 +92,7 @@
 		<cfparam name="arguments.rc.locking" default="false"/>
 		<cfparam name="arguments.rc.mobileExclude" default="0"/>
 		<cfparam name="arguments.rc.moduleAssign" default=""/>
+		<cfparam name="arguments.rc.orderno" default="0"/>
 		 
 		<cfif not isDefined("arguments.rc.topid")>
 			<cfparam name="session.topID" default="00000000000000000000000000000000001">
@@ -223,7 +223,7 @@
 	 
 	<cfset request.newImageIDList="">
 
-	<cfif not isNumeric(arguments.rc.orderno)>
+	<cfif structKeyExists(arguments.rc,'orderno') and not isNumeric(arguments.rc.orderno)>
 		<cfset arguments.rc.orderno=0>
 	</cfif>
 	
