@@ -223,7 +223,7 @@
 	 
 	<cfset request.newImageIDList="">
 
-	<cfif not isNumeric(arguments.rc.orderno)>
+	<cfif structKeyExists(arguments.rc,'orderno') and not isNumeric(arguments.rc.orderno)>
 		<cfset arguments.rc.orderno=0>
 	</cfif>
 	
