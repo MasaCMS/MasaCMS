@@ -1210,16 +1210,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 					
 				<!--- Make sure preview data is in sync --->
-				<cfif isDefined('session.mura')>
-					<cfset changesetData=getCurrentUser().getValue("ChangesetPreviewData")>
-					<cfif isdefined("changesetData.changesetID")
-						and (
-								previousChangesetID eq changesetData.changesetID
-								or newBean.getChangesetID() eq changesetData.changesetID
-							)>
-						<cfset variables.changesetManager.setSessionPreviewData(changesetData.changesetID)>
-					</cfif>
-				</cfif>	
+				<cfif len(previousChangesetID)>
+					<cfset getBean('changeset').loadBy(changesetID=previousChangesetID,siteid=newBean.getSiteID()).save()>
+				</cfif>
+
+				<cfif len(newBean.getChangesetID()) and newBean.getChangesetID() neq previousChangesetID>
+					<cfset getBean('changeset').loadBy(changesetID=newBean.getChangesetID(),siteid=newBean.getSiteID()).save()>
+				</cfif>
 					
 				<cfset variables.trashManager.takeOut(newBean)>
 					
