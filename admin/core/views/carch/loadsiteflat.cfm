@@ -193,7 +193,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset editLink="index.cfm?muraAction=cArch.edit&contenthistid=#item.getContentHistID()#&contentid=#item.getContentID()#&type=#item.gettype()#&parentid=#item.getParentID()#&topid=#URLEncodedFormat(topID)#&siteid=#URLEncodedFormat(item.getSiteid())#&moduleid=#item.getmoduleid()#&startrow=#$.event('startrow')#">
 		</cfsilent>
 	
-		<tr data-siteid="#item.getSiteID()#" data-contentid="#item.getContentID()#" data-contenthistid="#item.getContentHistID()#" data-sortby="#item.getSortBy()#" data-sortdirection="#item.getSortDirection()#" data-moduleid="#HTMLEditFormat(item.getModuleID())#" data-type="#item.getType()#">
+		<tr data-siteid="#item.getSiteID()#" data-contentid="#item.getContentID()#" data-contenthistid="#item.getContentHistID()#" data-sortby="#item.getSortBy()#" data-sortdirection="#item.getSortDirection()#" data-moduleid="#HTMLEditFormat(item.getModuleID())#" data-type="#item.getType()#" class="mura-node-data">
 			<td class="add"><a class="add" href="javascript:;" onmouseover="siteManager.showMenu('newContentMenu','#newcontent#',this,'#item.getContentID()#','#item.getContentID()#','#item.getContentID()#','#item.getSiteID()#','#item.getType()#');"><i class="icon-plus-sign"></i></a></td>
 			<td class="var-width item">
 			
