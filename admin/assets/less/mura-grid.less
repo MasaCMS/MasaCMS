@@ -142,14 +142,13 @@
 				white-space: wrap;
 				padding: 5px 5px 0 0;
 				float: left;
-				color: @grayDarker;	
+				color: @grayDarker;		
 			}
 			
 			dt a.title {
 				overflow: hidden;
 				position: relative;
-				white-space: nowrap;
-				.text-overflow();
+				.text-overflow;
 				
 				&:hover { border-bottom: 1px dotted; }
 				&.locked {}
@@ -166,7 +165,7 @@
 					width: 22px;
 					text-align: center;
 					}
-										
+					
 				&.file {
 					
 					/* margin-left: -3px; */
@@ -211,7 +210,6 @@
 				&.icon-mura-folder:before { 
 					content: "\f114";
 					top: 2px;
-					font-size: 19px;
 					}
 				
 				&.icon-mura-page:before {
@@ -482,40 +480,40 @@
 			li .title { max-width: 80%; }
 			
 			li li .add { margin-right: 32px; }
-			li li .title { max-width: 83%; }
+			li li .title { max-width: 76%; }
 			
 			li li li .add { margin-right: 53px; }
-			li li li .title { max-width: 77%; }
+			li li li .title { max-width: 71%; }
 			
 			li li li li .add { margin-right: 73px; }
-			li li li li .title { max-width: 73%; }
+			li li li li .title { max-width: 66%; }
 			
 			li li li li li .add { margin-right: 93px; }
-			li li li li li .title { max-width: 68%; }
+			li li li li li .title { max-width: 61%; }
 			
 			li li li li li li .add { margin-right: 113px; }
-			li li li li li li .title { max-width: 63%; }
+			li li li li li li .title { max-width: 56%; }
 			
 			li li li li li li li .add { margin-right: 133px; }
-			li li li li li li li .title { max-width: 57%; }
+			li li li li li li li .title { max-width: 50%; }
 			
 			li li li li li li li li .add { margin-right: 153px; }
-			li li li li li li li li .title { max-width: 52%; }
+			li li li li li li li li .title { max-width: 45%; }
 			
 			li li li li li li li li li .add { margin-right: 173px; }
-			li li li li li li li li li .title { max-width: 47%; }
+			li li li li li li li li li .title { max-width: 40%; }
 			
 			li li li li li li li li li li .add { margin-right: 193px; }
-			li li li li li li li li li li .title { max-width: 42%; }
+			li li li li li li li li li li .title { max-width: 35%; }
 			
 			li li li li li li li li li li li .add { margin-right: 213px; }
-			li li li li li li li li li li li .title { max-width: 37%; }
+			li li li li li li li li li li li .title { max-width: 30%; }
 			
 			li li li li li li li li li li li li .add { margin-right: 233px; }
-			li li li li li li li li li li li li .title { max-width: 32%; }
+			li li li li li li li li li li li li .title { max-width: 25%; }
 			
 			li li li li li li li li li li li li li .add { margin-right: 253px; }
-			li li li li li li li li li li li li li .title { max-width: 27%; }
+			li li li li li li li li li li li li li .title { max-width: 20%; }
 		
 		}	
 		/* @end */
@@ -1234,15 +1232,16 @@
 			.cancel {
 				position: absolute;
 				top: 4px;
-				right: 4px;
+				right: 2px;
 				cursor: pointer;
 				
 				i {
 					font-size: 16px;
-					color: @grayDark;
+					color: @gray;
+					text-shadow: 0 -1px 0 #000;
 					
 					&:hover {
-						color: @gray;
+						color: @grayDark;
 						}
 					
 					}
@@ -1350,16 +1349,37 @@
 			background: url('../images/quickedit-bottom-hasdraft.png') no-repeat center bottom;
 		}
 		
+		.hasDraft .mura-quickEdit > i {
+				float: left !important;
+				margin-left: -4px !important;
+				font-size: 20px !important;
+				}
+		
 		.hasDraft .mura-quickEdit h1 {
-			color: #333232;
-			font-weight: bold;
-			background: url('../images/icons/unsubscribe_24x24.png') no-repeat left top;
-			height: 24px;
-			line-height: 26px;
-			padding-left: 28px;
+			color: #333 !important;
+			font-weight: bold !important;
+			font-size: 16px !important;
+			line-height: 20px !important;
+			margin-bottom: 2px !important;
 		}
 		
+		.hasDraft .mura-quickEdit .cancel {
+				
+				i {
+					font-size: 16px;
+					color: @grayDark;
+					text-shadow: 0 1px 0 #fff;
+					
+					&:hover {
+						color: @grayDarker;
+						}
+					
+					}
+				}
+		
 		.hasDraft .mura-quickEdit p {
+			clear: both;
+			line-height: 1.2;
 			font-size: @qeFontSize !important;
 		}
 		
