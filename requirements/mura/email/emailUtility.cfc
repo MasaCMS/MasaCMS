@@ -285,7 +285,7 @@ Select EmailID from temails where deliverydate <=<cfqueryparam cfsqltype="cf_sql
 <cfset var returnParams=""/>
 <cfset var t=0/>
 <cfset var f=0/>
-
+<cfset var scheme=""/>
 
 <cfset member=structNew()/>
 <cfset member.email=arguments.data.origin>
