@@ -140,13 +140,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="args" type="struct"/>	
 	<cfset var emailBean = "" /> 
 	<cfset var data=arguments.args />
+	<cfset var scheme = application.settingsManager.getSite(data.siteid).getScheme() />
 	
 	<cfswitch expression="#data.action#">
 	<cfcase value="Update">
-		<cfset data.bodyhtml=replaceNoCase(data.bodyhtml,'src="/','src="http://#variables.settingsManager.getSite(data.siteid).getDomain("production")##variables.configBean.getServerPort()#/','ALL')>
-		<cfset data.bodyhtml=replaceNoCase(data.bodyhtml,"src='/",'src="http://#variables.settingsManager.getSite(data.siteid).getDomain("production")##variables.configBean.getServerPort()#/','ALL')>
-		<cfset data.bodyhtml=replaceNoCase(data.bodyhtml,'href="/','href="http://#variables.settingsManager.getSite(data.siteid).getDomain("production")##variables.configBean.getServerPort()#/','ALL')>
-		<cfset data.bodyhtml=replaceNoCase(data.bodyhtml,"href='/",'href="http://#variables.settingsManager.getSite(data.siteid).getDomain("production")##variables.configBean.getServerPort()#/','ALL')>
+		<cfset data.bodyhtml=replaceNoCase(data.bodyhtml,'src="/','src="#scheme#://#variables.settingsManager.getSite(data.siteid).getDomain("production")##variables.configBean.getServerPort()#/','ALL')>
+		<cfset data.bodyhtml=replaceNoCase(data.bodyhtml,"src='/",'src="#scheme#://#variables.settingsManager.getSite(data.siteid).getDomain("production")##variables.configBean.getServerPort()#/','ALL')>
+		<cfset data.bodyhtml=replaceNoCase(data.bodyhtml,'href="/','href="#scheme#://#variables.settingsManager.getSite(data.siteid).getDomain("production")##variables.configBean.getServerPort()#/','ALL')>
+		<cfset data.bodyhtml=replaceNoCase(data.bodyhtml,"href='/",'href="#scheme#://#variables.settingsManager.getSite(data.siteid).getDomain("production")##variables.configBean.getServerPort()#/','ALL')>
 		
 		<cfif data.deliveryDate neq '' AND isDate(data.deliveryDate)>
 			<cfif data.timepart eq "PM">
@@ -179,10 +180,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfcase>
 	
 	<cfcase value="Add">
-		<cfset data.bodyhtml=replaceNoCase(data.bodyhtml,'src="/','src="http://#variables.settingsManager.getSite(data.siteid).getDomain("production")##variables.configBean.getServerPort()#/','ALL')>
-		<cfset data.bodyhtml=replaceNoCase(data.bodyhtml,"src='/",'src="http://#variables.settingsManager.getSite(data.siteid).getDomain("production")##variables.configBean.getServerPort()#/','ALL')>
-		<cfset data.bodyhtml=replaceNoCase(data.bodyhtml,'href="/','href="http://#variables.settingsManager.getSite(data.siteid).getDomain("production")##variables.configBean.getServerPort()#/','ALL')>
-		<cfset data.bodyhtml=replaceNoCase(data.bodyhtml,"href='/",'href="http://#variables.settingsManager.getSite(data.siteid).getDomain("production")##variables.configBean.getServerPort()#/','ALL')>
+		<cfset data.bodyhtml=replaceNoCase(data.bodyhtml,'src="/','src="#scheme#://#variables.settingsManager.getSite(data.siteid).getDomain("production")##variables.configBean.getServerPort()#/','ALL')>
+		<cfset data.bodyhtml=replaceNoCase(data.bodyhtml,"src='/",'src="#scheme#://#variables.settingsManager.getSite(data.siteid).getDomain("production")##variables.configBean.getServerPort()#/','ALL')>
+		<cfset data.bodyhtml=replaceNoCase(data.bodyhtml,'href="/','href="#scheme#://#variables.settingsManager.getSite(data.siteid).getDomain("production")##variables.configBean.getServerPort()#/','ALL')>
+		<cfset data.bodyhtml=replaceNoCase(data.bodyhtml,"href='/",'href="#scheme#://#variables.settingsManager.getSite(data.siteid).getDomain("production")##variables.configBean.getServerPort()#/','ALL')>
 		
 		<cfif isDate(data.deliveryDate)>
 			<cfif data.timepart eq "PM">

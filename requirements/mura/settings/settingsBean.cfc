@@ -869,4 +869,9 @@ if(not isObject(arguments.$)){
 	<cfreturn application.settingsManager.read(argumentCollection=arguments)>
 </cffunction>
 
+<cffunction name="getScheme">
+	<!--- Temporary : will eventually be a Site Setting, but for now, pull from extranetSSL --->
+	<cfreturn getValue('extranetSSL') ? 'https' : 'http' />
+</cffunction>
+
 </cfcomponent>
