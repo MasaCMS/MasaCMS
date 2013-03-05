@@ -131,7 +131,7 @@ div.tooltip {
 // Additional Mura styles -- Move to separate file?
 .alert {
 	
-	padding: 12px 30px 12px 58px;
+	padding: 12px 30px 12px 48px;
 	margin-left: -1px;
 	margin-bottom: @baseLineHeight;
 	.border-radius(3px);
@@ -169,7 +169,8 @@ div.tooltip {
 		.inline-block();
 		margin-right: @gridGutterWidth/2;
 		position: absolute;
-		top: 1px;
+		top: 44%;
+		margin-top: -18px;
 		left: 13px;
 		content: "\f05a";
 		color: @warningBorder;
@@ -190,12 +191,12 @@ div.tooltip {
 	}
 
 .alert-error {
-
+	padding-left: 50px;
 	border-color: @errorBorder;
 	background-color: @errorBackground;
 	
 	&:before {
-		top: 10px;
+		margin-top: -16px;
 		content: "\f071";
 		color: @errorBorder;
 		}
