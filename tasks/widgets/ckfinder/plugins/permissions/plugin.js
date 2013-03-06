@@ -22,12 +22,11 @@ CKFinder.addPlugin( 'permissions', function( api ) {
 
 			if ( xml.checkError() )
 				return;
-				
+		
 			privateListSimple = new Array();
 			publicListSimple = new Array();
 			var privateList = new Array();
 			var publicList = new Array();
-				
 
 			g_subdir = xml.selectSingleNode( 'Connector/Path/@subdir' ).value;
 			g_editfilename = xml.selectSingleNode( 'Connector/Path/@editFileName' ).value;
@@ -119,12 +118,14 @@ CKFinder.addPlugin( 'permissions', function( api ) {
 					{
 						if ( xml.checkError() )
 							return;
+
+						updatePerms(dlgMain);
 							
 					}
 				);
 				
 				// Update dialog to show changes.				
-				updatePerms(dlgMain);
+				//updatePerms(dlgMain);
 				return undefined;
 			},
 			contents : [
