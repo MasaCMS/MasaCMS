@@ -313,7 +313,7 @@ order by tformresponsepackets.entered asc
 					for (p=0; p < poll.length; p++) {
 							if(poll[p].type =='radio'){polllist.push(escape(poll[p].value));}
 						}
-				if(polllist.length > 0) {frm.setAttribute('?nocache=1&polllist='+ polllist.toString());}		
+				if(polllist.length > 0) {frm.setAttribute('action','?nocache=1&polllist='+ polllist.toString());}		
 			</cfif>
 		</cfif>
 		if( !(typeof(window.jQuery) != 'undefined' && typeof(window.jQuery.mobile) != 'undefined') ){
