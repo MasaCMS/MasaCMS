@@ -55,8 +55,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<div class="fieldset">
 		<div class="control-group">
 			<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.usagetext')#:</label>
-		<div class="controls">
-	 <table id="metadata" class="table table-striped table-condensed table-bordered mura-table-grid">
+			<div class="controls">
+				<table id="metadata" class="table table-striped table-condensed table-bordered mura-table-grid">
 	    <tr> 
 	      <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'collections.title')#</th>
 	      <th>#application.rbFactory.getKeyValue(session.rb,'collections.display')#</th>
@@ -80,7 +80,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	      </tr>
 	    </cfif>
 	</table>
-	</div>
-	</div>
+		 	</div>
+		 </div>
 	</div>
 </div>
