@@ -5,6 +5,7 @@
 <!--[if lt IE 7 ]><html class="mura ie ie6" lang="#HTMLEditFormat(session.locale)#"> <![endif]-->
 <!--[if IE 7 ]><html class="mura ie ie7" lang="#HTMLEditFormat(session.locale)#"> <![endif]-->
 <!--[if IE 8 ]><html class="mura ie ie8" lang="#HTMLEditFormat(session.locale)#"> <![endif]-->
+<!--[if IE 9 ]><html class="mura ie ie9" lang="#HTMLEditFormat(session.locale)#"> <![endif]-->
 <!--[if (gte IE 9)|!(IE)]><!--><html lang="#HTMLEditFormat(session.locale)#" class="mura ie"><!--<![endif]-->
 <cfelse>
 <html lang="#HTMLEditFormat(session.locale)#" class="mura">

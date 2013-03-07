@@ -43,14 +43,6 @@
 	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
-.mura.ie {
-  /*
-&.ie9 {
-	
-}
-*/
-
-}
 .mura.ie .navbar-inner {
   filter: none;
 }
@@ -61,6 +53,18 @@
 .mura.ie .mura-grid dt a.title {
   overflow-x: hidden !important;
   text-overflow: clip !important;
+  font-family: sans-serif;
+}
+.mura.ie .mura-grid dt a.title:before {
+  font-family: FontAwesome;
+}
+.mura.ie input[type="radio"],
+.mura.ie input[type="checkbox"] {
+  padding-left: 10px;
+  box-shadow: none;
+  vertical-align: middle;
+  min-height: 0;
+  padding-top: 0;
 }
 .mura.ie.ie7 {
   /*
@@ -295,13 +299,6 @@
 .mura.ie.ie8 {
   /* Fixes form input height */
 
-  /*
-		.mura-modal, .modal-backdrop {
-			background: #000;
-			opacity: .8;
-		}
-	*/
-
 }
 .mura.ie.ie8 .dropdown-menu li.divider {
   background: transparent;
@@ -312,7 +309,7 @@
   background: #333;
 }
 .mura.ie.ie8 .row-fluid [class*="span"] {
-  min-height: 20px;
+  min-height: 18px;
 }
 .mura.ie.ie8 #tabCategorization .mura-grid .categoryLabelContainer {
   padding-bottom: 0;
@@ -320,7 +317,9 @@
 .mura.ie.ie8 #tabCategorization .mura-grid label {
   margin-bottom: 0;
 }
-.mura.ie.ie8 input[type="text"] {
-  height: 24px !important;
-  min-height: 24px !important;
+.mura.ie.ie8 #clogin input[type="text"],
+.mura.ie.ie9 #clogin input[type="text"],
+.mura.ie.ie8 #clogin input[type="password"],
+.mura.ie.ie9 #clogin input[type="password"] {
+  width: 270px;
 }
