@@ -776,7 +776,11 @@ s
 <cfif not isObject(arguments.$)>
 	<cfif not isObject(variables.instance.contentRenderer)>
 		<cfset arguments.$=getBean("$")>
-		<cfset variables.instance.contentRenderer=createObject("component","#getAssetMap()#.includes.contentRenderer").init(event=arguments.$.event(),$=arguments.$,MURA=arguments.$)>
+		<cfif fileExists(expandPath("#getIncludePath()#/includes/contentRenderer.cfc"))>
+			<cfset variables.instance.contentRenderer=createObject("component","#getAssetMap()#.includes.contentRenderer").init(event=arguments.$.event(),$=arguments.$,MURA=arguments.$)>
+		<cfelse>
+			<cfset variables.instance.contentRenderer=createObject("component","mura.content.contentRenderer").init(event=arguments.$.event(),$=arguments.$,MURA=arguments.$)>
+		</cfif>
 	</cfif>
 	<cfreturn variables.instance.contentRenderer>
 <cfelse>
