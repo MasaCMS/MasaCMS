@@ -47,7 +47,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="local" default="#structNew()#">
 <cfparam name="application.setupComplete" default="false">
 <cfparam name="application.appInitialized" default="false">
-
+<cfprocessingdirective pageencoding="utf-8"/>
+	
 <!--- Double check that the application has started properly.
 If it has not set application.appInitialized=false. --->
 <cftry>
@@ -102,9 +103,6 @@ If it has not set application.appInitialized=false. --->
 <cfif not isDefined("application.cfstatic")>
 	<cfset application.cfstatic=structNew()>
 </cfif>
-
-<cfprocessingdirective pageencoding="utf-8"/>
-<cfsetting requestTimeout = "1000">
 
 <cfif not StructKeyExists(cookie, 'userid')>
 	  <cfcookie name="userid" expires="never" value="">

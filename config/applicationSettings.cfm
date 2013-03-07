@@ -191,6 +191,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset this.sessionTimeout = createTimeSpan(0,0,5,0)>
 	</cfif>
 	
+	<cfset this.timeout = roperties.getProperty("requesttimeout","1000")>
+	
 	<!--- define a list of custom tag paths. --->
 	<cfset this.customtagpaths = properties.getProperty("customtagpaths","") />
 	<cfset this.customtagpaths = listAppend(this.customtagpaths,variables.mapPrefix & variables.baseDir  &  "/requirements/custom_tags/")>
