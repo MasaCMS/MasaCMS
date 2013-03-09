@@ -121,7 +121,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</ul>
 	</div>
 	
-	<div id="svPortal" class="svIndex">
+	<div id="svFolder" class="svIndex">
 		#variables.$.dspObject_Include(
 			thefile='dsp_content_list.cfm',
 			fields=variables.contentListFields,
