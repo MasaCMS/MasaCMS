@@ -1947,14 +1947,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="openFolders" type="string" default="">
 	<cfargument name="class" type="string" default="">
 	<cfargument name="showCurrentChildrenOnly" type="boolean" default="false">
+	<cfargument name="aHasKidsClass" type="string" default="">
 	<cfargument name="aHasKidsCustomString" type="string" default="">
-	
+
 	<cfset var thenav="" />
 	<cfset var topIndex= arrayLen(this.crumbdata)-this.navOffSet />
 	<cfset var tracePoint=0>
 
 	<!--- hack or issue with bootstrap that breaks link with kids --->
-	<cfif arguments.aHasKidsCustomString eq 'role="button" data-toggle="dropdown" data-target="##"'>
+	<cfif arguments.aHasKidsClass 'dropdown-toggle' and arguments.aHasKidsCustomString eq 'role="button" data-toggle="dropdown" data-target="##"'>
 		<cfset arguments.aHasKidsCustomString=''>
 	</cfif>
 
