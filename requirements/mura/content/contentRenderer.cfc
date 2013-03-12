@@ -1955,7 +1955,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var tracePoint=0>
 
 	<!--- hack or issue with bootstrap that breaks link with kids --->
-	<cfif arguments.aHasKidsClass 'dropdown-toggle' and arguments.aHasKidsCustomString eq 'role="button" data-toggle="dropdown" data-target="##"'>
+	<cfif arguments.aHasKidsClass eq 'dropdown-toggle' and arguments.aHasKidsCustomString eq 'role="button" data-toggle="dropdown" data-target="##"'>
 		<cfset arguments.aHasKidsCustomString=''>
 	</cfif>
 
