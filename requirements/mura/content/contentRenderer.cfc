@@ -2045,13 +2045,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getCurrentURL" access="public" returntype="string" output="false">
 <cfargument name="complete" required="true" type="boolean" default="true" />
 <cfargument name="injectVars" required="true" type="string" default="" />
+<cfargument name="filterVars" required="true" type="boolean" default="true" />
 	<cfset var qrystr=''>
 	<cfset var host=''>
 	<cfset var item = "" />
 	
 	<cfloop collection="#url#" item="item">
-		<cfif not listFindNoCase('NOCACHE,PATH,DELETECOMMENTID,APPROVEDCOMMENTID,LOADLIST,INIT,SITEID,DISPLAY,#ucase(application.appReloadKey)#',item) 
-			 and not (item eq 'doaction' and url[item] eq 'logout') >	
+		<cfif not arguments.filterVars or (not listFindNoCase('NOCACHE,PATH,DELETECOMMENTID,APPROVEDCOMMENTID,LOADLIST,INIT,SITEID,DISPLAY,#ucase(application.appReloadKey)#',item) 
+			 and not (item eq 'doaction' and url[item] eq 'logout')) >	
 			<cftry>
 			<cfif len(qrystr)>	
 					<cfset qrystr="#qrystr#&#item#=#url[item]#">	

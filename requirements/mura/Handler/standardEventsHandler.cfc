@@ -232,9 +232,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="event" required="true">
 	
 	<cfif application.utility.isHTTPS()>
-		<cflocation addtoken="no" url="http://#application.settingsManager.getSite(arguments.event.getValue('siteID')).getDomain()##application.configBean.getServerPort()##arguments.event.getContentRenderer().getCurrentURL(false)#">
+		<cflocation addtoken="no" url="http://#application.settingsManager.getSite(arguments.event.getValue('siteID')).getDomain()##application.configBean.getServerPort()##arguments.event.getContentRenderer().getCurrentURL(complete=false,filterVars=false)#">
 	<cfelse>
-		<cflocation addtoken="no" url="https://#application.settingsManager.getSite(arguments.event.getValue('siteID')).getDomain()##application.configBean.getServerPort()##arguments.event.getContentRenderer().getCurrentURL(false)#">
+		<cflocation addtoken="no" url="https://#application.settingsManager.getSite(arguments.event.getValue('siteID')).getDomain()##application.configBean.getServerPort()##arguments.event.getContentRenderer().getCurrentURL(complete=false,filterVars=false)#">
 	</cfif>
 </cffunction>
 
