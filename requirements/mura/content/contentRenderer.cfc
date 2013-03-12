@@ -1081,7 +1081,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 		
 	<cfset href=createHREF(arguments.type,arguments.filename,arguments.siteid,arguments.contentid,arguments.target,iif(arguments.filename eq variables.event.getValue('contentBean').getfilename(),de(''),de(arguments.targetParams)),arguments.queryString,arguments.context,arguments.stub,arguments.indexFile,arguments.complete,arguments.showMeta)>
-	<cfset link='<a href="#href#"#iif(len(theClass),de(' class="#theClass#"'),de(""))##iif(len(arguments.id),de(' id="#arguments.id#"'),de(""))##iif(arguments.showCurrent,de(' #arguments.aCurrentCustomString#'),de(""))##iif(arguments.isParent and len(arguments.aHasKidsCustomString),de(' #arguments.aHasKidsCustomString#'),de(""))#>#HTMLEditFormat(arguments.title)#</a>' />
+	<cfset link='<a href="#href#"#iif(len(theClass),de(' class="#theClass#"'),de(""))##iif(len(arguments.id),de(' id="#arguments.id#"'),de(""))##iif(arguments.showCurrent,de(' #replace(arguments.aCurrentCustomString,"##","####","all")#'),de(""))##iif(arguments.isParent and len(arguments.aHasKidsCustomString),de(' #replace(arguments.aHasKidsCustomString,"##","####","all")#'),de(""))#>#HTMLEditFormat(arguments.title)#</a>' />
 	<cfreturn link>
 </cffunction>
 
@@ -1921,6 +1921,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset linkArgs.siteID=variables.event.getValue('siteID')>
 			<cfset linkArgs.querystring=arguments.querystring>
 			<cfset linkArgs.isParent=subnav>
+			<cfset structAppend(linkArgs,arguments,false)>
 			<cfset link=addlink(argumentCollection=linkArgs)>
 			
 			</cfsilent>
@@ -1946,10 +1947,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="openFolders" type="string" default="">
 	<cfargument name="class" type="string" default="">
 	<cfargument name="showCurrentChildrenOnly" type="boolean" default="false">
+	<cfargument name="aHasKidsClass" type="string" default="">
+	<cfargument name="aHasKidsCustomString" type="string" default="">
 
 	<cfset var thenav="" />
 	<cfset var topIndex= arrayLen(this.crumbdata)-this.navOffSet />
 	<cfset var tracePoint=0>
+
+	<!--- hack or issue with bootstrap that breaks link with kids --->
+	<cfif arguments.aHasKidsClass eq 'dropdown-toggle' and arguments.aHasKidsCustomString eq 'role="button" data-toggle="dropdown" data-target="##"'>
+		<cfset arguments.aHasKidsCustomString=''>
+	</cfif>
 
 	<cfif isDefined("arguments.closePortals")>
 		<cfset arguments.closeFolders=arguments.closePortals>
@@ -2044,13 +2052,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getCurrentURL" access="public" returntype="string" output="false">
 <cfargument name="complete" required="true" type="boolean" default="true" />
 <cfargument name="injectVars" required="true" type="string" default="" />
+<cfargument name="filterVars" required="true" type="boolean" default="true" />
 	<cfset var qrystr=''>
 	<cfset var host=''>
 	<cfset var item = "" />
 	
 	<cfloop collection="#url#" item="item">
-		<cfif not listFindNoCase('NOCACHE,PATH,DELETECOMMENTID,APPROVEDCOMMENTID,LOADLIST,INIT,SITEID,DISPLAY,#ucase(application.appReloadKey)#',item) 
-			 and not (item eq 'doaction' and url[item] eq 'logout') >	
+		<cfif not arguments.filterVars or (not listFindNoCase('NOCACHE,PATH,DELETECOMMENTID,APPROVEDCOMMENTID,LOADLIST,INIT,SITEID,DISPLAY,#ucase(application.appReloadKey)#',item) 
+			 and not (item eq 'doaction' and url[item] eq 'logout')) >	
 			<cftry>
 			<cfif len(qrystr)>	
 					<cfset qrystr="#qrystr#&#item#=#url[item]#">	
