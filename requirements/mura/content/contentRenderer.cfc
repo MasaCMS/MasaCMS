@@ -1081,7 +1081,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 		
 	<cfset href=createHREF(arguments.type,arguments.filename,arguments.siteid,arguments.contentid,arguments.target,iif(arguments.filename eq variables.event.getValue('contentBean').getfilename(),de(''),de(arguments.targetParams)),arguments.queryString,arguments.context,arguments.stub,arguments.indexFile,arguments.complete,arguments.showMeta)>
-	<cfset link='<a href="#href#"#iif(len(theClass),de(' class="#theClass#"'),de(""))##iif(len(arguments.id),de(' id="#arguments.id#"'),de(""))##iif(arguments.showCurrent,de(' #arguments.aCurrentCustomString#'),de(""))##iif(arguments.isParent and len(arguments.aHasKidsCustomString),de(' #arguments.aHasKidsCustomString#'),de(""))#>#HTMLEditFormat(arguments.title)#</a>' />
+	<cfset link='<a href="#href#"#iif(len(theClass),de(' class="#theClass#"'),de(""))##iif(len(arguments.id),de(' id="#arguments.id#"'),de(""))##iif(arguments.showCurrent,de(' #replace(arguments.aCurrentCustomString,"##","####","all")#'),de(""))##iif(arguments.isParent and len(arguments.aHasKidsCustomString),de(' #replace(arguments.aHasKidsCustomString,"##","####","all")#'),de(""))#>#HTMLEditFormat(arguments.title)#</a>' />
 	<cfreturn link>
 </cffunction>
 
@@ -1921,6 +1921,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset linkArgs.siteID=variables.event.getValue('siteID')>
 			<cfset linkArgs.querystring=arguments.querystring>
 			<cfset linkArgs.isParent=subnav>
+			<cfset structAppend(linkArgs,arguments,false)>
 			<cfset link=addlink(argumentCollection=linkArgs)>
 			
 			</cfsilent>
