@@ -1921,7 +1921,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset linkArgs.siteID=variables.event.getValue('siteID')>
 			<cfset linkArgs.querystring=arguments.querystring>
 			<cfset linkArgs.isParent=subnav>
-			<cfset structAppend(linkArgs,arguments,false)>
 			<cfset link=addlink(argumentCollection=linkArgs)>
 			
 			</cfsilent>
