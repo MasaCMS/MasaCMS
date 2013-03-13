@@ -241,7 +241,14 @@ aside {
 // @end
 
 ul.nav li:hover ul.dropdown-menu {
-    display: inline-block;   
+    display: inline-block;
+    //Second Level Flyouts
+    ul.dropdown-menu{
+	    display: none;
+	}
+	.dropdown-submenu:hover > ul.dropdown-menu{
+	    display: block;
+    }  
 }
 
 a.menu:after, .dropdown-toggle:after {
