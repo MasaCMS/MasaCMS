@@ -2058,7 +2058,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var item = "" />
 	
 	<cfloop collection="#url#" item="item">
-		<cfif not arguments.filterVars or (not listFindNoCase('NOCACHE,PATH,DELETECOMMENTID,APPROVEDCOMMENTID,LOADLIST,INIT,SITEID,DISPLAY,#ucase(application.appReloadKey)#',item) 
+		<cfif not arguments.filterVars and item neq 'path' or (not listFindNoCase('NOCACHE,PATH,DELETECOMMENTID,APPROVEDCOMMENTID,LOADLIST,INIT,SITEID,DISPLAY,#ucase(application.appReloadKey)#',item) 
 			 and not (item eq 'doaction' and url[item] eq 'logout')) >	
 			<cftry>
 			<cfif len(qrystr)>	
