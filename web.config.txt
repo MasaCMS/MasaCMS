@@ -65,6 +65,32 @@
 			<action type="Rewrite" url="/{R:1}/index.cfm/{R:2}" />
 		</rule>
 		
+		<!--
+			Rewrite rules to allow each site to have their own respective sitemap.xml and robots.txt for SEO
+				NOTES:
+					- Works well with Meld Google Sitemaps Plugin
+					- Must duplicate rules for each site needed
+					- Replace domain and siteID with respective domain and siteID per instance
+		-->
+		
+		<!--		
+		<rule name="Sitemap" stopProcessing="true">
+            <match url="^sitemap.xml$" />
+            <conditions logicalGrouping="MatchAll">
+                <add input="{HTTP_HOST}" pattern="^www.domain.com$" ignoreCase="false" />
+            </conditions>
+            <action type="Rewrite" url="/siteID/sitemap.xml" />
+        </rule>
+        
+        <rule name="Robots" stopProcessing="true">
+            <match url="^robots.txt$" />
+            <conditions logicalGrouping="MatchAll">
+                <add input="{HTTP_HOST}" pattern="^www.domain.com$" ignoreCase="false" />
+            </conditions>
+            <action type="Rewrite" url="/siteID/robots.txt" />
+        </rule>
+        -->
+		
 	</rules>
 </rewrite>
 

@@ -38,7 +38,7 @@
 							ulNestedClass='dropdown-menu',
 							liHasKidsClass='dropdown',
 							liHasKidsCustomString='',
-							liHasKidsNestedClass='',
+							liHasKidsNestedClass='dropdown-submenu',
 							liNestedClass='',
 							aHasKidsClass='dropdown-toggle',
 							aHasKidsCustomString='',
