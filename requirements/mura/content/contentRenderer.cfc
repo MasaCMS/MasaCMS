@@ -102,6 +102,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.ulPaginationWrapperClass="pagination">
 <cfset this.formWrapperClass="well">
 <cfset this.generalWrapperClass="well">
+<cfset this.aNotCurrentClass="">
 
 
 <cffunction name="init" returntype="any" access="public" output="false">
@@ -469,6 +470,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="ulNestedClass" required="true" default="#this.ulNestedClass#">
 		<cfargument name="ulNestedCustomString" required="true" default="#this.ulNestedCustomString#">
 		<cfargument name="openCurrentOnly" required="true" default="false">
+		<cfargument name="aNotCurrentClass" required="true" default="#this.aNotCurrentClass#">
 
 		<cfset var rsSection=arguments.rs>
 		<cfset var adjust=0>
@@ -545,6 +547,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset linkArgs=structNew()>
 				<cfset linkArgs.aHasKidsClass=arguments.aHasKidsClass>
 				<cfset linkArgs.aHasKidsCustomString=arguments.aHasKidsCustomString>
+				<cfset linkArgs.aNotCurrentClass=arguments.aNotCurrentClass>
 				<cfset linkArgs.aCurrentClass=arguments.aCurrentClass>
 				<cfset linkArgs.aCurrentCustomString=arguments.aCurrentCustomString>
 				<cfset linkArgs.type=rsSection.type>
@@ -1065,6 +1068,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="aCurrentClass" required="true" default="#this.aCurrentClass#">
 	<cfargument name="aCurrentCustomString" required="true" default="#this.aCurrentCustomString#">
 	<cfargument name="isParent" required="true" default="false">
+	<cfargument name="aNotCurrentClass" required="true" default="#this.aNotCurrentClass#">
 			
 	<cfset var link ="">
 	<cfset var href ="">
@@ -1075,6 +1079,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfif arguments.showCurrent>					
 		<cfset theClass=listAppend(theClass,arguments.aCurrentClass," ") />
+	<cfelseif len(arguments.aNotCurrentClass)>
+		<cfset theClass=listAppend(theClass,arguments.aNotCurrentClass," ") />
 	</cfif>
 	<cfif arguments.isParent>					
 		<cfset theClass=listAppend(theClass,arguments.aHasKidsClass," ") />
@@ -1768,6 +1774,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="aCurrentCustomString" required="true" default="">
 		<cfargument name="ulNestedClass" required="true" default="">
 		<cfargument name="ulNestedCustomString" required="true" default="">
+		<cfargument name="aNotCurrentClass" required="true" default="#this.aNotCurrentClass#">
 
 		<cfset var rsSection=variables.contentGateway.getKids('00000000000000000000000000000000000',variables.event.getValue('siteID'),arguments.contentid,arguments.type,arguments.today,0,'',0,arguments.sortBy,arguments.sortDirection,'','','',true)>
 		<cfset var adjust=0>
@@ -1835,7 +1842,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<cfset started=true>
 				<ul<cfif arguments.currDepth eq 1>#iif(arguments.id neq '',de(' id="#arguments.id#"'),de(''))##iif(arguments.menuClass neq '',de(' class="#arguments.menuClass#"'),de(''))#<cfelse><cfif len(arguments.ulNestedClass)> class="#arguments.ulNestedClass#"</cfif><cfif len(arguments.ulNestedCustomString)> #arguments.ulNestedCustomString#</cfif></cfif>>
-				<li class="first<cfif variables.event.getValue('contentBean').getcontentid() eq arguments.contentid> #arguments.liCurrentClass#</cfif>" id="navHome"<cfif len(arguments.liCurrentCustomString)> #arguments.liCurrentCustomString#</cfif>><a href="#homeLink#"<cfif len(arguments.aCurrentClass) and $.content('contentID') eq '00000000000000000000000000000000001'> class="#arguments.aCurrentClass#"</cfif><cfif len(arguments.aCurrentCustomString)> #arguments.aCurrentCustomString#</cfif>>#HTMLEditFormat(rsHome.menuTitle)#</a></li>
+				<li class="first<cfif variables.event.getValue('contentBean').getcontentid() eq arguments.contentid> #arguments.liCurrentClass#</cfif>" id="navHome"<cfif len(arguments.liCurrentCustomString)> #arguments.liCurrentCustomString#</cfif>><a href="#homeLink#"<cfif len(arguments.aCurrentClass) and $.content('contentID') eq '00000000000000000000000000000000001'> class="#arguments.aCurrentClass#"<cfelseif len(arguments.aNotCurrentClass)> class="#arguments.aNotCurrentClass#"</cfif><cfif len(arguments.aCurrentCustomString)> #arguments.aCurrentCustomString#</cfif>>#HTMLEditFormat(rsHome.menuTitle)#</a></li>
 			</cfif>
 			
 			<cfloop query="rsSection">
