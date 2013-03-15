@@ -121,7 +121,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset arguments.mailinglistBean=this>
 		
-	<cfreturn variables.mailinglistManager.read(arguments)>
+	<cfreturn variables.mailinglistManager.read(argumentCollection=arguments)>
 </cffunction>
 
 </cfcomponent>
