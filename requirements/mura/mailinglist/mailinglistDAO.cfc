@@ -93,6 +93,7 @@ values (
 
 <cffunction name="readByName" access="public" output="false" returntype="any" >
 	<cfargument name="name" type="string" />
+	<cfargument name="siteid" type="string" />
 	<cfargument name="mailingListBean" default="" />
 	<cfset var rs ="" />
 	<cfset var beanArray=arrayNew(1)>
