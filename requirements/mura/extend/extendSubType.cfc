@@ -325,7 +325,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif not len(getBaseTable())>
 		<cfswitch expression="#getType()#">
-			<cfcase value="Page,Folder,Component,File,Link,Calendar,Gallery">
+			<cfcase value="Page,Folder,Component,File,Link,Calendar,Gallery,Base,Form">
 				<cfset setBaseTable("tcontent")>
 			</cfcase>
 			<cfcase value="1,2,User,Group,Address">
@@ -336,7 +336,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif not len(getBaseKeyField())>
 		<cfswitch expression="#getType()#">
-			<cfcase value="Page,Folder,Component,File,Link,Calendar,Gallery">
+			<cfcase value="Page,Folder,Component,File,Link,Calendar,Gallery,Base,Form">
 				<cfset setBaseKeyField("contentHistID")>
 			</cfcase>
 			<cfcase value="1,2,User,Group,Address">
@@ -347,7 +347,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif not len(getDataTable())>
 		<cfswitch expression="#getType()#">
-			<cfcase value="Page,Folder,Component,File,Link,Calendar,Gallery">
+			<cfcase value="Page,Folder,Component,File,Link,Calendar,Gallery,Base,Form">
 				<cfset setDataTable("tclassextenddata")>
 			</cfcase>
 			<cfcase value="1,2,User,Group,Address">

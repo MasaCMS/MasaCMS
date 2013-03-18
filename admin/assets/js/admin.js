@@ -185,6 +185,28 @@ function isEmail(cur) {
 
 }
 
+function isColor(c){
+    var i= 0, itm,
+    M= c.replace(/ +/g, '').match(/(rgba?)|(\d+(\.\d+)?%?)|(\.\d+)/g);
+    if(M && M.length> 3){
+        while(i<3){
+            itm= M[++i];
+            if(itm.indexOf('%')!= -1){
+                itm= Math.round(parseFloat(itm)*2.55);
+            }
+            else itm= parseInt(itm);
+            if(itm<0 || itm> 255) return NaN;
+            M[i]= itm;
+        }
+        if(c.indexOf('rgba')=== 0){
+            if(M[4]==undefined ||M[4]<0 || M[4]> 1) return NaN;
+        }
+        else if(M[4]) return NaN;
+        return M[0]+'('+M.slice(1).join(',')+')';
+    }
+    return NaN;
+}
+
 function stripe(theclass) {
 
 	$('table.' + theclass + ' tr').each(
@@ -395,8 +417,8 @@ function validateForm(theForm) {
 						errors += getValidationMessage(theField, ' must be numeric.');
 					}
 				} else if(validationType == 'COLOR' && theField.value != '') {
-					var re = new RegExp("^#?([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?$");
-					if(!theField.value.match(re)) {
+					//var re = new RegExp("^#?([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?$");
+					if(!isColor(theField.value)) {
 						if(!started) {
 							started = true;
 							startAt = f;
@@ -739,8 +761,8 @@ function setColorPickers(target) {
 		$(this).colorpicker({
 			format: 'rgba'
 		}).on('changeColor', function(e) {
-			//var rgb=e.color.toRGB();
-			//$(this).val('rgba('+rgb.r+','+rgb.g+','+rgb.b+','+rgb.a+')');
+			var rgb=e.color.toRGB();
+			$(this).val('rgba('+rgb.r+','+rgb.g+','+rgb.b+','+rgb.a+')');
 		});
 	});
 }
