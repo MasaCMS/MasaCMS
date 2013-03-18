@@ -418,7 +418,7 @@ function validateForm(theForm) {
 					}
 				} else if(validationType == 'COLOR' && theField.value != '') {
 					//var re = new RegExp("^#?([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?$");
-					if(!isColor(theField.value) {
+					if(!isColor(theField.value)) {
 						if(!started) {
 							started = true;
 							startAt = f;
