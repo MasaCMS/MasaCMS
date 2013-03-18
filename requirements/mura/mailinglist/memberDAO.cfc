@@ -105,6 +105,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset data.isVerified=rs.isVerified>
 	
 	<cfif rs.recordcount>
+		<cfset data.isNew=0 />
 		<cfset memberBean.set(data) />
 	<cfelse>
 		<cfset memberBean.setSiteID(arguments.siteID) />
