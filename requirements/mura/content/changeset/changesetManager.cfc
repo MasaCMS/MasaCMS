@@ -215,7 +215,7 @@
 <cfargument name="siteID">
 	<cfset var rsPendingChangeSets="">
 	<cfquery name="rsPendingChangeSets" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-	select tchangesets.changesetID, tcontent.contentID, tcontent.contenthistid, tcontent.siteID, tchangesets.name changesetName
+	select tchangesets.changesetID, tcontent.contentID, tcontent.contenthistid, tcontent.siteID, tchangesets.name changesetName, tcontent.lastupdate
 	from tcontent
 	inner join tchangesets on tcontent.changesetID=tchangesets.changesetID
 	where tcontent.siteID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">

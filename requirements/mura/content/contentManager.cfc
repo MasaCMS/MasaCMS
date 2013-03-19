@@ -2100,14 +2100,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var showdialog = false />
 		<cfset var historyID = cb.getContentHistID() />
 		<cfset var newDraft = "" />
-		<cfset var history = "" />
+		<cfset var history = getDraftHist(arguments.contentid,arguments.siteid) />
+		<cfset var pendingchangsets=variables.changesetManager.getPendingByContentID(arguments.contentID,arguments.siteID) />
 		
 		<cfif cb.getActive()>
-			<cfif cb.hasDrafts()>
-				<cfset history = getDraftHist(arguments.contentid,arguments.siteid) />
+			<cfif history.recordcount or pendingchangsets.recordcount>
 				<cfquery name="newDraft" dbtype="query">
-					select * from history where lastUpdate > <cfqueryparam cfsqltype="cf_sql_timestamp" value="#cb.getLastUpdate()#"> 
-					order by lastUpdate desc
+					select contenthistid, lastupdate from history where lastUpdate > <cfqueryparam cfsqltype="cf_sql_timestamp" value="#cb.getLastUpdate()#"> 
+					union 
+					select contenthistid, lastupdate from pendingchangsets
+				</cfquery>
+				<cfquery name="newDraft" dbtype="query">
+					select * from newDraft order by lastupdate desc
 				</cfquery>
 				<cfif newDraft.recordCount>
 					<cfset showdialog = true />
