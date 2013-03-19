@@ -1722,6 +1722,7 @@ select * from tplugins order by #arguments.orderby#
 					<cfif len(testStr) or yesNoFormat(arguments.event.getValue("errorIsHandled"))>
 						<cfset str=str & testStr>
 					<cfelseif yesNoFormat(variables.configBean.getValue("debuggingenabled"))>
+						<cfset request.muraDynamicContentError=true>
 						<cfsavecontent variable="local.theDisplay1">
 						<cfdump var="#cfcatch#">
 						</cfsavecontent>
@@ -1730,6 +1731,7 @@ select * from tplugins order by #arguments.orderby#
 						<cfrethrow>
 					</cfif>
 				<cfelseif yesNoFormat(variables.configBean.getValue("debuggingenabled"))>
+					<cfset request.muraDynamicContentError=true>
 					<cfsavecontent variable="local.theDisplay1">
 					<cfdump var="#cfcatch#">
 					</cfsavecontent>
@@ -1738,6 +1740,7 @@ select * from tplugins order by #arguments.orderby#
 					<cfrethrow>
 				</cfif>
 			<cfelseif yesNoFormat(variables.configBean.getValue("debuggingenabled"))>
+				<cfset request.muraDynamicContentError=true>
                 <cfsavecontent variable="local.theDisplay1">
 				<cfdump var="#cfcatch#">
 				</cfsavecontent>
@@ -1895,6 +1898,7 @@ select * from tplugins order by #arguments.orderby#
 				<cfset arguments.event.setValue("error",cfcatch)>
 				<cfreturn renderScripts("onError",event.getValue('siteID'),arguments.event,rsOnError)>
 			<cfelseif variables.configBean.getDebuggingEnabled()>
+				<cfset request.muraDynamicContentError=true>
 				<cfsavecontent variable="theDisplay1"><cfdump var="#cfcatch#"></cfsavecontent>
 				<cfreturn theDisplay1>
 			 <cfelse>

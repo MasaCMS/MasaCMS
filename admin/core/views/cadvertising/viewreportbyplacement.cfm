@@ -142,10 +142,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
    </cfoutput>
    <cfoutput>
    <cfsilent>
-   <cfif rsTotalClicks.total eq ''>
+   <cfif request.rsTotalClicks.total eq ''>
    	<cfset fTotalClicks=0>
    <cfelse>
-   	<cfset fTotalClicks=rsTotalClicks.total>
+   	<cfset fTotalClicks=request.rsTotalClicks.total>
    </cfif>
    <cfif request.rsTotalImps.total eq ''>
    	<cfset fTotalImps=0>

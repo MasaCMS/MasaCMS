@@ -2180,6 +2180,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset body=replaceNoCase(body,mid(body, finder.pos[1], finder.len[1]),'#trim(tempValue)#')>
 			<cfcatch>
 				<cfif application.configBean.getDebuggingEnabled()>
+					<cfset request.muraDynamicContentError=true>
 					<cfsavecontent variable="errorStr"><cfdump var="#cfcatch#"></cfsavecontent>
 					<cfset body=replaceNoCase(body,mid(body, finder.pos[1], finder.len[1]),errorStr)>
 				<cfelse>
