@@ -143,7 +143,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			</cfsilent>
 			<cfoutput>
-			<li class="#variables.class#"<cfif variables.imageWidth> style="width:#variables.imageWidth#px;"</cfif>>
+			<li class="#variables.class#"<cfif isNumeric(variables.imageWidth)> style="width:#variables.imageWidth#px;"</cfif>>
 				<a href="#variables.item.getImageURL(size='large')#" title="#HTMLEditFormat(variables.item.getValue('title'))#" rel="shadowbox[gallery]" class="gallery thumbnail"><img src="#variables.item.getImageURL(argumentCollection=imageArgs)#" alt="#HTMLEditFormat(variables.item.getValue('title'))#"/></a>	 
 			 	<dl>
 			 	<cfloop list="#variables.$.content("displayList")#" index="field">
