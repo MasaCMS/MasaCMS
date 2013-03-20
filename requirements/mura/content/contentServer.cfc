@@ -486,6 +486,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var localHandler=""/>
 	<cfset var previewData=""/>
 
+	<cfset session.siteid=arguments.event.getValue("siteID")>
+
 	<cfif fileExists(expandPath("/#application.configBean.getWebRootMap()#/#arguments.event.getValue('siteid')#/includes/servlet.cfc"))>
 		<cfset servlet=createObject("component","#application.configBean.getWebRootMap()#.#arguments.event.getValue('siteid')#.includes.servlet").init(arguments.event)>
 	<cfelse>
