@@ -352,6 +352,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getSite" access="public" output="false" returntype="any">
 	<cfargument name="siteid" type="string" />
+	<cfif not len(arguments.siteid)>
+		<cfset arguments.siteid='default'>
+	</cfif>
 	<cftry>
 	<cfreturn variables.sites['#arguments.siteid#'] />
 	<cfcatch>
