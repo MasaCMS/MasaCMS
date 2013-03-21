@@ -91,7 +91,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfinclude template="dsp_file_selector.cfm">
 	</cfif>	
 
-	<cfif rc.type neq 'Form' and  rc.type neq 'Component' >	
+	<cfif not ListFindNoCase('Form,Component',rc.type) >	
 		<div class="control-group summaryContainer" style="display:none;">
 	      	<label class="control-label">
 	      		<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.contentSummary"))#">
@@ -137,13 +137,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</script>
 	</cfif>
 
-	<cfif rc.type eq 'Page' or rc.type eq 'Folder' or rc.type eq 'Gallery' or rc.type eq 'Calendar' or  rc.type eq 'Component' or  rc.type eq 'Form' >
-		<div class="control-group">
-	      	<label class="control-label">
+	<cfif listFindNoCase('Form,Gallery,Calendar,Component,Page,Folder',rc.type)>    	
+		<cfset rsPluginEditor=application.pluginManager.getScripts("onHTMLEdit",rc.siteID)>
+		<div id="bodyContainer" class="body-container controls"<cfif rsPluginEditor.recordcount> style="display:none;"</cfif>>
+			<div class="control-group">
+			<label class="control-label">
 	      		#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.content")#
 	      	</label>
-			<cfset rsPluginEditor=application.pluginManager.getScripts("onHTMLEdit",rc.siteID)>
-			<div id="bodyContainer" class="body-container controls"<cfif rsPluginEditor.recordcount> style="display:none;"</cfif>>
 			<cfif rsPluginEditor.recordcount>
 				#application.pluginManager.renderScripts("onHTMLEdit",rc.siteid,pluginEvent,rsPluginEditor)#
 			<cfelse>
