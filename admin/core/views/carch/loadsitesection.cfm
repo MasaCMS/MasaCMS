@@ -77,7 +77,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset session.openSectionList=listAppend(session.openSectionList,rc.contentID)>
 
 <cfsavecontent variable="data.html">
-<cf_dsp_nest topid="#rc.contentID#" parentid="#rc.contentID#"  rsnest="#rsNext#" locking="#application.settingsManager.getSite(rc.siteid).getlocking()#" nestlevel="1" perm="#perm#" siteid="#rc.siteid#" moduleid="#rc.moduleid#" restricted="#r#" viewdepth="1" nextn="#session.mura.nextN#" startrow="#rc.startrow#" sortBy="#rc.sortBy#" sortDirection="#rc.sortDirection#" pluginEvent="#pluginEvent#" isSectionRequest="true">
+<cf_dsp_nest topid="#HTMLEditFormat(rc.contentID)#" parentid="#HTMLEditFormat(rc.contentID)#"  rsnest="#rsNext#" locking="#application.settingsManager.getSite(rc.siteid).getlocking()#" nestlevel="1" perm="#perm#" siteid="#rc.siteid#" moduleid="#htmlEditFormat(rc.moduleid)#" restricted="#r#" viewdepth="1" nextn="#session.mura.nextN#" startrow="#HTMLEditFormat(rc.startrow)#" sortBy="#HTMLEditFormat(rc.sortBy)#" sortDirection="#HTMLEditFormat(rc.sortDirection)#" pluginEvent="#pluginEvent#" isSectionRequest="true">
 </cfsavecontent>
 
 <cfoutput>#createObject("component","mura.json").encode(data)#</cfoutput>

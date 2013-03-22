@@ -73,14 +73,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h2><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,"dashboard.useractivity")# <span><a href="index.cfm?muraAction=cDashboard.sessionSearch&siteid=#URLEncodedFormat(rc.siteid)#&newSearch=true">(#application.rbFactory.getKeyValue(session.rb,"dashboard.advancedsessionsearch")#)</a></span></h2>
 <span id="userActivityData"></span>
 </div>
-<script type="text/javascript">dashboardManager.loadUserActivity('#rc.siteid#');</script>
+<script type="text/javascript">dashboardManager.loadUserActivity('#JSStringFormat(rc.siteid)#');</script>
 <cfset started=true>
 
 <div id="popularContent"<cfif started> class="divide"</cfif>>
 <h2><i class="icon-thumbs-up"></i> #application.rbFactory.getKeyValue(session.rb,"dashboard.popularcontent")# <span>(#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"dashboard.span"),rc.span)#)</span></h2>
 <span id="popularContentData"></span>
 </div>
-<script type="text/javascript">dashboardManager.loadPopularContent('#rc.siteid#');</script>
+<script type="text/javascript">dashboardManager.loadPopularContent('#JSStringFormat(rc.siteid)#');</script>
 <cfset started=true>
 <cfelse>
 <div id="userActivity"<cfif started> class="divide"</cfif>>
@@ -96,7 +96,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h2><i class="icon-comments"></i> #application.rbFactory.getKeyValue(session.rb,"dashboard.comments")# <span><a href="?muraAction=cDashboard.recentComments&siteID=#session.siteID#">(#application.rbFactory.getKeyValue(session.rb,"dashboard.comments.last100")#)</a></span></h2>
 <span id="recentCommentsData"></span>
 </div>
-<script type="text/javascript">dashboardManager.loadRecentComments('#rc.siteid#');</script>
+<script type="text/javascript">dashboardManager.loadRecentComments('#JSStringFormat(rc.siteid)#');</script>
 <cfset started=true>
 </cfif>
 
@@ -105,7 +105,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h2><i class="icon-list"></i> #application.rbFactory.getKeyValue(session.rb,"dashboard.formactivity")#</h2>
 <span id="recentFormActivityData"></span>
 </div>
-<script type="text/javascript">dashboardManager.loadFormActivity('#rc.siteid#');</script>
+<script type="text/javascript">dashboardManager.loadFormActivity('#JSStringFormat(rc.siteid)#');</script>
 <cfset started=true>
 </cfif>
 
@@ -115,7 +115,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <span id="emailBroadcastsData"></span>
 </div>
 
-<script type="text/javascript">dashboardManager.loadEmailActivity('#rc.siteid#');</script>
+<script type="text/javascript">dashboardManager.loadEmailActivity('#JSStringFormat(rc.siteid)#');</script>
 <cfset started=true>
 </cfif>
 </cfoutput>
