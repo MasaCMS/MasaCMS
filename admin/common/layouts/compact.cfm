@@ -117,6 +117,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckeditor/adapters/jquery.js"></script>
 		<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckfinder/ckfinder.js"></script>
 
+		<!-- Color Picker -->
+		<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/colorpicker/js/bootstrap-colorpicker.js?coreversion=#application.coreversion#"></script>
+		<link href="#application.configBean.getContext()#/tasks/widgets/colorpicker/css/colorpicker.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+
 		<!-- JSON -->
 		<script src="#application.configBean.getContext()#/admin/assets/js/json2.js" type="text/javascript"></script>
 
