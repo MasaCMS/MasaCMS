@@ -516,18 +516,18 @@ var hasBody=#subType.getHasBody()#;
 	</cfif>
 	<input name="action" type="hidden" value="add">
 	<input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
-	<input type="hidden" name="moduleid" value="#rc.moduleid#">
+	<input type="hidden" name="moduleid" value="#HTMLEditFormat(rc.moduleid)#">
 	<input type="hidden" name="contenthistid" value="#rc.contentBean.getContentHistID()#">
-	<input type="hidden" name="return" value="#rc.return#">
-	<input type="hidden" name="topid" value="#rc.topid#">
+	<input type="hidden" name="return" value="#HTMLEditFormat(rc.return)#">
+	<input type="hidden" name="topid" value="#HTMLEditFormat(rc.topid)#">
 	<input type="hidden" name="contentid" value="#rc.contentBean.getContentID()#">
-	<input type="hidden" name="ptype" value="#rc.ptype#">
-	<input type="hidden" name="type" value="#rc.type#">
+	<input type="hidden" name="ptype" value="#HTMLEditFormat(rc.ptype)#">
+	<input type="hidden" name="type" value="#HTMLEditFormat(rc.type)#">
 	<input type="hidden" name="subtype" value="#rc.contentBean.getSubType()#">
 	<input type="hidden" name="muraAction" value="cArch.update">
-	<input type="hidden" name="startrow" value="#rc.startrow#">
-	<input type="hidden" name="returnURL" id="txtReturnURL" value="#rc.returnURL#">
-	<input type="hidden" name="homeID" value="#rc.homeID#">
+	<input type="hidden" name="startrow" value="#HTMLEditFormat(rc.startrow)#">
+	<input type="hidden" name="returnURL" id="txtReturnURL" value="#HTMLEditFormat(rc.returnURL)#">
+	<input type="hidden" name="homeID" value="#HTMLEditFormat(rc.homeID)#">
 	<cfif not  listFind(session.mura.memberships,'S2')>
 		<input type="hidden" name="isLocked" value="#rc.contentBean.getIsLocked()#">
 	</cfif>
