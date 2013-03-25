@@ -53,8 +53,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cffunction name="secure" output="false">	
 		<cfargument name="rc">
+		<cfset var qrystr="">
+		<cfset var item="">
+		
+		<cfset request.context.returnURL="./index.cfm">
+
 		<cfif not session.mura.isLoggedIn>
-			<cfset request.context.returnURL='index.cfm?#cgi.query_string#'>
+			<cfset application.scriptProtectionFilter.scan(request.context,"request.context",request.remoteAddr)>
+			<cfloop collection="#url#" item="item">
+				<cftry>	
+					<cfset qrystr="#qrystr#&#item#=#request.context[item]#">	
+				<cfcatch ></cfcatch>
+				</cftry>
+			</cfloop>
+			<cfif len(qrystr)>
+				<cfset request.context.returnURL=request.context.returnURL & "?" & qrystr>
+			</cfif>
 			<cfset variables.fw.redirect(action="cLogin.main",append="returnURL,compactDisplay")>
 		<cfelse>
 			<cfset variables.utility.backUp()>
