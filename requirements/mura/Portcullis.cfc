@@ -105,7 +105,7 @@
 			<cfelse>
 				<cfset newitem = replaceNoCase(item,"&amp;","","ALL")/>
 				<cfset newitem = replaceNoCase(newitem,"amp;","","ALL")/>
-				<cfset contents = "#object[item]#"/>
+				<cfset contents = removeNullChars("#object[item]#")/>
 				<cfset structdelete(object,item,false)/>
 				<cfset StructInsert(object,"#newitem#",contents,true)/>
 			</cfif>
@@ -516,6 +516,11 @@
 
 	<cffunction name="isDetected" output="false" access="public" returntype="Any">
 		<cfreturn variables.internal.detected/>
+	</cffunction>
+
+	<cffunction name="removeNullChars" access="private" output="false" returntype="string">    
+		<cfargument name="theString" type="string" required="true" />           
+		<cfreturn urldecode(replace(urlEncodedFormat(arguments.theString),"%00","","all"))> 
 	</cffunction>
 	
 </cfcomponent>
