@@ -152,10 +152,33 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var local = structNew() />
 		
 		<cfinclude template="../config/appcfc/onRequestStart_include.cfm">
-				
+
 		<cfif right(cgi.script_name, Len("index.cfm")) NEQ "index.cfm" and right(cgi.script_name, Len("error.cfm")) NEQ "error.cfm" AND right(cgi.script_name, 3) NEQ "cfc">
 			<cflocation url="index.cfm" addtoken="false">
 		</cfif>	
+
+		<cfset application.scriptProtectionFilter.scan(
+					object=url,
+					objectname="url",
+					ipAddress=request.remoteAddr,
+					useWordFilter=true,
+					useSQLFilter=false,
+					useTagFilter=true)>
+
+		<cfset request.context.currentURL="index.cfm" >
+	
+		<cfset var qrystr="">
+		<cfset var item="">
+		<cfloop collection="#url#" item="item">
+			<cftry>	
+				<cfset request.context[item]=url[item]>
+				<cfset qrystr="#qrystr#&#item#=#url[item]#">	
+			<cfcatch ></cfcatch>
+			</cftry>
+		</cfloop>
+		<cfif len(qrystr)>
+			<cfset request.context.currentURL=request.context.currentURL & "?" & qrystr>
+		</cfif>
 
 		<cfscript>
 			StructAppend(request.context, url, "no");
@@ -181,8 +204,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfparam name="session.keywords" default="">
 		<cfparam name="session.alerts" default="#structNew()#">
 		<cfparam name="cookie.rb" default="">
-		<cfset request.context.currentURL="index.cfm?" & cgi.query_string>
-	
+
 		<cfif len(request.context.rb)>
 			<cfset session.rb=request.context.rb>
 			<cfcookie name="rb" value="#session.rb#" expires="never" />

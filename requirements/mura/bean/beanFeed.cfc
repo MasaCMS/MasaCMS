@@ -372,8 +372,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn it>
 </cffunction>
 
+ <cffunction name="setSortDirection" access="public" output="false">
+	<cfargument name="sortDirection" type="any" />
+	<cfif listFindNoCase('desc,asc',arguments.sortDirection)>
+	<cfset variables.instance.sortDirection = arguments.sortDirection />
+	</cfif>
+	<cfreturn this>
+</cffunction> 
 
-  
-
- 
 </cfcomponent>
