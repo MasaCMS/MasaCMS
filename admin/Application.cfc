@@ -157,14 +157,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cflocation url="index.cfm" addtoken="false">
 		</cfif>	
 
-		<cfset application.scriptProtectionFilter.scan(url,"url",request.remoteAddr)>
+		<cfset application.scriptProtectionFilter.scan(
+					object=url,
+					objectname="url",
+					ipAddress=request.remoteAddr,
+					useWordFilter=true,
+					useSQLFilter=false,
+					useTagFilter=true)>
+
 		<cfset request.context.currentURL="index.cfm" >
 	
 		<cfset var qrystr="">
 		<cfset var item="">
 		<cfloop collection="#url#" item="item">
 			<cftry>	
-				<cfset qrystr="#qrystr#&#item#=#request.context[item]#">	
+				<cfset request.context[item]=url[item]>
+				<cfset qrystr="#qrystr#&#item#=#url[item]#">	
 			<cfcatch ></cfcatch>
 			</cftry>
 		</cfloop>
