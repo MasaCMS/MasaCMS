@@ -47,11 +47,10 @@
 	<cfset variables.instance.allowJSAccessCookies = true/>						<!---Turn off Javascript access to cookies with the HttpOnly attribute - supported by only some browsers--->					
 	<cfset variables.instance.blockCRLF = false/>									<!---Block CRLF (carriage return line feed) hacks, this particular hack has limited abilities so this could be overkill--->
 	
-	<!---<cfset variables.instance.sqlFilter = "select,insert,update,delete,create,drop,alter,declare,execute,--,xp_,sp_sqlexecute,table_cursor,cast\(,exec\(,eval\(,information_schema"/>--->
-	<cfset variables.instance.sqlFilter = "" />
+	<cfset variables.instance.sqlFilter = "select,insert,update,delete,create,drop,alter,declare,execute,--,xp_,sp_sqlexecute,table_cursor,cast\(,exec\(,eval\(,information_schema"/>
 	<cfset variables.instance.tagFilter = "script,object,applet,embed,form,input,layer,ilayer,frame,iframe,frameset,param,meta,base,style,xss"/>
-	<!---<cfset variables.instance.wordFilter = "onLoad,onClick,onDblClick,onKeyDown,onKeyPress,onKeyUp,onMouseDown,onMouseOut,onMouseUp,onMouseOver,onBlur,onChange,onFocus,onSelect,javascript:,vbscript:,.cookie,.toString,:expr,:expression,.fromCharCode,String."/>--->
-	<cfset variables.instance.wordFilter = ""/>
+	<cfset variables.instance.wordFilter = "onLoad,onClick,onDblClick,onKeyDown,onKeyPress,onKeyUp,onMouseDown,onMouseOut,onMouseUp,onMouseOver,onBlur,onChange,onFocus,onSelect,javascript:,vbscript:,.cookie,.toString,:expr,:expression,.fromCharCode,String."/>
+
 	<cfset variables.instance.thisServer = lcase(CGI.SERVER_NAME)/>
 	<!---End of settings--->
 
@@ -85,7 +84,11 @@
 		<cfargument name="object" required="true" type="Struct"/>
 		<cfargument name="objectname" required="true" type="String"/>
 		<cfargument name="ipAddress" required="true" type="String"/>
-		<cfargument name="exceptionFields" required="false" type="String"/> 		<!---Comma delimited list of fields not to scan--->
+		<cfargument name="exceptionFields" required="false" type="String"/>
+		<cfargument name="useWordFilter" default="false"/>
+		<cfargument name="useSQLFilter" default="false"/>
+		<cfargument name="useTagFilter" default="false"/>
+		 <!---Comma delimited list of fields not to scan--->
 		<cfset var object2 = StructNew()/>
 		<cfset var result = StructNew()/>
 		<cfset var item= ""/>
@@ -105,7 +108,7 @@
 			<cfelse>
 				<cfset newitem = replaceNoCase(item,"&amp;","","ALL")/>
 				<cfset newitem = replaceNoCase(newitem,"amp;","","ALL")/>
-				<cfset contents = "#object[item]#"/>
+				<cfset contents = removeNullChars("#object[item]#")/>
 				<cfset structdelete(object,item,false)/>
 				<cfset StructInsert(object,"#newitem#",contents,true)/>
 			</cfif>
@@ -116,29 +119,37 @@
 		</cfif>
 		
 		<!---Filter Tags--->
-		<cfloop collection="#object#" item="item">
-			<cfif ListContainsNoCase(exFF,item,',') eq false>
-				<cfset temp = filterTags(object[item])/>
-				<cfset itemname = REReplaceNoCase(item,nameregex,"","All")>
-				<cfif temp.detected eq true><cfset detected = detected + 1/></cfif>
-				<cfif objectname eq "cookie" and variables.instance.allowJSAccessCookies eq false>
-					<cfheader name="Set-Cookie" value="#itemname#=#temp.cleanText#;HttpOnly">
-				<cfelse>
-					<cfset "#objectname#.#itemname#" = temp.cleanText/>
+		<cfif arguments.useTagFilter>
+			<cfloop collection="#object#" item="item">
+				<cfif ListContainsNoCase(exFF,item,',') eq false>
+					<cfset temp = filterTags(object[item])/>
+					<cfset itemname = REReplaceNoCase(item,nameregex,"","All")>
+					<cfif temp.detected eq true><cfset detected = detected + 1/></cfif>
+					<cfif objectname eq "cookie" and variables.instance.allowJSAccessCookies eq false>
+						<cfheader name="Set-Cookie" value="#itemname#=#temp.cleanText#;HttpOnly">
+					<cfelse>
+						<cfset "#objectname#.#itemname#" = temp.cleanText/>
+					</cfif>
 				</cfif>
-			</cfif>
-		</cfloop>
+			</cfloop>
+		</cfif>
 
 		<!---Filter Words--->
 		<cfloop collection="#object#" item="item">
 			<cfif ListContainsNoCase(exFF,item,',') eq false>
-				<cfset temp = filterWords(object[item])/>
-				<cfset itemname = REReplaceNoCase(item,nameregex,"","All")>
-				<cfif temp.detected eq true><cfset detected = detected + 1/></cfif>
-				<cfif objectname eq "cookie" and variables.instance.allowJSAccessCookies eq false>
-					<cfheader name="Set-Cookie" value="#itemname#=#temp.cleanText#;HttpOnly">
-				<cfelse>
-					<cfset "#objectname#.#itemname#" = temp.cleanText/>
+				<!---trim white space and deal with "smart quotes" from MS Word, etc.--->	
+				<!---trim white space and deal with "smart quotes" from MS Word, etc.--->
+				<cfset object[item]=trim(REReplace(object[item],"(�|�)", "'", "ALL"))>
+				
+				<cfif arguments.useWordFilter>
+					<cfset temp = filterWords(object[item])/>
+					<cfset itemname = REReplaceNoCase(item,nameregex,"","All")>
+					<cfif temp.detected eq true><cfset detected = detected + 1/></cfif>
+					<cfif objectname eq "cookie" and variables.instance.allowJSAccessCookies eq false>
+						<cfheader name="Set-Cookie" value="#itemname#=#temp.cleanText#;HttpOnly">
+					<cfelse>
+						<cfset "#objectname#.#itemname#" = temp.cleanText/>
+					</cfif>
 				</cfif>
 			</cfif>
 		</cfloop>
@@ -160,18 +171,20 @@
 		</cfif>
 
 		<!---Filter SQL--->
-		<cfloop collection="#object#" item="item">
-			<cfif ListContainsNoCase(exFF,item,',') eq false>
-				<cfset temp = filterSQL(object[item])/>
-				<cfset itemname = REReplaceNoCase(item,nameregex,"","All")>
-				<cfif temp.detected eq true><cfset detected = detected + 1/></cfif>
-				<cfif objectname eq "cookie" and variables.instance.allowJSAccessCookies eq false>
-					<cfheader name="Set-Cookie" value="#itemname#=#temp.cleanText#;HttpOnly">
-				<cfelse>
-					<cfset "#objectname#.#itemname#" = temp.cleanText/>
+		<cfif arguments.useSQLFilter>
+			<cfloop collection="#object#" item="item">
+				<cfif ListContainsNoCase(exFF,item,',') eq false>
+					<cfset temp = filterSQL(object[item],arguments.useSQLFilter)/>
+					<cfset itemname = REReplaceNoCase(item,nameregex,"","All")>
+					<cfif temp.detected eq true><cfset detected = detected + 1/></cfif>
+					<cfif objectname eq "cookie" and variables.instance.allowJSAccessCookies eq false>
+						<cfheader name="Set-Cookie" value="#itemname#=#temp.cleanText#;HttpOnly">
+					<cfelse>
+						<cfset "#objectname#.#itemname#" = temp.cleanText/>
+					</cfif>
 				</cfif>
-			</cfif>
-		</cfloop>
+			</cfloop>
+		</cfif>
 
 		<!---Escape Special Characters--->
 		<cfif variables.instance.escapeChars eq true>
@@ -344,7 +357,7 @@
 		<cfargument name="text" required="true" type="String">
 		<cfset var result = StructNew()/>
 		<cfset result.detected = true/>
-		<cfset result.originalText = trim(REReplace(arguments.text,"(�|�)", "'", "ALL"))/>	<!---trim white space and deal with "smart quotes" from MS Word, etc.--->	<!---trim white space and deal with "smart quotes" from MS Word, etc.--->
+		<cfset result.originalText = arguments.text/>
 		
 		<cfif len(variables.instance.wordFilter)>
 			<cfif REFindNoCase((ListChangeDelims(variables.instance.wordFilter,"|")),arguments.text) eq 0>
@@ -516,6 +529,11 @@
 
 	<cffunction name="isDetected" output="false" access="public" returntype="Any">
 		<cfreturn variables.internal.detected/>
+	</cffunction>
+
+	<cffunction name="removeNullChars" access="private" output="false" returntype="string">    
+		<cfargument name="theString" type="string" required="true" />           
+		<cfreturn urldecode(replace(urlEncodedFormat(arguments.theString),"%00","","all"))> 
 	</cffunction>
 	
 </cfcomponent>

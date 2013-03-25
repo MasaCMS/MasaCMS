@@ -53,8 +53,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cffunction name="secure" output="false">	
 		<cfargument name="rc">
+		
+		<cfset request.context.returnURL=request.context.currentURL>
+
 		<cfif not session.mura.isLoggedIn>
-			<cfset request.context.returnURL='index.cfm?#cgi.query_string#'>
 			<cfset variables.fw.redirect(action="cLogin.main",append="returnURL,compactDisplay")>
 		<cfelse>
 			<cfset variables.utility.backUp()>

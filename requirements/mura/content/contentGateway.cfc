@@ -350,6 +350,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset var nowAdjusted="">
 			<cfset var tableModifier="">
 
+			<cfif not listFindNoCase('asc,desc',arguments.sortDirection)>
+				<cfset arguments.sortDirection='asc'>
+			</cfif>
+
 			<cfif dbtype eq "MSSQL">
 				<cfset tableModifier="with (nolock)">
 			</cfif>
@@ -802,6 +806,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="sortBy" type="string" required="true" default="lastUpdate">
 	<cfargument name="sortDirection" type="string" required="true" default="desc">
 	<cfset var rsDraftList = "">
+
+	<cfif not listFindNoCase('asc,desc',arguments.sortDirection)>
+		<cfset arguments.sortDirection='desc'>
+	</cfif>
 	
 	<cfquery name="rsDraftList" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	SELECT DISTINCT tmodule.Title AS module, active.ModuleID, active.SiteID, active.ParentID, active.Type, active.subtype, active.MenuTitle, active.Filename, active.ContentID,
@@ -922,6 +930,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var isExtendedSort=(not listFindNoCase(sortOptions,arguments.sortBy))>
 		<cfset var dbType=variables.configBean.getDbType() />
 		<cfset var tableModifier="">
+
+		<cfif not listFindNoCase('asc,desc',arguments.sortDirection)>
+			<cfset arguments.sortDirection='asc'>
+		</cfif>
 
 		<cfif dbtype eq "MSSQL">
 			<cfset tableModifier="with (nolock)">
@@ -1563,12 +1575,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="sortDirection" type="string" default="desc" >
 	<cfset var rs ="" />
 
-	<cfif not len(arguments.sortBy)>
-		<cfset arguments.sortBy=created>
+	<cfif not listFindNoCase('menutitle,title,lastupdate,releasedate,orderno,displaystart,displaystop,created,credits,type,subtype,comments,rating',arguments.sortby)>
+		<cfset arguments.sortBy='created'>
 	</cfif>
 
-	<cfif not len(arguments.sortDirection)>
-		<cfset arguments.sortDirection=desc>
+	<cfif not listFindNoCase('asc,desc',arguments.sortDirection)>
+		<cfset arguments.sortDirection='desc'>
 	</cfif>
 
 	<cfquery name="rsRelatedContent" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
