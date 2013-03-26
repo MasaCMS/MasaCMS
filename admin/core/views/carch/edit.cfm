@@ -101,6 +101,8 @@ function conditionalExit(msg){
 	if(msg==null){
 		<cfoutput>msg="#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.saveasdraft"))#";</cfoutput>
 	}
+
+	document.contentForm.approved.value=0;
 	jQuery("#alertDialog").html(msg);
 	jQuery("#alertDialog").dialog({
 			resizable: false,
