@@ -80,11 +80,13 @@ $(document).ready(function(){
 	var anchors=document.getElementsByTagName("A");
 	
 	for(var i=0;i<anchors.length;i++){	
-		if (typeof(anchors[i].onclick) != 'function' 
-			&& typeof(anchors[i].getAttribute('href')) == 'string' 
-			&& anchors[i].getAttribute('href').indexOf('#') == -1) {
-   			anchors[i].onclick = setRequestedURL;
-		}
+		try{
+			if (typeof(anchors[i].onclick) != 'function' 
+				&& typeof(anchors[i].getAttribute('href')) == 'string' 
+				&& anchors[i].getAttribute('href').indexOf('#') == -1) {
+	   			anchors[i].onclick = setRequestedURL;
+			}
+		} catch(err){}
 	}
 	
 });
