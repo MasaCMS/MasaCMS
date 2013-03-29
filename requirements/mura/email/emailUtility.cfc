@@ -423,7 +423,7 @@ Select EmailID from temails where deliverydate <=<cfqueryparam cfsqltype="cf_sql
 		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
 			update temailstats 
 			set #arguments.type# = 1
-			where emailid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.emailID#" />
+			where emailid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#left(arguments.emailID,35)#" />
 			and email = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.email#" />
 		</cfquery>
 	</cfif>
