@@ -64,7 +64,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</div>
 			   </div>
 			</cfif>
-
 			
 			<cfif rc.type eq 'Component'>
 			<div class="control-group">
