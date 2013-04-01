@@ -85,7 +85,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 
 			<cfif rc.type neq 'Component' and rc.type neq 'Form'>
-			
 
 				<div class="control-group">
 			      <div class="controls">
