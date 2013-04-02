@@ -99,7 +99,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				
 			</cfif>
 
-			<cfif rc.type eq 'Form' >
+			<cfif rc.type eq 'Form' > 
 				<div class="control-group">
 					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.forcessllabel')#</label>
 				 	<div class="controls">
