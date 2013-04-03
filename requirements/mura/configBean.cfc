@@ -92,7 +92,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.productionPushMode="full"/>
 <cfset variables.instance.fileStore=""/>
 <cfset variables.instance.fileStoreAccessInfo=""/>
-<cfset variables.instance.fileStoreEndPoint=""/>
+<cfset variables.instance.fileStoreEndPoint="http://s3.amazonaws.com"/>
 <cfset variables.instance.tooltips=structNew()/>
 <cfset variables.instance.sessionHistory=1 />
 <cfset variables.instance.clearSessionHistory=1 />
