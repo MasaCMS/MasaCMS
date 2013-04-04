@@ -610,22 +610,23 @@
 			margin: 0;
 			position: relative;
 			list-style: none;
-		}
-		
-		ul.nodeMeta li {
+			
+			li {
 			float: left;
 			padding: 0;
 			margin: 0 .5em .35em 0;
 			font-size: 11px;
-		}
-		
-		ul.nodeMeta li:after {
-			content: "/";
-			margin-left: .5em;
-		}
-		
-		ul.nodeMeta li:last-child:after {
-			content: "";
+			white-space: nowrap;
+			
+				&:after {
+				content: "/";
+				margin-left: .5em;
+					}
+					
+				&:last-child:after {
+				content: "";
+				}
+			}
 		}
 		
 		.thumbnail {
