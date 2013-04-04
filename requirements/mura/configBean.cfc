@@ -146,6 +146,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.dbUtility="">
 <cfset variables.instance.allowAutoUpdates=1>
 <cfset variables.instance.CFFPConfigFilename="cffp.ini.cfm">
+<cfset variables.instance.loadcontentby="filename">
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
