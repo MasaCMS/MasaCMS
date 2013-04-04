@@ -20,6 +20,8 @@ limitations under the License.
 		<cfargument name="awsSecret" type="string" required="true" />
 		<cfargument name="localCacheDir" type="string" required="false"
 			hint="If omitted, no local caching is done.  If provided, this directory is used for local caching of S3 assets.  Note that if local caching is enabled, this CFC assumes it is the only entity managing the S3 storage and therefore that S3 never needs to be checked for updates (other than those made though this CFC).  If you update S3 via other means, you cannot safely use the local cache." />
+		<cfargument name="awsEndpoint" type="string" required="false" default="s3.amazonaws.com" />
+		<cfset variables.awsEndpoint = awsEndpoint>
 		<cfset variables.awsKey = awsKey />
 		<cfset variables.awsSecret = awsSecret />
 		<cfset variables.useLocalCache = structKeyExists(arguments, "localCacheDir") />
@@ -32,8 +34,6 @@ limitations under the License.
 		</cfif>
 		<cfreturn this />
 	</cffunction>
-	
-
 	
 	<cffunction name="s3Url" access="public" output="false" returntype="string">
 		<cfargument name="bucket" type="string" required="true" />
@@ -48,7 +48,7 @@ limitations under the License.
 			var expires = int(getTickCount() / 1000) + timeout;
 			var signature = "";
 			var destUrl = "";
-	
+
 			signature = getRequestSignature(
 				uCase(verb),
 				bucket,
@@ -56,19 +56,19 @@ limitations under the License.
 				expires
 			);
 			if (requestType EQ "ssl" OR requestType EQ "regular") {
-				destUrl = "http" & iif(requestType EQ "ssl", de("s"), de("")) & "://s3.amazonaws.com/#bucket#/#objectKey#?AWSAccessKeyId=#variables.awsKey#&Signature=#urlEncodedFormat(signature)#&Expires=#expires#";
+				destUrl = "http" & iif(requestType EQ "ssl", de("s"), de("")) & "://#variables.awsEndpoint#/#bucket#/#objectKey#?AWSAccessKeyId=#variables.awsKey#&Signature=#urlEncodedFormat(signature)#&Expires=#expires#";
 			} else if (requestType EQ "cname") {
 				destUrl = "http://#bucket#/#objectKey#?AWSAccessKeyId=#variables.awsKey#&Signature=#urlEncodedFormat(signature)#&Expires=#expires#";
 			} else { // vhost
-				destUrl = "http://#bucket#.s3.amazonaws.com/#objectKey#?AWSAccessKeyId=#variables.awsKey#&Signature=#urlEncodedFormat(signature)#&Expires=#expires#";
+				destUrl = "http://#bucket#.#variables.awsEndpoint#/#objectKey#?AWSAccessKeyId=#variables.awsKey#&Signature=#urlEncodedFormat(signature)#&Expires=#expires#";
 			}
 
 			return destUrl;
 		</cfscript>
 	</cffunction>
-	
-	
-	
+
+
+
 	<cffunction name="putFileOnS3" access="public" output="false" returntype="struct"
 			hint="I put a file on S3, and return the HTTP response from the PUT">
 		<!---<cfargument name="localFilePath" type="string" required="true" />--->
@@ -96,10 +96,10 @@ limitations under the License.
 			variable="content" />
 		--->
 		<cfif len(application.configBean.getProxyServer())>
-		<cfhttp url="http://s3.amazonaws.com/#bucket#/#objectKey#"
+		<cfhttp url="http://#variables.awsEndpoint#/#bucket#/#objectKey#"
 			method="PUT"
 			result="result"
-			proxyUser="#application.configBean.getProxyUser()#" 
+			proxyUser="#application.configBean.getProxyUser()#"
 			proxyPassword="#application.configBean.getProxyPassword()#"
 			proxyServer="#application.configBean.getProxyServer()#"
 			proxyPort="#application.configBean.getProxyPort()#">
@@ -112,7 +112,7 @@ limitations under the License.
 			<cfhttpparam type="body" value="#binaryFileData#" />
 		</cfhttp>
 		<cfelse>
-		<cfhttp url="http://s3.amazonaws.com/#bucket#/#objectKey#"
+		<cfhttp url="http://#variables.awsEndpoint#/#bucket#/#objectKey#"
 			method="PUT"
 			result="result">
 			<cfhttpparam type="header" name="Date" value="#dateValue#" />
@@ -127,8 +127,8 @@ limitations under the License.
 		<cfset deleteCacheFor(bucket, objectKey) />
 		<cfreturn result />
 	</cffunction>
-	
-	
+
+
 
 	<cffunction name="s3FileExists" access="public" output="false" returntype="boolean">
 		<cfargument name="bucket" type="string" required="true" />
@@ -144,8 +144,8 @@ limitations under the License.
 			method="HEAD"
 			timeout="30"
 			throwonerror="false"
-			result="result" 
-			proxyUser="#application.configBean.getProxyUser()#" 
+			result="result"
+			proxyUser="#application.configBean.getProxyUser()#"
 			proxyPassword="#application.configBean.getProxyPassword()#"
 			proxyServer="#application.configBean.getProxyServer()#"
 			proxyPort="#application.configBean.getProxyPort()#"/>
@@ -156,7 +156,7 @@ limitations under the License.
 			throwonerror="false"
 			result="result"/>
 		</cfif>
-		<cfreturn val(trim(result.statusCode)) EQ 200 /> 
+		<cfreturn val(trim(result.statusCode)) EQ 200 />
 	</cffunction>
 
 
@@ -180,8 +180,8 @@ limitations under the License.
 			method="DELETE"
 			timeout="15"
 			throwonerror="false"
-			result="result" 	
-			proxyUser="#application.configBean.getProxyUser()#" 
+			result="result"
+			proxyUser="#application.configBean.getProxyUser()#"
 			proxyPassword="#application.configBean.getProxyPassword()#"
 			proxyServer="#application.configBean.getProxyServer()#"
 			proxyPort="#application.configBean.getProxyPort()#"/>
@@ -212,7 +212,7 @@ limitations under the License.
 	</cffunction>
 
 
-	
+
 	<cffunction name="getFileFromS3" access="public" output="false" returntype="string"
 			hint="Brings a file from S3 down local, and returns the fully qualified local path">
 		<cfargument name="bucket" type="string" required="true" />
@@ -241,7 +241,7 @@ limitations under the License.
 				getasbinary="yes"
 				file="#getFileFromPath(filepath)#"
 				path="#getDirectoryFromPath(filepath)#"
-				proxyUser="#application.configBean.getProxyUser()#" 
+				proxyUser="#application.configBean.getProxyUser()#"
 				proxyPassword="#application.configBean.getProxyPassword()#"
 				proxyServer="#application.configBean.getProxyServer()#"
 				proxyPort="#application.configBean.getProxyPort()#" />
@@ -262,7 +262,7 @@ limitations under the License.
 					getasbinary="yes"
 					file="#getFileFromPath(filepath)#"
 					path="#getDirectoryFromPath(filepath)#"
-					proxyUser="#application.configBean.getProxyUser()#" 
+					proxyUser="#application.configBean.getProxyUser()#"
 					proxyPassword="#application.configBean.getProxyPassword()#"
 					proxyServer="#application.configBean.getProxyServer()#"
 					proxyPort="#application.configBean.getProxyPort()#" />
@@ -281,9 +281,9 @@ limitations under the License.
 		</cfif>
 		<cfreturn filepath />
 	</cffunction>
-	
-	
-	
+
+
+
 	<cffunction name="deleteCacheFor" access="public" output="false" returntype="void">
 		<cfargument name="bucket" type="string" required="true" />
 		<cfargument name="objectKey" type="string" required="true" />
@@ -295,9 +295,9 @@ limitations under the License.
 			</cfif>
 		</cfif>
 	</cffunction>
-	
 
-	
+
+
 	<cffunction name="getRequestSignature" access="private" output="false" returntype="string">
 		<cfargument name="verb" type="string" required="true" />
 		<cfargument name="bucket" type="string" required="true" />
@@ -313,7 +313,7 @@ limitations under the License.
 			var signingKey = "";
 			var mac = "";
 			var signature = "";
-			
+
 			stringToSign = uCase(verb) & chr(10)
 				& contentMd5 & chr(10)
 				& contentType & chr(10)
