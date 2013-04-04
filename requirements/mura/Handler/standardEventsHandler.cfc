@@ -149,7 +149,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif not arguments.event.valueExists('contentBean')>
 			<cfif len(arguments.event.getValue('linkServID'))>
 				<cfset arguments.event.setValue('contentBean',application.contentManager.getActiveContent(listFirst(arguments.event.getValue('linkServID')),arguments.event.getValue('siteid'),true)) />
-			<cfelseif application.configBean.getLoadContentBy() 'urltitle'>
+			<cfelseif application.configBean.getLoadContentBy() eq 'urltitle'>
 				<cfset arguments.event.setValue('contentBean',application.contentManager.getActiveByURLTitle(listLast(arguments.event.getValue('currentFilenameAdjusted'),'/'),arguments.event.getValue('siteid'),true)) />
 			<cfelse>
 				<cfset arguments.event.setValue('contentBean',application.contentManager.getActiveContentByFilename(arguments.event.getValue('currentFilenameAdjusted'),arguments.event.getValue('siteid'),true)) />
