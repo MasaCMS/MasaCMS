@@ -140,7 +140,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var renderer=arguments.event.getValue("contentRenderer")>
 	<cfset var themeRenderer=arguments.event.getValue("themeRenderer")>
-	
+	<cfset var contentArray="">
+
 	<cfif arguments.event.valueExists('previewID')>
 		<cfset arguments.event.getHandler("standardSetPreview").handle(arguments.event)>
 	<cfelse>
@@ -155,6 +156,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset arguments.event.setValue('contentBean',application.contentManager.getActiveContentByFilename(arguments.event.getValue('currentFilenameAdjusted'),arguments.event.getValue('siteid'),true)) />
 			</cfif>
 		</cfif>
+	</cfif>
+
+	<cfif isArray(arguments.event.getValue('contentBean'))>
+		<cfset contentArray=arguments.event.getValue('contentBean')>
+		<cfset arguments.event.setValue('contentBean',contentArray[1])>
 	</cfif>
 
 	<cfset arguments.event.getValidator("standard404").validate(arguments.event)>
