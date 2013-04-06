@@ -45,7 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
-<cfloop from="1" to="#application.settingsManager.getSite('siteID').getColumnCount()#" index="i">
+<cfloop from="1" to="#application.settingsManager.getSite(rc.siteID).getColumnCount()#" index="i">
   <cfparam name="request.rsContentObjects#i#.recordcount" default=0>
 </cfloop>
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.layoutobjects"))/>
