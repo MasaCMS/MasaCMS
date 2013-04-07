@@ -104,7 +104,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<cfloop from="#maxItems#" to="1" index="i" step="-1">
 			
-			<cfif isdefined('arguments.data.remoteID') and (arguments.data.remoteID eq 'All' or listFind(arguments.data.remoteID,items[i].guid.xmlText)) >
+			<cfif isdefined('arguments.data.remoteID') and (arguments.data.remoteID eq 'All' or listFind(arguments.data.remoteID,hash(left(items[i].guid.xmlText,255)))) >
 				
 				<cfset contentBean=getBean('content').loadBy(remoteID=items[i].guid.xmlText,siteID=theImport.feedBean.getSiteID())>
 
