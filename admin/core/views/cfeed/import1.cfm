@@ -69,14 +69,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		
 <cfloop from="1" to="#maxItems#" index="i">
-			<cfsilent>
-		<cftry>
-		 <cfset remoteID=left(items[i].guid.xmlText,255) />
-		 <cfcatch>
-		  <cfset remoteID=left(items[i].link.xmlText,255) />
-		 </cfcatch>
-		 </cftry>
-		 
+		<cfsilent>
+			<cftry>
+				<cfset remoteID=hash(left(items[i].guid.xmlText,255)) />
+				<cfcatch>
+					<cfset remoteID=hash(left(items[i].link.xmlText,255)) />
+				</cfcatch>
+			</cftry>
+			 
 			<cfset rc.newBean=application.contentManager.getActiveByRemoteID(remoteID,rc.siteid) />
 		
 		</cfsilent>
