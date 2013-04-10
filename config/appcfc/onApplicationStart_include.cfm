@@ -47,6 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="local" default="#structNew()#">
 <cfparam name="application.appInitializedTime" default="" />
 <cfparam name="application.appInitialized" default="false" />
+<cfparam name="application.appInitializedPreviously" default="false" />
 <cfparam name="application.appAutoUpdated" default="false" />
 <cfparam name="application.appReloadKey" default="appreload" />
 <cfparam name="application.broadcastInit" default="false" />
@@ -247,12 +248,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif application.configBean.getValue("autoDiscoverPlugins") and not isdefined("url.safemode")>
 			<cfset application.pluginManager.discover()>
 		</cfif>
-		
-		<cfset application.cfstatic=structNew()>			
-		<cfset application.appInitialized=true/>
-		<cfset application.appInitializedTime=now()>
-		<cfset application.clusterManager.reload(broadcast=application.broadcastInit)>
-		<cfset application.broadcastInit=true/>
+				
+		<!--- If mura has not started before don't comfirm a successfull startup until is gets to the end --->
+		<cfif application.appInitializedPreviously>
+			<cfset application.appInitialized=true/>
+			<cfset application.appInitializedTime=now()>
+			<cfset application.clusterManager.reload(broadcast=application.broadcastInit)>
+			<cfset application.broadcastInit=true/>
+		</cfif>	
+
+		<cfset application.cfstatic=structNew()>	
 		<cfset structDelete(application,"muraAdmin")>
 		<cfset structDelete(application,"proxyServices")>
 		<cfset structDelete(application,"CKFinderResources")>
@@ -448,6 +453,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset application.serviceFactory.getBean('fileWriter').renameFile(source=local.bundleLoc,destination=expandPath("/muraWRM/config/setup/deploy/#createUUID()#.zip"))>
 		</cfif>
 
+		<!--- If mura has not started before don't comfirm a successfull startup until is gets to the end --->
+		<cfif not application.appInitializedPreviously>
+			<cfset application.appInitialized=true/>
+			<cfset application.appInitializedTime=now()>
+			<cfset application.clusterManager.reload(broadcast=application.broadcastInit)>
+			<cfset application.broadcastInit=true/>
+		</cfif>	
+
+		<cfset application.appInitializedPreviously=true>
 		<cfset application.sessionTrackingThrottle=false>
 	
 	</cfif>	
