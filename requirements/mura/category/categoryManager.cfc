@@ -291,6 +291,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			select categoryID from tcontentcategories 
 			where categoryID != <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.categoryBean.getCategoryID()#">
 			and filename=<cfqueryparam cfsqltype="cf_sql_varchar" value="#tempFilename#">
+			and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.categoryBean.getSiteID()#">
 		</cfquery>
 		<cfif rsCheck.recordcount>
 			<cfset count=count+1>
