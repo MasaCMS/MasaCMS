@@ -44,17 +44,22 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-
-<cfparam name="request.fuseaction" default="list">
-<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="variables.rssite">
-select siteid from tcontent where contentid='#arguments.objectid#' and active=1
-</cfquery>
-<cfset variables.formBean=$.getBean('content').loadBy(contentID=arguments.objectID)>
-<cfswitch expression="#request.fuseaction#">
-<cfcase value="list">
-<cfinclude template="dsp_list.cfm">
-</cfcase>
-<cfcase value="detail">
-<cfinclude template="dsp_detail.cfm">
-</cfcase>
+<cfsilent>
+	<cfparam name="request.dataResponseView" default="list">
+	<cfquery datasource="#application.configBean.getDatasource()#" name="variables.rssite">
+		SELECT siteid 
+		FROM tcontent
+		WHERE contentid='#arguments.objectid#'
+			AND active=1
+	</cfquery>
+	<cfset variables.formBean=$.getBean('content').loadBy(contentID=arguments.objectID)>
+	<cfset variables.fieldlist = application.dataCollectionManager.getCurrentFieldList(variables.formBean.getValue('contentID'))>
+</cfsilent>
+<cfswitch expression="#$.event('dataResponseView')#">
+	<cfcase value="detail">
+		<cfinclude template="dsp_detail.cfm" />
+	</cfcase>
+	<cfdefaultcase>
+		<cfinclude template="dsp_list.cfm" />
+	</cfdefaultcase>
 </cfswitch>
