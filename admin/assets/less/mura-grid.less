@@ -616,7 +616,7 @@
 			padding: 0;
 			margin: 0 .5em .35em 0;
 			font-size: 11px;
-			white-space: nowrap;
+			//white-space: nowrap;
 			
 				&:after {
 				content: "/";
@@ -626,6 +626,8 @@
 				&:last-child:after {
 				content: "";
 				}
+				
+				&.created { white-space: nowrap; }
 			}
 		}
 		
@@ -667,8 +669,8 @@
 				}
 			
 			.navZoom {
-			margin: .75em 0 .75em !important;
-			/*clear: both !important;*/
+			margin: .75em 0 .6em !important;
+			padding: 0 !important;
 			display: block;
 			overflow: hidden;
 			float: none !important;
