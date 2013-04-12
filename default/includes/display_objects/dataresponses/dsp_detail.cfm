@@ -44,26 +44,38 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-
 <cfsilent>
-<cfset variables.rsData=application.dataCollectionManager.read(request.responseid)/>
-<cfif variables.formBean.getValue('ResponseDisplayFields') neq ''>
-<cfset variables.fieldnames=replace(listLast(variables.formBean.getValue('ResponseDisplayFields'),"~"),"^",",","ALL")/>
-<cfelse>
-<cfset variables.fieldnames=application.dataCollectionManager.getCurrentFieldList(variables.formBean.getValue('contentID'))/>
-</cfif>
-<cfwddx action="wddx2cfml" input="#variables.rsData.data#" output="variables.info">
+	<cfset variables.rsData=application.dataCollectionManager.read($.event('responseid'))/>
+	<cfif Left(variables.formBean.getValue('ResponseDisplayFields'), 1) neq '~'>
+		<cfset variables.fieldnames=Replace(ListFirst(variables.formBean.getValue('ResponseDisplayFields'),"~"),"^",",","ALL")/>
+	<cfelse>
+		<cfset variables.fieldnames=application.dataCollectionManager.getCurrentFieldList(variables.formBean.getValue('contentID'))/>
+	</cfif>
 </cfsilent>
-<cfoutput>
-<div id="dsp_detail" class="dataResponses">
-<#variables.$.getHeaderTag('subHead1')#>#variables.$.content('title')#</#variables.$.getHeaderTag('subHead1')#>
-<a class="actionItem" href="##" onclick="history.go(-1); return false;">Return to List</a>
-<dl>
-<cfloop list="#variables.fieldnames#" index="variables.f">
-	<cftry><cfset variables.fValue=variables.info['#variables.f#']><cfcatch><cfset variables.fValue=""></cfcatch></cftry>
-	<dt>#variables.f#</dt>
-	<dd>#HTMLEditFormat(fvalue)#</dd>
-</cfloop>
-</dl>
-</cfoutput>
-</div>
+<cfif variables.rsData.recordcount>
+	<cfsilent>
+		<cfwddx action="wddx2cfml" input="#variables.rsData.data#" output="variables.info">
+	</cfsilent>
+	<cfoutput>
+		<div id="dsp_detail" class="dataResponses">
+			<#variables.$.getHeaderTag('subHead2')#>
+				#HTMLEditFormat(variables.formBean.getValue('title'))# Response
+			</#variables.$.getHeaderTag('subHead2')#>
+			<a class="actionItem" href="##" onclick="history.go(-1); return false;">Return to List</a>
+			<dl class="dl-horizontal">
+				<cfloop list="#variables.fieldnames#" index="variables.f">
+					<cftry>
+						<cfset variables.fValue=variables.info['#variables.f#']>
+						<cfcatch>
+							<cfset variables.fValue="">
+						</cfcatch>
+					</cftry>
+					<dt>#HTMLEditFormat(variables.f)#</dt>
+					<dd>#HTMLEditFormat(fvalue)#</dd>
+				</cfloop>
+			</dl>
+		</div>
+	</cfoutput>
+<cfelse>
+	<p><em>Record not found</em></p>
+</cfif>

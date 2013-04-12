@@ -46,13 +46,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfsilent>
-<cfif rc.contentBean.getResponseDisplayFields() neq "~">
-  <cfset summaryList=listLast(rc.contentBean.getResponseDisplayFields(),"~")>
-  <cfset detailList=listFirst(rc.contentBean.getResponseDisplayFields(),"~")>
-  <cfelse>
-  <cfset summaryList="">
-  <cfset detailList="">
-</cfif>
+<cfset detailList = Left(rc.contentBean.getResponseDisplayFields(), 1) neq '~' ? ListFirst(rc.contentBean.getResponseDisplayFields(), '~') : ''>
+<cfset summaryList = Right(rc.contentBean.getResponseDisplayFields(), 1) neq '~' ? ListLast(rc.contentBean.getResponseDisplayFields(), '~') : ''>
 <cfhtmlhead text='<script src="assets/js/manageData.js?coreversion=#application.coreversion#" type="text/javascript"></script>'>
 </cfsilent>
 <script type="text/javascript">
