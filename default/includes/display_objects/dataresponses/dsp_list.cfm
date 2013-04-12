@@ -24,7 +24,7 @@ Mura CMS under the license of your choice, provided that you follow these specif
 
 Your custom code 
 
-• Must not alter any default objects in the Mura CMS variables.database and
+• Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
 • Must not alter any files in the following directories.
 
@@ -44,60 +44,95 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-
 <cfsilent>
-<cfset variables.data.sortby=variables.formBean.getValue('sortBy')/>
-<cfset variables.data.sortDirection=variables.formBean.getValue('sortDirection')/>
-<cfset variables.data.siteid=variables.formBean.getValue('siteID')/>
-<cfset variables.data.contentid=variables.formBean.getValue('contentID')/>
-<cfset variables.data.keywords=request.keywords />
-<cfset variables.data.fieldnames=application.dataCollectionManager.getCurrentFieldList(variables.data.contentid)/>
-<cfset variables.rsdata=application.dataCollectionManager.getdata(variables.data)/>
+	<cfset variables.data.sortby=variables.formBean.getValue('sortBy')/>
+	<cfset variables.data.sortDirection=variables.formBean.getValue('sortDirection')/>
+	<cfset variables.data.siteid=variables.formBean.getValue('siteID')/>
+	<cfset variables.data.contentid=variables.formBean.getValue('contentID')/>
+	<cfset variables.data.keywords=request.keywords />
+	<cfif Right(variables.formBean.getValue('ResponseDisplayFields'), 1) neq '~'>
+		<cfset variables.data.fieldnames=Replace(ListLast(variables.formBean.getValue('ResponseDisplayFields'),"~"),"^",",","ALL")/>
+	<cfelse>
+		<cfset variables.data.fieldnames=application.dataCollectionManager.getCurrentFieldList(variables.data.contentid)/>
+	</cfif>
+	<cfset variables.rsdata=application.dataCollectionManager.getdata(variables.data)/>
 </cfsilent>
 <div id="dsp_list" class="variables.dataResponses">
-<cfif variables.rsdata.recordcount>
-<cfsilent>
-<cfset variables.nextN=variables.$.getBean('utility').getnextN(variables.rsdata,variables.$.content('nextN'),request.StartRow)>
-			
-<cfif variables.$.content('ResponseDisplayFields') neq ''>
-<cfset variables.data.fieldnames=replace(listFirst(variables.$.content('ResponseDisplayFields'),"~"),"^",",","ALL")/>
-</cfif>
-</cfsilent>
-<cfoutput><#variables.$.getHeaderTag('subHead1')#>#variables.$.content('title')#</#variables.$.getHeaderTag('subHead1')#></cfoutput>
-<table class="mura-table-grid stripe">
-<tr>
-<cfloop list="#variables.data.fieldnames#" index="variables.f">
-<th><cfoutput>#variables.f#</cfoutput></th>
-</cfloop>
-
-</tr>
-<cfoutput query="variables.rsdata" startrow="#request.startRow#" maxrows="#variables.nextN.RecordsPerPage#">
-<tr>
-<cfsilent><cfwddx action="wddx2cfml" input="#variables.rsdata.data#" output="variables.info"></cfsilent>
-<cfloop list="#variables.data.fieldnames#" index="variables.f">
-	<cftry><cfset fValue=variables.info['#variables.f#']><cfcatch><cfset variables.fValue=""></cfcatch></cftry>
-<td><a href="?fuseaction=detail&responseid=#variables.rsdata.responseid#">#HTMLEditFormat(variables.fvalue)#</a></td>
-</cfloop>
-
-</tr>
-</cfoutput>
-</table>
-<cfif variables.nextN.numberofpages gt 1>
-			<cfoutput><div class="moreResults"><#variables.$.getHeaderTag('subHead2')#>More Results:</#variables.$.getHeaderTag('subHead2')#> 
-			<ul>
-			<cfif variables.nextN.currentpagenumber gt 1>
-				<li><a href="?startrow=#variables.nextN.previous#&categoryID=#variables.$.event('categoryID')#&relatedID=#request.relatedID#">&laquo;&nbsp;Prev</a></li>
-			</cfif>
-			<cfloop from="#variables.nextN.firstPage#"  to="#variables.nextN.lastPage#" index="i">
-			<cfif variables.nextN.currentpagenumber eq i><li class="current">#i#</li><cfelse><li><a href="?startrow=#evaluate('(#i#*#variables.nextN.recordsperpage#)-#variables.nextN.recordsperpage#+1')#&categoryID=#variables.$.event('categoryID')#&relatedID=#request.relatedID#">#i#</a></li></cfif>
-			</cfloop>
-			<cfif variables.nextN.currentpagenumber lt variables.nextN.NumberOfPages>
-				<li><a href="?startrow=#variables.nextN.next#&categoryID=#variables.$.event('categoryID')#&relatedID=#request.relatedID#">Next&nbsp;&raquo;</a></li>
-			</cfif>
-			</ul></cfoutput>
+	<cfif variables.rsdata.recordcount>
+		<cfsilent>
+			<cfset variables.nextN=variables.$.getBean('utility').getnextN(variables.rsdata,variables.formBean.getValue('nextN'),request.StartRow)>
+		</cfsilent>
+		<cfoutput>
+			<#variables.$.getHeaderTag('subHead2')#>
+				#HTMLEditFormat(variables.formBean.getValue('title'))# Responses
+			</#variables.$.getHeaderTag('subHead2')#>
+		</cfoutput>
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<cfloop list="#variables.data.fieldnames#" index="variables.f">
+						<th>
+							<cfoutput>#variables.f#</cfoutput>
+						</th>
+					</cfloop>
+				</tr>
+			</thead>
+			<tbody>
+				<cfoutput 
+					query="variables.rsdata" 
+					startrow="#request.startRow#" 
+					maxrows="#variables.nextN.RecordsPerPage#">
+					<tr>
+						<cfsilent>
+							<cfwddx action="wddx2cfml" input="#variables.rsdata.data#" output="variables.info">
+						</cfsilent>
+						<cfloop list="#variables.data.fieldnames#" index="variables.f">
+							<cfsilent>
+								<cftry>
+									<cfset fValue=variables.info['#variables.f#']>
+									<cfcatch>
+										<cfset variables.fValue="">
+									</cfcatch>
+								</cftry>
+							</cfsilent>
+							<td>
+								<a href="./?dataResponseView=detail&amp;responseid=#variables.rsdata.responseid#">
+									#HTMLEditFormat(variables.fvalue)#
+								</a>
+							</td>
+						</cfloop>
+					</tr>
+				</cfoutput>
+			</tbody>
+		</table>
+		<cfif variables.nextN.numberofpages gt 1>
+			<cfoutput>
+				<div class="pagination">
+					<ul>
+						<cfif variables.nextN.currentpagenumber gt 1>
+							<li>
+								<a href="./?startrow=#variables.nextN.previous#&amp;categoryID=#variables.$.event('categoryID')#&amp;relatedID=#request.relatedID#">&laquo;&nbsp;#variables.$.rbKey('list.previous')#</a>
+							</li>
+						</cfif>
+						<cfloop from="#variables.nextN.firstPage#"  to="#variables.nextN.lastPage#" index="i">
+							<cfif variables.nextN.currentpagenumber eq i>
+								<li class="current active"><span>#i#</span></li>
+							<cfelse>
+								<li>
+									<a href="./?startrow=#evaluate('(#i#*#variables.nextN.recordsperpage#)-#variables.nextN.recordsperpage#+1')#&amp;categoryID=#variables.$.event('categoryID')#&amp;relatedID=#request.relatedID#">#i#</a>
+								</li>
+							</cfif>
+						</cfloop>
+						<cfif variables.nextN.currentpagenumber lt variables.nextN.NumberOfPages>
+							<li>
+								<a href="./?startrow=#variables.nextN.next#&amp;categoryID=#variables.$.event('categoryID')#&amp;relatedID=#request.relatedID#">#variables.$.rbKey('list.next')#&nbsp;&raquo;</a>
+							</li>
+						</cfif>
+					</ul>
+				</cfoutput>
 			</div>
-</cfif>
-<cfelse>
-<em>There is currently no data collected</em>
-</cfif>
+		</cfif>
+	<cfelse>
+		<em>There is currently no data collected</em>
+	</cfif>
 </div>
