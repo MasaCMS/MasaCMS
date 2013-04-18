@@ -312,7 +312,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfloop query="rc.rslist" startrow="#rc.startRow#" endrow="#endRow#">
 <tr>
 <td><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="index.cfm?muraAction=cDashboard.viewSession&urlToken=#urlEncodedFormat(rc.rslist.urlToken)#&siteid=#URLEncodedFormat(rc.siteid)#"><cfif rc.rslist.userid eq ''>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.anonymous")#<cfelse>#HTMLEditFormat(rc.rslist.fname)# #HTMLEditFormat(rc.rslist.lname)#<cfif rc.rslist.company neq ''> (#HTMLEditFormat(rc.rslist.company)#)</cfif></cfif></a></td>
-<td>#rc.rslist.locale#</td>
+<td>#HTMLEditFormat(rc.rslist.locale)#</td>
 <td>#LSDateFormat(rc.rslist.lastRequest,session.dateKeyFormat)# #LSTimeFormat(rc.rslist.lastRequest,"short")#</td>
 <td>#rc.rslist.views#</td>
 <td>#application.dashboardManager.getTimespan(rc.rslist.firstRequest,rc.rslist.lastRequest)#</td>
