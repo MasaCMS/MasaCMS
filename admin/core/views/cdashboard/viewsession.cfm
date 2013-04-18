@@ -53,11 +53,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 
 <ul class="metadata">
-<li><strong>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.user")#:</strong> #application.dashboardManager.getUserFromSessionQuery(rc.rslist)#</li>
+<li><strong>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.user")#:</strong> #HTMLEditFormat(application.dashboardManager.getUserFromSessionQuery(rc.rslist))#</li>
 <li><strong>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.lastaccessed")#:</strong> <cfif LSisDate(lastAccessed)>#LSDateFormat(lastAccessed,session.dateKeyFormat)#<cfelse>Not Available</cfif></li>
 <cfif LSisDate(lastAccessed)><li><strong>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.timebetweenvisit")#:</strong> #application.dashboardManager.getTimespan(lastAccessed,rc.rslist.entered,"long")#</li></cfif> 
 <li><strong>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.lengthofvisit")#:</strong> #application.dashboardManager.getTimespan(rc.rslist.entered[rc.rslist.recordcount],rc.rslist.entered[1])#</li>
-<li><strong>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.useragent")#:</strong> #application.dashboardManager.getUserAgentFromSessionQuery(rc.rslist)#</li>
+<li><strong>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.useragent")#:</strong> #HTMLEditFormat(application.dashboardManager.getUserAgentFromSessionQuery(rc.rslist))#</li>
 </ul>
 
 <table class="table table-striped table-condensed table-bordered mura-table-grid"> 
@@ -77,7 +77,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <td>#LSDateFormat(rc.rslist.entered,session.dateKeyFormat)# #LSTimeFormat(rc.rslist.entered,"short")#</td>
 <td><cfif rc.rslist.keywords neq ''>#HTMLEditFormat(rc.rslist.keywords)#<cfelse>&mdash;</cfif></td>
-<td>#rc.rslist.locale#</td>
+<td>#HTMLEditFormat(rc.rslist.locale)#</td>
 <td class="actions"><ul><li class="preview"><cfswitch expression="#rc.rslist.type#">
 		<cfcase value="Page,Folder,Calendar,Gallery">
 		<a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,rc.rsList.filename)#','#rc.rslist.targetParams#');"><i class="icon-globe"></i></a>
