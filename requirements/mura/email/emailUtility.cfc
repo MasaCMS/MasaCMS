@@ -104,10 +104,6 @@ Select EmailID from temails where deliverydate <=<cfqueryparam cfsqltype="cf_sql
 		update temails set status = 99 where emailid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#email#" />
 	</cfquery>
 	
-	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		update temails set status = 99 where emailid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#email#" />
-	</cfquery>
-	
 	<cfquery name="rsEmail" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 	select temails.*, tsettings.* from temails inner join tsettings on (temails.siteid=tsettings.siteid) where emailid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#email#" />
 	</cfquery>
