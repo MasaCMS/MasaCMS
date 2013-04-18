@@ -122,7 +122,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset arguments.language = 'Unknown' />
 	<cfset arguments.country ='Unknown' />
 	<cfset arguments.startCount =GetTickCount()>
-			
+	
+	<cfset application.scriptProtectionFilter.scan(
+					object=arguments,
+					objectname="arguments",
+					ipAddress=arguments.remote_addr,
+					useWordFilter=true,
+					useSQLFilter=false,
+					useTagFilter=true)>
+
 	<cftry>
 		<cfquery datasource="#variables.datasource#" username="#variables.dbUsername#" password="#variables.dbPassword#">
 			INSERT INTO tsessiontracking (REMOTE_ADDR,SCRIPT_NAME,QUERY_STRING,SERVER_NAME,URLToken,UserID,siteID,
