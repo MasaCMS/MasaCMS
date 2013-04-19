@@ -217,6 +217,10 @@ If it has not set application.appInitialized=false. --->
 	</cfif>
 </cfif>
 
+<cfif not isBoolean(cookie.mobileFormat)>
+	<cfcookie name="mobileFormat" value="false" />
+</cfif>
+
 <cfset request.muraMobileRequest=cookie.mobileFormat>
 
 <cfif not request.hasCFApplicationCFM and not fileExists("#expandPath('/muraWRM/config')#/cfapplication.cfm")>
