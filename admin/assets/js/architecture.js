@@ -59,22 +59,24 @@ var siteManager = {
 
 		if(typeof(saveFormBuilder) != "undefined") saveFormBuilder();
 
-		if(document.contentForm.display.value == '2') {
-			var tempStart = document.contentForm.displayStart.value;
-			var tempStop = document.contentForm.displayStop.value;
-			//alert(tempStart);
-			if(isDate(tempStart, 'DISPLAY START DATE') == false) {
+		if(typeof(document.contentForm.display) != 'undefined'){
+			if(document.contentForm.display.value == '2') {
+				var tempStart = document.contentForm.displayStart.value;
+				var tempStop = document.contentForm.displayStop.value;
+				//alert(tempStart);
+				if(isDate(tempStart, 'DISPLAY START DATE') == false) {
 
-				alertDialog("Please enter a valid date in the 'Display Start Date' field");
-				return false;
-			} else if(tempStop != '' && isDate(tempStop, 'DISPLAY STOP DATE') == false) {
+					alertDialog("Please enter a valid date in the 'Display Start Date' field");
+					return false;
+				} else if(tempStop != '' && isDate(tempStop, 'DISPLAY STOP DATE') == false) {
 
-				alertDialog("Please enter a valid date in the 'Display Stop Date' field");
-				return false;
+					alertDialog("Please enter a valid date in the 'Display Stop Date' field");
+					return false;
+				}
+			} else {
+				document.contentForm.displayStart.value = "";
+				document.contentForm.displayStop.value = "";
 			}
-		} else {
-			document.contentForm.displayStart.value = "";
-			document.contentForm.displayStop.value = "";
 		}
 
 		if(document.contentForm.title.value == '') {
