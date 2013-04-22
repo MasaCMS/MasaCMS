@@ -2581,7 +2581,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn str>
 </cffunction>
 
-<cffunction name="generateListImageSyles" output="false">
+<cffunction name="generateListImageSyles" output="false" hint="for backward compatibility">
+	<cfreturn generateListImageStyels(argumentCollection=arguments)>
+</cffunction>
+
+<cffunction name="generateListImageStyles" output="false">
 	<cfargument name="size" default="small">
 	<cfargument name="height" default="auto">
 	<cfargument name="width" default="auto">

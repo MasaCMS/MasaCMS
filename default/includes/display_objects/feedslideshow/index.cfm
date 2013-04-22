@@ -93,7 +93,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 	<cfif variables.feedBean.getDisplayName()>
 		       <#variables.$.getHeaderTag('subHead1')#>#HTMLEditFormat(variables.feedBean.renderName())#</#variables.$.getHeaderTag('subHead1')#>
 			</cfif>
-	  		<div class="svSlides"<cfif listFindNoCase(variables.feedBean.getDisplayList(),"image")> style="#variables.$.generateListImageSyles(size=variables.feedBean.getImageSize(),height=variables.feedBean.getImageHeight(),setWidth=false)#"</cfif>>
+	  		<div class="svSlides"<cfif listFindNoCase(variables.feedBean.getDisplayList(),"image")> style="#variables.$.generateListImageStyles(size=variables.feedBean.getImageSize(),height=variables.feedBean.getImageHeight(),setWidth=false)#"</cfif>>
 
 				#variables.$.dspObject_Include(
 					thefile='dsp_content_list.cfm',
