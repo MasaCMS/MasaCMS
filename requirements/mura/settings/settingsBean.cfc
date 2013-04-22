@@ -845,7 +845,7 @@ if(not isObject(arguments.$)){
 	<cfargument name="reset" default="false">
 	<cfset var rsCustomImageSizeQuery="">
 
-	<cfquery name="rsCustomImageSizeQuery" username="#variables.configBean.getDbUsername()#"  password="#variables.configBean.getDbPassword()#">
+	<cfquery name="rsCustomImageSizeQuery" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#"  password="#variables.configBean.getDbPassword()#">
 		select sizeid,siteid,name,height,width from timagesizes where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteid#">
 	</cfquery>
 	
