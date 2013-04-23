@@ -79,9 +79,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 
 		<cfif arguments.isCustomImage>
-			<cfset arguments.imageStyles='style="#variables.$.generateListImageSyles(size='custom',width=arguments.imageWidth,height=arguments.imageHeight,padding=arguments.imagePadding)#"'>
+			<cfset arguments.imageStyles='style="#variables.$.generateListImageStyles(size='custom',width=arguments.imageWidth,height=arguments.imageHeight,padding=arguments.imagePadding)#"'>
 		<cfelse>
-			<cfset arguments.imageStyles='style="#variables.$.generateListImageSyles(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight,padding=arguments.imagePadding)#"'>
+			<cfset arguments.imageStyles='style="#variables.$.generateListImageStyles(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight,padding=arguments.imagePadding)#"'>
 		</cfif>
 	</cfif>
 </cfsilent>	
