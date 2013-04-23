@@ -2582,7 +2582,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="generateListImageSyles" output="false" hint="for backward compatibility">
-	<cfreturn generateListImageStyels(argumentCollection=arguments)>
+	<cfreturn generateListImageStyles(argumentCollection=arguments)>
 </cffunction>
 
 <cffunction name="generateListImageStyles" output="false">
