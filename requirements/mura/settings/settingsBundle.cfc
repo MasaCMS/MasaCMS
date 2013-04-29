@@ -264,7 +264,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cffile action="write" file="#variables.backupDir#plugins#variables.fileDelim#blank.txt" output="empty file" /> 
 			</cfif>
 			<cfloop query="rstplugins">
-				<cfset variables.utility.copyDir( expandPath("/plugins/#rstplugins.directory#"),"#variables.backupDir#plugins/#rstplugins.directory#" )>
+				<cfset variables.utility.copyDir("#variables.configBean.getPluginDir()#/#rstplugins.directory#","#variables.backupDir#plugins/#rstplugins.directory#" )>
 			</cfloop>
 			<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#pluginfiles.zip",directory="#variables.backupDir#plugins/",recurse="true")>
 		</cfif>
