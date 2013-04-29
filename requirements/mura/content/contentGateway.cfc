@@ -1937,6 +1937,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"> 
         #renderActiveClause("tcontent",arguments.siteID)#
 		and releaseDate <> ''
+		and display != 0
 		group by parentID,
 		<cfif variables.configBean.getDbTYpe() neq 'oracle'>
 			month(releaseDate),
@@ -1963,6 +1964,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"> 
         #renderActiveClause("tcontent",arguments.siteID)#
 		and releaseDate is null
+		and display != 0
 		group by parentID,
 		<cfif variables.configBean.getDbTYpe() neq 'oracle'>
 			month(lastUpdate),
