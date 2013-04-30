@@ -195,8 +195,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="event" required="true">
 	
 	<cfset var loginURL = "" />
-	
-	<cfif arguments.event.getValue('isOnDisplay') and arguments.event.getValue('r').restrict and not arguments.event.getValue('r').loggedIn and (arguments.event.getValue('display') neq 'login' and arguments.event.getValue('display') neq 'editProfile')>
+
+	<cfif arguments.event.getValue('isOnDisplay') and arguments.event.getValue('r').restrict and not arguments.event.getValue('r').loggedIn and not listFindNoCase('login,editProfile,search',arguments.event.getValue('display'))>
 		<cfset loginURL = application.settingsManager.getSite(request.siteid).getLoginURL() />
 		<cfif find('?', loginURL)>
 			<cfset loginURL &= "&returnURL=#URLEncodedFormat(arguments.event.getValue('contentRenderer').getCurrentURL())#" />
