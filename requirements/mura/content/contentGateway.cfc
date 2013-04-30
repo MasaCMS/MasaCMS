@@ -1362,7 +1362,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var c = "">
 	<cfset var categoryListLen=listLen(arguments.categoryID)>
 	
-	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsPublicSearch')#">
+	<cfquery name="rsPublicSearch" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#" maxrows="1000">
 	<!--- Find direct matches with no releasedate --->
 	
 	select tcontent.contentid,tcontent.contenthistid,tcontent.siteid,tcontent.title,tcontent.menutitle,tcontent.targetParams,tcontent.filename,tcontent.summary,tcontent.tags,
