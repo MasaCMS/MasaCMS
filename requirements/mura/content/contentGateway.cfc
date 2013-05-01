@@ -1173,12 +1173,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rsPrivateSearch = "">
 	<cfset var kw = trim(arguments.keywords)>
 	
-	<cfquery name="rsPrivateSearch" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#" maxrows="1000">
+	<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rsPrivateSearch"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#" maxrows="1000">
 	SELECT tcontent.ContentHistID, tcontent.ContentID, tcontent.Approved, tcontent.filename, tcontent.Active, tcontent.Type, tcontent.OrderNo, tcontent.ParentID, 
 	tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, 
 	tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted, count(tcontent2.parentid) AS hasKids,tcontent.isfeature,tcontent.inheritObjects,tcontent.target,tcontent.targetParams,
 	tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt, 2 AS Priority, tcontent.nextn, tfiles.fileid,
-	tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires
+	tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires,tfiles.filename as assocFilename
 	FROM tcontent 
 	LEFT JOIN tcontent tcontent2 ON (tcontent.contentid=tcontent2.parentid)
 	LEFT JOIN tcontentstats on (tcontent.contentID=tcontentstats.contentID 
@@ -1207,7 +1207,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					AND
 					
 					
-					tcontent.type in ('Page','Portal','Calendar','File','Link','Gallery')
+					tcontent.type in ('Page','Folder','Calendar','File','Link','Gallery')
 						
 						<cfif len(arguments.sectionID)>
 							and tcontent.path like  <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.sectionID#%">	
@@ -1221,7 +1221,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						(tcontent.Title like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#kw#%"/>
 						or tcontent.menuTitle like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#kw#%"/>
 						or tcontent.summary like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#kw#%"/>
-						or tcontent.body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#kw#%"/>)
+						or 
+								(
+									tcontent.type not in ('Link','File')
+									and tcontent.body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+								)
+						or tcontent.contenthistid in (
+								select distinct tcontent.contenthistid from tclassextenddata 
+								inner join tcontent on (tclassextenddata.baseid=tcontent.contenthistid)
+								where tcontent.active=1
+								and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
+								and tclassextenddata.attributeValue like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+							))
 						and not (
 						tcontent.Title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#kw#"/>
 						or tcontent.menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#kw#"/>	
@@ -1237,7 +1248,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, 
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted,tcontent.isfeature,tcontent.inheritObjects,
 		tcontent.target,tcontent.targetParams,tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt, tcontent.nextn, tfiles.fileid,
-		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires
+		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires,tfiles.filename
 		
 		
 		<cfif kw neq ''>	
@@ -1247,7 +1258,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, 
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted, count(tcontent2.parentid) AS hasKids,tcontent.isfeature,tcontent.inheritObjects,tcontent.target,tcontent.targetParams,
 		tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt, 1 AS Priority, tcontent.nextn, tfiles.fileid,
-		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires
+		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires,tfiles.filename as assocFilename
 		FROM tcontent 
 		LEFT JOIN tcontent tcontent2 ON (tcontent.contentid=tcontent2.parentid)
 		LEFT JOIN tcontentstats on (tcontent.contentID=tcontentstats.contentID 
@@ -1272,7 +1283,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					AND
 					
 					
-					tcontent.type in ('Page','Portal','Calendar','File','Link','Gallery')
+					tcontent.type in ('Page','Folder','Calendar','File','Link','Gallery')
 						
 						<cfif len(arguments.sectionID)>
 							and tcontent.path like  <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.sectionID#%">	
@@ -1287,7 +1298,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, 
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted,tcontent.isfeature,tcontent.inheritObjects,
 		tcontent.target,tcontent.targetParams,tcontent.islocked,tcontent.releaseDate,tfiles.fileSize,tfiles.fileExt,tcontent.nextn, tfiles.fileid,
-		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires
+		tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires,tfiles.filename 
 	</cfif>
 	</cfquery> 
 	
@@ -1309,7 +1320,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var c = "">
 	<cfset var categoryListLen=listLen(arguments.categoryID)>
 	
-	<cfquery name="rsPublicSearch" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rsPublicSearch"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#" maxrows="1000">
 	<!--- Find direct matches with no releasedate --->
 	
 	select tcontent.contentid,tcontent.contenthistid,tcontent.siteid,tcontent.title,tcontent.menutitle,tcontent.targetParams,tcontent.filename,tcontent.summary,tcontent.tags,
@@ -1318,8 +1329,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tcontent.credits, tcontent.remoteSource, tcontent.remoteSourceURL, 
 	tcontent.remoteURL,tfiles.fileSize,tfiles.fileExt,tcontent.fileID,tcontent.audience,tcontent.keyPoints,
 	tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes, 0 as kids, 
-	tparent.type parentType,tcontent.nextn,tcontent.path,tcontent.orderno,tcontent.lastupdate,tcontent.created,
-	tcontent.created sortdate, 0 sortpriority,tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires
+	tparent.type parentType,tcontent.nextn,tcontent.path,tcontent.orderno,tcontent.lastupdate, tcontent.created,
+	tcontent.created sortdate, 0 sortpriority,tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, 
+	tcontent.expires,tfiles.filename as assocFilename
 	from tcontent Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
 	Left Join tcontent tparent on (tcontent.parentid=tparent.contentid
 						    			and tcontent.siteid=tparent.siteid
@@ -1381,8 +1393,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							or tcontent.menuTitle like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
 							or tcontent.metaKeywords like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
 							or tcontent.summary like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"> 
-							or tcontent.body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
-							or tcontent.credits like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">)
+							or (
+									tcontent.type not in ('Link','File')
+									and tcontent.body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+								)
+							or tcontent.credits like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+
+							or tcontent.contenthistid in (
+								select distinct tcontent.contenthistid from tclassextenddata 
+								inner join tcontent on (tclassextenddata.baseid=tcontent.contenthistid)
+								where tcontent.active=1
+								and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
+								and tclassextenddata.attributeValue like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+							))
 				</cfif>
 				
 				and tcontent.searchExclude=0
@@ -1413,8 +1436,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	tcontent.credits, tcontent.remoteSource, tcontent.remoteSourceURL, 
 	tcontent.remoteURL,tfiles.fileSize,tfiles.fileExt,tcontent.fileID,tcontent.audience,tcontent.keyPoints,
 	tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes, 0 as kids, 
-	tparent.type parentType,tcontent.nextn,tcontent.path,tcontent.orderno,tcontent.lastupdate,tcontent.created,
-	tcontent.releaseDate sortdate, 0 sortpriority,tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, tcontent.expires
+	tparent.type parentType,tcontent.nextn,tcontent.path,tcontent.orderno,tcontent.lastupdate, tcontent.created,
+	tcontent.releaseDate sortdate, 0 sortpriority,tcontent.majorVersion, tcontent.minorVersion, tcontentstats.lockID, 
+	tcontent.expires,tfiles.filename as assocFilename
 	from tcontent Left Join tfiles ON (tcontent.fileID=tfiles.fileID)
 	Left Join tcontent tparent on (tcontent.parentid=tparent.contentid
 						    			and tcontent.siteid=tparent.siteid
@@ -1473,11 +1497,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					--->
 					and
 							(tcontent.Title like  <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+							
 							or tcontent.menuTitle like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
 							or tcontent.metaKeywords like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
 							or tcontent.summary like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"> 
-							or tcontent.body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
-							or tcontent.credits like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">)
+							or 
+								(
+									tcontent.type not in ('Link','File')
+									and tcontent.body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+								)
+							or tcontent.credits like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+
+							or tcontent.contenthistid in (
+								select distinct tcontent.contenthistid from tclassextenddata 
+								inner join tcontent on (tclassextenddata.baseid=tcontent.contenthistid)
+								where tcontent.active=1
+								and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
+								and tclassextenddata.attributeValue like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+							))
 				</cfif>
 				
 				and tcontent.searchExclude=0
@@ -1497,7 +1534,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				
 				#renderMobileClause()#			
 	</cfquery>
-	
+
 	<cfquery name="rsPublicSearch" dbtype="query">
 		select *
 		from rsPublicSearch 
