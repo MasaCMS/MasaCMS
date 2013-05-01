@@ -200,7 +200,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset this.customtagpaths = listAppend(this.customtagpaths,variables.mapPrefix & variables.baseDir  &  "/requirements/custom_tags/")>
 	
 	<cfset this.clientManagement = properties.getProperty("clientManagement","false") />
-	<cfset this.clientStorage = properties.getProperty("clientStorage","registry") />
+	
+	<cfset variables.clientStorageCheck=properties.getProperty("clientStorage","")>
+	
+	<cfif len(variables.clientStorageCheck)>
+		<cfset this.clientStorage = variables.clientStorageCheck />
+	</cfif>
+	
 	<cfset this.ormenabled = properties.getProperty("ormenabled","true") />
 	
 	<!--- You can't depend on 9 supporting datasource as struct --->
