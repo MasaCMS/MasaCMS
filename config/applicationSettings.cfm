@@ -171,7 +171,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 Find( "blog", request.userAgent ) OR
 	 Find( "reader", request.userAgent ) OR
 	 Find( "syndication", request.userAgent ) OR
-	 Find( "coldfusion", request.userAgent ) OR
+	 FindNoCase( "coldfusion", request.userAgent ) OR
 	 Find( "slurp", request.userAgent ) OR
 	 Find( "google", request.userAgent ) OR
 	 Find( "zyborg", request.userAgent ) OR
