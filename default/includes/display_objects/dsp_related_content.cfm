@@ -49,6 +49,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.isConfigured=not structIsEmpty(objectparams)>
 <cfparam name="objectparams.sortBy" default="created">
 <cfparam name="objectparams.sortDirection" default="desc">
+<cfparam name="objectparams.imagesize" default="desc">
+<cfparam name="objectparams.imageHeight" default="#$.siteConfig('smallImageHeight')#">
+<cfparam name="objectparams.imageWidth" default="#$.siteConfig('smallImageWidth')#">
 <cfset variables.iterator=variables.$.content().getRelatedContentIterator(liveOnly=true,sortBy=objectparams.sortBy,sortDirection=objectparams.sortDirection)>
 <cfif variables.iterator.getRecordCount()>
 	<div class="svRelContent svIndex">
