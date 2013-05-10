@@ -1200,7 +1200,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset setValue("rstplugins",rstplugins)>
 		
 		<cfloop query="rstplugins">
-			<cfif fileExists(expandPath("/plugins/#rstplugins.directory#/plugin/plugin.cfc"))>	
+			<cfif fileExists(variables.configBean.getPluginDir() & "/#rstplugins.directory#/plugin/plugin.cfc")>	
 				<cfset pluginConfig=getPlugin(ID=rstplugins.moduleID, siteID="", cache=false)>
 				<cfset pluginCFC= createObject("component","plugins.#rstplugins.directory#.plugin.plugin") />
 						
