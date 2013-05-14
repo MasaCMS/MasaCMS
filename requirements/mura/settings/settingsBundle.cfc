@@ -264,7 +264,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cffile action="write" file="#variables.backupDir#plugins#variables.fileDelim#blank.txt" output="empty file" /> 
 			</cfif>
 			<cfloop query="rstplugins">
-				<cfset variables.utility.copyDir("#variables.configBean.getPluginDir()#/#rstplugins.directory#","#variables.backupDir#plugins/#rstplugins.directory#" )>
+				<cfset variables.utility.copyDir("#variables.configBean.getPluginDir()##variables.fileDelim##rstplugins.directory#","#variables.backupDir#plugins#variables.fileDelim##rstplugins.directory#" )>
 			</cfloop>
 			<cfset variables.zipTool.AddFiles(zipFilePath="#variables.backupDir#pluginfiles.zip",directory="#variables.backupDir#plugins/",recurse="true")>
 		</cfif>
@@ -1200,7 +1200,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset setValue("rstplugins",rstplugins)>
 		
 		<cfloop query="rstplugins">
-			<cfif fileExists(expandPath("/plugins/#rstplugins.directory#/plugin/plugin.cfc"))>	
+			<cfif fileExists(variables.configBean.getPluginDir() & "/#rstplugins.directory#/plugin/plugin.cfc")>	
 				<cfset pluginConfig=getPlugin(ID=rstplugins.moduleID, siteID="", cache=false)>
 				<cfset pluginCFC= createObject("component","plugins.#rstplugins.directory#.plugin.plugin") />
 						

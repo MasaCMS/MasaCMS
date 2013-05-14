@@ -1070,7 +1070,7 @@ select * from tplugins order by #arguments.orderby#
 		<cfset pluginConfig=getConfig(arguments.args.moduleID,'',false) />
 		
 		<!--- check to see is the plugin.cfc exists --->
-		<cfif fileExists(ExpandPath("/plugins") & "/" & pluginConfig.getDirectory() & "/plugin/plugin.cfc")>	
+		<cfif fileExists(variables.configBean.getPluginDir() & "/" & pluginConfig.getDirectory() & "/plugin/plugin.cfc")>	
 			<cfset pluginCFC= createObject("component","plugins.#pluginConfig.getDirectory()#.plugin.plugin") />
 			
 			<!--- only call the methods if they have been defined --->
