@@ -1160,6 +1160,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			    from timagesizes where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
 			</cfquery>	
 
+			<cfset setValue("rstimagesizes",rstimagesizes)>
+			
 			<cfset setValue("assetPath",application.configBean.getAssetPath())>
 			<cfset setValue("context",application.configBean.getContext())>
 			
