@@ -88,6 +88,7 @@
 		<cfargument name="useWordFilter" default="false"/>
 		<cfargument name="useSQLFilter" default="false"/>
 		<cfargument name="useTagFilter" default="false"/>
+		<cfargument name="pattern" default=""/>
 		 <!---Comma delimited list of fields not to scan--->
 		<cfset var object2 = StructNew()/>
 		<cfset var result = StructNew()/>
@@ -121,7 +122,7 @@
 		<!---Filter Tags--->
 		<cfif arguments.useTagFilter>
 			<cfloop collection="#object#" item="item">
-				<cfif ListContainsNoCase(exFF,item,',') eq false>
+				<cfif ListContainsNoCase(exFF,item,',') eq false and (not len(arguments.pattern) or refindNoCase(arguments.pattern,item))>
 					<cfset temp = filterTags(object[item])/>
 					<cfset itemname = REReplaceNoCase(item,nameregex,"","All")>
 					<cfif temp.detected eq true><cfset detected = detected + 1/></cfif>
@@ -136,7 +137,7 @@
 
 		<!---Filter Words--->
 		<cfloop collection="#object#" item="item">
-			<cfif ListContainsNoCase(exFF,item,',') eq false>
+			<cfif ListContainsNoCase(exFF,item,',') eq false and (not len(arguments.pattern) or refindNoCase(arguments.pattern,item))>
 				<!---trim white space and deal with "smart quotes" from MS Word, etc.--->	
 				<!---trim white space and deal with "smart quotes" from MS Word, etc.--->
 				<cfset object[item]=trim(REReplace(object[item],"(�|�)", "'", "ALL"))>
@@ -157,7 +158,7 @@
 		<!---Filter CRLF--->
 		<cfif variables.instance.blockCRLF eq true>
 		<cfloop collection="#object#" item="item">
-			<cfif ListContainsNoCase(exFF,item,',') eq false>
+			<cfif ListContainsNoCase(exFF,item,',') eq false and (not len(arguments.pattern) or refindNoCase(arguments.pattern,item))>
 				<cfset temp = filterCRLF(object[item])/>
 				<cfset itemname = REReplaceNoCase(item,nameregex,"","All")>
 				<!---<cfif temp.detected eq true><cfset detected = detected + 1/></cfif>  // We're not going to take note of CRLFs since it's very likely benign--->
@@ -173,7 +174,7 @@
 		<!---Filter SQL--->
 		<cfif arguments.useSQLFilter>
 			<cfloop collection="#object#" item="item">
-				<cfif ListContainsNoCase(exFF,item,',') eq false>
+				<cfif ListContainsNoCase(exFF,item,',') eq false and (not len(arguments.pattern) or refindNoCase(arguments.pattern,item))>
 					<cfset temp = filterSQL(object[item],arguments.useSQLFilter)/>
 					<cfset itemname = REReplaceNoCase(item,nameregex,"","All")>
 					<cfif temp.detected eq true><cfset detected = detected + 1/></cfif>
@@ -189,7 +190,7 @@
 		<!---Escape Special Characters--->
 		<cfif variables.instance.escapeChars eq true>
 			<cfloop collection="#object#" item="item">
-			<cfif ListContainsNoCase(exFF,item,',') eq false>
+			<cfif ListContainsNoCase(exFF,item,',') eq false and (not len(arguments.pattern) or refindNoCase(arguments.pattern,item))>
 				<cfif isNumeric(object[item]) eq false>
 					<cfset itemname = REReplaceNoCase(item,nameregex,"","All")>
 					<cfset temp = escapeChars(object[item])/>
@@ -531,11 +532,9 @@
 		<cfreturn variables.internal.detected/>
 	</cffunction>
 
-	<cffunction name="removeChars" access="private" output="false" returntype="string">    
-		<cfargument name="theString" type="string" required="true" />        
-		<cfset arguments.theString=urldecode(replace(urlEncodedFormat(arguments.theString),"%0A","","all"))>
-		<cfset arguments.theString=urldecode(replace(urlEncodedFormat(arguments.theString),"%00","","all"))>
-		<cfreturn arguments.theString> 
+	<cffunction name="removeNullChars" access="private" output="false" returntype="string">    
+		<cfargument name="theString" type="string" required="true" />           
+		<cfreturn urldecode(replace(urlEncodedFormat(arguments.theString),"%00","","all"))> 
 	</cffunction>
 	
 </cfcomponent>
