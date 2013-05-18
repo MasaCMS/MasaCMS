@@ -7,7 +7,7 @@
 									objectname="url",
 									ipAddress=request.remoteAddr,
 									useTagFilter=true,
-										useWordFilter=true)>
+									useWordFilter=true)>
 	</cfif>
 	<cfif isDefined("form")>
 		<cfset application.scriptProtectionFilter.scan(
