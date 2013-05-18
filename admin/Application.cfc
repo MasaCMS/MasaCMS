@@ -140,6 +140,50 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		
 	</cffunction>
+
+	<cffunction name="onRequestStart" output="true">
+		<cfif isDefined('application.scriptProtectionFilter')>
+
+			<cfset variables.remoteIPHeader=application.configBean.getValue("remoteIPHeader")>
+			<cfif len(variables.remoteIPHeader)>
+				<cftry>
+					<cfif StructKeyExists(GetHttpRequestData().headers, variables.remoteIPHeader)>
+				    	<cfset request.remoteAddr = GetHttpRequestData().headers[remoteIPHeader]>
+				    <cfelse>
+						<cfset request.remoteAddr = CGI.REMOTE_ADDR>
+				    </cfif>
+					<cfcatch type="any"><cfset request.remoteAddr = CGI.REMOTE_ADDR></cfcatch>
+				</cftry>
+			<cfelse>
+				<cfset request.remoteAddr = CGI.REMOTE_ADDR>
+			</cfif>	
+
+			<cfif isDefined("url")>
+				<cfset application.scriptProtectionFilter.scan(
+											object=url,
+											objectname="url",
+											ipAddress=request.remoteAddr,
+											useTagFilter=true,
+											useWordFilter=true)>
+			</cfif>
+			<cfif isDefined("form")>
+				<cfset application.scriptProtectionFilter.scan(
+											object=form,
+											objectname="form",
+											ipAddress=request.remoteAddr)>
+			</cfif>
+			<cfif isDefined("cookie")>
+				<cfset application.scriptProtectionFilter.scan(
+											object=cookie,
+											objectname="cookie",
+											ipAddress=request.remoteAddr,
+											useTagFilter=true,
+											useWordFilter=true)>
+			</cfif>
+		</cfif>
+
+		<cfset super.onRequestStart(argumentCollection=arguments)>
+	</cffunction>
 	
 	<cffunction name="setupRequest" output="false">
 		
@@ -153,17 +197,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfinclude template="../config/appcfc/onRequestStart_include.cfm">
 
+		<cfif application.scriptProtectionFilter.isBlocked(request.remoteAddr) eq true>
+			<cfset application.eventManager.announceEvent("onGlobalThreatDetect",createObject("component","mura.event"))>
+		</cfif> 
+
 		<cfif right(cgi.script_name, Len("index.cfm")) NEQ "index.cfm" and right(cgi.script_name, Len("error.cfm")) NEQ "error.cfm" AND right(cgi.script_name, 3) NEQ "cfc">
 			<cflocation url="index.cfm" addtoken="false">
 		</cfif>	
-
-		<cfset application.scriptProtectionFilter.scan(
-					object=url,
-					objectname="url",
-					ipAddress=request.remoteAddr,
-					useWordFilter=true,
-					useSQLFilter=false,
-					useTagFilter=true)>
 
 		<cfset request.context.currentURL="index.cfm" >
 	
@@ -171,7 +211,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var item="">
 		<cfloop collection="#url#" item="item">
 			<cftry>	
-				<cfset request.context[item]=url[item]>
 				<cfset qrystr="#qrystr#&#item#=#url[item]#">	
 			<cfcatch ></cfcatch>
 			</cftry>

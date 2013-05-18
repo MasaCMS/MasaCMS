@@ -531,9 +531,11 @@
 		<cfreturn variables.internal.detected/>
 	</cffunction>
 
-	<cffunction name="removeNullChars" access="private" output="false" returntype="string">    
-		<cfargument name="theString" type="string" required="true" />           
-		<cfreturn urldecode(replace(urlEncodedFormat(arguments.theString),"%00","","all"))> 
+	<cffunction name="removeChars" access="private" output="false" returntype="string">    
+		<cfargument name="theString" type="string" required="true" />        
+		<cfset arguments.theString=urldecode(replace(urlEncodedFormat(arguments.theString),"%0A","","all"))>
+		<cfset arguments.theString=urldecode(replace(urlEncodedFormat(arguments.theString),"%00","","all"))>
+		<cfreturn arguments.theString> 
 	</cffunction>
 	
 </cfcomponent>
