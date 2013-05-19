@@ -110,8 +110,11 @@
 				<cfset newitem = replaceNoCase(item,"&amp;","","ALL")/>
 				<cfset newitem = replaceNoCase(newitem,"amp;","","ALL")/>
 				<cfset contents = removeNullChars("#object[item]#")/>
-				<cfset structdelete(object,item,false)/>
-				<cfset StructInsert(object,"#newitem#",contents,true)/>
+				<cftry>
+					<cfset structdelete(object,item,false)/>
+					<cfset StructInsert(object,"#newitem#",contents,true)/>
+					<cfcatch></cfcatch>
+				</cftry>
 			</cfif>
 		</cfloop>
 
