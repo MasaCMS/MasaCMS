@@ -82,6 +82,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var sArgs			= StructNew() />
 		<cfset var rsImportFiles = "" />
 		<cfset var importWDDX = "" />
+		<cfset var i = "">
 		
 		<cfset variables.Bundle	= variables.unpackPath />
 
@@ -109,8 +110,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfloop query="rsImportFiles">
 			<cfset fname = rereplace(rsImportFiles.name,"^wddx_(.*)\.xml","\1") />
 			<cffile action="read" file="#variables.unpackPath##rsImportFiles.name#" variable="importWDDX" charset="utf-8">
+			
+			<!--- replace lower, non-printable ascii chars --->
+			<cfloop from="1" to="31" index="i">
+				<cfset importWDDX = replace(importWDDX,chr(i),"","all")>
+			</cfloop>
+			
+			<!--- fix mixed occurances of ampersands by converting all to entities --->
+			<!---<cfset importWDDX = replace(importWDDX,'&amp;',"&","all")>
+			<cfset importWDDX = replace(importWDDX,"&","&amp;","all")>--->
+
 			<cftry>
-				<cfwddx action="wddx2cfml" input=#importWDDX# output="importValue">
+				<cfwddx action="wddx2cfml" input=#importWDDX# output="importValue" validate="yes">
 			<cfcatch>
 				<cfdump var="An error happened while trying to deserialize #rsImportFiles.name#.">
 				<cfdump var="#cfcatch#">
@@ -1372,6 +1383,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="name" type="string" required="true">
 		<cfargument name="value" type="any" required="true">
 		<cfset var temp="">
+		<cfset var i = "">
 		
 		<cfif isQuery(arguments.value) and application.configBean.getDBType() eq "Oracle">
 			<cfset arguments.value=variables.utility.fixOracleClobs(arguments.value)>
@@ -1379,6 +1391,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfset variables.data["#name#"]=arguments.value>
 		<cfwddx action="cfml2wddx" input="#arguments.value#" output="temp">
+		
+		<!--- replace lower, non-printable ascii chars --->
+		<cfloop from="1" to="31" index="i">
+			<cfset importWDDX = replace(temp, chr(i), "", "all")>
+		</cfloop>
+		
 		<cffile action="write" output="#temp#" file="#variables.backupDir#wddx_#arguments.name#.xml"  charset="utf-8">
 	</cffunction>
 
