@@ -1394,7 +1394,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<!--- replace lower, non-printable ascii chars --->
 		<cfloop from="1" to="31" index="i">
-			<cfset importWDDX = replace(temp, chr(i), "", "all")>
+			<cfset temp = replace(temp, chr(i), "", "all")>
 		</cfloop>
 		
 		<cffile action="write" output="#temp#" file="#variables.backupDir#wddx_#arguments.name#.xml"  charset="utf-8">
