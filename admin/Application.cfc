@@ -142,7 +142,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cffunction>
 
 	<cffunction name="onRequestStart" output="true">
-		<cfif isDefined('application.scriptProtectionFilter')>
+		<cfif isDefined('application.scriptProtectionFilter') and application.configBean.getScriptProtect()>
 
 			<cfset variables.remoteIPHeader=application.configBean.getValue("remoteIPHeader")>
 			<cfif len(variables.remoteIPHeader)>
@@ -178,18 +178,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											objectname="cgi",
 											ipAddress=request.remoteAddr,
 											useTagFilter=true,
-											useWordFilter=true)>
+											useWordFilter=true,
+											fixValues=false)>
 			</cfif>
-			<!---
 			<cfif isDefined("cookie")>
 				<cfset application.scriptProtectionFilter.scan(
 											object=cookie,
 											objectname="cookie",
 											ipAddress=request.remoteAddr,
 											useTagFilter=true,
-											useWordFilter=true)>
+											useWordFilter=true,
+									        fixValues=false)>
 			</cfif>
-			--->
 		</cfif>
 
 		<cfset super.onRequestStart(argumentCollection=arguments)>
