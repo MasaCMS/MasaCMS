@@ -172,6 +172,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 											objectname="form",
 											ipAddress=request.remoteAddr)>
 			</cfif>
+			<cfif isDefined("cgi")>
+				<cfset application.scriptProtectionFilter.scan(
+											object=cgi,
+											objectname="cgi",
+											ipAddress=request.remoteAddr,
+											useTagFilter=true,
+											useWordFilter=true)>
+			</cfif>
 			<!---
 			<cfif isDefined("cookie")>
 				<cfset application.scriptProtectionFilter.scan(

@@ -49,7 +49,7 @@
 	
 	<cfset variables.instance.sqlFilter = "select,insert,update,delete,create,drop,alter,declare,execute,--,xp_,sp_sqlexecute,table_cursor,cast\(,exec\(,eval\(,information_schema"/>
 	<cfset variables.instance.tagFilter = "script,object,applet,embed,form,input,layer,ilayer,frame,iframe,frameset,param,meta,base,style,xss"/>
-	<cfset variables.instance.wordFilter = "onLoad,onClick,onDblClick,onKeyDown,onKeyPress,onKeyUp,onMouseDown,onMouseOut,onMouseUp,onMouseOver,onBlur,onChange,onFocus,onSelect,javascript:,vbscript:,.cookie,.toString,:expr,:expression,.fromCharCode,String."/>
+	<cfset variables.instance.wordFilter = "onLoad,onClick,onDblClick,onKeyDown,onKeyPress,onKeyUp,onMouseDown,onMouseOut,onMouseUp,onMouseOver,onBlur,onChange,onFocus,onSelect,javascript:,vbscript:,\.cookie,\.toString,:expr,:expression,\.fromCharCode,String\."/>
 
 	<cfset variables.instance.thisServer = lcase(CGI.SERVER_NAME)/>
 	<!---End of settings--->
@@ -239,7 +239,7 @@
 		<cfset var blocked = false/>
 		<cfset var find = ""/>
 		
-		<cfif structkeyexists(form,"fieldnames") and variables.instance.checkReferer eq true and isSafeReferer() eq false>
+		<cfif isdefined("form.fieldnames") and variables.instance.checkReferer eq true and isSafeReferer() eq false>
 			<cfset blocked = true/>
  		<cfelse>
 			<cfquery dbtype="query" name="find">

@@ -16,6 +16,14 @@
 									ipAddress=request.remoteAddr,
 									useTagFilter=true)>
 	</cfif>
+	<cfif isDefined("cgi")>
+		<cfset application.scriptProtectionFilter.scan(
+									object=cgi,
+									objectname="cgi",
+									ipAddress=request.remoteAddr,
+									useTagFilter=true,
+									useWordFilter=true)>
+	</cfif>
 	<!---
 	<cfif isDefined("cookie")>
 		<cfset application.scriptProtectionFilter.scan(
