@@ -48,6 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="rc.contentid" default="">
 <cfparam name="rc.parentid" default="">
 <cfparam name="rc.contenthistid" default="">
+<cfparam name="rc.objectid" default="">
 <cfswitch expression="#rc.classid#">
 	<cfcase value="component">
 		<cfinclude template="objectclass/dsp_components.cfm">
