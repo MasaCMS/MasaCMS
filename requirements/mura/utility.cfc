@@ -214,7 +214,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="excludeList" default="" required="true" />
 	<cfargument name="sinceDate" default="" required="true" />
 	<cfargument name="excludeHiddenFiles" default="true" required="true" />
-	<cfset return variables.fileWriter.copyDir(argumentCollection=arguments)>
+	<cfreturn variables.fileWriter.copyDir(argumentCollection=arguments)>
 </cffunction>
 
 <cffunction name="deleteDir">
