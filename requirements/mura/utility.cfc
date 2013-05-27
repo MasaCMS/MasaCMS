@@ -214,73 +214,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="excludeList" default="" required="true" />
 	<cfargument name="sinceDate" default="" required="true" />
 	<cfargument name="excludeHiddenFiles" default="true" required="true" />
-	<cfset var rsAll = "">
-	<cfset var rs = "">
-	<cfset var i="">
-	<cfset var errors=arrayNew(1)>
-	<cfset var copyItem="">
-	
-	<cfif arguments.baseDir neq arguments.destDir>	
-		<cfdirectory directory="#arguments.baseDir#" name="rsAll" action="list" recurse="true" />
-		<!--- filter out Subversion hidden folders --->
-		<cfquery name="rsAll" dbtype="query">
-			SELECT * FROM rsAll
-			WHERE 
-			1=1
-			<cfif arguments.excludeHiddenFiles>
-				and directory NOT LIKE '%#variables.configBean.getFileDelim()#.svn%'
-				and directory NOT LIKE '%#variables.configBean.getFileDelim()#.git%'
-				and name not like '.%'
-			</cfif>
-			<cfif len(arguments.excludeList)>
-				<cfloop list="#arguments.excludeList#" index="i">
-					and directory NOT LIKE '%#i#%'
-				</cfloop>
-			</cfif>
-			
-			<cfif isDate(arguments.sinceDate)>
-				and dateLastModified >= #createODBCDateTime(arguments.sinceDate)#
-			</cfif>
-		</cfquery>
-
-		<cfset copyItem=arguments.destDir>
-		<cftry>
-			<cfset variables.fileWriter.createDir(directory=copyItem)>
-			<cfcatch><!---<cfset arrayAppend(errors,copyItem)>---></cfcatch>
-		</cftry>
-		
-		<cfquery name="rs" dbtype="query">
-			select * from rsAll where lower(type) = 'dir'
-		</cfquery>
-		
-		<cfloop query="rs">
-			<cfset copyItem="#replace('#rs.directory##variables.configBean.getFileDelim()#',arguments.baseDir,arguments.destDir)##rs.name##variables.configBean.getFileDelim()#">
-			<cfif not DirectoryExists(copyItem)>
-			<cftry>
-				<cfset variables.fileWriter.createDir(directory=copyItem)>
-				<cfcatch><!---<cfset arrayAppend(errors,copyItem)>---></cfcatch>
-			</cftry>
-			</cfif>
-		</cfloop>
-		
-		<cfquery name="rs" dbtype="query">
-			select * from rsAll where lower(type) = 'file'
-		</cfquery>
-		
-		<cfloop query="rs">
-			<cfset copyItem="#replace('#rs.directory##variables.configBean.getFileDelim()#',arguments.baseDir,arguments.destDir)#">
-			<cfif fileExists(copyItem)>
-				<cffile action="delete" file="#copyItem#">
-			</cfif>
-			
-			<cftry>
-				<cfset variables.fileWriter.copyFile(source="#rs.directory##variables.configBean.getFileDelim()##rs.name#", destination=copyItem, sinceDate=arguments.sinceDate)>
-				<cfcatch><cfset arrayAppend(errors,copyItem)></cfcatch>
-			</cftry>
-		</cfloop>
-	</cfif>
-	
-	<cfreturn errors>
+	<cfreturn variables.fileWriter.copyDir(argumentCollection=arguments)>
 </cffunction>
 
 <cffunction name="deleteDir">
