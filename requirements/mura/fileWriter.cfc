@@ -255,8 +255,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			WHERE 
 			1=1
 			<cfif arguments.excludeHiddenFiles>
-				and directory NOT LIKE '%#variables.configBean.getFileDelim()#.svn%'
-				and directory NOT LIKE '%#variables.configBean.getFileDelim()#.git%'
+				and directory NOT LIKE '%#application.configBean.getFileDelim()#.svn%'
+				and directory NOT LIKE '%#application.configBean.getFileDelim()#.git%'
 				and name not like '.%'
 			</cfif>
 			<cfif len(arguments.excludeList)>
@@ -281,7 +281,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfquery>
 		
 		<cfloop query="rs">
-			<cfset copyItem="#replace('#rs.directory##variables.configBean.getFileDelim()#',arguments.baseDir,arguments.destDir)##rs.name##variables.configBean.getFileDelim()#">
+			<cfset copyItem="#replace('#rs.directory##application.configBean.getFileDelim()#',arguments.baseDir,arguments.destDir)##rs.name##application.configBean.getFileDelim()#">
 			<cfif not DirectoryExists(copyItem)>
 			<cftry>
 				<cfset createDir(directory=copyItem)>
@@ -295,13 +295,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfquery>
 		
 		<cfloop query="rs">
-			<cfset copyItem="#replace('#rs.directory##variables.configBean.getFileDelim()#',arguments.baseDir,arguments.destDir)#">
+			<cfset copyItem="#replace('#rs.directory##application.configBean.getFileDelim()#',arguments.baseDir,arguments.destDir)#">
 			<cfif fileExists(copyItem)>
 				<cffile action="delete" file="#copyItem#">
 			</cfif>
 			
 			<cftry>
-				<cfset copyFile(source="#rs.directory##variables.configBean.getFileDelim()##rs.name#", destination=copyItem, sinceDate=arguments.sinceDate)>
+				<cfset copyFile(source="#rs.directory##application.configBean.getFileDelim()##rs.name#", destination=copyItem, sinceDate=arguments.sinceDate)>
 				<cfcatch><cfset arrayAppend(errors,copyItem)></cfcatch>
 			</cftry>
 		</cfloop>
@@ -376,7 +376,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="PathFormat" access="private" output="no" returntype="string" hint="Convert path into Windows or Unix format.">
 	<cfargument name="path" required="yes" type="string" hint="The path to convert.">
 
-	<cfif FindNoCase("Windows", this.os)>
+	<cfif FindNoCase("Windows", Server.OS.Name)>
 		<cfset arguments.path = Replace(arguments.path, "/", "\", "ALL")>
 	<cfelse>
 		<cfset arguments.path = Replace(arguments.path, "\", "/", "ALL")>
