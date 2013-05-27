@@ -243,9 +243,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var errors=arrayNew(1)>
 	<cfset var copyItem="">
 
-	<cfset arguments.baseDir=pathFormat(argments.baseDir)>
-	<cfset arguments.destDir=pathFormat(argments.destDir)>
-	<cfset arguments.excludeList=pathFormat(argments.excludeList)>
+	<cfset arguments.baseDir=pathFormat(arguments.baseDir)>
+	<cfset arguments.destDir=pathFormat(arguments.destDir)>
+	<cfset arguments.excludeList=pathFormat(arguments.excludeList)>
 	
 	<cfif arguments.baseDir neq arguments.destDir>	
 		<cfdirectory directory="#arguments.baseDir#" name="rsAll" action="list" recurse="true" />
