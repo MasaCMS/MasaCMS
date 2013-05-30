@@ -325,15 +325,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif fileExists( getBundle() & "sitefiles.zip" )>
 					<cfset zipPath = getBundle() & "sitefiles.zip" />
 					
-					<cfset destDir = variables.configBean.getValue('filedir') & variables.fileDelim & arguments.siteID />
-					<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true, extractDirs="cache")>
-					
-					<cfset destDir = variables.configBean.getValue('assetdir') & variables.fileDelim & arguments.siteID />
-					<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true, extractDirs="assets")>
+					<cfif not fileExists( getBundle() & "filefiles.zip" )>
+						<cfset destDir = variables.configBean.getValue('filedir') & variables.fileDelim & arguments.siteID />
+						<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true, extractDirs="cache")>
+					</cfif>
+
+					<cfif not fileExists( getBundle() & "assetfiles.zip" )>
+						<cfset destDir = variables.configBean.getValue('assetdir') & variables.fileDelim & arguments.siteID />
+						<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true, extractDirs="assets")>
+					</cfif>
 				</cfif>
 				<cfif fileExists( getBundle() & "assetfiles.zip" )>
 					<cfset zipPath = getBundle() & "assetfiles.zip" />
-					<cfset destDir = variables.configBean.getValue('assetdir') & variables.fileDelim & arguments.siteID & variables.fileDelim & "assets" & variables.fileDelim />
+					<cfset destDir = variables.configBean.getValue('assetdir') & variables.fileDelim & arguments.siteID />
 					<cfset variables.zipTool.Extract(zipFilePath="#zipPath#",extractPath=destDir, overwriteFiles=true)>
 				</cfif>
 				<cfif fileExists( getBundle() & "filefiles.zip" )>
