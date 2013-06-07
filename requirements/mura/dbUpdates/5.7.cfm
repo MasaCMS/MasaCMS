@@ -98,7 +98,7 @@
 	.addColumn(column="height",dataType="varchar",length="10")
 	.addColumn(column="width",dataType="varchar",length="10")
 	.addPrimaryKey('sizeID')
-	.addIndex('sizeID')
+	//.addIndex('sizeID')
 	.addIndex('siteID');
 
 	dbUtility.setTable("ttrash")

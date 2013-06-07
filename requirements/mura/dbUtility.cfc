@@ -303,7 +303,10 @@
 					<cfif arguments.autoincrement>
 						,PRIMARY KEY(#arguments.column#)
 					</cfif>
-					) ENGINE=InnoDB DEFAULT CHARSET=utf8
+					)
+					<cfif version().database_productname neq 'h2'>
+						ENGINE=#variables.configBean.getMySQLEngine()# DEFAULT CHARSET=utf8
+					</cfif>
 				</cfif>
 			</cfquery>
 		</cfcase>

@@ -291,7 +291,7 @@
 </cfcase>
 <cfcase value="mysql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tcontentcomments MODIFY column url varchar(255)
+	ALTER TABLE tcontentcomments ALTER column url varchar(255)
 	</cfquery>
 </cfcase>
 <cfcase value="nuodb">

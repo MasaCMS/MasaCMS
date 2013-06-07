@@ -110,6 +110,9 @@ CREATE INDEX IX_ttrash_parentid ON ttrash (parentid)
 	  deletedBy varchar(50) NOT NULL,
 	  PRIMARY KEY  (objectID)
 	) 
+	<cfif dbUtility.version().database_productname neq 'H2'>
+		ENGINE=#variables.instance.MYSQLEngine# DEFAULT CHARSET=utf8
+	</cfif>
 	</cfquery>
 
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">

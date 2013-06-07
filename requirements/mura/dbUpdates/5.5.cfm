@@ -265,7 +265,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 </cfcase>
 <cfcase value="mysql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tcontent MODIFY column urltitle varchar(255)
+	ALTER TABLE tcontent ALTER column urltitle varchar(255)
 	</cfquery>
 </cfcase>
 <cfcase value="nuodb">
@@ -299,7 +299,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 		
 		<cfif rsSubCheck.type_name neq "text">
 			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-			ALTER TABLE tcontent MODIFY column #i# text
+			ALTER TABLE tcontent ALTER column #i# text
 			</cfquery>
 		</cfif>
 	</cfloop>
@@ -454,7 +454,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 </cfcase>
 <cfcase value="mysql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tsettings MODIFY column domain varchar(255)
+	ALTER TABLE tsettings ALTER column domain varchar(255)
 	</cfquery>
 </cfcase>
 <cfcase value="nuodb">
@@ -495,7 +495,7 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 </cfcase>
 <cfcase value="mysql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tsettings MODIFY column columnNames text
+	ALTER TABLE tsettings ALTER column columnNames text
 	</cfquery>
 </cfcase>
 <cfcase value="nuodb">	
