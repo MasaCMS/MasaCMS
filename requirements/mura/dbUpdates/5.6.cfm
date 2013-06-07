@@ -1,4 +1,5 @@
 ﻿<cfset rsCheck=dbTableColumns("tcontent")>
+<cfset dbversion=dbUtility.version().database_productname>
 
 <cfquery name="rsCheck" dbtype="query">
 	select * from rsCheck where lower(rsCheck.column_name) like 'majorversion'
@@ -291,7 +292,13 @@
 </cfcase>
 <cfcase value="mysql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tcontentcomments ALTER column url varchar(255)
+	ALTER TABLE tcontentcomments 
+	<cfif dbversion eq 'H2'>
+		ALTER
+	<cfelse>
+		MODIFY
+	</cfif>
+	 column url varchar(255)
 	</cfquery>
 </cfcase>
 <cfcase value="nuodb">

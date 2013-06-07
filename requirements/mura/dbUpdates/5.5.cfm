@@ -1,4 +1,5 @@
 ﻿<cfset rsCheck=dbTableColumns("tcontentfeeds")>
+<cfset dbversion=dbUtility.version().database_productname>
 
 <cfquery name="rsCheck" dbtype="query">
 	select * from rsCheck where lower(rsCheck.column_name) like 'imagesize'
@@ -299,7 +300,13 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 		
 		<cfif rsSubCheck.type_name neq "text">
 			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-			ALTER TABLE tcontent ALTER column #i# text
+			ALTER TABLE 
+			tcontent 
+			<cfif dbversion eq 'H2'>
+				ALTER
+			<cfelse>
+				MODIFY
+			</cfif> column #i# text
 			</cfquery>
 		</cfif>
 	</cfloop>
@@ -454,7 +461,13 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 </cfcase>
 <cfcase value="mysql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tsettings ALTER column domain varchar(255)
+	ALTER TABLE tsettings 
+	<cfif dbversion eq 'H2'>
+		ALTER
+	<cfelse>
+		MODIFY
+	</cfif>
+	column domain varchar(255)
 	</cfquery>
 </cfcase>
 <cfcase value="nuodb">
@@ -495,7 +508,13 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 </cfcase>
 <cfcase value="mysql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
-	ALTER TABLE tsettings ALTER column columnNames text
+	ALTER TABLE tsettings 
+	<cfif dbversion eq 'H2'>
+		ALTER
+	<cfelse>
+		MODIFY
+	</cfif>
+	column columnNames text
 	</cfquery>
 </cfcase>
 <cfcase value="nuodb">	
