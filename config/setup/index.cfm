@@ -44,9 +44,9 @@ to your own modified versions of Mura CMS.
 <!--- Prevent installation if under a directory called 'mura' --->
 <cfscript>
   muraInstallPath = GetDirectoryFromPath(GetCurrentTemplatePath());
-  fileDelim = FindNoCase("Windows", Server.OS.Name) ? '\' : '/';
+  fileDelim = FindNoCase('Windows', Server.OS.Name) ? '\' : '/';
 </cfscript> 
-<cfif (ListFindNoCase(muraInstallPath, 'mura', fileDelim))>
+<cfif ListFindNoCase(muraInstallPath, 'mura', fileDelim)>
   <h1>Mura cannot be installed under a directory called &quot;<strong>mura</strong>&quot; &hellip; please move or rename and try to install again.</h1>
   <cfabort />
 </cfif>
