@@ -89,7 +89,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 	</cfif>
 	 	<cfif not counter>
 		<tr class="alt"><cfoutput>  
-		  <td class="noResults" colspan="2">#application.rbFactory.getKeyValue(session.rb,'sitemanager.noresults')#<input type="hidden" id="parentid" name="parentid" value="#rc.parentid#" /> </td>
+		  <td class="noResults" colspan="2">#application.rbFactory.getKeyValue(session.rb,'sitemanager.noresults')#<!---<input type="hidden" id="parentid" name="parentid" value="#rc.parentid#" />---> </td>
 		</tr></cfoutput>
 		</cfif>
   </table>

@@ -1,7 +1,7 @@
 -- MySQL Administrator dump 1.4
 --
 -- ------------------------------------------------------
--- Server version	4.1.14-nt
+-- Server version 4.1.14-nt
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -1242,78 +1242,78 @@ ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE `tclassextenddatauseractivity`  (
-	`dataID` INTEGER NOT NULL AUTO_INCREMENT,	
-	`baseID` char (35)  NOT NULL ,
-	`attributeID`INTEGER NOT NULL ,
-	`siteID` varchar (25)  NULL ,
-	`attributeValue` longtext,
-	INDEX `Index_2`(`baseID`),
-	INDEX `Index_3`(`attributeID`),
-	PRIMARY KEY (`dataID`)
+  `dataID` INTEGER NOT NULL AUTO_INCREMENT, 
+  `baseID` char (35)  NOT NULL ,
+  `attributeID`INTEGER NOT NULL ,
+  `siteID` varchar (25)  NULL ,
+  `attributeValue` longtext,
+  INDEX `Index_2`(`baseID`),
+  INDEX `Index_3`(`attributeID`),
+  PRIMARY KEY (`dataID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE `tclassextenddata`  (
-	`dataID` INTEGER NOT NULL AUTO_INCREMENT,
-	`baseID` char (35)  NOT NULL ,
-	`attributeID` INTEGER NOT NULL ,
-	`siteID` varchar (25)  NULL ,
-	`attributeValue` longtext,
-	INDEX `Index_2`(`baseID`),
-	INDEX `Index_3`(`attributeID`),
-	PRIMARY KEY (`dataID`)
+  `dataID` INTEGER NOT NULL AUTO_INCREMENT,
+  `baseID` char (35)  NOT NULL ,
+  `attributeID` INTEGER NOT NULL ,
+  `siteID` varchar (25)  NULL ,
+  `attributeValue` longtext,
+  INDEX `Index_2`(`baseID`),
+  INDEX `Index_3`(`attributeID`),
+  PRIMARY KEY (`dataID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE `tclassextend` (
-	`subTypeID` char (35)  NOT NULL ,
-	`siteID` varchar (25)  NULL ,
-	`baseTable` varchar (50) NULL ,
-	`baseKeyField` varchar (50) NULL ,
-	`dataTable` varchar (50) NULL ,
-	`type` varchar (50) NULL ,
-	`subType` varchar (50) NULL ,
-	`isActive` tinyint(3) NULL ,
-	`notes` longtext ,
-	`lastUpdate` datetime NULL ,
-	`dateCreated` datetime NULL ,
-	`lastUpdateBy` varchar (100)  NULL ,
-	PRIMARY KEY (`subTypeID`)
+  `subTypeID` char (35)  NOT NULL ,
+  `siteID` varchar (25)  NULL ,
+  `baseTable` varchar (50) NULL ,
+  `baseKeyField` varchar (50) NULL ,
+  `dataTable` varchar (50) NULL ,
+  `type` varchar (50) NULL ,
+  `subType` varchar (50) NULL ,
+  `isActive` tinyint(3) NULL ,
+  `notes` longtext ,
+  `lastUpdate` datetime NULL ,
+  `dateCreated` datetime NULL ,
+  `lastUpdateBy` varchar (100)  NULL ,
+  PRIMARY KEY (`subTypeID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE `tclassextendattributes` (
-	`attributeID` INTEGER NOT NULL AUTO_INCREMENT,	
-	`extendSetID` char (35)  NULL ,
-	`siteID` varchar (25) NULL ,
-	`name` varchar (100) NULL ,
-	`label` text  NULL ,
-	`hint` text  NULL ,
-	`type` varchar (100) NULL ,
-	`orderno` int NULL ,
-	`isActive` tinyint(3) NULL ,
-	`required` varchar(50) NULL ,
-	`validation` varchar (50) NULL ,
-	`regex` text  NULL ,
-	`message` text  NULL ,
-	`defaultValue` varchar (100) NULL ,
-	`optionList` longtext ,
-	`optionLabelList` longtext,
-	INDEX `Index_2`(`extendSetID`),
-	PRIMARY KEY (`attributeID`)
+  `attributeID` INTEGER NOT NULL AUTO_INCREMENT,  
+  `extendSetID` char (35)  NULL ,
+  `siteID` varchar (25) NULL ,
+  `name` varchar (100) NULL ,
+  `label` text  NULL ,
+  `hint` text  NULL ,
+  `type` varchar (100) NULL ,
+  `orderno` int NULL ,
+  `isActive` tinyint(3) NULL ,
+  `required` varchar(50) NULL ,
+  `validation` varchar (50) NULL ,
+  `regex` text  NULL ,
+  `message` text  NULL ,
+  `defaultValue` varchar (100) NULL ,
+  `optionList` longtext ,
+  `optionLabelList` longtext,
+  INDEX `Index_2`(`extendSetID`),
+  PRIMARY KEY (`attributeID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE `tclassextendsets` (
-	`extendSetID` char(35) NOT NULL ,
-	`subTypeID` char(35) NULL ,
-	`categoryID` longtext ,
-	`siteID` varchar (25) NULL ,
-	`name` varchar(50)  NULL ,
-	`orderno` int NULL ,
-	`isActive` tinyint(3) NULL,
-	INDEX `Index_2`(`subTypeID`),
-	PRIMARY KEY (`extendSetID`)
+  `extendSetID` char(35) NOT NULL ,
+  `subTypeID` char(35) NULL ,
+  `categoryID` longtext ,
+  `siteID` varchar (25) NULL ,
+  `name` varchar(50)  NULL ,
+  `orderno` int NULL ,
+  `isActive` tinyint(3) NULL,
+  INDEX `Index_2`(`subTypeID`),
+  PRIMARY KEY (`extendSetID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

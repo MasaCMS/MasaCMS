@@ -72,8 +72,8 @@ CKEDITOR.plugins.add( 'Selectlink',
 							var text = new CKEDITOR.dom.text( theLink[1], editor.document );
 							ranges[0].insertNode( text );
 							ranges[0].selectNodeContents( text );
-							selection.selectRanges( ranges );
 						}
+						selection.selectRanges( ranges );
 						
 						var style = new CKEDITOR.style( {
 							element : 'a',

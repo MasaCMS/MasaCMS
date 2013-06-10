@@ -89,7 +89,10 @@
 					  key `IX_tchangesets_siteID` (`siteID`),
 					  key `IX_tchangesets_publishDate` (`publishDate`),
 					  key `IX_tchangesets_remoteID` (`remoteID`)
-					) ENGINE=#variables.instance.MYSQLEngine# DEFAULT CHARSET=utf8
+					) 
+					<cfif dbUtility.version().database_productname neq 'H2'>
+						ENGINE=#variables.instance.MYSQLEngine# DEFAULT CHARSET=utf8
+					</cfif>
 				</cfquery>
 			</cfif>
 

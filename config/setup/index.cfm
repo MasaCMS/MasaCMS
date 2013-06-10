@@ -41,6 +41,16 @@ the GNU General Public License version 2 ?without this exception. ?You may, if y
 to your own modified versions of Mura CMS.
 --->
 
+<!--- Prevent installation if under a directory called 'mura' --->
+<cfscript>
+  muraInstallPath = GetDirectoryFromPath(GetCurrentTemplatePath());
+  fileDelim = FindNoCase('Windows', Server.OS.Name) ? '\' : '/';
+</cfscript> 
+<cfif ListFindNoCase(muraInstallPath, 'mura', fileDelim)>
+  <h1>Mura cannot be installed under a directory called &quot;<strong>mura</strong>&quot; &hellip; please move or rename and try to install again.</h1>
+  <cfabort />
+</cfif>
+
 <!--- if renderSetup is not found or is false then do not render --->
 <cfif NOT isDefined( "renderSetup" ) OR NOT renderSetup>
   <cfabort />
@@ -253,10 +263,27 @@ to your own modified versions of Mura CMS.
               <cffile action="read" file="#getDirectoryFromPath( getCurrentTemplatePath() )#/db/#FORM.production_dbtype#.sql" variable="sql" />
             </cfif>
             --->
-          <cfset form.production_dbtablespace=ucase(form.production_dbtablespace)>
-          <cfsavecontent variable="sql">
-            <cfinclude template="db/#FORM.production_dbtype#.sql">
-          </cfsavecontent>
+        
+           <cfdbinfo 
+                name="rsCheck"
+                datasource="#FORM.production_datasource#" 
+                username="#FORM.production_dbusername#" 
+                password="#FORM.production_dbpassword#"
+                type="version">
+
+          <cfif rsCheck.database_productname eq 'H2'>
+            <cfsavecontent variable="sql">
+              <cfinclude template="db/h2.sql">
+            </cfsavecontent>
+          <cfelse>
+            <cfparam name="form.production_mysqlengine" default="InnoDB">
+            <cfset storageEngine="ENGINE=#form.production_mysqlengine# DEFAULT CHARSET=utf8">
+            <cfset form.production_dbtablespace=ucase(form.production_dbtablespace)>
+            
+            <cfsavecontent variable="sql">
+              <cfinclude template="db/#FORM.production_dbtype#.sql">
+            </cfsavecontent>
+          </cfif>
           <!---
           <cfsavecontent variable="sql">
             <cfinclude template="db/#FORM.production_dbtype#.sql">
