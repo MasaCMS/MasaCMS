@@ -253,10 +253,27 @@ to your own modified versions of Mura CMS.
               <cffile action="read" file="#getDirectoryFromPath( getCurrentTemplatePath() )#/db/#FORM.production_dbtype#.sql" variable="sql" />
             </cfif>
             --->
-          <cfset form.production_dbtablespace=ucase(form.production_dbtablespace)>
-          <cfsavecontent variable="sql">
-            <cfinclude template="db/#FORM.production_dbtype#.sql">
-          </cfsavecontent>
+        
+           <cfdbinfo 
+                name="rsCheck"
+                datasource="#FORM.production_datasource#" 
+                username="#FORM.production_dbusername#" 
+                password="#FORM.production_dbpassword#"
+                type="version">
+
+          <cfif rsCheck.database_productname eq 'H2'>
+            <cfsavecontent variable="sql">
+              <cfinclude template="db/h2.sql">
+            </cfsavecontent>
+          <cfelse>
+            <cfparam name="form.production_mysqlengine" default="InnoDB">
+            <cfset storageEngine="ENGINE=#form.production_mysqlengine# DEFAULT CHARSET=utf8">
+            <cfset form.production_dbtablespace=ucase(form.production_dbtablespace)>
+            
+            <cfsavecontent variable="sql">
+              <cfinclude template="db/#FORM.production_dbtype#.sql">
+            </cfsavecontent>
+          </cfif>
           <!---
           <cfsavecontent variable="sql">
             <cfinclude template="db/#FORM.production_dbtype#.sql">
