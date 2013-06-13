@@ -52,6 +52,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="rsNext.recordcount" default=0>
 <cfparam name="session.openSectionList" default="">
 
+<cfset site=application.settingsManager.getSite(attributes.siteid)>
+<cfset contentRenderer=site.getContentRenderer()>
 <cfif attributes.nestlevel neq 1><cfset variables.startrow=1><cfelse><cfset variables.startrow=attributes.startrow></cfif>
 <cfset sortable=not attributes.isSectionRequest and attributes.nestlevel eq  1 and attributes.sortby eq 'orderno'>
 <cfset currentPos=variables.startrow>
@@ -138,7 +140,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfsilent>
 		<cfif verdict neq 'none' and listFindNoCase("jpg,jpeg,png,gif",listLast(attributes.rsnest.assocfilename,"."))>
 			<cfset atooltip=true>
-			<cfset atitle="<img class='image-preview' src='#application.contentRenderer.getURLForImage(fileid=attributes.rsNest.fileid,size='small',siteid=attributes.rsnest.siteid,fileext=attributes.rsnest.fileExt)#'/>">
+			<cfset atitle="<img class='image-preview' src='#contentRenderer.getURLForImage(fileid=attributes.rsNest.fileid,size='small',siteid=attributes.rsnest.siteid,fileext=attributes.rsnest.fileExt)#'/>">
 		<cfelse>
 			<cfset atooltip=false>
 			<cfset atitle=application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")>
@@ -215,14 +217,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
        <li class="edit"><a class="draftprompt"  data-siteid="#attributes.siteid#" data-contentid="#attributes.rsNest.contentid#" data-contenthistid="#attributes.rsNest.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?muraAction=cArch.edit&contenthistid=#attributes.rsNest.ContentHistID#&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#"><i class="icon-pencil"></i></a></li>
 	   <cfswitch expression="#attributes.rsnest.type#">
 		<cfcase value="Page,Folder,Calendar,Gallery">
-		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,attributes.rsNest.filename)#','#attributes.rsnest.targetParams#');"><i class="icon-globe"></i></a></li>
+		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#site.getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##contentRenderer.getURLStem(attributes.siteid,attributes.rsNest.filename)#','#attributes.rsnest.targetParams#');"><i class="icon-globe"></i></a></li>
 		</cfcase>
 		<cfcase value="File,Link">
-		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,"")#?LinkServID=#attributes.rsnest.contentid#','#attributes.rsnest.targetParams#');"><i class="icon-globe"></i></a></li>
+		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#site.getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##contentRenderer.getURLStem(attributes.siteid,"")#?LinkServID=#attributes.rsnest.contentid#','#attributes.rsnest.targetParams#');"><i class="icon-globe"></i></a></li>
 		</cfcase>
 		</cfswitch>
 	   <li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.versionhistory")#" href="index.cfm?muraAction=cArch.hist&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#"><i class="icon-book"></i></a></li>
-        <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
+        <cfif listFind(session.mura.memberships,'Admin;#site.getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
           <li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#" href="index.cfm?muraAction=cPerm.main&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#"><i class="icon-group"></i></a></li>
         <cfelse>
 		  <li class="permissions disabled"><a><i class="icon-group"></i></a></li>
@@ -236,10 +238,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         <li class="edit disabled"><a><i class="icon-pencil"></i></a></li>
 		<cfswitch expression="#attributes.rsnest.type#">
 		<cfcase value="Page,Folder,Calendar,Gallery">
-		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,attributes.rsNest.filename)#','#attributes.rsnest.targetParams#');"><i class="icon-globe"></i></a></li>
+		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#site.getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##contentRenderer.getURLStem(attributes.siteid,attributes.rsNest.filename)#','#attributes.rsnest.targetParams#');"><i class="icon-globe"></i></a></li>
 		</cfcase>
 		<cfcase value="File,Link">
-		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(attributes.siteid,"")#?LinkServID=#attributes.rsnest.contentid#','#attributes.rsnest.targetParams#');"><i class="icon-globe"></i></a></li>
+		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#site.getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##contentRenderer.getURLStem(attributes.siteid,"")#?LinkServID=#attributes.rsnest.contentid#','#attributes.rsnest.targetParams#');"><i class="icon-globe"></i></a></li>
 		</cfcase>
 		</cfswitch>
 		<li class="version-history disabled"><a><i class="icon-book"></i></a></li>
