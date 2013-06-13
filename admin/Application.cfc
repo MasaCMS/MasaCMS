@@ -196,9 +196,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfcatch></cfcatch>
 				</cftry>
 			</cfif>
-			<cfcatch>
-				<cfset application.appInitialized=false>
-			</cfcatch>
+			<cfcatch></cfcatch>
 		</cftry>
 
 		<cfset super.onRequestStart(argumentCollection=arguments)>
