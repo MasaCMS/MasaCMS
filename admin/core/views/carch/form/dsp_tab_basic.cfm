@@ -44,7 +44,6 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfset contentRenderer=application.settingsManager.getSite(rc.siteID).getContentRenderer()>
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.basic"))/>
 <cfset tabList=listAppend(tabList,"tabBasic")>
 <cfset started=false>
@@ -188,7 +187,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					
 					function FCKeditor_OnComplete( editorInstance ) { 	
 						<cfif rc.preview eq 1>
-					   	preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##contentRenderer.getURLStem(rc.siteid,'')#?previewid=#rc.contentBean.getcontenthistid()#','#rc.contentBean.getTargetParams()#');
+					   	preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##rc.$.getURLStem(rc.siteid,'')#?previewid=#rc.contentBean.getcontenthistid()#','#rc.contentBean.getTargetParams()#');
 						</cfif> 
 						htmlEditorOnComplete(editorInstance); 
 					}
@@ -247,9 +246,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfif rc.preview eq 1>
 							if(!previewLaunched){
 						<cfif listFindNoCase("File",rc.type)>
-							preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##contentRenderer.getURLStem(rc.siteid,'')#?previewid=#rc.contentBean.getcontenthistid()#&siteid=#rc.contentBean.getsiteid()#');
+							preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##rc.$.getURLStem(rc.siteid,'')#?previewid=#rc.contentBean.getcontenthistid()#&siteid=#rc.contentBean.getsiteid()#');
 						<cfelse>
-							openPreviewDialog('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##contentRenderer.getURLStem(rc.siteid,'')#?previewid=#rc.contentBean.getcontenthistid()#&siteid=#rc.contentBean.getsiteid()#');
+							openPreviewDialog('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##rc.$.getURLStem(rc.siteid,'')#?previewid=#rc.contentBean.getcontenthistid()#&siteid=#rc.contentBean.getsiteid()#');
 						</cfif>
 							previewLaunched=true;
 							}
