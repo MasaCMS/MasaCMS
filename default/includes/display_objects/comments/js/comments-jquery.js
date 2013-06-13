@@ -23,7 +23,7 @@ jQuery(document).ready(function() {
 	$email=jQuery("#postcomment [name=email]").val();
 	$currentedit="";
 	
-	jQuery(".reply a").live('click',function( event ) {
+	jQuery(".reply a").on('click',function( event ) {
 		var id = jQuery(this).attr('data-id');
 	
 		if($.currentedit != ''){
@@ -49,7 +49,7 @@ jQuery(document).ready(function() {
 		$editor.slideDown();
 	});
 	
-	jQuery(".editcomment").live('click',function( event ) {
+	jQuery(".editcomment").on('click',function( event ) {
 		event.preventDefault();
 		var id = jQuery(this).attr('data-id');
 		var actionURL=$commentsProxyPath + "?method=get&commentID=" + id;
