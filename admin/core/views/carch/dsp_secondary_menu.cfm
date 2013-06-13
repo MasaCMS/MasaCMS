@@ -148,6 +148,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfdefaultcase>
 		<cfswitch expression="#rc.originalfuseaction#">
 			<cfcase value="edit">
+				<cfset contentRenderer=application.settingsManager.getSite(rc.siteID).getContentRenderer()>
 				<a class="btn" href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=00000000000000000000000000000000000"><i class="icon-circle-arrow-left"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.backtositemanager')#</a>
 				<cfif rc.contentid neq "">
 				<cfif (rc.contentBean.getfilename() neq '' or rc.contentid eq '00000000000000000000000000000000001')>
@@ -155,12 +156,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfcase value="Page,Folder,Calendar,Gallery,Link">
 						<cfif not rc.contentBean.getIsNew()>
 							<cfset currentBean=application.contentManager.getActiveContent(rc.contentID,rc.siteid) />
-							<a class="btn" href="##" onclick="return openPreviewDialog('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,currentBean.getfilename())#','#currentBean.getTargetParams()#');"><i class="icon-globe"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewactive")#</a>
+							<a class="btn" href="##" onclick="return openPreviewDialog('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##contentRenderer.getURLStem(rc.siteid,currentBean.getfilename())#','#currentBean.getTargetParams()#');"><i class="icon-globe"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewactive")#</a>
 						</cfif>
-						<a class="btn" href="##" onclick="return openPreviewDialog('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?previewid=#rc.contentBean.getcontenthistid()#&contentid=#rc.contentBean.getcontentid()#','#rc.contentBean.getTargetParams()#');"><i class="icon-eye-open"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewversion")#</a>
+						<a class="btn" href="##" onclick="return openPreviewDialog('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##contentRenderer.getURLStem(rc.siteid,"")#?previewid=#rc.contentBean.getcontenthistid()#&contentid=#rc.contentBean.getcontentid()#','#rc.contentBean.getTargetParams()#');"><i class="icon-eye-open"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewversion")#</a>
 					</cfcase>
 					<cfcase value="File">	
-						<a class="btn" href="##" href="##" onclick="return openPreviewDialog('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?LinkServID=#rc.contentid#');"><i class="icon-globe"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewactive")#</a>
+						<a class="btn" href="##" href="##" onclick="return openPreviewDialog('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##contentRenderer.getURLStem(rc.siteid,"")#?LinkServID=#rc.contentid#');"><i class="icon-globe"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewactive")#</a>
 						<a class="btn" href="##" href="##" onclick="return openPreviewDialog('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()#/tasks/render/file/?fileID=#rc.contentBean.getFileID()#');"><i class="icon-eye-open"></i> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.viewversion")#</a>
 					</cfcase>
 					</cfswitch>

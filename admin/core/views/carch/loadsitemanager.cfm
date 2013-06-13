@@ -65,6 +65,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="session.copyAll" default="false">
 <cfparam name="session.openSectionList" default="">
 
+<cfset contentRenderer=application.settingsManager.getSite(rc.siteID).getContentRenderer()>
+
 <cfset request.rowNum=0>
 <cfset request.menulist=rc.topid>
 <cfset crumbdata=application.contentManager.getCrumbList(rc.topid,rc.siteid)>
@@ -278,13 +280,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             <li class="edit"><a class="draftprompt" data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&siteid=#URLEncodedFormat(rc.siteid)#&contentid=#rc.topid#&topid=#URLEncodedFormat(rc.topid)#&type=#rc.rstop.type#&parentid=#rc.rstop.parentid#&moduleid=#rc.moduleid#"><i class="icon-pencil"></i></a></li>
             <cfswitch expression="#rc.rsTop.type#">
               <cfcase value="Page,Folder,Calendar,Gallery">
-              <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,rc.rsTop.filename)#','#rc.rsTop.targetParams#');"><i class="icon-globe"></i></a></li>
+              <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##contentRenderer.getURLStem(rc.siteid,rc.rsTop.filename)#','#rc.rsTop.targetParams#');"><i class="icon-globe"></i></a></li>
               </cfcase>
               <cfcase value="Link">
               <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#rc.rsTop.filename#','#rc.rsTop.targetParams#');"><i class="icon-globe"></i></a></li>
               </cfcase>
               <cfcase value="File">
-              <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?LinkServID=#rc.rsTop.contentid#','#rc.rsTop.targetParams#');"><i class="icon-globe"></i></a></li>
+              <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##contentRenderer.getURLStem(rc.siteid,"")#?LinkServID=#rc.rsTop.contentid#','#rc.rsTop.targetParams#');"><i class="icon-globe"></i></a></li>
               </cfcase>
             </cfswitch>
             <li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.versionhistory")#" href="index.cfm?muraAction=cArch.hist&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#"><i class="icon-book"></i></a></li>
@@ -300,13 +302,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
            <li class="edit disabled"><a><i class="icon-pencil"></i></a></li>
             <cfswitch expression="#rc.rsTop.type#">
               <cfcase value="Page,Folder,Calendar,Gallery">
-              <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,rc.rsTop.filename)#','#rc.rsTop.targetParams#');"><i class="icon-globe"></i></a></li>
+              <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##contentRenderer.getURLStem(rc.siteid,rc.rsTop.filename)#','#rc.rsTop.targetParams#');"><i class="icon-globe"></i></a></li>
               </cfcase>
               <cfcase value="Link">
               <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('#rc.rsTop.filename#','#rc.rsTop.targetParams#');"><i class="icon-globe"></i></a></li>
               </cfcase>
               <cfcase value="File">
-              <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?LinkServID=#rc.rsTop.contentid#','#rc.rsTop.targetParams#');"><i class="icon-globe"></i></a></li>
+              <li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##contentRenderer.getURLStem(rc.siteid,"")#?LinkServID=#rc.rsTop.contentid#','#rc.rsTop.targetParams#');"><i class="icon-globe"></i></a></li>
               </cfcase>
             </cfswitch>
             <li class="version-history disabled"><a><i class="icon-book"></i></a></li>

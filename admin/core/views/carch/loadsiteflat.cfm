@@ -144,6 +144,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsavecontent></cfsilent>
 <!---<cfsavecontent variable="data.html">--->
 <cfset hasCustomImage=structKeyExists(getMetaData($.getBean('fileManager').getValue('imageProcessor')),'getCustomImage')>
+<cfset contentRenderer=application.settingsManager.getSite(rc.siteID).getContentRenderer()>
 
 <cfoutput>
 <div class="row-fluid">
@@ -205,10 +206,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						
 						<cfswitch expression="#item.gettype()#">
 							<cfcase value="Page,Folder,Calendar,Gallery">
-							<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),item.getfilename())#','#item.gettargetParams()#');"><i class="icon-globe"></i></a></li>
+							<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##contentRenderer.getURLStem(item.getSiteID(),item.getfilename())#','#item.gettargetParams()#');"><i class="icon-globe"></i></a></li>
 							</cfcase>
 							<cfcase value="File,Link">
-							<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),"")#?LinkServID=#item.getcontentid()#','#item.gettargetParams()#');"><i class="icon-globe"></i></a></li>
+							<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##contentRenderer.getURLStem(item.getSiteID(),"")#?LinkServID=#item.getcontentid()#','#item.gettargetParams()#');"><i class="icon-globe"></i></a></li>
 							<cfif item.getType() eq "File">
 							<li class="download"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.download')#" href="/tasks/render/file/?fileID=#item.getFileID()#&method=attachment" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.downloadconfirm'))#',this.href)"><i class="icon-download"></i></a></li>
 							</cfif>
@@ -234,10 +235,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					    <li class="edit disabled"><i class="icon-pencil"></i></li>
 						<cfswitch expression="#item.gettype()#">
 							<cfcase value="Page,Folder,Calendar,Gallery">
-							<li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),item.getfilename())#','#item.gettargetParams()#');"><i class="icon-globe"></i></a></li>
+							<li class="preview"><a title="Preview" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##contentRenderer.getURLStem(item.getSiteID(),item.getfilename())#','#item.gettargetParams()#');"><i class="icon-globe"></i></a></li>
 							</cfcase>
 							<cfcase value="File,Link">
-							<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(item.getSiteID(),"")#?LinkServID=#item.getcontentid()#','#item.gettargetParams()#');"><i class="icon-globe"></i></a></li>
+							<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.preview')#" href="##" onclick="return preview('http://#application.settingsManager.getSite(item.getSiteID()).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##contentRenderer.getURLStem(item.getSiteID(),"")#?LinkServID=#item.getcontentid()#','#item.gettargetParams()#');"><i class="icon-globe"></i></a></li>
 							</cfcase>
 						</cfswitch>
 						<li class="version-history disabled"><a><i class="icon-book"></i></a></li>
