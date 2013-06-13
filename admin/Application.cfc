@@ -142,59 +142,62 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cffunction>
 
 	<cffunction name="onRequestStart" output="true">
-		<cfif isDefined('application.scriptProtectionFilter') and application.configBean.getScriptProtect()>
+		<cftry>
+			<cfif application.appInitialized and isDefined('application.scriptProtectionFilter') and application.configBean.getScriptProtect()>
 
-			<cfset variables.remoteIPHeader=application.configBean.getValue("remoteIPHeader")>
-			<cfif len(variables.remoteIPHeader)>
+				<cfset variables.remoteIPHeader=application.configBean.getValue("remoteIPHeader")>
+				<cfif len(variables.remoteIPHeader)>
+					<cftry>
+						<cfif StructKeyExists(GetHttpRequestData().headers, variables.remoteIPHeader)>
+					    	<cfset request.remoteAddr = GetHttpRequestData().headers[remoteIPHeader]>
+					    <cfelse>
+							<cfset request.remoteAddr = CGI.REMOTE_ADDR>
+					    </cfif>
+						<cfcatch type="any"><cfset request.remoteAddr = CGI.REMOTE_ADDR></cfcatch>
+					</cftry>
+				<cfelse>
+					<cfset request.remoteAddr = CGI.REMOTE_ADDR>
+				</cfif>	
+
+				<cfif isDefined("url")>
+					<cfset application.scriptProtectionFilter.scan(
+												object=url,
+												objectname="url",
+												ipAddress=request.remoteAddr,
+												useTagFilter=true,
+												useWordFilter=true)>
+				</cfif>
+				<cfif isDefined("form")>
+					<cfset application.scriptProtectionFilter.scan(
+												object=form,
+												objectname="form",
+												ipAddress=request.remoteAddr)>
+				</cfif>
+
 				<cftry>
-					<cfif StructKeyExists(GetHttpRequestData().headers, variables.remoteIPHeader)>
-				    	<cfset request.remoteAddr = GetHttpRequestData().headers[remoteIPHeader]>
-				    <cfelse>
-						<cfset request.remoteAddr = CGI.REMOTE_ADDR>
-				    </cfif>
-					<cfcatch type="any"><cfset request.remoteAddr = CGI.REMOTE_ADDR></cfcatch>
+					<cfif isDefined("cgi")>
+						<cfset application.scriptProtectionFilter.scan(
+													object=cgi,
+													objectname="cgi",
+													ipAddress=request.remoteAddr,
+													useTagFilter=true,
+													useWordFilter=true,
+													fixValues=false)>
+					</cfif>
+					<cfif isDefined("cookie")>
+						<cfset application.scriptProtectionFilter.scan(
+													object=cookie,
+													objectname="cookie",
+													ipAddress=request.remoteAddr,
+													useTagFilter=true,
+													useWordFilter=true,
+											        fixValues=false)>
+					</cfif>
+					<cfcatch></cfcatch>
 				</cftry>
-			<cfelse>
-				<cfset request.remoteAddr = CGI.REMOTE_ADDR>
-			</cfif>	
-
-			<cfif isDefined("url")>
-				<cfset application.scriptProtectionFilter.scan(
-											object=url,
-											objectname="url",
-											ipAddress=request.remoteAddr,
-											useTagFilter=true,
-											useWordFilter=true)>
 			</cfif>
-			<cfif isDefined("form")>
-				<cfset application.scriptProtectionFilter.scan(
-											object=form,
-											objectname="form",
-											ipAddress=request.remoteAddr)>
-			</cfif>
-
-			<cftry>
-				<cfif isDefined("cgi")>
-					<cfset application.scriptProtectionFilter.scan(
-												object=cgi,
-												objectname="cgi",
-												ipAddress=request.remoteAddr,
-												useTagFilter=true,
-												useWordFilter=true,
-												fixValues=false)>
-				</cfif>
-				<cfif isDefined("cookie")>
-					<cfset application.scriptProtectionFilter.scan(
-												object=cookie,
-												objectname="cookie",
-												ipAddress=request.remoteAddr,
-												useTagFilter=true,
-												useWordFilter=true,
-										        fixValues=false)>
-				</cfif>
-				<cfcatch></cfcatch>
-			</cftry>
-		</cfif>
+			<cfcatch></cfcatch>
+		</cftry>
 
 		<cfset super.onRequestStart(argumentCollection=arguments)>
 	</cffunction>

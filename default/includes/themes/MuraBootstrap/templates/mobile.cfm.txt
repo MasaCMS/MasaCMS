@@ -110,7 +110,7 @@
 </div><!-- /page -->
 
 <script>
-	$('body').live('pagebeforecreate',init);
+	$('body').on('pagebeforecreate',init);
 	
 	function init() {
 	
@@ -162,9 +162,9 @@
 			'data-role': 'controlgroup'
 	});
 	
-	$('##btn-back').live('tap',function() {
+	$('##btn-back').on('tap',function() {
 	  history.back(); return false;
-	}).live('click',function() {
+	}).on('click',function() {
 	  history.back(); return false;
 	});
 	
