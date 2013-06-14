@@ -143,6 +143,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cffunction name="onRequestStart" output="true">
 		<cftry>
+			<cfif not (structKeyExists(application.settingsManager,'validate') and application.settingsManager.validate() and isStruct(application.configBean.getAllValues()))>
+				<cfset application.appInitialized=false>
+			</cfif>
+			<cfcatch>
+				<cfset application.appInitialized=false>
+				<cfset request.muraAppreloaded=false>
+			</cfcatch>
+		</cftry>
+
+		<cftry>
 			<cfif application.appInitialized and isDefined('application.scriptProtectionFilter') and application.configBean.getScriptProtect()>
 
 				<cfset variables.remoteIPHeader=application.configBean.getValue("remoteIPHeader")>

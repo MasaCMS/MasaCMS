@@ -69,9 +69,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 	
 <cfif structKeyExists(application,"configBean")>
+	<cftry>
 	<cfif not application.configBean.getDebuggingEnabled()>
 		<cfset mailto=application.configBean.getMailserverusername()>
 		<cfcontent reset="true">
+		<cfheader statuscode="500" statustext="An Error Occurred" />
 		<cfif len(application.configBean.getValue("errorTemplate"))>
 			<cfinclude template="#application.configBean.getValue('errorTemplate')#">
 		<cfelse>
@@ -79,7 +81,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		<cfabort>
 	</cfif>
+	<cfcatch></cfcatch>
+	</cftry>
 </cfif>
-		
+<cfheader statuscode="500" statustext="An Error Occurred" />		
 <cfdump var="#arguments.exception#">
 <cfabort>	
