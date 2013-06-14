@@ -146,10 +146,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif not application.settingsManager.validate()>
 				<cfset application.appInitialized=false>
 			</cfif>
-			<cfset application.clusterManager.runCommands()>
-			<cfif not application.appInitialized>
-				<cfset request.muraAppreloaded=false>
-			</cfif>
 			<cfcatch>
 				<cfset application.appInitialized=false>
 				<cfset request.muraAppreloaded=false>
