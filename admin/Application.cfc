@@ -143,7 +143,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cffunction name="onRequestStart" output="true">
 		<cftry>
-			<cfif not application.settingsManager.validate()>
+			<cfif not (application.settingsManager.validate() and application.configBean.validate())>
 				<cfset application.appInitialized=false>
 			</cfif>
 			<cfcatch>
@@ -151,11 +151,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset request.muraAppreloaded=false>
 			</cfcatch>
 		</cftry>
-
-		<cfif isDefined('application.configBean.getAllValues') and not isStruct(application.configBean.getAllValues())>
-			<cfset application.appInitialized=false>
-			<cfset request.muraAppreloaded=false>
-		</cfif>
 
 		<cftry>
 			<cfif application.appInitialized and isDefined('application.scriptProtectionFilter') and application.configBean.getScriptProtect()>
