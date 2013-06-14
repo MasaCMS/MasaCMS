@@ -143,7 +143,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cffunction name="onRequestStart" output="true">
 		<cftry>
-			<cfif not (application.settingsManager.validate() and application.configBean.validate())>
+			<cfif not (structKeyExists(application.settingsManager,'validate') and application.settingsManager.validate() and structKeyExists(application.configBean,'validate') and application.configBean.validate())>
 				<cfset application.appInitialized=false>
 			</cfif>
 			<cfcatch>
