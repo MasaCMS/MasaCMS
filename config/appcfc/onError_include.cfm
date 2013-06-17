@@ -85,5 +85,5 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cftry>
 </cfif>
 <cfheader statuscode="500" statustext="An Error Occurred" />		
-<cfdump var="#arguments.exception#">
+<cfdump var="#arguments.exception#" top="3">
 <cfabort>	
