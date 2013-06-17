@@ -95,6 +95,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif rsChanges.recordcount>
 		<cfloop query="rsChanges">
+			<cfset application.serviceFactory
+				.getBean('contentManager')
+					.purgeContentCache(
+						contentBean=application.serviceFactory
+							.getBean('content')
+							.loadBy(
+								contentID=rsChanges.contentid,
+								siteid=rsChanges.siteid
+							)
+					)>
+		</cfloop>
+
+		<cfquery name="rsChanges" dbtype="query">
+			select distinct siteid from rsChanges
+		</cfquery>
+		<cfloop query="rsChanges">
 			<cfset application.settingsManager.getSite(rsChanges.siteid).purgeCache() />
 		</cfloop>
 	</cfif>
