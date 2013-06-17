@@ -182,7 +182,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 </cffunction>
 
-<cffunction name="doAutoImport" access="public" returntype="struct" output="false">		
+<cffunction name="doAutoImport" access="public" output="false">		
 	<cfargument name="siteid">
 	<cfset var rs=getFeeds(arguments.siteid,'Remote',0,1)>
 	<cfset var importArgs=structNew()>
