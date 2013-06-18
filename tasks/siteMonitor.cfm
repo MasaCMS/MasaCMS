@@ -83,14 +83,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cftry>
 <cfelse>
 	<cfquery name="rsChanges" datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
-	select distinct tcontent.siteid from tcontent inner join tcontent tcontent2 on tcontent.parentid=tcontent2.contentid 
+	select distinct tcontent.siteid, tcontent.contentidfrom tcontent inner join tcontent tcontent2 on tcontent.parentid=tcontent2.contentid 
 	where tcontent.approved=1 and tcontent.active=1 and tcontent.display=2 and tcontent2.type <> 'Calendar'
 	and ((tcontent.displaystart >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#application.lastmonitored#">
 	and tcontent.displaystart <=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#theTime#">)
 	or
 	(tcontent.displaystop >=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#application.lastmonitored#">
 	and tcontent.displaystop <=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#theTime#">))
-	group by tcontent.siteid
+	group by tcontent.siteid, tcontent.contentid
 	</cfquery>
 	
 	<cfif rsChanges.recordcount>
