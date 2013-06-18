@@ -869,7 +869,12 @@ and tclassextendattributes.type='File'
 		inner join tclassextendsets on (tclassextendsets.extendSetID=tclassextendattributes.extendSetID)
 		inner join tclassextend on (tclassextendsets.subTypeID=tclassextend.subTypeID)
 		where tclassextend.siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#">
-		and tclassextend.baseTable= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.baseTable#">
+		and (
+			tclassextend.baseTable= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.baseTable#">
+			<cfif arguments.baseTable eq 'tcontent'>
+			or tclassextend.type = 'Base'	
+			</cfif>
+		)
 		<cfif arguments.activeOnly>
 			and tclassextend.isActive=1
 		</cfif>
