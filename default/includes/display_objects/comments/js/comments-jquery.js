@@ -23,7 +23,7 @@ jQuery(document).ready(function() {
 	$email=jQuery("#postcomment [name=email]").val();
 	$currentedit="";
 	
-	jQuery(".reply a").on('click',function( event ) {
+	jQuery(document).on('click', '.reply a', function( event ) {
 		var id = jQuery(this).attr('data-id');
 	
 		if($.currentedit != ''){
@@ -49,7 +49,7 @@ jQuery(document).ready(function() {
 		$editor.slideDown();
 	});
 	
-	jQuery(".editcomment").on('click',function( event ) {
+	jQuery(document).on('click', '.editcomment', function( event ) {
 		event.preventDefault();
 		var id = jQuery(this).attr('data-id');
 		var actionURL=$commentsProxyPath + "?method=get&commentID=" + id;
@@ -86,7 +86,7 @@ jQuery(document).ready(function() {
 		);
 	});
 	
-	jQuery("#postcomment-comment a").click( function( event ) {
+	jQuery("#postcomment-comment a").on('click', function( event ) {
 		jQuery("#postcomment-comment").hide();
 		
 		if($.currentedit != ''){
