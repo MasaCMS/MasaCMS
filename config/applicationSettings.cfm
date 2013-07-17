@@ -210,14 +210,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset this.ormenabled = properties.getProperty("ormenabled","true") />
 	
 	<!--- You can't depend on 9 supporting datasource as struct --->
-	<cfif listFirst(SERVER.COLDFUSION.PRODUCTVERSION) gt 9 
-		or listGetAt(SERVER.COLDFUSION.PRODUCTVERSION,3) gt 0>
-		<cfset this.datasource = structNew()>
-		<cfset this.datasource.name = properties.getProperty("datasource","") />
-		<cfset this.datasource.username = properties.getProperty("dbusername","")>
-		<cfset this.datasource.password = properties.getProperty("dbpassword","")>
-	<cfelse>
-		<cfset this.datasource =  properties.getProperty("datasource","") >
+	<cfif len(properties.getProperty("datasource",""))>
+		<cfif listFirst(SERVER.COLDFUSION.PRODUCTVERSION) gt 9 
+			or listGetAt(SERVER.COLDFUSION.PRODUCTVERSION,3) gt 0>
+			<cfset this.datasource = structNew()>
+			<cfset this.datasource.name = properties.getProperty("datasource","") />
+			<cfset this.datasource.username = properties.getProperty("dbusername","")>
+			<cfset this.datasource.password = properties.getProperty("dbpassword","")>
+		<cfelse>
+			<cfset this.datasource =  properties.getProperty("datasource","") >
+		</cfif>
 	</cfif>
 	
 	<cfset this.ormSettings=structNew()>
