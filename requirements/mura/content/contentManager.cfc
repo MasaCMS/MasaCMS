@@ -1826,16 +1826,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cffunction name="approveComment" access="public" output="false" returntype="any">
 		<cfargument name="commentID" type="string">
-		<cfargument name="contentRenderer" required="true" default="#getBean('contentRenderer')#">
+		<cfargument name="contentRenderer" required="true" default="" hint="deprecated">
 		<cfargument name="script" required="true" default="">
 		<cfargument name="subject" required="true" default="">
+		<cfargument name="notify" required="true" default="true">
 		
 			<cfset var commentBean=getCommentBean() />
 			<cfset commentBean.setCommentID(arguments.commentid) />
 			<cfset commentBean.load() />
 			<cfif not commentBean.getIsNew()>
 				<cfset commentBean.setIsApproved(1) />
-				<cfset commentBean.save(arguments.contentRenderer,arguments.script,arguments.subject) />
+				<cfset commentBean.save(script=arguments.script,subject=arguments.subject,notify=arguments.notify) />
 			</cfif>
 			<cfreturn commentBean />
 	</cffunction>
