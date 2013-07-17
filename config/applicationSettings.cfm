@@ -220,38 +220,38 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelse>
 			<cfset this.datasource =  properties.getProperty("datasource","") >
 		</cfif>
-	</cfif>
 	
-	<cfset this.ormSettings=structNew()>
-	<cfset this.ormSettings.cfclocation=arrayNew(1)>
-	
-	<cfif this.ormenabled>
-		<cfswitch expression="#properties.getProperty('dbtype','')#">
-			<cfcase value="mssql">
-				<cfset this.ormSettings.dialect = "MicrosoftSQLServer" />
-			</cfcase>
-			<cfcase value="mysql">
-				<cfset this.ormSettings.dialect = "MySQL" />
-			</cfcase>
-			<cfcase value="oracle">
-				<cfset this.ormSettings.dialect = "Oracle10g" />
-			</cfcase>
-			<cfcase value="nuodb">
-				<cfset this.ormSettings.dialect = "nuodb" />
-			</cfcase>
-		</cfswitch>
-		<cfset this.ormSettings.dbcreate = properties.getProperty("ormdbcreate","update") />
-		<cfif len(properties.getProperty("ormcfclocation",""))>
-			<cfset arrayAppend(this.ormSettings.cfclocation,properties.getProperty("ormcfclocation")) />
+		<cfset this.ormSettings=structNew()>
+		<cfset this.ormSettings.cfclocation=arrayNew(1)>
+		
+		<cfif this.ormenabled>
+			<cfswitch expression="#properties.getProperty('dbtype','')#">
+				<cfcase value="mssql">
+					<cfset this.ormSettings.dialect = "MicrosoftSQLServer" />
+				</cfcase>
+				<cfcase value="mysql">
+					<cfset this.ormSettings.dialect = "MySQL" />
+				</cfcase>
+				<cfcase value="oracle">
+					<cfset this.ormSettings.dialect = "Oracle10g" />
+				</cfcase>
+				<cfcase value="nuodb">
+					<cfset this.ormSettings.dialect = "nuodb" />
+				</cfcase>
+			</cfswitch>
+			<cfset this.ormSettings.dbcreate = properties.getProperty("ormdbcreate","update") />
+			<cfif len(properties.getProperty("ormcfclocation",""))>
+				<cfset arrayAppend(this.ormSettings.cfclocation,properties.getProperty("ormcfclocation")) />
+			</cfif>
+			<cfset this.ormSettings.flushAtRequestEnd = properties.getProperty("ormflushAtRequestEnd","false") />
+			<cfset this.ormsettings.eventhandling = properties.getProperty("ormeventhandling","true") />
+			<cfset this.ormSettings.automanageSession = properties.getProperty("ormautomanageSession","false") />
+			<cfset this.ormSettings.savemapping=properties.getProperty("ormsavemapping","false") />
+			<cfset this.ormSettings.skipCFCwitherror=properties.getProperty("ormskipCFCwitherror","false") />
+			<cfset this.ormSettings.useDBforMapping=properties.getProperty("ormuseDBforMapping","true") />
+			<cfset this.ormSettings.autogenmap=properties.getProperty("ormautogenmap","true") />
+			<cfset this.ormSettings.logsql=properties.getProperty("ormlogsql","false") />
 		</cfif>
-		<cfset this.ormSettings.flushAtRequestEnd = properties.getProperty("ormflushAtRequestEnd","false") />
-		<cfset this.ormsettings.eventhandling = properties.getProperty("ormeventhandling","true") />
-		<cfset this.ormSettings.automanageSession = properties.getProperty("ormautomanageSession","false") />
-		<cfset this.ormSettings.savemapping=properties.getProperty("ormsavemapping","false") />
-		<cfset this.ormSettings.skipCFCwitherror=properties.getProperty("ormskipCFCwitherror","false") />
-		<cfset this.ormSettings.useDBforMapping=properties.getProperty("ormuseDBforMapping","true") />
-		<cfset this.ormSettings.autogenmap=properties.getProperty("ormautogenmap","true") />
-		<cfset this.ormSettings.logsql=properties.getProperty("ormlogsql","false") />
 	</cfif>
 
 	<cftry>
