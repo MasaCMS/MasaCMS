@@ -377,7 +377,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				title, releasedate, menuTitle, tcontent.lastupdate,summary, tags,tcontent.filename, type,subType, tcontent.siteid,
 				tcontent.contentid, tcontent.contentHistID, target, targetParams, 
 				restricted, restrictgroups, displaystart, displaystop, orderno,sortBy,sortDirection,
-				tcontent.fileid, tcontent.credits, remoteSource, remoteSourceURL, remoteURL,
+				tcontent.fileid, tcontent.credits, tcontent.remoteSource, tcontent.remoteSourceURL, tcontent.remoteURL,
 				tfiles.fileSize,tfiles.fileExt, audience, keypoints
 				,tcontentstats.rating,tcontentstats.totalVotes,tcontentstats.downVotes,tcontentstats.upVotes
 				,tcontentstats.comments, '' as parentType, <cfif doKids> qKids.kids<cfelse>null as kids</cfif>,tcontent.path, tcontent.created, tcontent.nextn,
