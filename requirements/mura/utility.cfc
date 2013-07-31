@@ -182,13 +182,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset var msg=arguments.text />
 <cfset var user = "Anonymous" />
+<cfset var remoteAddr = StructKeyExists(request, 'remoteAddr') ? request.remoteAddr : CGI.REMOTE_ADDR />
 
 <cfif isBoolean(variables.configBean.getLogEvents()) and variables.configBean.getLogEvents()>
 <cfif session.mura.isLoggedIn>
 <cfset user=session.mura.fname & " " & session.mura.lname />
 </cfif>
 
-<cfset msg="#msg# By #user# from #request.remoteAddr#" />
+<cfset msg="#msg# By #user# from #remoteAddr#" />
 
 	<cflog 
 		text="#msg#"
