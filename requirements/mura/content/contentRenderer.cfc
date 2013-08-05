@@ -103,6 +103,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.formWrapperClass="well">
 <cfset this.generalWrapperClass="well">
 <cfset this.aNotCurrentClass="">
+<cfset this.size=50>
 
 
 <cffunction name="init" returntype="any" access="public" output="false">
@@ -471,6 +472,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="ulNestedCustomString" required="true" default="#this.ulNestedCustomString#">
 		<cfargument name="openCurrentOnly" required="true" default="false">
 		<cfargument name="aNotCurrentClass" required="true" default="#this.aNotCurrentClass#">
+		<cfargument name="size" required="true" default="#this.size#">
 
 		<cfset var rsSection=arguments.rs>
 		<cfset var adjust=0>
@@ -486,7 +488,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var started=false>
 		
 		<cfif not isQuery(rsSection)>
-			<cfset rsSection=variables.contentGateway.getKids('00000000000000000000000000000000000',variables.event.getValue('siteID'),arguments.contentid,arguments.type,arguments.today,50,'',0,arguments.sortBy,arguments.sortDirection,arguments.categoryID,arguments.relatedID)>
+			<cfset rsSection=variables.contentGateway.getKids('00000000000000000000000000000000000',variables.event.getValue('siteID'),arguments.contentid,arguments.type,arguments.today,Val(arguments.size),'',0,arguments.sortBy,arguments.sortDirection,arguments.categoryID,arguments.relatedID)>
 		</cfif>
 
 		<cfif isDefined("arguments.ulTopClass") and arguments.currDepth eq 1>
