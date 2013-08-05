@@ -1,16 +1,56 @@
-# This is for rewriting urls "WITHOUT" siteIDs
-# To remove the Mura siteID directory and index.cfm from urls you must also set both siteIDInURLS and indexFileInURLs to 0 in your /config/setting.ini.cfm and reload Mura.
-Options +FollowSymLinks
-RewriteEngine On 
-RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-d
-RewriteRule ^([a-zA-Z0-9/-]+/tag/.+|tag/.+)$ /index.cfm%{REQUEST_URI} [PT]
-RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-d
-RewriteRule ^([a-zA-Z0-9/-\s]+)$ /index.cfm%{REQUEST_URI} [PT]
+# Apache mod_rewrite Docs: http://httpd.apache.org/docs/current/rewrite/
+#   Intro: http://httpd.apache.org/docs/current/rewrite/intro.html
+#   Flags: http://httpd.apache.org/docs/current/rewrite/flags.html
 
-# This is for rewriting urls "WITH" siteIDs
-# To remove the Mura siteID directory and index.cfm from urls you must also set siteIDInURLS to 1 and indexFileInURLs to 0 in your /config/setting.ini.cfm and reload Mura.
-# RewriteEngine On
-# RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-d
-# RewriteRule ^([a-zA-Z0-9-]{1,})/^([a-zA-Z0-9/-]+/tag/.+|tag/.+)$ /$1/index.cfm/$2 [PT]
-# RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} !-d
-# RewriteRule ^([a-zA-Z0-9-]{1,})/([a-zA-Z0-9/-\s]+)$ /$1/index.cfm/$2 [PT]
+Options All -Indexes
+Options +FollowSymLinks
+
+# -------------------------------------------------------------------------------
+# MURA REWRITE OPTIONS
+# -------------------------------------------------------------------------------
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+
+
+# Is the request for a non-existent file or non-existent directory?
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+
+# OPTION 1 :: WITHOUT SiteID
+# Set both siteIDInURLS and indexFileInURLs to 0 in your 
+# /config/setting.ini.cfm and reload Mura
+RewriteRule ^([a-zA-Z0-9/].+)$ /index.cfm/$1 [NC,QSA,PT]
+
+
+# OPTION 2 :: WITH SiteID
+# Set indexFileInURLs to 0 in your /config/setting.ini.cfm and reload Mura.
+#RewriteRule ^([a-zA-Z0-9]{1,})/([a-zA-Z0-9/].+)$ /$1/index.cfm/$2 [NC,QSA,PT]
+
+
+# OPTION 3 :: Advanced Configuration ::
+# IF you want to have SiteID for SPECIFIC SITES ONLY, but not all of them
+# you need to add a custom getURLStem() method to the Site's contentRenderer.cfc
+# Then, you need to ENABLE OPTION 1 above, and add a custom rewrite rule for each site:
+#RewriteRule ^YourSiteID/(.*) /YourSiteID/index.cfm/$1 [NC,QSA,PT]
+
+
+# 404 :: Pass the requested URI as a query string
+# This assumes you have a custom 404.cfm file at the root of your site
+#RewriteRule (.*) 404.cfm?%{REQUEST_URI}?%{QUERY_STRING}
+
+
+# Forbid executable files from being downloaded
+RewriteRule \.exe - [F]
+</IfModule>
+
+# -------------------------------------------------------------------------------
+# UTF-8 encoding
+# -------------------------------------------------------------------------------
+
+# Use UTF-8 encoding for anything served text/plain or text/html
+AddDefaultCharset utf-8
+
+# Force UTF-8 for a number of file formats
+AddCharset utf-8 .css .js .xml .json .rss .atom
