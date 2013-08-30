@@ -48,6 +48,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="rc.originalfuseAction" default="">
 <cfparam name="rc.originalcircuit" default="">
 <cfparam name="rc.moduleid" default="">
+<cfif not application.configBean.getSessionHistory() or application.configBean.getSessionHistory() gte 30>
+	<cfparam name="session.dashboardSpan" default="30">
+<cfelse>
+	<cfparam name="session.dashboardSpan" default="#application.configBean.getSessionHistory()#">
+</cfif>
 <cfif not isDefined("session.mura.memberships")>
   <cflocation url="#application.configBean.getContext()#/admin/?muraAction=cLogin.logout" addtoken="false">
 </cfif>
