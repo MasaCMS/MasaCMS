@@ -745,14 +745,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset var file="#application.configBean.getFileDir()#/#arguments.siteID#/cache/file/#arguments.fileID#_#arguments.size#.#rsMeta.fileExt#">
 		</cfif>
 
+		<cfset file=trim(file)>
+
 		<cfif fileExists(file)>
-			<cftry>
-				<cfset fileDelete(file)>
-				<cfcatch>
-					<cfset createObject("java", "java.lang.Thread").sleep(JavaCast("int", 2000))>
-					<cfset fileDelete(file)>
-				</cfcatch>
-			</cftry>	
+			<cfset fileDelete(file)>	
 		</cfif>
 
 		<cfset cropper=imageRead(source)>

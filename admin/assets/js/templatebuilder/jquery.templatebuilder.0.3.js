@@ -386,6 +386,48 @@
 			$_grid.show();
 		}
 
+		function doRenderDataset() {
+
+			var fieldData	= _formData.fields[_currentFieldID];
+			var datasetID	= fieldData.datasetid; 
+			var data		= _dataSets[datasetID];
+
+			jQuery('.ui-tabs-nav li',$_grid).unbind();
+
+			$_grid.html( _templates['dataset-grid'] );
+
+			$_gridtable	= jQuery('#mura-tb-grid-table');
+			$_gridhead	= jQuery('#mura-tb-grid-table-header');
+
+			setDataMode('edit');
+
+			jQuery('.ui-tabs-nav li',$_grid).click(function() {
+				switch (jQuery(this).attr('id')) {
+					case 'button-grid-edit':{
+						doDatasetForm();
+					}
+					break;
+				}
+			});
+
+			jQuery('.ui-button',$_grid).click(function() {
+				switch ( jQuery(this).attr('id') ) {
+					case 'button-grid-add': {
+						doRenderRow();
+					}
+					break;
+				}
+			});
+			
+			jQuery(".mura-tb-grid-radio",$_grid).live('click',function() {
+				id = jQuery(this).attr('data-id');
+				_currentDataset.defaultid = id;
+			});
+
+			$_grid.show();
+			doRenderData();
+		}
+
 		function doDatasetForm() {
 			var fieldData	= _formData.fields[_currentFieldID];
 			var datasetID	= fieldData.datasetid; 
@@ -518,52 +560,7 @@
 
 			doShowDatasetForm();
 		}
-		
-		function doRenderDataset() {
-
-			var fieldData	= _formData.fields[_currentFieldID];
-			var datasetID	= fieldData.datasetid; 
-			var data		= _dataSets[datasetID];
-
-
-			jQuery('.ui-tabs-nav li',$_grid).unbind();
-
-			$_grid.html( _templates['dataset-grid'] );
-
-			$_gridtable	= jQuery('#mura-tb-grid-table');
-			$_gridhead	= jQuery('#mura-tb-grid-table-header');
-
-			setDataMode('edit');
-
-			$_grid.html(_templates['dataset-sourced']);
-
-			jQuery('.ui-tabs-nav li',$_grid).click(function() {
-				switch (jQuery(this).attr('id')) {
-					case 'button-grid-edit':{
-						doDatasetForm();
-					}
-					break;
-				}
-			});
-
-			jQuery('.ui-button',$_grid).click(function() {
-				switch ( jQuery(this).attr('id') ) {
-					case 'button-grid-add': {
-						doRenderRow();
-					}
-					break;
-				}
-			});
-			
-			jQuery(".mura-tb-grid-radio",$_grid).live('click',function() {
-				id = jQuery(this).attr('data-id');
-				_currentDataset.defaultid = id;
-			});
-
-			$_grid.show();
-			doRenderData();
-		}
-		
+				
 		function setDataMode( mode ) {
 			var fieldData	= _formData.fields[_currentFieldID];
 			var datasetID	= fieldData.datasetid; 
