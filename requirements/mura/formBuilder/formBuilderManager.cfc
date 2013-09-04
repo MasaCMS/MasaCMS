@@ -236,6 +236,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfset var dataOrder		= ArrayNew(1) />
 		<cfset var dataRecords		= StructNew() />
+		<cfset var delim			= application.configBean.getFileDelim() />
 
 		<cfif not StructKeyExists( arguments.dataset,"datasetID" )>			
 			<cfthrow message="#mmRBF.getKeyValue(session.rb,"formbuilder.invaliddataset")#" >
@@ -246,11 +247,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfreturn arguments.dataset />
 			</cfcase>
 			<cfcase value="object">
-				<cfset arguments.dataset = createObject('component',$.siteConfig().getAssetMap() & "." & dataset.source).getData($,arguments.dataset) />
+				<cfset arguments.dataset = createObject('component',$.siteConfig().getAssetMap() & "." & replacenocase(dataset.source,".cfc","") ).getData($,arguments.dataset) />
 				<cfreturn arguments.dataset />
 			</cfcase>
 			<cfcase value="dsp">
-				<cfinclude template="#$.siteConfig().getIncludePath()##dataset.source#">
+				<cfif fileExists( expandPath( $.siteConfig().getIncludePath() ) & "#delim#includes#delim#display_objects#delim#custom#delim##dataset.source#"  )>
+					<cfinclude template="#$.siteConfig().getIncludePath()##delim#includes#delim#display_objects#delim#custom#delim##dataset.source#">
+				<cfelse>
+					<cfinclude template="#$.siteConfig().getIncludePath()##dataset.source#">
+				</cfif>
 				<cfreturn arguments.dataset />
 			</cfcase>
 			<cfdefaultcase>
