@@ -748,7 +748,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset file=trim(file)>
 
 		<cfif fileExists(file)>
-			<cfset fileDelete(file)>	
+			<cftry>
+				<cfset fileDelete(file)>
+				<cfcatch>
+					<cfthrow message="CROPANDSCALE ERROR: cannot delete '#file#', FileExists=#fileExists(file)#">
+				</cfcatch>
+			</cftry>
 		</cfif>
 
 		<cfset cropper=imageRead(source)>
