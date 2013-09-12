@@ -162,7 +162,7 @@ to your own modified versions of Mura CMS.
 				</cfif>
 				
 				<cfset request.comments=""/>
-				<cfif not (request.remember)>
+				<cfif not IsBoolean(request.remember) or  not (request.remember)>
 					<cfset request.name=""/>
 					<cfset request.email=""/>
 					<cfset request.url=""/>
