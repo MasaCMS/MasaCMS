@@ -2153,7 +2153,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset var body=arguments.str>
 	<cfset var errorStr="">
-	<cfset var regex1="(\{{|\[sava\]|\[mura\]).+?(\[/sava\]|\[/mura\]|}})">
+	<cfset var regex1="(\[sava\]|\[mura\]).+?(\[/sava\]|\[/mura\])">
 	<cfset var regex2="">
 	<cfset var finder=reFindNoCase(regex1,body,1,"true")>
 	<cfset var tempValue="">
