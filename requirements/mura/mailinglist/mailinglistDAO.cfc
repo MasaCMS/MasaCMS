@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="create" returntype="void" access="public" output="false">
 <cfargument name="listBean" type="any" />
  
-<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+<cfquery>
 insert into tmailinglist (mlid,name,lastupdate,siteid,isPublic,description,ispurge)
 values (
 <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.listBean.getMLID()#">,
@@ -78,7 +78,7 @@ values (
 		<cfset bean=getBean("mailingList")>
 	</cfif>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 	Select * from tmailinglist where 
 	mlid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.MLID#">
 	</cfquery>
@@ -103,7 +103,7 @@ values (
 		<cfset bean=getBean("mailingList")>
 	</cfif>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 	Select * from tmailinglist where 
 	name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.name#">
 	and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#">
@@ -130,7 +130,7 @@ values (
 <cffunction name="update" access="public" output="false" returntype="void" >
 	<cfargument name="listBean" type="any" />
 	
-	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery>
 	update tmailinglist set name=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.listBean.getName() neq '',de('no'),de('yes'))#" value="#arguments.listBean.getName()#">,
 	lastupdate=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">, 
 	isPublic=<cfqueryparam cfsqltype="cf_sql_numeric" value="#arguments.listBean.getIsPublic()#">,
@@ -145,7 +145,7 @@ values (
 	<cfargument name="mlid" type="string" />
 	<cfargument name="siteid" type="string" />
 	
-	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery>
 	delete from tmailinglist where mlid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.mlid#"> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#">
 	</cfquery>
 
@@ -155,7 +155,7 @@ values (
 	<cfargument name="mlid" type="string" />
 	<cfargument name="siteid" type="string" />
 
-	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery>
 	delete from tmailinglistmembers where mlid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.mlid#"> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#">
 	</cfquery>
 

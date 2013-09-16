@@ -12,17 +12,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on
+Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
 Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
 
 However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
 or libraries that are released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without
-Mura CMS under the license of your choice, provided that you follow these specific guidelines:
+In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
+independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
+Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
 
-Your custom code
+Your custom code 
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
@@ -36,19 +36,19 @@ Your custom code
  /index.cfm
  /MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
+under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
 requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License
+For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
+modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
 <cfcomponent extends="mura.cfobject" output="false">
 <cfset variables.instance=structNew()/>
 <cfset variables.instance.mode=""/>
-<cfset variables.instance.version="6.0"/>
+<cfset variables.instance.version="6.1"/> 
 <cfset variables.instance.title=""/>
 <cfset variables.instance.webroot=""/>
 <cfset variables.instance.webrootmap=""/>
@@ -116,7 +116,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.confirmSaveAsDraft=true />
 <cfset variables.instance.notifyWithVersionLink=true />
 <cfset variables.instance.scriptProtect=true />
-<cfset variables.instance.appreloadKey=application.appreloadKey />
+<cfset variables.instance.appreloadKey="appreload" />
 <cfset variables.instance.loginStrikes=4 />
 <cfset variables.instance.encryptPasswords=true />
 <cfset variables.instance.sessionTimeout=180 />
@@ -142,11 +142,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.cfStaticJavaLoaderScope="application">
 <cfset variables.instance.URLTitleDelim="-">
 <cfset variables.instance.BCryptLogRounds=10>
-<cfset variables.instance.maxSourceImageWIdth=3000>
+<cfset variables.instance.maxSourceImageWidth=3000>
 <cfset variables.dbUtility="">
 <cfset variables.instance.allowAutoUpdates=1>
 <cfset variables.instance.CFFPConfigFilename="cffp.ini.cfm">
-<cfset variables.instance.loadcontentby="filename">
+<cfset variables.instance.loadcontentby='filename'/>
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
@@ -174,8 +174,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="set" returntype="any" output="true" access="public">
-	<cfargument name="config" type="struct">
+	<cfargument name="config" type="struct"> 	
 	<cfset var prop="">
+	<cfset var tempFunc="">
+	
 	<cfset setWebRoot(arguments.config.webroot)/>
 	<cfset setContext(arguments.config.context)/>
 	<cfset setAssetPath(arguments.config.assetPath)/>
@@ -184,54 +186,53 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset setFileDir(arguments.config.fileDir)/>
 	<cfset setDefaultLocale(arguments.config.locale)>
 	<cfset setServerPort(arguments.config.port)>
-
+	
 	<cfloop collection="#arguments.config#" item="prop">
 		<cfif not listFindNoCase("webroot,filedir,plugindir,locale,port,assetpath,context",prop)>
 			<cfif structKeyExists(this,"set#prop#")>
-				<cfset evaluate("set#prop#(arguments.config.#prop#)")>
+				<cfset tempFunc=this["set#prop#"]>
+				<cfset tempFunc(arguments.config['#prop#'])>
 			<cfelse>
 				<cfset setValue(prop,arguments.config[prop])>
 			</cfif>
 		</cfif>
 	</cfloop>
-
+	
 	<cfif structKeyExists(arguments.config,"assetDir")>
 		<cfset setAssetDir(arguments.config.assetDir)/>
 	<cfelse>
 		<cfset setAssetDir(arguments.config.fileDir)/>
 	</cfif>
-
+	
 	<cfif structKeyExists(arguments.config,"pluginDir") and len(trim(arguments.config.pluginDir))>
 		<cfset setPluginDir(arguments.config.pluginDir)/>
 	<cfelse>
 		<cfset setPluginDir("#getWebRoot()##getFileDelim()#plugins")/>
 	</cfif>
-
+	
 	<cfswitch expression="#server.coldfusion.productName#">
 	<cfcase value="Railo">
-		<cfset setCompiler("Railo")/>
+		<cfset setCompiler("Railo")/>	
 	</cfcase>
 	<cfcase value="Open BlueDragon">
-		<cfset setCompiler("Open BlueDragon")/>
+		<cfset setCompiler("Open BlueDragon")/>	
 	</cfcase>
 	<cfdefaultcase>
-		<cfset setCompiler("Adobe")/>
+		<cfset setCompiler("Adobe")/>	
 	</cfdefaultcase>
 	</cfswitch>
-
+	
 	<cfif not len(variables.instance.readOnlyDatasource)>
 		<cfset variables.instance.readOnlyDatasource=variables.instance.datasource>
 	</cfif>
-
+	
 	<cfif not len(variables.instance.readOnlyDbPassword)>
 		<cfset variables.instance.readOnlyDbPassword=variables.instance.dbPassword>
 	</cfif>
-
+	
 	<cfif not len(variables.instance.readOnlyDbUsername)>
 		<cfset variables.instance.readOnlyDbUsername=variables.instance.dbUsername>
 	</cfif>
-
-	<cfset variables.dbUtility=getBean("dbUtility")>
 
 	<cfreturn this />
 </cffunction>
@@ -407,9 +408,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setMailServerUsernameEmail" returntype="any" access="public" output="false">
 	<cfargument name="MailServerUsernameEmail" type="String" />
 
-	<cfif find("@",arguments.MailServerUsernameEmail)>
-		<cfset variables.instance.MailServerUsernameEmail=arguments.MailServerUsernameEmail />
-	<cfelseif find("+",arguments.MailServerUsernameEmail)>
+	<cfif find("@",arguments.MailServerUsernameEmail)>	
+		<cfset variables.instance.MailServerUsernameEmail=arguments.MailServerUsernameEmail />	
+	<cfelseif find("+",arguments.MailServerUsernameEmail)>		
 			<cfset variables.instance.MailServerUsernameEmail=replace(arguments.MailServerUsernameEmail,"+","@") />
 	<cfelse>
 		<cfset variables.instance.MailServerUsernameEmail=arguments.MailServerUsernameEmail & "@" & listRest(variables.instance.MailServerIP,".") />
@@ -482,7 +483,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="setFileDelim" access="public" output="false">
-
+	
 	 <cfset var fileObj = createObject("java", "java.io.File")/>
      <cfset variables.instance.fileDelim = fileObj.separator />
       <cfreturn this>
@@ -500,6 +501,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.instance.dbType = arguments.dbType />
 	</cfif>
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="getDbLikeCi" returntype="any" access="public" output="false" hint="Return the case-insensitive LIKE keyword according to the db type">
+	<cfif getDbType() eq "postgresql">
+		<cfreturn "ILIKE" />
+	<cfelse>
+		<cfreturn "LIKE" />
+	</cfif>
 </cffunction>
 
 <cffunction name="getDbPassword" returntype="any" access="public" output="false">
@@ -577,11 +586,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setFileDir" access="public" output="false">
 	<cfargument name="fileDir" type="string" default="" />
-
+	
 	<cfset var ap=variables.instance.assetPath/>
-
+	
 	<cfset arguments.fileDir=cleanFilePath(arguments.fileDir)>
-
+	
 	<cfif len(arguments.fileDir)>
 		<cfset variables.instance.fileDir = arguments.fileDir />
 	<cfelse>
@@ -594,7 +603,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.instance.fileDir = variables.instance.webroot  />
 		</cfif>
 	</cfif>
-
+	
 	<cfreturn this>
 </cffunction>
 
@@ -604,11 +613,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setAssetDir" access="public" output="false">
 	<cfargument name="assetDir" type="string" default="" />
-
+	
 	<cfset var ap=variables.instance.assetPath/>
-
+	
 	<cfset arguments.assetDir=cleanFilePath(arguments.assetDir)>
-
+		
 	<cfif len(arguments.assetDir)>
 		<cfset variables.instance.assetDir = arguments.assetDir />
 	<cfelse>
@@ -621,7 +630,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.instance.assetDir = variables.instance.webroot  />
 		</cfif>
 	</cfif>
-
+	
 	<cfreturn this>
 </cffunction>
 
@@ -716,13 +725,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="setFileStoreEndPoint" access="public" output="false">
-	<cfargument name="fileStoreEndPoint" type="String" />
-	<cfset variables.instance.fileStoreEndPoint = arguments.fileStoreEndPoint />
-	<cfreturn this>
+  	<cfargument name="fileStoreEndPoint" type="String" />
+  	<cfset variables.instance.fileStoreEndPoint = arguments.fileStoreEndPoint />
+  	<cfreturn this>
 </cffunction>
 
 <cffunction name="getFileStoreEndPoint" returntype="any" access="public" output="false">
-	<cfreturn variables.instance.fileStoreEndPoint />
+  	<cfreturn variables.instance.fileStoreEndPoint />
 </cffunction>
 
 <cffunction name="getSessionHistory" returntype="numeric" access="public" output="false">
@@ -772,7 +781,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfquery name="MSSQLversion" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 				EXEC sp_MSgetversion
 			</cfquery>
-
+		
 			<cftry>
 				<cfset MSSQLversion=left(MSSQLversion.CHARACTER_VALUE,1)>
 				<cfcatch>
@@ -785,9 +794,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset MSSQLlob="[nvarchar](max)">
 		<cfelse>
 			<cfset MSSQLlob="[ntext]">
-		</cfif>
+		</cfif>		
 	</cfif>
-
+	
 	<cfdirectory action="list" directory="#getDirectoryFromPath(getCurrentTemplatePath())#dbUpdates" name="rsUpdates" filter="*.cfm" sort="name asc">
 
 	<cfloop query="rsUpdates">
@@ -799,20 +808,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="dbTableColumns" output="false" hint="deprecated, use dbUtility">
 	<cfargument name="table">
 	<cfset var rs ="">
-
+	
 	<cfswitch expression="#getDbType()#">
 			<cfcase value="oracle">
 				<cfquery
-				name="rs"
+				name="rs" 
 				datasource="#getDatasource()#"
 				username="#getDbUsername()#"
 				password="#getDbPassword()#">
-					SELECT column_name,
-					data_length column_size,
-					data_type type_name,
-					data_default column_default_value,
+					SELECT column_name, 
+					data_length column_size, 
+					data_type type_name, 
 					nullable is_nullable,
-					 data_precision
+					 data_precision 
 					FROM user_tab_cols
 					WHERE table_name=UPPER('#arguments.table#')
 			</cfquery>
@@ -820,27 +828,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<!---
 			<cfcase value="nuodb">
 				<cfquery
-				name="rs"
+				name="rs" 
 				datasource="#getDatasource()#"
 				username="#getDbUsername()#"
 				password="#getDbPassword()#">
-					SELECT field ,
-					length,
-					datatype ,
-					defaultvalue,
-					1  is_nullable,
+					SELECT field , 
+					length, 
+					datatype , 
+					defaultvalue, 
+					1  is_nullable, 
 					precision
 					FROM system.fields
 					WHERE tablename='#ucase(arguments.table)#'
 			</cfquery>
 			<cfquery
-				name="rs"
+				name="rs" 
 				dbtype="query">
-					SELECT field column_name,
-					length column_size,
-					datatype type_name,
-					defaultvalue column_default_value,
-					is_nullable,
+					SELECT field column_name, 
+					length column_size, 
+					datatype type_name, 
+					defaultvalue column_default_value, 
+					is_nullable, 
 					precision data_precision
 					FROM rs
 			</cfquery>
@@ -848,7 +856,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			--->
 			<cfcase value="mssql">
 			<cfquery
-				name="rs"
+				name="rs" 
 				datasource="#getDatasource()#"
 				username="#getDbUsername()#"
 				password="#getDbPassword()#">
@@ -863,26 +871,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfquery>
 			</cfcase>
 			<cfdefaultcase>
-				<cfdbinfo
+				<cfdbinfo 
 				name="rs"
 				datasource="#getDatasource()#"
 				username="#getDbUsername()#"
 				password="#getDbPassword()#"
 				table="#table#"
-				type="columns">
+				type="columns">	
 			</cfdefaultcase>
 		</cfswitch>
-
+	
 	<cfreturn rs>
 </cffunction>
 
 <cffunction name="dbCreateIndex" output="false" hint="deprecated, use dbUtility">
 	<cfargument name="table">
 	<cfargument name="column" default="">
-
+	
 	<cfset var rsCheck="">
-
-	<cfdbinfo
+	 
+	<cfdbinfo 
 		name="rsCheck"
 		datasource="#getDatasource()#"
 		username="#getDbUsername()#"
@@ -893,7 +901,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfquery name="rsCheck" dbtype="query">
 		select * from rsCheck where lower(rsCheck.column_name) like '#arguments.column#'
 	</cfquery>
-
+	
 	<cfif not rsCheck.recordcount>
 	<cftry>
 		<cfswitch expression="#getDbType()#">
@@ -907,12 +915,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			CREATE INDEX IX_#arguments.table#_#arguments.column# ON #arguments.table# (#arguments.column#)
 			</cfquery>
 		</cfcase>
+		<cfcase value="postgresql">
+			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+			CREATE INDEX IX_#arguments.table#_#arguments.column# ON #arguments.table# (#arguments.column#)
+			</cfquery>
+		</cfcase>
 		<cfcase value="oracle">
 			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 			CREATE INDEX #right("IX_#arguments.table#_#arguments.column#",30)# ON #arguments.table# (#arguments.column#)
 			</cfquery>
 		</cfcase>
-		</cfswitch>
+		</cfswitch>	
 	<cfcatch></cfcatch>
 	</cftry>
 	</cfif>
@@ -921,21 +934,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="dbDropIndex" output="false" hint="deprecated, use dbUtility">
 	<cfargument name="table">
 	<cfargument name="column" default="">
-
+	
 	<cfset var rsCheck="">
-
-	<cfdbinfo
+	 
+	<cfdbinfo 
 		name="rsCheck"
 		datasource="#getDatasource()#"
 		username="#getDbUsername()#"
 		password="#getDbPassword()#"
 		table="#arguments.table#"
 		type="index">
-
+	
 	<cfquery name="rsCheck" dbtype="query">
 		select * from rsCheck where lower(rsCheck.column_name) like '#arguments.column#'
 	</cfquery>
-
+	
 	<cfif not rsCheck.recordcount>
 	<cfswitch expression="#getDbType()#">
 	<cfcase value="mssql">
@@ -944,6 +957,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfquery>
 	</cfcase>
 	<cfcase value="mysql">
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		DROP INDEX IX_#arguments.table#_#arguments.column# on #arguments.table#
+		</cfquery>
+	</cfcase>
+	<cfcase value="postgresql">
 		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 		DROP INDEX IX_#arguments.table#_#arguments.column# on #arguments.table#
 		</cfquery>
@@ -953,28 +971,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		DROP INDEX IX_#arguments.table#_#arguments.column#
 		</cfquery>
 	</cfcase>
-	</cfswitch>
+	</cfswitch>	
 	</cfif>
 </cffunction>
 
 <cffunction name="dbDropColumn" access="private" hint="deprecated, use dbUtility">
 	<cfargument name="table">
 	<cfargument name="column" default="">
-
+	
 	<cfset var rsCheck="">
-
-	<cfdbinfo
+	 
+	<cfdbinfo 
 		name="rsCheck"
 		datasource="#getDatasource()#"
 		username="#getDbUsername()#"
 		password="#getDbPassword()#"
 		table="#arguments.table#"
 		type="index">
-
+	
 	<cfquery name="rsCheck" dbtype="query">
 		select * from rsCheck where lower(rsCheck.column_name) like '#arguments.column#'
 	</cfquery>
-
+	
 	<cfif not rsCheck.recordcount>
 	<cfswitch expression="#getDbType()#">
 	<cfcase value="mssql">
@@ -987,16 +1005,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		ALTER TABLE #arguments.table# DROP COLUMN #arguments.column#
 		</cfquery>
 	</cfcase>
+	<cfcase value="postgresql">
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		ALTER TABLE #arguments.table# DROP COLUMN #arguments.column#
+		</cfquery>
+	</cfcase>
 	<cfcase value="oracle">
 		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 		ALTER TABLE #arguments.table# DROP COLUMN #arguments.column#
 		</cfquery>
 	</cfcase>
-	</cfswitch>
+	</cfswitch>	
 	</cfif>
 </cffunction>
 <cffunction name="getClassExtensionManager" returntype="any" access="public" output="false">
-
+	
 	<cfif not isObject(variables.instance.extensionManager)>
 		<cfset loadClassExtensionManager()/>
 	</cfif>
@@ -1005,7 +1028,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setDefaultLocale" access="public" output="false">
 	<cfargument name="locale" type="String" />
-
+	
 	<cfif len(arguments.locale)>
 		<cfset variables.instance.locale = arguments.locale />
 	</cfif>
@@ -1018,7 +1041,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setUseDefaultSMTPServer" access="public" output="false">
 	<cfargument name="UseDefaultSMTPServer"  />
-
+	
 	<cfif isNumeric(arguments.UseDefaultSMTPServer)>
 		<cfset variables.instance.UseDefaultSMTPServer = arguments.UseDefaultSMTPServer />
 	</cfif>
@@ -1031,7 +1054,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setAdminDir" access="public" output="false">
 	<cfargument name="adminDir" type="String" />
-
+	
 	<cfif len(arguments.adminDir)>
 		<cfset variables.instance.adminDir = arguments.adminDir />
 	</cfif>
@@ -1044,7 +1067,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setImageInterpolation" access="public" output="false">
 	<cfargument name="imageInterpolation" type="String" />
-
+	
 	<cfif len(arguments.imageInterpolation)>
 		<cfset variables.instance.imageInterpolation = arguments.imageInterpolation />
 	</cfif>
@@ -1060,9 +1083,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="setMailServerSMTPPort" access="public" output="false">
-	<cfargument name="mailServerPort" type="String" />
-	<cfif isNumeric(arguments.mailServerPort)>
-	<cfset variables.instance.mailServerSMTPPort = arguments.mailServerPort />
+	<cfargument name="mailServerSMTPPort" type="String" />
+	<cfif isNumeric(arguments.mailServerSMTPPort)>
+	<cfset variables.instance.mailServerSMTPPort = arguments.mailServerSMTPPort />
 	</cfif>
 	<cfreturn this>
 </cffunction>
@@ -1072,9 +1095,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="setMailServerPOPPort" access="public" output="false">
-	<cfargument name="mailServerPort" type="String" />
-	<cfif isNumeric(arguments.mailServerPort)>
-	<cfset variables.instance.mailServerPOPPort = arguments.mailServerPort />
+	<cfargument name="MailServerPOPPort" type="String" />
+	<cfif isNumeric(arguments.MailServerPOPPort)>
+	<cfset variables.instance.mailServerPOPPort = arguments.MailServerPOPPort />
 	</cfif>
 	<cfreturn this>
 </cffunction>
@@ -1126,7 +1149,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		<cfloop list="#variables.instance.dashboard#" index="i">
 			<cfif currentUser.isInGroup(group=i,isPublic=0)>
-				<cfreturn true>
+				<cfreturn true>	
 			</cfif>
 		</cfloop>
 		<cfreturn false>
@@ -1379,7 +1402,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getEncryptPasswords" returntype="boolean" access="public" output="false">
 	<cfreturn variables.instance.encryptPasswords />
-</cffunction>
+</cffunction> 
 
 <cffunction name="setAutoResetPasswords" access="public" output="false">
 	<cfargument name="autoresetpasswords" />
@@ -1403,7 +1426,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getEncryptionKey" returntype="any" access="public" output="false">
 	<cfreturn variables.instance.encryptionKey />
-</cffunction>
+</cffunction> 
 
 <cffunction name="setMaxArchivedVersions" access="public" output="false">
 	<cfargument name="maxArchivedVersions" />
@@ -1472,7 +1495,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getValue" returntype="any" access="public" output="false">
 <cfargument name="property"  type="string" required="true">
 <cfargument name="defaultValue">
-
+	
 	<cfif structKeyExists(variables.instance,"#arguments.property#")>
 		<cfreturn variables.instance["#arguments.property#"] />
 	<cfelseif structKeyExists(arguments,"defaultValue")>
@@ -1489,7 +1512,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var last="">
 	<cfset var theLen=len(arguments.filePath)>
 	<cfset var returnStr=arguments.filePath>
-
+	
 	<cfif theLen>
 		<cfset last=right(arguments.filePath,1)>
 		<cfif listFind("/,\",last)>
@@ -1500,9 +1523,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfif>
 	</cfif>
-
+	
 	<cfreturn returnStr>
-
+	
 </cffunction>
 
 <cffunction name="addCustomUrlVarDelimiter" output="false">
@@ -1518,7 +1541,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="column">
 	<cfargument name="table">
 	<cfset var datatype=variables.dbUtility.columnMetaData(argumentCollection=arguments).datatype>
-
+	<cfset var columnArgs={}>
+	
 	<cfswitch expression="#arguments.rs.type_name#">
 			<cfcase value="varchar,nvarchar,varchar2">
 				<!--- Add MSSQL nvarchar(max)--->
@@ -1536,7 +1560,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif arguments.rs.data_precision eq 3>
 					<cfset columnArgs.datatype="tinyint">
 				<cfelse>
-					<cfset columnArgs.datatype="int">
+					<cfset columnArgs.datatype="int">	
 				</cfif>
 			</cfcase>
 			<cfcase value="tinyint">
@@ -1559,6 +1583,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfcase>
 		</cfswitch>
 
+</cffunction>
+
+
+<cffunction name="getReadOnlyQRYAttrs" output="false">
+	<cfif not request.muratransaction>
+		<cfset structAppend(arguments,
+				{datasource=getReadOnlyDatasource(),
+				 username=getReadOnlyDbUsername(),
+				 password=getReadOnlyDbPassword()},
+				 false)>
+	</cfif>
+	<cfreturn arguments>
 </cffunction>
 
 </cfcomponent>

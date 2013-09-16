@@ -29,11 +29,11 @@
 	<cffunction name="fDSCreate" access="public" returntype="String"  hint="creates datasource connection, returns empty string or error">
 		<cfargument name="GWPassword" required="true"  type="string" hint="password for coldfusion or Railo">
 		<cfargument name="DatasourceName" default="#Application.ApplicationName#" type="string" hint="name of the desired datasource. will default to application name.">
-		<cfargument name="DatabaseServer" required="false"  type="string" hint="name of the database server,required for oracle,mysql,mssql">
+		<cfargument name="DatabaseServer" required="false"  type="string" hint="name of the database server,required for oracle,mysql,mssql,postgresql">
 		<cfargument name="DatabasePort" required="false"  type="numeric" hint="will use default port for each database if not provided">
 		<cfargument name="DatabaseName" default="#Application.ApplicationName#" required="false"  type="string" hint="name of the database to connect to, will default to application name.">
-		<cfargument name="UserName" required="false"  type="string" hint="username is needed for mysql,oracle,mssql">
-		<cfargument name="Password" required="false"  type="string" hint="password is needed for mysql,oracle,mssql">
+		<cfargument name="UserName" required="false"  type="string" hint="username is needed for mysql,oracle,mssql,postgresql">
+		<cfargument name="Password" required="false"  type="string" hint="password is needed for mysql,oracle,mssql,postgresql">
 		<cfargument name="Description" required="false"  type="string" hint="any descriptive text">
 		<cfargument name="bCreateDB" default="Yes" required="false"  type="boolean" hint="should the database be created at the same time, default = Yes">
 		
@@ -44,7 +44,7 @@
 			if (this.dbType IS "") sErr="No database type specified. Use set method, or initialize application first.";
 			
 			switch(this.dbType) {
-	        	case "mysql":case "mssql":
+	        	case "mysql":case "mssql":case "postgresql":
 					if (NOT IsDefined("Arguments.DatabaseServer")) sErr=sErr & ":Database Server is required.";
 					if (NOT IsDefined("Arguments.UserName")) sErr=sErr & ":Database User Name is required.";	
 	               	if (NOT IsDefined("Arguments.Password")) sErr=sErr & ":Database User Password is required.";				   
@@ -105,11 +105,11 @@
 	</cffunction>	
 	
 	<!--- setters and getters (bsoylu 6/6/2010)  --->
-	<cffunction name="setDBType" access="public" hint="set the database type to one of mysql,mssql,oracle,h2">
+	<cffunction name="setDBType" access="public" hint="set the database type to one of mysql,mssql,postgresql,oracle,h2">
 		<cfargument name="sDBType" required="true" type="string" hint="the new database type: one of mysql,mssql,oracle,h2">
 		
 		<cfscript>
-			var lstValidDBs = "mysql,mssql,oracle,h2";
+			var lstValidDBs = "mysql,mssql,postgresql,oracle,h2";
 			if (ListFindNoCase(lstValidDBs,Arguments.sDBType) GT 0 )
 				this.dbType = Arguments.sDBType;
 		

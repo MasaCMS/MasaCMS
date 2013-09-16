@@ -51,13 +51,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 
 <div id="nav-module-specific" class="btn-group">
-<a class="btn" href="index.cfm?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-circle-arrow-left"></i> Back to Class Extensions</a>
-<a class="btn" href="index.cfm?muraAction=cExtend.listSets&subTypeID=#rc.subTypeID#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-circle-arrow-left"></i> Back to Attribute Sets</a>
+      <a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
+         <i class="icon-circle-arrow-left"></i> Back <span class="caret"></span>
+       </a>
+       <ul class="dropdown-menu">
+          <li><a href="./?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#">&hellip;to Class Extensions</a></li>
+          <li><a href="./?muraAction=cExtend.listSets&subTypeID=#URLEncodedFormat(rc.subTypeID)#&siteid=#URLEncodedFormat(rc.siteid)#">&hellip;to Class Extension Overview</a></li>
+       </ul>
 </div>
 
-<ul class="metadata">
-<li><strong>Class Extension:</strong> #application.classExtensionManager.getTypeAsString(subType.getType())# / #subType.getSubType()#</li>
-</ul>
+<h2><i class="#subtype.getIconClass(includeDefault=true)# icon-large"></i> #application.classExtensionManager.getTypeAsString(subType.getType())# / #subType.getSubType()#</h2>
 
 <form class="fieldset-wrap" novalidate="novalidate" name="form1" method="post" action="index.cfm" onsubit="return validateForm(this);">
 

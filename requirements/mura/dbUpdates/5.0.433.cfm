@@ -24,6 +24,11 @@ ALTER TABLE tsettings ADD useDefaultSMTPServer tinyint
 		</cfcatch>
 	</cftry>
 </cfcase>
+<cfcase value="postgresql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tsettings ADD COLUMN useDefaultSMTPServer smallint
+	</cfquery>
+</cfcase>
 <cfcase value="nuodb">
 <cfset dbUtility.addColumn(column='useDefaultSMTPServer',datatype='tinyint',default=0,table='tsettings')>
 </cfcase>

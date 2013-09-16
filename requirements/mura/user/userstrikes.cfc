@@ -20,12 +20,12 @@
 <cffunction name="getQuery" output="false" returntype="query">
 	<cfset var rs="">
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 	select * from tuserstrikes where username=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.username#">
 	</cfquery>
 	
 	<cfif not rs.recordcount>
-		<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery>
 		insert into tuserstrikes (username,strikes,lastAttempt) values (
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.username#">,
 		0,
@@ -49,7 +49,7 @@
 	<cfelse>
 		<cfset setLastAttempt(dateAdd("n",-1,now()))>
 		<cfset setStrikes(0)>
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery>
 		update tuserstrikes set 
 		strikes=0,
 		lastAttempt=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#getLastAttempt()#">
@@ -88,7 +88,7 @@
 </cffunction>
 
 <cffunction name="addStrike" output="false" returntype="void">
-	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery>
 		update tuserstrikes set 
 		strikes=strikes + 1,
 		lastAttempt=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#now()#">
@@ -111,7 +111,7 @@
 </cffunction>
 
 <cffunction name="clear" output="false" returntype="void">
-	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery>
 		update tuserstrikes set 
 		strikes=0,
 		lastAttempt=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd("n",-1,now())#">

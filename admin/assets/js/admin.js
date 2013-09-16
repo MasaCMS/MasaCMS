@@ -43,7 +43,7 @@
 	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
- 
+
 function loadObject(url, target, message) {
 	// branch for native XMLHttpRequest object
 	var req;
@@ -126,7 +126,52 @@ function DaysArray(n) {
 	return this
 }
 
-function isDate(dtStr, fldName) {
+function parseDateTimeSelector(id){
+	//alert($('.datepicker.mura-datepicker' + id).val())
+	if(isDate($('.datepicker.mura-datepicker' + id).val())){
+		var dtStr=$('.datepicker.mura-datepicker' + id).val();
+		var daysInMonth = DaysArray(12);
+		var dtArray = dtStr.split(dtCh);
+		var strMonth = dtArray[dtFormat[0]];
+		var strDay = dtArray[dtFormat[1]];
+		var strYear = dtArray[dtFormat[2]];
+	
+		var strMinute = ($('#mura-' + id + 'Minute').length) ? $('#mura-' + id + 'Minute').val() : 0;
+		var strHour=($('#mura-' + id + 'Hour').length) ? $('#mura-' + id + 'Hour').val() : 0;
+
+		if($('#mura-' + id + 'DayPart').length){
+			if($('#mura-' + id + 'DayPart').val().toLowerCase() == 'pm'){
+				strHour=parseInt(strHour) + 12;
+				if(strHour==24){
+					strHour=12;
+				}
+			} else if (parseInt(strHour) ==12) {
+				strHour=0;
+			}
+		}
+
+		//alert('#mura-' + id + 'Minute');
+
+		if(strHour.length==1){
+			strHour='0' + strHour;
+		}
+
+		if(strMinute.length==1){
+			strMinute='0' + strMinute;
+		}
+
+		var newVal="{ts '" + strYear + "-" + strMonth + "-" + strDay + " " + strHour + ":" + strMinute + ":00'}";
+		
+		$('#mura-' + id).val(newVal);
+		//alert($('#mura-' + id).val());
+	} else {
+		$('#mura-' + id).val('');
+	}
+
+
+}
+
+function isDate(dtStr) {
 	var daysInMonth = DaysArray(12);
 	var dtArray = dtStr.split(dtCh);
 
@@ -417,8 +462,8 @@ function validateForm(theForm) {
 						errors += getValidationMessage(theField, ' must be numeric.');
 					}
 				} else if(validationType == 'COLOR' && theField.value != '') {
-					//var re = new RegExp("^#?([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?$");
-					if(!isColor(theField.value)) {
+					//var re = new RegExp("(^#?([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?$)||");
+					if( !isColor(theField.value) ) {
 						if(!started) {
 							started = true;
 							startAt = f;
@@ -564,7 +609,7 @@ function submitForm(frm, action, msg) {
 				modal: true,
 				position: getDialogPosition(),
 				buttons: {
-					'YES': function() {
+					'Yes': function() {
 						$(this).dialog('close');
 						var frmInputs = currentFrm.getElementsByTagName("input");
 						for(f = 0; f < frmInputs.length; f++) {
@@ -574,7 +619,7 @@ function submitForm(frm, action, msg) {
 						}
 						currentFrm.submit();
 					},
-					'NO': function() {
+					'No': function() {
 						$(this).dialog('close');
 					}
 				}
@@ -611,13 +656,11 @@ function submitForm(frm, action, msg) {
 function actionModal(action) {
 	$('body').append('<div id="action-modal" class="modal-backdrop fade in"></div>');
 	if(typeof(action)=='string'){
-		$('#action-modal').spin(spinnerArgs, 
-			function(){
-				location.href=action;
-			}
-		);
+		$('#action-modal').spin(spinnerArgs);
+		location.href=action;
 	} else {
-		$('#action-modal').spin(spinnerArgs, action);
+		$('#action-modal').spin(spinnerArgs);
+		action();
 	}
  
 	return false;
@@ -779,6 +822,7 @@ function setToolTips(target) {
 }
 
 function setTabs(target, activetab) {
+	$(".tab-preloader").spin(spinnerArgs2);
 	/*
 	$(target).each(
 		function(index) {			
@@ -799,8 +843,14 @@ function setTabs(target, activetab) {
 	if(window.location.hash != "") {
 		$(target + ' a[href="' + window.location.hash + '"]').tab('show');
 	} else if(typeof(activetab) != 'undefined') {
-		$(target + ' li::nth-child(' + (activetab + 1) + ') a').tab('show');
-
+		try{
+			$(target + ' li::nth-child(' + (activetab + 1) + ') a').tab('show');
+		} 
+		catch(err){
+			if($(target + ' li:first a').tab){
+				$(target + ' li:first a').tab('show');
+			}
+		}
 	} else {
 		$(target + ' li:first a').tab('show');
 	}
@@ -819,11 +869,7 @@ function setTabs(target, activetab) {
 		);
 
 	*/
-	$(".tab-preloader").each(
-
-	function(index) {
-		$(this).hide();
-	});
+	$(".tab-preloader").hide().spin(false);
 }
 
 function setAccordions(target, activepanel) {
@@ -855,6 +901,208 @@ function setCheckboxTrees() {
 	});
 }
 
+function openFileMetaData(contenthistid,fileid,siteid,property) {
+
+		if (typeof fileMetaDataAssign === 'undefined') {
+			fileMetaDataAssign={};
+		}
+
+ 		$("#newFileMetaContainer").remove();
+		$("body").append('<div id="newFileMetaContainer" title="Loading..." style="display:none"><div id="newFileMeta"><div class="load-inline"></div></div></div>');
+
+		$("#newFileMetaContainer").dialog({
+			resizable: false,
+			modal: true,
+			width: 552,
+			title: 'Edit Image Properties',
+			position: getDialogPosition(),
+			buttons: {
+				Save:function(){
+					var fileData={};
+
+					$('.filemeta').each(function(){
+						fileData[$(this).attr('data-property')]=$(this).val();
+					});
+
+					fileData.setasdefault=$('#filemeta-setasdefault').is(':checked');
+
+					fileMetaDataAssign[property]=fileData;
+					$('#filemetadataassign').val(JSON.stringify(fileMetaDataAssign));
+					//alert($('#filemetadataassign').val());
+					$(this).dialog( "close" );
+
+				},
+				Cancel: function(){
+					 $(this).dialog( "close" );
+				}
+
+
+			},
+
+			open: function() {
+
+				$("#newFileMetaContainer").html('<div class="ui-dialog-content ui-widget-content"><div class="load-inline"></div></div>');
+				var url = 'index.cfm';
+				var pars = 'muraAction=cArch.loadfilemetadata&fileid=' + fileid + '&property=' + property  + '&contenthistid=' + contenthistid + '&siteid=' + siteid + '&cacheid=' + Math.random();
+				$("#newFileMetaContainer .load-inline").spin(spinnerArgs2);
+
+				$.get(url + "?" + pars).done(function(data) {
+
+					if(data.indexOf('mura-primary-login-token') != -1) {
+						location.href = './';
+					}
+					
+					$("#newFileMetaContainer .load-inline").spin(false);
+					$('#newFileMetaContainer').html(data);
+					
+					if(property in fileMetaDataAssign){
+						var fileData=fileMetaDataAssign[property];
+						for(var p in fileData){
+							$('.filemeta[data-property="' + p +'"]').val(fileData[p]);
+						}
+
+						$('#filemeta-setasdefault').prop('checked',fileData.setasdefault);
+					}
+					
+					$('#newFileMetaContainer .htmlEditor').ckeditor({
+							toolbar: 'Basic',
+							height: 100,
+							customConfig: 'config.js.cfm'
+						}, htmlEditorOnComplete);
+
+					/*
+					$('#file-credits').ckeditor({
+							toolbar: 'Default',
+							customConfig: 'config.js.cfm'
+						}, htmlEditorOnComplete);*/
+
+					setTabs("#newFileMetaContainer.tabs",0);
+					setDatePickers(".datepicker",dtLocale);
+
+					$("#newFileMetaContainer").dialog("option", "position", getDialogPosition());
+
+
+					$('.filemeta:first').focus();
+
+				}).error(function(data){
+					$('#newFileMetaContainer').html(data.responseText);
+					$("#newFileMetaContainer").dialog("option", "position", getDialogPosition());
+				});
+
+			},
+			close: function() {
+				$(this).dialog("destroy");
+				$("#newFileMetaContainer").remove();
+			}
+		});
+
+		return false;
+	}
+ 
+(function ($) {
+
+	 /* BUTTON PUBLIC CLASS DEFINITION
+	  * ============================== */
+
+	  var FileSelector = function (element, options) {
+	    var $elm= this.$element = $(element);
+	    var $opts = this.options = $.extend({}, $.fn.fileselector.defaults, options);
+
+	    if($(this.$element).attr('data-name')){
+	    	this.options.file=this.$element.attr('data-name');
+	    }
+
+	    var loadAssocFiles=function(keywords) {
+			var url = 'index.cfm';
+			var pars = 'muraAction=cArch.assocfiles&compactDisplay=true&siteid=' + $elm.attr('data-siteid') + '&fileid=' + $elm.attr('data-fileid') + '&type=' + $elm.attr('data-filetype') + '&contentid=' + $elm.attr('data-contentid') +  '&property=' + $elm.attr('data-property') +'&keywords=' + keywords + '&cacheid=' + Math.random();
+			$elm.find(".mura-file-existing").html('<div class="load-inline"></div>');
+			$elm.find('.load-inline').spin(spinnerArgs2);
+			$.ajax(url + "?" + pars)
+			.done( 
+				function(data) {
+					$elm.find('.load-inline').spin(false);
+					$elm.find(".mura-file-existing").html(data);
+					$elm.find(".mura-file-existing").find('.btn').click(function(){
+						loadAssocFiles($elm.find(".mura-file-existing").find(".filesearch").val());
+					});
+
+					setTabs('#selectAssocImageResults',0);
+				}
+			)
+			.error(
+				function(data) {
+				$elm.find('.load-inline').spin(false);
+				$elm.find(".mura-file-existing").html(data.responseText);
+				}
+			);
+		}
+	   
+
+	    var clickHandler=function(){
+	    	setTab($(this).val());
+	    	if($(this).val().toLowerCase() == 'existing'){
+	    		loadAssocFiles('');
+	    	} else {
+	    		$elm.find(".mura-file-existing").html('<div class="load-inline"></div>')
+	    		$elm.find('.load-inline').spin(spinnerArgs2);
+	    	}
+	    }
+
+	    var setTab=function(tab){
+	    	
+	    	//if(tab.toLowerCase() != 'upload'){
+			$elm.find(".mura-file-option").find('input').val('');
+			$elm.find(".mura-file-option").find('.btn').hide();
+			//}
+
+	    	$elm.find(".mura-file-option").hide();
+	    	$elm.find(".mura-file-" + tab.toLowerCase()).show();
+			$elm.find(".mura-file-option").find("input").attr('name','');
+			$elm.find(".mura-file-" + tab.toLowerCase()).find("input").attr('name',$opts.file);
+
+	    }
+	
+	    $(this.$element).find("button.btn").click(clickHandler);
+	   
+	    $elm.find(".mura-file-option").find('input').change(
+	    	function(){
+	    		var reg1 = /^(([a-zA-Z]:)|(\\{2}\w+)\$?)(\\(\w[\w].*))+(.jpg|.jpeg|.png|.gif)$/;
+	    		var reg2 = /(http(s?):)|([/|.|\w|\s])*\.(?:jpg|gif|png)/;
+	    		if(reg1.test( $(this).val().toLowerCase()) || reg2.test( $(this).val().toLowerCase())){
+	    			$(this).parent().find('.btn').show();
+	    		}else{
+	    			$(this).parent().find('.btn').hide()
+	    		}
+	    });
+
+		setTab('Upload');
+
+	  }
+	
+	  $.fn.fileselector = function (options) {
+	    return this.each(function () {
+	      var $this = $(this);
+	      var data = $this.data('fileselector');
+	      
+	      if (!data){
+	      	 $this.data('fileselector', (data = new FileSelector(this, options)) );
+	      }
+	  	});
+	  }
+
+	  $.fn.fileselector.defaults = {
+	    file: 'newfile'
+	  }
+
+	  $.fn.fileselector.Constructor = FileSelector;
+
+}(window.jQuery));
+
+function setFileSelectors() {
+
+	$('.mura-file-selector').fileselector();
+}
+
 function alertDialog(message) {
 	$("#alertDialogMessage").html(message);
 	$("#alertDialog").dialog({
@@ -881,23 +1129,24 @@ function confirmDialog(message, yesAction, noAction) {
 		modal: true,
 		position: getDialogPosition(),
 		buttons: {
-			'YES': function() {
+			'Yes': function() {
 				$(this).dialog('close');
 				if(typeof(_yesAction) == 'function') {
 					_yesAction();
 				} else {
-					location.href = _yesAction;
+					actionModal(_yesAction);
 				}
 
 			},
-			'NO': function() {
-				$(this).dialog('close');
+			'No': function() {		
 				if(typeof(_noAction) != 'undefined') {
 					if(typeof(_noAction) == 'function') {
 						_noAction();
 					} else {
-						location.href = _noAction;
+						actionModal(_noAction);
 					}
+				} else {
+					$(this).dialog('close');
 				}
 			}
 		}
@@ -931,7 +1180,7 @@ function CountDown() {
 		if(document.getElementById('clock').innerHTML != undefined) {
 			document.getElementById('clock').innerHTML = 0 + ':' + 0 + ':' + 0;
 		}
-		//location.href=context + "/admin/index.cfm?muraAction=cLogin.logout"
+		//location.href=context + "/admin/?muraAction=cLogin.logout"
 	}
 }
 
@@ -965,6 +1214,7 @@ function loadjscssfile(filename, filetype) {
 }
 
 function getDialogPosition() {
+
 	if(top.location != self.location) {
 		try {
 			var windowHeight = $(window.parent).height();
@@ -982,17 +1232,64 @@ function getDialogPosition() {
 }
 
 function openPreviewDialog(previewURL) {
-	if(previewURL.indexOf("?") == -1) {
-		previewURL = previewURL + '?muraadminpreview';
+
+	var $previewURL=previewURL;
+
+	if($previewURL.indexOf("?") == -1) {
+		$previewURL = previewURL + '?muraadminpreview';
 	} else {
-		previewURL = previewURL + '&muraadminpreview';
+		$previewURL = previewURL + '&muraadminpreview';
 	}
 
-	var $dialog = $('<div></div>').html('<iframe style="border: 0; " src="' + previewURL + '" width="1100" height="600"></iframe>').dialog({
-		width: 1100,
+	var position=["top",20];
+
+	var $dialog = $('<div id="mura-preview-container"></div>').html('<iframe id="preview-dialog" style="border: 0; " src="' + $previewURL + '&mobileFormat=false" width="1075" height="600" allowfullscreen></iframe>').dialog({
+		width: 1105,
 		height: 600,
 		modal: true,
-		title: 'Preview'
+		title: 'Preview',
+		position: position,
+		resize: function(event,ui){
+			$('#preview-dialog').attr('width',ui.size.width-25);
+		},
+		close: function(){
+			$($dialog).dialog( "destroy" );
+			$('#mura-preview-container').remove();
+			$('#mura-preview-device-selector').remove();
+		},
+		open: function(){
+
+			var $tools='<div id="mura-preview-device-selector"><p>Preview Mode</p>';
+				$tools=$tools+'<a class="mura-device-standard active" data-height="600" data-width="1075" data-mobileformat="false"><i class="icon-desktop"></i></a>';
+				$tools=$tools+'<a class="mura-device-tablet" data-height="600" data-width="768" data-mobileformat="false"><i class="icon-tablet"></i></a>';
+				$tools=$tools+'<a class="mura-device-tablet-landscape" data-height="480" data-width="1024" data-mobileformat="false"><i class="icon-tablet icon-rotate-270"></i></a>';
+				$tools=$tools+'<a class="mura-device-phone" data-height="480" data-width="320" data-mobileformat="true"><i class="icon-mobile-phone"></i></a>';
+				$tools=$tools+'<a class="mura-device-phone-landscape" data-height="250" data-width="520" data-mobileformat="true"><i class="icon-mobile-phone icon-rotate-270"></i></a>';
+				$tools=$tools+'</div>';
+
+			var wos=30;
+			var hos=85+39;
+
+			$('.ui-dialog').prepend($tools);
+			
+			$('#mura-preview-device-selector a').bind('click', function () {
+				var data=$(this).data();
+
+			    $( $dialog ).dialog( "option", "width", data.width + wos );
+			    $( $dialog ).dialog( "option", "height", data.height + hos);
+
+			    $('#preview-dialog')
+			    	.attr('width',data.width)
+			    	.attr('height',data.height)
+			   	 .attr('src',$previewURL + '&mobileFormat=' + data.mobileformat);
+			    $( $dialog ).dialog( "option", "position", position );
+			    $('#mura-preview-device-selector a').removeClass('active');
+			    $(this).addClass('active');
+
+			    return false;
+			});
+			
+		}
 	});
 
 	return false;
@@ -1008,7 +1305,7 @@ function preloadimages(arr) {
 }
 
 
-spinnerArgs = {
+var spinnerArgs = {
 	lines: 17,
 	// The number of lines to draw
 	length: 7,
@@ -1032,6 +1329,70 @@ spinnerArgs = {
 	hwaccel: false,
 	// Whether to use hardware acceleration
 	className: 'spinner',
+	// The CSS class to assign to the spinner
+	zIndex: 2e9,	
+	// The z-index (defaults to 2000000000)
+	top: 'auto',
+	// Top position relative to parent in px
+	left: 'auto' // Left position relative to parent in px
+}
+
+var spinnerArgs2 = {
+	lines: 17,
+	// The number of lines to draw
+	length: 7,
+	// The length of each line
+	width: 4,
+	// The line thickness
+	radius: 13,
+	// The radius of the inner circle
+	corners: 1,
+	// Corner roundness (0..1)
+	rotate: 0,
+	// The rotation offset
+	color: '#000',
+	// #rgb or #rrggbb
+	speed: 0.9,
+	// Rounds per second
+	trail: 60,
+	// Afterglow percentage
+	shadow: false,
+	// Whether to render a shadow
+	hwaccel: false,
+	// Whether to use hardware acceleration
+	className: 'spinner-alt',
+	// The CSS class to assign to the spinner
+	zIndex: 2e9,	
+	// The z-index (defaults to 2000000000)
+	top: 'auto',
+	// Top position relative to parent in px
+	left: 'auto' // Left position relative to parent in px
+}
+
+var spinnerArgs3 = {
+	lines: 17,
+	// The number of lines to draw
+	length: 7,
+	// The length of each line
+	width: 4,
+	// The line thickness
+	radius: 13,
+	// The radius of the inner circle
+	corners: 1,
+	// Corner roundness (0..1)
+	rotate: 0,
+	// The rotation offset
+	color: '#fff',
+	// #rgb or #rrggbb
+	speed: 0.9,
+	// Rounds per second
+	trail: 60,
+	// Afterglow percentage
+	shadow: false,
+	// Whether to render a shadow
+	hwaccel: false,
+	// Whether to use hardware acceleration
+	className: 'spinner-alt',
 	// The CSS class to assign to the spinner
 	zIndex: 2e9,	
 	// The z-index (defaults to 2000000000)

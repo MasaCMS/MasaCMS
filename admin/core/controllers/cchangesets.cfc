@@ -58,52 +58,81 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset secure(arguments.rc)>
 	</cfif>
 	<cfparam name="arguments.rc.startrow" default="1"/>
+	<cfparam name="arguments.rc.startdate" default=""/>
+	<cfparam name="arguments.rc.stopdate" default=""/>
 	<cfparam name="arguments.rc.page" default="1"/>
 	<cfparam name="arguments.rc.keywords" default=""/>
 </cffunction>
 
 <cffunction name="list" output="false">
 <cfargument name="rc">
-<cfset rc.changesets=variables.changesetManager.getIterator(argumentCollection=rc)>
-<cfset rc.changesets.setNextN(20)>
-<cfset rc.changesets.setPage(rc.page)>
+<cfset var feed=variables.changesetManager.getFeed(argumentCollection=arguments.rc)>
+
+<cfset feed.setSiteID(arguments.rc.siteid)>
+
+<cfif isDate(rc.startdate)>
+	<cfset feed.addParam(column='publishdate',datatype='date',criteria=arguments.rc.startdate,condition=">=")>	
+</cfif>
+
+
+<cfif isDate(rc.stopdate)>
+	<cfset feed.addParam(column='publishdate',datatype='date',criteria=arguments.rc.stopdate,condition="<=")>
+	<cfif not isDate(rc.startdate)>
+		<cfset feed.addParam(column='publishdate',datatype='date',criteria=dateAdd('yyyy',100,now()),condition=">=")>	
+	</cfif>
+</cfif>
+
+<cfif len(rc.keywords)>
+	<cfset feed.addParam(column='name',criteria=arguments.rc.keywords,condition="contains")>	
+</cfif>
+
+<cfset arguments.rc.changesets=feed.getIterator()>
+
+<cfset arguments.rc.changesets.setNextN(20)>
+<cfset arguments.rc.changesets.setPage(arguments.rc.page)>
 </cffunction>
 
 <cffunction name="publish" output="false">
 <cfargument name="rc">
 <cfset variables.changesetManager.publish(rc.changesetID)>
-<cfset variables.fw.redirect(action="cChangesets.edit",append="changesetID,siteID")>
+<cfset variables.fw.redirect(action="cChangesets.edit",append="changesetID,siteID",path="./")>
+</cffunction>
+
+<cffunction name="rollback" output="false">
+<cfargument name="rc">
+<cfset variables.changesetManager.rollback(rc.changesetID)>
+<cfset variables.fw.redirect(action="cChangesets.edit",append="changesetID,siteID",path="./")>
 </cffunction>
 
 <cffunction name="assignments" output="false">
 <cfargument name="rc">
-<cfset rc.siteAssignments=variables.changesetManager.getAssignmentsIterator(rc.changesetID,rc.keywords,'00000000000000000000000000000000000')>
-<cfset rc.componentAssignments=variables.changesetManager.getAssignmentsIterator(rc.changesetID,rc.keywords,'00000000000000000000000000000000003')>
-<cfset rc.formAssignments=variables.changesetManager.getAssignmentsIterator(rc.changesetID,rc.keywords,'00000000000000000000000000000000004')>
-<cfset rc.changeset=variables.changesetManager.read(rc.changesetID)>
+<cfset arguments.rc.siteAssignments=variables.changesetManager.getAssignmentsIterator(arguments.rc.changesetID,arguments.rc.keywords,'00000000000000000000000000000000000')>
+<cfset arguments.rc.componentAssignments=variables.changesetManager.getAssignmentsIterator(arguments.rc.changesetID,arguments.rc.keywords,'00000000000000000000000000000000003')>
+<cfset arguments.rc.formAssignments=variables.changesetManager.getAssignmentsIterator(arguments.rc.changesetID,arguments.rc.keywords,'00000000000000000000000000000000004')>
+<cfset arguments.rc.changeset=variables.changesetManager.read(arguments.rc.changesetID)>
 </cffunction>
 
 <cffunction name="removeitem" output="false">
 <cfargument name="rc">
 <cfset variables.changesetManager.removeItem(rc.changesetID,rc.contenthistID)>
-<cfset variables.fw.redirect(action="cChangesets.assignments",append="changesetID,siteID,keywords")>
+<cfset variables.fw.redirect(action="cChangesets.assignments",append="changesetID,siteID,keywords",path="./")>
 </cffunction>
 
 <cffunction name="edit" output="false">
 <cfargument name="rc">
-<cfset rc.changeset=variables.changesetManager.read(rc.changesetID)>
+<cfset arguments.rc.changeset=variables.changesetManager.read(arguments.rc.changesetID)>
 </cffunction>
 
 <cffunction name="save" output="false">
 <cfargument name="rc">
-<cfset rc.changeset=variables.changesetManager.read(rc.changesetID).set(rc).save()>
-<cfset rc.changesetID=rc.changeset.getChangesetID()>
-<cfset variables.fw.redirect(action="cChangesets.list",append="changesetID,siteID")>
+<cfset arguments.rc.changeset=variables.changesetManager.read(arguments.rc.changesetID).set(arguments.rc).save()>
+<cfset arguments.rc.changesetID=arguments.rc.changeset.getChangesetID()>
+<cfset variables.fw.redirect(action="cChangesets.list",append="changesetID,siteID",path="./")>
 </cffunction>
 
 <cffunction name="delete" output="false">
 <cfargument name="rc">
-<cfset rc.changeset=variables.changesetManager.read(rc.changesetID).delete()>
-<cfset variables.fw.redirect(action="cChangesets.list",append="changesetID,siteID")>
+<cfset arguments.rc.changeset=variables.changesetManager.read(arguments.rc.changesetID).delete()>
+<cfset variables.fw.redirect(action="cChangesets.list",append="changesetID,siteID",path="./")>
 </cffunction>
 </cfcomponent>

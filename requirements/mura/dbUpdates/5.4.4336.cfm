@@ -20,6 +20,14 @@ select * from tadcreatives  where 0=1
 	ALTER TABLE tadcreatives ADD COLUMN linktitle varchar(100) default NULL
 	</cfquery>
 </cfcase>
+<cfcase value="postgresql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tadcreatives ADD COLUMN title varchar(200) default NULL
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tadcreatives ADD COLUMN linktitle varchar(100) default NULL
+	</cfquery>
+</cfcase>
 <cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tadcreatives ADD COLUMN title varchar(200) default NULL

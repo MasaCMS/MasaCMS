@@ -331,7 +331,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="beforeDate"/>
 	
 	<cfset var rs = "" />
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 	select max(entered) as lastRequest
 	from tsessiontracking 
 	where originalUrlToken=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.originalUrlToken#"/>

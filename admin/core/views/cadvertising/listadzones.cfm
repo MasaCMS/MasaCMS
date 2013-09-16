@@ -61,10 +61,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfinclude template="dsp_secondary_menu.cfm">
 
 <ul class="navTask nav nav-pills">
-<li><a href="index.cfm?muraAction=cAdvertising.editAdZone&adzoneid=&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'advertising.addnewadzone')#</a></li>
+<li><a href="./?muraAction=cAdvertising.editAdZone&adzoneid=&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,'advertising.addnewadzone')#</a></li>
 </ul>
 
-<table class="table table-striped table-condensed table-bordered mura-table-grid">
+<table class="mura-table-grid">
 <tr>
 	<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'advertising.adzone')#</th>
 	<th>#application.rbFactory.getKeyValue(session.rb,'advertising.creativetype')#</th>
@@ -76,7 +76,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif rc.rslist.recordcount>
 <cfoutput query="rc.rslist">
 	<tr>
-		<td class="var-width"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?muraAction=cAdvertising.editAdZone&adZoneid=#rc.rslist.adzoneid#&siteid=#URLEncodedFormat(rc.siteid)#">#name#</a></td>
+		<td class="var-width"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="./?muraAction=cAdvertising.editAdZone&adZoneid=#rc.rslist.adzoneid#&siteid=#URLEncodedFormat(rc.siteid)#">#name#</a></td>
 		<td>#creativeType#</td>
 		<td>#height#</td>
 		<td>#width#</td>
@@ -89,8 +89,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<span>#application.rbFactory.getKeyValue(session.rb,'advertising.#yesnoformat(isActive)#')#</span>
 		</td>
 		<td class="actions"><ul>
-		<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="index.cfm?muraAction=cAdvertising.editAdZone&adZoneid=#rc.rslist.adzoneid#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-pencil"></i></a></li>
-		<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.delte')#" href="index.cfm?muraAction=cAdvertising.updateAdZone&action=delete&adzoneid=#rc.rslist.adZoneid#&siteid=#URLEncodedFormat(rc.siteid)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'advertising.deleteadzoneconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li></ul>
+		<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.edit')#" href="./?muraAction=cAdvertising.editAdZone&adZoneid=#rc.rslist.adzoneid#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-pencil"></i></a></li>
+		<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.delte')#" href="./?muraAction=cAdvertising.updateAdZone&action=delete&adzoneid=#rc.rslist.adZoneid#&siteid=#URLEncodedFormat(rc.siteid)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'advertising.deleteadzoneconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li></ul>
 		</td></tr>
 </cfoutput>
 <cfelse>

@@ -1,6 +1,9 @@
-.table {
-
+.mura-table-grid {
+	
+	.table;
 	.table-bordered;
+	.table-condensed;
+	.table-striped;	
 	.border-radius(0) !important;
 
 	td, th {
@@ -8,6 +11,10 @@
 		.border-radius(0) !important;
 		text-align: center;
 		color: @grayDarker;
+		
+		&.title {
+			text-align: left;
+			}
 		}
 
 	th {
@@ -16,30 +23,65 @@
 		text-transform: none;
 		font-weight: bold;
 		white-space: nowrap;
-		border-right: 1px solid @grayLight;
 		}
 		
 	td {
 		vertical-align: middle;
 		}
+		
+	tr { // Duplicated from bootstrap since they explicitly use .table class, may have to add that to our markup to account for other things
+		  &.success > td {
+		    background-color: @successBackground !important;
+		  }
+		  &.error > td {
+		    background-color: @errorBackground !important;
+		  }
+		  &.warning > td {
+		    background-color: @warningBackground !important;
+		  }
+		  &.info > td {
+		    background-color: @infoBackground !important;
+		  }
+	}
 	
 	a {
 		color: @grayDarker;
 		}
-
-}
-
-.table { //Exceptions
 	
 	.time {
 		white-space: nowrap;
 	}
-	
-}
+} // End .mura-table-grid
 
-.tab-pane th, .tab-pane td {
-	text-align: left;
-}
+#draft-prompt {
+
+	.alert {
+		font-size: 12px !important;
+		}
+	
+	.mura-table-grid {
+		
+		th,td {
+			padding: .5em 1em;
+			text-align: left;
+			}
+			
+		th {
+			font-size: 13px;
+			}
+			
+		i {
+			font-size: 16px;
+			line-height: 13px;
+			color: @grayDark;
+			position: relative;
+			top: 1px;		
+			}
+		
+		}
+	
+	}
+
 
 table.cke_editor {
 	border: 0;
@@ -51,11 +93,4 @@ table.cke_editor {
 
 .fieldset > .mura-table-grid {
 		.box-sizing(border-box);
-		/* margin: 0 @gridGutterWidth @baseLineHeight; */
-}
-
-#mura-select-link {
-	td, th {
-		text-align: left;
-	}
 }

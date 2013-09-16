@@ -123,7 +123,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </form>
 </div>
 
-	<form novalidate="novalidate" class="span12" id="sendLogin" name="sendLogin" method="post" action="index.cfm?muraAction=cLogin.main" onsubmit="return submitForm(this);">
+	<form novalidate="novalidate" class="span12" id="sendLogin" name="sendLogin" method="post" action="./?muraAction=cLogin.main" onsubmit="return submitForm(this);">
 	
 	<div class="control-group">
       	<label class="control-label">

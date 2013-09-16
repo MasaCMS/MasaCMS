@@ -93,6 +93,38 @@ CREATE INDEX IX_ttrash_parentid ON ttrash (parentid)
 	</cfcatch>
 	</cftry>
 </cfcase>
+<cfcase value="postgresql">
+	<cfif not dbUtility.tableExists('ttrash')>
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		CREATE TABLE ttrash (
+			objectID char(35) NOT NULL,
+			parentID char(35) NOT NULL,
+			siteID varchar(25) NOT NULL,
+			objectLabel varchar(255) NOT NULL,
+			objectClass varchar(50) NOT NULL,
+			objectType varchar(50) NOT NULL,
+			objectSubType varchar(50) NOT NULL,
+			objectstring text,
+			deletedDate timestamp default NULL,
+			deletedBy varchar(50) NOT NULL,
+			CONSTRAINT PK_ttrash PRIMARY KEY (objectID)
+		)
+		</cfquery>
+
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		CREATE INDEX IX_ttrash_deleteddate ON ttrash (deleteddate)
+		</cfquery>
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		CREATE INDEX IX_ttrash_siteid ON ttrash (siteid)
+		</cfquery>
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		CREATE INDEX IX_ttrash_objectclass ON ttrash (objectclass)
+		</cfquery>
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		CREATE INDEX IX_ttrash_parentid ON ttrash (parentid)
+		</cfquery>
+	</cfif>
+</cfcase>
 <cfcase value="nuodb">
 
 	<cfif not dbUtility.tableExists('ttrash')>
@@ -110,9 +142,6 @@ CREATE INDEX IX_ttrash_parentid ON ttrash (parentid)
 	  deletedBy varchar(50) NOT NULL,
 	  PRIMARY KEY  (objectID)
 	) 
-	<cfif dbUtility.version().database_productname neq 'H2'>
-		ENGINE=#variables.instance.MYSQLEngine# DEFAULT CHARSET=utf8
-	</cfif>
 	</cfquery>
 
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
@@ -208,6 +237,11 @@ ALTER TABLE tfiles ADD deleted tinyint
 			</cfquery>
 		</cfcatch>
 	</cftry>
+</cfcase>
+<cfcase value="postgresql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tfiles ADD deleted smallint
+	</cfquery>
 </cfcase>
 <cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">

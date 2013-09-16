@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		jQuery("##mura-templatebuilder").templatebuilder();
 	});
 </script>
-	<div id="mura-templatebuilder" data-url="#$.globalConfig('context')#/admin/index.cfm">
+	<div id="mura-templatebuilder" data-url="#$.globalConfig('context')#/admin/">
 		<div class="mura-tb-menu">
 			<ul>
 			<li><div class="ui-button button-field" id="button-section" data-object="section-section" title="#application.rbFactory.getKeyValue(session.rb,'formbuilder.field.section.tooltip')#"><span class="ui-button-text ui-icon-formfield-section">#application.rbFactory.getKeyValue(session.rb,'formbuilder.field.section')#</span></div></li>

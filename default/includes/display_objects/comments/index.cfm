@@ -146,6 +146,7 @@ to your own modified versions of Mura CMS.
 				</cfif>
 		
 				<cfset variables.submittedData.isApproved=application.settingsManager.getSite(variables.$.event('siteID')).getCommentApprovalDefault() />
+				<cfset variables.submittedData.url = variables.$.getCurrentURL()>
 				
 				
 				
@@ -162,7 +163,7 @@ to your own modified versions of Mura CMS.
 				</cfif>
 				
 				<cfset request.comments=""/>
-				<cfif not IsBoolean(request.remember) or  not (request.remember)>
+				<cfif not IsBoolean(request.remember) or not (request.remember)>
 					<cfset request.name=""/>
 					<cfset request.email=""/>
 					<cfset request.url=""/>
@@ -241,7 +242,7 @@ to your own modified versions of Mura CMS.
 		</cfif>
 		<dd id="postcomment-form">
 		<cfoutput><span id="postcomment-comment" style="display: none"><a href="##postcomment">#variables.$.rbKey('comments.newcomment')#</a></span></cfoutput>
-		<form id="postcomment" class="well" method="post" name="addComment" action="?nocache=1#postcomment" onsubmit="return validate(this);" novalidate="novalidate">
+		<form id="postcomment" class="well" method="post" name="addComment" action="?nocache=1#postcomment" onsubmit="return validateForm(this);" novalidate="novalidate">
 			<a name="postcomment"></a>
 			<fieldset>
 				<cfoutput><legend id="postacomment">#variables.$.rbKey('comments.postacomment')#</legend>
@@ -285,7 +286,7 @@ to your own modified versions of Mura CMS.
 					<input type="hidden" name="parentid" value="" />
 					<input type="hidden" name="commenteditmode" value="add" />
 					<input type="hidden" name="linkServID" value="#variables.$.content('contentID')#" />
-					<input type="submit" class="submit btn" name="submit" value="#htmlEditFormat(variables.$.rbKey('comments.submit'))#" />
+					<input type="submit" class="submit btn" name="btnSubmit" value="#htmlEditFormat(variables.$.rbKey('comments.submit'))#" />
 			</div>
 				</cfoutput>
 		</form>

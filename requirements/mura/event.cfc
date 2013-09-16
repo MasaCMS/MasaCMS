@@ -52,7 +52,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="data"  type="any" default="#structNew()#">
 	<cfargument name="$">
 
-	<cfset variables.event=arguments.data />
+	<cfif isStruct(arguments.data)>
+		<cfset variables.event=arguments.data />
+	</cfif>
 	
 	<cfif isdefined("form")>
 		<cfset structAppend(variables.event,form,false)/>

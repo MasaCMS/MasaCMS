@@ -54,7 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cffunction name="getDialog" access="public" returntype="string" output="false">
 		<cfargument name="rc" type="struct" required="false" default="#StructNew()#">
 		
-		<cfset rc.return	= variables.formBuilderManager.getDialog( dialog=rc.dialog ) />
+		<cfset arguments.rc.return	= variables.formBuilderManager.getDialog( dialog=rarguments.c.dialog ) />
 	</cffunction>
 
 	<cffunction name="getForm" access="public" returntype="string" output="false">
@@ -62,12 +62,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfset var formBean	= "" />
 
-		<cfif not StructKeyExists( rc,"formID" )>
-			<cfset formID = createUUID() />
+		<cfif not StructKeyExists( arguments.rc,"formID" )>
+			<cfset arguments.rc.formID = createUUID() />
 		</cfif>
 		
-		<cfset formBean	= variables.formBuilderManager.getFormBean( formID=formID ) />
-		<cfset rc.return = formBean.getAsJSON() />
+		<cfset formBean	= variables.formBuilderManager.getFormBean( formID=arguments.rc.formID ) />
+		<cfset arguments.rc.return = formBean.getAsJSON() />
 	</cffunction>
 
 	<cffunction name="getField" access="public" returntype="string" output="false">
@@ -75,15 +75,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfset var fieldBean	= "" />
 
-		<cfif not StructKeyExists( rc,"fieldID" )>
-			<cfset fieldID = createUUID() />
+		<cfif not StructKeyExists( arguments.rc,"fieldID" )>
+			<cfset arguments.rc.fieldID = createUUID() />
 		</cfif>
-		<cfif not StructKeyExists( rc,"fieldType" )>
-			<cfset rc.fieldType = "field-textfield" />
+		<cfif not StructKeyExists( arguments.rc,"fieldType" )>
+			<cfset arguments.rc.fieldType = "field-textfield" />
 		</cfif>
 	
-		<cfset fieldBean	= variables.FormBuilderManager.getfieldBean( fieldID=fieldID,formID=rc.formID,fieldtype=rc.fieldType ) />
-		<cfset rc.return = fieldBean.getAsJSON() />
+		<cfset fieldBean	= variables.FormBuilderManager.getfieldBean( fieldID=arguments.rc.fieldID,formID=arguments.rc.formID,fieldtype=arguments.rc.fieldType ) />
+		<cfset arguments.rc.return = fieldBean.getAsJSON() />
 	</cffunction>
 
 	<cffunction name="getFieldType" access="public" returntype="string" output="false">
@@ -92,22 +92,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var fieldTypeBean	= "" />
 
 		<cfif not StructKeyExists( rc,"fieldTypeID" )>
-			<cfset rc.fieldTypeID = createUUID() />
+			<cfset arguments.rc.fieldTypeID = createUUID() />
 		</cfif>
 		<cfif not StructKeyExists( rc,"fieldType" )>
-			<cfset rc.fieldType = "field-textfield" />
+			<cfset arguments.rc.fieldType = "field-textfield" />
 		</cfif>
 		
-		<cfset fieldTypeBean	= variables.FormBuilderManager.getfieldTypeBean( fieldTypeID=rc.fieldTypeID,fieldType=rc.fieldType ) />
-		<cfset rc.return = fieldTypeBean.getAsJSON() />
+		<cfset fieldTypeBean	= variables.FormBuilderManager.getfieldTypeBean( fieldTypeID=arguments.rc.fieldTypeID,fieldType=arguments.rc.fieldType ) />
+		<cfset arguments.rc.return = fieldTypeBean.getAsJSON() />
 	</cffunction>
 
 	<cffunction name="getFieldTemplate" access="public" returntype="string" output="false">
 		<cfargument name="rc" type="struct" required="false" default="#StructNew()#">
 		
-		<cfset var fieldTemplate	= variables.FormBuilderManager.getFieldTemplate( rc.fieldtype ) />
+		<cfset var fieldTemplate	= variables.FormBuilderManager.getFieldTemplate( arguments.rc.fieldtype ) />
 
-		<cfset rc.return = fieldTemplate />
+		<cfset arguments.rc.return = fieldTemplate />
 	</cffunction>
 
 	<cffunction name="getDataset" access="public" returntype="string" output="false">
@@ -115,13 +115,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfset var datasetBean	= "" />
 
-		<cfif not StructKeyExists( rc,"datasetID" ) or not len(rc.datasetID)>
-			<cfset rc.datasetID = createUUID() />
+		<cfif not StructKeyExists( arguments.rc,"datasetID" ) or not len(arguments.rc.datasetID)>
+			<cfset arguments.rc.datasetID = createUUID() />
 		</cfif>
 	
-		<cfset datasetBean	= variables.FormBuilderManager.getdatasetBean( datasetID=rc.datasetID,fieldID=rc.fieldID ) />
+		<cfset datasetBean	= variables.FormBuilderManager.getdatasetBean( datasetID=arguments.rc.datasetID,fieldID=arguments.rc.fieldID ) />
 
-		<cfset rc.return = datasetBean.getAsJSON() />
+		<cfset arguments.rc.return = datasetBean.getAsJSON() />
 	</cffunction>
 
 </cfcomponent>

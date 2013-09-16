@@ -29,6 +29,14 @@ select urltitle from tcontent  where 0=1
 	ALTER TABLE tcontent ADD COLUMN htmltitle longtext
 	</cfquery>
 </cfcase>
+<cfcase value="postgresql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontent ADD COLUMN urltitle varchar(255)
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontent ADD COLUMN htmltitle text
+	</cfquery>
+</cfcase>
 <cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontent ADD COLUMN urltitle varchar(255)

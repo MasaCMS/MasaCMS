@@ -9,54 +9,23 @@ if ( 'CKEDITOR' in window) {
 	[
 		/* Block Styles */
 
-		// These styles are already available in the "Format" combo, so they are
-		// not needed here by default. You may enable them to avoid placing the
-		// "Format" combo in the toolbar, maintaining the same features.
-		/*
-		{ name : 'Paragraph'		, element : 'p' },
-		{ name : 'Heading 1'		, element : 'h1' },
-		{ name : 'Heading 2'		, element : 'h2' },
-		{ name : 'Heading 3'		, element : 'h3' },
-		{ name : 'Heading 4'		, element : 'h4' },
-		{ name : 'Heading 5'		, element : 'h5' },
-		{ name : 'Heading 6'		, element : 'h6' },
-		{ name : 'Preformatted Text', element : 'pre' },
-		{ name : 'Address'			, element : 'address' },
+		{ name: 'Code', element: 'pre', attributes: { 'class': 'prettyprint linenums' } },
 
-
-		{ name : 'Intro Paragraph'		, element : 'p', attributes : { 'class' : 'intro' } },
-		{ name : 'Center Text'          , element : 'p', attributes : { 'class' : 'center' } },
-		{ name : 'Call to Action'		, element : 'a', attributes : { 'class' : 'callToAction' } },
-
-		/* Inline Styles */
-
-		// These are core styles available as toolbar buttons. You may opt enabling
-		// some of them in the Styles combo, removing them from the toolbar.
-		/*
-		{ name : 'Strong'			, element : 'strong', overrides : 'b' },
-		{ name : 'Emphasis'			, element : 'em'	, overrides : 'i' },
-		{ name : 'Underline'		, element : 'u' },
-		{ name : 'Strikethrough'	, element : 'strike' },
-		{ name : 'Subscript'		, element : 'sub' },
-		{ name : 'Superscript'		, element : 'sup' },
-		*/
-
-		{ name : 'Notice'	, element : 'span', styles : { 'class' : 'alert' } },
-		{ name : 'Success'	, element : 'span', styles : { 'class' : 'alert alert-success' } },
-		{ name : 'Error'	, element : 'span', styles : { 'class' : 'alert alert-error' } },
-		{ name : 'Info'	, element : 'span', styles : { 'class' : 'alert alert-info' } },
+		{ name : 'Notice'	, element : 'p', attributes : { 'class' : 'alert' } },
+		{ name : 'Success'	, element : 'p', attributes : { 'class' : 'alert alert-success' } },
+		{ name : 'Error'	, element : 'p', attributes : { 'class' : 'alert alert-error' } },
+		{ name : 'Info'		, element : 'p', attributes : { 'class' : 'alert alert-info' } },
+		
+		{ name : 'Well'	, element : 'p', attributes : { 'class' : 'well' } },
+		
+		{ name : 'Default Bootstrap Table'	, element : 'table', attributes : { 'class' : 'table' } },
+		{ name : 'Table Striped'	, element : 'table', attributes : { 'class' : 'table table-striped' } },
+		{ name : 'Table Bordered'	, element : 'table', attributes : { 'class' : 'table table-bordered' } },
+		{ name : 'Table Hover'	, element : 'table', attributes : { 'class' : 'table table-hover' } },
+		{ name : 'Table Condensed'	, element : 'table', attributes : { 'class' : 'table table-condensed' } },
 
 		{ name : 'Marker: Yellow'	, element : 'span', styles : { 'background-color' : 'Yellow' } },
 		{ name : 'Marker: Green'	, element : 'span', styles : { 'background-color' : 'Lime' } },
-
-		/* { name : 'Big'				, element : 'big' },
-		{ name : 'Small'			, element : 'small' },
-		{ name : 'Typewriter'		, element : 'tt' },
-
-		{ name : 'Computer Code'	, element : 'code' },
-		{ name : 'Keyboard Phrase'	, element : 'kbd' },
-		{ name : 'Sample Text'		, element : 'samp' },
-		{ name : 'Variable'			, element : 'var' },*/
 
 		{ name : 'Computer Code'	, element : 'code' },
 		{ name : 'Deleted Text'		, element : 'del' },
@@ -65,32 +34,36 @@ if ( 'CKEDITOR' in window) {
 		{ name : 'Cited Work'		, element : 'cite' },
 		{ name : 'Inline Quotation'	, element : 'q' },
 
-		/*
-	{ name : 'Language: RTL'	, element : 'span', attributes : { 'dir' : 'rtl' } },
-		{ name : 'Language: LTR'	, element : 'span', attributes : { 'dir' : 'ltr' } },
-	*/
-
 		/* Object Styles */
 
-		{
-			name : 'Align Image Left',
-			element : 'img',
-			attributes :
-			{
-				'class' : 'pull-left'
-			}
-		},
+		{ name : 'Align Image Left', element : 'img', attributes : { 'class' : 'pull-left' } },
+		{ name : 'Align Image Right', element : 'img', attributes : { 'class' : 'pull-right' } },
+		{ name : 'Rounded Corners', element : 'img', attributes : { 'class' : 'img-rounded' } },
+		{ name : 'In a Circle', element : 'img', attributes : { 'class' : 'img-circle' } },
+		{ name : 'Polaroid', element : 'img', attributes : { 'class' : 'img-polaroid' } },
+		
+		{ name : 'Table Row - Success', element : 'tr', attributes : { 'class' : 'success' } },
+		{ name : 'Table Row - Error', element : 'tr', attributes : { 'class' : 'error' } },
+		{ name : 'Table Row - Warning', element : 'tr', attributes : { 'class' : 'warning' } },
+		{ name : 'Table Row - Info', element : 'tr', attributes : { 'class' : 'info' } },
+		
+		{ name : 'Link as Button', element : 'a', attributes : { 'class' : 'btn' } },
+		{ name : 'Link as Primary Button', element : 'a', attributes : { 'class' : 'btn btn-primary' } },
+		{ name : 'Link as Button-Large', element : 'a', attributes : { 'class' : 'btn btn-large' } },
+		{ name : 'Link as Primary Button-Large', element : 'a', attributes : { 'class' : 'btn btn-primary btn-large' } },
+		{ name : 'Link as Button-Small', element : 'a', attributes : { 'class' : 'btn btn-small' } },
+		{ name : 'Link as Primary Button-Small', element : 'a', attributes : { 'class' : 'btn btn-primary btn-small' } },
+		{ name : 'Link as Button-Mini', element : 'a', attributes : { 'class' : 'btn btn-mini' } },
+		{ name : 'Link as Primary Button-Mini', element : 'a', attributes : { 'class' : 'btn btn-primary btn-mini' } },
+		{ name : 'Link as Button-Block', element : 'a', attributes : { 'class' : 'btn btn-block' } },
+		{ name : 'Link as Primary Button-Block', element : 'a', attributes : { 'class' : 'btn btn-primary btn-block' } },
+		{ name : 'Link as Button-Large Block', element : 'a', attributes : { 'class' : 'btn btn-large btn-block' } },
+		{ name : 'Link as Primary Button-Large Block', element : 'a', attributes : { 'class' : 'btn btn-primary btn-large btn-block' } },
+		{ name : 'Link as Button-Small Block', element : 'a', attributes : { 'class' : 'btn btn-small btn-block' } },
+		{ name : 'Link as Primary Button-Small Block', element : 'a', attributes : { 'class' : 'btn btn-primary btn-small btn-block' } },
+		{ name : 'Link as Button-Mini Block', element : 'a', attributes : { 'class' : 'btn btn-mini btn-block' } },
+		{ name : 'Link as Primary Button-Mini Block', element : 'a', attributes : { 'class' : 'btn btn-primary btn-mini btn-block' } },
 
-		{
-			name : 'Align Image Right',
-			element : 'img',
-			attributes :
-			{
-				'class' : 'pull-right'
-			}
-		},
-
-		{ name : 'Borderless Table', element : 'table', styles: { 'border-style': 'hidden', 'background-color' : '#E6E6FA' } },
 		{ name : 'Square Bulleted List', element : 'ul', styles : { 'list-style-type' : 'square' } }
 	]);
 

@@ -1,6 +1,6 @@
-<cfcomponent output="false"><cfscript>
+component {
 /*
-	Copyright (c) 2009-2010, Sean Corfield, Ryan Cogswell
+	Copyright (c) 2009-2012, Sean Corfield, Ryan Cogswell
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -23,162 +23,239 @@
 		variables.cgiScriptName = CGI.SCRIPT_NAME;
 		variables.cgiPathInfo = CGI.PATH_INFO;
 	}
-
-	function actionSpecifiesSubsystem( action ) {
-
-		if ( not usingSubsystems() ) {
-			return false;
-		}
-		return listLen( action, variables.framework.subsystemDelimiter ) gt 1 or right( action, 1 ) eq variables.framework.subsystemDelimiter;
+	request._fw1 = {
+        cgiScriptName = CGI.SCRIPT_NAME,
+        cgiRequestMethod = CGI.REQUEST_METHOD,
+        controllers = [ ],
+        requestDefaultsInitialized = false,
+        services = [ ],
+        trace = [ ]
+    };
+	// do not rely on these, they are meant to be true magic...
+    variables.magicApplicationSubsystem = '][';
+	variables.magicApplicationController = '[]';
+	variables.magicApplicationAction = '__';
+	variables.magicBaseURL = '-[]-';
+	
+	public void function abortController() {
+		request._fw1.abortController = true;
+        frameworkTrace( 'abortController() called' );
+		throw( type='FW1.AbortControllerException', message='abortController() called' );
 	}
 
-</cfscript><cfsilent>
+	public boolean function actionSpecifiesSubsystem( string action ) {
 
-	<!---
-		buildURL() should be used from views to construct urls when using subsystems or
-		in order to provide a simpler transition to using subsystems in the future
-	--->
-	<cffunction name="buildURL" access="public" output="false">
-		<cfargument name="action" type="string" />
-		<cfargument name="path" type="string" default="#variables.framework.baseURL#" />
-		<cfargument name="queryString" type="string" default="" />
-
-		<cfset var initialDelim = '?' />
-		<cfset var varDelim = '&' />
-		<cfset var equalDelim = '=' />
-		<cfset var curDelim = '' />
-		<cfset var basePath = '' />
-		<cfset var extraArgs = '' />
-		<cfset var queryPart = '' />
-		<cfset var anchor = '' />
-		<cfset var ses = false />
-		<cfset var omitIndex = false />
-		<cfset var cosmeticAction = '' />
-		<cfset var isHomeAction = false />
-		<cfset var isDefaultItem = false />
-
-		<cfif arguments.path eq "useCgiScriptName">
-			<cfset arguments.path = CGI.SCRIPT_NAME />
-			<cfif variables.framework.SESOmitIndex>
-				<cfset arguments.path = getDirectoryFromPath( arguments.path ) />
-				<cfset omitIndex = true />
-			</cfif>
-		<cfelseif arguments.path eq "useRequestURI">
-			<cfset arguments.path = getPageContext().getRequest().getRequestURI() />
-			<cfif variables.framework.SESOmitIndex>
-				<cfset arguments.path = getDirectoryFromPath( arguments.path ) />
-				<cfset omitIndex = true />
-			</cfif>
-		</cfif>
+		if ( !usingSubsystems() ) {
+			return false;
+		}
+		return listLen( action, variables.framework.subsystemDelimiter ) > 1 ||
+			right( action, 1 ) == variables.framework.subsystemDelimiter;
+	}
+	
+	public void function addRoute( any routes, string target, any methods = [ ], string statusCode = '' ) {
+		if ( !isArray( routes ) ) routes = [ routes ];
+		if ( !isArray( methods ) ) methods = [ methods ];
+		param name="variables.framework.routes" default="#[ ]#"; 
+		if ( len( statusCode ) ) target = statusCode & ':' & target;
+		for ( var route in routes ) {
+			if ( arrayLen( methods ) ) {
+				for ( var method in methods ) {
+					arrayAppend( variables.framework.routes, { '$#method##route#' = target } );
+				}
+			} else {
+				arrayAppend( variables.framework.routes, { '#route#' = target } );
+			}
+		}
+	}
+	
+	/*
+	 *	buildURL() should be used from views to construct urls when using subsystems or
+	 *	in order to provide a simpler transition to using subsystems in the future
+	 */
+	public string function buildURL( string action = '.', string path = variables.magicBaseURL, any queryString = '' ) {
+		if ( action == '.' ) action = getFullyQualifiedAction();
+		if ( path == variables.magicBaseURL ) path = getBaseURL();
+		var omitIndex = false;
+		if ( path == 'useSubsystemConfig' ) {
+			var subsystemConfig = getSubsystemConfig( getSubsystem( action ) );
+			if ( structKeyExists( subsystemConfig, 'baseURL' ) ) {
+				path = subsystemConfig.baseURL;
+			} else {
+				path = getBaseURL();
+			}
+		}
+		if ( path == 'useCgiScriptName' ) {
+			path = request._fw1.cgiScriptName;
+			if ( variables.framework.SESOmitIndex ) {
+				path = getDirectoryFromPath( path );
+				omitIndex = true;
+			}
+		} else if ( path == 'useRequestURI' ) {
+			path = getPageContext().getRequest().getRequestURI();
+			if ( variables.framework.SESOmitIndex ) {
+				path = getDirectoryFromPath( path );
+				omitIndex = true;
+			}
+		}
+		// if queryString is a struct, massage it into a string
+		if ( isStruct( queryString ) && structCount( queryString ) ) {
+			var q = '';
+			for( var key in queryString ) {
+				q &= '#urlEncodedFormat( key )#=#urlEncodedFormat( queryString[ key ] )#&';
+			}
+			queryString = q;
+		}
+		else if ( !isSimpleValue( queryString ) ) {
+			queryString = '';
+		}
+		if ( queryString == '' ) {
+			// extract query string from action section:
+			var q = find( '?', action );
+			var a = find( '##', action );
+			if ( q > 0 ) {
+				queryString = right( action, len( action ) - q );
+				if ( q == 1 ) {
+					action = '';
+				} else {
+					action = left( action, q - 1 );
+				}
+			} else if ( a > 0 ) {
+				queryString = right( action, len( action ) - a + 1 );
+				if ( a == 1 ) {
+					action = '';
+				} else {
+					action = left( action, a - 1 );
+				}
+			}
+		}
+		var cosmeticAction = getFullyQualifiedAction( action );
+		var isHomeAction = cosmeticAction == getFullyQualifiedAction( variables.framework.home );
+		var isDefaultItem = getItem( cosmeticAction ) == variables.framework.defaultItem;
 		
-		<cfif find( '?', arguments.action ) and arguments.queryString is ''>
-			<!--- shorthand for action/queryString pairing --->
-			<cfset arguments.queryString = listRest( arguments.action, '?' ) />
-			<cfset arguments.action = listFirst( arguments.action, '?##' ) />
-		</cfif>
-		<cfset cosmeticAction = getFullyQualifiedAction( arguments.action ) />
-		<cfset isHomeAction = cosmeticAction is getFullyQualifiedAction( variables.framework.home ) />
-		<cfset isDefaultItem = getItem( cosmeticAction ) is variables.framework.defaultItem />
-
-		<cfif find( '?', arguments.path ) gt 0>
-			<cfif right( arguments.path, 1 ) eq '?' or right( arguments.path, 1 ) eq '&'>
-				<cfset initialDelim = '' />
-			<cfelse>
-				<cfset initialDelim = '&' />
-			</cfif>
-		<cfelseif structKeyExists( request, 'generateSES' ) and request.generateSES>
-			<cfif omitIndex>
-				<cfset initialDelim = '' />
-			<cfelse>
-				<cfset initialDelim = '/' />
-			</cfif>
-			<cfset varDelim = '/' />
-			<cfset equalDelim = '/' />
-			<cfset ses = true />
-		</cfif>
-		<cfset curDelim = varDelim />
-
-		<cfif usingSubsystems() and getSubsystem( cosmeticAction ) is variables.framework.defaultSubsystem>
-			<cfset cosmeticAction = getSectionAndItem( cosmeticAction ) />
-		</cfif>
-
-		<cfif len( arguments.queryString )>
-			<cfset extraArgs = listFirst( arguments.queryString, '?##' ) />
-			<cfif find( '?', arguments.queryString )>
-				<cfset queryPart = listRest( arguments.queryString, '?' ) />
-			</cfif>
-			<cfif find( '##', arguments.queryString )>
-				<cfset anchor = listRest( arguments.queryString, '##' ) />
-			</cfif>
-			<cfif ses>
-				<cfset extraArgs = listChangeDelims( extraArgs, '/', '&=' ) />
-			</cfif>
-		</cfif>
+		var initialDelim = '?';
+		var varDelim = '&';
+		var equalDelim = '=';
+		var basePath = '';
+		var extraArgs = '';
+		var queryPart = '';
+		var anchor = '';
+		var ses = false;
+		if ( find( '?', path ) > 0 ) {
+			if ( right( path, 1 ) == '?' || right( path, 1 ) == '&' ) {
+				initialDelim = '';
+			} else {
+				initialDelim = '&';
+			}
+		} else if ( structKeyExists( request._fw1, 'generateSES' ) && request._fw1.generateSES ) {
+			if ( omitIndex ) {
+				initialDelim = '';
+			} else {
+				initialDelim = '/';
+			}
+			varDelim = '/';
+			equalDelim = '/';
+			ses = true;
+		}
+		var curDelim = varDelim;
 		
-		<cfif ses>
-			<cfif isHomeAction and extraArgs is ''>
-				<cfset basePath = arguments.path />
-			<cfelseif isDefaultItem and extraArgs is ''>
-				<cfset basePath = arguments.path & initialDelim & listFirst( cosmeticAction, '.' ) />
-			<cfelse>
-				<cfset basePath = arguments.path & initialDelim & replace( cosmeticAction, '.', '/' ) />
-			</cfif>
-		<cfelse>
-			<cfif isHomeAction>
-				<cfset basePath = arguments.path />
-				<cfset curDelim = '?' />
-			<cfelseif isDefaultItem>
-				<cfset basePath = arguments.path & initialDelim & variables.framework.action & equalDelim & listFirst( cosmeticAction, '.' ) />
-			<cfelse>
-				<cfset basePath = arguments.path & initialDelim & variables.framework.action & equalDelim & cosmeticAction />
-			</cfif>
-		</cfif>
+		if ( usingSubsystems() && getSubsystem( cosmeticAction ) == variables.framework.defaultSubsystem ) {
+			cosmeticAction = getSectionAndItem( cosmeticAction );
+		}
 		
-		<cfif extraArgs is not ''>
-			<cfset basePath = basePath & curDelim & extraArgs />
-			<cfset curDelim = varDelim />
-		</cfif>
-		<cfif queryPart is not ''>
-			<cfif ses>
-				<cfset basePath = basePath & '?' & queryPart />
-			<cfelse>
-				<cfset basePath = basePath & curDelim & queryPart />
-			</cfif>
-		</cfif>
-		<cfif anchor is not ''>
-			<cfset basePath = basePath & '##' & anchor />
-		</cfif>
+		if ( len( queryString ) ) {
+			// extract query part and anchor from query string:
+			q = find( '?', queryString );
+			if ( q > 0 ) {
+				queryPart = right( queryString, len( queryString ) - q );
+				if ( q > 1 ) {
+					extraArgs = left( queryString, q - 1 );
+				}
+				a = find( '##', queryPart );
+				if ( a > 0 ) {
+					anchor = right( queryPart, len( queryPart ) - a );
+					if ( a == 1 ) {
+						queryPart = '';
+					} else {
+						queryPart = left( queryPart, a - 1 );
+					}
+				}
+			} else {
+				extraArgs = queryString;
+				a = find( '##', extraArgs );
+				if ( a > 0 ) {
+					anchor = right( extraArgs, len( extraArgs ) - a );
+					if ( a == 1 ) {
+						extraArgs = '';
+					} else {
+						extraArgs = left( extraArgs, a - 1 );
+					}
+				}
+			}
+			if ( ses ) {
+				extraArgs = listChangeDelims( extraArgs, '/', '&=' );
+			}
+		}
 		
-		<cfreturn basePath />
-
-	</cffunction>
-
-</cfsilent><cfscript>
+		if ( ses ) {
+			if ( isHomeAction && extraArgs == '' ) {
+				basePath = path;
+			} else if ( isDefaultItem && extraArgs == '' ) {
+				basePath = path & initialDelim & listFirst( cosmeticAction, '.' );
+			} else {
+				basePath = path & initialDelim & replace( cosmeticAction, '.', '/' );
+			}
+		} else {
+			if ( isHomeAction ) {
+				basePath = path;
+				curDelim = '?';
+			} else if ( isDefaultItem ) {
+				basePath = path & initialDelim & variables.framework.action & equalDelim & listFirst( cosmeticAction, '.' );
+			} else {
+				basePath = path & initialDelim & variables.framework.action & equalDelim & cosmeticAction;
+			}
+		}
+		
+		if ( extraArgs != '' ) {
+			basePath = basePath & curDelim & extraArgs;
+			curDelim = varDelim;
+		}
+		if ( queryPart != '' ) {
+			if ( ses ) {
+				basePath = basePath & '?' & queryPart;
+			} else {
+				basePath = basePath & curDelim & queryPart;
+			}
+		}
+		if ( anchor != '' ) {
+			basePath = basePath & '##' & anchor;
+		}
+		return basePath;
+	}
 
 	/*
 	 * call this from your Application.cfc methods to queue up additional controller
 	 * method calls at the start of the request
 	 */
-	function controller( action ) {
+	public void function controller( string action ) {
 		var subsystem = getSubsystem( action );
 		var section = getSection( action );
 		var item = getItem( action );
-		var tuple = structNew();
+		var tuple = { };
 
-		if ( structKeyExists( request, 'controllerExecutionStarted' ) ) {
-			raiseException( type="FW1.controllerExecutionStarted", message="Controller '#action#' may not be added at this point.",
-				detail="The controller execution phase has already started. Controllers may not be added by other controller methods." );
+		if ( structKeyExists( request._fw1, 'controllerExecutionStarted' ) ) {
+			raiseException( type='FW1.controllerExecutionStarted', message="Controller '#action#' may not be added at this point.",
+				detail='The controller execution phase has already started. Controllers may not be added by other controller methods.' );
 		}
 
 		tuple.controller = getController( section = section, subsystem = subsystem );
 		tuple.key = subsystem & variables.framework.subsystemDelimiter & section;
+        tuple.subsystem = subsystem;
+        tuple.section = section;
 		tuple.item = item;
 
-		if ( structKeyExists( tuple, "controller" ) and isObject( tuple.controller ) ) {
-			if ( not structKeyExists( request, 'controllers' ) ) {
-				request.controllers = arrayNew(1);
-			}
-			arrayAppend( request.controllers, tuple );
+		if ( structKeyExists( tuple, 'controller' ) && isObject( tuple.controller ) ) {
+            frameworkTrace( 'queuing controller', subsystem, section, item );
+			arrayAppend( request._fw1.controllers, tuple );
 		}
 	}
 
@@ -186,7 +263,7 @@
 	 * can be overridden to customize how views and layouts are found - can be
 	 * used to provide skinning / common views / layouts etc
 	 */
-	function customizeViewOrLayoutPath( pathInfo, type, fullPath ) {
+	public string function customizeViewOrLayoutPath( struct pathInfo, string type, string fullPath ) {
 		// fullPath is: '#pathInfo.base##type#s/#pathInfo.path#.cfm'
 		return fullPath;
 	}
@@ -194,43 +271,47 @@
 	/*
 	 * return the action URL variable name - allows applications to build URLs
 	 */
-	function getAction() {
+	public string function getAction() {
 		return variables.framework.action;
 	}
-
-</cfscript><cfsilent>
-
-	<!---
-		returns whatever the framework has been told is a bean factory
-		this will return a subsystem-specific bean factory if one
-		exists for the current request's subsystem (or for the specified subsystem
-		if passed in)
-	--->
-	<cffunction name="getBeanFactory" output="false">
-		<cfargument name="subsystem" required="false" default="" />
-		<cfscript>
-			if ( len(subsystem) gt 0 ) {
-				if ( hasSubsystemBeanFactory(subsystem) ) {
-					return getSubsystemBeanFactory(subsystem);
-				}
-				return getDefaultBeanFactory();
-			}
-			if ( not usingSubsystems() ) {
-				return getDefaultBeanFactory();
-			}
-			if ( structKeyExists( request, 'subsystem' ) and len(request.subsystem) gt 0 ) {
-				return getBeanFactory(request.subsystem);
-			}
-			if ( len(variables.framework.defaultSubsystem) gt 0 ) {
-				return getBeanFactory(variables.framework.defaultSubsystem);
+	
+	/*
+	 * returns the base URL for redirects and links etc
+	 * can be overridden if you need to modify this per-request
+	 */
+	public string function getBaseURL() {
+		return variables.framework.baseURL;
+	}
+	
+	/*
+	 *	returns whatever the framework has been told is a bean factory
+	 *	this will return a subsystem-specific bean factory if one
+	 *	exists for the current request's subsystem (or for the specified subsystem
+	 *	if passed in)
+	 */
+	public any function getBeanFactory( string subsystem = '' ) {
+		if ( len( subsystem ) > 0 ) {
+			if ( hasSubsystemBeanFactory( subsystem ) ) {
+				return getSubsystemBeanFactory( subsystem );
 			}
 			return getDefaultBeanFactory();
-		</cfscript>
-	</cffunction>
-
-</cfsilent><cfscript>
-
-	function getConfig()
+		}
+		if ( !usingSubsystems() ) {
+			return getDefaultBeanFactory();
+		}
+		if ( structKeyExists( request, 'subsystem' ) && len( request.subsystem ) > 0 ) {
+			return getBeanFactory( request.subsystem );
+		}
+		if ( len( variables.framework.defaultSubsystem ) > 0 ) {
+			return getBeanFactory( variables.framework.defaultSubsystem );
+		}
+		return getDefaultBeanFactory();
+	}
+	
+	/*
+	 * return the framework configuration
+	 */
+	public struct function getConfig()
 	{
 		// return a copy to make it read only from outside the framework:
 		return structCopy( framework );
@@ -239,16 +320,16 @@
 	/*
 	 * returns the bean factory set via setBeanFactory
 	 */
-	function getDefaultBeanFactory() {
+	public any function getDefaultBeanFactory() {
 		return application[ variables.framework.applicationKey ].factory;
 	}
 
 	/*
 	 * returns the name of the default subsystem
 	 */
-	function getDefaultSubsystem() {
+	public string function getDefaultSubsystem() {
 
-		if ( not usingSubsystems() ) {
+		if ( !usingSubsystems() ) {
 			return '';
 		}
 
@@ -256,70 +337,96 @@
 			return request.subsystem;
 		}
 
-		if ( variables.framework.defaultSubsystem eq "" ) {
-			raiseException( type="FW1.subsystemNotSpecified", message="No subsystem specified and no default configured.",
-					detail="When using subsystems, every request should specify a subsystem or variables.framework.defaultSubsystem should be configured." );
+		if ( variables.framework.defaultSubsystem == '' ) {
+			raiseException( type='FW1.subsystemNotSpecified', message='No subsystem specified and no default configured.',
+					detail='When using subsystems, every request should specify a subsystem or variables.framework.defaultSubsystem should be configured.' );
 		}
 
 		return variables.framework.defaultSubsystem;
 
 	}
+	
+    /*
+     * override this to provide your environment selector
+     */
+    public string function getEnvironment() {
+        return '';
+    }
+	
+	/*
+	 * return an action with all applicable parts (subsystem, section, and item) specified
+	 * using defaults from the configuration or request where appropriate
+	 */
+	public string function getFullyQualifiedAction( string action = request.action ) {
+		if ( usingSubsystems() ) {
+			return getSubsystem( action ) & variables.framework.subsystemDelimiter & getSectionAndItem( action );
+		}
 
-</cfscript><cfsilent>
+		return getSectionAndItem( action );
+	}
 
-	<!---
-		return an action with all applicable parts (subsystem, section, and item) specified
-		 using defaults from the configuration or request where appropriate
-	--->
-	<cffunction name="getFullyQualifiedAction" output="false">
-		<cfargument name="action" default="#request.action#" />
-
-		<cfscript>
-			if ( usingSubsystems() ) {
-				return getSubsystem( action ) & variables.framework.subsystemDelimiter & getSectionAndItem( action );
-			}
-
-			return getSectionAndItem( action );
-		</cfscript>
-
-	</cffunction>
-
-	<!--- return the item part of the action --->
-	<cffunction name="getItem" output="false">
-		<cfargument name="action" default="#request.action#" />
-
-		<cfreturn listLast( getSectionAndItem( arguments.action ), '.' ) />
-
-	</cffunction>
-
-	<!--- return the section part of the action --->
-	<cffunction name="getSection" output="false">
-		<cfargument name="action" default="#request.action#" />
-
-		<cfreturn listFirst( getSectionAndItem( arguments.action ), '.' ) />
-
-	</cffunction>
-
-	<!--- return the action without the subsystem --->
-	<cffunction name="getSectionAndItem" output="false">
-		<cfargument name="action" default="#request.action#" />
-
-		<cfscript>
+    /*
+     * return the local hostname of the server
+     */
+    public string function getHostname() {
+        return createObject( 'java', 'java.net.InetAddress' ).getLocalHost().getHostName();
+    }
+	
+	/*
+	 * return the item part of the action
+	 */
+	public string function getItem( string action = request.action ) {
+		return listLast( getSectionAndItem( action ), '.' );
+	}
+	
+	
+	/*
+	 * return the current route (if any)
+	 */
+	public string function getRoute() {
+		return structKeyExists( request._fw1, 'route' ) ? request._fw1.route : '';
+	}
+	
+	
+	/*
+	 * return the configured routes
+	 */
+	public array function getRoutes() {
+		return variables.framework.routes;
+	}
+	
+	
+	/*
+	 * return the section part of the action
+	 */
+	public string function getSection( string action = request.action ) {
+		return listFirst( getSectionAndItem( action ), '.' );
+	}
+	
+	
+	/*
+	 * return the action without the subsystem
+	 */
+	public string function getSectionAndItem( string action = request.action ) {
 		var sectionAndItem = '';
 
-		if ( usingSubsystems() and actionSpecifiesSubsystem( action ) ) {
-			if ( listLen( action, variables.framework.subsystemDelimiter ) gt 1 ) {
+		if ( usingSubsystems() && actionSpecifiesSubsystem( action ) ) {
+			if ( listLen( action, variables.framework.subsystemDelimiter ) > 1 ) {
 				sectionAndItem = listLast( action, variables.framework.subsystemDelimiter );
 			}
 		} else {
 			sectionAndItem = action;
 		}
 
-		if ( len( sectionAndItem ) eq 0 ) {
+		if ( len( sectionAndItem ) == 0 ) {
 			sectionAndItem = variables.framework.defaultSection & '.' & variables.framework.defaultItem;
-		} else if ( listLen( sectionAndItem, '.' ) eq 1 ) {
-			if ( left( sectionAndItem, 1 ) eq '.' ) {
-				sectionAndItem = variables.framework.defaultSection & '.' & listLast( sectionAndItem, '.' );
+		} else if ( listLen( sectionAndItem, '.' ) == 1 ) {
+			if ( left( sectionAndItem, 1 ) == '.' ) {
+				if ( structKeyExists( request, 'section' ) ) {
+					sectionAndItem = request.section & '.' & listLast( sectionAndItem, '.' );
+				} else {
+					sectionAndItem = variables.framework.defaultSection & '.' & listLast( sectionAndItem, '.' );
+				}
 			} else {
 				sectionAndItem = listFirst( sectionAndItem, '.' ) & '.' & variables.framework.defaultItem;
 			}
@@ -328,62 +435,70 @@
 		}
 
 		return sectionAndItem;
-		</cfscript>
-
-	</cffunction>
-
-</cfsilent><cfscript>
-
+	}
+	
+	
 	/*
 	 * return the default service result key
 	 * override this if you want the default service result to be
 	 * stored under a different request context key, based on the
 	 * requested action, e.g., return getSection( action );
 	 */
-	function getServiceKey( action ) {
-		return "data";
+	public string function getServiceKey( action ) {
+		return 'data';
+	}
+	
+	/*
+	 * return the subsystem part of the action
+	 */
+	public string function getSubsystem( string action = request.action ) {
+		if ( actionSpecifiesSubsystem( action ) ) {
+			return listFirst( action, variables.framework.subsystemDelimiter );
+		}
+		return getDefaultSubsystem();
 	}
 
-</cfscript><cfsilent>
-
-	<!--- return the subsystem part of the action --->
-	<cffunction name="getSubsystem" output="false">
-		<cfargument name="action" default="#request.action#" />
-
-		<cfif actionSpecifiesSubsystem( arguments.action ) >
-			<cfreturn listFirst( arguments.action, variables.framework.subsystemDelimiter ) />
-		</cfif>
-
-		<cfreturn getDefaultSubsystem() />
-
-	</cffunction>
-
-</cfsilent><cfscript>
+    /*
+     * return the base directory for the current request's subsystem
+     */
+    public string function getSubsystemBase() {
+        return request.subsystemBase;
+    }
+	
+	/*
+	 * return the (optional) configuration for a subsystem
+	 */
+	public struct function getSubsystemConfig( string subsystem ) {
+		if ( structKeyExists( variables.framework.subsystems, subsystem ) ) {
+			// return a copy to make it read only from outside the framework:
+			return structCopy( variables.framework.subsystems[ subsystem ] );
+		}
+		return { };
+	}
 
 	/*
-	* returns the bean factory set via setSubsystemBeanFactory
-	* same effect as getBeanFactory when not using subsystems
-	*/
-	function getSubsystemBeanFactory( subsystem ) {
+	 * returns the bean factory set via setSubsystemBeanFactory
+	 * same effect as getBeanFactory when not using subsystems
+	 */
+	public any function getSubsystemBeanFactory( string subsystem ) {
 
 		setupSubsystemWrapper( subsystem );
 
 		return application[ variables.framework.applicationKey ].subsystemFactories[ subsystem ];
 
 	}
-
-
+	
 	/*
 	 * returns true iff a call to getBeanFactory() will successfully return a bean factory
 	 * previously set via setBeanFactory or setSubsystemBeanFactory
 	 */
-	function hasBeanFactory() {
+	public boolean function hasBeanFactory() {
 
 		if ( hasDefaultBeanFactory() ) {
 			return true;
 		}
 
-		if ( not usingSubsystems() ) {
+		if ( !usingSubsystems() ) {
 			return false;
 		}
 
@@ -391,7 +506,7 @@
 			return hasSubsystemBeanFactory(request.subsystem);
 		}
 
-		if ( len(variables.framework.defaultSubsystem) gt 0 ) {
+		if ( len(variables.framework.defaultSubsystem) > 0 ) {
 			return hasSubsystemBeanFactory(variables.framework.defaultSubsystem);
 		}
 
@@ -402,14 +517,14 @@
 	/*
 	 * returns true iff the framework has been told about a bean factory via setBeanFactory
 	 */
-	function hasDefaultBeanFactory() {
+	public boolean function hasDefaultBeanFactory() {
 		return structKeyExists( application[ variables.framework.applicationKey ], 'factory' );
 	}
 
 	/*
 	 * returns true if a subsystem specific bean factory has been set
 	 */
-	function hasSubsystemBeanFactory( subsystem ) {
+	public boolean function hasSubsystemBeanFactory( string subsystem ) {
 
 		ensureNewFrameworkStructsExist();
 
@@ -421,8 +536,9 @@
 	 * layout() may be invoked inside layouts
 	 * returns the UI generated by the named layout and body
 	 */
-	function layout( path, body ) {
-		var layoutPath = parseViewOrLayoutPath( arguments.path, 'layout' );
+	public string function layout( string path, string body ) {
+		var layoutPath = parseViewOrLayoutPath( path, 'layout' );
+        frameworkTrace( 'layout( #path# ) called - rendering #layoutPath#' );
 		return internalLayout( layoutPath, body );
 	}
 
@@ -433,7 +549,7 @@
 	 * if you do override onApplicationStart(), you must call
 	 * super.onApplicationStart() first
 	 */
-	function onApplicationStart() {
+	public any function onApplicationStart() {
 		setupFrameworkDefaults();
 		setupRequestDefaults();
 		setupApplicationWrapper();
@@ -445,10 +561,16 @@
 	 * note: you need to rename / disable onError() on OpenBD since it does
 	 * not seem to be passed exception or event correctly when something fails
 	 * in the code...
-	*/
-	function onError( exception, event ) {
-
+	 */
+	public void function onError( any exception, string event ) {
 		try {
+		    if ( !structKeyExists( variables, 'framework' ) ||
+                 !structKeyExists( variables.framework, 'version' ) ) {
+		      // error occurred before framework was initialized
+		      failure( exception, event, false, true );
+		      return;
+		    }
+		    
 			// record details of the exception:
 			if ( structKeyExists( request, 'action' ) ) {
 				request.failedAction = request.action;
@@ -456,16 +578,49 @@
 			request.exception = exception;
 			request.event = event;
 			// reset lifecycle flags:
-			structDelete( request, 'controllerExecutionComplete' );
-			structDelete( request, 'controllerExecutionStarted' );
-			structDelete( request, 'serviceExecutionComplete' );
+			structDelete( request._fw1, 'controllerExecutionComplete' );
+			structDelete( request._fw1, 'controllerExecutionStarted' );
+			structDelete( request._fw1, 'serviceExecutionComplete' );
+			structDelete( request._fw1, 'overrideViewAction' );
 			// setup the new controller action, based on the error action:
-			structDelete( request, 'controllers' );
-			request.action = variables.framework.error;
+			request._fw1.controllers = [ ];
+            // reset services for this new action:
+            request._fw1.services = [ ];
+			
+			if ( structKeyExists( variables, 'framework' ) && structKeyExists( variables.framework, 'error' ) ) {
+				request.action = variables.framework.error;
+			} else {
+				// this is an edge case so we don't bother with subsystems etc
+				// (because if part of the framework defaults are not present,
+				// we'd have to do a lot of conditional logic here!)
+				request.action = 'main.error';
+			}
+			// ensure request.context is available
+			if ( !structKeyExists( request, 'context' ) ) {
+			    request.context = { };
+			}
+			if ( !structKeyExists( request, 'base' ) ) {
+				if ( structKeyExists( variables, 'framework' ) && structKeyExists( variables.framework, 'base' ) ) {
+					request.base = variables.framework.base;
+				} else {
+					request.base = '';
+				}
+			}
+			if ( !structKeyExists( request, 'cfcbase' ) ) {
+				if ( structKeyExists( variables, 'framework' ) && structKeyExists( variables.framework, 'cfcbase' ) ) {
+					request.cfcbase = variables.framework.cfcbase;
+				} else {
+					request.cfcbase = '';
+				}
+			}
+			frameworkTrace( 'onError( #exception.message#, #event# ) called' );
 			setupRequestWrapper( false );
 			onRequest( '' );
+            frameworkTraceRender();
 		} catch ( any e ) {
-			failure( exception, event );
+			failure( e, 'onError' );
+			failure( exception, event, true );
+            frameworkTraceRender();
 		}
 
 	}
@@ -474,11 +629,12 @@
 	 * this can be overridden if you want to change the behavior when
 	 * FW/1 cannot find a matching view
 	 */
-	function onMissingView( rc ) {
+	public string function onMissingView( struct rc ) {
 		// unable to find a matching view - fail with a nice exception
 		viewNotFound();
 		// if we got here, we would return the string to be rendered
 		// but viewNotFound() throws an exception...
+        // for example, return view( 'main.missing' );
 	}
 
 	/*
@@ -490,73 +646,102 @@
 	 * being set when the error occurred as well as the request context structure.
 	 * You can also reference the cfcatch variable for details about the error.
 	 */
-	function onPopulateError( cfc, property, rc ) {
+	public void function onPopulateError( any cfc, string property, struct rc ) {
 	}
 
 	/*
 	 * not intended to be overridden, automatically deleted for CFC requests
 	 */
-	function onRequest(targetPath) {
+	public any function onRequest( string targetPath ) {
 
 		var out = 0;
 		var i = 0;
 		var tuple = 0;
 		var _data_fw1 = 0;
-		var once = structNew();
+		var once = { };
+		var n = 0;
 
-		request.controllerExecutionStarted = true;
-		if ( structKeyExists( request, 'controllers' ) ) {
-			for ( i = 1; i lte arrayLen( request.controllers ); i = i + 1 ) {
-				tuple = request.controllers[ i ];
+		request._fw1.controllerExecutionStarted = true;
+		try {
+			n = arrayLen( request._fw1.controllers );
+			for ( i = 1; i <= n; i = i + 1 ) {
+				tuple = request._fw1.controllers[ i ];
 				// run before once per controller:
-				if ( not structKeyExists( once, tuple.key ) ) {
+				if ( !structKeyExists( once, tuple.key ) ) {
 					once[ tuple.key ] = i;
-					doController( tuple.controller, 'before' );
+					doController( tuple, 'before', 'before' );
+					if ( structKeyExists( request._fw1, 'abortController' ) ) abortController();
 				}
-				doController( tuple.controller, 'start' & tuple.item );
-				doController( tuple.controller, tuple.item );
+				doController( tuple, 'start' & tuple.item, 'start' );
+				if ( structKeyExists( request._fw1, 'abortController' ) ) abortController();
+				doController( tuple, tuple.item, 'item' );
+				if ( structKeyExists( request._fw1, 'abortController' ) ) abortController();
 			}
-		}
-		for ( i = 1; i lte arrayLen( request.services ); i = i + 1 ) {
-			tuple = request.services[i];
-			if ( tuple.key is '' ) {
-				// throw the result away:
-				doService( tuple.service, tuple.item, tuple.args, tuple.enforceExistence );
-			} else {
-				_data_fw1 = doService( tuple.service, tuple.item, tuple.args, tuple.enforceExistence );
-				if ( isDefined('_data_fw1') ) {
-					request.context[ tuple.key ] = _data_fw1;
+			n = arrayLen( request._fw1.services );
+			for ( i = 1; i <= n; i = i + 1 ) {
+				tuple = request._fw1.services[ i ];
+				if ( tuple.key == '' ) {
+					// throw the result away:
+					doService( tuple, tuple.item, tuple.args, tuple.enforceExistence );
+					if ( structKeyExists( request._fw1, 'abortController' ) ) abortController();
+				} else {
+					_data_fw1 = doService( tuple, tuple.item, tuple.args, tuple.enforceExistence );
+					if ( structKeyExists( request._fw1, 'abortController' ) ) abortController();
+					if ( isDefined('_data_fw1') ) {
+                        frameworkTrace( 'store service result in rc.#tuple.key#', tuple.subsystem, tuple.section, tuple.item );
+						request.context[ tuple.key ] = _data_fw1;
+					} else {
+                        frameworkTrace( 'service returned no result for rc.#tuple.key#', tuple.subsystem, tuple.section, tuple.item );
+                    }
 				}
 			}
-		}
-		request.serviceExecutionComplete = true;
-		if ( structKeyExists( request, 'controllers' ) ) {
-			for ( i = arrayLen( request.controllers ); i gte 1; i = i - 1 ) {
-				tuple = request.controllers[ i ];
-				doController( tuple.controller, 'end' & tuple.item );
-				// run after once per controller:
+			request._fw1.serviceExecutionComplete = true;
+			n = arrayLen( request._fw1.controllers );
+			for ( i = n; i >= 1; i = i - 1 ) {
+				tuple = request._fw1.controllers[ i ];
+				doController( tuple, 'end' & tuple.item, 'end' );
+				if ( structKeyExists( request._fw1, 'abortController' ) ) abortController();
 				if ( once[ tuple.key ] eq i ) {
-					doController( tuple.controller, 'after' );
+					doController( tuple, 'after', 'after' );
+					if ( structKeyExists( request._fw1, 'abortController' ) ) abortController();
 				}
 			}
+		} catch ( FW1.AbortControllerException e ) {
+			request._fw1.serviceExecutionComplete = true;
 		}
-		request.controllerExecutionComplete = true;
+		request._fw1.controllerExecutionComplete = true;
 
-		buildViewAndLayoutQueue();
-
-		if ( structKeyExists(request, 'view') ) {
-			out = internalView( request.view );
+		buildViewQueue();
+        frameworkTrace( 'setupView() called' );
+		setupView();
+		if ( structKeyExists(request._fw1, 'view') ) {
+            frameworkTrace( 'rendering #request._fw1.view#' );
+			out = internalView( request._fw1.view );
 		} else {
+            frameworkTrace( 'onMissingView() called' );
 			out = onMissingView( request.context );
 		}
-		for ( i = 1; i lte arrayLen(request.layouts); i = i + 1 ) {
-			if ( structKeyExists(request, 'layout') and not request.layout ) {
+
+        buildLayoutQueue();
+		for ( i = 1; i <= arrayLen(request._fw1.layouts); i = i + 1 ) {
+			if ( structKeyExists(request, 'layout') && !request.layout ) {
+                frameworkTrace( 'aborting layout rendering' );
 				break;
 			}
-			out = internalLayout( request.layouts[i], out );
+            frameworkTrace( 'rendering #request._fw1.layouts[i]#' );
+			out = internalLayout( request._fw1.layouts[i], out );
 		}
 		writeOutput( out );
+		setupResponseWrapper();
 	}
+
+    /*
+     * if you override onRequestEnd(), call super.onRequestEnd() if you
+     * want tracing functionality to continue working
+     */
+    public any function onRequestEnd() {
+        frameworkTraceRender();
+    }
 
 	/*
 	 * it is better to set up your request configuration in
@@ -564,66 +749,13 @@
 	 * if you do override onRequestStart(), you must call
 	 * super.onRequestStart() first
 	 */
-	function onRequestStart(targetPath) {
-
-		var pathInfo = variables.cgiPathInfo;
-		var sesIx = 0;
-		var sesN = 0;
-
+	public any function onRequestStart( string targetPath ) {
 		setupFrameworkDefaults();
 		setupRequestDefaults();
 
-		if ( not isFrameworkInitialized() or isFrameworkReloadRequest() ) {
+		if ( !isFrameworkInitialized() || isFrameworkReloadRequest() ) {
 			setupApplicationWrapper();
 		}
-
-		if ( not structKeyExists(request, 'context') ) {
-			request.context = structNew();
-		}
-		// SES URLs by popular request :)
-		if ( len( pathInfo ) gt len( variables.cgiScriptName ) and left( pathInfo, len( variables.cgiScriptName ) ) is variables.cgiScriptName ) {
-			// canonicalize for IIS:
-			pathInfo = right( pathInfo, len( pathInfo ) - len( variables.cgiScriptName ) );
-		} else if ( len( pathInfo ) gt 0 and pathInfo is left( variables.cgiScriptName, len( pathInfo ) ) ) {
-			// pathInfo is bogus so ignore it:
-			pathInfo = '';
-		}
-		try {
-			// we use .split() to handle empty items in pathInfo - we fallback to listToArray() on
-			// any system that doesn't support .split() just in case (empty items won't work there!)
-			if ( len( pathInfo ) gt 1 ) {
-				pathInfo = right( pathInfo, len( pathInfo ) - 1 ).split( '/' );
-			} else {
-				pathInfo = arrayNew( 1 );
-			}
-		} catch ( any exception ) {
-			pathInfo = listToArray( pathInfo, '/' );
-		}
-		sesN = arrayLen( pathInfo );
-		if ( ( sesN gt 0 or variables.framework.generateSES ) and variables.framework.baseURL is not 'useRequestURI' ) {
-			request.generateSES = true;
-		}
-		for ( sesIx = 1; sesIx lte sesN; sesIx = sesIx + 1 ) {
-			if ( sesIx eq 1 ) {
-				request.context[variables.framework.action] = pathInfo[sesIx];
-			} else if ( sesIx eq 2 ) {
-				request.context[variables.framework.action] = pathInfo[sesIx-1] & '.' & pathInfo[sesIx];
-			} else if ( sesIx mod 2 eq 1 ) {
-				request.context[ pathInfo[sesIx] ] = '';
-			} else {
-				request.context[ pathInfo[sesIx-1] ] = pathInfo[sesIx];
-			}
-		}
-		// certain remote calls do not have URL or form scope:
-		if ( isDefined('URL') ) structAppend(request.context,URL);
-		if ( isDefined('form') ) structAppend(request.context,form);
-		// figure out the request action before restoring flash context:
-		if ( not structKeyExists(request.context, variables.framework.action) ) {
-			request.context[variables.framework.action] = variables.framework.home;
-		} else {
-			request.context[variables.framework.action] = getFullyQualifiedAction( request.context[variables.framework.action] );
-		}
-		request.action = validateAction( lCase(request.context[variables.framework.action]) );
 
 		restoreFlashContext();
 		// ensure flash context cannot override request action:
@@ -631,14 +763,20 @@
 
 		// allow configured extensions and paths to pass through to the requested template.
 		// NOTE: for unhandledPaths, we make the list into an escaped regular expression so we match on subdirectories.  
-		// Meaning /myexcludepath will match "/myexcludepath" and all subdirectories  
-		if ( listFindNoCase( framework.unhandledExtensions, listLast( arguments.targetPath, "." ) ) or 
-				REFindNoCase( "^(" & framework.unhandledPathRegex & ")", arguments.targetPath ) ) {		
+		// Meaning /myexcludepath will match '/myexcludepath' and all subdirectories  
+		if ( listFindNoCase( variables.framework.unhandledExtensions, listLast( targetPath, '.' ) ) || 
+				REFindNoCase( '^(' & variables.framework.unhandledPathRegex & ')', targetPath ) ) {		
 			structDelete(this, 'onRequest');
 			structDelete(variables, 'onRequest');
+			structDelete(this, 'onRequestEnd');
+			structDelete(variables, 'onRequestEnd');			
+            if ( !variables.framework.unhandledErrorCaught ) {
+			    structDelete(this, 'onError');
+			    structDelete(variables, 'onError');
+            }
+		} else {
+			setupRequestWrapper( true );
 		}
-
-		setupRequestWrapper( true );
 	}
 
 	/*
@@ -647,194 +785,211 @@
 	 * if you do override onSessionStart(), you must call
 	 * super.onSessionStart() first
 	 */
-	function onSessionStart() {
+	public any function onSessionStart() {
 		setupFrameworkDefaults();
 		setupRequestDefaults();
-		setupSession();
+		setupSessionWrapper();
+	}
+	
+	// populate() may be invoked inside controllers
+	public any function populate( any cfc, string keys = '', boolean trustKeys = false, boolean trim = false, deep = false ) {
+		if ( keys == '' ) {
+			if ( trustKeys ) {
+				// assume everything in the request context can be set into the CFC
+				for ( var property in request.context ) {
+					try {
+						var args = { };
+						args[ property ] = request.context[ property ];
+						if ( trim && isSimpleValue( args[ property ] ) ) args[ property ] = trim( args[ property ] );
+						// cfc[ 'set'&property ]( argumentCollection = args ); // ugh! no portable script version of this?!?!						
+						setProperty( cfc, property, args );
+					} catch ( any e ) {
+						onPopulateError( cfc, property, request.context );
+					}
+				}
+			} else {
+				var setters = findImplicitAndExplicitSetters( cfc );
+				for ( var property in setters ) {
+					if ( structKeyExists( request.context, property ) ) {
+						var args = { };
+						args[ property ] = request.context[ property ];
+						if ( trim && isSimpleValue( args[ property ] ) ) args[ property ] = trim( args[ property ] );
+						// cfc[ 'set'&property ]( argumentCollection = args ); // ugh! no portable script version of this?!?!
+						setProperty( cfc, property, args );
+					} else if ( deep && structKeyExists( cfc, 'get' & property ) ) {
+						//look for a context property that starts with the property
+						for ( var key in request.context ) {
+							if ( listFindNoCase( key, property, '.') ) {
+								try {
+									setProperty( cfc, key, { '#key#' = request.context[ key ] } );
+								} catch ( any e ) {
+									onPopulateError( cfc, key, request.context);
+								}
+							}
+						}
+					}
+				}
+			}
+		} else {
+			var setters = findImplicitAndExplicitSetters( cfc );
+			var keyArray = listToArray( keys );
+			for ( var property in keyArray ) {
+				var trimProperty = trim( property );
+				if ( structKeyExists( setters, trimProperty ) || trustKeys ) {
+					if ( structKeyExists( request.context, trimProperty ) ) {
+						var args = { };
+						args[ trimProperty ] = request.context[ trimProperty ];
+						if ( trim && isSimpleValue( args[ trimProperty ] ) ) args[ trimProperty ] = trim( args[ trimProperty ] );
+						// cfc[ 'set'&trimproperty ]( argumentCollection = args ); // ugh! no portable script version of this?!?!
+						setProperty( cfc, trimProperty, args );
+					}
+				} else if ( deep ) {
+					if ( listLen( trimProperty, '.' ) > 1 ) {
+						var prop = listFirst( trimProperty, '.' );
+						if ( structKeyExists( cfc, 'get' & prop ) ) {
+                            setProperty( cfc, trimProperty, { '#trimProperty#' = request.context[ trimProperty ] } );
+                        }
+					}
+				}
+			}
+		}
+		return cfc;
 	}
 
-</cfscript><cfsilent>
+	private void function setProperty( struct cfc, string property, struct args ) {
+		if ( listLen( property, '.' ) > 1 ) {
+			var firstObjName = listFirst( property, '.' );
+			var newProperty = listRest( property,  '.' );
 
-	<!---
-		populate() may be invoked inside controllers
-	--->
-	<cffunction name="populate" returntype="any" access="public" output="false"
-			hint="Used to populate beans from the request context.">
-		<cfargument name="cfc" />
-		<cfargument name="keys" default="" />
-		<cfargument name="trustKeys" default="false" />
-		<cfargument name="trim" default="false" />
+			args[ newProperty ] = args[ property ];
+			structDelete( args, property );
 
-		<cfset var key = 0 />
-		<cfset var property = 0 />
-		<cfset var trimProperty = 0 />
-		<cfset var args = 0 />
+			if ( structKeyExists( cfc , 'get' & firstObjName ) ) {
+				var obj = getProperty( cfc, firstObjName );
+				if ( !isNull( obj ) ) setProperty( obj, newProperty, args );
+			}
+		} else {
+			evaluate( 'cfc.set#property#( argumentCollection = args )' );
+		}
+	}
+	
+	private any function getProperty( struct cfc, string property ) {
+		if ( structKeyExists( cfc, 'get#property#' ) ) return evaluate( 'cfc.get#property#()' );
+	}
 
-		<cfif arguments.keys is "">
-			<cfif arguments.trustKeys>
-				<!--- assume everything in the request context can be set into the CFC --->
-				<cfloop item="property" collection="#request.context#">
-					<cfset key = "set" & property />
-					<cftry>
-						<cfset args = structNew() />
-						<cfset args[ property ] = request.context[ property ] />
-						<cfif arguments.trim and isSimpleValue( args[property] )><cfset args[property] = trim( args[property] ) /></cfif>
-						<cfinvoke component="#arguments.cfc#" method="#key#" argumentCollection="#args#" />
-					<cfcatch type="any">
-						<cfset onPopulateError( arguments.cfc, property, request.context ) />
-					</cfcatch>
-					</cftry>
-				</cfloop>
-			<cfelse>
-				<cfloop item="key" collection="#arguments.cfc#">
-					<cfif len( key ) gt 3 and left( key, 3 ) is "set">
-						<cfset property = right( key, len( key ) - 3 ) />
-						<cfif structKeyExists( request.context, property )>
-							<cfset args = structNew() />
-							<cfset args[ property ] = request.context[ property ] />
-							<cfif arguments.trim and isSimpleValue( args[property] )><cfset args[property] = trim( args[property] ) /></cfif>
-							<cfinvoke component="#arguments.cfc#" method="#key#" argumentCollection="#args#" />
-						</cfif>
-					</cfif>
-				</cfloop>
-			</cfif>
-		<cfelse>
-			<cfloop index="property" list="#arguments.keys#">
-				<cfset trimProperty = trim( property ) />
-				<cfset key = "set" & trimProperty />
-				<cfif structKeyExists( arguments.cfc, key ) or arguments.trustKeys>
-					<cfif structKeyExists( request.context, trimProperty )>
-						<cfset args = structNew() />
-						<cfset args[ trimProperty ] = request.context[ trimProperty ] />
-						<cfif arguments.trim and isSimpleValue( args[trimProperty] )><cfset args[trimProperty] = trim( args[trimProperty] ) /></cfif>
-					<cfinvoke component="#arguments.cfc#" method="#key#" argumentCollection="#args#" />
-					</cfif>
-				</cfif>
-			</cfloop>
-		</cfif>
+	// call from your controller to redirect to a clean URL based on an action, pushing data to flash scope if necessary:
+	public void function redirect( string action, string preserve = 'none', string append = 'none', string path = variables.magicBaseURL, string queryString = '', string statusCode = '302' ) {
+		if ( path == variables.magicBaseURL ) path = getBaseURL();
+		var preserveKey = '';
+		if ( preserve != 'none' ) {
+			preserveKey = saveFlashContext( preserve );
+		}
+		var baseQueryString = '';
+		if ( append != 'none' ) {
+			if ( append == 'all' ) {
+				for ( var key in request.context ) {
+					if ( isSimpleValue( request.context[ key ] ) ) {
+						baseQueryString = listAppend( baseQueryString, key & '=' & urlEncodedFormat( request.context[ key ] ), '&' );
+					}
+				}
+			} else {
+				var keys = listToArray( append );
+				for ( var key in keys ) {
+					if ( structKeyExists( request.context, key ) && isSimpleValue( request.context[ key ] ) ) {
+						baseQueryString = listAppend( baseQueryString, key & '=' & urlEncodedFormat( request.context[ key ] ), '&' );
+					}
+				}
+				
+			}
+		}
 		
-		<cfreturn arguments.cfc />
-
-	</cffunction>
-
-	<!---
-		redirect() may be invoked inside controllers
-	--->
-	<cffunction name="redirect" access="public" output="false"
-			hint="Redirect to the specified action, optionally append specified request context items - or use session.">
-		<cfargument name="action" type="string" />
-		<cfargument name="preserve" type="string" default="none" />
-		<cfargument name="append" type="string" default="none" />
-		<cfargument name="path" type="string" default="#variables.framework.baseURL#" />
-		<cfargument name="queryString" type="string" default="" />
-
-		<cfset var baseQueryString = "" />
-		<cfset var key = "" />
-		<cfset var preserveKey = "" />
-		<cfset var targetURL = "" />
-
-		<cfif arguments.preserve is not "none">
-			<cfset preserveKey = saveFlashContext( arguments.preserve ) />
-		</cfif>
-
-		<cfif arguments.append is not "none">
-			<cfif arguments.append is "all">
-				<cfloop item="key" collection="#request.context#">
-					<cfif isSimpleValue( request.context[key] )>
-						<cfset baseQueryString = listAppend( baseQueryString, key & "=" & urlEncodedFormat( request.context[key] ), '&' ) />
-					</cfif>
-				</cfloop>
-			<cfelse>
-				<cfloop index="key" list="#arguments.append#">
-					<cfif structKeyExists( request.context, key ) and isSimpleValue( request.context[key] )>
-						<cfset baseQueryString = listAppend( baseQueryString, key & "=" & urlEncodedFormat( request.context[key] ), '&' ) />
-					</cfif>
-				</cfloop>
-			</cfif>
-		</cfif>
+		if ( baseQueryString != '' ) {
+			if ( queryString != '' ) {
+				if ( left( queryString, 1 ) == '?' || left( queryString, 1 ) == '##' ) {
+					baseQueryString = baseQueryString & queryString;
+				} else {
+					baseQueryString = baseQueryString & '&' & queryString;
+				}
+			}
+		} else {
+			baseQueryString = queryString;
+		}
 		
-		<cfif baseQueryString is not ''>
-			<cfif arguments.queryString is not ''>
-				<cfif left( arguments.queryString, 1 ) is '?' or left( arguments.queryString, 1 ) is '##'>
-					<cfset baseQueryString = baseQueryString & arguments.queryString />
-				<cfelse>
-					<cfset baseQueryString = baseQueryString & '&' & arguments.queryString />
-				</cfif>
-			</cfif>
-		<cfelse>
-			<cfset baseQueryString = arguments.queryString />
-		</cfif>
-
-		<cfset targetURL = buildURL( arguments.action, arguments.path, baseQueryString ) />
-		<cfif preserveKey is not "" and variables.framework.maxNumContextsPreserved gt 1>
-			<cfif find( '?', targetURL )>
-				<cfset preserveKey = '&#variables.framework.preserveKeyURLKey#=#preserveKey#' />
-			<cfelse>
-				<cfset preserveKey = '?#variables.framework.preserveKeyURLKey#=#preserveKey#' />
-			</cfif>
-			<cfif find( '##', targetURL )>
-				<cfset targetURL = listFirst( targetURL, '##' ) & preserveKey & '##' & listRest( targetURL, '##' ) />
-			<cfelse>
-				<cfset targetURL = targetURL & preserveKey />
-			</cfif>
-		</cfif>
-		<cflocation url="#targetURL#" addtoken="false" />
-
-	</cffunction>
-
-	<!--- call this from your controller to queue up additional services --->
-	<cffunction name="service" output="false">
-		<cfargument name="action" />
-		<cfargument name="key" />
-		<cfargument name="args" default="#structNew()#" />
-		<cfargument name="enforceExistence" required="false" default="true" />
-		<cfscript>
+		var targetURL = buildURL( action, path, baseQueryString );
+		if ( preserveKey != '' && variables.framework.maxNumContextsPreserved > 1 ) {
+			if ( find( '?', targetURL ) ) {
+				preserveKey = '&#variables.framework.preserveKeyURLKey#=#preserveKey#';
+			} else {
+				preserveKey = '?#variables.framework.preserveKeyURLKey#=#preserveKey#';
+			}
+			if ( find( '##', targetURL ) ) {
+				targetURL = listFirst( targetURL, '##' ) & preserveKey & '##' & listRest( targetURL, '##' );
+			} else {
+				targetURL = targetURL & preserveKey;
+			}
+		}
+		setupResponseWrapper();
+        if ( variables.framework.trace ) {
+            frameworkTrace( 'redirecting to #targetURL# (#statusCode#)' );
+            session._fw1_trace = request._fw1.trace;
+        }
+		location( targetURL, false, statusCode );
+	}
+	
+	// call this from your controller to queue up additional services
+	public void function service( string action, string key, struct args = { }, boolean enforceExistence = true ) {
 		var subsystem = getSubsystem( action );
 		var section = getSection( action );
 		var item = getItem( action );
-		var tuple = structNew();
+		var tuple = { };
 
-		if ( structKeyExists( request, "serviceExecutionComplete" ) ) {
-			raiseException( type="FW1.serviceExecutionComplete", message="Service '#action#' may not be added at this point.",
-				detail="The service execution phase is complete. Services may not be added by end*() or after() controller methods." );
+		if ( structKeyExists( request._fw1, 'serviceExecutionComplete' ) ) {
+			raiseException( type='FW1.serviceExecutionComplete', message="Service '#action#' may not be added at this point.",
+				detail='The service execution phase is complete. Services may not be added by end*() or after() controller methods.' );
 		}
 
 		tuple.service = getService(section=section, subsystem=subsystem);
+        tuple.subsystem = subsystem;
+        tuple.section = section;
 		tuple.item = item;
 		tuple.key = key;
 		tuple.args = args;
 		tuple.enforceExistence = enforceExistence;
 
-		if ( structKeyExists( tuple, "service" ) and isObject( tuple.service ) ) {
-			arrayAppend( request.services, tuple );
+		if ( structKeyExists( tuple, 'service' ) && isObject( tuple.service ) ) {
+            frameworkTrace( 'queuing service', subsystem, section, item );
+			arrayAppend( request._fw1.services, tuple );
 		} else if ( enforceExistence ) {
-			raiseException( type="FW1.serviceCfcNotFound", message="Service '#action#' does not exist.",
+			raiseException( type='FW1.serviceCfcNotFound', message="Service '#action#' does not exist.",
 				detail="To have the execution of this service be conditional based upon its existence, pass in a third parameter of 'false'." );
 		}
-		</cfscript>
-	</cffunction>
-
-</cfsilent><cfscript>
-
+	}
 	/*
 	 * call this from your setupApplication() method to tell the framework
 	 * about your bean factory - only assumption is that it supports:
 	 * - containsBean(name) - returns true if factory contains that named bean, else false
 	 * - getBean(name) - returns the named bean
 	 */
-	function setBeanFactory( factory ) {
+	public void function setBeanFactory( any beanFactory ) {
 
-		application[ variables.framework.applicationKey ].factory = factory;
+		application[ variables.framework.applicationKey ].factory = beanFactory;
 
 	}
 
+	/*
+	 * use this to override the default layout
+	 */
+	public void function setLayout( string action ) {
+		request._fw1.overrideLayoutAction = validateAction( action );
+	}
+	
 	/*
 	 * call this from your setupSubsystem() method to tell the framework
 	 * about your subsystem-specific bean factory - only assumption is that it supports:
 	 * - containsBean(name) - returns true if factory contains that named bean, else false
 	 * - getBean(name) - returns the named bean
 	 */
-	function setSubsystemBeanFactory( subsystem, factory ) {
+	public void function setSubsystemBeanFactory( string subsystem, any factory ) {
 
 		ensureNewFrameworkStructsExist();
 		application[ variables.framework.applicationKey ].subsystemFactories[ subsystem ] = factory;
@@ -848,19 +1003,31 @@
 	 * setupApplication() method
 	 * you do not need to call super.setupApplication()
 	 */
-	function setupApplication() { }
+	public void function setupApplication() { }
+
+	/*
+	 * override this to provide environment-specific initialization
+	 * you do not need to call super.setupEnvironment()
+	 */
+	public void function setupEnvironment( string env ) { }
 
 	/*
 	 * override this to provide request-specific initialization
 	 * you do not need to call super.setupRequest()
 	 */
-	function setupRequest() { }
+	public void function setupRequest() { }
+
+	/*
+	 * override this to provide request-specific finalization
+	 * you do not need to call super.setupResponse()
+	 */
+	public void function setupResponse() { }
 
 	/*
 	 * override this to provide session-specific initialization
 	 * you do not need to call super.setupSession()
 	 */
-	function setupSession() { }
+	public void function setupSession() { }
 
 	/*
 	 * override this to provide subsystem-specific initialization
@@ -870,41 +1037,54 @@
 	 * in your setupSubsystem() method
 	 * you do not need to call super.setupSubsystem( subsystem )
 	 */
-	function setupSubsystem( subsystem ) { }
+	public void function setupSubsystem( string subsystem ) { }
+	
+	/*
+	 * override this to provide pre-rendering logic, e.g., to
+	 * populate the request context with globally required data
+	 * you do not need to call super.setupView()
+	 */
+	public void function setupView() { }
 	
 	/*
 	 * use this to override the default view
 	 */
-	function setView( action ) {
-		request.overrideViewAction = validateAction( action );
+	public void function setView( string action ) {
+		request._fw1.overrideViewAction = validateAction( action );
 	}
 
 	/*
 	 * returns true if the application is configured to use subsystems
 	 */
-	function usingSubsystems() {
+	public boolean function usingSubsystems() {
 		return variables.framework.usingSubsystems;
 	}
-
-</cfscript><cfsilent>
-
-	<!---
-		view() may be invoked inside views and layouts
-		returns the UI generated by the named view
-	--->
-	<cffunction name="view" returntype="string" access="public" output="false">
-		<cfargument name="path" type="string" required="true" />
-		<cfargument name="args" type="struct" default="#structNew()#" />
-		
-		<cfset var viewPath = parseViewOrLayoutPath( arguments.path, 'view' ) />
-		<cfreturn internalView( viewPath, arguments.args ) />
-	</cffunction>
-
-<!--- THE FOLLOWING METHODS SHOULD ALL BE CONSIDERED PRIVATE / UNCALLABLE --->
-
-</cfsilent><cfscript>
-
-	function buildViewAndLayoutQueue() { // "private"
+	
+	/*
+	 * view() may be invoked inside views and layouts
+	 * returns the UI generated by the named view
+	 */
+	public string function view( string path, struct args = { } ) {
+		var viewPath = parseViewOrLayoutPath( path, 'view' );
+        frameworkTrace( 'view( #path# ) called - rendering #viewPath#' );
+		return internalView( viewPath, args );
+	}
+	
+	// THE FOLLOWING METHODS SHOULD ALL BE CONSIDERED PRIVATE / UNCALLABLE
+	
+	private void function autowire( any cfc, any beanFactory ) {
+		var setters = findImplicitAndExplicitSetters( cfc );
+		for ( var property in setters ) {
+			if ( beanFactory.containsBean( property ) ) {
+				var args = { };
+				args[ property ] = beanFactory.getBean( property );
+				// cfc['set'&property](argumentCollection = args) does not work on ACF9
+				evaluate( 'cfc.set#property#( argumentCollection = args )' );
+			}
+		}
+	}
+	
+	private void function buildLayoutQueue() {
 		var siteWideLayoutBase = request.base & getSubsystemDirPrefix( variables.framework.siteWideLayoutSubsystem );
 		var testLayout = 0;
 		// default behavior:
@@ -913,85 +1093,396 @@
 		var item = request.item;
 		var subsystembase = '';
 		
-		// has view been overridden?
-		if ( structKeyExists( request, 'overrideViewAction' ) ) {
-			subsystem = getSubsystem( request.overrideViewAction );
-			section = getSection( request.overrideViewAction );
-			item = getItem( request.overrideViewAction );
-			structDelete( request, 'overrideViewAction' );
+		request._fw1.layouts = [ ];
+		
+		// has layout been overridden?
+		if ( structKeyExists( request._fw1, 'overrideLayoutAction' ) ) {
+			subsystem = getSubsystem( request._fw1.overrideLayoutAction );
+			section = getSection( request._fw1.overrideLayoutAction );
+			item = getItem( request._fw1.overrideLayoutAction );
+			structDelete( request._fw1, 'overrideLayoutAction' );
 		}
 		subsystembase = request.base & getSubsystemDirPrefix( subsystem );
-
-		// view and layout setup - used to be in setupRequestWrapper():
-		request.view = parseViewOrLayoutPath( subsystem & variables.framework.subsystemDelimiter &
-													section & '/' & item, 'view' );
-		if ( not cachedFileExists( expandPath( request.view ) ) ) {
-			request.missingView = request.view;
-			// ensures original view not re-invoked for onError() case:
-			structDelete( request, 'view' );
-		}
-
-		request.layouts = arrayNew(1);
+        frameworkTrace( 'building layout queue', subsystem, section, item );
 		// look for item-specific layout:
 		testLayout = parseViewOrLayoutPath( subsystem & variables.framework.subsystemDelimiter &
 													section & '/' & item, 'layout' );
-		if ( cachedFileExists( expandPath( testLayout ) ) ) {
-			arrayAppend( request.layouts, testLayout );
-		}
+		if ( cachedFileExists( testLayout ) ) {
+            frameworkTrace( 'found item-specific layout #testLayout#', subsystem, section, item );
+			arrayAppend( request._fw1.layouts, testLayout );
+        }
 		// look for section-specific layout:
 		testLayout = parseViewOrLayoutPath( subsystem & variables.framework.subsystemDelimiter &
 													section, 'layout' );
-		if ( cachedFileExists( expandPath( testLayout ) ) ) {
-			arrayAppend( request.layouts, testLayout );
+		if ( cachedFileExists( testLayout ) ) {
+            frameworkTrace( 'found section-specific layout #testLayout#', subsystem, section, item );
+			arrayAppend( request._fw1.layouts, testLayout );
 		}
 		// look for subsystem-specific layout (site-wide layout if not using subsystems):
-		if ( request.section is not 'default' ) {
+		if ( request.section != 'default' ) {
 			testLayout = parseViewOrLayoutPath( subsystem & variables.framework.subsystemDelimiter &
 														'default', 'layout' );
-			if ( cachedFileExists( expandPath( testLayout ) ) ) {
-				arrayAppend( request.layouts, testLayout );
+			if ( cachedFileExists( testLayout ) ) {
+                frameworkTrace( 'found default layout #testLayout#', subsystem, section, item );
+				arrayAppend( request._fw1.layouts, testLayout );
 			}
 		}
 		// look for site-wide layout (only applicable if using subsystems)
-		if ( usingSubsystems() and siteWideLayoutBase is not subsystembase ) {
+		if ( usingSubsystems() && siteWideLayoutBase != subsystembase ) {
 			testLayout = parseViewOrLayoutPath( variables.framework.siteWideLayoutSubsystem & variables.framework.subsystemDelimiter &
 														'default', 'layout' );
-			if ( cachedFileExists( expandPath( testLayout ) ) ) {
-				arrayAppend( request.layouts, testLayout );
+			if ( cachedFileExists( testLayout ) ) {
+                frameworkTrace( 'found #variables.framework.siteWideLayoutSubsystem# layout #testLayout#', subsystem, section, item );
+				arrayAppend( request._fw1.layouts, testLayout );
 			}
 		}
 	}
 
-	function ensureNewFrameworkStructsExist() { // "private"
+
+	private void function buildViewQueue() {
+		// default behavior:
+		var subsystem = request.subsystem;
+		var section = request.section;
+		var item = request.item;
+		var subsystembase = '';
+		
+		// has view been overridden?
+		if ( structKeyExists( request._fw1, 'overrideViewAction' ) ) {
+			subsystem = getSubsystem( request._fw1.overrideViewAction );
+			section = getSection( request._fw1.overrideViewAction );
+			item = getItem( request._fw1.overrideViewAction );
+			structDelete( request._fw1, 'overrideViewAction' );
+		}
+		subsystembase = request.base & getSubsystemDirPrefix( subsystem );
+        frameworkTrace( 'building view queue', subsystem, section, item );
+		// view and layout setup - used to be in setupRequestWrapper():
+		request._fw1.view = parseViewOrLayoutPath( subsystem & variables.framework.subsystemDelimiter &
+													section & '/' & item, 'view' );
+		if ( cachedFileExists( request._fw1.view ) ) {
+            frameworkTrace( 'found view #request._fw1.view#', subsystem, section, item );
+        } else {
+            frameworkTrace( 'no such view #request._fw1.view#', subsystem, section, item );
+			request.missingView = request._fw1.view;
+			// ensures original view not re-invoked for onError() case:
+			structDelete( request._fw1, 'view' );
+		}
+	}
+
+
+	private boolean function cachedFileExists( string filePath ) {
+		var cache = application[ variables.framework.applicationKey ].cache;
+		if ( !variables.framework.cacheFileExists ) {
+			return fileExists( expandPath( filePath) );
+		}
+		param name="cache.fileExists" default="#{ }#";
+		if ( !structKeyExists( cache.fileExists, filePath ) ) {
+			cache.fileExists[ filePath ] = fileExists( expandPath( filePath ) );
+		}
+		return cache.fileExists[ filePath ];
+	}
+	
+	
+	private string function cfcFilePath( string dottedPath ) {
+		if ( dottedPath == '' ) {
+			return '/';
+		} else {
+			return '/' & replace( dottedPath, '.', '/', 'all' ) & '/';
+		}
+	}
+	
+	private void function doController( struct tuple, string method, string lifecycle ) {
+        var cfc = tuple.controller;
+		if ( structKeyExists( cfc, method ) ) {
+			try {
+                frameworkTrace( 'calling #lifecycle# controller', tuple.subsystem, tuple.section, method );
+				evaluate( 'cfc.#method#( rc = request.context )' );
+			} catch ( any e ) {
+				setCfcMethodFailureInfo( cfc, method );
+				rethrow;
+			}
+		}
+		else if ( structKeyExists( cfc, 'onMissingMethod' ) ) {
+			try {
+                frameworkTrace( 'calling #lifecycle# controller (via onMissingMethod)', tuple.subsystem, tuple.section, method );
+				evaluate( 'cfc.#method#( rc = request.context, method = lifecycle )' );
+			} catch ( any e ) {
+				setCfcMethodFailureInfo( cfc, method );
+				rethrow;
+			}
+		} else {
+            frameworkTrace( 'no #lifecycle# controller to call', tuple.subsystem, tuple.section, method );
+        }
+	}
+	
+	private any function doService( struct tuple, string method, struct args, boolean enforceExistence ) {
+        var cfc = tuple.service;
+		if ( structKeyExists( cfc, method ) || structKeyExists( cfc, 'onMissingMethod' ) ) {
+			try {
+				structAppend( args, request.context, false );
+                frameworkTrace( 'calling service', tuple.subsystem, tuple.section, method );
+				var _result_fw1 = evaluate( 'cfc.#method#( argumentCollection = args )' );
+				if ( !isNull( _result_fw1 ) ) {
+					return _result_fw1;
+				}
+			} catch ( any e ) {
+				setCfcMethodFailureInfo( cfc, method );
+				rethrow;
+			}
+		} else if ( enforceExistence ) {
+			raiseException( type='FW1.serviceMethodNotFound', message="Service method '#method#' does not exist in service '#getMetadata( cfc ).fullname#'.",
+				detail="To have the execution of this service method be conditional based upon its existence, pass in a third parameter of 'false'." );
+		}
+	}
+	
+	private void function dumpException( any exception ) {
+		writeDump( var = exception, label = 'Exception' );
+	}
+	
+	private void function ensureNewFrameworkStructsExist() {
 
 		var framework = application[variables.framework.applicationKey];
 
-		if ( not structKeyExists(framework, 'subsystemFactories') ) {
-			framework.subsystemFactories = structNew();
+		if ( !structKeyExists(framework, 'subsystemFactories') ) {
+			framework.subsystemFactories = { };
 		}
 
-		if ( not structKeyExists(framework, 'subsystems') ) {
-			framework.subsystems = structNew();
+		if ( !structKeyExists(framework, 'subsystems') ) {
+			framework.subsystems = { };
 		}
 
 	}
 
-	function failure( exception, event ) { // "private"
-
+	private void function failure( any exception, string event, boolean indirect = false, boolean early = false ) {
+		var h = indirect ? 3 : 1;
 		if ( structKeyExists(exception, 'rootCause') ) {
 			exception = exception.rootCause;
 		}
-		writeOutput( '<h1>Exception in #event#</h1>' );
-		if ( structKeyExists( request, 'failedAction' ) ) {
-			writeOutput( '<p>The action #request.failedAction# failed.</p>' );
+		getPageContext().getResponse().setStatus( 500 );
+		if ( arguments.early ) {
+		    writeOutput( '<h1>Exception occured before FW/1 was initialized</h1>');
+		} else {
+			writeOutput( '<h#h#>' & ( indirect ? 'Original exception ' : 'Exception' ) & ' in #event#</h#h#>' );
+			if ( structKeyExists( request, 'failedAction' ) ) {
+				writeOutput( '<p>The action #request.failedAction# failed.</p>' );
+			}
+			writeOutput( '<h#1+h#>#exception.message#</h#1+h#>' );
 		}
-		writeOutput( '<h2>#exception.message#</h2>' );
+		
 		writeOutput( '<p>#exception.detail# (#exception.type#)</p>' );
 		dumpException(exception);
 
 	}
 
-	function getSubsystemDirPrefix( subsystem ) { // "private"
+	private struct function findImplicitAndExplicitSetters( any cfc ) {
+		var baseMetadata = getMetadata( cfc );
+		var setters = { };
+		// is it already attached to the CFC metadata?
+		if ( structKeyExists( baseMetadata, '__fw1_setters' ) )  {
+			setters = baseMetadata.__fw1_setters;
+		} else {
+			var md = { extends = baseMetadata };
+			do {
+				md = md.extends;
+				var implicitSetters = false;
+				// we have implicit setters if: accessors="true" or persistent="true"
+				if ( structKeyExists( md, 'persistent' ) && isBoolean( md.persistent ) ) {
+					implicitSetters = md.persistent;
+				}
+				if ( structKeyExists( md, 'accessors' ) && isBoolean( md.accessors ) ) {
+					implicitSetters = implicitSetters || md.accessors;
+				}
+				if ( structKeyExists( md, 'properties' ) ) {
+					// due to a bug in ACF9.0.1, we cannot use var property in md.properties,
+					// instead we must use an explicit loop index... ugh!
+					var n = arrayLen( md.properties );
+					for ( var i = 1; i <= n; ++i ) {
+						var property = md.properties[ i ];
+						if ( implicitSetters ||
+								structKeyExists( property, 'setter' ) && isBoolean( property.setter ) && property.setter ) {
+							setters[ property.name ] = 'implicit';
+						}
+					}
+				}
+			} while ( structKeyExists( md, 'extends' ) );
+			// cache it in the metadata (note: in Railo 3.2 metadata cannot be modified
+			// which is why we return the local setters structure - it has to be built
+			// on every controller call; fixed in Railo 3.3)
+			baseMetadata.__fw1_setters = setters;
+		}
+		// gather up explicit setters as well
+		for ( var member in cfc ) {
+			var method = cfc[ member ];
+			var n = len( member );
+			if ( isCustomFunction( method ) && left( member, 3 ) == 'set' && n > 3 ) {
+				var property = right( member, n - 3 );
+				setters[ property ] = 'explicit';
+			}
+		}
+		return setters;
+	}
+
+    private void function frameworkTrace( string message, string subsystem = '', string section = '', string item = '' ) {
+        if ( variables.framework.trace ) {
+            if ( isDefined( 'session._fw1_trace' ) && structKeyExists( session, '_fw1_trace' ) ) {
+                request._fw1.trace = session._fw1_trace;
+                structDelete( session, '_fw1_trace' );
+            }
+            arrayAppend( request._fw1.trace, { tick = getTickCount(), msg = message, sub = subsystem, s = section, i = item } );
+        }
+    }
+
+    private void function frameworkTraceRender() {
+        if ( variables.framework.trace && arrayLen( request._fw1.trace ) ) {
+            var startTime = request._fw1.trace[1].tick;
+            var font = 'font-family: verdana, helvetica;';
+            writeOutput( '<hr /><div style="background: ##ccdddd; color: black; border: 1px solid; border-color: black; padding: 5px; #font#">' );
+            writeOutput( '<div style="#font# font-weight: bold; font-size: large; float: left;">Framework Lifecycle Trace</div><div style="clear: both;"></div>' );
+            var table = '<table style="border: 1px solid; border-color: black; color: black; #font#" width="100%">';
+            writeOutput( table );
+            var colors = [ '##ccd4dd', '##ccddcc' ];
+            var row = 0;
+            var n = arrayLen( request._fw1.trace );
+            for ( var i = 1; i <= n; ++i ) {
+                var trace = request._fw1.trace[i];
+                var action = '';
+                if ( trace.s == variables.magicApplicationController || trace.sub == variables.magicApplicationSubsystem ) {
+                    action = '<em>Application.cfc</em>';
+                    if ( right( trace.i, len( variables.magicApplicationAction ) ) == variables.magicApplicationAction ) {
+                        continue;
+                    }
+                } else {
+                    action = trace.sub;
+                    if ( action != '' && trace.s != '' ) {
+                        action &= variables.framework.subsystemDelimiter;
+                    }
+                    action &= trace.s;
+                    if ( trace.s != '' ) {
+                        action &= '.';
+                    }
+                    action &= trace.i;
+                }
+                ++row;
+                writeOutput( '<tr style="border: 0; background: #colors[1 + row mod 2]#;">' );
+                writeOutput( '<td style="border: 0; color: black; #font# font-size: small;" width="5%">#trace.tick - startTime#ms</td>' );
+                writeOutput( '<td style="border: 0; color: black; #font# font-size: small;" width="10%">#action#</td>' );
+                var color =
+                    trace.msg.startsWith( 'no ' ) ? '##cc8888' :
+                        trace.msg.startsWith( 'onError( ' ) ? '##cc0000' : '##0000';
+                writeOutput( '<td style="border: 0; color: #color#; #font# font-size: small;">#trace.msg#</td>' );
+                writeOutput( '</tr>' );
+                if ( trace.msg.startsWith( 'redirecting ' ) ) {
+                    writeOutput( '</table>#table#' );
+                    if ( i < n ) startTime = request._fw1.trace[i+1].tick;
+                }
+            }
+            writeOutput( '<table></div>' );
+        }
+    }
+
+	private any function getCachedComponent( string type, string subsystem, string section ) {
+
+		setupSubsystemWrapper( subsystem );
+		var cache = application[variables.framework.applicationKey].cache;
+		var types = type & 's';
+		var cfc = 0;
+		var subsystemDir = getSubsystemDirPrefix( subsystem );
+		var subsystemDot = replace( subsystemDir, '/', '.', 'all' );
+		var subsystemUnderscore = replace( subsystemDir, '/', '_', 'all' );
+		var componentKey = subsystemUnderscore & section;
+		var beanName = section & type;
+		
+		if ( !structKeyExists( cache[ types ], componentKey ) ) {
+			lock name="fw1_#application.applicationName#_#variables.framework.applicationKey#_#type#_#componentKey#" type="exclusive" timeout="30" {
+				if ( !structKeyExists( cache[ types ], componentKey ) ) {
+					if ( usingSubsystems() && hasSubsystemBeanFactory( subsystem ) && getSubsystemBeanFactory( subsystem ).containsBean( beanName ) ) {
+						cfc = getSubsystemBeanFactory( subsystem ).getBean( beanName );
+						if ( type == 'controller' ) injectFramework( cfc );
+					} else if ( !usingSubsystems() && hasDefaultBeanFactory() && getDefaultBeanFactory().containsBean( beanName ) ) {
+						cfc = getDefaultBeanFactory().getBean( beanName );
+						if ( type == 'controller' ) injectFramework( cfc );
+					} else {
+						if ( type == 'controller' && section == variables.magicApplicationController ) {
+							// treat this (Application.cfc) as a controller:
+							cfc = this;
+						} else if ( cachedFileExists( cfcFilePath( request.cfcbase ) & subsystemDir & types & '/' & section & '.cfc' ) ) {
+							// we call createObject() rather than new so we can control initialization:
+							if ( request.cfcbase == '' ) {
+								cfc = createObject( 'component', subsystemDot & types & '.' & section );
+							} else {
+								cfc = createObject( 'component', request.cfcbase & '.' & subsystemDot & types & '.' & section );
+							}
+							if ( structKeyExists( cfc, 'init' ) ) {
+								if ( type == 'controller' ) {
+									cfc.init( this );
+								} else {
+									cfc.init();
+								}
+							}
+						}
+						if ( isObject( cfc ) && ( hasDefaultBeanFactory() || hasSubsystemBeanFactory( subsystem ) ) ) {
+							autowire( cfc, getBeanFactory( subsystem ) );
+						}
+					}
+					if ( isObject( cfc ) ) {
+						cache[ types ][ componentKey ] = cfc;
+					}
+				}
+			}
+		}
+
+		if ( structKeyExists( cache[ types ], componentKey ) ) {
+			return cache[ types ][ componentKey ];
+		}
+		// else "return null" effectively
+	}
+	
+	private any function getController( string section, string subsystem = getDefaultSubsystem() ) {
+		var _controller_fw1 = getCachedComponent( 'controller', subsystem, section );
+		if ( isDefined( '_controller_fw1' ) ) {
+			return _controller_fw1;
+		}
+	}
+	
+	private string function getNextPreserveKeyAndPurgeOld() {
+		var nextPreserveKey = '';
+		var oldKeyToPurge = '';
+        try {
+		    if ( variables.framework.maxNumContextsPreserved > 1 ) {
+			    lock scope="session" type="exclusive" timeout="30" {
+				    param name="session.__fw1NextPreserveKey" default="1";
+				    nextPreserveKey = session.__fw1NextPreserveKey;
+				    session.__fw1NextPreserveKey = session.__fw1NextPreserveKey + 1;
+			    }
+			    oldKeyToPurge = nextPreserveKey - variables.framework.maxNumContextsPreserved;
+		    } else {
+			    lock scope="session" type="exclusive" timeout="30" {
+				    session.__fw1PreserveKey = '';
+				    nextPreserveKey = session.__fw1PreserveKey;
+			    }
+			    oldKeyToPurge = '';
+            }
+		} catch ( any e ) {
+            // ignore - assume session scope is disabled
+        }
+		var key = getPreserveKeySessionKey( oldKeyToPurge );
+		if ( structKeyExists( session, key ) ) {
+			structDelete( session, key );
+		}
+		return nextPreserveKey;
+	}
+	
+	private string function getPreserveKeySessionKey( string preserveKey ) {
+		return '__f1' & preserveKey;
+	}
+	
+	private any function getService( string section, string subsystem = getDefaultSubsystem() ) {
+		var _service_fw1 = getCachedComponent( 'service', subsystem, section );
+		if ( isDefined( '_service_fw1' ) ) {
+			return _service_fw1;
+		}
+	}
+	
+	private string function getSubsystemDirPrefix( string subsystem ) {
 
 		if ( subsystem eq '' ) {
 			return '';
@@ -999,19 +1490,68 @@
 
 		return subsystem & '/';
 	}
-
-	function isFrameworkInitialized() { // "private"
+	
+	private void function injectFramework( any cfc ) {
+		var args = { };
+		if ( structKeyExists( cfc, 'setFramework' ) ) {
+			args.framework = this;
+			// allow alternative spellings
+			args.fw = this;
+			args.fw1 = this;
+			evaluate( 'cfc.setFramework( argumentCollection = args )' );
+		}
+	}
+	
+	private string function internalLayout( string layoutPath, string body ) {
+		var rc = request.context;
+		var $ = { };
+		// integration point with Mura:
+		if ( structKeyExists( rc, '$' ) ) {
+			$ = rc.$;
+		}
+		if ( !structKeyExists( request._fw1, 'controllerExecutionComplete' ) ) {
+			raiseException( type='FW1.layoutExecutionFromController', message='Invalid to call the layout method at this point.',
+				detail='The layout method should not be called prior to the completion of the controller execution phase.' );
+		}
+		var response = '';
+		savecontent variable="response" {
+			include '#layoutPath#';
+		}
+		return response;
+	}
+	
+	private string function internalView( string viewPath, struct args = { } ) {
+		var rc = request.context;
+		var $ = { };
+		// integration point with Mura:
+		if ( structKeyExists( rc, '$' ) ) {
+			$ = rc.$;
+		}
+		structAppend( local, args );
+		if ( !structKeyExists( request._fw1, 'serviceExecutionComplete') &&
+             structKeyExists( request._fw1, 'services' ) && arrayLen( request._fw1.services ) != 0 ) {
+			raiseException( type='FW1.viewExecutionFromController', message='Invalid to call the view method at this point.',
+				detail='The view method should not be called prior to the completion of the service execution phase.' );
+		}
+		var response = '';
+		savecontent variable="response" {
+			include '#viewPath#';
+		}
+		return response;
+	}
+	
+	private boolean function isFrameworkInitialized() {
 		return structKeyExists( application, variables.framework.applicationKey );
 	}
 
-	function isFrameworkReloadRequest() { // "private"
-		return ( isDefined('URL') and
-					structKeyExists(URL, variables.framework.reload) and
-					URL[variables.framework.reload] is variables.framework.password ) or
+	private boolean function isFrameworkReloadRequest() {
+		return ( isDefined( 'URL' ) &&
+					structKeyExists( URL, variables.framework.reload ) &&
+					URL[ variables.framework.reload ] == variables.framework.password ) ||
 				variables.framework.reloadApplicationOnEveryRequest;
 	}
 
-	function isSubsystemInitialized( subsystem ) { // "private"
+	private boolean function isSubsystemInitialized( string subsystem ) {
 
 		ensureNewFrameworkStructsExist();
 
@@ -1019,13 +1559,13 @@
 
 	}
 
-	function parseViewOrLayoutPath( path, type ) { // "private"
+	private string function parseViewOrLayoutPath( string path, string type ) {
 
-		var pathInfo = StructNew();
-		var subsystem = getSubsystem( arguments.path );
+		var pathInfo = { };
+		var subsystem = getSubsystem( path );
 
 		// allow for :section/action to simplify logic in setupRequestWrapper():
-		pathInfo.path = listLast( arguments.path, variables.framework.subsystemDelimiter );
+		pathInfo.path = listLast( path, variables.framework.subsystemDelimiter );
 		pathInfo.base = request.base;
 		pathInfo.subsystem = subsystem;
 		if ( usingSubsystems() ) {
@@ -1035,594 +1575,454 @@
 		return customizeViewOrLayoutPath( pathInfo, type, '#pathInfo.base##type#s/#pathInfo.path#.cfm' );
 
 	}
+	
+	private struct function processRouteMatch( string route, string target, string path ) {
+		// TODO: could cache preprocessed versions of route / target / etc
+		var routeMatch = { matched = false, redirect = false, method = '' };
+		// if target has numeric prefix, strip it and set redirect:
+		var prefix = listFirst( target, ':' );
+		if ( isNumeric( prefix ) ) {
+			routeMatch.redirect = true;
+			routeMatch.statusCode = prefix;
+			target = listRest( target, ':' );
+		}
+		// special routes begin with $METHOD, * is also a wildcard
+		var routeLen = len( route );
+		if ( routeLen ) {
+			if ( left( route, 1 ) == '$' ) {
+				// check HTTP method
+				routeMatch.method = listFirst( route, '*/' );
+				var methodLen = len( routeMatch.method );
+				if ( routeLen == methodLen ) {
+					route = '*';
+				} else {
+					route = right( route, routeLen - methodLen );
+				}
+			}
+			if ( route == '*' ) {
+				route = '/';
+			} else if ( right( route, 1 ) != '/' && right( route, 1 ) != '$' ) {
+				// only add the closing backslash if last position is not already a "/" or a "$" to respect regex end of string
+				route &= '/';
+			}
+		} else {
+			route = '/';
+		}
+		if ( !len( target ) || right( target, 1) != '/' ) target &= '/';
+		// walk for self defined (regex) and :var -  replace :var with ([^/]*) in route and back reference in target:
+		var n = 1;
+		var placeholders = rematch( '(:[^/]+)|(\([^\)]+)', route );
+		for ( var placeholder in placeholders ) {
+			if ( left( placeholder, 1 ) == ':') {
+				route = replace( route, placeholder, '([^/]*)' );
+				target = replace( target, placeholder, chr(92) & n );
+			}
+			++n;
+		}
+		// add trailing match/back reference: if last character is not "$" to respect regex end of string
+		if (right( route, 1 ) != '$')
+			route &= '(.*)';
+		target &= chr(92) & n;
+		// end of preprocessing section
+		if ( !len( path ) || right( path, 1) != '/' ) path &= '/';
+		var matched = len( routeMatch.method ) ? ( '$' & request._fw1.cgiRequestMethod == routeMatch.method ) : true;
+		if ( matched && reFind( route, path ) ) {
+			routeMatch.matched = true;
+			routeMatch.pattern = route;
+			routeMatch.target = target;
+			routeMatch.path = path;
+		}
+		return routeMatch;
+	}
 
-	function setCfcMethodFailureInfo( cfc, method ) { // "private"
-		var meta = getMetadata( arguments.cfc );
+	private string function processRoutes( string path ) {
+		for ( var routePack in variables.framework.routes ) {
+			for ( var route in routePack ) {
+				if ( route != 'hint' ) {
+					var routeMatch = processRouteMatch( route, routePack[ route ], path );
+					if ( routeMatch.matched ) {
+						path = rereplace( routeMatch.path, routeMatch.pattern, routeMatch.target );
+						if ( routeMatch.redirect ) {
+							location( path, false, routeMatch.statusCode ); 
+						} else {
+							request._fw1.route = route;
+							return path;
+						}
+					}
+				}
+			}
+		}
+		return path;
+	}
+
+	private void function raiseException( string type, string message, string detail ) {
+		throw( type = type, message = message, detail = detail );
+	}
+	
+	private void function restoreFlashContext() {
+		if ( variables.framework.maxNumContextsPreserved > 1 ) {
+			if ( !structKeyExists( URL, variables.framework.preserveKeyURLKey ) ) {
+				return;
+			}
+			var preserveKey = URL[ variables.framework.preserveKeyURLKey ];
+			var preserveKeySessionKey = getPreserveKeySessionKey( preserveKey );
+		} else {
+			var preserveKeySessionKey = getPreserveKeySessionKey( '' );
+		}
+		try {
+			if ( structKeyExists( session, preserveKeySessionKey ) ) {
+				structAppend( request.context, session[ preserveKeySessionKey ], false );
+				if ( variables.framework.maxNumContextsPreserved == 1 ) {
+					/*
+						When multiple contexts are preserved, the oldest context is purged
+					 	within getNextPreserveKeyAndPurgeOld once the maximum is reached.
+					 	This allows for a browser refresh after the redirect to still receive
+					 	the same context.
+					*/
+					structDelete( session, preserveKeySessionKey );
+				}
+			}
+		} catch ( any e ) {
+			// session scope not enabled, do nothing
+		}
+	}
+	
+	private string function saveFlashContext( string keys ) {
+		var curPreserveKey = getNextPreserveKeyAndPurgeOld();
+		var preserveKeySessionKey = getPreserveKeySessionKey( curPreserveKey );
+		try {
+			param name="session.#preserveKeySessionKey#" default="#{ }#";
+			if ( keys == 'all' ) {
+				structAppend( session[ preserveKeySessionKey ], request.context );
+			} else {
+				var key = 0;
+				var keyNames = listToArray( keys );
+				for ( key in keyNames ) {
+					if ( structKeyExists( request.context, key ) ) {
+						session[ preserveKeySessionKey ][ key ] = request.context[ key ];
+					}
+				}
+			}
+		} catch ( any ex ) {
+			// session scope not enabled, do nothing
+		}
+		return curPreserveKey;
+	}
+
+	private void function setCfcMethodFailureInfo( any cfc, string method ) {
+		var meta = getMetadata( cfc );
 		if ( structKeyExists( meta, 'fullname' ) ) {
 			request.failedCfcName = meta.fullname;
 		} else {
 			request.failedCfcName = meta.name;
 		}
-		request.failedMethod = arguments.method;
+		request.failedMethod = method;
 	}
-
-</cfscript><cfsilent>
-
-	<cffunction name="setupApplicationWrapper" returntype="void" access="private" output="false">
 	
-		<!---
+	private void function setupApplicationWrapper() {
+		/*
 			since this can be called on a reload, we need to lock it to prevent other threads
 			trying to reload the app at the same time since we're messing with the main application
 			data struct... if the application is already running, we don't blow away the factories
 			because we don't want to affect other threads that may be running at this time
-		--->
-		<cfset var frameworkCache = structNew() />
-		<cfset var framework = structNew() />
-		<cfset var isReload = true />
-		<cfset frameworkCache.lastReload = now() />
-		<cfset frameworkCache.fileExists = structNew() />
-		<cfset frameworkCache.controllers = structNew() />
-		<cfset frameworkCache.services = structNew() />
-		<cflock name="fw1_#application.applicationName#_#variables.framework.applicationKey#_initialization" type="exclusive" timeout="10">
-			<cfif structKeyExists( application, variables.framework.applicationKey )>
-				<!--- application is already loaded, just reset the cache and trigger re-initialization of subsystems --->
-				<cfset application[variables.framework.applicationKey].cache = frameworkCache />
-				<cfset application[variables.framework.applicationKey].subsystems = structNew() />
-			<cfelse>
-				<!--- must be first request so we need to set up the entire structure --->
-				<cfset isReload = false />
-				<cfset framework.cache = frameworkCache />
-				<cfset framework.subsystems = structNew() />
-				<cfset framework.subsystemFactories = structNew() /> 
-				<cfset application[variables.framework.applicationKey] = framework />
-			</cfif>
-		</cflock>
+		*/
+		var frameworkCache = { };
+		var framework = { };
+		var isReload = true;
+		frameworkCache.lastReload = now();
+		frameworkCache.fileExists = { };
+		frameworkCache.controllers = { };
+		frameworkCache.services = { };
+		lock name="fw1_#application.applicationName#_#variables.framework.applicationKey#_initialization" type="exclusive" timeout="10" {
+			if ( structKeyExists( application, variables.framework.applicationKey ) ) {
+				// application is already loaded, just reset the cache and trigger re-initialization of subsystems
+				application[variables.framework.applicationKey].cache = frameworkCache;
+				application[variables.framework.applicationKey].subsystems = { };
+			} else {
+				// must be first request so we need to set up the entire structure
+				isReload = false;
+				framework.cache = frameworkCache;
+				framework.subsystems = { };
+				framework.subsystemFactories = { }; 
+				application[variables.framework.applicationKey] = framework;
+			}
+		}
 		
-		<!--- this will recreate the main bean factory on a reload: --->
-		<cfset setupApplication() />
+		// this will recreate the main bean factory on a reload:
+        frameworkTrace( 'setupApplication() called' );
+		setupApplication();
 		
-		<cfif isReload>
-			<!---
+		if ( isReload ) {
+			/*
 				it's possible that the cache got populated by another thread between resetting the cache above
 				and the factory getting recreated by the user code in setupApplication() so we flush the cache
 				again here to be safe / paranoid! 
-			--->
-			<cfset frameworkCache = structNew() />
-			<cfset frameworkCache.lastReload = now() />
-			<cfset frameworkCache.fileExists = structNew() />
-			<cfset frameworkCache.controllers = structNew() />
-			<cfset frameworkCache.services = structNew() />
-			<cfset application[variables.framework.applicationKey].cache = frameworkCache />
-			<cfset application[variables.framework.applicationKey].subsystems = structNew() />
-		</cfif>
+			*/
+			frameworkCache = { };
+			frameworkCache.lastReload = now();
+			frameworkCache.fileExists = { };
+			frameworkCache.controllers = { };
+			frameworkCache.services = { };
+			application[variables.framework.applicationKey].cache = frameworkCache;
+			application[variables.framework.applicationKey].subsystems = { };
+		}
 	
-	</cffunction>
-
-</cfsilent><cfscript>
-
-	function setupFrameworkDefaults() { // "private"
+	}
+	
+	private void function setupFrameworkDefaults() {
 
 		// default values for Application::variables.framework structure:
-		if ( not structKeyExists(variables, 'framework') ) {
-			variables.framework = structNew();
+		if ( !structKeyExists(variables, 'framework') ) {
+			variables.framework = { };
 		}
-		if ( not structKeyExists(variables.framework, 'action') ) {
+		if ( !structKeyExists(variables.framework, 'action') ) {
 			variables.framework.action = 'action';
 		}
-		if ( not structKeyExists(variables.framework, 'base') ) {
+		if ( !structKeyExists(variables.framework, 'base') ) {
 			variables.framework.base = getDirectoryFromPath( variables.cgiScriptName );
-		} else if ( right( variables.framework.base, 1 ) is not '/' ) {
+		} else if ( right( variables.framework.base, 1 ) != '/' ) {
 			variables.framework.base = variables.framework.base & '/';
 		}
 		variables.framework.base = replace( variables.framework.base, chr(92), '/', 'all' );
-		if ( not structKeyExists(variables.framework, 'cfcbase') ) {
+		if ( !structKeyExists(variables.framework, 'cfcbase') ) {
 			if ( len( variables.framework.base ) eq 1 ) {
 				variables.framework.cfcbase = '';
 			} else {
 				variables.framework.cfcbase = replace( mid( variables.framework.base, 2, len(variables.framework.base)-2 ), '/', '.', 'all' );
 			}
 		}
-		if ( not structKeyExists(variables.framework, 'usingSubsystems') ) {
+		if ( !structKeyExists(variables.framework, 'usingSubsystems') ) {
 			variables.framework.usingSubsystems = false;
 		}
-		if ( not structKeyExists(variables.framework, 'defaultSubsystem') ) {
+		if ( !structKeyExists(variables.framework, 'defaultSubsystem') ) {
 			variables.framework.defaultSubsystem = 'home';
 		}
-		if ( not structKeyExists(variables.framework, 'defaultSection') ) {
+		if ( !structKeyExists(variables.framework, 'defaultSection') ) {
 			variables.framework.defaultSection = 'main';
 		}
-		if ( not structKeyExists(variables.framework, 'defaultItem') ) {
+		if ( !structKeyExists(variables.framework, 'defaultItem') ) {
 			variables.framework.defaultItem = 'default';
 		}
-		if ( not structKeyExists(variables.framework, 'subsystemDelimiter') ) {
+		if ( !structKeyExists(variables.framework, 'subsystemDelimiter') ) {
 			variables.framework.subsystemDelimiter = ':';
 		}
-		if ( not structKeyExists(variables.framework, 'siteWideLayoutSubsystem') ) {
+		if ( !structKeyExists(variables.framework, 'siteWideLayoutSubsystem') ) {
 			variables.framework.siteWideLayoutSubsystem = 'common';
 		}
-		if ( not structKeyExists(variables.framework, 'home') ) {
+		if ( !structKeyExists(variables.framework, 'home') ) {
 			if (usingSubsystems()) {
 				variables.framework.home = variables.framework.defaultSubsystem & variables.framework.subsystemDelimiter & variables.framework.defaultSection & '.' & variables.framework.defaultItem;
 			} else {
 				variables.framework.home = variables.framework.defaultSection & '.' & variables.framework.defaultItem;
 			}
 		}
-		if ( not structKeyExists(variables.framework, 'error') ) {
+		if ( !structKeyExists(variables.framework, 'error') ) {
 			if (usingSubsystems()) {
 				variables.framework.error = variables.framework.defaultSubsystem & variables.framework.subsystemDelimiter & variables.framework.defaultSection & '.error';
 			} else {
 				variables.framework.error = variables.framework.defaultSection & '.error';
 			}
 		}
-		if ( not structKeyExists(variables.framework, 'reload') ) {
+		if ( !structKeyExists(variables.framework, 'reload') ) {
 			variables.framework.reload = 'reload';
 		}
-		if ( not structKeyExists(variables.framework, 'password') ) {
+		if ( !structKeyExists(variables.framework, 'password') ) {
 			variables.framework.password = 'true';
 		}
-		if ( not structKeyExists(variables.framework, 'reloadApplicationOnEveryRequest') ) {
+		if ( !structKeyExists(variables.framework, 'reloadApplicationOnEveryRequest') ) {
 			variables.framework.reloadApplicationOnEveryRequest = false;
 		}
-		if ( not structKeyExists(variables.framework, 'preserveKeyURLKey') ) {
+		if ( !structKeyExists(variables.framework, 'preserveKeyURLKey') ) {
 			variables.framework.preserveKeyURLKey = 'fw1pk';
 		}
-		if ( not structKeyExists(variables.framework, 'maxNumContextsPreserved') ) {
+		if ( !structKeyExists(variables.framework, 'maxNumContextsPreserved') ) {
 			variables.framework.maxNumContextsPreserved = 10;
 		}
-		if ( not structKeyExists(variables.framework, 'baseURL') ) {
+		if ( !structKeyExists(variables.framework, 'baseURL') ) {
 			variables.framework.baseURL = 'useCgiScriptName';
 		}
-		if ( not structKeyExists(variables.framework, 'generateSES') ) {
+		if ( !structKeyExists(variables.framework, 'generateSES') ) {
 			variables.framework.generateSES = false;
 		}
-		if ( not structKeyExists(variables.framework, 'SESOmitIndex') ) {
+		if ( !structKeyExists(variables.framework, 'SESOmitIndex') ) {
 			variables.framework.SESOmitIndex = false;
 		}
 		// NOTE: unhandledExtensions is a list of file extensions that are not handled by FW/1
-		if ( not structKeyExists(variables.framework, 'unhandledExtensions') ) {
+		if ( !structKeyExists(variables.framework, 'unhandledExtensions') ) {
 			variables.framework.unhandledExtensions = 'cfc';
 		}
 		// NOTE: you can provide a comma delimited list of paths.  Since comma is the delim, it can not be part of your path URL to exclude
-		if ( not structKeyExists(variables.framework, 'unhandledPaths') ) {
+		if ( !structKeyExists(variables.framework, 'unhandledPaths') ) {
 			variables.framework.unhandledPaths = '/flex2gateway';
 		}				
+        if ( !structKeyExists( variables.framework, 'unhandledErrorCaught' ) ) {
+            variables.framework.unhandledErrorCaught = false;
+        }
 		// convert unhandledPaths to regex:
 		variables.framework.unhandledPathRegex = replaceNoCase(
 			REReplace( variables.framework.unhandledPaths, '(\+|\*|\?|\.|\[|\^|\$|\(|\)|\{|\||\\)', '\\\1', 'all' ),
 			',', '|', 'all' );
-		if ( not structKeyExists(variables.framework, 'applicationKey') ) {
+		if ( !structKeyExists(variables.framework, 'applicationKey') ) {
 			variables.framework.applicationKey = 'org.corfield.framework';
 		}
-		if ( not structKeyExists( variables.framework, 'suppressImplicitService' ) ) {
-			variables.framework.suppressImplicitService = false;
+		if ( !structKeyExists( variables.framework, 'suppressImplicitService' ) ) {
+			variables.framework.suppressImplicitService = true;
 		}
-		if ( not structKeyExists( variables.framework, 'cacheFileExists' ) ) {
+		if ( !structKeyExists( variables.framework, 'cacheFileExists' ) ) {
 			variables.framework.cacheFileExists = false;
 		}
-		variables.framework.version = '1.2';
+		if ( !structKeyExists( variables.framework, 'routes' ) ) {
+			variables.framework.routes = [ ];
+		}
+		if ( !structKeyExists( variables.framework, 'noLowerCase' ) ) {
+			variables.framework.noLowerCase = false;
+		}
+		if ( !structKeyExists( variables.framework, 'subsystems' ) ) {
+			variables.framework.subsystems = { };
+		}
+		if ( !structKeyExists( variables.framework, 'trace' ) ) {
+			variables.framework.trace = false;
+		}
+	    variables.framework.version = '2.1.1';
+        setupFrameworkEnvironments();
 	}
 
-	function setupRequestDefaults() { // "private"
-		request.base = variables.framework.base;
-		request.cfcbase = variables.framework.cfcbase;
+    private void function setupFrameworkEnvironments() {
+        var env = getEnvironment();
+        if ( structKeyExists( variables.framework, 'environments' ) ) {
+            var envs = variables.framework.environments;
+            var tier = listFirst( env, '-' );
+            if ( structKeyExists( envs, tier ) ) {
+                structAppend( variables.framework, envs[ tier ] );
+            }
+            if ( structKeyExists( envs, env ) ) {
+                structAppend( variables.framework, envs[ env ] );
+            }
+        }
+        setupEnvironment( env );
+    }
+
+	private void function setupRequestDefaults() {
+        if ( !request._fw1.requestDefaultsInitialized ) {
+            var pathInfo = variables.cgiPathInfo;
+            request.base = variables.framework.base;
+            request.cfcbase = variables.framework.cfcbase;
+
+            if ( !structKeyExists(request, 'context') ) {
+                request.context = { };
+            }
+            // SES URLs by popular request :)
+            if ( len( pathInfo ) > len( variables.cgiScriptName ) && left( pathInfo, len( variables.cgiScriptName ) ) == variables.cgiScriptName ) {
+                // canonicalize for IIS:
+                pathInfo = right( pathInfo, len( pathInfo ) - len( variables.cgiScriptName ) );
+            } else if ( len( pathInfo ) > 0 && pathInfo == left( variables.cgiScriptName, len( pathInfo ) ) ) {
+                // pathInfo is bogus so ignore it:
+                pathInfo = '';
+            }
+            pathInfo = processRoutes( pathInfo );
+            try {
+                // we use .split() to handle empty items in pathInfo - we fallback to listToArray() on
+                // any system that doesn't support .split() just in case (empty items won't work there!)
+                if ( len( pathInfo ) > 1 ) {
+                    pathInfo = right( pathInfo, len( pathInfo ) - 1 ).split( '/' );
+                } else {
+                    pathInfo = arrayNew( 1 );
+                }
+            } catch ( any exception ) {
+                pathInfo = listToArray( pathInfo, '/' );
+            }
+            var sesN = arrayLen( pathInfo );
+            if ( ( sesN > 0 || variables.framework.generateSES ) && getBaseURL() != 'useRequestURI' ) {
+                request._fw1.generateSES = true;
+            }
+            for ( var sesIx = 1; sesIx <= sesN; sesIx = sesIx + 1 ) {
+                if ( sesIx == 1 ) {
+                    request.context[variables.framework.action] = pathInfo[sesIx];
+                } else if ( sesIx == 2 ) {
+                    request.context[variables.framework.action] = pathInfo[sesIx-1] & '.' & pathInfo[sesIx];
+                } else if ( sesIx mod 2 == 1 ) {
+                    request.context[ pathInfo[sesIx] ] = '';
+                } else {
+                    request.context[ pathInfo[sesIx-1] ] = pathInfo[sesIx];
+                }
+            }
+            // certain remote calls do not have URL or form scope:
+            if ( isDefined('URL') ) structAppend(request.context,URL);
+            if ( isDefined('form') ) structAppend(request.context,form);
+            // figure out the request action before restoring flash context:
+            if ( !structKeyExists(request.context, variables.framework.action) ) {
+                request.context[variables.framework.action] = variables.framework.home;
+            } else {
+                request.context[variables.framework.action] = getFullyQualifiedAction( request.context[variables.framework.action] );
+            }
+            if ( variables.framework.noLowerCase ) {
+                request.action = validateAction( request.context[variables.framework.action] );
+            } else {
+                request.action = validateAction( lCase(request.context[variables.framework.action]) );
+            }
+            request._fw1.requestDefaultsInitialized = true;
+        }
 	}
 
-	function setupRequestWrapper( runSetup ) { // "private"
+	private void function setupRequestWrapper( boolean runSetup ) {
 
 		request.subsystem = getSubsystem( request.action );
 		request.subsystembase = request.base & getSubsystemDirPrefix( request.subsystem );
 		request.section = getSection( request.action );
 		request.item = getItem( request.action );
-		request.services = arrayNew(1);
 		
 		if ( runSetup ) {
 			rc = request.context;
+            if ( usingSubsystems() ) {
+			    controller( variables.magicApplicationSubsystem & variables.framework.subsystemDelimiter &
+                            variables.magicApplicationController & '.' & variables.magicApplicationAction );
+            } else {
+			    controller( variables.magicApplicationController & '.' & variables.magicApplicationAction );
+            }
 			setupSubsystemWrapper( request.subsystem );
+            frameworkTrace( 'setupRequest() called' );
 			setupRequest();
 		}
 
 		controller( request.action );
-		if ( not variables.framework.suppressImplicitService ) {
-			service( request.action, getServiceKey( request.action ), structNew(), false );
+		if ( !variables.framework.suppressImplicitService ) {
+			service( request.action, getServiceKey( request.action ), { }, false );
 		}
 	}
 
-	function setupSessionWrapper() { // "private"
+	private void function setupResponseWrapper() {
+        frameworkTrace( 'setupResponse() called' );
+		setupResponse();
+	}
+
+	private void function setupSessionWrapper() {
+        frameworkTrace( 'setupSession() called' );
 		setupSession();
 	}
 
-	function validateAction( action ) { // "private"
-		if ( findOneOf( '/\', action ) gt 0 ) {
-			raiseException( type="FW1.actionContainsSlash", message="Found a slash in the action: '#action#'.",
-					detail="Actions are not allowed to embed sub-directory paths.");
+	private void function setupSubsystemWrapper( string subsystem ) {
+		if ( !usingSubsystems() ) return;
+		lock name="fw1_#application.applicationName#_#variables.framework.applicationKey#_subsysteminit_#subsystem#" type="exclusive" timeout="30" {
+			if ( !isSubsystemInitialized( subsystem ) ) {
+				application[ variables.framework.applicationKey ].subsystems[ subsystem ] = now();
+                frameworkTrace( 'setupSubsystem() called', subsystem );
+				setupSubsystem( subsystem );
+			}
+		}
+	}
+
+	private string function validateAction( string action ) {
+		// check for forward and backward slash in the action - using chr() to avoid confusing TextMate (Hi Nathan!)
+		if ( findOneOf( chr(47) & chr(92), action ) > 0 ) {
+			raiseException( type='FW1.actionContainsSlash', message="Found a slash in the action: '#action#'.",
+					detail='Actions are not allowed to embed sub-directory paths.');
 		}
 		return action;
 	}
 
-	function viewNotFound() { // "private"
-		raiseException( type="FW1.viewNotFound", message="Unable to find a view for '#request.action#' action.",
+	private void function viewNotFound() {
+		raiseException( type='FW1.viewNotFound', message="Unable to find a view for '#request.action#' action.",
 				detail="'#request.missingView#' does not exist." );
 	}
-
-</cfscript><cfsilent>
-
-	<cffunction name="autowire" access="private" output="false"
-			hint="Used to autowire controllers and services from a bean factory.">
-		<cfargument name="cfc" />
-		<cfargument name="beanFactory" />
-
-		<cfset var key = 0 />
-		<cfset var property = 0 />
-		<cfset var args = 0 />
-
-		<cfloop item="key" collection="#arguments.cfc#">
-			<cfif len(key) gt 3 and left(key,3) is "set">
-				<cfset property = right(key, len(key)-3) />
-				<cfif arguments.beanFactory.containsBean(property)>
-					<!--- args = [ getBeanFactory().getBean(property) ] does not seem to be portable --->
-					<cfset args = structNew() />
-					<cfset args[property] = arguments.beanFactory.getBean(property) />
-					<cfinvoke component="#arguments.cfc#" method="#key#" argumentCollection="#args#" />
-				</cfif>
-			</cfif>
-		</cfloop>
-
-	</cffunction>
 	
-	<cffunction name="cachedFileExists" returntype="boolean" access="private" output="false">
-		<cfargument name="filePath" />
-		<cfset var cache = application[variables.framework.applicationKey].cache />
-		<cfif not variables.framework.cacheFileExists>
-			<cfreturn fileExists( arguments.filePath ) />
-		</cfif>
-		<cfparam name="cache.fileExists" default="#structNew()#" />
-		<cfif not structKeyExists( cache.fileExists, arguments.filePath )>
-			<cfset cache.fileExists[arguments.filePath] = fileExists( arguments.filePath ) /> 
-		</cfif>
-		<cfreturn cache.fileExists[arguments.filePath] />
-	</cffunction>
-
-	<cffunction name="cfcFilePath" access="private" output="false" hint="Changes a dotted path to a filesystem path">
-		<cfargument name="dottedPath" />
-
-		<cfif arguments.dottedPath eq '' >
-		
-			<cfreturn "/" />
-			
-		<cfelse>
-		
-			<cfreturn '/' & replace( arguments.dottedPath, '.', '/', 'all' ) & '/' />
-		
-		</cfif>
-
-	</cffunction>
-
-	<cffunction name="doController" access="private" output="false" hint="Executes a controller in context.">
-		<cfargument name="cfc" />
-		<cfargument name="method" />
-
-		<cfset var meta = 0 />
-
-		<cfif structKeyExists(arguments.cfc,arguments.method) or structKeyExists(arguments.cfc,"onMissingMethod")>
-			<cftry>
-				<cfinvoke component="#arguments.cfc#" method="#arguments.method#" rc="#request.context#" />
-			<cfcatch type="any">
-				<cfset setCfcMethodFailureInfo( arguments.cfc, arguments.method ) />
-				<cfrethrow />
-			</cfcatch>
-			</cftry>
-		</cfif>
-
-	</cffunction>
-
-	<cffunction name="doService" access="private" output="false" hint="Executes a controller in context.">
-		<cfargument name="cfc" />
-		<cfargument name="method" />
-		<cfargument name="args" />
-		<cfargument name="enforceExistence" />
-
-		<cfset var _result_fw1 = 0 />
-
-		<cfif structKeyExists( arguments.cfc, arguments.method ) or structKeyExists( arguments.cfc, "onMissingMethod" )>
-			<cftry>
-				<cfset structAppend( arguments.args, request.context, false ) />
-				<cfinvoke component="#arguments.cfc#" method="#arguments.method#"
-					argumentCollection="#arguments.args#" returnVariable="_result_fw1" />
-			<cfcatch type="any">
-				<cfset setCfcMethodFailureInfo( arguments.cfc, arguments.method ) />
-				<cfrethrow />
-			</cfcatch>
-			</cftry>
-			<cfif isDefined("_result_fw1")>
-				<cfreturn _result_fw1 />
-			</cfif>
-		<cfelseif arguments.enforceExistence>
-			<cfset raiseException( type="FW1.serviceMethodNotFound", message="Service method '#arguments.method#' does not exist in service '#getMetadata( arguments.cfc ).fullname#'.",
-				detail="To have the execution of this service method be conditional based upon its existence, pass in a third parameter of 'false'." )>
-		</cfif>
-
-	</cffunction>
-
-	<cffunction name="dumpException" access="private" hint="Convenience method to dump an exception cleanly.">
-		<cfargument name="exception" />
-
-		<cfdump var="#arguments.exception#" label="Exception"/>
-
-	</cffunction>
-
-	<cffunction name="getCachedComponent" access="private" output="false">
-		<cfargument name="type" type="string" />
-		<cfargument name="subsystem" type="string" />
-		<cfargument name="section" type="string" />
-
-		<cfset var cache = application[variables.framework.applicationKey].cache />
-		<cfset var types = type & 's' />
-		<cfset var cfc = 0 />
-		<cfset var subsystemDir = getSubsystemDirPrefix(arguments.subsystem) />
-		<cfset var subsystemDot = replace( subsystemDir, '/', '.', 'all' ) />
-		<cfset var subsystemUnderscore = replace( subsystemDir, '/', '_', 'all' ) />
-		<cfset var componentKey = subsystemUnderscore & section />
-		<cfset var beanName = section & type />
-
-		<cfset setupSubsystemWrapper(subsystem) />
-
-		<cfif not structKeyExists(cache[types], componentKey)>
-			<cflock name="fw1_#application.applicationName#_#variables.framework.applicationKey#_#type#_#componentKey#" type="exclusive" timeout="30">
-				<cfscript>
-
-					if ( not structKeyExists(cache[types], componentKey)) {
-
-						if ( usingSubsystems() and hasSubsystemBeanFactory(subsystem) and getSubsystemBeanFactory(subsystem).containsBean(beanName) ) {
-
-							cfc = getSubsystemBeanFactory(subsystem).getBean( beanName );
-							if ( type is 'controller' ) injectFramework( cfc );
-
-						} else if ( not usingSubsystems() and hasDefaultBeanFactory() and getDefaultBeanFactory().containsBean(beanName) ) {
-
-							cfc = getDefaultBeanFactory().getBean( beanName );
-							if ( type is 'controller' ) injectFramework( cfc );
-
-						} else if ( cachedFileExists( expandPath( cfcFilePath( request.cfcbase ) & subsystemDir & types & '/' & section & '.cfc' ) ) ) {
-
-							if ( request.cfcbase is '' ) {
-								cfc = createObject( 'component', subsystemDot & types & '.' & section );
-							} else {
-								cfc = createObject( 'component', request.cfcbase & '.' & subsystemDot & types & '.' & section );
-							}
-							if ( structKeyExists( cfc, 'init' ) ) {
-								if ( type is 'controller' ) {
-									cfc.init( this );
-								} else {
-									cfc.init();
-								}
-							}
-
-							if ( hasDefaultBeanFactory() or hasSubsystemBeanFactory( subsystem ) ) {
-   								autowire( cfc, getBeanFactory( subsystem ) );
-							}
-						}
-
-						if ( isObject(cfc) ) {
-							cache[types][componentKey] = cfc;
-						}
-					}
-
-				</cfscript>
-			</cflock>
-		</cfif>
-
-		<cfif structKeyExists(cache[types], componentKey)>
-			<cfreturn cache[types][componentKey] />
-		</cfif>
-		<!--- else "return null" effectively --->
-	</cffunction>
-
-	<cffunction name="getController" access="private" output="false">
-		<cfargument name="section" />
-		<cfargument name="subsystem" default="#getDefaultSubsystem()#" required="false" />
-		<cfscript>
-		var _controller_fw1 = getCachedComponent("controller",subsystem,section);
-
-		if ( isDefined('_controller_fw1') ) {
-			return _controller_fw1;
-		}
-		</cfscript>
-	</cffunction>
-
-	<cffunction name="getNextPreserveKeyAndPurgeOld" access="private" output="false">
-		<cfset var nextPreserveKey = "" />
-		<cfset var oldKeyToPurge = "" />
-
-		<cfif variables.framework.maxNumContextsPreserved gt 1>
-			<cflock scope="session" type="exclusive" timeout="30">
-				<cfparam name="session.__fw1NextPreserveKey" default="1" />
-				<cfset nextPreserveKey = session.__fw1NextPreserveKey />
-				<cfset session.__fw1NextPreserveKey = session.__fw1NextPreserveKey + 1 />
-			</cflock>
-			<cfset oldKeyToPurge = nextPreserveKey - variables.framework.maxNumContextsPreserved />
-		<cfelse>
-			<cflock scope="session" type="exclusive" timeout="30">
-				<cfset session.__fw1PreserveKey = '' />
-				<cfset nextPreserveKey = session.__fw1PreserveKey />
-			</cflock>
-			<cfset oldKeyToPurge = '' />
-		</cfif>
-		
-		<cfif structKeyExists( session, getPreserveKeySessionKey( oldKeyToPurge ) )>
-			<cfset structDelete( session, getPreserveKeySessionKey( oldKeyToPurge ) ) />
-		</cfif>
-
-		<cfreturn nextPreserveKey />
-
-	</cffunction>
-
-	<cffunction name="getPreserveKeySessionKey" access="private" output="false">
-		<cfargument name="preserveKey" />
-
-		<cfreturn "__fw1#arguments.preserveKey#" />
-
-	</cffunction>
-
-	<cffunction name="getService" access="private" output="false">
-		<cfargument name="section" />
-		<cfargument name="subsystem" default="#getDefaultSubsystem()#" required="false" />
-		<cfscript>
-		var _service_fw1 = getCachedComponent("service",subsystem,section);
-
-		if ( isDefined('_service_fw1') ) {
-			return _service_fw1;
-		}
-		</cfscript>
-	</cffunction>
-
-	<cffunction name="injectFramework" access="private" output="false" hint="Injects FW/1 if appropriate setter declared.">
-		<cfargument name="cfc" required="true" />
-		
-		<cfset var args = structNew() />
-		<cfif structKeyExists( arguments.cfc, 'setFramework' )>
-			<cfset args.framework = this />
-			<!--- allow alternative spellings --->
-			<cfset args.fw = this />
-			<cfset args.fw1 = this />
-			<cfinvoke component="#arguments.cfc#" method="setFramework" argumentCollection="#args#" />
-		</cfif>
-		 
-	</cffunction>	
-
-	<cffunction name="internalLayout" access="private" output="false" hint="Returns the UI generated by the named layout.">
-		<cfargument name="layoutPath" />
-		<cfargument name="body" />
-
-		<cfset var rc = request.context />
-		<cfset var response = '' />
-		<cfset var local = structNew() />
-		<cfset var $ = structNew() />
-		
-		<!--- integration point with Mura --->
-		<cfif structKeyExists( rc, '$' )>
-			<cfset $ = rc.$ />
-		</cfif>
-
-		<cfif not structKeyExists( request, "controllerExecutionComplete" ) >
-			<cfset raiseException( type="FW1.layoutExecutionFromController", message="Invalid to call the layout method at this point.",
-				detail="The layout method should not be called prior to the completion of the controller execution phase." ) />
-		</cfif>
-
-		<cfsavecontent variable='response'><cfinclude template="#layoutPath#"/></cfsavecontent>
-
-		<cfreturn response />
-	</cffunction>
-
-	<cffunction name="internalView" access="private" output="false" hint="Returns the UI generated by the named view.">
-		<cfargument name="viewPath" />
-		<cfargument name="args" type="struct" default="#structNew()#" />
-
-		<cfset var rc = request.context />
-		<cfset var response = '' />
-		<cfset var local = structNew() />
-		<cfset var $ = structNew() />
-		
-		<!--- integration point with Mura --->
-		<cfif structKeyExists( rc, '$' )>
-			<cfset $ = rc.$ />
-		</cfif>
-		
-		<cfset structAppend( local, arguments.args ) />
-
-		<cfif not structKeyExists( request, "controllerExecutionComplete" ) >
-			<cfset raiseException( type="FW1.viewExecutionFromController", message="Invalid to call the view method at this point.",
-				detail="The view method should not be called prior to the completion of the controller execution phase." ) />
-		</cfif>
-
-		<cfsavecontent variable='response'><cfinclude template="#viewPath#"/></cfsavecontent>
-
-		<cfreturn response />
-
-	</cffunction>
-
-	<cffunction name="raiseException" access="private" output="false" hint="Throw an exception, callable from script.">
-		<cfargument name="type" type="string" required="true" />
-		<cfargument name="message" type="string" required="true" />
-		<cfargument name="detail" type="string" default="" />
-
-		<cfthrow type="#arguments.type#" message="#arguments.message#" detail="#arguments.detail#" />
-
-	</cffunction>
-
-	<cffunction name="restoreFlashContext" access="private" output="false" hint="Restore request context from session scope if present.">
-		<cfset var preserveKey = '' />
-		<cfset var preserveKeySessionKey = '' />
-
-		<cfif variables.framework.maxNumContextsPreserved gt 1>
-			<cfif not structKeyExists( URL, variables.framework.preserveKeyURLKey )>
-				<cfreturn />
-			</cfif>
-			<cfset preserveKey = URL[ variables.framework.preserveKeyURLKey ] />
-			<cfset preserveKeySessionKey = getPreserveKeySessionKey( preserveKey ) />
-		<cfelse>
-			<cfset preserveKeySessionKey = getPreserveKeySessionKey( '' ) />
-		</cfif>
-		<cftry>
-			<cfif structKeyExists( session, preserveKeySessionKey )>
-				<cfset structAppend( request.context, session[ preserveKeySessionKey ], false ) />
-				<cfif variables.framework.maxNumContextsPreserved eq 1>
-					<!--- When multiple contexts are preserved, the oldest context is purged
-					 		within getNextPreserveKeyAndPurgeOld once the maximum is reached.
-					 		This allows for a browser refresh after the redirect to still receive
-					 		the same context. --->
-					<cfset structDelete( session, preserveKeySessionKey ) />
-				</cfif>
-			</cfif>
-		<cfcatch type="any">
-			<!--- session scope not enabled, do nothing --->
-		</cfcatch>
-		</cftry>
-
-	</cffunction>
-
-	<cffunction name="saveFlashContext" returntype="string" output="false" access="private" hint="Save request context to session scope if present.">
-		<cfargument name="keys" type="string" />
-
-		<cfset var currPreserveKey = getNextPreserveKeyAndPurgeOld() />
-		<cfset var preserveKeySessionKey = getPreserveKeySessionKey( currPreserveKey ) />
-		<cfset var key = "" />
-
-		<cftry>
-			<cfparam name="session.#preserveKeySessionKey#" default="#structNew()#" />
-			<cfif arguments.keys is "all">
-				<cfset structAppend( session[ preserveKeySessionKey ], request.context ) />
-			<cfelse>
-				<cfloop index="key" list="#arguments.keys#">
-					<cfif structKeyExists( request.context, key )>
-						<cfset session[ preserveKeySessionKey ][ key ] = request.context[ key ] />
-					</cfif>
-				</cfloop>
-			</cfif>
-		<cfcatch type="any">
-			<!--- session scope not enabled, do nothing --->
-		</cfcatch>
-		</cftry>
-
-		<cfreturn currPreserveKey />
-
-	</cffunction>
-
-	<cffunction name="setupSubsystemWrapper" access="private" output="false">
-		<cfargument name="subsystem" required="true" />
-
-		<cfif not usingSubsystems()>
-			<cfreturn>
-		</cfif>
-
-		<cflock name="fw1_#application.applicationName#_#variables.framework.applicationKey#_subsysteminit_#arguments.subsystem#" type="exclusive" timeout="30">
-			<cfscript>
-				if ( not isSubsystemInitialized(subsystem) ) {
-					application[variables.framework.applicationKey].subsystems[subsystem] = Now();
-					setupSubsystem(subsystem=subsystem);
-				}
-			</cfscript>
-		</cflock>
-
-	</cffunction>
-
-</cfsilent></cfcomponent>
+}

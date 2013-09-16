@@ -82,6 +82,9 @@ jQuery(document).ready(function(){
 siteManager.configuratorMode='frontEnd';
 
 jQuery(document).ready(function(){
+
+	$('##configurator .load-inline').spin(spinnerArgs2);
+
 	if(jQuery("##ProxyIFrame").length){
 		jQuery("##ProxyIFrame").load(
 			function(){
@@ -123,6 +126,20 @@ jQuery(document).ready(function(){
 		</cfcase>
 		<cfcase value="category_summary,category_summary_rss">	
 			siteManager.initCategorySummaryConfigurator({
+						'object':'#JSStringFormat(rsDisplayObject.object)#',
+						'objectid':'#JSStringFormat(rsDisplayObject.objectid)#',
+						'name':'#JSStringFormat(rsDisplayObject.name)#',
+						'regionid':'#JSStringFormat(rsDisplayObject.columnid)#',
+						'context':'#application.configBean.getContext()#',
+						'params':'#JSStringFormat(rsDisplayObject.params)#',
+						'siteid':'#JSStringFormat(rsDisplayObject.siteid)#',
+						'contenthistid':'#JSStringFormat(rc.contentBean.getContentHistID())#',
+						'contentid':'#JSStringFormat(rc.contentBean.getContentID())#',
+						'parentid':'#JSStringFormat(rc.contentBean.getParentID())#'		
+					});
+		</cfcase>
+		<cfcase value="tag_cloud">	
+			siteManager.initTagCloudConfigurator({
 						'object':'#JSStringFormat(rsDisplayObject.object)#',
 						'objectid':'#JSStringFormat(rsDisplayObject.objectid)#',
 						'name':'#JSStringFormat(rsDisplayObject.name)#',
@@ -181,6 +198,7 @@ jQuery(document).ready(function(){
 			
 			if (siteManager.availableObjectValidate(siteManager.availableObject.params)) {
 				jQuery("##configurator").html('<div class="load-inline"></div>');
+				$('##configurator .load-inline').spin(spinnerArgs2);
 				jQuery(".form-actions").hide();
 				jQuery("##configuratorNotices").hide();
 				
@@ -210,6 +228,7 @@ jQuery(document).ready(function(){
 			
 			if (siteManager.availableObjectValidate(siteManager.availableObject.params)) {
 				jQuery("##configurator").html('<div class="load-inline"></div>');
+				$('##configurator .load-inline').spin(spinnerArgs2);
 				jQuery(".form-actions").hide();
 				jQuery("##configuratorNotices").hide();
 				
@@ -239,6 +258,7 @@ jQuery(document).ready(function(){
 				
 			if (siteManager.availableObjectValidate(siteManager.availableObject.params)) {
 				jQuery("##configurator").html('<div class="load-inline"></div>');
+				$('##configurator .load-inline').spin(spinnerArgs2);
 				jQuery(".form-actions").hide();
 				jQuery("##configuratorNotices").hide();
 				
@@ -286,6 +306,7 @@ function saveConfiguratorToChangeset(changesetid,removepreviouschangeset){
 			
 			if (siteManager.availableObjectValidate(siteManager.availableObject.params)) {
 				jQuery("##configurator").html('<div class="load-inline"></div>');
+				$('##configurator .load-inline').spin(spinnerArgs2);
 				jQuery(".form-actions").hide();
 				
 				jQuery.post("./index.cfm?muraAction=cArch.updateObjectParams", {

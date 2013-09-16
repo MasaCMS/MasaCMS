@@ -49,7 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset pathStrings=arrayNew(1)>
 <cfloop query="rc.rsSections">
-	<cfset arrayAppend(pathStrings, application.contentRenderer.dspZoomText(application.contentGateway.getCrumblist(contentid=rc.rsSections.contentid,siteid=rc.rsSections.siteid, path=rc.rsSections.path)))>
+	<cfset arrayAppend(pathStrings, $.dspZoomText(application.contentGateway.getCrumblist(contentid=rc.rsSections.contentid,siteid=rc.rsSections.siteid, path=rc.rsSections.path)))>
 </cfloop>
 
 <cfset queryAddColumn(rc.rsSections, "pathString", "cf_sql_varchar",pathStrings)>

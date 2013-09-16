@@ -56,6 +56,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfelse>
 <h2>#application.rbFactory.getKeyValue(session.rb,'collections.importsuccessful')#</h2>
 <cfset crumbdata=application.contentManager.getCrumbList(rc.theImport.parentBean.getcontentID(), rc.siteid)/>
-#application.contentRenderer.dspZoom(crumbdata)#
+#$.dspZoom(crumbdata)#
 </cfif>
 </cfoutput>

@@ -52,7 +52,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfinclude template="dsp_secondary_menu.cfm">
 
 
-<form class="form-inline form-well" novalidate="novalidate" action="index.cfm?muraAction=cEmail.showAllBounces" method="post" name="form1" id="filterBounces">
+<form class="form-inline form-well" novalidate="novalidate" action="./?muraAction=cEmail.showAllBounces" method="post" name="form1" id="filterBounces">
 <h2>#application.rbFactory.getKeyValue(session.rb,"email.filterbynumberofbounces")#:</h2>
  <select name="bounceFilter" class="span1">
 	<option value="">#application.rbFactory.getKeyValue(session.rb,"email.all")#</option>
@@ -73,7 +73,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <h2>#application.rbFactory.getKeyValue(session.rb,"email.emailaddressbounces")#</h2>
 	<cfset bouncedEmailList = "">
 
-	<form novalidate="novalidate" action="index.cfm?muraAction=cEmail.deleteBounces" method="post" name="form2" id="bounces">
+	<form novalidate="novalidate" action="./?muraAction=cEmail.deleteBounces" method="post" name="form2" id="bounces">
 	
 		<ul class="metadata">
 			<cfoutput query="rc.rsBounces">

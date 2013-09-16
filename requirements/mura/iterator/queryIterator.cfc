@@ -133,7 +133,13 @@
 	
 	<cffunction name="packageRecord" access="public" output="false" returntype="any">
 		<cfargument name="recordIndex" default="#currentIndex()#">
-		<cfreturn queryRowToStruct(variables.records,arguments.recordIndex) />
+		<cfif isQuery(variables.records)>
+			<cfreturn queryRowToStruct(variables.records,arguments.recordIndex)>
+		<cfelseif isArray(variables.records)>
+			<cfreturn variables.records[arguments.recordIndex]>
+		<cfelse>
+			<cfthrow message="The records have not been set.">
+		</cfif>
 	</cffunction>
 	
 	<cffunction name="reset" access="public" output="false">
@@ -161,7 +167,11 @@
 	<cffunction name="getRecordCount" access="public" output="false" returntype="numeric">
 		<cfset var recordCount = 0 />
 		<cfif structKeyExists(variables,"records")>
-			<cfset recordCount =variables.records.recordCount />
+			<cfif isQuery(variables.records)>
+				<cfset recordCount =variables.records.recordCount />
+			<cfelseif isArray(variables.records)>
+				<cfset recordCount= arrayLen(variables.records) />
+			</cfif>
 		</cfif>
 		<cfreturn recordCount />
 	</cffunction>
@@ -191,13 +201,42 @@
 	<cffunction name="getNextN" access="public" output="false" returntype="any">
 		<cfreturn variables.maxRecordsPerPage>
 	</cffunction>
-	
+
+	<cffunction name="setArray" access="public" output="false">
+		<cfargument name="array" type="any" required="true">
+		<cfargument name="maxRecordsPerPage" type="numeric" required="false">
+
+		<cfset variables.records = arguments.array />
+			
+		<cfif structKeyExists(arguments,"maxRecordsPerPage") and isNumeric(arguments.maxRecordsPerPage)>
+			<cfset variables.maxRecordsPerPage = arguments.maxRecordsPerPage />
+		<cfelse>
+			<cfset variables.maxRecordsPerPage = arrayLen(variables.records) />
+		</cfif>
+		<cfreturn this>
+	</cffunction>
+		
+	<cffunction name="getArray" output="false" returntype="any">
+		<cfset var array=arrayNew(1)>
+		<cfset var i=1>
+		
+		<cfif isArray(variables.records)>
+			<cfreturn variables.records>
+		<cfelseif isQuery(variables.records)>
+			<cfloop query="variables.records">
+				<cfset arrayAppend(array,queryRowToStruct(variables.records,variables.records.currentRow))>
+			</cfloop>
+		<cfelse>
+			<cfthrow message="The records have not been set.">
+		</cfif>
+	</cffunction>
+
 	<cffunction name="setQuery" access="public" output="false">
 		<cfargument name="rs" type="query" required="true">
 		<cfargument name="maxRecordsPerPage" type="numeric" required="false">
 
 		<cfset variables.records = arguments.rs />
-		
+
 		<cfif structKeyExists(arguments,"maxRecordsPerPage") and isNumeric(arguments.maxRecordsPerPage) and arguments.maxRecordsPerPage>
 			<cfset variables.maxRecordsPerPage = arguments.maxRecordsPerPage />
 		<cfelse>
@@ -205,9 +244,15 @@
 		</cfif>
 		<cfreturn this>
 	</cffunction>
-	
+
 	<cffunction name="getQuery" output="false" returntype="any">
-		<cfreturn variables.records>
+		<cfif isQuery(variables.records)>
+			<cfreturn variables.records>
+		<cfelseif isArray(variables.records)>
+			<cfreturn getBean("utility").arrayToQuery(variables.records)>
+		<cfelse>
+			<cfthrow message="The records have not been set.">
+		</cfif>
 	</cffunction>
 	
 	<cffunction name="queryRowToStruct" access="public" output="false" returntype="struct">
@@ -241,12 +286,6 @@
 			//return the struct
 			return stReturn;
 		</cfscript>
-	</cffunction>
-	
-	<cffunction name="setRecordTranslator" output="false" access="public">
-	<cfargument name="recordTranslator">
-		<cfset variables.recordTranslator=arguments.recordTranslator/>
-		<cfreturn this>
 	</cffunction>
 
 	<cffunction name="setPageQuery" returntype="any" access="public" output="false">

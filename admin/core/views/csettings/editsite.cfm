@@ -51,11 +51,11 @@ to your own modified versions of Mura CMS.
 <h1>Site Settings</h1>
 <cfoutput>
   <cfif len(rc.siteid)>
-    <div id="nav-module-specific" class="btn-group"> <a class="btn" href="index.cfm?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-list-alt"></i> Class Extension Manager</a> <a  class="btn" href="index.cfm?muraAction=cTrash.list&siteID=#URLEncodedFormat(rc.siteid)#"><i class="icon-trash"></i> Trash Bin</a>
+    <div id="nav-module-specific" class="btn-group"> <a class="btn" href="./?muraAction=cExtend.listSubTypes&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-list-alt"></i> Class Extension Manager</a> <a  class="btn" href="./?muraAction=cTrash.list&siteID=#URLEncodedFormat(rc.siteid)#"><i class="icon-trash"></i> Trash Bin</a>
       <cfif rc.action eq "updateFiles">
-        <a href="index.cfm?muraAction=cSettings.editSite&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-pencil"></i> Edit Site</a>
+        <a href="./?muraAction=cSettings.editSite&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-pencil"></i> Edit Site</a>
         <cfelseif application.configBean.getAllowAutoUpdates()>
-        <a  class="btn" href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('index.cfm?muraAction=cSettings.editSite&siteid=#URLEncodedFormat(rc.siteid)#&action=updateFiles')});return false;"><i class="icon-bolt"></i> Update Site Files to Latest Version</a> 
+        <a  class="btn" href="##" onclick="confirmDialog('WARNING: Do not update your site files unless you have backed up your current siteID directory.',function(){actionModal('./?muraAction=cSettings.editSite&siteid=#URLEncodedFormat(rc.siteid)#&action=updateFiles')});return false;"><i class="icon-bolt"></i> Update Site Files to Latest Version</a> 
 
         <a  class="btn" href="?muraAction=cSettings.selectBundleOptions&siteID=#URLEncodedFormat(rc.siteBean.getSiteID())#"><i class="icon-gift"></i> Create Site Bundle</a>
       </cfif>
@@ -67,7 +67,7 @@ to your own modified versions of Mura CMS.
 </cfoutput>
 <cfif rc.action neq "updateFiles">
   <cfoutput>
-    <form novalidate method ="post"  enctype="multipart/form-data" action="index.cfm?muraAction=cSettings.updateSite" name="form1"  onsubmit="return validate(this);">
+    <form novalidate method ="post"  enctype="multipart/form-data" action="./?muraAction=cSettings.updateSite" name="form1"  onsubmit="return validate(this);">
     <!---
 <cfhtmlhead text='<link rel="stylesheet" href="css/tab-view.css" type="text/css" media="screen">'>
 <cfhtmlhead text='<script type="text/javascript" src="assets/js/ajax.js"></script>'>
@@ -80,7 +80,7 @@ to your own modified versions of Mura CMS.
           <button type="button" class="btn" onclick="submitForm(document.forms.form1,'add');"  /><i class="icon-plus-sign"></i> Add</button>
           <cfelse>
           <cfif rc.siteBean.getsiteid() neq 'default'>
-            <button type="button" class="btn" onclick="return confirmDialog('#JSStringFormat("WARNING: A deleted site and all of its files cannot be recovered. Are you sure that you want to continue?")#',function(){actionModal('index.cfm?muraAction=cSettings.updateSite&action=delete&siteid=#rc.siteBean.getSiteID()#')});" /><i class="icon-remove-sign"></i> Delete</button>
+            <button type="button" class="btn" onclick="return confirmDialog('#JSStringFormat("WARNING: A deleted site and all of its files cannot be recovered. Are you sure that you want to continue?")#',function(){actionModal('./?muraAction=cSettings.updateSite&action=delete&siteid=#rc.siteBean.getSiteID()#')});" /><i class="icon-remove-sign"></i> Delete</button>
           </cfif>
           <button type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" /><i class="icon-ok-sign"></i> Update</button>
         </cfif>
@@ -96,9 +96,9 @@ to your own modified versions of Mura CMS.
     </cfif>
   </cfoutput> <cfoutput query="rsPluginScripts" group="pluginid"> <cfoutput>
       <cfset tabLabelList=listAppend(tabLabelList,rsPluginScripts.name)/>
-      <cfset tabList=listAppend(tabList,"tab" & application.contentRenderer.createCSSID(rsPluginScripts.name))>
+      <cfset tabList=listAppend(tabList,"tab" & $.createCSSID(rsPluginScripts.name))>
     </cfoutput> </cfoutput> <cfoutput>
-    <div class="tabbable tabs-left">
+    <div class="tabbable tabs-left mura-ui">
     <ul class="nav nav-tabs tabs initActiveTab">
         <cfloop from="1" to="#listlen(tabList)#" index="t">
         <li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
@@ -142,6 +142,14 @@ to your own modified versions of Mura CMS.
               </div>
             <label class="control-label">Enforce Primary Domain</label>
             <div class="controls">
+            
+	            <!--- How to submit the selected option to the form?
+<div class="btn-group" data-toggle="buttons-radio">
+				  <button type="button" class="btn btn-primary" name="enforcePrimaryDomain" value="0"<cfif rc.siteBean.getEnforcePrimaryDomain() neq 1> CHECKED</CFIF>>On</button>
+				  <button type="button" class="btn btn-primary" data-toggle="button" name="enforcePrimaryDomain" value="1"<cfif rc.siteBean.getEnforcePrimaryDomain() eq 1> CHECKED</CFIF>>Off</button>
+				</div>
+--->
+            
                 <label class="radio inline">
                 <input type="radio" name="enforcePrimaryDomain" value="0"<cfif rc.siteBean.getEnforcePrimaryDomain() neq 1> CHECKED</CFIF>>
                 Off</label>
@@ -247,9 +255,9 @@ to your own modified versions of Mura CMS.
                 <label class="radio inline">
                 <input type="radio" name="CommentApprovalDefault" value="0" <cfif rc.siteBean.getCommentApprovalDefault() neq 1> CHECKED</CFIF>>
                 No</label>
-              </div>
+            </div>
           </div>
-          </div>
+        </div>
         <div class="control-group">
             <label class="control-label">Static HTML Export Location (BETA)</label>
             <div class="controls">
@@ -258,7 +266,23 @@ to your own modified versions of Mura CMS.
               </cfif>
             <input name="exportLocation" type="text" class="span12"  value="#rc.siteBean.getExportLocation()#" maxlength="100"/>
           </div>
-          </div>
+        </div>
+         <div class="control-group">
+            <label class="control-label">Custom Tag Groups</label>
+            <div class="controls">
+              <input name="customTagGroups" type="text" class="span12"  value="#rc.siteBean.getCustomTagGroups()#" maxlength="255"/>
+            </div>
+        </div>
+		<div class="control-group">
+            <label class="control-label">Site Mode</label>
+            <div class="controls">
+            	<select name="enableLockdown">
+                	<option value=""<cfif rc.siteBean.getEnableLockdown() eq ""> selected</cfif>>Live</option>
+                	<option value="development"<cfif rc.siteBean.getEnableLockdown() eq "development"> selected</cfif>>Development</option>
+                	<option value="maintenance"<cfif rc.siteBean.getEnableLockdown() eq "maintenance"> selected</cfif>>Maintenance</option>
+                </select>
+            </div>
+        </div>  
       </div>
     </div>
         
@@ -512,7 +536,7 @@ to your own modified versions of Mura CMS.
         
         <div class="control-group">
         <div class="span6">
-        <label class="control-label">Mail Server Username <a href="" rel="tooltip" data-original-title="<strong>Warning:</strong> Do Not Use a Personal Account. Email will be removed from server for tracking purposes."><i class="icon-warning-sign"></i></a></label>
+        <label class="control-label">Mail Server Username <a href="" rel="tooltip" data-original-title="WARNING: Do Not Use a Personal Account. Email will be removed from server for tracking purposes."><i class="icon-warning-sign"></i></a></label>
         <div class="controls">
             <input name="MailServerUserName" type="text" class="span12" value="#HTMLEditFormat(rc.siteBean.getMailServerUserName())#" size="50" maxlength="50">
           </div>
@@ -561,6 +585,23 @@ to your own modified versions of Mura CMS.
       </div>
       </div>
       
+       <div class="control-group">
+        <label class="control-label">Content Approval Script</label>
+        <div class="controls">
+            <p class="help-block">Available Dynamic Content: ##returnURL## ##contentName## ##parentName## ##contentType##</p>
+            <textarea rows="6" class="span12" name="contentApprovalScript">#HTMLEditFormat(rc.siteBean.getContentApprovalScript())#</textarea>
+          </div>
+      </div>
+
+
+       <div class="control-group">
+        <label class="control-label">Content Rejection Script</label>
+        <div class="controls">
+            <p class="help-block">Available Dynamic Content: ##returnURL## ##contentName## ##parentName## ##contentType##</p>
+            <textarea rows="6" class="span12" name="contentRejectionScript">#HTMLEditFormat(rc.siteBean.getContentRejectionScript())#</textarea>
+          </div>
+      </div>
+
         <div class="control-group">
         <label class="control-label">User Login Info Request Script</label>
         <div class="controls">
@@ -582,6 +623,7 @@ to your own modified versions of Mura CMS.
             <textarea rows="6" class="span12" name="accountActivationScript">#HTMLEditFormat(rc.siteBean.getAccountActivationScript())#</textarea>
           </div>
       </div>
+      <!---
         <div class="control-group">
         <label class="control-label">Public Submission Approval Script</label>
         <div class="controls">
@@ -589,6 +631,7 @@ to your own modified versions of Mura CMS.
             <textarea rows="6" class="span12" name="publicSubmissionApprovalScript">#HTMLEditFormat(rc.siteBean.getPublicSubmissionApprovalScript())#</textarea>
           </div>
       </div>
+      --->
         <div class="control-group">
         <label class="control-label">Event Reminder Script</label>
         <div class="controls">
@@ -818,7 +861,7 @@ to your own modified versions of Mura CMS.
         <div class="control-group">
         <label class="control-label">Email Site Registration Notifications to:</label>
         <div class="controls">
-            <input name="ExtranetPublicRegNotify" type="text" class="span12" value="#rc.siteBean.getExtranetPublicRegNotify()#" size="50" maxlength="50">
+            <input name="ExtranetPublicRegNotify" type="text" class="span12" value="#rc.siteBean.getExtranetPublicRegNotify()#" size="255" maxlength="255">
           </div>
       </div>
       
@@ -1026,14 +1069,17 @@ to your own modified versions of Mura CMS.
   
   <cfoutput query="rsPluginScripts" group="pluginID"> 
     <!---<cfset tabLabelList=tabLabelList & ",'#jsStringFormat(rsPluginScripts.name)#'"/>--->
-    <cfset tabID="tab" & application.contentRenderer.createCSSID(rsPluginScripts.name)>
+    <cfset tabID="tab" & $.createCSSID(rsPluginScripts.name)>
     <div id="#tabID#" class="tab-pane fade"> <cfoutput>
         <cfset rsPluginScript=application.pluginManager.getScripts("onSiteEdit",rc.siteID,rsPluginScripts.moduleID)>
         <cfif rsPluginScript.recordcount>
 #application.pluginManager.renderScripts("onSiteEdit",rc.siteid,pluginEvent,rsPluginScript)#
         </cfif>
       </cfoutput> </div>
-  </cfoutput> <cfoutput> <div class="load-inline tab-preloader"></div> #actionButtons#
+  </cfoutput> <cfoutput> 
+    <div class="load-inline tab-preloader"></div>
+    <script>$('.tab-preloader').spin(spinnerArgs2);</script>
+     #actionButtons#
     <input type="hidden" name="action" value="update">
     </form>
   </cfoutput>

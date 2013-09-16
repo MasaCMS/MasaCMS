@@ -89,7 +89,7 @@ function checkAll (form) {
 
   <h1>Create Site Bundle</h1>
   <div id="nav-module-specific" class="btn-group">
-  <a class="btn" href="index.cfm?muraAction=cSettings.editSite&siteID=#URLEncodedFormat(rc.siteID)#"><i class="icon-circle-arrow-left"></i> Back to Site Settings</a>
+  <a class="btn" href="./?muraAction=cSettings.editSite&siteID=#URLEncodedFormat(rc.siteID)#"><i class="icon-circle-arrow-left"></i> Back to Site Settings</a>
   </div>
   <p class="alert alert-info">A Bundle includes a Site's architecture &amp; content, all rendering files (display objects, themes, javascript, etc.) and any of the items you select below. </p>
   

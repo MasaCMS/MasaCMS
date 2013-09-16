@@ -71,7 +71,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  </cfoutput>
 	  <!---<div id="bounces" class="divide">
 	  <h2>Bounces</h2>
-	  <a href="index.cfm?muraAction=cEmail.showAllBounces&siteid=<cfoutput>#rc.siteid#</cfoutput>">View All Bounces</a>
+	  <a href="./?muraAction=cEmail.showAllBounces&siteid=<cfoutput>#rc.siteid#</cfoutput>">View All Bounces</a>
 	  </div>--->
 	  <cfinclude template="dsp_secondary_menu.cfm">
 	  <cfoutput>
@@ -79,7 +79,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  <div id="filterView" class="row-fluid">
 	  <h2>#application.rbFactory.getKeyValue(session.rb,"email.emails")#</h2></cfoutput>
 
-<form novalidate="novalidate" action="index.cfm?muraAction=cEmail.list&siteid=<cfoutput>#rc.siteid#</cfoutput>" method="post" name="form1" id="advancedSearch" class="fieldset-wrap">
+<form novalidate="novalidate" action="./?muraAction=cEmail.list&siteid=<cfoutput>#rc.siteid#</cfoutput>" method="post" name="form1" id="advancedSearch" class="fieldset-wrap">
 
 <div class="fieldset">
 	<div class="control-group">
@@ -160,7 +160,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 
 </cfoutput>
-	  <table id="metadata" class="table table-striped table-condensed table-bordered mura-table-grid">
+	  <table id="metadata" class="mura-table-grid">
         <tr> 
 		  <cfset subjectDirection = "asc">
 		  <cfset createdDateDirection = "desc">
@@ -189,14 +189,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfcase>
 		  </cfswitch>
 		  <cfoutput>
-		  <th class="var-width"><a href="index.cfm?muraAction=cEmail.list&siteid=#URLEncodedFormat(rc.siteid)#&orderBy=subject&direction=#subjectDirection#">#application.rbFactory.getKeyValue(session.rb,'email.subject')#</a></th>
+		  <th class="var-width"><a href="./?muraAction=cEmail.list&siteid=#URLEncodedFormat(rc.siteid)#&orderBy=subject&direction=#subjectDirection#">#application.rbFactory.getKeyValue(session.rb,'email.subject')#</a></th>
 		  <th>#application.rbFactory.getKeyValue(session.rb,'email.clicks')#</th>
 		  <th>#application.rbFactory.getKeyValue(session.rb,'email.opens')#</th>
 		  <th>#application.rbFactory.getKeyValue(session.rb,'email.bounces')#</th>
 		  <th>#application.rbFactory.getKeyValue(session.rb,'email.all')#</th>
-		  <th><a href="index.cfm?muraAction=cEmail.list&siteid=#URLEncodedFormat(rc.siteid)#&orderBy=createdDate&direction=#createdDateDirection#">#application.rbFactory.getKeyValue(session.rb,'email.datecreated')#</a></th>
-          <th><a href="index.cfm?muraAction=cEmail.list&siteid=#URLEncodedFormat(rc.siteid)#&orderBy=deliveryDate&direction=#deliveryDateDirection#">#application.rbFactory.getKeyValue(session.rb,'email.deliverydate')#</a></th>
-          <th><a href="index.cfm?muraAction=cEmail.list&siteid=#URLEncodedFormat(rc.siteid)#&orderBy=status&direction=#statusDirection#">#application.rbFactory.getKeyValue(session.rb,'email.status')#</a></th>
+		  <th><a href="./?muraAction=cEmail.list&siteid=#URLEncodedFormat(rc.siteid)#&orderBy=createdDate&direction=#createdDateDirection#">#application.rbFactory.getKeyValue(session.rb,'email.datecreated')#</a></th>
+          <th><a href="./?muraAction=cEmail.list&siteid=#URLEncodedFormat(rc.siteid)#&orderBy=deliveryDate&direction=#deliveryDateDirection#">#application.rbFactory.getKeyValue(session.rb,'email.deliverydate')#</a></th>
+          <th><a href="./?muraAction=cEmail.list&siteid=#URLEncodedFormat(rc.siteid)#&orderBy=status&direction=#statusDirection#">#application.rbFactory.getKeyValue(session.rb,'email.status')#</a></th>
           <th>&nbsp;</th>
 		  </cfoutput>
         </tr>
@@ -215,7 +215,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				  <cfset sent=application.emailManager.getStat(rc.rslist.emailid,'sent')/>
 				  <cfset bounces=application.emailManager.getStat(rc.rslist.emailid,'bounce')/>
 					<tr> 
-					  <td class="var-width"><a title="Edit" href="index.cfm?muraAction=cEmail.edit&emailid=#rc.rslist.emailid#&siteid=#URLEncodedFormat(rc.siteid)#">#rc.rslist.subject#</a></td>
+					  <td class="var-width"><a title="Edit" href="./?muraAction=cEmail.edit&emailid=#rc.rslist.emailid#&siteid=#URLEncodedFormat(rc.siteid)#">#rc.rslist.subject#</a></td>
 					  <td>#clicks#</td>
 					  <td>#opens#</td>
 					  <td>#bounces#</td>
@@ -223,7 +223,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					  <td>#LSDateFormat(rc.rslist.createddate,session.dateKeyFormat)#</td>
 					  <td><cfif LSisDate(rc.rslist.deliverydate)>#LSDateFormat(rc.rslist.deliverydate,session.dateKeyFormat)# #LSTimeFormat(rc.rslist.deliverydate,"short")#<cfelse>#application.rbFactory.getKeyValue(session.rb,'email.notscheduled')#</cfif></td>
 					  <td><cfif LSisDate(rc.rslist.deliverydate)><cfif rc.rslist.status eq 99>In Progress<cfelseif rc.rslist.status eq 1>#application.rbFactory.getKeyValue(session.rb,'email.sent')#<cfelse>#application.rbFactory.getKeyValue(session.rb,'email.queued')#</cfif><cfelse>#application.rbFactory.getKeyValue(session.rb,'email.notscheduled')#</cfif></td>
-					  <td class="actions"><ul><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'email.edit')#" href="index.cfm?muraAction=cEmail.edit&emailid=#rc.rslist.emailid#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-pencil"></i></a></li><li class="download"><a title="#application.rbFactory.getKeyValue(session.rb,'email.download')#" href="index.cfm?muraAction=cEmail.download&emailID=#rc.rsList.emailID#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-download-alt"></i></a></li><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'email.delete')#" href="index.cfm?muraAction=cEmail.update&action=delete&emailid=#rc.rslist.emailid#&siteid=#URLEncodedFormat(rc.siteid)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.deleteconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li></ul></td>
+					  <td class="actions"><ul><li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'email.edit')#" href="./?muraAction=cEmail.edit&emailid=#rc.rslist.emailid#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-pencil"></i></a></li><li class="download"><a title="#application.rbFactory.getKeyValue(session.rb,'email.download')#" href="./?muraAction=cEmail.download&emailID=#rc.rsList.emailID#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-download-alt"></i></a></li><li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'email.delete')#" href="./?muraAction=cEmail.update&action=delete&emailid=#rc.rslist.emailid#&siteid=#URLEncodedFormat(rc.siteid)#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.deleteconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li></ul></td>
 					</tr>
 			  </cfloop>
 		  
@@ -241,7 +241,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif i eq rc.page>
 				#i#
 			<cfelse>
-				<a href="index.cfm?muraAction=cEmail.list&siteid=#URLEncodedFormat(rc.siteid)#&page=#i#&direction=#rc.direction#&orderBy=#rc.orderBy#">#i#</a>
+				<a href="./?muraAction=cEmail.list&siteid=#URLEncodedFormat(rc.siteid)#&page=#i#&direction=#rc.direction#&orderBy=#rc.orderBy#">#i#</a>
 			</cfif>
 		</cfloop> 
 	  </cfif>

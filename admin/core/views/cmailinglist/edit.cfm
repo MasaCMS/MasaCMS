@@ -52,11 +52,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfinclude template="dsp_secondary_menu.cfm">
 
-<form <cfif rc.mlid eq ''>class="fieldset-wrap"</cfif> novalidate="novalidate" action="index.cfm?muraAction=cMailingList.update" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);">
+<form <cfif rc.mlid eq ''>class="fieldset-wrap"</cfif> novalidate="novalidate" action="./?muraAction=cMailingList.update" method="post" enctype="multipart/form-data" name="form1" onsubmit="return validate(this);">
 
 <cfif rc.listBean.getispurge() neq 1>
 	<cfif rc.mlid eq ''>
-		<div class="fieldset">
 		<div class="control-group">
 			<label class="control-label">
 				#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.name')#
@@ -66,14 +65,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</div>
 		</div>
 	<cfelse>
-		<div class="tabbable tabs-left">
+		<div class="tabbable tabs-left mura-ui">
 		<ul class="nav nav-tabs tabs initActiveTab">
 		<cfloop from="1" to="#listlen(tabList)#" index="t">
 		<li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
 		</cfloop>
 		</ul>
+		
 		<div class="tab-content">
 		<div id="tabBasic" class="tab-pane fade">
+		<div class="fieldset">
 		<div class="control-group">
 			<label class="control-label">
 				#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.name')#
@@ -102,16 +103,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</div>
 
 <cfelse>
-	<div class="tabbable tabs-left">
-	<ul class="nav nav-tabs tabs initActiveTab">
+	<div class="tabbable tabs-left mura-ui">
+		<ul class="nav nav-tabs tabs initActiveTab">
 	<cfloop from="1" to="#listlen(tabList)#" index="t">
 	<li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
 	</cfloop>
 	</ul>
-	<div class="tab-content">
-	<div id="tabBasic" class="tab-pane fade">
-
-	<div class="control-group">
+			
+		<div class="tab-content">
+		<div id="tabBasic" class="tab-pane fade">
+			<div class="fieldset">
+				<div class="control-group">
 		<label class="control-label">
 			#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.masterdonotemaillistname')#
 		</label>
@@ -120,9 +122,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<input type=hidden name="ispurge" value="1"><input type=hidden name="ispublic" value="1">
 		</div>
 	</div>
+			</div>
 </cfif>
 
-<div class="control-group">
+	<div class="control-group">
 	<label class="control-label">
 		#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.description')#
 	</label>
@@ -131,8 +134,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
 	</div>
 </div>
-
-<div class="control-group">
+	
+	<div class="control-group">
 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.uploadlistmaintenancefile')#</dt>
 	<div class="controls">
 		<label for="da" class="radio inline">
@@ -146,30 +149,31 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</label>
 	</div>
 </div>
-
-<div class="control-group">
+	
+	<div class="control-group">
 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.uploademailaddressfile')#</label>
 	<div class="controls">
 		<input type="file" name="listfile" accept="text/plain" >
 	</div>
 </div>
-
-<cfif rc.mlid neq ''>
-<div class="control-group">
+	
+	<cfif rc.mlid neq ''>
+	<div class="control-group">
 	<div class="controls">
 		<label for="cm" class="checkbox inline">
 			<input type="checkbox" id="cm" name="clearMembers" value="1" /> #application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.clearoutexistingmembers')#
 		</label>
 	</div>
 </div>
-</cfif>      
-
-</div>
-<cfif rc.mlid neq ''>
-	<cfinclude template="dsp_tab_usage.cfm">
-</cfif>
+	</cfif>      
 	
-	<div class="clearfix form-actions">			
+	</div>
+	</div>
+		<cfif rc.mlid neq ''>
+			<cfinclude template="dsp_tab_usage.cfm">
+		</cfif>
+	
+	<div class="form-actions">			
 		<cfif rc.mlid eq ''>
 			<input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.add')#" />
 			<input type=hidden name="mlid" value="#createuuid()#">
@@ -182,7 +186,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		<input type="hidden" name="action" value="">
 	</div>
-</div>
 </div>
 
 </form>

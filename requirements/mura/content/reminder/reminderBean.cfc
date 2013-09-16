@@ -65,6 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="reminder" type="any" required="true">
 
 		<cfset var prop = "" />
+    <cfset var tempFunc="">
 		
 		<cfif isquery(arguments.reminder)>
 		
@@ -80,7 +81,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 			<cfloop collection="#arguments.reminder#" item="prop">
 				<cfif isdefined("variables.instance.#prop#")>
-					<cfset evaluate("set#prop#(arguments.reminder[prop])") />
+					<cfset tempFunc=this["set#prop#"]>
+          <cfset tempFunc(arguments.reminder['#prop#'])>
 				</cfif>
 			</cfloop>
 			

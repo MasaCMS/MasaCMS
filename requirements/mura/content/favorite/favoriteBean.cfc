@@ -145,7 +145,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getQuery"  access="public" output="false" returntype="query">
 	<cfset var rs=""/>
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 	select * from tusersfavorites 
 	where 
 	<cfif structKeyExists(arguments,"favoriteID")>
@@ -178,7 +178,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif getQuery().recordcount>
 		
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery>
 		update tusersfavorites set
 		favoriteName=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(variables.instance.favoriteName neq '',de('no'),de('yes'))#" value="#variables.instance.favoriteName#">,
 		favorite=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(variables.instance.favorite neq '',de('no'),de('yes'))#" value="#variables.instance.favorite#">,
@@ -193,7 +193,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 	<cfelse>
 	
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery>
 		insert into tusersfavorites (favoriteID,userID,favoriteName,favorite,type,siteID,columnNumber,rowNumber,maxRSSItems,dateCreated)
 		values(
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getFavoriteID() neq '',de('no'),de('yes'))#" value="#getFavoriteID()#">,
@@ -223,6 +223,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="favorite">
 	<cfargument name="type">
 	<cfreturn variables.instance>
+</cffunction>
+
+<cffunction name="getPrimaryKey" output="false">
+	<cfreturn "favoriteID">
 </cffunction>
 
 </cfcomponent>

@@ -114,10 +114,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div>
 <cfif rc.contentid neq ''>
 <cfset crumbdata=application.contentManager.getCrumbList(rc.contentid, rc.siteid)/>
-<h3>#application.contentRenderer.dspZoom(crumbdata)#</h3>
+<h3>#$.dspZoom(crumbdata)#</h3>
 </cfif>
 
-<table class="table table-striped table-condensed table-bordered mura-table-grid"> 
+<table class="mura-table-grid"> 
 <tr>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.user")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.locale")#</th>
@@ -131,12 +131,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset endrow=(rc.startrow+rc.nextN.recordsperpage)-1/>
 <cfloop query="rc.rslist" startrow="#rc.startRow#" endrow="#endRow#">
 <tr>
-<td><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="index.cfm?muraAction=cDashboard.viewSession&urlToken=#urlEncodedFormat(rc.rslist.urlToken)#&siteid=#URLEncodedFormat(rc.siteid)#"><cfif rc.rslist.userid eq ''>Anonymous<cfelse>#HTMLEditFormat(rc.rslist.fname)# #HTMLEditFormat(rc.rslist.lname)#<cfif rc.rslist.company neq ''> (#HTMLEditFormat(rc.rslist.company)#)</cfif></cfif></a></td>
+<td><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="./?muraAction=cDashboard.viewSession&urlToken=#urlEncodedFormat(rc.rslist.urlToken)#&siteid=#URLEncodedFormat(rc.siteid)#"><cfif rc.rslist.userid eq ''>Anonymous<cfelse>#HTMLEditFormat(rc.rslist.fname)# #HTMLEditFormat(rc.rslist.lname)#<cfif rc.rslist.company neq ''> (#HTMLEditFormat(rc.rslist.company)#)</cfif></cfif></a></td>
 <td>#HTMLEditFormat(rc.rslist.locale)#</td>
 <td>#LSDateFormat(rc.rslist.lastRequest,session.dateKeyFormat)# #LSTimeFormat(rc.rslist.lastRequest,"short")#</td>
 <td>#rc.rslist.views#</td>
 <td>#application.dashboardManager.getTimespan(rc.rslist.firstRequest,rc.rslist.lastRequest)#</td>
-<td class="actions"><ul class="one"><li class="viewDetails"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="index.cfm?muraAction=cDashboard.viewSession&urlToken=#urlEncodedFormat(rc.rslist.urlToken)#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-pencil"></i></a></li></ul></td>
+<td class="actions"><ul class="one"><li class="viewDetails"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="./?muraAction=cDashboard.viewSession&urlToken=#urlEncodedFormat(rc.rslist.urlToken)#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-pencil"></i></a></li></ul></td>
 </tr></cfloop>
 <cfelse>
 <tr>
@@ -146,10 +146,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </table>
 
 <cfif rc.rslist.recordcount and rc.nextN.numberofpages gt 1>
-#application.rbFactory.getKeyValue(session.rb,"dashboard.session.moreresults")#: <cfif rc.nextN.currentpagenumber gt 1> <a href="index.cfm?muraAction=cDashboard.listSessions&startrow=#rc.nextN.previous#&siteid=#URLEncodedFormat(rc.siteid)#&direction=#rc.direction#&orderBy=#rc.orderBy#&spanType=#rc.spanType#&span=#rc.span#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,"dashboard.session.prev")#</a></cfif>
+#application.rbFactory.getKeyValue(session.rb,"dashboard.session.moreresults")#: <cfif rc.nextN.currentpagenumber gt 1> <a href="./?muraAction=cDashboard.listSessions&startrow=#rc.nextN.previous#&siteid=#URLEncodedFormat(rc.siteid)#&direction=#rc.direction#&orderBy=#rc.orderBy#&spanType=#rc.spanType#&span=#rc.span#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,"dashboard.session.prev")#</a></cfif>
 <cfloop from="#rc.nextN.firstPage#"  to="#rc.nextN.lastPage#" index="i">
-	<cfif rc.nextN.currentpagenumber eq i> #i# <cfelse> <a href="index.cfm?muraAction=cDashBoard.listSessions&startrow=#evaluate('(#i#*#rc.nextN.recordsperpage#)-#rc.nextN.recordsperpage#+1')#&siteid=#URLEncodedFormat(rc.siteid)#&direction=#rc.direction#&orderBy=#rc.orderBy#&spanType=#rc.spanType#&span=#rc.span#">#i#</a> </cfif></cfloop>
-	<cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages><a href="index.cfm?muraAction=cDashboard.listSessions&startrow=#rc.nextN.next#&siteid=#URLEncodedFormat(rc.siteid)#&direction=#rc.direction#&orderBy=#rc.orderBy#&spanType=#rc.spanType#&span=#rc.span#">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.next")#&nbsp;&raquo;</a></cfif> 
+	<cfif rc.nextN.currentpagenumber eq i> #i# <cfelse> <a href="./?muraAction=cDashBoard.listSessions&startrow=#evaluate('(#i#*#rc.nextN.recordsperpage#)-#rc.nextN.recordsperpage#+1')#&siteid=#URLEncodedFormat(rc.siteid)#&direction=#rc.direction#&orderBy=#rc.orderBy#&spanType=#rc.spanType#&span=#rc.span#">#i#</a> </cfif></cfloop>
+	<cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages><a href="./?muraAction=cDashboard.listSessions&startrow=#rc.nextN.next#&siteid=#URLEncodedFormat(rc.siteid)#&direction=#rc.direction#&orderBy=#rc.orderBy#&spanType=#rc.spanType#&span=#rc.span#">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.next")#&nbsp;&raquo;</a></cfif> 
 
 </cfif>	  
 </div>

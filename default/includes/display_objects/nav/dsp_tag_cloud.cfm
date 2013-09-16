@@ -45,7 +45,7 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 <cfsilent>
-<cfset variables.tags=variables.$.getBean('contentGateway').getTagCloud(variables.$.event('siteID'),arguments.parentID,arguments.categoryID,arguments.rsContent) />
+<cfset variables.tags=variables.$.getBean('contentGateway').getTagCloud(variables.$.event('siteID'),arguments.parentID,arguments.categoryID,arguments.rsContent,'00000000000000000000000000000000000',arguments.taggroup) />
 <cfset variables.tagValueArray = ListToArray(ValueList(variables.tags.tagCount))>
 <cfset variables.max = ArrayMax(variables.tagValueArray)>
 <cfset variables.min = Arraymin(variables.tagValueArray)>
@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsilent>
 
 <cfoutput>
-<div id="svTagCloud">
+<div class="svTagCloud">
 <#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('tagcloud.tagcloud')#</#variables.$.getHeaderTag('subHead1')#>
 <cfif variables.tags.recordcount>
 <ol>
@@ -73,7 +73,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfset variables.args = ArrayNew(1)>
     <cfset variables.args[1] = variables.tags.tagcount>
-</cfsilent><li class="#variables.class#"><span><cfif variables.tags.tagcount gt 1> #variables.rbFactory.getResourceBundle().messageFormat(variables.$.rbKey('tagcloud.itemsare'), variables.args)#<cfelse>#variables.rbFactory.getResourceBundle().messageFormat(variables.$.rbKey('tagcloud.itemis'), variables.args)#</cfif> </span><a href="#variables.$.createHREF(filename='#variables.$.event('currentFilenameAdjusted')#/tag/#urlEncodedFormat(variables.tags.tag)#')#" variables.class="tag">#HTMLEditFormat(variables.tags.tag)#</a></li>
+</cfsilent>
+	<li class="#variables.class#"><span><cfif variables.tags.tagcount gt 1> #variables.rbFactory.getResourceBundle().messageFormat(variables.$.rbKey('tagcloud.itemsare'), variables.args)#<cfelse>#variables.rbFactory.getResourceBundle().messageFormat(variables.$.rbKey('tagcloud.itemis'), variables.args)#</cfif>  </span>
+		<cfif len(arguments.taggroup)>
+			<a href="#variables.$.createHREF(filename='#variables.$.event('currentFilenameAdjusted')#/tag/#urlEncodedFormat(variables.tags.tag)#/_/taggroup/#urlEncodedFormat(arguments.taggroup)#')#" variables.class="tag">#HTMLEditFormat(variables.tags.tag)#</a>
+		<cfelse>
+			<a href="#variables.$.createHREF(filename='#variables.$.event('currentFilenameAdjusted')#/tag/#urlEncodedFormat(variables.tags.tag)#')#" variables.class="tag">#HTMLEditFormat(variables.tags.tag)#</a>
+		</cfif>
+	</li>
 </cfloop>
 </ol>
 <cfelse>

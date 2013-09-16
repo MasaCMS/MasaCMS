@@ -11,7 +11,7 @@
 
 <cfset rsNest=application.contentManager.getNest('#rc.parentid#','#rc.siteid#', 0, '#rc.sort#')>
 <cfoutput query="rsNest">
-<cfset link=application.contentRenderer.createHREF(rsNest.type,rsNest.filename,rc.siteid,rsnest.contentid,rsnest.target,rsnest.targetparams,"","http://" & application.settingsManager.getSite(rc.siteid).getdomain() & rc.context,rc.stub,rc.indexFile) />
+<cfset link=$.createHREF(rsNest.type,rsNest.filename,rc.siteid,rsnest.contentid,rsnest.target,rsnest.targetparams,"","http://" & application.settingsManager.getSite(rc.siteid).getdomain() & rc.context,rc.stub,rc.indexFile) />
 <cfset "rc.#rc.linklist#"=listappend(evaluate("rc.#rc.linklist#"),"#link#","^")>
 <cfsavecontent variable="templabel"><cfif rc.nestlevel><cfloop  from="1" to="#rc.NestLevel#" index="I">&nbsp;&nbsp;</cfloop></cfif>#rsnest.menutitle#</cfsavecontent>
 <cfset "rc.#rc.labellist#"=listappend(evaluate("rc.#rc.labellist#"),templabel,"^")>

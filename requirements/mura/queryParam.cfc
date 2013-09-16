@@ -253,8 +253,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.isValid />
 </cffunction>
 
+<cffunction name="isGroupingParam" output="false">
+	<cfreturn listFindNoCase("(,and (,or (,),openGrouping,orOpenGrouping,andOpenGrouping,closeGrouping",getRelationship()) >
+</cffunction>
+
 <cffunction name="validate">
-	<cfif not listFindNoCase("(,and (,or (,),openGrouping,orOpenGrouping,andOpenGrouping,closeGrouping",getRelationship()) 
+	<cfif not isGroupingParam() 
 		and (variables.field eq '' or variables.field eq 'Select Field')>
 		<cfset variables.field=""/>
 		<cfset setIsValid(false) />
@@ -276,5 +280,51 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 </cffunction>
+
+<cffunction name="isListParam" output="false">
+	<cfreturn listFindNoCase("IN,NOT IN",getCondition())>
+</cffunction>
+
+<cffunction name="getExtendedIDList" output="false">
+	<cfargument name="table">
+	<cfargument name="siteid">
+	<cfargument name="tableModifier" default="">
+	<cfset var maxrows=2100>
+	<cfset var rs="">
+
+	<cfif application.configBean.getDbType() eq 'Oracle'>
+		<cfset maxrows=990>
+	</cfif>
+
+	<cfset var isList=isListParam()>
+
+	<cfquery attributeCollection="#application.configBean.getReadOnlyQRYAttrs(name='rs',maxrows=maxrows)#">
+			select #arguments.table#.baseID from #arguments.table# #arguments.tableModifier#
+			<cfif isNumeric(getField())>
+				where #arguments.table#.attributeID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#getField()#">
+			<cfelse>
+				inner join tclassextendattributes on (#arguments.table#.attributeID = tclassextendattributes.attributeID)
+				where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#">
+				and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getField()#">
+			</cfif>
+			and 
+			<cfif getCondition() neq "like">
+				#application.configBean.getClassExtensionManager().getCastString(getField(),arguments.siteid)#
+			<cfelse>
+				attributeValue
+			</cfif> 
+			#getCondition()# 
+			<cfif isList>
+				(
+			</cfif>
+			<cfqueryparam cfsqltype="cf_sql_#getDataType()#" value="#getCriteria()#" list="#iif(isList,de('true'),de('false'))#" null="#iif(getCriteria() eq 'null',de('true'),de('false'))#">
+			<cfif isList>
+				)
+			</cfif>
+	</cfquery>
+
+	<cfreturn valuelist(rs.baseid)>
+</cffunction>
+
 
 </cfcomponent>

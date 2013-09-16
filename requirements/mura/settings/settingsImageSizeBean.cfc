@@ -64,6 +64,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.height="AUTO"/>
 	<cfset variables.instance.isNew=1/>
 
+	<cfset variables.primaryKey = 'sizeid'>
+	<cfset variables.entityName = 'imageSize'>
+
 	<cfreturn this>
 </cffunction>
 

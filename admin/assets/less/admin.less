@@ -1,7 +1,7 @@
 // -- Bootstrap File Edits --
-// 1. Commented out glyphicons @import to avoid conflict with font-awesome (bootstrap.less,line 30) 
+// 1. Changed ref to @import sprites.less to @import "../../fonts/less/font-awesome.less" (bootstrap.less, line 30)
 // 2. Commented out variables.less @import (responsive.less, line 21) - Using our own
-// 3. Commented out #grid > .core(@gridColumnWidth1200, @gridGutterWidth1200); (responsive-1200px-min.less, line 9) - Don't need super-wide layouts
+// 3. Commented out @import "responsive-1200px-min.less"; - Don't need super-wide layouts
 
 @import "jquery.ui.less";
 @import "../bootstrap/less/bootstrap.less";
@@ -14,7 +14,9 @@
 	@import "icons.less";
 	@import "typography.less";
 	@import "header.less";
+//	@import "dropdowns.less";
 	@import "navigation.less";
+	@import "buttons.less";
 	@import "tables.less";
 	@import "mura-grid.less";
 	@import "login.less";
@@ -28,45 +30,31 @@
 	@import "setup.less";
 	@import "site-settings.less";
 	@import "image-details.less";
-	@import "dialog.less";
 	@import "configurator.less";
 	@import "class-extension.less";
+	@import "add-content-ui.less";
+	@import "multi-file-upload.less";
+	@import "related-content.less";
+	@import "status-modal.less";
 	
 	
 // Layout
 
 body.compact {
 	padding: 18px;
-	//Old border on modals...doesn't quite work right
-	//padding: 19px;
-	//.border-radius(5px);
-	//border: 6px solid @grayDark;
 	background: #fff;
 }
 
 .main { padding-bottom: @baseLineHeight*2; min-width: 940px; }
-.compact .main { padding-bottom: 0; min-width: 0; }
+.compact .main { 
+	padding-bottom: 0;
+	min-width: 0;
+	}
 
 // Override bootstrap classes
 
 .dropdown .dropdown-menu {
 	.border-radius(6);
-}
-
-.btn-icon-only {
-	padding-right: 3px;
-	padding-left: 3px;
-}
-
-.btn i {
-	position: relative;
-	text-shadow: 0 1px 0 rgba(255,255,255,1);
-	}
-	
-.nav-pills .btn {
-	padding-top: 6px;
-	padding-bottom: 6px;
-	border: 0;
 }
 
 .well {
@@ -104,6 +92,10 @@ a[rel="tooltip"] {
 	}
 
 div.tooltip {
+	text-shadow: none;
+	font-weight: normal;
+	display: block !important;
+	white-space: normal;
 
 	&.in {
 		.opacity(100) !important;
@@ -113,6 +105,13 @@ div.tooltip {
 		padding: 10px;
 		text-align: left;
 		line-height: 1.2;
+		
+		img {
+			float: none;
+			margin: 0;
+			padding: 0;
+		}
+		
 		}
 	
 	.tooltip-arrow {
@@ -120,13 +119,7 @@ div.tooltip {
 		}
 	}
 
-.badge {
-	background: darken(@gray,10%);
-	font-size: @baseFontSize;
-	/* min-width: 22px; */
-	text-align: center;
-	.inline-block;
-	}
+
 
 // Additional Mura styles -- Move to separate file?
 .alert {
@@ -175,7 +168,16 @@ div.tooltip {
 		content: "\f05a";
 		color: @warningBorder;
 		/* text-shadow: 0 1px 1px rgba(255,255,255,.15); */
+	}
+
+#alertDialog {
+
+	h2 { color: @orange !important; }
+
+	&.alert:before {
+		content: '';
 		}
+}
 
 .alert-success {
 	
@@ -291,9 +293,40 @@ img.fmImage {
 		}
 	
 	}
-	
+
+#commentsManagerWrapper {
+	.btn-success, .btn-danger, .btn-warning {
+		color: white;
+	}
+	.mura-table-grid i.icon-calendar {
+		font-size: 14px;
+	}
+}	
 /* @end */
 
+.spinner-wrap {
+		background: @grayDark;
+		background: rgba(0,0,0,.55);
+		color: #fff;
+		width: 70px;
+		height: 70px;
+		margin: -35px 0 0 -35px;
+		.border-radius(8px);
+		z-index: 50000;
+		position: fixed;
+		top: 50%;
+		left: 50%;
+	}
+
+#mura-grid-loader {
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	margin: 0 -1px;
+	background: rgba(255,255,255,.53);
+	z-index: 49999;
+	}
+	
 } /* End .mura */
 
 // @import "../bootstrap/less/responsive.less";

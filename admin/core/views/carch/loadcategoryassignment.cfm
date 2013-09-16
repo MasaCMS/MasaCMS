@@ -69,41 +69,70 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<ol id="mura-quickEdit-displayDates"<cfif rc.categoryAssignment NEQ 2> style="display: none;"</cfif>>
 			<li><label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startdatetime')#</label>
 			<input type="text" id="mura-quickEdit-featureStart" value="#LSDateFormat(rc.featurestart,session.dateKeyFormat)#" class="textAlt datepicker mura-quickEdit-datepicker"><br />
-				<select id="mura-quickEdit-startHour" class="span1">
+
+			<cfif session.localeHasDayParts>
+				<select id="mura-quickEdit-startHour" class="time">
 					<cfloop from="1" to="12" index="h">
 						<option value="#h#" <cfif isNumeric(rc.startHour) and (rc.startHour eq h or rc.startHour eq 0 and h eq 12) or not isNumeric(rc.startHour) and h eq 12>selected</cfif>>#h#</option>
 					</cfloop>
 				</select>
-				<select id="mura-quickEdit-startMinute" class="span1">
-					<cfloop from="0" to="59" index="m">
-						<option value="#m#" <cfif isNumeric(rc.startMinute) and rc.startMinute eq m>selected</cfif>>
-							#iif(len(m) eq 1,de('0#m#'),de('#m#'))#
-						</option>
+			<cfelse>
+				<select id="mura-quickEdit-startHour" class="time">
+					<cfloop from="0" to="23" index="h">
+						<option value="#h#" <cfif isNumeric(rc.startHour) and rc.startHour eq h>selected</cfif>>#h#</option>
 					</cfloop>
 				</select>
-				<select id="mura-quickEdit-startDayPart" class="span1">
+
+			</cfif>
+
+			<select id="mura-quickEdit-startMinute" class="time">
+				<cfloop from="0" to="59" index="m">
+					<option value="#m#" <cfif isNumeric(rc.startMinute) and rc.startMinute eq m>selected</cfif>>
+						#iif(len(m) eq 1,de('0#m#'),de('#m#'))#
+					</option>
+				</cfloop>
+			</select>
+
+			<cfif session.localeHasDayParts>
+				<select id="mura-quickEdit-startDayPart" class="time">
 					<option value="AM">AM</option>
 					<option value="PM" <cfif rc.startDayPart eq 'PM'>selected</cfif>>PM</option>
 				</select>
+			</cfif>
+	
 			</li>
 			<li><label>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.stopdatetime')#</label>
 			<input type="text" id="mura-quickEdit-featureStop" value="#LSDateFormat(rc.featureStop,session.dateKeyFormat)#" class="textAlt datepicker mura-quickEdit-datepicker"><br />
-				<select id="mura-quickEdit-stopHour" class="span1">
+
+
+			<cfif session.localeHasDayParts>
+				<select id="mura-quickEdit-stopHour" class="time">
 					<cfloop from="1" to="12" index="h">
 						<option value="#h#" <cfif isNumeric(rc.stopHour) and (rc.stopHour eq h or rc.stopHour eq 0 and h eq 12) or not isNumeric(rc.stopHour) and h eq 11>selected</cfif>>#h#</option>
 					</cfloop>
 				</select>
-				<select id="mura-quickEdit-stopMinute" class="span1">
-					<cfloop from="0" to="59" index="m">
-						<option value="#m#" <cfif isNumeric(rc.stopMinute) and rc.stopMinute eq m or m eq 59>selected</cfif>>
-							#iif(len(m) eq 1,de('0#m#'),de('#m#'))#
-						</option>
+			<cfelse>
+				<select id="mura-quickEdit-stopHour" class="time">
+					<cfloop from="0" to="23" index="h">
+						<option value="#h#" <cfif isNumeric(rc.stopHour) and rc.stopHour eq h or not isNumeric(rc.stopHour) and h eq 23>selected</cfif>>#h#</option>
 					</cfloop>
 				</select>
-				<select id="mura-quickEdit-stopDayPart" class="span1">
+			</cfif>
+
+			<select id="mura-quickEdit-stopMinute" class="time">
+				<cfloop from="0" to="59" index="m">
+					<option value="#m#" <cfif isNumeric(rc.stopMinute) and rc.stopMinute eq m or m eq 59>selected</cfif>>
+						#iif(len(m) eq 1,de('0#m#'),de('#m#'))#
+					</option>
+				</cfloop>
+			</select>
+
+			<cfif session.localeHasDayParts>
+				<select id="mura-quickEdit-stopDayPart" class="time">
 					<option value="AM">AM</option>
 					<option value="PM" <cfif rc.stopDayPart neq 'AM'>selected</cfif>>PM</option>
 				</select>
+			</cfif>
 			</li>
 		</ol>	
 	<input type="hidden" id="mura-quickEdit-cattrim" value="#HTMLEditFormat(rc.cattrim)#">

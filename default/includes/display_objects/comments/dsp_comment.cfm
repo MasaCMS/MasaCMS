@@ -60,10 +60,10 @@ to your own modified versions of Mura CMS.
 				<cfif yesnoformat(application.configBean.getValue("editablecomments"))>
 					| <a class="editcomment" data-id="#request.rsSubCommentsLevel.commentID[arguments.currentrow]#">#variables.$.rbKey('comments.edit')#</a>
 				</cfif>
-				<cfif request.rsSubCommentsLevel.isApproved neq 1>
-					| <a href="./?approvedcommentid=#request.rsSubCommentsLevel.commentid[arguments.currentrow]#&nocache=1&linkServID=#variables.$.content('contentID')#" onClick="return confirm('Approve Comment?');">#variables.$.rbKey('comments.approve')#</a>
+				<cfif request.rsSubCommentsLevel.isApproved[arguments.currentrow] neq 1>
+					| <a href="./?approvedcommentid=#request.rsSubCommentsLevel.commentid[arguments.currentrow]#&amp;nocache=1&amp;linkServID=#variables.$.content('contentID')#" onClick="return confirm('Approve Comment?');">#variables.$.rbKey('comments.approve')#</a>
 				</cfif>
-				| <a href="./?deletecommentid=#request.rsSubCommentsLevel.commentid[arguments.currentrow]#&nocache=1&linkServID=#variables.$.content('contentID')#" onClick="return confirm('Delete Comment?');">#variables.$.rbKey('comments.delete')#</a>		
+				| <a href="./?deletecommentid=#request.rsSubCommentsLevel.commentid[arguments.currentrow]#&amp;nocache=1&amp;linkServID=#variables.$.content('contentID')#" onClick="return confirm('Delete Comment?');">#variables.$.rbKey('comments.delete')#</a>		
 			</cfif>
 		</dt>
 		<cfif len(variables.$.currentUser().getPhotoFileID())>

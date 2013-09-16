@@ -36,11 +36,11 @@
 	<cffunction name="fDSCreate" access="package" returntype="String"  hint="creates datasource connection, returns empty string or error">
 		<cfargument name="GWPassword" required="true"  type="string" hint="password for coldfusion or Railo">
 		<cfargument name="DatasourceName" default="#Application.ApplicationName#" type="string" hint="name of the desired datasource. will default to application name.">
-		<cfargument name="DatabaseServer" required="false"  type="string" hint="name of the database server,required for oracle,mysql,mssql">
+		<cfargument name="DatabaseServer" required="false"  type="string" hint="name of the database server,required for oracle,mysql,mssql,postgresql">
 		<cfargument name="DatabasePort" default="3306" displayname="" required="false"  type="numeric" hint="will use default port for each database if not provided">
 		<cfargument name="DatabaseName" default="#Application.ApplicationName#" required="false"  type="string" hint="name of the database to connect to, will default to application name.">
-		<cfargument name="UserName" required="false"  type="string" hint="username is needed for mysql,oracle,mssql">
-		<cfargument name="Password" required="false"  type="string" hint="password is needed for mysql,oracle,mssql">
+		<cfargument name="UserName" required="false"  type="string" hint="username is needed for mysql,oracle,mssql,postgresql">
+		<cfargument name="Password" required="false"  type="string" hint="password is needed for mysql,oracle,mssql,postgresql">
 		<cfargument name="Description" default="Mura data source" required="false"  type="string" hint="any descriptive text">
 		<cfargument name="bCreateDB" default="Yes" required="false"  type="boolean" hint="should the database be created at the same time, default = Yes">
 		
@@ -64,11 +64,11 @@
 	<cffunction name="fDSCreateAdobe" access="private" returntype="String"  hint="creates datasource connection, returns empty string or error">
 		<cfargument name="GWPassword" required="true"  type="string" hint="password for coldfusion or Railo">
 		<cfargument name="DatasourceName" default="#Application.ApplicationName#" type="string" hint="name of the desired datasource. will default to application name.">
-		<cfargument name="DatabaseServer" required="false"  type="string" hint="name of the database server,required for oracle,mysql,mssql">
+		<cfargument name="DatabaseServer" required="false"  type="string" hint="name of the database server,required for oracle,mysql,mssql,postgresql">
 		<cfargument name="DatabasePort" required="false"  type="numeric" hint="will use default port for each database if not provided">
 		<cfargument name="DatabaseName" default="#Application.ApplicationName#" required="false"  type="string" hint="name of the database to connect to, will default to application name.">
-		<cfargument name="UserName" required="false"  type="string" hint="username is needed for mysql,oracle,mssql">
-		<cfargument name="Password" required="false"  type="string" hint="password is needed for mysql,oracle,mssql">
+		<cfargument name="UserName" required="false"  type="string" hint="username is needed for mysql,oracle,mssql,postgresql">
+		<cfargument name="Password" required="false"  type="string" hint="password is needed for mysql,oracle,mssql,postgresql">
 		<cfargument name="Description" required="false"  type="string" hint="any descriptive text">
 		<cfargument name="bCreateDB" default="Yes" required="false"  type="boolean" hint="should the database be created at the same time, default = Yes">
 		
@@ -126,11 +126,11 @@
 	<cffunction name="fDSCreateRailo" access="private" returntype="String"  hint="creates datasource connection, returns empty string or error">
 		<cfargument name="GWPassword" required="true"  type="string" hint="password for coldfusion or Railo">
 		<cfargument name="DatasourceName" default="#Application.ApplicationName#" type="string" hint="name of the desired datasource. will default to application name.">
-		<cfargument name="DatabaseServer" required="false"  type="string" hint="name of the database server,required for oracle,mysql,mssql">
+		<cfargument name="DatabaseServer" required="false"  type="string" hint="name of the database server,required for oracle,mysql,mssql,postgresql">
 		<cfargument name="DatabasePort" required="false"  type="numeric" hint="will use default port for each database if not provided">
 		<cfargument name="DatabaseName" default="#Application.ApplicationName#" required="false"  type="string" hint="name of the database to connect to, will default to application name.">
-		<cfargument name="UserName" required="false"  type="string" hint="username is needed for mysql,oracle,mssql">
-		<cfargument name="Password" required="false"  type="string" hint="password is needed for mysql,oracle,mssql">
+		<cfargument name="UserName" required="false"  type="string" hint="username is needed for mysql,oracle,mssql,postgresql">
+		<cfargument name="Password" required="false"  type="string" hint="password is needed for mysql,oracle,mssql,postgresql">
 		<cfargument name="Description" required="false"  type="string" hint="any descriptive text">
 		<cfargument name="bCreateDB" default="Yes" required="false"  type="boolean" hint="should the database be created at the same time, default = Yes">
 		

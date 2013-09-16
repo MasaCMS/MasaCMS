@@ -92,8 +92,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 </cfswitch>
 	 
 	  <cfif not (arguments.rc.action neq 'delete' and not structIsEmpty(arguments.rc.categoryBean.getErrors()))>
-		  <cfset variables.fw.redirect(action="cCategory.list",append="siteid")>
-	  </cfif>
+		  <cfset variables.fw.redirect(action="cCategory.list",append="siteid",path="./")>
+	<cfelse>
+		<cfset arguments.rc.rsRestrictGroups=variables.contentUtility.getRestrictGroups(arguments.rc.siteid) />
+	 </cfif>
 </cffunction>
 
 </cfcomponent>

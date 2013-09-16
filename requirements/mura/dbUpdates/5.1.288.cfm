@@ -16,6 +16,11 @@ select * from tplugins  where 0=1
 	ALTER TABLE tplugins ADD COLUMN package varchar(100) default NULL
 	</cfquery>
 </cfcase>
+<cfcase value="postgresql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tplugins ADD COLUMN package varchar(100) default NULL
+	</cfquery>
+</cfcase>
 <cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tplugins ADD COLUMN package varchar(100) default NULL
@@ -38,6 +43,11 @@ select * from tplugins  where 0=1
 	</cfquery>
 </cfcase>
 <cfcase value="mysql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tplugins ADD COLUMN directory varchar(100) default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="postgresql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tplugins ADD COLUMN directory varchar(100) default NULL
 	</cfquery>

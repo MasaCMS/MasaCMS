@@ -80,16 +80,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
             0%
           </cfif>
           )</li>
-        <li><a href="index.cfm?muraAction=cEmail.showReturns&emailid=#rc.emailid#&siteid=#URLEncodedFormat(rc.siteid)#"><strong>#application.rbFactory.getKeyValue(session.rb,'email.userswhoclicked')#:</strong></a> #clicks# (
+        <li><a href="./?muraAction=cEmail.showReturns&emailid=#rc.emailid#&siteid=#URLEncodedFormat(rc.siteid)#"><strong>#application.rbFactory.getKeyValue(session.rb,'email.userswhoclicked')#:</strong></a> #clicks# (
           <cfif sent gt 0>
 #evaluate(round((clicks/sent)*100))#%
             <cfelse>
             0%
           </cfif>
           )</li>
-        <li><a href="index.cfm?muraAction=cEmail.showReturns&emailid=#rc.emailid#&siteid=#URLEncodedFormat(rc.siteid)#"><strong>#application.rbFactory.getKeyValue(session.rb,'email.uniqueclicks')#:</strong></a> #uniqueClicks# </li>
-        <li><a href="index.cfm?muraAction=cEmail.showReturns&emailid=#rc.emailid#&siteid=#URLEncodedFormat(rc.siteid)#"><strong>#application.rbFactory.getKeyValue(session.rb,'email.totalclicks')#:</strong></a> #totalClicks# </li>
-        <li><a href="index.cfm?muraAction=cEmail.showBounces&emailid=#rc.emailid#&siteid=#URLEncodedFormat(rc.siteid)#"><strong>Bounces:</strong></a> #bounces# (
+        <li><a href="./?muraAction=cEmail.showReturns&emailid=#rc.emailid#&siteid=#URLEncodedFormat(rc.siteid)#"><strong>#application.rbFactory.getKeyValue(session.rb,'email.uniqueclicks')#:</strong></a> #uniqueClicks# </li>
+        <li><a href="./?muraAction=cEmail.showReturns&emailid=#rc.emailid#&siteid=#URLEncodedFormat(rc.siteid)#"><strong>#application.rbFactory.getKeyValue(session.rb,'email.totalclicks')#:</strong></a> #totalClicks# </li>
+        <li><a href="./?muraAction=cEmail.showBounces&emailid=#rc.emailid#&siteid=#URLEncodedFormat(rc.siteid)#"><strong>Bounces:</strong></a> #bounces# (
           <cfif sent gt 0>
 #evaluate(round((bounces/sent)*100))#%
             <cfelse>
@@ -99,11 +99,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       </cfif>
     </ul>
   </cfif>
-<form class="" novalidate="novalidate" action="index.cfm?muraAction=cEmail.update&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="form1" onSubmit="return false;">
+
+<form novalidate="novalidate" action="./?muraAction=cEmail.update&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="form1" onSubmit="return false;">
     
 <div class="load-inline tab-preloader"></div>
+<script>$('.tab-preloader').spin(spinnerArgs2);</script>
     
-<div class="tabbable tabs-left">
+<div class="tabbable tabs-left mura-ui">
     <ul class="nav nav-tabs tabs initActiveTab">
         <li><a href="##emailContent" onClick="return false;"><span>Email</span></a></li>
         <li><a href="##emailGroupsLists" onClick="return false;"><span>Recipients</span></a></li>
@@ -156,6 +158,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
          </div>
         
         <span id="htmlMessage" style="display:none;">
+
+          <!--- HTML LAYOUT TEMPLATE --->
+          <cfif rc.rsTemplates.recordcount>
+            <div class="control-group">
+              <label class="control-label">
+                #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.layouttemplate')#
+              </label>
+              <div class="controls">
+                <select name="template" class="dropdown">
+                  <cfloop query="rc.rsTemplates">
+                    <option value=""<cfif not Len(rc.rsTemplates.name)> selected</cfif>>Default</option>
+                    <cfif right(rc.rsTemplates.name,4) eq ".cfm">
+                      <cfoutput>
+                        <option value="#rc.rsTemplates.name#" <cfif rc.emailBean.gettemplate() eq rc.rsTemplates.name>selected</cfif>>#rc.rsTemplates.name#</option>
+                      </cfoutput>
+                    </cfif>
+                  </cfloop>
+                </select>
+              </div>
+            </div>
+            <cfelse>
+            <input type="hidden" name="template" value="">
+          </cfif>
         
         <div class="control-group">
         <label class="control-label">
@@ -287,10 +312,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     </div>
 	</div>
 
- <!--- End Tab Container --->
+<!--- End Tab Container --->
+<!---
 <div class="form-actions" style="display:none;">
-<img src="./images/progress_bar.gif">
+	<img src="./images/progress_bar.gif">
 </div>
+--->
+
 <div class="form-actions"> 
 <!---Delivery Options--->
 	<cfsilent>
@@ -326,7 +354,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         <div style="display:none" id="scheduler">
 	        <label>#application.rbFactory.getKeyValue(session.rb,'email.deliverydate')#</label>
 	          <div class="controls">
-	          <input type="text" class="datepicker input-medium" id="deliveryDate" name="deliveryDate" value="#LSDateFormat(rc.emailBean.getDeliveryDate(),session.dateKeyFormat)#">
+	          <cf_datetimeselector name="deliveryDate" 
+            datetime="#rc.emailBean.getDeliveryDate()#" >
+            <!---
+            <input type="text" class="datepicker input-medium" id="deliveryDate" name="deliveryDate" value="#LSDateFormat(rc.emailBean.getDeliveryDate(),session.dateKeyFormat)#">
 	          <cfsilent>
 	          <cfset timehour = "">
 	          <cfset timeminute = "">
@@ -368,6 +399,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	            <option value="AM" <cfif timepart eq 'AM'>selected</cfif>>AM</option>
 	            <option value="PM" <cfif timepart eq 'PM'>selected</cfif>>PM</option>
 	          </select>
+            --->
 	          <div>
 		          <button type="button" class="btn" onClick="emailManager.validateScheduler('#formAction#', '#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'email.pleaseenterdate'))#', 'deliveryDate');"><i class="icon-check"></i> #application.rbFactory.getKeyValue(session.rb,'email.save')#</button>
 		          <button type="button" class="btn" onClick="emailManager.closeScheduler()"><i class="icon-ban-circle"></i> #application.rbFactory.getKeyValue(session.rb,'email.cancel')#</button>

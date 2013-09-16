@@ -31,6 +31,14 @@ CREATE INDEX [IX_tcontent_mobileExclude] ON [dbo].[tcontent]([mobileExclude]) ON
 		</cfcatch>
 	</cftry>
 </cfcase>
+<cfcase value="postgresql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontent ADD mobileExclude smallint
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	CREATE INDEX IX_tcontent_mobileExclude ON tcontent(mobileExclude)
+	</cfquery>
+</cfcase>
 <cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontent ADD COLUMN mobileExclude smallint

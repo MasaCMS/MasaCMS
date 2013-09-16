@@ -73,13 +73,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.qrystr=variables.qrystr & "&nextNID=#request.currentNextNID#"/>
 </cfif>
 <cfif len(request.filterBy)>
-<cfif isNumeric(request.day) and request.day>
-	<cfset variables.qrystr=variables.qrystr & "&month=#request.month#&year=#request.year#&day=#request.day#&filterBy=#request.filterBy#">
-</cfif>
+	<cfif isNumeric(request.day) and request.day>
+		<cfset variables.qrystr=variables.qrystr & "&month=#request.month#&year=#request.year#&day=#request.day#&filterBy=#request.filterBy#">
+	<cfelse>
+		<cfset variables.qrystr=variables.qrystr & "&month=#request.month#&year=#request.year#&categoryID=#variables.$.event('categoryID')#&relatedID=#variables.$.event('relatedID')#&filterBy=#request.filterBy#">
+	</cfif>
 <cfelse>
-<cfif isNumeric(request.day) and request.day>
-	<cfset variables.qrystr=variables.qrystr & "&month=#request.month#&year=#request.year#&day=#request.day#">
-</cfif>
+	<cfif isNumeric(request.day) and request.day>
+		<cfset variables.qrystr=variables.qrystr & "&month=#request.month#&year=#request.year#&day=#request.day#">
+	</cfif>
 </cfif>
 </cfsilent>
 <cfoutput>

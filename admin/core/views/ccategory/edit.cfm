@@ -51,13 +51,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfinclude template="dsp_secondary_menu.cfm">
 
-#application.utility.displayErrors(rc.categoryBean.getErrors())#
+<cfif not structIsEmpty(rc.categoryBean.getErrors())>
+  <p class="alert alert-error">#application.utility.displayErrors(rc.categoryBean.getErrors())#</p>
+</cfif>
 
 <span id="msg">
 #application.pluginManager.renderEvent("onCategoryEditMessageRender", event)#
 </span>
 
-<form class="fieldset-wrap" novalidate="novalidate" action="index.cfm?muraAction=cCategory.update&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="form1" onsubmit="return validate(this);">
+<form class="fieldset-wrap" novalidate="novalidate" action="./?muraAction=cCategory.update&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="form1" onsubmit="return validate(this);">
+
+#$.renderEvent("onCategoryBasicTopRender")#
+
 <div class="fieldset">
 <div class="control-group">
   <label class="control-label">
@@ -136,9 +141,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
   
   
   
-<div class="span6">  <label class="control-label">Active?</label>
+<div class="span3">  <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'categorymanager.isfeatureable')#</label>
   <div class="controls">
-  	<label class="radio inline" for="isActiveYes">
+  	<label class="radio inline" for="isfeatureableYes">
+      <input name="isfeatureable" id="isfeatureableYes" type="radio" value="1" <cfif rc.categoryBean.getIsfeatureable()>checked</cfif>> 
+      #application.rbFactory.getKeyValue(session.rb,'categorymanager.yes')#
+    </label>
+    <label class="radio inline" for="isfeatureableNo"> 
+      <input name="isfeatureable" id="isfeatureableNo" type="radio" value="0" <cfif not rc.categoryBean.getIsfeatureable()>checked</cfif>> 
+      #application.rbFactory.getKeyValue(session.rb,'categorymanager.no')#
+    </label> 
+  </div></div>
+
+<div class="span3">  <label class="control-label">Active?</label>
+  <div class="controls">
+    <label class="radio inline" for="isActiveYes">
       <input name="isActive" id="isActiveYes" type="radio" value="1" <cfif rc.categoryBean.getIsActive()>checked</cfif>> 
       #application.rbFactory.getKeyValue(session.rb,'categorymanager.yes')#
     </label>
@@ -147,6 +164,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
       #application.rbFactory.getKeyValue(session.rb,'categorymanager.no')#
     </label> 
   </div></div>
+
   
 </div>
 
@@ -192,10 +210,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 </div>
 
+
+ #$.renderEvent("onCategoryBasicBottomRender")#
+
 <div class="form-actions">
   <cfif rc.categoryID eq ''>
     <input type="button" class="btn" onclick="submitForm(document.forms.form1,'add');" value="#application.rbFactory.getKeyValue(session.rb,'categorymanager.add')#" />
-    <input type=hidden name="categoryID" value="">
+    <input type=hidden name="categoryID" value="#rc.categoryBean.getCategoryID()#">
   <cfelse> 
     <input type="button" class="btn" onclick="submitForm(document.forms.form1,'delete','#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'categorymanager.deleteconfirm'))#');" value="#application.rbFactory.getKeyValue(session.rb,'categorymanager.delete')#" /> 
     <input type="button" class="btn" onclick="submitForm(document.forms.form1,'update');" value="#application.rbFactory.getKeyValue(session.rb,'categorymanager.update')#" />

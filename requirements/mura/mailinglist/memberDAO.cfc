@@ -63,7 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfloop list="#arguments.memberBean.getMLID()#" index="L">
 				<cfif not listfind(currBean.getMLID(),L)>
 					<cftry>
-					<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+					<cfquery>
 					insert into tmailinglistmembers (mlid,email,siteid,fname,lname,company,isVerified,created)
 					values (<cfqueryparam cfsqltype="cf_sql_varchar" value="#L#">
 					,<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.memberBean.getEmail())#" />
@@ -90,7 +90,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rs ="" />
 	<cfset var data =structNew() />
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 	Select mlid,siteid,email,fname,lname,company,isVerified,created from tmailinglistmembers where 
 	siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.siteID)#">
 	and email=<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.email)#" />
@@ -119,7 +119,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif REFindNoCase("^[^@%*<> ]+@[^@%*<> ]{1,255}\.[^@%*<> ]{2,5}", trim(arguments.memberBean.getEmail())) neq 0>
 		<cftry>
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" >
+		<cfquery>
 		update tmailinglistmembers 
 		set 
 		fName= <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.memberBean.getFName() neq '',de('no'),de('yes'))#" value="#arguments.memberBean.getFName()#">
@@ -140,7 +140,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif REFindNoCase("^[^@%*<> ]+@[^@%*<> ]{1,255}\.[^@%*<> ]{2,5}", trim(arguments.memberBean.getEmail())) neq 0>
 		<cftry>
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery>
 		delete from tmailinglistmembers where email=<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.memberBean.getEmail())#" /> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.memberBean.getsiteID())#" />
 		</cfquery>
 		<cfcatch type="database"></cfcatch>
@@ -154,7 +154,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif REFindNoCase("^[^@%*<> ]+@[^@%*<> ]{1,255}\.[^@%*<> ]{2,5}", trim(arguments.memberBean.getEmail())) neq 0>
 		<cftry>
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#" >
+		<cfquery>
 		delete from tmailinglistmembers where mlid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.memberBean.getMLID()#" /> and email=<cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.memberBean.getEmail())#" /> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.memberBean.getSiteID()#" />
 		</cfquery>
 		<cfcatch type="database"></cfcatch>

@@ -194,6 +194,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var rsDefinitions=getDefinitionsQuery()>
 <cfset var tableModifier="">
 <cfset var rsExtended="">
+<cfset var rsPage="">
 
 		<cfif variables.configBean.getDbType() eq "MSSQL">
 			 <cfset tableModifier="with (nolock)">
@@ -208,7 +209,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				)>
 
 			<cfif not isQuery(variables.instance.sourceIterator.getPageQuery("page_extended#variables.instance.sourceIterator.getPageIndex()#"))>
-				<cfquery name="rsPage" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+				<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsPage')#">
 					select #getDataTable()#.baseid, tclassextendattributes.name, tclassextendattributes.type, tclassextendattributes.validation, 
 					<cfif variables.configBean.getDBType() eq "oracle">
 						to_char(tclassextendattributes.label) as label
@@ -244,7 +245,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				where baseID='#getBaseID()#'
 			</cfquery>
 		<cfelse>
-			<cfquery name="rsExtended" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+			<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsExtended')#">
 			select #dataTable#.baseid, tclassextendattributes.name, tclassextendattributes.type, tclassextendattributes.validation, 
 			<cfif variables.configBean.getDBType() eq "oracle">
 				to_char(tclassextendattributes.label) as label
@@ -361,23 +362,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset var extData=structNew() />
 	<cfset var tempDate="" />
-	<cfif rs.recordcount>
-		<cfset extData.extendSetID=valueList(rs.extendSetID)>
+	<cfif arguments.rs.recordcount>
+		<cfset extData.extendSetID=valueList(arguments.rs.extendSetID)>
 		<cfset extData.data=structNew()>
 		
-		<cfloop query="rs">
-			<cfif len(rs.baseID)>
-				<cfif rs.validation eq "Date">
-					<cfset tempDate=rs.attributeValue>
+		<cfloop query="arguments.rs">
+			<cfif len(arguments.rs.baseID)>
+				<cfif arguments.rs.validation eq "Date">
+					<cfset tempDate=arguments.rs.attributeValue>
 					<cftry>
-						<cfset extData.data['#rs.name#']=parseDateTime(tempDate)>
-						<cfcatch><cfset extData.data['#rs.name#']=tempDate></cfcatch>
+						<cfset extData.data['#arguments.rs.name#']=parseDateTime(tempDate)>
+						<cfcatch><cfset extData.data['#arguments.rs.name#']=tempDate></cfcatch>
 					</cftry>
 				<cfelse>
-					<cfset extData.data['#rs.name#']=rs.attributeValue>
+					<cfset extData.data['#arguments.rs.name#']=arguments.rs.attributeValue>
 				</cfif>
 			<cfelse>
-				<cfset extData.data['#rs.name#']=getBean('contentRenderer').setDynamicContent(rs.defaultValue)>
+				<cfset extData.data['#arguments.rs.name#']=getBean('contentRenderer').setDynamicContent(arguments.rs.defaultValue)>
 			</cfif>
 		</cfloop>
 	</cfif>

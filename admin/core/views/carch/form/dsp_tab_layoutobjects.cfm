@@ -44,8 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-
-<cfloop from="1" to="#application.settingsManager.getSite(rc.siteID).getColumnCount()#" index="i">
+<cfloop from="1" to="#application.settingsManager.getSite($.event('siteID')).getColumnCount()#" index="i">
   <cfparam name="request.rsContentObjects#i#.recordcount" default=0>
 </cfloop>
 <cfset tabLabelList=listAppend(tabLabelList,application.rbFactory.getKeyValue(session.rb,"sitemanager.content.tabs.layoutobjects"))/>
@@ -101,6 +100,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
  
     <div class="control-group">
       <label class="control-label"> <a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"tooltip.inheritanceRules"))#"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.inheritancerules')# <i class="icon-question-sign"></i> </a> </label>
+       <cfif structKeyExists(request, "inheritedObjects") and len(request.inheritedObjects)>
+          <cfset inheritBean=$.getBean('content').loadBy(contenthistid=request.inheritedObjects)>
+          <cfif inheritBean.getContentID() neq rc.contentBean.getContentID()>
+          <div class="alert">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.currentinheritance')#: 
+          <cfif listFindNoCase("author,editor",application.permUtility.getnodePerm(inheritBean.getCrumbArray()))>
+             <strong><a href='#inheritBean.getEditURL(compactDisplay=yesNoFormat(rc.compactdisplay),tab='tabLayoutObjects')#'>#HTMLEditFormat(inheritBean.getMenuTitle())#</a></strong>
+          <cfelse>
+             <strong>#HTMLEditFormat(inheritBean.getMenuTitle())#</strong>
+          </cfif>
+         
+          </div>
+          </cfif>
+      </cfif>
       <div class="controls">
         <label for="ioi" class="radio inline">
           <input type="radio" name="inheritObjects" id="ioi" value="Inherit" <cfif rc.contentBean.getinheritObjects() eq 'inherit' or rc.contentBean.getinheritObjects() eq ''>checked</cfif>>

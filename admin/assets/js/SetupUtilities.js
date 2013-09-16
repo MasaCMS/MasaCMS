@@ -19,7 +19,7 @@ function fHandleAutoCreateChange() {
 		
 	}
 	switch(sDBName) {
-	case "mysql": case "mssql": 
+	case "mysql": case "mssql": case "postgresql":
 		blnAutoCreate=true;
 		//enable radio button
 		document.getElementById("auto_create_on").disabled=false;

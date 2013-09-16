@@ -57,6 +57,7 @@
 		<cfparam name="arguments.rc.ommitPublishingTab" default="false"/>
 		<cfparam name="arguments.rc.ommitRelatedContentTab" default="false"/>
 		<cfparam name="arguments.rc.ommitAdvancedTab" default="false"/>
+		<cfparam name="arguments.rc.murakeepediting" default="false"/>
 
 		<cfif not arguments.rc.ommitPublishingTab>
 			<cfparam name="arguments.rc.isNav" default="0"/>
@@ -74,7 +75,7 @@
 		</cfif>
 			
 		<cfif not arguments.rc.ommitRelatedContentTab>
-			<cfparam name="arguments.rc.relatedcontentid" default=""/>
+			<cfparam name="arguments.rc.relatedContentSetData" default=""/>
 		</cfif>
 		
 		<cfparam name="arguments.rc.responseChart" default="0"/>
@@ -143,14 +144,17 @@
 		<cfset local.args.display=arguments.rc.display>
 		
 		<cfset local.args.displayStop=arguments.rc.displayStop>
+		<!---
 		<cfset local.args.stopHour=arguments.rc.stopHour>
 		<cfset local.args.stopMinute=arguments.rc.stopMinute>
 		<cfset local.args.stopDayPart=arguments.rc.stopDayPart>
-		
+		--->
 		<cfset local.args.displayStart=arguments.rc.displayStart>
+		<!---
 		<cfset local.args.startHour=arguments.rc.startHour>
 		<cfset local.args.startMinute=arguments.rc.startMinute>
 		<cfset local.args.startDayPart=arguments.rc.startDayPart>
+		--->
 	
 	<cfelseif arguments.rc.attribute eq "template">
 		<cfset local.args.template=arguments.rc.template>
@@ -177,15 +181,15 @@
 	<cfset local.currentBean=getBean("content").loadBy(contentID=arguments.rc.contentID, siteID= arguments.rc.siteid)> 
 	
   	<cfif local.currentBean.getIsNew()>
-		<cfset arguments.rc.crumbdata=variables.contentManager.getCrumbList(arguments.rc.parentid,arguments.rc.siteid)/>
+		<cfset arguments.rc.crumbdata=variables.contentManager.getCrumbList(arguments.rc.parentid,arguments.rc.siteid,true)/>
 	 <cfelse>
-		<cfset arguments.rc.crumbdata=variables.contentManager.getCrumbList(arguments.rc.contentID,arguments.rc.siteid)/>
+		<cfset arguments.rc.crumbdata=variables.contentManager.getCrumbList(arguments.rc.contentID,arguments.rc.siteid,true)/>
 	</cfif>
 
    <cfset arguments.rc.contentBean=variables.contentManager.getcontentVersion(arguments.rc.contenthistid,arguments.rc.siteid)/>
   
    <cfif arguments.rc.contentid neq '' and arguments.rc.contenthistid neq '' and arguments.rc.contentBean.getIsNew() eq 1>
-		<cfset variables.fw.redirect(action="cArch.hist",append="contentid,siteid,startrow,moduleid,parentid,type")>
+		<cfset variables.fw.redirect(action="cArch.hist",append="contentid,siteid,startrow,moduleid,parentid,type",path="./")>
    </cfif>
    
   	<cfset arguments.rc.rsCount=variables.contentManager.getItemCount(arguments.rc.contentid,arguments.rc.siteid) />
@@ -242,15 +246,17 @@
 	 </cfif>
   
 	 <cfif arguments.rc.allowAction and arguments.rc.action eq 'add'>
-		<cfif structKeyExists(arguments.rc,"sourceID") and isValid('UUID',arguments.rc.sourceID)>
-			 <cfset arguments.rc.contentBean=getBean('content').loadBy(contentHistID=arguments.rc.sourceID, siteid=arguments.rc.siteid).set(arguments.rc).save() />
+		<cfif structKeyExists(arguments.rc,"sourceid") and isValid('UUID',arguments.rc.sourceid)>
+			 <cfset arguments.rc.contentBean=getBean('content').loadBy(contentHistID=arguments.rc.sourceid, siteid=arguments.rc.siteid).set(arguments.rc).save() />
+		<cfelseif structKeyExists(arguments.rc,"contenthistid") and isValid('UUID',arguments.rc.contenthistid)>
+			 <cfset arguments.rc.contentBean=getBean('content').loadBy(contentHistID=arguments.rc.contenthistid, siteid=arguments.rc.siteid).set(arguments.rc).save() />
 		<cfelse>
 			 <cfset arguments.rc.contentBean=getBean('content').loadBy(contentID=arguments.rc.contentID, siteid=arguments.rc.siteid).set(arguments.rc).save() />
 		</cfif>
-		<cfif not arguments.rc.ajaxrequest and len(request.newImageIDList)>
-			<cfset rc.fileid=request.newImageIDList>
-			<cfset rc.contenthistid=arguments.rc.contentBean.getContentHistID()>
-			<cfset variables.fw.redirect(action="cArch.imagedetails",append="contenthistid,siteid,fileid,compactDisplay")>
+		<cfif not arguments.rc.ajaxrequest and len(request.newImageIDList) and not arguments.rc.murakeepediting>
+			<cfset arguments.rc.fileid=request.newImageIDList>
+			<cfset arguments.rc.contenthistid=arguments.rc.contentBean.getContentHistID()>
+			<cfset variables.fw.redirect(action="cArch.imagedetails",append="contenthistid,siteid,fileid,compactDisplay",path="./")>
 		</cfif>
 	 </cfif>
 	 
@@ -269,33 +275,34 @@
 			  </cfif>
 		  </cfif>
 		 
-		<cfif arguments.rc.closeCompactDisplay neq 'true' and arguments.rc.action neq 'multiFileUpload'>
+		<cfif (arguments.rc.closeCompactDisplay neq 'true'  or arguments.rc.murakeepediting) and arguments.rc.action neq 'multiFileUpload'>
 			
-				<cfif len(arguments.rc.returnURL) and (arguments.rc.action eq 'delete' or arguments.rc.action eq 'deletehistall' or arguments.rc.preview eq 0)>
-						<cflocation url="#rc.returnURL#" addtoken="false"/>
+				<cfif len(arguments.rc.returnURL) and (arguments.rc.action eq 'delete' or arguments.rc.action eq 'deletehistall' or (arguments.rc.preview eq 0 and not arguments.rc.murakeepediting))>
+					<cflocation url="#rc.returnURL#" addtoken="false"/>
 				</cfif>
 				
-				<cfif arguments.rc.action eq 'delete' or arguments.rc.action eq 'deletehistall' or (arguments.rc.return eq 'hist' and arguments.rc.preview eq 0)>
+				<cfif arguments.rc.action eq 'delete' or arguments.rc.action eq 'deletehistall' or (arguments.rc.return eq 'hist' and arguments.rc.preview eq 0 and not arguments.rc.murakeepediting)>
 					<cfset variables.fw.redirect(action="cArch.hist",append="contentid,siteid,startrow,moduleid,parentid,type,compactDisplay")>
 				</cfif>
 				
-				<cfif arguments.rc.return eq 'changesets' and len(rc.contentBean.getChangesetID())>
-					<cfset variables.fw.redirect(action="cChangesets.assignments",append="changesetID,siteid")>
+				<cfif arguments.rc.return eq 'changesets' and len(rc.contentBean.getChangesetID()) and not arguments.rc.murakeepediting>
+					<cfset variables.fw.redirect(action="cChangesets.assignments",append="changesetID,siteid",path="./")>
 				</cfif>
 				
 				<cfif structIsEmpty(rc.contentBean.getErrors())>
 					<cfset structDelete(session.mura,"editBean")>
-					<cfif arguments.rc.preview eq 0>
-						<cfset variables.fw.redirect(action="cArch.list",append="topid,siteid,startrow,moduleid")>
+					<cfif arguments.rc.preview eq 0 and not arguments.rc.murakeepediting>
+						<cfset variables.fw.redirect(action="cArch.list",append="topid,siteid,startrow,moduleid",path="./")>
 					<cfelse>
 						<cfset arguments.rc.parentid=rc.contentBean.getParentID()>
 						<cfset arguments.rc.type=rc.contentBean.getType()>
 						<cfset arguments.rc.contentid=rc.contentBean.getContentID()>
 						<cfset arguments.rc.contenthistid=rc.contentBean.getContentHistID()>
-						<cfset arguments.rc.preview=1>
-						<cfset variables.fw.redirect(action="cArch.edit",append="contenthistid,contentid,type,parentid,topid,siteid,moduleid,preview,startrow,return,compactDisplay")>
+						<cfset arguments.rc.preview=arguments.rc.preview>
+						<cfset variables.fw.redirect(action="cArch.edit",append="contenthistid,contentid,type,parentid,topid,siteid,moduleid,preview,startrow,return,compactDisplay",path="./")>
 					</cfif>
 				</cfif>
+
 		</cfif>
 
 	 </cfif>
@@ -304,7 +311,12 @@
 
 <cffunction name="hist" ouput="false">
 	<cfargument name="rc">
-	<cfset arguments.rc.rshist=variables.contentManager.getHist(arguments.rc.contentid,arguments.rc.siteid) />
+	<cfset arguments.rc.contentBean=variables.contentManager.getActiveContent(arguments.rc.contentid,arguments.rc.siteid) />
+	<cfset arguments.rc.rsCount=variables.contentManager.getItemCount(arguments.rc.contentid,arguments.rc.siteid) />
+</cffunction>
+
+<cffunction name="audit" ouput="false">
+	<cfargument name="rc">
 	<cfset arguments.rc.contentBean=variables.contentManager.getActiveContent(arguments.rc.contentid,arguments.rc.siteid) />
 	<cfset arguments.rc.rsCount=variables.contentManager.getItemCount(arguments.rc.contentid,arguments.rc.siteid) />
 </cffunction>
@@ -347,7 +359,7 @@
 	<cfargument name="rc">
 	<cfparam name="session.flatViewArgs" default="#structNew()#">
 	<cfparam name="session.flatViewArgs.#session.siteID#" default="#structNew()#">
-	<cfset session.flatViewArgs[session.siteID].tab=rc.tab  />
+	<cfset session.flatViewArgs[session.siteID].tab=arguments.rc.tab  />
 	<cfabort>
 </cffunction>
 
@@ -390,19 +402,19 @@
 	</cfif>
 
 	<cfif arguments.rc.perm eq "author">
-		<cfset versionBean.setApproved(0)>
+		<cfset local.versionBean.setApproved(0)>
 	<cfelseif arguments.rc.perm eq "editor" >
-		<cfset versionBean.setApproved(arguments.rc.approved)>
+		<cfset local.versionBean.setApproved(arguments.rc.approved)>
 	<cfelse>
 		<cfabort>
 	</cfif>
 
 	<cfif isJSON(arguments.rc.params)>
-		<cfset versionBean.addDisplayObject(argumentCollection=arguments.rc)>
+		<cfset local.versionBean.addDisplayObject(argumentCollection=arguments.rc)>
 		<cfset versionBean.save()>
 	</cfif>
 	
-	<cfset rc.versionBean=versionBean>
+	<cfset arguments.rc.versionBean=local.versionBean>
 	
 </cffunction>
 
@@ -437,6 +449,22 @@
 	
 	</cfif>
 	<cfabort>
+</cffunction>
+
+<cffunction name="getAuditTrail" output="true">
+	<cfargument name="rc">
+	<cfset var trail=[]>
+
+	<cfset arguments.rc.item=rc.$.getBean('content').loadBy(contenthistid=arguments.rc.contenthistid,siteid=arguments.rc.siteid)>
+	
+	<cfloop condition="not arguments.rc.item.getIsNew()">
+		<cfset arrayAppend(trail, arguments.rc.item.getContentHistID())>
+		<cfset arguments.rc.item=arguments.rc.item.getSource()>
+	</cfloop>
+	<cfcontent type="application/json">
+	<cfoutput>#createObject("component","mura.json").encode(trail)#</cfoutput>
+	<cfabort>
+		
 </cffunction>
 
 </cfcomponent>

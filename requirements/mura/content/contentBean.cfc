@@ -46,85 +46,90 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.bean.beanExtendable" output="false">
 	
-<cfproperty name="contentHistID" type="string" default="" required="true" />
-<cfproperty name="contentID" type="string" default="" required="true" />
-<cfproperty name="sourceID" type="string" default="" required="true" />
-<cfproperty name="active" type="numeric" default="0" required="true" />
-<cfproperty name="approved" type="numeric" default="0" required="true" />
-<cfproperty name="orderno" type="numeric" default="0" required="true" />
-<cfproperty name="metaDesc" type="string" default="" required="true" />
-<cfproperty name="metaKeyWords" type="string" default="" required="true" />
-<cfproperty name="displayStart" type="date" default="" required="true" />
-<cfproperty name="displayStop" type="date" default="" required="true" />
-<cfproperty name="body" type="string" default="" required="true" />
-<cfproperty name="title" type="string" default="" required="true" />
-<cfproperty name="menuTitle" type="string" default="" required="true" />
-<cfproperty name="URLTitle" type="string" default="" required="true" />
-<cfproperty name="HTMLTitle" type="string" default="" required="true" />
-<cfproperty name="filename" type="string" default="" required="true" />
-<cfproperty name="oldfilename" type="string" default="" required="true" />
-<cfproperty name="lastUpdate" type="date" default="" required="true" />
-<cfproperty name="display" type="numeric" default="" required="true" />
-<cfproperty name="parentID" type="string" default="" required="true" />
+<cfproperty name="contentHistID" type="string" default="" required="true" comparable="false"/>
+<cfproperty name="contentID" type="string" default="" required="true" comparable="false"/>
+<cfproperty name="preserveID" type="string" default="" comparable="false"/>
+<cfproperty name="active" type="numeric" default="0" required="true" comparable="false"/>
+<cfproperty name="approved" type="numeric" default="0" required="true" comparable="false"/>
+<cfproperty name="orderno" type="numeric" default="0" required="true" comparable="false"/>
+<cfproperty name="metaDesc" type="string" default=""/>
+<cfproperty name="metaKeyWords" type="string" default=""/>
+<cfproperty name="displayStart" type="date" default=""/>
+<cfproperty name="displayStop" type="date" default=""/>
+<cfproperty name="body" type="string" default=""/>
+<cfproperty name="title" type="string" default=""/>
+<cfproperty name="menuTitle" type="string" default=""/>
+<cfproperty name="URLTitle" type="string" default=""/>
+<cfproperty name="HTMLTitle" type="string" default=""/>
+<cfproperty name="filename" type="string" default=""/>
+<cfproperty name="oldfilename" type="string" default=""/>
+<cfproperty name="lastUpdate" type="date" default="" comparable="false"/>
+<cfproperty name="display" type="numeric" default=""/>
+<cfproperty name="parentID" type="string" default=""/>
 <cfproperty name="type" type="string" default="Page" required="true" />
-<cfproperty name="newfile" type="string" default="" required="true" />
-<cfproperty name="lastUpdateBy" type="string" default="" required="true" />
-<cfproperty name="lastUpdateByID" type="string" default="" required="true" />
-<cfproperty name="summary" type="string" default="" required="true" />
-<cfproperty name="siteID" type="string" default="" required="true" />
+<cfproperty name="newfile" type="string" default=""/>
+<cfproperty name="lastUpdateBy" type="string" default=""/>
+<cfproperty name="lastUpdateByID" type="string" default="" comparable="false"/>
+<cfproperty name="summary" type="string" default=""/>
+<cfproperty name="siteID" type="string" default=""/>
 <cfproperty name="moduleID" type="string" default="00000000000000000000000000000000000" required="true" />
 <cfproperty name="isNav" type="numeric" default="1" required="true" />
 <cfproperty name="restricted" type="numeric" default="0" required="true" />
 <cfproperty name="target" type="string" default="_self" required="true" />
-<cfproperty name="restrictGroups" type="string" default="" required="true" />
-<cfproperty name="template" type="string" default="" required="true" />
-<cfproperty name="childTemplate" type="string" default="" required="true" />
-<cfproperty name="responseMessage" type="string" default="" required="true" />
+<cfproperty name="restrictGroups" type="string" default=""/>
+<cfproperty name="template" type="string" default=""/>
+<cfproperty name="childTemplate" type="string" default=""/>
+<cfproperty name="responseMessage" type="string" default=""/>
 <cfproperty name="responseChart" type="numeric" default="0" required="true" />
-<cfproperty name="responseSendTo" type="string" default="" required="true" />
-<cfproperty name="responseDisplayFields" type="string" default="" required="true" />
-<cfproperty name="moduleAssign" type="string" default="" required="true" />
-<cfproperty name="notes" type="string" default="" required="true" />
+<cfproperty name="responseSendTo" type="string" default=""/>
+<cfproperty name="responseDisplayFields" type="string" default=""/>
+<cfproperty name="moduleAssign" type="string" default=""/>
+<cfproperty name="notes" type="string" default=""/>
 <cfproperty name="inheritObjects" type="string" default="Inherit" required="true" />
 <cfproperty name="isFeature" type="numeric" default="0" required="true" />
 <cfproperty name="isNew" type="numeric" default="1" required="true" />
-<cfproperty name="releaseDate" type="date" default="" required="true" />
+<cfproperty name="releaseDate" type="date" default=""/>
 <cfproperty name="isLocked" type="numeric" default="0" required="true" />
 <cfproperty name="nextN" type="numeric" default="10" required="true" />
-<cfproperty name="sortBy" type="string" default="orderno" required="true" />
+<cfproperty name="sortBy" type="string" default="orderno" required="true"/>
 <cfproperty name="sortDirection" type="string" default="asc" required="true" />
-<cfproperty name="featureStart" type="date" default="" required="true" />
-<cfproperty name="featureStop" type="date" default="" required="true" />
-<cfproperty name="fileID" type="string" default="" required="true" />
-<cfproperty name="fileSize" type="numeric" default="0" required="true" />
-<cfproperty name="fileExt" type="string" default="" required="true" />
-<cfproperty name="contentType" type="string" default="" required="true" />
-<cfproperty name="contentSubType" type="string" default="" required="true" />
+<cfproperty name="featureStart" type="date" default=""/>
+<cfproperty name="featureStop" type="date" default=""/>
+<cfproperty name="fileID" type="string" default=""/>
+<cfproperty name="fileSize" type="any" default="0" />
+<cfproperty name="fileExt" type="string" default=""/>
+<cfproperty name="contentType" type="string" default=""/>
+<cfproperty name="contentSubType" type="string" default=""/>
 <cfproperty name="forceSSL" type="numeric" default="0" required="true" />
-<cfproperty name="remoteURL" type="string" default="" required="true" />
-<cfproperty name="remoteID" type="string" default="" required="true" />
-<cfproperty name="remotePubDate" type="string" default="" required="true" />
-<cfproperty name="remoteSource" type="string" default="" required="true" />
-<cfproperty name="remoteSourceURL" type="string" default="" required="true" />
-<cfproperty name="credits" type="string" default="" required="true" />
-<cfproperty name="audience" type="string" default="" required="true" />
-<cfproperty name="keyPoints" type="string" default="" required="true" />
+<cfproperty name="remoteURL" type="string" default=""/>
+<cfproperty name="remoteID" type="string" default=""/>
+<cfproperty name="remotePubDate" type="string" default=""/>
+<cfproperty name="remoteSource" type="string" default=""/>
+<cfproperty name="remoteSourceURL" type="string" default=""/>
+<cfproperty name="credits" type="string" default=""/>
+<cfproperty name="audience" type="string" default=""/>
+<cfproperty name="keyPoints" type="string" default=""/>
 <cfproperty name="searchExclude" type="numeric" default="0" required="true" />
 <cfproperty name="displayTitle" type="numeric" default="1" required="true" />
-<cfproperty name="path" type="string" default="" required="true" />
-<cfproperty name="tags" type="string" default="" required="true" />
+<cfproperty name="path" type="string" default=""/>
+<cfproperty name="tags" type="string" default=""/>
 <cfproperty name="doCache" type="numeric" default="1" required="true" />
-<cfproperty name="created" type="date" default="" required="true" />
+<cfproperty name="created" type="date" default=""/>
 <cfproperty name="mobileExclude" type="numeric" default="0" required="true" />
-<cfproperty name="changesetID" type="string" default="" required="true" />
+<cfproperty name="changesetID" type="string" default="" comparable="false"/>
 <cfproperty name="imageSize" type="string" default="small" required="true" />
 <cfproperty name="imageHeight" type="string" default="AUTO" required="true" />
 <cfproperty name="imageWidth" type="string" default="AUTO" required="true" />
 <cfproperty name="majorVersion" type="numeric" default="0" required="true" />
 <cfproperty name="minorVersion" type="numeric" default="0" required="true" />
-<cfproperty name="expires" type="date" default="" required="true" />
-<cfproperty name="assocFilename" type="date" default="" required="true" />
-<cfproperty name="displayInterval" type="string" default="Daily" required="true" />
+<cfproperty name="expires" type="date" default=""/>
+<cfproperty name="assocFilename" type="string" default=""/>
+<cfproperty name="displayInterval" type="string" default="Daily" />
+<cfproperty name="requestID" type="string" default="" comparable="false"/>
+<cfproperty name="approvalStatus" type="string" default=""/>
+<cfproperty name="approvalGroupID" type="string" default="" comparable="false"/>
+<cfproperty name="approvalChainOverride" type="boolean" default="false" required="true" comparable="false"/>
+<cfproperty name="relatedContentSetData" type="any"/>
 
 <cffunction name="init" access="public" returntype="any" output="false">
 	
@@ -132,7 +137,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset variables.instance.ContentHistID = "" />
 	<cfset variables.instance.Contentid = "" />
-	<cfset variables.instance.sourceID = "" />
 	<cfset variables.instance.Active = 0 />
 	<cfset variables.instance.OrderNo = 1 />
 	<cfset variables.instance.MetaDesc = "" />
@@ -221,9 +225,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.displayInterval = "Daily" />
 	<cfset variables.instance.errors=structnew() />
 	<cfset variables.instance.categoryID = "" />
-	
+	<cfset variables.instance.requestID = "" />
+	<cfset variables.instance.approvalStatus = "" />
+	<cfset variables.instance.approvalGroupID = "" />
+	<cfset variables.instance.approvalChainOverride = false />
+	<cfset variables.instance.relatedContentSetData = "" />
+
 	<cfset variables.kids = arrayNew(1) />
 	<cfset variables.displayRegions = structNew()>
+	<cfset variables.primaryKey = 'contenthistid'>
+	<cfset variables.entityName = 'content'>
 	
 	<cfreturn this />
 </cffunction>
@@ -272,21 +283,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			AND isDate(variables.instance.displayStart)>
 			
 			<cfif isdefined("arguments.content.starthour")
-			and isdefined("arguments.content.startMinute")
-			and isdefined("arguments.content.startDayPart")>
+			and isdefined("arguments.content.startMinute")>
 			
+				<cfparam name="arguments.content.startDayPart" default="">
+
 				<cfif arguments.content.startdaypart eq "PM">
 					<cfset starthour = arguments.content.starthour + 12>
 					
 					<cfif starthour eq 24>
 						<cfset starthour = 12>
 					</cfif>
-				<cfelse>
+				<cfelseif arguments.content.startdaypart eq "AM">
 					<cfset starthour = arguments.content.starthour>
 					
 					<cfif starthour eq 12>
 						<cfset starthour = 0>
 					</cfif>
+				<cfelse>
+					<cfset starthour = arguments.content.starthour>
 				</cfif>
 				
 				<cfset setDisplayStart(createDateTime(year(variables.instance.displayStart), month(variables.instance.displayStart), day(variables.instance.displayStart),starthour, arguments.content.startMinute, "0"))>
@@ -302,20 +316,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			AND isDate(variables.instance.displayStop)>
 			
 			<cfif isdefined("arguments.content.Stophour")
-			and isdefined("arguments.content.StopMinute")
-			and isdefined("arguments.content.StopDayPart")>
+			and isdefined("arguments.content.StopMinute")>
+
+			<cfparam name="arguments.content.stopDayPart" default="">
+
 			<cfif arguments.content.stopdaypart eq "PM">
 				<cfset stophour = arguments.content.stophour + 12>
 				
 				<cfif stophour eq 24>
 					<cfset stophour = 12>
 				</cfif>
-			<cfelse>
+			<cfelseif arguments.content.stopdaypart eq "AM">
 				<cfset stophour = arguments.content.stophour>
 				
 				<cfif stophour eq 12>
 					<cfset stophour = 0>
 				</cfif>
+			<cfelse>
+				<cfset stophour = arguments.content.stophour>
 			</cfif>
 			
 			<cfset setDisplayStop(createDateTime(year(variables.instance.displayStop), month(variables.instance.displayStop), day(variables.instance.displayStop),stophour, arguments.content.StopMinute, "0"))>
@@ -326,21 +344,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif variables.instance.isFeature eq 2 
 			AND isDate(variables.instance.featureStart)
 			and isdefined("arguments.content.featurestarthour")
-			and isdefined("arguments.content.featurestartMinute")
-			and isdefined("arguments.content.featureStartDayPart")>
+			and isdefined("arguments.content.featurestartMinute")>
 			
+			<cfparam name="arguments.content.featureStartDayPart" default="">
+
 			<cfif arguments.content.featureStartdaypart eq "PM">
 				<cfset featurestarthour = arguments.content.featurestarthour + 12>
 				
 				<cfif featurestarthour eq 24>
 					<cfset featurestarthour = 12>
 				</cfif>
-			<cfelse>
+			<cfelseif arguments.content.featureStartdaypart eq "AM">
 				<cfset featurestarthour = arguments.content.featurestarthour>
 				
 				<cfif featurestarthour eq 12>
 					<cfset featurestarthour = 0>
 				</cfif>
+			<cfelse>
+				<cfset featurestarthour = arguments.content.featurestarthour>
 			</cfif>
 			
 			<cfset setFeatureStart(createDateTime(year(variables.instance.featureStart), month(variables.instance.featureStart), day(variables.instance.featureStart),Featurestarthour, arguments.content.featurestartMinute, "0"))>
@@ -349,21 +370,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif variables.instance.isFeature eq 2 
 			AND isDate(variables.instance.featureStop)
 			and isdefined("arguments.content.featurestophour")
-			and isdefined("arguments.content.featurestopMinute")
-			and isdefined("arguments.content.featureStopDayPart")>
+			and isdefined("arguments.content.featurestopMinute")>
 			
+			<cfparam name="arguments.content.featureStopDayPart" default="">
+
 			<cfif arguments.content.featureStopdaypart eq "PM">
 				<cfset featurestophour = arguments.content.featurestophour + 12>
 				
 				<cfif featurestophour eq 24>
 					<cfset featurestophour = 12>
 				</cfif>
-			<cfelse>
+			<cfelseif arguments.content.featureStopdaypart eq "AM">
 				<cfset featurestophour = arguments.content.featurestophour>
 				
 				<cfif featurestophour eq 12>
 					<cfset featurestophour = 0>
 				</cfif>
+			<cfelse>
+				<cfset featurestophour = arguments.content.featurestophour>
 			</cfif>
 			
 			<cfset setFeatureStop(createDateTime(year(variables.instance.featureStop), month(variables.instance.featureStop), day(variables.instance.featureStop),Featurestophour, arguments.content.featurestopMinute, "0"))>
@@ -372,21 +396,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif isDate(variables.instance.releaseDate)>
 			
 			<cfif isdefined("arguments.content.releasehour")
-			and isdefined("arguments.content.releaseMinute")
-			and isdefined("arguments.content.releaseDayPart")>
+			and isdefined("arguments.content.releaseMinute")>
 			
+				<cfparam name="arguments.content.releaseDayPart" default="">
+
 				<cfif arguments.content.releasedaypart eq "PM">
 					<cfset releasehour = arguments.content.releasehour + 12>
 					
 					<cfif releasehour eq 24>
 						<cfset releasehour = 12>
 					</cfif>
-				<cfelse>
+				<cfelseif arguments.content.releasedaypart eq "AM">
 					<cfset releasehour = arguments.content.releasehour>
 					
 					<cfif releasehour eq 12>
 						<cfset releasehour = 0>
 					</cfif>
+				<cfelse>
+					<cfset releasehour = arguments.content.releasehour>
 				</cfif>
 				
 				<cfset setReleaseDate(createDateTime(year(variables.instance.releaseDate), month(variables.instance.releaseDate), day(variables.instance.releaseDate), releasehour, arguments.content.releaseMinute, "0"))>
@@ -397,8 +424,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif isDate(variables.instance.expires)>
 			
 			<cfif isdefined("arguments.content.expireshour")
-			and isdefined("arguments.content.expiresMinute")
-			and isdefined("arguments.content.expiresDayPart")>
+			and isdefined("arguments.content.expiresMinute")>
+
+				<cfparam name="arguments.content.expiresDayPart" default="">
 			
 				<cfif arguments.content.expiresdaypart eq "PM">
 					<cfset expireshour = arguments.content.expireshour + 12>
@@ -406,12 +434,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif expireshour eq 24>
 						<cfset expireshour = 12>
 					</cfif>
-				<cfelse>
+				<cfelseif arguments.content.expiresdaypart eq "AM">
 					<cfset expireshour = arguments.content.expireshour>
 					
 					<cfif expireshour eq 12>
 						<cfset expireshour = 0>
 					</cfif>
+				<cfelse>
+					<cfset expireshour = arguments.content.expireshour>
 				</cfif>
 				
 				<cfset setExpires(createDateTime(year(variables.instance.expires), month(variables.instance.expires), day(variables.instance.expires), expireshour, arguments.content.expiresMinute, "0"))>
@@ -419,6 +449,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfif>
 		
+
 		<cfif isDefined("session.mura") and session.mura.isLoggedIn>
 			<cfset variables.instance.LastUpdateBy = left(session.mura.fname & " " & session.mura.lname,50) />
 			<cfset variables.instance.LastUpdateByID = session.mura.userID />
@@ -880,19 +911,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getRelatedContentQuery" returnType="query" output="false" access="public">
 	<cfargument name="liveOnly" type="boolean" required="yes" default="false" />
 	<cfargument name="today" type="date" required="yes" default="#now()#" />
-	<cfargument name="sortBy" type="string" default="created" >
-	<cfargument name="sortDirection" type="string" default="desc" >
+	<cfargument name="sortBy" type="string" default="orderno">
+	<cfargument name="sortDirection" type="string" default="asc">
+	<cfargument name="relatedContentSetID" type="string" default="">
+	<cfargument name="name" type="string" default="">
+	<cfargument name="reverse" type="boolean" default="false">
 	
-	<cfreturn variables.contentManager.getRelatedContent(variables.instance.siteID, getContentHistID(), arguments.liveOnly, arguments.today,arguments.sortBy,arguments.sortDirection) />
+	<cfreturn variables.contentManager.getRelatedContent(variables.instance.siteID, getContentHistID(), arguments.liveOnly, arguments.today, arguments.sortBy, arguments.sortDirection, arguments.relatedContentSetID, arguments.name, arguments.reverse, getContentID()) />
 </cffunction>
 
 <cffunction name="getRelatedContentIterator" returnType="any" output="false" access="public">
 	<cfargument name="liveOnly" type="boolean" required="yes" default="false" />
 	<cfargument name="today" type="date" required="yes" default="#now()#" />
-	<cfargument name="sortBy" type="string" default="created" >
-	<cfargument name="sortDirection" type="string" default="desc" >
+	<cfargument name="sortBy" type="string" default="orderno" >
+	<cfargument name="sortDirection" type="string" default="asc">
+	<cfargument name="relatedContentSetID" type="string" default="">
+	<cfargument name="name" type="string" default="">
+	<cfargument name="reverse" type="boolean" default="false">
 	
-	<cfset var q=getRelatedContentQuery(arguments.liveOnly, arguments.today,arguments.sortBy,arguments.sortDirection) />
+	<cfset var q=getRelatedContentQuery(argumentCollection=arguments) />
 	<cfset var it=getBean("contentIterator")>
 	<cfset it.setQuery(q)>
 	<cfreturn it>
@@ -1007,7 +1044,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="deleteVersion" returnType="any" output="false" access="public">
-	<cfif not getActive()>
+	<cfif not getValue('active')>
 		<cfset variables.contentManager.delete(getAllValues()) />
 		<cfreturn true>
 	<cfelse>
@@ -1109,16 +1146,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>			
 
 <cffunction name="getEditUrl" access="public" returntype="string" output="false">
-	<cfargument name="compactDisplay" type="any" required="true" default="false"/>
+	<cfargument name="compactDisplay" type="boolean" required="true" default="false"/>
+	<cfargument name="tab">
 	<cfset var returnStr="">
 	<cfset var topID="00000000000000000000000000000000001">
 	
 	<cfif listFindNoCase("Form,Component", variables.instance.type)>
 		<cfset topID=variables.instance.moduleID>
 	</cfif>
+
+	<cfif arguments.compactDisplay>
+		<cfset arguments.compactDisplay=true>
+	</cfif>
 	
 	<cfset returnStr= "#variables.configBean.getContext()#/admin/?muraAction=cArch.edit&contentHistId=#getContentHistId()#&contentId=#getContentId()#&Type=#variables.instance.type#&siteId=#variables.instance.siteID#&topId=#topID#&parentId=#variables.instance.parentID#&moduleId=#variables.instance.moduleID#&compactDisplay=#arguments.compactdisplay#" >
 	
+	<cfif structKeyExists(arguments,"tab")>
+		<cfset returnStr=returnStr & "##" & arguments.tab>
+	</cfif>
 	<cfreturn returnStr>
 </cffunction> 
 
@@ -1151,6 +1196,112 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getExtendBaseID" output="false">
 	<cfreturn getContentHistID()>
+</cffunction>
+
+<cffunction name="getPrimaryKey" output="false">
+	<cfreturn "contentHistID">
+</cffunction>
+
+<cffunction name="requiresApproval" output="false">
+	<cfset var crumbs=getCrumbIterator()>
+	<cfset var crumb="">
+	<cfset var chain="">
+
+	<cfloop condition="crumbs.hasNext()">
+		<cfset crumb=crumbs.next()>
+		<cfif len(crumb.getChainID())>
+			<cfset chain=getBean('approvalChain').loadBy(chainID=crumb.getChainID())>
+			<cfif not chain.getIsNew()>
+				<cfset setValue('chainID',crumb.getChainID())>
+				<cfreturn true>
+			</cfif>
+		</cfif>
+	</cfloop>
+
+	<cfreturn false>
+</cffunction>
+
+<cffunction name="getApprovalRequest" output="false">
+	<cfreturn getBean('approvalRequest').loadBy(contenthistid=getValue('contenthistid'),chainID=getValue('chainID'),siteID=getValue('siteID'))>
+</cffunction>
+
+<cffunction name="getSource" output="false">
+	<cfset var map=getBean('contentSourceMap').loadBy(contenthistid=getValue('contenthistID'),siteid=getValue('siteid'))>
+	<cfset var source=map.getSource()>
+
+	<cfif source.getIsNew() and not map.getIsNew()>	
+		<cfloop condition="source.getIsNew() and not map.getIsNew()">
+			<cfset map=getBean('contentSourceMap').loadBy(contenthistid=map.getSourceID(),siteid=map.getSiteID())>
+			<cfset source=map.getSource()>
+		</cfloop>
+	</cfif>
+
+	<cfreturn source>
+
+</cffunction>
+
+<cffunction name="getUser" output="false">
+	<cfreturn getBean('user').loadBy(userID=getValue('LastUpdateByID'))>
+</cffunction>
+
+<cffunction name="getClassExtension" output="false">
+	<cfreturn variables.configBean.getClassExtensionManager().getSubTypeByName(getValue('type'),getValue('subtype'),getValue('siteid'))>
+</cffunction>
+
+<cffunction name="getFileMetaData" output="false">
+	<cfargument name="property" default="fileid">
+	<cfreturn getBean('fileMetaData').loadBy(contentid=getValue('contentid'),contentHistID=getValue('contentHistID'),siteID=getValue('siteid'),fileid=getValue(arguments.property))>	
+</cffunction>
+
+<cffunction name="setRelatedContentID" output="false">
+	<cfargument name="contentIDs" required="yes" default="">
+	<cfargument name="relatedContentSetID" default="">
+	<cfargument name="name" default="">
+	<cfset var relatedContentSets = variables.configBean.getClassExtensionManager().getSubTypeByName(variables.instance.type, variables.instance.subtype, variables.instance.siteid).getRelatedContentSets()>
+	<cfset var rcs = "">
+	<cfset var i = "">
+	<cfset var q = "">
+	
+	<cfset variables.instance.relatedContentSetData = arrayNew(1)>
+		
+	<cfloop from="1" to="#arrayLen(relatedContentSets)#" index="i">
+		<cfset rcs = structNew()>
+		<cfset rcs.items = arrayNew(1)>
+		<cfset rcs.relatedContentSetID = relatedContentSets[i].getRelatedContentSetID()>
+		
+		<cfset q = relatedContentSets[i].getRelatedContentQuery(getValue('contentHistID'))>
+			
+		<cfloop query="q">
+			<cfset arrayAppend(rcs.items, q.contentID)>
+		</cfloop>
+		
+		<cfset arrayAppend(variables.instance.relatedContentSetData, rcs)>
+	</cfloop>
+	
+	<cfset rcs = structNew()>
+	<cfset rcs.items = arrayNew(1)>
+	<cfset rcs.relatedContentSetID = "00000000000000000000000000000000000">
+	
+	<cfloop list="#arguments.contentIDs#" index="i">
+		<cfset arrayAppend(rcs.items, i)>
+	</cfloop>
+	
+	<cfif len(arguments.relatedContentSetID)>
+		<cfset rcs.relatedContentSetID = arguments.relatedContentSetID>
+	<cfelseif len(arguments.name)>
+		<cfloop from="1" to="#arrayLen(relatedContentSets)#" index="i">
+			<cfif relatedContentSets[i].getName() eq trim(arguments.name)>
+				<cfset rcs.relatedContentSetID = relatedContentSets[i].getRelatedContentSetID()>
+			</cfif>
+		</cfloop>
+	</cfif>
+	
+	<cfloop from="1" to="#arrayLen(variables.instance.relatedContentSetData)#" index="i">
+		<cfif variables.instance.relatedContentSetData[i].relatedContentSetID eq rcs.relatedContentSetID>
+			<cfset variables.instance.relatedContentSetData[i] = rcs>
+		</cfif>
+	</cfloop>
+	
 </cffunction>
 
 </cfcomponent>

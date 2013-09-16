@@ -90,15 +90,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfoutput>
 <div class="row-fluid">
 	  <div id="main" class="span9">
-	  <table class="table table-striped table-condensed table-bordered mura-table-grid">
+	  <table class="mura-table-grid">
 	    
 		<cfoutput>
 		<thead>
 		<tr> 
-	      <th class="var-width"><a href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&topid=#URLEncodedFormat(rc.topid)#&parentid=#URLEncodedFormat(rc.parentid)#&moduleid=#rc.moduleID#&sortBy=title&sortDirection=#titleDirection#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.title')#</a></th>
+	      <th class="var-width"><a href="./?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&topid=#URLEncodedFormat(rc.topid)#&parentid=#URLEncodedFormat(rc.parentid)#&moduleid=#rc.moduleID#&sortBy=title&sortDirection=#titleDirection#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.title')#</a></th>
 	    <!--- <cfif rc.perm eq 'editor'><th class="order" width="30">Order</th></cfif>--->
-	      <th><a href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&topid=#URLEncodedFormat(rc.topid)#&parentid=#URLEncodedFormat(rc.parentid)#&moduleid=#rc.moduleID#&sortBy=display&sortDirection=#displayDirection#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.display')#</a></th>
-	      <th><a href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&topid=#URLEncodedFormat(rc.topid)#&parentid=#URLEncodedFormat(rc.parentid)#&moduleid=#rc.moduleID#&sortBy=lastUpdate&sortDirection=#lastUpdatedDirection#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.lastupdated')#</a></th>
+	      <th><a href="./?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&topid=#URLEncodedFormat(rc.topid)#&parentid=#URLEncodedFormat(rc.parentid)#&moduleid=#rc.moduleID#&sortBy=display&sortDirection=#displayDirection#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.display')#</a></th>
+	      <th><a href="./?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&topid=#URLEncodedFormat(rc.topid)#&parentid=#URLEncodedFormat(rc.parentid)#&moduleid=#rc.moduleID#&sortBy=lastUpdate&sortDirection=#lastUpdatedDirection#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.lastupdated')#</a></th>
 	      <th class="actions">&nbsp;</th>
 	    </tr>
 		</thead>
@@ -122,7 +122,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		</cfsilent>
         <tr>  
-          <td class="var-width"><cfif verdict neq 'none'><a class="draftprompt" data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#">#left(rc.rstop.menutitle,90)#</a><cfelse>#left(rc.rstop.menutitle,90)#</cfif></td>
+          <td class="var-width"><cfif verdict neq 'none'><a class="draftprompt" data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.edit')#" href="./?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#">#left(rc.rstop.menutitle,90)#</a><cfelse>#left(rc.rstop.menutitle,90)#</cfif></td>
           
 			   <td>
 			    <cfif rc.rstop.Display and (rc.rstop.Display eq 1 and rc.rstop.approved)>
@@ -137,13 +137,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<ul class="#lcase(rc.rstop.type)#">
 				<cfif verdict neq 'none'>
 				<li class="edit">
-					<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#" class="draftprompt" data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#"title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#" href="index.cfm?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#"><i class="icon-pencil"></i></a></li>
-					<li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" href="index.cfm?muraAction=cArch.hist&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#"><i class="icon-book"></i></a></li>
+					<a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.edit')#" class="draftprompt" data-siteid="#rc.siteid#" data-contentid="#rc.rstop.contentid#" data-contenthistid="#rc.rstop.contenthistid#" href="./?muraAction=cArch.edit&contenthistid=#rc.rstop.ContentHistID#&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#"><i class="icon-pencil"></i></a></li>
+					<li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.versionhistory')#" href="./?muraAction=cArch.hist&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#"><i class="icon-book"></i></a></li>
 					<cfif rc.moduleid eq '00000000000000000000000000000000004'>
-						<li class="manage-data"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.managedata')#" href="index.cfm?muraAction=cArch.datamanager&contentid=#rc.rstop.ContentID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&contenthistid=#rc.rstop.ContentHistID#&topid=#URLEncodedFormat(rc.topid)#&parentid=#URLEncodedFormat(rc.parentid)#&type=Form"><i class="icon-wrench"></i></a></li>
+						<li class="manage-data"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.managedata')#" href="./?muraAction=cArch.datamanager&contentid=#rc.rstop.ContentID#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&contenthistid=#rc.rstop.ContentHistID#&topid=#URLEncodedFormat(rc.topid)#&parentid=#URLEncodedFormat(rc.parentid)#&type=Form"><i class="icon-wrench"></i></a></li>
 					</cfif>
 					<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-						<li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.permissions')#" href="index.cfm?muraAction=cPerm.main&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&startrow=#rc.startrow#"><i class="icon-group"></i></a></li>
+						<li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.permissions')#" href="./?muraAction=cPerm.main&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&parentid=#rc.rstop.parentID#&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&startrow=#rc.startrow#"><i class="icon-group"></i></a></li>
 					</cfif>
 				<cfelse>
 					<li class="edit disabled"><a><i class="icon-pencil"></i></a></li>
@@ -154,7 +154,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<li class="permissions disabled"><a><i class="icon-group"></i></a></li>
 				</cfif>
 				<cfif ((rc.locking neq 'all') or (rc.parentid eq '#rc.topid#' and rc.locking eq 'none')) and (verdict eq 'editor') and not rc.rsTop.isLocked eq 1>
-					<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" href="index.cfm?muraAction=cArch.update&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&action=deleteall&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&parentid=#URLEncodedFormat(rc.parentid)#" onClick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li>
+					<li class="delete"><a title="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.delete')#" href="./?muraAction=cArch.update&contentid=#rc.rstop.ContentID#&type=#rc.rstop.type#&action=deleteall&topid=#URLEncodedFormat(rc.topid)#&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&parentid=#URLEncodedFormat(rc.parentid)#" onClick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li>
 				<cfelseif rc.locking neq 'all'>
 					<li class="delete disabled"><i class="icon-remove-sign"></i></li>
 				</cfif>
@@ -177,12 +177,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="mura-results-wrapper">
 		<p class="clearfix search-showing">
 			#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.paginationmeta"),args)#
-		</p> 
-		<ul class="pagination">
+		</p>
+		<div class="pagination">
+		<ul>
 		 <cfif rc.nextN.currentpagenumber gt 1>
 			
 					<li>	
-				 	<a href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&topid=#URLEncodedFormat(rc.topid)#&startrow=#rc.nextN.previous#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.prev')#</a>
+				 	<a href="./?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&topid=#URLEncodedFormat(rc.topid)#&startrow=#rc.nextN.previous#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.prev')#</a>
 				 	</li>
 				 </cfif>
 				<cfloop from="#rc.nextn.firstPage#"  to="#rc.nextn.lastPage#" index="i">
@@ -190,15 +191,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<li class="active"><a href="##">#i#</a></li> 
 					<cfelse> 
 						<li>
-						<a href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&topid=#URLEncodedFormat(rc.topid)#&startrow=#evaluate('(#i#*#rc.nextn.recordsperpage#)-#rc.nextn.recordsperpage#+1')#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">#i#</a></li>
+						<a href="./?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&topid=#URLEncodedFormat(rc.topid)#&startrow=#evaluate('(#i#*#rc.nextn.recordsperpage#)-#rc.nextn.recordsperpage#+1')#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">#i#</a></li>
 					</cfif>
 				</cfloop>
 				<cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages>
 					<li>
-						<a href="index.cfm?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&topid=#URLEncodedFormat(rc.topid)#&startrow=#rc.nextN.next#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.next')#&nbsp;&raquo;</a>
+						<a href="./?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=#rc.moduleid#&topid=#URLEncodedFormat(rc.topid)#&startrow=#rc.nextN.next#&sortBy=#rc.sortBy#&sortDirection=#rc.sortDirection#&searchString=#rc.searchString#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.next')#&nbsp;&raquo;</a>
 					</li>
 				</cfif>
 				</ul>
+				</div>
 			</div>
 		</cfoutput>
 			
@@ -221,76 +223,48 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	     <input type="text" name="searchString" id="searchString" value="#HTMLEditFormat(rc.searchString)#" class="text" size="20">
 	  	</div>
 
-	  	<cfsilent>
-		<cfset tags=$.getBean('contentGateway').getTagCloud(siteid=$.event('siteID'),moduleID=rc.moduleID) />
-		<cfset tagValueArray = ListToArray(ValueList(tags.tagCount))>
-		<cfset max = ArrayMax(tagValueArray)>
-		<cfset min = ArrayMin(tagValueArray)>
-		<cfset diff = max - min>
-		<cfset distribution = diff>
-		<cfset rbFactory=$.siteConfig().getRBFactory()>
-		</cfsilent>	
-	
-		<cfif tags.recordcount>
-			<div class="module well" id="mura-filter-tags">
-				<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</h3>
-				<div id="svTagCloud">
-					<ol>
-					<cfloop query="tags"><cfsilent>
-							<cfif tags.tagCount EQ min>
-							<cfset class="not-popular">
-						<cfelseif tags.tagCount EQ max>
-							<cfset class="ultra-popular">
-						<cfelseif tags.tagCount GT (min + (distribution/2))>
-							<cfset class="somewhat-popular">
-						<cfelseif tags.tagCount GT (min + distribution)>
-							<cfset class="mediumTag">
-						<cfelse>
-							<cfset class="not-very-popular">
-						</cfif>
-					
-						<cfset args = ArrayNew(1)>
-					    <cfset args[1] = tags.tagcount>
-					</cfsilent><li class="#class#"><span><cfif tags.tagcount gt 1> #rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemsare'), args)#<cfelse>#rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemis'), args)#</cfif> tagged with </span><a class="tag<cfif listFind($.event('tag'),tags.tag)> active</cfif>">#HTMLEditFormat(tags.tag)#</a></li>
-					</cfloop>
-					</ol>
-				</div>
-			</div>
+	  	<div class="module well" id="mura-filter-tags">
+			<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.tags")#</h3>
 
-		</cfif>
-	  	<cfif $.getBean("categoryManager").getCategoryCount($.event("siteID"))>
-		<div class="module well" id="mura-list-tree">
-		<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#</h3>
-		<cf_dsp_categories_nest siteID="#$.event('siteID')#" parentID="" nestLevel="0" categoryid="#$.event('categoryid')#">
+			<div id="tags" class="tagSelector">
+				<cfloop list="#$.event('tags')#" index="i">
+					<span class="tag">
+					#HTMLEditFormat(i)# <a><i class="icon-remove-sign"></i></a>
+					<input name="tags" type="hidden" value="#HTMLEditFormat(i)#">
+					</span>
+				</cfloop>
+				<input type="text" name="tags">
+			</div>
 		</div>
-	</cfif>
-		<input type="hidden" name="tag" id="tag" value="#HTMLEditFormat($.event('tag'))#" />
+
+	  	<cfif $.getBean("categoryManager").getCategoryCount($.event("siteID"))>
+			<div class="module well" id="mura-list-tree">
+				<h3>#application.rbFactory.getKeyValue(session.rb,"sitemanager.categories")#</h3>
+				<cf_dsp_categories_nest siteID="#$.event('siteID')#" parentID="" nestLevel="0" categoryid="#$.event('categoryid')#">
+			</div>
+		</cfif>
+
 	  	<input type="submit" class="btn" name="filterList" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.filter")#"/>
-	  	<cfif len($.event('categoryID') & $.event('tag') & $.event('searchString'))>
+	  	<cfif len($.event('categoryID') & $.event('tags') & $.event('searchString'))>
 	  	<input type="button" class="btn" name="removeFilter" id="removeFilter" value="#application.rbFactory.getKeyValue(session.rb,"sitemanager.removefilter")#" onclick=""/>
 	  	</cfif>
   	 </form>
 
-  	 <script> 	
-	  	$('##filterByTitle').submit(
-	  		function(){
-		  	 	var tag=[];
+  	 <script>
 
-		  	 	$("##svTagCloud .active").each(
-					function(){
-						tag.push($(this).html());
-					}
-				);
-					
-				$('##tag').val(tag.toString());
-				
-				return true;
-	  	 	}
-	  	 );	
+  	 	$(function(){
+			$.get('?muraAction=carch.loadtagarray&siteid=' + siteid).done(
+				function(data){
+					var tagArray=eval('(' + data + ')'); 
+					$('##tags').tagSelector(tagArray, 'tags');
+				}
+			);
+		}); 	
 
 	  	$('##removeFilter').click(
 	  		function(){
-		  	 	$('##tag').val('');
+	  			$('span.tag').remove();
+		  	 	$("input[name='tags']").val('');
 				$('##searchString').val('');
 				$('input[name=categoryID]').attr('checked', false);
 				document.getElementById('filterByTitle').submit();
@@ -298,12 +272,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	  	 	}
 	  	 );	
 
-		$("##svTagCloud a").click(
-			function(event){
-				event.preventDefault();
-				jQuery(this).toggleClass('active');
-			}
-		);
 	</script>
 </div>
 </cfoutput>
@@ -334,20 +302,37 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="rc.lockid" default="" />
 <cfparam name="rc.assignments" default="false" />
 <cfparam name="rc.categoryid" default="" />
-<cfparam name="rc.tag" default="" />
+<cfparam name="rc.tags" default="" />
 <cfparam name="rc.type" default="" />
 <cfparam name="rc.page" default="1" />
 <cfparam name="rc.subtype" default="" />
+
+<cfif len($.siteConfig('customTagGroups'))>
+	<cfloop list="#$.siteConfig('customTagGroups')#" index="g">
+		<cfparam name="rc.#g#tags" default="" />
+	</cfloop>
+</cfif>
+
 <cfparam name="session.copyContentID" default="">
 <cfparam name="session.copySiteID" default="">
 <cfparam name="session.copyAll" default="false">
-
 <cfparam name="session.flatViewArgs" default="#structNew()#">
 <cfparam name="session.flatViewArgs" default="#structNew()#">
 
 <cfscript>
+
 	if(not structKeyExists(session.flatViewArgs,session.siteid)){
 		session.flatViewArgs["#session.siteid#"]=structNew();
+	}
+
+	if(structkeyExists(rc,'refreshFlatview')){
+		session.flatViewArgs["#session.siteid#"].report=rc.report;
+		if(structKeyExists(rc,'reportSortBy')){
+			session.flatViewArgs["#session.siteid#"].sortby=rc.reportSortBy;
+		}
+		if(structKeyExists(rc,'reportSortDirection')){
+			session.flatViewArgs["#session.siteid#"].direction=rc.reportSortDirection;
+		}
 	}
 	
 	if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"moduleid")){
@@ -374,8 +359,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		session.flatViewArgs["#session.siteid#"].categoryid=rc.categoryid;
 	}
 	
-	if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"tag")){
-		session.flatViewArgs["#session.siteid#"].tag=rc.tag;
+	if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"tags")){
+		session.flatViewArgs["#session.siteid#"].tags=rc.tags;
+	}
+
+	if(len($.siteConfig('customTagGroups'))){
+		taggrouparray=listToArray($.siteConfig('customTagGroups'));
+		for(g=1;g <= arrayLen(taggrouparray);g++){
+			if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"#taggrouparray[g]#tags")){
+				session.flatViewArgs["#rc.siteID#"]["#taggrouparray[g]#tags"]=rc["#taggrouparray[g]#tags"];
+			}
+		}
 	}
 	
 	if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"page")){
@@ -463,7 +457,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cflock>
 </cfif>
 <cfif not len(crumbdata[1].siteid)>
-  <cflocation url="index.cfm?muraAction=cDashboard.main&siteid=#URLEncodedFormat(rc.siteid)#&span=30" addtoken="false"/>
+  <cflocation url="./?muraAction=cDashboard.main&siteid=#URLEncodedFormat(rc.siteid)#&span=30" addtoken="false"/>
 </cfif>
 </cfsilent>
 
@@ -503,13 +497,12 @@ copyAll = 'false';
 	<div class="tab-content"> 
 		<div id="tabArchitectural" class="tab-pane fade">
 			<div id="gridContainer">
-				<div class="load-inline"></div>
+				
 			</div>
 		</div>
-		
 		<div id="tabFlat" class="tab-pane fade">
 			<div id="flatViewContainer">
-				<div class="load-inline"></div>
+				
 			</div>
 		</div>
 	</div>	
@@ -519,6 +512,7 @@ copyAll = 'false';
 var archViewLoaded=false;
 var flatViewLoaded=false;
 var tabsInited=false;
+var customtaggroups=#serializeJSON(listToArray($.siteConfig('customTagGroups')))#;
 
 function initFlatViewArgs(){
 	return {siteid:'#JSStringFormat(session.siteID)#', 
@@ -526,7 +520,7 @@ function initFlatViewArgs(){
 			sortby:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].sortby)#', 
 			sortdirection:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].sortdirection)#', 
 			page:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].page)#',	
-			tag:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].tag)#',
+			tags:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].tags)#',
 			categoryid:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].categoryid)#',
 			lockid:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].lockid)#',
 			type:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].type)#',
@@ -534,6 +528,11 @@ function initFlatViewArgs(){
 			report:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].report)#',
 			keywords:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].keywords)#',
 			filtered: '#JSStringFormat(session.flatViewArgs["#session.siteID#"].filtered)#'
+			<cfif len($.siteConfig('customTagGroups'))>
+			<cfloop list="#$.siteConfig('customTagGroups')#" index="g">
+			,#g#tags:'#JSStringFormat(session.flatViewArgs["#session.siteID#"]["#g#tags"])#'	
+			</cfloop>	
+			</cfif>
 			};
 }
 
@@ -560,16 +559,16 @@ function initSiteManagerTabContent(index){
 	switch(index){
 		case 0:
 		if (!archViewLoaded) {
+			jQuery('##viewTabs a[href="##tabArchitectural"]').tab('show');
 			siteManager.loadSiteManager('#JSStringFormat(rc.siteID)#', '#JSStringFormat(rc.topid)#', '#JSStringFormat(rc.moduleid)#', '#JSStringFormat(rc.sortby)#', '#JSStringFormat(rc.sortdirection)#', '#JSStringFormat(rc.ptype)#', '#JSStringFormat(rc.startrow)#');
 			archViewLoaded = true;
-			jQuery('##viewTabs a[href="##tabArchitectural"]').tab('show');
 		}
 		break;
 		case 1:
 		if (!flatViewLoaded) {
+			jQuery('##viewTabs a[href="##tabFlat"]').tab('show');
 			siteManager.loadSiteFlat(flatViewArgs);
 			flatViewLoaded = true;
-			jQuery('##viewTabs a[href="##tabFlat"]').tab('show');
 		}
 	}
 }

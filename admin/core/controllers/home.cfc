@@ -65,7 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset arguments.rc.siteid="">
 	
 	<cfif not listFind(session.mura.memberships,'S2IsPrivate')>
-		<cfset variables.fw.redirect(action="clogin.main",path="index.cfm")>
+		<cfset variables.fw.redirect(action="clogin.main",path="./")>
 	</cfif>
 
 	<cfset rsList=application.settingsManager.getUserSites(session.siteArray,listFind(session.mura.memberships,'S2')) />
@@ -89,16 +89,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfif len(arguments.rc.siteid)>
-		<cfif application.configBean.getDashboard()>
-			<cfset variables.fw.redirect(action="cDashboard.main",append="siteid",path="index.cfm")>
+		<cfif session.showdashboard>
+			<cfset variables.fw.redirect(action="cDashboard.main",append="siteid",path="./")>
 		<cfelse>
 			<cfset arguments.rc.moduleid="00000000000000000000000000000000000">
 			<cfset arguments.rc.topid="00000000000000000000000000000000001">
-			<cfset variables.fw.redirect(action="cArch.list",append="siteid,moduleid,topid",path="index.cfm")>
+			<cfset variables.fw.redirect(action="cArch.list",append="siteid,moduleid,topid",path="./")>
 		</cfif>
 	</cfif>
 
-	<cfset variables.fw.redirect(action="cMessage.noAccess",path="index.cfm")>
+	<cfset variables.fw.redirect(action="cMessage.noAccess",path="./")>
 
 </cffunction>
 

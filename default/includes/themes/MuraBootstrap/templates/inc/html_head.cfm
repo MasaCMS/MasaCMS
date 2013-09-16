@@ -16,7 +16,7 @@
 	<!--- CSS
 	================================================== --->
 	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/assets/bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/assets/font-awesome/css/font-awesome.css">
+	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/assets/font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.6.0.min.css">
 
 	<!--- CfStatic CSS --->

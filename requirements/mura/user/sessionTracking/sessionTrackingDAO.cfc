@@ -122,9 +122,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset arguments.language = 'Unknown' />
 	<cfset arguments.country ='Unknown' />
 	<cfset arguments.startCount =GetTickCount()>
+
+	<cfset application.scriptProtectionFilter.scan(
+					object=arguments,
+					objectname="arguments",
+					ipAddress=arguments.remote_addr,
+					useWordFilter=true,
+					useSQLFilter=false,
+					useTagFilter=true)>
 			
 	<cftry>
-		<cfquery datasource="#variables.datasource#" username="#variables.dbUsername#" password="#variables.dbPassword#">
+		<cfquery>
 			INSERT INTO tsessiontracking (REMOTE_ADDR,SCRIPT_NAME,QUERY_STRING,SERVER_NAME,URLToken,UserID,siteID,
 				country,lang,locale, contentID, referer,keywords,user_agent,Entered,originalURLToken)
 			values (
@@ -184,7 +192,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="deleteSession" access="public" returntype="void">
 	<cfargument name="URLToken" type="string" required="yes"/>
-	<cfquery datasource="#variables.datasource#" username="#variables.dbUsername#" password="#variables.dbPassword#">
+	<cfquery>
 	delete from tsessiontracking 
 	where urlToken=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.urlToken#" />
 	</cfquery>
