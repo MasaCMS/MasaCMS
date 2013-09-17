@@ -151,16 +151,6 @@ Mura CMS.
 			<cfset data.bodyhtml=replaceNoCase(data.bodyhtml,'href="/','href="#scheme#://#variables.settingsManager.getSite(data.siteid).getDomain("production")##variables.configBean.getServerPort()#/','ALL')>
 			<cfset data.bodyhtml=replaceNoCase(data.bodyhtml,"href='/",'href="#scheme#://#variables.settingsManager.getSite(data.siteid).getDomain("production")##variables.configBean.getServerPort()#/','ALL')>
 			
-			<cfif data.deliveryDate neq '' AND isDate(data.deliveryDate)>
-				<cfif data.timepart eq "PM">
-					<cfset data.timehour = data.timehour + 12>
-				</cfif>
-				<cfif data.timehour eq 24>
-					<cfset data.timehour = 0>
-				</cfif>
-				<cfset data.deliveryDate = createDateTime(year(data.deliveryDate), month(data.deliveryDate), day(data.deliveryDate), data.timehour, data.timeminute, "0")>
-			</cfif>
-			
 			<cfif data.sendNow eq "true">
 				<cfset data.deliveryDate = now()>
 			</cfif>
@@ -186,21 +176,6 @@ Mura CMS.
 			<cfset data.bodyhtml=replaceNoCase(data.bodyhtml,"src='/",'src="#scheme#://#variables.settingsManager.getSite(data.siteid).getDomain("production")##variables.configBean.getServerPort()#/','ALL')>
 			<cfset data.bodyhtml=replaceNoCase(data.bodyhtml,'href="/','href="#scheme#://#variables.settingsManager.getSite(data.siteid).getDomain("production")##variables.configBean.getServerPort()#/','ALL')>
 			<cfset data.bodyhtml=replaceNoCase(data.bodyhtml,"href='/",'href="#scheme#://#variables.settingsManager.getSite(data.siteid).getDomain("production")##variables.configBean.getServerPort()#/','ALL')>
-			
-			<cfif isDate(data.deliveryDate)>
-				<cfif data.timepart eq "PM">
-					<cfset data.timehour = data.timehour + 12>
-					<cfif data.timehour eq 24>
-						<cfset data.timehour = 12>
-					</cfif>
-				<cfelse>
-					<cfif data.timehour eq 12>
-						<cfset data.timehour = 0>
-					</cfif>
-				</cfif>
-				
-				<cfset data.deliveryDate = createDateTime(year(data.deliveryDate), month(data.deliveryDate), day(data.deliveryDate), data.timehour, data.timeminute, "0")>
-			</cfif>
 			
 			<cfif data.sendNow eq "true">
 				<cfset data.deliveryDate = now()>
