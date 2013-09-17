@@ -51,11 +51,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfoutput>
   <h1>#application.rbFactory.getKeyValue(session.rb,'email.createeditemail')#</h1>
-
-  <cfinclude template="dsp_secondary_menu.cfm">
   
   <cfif rc.emailid neq "">
-    <ul class="metadata">
+    <ul class="metadata-horizontal">
       <li><strong>#application.rbFactory.getKeyValue(session.rb,'email.datecreated')#:</strong> #LSDateFormat(rc.emailBean.getCreatedDate(),session.dateKeyFormat)#</li>
       <li><strong>#application.rbFactory.getKeyValue(session.rb,'email.createdby')#:</strong> #rc.emailBean.getlastupdateby()#</li>
       <li><strong>#application.rbFactory.getKeyValue(session.rb,'email.status')#:</strong>
@@ -100,6 +98,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
     </ul>
   </cfif>
 
+
+ <cfinclude template="dsp_secondary_menu.cfm">
 <form novalidate="novalidate" action="./?muraAction=cEmail.update&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="form1" onSubmit="return false;">
     
 <div class="load-inline tab-preloader"></div>
