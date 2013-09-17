@@ -2056,7 +2056,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="class" type="string" default="">
 	<cfargument name="aHasKidsClass" type="string" default="">
 	<cfargument name="aHasKidsCustomString" type="string" default="">
-	<cfargument name="siteid" default="#variables.event('siteid')#">
+	<cfargument name="siteid" default="$.event('siteid')">
 
 	<cfset var thenav="" />
 	<cfset var topIndex= arrayLen(this.crumbdata)-this.navOffSet />
