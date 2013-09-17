@@ -49,8 +49,10 @@ var emailManager = {
 	openScheduler: function() {
 		var s = $('#scheduler');
 		var c = $('#controls');
+		var i = $('.toggle');
 		c.css('display', 'none');
-		s.css('display', 'inline');
+		s.css('display', 'inline-block');
+		i.css('opacity', '.30');
 
 		return false;
 
@@ -59,8 +61,10 @@ var emailManager = {
 	closeScheduler: function() {
 		var s = $('#scheduler');
 		var c = $('#controls');
+		var i = $('.toggle');
 		s.css('display', 'none');
 		c.css('display', 'inline');
+		i.css('opacity', '1');
 		document.forms.form1.deliveryDate.value = '';
 
 		document.forms.form1.timehour.selectedIndex = 7;
