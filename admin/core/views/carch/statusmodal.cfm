@@ -201,6 +201,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				);
 			}
 		}
+
+		$(document).ready(function(){
+			if (top.location != self.location) {
+				if(jQuery("##ProxyIFrame").length){
+					jQuery("##ProxyIFrame").load(
+						function(){
+							frontEndProxy.post({cmd:'setWidth',width:'configurator'});
+						}
+					);	
+				} else {
+					frontEndProxy.post({cmd:'setWidth',width:'configurator'});
+				}
+			}
+		});
 		</script>
 	</cfif>
 <cfelse>
