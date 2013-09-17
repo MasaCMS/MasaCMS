@@ -79,8 +79,12 @@ If it has not set application.appInitialized=false. --->
 		)
 	)
 	>
-		<cfset onApplicationStart()>
-	</cfif>
+	<cflock name="appInitBlock#application.instanceID#" type="exclusive" timeout="200">
+		<!--- Since the request may of had to wait double thak that code sitll needs to run --->
+		<cfif (not application.appInitialized or structKeyExists(url,application.appReloadKey))>
+			<cfset onApplicationStart()>
+		</cfif>
+	</cflock>
 
 	<cfif not application.setupComplete and request.muraAppreloaded>
 		<cfset renderSetup = true />
