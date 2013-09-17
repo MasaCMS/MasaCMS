@@ -82,7 +82,10 @@ If it has not set application.appInitialized=false. --->
 		<cflock name="appInitBlock#application.instanceID#" type="exclusive" timeout="200">
 			<!--- Since the request may of had to wait double thak that code sitll needs to run --->
 			<cfif (not application.appInitialized or structKeyExists(url,application.appReloadKey))>
-				<cfset onApplicationStart()>
+				<cfinclude template="onApplicationStart_include.cfm">
+				<cfif isdefined("setupApplication")>
+					<cfset setupApplication()>
+				</cfif>
 			</cfif>
 		</cflock>
 	</cfif>
