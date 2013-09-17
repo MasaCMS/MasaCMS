@@ -95,11 +95,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>	
 
 <cfif application.setupComplete and (not application.appInitialized or structKeyExists(url,application.appReloadKey))>
-	<cfif structKeyExists(server,'railo')>
-		<cfinclude template="onApplicationStart_internals.cfm">
-	<cfelse>
+	<cfif not structKeyExists(server,'railo')>
 		<cflock name="appInitBlock#application.instanceID#" type="exclusive" timeout="200">	
 			<cfinclude template="onApplicationStart_internals.cfm">
 		</cflock>
+	<cfelse>
+		<cfinclude template="onApplicationStart_internals.cfm">
 	</cfif>	
 </cfif> 
