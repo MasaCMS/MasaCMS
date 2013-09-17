@@ -233,10 +233,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		include "../config/appcfc/onRequestStart_include.cfm";
 				
 		if(right(cgi.script_name, Len("index.cfm")) NEQ "index.cfm" and right(cgi.script_name, Len("error.cfm")) NEQ "error.cfm" AND right(cgi.script_name, 3) NEQ "cfc"){
-			location(url="index.cfm", addtoken="false");
+			location(url="./", addtoken="false");
 		}
 		
-		request.context.currentURL="index.cfm";
+		request.context.currentURL="./";
 	
 		var qrystr="";
 		var item="";

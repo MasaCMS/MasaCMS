@@ -204,7 +204,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif cgi.HTTP_REFERER neq ''>
 		<cflocation url="#cgi.HTTP_REFERER#" addtoken="no">
 	<cfelse>
-		<cflocation url="index.cfm" addtoken="no">
+		<cflocation url="./" addtoken="no">
 	</cfif>
 
 </cffunction>
