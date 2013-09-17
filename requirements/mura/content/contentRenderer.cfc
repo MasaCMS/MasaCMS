@@ -1846,7 +1846,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="dspNestedNavPrimary" output="false" returntype="string">
-		<cfargument name="contentid" type="string" >
+		<cfargument name="contentid" type="string">
 		<cfargument name="viewDepth" type="numeric" required="true" default="1">
 		<cfargument name="currDepth" type="numeric"  required="true"  default="1">
 		<cfargument name="type" type="string"  default="default">
@@ -1874,8 +1874,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="ulNestedClass" required="true" default="">
 		<cfargument name="ulNestedCustomString" required="true" default="">
 		<cfargument name="aNotCurrentClass" required="true" default="#this.aNotCurrentClass#">
+		<cfargument name="siteid" default="#variables.event.getValue('siteID')#">
 
-		<cfset var rsSection=variables.contentGateway.getKids('00000000000000000000000000000000000',variables.event.getValue('siteID'),arguments.contentid,arguments.type,arguments.today,0,'',0,arguments.sortBy,arguments.sortDirection,'','','',arguments.viewDepth-1)>
+		<cfset var rsSection=variables.contentGateway.getKids('00000000000000000000000000000000000',arguments.siteid,arguments.contentid,arguments.type,arguments.today,0,'',0,arguments.sortBy,arguments.sortDirection,'','','',arguments.viewDepth-1)>
 		<cfset var adjust=0>
 		<cfset var current=0>
 		<cfset var link=''>
@@ -1933,9 +1934,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif not homeDisplayed and arguments.currDepth eq 1 and (arguments.displayHome eq "Always" or (arguments.displayHome eq "Conditional" and variables.event.getValue('contentBean').getcontentid() neq "00000000000000000000000000000000001"))>
 				<cfsilent>
 					<cfquery name="rsHome" datasource="#application.configBean.getReadOnlyDatasource()#" username="#application.configBean.getReadOnlyDbUsername()#" password="#application.configBean.getReadOnlyDbPassword()#">
-					select menutitle,filename from tcontent where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.event.getValue('siteID')#"> and active=1
+					select menutitle,filename from tcontent where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"> and active=1
 					</cfquery>
-					<cfset homeLink="#application.configBean.getContext()##getURLStem(variables.event.getValue('siteID'),rsHome.filename)#">
+					<cfset homeLink="#application.configBean.getContext()##getURLStem(arguments.siteid,rsHome.filename)#">
 					<cfset homeDisplayed = true>
 				</cfsilent>
 
@@ -2026,7 +2027,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset linkArgs.contentid=rsSection.contentid>
 			<cfset linkArgs.target=rsSection.target>
 			<cfset linkArgs.targetParams=rsSection.targetParams>
-			<cfset linkArgs.siteID=variables.event.getValue('siteID')>
+			<cfset linkArgs.siteID=arguments.siteid>
 			<cfset linkArgs.querystring=arguments.querystring>
 			<cfset linkArgs.isParent=subnav>
 			<cfset link=addlink(argumentCollection=linkArgs)>
@@ -2055,6 +2056,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="class" type="string" default="">
 	<cfargument name="aHasKidsClass" type="string" default="">
 	<cfargument name="aHasKidsCustomString" type="string" default="">
+	<cfargument name="siteid" default="#variables.event('siteid')#">
 
 	<cfset var thenav="" />
 	<cfset var topIndex= arrayLen(this.crumbdata)-this.navOffSet />
