@@ -1,18 +1,3 @@
-<cfparam name="local" default="#structNew()#">
-<cfparam name="application.appInitializedTime" default="" />
-<cfparam name="application.appInitialized" default="false" />
-<cfparam name="application.appAutoUpdated" default="false" />
-<cfparam name="application.appReloadKey" default="appreload" />
-<cfparam name="application.broadcastInit" default="false" />
-<cfparam name="application.sessionTrackingThrottle" default="true"/>
-<cfparam name="application.instanceID" default="#createUUID()#" />
-<cfparam name="application.CFVersion" default="#listFirst(SERVER.COLDFUSION.PRODUCTVERSION)#" />
-<cfparam name="application.setupComplete" default="false" />
-<!--- this is here for CF8 compatibility --->
-<cfset variables.baseDir=this.baseDir>
-<cfprocessingdirective pageencoding="utf-8"/>
-<cfsetting requestTimeout = "1000"> 
-
 <!--- Since the request may of had to wait double thak that code sitll needs to run --->
 	<cfif (not application.appInitialized or structKeyExists(url,application.appReloadKey))>
 		<cfset request.muraAppreloaded=true>
