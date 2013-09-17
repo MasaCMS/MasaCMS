@@ -3004,6 +3004,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset tclassextendrcsets = arguments.Bundle.getValue("tclassextendrcsets")>
 			</cfif>
 	
+			<cfif tclassextendrcsets.recordcount>
 				<cfquery name="tclassextendrcsets" dbtype="query">
 				select * from tclassextendrcsets where 
 				<cfif rstclassextend.recordcount>
@@ -3012,7 +3013,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					0=1
 				</cfif>
 				</cfquery>
-				
+
 				<cfset local.it=getBean('relatedContentSet').getIterator()>
 				<cfset local.it.setQuery(tclassextendrcsets)>
 				<cfloop condition="local.it.hasNext()">
@@ -3022,7 +3023,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset local.item.setRelatedContentID(keys.get(local.item.getSubTypeID()))>
 					<cfset local.item.save()>
 				</cfloop>
-			
+			</cfif>
+				
 			<cfif not StructKeyExists(arguments,"Bundle")>
 				<cfquery datasource="#arguments.fromDSN#" name="rstclassextendattributes">
 					select * from tclassextendattributes where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.fromsiteid#"/>
