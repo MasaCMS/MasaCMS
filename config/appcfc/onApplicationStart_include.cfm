@@ -95,7 +95,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>	
 
 <cfif application.setupComplete and (not application.appInitialized or structKeyExists(url,application.appReloadKey))>
-<cflock name="appInitBlock#application.instanceID#" type="exclusive" timeout="200">	
+
+<cfif structKeyExists(server,'railo')>
+	<cfset lockname="appInitBlock" & createUUID()>
+<cfelse>
+	<cfset lockname="appInitBlock" & application.instanceID>
+</cfif>
+
+<cflock name="#lockname#" type="exclusive" timeout="200">	
 	<!--- Since the request may of had to wait double thak that code sitll needs to run --->
 	<cfif (not application.appInitialized or structKeyExists(url,application.appReloadKey))>
 		
