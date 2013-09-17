@@ -163,7 +163,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <script type="text/javascript">
 jQuery(document).ready(function(){
 	if (top.location != self.location) {
-		alert('sdfsd')
 		if(jQuery("#ProxyIFrame").length){
 			jQuery("#ProxyIFrame").load(
 				function(){
