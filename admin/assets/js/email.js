@@ -53,6 +53,7 @@ var emailManager = {
 		c.css('display', 'none');
 		s.css('display', 'inline-block');
 		i.css('opacity', '.30');
+		i.attr('disabled','disabled');
 
 		return false;
 
@@ -65,6 +66,7 @@ var emailManager = {
 		s.css('display', 'none');
 		c.css('display', 'inline');
 		i.css('opacity', '1');
+		i.removeAttr('disabled');
 
 		document.forms.form1.deliveryDate.value = '';
 
