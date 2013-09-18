@@ -64,7 +64,9 @@ function applyApprovalAction(requestid,action,comment,siteid){
 							window.location = href;
 						}
 					}
-				);
+				).fail(function(data){
+					$('html').html(data);
+				});
 			}
 		);
 	}
