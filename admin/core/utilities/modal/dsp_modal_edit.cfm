@@ -306,7 +306,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfset changesetMembers=application.changesetManager.getAssignmentsIterator(changesetID=previewData.changesetID,moduleID='00000000000000000000000000000000000')>
 							</cfif>
 							<li class="dropdown">
-								<a class="dropdown-toggle" data-toggle="dropdown"><i class="icon-list"></i></a>
+								<a class="dropdown-toggle" data-toggle="dropdown" title="#htmlEditFormat(application.rbFactory.getKeyValue(session.rb,'changesets.assignments'))#"><i class="icon-list"></i></a>
 								<cfif request.muraChangesetPreview>
 									<ul class="dropdown-menu">
 									<cfif changesetMembers.hasNext()>
