@@ -49,6 +49,7 @@ component extends="mura.bean.beanORM"  table="tapprovalrequests" entityname="app
 							      		.setApproved(1)
 							      		.setLastUpdateBy(content.getLastUpdateBy())
 							      		.setLastUpdateByID(content.getLastUpdateByID())
+							      		.setApprovingChainRequest(true)
 							      		.save()
 							      		.getContentHistID()
 						      	);
@@ -83,6 +84,7 @@ component extends="mura.bean.beanORM"  table="tapprovalrequests" entityname="app
 						    'contentHistID', 
 						    content
 							.setApproved(1)
+							.setApprovingChainRequest(true)
 							.save()
 							.getContentHistID()
 						 );
