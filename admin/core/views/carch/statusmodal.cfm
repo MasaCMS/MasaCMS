@@ -163,7 +163,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					
 				<p>#application.rbFactory.getKeyValue(session.rb,"approvalchains.comments")#</p>
 				<textarea id="approval-comments" rows="4"></textarea>
-				<input type="button" class="btn btn-primary" value="Apply" onclick="applyApprovalAction('#approvalRequest.getRequestID()#',$('input:radio[name=approval-action]:checked').val(),$('##approval-comments').val(),'#approvalRequest.getSiteID()#');"/>
+				<input id="mura-approval-apply" type="button" class="btn btn-primary" value="Apply" onclick="applyApprovalAction('#approvalRequest.getRequestID()#',$('input:radio[name=approval-action]:checked').val(),$('##approval-comments').val(),'#approvalRequest.getSiteID()#');"/>
 				</dd>
 				</dl>
 			</cfif>
@@ -179,6 +179,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			if(action == 'Reject' && comment == ''){
 				alertDialog('#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"approvalchains.rejectioncommentrequired"))#');
 			} else {
+				$('##mura-approval-apply').attr('disabled','disabled').css('opacity', '.30');
+		
 				var pars={
 							muraAction:'carch.approvalaction',
 							siteid: siteid,

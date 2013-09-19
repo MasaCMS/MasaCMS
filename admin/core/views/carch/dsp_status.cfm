@@ -43,6 +43,8 @@ function applyApprovalAction(requestid,action,comment,siteid){
 	if(action == 'Reject' && comment == ''){
 		alertDialog('#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"approvalchains.rejectioncommentrequired"))#');
 	} else {
+		$('##mura-approval-apply').attr('disabled','disabled').css('opacity', '.30');
+		
 		var pars={
 					muraAction:'carch.approvalaction',
 					siteid: siteid,
