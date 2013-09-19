@@ -2615,4 +2615,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn variables.contentGateway.getLockedFilesCount(arguments.siteid,session.mura.userid)>
 	</cffunction>
 
+	<cffunction name="getKidCount" output="false">
+		<cfargument name="parentid" type="string" required="true">
+		<cfargument name="siteid" type="string" required="true">
+		<cfreturn variables.contentGateway.getKidCount(argumentCollection=arguments)>
+	</cffunction>
+
 </cfcomponent>

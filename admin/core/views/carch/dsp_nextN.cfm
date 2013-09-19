@@ -45,11 +45,11 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
-<cfset isMore=rsNext.recordcount gt session.mura.nextN>
+<cfset isMore=hasKids gt session.mura.nextN>
 
 <cfif isMore>
 
-<cfset nextN=application.utility.getNextN(rsNext,session.mura.nextN,rc.startRow,5)>
+<cfset nextN=application.utility.getNextN(hasKids,session.mura.nextN,rc.startRow,5)>
 <!--- <cfset TotalRecords=rsNext.RecordCount>
 <cfset RecordsPerPage=session.mura.nextN> 
 <cfset NumberOfPages=Ceiling(TotalRecords/RecordsPerPage)>

@@ -72,13 +72,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getNextN" returntype="struct" access="public" output="false">
-	<cfargument name="data" type="query" />
+	<cfargument name="data" />
 	<cfargument name="RecordsPerPage" type="numeric" />
 	<cfargument name="startRow" type="numeric" />
 	<cfargument name="pageBuffer" type="numeric" default="5" />
 	<cfset var nextn=structnew() />
 	
-	<cfset nextn.TotalRecords=arguments.data.RecordCount>
+	<cfif isNumeric(arguments.data)>
+		<cfset nextn.TotalRecords=arguments.data>
+	<cfelse>
+		<cfset nextn.TotalRecords=arguments.data.RecordCount>
+	</cfif>
+	
 	<cfset nextn.RecordsPerPage=arguments.RecordsPerPage> 
 	<cfset nextn.NumberOfPages=Ceiling(nextn.TotalRecords/nextn.RecordsPerPage)>
 	<cfset nextn.CurrentPageNumber=Ceiling(arguments.StartRow/nextn.RecordsPerPage)> 
