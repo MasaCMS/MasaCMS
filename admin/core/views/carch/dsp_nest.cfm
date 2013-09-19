@@ -68,7 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset endRow=iif((currentPos + attributes.nextn) gt rsnest.recordcount,rsnest.recordcount,currentPos + attributes.nextn)>
 </cfsilent>
 <!--- Start Level UL List--->
-<ul<cfif sortable> id='sortableKids'</cfif> class="section">
+<ul<cfif sortable> id='sortableKids'</cfif> class="mura-section">
 <cfoutput query="rsnest" startrow="#variables.startrow#" maxrows="#attributes.nextN#">
 <cfsilent>
 <cfset request.menulist=listappend(request.menulist,rsnest.contentid)>
