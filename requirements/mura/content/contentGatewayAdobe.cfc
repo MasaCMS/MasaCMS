@@ -1240,16 +1240,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		tcontent.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 		AND tcontent.ParentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#"/>
 		and   tcontent.Active=1 
-		and   (tcontent.Type ='Page'
-				or tcontent.Type = 'Component' 
-				or tcontent.Type = 'Link'
-				or tcontent.Type = 'File' 
-				or tcontent.Type = 'Folder'
-				or tcontent.Type = 'Calendar'
-				or tcontent.Type = 'Form'
-				or tcontent.Type = 'Gallery') 
-		
-	
 		</cfquery>
 
 		<cfreturn rs.kids />
