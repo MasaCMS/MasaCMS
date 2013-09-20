@@ -1469,7 +1469,7 @@ and tclassextendattributes.type='File'
 						imagesize.setHeight(imagesizeXML.xmlAttributes.height);
 					}
 					if(isDefined("imagesizeXML.xmlAttributes.width")){
-						imagesize.setHeight(imagesizeXML.xmlAttributes.width);
+						imagesize.setWidth(imagesizeXML.xmlAttributes.width);
 					}
 
 					imagesize.setSiteID(arguments.siteid);
