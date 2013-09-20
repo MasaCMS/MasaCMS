@@ -81,6 +81,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="data" type="any" required="true">
 
 		<cfset var prop=""/>
+		<cfset var tempFunc="">
 		
 		<cfif isquery(arguments.data)>
 			<cfset setSiteID(arguments.data.siteID) />
@@ -96,7 +97,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 			<cfloop collection="#arguments.data#" item="prop">
 				<cfif structKeyExists(this,"set#prop#")>
-					<cfset evaluate("set#prop#(arguments.data[prop])") />
+					<cfset tempFunc=this["set#prop#"]>
+          			<cfset tempFunc(arguments.data['#prop#'])>
 				</cfif>
 			</cfloop>
 			
@@ -217,7 +219,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getAttributesQuery" access="public" returntype="query">
 <cfset var rs=""/>
 
-		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 		select *
 		from tclassextendattributes 
 		where tclassextendattributes.ExtendSetID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getExtendSetID()#">
@@ -230,7 +232,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="load" access="public" returntype="any">
 	<cfset var rs=""/>
                
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
         select extendSetID,subTypeID,categoryID,siteID,name,orderno,isActive,container from tclassextendsets
         where
         <cfif len(getName()) and len(getSubTypeID())>
@@ -283,13 +285,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="save"  access="public" output="false">
 <cfset var rs=""/>
 
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 	select ExtendSetID from tclassextendsets where ExtendSetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getExtendSetID()#">
 	</cfquery>
 	
 	<cfif rs.recordcount>
 		
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery>
 		update tclassextendsets set
 		siteID=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getSiteID() neq '',de('no'),de('yes'))#" value="#getSiteID()#">,
 		name=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getName() neq '',de('no'),de('yes'))#" value="#getName()#">,
@@ -303,7 +305,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 	<cfelse>
 	
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery>
 		Insert into tclassextendsets (ExtendSetID,siteID,name,subtypeid,isActive,orderno,categoryID,container) 
 		values(
 		<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getExtendSetID()#">,
@@ -332,7 +334,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset attribute.delete() />
 	</cfloop>
 
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 	delete from tclassextendsets where extendSetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getExtendSetID()#">
 	</cfquery>
 	

@@ -169,7 +169,7 @@
 					}
 				});
 			});
-			jQuery("#mura-tb-fields li div").live( 'click', function() {
+			jQuery("#mura-tb-fields li div").on( 'click', function() {
 				doField( this );
 			});			
 		}

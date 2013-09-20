@@ -57,7 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset rsNest=application.contentManager.getNest('#rc.parentid#','#rc.siteid#')>
 <cfoutput query="rsNest">
-<cfset link=application.contentRenderer.createHREF(rsNest.type,rsNest.filename,rc.siteid,rsnest.contentid,rsNest.target,rsnest.targetParams,'',rc.context,rc.stub,rc.indexFile) />
+<cfset link=$.createHREF(rsNest.type,rsNest.filename,rc.siteid,rsnest.contentid,rsNest.target,rsnest.targetParams,'',rc.context,rc.stub,rc.indexFile) />
 <cfset "rc.#rc.linklist#"=listappend(evaluate("rc.#rc.linklist#"),"#link#","^")>
 <cfsavecontent variable="templabel"><cfif rc.nestlevel><cfloop  from="1" to="#rc.NestLevel#" index="I">&nbsp;&nbsp;</cfloop></cfif>#rsnest.menutitle#</cfsavecontent>
 <cfset "rc.#rc.labellist#"=listappend(evaluate("rc.#rc.labellist#"),templabel,"^")>

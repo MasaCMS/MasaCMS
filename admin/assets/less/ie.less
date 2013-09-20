@@ -49,7 +49,6 @@
 	// All IE
 	.navbar-inner { filter: none; }
 	.fieldset, fieldset { background-color: #fdfdfd !important; }
-	
 	.mura-grid dt a.title {
 					overflow-x: hidden !important;
 					text-overflow: clip !important;
@@ -58,17 +57,47 @@
 						&:before {
 							font-family: FontAwesome; // Resetting fonts, title would display serif, :before would display no icon without resetting
 							}
+							
+					
+						&.file:before {
+							font-family: SilkscreenNormal; // Resetting fonts, title would display serif, :before would display no icon without resetting
+						}
 					
 					}
 	
 	
 	input[type="radio"], input[type="checkbox"] {
-		padding-left: 10px;
+		padding-left: 0;
 		box-shadow: none;
 		vertical-align: middle;
 		min-height: 0;
 		padding-top: 0;
 		}
+		
+	input[type="file"] {
+			width: 400px;
+			height: 24px;
+			}
+			
+	input[type="text"] {
+			height: 28px;
+			}
+			
+	.input-append input[type="text"] {
+			height: 18px;
+			}
+	
+	textarea {
+		height: 260px;
+		}
+		
+	// IE10
+	
+		&.ie10 {
+		
+		
+		}
+
 		
 	// IE7
 	&.ie7 {

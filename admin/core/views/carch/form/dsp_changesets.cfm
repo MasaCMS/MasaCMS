@@ -32,8 +32,10 @@ function saveToChangeset(changesetid,siteid,keywords){
 	var pars = 'muraAction=cArch.availablechangesets&compactDisplay=true&siteid=' + siteid  + '&keywords=' + keywords + '&changesetid=' + changesetid +'&cacheid=' + Math.random();
 	var d = jQuery('##changesetContainer');
 	d.html('<div class="load-inline"></div>');
+	$('##changesetContainer .load-inline').spin(spinnerArgs2);
 	jQuery.get(url + "?" + pars, 
 			function(data) {
+			$('##changesetContainer .load-inline').spin(false);
 			jQuery('##changesetContainer').html(data);
 			stripe('stripe');
 			});
@@ -48,6 +50,11 @@ function saveToChangeset(changesetid,siteid,keywords){
 						if(siteManager.ckContent()){
 							jQuery("##changesetID").val(currentChangesetSelection);
 							jQuery("##removePreviousChangeset").val(document.getElementById("_removePreviousChangeset").checked);
+							if(currentChangesetSelection=='other'){
+								jQuery("##changesetname").val(jQuery("##_changesetname").val());
+							} else {
+								jQuery("##changesetname").val('');
+							}
 							submitForm(document.contentForm, 'add');
 						}
 					} else {

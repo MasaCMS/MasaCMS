@@ -82,7 +82,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfthrow type="custom" message="The attribute 'NLID' is required when saving a mailing list.">
 	</cfif>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 		select * from tmailinglist where mlid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.mlid#">
 	</cfquery>
 

@@ -3,15 +3,16 @@
 <cfproperty name="changesetID" type="string" default="" required="true" />
 <cfproperty name="siteID" type="string" default="" required="true" />
 <cfproperty name="name" type="string" default="" required="true" />
-<cfproperty name="created" type="date" default="" required="true" />
-<cfproperty name="description" type="string" default="" required="true" />
-<cfproperty name="publishDate" type="date" default="" required="true" />
+<cfproperty name="created" type="date" default="" />
+<cfproperty name="description" type="string" default="" />
+<cfproperty name="publishDate" type="date" default="" />
 <cfproperty name="published" type="numeric" default="0" required="true" />
-<cfproperty name="remoteID" type="string" default="" required="true" />
-<cfproperty name="remoteSourceURL" type="string" default="" required="true" />
-<cfproperty name="remotePubDate" type="date" default="" required="true" />
-<cfproperty name="lastUpdate" type="date" default="" required="true" />
-<cfproperty name="lastUpdateBy" type="string" default="" required="true" />
+<cfproperty name="remoteID" type="string" default="" />
+<cfproperty name="remoteSourceURL" type="string" default="" />
+<cfproperty name="remotePubDate" type="date" default="" />
+<cfproperty name="lastUpdate" type="date" default="" />
+<cfproperty name="lastUpdateBy" type="string" default="" />
+<cfproperty name="closeDate" type="date" default="" />
 <cfproperty name="isNew" type="numeric" default="1" required="true" />
 
 <cffunction name="init" output="false">
@@ -30,6 +31,7 @@
 	<cfset variables.instance.remotePubDate = "">
 	<cfset variables.instance.lastUpdate="#now()#"/>
 	<cfset variables.instance.lastUpdateBy=""/>
+	<cfset variables.instance.closeDate=""/>
 	<cfset variables.instance.isNew=1 />
 	<cfset variables.instance.errors=structNew()>
 	
@@ -40,6 +42,9 @@
 		<cfset variables.instance.LastUpdateBy = "" />
 		<cfset variables.instance.LastUpdateByID = "" />
 	</cfif>
+
+	<cfset variables.primaryKey = 'changesetID'>
+	<cfset variables.entityName = 'changeset'>
 	
 	<cfreturn this>
 </cffunction>
@@ -72,31 +77,6 @@
 			<cfloop collection="#arguments.data#" item="prop">
 				<cfset setValue(prop,arguments.data[prop]) />
 			</cfloop>
-			
-			<cfif isDate(variables.instance.publishDate)>
-				
-				<cfif isdefined("arguments.data.publishhour")
-				and isdefined("arguments.data.publishMinute")
-				and isdefined("arguments.data.publishDayPart")>
-				
-					<cfif arguments.data.publishdaypart eq "PM">
-						<cfset publishhour = arguments.data.publishhour + 12>
-						
-						<cfif publishhour eq 24>
-							<cfset publishhour = 12>
-						</cfif>
-					<cfelse>
-						<cfset publishhour = arguments.data.publishhour>
-						
-						<cfif publishhour eq 12>
-							<cfset publishhour = 0>
-						</cfif>
-					</cfif>
-					
-					<cfset setpublishDate(createDateTime(year(variables.instance.publishDate), month(variables.instance.publishDate), day(variables.instance.publishDate), publishhour, arguments.data.publishMinute, "0"))>
-			
-				</cfif>
-			</cfif>
 			
 		</cfif>
 		
@@ -140,6 +120,12 @@
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="setCloseDate" access="public" output="false">
+	<cfargument name="closeDate" type="String" />
+	<cfset variables.instance.closeDate = parseDateArg(arguments.closeDate) />
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="setLastUpdateBy" access="public" output="false">
 	<cfargument name="lastUpdateBy" type="String" />
 	<cfset variables.instance.lastUpdateBy = left(trim(arguments.lastUpdateBy),50) />
@@ -169,6 +155,46 @@
 
 <cffunction name="delete" output="false" access="public">
 	<cfset variables.changesetManager.delete(getChangesetID()) />
+</cffunction>
+
+<cffunction name="getPrimaryKey" output="false">
+	<cfreturn "changesetID">
+</cffunction>
+
+<cffunction name="hasPendingApprovals" output="false">
+		<cfreturn variables.changesetManager.hasPendingApprovals(getValue('changesetID'))>
+</cffunction>
+
+<cffunction name="getAssignmentsIterator" output="false">
+		<cfreturn variables.changesetManager.getAssignmentsIterator(getValue('changesetID'))>
+</cffunction>
+
+<cffunction name="getAssignmentsQuery" output="false">
+		<cfreturn variables.changesetManager.getAssignmentsQuery(getValue('changesetID'))>
+</cffunction>
+
+<cffunction name="rollback" output="false">
+	<cfif variables.instance.published>
+		<cfset var it=getBean('changesetRollBack')
+			.getFeed()
+			.setNextN(0)
+			.setSiteID(getValue('siteID'))
+			.addParam(column='changesetID',criteria=getValue('changesetID'))
+			.getIterator()>
+
+		<cfif it.hasNext()>
+			<cfloop condition="it.hasNext()">
+				<cfset it.next().rollback()>
+			</cfloop>
+		</cfif>	
+	</cfif>
+
+	<cfset variables.instance.published=0>
+	<cfset variables.instance.publishDate="">
+	<cfset save()>
+	<!---<cfdump var="#variables.instance.published#" abort="true">--->
+
+	<cfreturn this>
 </cffunction>
 
 </cfcomponent>

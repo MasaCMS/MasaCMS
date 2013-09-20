@@ -51,11 +51,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 #application.utility.displayErrors(rc.adZoneBean.getErrors())#
 
-<form <cfif rc.adZoneID neq ''>class="fieldset-wrap"</cfif> novalidate="novalidate" name="form1" method="post" action="index.cfm?muraAction=cAdvertising.updateAdZone&siteid=#URLEncodedFormat(rc.siteid)#" onsubmit="return false;">
+<form <cfif rc.adZoneID neq ''>class="fieldset-wrap"</cfif> novalidate="novalidate" name="form1" method="post" action="./?muraAction=cAdvertising.updateAdZone&siteid=#URLEncodedFormat(rc.siteid)#" onsubmit="return false;">
 
 
 <cfif rc.adZoneID neq ''>
-<div class="tabbable tabs-left">
+<div class="tabbable tabs-left mura-ui">
 	<ul class="nav nav-tabs tabs initActiveTab">
 		<li><a href="##tabBasic" onclick="return false;"><span>#application.rbFactory.getKeyValue(session.rb,'advertising.basic')#</span></a></li>
 		<li><a href="##tabUsagereport" onclick="return false;"><span>#application.rbFactory.getKeyValue(session.rb,'advertising.usagereport')#</span></a></li>

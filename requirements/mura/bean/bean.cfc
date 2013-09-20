@@ -46,42 +46,121 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 
-<cfproperty name="errors" type="struct" default="{}" required="true" />
-<cfproperty name="siteID" type="String" default="" required="true" />
-<cfproperty name="fromMuraCache" type="boolean" default="false" required="true" />
+<cfproperty name="errors" type="struct" persistent="false" comparable="false" />
+<cfproperty name="isNew" type="numeric" persistent="false" default="1"/>
+<cfproperty name="fromMuraCache" type="boolean" default="false" persistent="false" comparable="false"/>
+<cfproperty name="instanceID" type="string" persistent="false" comparable="false"/>
+
+<cfset variables.properties={}>
+<cfset variables.validations={}>
+<cfset variables.entityName="">
+<cfset variables.primaryKey="">
 
 <cffunction name="init" output="false">
 	<cfset super.init(argumentCollection=arguments)>
 	<cfset variables.instance=structNew()>
 	<cfset variables.instance.siteID=""/>
+	<cfset variables.instance.isNew=1/>
 	<cfset variables.instance.errors=structNew()/>
 	<cfset variables.instance.fromMuraCache = false />
+
+	<cfif not structKeyExists(variables.instance,"instanceID")>
+		<cfset variables.instance.instanceID=createUUID()>
+	</cfif>
 	<cfreturn this>
 </cffunction>
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
 <cfargument name="MissingMethodArguments" type="struct" required="true" />
-<cfset var prop="">
-<cfset var prefix=left(arguments.MissingMethodName,3)>
-<cfset var bean="">
+	<cfscript>
+		var prefix=left(arguments.MissingMethodName,3);
 
-<cfif len(arguments.MissingMethodName)>
-	<cfif listFindNoCase("set,get",prefix) and len(arguments.MissingMethodName) gt 3>
-		<cfset prop=right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3)>	
-		<cfif prefix eq "get">
-			<cfreturn getValue(prop)>
-		<cfelseif prefix eq "set" and not structIsEmpty(arguments.MissingMethodArguments)>
-			<cfset setValue(prop,arguments.MissingMethodArguments[1])>	
-			<cfreturn this>
-		</cfif>
-	<cfelse>
-		<cfthrow message="The method '#arguments.MissingMethodName#' is not defined">
-	</cfif>
-<cfelse>
-	<cfreturn "">
-</cfif>
+		if(len(arguments.MissingMethodName)){
+
+			if(variables.entityName != ''  && isdefined('application.objectMappings.#variables.entityName#.synthedFunctions.#arguments.MissingMethodName#')){
+				try{
+
+					if(not structKeyExists(arguments,'MissingMethodArguments')){
+						arguments.MissingMethodArguments={};
+					}
+
+					if(structKeyExists(application.objectMappings[variables.entityName].synthedFunctions[arguments.MissingMethodName],'args')){
+						
+						if(structKeyExists(application.objectMappings[variables.entityName].synthedFunctions[arguments.MissingMethodName].args,'cfc')){
+							var bean=getBean(application.objectMappings[variables.entityName].synthedFunctions[arguments.MissingMethodName].args.cfc);
+							//writeDump(var=bean.getProperties());
+							if(application.objectMappings[variables.entityName].synthedFunctions[arguments.MissingMethodName].args.functionType eq 'getEntity'){
+								application.objectMappings[variables.entityName].synthedFunctions[arguments.MissingMethodName].args.loadKey=bean.getPrimaryKey();
+							} else {
+								application.objectMappings[variables.entityName].synthedFunctions[arguments.MissingMethodName].args.loadKey=application.objectMappings[variables.entityName].synthedFunctions[arguments.MissingMethodName].args.fkcolumn;
+							}
+
+							structAppend(arguments.MissingMethodArguments,synthArgs(application.objectMappings[variables.entityName].synthedFunctions[arguments.MissingMethodName].args),true);
+						}
+					}
+
+
+					//writeDump(var=arguments.MissingMethodArguments);
+					//writeDump(var=application.objectMappings[variables.entityName].synthedFunctions[arguments.MissingMethodName].exp,abort=true);
+					return evaluate(application.objectMappings[variables.entityName].synthedFunctions[arguments.MissingMethodName].exp);
+
+				} catch(any err){
+					if(request.muratransaction){
+						transactionRollback();
+					}				
+					writeDump(var=application.objectMappings[variables.entityName].synthedFunctions[arguments.MissingMethodName]);
+					writeDump(var=err,abort=true);
+				}
+			} 
+
+			if(listFindNoCase("set,get",prefix) and len(arguments.MissingMethodName) gt 3){
+				var prop=right(arguments.MissingMethodName,len(arguments.MissingMethodName)-3);	
+				
+				if(prefix eq "get"){
+					return getValue(prop);
+				} 
+
+				if(not structIsEmpty(arguments.MissingMethodArguments)){
+					return setValue(prop,arguments.MissingMethodArguments[1]);
+				} else {
+					throw(message="The method '#arguments.MissingMethodName#' requires a propery value");
+				}
+					
+			} else {
+				throw(message="The method '#arguments.MissingMethodName#' is not defined");
+			}
+		} else {
+			return "";
+		}	
+	</cfscript>
+
 </cffunction>
+
+<cfscript>
+	private function synthArgs(args){
+		var returnArgs={
+				"#translatePropKey(args.loadkey)#"=getValue(translatePropKey(arguments.args.fkcolumn)),
+				returnFormat=arguments.args.returnFormat
+			};
+
+		if(isDefined('application.objectMappings.#getEntityName()#.properties.#arguments.args.prop#.orderby')){
+			returnArgs.orderby=application.objectMappings[getEntityName()].properties[arguments.args.prop].orderby;
+		} else if(isDefined('application.objectMappings.#arguments.args.cfc#.orderby')){
+			returnArgs.orderby=application.objectMappings[arguments.args.cfc].orderby;
+		}
+
+		return returnArgs;
+	}
+
+	private function translatePropKey(property){
+		if(arguments.property eq 'primaryKey'){
+			return getPrimaryKey();
+		}
+		return arguments.property;
+	}
+</cfscript>
+
 
 <cffunction name="parseDateArg" output="false" access="public">
     <cfargument name="arg" type="string" required="true">
@@ -119,7 +198,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfloop list="#arguments.data.columnlist#" index="prop">
 				<cfset setValue(prop,arguments.data[prop][1]) />
 			</cfloop>
-			
+			<cfset variables.instance.isNew=0>
 		<cfelseif isStruct(arguments.data)>
 			<cfloop collection="#arguments.data#" item="prop">
 				<cfset setValue(prop,arguments.data[prop]) />
@@ -133,13 +212,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setValue" returntype="any" access="public" output="false">
 <cfargument name="property"  type="string" required="true">
 <cfargument name="propertyValue" default="" >
-	
+
 	<cfif isSimpleValue(arguments.propertyValue)>
 		<cfset arguments.propertyValue=trim(arguments.propertyValue)>
 	</cfif>
 	
 	<cfif structKeyExists(this,"set#arguments.property#")>
-		<cfset evaluate("set#property#(arguments.propertyValue)") />
+		<cfset var tempFunc=this["set#arguments.property#"]>
+		<cfset tempFunc(arguments.propertyValue)>
 	<cfelse>
 		<cfset variables.instance["#arguments.property#"]=arguments.propertyValue />
 	</cfif>
@@ -151,7 +231,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="defaultValue">
 	
 	<cfif structKeyExists(this,"get#arguments.property#")>
-		<cfreturn evaluate("get#arguments.property#()") />
+		<cfset var tempFunc=this["get#arguments.property#"]>
+		<cfreturn tempFunc()>
 	<cfelseif structKeyExists(variables.instance,"#arguments.property#")>
 		<cfreturn variables.instance["#arguments.property#"] />
 	<cfelseif structKeyExists(arguments,"defaultValue")>
@@ -180,8 +261,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="validate" access="public" output="false">
-	<cfset variables.instance.errors=structnew() />
-	<cfreturn this>
+	<cfscript>
+	variables.instance.errors=getBean('beanValidator').validate(this);
+
+	return this;
+	</cfscript>
 </cffunction>
 
 <cffunction name="setErrors" output="false" access="public">
@@ -196,10 +280,244 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn variables.instance.errors>
 </cffunction>
 
+<cffunction name="hasErrors" output="false" access="public">
+	<cfreturn not structIsEmpty(variables.instance.errors)>
+</cffunction>
+
 <cffunction name="setlastUpdateBy" access="public" output="false">
 	<cfargument name="lastUpdateBy" type="String" />
 	<cfset variables.instance.lastUpdateBy = left(trim(arguments.lastUpdateBy),50) />
 	<cfreturn this>
 </cffunction>
+
+<cfscript>
+
+	function getProperties(){
+		getEntityName();
+
+		if(!isdefined('application.objectMappings.#variables.entityName#.properties')){
+			var md={};
+			var pname='';
+			var i='';
+			var prop={};
+			var md=duplicate(getMetaData(this));
+
+			param name="application.objectMappings.#variables.entityName#" default={};
+			application.objectMappings[variables.entityName].properties={};
+			
+			//writeDump(var=md,abort=true);
+
+			for (md; 
+			    structKeyExists(md, "extends"); 
+			    md = md.extends) 
+			  { 
+
+			    if (structKeyExists(md, "properties")) 
+			    { 
+			      for (i = 1; 
+			           i <= arrayLen(md.properties); 
+			           i++) 
+			      { 
+			        pName = md.properties[i].name;
+
+			        if(!structkeyExists(application.objectMappings[variables.entityName].properties,pName)){
+			       	 	application.objectMappings[variables.entityName].properties[pName]=md.properties[i];
+			       	 	prop=application.objectMappings[variables.entityName].properties[pName];
+
+			       	 	if(!structKeyExists(prop,'comparable')){
+				       	 	prop.comparable=true;
+				       	 } 
+
+			       	 	if(!structKeyExists(prop,"dataType")){
+			       	 		if(structKeyExists(prop,"ormtype")){
+			       	 			prop.dataType=prop.ormtype;
+			       	 		} else if(structKeyExists(prop,"type")){
+			       	 			prop.dataType=prop.type;
+			       	 		} else {
+			       	 			prop.type="string";
+			       	 			prop.dataType="varchar";
+			       	 		}
+			       	 	}	 	
+			     	 }
+			    	} 
+				} 
+
+			}
+
+			if(hasProperty('contenthistid')){
+				application.objectMappings[variables.entityName].versioned=true;
+			} else {
+				application.objectMappings[variables.entityName].versioned=false;
+			}
+			
+			getValidations();	
+		}
+		//writeDump(var=variables.properties,abort=true);
+		
+		return application.objectMappings[variables.entityName].properties;
+	}
+
+	function getEntityName(){
+
+		if(!len(variables.entityName)){
+			var md=getMetaData(this);
+
+			if(structKeyExists(md,'entityName')){
+				variables.entityName=md.entityName;
+			} else {
+				variables.entityName=listLast(md.name,".");
+
+				if(variables.entityName != 'bean' && right(variables.entityName,4) eq "bean"){
+					variables.entityName=left(variables.entityName,len(variables.entityName)-4);
+				}
+			}
+		}
+
+		return variables.entityName;
+
+	}
+
+	function hasProperty(property){
+		var props=getProperties();
+
+		for(var prop in props){
+			if(prop eq arguments.property or structKeyExists(props[prop],'column') and  props[prop].column eq arguments.property){
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	function isComparable(property){
+		var props=getProperties();
+
+		if(structKeyExists(props, property) && structKeyExists(props[property],'comparable')){
+			return props[property].comparable;
+		} else {
+			return true;
+		}
+	}
+
+	function getValidations(){
+		getEntityName();
+
+		if(structIsEmpty(variables.validations)){
+			
+			if(!isDefined('application.objectMappings.#variables.entityName#.validations')){
+			
+				param name="application.objectMappings" default={};
+				param name="application.objectMappings.#variables.entityName#" default={};
+				
+				application.objectMappings[variables.entityName].validations={};
+				application.objectMappings[variables.entityName].validations.properties={};
+
+				var props=getProperties();
+				var rules=[];
+				var rule={};
+				var ruleKey='';
+
+
+				for(var prop in props){
+
+					rules=[];
+
+					if(structKeyExists(props[prop], "fkcolumn")){
+						ruleKey=props[prop].fkcolumn;
+					} else {
+						ruleKey=prop;
+					}
+
+					if(structKeyExists(props[prop], "datatype") && props[prop].datatype != 'any'){
+						if(structKeyExists(props[prop], "message")){
+							rule={message=props[prop].message};
+						} else {
+							rule={};
+						}
+						structAppend(rule,{datatype=props[prop].datatype});
+						arrayAppend(rules, rule);
+					}
+
+					if(structKeyExists(props[prop], "regex")){
+						if(structKeyExists(props[prop], "message")){
+							rule={message=props[prop].message};
+						} else {
+							rule={};
+						}
+						structAppend(rule,{regex=props[prop].regex});
+						arrayAppend(rules, rule);
+					}
+
+					if(structKeyExists(props[prop], "required") && props[prop].required){
+						if(structKeyExists(props[prop], "message")){
+							rule={message=props[prop].message};
+						} else {
+							rule={};
+						}
+						structAppend(rule,{required=props[prop].required});
+						arrayAppend(rules,rule);
+					}
+					
+					if(arrayLen(rules)){
+						application.objectMappings[variables.entityName].validations.properties[ruleKey]=rules;
+					}
+				}
+
+			}
+
+			return application.objectMappings[variables.entityName].validations;
+		}
+		return variables.validations;
+	}
+
+	function setValidations(validations){
+		variables.validations=arguments.validations;
+		return this;
+	}
+
+	function getSynthedFunctions(){
+		bc=getEntityName();
+
+		param name="application.objectMappings.#variables.entityName#" default={};
+		param name="application.objectMappings.#variables.entityName#.synthedFunctions" default={};
+
+		return application.objectMappings[variables.entityName].synthedFunctions;
+	}
+
+
+	function compare(bean, propertyList=''){
+		
+		var returnStruct={};
+		var diffMatchPatch=getBean('diffMatchPatch');
+		var diffObj={};
+		var i='';
+		var propertyArray=listToArray(arguments.propertyList);
+		var property='';
+
+		if(!arrayLen(propertyArray)){
+			propertyArray=StructKeyArray(getAllValues());
+		}
+
+		if(!isObject(arguments.bean) && isStruct(arguments.bean)){
+			arguments.bean=new mura.bean.bean().set(arguments.bean);
+		}
+
+		for(i=1; i lte arrayLen(propertyArray); i++){
+			property=propertyArray[i];
+			if(isComparable(property) 
+				&& isSimpleValue(getValue(property)) 
+				&& isSimpleValue(arguments.bean.getValue(property))
+				&& getValue(property) != arguments.bean.getValue(property)
+			){
+			
+				diffObj=diffMatchPatch.compute(javaCast('string',getValue(property)),javaCast('string',arguments.bean.getValue(property)));
+				returnStruct[property]=diffObj;
+			}
+		}
+
+		return returnStruct;
+	}
+
+</cfscript>
 
 </cfcomponent>

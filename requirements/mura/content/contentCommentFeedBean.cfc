@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.bean.beanFeed" output="false">
 
-	<cfproperty name="bean" type="string" default="comment" required="true" />
+	<cfproperty name="entityName" type="string" default="comment" required="true" />
 	<cfproperty name="table" type="string" default="tcontentcomments" required="true" />
 	<cfproperty name="keyField" type="string" default="commentID" required="true" />
 	<cfproperty name="siteID" type="string" default="" required="true" />
@@ -57,7 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset super.init(argumentCollection=arguments)>
 	
 	<cfset variables.instance.siteID="">
-	<cfset variables.instance.bean="comment">
+	<cfset variables.instance.entityName="comment">
 	<cfset variables.instance.table="tcontentcomments">
 	<cfset variables.instance.keyField="commentID">
 	<cfset variables.instance.sortBy="entered" />

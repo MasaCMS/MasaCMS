@@ -128,7 +128,7 @@ tr:nth-child(even) i {
 			padding: 2px 0 !important;
 			
 			&:before {
-				.icon-font('FontAwesome');
+				font-family: FontAwesome !important;
 				font-size: 18px;
 				position: relative;
 				top: 2px;
@@ -142,10 +142,10 @@ tr:nth-child(even) i {
 					
 					&:before {
 					position: absolute;
-					top: 0px;
-					left: 2px;
+					top: 1px;
+					left: 0px;
 					content: attr(data-filetype);
-					font-family: 'SilkscreenNormal';
+					font-family: 'SilkscreenNormal' !important;
 					font-size: 8px;
 					line-height: 1;
 					.inline-block;
@@ -154,7 +154,7 @@ tr:nth-child(even) i {
 					padding: 4px 4px 3px;
 					.border-radius(2px);
 					overflow: hidden;
-					text-shadow: 0 0 0;				
+					text-shadow: none !important;				
 					}
 				
 					&.gif,
@@ -162,6 +162,7 @@ tr:nth-child(even) i {
 					&.jpg,
 					&.jpeg {
 						padding-left: 0 !important;
+						//font-family: 'FontAwesome' !important;
 						
 						&:before {
 							position: relative;
@@ -177,17 +178,17 @@ tr:nth-child(even) i {
 			&.folder:before { content: '\f114'; }
 			&.gallery:before { content: '\f00a'; }			
 			/* &.file:before { content: '\f0c6'; } */
-			&.calendar:before { content: '\f073'; font-size: 21px; top: 3px; }
+			&.calendar:before { content: '\f073'; font-size: 18px; top: 1px; }
 			
 			&.jpg:before,
 			&.jpeg:before,
 			&.png:before,
 			&.gif:before {
-				font-family: 'FontAwesome'; 
+				font-family: 'FontAwesome' !important; 
 				background: transparent;
 				padding: 0;
 				color: @grayDark;
-				content: "\f03e";
+				content: "\f03e" !important;
 				font-size: 19px;
 				top: 3px;
 				}

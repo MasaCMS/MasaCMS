@@ -48,8 +48,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent extends="mura.cfobject" output="false">
 
 <cffunction name="init" returntype="any" output="false" access="public">
-<cfargument name="configBean" type="any" />
-<cfargument name="advertiserGateway" type="any" />
+<cfargument name="configBean" type="any" required="yes"/>
+<cfargument name="advertiserGateway" type="any" required="yes"/>
 <cfset variables.instance.configBean=arguments.configBean />
 <cfset variables.instance.Gateway=arguments.advertiserGateway />
 	<cfreturn this />

@@ -23,6 +23,11 @@ select theme from tsettings  where 0=1
 	ALTER TABLE tsettings ADD COLUMN theme varchar(50) default NULL
 	</cfquery>
 </cfcase>
+<cfcase value="postgresql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tsettings ADD COLUMN theme varchar(50) default NULL
+	</cfquery>
+</cfcase>
 <cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tsettings ADD COLUMN theme varchar(50) default NULL

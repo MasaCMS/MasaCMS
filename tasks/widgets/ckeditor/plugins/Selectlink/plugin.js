@@ -42,25 +42,23 @@ CKEDITOR.plugins.add( 'Selectlink',
 					  }
 				   ],
 			 onOk : function() {
-
 				/* Begin insert links */
 				if (typeof(iframeWindow.document.forms.frmLinks.theLinks) != 'undefined') {
-
 					var theChoice = -1,
 						theLink;
 					
-					if(iframeWindow.document.frmLinks.theLinks.length == undefined) {
+					if(iframeWindow.document.forms.frmLinks.theLinks.length == undefined) {
 						theChoice = 0; 
 						theLink = iframeWindow.document.forms.frmLinks.theLinks.value.split("^");
 					} else {
-						for (counter = 0; counter < iframeWindow.document.frmLinks.theLinks.length; counter++) {
-							if (iframeWindow.document.frmLinks.theLinks[counter].checked) {
+						for (counter = 0; counter < iframeWindow.document.forms.frmLinks.theLinks.length; counter++) {
+							if (iframeWindow.document.forms.frmLinks.theLinks[counter].checked) {
 								theChoice = counter; 
 								theLink = iframeWindow.document.forms.frmLinks.theLinks[theChoice].value.split("^");
 							}
 						}
 					}
-
+				
 					if(theChoice != -1) {
 
 						var editor = this._.editor,

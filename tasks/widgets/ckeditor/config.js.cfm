@@ -18,6 +18,7 @@ CKEDITOR.editorConfig = function( config )
 	</cfoutput>
 	
 	config.skin = 'mura';
+	config.allowedContent = true;
 	
 	<cfoutput>
 	<cfif renderer.headline eq "h1">
@@ -105,14 +106,14 @@ CKEDITOR.editorConfig = function( config )
 	                                	['Source'],['Bold','Italic','-','NumberedList','BulletedList','-','Link','Unlink','-','Image']
 	                                ] ;
 
-	config.extraPlugins = 'SelectComponent,media,Selectlink,gmap,tableresize,onchange,justify,find,bidi,div,showblocks,forms,templates,pagebreak';
+	config.extraPlugins = 'SelectComponent,media,Selectlink,gmap,tableresize,onchange,justify,find,bidi,div,showblocks,forms,templates,pagebreak,codemirror';
 
 	<cfif application.configBean.getEnableMuraTag()>
 	config.extraPlugins = config.extraPlugins + ",muratag";
 	</cfif>
 	
-	config.protectedSource.push( /<i class\=\"[\s\S]*?\"\>/g ); //allows beginning <i class=""> tag
-	config.protectedSource.push( /<\/i\>/g ); //allows ending </i> tag
+	//config.protectedSource.push( /<i class\=\"[\s\S]*?\"\>/g ); //allows beginning <i class=""> tag
+	//config.protectedSource.push( /<\/i\>/g ); //allows ending </i> tag
 
 	// Remove the Resize plugin as it does not make sense to use it in conjunction with the AutoGrow plugin.
 	//removePlugins : 'resize';

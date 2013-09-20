@@ -20,7 +20,7 @@
 
 // Accent colors
 // -------------------------
-@blue:                  #69c;
+@blue:                  #6699cc;
 @blueDark:              darken(@blue, 20%);
 @blueDarker:            darken(@blueDark, 10%);
 @green:                 #46a546;
@@ -82,8 +82,9 @@
 @btnBackgroundHighlight:            darken(@grayLighter,4%);
 @btnBorder:                         darken(@btnBackgroundHighlight,1%);
 
-@btnPrimaryBackground:              @blue;
-@btnPrimaryBackgroundHighlight:     spin(@btnPrimaryBackground,10%);
+@btnPrimaryBackground:              lighten(@blue,10%);
+@btnPrimaryBackgroundHighlight:     @blue;
+@btnPrimaryBorder:                  lighten(@btnPrimaryBackgroundHighlight,4%);
 
 @btnInfoBackground:                 #5bc0de;
 @btnInfoBackgroundHighlight:        #2f96b4;
@@ -97,8 +98,8 @@
 @btnDangerBackground:               #ee5f5b;
 @btnDangerBackgroundHighlight:      #bd362f;
 
-@btnInverseBackground:              lighten(@blue,10%);
-@btnInverseBackgroundHighlight:     lighten(@blue,0%);
+@btnInverseBackground:              @grayDark;
+@btnInverseBackgroundHighlight:     darken(@grayDark,15%);
 
 //@btnInverseBackground:              darken(@gray,50%);
 //@btnInverseBackgroundHighlight:     darken(@btnInverseBackground,15%);
@@ -112,6 +113,7 @@
 @inputTextColor:				@black;
 @inputBackground:               @white;
 @inputBorder:                   @grayLight;
+@inputHeight:                   @baseLineHeight + 10px;
 @inputBorderRadius:             2px;
 @inputDisabledBackground:       @grayLighter;
 @formActionsBackground:         transparent;
@@ -147,6 +149,11 @@
 // -------------------------
 // @iconSpritePath:          "../img/glyphicons-halflings.png";
 // @iconWhiteSpritePath:     "../img/glyphicons-halflings-white.png";
+
+// Icons (Font Awesome Overrides)
+// -------------------------
+@borderColor:       #eee;
+@iconMuted:         #eee;
 
 
 // Input placeholder text color
@@ -187,14 +194,17 @@
 @heroUnitHeadingColor:            inherit;
 @heroUnitLeadColor:               inherit;
 
+// Wells
+// -------------------------
+@wellBackground:                  @grayLight;
 
 // Form states and alerts
 // -------------------------
-@warningText:             darken(@warningBorder,40%);
-@warningBackground:       rgb(255, 246, 191);
+@warningText:           darken(@warningBorder,40%);
+@warningBackground:     rgb(255, 246, 191);
 @warningBorder:			rgb(255, 211, 36);
 
-@errorText:               rgb(204, 1, 1);
+@errorText:               #B90e0e;
 @errorBackground:         rgb(255, 203, 203);
 @errorBorder:             @errorText;
 
@@ -205,6 +215,39 @@
 @infoText:                rgb(78, 118, 150);
 @infoBackground:          rgb(188, 233, 255);
 @infoBorder:              rgb(172, 207, 221);
+
+// Badges & Labels
+// -------------------------
+
+.badge {
+  padding-left: 7px;
+  padding-right: 7px;
+  .border-radius(9px);
+  border: 0 solid @white;
+  background-color: darken(@gray,10%);
+  color: @white;
+}
+
+.label,
+.badge {
+  // Important (red)
+  &-important         { background-color: @orange; }
+  &-important[href]   { background-color: darken(@orange, 10%); }
+  // Warnings (orange)
+  &-warning           { background-color: @yellow; }
+  &-warning[href]     { background-color: darken(@yellow, 10%); }
+  // Success (green)
+  &-success           { background-color: @successText; }
+  &-success[href]     { background-color: darken(@successText, 10%); }
+  // Info (turquoise)
+  &-info              { background-color: @infoText; }
+  &-info[href]        { background-color: darken(@infoText, 10%); }
+  // Inverse (black)
+  &-inverse           { background-color: @grayDark; }
+  &-inverse[href]     { background-color: darken(@grayDark, 10%); }
+}
+
+
 
 // GRID
 // --------------------------------------------------

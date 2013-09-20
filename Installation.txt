@@ -1,6 +1,6 @@
 REQUIREMENTS
 - Must have ColdFusion, Railo or OpenBD installed
-- Access to a MySQL 4+, Microsoft SQL 2000+ or Oracle 10g+ database server and the ability to add a new database
+- Access to a MySQL 4+, PostgreSQL 8+, Microsoft SQL 2000+ or Oracle 10g+ database server and the ability to add a new database
 - Ability to add a Datasource to ColdFusion, Railo or OpenBD Administrator
 
 INSTALLATION

@@ -125,11 +125,11 @@ var feedManager = {
 			resizable: false,
 			modal: true,
 			buttons: {
-				'YES': function() {
+				'Yes': function() {
 					$(this).dialog('close');
 					submitForm(document.forms.contentForm, 'Import');
 				},
-				'NO': function() {
+				'No': function() {
 					$(this).dialog('close');
 				}
 			}

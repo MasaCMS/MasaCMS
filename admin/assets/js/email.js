@@ -49,8 +49,11 @@ var emailManager = {
 	openScheduler: function() {
 		var s = $('#scheduler');
 		var c = $('#controls');
+		var i = $('.toggle');
 		c.css('display', 'none');
-		s.css('display', 'inline');
+		s.css('display', 'inline-block');
+		i.css('opacity', '.30');
+		i.attr('disabled','disabled');
 
 		return false;
 
@@ -59,14 +62,21 @@ var emailManager = {
 	closeScheduler: function() {
 		var s = $('#scheduler');
 		var c = $('#controls');
+		var i = $('.toggle');
 		s.css('display', 'none');
 		c.css('display', 'inline');
+		i.css('opacity', '1');
+		i.removeAttr('disabled');
+
 		document.forms.form1.deliveryDate.value = '';
 
-		document.forms.form1.timehour.selectedIndex = 7;
-		document.forms.form1.timeminute.selectedIndex = 0;
-		document.forms.form1.timepart.selectedIndex = 1;
-
+		$('.mura-datepickerdeliveryDate').val('');
+		$('#mura-deliveryDateHour option')[7].selected = true;
+		$('#mura-deliveryDateMinute option')[0].selected = true;
+	
+		if($('#mura-deliveryDateDayPart option').length){
+			$('#mura-deliveryDateDayPart option')[0].selected = true;	
+		}
 		return false;
 
 	},

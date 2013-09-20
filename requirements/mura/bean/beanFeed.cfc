@@ -46,21 +46,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.bean.bean" output="false">
 
-	<cfproperty name="bean" type="string" default="" required="true" />
-	<cfproperty name="table" type="string" default="" required="true" />
-	<cfproperty name="keyField" type="string" default="" required="true" />
+	<cfproperty name="entityName" type="string" default="" />
+	<cfproperty name="table" type="string" default="" />
+	<cfproperty name="keyField" type="string" default="" />
 	<cfproperty name="nextN" type="numeric" default="0" required="true" />
 	<cfproperty name="maxItems" type="numeric" default="0" required="true" />
-	<cfproperty name="siteID" type="string" default="" required="true" />
-	<cfproperty name="sortBy" type="string" default="" required="true" />
+	<cfproperty name="siteID" type="string" default="" />
+	<cfproperty name="sortBy" type="string" default="" />
 	<cfproperty name="sortDirection" type="string" default="asc" required="true" />
-	<cfproperty name="additionalColumns" type="string" default="" required="true" />
-	<cfproperty name="sortTable" type="string" default="" required="true" />
+	<cfproperty name="additionalColumns" type="string" default="" />
+	<cfproperty name="sortTable" type="string" default="" />
 	
 <cffunction name="init" output="false">
 	<cfset super.init(argumentCollection=arguments)>
 	
 	<cfset variables.instance.siteID="">
+	<cfset variables.instance.entityName=""/>
 	<cfset variables.instance.table="">
 	<cfset variables.instance.keyField="">
 	<cfset variables.instance.sortBy="" />
@@ -71,6 +72,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.maxItems=0>
 	<cfset variables.instance.additionalColumns=""/>
 	<cfset variables.instance.sortTable=""/>
+	<cfset variables.instance.orderby=""/>
+	<cfset variables.instance.orderby=""/>
 
 	
 	<cfset variables.instance.params=queryNew("param,relationship,field,condition,criteria,dataType","integer,varchar,varchar,varchar,varchar,varchar" )  />
@@ -100,9 +103,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var i="">
 
 	<cfif not len(variables.instance.tableFieldList)>
-		<cfset variables.instance.tableFieldLookUp=variables.configBean.getValue("#variables.instance.bean#FieldLookUp")>
-		<cfset variables.instance.tableFieldList=variables.configBean.getValue("#variables.instance.bean#FieldList
-			")>
+		<cfset variables.instance.tableFieldLookUp=variables.configBean.getValue("#variables.instance.entityName#FieldLookUp")>
+		<cfset variables.instance.tableFieldList=variables.configBean.getValue("#variables.instance.entityName#FieldList")>
 		<cfif not len(variables.instance.tableFieldList)>
 			<cfset variables.instance.tableFieldLookUp=structNew()>
 			<cfset rs=variables.configBean.dbTableColumns(variables.instance.table)>
@@ -110,8 +112,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfloop list="#variables.instance.tableFieldlist#" index="i">
 				<cfset variables.instance.tableFieldLookUp["#i#"]=true>
 			</cfloop>
-			<cfset variables.configBean.setValue("#variables.instance.bean#FieldLookUp",variables.instance.tableFieldLookUp)>
-			<cfset variables.configBean.setValue("#variables.instance.bean#FieldList",variables.instance.tableFieldlist)>
+			<cfset variables.configBean.setValue("#variables.instance.entityName#FieldLookUp",variables.instance.tableFieldLookUp)>
+			<cfset variables.configBean.setValue("#variables.instance.entityName#FieldList",variables.instance.tableFieldlist)>
 		</cfif>
 	</cfif>
 </cffunction>
@@ -161,11 +163,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfloop from="1" to="#listLen(arguments.params.param)#" index="i">
 				
 				<cfset addParam(
-						listFirst(evaluate('arguments.params.paramField#i#'),'^'),
-						evaluate('arguments.params.paramRelationship#i#'),
-						evaluate('arguments.params.paramCriteria#i#'),
-						evaluate('arguments.params.paramCondition#i#'),
-						listLast(evaluate('arguments.params.paramField#i#'),'^')
+						listFirst(arguments.params['paramField#i#'],'^'),
+						arguments.params['paramRelationship#i#'],
+						arguments.params['paramCriteria#i#'],
+						arguments.params['paramCondition#i#'],
+						listLast(arguments.params['params.paramField#i#'],'^')
 						) />
 	
 			</cfloop>
@@ -203,15 +205,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="condition" type="string" default="EQUALS" required="true">
 	<cfargument name="datatype" type="string"  default="varchar" required="true">
 		<cfset var rows=1/>
+
+		<cfif structKeyExists(arguments,'column')>
+			<cfset arguments.field=arguments.column>
+		</cfif>
 		
 		<cfset queryAddRow(variables.instance.params,1)/>
 		<cfset rows = variables.instance.params.recordcount />
 		<cfset querysetcell(variables.instance.params,"param",rows,rows)/>
-		<cfif structKeyExists(arguments,"column")>
-			<cfset querysetcell(variables.instance.params,"field",formatField(arguments.column),rows)/>
-		<cfelse>
-			<cfset querysetcell(variables.instance.params,"field",formatField(arguments.field),rows)/>
-		</cfif>
+		<cfset querysetcell(variables.instance.params,"field",formatField(arguments.field),rows)/>
 		<cfset querysetcell(variables.instance.params,"relationship",arguments.relationship,rows)/>
 		<cfset querysetcell(variables.instance.params,"criteria",arguments.criteria,rows)/>
 		<cfset querysetcell(variables.instance.params,"condition",arguments.condition,rows)/>
@@ -278,19 +280,52 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn returnVar>
 </cffunction>
 
+<cffunction name="getDbType" output="false">
+	<cfif structKeyExists(application.objectMappings,variables.instance.entityName) and structKeyExists(application.objectMappings[variables.instance.entityName],'dbtype')>
+		<cfreturn application.objectMappings[variables.instance.entityName].dbtype>
+	<cfelse>
+		<cfreturn variables.configBean.getDbType()>
+	</cfif>
+</cffunction>
+
+<cffunction name="hasCustomDatasource" output="false">
+	<cfreturn structKeyExists(application.objectMappings,variables.instance.entityName) and structKeyExists(application.objectMappings[variables.instance.entityName],'datasource')>
+</cffunction>
+
+<cffunction name="getCustomDatasource" output="false">
+	<cfreturn application.objectMappings[variables.instance.entityName].datasource>
+</cffunction>
+
+<cffunction name="getQueryAttrs" output="false">
+	<cfif hasCustomDatasource()>
+		<cfset structAppend(arguments,
+			{datasource=getCustomDatasource(),
+			username='',
+			password=''},
+			false)>
+		<cfreturn arguments>
+	<cfelse>
+		<cfreturn variables.configBean.getReadOnlyQRYAttrs(argumentCollection=arguments)>
+	</cfif>
+</cffunction>
+
+<cffunction name="getQueryService" output="false">
+	<cfreturn new Query(argumentCollection=getQueryAttrs(argumentCollection=arguments))>
+</cffunction>
+
+
 <cffunction name="getQuery" returntype="query" output="false">
+	<cfargument name="countOnly" default="false">
+
 	<cfset var rs="">
+	<cfset var isListParam=false>
 	<cfset var param="">
 	<cfset var started=false>
 	<cfset var openGrouping=false>
 	<cfset var jointable="">
 	<cfset var jointableS="">
-	<cfset var dbType=variables.configBean.getDBType()>
-
-	<cfif not len(variables.instance.siteID)>
-		<cfthrow message="The 'SITEID' value must be set in order to search users.">
-	</cfif>
-
+	<cfset var dbType=getDbType()>
+ 
 	<cfloop query="variables.instance.params">
 		<cfif listLen(variables.instance.params.field,".") eq 2>
 			<cfset jointable=listFirst(variables.instance.params.field,".") >
@@ -300,16 +335,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	</cfloop>
 
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
-		<cfif dbType eq "oracle" and variables.instance.maxItems>select * from (</cfif>
-		select <cfif dbtype eq "mssql" and variables.instance.maxItems>top #variables.instance.maxItems#</cfif>
-		#getTableFieldList()# from #variables.instance.table#
+	<cfquery attributeCollection="#getQueryAttrs(name='rs')#">
+		<cfif not arguments.countOnly and dbType eq "oracle" and variables.instance.maxItems>select * from (</cfif>
+		select <cfif not arguments.countOnly and dbtype eq "mssql" and variables.instance.maxItems>top #val(variables.instance.maxItems)#</cfif>
+		
+		<cfif not arguments.countOnly>
+			#getTableFieldList()# 
+		<cfelse>
+			count(*) as count
+		</cfif>
+		
+		from #variables.instance.table#
 		
 		<cfloop list="#jointables#" index="jointable">
 			inner join #jointable# on (#variables.instance.table#.#variables.instance.keyField#=#jointable#.#variables.instance.keyField#)
 		</cfloop>
 
-		where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#"/>
+		where
+
+		<cfif len(variables.instance.siteID)>
+			siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#"/>
+		<cfelse>
+			1=1
+		</cfif>
 
 		<cfif variables.instance.params.recordcount>
 		<cfset started = false />
@@ -321,44 +369,49 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					variables.instance.params.criteria
 				) />
 								 
-			<cfif param.getIsValid()>	
+			<cfif param.getIsValid()>
 				<cfif not started >
+					<cfset openGrouping=true />	
 					and (
 				</cfif>
 				<cfif listFindNoCase("openGrouping,(",param.getRelationship())>
-					(
+					<cfif not openGrouping>and</cfif> (
 					<cfset openGrouping=true />
 				<cfelseif listFindNoCase("orOpenGrouping,or (",param.getRelationship())>
-					<cfif started>or</cfif> (
+					<cfif not openGrouping>or</cfif> (
 					<cfset openGrouping=true />
 				<cfelseif listFindNoCase("andOpenGrouping,and (",param.getRelationship())>
-					<cfif started>and</cfif> (
+					<cfif not openGrouping>and</cfif> (
 					<cfset openGrouping=true />
 				<cfelseif listFindNoCase("closeGrouping,)",param.getRelationship())>
 					)
-				<cfelse>
-					<cfif not openGrouping and started>
-						#param.getRelationship()#
-					<cfelse>
-						<cfset openGrouping=false />
-					</cfif>
+					<cfset openGrouping=false />
+				<cfelseif not openGrouping>
+					#param.getRelationship()#
 				</cfif>
 				
 				<cfset started = true />
+
 				<cfset isListParam=listFindNoCase("IN,NOT IN",param.getCondition())>					
 				#param.getField()# #param.getCondition()# <cfif isListParam>(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(isListParam,de('true'),de('false'))#" null="#iif(param.getCriteria() eq 'null',de('true'),de('false'))#"><cfif isListParam>)</cfif>  	
 				
+				<cfset openGrouping=false />
 			</cfif>						
 		</cfloop>
 		<cfif started>)</cfif>
 	</cfif> 
 
-	order by
+	<cfif not arguments.countOnly>
+		<cfif len(variables.instance.orderby)>
+			order by #variables.instance.orderby#
+		<cfelseif len(variables.instance.sortBy)>
+			order by #variables.instance.table#.#variables.instance.sortBy# #variables.instance.sortDirection#
+		</cfif>
 		
-	#variables.instance.table#.#variables.instance.sortBy# #variables.instance.sortDirection#
-	
-	<cfif dbType eq "mysql" and variables.instance.maxItems>limit <cfqueryparam cfsqltype="cf_sql_integer" value="#variables.instance.maxItems#" /> </cfif>
-	<cfif dbType eq "oracle" and variables.instance.maxItems>) where ROWNUM <= <cfqueryparam cfsqltype="cf_sql_integer" value="#variables.instance.maxItems#" /> </cfif>
+		<cfif listFindNoCase("mysql,postgresql", dbType) and variables.instance.maxItems>limit <cfqueryparam cfsqltype="cf_sql_integer" value="#variables.instance.maxItems#" /> </cfif>
+		<cfif dbType eq "nuodb" and variables.instance.maxItems>fetch <cfqueryparam cfsqltype="cf_sql_integer" value="#variables.instance.maxItems#" /></cfif>
+		<cfif dbType eq "oracle" and variables.instance.maxItems>) where ROWNUM <= <cfqueryparam cfsqltype="cf_sql_integer" value="#variables.instance.maxItems#" /> </cfif>
+	</cfif>
 
 	</cfquery>
 
@@ -367,17 +420,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getIterator" returntype="any" output="false">
 	<cfset var rs=getQuery()>
-	<cfset var it=getBean("#variables.instance.bean#Iterator")>
+	<cfset var it=''>
+
+	<cfif getServiceFactory().containsBean("#variables.instance.entityName#Iterator")>
+		<cfset it=getBean("#variables.instance.entityName#Iterator")>
+	<cfelse>
+		<cfset it=getBean("beanIterator")>
+	</cfif>
+
+	<cfset it.setEntityName(getValue('entityName'))>
+
 	<cfset it.setQuery(rs,variables.instance.nextN)>
 	<cfreturn it>
 </cffunction>
 
- <cffunction name="setSortDirection" access="public" output="false">
+<cffunction name="setSortDirection" access="public" output="false">
 	<cfargument name="sortDirection" type="any" />
 	<cfif listFindNoCase('desc,asc',arguments.sortDirection)>
 	<cfset variables.instance.sortDirection = arguments.sortDirection />
 	</cfif>
 	<cfreturn this>
-</cffunction> 
+</cffunction>
+
+<cffunction name="getAvailableCount" output="false">
+	<cfreturn getQuery(countOnly=true).count>
+</cffunction>
 
 </cfcomponent>

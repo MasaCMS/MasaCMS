@@ -47,7 +47,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent extends="mura.cfobject" output="false">
 	<cfset this.TreeLevelList="Page,Folder,Calendar,Link,File,Gallery">
 	<cfset this.ExtendableList="Page,Folder,Calendar,Link,File,Gallery,Component">
-	
+	<cfset this.versionObjects="">
+
 	<cffunction name="init" access="public" returntype="any" output="false">
 		<cfargument name="configBean" type="any" required="yes"/>
 		<cfargument name="contentGateway" type="any" required="yes"/>
@@ -97,6 +98,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfparam name="data.searchString" default="">
 		<cfparam name="data.categoryid" default="">
 		<cfparam name="data.tag" default="">
+		<cfparam name="data.tags" default="">
+
+
 		
 		<cfswitch expression="#data.moduleid#">
 			<cfcase value="00000000000000000000000000000000011,00000000000000000000000000000000012,00000000000000000000000000000000013" delimiters=",">
@@ -125,6 +129,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<cfif len(data.tag)>
 					<cfset feed.addParam(column="tcontenttags.tag",criteria=data.tag,condition="in")>
+				</cfif>
+				<cfif len(data.tags)>
+					<cfset feed.addParam(column="tcontenttags.tag",criteria=data.tags,condition="in")>
 				</cfif>
 				
 				<cfset rs=feed.getQuery()>
@@ -214,9 +221,41 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="siteid" type="string"/>
 		<cfset var rs ="" />
 		
-		<cfset rs=variables.contentGateway.getDraftList(arguments.siteid) />
+		<cfset rs=variables.contentGateway.getDraftList(argumentCollection=arguments) />
 		
 		<cfreturn rs />
+	</cffunction>
+
+	<cffunction name="getApprovalsQuery" access="public" returntype="query" output="false">
+		<cfargument name="siteid" type="string"/>
+		<cfset var rs ="" />
+		
+		<cfset rs=variables.contentGateway.getApprovals(argumentCollection=arguments) />
+		
+		<cfreturn rs />
+	</cffunction>
+
+	<cffunction name="getApprovalsIterator" access="public" returntype="query" output="false">
+		<cfargument name="siteid" type="string"/>
+		<cfset var rs=getApprovalsQuery(argumentCollection=arguments) />
+		<cfset var it=getBean('contentIterator')>		
+		<cfreturn it />
+	</cffunction>
+
+	<cffunction name="getSubmissionsQuery" access="public" returntype="query" output="false">
+		<cfargument name="siteid" type="string"/>
+		<cfset var rs ="" />
+		
+		<cfset rs=variables.contentGateway.getSubmissions(argumentCollection=arguments) />
+		
+		<cfreturn rs />
+	</cffunction>
+
+	<cffunction name="getSubmissionsIterator" access="public" returntype="query" output="false">
+		<cfargument name="siteid" type="string"/>
+		<cfset var rs=getSubmissionsQuery(argumentCollection=arguments) />
+		<cfset var it=getBean('contentIterator')>		
+		<cfreturn it />
 	</cffunction>
 	
 	<cffunction name="read" output="false" returntype="Any" hint="Takes (contentid | contenthistid | filename | remoteid | title), siteid, use404">
@@ -271,12 +310,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif not isArray(bean) and not bean.getIsNew()>
 					<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 				</cfif>
+				<cfset commitTracePoint(initTracePoint(detail="DATA CACHE MISS: {class: contentBean, key: #key#}"))>
 				<cfreturn bean/>
 			<cfelse>
 				<cftry>
 					<cfif not isObject(bean)>
 						<cfset bean=getBean("content")/>
 					</cfif>
+					<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: contentBean, key: #key#}"))>
 					<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 					<cfset bean.setValue("extendAutoComplete",false)>
 					<cfreturn bean />
@@ -285,11 +326,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfif not isArray(bean) and not bean.getIsNew()>
 							<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 						</cfif>
+						<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: contentBean, key: #key#}"))>
 						<cfreturn bean/>
 					</cfcatch>
 				</cftry>
 			</cfif>
 		<cfelse>
+			<cfset commitTracePoint(initTracePoint(detail="Loading contentBean"))>
 			<cfreturn variables.contentDAO.readVersion(arguments.contentHistID,arguments.siteid,arguments.use404,bean,arguments.sourceIterator) />
 		</cfif>
 	</cffunction>
@@ -336,6 +379,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif not isArray(bean) and not bean.getIsNew()>
 						<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 					</cfif>
+					<cfset commitTracePoint(initTracePoint(detail="DATA CACHE MISS: {class: contentBean, key: #key#}"))>
 					<cfreturn bean/>
 				<cfelse>
 					<cftry>
@@ -344,12 +388,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>
 						<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 						<cfset bean.setValue("extendAutoComplete",false)>
+						<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: contentBean, key: #key#}"))>
 						<cfreturn bean />
 						<cfcatch>
 							<cfset bean=variables.contentDAO.readActiveByFilename(arguments.filename,arguments.siteid,arguments.use404,bean,arguments.type) />
 							<cfif not isArray(bean) and not bean.getIsNew()>
 								<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 							</cfif>
+							<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: contentBean, key: #key#}"))>
 							<cfreturn bean/>
 						</cfcatch>
 					</cftry>
@@ -382,6 +428,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif not isArray(bean) and not bean.getIsNew()>
 					<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 				</cfif>
+				<cfset commitTracePoint(initTracePoint(detail="DATA CACHE MISS: {class: contentBean, key: #key#}"))>
 				<cfreturn bean/>
 			<cfelse>
 				<cftry>
@@ -390,12 +437,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 					<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 					<cfset bean.setValue("extendAutoComplete",false)>
+					<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: contentBean, key: #key#}"))>
 					<cfreturn bean />
 					<cfcatch>
 						<cfset bean=variables.contentDAO.readActiveByRemoteID(arguments.remoteID,arguments.siteid,arguments.use404,bean,arguments.type)  />
 						<cfif not isArray(bean) and not bean.getIsNew()>
 							<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 						</cfif>
+						<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: contentBean, key: #key#}"))>
 						<cfreturn bean/>
 					</cfcatch>
 				</cftry>
@@ -417,7 +466,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var cacheFactory=site.getCacheFactory(name="data")/>
 		<cfset var bean=arguments.contentBean/>
 		
-		
  		<cfif site.getCache() and not request.muraChangesetPreview>
 			<!--- check to see if it is cached. if not then pass in the context --->
 			<!--- otherwise grab it from the cache --->
@@ -426,6 +474,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif not isArray(bean) and not bean.getIsNew()>
 					<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 				</cfif>
+				<cfset commitTracePoint(initTracePoint(detail="DATA CACHE MISS: {class: contentBean, key: #key#}"))>
 				<cfreturn bean/>
 			<cfelse>
 				<cftry>
@@ -434,12 +483,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 					<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 					<cfset bean.setValue("extendAutoComplete",false)>
+					<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: contentBean, key: #key#}"))>
 					<cfreturn bean />
 					<cfcatch>
 						<cfset bean=variables.contentDAO.readActiveByTitle(arguments.title,arguments.siteid,arguments.use404,bean,arguments.type)  />
 						<cfif not isArray(bean) and not bean.getIsNew()>
 							<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 						</cfif>
+						<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: contentBean, key: #key#}"))>
 						<cfreturn bean/>
 					</cfcatch>
 				</cftry>
@@ -469,6 +520,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif not isArray(bean) and not bean.getIsNew()>
 					<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 				</cfif>
+				<cfset commitTracePoint(initTracePoint(detail="DATA CACHE MISS: {class: contentBean, key: #key#}"))>
 				<cfreturn bean/>
 			<cfelse>
 				<cftry>
@@ -477,12 +529,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 					<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 					<cfset bean.setValue("extendAutoComplete",false)>
+					<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: contentBean, key: #key#}"))>
 					<cfreturn bean />
 					<cfcatch>
 						<cfset bean=variables.contentDAO.readActiveByURLTitle(arguments.URLTitle,arguments.siteid,arguments.use404,bean,arguments.type)  />
 						<cfif not isArray(bean) and not bean.getIsNew()>
 							<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 						</cfif>
+						<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: contentBean, key: #key#}"))>
 						<cfreturn bean/>
 					</cfcatch>
 				</cftry>
@@ -512,6 +566,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif not isArray(bean) and not bean.getIsNew()>
 					<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 				</cfif>
+				<cfset commitTracePoint(initTracePoint(detail="DATA CACHE MISS: {class: contentBean, key: #key#}"))>
 				<cfreturn bean/>
 			<cfelse>
 				<cftry>
@@ -520,12 +575,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 					<cfset bean.setAllValues( structCopy(cacheFactory.get( key )) )>
 					<cfset bean.setValue("extendAutoComplete",false)>
+					<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: contentBean, key: #key#}"))>
 					<cfreturn bean />
 					<cfcatch>
 						<cfset bean=variables.contentDAO.readActive(arguments.contentID,arguments.siteid,arguments.use404,bean,arguments.sourceIterator)  />
 						<cfif not isArray(bean) and not bean.getIsNew()>
 							<cfset cacheFactory.get( key, structCopy(bean.getAllValues()) ) />
 						</cfif>
+						<cfset commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: contentBean, key: #key#}"))>
 						<cfreturn bean/>
 					</cfcatch>
 				</cftry>
@@ -657,7 +714,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rslist= "" />
 		
 		<cfif len(arguments.newPath)>
-			<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			<cfquery>
 				update tcontent 
 				set path=replace(ltrim(rtrim(cast(path AS char(1000)))),<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#arguments.currentPath#">,<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#arguments.newPath#">) 
 				where path like	<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#arguments.currentPath#%">
@@ -704,6 +761,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var doPurgeOutputCache=false>
 		<cfset var doPurgeContentDescendentsCache=false>
 		<cfset var doTrimVersionHistory=false>
+		<cfset var doPreserveVersionedObjects=false>
 		<cfset var activeBean="">
 		
 		<!---IF THE DATA WAS SUBMITTED AS AN OBJECT UNPACK THE VALUES --->
@@ -714,7 +772,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfthrow type="custom" message="The attribute 'DATA' is not of type 'mura.content.contentBean'.">
 			</cfif>
 		</cfif>
-		
+
 		<cfset pluginEvent=pluginEvent.init(arguments.data).getEvent()>
 		
 		<!--- MAKE SURE ALL REQUIRED DATA IS THERE--->
@@ -772,9 +830,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		
 		<cfif not refused>
-			<cfset previousChangesetID=newBean.getChangesetID()>
-			
+			<cfset previousChangesetID=newBean.getChangesetID()>			
 			<cfset newBean.set(arguments.data) />
+
+			<cfif newBean.getChangesetID() eq 'other' and len(newBean.getChangesetName())>
+				<cfset var changeset=getBean('changeset').setName(newBean.getChangesetName())>
+				<cfset changeset.setSiteID(newBean.getSiteID())>
+				<cfset newBean.setChangesetID(changeset.getChangesetID())>
+				<cfset arguments.data.changesetID=changeset.getChangesetID()>
+				<cfset changeset.save()>
+			</cfif>
 		
 			<cfset pluginEvent.setValue("newBean",newBean)>	
 			<cfset pluginEvent.setValue("contentBean",newBean)>
@@ -801,7 +866,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif newBean.getcontentID() eq ''>
 				<cfset newBean.setcontentID(createUUID()) />
 			</cfif>
-		
+
+			<cfif newBean.getIsNew()>
+				<cfset var parent=getBean('content').loadBy(contentID=arguments.data.parentID,siteid=arguments.data.siteid)>
+				<cfset var requiresApproval=parent.requiresApproval()>
+				<cfset var chainid= parent.getChainID()>
+			<cfelse>
+				<cfset var requiresApproval=newBean.requiresApproval()>
+				<cfset var chainid= newBean.getChainID()>
+			</cfif>
+			
+			<cfif not newBean.getApprovalChainOverride() and (newBean.getApproved() or len(newBean.getChangesetID())) and requiresApproval>		
+				<cfset newBean.setChainID(chainID)>
+				<cfset pluginEvent.setValue('approvalRequest',newBean.getApprovalRequest().setStatus("Pending"))>
+			</cfif>
+			
 			<cfset newBean.setcontentHistID(createUUID()) />
 			
 			<cfif newBean.getTitle() eq ''>
@@ -844,8 +923,56 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset arguments.data=newBean.getAllValues()>
 
 				<cflock type="exclusive" name="editingContent#arguments.data.siteid##application.instanceID#" timeout="600">
-				<cftransaction>
+	
+				<cfif isObject(pluginEvent.getValue('approvalRequest'))>
+					<cfset var approvalRequest=pluginEvent.getValue('approvalRequest')>
+					<!---If it does not have a currently pending aproval request create one --->
+					<cfif approvalRequest.getIsNew() or (not newBean.getIsNew() and currentBean.getActive() and currentBean.getApproved())>			
+						<cfif isDefined("session.mura") and session.mura.isLoggedIn>
+							<cfset approvalRequest.setUserID(session.mura.userID)>
+						</cfif>
+						
+						<cfset approvalRequest.setRequestID(createUUID())>
+						<cfset approvalRequest.setContentHistID(newBean.getContentHistID())>
+						<cfset approvalRequest.setStatus("Pending")>
+						<cfset approvalRequest.setGroupID("")>
+						<cfset approvalRequest.save()>
+						<cfset newBean.setApproved(0)>
+					
+					<!--- If it has an approval request that has been rejected or is pending then create a new request --->
+					<cfelseif not newBean.getApprovingChainRequest()>
+						
+						<!--- If the request is pending conditionally delete existing request --->
+						<cfif 	(
+									approvalRequest.getStatus() eq 'Pending' 
+									and yesNoFormat(newBean.getValue('cancelPendingApproval'))
+								)
+								or 
+								(
+									len(newBean.getChangesetID()) and previousChangesetID eq newBean.getChangesetID()
+								)
+							>
+							
+							<cfset approvalRequest.cancel('')>
+					
+						</cfif>
+
+						<cfif isDefined("session.mura") and session.mura.isLoggedIn>
+							<cfset approvalRequest.setUserID(session.mura.userID)>
+						</cfif>
+
+						<cfset approvalRequest.setRequestID(createUUID())>
+						<cfset approvalRequest.setcontentHistID(newBean.getContentHistID())>
+						<cfset approvalRequest.setStatus("Pending")>
+						<cfset approvalRequest.setGroupID("")>
+						<cfset approvalRequest.save()>
+						<cfset newBean.setApproved(0)>
+					
+					</cfif>
+				</cfif>	
 				
+				<cftransaction>
+				<cfset request.muratransaction=true>
 				<!--- BEGIN CONTENT TYPE: ALL EXTENDABLE CONTENT TYPES --->
 				<cfif  listFindNoCase(this.ExtendableList,newBean.getType())>
 					<cfif isDefined('arguments.data.extendSetID') and len(arguments.data.extendSetID)>	
@@ -855,6 +982,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif not newBean.getIsNew()>
 						<cfset variables.ClassExtensionManager.preserveExtendedData(newBean.getcontentHistID(),currentBean.getContentHistID(),arguments.data,"tclassextenddata", newBean.getType(), newBean.getSubType())/>
 					</cfif>
+				</cfif>
+
+				<cfif not newBean.getIsNew()>
+					<cfset doPreserveVersionedObjects=true>
 				</cfif>
 				
 				<!--- Category Persistence --->	
@@ -891,16 +1022,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfif not newBean.getIsNew() and newBean.getParentID() neq currentBean.getParentID()>
 						<cfset updateMaterializedPath(newBean.getPath(),currentBean.getPath(),newBean.getSiteID()) />
 					</cfif>
-					
-					<!--- Related content persistence --->	
-					<cfif not newBean.getIsNew()>
-						<cfset variables.contentDAO.createRelatedItems(newBean.getcontentID(),
-						newBean.getcontentHistID(),arguments.data,newBean.getSiteID(),currentBean.getcontentHistID()) />
-					
-					<cfelse>
-						<cfset variables.contentDAO.createRelatedItems(newBean.getcontentID(),
-						newBean.getcontentHistID(),arguments.data,newBean.getSiteID(),'') />
-					</cfif>
+						
 					
 					<!--- Content expiration assignments --->
 					<cfif isDefined("arguments.data.expiresnotify") and len(arguments.data.expiresnotify)>
@@ -934,7 +1056,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				
 				<!--- Begin Changeset --->
 				<cfif not newBean.getIsNew() and isBoolean(newBean.getValue("removePreviousChangeset")) and newBean.getValue("removePreviousChangeset") and isValid("uuid",previousChangesetID)>
-					<cfquery datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
+					<!--- If removePreviousChangeset cancel any approval requests previous version --->
+					<cfquery name="local.rsApprovalsCancel">
+						select tcontent.contenthistid, tapprovalrequests.requestID
+						from tcontent 
+						inner join tapprovalrequests on (tcontent.contenthistid=tapprovalrequests.contenthistid)
+						where tcontent.contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getContentID()#">
+						and changesetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#previousChangesetID#">
+						and tcontent.siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getSiteID()#">
+					</cfquery>
+
+					<cfquery>
 						update tcontent set changesetID=null 
 						where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getContentID()#">
 						and changesetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#previousChangesetID#">
@@ -942,7 +1074,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfquery>
 				</cfif>
 				<cfif len(newBean.getChangesetID())>
-					<cfquery datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
+					<!--- If the version has been assigned to a change set cancel any approval request for previous version--->
+					<cfquery name="local.rsApprovalsCancel">
+						select tcontent.contenthistid, tapprovalrequests.requestID
+						from tcontent 
+						inner join tapprovalrequests on (tcontent.contenthistid=tapprovalrequests.contenthistid)
+						where tcontent.contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getContentID()#">
+						and tcontent.changesetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getChangesetID()#">
+						and tcontent.siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getSiteID()#">
+					</cfquery>
+
+					<cfquery>
 						update tcontent set changesetID=null 
 						where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getContentID()#">
 						and changesetID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#newBean.getChangesetID()#">
@@ -995,7 +1137,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset getBean('contentUtility').setUniqueURLTitle(newBean) />
 					</cfif>
 
+					<cfset variables.pluginManager.announceEvent("onBeforeFilenameCreate",pluginEvent)>
+
 					<cfset getBean('contentUtility').setUniqueFilename(newBean) />
+
+					<cfset variables.pluginManager.announceEvent("onAfterFilenameCreate",pluginEvent)>
 												
 					<cfif not newBean.getIsNew() and newBean.getoldfilename() neq newBean.getfilename() and len(newBean.getoldfilename())>
 						<cfset getBean('contentUtility').movelink(newBean.getSiteID(),newBean.getFilename(),currentBean.getFilename()) />	
@@ -1013,12 +1159,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				
 
 				<cfif newBean.getapproved() or newBean.getIsNew()>
-				<!--- BEGIN CONTENT TYPE: FILE, LINK 
-					<cfif listFindNoCase("Link,File",newBean.getType())>
-						<cfset getBean('contentUtility').setUniqueURLTitle(newBean) />
-					</cfif>
-				 END CONTENT TYPE: FILE, LINK --->
-							
 					<!--- BEGIN CONTENT TYPE: COMPONENT, FORM --->	
 					<cfif listFindNoCase("Component,Form",newBean.getType())>
 						<!---
@@ -1041,16 +1181,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						
 				<cfif isDefined('arguments.data.newfile') and len(arguments.data.newfile)>
 						
-					<!--- Check to see if it's a posted binary file--->
-					<cfif variables.fileManager.isPostedFile(arguments.data.newfile)>
-						<cffile action="upload" result="tempFile" filefield="NewFile" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
-					<!--- Else fake it to think it was a posted files--->
-					<cfelse>
-						<cfset tempFile=variables.fileManager.emulateUpload(arguments.data.newfile)>
-					</cfif>
-						
-					<cfset theFileStruct=variables.fileManager.process(tempFile,newBean.getSiteID()) />
-					<cfset newBean.setfileID(variables.fileManager.create(theFileStruct.fileObj,newBean.getcontentID(),newBean.getSiteID(),tempFile.ClientFile,tempFile.ContentType,tempFile.ContentSubType,tempFile.FileSize,newBean.getModuleID(),tempFile.ServerFileExt,theFileStruct.fileObjSmall,theFileStruct.fileObjMedium,variables.utility.getUUID(),theFileStruct.fileObjSource)) />
+					<cfset local.fileBean=getBean('file')>
+					<cfset local.fileBean.setContentID(newBean.getContentID())>
+					<cfset local.fileBean.setContentHistID(newBean.getContentHistID())>
+					<cfset local.fileBean.setSiteID(newBean.getSiteID())>
+					<cfset local.fileBean.setModuleID(newBean.getModuleID())>
+					<cfset local.fileBean.setFileField('newFile')>
+					<cfset local.fileBean.setNewFile(newBean.getNewFile())>
+					<cfset local.fileBean.save()>
+
+					<cfset newBean.setfileID(local.fileBean.getFileID()) />
 						
 					<cfif not newBean.getIsNew()
 							and isdefined("arguments.data.unlockwithnew") 
@@ -1059,7 +1199,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 						
 					<cfif newBean.getType() eq "File">
-						<cfset newBean.setBody(tempFile.serverfile) />
+						<cfset newBean.setBody(local.fileBean.getFilename()) />
 							
 						<cfif not isdefined("arguments.data.versionType")>
 							<cfset arguments.data.versionType="minor">
@@ -1140,7 +1280,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				or (newBean.getapproved() and not newBean.getIsNew() and newBean.getParentID() neq currentBean.getParentID() )>		 
 						
 					<cfif not isdefined('arguments.data.topOrBottom') or isdefined('arguments.data.topOrBottom') and arguments.data.topOrBottom eq 'Top' >
-						<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+						<cfquery>
 						 update tcontent set orderno=OrderNo+1 where parentid='#newBean.getparentid()#' 
 						 and siteid='#newBean.getsiteid()#' 
 						 and type in ('Page','Folder','Link','File','Component','Calendar','Form') and active=1
@@ -1151,7 +1291,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfelseif (isdefined('arguments.data.topOrBottom') and arguments.data.topOrBottom eq 'bottom')>
 						
 						<cfif not newBean.getIsNew() and newBean.getParentID() eq currentBean.getParentID()>
-							<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+							<cfquery>
 							 update tcontent set orderno=OrderNo-1 where parentid='#newBean.getparentid()#' 
 							 and siteid='#newBean.getsiteid()#' 
 							 and type in ('Page','Folder','Link','File','Component','Calendar','Form') and active=1
@@ -1159,7 +1299,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								</cfquery>
 						</cfif>
 				
-						<cfquery name="rsOrder" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+						<cfquery name="rsOrder">
 						 select max(orderno) as theBottom from tcontent where parentid='#newBean.getparentid()#' 
 						 and siteid='#newBean.getsiteid()#' 
 						 and type in ('Page','Folder','Link','File','Component','Calendar','Form') and active=1
@@ -1173,12 +1313,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfif>
 							 
 					<cfif not newBean.getIsNew() and newBean.getParentID() neq currentBean.getParentID() >
-						<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+						<cfquery>
 						update tcontent set parentid='#newBean.getparentid()#' where contentid='#newBean.getcontentid()#' 
 						and active=0 and siteid='#newBean.getsiteid()#'
 						</cfquery>
 					</cfif>
-										 
 				</cfif>	 
 					
 				<!--- Send out notification(s) if needed--->
@@ -1187,18 +1326,56 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 					
 				<cfset variables.contentDAO.createTags(newBean) />
-					
+				
+				<cfset var isNewBean=newBean.getIsNew()>
+
 				<cfset variables.utility.logEvent("ContentID:#newBean.getcontentID()# ContentHistID:#newBean.getcontentHistID()# MenuTitle:#newBean.getMenuTitle()# Type:#newBean.getType()# was created","mura-content","Information",true) />
 				<cfset variables.contentDAO.create(newBean) />
-				<!---
-					<cfif isQuery(newBean.getValue("commentsFromMuraTrash") ) >
-						<cfset rsComments=newBean.getValue("commentsFromMuraTrash")>
-						<cfloop query="rsComments">
-							<cfset getBean("contentCommentBean").set( variables.utility.queryRowToStruct(rsComments, currentrow)  ).save()>
-						</cfloop>
-					</cfif>
-					--->
+
+				<cfset request.muratransaction=false>
 				</cftransaction>
+
+				<!--- Related content persistence --->
+				<cfif not isNewBean>
+					<cfset variables.contentDAO.createRelatedItems(newBean.getcontentID(),
+						newBean.getcontentHistID(),arguments.data,newBean.getSiteID(),currentBean.getcontentHistID(),newBean) />
+					
+				<cfelse>
+					<cfset variables.contentDAO.createRelatedItems(newBean.getcontentID(),
+						newBean.getcontentHistID(),arguments.data,newBean.getSiteID(),'',newBean) />
+				</cfif> 
+
+				<cfset getBean('contentSourceMap')
+						.setContentHistID(newBean.getContentHistID())
+						.setSourceID(arguments.data.sourceID)
+						.setSiteID(newBean.getSiteID())
+						.setContentID(newBean.getContentID())
+						.setCreated(now())
+						.save()>
+
+				<cfset newBean=variables.contentDAO.readVersion(contenthistid=newbean.getContentHistID(),siteid=newBean.getSiteID())>
+				
+				<cfset request.handledfilemetas={}>
+				<cfparam name="arguments.data.fileMetaDataAssign" default="">
+				
+				<cfif isJSON(arguments.data.fileMetaDataAssign)>
+					<cfset arguments.data.fileMetaDataAssign=deserializeJSON(arguments.data.fileMetaDataAssign)>
+				</cfif>
+
+				<cfif isStruct(arguments.data.fileMetaDataAssign)>
+
+					<cfloop collection="#arguments.data.fileMetaDataAssign#" item="local.i">	
+						<cfset local.fileMeta=newBean.getFileMetaData(local.i)>			
+						<cfset local.fileMeta.set(arguments.data.fileMetaDataAssign[local.i])>	
+						<cfparam name="arguments.data.fileMetaDataAssign.#local.i#.setAsDefault" default="false">	
+						<cfset local.fileMeta.save(setAsDefault=arguments.data.fileMetaDataAssign[local.i].setAsDefault)>
+						<cfset request.handledfilemetas[hash(local.fileMeta.getFileID() & newBean.getContentHistID())]=true>
+					</cfloop>	
+				</cfif>
+
+				<cfif doPreserveVersionedObjects>
+					<cfset variables.contentDAO.persistVersionedObjects(currentBean,newBean)>
+				</cfif>
 					
 				<cfif doPurgeOutputCache>
 					<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache(name="output") />
@@ -1221,7 +1398,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif len(newBean.getChangesetID()) and newBean.getChangesetID() neq previousChangesetID>
 					<cfset getBean('changeset').loadBy(changesetID=newBean.getChangesetID(),siteid=newBean.getSiteID()).save()>
 				</cfif>
-					
+
+				<cfif isDefined('local.rsApprovalsCancel')>
+					<cfloop query="local.rsApprovalsCancel">
+						<cfset getBean('approvalRequest').loadBy(requestID=local.rsApprovalsCancel.requestID).cancel()>
+					</cfloop>
+				</cfif>
+
+				<!---
+				<cfif len(newBean.getChangesetID())>
+					variables.changesetManager.setSessionPreviewData(newBean.getChangeSetID())>
+				</cfif>
+				--->
+							
 				<cfset variables.trashManager.takeOut(newBean)>
 					
 				<!--- END CONTENT TYPE: ALL CONTENT TYPES --->
@@ -1235,6 +1424,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					
 				<cfset newBean.setIsNew(0)>
 				<cfset pluginEvent.setValue("contentBean",newBean)>
+				<cfset pluginEvent.setValue("newBean",newBean)>
 				<cfif  ListFindNoCase(this.TreeLevelList,newBean.getType())>			
 					<cfset variables.pluginManager.announceEvent("onContentSave",pluginEvent)>
 					<cfset variables.pluginManager.announceEvent("onAfterContentSave",pluginEvent)>		
@@ -1290,7 +1480,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfabort>
 		</cfif>
 		
-		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery name="rs">
 		select contentID from tcontent where parentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.contentID#">
 		and active = 1
 		</cfquery>
@@ -1419,9 +1609,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset fileList=listAppend(fileList,rsPendingChangesets.FileID)/>
 			</cfif>
 		</cfloop>
-		
+	
 		<cfloop query="rsHist">
-			<cfif not (rshist.active eq 1 or (rshist.approved eq 0 and len(rshist.changesetID))) and len(rshist.FileID)>
+			<cfif not rshist.approvalstatus eq 'Pending' and not (rshist.active eq 1 or (rshist.approved eq 0 and len(rshist.changesetID))) and len(rshist.FileID)>
 				<cfif not listFind(fileList,rshist.FileID)>
 					<cfset variables.fileManager.deleteVersion(rshist.FileID,false) />
 					<cfset fileList=listAppend(fileList,rshist.FileID)/>
@@ -1495,8 +1685,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.contentDAO.deleteObjectsHist(arguments.data.contenthistid,arguments.data.siteid) />
 		<cfset variables.contentDAO.deleteCategoryHist(arguments.data.contenthistid,arguments.data.siteid) />
 		<cfset variables.contentDAO.deleteExtendDataHist(arguments.data.contenthistid,arguments.data.siteid) />
-		<cfset variables.contentDAO.deleteContentAssignments(arguments.data.contenthistid,arguments.data.siteid,'expire') />
-		
+		<cfset variables.contentDAO.deleteContentAssignments(arguments.data.contenthistid,arguments.data.siteID,'expire') />
+		<cfset variables.contentDAO.deleteVersionedObjects(arguments.data.contenthistid) />
+
 		<cfif  ListFindNoCase(this.TreeLevelList,versionBean.getType())>
 			<cfset variables.pluginManager.announceEvent("onAfterContentDeleteVersion",pluginEvent)>
 		</cfif>		
@@ -1685,8 +1876,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="contentHistID"  type="string" />
 		<cfargument name="liveOnly" type="boolean" required="yes" default="false" />
 		<cfargument name="today" type="date" required="yes" default="#now()#" />
-		<cfargument name="sortBy" type="string" default="created" >
-		<cfargument name="sortDirection" type="string" default="desc" >
+		<cfargument name="sortBy" type="string" default="orderno" >
+		<cfargument name="sortDirection" type="string" default="asc" >
+		<cfargument name="relatedContentSetID" type="string" default="">
+		<cfargument name="name" type="string" default="">
+		<cfargument name="reverse" type="boolean" default="false">
+		<cfargument name="reverseContentID"  type="string" />
 	
 		<cfreturn variables.contentGateway.getRelatedContent(argumentCollection=arguments) />
 	</cffunction>
@@ -1696,8 +1891,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="contentHistID"  type="string" />
 		<cfargument name="liveOnly" type="boolean" required="yes" default="false" />
 		<cfargument name="today" type="date" required="yes" default="#now()#" />
+		<cfargument name="sortBy" type="string" default="orderno" >
+		<cfargument name="sortDirection" type="string" default="asc" >
+		<cfargument name="relatedContentSetID" type="string" default="">
+		<cfargument name="name" type="string" default="">
+		<cfargument name="reverse" type="boolean" default="false">
+		<cfargument name="reverseContentID"  type="string" />
 	
-		<cfset var rs=getRelatedContent(arguments.siteID,arguments.contentHistID,arguments.liveOnly,arguments.today) />
+		<cfset var rs=getRelatedContent(argumentCollection=arguments) />
 		<cfset var it = getBean("contentIterator")>
 		<cfset it.setQuery(rs)>
 		<cfreturn it/>
@@ -1735,7 +1936,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfabort>
 		</cfif>
 		
-		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 		select contentID from tcontent where parentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.contentID#">
 		and active = 1
 		</cfquery>
@@ -1804,7 +2005,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cffunction name="saveComment" access="public" output="false" returntype="any">
 		<cfargument name="data" type="struct">
-		<cfargument name="contentRenderer" required="true" default="" hint="deprecated">
+		<cfargument name="contentRenderer" required="false" default="" hint="deprecated">
 		<cfargument name="script" required="true" default="">
 		<cfargument name="subject" required="true" default="">
 		<cfargument name="notify" required="true" default="true">
@@ -1884,6 +2085,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var fileBean="" />
 	<cfset var tempFile="">
 	<cfset var requestData = GetHttpRequestData()>
+	<cfset var filemetadata= "">
 	
 	<cfset fileItem.siteID=arguments.data.siteID/>
 	<cfset fileItem.parentID=arguments.data.parentID/>
@@ -1894,6 +2096,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset fileItem.contentID=""/>
 	<cfset fileItem.approved=arguments.data.approved/>
 	
+	<!--- BEGIN LEGACY --->
 	<cfif structKeyExists(arguments.data,'qqfile')>
 		<cftry>
 		
@@ -1912,7 +2115,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset fileItem.fileid=variables.fileManager.create(theFileStruct.fileObj, '', arguments.data.siteid, tempFile.ClientFile, tempFile.ContentType, tempFile.ContentSubType, tempFile.FileSize, "00000000000000000000000000000000000", tempFile.ServerFileExt, theFileStruct.fileObjSmall, theFileStruct.fileObjMedium, variables.utility.getUUID(), theFileStruct.fileObjSource) />
 		<cfset fileItem.filename=tempFile.serverfile/>
 		<cfset fileBean=add(structCopy(fileItem)) />
-		<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery>
 			 update tfiles set contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getContentID()#"> 
 			 where fileid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getFileID()#">
 		</cfquery>
@@ -1925,7 +2128,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfcatch>
 		</cftry>
 	</cfif>
-	
+
 	<cfloop condition="structKeyExists(arguments.data,'newFile#f#')">
 		<cfif len(form["NewFile#f#"])>
 		<cffile action="upload" result="tempFile" filefield="NewFile#f#" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
@@ -1934,13 +2137,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset fileItem.fileid=variables.fileManager.create(theFileStruct.fileObj, '', arguments.data.siteid, tempFile.ClientFile, tempFile.ContentType, tempFile.ContentSubType, tempFile.FileSize, "00000000000000000000000000000000000", tempFile.ServerFileExt, theFileStruct.fileObjSmall, theFileStruct.fileObjMedium, variables.utility.getUUID(), theFileStruct.fileObjSource) />
 		<cfset fileItem.filename=tempFile.serverfile/>
 		<cfset fileBean=add(structCopy(fileItem)) />
-		<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery>
 			 update tfiles set contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getContentID()#"> 
 			 where fileid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getFileID()#">
 		</cfquery>
 		</cfif>
 		<cfset f=f+1 />			
 	</cfloop>
+	<!--- END LEGACY --->
 
 	<!--- RAILO --->
 	<cfif isDefined('form.files') and isArray(form.files)>
@@ -1950,33 +2154,54 @@ version 2 without this exception.  You may, if you choose, apply this exception 
    			<cfelse>
    				<cfcontent type="text/plain; charset=utf-8">
 			</cfif>
-			<cfoutput>[</cfoutput>
+			<cfoutput>{"files":[</cfoutput>
 			<cfloop from="1" to="#arrayLen(form.files)#" index="f">
-				<cffile action="upload" result="tempFile" filefield="#form.files#" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
-				<cfset theFileStruct=variables.fileManager.process(tempFile,arguments.data.siteid) />		
-				<cfset fileItem.title=tempFile.serverfile/>
-				<cfset fileItem.fileid=variables.fileManager.create(theFileStruct.fileObj, '', arguments.data.siteid, tempFile.ClientFile, tempFile.ContentType, tempFile.ContentSubType, tempFile.FileSize, "00000000000000000000000000000000000", tempFile.ServerFileExt, theFileStruct.fileObjSmall, theFileStruct.fileObjMedium, variables.utility.getUUID(), theFileStruct.fileObjSource) />
-				<cfset fileItem.filename=tempFile.serverfile/>
+				<cfif isDefined('form.extraParams') 
+					and isArray(form.extraParams) 
+					and arrayLen(form.extraParams) 
+					and isJSON(form.extraParams[1])>
+					<cfset local.extraParams=deserializeJSON(form['extraParams'])>
+				<cfelse>
+					<cfset local.extraParams={}>
+				</cfif>
+
+				<cfset structAppend(fileItem,local.extraParams)>
+
+				<cfset local.fileBean=getBean('file')>
+				<cfset local.fileBean.set(fileItem)>
+				<cfset local.fileBean.setFileField('files')>
+				<cfset local.fileBean.save()>
+			
+				<cfset fileItem.filename=local.fileBean.getFilename()/>
+				<cfset fileItem.fileid=local.fileBean.getFileID()/>
+
+				<cfif not structKeyExists(fileItem,'title')>
+					<cfset fileItem.title=local.fileBean.getFilename()>
+				</cfif>
+
+				<cfset fileItem.credits=variables.utility.textPreview(local.fileBean.getCredits(),255)>
+
 				<cfset fileBean=add(structCopy(fileItem)) />
-				<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+
+				<cfquery>
 					 update tfiles set contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getContentID()#"> 
 					 where fileid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getFileID()#">
 				</cfquery>
 				<cfset fileBean=read(contentHistID=fileBean.getContentHistID(),siteid=fileBean.getSiteID())>
-				<cfoutput>
-					{
-					    "name":"#JSStringFormat(fileBean.getTitle())#",
-					    "size":#fileBean.getFileSize()#,
-					    "url":"#JSStringFormat(fileBean.getImageURL(size='source'))#",
-					    "edit_url":"#JSStringFormat(fileBean.getEditURL())#",
-					    "thumbnail_url":"#JSStringFormat(fileBean.getImageURL(size='small'))#",
-					    "delete_url":"",
-					    "delete_type":"DELETE"
-					  }
-				<cfif f lt arrayLen(form.files)>,</cfif>
-				</cfoutput>
+				<cfset local.returnStr={
+					    name=JSStringFormat(fileBean.getTitle()),
+					    size=fileBean.getFileSize(),
+					    url=JSStringFormat(fileBean.getImageURL(size='source')),
+					    edit_url=JSStringFormat(fileBean.getEditURL()),
+					    thumbnail_url=JSStringFormat(fileBean.getImageURL(size='small')),
+					    delete_url="",
+					    delete_type="DELETE"
+					  }>
+				<cfset structAppend(local.returnStr,local.extraParams)>
+				<cfoutput>#createObject("component","mura.json").encode(local.returnStr)#</cfoutput>
+				<cfif f lt arrayLen(form.files)><cfoutput>,</cfoutput></cfif>
 			</cfloop>
-			<cfoutput>]</cfoutput>
+			<cfoutput>]}</cfoutput>
 			<cfabort>
 		<cfcatch>
 			<cflog log="application" text="Railo: #cfcatch.message#">
@@ -1993,33 +2218,51 @@ version 2 without this exception.  You may, if you choose, apply this exception 
    			<cfelse>
    				<cfcontent type="text/plain; charset=utf-8">
 			</cfif>
-			<cfoutput>[</cfoutput>
+			<cfoutput>{"files":[</cfoutput>
 			<!---<cfloop from="1" to="#listLen(form['files'])#" index="f">--->
-				<cffile action="upload" result="tempFile" filefield="files" nameconflict="makeunique" destination="#variables.configBean.getTempDir()#">
-				<cfset theFileStruct=variables.fileManager.process(tempFile,arguments.data.siteid) />		
-				<cfset fileItem.title=tempFile.serverfile/>
-				<cfset fileItem.fileid=variables.fileManager.create(theFileStruct.fileObj, '', arguments.data.siteid, tempFile.ClientFile, tempFile.ContentType, tempFile.ContentSubType, tempFile.FileSize, "00000000000000000000000000000000000", tempFile.ServerFileExt, theFileStruct.fileObjSmall, theFileStruct.fileObjMedium, variables.utility.getUUID(), theFileStruct.fileObjSource) />
-				<cfset fileItem.filename=tempFile.serverfile/>
+				<cfif isDefined('form.extraParams') 
+					and isSimpleValue(form['extraParams']) 
+					and len(form['extraParams'])>
+					<cfset local.extraParams=deserializeJSON(form['extraParams'])>
+				<cfelse>
+					<cfset local.extraParams={}>
+				</cfif>
+
+				<cfset structAppend(fileItem,local.extraParams)>
+
+				<cfset local.fileBean=getBean('file')>
+				<cfset local.fileBean.set(fileItem)>
+				<cfset local.fileBean.setFileField('files')>
+				<cfset local.fileBean.save()>
+			
+				<cfset fileItem.filename=local.fileBean.getFileName()/>
+				<cfset fileItem.fileid=local.fileBean.getFileID()/>
+
+				<cfif not structKeyExists(fileItem,'title')>
+					<cfset fileItem.title=local.fileBean.getFilename()>
+				</cfif>
+
+				<cfset fileItem.credits=variables.utility.textPreview(local.fileBean.getCredits(),255)>
+
 				<cfset fileBean=add(structCopy(fileItem)) />
-				<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+				<cfquery>
 					 update tfiles set contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getContentID()#"> 
 					 where fileid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#fileBean.getFileID()#">
 				</cfquery>
 				<cfset fileBean=read(contentHistID=fileBean.getContentHistID(),siteid=fileBean.getSiteID())>
-				<cfoutput>
-					{
-					    "name":"#JSStringFormat(fileBean.getTitle())#",
-					    "size":#fileBean.getFileSize()#,
-					    "url":"#JSStringFormat(fileBean.getImageURL(size='source'))#",
-					    "edit_url":"#JSStringFormat(fileBean.getEditURL())#",
-					    "thumbnail_url":"#JSStringFormat(fileBean.getImageURL(size='small'))#",
-					    "delete_url":"",
-					    "delete_type":"DELETE"
-					  }
-				<!---<cfif f lt listLen(form['files'])>,</cfif>--->
-				</cfoutput>
+				<cfset local.returnStr={
+					    name=JSStringFormat(fileBean.getTitle()),
+					    size=fileBean.getFileSize(),
+					    url=JSStringFormat(fileBean.getImageURL(size='source')),
+					    edit_url=JSStringFormat(fileBean.getEditURL()),
+					    thumbnail_url=JSStringFormat(fileBean.getImageURL(size='small')),
+					    delete_url="",
+					    delete_type="DELETE"
+					  }>
+				<cfset structAppend(local.returnStr,local.extraParams)>
+				<cfoutput>#createObject("component","mura.json").encode(local.returnStr)#</cfoutput>
 			<!---</cfloop>--->
-			<cfoutput>]</cfoutput>
+			<cfoutput>]}</cfoutput>
 			<cfabort>
 		<cfcatch>
 			<cflog log="application" text="CF: #cfcatch.message#">
@@ -2049,8 +2292,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfargument name="tag" type="string" required="yes" default="" >
 			<cfargument name="aggregation" type="boolean" required="yes" default="false" >
 			<cfargument name="applyPermFilter" type="boolean" required="yes" default="false" >
+			<cfargument name="taggroup" type="string" required="yes" default="" >
 			
-			<cfreturn variables.contentGateway.getKids(arguments.moduleID, arguments.siteid, arguments.parentID, arguments.type, arguments.today, arguments.size, arguments.keywords, arguments.hasFeatures, arguments.sortBy, arguments.sortDirection, arguments.categoryID, arguments.relatedID, arguments.tag, arguments.aggregation,arguments.applyPermFilter)>
+			<cfreturn variables.contentGateway.getKids(arguments.moduleID, arguments.siteid, arguments.parentID, arguments.type, arguments.today, arguments.size, arguments.keywords, arguments.hasFeatures, arguments.sortBy, arguments.sortDirection, arguments.categoryID, arguments.relatedID, arguments.tag, arguments.aggregation,arguments.applyPermFilter,arguments.taggroup)>
 	</cffunction>
 	
 	<cffunction name="getKidsIterator" returntype="any" output="false">
@@ -2069,8 +2313,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfargument name="tag" type="string" required="yes" default="" >
 			<cfargument name="aggregation" type="boolean" required="yes" default="false" >
 			<cfargument name="applyPermFilter" type="boolean" required="yes" default="false" >
+			<cfargument name="taggroup" type="string" required="yes" default="" >
 
-			<cfreturn variables.contentGateway.getKidsIterator(arguments.moduleID, arguments.siteid, arguments.parentID, arguments.type, arguments.today, arguments.size, arguments.keywords, arguments.hasFeatures, arguments.sortBy, arguments.sortDirection, arguments.categoryID, arguments.relatedID, arguments.tag, arguments.aggregation,arguments.applyPermFilter)>
+			<cfreturn variables.contentGateway.getKidsIterator(arguments.moduleID, arguments.siteid, arguments.parentID, arguments.type, arguments.today, arguments.size, arguments.keywords, arguments.hasFeatures, arguments.sortBy, arguments.sortDirection, arguments.categoryID, arguments.relatedID, arguments.tag, arguments.aggregation,arguments.applyPermFilter,arguments.taggroup)>
 	</cffunction>
 	
 	<cffunction name="getIterator" returntype="any" output="false">
@@ -2083,7 +2328,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="complete" type="boolean" required="true" default="false">
 		<cfargument name="showMeta" type="string" required="true" default="0">
 
-		<cfreturn variables.settingsManager.getSite(arguments.bean.getValue("siteID")).getContentRenderer().createHREF(arguments.bean.getValue("type"), arguments.bean.getValue("filename"), arguments.bean.getValue("siteID"), arguments.bean.getValue("contentID"), arguments.bean.getValue("target"), arguments.bean.getValue("targetParams"), arguments.queryString, application.configBean.getContext(), application.configBean.getStub(), application.configBean.getIndexFile(), arguments.complete, arguments.showMeta)>
+		<cfreturn variables.settingsManager.getSite(arguments.bean.getValue("siteID")).getContentRenderer().createHREF(arguments.bean.getValue("type"), arguments.bean.getValue("filename"), arguments.bean.getValue("siteID"), arguments.bean.getValue("contentID"), arguments.bean.getValue("target"), arguments.bean.getValue("targetParams"), arguments.queryString, application.configBean.getContext(), application.configBean.getStub(), application.configBean.getIndexFile(), arguments.complete, arguments.showMeta, arguments.bean)>
 	</cffunction>
 
 	<cffunction name="getImageURL" output="false">
@@ -2101,34 +2346,76 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="siteid" type="string" required="true" />
 		
 		<cfset var data = structNew() />
-		<cfset var cb = getBean("content").loadby(contentid=arguments.contentid,siteid=arguments.siteid) />   
-		<cfset var showdialog = false />
-		<cfset var historyID = cb.getContentHistID() />
+		<cfset var cb = getBean("content").loadby(contentid=arguments.contentid,siteid=arguments.siteid) /> 
 		<cfset var newDraft = "" />
 		<cfset var history = getDraftHist(arguments.contentid,arguments.siteid) />
-		<cfset var pendingchangsets=variables.changesetManager.getPendingByContentID(arguments.contentID,arguments.siteID) />
-		
+		<cfset var pending = "">
+
+		<cfset data.verdict=getBean("permUtility").getPerm(contentid=arguments.contentid,siteid=arguments.siteid)>
+		<cfset data.pendingchangesets=variables.changesetManager.getPendingByContentID(arguments.contentID,arguments.siteID) />
+		<cfset data.hasdraft=false>
+		<cfset data.hasdraftpending=false>
+		<cfset data.historyID=''>
+		<cfset data.publishedHistoryID= cb.getContentHistID() />
+		<cfset data.yourapprovals=queryNew('empty')>
+
 		<cfif cb.getActive()>
-			<cfif history.recordcount or pendingchangsets.recordcount>
+			<cfif history.recordcount or data.pendingchangesets.recordcount>
 				<cfquery name="newDraft" dbtype="query">
-					select contenthistid, lastupdate from history where lastUpdate > <cfqueryparam cfsqltype="cf_sql_timestamp" value="#cb.getLastUpdate()#"> 
+					select contenthistid, menutitle, lastupdate, lastupdateby, approvalStatus from history where lastUpdate > <cfqueryparam cfsqltype="cf_sql_timestamp" value="#cb.getLastUpdate()#"> 
 					union 
-					select contenthistid, lastupdate from pendingchangsets
+					select contenthistid, menutitle, lastupdate, lastupdateby, approvalStatus from data.pendingchangesets
 				</cfquery>
-				<cfquery name="newDraft" dbtype="query">
-					select * from newDraft order by lastupdate desc
+
+				<cfif listFindNoCase('Author,Editor',data.verdict)>
+					<cfquery name="newDraft" dbtype="query">
+						select * from newDraft order by lastupdate desc
+					</cfquery>
+					<cfif newDraft.recordCount>
+						<cfset data.hasdraft=true>
+						<cfif newDraft.approvalStatus eq 'Pending'>
+							<cfset data.hasdraftpending=true>
+						</cfif>
+						<cfset data['historyID'] = newDraft.contentHistId[1] />
+					</cfif>
+				</cfif>
+			
+				<cfquery name="data.yourapprovals" dbtype="query">
+					select contenthistid, menutitle, lastupdate, lastupdateby, approvalStatus, approvalGroupID, '' changesetID, '' changesetName from history
+					where approvalStatus='Pending'
+					union 
+					select contenthistid, menutitle, lastupdate, lastupdateby, approvalStatus, approvalGroupID, changesetID, changesetName from data.pendingchangesets
+					where approvalStatus='Pending'
 				</cfquery>
-				<cfif newDraft.recordCount>
-					<cfset showdialog = true />
-					<cfset historyID = newDraft.contentHistId[1] />
+
+				<cfif not getCurrentUser().isAdminUser() and not getCurrentUser().isSuperUser()>
+					<cfquery name="data.yourapprovals" dbtype="query">
+						select * from data.yourapprovals
+						where approvalGroupID in (<cfqueryparam list='true' cfsqltype='cf_sql_varchar' value='#session.mura.membershipids#'>) order by lastupdate asc
+					</cfquery>
+				<cfelseif not listFindNoCase('Author,Editor',data.verdict)>
+					<cfset data.pendingchangesets=queryNew("empty")>
+				</cfif>
+		
+				<cfif data.yourapprovals.recordcount>
+					
+					<cfset queryAddColumn(data.yourapprovals, 'publishDate','date',[])>
+
+					<cfloop query="data.yourapprovals">
+						<cfif len(data.yourapprovals.changesetID)>
+							<cfquery name="pending" dbtype="query">
+								select publishDate from data.pendingchangesets
+								where contenthistid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#data.yourapprovals.contenthistid#">
+							</cfquery>
+							<cfset querySetCell(data.yourapprovals, "publishDate", pending.publishdate, data.yourapprovals.currentrow)>
+						</cfif>
+					</cfloop>
 				</cfif>
 			</cfif>
 		</cfif>
 		
-		<cfset data['showdialog'] = showdialog />
-		<cfset data['historyID'] = historyID />
-		<cfset data['publishedHistoryID'] = cb.getContentHistID() />
-		
+		<cfset data.showdialog = data.hasdraft or data.pendingchangesets.recordcount or data.yourapprovals.recordcount/>
+			
 		<cfreturn data />
 	</cffunction>
 	
@@ -2183,7 +2470,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset purgeContentCacheKey(cache,"urltitle" & arguments.contentBean.getSiteID() & arguments.contentBean.getURLTitle())>
 		
 		<cfset history=arguments.contentBean.getVersionHistoryIterator()>
-		
+	
 		<cfloop condition="history.hasNext()">
 			<cfset version=history.next()>
 			<cfset purgeContentCacheKey(cache,"version" & version.getSiteID() & version.getContentHistID(),false)>
@@ -2207,7 +2494,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset arguments.contentBean=read(contentID=arguments.contentID,siteID=arguments.siteID)>
 	</cfif>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 	select contentID,siteID
 	from tcontent where 
 	siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentBean.getSiteID()#">
@@ -2284,4 +2571,54 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cffunction name="getTabList" output="false">
 		<cfreturn "Basic,SEO,Mobile,List Display Options,Layout & Objects,Categorization,Tags,Related Content,Extended Attributes,Advanced,Publishing,Usage Report">
 	</cffunction>
+
+	<cffunction name="getMyApprovalsCount" output="false">
+		<cfargument name="siteid">
+		<cfset var rsDrafts=getApprovalsQuery(arguments.siteid)>
+		<cfquery name="rsDrafts" dbtype="query">
+			select distinct contentid from rsDrafts
+		</cfquery>
+		<cfreturn rsDrafts.recordcount>
+	</cffunction>
+
+	<cffunction name="getMySubmissionsCount" output="false">
+		<cfargument name="siteid">
+		<cfset var rsDrafts=getSubmissionsQuery(arguments.siteid)>
+		<cfquery name="rsDrafts" dbtype="query">
+			select distinct contentid from rsDrafts
+		</cfquery>
+		<cfreturn rsDrafts.recordcount>
+	</cffunction>
+
+	<cffunction name="getMyDraftsCount" output="false">
+		<cfargument name="siteid">
+		<cfargument name="startdate">
+		<cfset var rsDrafts=getDraftList(argumentCollection=arguments)>
+		<cfquery name="rsDrafts" dbtype="query">
+			select contentid from rsDrafts
+			group by contentid
+		</cfquery>
+		<cfreturn rsDrafts.recordcount>
+	</cffunction>
+
+	<cffunction name="getMyExpiresCount" output="false">
+		<cfargument name="siteid" type="string" required="true">
+		<cfset var rsDrafts=getExpiringContent(arguments.siteid,session.mura.userid)>
+		<cfquery name="rsDrafts" dbtype="query">
+			select distinct contentid from rsDrafts
+		</cfquery>
+		<cfreturn rsDrafts.recordcount>
+	</cffunction>
+
+	<cffunction name="getMyLockedFilesCount" output="false">
+		<cfargument name="siteid" type="string" required="true">
+		<cfreturn variables.contentGateway.getLockedFilesCount(arguments.siteid,session.mura.userid)>
+	</cffunction>
+
+	<cffunction name="getKidCount" output="false">
+		<cfargument name="parentid" type="string" required="true">
+		<cfargument name="siteid" type="string" required="true">
+		<cfreturn variables.contentGateway.getKidCount(argumentCollection=arguments)>
+	</cffunction>
+
 </cfcomponent>

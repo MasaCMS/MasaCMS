@@ -74,6 +74,35 @@ var extendManager = {
 		$("#" + id).enableSelection();
 
 	},
+	
+	showRelatedSaveSort: function(id) {
+		$('#showRelatedSort').hide();
+		$('#saveRelatedSort').show();
+
+		$(".handleRelated").each(
+
+		function(index) {
+			$(this).show();
+		});
+
+		this.setSortable(id);
+
+	},
+
+	showRelatedSort: function(id) {
+		$('#showRelatedSort').show();
+		$('#saveRelatedSort').hide();
+
+		$(".handleRelated").each(
+
+		function(index) {
+			$(this).hide();
+		});
+
+		$("#" + id).sortable('destroy');
+		$("#" + id).enableSelection();
+
+	},
 
 	saveAttributeSort: function(id) {
 		var attArray = new Array();
@@ -108,6 +137,23 @@ var extendManager = {
 		$.get(url + "?" + pars);
 		this.showSort(id);
 	},
+	
+	saveRelatedSetSort: function(id) {
+		var setArray = new Array();
+
+		$("#" + id + ' > li').each(
+
+		function(index) {
+			setArray.push($(this).attr("relatedContentSetID"));
+		});
+
+		var url = "index.cfm";
+		var pars = 'muraAction=cExtend.saveRelatedSetSort&relatedContentSetID=' + setArray.toString() + '&cacheID=' + Math.random();
+
+		//location.href=url + "?" + pars;
+		$.get(url + "?" + pars);
+		this.showRelatedSort(id);
+	},
 
 	setSortable: function(id) {
 		$("#" + id).sortable();
@@ -126,31 +172,37 @@ var extendManager = {
 		}
 		if(dataArray[0] == "") {
 			$(".subTypeContainer").hide();
+			$(".SubTypeIconSelect").hide();
 			$(".hasSummaryContainer").hide();
 			$(".hasBodyContainer").hide();
 			$(".availableSubTypesContainer").hide();
 		} else if(dataArray[0] == "Site") {
 			$(".subTypeContainer").hide();
+			$(".SubTypeIconSelect").hide();
 			$(".hasSummaryContainer").hide();
 			$(".hasBodyContainer").hide();
 			$("#subType").val("Default");
 		} else if(dataArray[0] == "1" || dataArray[0] == "2" || dataArray[0] == "Address" || dataArray[0] == "Custom" || dataArray[0] == "Base") {
 			$(".subTypeContainer").show();
+			$(".SubTypeIconSelect").hide();
 			$(".hasSummaryContainer").hide();
 			$(".hasBodyContainer").hide();
 			$(".availableSubTypesContainer").hide();
 		} else if(dataArray[0] == "File" || dataArray[0] == "Link") {
 			$(".subTypeContainer").show();
+			$(".SubTypeIconSelect").show();
 			$(".hasSummaryContainer").show();
 			$(".hasBodyContainer").hide();
 			$(".availableSubTypesContainer").show();
 		} else if(dataArray[0] == "Component" || dataArray[0] == "Form") {
 			$(".subTypeContainer").show();
+			$(".SubTypeIconSelect").hide();
 			$(".hasSummaryContainer").hide();
 			$(".hasBodyContainer").show();
 			$(".availableSubTypesContainer").hide();
 		} else {
 			$(".subTypeContainer").show();
+			$(".SubTypeIconSelect").show();
 			$(".hasSummaryContainer").show();
 			$(".hasBodyContainer").show();
 			$(".availableSubTypesContainer").show();

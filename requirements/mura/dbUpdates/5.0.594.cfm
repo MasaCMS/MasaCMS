@@ -212,11 +212,61 @@ ALTER TABLE [dbo].[tpluginsettings] WITH NOCHECK ADD
 	</cfif>
 </cfcase>
 
+<cfcase value="postgresql">
+	<cftransaction>
+
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		CREATE TABLE IF NOT EXISTS tplugins (
+			pluginID SERIAL,
+			moduleID char(35),
+			name varchar(50),
+			created timestamp NOT NULL ,
+			provider varchar(100),
+			providerURL varchar(100),
+			category varchar(50),
+			version varchar(50),
+			deployed smallint,
+			CONSTRAINT PK_tplugins_pluginID PRIMARY KEY (pluginID)
+		)
+	</cfquery>
+
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		CREATE TABLE IF NOT EXISTS tplugindisplayobjects (
+			objectID char(35) NOT NULL default '',
+			moduleID char(35),
+			name varchar(50),
+			location varchar(50),
+			displayObjectFile varchar(200),
+			CONSTRAINT PK_tplugindisplayobjects_objectID PRIMARY KEY (objectID)
+		)
+	</cfquery>
+
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		CREATE TABLE IF NOT EXISTS tpluginscripts (
+			scriptID char(35) NOT NULL default '',
+			moduleID char(35),
+			runat varchar(50),
+			scriptfile varchar(200),
+			CONSTRAINT PK_tpluginscripts_scriptID PRIMARY KEY (scriptID)
+		)
+	</cfquery>
+
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		CREATE TABLE IF NOT EXISTS tpluginsettings (
+			moduleID char(35) NOT NULL default '',
+			name varchar(100) NOT NULL default '',
+			settingValue text,
+			CONSTRAINT PK_tpluginsettings_ID PRIMARY KEY (moduleID, name)
+		)
+	</cfquery>
+
+	</cftransaction>
+</cfcase>
+
 <cfcase value="nuodb">
-		
-	
 	<cftransaction>
 	<cfif not dbUtility.tableExists('tplugins')>
+
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	CREATE TABLE tplugins (
 	  pluginID integer generated always as identity (seq_tplugins),

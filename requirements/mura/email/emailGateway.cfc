@@ -12,80 +12,84 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Mura CMS. If not, see <http://www.gnu.org/licenses/>.
 
-Linking Mura CMS statically or dynamically with other modules constitutes the preparation of a derivative work based on 
-Mura CMS. Thus, the terms and conditions of the GNU General Public License version 2 ("GPL") cover the entire combined work.
+Linking Mura CMS statically or dynamically with other modules constitutes 
+the preparation of a derivative work based on Mura CMS. Thus, the terms 
+and conditions of the GNU General Public License version 2 ("GPL") cover 
+the entire combined work.
 
-However, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with programs
-or libraries that are released under the GNU Lesser General Public License version 2.1.
+However, as a special exception, the copyright holders of Mura CMS grant 
+you permission to combine Mura CMS with programs or libraries that are 
+released under the GNU Lesser General Public License version 2.1.
 
-In addition, as a special exception, the copyright holders of Mura CMS grant you permission to combine Mura CMS with 
-independent software modules (plugins, themes and bundles), and to distribute these plugins, themes and bundles without 
-Mura CMS under the license of your choice, provided that you follow these specific guidelines: 
+In addition, as a special exception, the copyright holders of Mura CMS 
+grant you permission to combine Mura CMS with independent software modules 
+(plugins, themes and bundles), and to distribute these plugins, themes and 
+bundles without Mura CMS under the license of your choice, provided that 
+you follow these specific guidelines: 
 
 Your custom code 
 
 • Must not alter any default objects in the Mura CMS database and
 • May not alter the default display of the Mura CMS logo within Mura CMS and
-• Must not alter any files in the following directories.
+• Must not alter any files in the following directories:
 
- /admin/
- /tasks/
- /config/
- /requirements/mura/
- /Application.cfc
- /index.cfm
- /MuraProxy.cfc
+	/admin/
+	/tasks/
+	/config/
+	/requirements/mura/
+	/Application.cfc
+	/index.cfm
+	/MuraProxy.cfc
 
-You may copy and distribute Mura CMS with a plug-in, theme or bundle that meets the above guidelines as a combined work 
-under the terms of GPL for Mura CMS, provided that you include the source code of that other code when and as the GNU GPL 
-requires distribution of source code.
+You may copy and distribute Mura CMS with a plug-in, theme or bundle that 
+meets the above guidelines as a combined work under the terms of GPL for 
+Mura CMS, provided that you include the source code of that other code when 
+and as the GNU GPL requires distribution of source code.
 
-For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
-modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
-version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
+For clarity, if you create a modified version of Mura CMS, you are not 
+obligated to grant this special exception for your modified version; it is 
+your choice whether to do so, or to make such modified version available 
+under the GNU General Public License version 2 without this exception.  You 
+may, if you choose, apply this exception to your own modified versions of 
+Mura CMS.
 --->
 <cfcomponent extends="mura.cfobject" output="false">
 	
 	<cffunction name="init" access="public" returntype="any" output="false">
 		<cfargument name="configBean" type="any" required="yes"/>
-				<cfset variables.configBean=arguments.configBean />
+		<cfset variables.configBean=arguments.configBean />
 		<cfreturn this />
 	</cffunction>
 	
 	<cffunction name="getPrivateGroups" access="public" output="false" returntype="query">
 		<cfargument name="siteid" type="string" />
-	
 		<cfset var rsPrivateGroups = "" />
 	
-			<cfquery name="rsPrivateGroups" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery name="rsPrivateGroups" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 			select userid, groupname, ispublic from tusers where type =1 and ispublic=0
 			and 
 			userid in (select groupid from tpermissions where contentid='00000000000000000000000000000000000' and siteid='#application.settingsManager.getSite(arguments.siteid).getPrivateUserPoolID()#')
 			order by groupname
-			</cfquery>
+		</cfquery>
 		
 		<cfreturn rsPrivateGroups />
-		
 	</cffunction>
 	
 	<cffunction name="getPublicGroups" access="public" output="false" returntype="query">
 		<cfargument name="siteid" type="string" />
 		<cfset var rs ="" />
 		<cfquery name="rs"  datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
-		select * from tusers where ispublic=1 and type=1 and siteid='#application.settingsManager.getSite(arguments.siteid).getPublicUserPoolID()#'  order by groupname
+			select * from tusers where ispublic=1 and type=1 and siteid='#application.settingsManager.getSite(arguments.siteid).getPublicUserPoolID()#'  order by groupname
 		</cfquery>
-		
 		<cfreturn rs />
 	</cffunction>
 	
 	<cffunction name="getMailingLists" access="public" output="false" returntype="query">
 		<cfargument name="siteid" type="string" />
 		<cfset var rs ="" />
-		
 		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
 		select * from tmailinglist where ispurge=0 and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" /> order by name
 		</cfquery>
-		
 		<cfreturn rs />
 	</cffunction>
 	
@@ -96,8 +100,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var g ="" />
 		<cfset var data=arguments.args />
 		<cfset var counter =0 />
-		
-		
+
 		<cfparam name="session.emaillist.status" default=2>
 		<cfparam name="session.emaillist.groupid" default="">
 		<cfparam name="session.emaillist.subject" default="">
@@ -137,13 +140,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfif counter>)</cfif>
 				</cfif>
 			<cfelse>
-			
-			and 0=1
-			
+				and 0=1		
 			</cfif>
-		
-		
-		 
+
 			<cfif  session.emaillist.status lt 2 or session.emaillist.subject neq ''>
 				<cfif session.emaillist.status lt 2>
 					 and  temails.status = <cfqueryparam cfsqltype="cf_sql_varchar" value="#session.emaillist.status#" />
@@ -157,13 +156,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			ORDER BY #session.emaillist.orderBy# #session.emaillist.direction#
 		</cfquery>
-	
 		<cfreturn rs />
-	
 	</cffunction>
 	
 	<cffunction name="getStat" output="false" returntype="numeric" access="public">
-	<cfargument name="emailid" type="string">
+		<cfargument name="emailid" type="string">
 		<cfargument name="type" type="string">
 	
 		<cfset var rs=""/>
@@ -290,7 +287,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				DELETE FROM tmailinglistmembers WHERE email IN (<cfqueryparam cfsqltype="cf_sql_varchar" value="#listGetAt(arguments.data.bouncedEmail,i)#" />)
 			</cfquery>
 		</cfloop>
-
 	</cffunction>
 
 	<cffunction name="getEmailActivity" access="public" output="false" returntype="query" >
@@ -312,32 +308,32 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
 			and isDeleted=0
 			
-	<cfif lsIsDate(arguments.startDate)>
-		<cftry>
-		<cfset start=lsParseDateTime(arguments.startDate) />
-		and deliveryDate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(start),month(start),day(start),0,0,0)#">
-		<cfcatch>
-		and deliveryDate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#">
-		</cfcatch>
-		</cftry>
-	</cfif>
+			<cfif lsIsDate(arguments.startDate)>
+				<cftry>
+				<cfset start=lsParseDateTime(arguments.startDate) />
+				and deliveryDate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(start),month(start),day(start),0,0,0)#">
+				<cfcatch>
+				and deliveryDate >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.startDate),month(arguments.startDate),day(arguments.startDate),0,0,0)#">
+				</cfcatch>
+				</cftry>
+			</cfif>
 	
-	<cfif lsIsDate(arguments.stopDate)>
-		<cftry>
-		<cfset stop=lsParseDateTime(arguments.stopDate) />
-		and deliveryDate <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(stop),month(stop),day(stop),23,59,0)#">
-		<cfcatch>
-		and deliveryDate <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#">
-		</cfcatch>
-		</cftry>
-	</cfif>
+			<cfif lsIsDate(arguments.stopDate)>
+				<cftry>
+				<cfset stop=lsParseDateTime(arguments.stopDate) />
+				and deliveryDate <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(stop),month(stop),day(stop),23,59,0)#">
+				<cfcatch>
+				and deliveryDate <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(arguments.stopDate),month(arguments.stopDate),day(arguments.stopDate),23,59,0)#">
+				</cfcatch>
+				</cftry>
+			</cfif>
+
 			order by deliveryDate desc
 			
-			<cfif dbType eq "mysql">limit #arguments.limit#</cfif>
+			<cfif listFindNoCase("mysql,postgresql", dbType)>limit #arguments.limit#</cfif>
 			<cfif dbType eq "oracle">) where ROWNUM <=#arguments.limit# </cfif>
 		</cfquery>
-	
 		<cfreturn rs />
-	
 	</cffunction>
+
 </cfcomponent>

@@ -1,5 +1,5 @@
 <cfoutput>
-<header class="#$.getMBRowClass()#">
+<header class="row-fluid">
 	<nav class="navbar navbar-inverse span12">
 		<div class="navbar-inner">
 			<div class="#$.getMBContainerClass()#">
@@ -9,7 +9,7 @@
 					<span class="icon-bar"></span>
 				</a>
 				<a class="brand" href="#$.createHREF(filename='')#">
-					#HTMLEditFormat($.siteConfig('site'))#
+					<i class="icon-bullseye"></i> #HTMLEditFormat($.siteConfig('site'))#
 				</a>
 				
 				<cfif $.currentUser().isLoggedIn()>

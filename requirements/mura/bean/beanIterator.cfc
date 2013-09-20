@@ -46,31 +46,41 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.iterator.queryIterator" output="false">
 
-<cfset variabes.beanClass="">
+<cfset variables.entityName="">
 
 <cffunction name="init" output="false">
-	<cfargument name="beanClass" default="">
 	<cfset super.init()>
-	<cfset setBeanClass(arguments.beanClass)>
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="setBeanClass" output="false">
-	<cfargument name="beanClass">
-	<cfif len(arguments.beanClass)>
-		<cfset variables.beanClass=arguments.beanClass>
+<cffunction name="setEntityName" output="false">
+	<cfargument name="entityName">
+	<cfif len(arguments.entityName)>
+		<cfset variables.entityName=arguments.entityName>
 	</cfif>
 	<cfreturn this>
 </cffunction>
 
-<cffunction name="getBeanClass" output="false">
-	<cfreturn variables.beanClass>
+<cffunction name="getEntityName" output="false">
+	<cfreturn variables.entityName>
 </cffunction>
 
 <cffunction name="packageRecord" access="public" output="false" returntype="any">
-	<cfset var bean=getBean(variabes.beanClass)>
-	<cfset bean.set(queryRowToStruct(variables.records,currentIndex()))>
-	<cfreturn bean>
+	<cfargument name="recordIndex" default="#currentIndex()#">
+	<cfset var bean="">
+		
+	<cfif isQuery(variables.records)>
+		<cfreturn getBean(variables.entityName).set(queryRowToStruct(variables.records,arguments.recordIndex)).setIsNew(0)>
+	<cfelseif isArray(variables.records)>
+		<cfset bean=variables.records[arguments.recordIndex]>
+		<cfif isObject(bean)>
+			<cfreturn bean>
+		<cfelse>
+			<cfreturn getBean(variables.entityName).set(bean)>
+		</cfif>
+	<cfelse>
+		<cfthrow message="The records have not been set.">
+	</cfif>
 </cffunction>
 	
 </cfcomponent>

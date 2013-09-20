@@ -60,7 +60,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif not parentBean.getIsNew()>
 <cfset parentCrumb=application.contentManager.getCrumbList(rc.parentid, rc.siteid)/>
 </cfif>
- <table class="table table-striped table-condensed table-bordered mura-table-grid">
+ <table class="mura-table-grid">
     <cfif not parentBean.getIsNew()>
 	<tr> 
       <th class="var-width"><cfoutput>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectnewcontentparent')#</cfoutput></th>
@@ -70,7 +70,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif rc.rslist.recordcount>
 		<cfif not parentBean.getIsNew()>
 			<tr class="alt"><cfoutput>  
-	         <td class="var-width">#application.contentRenderer.dspZoomNoLinks(parentCrumb)#</td>
+	         <td class="var-width">#$.dspZoomNoLinks(parentCrumb)#</td>
 			  <td class="actions"><input type="radio" name="parentid" value="#rc.parentid#" checked="checked"></td>
 			</tr></cfoutput>
 		</cfif>
@@ -81,7 +81,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfif verdict neq 'none' and arrayLen(crumbdata) and structKeyExists(crumbdata[1],"parentArray") and not listFind(arraytolist(crumbdata[1].parentArray),rc.contentid) and rc.rslist.type neq 'Link' and rc.rslist.type neq 'File'>
 			<cfset counter=counter+1/>
 			<tr <cfif not(counter mod 2)>class="alt"</cfif>>  
-	          <td class="var-width">#application.contentRenderer.dspZoomNoLinks(crumbdata)#</td>
+	          <td class="var-width">#$.dspZoomNoLinks(crumbdata)#</td>
 			  <td class="actions"><input type="radio" name="parentid" value="#rc.rslist.contentid#"></td>
 			</tr>
 		 	</cfif></cfif>

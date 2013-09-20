@@ -49,13 +49,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.isConfigured=not structIsEmpty(objectparams)>
 <cfparam name="objectparams.sortBy" default="created">
 <cfparam name="objectparams.sortDirection" default="desc">
-<cfparam name="objectparams.imagesize" default="desc">
+<cfparam name="objectparams.imagesize" default="small">
 <cfparam name="objectparams.imageHeight" default="#$.siteConfig('smallImageHeight')#">
 <cfparam name="objectparams.imageWidth" default="#$.siteConfig('smallImageWidth')#">
-<cfset variables.iterator=variables.$.content().getRelatedContentIterator(liveOnly=true,sortBy=objectparams.sortBy,sortDirection=objectparams.sortDirection)>
+<cfparam name="objectparams.relatedContentSetName" default="default">
+<cfset variables.iterator=variables.$.content().getRelatedContentIterator(liveOnly=true,sortBy=objectparams.sortBy,sortDirection=objectparams.sortDirection,name=objectparams.relatedContentSetName)>
 <cfif variables.iterator.getRecordCount()>
 	<div class="svRelContent svIndex">
-	<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('list.relatedcontent')#</#variables.$.getHeaderTag('subHead1')#>
+	<#variables.$.getHeaderTag('subHead1')#>
+		<cfif len(objectparams.relatedContentSetName)>
+			#objectparams.relatedContentSetName#
+		<cfelse>
+			#variables.$.rbKey('list.relatedcontent')#
+		</cfif>
+	</#variables.$.getHeaderTag('subHead1')#>
 	<cfif variables.isConfigured>
 		#variables.$.dspObject_Include(
 				thefile='dsp_content_list.cfm',

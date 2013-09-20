@@ -57,7 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset super.init(argumentCollection=arguments)>
 	
 	<cfset variables.instance.siteID="">
-	<cfset variables.instance.bean="category">
+	<cfset variables.instance.entityName="category">
 	<cfset variables.instance.table="tcontentcategories">
 	<cfset variables.instance.keyField="categoryID">
 	<cfset variables.instance.sortBy="name" />

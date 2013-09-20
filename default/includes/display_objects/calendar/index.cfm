@@ -49,12 +49,10 @@ Lazarus contentServer Sitemap
 	<cfset variables.menuDate=createDate(variables.$.event('year'),variables.$.event('month'),1)>
 </cfif>
 
-<cfset variables.rsPreSection=variables.$.getBean('contentGateway').getKids('00000000000000000000000000000000000',variables.$.event('siteID'),variables.$.content('contentID'),variables.menuType,variables.menuDate,100,variables.$.event('keywords'),0,"displayStart","asc",variables.$.event('categoryID'),variables.$.event('relatedID'),variables.$.event('tag'))>
-<cfif variables.$.siteConfig('extranet') eq 1 and variables.$.event('r').restrict eq 1>
-	<cfset variables.rssection=variables.$.queryPermFilter(variables.rsPreSection)/>
-<cfelse>
-	<cfset variables.rssection=variables.rsPreSection/>
-</cfif>
+<cfset applyPermFilter=variables.$.siteConfig('extranet') eq 1 and variables.$.event('r').restrict eq 1>
+
+<cfset variables.rsSection=variables.$.getBean('contentGateway').getKids('00000000000000000000000000000000000',variables.$.event('siteID'),variables.$.content('contentID'),variables.menuType,variables.menuDate,100,variables.$.event('keywords'),0,"displayStart","asc",variables.$.event('categoryID'),variables.$.event('relatedID'),variables.$.event('tag'),false,applyPermFilter,variables.$.event('taggroup'))>
+
 </cfsilent>				
 <cfoutput>
 <cfinclude template="myglobals.cfm">

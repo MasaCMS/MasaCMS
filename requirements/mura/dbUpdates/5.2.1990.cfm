@@ -33,6 +33,17 @@ select parentid from tcontentcomments  where 0=1
 	CREATE INDEX IX_tcontentcomments_parentID ON tcontentcomments (parentID)
 	</cfquery>
 </cfcase>
+<cfcase value="postgresql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentcomments ADD parentID char(35) default NULL
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentcomments ADD path text default NULL
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	CREATE INDEX IX_tcontentcomments_parentID ON tcontentcomments (parentID)
+	</cfquery>
+</cfcase>
 <cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontentcomments ADD parentID char(35) default NULL
@@ -81,6 +92,11 @@ select tagline from tsettings  where 0=1
 	</cfquery>
 </cfcase>
 <cfcase value="mysql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tsettings ADD tagline varchar(255) default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="postgresql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tsettings ADD tagline varchar(255) default NULL
 	</cfquery>
@@ -149,6 +165,30 @@ select params from tcontentobjects  where 0=1
 	<cfcatch></cfcatch>
 	</cftry>
 </cfcase>
+<cfcase value="postgresql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentobjects ADD Params text default NULL
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentobjects DROP CONSTRAINT PK_tcontentobjects
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentobjects ALTER COLUMN OrderNo TYPE integer
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentobjects ALTER COLUMN OrderNo SET NOT NULL
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentobjects ADD CONSTRAINT PK_tcontentobjects PRIMARY KEY
+	(
+		ContentHistID,
+		ObjectID,
+		Object,
+		ColumnID,
+		OrderNo
+	)
+	</cfquery>
+</cfcase>
 <cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontentobjects ADD Params clob
@@ -199,6 +239,11 @@ select remotePubDate from tcontentcategories  where 0=1
 	ALTER TABLE tcontentcategories ADD remotePubDate datetime default NULL
 	</cfquery>
 </cfcase>
+<cfcase value="postgresql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentcategories ADD remotePubDate timestamp default NULL
+	</cfquery>
+</cfcase>
 <cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontentcategories ADD remotePubDate timestamp default NULL
@@ -233,6 +278,11 @@ select remotePubDate from tcontentfeeds  where 0=1
 <cfcase value="mysql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontentfeeds ADD remotePubDate datetime default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="postgresql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentfeeds ADD remotePubDate timestamp default NULL
 	</cfquery>
 </cfcase>
 <cfcase value="nuodb">

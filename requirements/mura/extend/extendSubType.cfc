@@ -55,6 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.dataTable="tclassextenddata"/>
 <cfset variables.instance.isActive=1/>
 <cfset variables.instance.hasSummary=1/>
+<cfset variables.instance.iconclass=""/>
 <cfset variables.instance.hasBody=1/>
 <cfset variables.instance.description=""/>
 <cfset variables.instance.availableSubTypes=""/>
@@ -64,6 +65,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.errors=structnew() />
 <cfset variables.contentRenderer="" />
 
+<cfset variables.iconsclasses="icon-adjust,icon-anchor,icon-archive,icon-asterisk,icon-ban-circle,icon-bar-chart,icon-barcode,icon-beaker,icon-beer,icon-bell,icon-bell-alt,icon-bolt,icon-book,icon-bookmark,icon-bookmark-empty,icon-briefcase,icon-bug,icon-building,icon-bullhorn,icon-bullseye,icon-calendar,icon-calendar-empty,icon-camera,icon-camera-retro,icon-certificate,icon-check,icon-check-empty,icon-check-minus,icon-check-sign,icon-circle,icon-circle-blank,icon-cloud,icon-cloud-download,icon-cloud-upload,icon-code,icon-code-fork,icon-coffee,icon-cog,icon-cogs,icon-collapse,icon-collapse-alt,icon-collapse-top,icon-comment,icon-comment-alt,icon-comments,icon-comments-alt,icon-compass,icon-credit-card,icon-crop,icon-dashboard,icon-desktop,icon-download,icon-download-alt,icon-edit,icon-edit-sign,icon-ellipsis-horizontal,icon-ellipsis-vertical,icon-envelope,icon-envelope-alt,icon-eraser,icon-exchange,icon-exclamation,icon-exclamation-sign,icon-expand,icon-expand-alt,icon-external-link,icon-external-link-sign,icon-eye-close,icon-eye-open,icon-facetime-video,icon-female,icon-fighter-jet,icon-film,icon-filter,icon-fire,icon-fire-extinguisher,icon-flag,icon-flag-alt,icon-flag-checkered,icon-folder-close,icon-folder-close-alt,icon-folder-open,icon-folder-open-alt,icon-food,icon-frown,icon-gamepad,icon-gift,icon-glass,icon-globe,icon-group,icon-hdd,icon-headphones,icon-heart,icon-heart-empty,icon-home,icon-inbox,icon-info,icon-info-sign,icon-key,icon-keyboard,icon-laptop,icon-leaf,icon-legal,icon-lemon,icon-level-down,icon-level-up,icon-lightbulb,icon-location-arrow,icon-lock,icon-magic,icon-magnet,icon-mail-reply-all,icon-male,icon-map-marker,icon-meh,icon-microphone,icon-microphone-off,icon-minus,icon-minus-sign,icon-minus-sign-alt,icon-mobile-phone,icon-money,icon-moon,icon-move,icon-music,icon-off,icon-ok,icon-ok-circle,icon-ok-sign,icon-pencil,icon-phone,icon-phone-sign,icon-picture,icon-plane,icon-plus,icon-plus-sign,icon-plus-sign-alt,icon-print,icon-pushpin,icon-puzzle-piece,icon-qrcode,icon-question,icon-question-sign,icon-quote-left,icon-quote-right,icon-random,icon-refresh,icon-remove,icon-remove-circle,icon-remove-sign,icon-reorder,icon-reply,icon-reply-all,icon-resize-horizontal,icon-resize-vertical,icon-retweet,icon-road,icon-rocket,icon-rss,icon-rss-sign,icon-screenshot,icon-search,icon-share,icon-share-alt,icon-share-sign,icon-shield,icon-shopping-cart,icon-sign-blank,icon-signal,icon-signin,icon-signout,icon-sitemap,icon-smile,icon-sort,icon-sort-by-alphabet,icon-sort-by-alphabet-alt,icon-sort-by-attributes,icon-sort-by-attributes-alt,icon-sort-by-order,icon-sort-by-order-alt,icon-sort-down,icon-sort-up,icon-spinner,icon-star,icon-star-empty,icon-star-half,icon-star-half-empty,icon-subscript,icon-suitcase,icon-sun,icon-superscript,icon-tablet,icon-tag,icon-tags,icon-tasks,icon-terminal,icon-thumbs-down,icon-thumbs-down-alt,icon-thumbs-up,icon-thumbs-up-alt,icon-ticket,icon-time,icon-tint,icon-trash,icon-trophy,icon-truck,icon-umbrella,icon-unlock,icon-unlock-alt,icon-upload,icon-upload-alt,icon-user,icon-volume-down,icon-volume-off,icon-volume-up,icon-warning-sign,icon-wrench,icon-zoom-in,icon-zoom-out,icon-btc,icon-cny,icon-eur,icon-gbp,icon-inr,icon-jpy,icon-krw,icon-usd,icon-align-center,icon-align-justify,icon-align-left,icon-align-right,icon-bold,icon-columns,icon-copy,icon-cut,icon-eraser,icon-file,icon-file-alt,icon-file-text,icon-file-text-alt,icon-font,icon-indent-left,icon-indent-right,icon-italic,icon-link,icon-list,icon-list-alt,icon-list-ol,icon-list-ul,icon-paper-clip,icon-paste,icon-repeat,icon-save,icon-strikethrough,icon-table,icon-text-height,icon-text-width,icon-th,icon-th-large,icon-th-list,icon-underline,icon-undo,icon-unlink,icon-angle-down,icon-angle-left,icon-angle-right,icon-angle-up,icon-arrow-down,icon-arrow-left,icon-arrow-right,icon-arrow-up,icon-caret-down,icon-caret-left,icon-caret-right,icon-caret-up,icon-chevron-down,icon-chevron-left,icon-chevron-right,icon-chevron-sign-down,icon-chevron-sign-left,icon-chevron-sign-right,icon-chevron-sign-up,icon-chevron-up,icon-circle-arrow-down,icon-circle-arrow-left,icon-circle-arrow-right,icon-circle-arrow-up,icon-double-angle-down,icon-double-angle-left,icon-double-angle-right,icon-double-angle-up,icon-hand-down,icon-hand-left,icon-hand-right,icon-hand-up,icon-long-arrow-down,icon-long-arrow-left,icon-long-arrow-right,icon-long-arrow-up,icon-backward,icon-eject,icon-fast-backward,icon-fast-forward,icon-forward,icon-fullscreen,icon-pause,icon-play,icon-play-circle,icon-play-sign,icon-resize-full,icon-resize-small,icon-step-backward,icon-step-forward,icon-stop,icon-youtube-play,icon-adn,icon-android,icon-apple,icon-bitbucket,icon-bitbucket-sign,icon-btc,icon-css3,icon-dribbble,icon-dropbox,icon-facebook,icon-facebook-sign,icon-flickr,icon-foursquare,icon-github,icon-github-alt,icon-github-sign,icon-gittip,icon-google-plus,icon-google-plus-sign,icon-html5,icon-instagram,icon-linkedin,icon-linkedin-sign,icon-linux,icon-maxcdn,icon-pinterest,icon-pinterest-sign,icon-renren,icon-skype,icon-stackexchange,icon-trello,icon-tumblr,icon-tumblr-sign,icon-twitter,icon-twitter-sign,icon-vk,icon-weibo,icon-windows,icon-xing,icon-xing-sign,icon-youtube,icon-youtube-play,icon-youtube-sign,icon-ambulance,icon-h-sign,icon-hospital,icon-medkit,icon-plus-sign-alt,icon-stethoscope,icon-user-md">
+
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfargument name="configBean">
 	
@@ -72,18 +75,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
+<cffunction name="getIconClasses" output="false">
+	<cfreturn variables.iconsclasses>
+</cffunction>
+
 <cffunction name="getExtendSetBean" returnType="any">
-<cfset var extendSetBean=createObject("component","mura.extend.extendSet").init(variables.configBean,getContentRenderer()) />
-<cfset extendSetBean.setSubTypeID(getSubTypeID()) />
-<cfset extendSetBean.setSiteID(getSiteID()) />
-<cfreturn extendSetBean />
+	<cfset var extendSetBean=createObject("component","mura.extend.extendSet").init(variables.configBean,getContentRenderer()) />
+	<cfset extendSetBean.setSubTypeID(getSubTypeID()) />
+	<cfset extendSetBean.setSiteID(getSiteID()) />
+	<cfreturn extendSetBean />
+</cffunction>
+
+<cffunction name="getRelatedContentSetBean" returnType="any">
+	<cfset var rcsBean = getBean('relatedContentSet') />
+	<cfset rcsBean.setSubTypeID(getSubTypeID()) />
+	<cfset rcsBean.setSiteID(getSiteID()) />
+	<cfreturn rcsBean />
 </cffunction>
 
 <cffunction name="load">
 	<cfset var rs=""/>
-		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 		select subtypeid,siteID,baseTable,baseKeyField,dataTable,type,subtype,
-		isActive,notes,lastUpdate,dateCreated,lastUpdateBy,hasSummary,hasBody,description,availableSubTypes 
+		isActive,notes,lastUpdate,dateCreated,lastUpdateBy,hasSummary,hasBody,description,availableSubTypes,iconclass 
 		from tclassextend 
 		where subTypeID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getsubtypeID()#">
 		or (
@@ -105,6 +119,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="data" type="any" required="true">
 
 		<cfset var prop=""/>
+		<cfset var tempFunc="">
 		
 		<cfif isquery(arguments.data)>
 		
@@ -119,13 +134,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset setHasSummary(arguments.data.hasSummary) />
 			<cfset setHasBody(arguments.data.hasBody) />
 			<cfset setDescription(arguments.data.description)/>
+			<cfset setIconClass(arguments.data.iconclass)/>
 			<cfset setAvailableSubTypes(arguments.data.availableSubTypes)/>
 			
 		<cfelseif isStruct(arguments.data)>
 		
 			<cfloop collection="#arguments.data#" item="prop">
 				<cfif isdefined("variables.instance.#prop#")>
-					<cfset evaluate("set#prop#(arguments.data[prop])") />
+					<cfset tempFunc=this["set#prop#"]>
+          			<cfset tempFunc(arguments.data['#prop#'])>
 				</cfif>
 			</cfloop>
 			
@@ -208,7 +225,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setBaseTable" access="public" output="false">
 	<cfargument name="BaseTable" type="String" />
-	<cfset variables.instance.BaseTable = trim(arguments.BaseTable) />
+	<cfif len(trim(arguments.BaseTable))>
+		<cfset variables.instance.BaseTable = trim(arguments.BaseTable) />
+	</cfif>
 	<cfreturn this>
 </cffunction>
 
@@ -218,7 +237,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setbaseKeyField" access="public" output="false">
 	<cfargument name="baseKeyField" type="String" />
-	<cfset variables.instance.baseKeyField = trim(arguments.baseKeyField) />
+	<cfif len(trim(arguments.baseKeyField))>
+		<cfset variables.instance.baseKeyField = trim(arguments.baseKeyField) />
+	</cfif>
 	<cfreturn this>
 </cffunction>
 
@@ -265,6 +286,59 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setDescription" access="public" output="false">
 	<cfargument name="description" type="String" />
 	<cfset variables.instance.description = trim(arguments.description) />
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getIconClass" returntype="String" access="public" output="false">
+	<cfargument name="includeDefault" default="false">
+	<cfset var returnVar = variables.instance.iconclass>
+	
+	<cfif not len(returnVar) and includeDefault>
+		<cfset returnVar=getDefaultIconClass()>
+	</cfif>
+	
+	<cfreturn returnVar>
+</cffunction>
+
+<cffunction name="getDefaultIconClass" returntype="String" access="public" output="false">
+	<cfswitch expression="#getType()#">
+		<cfcase value="page">
+			<cfset returnVar = "icon-file">
+		</cfcase>
+		<cfcase value="folder">
+			<cfset returnVar = "icon-folder-open-alt">
+		</cfcase>
+		<cfcase value="file">
+			<cfset returnVar = "icon-file-text-alt">
+		</cfcase>
+		<cfcase value="link">
+			<cfset returnVar = "icon-link">
+		</cfcase>
+		<cfcase value="calendar">
+			<cfset returnVar = "icon-calendar">
+		</cfcase>
+		<cfcase value="gallery">
+			<cfset returnVar = "icon-th">
+		</cfcase>
+		<cfcase value="1">
+			<cfset returnVar = "icon-group">
+		</cfcase>
+		<cfcase value="2">
+			<cfset returnVar = "icon-user">
+		</cfcase>
+		<cfdefaultcase>
+			<cfset returnVar = "icon-cog">
+		</cfdefaultcase>
+	</cfswitch> 
+
+	<cfreturn returnVar>
+</cffunction>
+
+<cffunction name="setIconClass" access="public" output="false">
+	<cfargument name="iconclass" type="String" />
+	<cfif len(arguments.iconclass)>
+		<cfset variables.instance.iconclass = trim(arguments.iconclass) />
+	</cfif>
 	<cfreturn this>
 </cffunction>
 
@@ -319,6 +393,75 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn extendArray />
 </cffunction>
 
+<cffunction name="getRelatedContentSets" access="public" returntype="array">
+	<cfargument name="includeInheritedSets" required="true" default="true"/>
+	<cfset var tempArray=""/>
+	<cfset var relatedContentSetArray=arrayNew(1) />
+	<cfset var rsSets=""/>
+	<cfset var relatedContentSetBean=""/>
+	<cfset var s=0/>
+	<cfset var inheritanceList="ID,TYPE,BASE"/>
+	<cfset var i=""/>
+	<cfset var process="">
+	
+	<cfloop list="#inheritanceList#" index="i">
+		<cfset process = false>
+		<cfswitch expression="#i#">
+			<cfcase value="ID">
+				<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsSets')#">
+					select * from tclassextendrcsets where 
+					siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getSiteID()#"> 
+					and subTypeID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getSubTypeID()#"> 
+					order by orderNo
+				</cfquery>
+				<cfset process = true>
+			</cfcase>
+			<cfcase value="TYPE">
+				<cfif arguments.includeInheritedSets and getSubType() neq "Default">
+					<!--- get type/default --->
+					<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsSets')#">
+						select * from tclassextendrcsets where 
+						siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getSiteID()#"> 
+						and subTypeID in (select subTypeID from tclassextend where (type = <cfqueryparam CFSQLType="cf_sql_varchar" value="#getType()#"> and subType = 'Default' and siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getSiteID()#">))
+						order by orderNo
+					</cfquery>
+					<cfset process = true>
+				</cfif>
+			</cfcase>
+			<cfcase value="BASE">
+				<cfif arguments.includeInheritedSets and not listFindNoCase("1,2,User,Group,Address,Site,Component,Form", getType())>
+					<!--- get base/default --->
+					<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsSets')#">
+						select * from tclassextendrcsets where 
+						siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getSiteID()#"> 
+						and subTypeID in (select subTypeID from tclassextend where (type = 'Base' and subType = 'Default' and siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getSiteID()#"> ))
+						order by orderNo
+					</cfquery>
+					<cfset process = true>
+				</cfif>
+			</cfcase>
+		</cfswitch>
+			
+		<cfif process and rsSets.recordcount>
+			<cfset tempArray=createObject("component","mura.queryTool").init(rsSets).toArray() />
+			
+			<cfloop from="1" to="#rsSets.recordcount#" index="s">
+				
+				<cfset relatedContentSetBean=getRelatedContentSetBean() />
+				<cfset relatedContentSetBean.set(tempArray[s]) />
+				<cfset arrayAppend(relatedContentSetArray,relatedContentSetBean)/>
+			</cfloop>
+		</cfif>
+		
+		<cfif arguments.includeInheritedSets and i eq "ID">
+			<!--- include default set --->
+			<cfset arrayAppend(relatedContentSetArray, getBean('relatedContentSet').setRelatedContentSetID('00000000000000000000000000000000000').setName('Default'))>
+		</cfif>
+	</cfloop>
+	
+	<cfreturn relatedContentSetArray />
+</cffunction>
+
 <cffunction name="save"  access="public" output="false">
 <cfset var rs=""/>
 <cfset var extendSetBean=""/>
@@ -361,8 +504,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfquery>
 	
 	<cfif rs.recordcount>
-		
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery>
 		update tclassextend set
 		siteID = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getSiteID() neq '',de('no'),de('yes'))#" value="#getSiteID()#">,
 		type = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getType() neq '',de('no'),de('yes'))#" value="#getType()#">,
@@ -374,13 +516,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		hasSummary = #getHasSummary()#,
 		hasBody = #getHasBody()#,
 		description=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getDescription() neq '',de('no'),de('yes'))#" value="#getDescription()#">,
-		availableSubTypes=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getAvailableSubTypes() neq '',de('no'),de('yes'))#" value="#getAvailableSubTypes()#">
+		availableSubTypes=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getAvailableSubTypes() neq '',de('no'),de('yes'))#" value="#getAvailableSubTypes()#">,
+		iconClass=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getIconClass() neq '',de('no'),de('yes'))#" value="#getIconClass()#">
 		where subTypeID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSubTypeID()#">
 		</cfquery>
 		
 		<cfif rs.subtype neq 'Default' and (rs.type neq getType() or rs.subtype neq getSubType() and getBaseTable() neq "Custom")
 		and listFindNoCase('Folder,Page,Calendar,Gallery,File,link,Component,Form',rs.type) and listFindNoCase('Folder,Page,Calendar,Gallery,File,Link,Component,Form',getType())>
-			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			<cfquery>
 				update #getBaseTable()# set
 				type = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getType() neq '',de('no'),de('yes'))#" value="#getType()#">,
 				subType = <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getSubType() neq '',de('no'),de('yes'))#" value="#getSubType()#" maxlength="25">
@@ -393,8 +536,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 	<cfelse>
 	
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-		Insert into tclassextend (subTypeID,siteID,type,subType,baseTable,baseKeyField,dataTable,isActive,hasSummary,hasBody,description,availableSubTypes) 
+		<cfquery>
+		Insert into tclassextend (subTypeID,siteID,type,subType,baseTable,baseKeyField,dataTable,isActive,hasSummary,hasBody,description,availableSubTypes,iconclass) 
 		values(
 		<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getsubTypeID()#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getSiteID() neq '',de('no'),de('yes'))#" value="#getSiteID()#">,
@@ -407,7 +550,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		#getHasSummary()#,
 		#getHasBody()#,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getDescription() neq '',de('no'),de('yes'))#" value="#getDescription()#">,
-		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getAvailableSubTypes() neq '',de('no'),de('yes'))#" value="#getAvailableSubTypes()#">
+		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getAvailableSubTypes() neq '',de('no'),de('yes'))#" value="#getAvailableSubTypes()#">,
+		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getIconClass() neq '',de('no'),de('yes'))#" value="#getIconClass()#">
 		)
 		</cfquery>
 		<!---
@@ -419,7 +563,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	<cfset variables.classExtensionManager.purgeDefinitionsQuery()>
-	
+	<cfset variables.classExtensionManager.setIconClass(type=getType(),subtype=getSubType(),siteid=getSiteID(),iconclass=getIconClass())>
 	<cfreturn this>
 </cffunction>
 
@@ -461,7 +605,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfquery>
 	
 	<cfif not listFindNoCase("Custom,Site,Base",getType())>
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery>
 		update #getBaseTable()#
 		set subType='Default'
 		where 
@@ -522,7 +666,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var rsDefault=""/>
 <cfset var fLen=listLen(arguments.filter)/>
 
-		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 		select tclassextendsets.ExtendSetID,tclassextendsets.subTypeID,tclassextendsets.name,tclassextendsets.orderno,tclassextendsets.isActive,tclassextendsets.siteID,tclassextendsets.categoryID,tclassextendsets.orderno,0 as setlevel 
 		from tclassextendsets
 		inner join tclassextend on (tclassextendsets.subtypeid=tclassextend.subtypeID) 

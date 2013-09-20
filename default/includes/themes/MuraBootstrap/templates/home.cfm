@@ -3,7 +3,7 @@
 	<body id="#$.getTopID()#" class="#$.createCSSid($.content('menuTitle'))#" data-spy="scroll" data-target=".subnav" data-offset="50">
 		<div class="#$.getMBContainerClass()#">
 			<cfinclude template="inc/navbar.cfm" />
-			<div class="#$.getMBRowClass()#">
+			<div class="row-fluid">
 				<section class="span12">
 					<!---
 						The Carousel/Slideshow
@@ -23,7 +23,7 @@
 				</section>
 			</div>
 			
-			<div class="#$.getMBRowClass()#">
+			<div class="row-fluid">
 				<section class="span9 content">
 					<!--- The content --->
 					#$.dspBody(

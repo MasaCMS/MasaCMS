@@ -123,4 +123,56 @@
 			background: @grayLight !important;
 			cursor: hand !important;
 		}
+		
+		// Icon Selector Dropdown
+		
+		.SubTypeIconSelect {
+			
+			.dropdown-menu {
+			
+				width: 731px;
+				padding: @baseLineHeight/2;
+				margin-bottom: @baseLineHeight;
+				left: -360px;
+				height: 404px;
+				overflow-x: scroll;
+				
+			
+				li {
+					
+					float: left;
+					
+					i {
+						margin: @baseLineHeight/6;
+						 .icon-border;
+						 .icon-2x;
+						 .inline-block();
+						 width: 23px;
+						 text-align: center;
+						
+						&:hover {
+							cursor: pointer;
+							background-color: @blue;
+							color: @white;
+							border-color: @blue;
+						}
+						
+						&.icon-default {
+							background-color: @gray;
+							border-color: @gray;
+							color: @white;
+						}
+						
+						&.icon-current {
+							background-color: @orange;
+							border-color: @orange;
+							color: @white;
+						}
+					}
+					
+				}
+			
+			}
+			
+		}
 	}

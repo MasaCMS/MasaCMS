@@ -164,7 +164,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfinclude template="dsp_secondary_menu.cfm">
 </cfif>
 
-#application.utility.displayErrors(rc.feedBean.getErrors())#
+<cfif not structIsEmpty(rc.feedBean.getErrors())>
+  <p class="alert alert-error">#application.utility.displayErrors(rc.feedBean.getErrors())#</p>
+</cfif>
 
 <cfif rc.compactDisplay eq "true" and not isObjectInstance>
 <p class="alert">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.globallyappliednotice")#</p>
@@ -175,7 +177,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 #application.pluginManager.renderEvent("onFeedEditMessageRender",event)#
 </span>
 
-<form novalidate="novalidate" action="index.cfm?muraAction=cFeed.update&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="form1" id="feedFrm" onsubmit="return validate(this);"<cfif len(rc.assignmentID)> style="width: 412px"</cfif>>
+<form novalidate="novalidate" action="./?muraAction=cFeed.update&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="form1" id="feedFrm" onsubmit="return validate(this);"<cfif len(rc.assignmentID)> style="width: 412px"</cfif>>
 <cfif not isObjectInstance>
 	<cfif rc.compactDisplay eq "true">
 	<ul class="navTask nav nav-pills">
@@ -211,7 +213,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="control-group">
 	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.basicfromsection')#: <span id="selectFilter"><a href="javascript:;" onclick="javascript: feedManager.loadSiteFilters('#rc.siteid#','',1);return false;">[#application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#]</a></span></label>
 		<div class="controls">
-			<table id="contentFilters" class="table table-striped table-condensed table-bordered mura-table-grid"> 
+			<table id="contentFilters" class="mura-table-grid"> 
 			<tr>
 			<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'collections.section')#</th>
 			<th>#application.rbFactory.getKeyValue(session.rb,'collections.type')#</th>
@@ -222,7 +224,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfloop query="rc.rslist">
 			<cfset itemcrumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/>
 			<tr id="c#rc.rslist.contentID#">
-			<td class="var-width">#application.contentRenderer.dspZoomNoLinks(itemcrumbdata)#</td>
+			<td class="var-width">#$.dspZoomNoLinks(itemcrumbdata)#</td>
 			<td>#rc.rslist.type#</td>
 			<td class="actions"><input type="hidden" name="contentID" value="#rc.rslist.contentid#" /><ul class="clearfix"><li class="delete"><a title="Delete" href="##" onclick="return feedManager.removeFilter('c#rc.rslist.contentid#');"><i class="icon-remove-sign"></i></a></li></ul></td>
 			</tr></cfloop>
@@ -238,11 +240,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 		<cfif application.categoryManager.getCategoryCount(rc.siteid)>
 			<div class="control-group">
-		      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.categoryfilters')#</label>
-		      <div id="mura-list-tree" class="controls">
-			      <cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" feedID="#rc.feedID#" feedBean="#rc.feedBean#">
-			  </div>
-		</div>
+			      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.categoryfilters')#</label>
+			      <div id="mura-list-tree" class="controls">
+				      <cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" feedID="#rc.feedID#" feedBean="#rc.feedBean#">
+				  </div>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label">Category Intersection</label>
+				<div class="controls">
+				<label class="radio inline">
+					<input name="useCategoryIntersect" type="radio" value="1" class="radio" <cfif rc.feedBean.getUseCategoryIntersect()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+				</label>
+				<label class="radio inline">
+					<input name="useCategoryIntersect" type="radio" value="0" class="radio" <cfif not rc.feedBean.getUseCategoryIntersect()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+				</label>
+				</div>
+			</div>
+
 		</cfif>
 	
 		<div class="control-group">
@@ -687,7 +702,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfsavecontent>
 <cfoutput>
 <cfif not isObjectInstance>
-	<div class="tabbable tabs-left">
+	<div class="tabbable tabs-left mura-ui">
 		<ul class="nav nav-tabs tabs initActiveTab">
 		<cfloop from="1" to="#listlen(tabList)#" index="t">
 		<li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
@@ -696,6 +711,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="tab-content">
 			#tabContent#
 			<div class="load-inline tab-preloader"></div>
+			<script>$('.tab-preloader').spin(spinnerArgs2);</script>
 			#actionButtons#
 		</div>
 	</div>
@@ -747,7 +763,10 @@ jQuery(document).ready(function(){
 
 <cfinclude template="dsp_secondary_menu.cfm">
 
-#application.utility.displayErrors(rc.feedBean.getErrors())#
+<cfif not structIsEmpty(rc.feedBean.getErrors())>
+  <p class="alert alert-error">#application.utility.displayErrors(rc.feedBean.getErrors())#</p>
+</cfif>
+
 <cfif rc.feedID neq ''>
 <ul class="navTask nav nav-pills">
 <cfif rc.compactDisplay eq "true">
@@ -764,7 +783,7 @@ jQuery(document).ready(function(){
 #application.pluginManager.renderEvent("onFeedEditMessageRender", event)#
 </span>
 
-<form novalidate="novalidate" action="index.cfm?muraAction=cFeed.update&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="form1" onsubmit="return validate(this);">
+<form novalidate="novalidate" action="./?muraAction=cFeed.update&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="form1" onsubmit="return validate(this);">
 </cfoutput>
 <cfsavecontent variable='tabContent'>
 <cfoutput>
@@ -927,7 +946,7 @@ jQuery(document).ready(function(){
 </cfsavecontent>
 <cfoutput>
 
-<div class="tabbable tabs-left">
+<div class="tabbable tabs-left mura-ui">
 	<ul class="nav nav-tabs tabs">
 	<cfloop from="1" to="#listlen(tabList)#" index="t">
 	<li><a href="###listGetAt(tabList,t)#" onclick="return false;"><span>#listGetAt(tabLabelList,t)#</span></a></li>
@@ -936,6 +955,7 @@ jQuery(document).ready(function(){
 	<div class="tab-content">
 	#tabContent#
 	<div class="load-inline tab-preloader"></div>
+	<script>$('.tab-preloader').spin(spinnerArgs2);</script>
 
 	<div class="form-actions">
 		<cfif rc.feedID eq ''>

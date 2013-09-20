@@ -47,6 +47,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent extends="mura.cfobject" output="false">
 
 <!---- HANDLERS --->
+<cffunction name="standardEnableLockdownHandler" output="false" returnType="any">
+	<cfargument name="event" required="true">
+	
+	<cfinclude template="/muraWRM/config/lockdown.cfm">
+
+</cffunction>
+
 <cffunction name="standardWrongDomainHandler" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
@@ -141,16 +148,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var renderer=arguments.event.getValue("contentRenderer")>
 	<cfset var themeRenderer=arguments.event.getValue("themeRenderer")>
 	<cfset var contentArray="">
-
+	
 	<cfif arguments.event.valueExists('previewID')>
 		<cfset arguments.event.getHandler("standardSetPreview").handle(arguments.event)>
+		<cfset arguments.event.setValue('showMeta',1)>
 	<cfelse>
 		<cfset arguments.event.getHandler("standardSetAdTracking").handle(arguments.event)>
 		
 		<cfif not arguments.event.valueExists('contentBean')>
 			<cfif len(arguments.event.getValue('linkServID'))>
 				<cfset arguments.event.setValue('contentBean',application.contentManager.getActiveContent(listFirst(arguments.event.getValue('linkServID')),arguments.event.getValue('siteid'),true)) />
-			<cfelseif len(arguments.event.getValue('currentFilenameAdjusted')) and application.configBean.getLoadContentBy() eq 'urltitle'>
+			<cfelseif len(arguments.event.getValue('currentFilenameAdjusted')) and  application.configBean.getLoadContentBy() eq 'urltitle'>
 				<cfset arguments.event.setValue('contentBean',application.contentManager.getActiveByURLTitle(listLast(arguments.event.getValue('currentFilenameAdjusted'),'/'),arguments.event.getValue('siteid'),true)) />
 			<cfelse>
 				<cfset arguments.event.setValue('contentBean',application.contentManager.getActiveContentByFilename(arguments.event.getValue('currentFilenameAdjusted'),arguments.event.getValue('siteid'),true)) />
@@ -162,6 +170,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset contentArray=arguments.event.getValue('contentBean')>
 		<cfset arguments.event.setValue('contentBean',contentArray[1])>
 	</cfif>
+
+	<cfset arguments.event.getValidator("standardWrongFilename").validate(arguments.event)>
 
 	<cfset arguments.event.getValidator("standard404").validate(arguments.event)>
 	
@@ -227,6 +237,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset renderer.showEditableObjects=false>
 	</cfif>
 	
+</cffunction>
+
+<cffunction name="standardWrongFilenameHandler" output="false" returnType="any">
+	<cfargument name="event" required="true">
+	<cfset var currentFilename=arguments.event.getValue('currentFilename')>
+	<cfset var currentFilenameAdjusted=arguments.event.getValue('currentFilenameAdjusted')>
+
+	<cfif len(currentFilename) and currentFilename neq currentFilenameAdjusted>
+		<cfset arguments.event.setValue('currentFilename',arguments.event.getValue('contentBean').getFilename() & right(currentFilename,len(currentFilename)-len(currentFilenameAdjusted)))>
+	<cfelse>
+		<cfset arguments.event.setValue('currentFilename',arguments.event.getValue('contentBean').getFilename())>
+	</cfif>
+
+	<cflocation url="#arguments.event.getValue('contentRenderer').getCurrentURL()#" addtoken="false" statuscode="301">
+
 </cffunction>
 
 <cffunction name="standardLinkTranslationHandler" output="false" returnType="any">
@@ -478,6 +503,29 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction> 
 
 <!--- VALIDATORS --->
+<cffunction name="standardEnableLockdownValidator" output="false" returnType="any">
+	<cfargument name="event" required="true">
+	<cfset var valid = false>
+	<cfset var enableLockdown = application.settingsManager.getSite(request.siteID).getEnableLockdown()>
+	
+	<cfif (enableLockdown eq "development" and not getCurrentUser().isPassedLockdown()) or (enableLockdown eq "maintenance" and not getCurrentUser().isLoggedIn())>
+		<cfif event.getValue('locks') eq "true">
+			<cfif enableLockdown eq "development">
+				<!--- all member types, set 'passedLockdown' cookie --->
+				<cfset valid = getBean('userUtility').login(event.getValue('locku'), event.getValue('lockp'), request.siteID, true, event.getValue('expires'))>				
+			<cfelseif enableLockdown eq "maintenance">
+				<!--- only admin users, log user in --->
+				<cfset valid = getBean('userUtility').login(event.getValue('locku'), event.getValue('lockp'), '', false, '')>
+			</cfif>
+		</cfif>
+				
+		<cfif not valid>
+			<cfset arguments.event.getHandler("standardEnableLockdown").handle(arguments.event)>
+		</cfif>
+	</cfif>
+
+</cffunction>
+
 <cffunction name="standardWrongDomainValidator" output="false" returnType="any">
 	<cfargument name="event" required="true">
 	
@@ -512,8 +560,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="standardMobileValidator" output="false" returnType="any">
 	<cfargument name="event" required="true">
+	<cfif not isBoolean(request.muraMobileRequest)>
+		<cfset request.muraMobileRequest=false>
+	</cfif>
 	<cfif request.muraMobileRequest and not len(arguments.event.getValue('altTheme'))>
 		<cfset arguments.event.getHandler("standardMobile").handle(arguments.event)>
+	</cfif>
+</cffunction>
+
+<cffunction name="standardWrongFilenameValidator" output="false" returnType="any">
+	<cfargument name="event" required="true">
+	<cfset var requestedfilename=arguments.event.getValue('currentFilenameAdjusted')>
+	<cfset var contentFilename=arguments.event.getValue('contentBean').getFilename()>
+
+	<cfif arguments.event.getValue('muraForceFilename') and contentFilename neq '404' and len(requestedfilename) and requestedfilename neq contentFilename>
+		<cfset arguments.event.getHandler("standardWrongFilename").handle(arguments.event)>
 	</cfif>
 </cffunction>
 

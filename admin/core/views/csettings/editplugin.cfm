@@ -69,8 +69,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif rsPlugin.recordcount and rsPlugin.deployed>
 		<ul class="navTask nav nav-pills">
-			<li><a href="index.cfm?muraAction=cSettings.updatePluginVersion&moduleid=#rc.moduleid#">Update Plugin Version</a></li>
-			<li><a href="index.cfm?muraAction=cSettings.createBundle&moduleid=#rc.moduleid#&siteID=&BundleName=#URLEncodedFormat(application.serviceFactory.getBean('contentUtility').formatFilename(rsPlugin.name))#">Create and Download Plugin Bundle</a></li>
+			<li><a href="./?muraAction=cSettings.updatePluginVersion&moduleid=#rc.moduleid#">Update Plugin Version</a></li>
+			<li><a href="./?muraAction=cSettings.createBundle&moduleid=#rc.moduleid#&siteID=&BundleName=#URLEncodedFormat(application.serviceFactory.getBean('contentUtility').formatFilename(rsPlugin.name))#">Create and Download Plugin Bundle</a></li>
 		</ul>
 	</cfif>
 
@@ -80,7 +80,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	<cfset application.userManager.getCurrentUser().setValue("errors","")>
 
-	<form novalidate="novalidate" class="fieldset-wrap" method="post" name="frmSettings" action="index.cfm?muraAction=cSettings.updatePlugin" onsubmit="return submitForm(document.frmSettings);">
+	<form novalidate="novalidate" class="fieldset-wrap" method="post" name="frmSettings" action="./?muraAction=cSettings.updatePlugin" onsubmit="return submitForm(document.frmSettings);">
 		<div class="fieldset">
 			<cfsilent>
 				<cfquery name="rsLocation" datasource="#application.configbean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#">
@@ -88,15 +88,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					where moduleID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rc.ModuleID#">
 				</cfquery>
 
+				<!---
 				<cfif len(rsLocation.location)>
 					<cfset location=rsLocation.location>
 				<cfelse>
 					<cfif structKeyExists(rc.pluginXML.plugin.displayobjects.xmlAttributes,"location")>
 						<cfset location=rc.pluginXML.plugin.displayobjects.xmlAttributes.location>
 					<cfelse>
+				--->
 						<cfset location="global">
+				
+				<!---
 					</cfif>
 				</cfif>
+				--->
 
 				<cfif structKeyExists(rc.pluginXML.plugin.settings,"setting")>
 					<cfset settingsLen=arraylen(rc.pluginXML.plugin.settings.setting)/>
@@ -214,7 +219,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								</ul>
 							</div>
 						</div>
-
+						<!---
 						<div class="span3">
 							<label class="control-label">Display Objects Location</label>
 							<div class="controls">
@@ -236,6 +241,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								</div>
 							</div>
 						</span>
+						--->
 					</div>
 				</div>
 			<cfelse>

@@ -43,151 +43,224 @@
 	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
-/*May need to implement for style consistency*/
-/*#m-changesets * {
-	margin: 0;
-	padding: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
-}*/
-
+.badge {
+  padding-left: 7px;
+  padding-right: 7px;
+  -webkit-border-radius: 9px;
+  -moz-border-radius: 9px;
+  border-radius: 9px;
+  border: 0 solid #ffffff;
+  background-color: #b3b3b3;
+  color: #ffffff;
+}
+.label-important,
+.badge-important {
+  background-color: #ff3a00;
+}
+.label-important[href],
+.badge-important[href] {
+  background-color: #cc2e00;
+}
+.label-warning,
+.badge-warning {
+  background-color: #ffc40d;
+}
+.label-warning[href],
+.badge-warning[href] {
+  background-color: #d9a400;
+}
+.label-success,
+.badge-success {
+  background-color: #587231;
+}
+.label-success[href],
+.badge-success[href] {
+  background-color: #3c4f22;
+}
+.label-info,
+.badge-info {
+  background-color: #4e7696;
+}
+.label-info[href],
+.badge-info[href] {
+  background-color: #3d5c74;
+}
+.label-inverse,
+.badge-inverse {
+  background-color: #666666;
+}
+.label-inverse[href],
+.badge-inverse[href] {
+  background-color: #4d4d4d;
+}
+.clearfix {
+  *zoom: 1;
+}
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.clearfix:after {
+  clear: both;
+}
+.hide-text {
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+.input-block-level {
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.mura-modal,
+.modal-backdrop {
+  background-color: #222;
+  background: transparent;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#CC000000,endColorstr=#CC000000);
+  zoom: 1;
+  background-color: rgba(0, 0, 0, 0.8);
+  background-image: -webkit-gradient(radial, center center, 0, center center, 460, from(rgba(102, 102, 102, 0.8)), to(rgba(0, 0, 0, 0.8)));
+  background-image: -webkit-radial-gradient(circle, rgba(102, 102, 102, 0.8), rgba(0, 0, 0, 0.8));
+  background-image: -moz-radial-gradient(circle, rgba(102, 102, 102, 0.8), rgba(0, 0, 0, 0.8));
+  background-image: -o-radial-gradient(circle, rgba(102, 102, 102, 0.8), rgba(0, 0, 0, 0.8));
+  background-repeat: no-repeat;
+}
+.load-inline {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  min-height: 60px;
+}
+.btn-alt {
+  color: #ffffff;
+  padding: 3% 3% 5%;
+  background-color: #3b3b3b;
+  background-image: -moz-linear-gradient(top, #414141, #323232);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#414141), to(#323232));
+  background-image: -webkit-linear-gradient(top, #414141, #323232);
+  background-image: -o-linear-gradient(top, #414141, #323232);
+  background-image: linear-gradient(to bottom, #414141, #323232);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff414141', endColorstr='#ff323232', GradientType=0);
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.99);
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border-bottom: 1px solid #0d0d0d;
+  border-bottom-right-radius: 1px solid #0d0d0d;
+  border-right: 1px solid #0d0d0d;
+}
 #m-changesets {
-	position: fixed !important;
-	z-index: 50 !important;
-	bottom: 0px !important;
-	left: 0px !important;
-	min-height: 27px !important;
-	font-size: 11px !important;
-	padding: 22px 0 0 !important;
-	width: 100% !important;
-	/*background-color: rgb(100,100,100);*/ /* fallback */
-	background: rgba(170,170,170,.95) !important;
-}
+  position: fixed !important;
+  z-index: 5000 !important;
+  bottom: 0px !important;
+  left: 0px !important;
+  min-height: 27px !important;
+  font-size: 11px !important;
+  padding: 0 !important;
+  width: 100% !important;
+  background: rgba(170, 170, 170, 0.95) !important;
+  /*
+h1 {
+		font-size: 11px !important;
+		text-transform: uppercase !important;
+		font-weight: normal !important;
+		padding: 5px 5px 4px 10px !important;
+		margin: 0 !important;
+		background: rgba(0, 0, 0, .35) !important;
+		position: absolute !important;
+		top: 0px !important;
+		left: 0px !important;
+		width: 100% !important;
+		color: rgba(255,255,255,.8) !important;
+		text-shadow: rgba(0,0,0,.8) 0px -1px 0px !important;
+		height: 13px !important;
+		line-height: 13px !important;
+		}
+*/
 
-#m-changesets h1 {
-	font-size: 11px !important;
-	text-transform: uppercase !important;
-	font-weight: normal !important;
-	padding: 5px 5px 4px 10px !important;
-	margin: 0 !important;
-	/*background-color: rgb(100,100,100);*/ /* fallback */
-	background: rgba(0, 0, 0, .35) !important;
-	position: absolute !important;
-	top: 0px !important;
-	left: 0px !important;
-	width: 100% !important;
-	color: rgba(255,255,255,.8) !important;
-	text-shadow: rgba(0,0,0,.8) 0px -1px 0px !important;
-	height: 13px !important;
-	line-height: 13px !important;
 }
-
-#m-changesets #m-cs-utility {
-	position: absolute !important;
-	top: -2px !important;
-	right:10px !important;
-	list-style: none !important;
-	margin: 0 !important;
+#m-changesets a#m-cs-close {
+  position: absolute !important;
+  top: -2px !important;
+  right: 10px !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  padding: 2px 0 !important;
+  margin: 2px 0 !important;
 }
-
-#m-changesets #m-cs-utility li {
-	float: left !important;
-	margin-left: 3px !important;
+#m-changesets a#m-cs-close i {
+  text-decoration: none !important;
+  color: #333 !important;
+  line-height: 14px !important;
+  font-size: 14px !important;
 }
-
-#m-changesets #m-cs-utility li a {
-	color: #fff !important;
-	display: block !important;
-	text-align: center !important;
-	text-decoration: none !important;
-	line-height: 12px !important;
-	font-size: 11px !important;
-	color: rgba(255,255,255,.95) !important;
-	padding: 2px 8px !important;
-	margin: 5px 0 !important;
-	border-radius: 8px !important;
-	-moz-border-radius: 8px !important;
-	/*background-color: rgb(175,175,175);*/ /* fallback */
-	background: rgba(0,0,0,.3) !important;
-	text-shadow: #000 0px -1px 0px !important;
-	-moz-text-shadow: #000 0px 1px 0px !important;
-	-webkit-box-shadow: rgba(255,255,255,.2) 0px 1px 0px !important;
-	-moz-box-shadow: rgba(255,255,255,.2) 0px 1px 0px !important;
-	box-shadow: rgba(255,255,255,.2) 0px 1px 0px !important;
+#m-changesets a#m-cs-close i:hover {
+  color: #fff !important;
 }
-
-#m-changesets #m-cs-utility li a:hover {
-	text-decoration: none !important;
-	background-color: rgb(0,0,0) !important; /* fallback */
-	background: rgba(0,0,0,.8) !important;
-	text-decoration: none !important;
-}
-
-#m-changesets li#m-cs-close a:hover {
-	text-decoration: none !important;
-	background: #333 !important;
-}
-
 #m-changesets dl {
-	float: left !important;
-	clear: none !important;
-	margin: 0 !important;
-	padding: 8px 1% 8px 1.5% !important;
-	width: 22.5% !important;
-	position: relative !important;
-	overflow: hidden !important;
-	background: url(../images/cs-vert-rule.png) repeat-y left top !important;
+  float: left !important;
+  clear: none !important;
+  margin: 0 !important;
+  padding: 8px 1% 8px 1.5% !important;
+  width: 22.5% !important;
+  position: relative !important;
+  overflow: hidden !important;
+  border-right: 1px solid #9a9a9a !important;
+  border-left: 1px solid #c1c1c1 !important;
 }
-
+#m-changesets dl dt {
+  color: rgba(0, 0, 0, 0.95) !important;
+  text-shadow: rgba(255, 255, 255, 0.3) 0px 1px 0px !important;
+  font-size: 12px !important;
+  margin: 0 0 4px !important;
+  border: 0 !important;
+  padding: 0 !important;
+}
+#m-changesets dl dd {
+  margin: 0 !important;
+  color: rgba(0, 0, 0, 0.95) !important;
+  font-size: 11px !important;
+  border: 0 !important;
+  padding: 0 !important;
+}
 #m-changesets dl#m-cs-changeset {
-	border-left: 0 !important;
-	background: none !important;
+  border-left: 0 !important;
+  background: none !important;
 }
-
+#m-changesets dl#m-cs-status {
+  border-right: 0 !important;
+  background: none !important;
+}
+#m-changesets dl#m-cs-status #m-cs-included,
+#m-changesets dl#m-cs-status #m-cs-other {
+  margin-top: -3px !important;
+  line-height: 14px !important;
+}
+#m-changesets dl#m-cs-status i {
+  position: relative !important;
+  font-size: 24px !important;
+  top: 3px !important;
+}
+#m-changesets dl#m-cs-status #m-cs-included i {
+  color: green !important;
+}
+#m-changesets dl#m-cs-status #m-cs-other i {
+  color: #000000 !important;
+}
 #m-changesets dl#m-cs-dependencies {
-	border-right: 0 !important;
+  border-right: 0 !important;
 }
-
-#m-changesets dt {
-	color: rgba(0,0,0,.95) !important;
-	text-shadow: rgba(255,255,255,.3) 0px 1px 0px !important;
-	font-size: 12px !important;
-	margin: 0 0 4px !important;
-	border: 0 !important;
-	padding: 0 !important;
-}
-
-#m-changesets dd {
-	margin: 0 !important;
-	color: rgba(0,0,0,.95) !important;
-	font-size: 11px !important;
-	border: 0 !important;
-	padding: 0 !important;
-}
-
-#m-changesets #m-cs-status dd/*, #m-changesets #m-cs-dependencies dd*/ {
-	padding: 6px 0 6px 32px !important;
-	line-height: 1.2 !important;
-}
-
-#m-cs-status #m-cs-included {
-	background: url(../images/icons/cs-status-included.png) no-repeat left center !important;
-}
-
-#m-cs-status #m-cs-other {
-	background: url(../images/icons/cs-status-other.png) no-repeat !important;
-}
-
-#m-changesets #m-cs-status #m-cs-none {
-	padding-left: 0 !important;
-}
-
-#m-changesets #m-cs-dependencies dd {
-	/*background: url(../images/icons/cs-dependencies.png) no-repeat;*/
-}
-
-
-#m-changesets select {
-	width: 99% !important;
+#m-changesets dl select {
+  width: 99% !important;
+  font-size: 12px !important;
+  height: auto !important;
 }

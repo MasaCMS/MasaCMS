@@ -54,67 +54,141 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <div class="fieldset">
 <cfoutput>
 <div class="control-group">
-   	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.tags')#</label>	    
+   	<label class="control-label">
+   		<cfif len($.siteConfig('customTagGroups'))>
+   		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.defaulttags')#
+   		<cfelse>
+   		#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.defaulttags')#
+   		</cfif>
+   	</label>	    
    	<div class="controls">
+   		
+   		<!---
+   		<cfset tags=$.getBean('contentGateway').getTagCloud($.event('siteID')) />
    		<cfif tags.recordcount>
-   		<div id="svTagCloud">	
-			<cfsilent>
-				<cfset tags=$.getBean('contentGateway').getTagCloud($.event('siteID')) />
-				<cfset tagValueArray = ListToArray(ValueList(tags.tagCount))>
-				<cfset max = ArrayMax(tagValueArray)>
-				<cfset min = ArrayMin(tagValueArray)>
-				<cfset diff = max - min>
-				<cfset distribution = diff>
-				<cfset rbFactory=$.siteConfig().getRBFactory()>
-			</cfsilent>	
-			<ol>
-				<cfloop query="tags"><cfsilent>
-						<cfif tags.tagCount EQ min>
-						<cfset class="not-popular">
-					<cfelseif tags.tagCount EQ max>
-						<cfset class="ultra-popular">
-					<cfelseif tags.tagCount GT (min + (distribution/2))>
-						<cfset class="somewhat-popular">
-					<cfelseif tags.tagCount GT (min + distribution)>
-						<cfset class="mediumTag">
-					<cfelse>
-						<cfset class="not-very-popular">
-					</cfif>
-				
-					<cfset args = ArrayNew(1)>
-				    <cfset args[1] = tags.tagcount>
-				</cfsilent><li class="#class#"><span><cfif tags.tagcount gt 1> #rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemsare'), args)#<cfelse>#rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemis'), args)#</cfif> tagged with </span><a class="tag<cfif listFind(rc.contentBean.getTags(),tags.tag)> active</cfif>">#HTMLEditFormat(tags.tag)#</a></li>
-				</cfloop>
-			</ol>
-		</div>
+	   		<div class="svTagCloud">	
+				<cfsilent>
+					<cfset tagValueArray = ListToArray(ValueList(tags.tagCount))>
+					<cfset max = ArrayMax(tagValueArray)>
+					<cfset min = ArrayMin(tagValueArray)>
+					<cfset diff = max - min>
+					<cfset distribution = diff>
+					<cfset rbFactory=$.siteConfig().getRBFactory()>
+				</cfsilent>	
+				<ol>
+					<cfloop query="tags"><cfsilent>
+							<cfif tags.tagCount EQ min>
+							<cfset class="not-popular">
+						<cfelseif tags.tagCount EQ max>
+							<cfset class="ultra-popular">
+						<cfelseif tags.tagCount GT (min + (distribution/2))>
+							<cfset class="somewhat-popular">
+						<cfelseif tags.tagCount GT (min + distribution)>
+							<cfset class="mediumTag">
+						<cfelse>
+							<cfset class="not-very-popular">
+						</cfif>
+					
+						<cfset args = ArrayNew(1)>
+					    <cfset args[1] = tags.tagcount>
+					</cfsilent><li class="#class#"><span><cfif tags.tagcount gt 1> #rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemsare'), args)#<cfelse>#rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemis'), args)#</cfif> tagged with </span><a class="tag<cfif listFind(rc.contentBean.getTags(),tags.tag)> active</cfif>">#HTMLEditFormat(tags.tag)#</a></li>
+					</cfloop>
+				</ol>
+			</div>
+		</cfif>	
+		--->
+   		<div id="tags" class="tagSelector">
+		<cfif len(rc.contentBean.getTags())>
+			<cfloop list="#rc.contentBean.getTags()#" index="i">
+				<span class="tag">
+				#HTMLEditFormat(i)# <a><i class="icon-remove-sign"></i></a>
+				<input name="tags" type="hidden" value="#HTMLEditFormat(i)#">
+				</span>
+			</cfloop>
 		</cfif>
-   		<div id=tags class=tagSelector>
-		<cfloop list="#rc.contentBean.getTags()#" index="i">
-			<span class="tag">
-			#HTMLEditFormat(i)# <a><i class="icon-remove-sign"></i></a>
-			<input name="tags" type="hidden" value="#HTMLEditFormat(i)#">
-			</span>
-		</cfloop>
 		<input type="text" name="tags">
 		</div>
    </div>
 </div>
 
 <script>
-	<cfif tags.recordcount>
 	$(document).ready(function(){
-		var tags = [
-			<cfloop query="tags">
-			{ id: '#JSStringFormat(tags.tag)#', toString: function() { return '#JSStringFormat(tags.tag)#'; } }<cfif tags.currentrow lt tags.recordcount>,</cfif>
-			</cfloop>
-		];
-		$('##tags').tagSelector(tags, 'tags');
+		$.get('?muraAction=carch.loadtagarray&siteid=' + siteid).done(function(data){
+				var tagArray=eval('(' + data + ')'); 
+				$('##tags').tagSelector(tagArray, 'tags');
+		});
 	});
-	</cfif>
 </script>
 
-</div>
 
+<cfset tagGroupList=$.siteConfig('customTagGroups')>
+
+<cfif len(tagGroupList)>
+	<cfloop list="#tagGroupList#" index="g">
+		<cfset g=trim(g)>
+		<div class="control-group">
+		   	<label class="control-label">#g# #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.tags')#</label>	    
+		   	<div class="controls">
+		   		<!---
+		   		<cfset tags=$.getBean('contentGateway').getTagCloud(siteid=$.event('siteID'),taggroup=g) />
+		   		
+		   		<cfif tags.recordcount>
+			   		<div class="svTagCloud">	
+						<cfsilent>
+							<cfset tagValueArray = ListToArray(ValueList(tags.tagCount))>
+							<cfset max = ArrayMax(tagValueArray)>
+							<cfset min = ArrayMin(tagValueArray)>
+							<cfset diff = max - min>
+							<cfset distribution = diff>
+							<cfset rbFactory=$.siteConfig().getRBFactory()>
+						</cfsilent>	
+						<ol>
+							<cfloop query="tags"><cfsilent>
+									<cfif tags.tagCount EQ min>
+									<cfset class="not-popular">
+								<cfelseif tags.tagCount EQ max>
+									<cfset class="ultra-popular">
+								<cfelseif tags.tagCount GT (min + (distribution/2))>
+									<cfset class="somewhat-popular">
+								<cfelseif tags.tagCount GT (min + distribution)>
+									<cfset class="mediumTag">
+								<cfelse>
+									<cfset class="not-very-popular">
+								</cfif>
+							
+								<cfset args = ArrayNew(1)>
+							    <cfset args[1] = tags.tagcount>
+							</cfsilent><li class="#class#"><span><cfif tags.tagcount gt 1> #rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemsare'), args)#<cfelse>#rbFactory.getResourceBundle().messageFormat($.rbKey('tagcloud.itemis'), args)#</cfif> tagged with </span><a class="tag<cfif listFind(rc.contentBean.getTags(),tags.tag)> active</cfif>">#HTMLEditFormat(tags.tag)#</a></li>
+							</cfloop>
+						</ol>
+					</div>
+				</cfif>
+				--->
+		   		<div id="#g#tags" class="tagSelector">
+		   		<cfif len(rc.contentBean.getvalue('#g#tags'))>
+					<cfloop list="#rc.contentBean.getvalue('#g#tags')#" index="i">
+						<span class="tag">
+						#HTMLEditFormat(i)# <a><i class="icon-remove-sign"></i></a>
+						<input name="#g#tags" type="hidden" value="#HTMLEditFormat(i)#">
+						</span>
+					</cfloop>
+				</cfif>
+				<input type="text" name="#g#tags">
+				</div>
+		   </div>
+		</div>
+		<script>
+			$(document).ready(function(){
+				$.get('?muraAction=carch.loadtagarray&siteid=' + siteid + '&taggroup=#g#').done(function(data){
+				var tagArray=eval('(' + data + ')'); 
+				$('###g#tags').tagSelector(tagArray, '#g#tags');
+		});
+			});
+		</script>
+	</cfloop>
+</cfif>
+
+</div>
 <span id="extendset-container-tags" class="extendset-container"></span>
 <span id="extendset-container-tabtagsbottom" class="extendset-container"></span>
 

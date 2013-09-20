@@ -1,0 +1,144 @@
+.rcSortable {
+	min-height: 27px;
+}
+	
+.list-table {
+
+	border: 1px solid #e6e6e6;
+	margin: 18px 0;
+	
+	&.disabled {
+	opacity: 0.1;	
+	}	
+	
+	.list-table-content-set {
+		color: #000;
+		font-weight: bold;
+		background: #f0f0f0;
+		padding: 8px 5px;		
+		}
+	
+	/* header of list */
+	.list-table-header {
+		color: #000;
+		background: #eaf4fd;
+		background-image: linear-gradient(to bottom,#fffefe,#f5f5f5);
+		padding: 4px 5px;
+		line-height: 18px;
+		font-weight: bold;
+		}
+	
+	/* list holder - similar to tbody */
+	.list-table-items {
+		position: relative;
+		list-style: none;
+		display: block;
+		padding: 0;
+		margin: 0;
+
+		.ui-draggable .navZoom {
+			max-width: 95%;
+			//.text-overflow;
+			
+			li {
+				white-space: nowrap;
+				}
+			
+			}
+	
+		/* each 'row' of the pseudo table - similar to tr */
+		li.item {
+			position: relative;
+			display: block;
+			background: #fcfeff;
+			border-top: 1px solid #e6e6e6;
+			padding: 4px 5px;
+			border-collapse: collapse;
+			overflow: hidden;
+			width: 686px;
+			cursor: move;
+			}
+		
+		/* zero out bottom margin on empty list item */
+		li.item.empty p {
+			margin: 0;
+			padding: 5px;
+			font-style: italic;
+		}
+		
+		li.item:nth-child(even) {
+			background: #eaf4fd;
+			}
+		
+		/* styles for the list item being sorted */
+		li.item.ui-sortable-helper {}
+		
+		/* the nested list within each item */
+		li.item ul {
+			list-style: none;
+			margin: 0;
+			padding: .2em;
+			}
+		
+		/* inline list of nested items */
+		.list-table-items li.item ul li {
+			display: inline-block;
+			}
+		
+		.list-table-items li.item ul li strong {
+			color: #333232;
+			}
+		}
+	
+	.content-type {
+		float: right;
+		font-weight: normal;
+		color: @grayDark;
+		
+		i {
+			//background: @gray;
+			//.border-radius(3px);
+			//padding: 4px 4px;
+			font-size: 18px;
+			margin-left: .25em;
+			
+			&:hover {
+				color: @grayDarker;
+			}
+		}
+		
+		}
+}
+
+div[id^="rcGroup-"] .list-table-items li.item {
+	
+	.delete {
+	z-index: 1;
+	position: absolute;
+	text-align: center;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	width: 30px;
+	font-size: 14px;
+	border-left: 1px solid #e6e6e6;
+	line-height: 34px;
+	color: #949494;
+	
+		&:before {
+			content: "\f057";
+			font-family: "FontAwesome";
+			font-weight: normal;
+			font-style: normal;
+			}
+		
+		&:hover {
+			color: #666;
+			text-decoration: none;
+			}
+	}
+}
+
+.noShow {
+	display: none !important;
+	}

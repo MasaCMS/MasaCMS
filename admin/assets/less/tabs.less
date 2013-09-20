@@ -1,23 +1,6 @@
 // Tabs 
 
-
-.tabbable {
-	
-	clear: both;
-	
-	> .nav-tabs {
-	font-weight: bold;
-		}
-	
-	.nav .active a {
-		color: @grayDarker;
-		}
-
-	// TABS
-	// ----
-	
-	// Give the tabs something to sit on
-	.nav-tabs {
+.nav-tabs {
 	  border-bottom-width: 2px;
 	}
 	// Make the list-items overlay the bottom border
@@ -27,20 +10,66 @@
 	// Actual tabs (as links)
 	.nav-tabs > li > a {
 	  border-width: 2px;
+	  color: @blue;
+	  font-weight: bold;
 	  }
 	// Active state, and it's :hover to override normal :hover
-	.nav-tabs > .active > a,
-	.nav-tabs > .active > a:hover {
-	  border-width: 2px;
-	}
 	
+	.nav-tabs > .active > a,
+	.nav-tabs > .active > a:hover,
+	.nav-tabs > .active > a:focus {
+		  border-width: 2px;
+		color: @grayDark;
+		font-weight: bold;
+		}
+
+.tabbable { clear: both; } // Legacy naming convention no longer needed?
+
+.ui-dialog {
+	.nav-tabs {
+		  border-bottom-color: #f4f4f4;
+		  margin-bottom: -4px;
+		  border: 0;
+		}
+		// Make the list-items overlay the bottom border
+		.nav-tabs > li {
+		  margin-bottom: 0;
+		}
+		// Actual tabs (as links)
+		.nav-tabs > li > a {
+		  color: @grayDarker;
+		  font-weight: normal;
+		  //background: @gray;
+		  
+		  &:hover {
+			  background-color: @gray;
+			  border-color: @gray;
+			  }
+		  
+		  }
+		// Active state, and it's :hover to override normal :hover
+		
+		.nav-tabs > .active > a,
+		.nav-tabs > .active > a:hover,
+		.nav-tabs > .active > a:focus {
+			color: @grayDarker;
+			border: 2px solid #f4f4f4;
+			background-color: #f4f4f4;
+			font-weight: normal;
+			}
+			
+	.tab-pane > .fieldset {
+		margin: 0;
+		border: 0;
+		background-color: #f4f4f4;
+		.border-top-left-radius(0);
+	}
 }
 
-
-.tabs-left { // Content Editing, etc.
+.mura-ui { // Content Editing, etc.
 		
 	> .nav-tabs {
-		border: 0;
+		border: 0 !important;
 		.makeColumn(2);
 		margin-left: 0;
 		}
@@ -67,26 +96,26 @@
 			position: relative;
 			}
 		}	
-
 				
 	/* Content */
-	.tab-content {
+	> .tab-content {
 		.makeColumn(10);
 		.border-radius(3px);
 		padding: 0;
 		margin-left: 0;
 		#gradient .vertical(darken(@btnBackground,2%),@btnBackgroundHighlight);
 		.box-shadow(@globalDropShadow);
-		//behavior: @PIE;
+		position: relative;
 		}
 	} // End .tabs-left
+
 
 .pane-padded {
 	padding: @gridGutterWidth @gridGutterWidth 0 !important;
 	}
 	
 .fieldset-wrap {
-	.tabs-left > .tab-content;
+	.mura-ui > .tab-content;
 	.makeColumn(12);
 	margin: 0 0 @baseLineHeight*2 0;
 	max-width: 100%;

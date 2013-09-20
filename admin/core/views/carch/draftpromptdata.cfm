@@ -44,6 +44,124 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
+
+<cfset draftprompdata=application.contentManager.getDraftPromptData(rc.contentid,rc.siteid)>
+<cfif draftprompdata.showdialog>
+	<cfset draftprompdata.showdialog='true'>
+	<cfsavecontent variable="draftprompdata.message">
+	<cfoutput>
+		<div id="draft-prompt">
+		<p class="alert alert-info">#application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.dialog')#</p>
+			
+			<cfset publishedVersion=$.getBean('content').loadBy(contenthistid=draftprompdata.publishedHistoryID)>
+			<cfif publishedVersion.getApproved() or not draftprompdata.hasdraft>		
+				<table class="mura-table-grid">
+					<thead>
+						<tr>
+							<th colspan="4">
+								<cfif publishedVersion.getApproved()>
+									<i class="icon-check"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.published'))#
+								<cfelse>
+									<i class="icon-edit"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.latest'))#
+								</cfif>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<td class="var-width"><a href="##" tabindex="-1" class="draft-prompt-option var-width" data-contenthistid="#draftprompdata.publishedHistoryID#">#HTMLEditFormat(publishedVersion.getMenuTitle())#</a></td>
+						<td>#LSDateFormat(publishedVersion.getlastupdate(),session.dateKeyFormat)# #LSTimeFormat(publishedVersion.getLastUpdate(),"medium")#</td>
+						<td>#HTMLEditFormat(publishedVersion.getLastUpdateBy())#</td>
+						<td><a href="##" tabindex="-1" class="draft-prompt-option" data-contenthistid="#draftprompdata.publishedHistoryID#"><i class="icon-pencil"></i></a></td>
+					</tbody>
+				</table>
+			</cfif>
+
+			<cfif draftprompdata.hasdraft>
+
+				<cfset draftVersion=$.getBean('content').loadBy(contenthistid=draftprompdata.historyid)>
+				<table class="mura-table-grid">
+					<thead>
+						<tr>
+							<th colspan="4"><i class="icon-edit"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.latest'))#</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="var-width"><a href="##" tabindex="-1" class="draft-prompt-option" data-contenthistid="#draftprompdata.historyid#">#HTMLEditFormat(draftVersion.getMenuTitle())#</a></td>
+							<td>#LSDateFormat(draftVersion.getlastupdate(),session.dateKeyFormat)# #LSTimeFormat(draftVersion.getLastUpdate(),"medium")#</td>
+							<td>#HTMLEditFormat(draftVersion.getLastUpdateBy())#</td>
+							<td><a href="##" tabindex="-1" class="draft-prompt-option" data-contenthistid="#draftprompdata.historyid#"><i class="icon-pencil"></i></a></td>
+						</tr>
+					</tbody>
+				</table>
+			</cfif>
+
+			<cfif draftprompdata.pendingchangesets.recordcount>
+				<table class="mura-table-grid">	
+					<thead>
+						<tr>
+							<th colspan="4"><i class="icon-list"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.changesets'))#</th>
+						</tr>
+					</thead>
+					<tbody>
+						<cfloop query="draftprompdata.pendingchangesets">
+						<tr>
+							<td class="var-width"><a href="##" tabindex="-1" class="draft-prompt-option" data-contenthistid="#draftprompdata.pendingchangesets.contenthistid#">#HTMLEditFormat(draftprompdata.pendingchangesets.changesetName)#</a></td>
+							<td>#LSDateFormat(draftprompdata.pendingchangesets.lastupdate,session.dateKeyFormat)# #LSTimeFormat(draftprompdata.pendingchangesets.lastupdate,"medium")#</td>
+							<td>#HTMLEditFormat(draftprompdata.pendingchangesets.lastupdateby)#</td>
+							<td><a href="##" tabindex="-1" class="draft-prompt-option" data-contenthistid="#draftprompdata.pendingchangesets.contenthistid#"><i class="icon-pencil"></i></a></td>
+						</tr>
+						</cfloop>
+					</tbody>
+				</table>
+			</cfif>
+
+			<cfif draftprompdata.yourapprovals.recordcount>
+				<cfset content=$.getBean('content').loadBy(contentid=rc.contentid)>
+				<table class="mura-table-grid">	
+					<thead>
+						<tr>
+							<th colspan="4"><i class="icon-time"></i> #HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.awaitingapproval'))#</th>
+						</tr>
+					</thead>
+					<tbody>
+						<cfloop query="draftprompdata.yourapprovals">
+							<tr>
+								<cfif listFindNoCase("author,editor",draftprompdata.verdict)>
+									<td class="var-width"><a href="##" data-contenthistid="#draftprompdata.yourapprovals.contenthistid#"  tabindex="-1" class="draft-prompt-option">#HTMLEditFormat(draftprompdata.yourapprovals.menutitle)#</a></td>
+									<td>#LSDateFormat(draftprompdata.yourapprovals.lastupdate,session.dateKeyFormat)# #LSTimeFormat(draftprompdata.yourapprovals.lastupdate,"medium")#</td>
+									<td>#HTMLEditFormat(draftprompdata.yourapprovals.lastupdateby)#</td>
+									<td><a href="##" data-contenthistid="#draftprompdata.yourapprovals.contenthistid#" tabindex="-1" class="draft-prompt-option"><i class="icon-pencil"></i></a></td>
+								<cfelse>
+									<td class="var-width"><a href="#content.getURL(querystring="previewid=#draftprompdata.yourapprovals.contenthistid#")#" tabindex="-1" class="draft-prompt-approval">#HTMLEditFormat(draftprompdata.yourapprovals.menutitle)#</a></td>
+									<td>#LSDateFormat(draftprompdata.yourapprovals.lastupdate,session.dateKeyFormat)# #LSTimeFormat(draftprompdata.yourapprovals.lastupdate,"medium")#</td>
+									<td>#HTMLEditFormat(draftprompdata.yourapprovals.lastupdateby)#</td>
+									<td><a href="#content.getURL(querystring="previewid=#draftprompdata.yourapprovals.contenthistid#")#" tabindex="-1" class="draft-prompt-approval"><i class="icon-pencil"></i></a></td>
+
+								</cfif>
+							</tr>
+						</cfloop>
+					</tbody>
+				</table>
+			</cfif>
+					
+		<!---			
+		<cfif listFindNoCase('Pending,Rejected',draftprompdata.pendingchangesets.approvalStatus)>
+							(#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.#draftprompdata.pendingchangesets.approvalStatus#')#)
+						</cfif>
+		--->
+		
+		
+	
+		</div>
+	</cfoutput>
+	</cfsavecontent>
+<cfelse>
+	<cfset draftprompdata.showdialog='false'>
+	<cfset draftprompdata.message="">	
+</cfif>
+<cfset structDelete(draftprompdata,'yourapprovals')>
+<cfset structDelete(draftprompdata,'pendingchangesets')>
 <cfcontent type="application/json">
-<cfoutput>#createObject("component","mura.json").encode(application.contentManager.getDraftPromptData(rc.contentid,rc.siteid))#</cfoutput>
+<cfoutput>#createObject("component","mura.json").encode(draftprompdata)#</cfoutput>
 <cfabort>

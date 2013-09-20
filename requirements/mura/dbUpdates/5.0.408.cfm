@@ -24,6 +24,11 @@ EXEC sp_rename 'tcontentcomments.[comment]', 'comments', 'COLUMN'
 		</cfcatch>
 	</cftry>
 </cfcase>
+<cfcase value="postgresql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentcomments RENAME COLUMN comment TO comments
+	</cfquery>
+</cfcase>
 <cfcase value="nuodb">
 	<cfset dbUtility.renameColumn(column='comment',newColumn='comments',table='tcontentcomments')>
 </cfcase>
@@ -61,6 +66,11 @@ EXEC sp_rename 'tclassextendattributes.[validate]', 'validation', 'COLUMN'
 		</cfquery>
 	</cfcatch>
 </cftry>
+</cfcase>
+<cfcase value="postgresql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tclassextendattributes RENAME COLUMN validate TO validation
+	</cfquery>
 </cfcase>
 <cfcase value="nuodb">
 	<cfset dbUtility.renameColumn(column='validate',newColumn='validation',table='tclassextendattributes')>

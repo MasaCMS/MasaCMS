@@ -44,6 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
+<cfset $=application.serviceFactory.getBean('$').init(feedBean.getSiteID())>
 <cfheader name="content-type" value="text/xml"><cfcontent reset="yes"><cfoutput><?xml version="1.0" ?>
 <rss version="0.92"
 	xmlns:dc="http://purl.org/dc/elements/1.1/">
@@ -60,10 +61,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not len(itemdescription)>
 		<cfset itemdescription=item.getValue('body')>
 	</cfif>	
-	<cfset itemdescription = renderer.stripHTML(renderer.setDynamicContent(itemdescription))>
+	<cfset itemdescription = $.stripHTML($.setDynamicContent(itemdescription))>
 	<cfset itemdescription=left(itemdescription,200) & "...">
 <cfelse>
-	<cfset itemdescription = renderer.addCompletePath(renderer.setDynamicContent(itemdescription),feedBean.getSiteID())>
+	<cfset itemdescription = $.addCompletePath($.setDynamicContent(itemdescription),feedBean.getSiteID())>
 </cfif>
 <cfif isDate(item.getValue('releaseDate'))>
 	<cfset thePubDate=item.getValue('releaseDate')>
@@ -72,7 +73,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 <cfset rsCats=application.contentManager.getCategoriesByHistID(item.getValue('contentHistID'))>
 
-<cfset theLink=XMLFormat(renderer.createHREFforRss(item.getValue('type'),item.getValue('filename'),item.getValue('siteID'),item.getValue('contentID'),item.getValue('target'),item.getValue('targetParams'),application.configBean.getContext(),application.configBean.getStub(),application.configBean.getIndexFile(),0,item.getValue('fileEXT'))) />
+<cfset theLink=XMLFormat(item.getURL(complete=true)) />
 </cfsilent>
 		<item>
 			<title>#XMLFormat(item.getMenuTitle())#</title>

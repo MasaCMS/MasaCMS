@@ -1,7 +1,10 @@
 <cfoutput>
 <script>
+var customtaggroups=#serializeJSON(listToArray($.siteConfig('customTagGroups')))#;
+
 var remoteFeedConfiguratorTitle='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.remotefeedtitle"))#';
-var localIndexConfiguratorTitle='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.localindextitle"))#';		
+var localIndexConfiguratorTitle='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.localindextitle"))#';
+var tagCloudConfiguratorTitle='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.tagcloudtitle"))#';
 var categorySummaryConfiguratorTitle='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.categorysummarytitle"))#';	
 var slideShowConfiguratorTitle='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.slideshowtitle"))#';	
 var relatedContentConfiguratorTitle='#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.configurator.relatedcontenttitle"))#';		

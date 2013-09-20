@@ -54,7 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <section>
   <form novalidate="novalidate"  method="post" name="form1" action="?muraAction=cPerm.updatemodule&contentid=#URLEncodedFormat(rc.contentid)#">
         <h2>#application.rbFactory.getKeyValue(session.rb,'user.adminusergroups')#</h2>
-		<table class="table table-striped table-condensed table-bordered mura-table-grid">
+		<table class="mura-table-grid">
           <tr> 
             <th>#application.rbFactory.getKeyValue(session.rb,'permissions.allow')#</th>
             <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'permissions.group')#</th>
@@ -78,7 +78,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset rc.rslist=rc.groups.publicGroups />
 <section>
  <h2>#application.rbFactory.getKeyValue(session.rb,'user.membergroups')#</h2>		<p>#application.rbFactory.getKeyValue(session.rb,'permissions.memberpermscript')#</p>
- <table class="table table-striped table-condensed table-bordered mura-table-grid">
+ <table class="mura-table-grid">
     <tr> 
         <th>#application.rbFactory.getKeyValue(session.rb,'permissions.allow')#</th>
         <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'permissions.group')#</th>

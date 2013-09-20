@@ -22,7 +22,7 @@ height:#rc.height#<br/>
 width:#rc.width#<br/>
 --->
 <cfif images.hasNext()>
-<table class="table table-striped table-condensed table-bordered mura-table-grid">
+<table class="mura-table-grid">
 <tr>
 <th >Name</th>
 <th>Height</th>

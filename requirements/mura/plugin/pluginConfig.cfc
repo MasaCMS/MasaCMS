@@ -369,7 +369,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif arrayLen(clobArray)>
 		<cfloop query="arguments.rs">
 			<cfloop from="1" to="#arrayLen(clobArray)#" index="i">
-				 <cfset QuerySetCell(arguments.rs, clobArray[i],evaluate('arguments.rs.#clobArray[i]#'), arguments.rs.currentRow)>
+				 <cfset QuerySetCell(arguments.rs, clobArray[i],arguments.rs['#clobArray[i]#'], arguments.rs.currentRow)>
 			</cfloop>
 		</cfloop>
 	</cfif>

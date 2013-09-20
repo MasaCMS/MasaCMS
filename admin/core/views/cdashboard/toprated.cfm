@@ -95,7 +95,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <input type="hidden" value="#HTMLEditFormat(rc.siteid)#" name="siteID"/>
 <input type="hidden" value="cDashboard.topRated" name="muraAction"/>
 </form>
-<table class="table table-striped table-condensed table-bordered mura-table-grid">
+<table class="mura-table-grid">
 <tr>
 <th class="var-width">Content</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.averagerating")#</th>
@@ -108,20 +108,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset crumbdata=application.contentManager.getCrumbList(rsList.contentid, rc.siteid)/>
 </cfsilent>
 <tr>
-<td class="var-width">#application.contentRenderer.dspZoom(crumbdata)#</td>
+<td class="var-width">#$.dspZoom(crumbdata)#</td>
 <td><img src="images/rater/star_#application.raterManager.getStarText(rslist.theAvg)#.gif"/></td>
 <td>#rsList.theCount#</td>
 <td class="actions">
 		<ul>
 		<cfswitch expression="#rslist.type#">
 		<cfcase value="Page,Folder,Calendar,Gallery">
-		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,rsList.filename)#','#rslist.targetParams#');"><i class="icon-globe"></i></a></li>
+		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,rsList.filename)#','#rslist.targetParams#');"><i class="icon-globe"></i></a></li>
 		</cfcase>
 		<cfcase value="Link">
 		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('#rslist.filename#','#rslist.targetParams#');"><i class="icon-globe"></i></a></li>
 		</cfcase>
 		<cfcase value="File">
-		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##application.contentRenderer.getURLStem(rc.siteid,"")#?LinkServID=#rslist.contentid#','#rslist.targetParams#');"><i class="icon-globe"></i></a></li>
+		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"dashboard.session.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,"")#?LinkServID=#rslist.contentid#','#rslist.targetParams#');"><i class="icon-globe"></i></a></li>
 		</cfcase>
 		</cfswitch>	
 		</ul></td>
