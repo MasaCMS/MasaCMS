@@ -664,7 +664,20 @@ buttons: {
 			});
 		});
 	},
-	
+	loadRelatedContentSets:function(contenthistid,type,subtype,siteid){
+		var url = 'index.cfm';
+		var pars = 'muraAction=cArch.loadSelectedRelatedContent&compactDisplay=true&contenthistid=' + contenthistid + '&type=' + type + '&subtype=' + subtype + '&siteid=' + siteid + '&cacheid=' + Math.random();
+		
+		var d = $('#selectedRelatedContent');
+		d.html('<div class="load-inline"></div>');
+		$('#selectedRelatedContent .load-inline').spin(spinnerArgs2);
+		$.get(url + "?" + pars, function(data) {
+			$('#selectedRelatedContent .load-inline').spin(false);
+			d.html(data);
+			siteManager.setupRCSortable();
+		});
+
+	},
 	setupRCSortable: function() {
 		$(".rcSortable").sortable({
 			connectWith: ".rcSortable",
@@ -818,6 +831,8 @@ buttons: {
 				$(this).find('.load-inline').spin(spinnerArgs2);
 			}
 		});
+
+		siteManager.loadRelatedContentSets(contentHistID,type,subType,_siteID);
 
 		$.get(url + "?" + pars, function(data) {
 			siteManager.setExtendedAttributes(data);
