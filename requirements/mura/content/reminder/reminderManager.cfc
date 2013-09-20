@@ -108,7 +108,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="contentid" type="string">
 <cfargument name="siteid" type="string">
 
-<cfquery datasource="#variables.instance.configBean.getDatasource()#"  username="#variables.instance.configBean.getDBUsername()#" password="#variables.instance.configBean.getDBPassword()#">
+<cfquery>
 delete from tcontenteventreminders where contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/> and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 </cfquery>
 </cffunction>

@@ -1,46 +1,46 @@
 <cfoutput>
 <script type="text/javascript">
-jQuery(function(){
+$(function(){
 	initDraftPrompt();	
 });
 
 function initDraftPrompt(){
-	jQuery('a.draftprompt').click(function(e){
+	$('a.draftprompt').click(function(e){
 		e.preventDefault(); // stop the link's normal clicking behavior
 		var node = jQuery(this).parents(".mura-node-data:first");		
 		var a = jQuery(this);
 		
-		jQuery.ajax({
+		$.ajax({
 			  url: "./index.cfm?muraAction=carch.draftpromptdata&contentid=" + node.attr('data-contentid') + "&siteid=" + node.attr('data-siteid'),
 			  context: this,
 			  success: function(resp){
-		
+				  
 				  if (resp.showdialog !== undefined && resp.showdialog === "true"){
-					jQuery('<div><p>#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.dialog'))#</p></div>').dialog({
+					var dialog=jQuery(resp.message).dialog({
 						title:"#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.title'))#",
 						modal:true,
-						width:"400px",
-						buttons: {
-							"#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.cancel'))#":function(){
-								jQuery(this).dialog('close');
-							},
-							"#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.latest'))#": function(){
-								var href = a.attr('href').replace(node.attr('data-contenthistid'),resp.historyid);
-								window.location = href;
-							},
-							"#JSStringFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.draftprompt.published'))#" : function(){
-								window.location = a.attr('href');
-							}
-						}
+						width:"600px"
+					});
+					
+					$(".draft-prompt-option").click(function(e){
+						e.preventDefault();
+						var href = a.attr('href').replace(node.attr('data-contenthistid'),$(this).attr('data-contenthistid'));
+						actionModal(href);
+					});
+
+					$(".draft-prompt-approval").click(function(e){
+						e.preventDefault();
+						preview($(this).attr('href'));
+						jQuery(dialog).dialog('close');
+						return false;
 					});
 				} else {
-					window.location = a.attr('href');
+					actionModal(a.attr('href'));
 				}
 			}
 		});
 		
 	});
-	
 }
 </script>
 </cfoutput>

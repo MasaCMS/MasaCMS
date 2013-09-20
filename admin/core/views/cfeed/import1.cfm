@@ -51,7 +51,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfinclude template="dsp_secondary_menu.cfm">
 
-<form novalidate="novalidate" action="index.cfm?muraAction=cFeed.import2&feedid=#URLEncodedFormat(rc.feedid)#&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="contentForm" onsubmit="return false;">
+<form novalidate="novalidate" action="./?muraAction=cFeed.import2&feedid=#URLEncodedFormat(rc.feedid)#&siteid=#URLEncodedFormat(rc.siteid)#" method="post" name="contentForm" onsubmit="return false;">
 	<cfset feedBean=application.feedManager.read(rc.feedID) />
 	<h2>#feedBean.getName()#</h2>
 		</cfoutput>
@@ -70,14 +70,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 <cfloop from="1" to="#maxItems#" index="i">
 		<cfsilent>
-			<cftry>
-				<cfset remoteID=hash(left(items[i].guid.xmlText,255)) />
-				<cfcatch>
-					<cfset remoteID=hash(left(items[i].link.xmlText,255)) />
-				</cfcatch>
-			</cftry>
-			 
-			<cfset rc.newBean=application.contentManager.getActiveByRemoteID(remoteID,rc.siteid) />
+		<cftry>
+			<cfset remoteID=hash(left(items[i].guid.xmlText,255)) />
+			<cfcatch>
+				<cfset remoteID=hash(left(items[i].link.xmlText,255)) />
+			</cfcatch>
+		</cftry>
+		 
+		<cfset rc.newBean=application.contentManager.getActiveByRemoteID(remoteID,rc.siteid) />
 		
 		</cfsilent>
 		<cfif not (not rc.newBean.getIsNew() and (items[i].pubDate.xmlText eq rc.newBean.getRemotePubDate())) >

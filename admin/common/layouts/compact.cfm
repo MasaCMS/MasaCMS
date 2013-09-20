@@ -59,10 +59,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif len(rc.frontEndProxyLoc)>
 	<cfset session.frontEndProxyLoc=rc.frontEndProxyLoc>
 </cfif>
-
-<cfif not structKeyExists(rc,"$")>
-	<cfset rc.$=application.serviceFactory.getBean('$').init(session.siteid)>
-</cfif> 
 </cfsilent>
 <cfoutput>
 <!DOCTYPE html>
@@ -102,15 +98,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		 <!-- Spinner JS -->
 		<script src="#application.configBean.getContext()#/admin/assets/js/spin.min.js" type="text/javascript"></script>
 
-		<!-- Mura Admin JS -->
-		<script src="#application.configBean.getContext()#/admin/assets/js/admin.min.js" type="text/javascript"></script>
-
 		 <!-- jQuery -->
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.spin.js" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery.collapsibleCheckboxTree.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui.js?coreversion=#application.coreversion#" type="text/javascript"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-ui-i18n.min.js?coreversion=#application.coreversion#" type="text/javascript"></script>
+
+		<!-- Mura Admin JS -->
+		<script src="#application.configBean.getContext()#/admin/assets/js/admin.min.js" type="text/javascript"></script>
+
 		
 		<!-- CK Editor/Finder -->
 		<script type="text/javascript" src="#application.configBean.getContext()#/tasks/widgets/ckeditor/ckeditor.js"></script>
@@ -148,6 +145,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				setCheckboxTrees();
 				setColorPickers(".colorpicker");
 				setToolTips(".container");
+				setFileSelectors();
 
 				if (top.location != self.location) {
 					frontEndProxy = new Porthole.WindowProxy("#session.frontEndProxyLoc##application.configBean.getContext()#/admin/assets/js/porthole/proxy.html");
@@ -164,7 +162,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				};
 			});
 
-			preloadimages(['#application.configBean.getContext()#/admin/assets/images/ajax-loader.gif'])
+			preloadimages(['#application.configBean.getContext()#/admin/assets/images/ajax-loader.gif']);
 		</script>
 		#rc.ajax#
 		
@@ -175,7 +173,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	    <![endif]-->
 		
 		<!--[if lte IE 8]>
-		<link href="#application.configBean.getContext()#/admin/assets/css/ie/ie.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
+		<link href="#application.configBean.getContext()#/admin/assets/css/ie.min.css?coreversion=#application.coreversion#" rel="stylesheet" type="text/css" />
 		<![endif]-->
 		
 		<!--[if lte IE 7]>

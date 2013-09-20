@@ -218,4 +218,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>	
 </cffunction>
 
+<cfscript>
+	public any function invokeMethod(required string methodName, struct methodArguments={}) {
+		if(structKeyExists(this, arguments.methodName)) {
+			var theMethod = this[ arguments.methodName ];
+			return theMethod(argumentCollection = methodArguments);
+		}
+		if(structKeyExists(this, "onMissingMethod")) {
+			return this.onMissingMethod(missingMethodName=arguments.methodName, missingMethodArguments=arguments.methodArguments);	
+		}
+		throw("You have attempted to call the method #arguments.methodName# which does not exist in #getClassFullName()#");
+	}
+
+</cfscript>
+
 </cfcomponent>

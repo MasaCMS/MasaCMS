@@ -48,8 +48,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.resourceBundles=structNew() />
 <cfset variables.parentFactory=""/>
 <cfset variables.resourceDirectory=""/>
-<cfset variables.configBean=getBean("configBean") />
-<cfset variables.settingsManager=getBean("settingsManager") />
+<cfset variables.configBean="" />
+<cfset variables.settingsManager="" />
 <cfset variables.locale="" />
 
 <cffunction name="init" returntype="any" access="public" output="false">
@@ -59,6 +59,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset variables.parentFactory = arguments.parentFactory />
 	<cfset variables.locale = arguments.locale />
+	<cfset variables.configBean=getBean("configBean") />
+	<cfset variables.settingsManager=getBean("settingsManager") />
 
 	<cfif not len(arguments.resourceDirectory)>
 		<cfset variables.resourceDirectory=getDirectoryFromPath(getCurrentTemplatePath()) & "resources/"  />
@@ -842,11 +844,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset arguments.mySession.dateKeyFormat=utils.getJSDateKeyFormat()>
 </cfif>
 
+<cfset arguments.mySession.localeHasDayParts=findNoCase('AM',LSTimeFormat(createTime(0,0,0),  'medium'))>
+
 </cffunction>
 
 <cffunction name="resetSessionLocale" output="false">
 <cfargument name="mySession" required="true" default="#session#">
 	<cfset arguments.mySession.locale=application.settingsManager.getSite(arguments.mySession.siteID).getJavaLocale() />
+	<cfset arguments.mySession.localeHasDayParts=true>
 	<cfset arguments.mySession.dateKey=""/>
 	<cfset arguments.mySession.dateKeyFormat=""/>
 	<cfset setAdminLocale(arguments.mySession)>

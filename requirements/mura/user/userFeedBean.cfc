@@ -65,7 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.type=2>
 	<cfset variables.instance.categoryID="">
 	<cfset variables.instance.siteID="">
-	<cfset variables.instance.bean="user">
+	<cfset variables.instance.entityName="user">
 	<cfset variables.instance.sortBy="lname" />
 	<cfset variables.instance.sortDirection="asc" />
 	<cfset variables.instance.table="tusers">
@@ -90,11 +90,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfloop from="1" to="#listLen(arguments.params.param)#" index="i">
 				
 				<cfset addParam(
-						listFirst(evaluate('arguments.params.paramField#i#'),'^'),
-						evaluate('arguments.params.paramRelationship#i#'),
-						evaluate('arguments.params.paramCriteria#i#'),
-						evaluate('arguments.params.paramCondition#i#'),
-						listLast(evaluate('arguments.params.paramField#i#'),'^')
+						listFirst(arguments.params['paramField#i#'],'^'),
+						arguments.params['paramRelationship#i#'],
+						arguments.params['paramCriteria#i#'],
+						arguments.params['paramCondition#i#'],
+						listLast(arguments.params['paramField#i#'],'^')
 						) />
 	
 			</cfloop>
@@ -148,7 +148,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not len(variables.instance.siteID)>
 		<cfthrow message="The 'SITEID' value must be set in order to search users.">
 	</cfif>
-	<cfreturn getBean('userManager').getAdvancedSearchQuery(this)>
+	<cfreturn getBean('userManager').getAdvancedSearchQuery(userFeedBean=this)>
 </cffunction>
 
 <cffunction name="getIterator" returntype="any" output="false">
@@ -214,6 +214,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	    </cfloop> 
 	</cfif>
 	<cfreturn this>
+</cffunction>
+
+<cffunction name="getAvailableCount" output="false">
+	<cfreturn getQuery(countOnly=true).count>
 </cffunction>
  
 </cfcomponent>

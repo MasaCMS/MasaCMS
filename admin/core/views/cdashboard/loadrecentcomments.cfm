@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfinclude template="act_defaults.cfm">
 <cfset comments=application.contentManager.getRecentCommentsIterator(rc.siteID,5,false) />
 <cfoutput>
-<table class="table table-striped table-condensed table-bordered mura-table-grid">
+<table class="mura-table-grid">
 	<thead>
 	<tr>
 		<th class="var-width">#application.rbFactory.getKeyValue(session.rb,"dashboard.comments")#</th>

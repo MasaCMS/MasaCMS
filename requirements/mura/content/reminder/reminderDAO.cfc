@@ -48,14 +48,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="init" returntype="any" output="false" access="public">
 <cfargument name="configBean" type="any" required="yes"/>
-		<cfset variables.instance.configBean=arguments.configBean />
+		<cfset variables.configBean=arguments.configBean />
 	<cfreturn this />
 </cffunction>
 
 <cffunction name="create" returntype="void" access="public" output="false">
 <cfargument name="reminderBean" type="any" />
  
- <cfquery datasource="#variables.instance.configBean.getDatasource()#"  username="#variables.instance.configBean.getDBUsername()#" password="#variables.instance.configBean.getDBPassword()#">
+ <cfquery>
 insert into tcontenteventreminders (contentid,email,siteid,reminddate,remindHour,remindMinute,isSent,remindInterval)
 values (
 <cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(arguments.reminderBean.getcontentID() neq '',de('no'),de('yes'))#" value="#arguments.reminderBean.getcontentID()#">,
@@ -79,7 +79,7 @@ values (
  <cfset var rs=""/>
  <cfset var reminderBean=getBean("reminderBean") />
  
-	<cfquery datasource="#variables.instance.configBean.getReadOnlyDatasource()#" name="rs"  username="#variables.instance.configBean.getReadOnlyDbUsername()#" password="#variables.instance.configBean.getReadOnlyDbPassword()#">
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 	select * from tcontenteventreminders 
 	where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/>
 	and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
@@ -102,7 +102,7 @@ values (
 <cffunction name="update" returntype="void" access="public" output="false">
 <cfargument name="reminderBean" type="any" />
  
- <cfquery datasource="#variables.instance.configBean.getDatasource()#"  username="#variables.instance.configBean.getDBUsername()#" password="#variables.instance.configBean.getDBPassword()#">
+ <cfquery>
 update tcontenteventreminders set
 remindDate=<cfqueryparam cfsqltype="cf_sql_timestamp" null="#iif(isdate(arguments.reminderBean.getRemindDate()) ,de('no'),de('yes'))#" value="#createodbcdatetime(dateFormat(arguments.reminderBean.getRemindDate(),'mm/dd/yyyy'))#">,
 remindHour=<cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.reminderBean.getRemindHour()#">,

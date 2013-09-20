@@ -55,6 +55,7 @@ header, #cPlugins {
 		font-size: 15px;
 		position: relative;
 		top: 1px;
+		margin-right: .25em;
 	}
 	
 	.brand {
@@ -62,7 +63,7 @@ header, #cPlugins {
 	    position: absolute;
 	    padding: 0;
 	    margin: 0 0 0 -4px;
-	    z-index: 1000;
+	    z-index: 99; // Was 1000
 	    .hide-text;
 	    background: transparent url(../images/mura_logo.png) no-repeat;
 	    height: 52px;
@@ -242,7 +243,11 @@ header, #cPlugins {
 			i {
 				color: @grayDark;
 				font-size: 15px;
-				top: 2px;
+				top: 2px;				
+				display: inline-block;
+				width: 1.25em;
+				text-align: center;
+				position: relative;
 				}
 			
 			li > a:hover i {
@@ -354,7 +359,14 @@ header, #cPlugins {
 		 	}
 		
 		.dropdown-menu {
-		 	width: 164px;
+		 	min-width: 164px;
+		 	max-width: 388px;
+		 	max-height: 200px;
+		 	overflow-y: auto; 
+		 	
+		 	> li {
+		 	.text-overflow;
+		 		}
 		 	}
 		 	
 		.dropdown-menu  i {

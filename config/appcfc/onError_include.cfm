@@ -64,11 +64,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif len(local.pluginEvent.getValue("siteID"))>
 			<cfset application.pluginManager.announceEvent("onSiteError",local.pluginEvent)>
 		</cfif>	
-		<cftry>
-			<cfcatch>	
-				<cfset application.pluginManager.announceEvent("onGlobalError",local.pluginEvent)>
-			</cfcatch>
-		</cftry>
+		<cfset application.pluginManager.announceEvent("onGlobalError",local.pluginEvent)>
 	</cfif>
 </cfif>
 	
@@ -88,6 +84,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfcatch></cfcatch>
 	</cftry>
 </cfif>
-<cfheader statuscode="500" statustext="An Error Occurred" />		
-<cfdump var="#arguments.exception#" top="3">
+<cftry>
+	<cfheader statuscode="500" statustext="An Error Occurred" />	
+	<cfcatch></cfcatch>
+</cftry>
+	
+<cfdump var="#arguments.exception#" top="100">
 <cfabort>	

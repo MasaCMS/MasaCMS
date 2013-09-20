@@ -50,11 +50,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="file" default="" required="yes" type="any">
 		
 	<cfscript>
-    context = getPageContext();
+    var context = getPageContext();
     //context.setFlushOutput(false);
 	//response = context.getResponse();
-	response = context.getResponse();
-    out = response.getOutputStream();
+	var response = context.getResponse();
+    var out = response.getOutputStream();
     response.setContentType("#arguments.mimeType#");
     response.setContentLength(arrayLen(arguments.file));
     out.write(arguments.file);

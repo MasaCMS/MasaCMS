@@ -49,14 +49,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.parent = "" />
 	<cfset variables.javaLoader = "" />
 	<!--- main collection --->
-	<cfset variables.collections = createObject( "java", "java.util.Collections" ) />
+	<cfset variables.collections = "" />
 	<cfset variables.collection = "" />
-	<cfset variables.map = createObject( "java", "java.util.HashMap" ).init() />
-	<cfset variables.utility=application.utility>
+	<cfset variables.map = "" />
+	<cfset variables.utility="">
 	<!--- default variables --->
 
 	<cffunction name="init" access="public" returntype="mura.Factory" output="false">
 		
+		<cfset variables.collections = createObject( "java", "java.util.Collections" ) />
+		<cfset variables.collection = "" />
+		<cfset variables.map = createObject( "java", "java.util.HashMap" ).init() />
+		<cfset variables.utility=application.utility>
 		<!--- set the map into the collections --->
 		<cfset setCollection( variables.collections.synchronizedMap( variables.map ) ) />
 		

@@ -208,7 +208,7 @@ The #contactName# staff
 	<cfargument name="data" type="struct" />
 	
 	
-	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery>
 		update tmailinglistmembers
 		set isVerified = 1 
 		where email = <cfqueryparam cfsqltype="cf_sql_varchar" value="#data.email#"> and

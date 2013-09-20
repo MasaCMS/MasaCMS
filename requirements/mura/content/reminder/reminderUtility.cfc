@@ -144,7 +144,7 @@ Phone #eventContactPhone#</cfoutput>
 				"Event Reminder from #arguments.rsReminders.site#",
 				arguments.rsReminders.siteid) />
 			
-<cfquery datasource="#variables.instance.configBean.getDatasource()#">
+<cfquery>
 update tcontenteventreminders set isSent=1 where 
 siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.rsReminders.siteid#"/>
 and contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.rsReminders.contentid#"/>

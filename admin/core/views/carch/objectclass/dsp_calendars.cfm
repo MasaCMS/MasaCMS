@@ -49,7 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset pathStrings=arrayNew(1)>
 <cfloop query="rc.rsSections">
-	<cfset arrayAppend(pathStrings, application.contentRenderer.dspZoomText(application.contentGateway.getCrumblist(contentid=rc.rsSections.contentid,siteid=rc.rsSections.siteid, path=rc.rsSections.path)))>
+	<cfset arrayAppend(pathStrings, $.dspZoomText(application.contentGateway.getCrumblist(contentid=rc.rsSections.contentid,siteid=rc.rsSections.siteid, path=rc.rsSections.path)))>
 </cfloop>
 
 <cfset queryAddColumn(rc.rsSections, "pathString", "cf_sql_varchar",pathStrings)>
@@ -69,7 +69,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</option>
 			<cfloop query="rc.rsSections">
 				<cfsilent>
-				<cfset pathString=application.contentRenderer.dspZoomText(application.contentGateway.getCrumblist(contentid=rc.rsSections.contentid,siteid=rc.rsSections.siteid, path=rc.rsSections.path))>
+				<cfset pathString=$.dspZoomText(application.contentGateway.getCrumblist(contentid=rc.rsSections.contentid,siteid=rc.rsSections.siteid, path=rc.rsSections.path))>
 			</cfsilent>
 				<option value="#rc.rsSections.contentID#" <cfif rc.rsSections.contentID eq rc.subclassid>selected</cfif>>#HTMLEditFormat(rc.rsSections.pathString)#</option>
 			</cfloop>
@@ -84,7 +84,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfloop query="rc.rsSections">
 					<cfif rc.rsSections.contentID eq rc.subclassid>
 						<cfsilent>
-						<cfset pathString=application.contentRenderer.dspZoomText(application.contentGateway.getCrumblist(contentid=rc.rsSections.contentid,siteid=rc.rsSections.siteid, path=rc.rsSections.path))>
+						<cfset pathString=$.dspZoomText(application.contentGateway.getCrumblist(contentid=rc.rsSections.contentid,siteid=rc.rsSections.siteid, path=rc.rsSections.path))>
 						</cfsilent>
 						<option value="{'object':'category_summary','name':'#JSStringFormat(rc.rsSections.pathString)# - #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.categorysummary')#','objectid':'#rc.rsSections.contentid#'}">
 							#HTMLEditFormat(rc.rsSections.pathString)# 

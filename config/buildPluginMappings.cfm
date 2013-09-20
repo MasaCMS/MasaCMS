@@ -69,16 +69,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				
 <cfloop query="rsRequirements">
 	<cfif rsRequirements.type eq "dir" and rsRequirements.name neq '.svn'>
-		<cfset m=listFirst(rsRequirements.name,"_")>
-		<cfif not isNumeric(m) and not structKeyExists(this.mappings,m)>
-			<cfif canWriteMode>
-				<cffile action="append" file="#variables.baseDir#/plugins/mappings.cfm" output='<cfset this.mappings["/#m#"] = variables.mapPrefix & variables.BaseDir & "/plugins/#rsRequirements.name#">' mode="775">
-			<cfelseif canWriteMappings>
-				<cffile action="append" file="#variables.baseDir#/plugins/mappings.cfm" output='<cfset this.mappings["/#m#"] = variables.mapPrefix & variables.BaseDir & "/plugins/#rsRequirements.name#">'>		
-			</cfif>
-			<cfset this.mappings["/#m#"] = variables.mapPrefix & rsRequirements.directory & "/" & rsRequirements.name>
-		</cfif>
-		
 		<cfset currentDir="#variables.baseDir#/plugins/#rsRequirements.name#">
 		<cfset currentConfigFile="#currentDir#/plugin/config.xml">
 		<cfif fileExists(currentConfigFile)>
@@ -103,6 +93,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset currentConfig=structNew()>
 			</cfif>
 		</cfif>
+
+		<cfset m=listFirst(rsRequirements.name,"_")>
+
+		<cfif not isDefined("currentConfig.plugin.createmapping.xmlText")
+				or yesNoFormat(currentConfig.plugin.createmapping.xmlText)>
+			<cfif not isNumeric(m) and not structKeyExists(this.mappings,m)>
+				<cfif canWriteMode>
+					<cffile action="append" file="#variables.baseDir#/plugins/mappings.cfm" output='<cfset this.mappings["/#m#"] = expandPath("/plugins/#rsRequirements.name#")>' mode="775">
+				<cfelseif canWriteMappings>
+					<cffile action="append" file="#variables.baseDir#/plugins/mappings.cfm" output='<cfset this.mappings["/#m#"] = expandPath("/plugins/#rsRequirements.name#")>'>		
+				</cfif>
+				<cfset this.mappings["/#m#"] = rsRequirements.directory & "/" & rsRequirements.name>
+			</cfif>
+		</cfif>
+		
 		<cfif isDefined("currentConfig.plugin.mappings.mapping") and arrayLen(currentConfig.plugin.mappings.mapping)>
 			<cfloop from="1" to="#arrayLen(currentConfig.plugin.mappings.mapping)#" index="m">
 			<cfif structkeyExists(currentConfig.plugin.mappings.mapping[m].xmlAttributes,"directory")
@@ -121,9 +126,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif len(p) and directoryExists(currentPath)>
 					<cfset pluginmapping=currentConfig.plugin.mappings.mapping[m].xmlAttributes.name>
 					<cfif canWriteMode>
-						<cffile action="append" file="#variables.baseDir#/plugins/mappings.cfm" output='<cfif not structKeyExists(this.mappings,"/#pluginmapping#")><cfset this.mappings["/#pluginmapping#"] = variables.mapPrefix & variables.baseDir & "/plugins/#rsRequirements.name#/#p#"></cfif>' mode="775">
+						<cffile action="append" file="#variables.baseDir#/plugins/mappings.cfm" output='<cfif not structKeyExists(this.mappings,"/#pluginmapping#")><cfset this.mappings["/#pluginmapping#"] = expandPath("/plugins/#rsRequirements.name#/#p#)"></cfif>' mode="775">
 					<cfelseif canWriteMappings>
-						<cffile action="append" file="#variables.baseDir#/plugins/mappings.cfm" output='<cfif not structKeyExists(this.mappings,"/#pluginmapping#")><cfset this.mappings["/#pluginmapping#"] = variables.mapPrefix & variables.baseDir & "/plugins/#rsRequirements.name#/#p#"></cfif>'>		
+						<cffile action="append" file="#variables.baseDir#/plugins/mappings.cfm" output='<cfif not structKeyExists(this.mappings,"/#pluginmapping#")><cfset this.mappings["/#pluginmapping#"] = expandPath("/plugins/#rsRequirements.name#/#p#")></cfif>'>		
 					</cfif>
 				</cfif>
 			</cfif>

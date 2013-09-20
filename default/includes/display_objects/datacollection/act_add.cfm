@@ -131,6 +131,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 
 <cfif variables.acceptdata>
+	<cfscript>
+		formErrors=$.getBean('dataCollectionBean').set($.event().getAllValues())
+		.validate()
+		.getErrors();
+
+		if(!structIsEmpty(formErrors)){
+			variables.acceptdata=0;
+			variables.acceptError="Validation";
+		}
+	</cfscript>
+</cfif>
+
+<cfif variables.acceptdata>
 	<cfset application.pluginManager.announceEvent("onBeforeFormSubmitSave",variables.event)>
 	<cfset variables.info=application.dataCollectionManager.update(structCopy(request))/>
 	<cfset variables.event.setValue("formResult",variables.info)>

@@ -56,7 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <input type="hidden" name="siteid" value="#HTMLEditFormat(rc.siteid)#">
 </form>
 
-        <table class="table table-striped table-condensed table-bordered mura-table-grid">
+        <table class="mura-table-grid">
           <tr> 
             <th class="var-width">Name</th>
             <th>#application.rbFactory.getKeyValue(session.rb,'user.email')#</th>
@@ -68,12 +68,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
           <cfif rc.rsList.recordcount>
             <cfoutput query="rc.rsList" maxrows="#rc.nextN.recordsperPage#" startrow="#rc.startrow#"> 
               <tr> 
-                <td class="var-width"><a  title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?muraAction=cPrivateUsers.edituser&userid=#rc.rsList.UserID#&type=2&siteid=#URLEncodedFormat(rc.siteid)#&returnURL=#URLEncodedFormat(rc.currentURL)#">#HTMLEditFormat(rc.rslist.lname)#, #HTMLEditFormat(rc.rslist.fname)# <cfif rc.rslist.company neq ''> (#HTMLEditFormat(rc.rslist.company)#)</cfif></a></td>
+                <td class="var-width"><a  title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="./?muraAction=cPrivateUsers.edituser&userid=#rc.rsList.UserID#&type=2&siteid=#URLEncodedFormat(rc.siteid)#&returnURL=#URLEncodedFormat(rc.currentURL)#">#HTMLEditFormat(rc.rslist.lname)#, #HTMLEditFormat(rc.rslist.fname)# <cfif rc.rslist.company neq ''> (#HTMLEditFormat(rc.rslist.company)#)</cfif></a></td>
                 <td><cfif rc.rsList.email gt ""><a href="mailto:#HTMLEditFormat(rc.rsList.email)#">#HTMLEditFormat(rc.rsList.email)#</a><cfelse>&nbsp;</cfif></td>
                 <td>#LSDateFormat(rc.rslist.lastupdate,session.dateKeyFormat)#</td>
               <td>#LSTimeFormat(rc.rslist.lastupdate,"short")#</td>
 			  <td>#HTMLEditFormat(rc.rsList.LastUpdateBy)#</td>
-                <td class="actions"><ul><li class="edit"><a  title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?muraAction=cPrivateUsers.edituser&userid=#rc.rsList.UserID#&type=2&siteid=#URLEncodedFormat(rc.siteid)#&returnURL=#URLEncodedFormat(rc.currentURL)#"><i class="icon-pencil"></i></a></li></ul></td>
+                <td class="actions"><ul><li class="edit"><a  title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="./?muraAction=cPrivateUsers.edituser&userid=#rc.rsList.UserID#&type=2&siteid=#URLEncodedFormat(rc.siteid)#&returnURL=#URLEncodedFormat(rc.currentURL)#"><i class="icon-pencil"></i></a></li></ul></td>
               </tr>
             </cfoutput>
 		 <cfelse>
@@ -85,23 +85,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 <cfif rc.nextN.numberofpages gt 1>
 <cfoutput>
-<ul class="pagination">
+<div class="pagination">
+<ul>
 <cfif rc.nextN.currentpagenumber gt 1> 
   <li>
-    <a href="index.cfm?muraAction=cPrivateUsers.search&startrow=#rc.nextN.previous#&lname=#urlencodedformat(rc.lname)#&siteid=#URLEncodedFormat(rc.siteid)#&search=#urlencodedformat(rc.search)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'user.prev')#</a>
+    <a href="./?muraAction=cPrivateUsers.search&startrow=#rc.nextN.previous#&lname=#urlencodedformat(rc.lname)#&siteid=#URLEncodedFormat(rc.siteid)#&search=#urlencodedformat(rc.search)#">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'user.prev')#</a>
   </li>
 </cfif> 
  <cfloop from="#rc.nextN.firstPage#"  to="#rc.nextN.lastPage#" index="i">
   <cfif rc.nextN.currentpagenumber eq i>
     <li class="active"><a href="##">#i#</a></li>
   <cfelse> 
-    <li><a href="index.cfm?muraAction=cPrivateUsers.search&startrow=#evaluate('(#i#*#rc.nextN.recordsperpage#)-#rc.nextN.recordsperpage#+1')#&lname=#urlencodedformat(rc.lname)#&siteid=#URLEncodedFormat(rc.siteid)#&search=#urlencodedformat(rc.search)#">#i#</a></li>
+    <li><a href="./?muraAction=cPrivateUsers.search&startrow=#evaluate('(#i#*#rc.nextN.recordsperpage#)-#rc.nextN.recordsperpage#+1')#&lname=#urlencodedformat(rc.lname)#&siteid=#URLEncodedFormat(rc.siteid)#&search=#urlencodedformat(rc.search)#">#i#</a></li>
   </cfif>
 </cfloop>
 <cfif rc.nextN.currentpagenumber lt rc.nextN.NumberOfPages>
-  <li><a href="index.cfm?muraAction=cPrivateUsers.search&startrow=#rc.nextN.next#&lname=#urlencodedformat(rc.lname)#&siteid=#URLEncodedFormat(rc.siteid)#&search=#urlencodedformat(rc.search)#">#application.rbFactory.getKeyValue(session.rb,'user.next')#&nbsp;&raquo;</a>
+  <li><a href="./?muraAction=cPrivateUsers.search&startrow=#rc.nextN.next#&lname=#urlencodedformat(rc.lname)#&siteid=#URLEncodedFormat(rc.siteid)#&search=#urlencodedformat(rc.search)#">#application.rbFactory.getKeyValue(session.rb,'user.next')#&nbsp;&raquo;</a>
   </li>
 </cfif> 
 </ul>
+</div>
 </cfoutput>
 </cfif>

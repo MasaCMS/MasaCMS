@@ -145,6 +145,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.tablist="" />
 	<cfset variables.instance.newFile="" />
 	<cfset variables.newAddresses = arrayNew(1) />
+
+	<cfset variables.primaryKey = 'userid'>
+	<cfset variables.entityName = 'user'>
 	
 	<cfreturn this />
 </cffunction>
@@ -644,11 +647,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getImageURL" output="false">
-		<cfargument name="size" required="true" default="Large">
-		<cfargument name="direct" default="true"/>
-		<cfargument name="complete" default="false"/>
-		<cfargument name="height" default=""/>
-		<cfargument name="width" default=""/>
-		<cfreturn variables.settingsManager.getSite(variables.instance.siteID).getContentRenderer().createHREFForImage(variables.instance.siteID, variables.instance.photofileid, variables.instance.photofileEXT, arguments.size, arguments.direct, arguments.complete, arguments.height, arguments.width)>
-	</cffunction>
+	<cfargument name="size" required="true" default="Large">
+	<cfargument name="direct" default="true"/>
+	<cfargument name="complete" default="false"/>
+	<cfargument name="height" default=""/>
+	<cfargument name="width" default=""/>
+	<cfreturn variables.settingsManager.getSite(variables.instance.siteID).getContentRenderer().createHREFForImage(variables.instance.siteID, variables.instance.photofileid, variables.instance.photofileEXT, arguments.size, arguments.direct, arguments.complete, arguments.height, arguments.width)>
+</cffunction>
+
+<cffunction name="getPrimaryKey" output="false">
+	<cfreturn "userID">
+</cffunction>
+
+<cffunction name="getFullName" access="public" returntype="any" output="false">
+	<cfif variables.instance.type eq 2>
+		<cfreturn trim("#variables.instance.fname# # variables.instance.lname#")>
+	<cfelse>
+		<cfreturn variables.instance.groupname>
+	</cfif>
+</cffunction>
+
 </cfcomponent>

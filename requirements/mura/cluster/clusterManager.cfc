@@ -115,7 +115,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="runCommands" output="false">	
 	<cfset var rsCommands="">
 
-	<cfquery name="rsCommands" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsCommands')#">
 		select * from tclustercommands where instanceID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.instanceID#">
 	</cfquery>
 
@@ -129,7 +129,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				Detail: #cfcatch.detail#">
 			</cfcatch>
 		</cftry>
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
+		<cfquery>
 			delete from tclustercommands where commandID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsCommands.commandID#">
 		</cfquery>
 	</cfloop>
@@ -141,7 +141,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfif rsPeers.recordcount>
 		<cfloop query="rsPeers">
-			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
+			<cfquery>
 				insert into tclustercommands (commandID,instanceID,command,created) 
 					values(
 					'#createUUID()#',
@@ -162,11 +162,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif arguments.broadcast and variables.broadcastAppreloads>
 		<cfset broadcastCommand("getBean('settingsManager').remoteReload()")>
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
+		<cfquery>
 			delete from tclustercommands where instanceid not in (select instanceid from tclusterpeers)
 			and created < <cfqueryparam cfsqltype="cf_sql_timestamp" value="#dateAdd('d',-1,now())#">
 		</cfquery>
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
+		<cfquery>
 			delete from tclusterpeers where instanceid <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#application.instanceID#">
 		</cfquery>	
 	</cfif>
@@ -175,7 +175,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="touchInstance" output="false">
 	<cfif not hasInstance()>
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
+		<cfquery>
 			insert into tclusterpeers (instanceID) values(<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.instanceID#">)
 		</cfquery>
 	</cfif>
@@ -183,10 +183,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="purgeInstance" output="false">
 
-	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
+	<cfquery>
 		delete from tclusterpeers where instanceid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.instanceID#">
 	</cfquery>
-	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
+	<cfquery>
 		delete from tclustercommands where instanceid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.instanceID#">
 	</cfquery>
 	
@@ -195,7 +195,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="hasInstance" output="false">	
 	<cfset var rsInstance="">
 
-	<cfquery name="rsInstance" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsInstance')#">
 		select instanceID from tclusterpeers where instanceID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#application.instanceID#">
 	</cfquery>
 
@@ -203,9 +203,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>		
 
 <cffunction name="getPeers" output="false">
-	<cfset rsPeers="">
+	<cfset var rsPeers="">
 
-	<cfquery name="rsPeers" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDbUsername()#" password="#variables.configBean.getDbPassword()#">
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsPeers')#">
 		select instanceID from tclusterpeers where instanceID <> <cfqueryparam cfsqltype="cf_sql_varchar" value="#application.instanceID#">
 	</cfquery>
 

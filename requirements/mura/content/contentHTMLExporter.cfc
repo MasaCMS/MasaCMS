@@ -74,6 +74,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var $=getBean("MuraScope").init(arguments.siteID)>
 	<cfset var fileDelim = variables.configBean.getFileDelim()>
+	<cfset var localval="">
 	
 	<cfsetting requestTimeout = "7200">
 	

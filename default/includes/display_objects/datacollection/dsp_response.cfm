@@ -46,7 +46,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 
 <cfoutput>
-<cfif StructKeyExists(request, 'polllist') and variables.rsform.responseChart and not(refind("Mac",cgi.HTTP_USER_AGENT) and refind("MSIE 5",cgi.HTTP_USER_AGENT))>
+<cfif StructKeyExists(request, 'polllist') and  variables.rsform.responseChart and not(refind("Mac",cgi.HTTP_USER_AGENT) and refind("MSIE 5",cgi.HTTP_USER_AGENT))>
 	
 	<cfset variables.customResponse=application.pluginManager.renderEvent("onFormSubmitPollRender",variables.event)>
 	<cfif len(variables.customResponse)>
@@ -93,6 +93,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<p class="error">#getSite().getRBFactory().getKey("captcha.error")# <a href="javascript:history.back();">#getSite().getRBFactory().getKey("captcha.tryagain")#</a></p>
 	<cfelseif variables.acceptError eq "Spam">
 		<p class="error">#getSite().getRBFactory().getKey("captcha.spam")# <a href="javascript:history.back();">#getSite().getRBFactory().getKey("captcha.tryagain")#</a></p>
+	<cfelseif variables.acceptError eq "Validation">
+		<div class="alert alert-error">#application.utility.displayErrors(formErrors)#</div>
 	</cfif>
 <cfelse>
 		<div id="frm#replace(variables.rsform.contentID,'-','','ALL')#">

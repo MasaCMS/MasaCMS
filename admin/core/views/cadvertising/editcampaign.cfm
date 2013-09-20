@@ -54,7 +54,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 #application.utility.displayErrors(rc.campaignBean.getErrors())#
 
-<form class="fieldset-wrap" novalidate="novalidate" action="index.cfm?muraAction=cAdvertising.updateCampaign&siteid=#URLEncodedFormat(rc.siteid)#" name="form1"  method="post" onsubmit="return validate(this);">
+<form class="fieldset-wrap" novalidate="novalidate" action="./?muraAction=cAdvertising.updateCampaign&siteid=#URLEncodedFormat(rc.siteid)#" name="form1"  method="post" onsubmit="return validate(this);">
 <div class="fieldset"> 
 <div class="control-group">
 	<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'advertising.name')#</label>
@@ -118,10 +118,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfoutput>
 	<h3 class="divide">#application.rbFactory.getKeyValue(session.rb,'advertising.campaignplacements')#</h3>
 	<div id="nav-module-specific" class="btn-group">
-	<a class="btn" href="index.cfm?muraAction=cAdvertising.editPlacement&campaignid=#URLEncodedFormat(rc.campaignid)#&placementid=&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.addplacement')#</a>
+	<a class="btn" href="./?muraAction=cAdvertising.editPlacement&campaignid=#URLEncodedFormat(rc.campaignid)#&placementid=&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#">#application.rbFactory.getKeyValue(session.rb,'advertising.addplacement')#</a>
 	</div>
 	
-	<table class="table table-striped table-condensed table-bordered mura-table-grid">
+	<table class="mura-table-grid">
 	<tr>
 		<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'advertising.adzone')#</th>
 		<th>#application.rbFactory.getKeyValue(session.rb,'advertising.creativeasset')#</th>
@@ -169,8 +169,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 		<cfset cTotalBudget=cTotalBudget+rc.rsPlacements.budget />
 	 	</cfsilent>
 			<tr>
-				<td class="var-width"><a href="index.cfm?muraAction=cAdvertising.editAdZone&siteid=#URLEncodedFormat(rc.siteid)#&adzoneid=#rc.rsplacements.adzoneid#">#rc.rsPlacements.Adzone#</a></td>
-				<td><a href="index.cfm?muraAction=cAdvertising.editCreative&userid=#URLEncodedFormat(rc.userid)#&creativeid=#rc.rsplacements.creativeid#&siteid=#URLEncodedFormat(rc.siteid)#">#rc.rsPlacements.creative#</a></td>
+				<td class="var-width"><a href="./?muraAction=cAdvertising.editAdZone&siteid=#URLEncodedFormat(rc.siteid)#&adzoneid=#rc.rsplacements.adzoneid#">#rc.rsPlacements.Adzone#</a></td>
+				<td><a href="./?muraAction=cAdvertising.editCreative&userid=#URLEncodedFormat(rc.userid)#&creativeid=#rc.rsplacements.creativeid#&siteid=#URLEncodedFormat(rc.siteid)#">#rc.rsPlacements.creative#</a></td>
 				<td>#LSDateFormat(rc.rsPlacements.startdate,session.dateKeyFormat)#</td>
 				<td>#LSDateFormat(rc.rsPlacements.enddate,session.dateKeyFormat)#</td>
 				<td>#application.rbFactory.getKeyValue(session.rb,'advertising.#yesnoFormat(rc.rsPlacements.isExclusive)#')#</td>
@@ -184,9 +184,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<td>#LSCurrencyFormat(rc.rsPlacements.costPerClick*Clicks)#</td>
 				<td>#LSCurrencyFormat((rc.rsPlacements.costPerClick*Clicks)+(rc.rsPlacements.costPerImp*Imps))#</td>
 				<td class="actions"><ul>
-				<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="index.cfm?muraAction=cAdvertising.editPlacement&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#&campaignid=#rc.campaignID#&placementid=#rc.rsplacements.placementid#"><i class="icon-pencil"></i></a></li>
-				<li class="view-report"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.viewplacementreport')#" href="index.cfm?muraAction=cAdvertising.viewReportByPlacement&placementid=#rc.rsPlacements.placementid#&campaignid=#rc.campaignid#&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-bar-chart"></i></a></li>
-				<li class="delete"><a title="#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.delete'))#" href="index.cfm?muraAction=cAdvertising.updatePlacement&action=delete&campaignid=#rc.campaignid#&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#&placementid=#rc.rsplacements.placementid#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'advertising.deleteplacementconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li></ul>
+				<li class="edit"><a title="#application.rbFactory.getKeyValue(session.rb,'user.edit')#" href="./?muraAction=cAdvertising.editPlacement&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#&campaignid=#rc.campaignID#&placementid=#rc.rsplacements.placementid#"><i class="icon-pencil"></i></a></li>
+				<li class="view-report"><a title="#application.rbFactory.getKeyValue(session.rb,'advertising.viewplacementreport')#" href="./?muraAction=cAdvertising.viewReportByPlacement&placementid=#rc.rsPlacements.placementid#&campaignid=#rc.campaignid#&userid=#URLEncodedFormat(rc.userid)#&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-bar-chart"></i></a></li>
+				<li class="delete"><a title="#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'user.delete'))#" href="./?muraAction=cAdvertising.updatePlacement&action=delete&campaignid=#rc.campaignid#&siteid=#URLEncodedFormat(rc.siteid)#&userid=#URLEncodedFormat(rc.userid)#&placementid=#rc.rsplacements.placementid#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getKeyValue(session.rb,'advertising.deleteplacementconfirm'))#',this.href)"><i class="icon-remove-sign"></i></a></li></ul>
 				</td></tr>
 		</cfoutput>
 		<cfoutput>

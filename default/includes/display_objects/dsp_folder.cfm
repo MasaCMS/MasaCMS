@@ -79,7 +79,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfelse>
 	<cfset variables.applyPermFilter=false/>
 </cfif>
-<cfset variables.iterator=variables.$.getBean('contentGateway').getKidsIterator('00000000000000000000000000000000000',variables.$.event('siteID'),variables.$.content('contentID'),variables.menuType,variables.menuDate,variables.maxPortalItems,variables.$.event('keywords'),0,variables.$.content('sortBy'),variables.$.content('sortDirection'),variables.$.event('categoryID'),variables.$.event('relatedID'),variables.$.event('tag'),false,variables.applyPermFilter)>
+<cfset variables.iterator=variables.$.getBean('contentGateway').getKidsIterator('00000000000000000000000000000000000',variables.$.event('siteID'),variables.$.content('contentID'),variables.menuType,variables.menuDate,variables.maxPortalItems,variables.$.event('keywords'),0,variables.$.content('sortBy'),variables.$.content('sortDirection'),variables.$.event('categoryID'),variables.$.event('relatedID'),variables.$.event('tag'),false,variables.applyPermFilter,$.event('taggroup'))>
 
 <cfset variables.iterator.setNextN(variables.$.content('nextN'))>
 

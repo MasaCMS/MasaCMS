@@ -97,7 +97,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </form>
 
 <h3 class="alt">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.totalreferrals")#: <strong>#rstotal.referals#</strong></h3>
-<table class="table table-striped table-condensed table-bordered mura-table-grid">
+<table class="mura-table-grid">
 <tr>
 <th class="var-width">#application.rbFactory.getKeyValue(session.rb,"dashboard.session.referer")#</th>
 <th>#application.rbFactory.getKeyValue(session.rb,"dashboard.session.count")#</th>

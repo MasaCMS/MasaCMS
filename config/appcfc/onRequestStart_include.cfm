@@ -48,6 +48,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="application.setupComplete" default="false">
 <cfparam name="application.appInitialized" default="false">
 <cfprocessingdirective pageencoding="utf-8"/>
+<cfset setEncoding("url", "utf-8")>
+<cfset setEncoding("form", "utf-8")> 
 	
 <!--- Double check that the application has started properly.
 If it has not set application.appInitialized=false. --->
@@ -63,7 +65,7 @@ If it has not set application.appInitialized=false. --->
 		<cfset application.appInitialized=false>
 		<cfset request.muraAppreloaded=false>
 	</cfcatch>
-</cftry>	
+</cftry>
 
 <cfif isDefined("onApplicationStart") >
 	<cfif (
@@ -89,6 +91,7 @@ If it has not set application.appInitialized=false. --->
 			</cfif>
 		</cflock>
 	</cfif>
+
 	<cfif not application.setupComplete and request.muraAppreloaded>
 		<cfset renderSetup = true />
 		<!--- go to the index.cfm page (setup) --->
@@ -200,35 +203,40 @@ If it has not set application.appInitialized=false. --->
 	<cfset request.remoteAddr = CGI.REMOTE_ADDR>
 </cfif>
 
-<cfif isDefined("form.mobileFormat") and isBoolean(form.mobileFormat)>
-	<cfcookie name="mobileFormat" value="#form.mobileFormat#" />	
-<cfelseif isDefined("url.mobileFormat") and isBoolean(url.mobileFormat)>
-	<cfcookie name="mobileFormat" value="#url.mobileFormat#" />
-</cfif>
-
-<cfif not isdefined("cookie.mobileFormat")>
-	<cfset application.pluginManager.executeScripts('onGlobalMobileDetection')>
+<cfif not isdefined('url.muraadminpreview')>
+	<cfif isDefined("form.mobileFormat") and isBoolean(form.mobileFormat)>
+		<cfcookie name="mobileFormat" value="#form.mobileFormat#" />	
+	<cfelseif isDefined("url.mobileFormat") and isBoolean(url.mobileFormat)>
+		<cfcookie name="mobileFormat" value="#url.mobileFormat#" />
+	</cfif>
 
 	<cfif not isdefined("cookie.mobileFormat")>
-		<cfif 
-			findNoCase("iphone",CGI.HTTP_USER_AGENT)
-			or
-				(
-					findNoCase("mobile",CGI.HTTP_USER_AGENT)
-					and not reFindNoCase("tablet|ipad|xoom",CGI.HTTP_USER_AGENT)
-				)>
-			<cfcookie name="mobileFormat" value="true" />
-		<cfelse>	
-			<cfcookie name="mobileFormat" value="false" />
-		</cfif>	
+		<cfset application.pluginManager.executeScripts('onGlobalMobileDetection')>
+
+		<cfif not isdefined("cookie.mobileFormat")>
+			<cfif 
+				findNoCase("iphone",CGI.HTTP_USER_AGENT)
+				or
+					(
+						findNoCase("mobile",CGI.HTTP_USER_AGENT)
+						and not reFindNoCase("tablet|ipad|xoom",CGI.HTTP_USER_AGENT)
+					)>
+				<cfcookie name="mobileFormat" value="true" />
+			<cfelse>	
+				<cfcookie name="mobileFormat" value="false" />
+			</cfif>	
+		</cfif>
 	</cfif>
-</cfif>
 
-<cfif not isBoolean(cookie.mobileFormat)>
-	<cfcookie name="mobileFormat" value="false" />
-</cfif>
+	<cfif not isBoolean(cookie.mobileFormat)>
+		<cfcookie name="mobileFormat" value="false" />
+	</cfif>
 
-<cfset request.muraMobileRequest=cookie.mobileFormat>
+	<cfset request.muraMobileRequest=cookie.mobileFormat>
+<cfelse>
+	<cfparam name="url.mobileFormat" default="false">
+	<cfset request.muraMobileRequest=url.mobileFormat>
+</cfif>
 
 <cfif not request.hasCFApplicationCFM and not fileExists("#expandPath('/muraWRM/config')#/cfapplication.cfm")>
 	<cfset variables.tracePoint=initTracePoint("Writing config/cfapplication.cfm")>

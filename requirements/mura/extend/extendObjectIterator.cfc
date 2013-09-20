@@ -51,14 +51,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="init" access="public" output="false" returntype="any">
 	<cfargument name="configBean" default="">
-	<cfargument name="manager" default="">
+	<!---<cfargument name="manager" default="">--->
 	<cfset super.init(argumentCollection=arguments)>
 	<cfif isObject(arguments.configBean)>
 		<cfset setConfigBean(arguments.configBean)>
 	</cfif>
+	<!---
 	<cfif isObject(arguments.manager)>
 		<cfset setManager(arguments.manager)>
 	</cfif>
+	--->
 	<cfreturn this />
 </cffunction>
 

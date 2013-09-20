@@ -37,7 +37,6 @@
 				<cfelse>
 					<cfset oObject=APPLICATION.CreateCFC("CommandHandler." & #command#)>
 				</cfif>
-				
 				<cfset result=oObject.sendResponse()>
 
 			<!--- actually, errors should be catched inside command handlers and this never should happen --->

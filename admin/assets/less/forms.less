@@ -18,35 +18,46 @@ input[type="color"],
 .uneditable-input {
   height: @baseLineHeight;
   font-size: @baseFontSize;
-  /* padding: 4px; */
   line-height: @baseLineHeight;
-  color: @grayDarker;
+  color: @grayDarker !important;
   margin-bottom: 0;
 }
 
 select, input[type="file"] {
 	height: 28px;
-	line-height: 28px;
+	line-height: 1;
 	margin-bottom: 0;
 	.box-shadow(0 0 0) !important;
 }
 
-input[type="checkbox"] {
-	.box-shadow(0 0 0);	
+input[type="file"] {
+	height: auto;
+	margin: 0 0 @baseLineHeight/2 0;
+	}
+	
+input[type="checkbox"],
+input[type="radio"] {
+	.box-shadow(0 0 0) !important;	
 }
 
 textarea,
 select[multiple],
 select[size] {
-  height: auto;
+  min-height: 100px;
 }
 
 select.time {
 	width: 4.5em;
 }
 
-.input-prepend .add-on {
-	min-height: 20px;
+.input-prepend {
+	display: block; // Default is inline-block, but width wasn't getting respected on,login form for some reason
+}
+
+.input-append {
+	
+	input[type="text"] { width: 300px; }
+	i { font-size: 15px !important; } //Changing Default setting because button ends up 19px high
 }
 
 td, th {
@@ -76,8 +87,7 @@ input + .help-block {
 	margin: 0;
 	background: transparent;
 	.border-radius(0 0 5px 5px);
-	border-top-color: @white;
-	border-top-width: 0;
+	border: 0 !important;
 	padding-top: 0;
 	text-align: left;
 	
@@ -129,16 +139,6 @@ input + .help-block {
 .controls ul {
 	margin: 0;
 	list-style: none;
-	
-	select {
-		/*
-font-size: @baseFontSize - 1;
-		padding: 0;
-		line-height: 1;
-		height: 18px;
-		width: auto;
-*/
-	}
 }
 
 .help-inline, .help-block {
@@ -171,8 +171,7 @@ font-size: @baseFontSize - 1;
 			}
 			
 			dd {
-				margin: 0;
-				
+				margin: 0;				
 				}
 			}
 		
@@ -237,13 +236,45 @@ fieldset, .fieldset { // Using an actual fieldset causes ck editor to grow crazy
 		margin-bottom: 0;
 		border-top: 1px solid @formBorderColor;
 		.clearfix;
+	
+		&:first-of-type {
+			border-top: 0 !important;
+			padding-top: 0 !important;
+			}
+			
+		label + .btn-toolbar {
+				margin-top: 0;
+				}	
+			
+		.well {
+				background-color: @grayLight;
+				
+				.control-group {
+					border-top: 0;
+					padding: 0;
+					}
+			}
+		
+		 .control-group-nested {
+			 border-top: 0;
+			 padding: 0;
+			 margin-bottom: @baseLineHeight/2;
+			 
+			 label {
+				 font-weight: normal;
+				 font-size: 12px;
+				 
+				 a {
+					 font-weight: normal;
+					 font-size: 12px;
+					 }	 
+				 } 
+		 	}
+		 	
+		 	.input-append {
+			 	margin-bottom: 0;
+			 }		
 		}
-
-	> div:first-of-type {
-		border-top: 0 !important;
-		padding-top: 0 !important;
-		}
-
 	}
 
 label:last-child {
@@ -254,6 +285,14 @@ label:last-child {
 	color: @grayDarker !important;
 	font-size: 13px;
 	font-weight: bold;
+	text-shadow: 0 1px 0 @white;
+	cursor: default;
+}
+
+.well .control-label {
+	color: @grayDarker !important;
+	font-size: 12px;
+	font-weight: normal;
 	text-shadow: 0 1px 0 @white;
 }
 
@@ -267,35 +306,38 @@ label:last-child {
 	+ .control-label {
 	margin-top: @baseLineHeight;
 	}
-}
-
-.btn {
-  color: @grayDark;
-  border-color: @btnBorder @btnBorder darken(@btnBorder, 10%);
+	
+	&.rule-dotted-top {
+		border-top: 1px dashed @gray;
+		margin-top: @baseLineHeight;
+		padding-top: @baseLineHeight/2;
+	}
 }
 
 .tab-content, .fieldset-wrap {
 
 	.form-actions {
-	
 		text-align: center;
-	
+		
 		.btn {
-			.btn-inverse;
-			border: 0;
-			.border-radius(28px);
-			/* .box-shadow(0 2px 2px rgba(255,255,255,.6)); */
-			text-shadow: 0 -1px 1px rgba(0,0,0,.35);
-			margin: 0 .15em;
-			
-			i {
-				color: darken(@btnInverseBackgroundHighlight,30%);
-				text-shadow: 0 1px 0 rgba(255,255,255,.25);
-				}
-			
+			.btn-primary;
 			}
+		
 		}
 	}
+	
+#configurator {
+	
+	.fieldset-wrap {
+	.box-shadow(none);
+	margin-bottom: 0;
+		}
+	
+	.fieldset {
+		margin: 0;
+		border: 0;
+		}
+}
 
 // Various Search Utilities
 .criteria {
@@ -332,24 +374,163 @@ label:last-child {
 		}
 	}
 
+#selectAssocImageResults {
+	
+	max-height: 300px;
+	margin-bottom: @baseLineHeight;
+	
+	> .nav-tabs {
+		border: 0;
+		margin: 0;
+		width: 100%;
+		z-index: 100;
+		}
+	
+	> .nav-tabs > li {
+		.box-sizing(border-box);
+		width: 50%;
+		
+		&:last-child {
+			float: right;
+			}	
+		}
+		
+	> .nav-tabs > li > a,
+	> .nav-tabs > li > a:hover {
+		border: 0;
+		margin-bottom: -2px;
+		margin-right: 0;
+		display: block;
+		padding: .75em;
+		background: @grayLighter;
+		text-align: center;
+		.border-top-radius(4px);
+		color: @grayDark;
+		//font-weight: normal;
+		}
+	
+	> .nav-tabs > li > a:hover {
+		background: @gray;
+		}
+		
+	> .nav-tabs > li.active {
+	
+		> a {
+			border: 0 !important;
+			background: @grayLight;
+			color: @grayDark;
+			font-weight: bold;
+			}
+		}	
+				
+	/* Content */
+	> .tab-content {
+		
+		> .tab-pane {
+			max-height: 200px;
+			overflow-y: scroll;
+			background: @grayLight;
+			padding: 1em;
+			
+			> ul { 
+			
+				> li {
+					border: 1px solid @grayLight;
+					.border-radius(3px);
+					background: lighten(@grayLighter,2%);
+					padding: .5em;
+					margin: 0 .5em .5em 0;
+					.clearfix();
+					
+					}
+				
+				}
+				
+			&#mura-assoc-files > ul > li {
+						text-align: left;
+						line-height: 28px;
+						margin: 0 0 .2em 0;
+						//.border-radius(0);
+
+						input[type="radio"] {
+							margin: 0;
+							}
+						
+						i {
+							vertical-align: middle;
+							margin: 0 .2em;
+							}
+						}	
+			
+			&#mura-assoc-images > ul > li {
+						.inline-block();
+						text-align: center;			
+					
+						&.no-results {
+							display: block;
+							text-align: left;
+							}
+						}
+			
+			}
+		}
+	}
+
 // Basic Tab
 .mura-file {
 	font-size: 15px;
+	line-height: 28px;
+	margin-bottom: 0;
+	
+	> .current-file {
+		text-transform: uppercase;
+		padding: .5em 1em;
+		.border-radius(8px);
+		letter-spacing: 1px;
+		background: @grayDark;
+		color: @white;
+		font-size: 9px;
+		.inline-block;
+		line-height: 1;
+		margin: 0 0 .5em;
+		}
+	
+	> i {
+		vertical-align: middle;
+		float: left;
+		margin-right: .25em;
+		//margin-top: -12px;
+		}
+	
+	& + .btn {
+
+		margin: @baseLineHeight/2 0;
+	
+		> i {
+			font-size: 16px;
+		}
+	}
+}
+
+.btn.download-file {
+	
+	i {
+		position: relative;
+		left: -2px;
+		top: 1px;
+	}
+	
 }
 
 #assocImage {
 	border: 8px solid @grayLight;
 	.border-radius(3px);
-	margin-bottom: @baseLineHeight;
+	margin-bottom: @baseLineHeight/2;
 	.box-sizing(border-box);
 	max-width: 100%;
 	clear: both !important;
 	float: none;
 	display: block;
-}
-
-#selectAssocImage {
-	margin-left: 3em;
 }
 
 #mura-file-unlock {
@@ -436,4 +617,88 @@ select[multiple] {
 	margin-bottom: @baseLineHeight;
 	.border-radius(5px);
 	.box-shadow(@globalDropShadow);
+}
+
+// File Selector 
+.mura-file-selector {
+		
+	.btn-group {
+		margin-bottom: @baseLineHeight/2;
+		
+		button[value="Upload"] {
+			.border-left-radius(4px);
+			}
+		}
+	
+	#mura-download-locked, #mura-download-unlocked {
+		margin: @baseLineHeight/2 0;
+		}
+		
+	#mura-download-locked {
+		.border-right-radius(4px);
+		border-left: 0;
+		}
+	
+	.controls .btn-group i {
+			font-size: 17px;
+			line-height: 19px;
+			top: 2px;
+		
+			&.icon-crop {
+				font-size: 15px;
+				top: 0;
+				}
+			}
+		
+	form {
+		margin-bottom: 0;
+		
+		input[type=text] {
+			margin-bottom: 0;
+			}
+		
+		}
+	
+	}
+
+.control-group .mura-file-selector {
+
+		input[type="text"] { float: left; }
+		
+		// Darkening buttons for contrast when in a fieldset
+		.btn {
+			.buttonBackground(darken(@btnBackground,5%), darken(@btnBackgroundHighlight,5%), darken(@grayDark,5%), 0 1px 1px rgba(255,255,255,.75));
+			
+			&.active	{
+				.buttonBackground(darken(@btnBackground,12%), darken(@btnBackgroundHighlight,12%), darken(@grayDark,12%), 0 1px 1px rgba(255,255,255,.75));
+				}
+		}
+	}
+	
+#tabPlugins .mura-file-selector {
+
+	margin-bottom: @baseLineHeight;
+	padding-bottom: @baseLineHeight;
+	border-bottom: 1px solid @gray;
+
+	//.btn-group { margin-bottom: @baseLineHeight; }
+}
+
+.btn-group > .dropdown-menu > li > a {
+	margin-right: 0;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+	
+// Subtype Icon Selector
+#iconcurrent {
+	
+}
+
+#icon-selector {
+	> li > .icon-selector-undo { 
+		background: @orange;
+		color: @white;
+		border: 0;
+	}
 }

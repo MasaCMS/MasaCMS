@@ -79,7 +79,7 @@
                 <cfthrow errorcode="#REQUEST.constants.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED#" type="ckfinder" />
             </cfif>
          <cfelseif arguments.command eq "Permissions">
-            <cfif not(application.permUtility.isUserInGroup('Admin',application.settingsManager.getSite(session.siteid).getPrivateUserPoolID(),0) or application.permUtility.isS2())>
+             <cfif not(application.permUtility.isUserInGroup('Admin',application.settingsManager.getSite(session.siteid).getPrivateUserPoolID(),0) or application.permUtility.isS2())>
                 <cfthrow errorcode="#REQUEST.constants.CKFINDER_CONNECTOR_ERROR_ACCESS_DENIED#" type="ckfinder" />
             </cfif>
          </cfif>

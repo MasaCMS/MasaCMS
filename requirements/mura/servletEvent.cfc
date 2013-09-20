@@ -79,6 +79,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfparam name="request.returnURL" default=""/>
 	<cfparam name="request.showMeta" default="0"/>
 	<cfparam name="request.forceSSL" default="0"/>
+	<cfparam name="request.muraForceFilename" default="true"/>
 
 	<cfset setValue('HandlerFactory',application.pluginManager.getStandardEventFactory(getValue('siteid')))>
 	<cfset setValue("MuraScope",createObject("component","mura.MuraScope"))>

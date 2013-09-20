@@ -90,7 +90,7 @@ var categoryManager = {
 		document.getElementById(id).style.left = xPos + "px";
 		$('#' + id).removeClass('hide');
 
-		document.getElementById('newCategoryLink').href = 'index.cfm?muraAction=cCategory.edit&parentid=' + parentid + '&siteid=' + siteid;
+		document.getElementById('newCategoryLink').href = './?muraAction=cCategory.edit&parentid=' + parentid + '&siteid=' + siteid;
 
 
 		if(this.lastid != "" && this.lastid != id) {

@@ -84,6 +84,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.remoteID=""/>
 	<cfset variables.instance.isNew=1/>
 
+	<cfset variables.primaryKey = 'commentid'>
+	<cfset variables.entityName = 'comment'>
+
 	<cfreturn this />
 </cffunction>
 
@@ -197,7 +200,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="remoteID">	
 	<cfset var rs=""/>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 	select c.contentid,c.commentid,c.parentid,c.name,c.email,c.url,c.comments,c.entered,c.siteid,c.isApproved,c.subscribe, c.userID, c.path, c.remoteID, k.kids, f.fileid, f.fileExt 
 	from tcontentcomments c left join (select count(*) kids, parentID 
 										from tcontentcomments where commentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#"> 
@@ -232,7 +235,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset pluginManager.announceEvent("onBeforeCommentDelete",pluginEvent)>
 	
-	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery>
 	delete from tcontentcomments
 	where path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#getCommentID()#%">
 	</cfquery>
@@ -271,7 +274,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfset pluginManager.announceEvent("onBeforeCommentUpdate",pluginEvent)>
 		
-		<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery>
 		update tcontentcomments set
 			contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#"/>,
 			name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.name#"/>,
@@ -294,7 +297,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 		<cfset pluginManager.announceEvent("onBeforeCommentCreate",pluginEvent)>
 		
-		<cfquery datasource="#application.configBean.getDatasource()#" username="#application.configBean.getDBUsername()#" password="#application.configBean.getDBPassword()#" name="rslist">
+		<cfquery>
 			insert into tcontentcomments (contentid,commentid,parentid,name,email,url,comments,entered,siteid,isApproved,subscribe,userID,path, ip, remoteID)
 			values (
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#"/>,
@@ -335,7 +338,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="saveSubscription" access="public" output="false">		
-	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery>
 			update tcontentcomments set subscribe=<cfqueryparam cfsqltype="cf_sql_numeric" value="#variables.instance.subscribe#">
 			where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#">
 			and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#">
@@ -362,7 +365,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset contactEmail=settingsManager.getSite(variables.instance.siteID).getContact()>
 	</cfif>
 	<cfif not len(arguments.script)>
-		<cfquery name="rsContent" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsContent')#">
 			select title from tcontent 
 			where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#">
 			and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#">
@@ -412,7 +415,7 @@ View
 	<cfset var email=variables.mailer>
 	<cfset var rsSubscribers=variables.contentDAO.getCommentSubscribers(variables.instance.contentID,variables.instance.siteID)>
 	<cfset var contentBean=getBean('content').loadBy(contentid=variables.instance.contentID)>
-	<cfquery name="rsContent" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsContent')#">
 		select title from tcontent 
 		where contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#">
 		and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#">
@@ -498,7 +501,7 @@ To Unsubscribe Click Here:
 	<cfargument name="sort" required="true" default="asc">
 	<cfset var rsCommentCrumbData="">
 	
-	<cfquery name="rsCommentCrumbData" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsCommentCrumbData')#">
 		select c.contentid,c.commentid,c.parentid,c.name,c.email,c.url,c.comments,c.entered,c.siteid,
 		c.isApproved,c.subscribe,c.userID,c.path, 
 		<cfif variables.configBean.getDBType() eq "MSSQL">
@@ -547,4 +550,9 @@ To Unsubscribe Click Here:
 <cffunction name="clone" output="false">
 	<cfreturn getBean("comment").setAllValues(structCopy(getAllValues()))>
 </cffunction>
+
+<cffunction name="getPrimaryKey" output="false">
+	<cfreturn "commentID">
+</cffunction>
+
 </cfcomponent>

@@ -75,6 +75,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.instance.LastUpdateBy = "" />
 		<cfset variables.instance.LastUpdateByID = "" />
 	</cfif>
+
+	<cfset variables.primaryKey = 'mlid'>
+	<cfset variables.entityName = 'mailinglist'>
+
 	<cfreturn this />
 </cffunction>
 

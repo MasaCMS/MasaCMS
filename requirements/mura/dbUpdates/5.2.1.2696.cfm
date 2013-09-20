@@ -60,6 +60,27 @@ ALTER TABLE [dbo].[tadplacementcategoryassign] WITH NOCHECK ADD
 	</cftry>
 	</cfif>
 </cfcase>
+<cfcase value="postgresql">
+	<cfset variables.RUNDBUPDATE=false/>
+	<cftry>
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		select placementID as CheckIfTableExists from tadplacementcategoryassign limit 1
+		</cfquery>
+		<cfcatch>
+			<cfset variables.RUNDBUPDATE=true/>
+		</cfcatch>
+	</cftry>
+
+	<cfif variables.RUNDBUPDATE>
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		CREATE TABLE IF NOT EXISTS  tadplacementcategoryassign (
+			placementID char(35) NOT NULL,
+			categoryID char(35) NOT NULL,
+			CONSTRAINT PK_tadplacementcategoryassign PRIMARY KEY (placementID, categoryID)
+		)
+		</cfquery>
+	</cfif>
+</cfcase>
 <cfcase value="nuodb">	
 	<cfif not dbUtility.tableExists('tadplacementcategoryassign')>
 		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
@@ -139,6 +160,15 @@ select * from tadplacements  where 0=1
 		</cfcatch>
 	</cftry>
 </cfcase>
+<cfcase value="postgresql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tadplacements ADD hasCategories integer default NULL
+	</cfquery>
+
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	CREATE INDEX IX_ad_hascategories ON tadplacements(hasCategories)
+	</cfquery>
+</cfcase>
 <cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 		ALTER TABLE tadplacements ADD COLUMN hasCategories int default NULL
@@ -208,6 +238,15 @@ select remoteID from tclassextenddatauseractivity  where 0=1
 			</cfquery>
 		</cfcatch>
 	</cftry>
+</cfcase>
+<cfcase value="postgresql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tclassextenddatauseractivity ADD remoteID varchar(35) NULL
+	</cfquery>
+
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	CREATE INDEX IX_extend_remotID2 ON tclassextenddatauseractivity(remoteID)
+	</cfquery>
 </cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
@@ -288,6 +327,23 @@ select remoteID from tclassextenddata where 0=1
 			</cfquery>
 		</cfcatch>
 	</cftry>
+</cfcase>
+<cfcase value="postgresql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tclassextenddata ADD COLUMN remoteID varchar(35) default NULL
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	CREATE INDEX IX_extend_remoteID1 ON tclassextenddata (remoteID)
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	CREATE INDEX IX_extend_attr_name ON tclassextendattributes (name)
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	CREATE INDEX IX_extend_type ON tclassextend (type,subtype)
+	</cfquery>
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	CREATE INDEX IX_extend_siteID ON tclassextend (siteID)
+	</cfquery>
 </cfcase>
 <cfcase value="oracle">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">

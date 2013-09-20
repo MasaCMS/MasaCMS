@@ -16,6 +16,11 @@ select * from tadcreatives testTarget where 0=1
 	ALTER TABLE tadcreatives ADD COLUMN target varchar(10) default NULL
 	</cfquery>
 </cfcase>
+<cfcase value="postgresql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tadcreatives ADD COLUMN target varchar(10) default NULL
+	</cfquery>
+</cfcase>
 <cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tadcreatives ADD COLUMN target varchar(10) default NULL
@@ -59,6 +64,11 @@ ALTER TABLE tcontentcomments ADD subscribe tinyint
 		</cfcatch>
 	</cftry>
 </cfcase>
+<cfcase value="postgresql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentcomments ADD COLUMN subscribe smallint
+	</cfquery>
+</cfcase>
 <cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontentcomments ADD COLUMN subscribe smallint 
@@ -98,6 +108,11 @@ ALTER TABLE tcontent ADD doCache tinyint
 			</cfquery>
 		</cfcatch>
 	</cftry>
+</cfcase>
+<cfcase value="postgresql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontent ADD COLUMN doCache smallint
+	</cfquery>
 </cfcase>
 <cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">

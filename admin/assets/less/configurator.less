@@ -1,14 +1,14 @@
 
 
-#availableFields {
+#availableFields, #availableGroups {
 	margin-bottom: 0;
 }
 
-#availableFields span, .dragMsg span {
+#availableFields span, #availableGroups span, .dragMsg span {
 	.inline-block;
 	}
 
-#sortableFields, .sortableFields {
+#sortableFields, .sortableFields, #sortableGroups, .sortableGroups {
 	
 	.clearfix;
 	clear: both;
@@ -37,7 +37,9 @@
 	#availableListSort,
 	#displayListSort,
 	#contentAvailableListSort,
-	#contentDisplayListSort  {
+	#contentDisplayListSort,
+	#groupAvailableListSort,
+	#groupAssignmentListSort  {
 		.box-sizing(border-box);
 		margin: 0 0 @baseLineHeight;
 		padding: 12px;
@@ -48,7 +50,8 @@
 	}
 	
 	#availableListSort,
-	#contentAvailableListSort {
+	#contentAvailableListSort,
+	#groupAvailableListSort {
 		border: 1px dotted @grayLight;
 		min-height: 36px;
 		margin: 0 18px 0 0;
@@ -59,7 +62,7 @@
 		}
 	}
 	
-	#contentDisplayListSort, #displayListSort {
+	#contentDisplayListSort, #displayListSort, #groupAssignmentListSort, #groupAvailableListSort {
 		
 		li {
 			background: hsl(55,80%,88%);

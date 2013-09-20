@@ -89,7 +89,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.adminBase=""/>
 		</cfif>
 		
-		<cfset editableControl.editLink = variables.adminBase & "#variables.$.globalConfig('context')#/admin/index.cfm?fuseaction=cArch.edit">
+		<cfset editableControl.editLink = variables.adminBase & "#variables.$.globalConfig('context')#/admin/?fuseaction=cArch.edit">
 		<cfif len(variables.$.event('previewID'))>
 			<cfset editableControl.editLink = editableControl.editLink & "&amp;contenthistid=" & variables.$.event('previewID')>
 		<cfelse>
@@ -105,7 +105,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;compactDisplay=true">
 		<cfset editableControl.editLink = editableControl.editLink & "&amp;homeid=" & variables.$.content('contentID')>
 		<!---
-		<cfset editableControl.historyLink = adminBase & "#variables.$.globalConfig('context')#/admin/index.cfm?fuseaction=cArch.hist">
+		<cfset editableControl.historyLink = adminBase & "#variables.$.globalConfig('context')#/admin/?fuseaction=cArch.hist">
 		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;siteid=" & bean.getSiteID()>
 		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;contentid=" & bean.getContentID()>
 		<cfset editableControl.historyLink = editableControl.historyLink & "&amp;topid=00000000000000000000000000000000001">

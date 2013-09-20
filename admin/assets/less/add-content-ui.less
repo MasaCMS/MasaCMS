@@ -1,0 +1,83 @@
+.add-content-ui {
+		
+		ul {
+			list-style: none;
+			margin: 0 0 -8px;
+			padding: 0;
+			}
+		
+		li {
+			.inline-block;
+			.box-sizing(border-box);
+			position: relative;
+			line-height: 1.1;
+			width: 32%;
+			margin: 0 1% 8px 0;
+			text-align: center;
+			
+			a {
+				// .btn-alt; Stopped rendering for some reason, including actual styles instead for now
+				color: @white;
+				padding: 3% 3% 5%;
+				#gradient .vertical(#414141,#323232);
+				text-shadow: 0 -1px 0 rgba(0,0,0,.99);
+				.border-radius(4px);
+				border-bottom: 1px solid lighten(@grayDarker,5%);
+				border-bottom-right-radius: 1px solid lighten(@grayDarker,5%);
+				border-right: 1px solid lighten(@grayDarker,5%);
+				display: block;
+				}
+			
+			a:hover {
+				text-decoration: none;
+				#gradient .vertical(darken(#414141,10%),darken(#323232,10%));
+				
+				i {
+					color: @white;
+					}
+				
+				span {
+					color: @gray;
+					}
+				
+				}
+			
+			i {
+				font-size: 32px;
+				line-height: 1;
+				width: auto;
+				height: 42px;
+				line-height: 42px;
+				display: block;
+				padding: 0;
+				margin: 0 auto;
+				color: @gray;
+				}
+				
+			a[rel="tooltip"] {
+				position: absolute;
+				top: 4px;
+				right: 6px;
+				display: inline-block !important;
+				height: 15px;
+				background: transparent;
+				border: 0;
+				z-index: 10;
+				
+				i {
+					font-size: 15px;
+					color: @grayDark;
+					text-shadow: 0 -1px 0 rgba(0,0,0,.9);
+					height: auto;
+					line-height: 1;
+					.inline-block;
+					}
+				}
+
+		}
+		
+		li:nth-child(3n) {
+			margin-right: 0;
+			}
+		
+		}

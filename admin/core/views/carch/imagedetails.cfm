@@ -3,11 +3,11 @@
 <cfset $=application.serviceFactory.getBean('$').init(session.siteID)>
 <cfif isDefined('url.userid')>
 	<cfset rc.userBean=$.getBean('user').loadBy(userID=rc.userID,siteID=rc.siteID)>
-<cfelse>
+<cfelseif isDefined('url.contentHistID')>
 	<cfset rc.contentBean=$.getBean('content').loadBy(contentHistID=rc.contentHistID)>
 </cfif>
 
-<cfif not (isDefined('rc.fileID') and len(rc.fileID))>
+<cfif (not (isDefined('rc.fileID') and len(rc.fileID))) and isDefined('rc.contentBean')>
 	<cfset rc.rsfileAttributes=rc.contentBean.getExtendedData().getAttributesByType('File')>
 	<cfset rc.fileID=listAppend(
 				valueList(rc.rsfileAttributes.attributeValue),
@@ -47,7 +47,7 @@
 <cfinclude template="dsp_secondary_menu.cfm">
 
 <cfif rc.compactDisplay neq "true" and isDefined('rc.contentBean')>
-	#application.contentRenderer.dspZoom(crumbdata=rc.contentBean.getCrumbArray(),class="navZoom alt")#
+	#$.dspZoom(crumbdata=rc.contentBean.getCrumbArray(),class="navZoom alt")#
 </cfif>
 
 <div id="image-details" class="form-horizontal fieldset-wrap">
@@ -286,8 +286,11 @@
 		       	});
 	    });
 
-		<cfif rc.compactDisplay eq "true">
+		
 		$(document).ready(function(){
+			$('.load-inline').spin(spinnerArgs2);
+
+			<cfif rc.compactDisplay eq "true">
 			if (top.location != self.location) {
 				if(jQuery("##ProxyIFrame").length){
 					jQuery("##ProxyIFrame").load(
@@ -299,8 +302,9 @@
 					frontEndProxy.post({cmd:'setWidth',width:'standard'});
 				}
 			}
+			</cfif> 
 		});
-		</cfif> 
+		
 		</script>
 		
 	    <!-- /Hidden dialog -->

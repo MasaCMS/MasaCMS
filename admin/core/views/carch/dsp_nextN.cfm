@@ -45,11 +45,11 @@ modified version; it is your choice whether to do so, or to make such modified v
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
 
-<cfset isMore=rsNext.recordcount gt session.mura.nextN>
+<cfset isMore=hasKids gt session.mura.nextN>
 
 <cfif isMore>
 
-<cfset nextN=application.utility.getNextN(rsNext,session.mura.nextN,rc.startRow,5)>
+<cfset nextN=application.utility.getNextN(hasKids,session.mura.nextN,rc.startRow,5)>
 <!--- <cfset TotalRecords=rsNext.RecordCount>
 <cfset RecordsPerPage=session.mura.nextN> 
 <cfset NumberOfPages=Ceiling(TotalRecords/RecordsPerPage)>
@@ -68,28 +68,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<div class="clearfix mura-results-wrapper">
 		<p class="search-showing">
 			#application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.paginationmeta"),args)#
-		</p> 
-		 <ul class="moreResults pagination">
-		  <cfif nextN.currentpagenumber gt 1>
-		  	<li>
-		  	<a href="" onclick="return siteManager.loadSiteManager('#JSStringFormat(rc.siteid)#','#JSStringFormat(rc.topid)#','00000000000000000000000000000000000','','','#JSStringFormat(rc.ptype)#',#nextN.previous#);">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.prev')#</a> 
-		  	</li>
-		  </cfif>
-		  <cfloop from="#nextN.firstPage#"  to="#nextN.lastPage#" index="i">
-		  <cfif nextN.currentpagenumber eq i> 
-		  		<li class="active"><a href="##">#i#</a></li>
-		  <cfelse>  
-		  		<li>
-		  			<a href="" onclick="return siteManager.loadSiteManager('#JSStringFormat(rc.siteid)#','#JSStringFormat(rc.topid)#','00000000000000000000000000000000000','','','#JSStringFormat(rc.ptype)#',#evaluate('(#i#*#nextN.recordsperpage#)-#nextN.recordsperpage#+1')#);">#i#</a>
-		  		</li>
-		  	</cfif>
-	     </cfloop>
-		 <cfif nextN.currentpagenumber lt nextN.NumberOfPages>
-		 	<li>
-		 		<a href="" onclick="return siteManager.loadSiteManager('#JSStringFormat(rc.siteid)#','#JSStringFormat(rc.topid)#','00000000000000000000000000000000000','','','#JSStringFormat(rc.ptype)#',#nextN.next#);">#application.rbFactory.getKeyValue(session.rb,'sitemanager.next')#&nbsp;&raquo;</a> 
-		 	</li>
-		 </cfif>
-		</ul>
+		</p>
+			<div class="pagination">
+			 <ul>
+			  <cfif nextN.currentpagenumber gt 1>
+			  	<li>
+			  	<a href="" onclick="return siteManager.loadSiteManager('#JSStringFormat(rc.siteid)#','#JSStringFormat(rc.topid)#','00000000000000000000000000000000000','','','#JSStringFormat(rc.ptype)#',#nextN.previous#);">&laquo;&nbsp;#application.rbFactory.getKeyValue(session.rb,'sitemanager.prev')#</a> 
+			  	</li>
+			  </cfif>
+			  <cfloop from="#nextN.firstPage#"  to="#nextN.lastPage#" index="i">
+			  <cfif nextN.currentpagenumber eq i> 
+			  		<li class="active"><a href="##">#i#</a></li>
+			  <cfelse>  
+			  		<li>
+			  			<a href="" onclick="return siteManager.loadSiteManager('#JSStringFormat(rc.siteid)#','#JSStringFormat(rc.topid)#','00000000000000000000000000000000000','','','#JSStringFormat(rc.ptype)#',#evaluate('(#i#*#nextN.recordsperpage#)-#nextN.recordsperpage#+1')#);">#i#</a>
+			  		</li>
+			  	</cfif>
+		     </cfloop>
+			 <cfif nextN.currentpagenumber lt nextN.NumberOfPages>
+			 	<li>
+			 		<a href="" onclick="return siteManager.loadSiteManager('#JSStringFormat(rc.siteid)#','#JSStringFormat(rc.topid)#','00000000000000000000000000000000000','','','#JSStringFormat(rc.ptype)#',#nextN.next#);">#application.rbFactory.getKeyValue(session.rb,'sitemanager.next')#&nbsp;&raquo;</a> 
+			 	</li>
+			 </cfif>
+			</ul>
+			</div>
 		</div>
 </cfoutput>
 </cfsavecontent>

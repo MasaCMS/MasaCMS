@@ -53,7 +53,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var initArgs=structNew()>
 	
-	<cfif structKeyExists(arguments,"data")>
+	<cfif structKeyExists(arguments,"data") and not (isSimpleValue(arguments.data) and not len(arguments.data))>
 		<cfif isObject(arguments.data)>
 			<cfset setEvent(arguments.data)>
 		<cfelse>
@@ -63,7 +63,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset initArgs.siteID=arguments.data>
 			</cfif>
 			<cfset initArgs.muraScope=this>
-			<cfset setEvent(createObject("component","mura.event").init(initArgs,this))>
+			<cfset setEvent(createObject("component","mura.event").init(initArgs).setValue('MuraScope',this))>
 		</cfif>
 	</cfif>
 	
@@ -131,20 +131,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif structKeyExists(request,"contentRenderer")>
 			<cfset event("contentRenderer",request.contentRenderer)>
 		<cfelseif len(event('siteid'))>
-			<cfset event("contentRenderer",createObject("component","#siteConfig().getAssetMap()#.contentRenderer").init(event=event,$=event("muraScope"),mura=event("muraScope") ) )>
+			<cfset event("contentRenderer",createObject("component","#siteConfig().getAssetMap()#.includes.contentRenderer").init(event=event,$=event("muraScope"),mura=event("muraScope") ) )>
 		<cfelseif structKeyExists(application,"contentRenderer")>
 			<cfset event("contentRenderer",getBean('contentRenderer'))>
 		</cfif>
 	</cfif>
 	<cfreturn event("contentRenderer")>
-</cffunction>
-
-<cffunction name="setContentRenderer" output="false" returntype="any">
-	<cfargument name="contentRenderer">
-	<cfif isObject(arguments.contentRenderer)>
-		<cfset event("contentRenderer",arguments.contentRenderer)>
-	</cfif>
-	<cfreturn this>
 </cffunction>
 
 <cffunction name="getThemeRenderer" output="false" returntype="any">
@@ -155,14 +147,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfreturn event("themeRenderer")>
 	</cfif>
-</cffunction>
-
-<cffunction name="setThemeRenderer" output="false" returntype="any">
-	<cfargument name="themeRenderer">
-	<cfif isObject(arguments.themeRenderer)>
-		<cfset event("themeRenderer",arguments.themeRenderer)>
-	</cfif>
-	<cfreturn this>
 </cffunction>
 
 <cffunction name="getContentBean" output="false" returntype="any">

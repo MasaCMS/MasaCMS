@@ -10,7 +10,7 @@
 <cffunction name="empty" output="false">
 	<cfset var rs=getQuery(argumentCollection=arguments)>
 	<cfset var pluginEvent = createObject("component","mura.MuraScope") />
-	
+	<cfset var i="">
 	<cfset pluginEvent=pluginEvent.init(arguments).getEvent()>
 	<cfset pluginEvent.setValue("rsTrash",rs)>
 	
@@ -21,6 +21,8 @@
 	</cfif>
 	
 	<cftransaction>
+	<cfset request.muratransaction=true>
+
 	<cfloop query="rs">
 		<!--- CONTENT --->
 		 <cfquery datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
@@ -124,6 +126,9 @@
 			delete from ttrash
 			where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rs.objectID#">
 		</cfquery>
+
+		<cfset getBean('contentDAO').deleteVersionedObjects(contentID=rs.objectid,siteID=rs.siteid)>
+
 	</cfloop>
 
 	<cfquery datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
@@ -140,6 +145,8 @@
 		delete from tadstats
 		where placementID not in (select placementID from tadplacements)
 	</cfquery>
+
+	<cfset request.muratransaction=false>
 	</cftransaction>
 	
 	<!--- FILES --->
@@ -223,7 +230,7 @@
 			<cfset fixValues = getBean('utility').fixOracleClobs(arguments.deleted.getAllValues().categoriesFromMuraTrash)>
 			<cfset arguments.deleted = arguments.deleted.setValue('categoriesFromMuraTrash', fixValues)>
 		</cfif>
-	
+		
 	</cfif>
 	
 	<cfwddx action="cfml2wddx" input="#arguments.deleted.getAllValues()#" output="allValues">

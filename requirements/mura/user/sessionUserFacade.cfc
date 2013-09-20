@@ -52,7 +52,8 @@
 	<cfargument name="property">	
 	<cfset var theValue="">
 	<cfif isDefined('get#arguments.property#')>
-		<cfreturn evaluate('get#arguments.property#()')>
+		<cfset var tempFunc=this["get#arguments.property#"]>
+        <cfreturn tempFunc()>
 	<cfelseif not structKeyExists(session.mura,arguments.property)>
 		<cfset theValue=getUserBean().getValue(arguments.property)>
 		<cfif isSimpleValue(theValue)>
@@ -150,12 +151,27 @@
 	</cfif>
 </cffunction>
 
+<cffunction name="isAdminUser" access="public" returntype="boolean" output="false">
+	<cfif hasSession()>
+		<cfreturn isInGroup('Admin',0) />
+	<cfelse>
+		<cfreturn false>
+	</cfif>
+</cffunction>
+
 <cffunction name="isLoggedIn" access="public" returntype="boolean" output="false">	
 	<cfif hasSession()>
 		<cfreturn session.mura.isLoggedIn>
 	<cfelse>
 		<cfreturn false>
 	</cfif>
+</cffunction>
+
+<cffunction name="isPassedLockdown" access="public" returntype="boolean" output="false">	
+	<cfif not structKeyExists(cookie, "passedLockdown")>
+		<cfcookie name="passedLockdown" value="false" expires="never">
+	</cfif>
+	<cfreturn cookie.passedLockdown>
 </cffunction>
 
 <cffunction name="hasSession" output="false" returntype="boolean">

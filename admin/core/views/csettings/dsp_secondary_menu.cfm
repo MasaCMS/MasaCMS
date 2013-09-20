@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <ul class="nav nav-pills">
 <cfswitch expression="#rc.originalfuseaction#">
 <cfcase value="list">
-<li><a href="index.cfm?muraAction=cSettings.edit&siteid=">Add New Site</a></li>
+<li><a href="./?muraAction=cSettings.edit&siteid=">Add New Site</a></li>
 </cfcase>
 </cfswitch>
 </ul>

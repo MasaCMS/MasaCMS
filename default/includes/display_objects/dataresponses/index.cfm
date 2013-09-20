@@ -55,6 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.formBean=$.getBean('content').loadBy(contentID=arguments.objectID)>
 	<cfset variables.fieldlist = application.dataCollectionManager.getCurrentFieldList(variables.formBean.getValue('contentID'))>
 </cfsilent>
+<!--- <cfdump var="#variables.formBean.getAllValues()#"> --->
 <cfswitch expression="#$.event('dataResponseView')#">
 	<cfcase value="detail">
 		<cfinclude template="dsp_detail.cfm" />

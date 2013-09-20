@@ -17,6 +17,11 @@
 	ALTER TABLE tcontentfeeds ADD COLUMN imageSize varchar(15) default NULL
 	</cfquery>
 </cfcase>
+<cfcase value="postgresql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentfeeds ADD COLUMN imageSize varchar(15) default NULL
+	</cfquery>
+</cfcase>
 <cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontentfeeds ADD COLUMN imageSize varchar(15) default NULL
@@ -48,6 +53,11 @@
 	ALTER TABLE tcontentfeeds ADD COLUMN imageHeight varchar(15) default NULL
 	</cfquery>
 </cfcase>
+<cfcase value="postgresql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentfeeds ADD COLUMN imageHeight varchar(15) default NULL
+	</cfquery>
+</cfcase>
 <cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontentfeeds ADD COLUMN imageHeight varchar(15) default NULL
@@ -75,6 +85,11 @@
 	</cfquery>
 </cfcase>
 <cfcase value="mysql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentfeeds ADD COLUMN imageWidth varchar(15) default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="postgresql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontentfeeds ADD COLUMN imageWidth varchar(15) default NULL
 	</cfquery>
@@ -111,6 +126,11 @@ ALTER TABLE tcontentfeeds ADD displayList #MSSQLlob#
 	ALTER TABLE tcontentfeeds ADD COLUMN displayList longtext 
 	</cfquery>
 </cfcase>
+<cfcase value="postgresql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentfeeds ADD COLUMN displayList text
+	</cfquery>
+</cfcase>
 <cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontentfeeds ADD COLUMN displayList clob 
@@ -138,6 +158,11 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	</cfquery>
 </cfcase>
 <cfcase value="mysql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontent ADD COLUMN imageSize varchar(15) default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="postgresql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontent ADD COLUMN imageSize varchar(15) default NULL
 	</cfquery>
@@ -173,6 +198,11 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	ALTER TABLE tcontent ADD COLUMN imageHeight varchar(15) default NULL
 	</cfquery>
 </cfcase>
+<cfcase value="postgresql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontent ADD COLUMN imageHeight varchar(15) default NULL
+	</cfquery>
+</cfcase>
 <cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontent ADD COLUMN imageHeight varchar(15) default NULL
@@ -204,6 +234,11 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	ALTER TABLE tcontent ADD COLUMN imageWidth varchar(15) default NULL
 	</cfquery>
 </cfcase>
+<cfcase value="postgresql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontent ADD COLUMN imageWidth varchar(15) default NULL
+	</cfquery>
+</cfcase>
 <cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontent ADD COLUMN imageWidth varchar(15) default NULL
@@ -231,6 +266,11 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	</cfquery>
 </cfcase>
 <cfcase value="mysql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontent ADD COLUMN childTemplate varchar(50) default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="postgresql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontent ADD COLUMN childTemplate varchar(50) default NULL
 	</cfquery>
@@ -268,6 +308,9 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontent ALTER column urltitle varchar(255)
 	</cfquery>
+</cfcase>
+<cfcase value="postgresql">
+	<cfset dbUtility.alterColumn(table='tcontent',column='urltitle',datatype='varchar',length=255)>
 </cfcase>
 <cfcase value="nuodb">
 	<cfset dbUtility.alterColumn(table='tcontent',column='urltitle',datatype='varchar',length=255)>
@@ -311,6 +354,21 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 		</cfif>
 	</cfloop>
 </cfif>
+<cfif getDbType() eq "postgresql">
+	<cfset rsCheck=dbTableColumns("tcontent")>
+
+	<cfloop list="targetparams,restrictgroups,moduleassign,htmltitle,remoteurl,remotesourceurl,remotesource,audience,tags,responsesendto,responsedisplayfields,notes,path,keypoints,metakeywords,metadesc" index="i">
+		<cfquery name="rsSubCheck" dbtype="query">
+		select * from rsCheck where lower(rsCheck.column_name) like '#i#'
+		</cfquery>
+
+		<cfif rsSubCheck.type_name neq "text">
+			<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+			ALTER TABLE tcontent ALTER COLUMN #i# TYPE text
+			</cfquery>
+		</cfif>
+	</cfloop>
+</cfif>
 
 <cfset rsCheck=dbTableColumns("tcontentfeeds")>
 
@@ -328,6 +386,11 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 <cfcase value="mysql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontentfeeds ADD COLUMN showNavOnly tinyint(3) NULL
+	</cfquery>
+</cfcase>
+<cfcase value="postgresql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentfeeds ADD COLUMN showNavOnly smallint NULL
 	</cfquery>
 </cfcase>
 <cfcase value="nuodb">
@@ -366,6 +429,11 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	ALTER TABLE tcontentfeeds ADD COLUMN showExcludeSearch tinyint(3) NULL
 	</cfquery>
 </cfcase>
+<cfcase value="postgresql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tcontentfeeds ADD COLUMN showExcludeSearch smallint NULL
+	</cfquery>
+</cfcase>
 <cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tcontentfeeds ADD COLUMN showExcludeSearch smallint NULL
@@ -402,6 +470,11 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	ALTER TABLE tplugindisplayobjects ADD COLUMN configuratorInit varchar(50) default NULL
 	</cfquery>
 </cfcase>
+<cfcase value="postgresql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tplugindisplayobjects ADD COLUMN configuratorInit varchar(50) default NULL
+	</cfquery>
+</cfcase>
 <cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tplugindisplayobjects ADD COLUMN configuratorInit varchar(50) default NULL
@@ -429,6 +502,11 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 	</cfquery>
 </cfcase>
 <cfcase value="mysql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tplugindisplayobjects ADD COLUMN configuratorJS varchar(255) default NULL
+	</cfquery>
+</cfcase>
+<cfcase value="postgresql">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tplugindisplayobjects ADD COLUMN configuratorJS varchar(255) default NULL
 	</cfquery>
@@ -468,6 +546,11 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 		MODIFY
 	</cfif>
 	column domain varchar(255)
+	</cfquery>
+</cfcase>
+<cfcase value="postgresql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tsettings ALTER COLUMN domain TYPE varchar(255)
 	</cfquery>
 </cfcase>
 <cfcase value="nuodb">
@@ -515,6 +598,11 @@ ALTER TABLE tcontentfeeds ADD displayList clob
 		MODIFY
 	</cfif>
 	column columnNames text
+	</cfquery>
+</cfcase>
+<cfcase value="postgresql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tsettings ALTER COLUMN columnNames TYPE text
 	</cfquery>
 </cfcase>
 <cfcase value="nuodb">	

@@ -71,12 +71,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif feedBean.getIsNew()>
 		<cfset is404=true>
 	</cfif>
+<cfelse>
+	<cfset is404=true>
+</cfif>
+<!---
 <cfelseif url.siteid neq "">
 	<cfset feedBean=application.feedManager.read("") />
 	<cfset feedBean.set(url)/>
 <cfelse>
 	<cfset is404=true>
 </cfif>
+--->
 <cfif isDefined("feedBean") and not is404>
 	<cfset rs=application.feedManager.getFeed(feedBean,url.tag) />
 </cfif>
@@ -93,8 +98,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		This feed is restricted
 		<cfabort>
 	</cfif>
+	<cfset request.muraFrontEndRequest=true>
+	<cfset request.siteid=feedBean.getSiteID()>
 	<cfset feedIt = application.serviceFactory.getBean("contentIterator").setQuery(rs)>
-	<cfset renderer = createObject("component","#application.configBean.getWebRootMap()#.#application.settingsManager.getSite(feedBean.getSiteID()).getDisplayPoolID()#.includes.contentRenderer").init() />
+	<cfset setLocale(application.settingsManager.getSite(feedBean.getSiteID()).getJavaLocale()) />
 	<cfswitch expression="#feedBean.getVersion()#">
 		<cfcase value="RSS 0.920">
 			<cfinclude template="rss0920.cfm">

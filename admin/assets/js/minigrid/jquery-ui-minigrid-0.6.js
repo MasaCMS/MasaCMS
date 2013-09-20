@@ -255,7 +255,7 @@
 			});
 
 			// this is the data binding for checkboxes,radio buttons
-			$(":checkbox,:radio",$rowList).live('change',function( event ) {
+			$(":checkbox,:radio",$rowList).on('change',function( event ) {
 				var $tgt	= $(event.target); 
 				var aID		= $tgt.attr('id').split("_");
 				var pos		= aID[0];
@@ -279,7 +279,7 @@
 			});
 
 			// this is the binding for text inputs
-			$(":text",$rowList).live('keyup',function( event ) {
+			$(":text",$rowList).on('keyup',function( event ) {
 				var $tgt	= $(event.target); 
 				
 				var aID		= $tgt.attr('id').split("_");
@@ -302,7 +302,7 @@
 			});
 
 			// this is the binding for delete keys
-			$(".ui-icon-close",$rowList).live('click',function( event ) {
+			$(".ui-icon-close",$rowList).on('click',function( event ) {
 				var $tgt	= $(event.target);
 				var $parent	= $tgt.parents("ul:first").parent();
 				var pos	= $parent.attr('id');

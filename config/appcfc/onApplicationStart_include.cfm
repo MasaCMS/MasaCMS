@@ -53,7 +53,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="application.sessionTrackingThrottle" default="true"/>
 <cfparam name="application.instanceID" default="#createUUID()#" />
 <cfparam name="application.CFVersion" default="#listFirst(SERVER.COLDFUSION.PRODUCTVERSION)#" />
-<cfparam name="application.setupComplete" default="false" />
+<cfparam name="application.setupComplete" default="false">
+
 <cfset request.muraAppreloaded=true>
 
 <!--- this is here for CF8 compatibility --->
@@ -84,7 +85,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfif NOT fileExists( variables.basedir & "/config/setup/index.cfm" )>
 					<cfthrow message="Your setup directory is incomplete. Please reset it up from the Mura source." />
 				</cfif>
-
 				<cfset application.setupComplete = false />
 			</cfif>	
 		<cfelse>
@@ -98,6 +98,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfif application.setupComplete>
 	<cfset application.appInitialized=false>
 	<cfset request.muraShowTrace=true>
+	<cfset application.objectMappings={}>
+	<cfset application.objectMappings.bundleableBeans="">
+	<cfset application.objectMappings.versionedBeans="">
 		
 	<cfset variables.iniPath = "#variables.basedir#/config/settings.ini.cfm" />
 		
@@ -144,61 +147,133 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 	<cfset variables.iniProperties.webroot = expandPath("/muraWRM") />
 		
-	<cfinclude template="/muraWRM/config/coldspring.xml.cfm" />
-		
 	<cfset variables.tracer=createObject("component","mura.cfobject").init()>
 	
-	<!--- load the core services.xml --->
+	<cfset variables.tracepoint=variables.tracer.initTracepoint("Instantiating DI1")> 
 		
-	<cfset variables.tracepoint=variables.tracer.initTracepoint("Instantiating ColdSpring")> 
-	<cfset variables.serviceFactory=createObject("component","mura.bean.beanFactory").init(defaultProperties=variables.iniProperties) />
+	<cfscript>	
+		application.configBean=new mura.configBean().set(variables.iniProperties);
+
+		variables.serviceFactory=new mura.bean.beanFactory("/mura",{
+				recurse=true,
+				exclude=[],
+				strict=true,
+				transientPattern = "(Iterator|Bean|MuraScope|Event|dbUtility)$" 
+				});
+			
+		variables.serviceFactory.addBean("tempDir",application.configBean.getTempDir());
+		variables.serviceFactory.addBean("useFileMode",application.configBean.getUseFileMode());
+		variables.serviceFactory.addBean("configBean",application.configBean);
+		variables.serviceFactory.addBean("data","");
+		variables.serviceFactory.addBean("settings",{});
+
+		if(server.coldfusion.productName eq 'Coldfusion Server'){
+			variables.serviceFactory.addAlias("contentGateway","contentGatewayAdobe");
+		} else {
+			variables.serviceFactory.addAlias("contentGateway","contentGatewayRailo");
+		}
+
+		variables.serviceFactory.addBean('javaLoader',
+					new mura.javaloader.JavaLoader(
+						loadPaths=[
+									expandPath('/mura/lib/mura.jar'),
+									expandPath('/mura/lib/jBCrypt-0.3'),
+									expandPath('/mura/lib/diff_match_patch.jar')
+								]
+					)
+				);
+		variables.serviceFactory.addBean("fileWriter",
+			new mura.fileWriter(mode=775,tempDir=application.configBean.getTempDir())
+		);
+		variables.serviceFactory.declareBean("beanValidator", "mura.bean.beanValidator", true);
+			
+		//variables.serviceFactory.addBean('validationService',new mura.bean.beanValidator());
+
+		variables.serviceFactory.addAlias("scriptProtectionFilter","Portcullis");
+		variables.serviceFactory.addAlias("eventManager","pluginManager");
+		variables.serviceFactory.addAlias("permUtility","permission");
+		variables.serviceFactory.addAlias("content","contentBean");
+		variables.serviceFactory.addAlias("feed","feedBean");
+		variables.serviceFactory.addAlias("site","settingsBean");
+		variables.serviceFactory.addAlias("user","userBean");
+		variables.serviceFactory.addAlias("group","userBean");
+		variables.serviceFactory.addAlias("address","addressBean");
+		variables.serviceFactory.addAlias("category","categoryBean");
+		variables.serviceFactory.addAlias("categoryFeed","categoryFeedBean");
+		variables.serviceFactory.addAlias("userFeed","userFeedBean");
+		variables.serviceFactory.addAlias("comment","contentCommentBean");
+		variables.serviceFactory.addAlias("commentFeed","contentCommentFeedBean");
+		variables.serviceFactory.addAlias("stats","contentStatsBean");
+		variables.serviceFactory.addAlias("changeset","changesetBean");
+		variables.serviceFactory.addAlias("bundle","settingsBundle");
+		variables.serviceFactory.addAlias("mailingList","mailingListBean");
+		variables.serviceFactory.addAlias("mailingListMember","memberBean");
+		variables.serviceFactory.addAlias("groupDAO","userDAO");
+		variables.serviceFactory.addAlias("placement","placementBean");
+		variables.serviceFactory.addAlias("creative","creativeBean");
+		variables.serviceFactory.addAlias("rate","rateBean");
+		variables.serviceFactory.addAlias("favorite","favoriteBean");
+		variables.serviceFactory.addAlias("campaign","campaignBean");
+		variables.serviceFactory.addAlias("email","emailBean");
+		variables.serviceFactory.addAlias("adZone","adZoneBean");
+		variables.serviceFactory.addAlias("imageSize","settingsImageSizeBean");
+		variables.serviceFactory.addAlias("imageSizeIterator","settingsImageSizeIterator");
+		variables.serviceFactory.addAlias("$","MuraScope");
+		variables.serviceFactory.addAlias("approvalchain","approvalchainBean");
+		variables.serviceFactory.addAlias("approvalRequest","approvalRequestBean");
+		variables.serviceFactory.addAlias("approvalAction","approvalActionBean");
+		variables.serviceFactory.addAlias("approvalChainMembership","approvalChainMembershipBean");
+		variables.serviceFactory.addAlias("approvalChainAssignment","approvalChainAssignmentBean");
+		variables.serviceFactory.addAlias("changesetRollBack","changesetRollBackBean");
+		variables.serviceFactory.addAlias("contentSourceMap","contentSourceMapBean");
+		variables.serviceFactory.addAlias("relatedContentSet","extendRelatedContentSetBean");
+		variables.serviceFactory.addAlias("fileMetaData","contentFileMetaDataBean");
+		variables.serviceFactory.addAlias("file","fileBean");
+		application.serviceFactory=variables.serviceFactory;
+	</cfscript>
+
 	<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
-		
-	<cfset variables.tracepoint=variables.tracer.initTracepoint("Loading Coldspring XML")> 
-	<cfset variables.serviceFactory.loadBeansFromXMLRaw(variables.servicesXML,true) />
-	<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
-		
-	<!--- If coldspring.custom.xml.cfm exists read it in an check it it is valid xml--->
-	<cfif fileExists(expandPath("/muraWRM/config/coldspring.custom.xml.cfm"))>	
-		<cffile action="read" variable="customvariables.servicesXML" file="#expandPath('/muraWRM/config/coldspring.custom.xml.cfm')#">
-		<cfif not findNoCase("<!-" & "--",customvariables.servicesXML)>
-			<cfif not findNoCase("<beans>",customvariables.servicesXML)>
-				<cfset customvariables.servicesXML= "<beans>" & customvariables.servicesXML & "</beans>">
-			</cfif>
-			<cfset customvariables.servicesXML=replaceNoCase(customvariables.servicesXML, "##mapdir##","mura","ALL")>
-			<cfset variables.tracepoint=variables.tracer.initTracepoint("Loading Custom Coldspring XML")> 
-			<cfset variables.serviceFactory.loadBeansFromXMLRaw(customvariables.servicesXML,true) />
-			<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
-		</cfif>
-	</cfif>
-		
-	<cfset application.serviceFactory=variables.serviceFactory>
 		
 	<cfobjectcache action="clear" />
-	<cfset variables.tracepoint=variables.tracer.initTracepoint("Instantiating ConfigBean")> 
-	<cfset application.configBean=application.serviceFactory.getBean("configBean") />
-	<cfset application.configBean.set(variables.iniProperties)>
-	<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
 		
 	<!---You can create an onGlobalConfig.cfm file that runs after the initial configBean loads, but before anything else is loaded --->
 	<cfif fileExists(ExpandPath("/muraWRM/config/onGlobalConfig.cfm"))>
 		<cfinclude template="/muraWRM/config/onGlobalConfig.cfm">
 	</cfif>
 		
-	<cfif application.configBean.getValue("applyDBUpdates") or application.appAutoUpdated>
+	<cfif application.configBean.getValue("applyDBUpdates") or application.appAutoUpdated or isdefined('url.applyDBUpdates')>
 		<cfset variables.tracepoint=variables.tracer.initTracepoint("Checking/Applying DB updates")> 
 		<cfset application.configBean.applyDbUpdates() />
 		<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
+	<cfelse>
+		<cfscript>
+			variables.serviceFactory.getBean('approvalChain');
+			variables.serviceFactory.getBean('approvalChainMembership');
+			variables.serviceFactory.getBean('approvalRequest');
+			variables.serviceFactory.getBean('approvalAction');
+			variables.serviceFactory.getBean('approvalChainAssignment');
+			variables.serviceFactory.getBean('changesetRollBack');
+			variables.serviceFactory.getBean('contentSourceMap');
+			variables.serviceFactory.getBean('relatedContentSet');
+			variables.serviceFactory.getBean('fileMetaData');
+			variables.serviceFactory.getBean('file');
+		</cfscript>
 	</cfif>
 		
 	<cfset application.appAutoUpdated=false>
+				
+	<cfset variables.serviceList="utility,pluginManager,settingsManager,contentManager,eventManager,contentRenderer,contentUtility,contentGateway,categoryManager,clusterManager,contentServer,changesetManager,scriptProtectionFilter,permUtility,emailManager,loginManager,mailinglistManager,userManager,dataCollectionManager,advertiserManager,feedManager,sessionTrackingManager,favoriteManager,raterManager,dashboardManager,autoUpdater">
 		
-	<cfset variables.serviceList="settingsManager,contentManager,pluginManager,eventManager,contentRenderer,utility,contentUtility,contentGateway,categoryManager,clusterManager,contentServer,changesetManager,scriptProtectionFilter,permUtility,emailManager,loginManager,mailinglistManager,userManager,dataCollectionManager,advertiserManager,feedManager,sessionTrackingManager,favoriteManager,raterManager,dashboardManager,autoUpdater">
-	
 	<!--- These application level services use the beanServicePlaceHolder to lazy load the bean --->
-	<cfloop list="#variables.serviceList#" index="variables.i">
+	<cfloop list="#variables.serviceList#" index="variables.i">			
 		<cfset variables.tracepoint=variables.tracer.initTracepoint("Instantiating #variables.i#")> 	
-		<cfset application["#variables.i#"]=application.serviceFactory.getBean("#variables.i#") />
+		<cftry>
+			<cfset application["#variables.i#"]=application.serviceFactory.getBean("#variables.i#") />
+			<cfcatch>
+				<cfdump var="#variables.i#">
+				<cfdump var="#cfcatch#" abort="true">
+			</cfcatch>
+		</cftry>
 		<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
 	</cfloop>	
 		
@@ -212,7 +287,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
 
 	<cfset variables.tracepoint=variables.tracer.initTracepoint("Instantiating resourceBundleFactory")> 
-	<cfset application.rbFactory=application.serviceFactory.getBean("resourceBundleFactory") />
+	<cfset application.rbFactory=new mura.resourceBundle.resourceBundleFactory() />
 	<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
 			
 	<!---settings.custom.managers.cfm reference is for backwards compatibility --->
@@ -221,12 +296,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>		
 					
 	<cfset variables.basedir=expandPath("/muraWRM")/>
-					
-	<cfif StructKeyExists(SERVER,"bluedragon") and not findNoCase("Windows",server.os.name)>
-		<cfset variables.mapprefix="$" />
-	<cfelse>
-		<cfset variables.mapprefix="" />
-	</cfif>
+	<cfset variables.mapprefix="" />
 		
 	<cfif len(application.configBean.getValue('encryptionKey'))>
 		<cfset application.encryptionKey=application.configBean.getValue('encryptionKey')>
@@ -236,7 +306,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfloop query="variables.rsRequirements">
 		<cfif variables.rsRequirements.type eq "dir" and variables.rsRequirements.name neq '.svn' and not structKeyExists(this.mappings,"/#variables.rsRequirements.name#")>
-			<cfset application.serviceFactory.getBean("fileWriter").appendFile(file="#variables.basedir#/config/mappings.cfm", output='<cfset this.mappings["/#variables.rsRequirements.name#"] = variables.mapprefix & variables.basedir & "/requirements/#variables.rsRequirements.name#">')>				
+			<cfset application.serviceFactory.getBean("fileWriter").appendFile(file="#variables.basedir#/config/mappings.cfm", output='<cfset this.mappings["/#variables.rsRequirements.name#"] = variables.basedir & "/requirements/#variables.rsRequirements.name#">')>				
 		</cfif>
 	</cfloop>	
 
@@ -322,8 +392,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<!--- Fire local onApplicationLoad events--->
 	<cfset variables.rsSites=application.settingsManager.getList() />
 		
-	<cfloop query="variables.rsSites">
-			
+	<cfloop query="variables.rsSites">	
 		<cfset variables.siteBean=application.settingsManager.getSite(variables.rsSites.siteID)>
 		<cfset variables.themedir=expandPath(variables.siteBean.getThemeIncludePath())>
 
@@ -334,20 +403,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfelse>
 			<cfset variables.themeConfig="">
 		</cfif>
-			
+
 		<cfif len(variables.themeConfig)>
-				
 			<cfif variables.themeConfig eq "config.xml.cfm">
 				<cfsavecontent variable="variables.themeConfig">
 					<cfinclude template="#variables.siteBean.getThemeIncludePath()#/config.xml.cfm">
 				</cfsavecontent>
-
 			<cfelse>
 				<cfset variables.themeConfig=fileRead(variables.themedir & "/" & variables.themeConfig)>
 			</cfif>
 
-			<cfset variables.themeConfig=xmlParse(variables.themeConfig)>
-			<cfset application.configBean.getClassExtensionManager().loadConfigXML(variables.themeConfig,variables.rsSites.siteid)>
+			<cfif isXml(variables.themeConfig)>
+				<cfset variables.themeConfig=xmlParse(variables.themeConfig)>
+				<cfset application.configBean.getClassExtensionManager().loadConfigXML(variables.themeConfig,variables.rsSites.siteid)>
+			</cfif>
 
 		</cfif>
 
@@ -434,12 +503,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset local.bundleLoc=expandPath("/muraWRM/config/setup/deploy/bundle.zip")>
 	<cfif fileExists(local.bundleLoc) and application.contentGateway.getPageCount('default').counter eq 1>
 		<cfset application.settingsManager.restoreBundle(
-				bundleFile=local.bundleLoc, 
-				keyMode='publish',
-				siteID='default',
-				contentMode='all',
-				pluginMode='all'
-			)>
+			bundleFile=local.bundleLoc, 
+			keyMode='publish',
+			siteID='default',
+			contentMode='all',
+			pluginMode='all'
+		)>
 		<cfset application.serviceFactory.getBean('fileWriter').renameFile(source=local.bundleLoc,destination=expandPath("/muraWRM/config/setup/deploy/#createUUID()#.zip"))>
 	</cfif>
 

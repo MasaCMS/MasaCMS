@@ -92,7 +92,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var perm=0>
 		<cfset var rsPermited="">
 		
-		<cfquery name="rsPermited" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsPermited')#">
 		Select GroupID from tpermissions where ContentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/> and type=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.type#"/> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> and groupid='#arguments.groupid#'
 		</cfquery>
 		
@@ -176,7 +176,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="siteid" type="string" required="true">
 		<cfset var rsPermVerdict="">
 		
-		<cfquery name="rsPermVerdict" datasource="#variables.configBean.getReadOnlyDatasource()#"  username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">	
+		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsPermVerdict')#">	
 		Select tusers.GroupName, tusers.isPublic 
 		from tpermissions inner join tusers on tusers.userid in (tpermissions.groupid)
 		where tpermissions.ContentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/>
@@ -320,7 +320,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="siteid" type="string" required="true">
 		<cfset var rsModulePerm="">
 		
-		<cfquery datasource="#variables.configBean.getReadOnlyDatasource()#" name="rsModulePerm" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsModulePerm')#">
 			select tusers.groupname,isPublic from tusers INNER JOIN tpermissions ON (tusers.userid = tpermissions.groupid) where tpermissions.contentid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#"/> and tpermissions.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
 		</cfquery>
 
@@ -445,7 +445,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var Verdictlist=""/>
 		<cfset var I = "" />
 		
-		<cfquery name="rsGroups" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsGroups')#">
 		select groupid from tpermissions where contentid='00000000000000000000000000000000000' and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.crumbdata[1].siteid#"/>
 		</cfquery>
 		
@@ -477,25 +477,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="data" type="struct" />
 <cfset var rsGroups=""/>
 
-	<cfquery name="rsgroups" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsGroups')#">
 	select UserID from tusers where type =1 
 	</cfquery> 
 	
-	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery>
 	Delete From tpermissions where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.contentID#"/> and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/>
 	</cfquery>
 	
 	<cfloop query="rsGroups">
-<cfif isdefined('arguments.data.p#replacelist(rsGroups.userid,"-","")#') and (evaluate("form.p#replacelist(rsGroups.userid,"-","")#") eq 'Editor'
- or evaluate("arguments.data.p#replacelist(rsGroups.userid,"-","")#") eq 'Author'
- or evaluate("arguments.data.p#replacelist(rsGroups.userid,"-","")#") eq 'Read'  
- or evaluate("arguments.data.p#replacelist(rsGroups.userid,"-","")#") eq 'Deny')>
-	<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+<cfif isdefined('arguments.data.p#replacelist(rsGroups.userid,"-","")#') 
+and (form['p#replacelist(rsGroups.userid,"-","")#'] eq 'Editor'
+ or arguments.data['p#replacelist(rsGroups.userid,"-","")#'] eq 'Author'
+ or arguments.data['p#replacelist(rsGroups.userid,"-","")#'] eq 'Read'  
+ or arguments.data['p#replacelist(rsGroups.userid,"-","")#'] eq 'Deny')>
+	<cfquery>
 	Insert Into tpermissions  (ContentID,GroupID,Type,siteid)
 	values(
 	<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.ContentID#"/>,
 	<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsGroups.UserID#"/>,
-	<cfqueryparam cfsqltype="cf_sql_varchar" value="#evaluate("arguments.data.p#replacelist(rsGroups.userid,"-","")#")#"/>,
+	<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data['p#replacelist(rsGroups.userid,"-","")#']#"/>,
 	<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/>
 	)</cfquery>
 	
@@ -510,27 +511,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="data" type="struct" />
 <cfset var rsContentlist=""/>
 
-	<cfquery name="rsContentlist" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsContentList')#">
 	select contentID from tcontent where siteid='#arguments.data.siteid#' group by contentid
 	</cfquery> 
 	
-	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery>
 	Delete From tpermissions where groupid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.groupID#"/> and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/>
 	</cfquery>
 	
 	<cfloop query="rsContentlist">
 		<cfif isdefined('arguments.data.p#replacelist(rsContentlist.contentid,"-","")#')
 		 and 
-		 (evaluate("arguments.data.p#replacelist(rsContentlist.contentid,"-","")#") eq 'Editor' 
-		 	or evaluate("arguments.data.p#replacelist(rsContentlist.contentid,"-","")#") eq 'Author'  
-			or evaluate("arguments.data.p#replacelist(rsContentlist.contentid,"-","")#") eq 'Module')>
+		 (arguments.data['p#replacelist(rsContentlist.contentid,"-","")#'] eq 'Editor' 
+		 	or arguments.data['p#replacelist(rsContentlist.contentid,"-","")#'] eq 'Author'  
+			or arguments.data['p#replacelist(rsContentlist.contentid,"-","")#'] eq 'Module')>
 		
-			<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+			<cfquery>
 			Insert Into tpermissions  (ContentID,GroupID,Type,siteid)
 			values(
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#rsContentlist.ContentID#"/>,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.groupid#"/>,
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#evaluate("form.p#replacelist(rsContentlist.contentid,"-","")#")#"/>,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#form['p#replacelist(rsContentlist.contentid,"-","")#']#"/>,
 			<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/>
 			)</cfquery>
 		
@@ -545,7 +546,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getModule" access="public" returntype="query" output="false">
 <cfargument name="data" type="struct" />
 <cfset var rsModulePerm = "" />
-<cfquery name="rsModulePerm" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsModulePerm')#">
 SELECT * FROM tcontent WHERE 
  ContentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.contentID#"/> and  siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/> and active=1
 </cfquery>
@@ -556,7 +557,7 @@ SELECT * FROM tcontent WHERE
 <cfargument name="data" type="struct" />
 <cfset var rsGroupList = "" />
 <cfset var returnStruct=structNew() />
-<cfquery name="rsGroupList" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsGroupList')#">
 select userid, groupname from tusers where type=1 and groupname <>'Admin' and isPublic=0 
 and siteid='#application.settingsManager.getSite(arguments.data.siteid).getPrivateUserPoolID()#' 
 order by groupname
@@ -564,7 +565,7 @@ order by groupname
 
 <cfset returnStruct.privateGroups=rsGroupList />
 
-<cfquery name="rsGroupList" datasource="#variables.configBean.getReadOnlyDatasource()#" username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsGroupList')#">
 select userid, groupname from tusers where type=1  and isPublic=1 
 and siteid='#application.settingsManager.getSite(arguments.data.siteid).getPublicUserPoolID()#' 
 order by groupname
@@ -578,8 +579,7 @@ order by groupname
 <cffunction name="getPermitedGroups"  access="public" returntype="query" output="false">
 <cfargument name="data" type="struct" />
 <cfset var rsGroupPermissions = "" />
-<cfquery name="rsGroupPermissions" datasource="#variables.configBean.getReadOnlyDatasource()#"
-username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsGroupPermissions')#">
 select * from tpermissions where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.contentID#"/> and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/> and type='module'
 </cfquery>
 <cfreturn rsGroupPermissions />
@@ -588,8 +588,7 @@ select * from tpermissions where contentid= <cfqueryparam cfsqltype="cf_sql_varc
 <cffunction name="getcontent" access="public" returntype="query" output="false">
 <cfargument name="data" type="struct" />
 <cfset var rsContent = "" />
-<cfquery name="rsContent" datasource="#variables.configBean.getReadOnlyDatasource()#"
-username="#variables.configBean.getReadOnlyDbUsername()#" password="#variables.configBean.getReadOnlyDbPassword()#">
+<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsContent')#">
 SELECT tcontent.*, tfiles.fileEXT FROM tcontent 
 LEFT Join tfiles ON (tcontent.fileID=tfiles.fileID)
 WHERE tcontent.ContentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.contentID#"/> and tcontent.active=1 and tcontent.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/>
@@ -602,15 +601,13 @@ WHERE tcontent.ContentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#argum
 <cfset var I = "" />
 <cfparam name="arguments.data.groupid" type="string" default="" />
 
-<cfquery datasource="#variables.configBean.getDatasource()#"
-username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+<cfquery>
 	Delete From tpermissions where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.contentID#"/> and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/>
 	</cfquery>
 	
 	<cfloop list="#arguments.data.groupid#" index="I">
 
-		<cfquery datasource="#variables.configBean.getDatasource()#"
-		username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery>
 		Insert Into tpermissions  (ContentID,GroupID,Type,siteid)
 		values(
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.contentID#"/>,
@@ -619,11 +616,6 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteid#"/>
 		)</cfquery>
 
-		<!---
-		<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
-	 		select * from tpermissions where groupid='#arguments.data.groupid#'
-		</cfquery>
-		--->
 	</cfloop>
 
 	<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache(name="output")>
@@ -653,7 +645,9 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 </cffunction>
 
 <cffunction name="isS2" access="public" returntype="boolean" output="false">
+	
 	<cfreturn listFindNoCase(session.mura.memberships,'S2') />
+	
 </cffunction>
 
 <cffunction name="getHasModuleAccess" output="false">
@@ -780,8 +774,7 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 	
 	<cfset removePermission(argumentcollection=arguments)>
 	
-	<cfquery datasource="#variables.configBean.getDatasource()#"
-		username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery>
 		Insert Into tpermissions (contentID,groupID,siteID,type) Values (
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/> ,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.groupID#"/>,
@@ -797,8 +790,7 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 	<cfargument name="groupID">
 	<cfargument name="siteID">
 	
-	<cfquery datasource="#variables.configBean.getDatasource()#"
-		username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery>
 		Delete From tpermissions 
 		where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentID#"/> 
 		and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
@@ -830,6 +822,8 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 <cfargument name="path" type="string" required="true">
 
 <cfset var loc = StructNew()>
+<cfset var usrGroups="">
+
 <cfset loc.return = "deny">
 
 	<!--- Check for super admin --->
@@ -928,7 +922,7 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
         <cffile action="append" file="d:\cms_dev_svn\debug\log.htm" output="#loc.jon#">--->
 
 		<!--- Check if a value exists in the database for this item --->
-	    <cfquery name="loc.qExists" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	    <cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='loc.qExists')#">
             select tdirectories.dirId from tdirectories
             inner join tpermissions on (tdirectories.dirId=tpermissions.contentid)
             where tdirectories.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
@@ -945,7 +939,7 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
             </cfsavecontent>
             <cffile action="append" file="d:\cms_dev_svn\debug\log.htm" output="#loc.jon#">--->
 
-            <cfquery name="loc.qPerm" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+            <cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='loc.perm')#">
                 select type from tpermissions
                 where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
                     and contentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#loc.qExists.dirId#"/>
@@ -968,7 +962,8 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 <cffunction name="getDirectoryId" returntype="string" access="public" output="false">
 <cfargument name="data" type="struct">
 <cfset var ret = "">
-    <cfquery name="qExists" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+<cfset var qExists="">
+    <cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='qExists')#">
         select dirId from tdirectories
         where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#data.siteid#"/>
             and subdir = <cfqueryparam cfsqltype="cf_sql_varchar" value="#data.subdir#"/>
@@ -988,7 +983,7 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 <cfset var qExists=""/>
 	
     <!--- insert new directory entry, if needed, and get id --->
-	<cfquery name="qExists" datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='qExists')#">
 		select dirId from tdirectories
         where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteid#"/>
         	and subdir = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.subdir#"/>
@@ -998,7 +993,7 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
     	<cfset dirId = qExists.dirId>
     <cfelse>
     	<cfset dirId = CreateUUID()>
-        <cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+        <cfquery>
             insert into tdirectories (dirId, siteid, subdir, editfilename)
             values (
 	            <cfqueryparam cfsqltype="cf_sql_varchar" value="#dirId#"/>,
@@ -1010,7 +1005,7 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
     </cfif>
 
 	<!--- Delete existing entry in permissions table --->    
-	<cfquery datasource="#variables.configBean.getDatasource()#" username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<cfquery>
 		Delete From tpermissions
         where contentid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#dirId#"/>
         	and groupid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.groupid#"/>
@@ -1021,7 +1016,7 @@ username="#variables.configBean.getDBUsername()#" password="#variables.configBea
 	<!--- Update permissions table ---> 
 	<cfif StructKeyExists(arguments.data, "perm") and (ListContains("editor,author,readonly,deny", arguments.data["perm"]))>
 	 
-		<cfquery datasource="#variables.configBean.getDatasource()#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+		<cfquery>
 			Insert Into tpermissions (ContentID, GroupID, Type, siteid)
 			values(
 				<cfqueryparam cfsqltype="cf_sql_varchar" value="#dirId#"/>,

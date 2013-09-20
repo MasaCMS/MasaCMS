@@ -4,7 +4,7 @@
 <cfset variables.configBean="">
 <cfset variables.instance.type="Custom">
 <cfset variables.instance.subtype="">
-<cfset variables.instance.maxitems=0>
+<cfset variables.instance.maxitems=2000>
 <cfset variables.instance.nextN=0>
 <cfset variables.instance.sortBy="">
 <cfset variables.instance.sortDirection="asc">
@@ -37,11 +37,11 @@
 			<cfloop from="1" to="#listLen(arguments.params.param)#" index="i">
 				
 				<cfset addParam(
-						listFirst(evaluate('arguments.params.paramField#i#'),'^'),
-						evaluate('arguments.params.paramRelationship#i#'),
-						evaluate('arguments.params.paramCriteria#i#'),
-						evaluate('arguments.params.paramCondition#i#'),
-						listLast(evaluate('arguments.params.paramField#i#'),'^')
+						listFirst(arguments.params['paramField#i#'],'^'),
+						arguments.params['paramRelationship#i#'],
+						arguments.params['paramCriteria#i#'],
+						arguments.params['paramCondition#i#'],
+						listLast(arguments.params['paramField#i#'],'^')
 						) />
 	
 			</cfloop>
@@ -213,6 +213,7 @@
 <cffunction name="getQuery" access="public" output="false" returntype="query">
 	<cfset var c ="" />
 	<cfset var rs ="" />
+	<cfset var baseIDList="''">
 	<cfset var rsParams=getParams() />
 	<cfset var started =false />
 	<cfset var param ="" />
@@ -245,41 +246,23 @@
 		<cfset blockFactor=100>
 	</cfif>
 	
-	<cfquery name="rs" datasource="#variables.configBean.getDatasource()#" blockfactor="#blockFactor#"  username="#variables.configBean.getDBUsername()#" password="#variables.configBean.getDBPassword()#">
+	<!--- Generate a list of baseIDs that match the criteria --->
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 	<cfif dbType eq "oracle" and getMaxItems()>select * from (</cfif>
-	select <cfif dbtype eq "mssql" and getMaxItems()>top #getMaxItems()#</cfif> 	
-	tclassextend.type,tclassextend.subtype,tclassextend.siteID, #dataTable#.baseID as ID<cfif hasExtendedSort>, extendedSort</cfif>
-	from #dataTable# #tableModifier#
-	INNER JOIN tclassextendattributes #tableModifier# on (#dataTable#.attributeID=tclassextendattributes.attributeID)
-	INNER JOIN tclassextendsets #tableModifier# on (tclassextendattributes.extendsetID=tclassextendsets.extendsetID)
-	INNER JOIN tclassextend #tableModifier# on (tclassextendsets.subtypeID=tclassextend.subtypeID)
+	select distinct <cfif dbtype eq "mssql" and getMaxItems()>top #getMaxItems()#</cfif> 
+		tclassextenddata.baseID
+		from tclassextenddata
+		where siteID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getSiteID()#">
+		and (tclassextenddata.attributeID IN
+			(select tclassextendattributes.attributeID from tclassextendattributes
+			INNER JOIN tclassextendsets with (nolock) on (tclassextendattributes.extendsetID=tclassextendsets.extendsetID) 
+			INNER JOIN tclassextend with (nolock) on (tclassextendsets.subtypeID=tclassextend.subtypeID) 
+			where tclassextend.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#getSiteID()#">
+				and tclassextend.type= <cfqueryparam cfsqltype="cf_sql_varchar" value="#getType()#"> 
+				and tclassextend.subtype= <cfqueryparam cfsqltype="cf_sql_varchar" value="#getSubType()#">))
 
-	<cfif len(getSortBy()) and getSortBy() neq "random">
-	LEFT JOIN (select 
-			#variables.configBean.getClassExtensionManager().getCastString(getSortBy(),getSiteID())# extendedSort
-			 ,#dataTable#.baseID 
-			from #dataTable# #tableModifier# 
-			inner join tclassextendattributes #tableModifier# on (#dataTable#.attributeID=tclassextendattributes.attributeID)
-			where #dataTable#.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getSiteID()#">
-			and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getSortBy()#">
-	) qExtendedSort
-	
-	on (#dataTable#.baseID=qExtendedSort.baseID)
-	</cfif>
-	
-	where
-	tclassextend.siteID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSiteID()#">
-	and tclassextend.type=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getType()#">
-	and 
-		(
-			tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSubType()#">
-			<cfif getSubType() neq "Default">
-			or tclassextend.subtype=<cfqueryparam cfsqltype="cf_sql_varchar"  value="Default">
-			</cfif>
-		)
-	
-	
-		<cfif rsParams.recordcount>
+		<cfif rsParams.recordcount>	
+		<cfset started = false />	
 		<cfloop query="rsParams">
 			<cfset param=createObject("component","mura.queryParam").init(rsParams.relationship,
 					rsParams.field,
@@ -287,54 +270,74 @@
 					rsParams.condition,
 					rsParams.criteria
 				) />
-								 
+		
 			<cfif param.getIsValid()>	
 				<cfif not started >
-					<cfset started = true />and (
-				<cfelse>
-					<cfif listFindNoCase("openGrouping,(",param.getRelationship())>
-						(
-						<cfset openGrouping=true />
-					<cfelseif listFindNoCase("orOpenGrouping,or (",param.getRelationship())>
-						or (
-						<cfset openGrouping=true />
-					<cfelseif listFindNoCase("andOpenGrouping,and (",param.getRelationship())>
-						and (
-						<cfset openGrouping=true />
-					<cfelseif listFindNoCase("closeGrouping,)",param.getRelationship())>
-						)
-					<cfelse>
-						<cfif not openGrouping>
-						#param.getRelationship()#
-						<cfelse>
-						<cfset openGrouping=false />
-						</cfif>
-					</cfif>
+					<cfset openGrouping=true />	
+					and (
 				</cfif>
-				<cfif  listLen(param.getField(),".") gt 1>			
-					#param.getField()# #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCondition() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>  	
-				<cfelseif len(param.getField())>
-					#dataTable#.baseID IN (
-						select #dataTable#.baseID from tclassextenddata #tableModifier#
+				<cfif listFindNoCase("openGrouping,(",param.getRelationship())>
+					(
+					<cfset openGrouping=true />
+				<cfelseif listFindNoCase("orOpenGrouping,or (",param.getRelationship())>
+					<cfif not openGrouping>or</cfif> (
+					<cfset openGrouping=true />
+				<cfelseif listFindNoCase("andOpenGrouping,and (",param.getRelationship())>
+					<cfif not openGrouping>and</cfif> (
+					<cfset openGrouping=true />
+				<cfelseif listFindNoCase("closeGrouping,)",param.getRelationship())>
+					)
+					<cfset openGrouping=false />
+				<cfelseif not openGrouping>
+					#param.getRelationship()#
+				</cfif>
+				
+				<cfset started = true />
+
+				<cfif len(param.getField())>	
+					<cfif  listLen(param.getField(),".") gt 1>			
+						(#param.getField()# #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCondition() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>)
+						<cfset openGrouping=false />
+					<cfelseif len(param.getField())>
 						<cfif isNumeric(param.getField())>
-						where #dataTable#.attributeID=<cfqueryparam cfsqltype="cf_sql_numeric" value="#param.getField()#">
+							(select #dataTable#.baseID from #dataTable# #tableModifier# where attributeID
+							= <cfqueryparam cfsqltype="cf_sql_numeric" value="#param.getField()#">
 						<cfelse>
-						inner join tclassextendattributes #tableModifier# on (tclassextenddata.attributeID = tclassextendattributes.attributeID)
-						where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getSiteID()#">
-						and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
+							#dataTable#.baseID
+							IN (
+							select #dataTable#.baseID from #dataTable# #tableModifier# INNER JOIN tclassextendattributes #tableModifier#
+								on (#dataTable#.attributeID = tclassextendattributes.attributeID)
+							where tclassextendattributes.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getSiteID()#">
+							and tclassextendattributes.name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#param.getField()#">
 						</cfif>
 						and <cfif param.getCondition() neq "like">#variables.configBean.getClassExtensionManager().getCastString(param.getField(),getSiteID())#<cfelse>attributeValue</cfif> #param.getCondition()# <cfif param.getCondition() eq "IN">(</cfif><cfqueryparam cfsqltype="cf_sql_#param.getDataType()#" value="#param.getCriteria()#" list="#iif(param.getCondition() eq 'IN',de('true'),de('false'))#"><cfif param.getCondition() eq "IN">)</cfif>)
+						
+						<cfset openGrouping=false />
+					</cfif>
 				</cfif>
 			</cfif>						
 		</cfloop>
 		<cfif started>)</cfif>
+		</cfif>
+	</cfquery>
+
+	<!--- convert base query to list --->
+	<cfif rs.recordcount>
+		<cfset baseIDList = QuotedValueList(rs.baseID)>	
 	</cfif>
 	
-	Group By tclassextend.type,tclassextend.subtype,tclassextend.siteID, #dataTable#.baseID<cfif hasExtendedSort>, extendedSort</cfif>
-	
+	<!--- generate a sorted (if specified) list of baseIDs with additional fields --->
+	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
+	select tclassextend.type,tclassextend.subtype,tclassextend.siteID, #dataTable#.baseID as ID
+	<cfif hasExtendedSort>,#variables.configBean.getClassExtensionManager().getCastString(getSortBy(),getSiteID())# as extendedSort</cfif>
+	from #dataTable# #tableModifier#
+	INNER JOIN tclassextendattributes #tableModifier# on (#dataTable#.attributeID=tclassextendattributes.attributeID)
+	INNER JOIN tclassextendsets #tableModifier# on (tclassextendattributes.extendsetID=tclassextendsets.extendsetID)
+	INNER JOIN tclassextend #tableModifier# on (tclassextendsets.subtypeID=tclassextend.subtypeID)
+	where tclassextenddata.baseID IN (#PreserveSingleQuotes(baseIDList)#)
+		
 	<cfif len(getSortBy())>
-		
-		
+		and tclassextendattributes.name = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getSortBy()#">
 		<cfswitch expression="#getSortBy()#">
 		<cfcase value="random">
 			<cfif dbType eq "mysql">
@@ -347,7 +350,7 @@
 		</cfcase>
 		<cfdefaultcase>
 			<cfif len(getSortBy())>
-				order by qExtendedSort.extendedSort #getSortDirection()#
+				order by extendedSort #getSortDirection()#
 			</cfif>
 		</cfdefaultcase>
 		</cfswitch>

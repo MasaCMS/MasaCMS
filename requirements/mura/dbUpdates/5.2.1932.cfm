@@ -23,6 +23,11 @@ select tablist from tusers  where 0=1
 	ALTER TABLE tusers ADD tablist varchar(255) default NULL
 	</cfquery>
 </cfcase>
+<cfcase value="postgresql">
+	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	ALTER TABLE tusers ADD tablist varchar(255) default NULL
+	</cfquery>
+</cfcase>
 <cfcase value="nuodb">
 	<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 	ALTER TABLE tusers ADD tablist varchar(255) default NULL

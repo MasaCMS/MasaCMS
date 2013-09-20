@@ -43,7 +43,40 @@
 	For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
 	modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 	version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS. */
+if(window.Prototype) {
+    delete Object.prototype.toJSON;
+    delete Array.prototype.toJSON;
+    delete Hash.prototype.toJSON;
+    delete String.prototype.toJSON;
+}
 
+if(!this.JSON){JSON=function(){function f(n){return n<10?'0'+n:n;}
+Date.prototype.toJSON=function(key){return this.getUTCFullYear()+'-'+
+f(this.getUTCMonth()+1)+'-'+
+f(this.getUTCDate())+'T'+
+f(this.getUTCHours())+':'+
+f(this.getUTCMinutes())+':'+
+f(this.getUTCSeconds())+'Z';};var cx=/[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,escapeable=/[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,gap,indent,meta={'\b':'\\b','\t':'\\t','\n':'\\n','\f':'\\f','\r':'\\r','"':'\\"','\\':'\\\\'},rep;function quote(string){escapeable.lastIndex=0;return escapeable.test(string)?'"'+string.replace(escapeable,function(a){var c=meta[a];if(typeof c==='string'){return c;}
+return'\\u'+('0000'+
+(+(a.charCodeAt(0))).toString(16)).slice(-4);})+'"':'"'+string+'"';}
+function str(key,holder){var i,k,v,length,mind=gap,partial,value=holder[key];if(value&&typeof value==='object'&&typeof value.toJSON==='function'){value=value.toJSON(key);}
+if(typeof rep==='function'){value=rep.call(holder,key,value);}
+switch(typeof value){case'string':return quote(value);case'number':return isFinite(value)?String(value):'null';case'boolean':case'null':return String(value);case'object':if(!value){return'null';}
+gap+=indent;partial=[];if(typeof value.length==='number'&&!(value.propertyIsEnumerable('length'))){length=value.length;for(i=0;i<length;i+=1){partial[i]=str(i,value)||'null';}
+v=partial.length===0?'[]':gap?'[\n'+gap+
+partial.join(',\n'+gap)+'\n'+
+mind+']':'['+partial.join(',')+']';gap=mind;return v;}
+if(rep&&typeof rep==='object'){length=rep.length;for(i=0;i<length;i+=1){k=rep[i];if(typeof k==='string'){v=str(k,value,rep);if(v){partial.push(quote(k)+(gap?': ':':')+v);}}}}else{for(k in value){if(Object.hasOwnProperty.call(value,k)){v=str(k,value,rep);if(v){partial.push(quote(k)+(gap?': ':':')+v);}}}}
+v=partial.length===0?'{}':gap?'{\n'+gap+partial.join(',\n'+gap)+'\n'+
+mind+'}':'{'+partial.join(',')+'}';gap=mind;return v;}}
+return{stringify:function(value,replacer,space){var i;gap='';indent='';if(typeof space==='number'){for(i=0;i<space;i+=1){indent+=' ';}}else if(typeof space==='string'){indent=space;}
+rep=replacer;if(replacer&&typeof replacer!=='function'&&(typeof replacer!=='object'||typeof replacer.length!=='number')){throw new Error('JSON.stringify');}
+return str('',{'':value});},parse:function(text,reviver){var j;function walk(holder,key){var k,v,value=holder[key];if(value&&typeof value==='object'){for(k in value){if(Object.hasOwnProperty.call(value,k)){v=walk(value,k);if(v!==undefined){value[k]=v;}else{delete value[k];}}}}
+return reviver.call(holder,key,value);}
+cx.lastIndex=0;if(cx.test(text)){text=text.replace(cx,function(a){return'\\u'+('0000'+
+(+(a.charCodeAt(0))).toString(16)).slice(-4);});}
+if(/^[\],:{}\s]*$/.test(text.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g,'@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,']').replace(/(?:^|:|,)(?:\s*\[)+/g,''))){j=eval('('+text+')');return typeof reviver==='function'?walk({'':j},''):j;}
+throw new SyntaxError('JSON.parse');}};}();}
 
 var dtCh= "/";
 var dtCh= "/";
@@ -210,11 +243,11 @@ function getValidationIsRequired(theField){
 
 function getValidationMessage(theField, defaultMessage){
 	if(theField.getAttribute('data-message') != undefined){
-		return theField.getAttribute('data-message') + '\n';
+		return theField.getAttribute('data-message');
 	} else if(theField.getAttribute('message') != undefined){
-		return theField.getAttribute('message') + '\n';
+		return theField.getAttribute('message') ;
 	} else {
-		return getValidationFieldName(theField).toUpperCase() + defaultMessage + '\n';
+		return getValidationFieldName(theField).toUpperCase() + defaultMessage;
 	}	
 }
 
@@ -270,100 +303,89 @@ function getValidationRegex(theField){
 	}
 }
 
-function validateForm(theForm) {
+function validateForm(frm) {
+		var theForm=frm;
 		var errors="";
 		var setFocus=0;
 		var started=false;
 		var startAt;
 		var firstErrorNode;
 		var validationType='';
+		var validations={properties:{}};
 		var frmInputs = theForm.getElementsByTagName("input");	
-		for (f=0; f < frmInputs.length; f++) {
-		 theField=frmInputs[f];
+		var rules=new Array();
+		var data={};
+
+		for (var f=0; f < frmInputs.length; f++) {
+		 var theField=frmInputs[f];
 		 validationType=getValidationType(theField);
-		 
+		
+			rules=new Array();
+	
 			if(theField.style.display==""){
-				if(getValidationIsRequired(theField) && theField.value == "" )
+				if(getValidationIsRequired(theField))
 					{	
-						if (!started) {
-						started=true;
-						startAt=f;
-						firstErrorNode="input";
-						}
+						rules.push({
+							required: true,
+							message: getValidationMessage(theField,' is required.')
+						});
 						
-						errors += getValidationMessage(theField,' is required.');
 						 			
 					}
 				else if(validationType != ''){
 						
-					if(validationType=='EMAIL' && theField.value != '' && !isEmail(theField.value))
+					if(validationType=='EMAIL' && theField.value != '')
 					{	
-						if (!started) {
-						started=true;
-						startAt=f;
-						firstErrorNode="input";
-						}
+						rules.push({
+							dataType: 'EMAIL',
+							message: getValidationMessage(theField,' must be a valid email address.')
+						});
 						
-						errors += getValidationMessage(theField,' must be a valid email address.');
 								
 					}
 	
-					else if(validationType=='NUMERIC' && isNaN(theField.value))
+					else if(validationType=='NUMERIC')
 					{	
-						if(!isNaN(theField.value.replace(/\$|\,|\%/g,'')))
-						{
-							theField.value=theField.value.replace(/\$|\,|\%/g,'');
-	
-						} else {
-							if (!started) {
-							started=true;
-							startAt=f;
-							firstErrorNode="input";
-							}
-						
-							 errors += getValidationMessage(theField,' must be numeric.');
-						}					
+						rules.push({
+							dataType: 'NUMERIC',
+							message: getValidationMessage(theField,' must be numeric.')
+						});
+									
 					}
 					
 					else if(validationType=='REGEX' && theField.value !='' && hasValidationRegex(theField))
 					{	
-						var re = new RegExp(getValidationRegex(theField));
-						if(!theField.value.match(re))
-						{
-							if (!started) {
-							started=true;
-							startAt=f;
-							firstErrorNode="input";
-							}
-						
-							 errors += getValidationMessage(theField,' is not valid.');
-						}					
+						rules.push({
+							regex: hasValidationRegex(theField),
+							message: getValidationMessage(theField,' is not valid.')
+						});
+										
 					}
+					
 					else if(validationType=='MATCH' 
 							&& hasValidationMatchField(theField) && theField.value != theForm[getValidationMatchField(theField)].value)
 					{	
-						if (!started) {
-						started=true;
-						startAt=f;
-						firstErrorNode="input";
-						}
-						
-						errors += getValidationMessage(theField, ' must match' + getValidationMatchField(theField) + '.' );
+						rules.push({
+							eq: theForm[getValidationMatchField(theField)].value,
+							message: getValidationMessage(theField, ' must match' + getValidationMatchField(theField) + '.' )
+						});
 									
 					}
-					else if(validationType=='DATE' && theField.value != '' && !isDate(theField.value))
+					
+					else if(validationType=='DATE' && theField.value != '')
 					{
-						if (!started) {
-						started=true;
-						startAt=f;
-						firstErrorNode="input";
-						}
-						
-						errors += getValidationMessage(theField, ' must be a valid date [MM/DD/YYYY].' );
+						rules.push({
+							dataType: 'DATE',
+							message: getValidationMessage(theField, ' must be a valid date [MM/DD/YYYY].' )
+						});
 						 
 					}
 				}
-					
+				
+				if(rules.length){
+					validations.properties[theField.getAttribute('name')]=rules;
+					data[theField.getAttribute('name')]=theField.value;
+				}
 			}
 		}
 		var frmTextareas = theForm.getElementsByTagName("textarea");	
@@ -372,32 +394,32 @@ function validateForm(theForm) {
 			
 				theField=frmTextareas[f];
 				validationType=getValidationType(theField);
+
+				rules=new Array();
 				 
-				if(theField.style.display=="" && getValidationIsRequired(theField) && theField.value == "" )
+				if(theField.style.display=="" && getValidationIsRequired(theField))
 				{	
-					if (!started) {
-					started=true;
-					startAt=f;
-					firstErrorNode="textarea";
-					}
+					rules.push({
+						required: true,
+						message: getValidationMessage(theField, ' is required.' )
+					});
 					
-					errors += getValidationMessage(theField, ' is required.' );		
 				}	
+
 				else if(validationType != ''){
 					if(validationType=='REGEX' && theField.value !='' && hasValidationRegex(theField))
 					{	
-						var re = new RegExp(getValidationRegex(theField));
-						if(!theField.value.match(re))
-						{
-							if (!started) {
-							started=true;
-							startAt=f;
-							firstErrorNode="input";
-							}
-						
-							errors += getValidationMessage(theField, ' is not valid.' );
-						}					
+						rules.push({
+							regex: getValidationRegex(theField),
+							message: getValidationMessage(theField, ' is not valid.' )
+						});
+										
 					}
+				}
+
+				if(rules.length){
+					validations.properties[theField.getAttribute('name')]=rules;
+					data[theField.getAttribute('name')]=theField.value;
 				}
 		}
 		
@@ -405,36 +427,63 @@ function validateForm(theForm) {
 		for (f=0; f < frmSelects.length; f++) {
 				theField=frmSelects[f];
 				validationType=getValidationType(theField);
-				if(theField.style.display=="" && getValidationIsRequired(theField) && theField.options[theField.selectedIndex].value == "")
+
+				rules=new Array();
+
+				if(theField.style.display=="" && getValidationIsRequired(theField))
 				{	
-					if (!started) {
-					started=true;
-					startAt=f;
-					firstErrorNode="select";
-					}
-					
-					errors += getValidationMessage(theField, ' is required.' );	
+					rules.push({
+						required: true,
+						message: getValidationMessage(theField, ' is required.' )
+					});
+				}
+
+				if(rules.length){
+					validations.properties[theField.getAttribute('name')]=rules;
+					data[theField.getAttribute('name')]=theField.value;
 				}	
 		}
-		
-		if(errors != ""){	
-			alert(errors);
-			if(firstErrorNode=="input"){
-				frmInputs[startAt].focus();
-			}
-			else if (firstErrorNode=="textarea"){
-				frmTextareas[startAt].focus();
-			}
-			else if (firstErrorNode=="select"){
-				frmSelects[startAt].focus();
-			}
-			return false;
-		}
-		else
-		{
-			return true;
+
+		try{
+			//alert(JSON.stringify(validations));
+
+			$.ajax(
+				{
+					type: 'post',
+					url: context + '/tasks/validate/',
+					data: {
+							data: JSON.stringify(data),
+							validations: JSON.stringify(validations)
+						},
+					success: function(resp) {
+ 				 		data=eval('(' + resp + ')');
+
+ 				 		if($.isEmptyObject(data)){
+ 				 			theForm.submit();
+ 				 		} else {
+	 				 		var msg='';
+	 				 		for(var e in data){
+	 				 			msg=msg + data[e] + '\n';
+	 				 		}
+
+	 				 		alert(msg);
+ 				 		}
+					},
+					error: function(resp) {
+ 				 		
+ 				 		alert(JSON.stringify(resp));
+					}
+
+				}		 
+			);
+		} 
+		catch(err){ 
+			console.log(err);
+
 		}
 
+	return false;
+		
 }
 
 function submitForm(frm,action,theClass){
@@ -624,5 +673,4 @@ function extendObject(obj1,obj2){
 
 $(document).ready(setMuraLoginCheck);
 
-//Event.observe(window, 'load', setKeyCheck, false);
 

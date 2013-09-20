@@ -16,6 +16,11 @@
 		ALTER TABLE tsettings ADD COLUMN baseID char(35) default NULL
 		</cfquery>
 	</cfcase>
+	<cfcase value="postgresql">
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		ALTER TABLE tsettings ADD COLUMN baseID char(35) default NULL
+		</cfquery>
+	</cfcase>
 	<cfcase value="nuodb">
 		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
 		ALTER TABLE tsettings ADD COLUMN baseID char(35) default NULL

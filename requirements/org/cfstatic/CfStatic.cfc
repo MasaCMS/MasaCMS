@@ -1,42 +1,5 @@
 <cfcomponent output="false" hint="I am the CfMinify api component. Instantiate me with configuration options and use my include(), includeData() and renderIncludes() methods to awesomely manage your static includes" extends="org.cfstatic.util.Base">
 
-<!--- private properties --->
-	<cfscript>
-		_staticDirectory     = "";
-		_staticUrl           = "";
-		_jsDirectory         = "js";
-		_cssDirectory        = "css";
-		_outputDirectory     = "min";
-		_minifyMode          = "package";
-		_downloadExternals   = false;
-		_addCacheBusters     = true;
-		_debugAllowed        = true;
-		_debugKey            = "debug";
-		_debugPassword       = true;
-		_forceCompilation    = false;
-		_checkForUpdates     = false;
-		_includeAllByDefault = true;
-		_embedCssImages      = "none";
-		_includePattern      = ".*";
-		_excludePattern      = "";
-		_outputCharset       = "utf-8";
-		_javaLoaderScope     = "server";
-		_lessGlobals         = "";
-		_jsDataVariable      = "cfrequest";
-		_jsDependencyFile    = "";
-		_cssDependencyFile   = "";
-		_fileStateCache      = "";
-
-		_jsPackages          = "";
-		_cssPackages         = "";
-		_yuiCompressor       = "";
-		_lessCompiler        = "";
-		_cssImageParser      = "";
-		_includeMappings     = StructNew();
-		_includeMappings.js  = StructNew();
-		_includeMappings.css = StructNew();
-	</cfscript>
-
 <!--- constructor --->
 	<cffunction name="init" access="public" returntype="any" output="false" hint="I am the constructor for CfStatic. Pass in your CfStatic configuration options to me.">
 		<cfargument name="staticDirectory"     type="string"  required="true"                      hint="Full path to the directoy in which static files reside" />
@@ -50,6 +13,7 @@
 		<cfargument name="debugAllowed"        type="boolean" required="false" default="true"      hint="Whether or not debug is allowed. Defaulting to true, even though this may seem like a dev setting. No real extra load is made on the server by a user making use of debug mode and it is useful by default." />
 		<cfargument name="debugKey"            type="string"  required="false" default="debug"     hint="URL parameter name used to invoke debugging (if enabled)" />
 		<cfargument name="debugPassword"       type="string"  required="false" default="true"      hint="URL parameter value used to invoke debugging (if enabled)" />
+		<cfargument name="debug"               type="boolean" required="false" default="false"     hint="Whether or not to start CfStatic in debug mode (regardless of other debug options). This is a permanent switch." />
 		<cfargument name="forceCompilation"    type="boolean" required="false" default="false"     hint="Whether or not to check for updated files before compiling" />
 		<cfargument name="checkForUpdates"     type="boolean" required="false" default="false"     hint="Whether or not to attempt a recompile every request. Useful in development, should absolutely not be enabled in production." />
 		<cfargument name="includeAllByDefault" type="boolean" required="false" default="true"      hint="Whether or not to include all static files in a request when the .include() method is never called" />
@@ -100,7 +64,7 @@
 
 	<cffunction name="renderIncludes" access="public" returntype="string" output="false" hint="I am the renderIncludes() method. I return the html required for including all the static resources needed for the requested page. If no includes have been specified, I include *all* static resources.">
 		<cfargument name="type"      type="string"  required="false" hint="Either 'js' or 'css'. the type of include to render. If I am not specified, the method will render both css and javascript (css first)" />
-		<cfargument name="debugMode" type="boolean" required="false" default="#_getDebugAllowed() and StructKeyExists(url, _getDebugKey()) and url[_getDebugKey()] EQ _getDebugPassword()#" hint="Whether or not to render the source files (as opposed to the compiled files). You should use the debug url parameter (see cfstatic config options) rather than manually setting this argument, but it is included here should you need it." />
+		<cfargument name="debugMode" type="boolean" required="false" default="#_isDebugOnForRequest()#" hint="Whether or not to render the source files (as opposed to the compiled files). You should use the debug url parameter (see cfstatic config options) rather than manually setting this argument, but it is included here should you need it." />
 
 		<cfscript>
 			var filters      = "";
@@ -120,10 +84,10 @@
 						buffer.append( _renderRequestData() );
 					}
 
-					filters = _getRequestIncludeFilters( types[i], arguments.debugMode );
+					filters = _getRequestIncludeFilters( types[i], debugMode );
 
 					if ( _anythingToRender( filters ) ) {
-						renderCache = _getRenderedIncludeCache( types[i], arguments.debugMode )._ordered;
+						renderCache = _getRenderedIncludeCache( types[i], debugMode )._ordered;
 						includeAll  = not ArrayLen( filters ) and _getIncludeAllByDefault();
 
 						if ( includeAll ){
@@ -157,6 +121,7 @@
 		<cfargument name="debugAllowed"        type="boolean" required="false" default="true"      hint="Whether or not debug is allowed. Defaulting to true, even though this may seem like a dev setting. No real extra load is made on the server by a user making use of debug mode and it is useful by default." />
 		<cfargument name="debugKey"            type="string"  required="false" default="debug"     hint="URL parameter name used to invoke debugging (if enabled)" />
 		<cfargument name="debugPassword"       type="string"  required="false" default="true"      hint="URL parameter value used to invoke debugging (if enabled)" />
+		<cfargument name="debug"               type="boolean" required="false" default="false"     hint="Whether or not to start CfStatic in debug mode (regardless of other debug options). This is a permanent switch." />
 		<cfargument name="forceCompilation"    type="boolean" required="false" default="false"     hint="Whether or not to check for updated files before compiling" />
 		<cfargument name="checkForUpdates"     type="boolean" required="false" default="false"     hint="Whether or not to attempt a recompile every request. Useful in development, should absolutely not be enabled in production." />
 		<cfargument name="includeAllByDefault" type="boolean" required="false" default="true"      hint="Whether or not to include all static files in a request when the .include() method is never called" />
@@ -184,6 +149,7 @@
 			_setDebugAllowed       ( debugAllowed                                 );
 			_setDebugKey           ( debugKey                                     );
 			_setDebugPassword      ( debugPassword                                );
+			_setDebug              ( debug                                        );
 			_setForceCompilation   ( forceCompilation                             );
 			_setCheckForUpdates    ( checkForUpdates                              );
 			_setAddCacheBusters    ( addCacheBusters                              );
@@ -490,15 +456,17 @@
 
 	<cffunction name="_getFileState" access="private" returntype="string" output="false">
 		<cfscript>
-			var jsDir    = $listAppend( _getRootDirectory(), _getJsDirectory() , '/' );
-			var cssDir   = $listAppend( _getRootDirectory(), _getCssDirectory(), '/' );
-			var jsFiles  = $directoryList( jsDir  );
-			var cssFiles = $directoryList( cssDir );
-			var state    = StructNew();
-			var ext      = "";
-			var path     = "";
-			var i        = 0;
-			var included = "";
+			var jsDir             = $listAppend( _getRootDirectory(), _getJsDirectory() , '/' );
+			var cssDir            = $listAppend( _getRootDirectory(), _getCssDirectory(), '/' );
+			var jsFiles           = $directoryList( jsDir  );
+			var cssFiles          = $directoryList( cssDir );
+			var jsDependencyFile  = $ensureFullFilePath( _getJsDependencyFile() );
+			var cssDependencyFile = $ensureFullFilePath( _getJsDependencyFile() );
+			var state             = StructNew();
+			var ext               = "";
+			var path              = "";
+			var i                 = 0;
+			var included          = "";
 
 			for( i=1; i LTE jsFiles.recordCount; i++ ){
 				ext      = ListLast( jsFiles.name[i], '.' );
@@ -517,6 +485,15 @@
 					state[path] = cssFiles.dateLastModified[i];
 				}
 			}
+
+			if ( Len( Trim( jsDependencyFile ) ) and FileExists( jsDependencyFile ) ) {
+				state[ jsDependencyFile ] = $fileLastModified( jsDependencyFile );
+			}
+			if ( Len( Trim( cssDependencyFile ) ) and FileExists( cssDependencyFile ) ) {
+				state[ cssDependencyFile ] = $fileLastModified( cssDependencyFile );
+			}
+
+
 
 			return Hash( SerializeJson( state ) );
 		</cfscript>
@@ -558,7 +535,7 @@
 
 			jarsForYui[1]    = ExpandPath('/org/cfstatic/lib/yuiCompressor/yuicompressor-2.4.7.jar');
 			jarsForYui[2]    = ExpandPath('/org/cfstatic/lib/cfstatic.jar');
-			jarsForLess[1]   = ExpandPath('/org/cfstatic/lib/less/lesscss-engine-1.3.0.jar');
+			jarsForLess[1]   = ExpandPath('/org/cfstatic/lib/less/lesscss-engine-1.4.2.jar');
 			jarsForCoffee[1] = ExpandPath('/org/cfstatic/lib/jcoffeescript/jcoffeescript-1.3.3.jar');
 
 			cfstaticJavaloaders.yui    = CreateObject('component','org.cfstatic.lib.javaloader.JavaLoader').init( jarsForYui    );
@@ -1005,13 +982,13 @@
     	<cfscript>
     		var node = "";
     		if ( debug ) {
-    			node = _renderedIncludeCache.debug[ arguments.type ];
+    			node = _renderedIncludeCache.debug[ type ];
     		} else {
-    			node = _renderedIncludeCache[ arguments.type ];
+    			node = _renderedIncludeCache[ type ];
     		}
 
     		ArrayAppend( node['_ordered'], rendered );
-    		node[ arguments.path ] = ArrayLen( node['_ordered'] );
+    		node[ path ] = ArrayLen( node['_ordered'] );
     	</cfscript>
     </cffunction>
 
@@ -1021,10 +998,27 @@
 
     	<cfscript>
     		if ( debug ) {
-    			return _renderedIncludeCache.debug[ arguments.type ];
+    			return _renderedIncludeCache.debug[ type ];
     		}
 
-    		return _renderedIncludeCache[ arguments.type ];
+    		return _renderedIncludeCache[ type ];
+    	</cfscript>
+    </cffunction>
+
+    <cffunction name="_isDebugOnForRequest" access="private" returntype="boolean" output="false">
+
+    	<cfscript>
+    		// configured (permanent) debugging
+    		if ( _getDebug() ) {
+    			return true;
+    		}
+
+    		// request level debugging
+    		if ( _getDebugAllowed() ) {
+    			return StructKeyExists(url, _getDebugKey()) and url[_getDebugKey()] EQ _getDebugPassword();
+    		}
+
+    		return false;
     	</cfscript>
     </cffunction>
 
@@ -1147,6 +1141,14 @@
 	</cffunction>
 	<cffunction name="_getDebugPassword" access="private" returntype="string" output="false">
 		<cfreturn _debugPassword />
+	</cffunction>
+
+	<cffunction name="_getDebug" access="private" returntype="boolean" output="false">
+		<cfreturn _debug>
+	</cffunction>
+	<cffunction name="_setDebug" access="private" returntype="void" output="false">
+		<cfargument name="debug" type="boolean" required="true" />
+		<cfset _debug = debug />
 	</cffunction>
 
 	<cffunction name="_setForceCompilation" access="private" returntype="void" output="false">
@@ -1316,7 +1318,7 @@
 	</cffunction>
 	<cffunction name="_setCssDependencyFile" access="private" returntype="void" output="false">
 		<cfargument name="cssDependencyFile" type="string" required="true" />
-		<cfset _cssDependencyFile = arguments.cssDependencyFile />
+		<cfset _cssDependencyFile = cssDependencyFile />
 	</cffunction>
 
 	<cffunction name="_getFileStateCache" access="private" returntype="string" output="false">
@@ -1324,7 +1326,7 @@
 	</cffunction>
 	<cffunction name="_setFileStateCache" access="private" returntype="void" output="false">
 		<cfargument name="fileStateCache" type="string" required="true" />
-		<cfset _fileStateCache = arguments.fileStateCache />
+		<cfset _fileStateCache = fileStateCache />
 	</cffunction>
 
 	<cffunction name="_getLessGlobals" access="private" returntype="string" output="false">

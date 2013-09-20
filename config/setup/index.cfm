@@ -46,6 +46,7 @@ to your own modified versions of Mura CMS.
   muraInstallPath = GetDirectoryFromPath(GetCurrentTemplatePath());
   fileDelim = FindNoCase('Windows', Server.OS.Name) ? '\' : '/';
 </cfscript> 
+
 <cfif ListFindNoCase(muraInstallPath, 'mura', fileDelim)>
   <h1>Mura cannot be installed under a directory called &quot;<strong>mura</strong>&quot; &hellip; please move or rename and try to install again.</h1>
   <cfabort />
@@ -125,7 +126,7 @@ to your own modified versions of Mura CMS.
   <cfset cleanIni( settingsPath ) />
   --->
   <!--- cflocate to the admin --->
-  <cflocation url="#context#/admin/index.cfm?appreload" addtoken="false" />
+  <cflocation url="#context#/admin/?appreload" addtoken="false" />
 </cfif>
 <!--- run save process --->
 <cfif isDefined( "FORM.#application.setupSubmitButton#" )>
@@ -251,6 +252,22 @@ to your own modified versions of Mura CMS.
             };
           </cfscript>
         </cfif>
+
+
+        <cfif form.production_dbtype eq 'Oracle'>
+           <cfset form.production_dbtablespace=ucase(form.production_dbtablespace)>
+
+           <cfquery name="rsTableSpaces" username="#form.production_dbusername#" password="#form.production_dbpassword#">
+              select * from user_ts_quotas
+              where tablespace_name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#form.production_dbtablespace#">
+           </cfquery>
+
+           <cfif not rsTableSpaces.recordcount>
+              <cfset message = "<strong>Error:</strong> The Oracle tablespace named '#form.production_dbtablespace#' is not available">
+              <cfset bProcessWithMessage = false>
+           </cfif>
+        </cfif>
+
         <cfif bProcessWithMessage>
           <!--- check if we need to process even though there is a message (bsoylu 6/7/2010)  --->
           <!--- try to create the database --->
@@ -263,8 +280,8 @@ to your own modified versions of Mura CMS.
               <cffile action="read" file="#getDirectoryFromPath( getCurrentTemplatePath() )#/db/#FORM.production_dbtype#.sql" variable="sql" />
             </cfif>
             --->
-        
-           <cfdbinfo 
+         
+          <cfdbinfo 
                 name="rsCheck"
                 datasource="#FORM.production_datasource#" 
                 username="#FORM.production_dbusername#" 
@@ -278,12 +295,11 @@ to your own modified versions of Mura CMS.
           <cfelse>
             <cfparam name="form.production_mysqlengine" default="InnoDB">
             <cfset storageEngine="ENGINE=#form.production_mysqlengine# DEFAULT CHARSET=utf8">
-            <cfset form.production_dbtablespace=ucase(form.production_dbtablespace)>
-            
             <cfsavecontent variable="sql">
               <cfinclude template="db/#FORM.production_dbtype#.sql">
             </cfsavecontent>
           </cfif>
+          
           <!---
           <cfsavecontent variable="sql">
             <cfinclude template="db/#FORM.production_dbtype#.sql">
@@ -334,7 +350,8 @@ to your own modified versions of Mura CMS.
                   </cfif>
                 </cfloop>
               </cfcase>
-              <cfcase value="mysql" delimiters=",">
+              <cfcase value="mysql">
+              
                 <cfset aSql = ListToArray(sql, ';')>
                 <!--- loop over items --->
                 <cfloop index="x" from="1" to="#arrayLen(aSql) - 1#">
@@ -346,6 +363,18 @@ to your own modified versions of Mura CMS.
                   </cfif>
                 </cfloop>
               </cfcase>
+				<cfcase value="postgresql,nuodb">
+				  <cfset aSql = ListToArray(sql, ';')>
+				  <!--- loop over items --->
+				  <cfloop index="x" from="1" to="#arrayLen(aSql) - 1#">
+					<!--- we placed a small check here to skip empty rows --->
+					<cfif len( trim( aSql[x] ) )>
+					  <cfquery datasource="#FORM.production_datasource#" username="#FORM.production_dbusername#" password="#FORM.production_dbpassword#">
+						#keepSingleQuotes(aSql[x])#
+					  </cfquery>
+					</cfif>
+				  </cfloop>
+				</cfcase>
             </cfswitch>
             <!--- update the domain to be local to the domain the server is being installed on --->
             <cfquery datasource="#FORM.production_datasource#" username="#FORM.production_dbusername#" password="#FORM.production_dbpassword#">
@@ -664,12 +693,14 @@ to your own modified versions of Mura CMS.
               <option value="">-- Select your Database Type --</option>
               <option value="mysql" <cfif FORM.production_dbtype IS "mysql">selected</cfif>>MySQL</option>
               <option value="mssql" <cfif FORM.production_dbtype IS "mssql">selected</cfif>>MSSQL</option>
+               <option value="nuodb" <cfif FORM.production_dbtype IS "nuodb">selected</cfif>>NuoDB</option>
               <option value="oracle" <cfif FORM.production_dbtype IS "oracle">selected</cfif>>Oracle</option>
+			        <option value="postgresql" <cfif FORM.production_dbtype IS "postgresql">selected</cfif>>PostgreSQL</option>
             </select>
           </div>
         </div>
         <div class="control-group">
-          <label class="control-label"><a href="" rel="tooltip" data-original-title="For MySQL and MS SQL Server, Mura can create the database and DSNs. You can create a database and use your own DSNs by setting this option to No." onClick="fHandleAutoCreateChange()">Auto Create Database <i class="icon-question-sign"></i></a></label>
+          <label class="control-label"><a href="" rel="tooltip" data-original-title="For MySQL, PostgreSQL and MS SQL Server, Mura can create the database and DSNs. You can create a database and use your own DSNs by setting this option to No." onClick="fHandleAutoCreateChange()">Auto Create Database <i class="icon-question-sign"></i></a></label>
           <div class="controls">
             <label class="inline radio">
               <input type="radio" name="auto_create" value="Yes" id="auto_create_on"  onclick="javascript:fHandleAutoCreateChange()">

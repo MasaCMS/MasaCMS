@@ -64,12 +64,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</a>
 			    </label>
 			    <div class="controls">
-			     	<input type="text" id="title" name="title" value="#HTMLEditFormat(rc.contentBean.gettitle())#"  maxlength="255" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#" <cfif not rc.contentBean.getIsNew() and not listFindNoCase('Link,File',rc.type)>onkeypress="openDisplay('editAdditionalTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');"</cfif>>
+			     	<input type="text" id="title" name="title" value="#HTMLEditFormat(rc.contentBean.gettitle())#"  maxlength="255" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.titlerequired')#" <cfif not rc.contentBean.getIsNew()>onkeypress="openDisplay('editAdditionalTitles','#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.close')#');"</cfif>>
 			     </div>
+			     <div id="alertTitleSuccess" class="alert alert-success" style="display:none;">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.seotitlescleared')# <button type="button" class="close" data-dismiss="alert"><i class="icon-remove-sign"></i></button></div>
 		    </div>
 		<div class="control-group" id="editAdditionalTitles" style="display:none;">		
 			<div class="controls" >
-				<p class="alert help-block">#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.AdditionalTitlesnote")#</p>
+				<div class="alert help-block">
+					<p>#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.AdditionalTitlesnote")#</p><br />
+					<button id="resetTitles" name="resetTitles" class="btn">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.clearseotitles')#</button>
+				</div>
+				
+				<script>
+					jQuery(document).ready(function(){
+						$('##resetTitles').click(function(e){
+							e.preventDefault();
+							$('##menuTitle,##urlTitle,##htmlTitle').val('');
+							$('##editAdditionalTitles').hide();
+							$('##alertTitleSuccess').fadeIn();
+							return true;
+						});
+					});
+				</script>
 			</div>
 		</div>
 		</cfcase>
@@ -87,7 +103,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfdefaultcase>
 	</cfswitch>
 
-	<cfif listFind("Page,Folder,Calendar,Gallery,Link",rc.type)>
+	<cfif ListFindNoCase("Page,Folder,Calendar,Gallery,Link",rc.type)>
 		<cfinclude template="dsp_file_selector.cfm">
 	</cfif>	
 
@@ -128,12 +144,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		     			height:'150',
 		     		  	customConfig : 'config.js.cfm'
 					},
-		     		function(editorInstance){
+					function(editorInstance){
 						htmlEditorOnComplete(editorInstance);
 						if (!hasBody){
 							showPreview();
 						}
-					}
+					}	
 		     	);
 				}
 			}
@@ -187,7 +203,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					
 					function FCKeditor_OnComplete( editorInstance ) { 	
 						<cfif rc.preview eq 1>
-					   	preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##rc.$.getURLStem(rc.siteid,'')#?previewid=#rc.contentBean.getcontenthistid()#','#rc.contentBean.getTargetParams()#');
+					   	preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(rc.siteid,'')#?previewid=#rc.contentBean.getcontenthistid()#','#rc.contentBean.getTargetParams()#');
 						</cfif> 
 						htmlEditorOnComplete(editorInstance); 
 					}
@@ -246,9 +262,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfif rc.preview eq 1>
 							if(!previewLaunched){
 						<cfif listFindNoCase("File",rc.type)>
-							preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##rc.$.getURLStem(rc.siteid,'')#?previewid=#rc.contentBean.getcontenthistid()#&siteid=#rc.contentBean.getsiteid()#');
+							preview('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.siteConfig().getContentRenderer().getURLStem(rc.siteid,'')#?previewid=#rc.contentBean.getcontenthistid()#&siteid=#rc.contentBean.getsiteid()#');
 						<cfelse>
-							openPreviewDialog('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##rc.$.getURLStem(rc.siteid,'')#?previewid=#rc.contentBean.getcontenthistid()#&siteid=#rc.contentBean.getsiteid()#');
+							openPreviewDialog('http://#application.settingsManager.getSite(rc.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.siteConfig().getContentRenderer().getURLStem(rc.siteid,'')#?previewid=#rc.contentBean.getcontenthistid()#&siteid=#rc.contentBean.getsiteid()#');
 						</cfif>
 							previewLaunched=true;
 							}
