@@ -74,7 +74,7 @@
 	</cfif>
 
 	<cfset variables.totalrecords=session.rsSearch.RecordCount>
-	<cfset variables.recordsperpage=3> 
+	<cfset variables.recordsperpage=10> 
 	<cfset variables.NumberOfPages=Ceiling(variables.totalrecords/variables.recordsperpage)>
 	<cfset variables.CurrentPageNumber=Ceiling(request.StartRow/variables.recordsperpage)> 
 	<cfset variables.next=evaluate((request.startrow+variables.recordsperpage))	>
@@ -127,9 +127,9 @@
 					<p>#variables.$.rbKey('search.displaying')#: #request.startrow# - #variables.through# #variables.$.rbKey('search.of')# #session.rsSearch.recordcount#</p>
 				</div>
 			</div>
-			<!--- pagination --->
+			<!--- Pager --->
 			<div class="row">
-				<ul class="#this.ulPaginationWrapperClass#">
+				<ul class="pager pull-left">
 					<cfif variables.previous gte 1>
 						<li class="navPrev">
 							<a href="?startrow=#variables.previous#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">&laquo;&nbsp;#variables.$.rbKey('search.prev')#</a>
@@ -162,9 +162,10 @@
 					#variables.$.rbKey('search.displaying')#: #request.startrow# - #variables.through# #variables.$.rbKey('search.of')# #session.rsSearch.recordcount#
 				</div>
 			</div>
-			<!--- pagination --->
+
+			<!--- Pager --->
 			<div class="row">
-				<ul class="#this.ulPaginationWrapperClass#">
+				<ul class="pager pull-left">
 					<cfif variables.previous gte 1>
 						<li class="navPrev">
 							<a href="?startrow=#variables.previous#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">&laquo;&nbsp;#variables.$.rbKey('search.prev')#</a>

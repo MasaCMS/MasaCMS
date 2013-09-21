@@ -80,37 +80,39 @@
 				#variables.$.rbKey('user.pleaselogin')#
 			</#variables.$.getHeaderTag('subHead1')#>
 
-			<div class="control-group">
-				<label class="control-label required" for="txtUsername">
+			<!--- Username --->
+			<div class="form-group">
+				<label class="control-label col-lg-2 required" for="txtUsername">
 					#variables.$.rbKey('user.username')#
 					<span class="help-inline">#htmlEditFormat(variables.$.rbKey('user.required'))#</span>
 				</label>
-				<div class="controls">
+				<div class="col-lg-10">
 					<input type="text" id="txtUsername" placeholder="#variables.$.rbKey('user.username')#" name="username" required="true" message="#htmlEditFormat(variables.$.rbKey('user.usernamerequired'))#" class="form-control" autofocus>
 				</div>
 			</div>
-			<div class="control-group">
-				<label class="control-label required" for="txtPassword">
+
+			<!--- Password --->
+			<div class="form-group">
+				<label class="control-label col-lg-2 required" for="txtPassword">
 					#variables.$.rbKey('user.password')#
 					<span class="help-inline">#htmlEditFormat(variables.$.rbKey('user.required'))#</span>
 				</label>
-				<div class="controls">
+				<div class="col-lg-10">
 					<input type="password" id="txtPassword" name="password" placeholder="#variables.$.rbKey('user.password')#" required="true" message="#htmlEditFormat(variables.$.rbKey('user.passwordrequired'))#" class="form-control" />
 				</div>
 			</div>
-			<div class="control-group">
-				<div class="controls">
+
+			<!--- Remember Me --->
+			<div class="form-group">
+				<div class="col-lg-10">
 					<label class="checkbox" for="cbRememberMe" >
-						<input type="checkbox" id="cbRememberMe" class="form-control" name="rememberMe" value="1"> #htmlEditFormat(variables.$.rbKey('user.rememberme'))#
+						<input type="checkbox" id="cbRememberMe" name="rememberMe" value="1"> #htmlEditFormat(variables.$.rbKey('user.rememberme'))#
 					</label>
 				</div>
-			</div> 
+			</div>
 
-			<div class="clearfix"></div>
-			<br> 
-
-			<div class="control-group">
-				<div class="controls">
+			<div class="form-group">
+				<div class="col-lg-10">
 					<!--- <p class="required">#variables.$.rbKey('user.requiredfields')#</p>  Don't need this if you're adding help text above --->
 					<input type="hidden" name="doaction" value="login" />
 					<input type="hidden" name="linkServID" value="#HTMLEditFormat(variables.$.event('linkServID'))#" />
@@ -134,15 +136,15 @@
 				<cfif FindNoCase('is not a valid',msg2)><div class="alert alert-error">#HTMLEditFormat(variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('user.forgotnotvalid'),variables.$.event('email')))#<cfelseif FindNoCase('no account',msg2)><div class="error">#HTMLEditFormat(variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('user.forgotnotfound'),variables.$.event('email')))#<cfelse><div class="alert">#variables.$.rbKey('user.forgotsuccess')#</cfif></div>
 			</cfif>
 
-			<div class="control-group">
-				<label class="control-label" for="txtEmail">#variables.$.rbKey('user.email')#</label>
-				<div class="controls">
+			<div class="form-group">
+				<label class="control-label col-lg-2" for="txtEmail">#variables.$.rbKey('user.email')#</label>
+				<div class="col-lg-10">
 					<input id="txtEmail" name="email" class="form-control" type="text" placeholder="#variables.$.rbKey('user.email')#" validate="email" required="true" message="#htmlEditFormat(variables.$.rbKey('user.emailvalidate'))#" />
 				</div>
 			</div>
 
-			<div class="control-group">
-				<div class="controls">
+			<div class="form-group">
+				<div class="col-lg-10">
 					<input type="hidden" name="doaction" value="sendlogin" />
 					<input type="hidden" name="linkServID" value="#HTMLEditFormat(variables.$.event('linkServID'))#" />
 					<input type="hidden" name="display" value="login" />
@@ -156,7 +158,7 @@
 
 		<cfif variables.$.siteConfig('ExtranetPublicReg')>
 			<div id="notRegistered">
-				<#variables.$.getHeaderTag('subHead1')# class="center">#variables.$.rbKey('user.notregistered')# <a class="callToAction" href="#variables.$.siteConfig('editProfileURL')#&returnURL=#urlencodedformat(variables.$.event('returnURL'))#">#variables.$.rbKey('user.signup')#.</a></#variables.$.getHeaderTag('subHead1')#>
+				<#variables.$.getHeaderTag('subHead1')# class="center">#variables.$.rbKey('user.notregistered')# <a class="callToAction" href="#variables.$.siteConfig('editProfileURL')#&returnURL=#urlencodedformat(variables.$.event('returnURL'))#">#variables.$.rbKey('user.signup')#</a></#variables.$.getHeaderTag('subHead1')#>
 			</div>
 		</cfif>
 

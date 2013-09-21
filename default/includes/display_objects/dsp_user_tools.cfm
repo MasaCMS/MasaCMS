@@ -62,43 +62,57 @@
 <cfoutput>
 	<div id="login" class="well clearfix">
 		<#variables.$.getHeaderTag('subhead1')#>#variables.$.rbKey('user.signin')#</#variables.$.getHeaderTag('subhead1')#>
-		<form action="<cfoutput>?nocache=1</cfoutput>" name="loginForm" method="post">
-			<ol>
-				<li class="control-group">
-					<label class="control-label" for="txtUserName">#variables.$.rbKey('user.username')#</label>
-					<input type="text" id="txtUserName" name="username" class="form-control" />
-				</li>
-				<li class="control-group">
-					<label class="control-label" for="txtPassword">#variables.$.rbKey('user.password')#</label>
-					<input type="password" id="txtPassword" name="password" class="form-control" />
-				</li>
-				<li class="control-group">
-					<label class="checkbox" for="cbRemember"><input type="checkbox" id="cbRemember" class="checkbox form-control first" name="rememberMe" value="1" />
-					#variables.$.rbKey('user.rememberme')#</label>
-				</li>
-			</ol>
-			<div class="buttons">
-				<input type="hidden" name="doaction" value="login" />
-				<button type="submit" class="submit btn btn-default">#variables.$.rbKey('user.signin')#</button>
+		<form role="form" class="form-horizontal" action="<cfoutput>?nocache=1</cfoutput>" name="loginForm" method="post">
+
+			<!--- Username --->
+			<div class="form-group">
+				<label class="control-label col-lg-2" for="txtUserName">#variables.$.rbKey('user.username')#</label>
+				<div class="col-lg-10">
+					<input type="text" id="txtUserName" name="username" class="form-control" placeholder="#variables.$.rbKey('user.username')#">
+				</div>
 			</div>
+
+			<!--- Password --->
+			<div class="form-group">
+				<label class="control-label col-lg-2" for="txtPassword">#variables.$.rbKey('user.password')#</label>
+				<div class="col-lg-10">
+					<input type="password" id="txtPassword" name="password" class="form-control" placeholder="#variables.$.rbKey('user.password')#">
+				</div>
+			</div>
+
+			<!--- Remember Me --->
+			<div class="form-group">
+				<div class="col-lg-10">
+					<label class="checkbox" for="cbRemember">
+						<input type="checkbox" id="cbRemember" name="rememberMe" value="1"> #variables.$.rbKey('user.rememberme')#
+					</label>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-lg-10">
+					<input type="hidden" name="doaction" value="login">
+					<button type="submit" class="btn btn-default">#variables.$.rbKey('user.signin')#</button>
+				</div>
+			</div>
+
 			<cfif application.settingsManager.getSite(variables.$.event('siteID')).getExtranetPublicReg()>
 				<#variables.$.getHeaderTag('subHead2')#>#variables.$.rbKey('user.notregistered')# <a href="#variables.$.siteConfig().getEditProfileURL()#&returnURL=#urlEncodedFormat(variables.$.getCurrentURL())#">#variables.$.rbKey('user.signup')#</a></#variables.$.getHeaderTag('subHead2')#></cfif>
 		</form>
 	</div>
 </cfoutput>
 <cfelse>
-<cfoutput>
-<cfif session.mura.isLoggedIn>	
-<div id="svSessionTools" class="clearfix">
-	<p id="welcome">#variables.$.rbKey('user.welcome')#, #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#</p>
- 	<ul id="navSession">
-		<li id="navEditProfile"><a href="#variables.$.siteConfig().getEditProfileURL()#&nocache=1&returnURL=#urlEncodedFormat(variables.$.getCurrentURL())#"><i class="icon-user"></i> #variables.$.rbKey('user.editprofile')#</a></li>
-		<li id="navLogout"><a href="?doaction=logout"><i class="icon-signout"></i> #variables.$.rbKey('user.logout')#</a></li>
-	</ul>
-</div>
-</cfif>
-
-#dspObject('favorites')#
-</cfoutput>
+	<cfoutput>
+		<cfif session.mura.isLoggedIn>	
+			<div id="svSessionTools" class="clearfix">
+				<p id="welcome">#variables.$.rbKey('user.welcome')#, #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#</p>
+			 	<ul id="navSession">
+					<li id="navEditProfile"><a href="#variables.$.siteConfig().getEditProfileURL()#&nocache=1&returnURL=#urlEncodedFormat(variables.$.getCurrentURL())#"><i class="icon-user"></i> #variables.$.rbKey('user.editprofile')#</a></li>
+					<li id="navLogout"><a href="?doaction=logout"><i class="icon-signout"></i> #variables.$.rbKey('user.logout')#</a></li>
+				</ul>
+			</div>
+		</cfif>
+		#dspObject('favorites')#
+	</cfoutput>
 </cfif>
 </cfif>
