@@ -244,7 +244,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif application.configBean.getValue("applyDBUpdates") or application.appAutoUpdated or isdefined('url.applyDBUpdates')>
 		<cfset variables.tracepoint=variables.tracer.initTracepoint("Checking/Applying DB updates")> 
 		<cfset application.configBean.applyDbUpdates() />
-		<cfset application.configBean.getValue("applyDBUpdates",false)>
+		<cfset application.configBean.setValue("applyDBUpdates",false)>
 		<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
 	<cfelse>
 		<cfscript>
