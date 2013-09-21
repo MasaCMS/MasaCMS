@@ -1,0 +1,9 @@
+.svIndex ul, .well ul, .svIndex ol, .well ol,#svTagCloud ol {
+	padding-left: 0;
+}
+
+#homepage .carousel {
+	height: 500px;
+	position: relative;
+	top: -91px;
+}
