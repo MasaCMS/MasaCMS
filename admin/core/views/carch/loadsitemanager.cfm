@@ -70,7 +70,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset crumbdata=application.contentManager.getCrumbList(rc.topid,rc.siteid)>
 <cfset perm=application.permUtility.getnodePerm(crumbdata)>
 <cfset r=application.permUtility.setRestriction(crumbdata).restrict>
-<cfset hasKids=application.contentManager.getKidCount(rc.rstop.contentid,rc.rstop.siteid)>
+<cfset hasKids=application.contentManager.getKidsCount(rc.rstop.contentid,rc.rstop.siteid,false)>
 
 <cfinclude template="dsp_nextN.cfm">
 

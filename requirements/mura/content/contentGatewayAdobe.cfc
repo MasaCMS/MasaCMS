@@ -1226,11 +1226,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfreturn rsNest />
 	</cffunction>
 
-<cffunction name="getKidCount" access="public" output="false">
+<cffunction name="getKidsCount" access="public" output="false">
 		<cfargument name="parentID" type="string" required="true">
 		<cfargument name="siteid" type="string" required="true">
+		<cfargument name="liveOnly" default="true" required="true">
+		<cfargument name="menutype" default="default" required="true">
 		<cfset var rs= "">
-
+		<cfset var today=now()>
 
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 		SELECT count(tcontent.parentid) as kids
@@ -1239,7 +1241,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		WHERE 
 		tcontent.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
 		AND tcontent.ParentID= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#"/>
-		and   tcontent.Active=1 
+		
+		<cfif arguments.liveOnly>	
+			#renderActiveClause("tcontent",arguments.siteID)# 
+		 	and isNav=1
+		 	and #renderMenuTypeClause(arguments.menutype,createDateTime(year(today),month(today),day(today),hour(today),int((minute(today)/5)*5),0))#
+
+		 	#renderMobileClause()#
+		 <cfelse>
+		 	and tcontent.Active=1 
+		</cfif>	
 		</cfquery>
 
 		<cfreturn rs.kids />
