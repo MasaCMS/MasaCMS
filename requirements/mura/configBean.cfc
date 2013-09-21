@@ -129,7 +129,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.duplicateTransients=false>
 <cfset variables.instance.maxArchivedVersions=0 />
 <cfset variables.instance.postBundles=true />
-<cfset variables.instance.applyDBUpdates=true />
+<cfset variables.instance.applyDBUpdates=false />
 <cfset variables.instance.broadcastCachePurges=true />
 <cfset variables.instance.broadcastAppreloads=true />
 <cfset variables.instance.broadcastWithProxy=true />
