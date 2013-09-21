@@ -73,7 +73,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfsilent>
 <cfset request.menulist=listappend(request.menulist,rsnest.contentid)>
 
-<cfset hasKids=application.contentManager.getKidCount(rsnest.contentid,rsnest.siteid)>
+<cfset hasKids=application.contentManager.getKidsCount(rsnest.contentid,rsnest.siteid,false)>
 <cfset isMore=hasKids gt attributes.nextN>
 
 <cfset isOpenSection=listFind(session.openSectionList,rsnest.contentid)>
