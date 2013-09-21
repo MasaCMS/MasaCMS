@@ -917,7 +917,7 @@ component extends="mura.bean.bean" versioned=false {
 		} else {
 			qs.setSQL("select * from #getTable()# where siteid = :siteid");
 			qs.addParam(cfsqltype="cf_sql_varchar",value=arguments.siteid);
-			arguments.bundle.setValue("rs" & getTable(),qs.getResult());
+			arguments.bundle.setValue("rs" & getTable(),qs.execute().getResult());
 		}
 		return this;
 	}
