@@ -1877,7 +1877,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="aNotCurrentClass" required="true" default="#this.aNotCurrentClass#">
 		<cfargument name="siteid" default="#variables.event.getValue('siteID')#">
 
-		<cfset var rsSection=variables.contentGateway.getKids('00000000000000000000000000000000000',arguments.siteid,arguments.contentid,arguments.type,arguments.today,0,'',0,arguments.sortBy,arguments.sortDirection,'','','',arguments.viewDepth-1)>
+		<cfset var rsSection=variables.contentGateway.getKids('00000000000000000000000000000000000',arguments.siteid,arguments.contentid,arguments.type,arguments.today,0,'',0,arguments.sortBy,arguments.sortDirection,'','','',0)>
 		<cfset var adjust=0>
 		<cfset var current=0>
 		<cfset var link=''>
@@ -1967,7 +1967,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				)
 			/>	
 				
-			<cfset subnav= isNumeric(rsSection.kids) and rsSection.kids and arguments.currDepth lt arguments.viewDepth 
+			<cfset subnav= arguments.currDepth lt arguments.viewDepth 
 			and (
 					(
 					isNotLimited and isNavSecondary and (
