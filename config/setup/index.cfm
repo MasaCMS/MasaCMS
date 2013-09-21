@@ -126,7 +126,7 @@ to your own modified versions of Mura CMS.
   <cfset cleanIni( settingsPath ) />
   --->
   <!--- cflocate to the admin --->
-  <cflocation url="#context#/admin/?appreload" addtoken="false" />
+  <cflocation url="#context#/admin/?appreload&applydbupdates" addtoken="false" />
 </cfif>
 <!--- run save process --->
 <cfif isDefined( "FORM.#application.setupSubmitButton#" )>
@@ -657,6 +657,7 @@ to your own modified versions of Mura CMS.
     <form id="frm" class="form-horizontal<cfif isDefined( "FORM.#application.setupSubmitButton#" ) AND errorType IS ""> install-complete<cfelse> setup-form</cfif>" name="frm" action="index.cfm" method="post" onsubmit="return processInstallFrm(this);" onclick="return validateForm(this);">
    
       <cfif isDefined( "FORM.#application.setupSubmitButton#" ) AND errorType IS "">
+        <cfset application.appAutoUpdated=true>
         <div id="installationComplete" class="alert alert-success">
           <p>Mura is now set up and ready to use.</p>
         </div>
