@@ -1,3 +1,0 @@
-Use this directory to store files containing  theme-specific overrides or customizations to default Mura functionality. For instance, if you'd like to add new business logic or different markup for Local Indexes or Remote Feeds, you'd simply copy /{sited}/includes/display_objects/dsp_feed.cfm here and make your changes. Mura will look here first for any display object files, then in /{sited}/includes/display_objects/custom/ (for site-specific overrides or customizations) and, finally, in /{sited}/includes/display_objects/.
-
-Files in the themes directory will NOT be overwritten by auto-updates.
