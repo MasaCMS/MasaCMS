@@ -995,6 +995,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="parentID" type="any"  required="true" default="" />
 <cfargument name="categoryID"  type="any" required="true" default="" />
 <cfargument name="rsContent"  type="any"  required="true"  default="" />
+<cfargument name="taggroup"  type="any"  required="true"  default="" />
 	<cfset var theIncludePath = variables.event.getSite().getIncludePath() />
 	<cfset var fileDelim = application.configBean.getFileDelim() />
 	<cfset var filePath = theIncludePath  & fileDelim & "includes" & fileDelim />
