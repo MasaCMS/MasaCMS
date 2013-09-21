@@ -19,7 +19,7 @@
 	<!--- Font Awesome --->
 	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/assets/font-awesome/css/font-awesome.css">
 	<!--- Mura CMS --->
-	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.6.0.min.css">
+	<link rel="stylesheet" href="#$.siteConfig('assetPath')#/css/mura.6.1.min.css">
 
 	<!--- CfStatic THEME CSS --->
 	<cf_CacheOMatic key="globalheadercss">
