@@ -143,7 +143,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<strong class="<cfif action.getActionType() eq 'rejection'>rejected<cfelseif action.getActionType() eq 'cancelation'>canceled<cfelse>approved</cfif>">
 					<cfif action.getActionType() eq 'rejection'><i class="icon-warning-sign"></i> #application.rbFactory.getKeyValue(session.rb,"approvalchains.rejected")#<cfelseif action.getActionType() eq 'cancelation'><i class="icon-ban-circle"></i> #application.rbFactory.getKeyValue(session.rb,"approvalchains.canceled")#<cfelse><i class="icon-ok-sign"></i> #application.rbFactory.getKeyValue(session.rb,"approvalchains.approved")#</cfif></strong> 
 					<cfif len(action.getComments())><p><!--- <i class="icon-comment"></i>  --->#HTMLEditFormat(action.getComments())#</p></cfif>
-					<em>by #HTMLEditFormat(action.getUser().getFullName())# on #LSDateFormat(parseDateTime(action.getCreated()),session.dateKeyFormat)# at #LSTimeFormat(parseDateTime(action.getCreated()),"short")#</em>		
+					<em>#application.rbFactory.getKeyValue(session.rb,"approvalchains.by")# #HTMLEditFormat(action.getUser().getFullName())# #application.rbFactory.getKeyValue(session.rb,"approvalchains.on")# #LSDateFormat(parseDateTime(action.getCreated()),session.dateKeyFormat)# #application.rbFactory.getKeyValue(session.rb,"approvalchains.at")# #LSTimeFormat(parseDateTime(action.getCreated()),"short")#</em>		
 				</dd>
 			
 			</cfloop>
