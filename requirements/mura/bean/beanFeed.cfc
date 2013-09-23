@@ -288,6 +288,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
+<cffunction name="hasDiscriminatorColumn" output="false">
+	<cfreturn isDefined("application.objectMappings.#getValue('entityName')#.discriminatorColumn") and len(application.objectMappings[getValue('entityName')].discriminatorColumn)>
+</cffunction>
+
+<cffunction name="getDiscriminatorColumn" output="false">
+	<cfreturn application.objectMappings[getValue('entityName')].discriminatorColumn>
+</cffunction>
+
+<cffunction name="getDiscriminatorValue" output="false">
+	<cfreturn application.objectMappings[getValue('entityName')].discriminatorValue>
+</cffunction>
+
 <cffunction name="hasCustomDatasource" output="false">
 	<cfreturn structKeyExists(application.objectMappings,variables.instance.entityName) and structKeyExists(application.objectMappings[variables.instance.entityName],'datasource')>
 </cffunction>
@@ -325,6 +337,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var jointable="">
 	<cfset var jointableS="">
 	<cfset var dbType=getDbType()>
+
+	<cfif hasDiscriminatorColumn()>
+		<cfset addParam(column=hasDiscriminatorColumn(),criteria=hasDiscriminatorValue())>
+	</cfif>
  
 	<cfloop query="variables.instance.params">
 		<cfif listLen(variables.instance.params.field,".") eq 2>

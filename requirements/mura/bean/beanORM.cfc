@@ -120,6 +120,10 @@ component extends="mura.bean.bean" versioned=false {
 
 		super.set(argumentCollection=arguments);
 
+		if(len(getDiscriminatorColumn())){
+			setValue(getDiscriminatorColumn(),getDiscriminatorValue());
+		}
+
 		postLoad();
 
 		return this;
@@ -161,6 +165,14 @@ component extends="mura.bean.bean" versioned=false {
 
 	function getBundleable(){
 		return application.objectMappings[variables.entityName].bundleable;
+	}
+
+	function getDiscriminatorColumn(){
+		return application.objectMappings[variables.entityName].discriminatorColumn;
+	}
+
+	function getDiscriminatorValue(){
+		return application.objectMappings[variables.entityName].discriminatorValue;
 	}
 
 	function getPrimaryKey(){
@@ -289,6 +301,18 @@ component extends="mura.bean.bean" versioned=false {
 
 			if(structKeyExists(md,'table')){
 				application.objectMappings[variables.entityName].table=md.table;
+			}
+
+			if(structKeyExists(md,'discriminatorColumn')){
+				application.objectMappings[variables.entityName].discriminatorColumn=md.discriminatorColumn;
+			} else {
+				application.objectMappings[variables.entityName].discriminatorColumn='';
+			}
+
+			if(structKeyExists(md,'discriminatorValue')){
+				application.objectMappings[variables.entityName].discriminatorValue=md.discriminatorValue;
+			} else {
+				application.objectMappings[variables.entityName].discriminatorValue='';
 			}
 
 			for (md; 
@@ -499,7 +523,11 @@ component extends="mura.bean.bean" versioned=false {
 				paramArgs.null=arguments.prop.nullable and (not len(variables.instance[arguments.prop.column]) or variables.instance[arguments.prop.column] eq "null");			
 			} 
 
-			paramArgs.value=arguments.value;
+			if(arguments.prop.column == getDiscriminatorColumn()){
+				paramArgs.value=getDiscriminatorValue();
+			} else {
+				paramArgs.value=arguments.value;
+			}
 
 			if(columns[arguments.prop.column].datatype eq 'datetime'){
 				paramArgs.cfsqltype='cf_sql_timestamp';
@@ -649,7 +677,8 @@ component extends="mura.bean.bean" versioned=false {
 
 
 					qs.execute(sql=sql);
-			
+					purgeCache();
+
 					variables.instance.isnew=0;
 
 					postCreate();
@@ -669,7 +698,7 @@ component extends="mura.bean.bean" versioned=false {
 		return this;
 	}
 
-	function updateMappings(){
+	function updateMappingsByIDLists(){
 		var props=getProperties();
 		var loadArgs={};
 		var i=0;
@@ -811,6 +840,7 @@ component extends="mura.bean.bean" versioned=false {
 		var qs=getQueryService();
 		qs.addParam(name='primarykey',value=variables.instance[getPrimaryKey()],cfsqltype='cf_sql_varchar');
 		qs.execute(sql='delete from #getTable()# where #getPrimaryKey()# = :primarykey');
+		purgeCache();
 
 		postDelete();
 
@@ -828,6 +858,10 @@ component extends="mura.bean.bean" versioned=false {
 		var started=false;
 		var rs="";
 		var hasArg=false;
+		var hasdiscriminator=len(getDiscriminatorColumn());
+		var discriminatorColumn=getDiscriminatorColumn();
+		var foundDiscriminator=false;
+		var primaryOnly=true;
 
 		savecontent variable="sql"{
 			writeOutput(getLoadSQL());
@@ -852,6 +886,18 @@ component extends="mura.bean.bean" versioned=false {
 						prop=arg;
 					}
 
+					if(
+						arg != getPrimaryKey() 
+						&& arg != 'siteid'
+						&& !(hasDiscriminator && arg==discriminatorColumn)
+					){
+						primaryOnly=false;
+					}
+
+					if(hasdiscriminator && !foundDiscriminator && arg==discriminatorColumn){
+						foundDiscriminator=true;
+					}
+
 					addQueryParam(qs,props[prop],arguments[arg]);
 
 					if(not started){
@@ -862,6 +908,17 @@ component extends="mura.bean.bean" versioned=false {
 					}
 
 					writeOutput(" #getTable()#.#arg#= :#arg# ");
+				}
+
+				if(hasDiscriminator && !foundDiscriminator){
+					if(not started){
+						writeOutput("where ");
+						started=true;
+					} else {
+						writeOutput("and ");
+					}
+
+					writeOutput(" #getTable()#.#discriminatorColumn#= :#getDiscriminatorValue()# ");
 				}	
 			}
 
@@ -870,8 +927,22 @@ component extends="mura.bean.bean" versioned=false {
 			}
 		}
 		
-		rs=qs.execute(sql=sql).getResult();
-	
+		if(primaryOnly && getUseCache()){
+			var cache=getCache();
+			var cacheKey=getCacheKey();
+			
+			if(cache.has(cacheKey)){
+				rs=cache.get(cacheKey);
+			} else {
+				rs=qs.execute(sql=sql).getResult();
+				if(rs.recordcount){
+					cache.get(cacheKey,rs);
+				}
+			}
+		} else {
+			rs=qs.execute(sql=sql).getResult();
+		}
+
 		if(rs.recordcount){
 			set(rs);
 		} else {
@@ -905,6 +976,8 @@ component extends="mura.bean.bean" versioned=false {
 		return feed;	
 	}
 
+	//BUNDLE METHODS
+	
 	function getIterator(){		
 		return getBean('beanIterator').setEntityName(variables.entityName);
 	}
@@ -952,6 +1025,34 @@ component extends="mura.bean.bean" versioned=false {
 		}
 	}
 
+	//CACHING METHODS
+
+	function getCache(){
+		return getBean('settingsManager').getSite(getCacheSiteID()).getCacheFactory(name='data');
+	}
+
+	function getUseCache(){
+		return getBean('settingsManager').getSite(getCacheSiteID()).getCache();
+	}
+
+	function cachePurge(){
+		var cachekKey=getCacheKey();
+		getCache().purge(key=cacheKey);
+		getBean('clusterManager').purgeCacheKey(cacheName='default',cacheKey=cacheKey,siteid=getCacheSiteID());
+	}
+
+	function getCacheKey(){
+		return getEntityName() & getValue(getPrimaryKey());
+	}
+
+	function getCacheSiteID(){
+		if(len(getValue('siteid'))){
+			return getValue('siteid');
+		} else {
+			param name="session.siteid" default="default";
+			return session.siteid;
+		}
+	}
 
 
 	//ORM EVENTHANDLING
