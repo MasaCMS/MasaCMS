@@ -315,6 +315,12 @@ component extends="mura.bean.bean" versioned=false {
 				application.objectMappings[variables.entityName].discriminatorValue='';
 			}
 
+			if(structKeyExists(md,'cachename')){
+				application.objectMappings[variables.entityName].cachename=md.cachename;
+			} else {
+				application.objectMappings[variables.entityName].cachename='data';
+			}
+
 			for (md; 
 			    structKeyExists(md, "extends"); 
 			    md = md.extends) 
@@ -1027,8 +1033,12 @@ component extends="mura.bean.bean" versioned=false {
 
 	//CACHING METHODS
 
+	function getCacheName(){
+		return application.objectMappings[variables.entityName].cachename;
+	}
+
 	function getCache(){
-		return getBean('settingsManager').getSite(getCacheSiteID()).getCacheFactory(name='data');
+		return getBean('settingsManager').getSite(getCacheSiteID()).getCacheFactory(name=getCacheName());
 	}
 
 	function getUseCache(){
@@ -1038,7 +1048,7 @@ component extends="mura.bean.bean" versioned=false {
 	function cachePurge(){
 		var cachekKey=getCacheKey();
 		getCache().purge(key=cacheKey);
-		getBean('clusterManager').purgeCacheKey(cacheName='default',cacheKey=cacheKey,siteid=getCacheSiteID());
+		getBean('clusterManager').purgeCacheKey(cacheName=getCacheName(),cacheKey=cacheKey,siteid=getCacheSiteID());
 	}
 
 	function getCacheKey(){
