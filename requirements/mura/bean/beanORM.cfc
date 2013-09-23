@@ -896,6 +896,7 @@ component extends="mura.bean.bean" versioned=false {
 		var discriminatorColumn=getDiscriminatorColumn();
 		var foundDiscriminator=false;
 		var primaryOnly=true;
+		var primaryFound=false;
 
 		savecontent variable="sql"{
 			writeOutput(getLoadSQL());
@@ -926,6 +927,8 @@ component extends="mura.bean.bean" versioned=false {
 						&& !(hasDiscriminator && arg==discriminatorColumn)
 					){
 						primaryOnly=false;
+					} else if(arg == getPrimaryKey()){
+						primaryFound=true;
 					}
 
 					if(hasdiscriminator && !foundDiscriminator && arg==discriminatorColumn){
@@ -961,7 +964,7 @@ component extends="mura.bean.bean" versioned=false {
 			}
 		}
 		
-		if(primaryOnly && getUseCache()){
+		if(primaryFound && primaryOnly && getUseCache()){
 			var cache=getCache();
 			var cacheKey=getCacheKey();
 			
