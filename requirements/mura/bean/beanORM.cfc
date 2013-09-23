@@ -120,6 +120,10 @@ component extends="mura.bean.bean" versioned=false {
 
 		super.set(argumentCollection=arguments);
 
+		if(len(getDiscriminatorColumn())){
+			setValue(getDiscriminatorColumn(),getDiscriminatorValue());
+		}
+
 		postLoad();
 
 		return this;
@@ -161,6 +165,14 @@ component extends="mura.bean.bean" versioned=false {
 
 	function getBundleable(){
 		return application.objectMappings[variables.entityName].bundleable;
+	}
+
+	function getDiscriminatorColumn(){
+		return application.objectMappings[variables.entityName].discriminatorColumn;
+	}
+
+	function getDiscriminatorValue(){
+		return application.objectMappings[variables.entityName].discriminatorValue;
 	}
 
 	function getPrimaryKey(){
@@ -289,6 +301,18 @@ component extends="mura.bean.bean" versioned=false {
 
 			if(structKeyExists(md,'table')){
 				application.objectMappings[variables.entityName].table=md.table;
+			}
+
+			if(structKeyExists(md,'discriminatorColumn')){
+				application.objectMappings[variables.entityName].discriminatorColumn=md.discriminatorColumn;
+			} else {
+				application.objectMappings[variables.entityName].discriminatorColumn='';
+			}
+
+			if(structKeyExists(md,'discriminatorValue')){
+				application.objectMappings[variables.entityName].discriminatorValue=md.discriminatorValue;
+			} else {
+				application.objectMappings[variables.entityName].discriminatorValue='';
 			}
 
 			for (md; 
@@ -499,7 +523,11 @@ component extends="mura.bean.bean" versioned=false {
 				paramArgs.null=arguments.prop.nullable and (not len(variables.instance[arguments.prop.column]) or variables.instance[arguments.prop.column] eq "null");			
 			} 
 
-			paramArgs.value=arguments.value;
+			if(arguments.prop.column == getDiscriminatorColumn()){
+				paramArgs.value=getDiscriminatorValue();
+			} else {
+				paramArgs.value=arguments.value;
+			}
 
 			if(columns[arguments.prop.column].datatype eq 'datetime'){
 				paramArgs.cfsqltype='cf_sql_timestamp';
@@ -669,7 +697,7 @@ component extends="mura.bean.bean" versioned=false {
 		return this;
 	}
 
-	function updateMappings(){
+	function updateMappingsByIDLists(){
 		var props=getProperties();
 		var loadArgs={};
 		var i=0;
@@ -828,6 +856,9 @@ component extends="mura.bean.bean" versioned=false {
 		var started=false;
 		var rs="";
 		var hasArg=false;
+		var hasdiscriminator=len(getDiscriminatorColumn());
+		var discriminatorColumn=getDiscriminatorColumn();
+		var foundDiscriminator=false;
 
 		savecontent variable="sql"{
 			writeOutput(getLoadSQL());
@@ -852,6 +883,10 @@ component extends="mura.bean.bean" versioned=false {
 						prop=arg;
 					}
 
+					if(hasdiscriminator && !foundDiscriminator && arg==discriminatorColumn){
+						foundDiscriminator=true;
+					}
+
 					addQueryParam(qs,props[prop],arguments[arg]);
 
 					if(not started){
@@ -862,6 +897,17 @@ component extends="mura.bean.bean" versioned=false {
 					}
 
 					writeOutput(" #getTable()#.#arg#= :#arg# ");
+				}
+
+				if(hasDiscriminator && !foundDiscriminator){
+					if(not started){
+						writeOutput("where ");
+						started=true;
+					} else {
+						writeOutput("and ");
+					}
+
+					writeOutput(" #getTable()#.#discriminatorColumn#= :#getDiscriminatorValue()# ");
 				}	
 			}
 
