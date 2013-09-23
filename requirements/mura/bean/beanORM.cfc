@@ -175,6 +175,14 @@ component extends="mura.bean.bean" versioned=false {
 		return application.objectMappings[variables.entityName].discriminatorValue;
 	}
 
+	function getReadOnly(){
+		return application.objectMappings[variables.entityName].readonly;
+	}
+
+	function getManageSchema(){
+		return application.objectMappings[variables.entityName].manageschema;
+	}
+
 	function getPrimaryKey(){
 		return application.objectMappings[variables.entityName].primaryKey;
 	}
@@ -201,6 +209,10 @@ component extends="mura.bean.bean" versioned=false {
 	function checkSchema(){
 		var props=getProperties();
 		getEntityName();
+
+		if(!getManageSchema()){
+			throw(type="MuraORMError",message="The Mura ORM entity '#getEntityName()#' is not allowed to manage schema.");
+		}
 
 		if(hasTable()){
 			for(var prop in props){
@@ -319,6 +331,18 @@ component extends="mura.bean.bean" versioned=false {
 				application.objectMappings[variables.entityName].cachename=md.cachename;
 			} else {
 				application.objectMappings[variables.entityName].cachename='data';
+			}
+
+			if(structKeyExists(md,'readonly')){
+				application.objectMappings[variables.entityName].readonly=md.readonly;
+			} else {
+				application.objectMappings[variables.entityName].readonly=false;
+			}
+
+			if(structKeyExists(md,'manageschema')){
+				application.objectMappings[variables.entityName].manageschema=md.manageschema;
+			} else {
+				application.objectMappings[variables.entityName].manageschema=true;
 			}
 
 			for (md; 
@@ -568,6 +592,10 @@ component extends="mura.bean.bean" versioned=false {
 		var event=new mura.event({siteID=variables.instance.siteid,bean=this});
 		
 		validate();
+
+		if(getReadOnly()){
+			throw(type="MuraORMError",message="The Mura ORM entity '#getEntityName()#' is read only.");
+		}
 
 		pluginManager.announceEvent('onBefore#variables.entityName#Save',event);
 
