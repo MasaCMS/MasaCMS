@@ -161,11 +161,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				transientPattern = "(Iterator|Bean|MuraScope|Event|dbUtility)$" 
 				});
 			
+		if(directoryExists(expandPath("/mura/content/file/imagecfc"))){
+			DirectoryDelete(expandPath("/mura/content/file/imagecfc") ,true);
+		}
+
 		variables.serviceFactory.addBean("tempDir",application.configBean.getTempDir());
 		variables.serviceFactory.addBean("useFileMode",application.configBean.getUseFileMode());
 		variables.serviceFactory.addBean("configBean",application.configBean);
 		variables.serviceFactory.addBean("data","");
 		variables.serviceFactory.addBean("settings",{});
+		variables.serviceFactory.addBean("resourceDirectory","");
+		variables.serviceFactory.addBean("locale","en_us");
+		variables.serviceFactory.addBean("parentFactory","");
 
 		if(server.coldfusion.productName eq 'Coldfusion Server'){
 			variables.serviceFactory.addAlias("contentGateway","contentGatewayAdobe");
