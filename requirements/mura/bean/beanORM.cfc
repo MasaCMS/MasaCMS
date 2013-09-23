@@ -1078,7 +1078,7 @@ component extends="mura.bean.bean" versioned=false {
 	}
 
 	function purgeCache(){
-		var cacheKey=getCacheKey();
+		var cachekKey=getCacheKey();
 		getCache().purge(key=cacheKey);
 		getBean('clusterManager').purgeCacheKey(cacheName=getCacheName(),cacheKey=cacheKey,siteid=getCacheSiteID());
 	}
