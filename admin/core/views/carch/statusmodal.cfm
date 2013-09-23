@@ -67,7 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 <div id="status-modal" class="mura-list-grid">
 	<dl>
-		<dt>Created By</dt> 
+		<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.createdby')#</dt> 
 		<dd>
 			<i class="icon-user"></i>
 			<p><cfif not user.getIsNew()>#HTMLEditFormat(user.getFullName())# <cfelse> #application.rbFactory.getKeyValue(session.rb,"sitemanager.content.na")# </cfif></p>
@@ -75,7 +75,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</dl>
 	
 	<dl class="created-on">
-		<dt>Created On</dt>
+		<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.createdon')#</dt>
 		<dd>
 			<i class="icon-calendar"></i>
 			<p>#LSDateFormat(parseDateTime(content.getLastUpdate()),session.dateKeyFormat)#<br />
@@ -84,7 +84,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</dl>
 	
 	<dl>
-		<dt>Status</dt>
+		<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.status')#</dt>
 		<dd>
 			
 			<cfif content.getactive() gt 0 and content.getapproved() gt 0>
@@ -107,7 +107,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif $.siteConfig('hasChangesets')>
 		<cfset changeset=$.getBean('changeset').loadBy(changesetID=content.getChangesetID())>
 		<dl class="change-set">
-			<dt>Change Set</dt>
+			<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.changeset')#</dt>
 			<dd>
 				<i class="icon-list"></i>
 				<p><cfif changeset.getIsNew()>Unassigned<cfelse>#HTMLEditFormat(changeset.getName())#</cfif></p>
@@ -119,7 +119,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif requiresApproval>
 			<cfif not content.getApproved() and approvalRequest.getStatus() eq 'Pending'>
 			<dl class="approval-status">
-				<dt>Approval Status</dt>
+				<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.approvalstatus')#</dt>
 				<dd>
 					<i class="icon-time"></i>
 					 <cfif group.getType() eq 1>
@@ -135,15 +135,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 			<cfif actions.hasNext()>
 			<dl class="approval-chain-comments">
-				<dt>Actions</dt>
+				<dt>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.actions')#</dt>
 				<cfloop condition="actions.hasNext()">
 				<cfset action=actions.next()>
 			
 				<dd>
 					<strong class="<cfif action.getActionType() eq 'rejection'>rejected<cfelseif action.getActionType() eq 'cancelation'>canceled<cfelse>approved</cfif>">
-					<cfif action.getActionType() eq 'rejection'><i class="icon-warning-sign"></i> Rejected<cfelseif action.getActionType() eq 'cancelation'><i class="icon-ban-circle"></i> Canceled<cfelse><i class="icon-ok-sign"></i> Approved</cfif></strong> 
+					<cfif action.getActionType() eq 'rejection'><i class="icon-warning-sign"></i> #application.rbFactory.getKeyValue(session.rb,"approvalchains.rejected")#<cfelseif action.getActionType() eq 'cancelation'><i class="icon-ban-circle"></i> #application.rbFactory.getKeyValue(session.rb,"approvalchains.canceled")#<cfelse><i class="icon-ok-sign"></i> #application.rbFactory.getKeyValue(session.rb,"approvalchains.approved")#</cfif></strong> 
 					<cfif len(action.getComments())><p><!--- <i class="icon-comment"></i>  --->#HTMLEditFormat(action.getComments())#</p></cfif>
-					<em>by #HTMLEditFormat(action.getUser().getFullName())# on #LSDateFormat(parseDateTime(action.getCreated()),session.dateKeyFormat)# at #LSTimeFormat(parseDateTime(action.getCreated()),"short")#</em>		
+					<em>#application.rbFactory.getKeyValue(session.rb,"approvalchains.by")# #HTMLEditFormat(action.getUser().getFullName())# #application.rbFactory.getKeyValue(session.rb,"approvalchains.on")# #LSDateFormat(parseDateTime(action.getCreated()),session.dateKeyFormat)# #application.rbFactory.getKeyValue(session.rb,"approvalchains.at")# #LSTimeFormat(parseDateTime(action.getCreated()),"short")#</em>		
 				</dd>
 			
 			</cfloop>
@@ -163,7 +163,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					
 				<p>#application.rbFactory.getKeyValue(session.rb,"approvalchains.comments")#</p>
 				<textarea id="approval-comments" rows="4"></textarea>
-				<input type="button" class="btn btn-primary" value="Apply" onclick="applyApprovalAction('#approvalRequest.getRequestID()#',$('input:radio[name=approval-action]:checked').val(),$('##approval-comments').val(),'#approvalRequest.getSiteID()#');"/>
+				<input id="mura-approval-apply" type="button" class="btn btn-primary" value="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.approvalstatus'))#<" onclick="applyApprovalAction('#approvalRequest.getRequestID()#',$('input:radio[name=approval-action]:checked').val(),$('##approval-comments').val(),'#approvalRequest.getSiteID()#');"/>
 				</dd>
 				</dl>
 			</cfif>
@@ -179,6 +179,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			if(action == 'Reject' && comment == ''){
 				alertDialog('#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"approvalchains.rejectioncommentrequired"))#');
 			} else {
+				$('##mura-approval-apply').attr('disabled','disabled').css('opacity', '.30');
+		
 				var pars={
 							muraAction:'carch.approvalaction',
 							siteid: siteid,

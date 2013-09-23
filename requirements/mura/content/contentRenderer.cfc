@@ -995,6 +995,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfargument name="parentID" type="any"  required="true" default="" />
 <cfargument name="categoryID"  type="any" required="true" default="" />
 <cfargument name="rsContent"  type="any"  required="true"  default="" />
+<cfargument name="taggroup"  type="any"  required="true"  default="" />
 	<cfset var theIncludePath = variables.event.getSite().getIncludePath() />
 	<cfset var fileDelim = application.configBean.getFileDelim() />
 	<cfset var filePath = theIncludePath  & fileDelim & "includes" & fileDelim />
@@ -1876,7 +1877,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfargument name="aNotCurrentClass" required="true" default="#this.aNotCurrentClass#">
 		<cfargument name="siteid" default="#variables.event.getValue('siteID')#">
 
-		<cfset var rsSection=variables.contentGateway.getKids('00000000000000000000000000000000000',arguments.siteid,arguments.contentid,arguments.type,arguments.today,0,'',0,arguments.sortBy,arguments.sortDirection,'','','',arguments.viewDepth-1)>
+		<cfset var rsSection=variables.contentGateway.getKids('00000000000000000000000000000000000',arguments.siteid,arguments.contentid,arguments.type,arguments.today,0,'',0,arguments.sortBy,arguments.sortDirection,'','','',0)>
 		<cfset var adjust=0>
 		<cfset var current=0>
 		<cfset var link=''>
@@ -1966,7 +1967,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				)
 			/>	
 				
-			<cfset subnav= isNumeric(rsSection.kids) and rsSection.kids and arguments.currDepth lt arguments.viewDepth 
+			<cfset subnav= arguments.currDepth lt arguments.viewDepth 
 			and (
 					(
 					isNotLimited and isNavSecondary and (
@@ -2056,7 +2057,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="class" type="string" default="">
 	<cfargument name="aHasKidsClass" type="string" default="">
 	<cfargument name="aHasKidsCustomString" type="string" default="">
-	<cfargument name="siteid" default="$.event('siteid')">
+	<cfargument name="siteid" default="#$.event('siteid')#">
 
 	<cfset var thenav="" />
 	<cfset var topIndex= arrayLen(this.crumbdata)-this.navOffSet />

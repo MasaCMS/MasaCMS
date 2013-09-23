@@ -1,0 +1,704 @@
+//@import "../../assets/bootstrap/less/bootstrap.less";
+
+// VARIABLES
+// =========================================================
+@baseLineHeight:	18px;
+
+// Grays
+// -------------------------
+@black: 					#000;
+@grayDarker: 			#222;
+@grayDark: 				#333;
+@gray: 						#555;
+@grayLight:				#999;
+@grayLighter:			#eee;
+@white: 					#fff;
+
+// Scaffolding
+// -------------------------
+@bodyBackground:	@white;
+@textColor:				@grayDark;
+
+
+// Links
+// -------------------------
+@linkColor:				#08c;
+@linkColorHover:	darken(@linkColor, 15%);
+
+
+// Sidebar Nav
+// -------------------------
+@offsetValue:			15px;
+
+.outdent(@multiplier:1) {
+	margin-left: -@offsetValue*@multiplier;
+	margin-right: -@offsetValue*@multiplier;
+}
+
+.indent(@multiplier:1) {
+	padding-left: @offsetValue*@multiplier;
+	padding-right: @offsetValue*@multiplier;
+}
+
+
+// OVERRIDES
+// =========================================================
+
+/* Font Awesome: Remove Bullets on Lists */
+ul.the-icons, ul.icons {
+	list-style-type: none;
+	margin-left: 2em;
+	text-indent: -0.8em;
+}
+a#logout {
+	float: right;
+}
+
+img {
+	height: auto;
+	max-width: 100%;
+}
+
+// NAV ELEMENTS
+#navArchive, #navMultilevel, #navPeer, #navPortal, #navSequential, #navStandard,
+#navSub, #svTagCloud, #svFavoritesList, #svPageTools {
+	margin-bottom: @baseLineHeight;
+}
+
+.dropdown-menu { margin-top: 0; }
+
+// INDEXES
+section .svIndex {
+ 	border-top: 0;
+ 	padding-top: 0;
+}
+
+.svIndex {
+
+	dl {
+		border-bottom: 1px solid @grayLighter;
+		padding-bottom: 12px;
+		margin-bottom: 12px;
+	}
+
+	dd { margin-left: 0; }
+
+	dt.releaseDate {
+		font-size: 12px;
+		line-height: 1;
+		margin-bottom: .25em;
+	}
+}
+//end INDEXES
+
+.comments, .tags, .rating {
+ 	font-size: 12px;
+ 	line-height: 12px;
+}
+
+.pagination {
+	margin: 24px 0 18px !important;
+
+	 a { padding: 0 14px; }
+}
+
+// LOGIN
+#svLoginContainer {
+	margin: 0;
+	width: auto;
+
+	#login label, #sendLogin label {
+		float: left;
+	}
+} 
+
+#login {
+	h2 {
+		margin-top: 0;
+	}
+}
+// end LOGIN
+
+#homepage {
+	.carousel {
+		margin-bottom: 1em;
+		margin-top: -91px;
+
+		.row {
+			margin: 0;
+			padding: 0;
+		}
+
+		.carousel-caption {
+			z-index: 10;
+			background-color: rgba(50,50,50, 0.5);
+			padding: 0 2em 2.5em;
+			h3 a {
+				color: @white;
+				font-weight: bold;
+			}
+		}
+
+		.item {
+			height: 500px;
+			background-color: @gray;
+			img {
+				position: absolute;
+				top:0;
+				left:0;
+				min-width: 100%;
+			}
+		}
+	}
+}
+
+// @group Headings
+
+aside { 
+	h1, h2, h3, h4, h5, h6 { 
+		margin: 0 0 0.5em 0;
+		line-height: 1.1; 
+	}
+	h1 { font-size: 36px; }
+	h2 { font-size: 22px; }
+	h3 { font-size: 18px; }
+	h4 { font-size: 16px; }
+	h5 { font-size: 14px; }
+	h6 { font-size: 12px; }
+}
+
+.navArchive { 
+	h2, h3 {
+		margin-bottom: 0;
+	}
+}
+
+// @end
+
+ul.nav li:hover ul.dropdown-menu {
+    display: inline-block;
+    //Second Level Flyouts
+    ul.dropdown-menu{
+	    display: none;
+	}
+	.dropdown-submenu:hover > ul.dropdown-menu{
+	    display: block;
+    }  
+}
+
+a.menu:after, .dropdown-toggle:after {
+  content: none;
+}
+
+.well ul, .well ol, ul.well, ol.well {
+	list-style-type: none;
+	margin-bottom: 0;
+	li {
+		a {
+			display: block;
+			padding: 2px 0 4px;
+		}
+	}
+}
+
+.svIndex, #svTagCloud, #svSessionTools, #svFavoritesList {
+	ul, ol {
+		-webkit-padding-start: 0;
+		padding-left: 0;
+
+		&.navSecondary {
+			li {
+				margin: 0 0 0.5em 0;
+			}
+		}
+	}
+}
+
+ul.nav {
+	margin-bottom: 0;
+}
+
+.navbar-wrapper {
+  position: relative;
+  z-index: 15;
+  margin-top: 20px;
+
+  .navbar {
+  	border-radius: 4px;
+
+		.navbar-form {
+			padding:0 0 0 0;
+		}
+
+		.nav > li { position: relative; }
+
+		.navbar-nav {
+			margin-left: 0;
+			margin-right: 0;
+		}
+	}
+}
+
+// Nested ULs need to go full width
+.nav-list {
+
+	li.active ul {
+		padding: 0;
+	}
+
+	li li a.active {
+		background: transparent;
+		color: @linkColor;
+		text-shadow: 0 0 0;
+	}
+
+	// Anchors need to be fullwidth but padded
+	li.active li a {
+		.indent(2);
+	}
+
+	li.active li li a {
+		.indent(3);
+	}
+
+	li.active li li li a {
+		.indent(4);
+	}
+
+	li.active li li li li a {
+		.indent(5);
+	}
+
+	li.active li.active a,
+	li.active li.active a:hover {
+		background: transparent;
+		color: @linkColorHover;
+		text-shadow: 0 0 0 transparent !important;
+	}
+
+} 
+// @end .nav-list
+
+li.form ol, #svTagCloud ol {
+	list-style: none;
+	margin: 0;
+}
+
+form legend+p {
+	line-height: 1.2;
+}
+
+.svIndex {
+		padding-top: 0;
+		border-top: 0;
+		margin-top: 0;
+	
+	dl {
+		padding-bottom: 12px;
+		margin: 0 0 12px;
+		border-bottom: 1px solid #eee;
+		}
+	
+	dt.releaseDate {
+		font-size: 12px;
+		margin-bottom: .25em;
+		line-height: 1;
+		}
+	
+	dd {
+		margin-left: 0;
+		}
+
+}
+
+.pagination {
+	margin: 24px 0 18px !important;
+
+	 a {
+		padding: 0 14px;
+	}
+}
+
+.moreResults dt {
+	font-size: 12px;
+	font-weight: normal;
+}
+
+.svSlideshow {
+	dt {
+		margin-bottom: 0.25em;
+		&.releaseDate {
+			font-size: 12px;
+		}
+		&.title {
+			font-size: 22px;
+		}
+	}
+}
+
+ol.svPager {
+	text-align: center;
+
+	li {
+		margin:0 .25em;
+		display:inline-block;
+		*display:inline;
+		background: #eee;
+
+		&.activeLI {
+			a {
+				background: #08c;
+				color: #fff;
+			}
+		}
+	}
+}
+
+
+/* CALENDAR
+===================================== */
+.svCalendar {
+	text-align: center;
+
+	table {
+
+		thead {
+			background: @grayLighter;
+
+			th, th a {
+				line-height: 1.5;
+				padding: .5em;
+				text-align: center;
+			}
+		}
+
+		td, th {
+			border-collapse: collapse;
+			border: 0;
+			font-size: 12px;
+		}
+
+		table #previousMonth a,
+		table #nextMonth a {
+			font-weight: normal;
+			font-size: 150%;
+			line-height: 1.1;
+			padding: 0;
+		}
+
+		.table tbody tr:hover td,
+		.table tbody tr:hover th {
+			background: @white;
+		}
+	}
+}
+
+#svCalendarNav {
+	th {
+		line-height: 1;
+		padding: 0;
+
+		a {
+			line-height: 1;
+			padding: 2px 2px 4px;
+		}
+	}
+}
+
+//end CALENDAR
+
+.table-bordered { 
+	th, td {
+		border-left: 1px solid #ddd;
+	}
+}
+
+.table { 
+	th, td {
+		padding: 8px;
+		line-height: 18px;
+		text-align: left;
+		vertical-align: top;
+		border-top: 1px solid #ddd;
+	}
+}
+
+/* @group Globals - Forms (from Mura's reset.css)
+===================================== */
+
+form {
+
+	legend+ul, legend+ol {
+		padding-top: 1em;
+	}
+
+	ol, ul {
+		margin: 0;
+
+		li {
+			list-style: none;
+		}
+	}
+}
+
+.well form {
+	margin-bottom: 0;
+}
+
+form:not(.navbar-form) {
+	// input, select, textarea {
+	// 	max-width: 500px;
+	// }
+	ol {
+		li.control-group, li.form-group {
+			label {
+				input {
+					height: auto;
+					margin-top: .35em;
+					width: auto;
+				}
+			}
+		}
+	}
+	.control-group, .form-group {
+		.controls {
+			label.checkbox {
+				input {
+					height: auto;
+					margin-top: .35em;
+					width: auto;
+				}
+			}
+		}
+	}
+	label {
+		.help-inline {
+			font-weight: normal;
+			vertical-align: top;
+		}
+	}
+}
+
+#svLoginContainer legend {
+	border-bottom: 0;
+}
+
+.sidebar input.text, .sidebar textarea, .sidebar select {
+	width: 95%;
+}
+
+.req label { 
+	background: none;
+
+	&:after { 
+		content: " *";
+    	color: red;
+    }
+}
+
+p.required {
+	display: inline-block;
+    margin-bottom: 1em !important;
+	background: none;
+
+	&:before { 
+		content: "* ";
+    	color: red;
+	}
+}
+
+
+.req ins {
+	position: absolute;
+	left: -9999px;
+}
+
+/* @end Globals - Forms - Required Fields
+-------------------------------- */
+
+ul.dragableFeeds {
+	margin-left: 12px;
+	margin-right: 12px;
+}
+
+.dragableBoxHeader { 
+	//Header inside dragable RSS box
+	background-color: #f2f2f2 !important;
+}
+
+.force-block {
+	display: block !important;
+	float: none;
+	clear: both;
+}
+
+// Ratings
+
+section .svIndex .credits,
+section .svIndex .comments,
+section .svIndex .tags,
+section .svIndex .rating {
+	line-height: 20px; /* acommodate height of stars */
+	}
+
+.stars a {
+	width: 14px;
+	height: 13px;
+	background: transparent url(../../images/rater/stars.png) no-repeat;
+}
+
+.zero { background-image: url(../../images/rater/star_zero.png); }
+.one { background-image: url(../../images/rater/star_one.png); }
+.onehalf { background-image: url(../../images/rater/star_onehalf.png); }
+.two { background-image: url(../../images/rater/star_two.png); }
+.twohalf { background-image: url(../../images/rater/star_twohalf.png); }
+.three { background-image: url(../../images/rater/star_three.png); }
+.threehalf { background-image: url(../../images/rater/star_threehalf.png); }
+.four { background-image: url(../../images/rater/star_four.png); }
+.fourhalf { background-image: url(../../images/rater/star_fourhalf.png); }
+.five { background-image: url(../../images/rater/star_five.png); }
+
+
+// SEARCH
+#svSearchResults {
+
+	.well {
+		padding: 0.5em;
+		margin: 0;
+		p {
+			padding: 0;
+			margin: 0;
+		}
+	}
+
+	.svIndex {
+		border:none;
+	}
+
+	#svSearchAgain {
+		padding: 0;
+		margin: 0 -15px;
+	}
+
+}
+
+// LOGIN
+.center {
+	text-align: center;
+}
+.form-signin, .form-sendlogin {
+  max-width: 500px;
+  padding: 15px;
+  margin: 1em auto;
+
+	.form-signin-heading, .checkbox {
+	  margin-bottom: 10px;
+	}
+
+	.checkbox {
+	  font-weight: normal;
+	}
+	.form-control {
+	  position: relative;
+	  font-size: 16px;
+	  height: auto;
+	  padding: 10px;
+	  -webkit-box-sizing: border-box;
+	     -moz-box-sizing: border-box;
+	          box-sizing: border-box;
+	}
+	.form-control:focus {
+	  z-index: 2;
+	}
+	input[type="text"] {
+	  margin-bottom: -1px;
+	  border-bottom-left-radius: 0;
+	  border-bottom-right-radius: 0;
+	}
+	input[type="password"] {
+	  margin-bottom: 10px;
+	  border-top-left-radius: 0;
+	  border-top-right-radius: 0;
+	}
+
+}
+
+
+// FONT AWESOME EXAMPLE PAGE
+.font-awesome-examples {
+	[class*="span"] {
+		float:left;
+		min-height:1px;
+		margin-left: 30px;
+	}
+
+	.span3{width:220px;}
+
+	.span3 a {
+		display:block;
+		cursor:pointer;
+		line-height: 32px;
+		height: 32px;
+		padding-left: 10px;
+		-webkit-border-radius: 6px;
+		-moz-border-radius: 6px;
+		border-radius: 6px;
+	}
+
+	.span3 a [class^="icon-"] {
+		width: 32px;
+		font-size:14px;
+		display: inline-block;
+		text-align: right;
+		margin-right:10px;
+	}
+
+	ul, ol {
+		padding:0;
+		margin: 0 0 10px 25px;
+	}
+}
+
+// BOOTSTRAP THEME 'EXAMPLE' PAGE
+.theme-showcase {
+	.theme-dropdown .dropdown-menu {
+		display: block;
+		position: static;
+		margin-bottom: 20px;
+	}
+
+	&> p > .btn {
+		margin: 5px 0;
+	}
+}
+
+
+// Prettify
+ol.linenums {
+	margin-left: -10px !important;
+}
+
+// Front-End Editing Theme Accommodations - Use this hook to adjust if the Mura Front-End Toolbar is obscuring navigation or something you or your users would rather not have obscured.
+.mura-edit-mode {
+	body {
+		margin-top: 40px;
+	}	
+}
+
+// RESPONSIVE
+// =========================================================
+@import url("responsive/screen-xs.less"); // Extra small devices (<768px)
+@import url("responsive/screen-sm.less"); // Small devices Tablets (≥768px)
+@import url("responsive/screen-md.less"); // Medium devices Desktops (≥992px)
+@import url("responsive/screen-lg.less"); // Large devices Desktops (≥1200px)
+@import url("responsive/screen-xxs.less"); // Extra EXTRA small devices (<480px)
+
+// RETINA DISPLAYS
+// =========================================================
+// @media only screen and (-webkit-min-device-pixel-ratio : 1.5), only screen and (min-device-pixel-ratio : 1.5) { }
+
+// PRINT
+// =========================================================
+@media print{
+	header{ display:none !important; }
+}

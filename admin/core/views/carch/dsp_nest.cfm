@@ -49,31 +49,36 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="attributes.parentid" default="00000000000000000000000000000000001">
 <cfparam name="attributes.locking" default="none">
 <cfparam name="attributes.isSectionRequest" default="false">
-<cfparam name="rsNext.recordcount" default=0>
 <cfparam name="session.openSectionList" default="">
-<cfset $=request.event.getValue('MuraScope')>
-<cfif attributes.nestlevel neq 1><cfset variables.startrow=1><cfelse><cfset variables.startrow=attributes.startrow></cfif>
-<cfset sortable=not attributes.isSectionRequest and attributes.nestlevel eq  1 and attributes.sortby eq 'orderno'>
-<cfset currentPos=variables.startrow>
-<cfset endRow=iif((currentPos + attributes.nextn) gt attributes.rsnest.recordcount,attributes.rsnest.recordcount,currentPos + attributes.nextn)>
-</cfsilent>
-<!--- Start Level UL List--->
-<ul<cfif sortable> id='sortableKids'</cfif> class="section">
-<cfoutput query="attributes.rsNest" startrow="#variables.startrow#" maxrows="#attributes.nextN#">
-<cfsilent>
-<cfset request.menulist=listappend(request.menulist,attributes.rsnest.contentid)>
 
-<cfif isNumeric(attributes.rsnest.hasKids) and attributes.rsnest.hasKids> 
-	<cfset rsNext=application.contentManager.getNest(attributes.rsNest.contentid,attributes.siteid,attributes.rsNest.sortBy,attributes.rsNest.sortDirection)>
-	<cfset isMore=rsNext.recordcount gt attributes.nextN>
+<cfset rsnest=application.contentManager.getNest(attributes.parentid,session.siteid,attributes.sortBy,attributes.sortDirection)>
+
+<cfset $=request.event.getValue('MuraScope')>
+
+<cfif attributes.nestlevel neq 1>
+	<cfset variables.startrow=1>
 <cfelse>
-	<cfset rsNext={recordcount=0}>
-	<cfset isMore=false />
+	<cfset variables.startrow=attributes.startrow>
 </cfif>
 
-<cfset isOpenSection=listFind(session.openSectionList,attributes.rsNest.contentid)>
+<cfset sortable=not attributes.isSectionRequest and attributes.nestlevel eq  1 and attributes.sortby eq 'orderno'>
 
-<cfset verdict=application.permUtility.getPerm(attributes.rsNest.contentid, attributes.siteid)>
+<cfset currentPos=variables.startrow>
+
+<cfset endRow=iif((currentPos + attributes.nextn) gt rsnest.recordcount,rsnest.recordcount,currentPos + attributes.nextn)>
+</cfsilent>
+<!--- Start Level UL List--->
+<ul<cfif sortable> id='sortableKids'</cfif> class="mura-section">
+<cfoutput query="rsnest" startrow="#variables.startrow#" maxrows="#attributes.nextN#">
+<cfsilent>
+<cfset request.menulist=listappend(request.menulist,rsnest.contentid)>
+
+<cfset hasKids=application.contentManager.getKidsCount(rsnest.contentid,rsnest.siteid,false)>
+<cfset isMore=hasKids gt attributes.nextN>
+
+<cfset isOpenSection=listFind(session.openSectionList,rsnest.contentid)>
+
+<cfset verdict=application.permUtility.getPerm(rsnest.contentid, attributes.siteid)>
 
 <cfif verdict neq 'deny'>
 	<cfif verdict eq 'none'>
@@ -91,63 +96,63 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset newcontent='none'>
 </cfif>
 
-<cfset attop=attributes.rsnest.currentrow eq 1>
+<cfset attop=rsnest.currentrow eq 1>
 
-<cfset atbottom=attributes.rsnest.currentrow eq attributes.rsnest.recordcount>
+<cfset atbottom=rsnest.currentrow eq rsnest.recordcount>
 	
 <cfset neworder= ((attributes.parentid neq '00000000000000000000000000000000001' and attributes.locking neq 'all') or (attributes.parentid eq '00000000000000000000000000000000001' and attributes.locking eq 'none')) and attributes.perm eq 'editor'>
 
-<cfset deletable=(((attributes.parentid neq '00000000000000000000000000000000001' and attributes.locking neq 'all') or (attributes.parentid eq '00000000000000000000000000000000001' and attributes.locking eq 'none')) and (verdict eq 'editor'))  and attributes.rsnest.IsLocked neq 1>
+<cfset deletable=(((attributes.parentid neq '00000000000000000000000000000000001' and attributes.locking neq 'all') or (attributes.parentid eq '00000000000000000000000000000000001' and attributes.locking eq 'none')) and (verdict eq 'editor'))  and rsnest.IsLocked neq 1>
 
 
-<cfif (attributes.restricted or attributes.rsNest.restricted)>
+<cfif (attributes.restricted or rsnest.restricted)>
 <cfset variables.restricted=1>
 <cfelse>
 <cfset variables.restricted=0>
 </cfif>
 
-<cfif attributes.rsNest.type eq 'File'>
-	<cfset icon=application.classExtensionManager.getCustomIconClass(siteid=attributes.rsNest.siteid,type=attributes.rsNest.type,subtype=attributes.rsNest.subtype)>
+<cfif rsnest.type eq 'File'>
+	<cfset icon=application.classExtensionManager.getCustomIconClass(siteid=rsnest.siteid,type=rsnest.type,subtype=rsnest.subtype)>
 
 	<cfif not len(icon)>
-		<cfset icon=lcase(attributes.rsNest.fileExt)>
+		<cfset icon=lcase(rsnest.fileExt)>
 	</cfif>
 	
 	<cfif variables.restricted>
 		<cfset icon=icon & " locked">
 	</cfif>
 <cfelse>
-	<cfset icon=application.classExtensionManager.getCustomIconClass(siteid=attributes.rsNest.siteid,type=attributes.rsNest.type,subtype=attributes.rsNest.subtype)>
+	<cfset icon=application.classExtensionManager.getCustomIconClass(siteid=rsnest.siteid,type=rsnest.type,subtype=rsnest.subtype)>
 	<cfif not len(icon)>
-		<cfset icon='icon-mura-' & attributes.rsNest.type>
+		<cfset icon='icon-mura-' & rsnest.type>
 	</cfif>
 
 	<cfif variables.restricted>
 		<cfset icon="#icon# locked">
 	</cfif>
-	<cfset icon=icon & " " & attributes.rsNest.subtype>
+	<cfset icon=icon & " " & rsnest.subtype>
 </cfif>
-<cfset isFileIcon=attributes.rsnest.type eq 'File' and listFirst(icon,"-") neq "icon">
+<cfset isFileIcon=rsnest.type eq 'File' and listFirst(icon,"-") neq "icon">
 <cfset request.rowNum=request.rowNum+1>
 </cfsilent>
 <!--- Start LI for content Item --->
-<li data-siteid="#attributes.rsNest.siteid#" data-contentid="#attributes.rsNest.contentid#" data-contenthistid="#attributes.rsNest.contenthistid#" data-sortby="#attributes.rsNest.sortby#" data-sortdirection="#attributes.rsNest.sortdirection#" data-moduleid="#HTMLEditFormat(attributes.moduleid)#" data-type="#attributes.rsNest.type#" class="#lcase(attributes.rsNest.type)# mura-node-data<cfif variables.restricted> restricted</cfif>">
+<li data-siteid="#rsnest.siteid#" data-contentid="#rsnest.contentid#" data-contenthistid="#rsnest.contenthistid#" data-sortby="#rsnest.sortby#" data-sortdirection="#rsnest.sortdirection#" data-moduleid="#HTMLEditFormat(attributes.moduleid)#" data-type="#rsnest.type#" class="#lcase(rsnest.type)# mura-node-data<cfif variables.restricted> restricted</cfif>">
 <cfif variables.restricted><div class="marker"></div></cfif>
 <dl>
 <dt>
-	<!---<cfif (attributes.rsNest.type eq 'Page') or  (attributes.rsNest.type eq 'Folder')  or  (attributes.rsNest.type eq 'Calendar') or (attributes.rsNest.type eq 'Gallery')>--->
+	<!---<cfif (rsnest.type eq 'Page') or  (rsnest.type eq 'Folder')  or  (rsnest.type eq 'Calendar') or (rsnest.type eq 'Gallery')>--->
 
 	
-	<a class="add" href="javascript:;" onmouseover="siteManager.showMenu('newContentMenu','#newcontent#',this,'#attributes.rsNest.contentid#','#attributes.topid#','#attributes.rsNest.parentid#','#attributes.siteid#','#attributes.rsNest.type#');"><i class="icon-plus-sign"></i></a>	
+	<a class="add" href="javascript:;" onmouseover="siteManager.showMenu('newContentMenu','#newcontent#',this,'#rsnest.contentid#','#attributes.topid#','#rsnest.parentid#','#attributes.siteid#','#rsnest.type#');"><i class="icon-plus-sign"></i></a>	
 	
-	<cfif isNumeric(attributes.rsnest.hasKids) and attributes.rsNest.haskids>
+	<cfif isNumeric(rsnest.hasKids) and rsnest.haskids>
 		<span <cfif isOpenSection>class="hasChildren open"<cfelse>class="hasChildren closed"</cfif> onclick="return siteManager.loadSiteSection( jQuery(this).parents('li:first') , 1 , true);"></span>
 	</cfif>
 
 	<cfsilent>
-		<cfif verdict neq 'none' and listFindNoCase("jpg,jpeg,png,gif",listLast(attributes.rsnest.assocfilename,"."))>
+		<cfif verdict neq 'none' and listFindNoCase("jpg,jpeg,png,gif",listLast(rsnest.assocfilename,"."))>
 			<cfset atooltip=true>
-			<cfset atitle="<img class='image-preview' src='#$.getURLForImage(fileid=attributes.rsNest.fileid,size='small',siteid=attributes.rsnest.siteid,fileext=attributes.rsnest.fileExt)#'/>">
+			<cfset atitle="<img class='image-preview' src='#$.getURLForImage(fileid=rsnest.fileid,size='small',siteid=rsnest.siteid,fileext=rsnest.fileExt)#'/>">
 		<cfelse>
 			<cfset atooltip=false>
 			<cfset atitle=application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")>
@@ -155,12 +160,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfsilent>
 
 	<cfif not listFindNoCase('none,read',verdict)>
-		<a class="<cfif isFileIcon>file #lcase(icon)#<cfelse>#lcase(icon)#</cfif> title draftprompt" title="#atitle#" href="./?muraAction=cArch.edit&contenthistid=#attributes.rsNest.ContentHistID#&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#"<cfif attributes.rsNest.type eq 'File'> data-filetype="#lcase(attributes.rsNest.fileExt)#"</cfif>  <cfif atooltip>rel="tooltip" data-html="true"</cfif>>
+		<a class="<cfif isFileIcon>file #lcase(icon)#<cfelse>#lcase(icon)#</cfif> title draftprompt" title="#atitle#" href="./?muraAction=cArch.edit&contenthistid=#rsnest.ContentHistID#&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#"<cfif rsnest.type eq 'File'> data-filetype="#lcase(rsnest.fileExt)#"</cfif>  <cfif atooltip>rel="tooltip" data-html="true"</cfif>>
 	<cfelse>
-		<a class="<cfif attributes.rsNest.type eq 'File'>file #lcase(icon)#<cfelse>#lcase(icon)#</cfif> title"<cfif attributes.rsNest.type eq 'File'> data-filetype="#lcase(attributes.rsNest.fileExt)#"</cfif> <cfif atooltip>rel="tooltip" data-html="true" title="#atitle#"</cfif>>
+		<a class="<cfif rsnest.type eq 'File'>file #lcase(icon)#<cfelse>#lcase(icon)#</cfif> title"<cfif rsnest.type eq 'File'> data-filetype="#lcase(rsnest.fileExt)#"</cfif> <cfif atooltip>rel="tooltip" data-html="true" title="#atitle#"</cfif>>
 	</cfif>
-	#HTMLEditFormat(left(attributes.rsNest.menutitle,75))#
-	<cfif len(attributes.rsNest.menutitle) gt 75>&hellip;</cfif>
+	#HTMLEditFormat(left(rsnest.menutitle,75))#
+	<cfif len(rsnest.menutitle) gt 75>&hellip;</cfif>
 	<cfif isMore><span class="hasMore">&nbsp;(#application.rbFactory.getKeyValue(session.rb,"sitemanager.more")#)</span></cfif></a>
 	<!--- <div class="mura-title-fade"></div> --->
 </dt>	
@@ -171,27 +176,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<a class="mura-quickEditItem" data-attribute="inheritObjects">
 		</cfif>
 			<cfif inheritObjects eq 'cascade'>
-				<i class="icon-arrow-down" title="#attributes.rsNest.inheritObjects#"></i>
+				<i class="icon-arrow-down" title="#rsnest.inheritObjects#"></i>
 				<cfelseif inheritObjects eq 'reject'>
-					<i class="icon-ban-circle" title="#attributes.rsNest.inheritObjects#"></i>
+					<i class="icon-ban-circle" title="#rsnest.inheritObjects#"></i>
 				<cfelse>
-					<span class="bullet" title="#attributes.rsNest.inheritObjects#">&bull;</span>
+					<span class="bullet" title="#rsnest.inheritObjects#">&bull;</span>
 			</cfif>
-			 <span>#attributes.rsNest.inheritObjects#</span>
+			 <span>#rsnest.inheritObjects#</span>
 		<cfif verdict eq 'editor'></a></cfif>
 	</dd>
 	
-	<dd class="display<cfif attributes.rsNest.Display eq 2 and attributes.rsNest.approved> scheduled</cfif>">
+	<dd class="display<cfif rsnest.Display eq 2 and rsnest.approved> scheduled</cfif>">
 		<cfif verdict eq 'editor'>
 		<a class="mura-quickEditItem" data-attribute="display">
 		</cfif>
 		
-		<cfif attributes.rsNest.Display eq 1 and attributes.rsNest.approved>
+		<cfif rsnest.Display eq 1 and rsnest.approved>
 		 <i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#"></i><span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.yes")#</span> 
 		
-		<cfelseif attributes.rsNest.Display eq 2 and attributes.rsNest.approved>
+		<cfelseif rsnest.Display eq 2 and rsnest.approved>
 			<cfif verdict neq 'editor'>
-				<a href="##" rel="tooltip" title="#HTMLEditFormat(LSDateFormat(attributes.rsNest.displaystart,"short"))#&nbsp;-&nbsp;#LSDateFormat(attributes.rsNest.displaystop,"short")#">
+				<a href="##" rel="tooltip" title="#HTMLEditFormat(LSDateFormat(rsnest.displaystart,"short"))#&nbsp;-&nbsp;#LSDateFormat(rsnest.displaystop,"short")#">
 			</cfif>
 			<i class="icon-calendar"></i>
 			<cfif verdict neq 'editor'></a></cfif>
@@ -202,9 +207,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</dd>
 	
 	<dd class="template">
-	  	<cfif verdict eq 'editor'><a class="mura-quickEditItem<cfif len(attributes.rsnest.template) or len(attributes.rsnest.childtemplate)> template-set</cfif>" data-attribute="template"></cfif>
-		<cfif len(attributes.rsnest.template) or len(attributes.rsnest.template)>
-			 <i class="icon-list-alt" title="#attributes.rsnest.template#"></i><span>#attributes.rsnest.template#</span>
+	  	<cfif verdict eq 'editor'><a class="mura-quickEditItem<cfif len(rsnest.template) or len(rsnest.childtemplate)> template-set</cfif>" data-attribute="template"></cfif>
+		<cfif len(rsnest.template) or len(rsnest.template)>
+			 <i class="icon-list-alt" title="#rsnest.template#"></i><span>#rsnest.template#</span>
 		<cfelse>
 			<span class="bullet" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#">&bull;</span>
            	<span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.inherit")#</span>
@@ -214,80 +219,80 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 	<dd class="nav">
 		 <cfif verdict eq 'editor'><a class="mura-quickEditItem" data-attribute="isnav"></cfif>
-			 <cfif isnav><i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(attributes.rsNest.isNav)#")#"></i><cfelse><i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(attributes.rsNest.isNav)#")#"></i></cfif>
-			 <span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(attributes.rsNest.isNav)#")#</span>
+			 <cfif isnav><i class="icon-ok" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(rsnest.isNav)#")#"></i><cfelse><i class="icon-ban-circle" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(rsnest.isNav)#")#"></i></cfif>
+			 <span>#application.rbFactory.getKeyValue(session.rb,"sitemanager.#yesnoformat(rsnest.isNav)#")#</span>
 		<cfif verdict eq 'editor'></a></cfif>
 	</dd>
-    <dd class="updated">#LSDateFormat(attributes.rsnest.lastupdate,session.dateKeyFormat)# #LSTimeFormat(attributes.rsnest.lastupdate,"medium")#</dd>
+    <dd class="updated">#LSDateFormat(rsnest.lastupdate,session.dateKeyFormat)# #LSTimeFormat(rsnest.lastupdate,"medium")#</dd>
     <dd class="actions">
     <ul>
     	<cfif not listFindNoCase('none,read',verdict)>
-       <li class="edit"><a class="draftprompt"  data-siteid="#attributes.siteid#" data-contentid="#attributes.rsNest.contentid#" data-contenthistid="#attributes.rsNest.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="./?muraAction=cArch.edit&contenthistid=#attributes.rsNest.ContentHistID#&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#"><i class="icon-pencil"></i></a></li>
-	   <cfswitch expression="#attributes.rsnest.type#">
+       <li class="edit"><a class="draftprompt"  data-siteid="#attributes.siteid#" data-contentid="#rsnest.contentid#" data-contenthistid="#rsnest.contenthistid#" title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.edit")#" href="./?muraAction=cArch.edit&contenthistid=#rsnest.ContentHistID#&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#"><i class="icon-pencil"></i></a></li>
+	   <cfswitch expression="#rsnest.type#">
 		<cfcase value="Page,Folder,Calendar,Gallery">
-		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(attributes.siteid,attributes.rsNest.filename)#','#attributes.rsnest.targetParams#');"><i class="icon-globe"></i></a></li>
+		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(attributes.siteid,rsnest.filename)#','#rsnest.targetParams#');"><i class="icon-globe"></i></a></li>
 		</cfcase>
 		<cfcase value="File,Link">
-		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(attributes.siteid,"")#?LinkServID=#attributes.rsnest.contentid#','#attributes.rsnest.targetParams#');"><i class="icon-globe"></i></a></li>
+		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(attributes.siteid,"")#?LinkServID=#rsnest.contentid#','#rsnest.targetParams#');"><i class="icon-globe"></i></a></li>
 		</cfcase>
 		</cfswitch>
-	   <li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.versionhistory")#" href="./?muraAction=cArch.hist&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#"><i class="icon-book"></i></a></li>
+	   <li class="version-history"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.versionhistory")#" href="./?muraAction=cArch.hist&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#"><i class="icon-book"></i></a></li>
         <cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(attributes.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
-          <li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#" href="./?muraAction=cPerm.main&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&parentid=#attributes.rsNest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#"><i class="icon-group"></i></a></li>
+          <li class="permissions"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.permissions")#" href="./?muraAction=cPerm.main&contentid=#rsnest.ContentID#&type=#rsnest.type#&parentid=#rsnest.parentID#&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&startrow=#attributes.startrow#"><i class="icon-group"></i></a></li>
         <cfelse>
 		  <li class="permissions disabled"><a><i class="icon-group"></i></a></li>
 		</cfif>
         <cfif deletable>
-          <li class="delete"><a  title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.delete")#" href="./?muraAction=cArch.update&contentid=#attributes.rsNest.ContentID#&type=#attributes.rsNest.type#&action=deleteall&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&parentid=#URLEncodedFormat(attributes.parentid)#&startrow=#attributes.startrow#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),attributes.rsNest.menutitle))#',this.href)"><i class="icon-remove-sign"></i></a></li>
+          <li class="delete"><a  title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.delete")#" href="./?muraAction=cArch.update&contentid=#rsnest.ContentID#&type=#rsnest.type#&action=deleteall&topid=#URLEncodedFormat(attributes.topid)#&siteid=#URLEncodedFormat(attributes.siteid)#&moduleid=#attributes.moduleid#&parentid=#URLEncodedFormat(attributes.parentid)#&startrow=#attributes.startrow#" onclick="return confirmDialog('#jsStringFormat(application.rbFactory.getResourceBundle(session.rb).messageFormat(application.rbFactory.getKeyValue(session.rb,'sitemanager.content.deletecontentrecursiveconfirm'),rsnest.menutitle))#',this.href)"><i class="icon-remove-sign"></i></a></li>
           <cfelseif attributes.locking neq 'all'>
           <li class="delete disabled"><a><i class="icon-remove-sign"></i></a></li>
         </cfif>
         <cfelse>
         <li class="edit disabled"><a><i class="icon-pencil"></i></a></li>
-		<cfswitch expression="#attributes.rsnest.type#">
+		<cfswitch expression="#rsnest.type#">
 		<cfcase value="Page,Folder,Calendar,Gallery">
-		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(attributes.siteid,attributes.rsNest.filename)#','#attributes.rsnest.targetParams#');"><i class="icon-globe"></i></a></li>
+		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(attributes.siteid,rsnest.filename)#','#rsnest.targetParams#');"><i class="icon-globe"></i></a></li>
 		</cfcase>
 		<cfcase value="File,Link">
-		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(attributes.siteid,"")#?LinkServID=#attributes.rsnest.contentid#','#attributes.rsnest.targetParams#');"><i class="icon-globe"></i></a></li>
+		<li class="preview"><a title="#application.rbFactory.getKeyValue(session.rb,"sitemanager.view")#" href="##" onclick="return preview('http://#application.settingsManager.getSite(attributes.siteid).getDomain()##application.configBean.getServerPort()##application.configBean.getContext()##$.getURLStem(attributes.siteid,"")#?LinkServID=#rsnest.contentid#','#rsnest.targetParams#');"><i class="icon-globe"></i></a></li>
 		</cfcase>
 		</cfswitch>
 		<li class="version-history disabled"><a><i class="icon-book"></i></a></li>
 		<li class="permissions disabled"><a><i class="icon-group"></i></a></li>
 		<li class="delete disabled"><a><i class="icon-remove-sign"></i></a></li>
       </cfif>
-		<cfif  ListFindNoCase("Page,Folder,Calendar,Link,File,Gallery",attributes.rsNest.type)>
+		<cfif  ListFindNoCase("Page,Folder,Calendar,Link,File,Gallery",rsnest.type)>
 		#application.pluginManager.renderScripts("onContentList",attributes.siteid,attributes.pluginEvent)#
 		</cfif>
-		<cfset attributes.pluginEvent.setValue('type', attributes.rsnest.type)>
-        <cfset attributes.pluginEvent.setValue('filename', attributes.rsnest.filename)>
-        <cfset attributes.pluginEvent.setValue('contentid', attributes.rsnest.contentid)>
-        <cfset attributes.pluginEvent.setValue('contenthistid', attributes.rsnest.contenthistid)>
-		#application.pluginManager.renderScripts("on#attributes.rsNest.type#List",attributes.siteid,attributes.pluginEvent)#
-		#application.pluginManager.renderScripts("on#attributes.rsNest.type##attributes.rsNest.subtype#List",attributes.siteid,attributes.pluginEvent)#
+		<cfset attributes.pluginEvent.setValue('type', rsnest.type)>
+        <cfset attributes.pluginEvent.setValue('filename', rsnest.filename)>
+        <cfset attributes.pluginEvent.setValue('contentid', rsnest.contentid)>
+        <cfset attributes.pluginEvent.setValue('contenthistid', rsnest.contenthistid)>
+		#application.pluginManager.renderScripts("on#rsnest.type#List",attributes.siteid,attributes.pluginEvent)#
+		#application.pluginManager.renderScripts("on#rsnest.type##rsnest.subtype#List",attributes.siteid,attributes.pluginEvent)#
 	</ul>
 	</dd>
 </dl>
-   <cfif ((isNumeric(attributes.rsnest.hasKids) and attributes.rsNest.hasKids and attributes.nestlevel lt attributes.viewDepth)
-   	 or isOpenSection) and rsNext.recordcount>
-   <cf_dsp_nest parentid="#attributes.rsNest.contentid#"  
+   <cfif ((hasKids and attributes.nestlevel lt attributes.viewDepth)
+   	 or isOpenSection) and hasKids>
+   <cf_dsp_nest parentid="#rsnest.contentid#"  
    locking="#attributes.locking#" 
    nestlevel="#evaluate(attributes.nestlevel + 1)#" 
    perm="#verdict#"
    siteid="#attributes.siteid#"
    topid="#attributes.topid#"
-   rsnest="#rsNext#"
    moduleid="#attributes.moduleid#"
    restricted="#variables.restricted#"
    viewdepth="#attributes.viewDepth#"
    nextn="#attributes.nextN#"
    startrow="#attributes.startrow#"
    sortBy="#attributes.sortBy#"
+   sortDirection="#attributes.sortDirection#"
    pluginEvent="#attributes.pluginEvent#">
    </cfif>
    <cfset currentPos=currentPos+1>
    <cfif sortable>
-   		<input type="hidden" name="orderid" value="#attributes.rsnest.contentID#"/>
+   		<input type="hidden" name="orderid" value="#rsnest.contentID#"/>
    </cfif>
    <!--- Close LI for contentID--->
    </li>

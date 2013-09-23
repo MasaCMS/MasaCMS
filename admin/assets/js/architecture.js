@@ -664,7 +664,20 @@ buttons: {
 			});
 		});
 	},
-	
+	loadRelatedContentSets:function(contenthistid,type,subtype,siteid){
+		var url = 'index.cfm';
+		var pars = 'muraAction=cArch.loadSelectedRelatedContent&compactDisplay=true&contenthistid=' + contenthistid + '&type=' + type + '&subtype=' + subtype + '&siteid=' + siteid + '&cacheid=' + Math.random();
+		
+		var d = $('#selectedRelatedContent');
+		d.html('<div class="load-inline"></div>');
+		$('#selectedRelatedContent .load-inline').spin(spinnerArgs2);
+		$.get(url + "?" + pars, function(data) {
+			$('#selectedRelatedContent .load-inline').spin(false);
+			d.html(data);
+			siteManager.setupRCSortable();
+		});
+
+	},
 	setupRCSortable: function() {
 		$(".rcSortable").sortable({
 			connectWith: ".rcSortable",
@@ -818,6 +831,8 @@ buttons: {
 				$(this).find('.load-inline').spin(spinnerArgs2);
 			}
 		});
+
+		siteManager.loadRelatedContentSets(contentHistID,type,subType,_siteID);
 
 		$.get(url + "?" + pars, function(data) {
 			siteManager.setExtendedAttributes(data);
@@ -1297,7 +1312,7 @@ buttons: {
 					try {
 						var r = eval("(" + data + ")");
 					
-						node.find('.section:first').remove();
+						node.find('.mura-section:first').remove();
 						
 						node.append(r.html);
 
@@ -1308,7 +1323,7 @@ buttons: {
 
 						//The fadeIn in ie8 causes a rendering issue
 						if(!(document.all && document.querySelector && !document.addEventListener)) {
-							node.find('.section:first').hide().fadeIn("slow");
+							node.find('.mura-section:first').hide().fadeIn("slow");
 						}
 					} catch(err) {
 						if(data.indexOf('mura-primary-login-token') != -1) {
@@ -1329,8 +1344,8 @@ buttons: {
 
 				$.get(url + "?" + pars);
 
-				node.find('.section:first').fadeOut("fast", function() {
-					node.find('.section:first').remove();
+				node.find('.mura-section:first').fadeOut("fast", function() {
+					node.find('.mura-section:first').remove();
 					stripe('stripe');
 					$('#newContentMenu').addClass('hide');
 					siteManager.sectionLoading = false;
@@ -1354,7 +1369,7 @@ buttons: {
 					var r = eval("(" + data + ")");
 
 					//d.find(".loadProgress").remove();
-					node.find('.section:first').remove();
+					node.find('.mura-section:first').remove();
 					node.append(r.html);
 
 					$('#newContentMenu').addClass('hide');

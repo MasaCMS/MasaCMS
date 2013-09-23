@@ -19,13 +19,13 @@ function viewStatusInfo(contenthistid,siteid){
 	var pars = 'muraAction=cArch.statusmodal&compactDisplay=true&siteid=' + siteid  + '&contenthistid=' + contenthistid +'&cacheid=' + Math.random();
 	var d = jQuery('##approvalModalContainer');
 	d.html('<div class="load-inline"></div>');
-	$('##approvalModalContainer .load-inline').spin(spinnerArgs2);
+	//$('##approvalModalContainer .load-inline').spin(spinnerArgs2);
 	$.get(url + "?" + pars, 
-			function(data) {
+		function(data) {
 			$('##approvalModalContainer .load-inline').spin(false);
 			jQuery('##approvalModalContainer').html(data);
 			stripe('stripe');
-			});
+		});
 		
 		$("##approvalModalContainer").dialog({
 			resizable: false,
@@ -43,6 +43,8 @@ function applyApprovalAction(requestid,action,comment,siteid){
 	if(action == 'Reject' && comment == ''){
 		alertDialog('#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"approvalchains.rejectioncommentrequired"))#');
 	} else {
+		$('##mura-approval-apply').attr('disabled','disabled').css('opacity', '.30');
+		
 		var pars={
 					muraAction:'carch.approvalaction',
 					siteid: siteid,
@@ -64,13 +66,15 @@ function applyApprovalAction(requestid,action,comment,siteid){
 							window.location = href;
 						}
 					}
-				);
+				).fail(function(data){
+					$('html').html(data);
+				});
 			}
 		);
 	}
 }
 </script>
-<div style="display:none" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"layout.status"))#" id="approvalModalContainer">
+<div style="display:none;" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"layout.status"))#" id="approvalModalContainer">
 
 </div>
 </cfoutput>

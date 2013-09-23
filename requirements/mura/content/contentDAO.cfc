@@ -738,13 +738,13 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfif rslist.recordcount>
 		<cfquery>
 		 Delete from tcontent where siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" /> 
-		 and contenthistid in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#rslist.contentHistID#" />)
+		 and contenthistid in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#valuelist(rslist.contentHistID)#" />)
 		</cfquery>
 		
 		<cfquery>
 		delete from tcontentobjects where 
 		siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
-		and contenthistid in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#rslist.contentHistID#" />)
+		and contenthistid in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#valuelist(rslist.contentHistID)#" />)
 		</cfquery>
 		
 		<cfloop query="rslist">
@@ -760,19 +760,19 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		<cfquery>
 		delete from tcontentcategoryassign where 
 		siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
-		and contenthistid in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#rslist.contentHistID#" />)
+		and contenthistid in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#valuelist(rslist.contentHistID)#" />)
 		</cfquery>
 		
 		<cfquery>
 		delete from tcontentrelated where 
 		siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
-		and contenthistid in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#rslist.contentHistID#" />)
+		and contenthistid in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#valuelist(rslist.contentHistID)#" />)
 		</cfquery>
 		
 		<cfquery>
 		delete from tcontenttags where 
 		siteid='#arguments.siteid#'
-		and contenthistid in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#rslist.contentHistID#" />)
+		and contenthistid in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#valuelist(rslist.contentHistID)#" />)
 		</cfquery>
 
 	</cfif>
@@ -800,7 +800,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		<cfquery>
 		delete from tcontentobjects where 
 		siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
-		and contenthistid in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#rslist.contentHistID#" />)
+		and contenthistid in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#valuelist(rslist.contentHistID)#" />)
 		</cfquery>
 		
 		<cfloop query="rslist">
@@ -811,19 +811,19 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		<cfquery>
 		delete from tcontentcategoryassign where 
 		siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
-		and contenthistid in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#rslist.contentHistID#" />)
+		and contenthistid in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#valuelist(rslist.contentHistID)#" />)
 		</cfquery>
 		
 		<cfquery>
 		delete from tcontentrelated where 
 		siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
-		and contenthistid in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#rslist.contentHistID#" />)
+		and contenthistid in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#valuelist(rslist.contentHistID)#" />)
 		</cfquery>
 		
 		<cfquery>
 		delete from tcontenttags where 
 		siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#" />
-		and contenthistid in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#rslist.contentHistID#" />)
+		and contenthistid in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#valuelist(rslist.contentHistID)#" />)
 		</cfquery>
 
 		<!---
@@ -835,7 +835,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 		<cfquery>
 		delete from tcontent where 
 		siteid='#arguments.siteid#'
-		and contenthistid in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#rslist.contentHistID#" />)
+		and contenthistid in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#valuelist(rslist.contentHistID)#" />)
 		</cfquery>
 	</cfif>
 	

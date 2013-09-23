@@ -229,6 +229,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.approvalStatus = "" />
 	<cfset variables.instance.approvalGroupID = "" />
 	<cfset variables.instance.approvalChainOverride = false />
+	<cfset variables.instance.approvingChainRequest = false />
 	<cfset variables.instance.relatedContentSetData = "" />
 
 	<cfset variables.kids = arrayNew(1) />

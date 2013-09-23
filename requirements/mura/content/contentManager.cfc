@@ -878,7 +878,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 			<cfif not newBean.getApprovalChainOverride() and (newBean.getApproved() or len(newBean.getChangesetID())) and requiresApproval>		
 				<cfset newBean.setChainID(chainID)>
-				<cfset pluginEvent.setValue('approvalRequest',newBean.getApprovalRequest())>
+				<cfset pluginEvent.setValue('approvalRequest',newBean.getApprovalRequest().setStatus("Pending"))>
 			</cfif>
 			
 			<cfset newBean.setcontentHistID(createUUID()) />
@@ -940,7 +940,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						<cfset newBean.setApproved(0)>
 					
 					<!--- If it has an approval request that has been rejected or is pending then create a new request --->
-					<cfelseif approvalRequest.getStatus() neq 'Approved'>
+					<cfelseif not newBean.getApprovingChainRequest()>
 						
 						<!--- If the request is pending conditionally delete existing request --->
 						<cfif 	(
@@ -2613,6 +2613,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cffunction name="getMyLockedFilesCount" output="false">
 		<cfargument name="siteid" type="string" required="true">
 		<cfreturn variables.contentGateway.getLockedFilesCount(arguments.siteid,session.mura.userid)>
+	</cffunction>
+
+	<cffunction name="getKidsCount" output="false">
+		<cfargument name="parentid" type="string" required="true">
+		<cfargument name="siteid" type="string" required="true">
+		<cfargument name="liveOnly" default="true" required="true">
+		<cfargument name="menutype" default="default" required="true">
+		<cfreturn variables.contentGateway.getKidsCount(argumentCollection=arguments)>
 	</cffunction>
 
 </cfcomponent>

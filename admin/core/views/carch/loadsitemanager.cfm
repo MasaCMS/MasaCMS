@@ -70,7 +70,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset crumbdata=application.contentManager.getCrumbList(rc.topid,rc.siteid)>
 <cfset perm=application.permUtility.getnodePerm(crumbdata)>
 <cfset r=application.permUtility.setRestriction(crumbdata).restrict>
-<cfset rsNext=application.contentManager.getNest('#rc.topid#',rc.siteid,rc.sortBy,rc.sortDirection)>
+<cfset hasKids=application.contentManager.getKidsCount(rc.rstop.contentid,rc.rstop.siteid,false)>
+
 <cfinclude template="dsp_nextN.cfm">
 
 <cfif  ((rc.topid eq '00000000000000000000000000000000001' and application.settingsManager.getSite(rc.siteid).getlocking() eq 'none') or (rc.topid neq '00000000000000000000000000000000001')) and application.settingsManager.getSite(rc.siteid).getlocking() neq 'all'>
@@ -200,7 +201,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
        <a class="add" href="javascript:;" onmouseover="siteManager.showMenu('newContentMenu','#newcontent#',this,'#rc.rstop.contentid#','#rc.topid#','#rc.rstop.parentid#','#rc.siteid#','#rc.rstop.type#');"><i class="icon-plus-sign"></i></a>
       
-        <cfif isNumeric(rc.rstop.haskids) and rc.rstop.haskids>
+        <cfif hasKids>
 	    	<span class="hasChildren open" onclick="siteManager.loadSiteManager('#JSStringFormat(rc.siteID)#','#JSStringFormat(rc.topid)#','#JSStringFormat(rc.moduleid)#','#JSStringFormat(rc.sortby)#','#JSStringFormat(rc.sortdirection)#','#JSStringFormat(rc.rstop.type)#',1);"></span>
 		</cfif>
 
@@ -331,8 +332,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
         </ul></dd>
       </dl>
       
-      <cfif isNumeric(rc.rstop.haskids) and rc.rstop.hasKids and rsNext.recordcount>
-        <cf_dsp_nest topid="#rc.topid#" parentid="#rc.topid#"  rsnest="#rsNext#" locking="#application.settingsManager.getSite(rc.siteid).getlocking()#" nestlevel="1" perm="#perm#" siteid="#rc.siteid#" moduleid="#rc.moduleid#" restricted="#r#" viewdepth="1" nextn="#session.mura.nextN#" startrow="#rc.startrow#" sortBy="#rc.sortBy#" sortDirection="#rc.sortDirection#" pluginEvent="#pluginEvent#">
+      <cfif hasKids>
+        <cf_dsp_nest topid="#rc.topid#" parentid="#rc.topid#" locking="#application.settingsManager.getSite(rc.siteid).getlocking()#" nestlevel="1" perm="#perm#" siteid="#rc.siteid#" moduleid="#rc.moduleid#" restricted="#r#" viewdepth="1" nextn="#session.mura.nextN#" startrow="#rc.startrow#" sortBy="#rc.sortBy#" sortDirection="#rc.sortDirection#" pluginEvent="#pluginEvent#">
       </cfif>
       </li>
       </ul>

@@ -240,10 +240,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif fileExists(ExpandPath("/muraWRM/config/onGlobalConfig.cfm"))>
 		<cfinclude template="/muraWRM/config/onGlobalConfig.cfm">
 	</cfif>
-		
-	<cfif application.configBean.getValue("applyDBUpdates") or application.appAutoUpdated or isdefined('url.applyDBUpdates')>
+	
+	<cfparam name="application.applyDbUpdates" default="#application.configBean.getValue("applyDBUpdates")#">
+
+	<cfif application.applyDbUpdates or application.appAutoUpdated or isdefined('url.applyDBUpdates')>
 		<cfset variables.tracepoint=variables.tracer.initTracepoint("Checking/Applying DB updates")> 
 		<cfset application.configBean.applyDbUpdates() />
+		<cfset application.applyDbUpdates=false>
 		<cfset variables.tracer.commitTracepoint(variables.tracepoint)>
 	<cfelse>
 		<cfscript>
