@@ -151,7 +151,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset variables.tracepoint=variables.tracer.initTracepoint("Instantiating DI1")> 
 		
-	<cfscript>	
+	<cfscript>
+		if(directoryExists(expandPath("/mura/content/file/imagecfc"))){
+			directoryDelete(expandPath("/mura/content/file/imagecfc") ,true);
+		}
+			
 		application.configBean=new mura.configBean().set(variables.iniProperties);
 
 		variables.serviceFactory=new mura.bean.beanFactory("/mura",{
@@ -160,10 +164,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				strict=true,
 				transientPattern = "(Iterator|Bean|MuraScope|Event|dbUtility)$" 
 				});
-			
-		if(directoryExists(expandPath("/mura/content/file/imagecfc"))){
-			DirectoryDelete(expandPath("/mura/content/file/imagecfc") ,true);
-		}
 
 		variables.serviceFactory.addBean("tempDir",application.configBean.getTempDir());
 		variables.serviceFactory.addBean("useFileMode",application.configBean.getUseFileMode());
