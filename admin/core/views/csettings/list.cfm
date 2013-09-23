@@ -68,8 +68,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			<cfelse>
 			<a class="btn" href="./?muraAction=cSettings.list"><i class="icon-list"></i> View Site List</a>
-		</cfif>
-	</div>
+			</cfif>
+		</div>
 </div>
  
 <!--- site updates messaging --->
