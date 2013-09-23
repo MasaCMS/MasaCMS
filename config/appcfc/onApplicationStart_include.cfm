@@ -162,7 +162,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				});
 			
 		if(directoryExists(expandPath("/mura/content/file/imagecfc"))){
-			DirectoryDelete(expandPath("/mura/content/file/imagecfc") ,true);
+			directoryDelete(expandPath("/mura/content/file/imagecfc") ,true);
 		}
 
 		variables.serviceFactory.addBean("tempDir",application.configBean.getTempDir());
