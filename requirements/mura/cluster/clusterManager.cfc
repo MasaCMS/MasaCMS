@@ -103,6 +103,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
+<cffunction name="purgeCacheKey" returntype="void" access="public" output="false">
+	<cfargument name="cacheName" required="true" default="">
+	<cfargument name="cacheKey" required="true" default="data">
+	<cfargument name="siteid" required="true" default="">
+	
+	<cfif variables.broadcastCachePurges>
+		<cfset broadcastCommand("getBean('settingsManager').getSite('#arguments.siteid#').getCacheFactory(name='#arguments.cacheName#').purge(key='#arguments.cacheKey#')")>
+	</cfif>
+</cffunction>
+
 <cffunction name="purgeContentDescendentsCache" returntype="void" access="public" output="false">
 	<cfargument name="contentID" required="true" default="">
 	<cfargument name="siteID" required="true" default="">
