@@ -897,6 +897,7 @@ component extends="mura.bean.bean" versioned=false {
 		var foundDiscriminator=false;
 		var primaryOnly=true;
 		var primaryFound=false;
+		var primarykeyargvalue='';
 
 		savecontent variable="sql"{
 			writeOutput(getLoadSQL());
@@ -927,8 +928,9 @@ component extends="mura.bean.bean" versioned=false {
 						&& !(hasDiscriminator && arg==discriminatorColumn)
 					){
 						primaryOnly=false;
-					} else if(arg == getPrimaryKey()){
+					} else if(arg == getPrimaryKey() && len(arguments[arg])){
 						primaryFound=true;
+						primarykeyargvalue=arguments[arg];
 					}
 
 					if(hasdiscriminator && !foundDiscriminator && arg==discriminatorColumn){
@@ -966,7 +968,7 @@ component extends="mura.bean.bean" versioned=false {
 		
 		if(primaryFound && primaryOnly && getUseCache()){
 			var cache=getCache();
-			var cacheKey=getCacheKey();
+			var cacheKey=getCacheKey(primarykeyargvalue);
 			
 			if(cache.has(cacheKey)){
 				try{
@@ -1090,8 +1092,12 @@ component extends="mura.bean.bean" versioned=false {
 		getBean('clusterManager').purgeCacheKey(cacheName=getCacheName(),cacheKey=cacheKey,siteid=getCacheSiteID());
 	}
 
-	function getCacheKey(){
-		return getEntityName() & getValue(getPrimaryKey());
+	function getCacheKey(primarykey){
+		if(structKeyExists(arguments,'primarykey')){
+			return getEntityName() & arguments.primarykey;
+		} else {
+			return getEntityName() & getValue(getPrimaryKey());
+		}
 	}
 
 	function getCacheSiteID(){
