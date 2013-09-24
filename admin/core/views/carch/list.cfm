@@ -457,7 +457,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cflock>
 </cfif>
 <cfif not len(crumbdata[1].siteid)>
-  <cflocation url="./?muraAction=cDashboard.main&siteid=#URLEncodedFormat(rc.siteid)#&span=30" addtoken="false"/>
+  <cflocation url="./?muraAction=cArch.list&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=00000000000000000000000000000000000&topid=00000000000000000000000000000000001" addtoken="false"/>
 </cfif>
 </cfsilent>
 
