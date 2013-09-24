@@ -152,14 +152,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.tracepoint=variables.tracer.initTracepoint("Instantiating DI1")> 
 		
 	<cfscript>
-		if(directoryExists(expandPath("/mura/content/file/imagecfc"))){
-			directoryDelete(expandPath("/mura/content/file/imagecfc") ,true);
-		}
-
-		if(fileExists(expandPath("/mura/content/file/image.cfc"))){
-			fileDelete(expandPath("/mura/content/file/image.cfc"));
-		}
-			
 		application.configBean=new mura.configBean().set(variables.iniProperties);
 
 		variables.serviceFactory=new mura.bean.beanFactory("/mura",{
