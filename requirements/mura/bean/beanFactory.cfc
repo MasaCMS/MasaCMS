@@ -346,18 +346,10 @@ component {
 			var file = listLast( cfcPath, '/' );
 			var beanName = left( file, len( file ) - 4 );
 			var dottedPath = deduceDottedPath( cfcPath, folder, mapping, rootRelative );
-			try{
-				var metadata = { 
-					name = beanName, qualifier = singleDir, isSingleton = !beanIsTransient( singleDir, dir, beanName ), 
-					path = cfcPath, cfc = dottedPath, metadata = cleanMetadata( dottedPath )
-				};
-			} catch (any e){
-				if(variables.config.strict){
-					rethrow;
-				} else {
-					logCompilationError( beanName, e.message);
-				}
-			}				
+			var metadata = { 
+				name = beanName, qualifier = singleDir, isSingleton = !beanIsTransient( singleDir, dir, beanName ), 
+				path = cfcPath, cfc = dottedPath, metadata = cleanMetadata( dottedPath )
+			};
 			if ( structKeyExists( variables.beanInfo, beanName ) ) {
 				structDelete( variables.beanInfo, beanName );
 				variables.beanInfo[ beanName & singleDir ] = metadata;
@@ -409,11 +401,7 @@ component {
 		}
 	}
 
-	private void function logCompilationError( string beanName, string errorMessage = '' ) {
-		var sys = createObject( 'java', 'java.lang.System' );
-		sys.out.println( 'bean compilation error: #beanName#; #errorMessage#' );
-	}
-
+	
 	private void function logMissingBean( string beanName, string resolvingBeanName = '' ) {
 		var sys = createObject( 'java', 'java.lang.System' );
 		if ( len( resolvingBeanName ) ) {

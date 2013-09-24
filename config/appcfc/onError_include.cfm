@@ -64,7 +64,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif len(local.pluginEvent.getValue("siteID"))>
 			<cfset application.pluginManager.announceEvent("onSiteError",local.pluginEvent)>
 		</cfif>	
-		<cfset application.pluginManager.announceEvent("onGlobalError",local.pluginEvent)>
+		<cftry>
+			<cfset application.pluginManager.announceEvent("onGlobalError",local.pluginEvent)>
+			<cfcatch></cfcatch>
+		</cftry>
+		
 	</cfif>
 </cfif>
 	
