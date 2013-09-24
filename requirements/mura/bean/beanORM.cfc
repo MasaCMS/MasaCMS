@@ -969,8 +969,15 @@ component extends="mura.bean.bean" versioned=false {
 			var cacheKey=getCacheKey();
 			
 			if(cache.has(cacheKey)){
-				rs=cache.get(cacheKey);
-				setValue("frommuracache",true);
+				try{
+					rs=cache.get(cacheKey);
+					setValue("frommuracache",true);
+				} catch(any e){
+					rs=qs.execute(sql=sql).getResult();
+					if(rs.recordcount){
+						cache.get(cacheKey,rs);
+					}
+				}
 			} else {
 				rs=qs.execute(sql=sql).getResult();
 				if(rs.recordcount){
