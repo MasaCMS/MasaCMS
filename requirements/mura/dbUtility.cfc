@@ -4,6 +4,7 @@
 	<cfset variables.tableLookUp=structNew()>
 	<cfset variables.tableMetaDataLookUp=structNew()>
 	<cfset variables.tableIndexLookUp=structNew()>
+	<cfset variables.dbSchema = "">
 
 <cffunction name="init" output="false">
 		<cfargument name="configBean">
@@ -74,7 +75,13 @@
 	<cfset var rscheck="">
 	<cfset var tableStruct={}>
 
-	<cfif variables.dbtype neq 'oracle'>
+	<cfif variables.dbtype eq 'postgresql'>
+		<cfquery name="rscheck" datasource="#variables.datasource#"
+			username="#variables.dbusername#"
+			password="#variables.dbpassword#">
+			select table_name from information_schema.tables where table_schema = current_schema()
+		</cfquery>
+	<cfelseif variables.dbtype neq 'oracle'>
 		<cfdbinfo 
 			name="rsCheck"
 			datasource="#variables.datasource#"
@@ -181,7 +188,7 @@
 				datasource="#variables.datasource#"
 				username="#variables.dbusername#"
 				password="#variables.dbpassword#"
-				table="#arguments.table#"
+				table="#qualifySchema(arguments.table)#"
 				type="columns">	
 			</cfdefaultcase>
 		</cfswitch>
@@ -1092,7 +1099,7 @@
 		datasource="#variables.datasource#"
 		username="#variables.dbusername#"
 		password="#variables.dbpassword#"
-		table="#arguments.table#"
+		table="#qualifySchema(arguments.table)#"
 		type="index">
 	<cfset variables.tableIndexLookUp[arguments.table]= buildIndexMetaData(rs,arguments.table)>
 	</cfif>
@@ -1166,7 +1173,7 @@
 		datasource="#variables.datasource#"
 		username="#variables.dbusername#"
 		password="#variables.dbpassword#"
-		table="#arguments.table#"
+		table="#qualifySchema(arguments.table)#"
 		type="index">
 	
 	<cfquery name="rsCheck" dbtype="query">
@@ -1187,7 +1194,7 @@
 		datasource="#variables.datasource#"
 		username="#variables.dbusername#"
 		password="#variables.dbpassword#"
-		table="#arguments.table#"
+		table="#qualifySchema(arguments.table)#"
 		type="index">
 	
 	<cfquery name="rsCheck" dbtype="query">
@@ -1219,7 +1226,7 @@
 			<cfcase value="postgresql">
 				<cfquery datasource="#variables.datasource#" username="#variables.dbusername#" password="#variables.dbpassword#">
 					ALTER TABLE #arguments.table#
-	    			ADD PRIMARY KEY (#arguments.column#)
+	    			ADD CONSTRAINT pk_#arguments.table# PRIMARY KEY (#arguments.column#)
 				</cfquery>
 			</cfcase>
 			<cfcase value="oracle">
@@ -1249,6 +1256,12 @@
 				<cfquery datasource="#variables.datasource#" username="#variables.dbusername#" password="#variables.dbpassword#">
 					ALTER TABLE #arguments.table#
 	    			DROP PRIMARY KEY
+				</cfquery>
+			</cfcase>
+			<cfcase value="postgresql">
+				<cfquery datasource="#variables.datasource#" username="#variables.dbusername#" password="#variables.dbpassword#">
+					ALTER TABLE #arguments.table#
+					DROP CONSTRAINT pk_#arguments.table#
 				</cfquery>
 			</cfcase>
 			<cfcase value="oracle">
@@ -1389,7 +1402,7 @@
 		datasource="#variables.datasource#"
 		username="#variables.dbusername#"
 		password="#variables.dbpassword#"
-		table="#arguments.table#"
+		table="#qualifySchema(arguments.table)#"
 		type="foreignKeys">
 
 </cffunction>
@@ -1454,6 +1467,27 @@ function _parseInt(String){
 	<cfargument name="obj">
 	<cfset var properties=getMetaData(arguments.obj)>
 	<cfdump var="#properties#" abort="true">
+</cffunction>
+
+<cffunction name="qualifySchema" output="false" hint="Add schema to table name where required">
+	<cfargument name="table">
+	<cfset var rs = "">
+
+	<cfif variables.dbtype eq "postgresql">
+		<cfif variables.dbSchema eq "">
+			<cfquery
+				name="rs"
+				datasource="#variables.datasource#"
+				username="#variables.dbusername#"
+				password="#variables.dbpassword#">
+				SELECT current_schema() AS schema
+			</cfquery>
+			<cfset variables.dbSchema = rs.schema>
+		</cfif>
+		<cfset arguments.table = variables.dbSchema & "." & arguments.table>
+	</cfif>
+
+	<cfreturn arguments.table>
 </cffunction>
 
 </cfcomponent>

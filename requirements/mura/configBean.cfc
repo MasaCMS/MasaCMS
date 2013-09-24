@@ -76,6 +76,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.dbUsername=""/>
 <cfset variables.instance.dbPassword=""/>
 <cfset variables.instance.dbtablespace="USERS"/>
+<cfset variables.instance.dbSchema=""/>
 <!--- <cfset variables.instance.dbTransactionLevel="read_committed"/> --->
 <cfset variables.instance.debuggingEnabled="false"/>
 <cfset variables.instance.compiler="adobe"/>
@@ -805,6 +806,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this>
 </cffunction>
 
+<cffunction name="qualifySchema" output="false" hint="Add schema to table name where required">
+	<cfargument name="table">
+	<cfset var rs = "">
+
+	<cfif getDbType() eq "postgresql">
+		<cfif variables.instance.dbSchema eq "">
+			<cfquery
+				name="rs"
+				datasource="#getDatasource()#"
+				username="#getDbUsername()#"
+				password="#getDbPassword()#">
+				SELECT current_schema() AS schema
+			</cfquery>
+			<cfset variables.instance.dbSchema = rs.schema>
+		</cfif>
+		<cfset arguments.table = variables.instance.dbSchema & "." & arguments.table>
+	</cfif>
+
+	<cfreturn arguments.table>
+</cffunction>
+
 <cffunction name="dbTableColumns" output="false" hint="deprecated, use dbUtility">
 	<cfargument name="table">
 	<cfset var rs ="">
@@ -876,7 +898,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				datasource="#getDatasource()#"
 				username="#getDbUsername()#"
 				password="#getDbPassword()#"
-				table="#table#"
+				table="#qualifySchema(arguments.table)#"
 				type="columns">	
 			</cfdefaultcase>
 		</cfswitch>
@@ -895,7 +917,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		datasource="#getDatasource()#"
 		username="#getDbUsername()#"
 		password="#getDbPassword()#"
-		table="#arguments.table#"
+		table="#qualifySchema(arguments.table)#"
 		type="index">
 
 	<cfquery name="rsCheck" dbtype="query">
@@ -942,7 +964,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		datasource="#getDatasource()#"
 		username="#getDbUsername()#"
 		password="#getDbPassword()#"
-		table="#arguments.table#"
+		table="#qualifySchema(arguments.table)#"
 		type="index">
 	
 	<cfquery name="rsCheck" dbtype="query">
@@ -986,7 +1008,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		datasource="#getDatasource()#"
 		username="#getDbUsername()#"
 		password="#getDbPassword()#"
-		table="#arguments.table#"
+		table="#qualifySchema(arguments.table)#"
 		type="index">
 	
 	<cfquery name="rsCheck" dbtype="query">
