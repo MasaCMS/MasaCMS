@@ -131,9 +131,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	function setupApplication(){
 
-		include "../config/appcfc/onApplicationStart_include.cfm";
-	
+		if(!request.muraAppreloaded){
+			include "../config/appcfc/onApplicationStart_include.cfm";
+		}
+
 		if(not structKeyExists(application,"muraAdmin") or not hasBeanFactory()){
+			setupFrameworkDefaults();
+			setupRequestDefaults();
 			variables.framework.cache = structNew();
 			variables.framework.cache.lastReload = now();
 			variables.framework.cache.controllers = structNew();
@@ -146,7 +150,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	}
 
 	function onRequestStart(){
-	
+
+		include "../config/appcfc/onRequestStart_include.cfm";
+
 		try{
 			if(not (structKeyExists(application.settingsManager,'validate') and application.settingsManager.validate() and isStruct(application.configBean.getAllValues()))){
 				application.appInitialized=false;
@@ -230,7 +236,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		var i="";
 		var site="";
 		
-		include "../config/appcfc/onRequestStart_include.cfm";
 				
 		if(right(cgi.script_name, Len("index.cfm")) NEQ "index.cfm" and right(cgi.script_name, Len("error.cfm")) NEQ "error.cfm" AND right(cgi.script_name, 3) NEQ "cfc"){
 			location(url="./", addtoken="false");
