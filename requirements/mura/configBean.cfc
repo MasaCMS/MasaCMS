@@ -65,7 +65,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.mailserverpassword=""/>
 <cfset variables.instance.mailserverip=""/>
 <cfset variables.instance.MailServerSMTPPort="25"/>
-<cfset variables.instance.MailServerSMTPPort="110"/>
+<cfset variables.instance.MailServerPOPPort="110"/>
 <cfset variables.instance.MailServerTLS="false"/>
 <cfset variables.instance.MailServerSSL="false" />
 <cfset variables.instance.useDefaultSMTPServer=0/>
