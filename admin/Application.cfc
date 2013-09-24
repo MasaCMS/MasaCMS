@@ -131,7 +131,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	function setupApplication(){
 
-		include "../config/appcfc/onApplicationStart_include.cfm";
+		if(!request.muraAppreloaded){
+			include "../config/appcfc/onApplicationStart_include.cfm";
+		}
 
 		if(not structKeyExists(application,"muraAdmin") or not hasBeanFactory()){
 			setupFrameworkDefaults();
