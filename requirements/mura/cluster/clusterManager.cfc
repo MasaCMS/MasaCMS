@@ -104,8 +104,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="purgeCacheKey" returntype="void" access="public" output="false">
-	<cfargument name="cacheName" required="true" default="">
-	<cfargument name="cacheKey" required="true" default="data">
+	<cfargument name="cacheName" required="true" default="data">
+	<cfargument name="cacheKey" required="true" default="">
 	<cfargument name="siteid" required="true" default="">
 	
 	<cfif variables.broadcastCachePurges>

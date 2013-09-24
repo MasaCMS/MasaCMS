@@ -151,21 +151,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset variables.tracepoint=variables.tracer.initTracepoint("Instantiating DI1")> 
 		
-	<cfscript>	
+	<cfscript>
 		application.configBean=new mura.configBean().set(variables.iniProperties);
 
 		variables.serviceFactory=new mura.bean.beanFactory("/mura",{
 				recurse=true,
 				exclude=[],
-				strict=true,
+				strict=application.configBean.getStrictFactory(),
 				transientPattern = "(Iterator|Bean|MuraScope|Event|dbUtility)$" 
 				});
-			
+
 		variables.serviceFactory.addBean("tempDir",application.configBean.getTempDir());
 		variables.serviceFactory.addBean("useFileMode",application.configBean.getUseFileMode());
 		variables.serviceFactory.addBean("configBean",application.configBean);
 		variables.serviceFactory.addBean("data","");
 		variables.serviceFactory.addBean("settings",{});
+		variables.serviceFactory.addBean("resourceDirectory","");
+		variables.serviceFactory.addBean("locale","en_us");
+		variables.serviceFactory.addBean("parentFactory","");
 
 		if(server.coldfusion.productName eq 'Coldfusion Server'){
 			variables.serviceFactory.addAlias("contentGateway","contentGatewayAdobe");

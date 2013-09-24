@@ -21,6 +21,7 @@
 		<cfparam name="rc.renderMuraAlerts" default="true">
 		<cfparam name="rc.activepanel" default="0">
 		<cfparam name="rc.siteid" default='#session.siteID#'>
+		<cfparam name="rc.$" default='#application.serviceFactory.getBean('$').init(session.siteID)#'>
 		<cfparam name="application.coreversion" default="#application.serviceFactory.getBean('autoUpdater').getCurrentVersion()#">
 		<!--- This code is just to prevent errors when people update past version 5.2.2652 --->
 		<cfif not len(rc.siteID)>

@@ -76,3 +76,4 @@ autoDiscoverPlugins=true
 maxPortalItems=100
 allowAutoUpdates=1
 maxArchivedVersions=50
+strictfactory=true

@@ -896,6 +896,8 @@ component extends="mura.bean.bean" versioned=false {
 		var discriminatorColumn=getDiscriminatorColumn();
 		var foundDiscriminator=false;
 		var primaryOnly=true;
+		var primaryFound=false;
+		var primarykeyargvalue='';
 
 		savecontent variable="sql"{
 			writeOutput(getLoadSQL());
@@ -926,6 +928,9 @@ component extends="mura.bean.bean" versioned=false {
 						&& !(hasDiscriminator && arg==discriminatorColumn)
 					){
 						primaryOnly=false;
+					} else if(arg == getPrimaryKey() && len(arguments[arg])){
+						primaryFound=true;
+						primarykeyargvalue=arguments[arg];
 					}
 
 					if(hasdiscriminator && !foundDiscriminator && arg==discriminatorColumn){
@@ -961,17 +966,28 @@ component extends="mura.bean.bean" versioned=false {
 			}
 		}
 		
-		if(primaryOnly && getUseCache()){
+		if(primaryFound && primaryOnly && getUseCache()){
 			var cache=getCache();
-			var cacheKey=getCacheKey();
+			var cacheKey=getCacheKey(primarykeyargvalue);
 			
 			if(cache.has(cacheKey)){
-				rs=cache.get(cacheKey);
+				try{
+					rs=cache.get(cacheKey);
+					setValue("frommuracache",true);
+					commitTracePoint(initTracePoint(detail="DATA CACHE HIT: {class: #getEntityName()#, key: #cacheKey#}"));
+				} catch(any e){
+					rs=qs.execute(sql=sql).getResult();
+					if(rs.recordcount){
+						cache.get(cacheKey,rs);
+					}
+					commitTracePoint(initTracePoint(detail="DATA CACHE MISS: {class: #getEntityName()#, key: #cacheKey#}"));
+				}
 			} else {
 				rs=qs.execute(sql=sql).getResult();
 				if(rs.recordcount){
 					cache.get(cacheKey,rs);
 				}
+				commitTracePoint(initTracePoint(detail="DATA CACHE MISS: {class: #getEntityName()#, key: #cacheKey#}"));
 			}
 		} else {
 			rs=qs.execute(sql=sql).getResult();
@@ -1073,14 +1089,18 @@ component extends="mura.bean.bean" versioned=false {
 		return getBean('settingsManager').getSite(getCacheSiteID()).getCache();
 	}
 
-	function cachePurge(){
-		var cachekKey=getCacheKey();
+	function purgeCache(){
+		var cacheKey=getCacheKey();
 		getCache().purge(key=cacheKey);
 		getBean('clusterManager').purgeCacheKey(cacheName=getCacheName(),cacheKey=cacheKey,siteid=getCacheSiteID());
 	}
 
-	function getCacheKey(){
-		return getEntityName() & getValue(getPrimaryKey());
+	function getCacheKey(primarykey){
+		if(structKeyExists(arguments,'primarykey')){
+			return getEntityName() & arguments.primarykey;
+		} else {
+			return getEntityName() & getValue(getPrimaryKey());
+		}
 	}
 
 	function getCacheSiteID(){

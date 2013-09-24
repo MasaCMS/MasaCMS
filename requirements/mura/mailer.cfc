@@ -461,8 +461,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	public string function getMailServerPort(string siteid='') {
 		return Len(arguments.siteid) 
-			? variables.settingsManager.getSite(arguments.siteid).getMailServerPort()
-			: variables.configBean.getMailServerPort();
+			? variables.settingsManager.getSite(arguments.siteid).getMailServerSMTPPort()
+			: variables.configBean.getMailServerSMTPPort();
 	}
 
 	public string function getMailServerTLS(string siteid='') {

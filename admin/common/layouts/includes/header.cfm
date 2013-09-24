@@ -77,7 +77,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	       <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-site-select">
 	            <span class="icon-globe"></span>
 	          </a>--->
-	              
+	          <cfparam name="session.showdashboard" default="true">
               <cfif session.showdashboard>
                   <cfset baseURL="#application.configBean.getContext()#/admin/?muraAction=cDashboard.main">
               <cfelse>
