@@ -135,8 +135,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfcatch>
 				<cflog type="error"
 				text="Cluster Communication Error -- 
-				Message: #cfcatch.message#,
-				Detail: #cfcatch.detail#">
+				Command: #rsCommands.command#">
 			</cfcatch>
 		</cftry>
 		<cfquery>
