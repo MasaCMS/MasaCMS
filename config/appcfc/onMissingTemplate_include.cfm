@@ -74,7 +74,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfloop>
 
 	<cfset application.contentServer.renderFilename(local.filename)>
-	<cfabort>
+	
 	<cfreturn true>
 </cfif>
 
