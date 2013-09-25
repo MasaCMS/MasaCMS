@@ -164,7 +164,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 		variables.serviceFactory=new mura.bean.beanFactory("/mura",{
 				recurse=true,
-				exclude=[],
+				exclude=["/mura/autoUpdater/global"],
 				strict=application.configBean.getStrictFactory(),
 				transientPattern = "(Iterator|Bean|MuraScope|Event|dbUtility)$" 
 				});
