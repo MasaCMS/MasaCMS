@@ -55,67 +55,8 @@
 	Mura CMS.
 */
 
-/*	Some styles, ideas, and concepts derived from:
-
-	Eric Meyer Reset - http://meyerweb.com/eric/tools/css/reset/index.html
-	BlueprintCSS - http://code.google.com/p/blueprintcss/
-	YUI - http://developer.yahoo.com/yui/
-
-	TODO: Seems to be alot of margin, padding, list-style, and other
-	such elements that could be set higher up on a more global scale
-
-	Helpers
-	TODO: Remove and replace with library thats included with the Theme.
-	Maybe we create a starter theme that would have some scaffold and helpers
-	if user doesn't want Bootstrap, Skeleton or others.
-*/
-.hide { display: none; }
-.left { float: left; }
-.right { float: right; }
-
-.carousel {
-	.left, .right {
-		float:none;
-	}
-}
-
-img {
-	&.left { margin: 0 1em 1em 0; }
-	&.right { margin: 0 0 1em 1em; }
-	&.center {
-		display: block;
-		margin: 1em auto;
-	}
-}
-
-p.center { text-align: center; }
-
-.callToAction {
-	background: url(../images/pointer_red.gif) no-repeat 0 50%;
-	padding-left: 10px;
-}
-
-/* Clearing floats without extra markup
-	http://perishablepress.com/press/2009/12/06/new-clearfix-hack/ */
-
-.clearfix:after, .svIndex dl:after, .svIndex > ul > li:after {
-	visibility: hidden;
-	display: block;
-	font-size: 0;
-	content: " ";
-	clear: both;
-	height: 0;
-}
-
-.svIndex .moreResults li:after { content: none;	}
-
-* html .clearfix, * html .svIndex dl { zoom: 1; } /* IE6 */
-*:first-child+html .clearfix, *:first-child+html .svIndex dl { zoom: 1; } /* IE7 */
-//end Helpers
-
 
 // Crumblist
-// TODO: Combine into one style name? Legacy I presume?
 #crumblist, #crumbList {
 	list-style: none;
 	margin: 0 0 1em;
@@ -149,11 +90,9 @@ p.center { text-align: center; }
 	a {
 		padding: .1em .2em;
 		text-decoration: none;
-		a:hover { background: #e4e4e4; }
 	}
 
 	.current a {
-		border: 1px solid #e4e4e4;
 		color: #000;
 	}
 }
