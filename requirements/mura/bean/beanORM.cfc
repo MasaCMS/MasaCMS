@@ -590,8 +590,26 @@ component extends="mura.bean.bean" versioned=false {
 	function save(){
 		var pluginManager=getBean('pluginManager');
 		var event=new mura.event({siteID=variables.instance.siteid,bean=this});
-		
+		var errorCheck={};
+		var checknum=1;
+		var checkfound=false;
+
 		validate();
+
+		if(arrayLen(variables.addObjects)){
+			for(var obj in variables.addObjects){	
+				errorCheck=obj.validate().getErrors();
+				if(!structIsEmpty(errorCheck)){
+					do{
+						if( !structKeyExists(variables.instance.errors,obj.getEntityName() & checknum) ){
+							variables.instance.errors[obj.getEntityName()  & checknum ]=errorCheck;
+							checkfound=true;
+						}
+					} while (!checkfound);
+				}
+				
+			}
+		}
 
 		if(getReadOnly()){
 			throw(type="MuraORMError",message="The Mura ORM entity '#getEntityName()#' is read only.");
