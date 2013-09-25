@@ -416,6 +416,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				var rules=[];
 				var rule={};
 				var ruleKey='';
+				var tempRule='';
+				var basicRules = ['minValue','maxValue','minLength','maxLength','minCollection','maxCollection','minList','maxList','inlist','method','lte','lt','gte','gt','eq','neq'];
 
 
 				for(var prop in props){
@@ -438,16 +440,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						arrayAppend(rules, rule);
 					}
 
-					if(structKeyExists(props[prop], "regex")){
-						if(structKeyExists(props[prop], "message")){
-							rule={message=props[prop].message};
-						} else {
-							rule={};
-						}
-						structAppend(rule,{regex=props[prop].regex});
-						arrayAppend(rules, rule);
-					}
-
 					if(structKeyExists(props[prop], "required") && props[prop].required){
 						if(structKeyExists(props[prop], "message")){
 							rule={message=props[prop].message};
@@ -457,6 +449,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						structAppend(rule,{required=props[prop].required});
 						arrayAppend(rules,rule);
 					}
+
+					for(var r=1;r <= arrayLen(basicRules);r++){
+						if(structKeyExists(props[prop], basicRules[r])){
+							if(structKeyExists(props[prop], "message")){
+								rule={message=props[prop].message};
+							} else {
+								rule={};
+							}
+							tempRule=props[prop];
+							structAppend(rule, {'#basicRules[r]#'=tempRule[basicRules[r]]});
+							arrayAppend(rules, rule);
+						}
+
+					}	
 					
 					if(arrayLen(rules)){
 						application.objectMappings[variables.entityName].validations.properties[ruleKey]=rules;
