@@ -290,13 +290,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			 						<!--- This is here solely for autoupdates--->
 			 						<cfif structKeyExists(application.classExtensionManager,'getIconClass')>
 			 							<cfset exp="application.classExtensionManager.getIconClass(rsExts.type,rsExts.subtype,rsExts.siteid)">
-			 						<cfelse>
+			 						<cfelseif structKeyExists(application.classExtensionManager,'getCustomIconClass')>
 			 							<cfset exp="application.classExtensionManager.getCustomIconClass(rsExts.type,rsExts.subtype,rsExts.siteid)">
+			 						<cfelse>
+			 							<cfset exp="">
 			 						</cfif>
 			 						<!--- --->
 				 					<cfloop query="rsExts">
 				 						<li><a href="#application.configBean.getContext()#/admin/?muraAction=cExtend.listSets&subTypeID=#rsExts.subtypeID#&siteid=#URLEncodedFormat(rc.siteid)#">
-				 							<i class="#evaluate(exp)#"></i> 
+				 							<i class=<cfif len(exp)>"#evaluate(exp)#"<cfelse>"icon-cog"</cfif>></i> 
+				 								
+				 							
 				 							<cfif rsExts.type eq 1>Group<cfelseif rsExts.type eq 2>User<cfelse>#HTMLEditFormat(rsExts.type)#</cfif>/#HTMLEditFormat(rsExts.subtype)#	
 				 						</a></li>
 				 					</cfloop>
