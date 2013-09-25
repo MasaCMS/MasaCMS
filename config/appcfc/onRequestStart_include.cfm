@@ -47,6 +47,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="local" default="#structNew()#">
 <cfparam name="application.setupComplete" default="false">
 <cfparam name="application.appInitialized" default="false">
+<cfparam name="application.instanceID" default="#createUUID()#" />
 <cfprocessingdirective pageencoding="utf-8"/>
 <cfset setEncoding("url", "utf-8")>
 <cfset setEncoding("form", "utf-8")> 
