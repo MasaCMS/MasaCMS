@@ -123,13 +123,9 @@
 
 			<!--- more results --->
 			<div class="row">
-				<div class="well">
+				<div class="moreResults">
 					<p>#variables.$.rbKey('search.displaying')#: #request.startrow# - #variables.through# #variables.$.rbKey('search.of')# #session.rsSearch.recordcount#</p>
-				</div>
-			</div>
-			<!--- Pager --->
-			<div class="row">
-				<ul class="pager pull-left">
+					<ul>
 					<cfif variables.previous gte 1>
 						<li class="navPrev">
 							<a href="?startrow=#variables.previous#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">&laquo;&nbsp;#variables.$.rbKey('search.prev')#</a>
@@ -141,6 +137,7 @@
 						</li>
 					</cfif>
 				</ul>
+				</div>				
 			</div>
 
 			<!--- RESULTS --->
@@ -158,14 +155,9 @@
 			
 			<!--- more results --->
 			<div class="row">
-				<div class="well">
+				<div class="moreResults">
 					#variables.$.rbKey('search.displaying')#: #request.startrow# - #variables.through# #variables.$.rbKey('search.of')# #session.rsSearch.recordcount#
-				</div>
-			</div>
-
-			<!--- Pager --->
-			<div class="row">
-				<ul class="pager pull-left">
+					<ul>
 					<cfif variables.previous gte 1>
 						<li class="navPrev">
 							<a href="?startrow=#variables.previous#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">&laquo;&nbsp;#variables.$.rbKey('search.prev')#</a>
@@ -177,12 +169,13 @@
 						</li>
 					</cfif>
 				</ul>
+				</div>
 			</div>
 		</cfif>
 
 		<!--- SEARCH AGAIN --->
 		<div class="row">
-			<div class="col-md-6">
+			<div class="col-md-8">
 				<form id="svSearchAgain" name="searchForm" class="navbar-form" role="search">
 					<p>#variables.$.rbKey('search.didnotfind')#</p>
 					<div class="input-group">
