@@ -14,8 +14,7 @@
 
 	<!--- Bootstrap core CSS --->
 	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/assets/bootstrap/css/bootstrap.min.css">
-	<!--- Bootstrap theme --->
-	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/assets/bootstrap/css/bootstrap-theme.min.css">
+	<!--- Bootstrap theme compiled below --->
 	<!--- Font Awesome --->
 	<link rel="stylesheet" href="#$.siteConfig('themeAssetPath')#/assets/font-awesome/css/font-awesome.css">
 	<!--- Mura CMS --->
