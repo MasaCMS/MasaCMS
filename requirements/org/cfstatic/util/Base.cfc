@@ -307,7 +307,7 @@
 	<cffunction name="$ensureFullDirectoryPath" access="private" returntype="string" output="false">
 		<cfargument name="dir" type="string" required="true" />
 		<cfscript>
-			if ( directoryExists( ExpandPath( dir ) ) ) {
+			if ( len(dir) && directoryExists( ExpandPath( dir ) ) ) {
 				return ExpandPath( dir );
 			}
 			return dir;
@@ -318,7 +318,7 @@
 		<cfargument name="file" type="string" required="true" />
 
 		<cfscript>
-			if ( fileExists( ExpandPath( file ) ) ) {
+			if ( len(file) && fileExists( ExpandPath( file ) ) ) {
 				return ExpandPath( file );
 			}
 			return file;
