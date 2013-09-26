@@ -763,6 +763,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var doTrimVersionHistory=false>
 		<cfset var doPreserveVersionedObjects=false>
 		<cfset var activeBean="">
+		<cfset var addObjects=[]>
+		<cfset var removeObjects=[]>
 		
 		<!---IF THE DATA WAS SUBMITTED AS AN OBJECT UNPACK THE VALUES --->
 		<cfif isObject(arguments.data)>
@@ -921,6 +923,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 				<!--- Reset extended data internal ids --->
 				<cfset arguments.data=newBean.getAllValues()>
+				<cfset addObjects=newBean.getAddObjects()>
+				<cfset removeObjects=newBean.getRemoveObjects()>
 
 				<cflock type="exclusive" name="editingContent#arguments.data.siteid##application.instanceID#" timeout="600">
 	
@@ -1374,8 +1378,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 
 				<cfif doPreserveVersionedObjects>
-					<cfset variables.contentDAO.persistVersionedObjects(currentBean,newBean)>
+					<cfset variables.contentDAO.persistVersionedObjects(currentBean,newBean,removeObjects)>
 				</cfif>
+
+				<cfscript>
+					if(arrayLen(addObjects)){
+						for(var obj in addObjects){	
+							obj.save();
+						}
+					}
+				</cfscript>
 					
 				<cfif doPurgeOutputCache>
 					<cfset variables.settingsManager.getSite(arguments.data.siteid).purgeCache(name="output") />

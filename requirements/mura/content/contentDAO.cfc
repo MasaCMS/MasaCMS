@@ -1554,19 +1554,34 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 <cffunction name="persistVersionedObjects" output="false">
 	<cfargument name="version1">
 	<cfargument name="version2">
+	<cfargument name="removeObjects">
 
 	<cfset var it="">
 	<cfset var i="">
 	<cfset var bean="">
-	
+	<cfset var remove=false>
+	<cfset var ro="">
+
 	<cfif len(application.objectMappings.versionedBeans)>
 		<cfloop list="#application.objectMappings.versionedBeans#" index="i">
 			
 			<cfset it=getBean(i).loadBy(contenthistid=arguments.version1.getContentHistID(),returnformat='iterator')>
-			
+
 			<cfloop condition="it.hasNext()">
 				<cfset bean=it.next()>
-				<cfif not bean.getIsNew()>
+				
+				<!--- Do not persist objects that have been removed. --->
+				<cfset remove=false>
+
+				<cfif arrayLen(removeObjects)>
+					<cfloop array="#arguments.removeObjects#" index="ro">
+						<cfif ro.getValue(ro.getPrimaryKey()) eq bean.getValue(bean.getPrimaryKey())>
+							<cfset remove=true>
+						</cfif>
+					</cfloop>
+				</cfif>
+
+				<cfif not remove and not bean.getIsNew()>
 					<cfif bean.persistToVersion(arguments.version1,arguments.version2)>
 						<cfset bean.setContentHistID(arguments.version2.getContentHistID())>
 						<cfset bean.setValue(bean.getPrimaryKey(),createUUID())>

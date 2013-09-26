@@ -231,8 +231,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.approvalChainOverride = false />
 	<cfset variables.instance.approvingChainRequest = false />
 	<cfset variables.instance.relatedContentSetData = "" />
-
-	<cfset variables.kids = arrayNew(1) />
+	
 	<cfset variables.displayRegions = structNew()>
 	<cfset variables.primaryKey = 'contenthistid'>
 	<cfset variables.entityName = 'content'>
@@ -937,18 +936,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="save" returnType="any" output="false" access="public">
-	<cfset var kid="">
+	<cfset var obj="">
 	<cfset var i="">
 	<cfset setAllValues(variables.contentManager.save(this).getAllValues())>
 	
-	<cfif arrayLen(variables.kids)>
-		<cfloop from="1" to="#arrayLen(variables.kids)#" index="i">
-			<cfset kid=variables.kids[i]>
-			<cfset kid.save()>
-		</cfloop>
-	</cfif>
-	
-	<cfset variables.kids=arrayNew(1)>
+	<cfset variables.addObjects=arrayNew(1)>
 	
 	<cfreturn this />
 </cffunction>
@@ -958,7 +950,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset arguments.child.setSiteID(variables.instance.siteID)>
 	<cfset arguments.child.setParentID(getContentID())>
 	<cfset arguments.child.setModuleID(variables.instance.moduleID)>
-	<cfset arrayAppend(variables.kids,arguments.child)>	
+	<cfset arrayAppend(variables.instance.addObjects,arguments.child)>	
 	<cfreturn this>
 </cffunction>
 
