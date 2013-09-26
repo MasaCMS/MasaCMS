@@ -100,13 +100,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset bean=getServiceFactory().getBean(arguments.beanName) />
 
-	<cfif structKeyExists(bean,"setSiteID") or bean.valueExists('siteid')>		
+	<cfif bean.valueExists('siteid')>		
 		<cfif len(arguments.siteID)>
-			<cfset bean.setSiteID(arguments.siteID)>			
-		<cfelseif isDefined("getSiteID")>
-			<cfset bean.setSiteID(getSiteID())>
+			<cfset bean.setValue(arguments.siteID)>			
 		<cfelseif len(getValue("siteID"))>
-			<cfset bean.setSiteID(getValue("siteID"))>		
+			<cfset bean.setValue(getValue("siteID"))>		
 		</cfif>		
 	</cfif>
 	

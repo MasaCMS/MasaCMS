@@ -49,7 +49,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="errors" type="struct" persistent="false" comparable="false" />
 <cfproperty name="isNew" type="numeric" persistent="false" default="1"/>
 <cfproperty name="fromMuraCache" type="boolean" default="false" persistent="false" comparable="false"/>
-<cfproperty name="siteid" type="string" persistent="false" comparable="false"/>
 <cfproperty name="instanceID" type="string" persistent="false" comparable="false"/>
 
 <cfset variables.properties={}>
@@ -60,7 +59,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="init" output="false">
 	<cfset super.init(argumentCollection=arguments)>
 	<cfset variables.instance=structNew()>
-	<cfset variables.instance.siteID=""/>
 	<cfset variables.instance.isNew=1/>
 	<cfset variables.instance.errors=structNew()/>
 	<cfset variables.instance.fromMuraCache = false />
@@ -182,12 +180,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfreturn "" />
 	</cfif>
-</cffunction>
-
-<cffunction name="setSiteID" output="false" access="public">
-    <cfargument name="siteID" type="string" required="true">
-    <cfset variables.instance.siteID=arguments.siteID>
-	<cfreturn this>
 </cffunction>
 
 <cffunction name="set" output="false" access="public">
