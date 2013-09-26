@@ -31,7 +31,7 @@
 					<!--- Display Objects assigned to display region 2 (Main Content) --->
 					#$.dspObjects(2)#
 				</section>
-				<aside class="col-lg-3">
+				<aside class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
 					<!--- Display Objects assigned to display region 3 (Right Column) --->
 					#$.dspObjects(3)#
 				</aside>
