@@ -964,6 +964,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn this />
 </cffunction>
 
+<cffunction name="addObject" output="false">
+	<cfargument name="obj" hint="Instance of a contentBean">
+	<cfset arguments.obj.setSiteID(variables.instance.siteID)>
+	<cfset arguments.obj.setContentID(getContentID())>
+	<cfset arguments.obj.setContentHistID(getContentHistID())>
+	<cfset arguments.obj.setModuleID(variables.instance.moduleID)>
+	<cfset arrayAppend(variables.instance.addObjects,arguments.obj)>	
+	<cfreturn this>
+</cffunction>
+
 <cffunction name="addChild" output="false">
 	<cfargument name="child" hint="Instance of a contentBean">
 	<cfset arguments.child.setSiteID(variables.instance.siteID)>
