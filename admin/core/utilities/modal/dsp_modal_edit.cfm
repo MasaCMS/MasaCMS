@@ -218,14 +218,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 									<cfif listFindNoCase('editor,author',request.r.perm) or listFind(session.mura.memberships,'S2') >
 										<li>
 											<a class="mura-inline-save" data-approved="0" data-changesetid="">
-												<i class="icon-ok"></i>  
+												<i class="icon-edit"></i>  
 												#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savedraft"))#
 											</a>
 										</li>
 									</cfif>
 									<cfif variables.$.siteConfig('HasChangesets') and (request.r.perm  eq 'editor' or listFind(session.mura.memberships,'S2')) >
 										<li class="dropdown-submenu">
-											<a href=""><i class="icon-ok"></i> 
+											<a href=""><i class="icon-list"></i> 
 											#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,"sitemanager.content.savetochangeset"))#</a>			
 											<cfset currentChangeset=application.changesetManager.read(variables.$.content('changesetID'))>
 											<cfset changesets=application.changesetManager.getIterator(siteID=variables.$.event('siteid'),published=0,publishdate=now(),publishDateOnly=false)>
