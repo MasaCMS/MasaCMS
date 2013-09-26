@@ -41,10 +41,10 @@ if ( 'CKEDITOR' in window) {
 		{ name : 'Superscript'		, element : 'sup' },
 		*/
 
-		{ name : 'Notice'	, element : 'span', styles : { 'class' : 'alert' } },
-		{ name : 'Success'	, element : 'span', styles : { 'class' : 'alert alert-success' } },
-		{ name : 'Error'	, element : 'span', styles : { 'class' : 'alert alert-error' } },
-		{ name : 'Info'	, element : 'span', styles : { 'class' : 'alert alert-info' } },
+		{ name : 'Notice'	, element : 'p', attributes : { 'class' : 'alert' } },
+		{ name : 'Success'	, element : 'p', attributes : { 'class' : 'alert alert-success' } },
+		{ name : 'Error'	, element : 'p', attributes : { 'class' : 'alert alert-error' } },
+		{ name : 'Info'	, element : 'p', attributes : { 'class' : 'alert alert-info' } },
 
 		{ name : 'Marker: Yellow'	, element : 'span', styles : { 'background-color' : 'Yellow' } },
 		{ name : 'Marker: Green'	, element : 'span', styles : { 'background-color' : 'Lime' } },
