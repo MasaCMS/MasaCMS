@@ -488,11 +488,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfscript>
+		var errorCheck={};
+		var checknum=1;
+		var checkfound=false;
+
 		if(arrayLen(variables.instance.addObjects)){
-			var checknum=1;
-			var checkfound=false;
-			var errorCheck={};
-			
 			for(var obj in variables.instance.addObjects){	
 				errorCheck=obj.validate().getErrors();
 				if(!structIsEmpty(errorCheck)){
