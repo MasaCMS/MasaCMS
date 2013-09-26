@@ -589,9 +589,27 @@ component extends="mura.bean.bean" versioned=false {
 
 	function save(){
 		var pluginManager=getBean('pluginManager');
-		var event=new mura.event({siteID=variables.instance.siteid,bean=this});
-		
+		var event=new mura.event({siteID=getValue('siteid'),bean=this});
+		var errorCheck={};
+		var checknum=1;
+		var checkfound=false;
+
 		validate();
+
+		if(arrayLen(variables.addObjects)){
+			for(var obj in variables.addObjects){	
+				errorCheck=obj.validate().getErrors();
+				if(!structIsEmpty(errorCheck)){
+					do{
+						if( !structKeyExists(variables.instance.errors,obj.getEntityName() & checknum) ){
+							variables.instance.errors[obj.getEntityName()  & checknum ]=errorCheck;
+							checkfound=true;
+						}
+					} while (!checkfound);
+				}
+				
+			}
+		}
 
 		if(getReadOnly()){
 			throw(type="MuraORMError",message="The Mura ORM entity '#getEntityName()#' is read only.");
@@ -847,7 +865,7 @@ component extends="mura.bean.bean" versioned=false {
 	function delete(){
 		var props=getProperties();
 		var pluginManager=getBean('pluginManager');
-		var event=new mura.event({siteID=variables.instance.siteid,bean=this});
+		var event=new mura.event({siteID=getValue('siteid'),bean=this});
 		var subitem="";
 		
 		preDelete();
@@ -1035,12 +1053,12 @@ component extends="mura.bean.bean" versioned=false {
 	function toBundle(bundle,siteid){
 		var qs=getQueryService();
 		
-		if(!hasProperty('siteid') && structKeyExists(arguments,'siteid')){
-			arguments.bundle.setValue("rs" * getTable(),qs.execute(sql="select * from #getTable()#").getResult());
-		} else {
+		if(hasColumn('siteid') && structKeyExists(arguments,'siteid')){
 			qs.setSQL("select * from #getTable()# where siteid = :siteid");
 			qs.addParam(name="siteid",cfsqltype="cf_sql_varchar",value=arguments.siteid);
 			arguments.bundle.setValue("rs" & getTable(),qs.execute().getResult());
+		} else {
+			arguments.bundle.setValue("rs" * getTable(),qs.execute(sql="select * from #getTable()#").getResult());
 		}
 		return this;
 	}
@@ -1112,6 +1130,9 @@ component extends="mura.bean.bean" versioned=false {
 		}
 	}
 
+	function hasColumn(column){
+		return isDefined("application.objectMappings.#getValue('entityName')#.columns.#arguments.column#");
+	}
 
 	//ORM EVENTHANDLING
 
