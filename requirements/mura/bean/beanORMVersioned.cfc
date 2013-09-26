@@ -57,7 +57,7 @@ component extends="mura.bean.beanORM" versioned=true bundleable=true{
 		arguments.obj.setValue('contentid',getValue('contentid'));
 		arguments.obj.setValue('siteid',getValue('siteid'));
 
-		arrayAppend(variables.addObjects,arguments.obj);
+		arrayAppend(variables.instance.addObjects,arguments.obj);
 		return this;
 	}
 

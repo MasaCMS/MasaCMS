@@ -487,6 +487,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.instance.errors.filemissing=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("sitemanager.filemissing")>
 	</cfif>
 
+	<cfscript>
+		var errorCheck={};
+		var checknum=1;
+		var checkfound=false;
+
+		if(arrayLen(variables.instance.addObjects)){
+			for(var obj in variables.instance.addObjects){	
+				errorCheck=obj.validate().getErrors();
+				if(!structIsEmpty(errorCheck)){
+					do{
+						if( !structKeyExists(variables.instance.errors,obj.getEntityName() & checknum) ){
+							variables.instance.errors[obj.getEntityName()  & checknum ]=errorCheck;
+							checkfound=true;
+						}
+					} while (!checkfound);
+				}
+				
+			}
+		}
+	</cfscript>
+
 	<cfreturn this>	
 </cffunction>
  
@@ -940,9 +961,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var i="">
 	<cfset setAllValues(variables.contentManager.save(this).getAllValues())>
 	
-	<cfset variables.addObjects=arrayNew(1)>
-	
 	<cfreturn this />
+</cffunction>
+
+<cffunction name="addObject" output="false">
+	<cfargument name="obj" hint="Instance of a contentBean">
+	<cfset arguments.obj.setSiteID(variables.instance.siteID)>
+	<cfset arguments.obj.setContentID(getContentID())>
+	<cfset arguments.obj.setContentHistID(getContentHistID())>
+	<cfset arguments.obj.setModuleID(variables.instance.moduleID)>
+	<cfset arrayAppend(variables.instance.addObjects,arguments.obj)>	
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="addChild" output="false">
