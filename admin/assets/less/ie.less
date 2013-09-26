@@ -78,18 +78,11 @@
 			width: 400px;
 			height: 24px;
 			}
-			
-	input[type="text"] {
-			height: 28px;
-			}
-			
-	.input-append input[type="text"] {
-			height: 18px;
-			}
 	
 	textarea {
 		height: 260px;
 		}
+	
 		
 	// IE10
 	
@@ -154,24 +147,7 @@
 	#mura-nodes dt a {
 		font-family: Helvetica, Arial, sans-serif;
 	}
-		
-	/*
-#emailGroupsLists { width: 640px; }
-	
-	#cEmail #advancedSearch form {
-		margin: 0;
-		padding: 0 0 8px;
-	}
-	
-	form.sessionHistory dl {
-		width: 100% !important;
-	}
-	
-	form.sessionHistory a.submit {
-		clear: both;
-	}
-*/
-	
+
 	.mura-grid li {
 		width: 914px;
 	}
@@ -310,15 +286,7 @@
 		.scheduled a i {
 					z-index: 1000;
 					zoom: 1;
-					}
-					
-	// Font Awesome
-	/* This should work, but isn't for some reason... */
-	.ie7icon(@inner) { *zoom: ~"expression( this.runtimeStyle['zoom'] = '1', this.innerHTML = '@{inner}&nbsp;')"; }
-	
-	hasChildren.closed { .ie7icon('&#xf0da;'); }
-	hasChildren.open { .ie7icon('&#xf0d7;'); }
-	
+					}	
 		}
 
 	// IE 8
@@ -337,7 +305,13 @@
 			label {margin-bottom: 0; }
 			}
 			
-		
+		input[type="text"] {
+			height: 28px;
+			}
+			
+		.input-append input[type="text"] {
+			height: 18px;
+			}
 			
 	}
 	
