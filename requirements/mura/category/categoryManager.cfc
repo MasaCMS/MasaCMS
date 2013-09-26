@@ -231,7 +231,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var categoryBean=getBean("categoryBean") />
 	<cfset var pluginEvent = createObject("component","mura.event").init(arguments.data) />
 	<cfset var parentBean="">
+
 	<cfset categoryBean.set(arguments.data) />
+	<cfset var addObjects=categoryBean.getAddObjects()>
 	<cfset categoryBean.validate()>
 
 	<cfset pluginEvent.setValue("categoryBean",categoryBean)>
@@ -266,6 +268,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfset variables.utility.logEvent("CategoryID:#categoryBean.getCategoryID()# Name:#categoryBean.getName()# was created","mura-content","Information",true) />
 		<cfset variables.DAO.create(categoryBean) />
+
+		<cfscript>
+			if(arrayLen(addObjects)){
+				for(var obj in addObjects){	
+					obj.save();
+				}
+			}
+		</cfscript>
 		
 		<cfset variables.trashManager.takeOut(categoryBean)>
 		<cfset categoryBean.setIsNew(0)>
@@ -651,6 +661,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset currentPath=categoryBean.getPath() />
 	
 	<cfset pluginEvent.setValue("categoryBean",categoryBean)>
+	<cfset var addObjects=categoryBean.getAddObjects()>
+	<cfset var removeObjects=categoryBean.getRemoveObjects()>
 	<cfset pluginEvent.setValue("siteID", categoryBean.getSiteID())>
 	<cfset variables.pluginManager.announceEvent("onBeforeCategorySave",pluginEvent)>
 	<cfset variables.pluginManager.announceEvent("onBeforeCategoryUpdate",pluginEvent)>
@@ -692,6 +704,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfset categoryBean.setLastUpdateBy(left(session.mura.fname & " " & session.mura.lname,50)) />
 		<cfset variables.DAO.update(categoryBean) />
+
+		<cfscript>
+			var obj='';
+
+			if(arrayLen(addObjects)){
+				for(obj in addObjects){	
+					obj.save();
+				}
+			}
+
+			if(arrayLen(removeObjects)){
+				for(obj in removeObjects){	
+					obj.delete();
+				}
+			}
+		</cfscript>
+
 		<cfif isdefined('arguments.data.OrderID')>
 			<cfset setListOrder(categoryBean.getCategoryID(),arguments.data.OrderID,arguments.data.Orderno,arguments.data.siteID) />
 		</cfif>
