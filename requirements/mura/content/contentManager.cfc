@@ -1378,7 +1378,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 
 				<cfif doPreserveVersionedObjects>
-					<cfset variables.contentDAO.persistVersionedObjects(currentBean,newBean,removeObjects)>
+					<cfset variables.contentDAO.persistVersionedObjects(currentBean,newBean,removeObjects,addObjects)>
 				</cfif>
 
 				<cfscript>

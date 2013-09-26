@@ -1555,6 +1555,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfargument name="version1">
 	<cfargument name="version2">
 	<cfargument name="removeObjects">
+	<cfargument name="addObjects">
 
 	<cfset var it="">
 	<cfset var i="">
@@ -1573,8 +1574,16 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 				<!--- Do not persist objects that have been removed. --->
 				<cfset remove=false>
 
-				<cfif arrayLen(removeObjects)>
+				<cfif arrayLen(arguments.removeObjects)>
 					<cfloop array="#arguments.removeObjects#" index="ro">
+						<cfif ro.getValue(ro.getPrimaryKey()) eq bean.getValue(bean.getPrimaryKey())>
+							<cfset remove=true>
+						</cfif>
+					</cfloop>
+				</cfif>
+
+				<cfif not remove and arrayLen(arguments.addObjects)>
+					<cfloop array="#arguments.addObjects#" index="ro">
 						<cfif ro.getValue(ro.getPrimaryKey()) eq bean.getValue(bean.getPrimaryKey())>
 							<cfset remove=true>
 						</cfif>

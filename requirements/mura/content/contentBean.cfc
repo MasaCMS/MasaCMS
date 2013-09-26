@@ -487,6 +487,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.instance.errors.filemissing=variables.settingsManager.getSite(variables.instance.siteID).getRBFactory().getKey("sitemanager.filemissing")>
 	</cfif>
 
+	<cfscript>
+		if(arrayLen(variables.instance.addObjects)){
+			var checknum=1;
+			var checkfound=false;
+			var errorCheck={};
+			
+			for(var obj in variables.instance.addObjects){	
+				errorCheck=obj.validate().getErrors();
+				if(!structIsEmpty(errorCheck)){
+					do{
+						if( !structKeyExists(variables.instance.errors,obj.getEntityName() & checknum) ){
+							variables.instance.errors[obj.getEntityName()  & checknum ]=errorCheck;
+							checkfound=true;
+						}
+					} while (!checkfound);
+				}
+				
+			}
+		}
+	</cfscript>
+
 	<cfreturn this>	
 </cffunction>
  
@@ -939,8 +960,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var obj="">
 	<cfset var i="">
 	<cfset setAllValues(variables.contentManager.save(this).getAllValues())>
-	
-	<cfset variables.addObjects=arrayNew(1)>
 	
 	<cfreturn this />
 </cffunction>
