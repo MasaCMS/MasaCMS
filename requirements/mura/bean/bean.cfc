@@ -49,6 +49,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="errors" type="struct" persistent="false" comparable="false" />
 <cfproperty name="isNew" type="numeric" persistent="false" default="1"/>
 <cfproperty name="fromMuraCache" type="boolean" default="false" persistent="false" comparable="false"/>
+<cfproperty name="siteid" type="string" persistent="false" comparable="false"/>
 <cfproperty name="instanceID" type="string" persistent="false" comparable="false"/>
 
 <cfset variables.properties={}>
