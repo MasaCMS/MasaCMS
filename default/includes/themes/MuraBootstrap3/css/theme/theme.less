@@ -255,6 +255,32 @@ img {
 	margin-bottom: @line-height-base;
 }
 
+.navbar-wrapper {
+  position: relative;
+  z-index: 15;
+  margin-top: 20px;
+
+  .navbar {
+  	border-radius: 4px;
+
+		.navbar-form {
+			padding:0 0 0 0;
+		}
+
+		.nav > li { position: relative; }
+
+		.navbar-nav {
+			margin-left: 0;
+			margin-right: 0;
+		}
+	}
+}
+
+.nav {
+	margin-bottom: 0;
+}
+
+
 // Dropdowns
 .dropdown-menu { margin-top: 0; }
 
@@ -384,6 +410,10 @@ aside {
 	}
 }
 
+//
+// Miscellaneous
+// --------------------------------------------------
+
 a.menu:after, .dropdown-toggle:after {
   content: none;
 }
@@ -408,31 +438,6 @@ a.menu:after, .dropdown-toggle:after {
 			li {
 				margin: 0 0 0.5em 0;
 			}
-		}
-	}
-}
-
-ul.nav {
-	margin-bottom: 0;
-}
-
-.navbar-wrapper {
-  position: relative;
-  z-index: 15;
-  margin-top: 20px;
-
-  .navbar {
-  	border-radius: 4px;
-
-		.navbar-form {
-			padding:0 0 0 0;
-		}
-
-		.nav > li { position: relative; }
-
-		.navbar-nav {
-			margin-left: 0;
-			margin-right: 0;
 		}
 	}
 }
