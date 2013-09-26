@@ -589,7 +589,7 @@ component extends="mura.bean.bean" versioned=false {
 
 	function save(){
 		var pluginManager=getBean('pluginManager');
-		var event=new mura.event({siteID=variables.instance.siteid,bean=this});
+		var event=new mura.event({siteID=getValue('siteid'),bean=this});
 		var errorCheck={};
 		var checknum=1;
 		var checkfound=false;
@@ -865,7 +865,7 @@ component extends="mura.bean.bean" versioned=false {
 	function delete(){
 		var props=getProperties();
 		var pluginManager=getBean('pluginManager');
-		var event=new mura.event({siteID=variables.instance.siteid,bean=this});
+		var event=new mura.event({siteID=getValue('siteid'),bean=this});
 		var subitem="";
 		
 		preDelete();
