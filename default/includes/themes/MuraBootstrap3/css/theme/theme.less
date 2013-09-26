@@ -226,10 +226,13 @@
 
 // End Bootstrap 3 Defaults
 
-// OVERRIDES
-// =========================================================
+//
+// Mura-Specific Styles
+// --------------------------------------------------
 
-/* Font Awesome: Remove Bullets on Lists */
+//
+// Font Awesome
+// --------------------------------------------------
 ul.the-icons, ul.icons {
 	list-style-type: none;
 	margin-left: 2em;
@@ -244,15 +247,31 @@ img {
 	max-width: 100%;
 }
 
-// NAV ELEMENTS
+//
+// Navigation
+// --------------------------------------------------
 #navArchive, #navMultilevel, #navPeer, #navPortal, #navSequential, #navStandard,
 #navSub, #svTagCloud, #svFavoritesList, #svPageTools {
 	margin-bottom: @line-height-base;
 }
 
+// Dropdowns
 .dropdown-menu { margin-top: 0; }
 
-// INDEXES
+
+.nav li:hover .dropdown-menu {
+    display: inline-block;
+    //Second Level Flyouts
+    
+    ul.dropdown-menu {
+	    display: none;
+		}
+	.dropdown-submenu:hover > ul.dropdown-menu {
+	    display: block;
+		}  
+	}
+
+// Indexes
 section .svIndex {
  	border-top: 0;
  	padding-top: 0;
@@ -274,8 +293,8 @@ section .svIndex {
 		margin-bottom: .25em;
 	}
 }
-//end INDEXES
 
+// Utilities
 .comments, .tags, .rating {
  	font-size: 12px;
  	line-height: 12px;
@@ -287,7 +306,7 @@ section .svIndex {
 	 a { padding: 0 14px; }
 }
 
-// LOGIN
+// Login
 #svLoginContainer {
 	margin: 0;
 	width: auto;
@@ -302,8 +321,10 @@ section .svIndex {
 		margin-top: 0;
 	}
 }
-// end LOGIN
 
+//
+// Homepage-Specific Styles
+// --------------------------------------------------
 #homepage {
 	.carousel {
 		margin-bottom: 1em;
@@ -335,9 +356,14 @@ section .svIndex {
 			}
 		}
 	}
+	
+	.promos > div { text-align: center; }
+	
 }
 
-// @group Headings
+//
+// Headings
+// --------------------------------------------------
 
 aside { 
 	h1, h2, h3, h4, h5, h6 { 
@@ -356,20 +382,6 @@ aside {
 	h2, h3 {
 		margin-bottom: 0;
 	}
-}
-
-// @end
-
-
-ul.nav li:hover ul.dropdown-menu {
-    display: inline-block;
-    //Second Level Flyouts
-    ul.dropdown-menu{
-	    display: none;
-	}
-	.dropdown-submenu:hover > ul.dropdown-menu{
-	    display: block;
-    }  
 }
 
 a.menu:after, .dropdown-toggle:after {
