@@ -1053,12 +1053,12 @@ component extends="mura.bean.bean" versioned=false {
 	function toBundle(bundle,siteid){
 		var qs=getQueryService();
 		
-		if(!hasProperty('siteid') && structKeyExists(arguments,'siteid')){
-			arguments.bundle.setValue("rs" * getTable(),qs.execute(sql="select * from #getTable()#").getResult());
-		} else {
+		if(hasColumn('siteid') && structKeyExists(arguments,'siteid')){
 			qs.setSQL("select * from #getTable()# where siteid = :siteid");
 			qs.addParam(name="siteid",cfsqltype="cf_sql_varchar",value=arguments.siteid);
 			arguments.bundle.setValue("rs" & getTable(),qs.execute().getResult());
+		} else {
+			arguments.bundle.setValue("rs" * getTable(),qs.execute(sql="select * from #getTable()#").getResult());
 		}
 		return this;
 	}
@@ -1130,6 +1130,9 @@ component extends="mura.bean.bean" versioned=false {
 		}
 	}
 
+	function hasColumn(column){
+		return isDefined("application.objectMappings.#getValue('entityName')#.columns.#arguments.column#");
+	}
 
 	//ORM EVENTHANDLING
 
