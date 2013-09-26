@@ -51,8 +51,6 @@ component extends="mura.bean.bean" versioned=false {
 		super.init();
 		variables.dbUtility="";
 		variables.entityName="";
-		variables.addObjects=[];
-		variables.removeObjects=[];
 
 		var props=getProperties();
 
@@ -465,7 +463,7 @@ component extends="mura.bean.bean" versioned=false {
 			       	 					application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#Iterator']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,cfc="#variables.entityName#",returnFormat="iterator",functionType='getEntityIterator'}};
 				       	 				application.objectMappings[prop.cfc].synthedFunctions['get#variables.entityName#Query']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments)',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,cfc="#variables.entityName#",returnFormat="query",functionType='getEntityQuery'}};
 				       	 				//application.objectMappings[prop.cfc].synthedFunctions['has#variables.entityName#']={exp='bean.loadBy(argumentCollection=arguments.MissingMethodArguments).recordcount',args={prop=variables.entityName,fkcolumn=prop.fkcolumn,cfc="#variables.entityName#",returnFormat="query",functionType='hasEntity'}};
-				       	 				//application.objectMappings[prop.cfc].synthedFunctions['add#variables.entityName#']={exp='addObject(arguments.MissingMethodArguments[1])',args={prop=variables.entityName,functionType='addEntity'}};
+				       	 				application.objectMappings[prop.cfc].synthedFunctions['add#variables.entityName#']={exp='addObject(arguments.MissingMethodArguments[1])',args={prop=variables.entityName,functionType='addEntity'}};
 				       	 				//application.objectMappings[prop.cfc].synthedFunctions['remove#variables.entityName#']={exp='removeObject(arguments.MissingMethodArguments[1])',args={prop=variables.entityName,functionType='removeEntity'}};
 
 			       	 				} else {
@@ -525,19 +523,6 @@ component extends="mura.bean.bean" versioned=false {
 		}
 	}
 
-	private function addObject(obj){
-		//writeDump(var='arguments.obj.set#getPrimaryKey()#(getValue("#getPrimaryKey()#"))',abort=true);
-		evaluate('arguments.obj.set#getPrimaryKey()#(getValue("#getPrimaryKey()#"))');
-		arrayAppend(variables.addObjects,arguments.obj);
-		return this;
-	}
-
-	private function removeObject(obj){
-		//writeDump(var='arguments.obj.set#getPrimaryKey()#(getValue("#getPrimaryKey()#"))',abort=true);
-		arrayAppend(variables.removeObjects,arguments.obj);
-		return this;
-	}
-
 	private function addQueryParam(qs,prop,value){
 		var paramArgs={};
 		var columns=getColumns();
@@ -590,26 +575,8 @@ component extends="mura.bean.bean" versioned=false {
 	function save(){
 		var pluginManager=getBean('pluginManager');
 		var event=new mura.event({siteID=getValue('siteid'),bean=this});
-		var errorCheck={};
-		var checknum=1;
-		var checkfound=false;
 
 		validate();
-
-		if(arrayLen(variables.addObjects)){
-			for(var obj in variables.addObjects){	
-				errorCheck=obj.validate().getErrors();
-				if(!structIsEmpty(errorCheck)){
-					do{
-						if( !structKeyExists(variables.instance.errors,obj.getEntityName() & checknum) ){
-							variables.instance.errors[obj.getEntityName()  & checknum ]=errorCheck;
-							checkfound=true;
-						}
-					} while (!checkfound);
-				}
-				
-			}
-		}
 
 		if(getReadOnly()){
 			throw(type="MuraORMError",message="The Mura ORM entity '#getEntityName()#' is read only.");
@@ -658,16 +625,16 @@ component extends="mura.bean.bean" versioned=false {
 					}
 
 
+					var obj='';
 
-					if(arrayLen(variables.removeObjects)){
-						for(var obj in variables.removeObjects){	
+					if(arrayLen(variables.instance.removeObjects)){
+						for(obj in variables.instance.removeObjects){	
 							obj.delete();
 						}
 					}
 
-					if(arrayLen(variables.addObjects)){
-						for(var obj in variables.addObjects){	
-							//writeDump(var=obj.getAllValues(),abort=true);
+					if(arrayLen(variables.instance.addObjects)){
+						for(obj in variables.instance.addObjects){	
 							obj.save();
 						}
 					}
@@ -677,6 +644,9 @@ component extends="mura.bean.bean" versioned=false {
 					postUpdate();
 
 					pluginManager.announceEvent('onAfter#variables.entityName#Update',event);
+
+					variables.instance.addObjects=[];
+					variables.instance.removeObjects=[];
 				}
 				
 			} else{
@@ -717,26 +687,25 @@ component extends="mura.bean.bean" versioned=false {
 						writeOutput(")");
 						
 					}
-
-					//writeDump(var=variables.instance,abort=true);
-					//writeDump(var=sql,abort=true);
 				
-					if(arrayLen(variables.addObjects)){
-						for(var obj in variables.addObjects){	
+					if(arrayLen(variables.instance.addObjects)){
+						for(var obj in variables.instance.addObjects){	
 							obj.save();
 						}
 					}
-
 
 					qs.execute(sql=sql);
 					purgeCache();
 
 					variables.instance.isnew=0;
+					variables.instance.addObjects=[];
+					variables.instance.removeObjects=[];
 
 					postCreate();
 					postInsert();
 
 					pluginManager.announceEvent('onAfter#variables.entityName#Create',event);
+
 				}
 			}
 

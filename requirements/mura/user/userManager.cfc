@@ -397,6 +397,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset userBean=variables.userDAO.read(arguments.data.userid)/>
 	
 	<cfset userBean.set(arguments.data) />
+	<cfset var addObjects=userBean.getAddObjects()>
+	<cfset var removeObjects=userBean.getRemoveObjects()>
+
 	<cfset userBean.validate()>
 
 	<!--- <cfif userBean.getType() eq 2 and  userBean.getAddressID() neq ''> --->
@@ -456,6 +459,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		Not need due to extended attributes now not using ext[pluginID] based form field names.
 		<cfset userBean=read(userID=userBean.getUserID())>
 		--->
+
+		<cfscript>
+			var obj='';
+
+			if(arrayLen(addObjects)){
+				for(obj in addObjects){	
+					obj.save();
+				}
+			}
+
+			if(arrayLen(removeObjects)){
+				for(obj in removeObjects){	
+					obj.delete();
+				}
+			}
+		</cfscript>
 		
 		<cfif  userBean.getType() eq 1>	
 			<cfset pluginEvent.setValue("groupBean",userBean)/>			
@@ -498,6 +517,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset pluginEvent.init(arguments.data)>
 	
 	<cfset userBean.set(arguments.data) />
+	<cfset var addObjects=userBean.getAddObjects()>
 	<cfset userBean.validate()>
 	
 	<!--- MAKE SURE ALL REQUIRED DATA IS THERE--->
@@ -568,6 +588,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfset userBean.purgeExtendedData()>
 		<cfset userBean.setIsNew(0)>
+
+		<cfscript>
+			if(arrayLen(addObjects)){
+				for(var obj in addObjects){	
+					obj.save();
+				}
+			}
+		</cfscript>
 		
 		<cfif  userBean.getType() eq 1>	
 			<cfset pluginEvent.setValue("groupBean",userBean)/>			

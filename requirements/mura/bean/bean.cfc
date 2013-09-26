@@ -62,10 +62,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.isNew=1/>
 	<cfset variables.instance.errors=structNew()/>
 	<cfset variables.instance.fromMuraCache = false />
-
 	<cfif not structKeyExists(variables.instance,"instanceID")>
 		<cfset variables.instance.instanceID=createUUID()>
 	</cfif>
+	<cfset variables.instance.addObjects=[]>
+	<cfset variables.instance.removeObjects=[]>
+
 	<cfreturn this>
 </cffunction>
 
@@ -137,6 +139,19 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cfscript>
+	private function addObject(obj){
+		evaluate('arguments.obj.set#getPrimaryKey()#(getValue("#getPrimaryKey()#"))');
+		arrayAppend(variables.instance.addObjects,arguments.obj);
+		return this;
+	}
+
+	private function removeObject(obj){
+		if(getValue(getPrimaryKey()) == obj.getValue(getPrimaryKey())){
+			arrayAppend(variables.instance.removeObjects,arguments.obj);
+		}
+		return this;
+	}
+
 	private function synthArgs(args){
 		var returnArgs={
 				"#translatePropKey(args.loadkey)#"=getValue(translatePropKey(arguments.args.fkcolumn)),
@@ -255,9 +270,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="validate" access="public" output="false">
 	<cfscript>
-	variables.instance.errors=getBean('beanValidator').validate(this);
+		var errorCheck={};
+		var checknum=1;
+		var checkfound=false;
 
-	return this;
+		variables.instance.errors=getBean('beanValidator').validate(this);
+
+		if(arrayLen(variables.instance.addObjects)){
+			for(var obj in variables.instance.addObjects){	
+				errorCheck=obj.validate().getErrors();
+				if(!structIsEmpty(errorCheck)){
+					do{
+						if( !structKeyExists(variables.instance.errors,obj.getEntityName() & checknum) ){
+							variables.instance.errors[obj.getEntityName()  & checknum ]=errorCheck;
+							checkfound=true;
+						}
+					} while (!checkfound);
+				}
+				
+			}
+		}
+
+		return this;
 	</cfscript>
 </cffunction>
 
