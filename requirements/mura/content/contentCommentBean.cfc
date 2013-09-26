@@ -46,22 +46,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <cfcomponent extends="mura.bean.bean" output="false">
 
-<cfproperty name="commentID" type="string" default="" required="true" />
-<cfproperty name="contentID" type="string" default="" required="true" />
-<cfproperty name="parentID" type="string" default="" required="true" />
-<cfproperty name="siteID" type="string" default="" required="true" />
-<cfproperty name="comments" type="string" default="" required="true" />
-<cfproperty name="url" type="string" default="" required="true" />
-<cfproperty name="name" type="string" default="" required="true" />
-<cfproperty name="email" type="string" default="" required="true" />
-<cfproperty name="entered" type="date" default="" required="true" />
-<cfproperty name="subscribe" type="numeric" default="0" required="true" />
-<cfproperty name="isApproved" type="numeric" default="0" required="true" />
-<cfproperty name="userID" type="string" default="" required="true" />
-<cfproperty name="path" type="string" default="" required="true" />
-<cfproperty name="kids" type="string" default="" required="true" />
-<cfproperty name="remoteID" type="string" default="" required="true" />
-<cfproperty name="isNew" type="numeric" default="1" required="true" />
+<cfproperty name="commentID" type="string" default="" />
+<cfproperty name="contentID" type="string" default="" />
+<cfproperty name="parentID" type="string" default="" />
+<cfproperty name="siteID" type="string" default="" />
+<cfproperty name="comments" type="string" default="" />
+<cfproperty name="url" type="string" default=""  />
+<cfproperty name="name" type="string" default=""  />
+<cfproperty name="email" type="string" default="" />
+<cfproperty name="entered" type="date" default="" />
+<cfproperty name="subscribe" type="numeric" default="0"  />
+<cfproperty name="isApproved" type="numeric" default="0" />
+<cfproperty name="userID" type="string" default="" />
+<cfproperty name="path" type="string" default="" />
+<cfproperty name="kids" type="string" default="" />
+<cfproperty name="remoteID" type="string" default=""/>
+<cfproperty name="isNew" type="numeric" default="1" />
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	
@@ -259,7 +259,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset eventArgs.siteID=variables.instance.siteID>
 	<cfset eventArgs.commentBean=this>
 	<cfset structAppend(eventArgs, arguments)>
-	
+
 	<cfset pluginEvent.init(eventArgs)>
 	
 	<cfif len(variables.instance.parentID)>
@@ -267,73 +267,96 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	<cfset path=listAppend(path, getCommentID())>
+
+	<cfset validate()>
+
+	<cfif structIsEmpty(getErrors())>	
 	
-	<cfset pluginManager.announceEvent("onBeforeCommentSave",pluginEvent)>
-	
-	<cfif getQuery().recordcount>
+		<cfset pluginManager.announceEvent("onBeforeCommentSave",pluginEvent)>
 		
-		<cfset pluginManager.announceEvent("onBeforeCommentUpdate",pluginEvent)>
-		
-		<cfquery>
-		update tcontentcomments set
-			contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#"/>,
-			name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.name#"/>,
-			email=<cfif len(variables.instance.email)><cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.email#"/><cfelse>null</cfif>,
-			url=<cfif len(variables.instance.url)><cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.url#"/><cfelse>null</cfif>,
-			comments=<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#variables.instance.comments#"/>,
-			entered=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#variables.instance.entered#">,
-			siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#"/>,
-			isApproved=#variables.instance.isApproved#,
-			subscribe=<cfqueryparam cfsqltype="cf_sql_numeric" value="#variables.instance.subscribe#">,
-			userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.useriD#"/>,
-			parentID=<cfif len(variables.instance.parentID)><cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.parentID#"/><cfelse>null</cfif>,
-			path=<cfqueryparam cfsqltype="cf_sql_varchar" value="#path#"/>,
-			remoteID=<cfif len(variables.instance.remoteID)><cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.remoteID#"/><cfelse>null</cfif>
-		where commentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
-		</cfquery>
-		
-		<cfset pluginManager.announceEvent("onAfterCommentUpdate",pluginEvent)>
-	<cfelse>
-	
-		<cfset pluginManager.announceEvent("onBeforeCommentCreate",pluginEvent)>
-		
-		<cfquery>
-			insert into tcontentcomments (contentid,commentid,parentid,name,email,url,comments,entered,siteid,isApproved,subscribe,userID,path, ip, remoteID)
-			values (
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#"/>,
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#"/>,
-			<cfif len(variables.instance.parentID)><cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.parentID#"/><cfelse>null</cfif>,
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.name#"/>,
-			<cfif len(variables.instance.email)><cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.email#"/><cfelse>null</cfif>,
-			<cfif len(variables.instance.url)><cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.url#"/><cfelse>null</cfif>,
-			<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#variables.instance.comments#"/>,
-			<cfqueryparam cfsqltype="cf_sql_timestamp" value="#variables.instance.entered#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#"/>,
-			#variables.instance.isApproved#,
-			<cfqueryparam cfsqltype="cf_sql_numeric" value="#variables.instance.subscribe#">,
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.userID#"/>,
-			<cfqueryparam cfsqltype="cf_sql_varchar" value="#path#"/>,
-			<cfif isdefined("request.remoteAddr")><cfqueryparam cfsqltype="cf_sql_varchar" value="#request.remoteAddr#"/><cfelse><cfqueryparam cfsqltype="cf_sql_varchar" value="#CGI.REMOTE_ADDR#"/></cfif>,
-			<cfif len(variables.instance.remoteID)><cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.remoteID#"/><cfelse>null</cfif>
-			)
-			</cfquery>
-		
-		<cfset variables.instance.isNew=0/>
+		<cfif getQuery().recordcount>
 			
-		<cfset pluginManager.announceEvent("onAfterCommentCreate",pluginEvent)>
-		<cfset getBean('trashManager').takeOut(this)>
-	</cfif>
-	
-	<cfset pluginManager.announceEvent("onAfterCommentSave",pluginEvent)>
-	
-	<cfif variables.instance.isApproved>
-		<cfset saveSubscription()>
-		<cfif isBoolean(pluginEvent.getValue("notify")) and pluginEvent.getValue("notify")>
-			<cfset notifySubscribers(arguments.script,arguments.subject)>
+			<cfset pluginManager.announceEvent("onBeforeCommentUpdate",pluginEvent)>
+			
+			<cfquery>
+			update tcontentcomments set
+				contentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#"/>,
+				name=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.name#"/>,
+				email=<cfif len(variables.instance.email)><cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.email#"/><cfelse>null</cfif>,
+				url=<cfif len(variables.instance.url)><cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.url#"/><cfelse>null</cfif>,
+				comments=<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#variables.instance.comments#"/>,
+				entered=<cfqueryparam cfsqltype="cf_sql_timestamp" value="#variables.instance.entered#">,
+				siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#"/>,
+				isApproved=#variables.instance.isApproved#,
+				subscribe=<cfqueryparam cfsqltype="cf_sql_numeric" value="#variables.instance.subscribe#">,
+				userID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.useriD#"/>,
+				parentID=<cfif len(variables.instance.parentID)><cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.parentID#"/><cfelse>null</cfif>,
+				path=<cfqueryparam cfsqltype="cf_sql_varchar" value="#path#"/>,
+				remoteID=<cfif len(variables.instance.remoteID)><cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.remoteID#"/><cfelse>null</cfif>
+			where commentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
+			</cfquery>
+			
+			<cfset pluginManager.announceEvent("onAfterCommentUpdate",pluginEvent)>
+		<cfelse>
+		
+			<cfset pluginManager.announceEvent("onBeforeCommentCreate",pluginEvent)>
+			
+			<cfquery>
+				insert into tcontentcomments (contentid,commentid,parentid,name,email,url,comments,entered,siteid,isApproved,subscribe,userID,path, ip, remoteID)
+				values (
+				<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.contentID#"/>,
+				<cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#"/>,
+				<cfif len(variables.instance.parentID)><cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.parentID#"/><cfelse>null</cfif>,
+				<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.name#"/>,
+				<cfif len(variables.instance.email)><cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.email#"/><cfelse>null</cfif>,
+				<cfif len(variables.instance.url)><cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.url#"/><cfelse>null</cfif>,
+				<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#variables.instance.comments#"/>,
+				<cfqueryparam cfsqltype="cf_sql_timestamp" value="#variables.instance.entered#">,
+				<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.siteID#"/>,
+				#variables.instance.isApproved#,
+				<cfqueryparam cfsqltype="cf_sql_numeric" value="#variables.instance.subscribe#">,
+				<cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.userID#"/>,
+				<cfqueryparam cfsqltype="cf_sql_varchar" value="#path#"/>,
+				<cfif isdefined("request.remoteAddr")><cfqueryparam cfsqltype="cf_sql_varchar" value="#request.remoteAddr#"/><cfelse><cfqueryparam cfsqltype="cf_sql_varchar" value="#CGI.REMOTE_ADDR#"/></cfif>,
+				<cfif len(variables.instance.remoteID)><cfqueryparam cfsqltype="cf_sql_varchar" value="#variables.instance.remoteID#"/><cfelse>null</cfif>
+				)
+				</cfquery>
+			
+			<cfset variables.instance.isNew=0/>
+				
+			<cfset pluginManager.announceEvent("onAfterCommentCreate",pluginEvent)>
+			<cfset getBean('trashManager').takeOut(this)>
 		</cfif>
+
+		<cfscript>
+			var obj='';
+
+			if(arrayLen(variables.instance.addObjects)){
+				for(obj in variables.instance.addObjects){	
+					obj.save();
+				}
+			}
+
+			if(arrayLen(variables.instance.removeObjects)){
+				for(obj in variables.instance.removeObjects){	
+					obj.delete();
+				}
+			}
+		</cfscript>
+
+		
+		<cfset pluginManager.announceEvent("onAfterCommentSave",pluginEvent)>
+		
+		<cfif variables.instance.isApproved>
+			<cfset saveSubscription()>
+			<cfif isBoolean(pluginEvent.getValue("notify")) and pluginEvent.getValue("notify")>
+				<cfset notifySubscribers(arguments.script,arguments.subject)>
+			</cfif>
+		</cfif>
+		
+		<cfset variables.contentManager.setCommentStat(variables.instance.contentID,variables.instance.siteID) />
+
 	</cfif>
-	
-	<cfset variables.contentManager.setCommentStat(variables.instance.contentID,variables.instance.siteID) />
 	<cfreturn this>
 </cffunction>
 

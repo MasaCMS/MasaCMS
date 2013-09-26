@@ -1378,13 +1378,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 
 				<cfif doPreserveVersionedObjects>
-					<cfset variables.contentDAO.persistVersionedObjects(currentBean,newBean,removeObjects)>
+					<cfset variables.contentDAO.persistVersionedObjects(currentBean,newBean,removeObjects,addObjects)>
 				</cfif>
 
 				<cfscript>
 					if(arrayLen(addObjects)){
+						var updateArgs={contentid=newBean.getContentID(),contenthistid=newBean.getContentHistId(),siteid=newBean.getSiteID(),moduleid=newBean.getModuleID()};
 						for(var obj in addObjects){	
-							obj.save();
+							obj.setAddedObjectValues(updateArgs).save();
 						}
 					}
 				</cfscript>

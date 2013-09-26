@@ -440,6 +440,28 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 		<cfset variables.instance.errors.siteid="The 'SiteID' variable is missing." />
 	</cfif>
+
+	<cfscript>
+		var errorCheck={};
+		var checknum=1;
+		var checkfound=false;
+
+		if(arrayLen(variables.instance.addObjects)){
+			for(var obj in variables.instance.addObjects){	
+				errorCheck=obj.validate().getErrors();
+				if(!structIsEmpty(errorCheck)){
+					do{
+						if( !structKeyExists(variables.instance.errors,obj.getEntityName() & checknum) ){
+							variables.instance.errors[obj.getEntityName()  & checknum ]=errorCheck;
+							checkfound=true;
+						}
+					} while (!checkfound);
+				}
+				
+			}
+		}
+	</cfscript>
+
 	<cfreturn this>
 </cffunction>
  

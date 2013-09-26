@@ -139,6 +139,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cfscript>
+	function setAddedObjectValues(properties){
+		set(arguments.properties);
+		for(var obj in variables.instance.addObjects){
+			obj.set(arguments.properties);
+			obj.setAddedObjectValues(arguments.properties);
+		}
+		return this;
+	}
+
 	private function addObject(obj){
 		evaluate('arguments.obj.set#getPrimaryKey()#(getValue("#getPrimaryKey()#"))');
 		arrayAppend(variables.instance.addObjects,arguments.obj);
@@ -157,7 +166,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				"#translatePropKey(args.loadkey)#"=getValue(translatePropKey(arguments.args.fkcolumn)),
 				returnFormat=arguments.args.returnFormat
 			};
-
+		if(structKeyExists(arguments.args,'siteid')){
+			returnArgs.siteid=getValue('siteid');
+		}
 		if(isDefined('application.objectMappings.#getEntityName()#.properties.#arguments.args.prop#.orderby')){
 			returnArgs.orderby=application.objectMappings[getEntityName()].properties[arguments.args.prop].orderby;
 		} else if(isDefined('application.objectMappings.#arguments.args.cfc#.orderby')){

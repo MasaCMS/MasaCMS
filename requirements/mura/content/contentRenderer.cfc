@@ -486,9 +486,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif arguments.maxLevels and crumbLen gt arguments.maxLevels and arguments.maxLevels lte arrayLen(arguments.crumbdata)>
 			<cfset crumbLen = arguments.maxLevels>
 		</cfif>
-		<cfsavecontent variable="content"><cfoutput><ul class="#arguments.class#">
+		<cfsavecontent variable="content">
+		<cfoutput>
+			<ul class="#arguments.class#">
 		<cfif limited>
-			<li>&raquo;</li>
+			<li>&hellip;</li>
 		</cfif>
 		<cfloop from="#crumbLen#" to="2" index="i" step="-1">
 			<cfsilent>

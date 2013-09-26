@@ -217,6 +217,7 @@
 	position: absolute;
 	left: -10px;
 	top: -10px;
+	z-index: 50000;
 }
 
 #carch.compact {
@@ -249,9 +250,10 @@
 
 #frontEndTools {
 	background: #333;
-	//#gradient > .vertical(@feToolBarBGStart,@feToolBarBGEnd);
+	#gradient > .vertical(@feToolBarBGStart,@feToolBarBGEnd);
     //background-color: mix(@feToolBarBGStart, @feToolBarBGEnd, 60%);
-    background-image: -moz-linear-gradient(top, @feToolBarBGStart, @feToolBarBGEnd); // FF 3.6+
+    /*
+background-image: -moz-linear-gradient(top, @feToolBarBGStart, @feToolBarBGEnd); // FF 3.6+
     background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@feToolBarBGStart), to(@feToolBarBGEnd)); // Safari 4+, Chrome 2+
     background-image: -webkit-linear-gradient(top, @feToolBarBGStart, @feToolBarBGEnd); // Safari 5.1+, Chrome 10+
     background-image: -o-linear-gradient(top, @feToolBarBGStart, @feToolBarBGEnd); // Opera 11.10
@@ -259,6 +261,7 @@
     background-image: -ms-linear-gradient(top, @feToolBarBGStart 0%, @feToolBarBGEnd 100%);
     background-image: linear-gradient(to bottom, @feToolBarBGStart 0%, @feToolBarBGEnd 100%);
     background-repeat: repeat-x;
+*/
     // Commented out because it blows up dropdowns in IE
     //filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",argb(@feToolBarBGStart),argb(@feToolBarBGEnd))); // IE9 and down
 	
@@ -412,6 +415,10 @@
 	
 #frontEndTools > ul#tools-changesets {
 
+		li {
+			cursor: pointer;
+			}
+
 		> li#cs-title > a {
 		padding-right: 4px !important;
 		
@@ -478,50 +485,51 @@
 
 #frontEndTools > ul > li#adminSave {
 	position: relative;
-	color: rgba(255,255,255,1.0) !important;
+	color: #fff !important;
 	float: left !important;
 	line-height: 30px !important;
 	margin-left: 14px !important;
-	padding: 3px 0 0 0 !important;
+	padding: 3px 11px 0 0 !important;
 	list-style: none !important;
 	font-weight: normal !important;
 	font-style: normal !important;
 	background: transparent !important;
 	border: 0 !important;
-	}
-
-#frontEndTools > ul > li#adminSave > a {
-	position: relative !important;
-	display: block !important;
-	color: @white !important;
-	font-size: 11px !important;
-	padding: 1px 8px 1px 6px !important;
-	line-height: 21px !important;
-	height: 21px !important;
-	/* text-shadow: none !important; */
-	.border-radius(4px) !important;
-	#gradient .vertical(@blue,@blueDark) !important;
-	.box-shadow(0 0 6px rgba(0,0,0,.5)) !important;
-	text-shadow: 0 -1px 1px @blueDarker !important;
-	cursor: pointer !important;
 	
-	> i { color: @blueDarker !important; }
-	
-	&:hover {
-		
+		> a {
+		position: relative !important;
+		display: block !important;
+		color: @white !important;
+		font-size: 11px !important;
+		padding: 1px 8px 1px 6px !important;
+		line-height: 24px !important;
+		height: 24px !important;
+		.border-radius(4px) !important;
+		#gradient .vertical(@blue,@blueDark) !important;
+		.box-shadow(0 0 6px rgba(0,0,0,.5)) !important;
+		text-shadow: 0 -1px 1px @blueDarker !important;
 		cursor: pointer !important;
 		
-		> i {
-			color: @blueDarker !important;
-			text-shadow: 0 1px 0 rgba(255,255,255,0.15) !important;
+		> i { color: @blueDarker !important;
+		text-shadow: 0 -1px 1px darken(@blueDarker,10%) !important; }
+		
+		&:hover {
+			
+			cursor: pointer !important;
+			
+			> i {
+				color: @blueDarker !important;
+				text-shadow: 0 -1px 1px darken(@blueDarker,10%) !important;
+				}
+			
 			}
 		
+		.caret {
+			border-top-color: @blueDarker !important;
+			margin: 9px 0 0 4px !important;
+			}
 		}
 	
-	.caret {
-		border-top-color: @blueDarker !important;
-		margin: 9px 0 0 4px !important;
-		}
 	}
 
 #frontEndTools > ul > li a:hover,
@@ -530,7 +538,7 @@
 	text-shadow: 0 -1px 0 rgba(0,0,0,1) !important;
 	}
 	
-#frontEndTools > ul > li.dropdown > .dropdown-menu {
+#frontEndTools > ul > li.dropdown .dropdown-menu {
 		
 		.border-bottom-radius(5px) !important;
 		.border-top-radius(0) !important;
@@ -570,7 +578,7 @@
 		
 		i {
 			color: @grayDark !important;
-			top: 0px !important;
+			top: 2px !important;
 			font-size: 16px !important;
 			margin-right: 2px !important;
 			}
@@ -588,10 +596,14 @@
 
 #frontEndTools > ul li.dropdown-submenu > a:after {
 	border-left-color: @grayLight !important;
-	margin-top: 1px !important;
+	margin-top: 5px !important;
 	margin-right: 0 !important;
 	margin-left: -5px !important;
 	}
+
+#frontEndTools > ul > li#adminSave .dropdown-menu {
+	margin-left: 0 !important;
+}
 
 } // End .mura
 
