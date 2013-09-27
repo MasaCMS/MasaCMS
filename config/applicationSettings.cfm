@@ -162,7 +162,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset request.userAgent = LCase( CGI.http_user_agent ) />
 	
 	<!--- Should we even use sessions? --->
-	<cfset request.trackSession = structKeyExists(cookie,'cfid') or structKeyExists(cookie,'jsessionid')>
+	<cfset request.trackSession = not (NOT Len( request.userAgent ) OR
+	 REFind( "bot\b", request.userAgent ) OR
+	 Find( "_bot_", request.userAgent ) OR
+	 Find( "crawl", request.userAgent ) OR
+	 REFind( "\brss", request.userAgent ) OR
+	 Find( "feed", request.userAgent ) OR
+	 Find( "news", request.userAgent ) OR
+	 Find( "blog", request.userAgent ) OR
+	 Find( "reader", request.userAgent ) OR
+	 Find( "syndication", request.userAgent ) OR
+	 FindNoCase( "coldfusion", request.userAgent ) OR
+	 Find( "slurp", request.userAgent ) OR
+	 Find( "google", request.userAgent ) OR
+	 Find( "zyborg", request.userAgent ) OR
+	 Find( "emonitor", request.userAgent ) OR
+	 Find( "jeeves", request.userAgent ) OR 
+	 Find( "ping", request.userAgent ) OR 
+	 FindNoCase( "java", request.userAgent ) OR 
+	 FindNoCase( "cfschedule", request.userAgent ) OR
+	 FindNoCase( "reeder", request.userAgent ) OR
+	 FindNoCase( "Python", request.userAgent ) OR
+	 FindNoCase( "Synapse", request.userAgent ) OR
+	 FindNoCase( "facebookexternalhit", request.userAgent ) OR
+	 Find( "spider", request.userAgent ))>
 	 
 	<!--- How long do session vars persist? --->
 	<cfif request.trackSession>
