@@ -97,7 +97,7 @@
 			var renderer = arguments.$.getContentRenderer();
 
 			// general vars
-			renderer.jsLib = 'jQuery';
+			renderer.jsLib = 'jquery';
 			renderer.jsLibLoaded = true;
 			renderer.generalWrapperClass = 'well';
 			

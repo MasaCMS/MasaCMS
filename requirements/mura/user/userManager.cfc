@@ -474,6 +474,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					obj.delete();
 				}
 			}
+
+			userBean.setAddObjects([]);
+			userBean.setRemoveObjects([]);
 		</cfscript>
 		
 		<cfif  userBean.getType() eq 1>	
@@ -595,6 +598,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					obj.save();
 				}
 			}
+
+			userBean.setAddObjects([]);
+			userBean.setRemoveObjects([]);
 		</cfscript>
 		
 		<cfif  userBean.getType() eq 1>	

@@ -275,6 +275,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					obj.save();
 				}
 			}
+
+			categoryBean.setAddObjects([]);
+			categoryBean.setRemoveObjects([]);
 		</cfscript>
 		
 		<cfset variables.trashManager.takeOut(categoryBean)>
@@ -719,6 +722,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					obj.delete();
 				}
 			}
+
+			categoryBean.setAddObjects([]);
+			categoryBean.setRemoveObjects([]);
 		</cfscript>
 
 		<cfif isdefined('arguments.data.OrderID')>

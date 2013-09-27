@@ -53,10 +53,10 @@ component {
 	}
 	
 	public void function addRoute( any routes, string target, any methods = [ ], string statusCode = '' ) {
-		if ( !isArray( routes ) ) routes = [ routes ];
-		if ( !isArray( methods ) ) methods = [ methods ];
+		if ( !isArray( routes ) ) {routes = [ routes ];}
+		if ( !isArray( methods ) ) {methods = [ methods ];}
 		param name="variables.framework.routes" default="#[ ]#"; 
-		if ( len( statusCode ) ) target = statusCode & ':' & target;
+		if ( len( statusCode ) ) {target = statusCode & ':' & target;}
 		for ( var route in routes ) {
 			if ( arrayLen( methods ) ) {
 				for ( var method in methods ) {
@@ -73,8 +73,8 @@ component {
 	 *	in order to provide a simpler transition to using subsystems in the future
 	 */
 	public string function buildURL( string action = '.', string path = variables.magicBaseURL, any queryString = '' ) {
-		if ( action == '.' ) action = getFullyQualifiedAction();
-		if ( path == variables.magicBaseURL ) path = getBaseURL();
+		if ( action == '.' ) {action = getFullyQualifiedAction();}
+		if ( path == variables.magicBaseURL ) {path = getBaseURL();}
 		var omitIndex = false;
 		if ( path == 'useSubsystemConfig' ) {
 			var subsystemConfig = getSubsystemConfig( getSubsystem( action ) );
