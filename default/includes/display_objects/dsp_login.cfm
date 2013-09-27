@@ -59,115 +59,120 @@
 	<cfset variables.$.event('isBlocked',false)>
 </cfif>
 <cfoutput>
-<div id="svLoginContainer" class="container">
-	<#variables.$.getHeaderTag('subhead1')#>#variables.$.content('title')#</#variables.$.getHeaderTag('subhead1')#>
+	<div id="svLoginContainer" class="container">
+		<div class="row">
+			<#variables.$.getHeaderTag('subhead1')#>#variables.$.content('title')#</#variables.$.getHeaderTag('subhead1')#>
 
-	#variables.$.content('summary')# <!--- The page summary can be used to show some content before the user has logged in. Outputs only if there is content in the summary field. --->
+			<!--- 
+				SUMMARY
+				The page summary can be used to show some content before the user has logged in. 
+				Outputs only if there is content in the summary field. 
+			--->
+			#variables.$.content('summary')#
 
-	<cfif variables.$.event('status') eq 'failed'>
-		<cfif isDate(session.blockLoginUntil) and session.blockLoginUntil gt now()>
-		<cfset variables.$.event('isBlocked',true) />
-		<p id="loginMsg" class="error">#variables.$.rbKey('user.loginblocked')#</p>
-		<cfelse>
-		<p id="loginMsg" class="error">#variables.$.rbKey('user.loginfailed')#</p>
-		</cfif>
-	</cfif>
-
-	<cfif not variables.$.event('isBlocked')>
-		<form id="login" class="form-horizontal form-signin <cfif this.formWrapperClass neq "">#this.formWrapperClass#</cfif>" name="frmLogin" method="post" action="?nocache=1" onsubmit="return validate(this);" novalidate="novalidate" >
-
-			<#variables.$.getHeaderTag('subHead1')# class="form-signin-heading">
-				#variables.$.rbKey('user.pleaselogin')#
-			</#variables.$.getHeaderTag('subHead1')#>
-
-			<!--- Username --->
-			<div class="form-group">
-				<label class="control-label col-lg-2 required" for="txtUsername">
-					#variables.$.rbKey('user.username')#
-					<span class="help-inline">#htmlEditFormat(variables.$.rbKey('user.required'))#</span>
-				</label>
-				<div class="col-lg-10">
-					<input type="text" id="txtUsername" placeholder="#variables.$.rbKey('user.username')#" name="username" required="true" message="#htmlEditFormat(variables.$.rbKey('user.usernamerequired'))#" class="form-control" autofocus>
-				</div>
-			</div>
-
-			<!--- Password --->
-			<div class="form-group">
-				<label class="control-label col-lg-2 required" for="txtPassword">
-					#variables.$.rbKey('user.password')#
-					<span class="help-inline">#htmlEditFormat(variables.$.rbKey('user.required'))#</span>
-				</label>
-				<div class="col-lg-10">
-					<input type="password" id="txtPassword" name="password" placeholder="#variables.$.rbKey('user.password')#" required="true" message="#htmlEditFormat(variables.$.rbKey('user.passwordrequired'))#" class="form-control" />
-				</div>
-			</div>
-
-			<!--- Remember Me --->
-			<div class="form-group">
-				<div class="col-lg-10">
-					<label class="checkbox" for="cbRememberMe" >
-						<input type="checkbox" id="cbRememberMe" name="rememberMe" value="1"> #htmlEditFormat(variables.$.rbKey('user.rememberme'))#
-					</label>
-				</div>
-			</div>
-
-			<div class="form-group">
-				<div class="col-lg-10">
-					<!--- <p class="required">#variables.$.rbKey('user.requiredfields')#</p>  Don't need this if you're adding help text above --->
-					<input type="hidden" name="doaction" value="login" />
-					<input type="hidden" name="linkServID" value="#HTMLEditFormat(variables.$.event('linkServID'))#" />
-					<input type="hidden" name="returnURL" value="#HTMLEditFormat(variables.$.event('returnURL'))#" />
-					<button type="submit" class="btn btn-default">#htmlEditFormat(variables.$.rbKey('user.login'))#</button>
-				</div>
-			</div>
-		</form>
-
-
-		<cfif variables.$.event('doaction') eq 'sendlogin'>
-			<cfset msg2=application.userManager.sendLoginByEmail(variables.$.event('email'), variables.$.event('siteID'),'#urlencodedformat(variables.$.event('returnURL'))#')>
-		</cfif>
-
-		<form name="form2" class="form-horizontal form-sendlogin <cfif this.formWrapperClass neq "">#this.formWrapperClass#</cfif>" method="post" action="?nocache=1" id="sendLogin" onsubmit="return validate(this);" novalidate="novalidate">
-
-			<legend>#variables.$.rbKey('user.forgetusernameorpassword')#</legend>
-			<p>#variables.$.rbKey('user.forgotloginmessage')#</p>
-
-			<cfif isdefined('msg2')>
-				<cfif FindNoCase('is not a valid',msg2)><div class="alert alert-error">#HTMLEditFormat(variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('user.forgotnotvalid'),variables.$.event('email')))#<cfelseif FindNoCase('no account',msg2)><div class="error">#HTMLEditFormat(variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('user.forgotnotfound'),variables.$.event('email')))#<cfelse><div class="alert">#variables.$.rbKey('user.forgotsuccess')#</cfif></div>
+			<cfif variables.$.event('status') eq 'failed'>
+				<cfif isDate(session.blockLoginUntil) and session.blockLoginUntil gt now()>
+				<cfset variables.$.event('isBlocked',true) />
+				<p id="loginMsg" class="error">#variables.$.rbKey('user.loginblocked')#</p>
+				<cfelse>
+				<p id="loginMsg" class="error">#variables.$.rbKey('user.loginfailed')#</p>
+				</cfif>
 			</cfif>
 
-			<div class="form-group">
-				<label class="control-label col-lg-2" for="txtEmail">#variables.$.rbKey('user.email')#</label>
-				<div class="col-lg-10">
-					<input id="txtEmail" name="email" class="form-control" type="text" placeholder="#variables.$.rbKey('user.email')#" validate="email" required="true" message="#htmlEditFormat(variables.$.rbKey('user.emailvalidate'))#" />
-				</div>
-			</div>
+			<cfif not variables.$.event('isBlocked')>
+				<form role="form" id="login" class="form-horizontal form-signin <cfif this.formWrapperClass neq "">#this.formWrapperClass#</cfif>" name="frmLogin" method="post" action="?nocache=1" onsubmit="return validate(this);" novalidate="novalidate">
 
-			<div class="form-group">
-				<div class="col-lg-10">
-					<input type="hidden" name="doaction" value="sendlogin" />
-					<input type="hidden" name="linkServID" value="#HTMLEditFormat(variables.$.event('linkServID'))#" />
-					<input type="hidden" name="display" value="login" />
-					<input type="hidden" name="returnURL" value="#HTMLEditFormat(variables.$.event('returnURL'))#" />
-					<br>
-					<button type="submit" class="btn btn-default">#htmlEditFormat(variables.$.rbKey('user.getpassword'))#</button>
-				</div>
-			</div>
+					<legend>#variables.$.rbKey('user.pleaselogin')#</legend>
+					<!--- Username --->
+					<div class="req form-group">
+						<label for="txtUsername" class="control-label col-lg-2">
+							#variables.$.rbKey('user.username')#
+							<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
+						</label>
+						<div class="col-lg-10">
+							<input class="form-control" type="text" id="txtUsername" placeholder="#variables.$.rbKey('user.username')#" name="username" required="true" message="#htmlEditFormat(variables.$.rbKey('user.usernamerequired'))#" autofocus>
+						</div>
+					</div>
 
-		</form>
+					<!--- Password --->
+					<div class="req form-group">
+						<label for="txtPassword" class="control-label col-lg-2">
+							#variables.$.rbKey('user.password')#
+							<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
+						</label>
+						<div class="col-lg-10">
+							<input class="form-control" type="password" id="txtPassword" name="password" placeholder="#variables.$.rbKey('user.password')#" required="true" message="#htmlEditFormat(variables.$.rbKey('user.passwordrequired'))#">
+						</div>
+					</div>
 
-		<cfif variables.$.siteConfig('ExtranetPublicReg')>
-			<div id="notRegistered">
-				<#variables.$.getHeaderTag('subHead1')# class="center">#variables.$.rbKey('user.notregistered')# <a class="callToAction" href="#variables.$.siteConfig('editProfileURL')#&returnURL=#urlencodedformat(variables.$.event('returnURL'))#">#variables.$.rbKey('user.signup')#</a></#variables.$.getHeaderTag('subHead1')#>
-			</div>
-		</cfif>
+					<!--- Remember Me --->
+					<div class="form-group">
+						<div class="col-lg-offset-2 col-lg-10">
+							<label class="checkbox" for="cbRememberMe" >
+								<input type="checkbox" id="cbRememberMe" name="rememberMe" value="1"> #htmlEditFormat(variables.$.rbKey('user.rememberme'))#
+							</label>
+						</div>
+					</div>
 
-		<script type="text/javascript">
-		<!--
-		   document.getElementById("login").elements[0].focus();
-		-->
-		</script>
+					<!--- Login Button --->
+					<div class="form-group">
+						<div class="col-lg-offset-2 col-lg-10">
+							<button type="submit" class="btn btn-default">#htmlEditFormat(variables.$.rbKey('user.login'))#</button>
+						</div>
+					</div>
 
-	</cfif>
+					<input type="hidden" name="doaction" value="login">
+					<input type="hidden" name="linkServID" value="#HTMLEditFormat(variables.$.event('linkServID'))#">
+					<input type="hidden" name="returnURL" value="#HTMLEditFormat(variables.$.event('returnURL'))#">
+				</form>
+
+
+				<cfif variables.$.event('doaction') eq 'sendlogin'>
+					<cfset msg2=application.userManager.sendLoginByEmail(variables.$.event('email'), variables.$.event('siteID'),'#urlencodedformat(variables.$.event('returnURL'))#')>
+				</cfif>
+
+				<!--- Forgot Username / Password Form --->
+				<form name="form2" class="form-horizontal form-sendlogin <cfif this.formWrapperClass neq "">#this.formWrapperClass#</cfif>" method="post" action="?nocache=1" id="sendLogin" onsubmit="return validate(this);" novalidate="novalidate">
+
+					<legend>#variables.$.rbKey('user.forgetusernameorpassword')#</legend>
+					<p>#variables.$.rbKey('user.forgotloginmessage')#</p>
+
+					<cfif isdefined('msg2')>
+						<cfif FindNoCase('is not a valid',msg2)><div class="alert alert-error">#HTMLEditFormat(variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('user.forgotnotvalid'),variables.$.event('email')))#<cfelseif FindNoCase('no account',msg2)><div class="error">#HTMLEditFormat(variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('user.forgotnotfound'),variables.$.event('email')))#<cfelse><div class="alert">#variables.$.rbKey('user.forgotsuccess')#</cfif></div>
+					</cfif>
+
+					<!--- Email --->
+					<div class="form-group">
+						<label class="control-label col-lg-2" for="txtEmail">#variables.$.rbKey('user.email')#</label>
+						<div class="col-lg-10">
+							<input id="txtEmail" name="email" class="form-control" type="text" placeholder="#variables.$.rbKey('user.email')#" validate="email" required="true" message="#htmlEditFormat(variables.$.rbKey('user.emailvalidate'))#" />
+						</div>
+					</div>
+
+					<!--- Submit Button --->
+					<div class="form-group">
+						<div class="col-lg-offset-2 col-lg-10">
+							<button type="submit" class="btn btn-default">#htmlEditFormat(variables.$.rbKey('user.getpassword'))#</button>
+						</div>
+					</div>
+
+					<input type="hidden" name="doaction" value="sendlogin">
+					<input type="hidden" name="linkServID" value="#HTMLEditFormat(variables.$.event('linkServID'))#">
+					<input type="hidden" name="display" value="login">
+					<input type="hidden" name="returnURL" value="#HTMLEditFormat(variables.$.event('returnURL'))#">
+				</form>
+
+				<!--- Not Registered? --->
+				<cfif variables.$.siteConfig('ExtranetPublicReg')>
+					<div id="notRegistered">
+						<#variables.$.getHeaderTag('subHead1')# class="center">#variables.$.rbKey('user.notregistered')# <a class="btn btn-primary" href="#variables.$.siteConfig('editProfileURL')#&returnURL=#urlencodedformat(variables.$.event('returnURL'))#">#variables.$.rbKey('user.signup')#</a></#variables.$.getHeaderTag('subHead1')#>
+					</div>
+				</cfif>
+
+				<script type="text/javascript">
+				   document.getElementById("login").elements[0].focus();
+				</script>
+			</cfif>
+		</div>
+	</div>
 </cfoutput>
-</div>
