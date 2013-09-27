@@ -125,15 +125,15 @@
 			<div class="row">
 				<div class="moreResults">
 					<p>#variables.$.rbKey('search.displaying')#: #request.startrow# - #variables.through# #variables.$.rbKey('search.of')# #session.rsSearch.recordcount#</p>
-					<ul>
+					<ul class="pager">
 					<cfif variables.previous gte 1>
 						<li class="navPrev">
-							<a href="?startrow=#variables.previous#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">&laquo;&nbsp;#variables.$.rbKey('search.prev')#</a>
+							<a href="?startrow=#variables.previous#&amp;display=search&amp;keywords=#HTMLEditFormat(request.keywords)#&amp;searchSectionID=#HTMLEditFormat(request.searchSectionID)#&amp;tag=#HTMLEditFormat(request.tag)#"><i class="icon-double-angle-left"></i> #variables.$.rbKey('search.prev')#</a>
 						</li>
 					</cfif>
 					<cfif session.rsSearch.recordcount gt 0 and variables.through lt session.rsSearch.recordcount>
 						<li class="navNext">
-							<a href="?startrow=#next#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">#variables.$.rbKey('search.next')#&nbsp;&raquo;</a>
+							<a href="?startrow=#next#&amp;display=search&amp;keywords=#HTMLEditFormat(request.keywords)#&amp;searchSectionID=#HTMLEditFormat(request.searchSectionID)#&amp;tag=#HTMLEditFormat(request.tag)#">#variables.$.rbKey('search.next')# <i class="icon-double-angle-right"></i></a>
 						</li>
 					</cfif>
 				</ul>
@@ -156,16 +156,16 @@
 			<!--- more results --->
 			<div class="row">
 				<div class="moreResults">
-					#variables.$.rbKey('search.displaying')#: #request.startrow# - #variables.through# #variables.$.rbKey('search.of')# #session.rsSearch.recordcount#
-					<ul>
+					<p>#variables.$.rbKey('search.displaying')#: #request.startrow# - #variables.through# #variables.$.rbKey('search.of')# #session.rsSearch.recordcount#</p>
+					<ul class="pager">
 					<cfif variables.previous gte 1>
 						<li class="navPrev">
-							<a href="?startrow=#variables.previous#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">&laquo;&nbsp;#variables.$.rbKey('search.prev')#</a>
+							<a href="./?startrow=#variables.previous#&amp;display=search&amp;keywords=#HTMLEditFormat(request.keywords)#&amp;searchSectionID=#HTMLEditFormat(request.searchSectionID)#&amp;tag=#HTMLEditFormat(request.tag)#"><i class="icon-double-angle-left"></i> #variables.$.rbKey('search.prev')#</a>
 						</li>
 					</cfif>
 					<cfif session.rsSearch.recordcount gt 0 and  variables.through lt session.rsSearch.recordcount>
 						<li class="navNext">
-							<a href="?startrow=#next#&display=search&keywords=#HTMLEditFormat(request.keywords)#&searchSectionID=#HTMLEditFormat(request.searchSectionID)#&tag=#HTMLEditFormat(request.tag)#">#variables.$.rbKey('search.next')#&nbsp;&raquo;</a>
+							<a href="./?startrow=#next#&amp;display=search&amp;keywords=#HTMLEditFormat(request.keywords)#&amp;searchSectionID=#HTMLEditFormat(request.searchSectionID)#&amp;tag=#HTMLEditFormat(request.tag)#">#variables.$.rbKey('search.next')# <i class="icon-double-angle-right"></i></a>
 						</li>
 					</cfif>
 				</ul>
