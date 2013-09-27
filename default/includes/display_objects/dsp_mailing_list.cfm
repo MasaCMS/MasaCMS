@@ -70,7 +70,6 @@
 </cfsilent>
 <cfoutput>
 	<div class="svMailingList well" id="#createCSSID(variables.rslist.name)#">
-		<#variables.$.getHeaderTag('subHead1')#>#HTMLEditFormat(variables.rslist.name)#</#variables.$.getHeaderTag('subHead1')#>
 		
 		<cfif variables.$.event('doaction') eq 'unsubscribe'>
 			<cfif variables.$.event("passedProtect")>
@@ -92,15 +91,15 @@
 			</cfif>	
 		<cfelse>
 
-			<!--- Form Description --->
-			<cfif #variables.rslist.description# neq ''>
-				<div class="description">#HTMLEditFormat(variables.rslist.description)#</div>
-			</cfif>
-
 			<!--- THE FORM --->
 			<form role="form" class="form-horizontal clearfix" name="frmMailingList" action="?nocache=1" method="post" onsubmit="return validate(this);" novalidate="novalidate" >
 				<fieldset>
-					<legend>#variables.$.rbKey('mailinglist.yourinfo')#</legend>
+					<legend>#HTMLEditFormat(variables.rslist.name)#</legend>
+
+					<!--- Form Description --->
+					<cfif #variables.rslist.description# neq ''>
+						<div class="description">#HTMLEditFormat(variables.rslist.description)#</div>
+					</cfif>
 
 					<cfif variables.rslist.isPurge neq 1>
 
