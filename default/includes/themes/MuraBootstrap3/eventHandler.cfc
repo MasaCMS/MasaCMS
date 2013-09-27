@@ -124,7 +124,7 @@
 			renderer.liNestedClass = '';
 
 			// pagination vars
-			renderer.ulPaginationClass = '';
+			renderer.ulPaginationClass = 'pagination';
 			renderer.ulPaginationWrapperClass = 'pagination';
 
 			// form vars
