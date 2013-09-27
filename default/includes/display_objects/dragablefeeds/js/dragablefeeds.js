@@ -98,7 +98,7 @@
 	} 
 	// This function has been slightly modified
 	function Set_Cookie(name,value,expires,path,domain,secure) { 
-		/*expires = expires * 60*60*24*1000;
+		expires = expires * 60*60*24*1000;
 		var today = new Date();
 		var expires_date = new Date( today.getTime() + (expires) );
 	    var cookieString = name + "=" +escape(value) + 
@@ -106,7 +106,7 @@
 	       ( (path) ? ";path=" + path : "") + 
 	       ( (domain) ? ";domain=" + domain : "") + 
 	       ( (secure) ? ";secure" : ""); 
-	    document.cookie = cookieString; */
+	    document.cookie = cookieString; 
 	} 
 
 	function autoScroll(direction,yPos)
@@ -551,14 +551,15 @@
 	{
 		var numericId = this.id.replace(/[^0-9]/g,'');
 		var obj = document.getElementById('dragableBoxEdit' + numericId);
+		var header = document.getElementById('dragableBoxHeader' + numericId);
 		if(obj.style.display=='none'){
 			obj.style.display='block';
 			//this.innerHTML = txt_editLink_stop;
-			document.getElementById('dragableBoxHeader' + numericId).style.height = '135px';
+			header.style.height = '170px';
 		}else{
 			obj.style.display='none';
 			//this.innerHTML = txt_editLink;
-			document.getElementById('dragableBoxHeader' + numericId).style.height = '20px';
+			header.style.height = '22px';
 		}
 		setTimeout('dragDropCounter=-5',5);
 	}
@@ -617,7 +618,7 @@
 		
 		
 		var div = document.createElement('DIV');
-		div.className = 'dragableBoxHeader';
+		div.className = 'dragableBoxHeader panel-heading';
 		div.style.cursor = 'move';
 		div.id = 'dragableBoxHeader' + boxIndex;
 		//div.onmouseover = mouseoverBoxHeader;
@@ -738,13 +739,28 @@
 		var editBox = document.createElement('DIV');
 		editBox.style.clear='both';
 		editBox.id = 'dragableBoxEdit' + boxIndex;
+		editBox.className = 'dragableBoxEdit';
 		editBox.style.display='none';
 		
-		var content = '<form class="RSSeditForm"><table><tr><td>' + feedsource + ':<\/td><td><input type="text" id="rssUrl[' + boxIndex + ']" value="' + dragableBoxesArray[boxIndex]['rssUrl'] + '"  class="text"><\/td><\/tr>'
-		+'<tr><td>' + feeditems + ':<\/td><td><input type="text" class="text" id="maxRssItems[' + boxIndex + ']" onblur="this.value = this.value.replace(/[^0-9]/g,\'\');if(!this.value)this.value=' + dragableBoxesArray[boxIndex]['maxRssItems'] + '" value="' + dragableBoxesArray[boxIndex]['maxRssItems'] + '" size="2" maxlength="2"><\/td><\/tr>'
-		//+'<tr><td>Fixed height:<\/td><td><input type="text" id="heightOfBox[' + boxIndex + ']" onblur="this.value = this.value.replace(/[^0-9]/g,\'\');if(!this.value)this.value=' + dragableBoxesArray[boxIndex]['heightOfBox'] + '" value="' + dragableBoxesArray[boxIndex]['heightOfBox'] + '" size="2" maxlength="3"><\/td><\/tr>'
-		//+'<tr><td>Reload every:<\/td><td width="30"><input type="text" id="minutesBeforeReload[' + boxIndex + ']" onblur="this.value = this.value.replace(/[^0-9]/g,\'\');if(!this.value || this.value/1<5)this.value=' + dragableBoxesArray[boxIndex]['minutesBeforeReload'] + '" value="' + dragableBoxesArray[boxIndex]['minutesBeforeReload'] + '" size="2" maxlength="3">&nbsp;minute<\/td><\/tr>'
-		+'<tr><td colspan="2"><input type="button" onclick="saveFeed(' + boxIndex + ')" value="' + feedsave + '"><\/td><\/tr><\/table><\/form>';
+		var content = '<form role="form" class="RSSeditForm form-horizontal">'
+		+	'<div class="form-group">'
+		+		'<label for="rssUrl['+boxIndex+']" class="col-lg-2 control-label">'+feedsource+':<\/label>'
+		+		'<div class="col-lg-10">'
+		+			'<input class="form-control" type="text" id="rssUrl[' + boxIndex + ']" value="' + dragableBoxesArray[boxIndex]['rssUrl'] + '">'
+		+		'<\/div>'
+		+	'<\/div>'
+		+	'<div class="form-group">'
+		+ 	'<label for="maxRssItems['+boxIndex+']" class="col-lg-2 control-label">'+feeditems+':<\/label>'
+		+		'<div class="col-lg-3">'
+		+			'<input class="form-control" type="text" id="maxRssItems['+boxIndex+']" onblur="this.value = this.value.replace(/[^0-9]/g,\'\');if(!this.value)this.value=' + dragableBoxesArray[boxIndex]['maxRssItems'] + '" value="' + dragableBoxesArray[boxIndex]['maxRssItems'] + '" size="2" maxlength="2">'
+		+		'<\/div>'
+		+ '<\/div>'
+		+ '<div class="form-group">'
+		+		'<div class="col-lg-offset-2 col-lg-10">'
+		+ 		'<input class="btn btn-default" type="button" onclick="saveFeed(' + boxIndex + ')" value="' + feedsave + '">'
+		+		'<\/div>'
+		+	'<\/div>'
+		+ '<\/form>';
 		editBox.innerHTML = content;
 		
 		parentObj.appendChild(editBox);		
@@ -784,7 +800,7 @@
 		boxIndex++;
 		
 		var div = document.createElement('DIV');
-		div.className = 'dragableBox';
+		div.className = 'dragableBox panel panel-primary';
 		div.id = 'dragableBox' + boxIndex;
 		addBoxHeader(div);
 		addBoxContentContainer(div,heightOfBox);
@@ -801,10 +817,6 @@
 		dragableBoxesArray[boxIndex] = new Array();
 		dragableBoxesArray[boxIndex]['obj'] = div;
 		dragableBoxesArray[boxIndex]['parentObj'] = div.parentNode;
-		
-		
-
-		
 		
 		return boxIndex;
 		
@@ -828,7 +840,8 @@
 		
 		document.getElementById('dragableBoxHeader_txt' + boxIndex).innerHTML = '<span>' + headerTokens[0] + '<\/span><span class="rssNumberOfItems">(' + headerTokens[1] + ')<\/span>';	// title
 		
-		var string = '<ul class=\"dragableFeeds\">';
+		//var string = '<ul class=\"dragableFeeds\">';
+		var string = '<div class="panel-body"><ul class="nav">';
 		for(var no=1;no<tokens.length;no++){	// Looping through RSS items
 			var itemTokens = tokens[no].split(/##/g);			
 			string = string + '<li class=\"boxItemHeader\"><a class=\"boxItemHeader\" href="' + itemTokens[3] + '" onclick="var w = window.open(this.href);return false">' + itemTokens[0] + '<\/a><\/li>';		
@@ -840,7 +853,7 @@
 				alert(itemTokens[2]);
 			}
 		}*/
-		var string = string + '<\/ul>';
+		var string = string + '<\/ul><\/div>';
 		document.getElementById('dragableBoxContent' + boxIndex).innerHTML = string;
 		showStatusBarMessage(boxIndex,'');
 		//ajaxObjects[ajaxIndex] = false;
