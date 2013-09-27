@@ -260,7 +260,7 @@
 			<!--- COMMENT FORM --->
 			<div id="postcomment-form" class="well">
 				
-				<span id="postcomment-comment" style="display: none"><a href="##postcomment">#variables.$.rbKey('comments.newcomment')#</a></span>
+				<span id="postcomment-comment" style="display: none"><a class="btn btn-default" href="##postcomment">#variables.$.rbKey('comments.newcomment')#</a></span>
 
 				<!--- THE FORM --->
 				<form role="form" id="postcomment" class="form-horizontal" method="post" name="addComment" action="?nocache=1##postcomment" onsubmit="return validate(this);" novalidate="novalidate">
