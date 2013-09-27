@@ -339,47 +339,49 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="filename" type="string" />
 	<cfargument name="oldfilename" type="string" />
 	
-	<cfset var newFile=""/>
-	<cfset var rslist=""/>
-	<cfset var newbody=""/>
-	<cfset var newSummary=""/>
-	<cfset var renderer=variables.settingsManager.getSite(arguments.siteID).getContentRenderer()>
+	<cfif variables.configBean.getManagelinks()>
+		<cfset var newFile=""/>
+		<cfset var rslist=""/>
+		<cfset var newbody=""/>
+		<cfset var newSummary=""/>
+		<cfset var renderer=variables.settingsManager.getSite(arguments.siteID).getContentRenderer()>
 
-	<cfif arguments.filename neq ''>
-	<cfset newfile="#variables.configBean.getContext()##renderer.getURLStem(arguments.siteID,arguments.filename)#">
-	<cfelse>
-	<cfset newfile="#variables.configBean.getContext()##renderer.getURLStem(arguments.siteID,"")#">
-	</cfif>
-
-	<cfif arguments.oldfilename neq "/">
-		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rslist')#">
-		select contenthistid, body from tcontent where type in ('Page','Calendar','Folder','Component','Form','Gallery','Link','File')
-		 and body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,arguments.oldfilename)#%"/>
-		 and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-		</cfquery>
-	
-		<cfif rslist.recordcount>
-			<cfloop query="rslist">
-				<cfset newbody=rereplace(rslist.body,"#variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,arguments.oldfilename)#","#newfile#",'All')>
-				<cfquery>
-				update tcontent set body=<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#newBody#"> where contenthistid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rslist.contenthistID#"/>
-				</cfquery>
-			</cfloop>
+		<cfif arguments.filename neq ''>
+		<cfset newfile="#variables.configBean.getContext()##renderer.getURLStem(arguments.siteID,arguments.filename)#">
+		<cfelse>
+		<cfset newfile="#variables.configBean.getContext()##renderer.getURLStem(arguments.siteID,"")#">
 		</cfif>
-			
-		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rslist')#">
-		 select contenthistid, summary from tcontent where type in ('Page','Calendar','Folder','Component','Form','Gallery','Link','File')
-		 and summary like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,arguments.oldfilename)#%"/>
-		 and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-		</cfquery>
+
+		<cfif arguments.oldfilename neq "/">
+			<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rslist')#">
+			select contenthistid, body from tcontent where type in ('Page','Calendar','Folder','Component','Form','Gallery','Link','File')
+			 and body like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,arguments.oldfilename)#%"/>
+			 and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+			</cfquery>
 		
-		<cfif rslist.recordcount>
+			<cfif rslist.recordcount>
 				<cfloop query="rslist">
-				<cfset newSummary=rereplace(rslist.summary,"#variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,arguments.oldfilename)#","#newfile#",'All')>
-				<cfquery>
-				update tcontent set summary= <cfqueryparam cfsqltype="cf_sql_longvarchar" value="#newSummary#"> where contenthistid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rslist.contenthistid#">
-				</cfquery>
+					<cfset newbody=rereplace(rslist.body,"#variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,arguments.oldfilename)#","#newfile#",'All')>
+					<cfquery>
+					update tcontent set body=<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#newBody#"> where contenthistid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rslist.contenthistID#"/>
+					</cfquery>
 				</cfloop>
+			</cfif>
+				
+			<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rslist')#">
+			 select contenthistid, summary from tcontent where type in ('Page','Calendar','Folder','Component','Form','Gallery','Link','File')
+			 and summary like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,arguments.oldfilename)#%"/>
+			 and siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+			</cfquery>
+			
+			<cfif rslist.recordcount>
+					<cfloop query="rslist">
+					<cfset newSummary=rereplace(rslist.summary,"#variables.configBean.getContext()##variables.contentRenderer.getURLStem(arguments.siteID,arguments.oldfilename)#","#newfile#",'All')>
+					<cfquery>
+					update tcontent set summary= <cfqueryparam cfsqltype="cf_sql_longvarchar" value="#newSummary#"> where contenthistid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#rslist.contenthistid#">
+					</cfquery>
+					</cfloop>
+			</cfif>
 		</cfif>
 	</cfif>
 
