@@ -11,16 +11,6 @@
 	padding: 0 6px !important;
 }*/
 
-#svRSSFeeds {
-	margin: 0;
-	padding: 0;
-	height: 1%;
-}
-
-#svRSSFeeds p.rssBlurb {
-	margin: 0 0 0 0;
-}
-
 .dragableBoxHeader { /* Header inside RSS box */
 	height: 20px;
 	line-height:  20px;

@@ -1,88 +1,3 @@
-/* @override http://72.29.5.128/intranet/includes/display_objects/dragablefeeds/css/dragablefeeds.css
-	http://localhost:8500/muracore/default/includes/display_objects/dragablefeeds/css/dragablefeeds.css */
-
-/* RSS Feed */
-
-#svRSSFeeds {
-	margin: 0 0 2em;
-	padding: 0;
-}
-
-#svRSSFeeds h3 {}
-
-#svRSSFeeds p.rssBlurb {
-	margin: 0 0 1em 0;
-}
-
-/* END RSS Feed */
-
-#svRSSFeeds form { /* No borders in forms */
-	display: inline;
-}
-
-#svAddNewFeed {
-	background: #f2f2f2;
-	padding: 1em;
-	margin: 0 0 2em;
-}
-
-#svAddNewFeed dl {
-	margin: 0;
-	width: 50%;
-}
-
-#svAddNewFeed dt {
-	margin: 0 0 .5em 0 !important;
-	font-weight: bold;
-	float: none !important;
-	line-height: auto !important;
-	width: auto !important;
-	clear: none !important;
-}
-
-#svAddNewFeed dd {
-	margin: 0 0 .5em 0 !important;
-	float: none !important;
-	white-space: nowrap;
-}
-
-#svAddNewFeed dl#rssInternal {
-	float: left;
-	margin: 0;
-	padding: 0;
-	clear: none;
-}
-
-#svAddNewFeed dl#rssExternal {
-	float: right;
-	margin: 0;
-	padding: 0;
-	clear: none;
-}
-
-#svAddNewFeed dd select {
-	float: left;
-	width: 65%;
-	margin: 0 !important;
-}
-
-#svAddNewFeed dd input {
-	display: block;
-	float: left;
-	width: 65%;
-	margin: 0 !important;
-}
-
-#svAddNewFeed button {
-	/*
-width: 30% !important;
-	line-height: 20px;
-	padding: 0 !important;
-	margin: 0 0 0 .5em !important;
-	float: left;
-*/
-}
-
 #dragableBoxesColumn1 {
 	margin: 0 0 5px 0;
 	padding: 0;
@@ -101,11 +16,12 @@ width: 30% !important;
 
 /* @group Draggable Boxes */
 
-.dragableBox { /* The RSS box */
+/* The RSS box */
+/*.dragableBox { 
 	margin: 0 0 1em 0;
 	padding: 0 0 1em 0;
 	border: 1px solid #ccc;
-}
+}*/
 
 #dragableBoxesColumn1 .dragableBox { margin-right: 10px; }
 
@@ -153,10 +69,11 @@ width: 30% !important;
 .dragableBoxHeader { /* Header inside RSS box */
 	font-weight: bold;
 	position: relative;
-	height: 17px;
-	line-height:  17px !important;
-	margin: 0 0 10px 0 !important;
-	background: #ccc url(../images/bg_hdr.png) repeat-x;
+	height: 22px;
+	line-height:  12px !important;
+	margin: 0;
+	/*background-color: #ccc;*/
+	/*background: #ccc url(../images/bg_hdr.png) repeat-x;*/
 	padding: .25em 30px .25em .5em !important;
 }
 
@@ -186,6 +103,10 @@ width: 30% !important;
 	right: 20px;
 }
 /* CLOSE BACKSLASH HACK */
+
+.dragableBoxEdit {
+	padding-top: 1em;
+}
 
 .dragableBoxHeader img.dragableBoxEditLink { /* Edit image inside RSS box */
 	right: 17px;
@@ -228,13 +149,14 @@ width: 30% !important;
 }
 
 #content .dragableBox ul { /* List of items */
-	margin: 1em;
+	/*margin: 1em;*/
+	-webkit-padding-start: 0;
 }
 
 .dragableBoxContent li { /* List of items */
-	margin: 0 0 .5em 0 !important;
+	/*margin: 0 0 .5em 0 !important;
 	list-style: none;
-		line-height: 1.2;
+		line-height: 1.2;*/
 }
 
 #rectangleDiv { /* Dotted rectangle indicating where objects will be dropped */
