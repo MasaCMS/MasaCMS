@@ -82,24 +82,33 @@
 					<legend>#variables.$.rbKey('user.contactinformation')#</legend>
 
 					<!--- First Name --->
-					<div class="form-group">
-						<label class="control-label col-lg-3 required" for="firstName">#variables.$.rbKey('user.fname')#</label>
+					<div class="req form-group">
+						<label class="control-label col-lg-3" for="firstName">
+							#variables.$.rbKey('user.fname')#
+							<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
+						</label>
 						<div class="col-lg-9">
 							<input class="form-control" type="text" id="firstName" name="fname" value="#HTMLEditFormat(request.userBean.getfname())#" required="true" message="#htmlEditFormat(variables.$.rbKey('user.fnamerequired'))#" maxlength="50" placeholder="#variables.$.rbKey('user.fname')#">
 						</div>
 					</div>
 
 					<!--- Last Name --->
-					<div class="form-group">
-						<label class="control-label col-lg-3 required" for="lastName">#variables.$.rbKey('user.lname')#</label>
+					<div class="req form-group">
+						<label class="control-label col-lg-3" for="lastName">
+							#variables.$.rbKey('user.lname')#
+							<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
+						</label>
 						<div class="col-lg-9">
 							<input class="form-control" type="text" id="lastName" name="lname" value="#HTMLEditFormat(request.userBean.getlname())#" required="true" message="#htmlEditFormat(variables.$.rbKey('user.lnamerequired'))#" maxlength="50" placeholder="#variables.$.rbKey('user.lname')#">
 						</div>
 					</div>
 
 					<!--- Username --->
-					<div class="form-group">
-						<label class="control-label col-lg-3 required" for="usernametxt">#variables.$.rbKey('user.username')#</label>
+					<div class="req form-group">
+						<label class="control-label col-lg-3" for="usernametxt">
+							#variables.$.rbKey('user.username')#
+							<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
+						</label>
 						<div class="col-lg-9">
 							<input class="form-control" type="text" id="usernametxt" name="username" value="#HTMLEditFormat(request.userBean.getUserName())#" required="true" message="#htmlEditFormat(variables.$.rbKey('user.usernamerequired'))#" maxlength="50" placeholder="#variables.$.rbKey('user.username')#">
 						</div>
@@ -114,8 +123,11 @@
 					</div>
 
 					<!--- Email --->
-					<div class="form-group">
-						<label class="control-label col-lg-3 required" for="emailtxt">#variables.$.rbKey('user.email')#</label>
+					<div class="req form-group">
+						<label class="control-label col-lg-3" for="emailtxt">
+							#variables.$.rbKey('user.email')#
+							<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
+						</label>
 						<div class="col-lg-9">
 							<input class="form-control" type="text" id="emailtxt" name="email" value="#HTMLEditFormat(request.userBean.getEmail())#" maxlength="50" required="true" placeholder="#variables.$.rbKey('user.email')#" message="#HTMLEditFormat(variables.$.rbKey('user.emailvalidate'))#">
 						</div>
@@ -123,8 +135,11 @@
 
 					<cfif not session.mura.isloggedin>
 						<!--- Email2 (for NEW USER) --->
-						<div class="form-group">
-							<label class="control-label col-lg-3 required" for="email2xt">#variables.$.rbKey('user.emailconfirm')#</label>
+						<div class="req form-group">
+							<label class="control-label col-lg-3" for="email2xt">
+								#variables.$.rbKey('user.emailconfirm')#
+								<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
+							</label>
 							<div class="col-lg-9">
 								<input class="form-control" type="text" id="email2xt" name="email2" value="" maxlength="50" required="true" validate="match" matchfield="email" placeholder="#variables.$.rbKey('user.emailconfirm')#" message="#HTMLEditFormat(variables.$.rbKey('user.emailconfirmvalidate'))#" />
 							</div>
@@ -136,16 +151,22 @@
 						for the user instead of letting them pick one themselves 
 					--->
 					<!--- Password --->
-					<div class="form-group">
-						<label class="control-label col-lg-3 required" for="passwordtxt">#variables.$.rbKey('user.password')#</label>
+					<div class="req form-group">
+						<label class="control-label col-lg-3" for="passwordtxt">
+							#variables.$.rbKey('user.password')#
+							<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
+						</label>
 						<div class="col-lg-9">
 							<input class="form-control" type="password" name="passwordNoCache" id="passwordtxt" validate="match" matchfield="password2" value=""  maxlength="50" required="true" placeholder="#variables.$.rbKey('user.password')#" message="#HTMLEditFormat(variables.$.rbKey('user.passwordvalidate'))#" />
 						</div>
 					</div>
 
 					<!--- Password2 --->
-					<div class="form-group">
-						<label class="control-label col-lg-3 required" for="password2txt">#variables.$.rbKey('user.passwordconfirm')#</label>
+					<div class="req form-group">
+						<label class="control-label col-lg-3" for="password2txt">
+							#variables.$.rbKey('user.passwordconfirm')#
+							<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
+						</label>
 						<div class="col-lg-9">
 							<input class="form-control" type="password" name="password2" id="password2txt" value=""  maxlength="50" required="true" placeholder="#variables.$.rbKey('user.passwordconfirm')#" message="#HTMLEditFormat(variables.$.rbKey('user.passwordconfirmrequired'))#" />
 						</div>
@@ -193,6 +214,7 @@
 					<cfset extendSets=application.classExtensionManager.getSubTypeByName(request.userBean.gettype(),request.userBean.getsubtype(),userPoolID).getExtendSets(inherit=true,activeOnly=true) />
 				</cfsilent>
 
+				<!--- Extended Attributes --->
 				<cfif arrayLen(extendSets)>
 					<cfloop from="1" to="#arrayLen(extendSets)#" index="s">
 						<cfset extendSetBean=extendSets[s]/>
@@ -212,27 +234,43 @@
 									<cfset started=true>
 								</cfif>
 
-								<div class="form-group">
+								<div class="<cfif attributeBean.getRequired()>req</cfif> form-group">
 									<cfif not listFind("TextArea,MultiSelectBox",attributeBean.getType())>
-										<label class="control-label col-lg-3 <cfif attributeBean.getRequired()>required</cfif>" for="ext#attributeBean.getAttributeID()#">#attributeBean.getLabel()#<!--- <cfif len(attributeBean.gethint())><br />#attributeBean.gethint()#</cfif> ---></label>
+										<label class="control-label col-lg-3" for="ext#attributeBean.getAttributeID()#">
+											#attributeBean.getLabel()#
+											<cfif attributeBean.getRequired()><ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins></cfif>
+											<!--- <cfif len(attributeBean.gethint())><br />#attributeBean.gethint()#</cfif> --->
+										</label>
 									<cfelse>
-										<label class="control-label col-lg-3 <cfif attributeBean.getRequired()>required</cfif>" for="ext#attributeBean.getAttributeID()#">#attributeBean.getLabel()#<cfif len(attributeBean.gethint())><span class="help-block">#attributeBean.gethint()#</span></cfif></label>
+										<label class="control-label col-lg-3" for="ext#attributeBean.getAttributeID()#">
+											#attributeBean.getLabel()#
+											<cfif attributeBean.getRequired()><ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins></cfif>
+											<cfif len(attributeBean.gethint())><span class="help-block">#attributeBean.gethint()#</span></cfif>
+										</label>
 									</cfif>
 
 									<div class="col-lg-9">
 										<cfif attributeBean.getType() neq 'TextArea'>
-
 											#attributeBean.renderAttribute(attributeValue,true)#
 
 											<cfif attributeBean.getType() neq "MultiSelectBox" and len(attributeBean.gethint())>
 												<span class="help-block">#attributeBean.gethint()#</span>
 											</cfif>
-
+											<!--- If it's a file --->
 											<cfif attributeBean.getType() eq "File" and len(attributeValue) and attributeValue neq 'useMuraDefault'>
-												<input type="checkbox" name="extDelete#attributeBean.getAttributeID()#" value="true"/> Delete
-												<span class="help-block"><a href="#variables.$.globalConfig('context')#/tasks/render/file/?fileID=#attributeValue#" target="_blank">[Download]</a></span>
+												<div class="form-group">
+													<div class="col-lg-offset-3 col-lg-6">
+														<div class="checkbox">
+															<label>
+																<input type="checkbox" name="extDelete#attributeBean.getAttributeID()#" value="true"/> Delete
+															</label>
+														</div>
+													</div>
+													<div class="col-lg-3">
+														<span class="help-block"><a class="btn btn-default" href="#variables.$.globalConfig('context')#/tasks/render/file/?fileID=#attributeValue#" target="_blank">Download</a></span>
+													</div>
+												</div>
 											</cfif>
-
 										<cfelse>
 											#attributeBean.renderAttribute(attributeValue)#
 										</cfif>
@@ -243,7 +281,6 @@
 					</cfloop>
 				</cfif>
 				<!--- @END Extended Attributes --->
-
 
 				<!--- EDIT PROFILE BUTTON --->
 				<div class="form-group">

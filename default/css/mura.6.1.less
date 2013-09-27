@@ -55,7 +55,6 @@
 	Mura CMS.
 */
 
-
 // Nav Session
 #navSession {
 	list-style: none;
@@ -861,9 +860,16 @@ ul#svSiteMap {
 
 } //end Site Map
 
-// Tag Cloud
-#svTagCloud ol {
+// Tag Cloud (#svTagCloud left in for backward-compatibility)
+#svTagCloud, .svTagCloud {
+	padding: 1em 0;
+}
+
+#svTagCloud ol, .svTagCloud ol {
 	margin: 0 0 2em;
+	-webkit-margin-before:0;
+	-webkit-margin-after: 0;
+	-webkit-padding-start:0;
 
 	li { display: inline; }
 
@@ -879,7 +885,6 @@ ul#svSiteMap {
 	.popular { font-size: 1.9em; }
 	.very-popular { font-size: 2.1em; }
 	.ultra-popular { font-size: 2.6em; }
-
 }
 //end Tag Cloud
 
@@ -1119,7 +1124,7 @@ aside .rating {
 
 .rating {	
 		position: relative;
-		width: 110px;
+		min-width: 150px;
 		background-repeat: no-repeat;
 		background-position: 3.5em 50%;
 		}
