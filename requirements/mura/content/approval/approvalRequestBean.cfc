@@ -28,7 +28,7 @@ component extends="mura.bean.beanORM"  table="tapprovalrequests" entityname="app
 		    		var membership=memberships.next();
 		    		
 		    		//writeLog(text=membership.getGroupID() & ' ' & getValue('groupID'));	
-		    		
+
 		    		if(membership.getGroupID() eq getValue('groupID')){
 		    			
 		    			if(memberships.hasNext()){
@@ -38,11 +38,10 @@ component extends="mura.bean.beanORM"  table="tapprovalrequests" entityname="app
 		    			} else {
 		    				setValue('status','Approved');
 		    				save();
-		    				
+		    					
 		    				var content=getBean('content').loadBy(contentHistID=getValue('contentHistID'));
 					      	var sourceid=getValue('contentHistID');
 		    				if(not len(content.getChangesetID())){
-						      	
 						      	setValue(
 						      		'contentHistID', 
 						      		content
@@ -75,7 +74,7 @@ component extends="mura.bean.beanORM"  table="tapprovalrequests" entityname="app
 		    } else {
 		    	setValue('status','Approved');
 		    	save();
-		    				
+		    	
 		    	var content=getBean('content').loadBy(contentHistID=getValue('contentHistID'));
 					      	
 		    	if(not len(content.getChangesetID())){

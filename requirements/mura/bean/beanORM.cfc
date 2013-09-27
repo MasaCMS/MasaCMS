@@ -649,11 +649,12 @@ component extends="mura.bean.bean" versioned=false {
 					}
 						
 					qs.execute(sql=sql);
-
+					purgeCache();
 					postUpdate();
 
 					pluginManager.announceEvent('onAfter#variables.entityName#Update',event);
 
+					variables.instance.isnew=0;
 					variables.instance.addObjects=[];
 					variables.instance.removeObjects=[];
 				}
