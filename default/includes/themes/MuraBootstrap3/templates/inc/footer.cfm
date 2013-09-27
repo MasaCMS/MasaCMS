@@ -1,7 +1,7 @@
 <cfoutput>
 	<hr>
 	<footer>
-		<ul class="list-inline pull-left">
+		<ul class="list-inline pull-left breadcrumb">
 			<li>&copy; #HTMLEditFormat($.siteConfig('site'))# #year(now())#</li>
 			<li><a href="#$.createHref(filename='site-map')#">Site Map</a></li>
 			<li><a href="#$.createHref(filename='font-awesome')#">Font Awesome</a></li>
