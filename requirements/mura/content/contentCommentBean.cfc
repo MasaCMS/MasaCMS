@@ -342,6 +342,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					obj.delete();
 				}
 			}
+
+			variables.instance.addObjects=[];
+			variables.instance.removeObjects=[];
 		</cfscript>
 
 		
