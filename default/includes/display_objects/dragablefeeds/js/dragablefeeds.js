@@ -98,7 +98,7 @@
 	} 
 	// This function has been slightly modified
 	function Set_Cookie(name,value,expires,path,domain,secure) { 
-		/*expires = expires * 60*60*24*1000;
+		expires = expires * 60*60*24*1000;
 		var today = new Date();
 		var expires_date = new Date( today.getTime() + (expires) );
 	    var cookieString = name + "=" +escape(value) + 
@@ -106,7 +106,7 @@
 	       ( (path) ? ";path=" + path : "") + 
 	       ( (domain) ? ";domain=" + domain : "") + 
 	       ( (secure) ? ";secure" : ""); 
-	    document.cookie = cookieString; */
+	    document.cookie = cookieString; 
 	} 
 
 	function autoScroll(direction,yPos)
