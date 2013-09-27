@@ -55,64 +55,71 @@
 	Mura CMS.
 --->
 <cfsilent>
-<cfset variables.$.loadShadowBoxJS() />
+	<cfset variables.$.loadShadowBoxJS() />
 </cfsilent>
-<cfif variables.$.event('display') neq 'login'>
-<cfif not len(getPersonalizationID())>
 <cfoutput>
-	<div id="login" class="well clearfix">
-		<#variables.$.getHeaderTag('subhead1')#>#variables.$.rbKey('user.signin')#</#variables.$.getHeaderTag('subhead1')#>
-		<form role="form" class="form-horizontal" action="<cfoutput>?nocache=1</cfoutput>" name="loginForm" method="post">
+	<cfif variables.$.event('display') neq 'login'>
+		<cfif not len(getPersonalizationID())>
+			<div id="login" class="well clearfix">
+				<form role="form" class="form-horizontal" action="<cfoutput>?nocache=1</cfoutput>" name="loginForm" method="post">
+					<legend>#variables.$.rbKey('user.signin')#</legend>
 
-			<!--- Username --->
-			<div class="form-group">
-				<label class="control-label col-lg-2" for="txtUserName">#variables.$.rbKey('user.username')#</label>
-				<div class="col-lg-10">
-					<input type="text" id="txtUserName" name="username" class="form-control" placeholder="#variables.$.rbKey('user.username')#">
-				</div>
+					<!--- Username --->
+					<div class="req form-group">
+						<label class="control-label col-lg-2" for="txtUserName">
+							#variables.$.rbKey('user.username')#
+							<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
+						</label>
+						<div class="col-lg-10">
+							<input type="text" id="txtUserName" name="username" class="form-control" placeholder="#variables.$.rbKey('user.username')#">
+						</div>
+					</div>
+
+					<!--- Password --->
+					<div class="req form-group">
+						<label class="control-label col-lg-2" for="txtPassword">
+							#variables.$.rbKey('user.password')#
+							<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
+						</label>
+						<div class="col-lg-10">
+							<input type="password" id="txtPassword" name="password" class="form-control" placeholder="#variables.$.rbKey('user.password')#">
+						</div>
+					</div>
+
+					<!--- Remember Me --->
+					<div class="form-group">
+						<div class="col-lg-offset-2 col-lg-10">
+							<label class="checkbox" for="cbRemember">
+								<input type="checkbox" id="cbRemember" name="rememberMe" value="1"> #variables.$.rbKey('user.rememberme')#
+							</label>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="col-lg-offset-2 col-lg-10">
+							<input type="hidden" name="doaction" value="login">
+							<button type="submit" class="btn btn-default">#variables.$.rbKey('user.signin')#</button>
+						</div>
+					</div>
+				</form>
 			</div>
-
-			<!--- Password --->
-			<div class="form-group">
-				<label class="control-label col-lg-2" for="txtPassword">#variables.$.rbKey('user.password')#</label>
-				<div class="col-lg-10">
-					<input type="password" id="txtPassword" name="password" class="form-control" placeholder="#variables.$.rbKey('user.password')#">
-				</div>
-			</div>
-
-			<!--- Remember Me --->
-			<div class="form-group">
-				<div class="col-lg-10">
-					<label class="checkbox" for="cbRemember">
-						<input type="checkbox" id="cbRemember" name="rememberMe" value="1"> #variables.$.rbKey('user.rememberme')#
-					</label>
-				</div>
-			</div>
-
-			<div class="form-group">
-				<div class="col-lg-10">
-					<input type="hidden" name="doaction" value="login">
-					<button type="submit" class="btn btn-default">#variables.$.rbKey('user.signin')#</button>
-				</div>
-			</div>
-
+			<!--- Not Registered? --->
 			<cfif application.settingsManager.getSite(variables.$.event('siteID')).getExtranetPublicReg()>
-				<#variables.$.getHeaderTag('subHead2')#>#variables.$.rbKey('user.notregistered')# <a href="#variables.$.siteConfig().getEditProfileURL()#&returnURL=#urlEncodedFormat(variables.$.getCurrentURL())#">#variables.$.rbKey('user.signup')#</a></#variables.$.getHeaderTag('subHead2')#></cfif>
-		</form>
-	</div>
-</cfoutput>
-<cfelse>
-	<cfoutput>
-		<cfif session.mura.isLoggedIn>	
-			<div id="svSessionTools" class="clearfix">
-				<p id="welcome">#variables.$.rbKey('user.welcome')#, #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#</p>
-			 	<ul id="navSession">
-					<li id="navEditProfile"><a href="#variables.$.siteConfig().getEditProfileURL()#&nocache=1&returnURL=#urlEncodedFormat(variables.$.getCurrentURL())#"><i class="icon-user"></i> #variables.$.rbKey('user.editprofile')#</a></li>
-					<li id="navLogout"><a href="?doaction=logout"><i class="icon-signout"></i> #variables.$.rbKey('user.logout')#</a></li>
-				</ul>
-			</div>
+				<div class="center">
+					<#variables.$.getHeaderTag('subHead2')#>#variables.$.rbKey('user.notregistered')# <a class="btn btn-primary" href="#variables.$.siteConfig().getEditProfileURL()#&amp;returnURL=#urlEncodedFormat(variables.$.getCurrentURL())#">#variables.$.rbKey('user.signup')#</a></#variables.$.getHeaderTag('subHead2')#>
+				</div>
+			</cfif>
+		<cfelse>
+			<cfif session.mura.isLoggedIn>	
+				<div id="svSessionTools" class="clearfix">
+					<p id="welcome">#variables.$.rbKey('user.welcome')#, #HTMLEditFormat("#session.mura.fname# #session.mura.lname#")#</p>
+				 	<ul id="navSession">
+						<li id="navEditProfile"><a class="btn btn-default" href="#variables.$.siteConfig().getEditProfileURL()#&amp;nocache=1&amp;returnURL=#urlEncodedFormat(variables.$.getCurrentURL())#"><i class="icon-user"></i> #variables.$.rbKey('user.editprofile')#</a></li>
+						<li id="navLogout"><a class="btn btn-default" href="./?doaction=logout"><i class="icon-signout"></i> #variables.$.rbKey('user.logout')#</a></li>
+					</ul>
+				</div>
+			</cfif>
+			#dspObject('favorites')#
 		</cfif>
-		#dspObject('favorites')#
-	</cfoutput>
-</cfif>
-</cfif>
+	</cfif>
+</cfoutput>
