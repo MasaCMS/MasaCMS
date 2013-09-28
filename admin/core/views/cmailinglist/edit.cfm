@@ -56,6 +56,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfif rc.listBean.getispurge() neq 1>
 	<cfif rc.mlid eq ''>
+		<div class="fieldset">
 		<div class="control-group">
 			<label class="control-label">
 				#application.rbFactory.getKeyValue(session.rb,'mailinglistmanager.name')#
@@ -122,7 +123,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<input type=hidden name="ispurge" value="1"><input type=hidden name="ispublic" value="1">
 		</div>
 	</div>
-			</div>
 </cfif>
 
 	<div class="control-group">
@@ -167,11 +167,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 	</cfif>      
 	
+<cfif rc.mlid neq ''>
 	</div>
-	</div>
-		<cfif rc.mlid neq ''>
-			<cfinclude template="dsp_tab_usage.cfm">
-		</cfif>
+	<cfinclude template="dsp_tab_usage.cfm">
+</cfif>
 	
 	<div class="form-actions">			
 		<cfif rc.mlid eq ''>
