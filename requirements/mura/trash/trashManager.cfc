@@ -237,16 +237,8 @@
 	
 	<cfwddx action="cfml2wddx" input="#arguments.deleted.getAllValues()#" output="allValues">
 
-	<cfif arguments.deleted.getEntityName() eq "user">
-		<cfif arguments.deleted.getType() eq 1>
-			<cfset labelString=getLabelString("Group")>
-		<cfelse>
-			<cfset labelString=getLabelString("User")>
-		</cfif>
-	<cfelse>
-		<cfset labelString=getLabelString(arguments.deleted)>
-	</cfif>
 
+	
 	<cfset idString=getIdString(arguments.deleted)>
 	
 	<cfif arguments.deleted.valueExists('Type')>
@@ -269,18 +261,18 @@
 	
 	<cfif len(idString)>
 		<cfquery name="rs" datasource="#variables.configBean.getReadOnlyDatasource()#" password="#variables.configBean.getReadOnlyDbPassword()#" username="#variables.configBean.getReadOnlyDbUsername()#">
-			select objectID from ttrash where objectID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#evaluate('arguments.deleted.get#IDString#()')#" />
+			select objectID from ttrash where objectID =<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.deleted.getValue(IDString)#" />
 		</cfquery>
 		
 		<cfif not rs.recordcount>
 			<cfquery datasource="#variables.configBean.getDatasource()#" password="#variables.configBean.getDbPassword()#" username="#variables.configBean.getDbUsername()#">
 				insert into ttrash (objectID,parentID,siteID,objectClass,objectLabel,objectType,objectSubType,objectString,deletedDate,deletedBy,deleteID,orderno)
 					values(	
-						<cfqueryparam cfsqltype="cf_sql_varchar" value="#evaluate('arguments.deleted.get#IDString#()')#" />,
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.deleted.getValue(IDString)#" />,
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDeletedParentID(arguments.deleted)#" />,
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#siteid#" />,
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#objectClass#" />,
-						<cfqueryparam cfsqltype="cf_sql_varchar" value="#evaluate('arguments.deleted.get#labelString#()')#" />,
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.deleted.getInstanceName()#" />,
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#objectType#" />,
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#objectSubType#" />,
 						<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#allValues#" />,
@@ -463,81 +455,6 @@
 	<cfelse>
 		<cfreturn arguments.object.getPrimaryKey()>
 	</cfif>
-</cffunction>
-
-<cffunction name="getLabelString" output="false">
-<cfargument name="deleted">
-
-	<cfswitch expression="#arguments.deleted.getEntityName()#">
-	
-		<cfcase value="content">
-			<cfreturn "title">
-		</cfcase>
-		
-		<cfcase value="comment">
-			<cfreturn "name">
-		</cfcase>
-		
-		<cfcase value="feed">
-			<cfreturn "name">
-		</cfcase>
-		
-		<cfcase value="changeset">
-			<cfreturn "name">
-		</cfcase>
-		
-		<cfcase value="user">
-			<cfreturn "username">
-		</cfcase>
-		
-		<cfcase value="address">
-			<cfreturn "addressname">
-		</cfcase>
-		
-		<cfcase value="group">
-			<cfreturn "groupname">
-		</cfcase>
-		
-		<cfcase value="settings">
-			<cfreturn "site">
-		</cfcase>
-		
-		<cfcase value="adzone">
-			<cfreturn "name">
-		</cfcase>
-		
-		<cfcase value="campaign">
-			<cfreturn "name">
-		</cfcase>
-		
-		<cfcase value="placement">
-			<cfreturn "placementID">
-		</cfcase>
-		
-		<cfcase value="creative">
-			<cfreturn "name">
-		</cfcase>
-		
-		<cfcase value="email">
-			<cfreturn "subject">
-		</cfcase>
-		
-		<cfcase value="category">
-			<cfreturn "name">
-		</cfcase>
-		
-		<cfcase value="mailinglist">
-			<cfreturn "name">
-		</cfcase>
-		
-		<cfcase value="extendObject">
-			<cfreturn "subtype">
-		</cfcase>
-		
-		<cfdefaultcase>
-			<cfreturn arguments.deleted.getPrimaryKey()>
-		</cfdefaultcase>
-	</cfswitch>
 </cffunction>
 
 </cfcomponent>

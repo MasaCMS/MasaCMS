@@ -122,6 +122,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset variables.primaryKey = 'siteid'>
 <cfset variables.entityName = 'site'>
+<cfset variables.instanceName= 'site'>
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	

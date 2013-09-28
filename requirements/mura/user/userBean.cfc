@@ -93,6 +93,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset variables.primaryKey = 'userid'>
 <cfset variables.entityName = 'user'>
+<cfset variables.instanceName = 'fullname'>
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	

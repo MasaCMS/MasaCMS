@@ -70,6 +70,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset variables.primaryKey = 'placementID'>
 <cfset variables.entityName = 'placement'>
+<cfset variables.instanceName= 'placementID'>
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	
