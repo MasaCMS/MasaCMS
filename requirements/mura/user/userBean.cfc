@@ -90,7 +90,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="isNew" type="numeric" default="1" required="true" />
 <cfproperty name="tablist" type="string" default="" required="true" />
 <cfproperty name="newFile" type="string" default="" required="true" />
-	
+
+<cfset variables.primaryKey = 'userid'>
+<cfset variables.entityName = 'user'>
+
 <cffunction name="init" returntype="any" output="false" access="public">
 	
 	<cfset super.init(argumentCollection=arguments)>
@@ -145,9 +148,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.tablist="" />
 	<cfset variables.instance.newFile="" />
 	<cfset variables.newAddresses = arrayNew(1) />
-
-	<cfset variables.primaryKey = 'userid'>
-	<cfset variables.entityName = 'user'>
 	
 	<cfreturn this />
 </cffunction>

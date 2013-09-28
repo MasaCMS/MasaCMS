@@ -121,7 +121,7 @@ function restoreAll(){
 	}
 	
 	if(parentid.length==35){
-		confirmDialog('Restore Item From Trash?',"?muraAction=cTrash.restore&siteID=#rc.trashItem.getSiteID()#&objectID=#rc.trashItem.getObjectID()#&&objectID=#rc.trashItem.getDeleteID()#parentid=" + parentid);
+		confirmDialog('Restore Item From Trash?',"?muraAction=cTrash.restore&siteID=#rc.trashItem.getSiteID()#&objectID=#rc.trashItem.getObjectID()#&deleteID=#rc.trashItem.getDeleteID()#&parentid=" + parentid);
 	}else{
 		alertDialog('Please select a valid content parent.');
 	}

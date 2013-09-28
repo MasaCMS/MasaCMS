@@ -5,7 +5,7 @@
 <cfproperty name="siteID" type="string" default="" required="true" />
 <cfproperty name="entered" type="date" default="" required="true" />
 <cfproperty name="rate" type="numeric" default="0" required="true" />
-	
+
 <cffunction name="init" returntype="any" output="false" access="public">
 	
 	<cfset super.init(argumentCollection=arguments)>

@@ -96,6 +96,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="cssClass" type="string" default="" />
 <cfproperty name="useCategoryIntersect" type="numeric" default="0" />
 
+<cfset variables.primaryKey = 'feedid'>
+<cfset variables.entityName = 'feed'>
+
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfset super.init(argumentCollection=arguments)>
 	
@@ -152,9 +155,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.isLocked=0 />
 	<cfset variables.instance.cssClass="" />
 	<cfset variables.instance.useCategoryIntersect=0 />
-
-	<cfset variables.primaryKey = 'feedid'>
-	<cfset variables.entityName = 'feed'>
 	
 	<cfreturn this />
 </cffunction>

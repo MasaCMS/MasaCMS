@@ -63,6 +63,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="remoteID" type="string" default=""/>
 <cfproperty name="isNew" type="numeric" default="1" />
 
+<cfset variables.primaryKey = 'commentid'>
+<cfset variables.entityName = 'comment'>
+
 <cffunction name="init" returntype="any" output="false" access="public">
 	
 	<cfset super.init(argumentCollection=arguments)>
@@ -83,9 +86,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.kids=0/>
 	<cfset variables.instance.remoteID=""/>
 	<cfset variables.instance.isNew=1/>
-
-	<cfset variables.primaryKey = 'commentid'>
-	<cfset variables.entityName = 'comment'>
 
 	<cfreturn this />
 </cffunction>

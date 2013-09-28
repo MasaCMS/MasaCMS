@@ -68,6 +68,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="extendDataTable" type="string" default="tclassextenddatauseractivity" required="true" />
 <cfproperty name="isNew" type="numeric" default="0" required="true" />
 
+<cfset variables.primaryKey = 'addressid'>
+<cfset variables.entityName = 'address'>
+
 <cffunction name="init" returntype="any" output="false" access="public">
 	
 	<cfset super.init(argumentCollection=arguments)>
@@ -97,9 +100,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.isNew=0 />
 	<cfset variables.instance.type="Address" />
 	<cfset variables.instance.subType="Default" />
-
-	<cfset variables.primaryKey = 'addressid'>
-	<cfset variables.entityName = 'address'>
 	
 	<cfreturn this />
 </cffunction>

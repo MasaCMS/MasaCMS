@@ -120,6 +120,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="enableLockdown" type="string" default="" />
 <cfproperty name="customTagGroups" type="string" default="" />
 
+<cfset variables.primaryKey = 'siteid'>
+<cfset variables.entityName = 'site'>
+
 <cffunction name="init" returntype="any" output="false" access="public">
 	
 	<cfset super.init(argumentCollection=arguments)>
@@ -208,9 +211,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.contentRejectionScript=""/>
 	<cfset variables.instance.enableLockdown=""/>
 	<cfset variables.instance.customTagGroups=""/>
-	
-	<cfset variables.primaryKey = 'siteid'>
-	<cfset variables.entityName = 'site'>
 
 	<cfreturn this />
 </cffunction>

@@ -185,6 +185,10 @@ component extends="mura.bean.bean" versioned=false {
 		return application.objectMappings[variables.entityName].primaryKey;
 	}
 
+	function getUseTrash(){
+		return application.objectMappings[variables.entityName].usetrash;
+	}
+
 	function getColumns(){
 		if(hasTable()){
 			if(!structKeyExists(application.objectMappings[variables.entityName],'columns')){
@@ -341,6 +345,12 @@ component extends="mura.bean.bean" versioned=false {
 				application.objectMappings[variables.entityName].manageschema=md.manageschema;
 			} else {
 				application.objectMappings[variables.entityName].manageschema=true;
+			}
+
+			if(structKeyExists(md,'usetrash')){
+				application.objectMappings[variables.entityName].usetrash=md.usetrash;
+			} else {
+				application.objectMappings[variables.entityName].usetrash=false;
 			}
 
 			for (md; 
@@ -726,6 +736,10 @@ component extends="mura.bean.bean" versioned=false {
 			request.muratransaction=false;
 		}
 
+		if(getUseTrash()){
+			getBean('trashManager').takeOut(this);
+		}
+
 		return this;
 	}
 
@@ -862,6 +876,7 @@ component extends="mura.bean.bean" versioned=false {
 				while(subItems.hasNext()){
 					subitem=subitems.next();
 					if(!subitem.getIsNew()){
+						subItem.setDeletedParentID(getValue(getPrimaryKey()));
 						subitem.delete();
 					}
 				}
@@ -876,6 +891,10 @@ component extends="mura.bean.bean" versioned=false {
 		postDelete();
 
 		pluginManager.announceEvent('onAfter#variables.entityName#Delete',event);
+
+		if(getUseTrash()){
+			getBean('trashManager').throwIn(this);
+		}
 
 		return this;
 	}

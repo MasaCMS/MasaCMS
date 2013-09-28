@@ -9,6 +9,9 @@
 <cfset variables.manager="">
 <cfset variables.configBean="">
 
+<cfset variables.primaryKey = 'id'>
+<cfset variables.entityName = 'extendObject'>
+
 <cffunction name="init" output="false">
 <cfargument name="type" default="Custom">
 <cfargument name="subType" default="">

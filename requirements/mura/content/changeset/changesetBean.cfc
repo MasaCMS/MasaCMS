@@ -15,6 +15,9 @@
 <cfproperty name="closeDate" type="date" default="" />
 <cfproperty name="isNew" type="numeric" default="1" required="true" />
 
+<cfset variables.primaryKey = 'changesetID'>
+<cfset variables.entityName = 'changeset'>
+
 <cffunction name="init" output="false">
 	
 	<cfset super.init(argumentCollection=arguments)>
@@ -42,9 +45,6 @@
 		<cfset variables.instance.LastUpdateBy = "" />
 		<cfset variables.instance.LastUpdateByID = "" />
 	</cfif>
-
-	<cfset variables.primaryKey = 'changesetID'>
-	<cfset variables.entityName = 'changeset'>
 	
 	<cfreturn this>
 </cffunction>

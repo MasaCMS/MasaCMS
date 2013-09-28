@@ -59,6 +59,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="height" type="numeric" default="0"  />
 <cfproperty name="width" type="numeric" default="0"  />
 
+<cfset variables.primaryKey = 'adZoneID'>
+<cfset variables.entityName = 'adZone'>
+
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfset super.init(argumentCollection=arguments)>
 	

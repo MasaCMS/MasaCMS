@@ -1334,6 +1334,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset var isNewBean=newBean.getIsNew()>
 
 				<cfset variables.utility.logEvent("ContentID:#newBean.getcontentID()# ContentHistID:#newBean.getcontentHistID()# MenuTitle:#newBean.getMenuTitle()# Type:#newBean.getType()# was created","mura-content","Information",true) />
+
 				<cfset variables.contentDAO.create(newBean) />
 
 				<cfset request.muratransaction=false>
@@ -1357,8 +1358,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						.setCreated(now())
 						.save()>
 
+				<cfset var fromMuraTrash=newBean.valueExists('fromMuraTrash')>
 				<cfset newBean=variables.contentDAO.readVersion(contenthistid=newbean.getContentHistID(),siteid=newBean.getSiteID())>
 				
+				<cfif fromMuraTrash>
+					<cfset newBean.setValue('fromMuraTrash',true)>
+				</cfif>
 				<cfset request.handledfilemetas={}>
 				<cfparam name="arguments.data.fileMetaDataAssign" default="">
 				
