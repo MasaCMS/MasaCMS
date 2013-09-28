@@ -98,6 +98,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset obj=it.next()>
 			<cfset objectID=obj.getObjectID()>
 			<cfset obj=obj.getObject()>
+
 			<cfif structKeyExists(arguments.rc,"parentid") 
 				and len(arguments.rc.parentid) eq 35
 				and arguments.rc.parentID eq objectID>
@@ -107,9 +108,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfloop>
 	<cfelse>
 		<cfset obj=variables.trashManager.getTrashItem(arguments.rc.objectID).getObject()>
-			<cfif structKeyExists(arguments.rc,"parentid") and len(arguments.rc.parentid) eq 35>
-				<cfset obj.setParentID(arguments.rc.parentid)>
-			</cfif>
+		<cfif structKeyExists(arguments.rc,"parentid") and len(arguments.rc.parentid) eq 35>
+			<cfset obj.setParentID(arguments.rc.parentid)>
+		</cfif>
 		<cfset obj.save()>
 	</cfif>
 

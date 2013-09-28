@@ -58,6 +58,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="isActive" type="numeric" default="1"  />
 <cfproperty name="notes" type="string" default=""  />
 
+<cfset variables.primaryKey = 'campaignID'>
+<cfset variables.entityName = 'campaign'>
+
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfset super.init(argumentCollection=arguments)>
 	

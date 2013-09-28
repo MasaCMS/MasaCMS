@@ -131,6 +131,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="approvalChainOverride" type="boolean" default="false" required="true" comparable="false"/>
 <cfproperty name="relatedContentSetData" type="any"/>
 
+<cfset variables.primaryKey = 'contenthistid'>
+<cfset variables.entityName = 'content'>
+
 <cffunction name="init" access="public" returntype="any" output="false">
 	
 	<cfset super.init(argumentCollection=arguments)>
@@ -233,9 +236,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.relatedContentSetData = "" />
 	
 	<cfset variables.displayRegions = structNew()>
-	<cfset variables.primaryKey = 'contenthistid'>
-	<cfset variables.entityName = 'content'>
-	
+		
 	<cfreturn this />
 </cffunction>
 
@@ -1218,10 +1219,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getExtendBaseID" output="false">
 	<cfreturn getContentHistID()>
-</cffunction>
-
-<cffunction name="getPrimaryKey" output="false">
-	<cfreturn "contentHistID">
 </cffunction>
 
 <cffunction name="requiresApproval" output="false">

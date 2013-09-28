@@ -68,6 +68,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="notes" type="string" default=""  />
 <cfproperty name="categoryID" type="string" default=""  />
 
+<cfset variables.primaryKey = 'placementID'>
+<cfset variables.entityName = 'placement'>
+
 <cffunction name="init" returntype="any" output="false" access="public">
 	
 	<cfset super.init(argumentCollection=arguments)>

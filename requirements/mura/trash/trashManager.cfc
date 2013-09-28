@@ -167,7 +167,7 @@
 <cffunction name="throwIn" output="false">
 <cfargument name="deleted">
 	<cfset var $="">	
-	<cfset var objectClass=listLast(getMetaData(arguments.deleted).name,".")>
+	<cfset var objectClass=arguments.deleted.getEntityName()>
 	<cfset var idString="">
 	<cfset var labelString="">
 	<cfset var objectType="">
@@ -200,18 +200,20 @@
 
 	<cfset request["delete#deleteIDHash#"]=request["delete#deleteIDHash#"]+1>
 
-	<cfif listFindNoCase("campaignBean,creativeBean",objectClass)>
+	<cfif listFindNoCase("campaign,creative",objectClass)>
 		<cfset siteid=getBean('userManager').read(arguments.deleted.getUserID()).getSiteID()>
-	<cfelseif objectClass eq "placementBean">
+	<cfelseif objectClass eq "placement">
 		<cfset siteid=getBean('userManager').read( getBean('advertiserManager').readCampaign(arguments.deleted.getCampaignID()).getUserID() ).getSiteID()>	
+	<cfelseif len(arguments.deleted.getValue('siteid'))>
+		<cfset siteid=arguments.deleted.getValue('siteid')>
 	<cfelse>
-		<cfset siteid=arguments.deleted.getSiteID()>
+		<cfset siteid=session.siteid>
 	</cfif>
 	
 	<cfset $=getBean('MuraScope').init(siteid)>
 	
 	<!--- Package up extra stuff related to the contentBean --->
-	<cfif objectClass eq "contentBean">
+	<cfif objectClass eq "content">
 		
 		<!--- Store display object assignments --->
 		<cfloop from="1" to="8" index="i">
@@ -235,23 +237,22 @@
 	
 	<cfwddx action="cfml2wddx" input="#arguments.deleted.getAllValues()#" output="allValues">
 
-	<cfif objectType eq "userBean">
+	<cfif arguments.deleted.getEntityName() eq "user">
 		<cfif arguments.deleted.getType() eq 1>
-			<cfset labelString=getLabelString("groupBean")>
-			<cfset idString=getIDString("groupBean")>
+			<cfset labelString=getLabelString("Group")>
 		<cfelse>
-			<cfset labelString=getLabelString("userBean")>
-			<cfset idString=getIDString("userBean")>
+			<cfset labelString=getLabelString("User")>
 		</cfif>
 	<cfelse>
-		<cfset labelString=getLabelString(objectClass)>
-		<cfset idString=getIDString(objectClass)>
+		<cfset labelString=getLabelString(arguments.deleted)>
 	</cfif>
+
+	<cfset idString=getIdString(arguments.deleted)>
 	
-	<cfif structKeyExists(arguments.deleted,"getType")>
+	<cfif arguments.deleted.valueExists('Type')>
 		<cfset objectType=arguments.deleted.getType()>
 	<cfelse>
-		<cfset objectType=$.setProperCase(replaceNoCase(objectClass,"Bean",""))>
+		<cfset objectType=arguments.deleted.getEntityName()>
 	</cfif>
 	
 	<cfif objectType eq "1">
@@ -260,7 +261,7 @@
 		<cfset objectType="User">
 	</cfif>
 	
-	<cfif structKeyExists(arguments.deleted,"getSubType")>
+	<cfif arguments.deleted.valueExists('subType')>
 		<cfset objectSubType=arguments.deleted.getSubType()>
 	<cfelse>
 		<cfset objectSubType="Default">
@@ -276,15 +277,7 @@
 				insert into ttrash (objectID,parentID,siteID,objectClass,objectLabel,objectType,objectSubType,objectString,deletedDate,deletedBy,deleteID,orderno)
 					values(	
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#evaluate('arguments.deleted.get#IDString#()')#" />,
-						<cfif structKeyExists(arguments.deleted,"getParentID")>
-							<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.deleted.getParentID()#" />
-						<cfelseif objectClass eq "addressBean">
-							<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.deleted.getUserID()#" />
-						<cfelseif objectClass eq "placementBean">
-							<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.deleted.getCampaignID()#" />
-						<cfelse>
-							'NA'
-						</cfif>,
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDeletedParentID(arguments.deleted)#" />,
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#siteid#" />,
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#objectClass#" />,
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#evaluate('arguments.deleted.get#labelString#()')#" />,
@@ -300,6 +293,22 @@
 		</cfif>
 	</cfif>
 
+</cffunction>
+
+<cffunction name="getDeletedParentID" output="false">
+	<cfargument name="deleted">
+
+	<cfif arguments.deleted.valueExists("deletedParentID")>
+		<cfreturn arguments.deleted.getDeletedParentID()>
+	<cfelseif arguments.deleted.valueExists("parentID")>
+		<cfreturn arguments.deleted.getParentID()>
+	<cfelseif arguments.deleted.getEntityName() eq 'address'>
+		<cfreturn arguments.deleted.getUserID()>
+	<cfelseif arguments.deleted.getEntityName() eq 'placement'>
+		<cfreturn arguments.deleted.getCampaignID()>
+	<cfelse>
+		<cfreturn "NA">
+	</cfif>
 </cffunction>
 
 <cffunction name="getTrashItem" output="false">
@@ -411,27 +420,21 @@
 
 	<cfset var data="">
 	<cfset var i="">
-	<cfset var objectClass=listLast(getMetaData(arguments.restored).name,".")>
-	<cfset var idString=getIDString(objectClass)>
+	<cfset var objectClass=arguments.restored.getEntityName()>
+	<cfset var idString=getIDString(arguments.restored)>
 	<cfset var doPurge=false>
 	<cfset var it="">
 	<cfset var item="">
 	
-	<cfif structKeyExists(arguments.restored,"getValue")>
-		<cfif arguments.restored.getValue("fromMuraTrash") eq "true">
-			<cfset doPurge=true>
-		</cfif>
-	<cfelse>
-		<cfset data=arguments.restored.getAllValues()>
-		<cfif structKeyExists(data,"fromMuraTrash")>
-			<cfset doPurge=true>
-		</cfif>
+
+	<cfif arguments.restored.valueExists("fromMuraTrash")>
+		<cfset doPurge=true>
 	</cfif>
 	
 	<cfif doPurge>
-		<cfif not isStruct(data)>
-			<cfset data=arguments.restored.getAllValues()>
-		</cfif>
+		
+		<cfset data=arguments.restored.getAllValues()>
+		
 		<cfloop collection="#data#" item="i">
 			<!--- If the values is a uuid try an restore it just in case it's a fileid --->
 			<cfif isSimpleValue(data[i]) and isValid("UUID",data[i])>
@@ -443,169 +446,87 @@
 			delete from ttrash where objectID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#evaluate('arguments.restored.get#IDString#()')#" />		
 		</cfquery>
 		
-		<cfif objectClass eq "contentBean">
-			<cfset it=getIterator(parentID=arguments.restored.getContentID(), deletedDate=arguments.restored.getvalue("muraDeleteDateTime"))>
-			<cfset it.end()>
-			<cfloop condition="it.hasPrevious()">
-				<cfset item=it.previous().getObject().save()>
-			</cfloop>
-		<cfelseif objectClass eq "categoryBean">
-			<cfset it=getIterator(parentID=arguments.restored.getCategoryID(), deletedDate=arguments.restored.getvalue("muraDeleteDateTime"))>
-			<cfloop condition="it.hasNext()">
-				<cfset it.next().getObject().save()>
-			</cfloop>
-		<cfelseif objectClass eq "userBean">
-			<cfset it=getIterator(parentID=arguments.restored.getUserID(), deletedDate=arguments.restored.getvalue("muraDeleteDateTime"))>
-			<cfloop condition="it.hasNext()">
-				<cfset it.next().getObject().save()>
-			</cfloop>
-		<cfelseif objectClass eq "campaignBean">
-			<cfset it=getIterator(parentID=arguments.restored.getCampaignID(), deletedDate=arguments.restored.getvalue("muraDeleteDateTime"))>
-			<cfloop condition="it.hasNext()">
-				<cfset it.next().getObject().save()>
-			</cfloop>
-		<cfelseif objectClass eq "contentComment">
-			<cfset it=getIterator(parentID=arguments.restored.getCommentID(), deletedDate=arguments.restored.getvalue("muraDeleteDateTime"))>
-			<cfloop condition="it.hasNext()">
-				<cfset it.next().getObject().save()>
-			</cfloop>
-		</cfif>
+		<cfset it=getIterator(parentID=arguments.restored.getvalue(arguments.restored.getPrimaryKey()), deletedDate=arguments.restored.getvalue("muraDeleteDateTime"))>
+		<cfset it.end()>
+		<cfloop condition="it.hasPrevious()">
+			<cfset item=it.previous().getObject().save()>
+		</cfloop>
+		
 	</cfif>
 </cffunction>
 
 <cffunction name="getIDString" output="false">
-<cfargument name="objectClass">
+<cfargument name="object">
 
-	<cfswitch expression="#arguments.objectClass#">
-	
-		<cfcase value="contentBean">
-			<cfreturn "contentID">
-		</cfcase>
-		
-		<cfcase value="contentCommentBean">
-			<cfreturn "commentID">
-		</cfcase>
-		
-		<cfcase value="feedBean">
-			<cfreturn "feedID">
-		</cfcase>
-		
-		<cfcase value="userBean">
-			<cfreturn "userID">
-		</cfcase>
-		
-		<cfcase value="addressBean">
-			<cfreturn "addressID">
-		</cfcase>
-		
-		<cfcase value="emailBean">
-			<cfreturn "emailID">
-		</cfcase>
-		
-		<cfcase value="settingsBean">
-			<cfreturn "siteID">
-		</cfcase>
-		
-		<cfcase value="changesetBean">
-			<cfreturn "changesetID">
-		</cfcase>
-		
-		<cfcase value="adzoneBean">
-			<cfreturn "adZoneID">
-		</cfcase>
-		
-		<cfcase value="campaignBean">
-			<cfreturn "campaignID">
-		</cfcase>
-		
-		<cfcase value="placementBean">
-			<cfreturn "placementID">
-		</cfcase>
-		
-		<cfcase value="creativeBean">
-			<cfreturn "creativeID">
-		</cfcase>
-		
-		<cfcase value="categoryBean">
-			<cfreturn "categoryID">
-		</cfcase>
-		
-		<cfcase value="mailinglistBean">
-			<cfreturn "mlid">
-		</cfcase>
-		
-		<cfcase value="extendObject">
-			<cfreturn "id">
-		</cfcase>
-		
-		<cfdefaultcase>
-			<cfreturn "">
-		</cfdefaultcase>
-	</cfswitch>
+	<cfif arguments.object.getEntityName() eq 'content'>
+		<cfreturn "contentID">
+	<cfelse>
+		<cfreturn arguments.object.getPrimaryKey()>
+	</cfif>
 </cffunction>
 
 <cffunction name="getLabelString" output="false">
-<cfargument name="objectClass">
+<cfargument name="deleted">
 
-	<cfswitch expression="#arguments.objectClass#">
+	<cfswitch expression="#arguments.deleted.getEntityName()#">
 	
-		<cfcase value="contentBean">
+		<cfcase value="content">
 			<cfreturn "title">
 		</cfcase>
 		
-		<cfcase value="contentCommentBean">
+		<cfcase value="comment">
 			<cfreturn "name">
 		</cfcase>
 		
-		<cfcase value="feedBean">
+		<cfcase value="feed">
 			<cfreturn "name">
 		</cfcase>
 		
-		<cfcase value="changesetBean">
+		<cfcase value="changeset">
 			<cfreturn "name">
 		</cfcase>
 		
-		<cfcase value="userBean">
+		<cfcase value="user">
 			<cfreturn "username">
 		</cfcase>
 		
-		<cfcase value="addressBean">
+		<cfcase value="address">
 			<cfreturn "addressname">
 		</cfcase>
 		
-		<cfcase value="groupBean">
+		<cfcase value="group">
 			<cfreturn "groupname">
 		</cfcase>
 		
-		<cfcase value="settingsBean">
+		<cfcase value="settings">
 			<cfreturn "site">
 		</cfcase>
 		
-		<cfcase value="adzoneBean">
+		<cfcase value="adzone">
 			<cfreturn "name">
 		</cfcase>
 		
-		<cfcase value="campaignBean">
+		<cfcase value="campaign">
 			<cfreturn "name">
 		</cfcase>
 		
-		<cfcase value="placementBean">
+		<cfcase value="placement">
 			<cfreturn "placementID">
 		</cfcase>
 		
-		<cfcase value="creativeBean">
+		<cfcase value="creative">
 			<cfreturn "name">
 		</cfcase>
 		
-		<cfcase value="emailBean">
+		<cfcase value="email">
 			<cfreturn "subject">
 		</cfcase>
 		
-		<cfcase value="categoryBean">
+		<cfcase value="category">
 			<cfreturn "name">
 		</cfcase>
 		
-		<cfcase value="mailinglistBean">
+		<cfcase value="mailinglist">
 			<cfreturn "name">
 		</cfcase>
 		
@@ -614,7 +535,7 @@
 		</cfcase>
 		
 		<cfdefaultcase>
-			<cfreturn "">
+			<cfreturn arguments.deleted.getPrimaryKey()>
 		</cfdefaultcase>
 	</cfswitch>
 </cffunction>

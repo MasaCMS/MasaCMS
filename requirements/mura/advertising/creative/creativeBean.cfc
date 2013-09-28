@@ -69,6 +69,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="siteID" type="string" default=""  />
 <cfproperty name="target" type="string" default="_blank"  />
 
+<cfset variables.primaryKey = 'creativeID'>
+<cfset variables.entityName = 'creative'>
+
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfset super.init(argumentCollection=arguments)>
 	

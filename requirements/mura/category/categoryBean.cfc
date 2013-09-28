@@ -70,6 +70,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="isNew" type="numeric" default="1" required="true"/>
 <cfproperty name="isFeatureable" type="numeric" default="1" required="true"/>
 
+<cfset variables.primaryKey = 'categoryid'>
+<cfset variables.entityName = 'category'>
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	
@@ -99,8 +101,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.isFeatureable=1 />
 	
 	<cfset variables.kids = arrayNew(1) />
-	<cfset variables.primaryKey = 'categoryid'>
-	<cfset variables.entityName = 'category'>
 
 	<cfreturn this />
 </cffunction>

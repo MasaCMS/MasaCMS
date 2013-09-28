@@ -73,6 +73,9 @@ Mura CMS.
 	<cfproperty name="fromLabel" type="string" default=""/>
 	<cfproperty name="template" type="string" default="" />
 
+	<cfset variables.primaryKey = 'emailid'>
+	<cfset variables.entityName = 'email'>
+
 	<cffunction name="Init" access="public" output="false" returntype="any">
 		<cfset super.init(argumentCollection=arguments)>
 		
@@ -92,9 +95,6 @@ Mura CMS.
 		<cfset variables.instance.ReplyTo="" />
 		<cfset variables.instance.FromLabel="" />
 		<cfset variables.instance.template="" />
-
-		<cfset variables.primaryKey = 'emailid'>
-		<cfset variables.entityName = 'email'>
 			
 		<cfreturn this />
 	</cffunction>
