@@ -348,7 +348,7 @@ component extends="mura.bean.bean" versioned=false {
 			}
 
 			if(structKeyExists(md,'usetrash')){
-				application.objectMappings[variables.entityName].usetrash=usetrash;
+				application.objectMappings[variables.entityName].usetrash=md.usetrash;
 			} else {
 				application.objectMappings[variables.entityName].usetrash=false;
 			}
