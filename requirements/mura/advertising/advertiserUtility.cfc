@@ -48,8 +48,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent extends="mura.cfobject" output="false">
 
 <cffunction name="init" returntype="any" output="false" access="public">
-<cfargument name="configBean" type="any" required="yes"/>
-<cfargument name="advertiserGateway" type="any" required="yes"/>
+<cfargument name="configBean" type="any" />
+<cfargument name="advertiserGateway" type="any" />
 <cfset variables.instance.configBean=arguments.configBean />
 <cfset variables.instance.Gateway=arguments.advertiserGateway />
 	<cfreturn this />
@@ -114,9 +114,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="track" output="false" returntype="void">	
-	<cfargument name="placementID" required="true" type="string">
-	<cfargument name="type" required="true" type="string">
-	<cfargument name="rate" required="true" type="numeric">
+	<cfargument name="placementID"  type="string">
+	<cfargument name="type"  type="string">
+	<cfargument name="rate"  type="numeric">
 	
 	<cfset var rsCheck="" />
 	<cfset var statHour=hour(now())>

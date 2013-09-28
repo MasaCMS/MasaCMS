@@ -47,26 +47,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfcomponent extends="mura.bean.bean" output="false">
 
-<cfproperty name="placementID" type="string" default="" required="true" />
-<cfproperty name="campaignID" type="string" default="" required="true" />
-<cfproperty name="adzoneID" type="string" default="" required="true" />
-<cfproperty name="creativeID" type="string" default="" required="true" />
-<cfproperty name="dateCreated" type="date" default="" required="true" />
-<cfproperty name="lastUpdate" type="date" default="" required="true" />
-<cfproperty name="lastUpdateBy" type="string" default="" required="true" />
-<cfproperty name="startDate" type="date" default="" required="true" />
-<cfproperty name="endDate" type="date" default="" required="true" />
-<cfproperty name="weekday" type="string" default="1,2,3,4,5,6,7" required="true" />
-<cfproperty name="hour" type="string" default="0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23" required="true" />
-<cfproperty name="costPerImp" type="numeric" default="0" required="true" />
-<cfproperty name="costPerM" type="numeric" default="0" required="true" />
-<cfproperty name="costPerClick" type="numeric" default="0" required="true" />
-<cfproperty name="isExclusive" type="numeric" default="0" required="true" />
-<cfproperty name="billable" type="numeric" default="0" required="true" />
-<cfproperty name="budget" type="numeric" default="0" required="true" />
-<cfproperty name="isActive" type="numeric" default="1" required="true" />
-<cfproperty name="notes" type="string" default="" required="true" />
-<cfproperty name="categoryID" type="string" default="" required="true" />
+<cfproperty name="placementID" type="string" default=""  />
+<cfproperty name="campaignID" type="string" default=""  />
+<cfproperty name="adzoneID" type="string" default=""  />
+<cfproperty name="creativeID" type="string" default=""  />
+<cfproperty name="dateCreated" type="date" default=""  />
+<cfproperty name="lastUpdate" type="date" default=""  />
+<cfproperty name="lastUpdateBy" type="string" default=""  />
+<cfproperty name="startDate" type="date" default=""  />
+<cfproperty name="endDate" type="date" default=""  />
+<cfproperty name="weekday" type="string" default="1,2,3,4,5,6,7"  />
+<cfproperty name="hour" type="string" default="0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23"  />
+<cfproperty name="costPerImp" type="numeric" default="0"  />
+<cfproperty name="costPerM" type="numeric" default="0"  />
+<cfproperty name="costPerClick" type="numeric" default="0"  />
+<cfproperty name="isExclusive" type="numeric" default="0"  />
+<cfproperty name="billable" type="numeric" default="0"  />
+<cfproperty name="budget" type="numeric" default="0"  />
+<cfproperty name="isActive" type="numeric" default="1"  />
+<cfproperty name="notes" type="string" default=""  />
+<cfproperty name="categoryID" type="string" default=""  />
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	
@@ -103,7 +103,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="set" returnType="any" output="false" access="public">
-		<cfargument name="data" type="any" required="true">
+		<cfargument name="data" type="any" >
 
 		<cfset var prop="" />
 		
@@ -140,7 +140,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setCategoryID" access="public" output="false">
 	<cfargument name="categoryID" type="String" />
-	<cfargument name="append" type="boolean" default="false" required="true" />
+	<cfargument name="append" type="boolean" default="false"  />
 	<cfset var i="">
 	
 	<cfif not arguments.append>

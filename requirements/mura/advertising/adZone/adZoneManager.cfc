@@ -48,11 +48,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent extends="mura.cfobject" output="false">
 
 <cffunction name="init" returntype="any" output="false" access="public">
-<cfargument name="configBean" type="any" required="yes"/>
-<cfargument name="adZoneGateway" type="any" required="yes"/>
-<cfargument name="adZoneDAO" type="any" required="yes"/>
-<cfargument name="utility" type="any" required="yes"/>
-<cfargument name="trashManager" type="any" required="yes"/>
+<cfargument name="configBean" type="any" />
+<cfargument name="adZoneGateway" type="any" />
+<cfargument name="adZoneDAO" type="any" />
+<cfargument name="utility" type="any" />
+<cfargument name="trashManager" type="any" />
 	<cfset variables.instance.configBean=arguments.configBean />
 	<cfset variables.instance.gateway=arguments.adZoneGateway />
 	<cfset variables.instance.DAO=arguments.adZoneDAO />
@@ -68,7 +68,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getadzonesBySiteID" returntype="query" access="public" output="false">
 	<cfargument name="siteID"  type="string" />
-	<cfargument name="keywords"  type="string" required="true" default=""/>
+	<cfargument name="keywords"  type="string"  default=""/>
 
 	<cfreturn variables.instance.gateway.getadzonesBySiteID(arguments.siteid,arguments.keywords) />
 </cffunction>

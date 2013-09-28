@@ -48,12 +48,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent extends="mura.cfobject" output="false">
 
 <cffunction name="init" returntype="any" output="false" access="public">
-<cfargument name="configBean" type="any" required="yes"/>
-<cfargument name="creativeGateway" type="any" required="yes"/>
-<cfargument name="creativeDAO" type="any" required="yes"/>
-<cfargument name="utility" type="any" required="yes"/>
-<cfargument name="fileManager" type="any" required="yes"/>
-<cfargument name="trashManager" type="any" required="yes"/>
+<cfargument name="configBean" type="any" />
+<cfargument name="creativeGateway" type="any" />
+<cfargument name="creativeDAO" type="any" />
+<cfargument name="utility" type="any" />
+<cfargument name="fileManager" type="any" />
+<cfargument name="trashManager" type="any" />
 
 	<cfset variables.instance.configBean=arguments.configBean />
 	<cfset variables.instance.gateway=arguments.creativeGateway />
@@ -78,7 +78,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getCreativesBySiteID" returntype="query" access="public" output="false">
 	<cfargument name="siteid"  type="string" />
-	<cfargument name="keywords"  type="string" required="true" default=""/>
+	<cfargument name="keywords"  type="string"  default=""/>
 
 	<cfreturn variables.instance.gateway.getCreativesBySiteID(arguments.siteid,arguments.keywords) />
 </cffunction>

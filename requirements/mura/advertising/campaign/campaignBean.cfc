@@ -47,16 +47,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfcomponent extends="mura.bean.bean" output="false">
 
-<cfproperty name="campaignID" type="string" default="" required="true" />
-<cfproperty name="userID" type="string" default="" required="true" />
-<cfproperty name="dateCreated" type="date" default="" required="true" />
-<cfproperty name="lastUpdate" type="date" default="" required="true" />
-<cfproperty name="lastUpdateBy" type="string" default="" required="true" />
-<cfproperty name="name" type="string" default="" required="true" />
-<cfproperty name="startDate" type="date" default="" required="true" />
-<cfproperty name="endDate" type="date" default="" required="true" />
-<cfproperty name="isActive" type="numeric" default="1" required="true" />
-<cfproperty name="notes" type="string" default="" required="true" />
+<cfproperty name="campaignID" type="string" default=""  />
+<cfproperty name="userID" type="string" default=""  />
+<cfproperty name="dateCreated" type="date" default=""  />
+<cfproperty name="lastUpdate" type="date" default=""  />
+<cfproperty name="lastUpdateBy" type="string" default=""  />
+<cfproperty name="name" type="string" default=""  />
+<cfproperty name="startDate" type="date" default=""  />
+<cfproperty name="endDate" type="date" default=""  />
+<cfproperty name="isActive" type="numeric" default="1"  />
+<cfproperty name="notes" type="string" default=""  />
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfset super.init(argumentCollection=arguments)>

@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent output="false" extends="mura.cfobject">
 
 <cffunction name="init" returntype="any" output="false" access="public">
-<cfargument name="configBean" type="any" required="yes"/>
+<cfargument name="configBean" type="any" />
 	<cfset variables.instance.configBean=arguments.configBean />
 	<cfreturn this />
 </cffunction>
@@ -69,7 +69,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getCampaignsBySiteID" access="public" output="false" returntype="query">
 	<cfargument name="siteid" type="String">
-	<cfargument name="keywords"  type="string" required="true" default=""/>
+	<cfargument name="keywords"  type="string"  default=""/>
 	
 	<cfset var rs ="" />
 

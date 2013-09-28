@@ -48,15 +48,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent extends="mura.cfobject" output="false">
 
 <cffunction name="init" returntype="any" output="false" access="public">
-<cfargument name="configBean" type="any" required="yes"/>
+<cfargument name="configBean" type="any" />
 	<cfset variables.instance.configBean=arguments.configBean />
 	<cfreturn this />
 </cffunction>
 
 <cffunction name="getPlacementsByCampaign" access="public" output="false" returntype="query">
 	<cfargument name="campaignID" type="String">
-	<cfargument name="date1" type="string" required="true" default="" />
-	<cfargument name="date2" type="string" required="true" default="" />
+	<cfargument name="date1" type="string"  default="" />
+	<cfargument name="date2" type="string"  default="" />
 	
 	<cfset var rs ="" />
 	<cfset var start ="" />

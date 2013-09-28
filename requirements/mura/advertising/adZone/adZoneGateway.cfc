@@ -48,8 +48,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent extends="mura.cfobject" output="false">
 
 <cffunction name="init" returntype="any" output="false" access="public">
-<cfargument name="configBean" type="any" required="yes"/>
-<cfargument name="settingsManager" type="any" required="yes"/>
+<cfargument name="configBean" type="any" />
+<cfargument name="settingsManager" type="any" />
 	<cfset variables.instance.configBean=arguments.configBean />
 	<cfset variables.instance.settingsManager=arguments.settingsManager />
 	<cfreturn this />
@@ -57,7 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getadzonesBySiteID" access="public" output="false" returntype="query">
 	<cfargument name="siteID" type="String">
-	<cfargument name="keywords"  type="string" required="true" default=""/>
+	<cfargument name="keywords"  type="string"  default=""/>
 	
 	<cfset var rs ="" />
 

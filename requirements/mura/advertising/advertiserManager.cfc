@@ -48,15 +48,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent extends="mura.cfobject" output="false">
 
 <cffunction name="init" returntype="any" output="false" access="public">
-<cfargument name="configBean" type="any" required="yes"/>
-<cfargument name="advertiserGateway" type="any" required="yes"/>
-<cfargument name="campaignManager" type="any" required="yes"/>
-<cfargument name="adZoneManager" type="any" required="yes"/>
-<cfargument name="creativeManager" type="any" required="yes"/>
-<cfargument name="advertiserRenderer" type="any" required="yes"/>
-<cfargument name="advertiserUtility" type="any" required="yes"/>
-<cfargument name="utility" type="any" required="yes"/>
-<cfargument name="settingsManager" type="any" required="yes"/>
+<cfargument name="configBean" type="any" />
+<cfargument name="advertiserGateway" type="any" />
+<cfargument name="campaignManager" type="any" />
+<cfargument name="adZoneManager" type="any" />
+<cfargument name="creativeManager" type="any" />
+<cfargument name="advertiserRenderer" type="any" />
+<cfargument name="advertiserUtility" type="any" />
+<cfargument name="utility" type="any" />
+<cfargument name="settingsManager" type="any" />
 
 	<cfset variables.instance.configBean=arguments.configBean />
 	<cfset variables.instance.gateway=arguments.advertiserGateway />
@@ -73,7 +73,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getAdvertisersBySiteID" returntype="query" access="public" output="false">
 	<cfargument name="siteID"  type="string" />
-	<cfargument name="keywords"  type="string" required="true" default=""/>
+	<cfargument name="keywords"  type="string"  default=""/>
 
 	<cfreturn variables.instance.gateway.getAdvertisersBySiteID(arguments.siteid,arguments.keywords) />
 </cffunction>
@@ -107,7 +107,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getadzonesBySiteID" returntype="query" access="public" output="false">
 	<cfargument name="siteID"  type="string" />
-	<cfargument name="keywords"  type="string" required="true" default=""/>
+	<cfargument name="keywords"  type="string"  default=""/>
 
 	<cfreturn variables.instance.adZoneManager.getadzonesBySiteID(variables.instance.settingsManager.getSite(arguments.siteid).getAdvertiserUserPoolID(),arguments.keywords) />
 </cffunction>
@@ -120,7 +120,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getCampaignsBySiteID" returntype="query" access="public" output="false">
 	<cfargument name="siteid"  type="string" />
-	<cfargument name="keywords"  type="string" required="true" default=""/>
+	<cfargument name="keywords"  type="string"  default=""/>
 	
 	<cfreturn variables.instance.campaignManager.getCampaignsBySiteID(variables.instance.settingsManager.getSite(arguments.siteid).getAdvertiserUserPoolID(),arguments.keywords) />
 </cffunction>
@@ -133,15 +133,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getCreativesBySiteID" returntype="query" access="public" output="false">
 	<cfargument name="siteid"  type="string" />
-	<cfargument name="keywords"  type="string" required="true" default=""/>
+	<cfargument name="keywords"  type="string"  default=""/>
 	
 	<cfreturn variables.instance.creativeManager.getCreativesBySiteID(variables.instance.settingsManager.getSite(arguments.siteid).getAdvertiserUserPoolID(),arguments.keywords) />
 </cffunction>
 
 <cffunction name="getPlacementsByCampaign" returntype="query" access="public" output="false">
 	<cfargument name="placementID"  type="string" />
-	<cfargument name="date1" type="string" required="true" default="" />
-	<cfargument name="date2" type="string" required="true" default="" />
+	<cfargument name="date1" type="string"  default="" />
+	<cfargument name="date2" type="string"  default="" />
 	
 	<cfreturn variables.instance.campaignManager.getPlacementsByCampaign(arguments.placementID,arguments.date1,arguments.date2) />
 </cffunction>
@@ -328,9 +328,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="readCreativeAndRender" returntype="String" output="false" access="public">
 	<cfargument name="creativeID" type="string">
-	<cfargument name="adZoneID" type="string" required="true" default="">
-	<cfargument name="campaignID" type="string" required="true" default="">
-	<cfargument name="siteID" type="string" required="true" default="">
+	<cfargument name="adZoneID" type="string"  default="">
+	<cfargument name="campaignID" type="string"  default="">
+	<cfargument name="siteID" type="string"  default="">
 	
 	<cfset var creativeBean=readCreative(arguments.creativeID) />
 	
@@ -339,9 +339,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="renderCreative" returntype="String" output="false" access="public">
 	<cfargument name="creativeBean" type="any" />
-	<cfargument name="placementID" type="string" required="true" default="">
-	<cfargument name="siteID" type="string" required="true" default="">
-	<cfargument name="track" type="numeric" required="true" default="1">
+	<cfargument name="placementID" type="string"  default="">
+	<cfargument name="siteID" type="string"  default="">
+	<cfargument name="track" type="numeric"  default="1">
 	
 	<cfreturn variables.instance.renderer.renderCreative(creativeBean,arguments.placementID,arguments.siteid,arguments.track) />
 </cffunction>
@@ -349,9 +349,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="renderAdZone" returntype="struct" output="false" access="public">
 	<cfargument name="adZoneID" type="string" />
 	<cfargument name="siteID" type="string" />
-	<cfargument name="track" type="numeric" required="true" default="1"/>
-	<cfargument name="IP" type="string" required="true" default=""/>
-	<cfargument name="contentHistID" type="string" required="true" default=""/>
+	<cfargument name="track" type="numeric"  default="1"/>
+	<cfargument name="IP" type="string"  default=""/>
+	<cfargument name="contentHistID" type="string"  default=""/>
 	
 	<cfset var rs="" />
 	<cfset var doTrack=arguments.track />
@@ -463,11 +463,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="trackAd" output="false" returntype="void">	
-<cfargument name="placementID" required="true" type="string">
-<cfargument name="type" required="true" type="string">
-<cfargument name="ip" required="true" type="string">
-<cfargument name="siteid" required="true" type="string">
-<cfargument name="rate" required="true" type="numeric">
+<cfargument name="placementID"  type="string">
+<cfargument name="type"  type="string">
+<cfargument name="ip"  type="string">
+<cfargument name="siteid"  type="string">
+<cfargument name="rate"  type="numeric">
 
 	<cfif not variables.instance.utility.checkIPWhiteList(arguments.ip,variables.instance.settingsManager.getSite(arguments.siteid).getAdvertiserUserPoolID())>
 		<cfset variables.instance.utility.track(arguments.placementID,arguments.type,arguments.rate) />

@@ -47,17 +47,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfcomponent extends="mura.bean.bean" output="false">
 
-<cfproperty name="adZoneID" type="string" default="" required="true" />
-<cfproperty name="siteID" type="string" default="" required="true" />
-<cfproperty name="dateCreated" type="date" default="" required="true" />
-<cfproperty name="lastUpdate" type="date" default="" required="true" />
-<cfproperty name="lastUpdateBy" type="string" default="" required="true" />
-<cfproperty name="name" type="string" default="" required="true" />
-<cfproperty name="creativeType" type="string" default="" required="true" />
-<cfproperty name="isActive" type="numeric" default="1" required="true" />
-<cfproperty name="notes" type="string" default="1" required="true" />
-<cfproperty name="height" type="numeric" default="0" required="true" />
-<cfproperty name="width" type="numeric" default="0" required="true" />
+<cfproperty name="adZoneID" type="string" default=""  />
+<cfproperty name="siteID" type="string" default=""  />
+<cfproperty name="dateCreated" type="date" default=""  />
+<cfproperty name="lastUpdate" type="date" default=""  />
+<cfproperty name="lastUpdateBy" type="string" default=""  />
+<cfproperty name="name" type="string" default=""  />
+<cfproperty name="creativeType" type="string" default=""  />
+<cfproperty name="isActive" type="numeric" default="1"  />
+<cfproperty name="notes" type="string" default="1"  />
+<cfproperty name="height" type="numeric" default="0"  />
+<cfproperty name="width" type="numeric" default="0"  />
 
 <cffunction name="init" returntype="any" output="false" access="public">
 	<cfset super.init(argumentCollection=arguments)>
