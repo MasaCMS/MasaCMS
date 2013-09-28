@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent extends="mura.cfobject" output="false">
 
 <cffunction name="init" returntype="any" output="false" access="public">
-<cfargument name="configBean" type="any" required="yes"/>
+<cfargument name="configBean" type="any" />
 	<cfset variables.instance.configBean=arguments.configBean />
 	<cfreturn this />
 </cffunction>

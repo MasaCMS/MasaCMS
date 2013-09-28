@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent extends="mura.cfobject" output="false">
 
 <cffunction name="init" returntype="any" output="false" access="public">
-<cfargument name="configBean" type="any" required="yes"/>
+<cfargument name="configBean" type="any" />
 	<cfset variables.instance.configBean=arguments.configBean />
 	<cfreturn this />
 </cffunction>
@@ -287,7 +287,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 
 <cffunction name="readCategoryAssignments" returntype="string" access="public" output="false">
-	<cfargument name="placementID" type="string" required="yes" default="" />
+	<cfargument name="placementID" type="string"  default="" />
 	
 	 <cfset var rs =""/>
 	 <cfset var ItemList =""/>
@@ -304,7 +304,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction> 
 
 <cffunction name="deleteCategoryAssignments" access="public" output="false">
-	<cfargument name="placementID" type="string" required="yes" default="" />
+	<cfargument name="placementID" type="string"  default="" />
 	
 	 <cfset var rs =""/>
 	 <cfset var ItemList =""/>

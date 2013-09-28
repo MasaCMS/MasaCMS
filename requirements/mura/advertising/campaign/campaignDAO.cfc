@@ -15,7 +15,7 @@
 <cfcomponent extends="mura.cfobject" output="false">
 
 <cffunction name="init" returntype="any" output="false" access="public">
-<cfargument name="configBean" type="any" required="yes"/>
+<cfargument name="configBean" type="any" />
 	<cfset variables.instance.configBean=arguments.configBean />
 	<cfreturn this />
 </cffunction>

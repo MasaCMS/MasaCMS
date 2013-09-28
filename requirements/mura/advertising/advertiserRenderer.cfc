@@ -48,7 +48,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent extends="mura.cfobject" output="false">
 
 <cffunction name="init" returntype="any" output="false" access="public">
-<cfargument name="configBean" type="any" required="yes"/>
+<cfargument name="configBean" type="any" />
 	<cfset variables.instance.configBean=arguments.configBean />
 	<cfset variables.instance.bucket=listLast(variables.instance.configBean.getFileStoreAccessInfo(),"^") />
 	<cfreturn this />
@@ -56,9 +56,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="renderCreative" access="public" output="false" returntype="String">
 <cfargument name="creativeBean" type="any" default="">
-<cfargument name="placementID" required="true" type="string">
-<cfargument name="siteid" required="true" type="string">
-<cfargument name="track" required="true" type="numeric" default="1">
+<cfargument name="placementID"  type="string">
+<cfargument name="siteid"  type="string">
+<cfargument name="track"  type="numeric" default="1">
 
 <cfset var ad= ""/>
 <cfset var link= ""/>
@@ -180,7 +180,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="getMediaURL" output="false" returntype="string">
-<cfargument name="creativeBean" required="true" type="any" >
+<cfargument name="creativeBean"  type="any" >
 
 <cfswitch expression="#variables.instance.configBean.getFileStore()#">
 	<cfcase value="S3">
@@ -197,9 +197,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getTrackingURL" output="false" returntype="string">
 <cfargument name="creativeBean" type="any" default="">
-<cfargument name="placementID" required="true" type="string">
-<cfargument name="siteid" required="true" type="string">
-<cfargument name="track" required="true" type="numeric" default="1">
+<cfargument name="placementID"  type="string">
+<cfargument name="siteid"  type="string">
+<cfargument name="track"  type="numeric" default="1">
 
 <cfset var link= ""/>
 

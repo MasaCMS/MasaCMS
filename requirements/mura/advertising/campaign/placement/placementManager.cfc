@@ -48,11 +48,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfcomponent extends="mura.cfobject" output="false">
 
 <cffunction name="init" returntype="any" output="false" access="public">
-<cfargument name="configBean" type="any" required="yes"/>
-<cfargument name="placementGateway" type="any" required="yes"/>
-<cfargument name="placementDAO" type="any" required="yes"/>
-<cfargument name="utility" type="any" required="yes"/>
-<cfargument name="trashManager" type="any" required="yes"/>
+<cfargument name="configBean" type="any" />
+<cfargument name="placementGateway" type="any" />
+<cfargument name="placementDAO" type="any" />
+<cfargument name="utility" type="any" />
+<cfargument name="trashManager" type="any" />
 	<cfset variables.instance.configBean=arguments.configBean />
 	<cfset variables.instance.gateway=arguments.placementGateway />
 	<cfset variables.instance.DAO=arguments.placementDAO />
@@ -69,8 +69,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getPlacementsByCampaign" access="public" output="false" returntype="query">
 	<cfargument name="campaignID" type="String">
-	<cfargument name="date1" type="string" required="true" default="" />
-	<cfargument name="date2" type="string" required="true" default="" />
+	<cfargument name="date1" type="string"  default="" />
+	<cfargument name="date2" type="string"  default="" />
 	
 	<cfreturn variables.instance.gateway.getPlacementsByCampaign(arguments.campaignID,arguments.date1,arguments.date2) />
 </cffunction>
