@@ -75,6 +75,7 @@ Mura CMS.
 
 	<cfset variables.primaryKey = 'emailid'>
 	<cfset variables.entityName = 'email'>
+	<cfset variables.instanceName= 'subject'>
 
 	<cffunction name="Init" access="public" output="false" returntype="any">
 		<cfset super.init(argumentCollection=arguments)>
