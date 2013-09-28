@@ -139,6 +139,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cfscript>
+	function getInstanceName(){
+		if(structKeyExists(variables,'instanceName')){
+			return getValue(variables.instanceName);
+		} else if(valueExists('name')){
+			return getValue('name');
+		} else {
+			return getValue(getPrimaryKey());
+		}
+	}
+
 	function setAddedObjectValues(properties){
 		set(arguments.properties);
 		for(var obj in variables.instance.addObjects){

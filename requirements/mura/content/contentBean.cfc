@@ -133,6 +133,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset variables.primaryKey = 'contenthistid'>
 <cfset variables.entityName = 'content'>
+<cfset variables.instanceName= 'title'>
 
 <cffunction name="init" access="public" returntype="any" output="false">
 	
