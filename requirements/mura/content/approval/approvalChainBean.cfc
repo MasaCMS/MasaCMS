@@ -44,7 +44,7 @@ component extends="mura.bean.beanORM"  table="tapprovalchains" entityname="appro
                 .loadBy(chainID=getValue('chainID'))
                 .getMembershipsIterator();
             var membership='';
-            var firstID='';
+            var firstid=listFirst(groupid);
 
             while(memberships.hasNext()){
                 membership=memberships.next();
@@ -60,39 +60,30 @@ component extends="mura.bean.beanORM"  table="tapprovalchains" entityname="appro
                     .loadBy(chainID=getValue('chainID'), groupID=listGetAt(groupID,i))
                     .setOrderNo(i)
                     .save();
-
-
-                //writeDump(var=membership.getMembershipID());
-  
-                if(i eq 1){
-                    firstID=membership.getGroupID();
-                }
-                
             }
             //abort;
             //writeDump(var=deleteID,abort=true);
 
             if(len(deleteID)){
                 for(i=1; i lte listLen(deleteID); i=i+1){
-                    var qs = new Query();
-                    var sql="
-                        update tapprovalrequests set groupID= :firstID
-                        where chainid = :chainID
-                        and groupID= :groupID
-                        ";
-                    qs.addParam(name="groupID", value=listGetAt(deleteID,i), cfsqltype='cf_sql_varchar');
-                    qs.addParam(name="firstID", value=firstID, cfsqltype='cf_sql_varchar');
-                    qs.addParam(name="chainID", value=getValue('chainID'), cfsqltype='cf_sql_varchar');
-                    qs.setSQL(sql);
-                    qs.execute();
-
                     getBean('approvalChainMembership').loadBy(membershipID=listGetAt(deleteID,i)).delete();
-
                 }
             }
 
             var qs = new Query();
             var sql="
+                    update tapprovalrequests set groupID= :firstID
+                    where chainid = :chainID
+                    and groupID not in ( :groupID )
+                    ";
+            qs.addParam(name="groupID", value=groupid, cfsqltype='cf_sql_varchar');
+            qs.addParam(name="firstID", value=firstid, cfsqltype='cf_sql_varchar');
+            qs.addParam(name="chainID", value=getValue('chainID'), cfsqltype='cf_sql_varchar');
+            qs.setSQL(sql);
+            qs.execute();
+
+            qs = new Query();
+            sql="
                 update tapprovalrequests set groupID= :firstID
                 where chainid = :chainID
                 and (groupID is null or groupID='')
