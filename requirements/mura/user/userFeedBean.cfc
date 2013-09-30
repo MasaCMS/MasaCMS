@@ -130,7 +130,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			
 			<cfif structKeyExists(arguments.params,"siteid")>
-				<cfset setSiteID(arguments.params.siteid)>
+				<cfset setValue('siteid',arguments.params.siteid)>
 			</cfif>
 			
 			<cfif structKeyExists(arguments.params,"categoryID")>
