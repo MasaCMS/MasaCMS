@@ -73,12 +73,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.additionalColumns=""/>
 	<cfset variables.instance.sortTable=""/>
 	<cfset variables.instance.orderby=""/>
-	<cfset variables.instance.orderby=""/>
-
 	
 	<cfset variables.instance.params=queryNew("param,relationship,field,condition,criteria,dataType","integer,varchar,varchar,varchar,varchar,varchar" )  />
 	<cfset variables.instance.joins=arrayNew(1)  />
 	<cfreturn this/>
+</cffunction>
+
+<cffunction name="getEntityName" output="false">
+	<cfreturn variables.instance.entityName>
+</cffunction>
+
+<cffunction name="setEntityName" output="false">
+	<cfargument name="entityName">
+	<cfset variables.instance.entityName=arguments.entityName>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="setNextN" access="public" output="false">
