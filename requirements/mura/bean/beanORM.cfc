@@ -503,9 +503,17 @@ component extends="mura.bean.bean" versioned=false {
 
 			       	 	param name="prop.column" default=prop.name;
 
-			       	 	defaultMetaData=getDbUtility().getDefaultColumnMetaData();
-			       	 	structDelete(defaultMetaData,'length');
-			       	 	structAppend(prop,defaultMetaData,false);
+			       	 	
+			       	 	structAppend(prop,
+			       	 		{
+								column="",
+								table="",
+								datatype="varchar",
+								default="null",
+								nullable=true
+							},
+							false
+						);
 
 			      	} 
 			      }
