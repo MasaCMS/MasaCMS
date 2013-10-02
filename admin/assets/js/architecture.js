@@ -877,6 +877,12 @@ buttons: {
 				showBodyEditor();
 			}
 		}
+		
+		if(!r.hasassocfile) {
+			$('#assocFileContainer').hide();
+		} else {
+			$('#assocFileContainer').show();
+		}
 
 		this.checkExtendSetTargeting();
 		setHTMLEditors(context, themeAssetPath);

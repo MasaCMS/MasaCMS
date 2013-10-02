@@ -57,6 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.hasSummary=1/>
 <cfset variables.instance.iconclass=""/>
 <cfset variables.instance.hasBody=1/>
+<cfset variables.instance.HasAssocFile=1/>
 <cfset variables.instance.description=""/>
 <cfset variables.instance.availableSubTypes=""/>
 <cfset variables.instance.isActive=1/>
@@ -97,7 +98,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var rs=""/>
 		<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 		select subtypeid,siteID,baseTable,baseKeyField,dataTable,type,subtype,
-		isActive,notes,lastUpdate,dateCreated,lastUpdateBy,hasSummary,hasBody,description,availableSubTypes,iconclass 
+		isActive,notes,lastUpdate,dateCreated,lastUpdateBy,hasSummary,hasBody,description,availableSubTypes,iconclass,hasassocfile
 		from tclassextend 
 		where subTypeID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getsubtypeID()#">
 		or (
@@ -133,6 +134,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset setIsActive(arguments.data.isActive) />
 			<cfset setHasSummary(arguments.data.hasSummary) />
 			<cfset setHasBody(arguments.data.hasBody) />
+			<cfset setHasAssocFile(arguments.data.HasAssocFile) />
 			<cfset setDescription(arguments.data.description)/>
 			<cfset setIconClass(arguments.data.iconclass)/>
 			<cfset setAvailableSubTypes(arguments.data.availableSubTypes)/>
@@ -275,6 +277,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="hasBody"/>
 	<cfif isNumeric(arguments.hasBody)>
 		<cfset variables.instance.hasBody = arguments.hasBody />
+	</cfif>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="getHasAssocFile" returntype="numeric" access="public" output="false">
+	<cfreturn variables.instance.HasAssocFile />
+</cffunction>
+
+<cffunction name="setHasAssocFile" access="public" output="false">
+	<cfargument name="HasAssocFile"/>
+	<cfif isNumeric(arguments.HasAssocFile)>
+		<cfset variables.instance.HasAssocFile = arguments.HasAssocFile />
 	</cfif>
 	<cfreturn this>
 </cffunction>
@@ -517,7 +531,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		hasBody = #getHasBody()#,
 		description=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getDescription() neq '',de('no'),de('yes'))#" value="#getDescription()#">,
 		availableSubTypes=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getAvailableSubTypes() neq '',de('no'),de('yes'))#" value="#getAvailableSubTypes()#">,
-		iconClass=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getIconClass() neq '',de('no'),de('yes'))#" value="#getIconClass()#">
+		iconClass=<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getIconClass() neq '',de('no'),de('yes'))#" value="#getIconClass()#">,
+		hasAssocFile=#getHasAssocFile()#
 		where subTypeID=<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getSubTypeID()#">
 		</cfquery>
 		
@@ -537,7 +552,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfelse>
 	
 		<cfquery>
-		Insert into tclassextend (subTypeID,siteID,type,subType,baseTable,baseKeyField,dataTable,isActive,hasSummary,hasBody,description,availableSubTypes,iconclass) 
+		Insert into tclassextend (subTypeID,siteID,type,subType,baseTable,baseKeyField,dataTable,isActive,hasSummary,hasBody,description,availableSubTypes,iconclass,hasAssocFile) 
 		values(
 		<cfqueryparam cfsqltype="cf_sql_varchar"  value="#getsubTypeID()#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getSiteID() neq '',de('no'),de('yes'))#" value="#getSiteID()#">,
@@ -551,7 +566,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		#getHasBody()#,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getDescription() neq '',de('no'),de('yes'))#" value="#getDescription()#">,
 		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getAvailableSubTypes() neq '',de('no'),de('yes'))#" value="#getAvailableSubTypes()#">,
-		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getIconClass() neq '',de('no'),de('yes'))#" value="#getIconClass()#">
+		<cfqueryparam cfsqltype="cf_sql_varchar" null="#iif(getIconClass() neq '',de('no'),de('yes'))#" value="#getIconClass()#">,
+		#getHasAssocFile()#
 		)
 		</cfquery>
 		<!---

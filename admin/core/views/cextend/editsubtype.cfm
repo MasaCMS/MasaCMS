@@ -165,19 +165,20 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<label class="radio inline"><input name="hasBody" type="radio" class="radio inline" value="0"<cfif subType.gethasBody() eq 0 >Checked</cfif>>No</label>
 		</div>
 	</div>
-	
-	<div class="span4">
-			<label class="control-label">Status</label>
-			<div class="controls">
-					<label class="radio inline"><input name="isActive" type="radio" class="radio inline" value="1"<cfif subType.getIsActive() eq 1 >Checked</cfif>>Active</label>
-				<label class="radio inline"><input name="isActive" type="radio" class="radio inline" value="0"<cfif subType.getIsActive() eq 0 >Checked</cfif>>Inactive</label>
-			</div>
+
+	<div class="span4 hasAssocFileContainer">
+		<label class="control-label">Show "Associated Image" field when editing?</label>
+		<div class="controls"> 
+			<label class="radio inline"><input name="hasAssocFile" type="radio" class="radio inline" value="1"<cfif subType.gethasAssocFile() eq 1 >Checked</cfif>>Yes</label>
+			<label class="radio inline"><input name="hasAssocFile" type="radio" class="radio inline" value="0"<cfif subType.gethasAssocFile() eq 0 >Checked</cfif>>No</label>
 		</div>
+	</div>
+	
 </div>
 	
 		<cfset rsSubTypes=application.classExtensionManager.getSubTypes(siteID=rc.siteID,activeOnly=true) />
 		<div class="control-group">
-			<div class="span6 availableSubTypesContainer" >
+			<div class="span4 availableSubTypesContainer" >
 				<label class="control-label">Allow users to add only specific subtypes?</label>
 				<div class="controls"> 
 					<label class="radio inline" ><input name="hasAvailableSubTypes" type="radio" class="radio inline" value="1" <cfif len(subType.getAvailableSubTypes())>checked </cfif>
@@ -198,6 +199,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfloop>
 					</cfloop>
 					</select>			
+				</div>
+			</div>
+
+			<div class="span4">
+				<label class="control-label">Status</label>
+				<div class="controls">
+						<label class="radio inline"><input name="isActive" type="radio" class="radio inline" value="1"<cfif subType.getIsActive() eq 1 >Checked</cfif>>Active</label>
+					<label class="radio inline"><input name="isActive" type="radio" class="radio inline" value="0"<cfif subType.getIsActive() eq 0 >Checked</cfif>>Inactive</label>
 				</div>
 			</div>
 		</div>
