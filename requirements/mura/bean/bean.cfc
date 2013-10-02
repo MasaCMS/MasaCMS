@@ -502,6 +502,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						arrayAppend(rules,rule);
 					}
 
+					if(structKeyExists(props[prop], "length") && isNumeric(props[prop].length)){
+						if(structKeyExists(props[prop], "message")){
+							rule={message=props[prop].message};
+						} else {
+							rule={};
+						}
+						structAppend(rule,{maxLength=props[prop].length});
+						arrayAppend(rules,rule);
+					}
+
 					for(var r=1;r <= arrayLen(basicRules);r++){
 						if(structKeyExists(props[prop], basicRules[r])){
 							if(structKeyExists(props[prop], "message")){

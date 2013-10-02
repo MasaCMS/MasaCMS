@@ -275,6 +275,7 @@ component extends="mura.bean.bean" versioned=false {
 			var loadKey="";
 			var dottedPath=md.fullname;
 			var synthArgs={};
+			var defaultMetaData={};
 			
 			param name="application.objectMappings.#variables.entityName#" default={};
 			application.objectMappings[variables.entityName].properties={};
@@ -502,7 +503,9 @@ component extends="mura.bean.bean" versioned=false {
 
 			       	 	param name="prop.column" default=prop.name;
 
-			       	 	structAppend(prop,getDbUtility().getDefaultColumnMetatData(),false);
+			       	 	defaultMetaData=getDbUtility().getDefaultColumnMetaData();
+			       	 	structDelete(defaultMetaData,'length');
+			       	 	structAppend(prop,defaultMetaData,false);
 
 			      	} 
 			      }
