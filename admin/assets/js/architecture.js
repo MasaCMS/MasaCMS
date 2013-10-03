@@ -880,6 +880,7 @@ buttons: {
 		
 		if(!r.hasassocfile) {
 			$('#assocFileContainer').hide();
+			$("input[name='newfile']").val('');
 		} else {
 			$('#assocFileContainer').show();
 		}
