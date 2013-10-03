@@ -2771,7 +2771,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var rstclassextenddata=""/>
 		<cfset var getAttributeID=""/>
 		<cfset var existingAttributeList=""/>
-		<cfset var fileattributeList=""/>
+		<cfset arguments.fileattributeList=""/>
 		<cfset var rsbaseids=""/>
 		<cfset var typeList="">
 		<cfset var incomingAttributeList="">
@@ -3124,7 +3124,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					
 					<!--- Extended attribute values of type file need to go through the key factory--->
 					<cfif rstclassextendattributes.type eq "File">
-						<cfset fileattributelist=listAppend(fileattributelist,rstclassextendattributes.attributeID)>
+						<cfset arguments.fileattributelist=listAppend(arguments.fileattributelist,rstclassextendattributes.attributeID)>
 					</cfif>
 					
 					<cfset incomingAttributeList=listAppend(incomingAttributeList,rstclassextendattributes.attributeID)>
@@ -3208,7 +3208,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfqueryparam cfsqltype="cf_sql_INTEGER" value="#keys.get(rstclassextenddata.attributeID)#">,
 							
 							<!--- Extended attribute values of type file need to go through the key factory--->
-							<cfif listFind(fileattributelist,rstclassextenddata.attributeID)>
+							<cfif listFind(arguments.fileattributelist,rstclassextenddata.attributeID)>
 								<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstclassextenddata.attributeValue neq '',de('no'),de('yes'))#" value="#keys.get(rstclassextenddata.attributeValue)#">,
 								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextenddata.stringvalue neq '',de('no'),de('yes'))#" value="#keys.get(rstclassextenddata.stringValue)#">,
 							<cfelse>
@@ -3260,6 +3260,46 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 			
 			<cfif arguments.usersMode neq "none" and structKeyExists(arguments,"Bundle")>
+				<cfset getToWorkClassExtensionsUsers(argumentCollection=arguments)>
+			</cfif>
+		</cfif>
+	</cffunction>
+
+	<cffunction name="getToWorkClassExtensionsUsers" returntype="void">
+		<cfargument name="fromSiteID" type="string" default="" required="true">
+		<cfargument name="toSiteID" type="string" default="" required="true">
+		<cfargument name="fromDSN" type="string" default="" required="true">
+		<cfargument name="toDSN" type="string" default="" required="true">
+		<cfargument name="contentMode" type="string" default="publish" required="true">
+		<cfargument name="keyFactory" type="any" required="true">
+		<cfargument name="Bundle" type="any" required="false">	
+		<cfargument name="errors" type="any" required="true">	
+		<cfargument name="lastDeployment" type="string" default="" required="true">
+		<cfargument name="rsDeleted" required="true" default="#queryNew('objectID')#">
+		<cfargument name="renderingMode" type="string" default="all" required="true">
+		<cfargument name="pluginMode" type="string" default="all" required="true">
+		<cfargument name="usersMode" type="string" default="all" required="true">		
+		<cfargument name="keyMode" type="string" default="copy" required="true">
+		<cfargument name="fileattributelist" type="string" default="" required="true">
+		
+		<cfset var keys=arguments.keyFactory/>
+		<cfset var rstclassextend=""/>
+		<cfset var rstclassextendsets=""/>
+		<cfset var rstclassextendrcsets="">
+		<cfset var rstclassextendattributes=""/>
+		<cfset var rstclassextenddata=""/>
+		<cfset var getAttributeID=""/>
+		<cfset var existingAttributeList=""/>
+		<cfset var rsbaseids=""/>
+		<cfset var typeList="">
+		<cfset var incomingAttributeList="">
+		<cfset var rsCheck="">
+		<cfset var rstclassextenddatauseractivity="">
+		<cfset var rsFeedParams="">
+		<cfset var rssite="">
+		<cfset var tclassextendrcsets="">
+		
+		
 				<cfset rstclassextenddatauseractivity = arguments.Bundle.getValue("rstclassextenddatauseractivity")>
 				
 				<cfif arguments.rsUserConflicts.recordcount>
@@ -3287,7 +3327,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfqueryparam cfsqltype="cf_sql_INTEGER" value="#keys.get(rstclassextenddatauseractivity.attributeID)#">,
 							
 							<!--- Extended attribute values of type file need to go through the key factory--->
-							<cfif listFind(fileattributelist,rstclassextenddatauseractivity.attributeID)>
+							<cfif listFind(arguments.fileattributelist,rstclassextenddatauseractivity.attributeID)>
 								<cfqueryparam cfsqltype="cf_sql_LONGVARCHAR" null="#iif(rstclassextenddatauseractivity.attributeValue neq '',de('no'),de('yes'))#" value="#keys.get(rstclassextenddatauseractivity.attributeValue)#">,
 								<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextenddatauseractivity.stringvalue neq '',de('no'),de('yes'))#" value="#keys.get(rstclassextenddatauseractivity.stringValue)#">,
 							<cfelse>
@@ -3312,8 +3352,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cftry>
 					</cfif>
 				</cfloop>
-			</cfif>
-		</cfif>
+		
 	</cffunction>
 
 	<cffunction name="getToWorkPlugins" returntype="void">
