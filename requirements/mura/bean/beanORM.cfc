@@ -275,7 +275,7 @@ component extends="mura.bean.bean" versioned=false {
 			var loadKey="";
 			var dottedPath=md.fullname;
 			var synthArgs={};
-			var defaultMetaData={};
+			var defaultMetaData={column="",table="",datatype="varchar","default"="null",nullable=true};
 			
 			param name="application.objectMappings.#variables.entityName#" default={};
 			application.objectMappings[variables.entityName].properties={};
@@ -505,13 +505,7 @@ component extends="mura.bean.bean" versioned=false {
 
 			       	 	
 			       	 	structAppend(prop,
-			       	 		{
-								column="",
-								table="",
-								datatype="varchar",
-								default="null",
-								nullable=true
-							},
+			       	 		defaultMetaData,
 							false
 						);
 
