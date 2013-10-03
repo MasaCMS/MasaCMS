@@ -15,7 +15,7 @@
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<div class="row">
 					<div class="col-md-7">
-						<cf_CacheOMatic key="dspPrimaryNav#$.content('contentid')#">
+						<cf_CacheOMatic key="dspPrimaryNav">
 							#$.dspPrimaryNav(
 								viewDepth=1
 								, id='navPrimary'
@@ -31,7 +31,7 @@
 								, liNestedClass=''
 								, aHasKidsClass='dropdown-toggle'
 								, aHasKidsCustomString='role="button" data-toggle="dropdown" data-target="##"'
-								, liCurrentClass='active'
+								, liCurrentClass=''
 								, aCurrentClass=''
 								, siteid=$.event('siteid')
 							)#
@@ -42,6 +42,15 @@
 							openFolders/closeFolders="contentid,contentid" 
 								(e.g. show specific sub-content in dropdown nav)
 						--->
+						<script>
+							$(function(){
+								$(#serializeJSON($.getCrumbPropertyArray('url'))#).each(
+									function(index, value){
+										$("##navPrimary [href='" + value + "']").closest("li").addClass("active");
+									}
+								);
+							})
+						</script>
 					</div>
 
 					<div class="col-md-3 pull-right">

@@ -499,4 +499,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn structKeyExists(request.muraHandledEvents,arguments.eventName)>
 </cffunction>
 
+<cffunction name="getCrumbPropertyArray" output="false">
+	<cfargument name="property">
+	<cfargument name="direction" default="desc">
+	<cfset var it=content().getCrumbIterator()>
+	<cfset var propertyArray=[]>
+	<cfif arguments.direction eq "desc">
+		<cfset it.end()>
+		<cfloop condition="it.hasPrevious()">
+			<cfset arrayAppend(propertyArray,it.previous().getValue(arguments.property))>
+		</cfloop>
+	<cfelse>
+		<cfloop condition="it.hasNext()">
+			<cfset arrayAppend(propertyArray,it.next().getValue(arguments.property))>
+		</cfloop>
+	</cfif>
+	<cfreturn propertyArray>
+</cffunction>
+
 </cfcomponent>
