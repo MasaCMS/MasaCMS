@@ -204,6 +204,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		variables.serviceFactory.addAlias("eventManager","pluginManager");
 		variables.serviceFactory.addAlias("permUtility","permission");
 		variables.serviceFactory.addAlias("content","contentBean");
+		variables.serviceFactory.addAlias("HTMLExporter","contentHTMLExporter");
 		variables.serviceFactory.addAlias("feed","feedBean");
 		variables.serviceFactory.addAlias("site","settingsBean");
 		variables.serviceFactory.addAlias("user","userBean");

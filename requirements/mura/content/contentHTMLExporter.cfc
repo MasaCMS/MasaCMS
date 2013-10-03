@@ -76,6 +76,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var fileDelim = variables.configBean.getFileDelim()>
 	<cfset var localval="">
 	
+	<cfset request.exportedfiles={}>
+
 	<cfsetting requestTimeout = "7200">
 	
 	<cfif listFind("/,\",right(arguments.exportDir,1))>
@@ -211,7 +213,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset variables.fileWriter.writeFile(file = "#filepath#",output = "#fileOutput#")>
 	</cfif>		
 	
-	<cfif len(arguments.contentBean.getFileID())>
+	<cfif len(arguments.contentBean.getFileID()) and not structKeyExists(request.exportedfiles,hash(arguments.contentBean.getFileID()))>
 			<cfif arguments.contentBean.getType() eq "File">
 				<cfset variables.fileWriter.createDir("#arguments.exportDir##$.globalConfig('context')##fileDelim##arguments.contentBean.getSiteID()##fileDelim#cache#fileDelim#file#fileDelim##arguments.contentBean.getFileID()#")>
 				<cfset variables.fileWriter.copyFile(source="#$.globalConfig('fileDir')##fileDelim##arguments.contentBean.getSiteID()##fileDelim#cache#fileDelim#file#fileDelim##arguments.contentBean.getFileID()#.#arguments.contentBean.getFileEXT()#", destination="#arguments.exportDir##$.globalConfig('context')##fileDelim##arguments.contentBean.getSiteID()##fileDelim#cache#fileDelim#file#fileDelim##arguments.contentBean.getFileID()##fileDelim##arguments.contentBean.getAssocFilename()#")>
@@ -223,6 +225,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfset variables.fileWriter.copyFile(source="#$.globalConfig('fileDir')##fileDelim##arguments.contentBean.getSiteID()##fileDelim#cache#fileDelim#file#fileDelim##rsFiles.name#", destination="#arguments.exportDir##$.globalConfig('context')##fileDelim##arguments.contentBean.getSiteID()##fileDelim#cache#fileDelim#file#fileDelim##rsFiles.name#")>
 				</cfloop>
 			</cfif>
+
+			<cfset request.exportedfiles[hash(arguments.contentBean.getFileID())]=true>
 	</cfif>
 			
 	<cfif listFindNoCase("Folder,Gallery",arguments.contentBean.getType())>
