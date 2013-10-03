@@ -114,8 +114,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="getValue" access="public" returntype="any" output="false">
 	<cfargument name="property">
-	<cfif len(arguments.property)>	
-		<cfif structKeyExists(variables.instance.struct,"#arguments.property#")>
+	<cfif len(arguments.property)>
+		<cfif structKeyExists(this,"get#arguments.property#")>
+			<cfset var tempFunc=this["get#arguments.property#"]>
+			<cfreturn tempFunc()>	
+		<cfelseif structKeyExists(variables.instance.struct,"#arguments.property#")>
 			<cfreturn variables.instance.struct["#arguments.property#"]>
 		<cfelse>
 			<cfreturn getContentBean().getValue(arguments.property)>
@@ -128,10 +131,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setValue" access="public" returntype="any" output="false">
 	<cfargument name="property">
 	<cfargument name="propertyValue">	
-	
+	<cfif structKeyExists(this,"set#arguments.property#")>
+		<cfset var tempFunc=this["set#arguments.property#"]>
+		<cfset tempFunc(arguments.propertyValue)>
+	<cfelse>
 		<cfset variables.instance.struct[arguments.property]=arguments.propertyValue>
 		<cfset getContentBean().setValue(arguments.property, arguments.propertyValue)>
-		<cfreturn this>
+	</cfif>
+	<cfreturn this>
 </cffunction>
 
 <cffunction name="getContentBean" access="public" returntype="any" output="false">
