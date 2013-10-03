@@ -182,8 +182,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 FindNoCase( "java", request.userAgent ) OR 
 	 FindNoCase( "cfschedule", request.userAgent ) OR
 	 FindNoCase( "reeder", request.userAgent ) OR
-	 FindNoCase( "Python", request.userAgent ) OR
-	 FindNoCase( "Synapse", request.userAgent ) OR
+	 FindNoCase( "python", request.userAgent ) OR
+	 FindNoCase( "synapse", request.userAgent ) OR
 	 FindNoCase( "facebookexternalhit", request.userAgent ) OR
 	 Find( "spider", request.userAgent ))>
 	 
