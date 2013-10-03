@@ -208,5 +208,11 @@ var extendManager = {
 			$(".availableSubTypesContainer").show();
 		}
 
+		if(dataArray[0] == "File"){
+			$(".hasAssocFileContainer").hide();
+		} else {
+			$(".hasAssocFileContainer").show();
+		}
+
 	}
 }

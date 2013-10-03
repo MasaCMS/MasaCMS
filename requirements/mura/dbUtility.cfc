@@ -245,7 +245,7 @@
 	<cfif hasTable>
 		<cfset existing=columnMetaData(arguments.column,arguments.table)>
 	<cfelse>
-		<cfset existing=getDefaultColumnMetatData()>
+		<cfset existing=getDefaultColumnMetaData()>
 	</cfif>
 
 	<cfif arguments.autoincrement>
@@ -895,7 +895,7 @@
 	<cfset var columnsStruct={}>
 	<cfset var columnArgs={}>
 
-	<cfset var defaultArgs=getDefaultColumnMetatData()>
+	<cfset var defaultArgs=getDefaultColumnMetaData()>
 
 	<cfloop query="arguments.rs">
 		<cfset columnArgs=structCopy(defaultArgs)>
@@ -989,10 +989,10 @@
 		<cfreturn columnsStruct[arguments.column]>
 	</cfif>
 
-	<cfreturn getDefaultColumnMetatData()>
+	<cfreturn getDefaultColumnMetaData()>
 </cffunction>
 
-<cffunction name="getDefaultColumnMetatData" output="false">
+<cffunction name="getDefaultColumnMetaData" output="false">
 	<cfreturn {
 				column="",
 				table="",

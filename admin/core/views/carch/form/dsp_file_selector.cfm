@@ -2,7 +2,7 @@
 <cfset lockedByYou=stats.getLockID() eq session.mura.userID>
 <cfset lockedBySomeElse=len(stats.getLockID()) and stats.getLockID() neq session.mura.userID>
 <cfoutput>
-<div class="control-group">
+<div id="assocFileContainer" class="control-group" style="display:none">
    <label class="control-label">
 	<cfif rc.ptype eq 'Gallery' or rc.type neq 'File'>
 		<a href="##" rel="tooltip" title="#HTMLEditFormat(application.rbFactory.getKeyValue(session.rb,'tooltip.selectimage'))#">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectimage')# <i class="icon-question-sign"></i></a>
@@ -46,5 +46,5 @@
 	</script>
 	<input type="hidden" id="unlockwithnew" name="unlockwithnew" value="false" />
 	</div>
-	</div>
+</div>
 </cfoutput>

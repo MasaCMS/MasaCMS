@@ -247,7 +247,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</div>
 
 			<div class="control-group">
-				<label class="control-label">Category Intersection</label>
+				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.categoryInterection')#</label>
 				<div class="controls">
 				<label class="radio inline">
 					<input name="useCategoryIntersect" type="radio" value="1" class="radio" <cfif rc.feedBean.getUseCategoryIntersect()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 

@@ -1453,6 +1453,7 @@ and tclassextendattributes.type='File'
 	<cfset destSubType.setIsActive(sourceSubType.getIsActive())>
 	<cfset destSubType.setHasSummary(sourceSubType.getHasSummary())>
 	<cfset destSubType.setHasBody(sourceSubType.getHasBody())>
+	<cfset destSubType.setHasAssocFile(sourceSubType.getHasAssocFile())>
 	<cfset destSubType.setDescription(sourceSubType.getDescription())>
 	<cfset destSubType.setAvailableSubTypes(sourceSubType.getAvailableSubTypes())>
 	<cfset destSubType.setIconClass(sourceSubType.getIconClass())>
@@ -1567,6 +1568,10 @@ and tclassextendattributes.type='File'
 
 			if(isDefined("extXML.xmlAttributes.hassummary")){
 				subType.setHasSummary( extXML.xmlAttributes.hassummary );
+			}
+
+			if(isDefined("extXML.xmlAttributes.hasassocfile")){
+				subType.setHasAssocfile( extXML.xmlAttributes.hasassocfile );
 			}
 
 			if(isDefined("extXML.xmlAttributes.hasbody")){
