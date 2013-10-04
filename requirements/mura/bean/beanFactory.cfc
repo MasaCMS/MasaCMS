@@ -17,7 +17,7 @@ component {
 
 	// CONSTRUCTOR
 	
-	public any function init( string folders, struct config = "#{}#" ) {
+	public any function init( string folders, struct config = {} ) {
 		variables.folders = folders;
 		variables.config = config;
 		variables.beanInfo = { };

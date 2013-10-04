@@ -217,7 +217,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cfscript>
-	public any function invokeMethod(required string methodName, struct methodArguments="#{}#") {
+	public any function invokeMethod(required string methodName, struct methodArguments={}) {
 		if(structKeyExists(this, arguments.methodName)) {
 			var theMethod = this[ arguments.methodName ];
 			return theMethod(argumentCollection = methodArguments);
