@@ -150,6 +150,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.loadcontentby='filename'/>
 <cfset variables.instance.strictfactory=false/>
 <cfset variables.instance.managelinks=true/>
+<cfset variables.instance.hasRazuna=false>
 
 <cffunction name="OnMissingMethod" access="public" returntype="any" output="false" hint="Handles missing method exceptions.">
 <cfargument name="MissingMethodName" type="string" required="true" hint="The name of the missing method." />
