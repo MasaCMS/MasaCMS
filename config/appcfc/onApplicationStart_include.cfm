@@ -57,6 +57,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset request.muraAppreloaded=true>
 
+<cfif left(server.coldfusion.productionversion,5) eq "9,0,0" or listFirst(server.coldfusion.productionversion) lt 9>
+	<cfoutput>Mura CMS requires Adobe Coldfusion 9.0.1 or greater compatibility</cfoutput>
+	<cfabort>
+</cfif>
 <!--- this is here for CF8 compatibility --->
 <cfset variables.baseDir=this.baseDir>
 <cfprocessingdirective pageencoding="utf-8"/>
