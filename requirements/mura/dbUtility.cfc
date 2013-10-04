@@ -248,6 +248,10 @@
 		<cfset existing=getDefaultColumnMetaData()>
 	</cfif>
 
+	<cfif arguments.datatype eq "any">
+		<cfset arguments.datatype="varchar">
+	</cfif>
+
 	<cfif arguments.autoincrement>
 		<cfset arguments.datatype="int">
 		<cfset arguments.nullable=false>
@@ -516,6 +520,10 @@
 
 	<cfif arguments.autoincrement>
 		<cfset arguments.datatype="int">
+	</cfif>
+
+	<cfif arguments.datatype eq "any">
+		<cfset arguments.datatype="varchar">
 	</cfif>
 	
 	<cfif tableExists(arguments.table) and columnExists(arguments.column,arguments.table)>
