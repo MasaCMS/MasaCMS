@@ -2023,6 +2023,7 @@ select * from tplugins order by #arguments.orderby#
 <cfset rc.jsLibLoaded=arguments.jsLibLoaded>
 <cfset rc.renderMuraAlerts=false>
 <cfset rc.$=getBean('$').init(session.siteid)>
+<cfset var $=rc.$>
 
 <cfif arguments.compactDisplay>
 	<cfset layoutTemplate = "compact" />
