@@ -190,6 +190,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<script src="#application.configBean.getContext()#/admin/assets/js/jquery/jquery-tagselector.js?coreversion=#application.coreversion#"></script>
 		<script src="#application.configBean.getContext()#/admin/assets/bootstrap/js/bootstrap.min.js"></script>
+		<cfinclude template="/muraWRM/tasks/widgets/razuna/core/includes/adminscripts.cfm">
 	</body>
 </html>
 </cfoutput>

@@ -82,13 +82,15 @@ component extends="mura.bean.bean" entityname='dataCollection'{
 
 					if(structkeyExists(prop,'validateMessage') && len(prop.validateMessage)){
 						message=prop.validateMessage;
+					} else {
+						message='';
 					}
 
 					if(structkeyExists(prop,'validateRegex') && len(prop.validateRegex)){
 						arrayAppend(rules,{'regex'=prop.validateRegex,message=message});
 					}
 
-					if(structkeyExists(prop,'isrequired') && len(prop.isrequired)){
+					if(structkeyExists(prop,'isrequired') &&  prop.isrequired){
 						arrayAppend(rules,{required=true,message=message});
 					}
 

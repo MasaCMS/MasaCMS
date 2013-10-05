@@ -890,4 +890,8 @@ if(not isObject(arguments.$)){
 	<cfreturn getValue('extranetSSL') ? 'https' : 'http' />
 </cffunction>
 
+<cffunction name="getRazunaSettings" output="false">
+	<cfreturn getBean('razunaSettings').loadBy(siteid=getValue('siteid'))>
+</cffunction>
+
 </cfcomponent>

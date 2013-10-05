@@ -88,11 +88,11 @@ to your own modified versions of Mura CMS.
     </cfoutput>
     </cfsavecontent>
     <cfif arrayLen(extendSets)>
-      <cfset tabLabelList='Basic,Contact Info,Shared Resources,Modules,Email,Images,Extranet,Display Regions,Extended Attributes,Deploy Bundle'>
-      <cfset tabList='tabBasic,tabContactinfo,tabSharedresources,tabModules,tabEmail,tabImages,tabExtranet,tabDisplayregions,tabExtendedAttributes,tabBundles'>
+      <cfset tabLabelList='Basic,Contact Info,Shared Resources,Modules,Email,Images,Extranet,Display Regions,Extended Attributes,Deploy Bundle,Razuna'>
+      <cfset tabList='tabBasic,tabContactinfo,tabSharedresources,tabModules,tabEmail,tabImages,tabExtranet,tabDisplayregions,tabExtendedAttributes,tabBundles,tabRazuna'>
       <cfelse>
-      <cfset tabLabelList='Basic,Contact Info,Shared Resources,Modules,Email,Images,Extranet,Display Regions,Deploy Bundle'>
-      <cfset tabList='tabBasic,tabContactinfo,tabSharedresources,tabModules,tabEmail,tabImages,tabExtranet,tabDisplayregions,tabBundles'>
+      <cfset tabLabelList='Basic,Contact Info,Shared Resources,Modules,Email,Images,Extranet,Display Regions,Deploy Bundle,Razuna'>
+      <cfset tabList='tabBasic,tabContactinfo,tabSharedresources,tabModules,tabEmail,tabImages,tabExtranet,tabDisplayregions,tabBundles,tabRazuna'>
     </cfif>
   </cfoutput> <cfoutput query="rsPluginScripts" group="pluginid"> <cfoutput>
       <cfset tabLabelList=listAppend(tabLabelList,rsPluginScripts.name)/>
@@ -1064,6 +1064,53 @@ to your own modified versions of Mura CMS.
       
     	</div>
     </div>
+
+    <cfset rc.razunaSettings=rc.siteBean.getRazunaSettings()>
+    <div id="tabRazuna" class="tab-pane fade">
+      <div class="fieldset">
+      <div class="control-group">
+        <label class="control-label" for="razuna_servertype">Server Type</label>
+        <div class="controls">
+          <label for="razuna_servertype_hosted" class="radio inline">
+            <input type="radio" name="servertype" onchange="checkServerType();"value="cloud" id="razuna_servertype_cloud" <cfif rc.razunaSettings.getServerType() eq "cloud">checked="checked"</cfif>> Hosted (razuna.com)
+          </label>
+          <label for="razuna_servertype_self" class="radio inline">
+            <input type="radio" name="servertype" onchange="checkServerType();" value="self" id="razuna_servertype_local" <cfif rc.razunaSettings.getServerType() eq "local">checked="checked"</cfif>> Self hosted
+          </label>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="razuna_hostname">Hostname</label>
+        <div class="controls">
+          <input type="text" class="span6" value="#HTMLEditFormat(rc.razunaSettings.getHostName())#" id="razuna_hostname" name="hostname"> 
+          <span class="help-block">Example: yourcompany.razuna.com or localhost:8080/razuna</span>
+        </div>
+      </div>
+      
+      <div class="control-group">
+        <label class="control-label" for="hostid">Host ID</label>
+        <div class="controls">
+          <input type="text" class="span6" value="#HTMLEditFormat(rc.razunaSettings.getHostID())#" id="razuna_hostid" name="hostid"> 
+          <span class="help-block">Example: 496</span>
+        </div>
+      </div>
+      
+      <div class="control-group">
+        <label class="control-label" for="dampath">DAM Path</label>
+        <div class="controls">
+          <input type="text" class="span6" value="#HTMLEditFormat(rc.razunaSettings.getDAMPath())#" id="razuna_dampath" name="razuna_dampath"> 
+          <span class="help-block">Example: /demo/dam</span>
+        </div>
+      </div>
+      
+      <div class="control-group">
+        <label class="control-label" for="razuna_api_key">API Key</label>
+        <div class="controls">
+          <input type="text" class="span6" value="#HTMLEditFormat(rc.razunaSettings.getApiKey())#" id="razuna_api_key" name="apikey">
+        </div>
+      </div>
+    </div>
+ </div>
         
   </cfoutput>
   

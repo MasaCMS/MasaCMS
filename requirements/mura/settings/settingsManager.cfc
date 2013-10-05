@@ -236,7 +236,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif structKeyExists(arguments.data,"extendSetID") and len(arguments.data.extendSetID)>
 			<cfset variables.classExtensionManager.saveExtendedData(bean.getBaseID(),bean.getAllValues())/>
 		</cfif>
+
+		<cfset bean.getRazunaSettings().set(arguments.data).save()>
 		<cfset variables.DAO.update(bean) />
+
 		<cfset checkForBundle(arguments.data,bean.getErrors())>
 		<cfset setSites() />
 		<cfset application.appInitialized=false>
@@ -259,6 +262,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<cfset getBean('pluginManager').announceEvent("onBeforeSiteDelete",pluginEvent)>
 
+	<cfset bean.getRazunaSettings().delete()>
+	
 	<cfset variables.utility.logEvent("SiteID:#arguments.siteid# Site:#bean.getSite()# was deleted","mura-settings","Information",true) />
 	<cfset variables.DAO.delete(arguments.siteid) />
 	<cfset setSites() />
@@ -312,6 +317,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfif structKeyExists(arguments.data,"extendSetID") and len(arguments.data.extendSetID)>
 			<cfset variables.classExtensionManager.saveExtendedData(bean.getBaseID(),bean.getAllValues())/>
 		</cfif>
+		<cfset bean.getRazunaSettings().set(arguments.data).save()>
 		<cfset variables.DAO.create(bean) />
 		<cfset variables.utility.copyDir("#variables.configBean.getWebRoot()##variables.configBean.getFileDelim()#default#variables.configBean.getFileDelim()#", "#variables.configBean.getWebRoot()##variables.configBean.getFileDelim()##bean.getSiteID()##variables.configBean.getFileDelim()#") />
 		<cfif variables.configBean.getCreateRequiredDirectories()>

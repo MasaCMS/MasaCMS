@@ -502,6 +502,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						arrayAppend(rules,rule);
 					}
 
+					if(structKeyExists(props[prop], "format")){
+						if(structKeyExists(props[prop], "message")){
+							rule={format=props[prop].message};
+						} else {
+							rule={};
+						}
+						structAppend(rule,{required=props[prop].required});
+						arrayAppend(rules,rule);
+					}
+
 					if(structKeyExists(props[prop], "length") && isNumeric(props[prop].length)){
 						if(structKeyExists(props[prop], "message")){
 							rule={message=props[prop].message};
