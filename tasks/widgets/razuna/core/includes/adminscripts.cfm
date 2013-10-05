@@ -28,8 +28,9 @@
  * Date US Format		User					Note
  * 2013/04/10			CF Mitrah		 	Initial version
  
-
+--->
 </cfsilent>
+<!---
 <cfif len($.event('siteid'))>
 <cfoutput>
 <link rel="stylesheet" id="theme" href="#$.globalConfig('context')#/tasks/widgets/razuna/assets/css/jstree/style.css" type="text/css" media="screen" />
@@ -41,4 +42,5 @@
 <script src="#$.globalConfig('context')#/tasks/widgets/razuna/assets/js/razuna.js" type="text/javascript"></script>
 <script src="#$.globalConfig('context')#/tasks/widgets/razuna/assets/js/jquery.jstree.js" type="text/javascript"></script>
 </cfoutput>
-</cfif>--->
+</cfif>
+--->
