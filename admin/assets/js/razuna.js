@@ -26,7 +26,10 @@
  * Date US Format		User					Note
  * 2013/04/10			CF Mitrah		 	Initial version
 */ 
-
+	$(function(){
+			$('body').append('<div id="razunaModalWindow"></div>');
+	});
+	
 	$(document).on('change','input[name=radio_path]',{},function(){
 		$('#width').val(parseInt($(this).attr('data-width')));
 		$('#height').val(parseInt($(this).attr('data-height')));
@@ -45,34 +48,14 @@
 	});
 	
 	$(document).on('click','#insert_into_post',{},function(){
-		if ($(this).hasClass('image')) {
-			if ($('.urlfield').val().length){
+		
+		if ($('.urlfield').val().length){
 				url = $('.urlfield').val();
-			}
-			else{
-				url = $("input[type='radio'][name='radio_path']:checked").val();
-			}
-			add_to_editor = "<a href='"+url+"'><img title='" + $('#img_title_text').val() + "' src='" + $("input[type='radio'][name='radio_path']:checked").val() + "' alt='"+$('#alt_text').val()+"'></a>";
+		} else{
+			url = $("input[type='radio'][name='radio_path']:checked").val();
 		}
-		else if ($(this).hasClass('audio')) {
-			add_to_editor = "[mura]$.razunaMediaPlayer.dspMedia(file='" + $('input[type="radio"][name="radio_path"]:checked').val() + "',width=450,height=30,sharecode=true,embedlink=true)[/mura]";
-		}
-		else if ($(this).hasClass('video')) {
-			add_to_editor = "[mura]$.razunaMediaPlayer.dspMedia(file='" + $('input[type="radio"][name="radio_path"]:checked').val() + "',width='" + $('#width').val() + "',height='" + $('#height').val() + "',image='"+$('input[type="radio"][name="radio_path"]:checked').attr('data-image-thumb')+"',sharecode=true,embedlink=true)[/mura]";
-		}
-		else if ($(this).hasClass('document')) {
-			if ($('#doc_link_text').val() == "") {
-				$('.doc_link_error').remove();
-				$('#doc_link_text').css({'border':'1px solid red'}).after('<span class="doc_link_error" style="color:red;"> This field is required<span>');
-				return false;
-			}
-			else {
-				add_to_editor = "<a href = '" + $('input[type="radio"][name="radio_path"]:checked').val() + "' target='_blank'>" + $('#doc_link_text').val() + "</a>";
-			}
-		}
-		var imgHtml = CKEDITOR.instances[$('#instances').val()].getData();
-		CKEDITOR.instances[$('#instances').val()].setData(imgHtml+add_to_editor);
-		removAll();
+		
+		$("#" + razunatargetid).val(url);
 		$('#razunaModalWindow').dialog("close");
 	});
 	
@@ -83,7 +66,8 @@
 		$('#tagTree').css("width","835px");
 	}
 	
-	function renderRazunaWindow(instances){
+	function renderRazunaWindow(targetid){
+		razunatargetid=targetid;
 		$('#razunaModalWindow').html('<div align="center"><img src="'+razuna_folder+'assets/images/ajax-loader.gif"></div>');
 		$('#razunaModalWindow').dialog({
 	        bgiframe: true,
@@ -97,10 +81,9 @@
 			removAll();
 		});
 		
-		$('#razunaModalWindow').load(razuna_folder+'?razunaaction=ajax',function(){
+		$('#razunaModalWindow').load(razuna_folder+'?muraAction=razuna.default',function(){
 			var loader_div = '<div id="loader-div"><div align="center" class="img_div"><img src="'+razuna_folder+'assets/images/ajax-loader.gif"></div></div>';
 				$('#razunaModalWindow').before(loader_div);
-				$('#instances').val(instances);
 
 		$("#tagTree").jstree({
 			"plugins" : [ "json_data", "ui", "types", "search"],
@@ -152,7 +135,7 @@
 				},
 			"json_data" : {
 				"ajax" : {
-					"url" : razuna_folder+'?razunaaction=ajax.getNodes',
+					"url" : razuna_folder+'?muraAction=razuna.getnodes',
 					"data" : function (n) {
 						return {
 							"folderid" : n.attr ? n.attr("id") : 0
@@ -163,4 +146,8 @@
 		});
 		$('#razunaModalWindow').before($('#search_div'));
 		}).dialog('open');
+
+		return false;
 	}
+
+

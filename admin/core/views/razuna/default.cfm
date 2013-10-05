@@ -1,3 +1,4 @@
+<cfsilent>
 <!---
  *
  * Copyright (C) 2005-2008 Razuna Ltd.
@@ -28,3 +29,23 @@
  * 2013/04/10			CF Mitrah		 	Initial version
  
 --->
+</cfsilent>
+<cfset request.layout=false>
+<div id="tagTree" class="jstree-classic"></div>
+<div id="full_page_loader">
+    <img src="./assets/images/ajax-loader.gif" style="position: absolute; left: 50%; top: 50%; margin-left: -32px; margin-top: -32px; display: block;"/>
+</div>
+<!--- Search Div --->
+<div id="search_div" class="pull-right">
+	<input type="text" name="search_box" id="search_box">
+	<input type="button" class="btn search" name="search" value="Search" id="search">
+	<input type="button" class="btn reset" name="reset" value="Reset" id="reset" onclick="$('#tagTree').jstree('refresh',-1);">
+</div>
+<!--- Image Details --->
+<div style="display:none;" id="razunaImageDetails">
+	<div id="inner-div">
+	<input type="hidden" name"instances" id="instances" value="">
+	<table class="describe" style="width:100%; height:auto; ">
+	</table>
+	</div>
+</div>
