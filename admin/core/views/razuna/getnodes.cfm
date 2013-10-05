@@ -1,4 +1,4 @@
-﻿<cfsilent>
+<cfsilent>
 <!---
  *
  * Copyright (C) 2005-2008 Razuna Ltd.
@@ -30,6 +30,7 @@
  
 --->
 <cfscript>
+	request.layout=false;
 	arr = arrayNew(1);
 	
 	for (x = 1; x <= rc.qFolders.RecordCount; x=x+1) { 

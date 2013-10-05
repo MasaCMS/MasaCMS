@@ -1,4 +1,4 @@
-﻿<cfsilent>
+<cfsilent>
 <!---
  *
  * Copyright (C) 2005-2008 Razuna Ltd.
@@ -30,3 +30,4 @@
  
 --->
 </cfsilent>
+<cfset request.layout=false>

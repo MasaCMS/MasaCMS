@@ -28,30 +28,28 @@
  * 2013/04/10			CF Mitrah		 	Initial version
 */ 
  
-component persistent="false" accessors="true" output="false" extends="mura.cfobject" {
+component persistent="false" accessors="true" output="false" extends="controller" {
 
-	property name='$';
-	property name='fw';
-
-	public any function init (required any fw) {
-		setFW(arguments.fw);
-	}
-
+	// *********************************  PAGES  *******************************************
+	
 	public any function before(required struct rc) {
-		if ( StructKeyExists(rc, '$') ) {
-			var $ = rc.$;
-			set$(rc.$);
-		};
-
-
-		if ( rc.isFrontEndRequest ) {
-			location(url='#rc.$.globalConfig('context')#/', addtoken=false);
-		} else if ( !rc.$.currentUser().isSuperUser() ) { // lock app down to Super Users only
-			location(url='#rc.$.globalConfig('context')#/admin/', addtoken=false);
-		};
-
+		if (not variables.permUtility.getModulePerm('00000000000000000000000000000000000',arguments.rc.siteid)){
+			secure(arguments.rc);
+		}
+		
+		rc.razunaSettings = rc.$.getBean('razunaSettings').loadBy(siteID=session.siteid);
+		rc.razunaAPI = rc.$.getBean('razunaAPI').set(rc.razunaSettings.getHostName(), rc.razunaSettings.getApiKey(), rc.razunaSettings.getHostID());
 	}
 	
+	public any function default(required rc) {
+		rc.qFolders = rc.razunaAPI.getFolders();
+	}
+	
+	public any function getnodes(required rc) {
+		rc.qFolders = rc.razunaAPI.getFolders(rc.folderid);
+		rc.qAssets = rc.razunaAPI.getassets(rc.folderid);
+	}
+
 	function settingsQueryToStruct(q){
 		structSettings = structnew();
 		for(i=1; i<=q.recordcount; i++ ){
