@@ -245,6 +245,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		variables.serviceFactory.addAlias("relatedContentSet","extendRelatedContentSetBean");
 		variables.serviceFactory.addAlias("fileMetaData","contentFileMetaDataBean");
 		variables.serviceFactory.addAlias("file","fileBean");
+		variables.serviceFactory.addAlias("razunaSettings","razunaSettingsBean");
 		application.serviceFactory=variables.serviceFactory;
 	</cfscript>
 
@@ -276,6 +277,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			variables.serviceFactory.getBean('relatedContentSet');
 			variables.serviceFactory.getBean('fileMetaData');
 			variables.serviceFactory.getBean('file');
+			variables.serviceFactory.getBean('razunaSettings');
 		</cfscript>
 	</cfif>
 		

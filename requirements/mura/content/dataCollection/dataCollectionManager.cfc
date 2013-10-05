@@ -228,12 +228,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset var stop="" />
 <cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rs')#">
 select tformresponsepackets.* from tformresponsepackets 
-<cfif extend or arguments.data.keywords neq ''>
-left join tformresponsequestions on tformresponsepackets.responseid= tformresponsequestions.responseid
+<cfif extend>
+left join tformresponsequestions extend on tformresponsepackets.responseid= extend.responseid
+</cfif>
+<cfif arguments.data.keywords neq ''>
+left join tformresponsequestions keywords on tformresponsepackets.responseid= keywords.responseid
 </cfif>
 where tformresponsepackets.siteid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.siteID#"/> and tformresponsepackets.formid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.contentID#"/>
 <cfif extend>
-and tformresponsequestions.formField= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.sortBy#"/>
+and extend.formField= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.sortBy#"/>
 </cfif>
 <cfif isdefined('arguments.data.date1') and lsIsDate(arguments.data.date1)>
 <cfset start=lsParseDateTime(arguments.data.date1) />
@@ -245,16 +248,16 @@ and entered >= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime
 and entered <= <cfqueryparam cfsqltype="cf_sql_timestamp" value="#createdatetime(year(stop),month(stop),day(stop),arguments.data.hour2,arguments.data.minute2,59)#">
 </cfif>
 <cfif arguments.data.keywords neq ''>
-and tformresponsequestions.pollValue = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.keywords#">
+and keywords.pollValue like <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.keywords#">
 
 <cfif listFind(arguments.data.fieldnames,arguments.data.filterBy) and arguments.data.filterBy neq ''>
-and tformresponsequestions.formField = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.filterBy#">
+and keywords.formField = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.data.filterBy#">
 </cfif>
 
 </cfif>
 
 <cfif  arguments.data.sortBy eq 'Entered' or (listFind(arguments.data.fieldnames,arguments.data.sortBy) and arguments.data.sortby neq '')>
-order by <cfif arguments.data.sortBy eq 'Entered'>tformresponsepackets.entered<cfelse>tformresponsequestions.pollValue</cfif> #arguments.data.sortDirection#
+order by <cfif arguments.data.sortBy eq 'Entered'>tformresponsepackets.entered<cfelse>extend.pollValue</cfif> #arguments.data.sortDirection#
 <cfelse>
 order by tformresponsepackets.entered asc
 </cfif>

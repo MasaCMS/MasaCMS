@@ -1,0 +1,43 @@
+/*
+ * Copyright (C) 2005-2008 Razuna Ltd.
+ *
+ * This file is part of Razuna - Enterprise Digital Asset Management.
+ *
+ * Razuna is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Razuna is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero Public License
+ * along with Razuna. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * You may restribute this Program with a special exception to the terms
+ * and conditions of version 3.0 of the AGPL as described in Razuna's
+ * FLOSS exception. You should have received a copy of the FLOSS exception
+ * along with Razuna. If not, see <http://www.razuna.com/licenses/>.
+ *
+ *
+ * HISTORY:
+ * Date US Format		User					Note
+ * 2013/04/10			CF Mitrah		 	Initial version
+*/ 
+
+.container-razuna h2 {margin:30px}
+.mura .container-razuna fieldset .control-group, .mura .container-razuna .fieldset .control-group {border-top:none}
+
+
+#tagTree{float:left; width:835px; background-color: #FFFFFF; height: auto; max-height: 450px; min-height: 450px; overflow-y: scroll;}
+#full_page_loader{display:none; position:absolute; top:0; left:0; width:100%; height:100%; z-index:1000; background-color:grey;opacity:.9;}
+#inner-div{padding:20px; float:left; width:533px; position:absolute; margin-left: 278px; margin-top: 62px !important; height:420px; background-color:#fff; border:5px solid #E6E6E6;}
+#razunaModalWindow{z-index:-1; margin-top:55px; width: auto; min-height: 60px; height: auto;}
+#loader-div{display:none;float:left; width:554px; position:absolute; margin-left: 278px; margin-top: 62px !important;}
+.img_div{padding: 210px 0px; background-color:#E6E6E6;}
+.form_labels{width:150px !important;padding-top: 4px;}
+.radio{width:25px; float:left;}
+#show-image{width:150px;height:150px;}
+

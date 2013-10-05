@@ -50,7 +50,7 @@
 					data-label="#HTMLEditFormat(attributes.label)#" data-label="#HTMLEditFormat(attributes.required)#" data-validate="#HTMLEditFormat(attributes.validation)#" data-regex="#HTMLEditFormat(attributes.regex)#" data-message="#HTMLEditFormat(attributes.message)#">
 					<a style="display:none;" class="btn" href="" onclick="return openFileMetaData('#attributes.bean.getContentHistID()#','','#attributes.bean.getSiteID()#','#attributes.property#');"><i class="icon-info-sign"></i></a>
 						
-					<!---<a href="" id="btn-razuna" title="Select a File from Razuna" rel="tooltip">Razuna</a>--->
+					<a href="" id="btn-razuna" title="Select a File from Razuna" rel="tooltip">Razuna</a>
 				</div>
 			</div>
 		

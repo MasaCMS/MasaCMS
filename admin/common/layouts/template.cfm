@@ -288,6 +288,7 @@
 	<cfinclude template="/muraWRM/admin/core/views/carch/dsp_content_nav.cfm">
 	</cfif>
 	<cfinclude template="includes/dialog.cfm">
+	<cfinclude template="/muraWRM/tasks/widgets/razuna/core/includes/adminscripts.cfm">
 	<cfif structKeyExists(rc,'$')>
 		#rc.$.renderEvent('onAdminHTMLFootRender')#
 	</cfif>
