@@ -891,7 +891,10 @@ if(not isObject(arguments.$)){
 </cffunction>
 
 <cffunction name="getRazunaSettings" output="false">
-	<cfreturn getBean('razunaSettings').loadBy(siteid=getValue('siteid'))>
+	<cfif not structKeyExists(variables,'razunaSettings')>
+		<cfset variables.razunaSettings=getBean('razunaSettings').loadBy(siteid=getValue('siteid'))>
+	</cfif>
+	<cfreturn variables.razunaSettings>
 </cffunction>
 
 </cfcomponent>
