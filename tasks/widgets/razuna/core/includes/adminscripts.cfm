@@ -30,8 +30,7 @@
  
 --->
 </cfsilent>
-<!---
-<cfif len($.event('siteid'))>
+<cfif len($.event('siteid')) and len(application.serviceFactory.getBean('settingsManager').getSite(attributes.bean.getSiteID()).getRazunaSettings().getHostname())>
 <cfoutput>
 <link rel="stylesheet" id="theme" href="#$.globalConfig('context')#/tasks/widgets/razuna/assets/css/jstree/style.css" type="text/css" media="screen" />
 <link rel="stylesheet" id="theme" href="#$.globalConfig('context')#/tasks/widgets/razuna/assets/css/razuna.css" type="text/css" media="screen" />
@@ -43,4 +42,3 @@
 <script src="#$.globalConfig('context')#/tasks/widgets/razuna/assets/js/jquery.jstree.js" type="text/javascript"></script>
 </cfoutput>
 </cfif>
---->
