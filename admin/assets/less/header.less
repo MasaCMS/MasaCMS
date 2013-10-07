@@ -217,10 +217,22 @@ header, #cPlugins {
 		 	//max-height: 200px;
 		 	//overflow-y: auto; 
 	    	
-	    	.dropdown-menu {
+	    	.dropdown-submenu > .dropdown-menu {
 		    	.border-radius(5px);	
 				max-height: 219px;
-				overflow-y: auto; 
+				overflow-y: auto;
+				
+				&:nth-child(8)&:after {
+					#gradient .vertical(hsla(0,0,25%,0),hsla(0,0,25%,1.0));
+					height: 20px;
+					position: absolute;
+					bottom: 0px;
+					right: 0px;
+					z-index: 10000000;
+					display: block;
+					width: 100%;					
+					} 
+				
 		    	}
 	    
 			.divider {

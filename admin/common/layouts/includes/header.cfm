@@ -296,19 +296,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			 							<cfset exp="">
 			 						</cfif>
 			 						<!--- --->
-				 					<cfloop query="rsExts">
-				 						<li><a href="#application.configBean.getContext()#/admin/?muraAction=cExtend.listSets&subTypeID=#rsExts.subtypeID#&siteid=#URLEncodedFormat(rc.siteid)#">
-				 							<i class=<cfif len(exp)>"#evaluate(exp)#"<cfelse>"icon-cog"</cfif>></i> 
-				 								
-				 							
-				 							<cfif rsExts.type eq 1>Group<cfelseif rsExts.type eq 2>User<cfelse>#HTMLEditFormat(rsExts.type)#</cfif>/#HTMLEditFormat(rsExts.subtype)#	
-				 						</a></li>
-				 					</cfloop>
+				 					 <li><a href="#application.configBean.getContext()#/admin/?muraAction=cExtend.editSubType&subTypeID=&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.addclassextension")#</a></li>
 				 					<cfif rsExts.recordcount>
 				 						<li class="divider"></li>
 				 					</cfif>
-				 					 <li><a href="#application.configBean.getContext()#/admin/?muraAction=cExtend.editSubType&subTypeID=&siteid=#URLEncodedFormat(rc.siteid)#"><i class="icon-plus-sign"></i> #application.rbFactory.getKeyValue(session.rb,"layout.addclassextension")#</a>
-			 					</ul>	
+				 					<cfloop query="rsExts">
+				 						<li><a href="#application.configBean.getContext()#/admin/?muraAction=cExtend.listSets&subTypeID=#rsExts.subtypeID#&siteid=#URLEncodedFormat(rc.siteid)#">
+				 							<i class=<cfif len(exp)>"#evaluate(exp)#"<cfelse>"icon-cog"</cfif>></i>				 								
+				 							<cfif rsExts.type eq 1>Group<cfelseif rsExts.type eq 2>User<cfelse>#HTMLEditFormat(rsExts.type)#</cfif>/#HTMLEditFormat(rsExts.subtype)#	
+				 						</a></li>
+				 					</cfloop>
+			 					</ul>
 		 					</li>
 
 		 					<li>
