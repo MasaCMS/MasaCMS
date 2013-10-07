@@ -9,7 +9,7 @@
 	getBean('relatedContentSet').checkSchema();
 	getBean('fileMetaData').checkSchema();
 	getBean('file').checkSchema();
-
+	getBean('razunaSettings').checkSchema();
 
 	dbUtility.setTable("tclassextend")
 	.addColumn(column="iconclass",dataType="varchar",length="50")

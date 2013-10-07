@@ -694,6 +694,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<input type="hidden" name="compactDisplay" value="#HTMLEditFormat(rc.compactDisplay)#" />	
 	</cfoutput>
 	</form>
+	
 <cfelse>
 	<div>
 		<cfinclude template="form/dsp_full.cfm">

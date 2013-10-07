@@ -890,4 +890,11 @@ if(not isObject(arguments.$)){
 	<cfreturn getValue('extranetSSL') ? 'https' : 'http' />
 </cffunction>
 
+<cffunction name="getRazunaSettings" output="false">
+	<cfif not structKeyExists(variables,'razunaSettings')>
+		<cfset variables.razunaSettings=getBean('razunaSettings').loadBy(siteid=getValue('siteid'))>
+	</cfif>
+	<cfreturn variables.razunaSettings>
+</cffunction>
+
 </cfcomponent>

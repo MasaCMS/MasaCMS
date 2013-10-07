@@ -45,12 +45,13 @@
 				
 			<div class="control-group control-group-nested">
 				<!--- <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.fileselector.selecturl')#</label> --->
-				<div class="controls">		
+				<div class="controls">	
 					<input type="text" name="#attributes.name#" class="mura-file-selector-#attributes.name# span6" type="url" placeholder="http://www.domain.com/yourfile.zip"	value=""
 					data-label="#HTMLEditFormat(attributes.label)#" data-label="#HTMLEditFormat(attributes.required)#" data-validate="#HTMLEditFormat(attributes.validation)#" data-regex="#HTMLEditFormat(attributes.regex)#" data-message="#HTMLEditFormat(attributes.message)#">
 					<a style="display:none;" class="btn" href="" onclick="return openFileMetaData('#attributes.bean.getContentHistID()#','','#attributes.bean.getSiteID()#','#attributes.property#');"><i class="icon-info-sign"></i></a>
-						
-					<!---<a href="" id="btn-razuna" title="Select a File from Razuna" rel="tooltip">Razuna</a>--->
+					<cfif len(application.serviceFactory.getBean('settingsManager').getSite(attributes.bean.getSiteID()).getRazunaSettings().getHostname())>
+						<a href="" onclick="renderRazunaWindow('#JSStringFormat(attributes.name)#');" id="btn-razuna" title="Select a File from Razuna" rel="tooltip">Razuna</a>
+					</cfif>	
 				</div>
 			</div>
 		

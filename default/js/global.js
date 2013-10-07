@@ -318,7 +318,7 @@ function validateForm(frm) {
 
 		for (var f=0; f < frmInputs.length; f++) {
 		 var theField=frmInputs[f];
-		 validationType=getValidationType(theField);
+		 validationType=getValidationType(theField).toUpperCase();
 		
 			rules=new Array();
 	
@@ -332,7 +332,7 @@ function validateForm(frm) {
 						
 						 			
 					}
-				else if(validationType != ''){
+				if(validationType != ''){
 						
 					if(validationType=='EMAIL' && theField.value != '')
 					{	

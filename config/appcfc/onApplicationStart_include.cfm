@@ -57,7 +57,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset request.muraAppreloaded=true>
 
-<cfif left(server.coldfusion.productversion,5) eq "9,0,0" or listFirst(server.coldfusion.productversion) lt 9>
+<cfif not structKeyExists(server,'railo') and left(server.coldfusion.productversion,5) eq "9,0,0" or listFirst(server.coldfusion.productversion) lt 9>
 	<cfoutput>Mura CMS requires Adobe Coldfusion 9.0.1 or greater compatibility</cfoutput>
 	<cfabort>
 </cfif>
@@ -245,6 +245,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		variables.serviceFactory.addAlias("relatedContentSet","extendRelatedContentSetBean");
 		variables.serviceFactory.addAlias("fileMetaData","contentFileMetaDataBean");
 		variables.serviceFactory.addAlias("file","fileBean");
+		variables.serviceFactory.addAlias("razunaSettings","razunaSettingsBean");
 		application.serviceFactory=variables.serviceFactory;
 	</cfscript>
 
@@ -276,6 +277,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			variables.serviceFactory.getBean('relatedContentSet');
 			variables.serviceFactory.getBean('fileMetaData');
 			variables.serviceFactory.getBean('file');
+			variables.serviceFactory.getBean('razunaSettings');
 		</cfscript>
 	</cfif>
 		

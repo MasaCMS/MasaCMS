@@ -229,16 +229,23 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	public boolean function validate_dataType(required any object, required string propertyIdentifier, required any constraintValue) {
 		
 		var propertyValue = arguments.object.invokeMethod("get#arguments.propertyIdentifier#");
-
+		
 		if(listFindNoCase("any,array,binary,boolean,component,creditCard,date,time,email,eurodate,float,numeric,guid,integer,query,range,regex,regular_expression,ssn,social_security_number,string,telephone,url,uuid,usdate,zipcode",arguments.constraintValue)) {
 			if(isNull(propertyValue) || isValid(arguments.constraintValue, propertyValue) || (arguments.constraintValue == 'Date' && propertyValue == '')) {
 				return true;
+			} else {
+				return false;
 			}
 		//} else {
 			//throw("The validation file: #arguments.object.getClassName()#.json has an incorrect dataType constraint value of '#arguments.constraintValue#' for one of it's properties.  Valid values are: any,array,binary,boolean,component,creditCard,date,time,email,eurodate,float,numeric,guid,integer,query,range,regex,regular_expression,ssn,social_security_number,string,telephone,url,uuid,usdate,zipcode");
 		}
 		
 		return true;
+	}
+
+	public boolean function validate_format(required any object, required string propertyIdentifier, required any constraintValue) {
+		
+		return validate_dataType(argumentCollection=arguments);
 	}
 	
 	public boolean function validate_minValue(required any object, required string propertyIdentifier, required numeric constraintValue) {

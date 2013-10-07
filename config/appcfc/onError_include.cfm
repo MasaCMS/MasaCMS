@@ -61,10 +61,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif isObject(local.pluginEvent)>
 		<cfset local.pluginEvent.setValue("exception",arguments.exception)>
 		<cfset local.pluginEvent.setValue("eventname",arguments.eventname)>
-		<cfif len(local.pluginEvent.getValue("siteID"))>
-			<cfset application.pluginManager.announceEvent("onSiteError",local.pluginEvent)>
-		</cfif>	
 		<cftry>
+			<cfif len(local.pluginEvent.getValue("siteID"))>
+				<cfset application.pluginManager.announceEvent("onSiteError",local.pluginEvent)>
+			</cfif>	
 			<cfset application.pluginManager.announceEvent("onGlobalError",local.pluginEvent)>
 			<cfcatch></cfcatch>
 		</cftry>
