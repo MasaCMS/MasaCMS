@@ -35,14 +35,14 @@
 		$('#height').val(parseInt($(this).attr('data-height')));
 	});
 	
-	$(document).on('click','#search',{}, function() {
+	$(document).on('click','#razuna-search',{}, function() {
 		$("#tagTree").jstree('open_all');
 		$('#inner-div').hide();
 		$('#loader-div').hide();
 		$('#tagTree').css("width","835px");
 		$('#full_page_loader').css('display','block');
 		setTimeout(function(){
-			$("#tagTree").jstree("search", $('#search_box').val());
+			$("#tagTree").jstree("search", $('#razuna-search-box').val());
 			$('#full_page_loader').css('display','none');
 		}, 2000);  
 	});
@@ -51,10 +51,10 @@
 		$("input[name='" + razuna_targetname + "']").val(razuna_current_filename);
 		$("input[name='" + razuna_targetname + "']").trigger('change');
 		$('#razunaModalWindow').dialog("close");
-		removAll();
+		razunaRemovAll();
 	});
 	
-	function removAll(){
+	function razunaRemovAll(){
 		$('.inner-div').remove();
 		$('#loader-div').hide();
 		$('#search_div').remove();
@@ -70,17 +70,15 @@
 	        width: 860,
 			height:450,
 	        modal: true,
-	        title: "Razuna" 
+	        title: "Razuna" ,
+	        close: razunaRemovAll
        	});
-		$('.ui-dialog-titlebar-close').click(function(){
-			removAll();
-		});
 		
 		$('#razunaModalWindow').load(razuna_folder+'?muraAction=razuna.default',function(){
-			var loader_div = '<div id="loader-div"><div align="center" class="img_div"><img src="'+razuna_folder+'assets/images/ajax-loader.gif"></div></div>';
+			var loader_div = '<div id="razuna-loader-div"><div align="center" class="razuna-img-div"><img src="'+razuna_folder+'assets/images/ajax-loader.gif"></div></div>';
 				$('#razunaModalWindow').before(loader_div);
 
-		$("#tagTree").jstree({
+		$("#razuna-tagTree").jstree({
 			"plugins" : [ "json_data", "ui", "types", "search"],
 			"types" : {
             	"types" : {
@@ -90,10 +88,10 @@
 		                },
 		                "default" : {
 		                    "select_node" : function (target) {
-								$('#tagTree').css("width","266px");
-								$('#inner-div').show();
-								$('.inner-div').remove();
-								$('#loader-div').show();
+								$('#razuna-tagTree').css("width","266px");
+								$('#razuna-inner-div').show();
+								$('.razuna-inner-div').remove();
+								$('#razuna-loader-div').show();
 								$(target).attr('data-cloud_url_thumb',$(target).attr('data-cloud_url'));
 
 								var type = $(target).attr('data-kind');
@@ -129,7 +127,7 @@
 									var content='<tbody>';
 										content+='		<tr>';
 										content+='			<td>';
-										content+='				<img src="'+$(target).attr('data-' + razuna_servertype + '_url_thumb')+'" id="show-image">';
+										content+='				<img src="'+$(target).attr('data-' + razuna_servertype + '_url_thumb')+'" id="razuna-show-image">';
 										content+='			</td>';
 										content+='			<td valign="top">';
 										content+='				<strong>Filename : </strong><span>'+$(target).attr('data-filename_org')+'</span><br>';
@@ -205,13 +203,13 @@
 										content+='	</tr>';
 										content+='</tbody>';
 								}
-								$('.describe').html(content);
+								$('.razuna-describe').html(content);
 								$('.rend').remove();
 								for(x=1; x<=$(target).attr('rend_total'); x++){
-									$('#renditions').append("<tr class='rend'><td><strong>&nbsp;</strong></td><td><div class='image-size-item'><input type='radio' name='radio_path' class='image-size-rend radio' value='"+$(target).attr('rend_' + razuna_servertype + '_url_org'+x)+"' id='radio_path' data-height='"+$(target).attr('rend_height'+x)+"' data-width='"+$(target).attr('rend_width'+x)+"' data-image-thumb='"+$(target).attr('data-' + razuna_servertype + '_url_thumb')+"'><label for='image-size-renditions' class='form_labels'>"+$(target).attr('rend_extension'+x).toUpperCase()+' ('+ parseInt($(target).attr('rend_width'+x))+'px X '+parseInt($(target).attr('rend_height'+x))+'px)'+"</label></div></td></tr>");
+									$('#renditions').append("<tr class='rend'><td><strong>&nbsp;</strong></td><td><div class='razuna-image-size-item'><input type='radio' name='radio_path' class='image-size-rend radio' value='"+$(target).attr('rend_' + razuna_servertype + '_url_org'+x)+"' id='radio_path' data-height='"+$(target).attr('rend_height'+x)+"' data-width='"+$(target).attr('rend_width'+x)+"' data-image-thumb='"+$(target).attr('data-' + razuna_servertype + '_url_thumb')+"'><label for='image-size-renditions' class='form_labels'>"+$(target).attr('rend_extension'+x).toUpperCase()+' ('+ parseInt($(target).attr('rend_width'+x))+'px X '+parseInt($(target).attr('rend_height'+x))+'px)'+"</label></div></td></tr>");
 								}
 								$('#razunaModalWindow').before($('#razunaImageDetails').html());
-								$('#inner-div').addClass('inner-div');
+								$('#razuna-inner-div').addClass('razuna-inner-div');
 		                        return false;
 		                    }
 		                }
@@ -232,7 +230,7 @@
 				}
 			}
 		});
-		$('#razunaModalWindow').before($('#search_div'));
+		$('#razunaModalWindow').before($('#razuna-search-div'));
 		}).dialog('open');
 
 		return false;
