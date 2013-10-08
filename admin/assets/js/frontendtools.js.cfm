@@ -3,7 +3,7 @@
 <cfset isIeSix=FindNoCase('MSIE 6','#CGI.HTTP_USER_AGENT#') GREATER THAN 0>
 <cfset $=application.serviceFactory.getBean("MuraScope").init(url.siteID)>
 <cfparam name="session.siteid" default="#url.siteid#">
-<cfif not structKeyExists(session,rb)>
+<cfif not structKeyExists(session,"rb")>
 	<cfset application.rbFactory.resetSessionLocale()>
 </cfif>
 <cfparam name="Cookie.fetDisplay" default="">
