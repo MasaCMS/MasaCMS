@@ -213,27 +213,14 @@ header, #cPlugins {
 	    	margin-top: 0 !important;
 	    	text-align: left;
 	    	
+	    	.dropdown-submenu {
 	    	
-		 	//max-height: 200px;
-		 	//overflow-y: auto; 
-	    	
-	    	.dropdown-submenu > .dropdown-menu {
+	    		> .dropdown-menu {
 		    	.border-radius(5px);	
 				max-height: 219px;
 				overflow-y: auto;
-				
-				&:nth-child(8)&:after {
-					#gradient .vertical(hsla(0,0,25%,0),hsla(0,0,25%,1.0));
-					height: 20px;
-					position: absolute;
-					bottom: 0px;
-					right: 0px;
-					z-index: 10000000;
-					display: block;
-					width: 100%;					
-					} 
-				
-		    	}
+				}
+		    }
 	    
 			.divider {
 		        	background: hsla(0,0%,20%,.98);
@@ -380,7 +367,7 @@ header, #cPlugins {
 		 	min-width: 164px;
 		 	max-width: 388px;
 		 	max-height: 200px;
-		 	overflow-y: auto; 
+		 	overflow-y: auto;
 		 	
 		 	> li {
 		 	.text-overflow;

@@ -158,6 +158,24 @@
   border-bottom-right-radius: 1px solid #0d0d0d;
   border-right: 1px solid #0d0d0d;
 }
+.more-gradient {
+  background-color: rgba(64, 64, 64, 0.4);
+  background-image: -moz-linear-gradient(top, rgba(64, 64, 64, 0), #404040);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(rgba(64, 64, 64, 0)), to(#404040));
+  background-image: -webkit-linear-gradient(top, rgba(64, 64, 64, 0), #404040);
+  background-image: -o-linear-gradient(top, rgba(64, 64, 64, 0), #404040);
+  background-image: linear-gradient(to bottom, rgba(64, 64, 64, 0), #404040);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00404040', endColorstr='#ff404040', GradientType=0);
+  height: 10px;
+  content: '';
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  z-index: 10000000;
+  display: block;
+  width: 100%;
+}
 #m-changesets {
   position: fixed !important;
   z-index: 5000 !important;
