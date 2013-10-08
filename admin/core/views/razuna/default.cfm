@@ -32,12 +32,14 @@
 </cfsilent>
 <cfset request.layout=false>
 <div id="razuna-tagTree" class="jstree-classic"></div>
-<div id="full_page_loader">
+<!---
+<div id="razuna-full_page_loader">
     <img src="./assets/images/ajax-loader.gif" style="position: absolute; left: 50%; top: 50%; margin-left: -32px; margin-top: -32px; display: block;"/>
 </div>
+--->
 <!--- Search Div --->
 <div id="razuna-search-div" class="pull-right">
-	<input type="text" name="razuna-search-box" id="search_box">
+	<input type="text" name="razuna-search-box" id="razuna-search-box">
 	<input type="button" class="btn search" name="search" value="Search" id="razuna-search">
 	<input type="button" class="btn reset" name="reset" value="Reset" id="razuna-reset" onclick="$('#razuna-tagTree').jstree('refresh',-1);">
 </div>

@@ -30,40 +30,73 @@
 			$('body').append('<div id="razunaModalWindow"></div>');
 	});
 	
-	$(document).on('change','input[name=radio_path]',{},function(){
+	$(document).on('change','input[name=razuna-selected-url]',{},function(){
 		$('#width').val(parseInt($(this).attr('data-width')));
 		$('#height').val(parseInt($(this).attr('data-height')));
 	});
 	
 	$(document).on('click','#razuna-search',{}, function() {
-		$("#tagTree").jstree('open_all');
-		$('#inner-div').hide();
-		$('#loader-div').hide();
-		$('#tagTree').css("width","835px");
-		$('#full_page_loader').css('display','block');
+		$("#razuna-tagTree").jstree('open_all');
+		$('#razuna-inner-div').hide();
+		$('#razuna-loader-div').hide();
+		$('#razuna-tagTree').css("width","835px");
+		$('#razuna-full_page_loader').css('display','block');
 		setTimeout(function(){
-			$("#tagTree").jstree("search", $('#razuna-search-box').val());
-			$('#full_page_loader').css('display','none');
+			$("#razuna-tagTree").jstree("razuna-search", $('#razuna-search-box').val());
+			$('#razuna-full_page_loader').css('display','none');
 		}, 2000);  
 	});
 	
-	$(document).on('click','#razuna_insert_filename',{},function(){	
-		$("input[name='" + razuna_targetname + "']").val(razuna_current_filename);
-		$("input[name='" + razuna_targetname + "']").trigger('change');
+	$(document).on('click','#razuna-insert',{},function(){	
+
+		var url=$('input[name="razuna-selected-url"]:checked').val();
+
+		if(typeof razuna_target == 'string'){
+			$("input[name='" + razuna_target + "']").val($('input[name="razuna-selected-url"]:checked').val());
+			$("input[name='" + razuna_target + "']").trigger('change');
+		} else {
+		
+			razuna_target.insertText(url);
+			/*
+			if($(this).hasClass('image')) {
+				add_to_editor = "<a href='"+url+"'><img title='" + $('#img_title_text').val() + "' src='" + $("input[type='radio'][name='radio_path']:checked").val() + "' alt='"+$('#alt_text').val()+"'></a>";
+			}
+			else if ($(this).hasClass('audio')) {
+				add_to_editor = "[mura]event.razunaMediaPlayer.dspMedia(file='" + $('input[type="radio"][name="radio_path"]:checked').val() + "',width=450,height=30,sharecode=true,embedlink=true)[/mura]";
+			}
+			else if ($(this).hasClass('video')) {
+				add_to_editor = "[mura]event.razunaMediaPlayer.dspMedia(file='" + $('input[type="radio"][name="radio_path"]:checked').val() + "',width='" + $('#width').val() + "',height='" + $('#height').val() + "',image='"+$('input[type="radio"][name="radio_path"]:checked').attr('data-image-thumb')+"',sharecode=true,embedlink=true)[/mura]";
+			}
+			else if ($(this).hasClass('document')) {
+				if ($('#doc_link_text').val() == "") {
+					$('.doc_link_error').remove();
+					$('#doc_link_text').css({'border':'1px solid red'}).after('<span class="doc_link_error" style="color:red;"> This field is required<span>');
+					return false;
+				}
+				else {
+					add_to_editor = "<a href = '" + $('input[type="radio"][name="radio_path"]:checked').val() + "' target='_blank'>" + $('#doc_link_text').val() + "</a>";
+				}
+			}
+			var imgHtml = CKEDITOR.instances[$('#instances').val()].getData();
+			CKEDITOR.instances[$('#instances').val()].setData(imgHtml+add_to_editor);
+			*/
+		}
+
 		$('#razunaModalWindow').dialog("close");
 		razunaRemovAll();
 	});
 	
 	function razunaRemovAll(){
-		$('.inner-div').remove();
-		$('#loader-div').hide();
-		$('#search_div').remove();
-		$('#tagTree').css("width","835px");
+		$('.razuna-inner-div').remove();
+		$('#razuna-loader-div').hide();
+		$('#razuna-search-div').remove();
+		$('#razuna-tagTree').css("width","835px");
 	}
-	
-	function renderRazunaWindow(targetname){
-		razuna_targetname=targetname;
+
+	function renderRazunaWindow(target){
+		razuna_target=target;
 		$('#razunaModalWindow').html('<div align="center"><img src="'+razuna_folder+'assets/images/ajax-loader.gif"></div>');
+		
 		$('#razunaModalWindow').dialog({
 	        bgiframe: true,
 	        autoOpen: false,
@@ -98,32 +131,27 @@
 								if(type == 'aud'){
 									var content='<tbody>';
 										content+='		<tr>';
-										content+='			<td valign="top">';
-										content+='				<strong>File name : </strong><span>'+$(target).attr('data-filename_org')+'</span><br>';
-										content+='				<strong>Kind : </strong><span>Audio</span><br><table border="0" id="renditions">';
+										content+='			<td>';
+										content+='				&nbsp;';
 										content+='			</td>';
-										content+='		<tr>';
-										content+='		<tr>';
-										content+='			<td>&nbsp;</td>';
-										content+='			<td ><div>';
-										content+='					<input type="radio" checked="checked" name="radio_path" class="radio_path radio" value="'+$(target).attr('data-' + razuna_servertype + '_url_org')+'" id="radio_path" data-height="'+$(target).attr('data-height')+'" data-width="'+$(target).attr('data-width')+'">';
-										content+='					<label for="radio_path_orig" class="form_labels">Original</label>';
-										content+='				</div>';
+										content+='			<td valign="top">';
+										content+='				<strong>Filename : </strong><span>'+$(target).attr('data-filename_org')+'</span><br>';
+										content+='				<strong>Type : </strong><span>Audio</span><br>';
+										content+='				<table border="0" id="renditions">';
+										content+='				<tr class="rend">';
+										content+='					<td>&nbsp;</td>';
+										content+='					<td><label for="radio_path_orig" class="radio inline">';
+										content+='						<input type="radio" checked="checked" name="razuna-selected-url" value="'+$(target).attr('data-' + razuna_servertype + '_url_org')+'" id="radio_path" data-height="'+$(target).attr('data-height')+'" data-width="'+$(target).attr('data-width')+'">';
+										content+='						Original</label>';
+										content+='					</td>';
+										content+='				</tr>';
+										content+='				</table>';
+										content+='				<br><button type="button" id="razuna-insert" class="btn audio">Select File</button>';
 										content+='			</td>';
 										content+='		</tr>';
-										content+='	</table>';
-										content+='	</td>';
-										content+='</tr>';
-										content+='<tr>';
-										content+='	<td>';
-										content+='		<br>';
-										content+='		<button type="button" data-id="'+$(target).attr('id')+'" id="insert_into_post" class="btn audio">Insert into Post</button>';
-										content+='	</td>';
-										content+='</tr>';
 										content+='</tbody>';
 								}
 								else if(type == 'img'){
-										razuna_current_filename=$(target).attr('data-' + razuna_servertype + '_url_org');
 									var content='<tbody>';
 										content+='		<tr>';
 										content+='			<td>';
@@ -131,82 +159,72 @@
 										content+='			</td>';
 										content+='			<td valign="top">';
 										content+='				<strong>Filename : </strong><span>'+$(target).attr('data-filename_org')+'</span><br>';
-										content+='				<strong>Type:</strong><span>Image</span><br>';
-										content+='				<button id="razuna_insert_filename" class="btn image_org">Select File</button>';
+										content+='				<strong>Type : </strong><span>Image</span><br>';
+										content+='				<table border="0" id="renditions">';
+										content+='				<tr class="rend">';
+										content+='					<td>&nbsp;</td>';
+										content+='					<td><label for="radio_path_orig" class="radio inline">';
+										content+='						<input type="radio" checked="checked" name="razuna-selected-url" value="'+$(target).attr('data-' + razuna_servertype + '_url_org')+'" id="radio_path" data-height="'+$(target).attr('data-height')+'" data-width="'+$(target).attr('data-width')+'">';
+										content+='						Original</label>';
+										content+='					</td>';
+										content+='				</tr>';
+										content+='				</table>';
+										content+='				<br><button type="button" id="razuna-insert" class="btn image">Select File</button>';
 										content+='			</td>';
 										content+='		</tr>';
-										/*
-										content+='		<tr>';
-										content+='			<td style="text-align:center;" colspan="3">';
-										content+='				<button onclick="'+original+'" class="btn image_org">Select File</button>';
-										content+='			</td>';
-										content+='		</tr>';
-										content+='		<tr>';
-										content+='			<td colspan="3" style="text-align:center;">';
-										content+='			</td>';
-										content+='		</tr>';
-										*/
-										content+='	</tbody>';
+										content+='</tbody>';
 								}
 								else if(type == 'doc'){
 									var content='<tbody>';
-										content+='	<tr><td valign="top">';
-										content+='			<strong>File name : </strong><span>'+$(target).attr('data-filename_org')+'</span><br>';
-										content+='			<strong>Kind : </strong><span>Document</span><br>';
-										content+='			<table border="0" id="renditions">';
-										content+='			<tr><td>&nbsp;</td>';
-										content+='				<td>';
-										content+='					<div><input type="radio" checked="checked" name="radio_path" class="radio_path radio" value="'+$(target).attr('data-' + razuna_servertype + '_url_org')+'" id="radio_path" data-height="'+$(target).attr('data-height')+'" data-width="'+$(target).attr('data-width')+'">';
-										content+='					<label for="doc-path-orig" class="form_labels">Original</label>';
-										content+='					</div>';
-										content+='				</td>';
-										content+='			</tr>';
-										content+='			</table>';
-										content+='		</td>';
-										content+='	</tr>';
-										content+='	<tr>';
-										content+='		<td><strong>Link Text:</strong></td>';
-										content+='		<td><input type="text" value="" id="doc_link_text"></td>';
-										content+='	</tr>';
-										content+='	<tr>';
-										content+='		<td>&nbsp;</td>';
-										content+='		<td><br><button type="button" id="insert_into_post" class="btn document">Insert into Post</button></td>';
-										content+='	</tr>';
+										content+='		<tr>';
+										content+='			<td>';
+										content+='				&nbsp;';
+										content+='			</td>';
+										content+='			<td valign="top">';
+										content+='				<strong>Filename : </strong><span>'+$(target).attr('data-filename_org')+'</span><br>';
+										content+='				<strong>Type : </strong><span>Document</span><br>';
+										content+='				<table border="0" id="renditions">';
+										content+='				<tr class="rend">';
+										content+='					<td>&nbsp;</td>';
+										content+='					<td><label for="radio_path_orig" class="radio inline">';
+										content+='						<input type="radio" checked="checked" name="razuna-selected-url" value="'+$(target).attr('data-' + razuna_servertype + '_url_org')+'" id="radio_path" data-height="'+$(target).attr('data-height')+'" data-width="'+$(target).attr('data-width')+'">';
+										content+='						Original</label>';
+										content+='					</td>';
+										content+='				</tr>';
+										content+='				</table>';
+										content+='				<br><button type="button" id="razuna-insert" class="btn document">Select File</button>';
+										content+='			</td>';
+										content+='		</tr>';
 										content+='</tbody>';
 								}
 								else if(type == 'vid'){
 									var content='<tbody>';
-										content+='	<tr>';
-										content+='		<td valign="top"><strong>File name : </strong><span>'+$(target).attr('data-filename_org')+'</span><br>';
-										content+='			<strong>Kind : </strong><span>Video</span><br><table border="0" id="renditions"><tr><td>&nbsp;';
-										content+='		</td>';
-										content+='		<td>';
-										content+='			<div class="image-size-item"><input type="radio" checked="checked" name="radio_path" class="image-size-original radio" value="'+$(target).attr('data-' + razuna_servertype + '_url_org')+'" id="radio_path" data-height="'+$(target).attr('data-height')+'" data-width="'+$(target).attr('data-width')+'" data-image-thumb="'+$(target).attr('data-' + razuna_servertype + '_url_thumb')+'">';
-										content+='			<label for="radio_path_orig" class="form_labels">Original</label>';
-										content+='			</div>';
-										content+='		</td>';
-										content+='	</tr>';
-										content+='	</table>';
-										content+='	</td>';
-										content+='	</tr>';
-										content+='	<tr>';
-										content+='		<td><strong>Width:</strong></td>';
-										content+='		<td><input type="text" id="width" value="'+$(target).attr('data-width').toString().split(".")[0]+'" class="width"></td>';
-										content+='	</tr>';
-										content+='	<tr>';
-										content+='		<td><strong>Height:</strong></td>';
-										content+='		<td><input type="text" value="'+$(target).attr('data-height').toString().split(".")[0]+'" class="height" id="height"></td>';
-										content+='	</tr>';
-										content+='	<tr>';
-										content+='		<td>&nbsp;</td>';
-										content+='		<td><br><button type="button" data-id="'+$(target).attr('id')+'" id="insert_into_post" class="btn video">Insert into Post</button></td>';
-										content+='	</tr>';
+										content+='		<tr>';
+										content+='			<td>';
+										content+='				&nbsp;';
+										content+='			</td>';
+										content+='			<td valign="top">';
+										content+='				<strong>Filename : </strong><span>'+$(target).attr('data-filename_org')+'</span><br>';
+										content+='				<strong>Type : </strong><span>Video</span><br>';
+										content+='				<table border="0" id="renditions">';
+										content+='				<tr class="rend">';
+										content+='					<td>&nbsp;</td>';
+										content+='					<td><label for="radio_path_orig" class="radio inline">';
+										content+='						<input type="radio" checked="checked" name="razuna-selected-url" value="'+$(target).attr('data-' + razuna_servertype + '_url_org')+'" id="radio_path" data-height="'+$(target).attr('data-height')+'" data-width="'+$(target).attr('data-width')+'">';
+										content+='						Original</label>';
+										content+='					</td>';
+										content+='				</tr>';
+										content+='				</table>';
+										content+='				<br><button type="button" id="razuna-insert" class="btn video">Select File</button>';
+										content+='			</td>';
+										content+='		</tr>';
 										content+='</tbody>';
+
 								}
 								$('.razuna-describe').html(content);
-								$('.rend').remove();
+								//$('.rend').remove();
 								for(x=1; x<=$(target).attr('rend_total'); x++){
-									$('#renditions').append("<tr class='rend'><td><strong>&nbsp;</strong></td><td><div class='razuna-image-size-item'><input type='radio' name='radio_path' class='image-size-rend radio' value='"+$(target).attr('rend_' + razuna_servertype + '_url_org'+x)+"' id='radio_path' data-height='"+$(target).attr('rend_height'+x)+"' data-width='"+$(target).attr('rend_width'+x)+"' data-image-thumb='"+$(target).attr('data-' + razuna_servertype + '_url_thumb')+"'><label for='image-size-renditions' class='form_labels'>"+$(target).attr('rend_extension'+x).toUpperCase()+' ('+ parseInt($(target).attr('rend_width'+x))+'px X '+parseInt($(target).attr('rend_height'+x))+'px)'+"</label></div></td></tr>");
+									$('#renditions').append("<tr class='rend'><td><strong>&nbsp;</strong></td><td><label for='image-size-renditions' class='radio inline'><input type='radio' name='razuna-selected-url' value='"+$(target).attr('rend_' + razuna_servertype + '_url_org'+x)+"' id='radio_path' data-height='"+$(target).attr('rend_height'+x)+"' data-width='"+$(target).attr('rend_width'+x)+"' data-image-thumb='"+$(target).attr('data-' + razuna_servertype + '_url_thumb')+"'>"+$(target).attr('rend_extension'+x).toUpperCase()+' ('+ parseInt($(target).attr('rend_width'+x))+'px X '+parseInt($(target).attr('rend_height'+x))+'px)'+"</label></td></tr>");
 								}
 								$('#razunaModalWindow').before($('#razunaImageDetails').html());
 								$('#razuna-inner-div').addClass('razuna-inner-div');
