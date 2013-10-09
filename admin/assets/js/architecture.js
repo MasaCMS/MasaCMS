@@ -619,6 +619,9 @@ buttons: {
 		d.html('<div class="load-inline"></div>');
 		$('#selectRelatedContent .load-inline').spin(spinnerArgs2);
 		$.get(url + "?" + pars, function(data) {
+			if(data.indexOf('mura-primary-login-token') != -1) {
+				location.href = './';
+			}
 			$('#selectRelatedContent .load-inline').spin(false);
 			$('#selectRelatedContent').html(data);
 			$(".rcDraggable li.item").draggable({
@@ -672,6 +675,9 @@ buttons: {
 		d.html('<div class="load-inline"></div>');
 		$('#selectedRelatedContent .load-inline').spin(spinnerArgs2);
 		$.get(url + "?" + pars, function(data) {
+			if(data.indexOf('mura-primary-login-token') != -1) {
+				location.href = './';
+			}
 			$('#selectedRelatedContent .load-inline').spin(false);
 			d.html(data);
 			siteManager.setupRCSortable();
