@@ -46,8 +46,8 @@
 						</cfif>
 						</select>
 					</div>
-      	</div> <!--- /end control-group --->
-    </cfif>
+	      	</div> <!--- /end control-group --->
+	    </cfif>
 
   		<div class="control-group">
 		     <div class="controls">
@@ -99,10 +99,11 @@
 	      				<cfif rc.contentBean.getIsNew()>
 	      					"#rc.crumbData[1].menutitle#"<cfelse>"#rc.crumbData[2].menutitle#"
 	      				</cfif>
-						&nbsp;&nbsp;
-						<button id="selectParent" name="selectParent" class="btn">
+
+						<button id="selectParent" name="selectParent" class="btn btn-inverse btn-small">
 							#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.selectnewparent')#
 						</button>
+						
 						<script>
 							jQuery(document).ready(function(){
 								$('##selectParent').click(function(e){
@@ -148,22 +149,6 @@
 	      	</label>
 	     	<div class="controls" id="expires-date-selector">
 	     			<cf_datetimeselector name="expires" datetime="#rc.contentBean.getExpires()#" defaulthour="23" defaultminute="59">
-					<!---
-					<input type="text" name="expires" value="#LSDateFormat(rc.contentBean.getExpires(),session.dateKeyFormat)#" class="span3 datepicker">
-					<cf_timeselector name="expires" time="#rc.contentBean.getExpires()#" defaulthour="23" defaultminute="59">
-					
-					<cfif session.localeHasDayParts>
-						<select name="expireshour" class="time"><cfloop from="1" to="12" index="h"><option value="#h#" <cfif not LSisDate(rc.contentBean.getExpires())  and h eq 12 or (LSisDate(rc.contentBean.getExpires()) and (hour(rc.contentBean.getExpires()) eq h or (hour(rc.contentBean.getExpires()) - 12) eq h or hour(rc.contentBean.getExpires()) eq 0 and h eq 12))>selected</cfif>>#h#</option></cfloop></select>
-					<cfelse>
-						<select name="featureStartHour" class="time"><cfloop from="0" to="23" index="h"><option value="#h#" <cfif lsIsDate(rc.contentBean.getExpires()) and hour(rc.contentBean.getExpires()) eq h or not lsIsDate(rc.contentBean.getExpires()) and h eq 23>selected</cfif>>#h#</option></cfloop></select>
-					</cfif>
-					
-					<select name="expiresMinute" class="time"><cfloop from="0" to="59" index="m"><option value="#m#" <cfif LSisDate(rc.contentBean.getExpires()) and minute(rc.contentBean.getExpires()) eq m>selected</cfif>>#iif(len(m) eq 1,de('0#m#'),de('#m#'))#</option></cfloop></select>
-					
-					<cfif session.localeHasDayParts>
-						<select name="expiresDayPart" class="time"><option value="AM">AM</option><option value="PM" <cfif LSisDate(rc.contentBean.getExpires()) and hour(rc.contentBean.getExpires()) gte 12>selected</cfif>>PM</option></select>
-					</cfif>
-					--->
 			</div>
 			<div class="controls" id="expires-notify">
 				<label for="dspexpiresnotify" class="checkbox">
@@ -195,20 +180,7 @@
 					<div class="controls">
 						
 						<cf_datetimeselector name="featureStart" datetime="#rc.contentBean.getFeatureStart()#">
-						<!---
-						<input type="text" name="featureStart" value="#LSDateFormat(rc.contentBean.getFeatureStart(),session.dateKeyFormat)#" class="span3 datepicker">
-						<cf_timeselector name="featureStart" time="#rc.contentBean.getFeatureStart()#">
-						
-						<cfif session.localeHasDayParts>
-							<select name="featureStartHour" class="time"><cfloop from="1" to="12" index="h"><option value="#h#" <cfif not LSisDate(rc.contentBean.getFeatureStart())  and h eq 12 or (LSisDate(rc.contentBean.getFeatureStart()) and (hour(rc.contentBean.getFeatureStart()) eq h or (hour(rc.contentBean.getFeatureStart()) - 12) eq h or hour(rc.contentBean.getFeatureStart()) eq 0 and h eq 12))>selected</cfif>>#h#</option></cfloop></select>
-						<cfelse>
-							<select name="featureStartHour" class="time"><cfloop from="0" to="23" index="h"><option value="#h#" <cfif lsIsDate(rc.contentBean.getFeatureStart()) and hour(rc.contentBean.getFeatureStart()) eq h>selected</cfif>>#h#</option></cfloop></select>
-						</cfif>
-						<select name="featureStartMinute" class="time"><cfloop from="0" to="59" index="m"><option value="#m#" <cfif LSisDate(rc.contentBean.getFeatureStart()) and minute(rc.contentBean.getFeatureStart()) eq m>selected</cfif>>#iif(len(m) eq 1,de('0#m#'),de('#m#'))#</option></cfloop></select>
-						<cfif session.localeHasDayParts>
-							<select name="featureStartDayPart" class="time"><option value="AM">AM</option><option value="PM" <cfif LSisDate(rc.contentBean.getFeatureStart()) and hour(rc.contentBean.getFeatureStart()) gte 12>selected</cfif>>PM</option></select>
-						</cfif>
-						--->
+
 					</div>
 				</div>
 				<div class="control-group">
@@ -217,22 +189,6 @@
 					</label>
 					<div class="controls">
 						<cf_datetimeselector name="featureStop" datetime="#rc.contentBean.getFeatureStop()#" defaulthour="23" defaultminute="59">
-						<!---
-						<input type="text" name="featureStop" value="#LSDateFormat(rc.contentBean.getFeatureStop(),session.dateKeyFormat)#" class="span3 datepicker">
-						<cf_timeselector name="featureStop" time="#rc.contentBean.getFeatureStop()#" defaulthour="23" defaultminute="59">
-						
-						<cfif session.localeHasDayParts>
-							<select name="featureStophour" class="time"><cfloop from="1" to="12" index="h"><option value="#h#" <cfif not LSisDate(rc.contentBean.getFeatureStop())  and h eq 11 or (LSisDate(rc.contentBean.getFeatureStop()) and (hour(rc.contentBean.getFeatureStop()) eq h or (hour(rc.contentBean.getFeatureStop()) - 12) eq h or hour(rc.contentBean.getFeatureStop()) eq 0 and h eq 12))>selected</cfif>>#h#</option></cfloop></select>
-						<cfelse>
-							<select name="featureStophour" class="time"><cfloop from="0" to="23" index="h"><option value="#h#" <cfif LSisDate(rc.contentBean.getFeatureStop()) and hour(rc.contentBean.getFeatureStop()) eq h or not LSisDate(rc.contentBean.getFeatureStop()) and h eq 23>selected</cfif>>#h#</option></cfloop></select>
-						</cfif>
-
-						<select name="featureStopMinute" class="time"><cfloop from="0" to="59" index="m"><option value="#m#" <cfif (not LSisDate(rc.contentBean.getFeatureStop()) and m eq 59) or (LSisDate(rc.contentBean.getFeatureStop()) and minute(rc.contentBean.getFeatureStop()) eq m)>selected</cfif>>#iif(len(m) eq 1,de('0#m#'),de('#m#'))#</option></cfloop></select>
-
-						<cfif session.localeHasDayParts>
-							<select name="featureStopDayPart" class="time"><option value="AM">AM</option><option value="PM" <cfif (LSisDate(rc.contentBean.getFeatureStop()) and (hour(rc.contentBean.getFeatureStop()) gte 12)) or not LSisDate(rc.contentBean.getFeatureStop())>selected</cfif>>PM</option></select>
-						</cfif>
-						--->
 					</div>
 				</div>
 			</div>
