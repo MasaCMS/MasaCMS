@@ -766,12 +766,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	--->
 			<cfloop query="rstcontentrelated">
 				<cfquery datasource="#arguments.toDSN#">
-					insert into tcontentrelated (contentHistID,contentID,relatedID,siteID
-					<cfif isdefined('rstcontentrelated.relatedContentSetID')>
-					,relatedContentSetID
-					,orderNo
-					</cfif>
-					)
+					insert into tcontentrelated (contentHistID,contentID,relatedID,siteID,relatedContentSetID,orderNo)
 					values
 					(
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstcontentrelated.contentHistID)#">,
@@ -779,8 +774,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstcontentrelated.relatedID)#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeID#">
 					<cfif isdefined('rstcontentrelated.relatedContentSetID')>
-						,<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstcontentrelated.relatedContentSetID)#">
+						,<cfif rstcontentrelated.relatedContentSetID eq '00000000000000000000000000000000000'>
+							'00000000000000000000000000000000000'
+						<cfelse>
+							<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstcontentrelated.relatedContentSetID)#">
+						</cfif>
 						,<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstcontentrelated.orderno),de(rstcontentrelated.orderno),de(0))#">
+					<cfelse>
+						,'00000000000000000000000000000000000'
+						,1
 					</cfif>
 					)
 				</cfquery>
