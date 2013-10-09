@@ -1068,17 +1068,20 @@ to your own modified versions of Mura CMS.
     <cfset rc.razunaSettings=rc.siteBean.getRazunaSettings()>
     <div id="tabRazuna" class="tab-pane fade">
       <div class="fieldset">
+      <!---
       <div class="control-group">
         <label class="control-label" for="razuna_servertype">Server Type</label>
         <div class="controls">
           <label for="razuna_servertype_hosted" class="radio inline">
-            <input type="radio" name="servertype" onchange="checkServerType();"value="cloud" id="razuna_servertype_cloud" <cfif rc.razunaSettings.getServerType() eq "cloud">checked="checked"</cfif>> Hosted (razuna.com)
+            <input type="radio" name="servertype" value="cloud" id="razuna_servertype_cloud" <cfif rc.razunaSettings.getServerType() eq "cloud">checked="checked"</cfif>> Hosted (razuna.com)
           </label>
           <label for="razuna_servertype_self" class="radio inline">
-            <input type="radio" name="servertype" onchange="checkServerType();" value="self" id="razuna_servertype_local" <cfif rc.razunaSettings.getServerType() eq "local">checked="checked"</cfif>> Self hosted
+            <input type="radio" name="servertype" value="local" id="razuna_servertype_local" <cfif rc.razunaSettings.getServerType() eq "local">checked="checked"</cfif>> Self hosted
           </label>
         </div>
       </div>
+      --->
+      <input type="hidden" name="servertype" value="local">
       <div class="control-group">
         <label class="control-label" for="razuna_hostname">Hostname</label>
         <div class="controls">

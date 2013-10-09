@@ -5,7 +5,7 @@ component extends="mura.bean.beanORM" entityname="razunasettings" table="trazuna
 	property name="hostName" required=true;
 	property name="hostID" validate="numeric" required=true;
 	property name="apiKey" required=true;
-	property name="servertype" required=true inlist="cloud,local" default="cloud";
+	property name="servertype" required=true inlist="cloud,local" default="local";
 	property name="damPath" length="250";
 
 } 
