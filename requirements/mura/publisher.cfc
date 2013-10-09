@@ -1188,7 +1188,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<!---<cfset var moduleIDSqlList="">--->
 		<cfset var i="">
 		<cfset var rsFileCheck="">
-		
+		<cfset var cfBlobType="cf_sql_BLOB">
+
+		<cfif application.configBean.getDbType() eq "postgresql">
+			<cfset cfBlobType="cf_sql_LONGVARBINARY">
+		</cfif>
 		<!---
 		<cfloop list="#arguments.moduleID#" index="i">
 			<cfset moduleIDSQLlist=listAppend(moduleIDlist,"'#keys.get(i)#'")>
@@ -1272,9 +1276,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstFiles.fileID neq '',de('no'),de('yes'))#" value="#keys.get(rstFiles.fileID)#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstFiles.filename neq '',de('no'),de('yes'))#" value="#rstFiles.filename#">,
 					<cfqueryparam cfsqltype="cf_sql_INTEGER" null="no" value="#iif(isNumeric(rstFiles.fileSize),de(rstFiles.fileSize),de(0))#">,
-					<cfqueryparam cfsqltype="cf_sql_BLOB" null="#iif(toBase64(rstFiles.image) eq '',de('yes'),de('no'))#" value="#rstFiles.image#">,
-					<cfqueryparam cfsqltype="cf_sql_BLOB" null="#iif(toBase64(rstFiles.imageMedium) eq '',de('yes'),de('no'))#" value="#rstFiles.imageMedium#">,
-					<cfqueryparam cfsqltype="cf_sql_BLOB" null="#iif(toBase64(rstFiles.imageSmall) eq '',de('yes'),de('no'))#" value="#rstFiles.imageSmall#">,
+					<cfqueryparam cfsqltype="#cfBlobType#" null="#iif(toBase64(rstFiles.image) eq '',de('yes'),de('no'))#" value="#rstFiles.image#">,
+					<cfqueryparam cfsqltype="#cfBlobType#" null="#iif(toBase64(rstFiles.imageMedium) eq '',de('yes'),de('no'))#" value="#rstFiles.imageMedium#">,
+					<cfqueryparam cfsqltype="#cfBlobType#" null="#iif(toBase64(rstFiles.imageSmall) eq '',de('yes'),de('no'))#" value="#rstFiles.imageSmall#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstfiles.moduleID neq '',de('no'),de('yes'))#" value="#rstfiles.moduleID#">,
 					<cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#arguments.tositeID#">,
 					<cfqueryparam cfsqltype="cf_sql_TIMESTAMP" null="#iif(isDate(rstFiles.created),de('no'),de('yes'))#" value="#rstFiles.created#">
