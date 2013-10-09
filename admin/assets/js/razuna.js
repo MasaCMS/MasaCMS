@@ -31,8 +31,8 @@
 	});
 	
 	$(document).on('change','input[name=razuna-selected-url]',{},function(){
-		$('#width').val(parseInt($(this).attr('data-width')));
-		$('#height').val(parseInt($(this).attr('data-height')));
+		$('#razuna-width').val(parseInt($(this).attr('data-width')));
+		$('#razuna-height').val(parseInt($(this).attr('data-height')));
 	});
 	
 	$(document).on('click','#razuna-search',{}, function() {
@@ -55,31 +55,34 @@
 			$("input[name='" + razuna_target + "']").val($('input[name="razuna-selected-url"]:checked').val());
 			$("input[name='" + razuna_target + "']").trigger('change');
 		} else {
+			var add_to_editor='';
 		
-			razuna_target.insertText(url);
-			/*
 			if($(this).hasClass('image')) {
-				add_to_editor = "<a href='"+url+"'><img title='" + $('#img_title_text').val() + "' src='" + $("input[type='radio'][name='radio_path']:checked").val() + "' alt='"+$('#alt_text').val()+"'></a>";
+				if($('#razuna-urlfield').val() != ''){
+					add_to_editor = "<a href='"+ $('#razuna-urlfield').val() +"'><img title='" + $('#razuna-img-title-text').val() + "' src='" + url + "' alt='"+$('#razuna-alt-text').val()+"'></a>";
+				} else {
+					add_to_editor = "<img title='" + $('#razuna-img-title-text').val() + "' src='" + url + "' alt='" + $('#razuna-alt-text').val() + "'>";
+				}
+				
 			}
 			else if ($(this).hasClass('audio')) {
-				add_to_editor = "[mura]event.razunaMediaPlayer.dspMedia(file='" + $('input[type="radio"][name="radio_path"]:checked').val() + "',width=450,height=30,sharecode=true,embedlink=true)[/mura]";
+				add_to_editor = "<div>[mura]$.razunaMediaPlayer.dspMedia(file='" + url + "',width=450,height=30,sharecode=true,embedlink=true)[/mura]</div>";
 			}
 			else if ($(this).hasClass('video')) {
-				add_to_editor = "[mura]event.razunaMediaPlayer.dspMedia(file='" + $('input[type="radio"][name="radio_path"]:checked').val() + "',width='" + $('#width').val() + "',height='" + $('#height').val() + "',image='"+$('input[type="radio"][name="radio_path"]:checked').attr('data-image-thumb')+"',sharecode=true,embedlink=true)[/mura]";
+				add_to_editor = "<div>[mura]$.razunaMediaPlayer.dspMedia(file='" + url + "',width='" + $('#razuna-width').val() + "',height='" + $('#razuna-height').val() + "',image='"+$('input[type="radio"][name="razuna-selected-url"]:checked').attr('data-image-thumb')+"',sharecode=true,embedlink=true)[/mura]</div>";
 			}
 			else if ($(this).hasClass('document')) {
-				if ($('#doc_link_text').val() == "") {
-					$('.doc_link_error').remove();
-					$('#doc_link_text').css({'border':'1px solid red'}).after('<span class="doc_link_error" style="color:red;"> This field is required<span>');
+				if ($('#razuna-link-text').val() == "") {
+					$('.razuna-doc-link-error').remove();
+					$('#razuna-link-text').css({'border':'1px solid red'}).after('<span class="razuna-doc-link-error" style="color:red;"> This field is required<span>');
 					return false;
 				}
 				else {
-					add_to_editor = "<a href = '" + $('input[type="radio"][name="radio_path"]:checked').val() + "' target='_blank'>" + $('#doc_link_text').val() + "</a>";
+					add_to_editor = "<a href = '" + url + "' target='_blank'>" + $('#razuna-link-text').val() + "</a>";
 				}
 			}
-			var imgHtml = CKEDITOR.instances[$('#instances').val()].getData();
-			CKEDITOR.instances[$('#instances').val()].setData(imgHtml+add_to_editor);
-			*/
+			
+			razuna_target.insertHtml(add_to_editor);
 		}
 
 		$('#razunaModalWindow').dialog("close");
@@ -140,8 +143,8 @@
 										content+='				<table border="0" id="renditions">';
 										content+='				<tr class="rend">';
 										content+='					<td>&nbsp;</td>';
-										content+='					<td><label for="radio_path_orig" class="radio inline">';
-										content+='						<input type="radio" checked="checked" name="razuna-selected-url" value="'+$(target).attr('data-' + razuna_servertype + '_url_org')+'" id="radio_path" data-height="'+$(target).attr('data-height')+'" data-width="'+$(target).attr('data-width')+'">';
+										content+='					<td><label class="radio inline">';
+										content+='						<input type="radio" checked="checked" name="razuna-selected-url" value="'+$(target).attr('data-' + razuna_servertype + '_url_org')+'" data-height="'+$(target).attr('data-height')+'" data-width="'+$(target).attr('data-width')+'">';
 										content+='						Original</label>';
 										content+='					</td>';
 										content+='				</tr>';
@@ -152,23 +155,46 @@
 										content+='</tbody>';
 								}
 								else if(type == 'img'){
+								
 									var content='<tbody>';
 										content+='		<tr>';
-										content+='			<td>';
+										content+='			<td valign="top">';
 										content+='				<img src="'+$(target).attr('data-' + razuna_servertype + '_url_thumb')+'" id="razuna-show-image">';
 										content+='			</td>';
 										content+='			<td valign="top">';
 										content+='				<strong>Filename : </strong><span>'+$(target).attr('data-filename_org')+'</span><br>';
 										content+='				<strong>Type : </strong><span>Image</span><br>';
 										content+='				<table border="0" id="renditions">';
+										if(typeof razuna_target == 'object'){
+										content+='				<tr class="rend">';
+										content+='					<td><strong>Size:</strong></td>';
+										content+='					<td><label class="radio inline">';
+										content+='						<input type="radio" id="razuna-image-size" checked="checked" name="razuna-selected-url" value="'+$(target).attr('data-local_url_thumb')+'"  data-height="'+$(target).attr('data-height')+'" data-width="'+$(target).attr('data-width')+'">Thumbnail</label>';
+										content+='					</td>';
+										content+='				</tr>';
+										}
 										content+='				<tr class="rend">';
 										content+='					<td>&nbsp;</td>';
-										content+='					<td><label for="radio_path_orig" class="radio inline">';
-										content+='						<input type="radio" checked="checked" name="razuna-selected-url" value="'+$(target).attr('data-' + razuna_servertype + '_url_org')+'" id="radio_path" data-height="'+$(target).attr('data-height')+'" data-width="'+$(target).attr('data-width')+'">';
+										content+='					<td><label class="radio inline">';
+										content+='						<input type="radio"';
+										if(typeof razuna_target != 'object'){
+										content+='						checked="checked";'
+										}  
+										content+='						name="razuna-selected-url" value="'+$(target).attr('data-' + razuna_servertype + '_url_org')+'" data-height="'+$(target).attr('data-height')+'" data-width="'+$(target).attr('data-width')+'">';
 										content+='						Original</label>';
 										content+='					</td>';
 										content+='				</tr>';
 										content+='				</table>';
+										if(typeof razuna_target == 'object'){
+										content+='				<table border="0">';
+										content+='				<tr><td><strong>Width:</strong></td><td><input type="text" id="razuna-width" value="'+$(target).attr('data-width').toString().split(".")[0]+'"></td></tr>';
+										content+='				<tr><td><strong>Height:</strong></td><td><input type="text" value="'+$(target).attr('data-height').toString().split(".")[0]+'" id="razuna-height"></td></tr>'
+										content+='				<tr><td><strong>Alternate text:</strong></td><td><input type="text" id="razuna-alt-text" value="'+$(target).attr('data-filename_org')+'"></td></tr>';
+										content+='				<tr><td><strong>Title:</strong></td><td><input type="text" value="" id="razuna-img-title-text"></td></tr>';
+										content+='				<tr><td><strong>Link URL:</strong></td><td><input type="text" id="razuna-urlfield"></td></tr>';
+										content+='				</table>';
+										}
+										
 										content+='				<br><button type="button" id="razuna-insert" class="btn image">Select File</button>';
 										content+='			</td>';
 										content+='		</tr>';
@@ -186,12 +212,17 @@
 										content+='				<table border="0" id="renditions">';
 										content+='				<tr class="rend">';
 										content+='					<td>&nbsp;</td>';
-										content+='					<td><label for="radio_path_orig" class="radio inline">';
-										content+='						<input type="radio" checked="checked" name="razuna-selected-url" value="'+$(target).attr('data-' + razuna_servertype + '_url_org')+'" id="radio_path" data-height="'+$(target).attr('data-height')+'" data-width="'+$(target).attr('data-width')+'">';
+										content+='					<td><label class="radio inline">';
+										content+='						<input type="radio" checked="checked" name="razuna-selected-url" value="'+$(target).attr('data-' + razuna_servertype + '_url_org')+'" data-height="'+$(target).attr('data-height')+'" data-width="'+$(target).attr('data-width')+'">';
 										content+='						Original</label>';
 										content+='					</td>';
 										content+='				</tr>';
 										content+='				</table>';
+										if(typeof razuna_target == 'object'){
+										content+='				<table border="0">';
+										content+='				<tr><td><strong>Link Text:</strong></td><td><input type="text" value="" id="razuna-link-text"></td></tr>';
+										content+='				</table>';
+										}
 										content+='				<br><button type="button" id="razuna-insert" class="btn document">Select File</button>';
 										content+='			</td>';
 										content+='		</tr>';
@@ -209,8 +240,8 @@
 										content+='				<table border="0" id="renditions">';
 										content+='				<tr class="rend">';
 										content+='					<td>&nbsp;</td>';
-										content+='					<td><label for="radio_path_orig" class="radio inline">';
-										content+='						<input type="radio" checked="checked" name="razuna-selected-url" value="'+$(target).attr('data-' + razuna_servertype + '_url_org')+'" id="radio_path" data-height="'+$(target).attr('data-height')+'" data-width="'+$(target).attr('data-width')+'">';
+										content+='					<td><label class="radio inline">';
+										content+='						<input type="radio" checked="checked" name="razuna-selected-url" value="'+$(target).attr('data-' + razuna_servertype + '_url_org')+'" id="radio_path" data-height="'+$(target).attr('data-height')+'" data-width="'+$(target).attr('data-width')+'" data-image-thumb="'+$(target).attr('data-local_url_thumb')+'">';
 										content+='						Original</label>';
 										content+='					</td>';
 										content+='				</tr>';
@@ -224,7 +255,7 @@
 								$('.razuna-describe').html(content);
 								//$('.rend').remove();
 								for(x=1; x<=$(target).attr('rend_total'); x++){
-									$('#renditions').append("<tr class='rend'><td><strong>&nbsp;</strong></td><td><label for='image-size-renditions' class='radio inline'><input type='radio' name='razuna-selected-url' value='"+$(target).attr('rend_' + razuna_servertype + '_url_org'+x)+"' id='radio_path' data-height='"+$(target).attr('rend_height'+x)+"' data-width='"+$(target).attr('rend_width'+x)+"' data-image-thumb='"+$(target).attr('data-' + razuna_servertype + '_url_thumb')+"'>"+$(target).attr('rend_extension'+x).toUpperCase()+' ('+ parseInt($(target).attr('rend_width'+x))+'px X '+parseInt($(target).attr('rend_height'+x))+'px)'+"</label></td></tr>");
+									$('#renditions').append("<tr class='rend'><td><strong>&nbsp;</strong></td><td><label class='radio inline'><input type='radio' name='razuna-selected-url' value='"+$(target).attr('rend_' + razuna_servertype + '_url_org'+x)+"' data-height='"+$(target).attr('rend_height'+x)+"' data-width='"+$(target).attr('rend_width'+x)+"' data-image-thumb='"+$(target).attr('data-' + razuna_servertype + '_url_thumb')+"'>"+$(target).attr('rend_extension'+x).toUpperCase()+' ('+ parseInt($(target).attr('rend_width'+x))+'px X '+parseInt($(target).attr('rend_height'+x))+'px)'+"</label></td></tr>");
 								}
 								$('#razunaModalWindow').before($('#razunaImageDetails').html());
 								$('#razuna-inner-div').addClass('razuna-inner-div');
