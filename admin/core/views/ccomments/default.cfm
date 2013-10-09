@@ -202,7 +202,8 @@
 							<!--- COMMENT --->
 							
 							<td class="var-width">
-								<a href="##comment-#local.item.getCommentID()#" data-toggle="modal">#HTMLEditFormat(Left(item.getComments(), 100))#</a>
+								<cfset theComments = Len(item.getComments()) >= 100 ? Left(item.getComments(), 100) && '&hellip;' : item.getComments() />
+								<a href="##comment-#local.item.getCommentID()#" data-toggle="modal">#HTMLEditFormat(theComments)#</a>
 							</td>
 
 							<!--- ACTIONS --->
