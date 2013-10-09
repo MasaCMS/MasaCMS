@@ -200,8 +200,9 @@
 							</td>
 							
 							<!--- COMMENT --->
+							
 							<td class="var-width">
-								<a href="##comment-#local.item.getCommentID()#" data-toggle="modal">#application.contentRenderer.setParagraphs(HTMLEditFormat(local.item.getComments()))#</a>
+								<a href="##comment-#local.item.getCommentID()#" data-toggle="modal">#HTMLEditFormat(Left(item.getComments(), 100))#</a>
 							</td>
 
 							<!--- ACTIONS --->
