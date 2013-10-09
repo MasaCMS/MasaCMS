@@ -212,7 +212,7 @@
 								<cfif IsValid('url', local.item.getURL())>
 										<li><a href="#HTMLEditFormat(local.item.getURL())#" title="#HTMLEditFormat(local.item.getURL())#" target="_blank"><i class="icon-link"></i></a></li>
 										<cfelse>
-										<li><i class="icon-link disabled"></i></li>
+										<li class="disabled"><i class="icon-link"></i></li>
 									</cfif>
 									<li><a href="mailto:#HTMLEditFormat(local.item.getEmail())#" title="#HTMLEditFormat(local.item.getEmail())#"><i class="icon-envelope"></i></a></li>
 									<li><a href="##comment-#local.item.getCommentID()#" data-toggle="modal" title="Comments"><i class="icon-comments"></i></a></li>
