@@ -2293,40 +2293,49 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsReleaseCountByMonth')#">
 		select
 			parentID,
-			<cfif variables.configBean.getDbTYpe() neq 'oracle'>
-			month(releaseDate) m,
-			year(releaseDate) y,
-			<cfelse>
+			<cfif variables.configBean.getDbType() eq 'oracle'>
 			TO_NUMBER(TO_CHAR(releaseDate, 'mm')) m,
 			TO_NUMBER(TO_CHAR(releaseDate, 'yyyy')) y,
+			<cfelseif variables.configBean.getDbType() eq 'postgresql'>
+			date_part('month', releaseDate) m,
+			date_part('year', releaseDate) y,
+			<cfelse>
+			month(releaseDate) m,
+			year(releaseDate) y,
 			</cfif>
 			count(*) items  
 		from tcontent 
 		where parentID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.parentID#"> 
 		and siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"> 
         #renderActiveClause("tcontent",arguments.siteID)#
-		and releaseDate <> ''
+		and releaseDate is not null
 		and display != 0
 		and isNav = 1
 		group by parentID,
-		<cfif variables.configBean.getDbTYpe() neq 'oracle'>
-			month(releaseDate),
-			year(releaseDate)
-			<cfelse>
+		<cfif variables.configBean.getDbType() eq 'oracle'>
 			TO_NUMBER(TO_CHAR(releaseDate, 'mm')),
 			TO_NUMBER(TO_CHAR(releaseDate, 'yyyy'))
+		<cfelseif variables.configBean.getDbType() eq 'postgresql'>
+			date_part('month', releaseDate),
+			date_part('year', releaseDate)
+		<cfelse>
+			month(releaseDate),
+			year(releaseDate)
 		</cfif>
 		
 		union
 		
 		select
 			parentID,
-			<cfif variables.configBean.getDbTYpe() neq 'oracle'>
-			month(lastUpdate) m,
-			year(lastUpdate) y,
-			<cfelse>
+			<cfif variables.configBean.getDbType() eq 'oracle'>
 			TO_NUMBER(TO_CHAR(lastUpdate, 'mm')) m,
 			TO_NUMBER(TO_CHAR(lastUpdate, 'yyyy')) y,
+			<cfelseif variables.configBean.getDbType() eq 'postgresql'>
+			date_part('month', lastUpdate) m,
+			date_part('year', lastUpdate) y,
+			<cfelse>
+			month(lastUpdate) m,
+			year(lastUpdate) y,
 			</cfif>
 			count(*) items  
 		from tcontent 
@@ -2337,12 +2346,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		and display != 0
 		and isNav = 1
 		group by parentID,
-		<cfif variables.configBean.getDbTYpe() neq 'oracle'>
-			month(lastUpdate),
-			year(lastUpdate)
-			<cfelse>
+		<cfif variables.configBean.getDbType() eq 'oracle'>
 			TO_NUMBER(TO_CHAR(lastUpdate, 'mm')),
 			TO_NUMBER(TO_CHAR(lastUpdate, 'yyyy'))
+		<cfelseif variables.configBean.getDbType() eq 'postgresql'>
+			date_part('month', lastUpdate),
+			date_part('year', lastUpdate)
+		<cfelse>
+			month(lastUpdate),
+			year(lastUpdate)
 		</cfif>
 	</cfquery>
 	
