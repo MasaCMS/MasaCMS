@@ -144,7 +144,7 @@
 										content+='				<tr class="rend">';
 										content+='					<td>&nbsp;</td>';
 										content+='					<td><label class="radio inline">';
-										content+='						<input type="radio" checked="checked" name="razuna-selected-url" value="'+$(target).attr('data-' + razuna_servertype + '_url_org')+'" data-height="'+$(target).attr('data-height')+'" data-width="'+$(target).attr('data-width')+'">';
+										content+='						<input type="radio" checked="checked" name="razuna-selected-url" value="'+$(target).attr('data-local_url_org')+'" data-height="'+$(target).attr('data-height')+'" data-width="'+$(target).attr('data-width')+'">';
 										content+='						Original</label>';
 										content+='					</td>';
 										content+='				</tr>';
@@ -180,7 +180,7 @@
 										if(typeof razuna_target != 'object'){
 										content+='						checked="checked";'
 										}  
-										content+='						name="razuna-selected-url" value="'+$(target).attr('data-' + razuna_servertype + '_url_org')+'" data-height="'+$(target).attr('data-height')+'" data-width="'+$(target).attr('data-width')+'">';
+										content+='						name="razuna-selected-url" value="'+$(target).attr('data-local_url_org')+'" data-height="'+$(target).attr('data-height')+'" data-width="'+$(target).attr('data-width')+'">';
 										content+='						Original</label>';
 										content+='					</td>';
 										content+='				</tr>';
@@ -213,7 +213,7 @@
 										content+='				<tr class="rend">';
 										content+='					<td>&nbsp;</td>';
 										content+='					<td><label class="radio inline">';
-										content+='						<input type="radio" checked="checked" name="razuna-selected-url" value="'+$(target).attr('data-' + razuna_servertype + '_url_org')+'" data-height="'+$(target).attr('data-height')+'" data-width="'+$(target).attr('data-width')+'">';
+										content+='						<input type="radio" checked="checked" name="razuna-selected-url" value="'+ $(target).attr('data-local_url_org') +'" data-height="'+$(target).attr('data-height')+'" data-width="'+$(target).attr('data-width')+'">';
 										content+='						Original</label>';
 										content+='					</td>';
 										content+='				</tr>';
@@ -241,7 +241,7 @@
 										content+='				<tr class="rend">';
 										content+='					<td>&nbsp;</td>';
 										content+='					<td><label class="radio inline">';
-										content+='						<input type="radio" checked="checked" name="razuna-selected-url" value="'+$(target).attr('data-' + razuna_servertype + '_url_org')+'" id="radio_path" data-height="'+$(target).attr('data-height')+'" data-width="'+$(target).attr('data-width')+'" data-image-thumb="'+$(target).attr('data-local_url_thumb')+'">';
+										content+='						<input type="radio" checked="checked" name="razuna-selected-url" value="'+$(target).attr('data-local_url_org')+'" data-height="'+$(target).attr('data-height')+'" data-width="'+$(target).attr('data-width')+'" data-image-thumb="'+$(target).attr('data-local_url_thumb')+'">';
 										content+='						Original</label>';
 										content+='					</td>';
 										content+='				</tr>';
