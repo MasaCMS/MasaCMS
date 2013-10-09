@@ -152,7 +152,7 @@
 <!--- MODAL WINDOW --->
 <div id="comment-#local.item.getCommentID()#" class="modal hide fade">
 	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="Close Comments"><i class="icon-comments"></i></button>
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="Close Comments"><i class="icon-remove-sign"></i></button>
 		<p>
 			<strong>#HTMLEditFormat(local.item.getName())#</strong> <em>#rc.$.rbKey('comments.commentedon')#:</em><br>
 			<a href="#local.content.getURL(complete=1,queryString='##comment-#local.item.getCommentID()#')#" target="_blank"><i class="icon-external-link"></i> #HTMLEditFormat(local.content.getMenuTitle())#</a>
@@ -203,7 +203,7 @@
 							
 							<td class="var-width">
 								<cfscript>
-									theComments = Len(item.getComments()) >= 100 || !ListFindNoCase('!,.,?', Right(item.getComments(), 1)) ? Left(item.getComments(), 100) & '...' : item.getComments();
+									theComments = Len(item.getComments()) >= 210 || !ListFindNoCase('!,.,?', Right(item.getComments(), 1)) ? Left(item.getComments(), 210) & '...' : item.getComments();
 								</cfscript>
 								<a href="##comment-#local.item.getCommentID()#" data-toggle="modal">#HTMLEditFormat(theComments)#</a>
 							</td>
