@@ -35,7 +35,7 @@
 	if (!dbUtility.setTable("tcontentrelated").columnExists("relatedContentID")) {
 		try{
 			dbUtility.setTable("tcontentrelated").dropPrimaryKey();
-		} catch (e any){}
+		} catch (any e){}
 	}
 	
 	dbUtility.setTable("tcontentrelated")
@@ -45,7 +45,7 @@
 
 	try{
 		dbUtility.addPrimaryKey('relatedContentID');
-	} catch (e any){
+	} catch (any e){
 		dbUtility.dropPrimaryKey();
 		dbUtility.addPrimaryKey('relatedContentID');
 	}
