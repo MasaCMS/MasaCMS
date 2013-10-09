@@ -496,6 +496,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var Bundle			= getBean("bundle") />
 	<cfset var publisher 		= getBean("publisher") />
 	<cfset var keyFactory		= createObject("component","mura.publisherKeys").init(arguments.keyMode,application.utility)>
+	<cfsetting requestTimeout = "7200">
 	
 	<cfset Bundle.restore( arguments.BundleFile)>
 	
