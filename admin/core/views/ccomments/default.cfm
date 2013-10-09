@@ -203,8 +203,13 @@
 							
 							<td class="var-width">
 								<cfscript>
-									theComments = Left(item.getComments(), 210);
-									theComments = !ListFindNoCase('!,.,?', Right(theComments, 1)) ? theComments & ' ...' : theComments;
+									theCount = 210;
+									if ( Len(item.getComments()) > theCount ) {
+										theComments = Left(Trim(item.getComments()), theCount);
+										theComments = !ListFindNoCase('.,!,?', Right(theComments, 1)) ? theComments & ' ...' : theComments;
+									} else {
+										theComments = item.getComments();
+									}
 								</cfscript>
 								<a href="##comment-#local.item.getCommentID()#" data-toggle="modal">#HTMLEditFormat(theComments)#</a>
 							</td>
