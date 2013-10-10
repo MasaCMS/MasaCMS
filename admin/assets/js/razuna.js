@@ -90,6 +90,8 @@
 	        title: "Razuna" ,
 	        close: razunaRemoveAll
        	});
+
+       	$('#razunaModalWindow').closest(".ui-dialog").addClass('razuna-dialog');
 		
 		$('#razunaModalWindow').load(razuna_folder+'?muraAction=razuna.default',function(){
 			var loader_div = '<div id="razuna-loader-div"><div align="center" class="razuna-img-div"><img src="'+razuna_folder+'assets/images/ajax-loader.gif"></div></div>';
