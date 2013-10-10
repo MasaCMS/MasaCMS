@@ -4,7 +4,7 @@ RazunaAdded=false;
 CKEDITOR.plugins.add( 'razuna', {
 	init: function( editor ) {	
 
-		if(renderRazunaWindow){
+		if(typeof renderRazunaWindow != 'undefined'){
 			CKEDITOR.on( 'dialogDefinition', function( ev )
 			   {
 

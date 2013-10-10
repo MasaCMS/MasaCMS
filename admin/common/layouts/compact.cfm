@@ -185,6 +185,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 	</head>
 	<body id="#rc.originalcircuit#" class="compact">
+		<a id="frontEndToolsModalClose" href="javascript:frontEndProxy.post({cmd:'close'});"><i class="icon-remove-sign"></i></a>
 		<cfinclude template="includes/dialog.cfm">
 		<div class="main row-fluid">#body#</div>
 		

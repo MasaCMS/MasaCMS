@@ -214,14 +214,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 			<!--- Sections --->
 			<div class="control-group">
-				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.basicfromsection')#: <span id="selectFilter"><a href="javascript:;" onclick="javascript: feedManager.loadSiteFilters('#rc.siteid#','',1);return false;">[#application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#]</a></span></label>
+				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.basicfromsection')#: <span id="selectFilter"><a class="btn btn-small btn-default" href="javascript:;" onclick="javascript: feedManager.loadSiteFilters('#rc.siteid#','',1);return false;">#application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#</a></span></label>
 				<div class="controls">
 					<table id="contentFilters" class="mura-table-grid">
 						<thead>
 							<tr>
-								<th>&nbsp;</th>
 								<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'collections.section')#</th>
 								<th>#application.rbFactory.getKeyValue(session.rb,'collections.type')#</th>
+								<th>&nbsp;</th>
 							</tr>
 						</thead>
 						<tbody id="ContentFilters">
@@ -229,9 +229,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfloop query="rc.rslist">
 									<cfset itemcrumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/>
 									<tr id="c#rc.rslist.contentID#">
-										<td class="actions"><input type="hidden" name="contentID" value="#rc.rslist.contentid#" /><ul class="clearfix"><li class="delete"><a title="Delete" href="##" onclick="return feedManager.removeFilter('c#rc.rslist.contentid#');"><i class="icon-remove-sign"></i></a></li></ul></td>
 										<td class="var-width">#$.dspZoomNoLinks(itemcrumbdata)#</td>
 										<td>#rc.rslist.type#</td>
+										<td class="actions"><input type="hidden" name="contentID" value="#rc.rslist.contentid#" /><ul class="clearfix"><li class="delete"><a title="Delete" href="##" onclick="return feedManager.removeFilter('c#rc.rslist.contentid#');"><i class="icon-remove-sign"></i></a></li></ul></td>
 									</tr>
 								</cfloop>
 							<cfelse>

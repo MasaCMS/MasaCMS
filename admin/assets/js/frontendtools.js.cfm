@@ -31,6 +31,8 @@
 					frontEndModalWidth=frontEndModalWidthStandard;
 				}
 				resizeFrontEndToolsModal();	
+			} else if(parameters["cmd"] == "close"){
+				closeFrontEndToolsModal();
 			} else if(parameters["cmd"] == "setLocation"){
 				window.location=decodeURIComponent(parameters["location"]);
 			} else if(parameters["cmd"] == "setHeight"){
@@ -100,7 +102,6 @@
 		
 		jQuery("##frontEndToolsModalTarget").html('<div id="frontEndToolsModalContainer">' +
 		'<div id="frontEndToolsModalBody">' +
-		'<a id="frontEndToolsModalClose" style="display:none;" href="javascript:closeFrontEndToolsModal();"><i class="icon-remove-sign"></i></a>' +
 		'<iframe src="' + src + '" id="frontEndToolsModaliframe" scrolling="false" frameborder="0" style="overflow:hidden" name="frontEndToolsModaliframe"></iframe>' +
 		'</div>' +
 		'</div>');
@@ -290,7 +291,7 @@
 						var editor=CKEDITOR.inline( 
 						document.getElementById( attribute.attr('id') ),
 						{
-							toolbar: 'Default',
+							toolbar: 'QuickEdit',
 							width: "75%",
 							customConfig: 'config.js.cfm'
 						});
