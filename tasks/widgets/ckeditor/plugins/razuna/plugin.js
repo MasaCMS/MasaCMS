@@ -61,6 +61,33 @@ CKEDITOR.plugins.add( 'razuna', {
 					 	}
 					 );
 			      }
+
+			      else if (!CKEDITOR.currentInstance.razunalink && ev.data.name == 'link' )
+			      {
+			      	alert( JSON.stringify(ev.data.definition.getContents( 'info' ).elements) );
+			         ev.data.definition.getContents( 'info' ).elements[1].children[0].children.push({
+						               id: 'razuna',
+						               type: 'button',
+						               label: 'Razuna',
+						               style: "display:inline-block;margin-top:10px;",
+			                           align: "center",
+						               title: 'Razuna',
+						               disabled: false,
+						               onClick: function()
+						                  {	
+						                     renderRazunaWindow(this.getDialog().getContentElement("info", "url"));
+						                  },
+
+						            });
+
+			       	CKEDITOR.currentInstance.razunalink=true;
+			   
+					ev.data.definition.dialog.on( 'hide', function( ev )
+					   {
+					   	$('#razunaModalWindow').dialog("close");
+					 	}
+					 );
+			      }
 			      
 			   });
 
