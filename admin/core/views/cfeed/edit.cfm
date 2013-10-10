@@ -203,149 +203,165 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfsavecontent variable="tabContent">
 <cfoutput>
 <cfif not isObjectInstance>
-<div id="tabBasic" class="tab-pane fade">
-	<div class="fieldset">
-		<div class="control-group">
-		  <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.name')#</label>
-		  <label class="control-label"><input type="text" name="name" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.namerequired')#" value="#HTMLEditFormat(rc.feedBean.getName())#" maxlength="250"<cfif rc.feedBean.getIsLocked()> disabled="disabled"</cfif>></label>
-		</div>
-	
-		<div class="control-group">
-	      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.basicfromsection')#: <span id="selectFilter"><a href="javascript:;" onclick="javascript: feedManager.loadSiteFilters('#rc.siteid#','',1);return false;">[#application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#]</a></span></label>
-		<div class="controls">
-			<table id="contentFilters" class="mura-table-grid"> 
-			<tr>
-			<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'collections.section')#</th>
-			<th>#application.rbFactory.getKeyValue(session.rb,'collections.type')#</th>
-			<th>&nbsp;</th>
-			</tr>
-			<tbody id="ContentFilters">
-			<cfif rc.rslist.recordcount>
-			<cfloop query="rc.rslist">
-			<cfset itemcrumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/>
-			<tr id="c#rc.rslist.contentID#">
-			<td class="var-width">#$.dspZoomNoLinks(itemcrumbdata)#</td>
-			<td>#rc.rslist.type#</td>
-			<td class="actions"><input type="hidden" name="contentID" value="#rc.rslist.contentid#" /><ul class="clearfix"><li class="delete"><a title="Delete" href="##" onclick="return feedManager.removeFilter('c#rc.rslist.contentid#');"><i class="icon-remove-sign"></i></a></li></ul></td>
-			</tr></cfloop>
-			<cfelse>
-			<tr>
-			<td class="noResults" colspan="4" id="noFilters"><em>#application.rbFactory.getKeyValue(session.rb,'collections.nocontentfilters')#</em></td>
-			</tr>
-			</cfif></tbody>
-			</table>
-		</div>
-	</div>
-	
-	
-		<cfif application.categoryManager.getCategoryCount(rc.siteid)>
+	<!--- Basic Tab --->
+	<div id="tabBasic" class="tab-pane fade">
+		<div class="fieldset">
+			<!--- Name --->
 			<div class="control-group">
-			      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.categoryfilters')#</label>
-			      <div id="mura-list-tree" class="controls">
-				      <cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" feedID="#rc.feedID#" feedBean="#rc.feedBean#">
-				  </div>
+			  <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.name')#</label>
+			  <label class="control-label"><input type="text" name="name" class="span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'collections.namerequired')#" value="#HTMLEditFormat(rc.feedBean.getName())#" maxlength="250"<cfif rc.feedBean.getIsLocked()> disabled="disabled"</cfif>></label>
 			</div>
 
+			<!--- Sections --->
 			<div class="control-group">
-				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.categoryInterection')#</label>
+				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.basicfromsection')#: <span id="selectFilter"><a href="javascript:;" onclick="javascript: feedManager.loadSiteFilters('#rc.siteid#','',1);return false;">[#application.rbFactory.getKeyValue(session.rb,'collections.selectnewsection')#]</a></span></label>
 				<div class="controls">
-				<label class="radio inline">
-					<input name="useCategoryIntersect" type="radio" value="1" class="radio" <cfif rc.feedBean.getUseCategoryIntersect()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-				</label>
-				<label class="radio inline">
-					<input name="useCategoryIntersect" type="radio" value="0" class="radio" <cfif not rc.feedBean.getUseCategoryIntersect()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
-				</label>
+					<table id="contentFilters" class="mura-table-grid">
+						<thead>
+							<tr>
+								<th class="var-width">#application.rbFactory.getKeyValue(session.rb,'collections.section')#</th>
+								<th>#application.rbFactory.getKeyValue(session.rb,'collections.type')#</th>
+								<th>&nbsp;</th>
+							</tr>
+						</thead>
+						<tbody id="ContentFilters">
+							<cfif rc.rslist.recordcount>
+								<cfloop query="rc.rslist">
+									<cfset itemcrumbdata=application.contentManager.getCrumbList(rc.rslist.contentid, rc.siteid)/>
+									<tr id="c#rc.rslist.contentID#">
+										<td class="var-width">#$.dspZoomNoLinks(itemcrumbdata)#</td>
+										<td>#rc.rslist.type#</td>
+										<td class="actions"><input type="hidden" name="contentID" value="#rc.rslist.contentid#" /><ul class="clearfix"><li class="delete"><a title="Delete" href="##" onclick="return feedManager.removeFilter('c#rc.rslist.contentid#');"><i class="icon-remove-sign"></i></a></li></ul></td>
+									</tr>
+								</cfloop>
+							<cfelse>
+								<tr>
+									<td class="noResults" colspan="4" id="noFilters"><em>#application.rbFactory.getKeyValue(session.rb,'collections.nocontentfilters')#</em></td>
+								</tr>
+							</cfif>
+						</tbody>
+					</table>
 				</div>
 			</div>
 
-		</cfif>
-	
-		<div class="control-group">
-	<div class="span6">
-		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.sortby')#</label>
-			<div class="controls">
-			<select name="sortBy">
-			<option value="lastUpdate" <cfif rc.feedBean.getsortBy() eq 'lastUpdate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.lastupdate')#</option>
-			<option value="releaseDate" <cfif rc.feedBean.getsortBy() eq 'releaseDate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.releasedate')#</option>
-			<option value="displayStart" <cfif rc.feedBean.getsortBy() eq 'displayStart'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startdatetime')#</option>
-			<option value="menuTitle" <cfif rc.feedBean.getsortBy() eq 'menuTitle'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.menutitle')#</option>
-			<option value="title" <cfif rc.feedBean.getsortBy() eq 'title'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.longtitle')#</option>
-			<option value="rating" <cfif rc.feedBean.getsortBy() eq 'rating'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.rating')#</option>
-			<option value="comments" <cfif rc.feedBean.getsortBy() eq 'comments'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.comments')#</option>
-			<option value="created" <cfif rc.feedBean.getsortBy() eq 'created'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.created')#</option>
-			<option value="orderno" <cfif rc.feedBean.getsortBy() eq 'orderno'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.orderno')#</option>
-			<option value="random" <cfif rc.feedBean.getsortBy() eq 'random'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.random')#</option>
-			<cfloop query="rsExtend"><option value="#HTMLEditFormat(rsExtend.attribute)#" <cfif rc.feedBean.getsortBy() eq rsExtend.attribute>selected</cfif>>#rsExtend.Type#/#rsExtend.subType# - #rsExtend.attribute#</option>
-			</cfloop>
-			</select>
+			<!--- Categories --->
+			<cfif application.categoryManager.getCategoryCount(rc.siteid)>
+				<div class="control-group">
+					<!--- Category Filters --->
+					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.categoryfilters')#</label>
+					<div id="mura-list-tree" class="controls">
+						<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" feedID="#rc.feedID#" feedBean="#rc.feedBean#">
+					</div>
+					<!--- Match All Categories (Category Intersection) --->
+					<label class="control-label">
+						<a href="##" rel="tooltip" data-original-title="#application.rbFactory.getKeyValue(session.rb,'collections.categoryintersectiontip')#">
+							#application.rbFactory.getKeyValue(session.rb,'collections.categoryintersection')#
+							<i class="icon-question-sign"></i>
+						</a>
+					</label>
+					<div class="controls">
+						<label class="radio inline">
+							<input name="useCategoryIntersect" type="radio" value="1" class="radio" <cfif rc.feedBean.getUseCategoryIntersect()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+						</label>
+						<label class="radio inline">
+							<input name="useCategoryIntersect" type="radio" value="0" class="radio" <cfif not rc.feedBean.getUseCategoryIntersect()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+						</label>
+					</div>
+				</div>
+			</cfif>
+
+			<!--- Sort Options --->
+			<div class="control-group">
+				<!--- Sort By --->
+				<div class="span6">
+					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.sortby')#</label>
+					<div class="controls">
+						<select name="sortBy">
+							<option value="lastUpdate" <cfif rc.feedBean.getsortBy() eq 'lastUpdate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.lastupdate')#</option>
+							<option value="releaseDate" <cfif rc.feedBean.getsortBy() eq 'releaseDate'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.releasedate')#</option>
+							<option value="displayStart" <cfif rc.feedBean.getsortBy() eq 'displayStart'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.startdatetime')#</option>
+							<option value="menuTitle" <cfif rc.feedBean.getsortBy() eq 'menuTitle'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.menutitle')#</option>
+							<option value="title" <cfif rc.feedBean.getsortBy() eq 'title'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.longtitle')#</option>
+							<option value="rating" <cfif rc.feedBean.getsortBy() eq 'rating'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.rating')#</option>
+							<option value="comments" <cfif rc.feedBean.getsortBy() eq 'comments'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.comments')#</option>
+							<option value="created" <cfif rc.feedBean.getsortBy() eq 'created'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.created')#</option>
+							<option value="orderno" <cfif rc.feedBean.getsortBy() eq 'orderno'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.orderno')#</option>
+							<option value="random" <cfif rc.feedBean.getsortBy() eq 'random'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'params.random')#</option>
+							<cfloop query="rsExtend">
+								<option value="#HTMLEditFormat(rsExtend.attribute)#" <cfif rc.feedBean.getsortBy() eq rsExtend.attribute>selected</cfif>>#rsExtend.Type#/#rsExtend.subType# - #rsExtend.attribute#</option>
+							</cfloop>
+						</select>
+					</div>
+				</div>
+				<!--- Sort Direction --->
+				<div class="span6">
+					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.sortdirection')#</label>
+					<div class="controls">
+						<select name="sortDirection">
+							<option value="asc" <cfif rc.feedBean.getsortDirection() eq 'asc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.ascending')#</option>
+							<option value="desc" <cfif rc.feedBean.getsortDirection() eq 'desc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.descending')#</option>
+						</select>
+					</div>
+				</div>
 			</div>
-	</div>
-	<div class="span6">
-			<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.sortdirection')#</label>
-			<div class="controls">
-				<select name="sortDirection">
-				<option value="asc" <cfif rc.feedBean.getsortDirection() eq 'asc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.ascending')#</option>
-				<option value="desc" <cfif rc.feedBean.getsortDirection() eq 'desc'>selected</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.descending')#</option>
-				</select>
+
+			<!--- Features + Nav --->
+			<div class="control-group">
+				<!--- Features Only --->
+				<div class="span6">
+					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.includefeaturesonly')#</label>
+					<div class="controls">
+						<label class="radio inline">
+							<input name="isFeaturesOnly" type="radio" value="1" class="radio" <cfif rc.feedBean.getIsFeaturesOnly()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+						</label>
+						<label class="radio inline">
+							<input name="isFeaturesOnly" type="radio" value="0" class="radio" <cfif not rc.feedBean.getIsFeaturesOnly()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')#
+						</label> 
+					</div>
+				</div>
+				<!--- Nav Only --->
+				<div class="span6">
+					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.shownavonly')#</label>
+					<div class="controls">
+						<label class="radio inline">
+							<input name="showNavOnly" type="radio" value="1" class="radio" <cfif rc.feedBean.getShowNavOnly()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+						</label>
+						<label class="radio inline">
+							<input name="showNavOnly" type="radio" value="0" class="radio" <cfif not rc.feedBean.getShowNavOnly()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+						</label>
+					</div>
+				</div>
 			</div>
-	</div>
-</div>
+
+			<!--- Exclude From Site Search --->
+			<div class="control-group">
+				<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.showexcludesearch')#</label>
+				<div class="controls">
+					<label class="radio inline">
+						<input name="showExcludeSearch" type="radio" value="1" class="radio" <cfif rc.feedBean.getShowExcludeSearch()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+					</label>
+					<label class="radio inline">
+						<input name="showExcludeSearch" type="radio" value="0" class="radio" <cfif not rc.feedBean.getShowExcludeSearch()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+					</label>
+		  	</div>
+			</div>
 		
-		<div class="control-group">
-	<div class="span6">
-		<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.includefeaturesonly')#</label>
-		<div class="controls">
-			<label class="radio inline">
-				<input name="isFeaturesOnly" type="radio" value="1" class="radio" <cfif rc.feedBean.getIsFeaturesOnly()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-			</label>
-			<label class="radio inline">
-				<input name="isFeaturesOnly" type="radio" value="0" class="radio" <cfif not rc.feedBean.getIsFeaturesOnly()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')#
-			</label> 
+			<!--- Lock Name? --->
+			<cfif listFind(session.mura.memberships,'S2')>
+				<div class="control-group">
+					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.isLocked')#</label>
+					<div class="controls">
+						<label class="radio inline">
+							<input name="islocked" type="radio" value="1" class="radio" <cfif rc.feedBean.getIsLocked()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+						</label>
+						<label class="radio inline">
+							<input name="islocked" type="radio" value="0" class="radio" <cfif not rc.feedBean.getIsLocked()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+						</label>
+			  	</div>
+				</div>
+			</cfif>
 		</div>
 	</div>
-
-	<div class="span6">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.shownavonly')#</label>
-      <div class="controls">
-	      <label class="radio inline">
-		      <input name="showNavOnly" type="radio" value="1" class="radio" <cfif rc.feedBean.getShowNavOnly()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-		  </label>
-		  <label class="radio inline">
-			  <input name="showNavOnly" type="radio" value="0" class="radio" <cfif not rc.feedBean.getShowNavOnly()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
-		</label>
-	</div>
-</div>
-</div>
-		
-		<div class="control-group">
-      <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.showexcludesearch')#
-      </label>
-	<div class="controls">
-	<label class="radio inline">
-	<input name="showExcludeSearch" type="radio" value="1" class="radio" <cfif rc.feedBean.getShowExcludeSearch()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-	</label>
-	<label class="radio inline">
-	<input name="showExcludeSearch" type="radio" value="0" class="radio" <cfif not rc.feedBean.getShowExcludeSearch()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
-	</label>
-  </div>
-</div>
-		
-		<cfif listFind(session.mura.memberships,'S2')>
-			<div class="control-group">
-     <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.isLocked')#</label>
-		<div class="controls">
-		<label class="radio inline">
-		<input name="islocked" type="radio" value="1" class="radio" <cfif rc.feedBean.getIsLocked()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-		</label>
-		<label class="radio inline">
-		<input name="islocked" type="radio" value="0" class="radio" <cfif not rc.feedBean.getIsLocked()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
-		</label>
-	  </div>
-	</div>
-		</cfif>
-	
-	</div>
-</div>
 
 <div id="tabAdvancedfilters" class="tab-pane fade">
 	<div class="fieldset">
