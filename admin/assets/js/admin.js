@@ -1062,16 +1062,16 @@ function openFileMetaData(contenthistid,fileid,siteid,property) {
 
 	    }
 	
-	    $(this.$element).find("button.btn").click(clickHandler);
+	    $(this.$element).find("button.mura-file-type-selector").click(clickHandler);
 	   
 	    $elm.find(".mura-file-option").find('input').change(
 	    	function(){
 	    		var reg1 = /^(([a-zA-Z]:)|(\\{2}\w+)\$?)(\\(\w[\w].*))+(.jpg|.jpeg|.png|.gif)$/;
 	    		var reg2 = /(http(s?):)|([/|.|\w|\s])*\.(?:jpg|gif|png)/;
 	    		if(reg1.test( $(this).val().toLowerCase()) || reg2.test( $(this).val().toLowerCase())){
-	    			$(this).parent().find('.btn').show();
+	    			$(this).parent().find('.file-meta-open').show();
 	    		}else{
-	    			$(this).parent().find('.btn').hide()
+	    			$(this).parent().find('.file-meta-open').hide()
 	    		}
 	    });
 
