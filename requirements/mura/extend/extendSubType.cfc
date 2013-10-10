@@ -469,7 +469,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfif arguments.includeInheritedSets and i eq "ID">
 			<!--- include default set --->
-			<cfset arrayAppend(relatedContentSetArray, getBean('relatedContentSet').setRelatedContentSetID('00000000000000000000000000000000000').setName('Default'))>
+			<cfset arrayAppend(relatedContentSetArray, getBean('relatedContentSet').setRelatedContentSetID('00000000000000000000000000000000000').setName('Default').setSiteID(getSiteID()))>
 		</cfif>
 	</cfloop>
 	
