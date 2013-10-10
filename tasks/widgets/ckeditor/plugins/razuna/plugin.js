@@ -30,7 +30,9 @@ CKEDITOR.plugins.add( 'razuna', {
 			   
 					ev.data.definition.dialog.on( 'hide', function( ev )
 					   {
-					   	$('#razunaModalWindow').dialog("close");
+					   		try{
+						   		$('#razunaModalWindow').dialog("close");
+						   	} catch(err){}
 					 	}
 					 );
 			      }
@@ -57,7 +59,9 @@ CKEDITOR.plugins.add( 'razuna', {
 			   
 					ev.data.definition.dialog.on( 'hide', function( ev )
 					   {
-					   	$('#razunaModalWindow').dialog("close");
+					   		try{
+						   		$('#razunaModalWindow').dialog("close");
+						   	} catch(err){}
 					 	}
 					 );
 			      }
@@ -94,7 +98,9 @@ CKEDITOR.plugins.add( 'razuna', {
 			   
 					ev.data.definition.dialog.on( 'hide', function( ev )
 					   {
-					   	$('#razunaModalWindow').dialog("close");
+						   	try{
+						   		$('#razunaModalWindow').dialog("close");
+						   	} catch(err){}
 					 	}
 					 );
 			      }
