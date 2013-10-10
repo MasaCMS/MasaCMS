@@ -67,6 +67,19 @@ CKEDITOR.editorConfig = function( config )
 		{name: 'group9', items:['Image','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
 		{name: 'group10', items:['Styles','Format','-','Maximize','ShowBlocks','About']}
 	] ;
+
+	config.toolbar_QuickEdit = [
+		{name: 'group1', items:['Source']},
+		{name: 'group2', items:['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt']},
+		{name: 'group3', items:['Undo','Redo','-','Find','Replace','-','RemoveFormat']},
+		{name: 'group4', items:['BidiLtr','BidiRtl']},
+		{name: 'group5', items:['Bold','Italic','Underline','Strike','-','Subscript','Superscript']},'/',
+		{name: 'group6', items:['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv']},
+		{name: 'group7', items:['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock']},
+		{name: 'group8', items:['Link','Unlink','Anchor']},'/',
+		{name: 'group9', items:['Image','Flash','Media','gmap','-','Table','HorizontalRule','SpecialChar','PageBreak','-','Selectlink','SelectComponent','Templates'<cfif application.configBean.getEnableMuraTag()>,'muratag'</cfif>]},
+		{name: 'group10', items:['Styles','Format','-','Maximize','ShowBlocks','About']}
+	] ;
 	
 	config.toolbar_Summary = [
 										['Source'],
