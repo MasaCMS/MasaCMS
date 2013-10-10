@@ -673,14 +673,20 @@ select[multiple] {
 .control-group .mura-file-selector {
 
 		input[type="text"] { float: left; }
+		input.razuna-url { float: none; }
 		
 		// Darkening buttons for contrast when in a fieldset
 		.btn {
 			.buttonBackground(darken(@btnBackground,5%), darken(@btnBackgroundHighlight,5%), darken(@grayDark,5%), 0 1px 1px rgba(255,255,255,.75));
 			
 			&.active	{
-				.buttonBackground(darken(@btnBackground,12%), darken(@btnBackgroundHighlight,12%), darken(@grayDark,12%), 0 1px 1px rgba(255,255,255,.75));
+				.buttonBackground(darken(@btnBackground,15%), darken(@btnBackgroundHighlight,15%), darken(@grayDark,15%), 0 1px 1px rgba(255,255,255,.75));
+				color: @grayLight;
 				}
+		}
+		
+		.btn-razuna {
+			display: inline-block !important;
 		}
 	}
 	
