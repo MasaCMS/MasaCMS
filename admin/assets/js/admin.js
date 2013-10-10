@@ -1215,6 +1215,7 @@ function loadjscssfile(filename, filetype) {
 
 function getDialogPosition() {
 
+	/*
 	if(top.location != self.location) {
 		try {
 			var windowHeight = $(window.parent).height();
@@ -1229,6 +1230,8 @@ function getDialogPosition() {
 	} else {
 		return "center";
 	}
+	*/
+	["top",20]
 }
 
 function openPreviewDialog(previewURL) {
