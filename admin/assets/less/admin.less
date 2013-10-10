@@ -43,17 +43,36 @@
 	
 // Layout
 
-body.compact {
+.main { padding-bottom: @baseLineHeight*2; min-width: 940px; }
+
+.compact {
 	padding: 18px;
 	background: #fff;
-}
 
-.main { padding-bottom: @baseLineHeight*2; min-width: 940px; }
-.compact .main { 
-	padding-bottom: 0;
-	min-width: 0;
+	#frontEndToolsModalClose {
+	position: absolute;
+	top: 23px;
+	right: 18px;
+	color: @gray;
+	.inline-block;
+	text-decoration: none !important;
+	/* text-shadow: -1px -1px 0 rgba(0,0,0,.4); */
+	
+		&:hover {
+			text-decoration: none !important;
+			color: @grayDark;
+			}
+
+		i {
+			font-size: 24px;
+			}
+	
+	.main { 
+		padding-bottom: 0;
+		min-width: 0;
+		}
 	}
-
+}
 // Override bootstrap classes
 
 .dropdown .dropdown-menu {
