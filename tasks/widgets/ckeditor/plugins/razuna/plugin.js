@@ -64,7 +64,7 @@ CKEDITOR.plugins.add( 'razuna', {
 
 			      else if (!CKEDITOR.currentInstance.razunalink && ev.data.name == 'link' )
 			      {
-			      	alert( JSON.stringify(ev.data.definition.getContents( 'info' ).elements) );
+			      	
 			         ev.data.definition.getContents( 'info' ).elements[1].children[0].children.push({
 						               id: 'razuna',
 						               type: 'button',
