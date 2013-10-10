@@ -219,6 +219,11 @@
 	<cfset var existing=structNew()>
 	<cfset var hasTable=tableExists(arguments.table)>
 
+	<cfif arguments.autoincrement>
+		<cfset arguments.datatype="int">
+		<cfset arguments.nullable=false>
+	</cfif>
+
 	<cfif hasTable>
 		<cfset existing=columnMetaData(arguments.column,arguments.table)>
 	<cfelse>
@@ -228,23 +233,6 @@
 	<cfif arguments.datatype eq "any">
 		<cfset arguments.datatype="varchar">
 	</cfif>
-
-	<cfif arguments.autoincrement>
-		<cfset arguments.datatype="int">
-		<cfset arguments.nullable=false>
-	<!---
-	<cfelseif not len(arguments.default)>
-		<cfset arguments.default="null">
-		<cfset arguments.nullable=true>
-	--->
-	</cfif>
-
-	<!---
-	<cfif hasTable and len(existing.column) and not len(existing.default)>
-		<cfset existing.default="null">
-		<cfset existing.nullable=true>
-	</cfif>
-	--->
 
 	<cfif len(existing.column)
 			and (existing.dataType neq arguments.datatype
@@ -497,6 +485,7 @@
 
 	<cfif arguments.autoincrement>
 		<cfset arguments.datatype="int">
+		<cfset arguments.nullable=false>
 	</cfif>
 
 	<cfif arguments.datatype eq "any">
