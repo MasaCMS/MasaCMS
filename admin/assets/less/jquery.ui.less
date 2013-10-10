@@ -54,6 +54,10 @@
   border: none;
   }
 */
+
+/* Make sure ui-modals are above all other modals i.e. CKEditor Image Select */
+.ui-widget-overlay {z-index:100000;}
+.ui-dialog {z-index:100001;}
   
 .ui-state-highlight a, .ui-widget-content .ui-state-highlight a,.ui-widget-header .ui-state-highlight a { color: @white; }
 
