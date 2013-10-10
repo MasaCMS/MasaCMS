@@ -25,12 +25,14 @@
 			<button type="button" class="btn active" value="Upload"><i class="icon-upload-alt"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.fileselector.viaupload')#</button>
 			<button type="button" class="btn" value="URL"><i class="icon-download-alt"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.fileselector.viaurl')#</button>
 			<button type="button" class="btn" value="Existing"><i class="icon-picture"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.fileselector.selectexisting')#</button>
+			<cfif len(application.serviceFactory.getBean('settingsManager').getSite(attributes.bean.getSiteID()).getRazunaSettings().getHostname())>
+			<button type="button" class="btn btn-razuna-icon" value="URL-Razuna"><i></i> Razuna</button>
+			</cfif>
 		</div>
 
 		<div id="mura-file-upload-#attributes.name#" class="mura-file-option mura-file-upload fileTypeOption#attributes.name#">
 			
 			<div class="control-group control-group-nested">
-				<!--- <label class="control-label"> #application.rbFactory.getKeyValue(session.rb,'sitemanager.fileselector.selectfiletoupload')#</label> --->
 				<div class="controls">
 					<input name="#attributes.name#" type="file" class="mura-file-selector-#attributes.name#"
 						data-label="#HTMLEditFormat(attributes.label)#" data-label="#HTMLEditFormat(attributes.required)#" data-validation="#HTMLEditFormat(attributes.validation)#" data-regex="#HTMLEditFormat(attributes.regex)#" data-message="#HTMLEditFormat(attributes.message)#">
@@ -44,14 +46,10 @@
 		<div id="mura-file-url-#attributes.name#" class="mura-file-option mura-file-url fileTypeOption#attributes.name#">
 				
 			<div class="control-group control-group-nested">
-				<!--- <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'sitemanager.fileselector.selecturl')#</label> --->
 				<div class="controls">	
 					<input type="text" name="#attributes.name#" class="mura-file-selector-#attributes.name# span6" type="url" placeholder="http://www.domain.com/yourfile.zip"	value=""
 					data-label="#HTMLEditFormat(attributes.label)#" data-label="#HTMLEditFormat(attributes.required)#" data-validate="#HTMLEditFormat(attributes.validation)#" data-regex="#HTMLEditFormat(attributes.regex)#" data-message="#HTMLEditFormat(attributes.message)#">
 					<a style="display:none;" class="btn" href="" onclick="return openFileMetaData('#attributes.bean.getContentHistID()#','','#attributes.bean.getSiteID()#','#attributes.property#');"><i class="icon-info-sign"></i></a>
-					<cfif len(application.serviceFactory.getBean('settingsManager').getSite(attributes.bean.getSiteID()).getRazunaSettings().getHostname())>
-						<a href="" onclick="renderRazunaWindow('#JSStringFormat(attributes.name)#');" class="btn-razuna" title="Select a File from Razuna" rel="tooltip">Razuna</a>
-					</cfif>	
 				</div>
 			</div>
 		
@@ -60,6 +58,21 @@
 		<div id="mura-file-existing-#attributes.name#" class="mura-file-option mura-file-existing fileTypeOption#attributes.name#">
 
 		</div>
+		<cfset razunaSettings = application.serviceFactory.getBean('settingsManager').getSite(attributes.bean.getSiteID()).getRazunaSettings()>
+		<cfif len(razunaSettings.getAPIKey())>
+		<div id="mura-file-url-#attributes.name#" class="mura-file-option mura-file-url-razuna fileTypeOption#attributes.name#">
+				
+			<div class="control-group control-group-nested">
+				<div class="controls">
+					<div class="input-append">
+						<input type="text" name="#attributes.name#" class="mura-file-selector-#attributes.name# span6 razuna-url" type="url" placeholder="http://#razunaSettings.getHostName()#" data-label="#HTMLEditFormat(attributes.label)#" data-label="#HTMLEditFormat(attributes.required)#" data-validate="#HTMLEditFormat(attributes.validation)#" data-regex="#HTMLEditFormat(attributes.regex)#" data-message="#HTMLEditFormat(attributes.message)#">
+						<button type="button" onclick="renderRazunaWindow('body');" class="btn btn-razuna"><i class="icon-external-link-sign"></i> Launch Razuna</button>
+					</div>
+				</div>
+			</div>
+		
+		</div>
+		</cfif>
 
 		<cfif attributes.bean.getType() eq 'File' and attributes.property eq 'fileid' and len(attributes.bean.getFileID())>
 						
