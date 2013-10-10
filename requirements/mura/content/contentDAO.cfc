@@ -1202,6 +1202,8 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 			<cfset rcsData = arguments.data.relatedContentSetData>
 		</cfif>
 
+		
+		
 		<cfloop from="1" to="#arrayLen(rcsData)#" index="i">
 			<cfset rcs = rcsData[i]>
 			<cfloop from="1" to="#arrayLen(rcs.items)#" index="j">
