@@ -11,22 +11,32 @@
 		.border-radius(0) !important;
 		text-align: center;
 		color: @grayDarker;
+		vertical-align: middle;
 		
 		&.title {
 			text-align: left;
 			}
 		}
 
-	th {
+	thead th {
 		#gradient .vertical(#fffefe,#f5f5f5);
 		color: @grayDarker;
 		text-transform: none;
 		font-weight: bold;
 		white-space: nowrap;
-		}
-		
-	td {
 		vertical-align: middle;
+		
+		.btn {
+			padding: 2px 6px;
+			font-weight: normal;
+			font-size: 11px;
+			
+			i {
+				color: @grayDarker;
+				}
+			
+			}
+		
 		}
 		
 	tr { // Duplicated from bootstrap since they explicitly use .table class, may have to add that to our markup to account for other things

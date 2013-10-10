@@ -2387,7 +2387,7 @@ buttons: {
 			resizable: false,
 			modal: true,
 			width: 750,
-			title: 'Code Diff',
+			title: 'Code & Attribute Diff',
 			position: getDialogPosition(),
 
 			open: function() {
