@@ -50,7 +50,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </div>
 <cfif isDefined('rc.$') and len(rc.$.event('siteid')) and isObject(rc.$.siteConfig().getRazunaSettings()) and len(rc.$.siteConfig().getRazunaSettings().getApiKey())>
 	<link rel="stylesheet" id="theme" href="#$.globalConfig('context')#/admin/assets/css/jstree/style.css" type="text/css" media="screen" />
-	<link rel="stylesheet" id="theme" href="#$.globalConfig('context')#/admin/assets/css/razuna.css" type="text/css" media="screen" />
 	<script>
 	   razuna_folder = "#rc.$.globalConfig('context')#/admin/";
 	   razuna_servertype="#rc.$.siteConfig().getRazunaSettings().getServerType()#";
