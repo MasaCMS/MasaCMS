@@ -76,7 +76,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <table class="mura-table-grid">
 <thead>
 <tr>
-<th colspan="2"><a class="btn" id="viewDiff"><i class="icon-code-fork"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.codediff')#</a></th> 
+<th colspan="2"><a class="btn " id="viewDiff"><i class="icon-code-fork"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.compare')#</a></th> 
 <th class="var-width">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.title')#</th>
 <cfif rc.contentBean.getType() eq "file" and stats.getMajorVersion()><th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.version.file')#</th></cfif>
 <th class="notes">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.notes')#</th>
