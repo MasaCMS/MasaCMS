@@ -41,7 +41,7 @@
 	dbUtility.setTable("tcontentrelated")
 	.addColumn(column="relatedContentSetID",dataType="varchar",length="35")
 	.addColumn(column="orderNo",dataType="int")
-	.addColumn(column="relatedContentID",autoincrement=true)
+	.addColumn(column="relatedContentID",nullable=false,autoincrement=true)
 	.addPrimaryKey('relatedContentID');
 
 	dbUtility.setTable("tcontentcategories")
