@@ -96,6 +96,30 @@
 
 		<!--- FORM --->
 		<form name="frmUpdate" id="frmUpdate" method="post" action="#buildURL(action='cComments.bulkedit', querystring='isapproved=#rc.isapproved#&pageno=#rc.pageno#&sortby=#rc.sortby#&sortdirection=#rc.sortdirection#')#">
+		
+		<!--- BULK EDIT BUTTONS --->
+		<div class="row-fluid">
+			<div class="span9">
+					<div class="commentform-actions">
+						<cfif rc.isapproved>
+							<button type="button" class="btn" id="btnDisapproveComments">
+								<i class="icon-ban-circle"></i> 
+								#rc.$.rbKey('comments.disapproveselectedcomments')#
+							</button>
+						<cfelse>
+							<button type="button" class="btn" id="btnApproveComments">
+								<i class="icon-ok"></i> 
+								#rc.$.rbKey('comments.approveselectedcomments')#
+							</button>
+						</cfif>
+						<button type="button" class="btn" id="btnDeleteComments">
+							<i class="icon-remove-sign"></i> 
+							#rc.$.rbKey('comments.deleteselectedcomments')#
+						</button>
+					</div>
+				</div>
+		</div>
+			<br />
 			<input type="hidden" name="bulkedit" id="bulkedit" value="" />
 			<table class="mura-table-grid">
 				<thead>
@@ -106,9 +130,10 @@
 						<th>
 							<a href="#buildURL(action='#rc.muraAction#', querystring='sortby=entered&sortdirection=#rc.sortdirlink#&isapproved=#rc.isapproved#&nextn=#Val(rc.nextn)#')#" title="#rc.$.rbKey('comments.sortbydatetime')#">Date / Time</a>
 						</th>
-						<th class="var-width">
+						<th>
 							<a href="#buildURL(action='#rc.muraAction#', querystring='sortby=name&sortdirection=#rc.sortdirlink#&isapproved=#rc.isapproved#&nextn=#Val(rc.nextn)#')#" title="#rc.$.rbKey('comments.sortbyname')#">User</a>
 						</th>
+						<th class="var-width">Comment</th>
 						<th>&nbsp;</th>
 					</tr>
 				</thead>
@@ -168,27 +193,46 @@
 							</td>
 
 							<!--- USER --->
-							<td class="var-width">
+							<td>
 								<a href="##comment-#local.item.getCommentID()#" data-toggle="modal">
 									#HTMLEditFormat(local.item.getName())#
 								</a>
 							</td>
+							
+							<!--- COMMENT --->
+							
+							<td class="var-width">
+								<cfscript>
+									theCount = 210;
+									if ( Len(item.getComments()) > theCount ) {
+										theComments = Left(Trim(item.getComments()), theCount);
+										theComments = !ListFindNoCase('.,!,?', Right(theComments, 1)) ? theComments & ' ...' : theComments;
+									} else {
+										theComments = item.getComments();
+									}
+								</cfscript>
+								<a href="##comment-#local.item.getCommentID()#" data-toggle="modal">#HTMLEditFormat(theComments)#</a>
+							</td>
 
 							<!--- ACTIONS --->
 							<td class="actions">
+							<ul>
 								<cfif IsValid('url', local.item.getURL())>
-										<a href="#HTMLEditFormat(local.item.getURL())#" title="#HTMLEditFormat(local.item.getURL())#" target="_blank"><i class="icon-link"></i></a> 
+										<li><a href="#HTMLEditFormat(local.item.getURL())#" title="#HTMLEditFormat(local.item.getURL())#" target="_blank"><i class="icon-link"></i></a></li>
+										<cfelse>
+										<li class="disabled"><i class="icon-link"></i></li>
 									</cfif>
-									<a href="mailto:#HTMLEditFormat(local.item.getEmail())#" title="#HTMLEditFormat(local.item.getEmail())#"><i class="icon-envelope"></i></a>
-									<a href="##comment-#local.item.getCommentID()#" data-toggle="modal" title="Comments"><i class="icon-comments"></i></a>
+									<li><a href="mailto:#HTMLEditFormat(local.item.getEmail())#" title="#HTMLEditFormat(local.item.getEmail())#"><i class="icon-envelope"></i></a></li>
+									<li><a href="##comment-#local.item.getCommentID()#" data-toggle="modal" title="Comments"><i class="icon-comments"></i></a></li>
 								
 								<cfif rc.isapproved>
-									<a href="#buildURL(action='cComments.disapprove', querystring='commentid=#local.item.getCommentID()#&isapproved=#rc.isapproved#&nextn=#rc.nextn#')#" title="Disapprove" onclick="return confirmDialog('Disapprove Comment?',this.href);"><i class="icon-ban-circle" title="Disapprove"></i></a>
+									<li><a href="#buildURL(action='cComments.disapprove', querystring='commentid=#local.item.getCommentID()#&isapproved=#rc.isapproved#&nextn=#rc.nextn#')#" title="Disapprove" onclick="return confirmDialog('Disapprove Comment?',this.href);"><i class="icon-ban-circle" title="Disapprove"></i></a></li>
 								<cfelse>
-									<a href="#buildURL(action='cComments.approve', querystring='commentid=#local.item.getCommentID()#&isapproved=#rc.isapproved#&nextn=#rc.nextn#')#" title="Approve" onclick="return confirmDialog('Approve Comment?',this.href);"><i class="icon-ok" title="Approve"></i></a>
+									<li><a href="#buildURL(action='cComments.approve', querystring='commentid=#local.item.getCommentID()#&isapproved=#rc.isapproved#&nextn=#rc.nextn#')#" title="Approve" onclick="return confirmDialog('Approve Comment?',this.href);"><i class="icon-ok" title="Approve"></i></a></li>
 								</cfif>
 
-								<a href="#buildURL(action='cComments.delete', querystring='commentid=#local.item.getCommentID()#&isapproved=#rc.isapproved#&nextn=#rc.nextn#')#" title="Delete" onclick="return confirmDialog('Delete Comment?',this.href);"><i class="icon-trash" title="Delete"></i></a>
+								<li><a href="#buildURL(action='cComments.delete', querystring='commentid=#local.item.getCommentID()#&isapproved=#rc.isapproved#&nextn=#rc.nextn#')#" title="Delete" onclick="return confirmDialog('Delete Comment?',this.href);"><i class="icon-remove-sign" title="Delete"></i></a></li>
+							</ul>
 							</td>
 						</tr>
 					</cfloop>
@@ -200,7 +244,8 @@
 		<div class="row-fluid">
 
 			<!--- BULK EDIT BUTTONS --->
-			<div class="span9">
+			<!---
+<div class="span9">
 				<div class="commentform-actions">
 					<cfif rc.isapproved>
 						<button type="button" class="btn" id="btnDisapproveComments">
@@ -214,11 +259,12 @@
 						</button>
 					</cfif>
 					<button type="button" class="btn" id="btnDeleteComments">
-						<i class="icon-trash"></i> 
+						<i class="icon-remove-sign"></i> 
 						#rc.$.rbKey('comments.deleteselectedcomments')#
 					</button>
 				</div>
 			</div>
+--->
 
 			<!--- RECORDS PER PAGE --->
 			<cfif rc.itComments.pageCount() gt 1>
