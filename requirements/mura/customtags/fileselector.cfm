@@ -67,7 +67,7 @@
 					<div class="input-append">
 						<input type="text" name="#attributes.name#" class="mura-file-selector-#attributes.name# span6 razuna-url" type="url" placeholder="http://#razunaSettings.getHostName()#" data-label="#HTMLEditFormat(attributes.label)#" data-label="#HTMLEditFormat(attributes.required)#" data-validate="#HTMLEditFormat(attributes.validation)#" data-regex="#HTMLEditFormat(attributes.regex)#" data-message="#HTMLEditFormat(attributes.message)#">
 						<a style="display:none;" class="btn file-meta-open" href="" onclick="return openFileMetaData('#attributes.bean.getContentHistID()#','','#attributes.bean.getSiteID()#','#attributes.property#');"><i class="icon-info-sign"></i></a>
-						<button type="button" onclick="renderRazunaWindow('newfile');" class="btn btn-razuna"><i class="icon-external-link-sign"></i> Launch Razuna</button>
+						<button type="button" onclick="renderRazunaWindow('newfile');" class="btn btn-razuna"><i class="icon-external-link-sign"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.launchrazuna')#</button>
 					</div>
 				</div>
 			</div>
