@@ -290,7 +290,7 @@
 						var editor=CKEDITOR.inline( 
 						document.getElementById( attribute.attr('id') ),
 						{
-							toolbar: 'Default',
+							toolbar: 'QuickEdit',
 							width: "75%",
 							customConfig: 'config.js.cfm'
 						});
