@@ -91,9 +91,9 @@ var feedManager = {
 		content.setAttribute("value", contentID);
 		admin.appendChild(content);
 		admin.appendChild(deleteUL);
+		row.appendChild(admin);
 		row.appendChild(name);
 		row.appendChild(type);
-		row.appendChild(admin);
 		tbody.appendChild(row);
 		if($('#noFilters').length) $('#noFilters').hide();
 

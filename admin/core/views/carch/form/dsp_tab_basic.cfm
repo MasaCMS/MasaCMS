@@ -283,7 +283,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	      		#application.rbFactory.getKeyValue(session.rb,"sitemanager.content.fields.url")#
 	      	</label>
 	     	<div class="controls">
-	     	 	<input type="text" id="url" name="body" value="#HTMLEditFormat(rc.contentBean.getbody())#" class="text span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.urlrequired')#">
+	     	 	
+	     	 	<cfif len(application.serviceFactory.getBean('settingsManager').getSite(session.siteid).getRazunaSettings().getHostname())>
+	     	 			<input type="text" id="url" name="body" value="#HTMLEditFormat(rc.contentBean.getbody())#" class="text span9" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.urlrequired')#">
+						<a href="" onclick="renderRazunaWindow('body');" id="btn-razuna" title="Select a File from Razuna" rel="tooltip">Razuna</a>
+				<cfelse>
+					<input type="text" id="url" name="body" value="#HTMLEditFormat(rc.contentBean.getbody())#" class="text span12" required="true" message="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.urlrequired')#">
+				</cfif>	
 	     	</div>
 	    </div>
 	<cfelseif rc.type eq 'File'>
