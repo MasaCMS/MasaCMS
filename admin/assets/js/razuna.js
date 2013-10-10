@@ -84,6 +84,7 @@
 		$('#razunaModalWindow').dialog({
 	        bgiframe: true,
 	        autoOpen: false,
+	        position: ["top",20],
 	        width: 860,
 			height:450,
 	        modal: true,
