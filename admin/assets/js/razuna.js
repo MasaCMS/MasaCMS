@@ -52,44 +52,24 @@
 		var url=$('input[name="razuna-selected-url"]:checked').val();
 
 		if(typeof razuna_target == 'string'){
-			$("input[name='" + razuna_target + "']").val($('input[name="razuna-selected-url"]:checked').val());
-			$("input[name='" + razuna_target + "']").trigger('change');
+		$("input[name='" + razuna_target + "']").val($('input[name="razuna-selected-url"]:checked').val());
+		$("input[name='" + razuna_target + "']").trigger('change');
 		} else {
-			var add_to_editor='';
-		
-			if($(this).hasClass('image')) {
-				if($('#razuna-urlfield').val() != ''){
-					add_to_editor = "<a href='"+ $('#razuna-urlfield').val() +"'><img title='" + $('#razuna-img-title-text').val() + "' src='" + url + "' alt='"+$('#razuna-alt-text').val()+"'></a>";
-				} else {
-					add_to_editor = "<img title='" + $('#razuna-img-title-text').val() + "' src='" + url + "' alt='" + $('#razuna-alt-text').val() + "'>";
-				}
-				
+			$("#" + razuna_target.getInputElement().$.id).val($('input[name="razuna-selected-url"]:checked').val());
+			if(razuna_target.onChange){
+				razuna_target.onChange();	
 			}
-			else if ($(this).hasClass('audio')) {
-				add_to_editor = "<div>[mura]$.razunaMediaPlayer.dspMedia(file='" + url + "',width=450,height=30,sharecode=true,embedlink=true)[/mura]</div>";
+			if(razuna_target.getInputElement().onChange){
+				razuna_target.getInputElement().onChange();	
 			}
-			else if ($(this).hasClass('video')) {
-				add_to_editor = "<div>[mura]$.razunaMediaPlayer.dspMedia(file='" + url + "',width='" + $('#razuna-width').val() + "',height='" + $('#razuna-height').val() + "',image='"+$('input[type="radio"][name="razuna-selected-url"]:checked').attr('data-image-thumb')+"',sharecode=true,embedlink=true)[/mura]</div>";
-			}
-			else if ($(this).hasClass('document')) {
-				if ($('#razuna-link-text').val() == "") {
-					$('.razuna-doc-link-error').remove();
-					$('#razuna-link-text').css({'border':'1px solid red'}).after('<span class="razuna-doc-link-error" style="color:red;"> This field is required<span>');
-					return false;
-				}
-				else {
-					add_to_editor = "<a href = '" + url + "' target='_blank'>" + $('#razuna-link-text').val() + "</a>";
-				}
-			}
-			
-			razuna_target.insertHtml(add_to_editor);
 		}
-
+		
 		$('#razunaModalWindow').dialog("close");
-		razunaRemovAll();
+
 	});
+
 	
-	function razunaRemovAll(){
+	function razunaRemoveAll(){
 		$('.razuna-inner-div').remove();
 		$('#razuna-loader-div').hide();
 		$('#razuna-search-div').remove();
@@ -98,6 +78,7 @@
 
 	function renderRazunaWindow(target){
 		razuna_target=target;
+
 		$('#razunaModalWindow').html('<div align="center"><img src="'+razuna_folder+'assets/images/ajax-loader.gif"></div>');
 		
 		$('#razunaModalWindow').dialog({
@@ -107,7 +88,7 @@
 			height:450,
 	        modal: true,
 	        title: "Razuna" ,
-	        close: razunaRemovAll
+	        close: razunaRemoveAll
        	});
 		
 		$('#razunaModalWindow').load(razuna_folder+'?muraAction=razuna.default',function(){
@@ -165,35 +146,28 @@
 										content+='				<strong>Filename : </strong><span>'+$(target).attr('data-filename_org')+'</span><br>';
 										content+='				<strong>Type : </strong><span>Image</span><br>';
 										content+='				<table border="0" id="renditions">';
-										if(typeof razuna_target == 'object'){
+										
+										
 										content+='				<tr class="rend">';
 										content+='					<td><strong>Size:</strong></td>';
 										content+='					<td><label class="radio inline">';
-										content+='						<input type="radio" id="razuna-image-size" checked="checked" name="razuna-selected-url" value="'+$(target).attr('data-' + razuna_servertype + '_url_thumb')+'"  data-height="'+$(target).attr('data-height')+'" data-width="'+$(target).attr('data-width')+'">Thumbnail</label>';
+										content+='						<input type="radio" id="razuna-image-size" name="razuna-selected-url" value="'+$(target).attr('data-' + razuna_servertype + '_url_thumb')+'"  data-height="'+$(target).attr('data-height')+'" data-width="'+$(target).attr('data-width')+'">Thumbnail</label>';
 										content+='					</td>';
 										content+='				</tr>';
-										}
+										
+
 										content+='				<tr class="rend">';
 										content+='					<td>&nbsp;</td>';
 										content+='					<td><label class="radio inline">';
 										content+='						<input type="radio"';
-										if(typeof razuna_target != 'object'){
+									
 										content+='						checked="checked";'
-										}  
 										content+='						name="razuna-selected-url" value="'+$(target).attr('data-' + razuna_servertype + '_url_org')+'" data-height="'+$(target).attr('data-height')+'" data-width="'+$(target).attr('data-width')+'">';
 										content+='						Original</label>';
 										content+='					</td>';
 										content+='				</tr>';
 										content+='				</table>';
-										if(typeof razuna_target == 'object'){
-										content+='				<table border="0">';
-										content+='				<tr><td><strong>Width:</strong></td><td><input type="text" id="razuna-width" value="'+$(target).attr('data-width').toString().split(".")[0]+'"></td></tr>';
-										content+='				<tr><td><strong>Height:</strong></td><td><input type="text" value="'+$(target).attr('data-height').toString().split(".")[0]+'" id="razuna-height"></td></tr>'
-										content+='				<tr><td><strong>Alternate text:</strong></td><td><input type="text" id="razuna-alt-text" value="'+$(target).attr('data-filename_org')+'"></td></tr>';
-										content+='				<tr><td><strong>Title:</strong></td><td><input type="text" value="" id="razuna-img-title-text"></td></tr>';
-										content+='				<tr><td><strong>Link URL:</strong></td><td><input type="text" id="razuna-urlfield"></td></tr>';
-										content+='				</table>';
-										}
+										
 										
 										content+='				<br><button type="button" id="razuna-insert" class="btn image">Select File</button>';
 										content+='			</td>';
@@ -218,11 +192,7 @@
 										content+='					</td>';
 										content+='				</tr>';
 										content+='				</table>';
-										if(typeof razuna_target == 'object'){
-										content+='				<table border="0">';
-										content+='				<tr><td><strong>Link Text:</strong></td><td><input type="text" value="" id="razuna-link-text"></td></tr>';
-										content+='				</table>';
-										}
+							
 										content+='				<br><button type="button" id="razuna-insert" class="btn document">Select File</button>';
 										content+='			</td>';
 										content+='		</tr>';

@@ -22,6 +22,9 @@ function viewStatusInfo(contenthistid,siteid){
 	//$('##approvalModalContainer .load-inline').spin(spinnerArgs2);
 	$.get(url + "?" + pars, 
 		function(data) {
+			if(data.indexOf('mura-primary-login-token') != -1) {
+				location.href = './';
+			}
 			$('##approvalModalContainer .load-inline').spin(false);
 			jQuery('##approvalModalContainer').html(data);
 			stripe('stripe');

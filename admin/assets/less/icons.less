@@ -68,12 +68,7 @@
 		font-size: 24px;
 		}
 	}
-}		
-	/*
-tr:nth-child(even) i {
-		text-shadow: 0 -1px 1px rgba(0,0,0,.5);
-	}
-*/
+}
 
 }
 
@@ -81,46 +76,9 @@ tr:nth-child(even) i {
 // Exceptions
 .actions li.edit + li.delete { margin-left: 2px; }
 .actions li.edit + li.view-report { margin-left: 3px; }
-/* .actions li.edit + li.permissions { margin-left: 2px; } */
 
 .actions li.rss + li.import { margin-left: -2px; }
 
-/*
-#carch,#cchangesets,#carch,#cfeed,#cadvertising,#cemail,#cmailinglist,#cprivateusers,#cpublicusers {
-
-	.mura-table-grid .actions {
-		
-		li {
-			.icon-font('FontAwesome');
-			color: @iconColor;
-			font-size: 18px;
-			margin: 0 -18px 0 0;
-			padding-right: 3px !important;
-			
-			&.disabled {
-				color: @gray;
-			}
-			
-			&.edit:before { content: '\f040'; }
-			&.preview:before { content: '\f0ac'; }
-			&.delete:before { content: '\f057'; }
-			&.permissions:before { content: '\f0c0'; }
-			&.version-history:before { content: '\f02d'; }
-			&.download:before { content: '\f01a'; }
-			&.manage-data:before { content: '\f0ad'; }
-			&.rss:before { content: '\f09e'; }
-			&.import:before { content: '\f019'; } // truck \f0d1
-			&.view-report:before { content: '\f080'; }
-			
-			> a, > span {
-				.inline-block;
-				width: 18px;
-				text-indent: -9999px;
-			}
-		}	
-	}
-}
-*/
 
 // Many styles overlap with .mura-grid styles for these, need to combine
 .navZoom li, .navZoom.alt li {
@@ -176,8 +134,7 @@ tr:nth-child(even) i {
 				
 			&.link:before { content: '\f0c1'; }
 			&.folder:before { content: '\f114'; }
-			&.gallery:before { content: '\f00a'; }			
-			/* &.file:before { content: '\f0c6'; } */
+			&.gallery:before { content: '\f00a'; }
 			&.calendar:before { content: '\f073'; font-size: 18px; top: 1px; }
 			
 			&.jpg:before,
