@@ -65,12 +65,20 @@ CKEDITOR.plugins.add( 'razuna', {
 			      else if (!CKEDITOR.currentInstance.razunalink && ev.data.name == 'link' )
 			      {
 			      	
-			         ev.data.definition.getContents( 'info' ).elements[1].children[0].children.push({
+			      	var temp = {
+					    "type": "hbox",
+					    "id": "urlOptionsButtons",
+					    "widths": ["25%", "75%"],
+					    "children": []
+					    };
+					 	
+					temp.children.push(ev.data.definition.getContents( 'info' ).elements[1].children[1]);
+				
+			        temp.children.push({
 						               id: 'razuna',
 						               type: 'button',
 						               label: 'Razuna',
-						               style: "display:inline-block;margin-top:10px;",
-			                           align: "center",
+						     
 						               title: 'Razuna',
 						               disabled: false,
 						               onClick: function()
@@ -79,6 +87,8 @@ CKEDITOR.plugins.add( 'razuna', {
 						                  },
 
 						            });
+
+			        ev.data.definition.getContents( 'info' ).elements[1].children[1]=temp;
 
 			       	CKEDITOR.currentInstance.razunalink=true;
 			   
