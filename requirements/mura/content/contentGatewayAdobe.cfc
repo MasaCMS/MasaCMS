@@ -439,8 +439,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							)
 					  </cfif>
 					  <cfif arguments.keywords neq ''>
-					  AND (tcontent.body #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"/>
-					  		OR tcontent.title #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"/>)
+					  AND (UPPER(tcontent.body) #likeCi# UPPER(<cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"/>)
+					  		OR UPPER(tcontent.title) #likeCi# UPPER(<cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"/>))
 					  </cfif>
  					
 					   AND (
@@ -515,8 +515,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					  
 					  <cfif arguments.keywords neq ''>
 					  AND 
-					  (tcontent.body #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"/>
-					  		OR tcontent.title #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"/>)
+					  (UPPER(tcontent.body) #likeCi# UPPER(<cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"/>)
+					  		OR UPPER(tcontent.title) #likeCi# UPPER(<cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"/>))
 					  </cfif>
  					
 					   AND (
@@ -1189,7 +1189,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				or tcontent.Type = 'Gallery') 
 		
 		<cfif arguments.searchString neq "">
-			and (tcontent.menuTitle #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.searchString#%"/>)
+			and (UPPER(tcontent.menuTitle) #likeCi# UPPER(<cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.searchString#%"/>))
 		</cfif>	
 	
 		<cfif arguments.aggregation>
@@ -1514,38 +1514,38 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>
 				
 						<cfif len(arguments.tag)>
-							and tcontenttags.Tag= <cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.tag)#"/> 
+							and #renderTextParamColumn('tcontenttags.Tag')# = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(trim(arguments.tag))#"/> 
 						<cfelse>
 						
 						and
 						(
-							tcontent.Title #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#kw#%"/>
-							or tcontent.menuTitle #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#kw#%"/>
-							or tcontent.summary #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#kw#%"/>
+							#renderTextParamColumn('tcontent.Title')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
+							or #renderTextParamColumn('tcontent.menuTitle')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
+							or #renderTextParamColumn('tcontent.summary')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
 
 							<cfif listFindNoCase("image,file",arguments.searchType)>
-								or tfiles.caption #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#kw#%"/>
-								or tfiles.credits #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#kw#%"/>
-								or tfiles.alttext #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#kw#%"/>
+								or #renderTextParamColumn('tfiles.caption')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
+								or #renderTextParamColumn('tfiles.credits')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
+								or #renderTextParamColumn('tfiles.alttext')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
 							</cfif>
 							
 							or 
 								(
 									tcontent.type not in ('Link','File')
-									and tcontent.body #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+									and #renderTextParamColumn('tcontent.body')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
 								)
 							or tcontent.contenthistid in (
 								select distinct tcontent.contenthistid from tclassextenddata 
 								inner join tcontent on (tclassextenddata.baseid=tcontent.contenthistid)
 								where tcontent.active=1
 								and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
-								and tclassextenddata.attributeValue #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#kw#%">
+								and #renderTextParamColumn('tclassextenddata.attributeValue')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%">
 							)
 						)
 
 						and not (
-							tcontent.Title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#kw#"/>
-							or tcontent.menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#kw#"/>	
+							#renderTextParamColumn('tcontent.Title')# = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(kw)#"/>
+							or #renderTextParamColumn('tcontent.menuTitle')# = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(kw)#"/>	
 						)
 					</cfif>
 					
@@ -1602,8 +1602,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>
 			
 						and
-						(tcontent.Title = <cfqueryparam cfsqltype="cf_sql_varchar" value="#kw#"/>
-						or tcontent.menuTitle = <cfqueryparam cfsqltype="cf_sql_varchar" value="#kw#"/>
+						(#renderTextParamColumn('tcontent.Title')# = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(kw)#"/>
+						or #renderTextParamColumn('tcontent.menuTitle')# = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(kw)#"/>
 					
 		)				
 	GROUP BY tcontent.ContentHistID, tcontent.ContentID, tcontent.Approved, tcontent.filename, tcontent.Active, tcontent.Type, tcontent.OrderNo, tcontent.ParentID, 
@@ -1693,9 +1693,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				
 				<cfif len(arguments.tag)>
 					and (
-							tcontenttags.tag in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#arguments.tag#"/> )
+							#renderTextParamColumn('tcontenttags.tag')# in (<cfqueryparam list="true" cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.tag)#"/> )
 							<cfif len(arguments.tagGroup) and arguments.tagGroup neq 'default'>
-								and tcontenttags.taggroup=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.taggroup#"/>
+								and #renderTextParamColumn('tcontenttags.taggroup')#=<cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(arguments.taggroup)#"/>
 							</cfif>
 						)	
 				<cfelse>
@@ -1710,22 +1710,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfloop>
 					--->
 					and
-							(tcontent.Title #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
-							or tcontent.menuTitle #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
-							or tcontent.metaKeywords #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
-							or tcontent.summary #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+							(#renderTextParamColumn('tcontent.Title')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
+							or #renderTextParamColumn('tcontent.menuTitle')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
+							or #renderTextParamColumn('tcontent.metaKeywords')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
+							or #renderTextParamColumn('tcontent.summary')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
 							or (
 									tcontent.type not in ('Link','File')
-									and tcontent.body #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+									and #renderTextParamColumn('tcontent.body')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
 								)
-							or tcontent.credits #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+							or #renderTextParamColumn('tcontent.credits')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
 
 							or tcontent.contenthistid in (
 								select distinct tcontent.contenthistid from tclassextenddata 
 								inner join tcontent on (tclassextenddata.baseid=tcontent.contenthistid)
 								where tcontent.active=1
 								and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
-								and tclassextenddata.attributeValue #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+								and #renderTextParamColumn('tclassextenddata.attributeValue')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
 							))
 				</cfif>
 				
@@ -1805,7 +1805,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				
 				<cfif len(arguments.tag)>
-					and tcontenttags.Tag= <cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.tag)#"/> 
+					and #renderTextParamColumn('tcontenttags.Tag')#= <cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.tag)#"/> 
 				<cfelse>
 					<!---
 					<cfloop list="#trim(arguments.keywords)#" index="w" delimiters=" ">
@@ -1818,24 +1818,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfloop>
 					--->
 					and
-							(tcontent.Title #likeCi#  <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+							(#renderTextParamColumn('tcontent.Title')# #likeCi#  <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
 							
-							or tcontent.menuTitle #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
-							or tcontent.metaKeywords #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
-							or tcontent.summary #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+							or #renderTextParamColumn('tcontent.menuTitle')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
+							or #renderTextParamColumn('tcontent.metaKeywords')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
+							or #renderTextParamColumn('tcontent.summary')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
 							or 
 								(
 									tcontent.type not in ('Link','File')
-									and tcontent.body #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+									and #renderTextParamColumn('tcontent.body')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
 								)
-							or tcontent.credits #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+							or #renderTextParamColumn('tcontent.credits')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
 
 							or tcontent.contenthistid in (
 								select distinct tcontent.contenthistid from tclassextenddata 
 								inner join tcontent on (tclassextenddata.baseid=tcontent.contenthistid)
 								where tcontent.active=1
 								and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
-								and tclassextenddata.attributeValue #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%">
+								and #renderTextParamColumn('tclassextenddata.attributeValue')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
 							))
 				</cfif>
 				
@@ -2626,6 +2626,26 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 	)
 	</cfoutput>
+</cffunction>
+
+<cffunction name="renderTextParamColumn">
+	<cfargument name="column">
+
+	<cfif variables.configBean.getDBCaseSensitive()>
+		<cfreturn "UPPER(#arguments.column#)">
+	<cfelse>
+		<cfreturn arguments.column>
+	</cfif>
+</cffunction>
+
+<cffunction name="renderTextParamValue">
+	<cfargument name="value">
+
+	<cfif variables.configBean.getDBCaseSensitive()>
+		<cfreturn ucase(arguments.value)>
+	<cfelse>
+		<cfreturn arguments.value>
+	</cfif>
 </cffunction>
 
 </cfcomponent>

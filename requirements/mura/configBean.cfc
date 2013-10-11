@@ -76,6 +76,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset variables.instance.dbUsername=""/>
 <cfset variables.instance.dbPassword=""/>
 <cfset variables.instance.dbtablespace="USERS"/>
+<cfset variables.instance.dbCaseSensitive=false>
 <cfset variables.instance.dbSchema=""/>
 <!--- <cfset variables.instance.dbTransactionLevel="read_committed"/> --->
 <cfset variables.instance.debuggingEnabled="false"/>
@@ -236,6 +237,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfif not len(variables.instance.readOnlyDbUsername)>
 		<cfset variables.instance.readOnlyDbUsername=variables.instance.dbUsername>
+	</cfif>
+
+	<cfif getDbType() eq 'oracle' or getBean('dbUtility').version().database_productname eq 'h2'>
+		<cfset variables.instance.dbCaseSensitive=true>
 	</cfif>
 
 	<cfreturn this />
