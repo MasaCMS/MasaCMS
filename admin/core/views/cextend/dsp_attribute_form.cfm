@@ -133,6 +133,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<select name="validation" class="span12">
 			<option value="" <cfif attributes.attributeBean.getValidation() eq "">selected</cfif>>None</option>
 			<option value="Date" <cfif attributes.attributeBean.getValidation() eq "Date">selected</cfif>>Date</option>
+			<option value="DateTime" <cfif attributes.attributeBean.getValidation() eq "DateTime">selected</cfif>>DateTime</option>
 			<option value="Numeric" <cfif attributes.attributeBean.getValidation() eq "Numeric">selected</cfif>>Numeric</option>
 			<option value="Email" <cfif attributes.attributeBean.getValidation() eq "Email">selected</cfif>>Email</option>
 			<option value="Regex" <cfif attributes.attributeBean.getValidation() eq "Regex">selected</cfif>>Regex</option>
