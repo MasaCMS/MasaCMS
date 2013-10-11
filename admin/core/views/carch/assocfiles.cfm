@@ -77,15 +77,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfoutput>
 
 <cfif len(rc.keywords)>
-	<div class="tabbable" id="selectAssocImageResults">
-		<cfoutput>
+	<cfoutput>
+	<div class="tabbable selectAssocImageResults" id="selectAssocImageResults-#HTMLEditFormat(rc.property)#">
 		<ul class="nav nav-tabs tabs">
-			<li><a href="##mura-assoc-images" onclick="return false;"><i class="icon-picture"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.images')#</a></li>
-			<cfif rc.type eq 'file'><li><a href="##mura-assoc-files" onclick="return false;"><i class="icon-file-text-alt"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.otherfiles')#</a></li></cfif>
+			<li><a href="##mura-assoc-images-#HTMLEditFormat(rc.property)#" onclick="return false;"><i class="icon-picture"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.images')#</a></li>
+			<cfif rc.type eq 'file'><li><a href="##mura-assoc-files-#HTMLEditFormat(rc.property)#" onclick="return false;"><i class="icon-file-text-alt"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.otherfiles')#</a></li></cfif>
 		</ul>
 		</cfoutput>
 		<div class="tab-content">
-			<div id="mura-assoc-images" class="tab-pane fade">
+			<cfoutput><div id="mura-assoc-images-#HTMLEditFormat(rc.property)#" class="tab-pane fade mura-assoc-images"></cfoutput>
 					<ul>
 						<cfset counter=0 />
 					    <cfif rsimages.recordcount>
@@ -118,7 +118,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</ul>
 			</div>
 			<cfif rc.type eq 'file'>
-				<div id="mura-assoc-files" class="tab-pane fade">
+				<cfoutput><div id="mura-assoc-files-#HTMLEditFormat(rc.property)#" class="tab-pane fade mura-assoc-files"></cfoutput>
 						<ul>
 							<cfset counter=0 />
 							<cfif rsfiles.recordcount>
