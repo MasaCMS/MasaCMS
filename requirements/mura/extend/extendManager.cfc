@@ -311,7 +311,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 		</cfif>
 
 		<cfif len(theValue)>
-			<cfif rs.validation eq "Date">
+			<cfif rs.validation eq "Date" or rs.validation eq "DateTime">
 				<cfif not (lsisDate(theValue) or isDate(theValue))>
 					<cfif len(rs.message)>
 						<cfset errors[rs.name]=rs.message>
@@ -415,7 +415,7 @@ ExtendSetID in(<cfloop from="1" to="#setLen#" index="s">
 			
 			<cfif len(theValue)>
 				
-				<cfif rs.validation eq "Date">
+				<cfif listFindNoCase("Date,DateTime",rs.validation)>
 					<cfif lsisDate(theValue)>
 						<cftry>
 						<cfset theValue = lsparseDateTime(theValue) />
@@ -924,7 +924,7 @@ and tclassextendattributes.type='File'
 	</cfquery>
 	
 	<cfif len(rs.attributeID)>
-		<cfif rs.validation eq "Date">
+		<cfif listFindNoCase("Date,DateTime",rs.validation)>
 			<cfset tempDate=rs.attributeValue>
 			<cftry>
 				<cfreturn parseDateTime(tempDate) />
@@ -1015,7 +1015,7 @@ and tclassextendattributes.type='File'
 	<cfcase value="Numeric">
 		<cfreturn "numericvalue">
 	</cfcase>
-	<cfcase value="Date">
+	<cfcase value="Date,DateTime">
 		<cfreturn "datetimevalue">
 	</cfcase>
 	<cfdefaultcase>
@@ -1133,7 +1133,7 @@ and tclassextendattributes.type='File'
 					<cfcase value="mysql">
 					update tclassextenddata
 					inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddata.attributeID
-														and tclassextendattributes.validation='date')
+														and (tclassextendattributes.validation='date' or tclassextendattributes.validation='datetime'))
 					inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
 											and tcontent.active=1)
 					set datetimevalue=STR_TO_DATE(subString(stringvalue,6,19),'%Y-%m-%d %T')
@@ -1146,7 +1146,7 @@ and tclassextendattributes.type='File'
 					
 					from tclassextenddata 
 					inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddata.attributeID
-														and  tclassextendattributes.validation='date')
+														and  (tclassextendattributes.validation='date' or tclassextendattributes.validation='datetime'))
 					inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
 											and tcontent.active=1)
 					where isDate(subString(stringvalue,6,19))=1
@@ -1171,7 +1171,7 @@ and tclassextendattributes.type='File'
 							dataID
 							from tclassextenddata 
 							inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddata.attributeID
-																and lower(tclassextendattributes.validation)='date')
+																and (lower(tclassextendattributes.validation)='date' or lower(tclassextendattributes.validation)='datetime'))
 							inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
 													and tcontent.active=1)
 							where attributeValue is not null
@@ -1185,7 +1185,7 @@ and tclassextendattributes.type='File'
 					<cfquery>
 					update tclassextenddata
 					inner join tclassextendattributes on (tclassextendattributes.attributeID=tclassextenddata.attributeID
-														and tclassextendattributes.validation='date')
+														and (tclassextendattributes.validation='date' or tclassextendattributes.validation='datetime'))
 					inner join tcontent on (tclassextenddata.baseID=tcontent.contentHistID
 											and tcontent.active=1)
 					set datetimevalue=null
