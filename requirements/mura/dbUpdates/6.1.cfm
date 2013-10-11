@@ -40,9 +40,18 @@
 	
 	dbUtility.setTable("tcontentrelated")
 	.addColumn(column="relatedContentSetID",dataType="varchar",length="35")
-	.addColumn(column="orderNo",dataType="int")
-	.addColumn(column="relatedContentID",nullable=false,autoincrement=true)
-	.addPrimaryKey('relatedContentID');
+	.addColumn(column="orderNo",dataType="int");
+
+	try{
+		dbUtility.setTable("tcontentrelated")
+		.addColumn(column="relatedContentID",nullable=false,autoincrement=true);
+	} catch(any e){
+		dbUtility.setTable("tcontentrelated")
+		.dropPrimaryKey()
+		.addColumn(column="relatedContentID",nullable=false,autoincrement=true);
+	}
+
+	dbUtility.setTable("tcontentrelated").addPrimaryKey("relatedContentID");
 
 	dbUtility.setTable("tcontentcategories")
 	.addColumn(column="isfeatureable",dataType="int")
