@@ -459,16 +459,21 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset renderValue=variables.contentRenderer.setDynamicContent(getDefaultValue()) />
 </cfif>
 
-<cfif getValidation() eq "Date">
-	<cfset renderValue=lsDateFormat(renderValue,session.dateKeyFormat) />
-</cfif>
-
 <cfswitch expression="#getType()#">
 <cfcase value="Hidden">
 <cfsavecontent variable="str"><cfoutput><input type="hidden" name="#key#" id="#key#" data-label="#XMLFormat(getlabel())#" value="#HTMLEditFormat(renderValue)#" /></cfoutput></cfsavecontent>
 </cfcase>
 <cfcase value="TextBox,Text">
-<cfsavecontent variable="str"><cfoutput><input type="text" name="#key#" class="text<cfif getValidation() eq 'date'> datepicker<cfelseif getValidation() eq 'Color'> colorpicker</cfif>" id="#key#" data-label="#XMLFormat(getlabel())#" value="#HTMLEditFormat(renderValue)#" data-required="#getRequired()#"<cfif len(getvalidation())> data-validate="#getValidation()#"</cfif><cfif getvalidation() eq "Regex"> data-regex="#getRegex()#"</cfif><cfif len(getMessage())> data-message="#XMLFormat(getMessage())#"</cfif> /></cfoutput></cfsavecontent>
+<cfif getValidation() neq 'datetime'>
+	<cfif getValidation() eq "date">
+		<cfset renderValue=lsDateFormat(renderValue,session.dateKeyFormat) />
+	</cfif>
+	<cfsavecontent variable="str">
+	<cfoutput><input type="text" name="#key#" class="text<cfif getValidation() eq 'date'> datepicker<cfelseif getValidation() eq 'Color'> colorpicker</cfif>" id="#key#" data-label="#XMLFormat(getlabel())#" value="#HTMLEditFormat(renderValue)#" data-required="#getRequired()#"<cfif len(getvalidation())> data-validate="#getValidation()#"</cfif><cfif getvalidation() eq "Regex"> data-regex="#getRegex()#"</cfif><cfif len(getMessage())> data-message="#XMLFormat(getMessage())#"</cfif> /></cfoutput>
+	</cfsavecontent>
+<cfelse>
+	<cfsavecontent variable="str"><cfoutput><cf_datetimeselector name="#key#" datetime="#renderValue#" id="#key#" label="#getlabel()#" required="#getRequired()#" validation="#getValidation()#" regex="#getRegex()#" message="#getMessage()#"></cfoutput></cfsavecontent>
+</cfif>
 </cfcase>
 <cfcase value="TextArea,HTMLEditor">
 <cfsavecontent variable="str"><cfoutput><textarea name="#key#" id="#key#" data-label="#XMLFormat(getlabel())#" data-required="#getRequired()#"<cfif len(getMessage())> data-message="#XMLFormat(getMessage())#"</cfif><cfif getType() eq "HTMLEditor"> class="htmlEditor"</cfif><cfif len(getvalidation())> data-validate="#getValidation()#"</cfif><cfif getvalidation() eq "Regex"> data-regex="#getRegex()#"</cfif>>#HTMLEditFormat(renderValue)#</textarea></cfoutput></cfsavecontent>

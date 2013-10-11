@@ -1158,6 +1158,24 @@
 	<cfreturn rsCheck.recordcount>
 </cffunction>
 
+<cffunction name="primaryKeyConstraintName" output="false">
+	<cfargument name="table" default="#variables.table#">
+	<cfset var rscheck="">
+
+	<cfdbinfo 
+		name="rsCheck"
+		table="#qualifySchema(arguments.table)#"
+		type="index">
+	
+	<cfquery name="rsCheck" dbtype="query">
+		select * from rsCheck where lower(rsCheck.INDEX_NAME) like 'primary%'
+		or lower(rsCheck.INDEX_NAME) like 'pk_%'
+		or lower(rsCheck.INDEX_NAME) like '%_pkey'
+	</cfquery>
+
+	<cfreturn rsCheck.INDEX_NAME>
+</cffunction>
+
 <cffunction name="primaryKeyMetaData" output="false">
 	<cfargument name="table" default="#variables.table#">
 	<cfset var rscheck="">
@@ -1170,6 +1188,7 @@
 	<cfquery name="rsCheck" dbtype="query">
 		select * from rsCheck where lower(rsCheck.INDEX_NAME) like 'primary%'
 		or lower(rsCheck.INDEX_NAME) like 'pk_%'
+		or lower(rsCheck.INDEX_NAME) like '%_pkey'
 	</cfquery>
 
 	<cfreturn buildIndexMetatData(rsCheck,arguments.table)>
@@ -1187,7 +1206,7 @@
 						ADD CONSTRAINT pk_#arguments.table# PRIMARY KEY (#arguments.column#)
 				</cfquery>
 			</cfcase>
-			<cfcase value="mysql">
+			<cfcase value="mysql,nuodb">
 				<cfquery>
 					ALTER TABLE #arguments.table#
 	    			ADD PRIMARY KEY (#arguments.column#)
@@ -1219,10 +1238,10 @@
 			<cfcase value="mssql">
 				<cfquery>
 					ALTER TABLE #arguments.table#
-					DROP CONSTRAINT pk_#arguments.table#
+					DROP CONSTRAINT #primaryKeyConstraintName(arguments.table)#
 				</cfquery>
 			</cfcase>
-			<cfcase value="mysql">
+			<cfcase value="mysql,nuodb">
 				<cfquery>
 					ALTER TABLE #arguments.table#
 	    			DROP PRIMARY KEY
@@ -1231,13 +1250,13 @@
 			<cfcase value="postgresql">
 				<cfquery>
 					ALTER TABLE #arguments.table#
-					DROP CONSTRAINT pk_#arguments.table#
+					DROP CONSTRAINT #primaryKeyConstraintName(arguments.table)#
 				</cfquery>
 			</cfcase>
 			<cfcase value="oracle">
 				<cfquery>
 					ALTER TABLE #arguments.table#
-					DROP CONSTRAINT pk_#arguments.table#
+					DROP CONSTRAINT #primaryKeyConstraintName(arguments.table)#
 				</cfquery>
 			</cfcase>
 		</cfswitch>
