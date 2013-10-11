@@ -433,6 +433,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not arguments.countOnly>
 		<cfif len(variables.instance.orderby)>
 			order by #variables.instance.orderby#
+			<cfif listFindNoCase("oracle,postgresql", dbType)>
+				<cfif lcase(listLast(variables.instance.orderby, " ")) eq "asc">
+					NULLS FIRST
+				<cfelse>
+					NULLS LAST
+				</cfif>
+			</cfif>
 		<cfelseif len(variables.instance.sortBy)>
 			order by #variables.instance.table#.#variables.instance.sortBy# #variables.instance.sortDirection#
 			<cfif listFindNoCase("oracle,postgresql", dbType)>
