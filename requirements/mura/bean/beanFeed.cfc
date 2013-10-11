@@ -435,8 +435,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			order by #variables.instance.orderby#
 		<cfelseif len(variables.instance.sortBy)>
 			order by #variables.instance.table#.#variables.instance.sortBy# #variables.instance.sortDirection#
+			<cfif listFindNoCase("oracle,postgresql", dbType)>
+				<cfif variables.instance.sortDirection eq "asc">
+					NULLS FIRST
+				<cfelse>
+					NULLS LAST
+				</cfif>
+			</cfif>
 		</cfif>
-		
+
 		<cfif listFindNoCase("mysql,postgresql", dbType) and variables.instance.maxItems>limit <cfqueryparam cfsqltype="cf_sql_integer" value="#variables.instance.maxItems#" /> </cfif>
 		<cfif dbType eq "nuodb" and variables.instance.maxItems>fetch <cfqueryparam cfsqltype="cf_sql_integer" value="#variables.instance.maxItems#" /></cfif>
 		<cfif dbType eq "oracle" and variables.instance.maxItems>) where ROWNUM <= <cfqueryparam cfsqltype="cf_sql_integer" value="#variables.instance.maxItems#" /> </cfif>

@@ -596,6 +596,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						</cfif>
 					</cfdefaultcase>
 				</cfswitch>
+
+				<cfif listFindNoCase("oracle,postgresql", dbType)>
+					<cfif arguments.sortDirection eq "asc">
+						NULLS FIRST
+					<cfelse>
+						NULLS LAST
+					</cfif>
+				</cfif>
 						
 				<cfif listFindNoCase("mysql,postgresql", dbType) and arguments.size>limit <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.size#" /></cfif>
 				<cfif dbType eq "nuodb" and arguments.size>fetch <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.size#" /></cfif>
@@ -1220,6 +1228,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</cfdefaultcase>
 		</cfswitch>
+
+		<cfif listFindNoCase("oracle,postgresql", dbType)>
+			<cfif arguments.sortDirection eq "asc">
+				NULLS FIRST
+			<cfelse>
+				NULLS LAST
+			</cfif>
+		</cfif>
 	
 		</cfquery>
 

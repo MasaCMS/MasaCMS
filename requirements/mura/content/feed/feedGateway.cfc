@@ -660,6 +660,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 			</cfdefaultcase>
 			</cfswitch>
+
+			<cfif listFindNoCase("oracle,postgresql", dbType)>
+				<cfif arguments.feedBean.getSortDirection() eq "asc">
+					NULLS FIRST
+				<cfelse>
+					NULLS LAST
+				</cfif>
+			</cfif>
 		</cfif>
 	
 		<cfif dbType eq "nuodb" and arguments.feedBean.getMaxItems()>fetch <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.feedBean.getMaxItems()#" /> </cfif>
