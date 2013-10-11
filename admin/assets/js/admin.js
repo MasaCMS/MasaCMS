@@ -492,7 +492,7 @@ function validateForm(theForm) {
 
 					errors += getValidationMessage(theField, ' must match' + getValidationMatchField(theField) + '.');
 
-				} else if(validationType == 'DATE' && theField.value != '' && !isDate(theField.value)) {
+				} else if((validationType == 'DATE' || validationType == 'DATETIME') && theField.value != '' && !isDate(theField.value)) {
 					if(!started) {
 						started = true;
 						startAt = f;
