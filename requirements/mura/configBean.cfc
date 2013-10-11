@@ -239,6 +239,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.instance.readOnlyDbUsername=variables.instance.dbUsername>
 	</cfif>
 
+	<cfif getDbType() eq 'oracle' or getBean('dbUtility').version().database_productname eq 'h2'>
+		<cfset variables.instance.dbCaseSensitive=true>
+	</cfif>
+
 	<cfreturn this />
 </cffunction>
 
