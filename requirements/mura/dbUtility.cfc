@@ -324,17 +324,19 @@
 					</cfif>
 				</cfif>
 				
-				<cfif not hasTable>
-					<cfif arguments.autoincrement>
-						,PRIMARY KEY(#arguments.column#)
-					</cfif>
-					) 
-					<cfif version().database_productname neq 'h2'>
+				<cfif version().database_productname neq 'h2'>
+					<cfif not hasTable>
+						<cfif arguments.autoincrement>
+							,PRIMARY KEY(#arguments.column#)
+						</cfif>
+						) 
+						
 						ENGINE=#variables.configBean.getMySQLEngine()# DEFAULT CHARSET=utf8
-					</cfif>
-				<cfelse>
-				 	 <cfif arguments.autoincrement>
-					 	, ADD PRIMARY KEY (#arguments.column#)
+						
+					<cfelse>
+					 	 <cfif arguments.autoincrement>
+						 	, ADD PRIMARY KEY (#arguments.column#)
+						</cfif>
 					</cfif>
 				</cfif>
 			</cfquery>
