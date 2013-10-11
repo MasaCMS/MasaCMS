@@ -195,7 +195,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset setIsValid(false) />
 			</cfif>
 		</cfcase>
-		<cfcase value="timestamp" >
+		<cfcase value="timestamp,datetime" >
 			<cfif lsIsDate(tmp)>
 				<cfset tmp=lsParseDateTime(tmp)>
 				<cfset variables.criteria=createODBCDateTime(createDateTime(year(tmp),month(tmp),day(tmp),hour(tmp),minute(tmp),0)) />
@@ -234,6 +234,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cffunction name="setDataType">
 	<cfargument name="dataType">
+	<cfif arguments.datatype eq 'datetime'>
+		<cfset arguments.datatype="timestamp">
+	</cfif>
 	<cfset variables.dataType=arguments.dataType />
 </cffunction>
 
