@@ -166,7 +166,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 	<cfif index>
 		<cfif len(variables.instance.data.baseID[index])>
-			<cfif variables.instance.data.validation[index] eq "Date">
+			<cfif  listFindNoCase("date,datetime",variables.instance.data.validation[index])>
 				<cfset tempDate=variables.instance.data.attributeValue[index]>
 				<cftry>
 					<cfreturn parseDateTime(tempDate) />	
@@ -368,7 +368,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		
 		<cfloop query="arguments.rs">
 			<cfif len(arguments.rs.baseID)>
-				<cfif arguments.rs.validation eq "Date">
+				<cfif listFindNoCase("date,datetime",arguments.rs.validation)>
 					<cfset tempDate=arguments.rs.attributeValue>
 					<cftry>
 						<cfset extData.data['#arguments.rs.name#']=parseDateTime(tempDate)>
