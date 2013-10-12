@@ -352,7 +352,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfset var f = ""/>
 			<cfset var doKids =false />
 			<cfset var dbType=variables.configBean.getDbType() />
-			<cfset var likeCi=variables.configBean.getDbLikeCi() />
 			<cfset var sortOptions="menutitle,title,lastupdate,releasedate,orderno,displayStart,created,rating,comment,credits,type,subtype">
 			<cfset var isExtendedSort=(not listFindNoCase(sortOptions,arguments.sortBy))>
 			<cfset var nowAdjusted="">
@@ -439,8 +438,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							)
 					  </cfif>
 					  <cfif arguments.keywords neq ''>
-					  AND (UPPER(tcontent.body) #likeCi# UPPER(<cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"/>)
-					  		OR UPPER(tcontent.title) #likeCi# UPPER(<cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"/>))
+					  AND (UPPER(tcontent.body) like UPPER(<cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"/>)
+					  		OR UPPER(tcontent.title) like UPPER(<cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"/>))
 					  </cfif>
  					
 					   AND (
@@ -515,8 +514,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					  
 					  <cfif arguments.keywords neq ''>
 					  AND 
-					  (UPPER(tcontent.body) #likeCi# UPPER(<cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"/>)
-					  		OR UPPER(tcontent.title) #likeCi# UPPER(<cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"/>))
+					  (UPPER(tcontent.body) like UPPER(<cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"/>)
+					  		OR UPPER(tcontent.title) like UPPER(<cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.keywords#%"/>))
 					  </cfif>
  					
 					   AND (
@@ -1126,7 +1125,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset var sortOptions="menutitle,title,lastupdate,releasedate,orderno,displayStart,created,rating,comment,tcontent.credits,type,subtype">
 		<cfset var isExtendedSort=(not listFindNoCase(sortOptions,arguments.sortBy))>
 		<cfset var dbType=variables.configBean.getDbType() />
-		<cfset var likeCi=variables.configBean.getDbLikeCi() />
 		<cfset var tableModifier="">
 
 		<cfif dbtype eq "MSSQL">
@@ -1189,7 +1187,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				or tcontent.Type = 'Gallery') 
 		
 		<cfif arguments.searchString neq "">
-			and (UPPER(tcontent.menuTitle) #likeCi# UPPER(<cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.searchString#%"/>))
+			and (UPPER(tcontent.menuTitle) like UPPER(<cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.searchString#%"/>))
 		</cfif>	
 	
 		<cfif arguments.aggregation>
@@ -1468,7 +1466,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 	<cfset var rsPrivateSearch = "">
 	<cfset var kw = trim(arguments.keywords)>
-	<cfset var likeCi=variables.configBean.getDbLikeCi() />
 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsPrivateSearch',maxrows=1000)#">
 	SELECT tcontent.ContentHistID, tcontent.ContentID, tcontent.Approved, tcontent.filename, tcontent.Active, tcontent.Type, tcontent.OrderNo, tcontent.ParentID, 
@@ -1519,27 +1516,27 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						
 						and
 						(
-							#renderTextParamColumn('tcontent.Title')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
-							or #renderTextParamColumn('tcontent.menuTitle')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
-							or #renderTextParamColumn('tcontent.summary')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
+							#renderTextParamColumn('tcontent.Title')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
+							or #renderTextParamColumn('tcontent.menuTitle')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
+							or #renderTextParamColumn('tcontent.summary')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
 
 							<cfif listFindNoCase("image,file",arguments.searchType)>
-								or #renderTextParamColumn('tfiles.caption')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
-								or #renderTextParamColumn('tfiles.credits')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
-								or #renderTextParamColumn('tfiles.alttext')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
+								or #renderTextParamColumn('tfiles.caption')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
+								or #renderTextParamColumn('tfiles.credits')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
+								or #renderTextParamColumn('tfiles.alttext')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
 							</cfif>
 							
 							or 
 								(
 									tcontent.type not in ('Link','File')
-									and #renderTextParamColumn('tcontent.body')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
+									and #renderTextParamColumn('tcontent.body')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
 								)
 							or tcontent.contenthistid in (
 								select distinct tcontent.contenthistid from tclassextenddata 
 								inner join tcontent on (tclassextenddata.baseid=tcontent.contenthistid)
 								where tcontent.active=1
 								and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
-								and #renderTextParamColumn('tclassextenddata.attributeValue')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%">
+								and #renderTextParamColumn('tclassextenddata.attributeValue')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%">
 							)
 						)
 
@@ -1633,7 +1630,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var w = "">
 	<cfset var c = "">
 	<cfset var categoryListLen=listLen(arguments.categoryID)>
-	<cfset var likeCi=variables.configBean.getDbLikeCi() />
 
 	<cfquery attributeCollection="#variables.configBean.getReadOnlyQRYAttrs(name='rsPublicSearch',maxrows=1000)#">
 	<!--- Find direct matches with no releasedate --->
@@ -1710,22 +1706,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfloop>
 					--->
 					and
-							(#renderTextParamColumn('tcontent.Title')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
-							or #renderTextParamColumn('tcontent.menuTitle')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
-							or #renderTextParamColumn('tcontent.metaKeywords')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
-							or #renderTextParamColumn('tcontent.summary')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
+							(#renderTextParamColumn('tcontent.Title')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
+							or #renderTextParamColumn('tcontent.menuTitle')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
+							or #renderTextParamColumn('tcontent.metaKeywords')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
+							or #renderTextParamColumn('tcontent.summary')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
 							or (
 									tcontent.type not in ('Link','File')
-									and #renderTextParamColumn('tcontent.body')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
+									and #renderTextParamColumn('tcontent.body')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
 								)
-							or #renderTextParamColumn('tcontent.credits')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
+							or #renderTextParamColumn('tcontent.credits')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
 
 							or tcontent.contenthistid in (
 								select distinct tcontent.contenthistid from tclassextenddata 
 								inner join tcontent on (tclassextenddata.baseid=tcontent.contenthistid)
 								where tcontent.active=1
 								and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
-								and #renderTextParamColumn('tclassextenddata.attributeValue')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
+								and #renderTextParamColumn('tclassextenddata.attributeValue')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
 							))
 				</cfif>
 				
@@ -1818,24 +1814,24 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</cfloop>
 					--->
 					and
-							(#renderTextParamColumn('tcontent.Title')# #likeCi#  <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
+							(#renderTextParamColumn('tcontent.Title')# like  <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
 							
-							or #renderTextParamColumn('tcontent.menuTitle')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
-							or #renderTextParamColumn('tcontent.metaKeywords')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
-							or #renderTextParamColumn('tcontent.summary')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
+							or #renderTextParamColumn('tcontent.menuTitle')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
+							or #renderTextParamColumn('tcontent.metaKeywords')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
+							or #renderTextParamColumn('tcontent.summary')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
 							or 
 								(
 									tcontent.type not in ('Link','File')
-									and #renderTextParamColumn('tcontent.body')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
+									and #renderTextParamColumn('tcontent.body')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
 								)
-							or #renderTextParamColumn('tcontent.credits')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
+							or #renderTextParamColumn('tcontent.credits')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
 
 							or tcontent.contenthistid in (
 								select distinct tcontent.contenthistid from tclassextenddata 
 								inner join tcontent on (tclassextenddata.baseid=tcontent.contenthistid)
 								where tcontent.active=1
 								and tcontent.siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
-								and #renderTextParamColumn('tclassextenddata.attributeValue')# #likeCi# <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
+								and #renderTextParamColumn('tclassextenddata.attributeValue')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(arguments.keywords)#%">
 							))
 				</cfif>
 				
