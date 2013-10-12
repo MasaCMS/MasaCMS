@@ -22,6 +22,24 @@
 <cfset attributes.hourname="">
 <cfset attributes.minutename="">
 <cfset attributes.daypartname="">
+
+<cfif lsisDate(attributes.datetime)>
+	<cftry>
+	<cfset attributes.datetime=lsparseDateTime(attributes.datetime) />
+	<cfcatch>
+		<cfset attributes.datetime="">
+	</cfcatch>
+	</cftry>
+<cfelseif isDate(attributes.datetime)>
+	<cftry>
+	<cfset attributes.datetime=parseDateTime(attributes.datetime) />
+	<cfcatch>
+		<cfset attributes.datetime="">
+	</cfcatch>
+	</cftry>
+<cfelse>
+	<cfset attributes.datetime="">
+</cfif>
 </cfsilent>
 
 <cfoutput>
