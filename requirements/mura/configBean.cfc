@@ -239,7 +239,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.instance.readOnlyDbUsername=variables.instance.dbUsername>
 	</cfif>
 
-	<cfif getDbType() eq 'oracle' or getBean('dbUtility').version().database_productname eq 'h2'>
+	<cfif listfindnocase('oracle,postgresql', getDbType()) or getBean('dbUtility').version().database_productname eq 'h2'>
 		<cfset variables.instance.dbCaseSensitive=true>
 	</cfif>
 
@@ -510,14 +510,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.instance.dbType = arguments.dbType />
 	</cfif>
 	<cfreturn this>
-</cffunction>
-
-<cffunction name="getDbLikeCi" returntype="any" access="public" output="false" hint="Return the case-insensitive LIKE keyword according to the db type">
-	<cfif getDbType() eq "postgresql">
-		<cfreturn "ILIKE" />
-	<cfelse>
-		<cfreturn "LIKE" />
-	</cfif>
 </cffunction>
 
 <cffunction name="getDbPassword" returntype="any" access="public" output="false">
