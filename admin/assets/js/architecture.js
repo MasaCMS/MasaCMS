@@ -2311,7 +2311,7 @@ buttons: {
 
 			});
 		}
-
+		
 		$.post(config.url + "?" + config.pars, data, function(_resp) {
 			try {
 				resp = eval('(' + _resp + ')');
@@ -2321,7 +2321,7 @@ buttons: {
 				}
 				resp = _resp;
 			}
-
+			
 			if(typeof(resp) == 'object') {
 				$("#configurator").html(resp.html);
 			} else if(typeof(resp) == 'xml') {
