@@ -308,7 +308,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfparam name="rc.subtype" default="" />
 
 <cfif len($.siteConfig('customTagGroups'))>
-	<cfloop list="#$.siteConfig('customTagGroups')#" index="g" delimiters="^">
+	<cfloop list="#$.siteConfig('customTagGroups')#" index="g" delimiters="^,">
 		<cfparam name="rc.#g#tags" default="" />
 	</cfloop>
 </cfif>
@@ -364,7 +364,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	}
 
 	if(len($.siteConfig('customTagGroups'))){
-		taggrouparray=listToArray($.siteConfig('customTagGroups'),"^");
+		taggrouparray=listToArray($.siteConfig('customTagGroups'),"^,");
 		for(g=1;g <= arrayLen(taggrouparray);g++){
 			if(not structKeyExists(session.flatViewArgs["#session.siteid#"],"#taggrouparray[g]#tags")){
 				session.flatViewArgs["#rc.siteID#"]["#taggrouparray[g]#tags"]=rc["#taggrouparray[g]#tags"];
@@ -512,7 +512,7 @@ copyAll = 'false';
 var archViewLoaded=false;
 var flatViewLoaded=false;
 var tabsInited=false;
-var customtaggroups=#serializeJSON(listToArray($.siteConfig('customTagGroups')))#;
+var customtaggroups=#serializeJSON(listToArray($.siteConfig('customTagGroups'),"^,"))#;
 
 function initFlatViewArgs(){
 	return {siteid:'#JSStringFormat(session.siteID)#', 
@@ -529,7 +529,7 @@ function initFlatViewArgs(){
 			keywords:'#JSStringFormat(session.flatViewArgs["#session.siteID#"].keywords)#',
 			filtered: '#JSStringFormat(session.flatViewArgs["#session.siteID#"].filtered)#'
 			<cfif len($.siteConfig('customTagGroups'))>
-			<cfloop list="#$.siteConfig('customTagGroups')#" index="g" delimiters="^">
+			<cfloop list="#$.siteConfig('customTagGroups')#" index="g" delimiters="^,">
 			,#g#tags:'#JSStringFormat(session.flatViewArgs["#session.siteID#"]["#g#tags"])#'	
 			</cfloop>	
 			</cfif>

@@ -124,7 +124,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset tagGroupList=$.siteConfig('customTagGroups')>
 
 <cfif len(tagGroupList)>
-	<cfloop list="#tagGroupList#" index="g" delimiters="^">
+	<cfloop list="#tagGroupList#" index="g" delimiters="^,">
 		<cfset g=trim(g)>
 		<div class="control-group">
 		   	<label class="control-label">#g# #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.tags')#</label>	    
