@@ -103,7 +103,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.formWrapperClass="well">
 <cfset this.generalWrapperClass="well">
 <cfset this.aNotCurrentClass="">
-<cfset this.metaImageSize="medium">
+<cfset this.bodyMetaImageSize="medium">
 <cfset this.size=50>
 
 
@@ -1522,7 +1522,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="includeMetaHREF" type="boolean" default="true" />
 	<cfargument name="bodyAttribute">
 	<cfargument name="titleAttribute">
-	<cfargument name="metaImageSize" default="#this.metaImageSize#">
+	<cfargument name="metaImageSize" default="#this.bodyMetaImageSize#">
 	
 	<cfset var theIncludePath = variables.event.getSite().getIncludePath() />
 	<cfset var str = "" />
