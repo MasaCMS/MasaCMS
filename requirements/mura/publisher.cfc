@@ -237,7 +237,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfset rssite=Bundle.getValue("rssite")>
 				<cfif rssite.recordcount and isDefined('rssite.customtaggroups') and len(rssite.customtaggroups)>
 					<cfquery datasource="#arguments.toDSN#">
-						update tsettings set customtaggroups=<cfqueryparam cfsqltype="cf_sql_varhar" value="#rssite.customtaggroups#">
+						update tsettings set customtaggroups=<cfqueryparam cfsqltype="cf_sql_varchar" value="#rssite.customtaggroups#">
 						where siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.toSiteID#">
 					</cfquery>
 				</cfif>
