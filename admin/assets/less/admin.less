@@ -44,7 +44,11 @@
 	
 // Layout
 
-.main { padding-bottom: @baseLineHeight*2; min-width: 940px; }
+.main { 
+	padding-bottom: @baseLineHeight*2;
+	.border-box;
+	width: 100%;
+	}
 
 .compact {
 	padding: 18px;
@@ -70,7 +74,7 @@
 	
 	.main { 
 		padding-bottom: 0;
-		min-width: 0;
+		//min-width: 0;
 		}
 	}
 }
