@@ -1369,9 +1369,11 @@ var spinnerArgs2 = {
 	// The z-index (defaults to 2000000000)
 	top: 'auto',
 	// Top position relative to parent in px
-	left: 'auto' // Left position relative to parent in px
+	left: 'auto', // Left position relative to parent in px
+    position: 'relative'
 }
 
+/*
 var spinnerArgs3 = {
 	lines: 17,
 	// The number of lines to draw
@@ -1401,8 +1403,10 @@ var spinnerArgs3 = {
 	// The z-index (defaults to 2000000000)
 	top: 'auto',
 	// Top position relative to parent in px
-	left: 'auto' // Left position relative to parent in px
+	left: 'auto', // Left position relative to parent in px
+    position: 'relative'
 }
+*/
 
 //preloadimages(['./assets/images/ajax-loader.gif']);
 
