@@ -2311,7 +2311,6 @@ buttons: {
 
 			});
 		}
-		return false;
 		
 		$.post(config.url + "?" + config.pars, data, function(_resp) {
 			try {
