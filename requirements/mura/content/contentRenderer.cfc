@@ -103,7 +103,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.formWrapperClass="well">
 <cfset this.generalWrapperClass="well">
 <cfset this.aNotCurrentClass="">
-<cfset this.bodyMetaImageSize="medium">
+<cfset this.bodyMetaImageSizeArgs={size="medium"}>
 <cfset this.size=50>
 
 
@@ -1522,7 +1522,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="includeMetaHREF" type="boolean" default="true" />
 	<cfargument name="bodyAttribute">
 	<cfargument name="titleAttribute">
-	<cfargument name="metaImageSize" default="#this.bodyMetaImageSize#">
+	<cfargument name="metaImageSizeArgs" default="#this.bodyMetaImageSizeArgs#">
 	
 	<cfset var theIncludePath = variables.event.getSite().getIncludePath() />
 	<cfset var str = "" />
@@ -1631,7 +1631,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfset loadShadowBoxJS() />
 								<cfoutput>
 								<div id="svAssetDetail" class="image">
-								<a href="#variables.$.content().getImageURL(size='large')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#variables.$.content().getImageURL(size=arguments.metaImageSize)#" class="imgMed thumbnail" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" /></a>
+								<a href="#variables.$.content().getImageURL(size='large')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed thumbnail" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" /></a>
 								#renderEditableAttribute(attribute="summary",type="htmlEditor")#
 								</div>
 								</cfoutput>
@@ -1660,7 +1660,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								<cfset loadShadowBoxJS() />
 								<cfoutput>
 								<cfif arguments.includeMetaHREF>
-									<a href="#variables.$.content().getImageURL(size='large')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#variables.$.content().getImageURL(size=arguments.metaImageSize)#" class="imgMed thumbnail" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" /></a>
+									<a href="#variables.$.content().getImageURL(size='large')#" title="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" rel="shadowbox[body]" id="svAsset"><img src="#variables.$.content().getImageURL(argumentCollection=arguments.metaImageSizeArgs)#" class="imgMed thumbnail" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" /></a>
 									<cfelse>
 									<div id="svAsset">
 									<img src="#variables.$.content().getImageURL(size='medium')#" class="imgMed thumbnail" alt="#HTMLEditFormat(variables.event.getValue('contentBean').getMenuTitle())#" />
