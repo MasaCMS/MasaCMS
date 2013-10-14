@@ -268,7 +268,7 @@ to your own modified versions of Mura CMS.
           </div>
         </div>
          <div class="control-group">
-            <label class="control-label">Custom Tag Groups</label>
+            <label class="control-label">Custom Tag Groups <span class="help-inline">("^" Delimiter. List elements must use valid variable names.)</span></label>
             <div class="controls">
               <input name="customTagGroups" type="text" class="span12"  value="#rc.siteBean.getCustomTagGroups()#" maxlength="255"/>
             </div>

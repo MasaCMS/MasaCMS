@@ -8,10 +8,18 @@
 	}
 
 .load-inline { 
-	// #gradient .radial(hsla(0,0%,100%,.8),hsla(0,0%,90%,.8));
-	.border-radius(3px);
-	//background: transparent url("../images/ajax-loader.gif") center center no-repeat;
-	min-height: 60px;
+	.border-radius(6px);
+	//min-height: 60px;
+	width: 60px;
+	height: 60px;
+	background: rgba(0,0,0,.1);
+	margin: @baseLineHeight auto;
+	
+	> .spinner-alt {
+		left: 50% !important;
+		top: 50% !important;
+		}
+	
 	}
 
 .inline-block() {

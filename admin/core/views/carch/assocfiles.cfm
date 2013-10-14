@@ -80,8 +80,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfoutput>
 	<div class="tabbable selectAssocImageResults" id="selectAssocImageResults-#HTMLEditFormat(rc.property)#">
 		<ul class="nav nav-tabs tabs">
-			<li><a href="##mura-assoc-images-#HTMLEditFormat(rc.property)#" onclick="return false;"><i class="icon-picture"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.images')#</a></li>
-			<cfif rc.type eq 'file'><li><a href="##mura-assoc-files-#HTMLEditFormat(rc.property)#" onclick="return false;"><i class="icon-file-text-alt"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.otherfiles')#</a></li></cfif>
+			<li><a href="##mura-assoc-images-#HTMLEditFormat(rc.property)#" data-toggle="tab" onclick="return false;"><i class="icon-picture"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.images')#</a></li>
+			<cfif rc.type eq 'file'><li><a href="##mura-assoc-files-#HTMLEditFormat(rc.property)#" data-toggle="tab" onclick="return false;"><i class="icon-file-text-alt"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.otherfiles')#</a></li></cfif>
 		</ul>
 		</cfoutput>
 		<div class="tab-content">
