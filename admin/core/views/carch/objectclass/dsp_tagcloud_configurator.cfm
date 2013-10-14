@@ -70,7 +70,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<select name="taggroup" class="objectParam">
 						<option value="">Default</option>
 						<cfif len($.siteConfig('customTagGroups'))>
-							<cfloop list="#$.siteConfig('customTagGroups')#" index="g">
+							<cfloop list="#$.siteConfig('customTagGroups')#" index="g" delimiters="^">
 								<option value="#g#" <cfif g eq params.taggroup>selected</cfif>>#g#</option>
 							</cfloop>
 						</cfif>
