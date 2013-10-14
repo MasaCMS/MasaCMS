@@ -959,7 +959,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 			and taggroup is not null
 		</cfquery>
 		
-		<cfloop list="#tagGroupList#" index="g">
+		<cfloop list="#tagGroupList#" index="g" delimiters="^,">
 			<cfset g=trim(g)>
 			<cfquery name="rsgroup" dbtype="query">
 				select tag from rs where 
@@ -998,10 +998,11 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	</cfif>
 
 	<cfif len(tagGroupList)>
-		<cfloop list="#tagGroupList#" index="g">
+		<cfloop list="#tagGroupList#" index="g" delimiters="^,">
 			<cfset g=trim(g)>
 			<cfif len(arguments.contentBean.getValue('#g#tags'))>
 				<cfset taglist = arguments.contentBean.getValue('#g#tags') />
+				
 				<cfloop list="#taglist#" index="t">
 					<cfif len(trim(t))>
 						<cfquery>
