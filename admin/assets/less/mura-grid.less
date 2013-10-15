@@ -55,15 +55,6 @@
 				.box-shadow(0px 0px 8px #666);
 				}
 			
-			/*Fix Firefox wrapping issue when zoomed in 1 level and dragging. Safari has a different issue when zoomed in and dragging where the row you're dragging gets positioned about 400 pixels below your cursor, not sure what the fix is. */
-			/*@-moz-document url-prefix() {
-				.mura-grid .ui-draggable-dragging {
-				width: 81.5% !important;
-				height: 28px !important;
-				overflow: hidden;
-				}
-			}*/
-			
 			a {
 				color: @grayDarker;
 			}
@@ -99,8 +90,6 @@
 				float: left;
 				width: auto;
 				margin: 0;
-				min-height: 10px;
-				line-height: 20px;
 			}
 			
 			dl.alt {
@@ -117,31 +106,30 @@
 				text-align: center;
 				float: left;
 				margin: 0 !important;
+				line-height: 28px;
+				height: 28px;
 			}
 			
 			dt {
 				width: 405px;
 				text-align: left;
-				line-height: 12px;
-				min-height: 20px;
 				padding: 0 5px 0 0 !important;
 				font-weight: normal;
 				position: relative;
 			}
 			
 			dd {
-				padding: 4px 5px;
-				height: 20px;
+				padding: 0 5px;
 				position: relative;
 			}
 			
 			dt a {
 				display: block;
 				height: auto;
-				min-height: 18px;
-				line-height: 20px;
+				min-height: inherit;
+				line-height: inherit;
 				white-space: wrap;
-				padding: 5px 5px 0 0;
+				padding: 0 5px 0 0;
 				float: left;
 				color: @grayDarker;		
 			}
@@ -177,7 +165,6 @@
 					
 					&:before {
 					position: absolute;
-					top: 6px;
 					left: 2px;
 					content: attr(data-filetype);
 					font-family: 'SilkscreenNormal';
@@ -186,11 +173,8 @@
 					.inline-block;
 					color: @white;
 					background: @iconColor;
-					padding: 4px 4px 3px;
+					padding: 3px 4px;
 					.border-radius(2px);
-					/* top: 3px; */
-					/* width: 16px; */
-					/* letter-spacing: -1px; */
 					overflow: hidden;					
 					}
 					
@@ -203,7 +187,7 @@
 					
 						&:before {
 							position: relative;
-							top: 0px;
+							top: 2px;
 						}
 					}
 				}
@@ -247,7 +231,7 @@
 					.icon-font(FontAwesome);
 					content: "\f03e";
 					font-size: 19px;
-					top: 2px !important;
+					top: 5px !important;
 					background: transparent;
 					padding: 0;
 					color: @iconColor;
