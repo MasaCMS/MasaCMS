@@ -114,7 +114,7 @@
 		//this.generalWrapperClass="well";
 		//this.aNotCurrentClass="";
 		//this.enablemuratag=true;
-		//this.bodyMetaImageSize={size="medium"};
+		//this.bodyMetaImageSizeArgs={size="medium"};
 	</cfscript>
 
 </cfcomponent>

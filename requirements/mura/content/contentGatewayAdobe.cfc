@@ -1984,28 +1984,34 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	order by 
 
-	<cfif len(arguments.relatedContentSetID)>
-		tcr.orderNo
-	<cfelse>
-		<cfswitch expression="#arguments.sortBy#">
-			<cfcase value="menutitle,title,lastupdate,releasedate,orderno,displaystart,displaystop,created,tcontent.credits,type,subtype">
-				<cfif variables.configBean.getDbType() neq "oracle" or  listFindNoCase("orderno,lastUpdate,releaseDate,created,displayStart,displayStop,orderno",arguments.sortBy)>
-					tcontent.#arguments.sortBy# #arguments.sortDirection#
-				<cfelse>
-					lower(tcontent.#arguments.sortBy#) #arguments.sortDirection#
-				</cfif>
-			</cfcase>
-			<cfcase value="rating">
-				tcontentstats.rating #arguments.sortDirection#, tcontentstats.totalVotes  #arguments.sortDirection#
-			</cfcase>
-			<cfcase value="comments">
-				tcontentstats.comments #arguments.sortDirection#
-			</cfcase>
-			<cfdefaultcase>
-				tcontent.orderno asc
-			</cfdefaultcase>
-		</cfswitch>
-	</cfif>
+	<cfswitch expression="#arguments.sortBy#">
+		<cfcase value="menutitle,title,lastupdate,releasedate,displaystart,displaystop,created,tcontent.credits,type,subtype">
+			<cfif variables.configBean.getDbType() neq "oracle" or listFindNoCase("lastUpdate,releaseDate,created,displayStart,displayStop,orderno", arguments.sortBy)>
+				tcontent.#arguments.sortBy# #arguments.sortDirection#
+			<cfelse>
+				lower(tcontent.#arguments.sortBy#) #arguments.sortDirection#
+			</cfif>
+		</cfcase>
+		<cfcase value="orderno">
+			<cfif len(arguments.relatedContentSetID) or len(arguments.name)>
+				tcr.orderNo #arguments.sortDirection#
+			<cfelse>
+				tcontent.orderno #arguments.sortDirection#
+			</cfif>
+		</cfcase>
+		<cfcase value="rating">
+			tcontentstats.rating #arguments.sortDirection#, tcontentstats.totalVotes  #arguments.sortDirection#
+		</cfcase>
+		<cfcase value="rating">
+			tcontentstats.rating #arguments.sortDirection#, tcontentstats.totalVotes  #arguments.sortDirection#
+		</cfcase>
+		<cfcase value="comments">
+			tcontentstats.comments #arguments.sortDirection#
+		</cfcase>
+		<cfdefaultcase>
+			tcontent.orderno asc
+		</cfdefaultcase>
+	</cfswitch>
 
 	</cfquery>
 
