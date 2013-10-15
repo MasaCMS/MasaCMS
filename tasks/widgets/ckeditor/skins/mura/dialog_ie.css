@@ -103,10 +103,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
   height: 60px;
   background: rgba(255, 255, 255, 0.5);
   margin: 18px auto;
+  position: relative;
 }
 .load-inline > .spinner-alt {
   left: 50% !important;
   top: 50% !important;
+}
+#classList > .load-inline {
+  padding-top: 70px;
 }
 .btn-alt {
   color: #ffffff;
