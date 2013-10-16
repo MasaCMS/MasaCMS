@@ -1,6 +1,10 @@
 /*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
+
+	Documentation on Styles can be found at:
+	http://docs.cksource.com/CKEditor_3.x/Developers_Guide/Styles
+
 */
 
 if ( 'CKEDITOR' in window) {
