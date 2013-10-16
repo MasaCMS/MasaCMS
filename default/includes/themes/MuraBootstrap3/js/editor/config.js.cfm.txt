@@ -6,20 +6,30 @@
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 
-Add additional customizations or override editor config settings below.
+	Add customizations or override editor config settings below.
+
+	The CKEditor Developer's Guide can be found at:
+	http://docs.cksource.com/CKEditor_3.x/Developers_Guide
 
 */
 
 if ( 'CKEDITOR' in window) {
 
 	CKEDITOR.editorConfig = function( config ) {
-		// config.language = 'fr';
-		// config.uiColor = '#AADC6E';
 
-		config.enterMode = CKEDITOR.ENTER_BR;
-		config.shiftEnterMode = CKEDITOR.ENTER_BR;
+		// Example of how to customize one of the available toolbars (Default, Summary, and QuickEdit)
+		// Documentation can be found at: http://docs.cksource.com/CKEditor_3.x/Developers_Guide/Toolbar
+		//config.toolbar_Default = [
+		//  {name:'group1',items:['Bold','Italic','Underline']}
+		//];
+
+		// Other misc. configuration examples
+		//config.language = 'fr';
+		//config.uiColor = '#AADC6E';
+		//config.enterMode = CKEDITOR.ENTER_BR;
+		//config.shiftEnterMode = CKEDITOR.ENTER_BR;
 		//config.ProtectedSource.Add( /<br[\s\S]*?\/>/g ) ;   // BR Tags
-		config.ignoreEmptyParagraph = true;
+		//config.ignoreEmptyParagraph = true;
 
 	};
 
