@@ -125,8 +125,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cffunction name="setupApplication" output="false">
 		<cfset var local = structNew() />
 		
-		<cfinclude template="../config/appcfc/onApplicationStart_include.cfm">
-	
+		<cfif not request.muraAppreloaded>
+			<cfinclude template="../config/appcfc/onApplicationStart_include.cfm">
+		</cfif>
+		
 		<cfif not structKeyExists(application,"muraAdmin") or not hasBeanFactory()>
 			<cfscript>
 				variables.framework.cache = structNew();
