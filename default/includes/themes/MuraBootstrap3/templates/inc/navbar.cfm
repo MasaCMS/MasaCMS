@@ -31,7 +31,7 @@
 								, liNestedClass=''
 								, aHasKidsClass='dropdown-toggle'
 								, aHasKidsCustomString='role="button" data-toggle="dropdown" data-target="##"'
-								, liCurrentClass=''
+								, liCurrentClass='active'
 								, aCurrentClass=''
 								, siteid=$.event('siteid')
 							)#
@@ -42,15 +42,6 @@
 							openFolders/closeFolders="contentid,contentid" 
 								(e.g. show specific sub-content in dropdown nav)
 						--->
-						<script>
-							$(function(){
-								$(#serializeJSON($.getCrumbPropertyArray('url'))#).each(
-									function(index, value){
-										$("##navPrimary [href='" + value + "']").closest("li").addClass("active");
-									}
-								);
-							})
-						</script>
 					</div>
 
 					<div class="col-md-3 pull-right">
@@ -68,7 +59,6 @@
 							<input type="hidden" name="noCache" value="1">
 						</form>
 					</div>
-
 				</div>
 			</div><!--- /.navbar-collapse --->
 
