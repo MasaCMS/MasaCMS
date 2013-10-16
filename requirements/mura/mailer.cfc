@@ -429,14 +429,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cfscript>
-	public any function getFromEmail(string siteid='') {
-		return variables.sendFromMailServerUserName && Len(getMailServerUsername(arguments.siteid))
+	public any function getFromEmail(string siteid='default') {
+		return variables.sendFromMailServerUserName && Len(getMailServerUsername(arguments.siteid)) && IsValid('email', getMailServerUsername(arguments.siteid))
 			? getMailServerUsername(arguments.siteid)
-			: Len(arguments.siteid) && Len(variables.settingsManager.getSite(arguments.siteid).getContact())
+			: Len(variables.settingsManager.getSite(arguments.siteid).getContact()) && IsValid('email', variables.settingsManager.getSite(arguments.siteid).getContact())
 				? variables.settingsManager.getSite(arguments.siteid).getContact()
-				: Len(variables.configBean.getAdminEmail())
+				: Len(variables.configBean.getAdminEmail()) && IsValid('email', variables.configBean.getAdminEmail())
 					? variables.configBean.getAdminEmail()
-					: 'no-reply';
+					: 'no-reply@#variables.settingsManager.getSite(arguments.siteid).getDomain()#';
 	}
 
 	public string function getUseDefaultSMTPServer(string siteid='') {
