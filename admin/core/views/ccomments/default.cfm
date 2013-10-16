@@ -240,8 +240,6 @@
 				</tbody>
 			</table>
 		</form>
-		
-		<div class="row-fluid">
 
 			<!--- BULK EDIT BUTTONS --->
 			<!---
@@ -268,8 +266,8 @@
 
 			<!--- RECORDS PER PAGE --->
 			<cfif rc.itComments.pageCount() gt 1>
-				<div class="span3">
-					<div class="btn-group pull-right">
+				<div class="view-controls row-fluid">
+					<div class="btn-group pull-left">
 						<a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
 							Comments Per Page
 							<span class="caret"></span>
@@ -285,17 +283,10 @@
 							<li><a href="#buildURL(action='cComments.default', querystring='nextn=100000&isapproved=#rc.isapproved#')#">#rc.$.rbKey('comments.all')#</a></li>
 						</ul>
 					</div>
-				</div>
-			</cfif>
-			<!--- /@END RECORDS PER PAGE --->
-
-		</div><!--- /.row-fluid --->
-
-		<!--- PAGINATION --->
+					
+					<!--- PAGINATION --->
 		<cfif rc.itComments.pageCount() gt 1>
-			<div id="paginationWrapper" class="row-fluid">
-				<div class="span12">
-					<div class="pagination paginationWrapper">
+					<div class="pagination pull-right">
 						<ul>
 							<!--- PREVIOUS --->
 							<cfscript>
@@ -333,9 +324,12 @@
 							</li>
 						</ul>
 					</div>
-				</div>
-			</div>
 		</cfif>
+
+					
+				</div>
+			</cfif>
+			<!--- /@END RECORDS PER PAGE --->
 
 		<!--- SCRIPTS --->
 		<script type="text/javascript">
