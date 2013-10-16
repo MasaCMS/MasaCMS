@@ -529,10 +529,6 @@ li.form ol, #svTagCloud ol {
 	margin: 0;
 }
 
-form legend+p {
-	line-height: 1.2;
-}
-
 .svIndex {
 		padding-top: 0;
 		border-top: 0;
@@ -673,6 +669,10 @@ ol.svPager {
 
 form {
 
+	legend+p {
+		line-height: 1.2;
+	}
+
 	legend+ul, legend+ol {
 		padding-top: 1em;
 	}
@@ -684,6 +684,7 @@ form {
 			list-style: none;
 		}
 	}
+
 }
 
 .well form {
@@ -691,9 +692,11 @@ form {
 }
 
 form:not(.navbar-form) {
+
 	// input, select, textarea {
 	// 	max-width: 500px;
 	// }
+
 	ol {
 		li.control-group, li.form-group {
 			label {

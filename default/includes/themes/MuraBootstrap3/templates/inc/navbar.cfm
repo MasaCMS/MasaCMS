@@ -68,7 +68,6 @@
 							<input type="hidden" name="noCache" value="1">
 						</form>
 					</div>
-
 				</div>
 			</div><!--- /.navbar-collapse --->
 
