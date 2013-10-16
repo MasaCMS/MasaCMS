@@ -2002,9 +2002,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfcase value="rating">
 			tcontentstats.rating #arguments.sortDirection#, tcontentstats.totalVotes  #arguments.sortDirection#
 		</cfcase>
-		<cfcase value="rating">
-			tcontentstats.rating #arguments.sortDirection#, tcontentstats.totalVotes  #arguments.sortDirection#
-		</cfcase>
 		<cfcase value="comments">
 			tcontentstats.comments #arguments.sortDirection#
 		</cfcase>
