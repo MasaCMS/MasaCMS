@@ -146,10 +146,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfloop>
 
-		<cfif not IsValid('email', fromEmail)>
-			<cfthrow type="Invalid eMail Settings" message="There is not a valid 'From' email address available. Go to Site Config > Edit Site > Email, and enter a valid Default 'From' Email Address.">
-		</cfif>
-
 		<cftry>
 			<cfif useDefaultSMTPServer>
 				<cfmail to="#filteredSendTo#" 
@@ -430,13 +426,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfscript>
 	public any function getFromEmail(string siteid='default') {
+		var defaultFrom = 'no-reply@' & variables.settingsManager.getSite(arguments.siteid).getDomain();
 		return variables.sendFromMailServerUserName && Len(getMailServerUsername(arguments.siteid)) && IsValid('email', getMailServerUsername(arguments.siteid))
 			? getMailServerUsername(arguments.siteid)
 			: Len(variables.settingsManager.getSite(arguments.siteid).getContact()) && IsValid('email', variables.settingsManager.getSite(arguments.siteid).getContact())
 				? variables.settingsManager.getSite(arguments.siteid).getContact()
 				: Len(variables.configBean.getAdminEmail()) && IsValid('email', variables.configBean.getAdminEmail())
 					? variables.configBean.getAdminEmail()
-					: 'no-reply@#variables.settingsManager.getSite(arguments.siteid).getDomain()#';
+					: defaultFrom;
 	}
 
 	public string function getUseDefaultSMTPServer(string siteid='') {
