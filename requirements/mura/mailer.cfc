@@ -146,10 +146,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</cfloop>
 
+		<cfif not IsValid('email', fromEmail)>
+			<cfthrow type="Invalid eMail Settings" message="There is not a valid 'From' email address available. Go to Site Config > Edit Site > Email, and enter a valid Default 'From' Email Address.">
+		</cfif>
+
 		<cftry>
 			<cfif useDefaultSMTPServer>
 				<cfmail to="#filteredSendTo#" 
-						from='"#arguments.from#" <#fromEmail#>'
+						from="#arguments.from# <#fromEmail#>"
 						subject="#arguments.subject#" 
 						replyto="#arguments.replyto#"
 						failto="#mailServerFailto#"
@@ -157,7 +161,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						#trim(tmt_mail_body)#</cfmail>
 			<cfelse>
 				<cfmail to="#filteredSendTo#" 
-						from='"#arguments.from#" <#fromEmail#>'
+						from="#arguments.from# <#fromEmail#>"
 						subject="#arguments.subject#" 
 						server="#MailServerIp#" 
 						username="#MailServerUsername#" 
