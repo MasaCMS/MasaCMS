@@ -37,12 +37,12 @@
 
 <div class="control-group" id="availableGroups">
   <label class="control-label">
-    <span class="span6">Available Groups</span> <span class="span6">Selected Groups</span>
+    <span class="span6">#application.rbFactory.getKeyValue(session.rb,'approvalchains.groupsavailable')#</span> <span class="span6">#application.rbFactory.getKeyValue(session.rb,'approvalchains.groupselected')#</span>
   </label>
 
   <div id="sortableGroups" class="controls">
     <p class="dragMsg">
-      <span class="dragFrom span6">Drag Groups from Here&hellip;</span><span class="span6">&hellip;and Drop Them Here.</span>
+      <span class="dragFrom span6">#application.rbFactory.getKeyValue(session.rb,'approvalchains.dragfrom')#&hellip;</span><span class="span6">&hellip;#application.rbFactory.getKeyValue(session.rb,'approvalchains.dragto')#</span>
     </p>              
           
     <ul id="groupAvailableListSort" class="groupDisplayListSortOptions">
@@ -56,7 +56,7 @@
       </cfloop>
     </ul>
                         
-    <ul id="groupAssignmentListSort" class="groupDisplayListSortOptions">  
+    <ol id="groupAssignmentListSort" class="groupDisplayListSortOptions">  
       <cfset it=chain.getMembershipsIterator()>
       <cfloop condition="it.hasNext()">
         <cfset item=it.next()>
@@ -65,7 +65,7 @@
           <input name="groupID" type="hidden" value="#item.getGroupID()#">
         </li>
       </cfloop>
-    </ul>   
+    </ol>   
     <script>
       $(function(){
           chainManager.setGroupMembershipSort();

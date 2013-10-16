@@ -166,9 +166,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfif not StructIsEmpty(variables.info) and variables.sendto neq ''> 
 		<cfset variables.mailer=variables.$.getBean('mailer')/>
 		<cfif variables.mailer.isValidEmailFormat(request.email)>
-			<cfset variables.mailer.send(info,'#variables.sendto#','#variables.rsform.title#','#request.subject#','#variables.$.event('siteID')#','#request.email#')>
+			<cfset variables.mailer.send(
+				args = variables.info
+				, sendto = variables.sendto
+				, from = request.email
+				, subject = request.subject
+				, siteid = variables.$.event('siteID')
+				, replyto = request.email
+				, bcc = ''
+			)>
 		<cfelse>
-			<cfset variables.mailer.send(variables.info,'#variables.sendto#','#variables.rsform.title#','#request.subject#','#variables.$.event('siteID')#','')>
+			<cfset variables.mailer.send(
+				args = variables.info
+				, sendto = variables.sendto
+				, from = variables.mailer.getFromEmail(variables.$.event('siteid'))
+				, subject = request.subject
+				, siteid = variables.$.event('siteID')
+				, replyto = ''
+				, bcc = ''
+			)>
 		</cfif>
 	</cfif>
 			

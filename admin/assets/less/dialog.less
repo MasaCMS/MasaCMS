@@ -224,6 +224,9 @@
 	z-index: 500001 !important;
 	cursor: pointer !important;
 	border: 0 !important;
+	box-shadow: none !important;
+	padding: 0 !important;
+	margin: 0 !important;
 }
 
 @feToolBarBGStart:	hsla(0,0,.30,.85);
@@ -246,7 +249,7 @@ background-image: -moz-linear-gradient(top, @feToolBarBGStart, @feToolBarBGEnd);
     // Commented out because it blows up dropdowns in IE
     //filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",argb(@feToolBarBGStart),argb(@feToolBarBGEnd))); // IE9 and down
 	
-	min-height: 31px !important;
+	height: 32px !important;
 	position: fixed !important;
 	left: 0px !important;
 	top: 0px !important;
