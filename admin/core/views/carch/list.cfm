@@ -53,8 +53,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfset rc.perm=application.permUtility.getPerm(rc.moduleid,rc.siteid)>
 
-<cfparam name="rc.sortBy" default="">
-<cfparam name="rc.sortDirection" default="">
+<cfparam name="rc.sortBy" default="menutitle">
+<cfparam name="rc.sortDirection" default="asc">
 <cfparam name="rc.searchString" default="">
 
 <cfset titleDirection = "asc">
