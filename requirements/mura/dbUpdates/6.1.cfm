@@ -77,4 +77,24 @@
 	.addIndex('contentID')
 	.addIndex('categoryID');
 
+	dbUtility.setTable('tpermissions')
+	.addIndex('siteid')
+	.addIndex('contentid')
+	.addIndex('type')
+	.addIndex('groupid');
+
+	dbUtility.setTable('tcontentfeeditems')
+	.addIndex('feedid')
+	.addIndex('itemid')
+	.addIndex('type');
+
+
+	dbUtility.setTable('tusers')
+	.addIndex('groupname')
+	.addIndex('type')
+	.addIndex('subtype')
+	.addIndex('remoteid')
+	.addIndex('siteid');
+
+
 </cfscript>
