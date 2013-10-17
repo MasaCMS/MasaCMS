@@ -393,17 +393,98 @@
 				var $callback=callback;
 
 				for (var prop in muraInlineEditor.attributes) {
-					data[muraInlineEditor.attributes[prop].getAttribute('name')]=muraInlineEditor.getAttributeValue(prop);
+					data[prop]=muraInlineEditor.getAttributeValue(prop);
 				}
-				
+
+				var errors="";
+                var setFocus=0;
+                var started=false;
+                var startAt;
+                var firstErrorNode;
+                var validationType='';
+                var validations={properties:{}};
+                var rules=new Array();
+
+                for (var prop in muraInlineEditor.attributes) {
+                	theField=muraInlineEditor.attributes[prop];
+                    validationType=getValidationType(theField).toUpperCase();;
+                    theValue=muraInlineEditor.getAttributeValue(prop);
+		
+					rules=new Array();
+					
+					if(getValidationIsRequired(theField))
+						{	
+							rules.push({
+								required: true,
+								message: getValidationMessage(theField,' is required.')
+							});
+							
+							 			
+						}
+					if(validationType != ''){
+							
+						if(validationType=='EMAIL' && theValue != '')
+						{	
+								rules.push({
+									dataType: 'EMAIL',
+									message: getValidationMessage(theField,' must be a valid email address.')
+								});
+								
+										
+						}
+		
+						else if(validationType=='NUMERIC')
+						{	
+								rules.push({
+									dataType: 'NUMERIC',
+									message: getValidationMessage(theField,' must be numeric.')
+								});
+											
+						}
+						
+						else if(validationType=='REGEX' && theValue !='' && hasValidationRegex(theField))
+						{	
+								rules.push({
+									regex: hasValidationRegex(theField),
+									message: getValidationMessage(theField,' is not valid.')
+								});
+												
+						}
+						
+						else if(validationType=='MATCH' 
+								&& hasValidationMatchField(theField) && theValue != theForm[getValidationMatchField(theField)].value)
+						{	
+							rules.push({
+								eq: theForm[getValidationMatchField(theField)].value,
+								message: getValidationMessage(theField, ' must match' + getValidationMatchField(theField) + '.' )
+							});
+										
+						}
+						
+						else if(validationType=='DATE' && theValue != '')
+						{
+							rules.push({
+								dataType: 'DATE',
+								message: getValidationMessage(theField, ' must be a valid date [MM/DD/YYYY].' )
+							});
+							 
+						}
+					}
+					
+					if(rules.length){
+						validations.properties[prop]=rules;
+					}
+				}
+
 				try{
-				
+					//alert(JSON.stringify(validations))
 					$.ajax(
 						{
 							type: 'post',
 							url: context + '/tasks/validate/',
 							data: {
-									data: JSON.stringify($.extend(muraInlineEditor.data,data))
+									data: JSON.stringify($.extend(muraInlineEditor.data,data)),
+									validations: JSON.stringify(validations)
 								},
 							success: function(resp) {
 		 				 		data=eval('(' + resp + ')');
