@@ -139,6 +139,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn event("contentRenderer")>
 </cffunction>
 
+<cffunction name="getSiteRenderer" output="false" returntype="any">
+	<cfreturn getContentRenderer()>
+</cffunction>
+
 <cffunction name="getThemeRenderer" output="false" returntype="any">
 	<cfif isObject(event("themeRenderer"))>
 		<cfreturn event("themeRenderer")>
