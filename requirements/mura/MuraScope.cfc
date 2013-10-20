@@ -506,16 +506,25 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="getCrumbPropertyArray" output="false">
 	<cfargument name="property">
 	<cfargument name="direction" default="desc">
+	<cfargument name="includeHome" default="true">
 	<cfset var it=content().getCrumbIterator()>
 	<cfset var propertyArray=[]>
+	<cfset var item="">
+
 	<cfif arguments.direction eq "desc">
 		<cfset it.end()>
 		<cfloop condition="it.hasPrevious()">
-			<cfset arrayAppend(propertyArray,it.previous().getValue(arguments.property))>
+			<cfset item=it.previous()>
+			<cfif arguments.includeHome or item.getValue('contentid') neq '00000000000000000000000000000000001'>
+				<cfset arrayAppend(propertyArray,item.getValue(arguments.property))>
+			</cfif>
 		</cfloop>
 	<cfelse>
 		<cfloop condition="it.hasNext()">
-			<cfset arrayAppend(propertyArray,it.next().getValue(arguments.property))>
+			<cfset item=it.next()>
+			<cfif arguments.includeHome or item.getValue('contentid') neq '00000000000000000000000000000000001'>
+				<cfset arrayAppend(propertyArray,item.getValue(arguments.property))>
+			</cfif>
 		</cfloop>
 	</cfif>
 	<cfreturn propertyArray>

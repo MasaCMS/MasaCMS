@@ -44,7 +44,7 @@
 						--->
 						<script>
 							$(function(){
-								$(#serializeJSON($.getCrumbPropertyArray('url'))#).each(
+								$(#serializeJSON($.getCrumbPropertyArray(property='url',direction="desc",displayHome=false))#).each(
 									function(index, value){
 										$("##navPrimary [href='" + value + "']").closest("li").addClass("active");
 									}
