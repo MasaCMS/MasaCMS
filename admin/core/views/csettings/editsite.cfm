@@ -406,6 +406,22 @@ to your own modified versions of Mura CMS.
           </div>
           </div>
       </div>
+   
+        <div class="control-group">
+         <div class="span3">
+        <label class="control-label">#application.rbFactory.getKeyValue(session.rb,'siteconfig.sharedresources.filepool')#</label>
+        <div class="controls">
+            <select class="span12"  name="filePoolID">
+            <option value="">This site</option>
+            <cfloop query="rsSites">
+                <cfif rsSites.siteid neq rc.siteBean.getSiteID()>
+                <option value="#rsSites.siteid#" <cfif rsSites.siteid eq rc.siteBean.getFilePoolID()>selected</cfif>>#HTMLEditFormat(rsSites.site)#</option>
+              </cfif>
+              </cfloop>
+          </select>
+          </div>
+          </div>
+           </div>
         </div>
     </div>
     

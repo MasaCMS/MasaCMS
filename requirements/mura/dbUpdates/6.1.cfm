@@ -96,5 +96,8 @@
 	.addIndex('remoteid')
 	.addIndex('siteid');
 
+	dbUtility.setTable('tsettings')
+	.addColumn(column="filePoolID",datatype="varchar",length=25);
+
 
 </cfscript>

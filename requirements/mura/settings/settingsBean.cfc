@@ -266,6 +266,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset variables.instance.displayPoolID=variables.instance.siteID />
 	</cfif>
 
+	<cfif variables.instance.filePoolID eq ''>
+		<cfset variables.instance.filePoolID=variables.instance.siteID />
+	</cfif>
+
 	<cfreturn this>
  </cffunction>
 
