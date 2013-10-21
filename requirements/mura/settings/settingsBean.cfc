@@ -747,10 +747,11 @@ s
 <cffunction name="isValidDomain" output="false" returntype="boolean">
 	<cfargument name="domain">
 	<cfargument name="mode" required="true" default="either">
+	<cfargument name="enforcePrimaryDomain" default="false">
 	<cfset var i="">
 	<cfset var lineBreak=chr(13)&chr(10)>
 	
-	<cfif variables.instance.enforcePrimaryDomain>
+	<cfif arguments.enforcePrimaryDomain and variables.instance.enforcePrimaryDomain>
 		<cfif arguments.domain eq getDomain()>
 			<cfreturn true>
 		</cfif>

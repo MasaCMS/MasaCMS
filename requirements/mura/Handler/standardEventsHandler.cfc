@@ -530,7 +530,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfargument name="event" required="true">
 	
 	<cfif (application.configBean.getMode() eq 'production' and yesNoFormat(arguments.event.getValue("muraValidateDomain"))
-				and not application.settingsManager.getSite(request.siteID).isValidDomain(domain:listFirst(cgi.http_host,":"), mode: "either")) 
+				and not application.settingsManager.getSite(request.siteID).isValidDomain(domain:listFirst(cgi.http_host,":"), mode: "either",enforcePrimaryDomain=true)) 
 				and not (listFirst(cgi.http_host,":") eq 'LOCALHOST' and cgi.HTTP_USER_AGENT eq 'vspider')>
 			<cfset arguments.event.getHandler("standardWrongDomain").handle(arguments.event)>
 		</cfif>
