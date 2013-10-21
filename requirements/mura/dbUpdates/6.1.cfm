@@ -10,6 +10,7 @@
 	getBean('fileMetaData').checkSchema();
 	getBean('file').checkSchema();
 	getBean('razunaSettings').checkSchema();
+	getBean('contentFilenameArchive').checkSchema();
 
 	dbUtility.setTable("tclassextend")
 	.addColumn(column="iconclass",dataType="varchar",length="50")
