@@ -10,6 +10,7 @@
 	getBean('fileMetaData').checkSchema();
 	getBean('file').checkSchema();
 	getBean('razunaSettings').checkSchema();
+	getBean('contentFilenameArchive').checkSchema();
 
 	dbUtility.setTable("tclassextend")
 	.addColumn(column="iconclass",dataType="varchar",length="50")
@@ -95,6 +96,9 @@
 	.addIndex('subtype')
 	.addIndex('remoteid')
 	.addIndex('siteid');
+
+	dbUtility.setTable('tsettings')
+	.addColumn(column="filePoolID",datatype="varchar",length=25);
 
 
 </cfscript>

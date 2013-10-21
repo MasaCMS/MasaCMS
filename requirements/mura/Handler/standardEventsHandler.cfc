@@ -350,6 +350,16 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 
 	<cfif arguments.event.getValue("contentBean").getIsNew()>
+		<cfset var archived=getBean('contentFilenameArchive').loadBy(filename=event.getValue('currentFilenameAdjusted'),siteid=event.getValue('siteid'))>
+		<cfif not archived.getIsNew()>
+			<cfset var archiveBean=getBean('content').loadBy(contentid=archived.getContentID(),siteid=event.getValue('siteid'))>
+			<cfif not archiveBean.getIsNew()>
+				<cflocation url="#archiveBean.getURL()#" addtoken="false" statuscode="301">
+			</cfif>
+		</cfif>
+	</cfif>
+
+	<cfif arguments.event.getValue("contentBean").getIsNew()>
 		<cfset arguments.event.setValue('contentBean',application.contentManager.getActiveContentByFilename("404",arguments.event.getValue('siteid'),true)) />
 			
 		<cfif len(arguments.event.getValue('previewID'))>
