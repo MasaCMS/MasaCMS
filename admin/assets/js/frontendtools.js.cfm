@@ -381,7 +381,8 @@
 						}
 					}
 				);
-			} catch(err){ 
+			} catch(err){
+				alert("An error has occurred, please check your browser console for more information."); 
 				console.log(err);
 			}
 
