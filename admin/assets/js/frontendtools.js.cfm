@@ -349,37 +349,42 @@
 			}
 		},
 		save:function(){
-			muraInlineEditor.validate(
-				function(){
-					var count=0;
-					for (var prop in muraInlineEditor.attributes) {
-						var attribute=$(muraInlineEditor.attributes[prop]).attr('data-attribute');
-						muraInlineEditor.data[attribute]=muraInlineEditor.getAttributeValue(attribute);
-						count++;
-					}
-
-					if(count){
-						if(muraInlineEditor.data.approvalstatus=='Pending'){
-							if(confirm('#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"approvalchains.cancelPendingApproval"))#')){
-								muraInlineEditor.data.cancelpendingapproval=true;
-							} else {
-								muraInlineEditor.data.cancelpendingapproval=false;
-							}
-
+			try{
+				muraInlineEditor.validate(
+					function(){
+						var count=0;
+						for (var prop in muraInlineEditor.attributes) {
+							var attribute=$(muraInlineEditor.attributes[prop]).attr('data-attribute');
+							muraInlineEditor.data[attribute]=muraInlineEditor.getAttributeValue(attribute);
+							count++;
 						}
 
-						$.post(adminLoc,
-							muraInlineEditor.data,
-							function(data){
-								var resp = eval('(' + data + ')');
-								location.href=resp.location;
+						if(count){
+							if(muraInlineEditor.data.approvalstatus=='Pending'){
+								if(confirm('#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"approvalchains.cancelPendingApproval"))#')){
+									muraInlineEditor.data.cancelpendingapproval=true;
+								} else {
+									muraInlineEditor.data.cancelpendingapproval=false;
+								}
+
 							}
-						);
-					} else {
-						location.reload();
+
+							$.post(adminLoc,
+								muraInlineEditor.data,
+								function(data){
+									var resp = eval('(' + data + ')');
+									location.href=resp.location;
+								}
+							);
+						} else {
+							location.reload();
+						}
 					}
-				}
-			);
+				);
+			} catch(err){
+				alert("An error has occurred, please check your browser console for more information."); 
+				console.log(err);
+			}
 
 			return false;		
 		},
