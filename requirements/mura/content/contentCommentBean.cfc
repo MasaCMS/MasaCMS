@@ -231,16 +231,53 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset eventArgs.commentBean=this>
 	<cfset pluginEvent.init(eventArgs)>
 	
-	<cfset variables.trashManager.throwIn(this)>
-	
 	<cfset pluginManager.announceEvent("onBeforeCommentDelete",pluginEvent)>
 	
 	<cfquery>
-	delete from tcontentcomments
-	where path like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#getCommentID()#%">
+	update tcontentcomments set isDeleted = 1 where commentID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
 	</cfquery>
 	
 	<cfset pluginManager.announceEvent("onAfterCommentDelete",pluginEvent)>
+	
+	<cfset variables.contentManager.setCommentStat(variables.instance.contentID,variables.instance.siteID) />
+</cffunction>
+
+<cffunction name="flag" access="public">
+	<cfset var pluginManager=getPluginManager()>
+	<cfset var pluginEvent=createObject("component","mura.event")>
+	<cfset var eventArgs=structNew()>
+	
+	<cfset eventArgs.siteID=variables.instance.siteID>
+	<cfset eventArgs.commentBean=this>
+	<cfset pluginEvent.init(eventArgs)>
+	
+	<cfset pluginManager.announceEvent("onBeforeCommentFlag",pluginEvent)>
+	
+	<cfquery>
+	update tcontentcomments set flagCount = flagCount + 1 where commentID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
+	</cfquery>
+	
+	<cfset pluginManager.announceEvent("onAfterCommentFlag",pluginEvent)>
+	
+	<cfset variables.contentManager.setCommentStat(variables.instance.contentID,variables.instance.siteID) />
+</cffunction>
+
+<cffunction name="markAsSpam" access="public">
+	<cfset var pluginManager=getPluginManager()>
+	<cfset var pluginEvent=createObject("component","mura.event")>
+	<cfset var eventArgs=structNew()>
+	
+	<cfset eventArgs.siteID=variables.instance.siteID>
+	<cfset eventArgs.commentBean=this>
+	<cfset pluginEvent.init(eventArgs)>
+	
+	<cfset pluginManager.announceEvent("onBeforeCommentFlag",pluginEvent)>
+	
+	<cfquery>
+	update tcontentcomments set isSpam = 1 where commentID = <cfqueryparam cfsqltype="cf_sql_varchar" value="#getCommentID()#">
+	</cfquery>
+	
+	<cfset pluginManager.announceEvent("onAfterCommentFlag",pluginEvent)>
 	
 	<cfset variables.contentManager.setCommentStat(variables.instance.contentID,variables.instance.siteID) />
 </cffunction>
@@ -271,7 +308,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset validate()>
 
 	<cfif structIsEmpty(getErrors())>	
-	
+		<cfset setCommenter()>
+		
 		<cfset pluginManager.announceEvent("onBeforeCommentSave",pluginEvent)>
 		
 		<cfif getQuery().recordcount>
@@ -347,7 +385,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			variables.instance.removeObjects=[];
 		</cfscript>
 
-		
 		<cfset pluginManager.announceEvent("onAfterCommentSave",pluginEvent)>
 		
 		<cfif variables.instance.isApproved>
@@ -579,6 +616,20 @@ To Unsubscribe Click Here:
 
 <cffunction name="getPrimaryKey" output="false">
 	<cfreturn "commentID">
+</cffunction>
+
+<cffunction name="setCommenter" access="private" output="false">
+	<cfset var pluginEvent=createObject("component","mura.event")>
+	<cfset var eventArgs=structNew()>
+	<cfset var commenter=getBean('commenter')>
+
+	<cfset eventArgs.siteID=variables.instance.siteID>
+	<cfset eventArgs.commentBean=this>
+	<cfset eventArgs.commenterBean=commenter>
+	<cfset structAppend(eventArgs, arguments)>
+
+	<cfset pluginEvent.init(eventArgs)>
+	<cfset pluginEvent.getHandler("standardSetCommenter").handle(pluginEvent)>
 </cffunction>
 
 </cfcomponent>

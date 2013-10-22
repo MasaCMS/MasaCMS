@@ -118,6 +118,7 @@
 			<cfparam name="request.securityCode" default="">
 			<cfparam name="session.securityCode" default="">
 			<cfparam name="request.deletecommentid" default="">
+			<cfparam name="request.spamcommentid" default="">
 			<cfparam name="request.approvedcommentid" default="">
 			<cfparam name="request.isApproved" default="1">
 			<cfparam name="request.hkey" default="">
@@ -222,6 +223,10 @@
 
 			<cfif request.isEditor and request.deletecommentid neq "" >
 				<cfset application.contentManager.deleteComment(request.deletecommentid) />
+			</cfif>
+
+			<cfif request.isEditor and request.spamcommentid neq "" >
+				<cfset application.contentManager.markCommentAsSpam(request.spamcommentid) />
 			</cfif>
 
 			<cfif request.approvedcommentid neq "" >

@@ -1,0 +1,1 @@
+<cfdump var="#application.serviceFActory.getBean('approvalChain').getSynthedFunctions()#">

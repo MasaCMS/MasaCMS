@@ -77,7 +77,8 @@
 				<cfif request.rsSubCommentsLevel.isApproved[arguments.currentrow] neq 1>
 					 <a class="btn btn-default" href="./?approvedcommentid=#request.rsSubCommentsLevel.commentid[arguments.currentrow]#&amp;nocache=1&amp;linkServID=#variables.$.content('contentID')#" onClick="return confirm('Approve Comment?');">#variables.$.rbKey('comments.approve')#</a>
 				</cfif>
-				 <a class="btn btn-default" href="./?deletecommentid=#request.rsSubCommentsLevel.commentid[arguments.currentrow]#&amp;nocache=1&amp;linkServID=#variables.$.content('contentID')#" onClick="return confirm('Delete Comment?');">#variables.$.rbKey('comments.delete')#</a>		
+				 <a class="btn btn-default" href="./?deletecommentid=#request.rsSubCommentsLevel.commentid[arguments.currentrow]#&amp;nocache=1&amp;linkServID=#variables.$.content('contentID')#" onClick="return confirm('Delete Comment?');">#variables.$.rbKey('comments.delete')#</a>
+				 <a class="btn btn-default" href="./?spamcommentid=#request.rsSubCommentsLevel.commentid[arguments.currentrow]#&amp;nocache=1&amp;linkServID=#variables.$.content('contentID')#" onClick="return confirm('Mark Comment As Spam?');">Spam</a>		
 			</cfif>
 		</dt>
 		<cfif len(variables.$.currentUser().getPhotoFileID())>
@@ -92,6 +93,7 @@
 			#LSDateFormat(request.rsSubCommentsLevel.entered[arguments.currentrow],"long")#, #LSTimeFormat(request.rsSubCommentsLevel.entered[arguments.currentrow],"short")#
 		</dd>
 		<dd class="reply"><a data-id="#request.rsSubCommentsLevel.commentid[arguments.currentrow]#" href="##postcomment">#variables.$.rbKey('comments.reply')#</a></dd>
+		<dd class="spam"><a data-id="#request.rsSubCommentsLevel.commentid[arguments.currentrow]#" class="flagAsSpam" href="##">Flag as Spam</a></dd>
 		<dd id="postcomment-#request.rsSubCommentsLevel.commentid[arguments.currentrow]#"></dd>
 	</dl>
 </cfoutput>

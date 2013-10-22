@@ -65,4 +65,11 @@
 		<cfabort>
 	</cffunction>
 
+	<cffunction name="flag" access="remote" output="true">
+		<cfargument name="commentID">
+		<cfset var $=getBean("MuraScope").init(session.siteid)>
+		<cfset var comment=$.getBean("contentManager").getCommentBean()>
+		<cfset comment.setCommentID(arguments.commentID).load().flag()>
+	</cffunction>
+
 </cfcomponent>

@@ -150,6 +150,23 @@ jQuery(document).ready(function() {
 		jQuery("#postcomment [name=commenteditmode]").val("add");
 		$editor.slideDown();
 	});
-	
-	
+
+	jQuery("a.flagAsSpam").on('click', function( event ) {
+		event.preventDefault();
+		var a = jQuery(this);
+		var id = a.attr('data-id');
+		
+		var actionURL=$commentsProxyPath + "?method=flag&commentID=" + id;
+		jQuery.get(
+			actionURL,
+			function(data){
+				console.log(a);
+				a.html('Flagged as Spam');
+				a.unbind('click');
+				a.on('click', function( event ) {
+					event.preventDefault();
+				});
+			}
+		);
+	});
 });

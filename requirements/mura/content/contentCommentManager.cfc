@@ -104,8 +104,16 @@ component persistent="false" accessors="true" output="false" extends="mura.cfobj
 			qComments.addParam(name='commentid', value=arguments.commentid, cfsqltype='cf_sql_varchar');
 		}
 
+		// keywords
+		if ( StructKeyExists(arguments, 'keywords') ) {
+			local.qryStr &= ' AND (comments like ( :comments ) ';
+			qComments.addParam(name='comments', value="%#arguments.keywords#%", cfsqltype='cf_sql_varchar');
+			local.qryStr &= ' OR name like ( :name )) ';
+			qComments.addParam(name='name', value="%#arguments.keywords#%", cfsqltype='cf_sql_varchar');
+		}
+
 		//contentid
-		if ( StructKeyExists(arguments, 'contentid') ) {
+		if ( StructKeyExists(arguments, 'contentid') and len(arguments.contentid)) {
 			local.qryStr &= ' AND contentid = ( :contentid ) ';
 			qComments.addParam(name='contentid', value=arguments.contentid, cfsqltype='cf_sql_varchar');
 		}
@@ -144,6 +152,30 @@ component persistent="false" accessors="true" output="false" extends="mura.cfobj
 		if ( StructKeyExists(arguments, 'isapproved') ) {
 			local.qryStr &= ' AND isapproved = ( :isapproved ) ';
 			qComments.addParam(name='isapproved', value=arguments.isapproved, cfsqltype='cf_sql_integer');
+		}
+
+		// isspam
+		if ( StructKeyExists(arguments, 'isspam') ) {
+			local.qryStr &= ' AND isspam = ( :isspam ) ';
+			qComments.addParam(name='isspam', value=arguments.isspam, cfsqltype='cf_sql_integer');
+		}
+
+		// isdeleted
+		if ( StructKeyExists(arguments, 'isdeleted') ) {
+			local.qryStr &= ' AND isdeleted = ( :isdeleted ) ';
+			qComments.addParam(name='isdeleted', value=arguments.isdeleted, cfsqltype='cf_sql_integer');
+		}
+
+		// startdate
+		if ( StructKeyExists(arguments, 'startdate') && isDate(arguments.startdate) ) {
+			local.qryStr &= ' AND entered >= :startdate ';
+			qComments.addParam(name='startdate', value=arguments.startdate, cfsqltype='cf_sql_date');
+		}
+
+		// enddate
+		if ( StructKeyExists(arguments, 'enddate') && isDate(arguments.enddate) ) {
+			local.qryStr &= ' AND entered <= :enddate ';
+			qComments.addParam(name='enddate', value=arguments.enddate, cfsqltype='cf_sql_date');
 		}
 
 		local.qryStr &= ' ORDER BY ' & arguments.sortby & ' ' & arguments.sortdirection;
@@ -189,6 +221,18 @@ component persistent="false" accessors="true" output="false" extends="mura.cfobj
 		return true;
 	}
 
+	public boolean function markAsSpam(required string commentid) {
+		var commentBean = getCommentBeanByCommentID(arguments.commentid);
+
+		try {
+			getContentManager().markAsSpam(arguments.commentid);
+		} catch(any e) {
+			handleError(e);
+		}
+
+		return true;
+	}
+
 
 	public any function getCommentBeanByCommentID(required string commentid) {
 		return getContentManager().getCommentBean().setCommentID(arguments.commentID).load();
@@ -214,7 +258,6 @@ component persistent="false" accessors="true" output="false" extends="mura.cfobj
 		return true;
 	}
 
-
 	private any function handleError(required any error) {
 		if ( getDebug() ) {
 			WriteDump(arguments.error);
@@ -222,6 +265,46 @@ component persistent="false" accessors="true" output="false" extends="mura.cfobj
 		} else {
 			return false;
 		}
+	}
+
+	public string function dspCategoriesNestSelect(string siteID, string parentID, string categoryID, numeric nestLevel, numeric useID, string elementName){
+		var rsList = getBean('categoryManager').getCategories(arguments.siteID, arguments.parentID, "");
+		var row = "";
+		var o = "";
+		var elemID = "";
+		var elemClass = "";
+		var classList = "categories";
+		var elemChecked = "";
+		
+		if (rsList.recordCount) {
+			if (arguments.useID) {
+				elemID = ' id="mura-nodes"';
+			}
+			if (arguments.nestLevel eq 0) {
+				classList = listAppend(classList, "checkboxTree", " ");
+			}
+			elemClass = ' class="' & classList & '"';
+			o &= "<ul#elemID##elemClass#>";
+			
+			for (row in rsList) {
+				o &= "<li>";
+				if (row.isOpen eq 1) {
+					if (listfind(arguments.categoryID, row.categoryID)) {
+						elemChecked = " checked";
+					} else {
+						elemChecked = "";
+					}
+					o &= '<input type="checkbox" name="#arguments.elementName#" class="checkbox" value="#rslist.categoryID#"#elemChecked#/> ';
+				}
+				o &= row.name;
+				if (row.hasKids) {
+					o &= dspCategoriesNestSelect(arguments.siteID, row.categoryID, arguments.categoryID, ++arguments.nestLevel, 0, arguments.elementName)
+				}
+				o &= "</li>";
+			}
+			o &= "</ul>";
+		}
+		return o;
 	}
 
 }

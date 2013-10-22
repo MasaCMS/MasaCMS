@@ -1364,6 +1364,8 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfargument name="sortOrder" type="string" required="true" default="asc">
 	<cfargument name="parentID" type="string" required="true" default="">
 	<cfargument name="filterByParentID" type="boolean" required="true" default="true">
+	<cfargument name="includeSpam" type="boolean" required="true" default="false">
+	<cfargument name="includeDeleted" type="boolean" required="true" default="false">
 	<cfset var rsComments= ''/>
 	
 	<cfquery name="rsComments">
@@ -1379,6 +1381,12 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 								  	<cfif not arguments.isEditor>
 									and isApproved=1
 									</cfif>
+									<cfif not arguments.includeSpam>
+									and isSpam=0
+									</cfif>
+									<cfif not arguments.includeDeleted>
+									and isDeleted = 0
+									</cfif>
 								  )
 				group by parentID
 				
@@ -1391,6 +1399,12 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfif not arguments.isEditor>
 	and c.isApproved=1
 	</cfif>
+	<cfif not arguments.includeSpam>
+	and c.isSpam=0
+	</cfif>
+	<cfif not arguments.includeDeleted>
+	and c.isDeleted = 0
+	</cfif>
 	order by c.entered #arguments.sortOrder#
 	</cfquery>
 
@@ -1401,6 +1415,8 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfargument name="siteID" type="string" required="true" default="">
 	<cfargument name="size" type="numeric" required="true" default="5">
 	<cfargument name="approvedOnly" type="boolean" required="true" default="true">
+	<cfargument name="includeSpam" type="boolean" required="true" default="false">
+	<cfargument name="includeDeleted" type="boolean" required="true" default="false">
 	
 	<cfset var rsRecentComments= ''/>
 	<cfset var dbType=variables.configBean.getDbType() />
@@ -1418,6 +1434,12 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfif arguments.approvedOnly>
 	and approved=1
 	</cfif>
+	<cfif not arguments.includeSpam>
+	and isSpam=0
+	</cfif>
+	<cfif not arguments.includeDeleted>
+	and isDeleted=0
+	</cfif>
 	order by entered desc
 	<cfif dbType eq "nuodb" and arguments.size>fetch <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.size#" /></cfif>
 	<cfif listFindNoCase("mysql,postgresql", dbType) and arguments.size>limit <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.size#" /></cfif>
@@ -1431,13 +1453,21 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfargument name="contentID" type="String" required="true" default="">
 	<cfargument name="siteID" type="string" required="true" default="">
 	<cfargument name="isEditor" type="boolean" required="true" default="false">
+	<cfargument name="includeSpam" type="boolean" required="true" default="false">
+	<cfargument name="includeDeleted" type="boolean" required="true" default="false">
 	<cfset var rs= ''/>
 	
 	<cfquery name="rs">
-	select count(*) TotalComments from tcontentcomments where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentid#"/> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
-	<cfif not arguments.isEditor >
-	and isApproved=1
-	</cfif>
+		select count(*) TotalComments from tcontentcomments where contentid= <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.contentid#"/> and siteid=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+		<cfif not arguments.isEditor>
+			and isApproved=1
+		</cfif>
+		<cfif not arguments.includeSpam>
+			and isSpam = 0
+		</cfif>
+		<cfif not arguments.includeDeleted>
+			and isDeleted = 0
+		</cfif>
 	</cfquery>
 	
 	<cfreturn rs.TotalComments />
@@ -1455,6 +1485,8 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	and email is not null
 	and isApproved=1
 	and subscribe=1
+	and isSpam=0
+	and isDeleted=0
 	</cfquery>
 	
 	<cfreturn rsCommentSubscribers />
