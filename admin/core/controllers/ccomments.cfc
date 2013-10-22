@@ -102,9 +102,7 @@ component persistent="false" accessors="true" output="false" extends="controller
 			}
 		}
 
-		getFW().redirect(action='cComments.default', preserve='processed,isapproved,siteid',path="./");
 	}
-
 
 	public void function approve(required struct rc) {
 		rc.processed = false;

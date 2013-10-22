@@ -68,7 +68,7 @@
 		<!--- <cfdump var="#rc.itComments.getQuery()#" abort="true"> --->
 		<cfif rc.itComments.hasNext()>
 			<!--- FORM --->
-			<form name="frmUpdate" id="frmUpdate" method="post" action="#buildURL(action='cComments.bulkedit', querystring='pageno=#rc.pageno#&sortby=#rc.sortby#&sortdirection=#rc.sortdirection#')#">
+			<form name="frmUpdate" id="frmUpdate">
 				<input type="hidden" name="bulkedit" id="bulkedit" value="" />
 				<!--- BULK EDIT BUTTONS --->
 				<div class="row-fluid">
@@ -80,10 +80,10 @@
 									<span class="caret"></span>
 								</a>
 								<ul class="dropdown-menu">
-									<li><a id="approveComments" href="##"><i class="icon-ok"></i> Approved</a></li>
-									<li><a><i class="icon-flag"></i> Spam</a></li>
-									<li><a><i class="icon-ban-circle"></i> Disapproved</a></li>
-									<li><a><i class="icon-remove-sign"></i> Deleted</a></li>
+									<li><a href="##" class="bulkEdit" data-alertmessage="#rc.$.rbKey('comments.message.confirm.approve')#" data-action="approve"><i class="icon-ok"></i> Approved</a></li>
+									<li><a href="##" class="bulkEdit" data-alertmessage="Are you sure you want to mark the selected comments as spam?" data-action="spam"><i class="icon-flag"></i> Spam</a></li>
+									<li><a href="##" class="bulkEdit" data-alertmessage="#rc.$.rbKey('comments.message.confirm.disapprove')#" data-action="disapprove"><i class="icon-ban-circle"></i> Disapproved</a></li>
+									<li><a href="##" class="bulkEdit" data-alertmessage="#rc.$.rbKey('comments.message.confirm.delete')#" data-action="delete"><i class="icon-remove-sign"></i> Deleted</a></li>
 								</ul>
 							</div>
 						</div>
@@ -232,29 +232,6 @@
 				</table>
 			</form>
 
-			<!--- BULK EDIT BUTTONS --->
-			<!---
-			<div class="span9">
-				<div class="commentform-actions">
-					<cfif rc.isapproved>
-						<button type="button" class="btn" id="btnDisapproveComments">
-							<i class="icon-ban-circle"></i> 
-							#rc.$.rbKey('comments.disapproveselectedcomments')#
-						</button>
-					<cfelse>
-						<button type="button" class="btn" id="btnApproveComments">
-							<i class="icon-ok"></i> 
-							#rc.$.rbKey('comments.approveselectedcomments')#
-						</button>
-					</cfif>
-					<button type="button" class="btn" id="btnDeleteComments">
-						<i class="icon-remove-sign"></i> 
-						#rc.$.rbKey('comments.deleteselectedcomments')#
-					</button>
-				</div>
-			</div>
-			--->
-
 			<!--- RECORDS PER PAGE --->
 			
 			<div class="view-controls row-fluid">
@@ -321,89 +298,7 @@
 					</div>
 				</cfif>
 			</div>
-			
-			<!--- /@END RECORDS PER PAGE --->
-			
-			<!--- SCRIPTS --->
-			<script type="text/javascript">
-				jQuery(function ($) {
-					// CHECKBOXES
-					$('##checkall').click(function (e) {
-						e.preventDefault();
-						var checkBoxes = $(':checkbox.checkall');
-						checkBoxes.prop('checked', !checkBoxes.prop('checked'));
-					});
-
-					// APPROVE
-					$('##approveComments').click(function(e) {
-						e.preventDefault();
-						confirmDialog(
-							'#rc.$.rbKey("comments.message.confirm.approve")#'
-							,function(){
-								actionModal(
-									function(){
-										$('.commentform-actions').hide();
-										$('##bulkedit').val('approve');
-										$('##actionIndicator').show();
-										//$('##frmUpdate').submit();
-										console.log($('##frmUpdate'));
-									}
-								);
-							}
-						)
-					});
-
-					// DISAPPROVE
-					$('##btnDisapproveComments').click(function() {
-						confirmDialog(
-							'#rc.$.rbKey("comments.message.confirm.disapprove")#'
-							,function(){
-								actionModal(
-									function(){
-										$('.commentform-actions').hide();
-										$('##bulkedit').val('disapprove');
-										$('##actionIndicator').show();
-										$('##frmUpdate').submit();
-									}
-								);
-							}
-						)
-					});
-
-					// DELETE
-					$('##btnDeleteComments').click(function() {
-						confirmDialog(
-							'#rc.$.rbKey("comments.message.confirm.delete")#'
-							,function(){
-								actionModal(
-									function(){
-										$('.commentform-actions').hide();
-										$('##bulkedit').val('delete');
-										$('##actionIndicator').show();
-										$('##frmUpdate').submit();
-									}
-								);
-							}
-						)
-					});
-
-					$('##btnSpamComments').click(function() {
-						confirmDialog(
-							'Mark As Spam?'
-							,function(){
-								actionModal(
-									function(){
-										$('.commentform-actions').hide();
-										$('##bulkedit').val('spam');
-										$('##actionIndicator').show();
-										$('##frmUpdate').submit();
-									}
-								);
-							}
-						)
-					});
-				});
-			</script>
+			<!--- /@END RECORDS PER PAGE --->		
 		<cfelse>
 			<div class="row-fluid">
 				<div class="span12">

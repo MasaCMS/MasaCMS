@@ -72,7 +72,7 @@
 </style>
 <script>
 	$(document).ready(function(){
-		commentManager.loadSearch(siteid, 1, '', false);
+		commentManager.loadSearch('', false);
 	});	
 </script>
 <cfoutput>
