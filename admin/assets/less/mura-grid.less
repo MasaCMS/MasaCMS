@@ -159,13 +159,13 @@
 					
 				&.file {
 					
-					/* margin-left: -3px; */
 					padding-left: 36px;
 					position: relative;
 					
 					&:before {
 					position: absolute;
-					left: 2px;
+					left: 0;
+					width: auto;
 					content: attr(data-filetype);
 					font-family: 'SilkscreenNormal';
 					font-size: 8px;
@@ -173,9 +173,11 @@
 					.inline-block;
 					color: @white;
 					background: @iconColor;
+					//#gradient .vertical (lighten(@grayDark,20%),@grayDark);
 					padding: 3px 4px;
 					.border-radius(2px);
-					overflow: hidden;					
+					overflow: hidden;
+					top: 7px;				
 					}
 					
 					&.gif,
@@ -187,7 +189,7 @@
 					
 						&:before {
 							position: relative;
-							top: 2px;
+							top: 3px;
 						}
 					}
 				}
