@@ -90,8 +90,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 --->
 <th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.update')#</th> 
 <th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.time')#</th>
-<th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.authoreditor')#</th> </cfoutput>
-<th nowrap class="actions">&nbsp;</th>
+<th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.authoreditor')#</th>
+<th nowrap class="actions">&nbsp;</th> 
+</cfoutput>
 </tr> 
 </thead>
 <tbody>
