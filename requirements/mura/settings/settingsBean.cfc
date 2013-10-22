@@ -212,6 +212,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.contentRejectionScript=""/>
 	<cfset variables.instance.enableLockdown=""/>
 	<cfset variables.instance.customTagGroups=""/>
+	<cfset variables.instance.hasSharedFilePool=""/>
 
 	<cfreturn this />
 </cffunction>
@@ -264,6 +265,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			
 	<cfif variables.instance.displayPoolID eq ''>
 		<cfset variables.instance.displayPoolID=variables.instance.siteID />
+	</cfif>
+
+	<cfif variables.instance.filePoolID eq ''>
+		<cfset variables.instance.filePoolID=variables.instance.siteID />
 	</cfif>
 
 	<cfreturn this>
@@ -747,10 +752,11 @@ s
 <cffunction name="isValidDomain" output="false" returntype="boolean">
 	<cfargument name="domain">
 	<cfargument name="mode" required="true" default="either">
+	<cfargument name="enforcePrimaryDomain" default="false">
 	<cfset var i="">
 	<cfset var lineBreak=chr(13)&chr(10)>
 	
-	<cfif variables.instance.enforcePrimaryDomain>
+	<cfif arguments.enforcePrimaryDomain and variables.instance.enforcePrimaryDomain>
 		<cfif arguments.domain eq getDomain()>
 			<cfreturn true>
 		</cfif>
@@ -895,6 +901,23 @@ if(not isObject(arguments.$)){
 		<cfset variables.razunaSettings=getBean('razunaSettings').loadBy(siteid=getValue('siteid'))>
 	</cfif>
 	<cfreturn variables.razunaSettings>
+</cffunction>
+
+<cffunction name="getHasSharedFilePool" output="false">
+	<cfif not isBoolean(variables.instance.hasSharedFilePool)>
+		<cfif getValue('siteid') neq getValue('filePoolID')>
+			<cfset variables.instance.hasSharedFilePool=true/>
+		<cfelse>
+			<cfset var rs="">
+			<cfquery name="rs">
+				select count(*) as count from tsettings
+				where filePoolID=<cfqueryparam cfsqltype="cf_sql_varchar" value='#getValue('siteid')#'>
+				and siteid!=<cfqueryparam cfsqltype="cf_sql_varchar" value='#getValue('siteid')#'>
+			</cfquery>
+			<cfset variables.instance.hasSharedFilePool=rs.count/>
+		</cfif>
+	</cfif>
+	<cfreturn variables.instance.hasSharedFilePool>
 </cffunction>
 
 </cfcomponent>

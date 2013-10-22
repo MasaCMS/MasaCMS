@@ -10,6 +10,7 @@
 	getBean('fileMetaData').checkSchema();
 	getBean('file').checkSchema();
 	getBean('razunaSettings').checkSchema();
+	getBean('contentFilenameArchive').checkSchema();
 
 	dbUtility.setTable("tclassextend")
 	.addColumn(column="iconclass",dataType="varchar",length="50")
@@ -76,5 +77,28 @@
 	dbUtility.setTable('tcontentcategoryassign')
 	.addIndex('contentID')
 	.addIndex('categoryID');
+
+	dbUtility.setTable('tpermissions')
+	.addIndex('siteid')
+	.addIndex('contentid')
+	.addIndex('type')
+	.addIndex('groupid');
+
+	dbUtility.setTable('tcontentfeeditems')
+	.addIndex('feedid')
+	.addIndex('itemid')
+	.addIndex('type');
+
+
+	dbUtility.setTable('tusers')
+	.addIndex('groupname')
+	.addIndex('type')
+	.addIndex('subtype')
+	.addIndex('remoteid')
+	.addIndex('siteid');
+
+	dbUtility.setTable('tsettings')
+	.addColumn(column="filePoolID",datatype="varchar",length=25);
+
 
 </cfscript>

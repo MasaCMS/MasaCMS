@@ -1498,8 +1498,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 	
 	<cfif kw neq '' or arguments.tag neq ''>
-         			(tcontent.Active = 1 
-			  		AND tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>)
+         	tcontent.Active = 1 
+			  	<cfif listFindNoCase("image,file",arguments.searchType)>
+					AND tcontent.siteID in (
+							select siteid 
+							from tsettings 
+							where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
+							or filePoolID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+						)
+			  	<cfelse>	
+			  		AND tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+				</cfif>
 					
 					AND
 					
@@ -1524,8 +1533,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 								or #renderTextParamColumn('tfiles.caption')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
 								or #renderTextParamColumn('tfiles.credits')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
 								or #renderTextParamColumn('tfiles.alttext')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
+								or #renderTextParamColumn('tcontentfilemetadata.caption')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
+								or #renderTextParamColumn('tcontentfilemetadata.credits')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
+								or #renderTextParamColumn('tcontentfilemetadata.alttext')# like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#renderTextParamValue(kw)#%"/>
 							</cfif>
-							
+	
 							or 
 								(
 									tcontent.type not in ('Link','File')
@@ -1586,9 +1598,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			tfiles.fileext in ('png','gif','jpg','jpeg') AND
 		</cfif>
 		
-		(tcontent.Active = 1 
-			  		AND tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>)
-					
+		tcontent.Active = 1 
+				<cfif listFindNoCase("image,file",arguments.searchType)>
+					AND tcontent.siteID in (
+							select siteid 
+							from tsettings 
+							where siteID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/> 
+							or filePoolID=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+						)
+			  	<cfelse>	
+			  		AND tcontent.siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.siteID#"/>
+				</cfif>
+
 					AND
 					
 					
@@ -1602,7 +1623,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 						(#renderTextParamColumn('tcontent.Title')# = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(kw)#"/>
 						or #renderTextParamColumn('tcontent.menuTitle')# = <cfqueryparam cfsqltype="cf_sql_varchar" value="#renderTextParamValue(kw)#"/>
 					
-		)				
+						)				
 	GROUP BY tcontent.ContentHistID, tcontent.ContentID, tcontent.Approved, tcontent.filename, tcontent.Active, tcontent.Type, tcontent.OrderNo, tcontent.ParentID, 
 		tcontent.Title, tcontent.menuTitle, tcontent.lastUpdate, tcontent.lastUpdateBy, tcontent.lastUpdateByID, tcontent.Display, tcontent.DisplayStart, tcontent.subtype,
 		tcontent.DisplayStop,  tcontent.isnav, tcontent.restricted,tcontent.isfeature,tcontent.inheritObjects,

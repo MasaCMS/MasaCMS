@@ -99,7 +99,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfparam name="data.categoryid" default="">
 		<cfparam name="data.tag" default="">
 		<cfparam name="data.tags" default="">
-
+		<cfparam name="data.sortBy" default="menutitle">
+		<cfparam name="data.sortDirection" default="asc">
 
 		
 		<cfswitch expression="#data.moduleid#">
@@ -113,13 +114,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				<cfelse>
 					<cfset feed.setType('Form')>
 				</cfif>
-				
+
 				<cfset feed.setSiteID(data.siteID)>
 				<cfset feed.setMaxItems(0)>
 				<cfset feed.setCategoryID(data.categoryid)>
 				<cfset feed.setShowExcludeSearch(1)>
 				<cfset feed.setLiveOnly(0)>
-				<cfset feed.setSortBy('menutitle')>
+				<cfset feed.setSortBy(data.sortBy)>
+				<cfset feed.setSortDirection(data.sortDirection)>
 				<cfif len(data.searchString)>
 					<cfset feed.addParam(relationship="(")>
 					<cfset feed.addParam(column="tcontent.title",criteria=data.searchString,condition="contains")>
@@ -1421,6 +1423,10 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					<cfloop query="local.rsApprovalsCancel">
 						<cfset getBean('approvalRequest').loadBy(requestID=local.rsApprovalsCancel.requestID).cancel()>
 					</cfloop>
+				</cfif>
+
+				<cfif newBean.getApproved() and listFindNoCase("File,Link,Page,Folder,Gallery,Calendar", newBean.getType())>
+					<cfset getBean('contentFilenameArchive').loadBy(filename=newBean.getFilename(),siteid=newBean.getSiteID()).setContentID(newBean.getContentID()).save()>
 				</cfif>
 
 				<!---

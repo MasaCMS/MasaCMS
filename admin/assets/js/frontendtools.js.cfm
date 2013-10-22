@@ -349,35 +349,38 @@
 			}
 		},
 		save:function(){
-			if(muraInlineEditor.validate()){
-				var count=0;
-				for (var prop in muraInlineEditor.attributes) {
-					var attribute=$(muraInlineEditor.attributes[prop]).attr('data-attribute');
-					muraInlineEditor.data[attribute]=muraInlineEditor.getAttributeValue(attribute);
-					count++;
-				}
-
-				if(count){
-					if(muraInlineEditor.data.approvalstatus=='Pending'){
-						if(confirm('#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"approvalchains.cancelPendingApproval"))#')){
-							muraInlineEditor.data.cancelpendingapproval=true;
-						} else {
-							muraInlineEditor.data.cancelpendingapproval=false;
-						}
-
+			muraInlineEditor.validate(
+				function(){
+					var count=0;
+					for (var prop in muraInlineEditor.attributes) {
+						var attribute=$(muraInlineEditor.attributes[prop]).attr('data-attribute');
+						muraInlineEditor.data[attribute]=muraInlineEditor.getAttributeValue(attribute);
+						count++;
 					}
 
-					$.post(adminLoc,
-						muraInlineEditor.data,
-						function(data){
-							var resp = eval('(' + data + ')');
-							location.href=resp.location;
+					if(count){
+						if(muraInlineEditor.data.approvalstatus=='Pending'){
+							if(confirm('#JSStringFormat(application.rbFactory.getKeyValue(session.rb,"approvalchains.cancelPendingApproval"))#')){
+								muraInlineEditor.data.cancelpendingapproval=true;
+							} else {
+								muraInlineEditor.data.cancelpendingapproval=false;
+							}
+
 						}
-					);
-				} else {
-					location.reload();
+
+						$.post(adminLoc,
+							muraInlineEditor.data,
+							function(data){
+								var resp = eval('(' + data + ')');
+								location.href=resp.location;
+							}
+						);
+					} else {
+						location.reload();
+					}
 				}
-			}
+			);
+
 			return false;		
 		},
 		stripHTML: function(html){
@@ -385,94 +388,134 @@
 			tmp.innerHTML = html;
 			return tmp.textContent||tmp.innerText;
 		},
-		validate: function(){
-				var errors="";
-				var setFocus=0;
-				var started=false;
-				var startAt;
-				var firstErrorNode;
-				var validationType='';
-				for (var prop in muraInlineEditor.attributes) {
-				 theField=muraInlineEditor.attributes[prop];
-				 validationType=getValidationType(theField);
-				 theValue=muraInlineEditor.getAttributeValue(prop);
-				 //alert(prop + ":" + theValue + " " + validationType);
-				if(getValidationIsRequired(theField) && theValue == "" )
-					{	
-						if (!started) {
-						started=true;
-						startAt=prop;
-						}
-						
-						errors += getValidationMessage(theField,' is required.');
-						 			
-					}
-				else if(validationType != ''){
-						
-					if(validationType=='EMAIL' && theValue != '' && !isEmail(theValue))
-					{	
-						if (!started) {
-						started=true;
-						startAt=prop;
-						}
-						
-						errors += getValidationMessage(theField,' must be a valid email address.');
-						
-					}
-			
-					else if(validationType=='NUMERIC' && isNaN(theValue))
-					{	
-						if(!isNaN(theValue.replace(/\$|\,|\%/g,'')))
-						{
-							theField.html(theValue.replace(/\$|\,|\%/g,''));
-			
-						} else {
-							if (!started) {
-							started=true;
-							startAt=prop;
-							}
-							
-							errors += getValidationMessage(theField,' must be numeric.');
-						}			
-					}
-					
-					else if(validationType=='REGEX' && theValue !='' && hasValidationRegex(theField))
-					{	
-						var re = new RegExp(getValidationRegex(theField));
-						if(!theValue.match(re))
-						{
-							if (!started) {
-							started=true;
-							startAt=prop;
-							}
-						
-							 errors += getValidationMessage(theField,' is not valid.');
-						}			
-					}
+		validate: function(callback){
+				var data={};
+				var $callback=callback;
 
-					else if(validationType=='DATE' && theValue != '' && !isDate(theValue))
-					{
-						if (!started) {
-						started=true;
-						startAt=prop;
+				for (var prop in muraInlineEditor.attributes) {
+					data[prop]=muraInlineEditor.getAttributeValue(prop);
+				}
+
+				var errors="";
+                var setFocus=0;
+                var started=false;
+                var startAt;
+                var firstErrorNode;
+                var validationType='';
+                var validations={properties:{}};
+                var rules=new Array();
+
+                for (var prop in muraInlineEditor.attributes) {
+                	theField=muraInlineEditor.attributes[prop];
+                    validationType=getValidationType(theField).toUpperCase();;
+                    theValue=muraInlineEditor.getAttributeValue(prop);
+		
+					rules=new Array();
+					
+					if(getValidationIsRequired(theField))
+						{	
+							rules.push({
+								required: true,
+								message: getValidationMessage(theField,' is required.')
+							});
+							
+							 			
+						}
+					if(validationType != ''){
+							
+						if(validationType=='EMAIL' && theValue != '')
+						{	
+								rules.push({
+									dataType: 'EMAIL',
+									message: getValidationMessage(theField,' must be a valid email address.')
+								});
+								
+										
+						}
+		
+						else if(validationType=='NUMERIC')
+						{	
+								rules.push({
+									dataType: 'NUMERIC',
+									message: getValidationMessage(theField,' must be numeric.')
+								});
+											
 						}
 						
-						errors += getValidationMessage(theField, ' must be a valid date [MM/DD/YYYY].' );
-						 
+						else if(validationType=='REGEX' && theValue !='' && hasValidationRegex(theField))
+						{	
+								rules.push({
+									regex: hasValidationRegex(theField),
+									message: getValidationMessage(theField,' is not valid.')
+								});
+												
+						}
+						
+						else if(validationType=='MATCH' 
+								&& hasValidationMatchField(theField) && theValue != theForm[getValidationMatchField(theField)].value)
+						{	
+							rules.push({
+								eq: theForm[getValidationMatchField(theField)].value,
+								message: getValidationMessage(theField, ' must match' + getValidationMatchField(theField) + '.' )
+							});
+										
+						}
+						
+						else if(validationType=='DATE' && theValue != '')
+						{
+							rules.push({
+								dataType: 'DATE',
+								message: getValidationMessage(theField, ' must be a valid date [MM/DD/YYYY].' )
+							});
+							 
+						}
 					}
-				}
 					
+					if(rules.length){
+						validations.properties[prop]=rules;
 					}
-				
-				if(errors != ""){	
-					alert(errors);
-					//muraInlineEditor.attributes[startAt].focus();
-					return false;
 				}
-				else
-				{
-					return true;
+
+				try{
+					//alert(JSON.stringify(validations))
+					$.ajax(
+						{
+							type: 'post',
+							url: context + '/tasks/validate/',
+							data: {
+									data: JSON.stringify($.extend(muraInlineEditor.data,data)),
+									validations: JSON.stringify(validations)
+								},
+							success: function(resp) {
+		 				 		data=eval('(' + resp + ')');
+
+		 				 		if($.isEmptyObject(data)){
+		 				 			$callback();
+		 				 		} else {
+			 				 		var msg='';
+			 				 		for(var e in data){
+			 				 			msg=msg + data[e] + '\n';
+			 				 		}
+
+			 				 		alert(msg);
+
+			 				 		return false;
+		 				 		}
+							},
+							error: function(resp) {
+		 				 		
+		 				 		alert(JSON.stringify(resp));
+							}
+
+						}		 
+					);
+				} 
+				catch(err){ 
+					console.log(err);
+
 				}
+
+				return false;
 
 		},
 		htmlEditorOnComplete: function(editorInstance) {
@@ -490,12 +533,14 @@
 			action: 'add',
 			ajaxrequest: true,
 			siteid: '#JSStringFormat(node.getSiteID())#',
-			sourceid: '#JSStringFormat(node.getContentHistID())#',
+			contenthistid: '#JSStringFormat(node.getContentHistID())#',
 			contentid: '#JSStringFormat(node.getContentID())#',
 			parentid: '#JSStringFormat(node.getParentID())#',
 			moduleid: '#JSStringFormat(node.getModuleID())#',
 			approved: 0,
 			changesetid: '',
+			bean: 'content',
+			loadby: 'contenthistid',
 			approvalstatus: '#JSStringFormat(node.getApprovalStatus())#'
 			},
 		attributes: {},
