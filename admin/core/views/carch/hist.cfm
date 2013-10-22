@@ -82,15 +82,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <th class="notes">#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.notes')#</th>
 <cfif hasChangesets><th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.changeset')#</th></cfif> 
 <th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.status')#</th>
-<th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.display')#</th>
 <!---
+<th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.display')#</th>
 <cfif rc.contentBean.getType() neq "file"><th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.objects')#</th></cfif> 
-<th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.feature')#</th>
+<th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.feature')#</th> 
 <th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.nav')#</th> 
- --->
+--->
 <th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.update')#</th> 
 <th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.time')#</th>
-<th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.authoreditor')#</th> </cfoutput>
+<th>#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.authoreditor')#</th>
+<th nowrap class="actions">&nbsp;</th>
+</cfoutput>
 </tr> 
 </thead>
 <tbody>
