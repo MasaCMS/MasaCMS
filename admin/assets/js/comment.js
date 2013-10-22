@@ -86,6 +86,16 @@ var commentManager = {
 				e.preventDefault();
 				commentManager.setSort($(this));
 			});
+
+			$('a.nextN').click(function(e){
+				e.preventDefault();
+				commentManager.setNextN($(this));
+			});
+
+			$('a.pageNo').click(function(e){
+				e.preventDefault();
+				commentManager.setPageNo($(this));
+			});
 		});
 	},
 
@@ -104,6 +114,18 @@ var commentManager = {
 		$('#sortBy').val(k.attr('data-sortby'));
 		$('#sortDirection').val(k.attr('data-sortdirection'));
 		
+		commentManager.submitSearch();
+	},
+
+	setNextN: function(k){
+		$('#nextN').val(k.attr('data-nextn'));
+				
+		commentManager.submitSearch();
+	},
+
+	setPageNo: function(k){
+		$('#pageNo').val(k.attr('data-pageno'));
+				
 		commentManager.submitSearch();
 	}
 }

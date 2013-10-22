@@ -175,7 +175,7 @@ component persistent="false" accessors="true" output="false" extends="mura.cfobj
 		// enddate
 		if ( StructKeyExists(arguments, 'enddate') && isDate(arguments.enddate) ) {
 			local.qryStr &= ' AND entered <= :enddate ';
-			qComments.addParam(name='enddate', value=arguments.enddate, cfsqltype='cf_sql_date');
+			qComments.addParam(name='enddate', value=createODBCDateTime(createDateTime(year(arguments.enddate), month(arguments.enddate), day(arguments.enddate), 23, 59, 59)), cfsqltype='cf_sql_time');
 		}
 
 		local.qryStr &= ' ORDER BY ' & arguments.sortby & ' ' & arguments.sortdirection;

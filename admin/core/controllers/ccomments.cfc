@@ -73,56 +73,7 @@ component persistent="false" accessors="true" output="false" extends="controller
 	// *********************************  PAGES  *******************************************
 
 	public void function default(required struct rc) {
-		param name='rc.bulkedit' default='';
-		param name='rc.sortby' default='entered';
-		param name='rc.sortdirection' default='asc';
-		param name='rc.pageno' default=1;
-		param name='rc.nextn' default=25; // 25
-		param name='rc.isapproved' default=false;
-
-		rc.siteid = StructKeyExists(session, 'siteid') ? session.siteid : 'default';
-		rc.sortdirlink = rc.sortdirection == 'asc' ? 'desc' : 'asc';
-		rc.sortby = !ListFindNoCase('entered,name', rc.sortby) ? 'entered' : rc.sortby;
-		rc.itComments = getContentCommentManager().getCommentsIterator(argumentCollection=rc);
-
-		// Pagination Setup
-		rc.nextn = Val(rc.nextn);
-		rc.pageno = Val(rc.pageno);
-		if ( rc.nextn < 1 ) { 
-			rc.nextn = 10; 
-		}
-
-		// WriteDump(rc.itComments);
-		// abort;
-
-		rc.itComments.setNextN(rc.nextn);
-		if ( rc.pageno < 1 || rc.pageno > rc.itComments.pageCount() ) {
-			rc.pageno = 1;
-		}
-		rc.itComments.setPage(rc.pageno);
-
-		rc.totalPages = rc.itComments.pageCount();
-		rc.buffer = 3;
-		rc.startPage = 1;
-		rc.endPage = rc.totalPages;
-
-		if ( rc.buffer < rc.totalPages ) {
-			rc.startPage = rc.pageno-rc.buffer;
-			rc.endPage = rc.pageno+rc.buffer;
-
-			if ( rc.startPage < 1 ) {
-				rc.endPage = rc.endPage + Abs(rc.startPage) + 1;
-				rc.startPage = 1;
-			} 
-
-			if ( rc.endPage > rc.totalPages ) {
-				rc.x = rc.startPage - (rc.endPage - rc.totalPages);
-				rc.startPage = rc.x < 1 ? 1 : rc.x;
-				rc.endPage = rc.totalPages;
-			}
-		}
 	}
-
 
 	public void function bulkedit(required struct rc) {
 		var local = {};
@@ -140,6 +91,8 @@ component persistent="false" accessors="true" output="false" extends="controller
 						case 'disapprove' : getContentCommentManager().disapprove(local.arr[local.i]);
 							break;
 						case 'delete' : getContentCommentManager().delete(local.arr[local.i]);
+							break;
+						case 'spam' : getContentCommentManager().markAsSpam(local.arr[local.i]);
 							break;
 						default : break;
 					}
@@ -193,8 +146,10 @@ component persistent="false" accessors="true" output="false" extends="controller
 		param name='rc.sortdirection' default='asc';
 		param name='rc.pageno' default=1;
 		param name='rc.nextn' default=25; // 25
-		param name='rc.commentStatus' default='';
-
+		param name='rc.commentStatus' default='Pending';
+		param name='rc.startdate' default=LSdateFormat(dateAdd('d', -14, now()), session.dateKeyFormat);
+		param name='rc.enddate' default=LSdateFormat(now(), session.dateKeyFormat);
+		
 		rc.siteid = StructKeyExists(session, 'siteid') ? session.siteid : 'default';
 		rc.sortdirlink = rc.sortdirection == 'asc' ? 'desc' : 'asc';
 		rc.sortby = !ListFindNoCase('entered,name,flagCount', rc.sortby) ? 'entered' : rc.sortby;
@@ -203,11 +158,13 @@ component persistent="false" accessors="true" output="false" extends="controller
 			case "approved": 
 				rc.isapproved = 1;
 				rc.isDeleted = 0;
+				rc.isSpam = 0;
 			break;
 
 			case "pending": 
 				rc.isapproved = 0;
 				rc.isDeleted = 0;
+				rc.isSpam = 0;
 			break;
 
 			case "spam": 
@@ -218,6 +175,8 @@ component persistent="false" accessors="true" output="false" extends="controller
 			case "deleted": 
 				rc.isdeleted = 1;
 			break;
+
+			default : break;
 		}
 
 		rc.itComments = getContentCommentManager().getCommentsIterator(argumentCollection=rc);
@@ -226,7 +185,7 @@ component persistent="false" accessors="true" output="false" extends="controller
 		rc.nextn = Val(rc.nextn);
 		rc.pageno = Val(rc.pageno);
 		if ( rc.nextn < 1 ) { 
-			rc.nextn = 10; 
+			rc.nextn = 25; 
 		}
 
 		// WriteDump(rc.itComments);
