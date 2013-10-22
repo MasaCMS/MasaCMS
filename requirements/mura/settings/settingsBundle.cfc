@@ -302,12 +302,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</cfif>
 		
 		<cfif len(arguments.siteID)>
-
-			<cfset var filePoolID=getBean('settingsManager').getSite(arguments.siteid).getFilePoolID()>
+			<cfset var site=getBean('settingsManager').getSite(arguments.siteid)>
+			<cfset var filePoolID=site.getFilePoolID()>
 
 			<cfif arguments.contentMode eq "all">
 				
-				<cfif not isDate(arguments.sinceDate)>
+				<cfif not isDate(arguments.sinceDate) and not site.getHasSharedFilePool()>
 					<!---
 					<cfset variables.utility.deleteDir( variables.configBean.getValue('filedir') & variables.fileDelim  & filePoolID & variables.fileDelim & "assets"  )>
 					--->

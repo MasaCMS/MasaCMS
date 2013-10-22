@@ -1239,7 +1239,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfquery>
 			</cfif>
 			
-			<cfif not isDate(arguments.lastDeployment)>
+			<cfif not isDate(arguments.lastDeployment) and not getBean('settingsManager').getSite(arguments.tositeid).getHasSharedFilePool()>
 				<cfquery datasource="#arguments.toDSN#">
 					delete from tfiles where siteid = <cfqueryparam cfsqltype="cf_sql_varchar" value="#toFilePoolID#"/>
 					and moduleid  in (''<cfif len(arguments.moduleID)>,<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.moduleID#" list="true"></cfif><cfif arguments.usersMode neq "none">,'00000000000000000000000000000000008'</cfif><cfif arguments.contentMode neq "none">,'00000000000000000000000000000000000','00000000000000000000000000000000003'</cfif><cfif arguments.formDataMode neq "none">,'00000000000000000000000000000000004'</cfif>)
