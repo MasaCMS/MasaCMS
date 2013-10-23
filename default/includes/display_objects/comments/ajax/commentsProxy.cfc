@@ -58,18 +58,36 @@
 
 	<cffunction name="get" access="remote" output="true">
 		<cfargument name="commentID">
-		<cfset var $=getBean("MuraScope").init(session.siteid)>
-		<cfset var comment=$.getBean("contentManager").getCommentBean()>
-		<cfset var data=comment.setCommentID(arguments.commentID).load().getAllValues()>
+		<cfset var $ = getBean("MuraScope").init(session.siteid)>
+		<cfset var comment = $.getBean("contentManager").getCommentBean()>
+		<cfset var data = comment.setCommentID(arguments.commentID).load().getAllValues()>
 		<cfoutput>#createobject("component","mura.json").encode(data)#</cfoutput>
 		<cfabort>
 	</cffunction>
 
 	<cffunction name="flag" access="remote" output="true">
 		<cfargument name="commentID">
-		<cfset var $=getBean("MuraScope").init(session.siteid)>
-		<cfset var comment=$.getBean("contentManager").getCommentBean()>
+		<cfset var $ = getBean("MuraScope").init(session.siteid)>
+		<cfset var comment = $.getBean("contentManager").getCommentBean()>
 		<cfset comment.setCommentID(arguments.commentID).load().flag()>
+	</cffunction>
+
+	<cffunction name="renderCommentsPage" access="remote" output="true">
+		<cfargument name="contentID">
+		<cfargument name="pageNo" required="true" default="1">
+		<cfargument name="nextN" required="true" default="25">
+		<cfset var $ = getBean("MuraScope").init(session.siteid)>
+		<cfset var content = $.getBean('content').loadBy(contentID=arguments.contentID)>
+		<cfset var it = content.getCommentsIterator()>
+		<cfset var comment = "">
+		<cfoutput>
+			<div id="commentsPage">
+				<cfloop condition="#it.hasNext()#">
+					<cfset comment = it.next()>				
+					#comment.getComment()#
+				</cfloop>
+			</div>
+		</cfoutput>
 	</cffunction>
 
 </cfcomponent>

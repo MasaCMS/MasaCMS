@@ -45,7 +45,7 @@
 				</div>
 			</div> --->
 		</div>
-		<!--- <div class="control-group">
+		<div class="control-group">
 			<div class="controls">
 				<label class="control-label">Available Categories</label>
 		
@@ -53,7 +53,7 @@
 					#$.getBean('contentCommentManager').dspCategoriesNestSelect($.event("siteID"), "", $.event('searchCategoryID'), 0, 0, "searchCategoryID")#
 				</div>
 			</div>
-		</div> --->
+		</div>
 		<input type="hidden" id="sortBy" name="sortBy" value="#$.event('sortBy')#">
 		<input type="hidden" id="sortDirection" name="sortDirection" value="#$.event('sortdirection')#">
 		<input type="hidden" id="nextN" name="nextN" value="#rc.nextN#">

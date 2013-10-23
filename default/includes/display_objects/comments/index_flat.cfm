@@ -244,7 +244,7 @@
 
 		<!--- COMMENTS --->
 		<div id="svComments" data-contentid="#variables.$.content('contentID')#">
-			<!--- <a name="comments"></a>
+			<a name="comments"></a>
 			
 			<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('comments.comments')#</#variables.$.getHeaderTag('subHead1')#>
 			#variables.$.dspObject_Include(thefile='comments/dsp_comments.cfm')#
@@ -353,7 +353,7 @@
 						</div>
 					</div>
 				</form>
-			</div> --->
-		</div> 
+			</div>
+		</div>
 	</cfoutput>
 </cfif>

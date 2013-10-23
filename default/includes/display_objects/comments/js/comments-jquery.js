@@ -169,4 +169,10 @@ jQuery(document).ready(function() {
 			}
 		);
 	});
+
+	jQuery(document).ready(function() {
+		var actionURL=$commentsProxyPath + "?method=renderCommentsPage&contentID=" + $('#svComments').attr('data-contentid');
+
+		$('#svComments').load(actionURL);
+	});
 });
