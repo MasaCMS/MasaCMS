@@ -225,7 +225,7 @@ component persistent="false" accessors="true" output="false" extends="mura.cfobj
 		var commentBean = getCommentBeanByCommentID(arguments.commentid);
 
 		try {
-			getContentManager().markAsSpam(arguments.commentid);
+			getContentManager().markCommentAsSpam(arguments.commentid);
 		} catch(any e) {
 			handleError(e);
 		}

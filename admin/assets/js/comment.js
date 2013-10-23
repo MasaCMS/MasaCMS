@@ -80,6 +80,14 @@ var commentManager = {
 		commentManager.submitSearch();
 	},
 
+	singleEdit: function(commentid, updateaction){
+		var url = './';
+		var pars = 'muraAction=cComments.singleEdit&siteid=' + siteid + '&commentid=' + commentid + '&updateaction=' + updateaction + '&cacheid=' + Math.random();
+		
+		$.get(url + "?" + pars);
+		commentManager.submitSearch();
+	},
+
 	submitSearch: function(){
 		var advSearching = $('#advancedSearch').is(':visible');
 		var valueSelector = '#commentSearch input';
@@ -160,6 +168,14 @@ var commentManager = {
 					commentManager.bulkEdit();
 				}
 			)
+		});	
+
+		$('a.singleEdit').click(function(e) {
+			e.preventDefault();
+			$('.modal').modal('hide');
+			var k = $(this);
+			commentManager.singleEdit(k.attr('data-commentid'), k.attr('data-action'));
+
 		});				
 	}
 }

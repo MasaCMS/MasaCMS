@@ -75,7 +75,7 @@ component persistent="false" accessors="true" output="false" extends="controller
 	public void function default(required struct rc) {
 	}
 
-	public void function bulkedit(required struct rc) {
+	public void function bulkEdit(required struct rc) {
 		var local = {};
 		rc.processed = true;
 
@@ -101,6 +101,36 @@ component persistent="false" accessors="true" output="false" extends="controller
 				rc.processed = false;
 			}
 		}
+
+		getFW().setView( "ccomments.ajax" );
+	}
+
+	public void function singleEdit(required struct rc) {
+		var local = {};
+		param name='rc.commentid' default='';
+		param name='rc.updateAction' default='';
+
+		try {
+			switch ( rc.updateAction ) {
+				case 'approve' : getContentCommentManager().approve(rc.commentid);
+					break;
+				case 'disapprove' : getContentCommentManager().disapprove(rc.commentid);
+					break;
+				case 'delete' : getContentCommentManager().delete(rc.commentid);
+					break;
+				case 'spam' : getContentCommentManager().markAsSpam(rc.commentid);
+					break;
+				//case 'undelete' : getContentCommentManager().delete(local.arr[local.i]);
+				//	break;
+				//case 'unspam' : getContentCommentManager().markAsSpam(local.arr[local.i]);
+				//	break;	
+				default : break;
+			}
+		} catch(any e) {
+			rc.processed = false;
+		}
+
+		getFW().setView( "ccomments.ajax" );
 
 	}
 

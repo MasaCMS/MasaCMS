@@ -83,7 +83,7 @@
 									<li><a href="##" class="bulkEdit" data-alertmessage="#rc.$.rbKey('comments.message.confirm.approve')#" data-action="approve"><i class="icon-ok"></i> Approved</a></li>
 									<li><a href="##" class="bulkEdit" data-alertmessage="Are you sure you want to mark the selected comments as spam?" data-action="spam"><i class="icon-flag"></i> Spam</a></li>
 									<li><a href="##" class="bulkEdit" data-alertmessage="#rc.$.rbKey('comments.message.confirm.disapprove')#" data-action="disapprove"><i class="icon-ban-circle"></i> Disapproved</a></li>
-									<li><a href="##" class="bulkEdit" data-alertmessage="#rc.$.rbKey('comments.message.confirm.delete')#" data-action="delete"><i class="icon-remove-sign"></i> Deleted</a></li>
+									<li><a href="##" class="bulkEdit" data-alertmessage="#rc.$.rbKey('comments.message.confirm.delete')#" data-action="delete"><i class="icon-trash"></i> Deleted</a></li>
 								</ul>
 							</div>
 						</div>
@@ -126,30 +126,39 @@
 
 							<!--- MODAL WINDOW --->
 							<div id="comment-#local.item.getCommentID()#" class="modal hide fade">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="Close Comments"><i class="icon-comments"></i></button>
-								<p>
-									<strong>#HTMLEditFormat(local.item.getName())#</strong> <em>#rc.$.rbKey('comments.commentedon')#:</em><br>
-									<a href="#local.content.getURL(complete=1,queryString='##comment-#local.item.getCommentID()#')#" target="_blank"><i class="icon-external-link"></i> #HTMLEditFormat(local.content.getMenuTitle())#</a>
-								</p>
-							</div>
-							<div class="modal-body">
-								#application.contentRenderer.setParagraphs(HTMLEditFormat(local.item.getComments()))#
-							</div>
-							<div class="modal-footer">
-								<div class="pull-left">
-									<i class="icon-calendar"></i>&nbsp;&nbsp;#DateFormat(local.item.getEntered(), 'yyyy.mm.dd')#&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-time"></i> #TimeFormat(local.item.getEntered(), 'hh:mm:ss tt')#
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="Close Comments"><i class="icon-remove-sign"></i></button>
+									<p>
+										<strong>#HTMLEditFormat(local.item.getName())#</strong> <em>#rc.$.rbKey('comments.commentedon')#:</em><br>
+										<a href="#local.content.getURL(complete=1,queryString='##comment-#local.item.getCommentID()#')#" target="_blank"><i class="icon-external-link"></i> #HTMLEditFormat(local.content.getMenuTitle())#</a>
+									</p>
 								</div>
-								<div class="pull-right">
-									<a href="##" class="btn" data-dismiss="modal"><i class="icon-undo"></i> #rc.$.rbKey('comments.cancel')#</a>
-									<!--- <cfif rc.isapproved>
-										<a href="#buildURL(action='cComments.disapprove', querystring='commentid=#local.item.getCommentID()#&isapproved=#rc.isapproved#&nextn=#rc.nextn#')#" class="btn btn-warning" onclick="return confirm('Disapprove Comment?',this.href);"><i class="icon-ban-circle"></i> #rc.$.rbKey('comments.disapprove')#</a>
-									<cfelse>
-										<a href="#buildURL(action='cComments.approve', querystring='commentid=#local.item.getCommentID()#&isapproved=#rc.isapproved#&nextn=#rc.nextn#')#" class="btn btn-success" onclick="return confirm('Approve Comment?',this.href);"><i class="icon-ok"></i> #rc.$.rbKey('comments.approve')#</a>
-									</cfif> --->
-									<a href="#buildURL(action='cComments.delete', querystring='commentid=#local.item.getCommentID()#&nextn=#rc.nextn#')#" class="btn btn-danger" onclick="return confirm('Delete Comment?',this.href);"><i class="icon-trash"></i> #rc.$.rbKey('comments.delete')#</a>
+								<div class="modal-body">
+									#application.contentRenderer.setParagraphs(HTMLEditFormat(local.item.getComments()))#
 								</div>
-							</div>
+								<div class="modal-footer">
+									<div class="pull-left">
+										<i class="icon-calendar"></i>&nbsp;&nbsp;#DateFormat(local.item.getEntered(), 'yyyy.mm.dd')#&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-time"></i> #TimeFormat(local.item.getEntered(), 'hh:mm:ss tt')#
+									</div>
+									<div class="pull-right">
+										<a href="##" class="btn" data-dismiss="modal"><i class="icon-undo"></i> #rc.$.rbKey('comments.cancel')#</a>
+										<cfif not local.item.getIsSpam()>
+											<a href="##" class="singleEdit btn btn-warning" data-commentid="#local.item.getCommentID()#" data-action="spam"><i class="icon-flag"></i> Spam</a>
+										<cfelse>
+											<a href="##" class="singleEdit btn btn-warning" data-commentid="#local.item.getCommentID()#" data-action="unspam"><i class="icon-flag"></i> Spam</a>
+										</cfif>
+										<cfif not local.item.getIsApproved()>
+											<a href="##" class="singleEdit btn btn-success" data-commentid="#local.item.getCommentID()#" data-action="approve"><i class="icon-ok"></i> #rc.$.rbKey('comments.approve')#</a>
+										<cfelse>
+											<a href="##" class="singleEdit btn btn-warning" data-commentid="#local.item.getCommentID()#" data-action="disapprove"><i class="icon-ban-circle"></i> #rc.$.rbKey('comments.disapprove')#</a>
+										</cfif>
+										<cfif not local.item.getIsDeleted()>
+											<a href="##" class="singleEdit btn btn-danger" data-commentid="#local.item.getCommentID()#" data-action="delete"><i class="icon-trash"></i> #rc.$.rbKey('comments.delete')#</a>
+										<cfelse>
+											<a href="##" class="singleEdit btn btn-warning" data-commentid="#local.item.getCommentID()#" data-action="undelete"><i class="icon-trash"></i> #rc.$.rbKey('comments.delete')#</a>
+										</cfif>
+									</div>
+								</div>
 							</div>
 							<!--- /@END MODAL --->
 
@@ -191,7 +200,7 @@
 
 								<td>
 									<cfif local.item.getIsDeleted()>
-										<i class="icon-remove-sign icon-white">
+										<i class="icon-trash"></i>
 									<cfelseif local.item.getIsSpam()>
 										<i class="icon-flag"></i>
 									<cfelseif local.item.getIsApproved()>
@@ -209,12 +218,12 @@
 								<td class="actions">
 								<ul>
 									<cfif IsValid('url', local.item.getURL())>
-											<li><a href="#HTMLEditFormat(local.item.getURL())#" title="#HTMLEditFormat(local.item.getURL())#" target="_blank"><i class="icon-link"></i></a></li>
-											<cfelse>
-											<li class="disabled"><i class="icon-link"></i></li>
-										</cfif>
-										<li><a href="mailto:#HTMLEditFormat(local.item.getEmail())#" title="#HTMLEditFormat(local.item.getEmail())#"><i class="icon-envelope"></i></a></li>
-										<li><a href="##comment-#local.item.getCommentID()#" data-toggle="modal" title="Comments"><i class="icon-comments"></i></a></li>
+										<li><a href="#HTMLEditFormat(local.item.getURL())#" title="#HTMLEditFormat(local.item.getURL())#" target="_blank"><i class="icon-link"></i></a></li>
+									<cfelse>
+										<li class="disabled"><i class="icon-link"></i></li>
+									</cfif>
+									<li><a href="mailto:#HTMLEditFormat(local.item.getEmail())#" title="#HTMLEditFormat(local.item.getEmail())#"><i class="icon-envelope"></i></a></li>
+									<li><a href="##comment-#local.item.getCommentID()#" data-toggle="modal" title="Comments"><i class="icon-comments"></i></a></li>
 									
 									<!--- <cfif rc.isapproved>
 										<li><a href="#buildURL(action='cComments.disapprove', querystring='commentid=#local.item.getCommentID()#&isapproved=#rc.isapproved#&nextn=#rc.nextn#')#" title="Disapprove" onclick="return confirmDialog('Disapprove Comment?',this.href);"><i class="icon-ban-circle" title="Disapprove"></i></a></li>
@@ -309,9 +318,4 @@
 			</div>
 		</cfif>
 	</div>
-	<script type="text/javascript">
-		jQuery(function ($) {
-			$('##feedback').delay(4000).fadeOut(1500); // MESSAGING : auto-hide after 4 secs.
-		});
-	</script>
 </cfoutput>
