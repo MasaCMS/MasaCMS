@@ -218,7 +218,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="loadShadowboxJS" returntype="void" output="false">
-	<cfif not cookie.mobileFormat>
+	<!---<cfif not cookie.mobileFormat>--->
 		<cfset loadJSLib() />
 		<cfswitch expression="#getJsLib()#">
 			<cfcase value="prototype">
@@ -229,7 +229,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfdefaultcase>
 		</cfswitch>			
 		<cfset addToHTMLHeadQueue("shadowbox.cfm")>
-	</cfif>
+	<!---</cfif>--->
 </cffunction>
 
 <cffunction name="loadPrettify" returntype="void" output="false">

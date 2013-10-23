@@ -275,4 +275,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfreturn it>
 </cffunction>
 
+<cffunction name="hasAssocImage">
+	<cfreturn len(getValue('fileID')) and listFindNoCase('jpg,jpeg,png,gif',getValue('fileEXT'))>
+</cffunction>
+
 </cfcomponent>

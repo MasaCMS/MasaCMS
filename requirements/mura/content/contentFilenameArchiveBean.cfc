@@ -6,6 +6,6 @@ component extends="mura.bean.beanORM"
 	property name="archiveid" fieldtype="id";
 	property name="content" fieldtype="many-to-one" cfc="content" fkcolumn="contentID"; 
 	property name="site" fieldtype="many-to-one" cfc="site" fkcolumn="siteID";
-	property name="url" fieltype="index" type="varchar" length=255;
+	property name="filename" fieltype="index" type="varchar" length=255;
 
 }
