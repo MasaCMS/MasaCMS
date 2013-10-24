@@ -77,6 +77,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.renderHTMLQueues=true/>
 <cfset this.crumbdata=arrayNew(1)/>
 <cfset this.listFormat="dl">
+<cfset this.listFormatImageStyes=true>
 <cfset this.headline="h2"/>
 <cfset this.subHead1="h3"/>
 <cfset this.subHead2="h4"/>

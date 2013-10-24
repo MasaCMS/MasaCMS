@@ -92,6 +92,7 @@
 		//this.renderHTMLHead=true;
 		//this.renderHTMLQueues=true;
 		//this.listFormat="dl";
+		//this.listFormatImageStyes=true;
 		//this.headline="h1";
 		//this.subHead1="h2";
 		//this.subHead2="h3";
