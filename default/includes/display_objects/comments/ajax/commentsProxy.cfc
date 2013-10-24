@@ -78,16 +78,55 @@
 		<cfargument name="nextN" required="true" default="25">
 		<cfset var $ = getBean("MuraScope").init(session.siteid)>
 		<cfset var content = $.getBean('content').loadBy(contentID=arguments.contentID)>
+		<cfset var crumbArray = content.getCrumbArray()>
 		<cfset var it = content.getCommentsIterator()>
+		<cfset var isEditor=(listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite($.event('siteID')).getPrivateUserPoolID()#')
+					and application.permUtility.getnodePerm(crumbArray) neq 'none')
+					or listFind(session.mura.memberships,'S2')>
 		<cfset var comment = "">
+
 		<cfoutput>
-			<div id="commentsPage">
-				<cfloop condition="#it.hasNext()#">
-					<cfset comment = it.next()>				
-					#comment.getComment()#
-				</cfloop>
-			</div>
+			<cfloop condition="#it.hasNext()#">
+				<cfset comment = it.next()>				
+				<dl>
+					<dt>
+						<cfif len(comment.getURL())>
+							<a href="#comment.getURL()#" target="_blank">#htmleditformat(comment.getName())#</a>
+						<cfelse>
+							#htmleditformat(comment.getName())#
+						</cfif>
+						<cfif isEditor and len(comment.getEmail())>
+							<a class="btn btn-default" href="javascript:noSpam('#listFirst(htmlEditFormat(comment.getEmail()),'@')#','#listlast(HTMLEditFormat(comment.getEmail()),'@')#')" onfocus="this.blur();">#$.rbKey('comments.email')#</a>
+						</cfif>
+						<cfif isEditor>
+							<cfif yesnoformat(application.configBean.getValue("editablecomments"))>
+								 <a class="editcomment btn btn-default" data-id="#comment.getCommentID()#">#$.rbKey('comments.edit')#</a>
+							</cfif>
+							<cfif comment.getIsApproved() neq 1>
+								 <a class="btn btn-default" href="./?approvedcommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Approve Comment?');">#$.rbKey('comments.approve')#</a>
+							</cfif>
+							 <a class="btn btn-default" href="./?deletecommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Delete Comment?');">#$.rbKey('comments.delete')#</a>
+							 <a class="btn btn-default" href="./?spamcommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Mark Comment As Spam?');">Spam</a>		
+						</cfif>
+					</dt>
+					<cfif len($.currentUser().getPhotoFileID())>
+						<dd class="gravatar"><img src="#$.createHREFForImage($.currentUser().getSiteID(),$.currentUser().getPhotoFileID(),'jpg', 'medium')#"></dd>
+					<cfelse>
+						<dd class="gravatar"><img src="http://www.gravatar.com/avatar/#lcase(Hash(lcase(comment.getEmail())))#" /></dd>
+					</cfif>
+					<dd class="comment">
+						#$.setParagraphs(htmleditformat(comment.getComment()))#
+					</dd>
+					<dd class="dateTime">
+						#LSDateFormat(comment.getEntered(),"long")#, #LSTimeFormat(comment.getEntered(),"short")#
+					</dd>
+					<dd class="reply"><a data-id="#comment.getCommentID()#" href="##postcomment">#$.rbKey('comments.reply')#</a></dd>
+					<dd class="spam"><a data-id="#comment.getCommentID()#" class="flagAsSpam" href="##">Flag as Spam</a></dd>
+					<dd id="postcomment-#comment.getCommentID()#"></dd>
+				</dl>
+			</cfloop>
 		</cfoutput>
+
 	</cffunction>
 
 </cfcomponent>

@@ -243,11 +243,12 @@
 		<cfset CurrentPageNumber=Ceiling(request.StartRow/RecordsPerPage)> --->
 
 		<!--- COMMENTS --->
-		<div id="svComments" data-contentid="#variables.$.content('contentID')#">
-			<!--- <a name="comments"></a>
+		<div id="svComments">
+			<a name="comments"></a>
 			
 			<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('comments.comments')#</#variables.$.getHeaderTag('subHead1')#>
-			#variables.$.dspObject_Include(thefile='comments/dsp_comments.cfm')#
+			<!--- #variables.$.dspObject_Include(thefile='comments/dsp_comments.cfm')# --->
+			<div id="commentsPage" data-contentid="#variables.$.content('contentID')#"></div>
 			<cfif not structIsEmpty(variables.errors) >
 				
 					#errorJSTxt#
@@ -353,7 +354,7 @@
 						</div>
 					</div>
 				</form>
-			</div> --->
-		</div> 
+			</div>
+		</div>
 	</cfoutput>
 </cfif>

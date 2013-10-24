@@ -354,6 +354,6 @@
 					</div>
 				</form>
 			</div>
-		</div>
+		</div> 
 	</cfoutput>
 </cfif>

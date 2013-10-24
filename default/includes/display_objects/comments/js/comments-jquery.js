@@ -57,11 +57,11 @@
 jQuery(document).ready(function() {
 	$editor = jQuery('#postcomment');
 	$commentsProxyPath = assetpath + "/includes/display_objects/comments/ajax/commentsProxy.cfc";
-	$newcommentid=jQuery("#postcomment [name=commentid]").val();
-	$name=jQuery("#postcomment [name=name]").val();
-	$url=jQuery("#postcomment [name=url]").val();
-	$email=jQuery("#postcomment [name=email]").val();
-	$currentedit="";
+	$newcommentid = jQuery("#postcomment [name=commentid]").val();
+	$name = jQuery("#postcomment [name=name]").val();
+	$url = jQuery("#postcomment [name=url]").val();
+	$email = jQuery("#postcomment [name=email]").val();
+	$currentedit = "";
 	
 	jQuery(document).on('click', '.reply a', function( event ) {
 		var id = jQuery(this).attr('data-id');
@@ -171,8 +171,8 @@ jQuery(document).ready(function() {
 	});
 
 	jQuery(document).ready(function() {
-		var actionURL=$commentsProxyPath + "?method=renderCommentsPage&contentID=" + $('#svComments').attr('data-contentid');
+		var actionURL = $commentsProxyPath + "?method=renderCommentsPage&contentID=" + $('#commentsPage').attr('data-contentid');
 
-		$('#svComments').load(actionURL);
+		$('#commentsPage').load(actionURL);
 	});
 });
