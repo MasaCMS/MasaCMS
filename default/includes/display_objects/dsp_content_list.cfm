@@ -144,7 +144,11 @@
 					<cfcase value="Image">
 						<cfif arguments.hasImage>
 						<#variables.$.getListFormatTag('itemdetail')# class="image">
+							<cfif $.event('muraMobileRequest')>
+							<img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/>
+							<cfelse>
 							<a href="#arguments.item.getURL()#" title="#HTMLEditFormat(arguments.item.getValue('title'))#" class="thumbnail"><img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>
+							</cfif>
 						</#variables.$.getListFormatTag('itemdetail')#>
 						</cfif>
 					</cfcase>
@@ -173,7 +177,7 @@
 						</cfif>
 					</cfcase>
 					<cfcase value="Comments">
-						<cfif (arguments.item.getValue('type') eq 'Page' or showItemMeta(arguments.item.getValue('type')) or (len(arguments.item.getValue('fileID')) and showItemMeta(arguments.item.getValue('fileEXT')))) >
+						<cfif not $.event('muraMobileRequest') and (arguments.item.getValue('type') eq 'Page' or showItemMeta(arguments.item.getValue('type')) or (len(arguments.item.getValue('fileID')) and showItemMeta(arguments.item.getValue('fileEXT')))) >
 						 	<#variables.$.getListFormatTag('itemdetail')# class="comments">#variables.$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),'#variables.$.rbKey("list.comments")#(#variables.$.getBean('contentGateway').getCommentCount(variables.$.event('siteID'),arguments.item.getValue('contentID'))#)',arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),variables.$.event('siteID'),'##comments')#</#variables.$.getListFormatTag('itemdetail')#>
 						</cfif>
 					</cfcase>

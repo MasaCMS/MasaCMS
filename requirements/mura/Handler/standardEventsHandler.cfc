@@ -235,6 +235,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset renderer.showAdminToolbar=false>
 		<cfset renderer.showMemberToolbar=false>
 		<cfset renderer.showEditableObjects=false>
+		<cfset renderer.listFormatImageStyles=false>
 	</cfif>
 	
 </cffunction>
