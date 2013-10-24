@@ -1813,9 +1813,6 @@ Display Objects
 				<!--- --->
 				
 				<cfif not len(eventOutput)>
-					<cfset eventOutput=application.pluginManager.renderEvent("on#variables.event.getContentBean().getType()#BodyRender",variables.event)>
-				</cfif>
-				<cfif not len(eventOutput)>
 					<cfset eventOutput=application.pluginManager.renderEvent("on#variables.event.getContentBean().getType()##variables.event.getContentBean().getSubType()#BodyRender",variables.event)>
 				</cfif>
 				<cfif not len(eventOutput)>
