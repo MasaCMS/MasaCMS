@@ -407,7 +407,56 @@ Display Objects
 </cffunction>
 
 <cffunction name="getListFormat" returntype="string" output="false">
-	<cfreturn this.listFormat />
+	<cfargument name="element" default="container">
+	<cfswitch expression="#arguments.element#">
+	<cfcase value="item">
+		<cfswitch expression="#this.listFormat#">
+			<cfcase value='ol,ul'>
+				<cfreturn "li" />
+			</cfcase>
+			<cfcase value='div,article'>
+				<cfreturn this.listFormat />
+			</cfcase>
+			<cfcase value='dl'>
+				<cfreturn "dl" />
+			</cfcase>
+		</cfswitch>
+	</cfcase>
+	<cfcase value="itemtitle">
+		<cfswitch expression="#this.listFormat#">
+			<cfcase value='ol,ul'>
+				<cfreturn "li" />
+			</cfcase>
+			<cfcase value='div'>
+				<cfreturn "h3" />
+			</cfcase>
+			<cfcase value='article'>
+				<cfreturn "h1" />
+			</cfcase>
+			<cfcase value='dl'>
+				<cfreturn "dt" />
+			</cfcase>
+		</cfswitch>
+	</cfcase>
+	<cfcase value="itemdetail">
+		<cfif this.listFormat eq 'dl'>
+			<cfreturn "dd" />
+		<cfelse>
+			<cfreturn "p" />
+		</cfif>
+	</cfcase>
+	<cfdefaultcase>
+		<cfswitch expression="#this.listFormat#">
+			<cfcase value='ol,ul'>
+				<cfreturn this.listFormat />
+			</cfcase>
+			<cfdefaultcase>
+				<cfreturn "div" />
+			</cfdefaultcase>
+		</cfswitch>
+	</cfdefaultcase>
+	</cfswitch>
+	
 </cffunction>
 
 <cffunction name="setListFormat" output="false">
