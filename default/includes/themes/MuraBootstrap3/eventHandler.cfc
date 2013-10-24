@@ -126,6 +126,216 @@
 			// pagination vars
 			renderer.ulPaginationClass = 'pagination';
 			renderer.ulPaginationWrapperClass = 'pagination';
+			
+			// Display Objects
+			// calendar/dsp_showMonth.cfm
+			renderer.calendarWrapper="";
+			renderer.calendarTable="table table-bordered";
+			renderer.calendarTableHeader="";
+			
+			// calendar/dspList.cfm
+			renderer.calendarListWrapper="";
+			
+			// Comments/index.cfm
+			renderer.commentsWrapper="";
+			renderer.commentFormWrapper="";
+			renderer.commentForm="form-horizontal";
+			renderer.commentFieldWrapper="";
+			renderer.commentFieldLabel="";
+			renderer.commentInputWrapper="";
+			renderer.commentInput="";
+			renderer.commentSubmitButton="btn";
+			renderer.commentUserEmail="";
+			renderer.commentDeleteButton="";
+			
+			// Comments/dsp_comment.cfm
+			renderer.emailLink="btn";
+			renderer.commentsLink="btn";
+			renderer.approveCommentLink="btn";
+			renderer.deleteCommentLink="btn";
+			
+			// Datacollection/dsp_response.cfm
+			renderer.datacollectionErrorP="error";
+			renderer.datacollectionErrorDiv="alert";
+			renderer.datacollectionSuccessP="success";
+			
+			// Dataresponses/dsp_detail.cfm
+			renderer.dataResponseList="dl-horizontal";
+			
+			// Dataresponses/dsp_list.cfm
+			renderer.dataResponseTable="table table-hover";
+			renderer.dataResponsePagination="pagination";
+			
+			// Draggablefeeds/index.cfm
+			renderer.draggableBoxHeader="";
+			renderer.draggableBoxHeaderButton="btn btn-default";
+			renderer.draggableBoxRSSeditForm="";
+			renderer.draggableBoxAddFeedWrapper="well clearfix";
+			renderer.draggableBoxNewFeedForm="form-horizontal";
+			renderer.draggableBoxSelectFeedWrapper="";
+			renderer.draggableBoxSelectFeedRow="row";
+			renderer.draggableBoxSelectFeedMenu="";
+			renderer.draggableBoxSelectFeedMenuDiv="";
+			renderer.draggableFeedMenuSelectField="";
+			renderer.addFeedButtonWrapperDiv="";
+			renderer.addFeedButtonWrapperDivInner="";
+			renderer.addFeedButton="btn btn-default";
+			
+			// Dsp_categories_nest.cfm
+			renderer.categoriesNestCheckbox="checkbox";
+			
+			// Dsp_content_list.cfm
+			renderer.contentListWrapperDiv="";
+			renderer.contentList="clearfix";
+			renderer.contentListItemTitle="";
+			renderer.contentListItemSummary="";
+			renderer.contentListItemCredits="";
+			renderer.contentListItemComments="";
+			renderer.contentListItemRating="";
+			renderer.contentListItemImageLink="thumbnail";
+			renderer.contentListItemImage="";
+			
+			// Dsp_edit_profile.cfm
+			renderer.editProfileForm="form-horizontal";
+			renderer.editProfileFormGroupWrapper="control-group";
+			renderer.editProfileFieldLabel="control-label";
+			renderer.editProfileFormFieldsWrapper="";
+			renderer.editProfileFormFields="";
+			renderer.editProfileHelpBlock="help-block";
+			renderer.editProfileSubmitButton="btn btn-primary";
+			renderer.editProfileSuccessMessage="success";
+			renderer.editProfileErrorMessage="alert";
+			
+			// Dsp_email_dropdown.cfm
+			renderer.emailDropdownSelect="dropdown";
+			
+			// Dsp_event_reminder_form.cfm
+			renderer.eventReminderForm="well";
+			renderer.eventReminderFieldWrapper="control-group";
+			renderer.eventReminderFormLabels="control-label";
+			renderer.eventReminderSubmit="btn";
+			
+			// Dsp_features.cfm
+			renderer.featuresWrapper="clearfix";
+			
+			// Dsp_feed.cfm
+			renderer.localIndexWrapper="clearfix";
+			renderer.remoteFeedWrapper="clearfix";
+			
+			// Dsp_login.cfm
+			renderer.loginWrapper="container";
+			renderer.loginWrapperInner="row";
+			renderer.loginErrorMessage="error";
+			renderer.loginForm="form-horizontal";
+			renderer.forgotPasswordForm="form-horizontal";
+			renderer.loginFormGroupWrapper="";
+			renderer.loginFormFieldLabel="control-label";
+			renderer.loginFormFieldWrapper="";
+			renderer.loginFormField="";
+			renderer.loginFormCheckbox="checkbox";
+			renderer.loginFormSubmit="btn btn-default";
+			renderer.loginFormAlert="alert";
+			renderer.loginFormError="error";
+			renderer.notRegisteredLink="btn btn-primary";
+			
+			// Dsp_mailing_list_master.cfm
+			renderer.mailingListWrapper="well";
+			renderer.mailingListSuccess="success";
+			renderer.mailingListError="error";
+			renderer.mailingListForm="form-horizontal";
+			renderer.mailingListFormGroupWrapper="";
+			renderer.mailingListFormLabel="control-label";
+			renderer.mailingListFormFieldWrapper="";
+			renderer.mailingListFormInput="";
+			renderer.mailingListCheckboxWrapper="";
+			renderer.mailingListCheckbox="checkbox";
+			renderer.mailingListSubmit="btn btn-default";
+			
+			// Dsp_nextN.cfm
+			renderer.nextNWrapper="container";
+			renderer.nextNInner="row";
+			
+			// Dsp_search_form.cfm
+			renderer.searchForm="";
+			renderer.searchFormInputWrapper="";
+			renderer.searchFormInput="";
+			renderer.searchFormSubmitWrapper="";
+			renderer.searchFormSubmit="btn btn-default";
+			
+			// Dsp_search_results.cfm
+			renderer.searchResultWrapper="container";
+			renderer.searchResultInner="row";
+			renderer.searchResultsRow="row";
+			renderer.searchResultsMoreResultsRow="row";
+			renderer.searchReultsPager="pager";
+			renderer.searchAgainRow="row";
+			renderer.searchAgainInner="";
+			renderer.searchAgainForm="";
+			renderer.searchAgainInputWrapper="";
+			renderer.searchAgainFormInput="";
+			renderer.searchAgainButtonWrapper="";
+			renderer.searchAgainSubmit="btn btn-default";
+			
+			// Dsp_user_tools.cfm
+			renderer.userToolsWrapper="well clearfix";
+			renderer.userToolsLoginForm="form-horizontal";
+			renderer.userToolsFormGroupWrapper="";
+			renderer.userToolsLoginFormLabel="control-label";
+			renderer.userToolsLoginFormInputWrapper="";
+			renderer.userToolsLoginFormInput="";
+			renderer.userToolsLoginFormFieldInner="";
+			renderer.userToolsLoginFormSubmit="btn btn-default";
+			renderer.userToolsNotRegisteredLink="btn btn-primary";
+			renderer.userToolsWrapper="clearfix";
+			renderer.userToolsEditProfileLink="btn btn-default";
+			renderer.userToolsLogoutLink="btn btn-default";
+			
+			// Formbuilder/Dsp_form.cfm
+			renderer.formBuilderFieldWrapper="";
+			renderer.formBuilderButtonWrapper="form-actions";
+			renderer.formBuilderSubmit="btn btn-default";
+			
+			// Formbuilder/Fields/Dsp_checkbox.cfm
+			// Formbuilder/Fields/Dsp_dropdown.cfm 
+			// Formbuilder/Fields/Dsp_file.cfm
+			// Formbuilder/Fields/Dsp_radio.cfm
+			// Formbuilder/Fields/Dsp_textfield.cfm
+			
+			renderer.formBuilderFormFields="control-group";
+			
+			// Formbuilder/Fields/field_dropdown.cfm
+			renderer.formBuilderTabHeader="dropdown";
+			renderer.formBuilderDisabledInput="disabled";
+			renderer.formBuilderCheckbox="checkbox";
+			
+			// Gallery/Index.cfm
+			renderer.galleryUL="clearfix";
+			renderer.galleryThumbnail="thumbnail";
+			
+			// Nav/CalendarNav/NavTools.cfc
+			renderer.navCalendarWrapper="";
+			renderer.navCalendarTable="table table-bordered";
+			
+			// Nav/Dsp_sequential.cfm
+			renderer.navSequentialWrapper="container";
+			renderer.navSequentialInner="row";
+			
+			// Nav/dsp_tag_cloud.cfm
+			renderer.tagCloudWrapper="";
+			
+			// NavArchive
+			renderer.navArchiveWrapper="";
+			renderer.navArchiveList="";
+			
+			
+			// Rater/Index.cfm
+			renderer.raterObjectWrapper="row clearfix";
+			renderer.raterWrapper="";
+			renderer.avgRatingWrapper="";
+			
+			// SendToLink/SendLink.cfm
+			renderer.sendToFriendSuccess="success";
+			renderer.sendToFriendError="error";
 
 			// form vars
 			renderer.formWrapperClass = 'well';

@@ -106,6 +106,219 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.bodyMetaImageSizeArgs={size="medium"}>
 <cfset this.size=50>
 
+<!--- ===================
+Display Objects 
+=================== --->
+<!--- calendar/dsp_showMonth.cfm --->
+<cfset this.calendarWrapper="">
+<cfset this.calendarTable="table table-bordered">
+<cfset this.calendarTableHeader="">
+
+<!--- calendar/dspList.cfm --->
+<cfset this.calendarListWrapper="">
+
+<!--- Comments/index.cfm --->
+<cfset this.commentsWrapper="">
+<cfset this.commentFormWrapper="">
+<cfset this.commentForm="form-horizontal">
+<cfset this.commentFieldWrapper="">
+<cfset this.commentFieldLabel="">
+<cfset this.commentInputWrapper="">
+<cfset this.commentInput="">
+<cfset this.commentSubmitButton="btn">
+<cfset this.commentUserEmail="">
+<cfset this.commentDeleteButton="">
+
+<!--- Comments/dsp_comment.cfm --->
+<cfset this.emailLink="btn">
+<cfset this.commentsLink="btn">
+<cfset this.approveCommentLink="btn">
+<cfset this.deleteCommentLink="btn">
+
+<!--- Datacollection/dsp_response.cfm --->
+<cfset this.datacollectionErrorP="error">
+<cfset this.datacollectionErrorDiv="alert">
+<cfset this.datacollectionSuccessP="success">
+
+<!--- Dataresponses/dsp_detail.cfm --->
+<cfset this.dataResponseList="dl-horizontal">
+
+<!--- Dataresponses/dsp_list.cfm --->
+<cfset this.dataResponseTable="table table-hover">
+<cfset this.dataResponsePagination="pagination">
+
+<!--- Draggablefeeds/index.cfm --->
+<cfset this.draggableBoxHeader="">
+<cfset this.draggableBoxHeaderButton="btn btn-default">
+<cfset this.draggableBoxRSSeditForm="">
+<cfset this.draggableBoxAddFeedWrapper="well clearfix">
+<cfset this.draggableBoxNewFeedForm="form-horizontal">
+<cfset this.draggableBoxSelectFeedWrapper="">
+<cfset this.draggableBoxSelectFeedRow="row">
+<cfset this.draggableBoxSelectFeedMenu="">
+<cfset this.draggableBoxSelectFeedMenuDiv="">
+<cfset this.draggableFeedMenuSelectField="">
+<cfset this.addFeedButtonWrapperDiv="">
+<cfset this.addFeedButtonWrapperDivInner="">
+<cfset this.addFeedButton="btn btn-default">
+
+<!--- Dsp_categories_nest.cfm --->
+<cfset this.categoriesNestCheckbox="checkbox">
+
+<!--- Dsp_content_list.cfm --->
+<cfset this.contentListWrapperDiv="">
+<cfset this.contentList="clearfix">
+<cfset this.contentListItemTitle="">
+<cfset this.contentListItemSummary="">
+<cfset this.contentListItemCredits="">
+<cfset this.contentListItemComments="">
+<cfset this.contentListItemRating="">
+<cfset this.contentListItemImageLink="thumbnail">
+<cfset this.contentListItemImage="">
+
+<!--- Dsp_edit_profile.cfm --->
+<cfset this.editProfileForm="form-horizontal">
+<cfset this.editProfileFormGroupWrapper="control-group">
+<cfset this.editProfileFieldLabel="control-label">
+<cfset this.editProfileFormFieldsWrapper="">
+<cfset this.editProfileFormFields="">
+<cfset this.editProfileHelpBlock="help-block">
+<cfset this.editProfileSubmitButton="btn btn-primary">
+<cfset this.editProfileSuccessMessage="success">
+<cfset this.editProfileErrorMessage="alert">
+
+<!--- Dsp_email_dropdown.cfm --->
+<cfset this.emailDropdownSelect="dropdown">
+
+<!--- Dsp_event_reminder_form.cfm --->
+<cfset this.eventReminderForm="well">
+<cfset this.eventReminderFieldWrapper="control-group">
+<cfset this.eventReminderFormLabels="control-label">
+<cfset this.eventReminderSubmit="btn">
+
+<!--- Dsp_features.cfm --->
+<cfset this.featuresWrapper="clearfix">
+
+<!--- Dsp_feed.cfm --->
+<cfset this.localIndexWrapper="clearfix">
+<cfset this.remoteFeedWrapper="clearfix">
+
+<!--- Dsp_login.cfm --->
+<cfset this.loginWrapper="container">
+<cfset this.loginWrapperInner="row">
+<cfset this.loginErrorMessage="error">
+<cfset this.loginForm="form-horizontal">
+<cfset this.forgotPasswordForm="form-horizontal">
+<cfset this.loginFormGroupWrapper="">
+<cfset this.loginFormFieldLabel="control-label">
+<cfset this.loginFormFieldWrapper="">
+<cfset this.loginFormField="">
+<cfset this.loginFormCheckbox="checkbox">
+<cfset this.loginFormSubmit="btn btn-default">
+<cfset this.loginFormAlert="alert">
+<cfset this.loginFormError="error">
+<cfset this.notRegisteredLink="btn btn-primary">
+
+<!--- Dsp_mailing_list_master.cfm --->
+<cfset this.mailingListWrapper="well">
+<cfset this.mailingListSuccess="success">
+<cfset this.mailingListError="error">
+<cfset this.mailingListForm="form-horizontal">
+<cfset this.mailingListFormGroupWrapper="">
+<cfset this.mailingListFormLabel="control-label">
+<cfset this.mailingListFormFieldWrapper="">
+<cfset this.mailingListFormInput="">
+<cfset this.mailingListCheckboxWrapper="">
+<cfset this.mailingListCheckbox="checkbox">
+<cfset this.mailingListSubmit="btn btn-default">
+
+<!--- Dsp_nextN.cfm --->
+<cfset this.nextNWrapper="container">
+<cfset this.nextNInner="row">
+
+<!--- Dsp_search_form.cfm --->
+<cfset this.searchForm="">
+<cfset this.searchFormInputWrapper="">
+<cfset this.searchFormInput="">
+<cfset this.searchFormSubmitWrapper="">
+<cfset this.searchFormSubmit="btn btn-default">
+
+<!--- Dsp_search_results.cfm --->
+<cfset this.searchResultWrapper="container">
+<cfset this.searchResultInner="row">
+<cfset this.searchResultsRow="row">
+<cfset this.searchResultsMoreResultsRow="row">
+<cfset this.searchReultsPager="pager">
+<cfset this.searchAgainRow="row">
+<cfset this.searchAgainInner="">
+<cfset this.searchAgainForm="">
+<cfset this.searchAgainInputWrapper="">
+<cfset this.searchAgainFormInput="">
+<cfset this.searchAgainButtonWrapper="">
+<cfset this.searchAgainSubmit="btn btn-default">
+
+<!--- Dsp_user_tools.cfm --->
+<cfset this.userToolsWrapper="well clearfix">
+<cfset this.userToolsLoginForm="form-horizontal">
+<cfset this.userToolsFormGroupWrapper="">
+<cfset this.userToolsLoginFormLabel="control-label">
+<cfset this.userToolsLoginFormInputWrapper="">
+<cfset this.userToolsLoginFormInput="">
+<cfset this.userToolsLoginFormFieldInner="">
+<cfset this.userToolsLoginFormSubmit="btn btn-default">
+<cfset this.userToolsNotRegisteredLink="btn btn-primary">
+<cfset this.userToolsWrapper="clearfix">
+<cfset this.userToolsEditProfileLink="btn btn-default">
+<cfset this.userToolsLogoutLink="btn btn-default">
+
+<!--- Formbuilder/Dsp_form.cfm --->
+<cfset this.formBuilderFieldWrapper="">
+<cfset this.formBuilderButtonWrapper="form-actions">
+<cfset this.formBuilderSubmit="btn btn-default">
+
+<!---
+ Formbuilder/Fields/Dsp_checkbox.cfm
+ Formbuilder/Fields/Dsp_dropdown.cfm 
+ Formbuilder/Fields/Dsp_file.cfm
+ Formbuilder/Fields/Dsp_radio.cfm
+ Formbuilder/Fields/Dsp_textfield.cfm
+--->
+<cfset this.formBuilderFormFields="control-group">
+
+<!--- Formbuilder/Fields/field_dropdown.cfm --->
+<cfset this.formBuilderTabHeader="dropdown">
+<cfset this.formBuilderDisabledInput="disabled">
+<cfset this.formBuilderCheckbox="checkbox">
+
+<!--- Gallery/Index.cfm --->
+<cfset this.galleryUL="clearfix">
+<cfset this.galleryThumbnail="thumbnail">
+
+<!--- Nav/CalendarNav/NavTools.cfc --->
+<cfset this.navCalendarWrapper="">
+<cfset this.navCalendarTable="table table-bordered">
+
+<!--- Nav/Dsp_sequential.cfm --->
+<cfset this.navSequentialWrapper="container">
+<cfset this.navSequentialInner="row">
+
+<!--- Nav/dsp_tag_cloud.cfm --->
+<cfset this.tagCloudWrapper="">
+
+<!--- NavArchive --->
+<cfset this.navArchiveWrapper="">
+<cfset this.navArchiveList="">
+
+
+<!--- Rater/Index.cfm --->
+<cfset this.raterObjectWrapper="row clearfix">
+<cfset this.raterWrapper="">
+<cfset this.avgRatingWrapper="">
+
+<!--- SendToLink/SendLink.cfm --->
+<cfset this.sendToFriendSuccess="success">
+<cfset this.sendToFriendError="error">
+
 
 <cffunction name="init" returntype="any" access="public" output="false">
 <cfargument name="event" required="true" default="">
