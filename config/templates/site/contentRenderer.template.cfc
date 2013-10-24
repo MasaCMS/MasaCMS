@@ -121,214 +121,218 @@
 		//this.size=50;
 		
 		// Display Objects
+		// Use these variables to pass-in specific classes without having to create custom versions
 		// calendar/dsp_showMonth.cfm
-		// this.calendarWrapper="";
-		// this.calendarTable="table table-bordered";
-		// this.calendarTableHeader="";
+		 this.calendarWrapperClass="";
+		 this.calendarTableClass="";
+		 this.calendarTableHeaderClass="";
 		
 		// calendar/dspList.cfm
-		// this.calendarListWrapper="";
+		 this.calendarListWrapperClass="";
 		
-		// Comments/index.cfm
-		// this.commentsWrapper="";
-		// this.commentFormWrapper="";
-		// this.commentForm="form-horizontal";
-		// this.commentFieldWrapper="";
-		// this.commentFieldLabel="";
-		// this.commentInputWrapper="";
-		// this.commentInput="";
-		// this.commentSubmitButton="btn";
-		// this.commentUserEmail="";
-		// this.commentDeleteButton="";
+		// comments/index.cfm
+		 this.commentsWrapperClass="";
+		 this.commentFormWrapperClass="";
+		 this.commentFormClass="";
+		 this.commentFieldWrapperClass="";
+		 this.commentFieldLabelClass="";
+		 this.commentInputWrapperClass="";
+		 this.commentInputClass="";
+		 this.commentSubmitButtonClass="";
+		 this.commentUserEmailClass="";
+		 this.commentDeleteButtonClass="";
 		
-		// Comments/dsp_comment.cfm
-		// this.emailLink="btn";
-		// this.commentsLink="btn";
-		// this.approveCommentLink="btn";
-		// this.deleteCommentLink="btn";
+		// comments/dsp_comment.cfm
+		 this.emailLinkClass="";
+		 this.commentsLinkClass="";
+		 this.approveCommentLinkClass="";
+		 this.deleteCommentLinkClass="";
 		
-		// Datacollection/dsp_response.cfm
-		// this.datacollectionErrorP="error";
-		// this.datacollectionErrorDiv="alert";
-		// this.datacollectionSuccessP="success";
+		// datacollection/dsp_response.cfm
+		 this.datacollectionErrorPClass="";
+		 this.datacollectionErrorDivClass="";
+		 this.datacollectionSuccessPClass="";
 		
-		// Dataresponses/dsp_detail.cfm
-		// this.dataResponseList="dl-horizontal";
+		// dataresponses/dsp_detail.cfm
+		 this.dataResponseListClass="";
 		
-		// Dataresponses/dsp_list.cfm
-		// this.dataResponseTable="table table-hover";
-		// this.dataResponsePagination="pagination";
+		// dataresponses/dsp_list.cfm
+		 this.dataResponseTableClass="";
+		 this.dataResponsePaginationClass="";
 		
-		// Draggablefeeds/index.cfm
-		// this.draggableBoxHeader="";
-		// this.draggableBoxHeaderButton="btn btn-default";
-		// this.draggableBoxRSSeditForm="";
-		// this.draggableBoxAddFeedWrapper="well clearfix";
-		// this.draggableBoxNewFeedForm="form-horizontal";
-		// this.draggableBoxSelectFeedWrapper="";
-		// this.draggableBoxSelectFeedRow="row";
-		// this.draggableBoxSelectFeedMenu="";
-		// this.draggableBoxSelectFeedMenuDiv="";
-		// this.draggableFeedMenuSelectField="";
-		// this.addFeedButtonWrapperDiv="";
-		// this.addFeedButtonWrapperDivInner="";
-		// this.addFeedButton="btn btn-default";
+		// draggablefeeds/index.cfm
+		 this.draggableBoxHeaderClass="";
+		 this.draggableBoxHeaderButtonClass="";
+		 this.draggableBoxRSSeditFormClass="";
+		 this.draggableBoxAddFeedWrapperClass="";
+		 this.draggableBoxNewFeedFormClass="";
+		 this.draggableBoxSelectFeedWrapperClass="";
+		 this.draggableBoxSelectFeedRowClass="";
+		 this.draggableBoxSelectFeedMenuClass="";
+		 this.draggableBoxSelectFeedMenuDivClass="";
+		 this.draggableFeedMenuSelectFieldClass="";
+		 this.addFeedButtonWrapperDivClass="";
+		 this.addFeedButtonWrapperDivInnerClass="";
+		 this.addFeedButtonClass="";
 		
-		// Dsp_categories_nest.cfm
-		// this.categoriesNestCheckbox="checkbox";
+		// dsp_categories_nest.cfm
+		 this.categoriesNestCheckboxClass="";
 		
-		// Dsp_content_list.cfm
-		// this.contentListWrapperDiv="";
-		// this.contentList="clearfix";
-		// this.contentListItemTitle="";
-		// this.contentListItemSummary="";
-		// this.contentListItemCredits="";
-		// this.contentListItemComments="";
-		// this.contentListItemRating="";
-		// this.contentListItemImageLink="thumbnail";
-		// this.contentListItemImage="";
+		// dsp_content_list.cfm
+		 this.contentListWrapperDivClass="";
+		 this.contentListClass="";
+		 this.contentListItemTitleClass="";
+		 this.contentListItemSummaryClass="";
+		 this.contentListItemCreditsClass="";
+		 this.contentListItemCommentsClass="";
+		 this.contentListItemRatingClass="";
+		 this.contentListItemImageLinkClass="";
+		 this.contentListItemImageClass="";
 		
-		// Dsp_edit_profile.cfm
-		// this.editProfileForm="form-horizontal";
-		// this.editProfileFormGroupWrapper="control-group";
-		// this.editProfileFieldLabel="control-label";
-		// this.editProfileFormFieldsWrapper="";
-		// this.editProfileFormFields="";
-		// this.editProfileHelpBlock="help-block";
-		// this.editProfileSubmitButton="btn btn-primary";
-		// this.editProfileSuccessMessage="success";
-		// this.editProfileErrorMessage="alert";
+		// dsp_edit_profile.cfm
+		 this.editProfileFormClass="";
+		 this.editProfileFormGroupWrapperClass="";
+		 this.editProfileFieldLabelClass="";
+		 this.editProfileFormFieldsWrapperClass="";
+		 this.editProfileFormFieldsClass="";
+		 this.editProfileHelpBlockClass="";
+		 this.editProfileSubmitButtonClass="";
+		 this.editProfileSuccessMessageClass="";
+		 this.editProfileErrorMessageClass="";
 		
-		// Dsp_email_dropdown.cfm
-		// this.emailDropdownSelect="dropdown";
+		// dsp_email_dropdown.cfm
+		 this.emailDropdownSelectClass="";
 		
-		// Dsp_event_reminder_form.cfm
-		// this.eventReminderForm="well";
-		// this.eventReminderFieldWrapper="control-group";
-		// this.eventReminderFormLabels="control-label";
-		// this.eventReminderSubmit="btn";
+		// dsp_event_reminder_form.cfm
+		 this.eventReminderFormClass="";
+		 this.eventReminderFieldWrapperClass="";
+		 this.eventReminderFormLabelsClass="";
+		 this.eventReminderSubmitClass="";
 		
-		// Dsp_features.cfm
-		// this.featuresWrapper="clearfix";
+		// dsp_features.cfm
+		 this.featuresWrapperClass="";
 		
-		// Dsp_feed.cfm
-		// this.localIndexWrapper="clearfix";
-		// this.remoteFeedWrapper="clearfix";
+		// dsp_feed.cfm
+		 this.localIndexWrapperClass="";
+		 this.remoteFeedWrapperClass="";
 		
-		// Dsp_login.cfm
-		// this.loginWrapper="container";
-		// this.loginWrapperInner="row";
-		// this.loginErrorMessage="error";
-		// this.loginForm="form-horizontal";
-		// this.forgotPasswordForm="form-horizontal";
-		// this.loginFormGroupWrapper="";
-		// this.loginFormFieldLabel="control-label";
-		// this.loginFormFieldWrapper="";
-		// this.loginFormField="";
-		// this.loginFormCheckbox="checkbox";
-		// this.loginFormSubmit="btn btn-default";
-		// this.loginFormAlert="alert";
-		// this.loginFormError="error";
-		// this.notRegisteredLink="btn btn-primary";
+		// dsp_login.cfm
+		 this.loginWrapperClass="";
+		 this.loginWrapperInnerClass="";
+		 this.loginErrorMessageClass="";
+		 this.loginFormClass="";
+		 this.forgotPasswordFormClass="";
+		 this.loginFormGroupWrapperClass="";
+		 this.loginFormFieldLabelClass="";
+		 this.loginFormFieldWrapperClass="";
+		 this.loginFormFieldClass="";
+		 this.loginFormCheckboxClass="";
+		 this.loginFormSubmitClass="";
+		 this.loginFormAlertClass="";
+		 this.loginFormErrorClass="";
+		 this.notRegisteredLinkClass="";
 		
-		// Dsp_mailing_list_master.cfm
-		// this.mailingListWrapper="well";
-		// this.mailingListSuccess="success";
-		// this.mailingListError="error";
-		// this.mailingListForm="form-horizontal";
-		// this.mailingListFormGroupWrapper="";
-		// this.mailingListFormLabel="control-label";
-		// this.mailingListFormFieldWrapper="";
-		// this.mailingListFormInput="";
-		// this.mailingListCheckboxWrapper="";
-		// this.mailingListCheckbox="checkbox";
-		// this.mailingListSubmit="btn btn-default";
+		// dsp_mailing_list_master.cfm
+		 this.mailingListWrapperClass="";
+		 this.mailingListSuccessClass="";
+		 this.mailingListErrorClass="";
+		 this.mailingListFormClass="";
+		 this.mailingListFormGroupWrapperClass="";
+		 this.mailingListFormLabelClass="";
+		 this.mailingListFormFieldWrapperClass="";
+		 this.mailingListFormInputClass="";
+		 this.mailingListCheckboxWrapperClass="";
+		 this.mailingListCheckboxClass="";
+		 this.mailingListSubmitClass="";
 		
-		// Dsp_nextN.cfm
-		// this.nextNWrapper="container";
-		// this.nextNInner="row";
+		// dsp_nextN.cfm
+		 this.nextNWrapperClass="";
+		 this.nextNInnerClass="";
 		
-		// Dsp_search_form.cfm
-		// this.searchForm="";
-		// this.searchFormInputWrapper="";
-		// this.searchFormInput="";
-		// this.searchFormSubmitWrapper="";
-		// this.searchFormSubmit="btn btn-default";
+		// dsp_search_form.cfm
+		 this.searchFormClass="";
+		 this.searchFormInputWrapperClass="";
+		 this.searchFormInputClass="";
+		 this.searchFormSubmitWrapperClass="";
+		 this.searchFormSubmitClass="";
 		
-		// Dsp_search_results.cfm
-		// this.searchResultWrapper="container";
-		// this.searchResultInner="row";
-		// this.searchResultsRow="row";
-		// this.searchResultsMoreResultsRow="row";
-		// this.searchReultsPager="pager";
-		// this.searchAgainRow="row";
-		// this.searchAgainInner="";
-		// this.searchAgainForm="";
-		// this.searchAgainInputWrapper="";
-		// this.searchAgainFormInput="";
-		// this.searchAgainButtonWrapper="";
-		// this.searchAgainSubmit="btn btn-default";
+		// dsp_search_results.cfm
+		 this.searchResultWrapperClass="";
+		 this.searchResultInnerClass="";
+		 this.searchResultsRowClass="";
+		 this.searchResultsMoreResultsRowClass="";
+		 this.searchReultsPagerClass="";
+		 this.searchAgainRowClass="";
+		 this.searchAgainInnerClass="";
+		 this.searchAgainFormClass="";
+		 this.searchAgainInputWrapperClass="";
+		 this.searchAgainFormInputClass="";
+		 this.searchAgainButtonWrapperClass="";
+		 this.searchAgainSubmitClass="";
 		
-		// Dsp_user_tools.cfm
-		// this.userToolsWrapper="well clearfix";
-		// this.userToolsLoginForm="form-horizontal";
-		// this.userToolsFormGroupWrapper="";
-		// this.userToolsLoginFormLabel="control-label";
-		// this.userToolsLoginFormInputWrapper="";
-		// this.userToolsLoginFormInput="";
-		// this.userToolsLoginFormFieldInner="";
-		// this.userToolsLoginFormSubmit="btn btn-default";
-		// this.userToolsNotRegisteredLink="btn btn-primary";
-		// this.userToolsWrapper="clearfix";
-		// this.userToolsEditProfileLink="btn btn-default";
-		// this.userToolsLogoutLink="btn btn-default";
+		// dsp_user_tools.cfm
+		 this.userToolsWrapperClass="";
+		 this.userToolsLoginFormClass="";
+		 this.userToolsFormGroupWrapperClass="";
+		 this.userToolsLoginFormLabelClass="";
+		 this.userToolsLoginFormInputWrapperClass="";
+		 this.userToolsLoginFormInputClass="";
+		 this.userToolsLoginFormFieldInnerClass="";
+		 this.userToolsLoginFormSubmitClass="";
+		 this.userToolsNotRegisteredLinkClass="";
+		 this.userToolsWrapperClass="";
+		 this.userToolsEditProfileLinkClass="";
+		 this.userToolsLogoutLinkClass="";
 		
-		// Formbuilder/Dsp_form.cfm
-		// this.formBuilderFieldWrapper="";
-		// this.formBuilderButtonWrapper="form-actions";
-		// this.formBuilderSubmit="btn btn-default";
+		// formbuilder/dsp_form.cfm
+		 this.formBuilderFieldWrapperClass="";
+		 this.formBuilderButtonWrapperClass="";
+		 this.formBuilderSubmitClass="";
 		
-		// Formbuilder/Fields/Dsp_checkbox.cfm
-		// Formbuilder/Fields/Dsp_dropdown.cfm 
-		// Formbuilder/Fields/Dsp_file.cfm
-		// Formbuilder/Fields/Dsp_radio.cfm
-		// Formbuilder/Fields/Dsp_textfield.cfm
+		// formbuilder/fields/dsp_checkbox.cfm
+		// formbuilder/fields/dsp_dropdown.cfm 
+		// formbuilder/fields/dsp_file.cfm
+		// formbuilder/fields/dsp_radio.cfm
+		// formbuilder/fields/dsp_textfield.cfm
 		
-		// this.formBuilderFormFields="control-group";
+		 this.formBuilderFormFieldsClass="";
 		
-		// Formbuilder/Fields/field_dropdown.cfm
-		// this.formBuilderTabHeader="dropdown";
-		// this.formBuilderDisabledInput="disabled";
-		// this.formBuilderCheckbox="checkbox";
+		// formbuilder/fields/field_dropdown.cfm
+		 this.formBuilderTabHeaderClass="";
+		 this.formBuilderDisabledInputClass="";
+		 this.formBuilderCheckboxClass="";
 		
-		// Gallery/Index.cfm
-		// this.galleryUL="clearfix";
-		// this.galleryThumbnail="thumbnail";
+		// gallery/index.cfm
+		 this.galleryULClass="";
+		 this.galleryThumbnailClass="";
 		
-		// Nav/CalendarNav/NavTools.cfc
-		// this.navCalendarWrapper="";
-		// this.navCalendarTable="table table-bordered";
+		// nav/calendarNav/navTools.cfc
+		 this.navCalendarWrapperClass="";
+		 this.navCalendarTableClass="";
 		
-		// Nav/Dsp_sequential.cfm
-		// this.navSequentialWrapper="container";
-		// this.navSequentialInner="row";
+		// nav/dsp_sequential.cfm
+		 this.navSequentialWrapperClass="";
+		 this.navSequentialInnerClass="";
 		
-		// Nav/dsp_tag_cloud.cfm
-		// this.tagCloudWrapper="";
+		// nav/dsp_tag_cloud.cfm
+		 this.tagCloudWrapperClass="";
 		
-		// NavArchive
-		// this.navArchiveWrapper="";
-		// this.navArchiveList="";
+		// navArchive
+		 this.navArchiveWrapperClass="";
+		 this.navArchiveListClass="";
 		
 		
-		// Rater/Index.cfm
-		// this.raterObjectWrapper="row clearfix";
-		// this.raterWrapper="";
-		// this.avgRatingWrapper="";
+		// rater/index.cfm
+		 this.raterObjectWrapperClass="";
+		 this.raterWrapperClass="";
+		 this.avgRatingWrapperClass="";
 		
-		// SendToLink/SendLink.cfm
-		// this.sendToFriendSuccess="success";
-		// this.sendToFriendError="error";
+		// sendToLink/SendLink.cfm
+		 this.sendToFriendSuccessClass="";
+		 this.sendToFriendErrorClass="";
+		
+		// Generic form vars
+			this.formWrapperClass = "";
 	</cfscript>
 
 </cfcomponent>
