@@ -77,21 +77,23 @@
 			<cfset arguments.isCustomImage= true />	
 		</cfif>
 
-		<cfif not structKeyExists(arguments,"imageHeight")>
-			<cfset arguments.imageHeight="auto">
-		</cfif>
-		<cfif not structKeyExists(arguments,"imageWidth")>
-			<cfset arguments.imageWidth="auto">
-		</cfif>
-		
-		<cfif not structKeyExists(arguments,"imagePadding")>
-			<cfset arguments.imagePadding=20>
-		</cfif>
+		<cfif variables.$.getListFormat() eq "dl">
+			<cfif not structKeyExists(arguments,"imageHeight")>
+				<cfset arguments.imageHeight="auto">
+			</cfif>
+			<cfif not structKeyExists(arguments,"imageWidth")>
+				<cfset arguments.imageWidth="auto">
+			</cfif>
+			
+			<cfif not structKeyExists(arguments,"imagePadding")>
+				<cfset arguments.imagePadding=20>
+			</cfif>
 
-		<cfif arguments.isCustomImage>
-			<cfset arguments.imageStyles='style="#variables.$.generateListImageSyles(size='custom',width=arguments.imageWidth,height=arguments.imageHeight,padding=arguments.imagePadding)#"'>
-		<cfelse>
-			<cfset arguments.imageStyles='style="#variables.$.generateListImageSyles(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight,padding=arguments.imagePadding)#"'>
+			<cfif arguments.isCustomImage>
+				<cfset arguments.imageStyles='style="#variables.$.generateListImageSyles(size='custom',width=arguments.imageWidth,height=arguments.imageHeight,padding=arguments.imagePadding)#"'>
+			<cfelse>
+				<cfset arguments.imageStyles='style="#variables.$.generateListImageSyles(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight,padding=arguments.imagePadding)#"'>
+			</cfif>
 		</cfif>
 	</cfif>
 </cfsilent>	
@@ -120,19 +122,19 @@
 		</cfif>
 	</cfsilent>
 	<cfoutput>
-		<#variables.$.getListFormat('item')# class="clearfix<cfif arguments.class neq ''> #arguments.class#</cfif>"<cfif arguments.hasImage> #arguments.imageStyles#</cfif>>
+		<#variables.$.getListFormat('item')# class="clearfix<cfif arguments.class neq ''> #arguments.class#</cfif>"<cfif variables.$.getListFormat() eq 'dl' and arguments.hasImage> #arguments.imageStyles#</cfif>>
 			<cfloop list="#arguments.fields#" index="arguments.field">
 				<cfset arguments.field=trim(arguments.field)>
 				<cfswitch expression="#arguments.field#">
 					<cfcase value="Date">
 						<cfif arguments.type eq "Portal" and isDate(arguments.item.getValue('releaseDate'))>
-						<#variables.$.getListFormat('itemtitle')# class="releaseDate">#LSDateFormat(arguments.item.getValue('releaseDate'),variables.$.getLongDateFormat())#</#variables.$.getListFormat('itemtitle')#>
+						<#variables.$.getListFormat('itemsubtitle')# class="releaseDate">#LSDateFormat(arguments.item.getValue('releaseDate'),variables.$.getLongDateFormat())#</#variables.$.getListFormat('itemsubtitle')#>
 						<cfelseif listFind("Search,Feed,Related",arguments.type) and arguments.item.getValue('parentType') eq 'Calendar' and isDate(arguments.item.getValue('displayStart'))>
-						<#variables.$.getListFormat('itemtitle')# class="releaseDate"><cfif LSDateFormat(arguments.item.getValue('displayStart'),"short") lt LSDateFormat(arguments.item.getValue('displayStop'),"short")>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getShortDateFormat())# - #LSDateFormat(arguments.item.getValue('displayStop'),variables.$.getShortDateFormat())#<cfelse>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getLongDateFormat())#</cfif></#variables.$.getListFormat('itemtitle')#>
+						<#variables.$.getListFormat('itemsubtitle')# class="releaseDate"><cfif LSDateFormat(arguments.item.getValue('displayStart'),"short") lt LSDateFormat(arguments.item.getValue('displayStop'),"short")>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getShortDateFormat())# - #LSDateFormat(arguments.item.getValue('displayStop'),variables.$.getShortDateFormat())#<cfelse>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getLongDateFormat())#</cfif></#variables.$.getListFormat('itemsubtitle')#>
 						<cfelseif arguments.type eq "Calendar">
-						<#variables.$.getListFormat('itemtitle')# class="releaseDate"><cfif LSDateFormat(arguments.item.getValue('displayStart'),"short") lt LSDateFormat(arguments.item.getValue('displayStop'),"short")>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getShortDateFormat())# - #LSDateFormat(arguments.item.getValue('displayStop'),variables.$.getShortDateFormat())#<cfelse>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getLongDateFormat())#</cfif></#variables.$.getListFormat('itemtitle')#>
+						<#variables.$.getListFormat('itemsubtitle')# class="releaseDate"><cfif LSDateFormat(arguments.item.getValue('displayStart'),"short") lt LSDateFormat(arguments.item.getValue('displayStop'),"short")>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getShortDateFormat())# - #LSDateFormat(arguments.item.getValue('displayStop'),variables.$.getShortDateFormat())#<cfelse>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getLongDateFormat())#</cfif></#variables.$.getListFormat('itemsubtitle')#>
 						<cfelseif LSisDate(arguments.item.getValue('releaseDate'))>
-						<#variables.$.getListFormat('itemtitle')# class="releaseDate">#LSDateFormat(arguments.item.getValue('releaseDate'),variables.$.getLongDateFormat())#</#variables.$.getListFormat('itemtitle')#>		
+						<#variables.$.getListFormat('itemsubtitle')# class="releaseDate">#LSDateFormat(arguments.item.getValue('releaseDate'),variables.$.getLongDateFormat())#</#variables.$.getListFormat('itemsubtitle')#>		
 						</cfif>
 					</cfcase>
 					<cfcase value="Title">

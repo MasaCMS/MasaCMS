@@ -424,14 +424,30 @@ Display Objects
 	</cfcase>
 	<cfcase value="itemtitle">
 		<cfswitch expression="#this.listFormat#">
-			<cfcase value='ol,ul'>
-				<cfreturn "li" />
+			<cfcase value='ol,ul,div'>
+				<cfreturn getHeaderTag("subHead3") />
 			</cfcase>
 			<cfcase value='div'>
-				<cfreturn "h3" />
+				<cfreturn getHeaderTag("subHead3") />
 			</cfcase>
 			<cfcase value='article'>
-				<cfreturn "h1" />
+				<cfreturn getHeaderTag("headline") />
+			</cfcase>
+			<cfcase value='dl'>
+				<cfreturn "dt" />
+			</cfcase>
+		</cfswitch>
+	</cfcase>
+	<cfcase value="itemsubtitle">
+		<cfswitch expression="#this.listFormat#">
+			<cfcase value='ol,ul,div'>
+				<cfreturn getHeaderTag("subHead4") />
+			</cfcase>
+			<cfcase value='div'>
+				<cfreturn getHeaderTag("subHead4") />
+			</cfcase>
+			<cfcase value='article'>
+				<cfreturn getHeaderTag("subHead1") />
 			</cfcase>
 			<cfcase value='dl'>
 				<cfreturn "dt" />
