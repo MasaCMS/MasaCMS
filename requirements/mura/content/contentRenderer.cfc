@@ -44,7 +44,7 @@ For clarity, if you create a modified version of Mura CMS, you are not obligated
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
 --->
-<cfcomponent extends="mura.cfobject" output="false">
+<cfcomponent extends="mura.content.contentRendererBase" output="false">
 
 <cfset this.navOffSet=0/>
 <cfset this.navDepthLimit=1000/>
@@ -319,7 +319,6 @@ Display Objects
 <cfset this.sendToFriendSuccessClass="success">
 <cfset this.sendToFriendErrorClass="error">
 
-
 <cffunction name="init" returntype="any" access="public" output="false">
 <cfargument name="event" required="true" default="">
 
@@ -406,7 +405,7 @@ Display Objects
 	</cfif>
 </cffunction>
 
-<cffunction name="getListFormat" returntype="string" output="false">
+<cffunction name="getListFormatTag" returntype="string" output="false">
 	<cfargument name="element" default="container">
 	<cfswitch expression="#arguments.element#">
 	<cfcase value="item">
@@ -479,6 +478,10 @@ Display Objects
 	<cfargument name="listFormat">
 	<cfset this.listFormat=arguments.listFormat>
 	<cfreturn this/>
+</cffunction>
+
+<cffunction name="getListFormat" output="false">
+	<cfreturn this.listFormat/>
 </cffunction>
 
 <cffunction name="loadJSLib" returntype="void" output="false">
@@ -1699,7 +1702,7 @@ Display Objects
 		<cfcase value="forward_email"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_forward_email.cfm")></cfcase>
 		<cfcase value="adzone"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_adZone.cfm")></cfcase>
 		<cfcase value="feed">
-			<cfset theObject=theObject & dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_feed.cfm",cacheKey=cacheKeyObjectId  & getListFormat() & "startrow#request.startrow#",params=arguments.params,showEditable=showEditable)>
+			<cfset theObject=theObject & dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_feed.cfm",cacheKey=cacheKeyObjectId  & this.listFormat & "startrow#request.startrow#",params=arguments.params,showEditable=showEditable)>
 		</cfcase>	
 		<cfcase value="feed_slideshow">
 			<cfif not cookie.mobileFormat>	
@@ -1714,10 +1717,10 @@ Display Objects
 		<cfcase value="favorites"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"favorites/index.cfm")></cfcase>
 			<cfcase value="dragable_feeds"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dragablefeeds/index.cfm")></cfcase>
 		<cfcase value="related_content">
-			<cfset theObject=theObject & dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_related_content.cfm",cacheKey=cacheKeyContentId & getListFormat(),params=arguments.params,showEditable=showEditable)>
+			<cfset theObject=theObject & dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_related_content.cfm",cacheKey=cacheKeyContentId & this.listFormat,params=arguments.params,showEditable=showEditable)>
 		</cfcase>
 		<cfcase value="related_section_content">
-			<cfset theObject=theObject & dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_related_section_content.cfm",cachekey=cacheKeyContentId & getListFormat(),params=arguments.params,showEditable=showEditable)>
+			<cfset theObject=theObject & dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_related_section_content.cfm",cachekey=cacheKeyContentId & this.listFormat,params=arguments.params,showEditable=showEditable)>
 		</cfcase>
 		<cfcase value="user_tools"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_user_tools.cfm")></cfcase>
 		<cfcase value="tag_cloud">
@@ -1957,13 +1960,13 @@ Display Objects
 					<cfswitch expression="#variables.event.getValue('contentBean').gettype()#">
 					<cfcase value="Folder">
 						<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
-						<cf_CacheOMatic key="FolderBody#cacheStub##getListFormat()#" nocache="#variables.event.getValue('r').restrict#">
+						<cf_CacheOMatic key="FolderBody#cacheStub##this.listFormat#" nocache="#variables.event.getValue('r').restrict#">
 						 <cfoutput>#dspObject_Include(thefile='dsp_portal.cfm')#</cfoutput>
 						</cf_CacheOMatic>
 					</cfcase> 
 					<cfcase value="Calendar">
 						<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
-						 <cf_CacheOMatic key="calendarBody#cacheStub##getListFormat()#" nocache="#variables.event.getValue('r').restrict#">
+						 <cf_CacheOMatic key="calendarBody#cacheStub##this.listFormat#" nocache="#variables.event.getValue('r').restrict#">
 						 <cfoutput>#dspObject_Include(thefile='calendar/index.cfm')#</cfoutput>
 						 </cf_CacheOMatic>
 					</cfcase> 
@@ -1971,7 +1974,7 @@ Display Objects
 						<cfset loadShadowBoxJS() />
 						<cfset addToHTMLHeadQueue("gallery/htmlhead/gallery.cfm")>
 						<cfif not variables.event.valueExists('galleryItemID')><cfset variables.event.setValue('galleryItemID','')></cfif>
-						<cf_CacheOMatic key="galleryBody#cacheStub##variables.event.getValue('galleryItemID')##getListFormat()#" nocache="#variables.event.getValue('r').restrict#">
+						<cf_CacheOMatic key="galleryBody#cacheStub##variables.event.getValue('galleryItemID')##this.listFormat#" nocache="#variables.event.getValue('r').restrict#">
 						<cfoutput>#dspObject_Include(thefile='gallery/index.cfm')#</cfoutput>
 						</cf_CacheOMatic>
 					</cfcase> 
