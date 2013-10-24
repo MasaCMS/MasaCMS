@@ -124,8 +124,8 @@ If it has not set application.appInitialized=false. --->
 	  <cfcookie name="userid" expires="never" value="">
 </cfif>
 
-<cfif not StructKeyExists(cookie, 'f100608')>
-	  <cfcookie name="f100608" value="true">
+<cfif not StructKeyExists(cookie, 'k100608v010505')>
+	  <cfcookie name="k100608v010505" value="true">
 </cfif>
 	
 <!--- Making sure that session is valid --->
