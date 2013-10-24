@@ -77,7 +77,7 @@
 			<cfset arguments.isCustomImage= true />	
 		</cfif>
 
-		<cfif variables.$.getListFormat() eq "dl">
+		<cfif listFindNoCase("dl,ul,ol",variables.$.getListFormat())>
 			<cfif not structKeyExists(arguments,"imageHeight")>
 				<cfset arguments.imageHeight="auto">
 			</cfif>
@@ -122,7 +122,7 @@
 		</cfif>
 	</cfsilent>
 	<cfoutput>
-		<#variables.$.getListFormat('item')# class="clearfix<cfif arguments.class neq ''> #arguments.class#</cfif>"<cfif variables.$.getListFormat() eq 'dl' and arguments.hasImage> #arguments.imageStyles#</cfif>>
+		<#variables.$.getListFormat('item')# class="clearfix<cfif arguments.class neq ''> #arguments.class#</cfif>"<cfif listFindNoCase("dl,ul,ol",variables.$.getListFormat()) and arguments.hasImage> #arguments.imageStyles#</cfif>>
 			<cfloop list="#arguments.fields#" index="arguments.field">
 				<cfset arguments.field=trim(arguments.field)>
 				<cfswitch expression="#arguments.field#">

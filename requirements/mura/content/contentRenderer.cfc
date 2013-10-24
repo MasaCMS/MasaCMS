@@ -425,10 +425,10 @@ Display Objects
 	<cfcase value="itemtitle">
 		<cfswitch expression="#this.listFormat#">
 			<cfcase value='ol,ul,div'>
-				<cfreturn getHeaderTag("subHead3") />
+				<cfreturn getHeaderTag("subHead2") />
 			</cfcase>
 			<cfcase value='div'>
-				<cfreturn getHeaderTag("subHead3") />
+				<cfreturn getHeaderTag("subHead2") />
 			</cfcase>
 			<cfcase value='article'>
 				<cfreturn getHeaderTag("headline") />
@@ -441,10 +441,10 @@ Display Objects
 	<cfcase value="itemsubtitle">
 		<cfswitch expression="#this.listFormat#">
 			<cfcase value='ol,ul,div'>
-				<cfreturn getHeaderTag("subHead4") />
+				<cfreturn getHeaderTag("subHead3") />
 			</cfcase>
 			<cfcase value='div'>
-				<cfreturn getHeaderTag("subHead4") />
+				<cfreturn getHeaderTag("subHead3") />
 			</cfcase>
 			<cfcase value='article'>
 				<cfreturn getHeaderTag("subHead1") />
