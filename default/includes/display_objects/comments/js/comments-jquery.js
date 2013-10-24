@@ -151,28 +151,34 @@ jQuery(document).ready(function() {
 		$editor.slideDown();
 	});
 
-	jQuery("a.flagAsSpam").on('click', function( event ) {
-		event.preventDefault();
-		var a = jQuery(this);
-		var id = a.attr('data-id');
-		
-		var actionURL=$commentsProxyPath + "?method=flag&commentID=" + id;
-		jQuery.get(
-			actionURL,
-			function(data){
-				console.log(a);
-				a.html('Flagged as Spam');
-				a.unbind('click');
-				a.on('click', function( event ) {
-					event.preventDefault();
-				});
-			}
-		);
-	});
+	function bindEvents(){
+		jQuery("a.flagAsSpam").on('click', function( event ) {
+			event.preventDefault();
+			var a = jQuery(this);
+			var id = a.attr('data-id');
+			
+			var actionURL=$commentsProxyPath + "?method=flag&commentID=" + id;
+			jQuery.get(
+				actionURL,
+				function(data){
+					console.log(a);
+					a.html('Flagged as Spam');
+					a.unbind('click');
+					a.on('click', function( event ) {
+						event.preventDefault();
+					});
+				}
+			);
+		});
+	}
 
 	jQuery(document).ready(function() {
 		var actionURL = $commentsProxyPath + "?method=renderCommentsPage&contentID=" + $('#commentsPage').attr('data-contentid');
 
-		$('#commentsPage').load(actionURL);
+		$('#commentsPage').load(actionURL,function(){
+			bindEvents();
+			console.log('hi');
+		});
+
 	});
 });
