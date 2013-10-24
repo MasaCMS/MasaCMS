@@ -242,7 +242,6 @@
 			</form>
 
 			<!--- RECORDS PER PAGE --->
-			
 			<div class="view-controls row-fluid">
 				<div class="btn-group pull-left">
 					<a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
