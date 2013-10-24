@@ -129,171 +129,171 @@
 			
 			// Display Objects
 			// calendar/dsp_showMonth.cfm
-			renderer.calendarWrapper="";
-			renderer.calendarTable="table table-bordered";
-			renderer.calendarTableHeader="";
+			renderer.calendarWrapperClass="";
+			renderer.calendarTableClass="table table-bordered";
+			renderer.calendarTableHeaderClass="";
 			
 			// calendar/dspList.cfm
-			renderer.calendarListWrapper="";
+			renderer.calendarListWrapperClass="";
 			
 			// Comments/index.cfm
-			renderer.commentsWrapper="";
-			renderer.commentFormWrapper="";
-			renderer.commentForm="form-horizontal";
-			renderer.commentFieldWrapper="";
-			renderer.commentFieldLabel="";
-			renderer.commentInputWrapper="";
-			renderer.commentInput="";
-			renderer.commentSubmitButton="btn";
-			renderer.commentUserEmail="";
-			renderer.commentDeleteButton="";
+			renderer.commentsWrapperClass="";
+			renderer.commentFormWrapperClass="";
+			renderer.commentFormClass="form-horizontal";
+			renderer.commentFieldWrapperClass="";
+			renderer.commentFieldLabelClass="";
+			renderer.commentInputWrapperClass="";
+			renderer.commentInputClass="";
+			renderer.commentSubmitButtonClass="btn";
+			renderer.commentUserEmailClass="";
+			renderer.commentDeleteButtonClass="";
 			
 			// Comments/dsp_comment.cfm
-			renderer.emailLink="btn";
-			renderer.commentsLink="btn";
-			renderer.approveCommentLink="btn";
-			renderer.deleteCommentLink="btn";
+			renderer.emailLinkClass="btn";
+			renderer.commentsLinkClass="btn";
+			renderer.approveCommentLinkClass="btn";
+			renderer.deleteCommentLinkClass="btn";
 			
 			// Datacollection/dsp_response.cfm
-			renderer.datacollectionErrorP="error";
-			renderer.datacollectionErrorDiv="alert";
-			renderer.datacollectionSuccessP="success";
+			renderer.datacollectionErrorPClass="error";
+			renderer.datacollectionErrorDivClass="alert";
+			renderer.datacollectionSuccessPClass="success";
 			
 			// Dataresponses/dsp_detail.cfm
-			renderer.dataResponseList="dl-horizontal";
+			renderer.dataResponseListClass="dl-horizontal";
 			
 			// Dataresponses/dsp_list.cfm
-			renderer.dataResponseTable="table table-hover";
-			renderer.dataResponsePagination="pagination";
+			renderer.dataResponseTableClass="table table-hover";
+			renderer.dataResponsePaginationClass="pagination";
 			
 			// Draggablefeeds/index.cfm
-			renderer.draggableBoxHeader="";
-			renderer.draggableBoxHeaderButton="btn btn-default";
-			renderer.draggableBoxRSSeditForm="";
-			renderer.draggableBoxAddFeedWrapper="well clearfix";
-			renderer.draggableBoxNewFeedForm="form-horizontal";
-			renderer.draggableBoxSelectFeedWrapper="";
-			renderer.draggableBoxSelectFeedRow="row";
-			renderer.draggableBoxSelectFeedMenu="";
-			renderer.draggableBoxSelectFeedMenuDiv="";
-			renderer.draggableFeedMenuSelectField="";
-			renderer.addFeedButtonWrapperDiv="";
-			renderer.addFeedButtonWrapperDivInner="";
-			renderer.addFeedButton="btn btn-default";
+			renderer.draggableBoxHeaderClass="";
+			renderer.draggableBoxHeaderButtonClass="btn btn-default";
+			renderer.draggableBoxRSSeditFormClass="";
+			renderer.draggableBoxAddFeedWrapperClass="well clearfix";
+			renderer.draggableBoxNewFeedFormClass="form-horizontal";
+			renderer.draggableBoxSelectFeedWrapperClass="";
+			renderer.draggableBoxSelectFeedRowClass="row";
+			renderer.draggableBoxSelectFeedMenuClass="";
+			renderer.draggableBoxSelectFeedMenuDivClass="";
+			renderer.draggableFeedMenuSelectFieldClass="";
+			renderer.addFeedButtonWrapperDivClass="";
+			renderer.addFeedButtonWrapperDivInnerClass="";
+			renderer.addFeedButtonClass="btn btn-default";
 			
 			// Dsp_categories_nest.cfm
-			renderer.categoriesNestCheckbox="checkbox";
+			renderer.categoriesNestCheckboxClass="checkbox";
 			
 			// Dsp_content_list.cfm
-			renderer.contentListWrapperDiv="";
-			renderer.contentList="clearfix";
-			renderer.contentListItemTitle="";
-			renderer.contentListItemSummary="";
-			renderer.contentListItemCredits="";
-			renderer.contentListItemComments="";
-			renderer.contentListItemRating="";
-			renderer.contentListItemImageLink="thumbnail";
-			renderer.contentListItemImage="";
+			renderer.contentListWrapperDivClass="";
+			renderer.contentListClass="clearfix";
+			renderer.contentListItemTitleClass="";
+			renderer.contentListItemSummaryClass="";
+			renderer.contentListItemCreditsClass="";
+			renderer.contentListItemCommentsClass="";
+			renderer.contentListItemRatingClass="";
+			renderer.contentListItemImageLinkClass="thumbnail";
+			renderer.contentListItemImageClass="";
 			
 			// Dsp_edit_profile.cfm
-			renderer.editProfileForm="form-horizontal";
-			renderer.editProfileFormGroupWrapper="control-group";
-			renderer.editProfileFieldLabel="control-label";
-			renderer.editProfileFormFieldsWrapper="";
-			renderer.editProfileFormFields="";
-			renderer.editProfileHelpBlock="help-block";
-			renderer.editProfileSubmitButton="btn btn-primary";
-			renderer.editProfileSuccessMessage="success";
-			renderer.editProfileErrorMessage="alert";
+			renderer.editProfileFormClass="form-horizontal";
+			renderer.editProfileFormGroupWrapperClass="control-group";
+			renderer.editProfileFieldLabelClass="control-label";
+			renderer.editProfileFormFieldsWrapperClass="";
+			renderer.editProfileFormFieldsClass="";
+			renderer.editProfileHelpBlockClass="help-block";
+			renderer.editProfileSubmitButtonClass="btn btn-primary";
+			renderer.editProfileSuccessMessageClass="success";
+			renderer.editProfileErrorMessageClass="alert";
 			
 			// Dsp_email_dropdown.cfm
-			renderer.emailDropdownSelect="dropdown";
+			renderer.emailDropdownSelectClass="dropdown";
 			
 			// Dsp_event_reminder_form.cfm
-			renderer.eventReminderForm="well";
-			renderer.eventReminderFieldWrapper="control-group";
-			renderer.eventReminderFormLabels="control-label";
-			renderer.eventReminderSubmit="btn";
+			renderer.eventReminderFormClass="well";
+			renderer.eventReminderFieldWrapperClass="control-group";
+			renderer.eventReminderFormLabelsClass="control-label";
+			renderer.eventReminderSubmitClass="btn";
 			
 			// Dsp_features.cfm
-			renderer.featuresWrapper="clearfix";
+			renderer.featuresWrapperClass="clearfix";
 			
 			// Dsp_feed.cfm
-			renderer.localIndexWrapper="clearfix";
-			renderer.remoteFeedWrapper="clearfix";
+			renderer.localIndexWrapperClass="clearfix";
+			renderer.remoteFeedWrapperClass="clearfix";
 			
 			// Dsp_login.cfm
-			renderer.loginWrapper="container";
-			renderer.loginWrapperInner="row";
-			renderer.loginErrorMessage="error";
-			renderer.loginForm="form-horizontal";
-			renderer.forgotPasswordForm="form-horizontal";
-			renderer.loginFormGroupWrapper="";
-			renderer.loginFormFieldLabel="control-label";
-			renderer.loginFormFieldWrapper="";
-			renderer.loginFormField="";
-			renderer.loginFormCheckbox="checkbox";
-			renderer.loginFormSubmit="btn btn-default";
-			renderer.loginFormAlert="alert";
-			renderer.loginFormError="error";
-			renderer.notRegisteredLink="btn btn-primary";
+			renderer.loginWrapperClass="container";
+			renderer.loginWrapperInnerClass="row";
+			renderer.loginErrorMessageClass="error";
+			renderer.loginFormClass="form-horizontal";
+			renderer.forgotPasswordFormClass="form-horizontal";
+			renderer.loginFormGroupWrapperClass="";
+			renderer.loginFormFieldLabelClass="control-label";
+			renderer.loginFormFieldWrapperClass="";
+			renderer.loginFormFieldClass="";
+			renderer.loginFormCheckboxClass="checkbox";
+			renderer.loginFormSubmitClass="btn btn-default";
+			renderer.loginFormAlertClass="alert";
+			renderer.loginFormErrorClass="error";
+			renderer.notRegisteredLinkClass="btn btn-primary";
 			
 			// Dsp_mailing_list_master.cfm
-			renderer.mailingListWrapper="well";
-			renderer.mailingListSuccess="success";
-			renderer.mailingListError="error";
-			renderer.mailingListForm="form-horizontal";
-			renderer.mailingListFormGroupWrapper="";
-			renderer.mailingListFormLabel="control-label";
-			renderer.mailingListFormFieldWrapper="";
-			renderer.mailingListFormInput="";
-			renderer.mailingListCheckboxWrapper="";
-			renderer.mailingListCheckbox="checkbox";
-			renderer.mailingListSubmit="btn btn-default";
+			renderer.mailingListWrapperClass="well";
+			renderer.mailingListSuccessClass="success";
+			renderer.mailingListErrorClass="error";
+			renderer.mailingListFormClass="form-horizontal";
+			renderer.mailingListFormGroupWrapperClass="";
+			renderer.mailingListFormLabelClass="control-label";
+			renderer.mailingListFormFieldWrapperClass="";
+			renderer.mailingListFormInputClass="";
+			renderer.mailingListCheckboxWrapperClass="";
+			renderer.mailingListCheckboxClass="checkbox";
+			renderer.mailingListSubmitClass="btn btn-default";
 			
 			// Dsp_nextN.cfm
-			renderer.nextNWrapper="container";
-			renderer.nextNInner="row";
+			renderer.nextNWrapperClass="container";
+			renderer.nextNInnerClass="row";
 			
 			// Dsp_search_form.cfm
-			renderer.searchForm="";
-			renderer.searchFormInputWrapper="";
-			renderer.searchFormInput="";
-			renderer.searchFormSubmitWrapper="";
-			renderer.searchFormSubmit="btn btn-default";
+			renderer.searchFormClass="";
+			renderer.searchFormInputWrapperClass="";
+			renderer.searchFormInputClass="";
+			renderer.searchFormSubmitWrapperClass="";
+			renderer.searchFormSubmitClass="btn btn-default";
 			
 			// Dsp_search_results.cfm
-			renderer.searchResultWrapper="container";
-			renderer.searchResultInner="row";
-			renderer.searchResultsRow="row";
-			renderer.searchResultsMoreResultsRow="row";
-			renderer.searchReultsPager="pager";
-			renderer.searchAgainRow="row";
-			renderer.searchAgainInner="";
-			renderer.searchAgainForm="";
-			renderer.searchAgainInputWrapper="";
-			renderer.searchAgainFormInput="";
-			renderer.searchAgainButtonWrapper="";
-			renderer.searchAgainSubmit="btn btn-default";
+			renderer.searchResultWrapperClass="container";
+			renderer.searchResultInnerClass="row";
+			renderer.searchResultsRowClass="row";
+			renderer.searchResultsMoreResultsRowClass="row";
+			renderer.searchReultsPagerClass="pager";
+			renderer.searchAgainRowClass="row";
+			renderer.searchAgainInnerClass="";
+			renderer.searchAgainFormClass="";
+			renderer.searchAgainInputWrapperClass="";
+			renderer.searchAgainFormInputClass="";
+			renderer.searchAgainButtonWrapperClass="";
+			renderer.searchAgainSubmitClass="btn btn-default";
 			
 			// Dsp_user_tools.cfm
-			renderer.userToolsWrapper="well clearfix";
-			renderer.userToolsLoginForm="form-horizontal";
-			renderer.userToolsFormGroupWrapper="";
-			renderer.userToolsLoginFormLabel="control-label";
-			renderer.userToolsLoginFormInputWrapper="";
-			renderer.userToolsLoginFormInput="";
-			renderer.userToolsLoginFormFieldInner="";
-			renderer.userToolsLoginFormSubmit="btn btn-default";
-			renderer.userToolsNotRegisteredLink="btn btn-primary";
-			renderer.userToolsWrapper="clearfix";
-			renderer.userToolsEditProfileLink="btn btn-default";
-			renderer.userToolsLogoutLink="btn btn-default";
+			renderer.userToolsWrapperClass="well clearfix";
+			renderer.userToolsLoginFormClass="form-horizontal";
+			renderer.userToolsFormGroupWrapperClass="";
+			renderer.userToolsLoginFormLabelClass="control-label";
+			renderer.userToolsLoginFormInputWrapperClass="";
+			renderer.userToolsLoginFormInputClass="";
+			renderer.userToolsLoginFormFieldInnerClass="";
+			renderer.userToolsLoginFormSubmitClass="btn btn-default";
+			renderer.userToolsNotRegisteredLinkClass="btn btn-primary";
+			renderer.userToolsWrapperClass="clearfix";
+			renderer.userToolsEditProfileLinkClass="btn btn-default";
+			renderer.userToolsLogoutLinkClass="btn btn-default";
 			
 			// Formbuilder/Dsp_form.cfm
-			renderer.formBuilderFieldWrapper="";
-			renderer.formBuilderButtonWrapper="form-actions";
-			renderer.formBuilderSubmit="btn btn-default";
+			renderer.formBuilderFieldWrapperClass="";
+			renderer.formBuilderButtonWrapperClass="form-actions";
+			renderer.formBuilderSubmitClass="btn btn-default";
 			
 			// Formbuilder/Fields/Dsp_checkbox.cfm
 			// Formbuilder/Fields/Dsp_dropdown.cfm 
@@ -301,44 +301,44 @@
 			// Formbuilder/Fields/Dsp_radio.cfm
 			// Formbuilder/Fields/Dsp_textfield.cfm
 			
-			renderer.formBuilderFormFields="control-group";
+			renderer.formBuilderFormFieldsClass="control-group";
 			
 			// Formbuilder/Fields/field_dropdown.cfm
-			renderer.formBuilderTabHeader="dropdown";
-			renderer.formBuilderDisabledInput="disabled";
-			renderer.formBuilderCheckbox="checkbox";
+			renderer.formBuilderTabHeaderClass="dropdown";
+			renderer.formBuilderDisabledInputClass="disabled";
+			renderer.formBuilderCheckboxClass="checkbox";
 			
 			// Gallery/Index.cfm
-			renderer.galleryUL="clearfix";
-			renderer.galleryThumbnail="thumbnail";
+			renderer.galleryULClass="clearfix";
+			renderer.galleryThumbnailClass="thumbnail";
 			
 			// Nav/CalendarNav/NavTools.cfc
-			renderer.navCalendarWrapper="";
-			renderer.navCalendarTable="table table-bordered";
+			renderer.navCalendarWrapperClass="";
+			renderer.navCalendarTableClass="table table-bordered";
 			
 			// Nav/Dsp_sequential.cfm
-			renderer.navSequentialWrapper="container";
-			renderer.navSequentialInner="row";
+			renderer.navSequentialWrapperClass="container";
+			renderer.navSequentialInnerClass="row";
 			
 			// Nav/dsp_tag_cloud.cfm
-			renderer.tagCloudWrapper="";
+			renderer.tagCloudWrapperClass="";
 			
 			// NavArchive
-			renderer.navArchiveWrapper="";
-			renderer.navArchiveList="";
+			renderer.navArchiveWrapperClass="";
+			renderer.navArchiveListClass="";
 			
 			
 			// Rater/Index.cfm
-			renderer.raterObjectWrapper="row clearfix";
-			renderer.raterWrapper="";
-			renderer.avgRatingWrapper="";
+			renderer.raterObjectWrapperClass="row clearfix";
+			renderer.raterWrapperClass="";
+			renderer.avgRatingWrapperClass="";
 			
 			// SendToLink/SendLink.cfm
-			renderer.sendToFriendSuccess="success";
-			renderer.sendToFriendError="error";
+			renderer.sendToFriendSuccessClass="success";
+			renderer.sendToFriendErrorClass="error";
 
 			// form vars
-			renderer.formWrapperClass = 'well';
+			renderer.formWrapperClass = "well";
 
 			// for code syntax highlighting
 			try {
