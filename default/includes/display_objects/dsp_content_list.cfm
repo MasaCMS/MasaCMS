@@ -200,7 +200,8 @@
 					</cfcase>
 					<cfdefaultcase>
 						<cfif len(arguments.item.getValue(arguments.field))>
-						 	<#variables.$.getContentListTag(arguments.field)# class="sys#uCase(left(arguments.field,1))##iif(len(arguments.field) gt 1,de('#right(arguments.field,len(arguments.field)-1)#'),de(''))#">#HTMLEditFormat(arguments.item.getValue(arguments.field))#</#variables.$.getContentListTag(arguments.field)#>	 	
+							<!--- sys based dynamic classes are deprecated --->
+						 	<#variables.$.getContentListTag(arguments.field)# class="#lcase(arguments.field)# sys#uCase(left(arguments.field,1))##iif(len(arguments.field) gt 1,de('#right(arguments.field,len(arguments.field)-1)#'),de(''))#">#HTMLEditFormat(arguments.item.getValue(arguments.field))#</#variables.$.getContentListTag(arguments.field)#>	 	
 						</cfif>
 					</cfdefaultcase>
 				</cfswitch>
