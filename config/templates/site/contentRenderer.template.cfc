@@ -91,8 +91,7 @@
 		//this.showInlineEditor=true;
 		//this.renderHTMLHead=true;
 		//this.renderHTMLQueues=true;
-		//this.listFormat="dl";
-		//this.listFormatImageStyes=true;
+		//this.listFormat="dl"; //deprecated
 		//this.headline="h1";
 		//this.subHead1="h2";
 		//this.subHead2="h3";
@@ -125,12 +124,24 @@
 		// Use these variables to pass-in specific classes without having to create custom versions
 		
 		<!--- dsp_content_list.cfm --->
-		this.listFormatContainerEl="div";
-		this.listFormatItemEl="dl";
-		this.listFormatItemTitleEl="dt";
-		this.listFormatItemSubTitleEl="dt";
-		this.listFormatItemDetailEl="dd";
-		this.listFormatImageStyes=true;
+		this.listContainerEl="div";
+		this.listItemEl="dl";
+		this.listItemTitleEl="dt";
+		this.listItemSubTitleEl="dt";
+		this.listItemDetailEl="dd";
+		this.listImageStyes=true;
+
+		/*
+		<#this.listContainerEl#>
+			<cfloop...>
+			<#this.listItemEl#>
+				<#this.listItemTitleEl#>... </#this.listItemTitleEl#>
+				<#this.listItemSubTitleEl#>... </#this.listItemSubTitleEl#>
+				<#this.listItemDetailEl#>... </#this.listDetailTitleEl#>
+			</#this.listItemEl#>
+			</cfloop>
+		<#this.listContainerEl#>
+		*/
 
 		// calendar/dsp_showMonth.cfm
 		 this.calendarWrapperClass="";

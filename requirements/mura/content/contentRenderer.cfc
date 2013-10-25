@@ -111,12 +111,12 @@ Display Objects
 =================== --->
 
 <!--- dsp_content_list.cfm --->
-<cfset this.listFormatContainerEl="div">
-<cfset this.listFormatItemEl="dl">
-<cfset this.listFormatItemTitleEl="dt">
-<cfset this.listFormatItemSubTitleEl="dt">
-<cfset this.listFormatItemDetailEl="dd">
-<cfset this.listFormatImageStyes=true>
+<cfset this.listContainerEl="div">
+<cfset this.listItemEl="dl">
+<cfset this.listItemTitleEl="dt">
+<cfset this.listItemSubTitleEl="dt">
+<cfset this.listItemDetailEl="dd">
+<cfset this.listImageStyes=true>
 
 <!--- calendar/dsp_showMonth.cfm --->
 <cfset this.calendarWrapperClass="">
@@ -414,16 +414,16 @@ Display Objects
 	</cfif>
 </cffunction>
 
-<cffunction name="getListFormatTag" returntype="string" output="false">
+<cffunction name="getListTag" returntype="string" output="false">
 	<cfargument name="element" default="container">
-	<cfreturn this['listFormat' & arguments.element & "El"]>
+	<cfreturn this['list' & arguments.element & "El"]>
 </cffunction>
 
 <cffunction name="getListFormat" output="false">
-	<cfif listFindNoCase("ul,ol",this.listFormatContainerEl)>
-		<cfreturn this.listFormatContainerEl>
+	<cfif listFindNoCase("ul,ol",this.listContainerEl)>
+		<cfreturn this.listContainerEl>
 	<cfelse>
-		<cfreturn this.listFormatItemEl>
+		<cfreturn this.listItemEl>
 	</cfif>
 </cffunction>
 
