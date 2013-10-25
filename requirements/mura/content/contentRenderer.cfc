@@ -408,7 +408,7 @@ Display Objects
 	</cfif>
 </cffunction>
 
-<cffunction name="getListTag" returntype="string" output="false">
+<cffunction name="getContentListTag" returntype="string" output="false">
 	<cfargument name="property" default="">
 	<cfif structKeyExists(this.contentListPropertyTagMap,arguments.property)>
 		<cfreturn this.contentListPropertyTagMap[arguments.property]>
