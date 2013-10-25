@@ -170,7 +170,7 @@ Display Objects
 <cfset this.contentListImageStyles=true>
 <cfset this.contentListPropertyMap={
 										containerTag={tag="div"},
-										itemTag={tag="dl"},
+										itemTag={tag="dl",class="clearfix"},
 										labelTag={tag="span"},
 										title={tag="dt"},
 										date={tag="dt"},

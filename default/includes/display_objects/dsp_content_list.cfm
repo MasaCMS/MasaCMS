@@ -123,7 +123,7 @@
 		</cfif>
 	</cfsilent>
 	<cfoutput>
-		<#variables.$.getContentListTag('itemTag')# <cfif arguments.class neq ''>class="#arguments.class#"</cfif><cfif this.contentListImageStyles and arguments.hasImage> #arguments.imageStyles#</cfif>>
+		<#variables.$.getContentListTag('itemTag')# #variables.$.getContentListAttributes('itemTag',arguments.class)#"<cfif this.contentListImageStyles and arguments.hasImage> #arguments.imageStyles#</cfif>>
 			<cfloop list="#arguments.fields#" index="arguments.field">
 				<cfset arguments.field=trim(arguments.field)>
 				<cfswitch expression="#arguments.field#">
