@@ -168,7 +168,14 @@ Display Objects
 
 <!--- Dsp_content_list.cfm --->
 <cfset this.contentListImageStyles=true>
-<cfset this.contentListPropertyTagMap={containerEl="div",itemEl="dl",title="dt",date="dt",default="dd"}>
+<cfset this.contentListPropertyMap={
+										containerTag={tag="div"},
+										itemTag={tag="dl"},
+										labelTag={tag="span"},
+										title={tag="dt"},
+										date={tag="dt"},
+										default={tag="dd"}
+									}>
 <cfset this.contentListWrapperDivClass="">
 <cfset this.contentListClass="clearfix">
 <cfset this.contentListItemTitleClass="">
@@ -410,19 +417,19 @@ Display Objects
 
 <cffunction name="getContentListTag" returntype="string" output="false">
 	<cfargument name="property" default="">
-	<cfif structKeyExists(this.contentListPropertyTagMap,arguments.property)>
-		<cfreturn this.contentListPropertyTagMap[arguments.property]>
+	<cfif structKeyExists(this.contentListPropertyMap,arguments.property)>
+		<cfreturn this.contentListPropertyMap[arguments.property].tag>
 	<cfelse>
-		<cfreturn this.contentListPropertyTagMap.default>
+		<cfreturn this.contentListPropertyMap.default.tag>
 	</cfif>
 
 </cffunction>
 
 <cffunction name="getListFormat" output="false">
-	<cfif listFindNoCase("ul,ol",this.contentListPropertyTagMap.containerEl)>
-		<cfreturn this.contentListPropertyTagMap.containerEl>
+	<cfif listFindNoCase("ul,ol",this.contentListPropertyMap.containerTag.tag)>
+		<cfreturn this.contentListPropertyMap.containerTag.tag>
 	<cfelse>
-		<cfreturn this.contentListPropertyTagMap.itemEl>
+		<cfreturn this.contentListPropertyMap.itemTag.tag>
 	</cfif>
 </cffunction>
 
