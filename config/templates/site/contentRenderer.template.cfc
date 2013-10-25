@@ -135,7 +135,7 @@
 		USAGE
 		<#this.listContainerEl#>
 			<cfloop...>
-			<#this.listItemEl#>
+			<#this.listItemEl#  #systemCalculuatedImageStyles#>
 				<#this.listItemTitleEl#>... </#this.listItemTitleEl#>
 				<#this.listItemSubTitleEl#>... </#this.listItemSubTitleEl#>
 				<#this.listItemDetailEl#>... </#this.listDetailTitleEl#>
