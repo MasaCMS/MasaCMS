@@ -171,9 +171,12 @@ Display Objects
 <cfset this.contentListPropertyMap={
 										containerTag={tag="div"},
 										itemTag={tag="dl"},
-										labelTag={tag="span"},
+										itemLabel={tag="span"},
 										title={tag="dt"},
 										date={tag="dt"},
+										credits={tag="dd",showLabel=true,labelDelim="",rbkey="list.by"},
+										tags={tag="dd",showLabel=true,labelDelim=":",rbkey="tagcloud.tags"},
+										rating={tag="dd",showLabel=true,labelDelim=":",rbkey="list.rating"},
 										default={tag="dd"}
 									}>
 <cfset this.contentListWrapperDivClass="">
@@ -428,6 +431,29 @@ Display Objects
 <cffunction name="getContentListTag" output="false">
 	<cfargument name="property" default="">
 	<cfreturn getContentListProperty(arguments.property).tag>
+</cffunction>
+
+<cffunction name="getContentListLabel" output="false">
+	<cfargument name="property" default="">
+	<cfset var propStruct=getContentListProperty(arguments.property)>
+	<cfset var returnString="">
+
+	<cfif structKeyExists(propStruct,"showLabel") and propStruct.showLabel>
+		<cfset returnString="<" & getContentListTag('labelTag') &  getContentListAttributes('labelTag')& ">">
+		<cfif structKeyExists(propStruct, "rbKey")>
+			<cfset returnString=returnString & htmlEditFormat(variables.$.rbKey(propStruct.rbkey))>
+		<cfelseif structKeyExists(propStruct, "label")>
+			<cfset returnString=returnString & htmlEditFormat(propStruct.label)>
+		<cfelse>
+			<cfset returnString=returnString & arguments.property>
+		</cfif>
+		<cfif structKeyExists(propStruct, "labelDelim")>
+			<cfset returnString=returnString & propStruct.labelDelim>
+		</cfif>
+		<cfset returnString=returnString & "</" & getContentListTag('labelTag') & ">">
+	</cfif>
+	
+	<cfreturn returnString>
 </cffunction>
 
 <cffunction name="getContentListAttributes" returntype="string" output="false">
