@@ -116,7 +116,7 @@ Display Objects
 <cfset this.listItemTitleEl="dt">
 <cfset this.listItemSubTitleEl="dt">
 <cfset this.listItemDetailEl="dd">
-<cfset this.listImageStyes=true>
+<cfset this.listImageStyles=true>
 
 <!--- calendar/dsp_showMonth.cfm --->
 <cfset this.calendarWrapperClass="">
