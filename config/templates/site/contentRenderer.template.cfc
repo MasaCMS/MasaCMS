@@ -123,7 +123,7 @@
 		// Display Objects
 		// Use these variables to pass-in specific classes without having to create custom versions
 		
-		<!--- dsp_content_list.cfm --->
+		// dsp_content_list.cfm
 		this.listContainerEl="div";
 		this.listItemEl="dl";
 		this.listItemTitleEl="dt";
