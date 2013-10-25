@@ -1193,7 +1193,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 	<cfset var relatedID="">
 	<cfset var rsCheck="">
 	<cfset var relatedBean="">
-	<cfset var relatedIDList="">
+	<cfset var relatedIDList=structNew()>
 
 	<cfif isDefined('arguments.data.relatedContentSetData') and ((isArray(arguments.data.relatedContentSetData) and arrayLen(arguments.data.relatedContentSetData) gte 1) or isJSON(arguments.data.relatedContentSetData))>
 	
@@ -1205,6 +1205,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 
 		<cfloop from="1" to="#arrayLen(rcsData)#" index="i">
 			<cfset rcs = rcsData[i]>
+			<cfset relatedIDList['setid-#rcs.relatedContentSetID#'] = "">
 			<cfloop from="1" to="#arrayLen(rcs.items)#" index="j">
 				<cfif isStruct(rcs.items[j])>
 					<cfif not isdefined('local.parentBean')>
@@ -1254,7 +1255,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 					<cfset relatedID = rcs.items[j]>
 				</cfif>
 				
-				<cfif not listFindNoCase(relatedIDList,relatedID)>
+				<cfif not listFindNoCase(relatedIDList['setid-#rcs.relatedContentSetID#'],relatedID)>
 					<cftry>
 						<cfquery>
 							insert into tcontentrelated (contentID,contentHistID,relatedID,siteid,relatedContentSetID,orderNo)
@@ -1269,7 +1270,7 @@ tcontent.imageSize,tcontent.imageHeight,tcontent.imageWidth,tcontent.childTempla
 						</cfquery>
 						<cfcatch></cfcatch>
 					</cftry>
-					<cfset relatedIDList=listAppend(relatedIDList,relatedID)>
+					<cfset relatedIDList['setid-#rcs.relatedContentSetID#']=listAppend(relatedIDList['setid-#rcs.relatedContentSetID#'],relatedID)>
 				</cfif>
 			</cfloop>
 			
