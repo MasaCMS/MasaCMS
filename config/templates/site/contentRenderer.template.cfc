@@ -126,7 +126,7 @@
 		// dsp_content_list.cfm
 		this.listContainerEl="div";
 		this.listItemEl="dl";
-		this.listItemDetailMap={title="dt",date="dt",default="dd"};
+		this.listItemDetailELMap={title="dt",date="dt",default="dd"};
 		this.listImageStyles=true;
 
 		// calendar/dsp_showMonth.cfm
