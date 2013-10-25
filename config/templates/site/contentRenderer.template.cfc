@@ -124,10 +124,10 @@
 		// Use these variables to pass-in specific classes without having to create custom versions
 		
 		// dsp_content_list.cfm
+		this.listImageStyles=true;
 		this.listPropertyELMap={
 								listContainer="div",
 								listItem="dl",
-								listImageStyles=true,
 								title="dt",
 								date="dt",
 								default="dd"

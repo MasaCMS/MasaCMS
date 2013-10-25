@@ -89,7 +89,7 @@
 			<cfset arguments.imagePadding=20>
 		</cfif>
 
-		<cfif this.listPropertyELMap.listImageStyles>
+		<cfif this.listImageStyles>
 			<cfif arguments.isCustomImage>
 				<cfset arguments.imageStyles='style="#variables.$.generateListImageSyles(size='custom',width=arguments.imageWidth,height=arguments.imageHeight,padding=arguments.imagePadding)#"'>
 			<cfelse>
@@ -123,7 +123,7 @@
 		</cfif>
 	</cfsilent>
 	<cfoutput>
-		<#variables.$.getListTag('listitem')# class="clearfix<cfif arguments.class neq ''> #arguments.class#</cfif>"<cfif this.listPropertyELMap.listImageStyles and arguments.hasImage> #arguments.imageStyles#</cfif>>
+		<#variables.$.getListTag('listitem')# class="clearfix<cfif arguments.class neq ''> #arguments.class#</cfif>"<cfif this.listImageStyles and arguments.hasImage> #arguments.imageStyles#</cfif>>
 			<cfloop list="#arguments.fields#" index="arguments.field">
 				<cfset arguments.field=trim(arguments.field)>
 				<cfswitch expression="#arguments.field#">

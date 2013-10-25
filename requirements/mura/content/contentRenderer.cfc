@@ -111,7 +111,8 @@ Display Objects
 =================== --->
 
 <!--- dsp_content_list.cfm --->
-<cfset this.listPropertyELMap={listContainer="div",listItem="dl",listImageStyles=true,title="dt",date="dt",default="dd"}>
+<cfset this.listImageStyles=true>
+<cfset this.listPropertyELMap={listContainer="div",listItem="dl",title="dt",date="dt",default="dd"}>
 
 <!--- calendar/dsp_showMonth.cfm --->
 <cfset this.calendarWrapperClass="">
