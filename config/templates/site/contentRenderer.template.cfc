@@ -132,6 +132,7 @@
 		this.listImageStyes=true;
 
 		/*
+		USAGE
 		<#this.listContainerEl#>
 			<cfloop...>
 			<#this.listItemEl#>
