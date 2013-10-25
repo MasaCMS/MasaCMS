@@ -123,16 +123,6 @@
 		// Display Objects
 		// Use these variables to pass-in specific classes without having to create custom versions
 		
-		// dsp_content_list.cfm
-		this.listImageStyles=true;
-		this.listPropertyTagMap={
-								listContainer="div",
-								listItem="dl",
-								title="dt",
-								date="dt",
-								default="dd"
-							};
-
 		// calendar/dsp_showMonth.cfm
 		 this.calendarWrapperClass="";
 		 this.calendarTableClass="";
@@ -190,6 +180,14 @@
 		 this.categoriesNestCheckboxClass="";
 		
 		// dsp_content_list.cfm
+		this.contentListImageStyles=true;
+		this.contentListPropertyTagMap={
+								listContainer="div",
+								listItem="dl",
+								title="dt",
+								date="dt",
+								default="dd"
+							};
 		 this.contentListWrapperDivClass="";
 		 this.contentListClass="";
 		 this.contentListItemTitleClass="";

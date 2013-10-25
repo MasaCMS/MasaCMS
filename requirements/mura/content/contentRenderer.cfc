@@ -110,10 +110,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 Display Objects 
 =================== --->
 
-<!--- dsp_content_list.cfm --->
-<cfset this.listImageStyles=true>
-<cfset this.listPropertyTagMap={listContainer="div",listItem="dl",title="dt",date="dt",default="dd"}>
-
 <!--- calendar/dsp_showMonth.cfm --->
 <cfset this.calendarWrapperClass="">
 <cfset this.calendarTableClass="table table-bordered">
@@ -171,6 +167,8 @@ Display Objects
 <cfset this.categoriesNestCheckboxClass="checkbox">
 
 <!--- Dsp_content_list.cfm --->
+<cfset this.contentListImageStyles=true>
+<cfset this.contentListPropertyTagMap={listContainer="div",listItem="dl",title="dt",date="dt",default="dd"}>
 <cfset this.contentListWrapperDivClass="">
 <cfset this.contentListClass="clearfix">
 <cfset this.contentListItemTitleClass="">
@@ -412,19 +410,19 @@ Display Objects
 
 <cffunction name="getListTag" returntype="string" output="false">
 	<cfargument name="property" default="">
-	<cfif structKeyExists(this.listPropertyTagMap,arguments.property)>
-		<cfreturn this.listPropertyTagMap[arguments.property]>
+	<cfif structKeyExists(this.contentListPropertyTagMap,arguments.property)>
+		<cfreturn this.contentListPropertyTagMap[arguments.property]>
 	<cfelse>
-		<cfreturn this.listPropertyTagMap.default>
+		<cfreturn this.contentListPropertyTagMap.default>
 	</cfif>
 
 </cffunction>
 
 <cffunction name="getListFormat" output="false">
-	<cfif listFindNoCase("ul,ol",this.listPropertyTagMap.listContainer)>
-		<cfreturn this.listPropertyTagMap.listContainer>
+	<cfif listFindNoCase("ul,ol",this.contentListPropertyTagMap.listContainer)>
+		<cfreturn this.contentListPropertyTagMap.listContainer>
 	<cfelse>
-		<cfreturn this.listPropertyTagMap.listItem>
+		<cfreturn this.contentListPropertyTagMap.listItem>
 	</cfif>
 </cffunction>
 
