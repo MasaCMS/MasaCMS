@@ -421,10 +421,10 @@ Display Objects
 </cffunction>
 
 <cffunction name="getListFormat" output="false">
-	<cfif listFindNoCase("ul,ol",this.listPropertyELMap.listContainer)>
-		<cfreturn this.listPropertyELMap.listContainer>
+	<cfif listFindNoCase("ul,ol",this.listPropertyTagMap.listContainer)>
+		<cfreturn this.listPropertyTagMap.listContainer>
 	<cfelse>
-		<cfreturn this.listPropertyELMap.listItem>
+		<cfreturn this.listPropertyTagMap.listItem>
 	</cfif>
 </cffunction>
 
