@@ -174,7 +174,7 @@ Display Objects
 										labelTag={tag="span"},
 										title={tag="dt"},
 										date={tag="dt"},
-										credits={tag="dd",showLabel=true,labelDelim="",rbkey="list.by"},
+										credits={tag="dd",showLabel=true,rbkey="list.by"},
 										tags={tag="dd",showLabel=true,labelDelim=":",rbkey="tagcloud.tags"},
 										rating={tag="dd",showLabel=true,labelDelim=":",rbkey="list.rating"},
 										default={tag="dd"}
