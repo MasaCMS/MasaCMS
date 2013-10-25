@@ -129,7 +129,7 @@
 		this.listItemTitleEl="dt";
 		this.listItemSubTitleEl="dt";
 		this.listItemDetailEl="dd";
-		this.listImageStyes=true;
+		this.listImageStyles=true;
 
 		/*
 		USAGE
