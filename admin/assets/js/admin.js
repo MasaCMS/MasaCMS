@@ -1373,7 +1373,7 @@ var spinnerArgs2 = {
     position: 'relative'
 }
 
-/*
+
 var spinnerArgs3 = {
 	lines: 17,
 	// The number of lines to draw
@@ -1406,7 +1406,7 @@ var spinnerArgs3 = {
 	left: 'auto', // Left position relative to parent in px
     position: 'relative'
 }
-*/
+
 
 //preloadimages(['./assets/images/ajax-loader.gif']);
 
