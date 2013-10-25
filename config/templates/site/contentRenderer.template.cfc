@@ -181,7 +181,7 @@
 		
 		// dsp_content_list.cfm
 		this.contentListImageStyles=true;
-		this.contentListPropertyTagMap={
+		this.contentListPropertyMap={
 										containerTag={tag="div"},
 										itemTag={tag="dl"},
 										labelTag={tag="span"},
