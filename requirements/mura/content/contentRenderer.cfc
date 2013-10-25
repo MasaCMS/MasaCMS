@@ -415,14 +415,41 @@ Display Objects
 	</cfif>
 </cffunction>
 
-<cffunction name="getContentListTag" returntype="string" output="false">
+<cffunction name="getContentListProperty" output="false">
 	<cfargument name="property" default="">
 	<cfif structKeyExists(this.contentListPropertyMap,arguments.property)>
-		<cfreturn this.contentListPropertyMap[arguments.property].tag>
+		<cfreturn this.contentListPropertyMap[arguments.property]>
 	<cfelse>
-		<cfreturn this.contentListPropertyMap.default.tag>
+		<cfreturn this.contentListPropertyMap.default>
 	</cfif>
 
+</cffunction>
+
+<cffunction name="getContentListTag" output="false">
+	<cfargument name="property" default="">
+	<cfreturn getContentListProperty(arguments.property).tag>
+</cffunction>
+
+<cffunction name="getContentListAttributes" returntype="string" output="false">
+	<cfargument name="property" default="">
+	<cfargument name="class" default="">
+
+	<cfset var propStruct=getContentListProperty(arguments.property)>
+	<cfset var returnstring="">
+	<cfset var propclass=lcase(arguments.property)>
+
+	<cfif structKeyExists(propStruct,"class")>
+		<cfset propclass=propStruct.class>
+	</cfif>
+
+	<cfset arguments.class=trim(propclass & " " & arguments.class)>
+	<cfset returnstring=' class="' & arguments.class & '"'>
+	
+	<cfif structKeyExists(propStruct,"customString")>
+		<cfset returnstring= trim(returnstring & " " & propStruct.customString)>
+	</cfif>
+
+	<cfreturn returnstring>
 </cffunction>
 
 <cffunction name="getListFormat" output="false">
@@ -432,7 +459,7 @@ Display Objects
 		<cfreturn this.contentListPropertyMap.itemTag.tag>
 	</cfif>
 </cffunction>
-
+--
 <cffunction name="loadJSLib" returntype="void" output="false">
 	<cfif not this.jsLibLoaded>
 	<cfswitch expression="#getJsLib()#">

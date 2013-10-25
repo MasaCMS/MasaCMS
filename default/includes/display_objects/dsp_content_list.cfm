@@ -129,22 +129,22 @@
 				<cfswitch expression="#arguments.field#">
 					<cfcase value="Date">
 						<cfif listFindNoCase("Folder,Portal",arguments.type) and isDate(arguments.item.getValue('releaseDate'))>
-						<#variables.$.getContentListTag(arguments.field)# class="releaseDate">#LSDateFormat(arguments.item.getValue('releaseDate'),variables.$.getLongDateFormat())#</#variables.$.getContentListTag(arguments.field)#>
+						<#variables.$.getContentListTag(arguments.field)# #variables.$.getContentListAttributes(arguments.field,'releaseDate')#>#LSDateFormat(arguments.item.getValue('releaseDate'),variables.$.getLongDateFormat())#</#variables.$.getContentListTag(arguments.field)#>
 						<cfelseif listFind("Search,Feed,Related",arguments.type) and arguments.item.getValue('parentType') eq 'Calendar' and isDate(arguments.item.getValue('displayStart'))>
 						<#variables.$.getContentListTag(arguments.field)# class="releaseDate"><cfif LSDateFormat(arguments.item.getValue('displayStart'),"short") lt LSDateFormat(arguments.item.getValue('displayStop'),"short")>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getShortDateFormat())# - #LSDateFormat(arguments.item.getValue('displayStop'),variables.$.getShortDateFormat())#<cfelse>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getLongDateFormat())#</cfif></#variables.$.getContentListTag(arguments.field)#>
 						<cfelseif arguments.type eq "Calendar">
-						<#variables.$.getContentListTag(arguments.field)# class="releaseDate"><cfif LSDateFormat(arguments.item.getValue('displayStart'),"short") lt LSDateFormat(arguments.item.getValue('displayStop'),"short")>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getShortDateFormat())# - #LSDateFormat(arguments.item.getValue('displayStop'),variables.$.getShortDateFormat())#<cfelse>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getLongDateFormat())#</cfif></#variables.$.getContentListTag(arguments.field)#>
+						<#variables.$.getContentListTag(arguments.field)# #variables.$.getContentListAttributes(arguments.field,'releaseDate')#><cfif LSDateFormat(arguments.item.getValue('displayStart'),"short") lt LSDateFormat(arguments.item.getValue('displayStop'),"short")>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getShortDateFormat())# - #LSDateFormat(arguments.item.getValue('displayStop'),variables.$.getShortDateFormat())#<cfelse>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getLongDateFormat())#</cfif></#variables.$.getContentListTag(arguments.field)#>
 						<cfelseif LSisDate(arguments.item.getValue('releaseDate'))>
-						<#variables.$.getContentListTag(arguments.field)# class="releaseDate">#LSDateFormat(arguments.item.getValue('releaseDate'),variables.$.getLongDateFormat())#</#variables.$.getContentListTag(arguments.field)#>		
+						<#variables.$.getContentListTag(arguments.field)# #variables.$.getContentListAttributes(arguments.field,'releaseDate')#>#LSDateFormat(arguments.item.getValue('releaseDate'),variables.$.getLongDateFormat())#</#variables.$.getContentListTag(arguments.field)#>		
 						</cfif>
 					</cfcase>
 					<cfcase value="Title">
-						<#variables.$.getContentListTag(arguments.field)# class="title"><cfif arguments.type eq "Search">#arguments.iterator.getRecordIndex()#. </cfif>#variables.$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),arguments.item.getValue('menutitle'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),arguments.item.getValue('siteID'),'',variables.$.globalConfig('context'),variables.$.globalConfig('stub'),variables.$.globalConfig('indexFile'))#</#variables.$.getContentListTag(arguments.field)#>
+						<#variables.$.getContentListTag(arguments.field)# #variables.$.getContentListAttributes(arguments.field)#><cfif arguments.type eq "Search">#arguments.iterator.getRecordIndex()#. </cfif>#variables.$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),arguments.item.getValue('menutitle'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),arguments.item.getValue('siteID'),'',variables.$.globalConfig('context'),variables.$.globalConfig('stub'),variables.$.globalConfig('indexFile'))#</#variables.$.getContentListTag(arguments.field)#>
 					</cfcase>
 					<cfcase value="Image">
 						<cfif arguments.hasImage>
-						<#variables.$.getContentListTag(arguments.field)# class="image">
-							<cfif $.event('muraMobileRequest')>
+						<#variables.$.getContentListTag(arguments.field)# #variables.$.getContentListAttributes(arguments.field)#>
+							<cfif variables.$.event('muraMobileRequest')>
 							<img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/>
 							<cfelse>
 							<a href="#arguments.item.getURL()#" title="#HTMLEditFormat(arguments.item.getValue('title'))#" class="thumbnail"><img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>
@@ -154,37 +154,37 @@
 					</cfcase>
 					<cfcase value="Summary">
 						<cfif len(arguments.item.getValue('summary')) and arguments.item.getValue('summary') neq "<p></p>">
-						 	<#variables.$.getContentListTag(arguments.field)# class="summary">#variables.$.setDynamicContent(arguments.item.getValue('summary'))#</#variables.$.getContentListTag(arguments.field)#>
+						 	<#variables.$.getContentListTag(arguments.field)# #variables.$.getContentListAttributes(arguments.field)#>#variables.$.setDynamicContent(arguments.item.getValue('summary'))#</#variables.$.getContentListTag(arguments.field)#>
 						</cfif>
 					</cfcase>
 					<cfcase value="Body">
 						<cfif not listFindNoCase('File,Link',arguments.item.getValue('type'))>
 							<cfif len(arguments.item.getValue('body')) and arguments.item.getValue('body') neq "<p></p>">
-						 		<#variables.$.getContentListTag(arguments.field)# class="body">#variables.$.setDynamicContent(arguments.item.getValue('body'))#</#variables.$.getContentListTag(arguments.field)#>
+						 		<#variables.$.getContentListTag(arguments.field)# #variables.$.getContentListAttributes(arguments.field)#>#variables.$.setDynamicContent(arguments.item.getValue('body'))#</#variables.$.getContentListTag(arguments.field)#>
 							 </cfif>
 						<cfelse>
 							 <cfif len(arguments.item.getValue('summary')) and arguments.item.getValue('summary') neq "<p></p>">
-						 		<#variables.$.getContentListTag(arguments.field)# class="body">#variables.$.setDynamicContent(arguments.item.getValue('summary'))#</#variables.$.getContentListTag(arguments.field)#>
+						 		<#variables.$.getContentListTag(arguments.field)# #variables.$.getContentListAttributes(arguments.field)#>#variables.$.setDynamicContent(arguments.item.getValue('summary'))#</#variables.$.getContentListTag(arguments.field)#>
 						 	</cfif>
 						</cfif>
 					</cfcase>
 					<cfcase value="ReadMore">
-					 	<#variables.$.getContentListTag(arguments.field)# class="readMore">#variables.$.a#variables.$.getContentListTag('itemdetail')#Link(arguments.item.getValue('type'),arguments.item.getValue('filename'),variables.$.rbKey('list.readmore'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),arguments.item.getValue('siteID'),'',variables.$.globalConfig('context'),variables.$.globalConfig('stub'),variables.$.globalConfig('indexFile'))#</#variables.$.getContentListTag(arguments.field)#>
+					 	<#variables.$.getContentListTag(arguments.field)# #variables.$.getContentListAttributes(arguments.field,"readMore")#>#variables.$.a#variables.$.getContentListTag('itemdetail')#Link(arguments.item.getValue('type'),arguments.item.getValue('filename'),variables.$.rbKey('list.readmore'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),arguments.item.getValue('siteID'),'',variables.$.globalConfig('context'),variables.$.globalConfig('stub'),variables.$.globalConfig('indexFile'))#</#variables.$.getContentListTag(arguments.field)#>
 					</cfcase>
 					<cfcase value="Credits">
 						<cfif len(arguments.item.getValue('credits'))>
-						 	<#variables.$.getContentListTag(arguments.field)# class="credits">#variables.$.rbKey('list.by')# #HTMLEditFormat(arguments.item.getValue('credits'))#</#variables.$.getContentListTag(arguments.field)#>
+						 	<#variables.$.getContentListTag(arguments.field)# #variables.$.getContentListAttributes(arguments.field)#>#variables.$.rbKey('list.by')# #HTMLEditFormat(arguments.item.getValue('credits'))#</#variables.$.getContentListTag(arguments.field)#>
 						</cfif>
 					</cfcase>
 					<cfcase value="Comments">
-						<cfif not $.event('muraMobileRequest') and (arguments.item.getValue('type') eq 'Page' or showItemMeta(arguments.item.getValue('type')) or (len(arguments.item.getValue('fileID')) and showItemMeta(arguments.item.getValue('fileEXT')))) >
-						 	<#variables.$.getContentListTag(arguments.field)# class="comments">#variables.$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),'#variables.$.rbKey("list.comments")#(#variables.$.getBean('contentGateway').getCommentCount(variables.$.event('siteID'),arguments.item.getValue('contentID'))#)',arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),variables.$.event('siteID'),'##comments')#</#variables.$.getContentListTag(arguments.field)#>
+						<cfif not variables.$.event('muraMobileRequest') and (arguments.item.getValue('type') eq 'Page' or showItemMeta(arguments.item.getValue('type')) or (len(arguments.item.getValue('fileID')) and showItemMeta(arguments.item.getValue('fileEXT')))) >
+						 	<#variables.$.getContentListTag(arguments.field)# #variables.$.getContentListAttributes(arguments.field)#>#variables.$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),'#variables.$.rbKey("list.comments")#(#variables.$.getBean('contentGateway').getCommentCount(variables.$.event('siteID'),arguments.item.getValue('contentID'))#)',arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),variables.$.event('siteID'),'##comments')#</#variables.$.getContentListTag(arguments.field)#>
 						</cfif>
 					</cfcase>
 					<cfcase value="Tags">
 						<cfif len(arguments.item.getValue('tags'))>
 							<cfset arguments.tagLen=listLen(arguments.item.getValue('tags')) />
-							<#variables.$.getContentListTag(arguments.field)# class="tags">
+							<#variables.$.getContentListTag(arguments.field)# #variables.$.getContentListAttributes(arguments.field)#>
 								#variables.$.rbKey('tagcloud.tags')#: 
 								<cfloop from="1" to="#arguments.tagLen#" index="t">
 								<cfset arguments.tag=#trim(listgetAt(arguments.item.getValue('tags'),t))#>
@@ -201,7 +201,7 @@
 					<cfdefaultcase>
 						<cfif len(arguments.item.getValue(arguments.field))>
 							<!--- sys based dynamic classes are deprecated --->
-						 	<#variables.$.getContentListTag(arguments.field)# class="#lcase(arguments.field)# sys#uCase(left(arguments.field,1))##iif(len(arguments.field) gt 1,de('#right(arguments.field,len(arguments.field)-1)#'),de(''))#">#HTMLEditFormat(arguments.item.getValue(arguments.field))#</#variables.$.getContentListTag(arguments.field)#>	 	
+						 	<#variables.$.getContentListTag(arguments.field)# #variables.$.getContentListAttributes(arguments.field,'sys#uCase(left(arguments.field,1))##iif(len(arguments.field) gt 1,de('#right(arguments.field,len(arguments.field)-1)#'),de(''))#')#">#HTMLEditFormat(arguments.item.getValue(arguments.field))#</#variables.$.getContentListTag(arguments.field)#>	 	
 						</cfif>
 					</cfdefaultcase>
 				</cfswitch>
