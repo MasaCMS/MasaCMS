@@ -42,7 +42,7 @@
 		$('#razuna-tagTree').css("width","835px");
 		$('#razuna-full_page_loader').css('display','block');
 		setTimeout(function(){
-			$("#razuna-tagTree").jstree("razuna-search", $('#razuna-search-box').val());
+			$("#razuna-tagTree").jstree("search", $('#razuna-search-box').val());
 			$('#razuna-full_page_loader').css('display','none');
 		}, 2000);  
 	});
@@ -99,7 +99,7 @@
 		$('#razunaModalWindow').load(razuna_folder+'?muraAction=razuna.default',function(){
 			var loader_div = '<div id="razuna-loader-div"><div class="razuna-img-div"><img src="'+razuna_folder+'assets/images/ajax-loader.gif"></div></div>';
 				$('#razunaModalWindow').before(loader_div);
-
+		
 		$("#razuna-tagTree").jstree({
 			"plugins" : [ "json_data", "ui", "types", "search"],
 			"types" : {
@@ -257,7 +257,7 @@
 		$('#razunaModalWindow').before($('#razuna-search-div'));
 		}).dialog('open');
 
-		return false;
+		//return false;
 	}
 
 
