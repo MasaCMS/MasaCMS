@@ -123,6 +123,15 @@
 		
 		// Display Objects
 		// Use these variables to pass-in specific classes without having to create custom versions
+		
+		<!--- dsp_content_list.cfm --->
+		this.listFormatContainerEl="div";
+		this.listFormatItemEl="dl";
+		this.listFormatItemTitleEl="dt";
+		this.listFormatItemSubTitleEl="dt";
+		this.listFormatItemDetailEl="dd";
+		this.listFormatImageStyes=true;
+
 		// calendar/dsp_showMonth.cfm
 		 this.calendarWrapperClass="";
 		 this.calendarTableClass="";
