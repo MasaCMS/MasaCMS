@@ -128,7 +128,7 @@
 				<cfset arguments.field=trim(arguments.field)>
 				<cfswitch expression="#arguments.field#">
 					<cfcase value="Date">
-						<cfif arguments.type eq "Portal" and isDate(arguments.item.getValue('releaseDate'))>
+						<cfif listFindNoCase("Folder,Portal",arguments.type) and isDate(arguments.item.getValue('releaseDate'))>
 						<#variables.$.getListTag(arguments.field)# class="releaseDate">#LSDateFormat(arguments.item.getValue('releaseDate'),variables.$.getLongDateFormat())#</#variables.$.getListTag(arguments.field)#>
 						<cfelseif listFind("Search,Feed,Related",arguments.type) and arguments.item.getValue('parentType') eq 'Calendar' and isDate(arguments.item.getValue('displayStart'))>
 						<#variables.$.getListTag(arguments.field)# class="releaseDate"><cfif LSDateFormat(arguments.item.getValue('displayStart'),"short") lt LSDateFormat(arguments.item.getValue('displayStop'),"short")>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getShortDateFormat())# - #LSDateFormat(arguments.item.getValue('displayStop'),variables.$.getShortDateFormat())#<cfelse>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getLongDateFormat())#</cfif></#variables.$.getListTag(arguments.field)#>
