@@ -77,7 +77,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.renderHTMLQueues=true/>
 <cfset this.crumbdata=arrayNew(1)/>
 <cfset this.listFormat="dl">
-<cfset this.listFormatImageStyes=true>
 <cfset this.headline="h2"/>
 <cfset this.subHead1="h3"/>
 <cfset this.subHead2="h4"/>
@@ -110,6 +109,15 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <!--- ===================
 Display Objects 
 =================== --->
+
+<!--- dsp_content_list.cfm --->
+<cfset this.listFormatContainerEl="div">
+<cfset this.listFormatItemEl="dl">
+<cfset this.listFormatItemTitleEl="dt">
+<cfset this.listFormatItemSubTitleEl="dt">
+<cfset this.listFormatItemDetailEl="dd">
+<cfset this.listFormatImageStyes=true>
+
 <!--- calendar/dsp_showMonth.cfm --->
 <cfset this.calendarWrapperClass="">
 <cfset this.calendarTableClass="table table-bordered">
@@ -408,81 +416,15 @@ Display Objects
 
 <cffunction name="getListFormatTag" returntype="string" output="false">
 	<cfargument name="element" default="container">
-	<cfswitch expression="#arguments.element#">
-	<cfcase value="item">
-		<cfswitch expression="#this.listFormat#">
-			<cfcase value='ol,ul'>
-				<cfreturn "li" />
-			</cfcase>
-			<cfcase value='div,article'>
-				<cfreturn this.listFormat />
-			</cfcase>
-			<cfcase value='dl'>
-				<cfreturn "dl" />
-			</cfcase>
-		</cfswitch>
-	</cfcase>
-	<cfcase value="itemtitle">
-		<cfswitch expression="#this.listFormat#">
-			<cfcase value='ol,ul,div'>
-				<cfreturn getHeaderTag("subHead2") />
-			</cfcase>
-			<cfcase value='div'>
-				<cfreturn getHeaderTag("subHead2") />
-			</cfcase>
-			<cfcase value='article'>
-				<cfreturn getHeaderTag("headline") />
-			</cfcase>
-			<cfcase value='dl'>
-				<cfreturn "dt" />
-			</cfcase>
-		</cfswitch>
-	</cfcase>
-	<cfcase value="itemsubtitle">
-		<cfswitch expression="#this.listFormat#">
-			<cfcase value='ol,ul,div'>
-				<cfreturn getHeaderTag("subHead3") />
-			</cfcase>
-			<cfcase value='div'>
-				<cfreturn getHeaderTag("subHead3") />
-			</cfcase>
-			<cfcase value='article'>
-				<cfreturn getHeaderTag("subHead1") />
-			</cfcase>
-			<cfcase value='dl'>
-				<cfreturn "dt" />
-			</cfcase>
-		</cfswitch>
-	</cfcase>
-	<cfcase value="itemdetail">
-		<cfif this.listFormat eq 'dl'>
-			<cfreturn "dd" />
-		<cfelse>
-			<cfreturn "p" />
-		</cfif>
-	</cfcase>
-	<cfdefaultcase>
-		<cfswitch expression="#this.listFormat#">
-			<cfcase value='ol,ul'>
-				<cfreturn this.listFormat />
-			</cfcase>
-			<cfdefaultcase>
-				<cfreturn "div" />
-			</cfdefaultcase>
-		</cfswitch>
-	</cfdefaultcase>
-	</cfswitch>
-	
-</cffunction>
-
-<cffunction name="setListFormat" output="false">
-	<cfargument name="listFormat">
-	<cfset this.listFormat=arguments.listFormat>
-	<cfreturn this/>
+	<cfreturn this['listFormat' & arguments.element & "El"]>
 </cffunction>
 
 <cffunction name="getListFormat" output="false">
-	<cfreturn this.listFormat/>
+	<cfif listFindNoCase("ul,ol",this.listFormatContainerEl)>
+		<cfreturn this.listFormatContainerEl>
+	<cfelse>
+		<cfreturn this.listFormatItemEl>
+	</cfif>
 </cffunction>
 
 <cffunction name="loadJSLib" returntype="void" output="false">
@@ -1703,7 +1645,7 @@ Display Objects
 		<cfcase value="forward_email"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_forward_email.cfm")></cfcase>
 		<cfcase value="adzone"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_adZone.cfm")></cfcase>
 		<cfcase value="feed">
-			<cfset theObject=theObject & dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_feed.cfm",cacheKey=cacheKeyObjectId  & this.listFormat & "startrow#request.startrow#",params=arguments.params,showEditable=showEditable)>
+			<cfset theObject=theObject & dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectid=arguments.objectid,filename="dsp_feed.cfm",cacheKey=cacheKeyObjectId  & getListFormat() & "startrow#request.startrow#",params=arguments.params,showEditable=showEditable)>
 		</cfcase>	
 		<cfcase value="feed_slideshow">
 			<cfif not cookie.mobileFormat>	
@@ -1718,10 +1660,10 @@ Display Objects
 		<cfcase value="favorites"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"favorites/index.cfm")></cfcase>
 			<cfcase value="dragable_feeds"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dragablefeeds/index.cfm")></cfcase>
 		<cfcase value="related_content">
-			<cfset theObject=theObject & dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_related_content.cfm",cacheKey=cacheKeyContentId & this.listFormat,params=arguments.params,showEditable=showEditable)>
+			<cfset theObject=theObject & dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_related_content.cfm",cacheKey=cacheKeyContentId & getListFormat(),params=arguments.params,showEditable=showEditable)>
 		</cfcase>
 		<cfcase value="related_section_content">
-			<cfset theObject=theObject & dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_related_section_content.cfm",cachekey=cacheKeyContentId & this.listFormat,params=arguments.params,showEditable=showEditable)>
+			<cfset theObject=theObject & dspObject_Render(siteID=arguments.siteid,object=arguments.object,objectID=arguments.objectid,filename="dsp_related_section_content.cfm",cachekey=cacheKeyContentId & getListFormat(),params=arguments.params,showEditable=showEditable)>
 		</cfcase>
 		<cfcase value="user_tools"><cfset theObject=theObject & dspObject_Render(arguments.siteid,arguments.object,arguments.objectid,"dsp_user_tools.cfm")></cfcase>
 		<cfcase value="tag_cloud">
@@ -1961,13 +1903,13 @@ Display Objects
 					<cfswitch expression="#variables.event.getValue('contentBean').gettype()#">
 					<cfcase value="Folder">
 						<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
-						<cf_CacheOMatic key="FolderBody#cacheStub##this.listFormat#" nocache="#variables.event.getValue('r').restrict#">
+						<cf_CacheOMatic key="FolderBody#cacheStub##getListFormat()#" nocache="#variables.event.getValue('r').restrict#">
 						 <cfoutput>#dspObject_Include(thefile='dsp_portal.cfm')#</cfoutput>
 						</cf_CacheOMatic>
 					</cfcase> 
 					<cfcase value="Calendar">
 						<cfset addToHTMLHeadQueue("listImageStyles.cfm")>
-						 <cf_CacheOMatic key="calendarBody#cacheStub##this.listFormat#" nocache="#variables.event.getValue('r').restrict#">
+						 <cf_CacheOMatic key="calendarBody#cacheStub##getListFormat()#" nocache="#variables.event.getValue('r').restrict#">
 						 <cfoutput>#dspObject_Include(thefile='calendar/index.cfm')#</cfoutput>
 						 </cf_CacheOMatic>
 					</cfcase> 
@@ -1975,7 +1917,7 @@ Display Objects
 						<cfset loadShadowBoxJS() />
 						<cfset addToHTMLHeadQueue("gallery/htmlhead/gallery.cfm")>
 						<cfif not variables.event.valueExists('galleryItemID')><cfset variables.event.setValue('galleryItemID','')></cfif>
-						<cf_CacheOMatic key="galleryBody#cacheStub##variables.event.getValue('galleryItemID')##this.listFormat#" nocache="#variables.event.getValue('r').restrict#">
+						<cf_CacheOMatic key="galleryBody#cacheStub##variables.event.getValue('galleryItemID')##getListFormat()#" nocache="#variables.event.getValue('r').restrict#">
 						<cfoutput>#dspObject_Include(thefile='gallery/index.cfm')#</cfoutput>
 						</cf_CacheOMatic>
 					</cfcase> 
