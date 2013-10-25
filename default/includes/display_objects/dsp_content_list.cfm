@@ -100,7 +100,7 @@
 </cfsilent>	
 
  <cfoutput>
- 	<#variables.$.getContentListTag('listcontainer')#>
+ 	<#variables.$.getContentListTag('containerEl')#>
  </cfoutput>
 
 <cfloop condition="arguments.iterator.hasNext()">
@@ -123,7 +123,7 @@
 		</cfif>
 	</cfsilent>
 	<cfoutput>
-		<#variables.$.getContentListTag('listitem')# class="clearfix<cfif arguments.class neq ''> #arguments.class#</cfif>"<cfif this.contentListImageStyles and arguments.hasImage> #arguments.imageStyles#</cfif>>
+		<#variables.$.getContentListTag('itemEL')# class="clearfix<cfif arguments.class neq ''> #arguments.class#</cfif>"<cfif this.contentListImageStyles and arguments.hasImage> #arguments.imageStyles#</cfif>>
 			<cfloop list="#arguments.fields#" index="arguments.field">
 				<cfset arguments.field=trim(arguments.field)>
 				<cfswitch expression="#arguments.field#">
@@ -205,10 +205,10 @@
 					</cfdefaultcase>
 				</cfswitch>
 			</cfloop>
-		</#variables.$.getContentListTag('listitem')#>
+		</#variables.$.getContentListTag('itemEl')#>
 	</cfoutput>
 </cfloop>
  <cfoutput>
- 	</#variables.$.getContentListTag('listcontainer')#>
+ 	</#variables.$.getContentListTag('containerEL')#>
  </cfoutput>
 

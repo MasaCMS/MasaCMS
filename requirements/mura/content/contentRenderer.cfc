@@ -168,7 +168,7 @@ Display Objects
 
 <!--- Dsp_content_list.cfm --->
 <cfset this.contentListImageStyles=true>
-<cfset this.contentListPropertyTagMap={listContainer="div",listItem="dl",title="dt",date="dt",default="dd"}>
+<cfset this.contentListPropertyTagMap={containerEl="div",itemEl="dl",title="dt",date="dt",default="dd"}>
 <cfset this.contentListWrapperDivClass="">
 <cfset this.contentListClass="clearfix">
 <cfset this.contentListItemTitleClass="">
@@ -419,10 +419,10 @@ Display Objects
 </cffunction>
 
 <cffunction name="getListFormat" output="false">
-	<cfif listFindNoCase("ul,ol",this.contentListPropertyTagMap.listContainer)>
-		<cfreturn this.contentListPropertyTagMap.listContainer>
+	<cfif listFindNoCase("ul,ol",this.contentListPropertyTagMap.containerEl)>
+		<cfreturn this.contentListPropertyTagMap.containerEl>
 	<cfelse>
-		<cfreturn this.contentListPropertyTagMap.listItem>
+		<cfreturn this.contentListPropertyTagMap.itemEl>
 	</cfif>
 </cffunction>
 

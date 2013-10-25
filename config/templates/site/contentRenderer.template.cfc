@@ -182,8 +182,8 @@
 		// dsp_content_list.cfm
 		this.contentListImageStyles=true;
 		this.contentListPropertyTagMap={
-								listContainer="div",
-								listItem="dl",
+								containerEl="div",
+								itemEl="dl",
 								title="dt",
 								date="dt",
 								default="dd"
