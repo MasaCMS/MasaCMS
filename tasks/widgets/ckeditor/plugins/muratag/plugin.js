@@ -48,7 +48,7 @@
 						[
 							{
 								type: 'html',
-								html: '<h2 style="font-weight:bold;font-size:1.2em;">dspInclude</h2><p style="white-space:normal;width:390px;margin:1em 0 1.5em;">Allows you to include any CFML file. Path is relative to your <strong>[site_id]/includes/[theme]</strong> directory.</p>'
+								html: '<h2 style="font-weight:bold;font-size:1.2em;">dspInclude</h2><p style="white-space:normal;width:390px;margin:1em 0 1.5em;">Allows you to include any CFML file. Path is relative to your <strong>[site_id]/includes/themes/[theme]</strong> directory.</p>'
 							},
 							{
 								id: 'themeIncludePath',
