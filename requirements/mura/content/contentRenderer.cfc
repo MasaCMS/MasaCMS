@@ -171,7 +171,7 @@ Display Objects
 <cfset this.contentListPropertyMap={
 										containerTag={tag="div"},
 										itemTag={tag="dl"},
-										itemLabel={tag="span"},
+										labelTag={tag="span"},
 										title={tag="dt"},
 										date={tag="dt"},
 										credits={tag="dd",showLabel=true,labelDelim="",rbkey="list.by"},
