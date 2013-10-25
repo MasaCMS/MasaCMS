@@ -100,7 +100,7 @@
 </cfsilent>	
 
  <cfoutput>
- 	<#variables.$.getContentListTag('containerTag')#>
+ 	<#variables.$.getContentListTag('containerTag')# #variables.$.getContentListAttributes('containerTag')#>
  </cfoutput>
 
 <cfloop condition="arguments.iterator.hasNext()">
@@ -163,7 +163,7 @@
 							<cfif variables.$.event('muraMobileRequest')>
 							<img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/>
 							<cfelse>
-							<a href="#arguments.item.getURL()#" title="#HTMLEditFormat(arguments.item.getValue('title'))#" class="thumbnail"><img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>
+							<a href="#arguments.item.getURL()#" title="#HTMLEditFormat(arguments.item.getValue('title'))#" class="#this.contentListItemImageLinkClass#"><img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>
 							</cfif>
 						</#variables.$.getContentListTag(arguments.field)#>
 						</cfif>
