@@ -126,23 +126,8 @@
 		// dsp_content_list.cfm
 		this.listContainerEl="div";
 		this.listItemEl="dl";
-		this.listItemTitleEl="dt";
-		this.listItemSubTitleEl="dt";
-		this.listItemDetailEl="dd";
+		this.listItemDetailMap={title="dt",date="dt",default="dd"};
 		this.listImageStyles=true;
-
-		/*
-		USAGE
-		<#this.listContainerEl#>
-			<cfloop...>
-			<#this.listItemEl#  #systemCalculuatedImageStyles#>
-				<#this.listItemTitleEl#>... </#this.listItemTitleEl#>
-				<#this.listItemSubTitleEl#>... </#this.listItemSubTitleEl#>
-				<#this.listItemDetailEl#>... </#this.listDetailTitleEl#>
-			</#this.listItemEl#>
-			</cfloop>
-		</#this.listContainerEl#>
-		*/
 
 		// calendar/dsp_showMonth.cfm
 		 this.calendarWrapperClass="";

@@ -113,9 +113,7 @@ Display Objects
 <!--- dsp_content_list.cfm --->
 <cfset this.listContainerEl="div">
 <cfset this.listItemEl="dl">
-<cfset this.listItemTitleEl="dt">
-<cfset this.listItemSubTitleEl="dt">
-<cfset this.listItemDetailEl="dd">
+<cfset this.listItemDetailMap={title="dt",date="dt",default="dd"}>
 <cfset this.listImageStyles=true>
 
 <!--- calendar/dsp_showMonth.cfm --->
@@ -416,7 +414,17 @@ Display Objects
 
 <cffunction name="getListTag" returntype="string" output="false">
 	<cfargument name="element" default="container">
-	<cfreturn this['list' & arguments.element & "El"]>
+	<cfargument name="property" default="">
+	<cfif arguments.element eq "itemdetail">
+		<cfif structKeyExists(this.listItemDetailMap,arguments.property)>
+			<cfreturn this.listItemDetailMap[arguments.property]>
+		<cfelse>
+			<cfreturn this.listItemDetailMap.default>
+		</cfif>
+	<cfelse>
+		<cfreturn this['list' & arguments.element & "El"]>
+	</cfif>
+	
 </cffunction>
 
 <cffunction name="getListFormat" output="false">
