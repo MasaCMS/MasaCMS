@@ -181,13 +181,7 @@ Display Objects
 									}>
 <cfset this.contentListWrapperDivClass="">
 <cfset this.contentListClass="clearfix">
-<cfset this.contentListItemTitleClass="">
-<cfset this.contentListItemSummaryClass="">
-<cfset this.contentListItemCreditsClass="">
-<cfset this.contentListItemCommentsClass="">
-<cfset this.contentListItemRatingClass="">
 <cfset this.contentListItemImageLinkClass="thumbnail">
-<cfset this.contentListItemImageClass="">
 
 <!--- Dsp_edit_profile.cfm --->
 <cfset this.editProfileFormClass="form-horizontal">
