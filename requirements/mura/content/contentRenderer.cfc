@@ -180,7 +180,6 @@ Display Objects
 										default={tag="dd"}
 									}>
 <cfset this.contentListWrapperDivClass="">
-<cfset this.contentListClass="clearfix">
 <cfset this.contentListItemImageLinkClass="thumbnail">
 
 <!--- Dsp_edit_profile.cfm --->
