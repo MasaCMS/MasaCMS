@@ -106,6 +106,221 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset this.bodyMetaImageSizeArgs={size="medium"}>
 <cfset this.size=50>
 
+<!--- ===================
+Display Objects 
+=================== --->
+
+<!--- calendar/dsp_showMonth.cfm --->
+<cfset this.calendarWrapperClass="">
+<cfset this.calendarTableClass="table table-bordered">
+<cfset this.calendarTableHeaderClass="">
+
+<!--- calendar/dspList.cfm --->
+<cfset this.calendarListWrapperClass="">
+
+<!--- Comments/index.cfm --->
+<cfset this.commentsWrapperClass="">
+<cfset this.commentFormWrapperClass="">
+<cfset this.commentFormClass="form-horizontal">
+<cfset this.commentFieldWrapperClass="">
+<cfset this.commentFieldLabelClass="">
+<cfset this.commentInputWrapperClass="">
+<cfset this.commentInputClass="">
+<cfset this.commentSubmitButtonClass="btn">
+<cfset this.commentUserEmailClass="">
+<cfset this.commentDeleteButtonClass="">
+
+<!--- Comments/dsp_comment.cfm --->
+<cfset this.emailLinkClass="btn">
+<cfset this.commentsLinkClass="btn">
+<cfset this.approveCommentLinkClass="btn">
+<cfset this.deleteCommentLinkClass="btn">
+
+<!--- Datacollection/dsp_response.cfm --->
+<cfset this.datacollectionErrorPClass="error">
+<cfset this.datacollectionErrorDivClass="alert">
+<cfset this.datacollectionSuccessPClass="success">
+
+<!--- Dataresponses/dsp_detail.cfm --->
+<cfset this.dataResponseListClass="dl-horizontal">
+
+<!--- Dataresponses/dsp_list.cfm --->
+<cfset this.dataResponseTableClass="table table-hover">
+<cfset this.dataResponsePaginationClass="pagination">
+
+<!--- Draggablefeeds/index.cfm --->
+<cfset this.draggableBoxHeaderClass="">
+<cfset this.draggableBoxHeaderButtonClass="btn btn-default">
+<cfset this.draggableBoxRSSeditFormClass="">
+<cfset this.draggableBoxAddFeedWrapperClass="well clearfix">
+<cfset this.draggableBoxNewFeedFormClass="form-horizontal">
+<cfset this.draggableBoxSelectFeedWrapperClass="">
+<cfset this.draggableBoxSelectFeedRowClass="row">
+<cfset this.draggableBoxSelectFeedMenuClass="">
+<cfset this.draggableBoxSelectFeedMenuDivClass="">
+<cfset this.draggableFeedMenuSelectFieldClass="">
+<cfset this.addFeedButtonWrapperDivClass="">
+<cfset this.addFeedButtonWrapperDivInnerClass="">
+<cfset this.addFeedButtonClass="btn btn-default">
+
+<!--- Dsp_categories_nest.cfm --->
+<cfset this.categoriesNestCheckboxClass="checkbox">
+
+<!--- Dsp_content_list.cfm --->
+<cfset this.contentListImageStyles=true>
+<cfset this.contentListPropertyTagMap={containerEl="div",itemEl="dl",title="dt",date="dt",default="dd"}>
+<cfset this.contentListWrapperDivClass="">
+<cfset this.contentListClass="clearfix">
+<cfset this.contentListItemTitleClass="">
+<cfset this.contentListItemSummaryClass="">
+<cfset this.contentListItemCreditsClass="">
+<cfset this.contentListItemCommentsClass="">
+<cfset this.contentListItemRatingClass="">
+<cfset this.contentListItemImageLinkClass="thumbnail">
+<cfset this.contentListItemImageClass="">
+
+<!--- Dsp_edit_profile.cfm --->
+<cfset this.editProfileFormClass="form-horizontal">
+<cfset this.editProfileFormGroupWrapperClass="control-group">
+<cfset this.editProfileFieldLabelClass="control-label">
+<cfset this.editProfileFormFieldsWrapperClass="">
+<cfset this.editProfileFormFieldsClass="">
+<cfset this.editProfileHelpBlockClass="help-block">
+<cfset this.editProfileSubmitButtonClass="btn btn-primary">
+<cfset this.editProfileSuccessMessageClass="success">
+<cfset this.editProfileErrorMessageClass="alert">
+
+<!--- Dsp_email_dropdown.cfm --->
+<cfset this.emailDropdownSelectClass="dropdown">
+
+<!--- Dsp_event_reminder_form.cfm --->
+<cfset this.eventReminderFormClass="well">
+<cfset this.eventReminderFieldWrapperClass="control-group">
+<cfset this.eventReminderFormLabelsClass="control-label">
+<cfset this.eventReminderSubmitClass="btn">
+
+<!--- Dsp_features.cfm --->
+<cfset this.featuresWrapperClass="clearfix">
+
+<!--- Dsp_feed.cfm --->
+<cfset this.localIndexWrapperClass="clearfix">
+<cfset this.remoteFeedWrapperClass="clearfix">
+
+<!--- Dsp_login.cfm --->
+<cfset this.loginWrapperClass="container">
+<cfset this.loginWrapperInnerClass="row">
+<cfset this.loginErrorMessageClass="error">
+<cfset this.loginFormClass="form-horizontal">
+<cfset this.forgotPasswordFormClass="form-horizontal">
+<cfset this.loginFormGroupWrapperClass="">
+<cfset this.loginFormFieldLabelClass="control-label">
+<cfset this.loginFormFieldWrapperClass="">
+<cfset this.loginFormFieldClass="">
+<cfset this.loginFormCheckboxClass="checkbox">
+<cfset this.loginFormSubmitClass="btn btn-default">
+<cfset this.loginFormAlertClass="alert">
+<cfset this.loginFormErrorClass="error">
+<cfset this.notRegisteredLinkClass="btn btn-primary">
+
+<!--- Dsp_mailing_list_master.cfm --->
+<cfset this.mailingListWrapperClass="well">
+<cfset this.mailingListSuccessClass="success">
+<cfset this.mailingListErrorClass="error">
+<cfset this.mailingListFormClass="form-horizontal">
+<cfset this.mailingListFormGroupWrapperClass="">
+<cfset this.mailingListFormLabelClass="control-label">
+<cfset this.mailingListFormFieldWrapperClass="">
+<cfset this.mailingListFormInputClass="">
+<cfset this.mailingListCheckboxWrapperClass="">
+<cfset this.mailingListCheckboxClass="checkbox">
+<cfset this.mailingListSubmitClass="btn btn-default">
+
+<!--- Dsp_nextN.cfm --->
+<cfset this.nextNWrapperClass="container">
+<cfset this.nextNInnerClass="row">
+
+<!--- Dsp_search_form.cfm --->
+<cfset this.searchFormClass="">
+<cfset this.searchFormInputWrapperClass="">
+<cfset this.searchFormInputClass="">
+<cfset this.searchFormSubmitWrapperClass="">
+<cfset this.searchFormSubmitClass="btn btn-default">
+
+<!--- Dsp_search_results.cfm --->
+<cfset this.searchResultWrapperClass="container">
+<cfset this.searchResultInnerClass="row">
+<cfset this.searchResultsRowClass="row">
+<cfset this.searchResultsMoreResultsRowClass="row">
+<cfset this.searchReultsPagerClass="pager">
+<cfset this.searchAgainRowClass="row">
+<cfset this.searchAgainInnerClass="">
+<cfset this.searchAgainFormClass="">
+<cfset this.searchAgainInputWrapperClass="">
+<cfset this.searchAgainFormInputClass="">
+<cfset this.searchAgainButtonWrapperClass="">
+<cfset this.searchAgainSubmitClass="btn btn-default">
+
+<!--- Dsp_user_tools.cfm --->
+<cfset this.userToolsWrapperClass="well clearfix">
+<cfset this.userToolsLoginFormClass="form-horizontal">
+<cfset this.userToolsFormGroupWrapperClass="">
+<cfset this.userToolsLoginFormLabelClass="control-label">
+<cfset this.userToolsLoginFormInputWrapperClass="">
+<cfset this.userToolsLoginFormInputClass="">
+<cfset this.userToolsLoginFormFieldInnerClass="">
+<cfset this.userToolsLoginFormSubmitClass="btn btn-default">
+<cfset this.userToolsNotRegisteredLinkClass="btn btn-primary">
+<cfset this.userToolsWrapperClass="clearfix">
+<cfset this.userToolsEditProfileLinkClass="btn btn-default">
+<cfset this.userToolsLogoutLinkClass="btn btn-default">
+
+<!--- Formbuilder/Dsp_form.cfm --->
+<cfset this.formBuilderFieldWrapperClass="">
+<cfset this.formBuilderButtonWrapperClass="form-actions">
+<cfset this.formBuilderSubmitClass="btn btn-default">
+
+<!---
+ Formbuilder/Fields/Dsp_checkbox.cfm
+ Formbuilder/Fields/Dsp_dropdown.cfm 
+ Formbuilder/Fields/Dsp_file.cfm
+ Formbuilder/Fields/Dsp_radio.cfm
+ Formbuilder/Fields/Dsp_textfield.cfm
+--->
+<cfset this.formBuilderFormFieldsClass="control-group">
+
+<!--- Formbuilder/Fields/field_dropdown.cfm --->
+<cfset this.formBuilderTabHeaderClass="dropdown">
+<cfset this.formBuilderDisabledInputClass="disabled">
+<cfset this.formBuilderCheckboxClass="checkbox">
+
+<!--- Gallery/Index.cfm --->
+<cfset this.galleryULClass="clearfix">
+<cfset this.galleryThumbnailClass="thumbnail">
+
+<!--- Nav/CalendarNav/NavTools.cfc --->
+<cfset this.navCalendarWrapperClass="">
+<cfset this.navCalendarTableClass="table table-bordered">
+
+<!--- Nav/Dsp_sequential.cfm --->
+<cfset this.navSequentialWrapperClass="container">
+<cfset this.navSequentialInnerClass="row">
+
+<!--- Nav/dsp_tag_cloud.cfm --->
+<cfset this.tagCloudWrapperClass="">
+
+<!--- NavArchive --->
+<cfset this.navArchiveWrapperClass="">
+<cfset this.navArchiveListClass="">
+
+
+<!--- Rater/Index.cfm --->
+<cfset this.raterObjectWrapperClass="row clearfix">
+<cfset this.raterWrapperClass="">
+<cfset this.avgRatingWrapperClass="">
+
+<!--- SendToLink/SendLink.cfm --->
+<cfset this.sendToFriendSuccessClass="success">
+<cfset this.sendToFriendErrorClass="error">
 
 <cffunction name="init" returntype="any" access="public" output="false">
 <cfargument name="event" required="true" default="">
@@ -193,14 +408,22 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cffunction>
 
-<cffunction name="getListFormat" returntype="string" output="false">
-	<cfreturn this.listFormat />
+<cffunction name="getContentListTag" returntype="string" output="false">
+	<cfargument name="property" default="">
+	<cfif structKeyExists(this.contentListPropertyTagMap,arguments.property)>
+		<cfreturn this.contentListPropertyTagMap[arguments.property]>
+	<cfelse>
+		<cfreturn this.contentListPropertyTagMap.default>
+	</cfif>
+
 </cffunction>
 
-<cffunction name="setListFormat" output="false">
-	<cfargument name="listFormat">
-	<cfset this.listFormat=arguments.listFormat>
-	<cfreturn this/>
+<cffunction name="getListFormat" output="false">
+	<cfif listFindNoCase("ul,ol",this.contentListPropertyTagMap.containerEl)>
+		<cfreturn this.contentListPropertyTagMap.containerEl>
+	<cfelse>
+		<cfreturn this.contentListPropertyTagMap.itemEl>
+	</cfif>
 </cffunction>
 
 <cffunction name="loadJSLib" returntype="void" output="false">
@@ -218,7 +441,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cffunction>
 
 <cffunction name="loadShadowboxJS" returntype="void" output="false">
-	<cfif not cookie.mobileFormat>
+	<!---<cfif not cookie.mobileFormat>--->
 		<cfset loadJSLib() />
 		<cfswitch expression="#getJsLib()#">
 			<cfcase value="prototype">
@@ -229,7 +452,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfdefaultcase>
 		</cfswitch>			
 		<cfset addToHTMLHeadQueue("shadowbox.cfm")>
-	</cfif>
+	<!---</cfif>--->
 </cffunction>
 
 <cffunction name="loadPrettify" returntype="void" output="false">
@@ -1599,9 +1822,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				</cfif>
 				<!--- --->
 				
-				<cfif not len(eventOutput)>
-					<cfset eventOutput=application.pluginManager.renderEvent("on#variables.event.getContentBean().getType()#BodyRender",variables.event)>
-				</cfif>
 				<cfif not len(eventOutput)>
 					<cfset eventOutput=application.pluginManager.renderEvent("on#variables.event.getContentBean().getType()##variables.event.getContentBean().getSubType()#BodyRender",variables.event)>
 				</cfif>

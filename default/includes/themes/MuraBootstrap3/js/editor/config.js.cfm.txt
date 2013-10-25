@@ -9,7 +9,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	Add customizations or override editor config settings below.
 
 	The CKEditor Developer's Guide can be found at:
-	http://docs.cksource.com/CKEditor_3.x/Developers_Guide
+	http://docs.ckeditor.com/#!/guide
 
 */
 
@@ -18,7 +18,7 @@ if ( 'CKEDITOR' in window) {
 	CKEDITOR.editorConfig = function( config ) {
 
 		// Example of how to customize one of the available toolbars (Default, Summary, and QuickEdit)
-		// Documentation can be found at: http://docs.cksource.com/CKEditor_3.x/Developers_Guide/Toolbar
+		// Documentation can be found at: http://docs.ckeditor.com
 		//config.toolbar_Default = [
 		//  {name:'group1',items:['Bold','Italic','Underline']}
 		//];

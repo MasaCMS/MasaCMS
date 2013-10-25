@@ -623,7 +623,6 @@ table.svFlvPlayer td {
 	}
 
 	.releaseDate {
-		color: #999;
 		font-weight: normal;
 		margin-bottom: .5em;
 	}
@@ -724,35 +723,36 @@ aside .hasImage {
 
 		ul { overflow: visible;	}
 	}
+	
+	// Pager
+	.svPager {
+		margin: 0;
+		padding: 0;
+		position: relative;
+		z-index: 2;
+	
+		li {
+			display: inline-block;
+			margin: 0 .25em;
+	
+			&.cycle-pager-active a {}
+	
+			a {
+				display: block;
+				line-height: 1.2;
+				padding: 2px 5px;
+				text-align: center;
+	
+				&:hover	{}
+			}
+		}
+	}
+	//end Pager
 }
 //end Slideshow
 
 
-// Pager
-ol.svPager {
-	margin: 0;
-	padding: 0;
-	position: relative;
-	z-index: 2;
 
-	li {
-		display: inline;
-		margin: 0 .25em;
-
-		&.activeLI a {}
-
-		a {
-			display: -moz-inline-block;
-			display: inline-block;
-			line-height: 1.2;
-			padding: 2px 5px;
-			text-align: center;
-
-			&:hover	{}
-		}
-	}
-}
-//end Pager
 
 
 //TODO: Convert to font awesome; move to a different place

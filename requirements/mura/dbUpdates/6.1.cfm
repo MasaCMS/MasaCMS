@@ -103,5 +103,5 @@
 	dbUtility.setTable("tcontentcomments")
 	.addColumn(column="flagCount",dataType="int",default=0)
 	.addColumn(column="isSpam",dataType="int",default=0)
-	.addColumn(column="isDeleted",dataType="int",default=0);;
+	.addColumn(column="isDeleted",dataType="int",default=0);
 </cfscript>

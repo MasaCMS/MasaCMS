@@ -1117,7 +1117,7 @@ to your own modified versions of Mura CMS.
       <div class="control-group">
         <label class="control-label" for="dampath">DAM Path</label>
         <div class="controls">
-          <input type="text" class="span6" value="#HTMLEditFormat(rc.razunaSettings.getDAMPath())#" id="razuna_dampath" name="razuna_dampath"> 
+          <input type="text" class="span6" value="#HTMLEditFormat(rc.razunaSettings.getDAMPath())#" id="razuna_dampath" name="damPath"> 
           <span class="help-block">Example: /demo/dam</span>
         </div>
       </div>
