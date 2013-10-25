@@ -141,7 +141,7 @@
 				<#this.listItemDetailEl#>... </#this.listDetailTitleEl#>
 			</#this.listItemEl#>
 			</cfloop>
-		<#this.listContainerEl#>
+		</#this.listContainerEl#>
 		*/
 
 		// calendar/dsp_showMonth.cfm
