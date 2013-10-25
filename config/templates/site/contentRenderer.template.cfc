@@ -125,7 +125,7 @@
 		
 		// dsp_content_list.cfm
 		this.listImageStyles=true;
-		this.listPropertyELMap={
+		this.listPropertyTagMap={
 								listContainer="div",
 								listItem="dl",
 								title="dt",

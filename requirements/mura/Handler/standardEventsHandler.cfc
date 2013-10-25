@@ -234,7 +234,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset renderer.showAdminToolbar=false>
 		<cfset renderer.showMemberToolbar=false>
 		<cfset renderer.showEditableObjects=false>
-		<cfset renderer.listPropertyELMap={listContainer="ul",listItem="li",title="h3",default="p",listImageStyles=false}>
+		<cfset renderer.listPropertyTagMap={listContainer="ul",listItem="li",title="h3",default="p"}>
 	</cfif>
 	
 </cffunction>

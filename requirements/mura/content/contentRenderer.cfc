@@ -112,7 +112,7 @@ Display Objects
 
 <!--- dsp_content_list.cfm --->
 <cfset this.listImageStyles=true>
-<cfset this.listPropertyELMap={listContainer="div",listItem="dl",title="dt",date="dt",default="dd"}>
+<cfset this.listPropertyTagMap={listContainer="div",listItem="dl",title="dt",date="dt",default="dd"}>
 
 <!--- calendar/dsp_showMonth.cfm --->
 <cfset this.calendarWrapperClass="">
@@ -412,10 +412,10 @@ Display Objects
 
 <cffunction name="getListTag" returntype="string" output="false">
 	<cfargument name="property" default="">
-	<cfif structKeyExists(this.listPropertyELMap,arguments.property)>
-		<cfreturn this.listPropertyELMap[arguments.property]>
+	<cfif structKeyExists(this.listPropertyTagMap,arguments.property)>
+		<cfreturn this.listPropertyTagMap[arguments.property]>
 	<cfelse>
-		<cfreturn this.listPropertyELMap.default>
+		<cfreturn this.listPropertyTagMap.default>
 	</cfif>
 
 </cffunction>
