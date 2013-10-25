@@ -124,10 +124,14 @@
 		// Use these variables to pass-in specific classes without having to create custom versions
 		
 		// dsp_content_list.cfm
-		this.listContainerEl="div";
-		this.listItemEl="dl";
-		this.listItemDetailELMap={title="dt",date="dt",default="dd"};
-		this.listImageStyles=true;
+		this.listPropertyELMap={
+								listContainer="div",
+								listItem="dl",
+								listImageStyles=true,
+								title="dt",
+								date="dt",
+								default="dd"
+							};
 
 		// calendar/dsp_showMonth.cfm
 		 this.calendarWrapperClass="";

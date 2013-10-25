@@ -111,10 +111,7 @@ Display Objects
 =================== --->
 
 <!--- dsp_content_list.cfm --->
-<cfset this.listContainerEl="div">
-<cfset this.listItemEl="dl">
-<cfset this.listItemPropertyELMap={title="dt",date="dt",default="dd"}>
-<cfset this.listImageStyles=true>
+<cfset this.listPropertyELMap={listContainer="div",listItem="dl",listImageStyles=true,title="dt",date="dt",default="dd"}>
 
 <!--- calendar/dsp_showMonth.cfm --->
 <cfset this.calendarWrapperClass="">
@@ -413,25 +410,20 @@ Display Objects
 </cffunction>
 
 <cffunction name="getListTag" returntype="string" output="false">
-	<cfargument name="element" default="container">
 	<cfargument name="property" default="">
-	<cfif arguments.element eq "itemdetail">
-		<cfif structKeyExists(this.listItemPropertyELMap,arguments.property)>
-			<cfreturn this.listItemPropertyELMap[arguments.property]>
-		<cfelse>
-			<cfreturn this.listItemPropertyELMap.default>
-		</cfif>
+	<cfif structKeyExists(this.listPropertyELMap,arguments.property)>
+		<cfreturn this.listPropertyELMap[arguments.property]>
 	<cfelse>
-		<cfreturn this['list' & arguments.element & "El"]>
+		<cfreturn this.listPropertyELMap.default>
 	</cfif>
-	
+
 </cffunction>
 
 <cffunction name="getListFormat" output="false">
-	<cfif listFindNoCase("ul,ol",this.listContainerEl)>
-		<cfreturn this.listContainerEl>
+	<cfif listFindNoCase("ul,ol",this.listPropertyELMap.listContainer)>
+		<cfreturn this.listPropertyELMap.listContainer>
 	<cfelse>
-		<cfreturn this.listItemEl>
+		<cfreturn this.listPropertyELMap.listItem>
 	</cfif>
 </cffunction>
 
