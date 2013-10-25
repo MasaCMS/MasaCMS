@@ -182,12 +182,13 @@
 		// dsp_content_list.cfm
 		this.contentListImageStyles=true;
 		this.contentListPropertyTagMap={
-								containerEl="div",
-								itemEl="dl",
-								title="dt",
-								date="dt",
-								default="dd"
-							};
+										containerTag={tag="div"},
+										itemTag={tag="dl"},
+										labelTag={tag="span"},
+										title={tag="dt"},
+										date={tag="dt"},
+										default={tag="dd"}
+									};
 		 this.contentListWrapperDivClass="";
 		 this.contentListClass="";
 		 this.contentListItemTitleClass="";
