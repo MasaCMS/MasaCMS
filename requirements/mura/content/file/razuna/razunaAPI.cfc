@@ -75,8 +75,8 @@
 		
 			var apiURL = this.folder_uri & "method=getfolders&api_key=" & this.config_hostid&'-'&this.config_APIKey & "&folderid=" & arguments.folderid;
 			var result = doHttp(apiURL);
-			if(arraylen(result.columns) eq 3 )
-				var q = querynew ("CALLEDWITH, CLOUD_URL, CLOUD_URL_ORG, DATEADD, DATECHANGE, DESCRIPTION, EXTENSION, EXTENSION_THUMB, FILENAME, FILENAME_ORG, FOLDER_ID, HEIGHT, ID, KEYWORDS, KIND, LOCAL_URL_ORG, LOCAL_URL_THUMB, PATH_TO_ASSET, RESPONSECODE, SIZE, SUBASSETS, TOTALASSETSCOUNT, VIDEO_IMAGE, WIDTH");
+			if(arraylen(result.columns) LTE 3 )
+				var qry = querynew ("CALLEDWITH, CLOUD_URL, CLOUD_URL_ORG, DATEADD, DATECHANGE, DESCRIPTION, EXTENSION, EXTENSION_THUMB, FILENAME, FILENAME_ORG, FOLDER_ID, HEIGHT, ID, KEYWORDS, KIND, LOCAL_URL_ORG, LOCAL_URL_THUMB, PATH_TO_ASSET, RESPONSECODE, SIZE, SUBASSETS, TOTALASSETSCOUNT, VIDEO_IMAGE, WIDTH");
 			else{
 				var q = querynew (arrayToList(result.columns)); //we can pass result.data as third argument in CF 10 
 				for (i=1;i LTE ArrayLen(result.data);i=i+1) {
@@ -94,7 +94,7 @@
 		 query function getrenditions( required string assetid, required string assettype){
 			var apiURL = this.asset_uri & "method=getrenditions&api_key=" & this.config_hostid&'-'&this.config_APIKey & "&assetid=" & arguments.assetid& "&assettype=" & arguments.assettype;
 			var result = doHttp(apiURL);
-			if(arraylen(result.columns) eq 3 )
+			if(arraylen(result.columns) LTE 3 )
 				var q = querynew ("CALLEDWITH, CLOUD_URL, CLOUD_URL_ORG, DATEADD, DATECHANGE, DESCRIPTION, EXTENSION, EXTENSION_THUMB, FILENAME, FILENAME_ORG, FOLDER_ID, HEIGHT, ID, KEYWORDS, KIND, LOCAL_URL_ORG, LOCAL_URL_THUMB, PATH_TO_ASSET, RESPONSECODE, SIZE, SUBASSETS, TOTALASSETSCOUNT, VIDEO_IMAGE, WIDTH");
 			else{
 				var q = querynew (arrayToList(result.columns));//we can pass result.data as third argument in CF 10 
@@ -112,7 +112,8 @@
 		query function getassets( required string folderID ){
 			var apiURL = this.folder_uri & "method=getassets&api_key=" & this.config_hostid&'-'&this.config_APIKey & "&folderid=" & arguments.folderID;
 			var result = doHttp(apiURL);
-			if(arraylen(result.columns) eq 3 )
+
+			if(arraylen(result.columns) LTE 3 )
 				var q = querynew ("CALLEDWITH, CLOUD_URL, CLOUD_URL_ORG, DATEADD, DATECHANGE, DESCRIPTION, EXTENSION, EXTENSION_THUMB, FILENAME, FILENAME_ORG, FOLDER_ID, HEIGHT, ID, KEYWORDS, KIND, LOCAL_URL_ORG, LOCAL_URL_THUMB, PATH_TO_ASSET, RESPONSECODE, SIZE, SUBASSETS, TOTALASSETSCOUNT, VIDEO_IMAGE, WIDTH");
 			else{
 				var q = querynew (arrayToList(result.columns));//we can pass result.data as third argument in CF 10 
@@ -130,7 +131,7 @@
 		query function getfolder( required string folderID ){
 			var apiURL = this.folder_uri & "method=getfolder&api_key=" & this.config_hostid&'-'&this.config_APIKey & "&folderid=" & arguments.folderID;
 			var result = doHttp(apiURL);
-			if(arraylen(result.columns) eq 3 )
+			if(arraylen(result.columns) LTE 3 )
 				var q = querynew ("CALLEDWITH, CLOUD_URL, CLOUD_URL_ORG, DATEADD, DATECHANGE, DESCRIPTION, EXTENSION, EXTENSION_THUMB, FILENAME, FILENAME_ORG, FOLDER_ID, HEIGHT, ID, KEYWORDS, KIND, LOCAL_URL_ORG, LOCAL_URL_THUMB, PATH_TO_ASSET, RESPONSECODE, SIZE, SUBASSETS, TOTALASSETSCOUNT, VIDEO_IMAGE, WIDTH");
 			else{
 				var q = querynew (arrayToList(result.columns));//we can pass result.data as third argument in CF 10 
