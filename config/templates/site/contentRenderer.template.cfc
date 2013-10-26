@@ -182,9 +182,9 @@
 		// dsp_content_list.cfm
 		this.contentListImageStyles=true;
 		this.contentListPropertyMap={
-										containerTag={tag="div"},
-										itemTag={tag="dl"},
-										labelTag={tag="span"},
+										containerEl={tag="div"},
+										itemEl={tag="dl"},
+										labelEl={tag="span"},
 										title={tag="dt"},
 										date={tag="dt"},
 										credits={tag="dd",showLabel=true,rbkey="list.by"},

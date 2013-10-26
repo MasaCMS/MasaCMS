@@ -169,9 +169,9 @@ Display Objects
 <!--- Dsp_content_list.cfm --->
 <cfset this.contentListImageStyles=true>
 <cfset this.contentListPropertyMap={
-										containerTag={tag="div"},
-										itemTag={tag="dl",class="clearfix"},
-										labelTag={tag="span"},
+										containerEl={tag="div"},
+										itemEl={tag="dl",class="clearfix"},
+										labelEl={tag="span"},
 										title={tag="dt"},
 										date={tag="dt"},
 										credits={tag="dd",showLabel=true,rbkey="list.by"},
@@ -432,7 +432,7 @@ Display Objects
 	<cfset var returnString="">
 
 	<cfif structKeyExists(propStruct,"showLabel") and propStruct.showLabel>
-		<cfset returnString="<" & getContentListTag('labelTag') &  getContentListAttributes('labelTag')& ">">
+		<cfset returnString="<" & getContentListTag('labelEl') &  getContentListAttributes('labelEl')& ">">
 		<cfif structKeyExists(propStruct, "rbKey")>
 			<cfset returnString=returnString & htmlEditFormat(variables.$.rbKey(propStruct.rbkey))>
 		<cfelseif structKeyExists(propStruct, "label")>
@@ -443,7 +443,7 @@ Display Objects
 		<cfif structKeyExists(propStruct, "labelDelim")>
 			<cfset returnString=returnString & propStruct.labelDelim>
 		</cfif>
-		<cfset returnString=returnString & "</" & getContentListTag('labelTag') & ">">
+		<cfset returnString=returnString & "</" & getContentListTag('labelEl') & ">">
 	</cfif>
 	
 	<cfreturn returnString>
@@ -472,10 +472,10 @@ Display Objects
 </cffunction>
 
 <cffunction name="getListFormat" output="false">
-	<cfif listFindNoCase("ul,ol",this.contentListPropertyMap.containerTag.tag)>
-		<cfreturn this.contentListPropertyMap.containerTag.tag>
+	<cfif listFindNoCase("ul,ol",this.contentListPropertyMap.containerEl.tag)>
+		<cfreturn this.contentListPropertyMap.containerEl.tag>
 	<cfelse>
-		<cfreturn this.contentListPropertyMap.itemTag.tag>
+		<cfreturn this.contentListPropertyMap.itemEl.tag>
 	</cfif>
 </cffunction>
 --
