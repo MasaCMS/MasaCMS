@@ -193,14 +193,7 @@
 										default={tag="dd"}
 									};
 		 this.contentListWrapperDivClass="";
-		 this.contentListClass="";
-		 this.contentListItemTitleClass="";
-		 this.contentListItemSummaryClass="";
-		 this.contentListItemCreditsClass="";
-		 this.contentListItemCommentsClass="";
-		 this.contentListItemRatingClass="";
 		 this.contentListItemImageLinkClass="";
-		 this.contentListItemImageClass="";
 		
 		// dsp_edit_profile.cfm
 		 this.editProfileFormClass="";
