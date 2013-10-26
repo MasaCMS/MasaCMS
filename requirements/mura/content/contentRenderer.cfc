@@ -432,7 +432,11 @@ Display Objects
 	<cfset var returnString="">
 
 	<cfif structKeyExists(propStruct,"showLabel") and propStruct.showLabel>
-		<cfset returnString="<" & getContentListTag('labelEl') &  getContentListAttributes('labelEl')& ">">
+		<cfset var labelEl="labelEl">
+		<cfif structKeyExists(propStruct,"labelEl")>
+			<cfset labelEl=propStruct.labelEl>
+		</cfif>
+		<cfset returnString="<" & getContentListTag(labelEl) &  getContentListAttributes(labelEl)& ">">
 		<cfif structKeyExists(propStruct, "rbKey")>
 			<cfset returnString=returnString & htmlEditFormat(variables.$.rbKey(propStruct.rbkey))>
 		<cfelseif structKeyExists(propStruct, "label")>
@@ -443,7 +447,7 @@ Display Objects
 		<cfif structKeyExists(propStruct, "labelDelim")>
 			<cfset returnString=returnString & propStruct.labelDelim>
 		</cfif>
-		<cfset returnString=returnString & "</" & getContentListTag('labelEl') & ">">
+		<cfset returnString=returnString & "</" & getContentListTag(labelEl) & ">">
 	</cfif>
 	
 	<cfreturn returnString>
