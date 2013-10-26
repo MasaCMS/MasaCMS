@@ -100,6 +100,7 @@
 </cfsilent>	
 
  <cfoutput>
+ 	#variables.$.getContentListPropertyValue('containerEl',"openingString")#
  	<#variables.$.getContentListTag('containerEl')# #variables.$.getContentListAttributes('containerEl')#>
  </cfoutput>
 
@@ -123,6 +124,7 @@
 		</cfif>
 	</cfsilent>
 	<cfoutput>
+		#variables.$.getContentListPropertyValue('itemEl',"openingString")#
 		<#variables.$.getContentListTag('itemEl')# #variables.$.getContentListAttributes('itemEl',arguments.class)#"<cfif this.contentListImageStyles and arguments.hasImage> #arguments.imageStyles#</cfif>>
 			<cfloop list="#arguments.fields#" index="arguments.field">
 				<cfset arguments.field=trim(arguments.field)>
@@ -240,9 +242,11 @@
 				</cfswitch>
 			</cfloop>
 		</#variables.$.getContentListTag('itemEl')#>
+		#variables.$.getContentListPropertyValue('itemEl',"closingString")#
 	</cfoutput>
 </cfloop>
  <cfoutput>
  	</#variables.$.getContentListTag('containerEl')#>
+ 	#variables.$.getContentListPropertyValue('containerEl',"closingString")#
  </cfoutput>
 

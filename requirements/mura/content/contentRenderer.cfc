@@ -426,6 +426,17 @@ Display Objects
 	<cfreturn getContentListProperty(arguments.property).tag>
 </cffunction>
 
+<cffunction name="getContentListPropertyValue" output="false">
+	<cfargument name="property" default="">
+	<cfargument name="value" default="">
+	<cfset var propStruct=getContentListProperty(arguments.property)>
+	<cfif structKeyExists(propStruct,arguments.value)>
+		<cfreturn propStruct[arguments.value]>
+	<cfelse>
+		<cfreturn "">
+	</cfif>
+</cffunction>
+
 <cffunction name="getContentListLabel" output="false">
 	<cfargument name="property" default="">
 	<cfset var propStruct=getContentListProperty(arguments.property)>
