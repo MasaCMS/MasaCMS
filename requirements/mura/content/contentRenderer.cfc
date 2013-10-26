@@ -421,11 +421,6 @@ Display Objects
 
 </cffunction>
 
-<cffunction name="getContentListTag" output="false">
-	<cfargument name="property" default="">
-	<cfreturn getContentListProperty(arguments.property).tag>
-</cffunction>
-
 <cffunction name="getContentListPropertyValue" output="false">
 	<cfargument name="property" default="">
 	<cfargument name="value" default="">
@@ -447,7 +442,7 @@ Display Objects
 		<cfif structKeyExists(propStruct,"labelEl")>
 			<cfset labelEl=propStruct.labelEl>
 		</cfif>
-		<cfset returnString="<" & getContentListTag(labelEl) &  getContentListAttributes(labelEl)& ">">
+		<cfset returnString="<" & getContentListPropertyValue(labelEl,'tag') &  getContentListAttributes(labelEl)& ">">
 		<cfif structKeyExists(propStruct, "rbKey")>
 			<cfset returnString=returnString & htmlEditFormat(variables.$.rbKey(propStruct.rbkey))>
 		<cfelseif structKeyExists(propStruct, "label")>
@@ -458,7 +453,7 @@ Display Objects
 		<cfif structKeyExists(propStruct, "labelDelim")>
 			<cfset returnString=returnString & propStruct.labelDelim>
 		</cfif>
-		<cfset returnString=returnString & "</" & getContentListTag(labelEl) & ">">
+		<cfset returnString=returnString & "</" & getContentListPropertyValue(labelEl,'tag') & ">">
 	</cfif>
 	
 	<cfreturn returnString>
