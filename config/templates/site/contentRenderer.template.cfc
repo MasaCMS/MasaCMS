@@ -100,16 +100,16 @@
 		//this.subHead5="h6";
 		//this.navWrapperClass="sidebar-nav well";
 		//this.liHasKidsClass="";
-		//this.liHasKidsCustomString="";
+		//this.liHasKidsAttributes="";
 		//this.liCurrentClass="current";
-		//this.liCurrentCustomString="";
+		//this.liCurrentAttributes="";
 		//this.liHasKidsNestedClass="";
 		//this.aHasKidsClass="";
-		//this.aHasKidsCustomString="";
+		//this.aHasKidsAttributes="";
 		//this.aCurrentClass="current";
-		//this.aCurrentCustomString="";
+		//this.aCurrentAttributes="";
 		//this.ulNestedClass="";
-		//this.ulNestedCustomString="";
+		//this.ulNestedAttributes="";
 		//this.ulTopClass="navSecondary";
 		//this.ulPaginationClass="navSequential";
 		//this.ulPaginationWrapperClass="pagination";
@@ -190,7 +190,7 @@
 										credits={tag="dd",showLabel=true,rbkey="list.by"},
 										tags={tag="dd",showLabel=true,labelDelim=":",rbkey="tagcloud.tags"},
 										rating={tag="dd",showLabel=true,labelDelim=":",rbkey="list.rating"},
-										_default={tag="dd"}
+										default={tag="dd"}
 									};
 		 this.contentListWrapperDivClass="";
 		 this.contentListItemImageLinkClass="";
