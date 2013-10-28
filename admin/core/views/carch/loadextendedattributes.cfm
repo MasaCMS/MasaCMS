@@ -145,6 +145,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfset returnsets.hasSummary=subType.getHasSummary()>
 <cfset returnsets.hasBody=subType.getHasBody()>
 <cfset returnsets.hasAssocFile=subType.getHasAssocFile()>
+<cfset returnsets.hasConfigurator=subType.getHasConfigurator()>
 
 <cfoutput>#createObject("component","mura.json").encode(returnsets)#</cfoutput>
 

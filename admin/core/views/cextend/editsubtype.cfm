@@ -176,8 +176,17 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	
 </div>
 	
-		<cfset rsSubTypes=application.classExtensionManager.getSubTypes(siteID=rc.siteID,activeOnly=true) />
+		
 		<div class="control-group">
+			<div class="span4 hasConfiguratorContainer">
+				<label class="control-label">Show "List Display Options" when editing?</label>
+				<div class="controls"> 
+					<label class="radio inline"><input name="hasConfigurator" type="radio" class="radio inline" value="1"<cfif subType.gethasConfigurator() eq 1 >Checked</cfif>>Yes</label>
+					<label class="radio inline"><input name="hasConfigurator" type="radio" class="radio inline" value="0"<cfif subType.gethasConfigurator() eq 0 >Checked</cfif>>No</label>
+				</div>
+			</div>
+
+			<cfset rsSubTypes=application.classExtensionManager.getSubTypes(siteID=rc.siteID,activeOnly=true) />
 			<div class="span4 availableSubTypesContainer" >
 				<label class="control-label">Allow users to add only specific subtypes?</label>
 				<div class="controls"> 
