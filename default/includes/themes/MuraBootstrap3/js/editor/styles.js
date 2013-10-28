@@ -49,6 +49,7 @@ if ( 'CKEDITOR' in window) {
 		{ name : 'Success'	, element : 'p', attributes : { 'class' : 'alert alert-success' } },
 		{ name : 'Error'	, element : 'p', attributes : { 'class' : 'alert alert-error' } },
 		{ name : 'Info'	, element : 'p', attributes : { 'class' : 'alert alert-info' } },
+		{ name : 'Prettify'	, element : 'pre', attributes : { 'class' : 'prettyprint linenums' } },
 
 		{ name : 'Marker: Yellow'	, element : 'span', styles : { 'background-color' : 'Yellow' } },
 		{ name : 'Marker: Green'	, element : 'span', styles : { 'background-color' : 'Lime' } },
