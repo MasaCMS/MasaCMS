@@ -76,6 +76,14 @@
 	});	
 </script>
 <cfoutput>
+	
+	<cfif listFind(session.mura.memberships,'Admin;#application.settingsManager.getSite(rc.siteid).getPrivateUserPoolID()#;0') or listFind(session.mura.memberships,'S2')>
+		<div id="nav-module-specific" class="btn-group">
+				<a class="btn" href="./?muraAction=cPerm.module&contentid=00000000000000000000000000000000015&siteid=#URLEncodedFormat(rc.siteid)#&moduleid=00000000000000000000000000000000015"><i class="icon-group"></i> #application.rbFactory.getKeyValue(session.rb,'sitemanager.permissions')#</a>
+		</div>
+	</cfif>
+
+	
 <div id="commentsManagerWrapper">
 	<h1>#rc.$.rbKey('comments.commentsmanager')#</h1>
 

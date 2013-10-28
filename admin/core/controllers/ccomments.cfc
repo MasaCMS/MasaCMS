@@ -65,8 +65,8 @@ component persistent="false" accessors="true" output="false" extends="controller
 	public any function before(required struct rc) {
 		param name='rc.siteid' default=session.siteid;
 
-		if ( !variables.permUtility.getModulePerm('00000000000000000000000000000000000',rc.siteid) ) {
-			secure(rc);
+		if((not listFind(session.mura.memberships,'Admin;#variables.settingsManager.getSite(arguments.rc.siteid).getPrivateUserPoolID()#;0') and not listFind(session.mura.memberships,'S2')) and not ( variables.permUtility.getModulePerm('00000000000000000000000000000000015',arguments.rc.siteid) and variables.permUtility.getModulePerm('00000000000000000000000000000000000',arguments.rc.siteid))){
+			secure(arguments.rc);
 		}
 	}
 

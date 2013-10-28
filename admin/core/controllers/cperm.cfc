@@ -127,6 +127,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	 <cfif arguments.rc.moduleid eq '00000000000000000000000000000000014'>
 		<cfset variables.fw.redirect(action="cChangesets.list",append="siteid",path="./")>
 	</cfif>
+	 <cfif arguments.rc.moduleid eq '00000000000000000000000000000000015'>
+		<cfset variables.fw.redirect(action="cComments.default",append="siteid",path="./")>
+	</cfif>
 	
 	 <cfset variables.fw.redirect(action="cPlugins.list",append="siteid",path="./")>
 </cffunction>

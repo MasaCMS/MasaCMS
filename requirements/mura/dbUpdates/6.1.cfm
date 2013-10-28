@@ -98,10 +98,144 @@
 	.addIndex('siteid');
 
 	dbUtility.setTable('tsettings')
-	.addColumn(column="filePoolID",datatype="varchar",length=25);
+	.addColumn(column="filePoolID",datatype="varchar",length=25)
+	.addColumn(column="isConfigurable",datatype="int",default=1);
 
 	dbUtility.setTable("tcontentcomments")
 	.addColumn(column="flagCount",dataType="int",default=0)
 	.addColumn(column="isSpam",dataType="int",default=0)
 	.addColumn(column="isDeleted",dataType="int",default=0);
 </cfscript>
+
+<cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+select moduleID from tcontent where moduleID='00000000000000000000000000000000015'
+</cfquery>
+
+<cfif not rsCheck.recordcount>
+	<cfquery name="rsCheck" datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	select siteID from tsettings
+	</cfquery>
+	
+	<cfloop query="rsCheck">
+		<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+		INSERT INTO tcontent 
+		(
+			SiteID
+			,ModuleID
+			,ParentID
+			,ContentID
+			,ContentHistID
+			,RemoteID
+			,RemoteURL
+			,RemotePubDate
+			,RemoteSourceURL
+			,RemoteSource
+			,Credits
+			,FileID
+			,Template
+			,Type
+			,subType
+			,Active
+			,OrderNo
+			,Title
+			,MenuTitle
+			,Summary
+			,Filename
+			,MetaDesc
+			,MetaKeyWords
+			,Body
+			,lastUpdate
+			,lastUpdateBy
+			,lastUpdateByID
+			,DisplayStart
+			,DisplayStop
+			,Display
+			,Approved
+			,IsNav
+			,Restricted
+			,RestrictGroups
+			,Target
+			,TargetParams
+			,responseChart
+			,responseMessage
+			,responseSendTo
+			,responseDisplayFields
+			,moduleAssign
+			,displayTitle
+			,Notes
+			,inheritObjects
+			,isFeature
+			,ReleaseDate
+			,IsLocked
+			,nextN
+			,sortBy
+			,sortDirection
+			,featureStart
+			,featureStop
+			,forceSSL
+			,audience
+			,keyPoints
+			,searchExclude
+			,path
+		) VALUES  (
+			'default'
+			,'00000000000000000000000000000000015'
+			,'00000000000000000000000000000000END'
+			,'00000000000000000000000000000000015'
+			,'#createUUID()#'
+			,NULL
+			,NULL
+			,NULL
+			,NULL
+			,NULL
+			,NULL
+			,NULL
+			,NULL
+			,'Module'
+			,'default'
+			,1
+			,NULL
+			,'Comments Manager'
+			,NULL
+			,NULL
+			,NULL
+			,NULL
+			,NULL
+			,NULL
+			,NULL
+			,NULL
+			,NULL
+			,NULL
+			,NULL
+			,1
+			,1
+			,1
+			,NULL
+			,NULL
+			,NULL
+			,NULL
+			,NULL
+			,NULL
+			,NULL
+			,NULL
+			,NULL
+			,NULL
+			,NULL
+			,NULL
+			,NULL
+			,NULL
+			,NULL
+			,NULL
+			,NULL
+			,NULL
+			,NULL
+			,NULL
+			,0
+			,NULL
+			,NULL
+			,NULL
+			,NULL
+		)
+		</cfquery>
+	</cfloop>
+</cfif>
