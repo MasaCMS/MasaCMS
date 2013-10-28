@@ -190,7 +190,7 @@
 										credits={tag="dd",showLabel=true,rbkey="list.by"},
 										tags={tag="dd",showLabel=true,labelDelim=":",rbkey="tagcloud.tags"},
 										rating={tag="dd",showLabel=true,labelDelim=":",rbkey="list.rating"},
-										default={tag="dd"}
+										_default={tag="dd"}
 									};
 		 this.contentListWrapperDivClass="";
 		 this.contentListItemImageLinkClass="";

@@ -474,8 +474,8 @@ Display Objects
 	<cfset arguments.class=trim(propclass & " " & arguments.class)>
 	<cfset returnstring=' class="' & arguments.class & '"'>
 	
-	<cfif structKeyExists(propStruct,"customString")>
-		<cfset returnstring= trim(returnstring & " " & propStruct.customString)>
+	<cfif structKeyExists(propStruct,"attributes")>
+		<cfset returnstring= trim(returnstring & " " & propStruct.attributes)>
 	</cfif>
 
 	<cfreturn returnstring>
