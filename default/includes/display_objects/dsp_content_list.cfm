@@ -100,7 +100,7 @@
 </cfsilent>	
 
  <cfoutput>
- 	#variables.$.getContentListPropertyValue('containerEl',"openingString")#
+ 	#variables.$.getContentListPropertyValue('containerEl',"openingMarkUp")#
  	<#variables.$.getContentListPropertyValue('containerEl','tag')# #variables.$.getContentListAttributes('containerEl')#>
  </cfoutput>
 
@@ -124,11 +124,11 @@
 		</cfif>
 	</cfsilent>
 	<cfoutput>
-		#variables.$.getContentListPropertyValue('itemEl','openingString')#
+		#variables.$.getContentListPropertyValue('itemEl','openingMarkUp')#
 		<#variables.$.getContentListPropertyValue('itemEl','tag')# #variables.$.getContentListAttributes('itemEl',arguments.class)#"<cfif this.contentListImageStyles and arguments.hasImage> #arguments.imageStyles#</cfif>>
 			<cfloop list="#arguments.fields#" index="arguments.field">
 				<cfset arguments.field=trim(arguments.field)>
-				#variables.$.getContentListPropertyValue(arguments.field,"openingString")#
+				#variables.$.getContentListPropertyValue(arguments.field,"openingMarkUp")#
 				<cfswitch expression="#arguments.field#">
 					<cfcase value="Date">
 						<cfif listFindNoCase("Folder,Portal",arguments.type) and isDate(arguments.item.getValue('releaseDate'))>
@@ -241,14 +241,14 @@
 						</cfif>
 					</cfdefaultcase>
 				</cfswitch>
-				#variables.$.getContentListPropertyValue(arguments.field,"closingString")#
+				#variables.$.getContentListPropertyValue(arguments.field,"closingMarkUp")#
 			</cfloop>
 		</#variables.$.getContentListPropertyValue('itemEl',"tag")#>
-		#variables.$.getContentListPropertyValue('itemEl',"closingString")#
+		#variables.$.getContentListPropertyValue('itemEl',"closingMarkUp")#
 	</cfoutput>
 </cfloop>
  <cfoutput>
  	</#variables.$.getContentListPropertyValue('containerEl','tag')#>
- 	#variables.$.getContentListPropertyValue('containerEl',"closingString")#
+ 	#variables.$.getContentListPropertyValue('containerEl',"closingMarkUp")#
  </cfoutput>
 
