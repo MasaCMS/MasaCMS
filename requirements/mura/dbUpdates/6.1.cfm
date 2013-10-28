@@ -14,7 +14,8 @@
 
 	dbUtility.setTable("tclassextend")
 	.addColumn(column="iconclass",dataType="varchar",length="50")
-	.addColumn(column="hasAssocFile",dataType="tinyint",default=1);
+	.addColumn(column="hasAssocFile",dataType="tinyint",default=1)
+	.addColumn(column="hasConfigurator",datatype="int",default=1);
 
 	dbUtility.setTable("tsettings")
 	.addColumn(column="contentApprovalScript",dataType="longtext")
@@ -98,8 +99,7 @@
 	.addIndex('siteid');
 
 	dbUtility.setTable('tsettings')
-	.addColumn(column="filePoolID",datatype="varchar",length=25)
-	.addColumn(column="isConfigurable",datatype="int",default=1);
+	.addColumn(column="filePoolID",datatype="varchar",length=25);
 
 	dbUtility.setTable("tcontentcomments")
 	.addColumn(column="flagCount",dataType="int",default=0)
