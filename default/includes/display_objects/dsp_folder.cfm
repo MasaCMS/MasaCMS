@@ -54,8 +54,9 @@
 	may, if you choose, apply this exception to your own modified versions of 
 	Mura CMS.
 --->
-
 <cfsilent>
+<cfset variables.displayContext={}>
+
 <cfif not isNumeric(variables.$.event('month'))>
 	<cfset variables.$.event('month',month(now()))>
 </cfif>
@@ -110,58 +111,49 @@
 
 <cfset variables.nextN=variables.$.getBean('utility').getNextN(variables.iterator.getQuery(),variables.$.content('nextN'),variables.currentNextNIndex)>
 
-</cfsilent>
-
 <cfif variables.iterator.getRecordcount()>
-	<cfoutput>
-	<div id="svFolder" class="svIndex">
-		<cfsilent>
-			<cfif NOT len(variables.$.content("displayList"))>
-				<cfset variables.contentListFields="Date,Title,Image,Summary,Credits">
-				
-				<cfif variables.$.getBean('contentGateway').getHasComments(variables.$.event('siteid'),variables.$.content('contentID'))>
-					<cfset variables.contentListFields=listAppend(contentListFields,"Comments")>
-				</cfif>
-				
-				<cfset variables.contentListFields=listAppend(variables.contentListFields,"Tags")>
-				
-				<cfif variables.$.getBean('contentGateway').getHasRatings(variables.$.event('siteid'),variables.$.content('contentID'))>
-					<cfset variables.contentListFields=listAppend(variables.contentListFields,"Rating")>
-				</cfif>
-				<cfset variables.$.content("displayList",variables.contentListFields)>
-			</cfif>
-		</cfsilent>
-		#variables.$.dspObject_Include(thefile='dsp_content_list.cfm',
+	<cfif NOT len(variables.$.content("displayList"))>
+		<cfset variables.contentListFields="Date,Title,Image,Summary,Credits">
+		
+		<cfif variables.$.getBean('contentGateway').getHasComments(variables.$.event('siteid'),variables.$.content('contentID'))>
+			<cfset variables.contentListFields=listAppend(contentListFields,"Comments")>
+		</cfif>
+		
+		<cfset variables.contentListFields=listAppend(variables.contentListFields,"Tags")>
+		
+		<cfif variables.$.getBean('contentGateway').getHasRatings(variables.$.event('siteid'),variables.$.content('contentID'))>
+			<cfset variables.contentListFields=listAppend(variables.contentListFields,"Rating")>
+		</cfif>
+		<cfset variables.$.content("displayList",variables.contentListFields)>
+
+		<cfset variables.displayContext.body=variables.$.dspObject_Include(thefile='dsp_content_list.cfm',
 			fields=variables.$.content("displayList"),
 			type="Portal", 
 			iterator= variables.iterator,
 			imageSize=variables.$.content("ImageSize"),
 			imageHeight=variables.$.content("ImageHeight"),
 			imageWidth=variables.$.content("ImageWidth")
-			)#
+			)>
+
 		<cfif variables.nextn.numberofpages gt 1>
-			#variables.$.dspObject_Include(thefile='dsp_nextN.cfm')#
+			<cfset variables.displayContext.body=variables.displayContext.body & variables.$.dspObject_Include(thefile='dsp_nextN.cfm')>
 		</cfif>	
-	</div>
-	</cfoutput>
-</cfif>
-
-<cfif not variables.iterator.getRecordCount()>
-     <cfoutput>
-     <cfif variables.$.event('filterBy') eq "releaseMonth">
-     <div id="mura-folder">
-	     <p>#variables.$.rbKey('list.nocontentmonth')#</p>    
-     </div>
+	</cfif>
+<cfelse>
+	<cfif variables.$.event('filterBy') eq "releaseMonth">
+     	<cfset variables.displayContext.body='<p>' & variables.$.rbKey('list.nocontentmonth') & '<p>'>
      <cfelseif variables.$.event('filterBy') eq "releaseDate">
-     <div id="mura-folder">
-	     <p>#variables.$.rbKey('list.nocontentday')#</p>
-     </div>
+    	<cfset variables.displayContext.body='<p>' & variables.$.rbKey('list.nocontentday') & '<p>'>
      <cfelse>
-     <div id="mura-folder">
-         <p>#variables.$.rbKey('list.nocontent')#</p>   
-     </div>
+        <cfset variables.displayContext.body='<p>' & variables.$.rbKey('list.nocontent') & '<p>'>
      </cfif>
-     </cfoutput>
 </cfif>
-	
+</cfsilent>
 
+<cfoutput>
+<cfif variables.iterator.getRecordcount()>
+	<div id="svFolder" class="svIndex">#variables.displayContext.body#</div>
+<cfelse>
+	<div id="mura-folder">#variables.displayContext.body#</div>
+</cfif>
+</cfoutput>
