@@ -133,7 +133,7 @@
 			imageSize=variables.$.content("ImageSize"),
 			imageHeight=variables.$.content("ImageHeight"),
 			imageWidth=variables.$.content("ImageWidth")
-			)
+			)>
 
 		<cfif variables.nextn.numberofpages gt 1>
 			<cfset variables.displayContext.body=variables.displayContext.body & variables.$.dspObject_Include(thefile='dsp_nextN.cfm')>
