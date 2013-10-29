@@ -19,7 +19,8 @@
 
 	dbUtility.setTable("tsettings")
 	.addColumn(column="contentApprovalScript",dataType="longtext")
-	.addColumn(column="contentRejectionScript",dataType="longtext");
+	.addColumn(column="contentRejectionScript",dataType="longtext")
+	.addColumn(column="hasComments",dataType="int",default=0);
 
 	dbUtility.setTable('temails')
 	.addColumn(column='template',dataType='varchar');

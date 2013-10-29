@@ -53,7 +53,7 @@ publicUserPoolID,PrivateUserPoolID,AdvertiserUserPoolID,displayPoolID,filePoolID
 largeImageHeight, largeImageWidth, smallImageHeight, smallImageWidth, mediumImageHeight, mediumImageWidth,
 sendLoginScript, mailingListConfirmScript,publicSubmissionApprovalScript,reminderScript,ExtranetPublicRegNotify,
 loginURL,editProfileURL,CommentApprovalDefault,deploy,accountActivationScript,
-googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPPort, mailserverTLS, mailserverSSL, theme, tagline,hasChangesets,baseID,enforceChangesets,contentApprovalScript,contentRejectionScript,enableLockdown,customTagGroups</cfoutput></cfsavecontent>
+googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPPort, mailserverTLS, mailserverSSL, theme, tagline,hasChangesets,baseID,enforceChangesets,contentApprovalScript,contentRejectionScript,enableLockdown,customTagGroups,hasComments</cfoutput></cfsavecontent>
 
 <cffunction name="init" access="public" returntype="any" output="false">
 <cfargument name="configBean" type="any" required="yes"/>
@@ -350,7 +350,8 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
 	 	 contentApprovalScript=<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.bean.getContentApprovalScript() neq '',de('no'),de('yes'))#" value="#arguments.bean.getContentApprovalScript()#" />,
 	 	 contentRejectionScript=<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.bean.getContentRejectionScript() neq '',de('no'),de('yes'))#" value="#arguments.bean.getContentRejectionScript()#" />,
 		 enableLockdown=<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getEnableLockdown()#" />,
-		 customTagGroups=<cfif arguments.bean.getCustomTagGroups() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getCustomTagGroups())#" /><cfelse>null</cfif>
+		 customTagGroups=<cfif arguments.bean.getCustomTagGroups() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getCustomTagGroups())#" /><cfelse>null</cfif>,
+		 hasComments=#arguments.bean.getHasComments()#
 		 
 		where siteid='#arguments.bean.getsiteid()#'
    </cfquery>
@@ -448,7 +449,8 @@ googleAPIKey,useDefaultSMTPServer,siteLocale, mailServerSMTPPort, mailServerPOPP
 	 	<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.bean.getContentApprovalScript() neq '',de('no'),de('yes'))#" value="#arguments.bean.getContentApprovalScript()#" />,
 	 	<cfqueryparam cfsqltype="cf_sql_longvarchar" null="#iif(arguments.bean.getContentRejectionScript() neq '',de('no'),de('yes'))#" value="#arguments.bean.getContentRejectionScript()#" />,
 		<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.bean.getEnableLockdown()#" />,
-		<cfif arguments.bean.getCustomTagGroups() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getCustomTagGroups())#" /><cfelse>null</cfif>
+		<cfif arguments.bean.getCustomTagGroups() neq ''><cfqueryparam cfsqltype="cf_sql_varchar" value="#trim(arguments.bean.getCustomTagGroups())#" /><cfelse>null</cfif>,
+		#arguments.bean.getHasComments()#
 		)
    </cfquery>
   

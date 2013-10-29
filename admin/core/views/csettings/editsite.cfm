@@ -455,17 +455,28 @@ to your own modified versions of Mura CMS.
 			            <label class="radio inline"><input type="radio" name="dataCollection" value="1" <cfif rc.siteBean.getdataCollection() eq 1> CHECKED</CFIF>>On</label>
 			        </div>
 		        </div>
-	      
-		        <div class="span3">
-			        <label class="control-label">Advertisement Manager</label>
-			        <div class="controls"> 
-			            <!--- <p class="alert">NOTE: The Advertisement Manager is not supported within Mura Bundles and Staging to Production configurations.</p> --->
-			            <label class="radio inline"><input type="radio" name="adManager" value="0" <cfif rc.siteBean.getadManager() neq 1> CHECKED</CFIF>>Off</label>
-			            <label class="radio inline"><input type="radio" name="adManager" value="1" <cfif rc.siteBean.getadManager() eq 1> CHECKED</CFIF>>On</label>
-			          </div>
-			    </div>
 	        
 	        </div>
+
+          <div class="control-group">
+            <div class="span3">
+              <label class="control-label">Advertisement Manager</label>
+              <div class="controls"> 
+                  <!--- <p class="alert">NOTE: The Advertisement Manager is not supported within Mura Bundles and Staging to Production configurations.</p> --->
+                  <label class="radio inline"><input type="radio" name="adManager" value="0" <cfif rc.siteBean.getadManager() neq 1> CHECKED</CFIF>>Off</label>
+                  <label class="radio inline"><input type="radio" name="adManager" value="1" <cfif rc.siteBean.getadManager() eq 1> CHECKED</CFIF>>On</label>
+                </div>
+            </div>
+
+            <div class="span3">
+              <label class="control-label">Comments Manager</label>
+              <div class="controls"> 
+                  <label class="radio inline"><input type="radio" name="hasComments" value="0" <cfif rc.siteBean.getHasComments() neq 1> CHECKED</CFIF>>Off</label>
+                  <label class="radio inline"><input type="radio" name="hasComments" value="1" <cfif rc.siteBean.getHasComments() eq 1> CHECKED</CFIF>>On</label>
+                </div>
+            </div>
+
+          </div>
       
       
 	        <div class="control-group">
