@@ -119,6 +119,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfproperty name="contentRejectionScript" type="string" default=""/>
 <cfproperty name="enableLockdown" type="string" default="" />
 <cfproperty name="customTagGroups" type="string" default="" />
+<cfproperty name="hasComments" type="numeric" default="1" required="true" />
 
 <cfset variables.primaryKey = 'siteid'>
 <cfset variables.entityName = 'site'>
@@ -213,6 +214,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset variables.instance.enableLockdown=""/>
 	<cfset variables.instance.customTagGroups=""/>
 	<cfset variables.instance.hasSharedFilePool=""/>
+	<cfset variables.instance.hasComments=0/>
 
 	<cfreturn this />
 </cffunction>
@@ -503,6 +505,14 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cffunction name="setLastDeployment" access="public" output="false">
 	<cfargument name="LastDeployment" type="String" />
 	<cfset variables.instance.LastDeployment = parseDateArg(arguments.LastDeployment)/>
+	<cfreturn this>
+</cffunction>
+
+<cffunction name="setHasComments" access="public" output="false">
+	<cfargument name="hasComments"  />
+	<cfif isNumeric(arguments.hasComments)>
+		<cfset variables.instance.hasComments = arguments.hasComments />
+	</cfif>
 	<cfreturn this>
 </cffunction>
 
