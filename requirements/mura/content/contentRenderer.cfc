@@ -1014,21 +1014,36 @@ Display Objects
 <cffunction name="dspFolderNav" output="false" returntype="string">
 	<cfargument name="class" default="#this.ulTopClass#" required="true">
 	<cfargument name="liHasKidsClass" required="true" default="#this.liHasKidsClass#">
-	<cfargument name="liHasKidsCustomString" required="true" default="#this.liHasKidsCustomString#">
+	<cfargument name="liHasKidsAttributes" required="true" default="#this.liHasKidsAttributes#">
 	<cfargument name="liCurrentClass" required="true" default="#this.liCurrentClass#">
-	<cfargument name="liCurrentCustomString" required="true" default="#this.liCurrentCustomString#">
+	<cfargument name="liCurrentAttributes" required="true" default="#this.liCurrentAttributes#">
 	<cfargument name="liHasKidsNestedClass" required="true" default="#this.liHasKidsNestedClass#">
 	<cfargument name="aHasKidsClass" required="true" default="#this.aHasKidsClass#">
-	<cfargument name="aHasKidsCustomString" required="true" default="#this.aHasKidsCustomString#">
+	<cfargument name="aHasKidsAttributes" required="true" default="#this.aHasKidsCustomString#">
 	<cfargument name="aCurrentClass" required="true" default="#this.aCurrentClass#">
-	<cfargument name="aCurrentCustomString" required="true" default="#this.aCurrentCustomString#">
+	<cfargument name="aCurrentAttributes" required="true" default="#this.aCurrentAttributes#">
 	<cfargument name="ulNestedClass" required="true" default="#this.ulNestedClass#">
-	<cfargument name="ulNestedCustomString" required="true" default="#this.ulNestedCustomString#">
+	<cfargument name="ulNestedAttributes" required="true" default="#this.ulNestedAttributes#">
 
 	<cfset var thenav="" />
 	<cfset var menutype="" />
 	<cfset var nestedArgs=structNew()>
 	<cfset var tracepoint=initTracepoint("contentRenderer.dspFolderNav")>
+
+	<!--- Supporting Old Arguments--->
+	<cfif structKeyExists(arguments,'liHasKidsCustomString')>
+		<cfset arguments.liHasKidsAttributes=arguments.liHasKidsCustomString>
+	</cfif>
+	<cfif structKeyExists(arguments,'aHasKidsCustomString')>
+		<cfset arguments.aHasKidsAttributes=arguments.aHasKidsCustomString>
+	</cfif>
+	<cfif structKeyExists(arguments,'aCurrentCustomString')>
+		<cfset arguments.aCurrentAttributes=arguments.aCurrentCustomString>
+	</cfif>
+	<cfif structKeyExists(arguments,'ulNestedCustomString')>
+		<cfset arguments.ulNestedAttributes=arguments.ulNestedCustomString>
+	</cfif>
+	<!--- --->
 
 	<cfset nestedArgs.openCurrentOnly=true>
 	""
@@ -1072,20 +1087,35 @@ Display Objects
 <cffunction name="dspStandardNav" output="false" returntype="string">
 	<cfargument name="class" default="#this.ulTopClass#" required="true">
 	<cfargument name="liHasKidsClass" required="true" default="#this.liHasKidsClass#">
-	<cfargument name="liHasKidsCustomString" required="true" default="#this.liHasKidsCustomString#">
+	<cfargument name="liHasKidsAttributes" required="true" default="#this.liHasKidsAttributes#">
 	<cfargument name="liCurrentClass" required="true" default="#this.liCurrentClass#">
-	<cfargument name="liCurrentCustomString" required="true" default="#this.liCurrentCustomString#">
+	<cfargument name="liCurrentAttributes" required="true" default="#this.liCurrentAttributes#">
 	<cfargument name="liHasKidsNestedClass" required="true" default="#this.liHasKidsNestedClass#">
 	<cfargument name="aHasKidsClass" required="true" default="#this.aHasKidsClass#">
-	<cfargument name="aHasKidsCustomString" required="true" default="#this.aHasKidsCustomString#">
+	<cfargument name="aHasKidsAttributes" required="true" default="#this.aHasKidsAttributes#">
 	<cfargument name="aCurrentClass" required="true" default="#this.aCurrentClass#">
-	<cfargument name="aCurrentCustomString" required="true" default="#this.aCurrentCustomString#">
+	<cfargument name="aCurrentAttributes" required="true" default="#this.aCurrentAttributes#">
 	<cfargument name="ulNestedClass" required="true" default="#this.ulNestedClass#">
-	<cfargument name="ulNestedCustomString" required="true" default="#this.ulNestedCustomString#">
+	<cfargument name="ulNestedAttributes" required="true" default="#this.ulNestedAttributes#">
 	<cfset var thenav="" />
 	<cfset var menutype="" />
 	<cfset var nestedArgs=structNew()>
 	<cfset var tracepoint=initTracepoint("contentRenderer.dspStandardNav")>
+
+	<!--- Supporting Old Arguments--->
+	<cfif structKeyExists(arguments,'liHasKidsCustomString')>
+		<cfset arguments.liHasKidsAttributes=arguments.liHasKidsCustomString>
+	</cfif>
+	<cfif structKeyExists(arguments,'aHasKidsCustomString')>
+		<cfset arguments.aHasKidsAttributes=arguments.aHasKidsCustomString>
+	</cfif>
+	<cfif structKeyExists(arguments,'aCurrentCustomString')>
+		<cfset arguments.aCurrentAttributes=arguments.aCurrentCustomString>
+	</cfif>
+	<cfif structKeyExists(arguments,'ulNestedCustomString')>
+		<cfset arguments.ulNestedAttributes=arguments.ulNestedCustomString>
+	</cfif>
+	<!--- --->
 
 	<cfset nestedArgs.openCurrentOnly=true>
 
@@ -1130,18 +1160,33 @@ Display Objects
 <cffunction name="dspSubNav" output="false" returntype="string">
 	<cfargument name="class" default="#this.ulTopClass#" required="true">
 	<cfargument name="liHasKidsClass" required="true" default="#this.liHasKidsClass#">
-	<cfargument name="liHasKidsCustomString" required="true" default="#this.liHasKidsCustomString#">
+	<cfargument name="liHasKidsAttributes" required="true" default="#this.liHasKidsAttributes#">
 	<cfargument name="liCurrentClass" required="true" default="#this.liCurrentClass#">
-	<cfargument name="liCurrentCustomString" required="true" default="#this.liCurrentCustomString#">
+	<cfargument name="liCurrentAttributes" required="true" default="#this.liCurrentAttributes#">
 	<cfargument name="liHasKidsNestedClass" required="true" default="#this.liHasKidsNestedClass#">
 	<cfargument name="aHasKidsClass" required="true" default="#this.aHasKidsClass#">
-	<cfargument name="aHasKidsCustomString" required="true" default="#this.aHasKidsCustomString#">
+	<cfargument name="aHasKidsAttributes" required="true" default="#this.aHasKidsAttributes#">
 	<cfargument name="aCurrentClass" required="true" default="#this.aCurrentClass#">
-	<cfargument name="aCurrentCustomString" required="true" default="#this.aCurrentCustomString#">
+	<cfargument name="aCurrentAttributes" required="true" default="#this.aCurrentAttributes#">
 
 	<cfset var thenav="" />
 	<cfset var nestedArgs=structNew()>
 	<cfset var tracepoint=initTracepoint("contentRenderer.dspSubNav")>
+
+	<!--- Supporting Old Arguments--->
+	<cfif structKeyExists(arguments,'liHasKidsCustomString')>
+		<cfset arguments.liHasKidsAttributes=arguments.liHasKidsCustomString>
+	</cfif>
+	<cfif structKeyExists(arguments,'aHasKidsCustomString')>
+		<cfset arguments.aHasKidsAttributes=arguments.aHasKidsCustomString>
+	</cfif>
+	<cfif structKeyExists(arguments,'aCurrentCustomString')>
+		<cfset arguments.aCurrentAttributes=arguments.aCurrentCustomString>
+	</cfif>
+	<cfif structKeyExists(arguments,'ulNestedCustomString')>
+		<cfset arguments.ulNestedAttributes=arguments.ulNestedCustomString>
+	</cfif>
+	<!--- --->
 
 	<cfset nestedArgs.openCurrentOnly=true>
 
@@ -1168,19 +1213,34 @@ Display Objects
 <cffunction name="dspPeerNav" output="false" returntype="string">
 	<cfargument name="class" default="#this.ulTopClass#" required="true">
 	<cfargument name="liHasKidsClass" required="true" default="#this.liHasKidsClass#">
-	<cfargument name="liHasKidsCustomString" required="true" default="#this.liHasKidsCustomString#">
+	<cfargument name="liHasKidsAttributes" required="true" default="#this.liHasKidsAttributes#">
 	<cfargument name="liCurrentClass" required="true" default="#this.liCurrentClass#">
-	<cfargument name="liCurrentCustomString" required="true" default="#this.liCurrentCustomString#">
+	<cfargument name="liCurrentAttributes" required="true" default="#this.liCurrentAttributes#">
 	<cfargument name="liHasKidsNestedClass" required="true" default="#this.liHasKidsNestedClass#">
 	<cfargument name="aHasKidsClass" required="true" default="#this.aHasKidsClass#">
-	<cfargument name="aHasKidsCustomString" required="true" default="#this.aHasKidsCustomString#">
+	<cfargument name="aHasKidsAttributes" required="true" default="#this.aHasKidsAttributes#">
 	<cfargument name="aCurrentClass" required="true" default="#this.aCurrentClass#">
-	<cfargument name="aCurrentCustomString" required="true" default="#this.aCurrentCustomString#">
+	<cfargument name="aCurrentAttributes" required="true" default="#this.aCurrentAttributes#">
 	
 	<cfset var thenav="" />
 	<cfset var menutype = "" />
 	<cfset var nestedArgs=structNew()>
 	<cfset var tracepoint=initTracepoint("contentRenderer.dspPeerNav")>
+
+	<!--- Supporting Old Arguments--->
+	<cfif structKeyExists(arguments,'liHasKidsCustomString')>
+		<cfset arguments.liHasKidsAttributes=arguments.liHasKidsCustomString>
+	</cfif>
+	<cfif structKeyExists(arguments,'aHasKidsCustomString')>
+		<cfset arguments.aHasKidsAttributes=arguments.aHasKidsCustomString>
+	</cfif>
+	<cfif structKeyExists(arguments,'aCurrentCustomString')>
+		<cfset arguments.aCurrentAttributes=arguments.aCurrentCustomString>
+	</cfif>
+	<cfif structKeyExists(arguments,'ulNestedCustomString')>
+		<cfset arguments.ulNestedAttributes=arguments.ulNestedCustomString>
+	</cfif>
+	<!--- --->
 
 	<cfset nestedArgs.openCurrentOnly=true>
 
@@ -1461,9 +1521,9 @@ Display Objects
 	<cfargument name="complete" type="boolean" required="true" default="false">
 	<cfargument name="id" type="string" required="true" default="">
 	<cfargument name="aHasKidsClass" required="true" default="#this.aHasKidsClass#">
-	<cfargument name="aHasKidsCustomString" required="true" default="#this.aHasKidsCustomString#">
+	<cfargument name="aHasKidsAttributes" required="true" default="#this.aHasKidsAttributes#">
 	<cfargument name="aCurrentClass" required="true" default="#this.aCurrentClass#">
-	<cfargument name="aCurrentCustomString" required="true" default="#this.aCurrentCustomString#">
+	<cfargument name="aCurrentAttributes" required="true" default="#this.aCurrentAttributes#">
 	<cfargument name="isParent" required="true" default="false">
 	<cfargument name="aNotCurrentClass" required="true" default="#this.aNotCurrentClass#">
 			
@@ -1471,12 +1531,21 @@ Display Objects
 	<cfset var href ="">
 	<cfset var theClass =arguments.class>
 
+	<!--- Supporting Old Arguments--->
+	<cfif structKeyExists(arguments,'aHasKidsCustomString')>
+		<cfset arguments.aHasKidsAttributes=arguments.aHasKidsCustomString>
+	</cfif>
+	<cfif structKeyExists(arguments,'aCurrentCustomString')>
+		<cfset arguments.aCurrentAttributes=arguments.aCurrentCustomString>
+	</cfif>
+	<!--- --->
+
 	<cfif arguments.showCurrent>
 		<cfset arguments.showCurrent=listFind(variables.event.getValue('contentBean').getPath(),"#arguments.contentID#")>
 	</cfif>
 	<cfif arguments.showCurrent>					
 		<cfset theClass=listAppend(theClass,arguments.aCurrentClass," ") />
-		<cfelseif len(arguments.aNotCurrentClass)>
+	<cfelseif len(arguments.aNotCurrentClass)>
 		<cfset theClass=listAppend(theClass,arguments.aNotCurrentClass," ") />
 	</cfif>
 	<cfif arguments.isParent>					
@@ -1484,7 +1553,7 @@ Display Objects
 	</cfif>
 		
 	<cfset href=createHREF(arguments.type,arguments.filename,arguments.siteid,arguments.contentid,arguments.target,iif(arguments.filename eq variables.event.getValue('contentBean').getfilename(),de(''),de(arguments.targetParams)),arguments.queryString,arguments.context,arguments.stub,arguments.indexFile,arguments.complete,arguments.showMeta)>
-	<cfset link='<a href="#href#"#iif(len(arguments.target) and arguments.target neq '_self',de(' target="#arguments.target#"'),de(""))##iif(len(theClass),de(' class="#theClass#"'),de(""))##iif(len(arguments.id),de(' id="#arguments.id#"'),de(""))##iif(arguments.showCurrent,de(' #replace(arguments.aCurrentCustomString,"##","####","all")#'),de(""))##iif(arguments.isParent and len(arguments.aHasKidsCustomString),de(' #replace(arguments.aHasKidsCustomString,"##","####","all")#'),de(""))#>#HTMLEditFormat(arguments.title)#</a>' />
+	<cfset link='<a href="#href#"#iif(len(arguments.target) and arguments.target neq '_self',de(' target="#arguments.target#"'),de(""))##iif(len(theClass),de(' class="#theClass#"'),de(""))##iif(len(arguments.id),de(' id="#arguments.id#"'),de(""))##iif(arguments.showCurrent,de(' #replace(arguments.aCurrentAttributes,"##","####","all")#'),de(""))##iif(arguments.isParent and len(arguments.aHasKidsAttributes),de(' #replace(arguments.aHasKidsAttributes,"##","####","all")#'),de(""))#>#HTMLEditFormat(arguments.title)#</a>' />
 	<cfreturn link>
 </cffunction>
 
@@ -2264,7 +2333,7 @@ Display Objects
 
 				<cfset started=true>
 				<ul<cfif arguments.currDepth eq 1>#iif(arguments.id neq '',de(' id="#arguments.id#"'),de(''))##iif(arguments.menuClass neq '',de(' class="#arguments.menuClass#"'),de(''))#<cfelse><cfif len(arguments.ulNestedClass)> class="#arguments.ulNestedClass#"</cfif><cfif len(arguments.ulNestedAttributes)> #arguments.ulNestedAttributes#</cfif></cfif>>
-				<li class="first<cfif variables.event.getValue('contentBean').getcontentid() eq arguments.contentid> #arguments.liCurrentClass#</cfif>" id="navHome"<cfif len(arguments.liCurrentCustomString)> #arguments.liCurrentCustomString#</cfif>><a href="#homeLink#"<cfif len(arguments.aCurrentClass) and $.content('contentID') eq '00000000000000000000000000000000001'> class="#arguments.aCurrentClass#"<cfelseif len(arguments.aNotCurrentClass)> class="#arguments.aNotCurrentClass#"</cfif><cfif len(arguments.aCurrentAttributes)> #arguments.aCurrentAttributes#</cfif>>#HTMLEditFormat(rsHome.menuTitle)#</a></li>
+				<li class="first<cfif variables.event.getValue('contentBean').getcontentid() eq arguments.contentid> #arguments.liCurrentClass#</cfif>" id="navHome"<cfif len(arguments.liCurrentAttributes)> #arguments.liCurrentAttributes#</cfif>><a href="#homeLink#"<cfif len(arguments.aCurrentClass) and $.content('contentID') eq '00000000000000000000000000000000001'> class="#arguments.aCurrentClass#"<cfelseif len(arguments.aNotCurrentClass)> class="#arguments.aNotCurrentClass#"</cfif><cfif len(arguments.aCurrentAttributes)> #arguments.aCurrentAttributes#</cfif>>#HTMLEditFormat(rsHome.menuTitle)#</a></li>
 			</cfif>
 			
 			<cfloop query="rsSection">
