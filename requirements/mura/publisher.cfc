@@ -2895,6 +2895,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 							<cfif isDefined("rstclassextend.iconclass")>
 							iconclass=<cfqueryparam cfsqltype="cf_sql_VARCHAR" null="#iif(rstclassextend.iconclass neq '',de('no'),de('yes'))#" value="#rstclassextend.iconclass#">,
 							</cfif>
+							<cfif isDefined("rstclassextend.hasConfigurator")>
+							hasConfigurator=<cfqueryparam cfsqltype="cf_sql_INTEGER" null="#iif(rstclassextend.hasConfigurator neq '',de('no'),de('yes'))#" value="#rstclassextend.hasConfigurator#">,
+							</cfif>
 							lastUpdateBy='System'
 							where subTypeID = <cfqueryparam cfsqltype="cf_sql_VARCHAR" value="#keys.get(rstclassextend.subTypeID)#">
 						</cfquery>

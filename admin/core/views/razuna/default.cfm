@@ -32,11 +32,11 @@
 </cfsilent>
 <cfset request.layout=false>
 <div id="razuna-tagTree" class="jstree-classic"></div>
-<!---
+
 <div id="razuna-full_page_loader">
     <img src="./assets/images/ajax-loader.gif" style="position: absolute; left: 50%; top: 50%; margin-left: -32px; margin-top: -32px; display: block;"/>
 </div>
---->
+
 <!--- Search Div --->
 <div id="razuna-search-div" class="pull-right well">
 	<div class="input-append">

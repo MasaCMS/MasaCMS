@@ -230,11 +230,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var renderer=arguments.event.getValue("contentRenderer")>
 	
 	<cfif fileExists(ExpandPath( "#arguments.event.getSite().getThemeIncludePath()#/templates/mobile.cfm"))>
-		<cfset renderer.listFormat="ul">
 		<cfset arguments.event.getValue("contentBean").setTemplate("mobile.cfm")>
 		<cfset renderer.showAdminToolbar=false>
 		<cfset renderer.showMemberToolbar=false>
 		<cfset renderer.showEditableObjects=false>
+		<cfset renderer.contentListPropertyTagMap={containerEl="ul",itemEl="li",title="h3",default="p"}>
 	</cfif>
 	
 </cffunction>

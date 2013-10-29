@@ -1,4 +1,5 @@
-<!--- This file is part of Mura CMS.
+/*
+This file is part of Mura CMS.
 
 Mura CMS is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,46 +44,12 @@ requires distribution of source code.
 For clarity, if you create a modified version of Mura CMS, you are not obligated to grant this special exception for your 
 modified version; it is your choice whether to do so, or to make such modified version available under the GNU General Public License 
 version 2 without this exception.  You may, if you choose, apply this exception to your own modified versions of Mura CMS.
---->
+*/
+component extends="mura.bean.beanORM" table="tcontentcommentcommenters" entityname="commenter" bundleable=true {
 
-<cfoutput>
-<cfset variables.isConfigured=not structIsEmpty(objectparams)>
-<cfparam name="objectparams.sortBy" default="orderNo">
-<cfparam name="objectparams.sortDirection" default="asc">
-<cfparam name="objectparams.imagesize" default="small">
-<cfparam name="objectparams.imageHeight" default="#$.siteConfig('smallImageHeight')#">
-<cfparam name="objectparams.imageWidth" default="#$.siteConfig('smallImageWidth')#">
-<cfparam name="objectparams.relatedContentSetName" default="default">
-<cfset variables.iterator=variables.$.content().getRelatedContentIterator(liveOnly=true,sortBy=objectparams.sortBy,sortDirection=objectparams.sortDirection,name=objectparams.relatedContentSetName)>
-<cfif variables.iterator.getRecordCount()>
-	<div class="svRelContent svIndex">
-	<#variables.$.getHeaderTag('subHead1')#>
-		<cfif len(objectparams.relatedContentSetName)>
-			#objectparams.relatedContentSetName#
-		<cfelse>
-			#variables.$.rbKey('list.relatedcontent')#
-		</cfif>
-	</#variables.$.getHeaderTag('subHead1')#>
-	<cfif variables.isConfigured>
-		#variables.$.dspObject_Include(
-				thefile='dsp_content_list.cfm',
-				fields=objectparams.displayList,
-				type='Related', 
-				iterator=variables.iterator,
-				imageSize=objectparams.imageSize,
-				imageHeight=objectparams.imageHeight,
-				imageWidth=objectparams.imageWidth
-				)#
-	<cfelse>
-		#variables.$.dspObject_Include(
-				thefile='dsp_content_list.cfm',
-				fields='Title',
-				type='Related', 
-				iterator= variables.iterator
-				)#
-	</cfif>
-	</div>
-<cfelse>
-	<!-- Empty Related Content -->
-</cfif>
-</cfoutput>
+	property name="commenterID" fieldtype="id";
+    property name="name" type="string";
+    property name="email" type="string";
+    property name="remoteID" type="string";
+
+}
