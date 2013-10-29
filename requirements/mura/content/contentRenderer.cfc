@@ -359,7 +359,7 @@ Display Objects
 		<cfset this.ulNestedAttributes=this.ulNestedCustomString>
 	</cfif>
 	<!--- --->
-
+	
 	<cfset variables.contentGateway=getBean('contentGateway')>
 
 	<cfif not isDefined('this.enableMuraTag')>
