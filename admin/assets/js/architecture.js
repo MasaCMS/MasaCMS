@@ -865,9 +865,9 @@ buttons: {
 		}
 		
 		if(!r['hasconfigurator']) {
-			$('#tabListDisplayOptionsLI').addClass('hide');
+			$('#availableFields').addClass('hide');
 		} else {
-			$('#tabListDisplayOptionsLI').removeClass('hide');
+			$('#availableFields').removeClass('hide');
 		}
 
 		if(!r.hassummary) {

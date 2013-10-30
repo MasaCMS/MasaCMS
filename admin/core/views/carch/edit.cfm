@@ -628,7 +628,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<ul class="nav nav-tabs tabs initActiveTab">
 			<cfloop from="1" to="#listlen(tabList)#" index="t">
 			<cfset currentTab=listGetAt(tabList,t)>
-			<li<cfif listFindNoCase("tabExtendedAttributes,tabListDisplayOptions",currentTab)> class="hide" id="#currentTab#LI"</cfif>><a href="###currentTab#" data-toggle="tab"><span>#listGetAt(tabLabelList,t)#</span></a></li>
+			<li<cfif listFindNoCase("tabExtendedAttributes",currentTab)> class="hide" id="#currentTab#LI"</cfif>><a href="###currentTab#" data-toggle="tab"><span>#listGetAt(tabLabelList,t)#</span></a></li>
 			</cfloop>
 		</ul>
 		<div class="tab-content row-fluid">		
