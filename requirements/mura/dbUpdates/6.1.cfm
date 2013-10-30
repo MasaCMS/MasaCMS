@@ -240,3 +240,7 @@ select moduleID from tcontent where moduleID='0000000000000000000000000000000001
 		</cfquery>
 	</cfloop>
 </cfif>
+
+<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	update tsettings set hasComments=1 where hasComments is null
+</cfquery>
