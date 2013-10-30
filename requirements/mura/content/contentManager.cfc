@@ -1829,6 +1829,13 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		<cfset rs = variables.contentGateway.getKidsCategorySummary(arguments.siteID,arguments.parentID)>
 		<cfreturn rs />
 	</cffunction>
+
+	<cffunction name="getCategorySummary" returntype="query" access="public" output="false">
+		<cfargument name="siteID" type="string" required="true" />
+		<cfset var rs = ''>
+		<cfset rs = variables.contentGateway.geCategorySummary(arguments.siteID)>
+		<cfreturn rs />
+	</cffunction>
 	
 	<cffunction name="exportHtmlSite" output="false">
 		<cfargument name="siteid" type="string" required="true" default="default" />

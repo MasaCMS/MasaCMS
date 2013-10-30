@@ -863,6 +863,12 @@ buttons: {
 		} else {
 			$('#tabExtendedAttributesLI').removeClass('hide');
 		}
+		
+		if(!r['hasconfigurator']) {
+			$('#tabListDisplayOptionsLI').addClass('hide');
+		} else {
+			$('#tabListDisplayOptionsLI').removeClass('hide');
+		}
 
 		if(!r.hassummary) {
 			if(typeof hideSummaryEditor != 'undefined') {

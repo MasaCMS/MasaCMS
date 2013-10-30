@@ -19,7 +19,8 @@
 
 	dbUtility.setTable("tsettings")
 	.addColumn(column="contentApprovalScript",dataType="longtext")
-	.addColumn(column="contentRejectionScript",dataType="longtext");
+	.addColumn(column="contentRejectionScript",dataType="longtext")
+	.addColumn(column="hasComments",dataType="int",default=0);
 
 	dbUtility.setTable('temails')
 	.addColumn(column='template',dataType='varchar');
@@ -239,3 +240,7 @@ select moduleID from tcontent where moduleID='0000000000000000000000000000000001
 		</cfquery>
 	</cfloop>
 </cfif>
+
+<cfquery datasource="#getDatasource()#" username="#getDBUsername()#" password="#getDbPassword()#">
+	update tsettings set hasComments=1 where hasComments is null
+</cfquery>
