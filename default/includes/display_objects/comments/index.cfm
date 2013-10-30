@@ -247,8 +247,16 @@
 			<a name="comments"></a>
 			
 			<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('comments.comments')#</#variables.$.getHeaderTag('subHead1')#>
-			<!--- #variables.$.dspObject_Include(thefile='comments/dsp_comments.cfm')# --->
+			
+			<div id="commentsSort">
+				<select id="sortDirectionSelector" name="sortDirection">
+					<option value="asc"<cfif variables.$.event('sortDirection') eq "asc"> selected</cfif>>Oldest - Newest</option>
+					<option value="desc"<cfif variables.$.event('sortDirection') eq "desc"> selected</cfif>>Newest - Oldest</option>
+				</select>
+			</div>
+
 			<div id="commentsPage" data-contentid="#variables.$.content('contentID')#"></div>
+			
 			<cfif not structIsEmpty(variables.errors) >
 				
 					#errorJSTxt#

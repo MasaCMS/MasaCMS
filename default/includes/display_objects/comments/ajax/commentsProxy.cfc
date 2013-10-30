@@ -76,103 +76,115 @@
 		<cfargument name="contentID">
 		<cfargument name="pageNo" required="true" default="1">
 		<cfargument name="nextN" required="true" default="3">
+		<cfargument name="sortDirection" required="true" default="desc">
+		<cfargument name="commentID" required="true" default="">
 		<cfset var $ = getBean("MuraScope").init(session.siteid)>
 		<cfset var content = $.getBean('content').loadBy(contentID=arguments.contentID)>
 		<cfset var crumbArray = content.getCrumbArray()>
 		<cfset var isEditor=(listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite($.event('siteID')).getPrivateUserPoolID()#')
 				and application.permUtility.getnodePerm(crumbArray) neq 'none')
 				or listFind(session.mura.memberships,'S2')
-				<!---or has module access to 0x15--->>
-		<cfset var comment = "">
-		<cfset var local = "">
+				or application.permUtility.getModulePerm("00000000000000000000000000000000015", $.event('siteID'))>
+		<cfset var sort = listFindNoCase('asc,desc', arguments.sortDirection) ? arguments.sortDirection : 'asc'>
 		<cfset var it = $.getBean('contentCommentManager').getCommentsIterator(
 						contentID=content.getContentID(),
 						siteID=$.event('siteID'),
 						isapproved=1,
 						isspam=0,
-						isdeleted=0)>
+						isdeleted=0,
+						sortDirection=sort)>
+		<cfset var q = it.getQuery()>
+		<cfset var comment = "">
+		<cfset var local = structNew()>
+		<cfset var i = "">
 		
 		<cfscript>
 			// Pagination Setup
 			local.nextn = Val(arguments.nextn);
 			local.pageno = Val(arguments.pageno);
-			// set default
+			local.commentPos = 0;
+			local.continue = true;
+			local.x = 1;
+			
+			// set defaults
 			if ( local.nextn < 1 ) { 
-				local.nextn = 25; 
+				local.nextn = 20; 
 			}
-
 			it.setNextN(local.nextn);
+			
 			if ( local.pageno < 1 || local.pageno > it.pageCount() ) {
 				local.pageno = 1;
 			}
 			it.setPage(local.pageno);
-
-			local.totalPages = it.pageCount();
-			local.buffer = 3;
-			local.startPage = 1;
-			local.endPage = local.totalPages;
-
-			if ( local.buffer < local.totalPages ) {
-				local.startPage = local.pageno-local.buffer;
-				local.endPage = local.pageno+local.buffer;
-
-				if ( local.startPage < 1 ) {
-					local.endPage = local.endPage + Abs(local.startPage) + 1;
-					local.startPage = 1;
-				} 
-
-				if ( local.endPage > local.totalPages ) {
-					local.x = local.startPage - (local.endPage - local.totalPages);
-					local.startPage = local.x < 1 ? 1 : local.x;
-					local.endPage = local.totalPages;
+			
+			local.startPage = local.pageNo;
+			local.endPage = local.pageNo;
+						
+			if ( len(arguments.commentID) ) {
+				for(local.x = 1; x <= q.recordcount && local.continue; local.x++){
+					if (q['commentID'][local.x] == arguments.commentID) {
+						local.commentPos = local.x;
+						local.continue = false;
+					}
 				}
+				
+				local.endPage = Ceiling(local.commentPos / local.nextN);
 			}
 		</cfscript>
 
 		<cfoutput>
-			<cfloop condition="#it.hasNext()#">
-				<cfset comment = it.next()>				
-				<dl>
-					<dt>
-						<cfif len(comment.getURL())>
-							<a href="#comment.getURL()#" target="_blank">#htmleditformat(comment.getName())#</a>
+			<cfloop from="#local.startPage#" to="#local.endPage#" index="i">
+				<cfset it.setPage(local.pageNo)>	
+				<cfloop condition="#it.hasNext()#">
+					<cfset comment = it.next()>				
+					<dl id="comment-#comment.getCommentID()#">
+						<dt>
+							<cfif len(comment.getURL())>
+								<a href="#comment.getURL()#" target="_blank">#htmleditformat(comment.getName())#</a>
+							<cfelse>
+								#htmleditformat(comment.getName())#
+							</cfif>
+							<cfif isEditor and len(comment.getEmail())>
+								<a class="btn btn-default" href="javascript:noSpam('#listFirst(htmlEditFormat(comment.getEmail()),'@')#','#listlast(HTMLEditFormat(comment.getEmail()),'@')#')" onfocus="this.blur();">#$.rbKey('comments.email')#</a>
+							</cfif>
+							<cfif isEditor>
+								<cfif yesnoformat(application.configBean.getValue("editablecomments"))>
+									 <a class="editcomment btn btn-default" data-id="#comment.getCommentID()#">#$.rbKey('comments.edit')#</a>
+								</cfif>
+								<cfif comment.getIsApproved() neq 1>
+									 <a class="btn btn-default" href="./?approvedcommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Approve Comment?');">#$.rbKey('comments.approve')#</a>
+								</cfif>
+								 <a class="btn btn-default" href="./?deletecommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Delete Comment?');">#$.rbKey('comments.delete')#</a>
+								 <a class="btn btn-default" href="./?spamcommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Mark Comment As Spam?');">Spam</a>		
+							</cfif>
+						</dt>
+						<cfif len(comment.getUser().getPhotoFileID())>
+							<dd class="gravatar"><img src="#$.createHREFForImage(comment.getUser().getSiteID(),comment.getUser().getPhotoFileID(),'jpg', 'medium')#"></dd>
 						<cfelse>
-							#htmleditformat(comment.getName())#
+							<dd class="gravatar"><img src="http://www.gravatar.com/avatar/#lcase(Hash(lcase(comment.getEmail())))#" /></dd>
 						</cfif>
-						<cfif isEditor and len(comment.getEmail())>
-							<a class="btn btn-default" href="javascript:noSpam('#listFirst(htmlEditFormat(comment.getEmail()),'@')#','#listlast(HTMLEditFormat(comment.getEmail()),'@')#')" onfocus="this.blur();">#$.rbKey('comments.email')#</a>
+						<cfif len(comment.getParentID())>
+							<dd class="inReplyTo">
+								<em>In reply to: <a href="##" class="inReplyTo" data-parentid="#comment.getParentID()#">#comment.getParent().getName()#</a></em>
+							</dd>
 						</cfif>
-						<cfif isEditor>
-							<cfif yesnoformat(application.configBean.getValue("editablecomments"))>
-								 <a class="editcomment btn btn-default" data-id="#comment.getCommentID()#">#$.rbKey('comments.edit')#</a>
-							</cfif>
-							<cfif comment.getIsApproved() neq 1>
-								 <a class="btn btn-default" href="./?approvedcommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Approve Comment?');">#$.rbKey('comments.approve')#</a>
-							</cfif>
-							 <a class="btn btn-default" href="./?deletecommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Delete Comment?');">#$.rbKey('comments.delete')#</a>
-							 <a class="btn btn-default" href="./?spamcommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Mark Comment As Spam?');">Spam</a>		
-						</cfif>
-					</dt>
-					<cfif len($.currentUser().getPhotoFileID())>
-						<dd class="gravatar"><img src="#$.createHREFForImage($.currentUser().getSiteID(),$.currentUser().getPhotoFileID(),'jpg', 'medium')#"></dd>
-					<cfelse>
-						<dd class="gravatar"><img src="http://www.gravatar.com/avatar/#lcase(Hash(lcase(comment.getEmail())))#" /></dd>
-					</cfif>
-					<dd class="comment">
-						#$.setParagraphs(htmleditformat(comment.getComment()))#
-					</dd>
-					<dd class="dateTime">
-						#LSDateFormat(comment.getEntered(),"long")#, #LSTimeFormat(comment.getEntered(),"short")#
-					</dd>
-					<dd class="reply"><a data-id="#comment.getCommentID()#" href="##postcomment">#$.rbKey('comments.reply')#</a></dd>
-					<dd class="spam"><a data-id="#comment.getCommentID()#" class="flagAsSpam" href="##">Flag as Spam</a></dd>
-					<dd id="postcomment-#comment.getCommentID()#"></dd>
-				</dl>
+						<dd class="comment">
+							#$.setParagraphs(htmleditformat(comment.getComments()))#
+						</dd>
+						<dd class="dateTime">
+							#LSDateFormat(comment.getEntered(),"long")#, #LSTimeFormat(comment.getEntered(),"short")#
+						</dd>
+						<dd class="reply"><a data-id="#comment.getCommentID()#" href="##postcomment">#$.rbKey('comments.reply')#</a></dd>
+						<dd class="spam"><a data-id="#comment.getCommentID()#" class="flagAsSpam" href="##">Flag as Spam</a></dd>
+						<dd id="postcomment-#comment.getCommentID()#"></dd>
+					</dl>
+				</cfloop>
+				<cfset local.pageNo++>
 			</cfloop>
 
 			<!--- MOAR --->
-			<cfif local.pageno lt local.totalPages>
-				<div id="moreCommentsContainer"><a id="moreComments" class="btn btn-default" href="##" data-pageno="#local.pageno+1#">More Comments</a></div>
+			<cfif it.getPageIndex() lt it.pageCount()>
+				<div id="moreCommentsContainer"><a id="moreComments" class="btn btn-default" href="##" data-pageno="#it.getPageIndex()+1#">More Comments</a></div>
 			</cfif>
 	
 		</cfoutput>

@@ -580,7 +580,7 @@ To Unsubscribe Click Here:
 </cffunction>
 
 <cffunction name="getParent" output="false" returntype="any">
-	<cfset var commentBean=getCommentBean() />
+	<cfset var commentBean=getBean("comment") />
 	<cfif len(variables.instance.parentID)>
 		<cfset commentBean.setCommentID(variables.instance.parentID) />
 		<cfset commentBean.load() />
