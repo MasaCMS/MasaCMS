@@ -180,7 +180,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</div>
 		</div>
 		<div class="span4 hasConfiguratorContainer">
-			<label class="control-label">Show "Available Fields" configurator when editing?</label>
+			<label class="control-label">Show "List Display Options" when editing?</label>
 			<div class="controls"> 
 				<label class="radio inline"><input name="hasConfigurator" type="radio" class="radio inline" value="1"<cfif subType.gethasConfigurator() eq 1 >Checked</cfif>>Yes</label>
 				<label class="radio inline"><input name="hasConfigurator" type="radio" class="radio inline" value="0"<cfif subType.gethasConfigurator() eq 0 >Checked</cfif>>No</label>
