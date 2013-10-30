@@ -14,18 +14,17 @@
 				<input type="text" name="keywords" value="#$.event('keywords')#" id="rcSearch" placeholder="#application.rbFactory.getKeyValue(session.rb,'sitemanager.content.fields.searchforcontent')#"/>
 				<button type="submit" name="btnSearch" id="btnSearch" class="btn"><i class="icon-search"></i></button>
 			</div>
-			<a class="btn" href="##" id="aAdvancedSearch" data-toggle="button">Advanced Search</a>
 		</div>	
 	</div>
 	
-	<div id="advancedSearch" style="display:none;">
+	<div id="advancedSearch">
 		<div class="control-group">
 			<div class="span4">
 				<label class="control-label">Comment Status</label>
 				<div class="controls">
 					<select name="commentStatus" id="commentStatusSelector">
 						<option value="">All</option>
-						<cfloop list="Pending,Approved,Spam,Deleted" index="i">
+						<cfloop list="Unapproved,Approved,Spam,Deleted" index="i">
 							<option value="#i#"<cfif $.event('commentStatus') eq i> selected="selected"</cfif>>#i#</option>
 						</cfloop>
 					</select>
@@ -50,7 +49,7 @@
 				<label class="control-label">Available Categories</label>
 		
 				<div id="mura-list-tree" class="controls">
-					#$.getBean('contentCommentManager').dspCategoriesNestSelect($.event("siteID"), "", $.event('searchCategoryID'), 0, 0, "searchCategoryID")#
+					#$.getBean('contentCommentManager').dspCategoriesNestSelect($.event("siteID"), "", $.event('categoryID'), 0, 0, "categoryID")#
 				</div>
 			</div>
 		</div>
@@ -82,7 +81,6 @@
 								<ul class="dropdown-menu">
 									<li><a href="##" class="bulkEdit" data-alertmessage="#rc.$.rbKey('comments.message.confirm.approve')#" data-action="approve"><i class="icon-ok"></i> Approved</a></li>
 									<li><a href="##" class="bulkEdit" data-alertmessage="Are you sure you want to mark the selected comments as spam?" data-action="spam"><i class="icon-flag"></i> Spam</a></li>
-									<li><a href="##" class="bulkEdit" data-alertmessage="#rc.$.rbKey('comments.message.confirm.disapprove')#" data-action="disapprove"><i class="icon-ban-circle"></i> Disapproved</a></li>
 									<li><a href="##" class="bulkEdit" data-alertmessage="#rc.$.rbKey('comments.message.confirm.delete')#" data-action="delete"><i class="icon-trash"></i> Deleted</a></li>
 								</ul>
 							</div>
@@ -142,20 +140,20 @@
 									</div>
 									<div class="pull-right">
 										<a href="##" class="btn" data-dismiss="modal"><i class="icon-undo"></i> #rc.$.rbKey('comments.cancel')#</a>
-										<cfif not local.item.getIsSpam()>
-											<a href="##" class="singleEdit btn btn-warning" data-commentid="#local.item.getCommentID()#" data-action="spam"><i class="icon-flag"></i> Spam</a>
+										<cfif local.item.getIsDeleted()>
+											<a href="##" class="singleEdit btn btn-danger" data-commentid="#local.item.getCommentID()#" data-action="undelete"><i class="icon-trash"></i> Undelete</a>
 										<cfelse>
-											<a href="##" class="singleEdit btn btn-warning" data-commentid="#local.item.getCommentID()#" data-action="unspam"><i class="icon-flag"></i> Spam</a>
-										</cfif>
-										<cfif not local.item.getIsApproved()>
-											<a href="##" class="singleEdit btn btn-success" data-commentid="#local.item.getCommentID()#" data-action="approve"><i class="icon-ok"></i> #rc.$.rbKey('comments.approve')#</a>
-										<cfelse>
-											<a href="##" class="singleEdit btn btn-warning" data-commentid="#local.item.getCommentID()#" data-action="disapprove"><i class="icon-ban-circle"></i> #rc.$.rbKey('comments.disapprove')#</a>
-										</cfif>
-										<cfif not local.item.getIsDeleted()>
 											<a href="##" class="singleEdit btn btn-danger" data-commentid="#local.item.getCommentID()#" data-action="delete"><i class="icon-trash"></i> #rc.$.rbKey('comments.delete')#</a>
-										<cfelse>
-											<a href="##" class="singleEdit btn btn-warning" data-commentid="#local.item.getCommentID()#" data-action="undelete"><i class="icon-trash"></i> #rc.$.rbKey('comments.delete')#</a>
+											<cfif local.item.getIsSpam()>
+												<a href="##" class="singleEdit btn btn-warning" data-commentid="#local.item.getCommentID()#" data-action="unspam"><i class="icon-flag"></i> Unspam</a>
+											<cfelse>
+												<a href="##" class="singleEdit btn btn-warning" data-commentid="#local.item.getCommentID()#" data-action="spam"><i class="icon-flag"></i> Spam</a>
+												<cfif local.item.getIsApproved()>
+													<a href="##" class="singleEdit btn" data-commentid="#local.item.getCommentID()#" data-action="unapprove"><i class="icon-ban-circle"></i> #rc.$.rbKey('comments.unapprove')#</a>
+												<cfelse>
+													<a href="##" class="singleEdit btn" data-commentid="#local.item.getCommentID()#" data-action="approve"><i class="icon-ok"></i> #rc.$.rbKey('comments.approve')#</a>
+												</cfif>
+											</cfif>
 										</cfif>
 									</div>
 								</div>
@@ -217,21 +215,13 @@
 								<!--- ACTIONS --->
 								<td class="actions">
 								<ul>
+									<li><a href="##comment-#local.item.getCommentID()#" data-toggle="modal" title="Comments"><i class="icon-comments"></i></a></li>
 									<cfif IsValid('url', local.item.getURL())>
 										<li><a href="#HTMLEditFormat(local.item.getURL())#" title="#HTMLEditFormat(local.item.getURL())#" target="_blank"><i class="icon-link"></i></a></li>
 									<cfelse>
 										<li class="disabled"><i class="icon-link"></i></li>
 									</cfif>
 									<li><a href="mailto:#HTMLEditFormat(local.item.getEmail())#" title="#HTMLEditFormat(local.item.getEmail())#"><i class="icon-envelope"></i></a></li>
-									<li><a href="##comment-#local.item.getCommentID()#" data-toggle="modal" title="Comments"><i class="icon-comments"></i></a></li>
-									
-									<!--- <cfif rc.isapproved>
-										<li><a href="#buildURL(action='cComments.disapprove', querystring='commentid=#local.item.getCommentID()#&isapproved=#rc.isapproved#&nextn=#rc.nextn#')#" title="Disapprove" onclick="return confirmDialog('Disapprove Comment?',this.href);"><i class="icon-ban-circle" title="Disapprove"></i></a></li>
-									<cfelse>
-										<li><a href="#buildURL(action='cComments.approve', querystring='commentid=#local.item.getCommentID()#&isapproved=#rc.isapproved#&nextn=#rc.nextn#')#" title="Approve" onclick="return confirmDialog('Approve Comment?',this.href);"><i class="icon-ok" title="Approve"></i></a></li>
-									</cfif> --->
-
-									<li><a href="#buildURL(action='cComments.delete', querystring='commentid=#local.item.getCommentID()#&nextn=#rc.nextn#')#" title="Delete" onclick="return confirmDialog('Delete Comment?',this.href);"><i class="icon-remove-sign" title="Delete"></i></a></li>
 								</ul>
 								</td>
 							</tr>

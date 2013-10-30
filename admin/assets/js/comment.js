@@ -46,7 +46,7 @@
 
 
 var commentManager = {
-	loadSearch: function(values, advSearch){
+	loadSearch: function(values){
 		var url = './';
 		var pars = 'muraAction=cComments.loadComments&siteid=' + siteid + '&' + values + '&cacheid=' + Math.random();
 		
@@ -57,11 +57,6 @@ var commentManager = {
 			$('#commentSearch').html(data);
 					
 			setDatePickers(".mura-custom-datepicker", dtLocale, dtCh);
-			
-			if (advSearch == true) {
-				$('#advancedSearch').show();
-				$('#aAdvancedSearch').addClass('active');
-			}
 			
 			setCheckboxTrees();
 			
@@ -76,27 +71,18 @@ var commentManager = {
 		var url = './';
 		var pars = 'muraAction=cComments.bulkEdit&siteid=' + siteid + '&' + values + '&cacheid=' + Math.random();
 		
-		$.get(url + "?" + pars);
-		commentManager.submitSearch();
+		$.get(url + "?" + pars, function(){commentManager.submitSearch();});
 	},
 
 	singleEdit: function(commentid, updateaction){
 		var url = './';
 		var pars = 'muraAction=cComments.singleEdit&siteid=' + siteid + '&commentid=' + commentid + '&updateaction=' + updateaction + '&cacheid=' + Math.random();
 		
-		$.get(url + "?" + pars);
-		commentManager.submitSearch();
+		$.get(url + "?" + pars, function(){commentManager.submitSearch();});
 	},
 
 	submitSearch: function(){
-		var advSearching = $('#advancedSearch').is(':visible');
-		var valueSelector = '#commentSearch input';
-		// if doing an advanced search, then serialze all elements
-		if (advSearching) {
-			valueSelector = '#commentSearch input, #commentSearch select';	
-		}
-						
-		commentManager.loadSearch($(valueSelector).serialize(), advSearching);
+		commentManager.loadSearch($('#commentSearch input, #commentSearch select').serialize());
 	},
 
 	setSort: function(k){
@@ -119,11 +105,6 @@ var commentManager = {
 	},
 
 	attachEvents: function(){
-
-		$('#aAdvancedSearch').click(function(e){
-			e.preventDefault();
-			$('#advancedSearch').slideToggle('fast');
-		});	
 
 		$('#btnSearch').click(function(e){
 			e.preventDefault();

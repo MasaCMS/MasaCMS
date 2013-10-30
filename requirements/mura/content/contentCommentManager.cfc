@@ -78,6 +78,8 @@ component persistent="false" accessors="true" output="false" extends="mura.cfobj
 		, string email
 		, string name
 		, boolean isapproved
+		, boolean isspam
+		, boolean isdeleted
 		, string sortby='entered'
 		, string sortdirection='asc'
 		, boolean returnCountOnly=false
@@ -179,10 +181,10 @@ component persistent="false" accessors="true" output="false" extends="mura.cfobj
 		}
 
 		// categoryID
-		/*if ( StructKeyExists(arguments, 'enddate') && isDate(arguments.enddate) ) {
-			local.qryStr &= ' AND entered <= :enddate ';
-			qComments.addParam(name='enddate', value=createODBCDateTime(createDateTime(year(arguments.enddate), month(arguments.enddate), day(arguments.enddate), 23, 59, 59)), cfsqltype='cf_sql_time');
-		}*/
+		if ( StructKeyExists(arguments, 'categoryID') && len(arguments.categoryID) ) {
+			local.qryStr &= ' AND contentID in ( select distinct contentID from tcontentcategoryassign where categoryID in ( :categoryID ) ) ';
+			qComments.addParam(name='categoryID', value=arguments.categoryID, cfsqltype='cf_sql_varchar', list='true');
+		}
 
 		local.qryStr &= ' ORDER BY ' & arguments.sortby & ' ' & arguments.sortdirection;
 
@@ -239,15 +241,27 @@ component persistent="false" accessors="true" output="false" extends="mura.cfobj
 		return true;
 	}
 
+	public boolean function unmarkAsSpam(required string commentid) {
+		var commentBean = getCommentBeanByCommentID(arguments.commentid);
+
+		try {
+			getContentManager().unmarkCommentAsSpam(arguments.commentid);
+		} catch(any e) {
+			handleError(e);
+		}
+
+		return true;
+	}
+
 
 	public any function getCommentBeanByCommentID(required string commentid) {
 		return getContentManager().getCommentBean().setCommentID(arguments.commentID).load();
 	}
 
 
-	public boolean function disapprove(required string commentid) {
+	public boolean function unapprove(required string commentid) {
 		try {
-			getContentManager().disapproveComment(arguments.commentid);
+			getContentManager().unapproveComment(arguments.commentid);
 		} catch(any e) {
 			handleError(e);
 		}
@@ -258,6 +272,15 @@ component persistent="false" accessors="true" output="false" extends="mura.cfobj
 	public boolean function delete(required string commentid) {
 		try {
 			getContentManager().deleteComment(arguments.commentid);
+		} catch(any e) {
+			handleError(e);
+		}
+		return true;
+	}
+
+	public boolean function undelete(required string commentid) {
+		try {
+			getContentManager().undeleteComment(arguments.commentid);
 		} catch(any e) {
 			handleError(e);
 		}

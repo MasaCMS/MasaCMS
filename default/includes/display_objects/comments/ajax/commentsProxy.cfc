@@ -79,23 +79,27 @@
 		<cfset var $ = getBean("MuraScope").init(session.siteid)>
 		<cfset var content = $.getBean('content').loadBy(contentID=arguments.contentID)>
 		<cfset var crumbArray = content.getCrumbArray()>
-		<cfset var it = content.getCommentsIterator()>
 		<cfset var isEditor=(listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite($.event('siteID')).getPrivateUserPoolID()#')
-					and application.permUtility.getnodePerm(crumbArray) neq 'none')
-					or listFind(session.mura.memberships,'S2')>
+				and application.permUtility.getnodePerm(crumbArray) neq 'none')
+				or listFind(session.mura.memberships,'S2')
+				<!---or has module access to 0x15--->>
 		<cfset var comment = "">
 		<cfset var local = "">
-
+		<cfset var it = $.getBean('contentCommentManager').getCommentsIterator(
+						contentID=content.getContentID(),
+						siteID=$.event('siteID'),
+						isapproved=1,
+						isspam=0,
+						isdeleted=0)>
+		
 		<cfscript>
 			// Pagination Setup
 			local.nextn = Val(arguments.nextn);
 			local.pageno = Val(arguments.pageno);
+			// set default
 			if ( local.nextn < 1 ) { 
 				local.nextn = 25; 
 			}
-
-			// WriteDump(it);
-			// abort;
 
 			it.setNextN(local.nextn);
 			if ( local.pageno < 1 || local.pageno > it.pageCount() ) {
@@ -166,77 +170,11 @@
 				</dl>
 			</cfloop>
 
-
-
-			<!--- RECORDS PER PAGE --->
-			<div class="view-controls row-fluid">
-				<div class="btn-group pull-left">
-					<a class="btn dropdown-toggle" data-toggle="dropdown" href="##">
-						Comments Per Page
-						<span class="caret"></span>
-					</a>
-					<ul class="dropdown-menu">
-						<li><a href="##" class="nextN" data-nextn="10">10</a></li>
-						<li><a href="##" class="nextN" data-nextn="25">25</a></li>
-						<li><a href="##" class="nextN" data-nextn="50">50</a></li>
-						<li><a href="##" class="nextN" data-nextn="100">100</a></li>
-						<li><a href="##" class="nextN" data-nextn="250">250</a></li>
-						<li><a href="##" class="nextN" data-nextn="500">500</a></li>
-						<li><a href="##" class="nextN" data-nextn="100">1000</a></li>
-						<li><a href="##" class="nextN" data-nextn="10000">#$.rbKey('comments.all')#</a></li>
-					</ul>
-				</div>
-				
-				<!--- PAGINATION --->
-				<cfif it.pageCount() gt 1>
-					<div class="pagination pull-right">
-						<ul>
-							<!--- PREVIOUS --->
-							<cfscript>
-								if ( local.pageno eq 1 ) {
-									local.prevClass = 'disabled';
-									local.prevNo = '';
-								} else {
-									local.prevClass = 'pageNo';
-									local.prevNo = local.pageno - 1;
-								}
-							</cfscript>
-							<li class="#local.prevClass#">
-								<a hre="##" data-pageno="#local.prevNo#">&laquo;</a>
-							</li>
-							<!--- LINKS --->
-							<cfloop from="#local.startPage#" to="#local.endPage#" index="p">
-								<li<cfif local.pageno eq p> class="disabled"</cfif>>
-									<cfset lClass = "pageNo">
-									<cfif val(local.pageno) eq p>
-										<cfset lClass = listAppend("lClass", "active", " ")>
-									</cfif>
-									<a href="##" data-pageno="#p#" class="#lClass#">
-										#p#
-									</a>
-								</li>
-							</cfloop>
-							<!--- NEXT --->
-							<cfscript>
-								if ( local.pageno == local.totalPages ) {
-									local.nextClass = 'disabled';
-									local.prevNo = '';
-								} else {
-									local.nextClass = 'pageNo';
-									local.prevNo = local.pageno + 1;
-								}
-							</cfscript>
-							<li class="#local.nextClass#">
-								<a href="##" data-pageno="#local.prevNo#">&raquo;</a>
-							</li>
-						</ul>
-					</div>
-				</cfif>
-			</div>
-			<!--- /@END RECORDS PER PAGE --->	
-
-
-
+			<!--- MOAR --->
+			<cfif local.pageno lt local.totalPages>
+				<div id="moreCommentsContainer"><a id="moreComments" class="btn btn-default" href="##" data-pageno="#local.pageno+1#">More Comments</a></div>
+			</cfif>
+	
 		</cfoutput>
 
 	</cffunction>

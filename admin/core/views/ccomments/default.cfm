@@ -72,7 +72,7 @@
 </style>
 <script>
 	$(document).ready(function(){
-		commentManager.loadSearch('', false);
+		commentManager.loadSearch('');
 	});	
 </script>
 <cfoutput>

@@ -86,13 +86,17 @@ component persistent="false" accessors="true" output="false" extends="controller
 				local.arr = ListToArray(rc.ckupdate);
 				for ( local.i=1; local.i <= ArrayLen(local.arr); local.i++ ) {
 					switch ( rc.bulkedit ) {
-						case 'approve' : getContentCommentManager().approve(local.arr[local.i]);
+						case 'delete' : 
+							getContentCommentManager().delete(local.arr[local.i]);
 							break;
-						case 'disapprove' : getContentCommentManager().disapprove(local.arr[local.i]);
+						case 'spam' : 
+							getContentCommentManager().markAsSpam(local.arr[local.i]);
+							getContentCommentManager().undelete(local.arr[local.i]);
 							break;
-						case 'delete' : getContentCommentManager().delete(local.arr[local.i]);
-							break;
-						case 'spam' : getContentCommentManager().markAsSpam(local.arr[local.i]);
+						case 'approve' : 
+							getContentCommentManager().unmarkAsSpam(local.arr[local.i]);
+							getContentCommentManager().undelete(local.arr[local.i]);
+							getContentCommentManager().approve(local.arr[local.i]);
 							break;
 						default : break;
 					}
@@ -114,16 +118,16 @@ component persistent="false" accessors="true" output="false" extends="controller
 			switch ( rc.updateAction ) {
 				case 'approve' : getContentCommentManager().approve(rc.commentid);
 					break;
-				case 'disapprove' : getContentCommentManager().disapprove(rc.commentid);
+				case 'unapprove' : getContentCommentManager().unapprove(rc.commentid);
 					break;
 				case 'delete' : getContentCommentManager().delete(rc.commentid);
 					break;
 				case 'spam' : getContentCommentManager().markAsSpam(rc.commentid);
 					break;
-				//case 'undelete' : getContentCommentManager().delete(local.arr[local.i]);
-				//	break;
-				//case 'unspam' : getContentCommentManager().markAsSpam(local.arr[local.i]);
-				//	break;	
+				case 'undelete' : getContentCommentManager().undelete(rc.commentid);
+					break;
+				case 'unspam' : getContentCommentManager().unmarkAsSpam(rc.commentid);
+					break;	
 				default : break;
 			}
 		} catch(any e) {
@@ -143,10 +147,10 @@ component persistent="false" accessors="true" output="false" extends="controller
 	}
 
 
-	public void function disapprove(required struct rc) {
+	public void function unapprove(required struct rc) {
 		rc.processed = false;
 		if ( StructKeyExists(arguments.rc, 'commentid') ) {
-			rc.processed = getContentCommentManager().disapprove(arguments.rc.commentid);
+			rc.processed = getContentCommentManager().unapprove(arguments.rc.commentid);
 		}
 		getFW().redirect(action='cComments.default', preserve='processed,isapproved,siteid',path="./");
 	}
@@ -174,9 +178,10 @@ component persistent="false" accessors="true" output="false" extends="controller
 		param name='rc.sortdirection' default='asc';
 		param name='rc.pageno' default=1;
 		param name='rc.nextn' default=25; // 25
-		param name='rc.commentStatus' default='Pending';
-		param name='rc.startdate' default=LSdateFormat(dateAdd('d', -14, now()), session.dateKeyFormat);
+		param name='rc.commentStatus' default='';
+		param name='rc.startdate' default=LSdateFormat(dateAdd('d', -7, now()), session.dateKeyFormat);
 		param name='rc.enddate' default=LSdateFormat(now(), session.dateKeyFormat);
+		param name='rc.categoryID' default='';
 		
 		rc.siteid = StructKeyExists(session, 'siteid') ? session.siteid : 'default';
 		rc.sortdirlink = rc.sortdirection == 'asc' ? 'desc' : 'asc';
@@ -189,7 +194,7 @@ component persistent="false" accessors="true" output="false" extends="controller
 				rc.isSpam = 0;
 			break;
 
-			case "pending": 
+			case "unapproved": 
 				rc.isapproved = 0;
 				rc.isDeleted = 0;
 				rc.isSpam = 0;

@@ -62,7 +62,53 @@ jQuery(document).ready(function() {
 	$url = jQuery("#postcomment [name=url]").val();
 	$email = jQuery("#postcomment [name=email]").val();
 	$currentedit = "";
-	
+
+	loadPage();
+});
+
+function loadPage() {
+	var actionURL = $commentsProxyPath + "?method=renderCommentsPage&contentID=" + jQuery('#commentsPage').attr('data-contentid');
+	jQuery('#commentsPage').load(actionURL,function(){
+		bindEvents();
+	});
+}
+
+function bindEvents(){
+	jQuery("a.flagAsSpam").on('click', function( event ) {
+		event.preventDefault();
+		var a = jQuery(this);
+		var id = a.attr('data-id');
+		
+		var actionURL = $commentsProxyPath + "?method=flag&commentID=" + id;
+		jQuery.get(
+			actionURL,
+			function(data){
+				a.html('Flagged as Spam');
+				a.unbind('click');
+				a.on('click', function( event ) {
+					event.preventDefault();
+				});
+			}
+		);
+	});
+
+	jQuery("#moreComments").on('click', function( event ) {
+		event.preventDefault();
+		var a = jQuery(this);
+		var pageNo = a.attr('data-pageNo');
+		var commentID = jQuery('#commentsPage').attr('data-contentid');
+		
+		var actionURL = $commentsProxyPath + "?method=renderCommentsPage&contentID=" + commentID + "&pageNo=" + pageNo;
+		jQuery.get(
+			actionURL,
+			function(data){
+				a.remove();
+				jQuery(data).appendTo('#commentsPage').hide().fadeIn();
+				bindEvents();
+			}
+		);
+	});
+
 	jQuery(document).on('click', '.reply a', function( event ) {
 		var id = jQuery(this).attr('data-id');
 	
@@ -150,35 +196,4 @@ jQuery(document).ready(function() {
 		jQuery("#postcomment [name=commenteditmode]").val("add");
 		$editor.slideDown();
 	});
-
-	function bindEvents(){
-		jQuery("a.flagAsSpam").on('click', function( event ) {
-			event.preventDefault();
-			var a = jQuery(this);
-			var id = a.attr('data-id');
-			
-			var actionURL=$commentsProxyPath + "?method=flag&commentID=" + id;
-			jQuery.get(
-				actionURL,
-				function(data){
-					console.log(a);
-					a.html('Flagged as Spam');
-					a.unbind('click');
-					a.on('click', function( event ) {
-						event.preventDefault();
-					});
-				}
-			);
-		});
-	}
-
-	jQuery(document).ready(function() {
-		var actionURL = $commentsProxyPath + "?method=renderCommentsPage&contentID=" + $('#commentsPage').attr('data-contentid');
-
-		$('#commentsPage').load(actionURL,function(){
-			bindEvents();
-			console.log('hi');
-		});
-
-	});
-});
+}

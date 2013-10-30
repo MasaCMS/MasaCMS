@@ -2050,12 +2050,30 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfreturn commentBean />
 	</cffunction>
 
+	<cffunction name="undeleteComment" access="public" output="false" returntype="any">
+		<cfargument name="commentID" type="string">
+			<cfset var commentBean=getCommentBean() />
+			<cfset commentBean.setCommentID(arguments.commentid) />
+			<cfset commentBean.load() />
+			<cfset commentBean.undelete() />
+			<cfreturn commentBean />
+	</cffunction>
+
 	<cffunction name="markCommentAsSpam" access="public" output="false" returntype="any">
 		<cfargument name="commentID" type="string">
 			<cfset var commentBean=getCommentBean() />
 			<cfset commentBean.setCommentID(arguments.commentid) />
 			<cfset commentBean.load() />
 			<cfset commentBean.markAsSpam() />
+			<cfreturn commentBean />
+	</cffunction>
+
+	<cffunction name="unmarkCommentAsSpam" access="public" output="false" returntype="any">
+		<cfargument name="commentID" type="string">
+			<cfset var commentBean=getCommentBean() />
+			<cfset commentBean.setCommentID(arguments.commentid) />
+			<cfset commentBean.load() />
+			<cfset commentBean.unmarkAsSpam() />
 			<cfreturn commentBean />
 	</cffunction>
 	
@@ -2076,7 +2094,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			<cfreturn commentBean />
 	</cffunction>
 	
-	<cffunction name="disapproveComment" access="public" output="false" returntype="any">
+	<cffunction name="unapproveComment" access="public" output="false" returntype="any">
 		<cfargument name="commentID" type="string">
 			<cfset var commentBean=getCommentBean() />
 			<cfset commentBean.setCommentID(arguments.commentid) />
