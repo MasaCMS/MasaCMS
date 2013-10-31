@@ -150,11 +150,11 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset isObjectInstance=false>
 </cfif>
 
-<cfset tablist="tabBasic,tabAdvancedfilters,tabDisplay,tabRss">
+<cfset tablist="tabBasic,tabCategorization,tabAdvancedfilters,tabDisplay,tabRss">
 <cfif isObjectInstance>
-	<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.displayinstance')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
+	<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.categorization')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.displayinstance')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
 <cfelse>
-	<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.displaydefaults')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
+	<cfset tabLabellist="#application.rbFactory.getKeyValue(session.rb,'collections.basic')#,#application.rbFactory.getKeyValue(session.rb,'collections.categorization')#,#application.rbFactory.getKeyValue(session.rb,'collections.advancedfilters')#,#application.rbFactory.getKeyValue(session.rb,'collections.displaydefaults')#,#application.rbFactory.getKeyValue(session.rb,'collections.rss')#">
 </cfif>
 </cfsilent>
 
@@ -204,7 +204,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <cfoutput>
 <cfif not isObjectInstance>
 	<!--- Basic Tab --->
-	<div id="tabBasic" class="tab-pane fade">
+		<div id="tabBasic" class="tab-pane fade">
 		<div class="fieldset">
 			<!--- Name --->
 			<div class="control-group">
@@ -243,32 +243,6 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 					</table>
 				</div>
 			</div>
-
-			<!--- Categories --->
-			<cfif application.categoryManager.getCategoryCount(rc.siteid)>
-				<div class="control-group">
-					<!--- Category Filters --->
-					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.categoryfilters')#</label>
-					<div id="mura-list-tree" class="controls">
-						<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" feedID="#rc.feedID#" feedBean="#rc.feedBean#">
-					</div>
-					<!--- Match All Categories (Category Intersection) --->
-					<label class="control-label">
-						<a href="##" rel="tooltip" data-original-title="#application.rbFactory.getKeyValue(session.rb,'collections.categoryintersectiontip')#">
-							#application.rbFactory.getKeyValue(session.rb,'collections.categoryintersection')#
-							<i class="icon-question-sign"></i>
-						</a>
-					</label>
-					<div class="controls">
-						<label class="radio inline">
-							<input name="useCategoryIntersect" type="radio" value="1" class="radio" <cfif rc.feedBean.getUseCategoryIntersect()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
-						</label>
-						<label class="radio inline">
-							<input name="useCategoryIntersect" type="radio" value="0" class="radio" <cfif not rc.feedBean.getUseCategoryIntersect()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
-						</label>
-					</div>
-				</div>
-			</cfif>
 
 			<!--- Sort Options --->
 			<div class="control-group">
@@ -362,6 +336,39 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfif>
 		</div>
 	</div>
+	
+<div id="tabCategorization" class="tab-pane fade">
+
+	
+			<cfif application.categoryManager.getCategoryCount(rc.siteid)>
+			<div class="fieldset">
+				<div class="control-group">
+					<!--- Category Filters --->
+					<label class="control-label">#application.rbFactory.getKeyValue(session.rb,'collections.categoryfilters')#</label>
+					<div id="mura-list-tree" class="controls">
+						<cf_dsp_categories_nest siteID="#rc.siteID#" parentID="" nestLevel="0" feedID="#rc.feedID#" feedBean="#rc.feedBean#">
+					</div>
+				</div>
+				<div class="control-group">
+					<!--- Match All Categories (Category Intersection) --->
+					<label class="control-label">
+						<a href="##" rel="tooltip" data-original-title="#application.rbFactory.getKeyValue(session.rb,'collections.categoryintersectiontip')#">
+							#application.rbFactory.getKeyValue(session.rb,'collections.categoryintersection')#
+							<i class="icon-question-sign"></i>
+						</a>
+					</label>
+					<div class="controls">
+						<label class="radio inline">
+							<input name="useCategoryIntersect" type="radio" value="1" class="radio" <cfif rc.feedBean.getUseCategoryIntersect()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.yes')# 
+						</label>
+						<label class="radio inline">
+							<input name="useCategoryIntersect" type="radio" value="0" class="radio" <cfif not rc.feedBean.getUseCategoryIntersect()>checked</cfif>>#application.rbFactory.getKeyValue(session.rb,'collections.no')# 
+						</label>
+					</div>
+				</div>
+		</div>
+			</cfif>
+</div>
 
 <div id="tabAdvancedfilters" class="tab-pane fade">
 	<div class="fieldset">
