@@ -252,6 +252,12 @@ function isColor(c){
     return NaN;
 }
 
+function isURL(url){
+	urlPattern = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/
+
+	return url.match(urlPattern);
+}
+
 function stripe(theclass) {
 
 	$('table.' + theclass + ' tr').each(
@@ -471,6 +477,17 @@ function validateForm(theForm) {
 						}
 
 						errors += getValidationMessage(theField, ' is not a valid color.');
+					}
+				} else if(validationType == 'URL' && theField.value != '') {
+					//var re = new RegExp("(^#?([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?$)||");
+					if( !isURL(theField.value) ) {
+						if(!started) {
+							started = true;
+							startAt = f;
+							firstErrorNode = "input";
+						}
+
+						errors += getValidationMessage(theField, ' is not a valid URL.');
 					}
 				} else if(validationType == 'REGEX' && theField.value != '' && hasValidationRegex(theField)) {
 					var re = new RegExp(getValidationRegex(theField));
