@@ -91,7 +91,9 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 </cfif>
 </cfif>
 
-<cfif application.settingsManager.getSite(session.siteid).getHasComments() and application.contentManager.getRecentCommentsQuery(session.siteID,1,false).recordCount>
+<cfif application.settingsManager.getSite(session.siteid).getHasComments() 
+	and application.permUtility.getModulePerm('00000000000000000000000000000000015',rc.siteid)
+	and application.contentManager.getRecentCommentsQuery(session.siteID,1,false).recordCount>
 <div id="recentComments"<cfif started> class="divide"</cfif>>
 <h2><i class="icon-comments"></i> #application.rbFactory.getKeyValue(session.rb,"dashboard.comments")# <span><a href="?muraAction=cComments.default&siteID=#session.siteID#">(#application.rbFactory.getKeyValue(session.rb,"dashboard.viewall")#)</a></span></h2>
 <span id="recentCommentsData"></span>
