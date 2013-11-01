@@ -79,10 +79,10 @@ function loadObject(url, target, message) {
 
 //content scheduling
 var dtCh = "/";
-var minYear = 1900;
+var minYear = 1800;
 var maxYear = 2100;
 var dtFormat = [0, 1, 2];
-var dtExample = "12/31/2014";
+var dtExample = "12/31/2016";
 
 function isInteger(s) {
 	var i;
