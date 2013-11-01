@@ -48,7 +48,7 @@
 var commentManager = {
 	loadSearch: function(values){
 		var url = './';
-		var pars = 'muraAction=cComments.loadComments&siteid=' + siteid + '&' + values + '&cacheid=' + Math.random();
+		var pars = 'muraAction=cComments.loadcomments&siteid=' + siteid + '&' + values + '&cacheid=' + Math.random();
 		
 		var d = $('#commentSearch');
 		d.html('<div class="load-inline"></div>');
@@ -62,7 +62,7 @@ var commentManager = {
 			
 			$('#advancedSearch').find('ul.categories:not(.checkboxTrees)').css("margin-left", "10px");
 			
-			commentManager.attachEvents();
+			commentManager.bindEvents();
 		});
 	},
 
@@ -104,7 +104,7 @@ var commentManager = {
 		commentManager.submitSearch();
 	},
 
-	attachEvents: function(){
+	bindEvents: function(){
 
 		$('#btnSearch').click(function(e){
 			e.preventDefault();
@@ -157,6 +157,43 @@ var commentManager = {
 			var k = $(this);
 			commentManager.singleEdit(k.attr('data-commentid'), k.attr('data-action'));
 
-		});				
+		});
+
+		$('.modal').on('shown', function(){
+			var k = $(this);
+
+			var params = {
+				contentID: k.attr('data-contentid'),
+				commentID: k.attr('data-commentid')
+			};
+			
+			commentManager.loadPage(params).success(function(data){
+				k.find('div.modal-body').html(data);
+				console.log($('#detail-' + k.attr('data-commentid')).position().top);
+				k.find('div.modal-body').animate({ scrollTop: $('#detail-' + k.attr('data-commentid')).position().top}, 'slow');
+			})
+		});
+
+		$('.modal').on('hide', function(){
+			var k = $(this);
+			k.find('div.modal-body').scrollTop(0);
+		});
+
+	},
+
+	loadPage: function(ext) {
+		var params = {
+			muraAction: "ccomments.loadcommentspage",
+			sortDirection: 'asc',
+			nextN: '3',
+			siteid: siteid
+		};
+
+		$.extend(params, ext);
+		
+		return $.ajax({
+			url: './',
+			data: params
+		});
 	}
 }

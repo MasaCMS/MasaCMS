@@ -221,9 +221,6 @@ component persistent="false" accessors="true" output="false" extends="controller
 			rc.nextn = 25; 
 		}
 
-		// WriteDump(rc.itComments);
-		// abort;
-
 		rc.itComments.setNextN(rc.nextn);
 		if ( rc.pageno < 1 || rc.pageno > rc.itComments.pageCount() ) {
 			rc.pageno = 1;
@@ -250,6 +247,79 @@ component persistent="false" accessors="true" output="false" extends="controller
 				rc.endPage = rc.totalPages;
 			}
 		}
+	}
+
+	public void function loadcommentspage(required struct rc) {
+		param name="rc.contentID" default='';
+		param name="rc.pageNo" default='1';
+		param name="rc.nextN" default='3';
+		param name="rc.sortDirection" default='asc';
+		param name="rc.commentID" default='';
+		param name="rc.currPagNo" default='0';
+
+
+		rc.content = rc.$.getBean('content').loadBy(contentID=rc.contentID);
+		rc.crumbArray = rc.content.getCrumbArray();
+		rc.isEditor=(listFind(session.mura.memberships,'S2IsPrivate;#application.settingsManager.getSite(rc.$.event('siteID')).getPrivateUserPoolID()#')
+				and application.permUtility.getnodePerm(rc.crumbArray) neq 'none')
+				or listFind(session.mura.memberships,'S2')
+				or application.permUtility.getModulePerm("00000000000000000000000000000000015", rc.$.event('siteID'));
+		rc.sort = listFindNoCase('asc,desc', rc.sortDirection) ? rc.sortDirection : 'asc';
+		rc.it = rc.$.getBean('contentCommentManager').getCommentsIterator(
+						contentID=rc.content.getContentID(),
+						siteID=rc.$.event('siteID'),
+						isapproved=1,
+						isspam=0,
+						isdeleted=0,
+						sortDirection=rc.sort);
+		rc.q = rc.it.getQuery();
+		rc.comment = "";
+		rc.p = structNew();
+		rc.i = "";
+		
+		
+		// Pagination Setup
+		rc.p.nextn = Val(rc.nextn);
+		rc.p.pageno = Val(rc.pageno);
+		rc.p.currpageno = Val(rc.currpageno);
+		rc.p.commentPos = 0;
+		rc.p.continue = true;
+		rc.p.x = 1;
+		
+		// set defaults
+		if ( rc.p.nextn < 1 ) { 
+			rc.p.nextn = 20; 
+		}
+		rc.it.setNextN(rc.p.nextn);
+		
+		if ( rc.p.pageno < 1 || rc.p.pageno > rc.it.pageCount() ) {
+			rc.p.pageno = 1;
+		}
+		rc.it.setPage(rc.p.pageno);
+		
+		rc.p.startPage = rc.p.pageNo;
+		rc.p.endPage = rc.p.pageNo;
+					
+		if ( len(rc.commentID) ) {
+			for(rc.p.x = 1; rc.p.x <= rc.q.recordcount && rc.p.continue; rc.p.x++){
+				if (rc.q['commentID'][rc.p.x] == rc.commentID) {
+					rc.p.commentPos = rc.p.x;
+					rc.p.continue = false;
+				}
+			}
+			
+			rc.p.endPage = Ceiling(rc.p.commentPos / rc.p.nextN);
+			
+			// only load comment page
+			if (rc.p.currpageno == 0) {
+				rc.p.currpageno = rc.p.endPage; 
+				rc.p.startPage = rc.p.endPage;
+				rc.p.pageno = rc.p.endPage;
+				rc.it.setPage(rc.p.pageno);
+			}
+		}
+
+
 	}
 
 }

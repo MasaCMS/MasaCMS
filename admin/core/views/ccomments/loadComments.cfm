@@ -1,11 +1,9 @@
-<cfset $.event('format', 'ajax')>
-
+<cfset request.layout=false>
 <style>
 	td.actions a:hover {
 		text-decoration: none;
 	}
 </style>
-<cfset request.layout=false>
 <cfoutput>
 	<div class="control-group">
 		<label class="control-label">Search for Comments</label>
@@ -64,7 +62,7 @@
 <cfoutput>
 	<div class="control-group">
 		<!--- BODY --->
-		<!--- <cfdump var="#rc.itComments.getQuery()#" abort="true"> --->
+		
 		<cfif rc.itComments.hasNext()>
 			<!--- FORM --->
 			<form name="frmUpdate" id="frmUpdate">
@@ -123,7 +121,7 @@
 							</cfsilent>
 
 							<!--- MODAL WINDOW --->
-							<div id="comment-#local.item.getCommentID()#" class="modal hide fade">
+							<div id="comment-#local.item.getCommentID()#" data-contentid="#local.item.getContentID()#" data-commentid="#local.item.getCommentID()#" class="modal hide fade">
 								<div class="modal-header">
 									<button type="button" class="close" data-dismiss="modal" aria-hidden="true" title="Close Comments"><i class="icon-remove-sign"></i></button>
 									<p>
@@ -132,7 +130,7 @@
 									</p>
 								</div>
 								<div class="modal-body">
-									#application.contentRenderer.setParagraphs(HTMLEditFormat(local.item.getComments()))#
+									<!--- #application.contentRenderer.setParagraphs(HTMLEditFormat(local.item.getComments()))# --->
 								</div>
 								<div class="modal-footer">
 									<div class="pull-left">
