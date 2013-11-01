@@ -2102,13 +2102,13 @@ select * from rs order by name
 	<cfset eventhandler._objectName=getMetaData(eventhandler).name>
 	
 	<cfset var appcfcLookup={
-		onRequestStart='onGlobalRequestStart',
-		onRequestEnd='onGlobalRequestEnd',
-		onApplicationStart='onApplicationLoad',
-		onError='onGlobalError',
-		onMissingTemplate='onGlobalMissingTemplate',
-		onSessionStart='onGlobalSessionStart',
-		onSessionEnd='onGlobalSessionEnd'
+		'onRequestStart'='onGlobalRequestStart',
+		'onRequestEnd'='onGlobalRequestEnd',
+		'onApplicationStart'='onApplicationLoad',
+		'onError'='onGlobalError',
+		'onMissingTemplate'='onGlobalMissingTemplate',
+		'onSessionStart'='onGlobalSessionStart',
+		'onSessionEnd'='onGlobalSessionEnd'
 	}>
 
 	<cfloop collection="#eventhandler#" item="i">
