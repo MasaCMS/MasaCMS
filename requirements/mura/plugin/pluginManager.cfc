@@ -2101,6 +2101,7 @@ select * from rs order by name
 	
 	<cfset eventhandler._objectName=getMetaData(eventhandler).name>
 	
+	<!---
 	<cfset var appcfcLookup={
 		'onRequestStart'='onGlobalRequestStart',
 		'onRequestEnd'='onGlobalRequestEnd',
@@ -2110,7 +2111,8 @@ select * from rs order by name
 		'onSessionStart'='onGlobalSessionStart',
 		'onSessionEnd'='onGlobalSessionEnd'
 	}>
-
+	--->
+	
 	<cfloop collection="#eventhandler#" item="i">
 		<!---
 		<cfif structKeyExists(appcfcLookup,i) and not structKeyExists(eventhandler,appcfcLookup[i])>
