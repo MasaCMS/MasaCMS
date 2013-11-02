@@ -130,7 +130,7 @@
 									</p>
 								</div>
 								<div class="modal-body">
-									<!--- #application.contentRenderer.setParagraphs(HTMLEditFormat(local.item.getComments()))# --->
+									
 								</div>
 								<div class="modal-footer">
 									<div class="pull-left">

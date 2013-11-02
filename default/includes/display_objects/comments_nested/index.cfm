@@ -118,7 +118,6 @@
 			<cfparam name="request.securityCode" default="">
 			<cfparam name="session.securityCode" default="">
 			<cfparam name="request.deletecommentid" default="">
-			<cfparam name="request.spamcommentid" default="">
 			<cfparam name="request.approvedcommentid" default="">
 			<cfparam name="request.isApproved" default="1">
 			<cfparam name="request.hkey" default="">
@@ -225,10 +224,6 @@
 				<cfset application.contentManager.deleteComment(request.deletecommentid) />
 			</cfif>
 
-			<cfif request.isEditor and request.spamcommentid neq "" >
-				<cfset application.contentManager.markCommentAsSpam(request.spamcommentid) />
-			</cfif>
-
 			<cfif request.approvedcommentid neq "" >
 				<cfset application.contentManager.approveComment(request.approvedcommentid,variables.$.getContentRenderer()) />
 			</cfif>
@@ -243,11 +238,11 @@
 		<cfset CurrentPageNumber=Ceiling(request.StartRow/RecordsPerPage)> --->
 
 		<!--- COMMENTS --->
-		<div id="svComments" data-contentid="#variables.$.content('contentID')#">
+		<div id="svComments">
 			<a name="comments"></a>
 			
 			<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('comments.comments')#</#variables.$.getHeaderTag('subHead1')#>
-			#variables.$.dspObject_Include(thefile='comments/dsp_comments.cfm')#
+			#variables.$.dspObject_Include(thefile='comments_nested/dsp_comments.cfm')#
 			<cfif not structIsEmpty(variables.errors) >
 				
 					#errorJSTxt#
@@ -354,6 +349,6 @@
 					</div>
 				</form>
 			</div>
-		</div> 
+		</div>
 	</cfoutput>
 </cfif>

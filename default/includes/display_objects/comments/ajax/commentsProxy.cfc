@@ -97,6 +97,10 @@
 		<cfset var comment = "">
 		<cfset var local = structNew()>
 		<cfset var i = "">
+		<cfset var commenter = "">
+		<cfset var remoteID = "">
+		<cfset var user = "">
+		<cfset var avatar = "">
 		
 		<cfscript>
 			// Pagination Setup
@@ -137,15 +141,24 @@
 				<cfset it.setPage(local.pageNo)>	
 				<cfloop condition="#it.hasNext()#">
 					<cfset comment = it.next()>				
+					<cfset commenter = comment.getCommenter()>
+					<!--- set avatar from Mura's user bean --->
+					<cfset avatar = "">
+					<cfif isValid("UUID", commenter.getRemoteID())>
+						<cfset user = $.getBean('user').loadBy(userID=commenter.getRemoteID())>
+						<cfif not user.getIsNew() and len(user.getPhotoFileID())>
+							<cfset avatar = $.createHREFForImage(user.getSiteID(), user.getPhotoFileID(), 'jpg', 'medium')>
+						</cfif>
+					</cfif>
 					<dl id="comment-#comment.getCommentID()#">
 						<dt>
-							<cfif len(comment.getURL())>
-								<a href="#comment.getURL()#" target="_blank">#htmleditformat(comment.getName())#</a>
+							<cfif len(commenter.getURL())>
+								<a href="#commenter.getURL()#" target="_blank">#htmleditformat(commenter.getName())#</a>
 							<cfelse>
-								#htmleditformat(comment.getName())#
+								#htmleditformat(commenter.getName())#
 							</cfif>
-							<cfif isEditor and len(comment.getEmail())>
-								<a class="btn btn-default" href="javascript:noSpam('#listFirst(htmlEditFormat(comment.getEmail()),'@')#','#listlast(HTMLEditFormat(comment.getEmail()),'@')#')" onfocus="this.blur();">#$.rbKey('comments.email')#</a>
+							<cfif isEditor and len(commenter.getEmail())>
+								<a class="btn btn-default" href="javascript:noSpam('#listFirst(htmlEditFormat(commenter.getEmail()),'@')#','#listlast(HTMLEditFormat(commenter.getEmail()),'@')#')" onfocus="this.blur();">#$.rbKey('comments.email')#</a>
 							</cfif>
 							<cfif isEditor>
 								<cfif yesnoformat(application.configBean.getValue("editablecomments"))>
@@ -158,10 +171,10 @@
 								 <a class="btn btn-default" href="./?spamcommentid=#comment.getCommentID()#&amp;nocache=1&amp;linkServID=#content.getContentID()#" onClick="return confirm('Mark Comment As Spam?');">Spam</a>		
 							</cfif>
 						</dt>
-						<cfif len(comment.getUser().getPhotoFileID())>
-							<dd class="gravatar"><img src="#$.createHREFForImage(comment.getUser().getSiteID(),comment.getUser().getPhotoFileID(),'jpg', 'medium')#"></dd>
+						<cfif len(avatar)>
+							<dd class="gravatar"><img src="#avatar#"></dd>
 						<cfelse>
-							<dd class="gravatar"><img src="http://www.gravatar.com/avatar/#lcase(Hash(lcase(comment.getEmail())))#" /></dd>
+							<dd class="gravatar"><img src="http://www.gravatar.com/avatar/#lcase(Hash(lcase(commenter.getEmail())))#" /></dd>
 						</cfif>
 						<cfif len(comment.getParentID())>
 							<dd class="inReplyTo">
@@ -184,7 +197,7 @@
 
 			<!--- MOAR --->
 			<cfif it.getPageIndex() lt it.pageCount()>
-				<div id="moreCommentsContainer"><a id="moreComments" class="btn btn-default" href="##" data-pageno="#it.getPageIndex()+1#">More Comments</a></div>
+				<div id="moreCommentsContainer"><a id="moreComments" class="btn btn-default" href="##" data-pageno="#it.getPageIndex()+1#"><i class="icon-arrow-down"> More Comments</i></a></div>
 			</cfif>
 	
 		</cfoutput>

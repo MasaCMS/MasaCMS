@@ -169,23 +169,62 @@ var commentManager = {
 			
 			commentManager.loadPage(params).success(function(data){
 				k.find('div.modal-body').html(data);
-				console.log($('#detail-' + k.attr('data-commentid')).position().top);
-				k.find('div.modal-body').animate({ scrollTop: $('#detail-' + k.attr('data-commentid')).position().top}, 'slow');
+				
+				var elem = $('#detail-' + k.attr('data-commentid'));
+				
+				k.find('div.modal-body').animate({ scrollTop: elem.position().top}, 'slow', function(){
+					elem.fadeTo('fast', 0.5, function() {
+						elem.fadeTo('fast', 1);
+					});
+				});
+
+				commentManager.bindAjaxEvents(k);
 			})
 		});
 
-		$('.modal').on('hide', function(){
+		$('.modal').on('hidden', function(){
 			var k = $(this);
-			k.find('div.modal-body').scrollTop(0);
+			k.find('#commentsPage').remove();
 		});
 
+	},
+
+	bindAjaxEvents: function(k) {
+		k.find('#moreCommentsUp').on('click', function(e){
+			e.preventDefault();
+			var params = {
+				contentID: k.attr('data-contentid'),
+				upperID: $(this).attr('data-upperid')
+			};
+			
+			commentManager.loadPage(params).success(function(data){
+				k.find('#moreCommentsUpContainer').remove();
+				//k.find('#commentsPage').prepend(data);
+				$(data).prependTo(k.find('#commentsPage')).hide().fadeIn();
+				commentManager.bindAjaxEvents(k);
+			});
+		});
+
+		k.find('#moreCommentsDown').on('click', function(e){
+			e.preventDefault();
+			var params = {
+				contentID: k.attr('data-contentid'),
+				lowerID: $(this).attr('data-lowerid')
+			};
+			
+			commentManager.loadPage(params).success(function(data){
+				k.find('#moreCommentsDownContainer').remove();
+				//k.find('#commentsPage').append(data);
+				$(data).appendTo(k.find('#commentsPage')).hide().fadeIn();
+				commentManager.bindAjaxEvents(k);
+			});
+		});
 	},
 
 	loadPage: function(ext) {
 		var params = {
 			muraAction: "ccomments.loadcommentspage",
 			sortDirection: 'asc',
-			nextN: '3',
 			siteid: siteid
 		};
 

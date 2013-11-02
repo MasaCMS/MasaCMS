@@ -106,20 +106,34 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	<cfset var remoteID = "">
 	<cfset var commenter = event.getValue('commenterBean')>
 	<cfset var comment = event.getValue('commentBean')>
-
-	<cfif getCurrentUser().isLoggedIn()>
-		<cfset remoteID = getCurrentUser().getUserID()>
-	<cfelseif len(comment.getEmail()) gt 0>
-		<cfset remoteID = comment.getEmail()>
+	
+	<cfif not comment.getIsNew()>
+		<!--- update existing commenter --->
+		<cfset commenter.loadBy(commenterID=comment.getUserID())>
+	<cfelse>
+		<!--- set up new commenter --->
+		<cfif getCurrentUser().isLoggedIn()>
+			<cfset remoteID = getCurrentUser().getUserID()>
+		<cfelseif len(comment.getEmail()) gt 0>
+			<cfset remoteID = comment.getEmail()>
+		</cfif>
+		<cfset commenter.loadBy(remoteID=remoteID)>
+		<cfset commenter.setRemoteID(remoteID)>
 	</cfif>
-
-	<cfset commenter.loadBy(remoteID=remoteID)>
+	
 	<cfset commenter.setName(comment.getName())>
 	<cfset commenter.setEmail(comment.getEmail())>
-	<cfset commenter.setRemoteID(remoteID)>
 	<cfset commenter.save()>
 
 	<cfset comment.setUserID(commenter.getCommenterID())>
+</cffunction>
+
+<cffunction name="standardGetCommenterHandler" output="false" returnType="any">
+	<cfargument name="event" required="true">
+	<cfset var commenter = event.getValue('commenterBean')>
+	<cfset var comment = event.getValue('commentBean')>
+	
+	<cfset commenter.loadBy(commenterID=comment.getUserID())>
 </cffunction>
 
 <cffunction name="standardSetLocaleHandler" output="false" returnType="any">

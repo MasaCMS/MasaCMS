@@ -590,16 +590,6 @@ To Unsubscribe Click Here:
 	</cfif>
 </cffunction>
 
-<cffunction name="getUser" output="false" returntype="any">
-	<cfset var user=getBean("user").loadBy(userID=variables.instance.userID)>
-	
-	<cfif user.getIsNew()>
-		<cfset user.setSiteID(variables.instance.siteID)>
-	</cfif>
-	
-	<cfreturn user>
-</cffunction>
-
 <cffunction name="getCrumbQuery" output="false" returntype="any">
 	<cfargument name="sort" required="true" default="asc">
 	<cfset var rsCommentCrumbData="">
@@ -670,6 +660,22 @@ To Unsubscribe Click Here:
 
 	<cfset pluginEvent.init(eventArgs)>
 	<cfset pluginEvent.getHandler("standardSetCommenter").handle(pluginEvent)>
+</cffunction>
+
+<cffunction name="getCommenter" access="private" output="false">
+	<cfset var pluginEvent=createObject("component","mura.event")>
+	<cfset var eventArgs=structNew()>
+	<cfset var commenter=getBean('commenter')>
+
+	<cfset eventArgs.siteID=variables.instance.siteID>
+	<cfset eventArgs.commentBean=this>
+	<cfset eventArgs.commenterBean=commenter>
+	<cfset structAppend(eventArgs, arguments)>
+
+	<cfset pluginEvent.init(eventArgs)>
+	<cfset pluginEvent.getHandler("standardGetCommenter").handle(pluginEvent)>
+
+	<cfreturn commenter>
 </cffunction>
 
 </cfcomponent>

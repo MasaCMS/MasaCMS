@@ -249,14 +249,13 @@ component persistent="false" accessors="true" output="false" extends="controller
 		}
 	}
 
-	public void function loadcommentspage(required struct rc) {
+	public void function loadCommentsPage(required struct rc) {
 		param name="rc.contentID" default='';
-		param name="rc.pageNo" default='1';
-		param name="rc.nextN" default='3';
-		param name="rc.sortDirection" default='asc';
 		param name="rc.commentID" default='';
-		param name="rc.currPagNo" default='0';
-
+		param name="rc.upperID" default='';
+		param name="rc.lowerID" default='';
+		param name="rc.parentID" default='';
+		param name="rc.sortDirection" default='asc';
 
 		rc.content = rc.$.getBean('content').loadBy(contentID=rc.contentID);
 		rc.crumbArray = rc.content.getCrumbArray();
@@ -265,61 +264,60 @@ component persistent="false" accessors="true" output="false" extends="controller
 				or listFind(session.mura.memberships,'S2')
 				or application.permUtility.getModulePerm("00000000000000000000000000000000015", rc.$.event('siteID'));
 		rc.sort = listFindNoCase('asc,desc', rc.sortDirection) ? rc.sortDirection : 'asc';
-		rc.it = rc.$.getBean('contentCommentManager').getCommentsIterator(
+		rc.q = rc.$.getBean('contentCommentManager').getComments(
 						contentID=rc.content.getContentID(),
 						siteID=rc.$.event('siteID'),
-						isapproved=1,
-						isspam=0,
-						isdeleted=0,
 						sortDirection=rc.sort);
-		rc.q = rc.it.getQuery();
-		rc.comment = "";
 		rc.p = structNew();
-		rc.i = "";
+		rc.p.startRow = 1;
+		rc.p.endRow = 1;		
 		
-		
-		// Pagination Setup
-		rc.p.nextn = Val(rc.nextn);
-		rc.p.pageno = Val(rc.pageno);
-		rc.p.currpageno = Val(rc.currpageno);
-		rc.p.commentPos = 0;
-		rc.p.continue = true;
-		rc.p.x = 1;
-		
-		// set defaults
-		if ( rc.p.nextn < 1 ) { 
-			rc.p.nextn = 20; 
+		rc.p.found = false;
+		for(rc.p.x = 1; rc.p.x <= rc.q.recordcount && !rc.p.found; rc.p.x++){
+			if (rc.q['commentID'][rc.p.x] == rc.commentID) {
+				rc.p.commentPos = rc.p.x;
+				rc.p.found = true;
+			}
 		}
-		rc.it.setNextN(rc.p.nextn);
-		
-		if ( rc.p.pageno < 1 || rc.p.pageno > rc.it.pageCount() ) {
-			rc.p.pageno = 1;
+		if (rc.p.found) {
+			rc.p.startRow = rc.p.commentPos;
+			rc.p.endRow = rc.p.commentPos;	
 		}
-		rc.it.setPage(rc.p.pageno);
-		
-		rc.p.startPage = rc.p.pageNo;
-		rc.p.endPage = rc.p.pageNo;
-					
-		if ( len(rc.commentID) ) {
-			for(rc.p.x = 1; rc.p.x <= rc.q.recordcount && rc.p.continue; rc.p.x++){
-				if (rc.q['commentID'][rc.p.x] == rc.commentID) {
+
+		rc.p.found = false;
+		if (len(rc.upperID)){
+			for(rc.p.x = 1; rc.p.x <= rc.q.recordcount && !rc.p.found; rc.p.x++){
+				if (rc.q['commentID'][rc.p.x] == rc.upperID) {
 					rc.p.commentPos = rc.p.x;
-					rc.p.continue = false;
+					rc.p.found = true;
 				}
 			}
-			
-			rc.p.endPage = Ceiling(rc.p.commentPos / rc.p.nextN);
-			
-			// only load comment page
-			if (rc.p.currpageno == 0) {
-				rc.p.currpageno = rc.p.endPage; 
-				rc.p.startPage = rc.p.endPage;
-				rc.p.pageno = rc.p.endPage;
-				rc.it.setPage(rc.p.pageno);
+			if (rc.p.found) {
+				rc.p.startRow = rc.p.commentPos-2;
+				rc.p.endRow = rc.p.commentPos;
+				if (rc.p.startRow < 1) {
+					rc.p.startRow = 1;
+				}
 			}
 		}
 
-
+		rc.p.found = false;
+		if (len(rc.lowerID)){
+			for(rc.p.x = 1; rc.p.x <= rc.q.recordcount && !rc.p.found; rc.p.x++){
+				if (rc.q['commentID'][rc.p.x] == rc.lowerID) {
+					rc.p.commentPos = rc.p.x;
+					rc.p.found = true;
+				}
+			}
+			if (rc.p.found) {
+				rc.p.startRow = rc.p.commentPos;
+				rc.p.endRow = rc.p.commentPos+2;
+			}
+			if (rc.p.endRow > rc.q.recordCount) {
+				rc.p.endRow = rc.q.recordCount;
+			}
+		}
+			
 	}
 
 }
