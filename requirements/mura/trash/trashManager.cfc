@@ -166,8 +166,8 @@
 
 <cffunction name="throwIn" output="false">
 <cfargument name="deleted">
+<cfargument name="objectClass" default="">
 	<cfset var $="">	
-	<cfset var objectClass=arguments.deleted.getEntityName()>
 	<cfset var idString="">
 	<cfset var labelString="">
 	<cfset var objectType="">
@@ -182,6 +182,10 @@
 	<cfset var deleteID="">
 	<cfset var deleteIDHash="">
 	<cfset var orderno="">
+
+	<cfif not len(arguments.objectClass)>
+		<cfset arguments.objectClass=arguments.deleted.getEntityName()>
+	</cfif>
 	
 	<cfif not isDate(arguments.deleted.getValue("muraDeleteDateTime"))>
 		<cfset arguments.deleted.setValue("muraDeleteDateTime",now())>
@@ -200,9 +204,9 @@
 
 	<cfset request["delete#deleteIDHash#"]=request["delete#deleteIDHash#"]+1>
 
-	<cfif listFindNoCase("campaign,creative",objectClass)>
+	<cfif listFindNoCase("campaign,creative",arguments.objectClass)>
 		<cfset siteid=getBean('userManager').read(arguments.deleted.getUserID()).getSiteID()>
-	<cfelseif objectClass eq "placement">
+	<cfelseif arguments.objectClass eq "placement">
 		<cfset siteid=getBean('userManager').read( getBean('advertiserManager').readCampaign(arguments.deleted.getCampaignID()).getUserID() ).getSiteID()>	
 	<cfelseif len(arguments.deleted.getValue('siteid'))>
 		<cfset siteid=arguments.deleted.getValue('siteid')>
@@ -213,7 +217,7 @@
 	<cfset $=getBean('MuraScope').init(siteid)>
 	
 	<!--- Package up extra stuff related to the contentBean --->
-	<cfif objectClass eq "content">
+	<cfif arguments.objectClass eq "content">
 		
 		<!--- Store display object assignments --->
 		<cfloop from="1" to="8" index="i">
@@ -271,7 +275,7 @@
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.deleted.getValue(IDString)#" />,
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#getDeletedParentID(arguments.deleted)#" />,
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#siteid#" />,
-						<cfqueryparam cfsqltype="cf_sql_varchar" value="#objectClass#" />,
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.objectClass#" />,
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.deleted.getInstanceName()#" />,
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#objectType#" />,
 						<cfqueryparam cfsqltype="cf_sql_varchar" value="#objectSubType#" />,
