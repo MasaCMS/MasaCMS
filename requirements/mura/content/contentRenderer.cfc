@@ -2317,7 +2317,12 @@ Display Objects
 				</cfif>
 			</cfif>
 		</cfif>
-			
+
+
+		<cfif len(arguments.aHasKidsCustomString) and not (arguments.aHasKidsAttributes contains arguments.aHasKidsCustomString)>
+			<cfset arguments.aHasKidsAttributes = arguments.aHasKidsAttributes & ' ' & arguments.aHasKidsCustomString>
+		</cfif>
+
 		<cfif rsSection.recordcount>
 			<cfset adjust=rsSection.recordcount>
 			<cfsavecontent variable="theNav"><cfoutput>
