@@ -63,5 +63,5 @@
 </cfsavecontent>
 </cfsilent>
 <cfoutput>
-#variables.strField# class="form-control" />
+#variables.strField# class="#this.formBuilderFormFieldsClass#" />
 </cfoutput>

@@ -64,7 +64,7 @@
 	<cfset variables.rbFactory=getSite().getRbFactory()>
 </cfsilent>
 <cfoutput>
-	<div class="svTagCloud">
+	<div class="#this.tagCloudWrapperClass#">
 		<#variables.$.getHeaderTag('subHead1')#>#variables.$.rbKey('tagcloud.tagcloud')#</#variables.$.getHeaderTag('subHead1')#>
 		<cfif variables.tags.recordcount>
 			<ol>

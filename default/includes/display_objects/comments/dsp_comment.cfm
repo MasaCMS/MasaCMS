@@ -68,16 +68,16 @@
 				#htmleditformat(request.rsSubCommentsLevel.name[arguments.currentrow])#
 			</cfif>
 			<cfif request.isEditor and request.rsSubCommentsLevel.email[arguments.currentrow] neq ''>
-				<a class="btn btn-default" href="javascript:noSpam('#listFirst(htmlEditFormat(request.rsSubCommentsLevel.email[arguments.currentrow]),'@')#','#listlast(HTMLEditFormat(request.rsSubCommentsLevel.email[arguments.currentrow]),'@')#')" onfocus="this.blur();">#variables.$.rbKey('comments.email')#</a>
+				<a class="#this.emailLinkClass#" href="javascript:noSpam('#listFirst(htmlEditFormat(request.rsSubCommentsLevel.email[arguments.currentrow]),'@')#','#listlast(HTMLEditFormat(request.rsSubCommentsLevel.email[arguments.currentrow]),'@')#')" onfocus="this.blur();">#variables.$.rbKey('comments.email')#</a>
 			</cfif>
 			<cfif request.isEditor>
 				<cfif yesnoformat(application.configBean.getValue("editablecomments"))>
-					 <a class="editcomment btn btn-default" data-id="#request.rsSubCommentsLevel.commentID[arguments.currentrow]#">#variables.$.rbKey('comments.edit')#</a>
+					 <a class="editcomment #this.commentsLinkClass#" data-id="#request.rsSubCommentsLevel.commentID[arguments.currentrow]#">#variables.$.rbKey('comments.edit')#</a>
 				</cfif>
 				<cfif request.rsSubCommentsLevel.isApproved[arguments.currentrow] neq 1>
-					 <a class="btn btn-default" href="./?approvedcommentid=#request.rsSubCommentsLevel.commentid[arguments.currentrow]#&amp;nocache=1&amp;linkServID=#variables.$.content('contentID')#" onClick="return confirm('Approve Comment?');">#variables.$.rbKey('comments.approve')#</a>
+					 <a class="#this.approveCommentLinkClass#" href="./?approvedcommentid=#request.rsSubCommentsLevel.commentid[arguments.currentrow]#&amp;nocache=1&amp;linkServID=#variables.$.content('contentID')#" onClick="return confirm('Approve Comment?');">#variables.$.rbKey('comments.approve')#</a>
 				</cfif>
-				 <a class="btn btn-default" href="./?deletecommentid=#request.rsSubCommentsLevel.commentid[arguments.currentrow]#&amp;nocache=1&amp;linkServID=#variables.$.content('contentID')#" onClick="return confirm('Delete Comment?');">#variables.$.rbKey('comments.delete')#</a>		
+				 <a class="#this.deleteCommentLinkClass#" href="./?deletecommentid=#request.rsSubCommentsLevel.commentid[arguments.currentrow]#&amp;nocache=1&amp;linkServID=#variables.$.content('contentID')#" onClick="return confirm('Delete Comment?');">#variables.$.rbKey('comments.delete')#</a>		
 			</cfif>
 		</dt>
 		<cfif len(variables.$.currentUser().getPhotoFileID())>
