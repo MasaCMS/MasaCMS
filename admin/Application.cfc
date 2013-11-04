@@ -407,7 +407,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				
 		}
 		
-		if(application.configBean.getAdminSSL() and  not application.utility.isHTTPS()){
+		if(application.configBean.getAdminSSL() and application.configBean.getForceAdminSSL() and not application.utility.isHTTPS()){
 			if(cgi.query_string eq ''){
 				page='#cgi.script_name#';
 			} else {

@@ -2101,21 +2101,24 @@ select * from rs order by name
 	
 	<cfset eventhandler._objectName=getMetaData(eventhandler).name>
 	
+	<!---
 	<cfset var appcfcLookup={
-		onRequestStart='onGlobalRequestStart',
-		onRequestEnd='onGlobalRequestEnd',
-		onApplicationStart='onApplicationLoad',
-		onError='onGlobalError',
-		onMissingTemplate='onGlobalMissingTemplate',
-		onSessionStart='onGlobalSessionStart',
-		onSessionEnd='onGlobalSessionEnd'
+		'onRequestStart'='onGlobalRequestStart',
+		'onRequestEnd'='onGlobalRequestEnd',
+		'onApplicationStart'='onApplicationLoad',
+		'onError'='onGlobalError',
+		'onMissingTemplate'='onGlobalMissingTemplate',
+		'onSessionStart'='onGlobalSessionStart',
+		'onSessionEnd'='onGlobalSessionEnd'
 	}>
-
+	--->
+	
 	<cfloop collection="#eventhandler#" item="i">
+		<!---
 		<cfif structKeyExists(appcfcLookup,i) and not structKeyExists(eventhandler,appcfcLookup[i])>
 			<cfset i=appcfcLookup[i]>
 		</cfif>
-
+		--->
 		<cfif left(i,2) eq "on" or left(i,8) eq "standard">
 			<cfset handlerData=structNew()>
 			<cfset handlerData.index=arrayLen(variables.eventHandlers)>

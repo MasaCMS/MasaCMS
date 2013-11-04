@@ -59,8 +59,8 @@
 	<cfset variables.$.event('isBlocked',false)>
 </cfif>
 <cfoutput>
-	<div id="svLoginContainer" class="container">
-		<div class="row">
+	<div id="svLoginContainer" class="#this.loginWrapperClass#">
+		<div class="#this.loginWrapperInnerClass#">
 			<#variables.$.getHeaderTag('subhead1')#>#variables.$.content('title')#</#variables.$.getHeaderTag('subhead1')#>
 
 			<!--- 
@@ -73,51 +73,51 @@
 			<cfif variables.$.event('status') eq 'failed'>
 				<cfif isDate(session.blockLoginUntil) and session.blockLoginUntil gt now()>
 				<cfset variables.$.event('isBlocked',true) />
-				<p id="loginMsg" class="error">#variables.$.rbKey('user.loginblocked')#</p>
+				<p id="loginMsg" class="#this.loginErrorMessageClass#">#variables.$.rbKey('user.loginblocked')#</p>
 				<cfelse>
-				<p id="loginMsg" class="error">#variables.$.rbKey('user.loginfailed')#</p>
+				<p id="loginMsg" class="#this.loginErrorMessageClass#">#variables.$.rbKey('user.loginfailed')#</p>
 				</cfif>
 			</cfif>
 
 			<cfif not variables.$.event('isBlocked')>
-				<form role="form" id="login" class="form-horizontal form-signin <cfif this.formWrapperClass neq "">#this.formWrapperClass#</cfif>" name="frmLogin" method="post" action="?nocache=1" onsubmit="return validate(this);" novalidate="novalidate">
+				<form role="form" id="login" class="#this.loginFormClass# <cfif this.formWrapperClass neq "">#this.formWrapperClass#</cfif>" name="frmLogin" method="post" action="?nocache=1" onsubmit="return validate(this);" novalidate="novalidate">
 
 					<legend>#variables.$.rbKey('user.pleaselogin')#</legend>
 					<!--- Username --->
-					<div class="req form-group">
-						<label for="txtUsername" class="control-label col-lg-2">
+					<div class="req #this.loginFormGroupWrapperClass#">
+						<label for="txtUsername" class="#this.loginFormFieldLabelClass#">
 							#variables.$.rbKey('user.username')#
 							<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
 						</label>
-						<div class="col-lg-10">
-							<input class="form-control" type="text" id="txtUsername" placeholder="#variables.$.rbKey('user.username')#" name="username" required="true" message="#htmlEditFormat(variables.$.rbKey('user.usernamerequired'))#" autofocus>
+						<div class="#this.loginFormFieldWrapperClass#">
+							<input class="#this.loginFormFieldClass#" type="text" id="txtUsername" placeholder="#variables.$.rbKey('user.username')#" name="username" required="true" message="#htmlEditFormat(variables.$.rbKey('user.usernamerequired'))#" autofocus>
 						</div>
 					</div>
 
 					<!--- Password --->
-					<div class="req form-group">
-						<label for="txtPassword" class="control-label col-lg-2">
+					<div class="req #this.loginFormGroupWrapperClass#">
+						<label for="txtPassword" class="#this.loginFormFieldLabelClass#">
 							#variables.$.rbKey('user.password')#
 							<ins>(#HTMLEditFormat(variables.$.rbKey('user.required'))#)</ins>
 						</label>
-						<div class="col-lg-10">
-							<input class="form-control" type="password" id="txtPassword" name="password" placeholder="#variables.$.rbKey('user.password')#" required="true" message="#htmlEditFormat(variables.$.rbKey('user.passwordrequired'))#">
+						<div class="#this.loginFormFieldWrapperClass#">
+							<input class="#this.loginFormFieldClass#" type="password" id="txtPassword" name="password" placeholder="#variables.$.rbKey('user.password')#" required="true" message="#htmlEditFormat(variables.$.rbKey('user.passwordrequired'))#">
 						</div>
 					</div>
 
 					<!--- Remember Me --->
-					<div class="form-group">
-						<div class="col-lg-offset-2 col-lg-10">
-							<label class="checkbox" for="cbRememberMe" >
+					<div class="#this.loginFormGroupWrapperClass#">
+						<div class="#this.loginFormPrefsClass#">
+							<label class="#this.loginFormCheckboxClass#" for="cbRememberMe" >
 								<input type="checkbox" id="cbRememberMe" name="rememberMe" value="1"> #htmlEditFormat(variables.$.rbKey('user.rememberme'))#
 							</label>
 						</div>
 					</div>
 
 					<!--- Login Button --->
-					<div class="form-group">
-						<div class="col-lg-offset-2 col-lg-10">
-							<button type="submit" class="btn btn-default">#htmlEditFormat(variables.$.rbKey('user.login'))#</button>
+					<div class="#this.loginFormGroupWrapperClass#">
+						<div class="#this.loginFormSubmitWrapperClass#">
+							<button type="submit" class="#this.loginFormSubmitClass#">#htmlEditFormat(variables.$.rbKey('user.login'))#</button>
 						</div>
 					</div>
 
@@ -132,27 +132,27 @@
 				</cfif>
 
 				<!--- Forgot Username / Password Form --->
-				<form name="form2" class="form-horizontal form-sendlogin <cfif this.formWrapperClass neq "">#this.formWrapperClass#</cfif>" method="post" action="?nocache=1" id="sendLogin" onsubmit="return validate(this);" novalidate="novalidate">
+				<form name="form2" class="#this.forgotPasswordFormClass# <cfif this.formWrapperClass neq "">#this.formWrapperClass#</cfif>" method="post" action="?nocache=1" id="sendLogin" onsubmit="return validate(this);" novalidate="novalidate">
 
 					<legend>#variables.$.rbKey('user.forgetusernameorpassword')#</legend>
 					<p>#variables.$.rbKey('user.forgotloginmessage')#</p>
 
 					<cfif isdefined('msg2')>
-						<cfif FindNoCase('is not a valid',msg2)><div class="alert alert-error">#HTMLEditFormat(variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('user.forgotnotvalid'),variables.$.event('email')))#<cfelseif FindNoCase('no account',msg2)><div class="error">#HTMLEditFormat(variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('user.forgotnotfound'),variables.$.event('email')))#<cfelse><div class="alert">#variables.$.rbKey('user.forgotsuccess')#</cfif></div>
+						<cfif FindNoCase('is not a valid',msg2)><div class="#this.loginFormErrorClass#">#HTMLEditFormat(variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('user.forgotnotvalid'),variables.$.event('email')))#<cfelseif FindNoCase('no account',msg2)><div class="#this.loginFormErrorClass#">#HTMLEditFormat(variables.$.siteConfig("rbFactory").getResourceBundle().messageFormat(variables.$.rbKey('user.forgotnotfound'),variables.$.event('email')))#<cfelse><div class="#this.loginFormAlertClass#">#variables.$.rbKey('user.forgotsuccess')#</cfif></div>
 					</cfif>
 
 					<!--- Email --->
-					<div class="form-group">
-						<label class="control-label col-lg-2" for="txtEmail">#variables.$.rbKey('user.email')#</label>
-						<div class="col-lg-10">
-							<input id="txtEmail" name="email" class="form-control" type="text" placeholder="#variables.$.rbKey('user.email')#" validate="email" required="true" message="#htmlEditFormat(variables.$.rbKey('user.emailvalidate'))#" />
+					<div class="#this.loginFormGroupWrapperClass#">
+						<label class="#this.loginFormFieldLabelClass#" for="txtEmail">#variables.$.rbKey('user.email')#</label>
+						<div class="#this.loginFormFieldWrapperClass#">
+							<input id="txtEmail" name="email" class="#this.loginFormFieldClass#" type="text" placeholder="#variables.$.rbKey('user.email')#" validate="email" required="true" message="#htmlEditFormat(variables.$.rbKey('user.emailvalidate'))#" />
 						</div>
 					</div>
 
 					<!--- Submit Button --->
-					<div class="form-group">
-						<div class="col-lg-offset-2 col-lg-10">
-							<button type="submit" class="btn btn-default">#htmlEditFormat(variables.$.rbKey('user.getpassword'))#</button>
+					<div class="#this.loginFormGroupWrapperClass#">
+						<div class="#this.loginFormSubmitWrapperClass#">
+							<button type="submit" class="#this.loginFormSubmitClass#">#htmlEditFormat(variables.$.rbKey('user.getpassword'))#</button>
 						</div>
 					</div>
 
@@ -165,7 +165,7 @@
 				<!--- Not Registered? --->
 				<cfif variables.$.siteConfig('ExtranetPublicReg')>
 					<div id="notRegistered">
-						<#variables.$.getHeaderTag('subHead1')# class="center">#variables.$.rbKey('user.notregistered')# <a class="btn btn-primary" href="#variables.$.siteConfig('editProfileURL')#&returnURL=#urlencodedformat(variables.$.event('returnURL'))#">#variables.$.rbKey('user.signup')#</a></#variables.$.getHeaderTag('subHead1')#>
+						<#variables.$.getHeaderTag('subHead1')# class="center">#variables.$.rbKey('user.notregistered')# <a class="#this.notRegisteredLinkClass#" href="#variables.$.siteConfig('editProfileURL')#&returnURL=#urlencodedformat(variables.$.event('returnURL'))#">#variables.$.rbKey('user.signup')#</a></#variables.$.getHeaderTag('subHead1')#>
 					</div>
 				</cfif>
 

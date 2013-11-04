@@ -109,12 +109,12 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 	<body id="svSendToFriend">
 		<cfif not passedProtect>
-			<h1 class="success">#$.rbKey('captcha.spam')#</h1>
+			<h1 class="#this.sendToFriendErrorClass#">#$.rbKey('captcha.spam')#</h1>
 		<cfelse>
 			<cfif success>
-				<h1 class="success">#$.rbKey('stf.yourlinkhasbeensent')#</h1>   
+				<h1 class="#this.sendToFriendSuccessClass#">#$.rbKey('stf.yourlinkhasbeensent')#</h1>   
 			<cfelse>
-				<h1 class="error">#$.rbKey('stf.error')#</h1>  
+				<h1 class="#this.sendToFriendErrorClass#">#$.rbKey('stf.error')#</h1>  
 			</cfif>
 		</cfif>
 	</body>

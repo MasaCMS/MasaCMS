@@ -88,7 +88,7 @@
 			dataset=variables.dataset
 			)#			
 		<cfelseif variables.field.fieldtype.fieldtype neq "section">
-			<div class="mura-form-#variables.field.fieldtype.fieldtype#<cfif variables.field.isrequired> req</cfif> form-group">
+			<div class="mura-form-#variables.field.fieldtype.fieldtype#<cfif variables.field.isrequired> req</cfif> #this.formBuilderFieldWrapperClass#">
 			#variables.$.dspObject_Include(thefile='/formbuilder/fields/dsp_#variables.field.fieldtype.fieldtype#.cfm',
 				field=variables.field,
 				dataset=variables.dataset
@@ -121,7 +121,7 @@
 <cfoutput>
 <form id="#variables.frmID#" class="#variables.$.siteConfig('bsFormLayout')#" method="post"<cfif isMultipart>enctype="multipart/form-data"</cfif>>
 	#variables.frmFieldContents#
-	<div class="form-actions buttons"><br><input type="submit" class="btn btn-default" value="Submit"></div>
+	<div class="#this.formBuilderButtonWrapperClass#"><br><input type="submit" class="#this.formBuilderSubmitClass#" value="Submit"></div>
 	#variables.$.dspObject_Include(thefile='dsp_form_protect.cfm')#
 	<!---#$.dspObject_Include(thefile='dsp_captcha.cfm')#--->
 </form>

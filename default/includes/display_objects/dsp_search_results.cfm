@@ -96,8 +96,8 @@
 
 	<#variables.$.getHeaderTag('headline')#>#variables.$.rbKey('search.searchresults')#</#variables.$.getHeaderTag('headline')#>
 
-	<div id="svSearchResults" class="container">
-		<div class="row">
+	<div id="svSearchResults" class="#this.searchResultWrapperClass#">
+		<div class="#this.searchResultInnerClass#">
 			<cfset variables.args=arrayNew(1)>
 			<cfset variables.args[1]=session.rsSearch.recordcount>
 			<cfif len(request.tag)>
@@ -122,7 +122,7 @@
 		<cfif variables.totalrecords>
 
 			<!--- more results --->
-			<div class="row">
+			<div class="#this.searchResultsMoreResultsRowClass#">
 				<div class="moreResults">
 					<p>#variables.$.rbKey('search.displaying')#: #request.startrow# - #variables.through# #variables.$.rbKey('search.of')# #session.rsSearch.recordcount#</p>
 					<ul class="pager">
@@ -141,8 +141,8 @@
 			</div>
 
 			<!--- RESULTS --->
-			<div class="row">
-				<div id="svPortal" class="svIndex">
+			<div class="#this.searchResultsRowClass#">
+				<div id="svPortal" class="#this.searchReultsListClass#">
 					#variables.$.dspObject_Include(
 						thefile='dsp_content_list.cfm'
 						, fields=variables.contentListFields
@@ -154,10 +154,10 @@
 			<!--- @END RESULTS --->
 			
 			<!--- more results --->
-			<div class="row">
+			<div class="#this.searchResultsMoreResultsRowClass#">
 				<div class="moreResults">
 					<p>#variables.$.rbKey('search.displaying')#: #request.startrow# - #variables.through# #variables.$.rbKey('search.of')# #session.rsSearch.recordcount#</p>
-					<ul class="pager">
+					<ul class="#this.searchReultsPagerClass#">
 					<cfif variables.previous gte 1>
 						<li class="navPrev">
 							<a href="./?startrow=#variables.previous#&amp;display=search&amp;keywords=#HTMLEditFormat(request.keywords)#&amp;searchSectionID=#HTMLEditFormat(request.searchSectionID)#&amp;tag=#HTMLEditFormat(request.tag)#"><i class="icon-double-angle-left"></i> #variables.$.rbKey('search.prev')#</a>
@@ -174,14 +174,14 @@
 		</cfif>
 
 		<!--- SEARCH AGAIN --->
-		<div class="row">
-			<div class="col-md-8">
-				<form id="svSearchAgain" name="searchForm" class="navbar-form" role="search">
+		<div class="#this.searchAgainRowClass#">
+			<div class="#this.searchAgainInnerClass#">
+				<form id="svSearchAgain" name="searchForm" class="#this.searchAgainFormClass#" role="search">
 					<p>#variables.$.rbKey('search.didnotfind')#</p>
-					<div class="input-group">
-						<input type="text" name="Keywords" id="txtKeywords" class="form-control" value="#HTMLEditFormat(request.keywords)#" placeholder="#variables.$.rbKey('search.search')#">
-						<span class="input-group-btn">
-							<button type="submit" class="btn btn-default">
+					<div class="#this.searchAgainInputWrapperClass#">
+						<input type="text" name="Keywords" id="txtKeywords" class="#this.searchAgainFormInputClass#" value="#HTMLEditFormat(request.keywords)#" placeholder="#variables.$.rbKey('search.search')#">
+						<span class="#this.searchAgainButtonWrapperClass#">
+							<button type="submit" class="#this.searchAgainSubmitClass#">
 								<i class="icon-search"></i>
 							</button>
 						</span>

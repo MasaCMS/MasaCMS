@@ -62,7 +62,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				#HTMLEditFormat(variables.formBean.getValue('title'))# Response
 			</#variables.$.getHeaderTag('subHead2')#>
 			<a class="actionItem" href="##" onclick="history.go(-1); return false;">Return to List</a>
-			<dl class="dl-horizontal">
+			<dl class="#this.dataResponseListClass#">
 				<cfloop list="#variables.fieldnames#" index="variables.f">
 					<cftry>
 						<cfset variables.fValue=variables.info['#variables.f#']>
