@@ -56,7 +56,7 @@
 --->
 <cfoutput><span>
 		<div class="mura-tb-form" id="formblock-${fieldid}">
-			<div class="mura-tb-header dropdown">
+			<div class="mura-tb-header #this.formBuilderTabHeaderClass#">
 				<h3><!---#mmRBF.getKeyValue(session.rb,'formbuilder.field.dropdown')#:---> <span id="mura-tb-form-label"></span></h3>
 				<ul class="mura-tb-nav-utility">
 					<li><div id="button-trash" title="#mmRBF.getKeyValue(session.rb,'formbuilder.delete')#"></div></li>
@@ -80,7 +80,7 @@
 						</li>
 						<li>
 							<label for="name">#mmRBF.getKeyValue(session.rb,'formbuilder.field.name')#</label>
-							<input id="tb-name" class="text  disabled" name="name" type="text" value="" maxlength="50" disabled="true" />
+							<input id="tb-name" class="text  #this.formBuilderDisabledInputClass#" name="name" type="text" value="" maxlength="50" disabled="true" />
 						</li>
 						<li class="checkbox">
 							<label for="ismultiselect">
@@ -116,7 +116,7 @@
 							<label for="validatemessage">#mmRBF.getKeyValue(session.rb,'formbuilder.field.validatemessage')#</label>
 							<input class="text long" type="text" name="validatemessage" value="" maxlength="250" />
 						</li>
-						<li class="checkbox">
+						<li class="#this.formBuilderCheckboxClass#">
 							<label for="isrequired">
 							#mmRBF.getKeyValue(session.rb,'formbuilder.field.isrequired')#</label>
 							<input type="checkbox" type="text" name="isrequired" value="1">

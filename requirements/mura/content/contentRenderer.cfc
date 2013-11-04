@@ -111,22 +111,27 @@ Display Objects
 =================== --->
 
 <!--- calendar/dsp_showMonth.cfm --->
-<cfset this.calendarWrapperClass="">
+<cfset this.calendarWrapperClass="svCalendar">
 <cfset this.calendarTableClass="table table-bordered">
 <cfset this.calendarTableHeaderClass="">
 
 <!--- calendar/dspList.cfm --->
-<cfset this.calendarListWrapperClass="">
+<cfset this.calendarListWrapperClass="svCalendar">
 
 <!--- Comments/index.cfm --->
 <cfset this.commentsWrapperClass="">
 <cfset this.commentFormWrapperClass="">
 <cfset this.commentFormClass="form-horizontal">
+<cfset this.commentNewClass="btn btn-default">
 <cfset this.commentFieldWrapperClass="">
 <cfset this.commentFieldLabelClass="">
 <cfset this.commentInputWrapperClass="">
 <cfset this.commentInputClass="">
+<cfset this.commentCheckboxClass="checkbox">
+<cfset this.commentPrefsInputWrapperClass="">
+<cfset this.commentSubmitButtonWrapperClass="">
 <cfset this.commentSubmitButtonClass="btn">
+<cfset this.commentRequiredWrapperClass="">
 <cfset this.commentUserEmailClass="">
 <cfset this.commentDeleteButtonClass="">
 
@@ -137,8 +142,8 @@ Display Objects
 <cfset this.deleteCommentLinkClass="btn">
 
 <!--- Datacollection/dsp_response.cfm --->
-<cfset this.datacollectionErrorPClass="error">
-<cfset this.datacollectionErrorDivClass="alert">
+<cfset this.datacollectionErrorPClass="alert alert-error">
+<cfset this.datacollectionErrorDivClass="alert alert-error">
 <cfset this.datacollectionSuccessPClass="success">
 
 <!--- Dataresponses/dsp_detail.cfm --->
@@ -149,7 +154,9 @@ Display Objects
 <cfset this.dataResponsePaginationClass="pagination">
 
 <!--- Draggablefeeds/index.cfm --->
+<cfset this.draggableBoxWrapperClass="">
 <cfset this.draggableBoxHeaderClass="">
+<cfset this.draggableBoxRSSWrapperClass="svRSSFeeds">
 <cfset this.draggableBoxHeaderButtonClass="btn btn-default">
 <cfset this.draggableBoxRSSeditFormClass="">
 <cfset this.draggableBoxAddFeedWrapperClass="well clearfix">
@@ -182,32 +189,41 @@ Display Objects
 <cfset this.contentListWrapperDivClass="">
 <cfset this.contentListItemImageLinkClass="thumbnail">
 
+<!--- dsp_folder.cfm --->
+<cfset this.folderWrapperClass="svIndex">
+
 <!--- Dsp_edit_profile.cfm --->
+<cfset this.editProfileWrapperClass="">
 <cfset this.editProfileFormClass="form-horizontal">
 <cfset this.editProfileFormGroupWrapperClass="control-group">
 <cfset this.editProfileFieldLabelClass="control-label">
 <cfset this.editProfileFormFieldsWrapperClass="">
 <cfset this.editProfileFormFieldsClass="">
 <cfset this.editProfileHelpBlockClass="help-block">
+<cfset this.editProfileExtAttributeFileWrapperClass="">
+<cfset this.editProfileExtAttributeFileCheckboxClass="checkbox">
+<cfset this.editProfileExtAttributeDownloadClass="">
+<cfset this.editProfileExtAttributeDownloadButtonClass="btn btn-default">
+<cfset this.editProfileSubmitButtonWrapperClass="">
 <cfset this.editProfileSubmitButtonClass="btn btn-primary">
-<cfset this.editProfileSuccessMessageClass="success">
-<cfset this.editProfileErrorMessageClass="alert">
+<cfset this.editProfileSuccessMessageClass="alert alert-success">
 
 <!--- Dsp_email_dropdown.cfm --->
 <cfset this.emailDropdownSelectClass="dropdown">
 
 <!--- Dsp_event_reminder_form.cfm --->
+<cfset this.eventReminderFormWrapperClass="">
 <cfset this.eventReminderFormClass="well">
 <cfset this.eventReminderFieldWrapperClass="control-group">
 <cfset this.eventReminderFormLabelsClass="control-label">
-<cfset this.eventReminderSubmitClass="btn">
+<cfset this.eventReminderSubmitClass="btn btn-default">
 
 <!--- Dsp_features.cfm --->
-<cfset this.featuresWrapperClass="clearfix">
+<cfset this.featuresWrapperClass="svSyndLocal svIndex clearfix">
 
 <!--- Dsp_feed.cfm --->
-<cfset this.localIndexWrapperClass="clearfix">
-<cfset this.remoteFeedWrapperClass="clearfix">
+<cfset this.localIndexWrapperClass="svSyndLocal svFeed svIndex clearfix">
+<cfset this.remoteFeedWrapperClass="svSyndRemote svIndex svFeed clearfix">
 
 <!--- Dsp_login.cfm --->
 <cfset this.loginWrapperClass="container">
@@ -219,16 +235,18 @@ Display Objects
 <cfset this.loginFormFieldLabelClass="control-label">
 <cfset this.loginFormFieldWrapperClass="">
 <cfset this.loginFormFieldClass="">
+<cfset this.loginFormPrefsClass="">
 <cfset this.loginFormCheckboxClass="checkbox">
+<cfset this.loginFormSubmitWrapperClass="">
 <cfset this.loginFormSubmitClass="btn btn-default">
-<cfset this.loginFormAlertClass="alert">
-<cfset this.loginFormErrorClass="error">
+<cfset this.loginFormAlertClass="alert alert-success">
+<cfset this.loginFormErrorClass="alert alert-error">
 <cfset this.notRegisteredLinkClass="btn btn-primary">
 
 <!--- Dsp_mailing_list_master.cfm --->
 <cfset this.mailingListWrapperClass="well">
-<cfset this.mailingListSuccessClass="success">
-<cfset this.mailingListErrorClass="error">
+<cfset this.mailingListSuccessClass="response success">
+<cfset this.mailingListErrorClass="response error">
 <cfset this.mailingListFormClass="form-horizontal">
 <cfset this.mailingListFormGroupWrapperClass="">
 <cfset this.mailingListFormLabelClass="control-label">
@@ -254,6 +272,7 @@ Display Objects
 <cfset this.searchResultInnerClass="row">
 <cfset this.searchResultsRowClass="row">
 <cfset this.searchResultsMoreResultsRowClass="row">
+<cfset this.searchReultsListClass="svIndex">
 <cfset this.searchReultsPagerClass="pager">
 <cfset this.searchAgainRowClass="row">
 <cfset this.searchAgainInnerClass="">
@@ -264,13 +283,14 @@ Display Objects
 <cfset this.searchAgainSubmitClass="btn btn-default">
 
 <!--- Dsp_user_tools.cfm --->
-<cfset this.userToolsWrapperClass="well clearfix">
+<cfset this.userToolsLoginWrapperClass="well clearfix">
 <cfset this.userToolsLoginFormClass="form-horizontal">
 <cfset this.userToolsFormGroupWrapperClass="">
 <cfset this.userToolsLoginFormLabelClass="control-label">
 <cfset this.userToolsLoginFormInputWrapperClass="">
 <cfset this.userToolsLoginFormInputClass="">
 <cfset this.userToolsLoginFormFieldInnerClass="">
+<cfset this.userToolsLoginFormCheckboxClass="checkbox">
 <cfset this.userToolsLoginFormSubmitClass="btn btn-default">
 <cfset this.userToolsNotRegisteredLinkClass="btn btn-primary">
 <cfset this.userToolsWrapperClass="clearfix">
@@ -297,11 +317,14 @@ Display Objects
 <cfset this.formBuilderCheckboxClass="checkbox">
 
 <!--- Gallery/Index.cfm --->
+<cfset this.galleryWrapperClass="">
 <cfset this.galleryULClass="clearfix">
 <cfset this.galleryThumbnailClass="thumbnail">
 
+<!--- Nav/CalendarNav/index --->
+<cfset this.navCalendarWrapperClass="svCalendar">
+
 <!--- Nav/CalendarNav/NavTools.cfc --->
-<cfset this.navCalendarWrapperClass="">
 <cfset this.navCalendarTableClass="table table-bordered">
 
 <!--- Nav/Dsp_sequential.cfm --->
@@ -309,7 +332,7 @@ Display Objects
 <cfset this.navSequentialInnerClass="row">
 
 <!--- Nav/dsp_tag_cloud.cfm --->
-<cfset this.tagCloudWrapperClass="">
+<cfset this.tagCloudWrapperClass="svTagCloud">
 
 <!--- NavArchive --->
 <cfset this.navArchiveWrapperClass="">

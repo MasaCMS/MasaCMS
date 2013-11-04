@@ -67,7 +67,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 				#HTMLEditFormat(variables.formBean.getValue('title'))# Responses
 			</#variables.$.getHeaderTag('subHead2')#>
 		</cfoutput>
-		<table class="table table-hover">
+		<table class="#this.dataResponseTableClass#">
 			<thead>
 				<tr>
 					<cfloop list="#variables.data.fieldnames#" index="variables.f">
@@ -111,7 +111,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 		</table>
 		<cfif variables.nextN.numberofpages gt 1>
 			<cfoutput>
-				<div class="pagination">
+				<div class="#renderer.dataResponsePaginationClass#">
 					<ul>
 						<cfif variables.nextN.currentpagenumber gt 1>
 							<li>

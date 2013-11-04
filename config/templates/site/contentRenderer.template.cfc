@@ -135,11 +135,16 @@
 		 this.commentsWrapperClass="";
 		 this.commentFormWrapperClass="";
 		 this.commentFormClass="";
+		 this.commentNewClass="";
 		 this.commentFieldWrapperClass="";
 		 this.commentFieldLabelClass="";
 		 this.commentInputWrapperClass="";
 		 this.commentInputClass="";
+		 this.commentCheckboxClass="";
+		 this.commentPrefsInputWrapperClass="";
+		 this.commentSubmitButtonWrapperClass="";
 		 this.commentSubmitButtonClass="";
+		 this.commentRequiredWrapperClass="";
 		 this.commentUserEmailClass="";
 		 this.commentDeleteButtonClass="";
 		
@@ -162,7 +167,9 @@
 		 this.dataResponsePaginationClass="";
 		
 		// draggablefeeds/index.cfm
+		 this.draggableBoxWrapperClass="";
 		 this.draggableBoxHeaderClass="";
+		 this.draggableBoxRSSWrapperClass="";
 		 this.draggableBoxHeaderButtonClass="";
 		 this.draggableBoxRSSeditFormClass="";
 		 this.draggableBoxAddFeedWrapperClass="";
@@ -194,22 +201,31 @@
 									};
 		 this.contentListWrapperDivClass="";
 		 this.contentListItemImageLinkClass="";
+		 
+		 // dsp_folder.cfm
+		 this.folderWrapperClass="";
 		
 		// dsp_edit_profile.cfm
+		 this.editProfileWrapperClass="";
 		 this.editProfileFormClass="";
 		 this.editProfileFormGroupWrapperClass="";
 		 this.editProfileFieldLabelClass="";
 		 this.editProfileFormFieldsWrapperClass="";
 		 this.editProfileFormFieldsClass="";
 		 this.editProfileHelpBlockClass="";
+		 this.editProfileExtAttributeFileWrapperClass="";
+		 this.editProfileExtAttributeFileCheckboxClass="";
+		 this.editProfileExtAttributeDownloadClass="";
+		 this.editProfileExtAttributeDownloadButtonClass="";
+		 this.editProfileSubmitButtonWrapperClass="";
 		 this.editProfileSubmitButtonClass="";
 		 this.editProfileSuccessMessageClass="";
-		 this.editProfileErrorMessageClass="";
 		
 		// dsp_email_dropdown.cfm
 		 this.emailDropdownSelectClass="";
 		
 		// dsp_event_reminder_form.cfm
+		 this.eventReminderFormWrapperClass="";
 		 this.eventReminderFormClass="";
 		 this.eventReminderFieldWrapperClass="";
 		 this.eventReminderFormLabelsClass="";
@@ -232,7 +248,9 @@
 		 this.loginFormFieldLabelClass="";
 		 this.loginFormFieldWrapperClass="";
 		 this.loginFormFieldClass="";
+		 this.loginFormPrefsClass="";
 		 this.loginFormCheckboxClass="";
+		 this.loginFormSubmitWrapperClass="";
 		 this.loginFormSubmitClass="";
 		 this.loginFormAlertClass="";
 		 this.loginFormErrorClass="";
@@ -267,6 +285,7 @@
 		 this.searchResultInnerClass="";
 		 this.searchResultsRowClass="";
 		 this.searchResultsMoreResultsRowClass="";
+		 this.searchReultsListClass="";
 		 this.searchReultsPagerClass="";
 		 this.searchAgainRowClass="";
 		 this.searchAgainInnerClass="";
@@ -277,13 +296,14 @@
 		 this.searchAgainSubmitClass="";
 		
 		// dsp_user_tools.cfm
-		 this.userToolsWrapperClass="";
+		 this.userToolsLoginWrapperClass="";
 		 this.userToolsLoginFormClass="";
 		 this.userToolsFormGroupWrapperClass="";
 		 this.userToolsLoginFormLabelClass="";
 		 this.userToolsLoginFormInputWrapperClass="";
 		 this.userToolsLoginFormInputClass="";
 		 this.userToolsLoginFormFieldInnerClass="";
+		 this.userToolsLoginFormCheckboxClass="";
 		 this.userToolsLoginFormSubmitClass="";
 		 this.userToolsNotRegisteredLinkClass="";
 		 this.userToolsWrapperClass="";
@@ -309,6 +329,7 @@
 		 this.formBuilderCheckboxClass="";
 		
 		// gallery/index.cfm
+		 this.galleryWrapperClass="";
 		 this.galleryULClass="";
 		 this.galleryThumbnailClass="";
 		

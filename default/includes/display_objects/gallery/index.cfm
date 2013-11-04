@@ -126,8 +126,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 	</cfif>
 </cfsilent>
 	<cfif variables.iterator.getRecordCount()>
-	<div id="svGallery"> 
-			<ul class="clearfix">
+	<div id="svGallery" class="#this.galleryWrapperClass#"> 
+			<ul class="#this.galleryULClass#">
 			<cfloop condition="variables.iterator.hasNext()">
 			<cfsilent>
 			<cfset variables.item=variables.iterator.next()>
@@ -141,7 +141,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 			</cfsilent>
 			<cfoutput>
 			<li class="#variables.class#"<cfif isNumeric(variables.imageWidth)> style="width:#variables.imageWidth#px;"</cfif>>
-				<a href="#variables.item.getImageURL(size='large')#" title="#HTMLEditFormat(variables.item.getValue('title'))#" rel="shadowbox[gallery]" class="gallery thumbnail"><img src="#variables.item.getImageURL(argumentCollection=imageArgs)#" alt="#HTMLEditFormat(variables.item.getValue('title'))#"/></a>	 
+				<a href="#variables.item.getImageURL(size='large')#" title="#HTMLEditFormat(variables.item.getValue('title'))#" rel="shadowbox[gallery]" class="gallery #this.galleryThumbnailClass#"><img src="#variables.item.getImageURL(argumentCollection=imageArgs)#" alt="#HTMLEditFormat(variables.item.getValue('title'))#"/></a>	 
 			 	<dl>
 			 	<cfloop list="#variables.$.content("displayList")#" index="field">
 					<cfswitch expression="#field#">

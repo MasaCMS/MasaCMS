@@ -94,8 +94,8 @@
 </cfsilent>
 <cfoutput>
 	
-	<div class="container">
-		<div class="row">
+	<div class="#this.nextNWrapperClass#">
+		<div class="#this.nextNInnerClass#">
 			<ul <cfif this.ulPaginationWrapperClass neq "">class="#this.ulPaginationWrapperClass#"</cfif>>
 			<cfif variables.nextN.currentpagenumber gt 1>
 				<cfif request.muraExportHtml>

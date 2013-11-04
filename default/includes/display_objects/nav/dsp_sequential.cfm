@@ -57,8 +57,8 @@
 <!--- Outputs nav of portal and calendar child content in sequence in the form of "Previous 1 2 3 4 5 Next" --->
 <cfif not listFind("Folder,Gallery",variables.$.content('type'))>
 	<cfoutput>
-		<div class="container">
-			<div class="row">
+		<div class="#this.navSequentialWrapperClass#">
+			<div class="#this.navSequentialInnerClass#">
 				<nav id="navSequential">
 					#variables.$.dspSequentialNav()#
 				</nav>

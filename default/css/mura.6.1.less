@@ -152,7 +152,7 @@ form {
 
 // Comments
 // TODO: Add in UL and HTML5 options?
-#svComments {
+.mura-Comments {
 	clear: both;
 
 	dl {
@@ -288,7 +288,7 @@ a#svAsset {
 
 // Calendar
 // Commented out for Bootstrap ease
-.svCalendar {
+.mura-Calendar {
 	text-align: center;
 
 	table { width: 100%; }
@@ -358,7 +358,7 @@ a#svAsset {
 
 
 // Calendar Nav
-#svCalendarNav {
+.mura-CalendarNav {
 
 	th {
 		font-size: .9em;
@@ -369,7 +369,7 @@ a#svAsset {
 
 	td {
 		height: auto;
-		text-align: center;
+		text-align: center !important;
 	}
 
 }
@@ -514,7 +514,7 @@ table.svFlvPlayer td {
 
 // Gallery
 // TODO: Strip any layout rules, and leave that up to the theme's scaffolding.
-#svGallery {
+.mura-Gallery {
 
 	ul {
 		list-style: none;
@@ -583,7 +583,7 @@ table.svFlvPlayer td {
 }
 //end Gallery
 
-.svIndex  {
+.mura-Index  {
 	margin: 2em 0;
 
 	dl {
@@ -623,6 +623,7 @@ table.svFlvPlayer td {
 	}
 
 	.releaseDate {
+		color: #999;
 		font-weight: normal;
 		margin-bottom: .5em;
 	}
@@ -643,8 +644,8 @@ table.svFlvPlayer td {
 
 
 // Side Index
-.sidebar .svIndex,
-aside .svIndex {
+.sidebar .mura-Index,
+aside .mura-Index {
 	margin: 0 0 2em 0;
 
 	dl.first,
@@ -671,7 +672,7 @@ aside .svIndex {
 
 
 // Content Index
-.content .svIndex, section .svIndex {
+.content .mura-Index, section .mura-Index {
 	border-top: 1px solid #ccc;
 	padding-top: 1em;
 }
@@ -723,36 +724,35 @@ aside .hasImage {
 
 		ul { overflow: visible;	}
 	}
-	
-	// Pager
-	.svPager {
-		margin: 0;
-		padding: 0;
-		position: relative;
-		z-index: 2;
-	
-		li {
-			display: inline-block;
-			margin: 0 .25em;
-	
-			&.cycle-pager-active a {}
-	
-			a {
-				display: block;
-				line-height: 1.2;
-				padding: 2px 5px;
-				text-align: center;
-	
-				&:hover	{}
-			}
-		}
-	}
-	//end Pager
 }
 //end Slideshow
 
 
+// Pager
+ol.svPager {
+	margin: 0;
+	padding: 0;
+	position: relative;
+	z-index: 2;
 
+	li {
+		display: inline;
+		margin: 0 .25em;
+
+		&.activeLI a {}
+
+		a {
+			display: -moz-inline-block;
+			display: inline-block;
+			line-height: 1.2;
+			padding: 2px 5px;
+			text-align: center;
+
+			&:hover	{}
+		}
+	}
+}
+//end Pager
 
 
 //TODO: Convert to font awesome; move to a different place
@@ -861,11 +861,11 @@ ul#svSiteMap {
 } //end Site Map
 
 // Tag Cloud (#svTagCloud left in for backward-compatibility)
-#svTagCloud, .svTagCloud {
+#svTagCloud, .mura-TagCloud {
 	padding: 1em 0;
 }
 
-#svTagCloud ol, .svTagCloud ol {
+#svTagCloud ol, .mura-TagCloud ol {
 	margin: 0 0 2em;
 	-webkit-margin-before:0;
 	-webkit-margin-after: 0;
@@ -976,7 +976,7 @@ ul#favoriteList {
 	}
 }
 
-#svSearchResults {
+.mura-SearchResults {
 	.submit {
 		float: none;
 	}
@@ -1134,11 +1134,11 @@ aside .rating {
 	left: -9999px;
 	}
 
-.svIndex .credits {
+.mura-Index .credits {
 	color: #666;
 	}
 
-.svIndex .comments {
+.mura-Index .comments {
 	padding-left: 13px !important;
 	background: url(../images/icon_comments.png) no-repeat 0 50%;
 	}

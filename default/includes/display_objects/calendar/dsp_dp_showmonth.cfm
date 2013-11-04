@@ -54,14 +54,14 @@
 	may, if you choose, apply this exception to your own modified versions of 
 	Mura CMS.
 --->
-<div id="svCalendar" class="svCalendar">
 <cfoutput>
-<table class="table table-bordered">
+<div id="svCalendar" class="#this.calendarWrapperClass#">
+<table class="#this.calendarTableClass#">
 <thead>
 <tr>
-<th title="#HTMLEditFormat(variables.datelong)#" id="variables.previousMonth"><a href="?month=#variables.previousMonth#&year=#variables.previousYear#&categoryID=#URLEncodedFormat(variables.$.event('categoryID'))#&relatedID=#URLEncodedFormat(request.relatedID)#" rel="nofollow">&laquo;</a></th>
-<th colspan="5">#variables.datelong#</th>
-<th id="variables.nextmonth"><a href="?month=#variables.nextmonth#&year=#variables.nextyear#&categoryID=#URLEncodedFormat(variables.$.event('categoryID'))#&relatedID=#URLEncodedFormat(request.relatedID)#" rel="nofollow">&raquo;</a></th>
+<th title="#HTMLEditFormat(variables.datelong)#" id="variables.previousMonth" class="#this.calendarTableHeaderClass#"><a href="?month=#variables.previousMonth#&year=#variables.previousYear#&categoryID=#URLEncodedFormat(variables.$.event('categoryID'))#&relatedID=#URLEncodedFormat(request.relatedID)#" rel="nofollow">&laquo;</a></th>
+<th colspan="5" class="#this.calendarTableHeaderClass#">#variables.datelong#</th>
+<th id="variables.nextmonth" class="#this.calendarTableHeaderClass#"><a href="?month=#variables.nextmonth#&year=#variables.nextyear#&categoryID=#URLEncodedFormat(variables.$.event('categoryID'))#&relatedID=#URLEncodedFormat(request.relatedID)#" rel="nofollow">&raquo;</a></th>
 </tr>
 	<tr class="dayofweek">
 	<cfloop index="variables.id" from="1" to="#listLen(variables.weekdayshort)#">
@@ -103,5 +103,5 @@
 	</cfif></tr>
 </tbody>
 	</table>
-</cfoutput>
 </div>
+</cfoutput>
