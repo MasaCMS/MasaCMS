@@ -75,10 +75,10 @@
 		<cfif variables.level>
 			<cfset class = class & iif(level lt 10,de(" indent-#variables.level#"),de(" indent-10")) />
 		</cfif>
-		#$.dspObject_Include(thefile='comments/dsp_comment.cfm', currentrow=request['rsSubComments#variables.level#'].currentrow)#
+		#$.dspObject_Include(thefile='comments_nested/dsp_comment.cfm', currentrow=request['rsSubComments#variables.level#'].currentrow)#
 		<cfif request['rsSubComments#variables.level#'].kids neq ''>
 			<cfset variables.level = variables.level+1 />
-			#$.dspObject_Include(thefile='comments/dsp_comments.cfm')#
+			#$.dspObject_Include(thefile='comments_nested/dsp_comments.cfm')#
 			<cfset variables.level = variables.level-1 />
 		</cfif>
 	</cfoutput>

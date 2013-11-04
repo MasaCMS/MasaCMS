@@ -57,152 +57,12 @@
 jQuery(document).ready(function() {
 	$editor = jQuery('#postcomment');
 	$commentsProxyPath = assetpath + "/includes/display_objects/comments/ajax/commentsProxy.cfc";
-	$newcommentid = jQuery("#postcomment [name=commentid]").val();
-	$name = jQuery("#postcomment [name=name]").val();
-	$url = jQuery("#postcomment [name=url]").val();
-	$email = jQuery("#postcomment [name=email]").val();
-	$currentedit = "";
-	$nextN = 3;
-
-	initPage();
-});
-
-function initPage() {
-	var params = {
-		// empty
-	};
-
-	loadPage(params).success(function(data){
-		jQuery('#commentsPage').html(data);	
-		bindEvents();
-		handleHash();
-	})
-		
-}
-
-function handleHash() {
-	var hash = window.location.hash;
-	if (hash.length > 0) {
-		if (jQuery(hash).length != 0) {
-			scrollToID(hash);
-		} else {
-			/* load comments, then scroll to */
-			var params = {
-				pageNo: jQuery("#moreComments").attr('data-pageno'),
-				commentID: hash.replace('#comment-', '')
-			};
-
-			loadPage(params).success(function(data){
-				jQuery("#moreComments").parent().remove();
-				jQuery(data).appendTo('#commentsPage').hide().fadeIn();
-				bindEvents();
-				if (jQuery(hash).length != 0) {
-					scrollToID(jQuery(hash));
-				}
-			});
-		}
-	}
-}
-
-function loadPage(ext) {
-	var params = {
-		method: "renderCommentsPage",
-		contentID: jQuery('#commentsPage').attr('data-contentid'),
-		sortDirection: jQuery('#sortDirectionSelector').val(),
-		nextN: $nextN
-	};
-
-	jQuery.extend(params, ext);
+	$newcommentid=jQuery("#postcomment [name=commentid]").val();
+	$name=jQuery("#postcomment [name=name]").val();
+	$url=jQuery("#postcomment [name=url]").val();
+	$email=jQuery("#postcomment [name=email]").val();
+	$currentedit="";
 	
-	return jQuery.ajax({
-		url: $commentsProxyPath,
-		data: params
-	});
-}
-
-function scrollToID(elem) {
-	$('html, body').animate({
-		scrollTop: elem.offset().top - 50
-	}, 500, function(){
-		elem.fadeTo('fast', 0.5, function() {
-			elem.fadeTo('fast', 1);
-		});
-	});
-}
-
-function bindEvents(){
-	jQuery("a.inReplyTo").on('click', function( event ) {
-		event.preventDefault();
-		var a = jQuery(this);
-		var parentid = a.attr('data-parentid');
-		
-		if (jQuery('#comment-' + parentid).length != 0) {
-			scrollToID(jQuery('#comment-' + parentid));
-		} else {
-			/* load comments, then scroll to */
-			var params = {
-				pageNo: jQuery("#moreComments").attr('data-pageno'),
-				commentID: parentid
-			};
-
-			loadPage(params).success(function(data){
-				jQuery("#moreComments").parent().remove();
-				jQuery(data).appendTo('#commentsPage').hide().fadeIn();
-				bindEvents();
-				if (jQuery('#comment-' + parentid).length != 0) {	
-					scrollToID(jQuery('#comment-' + parentid));
-				}
-			})
-		}
-	});
-
-	jQuery("a.flagAsSpam").on('click', function( event ) {
-		event.preventDefault();
-		var a = jQuery(this);
-		var id = a.attr('data-id');
-		
-		var actionURL = $commentsProxyPath + "?method=flag&commentID=" + id;
-		jQuery.get(
-			actionURL,
-			function(data){
-				a.html('Flagged as Spam');
-				a.unbind('click');
-				a.on('click', function( event ) {
-					event.preventDefault();
-				});
-			}
-		);
-	});
-
-	jQuery("#moreComments").on('click', function( event ) {
-		event.preventDefault();
-		var a = jQuery(this);
-		var pageNo = a.attr('data-pageno');
-		var contentID = jQuery('#commentsPage').attr('data-contentid');
-		var params = {
-			pageNo: pageNo
-		};
-		
-		loadPage(params).success(function(data){
-			a.parent().remove();
-			jQuery(data).appendTo('#commentsPage').hide().fadeIn();
-			bindEvents();
-		})
-		
-	});
-
-	jQuery("#sortDirectionSelector").on('change', function( event ) {
-		var params = {
-			// empty
-		};
-		
-		loadPage(params).success(function(data){
-			jQuery('#commentsPage').html(data);	
-			bindEvents();
-		})
-		
-	});
-
 	jQuery(document).on('click', '.reply a', function( event ) {
 		var id = jQuery(this).attr('data-id');
 	
@@ -290,4 +150,6 @@ function bindEvents(){
 		jQuery("#postcomment [name=commenteditmode]").val("add");
 		$editor.slideDown();
 	});
-}
+	
+	
+});
