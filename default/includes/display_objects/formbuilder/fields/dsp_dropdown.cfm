@@ -66,7 +66,7 @@
 </cfsilent>
 <cfsavecontent variable="variables.strField">
 	<cfoutput>
-	#variables.strField# class="form-control">
+	#variables.strField# class="#this.formBuilderFormFieldsClass#">
 	<cfloop from="1" to="#ArrayLen(dataset.datarecordorder)#" index="variables.iiy">
 		<cfset variables.record = arguments.dataset.datarecords[arguments.dataset.datarecordorder[variables.iiy]] />
 		<option<cfif len(variables.record.value)> value="#variables.record.value#"</cfif><cfif variables.record.datarecordid eq arguments.dataset.defaultid> SELECTED</cfif>>#variables.record.label#</option>

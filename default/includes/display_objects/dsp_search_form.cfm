@@ -55,14 +55,14 @@
 	Mura CMS.
 --->
 <cfoutput>
-	<form name="searchForm" class="navbar-form" role="search">
+	<form name="searchForm" class="#this.searchFormClass#" role="search">
 		<#variables.$.getHeaderTag('subHead1')#>
 			<label for="search">#variables.$.rbKey('search.search')#</label>
 		</#variables.$.getHeaderTag('subHead1')#>
-		<div class="input-group">
-			<input type="text" name="Keywords" id="txtKeywords" class="form-control" value="#HTMLEditFormat($.event('keywords'))#" placeholder="#variables.$.rbKey('search.search')#">
-			<span class="input-group-btn">
-				<button type="submit" class="btn btn-default">
+		<div class="#this.searchFormInputWrapperClass#">
+			<input type="text" name="Keywords" id="txtKeywords" class="#this.searchFormInputClass#" value="#HTMLEditFormat($.event('keywords'))#" placeholder="#variables.$.rbKey('search.search')#">
+			<span class="#this.searchFormSubmitWrapperClass#">
+				<button type="submit" class="#this.searchFormSubmitClass#">
 					<i class="icon-search"></i>
 				</button>
 			</span>

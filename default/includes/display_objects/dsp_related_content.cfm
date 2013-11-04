@@ -47,8 +47,8 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
 <cfoutput>
 <cfset variables.isConfigured=not structIsEmpty(objectparams)>
-<cfparam name="objectparams.sortBy" default="orderNo">
-<cfparam name="objectparams.sortDirection" default="asc">
+<cfparam name="objectparams.sortBy" default="created">
+<cfparam name="objectparams.sortDirection" default="desc">
 <cfparam name="objectparams.imagesize" default="small">
 <cfparam name="objectparams.imageHeight" default="#$.siteConfig('smallImageHeight')#">
 <cfparam name="objectparams.imageWidth" default="#$.siteConfig('smallImageWidth')#">

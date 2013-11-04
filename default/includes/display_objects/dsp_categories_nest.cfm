@@ -55,7 +55,7 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 <ul>
 <cfoutput query="rslist">
 <li><cfif variables.rslist.isOpen eq 1>
-<input type="checkbox" name="categoryID" class="checkbox" <cfif listfind(request.userBean.getCategoryID(),variables.rslist.categoryID) or listfind(attributes.categoryID,variables.rslist.CategoryID)>checked</cfif> value="#variables.rslist.categoryID#"> </cfif>#variables.rslist.name#
+<input type="checkbox" name="categoryID" class="#this.categoriesNestCheckboxClass#" <cfif listfind(request.userBean.getCategoryID(),variables.rslist.categoryID) or listfind(attributes.categoryID,variables.rslist.CategoryID)>checked</cfif> value="#variables.rslist.categoryID#"> </cfif>#variables.rslist.name#
 <cf_dsp_categories_nest siteID="#attributes.siteID#" parentID="#variables.rslist.categoryID#" categoryID="#attributes.categoryID#" nestLevel="#evaluate(attributes.nestLevel +1)#" >
 </li>
 </cfoutput>

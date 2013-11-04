@@ -77,34 +77,28 @@
 			<cfset arguments.isCustomImage= true />	
 		</cfif>
 
-		
 		<cfif not structKeyExists(arguments,"imageHeight")>
 			<cfset arguments.imageHeight="auto">
 		</cfif>
 		<cfif not structKeyExists(arguments,"imageWidth")>
 			<cfset arguments.imageWidth="auto">
 		</cfif>
-			
+		
 		<cfif not structKeyExists(arguments,"imagePadding")>
 			<cfset arguments.imagePadding=20>
 		</cfif>
 
-		<cfif this.contentListImageStyles>
-			<cfif arguments.isCustomImage>
-				<cfset arguments.imageStyles='style="#variables.$.generateListImageSyles(size='custom',width=arguments.imageWidth,height=arguments.imageHeight,padding=arguments.imagePadding)#"'>
-			<cfelse>
-				<cfset arguments.imageStyles='style="#variables.$.generateListImageSyles(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight,padding=arguments.imagePadding)#"'>
-			</cfif>
+		<cfif arguments.isCustomImage>
+			<cfset arguments.imageStyles='style="#variables.$.generateListImageSyles(size='custom',width=arguments.imageWidth,height=arguments.imageHeight,padding=arguments.imagePadding)#"'>
+		<cfelse>
+			<cfset arguments.imageStyles='style="#variables.$.generateListImageSyles(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight,padding=arguments.imagePadding)#"'>
 		</cfif>
 	</cfif>
 </cfsilent>	
 
- <cfoutput>
- 	#variables.$.getContentListPropertyValue('containerEl',"openingOuterMarkUp")#
- 	<#variables.$.getContentListPropertyValue('containerEl','tag')# #variables.$.getContentListAttributes('containerEl')#>
- 	#variables.$.getContentListPropertyValue('containerEl',"openingInnerMarkUp")#
- </cfoutput>
-
+<cfif getListFormat() eq "ul">
+	<ul>
+</cfif>
 <cfloop condition="arguments.iterator.hasNext()">
 	<cfsilent>
 		<cfset arguments.item=arguments.iterator.next()>
@@ -125,168 +119,183 @@
 		</cfif>
 	</cfsilent>
 	<cfoutput>
-		#variables.$.getContentListPropertyValue('itemEl','openingOuterMarkUp')#
-		<#variables.$.getContentListPropertyValue('itemEl','tag')# #variables.$.getContentListAttributes('itemEl',arguments.class)#"<cfif this.contentListImageStyles and arguments.hasImage> #arguments.imageStyles#</cfif>>
-			#variables.$.getContentListPropertyValue('itemEL',"openingInnerMarkUp")#
+	<!---  UL MARKUP -------------------------------------------------------------------------- --->
+	<cfif variables.$.getListFormat() eq "ul">
+		<li<cfif not variables.$.event("muraMobileRequest")> class="clearfix<cfif arguments.class neq ''> #arguments.class#</cfif>" <cfif arguments.hasImage>#arguments.imageStyles#</cfif></cfif>>
 			<cfloop list="#arguments.fields#" index="arguments.field">
 				<cfset arguments.field=trim(arguments.field)>
-				#variables.$.getContentListPropertyValue(arguments.field,"openingOuterMarkUp")#
 				<cfswitch expression="#arguments.field#">
+					<cfcase value="Image">
+						<cfif arguments.hasImage>
+							<cfif $.event('muraMobileRequest')>
+							<!---<div class="image">---><img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/><!---</div>--->
+							<cfelse>
+							<a class="image thumbnail" href="#arguments.item.getURL()#" title="#HTMLEditFormat(arguments.item.getValue('title'))#"><img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>	
+							</cfif>
+						</cfif>
+					</cfcase>
 					<cfcase value="Date">
-						<cfif listFindNoCase("Folder,Portal",arguments.type) and isDate(arguments.item.getValue('releaseDate'))>
-							<#variables.$.getContentListPropertyValue(arguments.field,'tag')# #variables.$.getContentListAttributes(arguments.field,'releaseDate')#>
-							#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp")#
-								#variables.$.getContentListLabel(arguments.field)#
-								#LSDateFormat(arguments.item.getValue('releaseDate'),variables.$.getLongDateFormat())#
-							#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp")#
-							</#variables.$.getContentListPropertyValue(arguments.field,'tag')#>
+						<cfif arguments.type eq "Portal" and isDate(arguments.item.getValue('releaseDate'))>
+						<p class="releaseDate">#LSDateFormat(arguments.item.getValue('releaseDate'),variables.$.getLongDateFormat())#</dt>
 						<cfelseif listFind("Search,Feed,Related",arguments.type) and arguments.item.getValue('parentType') eq 'Calendar' and isDate(arguments.item.getValue('displayStart'))>
-							<#variables.$.getContentListPropertyValue(arguments.field,'tag')# class="releaseDate">
-								#variables.$.getContentListLabel(arguments.field)#
-								<cfif LSDateFormat(arguments.item.getValue('displayStart'),"short") lt LSDateFormat(arguments.item.getValue('displayStop'),"short")>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getShortDateFormat())# - #LSDateFormat(arguments.item.getValue('displayStop'),variables.$.getShortDateFormat())#<cfelse>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getLongDateFormat())#</cfif>
-							#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp")#
-							</#variables.$.getContentListPropertyValue(arguments.field,'tag')#>
+						<p class="releaseDate"><cfif LSDateFormat(arguments.item.getValue('displayStart'),"short") lt LSDateFormat(arguments.item.getValue('displayStop'),"short")>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getShortDateFormat())# - #LSDateFormat(arguments.item.getValue('displayStop'),variables.$.getShortDateFormat())#<cfelse>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getLongDateFormat())#</cfif></p>
 						<cfelseif arguments.type eq "Calendar">
-							<#variables.$.getContentListPropertyValue(arguments.field,'tag')# #variables.$.getContentListAttributes(arguments.field,'releaseDate')#>
-							#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp")#
-								#variables.$.getContentListLabel(arguments.field)#
-								<cfif LSDateFormat(arguments.item.getValue('displayStart'),"short") lt LSDateFormat(arguments.item.getValue('displayStop'),"short")>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getShortDateFormat())# - #LSDateFormat(arguments.item.getValue('displayStop'),variables.$.getShortDateFormat())#<cfelse>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getLongDateFormat())#</cfif>
-							#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp")#
-							</#variables.$.getContentListPropertyValue(arguments.field,'tag')#>
+						<p class="releaseDate"><cfif LSDateFormat(arguments.item.getValue('displayStart'),"short") lt LSDateFormat(arguments.item.getValue('displayStop'),"short")>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getShortDateFormat())# - #LSDateFormat(arguments.item.getValue('displayStop'),variables.$.getShortDateFormat())#<cfelse>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getLongDateFormat())#</cfif></p>
 						<cfelseif LSisDate(arguments.item.getValue('releaseDate'))>
-							<#variables.$.getContentListPropertyValue(arguments.field,'tag')# #variables.$.getContentListAttributes(arguments.field,'releaseDate')#>
-							#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp")#
-								#variables.$.getContentListLabel(arguments.field)#
-								#LSDateFormat(arguments.item.getValue('releaseDate'),variables.$.getLongDateFormat())#
-							#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp")#
-							</#variables.$.getContentListPropertyValue(arguments.field,'tag')#>		
+						<p class="releaseDate">#LSDateFormat(arguments.item.getValue('releaseDate'),variables.$.getLongDateFormat())#</p>		
 						</cfif>
 					</cfcase>
 					<cfcase value="Title">
-						<#variables.$.getContentListPropertyValue(arguments.field,'tag')# #variables.$.getContentListAttributes(arguments.field)#>
-						#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp")#
-							#variables.$.getContentListLabel(arguments.field)#
-							<cfif arguments.type eq "Search">#arguments.iterator.getRecordIndex()#. </cfif>
-							#variables.$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),arguments.item.getValue('menutitle'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),arguments.item.getValue('siteID'),'',variables.$.globalConfig('context'),variables.$.globalConfig('stub'),variables.$.globalConfig('indexFile'))#
-						#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp")#
-						</#variables.$.getContentListPropertyValue(arguments.field,'tag')#>
-					</cfcase>
-					<cfcase value="Image">
-						<cfif arguments.hasImage>
-						<#variables.$.getContentListPropertyValue(arguments.field,'tag')# #variables.$.getContentListAttributes(arguments.field)#>
-						#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp")#
-							<cfif variables.$.event('muraMobileRequest')>
-							<img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/>
-							<cfelse>
-							<a href="#arguments.item.getURL()#" title="#HTMLEditFormat(arguments.item.getValue('title'))#" class="#this.contentListItemImageLinkClass#"><img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>
-							</cfif>
-						#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp")#
-						</#variables.$.getContentListPropertyValue(arguments.field,'tag')#>
-						</cfif>
+						<h3><cfif arguments.type eq "Search">#arguments.iterator.getRecordIndex()#. </cfif>#addlink(arguments.item.getValue('type'),arguments.item.getValue('filename'),arguments.item.getValue('menutitle'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),arguments.item.getValue('siteID'))#</h3>
 					</cfcase>
 					<cfcase value="Summary">
 						<cfif len(arguments.item.getValue('summary')) and arguments.item.getValue('summary') neq "<p></p>">
-						 	<#variables.$.getContentListPropertyValue(arguments.field,'tag')# #variables.$.getContentListAttributes(arguments.field)#>
-						 	#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp")#
-						 		#variables.$.getContentListLabel(arguments.field)#
-						 		#variables.$.setDynamicContent(arguments.item.getValue('summary'))#
-						 	#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp")#
-						 	</#variables.$.getContentListPropertyValue(arguments.field,'tag')#>
+							<!---<div class="summary">--->#variables.$.setDynamicContent(arguments.item.getValue('summary'))#<!---</div>--->
 						</cfif>
 					</cfcase>
 					<cfcase value="Body">
 						<cfif not listFindNoCase('File,Link',arguments.item.getValue('type'))>
 							<cfif len(arguments.item.getValue('body')) and arguments.item.getValue('body') neq "<p></p>">
-						 		<#variables.$.getContentListPropertyValue(arguments.field,'tag')# #variables.$.getContentListAttributes(arguments.field)#>
-						 		#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp")#
-						 			#variables.$.getContentListLabel(arguments.field)#
-						 			#variables.$.setDynamicContent(arguments.item.getValue('body'))#
-						 		#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp")#
-						 		</#variables.$.getContentListPropertyValue(arguments.field,'tag')#>
-							 </cfif>
+								<!---<div class="summary">--->#variables.$.setDynamicContent(arguments.item.getValue('summary'))#<!---</div>--->
+							</cfif>
 						<cfelse>
-							 <cfif len(arguments.item.getValue('summary')) and arguments.item.getValue('summary') neq "<p></p>">
-						 		<#variables.$.getContentListPropertyValue(arguments.field,'tag')# #variables.$.getContentListAttributes(arguments.field)#>
-						 		#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp")#
-						 			#variables.$.getContentListLabel(arguments.field)#
-						 			#variables.$.setDynamicContent(arguments.item.getValue('summary'))#
-						 		#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp")#
-						 		</#variables.$.getContentListPropertyValue(arguments.field,'tag')#>
-						 	</cfif>
+							<cfif len(arguments.item.getValue('summary')) and arguments.item.getValue('summary') neq "<p></p>">
+								<!---<div class="summary">--->#variables.$.setDynamicContent(arguments.item.getValue('summary'))#<!---</div>--->
+							</cfif>
 						</cfif>
 					</cfcase>
 					<cfcase value="ReadMore">
-					 	<#variables.$.getContentListPropertyValue(arguments.field,'tag')# #variables.$.getContentListAttributes(arguments.field,"readMore")#>
-					 	#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp")#
-					 		#variables.$.a#variables.$.getContentListTag('itemdetail')#Link(arguments.item.getValue('type'),arguments.item.getValue('filename'),variables.$.rbKey('list.readmore'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),arguments.item.getValue('siteID'),'',variables.$.globalConfig('context'),variables.$.globalConfig('stub'),variables.$.globalConfig('indexFile'))#
-					 	#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp")#
-					 	</#variables.$.getContentListPropertyValue(arguments.field,'tag')#>
+					 	<p class="readMore">#variables.$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),variables.$.rbKey('list.readmore'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),arguments.item.getValue('siteID'),'',variables.$.globalConfig('context'),variables.$.globalConfig('stub'),variables.$.globalConfig('indexFile'))#</p>
 					</cfcase>
 					<cfcase value="Credits">
 						<cfif len(arguments.item.getValue('credits'))>
-						 	<#variables.$.getContentListPropertyValue(arguments.field,'tag')# #variables.$.getContentListAttributes(arguments.field)#>
-						 	#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp")#
-						 		#variables.$.getContentListLabel(arguments.field)#
-						 		#HTMLEditFormat(arguments.item.getValue('credits'))#
-						 	#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp")#
-						 	</#variables.$.getContentListPropertyValue(arguments.field,'tag')#>
+							<p class="credits">#variables.$.rbKey('list.by')# #HTMLEditFormat(arguments.item.getValue('credits'))#</p>
 						</cfif>
 					</cfcase>
 					<cfcase value="Comments">
-						<cfif not variables.$.event('muraMobileRequest') and (arguments.item.getValue('type') eq 'Page' or showItemMeta(arguments.item.getValue('type')) or (len(arguments.item.getValue('fileID')) and showItemMeta(arguments.item.getValue('fileEXT')))) >
-						 	<#variables.$.getContentListPropertyValue(arguments.field,'tag')# #variables.$.getContentListAttributes(arguments.field)#>
-						 	#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp")#
-						 		#variables.$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),'#variables.$.rbKey("list.comments")#(#variables.$.getBean('contentGateway').getCommentCount(variables.$.event('siteID'),arguments.item.getValue('contentID'))#)',arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),variables.$.event('siteID'),'##comments')#
-						 	#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp")#
-						 	</#variables.$.getContentListPropertyValue(arguments.field,'tag')#>
+						<cfif (arguments.item.getValue('type') eq 'Page' or showItemMeta(arguments.item.getValue('type')) or (len(arguments.item.getValue('fileID')) and showItemMeta(arguments.item.getValue('fileEXT')))) >
+							<cfif not $.event('muraMobileRequest')>
+							 	<p class="comments">#variables.$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),'#variables.$.rbKey("list.comments")#(#variables.$.getBean('contentGateway').getCommentCount(variables.$.event('siteID'),arguments.item.getValue('contentID'))#)',arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),variables.$.event('siteID'),'##comments')#</p>
+							</cfif>
 						</cfif>
 					</cfcase>
 					<cfcase value="Tags">
 						<cfif len(arguments.item.getValue('tags'))>
 							<cfset arguments.tagLen=listLen(arguments.item.getValue('tags')) />
-							<#variables.$.getContentListPropertyValue(arguments.field,'tag')# #variables.$.getContentListAttributes(arguments.field)#>
-							#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp")#
-								#variables.$.getContentListLabel(arguments.field)# 
-								<cfloop from="1" to="#arguments.tagLen#" index="t">
-								<cfset arguments.tag=#trim(listgetAt(arguments.item.getValue('tags'),t))#>
-								<a href="#variables.$.createHREF(filename='#variables.$.event('currentFilenameAdjusted')#/tag/#urlEncodedFormat(arguments.tag)#')#">#HTMLEditFormat(arguments.tag)#</a><cfif arguments.tagLen gt t>, </cfif>
+							<p class="tags">
+								#variables.$.rbKey('tagcloud.tags')#: 
+								<cfif $.event('muraMobileRequest')>
+								<cfloop from="1" to="#arguments.tagLen#" index="arguments.t">
+									<cfset arguments.tag=#trim(listgetAt(arguments.item.getValue('tags'),arguments.t))#>
+									#arguments.tag#<cfif arguments.tagLen gt arguments.t>, </cfif>
 								</cfloop>
-							#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp")#
-							</#variables.$.getContentListPropertyValue(arguments.field,'tag')#>
+								<cfelse>
+								<cfloop from="1" to="#arguments.tagLen#" index="arguments.t">
+									<cfset arguments.tag=#trim(listgetAt(arguments.item.getValue('tags'),arguments.t))#>
+									<a href="#variables.$.createHREF(filename='#variables.$.event('currentFilenameAdjusted')#/tag/#urlEncodedFormat(arguments.tag)#')#">#HTMLEditFormat(arguments.tag)#</a><cfif arguments.tagLen gt arguments.t>, </cfif>
+								</cfloop>
+								</cfif>
+							</p>
 						</cfif>
 					</cfcase>
 					<cfcase value="Rating">
 						<cfif (arguments.item.getValue('type') eq 'Page' or showItemMeta(arguments.item.getValue('type')) or (len(arguments.item.getValue('fileID')) and showItemMeta(arguments.item.getValue('fileEXT'))))>
-						 	<#variables.$.getContentListPropertyValue(arguments.field,'tag')# class="rating #application.raterManager.getStarText(arguments.item.getValue('rating'))#">
-						 	#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp")#
-						 		#variables.$.getContentListLabel(arguments.field)# 
-						 		<span><cfif isNumeric(arguments.item.getValue('rating'))>#arguments.item.getValue('rating')# star<cfif arguments.item.getValue('rating') gt 1>s</cfif> <cfelse>Zero stars</cfif></span>
-						 	#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp")#
-						 	</#variables.$.getContentListPropertyValue('itemEl','tag')#>	 	
+							<p class="rating #application.raterManager.getStarText(arguments.item.getValue('rating'))#">#variables.$.rbKey('list.rating')#: <span><cfif isNumeric(arguments.item.getValue('rating'))>#arguments.item.getValue('rating')# star<cfif arguments.item.getValue('rating') gt 1>s</cfif> <cfelse>Zero stars</cfif></span></p>	 	
 						</cfif>
 					</cfcase>
 					<cfdefaultcase>
 						<cfif len(arguments.item.getValue(arguments.field))>
-							<!--- sys based dynamic classes are deprecated --->
-						 	<#variables.$.getContentListPropertyValue(arguments.field,'tag')# #variables.$.getContentListAttributes(arguments.field,'sys#uCase(left(arguments.field,1))##iif(len(arguments.field) gt 1,de('#right(arguments.field,len(arguments.field)-1)#'),de(''))#')#">
-						 	#variables.$.getContentListPropertyValue(arguments.field,"openingInnerMarkUp")#
-						 			#variables.$.getContentListLabel(arguments.field)#
-						 			#HTMLEditFormat(arguments.item.getValue(arguments.field))#
-						 	#variables.$.getContentListPropertyValue(arguments.field,"closingInnerMarkUp")#
-						 	</#variables.$.getContentListPropertyValue(arguments.field,'tag')#>	 	
+						 	<p class="sys#uCase(left(arguments.field,1))##iif(len(arguments.field) gt 1,de('#right(arguments.field,len(arguments.field)-1)#'),de(''))#">#HTMLEditFormat(arguments.item.getValue(arguments.field))#</p>	 	
 						</cfif>
 					</cfdefaultcase>
 				</cfswitch>
-				#variables.$.getContentListPropertyValue(arguments.field,"closingOuterMarkUp")#
 			</cfloop>
-		#variables.$.getContentListPropertyValue('itemEl',"closingInnerMarkUp")#
-		</#variables.$.getContentListPropertyValue('itemEl',"tag")#>
-		#variables.$.getContentListPropertyValue('itemEl',"closingOuterMarkUp")#
+		</li>
+	<cfelse>
+	<!---  DL MARKUP -------------------------------------------------------------------------- --->
+		<dl class="clearfix<cfif arguments.class neq ''> #arguments.class#</cfif>"<cfif arguments.hasImage> #arguments.imageStyles#</cfif>>
+			<cfloop list="#arguments.fields#" index="arguments.field">
+				<cfset arguments.field=trim(arguments.field)>
+				<cfswitch expression="#arguments.field#">
+					<cfcase value="Date">
+						<cfif arguments.type eq "Portal" and isDate(arguments.item.getValue('releaseDate'))>
+						<dt class="releaseDate">#LSDateFormat(arguments.item.getValue('releaseDate'),variables.$.getLongDateFormat())#</dt>
+						<cfelseif listFind("Search,Feed,Related",arguments.type) and arguments.item.getValue('parentType') eq 'Calendar' and isDate(arguments.item.getValue('displayStart'))>
+						<dt class="releaseDate"><cfif LSDateFormat(arguments.item.getValue('displayStart'),"short") lt LSDateFormat(arguments.item.getValue('displayStop'),"short")>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getShortDateFormat())# - #LSDateFormat(arguments.item.getValue('displayStop'),variables.$.getShortDateFormat())#<cfelse>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getLongDateFormat())#</cfif></dt>
+						<cfelseif arguments.type eq "Calendar">
+						<dt class="releaseDate"><cfif LSDateFormat(arguments.item.getValue('displayStart'),"short") lt LSDateFormat(arguments.item.getValue('displayStop'),"short")>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getShortDateFormat())# - #LSDateFormat(arguments.item.getValue('displayStop'),variables.$.getShortDateFormat())#<cfelse>#LSDateFormat(arguments.item.getValue('displayStart'),variables.$.getLongDateFormat())#</cfif></dt>
+						<cfelseif LSisDate(arguments.item.getValue('releaseDate'))>
+						<dt class="releaseDate">#LSDateFormat(arguments.item.getValue('releaseDate'),variables.$.getLongDateFormat())#</dt>		
+						</cfif>
+					</cfcase>
+					<cfcase value="Title">
+						<dt class="title"><cfif arguments.type eq "Search">#arguments.iterator.getRecordIndex()#. </cfif>#variables.$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),arguments.item.getValue('menutitle'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),arguments.item.getValue('siteID'),'',variables.$.globalConfig('context'),variables.$.globalConfig('stub'),variables.$.globalConfig('indexFile'))#</dt>
+					</cfcase>
+					<cfcase value="Image">
+						<cfif arguments.hasImage>
+						<dd class="image">
+							<a href="#arguments.item.getURL()#" title="#HTMLEditFormat(arguments.item.getValue('title'))#" class="thumbnail"><img src="#arguments.item.getImageURL(size=arguments.imageSize,width=arguments.imageWidth,height=arguments.imageHeight)#"  alt="#htmlEditFormat(arguments.item.getValue('title'))#"/></a>
+						</dd>
+						</cfif>
+					</cfcase>
+					<cfcase value="Summary">
+						<cfif len(arguments.item.getValue('summary')) and arguments.item.getValue('summary') neq "<p></p>">
+						 	<dd class="summary">#variables.$.setDynamicContent(arguments.item.getValue('summary'))#</dd>
+						</cfif>
+					</cfcase>
+					<cfcase value="Body">
+						<cfif not listFindNoCase('File,Link',arguments.item.getValue('type'))>
+							<cfif len(arguments.item.getValue('body')) and arguments.item.getValue('body') neq "<p></p>">
+						 		<dd class="body">#variables.$.setDynamicContent(arguments.item.getValue('body'))#</dd>
+							 </cfif>
+						<cfelse>
+							 <cfif len(arguments.item.getValue('summary')) and arguments.item.getValue('summary') neq "<p></p>">
+						 		<dd class="body">#variables.$.setDynamicContent(arguments.item.getValue('summary'))#</dd>
+						 	</cfif>
+						</cfif>
+					</cfcase>
+					<cfcase value="ReadMore">
+					 	<dd class="readMore">#variables.$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),variables.$.rbKey('list.readmore'),arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),arguments.item.getValue('siteID'),'',variables.$.globalConfig('context'),variables.$.globalConfig('stub'),variables.$.globalConfig('indexFile'))#</dd>
+					</cfcase>
+					<cfcase value="Credits">
+						<cfif len(arguments.item.getValue('credits'))>
+						 	<dd class="credits">#variables.$.rbKey('list.by')# #HTMLEditFormat(arguments.item.getValue('credits'))#</dd>
+						</cfif>
+					</cfcase>
+					<cfcase value="Comments">
+						<cfif (arguments.item.getValue('type') eq 'Page' or showItemMeta(arguments.item.getValue('type')) or (len(arguments.item.getValue('fileID')) and showItemMeta(arguments.item.getValue('fileEXT')))) >
+						 	<dd class="comments">#variables.$.addLink(arguments.item.getValue('type'),arguments.item.getValue('filename'),'#variables.$.rbKey("list.comments")#(#variables.$.getBean('contentGateway').getCommentCount(variables.$.event('siteID'),arguments.item.getValue('contentID'))#)',arguments.item.getValue('target'),arguments.item.getValue('targetparams'),arguments.item.getValue('contentID'),variables.$.event('siteID'),'##comments')#</dd>
+						</cfif>
+					</cfcase>
+					<cfcase value="Tags">
+						<cfif len(arguments.item.getValue('tags'))>
+							<cfset arguments.tagLen=listLen(arguments.item.getValue('tags')) />
+							<dd class="tags">
+								#variables.$.rbKey('tagcloud.tags')#: 
+								<cfloop from="1" to="#arguments.tagLen#" index="t">
+								<cfset arguments.tag=#trim(listgetAt(arguments.item.getValue('tags'),t))#>
+								<a href="#variables.$.createHREF(filename='#variables.$.event('currentFilenameAdjusted')#/tag/#urlEncodedFormat(arguments.tag)#')#">#HTMLEditFormat(arguments.tag)#</a><cfif arguments.tagLen gt t>, </cfif>
+								</cfloop>
+							</dd>
+						</cfif>
+					</cfcase>
+					<cfcase value="Rating">
+						<cfif (arguments.item.getValue('type') eq 'Page' or showItemMeta(arguments.item.getValue('type')) or (len(arguments.item.getValue('fileID')) and showItemMeta(arguments.item.getValue('fileEXT'))))>
+						 	<dd class="rating #application.raterManager.getStarText(arguments.item.getValue('rating'))#">#variables.$.rbKey('list.rating')#: <span><cfif isNumeric(arguments.item.getValue('rating'))>#arguments.item.getValue('rating')# star<cfif arguments.item.getValue('rating') gt 1>s</cfif> <cfelse>Zero stars</cfif></span></dd>	 	
+						</cfif>
+					</cfcase>
+					<cfdefaultcase>
+						<cfif len(arguments.item.getValue(arguments.field))>
+						 	<dd class="sys#uCase(left(arguments.field,1))##iif(len(arguments.field) gt 1,de('#right(arguments.field,len(arguments.field)-1)#'),de(''))#">#HTMLEditFormat(arguments.item.getValue(arguments.field))#</dd>	 	
+						</cfif>
+					</cfdefaultcase>
+				</cfswitch>
+			</cfloop>
+		</dl>
+	</cfif>	
 	</cfoutput>
 </cfloop>
- <cfoutput>
- 	#variables.$.getContentListPropertyValue('containerEl',"closingInnerMarkUp")#
- 	</#variables.$.getContentListPropertyValue('containerEl','tag')#>
- 	#variables.$.getContentListPropertyValue('containerEl',"closingOuterMarkUp")#
- </cfoutput>
 
+<cfif getListFormat() eq "ul">
+	</ul>
+</cfif>
