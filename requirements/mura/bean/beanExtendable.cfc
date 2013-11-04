@@ -131,7 +131,18 @@ version 2 without this exception.  You may, if you choose, apply this exception 
 
  <cffunction name="getExtendedAttributes" returnType="struct" output="false" access="public">
  	<cfset var extendSetData = getExtendedData().getAllExtendSetData() />
- 	<cfreturn StructKeyExists(extendSetData, 'data') ? extendSetData.data : {} />
+ 	<cfset var i="">
+ 	<cfset extendSetData=StructKeyExists(extendSetData, 'data') ? extendSetData.data : {} />
+
+ 	<cfif not structIsEmpty(extendSetData)>
+ 		<cfloop collection="#extendSetData#" item="i">
+ 			<cfif valueExists(i)>
+ 				<cfset extendSetData[i]=getValue(i)>
+ 			</cfif>
+ 		</cfloop>
+ 	</cfif>
+
+ 	<cfreturn extendSetData>
  </cffunction>
 
  <cffunction name="getExtendedAttributesList" returnType="string" output="false" access="public">
